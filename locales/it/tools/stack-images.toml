@@ -1,0 +1,337 @@
+#
+# Image Stacker - Italian.
+#
+# Overrides for tools/stack-images/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# I nomi dei metodi restano quelli che si trovano scritti nei manuali e nei
+# forum di fotografia in italiano: mediana, sigma clipping, focus stacking. Il
+# "RAW" non si traduce, e nemmeno le sigle dei formati.
+#
+
+name = "Impilatore di immagini"
+heading = "Impila&nbsp;immagini <span class=\"h1-kw\">&mdash; unisci una raffica, file RAW compresi</span>"
+tagline = "Venti fotogrammi in uno, senza venti caricamenti e senza un convertitore RAW."
+
+title = "Impilatore di immagini &mdash; media, mediana e focus stacking nel browser"
+description = "Unisci una raffica di fotografie in una sola: fanne la media per uccidere il rumore, prendi la mediana per togliere le persone da una scena, schiarisci per le scie stellari, oppure fai il focus stacking di una macro. Legge CR2, NEF, ARW, DNG, RAF e CR3 tirando fuori l'anteprima della fotocamera. Funziona interamente nel tuo browser."
+og_title = "Impila una raffica di fotografie, file RAW compresi"
+og_description = "Media, mediana, sigma clipping, schiarisci, scurisci, somma o focus stacking &mdash; con i fotogrammi prima allineati. I file RAW vengono aperti leggendo l'anteprima che la fotocamera ha già scritto, così un fotogramma da 60 MB si apre veloce come un JPEG. Non viene caricato niente."
+og_image_alt = "Impilatore di immagini - più fotogrammi uniti in uno, nel browser"
+
+pledge = """
+    Ogni fotogramma viene aperto, decodificato, allineato, combinato e scritto dal
+    tuo browser, sulla tua macchina. Una pila di venti file RAW da 60&nbsp;MB è
+    circa un gigabyte di fotografie, e non se ne sposta un byte: lo strumento non
+    ha nessuna funzione di rete, e i file vengono letti direttamente dal tuo disco
+    da un worker che non ha nessun posto dove mandare niente."""
+
+live_hint = """
+      Non fidarti sulla parola: apri gli strumenti di sviluppo, guarda la scheda
+      Rete e impila una cartella di file RAW. Non una richiesta porta con sé una
+      fotografia, una miniatura, un nome di file o un modello di fotocamera. Oppure
+      stacca la rete e impilali lo stesso &mdash; dello strumento non cambia
+      niente."""
+
+read_first = """
+, <code>src/raw.js</code> per come un file RAW
+      viene aperto leggendo kilobyte invece di megabyte, <code>src/stack.js</code>
+      per l'aritmetica di ogni metodo, e <code>src/plan.js</code> per sapere da
+      dove vengono le cifre di memoria e di decodifica mostrate sulla pagina
+      &mdash; sono le risposte di quel file, non delle stime."""
+
+howto_heading = "Come impilare una serie di fotografie nel browser"
+
+card = """
+            Unisci una raffica in un'immagine sola: fai la media per togliere il
+            rumore, prendi la mediana per perdere i passanti, o schiarisci per le
+            scie stellari. Legge i file RAW senza un convertitore."""
+
+[words]
+plural = "fotografie"
+choose = "delle fotografie"
+
+[[facts]]
+text = "Nessun caricamento"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessuna filigrana"
+
+[[facts]]
+text = "Legge il RAW"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Codice aperto"
+
+[[privacy]]
+title = "Le tue fotografie non hanno nessun posto dove andare."
+body = """
+ La
+      Content-Security-Policy elenca ogni indirizzo che questa pagina può
+      contattare, e nemmeno uno appartiene a questo sito. Qui non c'è un endpoint
+      dove i tuoi file possano essere raccolti, e non c'è niente nel codice che li
+      manderebbe se ci fosse &mdash; nessun <code>fetch</code>, nessun
+      <code>XMLHttpRequest</code>, nessun <code>sendBeacon</code>, né in
+      <code>src/</code> né nel worker."""
+
+[[privacy]]
+title = "I file RAW vengono letti, non caricati &mdash; e letti appena."
+body = """
+ Un file RAW di una
+      fotocamera contiene già un JPEG a piena risoluzione che la fotocamera ha
+      prodotto nel momento dello scatto. Questo strumento lo trova percorrendo
+      qualche voce di directory e poi chiedendo una sola fetta, che su un file da
+      60&nbsp;MB di solito sta sotto il centinaio di kilobyte. La pagina ti mostra
+      quella cifra accanto alla dimensione dei tuoi file mentre lavori. I dati del
+      sensore non vengono letti mai."""
+
+[[privacy]]
+title = "Il lavoro succede in un Worker su questa macchina, non su un server."
+body = """
+ È l'unico
+      strumento qui dentro che ne usa uno, perché impilare è questione di minuti di
+      aritmetica e non di secondi, e una pagina congelata non può mostrare un
+      avanzamento né essere annullata. Un Worker è un secondo thread in questo
+      stesso browser &mdash; vedi <code>src/worker.js</code>. Gli vengono passati i
+      file stessi, cosa che non costa niente, perché il riferimento a un file non
+      sono i byte; e ha esattamente la stessa Content-Security-Policy della pagina,
+      vale a dire nessun posto dove mandarli."""
+
+[[privacy]]
+title = "Della serie non viene riferito niente da nessuna parte."
+body = """
+ Quanti fotogrammi hai
+      impilato, quale fotocamera li ha scritti, di quanto si era spostato ognuno,
+      quale metodo hai scelto e quanto ci è voluto restano nella memoria di questa
+      pagina finché non la chiudi. In questo repository non c'è un evento di
+      analytics personalizzato che ne porti un pezzo, e l'unica domanda che questo
+      sito fa dopo un download manda un pollice su o giù e il nome dello strumento,
+      niente altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento è identico,
+      perché un passaggio di rete non c'è mai stato. Il worker e ogni modulo che
+      carica sono messi in cache dal service worker di questa pagina, quindi una
+      copia installata impila file RAW con la rete staccata."""
+
+[[howto]]
+title = "Scegli i fotogrammi."
+body = """
+ Una raffica, una serie a forcella,
+      una sequenza da intervallometro, o una cartella di file RAW. Ognuno viene
+      aperto man mano che arriva e la sua riga ti dice che cosa ne è venuto fuori
+      &mdash; per un file RAW, la fotocamera, la dimensione dell'anteprima trovata
+      dentro, e quanto poco del file si è dovuto leggere per trovarla."""
+
+[[howto]]
+title = "Scegli il metodo in base a quello che stai cercando di perdere."
+body = """
+ Rumore:
+      media, oppure sigma clipping se qualcosa si è mosso. Persone, macchine o un
+      aereo di passaggio: mediana. Un cielo scuro che vuoi trasformare in scie
+      stellari: schiarisci. Una macro scattata lungo la ghiera di messa a fuoco:
+      focus stacking. La nota sotto il menù dice che cosa fa ognuno di questi al
+      tuo particolare numero di fotogrammi."""
+
+[[howto]]
+title = "Decidi se i fotogrammi vanno allineati."
+body = """
+ A mano libera: sì,
+      solo traslazione. A mano libera e stavi anche ruotando: traslazione,
+      rotazione e scala. Treppiede bloccato o intervallometro: no, e sarà più
+      veloce. Ogni fotogramma viene misurato rispetto al primo dell'elenco, ed è
+      per questo che qualsiasi fotogramma può essere promosso a primo."""
+
+[[howto]]
+title = "Leggi le quattro cifre, poi premi il pulsante."
+body = """
+ Prima che parta
+      qualsiasi cosa, la pagina dice quanto sarà grande il risultato, più o meno
+      quanta memoria prenderà, quante volte i fotogrammi verranno decodificati e
+      quanto dei tuoi file è stato letto. Se la serie non entra in memoria in un
+      pezzo solo lo dice, e dice quale risoluzione di lavoro lo
+      sistemerebbe."""
+
+[[faq]]
+q = "Le mie fotografie vengono caricate da qualche parte?"
+a = """
+        No. Ogni fotogramma viene aperto, decodificato, allineato, impilato e
+        scritto dal tuo browser sul tuo hardware. Questo strumento non ha nessuna
+        funzione di rete &mdash; non va mai a prendere niente e non manda mai niente
+        &mdash; e la <code>Content-Security-Policy</code> della pagina elenca ogni
+        indirizzo che può contattare, nessuno dei quali appartiene a questo sito.
+        Carica la pagina una volta, stacca la rete, e continua a funzionare. Qui
+        conta più che nella maggior parte degli strumenti semplicemente per una
+        questione di volume: una pila di venti fotogrammi RAW è circa un gigabyte, e
+        caricare un gigabyte di fotografie per farne fare la media è esattamente la
+        cosa che questo strumento esiste per evitare."""
+
+[[faq]]
+q = "Quali formati RAW riesce a leggere, e come?"
+a = """
+        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF, RAF,
+        RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL e qualcun altro &mdash; che
+        è quasi tutto quello che scrivono le fotocamere. Quello che ne legge è
+        l'anteprima JPEG a piena risoluzione che la fotocamera stessa ha prodotto nel
+        momento dello scatto: l'immagine sul retro della fotocamera, e quella che il
+        tuo sistema operativo disegna come miniatura. Viene trovata percorrendo la
+        struttura di directory del file, il che costa qualche lettura da pochi
+        kilobyte l'una, e poi prendendo una sola fetta. <strong>Non è un demosaicing
+        dei dati del sensore.</strong> Il risultato si porta dietro il bilanciamento
+        del bianco e lo stile immagine della fotocamera a otto bit per canale, invece
+        dei dodici o quattordici bit di dati lineari del sensore che ti darebbe un
+        convertitore RAW."""
+
+[[faq]]
+q = "E allora perché non decodificare per bene i dati del sensore?"
+a = """
+        Perché vorrebbe dire incorporare LibRaw o dcraw &mdash; un secondo motore da
+        decine di megabyte, per una sola famiglia di formati, fatto per la maggior
+        parte di schemi di compressione diversi per ogni produttore. Quel baratto è
+        discusso in <code>docs/what-can-be-built-here.md</code> nel sorgente di
+        questo sito, dove il RAW delle fotocamere sta nella lista delle cose escluse
+        da prima che questo strumento esistesse. Quello che è cambiato non è la
+        risposta a quella domanda, ma la scoperta che per impilare non serve: le
+        anteprime sono a piena risoluzione, sono quello che la fotocamera ti avrebbe
+        dato comunque come JPEG, e leggerle è circa cento volte più veloce di quanto
+        sarebbe il demosaicing. Se vuoi i dati del sensore, sviluppa prima i
+        fotogrammi in un convertitore RAW e impila i TIFF o i JPEG che produce
+        &mdash; questo strumento prende anche quelli."""
+
+[[faq]]
+q = "Quanti fotogrammi regge, e quanto grandi?"
+a = """
+        Sei metodi su sette lavorano in flusso: tengono un solo accumulatore e
+        leggono ogni fotogramma esattamente una volta, quindi cento fotogrammi
+        costano la stessa memoria di due e l'unica cosa che cresce è il tempo. La
+        mediana è l'eccezione, perché il valore centrale di un insieme non si può
+        sapere finché non lo hai tutto, quindi tiene tutti i fotogrammi insieme
+        &mdash; venti fotogrammi da 24 megapixel sono circa 1,4&nbsp;GB, che nessun
+        browser ti concede. Quando succede, l'immagine viene tagliata in bande
+        orizzontali e impilata una banda per volta, il che costa rileggere i
+        fotogrammi per ogni banda. La pagina calcola tutto questo prima che tu prema
+        il pulsante e ti mostra il numero, così un'esecuzione lenta non è mai una
+        sorpresa."""
+
+[[faq]]
+q = "Che cosa fa davvero l'allineamento dei fotogrammi?"
+a = """
+        Trova di quanto si è spostato ogni fotogramma rispetto al primo e lo rimette
+        a posto, con la precisione di una frazione di pixel. Il metodo è la
+        correlazione di fase: lo spostamento tra due immagini compare come una
+        differenza di fase tra i loro spettri, quindi una trasformata di Fourier per
+        ciascuna trova uno scarto di duecento pixel al prezzo di uno da due pixel. La
+        seconda impostazione ricava anche rotazione e scala, con lo stesso trucco
+        applicato allo spettro in coordinate log-polari. È tutto globale &mdash; una
+        traslazione, un angolo, una scala per tutto il fotogramma &mdash; quindi
+        corregge una fotocamera che si è mossa e non può correggere un soggetto che
+        si è mosso, né una fotografia scattata un passo più a sinistra. Una
+        conseguenza visibile: un fotogramma spostato di venti pixel a sinistra non
+        arriva più al bordo destro, quindi il risultato viene tagliato alla parte che
+        tutti i fotogrammi coprono. È per questo che una pila allineata torna
+        indietro appena appena più piccola dei fotogrammi che ci sono entrati, ed è
+        l'unica alternativa a un bordo scuro fatto dei fotogrammi che lì non
+        c'erano."""
+
+[[faq]]
+q = "Quale metodo dovrei usare?"
+a = """
+        <strong>Media</strong> per il rumore, su una serie in cui non si è mosso
+        niente: taglia il rumore casuale di circa la radice quadrata del numero di
+        fotogrammi. <strong>Mediana</strong> per togliere le cose che c'erano solo
+        una parte del tempo &mdash; l'uso classico è fotografare una piazza affollata
+        una dozzina di volte e ottenerla vuota. <strong>Sigma clipping</strong>
+        quando vuoi tutte e due le cose: impara che cosa un pixel di solito è e fa la
+        media solo dei valori che vanno d'accordo, quindi ha l'immunità della mediana
+        a una macchina di passaggio e la riduzione del rumore della media.
+        <strong>Schiarisci</strong> per scie stellari, fuochi d'artificio e light
+        painting. <strong>Scurisci</strong> per togliere qualsiasi cosa luminosa si
+        sia mossa. <strong>Somma</strong> per simulare una sola lunga esposizione.
+        <strong>Focus stacking</strong> per una macro scattata lungo la ghiera di
+        messa a fuoco."""
+
+[[faq]]
+q = "Perché il mio risultato è a otto bit se i miei file RAW sono a quattordici?"
+a = """
+        Perché quello che viene impilato è l'anteprima della fotocamera, che è un
+        JPEG. Vale la pena dire che impilare recupera una parte di quello che questo
+        costa: fare la media di sedici fotogrammi a otto bit dà un risultato con
+        gradazioni davvero più fini di quelle che aveva ognuno di loro, perché è
+        proprio il rumore che rendeva diverso l'arrotondamento di ogni fotogramma a
+        permettere alla media di cadere tra un livello e l'altro. Qui l'aritmetica è
+        fatta in virgola mobile e arrotondata una volta sola alla fine, quindi in
+        mezzo non se ne butta via niente. Non è comunque la stessa cosa che impilare
+        dati lineari di sensore, e questo strumento non fa finta del contrario."""
+
+[[faq]]
+q = "Posso impilare fotogrammi di dimensioni diverse, o di fotocamere diverse?"
+a = """
+        Sì, anche se di solito è un errore e vale la pena controllare di averlo
+        voluto. Il risultato ha la dimensione del fotogramma più grande, e ogni altro
+        fotogramma viene scalato per entrarci e centrato dentro. Mescolare fotocamere
+        mescola anche la resa del colore, quindi la media delle due è la media di due
+        interpretazioni diverse della stessa luce. Dove aiuta davvero è una serie
+        scattata a due risoluzioni, o un file RAW e un JPEG dello stesso
+        fotogramma."""
+
+[[faq]]
+q = "Dice che l'esecuzione sarà a bande. Che cosa vuol dire?"
+a = """
+        Che la memoria di lavoro di cui il metodo ha bisogno è più di quella che lo
+        strumento è disposto ad allocare in una volta sola, quindi l'immagine verrà
+        tagliata in strisce orizzontali e impilata una striscia per volta. Produce
+        comunque esattamente lo stesso risultato; semplicemente rilegge i fotogrammi
+        per ogni striscia, quindi ci mette di più, e la pagina ti dice quante
+        decodifiche saranno. Abbassare di un passo la risoluzione di lavoro divide
+        per quattro la memoria, il che quasi sempre trasforma un'esecuzione a bande
+        in un passaggio unico &mdash; la nota dice quale impostazione lo
+        farebbe."""
+
+[[faq]]
+q = "Perché questo strumento usa un Worker e nessuno degli altri lo fa?"
+a = """
+        Perché è l'unico il cui lavoro si misura in minuti. Ogni altro strumento qui
+        fa qualcosa che prende un secondo o due, dove spostare il lavoro fuori dal
+        thread principale sarebbe cerimonia. Impilare venti fotogrammi grandi è
+        aritmetica compatta su centinaia di megabyte, e sul thread principale vuol
+        dire una pagina congelata: nessuna barra di avanzamento che si muove, un
+        pulsante Annulla che non risponde, e alla fine un browser che si offre di
+        chiudere la scheda. Il Worker è un secondo thread in questo stesso browser,
+        che esegue un file di questa stessa cartella, sotto questa stessa policy. Non
+        è un server e non è una funzione di rete."""
+
+[[faq]]
+q = "È gratis, e serve un account?"
+a = """
+        È gratis, e non c'è un account, né un accesso, né una prova, né una
+        filigrana. Non c'è nemmeno un limite a quanti fotogrammi impili o a quanto
+        sono grandi, perché non c'è un server a pagarlo &mdash; il lavoro succede
+        sulla tua macchina e l'unico tetto è la tua memoria. Il sito ospita
+        pubblicità, ed è quella che lo paga; agli inserzionisti non viene dato niente
+        delle tue fotografie."""
+
+[schema]
+description = "Impila una raffica di fotografie nel browser: media, mediana, media con sigma clipping, schiarisci, scurisci, somma o focus stacking, con i fotogrammi prima allineati per correlazione di fase. Legge i file RAW delle fotocamere estraendo l'anteprima a piena risoluzione che la fotocamera ha incorporato, quindi non serve un convertitore RAW. Non viene caricato niente."
+features = [
+  "Sette metodi di impilamento: media, mediana, media con sigma clipping, schiarisci, scurisci, somma e focus stacking",
+  "Legge CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 e altri estraendo l'anteprima a piena risoluzione della fotocamera",
+  "Apre un file RAW da 60 MB leggendone circa un centinaio di kilobyte",
+  "Allineamento automatico: solo traslazione, oppure traslazione con rotazione e scala, oppure nessuno",
+  "Allineamento sotto il pixel per correlazione di fase, non cercando gli scarti a tentativi",
+  "Sei metodi su sette tengono un solo accumulatore, quindi cento fotogrammi costano la memoria di due",
+  "Costo di memoria e di decodifica calcolato e mostrato prima che l'esecuzione parta",
+  "Il lavoro gira in un Worker, così l'avanzamento si muove e Annulla risponde",
+  "In uscita PNG o JPEG; funziona offline; nessun caricamento, nessun account",
+]
+
+[picker]
+title = "Trascina qui i fotogrammi"
+hint = "oppure clicca per sfogliare &mdash; JPEG, PNG, WebP, TIFF e RAW delle fotocamere"

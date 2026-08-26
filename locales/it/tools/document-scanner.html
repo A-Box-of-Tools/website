@@ -1,0 +1,388 @@
+<!--
+  tools/document-scanner/body.html, in Italian.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- Passo 1 &mdash; le foto -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli le foto</h2>
+
+    <p class="card-lede">
+      Una foto per pagina, scattata da qualche punto sopra. Tutta la pagina deve
+      stare nell'inquadratura, e i quattro angoli dovrebbero essere visibili o
+      quasi. Tutto il resto &mdash; l'inclinazione, l'ombra, il tavolo sotto
+      &mdash; è il motivo per cui questo strumento esiste. Aggiungine più di una e
+      diventano le pagine di un documento, nell'ordine in cui le aggiungi.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">Ricerca di nuovo su tutte le pagine</button>
+        <button type="button" id="clear-all" class="ghost danger">Togli tutte</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- Passo 2 &mdash; gli angoli -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Metti gli angoli sulla pagina</h2>
+
+    <p id="edit-empty" class="field-summary">
+      Scegli una foto e comparirà qui, con i suoi quattro angoli già trovati per
+      te.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Tocca un punto qualsiasi della foto e l'angolo più vicino viene al tuo
+        dito; trascinalo sull'angolo della pagina. Con <kbd>Tab</kbd> raggiungi un
+        angolo da tastiera, i tasti freccia lo spostano di un pixel e con
+        <kbd>Shift</kbd> di dieci. Niente di tutto questo è definitivo: la
+        scansione viene presa da dove i quattro angoli finiscono.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">Cerca di nuovo gli angoli</button>
+        <button type="button" id="whole-photo" class="ghost">Prendi tutta la foto</button>
+        <button type="button" id="turn-left" class="ghost">Ruota a sinistra</button>
+        <button type="button" id="turn-right" class="ghost">Ruota a destra</button>
+        <button type="button" id="undo" class="ghost" disabled>Annulla</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Passo 3 &mdash; la ripulitura -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> Ripulisci</h2>
+
+    <p id="clean-empty" class="field-summary">
+      La pagina raddrizzata compare qui, appena c'è una foto da raddrizzare.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        Quello che c'è qui sotto è il risultato vero, prodotto dallo stesso codice
+        che scrive il file: raddrizzato e con la luce irregolare divisa via. Sullo
+        schermo viene disegnato a dimensione di schermo mentre scegli; il file
+        vero e proprio nasce alla risoluzione della foto.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          Raddrizzamento in corso&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>Che cosa fare con la luce e con il colore</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>Colore, uniformato</strong>
+            <span class="check-note">
+              La carta viene misurata lungo tutta la pagina e divisa via, così
+              l'ombra sparisce e la carta torna bianca, mentre un timbro, una
+              firma a inchiostro blu o una riga evidenziata si tengono il loro
+              colore. È la modalità da usare quando il colore fa parte del
+              documento.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>Scala di grigi</strong>
+            <span class="check-note">
+              Lo stesso uniformamento senza il colore. Più piccola del colore e
+              più gentile con una fotografia o con una firma di quanto lo sia il
+              bianco e nero.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>Bianco e nero</strong>
+            <span class="check-note">
+              Ogni pixel viene deciso contro il suo vicinato e non contro un
+              numero unico per tutta la pagina, ed è esattamente questo che tiene
+              leggibile la scrittura dentro un'ombra. È quello che rende piccola
+              una scansione: un contratto di venti pagine viene fuori sotto il
+              megabyte, e come foto arriverebbe a una quindicina. Questa modalità
+              non conosce i mezzitoni, quindi niente che abbia sopra una
+              fotografia dovrebbe usarla.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>Lascia com'è</strong>
+            <span class="check-note">
+              Raddrizzata e nient'altro. Per una pagina in cui conta la carta
+              stessa: qualcosa di vecchio, qualcosa di colorato, una fotografia.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">Quanto forte</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        L'impostazione vale per ogni pagina. Pagine di uno stesso documento
+        ripulite in modo diverso sembrano due documenti.
+      </p>
+    </div>
+  </section>
+
+  <!-- Passo 4 &mdash; il file -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> Salva il documento</h2>
+
+    <p class="card-lede">
+      Il PDF nasce qui, nella memoria di questa pagina, una pagina alla volta.
+      Dall'altra parte di questo strumento non c'è nessun server a cui mandare una
+      busta paga, un passaporto o un contratto, e nel codice non c'è niente che lo
+      farebbe se ci fosse.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Dimensione della pagina</label>
+        <select id="page-size">
+          <option value="fit" selected>Adatta il foglio alla pagina stessa</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8,5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8,5 &times; 14 in</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Risoluzione di stampa</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; macchina da ufficio</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          Quanto grande viene chiamato un foglio fatto di un certo numero di
+          pixel. Cambia la dimensione con cui il documento viene stampato, e non
+          cambia un solo pixel della scansione.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">Margine</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="Margine in millimetri">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Lato più lungo</label>
+        <select id="max-side">
+          <option value="1600">1600 pixel &mdash; piccolo</option>
+          <option value="2400" selected>2400 pixel</option>
+          <option value="3500">3500 pixel</option>
+          <option value="0">Grande quanto la foto lo consente</option>
+        </select>
+        <p class="field-note">
+          Un tetto per la pagina raddrizzata. La foto di una pagina contiene molti
+          più pixel di quanti la pagina ne valga, e 2400 sul lato lungo sono circa
+          200 DPI su un A4.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Qualità</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          Per le modalità a colori e in scala di grigi, che vengono salvate come
+          JPEG. Le pagine in bianco e nero sono salvate in modo esatto, e per loro
+          questo non cambia niente.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">Titolo del documento <span class="optional">(facoltativo)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="Se lo lasci vuoto il PDF non porta nessun titolo">
+        <p class="field-note">
+          L'unica cosa che viene scritta nel documento oltre alle pagine. Nessuna
+          data, nessun autore e niente su questo dispositivo. Vedi
+          <code>src/document.js</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>Salva come PDF</button>
+      <button type="button" id="save-images" class="ghost big" disabled>Salva le pagine come immagini</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Il file finito</h3>
+        <a id="download" class="primary as-button" href="#" download>Scarica</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Aprilo prima di mandarlo. Quello che c'è nel documento è quello che stava
+        sullo schermo al passo 3, pagina per pagina.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">I quattro angoli sono stati trovati.
+      Controllali e sistema quelli che stanno fuori posto.</span>
+    <span data-phrase="detect.unsure">I bordi della pagina non erano abbastanza
+      netti per esserne sicuri. Questi angoli sono un'ipotesi: trascinali sulla
+      pagina prima di andare avanti.</span>
+    <span data-phrase="detect.nothing">In questa foto non si è riusciti a
+      distinguere una pagina, quindi gli angoli stanno sui suoi bordi.
+      Trascinali sulla pagina.</span>
+    <span data-phrase="detect.flat">In questa immagine non c'è niente da trovare,
+      non ha proprio nessun bordo.</span>
+    <span data-phrase="detect.tiny">Questa immagine è troppo piccola perché ci si
+      trovi dentro una pagina.</span>
+    <span data-phrase="detect.edited">Questi angoli adesso sono tuoi. &laquo;Cerca
+      di nuovo gli angoli&raquo; rimisura la foto da capo.</span>
+
+    <span data-phrase="corner.tl">Angolo in alto a sinistra</span>
+    <span data-phrase="corner.tr">Angolo in alto a destra</span>
+    <span data-phrase="corner.br">Angolo in basso a destra</span>
+    <span data-phrase="corner.bl">Angolo in basso a sinistra</span>
+    <span data-phrase="corner.at">{corner}, a {x} in orizzontale e {y} in
+      verticale. I tasti freccia lo spostano, e con Shift lo spostano di dieci
+      pixel per volta.</span>
+
+    <span data-phrase="page.select">Modifica la pagina {index}</span>
+    <span data-phrase="page.remove">Togli la pagina {index}</span>
+    <span data-phrase="page.earlier">Sposta la pagina {index} più avanti</span>
+    <span data-phrase="page.later">Sposta la pagina {index} più indietro</span>
+    <span data-phrase="page.count">{count} pagina</span>
+    <span data-phrase="page.counts">{count} pagine</span>
+
+    <span data-phrase="paper.a">A4 o A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">un biglietto da visita</span>
+    <span data-phrase="shape.known">La pagina è venuta fuori {ratio}, ed è la
+      forma di {paper}.</span>
+    <span data-phrase="shape.sideways">La pagina è venuta fuori {ratio}, ed è la
+      forma di {paper} in orizzontale.</span>
+    <span data-phrase="shape.unknown">La pagina è venuta fuori {ratio}, e non è un
+      formato standard.</span>
+
+    <span data-phrase="method.perspective">La forma è stata ricavata dalla
+      prospettiva della foto, quindi è la forma della pagina e non quella con cui
+      appariva nell'immagine.</span>
+    <span data-phrase="method.edges">La foto è stata scattata ad angolo retto,
+      quindi la forma è misurata direttamente sui bordi.</span>
+
+    <span data-phrase="quality.good">{width} per {height} pixel, circa {dpi} DPI
+      su una pagina di questa misura, abbastanza per stampare.</span>
+    <span data-phrase="quality.fair">{width} per {height} pixel, circa {dpi} DPI
+      su una pagina di questa misura. Sullo schermo va bene, su carta è un po'
+      molle.</span>
+    <span data-phrase="quality.low">{width} per {height} pixel, circa {dpi} DPI su
+      una pagina di questa misura. Avvicinati, se questo deve essere
+      stampato.</span>
+    <span data-phrase="quality.pixels">{width} per {height} pixel.</span>
+    <span data-phrase="coverage.note">La pagina ha riempito il {percent}% della
+      foto.</span>
+    <span data-phrase="coverage.small">La pagina ha riempito solo il {percent}%
+      della foto, quindi quasi tutto quello che hai fotografato era tavolo. La
+      prossima volta più vicino.</span>
+
+    <span data-phrase="strength.gentle">Leggera: la carta viene uniformata e
+      poco altro. Per una pagina con sopra una matita chiara o una
+      fotografia.</span>
+    <span data-phrase="strength.middling">L'impostazione solita: la carta torna
+      bianca e il testo stampato torna nero.</span>
+    <span data-phrase="strength.hard">Dura: tutto quello che è grigio viene spinto
+      verso il nero o verso il bianco. È la più pulita su una pagina di solo testo
+      stampato ed è distruttiva su qualsiasi cosa abbia sopra un'immagine.</span>
+
+    <span data-phrase="busy.page">Pagina {done} di {total}&hellip;</span>
+    <span data-phrase="busy.writing">Scrittura del documento&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">Salvato a un bit per pixel e compresso in modo
+      esatto, ed è per questo che è così piccolo.</span>
+    <span data-phrase="result.jpeg">Le pagine sono salvate come JPEG nella qualità
+      che hai scelto.</span>
+    <span data-phrase="result.png">Le pagine sono salvate come PNG, che è senza
+      perdite ed è quello che vuole un'immagine di due colori. Il JPEG sarebbe
+      insieme più grande e sfocato intorno a ogni lettera.</span>
+    <span data-phrase="result.clean">Nessuna data, nessun autore, nessun nome di
+      computer: l'unica cosa nel documento oltre alle pagine è il nome di questo
+      strumento.</span>
+
+    <span data-phrase="size.fit">Ogni foglio prende la misura che la sua pagina ha
+      davvero, alla risoluzione scelta sopra. Non viene riempito niente con delle
+      bande.</span>
+    <span data-phrase="size.named">Ogni pagina viene messa su un foglio {name},
+      dentro il margine, qualunque forma abbia preso.</span>
+
+    <span data-phrase="error.decode">Questo browser non è riuscito ad aprire
+      {name}. Se è una foto HEIC di un iPhone, convertila prima.</span>
+    <span data-phrase="error.none">Scegli prima almeno una foto.</span>
+    <span data-phrase="error.failed">Qualcosa è andato storto nel creare il file:
+      {detail}</span>
+  </div>
+</main>

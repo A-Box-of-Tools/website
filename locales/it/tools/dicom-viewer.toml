@@ -1,0 +1,398 @@
+#
+# DICOM Viewer - Italian.
+#
+# Overrides for tools/dicom-viewer/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# I nomi dei campi DICOM restano in inglese e si portano dietro il numero -
+# Pixel Spacing (0028,0030), Series Instance UID (0020,000E). Così stanno
+# scritti nel file e così stanno nello standard: chi cerca un campo cerca
+# esattamente quelle parole. Lo stesso vale per le transfer syntax e per
+# PS3.15.
+#
+# Qui la promessa del sito ha il filo più tagliente di tutte le pagine: il file
+# è una cartella clinica con dentro un'immagine. Le frasi su che cosa c'è
+# scritto dentro sono quindi tradotte con la stessa cura di quelle su dove non
+# va a finire.
+#
+
+name = "Visualizzatore DICOM"
+heading = "Visualizzatore&nbsp;DICOM <span class=\"h1-kw\">&mdash; apri una scansione .dcm nel browser</span>"
+tagline = "TC, RM, radiografie ed ecografie, con la finestra, l'header e le misure."
+
+title = "Visualizzatore DICOM &mdash; apri un file .dcm nel browser, senza caricarlo"
+description = "Apri scansioni TC, RM, radiografie ed ecografie nel browser. Finestra e livello, scorri un'intera serie, misura in millimetri, leggi ogni tag DICOM e vedi esattamente che cosa nel file identifica il paziente. Non viene caricato niente."
+og_title = "Visualizzatore DICOM &mdash; apri una scansione senza caricarla"
+og_description = "Un file .dcm aperto sulla tua macchina: finestra e livello, tutta la serie impilata nell'ordine giusto, misure in millimetri e ogni tag dell'header. Nessun caricamento, nessun account."
+og_image_alt = "Visualizzatore DICOM - apri una TC, una RM o una radiografia nel browser"
+
+pledge = """
+    La scansione viene aperta e decodificata dal tuo browser: l'header, i pixel, la
+    finestra, le misure. Dall'altra parte di questa pagina non c'è nessun server a
+    cui mandare dati sanitari, nemmeno se qualcosa qui dentro volesse farlo, e
+    niente di questo file &mdash; non il nome del paziente, non lo studio, non il
+    nome del file &mdash; viene riferito a qualcuno."""
+
+live_hint = """
+      Non fidarti sulla parola: apri gli strumenti di sviluppo, guarda la scheda
+      Rete e apri una scansione. Non una richiesta porta con sé un'immagine, un tag
+      o un nome di file. Oppure stacca la rete e aprine una lo stesso."""
+
+read_first = """
+, <code>src/dicom.js</code> per il parser che
+      percorre il file, <code>src/pixels.js</code> per la decodifica dei pixel,
+      <code>src/jpeg-lossless.js</code> per il codec con cui esporta la maggior
+      parte degli ospedali, e <code>src/window.js</code> per la finestra e il
+      livello &mdash; e in nessuno di questi c'è una riga che potrebbe raggiungere
+      la rete."""
+
+howto_heading = "Come aprire un file DICOM"
+
+card = """
+            Apri una TC, una RM, una radiografia o un'ecografia sulla tua
+            macchina. Regola finestra e livello, scorri tutta la serie, misura
+            in millimetri e leggi ogni tag dell'header."""
+
+[words]
+plural = "scansioni"
+choose = "una scansione"
+
+[[facts]]
+text = "Nessun caricamento"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Codice aperto"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "La tua scansione non ha nessun posto dove andare."
+body = """
+ La
+      Content-Security-Policy elenca ogni indirizzo che questa pagina può
+      contattare, e nemmeno uno appartiene a questo sito. Qui non c'è un endpoint
+      dove il tuo file possa essere raccolto, e non c'è niente nel codice che lo
+      manderebbe se ci fosse. Prima diceva <code>connect-src 'none'</code>, che era
+      assoluto; aggiungere la pubblicità è costato quello, e dirlo fa parte del
+      patto."""
+
+[[privacy]]
+title = "Qui questo pesa più che nelle altre pagine."
+body = """
+
+      Un file DICOM non è un'immagine con sopra dei metadati. È una cartella
+      clinica con dentro un'immagine: il nome del paziente, la data di nascita, il
+      numero di cartella, il numero di accettazione, il medico che ha richiesto
+      l'esame, la struttura e il numero di serie dell'apparecchio sono tutti campi
+      dell'header, e viaggiano con il file ovunque vada. Caricarne uno su un sito
+      per guardarlo vuol dire consegnare tutto questo a chi gestisce quel sito. È
+      precisamente la cosa che questa pagina esiste per non fare."""
+
+[[privacy]]
+title = "Il lettore sono quattordici file in questo repository."
+body = """
+ Niente qui dentro usa una
+      libreria scaricata da qualche parte. <code>src/dicom.js</code> percorre il
+      file, <code>src/dictionary.js</code> sa come si chiamano i tag,
+      <code>src/pixels.js</code> riporta i byte a essere misure,
+      <code>src/rle.js</code> e <code>src/jpeg-lossless.js</code> espandono le due
+      forme compresse che questa pagina sa decodificare, e
+      <code>src/window.js</code> mappa quello che è stato misurato sui grigi del
+      tuo schermo."""
+
+[[privacy]]
+title = "Gli identificatori sono elencati per te, e per nessun altro."
+body = """
+
+      La pagina stampa ogni campo del tuo file che nomina o restringe la persona di
+      cui è la scansione, perché è la domanda a cui ha bisogno di rispondere chi sta
+      per condividere una slice, e nessun visualizzatore risponde. Finisce sullo
+      schermo davanti a te e non va da nessun'altra parte: in questo repository non
+      c'è un evento di analytics che ne porti un pezzo, e la pagina non potrebbe
+      mandarlo neanche se ci fosse."""
+
+[[privacy]]
+title = "Legge. Non scrive."
+body = """
+ Qui non c'è un pulsante che
+      cambi il tuo file, e non c'è codice che potrebbe. Quello che puoi portarti via
+      è un PNG del fotogramma sullo schermo e una copia dell'header in testo
+      semplice, costruiti tutti e due nella pagina a partire da quello che c'è già.
+      L'originale resta intatto sul tuo disco, che è anche la risposta onesta a
+      cosa succede se chiudi la scheda."""
+
+[[privacy]]
+title = "Che cosa carica Google, e che cosa non gli viene dato."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente del tuo file: non i pixel, non una miniatura, non un nome, un
+      tag, un paziente o un nome di file. Ogni riga che analizza, decodifica o
+      disegna una scansione è servita da questa origine ed è elencata nel
+      repository."""
+
+[[privacy]]
+title = "Che cosa carica il pulsante delle donazioni, e che cosa non gli viene dato."
+body = """
+
+      Il pulsante &laquo;Buy me a coffee&raquo; in cima è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
+      niente di più: non segnala nessuna visita e non gli viene passato niente su di
+      te o sui tuoi file. Non succede nulla se non lo clicchi, e quello a cui
+      arriveresti cliccando è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e ogni parte di questa pagina
+      continua a funzionare. È la prova più semplice di tutte: uno strumento che
+      mandasse via la tua scansione per farla disegnare altrove si fermerebbe
+      nell'istante in cui stacchi la spina."""
+
+[[howto]]
+title = "Scegli i file."
+body = """
+ Un file <code>.dcm</code>, oppure
+      l'intera cartella del disco &mdash; una TC o una RM è un file per slice, e
+      trascinarli tutti insieme è quello che rimette insieme la serie. I file
+      vengono letti direttamente dal tuo disco dal browser; mentre lo fai non viene
+      mandato niente da nessuna parte."""
+
+[[howto]]
+title = "Scegli la serie."
+body = """
+ Uno studio di solito ne contiene
+      diverse: lo scout, poi ogni acquisizione. Ognuna viene impilata nell'ordine in
+      cui l'apparecchio l'ha presa, ricavato da dove ogni slice si trova nel corpo
+      e non dalla numerazione, che non va sempre nella stessa direzione."""
+
+[[howto]]
+title = "Imposta la finestra."
+body = """
+ È il comando che rende leggibile
+      una scansione, ed è quello che un editor di immagini non ha. Trascina sopra
+      l'immagine per allargare la finestra e in alto o in basso per spostarne il
+      centro, oppure scegli una delle finestre con un nome &mdash; polmone, osso,
+      cervello, tessuti molli &mdash; su una TC, dove le unità sono le stesse su
+      ogni apparecchio del mondo."""
+
+[[howto]]
+title = "Scorri la pila."
+body = """
+ Il cursore sotto l'immagine si muove
+      tra le slice, e i tasti freccia fanno lo stesso una volta che hai cliccato
+      sull'immagine. Un file multi-frame &mdash; un loop ecografico, un angiogramma
+      &mdash; parte con il pulsante lì accanto."""
+
+[[howto]]
+title = "Misura qualcosa."
+body = """
+ Passa a Misura e traccia una linea.
+      Dove il file dice quanto sono distanti i suoi pixel, la risposta è in
+      millimetri e tiene conto dei pixel che non sono quadrati; dove il file non lo
+      dice, la risposta è in pixel e lo dichiara, invece di inventarsi una scala."""
+
+[[howto]]
+title = "Leggi l'header."
+body = """
+ Ogni elemento del file, con il suo
+      numero, il nome che gli dà lo standard e quello che contiene, ricercabile.
+      Sopra, l'elenco di che cosa in questo file identifica il paziente &mdash; che
+      è parecchio di più del nome."""
+
+[[howto]]
+title = "Prendi quello che ti serve."
+body = """
+ Il fotogramma sullo schermo
+      come PNG, con la finestra che hai impostato e niente scritto sopra, oppure
+      tutto l'header in testo semplice. Sono costruiti tutti e due nella pagina a
+      partire da quello che c'è già."""
+
+[[faq]]
+q = "La mia scansione viene caricata da qualche parte?"
+a = """
+        No. Il file viene letto, decodificato e disegnato dal tuo browser sul tuo
+        hardware. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare &mdash; nessuno dei quali appartiene a questo sito. Stacca la
+        rete e continua ad aprire scansioni.
+        <br><br>
+        Qui questo vale più che in qualsiasi altra pagina del sito. Un file DICOM
+        porta nell'header il nome del paziente, la data di nascita e il numero di
+        cartella, quindi caricarne uno su un visualizzatore vuol dire consegnare a
+        uno sconosciuto una cartella clinica, non un'immagine."""
+
+[[faq]]
+q = "Quali file DICOM riesce ad aprire?"
+a = """
+        File non compressi in una qualsiasi delle tre transfer syntax di base
+        &mdash; implicit e explicit little endian, e quella big endian ritirata
+        &mdash; più deflated, RLE Lossless, JPEG baseline e JPEG Lossless, che è
+        quello con cui è compressa la maggioranza degli studi TC e RM su un disco
+        ospedaliero.
+        <br><br>
+        Non sa decodificare JPEG 2000, JPEG-LS, né le sintassi MPEG e HEVC usate per
+        il video. Servono codec che sono megabyte di libreria compilata, e una
+        pagina che ne scaricasse uno alla bisogna non sarebbe una pagina che
+        funziona offline. Un file in una di queste si apre lo stesso: tutto l'header
+        viene letto e mostrato, e al posto dell'immagine c'è una riga che nomina il
+        codec, invece dell'icona di immagine rotta che non dice niente."""
+
+[[faq]]
+q = "Che cosa sono &laquo;finestra e livello&raquo;, e perché mi servono?"
+a = """
+        Una slice TC contiene circa quattromila valori distinti e il tuo schermo
+        mostra duecentocinquantasei grigi. La finestra è la scelta di quale fetta di
+        quell'intervallo se li prende tutti: sotto è tutto nero, sopra è tutto
+        bianco, e quello che sta in mezzo viene distribuito sui grigi.
+        <br><br>
+        È per questo che lo stesso file sembra una scansione diversa con due
+        impostazioni, e perché polmone e osso non si possono vedere insieme. Su una
+        TC i numeri sono unità Hounsfield, che sono definite in assoluto &mdash;
+        l'acqua è 0 e l'aria è &minus;1000 &mdash; quindi le finestre con un nome su
+        questa pagina sono gli stessi numeri che usa un radiologo alla sua
+        postazione. Su una RM o un'ecografia una scala così non c'è, e la finestra
+        che si apre è quella che chiede il file stesso."""
+
+[[faq]]
+q = "Perché dice che la mia misura è in pixel?"
+a = """
+        Perché quel file non dice quanto è grande un pixel. È Pixel Spacing
+        (0028,0030) a portare quel dato, in millimetri, e moltissime immagini
+        ecografiche, documenti scansionati e secondary capture semplicemente non ce
+        l'hanno.
+        <br><br>
+        Dove c'è, la misura è in millimetri e ogni asse viene misurato con la sua
+        spaziatura, cosa che conta sulle immagini i cui pixel non sono quadrati.
+        Dove non c'è, la risposta onesta è un conteggio di pixel, e lo dice invece
+        di scegliersi una scala e presentare il risultato come una lunghezza."""
+
+[[faq]]
+q = "Ha aperto la mia cartella come più serie. Perché?"
+a = """
+        Perché è quello che c'è dentro. Uno studio è fatto di serie &mdash; lo scout,
+        poi ogni acquisizione o ricostruzione &mdash; e ogni file dichiara a quale
+        appartiene in Series Instance UID (0020,000E). Il menù è costruito da lì e
+        non dalla cartella, che di solito le tiene tutte mescolate in un unico
+        elenco di nomi.
+        <br><br>
+        Dentro una serie le slice vengono messe in ordine in base a dove ognuna si
+        trova nel corpo, ricavato da Image Position e Image Orientation. Instance
+        Number è la chiave ovvia ed è il ripiego, non la prima scelta: lo assegna
+        qualunque cosa abbia scritto i file e non è detto che corra nella stessa
+        direzione del paziente."""
+
+[[faq]]
+q = "Che cosa vuol dire l'elenco &laquo;che cosa identifica il paziente&raquo;?"
+a = """
+        È ogni campo del tuo file che nomina la persona di cui è la scansione, o che
+        restringe il campo su chi potrebbe essere, letto da questo file sulla tua
+        macchina. L'elenco viene da PS3.15 dello standard DICOM &mdash; la parte che
+        dice che cosa deve sparire prima che un dataset possa dirsi
+        de-identificato.
+        <br><br>
+        C'è perché la cosa che si sbaglia non è pensare che una scansione abbia
+        dentro un nome. È quanto altro ha dentro: la data di nascita, il numero di
+        accettazione, il medico richiedente, la struttura, il numero di serie
+        dell'apparecchio e gli UID dello studio, che sono chiavi perfette per
+        tornare all'archivio che ha prodotto il file. Una scansione a cui è stato
+        cancellato il nome e nient'altro non è anonima.
+        <br><br>
+        Questo strumento si limita a mostrartelo. Non scrive niente e non cambia
+        niente, quindi non può toglierne nemmeno un pezzo."""
+
+[[faq]]
+q = "Può anonimizzare una scansione?"
+a = """
+        No, e non fa finta di poterlo fare. Questa pagina legge; non ha codice che
+        scriva un file DICOM. Quello che fa è dirti esattamente che cosa c'è nel
+        tuo, che è la parte difficile da scoprire e la parte su cui la gente si
+        sbaglia.
+        <br><br>
+        Uno strumento che toglie gli identificatori è un lavoro a sé, con un'asticella
+        molto più alta &mdash; deve riscrivere il file senza toccare i pixel,
+        sostituire gli UID in modo coerente su tutto lo studio, e non sbagliarsi sugli
+        elementi privati in cui certi apparecchi nascondono una seconda copia del
+        nome. Sta nella roadmap di questo sito, non attaccato a un
+        visualizzatore."""
+
+[[faq]]
+q = "Può aprire un file senza estensione .dcm, o rovinato?"
+a = """
+        Sì a entrambe le cose. L'estensione non viene guardata: quello che si
+        controlla è il file. Un dataset scritto senza il solito preambolo di 128 byte
+        &mdash; che è l'aspetto di una scansione presa direttamente dalla rete
+        &mdash; viene letto ricavandone la codifica dal primo elemento, e la pagina
+        dice che è quello che ha fatto.
+        <br><br>
+        Un file che si interrompe a metà viene letto fin dove arriva. Tutto quello
+        che precede il danno viene mostrato, con una nota che dice a quale byte si è
+        fermato. È il caso in cui un visualizzatore serve di più, quindi buttare via
+        tutto il file per i suoi ultimi dodici byte sarebbe il comportamento
+        sbagliato."""
+
+[[faq]]
+q = "È un visualizzatore diagnostico?"
+a = """
+        No. Non è un dispositivo medico, non è passato per nessuna valutazione
+        regolatoria, e niente di quello che c'è qui va usato per prendere una
+        decisione clinica. Il tuo schermo non è calibrato, il browser non è una
+        catena di rendering validata, e nessuna delle due cose si può sistemare da
+        dentro una pagina web.
+        <br><br>
+        Va benissimo invece per tutto il resto per cui si apre una scansione:
+        controllare che cosa c'è su un disco, tirare fuori una slice per una lezione
+        o per un articolo, leggere un header, capire perché un altro programma
+        rifiuta il file, e vedere che cosa si porta dietro una scansione sulla
+        persona di cui è."""
+
+[[faq]]
+q = "Modifica il mio file?"
+a = """
+        No. Questo strumento si limita a leggere. Non c'è un file in uscita, non c'è
+        una ricodifica e non c'è un pulsante che scriva un DICOM &mdash; quello che
+        puoi scaricare è un PNG del fotogramma sullo schermo e una copia
+        dell'header in testo semplice. L'originale resta intatto sul tuo disco."""
+
+[[faq]]
+q = "È gratis, e serve un account?"
+a = """
+        È gratis, e non c'è un account, né un accesso né una prova. Non c'è un limite
+        alla dimensione dei file o a quanti ne apri, oltre alla memoria della tua
+        macchina. Il sito ospita pubblicità, ed è quella che lo paga; agli
+        inserzionisti non viene dato niente del tuo file."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la rete e continua a funzionare.
+        È anche il modo più semplice per dimostrare che non viene caricato niente:
+        uno strumento che mandasse via la tua scansione per farla disegnare altrove
+        si fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Apri scansioni DICOM (.dcm) nel browser: TC, RM, radiografie ed ecografie, con finestra e livello, un'intera serie impilata nell'ordine giusto, misure in millimetri e ogni tag dell'header. Non viene caricato niente."
+features = [
+  "Apre file TC, RM, radiografie, ecografie, PET e secondary capture",
+  "Finestra e livello trascinando, digitando o con un preset TC con un nome",
+  "Un'intera cartella raccolta in serie e ordinata per posizione nel corpo",
+  "I file multi-frame vengono riprodotti come un loop",
+  "Misura in millimetri, tenendo conto dei pixel non quadrati",
+  "Legge il valore del pixel sotto il puntatore in unità Hounsfield",
+  "Ogni tag DICOM con il suo nome e il suo valore, ricercabile",
+  "Elenca che cosa nel file identifica il paziente, secondo il profilo PS3.15",
+  "Decodifica RLE, JPEG baseline e JPEG Lossless senza librerie incorporate",
+  "Salva il fotogramma come PNG e l'header come testo semplice",
+  "Funziona offline; nessun caricamento, nessun account, nessuna modifica al file",
+]
+
+[picker]
+title = "Trascina qui una scansione"
+hint = "oppure clicca per sfogliare &mdash; un file .dcm, o un'intera cartella"
