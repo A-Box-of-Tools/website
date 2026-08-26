@@ -76,15 +76,30 @@ if(!anchor||anchor.hidden||!anchor.hasAttribute('download'))return null;
 var href=anchor.getAttribute('href')||'';
 return href.indexOf('blob:')===0?anchor:null;
 }
+function seat(anchor){
+var node=anchor;
+while(node.parentNode&&node.parentNode!==document.body){
+var parent=node.parentNode;
+var display=window.getComputedStyle(parent).display;
+if(display==='block'||display==='flow-root'||display==='none'){
+return parent;
+}
+node=parent;
+}
+return null;
+}
 function show(){
 var anchor=result();
 if(!anchor){
 if(!nav.hidden)nav.hidden=true;
 return;
 }
-var host=anchor.closest('.toolbar')||anchor;
-if(!host.parentNode)return;
-if(host.nextElementSibling!==nav)host.insertAdjacentElement('afterend',nav);
+var host=seat(anchor);
+if(host){
+if(host.lastElementChild!==nav)host.appendChild(nav);
+}else if(anchor.parentNode&&anchor.nextElementSibling!==nav){
+anchor.insertAdjacentElement('afterend',nav);
+}
 if(nav.hidden)nav.hidden=false;
 }
 var watch=new MutationObserver(show);
@@ -92,13 +107,17 @@ watch.observe(document.body,{
 subtree:true,attributes:true,attributeFilter:['href','hidden'],
 });
 show();
+var carrying=false;
 nav.addEventListener('click',function(event){
 var link=event.target&&event.target.closest
 ?event.target.closest('a[data-slug]'):null;
 if(!link)return;
+if(carrying){event.preventDefault();return;}
 var anchor=result();
 if(!anchor)return;
 event.preventDefault();
+carrying=true;
+link.setAttribute('aria-busy','true');
 var name=anchor.getAttribute('download')||'result';
 window.fetch(anchor.href)
 .then(function(response){return response.blob();})

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/exif-정보-삭제/:';
-const CACHE_NAME=CACHE_PREFIX+'8ad949db06';
+const CACHE_NAME=CACHE_PREFIX+'385882184a';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=b6e5c14c20',
+'styles.css?v=b5e73e86a1',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

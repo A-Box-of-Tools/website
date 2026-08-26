@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/empilhar-imagens/:';
-const CACHE_NAME=CACHE_PREFIX+'5a4b6fbc36';
+const CACHE_NAME=CACHE_PREFIX+'a9bcec0847';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=3272272919',
+'styles.css?v=b3475e17ca',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
