@@ -353,6 +353,12 @@ def build(out, clean=False, minify_output=True, jobs=None):
     build_llms(out, templates, site, locales, ordered_tools, ordered_prose)
     written.append('llms.txt')
 
+    # And once more as a stream, for a reader who wants to be told when a tool
+    # ships rather than to come back and check. One file per published
+    # language, so this adds a name per locale rather than a single one.
+    build_feeds(out, templates, site, locales, ordered_tools, ordered_prose)
+    written += [f'{locale["prefix"]}feed.xml' for locale in i18n.published(locales)]
+
     copy_shared(out)
     write(out / 'site.css', site_css)
     write(out / 'lang.js', lang_js)
@@ -572,6 +578,13 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
         # that crossing from one language to another is not also a second copy
         # of this file to fetch. shared/lang.js says what it does.
         'lang_href': f'/lang.js?v={lang_v}',
+        # This language's feed, and empty for a language that has none. Only a
+        # published locale gets one built, so offering the link from an
+        # unpublished one would point at a file that is not there - the same
+        # trap the hreflang set avoids by being built from published() too.
+        'feed_href': (f'/{locale["prefix"]}feed.xml'
+                      if locale['is_base'] or locale['complete'] else ''),
+        'feed_title': locale['site']['name'],
     }
     context.update(extra or {})
     return context
@@ -1416,6 +1429,77 @@ def build_sitemap(out, templates, site, locales, tools, prose):
                     if page['kind'] == 'legal' and ready(page['slug'])]
 
     write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': entries}))
+
+
+# How many entries a feed carries. The site has more tools and guides than
+# this, and deliberately so: a feed answers "what has changed lately", which a
+# reader checks repeatedly, and the whole catalogue is already two files away
+# in sitemap.xml and llms.txt. Every entry past the first screenful is weight
+# on every poll for something nobody scrolls to.
+FEED_ENTRIES = 30
+
+
+def build_feeds(out, templates, site, locales, tools, prose):
+    """One Atom feed per published language, at /feed.xml and /<lang>/feed.xml.
+
+    Per language rather than one for the site, because a feed is a reading
+    experience and not an index: a German subscriber wants German titles at
+    German URLs, and mixing fifteen languages into one file would make it
+    useless to all of them. The same rule as everywhere else decides who gets
+    one - a locale that has not finished its frame is built and readable and
+    advertised to nobody, so it has no feed and no link to one.
+
+    Tools and guides, newest first. Not the legal pages, whose dates move for
+    reasons no reader subscribed to hear about, and not the hub or the roadmap,
+    which are indexes of things that appear here already.
+    """
+    for locale in i18n.published(locales):
+        entries = []
+        for tool in tools:
+            if not i18n.translated(locale, tool['slug']):
+                continue
+            said = i18n.localize_tool(tool, locale, site)
+            entries.append({'title': said['name'], 'url': said['url'],
+                            'summary': said['description'],
+                            'lastmod': said['lastmod']})
+        for page in prose:
+            if page['kind'] != 'guide' or not i18n.translated(locale, page['slug']):
+                continue
+            said = i18n.localize_page(page, locale, site)
+            entries.append({'title': said['heading'], 'url': said['url'],
+                            'summary': said['description'],
+                            'lastmod': said['lastmod']})
+
+        # Two passes, because Python's sort is stable: alphabetical first, then
+        # by date descending. A day on which four guides shipped then reads in
+        # a fixed order rather than in whatever order the folders were walked,
+        # which is what keeps a rebuild from reshuffling a feed that did not
+        # change and re-notifying everyone who subscribes to it.
+        entries.sort(key=lambda entry: entry['title'])
+        entries.sort(key=lambda entry: entry['lastmod'], reverse=True)
+        entries = entries[:FEED_ENTRIES]
+
+        for entry in entries:
+            entry['updated'] = f'{entry["lastmod"]}T00:00:00Z'
+
+        home = i18n.locale_url(locale, '', site)
+        said_site = locale['site']
+        feed = {
+            'lang': locale['hreflang'],
+            'title': said_site['name'],
+            'subtitle': said_site['hub']['description'],
+            'home': home,
+            'self': f'{home}feed.xml',
+            'author': said_site['name'],
+            # The newest entry, not the moment of the build. A feed whose
+            # timestamp moves on every deploy teaches a reader to ignore it,
+            # which is the same reason lastmod in the sitemap is a date somebody
+            # changed on purpose.
+            'updated': entries[0]['updated'] if entries else f'{site["lastmod"]}T00:00:00Z',
+            'entries': entries,
+        }
+        write(out / locale['prefix'] / 'feed.xml',
+              templates.render('feed.xml', {'feed': feed}))
 
 
 def build_llms(out, templates, site, locales, tools, prose):
