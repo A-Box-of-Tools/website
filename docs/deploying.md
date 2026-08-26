@@ -154,8 +154,11 @@ the timing to the crawler, which is why a new tool can sit unindexed for weeks.
 Half of that is fixable and half is not, and the two halves are worth keeping
 straight.
 
-**Bing, Yandex, Seznam and Naver take IndexNow.** POST a list of URLs and a key
-that proves the host is yours, and they fetch them within hours.
+**Bing, Yandex, Seznam, Naver and Yep take IndexNow.** POST a list of URLs
+and a key that proves the host is yours, and they fetch them within hours.
+The protocol requires each participant to pass submissions on to the others
+within ten seconds of verifying them, which is why `indexnow.py` posts to the
+shared `api.indexnow.org` endpoint rather than to any one engine.
 
 **Google does not, and there is no equivalent.** It does not participate in
 IndexNow. Its Indexing API only accepts `JobPosting` and `BroadcastEvent`
