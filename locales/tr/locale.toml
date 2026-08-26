@@ -381,6 +381,7 @@ checking = "kontrol ediliyor&hellip;"
 questions_heading = "Sorular"
 guide_heading = "Uzun sürüm"
 related_heading = "Kutuda ayrıca"
+handoff_lead = "Sonucu doğrudan şuraya taşıyın:"
 privacy_heading = "Gizlilik iddiası nasıl doğrulanabilir"
 
 pledge_line = """

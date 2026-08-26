@@ -254,6 +254,7 @@ checking = "檢查中&hellip;"
 questions_heading = "常見問題"
 guide_heading = "說得更細的版本"
 related_heading = "工具箱裡還有"
+handoff_lead = "把結果直接帶到："
 privacy_heading = "這條隱私承諾怎麼核實"
 
 pledge_line = """

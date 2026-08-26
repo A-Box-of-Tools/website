@@ -24,6 +24,11 @@ roadmap_group = "images"
 # is this tool's own, because a row in it carries what was found inside a RAW
 # file rather than what the operating system said about the file.
 js_parts = ["file-picker"]
+# Where a finished result can be carried without being saved first: the row of
+# links shared/handoff.js shows beside the download once there is one. Slugs of
+# tools whose picker takes what this page produces; checked against the tools
+# that exist by the build.
+handoff = ["compress-image", "resize-image"]
 lastmod = "2026-08-25"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -374,7 +379,12 @@ features = [
 # by the service worker beside it - and there is no blob: on it, because nothing
 # here ever builds a script at runtime. A tool can only widen its own page this
 # way; it cannot narrow the site policy and cannot touch another tool's.
+# The carry-on row reads the finished result back out of this page's own
+# blob: URL before parking it for the next tool (see shared/handoff.js), and
+# reading a blob: URL is a fetch the policy has to permit. blob: names bytes
+# inside this page; nothing here gains any reach over the network.
 [csp]
+"connect-src" = ["blob:"]
 "worker-src" = ["'self'"]
 
 # The drop zone. Rendered by templates/partials/file-picker.html, which

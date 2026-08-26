@@ -1,0 +1,24 @@
+<!--
+  "Carry the result on" - the row of tools a finished result can go straight
+  into, declared as `handoff` in the sender's tool.toml and validated against
+  the tools that exist. Rendered hidden; shared/handoff.js moves it next to
+  the download link when there is a result to carry, and parks the file in
+  IndexedDB for the next page. See that file for why nothing in the journey
+  touches the network.
+
+  Rendered rather than built in JavaScript for the same reason the feedback
+  panel is: the lead line is translated in every locale's [ui.tool], and each
+  link borrows the target tool's own localized name and address - so the row
+  cannot promise a tool the language does not have.
+-->
+<nav class="handoff" id="handoff" aria-label="{{ ui.tool.handoff_lead }}" hidden>
+  <p class="handoff-lead">{{ ui.tool.handoff_lead }}</p>
+  <ul class="handoff-targets">
+{% for other in handoff %}    <li>
+      <a href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">
+        <span aria-hidden="true">{{ other.icon }}</span>
+        {{ other.name | e }} <span aria-hidden="true">&rarr;</span>
+      </a>
+    </li>
+{% endfor %}  </ul>
+</nav>

@@ -24,6 +24,11 @@ roadmap_group = "audio"
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
 js_parts = ["file-picker"]
+# Where a finished result can be carried without being saved first: the row of
+# links shared/handoff.js shows beside the download once there is one. Slugs of
+# tools whose picker takes what this page produces; checked against the tools
+# that exist by the build.
+handoff = ["trim-audio"]
 lastmod = "2026-08-20"
 
 # --- what search engines and chat apps are told ------------------------------
@@ -330,7 +335,12 @@ features = [
 # on this machine rather than from a URL. A tool can only ever widen its own
 # page this way - it cannot narrow the site policy, and it cannot touch any
 # other tool's.
+# The carry-on row reads the finished result back out of this page's own
+# blob: URL before parking it for the next tool (see shared/handoff.js), and
+# reading a blob: URL is a fetch the policy has to permit. blob: names bytes
+# inside this page; nothing here gains any reach over the network.
 [csp]
+"connect-src" = ["blob:"]
 "media-src" = ["'self'", "blob:"]
 
 # The drop zone. Rendered by templates/partials/file-picker.html, which

@@ -360,6 +360,7 @@ checking = "verificando&hellip;"
 questions_heading = "Perguntas"
 guide_heading = "A versão longa"
 related_heading = "Também na caixa"
+handoff_lead = "Leve o resultado direto para:"
 privacy_heading = "Como dá para conferir a promessa de privacidade"
 
 # O inglês escreve "Your {{ plural }} are never uploaded", e o particípio
