@@ -1,0 +1,241 @@
+<!--
+  tools/stack-images/body.html, in Hindi.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- कदम 1 &mdash; फ़्रेम -->
+  <section class="card">
+    <h2><span class="step">1</span> फ़्रेम चुनिए</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      RAW फ़ाइलें उस पूरे आकार की JPEG को पढ़कर खोली जाती हैं जो कैमरा पहले ही उनके
+      भीतर लिख चुका होता है, यानी कुछ किलोबाइट डायरेक्ट्री और फिर एक टुकड़ा। सेंसर
+      का डेटा कभी डीकोड नहीं होता, इसलिए 60&nbsp;MB का फ़्रेम लगभग उतनी ही तेज़ी से
+      खुलता है जितनी तेज़ी से कोई JPEG।
+      <a href="#faq-raw">नतीजे के लिए इसका क्या मतलब है</a>।
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">नाम से क्रम में लगाएँ</button>
+        <button type="button" id="clear-all" class="ghost danger">सब हटाएँ</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- कदम 2 &mdash; ये कैसे जुड़ेंगे -->
+  <section class="card">
+    <h2><span class="step">2</span> ये कैसे जुड़ेंगे</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">तरीका</label>
+        <select id="mode">
+          <option value="mean" selected>औसत &mdash; नॉइज़ घटाएँ</option>
+          <option value="median">माध्यिका &mdash; लोग और गुज़रती गाड़ियाँ हटाएँ</option>
+          <option value="sigma">सिग्मा क्लिपिंग &mdash; दोनों एक साथ</option>
+          <option value="max">हल्का &mdash; तारों की लकीरें, आतिशबाज़ी, लाइट पेंटिंग</option>
+          <option value="min">गहरा &mdash; जो चमकीला हिला हो उसे हटाएँ</option>
+          <option value="sum">जोड़ &mdash; एक लंबी एक्सपोज़र जैसा असर</option>
+          <option value="focus">फ़ोकस स्टैकिंग &mdash; जो साफ़ था वही रखें</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">फ़्रेम सीध में लाएँ</label>
+        <select id="align">
+          <option value="translate" selected>हाँ &mdash; सिर्फ़ खिसकाना</option>
+          <option value="similarity">हाँ &mdash; खिसकाना, घुमाना और पैमाना</option>
+          <option value="none">नहीं &mdash; जैसे हैं वैसे ही लें</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">काम करने वाला रिज़ॉल्यूशन</label>
+        <select id="scale">
+          <option value="full" selected>पूरा आकार</option>
+          <option value="half">आधा &mdash; चौथाई मेमोरी</option>
+          <option value="quarter">चौथाई &mdash; सोलहवाँ हिस्सा</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">इससे आगे छोड़ दें</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          कम रखने पर ज़्यादा छूटता है, और उसके साथ असली बारीकी भी छूटने लगती है। दो
+          मानक विचलन आम शुरुआती जगह है।
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">साफ़पन कितने दायरे में नापा जाए</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          बड़ा रखने पर किसी एक फ़्रेम से पूरे इलाके उठा लिए जाते हैं, और छोटा रखने
+          पर बारीक ब्योरा पकड़ में आता है पर चिकना बैकग्राउंड फ़्रेमों के बीच
+          बिखर सकता है।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">एक्सपोज़र</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">किस रूप में सेव करें</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; बिना नुकसान</option>
+          <option value="jpeg">JPEG &mdash; छोटी फ़ाइल</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>नतीजा</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>काम करने वाली मेमोरी</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>डीकोडिंग</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>डिस्क से पढ़ा गया</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- कदम 3 &mdash; चलाना -->
+  <section class="card">
+    <h2><span class="step">3</span> स्टैक कीजिए</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>तस्वीरें स्टैक करें</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द करें</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="स्टैक किया हुआ नतीजा">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>तस्वीर डाउनलोड करें</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 फ़्रेम</span>
+    <span data-phrase="count.many">{count} फ़्रेम</span>
+    <span data-phrase="count.none">अभी कोई फ़्रेम नहीं</span>
+
+    <span data-phrase="frame.reference">आधार</span>
+    <span data-phrase="frame.make-reference">इसे आधार बनाएँ</span>
+    <span data-phrase="frame.remove">हटाएँ</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; कैमरे की अपनी झलक, {width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; {width} &times; {height} की झलक</span>
+    <span data-phrase="frame.raw-unreadable">इस RAW फ़ाइल में कोई झलक नहीं मिली</span>
+    <span data-phrase="frame.read">{total} में से {read} पढ़ा गया</span>
+
+    <span data-phrase="mode.mean">हर फ़्रेम का औसत लेता है। यादृच्छिक नॉइज़ जितनी बार ऊपर जाता है उतनी ही बार नीचे, इसलिए {count} फ़्रेमों का औसत लेने से वह करीब {factor} गुना घट जाता है। यह शांत सेट के लिए सही तरीका है, और वही तरीका है जिसे एक अकेला उड़ता पक्षी बिगाड़ देता है।</span>
+    <span data-phrase="mode.median">हर पिक्सल का बीच वाला मान लेता है। जो कुछ सिर्फ़ कुछ ही फ़्रेमों में था, जैसे कोई सैलानी, कोई गाड़ी, कोई हवाई जहाज़, वह गायब हो जाता है। यह अकेला ऐसा तरीका है जिसे हर फ़्रेम एक साथ पकड़े रखना पड़ता है, और इसीलिए इसे नीचे पट्टियों में बाँटा जा सकता है।</span>
+    <span data-phrase="mode.sigma">सीखता है कि हर पिक्सल आम तौर पर क्या होता है, और फिर सिर्फ़ उन्हीं मानों का औसत लेता है जो उससे मेल खाते हैं। इसमें माध्यिका जैसा नतीजा और औसत जैसी नॉइज़ कमी दोनों मिलते हैं। यह फ़्रेमों को दो बार पढ़ता है।</span>
+    <span data-phrase="mode.max">हर पिक्सल का सबसे चमकीला मान रखता है। छोटी-छोटी एक्सपोज़र की कड़ी को तारों की लकीरों में यही बदलता है, और आतिशबाज़ी को उसके अपने ही फ़्रेमों से यही जोड़ता है।</span>
+    <span data-phrase="mode.min">हर पिक्सल का सबसे गहरा मान रखता है। कोई पिक्सल तभी चमकीला रहता है जब वह हर फ़्रेम में चमकीला रहा हो, इसलिए शीशे की परछाइयाँ, गुज़रती हेडलाइट और फ़्लैश से चमकी बारिश की बूँदें चली जाती हैं।</span>
+    <span data-phrase="mode.sum">फ़्रेमों को बिना भाग दिए जोड़ देता है, यानी जितना {count} गुना लंबी एक्सपोज़र ने बटोरा होता। यह उतना ही सफ़ेद पड़ जाता है जितना वह एक्सपोज़र पड़ती। एक्सपोज़र वाले स्लाइडर से इसे वापस ले आइए।</span>
+    <span data-phrase="mode.focus">तस्वीर का हर हिस्सा उस फ़्रेम से लेता है जिसमें वह साफ़ था। किसी छोटी चीज़ को फ़ोकस रिंग घुमाते हुए खींचिए, और यह साफ़ हिस्सों को जोड़ देता है।</span>
+
+    <span data-phrase="align.translate">पता लगाता है कि हर फ़्रेम कितना खिसका था और उसे उतना वापस सरका देता है, पिक्सल के अंश तक। हाथ के हिलने और तिपाई के सरकने को ठीक करता है। घुमाव को ठीक नहीं कर सकता।</span>
+    <span data-phrase="align.similarity">इसके साथ घुमाव और पैमाना भी निकाल लेता है। हर फ़्रेम पर एक नाप ज़्यादा लगती है, और अगर फ़्रेम सीधे निकलें तो कुछ भी नहीं लगती। घुमाव हमेशा आधे चक्कर के भीतर ही वापस निकाला जाता है।</span>
+    <span data-phrase="align.none">फ़्रेमों को ठीक वैसे ही स्टैक करता है जैसे वे आते हैं। कसी हुई तिपाई या इंटरवल की कड़ी के लिए सही, और हाथ से ली गई किसी भी चीज़ के लिए गलत।</span>
+
+    <span data-phrase="scale.note">हर फ़्रेम को ब्राउज़र का अपना डीकोडर इसी नाप में डीकोड करता है, इसलिए छोटी सेटिंग सिर्फ़ कम मेमोरी नहीं, कम काम भी है।</span>
+    <span data-phrase="gain.note">गणित के बाद और पूर्णांकन से पहले, बिलकुल आख़िर में नतीजे में गुणा किया जाता है।</span>
+    <span data-phrase="gain.sum-note">{count} फ़्रेम जोड़ने पर यह लगभग तय है कि सफ़ेद पड़ जाएगा। जो बटोरा गया है वह देखने के लिए इसे करीब {suggested} तक घटा दीजिए।</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">करीब {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}, हर फ़्रेम पर एक</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; हर फ़्रेम, {passes} बार</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; हर फ़्रेम, {bands} पट्टियों में से हर एक के लिए एक बार</span>
+    <span data-phrase="plan.read">डिस्क पर {total} में से {read}</span>
+    <span data-phrase="plan.banded">यह एक बार में मेमोरी में नहीं आता, इसलिए तस्वीर {bands} पट्टियों में काटी जाएगी और हर पट्टी के लिए फ़्रेम दोबारा पढ़े जाएँगे। {suggested} चुनने पर यह एक ही चक्कर में हो जाता।</span>
+    <span data-phrase="plan.banded-anyway">यह एक बार में मेमोरी में नहीं आता, इसलिए तस्वीर {bands} पट्टियों में काटी जाएगी और हर पट्टी के लिए फ़्रेम दोबारा पढ़े जाएँगे। कम फ़्रेम या छोटा काम करने वाला रिज़ॉल्यूशन इसे एक ही चक्कर में बदल देते।</span>
+
+    <span data-phrase="progress.open">{name} के भीतर देखा जा रहा है&hellip;</span>
+    <span data-phrase="progress.survey">{name} पढ़ा जा रहा है&hellip;</span>
+    <span data-phrase="progress.measure">{name} कितना हिला, यह नापा जा रहा है&hellip;</span>
+    <span data-phrase="progress.stack">स्टैक हो रहा है &mdash; {total} में से {done} फ़्रेम पढ़े गए</span>
+    <span data-phrase="progress.stack-banded">स्टैक हो रहा है &mdash; {bands} में से पट्टी {band}, {total} में से {done} फ़्रेम पढ़े गए</span>
+    <span data-phrase="progress.encode">तस्वीर लिखी जा रही है&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count} फ़्रेम {seconds} सेकंड में जोड़े गए</span>
+    <span data-phrase="result.moves">हर फ़्रेम नापकर अपनी जगह पर सरका दिया गया।</span>
+    <span data-phrase="result.moves-some">{total} में से {count} फ़्रेम भरोसे से नापे नहीं जा सके और जहाँ थे वहीं रहने दिए गए।</span>
+    <span data-phrase="result.moves-none">फ़्रेम ठीक वैसे ही स्टैक किए गए जैसे वे आए थे।</span>
+    <span data-phrase="result.moves-clamped">{count} फ़्रेमों ने इतना घुमाव बताया जो किसी बर्स्ट के लिए बहुत ज़्यादा है, इसलिए उन्हें सिर्फ़ खिसकाकर ठीक किया गया।</span>
+    <span data-phrase="result.cropped">उन्हें अलग-अलग सरकाने से ऐसे किनारे बचे जहाँ हर फ़्रेम नहीं पहुँचता था, और वे काट दिए गए।</span>
+
+    <span data-phrase="error.no.files">पहले कम से कम एक तस्वीर जोड़िए।</span>
+    <span data-phrase="error.no.size">इनमें से कोई भी फ़ाइल तस्वीर की तरह नहीं खुली।</span>
+    <span data-phrase="error.one.frame">स्टैक करने के लिए कम से कम दो फ़्रेम चाहिए।</span>
+    <span data-phrase="error.unknown">स्टैक करते समय कुछ गड़बड़ हो गई। अगर इनमें से कोई फ़ाइल कुछ अलग किस्म की है तो उसे अकेले आज़माइए।</span>
+    <span data-phrase="error.memory">ब्राउज़र की मेमोरी ख़त्म हो गई। छोटा काम करने वाला रिज़ॉल्यूशन या कम फ़्रेम आज़माइए।</span>
+    <span data-phrase="error.unreadable">{name} तस्वीर की तरह नहीं खुली और बाहर रह गई।</span>
+    <span data-phrase="error.busy">और फ़्रेम जोड़ने से पहले इस स्टैक के पूरा होने का इंतज़ार कीजिए, या इसे रद्द कर दीजिए।</span>
+  </div>
+</main>
