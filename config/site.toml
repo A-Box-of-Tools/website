@@ -31,18 +31,11 @@ adsense_client = "ca-pub-5997711677062324"
 analytics_id = "G-SCBN29XZ31"
 
 #
-# The build. `python build.py` needs nothing but Python and produces a readable,
-# working site; that is the default and stays the default. `--mangle` renames
-# identifiers as well, which needs esbuild, and is what CI runs and what gets
-# deployed - so `--check` needs it too.
+# The build needs nothing but Python. There is no minifier to install, no
+# bundler, and nothing pinned: `python build.py` produces exactly what is
+# deployed, which is what makes `--check` worth having. Identifiers are left
+# alone deliberately - see the note at the top of build.py.
 #
-# The version is pinned rather than merely requested. Two versions of esbuild do
-# not have to invent the same names, and if the checker and the deploy disagree
-# then --check reports tampering where there was none, which is worse than
-# having no checker at all. The build refuses to run against any other version.
-#
-[build]
-esbuild_version = "0.25.0"
 
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the
@@ -312,7 +305,7 @@ body = """
 id = "images"
 name = "Images"
 note = "Resize one, shrink one, or take out what it quietly records about you - none of it sent anywhere."
-order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "stack-images", "redact-image", "exif-editor", "image-to-ico", "image-to-data-uri", "svg-to-image"]
+order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "stack-images", "redact-image", "exif-editor", "dicom-viewer", "image-to-ico", "image-to-data-uri", "svg-to-image"]
 
 # Video and GIF were two categories, and the line between them was one this site
 # cared about and a reader did not: a GIF is what somebody makes when the MP4
@@ -332,7 +325,7 @@ order = ["images-to-video", "trim-video", "crop-video", "reverse-video", "timela
 id = "documents-and-audio"
 name = "Documents &amp; audio"
 note = "Rearrange a document or trim a recording, without sending either off to be processed."
-order = ["merge-pdf", "compress-pdf", "images-to-pdf", "trim-audio", "edit-audio"]
+order = ["merge-pdf", "compress-pdf", "redact-pdf", "images-to-pdf", "document-scanner", "trim-audio", "edit-audio"]
 
 # Everything that is not a file being edited. What goes in is something you
 # typed, something you want read back, or something you want checked, and what
@@ -464,10 +457,13 @@ order = [
   "remove-exif-and-gps-data",
   "redact-an-image",
   "stack-photos-to-reduce-noise",
+  "open-a-dicom-file",
   "convert-heic-to-jpg",
   "merge-and-split-pdf-files",
+  "redact-a-pdf",
   "make-a-pdf-smaller",
   "combine-images-into-a-pdf",
+  "scan-a-document-with-your-phone",
   "turn-images-into-a-video",
   "make-a-gif-from-images",
   "trim-a-video",

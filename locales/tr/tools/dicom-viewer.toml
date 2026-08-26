@@ -1,0 +1,382 @@
+#
+# DICOM Görüntüleyici - Türkçe.
+#
+# Overrides for tools/dicom-viewer/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+# Etiket adları, aktarım söz dizimi adları ve PS3.15 gibi standart
+# referansları Latin harflerinde kalıyor: bunlar bir okuyucunun DICOM
+# standardında arayacağı şeyler, çevrilecek kelimeler değil.
+#
+
+name = "DICOM Görüntüleyici"
+heading = "DICOM&nbsp;Görüntüleyici <span class=\"h1-kw\">&mdash; bir .dcm taramasını tarayıcınızda açın</span>"
+tagline = "BT, MR, röntgen ve ultrason; penceresi, başlığı ve ölçümleriyle."
+
+title = "DICOM Görüntüleyici &mdash; Bir .dcm Dosyasını Tarayıcınızda Açın, Yüklemesiz"
+description = "BT, MR, röntgen ve ultrason taramalarını tarayıcınızda açın. Pencere ve seviye, bütün bir seriyi kaydırma, milimetre cinsinden ölçüm, her DICOM etiketini okuma ve dosyada hastayı tam olarak neyin tanımladığını görme. Hiçbir şey yüklenmez."
+og_title = "DICOM Görüntüleyici &mdash; bir taramayı yüklemeden açın"
+og_description = "Kendi cihazınızda açılan bir .dcm dosyası: pencere ve seviye, sıraya dizilmiş bütün seri, milimetre cinsinden ölçümler ve başlıktaki her etiket. Yükleme yok, hesap yok."
+og_image_alt = "DICOM Görüntüleyici - bir BT, MR ya da röntgen taramasını tarayıcıda açın"
+
+pledge = """
+    Tarama kendi tarayıcınız tarafından açılır ve çözülür: başlık, pikseller,
+    pencere, ölçümler. Buradaki herhangi bir şey istese bile bu sayfanın öbür
+    ucunda korunan sağlık bilgilerinin gönderilebileceği bir sunucu yok ve dosya
+    hakkında hiçbir şey - ne hastanın adı, ne çalışma, ne de dosya adı - hiç
+    kimseye okunmaz."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir tarama açın. Tek bir istek bile bir görüntü, bir etiket ya
+      da bir dosya adı taşımıyor. Ya da internet bağlantısını kesip yine de bir
+      tane açın."""
+
+read_first = """
+, dosyayı gezen ayrıştırıcı için <code>src/dicom.js</code>,
+      piksel çözme için <code>src/pixels.js</code>, hastane dışa aktarmalarının
+      çoğunun kullandığı kodlayıcı için <code>src/jpeg-lossless.js</code> ve
+      pencere ile seviye için <code>src/window.js</code> &mdash; hiçbirinde ağa
+      erişebilecek tek bir satır yok."""
+
+howto_heading = "Bir DICOM dosyası nasıl açılır"
+
+card = """
+            Bir BT, MR, röntgen ya da ultrason taramasını kendi cihazınızda
+            açın. Penceresini ayarlayın, bütün seriyi kaydırın, milimetre
+            cinsinden ölçün ve başlıktaki her etiketi okuyun."""
+
+[words]
+plural = "taramalarınız"
+choose = "bir tarama"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[facts]]
+text = "Dosyalar cihazınızda kalır"
+
+[[privacy]]
+title = "Taramanızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyanızın toplanabileceği bir uç nokta burada yok,
+      olsaydı bile onu oraya gönderecek bir kod yok. Burada eskiden
+      <code>connect-src 'none'</code> yazıyordu ki bu mutlaktı; reklam eklemek
+      buna mal oldu ve bunu söylemek anlaşmanın bir parçası."""
+
+[[privacy]]
+title = "Bu, burada diğer sayfalardan daha çok önemli."
+body = """
+
+      Bir DICOM dosyası, üzerine biraz üst veri iliştirilmiş bir resim değildir.
+      İçinde bir resim olan bir tıbbi kayıttır: hastanın adı, doğum tarihi,
+      hastane numarası, istem numarası, sevk eden doktor, kurum ve tarayıcının
+      seri numarası, hepsi başlıktaki alanlardır ve dosya nereye giderse onunla
+      birlikte giderler. Bakmak için bir tanesini bir siteye yüklemek, bunların
+      hepsini o siteyi kim işletiyorsa ona vermek demektir. Bu sayfa tam da bunu
+      yapmamak için var."""
+
+[[privacy]]
+title = "Okuyucu bu depodaki on dört dosya."
+body = """
+ Buradaki hiçbir şey herhangi bir
+      yerden getirilmiş bir kitaplık kullanmıyor. <code>src/dicom.js</code>
+      dosyayı geziyor, <code>src/dictionary.js</code> etiketlerin adlarını
+      biliyor, <code>src/pixels.js</code> baytları tekrar ölçüme çeviriyor,
+      <code>src/rle.js</code> ve <code>src/jpeg-lossless.js</code> bu sayfanın
+      çözebildiği iki sıkıştırılmış biçimi açıyor ve <code>src/window.js</code>
+      ölçüleni ekranınızın grilerine eşliyor."""
+
+[[privacy]]
+title = "Tanımlayıcılar size listeleniyor, başka hiç kimseye değil."
+body = """
+
+      Sayfa, dosyanızda kimin taraması olduğunu söyleyen ya da daraltan her alanı
+      basar; çünkü bu, bir kesiti paylaşmak üzere olan birinin cevabına ihtiyaç
+      duyduğu ve hiçbir görüntüleyicinin cevaplamadığı bir sorudur. Önünüzdeki
+      ekrana konur ve başka hiçbir yere gitmez: bu depoda bunlardan herhangi
+      birini taşıyan bir analitik olayı yok ve olsaydı bile sayfa onu
+      gönderemezdi."""
+
+[[privacy]]
+title = "Okur. Yazmaz."
+body = """
+ Burada dosyanızı değiştiren bir düğme yok ve
+      değiştirebilecek bir kod da yok. Yanınızda götürebileceğiniz şey, ekrandaki
+      karenin bir PNG'si ve başlığın metin kopyasıdır; ikisi de sayfada, zaten
+      üzerinde olandan kurulur. Orijinaliniz diskinizde el değmemiş durur;
+      sekmeyi kapatırsanız ne olacağının dürüst cevabı da budur."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine dosyanız hakkında bir şey verilmiyor: ne
+      pikseller, ne bir küçük resim, ne bir ad, bir etiket, bir hasta ya da bir
+      dosya adı. Bir taramayı ayrıştıran, çözen ya da çizen her satır bu
+      kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de dosyalarınız
+      hakkında bir şey verilir. Siz tıklamadıkça hiçbir şey olmaz ve
+      tıkladığınızda gideceğiniz yer başkasının sitesidir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfanın her
+      parçası çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu:
+      taramanızı çizilmek üzere uzağa gönderen bir araç, siz fişi çeker çekmez
+      dururdu."""
+
+[[howto]]
+title = "Dosyaları seçin."
+body = """
+ Tek bir <code>.dcm</code> dosyası ya da diskteki
+      klasörün tamamı &mdash; bir BT ya da MR, kesit başına bir dosyadır ve
+      hepsini birden bırakmak seriyi yeniden bir araya getiren şeydir. Dosyalar
+      tarayıcı tarafından doğrudan diskinizden okunur; siz bunu yaparken hiçbir
+      yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Seriyi seçin."
+body = """
+ Bir çalışma genellikle birkaç seri taşır: önce
+      kılavuz görüntü, sonra her çekim. Her biri, tarayıcının aldığı sırayla
+      dizilir; bu sıra, her zaman aynı yönde ilerlemeyen numaralandırmadan değil,
+      her kesitin hastadaki konumundan hesaplanır."""
+
+[[howto]]
+title = "Pencereyi ayarlayın."
+body = """
+ Bir taramayı okunur yapan ve bir görsel
+      düzenleyicide bulunmayan denetim budur. Pencereyi genişletmek için görüntü
+      üzerinde yatay, merkezini kaydırmak için dikey sürükleyin ya da bir BT'de
+      adlandırılmış pencerelerden birini seçin &mdash; akciğer, kemik, beyin,
+      yumuşak doku &mdash; ki BT'de birimler dünyadaki her tarayıcıda aynıdır."""
+
+[[howto]]
+title = "Yığını kaydırın."
+body = """
+ Görüntünün altındaki kaydırıcı kesitler
+      arasında ilerler; görüntüye bir kez tıkladıktan sonra ok tuşları da aynı
+      şeyi yapar. Çok kareli bir dosya &mdash; bir ultrason döngüsü, bir
+      anjiyogram &mdash; yanındaki düğmeyle oynar."""
+
+[[howto]]
+title = "Bir şey ölçün."
+body = """
+ Ölç kipine geçin ve bir çizgi sürükleyin.
+      Dosya piksellerinin birbirine ne kadar uzak olduğunu söylüyorsa cevap
+      milimetre cinsindendir ve kare olmayan pikselleri hesaba katar; dosya
+      söylemiyorsa cevap piksel cinsindendir ve bir ölçek uydurmak yerine bunu
+      söyler."""
+
+[[howto]]
+title = "Başlığı okuyun."
+body = """
+ Dosyadaki her öğe; numarası, standardın ona
+      verdiği ad ve taşıdığı değerle, aranabilir hâlde. Onun üstünde ise bu
+      dosyada hastayı neyin tanımladığının listesi &mdash; ki bu, addan çok daha
+      fazlasıdır."""
+
+[[howto]]
+title = "İhtiyacınız olanı alın."
+body = """
+ Ekrandaki kareyi, ayarladığınız pencereyle
+      ve üzerine hiçbir şey yakılmadan PNG olarak ya da başlığın tamamını düz
+      metin olarak. İkisi de sayfada, zaten orada olandan kurulur."""
+
+[[faq]]
+q = "Taramam herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        çözülür ve çizilir. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Ağ
+        bağlantısını kesin, yine de tarama açar.
+        <br><br>
+        Bu, bu sitenin başka hiçbir sayfasında olmadığı kadar burada değerlidir.
+        Bir DICOM dosyası başlığında hastanın adını, doğum tarihini ve hastane
+        numarasını taşır; yani birini bir görüntüleyiciye yüklemek, bir yabancıya
+        bir resim değil bir tıbbi kayıt vermek demektir."""
+
+[[faq]]
+q = "Hangi DICOM dosyalarını açabiliyor?"
+a = """
+        Üç temel aktarım söz diziminin herhangi birindeki sıkıştırılmamış
+        dosyalar &mdash; örtük ve açık little endian ve kullanımdan kaldırılmış
+        big endian &mdash; ayrıca deflated, RLE Lossless, baseline JPEG ve bir
+        hastane diskindeki BT ve MR çalışmalarının çoğunun sıkıştırıldığı
+        JPEG Lossless.
+        <br><br>
+        JPEG 2000, JPEG-LS ve video için kullanılan MPEG ile HEVC söz dizimlerini
+        çözemez. Bunlar megabaytlarca derlenmiş kitaplık eden kodlayıcılar
+        gerektirir ve istendiğinde böyle bir şey indiren bir sayfa, çevrimdışı
+        çalışan bir sayfa olmazdı. Bunlardan birindeki bir dosya yine de açılır:
+        başlığın tamamı okunup gösterilir ve resmin yerine, size hiçbir şey
+        söylemeyen bozuk görsel simgesi yerine kodlayıcının adını veren bir satır
+        gelir."""
+
+[[faq]]
+q = "&laquo;Pencere ve seviye&raquo; nedir, neden gerekiyor?"
+a = """
+        Bir BT kesiti yaklaşık dört bin farklı değer taşır, ekranınız ise iki yüz
+        elli altı gri gösterir. Pencere, o aralığın hangi diliminin bu grilerin
+        hepsini alacağının seçimidir: altındaki her şey siyah, üstündeki her şey
+        beyaz ve arada kalan grilere yayılır.
+        <br><br>
+        Aynı dosyanın iki ayarda başka bir tarama gibi görünmesinin ve akciğerle
+        kemiğin aynı anda görülememesinin sebebi budur. Bir BT'de sayılar
+        Hounsfield birimidir ve mutlak olarak tanımlıdır &mdash; su 0, hava
+        &minus;1000 &mdash; dolayısıyla bu sayfadaki adlandırılmış pencereler bir
+        radyoloğun iş istasyonunda kullandığı sayıların aynısıdır. Bir MR'da ya
+        da ultrasonda böyle bir ölçek yoktur ve açılan pencere, dosyanın kendi
+        istediği penceredir."""
+
+[[faq]]
+q = "Ölçümümün piksel cinsinden olduğunu neden söylüyor?"
+a = """
+        Çünkü o dosya bir pikselin ne kadar büyük olduğunu söylemiyor. Bunu
+        milimetre cinsinden taşıyan şey Pixel Spacing (0028,0030) etiketidir ve
+        pek çok ultrason görüntüsü, taranmış belge ve ikincil yakalama bunu
+        taşımaz.
+        <br><br>
+        Orada olduğu yerde ölçüm milimetre cinsindendir ve her eksen kendi
+        aralığıyla ölçülür; pikselleri kare olmayan görüntülerde önemli olan da
+        budur. Olmadığı yerde dürüst cevap bir piksel sayısıdır ve bu araç bir
+        ölçek seçip sonucu bir uzunluk gibi sunmak yerine bunu söyler."""
+
+[[faq]]
+q = "Klasörümü birkaç seri olarak açtı. Neden?"
+a = """
+        Çünkü içindeki bu. Bir çalışma serilerden oluşur &mdash; kılavuz görüntü,
+        sonra her çekim ya da yeniden yapılandırma &mdash; ve her dosya hangisine
+        ait olduğunu Series Instance UID (0020,000E) içinde söyler. Açılır liste,
+        genellikle hepsini tek bir ad listesinde karışık tutan klasörden değil
+        bundan kurulur.
+        <br><br>
+        Bir seri içinde kesitler, her birinin hastadaki konumuna göre sıralanır;
+        bu da Image Position ve Image Orientation'dan hesaplanır. Instance Number
+        bariz anahtardır ve ilk tercih değil yedektir: onu dosyaları yazan şey
+        atar ve hastanın uzandığı yönde ilerlemek zorunda değildir."""
+
+[[faq]]
+q = "&laquo;Hastayı ne tanımlıyor&raquo; listesi ne demek?"
+a = """
+        Dosyanızda, taramanın kimin olduğunu söyleyen ya da kim olabileceğini
+        daraltan her alan; makinenizde bu dosyadan okunmuş hâliyle. Liste, DICOM
+        standardının PS3.15 bölümünden gelir &mdash; bir veri kümesine
+        kimliksizleştirilmiş denebilmesi için nelerin gitmesi gerektiğini söyleyen
+        bölüm.
+        <br><br>
+        Orada olmasının sebebi şu: insanların yanıldığı şey bir taramada bir ad
+        bulunması değildir. Başka ne kadar çok şey bulunduğudur: doğum tarihi,
+        istem numarası, sevk eden hekim, kurum, tarayıcının seri numarası ve
+        dosyayı üreten arşive geri açılan mükemmel anahtarlar olan çalışma
+        UID'leri. Yalnızca adı silinmiş bir tarama anonim değildir.
+        <br><br>
+        Bu araç size yalnızca gösterir. Hiçbir şey yazmaz ve hiçbir şey
+        değiştirmez, dolayısıyla bunların hiçbirini çıkaramaz."""
+
+[[faq]]
+q = "Bir taramayı anonimleştirebilir mi?"
+a = """
+        Hayır ve bilinçli olarak öyleymiş gibi de yapmıyor. Bu sayfa okur; bir
+        DICOM dosyası yazan bir kodu yoktur. Yaptığı şey, sizinkinde tam olarak ne
+        olduğunu söylemektir; öğrenmesi zor olan ve insanların yanıldığı kısım da
+        odur.
+        <br><br>
+        Tanımlayıcıları çıkaran bir araç, çıtası çok daha yüksek ayrı bir iştir
+        &mdash; dosyayı piksellere dokunmadan yeniden yazması, UID'leri bütün bir
+        çalışma boyunca tutarlı biçimde değiştirmesi ve bazı tarayıcıların adın
+        ikinci bir kopyasını sakladığı özel öğeler konusunda haklı olması gerekir.
+        Bu sitenin yol haritasında yer alıyor; bir görüntüleyiciye
+        cıvatalanmıyor."""
+
+[[faq]]
+q = "Uzantısı .dcm olmayan ya da bozuk bir dosyayı açabilir mi?"
+a = """
+        İkisine de evet. Uzantıya bakılmaz: denetlenen şey dosyanın kendisidir.
+        Olağan 128 baytlık ön ek olmadan yazılmış bir veri kümesi &mdash; ağdan
+        doğrudan çekilmiş bir tarama böyle görünür &mdash; kodlaması ilk
+        öğesinden hesaplanarak okunur ve sayfa bunu yaptığını söyler.
+        <br><br>
+        Ortasında biten bir dosya, gittiği yere kadar okunur. Hasardan önceki her
+        şey gösterilir ve hangi baytta durduğunu söyleyen bir not düşülür. Bir
+        görüntüleyicinin en çok istendiği durum budur; bu yüzden son on iki baytı
+        yüzünden dosyanın tamamını çöpe atmak yanlış davranış olurdu."""
+
+[[faq]]
+q = "Bu bir tanı görüntüleyicisi mi?"
+a = """
+        Hayır. Tıbbi cihaz değildir, hiçbir düzenleyici değerlendirmeden
+        geçmemiştir ve buradaki hiçbir şey klinik bir karar vermek için
+        kullanılmamalıdır. Ekranınız kalibre değildir, tarayıcı doğrulanmış bir
+        çizim zinciri değildir ve bunların ikisi de bir web sayfasının içinden
+        düzeltilemez.
+        <br><br>
+        İyi olduğu şey, insanların bir taramayı açtığı diğer her şeydir: bir
+        diskte ne olduğuna bakmak, bir ders sunumu ya da bir makale için kesit
+        almak, bir başlık okumak, başka bir programın dosyayı neden reddettiğini
+        anlamak ve bir taramanın kimin olduğu hakkında ne taşıdığını görmek."""
+
+[[faq]]
+q = "Dosyamı değiştiriyor mu?"
+a = """
+        Hayır. Bu araç yalnızca okur. Çıktı dosyası, yeniden kodlama ya da DICOM
+        yazan bir düğme yoktur &mdash; indirebileceğiniz şey, ekrandaki karenin
+        bir PNG'si ve başlığın düz metin kopyasıdır. Orijinaliniz diskinizde el
+        değmemiş durur."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok. Kendi makinenizin
+        belleğinin ötesinde dosya boyutu ya da kaç dosya açtığınız konusunda bir
+        sınır da yok. Sitede reklam var, masrafı karşılayan da o; reklamlara
+        dosyanız hakkında hiçbir şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: taramanızı çizilmek üzere uzağa gönderen bir
+        araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "DICOM (.dcm) taramalarını tarayıcıda açın: BT, MR, röntgen ve ultrason; pencere ve seviye, sıraya dizilmiş bütün bir seri, milimetre cinsinden ölçümler ve başlıktaki her etiketle. Hiçbir şey yüklenmez."
+features = [
+  "BT, MR, röntgen, ultrason, PET ve ikincil yakalama dosyalarını açar",
+  "Sürükleyerek, yazarak ya da adlandırılmış BT hazır ayarıyla pencere ve seviye",
+  "Bütün bir klasörü serilere ayırıp hastadaki konuma göre sıralar",
+  "Çok kareli dosyalar döngü olarak oynar",
+  "Kare olmayan pikselleri hesaba katarak milimetre cinsinden ölçer",
+  "İmlecin altındaki piksel değerini Hounsfield birimiyle okur",
+  "Her DICOM etiketi, adı ve değeriyle, aranabilir hâlde",
+  "Dosyada hastayı neyin tanımladığını PS3.15 profiline göre listeler",
+  "RLE, baseline JPEG ve JPEG Lossless'ı harici bir kitaplık olmadan çözer",
+  "Kareyi PNG, başlığı düz metin olarak kaydeder",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, dosyanızda değişiklik yok",
+]
+
+[picker]
+title = "Bir taramayı buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; tek bir .dcm dosyası ya da onlardan oluşan bütün bir klasör"

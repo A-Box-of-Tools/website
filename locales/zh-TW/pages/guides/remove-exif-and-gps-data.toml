@@ -1,0 +1,25 @@
+#
+# Guide: the metadata inside a photo, and how to remove it - Traditional
+# Chinese.
+#
+# Overrides for pages/guides/remove-exif-and-gps-data/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of the
+# English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "EXIF 與 GPS 資訊"
+
+title = "怎麼刪掉照片裡的 EXIF 和 GPS 資訊"
+description = "手機拍的照片通常帶著精確的拍攝地點、精確到秒的時間，還有相機的序列號。裡面到底有什麼，誰讀得到，以及怎麼在不動畫面的前提下把它們清掉。"
+
+heading = "一張照片把你交代了多少，以及怎麼把它刪掉"
+lede = """
+    剛出手機的一張照片，通常帶著拍攝地點的座標、精確到秒的時間，還有足夠把它\
+    和這臺裝置拍的其他每一張串起來的相機資訊。這些在螢幕上一樣都看不見。\
+    這一頁講裡面到底有什麼，以及怎麼清掉。"""
+
+updated = "2026年8月20日"
+
+og_title = "一張照片把你交代了多少，以及怎麼把它刪掉"
+og_description = "GPS 座標、時間戳和序列號就藏在普通照片裡。裡面有什麼，誰讀得到，以及怎麼清掉。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

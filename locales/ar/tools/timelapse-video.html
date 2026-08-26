@@ -1,0 +1,152 @@
+<main>
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر فيديو</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>الملف</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>الحجم</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>الإطار</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>المدة</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>معدّل الإطارات</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>الفيديو</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the speed -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> اختر السرعة</h2>
+
+    <div class="speed-row" role="group" aria-label="كم يُسرَّع المقطع">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>السرعة
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>المدة المنتهية
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">ث</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">يعمل بمعدّل</label>
+        <select id="fps">
+          <option value="24">24 إطاراً في الثانية</option>
+          <option value="30" selected>30 إطاراً في الثانية</option>
+          <option value="60">60 إطاراً في الثانية</option>
+        </select>
+        <p class="field-note">
+          المعدّل الذي يعمل به المقطع المنتهي. وهو لا يغيّر سرعة المقطع
+          &mdash; فتلك هي السرعة أعلاه &mdash; بل سلاسة منظره لا غير.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">المقاس</label>
+        <select id="size">
+          <option value="0" selected>المقاس الأصلي</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          تصغيرٌ لا غير. والتايم لابس يُشاهَد صغيراً عادةً.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">الجودة</label>
+        <select id="quality">
+          <option value="low">ملف أصغر</option>
+          <option value="medium" selected>متوازن</option>
+          <option value="high">أفضل جودة</option>
+        </select>
+        <p class="field-note">
+          أعلى مما تنفقه أدوات الفيديو هنا عادةً، لأن الإطارات المتتالية في
+          التايم لابس لا تشترك في كثير يُضغَط.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the export -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> اصنع التايم لابس</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>الإطارات المُبقاة</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>إطار كل</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>المدة المنتهية</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>إطار الخَرج</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>يقرأ</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>نحو</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      الناتج بلا صوت. فالكلام والموسيقى مسرَّعَين ثلاثين مرة ليسا كلاماً
+      وموسيقى، فليس هنا ما يستحق الإبقاء عليه &mdash; وإسقاطُه هو سبب خروج
+      تايم لابس لساعةٍ ببضعة ميغابايتات.
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>اصنع التايم لابس</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>نزِّل التايم لابس</a>
+      </div>
+    </div>
+  </section>
+</main>

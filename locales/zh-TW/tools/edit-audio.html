@@ -1,0 +1,174 @@
+<!--
+  tools/edit-audio/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選一個檔案</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>檔案</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>時長</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>聲音</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>最響的那一下</dt><dd id="src-peak">&mdash;</dd></div>
+      <div><dt>讀進來的取樣率</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <div class="wave-wrap" id="src-wave-wrap" hidden>
+      <canvas id="src-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="preview" controls preload="metadata"></audio>
+    </div>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第 2 步，改點什麼 -->
+  <section class="card" id="edit-card" hidden>
+    <h2><span class="step">2</span> 動手改</h2>
+
+    <div class="edit-block">
+      <label class="check" for="reverse">
+        <input type="checkbox" id="reverse">
+        倒著放
+      </label>
+      <p class="field-note">
+        取樣從最後一個開始往前寫出去，除此之外什麼都不變，所以倒兩次拿回來的就是你一開始那個檔案。
+      </p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="speed">速度</label>
+        <input type="text" id="speed-value" class="value-box" inputmode="decimal"
+               spellcheck="false" autocomplete="off" aria-label="速度倍數">
+      </div>
+
+      <!-- The slider is in octaves, not multiples: half speed and double speed
+           are then the same distance either side of the middle, which is how
+           they sound. main.js does the conversion. -->
+      <input type="range" id="speed" min="-2" max="2" step="0.01" value="0"
+             aria-describedby="speed-note">
+
+      <div class="presets" role="group" aria-label="常用速度">
+        <button type="button" class="ghost" data-speed="0.5">0.5&times;</button>
+        <button type="button" class="ghost" data-speed="0.75">0.75&times;</button>
+        <button type="button" class="ghost" data-speed="1">1&times;</button>
+        <button type="button" class="ghost" data-speed="1.25">1.25&times;</button>
+        <button type="button" class="ghost" data-speed="1.5">1.5&times;</button>
+        <button type="button" class="ghost" data-speed="2">2&times;</button>
+      </div>
+
+      <fieldset class="modes">
+        <legend>音高怎麼辦</legend>
+        <label class="mode">
+          <input type="radio" name="pitch" value="keep" checked>
+          <span>
+            <strong>釘住音高</strong>
+            嗓音還是那個嗓音，只是快了或者慢了。
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="pitch" value="move">
+          <span>
+            <strong>讓它跟著變</strong>
+            快了就尖，慢了就悶，跟磁帶一個道理。
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="speed-note"></p>
+    </div>
+
+    <div class="edit-block">
+      <div class="block-head">
+        <label for="volume">音量</label>
+        <input type="text" id="volume-value" class="value-box" inputmode="decimal"
+               spellcheck="false" aria-label="音量增減，單位分貝">
+      </div>
+
+      <input type="range" id="volume" min="-24" max="24" step="0.5" value="0"
+             aria-describedby="volume-note">
+
+      <fieldset class="modes">
+        <legend>提到多響</legend>
+        <label class="mode">
+          <input type="radio" name="level" value="gain" checked>
+          <span>
+            <strong>加減這麼多</strong>
+            每個取樣都乘同一個數，別的什麼都不變。
+          </span>
+        </label>
+        <label class="mode">
+          <input type="radio" name="level" value="normalize">
+          <span>
+            <strong>提到最響</strong>
+            一路往上，直到最響那一下剛好頂在上限之下。
+          </span>
+        </label>
+      </fieldset>
+
+      <p class="field-note" id="volume-note"></p>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>時長</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>速度</dt><dd id="sum-speed">&mdash;</dd></div>
+      <div><dt>最響的那一下</dt><dd id="sum-peak">&mdash;</dd></div>
+      <div><dt>大致體積</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="clip-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第 3 步，出檔案 -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> 儲存</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">寫成什麼</label>
+        <select id="depth">
+          <option value="16" selected>16 位 WAV，哪裡都能放</option>
+          <option value="32">32 位浮點 WAV，什麼都不削頂</option>
+        </select>
+        <p class="field-note" id="depth-note">
+          WAV 裡裝的就是取樣本身，所以寫出來這一步不可能掉品質。缺點是檔案不小，上面那個估算就是。
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary">開始處理</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下載音訊</a>
+      </div>
+    </div>
+  </section>
+</main>

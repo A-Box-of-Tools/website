@@ -50,9 +50,8 @@ lockfile, no dependency to fetch. Both test suites run in CI on every push and
 every pull request, and nothing is published if either fails.
 
 See [Running it](docs/running.md) for `--check` (does the deployed site match
-these sources), `--mangle` (what CI actually builds, and the one step here that
-needs something installed), and the double-click failure that is worth knowing
-about before it surprises you.
+these sources) and the double-click failure that is worth knowing about before
+it surprises you.
 
 ---
 

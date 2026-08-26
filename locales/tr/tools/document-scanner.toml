@@ -1,0 +1,296 @@
+#
+# Belge Tarayıcı - Türkçe.
+#
+# Overrides for tools/document-scanner/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+# Zhang ve He özel adlar, dolayısıyla Latin harflerinde kalıyor; Sauvola da
+# öyle. Bunlar aranabilir referanslar, çevrilecek kelimeler değil.
+#
+
+name = "Belge Tarayıcı"
+heading = "Belge&nbsp;Tarayıcı <span class=\"h1-kw\">&mdash; bir sayfanın fotoğrafı, düzeltilmiş</span>"
+tagline = "Sayfayı fotoğraflayın. Taranmış görünen bir şey geri alın."
+
+title = "Belge Tarayıcı &mdash; Fotoğraftan PDF Taramaya, Yüklemesiz"
+description = "Bir sayfanın telefon fotoğrafını düzeltilmiş, eşit aydınlatılmış bir PDF'e çevirin. Köşeler sizin için bulunur, perspektif geri alınır, gölge bölünüp atılır. Tamamen tarayıcınızda çalışır: hiçbir şey yüklenmez."
+og_title = "Bir belgeyi fotoğrafla, yüklemeden tarayın"
+og_description = "Sayfanın köşeleri bulunur, açı geri alınır ve eşitsiz ışık bölünüp atılır; hepsi kendi tarayıcınızda. İnsanların bu şekilde fotoğrafladığı şey bir pasaport, bir maaş bordrosu ya da bir sözleşmedir; yani tam da yüklenmemesi gereken şey."
+og_image_alt = "Belge Tarayıcı - bir sayfanın fotoğrafı, yüklenmeden düzeltilmiş ve temizlenmiş"
+
+pledge = """
+    Fotoğraf kendi tarayıcınız tarafından çözülür, düzeltilir, temizlenir ve bir
+    PDF'e yazılır; kullanılan tek şey aritmetik ve tarayıcının zaten beraberinde
+    getirdiği kodlayıcılardır. Bu aracın hiçbir türde ağ özelliği yoktur
+    &mdash; getirecek bir şey yok, gönderecek bir şey yok &mdash; ve bunun
+    burada önemli olmasının sebebi, insanların hangi sayfaları fotoğrafladığıdır:
+    bir pasaport, bir maaş bordrosu, bir kira sözleşmesi, bir ofisin
+    &laquo;tarayıp geri gönderin&raquo; dediği bir form."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir sayfa tarayın. Tek bir istek bile bir fotoğraf, bir küçük
+      resim, bir dosya adı ya da tek bir köşenin konumunu taşımıyor. Ya da
+      internet bağlantısını kesip yine de bir tane tarayın."""
+
+read_first = """
+, köşelerin hiçbir model olmadan nasıl bulunduğu için
+      <code>src/detect.js</code>, düzeltme için <code>src/warp.js</code> ve
+      eşitsiz ışığın nasıl bölünüp atıldığı için <code>src/clean.js</code>."""
+
+howto_heading = "Telefon kameranızla bir belge nasıl taranır"
+
+card = """
+            Bir sayfanın fotoğrafı, düzeltilip temizlenerek belgeye çevrilmiş.
+            Köşeler sizin için bulunur, açı geri alınır ve gölge bölünüp
+            atılır."""
+
+[words]
+plural = "belgeleriniz"
+choose = "bir sayfa fotoğrafı"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Belgelerinizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Fotoğraflarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Model yok; yani indirilecek bir şey de sorulacak bir şey de yok."
+body = """
+ Bir
+      sayfanın dört köşesini bulmak aritmetikle yapılıyor: görüntünün gradyanı,
+      içindeki düz çizgiler için bir oylama ve kazanan dikdörtgenin her
+      kenarının altında gerçekte ne olduğunun denetlenmesi. Ağırlık yok, çıkarım
+      çalışma zamanı yok, ilk kullanımda getirilen bir şey yok ve başkasının
+      belgesinde sizinkinden farklı davranan bir şey yok &mdash;
+      <code>src/detect.js</code>'e bakın."""
+
+[[privacy]]
+title = "Belge tarih, yazar ya da makine adı taşımaz."
+body = """
+ Bir tarama, insanların
+      başka insanlara gönderdiği bir şeydir; genellikle bir ofis istediği için.
+      Sayfaların kendisi dışında PDF'e yazılan tek şey bu aracın adıdır, bir de
+      yazarsanız bir başlık. Oluşturulma tarihi yok, yazar yok, seri numarası yok
+      ve saatinizden, dosya adlarınızdan ya da bilgisayarınızdan türetilmiş
+      hiçbir şey yok &mdash; <code>src/document.js</code>'e bakın."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir yerde
+      <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. İş, <code>getImageData</code>, baytlar
+      üzerinde birkaç döngü ve tarayıcının kendi JPEG kodlayıcısı &mdash;
+      hepsi makinenizde zaten kurulu."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu &mdash; ve bir pasaport taramadan önce çalıştırmaya değen de bu."""
+
+[[howto]]
+title = "Sayfayı fotoğraflayın."
+body = """
+ Yukarıdan, sayfanın tamamı kadrajda ve
+      dört köşesi görünür ya da neredeyse görünür olacak şekilde. Tam karşıdan
+      olması gerekmez ve eşit aydınlatılmış olması gerekmez: açı ve gölge zaten
+      bu aracın işidir. Önemli olan kadrajı doldurmaktır &mdash; odanın öbür
+      ucundan fotoğraflanmış bir sayfada geri kazanılacak ayrıntı yoktur."""
+
+[[howto]]
+title = "Dört köşeyi denetleyin."
+body = """
+ Fotoğraf okunurken sizin için
+      bulunurlar ve emin olunmadığında sayfa bunu söyler &mdash; kâğıtla aynı
+      renkteki bir masanın üzerindeki bir sayfanın kenarını görmek gerçekten
+      zordur. Fotoğrafın herhangi bir yerine basın, en yakın köşe parmağınıza
+      gelsin; ya da <kbd>Tab</kbd> ile birine ulaşıp ok tuşlarıyla oynatın."""
+
+[[howto]]
+title = "Işıkla ne yapılacağını seçin."
+body = """
+ &laquo;Renkli, eşitlenmiş&raquo;,
+      kâğıdın kendi parlaklığını sayfa boyunca ölçer ve bölüp atar; böylece gölge
+      gider, bir mühür ya da bir imza rengini korur. &laquo;Siyah beyaz&raquo;
+      daha ileri gider ve bir taramayı e-postayla gönderilebilecek kadar küçük
+      yapan da odur. Ekranda gördüğünüz şey gerçek sonuçtur; dosyayı yazan aynı
+      kod tarafından üretilmiştir."""
+
+[[howto]]
+title = "Diğer sayfaları ekleyin."
+body = """
+ Eklediğiniz her fotoğraf, listelendikleri
+      sırayla aynı belgenin bir başka sayfası olur ve her biri kendi köşelerini
+      korur. Şeritteki bir sayfanın üzerindeki oklar onu öne ya da arkaya
+      alır."""
+
+[[howto]]
+title = "PDF'i kaydedin ve göndermeden önce açın."
+body = """
+ Belge burada, bu
+      sayfanın belleğinde yazılır. Onu yapmak için hiçbir şey yüklenmedi ve onun
+      hakkında hiçbir şey hiçbir yere bildirilmedi."""
+
+[[faq]]
+q = "Belgem herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Fotoğraf kendi donanımınızda, kendi tarayıcınız tarafından
+        çözülür, düzeltilir, temizlenir ve bir PDF'e yazılır. Bu aracın hiçbir
+        türde ağ özelliği yoktur &mdash; hiçbir zaman bir şey getirmez ve hiçbir
+        zaman bir şey göndermez &mdash; ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar; bunların hiçbiri bu siteye ait değildir. Sayfayı bir kez
+        yükleyin, internet bağlantısını kesin, yine de çalışır."""
+
+[[faq]]
+q = "Model olmadan sayfanın köşelerini nasıl buluyor?"
+a = """
+        Bir dikdörtgeni oluşturan dört uzun düz kenarı arayarak. Fotoğraf
+        küçültülür, gradyanı alınır &mdash; görüntünün nerede ve hangi yönde
+        değiştiği &mdash; ve bir kenarın üzerinde duran her piksel, üzerinde
+        yatacağı düz çizgi için oy verir. Güçlü çizgiler aday dikdörtgenlere
+        eşlenir ve her aday, dört kenarı gezilerek puanlanır: her kenarın ne
+        kadarının altında gerçekten bir kenar var ve bu dördü tek bir şeyin
+        sınırı mı? Bir sayfa etrafındakinden ya daha açıktır ya daha koyu, ama
+        dört kenarında da aynı yönde farklıdır; bir metin satırının sayfanın alt
+        kenarı sanılmasını engelleyen de budur. Ağırlık yoktur, hiçbir şey
+        indirilmez ve aritmetik, içinden geçen her belge için aynı
+        aritmetiktir."""
+
+[[faq]]
+q = "Bulduğu köşeler yanlış. Şimdi ne olacak?"
+a = """
+        Onları sürükleyin. Köşeler bir başlangıç konumudur, asla bir karar değil:
+        tarama, dördü nerede biterse oradan alınır. Fotoğrafın herhangi bir
+        yerine basın, en yakın köşe parmağınıza sıçrasın &mdash; bu, küçük bir
+        tutamağı tutturmaktan kolaydır &mdash; ve ok tuşları odaktaki köşeyi
+        birer piksel oynatır. Sayfa ayrıca köşelerin bir bulgu değil bir tahmin
+        olduğu durumu söyler ve o sayfayı şeritte işaretler &mdash; kendi rengine
+        yakın bir masanın üzerinde duran bir sayfa bunun olağan sebebidir, çünkü
+        orada bulunacak neredeyse hiç kenar yoktur."""
+
+[[faq]]
+q = "Düzeltilmiş sayfa neden doğru şekilde çıkıyor da ezik çıkmıyor?"
+a = """
+        Çünkü şekil kenarlardan ölçülmüyor, perspektiften geri kazanılıyor. Açıyla
+        fotoğraflanmış bir sayfanın uzak kenarı kısalmış olur; bu yüzden bariz
+        yöntem &mdash; en uzun karşılıklı kenar çiftini alıp orana bu demek
+        &mdash; gözle görülür biçimde bodur bir A4 üretir ki çoğu web tarayıcının
+        size verdiği de budur. Bir dikdörtgenin fotoğrafı, kameranın sıradan bir
+        kamera olduğu bilgisinden başka bir şey gerekmeden, hem dikdörtgenin en
+        boy oranını hem de kameranın odak uzaklığını geri kazanmaya yetecek
+        bilgiyi gerçekten taşır; bu, Zhang ve He'nin 2003 tarihli bir sonucudur
+        ve <code>src/geometry.js</code>'in yaptığı da budur. Fotoğrafın tam
+        karşıdan çekildiği yerde çalışılacak bir perspektif yoktur ve gerekmez
+        de, çünkü o zaman kenarlar zaten kesindir &mdash; öyle durumlarda onlara
+        döner ve sayfa hangisinin cevap verdiğini söyler."""
+
+[[faq]]
+q = "&laquo;Temizleme&raquo; görüntüye aslında ne yapıyor?"
+a = """
+        Işığı bölüp atıyor. Kâğıdın kendi parlaklığı sayfa boyunca ölçülür
+        &mdash; bir mozaik ızgarası ve her karede parlaklığın yüksek bir yüzdelik
+        değeri; metin bunu oynatamayacak kadar koyu ve seyrektir &mdash; ve her
+        piksel, o noktada tahmin edilen kâğıda bölünür. Geriye kalan şey, eşit
+        aydınlatılmış mürekkeptir; gölge ve kenarlardaki karartı gitmiştir. Bu,
+        kontrastı artırmakla aynı şey değildir: fotoğraflanmış bir sayfanın
+        kontrastını artırmak parlak kısmı beyaz, koyu kısmı siyah ve koyu
+        kısımdaki yazıyı okunamaz yapar; &laquo;otomatik seviyeler&raquo;in bu
+        resimleri iyileştirmek yerine bozmasının sebebi de budur."""
+
+[[faq]]
+q = "Siyah beyaz kip neden bu kadar küçük?"
+a = """
+        Çünkü iki renkli bir resim, on altı milyon renkli bir resmin verisinin
+        gerçekten küçük bir kesridir ve burada öyle saklanır: piksel başına bir
+        bit, sekizi bir bayta paketlenmiş ve tam olarak sıkıştırılmış &mdash;
+        siyah beyaz bir resmin JPEG'i olarak değil. Aynı sayfalarda renkli kipten
+        yaklaşık on sekiz kat küçük çıkar; yani yirmi sayfalık bir sözleşme on
+        beş civarı yerine bir megabaytın altına iner. Eşikleme Sauvola'nın
+        yöntemidir; her pikseli, sayfanın tamamı için tek bir sayıya göre değil,
+        kendi komşuluğunun ortalamasına ve yayılımına göre karara bağlar
+        &mdash; gölge içindeki yazıyı ayakta tutan da budur. Ara tonu yoktur, bu
+        yüzden üzerinde fotoğraf olan bir sayfa diğer kiplerden birini
+        kullanmalıdır."""
+
+[[faq]]
+q = "Bir PDF'e birkaç sayfa koyabilir miyim?"
+a = """
+        Evet. Eklediğiniz her fotoğraf, listelendikleri sırayla bir başka sayfa
+        olur ve her sayfa kendi köşelerini korur &mdash; yani arka arkaya
+        fotoğraflanmış bir sayfa yığını tek bir belgeye dönüşür. Şeritteki her
+        sayfanın üzerindeki oklar onu öne ya da arkaya alır. Temizleme ayarı
+        bilinçli olarak hepsi için ortaktır: bir belgede farklı temizlenmiş
+        sayfalar iki belge gibi görünür."""
+
+[[faq]]
+q = "Metni okuyor mu, PDF'te arama yapabilecek miyim?"
+a = """
+        Hayır. Metin katmanı ve karakter tanıma yok: çıkan şey, bir sayfa
+        üzerinde sayfanın resmidir. Bunu doğru dürüst yapmak bir OCR motoru
+        demektir ki bu da indirilecek onlarca megabayt model eder &mdash; ve
+        maaş bordronuzu okuyabilmek için önce bir model getiren bir belge
+        tarayıcı, maaş bordroları hakkında eve haber vermek için bir sebebi olan
+        bir belge tarayıcı olurdu. Metin gerekiyorsa siyah beyaz kip, kendi
+        makinenizdeki OCR yazılımının en iyi çalıştığı türden bir dosya
+        üretir."""
+
+[[faq]]
+q = "Bulanık çıktı. Neden?"
+a = """
+        Neredeyse her zaman sayfa fotoğrafta küçük olduğu için. Ön izlemenin
+        altındaki panel, sayfanın kadrajın ne kadarını doldurduğunu ve o
+        boyutta bir kâğıtta bunun kabaca inç başına kaç noktaya denk geldiğini
+        söyler &mdash; yaklaşık 150 DPI'ın altında basılmış bir tarama yumuşak
+        görünür ve hiçbir aracın, dosyada hiç olmamış bir ayrıntı için
+        yapabileceği bir şey yoktur. Yakınlaştırmak yerine yaklaşın, sabit tutun
+        ve düğmeye basmadan önce kameranın sayfaya odaklanmasını bekleyin.
+        Kamera sarsıntısı diğer sebeptir ve o da geri kazanılamaz."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, sayfa sınırı yok,
+        filigran yok. Fotoğrafların boyutunda da bir sınır yok, çünkü bunun
+        masrafını ödeyen bir sunucu yok &mdash; iş sizin kendi cihazınızda
+        oluyor. Sitede reklam var, masrafı karşılayan da o; reklamlara
+        belgeleriniz hakkında hiçbir şey verilmiyor."""
+
+[schema]
+description = "Bir belgeyi tarayıcıda tarayın: bir sayfa fotoğraflayın; dört köşe bulunur, perspektif geri alınır, eşitsiz ışık bölünüp atılır ve sonuç bir PDF'e yazılır. Birden fazla sayfa tek bir belge olur. Hiçbir şey yüklenmez."
+features = [
+  "Sayfanın dört köşesini model olmadan, hiçbir şey indirmeden ve getirmeden bulur",
+  "Sayfanın gerçek şeklini perspektiften geri kazanır; böylece açılı bir fotoğraf ezik çıkmaz",
+  "Kontrastı artırmak yerine eşitsiz ışığı ve gölgeyi bölüp atar",
+  "Siyah beyaz sayfaları piksel başına bir bit olarak saklar; bir taramayı e-postayla gönderilebilecek kadar küçük yapan da budur",
+  "Birkaç fotoğraf, her biri kendi köşeleriyle tek bir PDF'in sayfaları olur",
+  "Köşeler sürüklenebilir ya da klavyeden birer piksel oynatılabilir",
+  "Köşelerin bir bulgu değil bir tahmin olduğu durumu söyler",
+  "Belgeye tarih, yazar ve makine adı yazmaz",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Sayfalarınızın fotoğraflarını buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; sayfa başına bir fotoğraf, sayfa sırasıyla"

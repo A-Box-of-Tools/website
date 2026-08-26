@@ -1,0 +1,174 @@
+<main>
+  <!-- Step 1 &mdash; the frames -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصور</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="غيّر كيفية عرض الإطارات">
+          <button type="button" data-view="large" class="active" aria-pressed="true">كبيرة</button>
+          <button type="button" data-view="small" aria-pressed="false">صغيرة</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">رتّب بالاسم</button>
+        <button type="button" data-sort="date" class="ghost">رتّب بالتاريخ</button>
+        <button type="button" data-sort="reverse" class="ghost">اعكس</button>
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      اسحب أي إطار من مقبضه <span class="grip" aria-hidden="true">&#8942;&#8942;</span> لإعادة
+      الترتيب، أو استعمل الأسهم التي على كل واحد. والترتيب هنا هو الترتيب الذي تعمل به.
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">أبقِ كل إطار مدة</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="وحدة مدة بقاء كل إطار">
+        <option value="seconds" selected>ثانية</option>
+        <option value="fps">إطاراً في الثانية</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">طبِّق على الكل</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; settings -->
+  <section class="card">
+    <h2><span class="step">2</span> إعدادات GIF</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">المقاس</label>
+        <select id="size">
+          <option value="480" selected>480 بكسلاً &mdash; افتراض جيد</option>
+          <option value="640">640 بكسلاً</option>
+          <option value="320">320 بكسلاً</option>
+          <option value="240">240 بكسلاً</option>
+          <option value="original">طابِق الصور</option>
+          <option value="custom">مخصّص&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="عرض مخصّص بالبكسل">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="ارتفاع مخصّص بالبكسل">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">احتواء الصورة</label>
+        <select id="fit">
+          <option value="contain" selected>احتواء داخل الإطار (بأشرطة)</option>
+          <option value="cover">ملء الإطار (يقصّ الأطراف)</option>
+          <option value="stretch">مطّ حتى الملء (يشوّه)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">لون الخلفية</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">الألوان</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; أكثر ما يحمله ملف GIF</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; أصغر ملف</option>
+        </select>
+        <p class="field-note">ألوان أقلّ، وملف أصغر، وتشرّط أكثر.</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">لوحة الألوان</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>أفضل الألوان لكل إطار</option>
+          <option value="shared">لوحة واحدة لملف GIF كله</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">التوشية</label>
+        <select id="dither">
+          <option value="on" selected>مفعَّلة &mdash; تدرّجات أسلس</option>
+          <option value="off">مطفأة &mdash; أشدّ تسطّحاً وحوافّ أنظف</option>
+        </select>
+        <p class="field-note">أطفئها للشعارات والرسم الخطّي ولقطات الشاشة.</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">التكرار</label>
+        <select id="loop-mode">
+          <option value="forever" selected>كرِّر بلا نهاية</option>
+          <option value="once">شغّل مرة واحدة</option>
+          <option value="times">شغّل عدداً محدّداً من المرات&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="كم مرة تعمل الحركة" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">الشفافية</label>
+        <select id="transparent">
+          <option value="off" selected>سطِّح على الخلفية</option>
+          <option value="on">أبقِ المناطق الشفافة</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="معاينة الإطار الأول"></canvas>
+        <p id="preview-empty" class="preview-empty">أضِف صوراً لترى معاينة</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>الإطارات</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>يعمل لمدة</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>مقاس الإطار</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>يعمل</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; export -->
+  <section class="card">
+    <h2><span class="step">3</span> اصنع ملف GIF</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>اصنع GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="الحركة المنتهية، وهي تعمل"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>نزِّل ملف GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

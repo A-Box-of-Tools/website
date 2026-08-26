@@ -1,0 +1,271 @@
+<!--
+  tools/resize-image/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選圖片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步，裁切 -->
+  <section class="card" id="crop-card">
+    <h2><span class="step">2</span> 想裁就裁</h2>
+
+    <p class="card-lede">
+      裁剪框一開始罩著整張圖，所以這一步你不動，就等於沒裁。每張圖各有各的框，在上面的列表裡點一張，就在那張上畫。裁切在縮放之前發生，這是唯一說得通的順序：先縮小再裁，那些本該留下的畫素早就扔掉了。
+    </p>
+
+    <p id="crop-empty" class="field-summary">加一張圖，框就出現在這裡。</p>
+
+    <div id="crop-controls" hidden>
+      <p class="stage-hint">
+        <span id="stage-name" class="stage-name"></span>
+        在框裡拖是移動，拖四角是縮放。框選中時，方向鍵一次挪一個畫素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向鍵是改大小，按住 <kbd>Shift</kbd> 一步走十個。
+      </p>
+
+      <!-- The crop box itself is added here by src/cropper.js. The stage is
+           given the picture's own shape, so the box can be positioned in
+           percentages and needs no recalculating when the window is resized. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <p id="stage-note" class="stage-note" hidden></p>
+
+      <div class="crop-controls">
+        <div class="aspect-row" id="aspect-row" role="group" aria-label="把裁剪框鎖成某個比例">
+          <button type="button" data-aspect="free" class="active">自由</button>
+          <button type="button" data-aspect="source">原比例</button>
+          <button type="button" data-aspect="1:1">1:1</button>
+          <button type="button" data-aspect="4:5">4:5</button>
+          <button type="button" data-aspect="9:16">9:16</button>
+          <button type="button" data-aspect="16:9">16:9</button>
+          <button type="button" data-aspect="4:3">4:3</button>
+          <button type="button" data-aspect="3:2">3:2</button>
+          <button type="button" id="swap-aspect" class="ghost" title="把鎖定的比例橫豎對調">
+            橫豎對調
+          </button>
+        </div>
+
+        <div class="numbers">
+          <label>左<input type="number" id="crop-x" min="0" step="1"></label>
+          <label>上<input type="number" id="crop-y" min="0" step="1"></label>
+          <label>寬<input type="number" id="crop-w" min="8" step="1"></label>
+          <label>高<input type="number" id="crop-h" min="8" step="1"></label>
+          <div class="number-actions">
+            <button type="button" id="crop-max" class="ghost">拉到最大</button>
+            <button type="button" id="crop-centre" class="ghost">居中</button>
+            <button type="button" id="crop-reset" class="ghost">整張圖</button>
+          </div>
+        </div>
+
+        <!--
+          Every image keeps its own box, which is the point. This is for the
+          case that is still worth one click: a folder of exports that all want
+          the same framing.
+        -->
+        <div class="apply-row" id="apply-row" hidden>
+          <button type="button" id="crop-apply-all" class="ghost">這個裁法套到每張圖上</button>
+          <p class="hint-line" id="apply-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 3 步，尺寸 -->
+  <section class="card" id="resize-card">
+    <h2><span class="step">3</span> 說清楚要多大</h2>
+
+    <div class="option-row">
+      <label for="resize-mode">尺寸怎麼定</label>
+      <select id="resize-mode">
+        <option value="pixels" selected>給寬和高，按畫素</option>
+        <option value="longest">給最長的那條邊</option>
+        <option value="percent">按現在尺寸的百分比</option>
+        <option value="none">不改，尺寸原樣保持</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="pixels-fields">
+      <div class="numbers">
+        <label>寬<input type="number" id="size-w" min="1" step="1" placeholder="自動" value="1920"></label>
+        <label>高<input type="number" id="size-h" min="1" step="1" placeholder="自動"></label>
+        <div class="number-actions">
+          <button type="button" id="swap-size" class="ghost">寬高對調</button>
+        </div>
+      </div>
+
+      <!--
+        Leaving one of them blank is the common case and the one worth
+        supporting properly: "1920 wide, whatever tall that makes it" needs no
+        decision about shapes at all.
+      -->
+      <p class="hint-line">
+        只填一個、另一個留空，圖片就保持自己原來的比例。
+      </p>
+
+      <div class="presets" id="size-presets" role="group" aria-label="常用尺寸">
+        <button type="button" class="ghost" data-w="1920" data-h="1080">1920 &times; 1080</button>
+        <button type="button" class="ghost" data-w="1280" data-h="720">1280 &times; 720</button>
+        <button type="button" class="ghost" data-w="1080" data-h="1080">1080 &times; 1080</button>
+        <button type="button" class="ghost" data-w="600" data-h="">寬 600</button>
+      </div>
+
+      <div class="option-row" id="fit-row">
+        <label for="fit">比例對不上的時候</label>
+        <select id="fit">
+          <option value="contain" selected>放進去，整張圖都在，有一邊會短一點</option>
+          <option value="cover">鋪滿，正好這麼大，溢位的裁掉</option>
+          <option value="pad">墊起來，正好這麼大，四周補背景</option>
+          <option value="stretch">拉伸，正好這麼大，比例認了變形</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>最長邊<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
+      </div>
+      <p class="hint-line">
+        哪邊長哪邊就變成這個數，另一邊跟著走。同一批裡的豎構圖和橫構圖，長邊就都一樣大了，相簿通常要的就是這個。
+      </p>
+      <div class="presets" id="longest-presets" role="group" aria-label="常用長邊">
+        <button type="button" class="ghost" data-longest="640">640</button>
+        <button type="button" class="ghost" data-longest="1280">1280</button>
+        <button type="button" class="ghost" data-longest="1920">1920</button>
+        <button type="button" class="ghost" data-longest="2560">2560</button>
+      </div>
+    </div>
+
+    <div class="size-fields" id="percent-fields" hidden>
+      <div class="numbers">
+        <label>百分比<input type="number" id="size-percent" min="1" max="1000" step="1" value="50"></label>
+      </div>
+      <div class="presets" id="percent-presets" role="group" aria-label="常用百分比">
+        <button type="button" class="ghost" data-percent="25">25%</button>
+        <button type="button" class="ghost" data-percent="50">50%</button>
+        <button type="button" class="ghost" data-percent="75">75%</button>
+        <button type="button" class="ghost" data-percent="200">200%</button>
+      </div>
+    </div>
+
+    <label class="check" id="enlarge-row">
+      <input type="checkbox" id="no-enlarge" checked>
+      <span>
+        <strong>絕不把圖片放大</strong>
+        <span class="check-note">放大是在編造當初根本沒拍到的畫素，所以一張小圖硬要撐到大尺寸，出來只會更糊，不會更清楚。開著這個，本來就比你要的尺寸小的圖，就按它自己的尺寸留著。
+        </span>
+      </span>
+    </label>
+
+    <p id="size-summary" class="field-summary"></p>
+  </section>
+
+  <!-- 第 4 步，格式，然後按一下 -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> 儲存</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">格式</label>
+        <select id="format">
+          <option value="keep" selected>各自保持進來時的格式</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">品質，<output id="quality-value" for="quality">85</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="85">
+        <p class="field-note">
+          只對 JPEG 和 WebP 起作用，PNG 沒有品質這個旋鈕。85 是多數人開始分辨不出來的那一檔。低於 60 上下，大片平坦的區域會開始出現色帶。
+        </p>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">背景</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          畫面蓋不到的地方露出來的就是它：墊成固定尺寸時四周那一圈，以及輸出格式沒有 alpha 通道時透明的那些地方。
+        </p>
+      </div>
+    </div>
+
+    <p id="plan-summary" class="field-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>開始處理</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>完成</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下載</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The big look at one result. A <dialog> opened with showModal() rather than
+    a div pretending to be one: the browser gives the focus trap, the Escape
+    key and the inert background for nothing, and gets all three right.
+
+    Both pictures in it are object URLs made on this page - the result, and the
+    original that was already decoded for the thumbnail. Opening this fetches
+    nothing and decodes nothing that was not already decoded.
+  -->
+  <dialog id="viewer" class="viewer" aria-labelledby="viewer-name">
+    <div class="viewer-head">
+      <h2 id="viewer-name" class="viewer-name"></h2>
+      <button type="button" id="viewer-close" class="ghost" aria-label="關閉">關閉</button>
+    </div>
+
+    <div class="viewer-stage">
+      <img id="viewer-image" alt="">
+    </div>
+
+    <p id="viewer-caption" class="viewer-caption"></p>
+
+    <dl class="viewer-facts" id="viewer-facts"></dl>
+
+    <div class="viewer-actions">
+      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">看原圖</button>
+      <a id="viewer-download" class="primary as-button" download>下載</a>
+    </div>
+  </dialog>
+</main>

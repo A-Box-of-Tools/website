@@ -1,0 +1,241 @@
+#
+# Video Tersleyici - Türkçe.
+#
+# Overrides for tools/reverse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Video Tersleyici"
+heading = "Video&nbsp;Tersleyici <span class=\"h1-kw\">&mdash; videoyu geriye oynatın</span>"
+tagline = "Önce son kare, sesiyle birlikte."
+
+title = "Videoyu Çevrimiçi Ters Çevirme &mdash; Ücretsiz, Yüklemesiz, Çevrimdışı Çalışır"
+description = "Bir MP4, MOV veya WebM'i geriye oynatın; sesi de ters çevrilir. Tarayıcınızda çalışır: hiçbir şey yüklenmez, filigran yoktur ve çevrimdışı da çalışır."
+og_title = "Video Tersleyici &mdash; bir klibi yüklemeden geriye oynatın"
+og_description = "Bir videoyu ve içindeki sesi kare kare, kendi cihazınızda ters çevirin. Dosyayı kendi tarayıcınız okur, çözer ve yazar."
+og_image_alt = "Video Tersleyici - bir klibi tarayıcınızda geriye oynatın, hiçbir şey yüklenmesin"
+
+pledge = """
+    Her kare kendi tarayıcınız tarafından, kendi donanımınızda çözülür, ters
+    çevrilir ve yeniden kodlanır. Buradaki hiçbir şey bir şey getiremez ya da
+    gönderemez &mdash; bu araçta hiçbir türde ağ özelliği yok &mdash; ve
+    olsaydı bile bu sayfanın öbür ucunda bir videonun gönderilebileceği bir
+    sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir klibi ters çevirin. Tek bir istek bile bir kare, bir dosya
+      adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet
+      bağlantısını kesip yine de bir tanesini ters çevirin &mdash; videonuzu
+      işlenmek üzere uzağa gönderen bir araç öylece dururdu."""
+
+read_first = """
+, hangi karenin ne zaman çıkacağına karar veren hesap için
+      <code>src/timeline.js</code> ve dosyayı her seferinde bir kare grubu
+      geriye doğru gezen döngü için <code>src/reverse.js</code>. Hiçbiri istek
+      yapabilecek bir şeyi içeri almaz."""
+
+howto_heading = "Bir video nasıl ters çevrilir"
+
+card = """
+            Bir klibi geriye oynatın &mdash; görüntüsüyle ve sesiyle &mdash;
+            onu hiçbir yere göndermeden."""
+
+[words]
+plural = "videolarınız"
+choose = "bir video"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Sesi de ters çevirir"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Videolarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Videonuza dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Çözme ve kodlama yerelde."
+body = """
+ Kareler kendi tarayıcınızdaki
+      WebCodecs'ten geçer ya da klibi zaten size gösterecek olan aynı oynatma
+      motorundan. Bitmiş dosya bu makinenin belleğinde kurulur ve doğrudan bir
+      indirmeye verilir."""
+
+[[privacy]]
+title = "Ses de burada ters çevriliyor."
+body = """
+ Bir parçayı ters çevirmek onu
+      çözmek demektir ve o çözme işi tarayıcının kendi işidir, bu makinede
+      çalışır. Hiçbir şey onu dinlemez, hiçbir şey saklamaz ve hiçbir şey onu
+      bir yere iletemez: burada bir bayt gönderen bir kod yolu yok."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine videonuz hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir kare, ne bir ad, bir boyut ya da bir uzunluk. Okuyan, çözen,
+      ters çeviren ya da kodlayan her satır bu kaynaktan sunuluyor ve depoda
+      listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de videonuz
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir video seçin."
+body = """
+ Seçiciye bir MP4, MOV, M4V ya da WebM
+      bırakın veya elle seçin. Tarayıcı onu doğrudan diskinizden okur; siz bunu
+      yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Sese karar verin."
+body = """
+ &laquo;Sesi de ters çevir&raquo;, parçayı
+      örnek örnek döndürür; konuşmanın sessizlik olarak değil, geriye oynatılan
+      konuşma olarak çıkmasını sağlayan da budur. Sessiz bir klip için kapatın,
+      daha hızlıdır."""
+
+[[howto]]
+title = "Ne kadar kalite harcayacağınızı seçin."
+body = """
+ Görüntünün yeniden
+      kodlanması gerekir, çünkü kareler dosyadaki hiçbir şeyin kodlanmadığı bir
+      sırayla çıkar. &laquo;Dengeli&raquo;, orijinalin harcadığına yakın kalır;
+      &laquo;En iyi kalite&raquo; daha fazlasını harcar."""
+
+[[howto]]
+title = "Ters çevirin ve indirin."
+body = """
+ İş kendi donanımınızda olduğu
+      için ne kadar süreceği bir sıraya değil makinenize bağlıdır. Bitmiş video
+      doğrudan tarayıcınızın indirmelerine verilir."""
+
+[[faq]]
+q = "Videom herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur, çözülür,
+        ters çevrilir ve kodlanır. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Size
+        söylenene güvenmek yerine denetlemeyi tercih ediyorsanız internet
+        bağlantısını kesin ve yine de bir klibi ters çevirin."""
+
+[[faq]]
+q = "Hangi video biçimlerini ters çevirebilirim?"
+a = """
+        MP4, M4V ve MOV içlerinde ne olursa olsun doğrudan okunur: H.264, HEVC,
+        AV1 ya da VP9 &mdash; yeter ki tarayıcınız o kodlayıcıyı çözebilsin.
+        Tarayıcınızın oynatabildiği başka her şey &mdash; en bilineni WebM
+        &mdash; bunun yerine tarayıcının kendi oynatıcısı içinde geriye doğru
+        adım adım gezilerek ters çevrilir; bu da işe yarar ama daha yavaştır.
+        Tarayıcının ne okuyabildiği ne de oynatabildiği bir dosya, ki pratikte
+        AVI, WMV, FLV ve çoğu MKV demektir, yarı yolda başarısız olmak yerine
+        bunu söyleyen bir mesajla geri çevrilir. Çıkan şey her zaman bir
+        MP4'tür."""
+
+[[faq]]
+q = "Ses de ters çevriliyor mu?"
+a = """
+        Kapatmadığınız sürece evet. Parçanın tamamı çözülür, örnekler öbür sıraya
+        konur ve AAC olarak yeniden kodlanır. Bu ikinci kodlamadan kaçmanın yolu
+        yok: bir ses paketi, kendinden önceki pakete göre kodlanmış birkaç on
+        milisaniyelik sestir; dolayısıyla paketleri tersten yazmak, kısa
+        parçaları yanlış sırada ileriye doğru oynatırdı &mdash; ki bu bir ters
+        çevirmeye değil, bir arızaya benzer."""
+
+[[faq]]
+q = "Ters çevirmek kalite kaybettirir mi?"
+a = """
+        Görüntü ikinci kez kodlanır ve bu biraz kaliteye mal olur. Burada,
+        kesmede olduğu gibi bundan kaçınmak mümkün değil: ters çevrilmiş bir
+        klip, karelerini orijinal dosyadaki hiçbir şeyin kodlanmadığı bir sırada
+        gösterir; bu yüzden her karenin yeniden yazılması gerekir. Aracın
+        yapmayacağı şey orijinalin harcadığından fazlasını harcamaktır; bunun
+        üzerinde kodlamak dosyayı yalnızca büyütür, daha iyi göstermez."""
+
+[[faq]]
+q = "Videonun boyutunda veya uzunluğunda bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok ve dosya belleğe bir seferde tümüyle
+        okunmuyor &mdash; geriye doğru, kare grubu kare grubu geziliyor. Pratik
+        tavanlar, indirmeden önce bellekte kurulan bitmiş video ile sestir;
+        çünkü ters çevirmek ilk örneği yazabilmek için son örneği gerektirdiğinden
+        sesin bütün olarak tutulması gerekir."""
+
+[[faq]]
+q = "Neden bazı dosyalarda daha yavaş?"
+a = """
+        Çünkü iki ayrı giriş yolu var. Bir MP4 ya da MOV bu araç tarafından
+        doğrudan okunur ve her seferinde bir kare grubu çözülür ki bu makinenizin
+        gidebildiği kadar hızlıdır. Başka her şey, tarayıcının kendi
+        oynatıcısından klibin bir anı arkasından öbürü istenerek ters çevrilir ve
+        bu aramaların her biri tarayıcıyı kendinden önceki anahtar kareden
+        itibaren çözmeye zorlar. Sayfa, başlamadan önce hangisini kullandığını ve
+        nedenini söyler."""
+
+[[faq]]
+q = "Bir klibin yalnızca bir bölümünü ters çevirebilir miyim?"
+a = """
+        Burada değil. Bu araç bütününü ters çevirir: çıkan klip, girenle tam
+        olarak aynı uzunlukta olur, son kare başta. Önce istediğiniz bölümü
+        <a href="../video-kesme/">Video Kesici</a> ile kesin &mdash; ki o bunu
+        tek bir kareyi bile yeniden kodlamadan yapar &mdash; sonra oradan
+        çıkanı ters çevirin."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara videonuz hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript ve WebCodecs video kodlama destekleyen bir tarayıcı gerekir: Chrome, Edge, Safari 16.4 veya üzeri ya da Firefox 133 veya üzeri."
+description = "Bir videoyu tarayıcıda, sesiyle birlikte ters çevirin. MP4, MOV ve M4V sondan başlayarak grup grup çözülür ve orijinal kare zamanlarıyla yeniden kodlanır; tarayıcının oynatabildiği başka her şey bunun yerine geriye doğru adım adım gezilir. Hiçbir şey yüklenmez."
+features = [
+  "MP4, MOV, M4V ve WebM videoları ters çevirir",
+  "H.264, HEVC, AV1 ve VP9 kaynakları, WebCodecs üzerinden çözülür",
+  "Sesi örnek örnek ters çevirir ya da tümüyle dışarıda bırakır",
+  "Düzensiz kare hızları dahil, orijinal kare zamanlarını korur",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP4, MOV, M4V, WebM ve bu tarayıcının oynattığı her şey"

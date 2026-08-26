@@ -1,0 +1,177 @@
+<main>
+  <!--
+    三步，而第三步才是有人到這裡來的理由。
+    
+    算出校驗和並不是這件事的目的。目的是弄清楚剛下載的檔案是不是釋出方量過的
+    那一個。一個停在「這是你的雜湊值」的頁面，把最後一步、也是唯一麻煩的一步
+    丟給了訪客：用眼睛比對六十四個字元。所以比對在這裡是獨立的一步，公佈成
+    什麼樣它都收得下，而且用一句話回答，不是用一種顏色。
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> 選一個檔案</h2>
+
+    <!--
+      真正的 <label> 會讓瀏覽器自己開啟檔案選擇框。對 display:none 藏起來的
+      input 調 .click()，Safari 和某些 Chrome 配置會直接拒絕，所以這個 input 留在
+      佈局裡：看不見，但仍然能獲得焦點，鍵盤也夠得著。這條路上一行 JavaScript
+      都沒有。
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="run-card">
+    <h2><span class="step">2</span> 校驗和</h2>
+    <p class="card-lede">
+      預設算 MD5 和 SHA-256，這兩個加起來幾乎覆蓋了所有下載頁面。再勾一個，檔案
+      就會為它重讀一遍：慢的那一半是讀，所以在選檔案之前勾好的，一遍讀完一起出。
+    </p>
+
+    <fieldset class="algorithms">
+      <legend class="visually-hidden">要算哪些校驗和</legend>
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="md5" checked>
+        <span class="algorithm-name">MD5</span>
+        <span class="algorithm-note">從 2004 年起造出碰撞就很便宜了。可網上一半的下載旁邊印的仍然是這個數。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha1">
+        <span class="algorithm-name">SHA-1</span>
+        <span class="algorithm-note">2017 年被公開攻破。可 Git 至今用它給物件命名，很多釋出頁面上也還有它。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha256" checked>
+        <span class="algorithm-name">SHA-256</span>
+        <span class="algorithm-note">今天說校驗和，指的就是它。凡是公佈校驗和的發行版，公佈的都是這一個。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha384">
+        <span class="algorithm-name">SHA-384</span>
+        <span class="algorithm-note">截短了的 SHA-512。主要出現在 script 標籤的 integrity 屬性裡。</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha512">
+        <span class="algorithm-name">SHA-512</span>
+        <span class="algorithm-note">更寬，但在任何實際要緊的地方都不更強。仍有一些專案公佈它。</span>
+      </label>
+    </fieldset>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track" role="progressbar" id="progress-track"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="progress-fill" id="progress-fill"></span>
+      </div>
+      <p class="progress-line">
+        <span id="progress-text" role="status" aria-live="polite"></span>
+        <button type="button" id="stop" class="ghost danger">停止</button>
+      </p>
+    </div>
+
+    <p class="stopped" id="stopped" hidden>
+      已停止。這個檔案什麼都還沒算出來。
+      <button type="button" id="restart" class="ghost">重新開始</button>
+    </p>
+
+    <div class="results" id="results" hidden>
+      <div class="toolbar">
+        <h3 class="file-name" id="file-name">&mdash;</h3>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">全部複製</button>
+          <button type="button" id="download-checksums" class="ghost">存成檔案</button>
+        </div>
+      </div>
+
+      <p class="file-facts" id="file-facts"></p>
+
+      <ul class="digests" id="digests">
+        <li class="digest" data-algorithm="md5" hidden>
+          <span class="digest-name">MD5</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <button type="button" class="ghost" data-slot="copy">複製</button>
+        </li>
+        <li class="digest" data-algorithm="sha1" hidden>
+          <span class="digest-name">SHA-1</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <button type="button" class="ghost" data-slot="copy">複製</button>
+        </li>
+        <li class="digest" data-algorithm="sha256" hidden>
+          <span class="digest-name">SHA-256</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <button type="button" class="ghost" data-slot="copy">複製</button>
+        </li>
+        <li class="digest" data-algorithm="sha384" hidden>
+          <span class="digest-name">SHA-384</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <button type="button" class="ghost" data-slot="copy">複製</button>
+        </li>
+        <li class="digest" data-algorithm="sha512" hidden>
+          <span class="digest-name">SHA-512</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <button type="button" class="ghost" data-slot="copy">複製</button>
+        </li>
+      </ul>
+
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2><span class="step">3</span> 和本該是的值對一下</h2>
+    <p class="card-lede">
+      把下載頁面給你的校驗和粘進來。什麼形式都不要緊：光是十六進位、
+      <code>sha256sum</code> 的輸出、整份 <code>SHA256SUMS</code> 檔案、
+      <code>SHA256 (檔名) = &hellip;</code> 這種寫法，或者 script 標籤上的
+      <code>integrity</code> 屬性。是哪種演算法由長度決定，所以沒有什麼要選的。
+    </p>
+
+    <label class="visually-hidden" for="expected">它本該有的校驗和</label>
+    <textarea id="expected" rows="3" spellcheck="false" autocapitalize="off"
+              autocomplete="off"
+              placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
+
+    <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
+      <span data-read="one">這是一個 <b data-slot="algorithm"></b>。</span>
+      <span data-read="many">這是一份清單，裡面有 <b data-slot="count"></b> 個校驗和。</span>
+      <span data-read="stray">這是 <b data-slot="length"></b> 個十六進位字元，而這裡沒有哪一種是這個長度。多半是複製時丟了結尾。</span>
+      <span data-read="nothing">裡面沒有看起來像校驗和的東西。</span>
+    </p>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-line good" data-outcome="match">
+        <span class="verdict-mark">&#10003;</span>
+        <span>這就是那串校驗和所描述的檔案。它的 <b data-slot="algorithm"></b> 和你粘進來的一字不差。</span>
+      </p>
+      <p class="verdict-line good" data-outcome="renamed">
+        <span class="verdict-mark">&#10003;</span>
+        <span>位元組對得上，但對上的是另一行。你粘進來的內容把這個檔案叫作 <b data-slot="name"></b>，而你選的檔案叫別的名字。要麼它在路上被改了名，要麼它不是你想核對的那次下載；無論哪種，<b data-slot="algorithm"></b> 都是對的。</span>
+      </p>
+      <p class="verdict-line bad" data-outcome="mismatch">
+        <span class="verdict-mark">&#10007;</span>
+        <span>這<b>不是</b>那串校驗和所描述的檔案。它的 <b data-slot="algorithm"></b> 不一樣，說明位元組不一樣：下載中斷了、版本拿錯了，或者映象給的是別的東西。先重新下一次，再談開啟。</span>
+      </p>
+      <p class="verdict-line" data-outcome="waiting">
+        <span class="verdict-mark">&hellip;</span>
+        <span>正在算 <b data-slot="algorithm"></b>，好拿來比對。</span>
+      </p>
+      <p class="verdict-line" data-outcome="nofile">
+        <span class="verdict-mark">&hellip;</span>
+        <span>在上面選一個檔案，這裡就會說它對不對得上。</span>
+      </p>
+    </div>
+  </section>
+</main>

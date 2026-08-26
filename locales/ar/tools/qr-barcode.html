@@ -1,0 +1,182 @@
+<main>
+  <!-- Step 1 &mdash; which kind of code -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر نوع الرمز</h2>
+
+    <p class="card-lede">
+      رمزُ QR يحمل أي شيء وهو ما تبحث عنه كاميرا الهاتف. أما الباركود فيحمل
+      رقماً، وأيُّه تحتاج يُقرَّر لك عادةً &mdash; يقرّره المتجر أو المستودع أو
+      شركة الشحن التي تطلبه.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">نوع الرمز</label>
+      <select id="symbology">
+        <optgroup label="مربّع">
+          <option value="qr" selected>رمز QR</option>
+        </optgroup>
+        <optgroup label="أشرطة">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- Step 2 &mdash; the string itself -->
+  <section class="card">
+    <h2><span class="step">2</span> قل ما الذي يدخل فيه</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">ماذا يحمل</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>السلسلة التي سيحملها هذا الرمز بالضبط</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- Step 3 &mdash; how it is drawn -->
+  <section class="card">
+    <h2><span class="step">3</span> اختر كيف يبدو</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>رمز QR</legend>
+
+      <div class="option-row">
+        <label for="level">كم من التلف يحتمل</label>
+        <select id="level">
+          <option value="L">L &mdash; نحو 7% قابلة للاسترداد، وأصغر رمز</option>
+          <option value="M" selected>M &mdash; نحو 15%، وهو الخيار المعتاد</option>
+          <option value="Q">Q &mdash; نحو 25%</option>
+          <option value="H">H &mdash; نحو 30%، لطباعة ستبلى</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">الهامش، بالوحدات</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        الهامش جزء من الرمز، لا فراغٌ حوله. وأربع وحدات هي ما تطلبه المواصفة،
+        والرمزُ المقلَّم إلى حافّته رمزٌ لن تراه كثير من الماسحات أصلاً.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>الباركود</legend>
+
+      <div class="option-row">
+        <label for="bar-width">أضيق شريط، بالبكسل</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">ارتفاع الأشرطة، بالبكسل</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>اطبع المحارف تحته</strong>
+          <span class="check-note">
+            ما يقرؤه الإنسان حين يعجز الماسح. وعلى رمز التجزئة تجلس الأرقام في
+            الهوامش كذلك، وذلك مقصود: فهي تحدّد الفراغ الأبيض الذي لا ينبغي
+            لأحد أن يقلّمه.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>أضِف محرف تحقّق</strong>
+          <span class="check-note">
+            Code 39 لا يحمل واحداً عادةً. وبعض الأنظمة تصرّ عليه؛ فأضِفه إن كان
+            نظامك يصرّ لا غير، لأن القارئ الذي لا يتوقّعه سيقرؤه محرفاً زائداً
+            في الآخر.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>اللون والمقاس</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">الرمز</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">ما خلفه</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>بلا خلفية البتة</strong>
+          <span class="check-note">
+            شفافة، لوضعه على شيء له لون أصلاً. وملفا SVG وPNG كلاهما يحفظها؛
+            وما ينتهي خلفه يجب أن يكون فاتحاً، وإلا لم يجد الماسح تبايناً.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">مقاس الصورة، بالبكسل</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Step 4 &mdash; the result -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> خذه</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="الرمز الذي صنعته"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">نزِّل ملف SVG</button>
+      <button type="button" id="download-png" class="primary">نزِّل ملف PNG</button>
+      <button type="button" id="copy-png" class="ghost">انسخ الصورة</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      ملف SVG هو الذي يُحتفَظ به. فهو الرمز تعليماتٍ لا بكسلات، فيُطبَع بأي
+      مقاس دون أن ينعم &mdash; وذلك يهمّ هنا أكثر منه في معظم الصور، لأن
+      الحافّة المغبَّشة هي بالضبط ما لا يستطيع الماسح تمييزه.
+    </p>
+  </section>
+</main>

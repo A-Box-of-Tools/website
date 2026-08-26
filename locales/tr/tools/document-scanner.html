@@ -1,0 +1,382 @@
+<!--
+  tools/document-scanner/body.html, in Turkish.
+
+  Every id, class, data-phrase key and {placeholder} below is what src/main.js
+  reaches for, so they are the same in every language. Only the words change.
+
+  page.count and page.counts are singular and plural in English; Turkish does
+  not put a plural suffix on a counted noun, so both carry the same bare form.
+-->
+<main>
+  <!-- Adım 1 &mdash; fotoğraflar -->
+  <section class="card">
+    <h2><span class="step">1</span> Fotoğrafları seçin</h2>
+
+    <p class="card-lede">
+      Her sayfa için bir fotoğraf, üstünden herhangi bir yerden çekilmiş.
+      Sayfanın tamamı kadrajda olmalı ve dört köşesi görünür ya da neredeyse
+      görünür olsun &mdash; geri kalan her şey, açı, gölge, üzerinde durduğu
+      masa, zaten bu aracın işi. Birkaç tane ekleyin, ekleme sıranızla tek bir
+      belgenin sayfaları olsunlar.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">Her sayfayı yeniden bul</button>
+        <button type="button" id="clear-all" class="ghost danger">Hepsini kaldır</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- Adım 2 &mdash; köşeler -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Köşeleri sayfanın üzerine koyun</h2>
+
+    <p id="edit-empty" class="field-summary">
+      Bir fotoğraf seçin; burada, dört köşesi sizin için bulunmuş hâlde
+      görünsün.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Fotoğrafın herhangi bir yerine basın, en yakın köşe parmağınıza gelsin;
+        onu sayfanın köşesine sürükleyin. <kbd>Tab</kbd> klavyeden bir köşeye
+        ulaşır, ok tuşları onu birer piksel, <kbd>Shift</kbd> ile onar piksel
+        oynatır. Burada hiçbir şey nihai değil &mdash; tarama, dört köşe nerede
+        biterse oradan alınır.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">Köşeleri yeniden bul</button>
+        <button type="button" id="whole-photo" class="ghost">Fotoğrafın tamamını kullan</button>
+        <button type="button" id="turn-left" class="ghost">Sola döndür</button>
+        <button type="button" id="turn-right" class="ghost">Sağa döndür</button>
+        <button type="button" id="undo" class="ghost" disabled>Geri al</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Adım 3 &mdash; temizleme -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> Temizleyin</h2>
+
+    <p id="clean-empty" class="field-summary">
+      Düzeltilecek bir fotoğraf olduğunda düzeltilmiş sayfa burada görünür.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        Aşağıdaki şey gerçek sonuçtur; dosyayı yazan aynı kod tarafından
+        üretilmiştir &mdash; düzeltilmiş ve eşitsiz ışığı bölünüp atılmış hâlde.
+        Siz seçerken ekran boyutunda çizilir; dosyanın kendisi fotoğrafın kendi
+        çözünürlüğünde yapılır.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          Düzeltiliyor&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>Işıkla ve renkle ne yapılacak</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>Renkli, eşitlenmiş</strong>
+            <span class="check-note">
+              Kâğıt sayfa boyunca ölçülür ve bölünüp atılır; böylece gölge gider
+              ve kâğıt beyaza döner, bir mühür, mavi mürekkeple atılmış bir imza
+              ya da vurgulanmış bir satır ise rengini korur. Rengin belgenin bir
+              parçası olduğu durumda kullanılacak olan.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>Gri tonlama</strong>
+            <span class="check-note">
+              Aynı eşitleme, renksiz. Renkliden küçüktür ve bir fotoğrafa ya da
+              bir imzaya siyah beyazdan daha yumuşak davranır.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>Siyah beyaz</strong>
+            <span class="check-note">
+              Her piksel, sayfanın tamamı için tek bir sayıya göre değil kendi
+              çevresine göre karara bağlanır; gölge içindeki yazıyı okunur tutan
+              da budur. Bir taramayı küçük yapan şey budur: yirmi sayfalık bir
+              sözleşme bu yolla bir megabaytın altına iner, fotoğraf olarak ise
+              on beş civarına çıkar. Ara tonu yoktur, bu yüzden üzerinde
+              fotoğraf olan hiçbir şey bunu kullanmamalıdır.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>Olduğu gibi bırak</strong>
+            <span class="check-note">
+              Düzeltilmiş ve başka hiçbir şey yapılmamış. Kâğıdın kendisinin
+              önemli olduğu bir sayfa için &mdash; eski bir şey, renkli bir şey,
+              bir fotoğraf.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">Ne kadar sert uygulansın</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        Ayar her sayfaya uygulanır. Bir belgede farklı temizlenmiş sayfalar iki
+        belge gibi görünür.
+      </p>
+    </div>
+  </section>
+
+  <!-- Adım 4 &mdash; dosya -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> Belgeyi kaydedin</h2>
+
+    <p class="card-lede">
+      PDF burada, bu sayfanın belleğinde, sayfa sayfa yazılır. Bu aracın öbür
+      ucunda bir maaş bordrosunun, bir pasaportun ya da bir sözleşmenin
+      gönderilebileceği bir sunucu yok ve olsaydı bile onu gönderecek bir kod
+      yok.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Sayfa boyutu</label>
+        <select id="page-size">
+          <option value="fit" selected>Yaprağı sayfanın kendisine uydur</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8,5 &times; 11 inç</option>
+          <option value="legal">Legal &mdash; 8,5 &times; 14 inç</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Baskı çözünürlüğü</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; ofis tarayıcısı</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          Belirli bir piksel sayısının ne kadar büyük bir yaprak sayılacağı.
+          Belgenin basıldığı boyutu değiştirir, taramanın tek bir pikselini
+          değiştirmez.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">Kenar boşluğu</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="Milimetre cinsinden kenar boşluğu">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">En uzun kenar</label>
+        <select id="max-side">
+          <option value="1600">1600 piksel &mdash; küçük</option>
+          <option value="2400" selected>2400 piksel</option>
+          <option value="3500">3500 piksel</option>
+          <option value="0">Fotoğrafın izin verdiği kadar</option>
+        </select>
+        <p class="field-note">
+          Düzeltilmiş sayfa için bir tavan. Bir sayfanın fotoğrafı, sayfanın
+          hak ettiğinden çok daha fazla piksel taşır ve uzun kenarda 2400,
+          A4'te yaklaşık 200 DPI eder.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Kalite</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">%82</output>
+        </div>
+        <p class="field-note">
+          JPEG olarak saklanan renkli ve gri tonlama kipleri için. Siyah beyaz
+          sayfalar tam olarak saklanır, dolayısıyla bu onlara bir şey yapmaz.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">Belge başlığı <span class="optional">(isteğe bağlı)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="Boş bırakılırsa PDF hiçbir başlık taşımaz">
+        <p class="field-note">
+          Sayfaların dışında belgeye yazılan tek şey. Tarih yok, yazar yok ve bu
+          makine hakkında hiçbir şey yok &mdash; <code>src/document.js</code>'e
+          bakın.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>PDF olarak kaydet</button>
+      <button type="button" id="save-images" class="ghost big" disabled>Sayfaları görsel olarak kaydet</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Bitmiş dosya</h3>
+        <a id="download" class="primary as-button" href="#" download>İndir</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Göndermeden önce açın. Belgedeki şey, 3. adımda ekranda olanın sayfa
+        sayfa kendisidir.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">Dört köşe bulundu. Onları denetleyin ve
+      yanlış düşenleri sürükleyin.</span>
+    <span data-phrase="detect.unsure">Sayfanın kenarları emin olunacak kadar net
+      değildi. Bu köşeler bir tahmin &mdash; devam etmeden önce onları sayfanın
+      üzerine sürükleyin.</span>
+    <span data-phrase="detect.nothing">Bu fotoğraftan bir sayfa seçilemedi, bu
+      yüzden köşeler fotoğrafın kenarlarında. Onları sayfanın üzerine
+      sürükleyin.</span>
+    <span data-phrase="detect.flat">Bu resimde bulunacak bir şey yok &mdash;
+      içinde hiç kenar yok.</span>
+    <span data-phrase="detect.tiny">Bu resim, içinde sayfa bulunamayacak kadar
+      küçük.</span>
+    <span data-phrase="detect.edited">Bu köşeler artık sizin. &laquo;Köşeleri
+      yeniden bul&raquo; fotoğrafı baştan ölçer.</span>
+
+    <span data-phrase="corner.tl">Sol üst köşe</span>
+    <span data-phrase="corner.tr">Sağ üst köşe</span>
+    <span data-phrase="corner.br">Sağ alt köşe</span>
+    <span data-phrase="corner.bl">Sol alt köşe</span>
+    <span data-phrase="corner.at">{corner}, soldan {x}, üstten {y}. Ok tuşları
+      onu oynatır, Shift ile birlikte onar piksel oynatır.</span>
+
+    <span data-phrase="page.select">{index}. sayfayı düzenle</span>
+    <span data-phrase="page.remove">{index}. sayfayı kaldır</span>
+    <span data-phrase="page.earlier">{index}. sayfayı öne al</span>
+    <span data-phrase="page.later">{index}. sayfayı arkaya al</span>
+    <span data-phrase="page.count">{count} sayfa</span>
+    <span data-phrase="page.counts">{count} sayfa</span>
+
+    <span data-phrase="paper.a">A4 ya da A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">bir kartvizit</span>
+    <span data-phrase="shape.known">Sayfa {ratio} çıktı ki bu {paper}
+      şeklidir.</span>
+    <span data-phrase="shape.sideways">Sayfa {ratio} çıktı ki bu, yan yatmış
+      {paper} şeklidir.</span>
+    <span data-phrase="shape.unknown">Sayfa {ratio} çıktı ki bu standart bir
+      yaprak değil.</span>
+
+    <span data-phrase="method.perspective">Şekil, fotoğraftaki perspektiften
+      hesaplandı; yani resimde göründüğü şekil değil, sayfanın kendi
+      şeklidir.</span>
+    <span data-phrase="method.edges">Fotoğraf tam karşıdan çekilmiş, bu yüzden
+      şekil doğrudan kenarlardan ölçüldü.</span>
+
+    <span data-phrase="quality.good">{width} çarpı {height} piksel; o boyutta bir
+      sayfada yaklaşık {dpi} DPI &mdash; basmaya yeter.</span>
+    <span data-phrase="quality.fair">{width} çarpı {height} piksel; o boyutta bir
+      sayfada yaklaşık {dpi} DPI. Ekranda iyi, kâğıtta biraz yumuşak.</span>
+    <span data-phrase="quality.low">{width} çarpı {height} piksel; o boyutta bir
+      sayfada yaklaşık {dpi} DPI. Bu basılacaksa fotoğrafı daha yakından
+      çekin.</span>
+    <span data-phrase="quality.pixels">{width} çarpı {height} piksel.</span>
+    <span data-phrase="coverage.note">Sayfa, fotoğrafın %{percent}'ini doldurdu.</span>
+    <span data-phrase="coverage.small">Sayfa, fotoğrafın yalnızca %{percent}'ini
+      doldurdu; yani fotoğraflananın çoğu masaydı. Bir dahakine daha
+      yakından.</span>
+
+    <span data-phrase="strength.gentle">Yumuşak: kâğıt eşitlenir ve pek bir şey
+      daha yapılmaz. Soluk kurşun kalemli ya da üzerinde fotoğraf olan bir sayfa
+      için.</span>
+    <span data-phrase="strength.middling">Olağan ayar: kâğıt beyaza, basılı metin
+      siyaha döner.</span>
+    <span data-phrase="strength.hard">Sert: gri olan her şey siyaha ya da beyaza
+      itilir. Düz basılı bir sayfada en temiz sonucu verir, üzerinde resim olan
+      her şeyde ise yıkıcıdır.</span>
+
+    <span data-phrase="busy.page">{total} sayfadan {done}. sayfa&hellip;</span>
+    <span data-phrase="busy.writing">Belge yazılıyor&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">Piksel başına bir bit olarak saklandı ve tam
+      olarak sıkıştırıldı; bu kadar küçük olmasının sebebi bu.</span>
+    <span data-phrase="result.jpeg">Sayfalar, seçtiğiniz kalitede JPEG olarak
+      saklanıyor.</span>
+    <span data-phrase="result.png">Sayfalar PNG olarak saklanıyor; PNG kayıpsızdır
+      ve iki renkli bir resmin istediği de budur &mdash; JPEG hem daha büyük olur
+      hem de her harfin çevresini bulandırırdı.</span>
+    <span data-phrase="result.clean">Tarih yok, yazar yok, makine adı yok:
+      belgede sayfalar dışında olan tek şey bu aracın adı.</span>
+
+    <span data-phrase="size.fit">Her yaprak, yukarıdaki çözünürlükte kendi
+      sayfasının gerçek boyutu olur. Hiçbir şeye bant eklenmez.</span>
+    <span data-phrase="size.named">Her sayfa, hangi şekilde çıkmış olursa olsun,
+      kenar boşluğunun içinde bir {name} yaprağa konur.</span>
+
+    <span data-phrase="error.decode">Bu tarayıcı {name} dosyasını açamadı. Bir
+      iPhone'dan gelen HEIC fotoğrafıysa önce dönüştürün.</span>
+    <span data-phrase="error.none">Önce en az bir fotoğraf seçin.</span>
+    <span data-phrase="error.failed">Dosya yapılırken bir şeyler ters gitti:
+      {detail}</span>
+  </div>
+</main>

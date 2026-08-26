@@ -1,0 +1,167 @@
+<main>
+  <!-- Step 1 &mdash; the file -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر فيديو</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>الملف</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>الحجم</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>الإطار</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>المدة</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>الفيديو</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>قرأه</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the section -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> اختر المقطع</h2>
+
+    <p class="hint">
+      شغّل المقطع وعلّم على الجزء الذي تريده. <kbd>I</kbd> يضبط البداية حيث رأس
+      التشغيل، و<kbd>O</kbd> يضبط النهاية، والمقبضان على الشريط كلاهما يُسحَب.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>البداية
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="اضبط البداية حيث رأس التشغيل (I)">
+        اضبط عند رأس التشغيل
+      </button>
+
+      <label>النهاية
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="اضبط النهاية حيث رأس التشغيل (O)">
+        اضبط عند رأس التشغيل
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">شغّل المقطع</button>
+        <button type="button" id="whole-clip" class="ghost">المقطع كله</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the GIF -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> المقاس ومعدّل الإطارات</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">العرض</label>
+        <select id="width">
+          <option value="240">240 بكسل</option>
+          <option value="320">320 بكسل</option>
+          <option value="480" selected>480 بكسل</option>
+          <option value="640">640 بكسل</option>
+          <option value="source">المقاس الأصلي</option>
+          <option value="custom">بالضبط&hellip;</option>
+        </select>
+        <p class="field-note">
+          ويتبع الارتفاعُ، فلا تتغيّر النسبة أبداً. والعرض هو ما يكلّفه ملف
+          GIF: فنصف العرض ربع البكسلات.
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">العرض بالضبط</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">بالبكسل، بين 16 و1920.</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">إطارات في الثانية</label>
+        <select id="fps">
+          <option value="5">5 &mdash; الأصغر</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; سلاسة كافية</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; الأسلس</option>
+        </select>
+        <p class="field-note">
+          ليس معدّل الفيديو نفسه: فالإطارات تُؤخَذ عيّناتٍ منه. والاثنا عشر
+          تُقرأ حركةً؛ وفوق العشرين يكبر الملف أسرع مما تظهر السلاسة.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">التوشية</label>
+        <select id="dither">
+          <option value="on" selected>مفعَّلة &mdash; تدرّجات أسلس</option>
+          <option value="off">مطفأة &mdash; أشدّ تسطّحاً وأصغر</option>
+        </select>
+        <p class="field-note">
+          تمزج لونين من اللوحة حيث يغيب اللون الصحيح. وهي مرتَّبة، فلا تتلألأ
+          خلفية ساكنة.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          كرِّر بلا نهاية
+        </label>
+        <p class="field-note">وإطفاؤه يشغّله مرة واحدة ثم يقف.</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>المقطع</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>الخَرج</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>الإطارات</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>حجم الملف تقريباً</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>اصنع ملف GIF</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="الحركة المنتهية، وهي تعمل">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>نزِّل ملف GIF</a>
+      </div>
+    </div>
+  </section>
+</main>

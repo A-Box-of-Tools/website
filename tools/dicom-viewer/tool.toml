@@ -1,0 +1,446 @@
+#
+# DICOM Viewer
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This is the tool on this site where the promise has the sharpest edge. The
+# other pages handle holiday photographs and invoices; this one handles a file
+# that is a person's medical record, and whose header carries their name, their
+# date of birth, their hospital number and the name of the doctor who ordered
+# the scan. "Nothing is uploaded" stops being a nice property of a website and
+# becomes the reason to use this rather than the first result on a search
+# engine, most of which have an upload box.
+#
+# Which is why the words below say what the file contains as well as where it
+# goes. A viewer that quietly showed the picture and said nothing about the
+# forty identifying fields behind it would be keeping the letter of the promise
+# and missing the point of it.
+#
+
+slug = "dicom-viewer"
+name = "DICOM Viewer"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "DICOM&nbsp;Viewer <span class=\"h1-kw\">&mdash; open a .dcm scan in your browser</span>"
+tagline = "CT, MR, X-ray and ultrasound, with the window, the header and the measurements."
+icon = "&#129659;"         # the mark beside the page heading
+favicon = "&#129659;"      # the tab icon, drawn into an inline SVG
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "images"
+
+# Shared modules this tool asks for. file-picker brings in the drop zone; it is
+# set to accept many files because a CT is three hundred of them and dropping a
+# folder is the only sane way to open one.
+js_parts = ["file-picker"]
+lastmod = "2026-08-25"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "DICOM Viewer &mdash; Open a .dcm File in Your Browser, No Upload"
+description = "Open CT, MR, X-ray and ultrasound scans in your browser. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded."
+og_title = "DICOM Viewer &mdash; open a scan without uploading it"
+og_description = "A .dcm file opened on your own machine: window and level, the whole series stacked in order, measurements in millimetres, and every tag in the header. No upload, no account."
+og_image_alt = "DICOM Viewer - open a CT, MR or X-ray scan in the browser"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "A scan, its window, its measurements and its header - none of it uploaded."
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The scan is opened and decoded by your own browser: the header, the pixels, the
+    window, the measurements. There is no server on the other end of this page to
+    send protected health information to even if anything here wanted to, and
+    nothing about the file - not the patient's name, not the study, not the
+    filename - is read out to anyone."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and open a
+      scan. Not one request carries an image, a tag, or a filename. Or unplug from
+      the internet and open one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/dicom.js</code> for the parser that
+      walks the file, <code>src/pixels.js</code> for the pixel decoding,
+      <code>src/jpeg-lossless.js</code> for the codec most hospital exports use,
+      and <code>src/window.js</code> for the window and level &mdash; none of which
+      has a line that could reach the network."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to open a DICOM file"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Open a CT, MR, X-ray or ultrasound scan on your own machine.
+            Window and level it, scroll the whole series, measure in
+            millimetres, and read every tag in the header."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "scans"
+choose = "a scan"
+analytics_extra = """, and no
+  patient name, tag or pixel out of your file"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "Your scan has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your file
+      could be collected at, and nothing in the code that would send it if there
+      were. This used to read <code>connect-src 'none'</code>, which was absolute;
+      adding advertising cost that, and saying so is part of the deal."""
+
+[[privacy]]
+title = "This matters more here than on the other pages."
+body = """
+
+      A DICOM file is not a picture with some metadata on it. It is a medical
+      record with a picture in it: the patient's name, date of birth, hospital
+      number, accession number, the referring doctor, the institution and the
+      scanner's serial number are all fields in the header, and they travel with
+      the file wherever it goes. Uploading one to a website to look at it means
+      handing all of that to whoever runs the website. That is the thing this
+      page exists not to do."""
+
+[[privacy]]
+title = "The reader is fourteen files in this repository."
+body = """
+ Nothing here uses a
+      library fetched from anywhere. <code>src/dicom.js</code> walks the file,
+      <code>src/dictionary.js</code> knows what the tags are called,
+      <code>src/pixels.js</code> turns the bytes back into measurements,
+      <code>src/rle.js</code> and <code>src/jpeg-lossless.js</code> expand the two
+      compressed forms this page can decode, and <code>src/window.js</code> maps
+      what was measured onto the greys of your screen."""
+
+[[privacy]]
+title = "The identifiers are listed for you, and for nobody else."
+body = """
+
+      The page prints out every field in your file that names or narrows down the
+      person it is of, because that is a question somebody about to share a slice
+      needs answered and no viewer answers it. It is put on the screen in front of
+      you and goes nowhere else: there is no analytics event in this repository
+      that carries any of it, and the page could not send one if there were."""
+
+[[privacy]]
+title = "It reads. It does not write."
+body = """
+ There is no button here that
+      changes your file, and no code that could. What you can take away is a PNG
+      of the frame on screen and a text copy of the header, both built in the page
+      from what is already on it. Your original is untouched on your disk, which
+      is also the honest answer to what happens if you close the tab."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about your
+      file: not the pixels, not a thumbnail, not a name, a tag, a patient or a
+      filename. Every line that parses, decodes or draws a scan is served from
+      this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The "Buy me a coffee" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your files. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and every part of this
+      page still works. That is the simplest proof of all: a tool that sent your
+      scan away to be rendered would stop the moment you unplugged."""
+
+[[howto]]
+title = "Choose the files."
+body = """
+ One <code>.dcm</code> file, or the whole
+      folder off the disc &mdash; a CT or an MR is one file per slice, and dropping
+      all of them at once is what puts the series back together. Files are read
+      straight off your disk by the browser; nothing is sent anywhere while you do
+      it."""
+
+[[howto]]
+title = "Pick the series."
+body = """
+ A study usually holds several: the
+      scout, then each acquisition. Each one is stacked in the order the scanner
+      took it in, worked out from where each slice sits in the patient rather than
+      from the numbering, which is not always in the same direction."""
+
+[[howto]]
+title = "Set the window."
+body = """
+ This is the control that makes a scan
+      readable, and the one an image editor does not have. Drag across the picture
+      to widen the window and up or down to move its centre, or pick one of the
+      named windows &mdash; lung, bone, brain, soft tissue &mdash; on a CT, where
+      the units are the same on every scanner in the world."""
+
+[[howto]]
+title = "Scroll the stack."
+body = """
+ The slider under the picture moves
+      through the slices, and the arrow keys do the same thing once you have
+      clicked on the picture. A multi-frame file &mdash; an ultrasound loop, an
+      angiogram &mdash; plays with the button beside it."""
+
+[[howto]]
+title = "Measure something."
+body = """
+ Switch to Measure and drag a line.
+      Where the file says how far apart its pixels are, the answer is in
+      millimetres and takes account of pixels that are not square; where the file
+      does not say, the answer is in pixels and says so rather than inventing a
+      scale."""
+
+[[howto]]
+title = "Read the header."
+body = """
+ Every element in the file, with its
+      number, what the standard calls it and what it holds, searchable. Above it,
+      the list of what in this particular file identifies the patient &mdash; which
+      is a great deal more than the name."""
+
+[[howto]]
+title = "Take what you need."
+body = """
+ The frame on screen as a PNG,
+      with the window you set and nothing burned into it, or the whole header as
+      plain text. Both are built in the page from what is already there."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my scan uploaded anywhere?"
+a = """
+        No. The file is read, decoded and drawn by your own browser on your own
+        hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. Unplug from the network and it
+        still opens scans.
+        <br><br>
+        That is worth more here than on any other page of this site. A DICOM file
+        carries the patient's name, date of birth and hospital number in its
+        header, so uploading one to a viewer means handing a stranger a medical
+        record, not a picture."""
+
+[[faq]]
+q = "Which DICOM files can it open?"
+a = """
+        Uncompressed files in any of the three basic transfer syntaxes &mdash;
+        implicit and explicit little endian, and the retired big-endian one
+        &mdash; plus deflated, RLE Lossless, baseline JPEG, and JPEG Lossless,
+        which is what the majority of CT and MR studies on a hospital disc are
+        compressed with.
+        <br><br>
+        It cannot decode JPEG 2000, JPEG-LS, or the MPEG and HEVC syntaxes used for
+        video. Those need codecs that are megabytes of compiled library, and a
+        page that downloaded one on demand would not be a page that works offline.
+        A file in one of them still opens: the whole header is read and shown, and
+        the picture is replaced by a line naming the codec, rather than by a
+        broken-image icon that tells you nothing."""
+
+[[faq]]
+q = "What is &ldquo;window and level&rdquo;, and why do I need it?"
+a = """
+        A CT slice holds about four thousand distinct values and your screen shows
+        two hundred and fifty-six greys. The window is the choice of which slice of
+        that range gets all of them: everything below it is black, everything above
+        it is white, and what is in between is spread across the greys.
+        <br><br>
+        That is why the same file looks like a different scan under two settings,
+        and why lung and bone cannot be seen at once. On a CT the numbers are
+        Hounsfield units, which are defined absolutely &mdash; water is 0 and air
+        is &minus;1000 &mdash; so the named windows on this page are the same
+        numbers a radiologist uses at a workstation. On an MR or an ultrasound
+        there is no such scale, and the window that opens is the one the file
+        itself asks for."""
+
+[[faq]]
+q = "Why does it say my measurement is in pixels?"
+a = """
+        Because that file does not say how big a pixel is. Pixel Spacing
+        (0028,0030) is what carries that, in millimetres, and a great many
+        ultrasound images, scanned documents and secondary captures simply do not
+        have it.
+        <br><br>
+        Where it is there, the measurement is in millimetres and each axis is
+        measured with its own spacing, which matters on the images whose pixels are
+        not square. Where it is not, the honest answer is a count of pixels, and
+        this says so rather than picking a scale and presenting the result as a
+        length."""
+
+[[faq]]
+q = "It opened my folder as several series. Why?"
+a = """
+        Because that is what is in it. A study is made of series &mdash; the scout
+        view, then each acquisition or reconstruction &mdash; and every file says
+        which one it belongs to in Series Instance UID (0020,000E). The dropdown is
+        built from that rather than from the folder, which usually has all of them
+        mixed together in one list of names.
+        <br><br>
+        Within a series the slices are put in order by where each one sits in the
+        patient, worked out from Image Position and Image Orientation. Instance
+        Number is the obvious key and it is the fallback rather than the first
+        choice: it is assigned by whatever wrote the files and does not have to run
+        in the direction the patient does."""
+
+[[faq]]
+q = "What does the &ldquo;what identifies the patient&rdquo; list mean?"
+a = """
+        It is every field in your file that names the person the scan is of, or
+        that narrows down who they could be, read off this file on your machine.
+        The list comes from PS3.15 of the DICOM standard &mdash; the part that says
+        what has to go before a dataset can be called de-identified.
+        <br><br>
+        It is there because the thing people get wrong is not that a scan has a
+        name in it. It is how much else it has: the birth date, the accession
+        number, the referring physician, the institution, the scanner's serial
+        number, and the study UIDs, which are perfect keys back into the archive
+        that made the file. A scan that has had the name blanked out and nothing
+        else is not anonymous.
+        <br><br>
+        This tool only shows you. It writes nothing and changes nothing, so it
+        cannot take any of it out."""
+
+[[faq]]
+q = "Can it anonymise a scan?"
+a = """
+        No, and it deliberately does not pretend to. This page reads; it has no
+        code that writes a DICOM file. What it does is tell you exactly what is in
+        yours, which is the part that is hard to find out and the part people are
+        wrong about.
+        <br><br>
+        A tool that takes the identifiers out is a separate job with a much higher
+        bar &mdash; it has to rewrite the file without touching the pixels, replace
+        the UIDs consistently across a whole study, and be right about the private
+        elements some scanners hide a second copy of the name in. It is on the
+        roadmap for this site rather than bolted onto a viewer."""
+
+[[faq]]
+q = "Can it open a file that has no .dcm extension, or a broken one?"
+a = """
+        Yes to both. The extension is not looked at: what is checked is the file
+        itself. A dataset written without the usual 128-byte preamble &mdash; which
+        is what a scan pulled straight off the network looks like &mdash; is read
+        by working out its encoding from its first element, and the page says that
+        is what it did.
+        <br><br>
+        A file that ends part-way through is read as far as it goes. Everything
+        before the damage is shown, with a note saying which byte it stopped at.
+        That is the case a viewer is most wanted for, so throwing the whole file
+        away over its last twelve bytes would be the wrong behaviour."""
+
+[[faq]]
+q = "Is this a diagnostic viewer?"
+a = """
+        No. It is not a medical device, it has not been through any regulatory
+        assessment, and nothing here should be used to make a clinical decision.
+        Your screen is not calibrated, the browser is not a validated rendering
+        chain, and neither of those can be fixed from inside a web page.
+        <br><br>
+        What it is good for is everything else people open a scan for: checking
+        what is on a disc, pulling a slice for a teaching deck or a paper, reading
+        a header, working out why another program refuses the file, and seeing what
+        a scan is carrying about the person it is of."""
+
+[[faq]]
+q = "Does it change my file?"
+a = """
+        No. This tool only reads. There is no output file, no re-encode and no
+        button here that writes a DICOM &mdash; what you can download is a PNG of
+        the frame on screen and a plain-text copy of the header. Your original is
+        untouched on your disk."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in and no trial. There is no
+        limit on file size or on how many files you open beyond your own machine's
+        memory. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your file."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being uploaded:
+        a tool that sent your scan away to be rendered would stop the moment you
+        unplugged."""
+
+[schema]
+category = "HealthApplication"
+description = "Open DICOM (.dcm) scans in the browser: CT, MR, X-ray and ultrasound, with window and level, a whole series stacked in order, measurements in millimetres, and every tag in the header. Nothing is uploaded."
+features = [
+  "Opens CT, MR, X-ray, ultrasound, PET and secondary capture files",
+  "Window and level by dragging, by typing, or by named CT preset",
+  "A whole folder stacked into series and ordered by position in the patient",
+  "Multi-frame files play as a loop",
+  "Measures in millimetres, with non-square pixels accounted for",
+  "Reads the pixel value under the cursor in Hounsfield units",
+  "Every DICOM tag with its name and value, searchable",
+  "Lists what in the file identifies the patient, from the PS3.15 profile",
+  "Decodes RLE, baseline JPEG and JPEG Lossless without a vendored library",
+  "Saves the frame as a PNG and the header as plain text",
+  "Runs offline; no upload, no account, no change to your file",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# `accept` is everything, and that is the considered answer rather than a
+# shrug. A great many DICOM files have no extension at all - a hospital disc is
+# a folder of files called IM000001 - so a picker filtered to `.dcm` would hide
+# exactly the files that most need a viewer, and hide them in the file dialog
+# where nobody would know why.
+[picker]
+accept = "*/*"
+multiple = true
+title = "Drop a scan here"
+hint = "or click to browse &mdash; one .dcm file, or a whole folder of them"

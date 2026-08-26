@@ -56,8 +56,6 @@ name = "Documentos y PDF"
 items = [
   ["Girar y recortar páginas", "enderezar un escaneo que entró de lado, o recortarle los márgenes"],
   ["Extraer imágenes", "recuperar las fotos que hay dentro de un documento"],
-  ["Tachar un PDF", "quitar las palabras, en vez de pintar un recuadro negro encima"],
-  ["Escáner de documentos", "la foto de una hoja, enderezada y limpia, convertida en documento"],
 ]
 
 [[group]]

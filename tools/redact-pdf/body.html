@@ -1,0 +1,290 @@
+<main>
+  <!-- Step 1 &mdash; the document -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose your PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; finding it -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> Say what has to go</h2>
+
+    <p class="card-lede">
+      Type the words &mdash; a name, an address, a reference &mdash; and every
+      place they appear is listed below with the line they sit on. Nothing is
+      removed until step 4, and nothing is removed that you have not ticked.
+    </p>
+
+    <label class="find-label" for="terms">Words and phrases, one per line</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="Smith&#10;14 Bridge Street&#10;REF-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">Find them</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>Match case</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>Whole words only</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>Or look for the things that are usually sensitive</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        These are patterns, and a pattern cannot tell a telephone number from a
+        reference number. Card numbers and IBANs are checked against their own
+        check digits; the rest are offered, never ticked for you, and it is
+        worth reading each one.
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">Tick all</button>
+        <button type="button" id="tick-none" class="ghost">Untick all</button>
+        <button type="button" id="clear-found" class="ghost danger">Clear the list</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- Step 3 &mdash; reading the page -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> Read the page, and pick words off it</h2>
+
+    <p class="card-lede">
+      This is the text as it is stored in the document, in the order a reader
+      would copy it &mdash; which is not always the order it is printed in.
+      Click any word to take it out, click it again to keep it. Everything
+      struck through here is what will be gone.
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; Previous</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">Next &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">Keep everything on this page</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="The text of this page"></div>
+  </section>
+
+  <!-- Step 4 &mdash; doing it -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Take the words out</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>Draw a black box where each one was</strong>
+        <span class="check-note">
+          So that a reader can see something was removed. The box is decoration
+          here and not the redaction: the letters have already gone from the
+          file by the time it is drawn. Turn it off and the words simply
+          disappear, leaving the space they occupied.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>Take the same words out of the rest of the document</strong>
+        <span class="check-note">
+          Bookmarks, comments, sticky notes, and what has been typed into form
+          fields. A word removed from a page and left in a bookmark has not been
+          removed. The document's properties go whatever this says, and so does
+          the replacement text a reader copies instead of the letters on the
+          page &mdash; both of those are the document saying the word, not
+          somewhere else keeping a copy of it.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>Drop attachments and anything that runs</strong>
+        <span class="check-note">
+          A PDF can carry whole files inside it and JavaScript that runs when it
+          opens. Neither can be searched for the words you are removing, and
+          neither is needed to read a document.
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Take them out</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Download</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">That is not a PDF, so there is no text in it to take out.</span>
+    <span data-phrase="load.encrypted">This PDF has a password on it. Taking a
+      document's protection off is a different job from taking words out of it,
+      and this tool will not do it behind your back.</span>
+    <span data-phrase="load.broken">This file could not be opened as a PDF ({detail}).</span>
+    <span data-phrase="load.nopages">This opened, but no pages could be found in it.</span>
+    <span data-phrase="load.repaired">This document's cross-reference table did
+      not match its contents, so it was read by scanning for objects instead.
+      That is a repair, and it worked &mdash; check the result carefully before
+      you send it anywhere.</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} of text &middot; {size}</span>
+    <span data-phrase="doc.notext">{count} of these pages have no text in them
+      at all. A page like that is a picture of a page, and there is nothing here
+      for this tool to remove &mdash; the words in the picture stay exactly
+      where they are.</span>
+    <span data-phrase="doc.unreadable">{count} letters on this document could
+      not be read as characters, because the fonts they use carry no map from
+      their glyphs back to text. Those letters cannot be searched for, so check
+      the pages they are on rather than trusting the search.</span>
+    <span data-phrase="doc.scan">Some pages carry invisible text laid over a
+      picture, which is how a scanner records what its reader made of the page.
+      Removing that text removes what a search and a copy would find. It does
+      not change the picture, and in the picture the words are still legible.</span>
+
+    <span data-phrase="find.none">Nothing on any page matched.</span>
+    <span data-phrase="find.some">{count} on {pages}.</span>
+    <span data-phrase="find.more">The first {shown} are listed. The rest are
+      found and will be taken out if you tick them all.</span>
+    <span data-phrase="find.terms">Type a word above, or choose a pattern, before pressing Find.</span>
+
+    <span data-phrase="page.of">Page {number} of {total}</span>
+    <span data-phrase="page.picked">{count} to be removed from this page</span>
+    <span data-phrase="page.notext">There is no text on this page. Either it is
+      blank, or it is a picture of a page &mdash; a scan, a photograph, an
+      export that drew its words as shapes. Nothing on it can be searched, and
+      nothing on it can be removed here.</span>
+    <span data-phrase="page.unreadable">{count} letters on this page could not
+      be read as characters. They are shown as &#9647; below, and searching will
+      not find them.</span>
+    <span data-phrase="page.scan">The text on this page is invisible: it is laid
+      over a picture of the page, which is how a scan is made searchable. What
+      you take out here is what a search and a copy would find. The picture
+      keeps the words.</span>
+
+    <span data-phrase="run.summary">{words} on {pages} will be taken out.</span>
+    <span data-phrase="run.nothing">Nothing is ticked yet. Find a word in step 2, or click one in step 3.</span>
+    <span data-phrase="run.editing">Taking the words out&hellip;</span>
+    <span data-phrase="run.writing">Writing the document&hellip;</span>
+    <span data-phrase="run.checking">Opening the finished file and searching it&hellip;</span>
+    <span data-phrase="run.failed">Something went wrong while rewriting this document ({detail}).</span>
+    <span data-phrase="run.cancelled">Cancelled. Nothing was written.</span>
+
+    <span data-phrase="result.headline">{words} removed</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} changed &middot; {boxes}</span>
+    <span data-phrase="check.good">Opened again here and searched, the same way
+      a reader would: not one of them is in the finished file.</span>
+    <span data-phrase="check.partial">Opened again here and searched: every
+      occurrence you ticked is gone, and the ones you left are still there.</span>
+    <span data-phrase="check.survived">This file was NOT written. The finished
+      document was opened again and some of what you removed was still findable
+      in it, which means the redaction was not complete. Nothing is offered for
+      download.</span>
+    <span data-phrase="check.pages">This file was NOT written. The finished
+      document came back with a different number of pages than it went in with,
+      so something went wrong beyond the words. Nothing is offered for
+      download.</span>
+
+    <span data-phrase="fact.boxes">{count} drawn over the gaps.</span>
+    <span data-phrase="fact.noboxes">No boxes were drawn, so the words are gone
+      with nothing to say where they were.</span>
+    <span data-phrase="fact.elsewhere">The same words were taken out of {where}.</span>
+    <span data-phrase="fact.metadata">The document properties and the XMP packet
+      were removed, so the finished file does not say what made it, when, or
+      what it used to be called.</span>
+    <span data-phrase="fact.carried">{attachments} and {actions} were dropped.</span>
+    <span data-phrase="fact.shared">Some of what you removed was drawn by a
+      block the document reuses on more than one page, so it has gone from every
+      page that draws it. That is more than you ticked, never less.</span>
+    <span data-phrase="fact.overimage">{count} of the letters you removed were
+      lying over a picture of the same page. They are out of the text layer and
+      still in the picture: a reader can no longer search or copy them, and can
+      still see them.</span>
+    <span data-phrase="fact.untouched">Everything else on every page was copied
+      through byte for byte. No font, picture or line was re-encoded.</span>
+
+    <span data-phrase="count.pages">{count} pages</span>
+    <span data-phrase="count.page">{count} page</span>
+    <span data-phrase="count.words">{count} words</span>
+    <span data-phrase="count.word">{count} word</span>
+    <span data-phrase="count.pieces">{count} pieces of text</span>
+    <span data-phrase="count.piece">{count} piece of text</span>
+    <span data-phrase="count.matches">{count} matches</span>
+    <span data-phrase="count.match">{count} match</span>
+    <span data-phrase="count.boxes">{count} black boxes</span>
+    <span data-phrase="count.box">{count} black box</span>
+    <span data-phrase="count.attachments">{count} attachments</span>
+    <span data-phrase="count.attachment">{count} attachment</span>
+    <span data-phrase="count.actions">{count} actions</span>
+    <span data-phrase="count.action">{count} action</span>
+    <span data-phrase="count.hosts">{count} hosts</span>
+    <span data-phrase="count.host">{count} host</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">your document has gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts}; not one of them was given a
+      document, a word of one, or anything you searched for.</span>
+
+    <span data-phrase="finder.email">Email addresses</span>
+    <span data-phrase="finder.card">Card numbers</span>
+    <span data-phrase="finder.iban">Bank accounts (IBAN)</span>
+    <span data-phrase="finder.nationalid">National insurance &amp; social security numbers</span>
+    <span data-phrase="finder.phone">Telephone numbers</span>
+  </div>
+</main>

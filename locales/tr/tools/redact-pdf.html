@@ -1,0 +1,300 @@
+<!--
+  tools/redact-pdf/body.html, in Turkish.
+
+  Every id, class, data-phrase key and {placeholder} below is what src/main.js
+  reaches for, so they are the same in every language. Only the words change.
+
+  The count.* pairs are singular and plural in English. Turkish does not put a
+  plural suffix on a counted noun - "5 sayfa", never "5 sayfalar" - so both
+  members of each pair carry the same bare form, the same way guide_one and
+  guide_many do in locale.toml.
+-->
+<main>
+  <!-- Adım 1 &mdash; belge -->
+  <section class="card">
+    <h2><span class="step">1</span> PDF'inizi seçin</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- Adım 2 &mdash; bulma -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> Neyin gitmesi gerektiğini söyleyin</h2>
+
+    <p class="card-lede">
+      Kelimeleri yazın &mdash; bir isim, bir adres, bir referans &mdash; ve
+      göründükleri her yer, üzerinde durdukları satırla birlikte aşağıda
+      listelensin. 4. adıma kadar hiçbir şey kaldırılmaz ve işaretlemediğiniz
+      hiçbir şey kaldırılmaz.
+    </p>
+
+    <label class="find-label" for="terms">Kelimeler ve ifadeler, her satıra bir tane</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="Yılmaz&#10;Bağdat Caddesi 14&#10;REF-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">Onları bul</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>Büyük/küçük harfe duyarlı</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>Yalnızca tam kelimeler</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>Ya da genellikle hassas olan şeyleri arayın</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        Bunlar kalıptır ve bir kalıp, bir telefon numarasını bir referans
+        numarasından ayıramaz. Kart numaraları ve IBAN'lar kendi kontrol
+        haneleriyle denetlenir; gerisi sunulur, sizin yerinize asla işaretlenmez
+        ve her birini okumaya değer.
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">Hepsini işaretle</button>
+        <button type="button" id="tick-none" class="ghost">İşaretleri kaldır</button>
+        <button type="button" id="clear-found" class="ghost danger">Listeyi temizle</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- Adım 3 &mdash; sayfayı okuma -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> Sayfayı okuyun ve kelimeleri üzerinden seçin</h2>
+
+    <p class="card-lede">
+      Bu, metnin belgede saklandığı hâli; bir okuyucunun kopyalayacağı sırayla
+      &mdash; ki bu her zaman basıldığı sıra değildir. Çıkarmak için herhangi
+      bir kelimeye tıklayın, tutmak için tekrar tıklayın. Burada üstü çizili
+      olan her şey gidecek olandır.
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; Önceki</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">Sonraki &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">Bu sayfada her şeyi tut</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="Bu sayfanın metni"></div>
+  </section>
+
+  <!-- Adım 4 &mdash; işi yapma -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Kelimeleri çıkarın</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>Her birinin yerine siyah bir kutu çiz</strong>
+        <span class="check-note">
+          Bir okuyucu bir şeyin kaldırıldığını görebilsin diye. Kutu burada
+          süstür, karartma değil: o çizildiğinde harfler dosyadan çoktan
+          gitmiştir. Kapatın, kelimeler kapladıkları boşluğu bırakarak öylece
+          yok olsun.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>Aynı kelimeleri belgenin geri kalanından da çıkar</strong>
+        <span class="check-note">
+          Yer imleri, yorumlar, yapışkan notlar ve form alanlarına yazılanlar.
+          Bir sayfadan kaldırılıp bir yer iminde bırakılan kelime kaldırılmış
+          değildir. Belgenin özellikleri bu ne derse desin gider; bir okuyucunun
+          sayfadaki harfler yerine kopyaladığı yedek metin de gider &mdash;
+          ikisi de kelimeyi başka bir yerin kopyalaması değil, belgenin kendisinin
+          söylemesidir.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>Ekleri ve çalışan her şeyi at</strong>
+        <span class="check-note">
+          Bir PDF içinde bütün dosyalar ve açıldığında çalışan JavaScript
+          taşıyabilir. İkisinde de kaldırdığınız kelimeler aranamaz ve ikisi de
+          bir belgeyi okumak için gerekmez.
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Onları çıkar</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>İndir</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">Bu bir PDF değil, dolayısıyla içinde çıkarılacak bir metin yok.</span>
+    <span data-phrase="load.encrypted">Bu PDF'te parola var. Bir belgenin
+      korumasını kaldırmak, içinden kelime çıkarmaktan farklı bir iştir ve bu
+      araç bunu arkanızdan yapmaz.</span>
+    <span data-phrase="load.broken">Bu dosya PDF olarak açılamadı ({detail}).</span>
+    <span data-phrase="load.nopages">Açıldı, ama içinde hiçbir sayfa bulunamadı.</span>
+    <span data-phrase="load.repaired">Bu belgenin çapraz başvuru tablosu
+      içeriğiyle uyuşmuyordu, bu yüzden nesneler taranarak okundu. Bu bir
+      onarımdır ve işe yaradı &mdash; sonucu bir yere göndermeden önce dikkatle
+      denetleyin.</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} metin &middot; {size}</span>
+    <span data-phrase="doc.notext">Bu sayfaların {count} tanesinde hiç metin
+      yok. Öyle bir sayfa, bir sayfanın resmidir ve bu aracın kaldıracağı bir şey
+      yoktur &mdash; resimdeki kelimeler tam olarak oldukları yerde kalır.</span>
+    <span data-phrase="doc.unreadable">Bu belgedeki {count} harf karakter olarak
+      okunamadı, çünkü kullandıkları yazı tipleri glifleri metne geri götüren bir
+      eşleme taşımıyor. O harfler aranamaz; bu yüzden aramaya güvenmek yerine
+      bulundukları sayfaları denetleyin.</span>
+    <span data-phrase="doc.scan">Bazı sayfalar bir resmin üzerine serilmiş
+      görünmez metin taşıyor; bir tarayıcı sayfadan ne anladığını böyle kaydeder.
+      O metni kaldırmak, bir aramanın ve bir kopyalamanın bulacağı şeyi kaldırır.
+      Resmi değiştirmez ve resimde kelimeler hâlâ okunaklıdır.</span>
+
+    <span data-phrase="find.none">Hiçbir sayfada eşleşme bulunamadı.</span>
+    <span data-phrase="find.some">{pages} üzerinde {count}.</span>
+    <span data-phrase="find.more">İlk {shown} tanesi listelendi. Gerisi de
+      bulundu ve hepsini işaretlerseniz onlar da çıkarılacak.</span>
+    <span data-phrase="find.terms">Bul'a basmadan önce yukarıya bir kelime yazın ya da bir kalıp seçin.</span>
+
+    <span data-phrase="page.of">{total} sayfadan {number}. sayfa</span>
+    <span data-phrase="page.picked">Bu sayfadan kaldırılacak: {count}</span>
+    <span data-phrase="page.notext">Bu sayfada metin yok. Ya boştur ya da bir
+      sayfanın resmidir &mdash; bir tarama, bir fotoğraf, kelimelerini şekil
+      olarak çizmiş bir dışa aktarma. Üzerinde hiçbir şey aranamaz ve üzerinden
+      hiçbir şey burada kaldırılamaz.</span>
+    <span data-phrase="page.unreadable">Bu sayfadaki {count} harf karakter
+      olarak okunamadı. Aşağıda &#9647; olarak gösteriliyorlar ve arama onları
+      bulmayacak.</span>
+    <span data-phrase="page.scan">Bu sayfadaki metin görünmez: sayfanın bir
+      resminin üzerine serilmiş durumda; bir tarama böyle aranabilir hâle
+      getirilir. Burada çıkardığınız şey, bir aramanın ve bir kopyalamanın
+      bulacağı şeydir. Resim kelimeleri korur.</span>
+
+    <span data-phrase="run.summary">{pages} üzerinden {words} çıkarılacak.</span>
+    <span data-phrase="run.nothing">Henüz hiçbir şey işaretlenmedi. 2. adımda bir kelime bulun ya da 3. adımda birine tıklayın.</span>
+    <span data-phrase="run.editing">Kelimeler çıkarılıyor&hellip;</span>
+    <span data-phrase="run.writing">Belge yazılıyor&hellip;</span>
+    <span data-phrase="run.checking">Bitmiş dosya açılıyor ve aranıyor&hellip;</span>
+    <span data-phrase="run.failed">Bu belge yeniden yazılırken bir şeyler ters gitti ({detail}).</span>
+    <span data-phrase="run.cancelled">Vazgeçildi. Hiçbir şey yazılmadı.</span>
+
+    <span data-phrase="result.headline">{words} kaldırıldı</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} değişti &middot; {boxes}</span>
+    <span data-phrase="check.good">Burada yeniden açılıp bir okuyucunun yapacağı
+      gibi arandı: hiçbiri bitmiş dosyada değil.</span>
+    <span data-phrase="check.partial">Burada yeniden açılıp arandı:
+      işaretlediğiniz her geçiş gitmiş, bıraktıklarınız ise hâlâ orada.</span>
+    <span data-phrase="check.survived">Bu dosya YAZILMADI. Bitmiş belge yeniden
+      açıldı ve kaldırdıklarınızın bir kısmı içinde hâlâ bulunabiliyordu; yani
+      karartma tamamlanmadı. İndirmek için hiçbir şey sunulmuyor.</span>
+    <span data-phrase="check.pages">Bu dosya YAZILMADI. Bitmiş belge, girdiğinden
+      farklı sayıda sayfayla geri geldi; yani kelimelerin ötesinde bir şey ters
+      gitti. İndirmek için hiçbir şey sunulmuyor.</span>
+
+    <span data-phrase="fact.boxes">Boşlukların üzerine {count} çizildi.</span>
+    <span data-phrase="fact.noboxes">Hiç kutu çizilmedi; yani kelimeler gitti ve
+      nerede olduklarını söyleyen bir şey kalmadı.</span>
+    <span data-phrase="fact.elsewhere">Aynı kelimeler şuradan da çıkarıldı: {where}.</span>
+    <span data-phrase="fact.metadata">Belge özellikleri ve XMP paketi
+      kaldırıldı; yani bitmiş dosya onu neyin, ne zaman yaptığını ya da eskiden
+      ne adla anıldığını söylemiyor.</span>
+    <span data-phrase="fact.carried">{attachments} ve {actions} atıldı.</span>
+    <span data-phrase="fact.shared">Kaldırdıklarınızın bir kısmı, belgenin
+      birden fazla sayfada yeniden kullandığı bir blok tarafından çiziliyordu;
+      bu yüzden onu çizen her sayfadan gitti. Bu, işaretlediğinizden fazlasıdır,
+      asla azı değil.</span>
+    <span data-phrase="fact.overimage">Kaldırdığınız harflerin {count} tanesi
+      aynı sayfanın bir resminin üzerinde duruyordu. Metin katmanından çıktılar
+      ve resimde kaldılar: bir okuyucu artık onları arayamaz ya da kopyalayamaz,
+      ama hâlâ görebilir.</span>
+    <span data-phrase="fact.untouched">Her sayfadaki diğer her şey bayt bayt
+      kopyalandı. Hiçbir yazı tipi, resim ya da çizgi yeniden kodlanmadı.</span>
+
+    <span data-phrase="count.pages">{count} sayfa</span>
+    <span data-phrase="count.page">{count} sayfa</span>
+    <span data-phrase="count.words">{count} kelime</span>
+    <span data-phrase="count.word">{count} kelime</span>
+    <span data-phrase="count.pieces">{count} metin parçası</span>
+    <span data-phrase="count.piece">{count} metin parçası</span>
+    <span data-phrase="count.matches">{count} eşleşme</span>
+    <span data-phrase="count.match">{count} eşleşme</span>
+    <span data-phrase="count.boxes">{count} siyah kutu</span>
+    <span data-phrase="count.box">{count} siyah kutu</span>
+    <span data-phrase="count.attachments">{count} ek</span>
+    <span data-phrase="count.attachment">{count} ek</span>
+    <span data-phrase="count.actions">{count} eylem</span>
+    <span data-phrase="count.action">{count} eylem</span>
+    <span data-phrase="count.hosts">{count} sunucu</span>
+    <span data-phrase="count.host">{count} sunucu</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">belgeniz hiçbir yere gitmedi. {total} dosya
+      yüklendi, hepsi bu sayfanın kendi dosyaları. {platform}</span>
+    <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç
+      bunu asla yapmaz. Bunu araştırmaya değer sayın. {platform}</span>
+    <span data-phrase="net.platform">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {hosts} üzerinden yüklendi; hiçbirine bir belge, bir
+      belgeden bir kelime ya da aradığınız bir şey verilmedi.</span>
+
+    <span data-phrase="finder.email">E-posta adresleri</span>
+    <span data-phrase="finder.card">Kart numaraları</span>
+    <span data-phrase="finder.iban">Banka hesapları (IBAN)</span>
+    <span data-phrase="finder.nationalid">Kimlik ve sosyal güvenlik numaraları</span>
+    <span data-phrase="finder.phone">Telefon numaraları</span>
+  </div>
+</main>

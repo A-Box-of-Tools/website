@@ -56,8 +56,6 @@ name = "Dokumente &amp; PDF"
 items = [
   ["Seiten drehen &amp; zuschneiden", "einen quer eingelesenen Scan geraderücken oder seine Ränder beschneiden"],
   ["Bilder extrahieren", "die Bilder wieder aus einem Dokument herausholen"],
-  ["PDF schwärzen", "die Wörter herausnehmen, statt einen schwarzen Kasten darüber zu malen"],
-  ["Dokumentenscanner", "das Foto einer Seite, geradegerückt und sauber als Dokument"],
 ]
 
 [[group]]

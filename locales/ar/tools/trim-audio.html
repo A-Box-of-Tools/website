@@ -1,0 +1,198 @@
+<main>
+  <!-- Step 1 &mdash; the recording -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر تسجيلاً</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>الملف</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>الحجم</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>المدة</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>الصوت</dt><dd id="src-format">&mdash;</dd></div>
+      <div><dt>قُرِئ على أنه</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the marks -->
+  <section class="card" id="section-card" hidden>
+    <h2>
+      <span class="step">2</span> علّم على الأجزاء التي تريدها
+      <span class="editing" id="editing" hidden></span>
+    </h2>
+
+    <p class="stage-hint">
+      شغّله إلى آخره واضغط <kbd>I</kbd> حيث ينبغي أن يبدأ الجزء و<kbd>O</kbd>
+      حيث ينبغي أن ينتهي. وافعل ذلك بلا حدّ &mdash; فكل زوج يصير صفاً أدناه،
+      والملف المنتهي تلك الصفوف واحداً بعد آخر. و<kbd>U</kbd> يتراجع عن آخر
+      واحد، و<kbd>Space</kbd> يشغّل ويوقف، ومفاتيح الأسهم تقفز خمس ثوانٍ.
+      وأمسِك <kbd>Shift</kbd> مع سهم لتحرّك عشرة أجزاء من الألف من الثانية في
+      كل مرة.
+    </p>
+
+    <!-- Built by src/timeline.js: the waveform, a band for every part, the one
+         being marked, and the playhead. -->
+    <div id="timeline"></div>
+
+    <div class="tl-scale">
+      <span id="tl-now">0:00.000</span>
+      <span id="tl-total">0:00.000</span>
+    </div>
+
+    <audio id="preview" class="player" controls preload="metadata"></audio>
+
+    <div class="transport">
+      <button type="button" id="play" class="primary">شغّل</button>
+      <button type="button" id="back-5" class="ghost" title="إلى الوراء خمس ثوانٍ">&minus;5 ث</button>
+      <button type="button" id="forward-5" class="ghost" title="إلى الأمام خمس ثوانٍ">+5 ث</button>
+      <button type="button" id="mark-in" class="ghost"><kbd>I</kbd> علّم البداية</button>
+      <button type="button" id="mark-out" class="ghost"><kbd>O</kbd> علّم النهاية</button>
+      <button type="button" id="undo" class="ghost"><kbd>U</kbd> تراجَع</button>
+    </div>
+
+    <div class="speed-row" role="group" aria-label="سرعة التشغيل">
+      <span class="speed-label">السرعة</span>
+      <button type="button" class="speed" data-speed="0.5">0.5&times;</button>
+      <button type="button" class="speed" data-speed="0.75">0.75&times;</button>
+      <button type="button" class="speed active" data-speed="1">عادية</button>
+      <button type="button" class="speed" data-speed="1.25">1.25&times;</button>
+      <button type="button" class="speed" data-speed="1.5">1.5&times;</button>
+      <button type="button" class="speed" data-speed="2">2&times;</button>
+    </div>
+
+    <!-- The parts themselves. This is the tool. -->
+    <div class="segments">
+      <div class="segments-head">
+        <h3>الأجزاء <span class="segment-count" id="segment-count">لا شيء بعد</span></h3>
+        <p class="segments-total">
+          مجموع المُبقى <strong id="total-kept">0:00.000</strong>
+        </p>
+      </div>
+
+      <table class="segment-table" id="segment-table" hidden>
+        <thead>
+          <tr>
+            <th scope="col" class="col-index">#</th>
+            <th scope="col">البداية</th>
+            <th scope="col">النهاية</th>
+            <th scope="col">المدة</th>
+            <th scope="col"><span class="visually-hidden">الإجراءات</span></th>
+          </tr>
+        </thead>
+        <tbody id="segment-rows"></tbody>
+      </table>
+
+      <p class="segments-empty" id="segments-empty">
+        لم تعلّم على شيء بعد. اضغط <kbd>I</kbd> ثم <kbd>O</kbd> وهو يعمل، أو
+        استعمل الأزرار أعلاه.
+      </p>
+
+      <div class="segment-actions">
+        <button type="button" id="add-segment" class="ghost">أضِف صفاً يدوياً</button>
+        <button type="button" id="reset-segments" class="ghost danger">امسحها كلها</button>
+        <span class="segment-actions-spacer"></span>
+        <button type="button" id="import-marks" class="ghost">حمِّل العلامات&hellip;</button>
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <select id="marks-format" aria-label="صيغة ملف الأوقات">
+          <option value="seconds" selected>ثوانٍ</option>
+          <option value="HHMMSSmmm">HH:MM:SS.mmm</option>
+        </select>
+        <button type="button" id="export-marks" class="ghost">احفظ العلامات</button>
+      </div>
+
+      <p class="field-note">
+        تُحفَظ العلامات ملفاً نصّياً صِرفاً &mdash; سطر لكل جزء، بالصيغة أعلاه
+        &mdash; فتنجو جلسةُ تعليم طويلة من تبويب أُغلِق، والملف نفسه يمكن
+        مناولته لمقصّ الفيديو أو لأي أداة أخرى تقرأ ذلك التخطيط.
+      </p>
+    </div>
+
+    <fieldset class="modes">
+      <legend>ماذا يُفعَل بالأجزاء المعلَّمة</legend>
+      <label class="mode">
+        <input type="radio" name="mode" value="keep" checked>
+        <span>
+          <strong>أبقِها</strong>
+          الملف المنتهي هو الأجزاء المعلَّمة، موصولةً بترتيبها.
+        </span>
+      </label>
+      <label class="mode">
+        <input type="radio" name="mode" value="cut">
+        <span>
+          <strong>اقطعها</strong>
+          تذهب الأجزاء المعلَّمة، ويُوصَل كل ما عداها.
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the file that comes out -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> قُصّه</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="depth">ماذا يُكتَب</label>
+        <select id="depth">
+          <option value="16" selected>WAV بـ 16 بتّاً &mdash; يعمل في كل مكان</option>
+          <option value="32">WAV عائم بـ 32 بتّاً &mdash; العيّنات بالضبط</option>
+        </select>
+        <p class="field-note">
+          ملف WAV يحمل العيّنات كما هي، فكتابةُ واحد لا يمكن أن تكلّف جودة. وهو
+          ليس ملفاً صغيراً: انظر التقدير أدناه.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="fade">ليّن الوصلات</label>
+        <select id="fade">
+          <option value="0">مطفأ &mdash; اقصص عند العيّنة بعينها</option>
+          <option value="0.005" selected>5 مللي ثانية &mdash; يكفي لمنع الطقطقة</option>
+          <option value="0.02">20 مللي ثانية</option>
+          <option value="0.05">50 مللي ثانية</option>
+        </select>
+        <p class="field-note" id="fade-note"></p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>المُبقى</dt><dd id="sum-parts">&mdash;</dd></div>
+      <div><dt>المدة المنتهية</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>يبدأ عند</dt><dd id="sum-start">&mdash;</dd></div>
+      <div><dt>الوصلات</dt><dd id="sum-joins">&mdash;</dd></div>
+      <div><dt>الصوت</dt><dd id="sum-sound">&mdash;</dd></div>
+      <div><dt>تقريباً</dt><dd id="sum-size">&mdash;</dd></div>
+    </dl>
+
+    <p id="cut-note" class="path-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>قُصّ الصوت</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <canvas id="out-wave" class="wave" aria-hidden="true"></canvas>
+      <audio id="result-audio" class="player" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>نزِّل الصوت</a>
+      </div>
+    </div>
+  </section>
+</main>

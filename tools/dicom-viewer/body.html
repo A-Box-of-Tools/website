@@ -1,0 +1,253 @@
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose a scan</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      Drop a whole folder's worth of files at once and they are put back into
+      their series and stacked in order. Nothing is uploaded, and nothing is
+      written back to your files.
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- The viewer. -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>Save this frame as PNG</button>
+        <button type="button" id="copy-header" class="ghost">Copy the header</button>
+        <button type="button" id="download-header" class="ghost">Download it</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">Series</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="The frame on screen, drawn from the file you chose"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="Play through the frames">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="Which slice or frame is shown">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">What dragging on the picture does</legend>
+        <label><input type="radio" name="mode" value="window" checked> Window &amp; level</label>
+        <label><input type="radio" name="mode" value="pan"> Pan</label>
+        <label><input type="radio" name="mode" value="measure"> Measure</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">Zoom</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">Fit</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">Window</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">Centre</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">Width</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> Invert</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> Show the patient details on the picture</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- What the file is. -->
+  <section class="card" id="facts-card" hidden>
+    <h2>What this file is</h2>
+    <dl class="facts">
+      <div><dt>Object</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>Modality</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>Image</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>Stored as</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfer syntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>Pixel spacing</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>Value range</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>File</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- What is in it about the person. -->
+  <section class="card" id="identity-card" hidden>
+    <h2>What in this file identifies the patient</h2>
+    <p class="card-lede">
+      Read off this file, on this machine, and shown to nobody else. This tool
+      writes nothing: it cannot take any of it out, and it has not sent any of
+      it anywhere. It is here because a scan carries far more than a name, and
+      the rest of it is what survives a careless anonymisation.
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- Every tag in the file. -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>Every tag in the file</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">Search the tags</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="Search by name, number or value">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">Every element in this file</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tag</th>
+            <th scope="col">VR</th>
+            <th scope="col">Name</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">Drag across the picture to widen or narrow the window, and up or down to move its centre. Both numbers are below, and typing into them does the same thing.</span>
+    <span data-phrase="mode.pan">Drag to move the picture inside its frame. The scroll wheel zooms, and &ldquo;Fit&rdquo; puts it back.</span>
+    <span data-phrase="mode.measure">Drag a line across the picture to measure it. Where the file says how far apart its pixels are, the answer is in millimetres; where it does not, the answer is in pixels and says so.</span>
+
+    <span data-phrase="probe.value">{value} at column {column}, row {row}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; this file does not say how far apart its pixels are, so this cannot be in millimetres</span>
+
+    <span data-phrase="stack.position">Stacked by where each slice sits in the patient, which is the order the scanner took them in.</span>
+    <span data-phrase="stack.number">Stacked by instance number: these files carry no position in the patient to sort on.</span>
+    <span data-phrase="stack.gap">The gap between slices is not the same all the way through, so at least one slice is missing from this series.</span>
+
+    <span data-phrase="pixels.none">This file&rsquo;s pixels are compressed with {codec}, which no browser can decode and which this page does not carry a decoder for. Everything else about the file is below.</span>
+    <span data-phrase="pixels.failed">The picture could not be decoded: {reason}. The header below was read in full.</span>
+    <span data-phrase="pixels.absent">This file carries no pixel data at all. It is a header, and everything in it is below.</span>
+    <span data-phrase="pixels.jpeg">These pixels are baseline JPEG, so the browser&rsquo;s own decoder unpacked them and what it hands back is eight bits deep. The window still works; the precision the scanner recorded is not all there.</span>
+
+    <span data-phrase="tags.count">{shown} of {total} elements. {hidden} more.</span>
+    <span data-phrase="tags.all">All {total} elements in this file.</span>
+    <span data-phrase="tags.found">{total} elements match &ldquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.found.one">One element matches &ldquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.none">Nothing matches &ldquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.more">Show the remaining {count}</span>
+    <span data-phrase="tags.private">private element</span>
+    <span data-phrase="tags.unknown">not in this dictionary</span>
+    <span data-phrase="tags.guessed">The file did not say; this is what the data dictionary gives for this tag.</span>
+
+    <span data-phrase="working.one">Reading {name}&hellip;</span>
+    <span data-phrase="working.many">Reading {at} of {total}&hellip;</span>
+    <span data-phrase="error.none">Nothing here could be read as DICOM. {why} This tool reads the DICOM format itself, so it has nothing to say about other files.</span>
+    <span data-phrase="error.skipped.one">One file was skipped: {files}</span>
+    <span data-phrase="error.skipped">{count} files were skipped: {files}</span>
+
+    <span data-phrase="series.number">Series {number}</span>
+    <span data-phrase="series.files.one">1 file</span>
+    <span data-phrase="series.files">{count} files</span>
+    <span data-phrase="stack.spacing">Slices are {gap} apart.</span>
+
+    <span data-phrase="at.position">{at} of {total}</span>
+    <span data-phrase="net.clean">your scan has gone nowhere. {total} files
+      loaded, all of them this page's own. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. Treat that as worth investigating. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a scan, a pixel of one, or a word from its header.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a scan, a pixel of one, or a word from its header.</span>
+    <span data-phrase="at.frame">frame {at} of {total}</span>
+    <span data-phrase="at.instance">instance {number}</span>
+
+    <span data-phrase="window.file">From the file</span>
+    <span data-phrase="window.file.n">From the file, {n}</span>
+    <span data-phrase="window.full">Everything in this frame</span>
+    <span data-phrase="window.custom">Set by hand</span>
+    <span data-phrase="window.soft">Soft tissue</span>
+    <span data-phrase="window.lung">Lung</span>
+    <span data-phrase="window.bone">Bone</span>
+    <span data-phrase="window.brain">Brain</span>
+    <span data-phrase="window.liver">Liver</span>
+    <span data-phrase="window.mediastinum">Mediastinum</span>
+    <span data-phrase="window.angio">Angiography</span>
+
+    <span data-phrase="facts.frames">{count} frames</span>
+    <span data-phrase="facts.nopixels">no pixel data</span>
+    <span data-phrase="facts.nospacing">not stated in this file</span>
+    <span data-phrase="facts.signed">signed</span>
+    <span data-phrase="facts.unsigned">unsigned</span>
+    <span data-phrase="facts.stored.one">{bits} bits, {sign}, 1 sample per pixel, {photometric}</span>
+    <span data-phrase="facts.stored">{bits} bits, {sign}, {samples} samples per pixel, {photometric}</span>
+    <span data-phrase="facts.range">{low} to {high}</span>
+    <span data-phrase="facts.colour">colour &mdash; nothing measured to report</span>
+
+    <span data-phrase="identity.clean">Nothing in this file names or numbers a person. The identifiers a scan usually carries are either absent or empty.</span>
+    <span data-phrase="identity.uids">It also carries {count} identifiers of its own &mdash; the study, series and instance UIDs. None of them is a name, and every one of them is a perfect key into the archive that made the file.</span>
+    <span data-phrase="identity.private">And {count} private elements, whose meaning is published nowhere: some scanners keep a second copy of the patient&rsquo;s name in one.</span>
+
+    <span data-phrase="copied">Copied.</span>
+    <span data-phrase="copy.failed">Your browser would not let the page copy. The download button beside it writes the same text to a file.</span>
+    <span data-phrase="saved">Saved {name}.</span>
+  </div>
+</main>

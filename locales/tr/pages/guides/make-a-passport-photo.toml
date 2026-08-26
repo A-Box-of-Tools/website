@@ -1,0 +1,18 @@
+#
+# Rehber: geri çevrilmeyen bir vesikalık fotoğraf - Türkçe.
+#
+
+nav = "Vesikalık fotoğraf çekme"
+title = "Evde Nasıl Vesikalık Fotoğraf Çekilir (ve Geri Çevrilmez)"
+description = "Bir vesikalık fotoğrafta gerçekte neyin ölçüldüğü - baş yüksekliği, göz hattı, arka plan - hangi ülkenin hangi sayıları istediği ve çevrimiçi bir formun dayattığı piksel ve KB sınırlarının nasıl tutturulacağı."
+heading = "Geri çevrilmeyen bir vesikalık fotoğraf nasıl çekilir"
+lede = """
+    Bir vesikalık fotoğraf, yüzünüzün belirli bir boyuttaki resmi değildir. Bir
+    ölçümler kümesidir ve çuvallayanlar neredeyse hiçbir zaman insanların
+    endişelendiği ölçümler olmaz. Bu rehber gerçekte neyin ölçüldüğünü, hangi
+    ülkenin hangi rakamları istediğini ve bir dosyayı fazla küçük diye reddeden
+    formlar hakkında ne yapacağınızı anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "Geri çevrilmeyen bir vesikalık fotoğraf nasıl çekilir"
+og_description = "Baş yüksekliği, göz hattı, arka plan ve dosya boyutu - bir pasaport ofisinin neyi ölçtüğü ve bunu bir telefon ile düz bir duvarla nasıl tutturacağınız."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

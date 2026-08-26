@@ -1,0 +1,314 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      <a href="../../resmi-base64e-donusturme/">Görselden Data URI'ye</a>'yi açın,
+      resmi bırakın, <em>Bir CSS özel özelliği</em>'ni seçin ve satırı stil
+      dosyanızın başına yapıştırın. Sonra ihtiyacınız olan her yerde
+      <code>background-image: var(--logo)</code> olarak kullanın.
+    </p>
+    <p>
+      Bunu resim küçükse &mdash; bir simge, bir madde imi, bir ok, bir desen
+      &mdash; ve her sayfada gerekiyorsa yapın. Bir fotoğrafla yapmayın.
+      Aşağıdaki her şey bu iki cümlenin neden farklı olduğu ve hangisine
+      baktığınızı nasıl anlayacağınızla ilgili.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir data URI aslında nedir</h2>
+    <p>
+      Bir şeyi göstermek yerine onu içeren bir adres. Bir stil dosyasının normalde
+    </p>
+    <pre><code>background-image: url("logo.png");</code></pre>
+    <p>
+      dediği ve tarayıcının gidip <code>logo.png</code>'yi getirdiği yerde, bir
+      data URI
+    </p>
+    <pre class="wrap"><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <p>
+      der ve getirilecek bir şey yoktur: resim, karakterlerle yazılmış olarak
+      zaten oradadır. Üç parçası vardır. <code>data:</code> şemadır.
+      <code>image/png</code> ortam türüdür ve tarayıcı ona tamamen inanır &mdash;
+      buna aşağıda döneceğiz. Virgülden sonraki her şey dosyanın kendisidir.
+    </p>
+    <p>
+      Bütün fikir budur. Bir numara ya da bir kurnazlık değildir; 1998'den beri
+      standartların içindedir ve o zamandan bu yana çıkmış her tarayıcıda
+      çalışır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Size kazandırdığı şey: bir gidiş dönüş eksiği</h2>
+    <p>
+      Kazanç bant genişliği değildir. İstektir.
+    </p>
+    <p>
+      Bir tarayıcı, <code>logo.png</code>'yi ondan söz eden stil dosyasını
+      okuyana kadar isteyemez ve o stil dosyasını da getirene kadar okuyamaz.
+      Yani sıradan bir arka plan görseli, sayfa yüklemesinde en az iki gidiş
+      dönüş derinliktedir ve yavaş bir ağdaki bir telefonda bir gidiş dönüş,
+      dosya ne kadar küçük olursa olsun birkaç yüz milisaniye olabilir. 600
+      baytlık bir ok işareti aktarım olarak neredeyse hiçbir şeye mal olmaz ama
+      yine de gelmesi çeyrek saniye tutabilir.
+    </p>
+    <p>
+      Satır içine alındığında stil dosyasıyla birlikte gelir. Bütün kazanç budur
+      ve sayfanın üst kısmında görünen küçük bir simge için gerçek bir
+      kazançtır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bedeli: üçte bir, sonra da önbellek</h2>
+    <p>
+      <strong>Base64 yaklaşık üçte bir ekler.</strong> Dosyanın üç baytı dört
+      karaktere dönüşür; çünkü rastgele baytları yalnızca bir URL'nin izin
+      verdiği karakterlerle yazmanın bedeli budur. Bundan kaçan akıllı bir
+      kodlayıcı yoktur. 9 KB'lik bir PNG, 12 KB'lik stil dosyası eder.
+    </p>
+    <p>
+      <strong>Sıkıştırma bunu geri vermez.</strong> İnsanların olmamış saydığı
+      kısım budur. Gzip ve Brotli fazlalık bularak çalışır; bir PNG, bir JPEG ve
+      bir WebP ise çoktan sıkıştırılmıştır &mdash; içlerinde çok az fazlalık
+      kalmıştır ve base64 fazlalık eklemez. Pratikte üçte birin onda biri kadarını
+      geri alırsınız, tamamını değil. (Bir SVG bunun tersi bir durumdur ve bir
+      sonraki bölüm de onunla ilgili.)
+    </p>
+    <p>
+      <strong>Dosya olmaktan çıkar.</strong> Bu, muhtemelen yapacağınız hiçbir
+      ölçümde görünmeyen bedeldir ve boyut büyüdüğünde asıl önemli olan da odur:
+    </p>
+    <ul>
+      <li>
+        <strong>Kendi başına önbelleğe alınamaz.</strong> Sıradan bir görsel bir
+        kez getirilir ve bir yıl boyunca yeniden kullanılır. Satır içine alınmış
+        biri stil dosyasının parçasıdır, yani stil dosyasının önbellek kaydıyla
+        birlikte yaşar ve ölür.
+      </li>
+      <li>
+        <strong>Bir şeyi değiştirmek her şeyi yeniden indirtir.</strong> Bir kenar
+        boşluğunu düzeltin, yeni bir stil dosyası yayına alın ve her ziyaretçi,
+        iki yıldır değişmemiş olan satır içi resmi de onunla birlikte yeniden
+        indirsin.
+      </li>
+      <li>
+        <strong>Kritik yolun üstündedir.</strong> Bir stil dosyası çizimi
+        engeller. Bir görsel engellemez. Bir resmi satır içine almak onu ikinci
+        sınıftan birinciye taşır: resim dâhil her şey gelene kadar sayfa
+        boyanamaz.
+      </li>
+      <li>
+        <strong>Paralel getirilemez.</strong> Tarayıcılar aynı anda birçok şey
+        indirir. Satır içi bir resim ayrı bir şey değildir, yani bundan hiç pay
+        almaz.
+      </li>
+    </ul>
+    <p>
+      Kaba eşikler &mdash; bunlar bir tarayıcının farklı bir şey yaptığı yerler
+      değil, tavsiyenin değiştiği yerlerdir: yaklaşık 2 KB'nin altında açık bir
+      kazançtır; 10 KB'ye kadar her sayfada bulunan bir şey için genellikle hâlâ
+      değer; 50 KB'yi geçtiğinde hata iletisi olmayan bir hatadır.
+      <a href="../../resmi-base64e-donusturme/">Araç</a> her sonucun hangi aralığa
+      düştüğünü, yanında karakter sayısıyla birlikte söyler.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir SVG'yi asla base64 yapmayın</h2>
+    <p>
+      Bu, satır içi görsellerdeki en yaygın tek hatadır ve dışa aktarıcılar ile
+      derleme eklentileri bunu insanlar kadar sık yapar.
+    </p>
+    <p>
+      Bir SVG metindir. Bir URL zaten metin taşır. Yalnızca bir avuç karakterin
+      kaçırılması gerekir &mdash; <code>%</code>, <code>#</code>,
+      <code>&lt;</code>, <code>&gt;</code> ve onu sardığınız tırnak &mdash; ve
+      geri kalan her şey tam olduğu gibi bırakılabilir. Böyle kodlamak size, aynı
+      dosyanın base64'ünden tipik olarak beşte bir kısa ve sonrasında gürültü gibi
+      değil metin gibi sıkışan bir URI verir.
+    </p>
+    <p>
+      Ayrıca hâlâ okunabilir:
+    </p>
+    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <p>
+      <code>viewBox</code>'ı görebilirsiniz. Dolgu rengini hiçbir şeyi çözmeden
+      düzenleyicinizde değiştirebilirsiniz. Aynı dosyayı base64 yapın; kimsenin
+      bir daha asla dokunmayacağı bir harf duvarına dönüşsün.
+      <a href="../../resmi-base64e-donusturme/">Görselden Data URI'ye</a>, SVG
+      olduğu anlaşılan her şey için bunu kendiliğinden yapar ve
+      <code>;base64</code> konusunda ısrar eden nadir araç zincirleri için bir
+      onay kutusu bulundurur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Yalnızca SVG'leri bozan tırnak hatası</h2>
+    <p>
+      CSS, <code>url()</code>'yi tırnaksız yazmanıza izin verir ve sıradan bir
+      dosya adı için bu sorunsuzdur:
+    </p>
+    <pre><code>background-image: url(logo.png);</code></pre>
+    <p>
+      Aynısını yüzde kodlamalı bir SVG'yle yapın, bozulsun. Tırnaksız bir
+      <code>url()</code> belirteci ilk boşlukta, parantezde, tırnakta ya da
+      denetim karakterinde biter &mdash; bir SVG ise her öznitelik ve bir
+      yoldaki her sayı arasında boşluk doludur. Bildirim böylece geçersiz olur,
+      CSS geçersiz bildirimleri sessizce atar ve elinizde ne arka plan ne de bir
+      hata kalır.
+    </p>
+    <p>
+      Çözüm, her seferinde tırnaktır:
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
+    <p>
+      Bir kodlayıcının boşlukları kaçırmasına gerek olmamasının sebebi de budur
+      &mdash; tırnak içindeki bir URL'nin içinde gayet yasaldırlar ve her birini
+      <code>%20</code> olarak kaçırmak, dosyadaki her boşluk için üç karaktere mal
+      olurdu. İki karar birlikte gider: URI'yi tırnaklayın, boşluklara
+      dokunmanız gerekmesin. Aracın ürettiği her şeklin tırnaklanmasının sebebi
+      tam olarak budur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ortam türü doğru olmak zorunda</h2>
+    <p>
+      Bir data URI kendi türünü bildirir ve tarayıcı sözüne inanır. Getirilen bir
+      dosyada olduğu gibi bir koklama yedeği yoktur: aslında JPEG olan bir şey
+      için <code>image/png</code> deyin, resim görüntülenmesin ve hiçbir işe yarar
+      yerde bir ileti çıkmasın.
+    </p>
+    <p>
+      Bunun önemi, dosya uzantılarının yalan söylemesindendir. JPEG olarak dışa
+      aktarılıp <code>logo.png</code> diye yeniden adlandırılmış bir fotoğraf, bir
+      diskte bulunması gayet sıradan bir şeydir. Bir görsel dosyasının ilk birkaç
+      baytı ise ne olduğunu tereddütsüz söyler &mdash; her biçimin bir imzası
+      vardır &mdash; yani bir araç adına değil dosyanın kendisine bakmalıdır.
+      Buradaki araç bakar ve ikisi çeliştiğinde size söyler.
+    </p>
+    <p>
+      Kafa karıştırıcı biçimde çuvalladıkları için bilmeye değer iki biçim var.
+      Bir iPhone'un fotoğraf çektiği biçim olan <strong>HEIC</strong> ve
+      tarayıcıların ürettiği <strong>TIFF</strong>; ikisi de Safari dışında
+      hiçbir tarayıcının çizmeyeceği ama gayet geçerli data URI'ler üretir. URI
+      bozuk değildir; biçim, düpedüz webin desteklediği bir biçim değildir. Önce
+      dönüştürün.
+    </p>
+  </section>
+
+  <section>
+    <h2>Yayımlamak istemediğiniz üstveri</h2>
+    <p>
+      Bir data URI, dosyanın baytı baytına bir kopyasıdır. Hiçbir şey çözülüp
+      yeniden kodlanmaz ki genellikle amaç da budur &mdash; kalite kaybı olmaz
+      &mdash; ama bu aynı zamanda dosyadaki diğer her şeyin de birlikte geldiği
+      anlamına gelir.
+    </p>
+    <p>
+      Telefondan doğrudan çıkan bir fotoğraf EXIF taşır: çekildiği yerin GPS
+      koordinatları, zaman damgası, kamera modeli ve çoğu zaman seri numarası. Bu,
+      dosyanın 30 KB'si olabilir. Satır içine alındığında, stil dosyanızda 40 KB
+      base64'e, her sayfanın kritik yoluna ve bir depoya işlenmiş, kimsenin
+      bakmayı akıl etmeyeceği bir biçimdeki bir ev adresine dönüşür.
+    </p>
+    <p>
+      Önce resme dokunmadan kabı yeniden yazan
+      <a href="../../exif-verisi-silme/">EXIF Görüntüleyici ve Silici</a> ile
+      temizleyin; onun da <a href="../exif-ve-gps-verisini-silme/">bir rehberi
+      var</a>. Görselden Data URI'ye, bir JPEG, PNG ya da WebP içinde ne kadar
+      üstveri olduğunu okur ve siz bir şey kopyalamadan önce söyler.
+    </p>
+  </section>
+
+  <section>
+    <h2>Elde ettikten sonra onu nereye koymalı</h2>
+    <p>
+      Resim tek bir kuralda görünüyorsa URI'yi o kurala koyun. Birden fazlasında
+      görünüyorsa &mdash; ki üzerine gelme durumunu ve koyu temayı da sayınca
+      simgeler genellikle öyledir &mdash; onu bir kez özel özellik olarak
+      tanımlayın:
+    </p>
+    <pre><code>:root {
+  --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
+}
+
+.search-field { background-image: var(--icon-search); }
+.search-button::before { content: var(--icon-search); }</code></pre>
+    <p>
+      Dört kurala yapıştırılmış 3 KB'lik bir URI, 12 KB stil dosyası ve simge
+      değiştiğinde düzenlenecek dört yer demektir. Özel özellik, her birinden bir
+      tane demektir. Ayrıca tema değiştirmeyi çalıştıran şekil de budur: bir ortam
+      sorgusunun içinde <code>--icon-search</code>'ü yeniden tanımlayın, onun her
+      kullanımı buna uysun.
+    </p>
+    <p>
+      CSS yerine bir <code>&lt;img&gt;</code> etiketi için <code>width</code> ve
+      <code>height</code> ekleyin. Satır içine alınmış bir görsel anında yüklenir,
+      yani eksik bir boyut, görülemeyecek kadar hızlı gerçekleşen ama yine de
+      aleyhinize sayılan bir düzen kaymasıdır. İstisna SVG'dir: yalnızca bir
+      <code>viewBox</code> taşıyan bir SVG'nin kendine ait bir piksel boyutu
+      yoktur ve tarayıcının 300&times;150 varsayılanını etikete yazmak,
+      ölçeklenebilir bir resmi kimsenin seçmediği bir boyuta çakar.
+    </p>
+    <p>
+      İçine koyacak doğru bir şeyiniz yoksa <code>alt</code>'u boş bırakın. Resmin
+      bir anlam taşıyıp taşımadığını ya da süs olup olmadığını yalnızca siz
+      bilirsiniz ve bir dosya adından tahmin edilmiş bir açıklama, ekran okuyucu
+      kullanan biri için hiç açıklama olmamasından daha kötüdür.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cevabın &ldquo;yapmayın&rdquo; olduğu durum</h2>
+    <p>
+      Resim kodlandığında yaklaşık 50 KB'yi geçiyorsa satır içine almak yanlış
+      araçtır ve kodlamada ne kadar özenli olursanız olun bunu düzeltmez. Denemeye
+      değer sırayla alternatifler:
+    </p>
+    <ul>
+      <li>
+        <strong>Küçültün.</strong> Satır içine alınamayacak kadar büyük olan
+        görsellerin çoğu genel olarak da fazla büyüktür.
+        <a href="../../resim-sikistirma/">Görsel Sıkıştırıcı</a> bir fotoğrafı
+        söylediğiniz boyuta indirir ve
+        <a href="../../resim-boyutlandirma/">Görsel Boyutlandırıcı</a> piksel
+        boyutlarını düzenin gerçekten kullandığına düşürür &mdash; ki asıl sorun
+        çoğu zaman budur.
+      </li>
+      <li>
+        <strong>SVG olarak yeniden çizin.</strong> 40 KB'lik bir PNG olarak dışa
+        aktarılmış bir simge sık sık 900 baytlık bir SVG'dir. Bu bir sıkıştırma
+        farkı değil bir biçim farkıdır ve retina sorununu da çözer.
+      </li>
+      <li>
+        <strong>Dosya olarak bırakın ve ön yükleyin.</strong>
+        <code>&lt;link rel="preload" as="image"&gt;</code>, baytları kritik yola
+        taşımadan getirmeyi hemen başlatır. Satır içine almanın kazancının
+        çoğunu, önbellek bedelinin hiçbirini almadan verir.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Bunların hiçbirinin bir yüklemeye ihtiyacı yok</h2>
+    <p>
+      Bir dosyayı base64 olarak kodlamak bir aritmetiktir. Tarayıcının en
+      başından beri sahip olduğu iki işlevdir &mdash; <code>btoa</code> ve
+      <code>encodeURIComponent</code> &mdash; ve bir resmin başka türlü yazılmak
+      için bir sunucuya gidip gelmesinin en ufak bir teknik sebebi yoktur. Bunu
+      yapmak için dosyanızı yükleyen her dönüştürücü, onu sizin sebeplerinizle
+      değil kendi sebepleriyle yüklüyordur.
+    </p>
+    <p>
+      <a href="../../resmi-base64e-donusturme/">Buradaki araç</a> onu hiçbir yere
+      göndermez: sayfanın <code>Content-Security-Policy</code>'si iletişim
+      kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu siteye ait
+      değildir. Size söylenmesindense denetlemeyi tercih ederseniz sayfayı
+      yükleyin, internet bağlantısını kesin ve yine de bir şey kodlayın.
+      <a href="../dosya-yuklemek-guvenli-mi/">Çevrimiçi dönüştürücülere dosya
+      yüklemek güvenli mi?</a> herhangi bir araçta çalıştırabileceğiniz üç denetim
+      daha anlatıyor.
+    </p>
+  </section>

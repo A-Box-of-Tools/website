@@ -1,0 +1,156 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر ملفات PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <ul id="source-list" class="source-list" hidden></ul>
+  </section>
+
+  <!-- Step 2 &mdash; the pages -->
+  <section class="card" id="pages-card" hidden>
+    <h2><span class="step">2</span> رتّب الصفحات</h2>
+
+    <p class="card-lede">
+      كل صفحة من كل ملف اخترته، بالترتيب الذي ستخرج به.
+      اسحب واحدة من مقبضها <span class="grip" aria-hidden="true">&#8942;&#8942;</span>
+      لتحريكها، أو أدِرها بالأسهم، أو أخرِجها بعلامة
+      &times;. ولم يُكتَب شيء هنا بعد &mdash; فالمستند يُجمَّع حين تضغط الزر في
+      الخطوة 4.
+    </p>
+
+    <div class="toolbar">
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="reverse" class="ghost">اعكس</button>
+        <button type="button" id="rotate-all" class="ghost">أدِر كل صفحة</button>
+        <button type="button" id="restore" class="ghost">أعِدها كما جاءت</button>
+        <button type="button" id="clear-all" class="ghost danger">ابدأ من جديد</button>
+      </div>
+    </div>
+
+    <div class="range-row">
+      <label for="range">الصفحات</label>
+      <input type="text" id="range" placeholder="1-3, 8, 12-" autocomplete="off"
+             spellcheck="false" aria-describedby="range-note">
+      <button type="button" id="range-keep" class="ghost">أبقِ هذه وحدها</button>
+      <button type="button" id="range-drop" class="ghost">أزِل هذه</button>
+      <button type="button" id="range-turn" class="ghost">أدِر هذه</button>
+    </div>
+    <p id="range-note" class="field-note">
+      بالأرقام أدناه، وهي تُعاد ترقيماً مع عملك. وتعمل كذلك <code>odd</code>
+      للفردية و<code>even</code> للزوجية و<code>all</code> للكل
+      و<code>last</code> للأخيرة.
+    </p>
+    <p id="range-error" class="error" role="alert" hidden></p>
+
+    <ul id="page-list" class="page-list"></ul>
+  </section>
+
+  <!-- Step 3 &mdash; one file, or several -->
+  <section class="card" id="output-card" hidden>
+    <h2><span class="step">3</span> مستند واحد، أو عدة</h2>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">كيف تُكتَب الصفحات</legend>
+      <div class="presets" id="split-modes" role="radiogroup" aria-label="كيف تُكتَب الصفحات">
+        <label class="preset">
+          <input type="radio" name="split" value="single" checked>
+          <span class="preset-body">
+            <strong>مستند واحد</strong>
+            <span class="preset-note">كل ما أعلاه، بذلك الترتيب، في ملف PDF واحد.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="every">
+          <span class="preset-body">
+            <strong>قسِّم كل كذا صفحة</strong>
+            <span class="preset-note">
+              مسحٌ طويل مقطوع إلى فصول من
+              <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
+                     inputmode="numeric" aria-label="عدد الصفحات في كل ملف">
+              صفحة.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="at">
+          <span class="preset-body">
+            <strong>قسِّم عند الصفحة&hellip;</strong>
+            <span class="preset-note">
+              اقطع قبل
+              <input type="text" id="split-at" placeholder="5, 9, 14" autocomplete="off"
+                     spellcheck="false" aria-label="أرقام الصفحات التي يُقطَع قبلها">
+              &mdash; وكل واحدة منها تبدأ ملفاً جديداً.
+            </span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="split" value="each">
+          <span class="preset-body">
+            <strong>كل صفحة وحدها</strong>
+            <span class="preset-note">ملف PDF لكل صفحة. مفيد لسحب ورقة توقيع.</span>
+          </span>
+        </label>
+        <label class="preset" id="by-file-preset" hidden>
+          <input type="radio" name="split" value="file">
+          <span class="preset-body">
+            <strong>رجوعاً إلى الملفات التي جاءت منها</strong>
+            <span class="preset-note">مستند لكل ملف اخترته، وتعديلاتك محفوظة.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <label class="check">
+      <input type="checkbox" id="keep-bookmarks" checked>
+      <span>
+        <strong>أبقِ على الإشارات المرجعية</strong>
+        <span class="check-note">
+          الفهرس الذي جاء به كل ملف، معاد بناؤه في مقابل الصفحات الموجودة هنا
+          فعلاً: فالمُدخَل الذي أزلت صفحته يذهب، والذي ما زال فصله هنا يبقى.
+          ودمجُ عدة ملفات يضع إشارات كل واحد تحت عنوان مسمّى باسمه.
+        </span>
+      </span>
+    </label>
+
+    <p id="output-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Step 4 &mdash; the one click -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> ضُمَّه</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">ابنِ المستند</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>نزِّل</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <ul id="file-list" class="out-list" hidden></ul>
+    </div>
+  </section>
+</main>

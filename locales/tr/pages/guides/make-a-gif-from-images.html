@@ -1,0 +1,221 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      <a href="../../gif-olusturma/">GIF Yapıcı</a>'yı açın, resimleri bırakın,
+      oynamaları gereken sıraya dizin, her karenin ne kadar tutulacağını belirleyin
+      ve GIF'i yapın. Siz kaydetmeden önce sayfada oynar.
+    </p>
+    <p>
+      Aşağıdaki her şey, sonrasında ters giden iki şeyle ilgili: dosya beklenenden
+      çok daha büyüktür ya da canlandırma, sayıların söylediğinden yavaş oynar.
+      İkisinin de belirli sebepleri var ve hiçbiri araçtaki bir kusur değil.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir GIF neden beklediğinizden bu kadar büyük</h2>
+    <p>
+      640 pikselde 20 karelik bir GIF alışıldık biçimde 8 ila 15 MB'dir. Aynı
+      canlandırma MP4 olarak birkaç yüz kilobayttır. Bu, kötü yapılmış bir GIF
+      değildir; biçimin kendisi budur.
+    </p>
+    <p>
+      Kullandığınız diğer her hareketli görüntü biçimi <em>farkları</em> saklar. Bir
+      video kodlayıcısı bir tam kare yazar ve ondan sonraki kareler için yalnızca
+      neyin ve nereye hareket ettiğini yazar &mdash; durağan bir arka planın önünde
+      konuşan birinin videosunun kare başına neredeyse hiçbir şeye mal olmamasının
+      sebebi budur. Bir GIF bunu yapamaz. Her kare, kayıpsız bir sıkıştırıcıdan
+      geçirilmiş bütün pikseller olarak saklanır ve alet çantasının tamamı budur.
+    </p>
+    <p>
+      Ayrıca bir kalite ayarı da yoktur; çünkü kısılacak kayıplı bir adım yoktur.
+      %60 kalitede bir JPEG, arkasında gerçek bir kaydırak olan gerçek bir seçimdir;
+      bir GIF'in dengi yoktur. Yani boyut kabaca
+      <strong>alan &times; kare sayısı</strong>dır ve onu oynatmanın tek yolu bu iki
+      sayıdan birini oynatmaktır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Onu gerçekten küçülten üç şey</h2>
+    <p>
+      Yardım ettikleri sırayla:
+    </p>
+    <p>
+      <strong>1. Küçültün.</strong> Bu, birkaç seçenekten biri değil, seçeneğin
+      kendisidir. Boyut alandır; yani uzun kenarı yarıya indirmek dosyayı dörtte
+      bire düşürür: 640&nbsp;pikselden 320&nbsp;piksele inmek 12&nbsp;MB'yi yaklaşık
+      3&nbsp;MB'ye çevirir. Bir web sayfasındaki ya da bir sohbet penceresindeki bir
+      GIF zaten birkaç yüz piksel olarak izleniyor. Araçtaki varsayılanın
+      480&nbsp;piksel olmasının sebebi tam olarak budur ve 320&nbsp;piksel gayet
+      saygın bir cevaptır.
+    </p>
+    <p>
+      <strong>2. Daha az kare kullanın.</strong> Beşte bir saniye tutulan on kare,
+      onda bir saniyede yirmi kareyle aynı iki saniyelik canlandırmadır ve dosyanın
+      yarısıdır. Akıcılık doğrudan orantılı olarak bayta mal olur, yani onu
+      yalnızca hareketin gerektirdiği yerde harcayın.
+    </p>
+    <p>
+      <strong>3. Titremeyi kapatın ve renkleri düşürün.</strong> Bu, sezgiye
+      aykırıdır. Titreme (dither), paletin sahip olmadığı renkleri taklit etmek için
+      dönüşümlü piksellerden ince bir desen serper ve o desen
+      <em>gürültü</em>dür &mdash; ki kayıpsız bir sıkıştırıcının sıkıştıramadığı şey
+      tam olarak budur. Düz çizimlerde, ekran görüntülerinde ve çizgi çalışmalarında
+      onu kapatmak dosyanın üçte birini alabilir ve üstelik daha iyi görünebilir.
+      Fotoğraflarda ise kazanç karşılığında görünür bantlanma takas eder; ikisini de
+      deneyin ve bakın.
+    </p>
+    <p>
+      256'dan 64 renge düşmek de yardımcı olur, ama insanların umduğundan az: piksel
+      kaldırmak yerine kod kelimelerini kısaltır.
+    </p>
+    <p>
+      Bunların hiçbiri onu yeterince küçültmüyorsa dürüst cevap, yaptığınız şeyin
+      bir video olduğudur.
+      <a href="../resimleri-videoya-donusturme/">Aynı görselleri bir MP4'e
+      çevirmek</a> belki de onda biri boyutunda olacaktır ve bir GIF'i bir
+      <code>&lt;img&gt;</code> etiketinden başka bir şey için kabul eden her yer
+      &mdash; her sosyal ağ dâhil &mdash; onu yüklemede yine de videoya
+      dönüştürür.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir GIF gerçekte ne kadar hızlı oynayabilir</h2>
+    <p>
+      Biçim, her karenin gecikmesini saniyenin yüzde biri cinsinden saklar; bu da
+      0,01 sn isteyip saniyede yüz kare alabileceğinizi düşündürür.
+      Alamazsınız.
+    </p>
+    <p>
+      Her tarayıcı, saniyenin yüzde ikisinin altındaki bir gecikmeyi saniyenin onda
+      birine yükseltir. Kural, sayfaların olabildiğince hızlı oynasın diye
+      ayarlanmış canlandırmalarla dolu olduğu ve günün makinelerinin buna
+      dayanamadığı 1990'lardan kalmadır ve konduğu her sebepten uzun yaşamıştır.
+      Hiçbir zaman kaldırılmadı ve bugün sizin GIF'iniz için de geçerli.
+    </p>
+    <p>
+      Yani pratikteki aralık şudur:
+    </p>
+    <ul>
+      <li><strong>0,02 sn</strong> (saniyede 50 kare) &mdash; bir GIF'in olmasına
+      izin verilen en hızlı hâl ve genellikle gerektiğinden hızlı.</li>
+      <li><strong>0,05 sn</strong> (saniyede 20 kare) &mdash; akıcı canlandırma ve
+      hareket canlandırıyorsanız başlanacak yer.</li>
+      <li><strong>0,1 sn</strong> (saniyede 10 kare) &mdash; klasik GIF görünümü.
+      Karelerin yarısı, dosyanın yarısı ve bilerek yapılmış gibi okunur.</li>
+      <li><strong>0,5 sn ve üstü</strong> &mdash; bir slayt gösterisi. Her resme
+      canlandırılıyor değil bakılıyordur.</li>
+    </ul>
+    <p>
+      0,02 sn'nin altındaki hiçbir şey sunulmuyor; çünkü var olan her tarayıcıda
+      sessizce 0,1 sn'ye dönüşecek bir sayıdır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Palet ve gerçekte neyi seçtiği</h2>
+    <p>
+      Bir GIF karesi en fazla 256 renk tutar. Bir fotoğrafta on binlerce renk
+      vardır. Birinin bunların 256'sını seçmesi gerekir ve o seçim, çıktının nasıl
+      göründüğüdür &mdash; başka her ayardan çok.
+    </p>
+    <p>
+      Araç bunu yapmanın iki yolunu sunar:
+    </p>
+    <p>
+      <strong>Her kare için en iyi renkler</strong>, her resme kendi 256'sını verir.
+      En keskin görünen budur ve her biri zaten tamamen farklı bir küme isteyen,
+      birbiriyle ilgisiz fotoğraflardan oluşan bir set için doğrudur.
+    </p>
+    <p>
+      <strong>Bütün GIF için tek palet</strong>, tüm karelerden aynı anda tek bir
+      tablo kurar. Kareler bir <em>dizi</em> olduğunda kullanın &mdash; aynı sahne,
+      birkaç an arayla. Kare başına paletle, resimdeki herhangi bir değişiklik hangi
+      256 rengin seçildiğini değiştirir ve arka planın tamamı her karede hafifçe
+      renk kaydırır. Ev yapımı bir GIF'i ev yapımı gösteren şey o titreşimdir.
+      Paylaşılan bir palet onu kaldırır ve üstüne daha küçük bir dosya yapar; çünkü
+      tablo her karede değil bir kez yazılır.
+    </p>
+    <p>
+      Daha az renk &mdash; 128, 64, 32 &mdash; düz olan her şeyde denemeye değer.
+      İçinde sekiz renk olan bir logo canlandırması 32'de hiçbir şey kaybetmez ve
+      farkı bir fotoğrafta anında görürsünüz.
+    </p>
+  </section>
+
+  <section>
+    <h2>Saydamlık tek bittir ve hikâyenin tamamı budur</h2>
+    <p>
+      Bir GIF pikseli ya tam boyalıdır ya da tamamen görünmezdir. Arası yoktur: %50
+      gölge yok, yumuşak kenar yok, geçiş yok.
+    </p>
+    <p>
+      Yani kaynak görsellerinizde saydamlık varsa onu açmak saydam alanları saydam
+      tutar &mdash; ama şekilden hiçliğe bir geçiş olan her kenar yumuşatması, tam
+      ortadan kesilerek sert ve gözle görülür biçimde tırtıklı bir kenara dönüşür.
+      En çok yuvarlak şekiller ve metin zarar görür.
+    </p>
+    <p>
+      GIF'in hangi rengin üstünde duracağını biliyorsanız onu o renge düzleştirmek
+      her seferinde daha iyi görünecektir. Saydamlığı yalnızca üstüne düşeceği arka
+      plan gerçekten bilinmiyorsa koruyun &mdash; ve cevap "her arka planda yumuşak
+      bir kenara ihtiyacı var" ise bunun biçimi GIF değil, hareketli PNG ya da
+      WebP'dir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sıra, zamanlama ve döngünün yerine oturması</h2>
+    <p>
+      Keşfetmekten daha hızlı öğrenilebilecek birkaç şey:
+    </p>
+    <p>
+      <strong>Ada göre sıralama düzgün sayar.</strong> Bir render ya da dışa
+      aktarma dizisi kastettiğiniz gibi sıralanır; yani <code>frame_2</code>,
+      <code>frame_10</code>'dan sonra değil önce düşer. Tarihe göre sıralamak bir
+      kamera rulosunu çekildiği sıraya geri koyar ki dosya adları 0001'den yeniden
+      başlamışsa istediğiniz de budur.
+    </p>
+    <p>
+      <strong>Son kareye daha uzun süre verin.</strong> Her karesi aynı uzunlukta
+      olan bir döngü amansız okunur. Son kareyi yarım saniye kadar tutmak göze
+      dinlenecek bir yer verir ve bütün işi kasıtlı gösterir. Bunun için her karenin
+      kendi tutma süresi var.
+    </p>
+    <p>
+      <strong>Bir döngü sıçramamalı.</strong> Son kareden hemen sonra ilki gelir;
+      yani bu ikisi çok farklıysa döngü şak diye kopar. Ya onları birbirine
+      benzetin ya da son kareyi tutarak kesmeyi bilerek kullanın.
+    </p>
+    <p>
+      <strong>Bir kez oynat, bir kez oynat demektir.</strong> Bazı araçlar bir
+      döngü sayısı olarak bir yazar; çözücüler bu konuda hiçbir zaman tam
+      anlaşamamıştır &mdash; birkaçı iki kez oynatır. Burada "Bir kez oynat"ı
+      seçmek hiçbir döngü bilgisi yazmaz ki şimdiye kadar kurulmuş her çözücü buna
+      aynı şekilde davranır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bunun neden bir sunucuya ihtiyacı yok</h2>
+    <p>
+      Bir GIF yapmak, tarayıcının sunmadığı iki iştir: paleti seçmek ve pikselleri
+      LZW ile sıkıştırmak. İkisi de büyük değildir. İkisi birlikte belki dört yüz
+      satırdır, depoda yazılıdır ve buradaki her şey gibi kendi makinenizde çalışır
+      &mdash; sayfanın ağ fişi çekilmişken çalışmaya devam etmesinin sebebi de
+      budur.
+    </p>
+    <p>
+      Bu kadar çok GIF yapıcısının yükleme yapmasının sebebi işin zor olması
+      değildir. Reklamın ve hesapların bulunduğu yerin sunucu olmasıdır. Bir
+      fotoğraf setini bir canlandırmaya çevirmenin, fotoğraflarınızın bulundukları
+      odadan ayrılmasını gerektiren bir yanı yoktur.
+    </p>
+    <p>
+      <a href="../dosya-yuklemek-guvenli-mi/">Çevrimiçi dönüştürücülere dosya
+      yüklemek güvenli mi?</a> size bu araç dâhil herhangi bir araç hakkında aynı
+      şeyi söyleyecek dört denetim anlatıyor.
+    </p>
+  </section>

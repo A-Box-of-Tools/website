@@ -230,5 +230,5 @@ then
 - the viewer opened from the thumbnail and from the button, closed by Escape, by
   the backdrop and by its own button, with the compare toggle swapping a 500 x
   333 result for its 1200 x 1600 original in place;
-- and the whole of the above again against the **mangled** build, which is what
+- and the whole of the above again against the **minified** build, which is what
   actually deploys.

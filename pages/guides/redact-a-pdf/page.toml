@@ -1,0 +1,40 @@
+#
+# Guide: redacting a PDF so the words are actually gone.
+#
+# Written for the person who is about to file, send or publish a document with
+# something private in it, and who has been told - or has worked out - that the
+# black rectangle they drew in a reader is not enough. The page leads with how
+# to check a file, because that is the part nobody is taught and the part that
+# would have caught every published failure of this kind.
+#
+# The other half of it is the case a PDF has that a picture does not: the text
+# in a PDF exists twice over, in the page and in the bookmarks, comments, form
+# fields and properties around it, and a redaction that only handles the first
+# is the second-most common way this goes wrong.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/redact-a-pdf"
+kind = "guide"
+nav = "Redacting a PDF"
+group = "doing-the-job"
+tool = "redact-pdf"
+
+title = "How to Redact a PDF So the Text Is Really Gone"
+description = "A black box drawn in a PDF reader usually leaves the words underneath it, and copy-and-paste gets them straight back. What a real redaction removes, the four places a word hides outside the page, and how to check a file before you send it."
+
+heading = "How to redact a PDF so the text is really gone"
+lede = """
+    A black rectangle over a name and a name that has been deleted look
+    identical on screen. One of them survives being selected and copied. This is
+    the difference, the places a word hides that are not on the page at all, and
+    the thirty-second check that tells you which of the two you have."""
+
+updated = "25 August 2026"
+published = "2026-08-25"
+lastmod = "2026-08-25"
+
+og_title = "How to redact a PDF so the text is really gone"
+og_description = "Why a black box in a PDF reader is usually not a redaction, the four places a word hides outside the page, and how to check a file before you send it."
+og_image_alt = "abox.tools - tools that never touch a server"

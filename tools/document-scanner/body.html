@@ -1,0 +1,366 @@
+<main>
+  <!-- Step 1 &mdash; the photographs -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the photos</h2>
+
+    <p class="card-lede">
+      A photo of each page, taken from anywhere above it. The whole page has to
+      be in the frame, and the four corners want to be visible or nearly so
+      &mdash; everything else, the angle, the shadow, the desk it is lying on,
+      is what this tool is for. Add several and they become the pages of one
+      document, in the order you add them.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">Find every page again</button>
+        <button type="button" id="clear-all" class="ghost danger">Remove all</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- Step 2 &mdash; the corners -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Put the corners on the page</h2>
+
+    <p id="edit-empty" class="field-summary">
+      Choose a photo and it appears here, with its four corners found for you.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Press anywhere on the photo and the nearest corner comes to your finger;
+        drag it onto the corner of the page. <kbd>Tab</kbd> reaches a corner from
+        the keyboard, the arrow keys move it one pixel and <kbd>Shift</kbd> ten.
+        Nothing here is final &mdash; the scan is taken from wherever the four
+        corners end up.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">Find the corners again</button>
+        <button type="button" id="whole-photo" class="ghost">Use the whole photo</button>
+        <button type="button" id="turn-left" class="ghost">Turn left</button>
+        <button type="button" id="turn-right" class="ghost">Turn right</button>
+        <button type="button" id="undo" class="ghost" disabled>Undo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the cleanup -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> Clean it up</h2>
+
+    <p id="clean-empty" class="field-summary">
+      The straightened page appears here once there is a photo to straighten.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        What is below is the real result, produced by the same code that writes
+        the file &mdash; straightened, and with the uneven light divided out.
+        It is drawn at screen size while you choose; the file itself is made at
+        the photo's own resolution.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          Straightening&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>What to do with the light and the colour</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>Colour, evened out</strong>
+            <span class="check-note">
+              The paper is measured across the page and divided out, so the
+              shadow goes and the paper comes back white, while a stamp, a
+              signature in blue ink or a highlighted line stays the colour it
+              was. The one to use when the colour is part of the document.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>Greyscale</strong>
+            <span class="check-note">
+              The same evening-out, without the colour. Smaller than colour and
+              kinder to a photograph or a signature than black and white is.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>Black and white</strong>
+            <span class="check-note">
+              Every pixel is decided against its own surroundings rather than
+              against one number for the whole page, which is what keeps the
+              writing in a shadow readable. This is what makes a scan small: a
+              twenty page contract comes out under a megabyte this way and
+              at something like fifteen as photographs. It has no half tones, so
+              anything with a photograph on it should not use it.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>Leave it alone</strong>
+            <span class="check-note">
+              Straightened and nothing else. For a page where the paper itself
+              matters &mdash; something old, something coloured, a photograph.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">How hard to push it</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        The setting applies to every page. Pages in one document that were
+        cleaned up differently look like two documents.
+      </p>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> Save the document</h2>
+
+    <p class="card-lede">
+      The PDF is written here, in this page's memory, a page at a time. There is
+      no server on the other end of this tool to send a payslip, a passport or a
+      contract to, and nothing in the code that would send one if there were.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Page size</label>
+        <select id="page-size">
+          <option value="fit" selected>Fit the sheet to the page itself</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8.5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8.5 &times; 14 in</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Print resolution</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; office scanner</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          How large a sheet a given number of pixels is called. It changes the
+          size the document prints at, and not one pixel of the scan.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">Margin</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="Margin in millimetres">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Largest side</label>
+        <select id="max-side">
+          <option value="1600">1600 pixels &mdash; small</option>
+          <option value="2400" selected>2400 pixels</option>
+          <option value="3500">3500 pixels</option>
+          <option value="0">However big the photo allows</option>
+        </select>
+        <p class="field-note">
+          A ceiling on the straightened page. A photograph of a page holds far
+          more pixels than the page is worth, and 2400 down the long side is
+          about 200 DPI on A4.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Quality</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          For the colour and greyscale modes, which are stored as JPEG. Black and
+          white pages are stored exactly, so this does nothing to them.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">Document title <span class="optional">(optional)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="Left blank, the PDF carries no title">
+        <p class="field-note">
+          The only thing written into the document besides the pages. There is no
+          date, no author and nothing about this machine &mdash; see
+          <code>src/document.js</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>Save as PDF</button>
+      <button type="button" id="save-images" class="ghost big" disabled>Save the pages as images</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>The finished file</h3>
+        <a id="download" class="primary as-button" href="#" download>Download</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Open it before you send it. What is in the document is what was on screen
+        at step 3, page for page.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">The four corners were found. Check them, and
+      drag any that landed wrong.</span>
+    <span data-phrase="detect.unsure">The edges of the page were not clear enough
+      to be sure of. These corners are a guess &mdash; drag them onto the page
+      before you go on.</span>
+    <span data-phrase="detect.nothing">No page could be picked out of this photo,
+      so the corners are at the edges of it. Drag them onto the page.</span>
+    <span data-phrase="detect.flat">There is nothing to find in this picture
+      &mdash; it has no edges in it at all.</span>
+    <span data-phrase="detect.tiny">This picture is too small to find a page
+      in.</span>
+    <span data-phrase="detect.edited">These corners are yours now. &ldquo;Find the
+      corners again&rdquo; measures the photo afresh.</span>
+
+    <span data-phrase="corner.tl">Top left corner</span>
+    <span data-phrase="corner.tr">Top right corner</span>
+    <span data-phrase="corner.br">Bottom right corner</span>
+    <span data-phrase="corner.bl">Bottom left corner</span>
+    <span data-phrase="corner.at">{corner}, at {x} across and {y} down. The arrow
+      keys move it, and Shift with them moves it ten pixels at a time.</span>
+
+    <span data-phrase="page.select">Edit page {index}</span>
+    <span data-phrase="page.remove">Remove page {index}</span>
+    <span data-phrase="page.earlier">Move page {index} earlier</span>
+    <span data-phrase="page.later">Move page {index} later</span>
+    <span data-phrase="page.count">{count} page</span>
+    <span data-phrase="page.counts">{count} pages</span>
+
+    <span data-phrase="paper.a">A4 or A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">a business card</span>
+    <span data-phrase="shape.known">The page came out {ratio}, which is the shape
+      of {paper}.</span>
+    <span data-phrase="shape.sideways">The page came out {ratio}, which is the
+      shape of {paper} on its side.</span>
+    <span data-phrase="shape.unknown">The page came out {ratio}, which is not a
+      standard sheet.</span>
+
+    <span data-phrase="method.perspective">The shape was worked out from the
+      perspective in the photo, so it is the shape of the page rather than the
+      shape it looked in the picture.</span>
+    <span data-phrase="method.edges">The photo was taken square-on, so the shape
+      is measured straight off the edges.</span>
+
+    <span data-phrase="quality.good">{width} by {height} pixels, about {dpi} DPI
+      across a page that size &mdash; enough to print.</span>
+    <span data-phrase="quality.fair">{width} by {height} pixels, about {dpi} DPI
+      across a page that size. Fine on screen, a little soft on paper.</span>
+    <span data-phrase="quality.low">{width} by {height} pixels, about {dpi} DPI
+      across a page that size. Take the photo closer if this has to be
+      printed.</span>
+    <span data-phrase="quality.pixels">{width} by {height} pixels.</span>
+    <span data-phrase="coverage.note">The page filled {percent}% of the photo.</span>
+    <span data-phrase="coverage.small">The page filled only {percent}% of the
+      photo, so most of what was photographed was desk. Closer next time.</span>
+
+    <span data-phrase="strength.gentle">Gentle: the paper is evened out and little
+      else. For a page with faint pencil or a photograph on it.</span>
+    <span data-phrase="strength.middling">The usual setting: the paper comes back
+      white and printed text comes back black.</span>
+    <span data-phrase="strength.hard">Hard: anything grey is pushed to black or to
+      white. Cleanest on a plain printed page, and destructive on anything with a
+      picture on it.</span>
+
+    <span data-phrase="busy.page">Page {done} of {total}&hellip;</span>
+    <span data-phrase="busy.writing">Writing the document&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">Stored as one bit per pixel and compressed
+      exactly, which is why it is this small.</span>
+    <span data-phrase="result.jpeg">The pages are stored as JPEG at the quality
+      you chose.</span>
+    <span data-phrase="result.png">The pages are stored as PNG, which is lossless
+      and is what a picture of two colours wants &mdash; JPEG would be both
+      larger and blurred around every letter.</span>
+    <span data-phrase="result.clean">No date, no author, no machine name: the only
+      thing in the document besides the pages is the name of this tool.</span>
+
+    <span data-phrase="size.fit">Every sheet becomes the size its own page really
+      is, at the resolution above. Nothing is letterboxed.</span>
+    <span data-phrase="size.named">Every page is put on a {name} sheet, inside the
+      margin, whatever shape it came out.</span>
+
+    <span data-phrase="error.decode">This browser could not open {name}. If it is
+      a HEIC photo from an iPhone, convert it first.</span>
+    <span data-phrase="error.none">Choose at least one photo first.</span>
+    <span data-phrase="error.failed">Something went wrong making the file:
+      {detail}</span>
+  </div>
+</main>

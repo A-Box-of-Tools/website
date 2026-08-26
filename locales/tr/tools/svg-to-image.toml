@@ -1,0 +1,313 @@
+#
+# SVG'den Görsele - Türkçe.
+#
+# Overrides for tools/svg-to-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# viewBox, @2x, @3x ve image-set() olduğu gibi kalıyor: biri dosyanın içinde
+# harfi harfine böyle yazar, diğerleri de araçların beklediği dosya adları ve
+# bir CSS işlevidir.
+#
+
+name = "SVG'den Görsele"
+heading = "SVG'den&nbsp;Görsele <span class=\"h1-kw\">&mdash; bir vektörü istediğiniz boyutta PNG, JPEG ya da WebP'ye çevirin</span>"
+tagline = "Boyutu siz söyleyin. Bir vektörün kaybedecek kendi boyutu yok."
+
+title = "SVG'den PNG'ye &mdash; Bir Vektörü İstediğiniz Boyutta Çevirin, Yüklemesiz"
+description = "Bir SVG'yi tarayıcınızda istediğiniz boyutta PNG, JPEG ya da WebP'ye dönüştürün. Genişliği, bir çarpanı ya da bir kutuyu söyleyin; @2x ve @3x kopyalarını da alın. Saydamlık korunur, hiçbir şey yüklenmez."
+og_title = "Bir SVG'yi yüklemeden, istediğiniz boyutta PNG'ye çevirin"
+og_description = "Bir vektörün kendi piksel boyutu yoktur, yani sayıyı siz seçersiniz - 32 ya da 8000, ikisinde de aynı keskinlikte. Hepsi kendi makinenizde çalışır."
+og_image_alt = "SVG'den Görsele - bir vektörü istediğiniz boyutta PNG, JPEG ya da WebP'ye çevirin"
+
+pledge = """
+    Çizim, onu az önce ekranınıza koyan aynı motor tarafından piksele çevrilir.
+    Dosyanız diskinizden okunur, kök etiketi <code>src/svg.js</code> içindeki,
+    okuyabileceğiniz yüz satır tarafından istediğiniz boyuta göre yeniden yazılır
+    ve tarayıcınızın zaten beraberinde getirdiği bir tuvale çizilir. Bu aracın
+    hiçbir türde ağ özelliği yoktur &mdash; getirecek bir şey yok, gönderecek bir
+    şey yok &mdash; ve olsaydı bile bu sayfanın öbür ucunda bir logonun
+    gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir şeyi piksele çevirin. Tek bir istek bile bir dosya, bir küçük
+      resim, bir dosya adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da
+      internet bağlantısını kesip yine de bir tanesini dönüştürün."""
+
+read_first = """
+, bir dosyanın kendi boyutunun nasıl okunduğu ve kök
+      etiketinin nasıl yeniden yazıldığı için <code>src/svg.js</code> ve piksele
+      çevirme işini yapan sekiz satır için <code>src/render.js</code> &mdash; bir
+      &lt;img&gt;, bir <code>drawImage</code> ve bir <code>toBlob</code>;
+      aralarında başka hiçbir şey yok."""
+
+howto_heading = "Bir SVG, yüklenmeden nasıl PNG'ye dönüştürülür"
+
+card = """
+            Bir SVG'nin kendi piksel boyutu yoktur, yani sayıyı siz seçersiniz
+            &mdash; 32 ya da 8000 ve ikisinde de aynı keskinlikte."""
+
+[words]
+plural = "SVG dosyaları"
+choose = "bir SVG"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Çiziminizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir yerde
+      <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Piksele çeviricinin tamamı, kendi dosyanızın
+      bir yığınını tutan bir <code>&lt;img&gt;</code>, bir tuvale tek bir
+      <code>drawImage</code> ve tek bir <code>canvas.toBlob</code>."""
+
+[[privacy]]
+title = "Bir SVG bir belgedir ve bu, onun eyleme geçemediği kiptir."
+body = """
+ Bir SVG bir
+      <code>&lt;script&gt;</code>, uzak bir
+      <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code>, bir stil
+      sayfası ve bir web yazı tipi taşıyabilir. Bir <code>&lt;img&gt;</code>
+      üzerinden çizildiğinde ise şartnamenin <em>güvenli durağan kip</em> dediği
+      durumdadır: betik çalışmaz ve o adreslerin hiçbiri getirilmez. Bu, bizim bir
+      sözümüz değil tarayıcının bir garantisidir ve bu sayfanın, hiç görmediği bir
+      dosyayı, o dosya eve haber veremeyecek şekilde açabilmesinin sebebi de
+      budur."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi de Buy Me a Coffee'den geliyor. Hiçbirine çiziminiz
+      hakkında bir şey verilmiyor. Bir dosyayı okuyan, boyutlandıran ya da çizen
+      her satır bu kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "SVG'yi seçin."
+body = """
+ Seçiciye bir tane bırakın ya da bir klasör
+      dolusunu seçip hepsini tek seferde dönüştürün. Tarayıcı dosyayı doğrudan
+      diskinizden okur; siz bunu yaparken hiçbir yere hiçbir şey gönderilmez. Her
+      satır, dosyanın kendini hangi boyutta sandığını söyler &mdash; ve o boyut
+      <code>viewBox</code>'ından geldiyse ya da dosya hiçbir şey bildirmediği için
+      varsayıldıysa bunu farklı söyler."""
+
+[[howto]]
+title = "Ne kadar büyük olacağını söyleyin."
+body = """
+ Dosyanın kendi boyutunun bir
+      çarpanı en hızlı cevaptır ve bir yığın için doğru olandır: her çizim kendi
+      başlangıç noktasından ölçeklenir, böylece bir simge seti orantısını korur.
+      Bunun dışında bir genişlik, bir yükseklik, en uzun kenar ya da iki kenarı da
+      verilmiş bir kutu belirtin. Burada büyük bir sayının, bir fotoğraftaki gibi
+      bir bedeli yoktur &mdash; çizim o boyutta yeniden çizilir, o boyuta
+      esnetilmez."""
+
+[[howto]]
+title = "Gerekirse yüksek yoğunluklu kopyaları ekleyin."
+body = """
+ Bir telefon ve bir Retina
+      dizüstü, her CSS pikseli için iki ya da üç cihaz pikseli çizer; yani 200
+      piksellik bir logonun arkasında 400 ya da 600 piksellik bir dosya olmalıdır.
+      <code>@2x</code> ve <code>@3x</code> isteyin; Xcode'un, Android
+      araçlarının ve CSS <code>image-set()</code>'in beklediği adlarla çıksınlar
+      ve her biri ayrı ayrı yuvarlanmak yerine ilkinin tam iki ya da üç katı
+      olsun."""
+
+[[howto]]
+title = "Biçimi seçin ve saydamlığa karar verin."
+body = """
+ Bir sebebiniz yoksa PNG:
+      kayıpsızdır, saydamlığı korur ve düz renk onda iyi sıkışır. JPEG'in hiç
+      saydamlığı yoktur; bu yüzden siz seçseniz de seçmeseniz de bir arka plan
+      rengi boyanır &mdash; o olmadan her saydam piksel siyah çıkar. WebP ikisini
+      de yapar ve daha küçük bir dosya üretir; bedeli, onu okuyamayacak kadar eski
+      yazılımlardır."""
+
+[[howto]]
+title = "İndirmeden önce ön izlemeye bakın."
+body = """
+ Dosyayı yazan aynı kod
+      tarafından, sizin dosyanızdan, sizin makinenizde çizilir. Bir çizim piksele
+      dönüştüğünde iki şey değişir ve ikisi de burada görünür: yarım piksel
+      genişliğindeki bir saç teli çizgi grileşir ve varsa metin, webden getirilmiş
+      bir yazı tipiyle değil bu bilgisayarda bulunan bir yazı tipiyle çizilir."""
+
+[[howto]]
+title = "Dosyaları alın."
+body = """
+ Dosya başına bir indirme ya da yığının tamamı
+      tek bir zip olarak. Adlar geldikleri SVG'yi izler, kopyalarda
+      <code>@2x</code> ve <code>@3x</code> eklenir ve aynı adı alacak iki dosya,
+      biri sessizce diğerinin yerine geçmek yerine numaralandırılır."""
+
+[[faq]]
+q = "SVG'im herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        gördüğünüz diğer her resmi çizen aynı motor tarafından bir tuvale çizilir
+        ve bir indirme olarak geri verilir. Bu aracın hiçbir türde ağ özelliği
+        yoktur &mdash; hiçbir zaman bir şey getirmez ve hiçbir zaman bir şey
+        göndermez &mdash; ve sayfanın <code>Content-Security-Policy</code>'si
+        iletişim kurabileceği her adresi tek tek sayar; bunların hiçbiri bu siteye
+        ait değildir."""
+
+[[faq]]
+q = "Bir SVG'yi hangi boyutta piksele çevirmeliyim?"
+a = """
+        Onu okuyacak şey ne istiyorsa onu; görüleceği ekranın cihaz piksel
+        oranıyla çarpılmış hâlde. 200 CSS pikseli kaplayan bir logonun bir Retina
+        dizüstü için 400, güncel bir telefon için 600 piksele ihtiyacı vardır;
+        buradaki <code>@2x</code> ve <code>@3x</code> kopyaları da budur. Bir
+        uygulama simgesi ya da bir mağaza görseli için mağaza tam bir sayı söyler
+        ve o sayı odur. Size bir şey söylenmediğinde en uzun kenarda 1024 kullanışlı
+        bir varsayılandır: neredeyse her kullanım için yeterince büyük ve
+        e-postayla gönderilecek kadar küçük."""
+
+[[faq]]
+q = "Büyütmek kalite kaybettirir mi?"
+a = """
+        Hayır ve bu cevabın dürüstçe hayır olduğu tek yer burasıdır. Bir vektör
+        piksel değil talimattır; yani tarayıcı eğrileri, istenen boyutta yeniden
+        çizer. 24 piksellik bir simgeden çıkan 4000 piksel, 24'ün olduğu kadar
+        keskindir. Yapamayacağınız şey ters yöne gitmektir: bir kez PNG olduğunda
+        o da diğer her şey gibi pikseldir; bu yüzden sonucu sonradan
+        boyutlandırmak yerine ihtiyacınız olan boyutta piksele çevirin."""
+
+[[faq]]
+q = "SVG'imin genişliği ya da yüksekliği yok. Hangi boyutu alırım?"
+a = """
+        Varsa <code>viewBox</code>'ı &mdash; genişliği ve yüksekliği piksel değil
+        kullanıcı birimidir, ama dosyadaki tek sayılar onlardır ve bir tarayıcı
+        onları çizimin doğal boyutu olarak kabul eder. viewBox da yoksa sayfa,
+        satırın yanında <em>varsayılan</em> der ve bir <code>&lt;img&gt;</code>'in
+        onu çizeceği boyut olan 300&nbsp;&times;&nbsp;150'yi kullanır. Her iki
+        durumda da istediğiniz boyutu söyleyebilirsiniz ve dosya o boyutta
+        çizilir."""
+
+[[faq]]
+q = "PNG'de metin neden farklı görünüyor?"
+a = """
+        Çünkü yazı tipi SVG'nin içinde değildir. Metin çizen bir SVG bir yazı
+        tipini adlandırır ve onu bulmayı makineye bırakır; bir <code>@import</code>
+        ile Google Fonts'tan yazı tipi çeken bir dosya ise burada hiçbir şey alamaz:
+        bir <code>&lt;img&gt;</code> üzerinden çizilen bir SVG'nin hiçbir şey
+        getirmesine izin verilmez ve bu, onun dosyanızla eve haber vermesini
+        engelleyen kuralın aynısıdır. Çözüm, her tasarımcının zaten bildiği şeydir
+        &mdash; dışa aktarmadan önce metni çizim programında yollara dönüştürün. O
+        zaman metin geometridir ve her yerde aynı görünür."""
+
+[[faq]]
+q = "Aynı anda birkaç dosyayı dönüştürebilir mi?"
+a = """
+        Evet. Listedeki her SVG aynı ayarlarla çizilir ve yığın tek bir zip olarak
+        iner. Bir çarpan &mdash; &laquo;dosyanın istediği boyutun 4&times;'i&raquo;
+        &mdash; genellikle bir yığın için doğru ayardır; çünkü her çizim, hepsi
+        aynı piksel sayısına zorlanmak yerine kendi boyutundan ölçeklenir. O
+        dosyayı ön izlemeye koymak için herhangi bir satıra tıklayın."""
+
+[[faq]]
+q = "Bir boyut sınırı var mı?"
+a = """
+        Bizim değil tarayıcının sınırı. Bir tuval, bir kenarda 16.384 pikselin
+        biraz ötesinde pes eder ve iPhone ya da iPad'deki Safari yaklaşık 16,7
+        megapiksel alanda durur &mdash; 4096&nbsp;&times;&nbsp;4096. Bunun
+        üstünde sayfa, size boş bir görüntü vermek yerine uyarır; çünkü bir
+        tarayıcı tükendiğinde yaptığı şey budur: <code>toBlob</code> kendini
+        açıklayan bir hata bile vermeden hiçbir şey döndürür. 100 megapikselin
+        ötesinde araç reddeder, çünkü bu, tek bir bayt kodlanmadan önce
+        400&nbsp;MB tuval demektir."""
+
+[[faq]]
+q = "Saydamlığa ne oluyor?"
+a = """
+        PNG'de ve WebP'de korunur. JPEG'in hiç alfa kanalı yoktur; bu yüzden siz
+        isteseniz de istemeseniz de resmin tamamının arkasına bir renk boyanır
+        &mdash; o olmadan saydam olan her şey siyah çıkardı ki bu, JPEG'e değil
+        bir hataya benzer. PNG ile bir arka plan rengi seçmek de gayet olağan bir
+        istektir: çizimi bir delik bırakmak yerine o renge düzleştirir."""
+
+[[faq]]
+q = "İçinde betik ya da dış görsel olan bir SVG'yi okuyabilir mi?"
+a = """
+        Bir tanesini okuyabilir ve tam olarak bir tarayıcının çizmeye razı olduğu
+        parçaları çizer. Bir <code>&lt;img&gt;</code> üzerinden yüklenen bir SVG
+        <em>güvenli durağan kip</em>tedir: betikler çalışmaz, dış başvurular
+        getirilmez ve animasyon oynamaz &mdash; aldığınız şey ilk karedir. Yani
+        içinde uzak bir <code>&lt;image&gt;</code> olan bir dosya, o parça eksik
+        çıkar. Bu, tarayıcının sizin adınıza reddetmesidir ve bu sayfanın hiç
+        görmediği bir dosyayı güvenle açabilmesinin sebebidir."""
+
+[[faq]]
+q = "Bununla Görsel Boyutlandırıcı arasındaki fark ne?"
+a = """
+        Kaynağın ne olduğu. Görsel Boyutlandırıcı piksellerden başlar &mdash; bir
+        JPEG, bir PNG &mdash; yani onu büyütmek, hiç orada olmamış bir ayrıntıyı
+        uydurmak zorundadır. Bu araç ise bir çizimden başlar; yani uydurulacak bir
+        şey ve endişelenmeye değer bir üst sınır yoktur. Elinizdeki bir SVG ise
+        keskin bir sonuç veren budur; elinizdeki bir fotoğrafsa öbürüdür."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok.
+        Dosyaların sayısında ya da boyutunda da bir sınır yok, çünkü bunların
+        bedelini ödeyen bir sunucu yok &mdash; iş sizin kendi cihazınızda oluyor.
+        Sitede reklam var, masrafı karşılayan da o; reklamlara dosyalarınız
+        hakkında hiçbir şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: çiziminizi çizilmek üzere uzağa gönderen bir
+        araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Bir SVG'yi tarayıcıda istediğiniz boyutta PNG, JPEG ya da WebP'ye çevirin. Boyutu bir çarpanla, bir genişlikle, bir yükseklikle, en uzun kenarla ya da bir kutuyla belirleyin; @2x ve @3x kopyaları ekleyin; saydamlığı koruyun ya da düzleştirin ve bir yığını tek seferde dönüştürün. Hiçbir şey yüklenmez."
+features = [
+  "Vektörü her boyutta yeniden çizer, böylece sonuç hepsinde keskin olur",
+  "Bir çarpanla, bir genişlikle, bir yükseklikle, en uzun kenarla ya da yerleşimli bir kutuyla boyut",
+  "@2x ve @3x kopyaları; her biri iki kez yuvarlanmak yerine ilkinin tam katı",
+  "PNG, JPEG ve WebP; saydamlık korunmuş ya da bir renge düzleştirilmiş hâlde",
+  "Boyutu width, height ya da viewBox'tan okur ve hangisini kullandığını söyler",
+  "Bir tarayıcı tuvalinin gerçekte üretemeyeceği bir boyuttan önce uyarır",
+  "Ön izleme, dosyayı yazan aynı kod tarafından çizilir",
+  "Toplu işlem, tüm sonuçlar tek bir zip içinde",
+  "Dosyadaki betikler ve dış başvurular hiçbir zaman çalıştırılmaz ya da getirilmez",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Bir SVG'yi buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; bir seferde birkaç tane de olur"

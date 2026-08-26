@@ -87,13 +87,36 @@
 
     <div id="frame-controls" hidden>
       <p class="stage-hint" id="mark-hint">
-        Faites glisser les quatre points sur le sommet du crâne, le menton et
-        chaque pupille, puis appuyez sur <strong>Ajuster le cadre</strong>. Ces
-        quatre points constituent la totalité de ce que la règle mesure, et c'est
-        pour cela que cet outil vous demande de les placer plutôt que de les deviner
-        avec un détecteur de visage. Les points démarrent là où une photo en buste
-        les met d'habitude&nbsp;: c'est une position de départ, pas une mesure.
+        Le sommet du crâne, le menton et chaque pupille. Ces quatre points
+        constituent la totalité de ce qu&rsquo;une règle mesure, et le recadrage est
+        pris là où ils finissent&nbsp;: faites glisser celui qui est tombé à côté,
+        puis appuyez sur <strong>Ajuster le cadre</strong>. Les trouver consiste à
+        mesurer la photo elle-même&nbsp;: le bord de votre tête sur le mur derrière
+        vous, et les taches plus sombres où sont les yeux. Il n&rsquo;y a aucun
+        modèle là-dedans et rien n&rsquo;est téléchargé, et c&rsquo;est une position
+        de départ plutôt qu&rsquo;un verdict &mdash; d&rsquo;où le fait qu&rsquo;elle
+        vous appartient et que la ligne ci-dessous dit lequel des quatre elle
+        n&rsquo;a pas pu mesurer.
       </p>
+
+      <!--
+        Where the dots come from. Choosing to place them yourself leaves them
+        exactly where they are and stops anything moving them again; moving one
+        by hand chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="D&rsquo;où viennent les quatre points">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>Les trouver pour moi</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>Je les place moi-même</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
 
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
@@ -106,7 +129,7 @@
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="primary">Ajuster le cadre à la règle</button>
-        <button type="button" id="reset-marks" class="ghost">Remettre les points</button>
+        <button type="button" id="reset-marks" class="ghost">Rechercher le visage</button>
         <button type="button" id="whole-photo" class="ghost">Le plus grand cadre possible</button>
       </div>
 
@@ -187,4 +210,40 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. `{why}` is
+    filled in with one or more of the `marks.why.*` lines below, joined with
+    a semicolon; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">Les quatre ont été mesurés sur la photo&nbsp;: le sommet
+      du crâne d&rsquo;après le contour de votre tête, les pupilles d&rsquo;après ce
+      qu&rsquo;elles ont de sombre, le menton là où la mâchoire rejoint le cou.
+      Vérifiez-les quand même et déplacez ceux qui sont tombés à côté&nbsp;: le
+      recadrage est pris là où ils finissent.</span>
+    <span data-phrase="marks.rough">Placés, mais tout n&rsquo;a pas été mesuré. Vérifiez les quatre points avant
+      d&rsquo;ajuster le cadre.</span>
+    <span data-phrase="marks.none">Rien n&rsquo;a pu être mesuré sur cette photo. Les points sont à leur position
+      de départ &mdash; faites-les glisser sur le sommet du crâne, le menton et chaque
+      pupille.</span>
+    <span data-phrase="marks.manual">Les quatre points sont les vôtres et rien ne les
+      déplacera. Faites glisser chacun sur le sommet du crâne, le menton et une
+      pupille.</span>
+    <span data-phrase="marks.edited">Vous avez déplacé un point&nbsp;: les quatre sont donc les
+      vôtres désormais. &laquo;&nbsp;Les trouver pour moi&nbsp;&raquo; mesure à
+      nouveau la photo.</span>
+
+    <span data-phrase="marks.why.background">Le mur derrière vous n&rsquo;est pas assez uni pour
+      y détourer le contour d&rsquo;une tête.</span>
+    <span data-phrase="marks.why.top">La tête sort par le haut de la photo, il n&rsquo;y avait
+      donc pas de sommet du crâne à trouver.</span>
+    <span data-phrase="marks.why.eyes">Les yeux n&rsquo;ont pas pu être distingués, les deux ont
+      donc été posés là où une tête de cette taille les a d&rsquo;habitude.</span>
+    <span data-phrase="marks.why.chin">Le menton vient des proportions d&rsquo;une tête plutôt
+      que du contour de celle-ci.</span>
+
+    <span data-phrase="marks.button.again">Rechercher le visage</span>
+    <span data-phrase="marks.button.back">Remettre les points</span>
+  </div>
 </main>

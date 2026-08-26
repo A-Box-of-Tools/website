@@ -1,0 +1,17 @@
+#
+# Rehber: bir indirmeyi yanındaki sağlama toplamına karşı denetlemek - Türkçe.
+#
+
+nav = "Sağlama toplamı doğrulama"
+title = "Bir İndirme Sağlama Toplamıyla Nasıl Doğrulanır (ve Bu Neyi Kanıtlar)"
+description = "Windows, macOS ve Linux'ta ya da tarayıcınızda bir MD5 veya SHA-256 sağlama toplamı nasıl denetlenir, bir eşleşme gerçekte neyi kanıtlar ve bütün işi anlamsız kılan hata."
+heading = "Bir indirme, sağlama toplamına karşı nasıl denetlenir"
+lede = """
+    Bir indirme bağlantısının altındaki onaltılık satır, dosyanın el değmemiş
+    geldiğini kanıtlayabilesiniz diye oradadır. Karşılaştırmak yaklaşık bir dakika
+    sürer. Karşılaştırmanın ne değerde olduğunu &mdash; ve onu değersiz kılan tek
+    alışkanlığı &mdash; bilmek bu sayfanın geri kalanını alır."""
+updated = "23 Ağustos 2026"
+og_title = "Bir indirmeyi sağlama toplamına karşı denetlemek ve bunun neyi kanıtladığı"
+og_description = "Bir indirme bağlantısının altındaki onaltılık ne işe yarar, herhangi bir işletim sisteminde nasıl karşılaştırılır ve onu dosyayla aynı sayfadan almak neden işin amacını ortadan kaldırır."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

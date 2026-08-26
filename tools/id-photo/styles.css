@@ -166,6 +166,74 @@
   max-width: 74ch;
 }
 
+/* Where the four dots come from. A radio group rather than a checkbox, because
+   the two states are two sources - measured, or yours - and neither is the
+   absence of the other. Drawn as one segmented control so that which of them is
+   in force is readable at a glance rather than from a tick. */
+.mark-mode {
+  display: inline-flex;
+  gap: 0;
+  margin: 0 0 0.5rem;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface-2);
+}
+
+/* `hidden` alone loses to the `display` above it - both are one class-worth of
+   specificity and the author sheet is read after the browser's own. */
+.mark-mode[hidden] { display: none; }
+
+.mark-mode-choice {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+/* The radio itself is not hidden with display:none - that takes it out of the
+   tab order and off every screen reader with it. It is laid over its own label
+   at no opacity, which leaves it focusable, announced and clickable. */
+.mark-mode-choice input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.mark-mode-choice span {
+  padding: 0.3rem 0.85rem;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+
+.mark-mode-choice input:checked + span {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.mark-mode-choice input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Whatever the placing could not measure, one line each. Bulleted rather than
+   run together, because these are separate findings with separate fixes. */
+.mark-why {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.mark-why:empty { display: none; }
+
 .stage-wrap {
   display: flex;
   justify-content: center;

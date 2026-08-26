@@ -1,0 +1,406 @@
+#
+# Redact a PDF
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# The one thing to keep hold of while editing any of the prose below: this page
+# is making a claim other redaction tools cannot make, and the claim is worth
+# nothing if it is overstated. What this removes is text. A page that is a
+# photograph of a page has no text on it and this tool says so rather than
+# pretending. Every sentence here is written to survive somebody checking it.
+#
+
+slug = "redact-pdf"
+name = "PDF Redactor"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Redact&nbsp;PDF <span class=\"h1-kw\">&mdash; the words come out, not a box over them</span>"
+tagline = "The letters are deleted from the file, and the file is searched afterwards to prove it."
+icon = "&#128274;"                  # the padlock, beside the page heading
+favicon = "&#128274;"      # the tab icon, drawn into an inline SVG
+category = "documents-and-audio"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "documents"
+
+js_parts = ["file-picker"]
+lastmod = "2026-08-25"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Redact a PDF &mdash; Really Delete the Text, Free, No Upload"
+description = "Take words out of a PDF instead of drawing a black rectangle over them. The letters are deleted from the page's own drawing instructions, the finished file is opened again and searched to prove they have gone, and nothing is uploaded."
+og_title = "Redact a PDF properly &mdash; the words are deleted, not covered"
+og_description = "A black rectangle in most tools sits on top of the text and can be copied out from underneath. This one deletes the letters from the file and then searches the result to show they are not there."
+og_image_alt = "Redact a PDF by deleting the text, not by covering it"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Delete the words from the file, then search the file to prove they are gone."
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The document you choose is opened, read, edited and written back out in
+    memory on this machine, by code served from this address. Nothing here can
+    make an upload, and there is no server on the other end of this page to
+    receive one. Neither the file nor the words you searched for leave the
+    tab."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      redact something. Not one request carries a page, a word, or a filename.
+      Or unplug from the internet and redact it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/text.js</code> for how every word on a
+      page is found and located, and <code>src/edit.js</code> for the deletion
+      itself &mdash; what is cut out of the page's instructions and what is put
+      back so the rest of the line does not move. None of them can reach the
+      network, and neither can the reader or the writer beside them."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to redact a PDF so the words are really gone"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Delete words from a PDF rather than covering them. The letters are
+            taken out of the page's own drawing instructions, the gap is held
+            open so nothing else moves, and the finished file is opened again
+            and searched here to prove the words are not in it."""
+
+# The nouns this tool uses for the things it works on.
+[words]
+plural = "documents"
+choose = "a PDF"
+analytics_extra = """, and nothing about
+  what you searched for or what you took out"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[facts]]
+mark = "&#10003;"
+text = "Files stay on your device"
+
+[[privacy]]
+title = "A black rectangle is not a redaction, and this does not draw one over anything."
+body = """
+
+      In almost every program that offers to redact a page &mdash; a PDF reader,
+      a word processor, a design tool &mdash; the rectangle is an object saved
+      beside the text rather than into it. The text is still there, in the same
+      file, in the same place, and selecting the area and pressing copy hands it
+      back. That failure has published court filings, intelligence reports and,
+      in December 2025, blacked-out names in a mass release of Department of
+      Justice documents that were readable within hours. This tool deletes the
+      letters from the instructions that draw the page. There is no rectangle
+      with anything underneath it, because there is nothing underneath."""
+
+[[privacy]]
+title = "The finished file is opened again and searched, here, before you are offered it."
+body = """
+
+      Every claim above is this tool marking its own homework until that
+      happens. So the bytes that are about to become your download are handed
+      back to the same reader as though a stranger had sent them, every page is
+      read again, every bookmark, comment, form field and document property is
+      collected, and the words you removed are searched for. The count is on the
+      results. If anything survived, the run is reported as failed and there is
+      no download."""
+
+[[privacy]]
+title = "The words never leave the tab, and neither does the search."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. This tool adds nothing to that list: it
+      has no network feature of its own, not even an optional one. What you type
+      into the search box is a string compared against text in this tab's
+      memory, and there is nowhere for either of them to go."""
+
+[[privacy]]
+title = "Redaction is the job least survivable as an upload."
+body = """
+
+      What people redact is the reason it must not be uploaded. A witness
+      statement, a medical letter, a bank statement going to a landlord, a
+      contract with one client's name in it going to another. Handing that to a
+      stranger's server to have the private part removed means the private part
+      arrives first, intact, and it is the version they keep. This page has no
+      other half."""
+
+[[privacy]]
+title = "What is left is copied through untouched."
+body = """
+
+      The only bytes that change on a page are the text-showing instructions the
+      removed letters were part of. Every other instruction, and every font,
+      picture and line the page refers to, is copied exactly as it arrived
+      &mdash; nothing is re-rendered, re-encoded or reflowed. The width of what
+      was taken out is measured and put back as a spacing instruction, so the
+      rest of the line stays where the document put it."""
+
+[[privacy]]
+title = "It cannot take words out of a photograph, and it says which pages those are."
+body = """
+
+      A scanned page is a picture. The words on it are pixels, not text, and
+      nothing here can touch them. If the scan carries the invisible searchable
+      layer a scanner's OCR produces, this tool will remove that layer &mdash;
+      which is what a search and a copy would have found &mdash; and it says
+      plainly on the page that the picture still shows the words. Covering that
+      picture is a different job; the
+      <a href=\"../redact-image/\">image redactor</a> is the tool that overwrites
+      pixels."""
+
+[[privacy]]
+title = "The document stops saying where it came from."
+body = """
+
+      The properties and the XMP packet go on every run: no producer line, no
+      creation date, no author, no title, and none of the private blocks a
+      layout application leaves behind. A file whose pages have had a name taken
+      out of them and whose properties still read
+      <code>Smith settlement draft 3.docx</code> has not been redacted, and that
+      is not something to leave to a checkbox."""
+
+[[privacy]]
+title = "Encrypted files are turned away rather than opened."
+body = """
+
+      A PDF with a password on it is refused, including the kind that scanners
+      produce with an empty password and that would technically open. Taking a
+      document's protection off is a different job from taking words out of it,
+      and doing it quietly would be a surprising thing for a tool to do on your
+      behalf."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google. Neither is handed anything about
+      your document: not a file, not a page, not a name, a size, a page count,
+      or a word you searched for. Every line that reads, edits or writes a PDF
+      is served from this origin and listed in the repository."""
+
+[[privacy]]
+title = "What the donate button loads, and what it is not given."
+body = """
+
+      The \"Buy me a coffee\" button in the header is drawn by a script from
+      cdnjs.buymeacoffee.com and letters itself from Google Fonts. It is a link
+      and nothing more: it reports no visit, and it is handed nothing about
+      you or your documents. Nothing happens unless you click it, and what you
+      would be clicking through to is somebody else's site."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and everything on this
+      page still functions. That is the simplest proof of all: a tool that sent
+      your document away to be redacted would stop."""
+
+[[howto]]
+title = "Choose the PDF."
+body = """
+ One document at a time, on purpose:
+      redaction is a job that has to be looked at page by page, and a tool that
+      let you tick words in one file and quietly applied them to another is
+      exactly how the wrong thing gets sent. It is read straight off your disk
+      by the browser."""
+
+[[howto]]
+title = "Say what has to go."
+body = """
+ Type the words &mdash; a name, an
+      address, a reference &mdash; and every place they appear is listed with
+      the line they sit on and a box to tick. The finders beside the box will
+      look for email addresses, card numbers, IBANs, national insurance and
+      social security numbers, and telephone numbers. Those are offered, never
+      ticked for you: a pattern cannot tell a phone number from a reference."""
+
+[[howto]]
+title = "Read the page and pick words off it."
+body = """
+
+      The panel shows the document's text as it is actually stored, in the order
+      a reader would copy it. Click any word to take it out and click it again
+      to keep it. Everything struck through is what will be gone &mdash; which
+      makes this the review as well as the selection, and it is worth doing on
+      every page before you press the button."""
+
+[[howto]]
+title = "Take them out, and read the line that says it was checked."
+body = """
+
+      The letters are deleted, the gap they left is held open, a black box is
+      drawn over it if you asked for one, and the same words are taken out of
+      bookmarks, comments, form fields and the document's properties. Then the
+      finished file is opened again here and searched. If a word you removed is
+      still findable in it, you get no download and a message saying so."""
+
+[[faq]]
+q = "How is this different from drawing a black box in a PDF reader?"
+a = """
+        A rectangle drawn in a reader is an annotation: an object with a
+        position, saved beside the page. The text under it is untouched. Anybody
+        who selects that area and presses copy, or opens the file in a different
+        program, or runs any text extractor over it, gets the words back. Some
+        readers offer a \"redact\" command that does apply the removal properly
+        &mdash; and several offer only the drawing. This tool has no rectangle
+        to move aside: the letters are cut out of the page's drawing
+        instructions, and the black box, if you leave it switched on, is drawn
+        afterwards over a gap that is already empty."""
+
+[[faq]]
+q = "How do I know the words are really gone?"
+a = """
+        Because the tool checks, on your machine, and shows you the count. When
+        the file has been written it is opened again by the same reader on this
+        page, every page is read, every bookmark, comment, form field and
+        property is collected, and each word you removed is searched for. The
+        results line says how many there were and how many are left. If the
+        answer is not what it should be, the run fails and nothing is offered
+        for download. You can also check it yourself afterwards in any reader:
+        press Ctrl+F and look for the word."""
+
+[[faq]]
+q = "Does the rest of the page move when a word is removed?"
+a = """
+        No. Text is drawn by advancing a pen across the page, so deleting five
+        letters would ordinarily pull the rest of the line five letters to the
+        left. The exact width of what was removed is measured from the font's
+        own metrics and put back as a spacing instruction, which moves the pen
+        without drawing anything. Columns stay lined up and totals stay under
+        their headings."""
+
+[[faq]]
+q = "Can it redact a scanned document?"
+a = """
+        Not the picture, and it says so rather than pretending. A scan is a
+        photograph of a page: the words are pixels and there is no text to
+        remove. What a scan often does carry is an invisible text layer that the
+        scanner's OCR wrote over the picture so the page can be searched &mdash;
+        this tool finds that layer, removes what you choose from it, and tells
+        you on the page that the picture is unchanged. So a search and a copy
+        stop finding the word, and a person looking at the page still reads it.
+        For a picture, the <a href=\"../redact-image/\">image redactor</a>
+        overwrites the pixels themselves."""
+
+[[faq]]
+q = "What about the parts of a document that are not on a page?"
+a = """
+        They are handled, because they are where a redaction usually leaks. The
+        same words are taken out of bookmarks, comments and sticky notes, what
+        has been typed into form fields, the text a screen reader is given, and
+        the replacement text a reader copies <em>instead of</em> the letters on
+        the page &mdash; that last one exists so ligatures and hyphenated words
+        copy properly, and it can hold a whole sentence. The document properties
+        and the XMP packet are removed outright. Attachments and anything that
+        runs when the file opens are dropped, because neither can be searched
+        for the words you are removing."""
+
+[[faq]]
+q = "Are my documents uploaded anywhere?"
+a = """
+        No. The file is read, edited and written by your own browser on your own
+        hardware. There is no server side to this tool, and the page's
+        <code>Content-Security-Policy</code> names every address it may contact
+        &mdash; none of them belongs to this site. What you type into the search
+        box is compared against text in this tab's memory and goes nowhere
+        either."""
+
+[[faq]]
+q = "Why can I not drag a box over the page like other tools?"
+a = """
+        Because drawing a page means a full PDF renderer &mdash; fonts, shading,
+        transparency, blend modes &mdash; which is a megabyte or more of engine
+        to fetch and run, and this site ships none. That turns out to suit the
+        job: dragging a rectangle selects an <em>area of paper</em>, and an area
+        of paper is not the same thing as the text under it, which is how the
+        black-box failure starts. What you get instead is the document's text,
+        in reading order, with every word clickable. It is also the only view
+        that can tell you the thing a picture of the page cannot: whether the
+        words in front of you are text at all."""
+
+[[faq]]
+q = "Will the finished file open everywhere?"
+a = """
+        Yes. The output is written as PDF 1.5 or the highest version the file
+        you gave it needed, and 1.5 is understood by every reader shipped since
+        2003. Nothing on the page is re-encoded: the fonts, pictures and vector
+        drawing come through byte for byte, so what is left of the text stays
+        selectable and searchable exactly as it was."""
+
+[[faq]]
+q = "Can it open a password-protected PDF?"
+a = """
+        No, and that is deliberate. An encrypted document is refused with a
+        message saying so, even when the password is blank &mdash; which is how
+        a lot of scanners and copiers save. Taking the protection off a file is
+        a different job from taking words out of it, and a tool that did it
+        silently would be doing something you did not ask for."""
+
+[[faq]]
+q = "Is there a size limit, and does it cost anything?"
+a = """
+        There is no limit written into the tool. The limit is your own machine:
+        the document is held in memory while it is worked on, so a laptop will
+        take a few hundred megabytes without complaint and will struggle
+        somewhere above that. It is free, there is no account, no sign-in and no
+        trial. The site carries advertising, which is what pays for it; the ads
+        are not given anything about your documents."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your document away to be redacted would stop
+        the moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Redact a PDF in your browser by deleting the text rather than covering it. The letters are removed from the page's content stream, the finished file is reopened and searched to prove they have gone, and nothing is uploaded."
+features = [
+  "Deletes the letters from the page rather than drawing a rectangle over them",
+  "Reopens the finished file and searches it to prove the words are gone",
+  "Finds every occurrence of a word, or looks for emails, card numbers, IBANs and national ID numbers",
+  "Shows the document's text in reading order so any word can be clicked",
+  "Removes the same words from bookmarks, comments, form fields and properties",
+  "Holds the gap open so the rest of the line does not move",
+  "Says which pages are scans, where there is no text to remove",
+  "Runs offline; no upload, no account, no file size limit",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# One file, deliberately: see the first step of the how-to above.
+[picker]
+accept = "application/pdf,.pdf"
+multiple = false
+title = "Drop your PDF here"
+hint = "or click to browse &mdash; one document at a time"

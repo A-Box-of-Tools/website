@@ -84,12 +84,33 @@
 
     <div id="frame-controls" hidden>
       <p class="stage-hint" id="mark-hint">
-        점 네 개를 정수리와 턱 끝, 양쪽 눈동자에 끌어다 놓은 다음
-        <strong>상자 맞추기</strong>를 누르세요. 규정이 재는 것은 그 네 점이
-        전부입니다. 그래서 얼굴 검출기로 짐작하는 대신 직접 놓아 달라고
-        부탁드립니다. 점은 상반신 사진이 대개 두는 자리에서 시작하는데, 그건
-        측정값이 아니라 출발 위치일 뿐입니다.
+        정수리와 턱 끝, 그리고 양쪽 눈동자. 규정이 재는 것은 그 네 점이
+        전부이고, 잘라내기는 점이 최종적으로 놓인 자리에서 만들어집니다. 잘못
+        떨어진 점은 끌어다 고친 다음 <strong>상자 맞추기</strong>를 누르세요.
+        네 점을 찾는 일은 사진 자체를 재는 일입니다. 뒤쪽 벽에 대비되는 머리의
+        윤곽, 그리고 눈이 있는 어두운 자리. 그 안에 모델은 없고 아무것도 받아
+        오지 않습니다. 판정이 아니라 출발 위치라서, 고치는 것은 당신 몫이고
+        어느 점을 재지 못했는지는 아래 줄이 말해 줍니다.
       </p>
+
+      <!--
+        Where the dots come from. Choosing to place them yourself leaves them
+        exactly where they are and stops anything moving them again; moving one
+        by hand chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="네 점이 어디에서 오는지">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>찾아 주세요</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>제가 놓을게요</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
 
       <!-- The crop box, its overlay and the four marks are all added here by
            src/cropper.js and src/marks.js. The stage is given the picture's own
@@ -102,7 +123,7 @@
 
       <div class="frame-actions">
         <button type="button" id="fit-box" class="primary">규정에 맞춰 상자 맞추기</button>
-        <button type="button" id="reset-marks" class="ghost">점 되돌리기</button>
+        <button type="button" id="reset-marks" class="ghost">얼굴 다시 찾기</button>
         <button type="button" id="whole-photo" class="ghost">들어가는 가장 큰 상자</button>
       </div>
 
@@ -182,4 +203,25 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. `{why}` is
+    filled in with one or more of the `marks.why.*` lines below, joined with
+    a semicolon; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">네 점 모두 사진에서 재어 놓았습니다. 정수리는 머리의 윤곽에서, 눈동자는 그 어두움에서, 턱 끝은 턱이 목으로 들어가는 자리에서요. 그래도 한 번 확인하시고 잘못 떨어진 점은 끌어다 놓으세요. 잘라내기는 점이 최종적으로 놓인 자리에서 만들어집니다.</span>
+    <span data-phrase="marks.rough">놓기는 했지만 전부 잰 것은 아닙니다. 상자를 맞추기 전에 네 점을 모두 확인하세요.</span>
+    <span data-phrase="marks.none">이 사진에서는 아무것도 잴 수 없었습니다. 점은 대신 처음 자리에 있습니다. 정수리와 턱 끝, 양쪽 눈동자로 끌어다 놓으세요.</span>
+    <span data-phrase="marks.manual">네 점은 당신 것이고 아무것도 움직이지 않습니다. 각각 정수리와 턱 끝, 눈동자로 끌어다 놓으세요.</span>
+    <span data-phrase="marks.edited">점을 하나 옮기셨으니 이제 네 점 모두 당신 것입니다. &ldquo;찾아 주세요&rdquo;를 고르면 사진을 다시 잽니다.</span>
+
+    <span data-phrase="marks.why.background">뒤쪽 벽이 충분히 단순하지 않아 머리 윤곽을 떼어낼 수 없습니다.</span>
+    <span data-phrase="marks.why.top">머리가 사진 위로 잘려 나가 찾을 정수리가 없었습니다.</span>
+    <span data-phrase="marks.why.eyes">눈을 가려낼 수 없어, 이 크기의 머리가 대개 두는 자리에 둘 다 놓았습니다.</span>
+    <span data-phrase="marks.why.chin">턱 끝은 이 머리의 윤곽이 아니라 머리의 일반적인 비율에서 나왔습니다.</span>
+
+    <span data-phrase="marks.button.again">얼굴 다시 찾기</span>
+    <span data-phrase="marks.button.back">점 되돌리기</span>
+  </div>
 </main>

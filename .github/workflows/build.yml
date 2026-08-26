@@ -55,8 +55,8 @@ jobs:
 
       # Newer than the build job's Node, and deliberately: `node --test` only
       # learned to take a glob in 21, and on 20 the same argument is read as a
-      # path that does not exist. Nothing is installed with it, so the version
-      # here is free to differ from the one esbuild is pinned against below.
+      # path that does not exist. Nothing is installed with either, so the two
+      # versions are free to differ.
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -80,43 +80,34 @@ jobs:
         with:
           python-version: '3.12'
 
-      # esbuild is the one exception, and only for renaming identifiers. The
-      # version is read out of config/site.toml rather than written here as
-      # well, and build.py refuses to run against any other one: two versions of
-      # esbuild need not invent the same names, and `--check` is only worth
-      # something if a fresh build reproduces the deployed bytes exactly.
-      - name: Read the pinned esbuild version
-        id: pin
-        run: |
-          version=$(python -c "import tomllib; print(tomllib.load(open('config/site.toml','rb'))['build']['esbuild_version'])")
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "pinned esbuild: $version"
-
+      # Node is here only to parse the emitted scripts below. Nothing is
+      # installed from npm: the build itself is Python and the standard
+      # library, start to finish.
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install esbuild
-        run: npm install --global --no-audit --no-fund esbuild@${{ steps.pin.outputs.version }}
-
-      # The readable build, kept as the reference the mangled one is judged
+      # The unminified build, kept as the reference the deployed one is judged
       # against. Cheap, and it means a file that went missing has something to
       # go missing from.
       - name: Build (readable)
         run: python build.py --out _plain --clean --no-minify
 
       - name: Build (deployed)
-        run: python build.py --out _site --clean --mangle
+        run: python build.py --out _site --clean
 
-      # Renaming is the one step here that could break the site quietly, so it
-      # is checked rather than assumed.
+      # Minifying is the one step here that could break the site quietly, so
+      # it is checked rather than assumed. buildlib/minify.py already compares
+      # its own tokens on every file and fails the build if they moved; this is
+      # the second opinion, from a real parser rather than the one that did the
+      # work.
       #
       # Every emitted script is parsed by Node as a real ES module - copied to
       # .mjs first, because a bare .js is read as CommonJS and `import` would be
-      # a syntax error for the wrong reason. A file esbuild had corrupted would
-      # fail here. Then the two builds are compared by filename, so a module
-      # that vanished is caught even if everything left behind parses.
-      - name: Check the mangled output
+      # a syntax error for the wrong reason. Then the two builds are compared by
+      # filename, so a module that vanished is caught even if everything left
+      # behind parses.
+      - name: Check the minified output
         run: |
           set -euo pipefail
           work=$(mktemp -d)
@@ -126,7 +117,7 @@ jobs:
           while IFS= read -r script; do
             cp "$script" "$work/check.mjs"
             if ! node --check "$work/check.mjs" 2>"$work/err"; then
-              echo "::error file=$script::does not parse after mangling"
+              echo "::error file=$script::does not parse after minifying"
               sed 's/^/    /' "$work/err"
               status=1
             fi

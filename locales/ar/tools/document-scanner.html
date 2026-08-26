@@ -1,0 +1,355 @@
+<main>
+  <!-- Step 1 &mdash; the photographs -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصور</h2>
+
+    <p class="card-lede">
+      صورةٌ لكل صفحة، ملتقَطة من أي موضع فوقها. والصفحة كلها يجب أن تكون في
+      الإطار، والأركان الأربعة يُستحسَن أن تكون ظاهرة أو تكاد &mdash; وكل ما
+      عدا ذلك، الميلُ والظلُّ والمكتبُ الذي هي ملقاة عليه، هو ما وُجِدت هذه
+      الأداة له. أضِف عدة صور فتصير صفحات مستند واحد، بالترتيب الذي تضيفها به.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">جِد كل صفحة من جديد</button>
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- Step 2 &mdash; the corners -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> ضَع الأركان على الصفحة</h2>
+
+    <p id="edit-empty" class="field-summary">
+      اختر صورة فتظهر هنا، وأركانها الأربعة موجودة لك.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        اضغط أي موضع على الصورة فيأتي أقرب ركن إلى إصبعك؛ ثم اسحبه إلى ركن
+        الصفحة. و<kbd>Tab</kbd> يصل إلى ركن من لوحة المفاتيح، ومفاتيح الأسهم
+        تحرّكه بكسلاً واحداً و<kbd>Shift</kbd> عشرة. ولا شيء هنا نهائي &mdash;
+        فالمسح يُؤخَذ من حيث تنتهي الأركان الأربعة.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">جِد الأركان من جديد</button>
+        <button type="button" id="whole-photo" class="ghost">استعمل الصورة كلها</button>
+        <button type="button" id="turn-left" class="ghost">أدِر يساراً</button>
+        <button type="button" id="turn-right" class="ghost">أدِر يميناً</button>
+        <button type="button" id="undo" class="ghost" disabled>تراجَع</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the cleanup -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> نظِّفها</h2>
+
+    <p id="clean-empty" class="field-summary">
+      تظهر الصفحة المعدَّلة هنا متى وُجِدت صورة تُعدَّل.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        الذي أدناه هو النتيجة الحقيقية، تنتجها الشيفرة نفسها التي تكتب الملف
+        &mdash; معدَّلةً، والإضاءةُ غير المتساوية مقسومة خارجاً. وهي مرسومة
+        بحجم الشاشة بينما تختار؛ أما الملف نفسه فيُصنَع بدقة الصورة هي.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          يجري التعديل&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>ماذا يُفعَل بالضوء واللون</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>ملوَّنة، مع تسوية الإضاءة</strong>
+            <span class="check-note">
+              يُقاس الورق عبر الصفحة ويُقسَم خارجاً، فيذهب الظلّ ويعود الورق
+              أبيض، بينما يبقى الختمُ والتوقيعُ بالحبر الأزرق والسطرُ المظلَّل
+              على ألوانها. وهي التي تُستعمَل حين يكون اللون جزءاً من المستند.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>تدرّج رمادي</strong>
+            <span class="check-note">
+              التسوية نفسها، بلا لون. أصغر من الملوَّنة وأرفق بصورة فوتوغرافية
+              أو بتوقيع مما هو الأبيض والأسود.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>أبيض وأسود</strong>
+            <span class="check-note">
+              كل بكسل يُقرَّر في مقابل جواره هو لا في مقابل رقم واحد للصفحة
+              كلها، وهو ما يُبقي الكتابة التي في ظلّ مقروءة. وهذا ما يجعل المسح
+              صغيراً: فعقدٌ من عشرين صفحة يخرج بهذه الطريقة دون ميغابايت وبنحو
+              خمسة عشر لو كان صوراً فوتوغرافية. وليس فيه درجات وسطى، فما عليه
+              صورة فوتوغرافية ينبغي ألا يستعمله.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>اتركها وشأنها</strong>
+            <span class="check-note">
+              معدَّلةً ولا شيء غير ذلك. لصفحة يهمّ فيها الورق نفسه &mdash; شيء
+              قديم، أو شيء ملوَّن، أو صورة فوتوغرافية.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">بأي شدّة يُدفَع</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        ينطبق الإعداد على كل صفحة. فالصفحات في مستند واحد نُظِّفت على نحو مختلف
+        تبدو مستندين.
+      </p>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> احفظ المستند</h2>
+
+    <p class="card-lede">
+      يُكتَب ملف PDF هنا، في ذاكرة هذه الصفحة، صفحةً صفحة. ولا يقف في الطرف
+      الآخر من هذه الأداة خادم يُرسَل إليه كشفُ راتب أو جوازُ سفر أو عقد، ولا
+      في الشيفرة ما يرسل واحداً لو وُجد.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">مقاس الصفحة</label>
+        <select id="page-size">
+          <option value="fit" selected>لائم الورقة مع الصفحة نفسها</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 مم</option>
+          <option value="letter">Letter &mdash; 8.5 &times; 11 بوصة</option>
+          <option value="legal">Legal &mdash; 8.5 &times; 14 بوصة</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 مم</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">دقة الطباعة</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; ماسحة مكتبية</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          كم تُسمّى ورقةً كبيرةً لعدد بكسلات معيّن. وهي تغيّر المقاس الذي
+          يُطبَع به المستند، ولا تغيّر بكسلاً واحداً من المسح.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">الهامش</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="الهامش بالمليمترات">
+          <span class="unit-label">مم</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">الضلع الأكبر</label>
+        <select id="max-side">
+          <option value="1600">1600 بكسل &mdash; صغير</option>
+          <option value="2400" selected>2400 بكسل</option>
+          <option value="3500">3500 بكسل</option>
+          <option value="0">بأي كِبَر تسمح به الصورة</option>
+        </select>
+        <p class="field-note">
+          سقفٌ للصفحة المعدَّلة. فصورةُ صفحة تحمل من البكسلات أكثر بكثير مما
+          تساويه الصفحة، و2400 على الضلع الطويل نحو 200 DPI على ورقة A4.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">الجودة</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          للوضعين الملوَّن والرمادي، وهما مخزَّنان JPEG. أما صفحات الأبيض
+          والأسود فمخزَّنة بالضبط، فلا يفعل بها هذا شيئاً.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">عنوان المستند <span class="optional">(اختياري)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="إن تُرِك فارغاً فلا عنوان في ملف PDF">
+        <p class="field-note">
+          الشيء الوحيد الذي يُكتَب في المستند عدا الصفحات. فلا تاريخ، ولا مؤلف،
+          ولا شيء عن هذا الجهاز &mdash; انظر <code>src/document.js</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>احفظ ملف PDF</button>
+      <button type="button" id="save-images" class="ghost big" disabled>احفظ الصفحات صوراً</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>الملف المنتهي</h3>
+        <a id="download" class="primary as-button" href="#" download>نزِّل</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        افتحه قبل أن ترسله. فالذي في المستند هو ما كان على الشاشة في الخطوة 3،
+        صفحةً بصفحة.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">وُجِدت الأركان الأربعة. تحقّق منها، واسحب
+      ما حطّ منها في غير موضعه.</span>
+    <span data-phrase="detect.unsure">لم تكن حوافّ الصفحة واضحة بما يكفي
+      للتيقّن منها. وهذه الأركان تخمين &mdash; فاسحبها إلى الصفحة قبل أن
+      تمضي.</span>
+    <span data-phrase="detect.nothing">لم يمكن تمييز صفحة في هذه الصورة، فالأركان
+      عند حوافّها. اسحبها إلى الصفحة.</span>
+    <span data-phrase="detect.flat">لا شيء يُوجَد في هذه الصورة &mdash; فليس
+      فيها حوافّ البتة.</span>
+    <span data-phrase="detect.tiny">هذه الصورة أصغر من أن تُوجَد فيها
+      صفحة.</span>
+    <span data-phrase="detect.edited">هذه الأركان لك الآن. و&laquo;جِد الأركان
+      من جديد&raquo; يقيس الصورة من جديد.</span>
+
+    <span data-phrase="corner.tl">الركن العلوي الأيسر</span>
+    <span data-phrase="corner.tr">الركن العلوي الأيمن</span>
+    <span data-phrase="corner.br">الركن السفلي الأيمن</span>
+    <span data-phrase="corner.bl">الركن السفلي الأيسر</span>
+    <span data-phrase="corner.at">{corner}، عند {x} عرضاً و{y} نزولاً. ومفاتيح
+      الأسهم تحرّكه، وShift معها يحرّكه عشرة بكسلات في كل مرة.</span>
+
+    <span data-phrase="page.select">حرّر الصفحة {index}</span>
+    <span data-phrase="page.remove">أزِل الصفحة {index}</span>
+    <span data-phrase="page.earlier">حرّك الصفحة {index} أقدم</span>
+    <span data-phrase="page.later">حرّك الصفحة {index} أحدث</span>
+    <span data-phrase="page.count">صفحة واحدة</span>
+    <span data-phrase="page.counts">{count} صفحة</span>
+
+    <span data-phrase="paper.a">A4 أو A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">بطاقة عمل</span>
+    <span data-phrase="shape.known">خرجت الصفحة {ratio}، وهي نسبة {paper}.</span>
+    <span data-phrase="shape.sideways">خرجت الصفحة {ratio}، وهي نسبة {paper} على
+      جنبها.</span>
+    <span data-phrase="shape.unknown">خرجت الصفحة {ratio}، وهي ليست ورقة
+      قياسية.</span>
+
+    <span data-phrase="method.perspective">استُنتِجت النسبة من المنظور الذي في
+      الصورة، فهي نسبة الصفحة لا النسبة التي بدت بها في الصورة.</span>
+    <span data-phrase="method.edges">التُقطت الصورة مواجِهةً، فالنسبة مقيسة من
+      الحوافّ مباشرة.</span>
+
+    <span data-phrase="quality.good">{width} في {height} بكسل، نحو {dpi} DPI عبر
+      صفحة بذلك المقاس &mdash; وذلك يكفي للطباعة.</span>
+    <span data-phrase="quality.fair">{width} في {height} بكسل، نحو {dpi} DPI عبر
+      صفحة بذلك المقاس. حسنٌ على الشاشة، وناعمٌ قليلاً على الورق.</span>
+    <span data-phrase="quality.low">{width} في {height} بكسل، نحو {dpi} DPI عبر
+      صفحة بذلك المقاس. التقط الصورة من أقرب إن كان هذا سيُطبَع.</span>
+    <span data-phrase="quality.pixels">{width} في {height} بكسل.</span>
+    <span data-phrase="coverage.note">ملأت الصفحة {percent}% من الصورة.</span>
+    <span data-phrase="coverage.small">لم تملأ الصفحة إلا {percent}% من الصورة،
+      فأكثر ما صُوِّر كان مكتباً. اقترب في المرة القادمة.</span>
+
+    <span data-phrase="strength.gentle">لطيفة: يُسوَّى الورق ولا شيء غير ذلك
+      تقريباً. لصفحة عليها رصاص خفيف أو صورة فوتوغرافية.</span>
+    <span data-phrase="strength.middling">الإعداد المعتاد: يعود الورق أبيض ويعود
+      النصّ المطبوع أسود.</span>
+    <span data-phrase="strength.hard">شديدة: كل ما هو رمادي يُدفَع إلى السواد أو
+      إلى البياض. وهي أنظف ما تكون على صفحة مطبوعة سادة، ومُتلِفة على كل ما عليه
+      صورة.</span>
+
+    <span data-phrase="busy.page">الصفحة {done} من {total}&hellip;</span>
+    <span data-phrase="busy.writing">تجري كتابة المستند&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}، {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}، {pages}.</span>
+    <span data-phrase="result.mono">مخزَّن ببتّ واحد لكل بكسل ومضغوط ضغطاً
+      دقيقاً، ولهذا هو بهذا الصغر.</span>
+    <span data-phrase="result.jpeg">الصفحات مخزَّنة JPEG بالجودة التي
+      اخترتها.</span>
+    <span data-phrase="result.png">الصفحات مخزَّنة PNG، وهي بلا خسارة وهي ما
+      تريده صورةٌ من لونين &mdash; فـ JPEG كانت ستكون أكبر ومغبَّشة حول كل
+      حرف.</span>
+    <span data-phrase="result.clean">لا تاريخ، ولا مؤلف، ولا اسم جهاز: فالشيء
+      الوحيد في المستند عدا الصفحات هو اسم هذه الأداة.</span>
+
+    <span data-phrase="size.fit">كل ورقة تصير بالمقاس الذي هي عليه صفحتُها
+      حقاً، بالدقة أعلاه. ولا شيء يُحاط بأشرطة.</span>
+    <span data-phrase="size.named">كل صفحة تُوضَع على ورقة {name}، داخل الهامش،
+      مهما كانت النسبة التي خرجت بها.</span>
+
+    <span data-phrase="error.decode">لم يستطع هذا المتصفح فتح {name}. فإن كانت
+      صورة HEIC من iPhone، فحوِّلها أولاً.</span>
+    <span data-phrase="error.none">اختر صورة واحدة على الأقل أولاً.</span>
+    <span data-phrase="error.failed">حدث خطب ما أثناء صنع الملف: {detail}</span>
+  </div>
+</main>

@@ -1,0 +1,20 @@
+#
+# 隱私與 Cookie - Traditional Chinese. Overrides for pages/privacy/page.toml.
+#
+# Written in Chinese rather than translated out of the English; the house style
+# is at the top of locales/zh/locale.toml. The reader is 你 here as well - a
+# legal page written in 您 would be the one page on the site that talks to
+# somebody else.
+#
+
+nav = "隱私與 Cookie"
+title = "隱私與 Cookie | abox.tools"
+description = "abox.tools 收集什麼、不收集什麼。你的檔案不會上傳，而廣告、訪問統計和捐助按鈕這三樣，這裡逐一寫清楚。"
+heading = "隱私與 Cookie"
+lede = """
+    先說短的：你的檔案不會上傳，因為根本沒有可以傳到的地方。這一頁剩下的內容\
+    講的是廣告、訪問統計和託管，也就是確實牽涉到別家公司的那幾部分。"""
+updated = "2026年8月22日"
+og_title = "隱私與 Cookie | abox.tools"
+og_description = "你的檔案不會上傳。什麼被收集了、由誰收集，以及怎麼把它關掉。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

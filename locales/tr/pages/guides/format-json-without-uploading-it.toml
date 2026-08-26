@@ -1,0 +1,19 @@
+#
+# Rehber: JSON biçimlendirme ve bir biçimlendiricinin neyi değiştirmemesi
+# gerektiği - Türkçe.
+#
+
+nav = "JSON biçimlendirme"
+title = "JSON Yüklemeden Nasıl Biçimlendirilir"
+description = "JSON'u kendi tarayıcınızda nasıl düzenli yazar, denetler ve küçültürsünüz: bir biçimlendiricinin dosyanızda asla değiştirmemesi gereken şeyler, hata iletisinin nasıl okunacağı ve yapıştırdığınız sitenin neden önemli olduğu."
+heading = "JSON kimseye vermeden nasıl biçimlendirilir"
+lede = """
+    JSON biçimlendirmek boşlukları değiştirmeli, başka hiçbir şeyi değil. Bunu
+    yapmayı öneren araçların çoğu bundan fazlasını değiştiriyor ve hiçbiri bundan
+    söz etmiyor. Bu rehber nelere dikkat edeceğinizi, dosya ayrıştırılmadığında
+    hatanın nasıl okunacağını ve bir yapılandırma dosyasını yapıştırdığınız
+    kutunun neden üzerinde düşünmeye değdiğini anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "JSON'u kimseye vermeden biçimlendirmek"
+og_description = "Bir JSON biçimlendiricisinin dosyanızda asla değiştirmemesi gerekenler, ayrıştırma hatasının nasıl okunacağı ve yapıştırdığınız sitenin neden önemli olduğu."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

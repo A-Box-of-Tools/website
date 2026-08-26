@@ -92,7 +92,17 @@ number and study UIDs are byte structures that can be rewritten in place, with
 the image never decoded and never re-compressed. That sidesteps the one genuine
 obstacle — the compressed transfer syntaxes, JPEG 2000 among them, that a
 browser cannot decode — because anonymising does not require decoding anything.
-A viewer for the uncompressed and baseline-JPEG cases can follow behind it.
+
+The viewer arrived first, in the other order to the one this paragraph
+predicted, and it left less of this to build than it looks.
+[`dicom-viewer`](tools/dicom-viewer/) already parses every encoding a dataset
+can be in, carries the data dictionary, and lists what in a file identifies the
+patient — from PS3.15 table E.1-1, which is the same list an anonymiser has to
+work from. What is left is the half a viewer deliberately does not do: writing
+a file back out, replacing the UIDs consistently across a whole study rather
+than per file, and having an answer about the private elements some scanners
+keep a second copy of the name in. That last one is the reason this is still a
+separate tool and not a button on the viewer.
 
 ## GIF & animation
 
@@ -199,25 +209,6 @@ Pulling the pictures back out of a document is the reader
 [`compress-pdf`](tools/compress-pdf/src/images.js) needed anyway, run in the
 other direction, and it answers a question people ask constantly: the picture
 is in the PDF and nowhere else, and they need it back.
-
-### Redact a PDF
-
-Every free web redaction tool draws a black rectangle and leaves the text layer
-underneath it. The result looks identical to a real redaction until somebody
-selects the box and copies out what is under it, which is why the same failure
-keeps making the news — most recently in December 2025, when blacked-out text
-in a mass release of Department of Justice documents came back out within hours
-of publication.
-
-Doing it correctly means deleting the text operators from the content stream
-and re-writing the page, not painting over it. That is out of reach of a
-one-page competitor and *not* out of reach here, because
-[`compress-pdf`](tools/compress-pdf/src/) already parses objects, decodes the
-Flate every stream is wrapped in, and writes the file back out. It is the
-strongest "this one is the only one that does it properly" claim available to
-this site, and the people who need it — lawyers, clerks, anyone filing a
-document with something private in it — are exactly the people who should not
-be uploading the file.
 
 ### Document scanner
 

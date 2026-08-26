@@ -463,7 +463,7 @@ export async function reverseExact({
   });
   decoder.configure(decoderConfig(video));
 
-  /** A kept frame, back in something the canvas will draw. Both kinds close(). */
+  /** A kept frame, back in something that can be drawn or encoded. */
   const drawable = (slot) => (slot.bitmap ? slot.bitmap : new VideoFrame(slot.data, {
     format: slot.format,
     codedWidth: slot.width,
@@ -482,16 +482,30 @@ export async function reverseExact({
     slot.data = null;
   };
 
-  /** One held frame, drawn and encoded at the time the reversal gives it. */
-  const emit = (videoFrame, index) => {
-    try {
-      drawFitted(ctx, videoFrame, {
-        rotation: video.rotation,
-        displayWidth: video.displayWidth,
-        displayHeight: video.displayHeight,
-        frame,
-      });
+  /**
+   * Whether this frame has to go through the canvas on its way to the encoder.
+   *
+   * The canvas exists to turn a rotated clip the right way up and to letterbox
+   * a picture that does not land exactly on the output frame. A clip that needs
+   * neither - which is most of them, and every clip filmed the way it is
+   * watched - was still paying for both: a 4K frame drawn into a 2D context is
+   * decoded YUV converted to RGBA and then converted back to YUV inside the
+   * encoder, and measured on a 4K frame that round trip costs more than the
+   * encode it precedes. Skipping it is worth about two and a half times on the
+   * whole export, and it is the more faithful of the two paths as well, the one
+   * that does not resample the colour twice.
+   */
+  const needsCanvas = (source) => video.rotation !== 0
+    || frame.width !== video.displayWidth
+    || frame.height !== video.displayHeight
+    // Anything whose pixels are not already the shape of the output - a clip
+    // with non-square pixels reaches here - still has to be fitted.
+    || (source.codedWidth ?? source.width) !== frame.width
+    || (source.codedHeight ?? source.height) !== frame.height;
 
+  /** One held frame, encoded at the time the reversal gives it. */
+  const emit = (source, index) => {
+    try {
       const timestamp = micros(times.start[index], video.timescale);
       const duration = micros(times.duration[index], video.timescale);
 
@@ -500,7 +514,20 @@ export async function reverseExact({
       const keyFrame = timestamp - lastKeyframeUs >= KEYFRAME_SECONDS * 1_000_000;
       if (keyFrame) lastKeyframeUs = timestamp;
 
-      const picture = new VideoFrame(canvas, { timestamp, duration });
+      let picture;
+      if (needsCanvas(source)) {
+        drawFitted(ctx, source, {
+          rotation: video.rotation,
+          displayWidth: video.displayWidth,
+          displayHeight: video.displayHeight,
+          frame,
+        });
+        picture = new VideoFrame(canvas, { timestamp, duration });
+      } else {
+        // The same picture, told when it is shown. No pixels move.
+        picture = new VideoFrame(source, { timestamp, duration });
+      }
+
       try {
         encoder.encode(picture, { keyFrame });
       } finally {
@@ -510,7 +537,7 @@ export async function reverseExact({
     } catch (error) {
       failure ??= error;
     } finally {
-      videoFrame.close();
+      source.close();
     }
   };
 

@@ -1,0 +1,309 @@
+#
+# GIF Çözümleyici - Türkçe.
+#
+# Overrides for tools/gif-analyzer/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "GIF Çözümleyici"
+heading = "GIF&nbsp;Çözümleyici <span class=\"h1-kw\">&mdash; bir GIF'in içinde gerçekte ne var</span>"
+tagline = "Kareler, gecikmeler, paletler ve her baytın nereye gittiği."
+
+title = "GIF Çözümleyici &mdash; Kareler, Gecikmeler, Palet ve Dosya Boyutu, Yüklemesiz"
+description = "Bir GIF'i tarayıcınızda parçalarına ayırın: gecikmesi ve tasfiye kuralıyla her kare, renk tabloları, döngü sayısı ve dosya boyutunun nereye gittiğine dair bayt bayt bir döküm. Hiçbir şey yüklenmez."
+og_title = "GIF Çözümleyici &mdash; bir GIF'i tarayıcınızda parçalarına ayırın"
+og_description = "Her kare, her gecikme, her palet ve baytların nereye gittiğine dair dürüst bir hesap. Dosya kendi cihazınızda okunur ve hiçbir zaman yüklenmez."
+og_image_alt = "GIF Çözümleyici - kareler, gecikmeler, palet ve baytların nereye gittiği"
+
+pledge = """
+    Dosya kendi tarayıcınız tarafından açılır ve parçalarına ayrılır: blok
+    yapısı, LZW açma işlemi ve bu sayfada çizilen her kare bu makinede yapılır.
+    Buradaki herhangi bir şey istese bile, bu sayfanın öbür ucunda bir dosyanın
+    gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir GIF çözümleyin. Tek bir istek bile bir görsel, bir küçük
+      resim ya da bir dosya adı taşımıyor. Ya da internet bağlantısını kesip yine
+      de bir tanesini çözümleyin."""
+
+read_first = """
+, dosyayı gezen blok okuyucu için <code>src/gif.js</code>,
+      açıcı için <code>src/lzw.js</code> ve bayt muhasebesi için
+      <code>src/budget.js</code> &mdash; hiçbirinde ağa erişebilecek tek bir
+      satır yok."""
+
+howto_heading = "Bir GIF nasıl çözümlenir"
+
+card = """
+            Bir GIF'i açın ve içinde gerçekte ne olduğunu görün: gecikmesi ve
+            tasfiye kuralıyla her kare, renk tabloları ve dosya boyutunun nereye
+            gittiğine dair dürüst bir hesap."""
+
+[words]
+plural = "GIF'leriniz"
+choose = "bir GIF"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[facts]]
+text = "Dosyalar cihazınızda kalır"
+
+[[privacy]]
+title = "GIF'inizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyanızın toplanabileceği bir uç nokta burada yok,
+      olsaydı bile onu oraya gönderecek bir kod yok. Burada eskiden
+      <code>connect-src 'none'</code> yazıyordu ki bu mutlaktı; reklam eklemek
+      buna mal oldu ve bunu söylemek anlaşmanın bir parçası."""
+
+[[privacy]]
+title = "Okuyucu bu depodaki dört dosya."
+body = """
+ Buradaki hiçbir şey, dosyada ne
+      olduğunu anlamak için tarayıcının kendi GIF çözücüsünü kullanmıyor; çünkü o
+      çözücü bir baytın nereye gittiğini söylemez. Bu yüzden biçim elle
+      okunuyor: <code>src/gif.js</code> blokları geziyor,
+      <code>src/lzw.js</code> pikselleri açıyor, <code>src/frames.js</code>
+      onları üst üste diziyor ve <code>src/budget.js</code> parçaları toplayıp
+      dosyanın boyutunu tutturup tutturmadığını denetliyor."""
+
+[[privacy]]
+title = "Yorumlar ve üst veri size gösteriliyor, başka hiç kimseye değil."
+body = """
+
+      Bir GIF bir yorum bloğu, bir düzenlemeyi anlatan bir XMP paketi ya da bir
+      renk profili taşıyabilir ve bu sayfa bunların hepsini basar. Onlar
+      önünüzdeki ekrana konur ve başka hiçbir yere gitmez: bu depoda bunlardan
+      herhangi birini taşıyan bir analitik olayı yok ve olsaydı bile sayfa onu
+      gönderemezdi."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine dosyanız hakkında bir şey verilmiyor: ne
+      dosya, ne bir küçük resim, ne bir ad, bir boyut, bir kare sayısı ya da bir
+      yorum. Bir GIF'i okuyan, açan ya da çizen her satır bu kaynaktan sunuluyor
+      ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de dosyalarınız
+      hakkında bir şey verilir. Siz tıklamadıkça hiçbir şey olmaz ve
+      tıkladığınızda gideceğiniz yer başkasının sitesidir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfanın her
+      parçası çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu:
+      GIF'inizi çözümlenmek üzere uzağa gönderen bir araç, siz fişi çeker çekmez
+      dururdu."""
+
+[[howto]]
+title = "Bir GIF seçin."
+body = """
+ Seçiciye bırakın ya da elle seçin. Tarayıcı
+      onu doğrudan diskinizden okur; siz bunu yaparken hiçbir yere hiçbir şey
+      gönderilmez."""
+
+[[howto]]
+title = "Önce özeti okuyun."
+body = """
+ Tuval boyutu, kare sayısı, animasyonun
+      ne kadar sürdüğünü söylediği ve gerçekte ne kadar oynadığı. Bu son ikisi
+      insanların beklediğinden daha sık farklı çıkar ve sebebi bir sonraki
+      bölümde."""
+
+[[howto]]
+title = "Göze çarpanlara bakın."
+body = """
+ Oradaki her satır sizin
+      dosyanızdan ölçülmüştür: hiçbir tarayıcının uymayacağı gecikmeler, eksik
+      bir döngü bloğu, hiçbir şeyin başvurmadığı renk tabloları, bazı karelerden
+      daha büyük olan üst veri. Hiçbiri neyi yapmak istediğinize dair bir tahmin
+      değildir."""
+
+[[howto]]
+title = "Baytların nereye gittiğini görün."
+body = """
+ Dosyanın her baytı tam
+      olarak bir satırdadır ve satırların toplamı dosyayı verir. Büyük kısmı
+      "sıkıştırılmış pikseller"de değilse, tablonun geri kalanı nerede olduğunu
+      söyler."""
+
+[[howto]]
+title = "Kareleri gezin."
+body = """
+ Her biri gecikmesini, dikdörtgenini,
+      tasfiye yöntemini ve boyutunu gösterir. "Her kareden sonraki tuval" ile
+      "yalnızca her karenin sakladığı" arasında geçiş yapın &mdash; dosyanın
+      iyileştirilmiş olup olmadığını ikincisiyle görürsünüz; çünkü iyi yapılmış
+      bir GIF küçücük dikdörtgenler saklar, kötü yapılmış olan ise her seferinde
+      görüntünün tamamını."""
+
+[[howto]]
+title = "Gerekirse raporu alın."
+body = """
+ Çözümlemenin tamamı düz metin
+      olarak; bir mesaja yapıştırmak ya da dosyanın yanında saklamak için. Zaten
+      ekranınızda duranlardan sayfa içinde kurulur."""
+
+[[faq]]
+q = "GIF'im herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        açılır ve çizilir. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Ağ
+        bağlantısını kesin, yine de GIF çözümler."""
+
+[[faq]]
+q = "GIF'im neden gecikmelerin söylediğinden yavaş oynuyor?"
+a = """
+        Çünkü her tarayıcı saniyenin yüzde ikisinin altındaki bir gecikmeye
+        uymayı reddeder ve kareyi onda bir saniye tutar. Kural 1996'da
+        Netscape'e, o zamanın dönen dünya küreleri ve "yapım aşamasında"
+        tabelaları için yazıldı ve o günden beri her tarayıcıya kopyalandı;
+        hiçbir zaman kaldırılmadı.
+        <br><br>
+        Yani kareleri hep 0,01 sn diyen bir GIF saniyede 100 kare oynamaz.
+        10 oynar ki bu, onu yapan neyse onun istediğinden beş ila on kat daha
+        yavaştır. Bu sayfa iki sayıyı da gösterir &mdash; dosyanın söylediğini ve
+        gerçekte yapacağını &mdash; ve etkilenen kareleri işaretler. Dosyayı
+        yapan neyse orada çözüm, 0,01 yerine 0,02 yazmaktır."""
+
+[[faq]]
+q = "&laquo;Tasfiye&raquo; ne demek?"
+a = """
+        Bir karenin süresi dolduğunda ekranda ne bırakılacağı; bir animasyonun
+        doğru mu görüneceğine yoksa bulaşacak mı olduğuna karar veren alan da bu.
+        <br><br>
+        <strong>Yerinde kalsın</strong>, bir sonraki karenin bunun üzerine
+        boyayacağı anlamına gelir; kareler opaksa ve birbirini kapatıyorsa
+        istediğiniz budur. <strong>Arka plana kadar temizle</strong> önce karenin
+        dikdörtgenini siler; saydamlığın ihtiyaç duyduğu şey budur &mdash; o
+        olmadan bir sonraki karenin saydam yerlerinden bir önceki görünür.
+        <strong>Altında ne varsa geri koy</strong>, bu kare çizilmeden önce orada
+        ne varsa onu geri getirir; sabit bir arka plan üzerinde hareket eden
+        küçük bir nesne böyle saklanır. <strong>Belirtilmemiş</strong> ise
+        dosyanın söylemediği anlamına gelir ve her görüntüleyici bunu "yerinde
+        kalsın" gibi işler."""
+
+[[faq]]
+q = "GIF'im neden bu kadar büyük?"
+a = """
+        "Baytlar nereye gitti" tablosu bunu genel olarak değil sizin dosyanız için
+        yanıtlar ve olası cevaplar birkaç tanedir.
+        <br><br>
+        Neredeyse tamamı <strong>sıkıştırılmış pikseller</strong> ise dosya
+        yalnızca çok fazla görüntüdür: GIF her kareyi bütün pikseller olarak
+        saklar; hareket telafisi ve kalite düğmesi yoktur, yani boyut kabaca alan
+        çarpı kare sayısıdır. Daha az kare, daha küçük boyut ya da daha az renk
+        tek kaldıraçtır.
+        <br><br>
+        Büyük bir dilim <strong>renk tabloları</strong> ise dosya kare başına
+        768 bayttan bir palet yazıyor demektir. Büyük bir dilim
+        <strong>üst veri</strong> ise bir düzenleyici geride bir XMP paketi
+        bırakmıştır ve bu, görüntüye dokunmadan kaldırılabilir. Kareler tuvalin
+        tamamını kaplıyorsa da kodlayıcı hangi bölümün gerçekten değiştiğini hiç
+        hesaplamamıştır &mdash; ki çekilmiş ya da kaydedilmiş her şeyde bu,
+        dosyanın büyük kısmıdır."""
+
+[[faq]]
+q = "İki kare görünümü arasındaki fark ne?"
+a = """
+        <strong>Her kareden sonraki tuval</strong>, bir görüntüleyicinin o anda
+        gösterdiğidir: bu kare, kendinden öncekilerin bıraktığının üzerine
+        çizilmiş hâlde. <strong>Yalnızca her karenin sakladığı</strong> ise
+        dosyanın o kare için gerçekten tuttuğu dikdörtgendir; tek başına, altında
+        hiçbir şey olmadan.
+        <br><br>
+        İlginç olan ikincisi. Bir GIF bir kareyi yalnızca görüntünün değişen
+        bölümü olarak saklayabilir; çoğunlukla sabit duran bir pencerenin ekran
+        kaydının küçük olabilmesinin sebebi budur. Dosyanızdaki her kare tuvalin
+        tamamıysa hiçbir şey bu işi yapmamıştır &mdash; ve bunu animasyonu
+        izleyerek anlayamazsınız, yalnızca saklanana bakarak anlarsınız."""
+
+[[faq]]
+q = "Dosyamda bir yorum ya da XMP olduğunu söylüyor. Bu ne?"
+a = """
+        Görüntüyle birlikte yolculuk eden ve hiçbir görüntüleyicinin çizmediği
+        metin. Bir yorum bloğu genellikle dosyayı yazan şeyin adıdır. Bir XMP
+        paketi ise bir görsel düzenleyicinin ne yaptığını kaydetmek için yazdığı
+        XML'dir ve düzenleme geçmişini, yazılım sürümünü ve bazen yazarın adını
+        taşıyabilir.
+        <br><br>
+        Bu sayfa ikisini de tam olarak basar, çünkü üst veriyle ilgili ilginç
+        soru onun var olması değil ne dediğidir. Size gösterilir ve başka hiç
+        kimseye gösterilmez: bu depoda bunların herhangi birini birine okuyan bir
+        şey yok."""
+
+[[faq]]
+q = "Bozuk bir GIF'i açabilir mi?"
+a = """
+        Dener ve nerede pes ettiğini söyler. Bir bloğun ortasında biten, blok
+        işaretinin olması gereken yerde bir bayt bulunan ya da sıkıştırılmış
+        verisi erken tükenen bir kare taşıyan bir dosya, o noktaya kadar okunan
+        her şeyi yine de gösterir ve sorun en üstte adıyla belirtilir. Bir
+        çözümleyicinin en çok istendiği durum tam da budur; bu yüzden tek bir
+        bozuk bayt yüzünden dosyanın tamamını çöpe atmak yanlış davranış
+        olurdu."""
+
+[[faq]]
+q = "Dosyamı değiştiriyor mu?"
+a = """
+        Hayır. Bu araç yalnızca okur. Çıktı dosyası, yeniden kodlama ya da GIF
+        yazan bir düğme yoktur &mdash; indirebileceğiniz tek şey çözümlemenin düz
+        metin bir kopyasıdır. Orijinaliniz diskinizde el değmemiş durur; sekmeyi
+        kapatırsanız ne olacağının dürüst cevabı da budur."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok. Kendi makinenizin
+        belleğinin ötesinde bir dosya boyutu sınırı da yok. Sitede reklam var,
+        masrafı karşılayan da o; reklamlara dosyanız hakkında hiçbir şey
+        verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: GIF'inizi çözümlenmek üzere uzağa gönderen
+        bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Bir GIF'i tarayıcıda parçalarına ayırın: gecikmesi, dikdörtgeni ve tasfiye yöntemiyle her kare, renk tabloları, döngü sayısı, varsa üst veri ve dosya boyutunun bayt bayt hesabı. Hiçbir şey yüklenmez."
+features = [
+  "Gecikmesi, dikdörtgeni, tasfiye yöntemi ve sıkıştırılmış boyutuyla her kare",
+  "Bir karenin iki görünümü: sakladığı şey ve bir görüntüleyicinin gördüğü tuval",
+  "Dosyanın boyutunu tutturan bir bayt bütçesi, böylece açıklanmayan hiçbir şey kalmaz",
+  "Çizilmiş renk tabloları, hiçbir pikselin başvurmadığı girdiler işaretli",
+  "Yorumları, XMP paketlerini, ICC profillerini ve Netscape döngü bloğunu okur",
+  "Hiçbir tarayıcının uymayacağı gecikmeleri ve animasyonun gerçekte ne hızda oynadığını bildirir",
+  "Bozuk ve yarıda kesilmiş dosyaları açar ve nerede durduklarını söyler",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, dosyanızda değişiklik yok",
+]
+
+[picker]
+title = "Bir GIF'i buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; hareketli ya da durağan, her boyutta"

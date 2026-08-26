@@ -1,0 +1,152 @@
+<main>
+  <!--
+    One numbered step, and then six headings without numbers.
+
+    Every other tool on this site numbers all of its cards, because every card
+    is something the visitor does. Here there is exactly one thing to do -
+    choose a file - and everything below it is the answer. Numbering the answer
+    would promise a sequence of decisions that does not exist, and would leave
+    somebody looking for step 4's button.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> 選一個 GIF</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- 概覽，以及瀏覽器自己畫出來的動畫。 -->
+  <section class="card" id="summary-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="copy-report" class="ghost">複製報告</button>
+        <button type="button" id="download-report" class="ghost">下載報告</button>
+      </div>
+    </div>
+
+    <div class="overview">
+      <div class="preview-wrap">
+        <!--
+          The browser's own decoder, drawing the file unchanged. Everything else
+          on this page is drawn by src/frames.js, so having both means a
+          disagreement between them is visible rather than hidden - and it is
+          the disagreement that would tell you this reader had a bug.
+        -->
+        <img id="preview" class="preview" alt="這個瀏覽器畫出來的動畫">
+        <p class="preview-note">瀏覽器自帶的解碼器，按檔案原樣播放。</p>
+      </div>
+
+      <dl class="facts">
+        <div><dt>版本</dt><dd id="fact-version">&mdash;</dd></div>
+        <div><dt>畫布</dt><dd id="fact-canvas">&mdash;</dd></div>
+        <div><dt>檔案大小</dt><dd id="fact-size">&mdash;</dd></div>
+        <div><dt>幀數</dt><dd id="fact-frames">&mdash;</dd></div>
+        <div><dt>檔案寫的時長</dt><dd id="fact-written">&mdash;</dd></div>
+        <div><dt>實際播的時長</dt><dd id="fact-plays">&mdash;</dd></div>
+        <div><dt>迴圈</dt><dd id="fact-loops">&mdash;</dd></div>
+        <div><dt>用到的顏色</dt><dd id="fact-colors">&mdash;</dd></div>
+      </dl>
+    </div>
+
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- 讀出來的結論。放最前面，因為這就是來看的東西。 -->
+  <section class="card" id="findings-card" hidden>
+    <h2>顯眼的地方</h2>
+    <p class="card-lede">
+      下面每一條都是從這個檔案上量出來的，沒有一條是在猜你本來想做什麼。
+    </p>
+    <ul class="findings" id="findings"></ul>
+  </section>
+
+  <!-- 位元組帳目。 -->
+  <section class="card" id="budget-card" hidden>
+    <h2>位元組去了哪裡</h2>
+    <p class="card-lede">
+      檔案的每個位元組都恰好落在某一行裡，各行加起來正好是這個檔案。要是加不
+      上，最後一行會明說，而不是讓那根條子悄悄拉長湊數。
+    </p>
+
+    <div class="budget-bar" id="budget-bar" role="img" aria-labelledby="budget-caption"></div>
+    <p class="visually-hidden" id="budget-caption">
+      和下面表格裡同樣的數字，畫成一根條子。
+    </p>
+
+    <table class="budget">
+      <caption class="visually-hidden">這個檔案的位元組去了哪裡</caption>
+      <thead>
+        <tr>
+          <th scope="col">部分</th>
+          <th scope="col" class="num">位元組</th>
+          <th scope="col" class="num">佔比</th>
+        </tr>
+      </thead>
+      <tbody id="budget-rows"></tbody>
+      <tfoot>
+        <tr>
+          <th scope="row">整個檔案</th>
+          <td class="num" id="budget-total">&mdash;</td>
+          <td class="num">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </section>
+
+  <!-- 逐幀。 -->
+  <section class="card" id="frames-card" hidden>
+    <div class="toolbar">
+      <h2>逐幀看</h2>
+      <div class="toolbar-actions">
+        <label for="frame-view" class="inline-label">顯示</label>
+        <select id="frame-view">
+          <option value="composited" selected>每幀之後的畫布</option>
+          <option value="stored">每幀實際存下的內容</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="card-lede" id="frames-lede"></p>
+
+    <ul class="frames" id="frames"></ul>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!-- 顏色。 -->
+  <section class="card" id="colors-card" hidden>
+    <h2>顏色</h2>
+    <p class="card-lede" id="colors-lede"></p>
+
+    <div id="global-palette-wrap" hidden>
+      <h3>全域性顏色表</h3>
+      <p class="palette-note" id="global-palette-note"></p>
+      <ul class="palette" id="global-palette"></ul>
+    </div>
+
+    <details id="local-palettes-wrap" hidden>
+      <summary id="local-palettes-summary">每幀各自的顏色表</summary>
+      <div id="local-palettes"></div>
+    </details>
+  </section>
+
+  <!-- 檔案裡不是畫面的那些東西。 -->
+  <section class="card" id="extras-card" hidden>
+    <h2>裡面還有些什麼</h2>
+    <p class="card-lede">
+      不帶畫面的塊。檢視器全都跳過，而檔案的每一份副本還是照樣把它們帶著。
+    </p>
+    <ul class="extras" id="extras"></ul>
+  </section>
+</main>

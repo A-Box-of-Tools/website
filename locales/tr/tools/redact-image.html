@@ -1,0 +1,186 @@
+<!--
+  tools/redact-image/body.html, in Turkish.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; resim -->
+  <section class="card">
+    <h2><span class="step">1</span> Görseli seçin</h2>
+
+    <p class="card-lede">
+      Bir hesap özetinin ekran görüntüsü, bir pasaport fotoğrafı, üzerinde adres
+      olan bir fatura &mdash; insanların karartması gereken resimler, tam da bir
+      yabancının sunucusuna bu iş için yüklememeleri gereken resimlerdir. Bu
+      resim, tarayıcı tarafından doğrudan diskinizden okunur.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Başkasını seç</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; kutular -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Görünmemesi gerekeni kapatın</h2>
+
+    <p id="edit-empty" class="field-summary">Bir görsel seçin; üzerine çizmek için burada görünsün.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Kutu çizmek için resim üzerinde sürükleyin. Taşımak için kutuyu, yeniden
+        boyutlandırmak için tutamaklarını sürükleyin ya da bir tanesine ulaşmak
+        için <kbd>Tab</kbd>'a basıp ok tuşlarını kullanın &mdash; <kbd>Alt</kbd>
+        ve oklar yeniden boyutlandırır, <kbd>Delete</kbd> kaldırır. Her kutunun
+        altında gördüğünüz şey gerçeğidir: ön izleme, dosyayı yazan aynı kod
+        tarafından, ekran boyutunda çizilir.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>Yeni bir kutu ne yapar</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Karart</strong>
+            <span class="check-note">
+              Kenardan kenara tek bir düz renk. Orada olandan hiçbir şey hayatta
+              kalmaz &mdash; ne bir dış hat, ne bir ortalama, ne de karakter
+              sayısı. Üçü içinde işi bitiren tek seçenek budur ve metin olarak
+              okunan her şey için kullanılacak olan da budur.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pikselleştir</strong>
+            <span class="check-note">
+              Her blok, o bloğun ortalama rengi olur. Orijinal pikseller
+              dosyadan gitmiştir, ama bir ortalamalar ızgarası hâlâ altında ne
+              olduğunun bir ölçümüdür &mdash; ve sıradan bir yazı tipindeki metin
+              için bu, yayımlanmış çalışmalarda orijinali yeniden kurmaya yetti.
+              Kalabalıktaki bir yüz için uygun; bir hesap numarası için değil.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Bulanıklaştır</strong>
+            <span class="check-note">
+              Her piksel, komşularının ağırlıklı ortalaması olur.
+              Pikselleştirmeyle aynı itiraz, biraz daha keskin hâliyle:
+              bulanıklaştırma bir konvolüsyondur ve konvolüsyonlar ilkesel olarak
+              tersine çevrilebilir. Bir şeyin gizlenmesini değil yumuşamasını
+              istediğiniz yerde kullanın.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Pikselleştirme ve bulanıklaştırma ne kadar sert uygulansın</label>
+          <select id="strength">
+            <option value="light">Hafif</option>
+            <option value="medium" selected>Orta</option>
+            <option value="heavy">Sert</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Ortaya bir kutu ekle</button>
+        <button type="button" id="undo" class="ghost" disabled>Geri al</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Her kutuyu kaldır</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Adım 3 &mdash; dosya -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Karartılmış kopyayı kaydedin</h2>
+
+    <p class="card-lede">
+      Resim piksellere çözülür, kutular o piksellerin üzerine yazılır ve sonuç
+      yeni bir dosya olarak kodlanır. Katman, açıklama ve kutuların nerede
+      olduğuna dair bir kayıt yoktur; çünkü kapatılan pikseller, kodlayıcıya bir
+      şey verilmeden önce var olmayı bırakır.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Biçim</label>
+        <select id="format">
+          <option value="auto" selected>Otomatik &mdash; fotoğraf için JPEG, başka her şey için PNG</option>
+          <option value="png">PNG (kayıpsız)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          Karartma açısından hiçbir fark yaratmaz: pikseller kodlayıcı onları
+          görmeden çoktan gitmiştir. Yalnızca resmin geri kalanının neye mal
+          olacağına ve nasıl sıkıştırılacağına karar verir.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Kalite</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">%90</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Karart ve kaydet</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Tam boyutta karartılıyor&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>Bitmiş dosya</h3>
+        <a id="download" class="primary as-button" href="#" download>İndir</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Sonrasında onu açıp kapatılan metni seçmeyi deneyin ya da bir
+        düzenleyiciye yapıştırıp bir katman arayın. Bulunacak bir şey yok: tek
+        bir düz resim var ve kapattığınız kısımların üzerine, dosya yazılmadan
+        önce yazıldı.
+      </p>
+    </div>
+  </section>
+</main>

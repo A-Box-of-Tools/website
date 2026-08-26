@@ -1,0 +1,118 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصور</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل من القائمة</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the number that matters -->
+  <section class="card" id="target-card">
+    <h2><span class="step">2</span> قل كم يجوز أن يكون حجمها</h2>
+
+    <p class="card-lede">
+      هنا يقلب الضاغطون الآخرون الأمر رأساً على عقب: يعطونك مِزلاج جودة ويتركونك
+      تخمّن أي إعداد سيحطّ تحت الحدّ المفروض عليك. سمِّ الحدّ بدلاً من ذلك،
+      فتبحث الأداة عن أعلى جودة تتّسع له &mdash; ثم تنفق ما بقي من الميزانية
+      بدل أن تناولك ملفاً بنصف الحجم الذي طلبته.
+    </p>
+
+    <div class="target-row">
+      <div class="target-field">
+        <label for="target-value">الحجم المطلوب، لكل صورة</label>
+        <div class="inline-pair">
+          <input type="number" id="target-value" value="500" min="1" step="1" inputmode="decimal">
+          <label for="target-unit" class="visually-hidden">الوحدة</label>
+          <select id="target-unit">
+            <option value="KB" selected>KB</option>
+            <option value="MB">MB</option>
+          </select>
+        </div>
+      </div>
+
+      <!--
+        The four numbers people are actually given: an upload form that says
+        100 KB, a forum avatar or a job application at 500 KB, an email
+        attachment at 1 MB, and a web page hero at 2 MB.
+      -->
+      <div class="presets" id="presets" role="group" aria-label="أحجام شائعة">
+        <button type="button" class="ghost" data-bytes="102400">100 KB</button>
+        <button type="button" class="ghost" data-bytes="512000">500 KB</button>
+        <button type="button" class="ghost" data-bytes="1048576">1 MB</button>
+        <button type="button" class="ghost" data-bytes="2097152">2 MB</button>
+      </div>
+    </div>
+
+    <p id="target-summary" class="field-summary"></p>
+
+    <fieldset class="options">
+      <legend>بماذا يُسمح له كي يبلغه</legend>
+
+      <div class="option-row">
+        <label for="format-select">صيغة الخَرج</label>
+        <select id="format-select">
+          <option value="auto" selected>تلقائي &mdash; أبقِ على الصيغة إلا إذا بدت غيرها أفضل</option>
+          <option value="keep">أبقِ على الصيغة الأصلية دائماً</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/webp">WebP</option>
+          <option value="image/png">PNG (بلا خسارة، فالحجم يخرج من الأبعاد)</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="allow-resize" checked>
+        <span>
+          <strong>يجوز له تصغير الصورة إن اضطر</strong>
+          <span class="check-note">
+            لا يُلجأ إليه إلا متى كان على الجودة وحدها أن تهبط دون الحدّ الذي
+            يبدأ الضغط عنده في الظهور. وتحت ذلك الحدّ تكون بكسلات أقل وجيدة أحسن
+            منظراً من بكسلات أكثر ومُفسَدة. أطفئ هذا للإبقاء على الأبعاد كما هي
+            بالضبط ودفع ثمن الحجم الضيّق من الجودة بدلاً منها.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the one click -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> اضغط</h2>
+
+    <div class="run-row">
+      <button type="button" id="compress-all" class="primary big" disabled>اضغط إلى الحجم المطلوب</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>بعد الضغط</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>نزِّل الكل في ملف zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

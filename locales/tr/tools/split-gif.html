@@ -1,0 +1,114 @@
+<!--
+  tools/split-gif/body.html, in Turkish.
+
+  Every id, class and template tag below is what src/main.js and the frame
+  reach for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosya -->
+  <section class="card">
+    <h2><span class="step">1</span> Bir GIF seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Dosya</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Boyut</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Görüntü</dt><dd id="src-picture">&mdash;</dd></div>
+      <div><dt>Kareler</dt><dd id="src-frames">&mdash;</dd></div>
+      <div><dt>Süresi</dt><dd id="src-duration">&mdash;</dd></div>
+      <div><dt>Tekrar</dt><dd id="src-loop">&mdash;</dd></div>
+    </dl>
+
+    <p id="notice" class="path-note" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; ne çıkacağı -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">2</span> Kareler nasıl çıksın</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="mode">Her PNG şunu taşısın</label>
+        <select id="mode">
+          <option value="composited" selected>Göründüğü hâliyle kare</option>
+          <option value="stored">Yalnızca o karenin sakladığı pikseller</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="background">Saydam alanlar</label>
+        <select id="background">
+          <option value="keep" selected>Saydam kalsın</option>
+          <option value="flatten">Bir renkle doldur&hellip;</option>
+        </select>
+        <div id="colour-row" class="inline-pair" hidden>
+          <input type="color" id="colour" value="#ffffff" aria-label="Saydam alanların doldurulacağı renk">
+          <span id="colour-note">Her kareye yazılır. Sonradan geri çıkarılamaz.</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="every">Şu kadarda bir kareyi koru</label>
+        <div class="inline-pair">
+          <input type="number" id="every" min="1" max="100" step="1" value="1">
+          <span id="every-note">kare</span>
+        </div>
+        <p class="field-note">
+          Bir kontak baskısı ya da uzun bir kayıt için hepsi yerine her ikinci ya
+          da her beşinci kareyi alın.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="timing">Zamanlama listesi</label>
+        <select id="timing">
+          <option value="yes" selected>ZIP'e frames.txt ekle</option>
+          <option value="no">Yalnızca kareler</option>
+        </select>
+        <p class="field-note">
+          Her karenin ne kadar tutulduğu ve nerede durduğu. Bir PNG klasörü bunu
+          kendi başına taşıyamaz.
+        </p>
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button type="button" id="download-all" class="primary">Her kareyi ZIP olarak indir</button>
+      <button type="button" id="download-selected" class="ghost" hidden>Seçili kareleri indir</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <!-- Adım 3 &mdash; karelerin kendisi -->
+  <section class="card" id="frames-card" hidden>
+    <h2><span class="step">3</span> Kareler</h2>
+
+    <div class="toolbar">
+      <p class="count" id="frames-count" role="status" aria-live="polite"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="select-all" class="ghost">Hepsini seç</button>
+        <button type="button" id="select-none" class="ghost">Hiçbirini seçme</button>
+        <button type="button" id="clear" class="ghost danger">Baştan başla</button>
+      </div>
+    </div>
+
+    <!-- Checkboxes rather than a click-to-select grid: this is a list of files
+         somebody is about to save, and a checkbox is the one control everybody
+         already knows is safe to press. -->
+    <ul class="frames" id="frames"></ul>
+  </section>
+</main>

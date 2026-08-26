@@ -15,17 +15,17 @@
  *
  * A crop rectangle of a fixed shape has two degrees of freedom that matter
  * here: how tall it is, and where its top edge sits. The first fixes the head
- * height and the second fixes the eye line - one each, which is why marking the
- * crown, the chin and the two eyes is enough to place the box exactly, with
- * nothing left to guess and no face detection anywhere in this tool.
+ * height and the second fixes the eye line - one each, which is why the crown,
+ * the chin and the two eyes are enough to place the box exactly, with nothing
+ * left to guess.
  *
- * WHY THE MARKS ARE DRAGGED RATHER THAN DETECTED. Finding a face is a model:
- * weights to ship, an inference runtime to run them in, and a whole argument
- * about what happens when it is wrong on somebody's face and not on somebody
- * else's. Four dragged dots take about eight seconds, are exact, and are the
- * same eight seconds for everybody. The browser's own FaceDetector would do it
- * on one browser behind a flag, which is not a feature, it is a difference in
- * how well the tool works depending on what you opened it in.
+ * WHERE THE FOUR POINTS COME FROM is detect.js, and it is not a model: there
+ * are no weights, no inference runtime and nothing fetched, only the outline of
+ * a head against a plain wall and the dark patches in it where eyes are. What
+ * it produces is a starting position, and the page says which of the four it
+ * managed to measure. Nothing in this file knows or cares which of them were
+ * measured and which were dragged afterwards, and that is the point: the
+ * arithmetic below is applied to wherever the dots ended up.
  *
  * WHY THE EYE LINE IS MEASURED FROM THE BOTTOM. Because that is how every
  * authority in specs.js publishes it. Converting to "from the top" here once,

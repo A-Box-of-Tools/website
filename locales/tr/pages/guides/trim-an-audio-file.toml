@@ -1,0 +1,16 @@
+#
+# Rehber: bir ses dosyasını kesmek - Türkçe.
+#
+
+nav = "Ses dosyası kesme"
+title = "Ses Kalite Kaybetmeden Nasıl Kesilir"
+description = "Bir ses kesmesi gerçekte nereye düşer, bir video kesmesi olamazken o neden tam olabilir, bir birleşme yeri neden bazen tıklar ve beş milisaniyelik bir geçiş gerçekte ne yapar."
+heading = "Ses kalite kaybetmeden nasıl kesilir"
+lede = """
+    Bir ses kesmesi, her oynatıcıda, her zaman, işaretlediğiniz tam ana
+    düşebilir &mdash; ki bu video için doğru değildir. Bu rehber bunun sebebini,
+    tek gerçek püf noktasını ve bu konuda ne yapacağınızı anlatıyor."""
+updated = "21 Ağustos 2026"
+og_title = "Ses kalite kaybetmeden nasıl kesilir"
+og_description = "Bir video kesmesi olamazken bir ses kesmesi neden tam olabilir, bir birleşme yeri neden bazen tıklar ve beş milisaniyelik bir geçiş gerçekte ne yapar."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

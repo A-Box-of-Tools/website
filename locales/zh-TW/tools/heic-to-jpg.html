@@ -1,0 +1,117 @@
+<!--
+  tools/heic-to-jpg/body.html, in Traditional Chinese.
+
+  Prose paragraphs are written on one line each: a line break inside Chinese
+  text collapses to a space in HTML, and a space between two Han characters is
+  visible on the page.
+-->
+<main>
+  <!-- 第 1 步，選檔案 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選好你的 HEIC 照片</h2>
+
+    <p class="card-lede">
+      手機裡直接拷的、備份裡翻出來的、儲存卡上拿的，都行。檔案就在這臺機器上讀，畫面也在這裡解碼。這個頁面沒有上傳這一步，背後也沒有伺服器。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">清空列表</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第 2 步，要什麼樣的結果 -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> 想要什麼樣的結果</h2>
+
+    <fieldset class="options">
+      <legend>格式</legend>
+
+      <div class="option-row">
+        <label for="format-select">把畫面存成</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG，什麼都打得開，連老掉牙的軟體也認</option>
+          <option value="image/png">PNG，無損，體積翻好幾倍</option>
+          <option value="image/webp">WebP，同畫質下比 JPEG 小，但只有新瀏覽器認</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">品質</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>照片裡的那些資訊</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>保留日期、相機和引數</strong>
+          <span class="check-note">按手機寫的樣子原樣複製過去，所以轉換後的照片還是按拍攝那天排序，不是按轉換那天。照片帶 GPS 座標的話，座標也一起帶上，上面那份列表寫明瞭你的哪幾張帶著。關掉它，出來的 JPEG 裡只剩畫面。
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        選哪邊都一樣，這裡沒有任何東西會被讀給誰聽。這個選擇管的是你拿回去的檔案裡裝什麼，不是這個頁面拿它做什麼。想逐條細看那些標籤，或者把已經是 JPEG 的照片裡的標籤清掉，那是 <a href="../exif-editor/">EXIF 檢視與清除</a>乾的活。
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- 第 3 步，按一下就完 -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> 轉換</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>轉換</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>轉好了</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>全部打包成 zip 下載</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    外框的離線那一行只說這一頁還能用。這裡值得補的是它覆蓋了什麼：HEIC 解碼器
+    是隨頁面一起帶的 WebAssembly 引擎，它也一併快取了。這裡定義的鍵會蓋過外框
+    的鍵，見 shared/js/phrases.js。
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <!-- 不要換行：行首的縮排會變成空格，落在句子中間。 -->
+    <span data-phrase="offline.ready">已就緒——解碼器也一起快取了，所以拔掉網線這一頁照樣能用。</span>
+  </div>
+</main>

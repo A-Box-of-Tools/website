@@ -1,0 +1,194 @@
+<!--
+  tools/qr-barcode/body.html, in Turkish.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change - and the
+  symbology names are not words here but the names somebody will ask you for,
+  so EAN-13, UPC-A, ITF-14 and the rest stay as they are.
+-->
+<main>
+  <!-- Adım 1 &mdash; kodun türü -->
+  <section class="card">
+    <h2><span class="step">1</span> Kodun türünü seçin</h2>
+
+    <p class="card-lede">
+      Bir QR kod her şeyi taşır ve bir telefon kamerasının aradığı şeydir. Bir
+      barkod bir sayı taşır ve hangisine ihtiyacınız olduğuna genellikle sizin
+      yerinize karar verilir &mdash; onu isteyen mağaza, depo ya da nakliye
+      şirketi tarafından.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">Kod türü</label>
+      <select id="symbology">
+        <optgroup label="Kare">
+          <option value="qr" selected>QR kod</option>
+        </optgroup>
+        <optgroup label="Çizgili">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- Adım 2 &mdash; dizenin kendisi -->
+  <section class="card">
+    <h2><span class="step">2</span> İçine ne gireceğini söyleyin</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">Ne taşıyacak</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>Bu kodun taşıyacağı tam dize</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- Adım 3 &mdash; nasıl çizileceği -->
+  <section class="card">
+    <h2><span class="step">3</span> Nasıl görüneceğini seçin</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>QR kod</legend>
+
+      <div class="option-row">
+        <label for="level">Ne kadar hasar alabilir</label>
+        <select id="level">
+          <option value="L">L &mdash; yaklaşık %7 kurtarılabilir, en küçük kod</option>
+          <option value="M" selected>M &mdash; yaklaşık %15, olağan tercih</option>
+          <option value="Q">Q &mdash; yaklaşık %25</option>
+          <option value="H">H &mdash; yaklaşık %30, yıpranacak bir baskı için</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">Modül cinsinden kenar boşluğu</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Kenar boşluğu, kodun çevresindeki alan değil kodun bir parçasıdır. Dört
+        modül, şartnamenin istediği şeydir ve kenarına kadar kırpılmış bir kodu
+        pek çok tarayıcı hiç göremez.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>Barkod</legend>
+
+      <div class="option-row">
+        <label for="bar-width">Piksel cinsinden en dar çubuk</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">Piksel cinsinden çubuk yüksekliği</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>Karakterleri altına bas</strong>
+          <span class="check-note">
+            Tarayıcı okumadığında bir insanın okuduğu şey. Bir perakende
+            kodunda haneler kenar boşluklarında da durur ve bu bilinçlidir:
+            kimsenin kırpmaması gereken beyaz alanı işaretlerler.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>Bir kontrol karakteri ekle</strong>
+          <span class="check-note">
+            Code 39 normalde bir tane taşımaz. Bazı sistemler bunda ısrar eder;
+            yalnızca sizinki ediyorsa ekleyin, çünkü onu beklemeyen bir okuyucu
+            bunu sondaki fazladan bir karakter olarak okur.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Renk ve boyut</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">Kod</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">Arkası</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Hiç arka plan olmasın</strong>
+          <span class="check-note">
+            Saydam; zaten bir rengi olan bir şeyin üzerine koymak için. SVG de
+            PNG de bunu korur; arkasında ne kalırsa kalsın açık renk olmalı,
+            yoksa bir tarayıcı hiç kontrast bulamaz.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">Piksel cinsinden resmin boyutu</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Adım 4 &mdash; sonuç -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> Alın</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Ürettiğiniz kod"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG'yi indir</button>
+      <button type="button" id="download-png" class="primary">PNG'yi indir</button>
+      <button type="button" id="copy-png" class="ghost">Görseli kopyala</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Saklanacak olan SVG'dir. Kodun piksel değil talimat hâlidir; yani her
+      boyutta yumuşamadan basılır &mdash; ki bu, çoğu resimden çok burada
+      önemlidir, çünkü bir tarayıcının çözemediği şey tam olarak bulanık bir
+      kenardır.
+    </p>
+  </section>
+</main>

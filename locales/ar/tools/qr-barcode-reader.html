@@ -1,0 +1,249 @@
+<main>
+  <!-- Step 1 &mdash; where the picture comes from -->
+  <section class="card">
+    <h2><span class="step">1</span> أرِه الرمز</h2>
+
+    <p class="card-lede">
+      صورة فوتوغرافية، أو لقطة شاشة، أو الكاميرا. وأياً اخترت، تُقرأ الصورة
+      هنا، في هذه الصفحة، على جهازك &mdash; فلا يُرفع شيء، وإطارُ الكاميرا
+      يُفحَص ويُرمى لا يُسجَّل.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">استعمل الكاميرا</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>أوقِف الكاميرا</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      وتستطيع كذلك لصق صورة مباشرة بـ <kbd>Ctrl</kbd>+<kbd>V</kbd>
+      &mdash; ولقطةُ شاشة لرمز على الشاشة أسرع مدخل.
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- The camera, which only appears once it is running -->
+  <section class="card" id="camera-card" hidden>
+    <h2>الكاميرا</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">أي كاميرا</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>شغّل الضوء</strong>
+          <span class="check-note">
+            بعض الكاميرات وحدها لها واحد، وبعض المتصفحات وحدها تسمح لصفحة أن
+            تطلبه. وحيث لا يُعرَض، فهو غير موجود.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      ضوءُ الكاميرا هو المؤشِّر الصادق هنا: فهو مضاء ما دامت الإطارات تصل
+      ومطفأ في اللحظة التي تتوقف فيها. ولا شيء بين تلك النقطتين يُكتَب على قرص،
+      ولا عنوان في <code>Content-Security-Policy</code> الخاصة بهذه الصفحة
+      يمكن أن تُرسَل إليه صورة.
+    </p>
+  </section>
+
+  <!-- Step 2 &mdash; the answer -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> ماذا يقول</h2>
+
+    <p class="card-lede">
+      يُعرَض، ولا يُفتَح أبداً. فالرمزُ المطبوع عنوانٌ لا يستطيع أحد قراءته،
+      وذلك بالضبط ما يجعل لصق ملصق فوق واحد يستحق عناء أحدهم &mdash; فالسلسلة
+      كلها هنا لتنظر إليها أولاً، والمضيفُ الذي ستبلغه فعلاً منادىً عليه على
+      سطره وحده.
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    One result. Cloned per code found, with only the values filled in from
+    script: every word in it is here, in the markup, because this file is
+    translated per language and src/*.js is one file serving all eleven.
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">انسخ النصّ</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          افتحه في تبويب جديد
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>كيف قُرِئ هذا</summary>
+
+        <dl class="facts-list">
+          <div><dt>الرمز</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>الإصدار</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>تصحيح الأخطاء</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>القناع</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>كلمات رمزية أُصلِحت</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>مكتوب بـ</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>مجموعة المحارف المعلَنة</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>واحد من طقم</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>أسطر مسح متوافقة</dt><dd data-fact="lines"></dd></div>
+          <div><dt>المحارف</dt><dd data-fact="characters"></dd></div>
+          <div><dt>وُجِد بـ</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            الوحدات التي أخذت هذه الصفحة عيّناتها، مرسومةً من جديد. فإن بدت هذه
+            الرمزَ الذي صوّرته، فقد قرأ الشيء الصحيح؛ وإن بدت تشويشاً، فلم
+            يفعل، والجوابُ الذي فوقها لا يُوثَق به.
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    The words script needs, sitting in the markup so that a translator meets
+    them where they meet the rest of the page. A `{host}` in one of these is
+    filled in with the host that was read; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">عنوان ويب</span>
+    <span data-phrase="kind.url-plain">عنوان ويب، غير مشفَّر</span>
+    <span data-phrase="kind.wifi">شبكة Wi-Fi</span>
+    <span data-phrase="kind.vcard">بطاقة جهة اتصال</span>
+    <span data-phrase="kind.mecard">بطاقة جهة اتصال</span>
+    <span data-phrase="kind.email">بريد إلكتروني</span>
+    <span data-phrase="kind.phone">رقم هاتف</span>
+    <span data-phrase="kind.sms">رسالة نصّية</span>
+    <span data-phrase="kind.place">موضع على خريطة</span>
+    <span data-phrase="kind.otp">سرُّ مصادقة ثنائية</span>
+    <span data-phrase="kind.other-scheme">شيء يفتحه برنامج آخر</span>
+    <span data-phrase="kind.number">رقم</span>
+    <span data-phrase="kind.text">نصّ صِرف</span>
+    <span data-phrase="symbology.qr">رمز QR</span>
+
+
+    <span data-phrase="field.host">يذهب إلى</span>
+    <span data-phrase="field.port">المنفذ</span>
+    <span data-phrase="field.path">المسار</span>
+    <span data-phrase="field.ssid">اسم الشبكة</span>
+    <span data-phrase="field.security">الحماية</span>
+    <span data-phrase="field.password">كلمة المرور</span>
+    <span data-phrase="field.hidden">شبكة مخفية</span>
+    <span data-phrase="field.name">الاسم</span>
+    <span data-phrase="field.org">المؤسسة</span>
+    <span data-phrase="field.title">المسمّى الوظيفي</span>
+    <span data-phrase="field.phone">الهاتف</span>
+    <span data-phrase="field.email">البريد الإلكتروني</span>
+    <span data-phrase="field.web">الموقع</span>
+    <span data-phrase="field.address">العنوان</span>
+    <span data-phrase="field.note">ملاحظة</span>
+    <span data-phrase="field.to">إلى</span>
+    <span data-phrase="field.subject">الموضوع</span>
+    <span data-phrase="field.message">الرسالة</span>
+    <span data-phrase="field.number">الرقم</span>
+    <span data-phrase="field.latitude">خط العرض</span>
+    <span data-phrase="field.longitude">خط الطول</span>
+    <span data-phrase="field.account">الحساب</span>
+    <span data-phrase="field.issuer">صادر عن</span>
+    <span data-phrase="field.secret">السرّ</span>
+    <span data-phrase="field.scheme">المخطَّط</span>
+
+    <span data-phrase="value.yes">نعم</span>
+    <span data-phrase="value.open-network">مفتوحة &mdash; بلا كلمة مرور</span>
+    <span data-phrase="value.none">لا شيء</span>
+    <span data-phrase="value.copied">نُسِخ</span>
+    <span data-phrase="value.modules">{n} وحدة مربّعة</span>
+
+    <span data-phrase="warn.userinfo">كلُّ ما قبل @ اسمُ مستخدِم لا عنوان.
+      ومهما بدا هذا الرابط يقول، فهو يذهب إلى {host}.</span>
+    <span data-phrase="warn.punycode">هذا العنوان مكتوب بخطّ غير لاتيني. وبعض
+      الحروف في أبجديات أخرى على شكل حروفنا تماماً، وهكذا يُجعَل اسمٌ يبدو
+      اسماً تثق به أصلاً.</span>
+    <span data-phrase="warn.unicode-host">في اسم المضيف محارف خارج الأبجدية
+      اللاتينية الصِّرفة، ويمكن استعمالها لجعل اسم يبدو اسماً آخر.</span>
+    <span data-phrase="warn.plain-http">هذا عنوان ‎http://‎ صِرف، فكلُّ ما ترسله
+      إليه يسافر غير مشفَّر وكلُّ ما بينكما يستطيع قراءته أو تغييره.</span>
+    <span data-phrase="warn.shortener">{host} إعادةُ توجيه. والعنوان الذي ستصل
+      إليه فعلاً ليس في هذا الرمز، ومعرفةُ ما هو تعني الاتصال بخادم &mdash; وهو
+      ما لا تفعله هذه الصفحة أبداً.</span>
+    <span data-phrase="warn.wifi-secret">هذا الرمز يحمل كلمة مرور نصّاً صريحاً.
+      فمن صوّر الرمز حصل عليها، وذلك جدير بالمعرفة قبل أن يُعلَّق واحد على
+      جدار.</span>
+    <span data-phrase="warn.otp-secret">هذه بذرةُ تطبيق مصادقة: فمن يملكها
+      يستطيع توليد رموزك لذلك الحساب إلى ما لا نهاية. وهي لم تغادر هذه الصفحة،
+      ومن الجدير الحذرُ في أي مكان آخر تذهب إليه.</span>
+    <span data-phrase="warn.not-openable">هذا ليس عنوان ويب، فلا رابط يُعرَض.
+      وهو مطبوع كاملاً أعلاه؛ وهل سيتصرّف شيء على جهازك بموجبه أمرٌ بينك وبين
+      ذلك البرنامج.</span>
+
+    <span data-phrase="mode.numeric">أرقام فقط</span>
+    <span data-phrase="mode.alphanumeric">أحرف كبيرة وأرقام</span>
+    <span data-phrase="mode.byte">بايتات</span>
+    <span data-phrase="mode.kanji">كانجي</span>
+
+    <span data-phrase="how.local">عتبة محسوبة كتلةً كتلة</span>
+    <span data-phrase="how.inverted">مبادلة الداكن بالفاتح</span>
+    <span data-phrase="how.global">عتبة واحدة للصورة كلها</span>
+    <span data-phrase="how.softened">تليين الصورة أولاً</span>
+    <span data-phrase="how.dense">، مع فحص كل صف</span>
+
+    <span data-phrase="status.reading">تجري قراءة الصورة&hellip;</span>
+    <span data-phrase="status.nothing">لم يُوجَد رمز في تلك الصورة. فهي تحتاج
+      إلى الرمز كله في الإطار، وهامشه الأبيض معه، وضوءٍ يكفي لأن تكون المربّعات
+      الداكنة داكنة كما ينبغي.</span>
+    <span data-phrase="status.broken">لم يمكن فتح ذلك الملف بوصفه صورة.</span>
+    <span data-phrase="status.looking">يجري البحث&hellip; ثبِّت الرمز واملأ به
+      نحو نصف الإطار.</span>
+    <span data-phrase="status.on">الكاميرا تعمل. ولا يُسجَّل شيء.</span>
+
+    <span data-phrase="camera.denied">رفض المتصفح الكاميرا لهذه الصفحة. وذلك
+      إذنٌ تستطيع تغييره: ابحث عن أيقونة الكاميرا في شريط العنوان. أما اختيارُ
+      صورة بدلاً من ذلك فلا يحتاج إلى إذن البتة.</span>
+    <span data-phrase="camera.none">لم تُوجَد كاميرا على هذا الجهاز. أفلِت صورة
+      فوتوغرافية أو لقطة شاشة أعلاه فستُقرأ بالطريقة نفسها.</span>
+    <span data-phrase="camera.busy">الكاميرا موجودة لكن شيئاً آخر يستعملها.
+      أغلِق ما يفتحها &mdash; مكالمةُ فيديو عادةً &mdash; وحاوِل من جديد.</span>
+    <span data-phrase="camera.insecure">المتصفح لا يناول الكاميرا إلا لصفحة
+      مخدومة عبر https، وهذه ليست كذلك الآن.</span>
+    <span data-phrase="camera.unsupported">ليس في هذا المتصفح واجهةُ كاميرا
+      تطلبها صفحة. وكلُّ ما عدا ذلك هنا ما زال يعمل.</span>
+    <span data-phrase="camera.failed">لم يمكن تشغيل الكاميرا، ولم يقل المتصفح
+      لماذا.</span>
+
+    <span data-phrase="live.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً
+      حُمِّلت، كلها ملفات هذه الصفحة نفسها.</span>
+    <span data-phrase="live.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه
+      الأداة أبداً. عُدَّ ذلك جديراً بالتحقيق.</span>
+    <span data-phrase="live.platform">نصوصُ الإعلانات والقياس وزرّ التبرّع
+      الخاصة بالصفحة حُمِّلت من {count} مضيفاً؛ ولم يُعطَ واحد منها صورةً ولا
+      إطاراً ولا محرفاً مما قاله رمز.</span>
+  </div>
+</main>

@@ -22,6 +22,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image Stacker](stack-images/) | `/stack-images/` | Twenty frames into one, without twenty uploads or a RAW converter. |
 | [Image Redactor](redact-image/) | `/redact-image/` | What you cover is deleted from the file, not covered up in it. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
+| [DICOM Viewer](dicom-viewer/) | `/dicom-viewer/` | CT, MR, X-ray and ultrasound, with the window, the header and the measurements. |
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |
 | [Image to Data URI](image-to-data-uri/) | `/image-to-data-uri/` | The whole picture as one line of text. Paste it straight into CSS or HTML. |
 | [SVG to Image](svg-to-image/) | `/svg-to-image/` | Name the size. A vector has none of its own to lose. |
@@ -37,7 +38,9 @@ browser and uploads nothing; how the site around them is built is in the
 | [GIF Analyzer](gif-analyzer/) | `/gif-analyzer/` | Frames, delays, palettes, and where every byte went. |
 | [PDF Merger & Splitter](merge-pdf/) | `/merge-pdf/` | Pages moved around without a round trip to a server. |
 | [PDF Compressor](compress-pdf/) | `/compress-pdf/` | Shrink a document without sending it anywhere. |
+| [PDF Redactor](redact-pdf/) | `/redact-pdf/` | The letters are deleted from the file, and the file is searched afterwards to prove it. |
 | [Images to PDF](images-to-pdf/) | `/images-to-pdf/` | Put your pictures into one document. |
+| [Document Scanner](document-scanner/) | `/document-scanner/` | Photograph the page. Get back something that looks scanned. |
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
 | [Text & Code](text-tools/) | `/text-tools/` | Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server. |

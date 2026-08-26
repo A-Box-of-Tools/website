@@ -1,0 +1,17 @@
+#
+# Rehber: bir videoyu GIF'e çevirmek - Türkçe.
+#
+
+nav = "Videodan GIF yapma"
+title = "Bir Video Nasıl GIF'e Çevrilir (ve Küçük Tutulur)"
+description = "Hangi bölümü, hangi genişliği ve hangi kare hızını seçmelisiniz, bir videonun GIF'i neden videonun on katı boyutunda olur ve GIF'i ne zaman kullanmalısınız."
+heading = "Bir video nasıl GIF'e çevrilir"
+lede = """
+    GIF, hareketi değil bütün resimleri saklayan, 1987'den kalma bir biçimdir;
+    yani bir videodan yapılanı her zaman büyüktür. Bu rehber, fazla büyük
+    olduğunda üç ayardan hangisini oynatacağınızı ve her birinin size ne
+    kazandırdığını anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "Bir video nasıl GIF'e çevrilir ve küçük tutulur"
+og_description = "Bir GIF'in boyutuna karar veren üç ayar, her birinin bedeli ve GIF'in tamamen yanlış cevap olduğu durumlar."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

@@ -1,0 +1,228 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../redact-pdf/">PDF Redactor</a>, drop the document
+      in, type the words that have to go, tick the ones you mean, and press
+      &ldquo;Take them out&rdquo;. The letters are deleted from the page's own
+      drawing instructions, the same words are taken out of the bookmarks,
+      comments, form fields and document properties, and the finished file is
+      opened again and searched in front of you before you are offered it.
+    </p>
+    <p>
+      Everything below is why that last clause is the important one, and how to
+      tell whether the tool you already use can say the same.
+    </p>
+  </section>
+
+  <section>
+    <h2>The failure this is about</h2>
+    <p>
+      Draw a black rectangle over a name in a PDF reader. What you see is a name
+      with a black rectangle over it. What most readers <em>save</em> is a
+      document containing the name and, separately, a rectangle with a position,
+      a size and a colour.
+    </p>
+    <p>
+      A rectangle drawn that way is an <strong>annotation</strong>: an object
+      that sits alongside the page rather than in it. The text underneath is
+      exactly as it was. Select the area and press copy, or run any text
+      extractor over the file, or open it in a program that draws annotations
+      differently, and the name comes back. Nothing on screen distinguishes that
+      from a real redaction, which is precisely why it keeps happening to
+      organisations that employ lawyers.
+    </p>
+    <p>
+      It has published court filings, intelligence assessments, contracts, and
+      &mdash; in December 2025 &mdash; blacked-out names in a mass release of
+      United States Department of Justice documents, which were readable within
+      hours of publication. The pattern is always the same. The rectangle was
+      the annotation, and the annotation was never the text.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a real redaction does instead</h2>
+    <p>
+      A page in a PDF is a list of instructions: set this font, move the pen
+      here, draw these glyphs. The words on the page exist in exactly one place,
+      as the operands of those drawing instructions:
+    </p>
+    <pre><code>BT /F1 12 Tf 72 700 Td (Dear Mr Smith) Tj ET</code></pre>
+    <p>
+      Redacting the name means <strong>deleting those letters from that
+      instruction</strong> and writing the page back out. After that there is
+      nothing to recover, not because the file hides it well but because the
+      letters are not in the file. There is no rectangle with something
+      underneath it, because there is nothing underneath.
+    </p>
+    <p>
+      One thing has to be put back, or the result is visibly wrong. Text is
+      drawn by advancing a pen across the page, so deleting five letters pulls
+      the rest of the line five letters to the left: columns stop lining up and
+      totals slide under the wrong headings. A tool doing this properly measures
+      how far the removed letters would have advanced and puts that distance
+      back as a spacing instruction, which moves the pen without drawing
+      anything.
+    </p>
+    <p>
+      The black box, if there is one, is drawn <em>afterwards</em>, over a gap
+      that is already empty. It is a courtesy to whoever reads the document
+      &mdash; a sign that something was taken out &mdash; and not the redaction.
+      That is the whole distinction in one sentence: in a real redaction, the box
+      is decoration; in a fake one, the box <em>is</em> the redaction.
+    </p>
+  </section>
+
+  <section>
+    <h2>The four places a word hides that are not the page</h2>
+    <p>
+      This is the part that catches people who did the first part properly. A PDF
+      carries text in several places at once, and a reader will show, search or
+      copy all of them. Removing a name from the page and leaving it in any of
+      these has not removed it.
+    </p>
+    <ul>
+      <li>
+        <strong>The document properties.</strong> Title, author, and the name of
+        the file this one was exported from. A document whose pages have had a
+        name taken out and whose properties still read
+        <code>Smith settlement draft 3.docx</code> is not redacted. There is
+        usually a second copy of the same information in an XMP packet, which
+        has to go too.
+      </li>
+      <li>
+        <strong>Bookmarks.</strong> The outline down the side of a reader is a
+        list of headings with page numbers attached &mdash; and a heading is a
+        line of text that nothing on the page controls.
+      </li>
+      <li>
+        <strong>Form fields and comments.</strong> What somebody typed into a
+        form is stored twice: once as the field's value and once as the
+        appearance the reader draws. Both have to go. A sticky note carries its
+        text and the name of whoever wrote it.
+      </li>
+      <li>
+        <strong>The replacement text.</strong> A PDF may declare that a run of
+        glyphs &ldquo;spells&rdquo; something else, so that a ligature or a
+        hyphenated line copies as the word it stands for. It means a document can
+        show one thing and hand a reader another on Ctrl+C, and a redaction that
+        removed only what was drawn would leave the sentence intact for anybody
+        who selected the paragraph.
+      </li>
+    </ul>
+    <p>
+      Attachments are the fifth. A PDF can carry entire other files inside it,
+      and nothing you do to the pages touches them.
+    </p>
+  </section>
+
+  <section>
+    <h2>How to check a file, in thirty seconds</h2>
+    <p>
+      Do this to anything you are about to send, whatever tool produced it. It is
+      the check that would have caught every one of the published failures.
+    </p>
+    <ol>
+      <li>
+        <strong>Open the finished file and press Ctrl+F</strong> (Cmd+F on a
+        Mac). Search for the word you removed. A real redaction returns nothing.
+        If the reader jumps to a black rectangle, the word is still in there and
+        the rectangle is sitting on top of it.
+      </li>
+      <li>
+        <strong>Select the blacked-out area and copy it.</strong> Drag across the
+        rectangle, press Ctrl+C, and paste into a text box. If anything arrives,
+        you have found the same failure from the other direction.
+      </li>
+      <li>
+        <strong>Select the whole document and copy that.</strong> Ctrl+A then
+        Ctrl+C, paste into any text editor, and read what comes out. This is the
+        single most useful of the three, because it shows you the document as a
+        text extractor sees it &mdash; including text you never knew was there,
+        which on a scanned page is common.
+      </li>
+      <li>
+        <strong>Look at the properties</strong> &mdash; File → Properties in most
+        readers &mdash; and at the bookmarks panel. Both are places a name
+        survives a page-perfect redaction.
+      </li>
+    </ol>
+    <p>
+      The <a href="../../redact-pdf/">PDF Redactor</a> runs the first and third
+      of those for you and shows the count, because a tool asserting that it
+      removed something is not evidence and a search of the finished file is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Scanned documents are a different problem</h2>
+    <p>
+      A scan is a photograph of a page. The words on it are pixels, not text, and
+      no amount of editing the text layer touches them &mdash; because there is
+      no text layer, or because the one there is describes the picture rather
+      than being it.
+    </p>
+    <p>
+      Most modern scanners and PDF tools add an invisible text layer over the
+      picture, written by optical character recognition, so the page can be
+      searched. That layer is real text and can be removed. Removing it is worth
+      doing: it is what a search, a copy, and every automated system that reads
+      documents would have found. It changes nothing about the picture, in which
+      the words are still perfectly legible to anyone looking at the page.
+    </p>
+    <p>
+      So for a scan, the honest sequence is: take the words out of the text
+      layer, then deal with the picture separately &mdash; which means
+      overwriting pixels. That is what the
+      <a href="../redact-an-image/">image redactor</a> does, and the guide beside
+      it explains why a blur or a mosaic is not good enough for text.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why not just print it and re-scan it</h2>
+    <p>
+      Because it works, and it costs you everything else. Printing a redacted
+      page and scanning it back in does produce a document with no text layer to
+      leak &mdash; and a document nobody can search, no screen reader can read,
+      that is five to fifty times the size, and whose quality is whatever the
+      office scanner felt like. It also rests on the page having printed the way
+      it looked: an annotation can be marked as showing on screen and not on
+      paper, and when that is what your black box was, the sheet that comes out
+      of the printer has the name on it.
+    </p>
+    <p>
+      The same argument applies to &ldquo;flatten to an image&rdquo;, which some
+      tools offer as a redaction. It converts every page into a photograph of
+      itself. If the words were covered rather than deleted, the covering is now
+      permanent &mdash; but everything else about the document is gone with it,
+      and the file you send is one nobody can work with.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why this is the job least worth uploading</h2>
+    <p>
+      A redaction service has to be given the unredacted file. That is the whole
+      transaction: the private version arrives first, intact, and is the version
+      on somebody else's disk. Whatever the privacy policy says, the sequence is
+      not arguable &mdash; the document you were careful about is the one you
+      handed over.
+    </p>
+    <p>
+      What people redact makes this worse than it sounds. Witness statements,
+      medical letters, bank statements going to a landlord, a contract with one
+      client's name in it going to another, a filing with a home address on it.
+      Those are the documents, which is exactly why the tool for them should not
+      have a server on the other end.
+    </p>
+    <p>
+      Everything on <a href="../../redact-pdf/">this site's redactor</a> happens
+      in your own browser: the file is read, edited, written and checked on your
+      machine, and the words you search for never leave the tab either. Unplug
+      from the internet and it keeps working, which is the simplest proof there
+      is that nothing is being sent anywhere. See
+      <a href="../is-it-safe-to-upload-files/">is it safe to upload files</a> for
+      what an upload actually involves.
+    </p>
+  </section>

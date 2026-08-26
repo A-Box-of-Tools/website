@@ -121,6 +121,17 @@ complete = true
 "guides/whats-inside-a-gif" = "rehberler/gifin-icinde-ne-var"
 "guides/verify-a-file-checksum" = "rehberler/dosya-saglama-toplamini-dogrulama"
 
+# The three that shipped after this file was first written. The tools keep
+# their Latin acronyms in the address for the reason given at the top: DICOM
+# and PDF are what a reader types, and a Turkish spelling of either would
+# invent a word nobody searches for.
+"dicom-viewer" = "dicom-goruntuleyici"
+"document-scanner" = "belge-tarayici"
+"redact-pdf" = "pdf-karartma"
+"guides/open-a-dicom-file" = "rehberler/dicom-dosyasi-acma"
+"guides/redact-a-pdf" = "rehberler/pdf-karartma"
+"guides/scan-a-document-with-your-phone" = "rehberler/telefonla-belge-tarama"
+
 #
 # ---------------------------------------------------------------------------
 # The hub.

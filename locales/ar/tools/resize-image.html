@@ -1,0 +1,277 @@
+<main>
+  <!-- Step 1 &mdash; the files -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصور</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">أزِل الكل من القائمة</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the crop -->
+  <section class="card" id="crop-card">
+    <h2><span class="step">2</span> قُصَّ، إن أردت</h2>
+
+    <p class="card-lede">
+      يبدأ الإطار على الصورة كلها، فتركُ هذه الخطوة على حالها لا يقصّ شيئاً.
+      وتحتفظ كل صورة بإطارها الخاص &mdash; اختر واحدة من القائمة أعلاه لترسم
+      عليها. ويجري القصُّ قبل تغيير الحجم، وهو الترتيب الوحيد المعقول: فالصورة
+      التي تُقتطَع بعد تصغيرها تكون قد رمت أصلاً بالبكسلات التي احتاجت إليها.
+    </p>
+
+    <p id="crop-empty" class="field-summary">أضِف صورة يظهر الإطار هنا.</p>
+
+    <div id="crop-controls" hidden>
+      <p class="stage-hint">
+        <span id="stage-name" class="stage-name"></span>
+        اسحب داخل الإطار لتحريكه، أو أي ركن لتغيير حجمه. ومع تركيز المؤشر على
+        الإطار تحرّكه مفاتيح الأسهم بكسلاً بكسلاً،
+        و<kbd>Alt</kbd>&nbsp;+&nbsp;الأسهم تغيّر حجمه، وإمساك
+        <kbd>Shift</kbd> يجعل كل خطوة عشراً.
+      </p>
+
+      <!-- The crop box itself is added here by src/cropper.js. The stage is
+           given the picture's own shape, so the box can be positioned in
+           percentages and needs no recalculating when the window is resized. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <p id="stage-note" class="stage-note" hidden></p>
+
+      <div class="crop-controls">
+        <div class="aspect-row" id="aspect-row" role="group" aria-label="ثبِّت القص على نسبة">
+          <button type="button" data-aspect="free" class="active">حر</button>
+          <button type="button" data-aspect="source">الأصل</button>
+          <button type="button" data-aspect="1:1">1:1</button>
+          <button type="button" data-aspect="4:5">4:5</button>
+          <button type="button" data-aspect="9:16">9:16</button>
+          <button type="button" data-aspect="16:9">16:9</button>
+          <button type="button" data-aspect="4:3">4:3</button>
+          <button type="button" data-aspect="3:2">3:2</button>
+          <button type="button" id="swap-aspect" class="ghost" title="اقلب النسبة المثبَّتة على جنبها">
+            اقلب
+          </button>
+        </div>
+
+        <div class="numbers">
+          <label>يسار<input type="number" id="crop-x" min="0" step="1"></label>
+          <label>أعلى<input type="number" id="crop-y" min="0" step="1"></label>
+          <label>العرض<input type="number" id="crop-w" min="8" step="1"></label>
+          <label>الارتفاع<input type="number" id="crop-h" min="8" step="1"></label>
+          <div class="number-actions">
+            <button type="button" id="crop-max" class="ghost">الأكبر</button>
+            <button type="button" id="crop-centre" class="ghost">التوسيط</button>
+            <button type="button" id="crop-reset" class="ghost">الصورة كلها</button>
+          </div>
+        </div>
+
+        <!--
+          Every image keeps its own box, which is the point. This is for the
+          case that is still worth one click: a folder of exports that all want
+          the same framing.
+        -->
+        <div class="apply-row" id="apply-row" hidden>
+          <button type="button" id="crop-apply-all" class="ghost">استخدم هذا القص على كل صورة</button>
+          <p class="hint-line" id="apply-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; the size -->
+  <section class="card" id="resize-card">
+    <h2><span class="step">3</span> قل بأي حجم تكون</h2>
+
+    <div class="option-row">
+      <label for="resize-mode">اضبط الحجم بـ</label>
+      <select id="resize-mode">
+        <option value="pixels" selected>العرض والارتفاع، بالبكسل</option>
+        <option value="longest">أطول ضلع</option>
+        <option value="percent">نسبة مئوية مما هي عليه الآن</option>
+        <option value="none">لا شيء &mdash; اترك الحجم كما هو تماماً</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="pixels-fields">
+      <div class="numbers">
+        <label>العرض<input type="number" id="size-w" min="1" step="1" placeholder="تلقائي" value="1920"></label>
+        <label>الارتفاع<input type="number" id="size-h" min="1" step="1" placeholder="تلقائي"></label>
+        <div class="number-actions">
+          <button type="button" id="swap-size" class="ghost">اقلب</button>
+        </div>
+      </div>
+
+      <!--
+        Leaving one of them blank is the common case and the one worth
+        supporting properly: "1920 wide, whatever tall that makes it" needs no
+        decision about shapes at all.
+      -->
+      <p class="hint-line">
+        املأ أحدهما واترك الآخر فارغاً للإبقاء على نسبة الصورة نفسها.
+      </p>
+
+      <div class="presets" id="size-presets" role="group" aria-label="أحجام شائعة">
+        <button type="button" class="ghost" data-w="1920" data-h="1080">1920 &times; 1080</button>
+        <button type="button" class="ghost" data-w="1280" data-h="720">1280 &times; 720</button>
+        <button type="button" class="ghost" data-w="1080" data-h="1080">1080 &times; 1080</button>
+        <button type="button" class="ghost" data-w="600" data-h="">عرض 600</button>
+      </div>
+
+      <div class="option-row" id="fit-row">
+        <label for="fit">إن تعارضت النسب</label>
+        <select id="fit">
+          <option value="contain" selected>احتواء &mdash; الصورة كلها، ويخرج أحد الضلعين أقصر</option>
+          <option value="cover">ملء &mdash; هذا الحجم بالضبط، مع قطع الفائض</option>
+          <option value="pad">حشو &mdash; هذا الحجم بالضبط، وحوله خلفية</option>
+          <option value="stretch">مطّ &mdash; هذا الحجم بالضبط، مع تشوّه النسبة</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>أطول ضلع<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
+      </div>
+      <p class="hint-line">
+        أيُّ الضلعين كان أطول صار هذا، ويتبعه الآخر. فتخرج اللقطات الطولية
+        والعرضية في الدفعة الواحدة بالحجم نفسه على ضلعها الطويل، وهو ما يريده
+        المعرض عادةً.
+      </p>
+      <div class="presets" id="longest-presets" role="group" aria-label="أطوال شائعة للضلع">
+        <button type="button" class="ghost" data-longest="640">640</button>
+        <button type="button" class="ghost" data-longest="1280">1280</button>
+        <button type="button" class="ghost" data-longest="1920">1920</button>
+        <button type="button" class="ghost" data-longest="2560">2560</button>
+      </div>
+    </div>
+
+    <div class="size-fields" id="percent-fields" hidden>
+      <div class="numbers">
+        <label>النسبة<input type="number" id="size-percent" min="1" max="1000" step="1" value="50"></label>
+      </div>
+      <div class="presets" id="percent-presets" role="group" aria-label="نسب شائعة">
+        <button type="button" class="ghost" data-percent="25">25%</button>
+        <button type="button" class="ghost" data-percent="50">50%</button>
+        <button type="button" class="ghost" data-percent="75">75%</button>
+        <button type="button" class="ghost" data-percent="200">200%</button>
+      </div>
+    </div>
+
+    <label class="check" id="enlarge-row">
+      <input type="checkbox" id="no-enlarge" checked>
+      <span>
+        <strong>لا تكبّر صورة أبداً فوق ما بدأت به</strong>
+        <span class="check-note">
+          التكبير يخترع بكسلات لم تُصوَّر قط، فالصورة الصغيرة إذا طُلب لها إطار
+          كبير خرجت ناعمة لا مفصَّلة. ومع تفعيل هذا يُترَك كل ما هو أصغر من
+          الحجم الذي طلبته على حجمه هو.
+        </span>
+      </span>
+    </label>
+
+    <p id="size-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Step 4 &mdash; the format, and the one click -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> احفظها</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">الصيغة</label>
+        <select id="format">
+          <option value="keep" selected>أبقِ كل ملف على الصيغة التي وصل بها</option>
+          <option value="image/jpeg">JPEG</option>
+          <option value="image/png">PNG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">الجودة &mdash; <output id="quality-value" for="quality">85</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="85">
+        <p class="field-note">
+          لصيغتَي JPEG وWebP فقط؛ أما PNG فليس فيه مقبض جودة. وعند 85 يعجز معظم
+          الناس عن التفريق. ودون 60 تقريباً تبدأ المساحات المسطَّحة في التشرّط.
+        </p>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">الخلفية</label>
+        <input type="color" id="background" value="#ffffff">
+        <p class="field-note">
+          ما يظهر حيث لا تظهر الصورة: خلف الإطار المحشوّ، وخلف الشفافية حين لا
+          تكون في صيغة الخَرج قناة ألفا.
+        </p>
+      </div>
+    </div>
+
+    <p id="plan-summary" class="field-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>غيّر حجم الصور</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>انتهى</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>نزِّل الكل في ملف zip</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The big look at one result. A <dialog> opened with showModal() rather than
+    a div pretending to be one: the browser gives the focus trap, the Escape
+    key and the inert background for nothing, and gets all three right.
+
+    Both pictures in it are object URLs made on this page - the result, and the
+    original that was already decoded for the thumbnail. Opening this fetches
+    nothing and decodes nothing that was not already decoded.
+  -->
+  <dialog id="viewer" class="viewer" aria-labelledby="viewer-name">
+    <div class="viewer-head">
+      <h2 id="viewer-name" class="viewer-name"></h2>
+      <button type="button" id="viewer-close" class="ghost" aria-label="إغلاق">إغلاق</button>
+    </div>
+
+    <div class="viewer-stage">
+      <img id="viewer-image" alt="">
+    </div>
+
+    <p id="viewer-caption" class="viewer-caption"></p>
+
+    <dl class="viewer-facts" id="viewer-facts"></dl>
+
+    <div class="viewer-actions">
+      <button type="button" id="viewer-compare" class="ghost" aria-pressed="false">أظهِر الأصل</button>
+      <a id="viewer-download" class="primary as-button" download>نزِّل</a>
+    </div>
+  </dialog>
+</main>

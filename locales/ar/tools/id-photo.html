@@ -1,0 +1,239 @@
+<main>
+  <!-- Step 1 &mdash; the photograph -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصورة</h2>
+
+    <p class="card-lede">
+      أي صورة يستطيع متصفحك فتحها. وصورةٌ بهاتف ملتقَطة أمام جدار سادة، في ضوء
+      النهار، من نحو متر ونصف، هي ما كُتِبت حولها معظم هذه القواعد &mdash;
+      وتُقرأ من قرصك مباشرة، ولا تُرسَل إلى أي مكان.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-photo" class="ghost danger">اختر صورة أخرى</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the rule -->
+  <section class="card" id="spec-card">
+    <h2><span class="step">2</span> اختر البلد والمستند</h2>
+
+    <p class="card-lede">
+      كل رقم أدناه هو المطلب المنشور، منقولاً عن الجهة المسمّاة تحته. ولا شيء
+      في هذه القائمة مخمَّن، ولا شيء فيها يُجلَب &mdash; فهي جدول في
+      <code>src/specs.js</code>، يُخدَم مع الصفحة.
+    </p>
+
+    <div class="option-row">
+      <label for="spec">المواصفة</label>
+      <select id="spec"></select>
+    </div>
+
+    <dl class="spec-facts" id="spec-facts"></dl>
+
+    <ul class="spec-notes" id="spec-notes"></ul>
+
+    <p class="spec-source" id="spec-source"></p>
+
+    <!--
+      Only the "Anywhere else" entry unlocks these. A country's own numbers are
+      not editable on purpose: an editable rule is a rule somebody can quietly
+      break and then believe they met.
+    -->
+    <details class="custom-panel" id="custom-panel" hidden>
+      <summary>الأرقام، تكتبها بنفسك</summary>
+      <div class="numbers">
+        <label>العرض (مم)<input type="number" id="custom-width" min="10" max="200" step="0.1" value="35"></label>
+        <label>الارتفاع (مم)<input type="number" id="custom-height" min="10" max="200" step="0.1" value="45"></label>
+        <label>DPI<input type="number" id="custom-dpi" min="72" max="1200" step="1" value="300"></label>
+      </div>
+      <div class="numbers">
+        <label>الرأس، الأصغر (مم)<input type="number" id="custom-head-min" min="1" step="0.1" value="31.5"></label>
+        <label>الرأس، الأكبر (مم)<input type="number" id="custom-head-max" min="1" step="0.1" value="36"></label>
+        <label>الخلفية
+          <select id="custom-background">
+            <option value="white">أبيض سادة</option>
+            <option value="off-white">أبيض أو مائل إلى البياض</option>
+            <option value="light-grey" selected>رمادي فاتح سادة</option>
+            <option value="cream">رمادي فاتح أو كريمي</option>
+          </select>
+        </label>
+      </div>
+      <div class="numbers">
+        <label>عرض الرفع (بكسل)<input type="number" id="custom-px-width" min="20" max="4000" step="1" value="413"></label>
+        <label>ارتفاع الرفع (بكسل)<input type="number" id="custom-px-height" min="20" max="4000" step="1" value="531"></label>
+        <label>الأصغر (KB)<input type="number" id="custom-min-kb" min="0" max="10000" step="1" value="0"></label>
+        <label>الأكبر (KB)<input type="number" id="custom-max-kb" min="1" max="10000" step="1" value="200"></label>
+      </div>
+      <p class="hint-line">
+        والـ KB هنا 1024 بايت، وهو ما تعنيه هذه الاستمارات به.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 3 &mdash; the framing -->
+  <section class="card" id="frame-card">
+    <h2><span class="step">3</span> علّم على الوجه، وتحقّق من التأطير</h2>
+
+    <p id="frame-empty" class="field-summary">اختر صورة فيظهر إطار القص هنا.</p>
+
+    <div id="frame-controls" hidden>
+      <p class="stage-hint" id="mark-hint">
+        التاج، والذقن، وكل بؤبؤ. تلك النقاط الأربع هي كل ما تقيسه القاعدة،
+        فيُؤخَذ القصّ من حيث تنتهي &mdash; فاسحب ما حطّ منها في غير موضعه، ثم
+        اضغط <strong>اضبط الإطار</strong>. وإيجادُها يقرأ الصورة نفسها: حافّة
+        رأسك في مقابل الجدار الذي خلفه، والرقع الأدكن حيث تكون العيون. وليس
+        فيه نموذج ولا شيء يُجلَب، وهو موضع بداية لا حُكم، ولذلك كان لك أن
+        تصحّحه ولذلك تقول اللوحة أدناه أياً من الأربع عجزت عن قياسه.
+      </p>
+
+      <!--
+        Where the dots come from. Choosing "I'll place them" leaves them exactly
+        where they are and stops anything moving them again; moving one by hand
+        chooses it for you, because at that point they are yours.
+      -->
+      <div class="mark-mode" role="radiogroup" aria-label="من أين تأتي النقاط الأربع">
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-auto" value="auto" checked>
+          <span>جِدها لي</span>
+        </label>
+        <label class="mark-mode-choice">
+          <input type="radio" name="mark-mode" id="mark-mode-manual" value="manual">
+          <span>سأضعها بنفسي</span>
+        </label>
+      </div>
+
+      <p id="mark-note" class="hint-line" role="status" aria-live="polite"></p>
+      <ul id="mark-why" class="mark-why"></ul>
+
+      <!-- The crop box, its overlay and the four marks are all added here by
+           src/cropper.js and src/marks.js. The stage is given the picture's own
+           shape, so everything on it can be positioned in percentages. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <img id="preview" alt="">
+        </div>
+      </div>
+
+      <div class="frame-actions">
+        <button type="button" id="fit-box" class="primary">اضبط الإطار على القاعدة</button>
+        <button type="button" id="reset-marks" class="ghost">جِد الوجه من جديد</button>
+        <button type="button" id="whole-photo" class="ghost">أكبر إطار يتّسع</button>
+      </div>
+
+      <p id="short-note" class="hint-line" hidden></p>
+
+      <!-- The live readout. Every line is measured from the box as it stands,
+           by the same function whether the box was fitted or dragged. -->
+      <ul class="checks" id="geometry-checks"></ul>
+
+      <p id="resample-note" class="field-summary"></p>
+    </div>
+  </section>
+
+  <!-- Step 4 &mdash; the background -->
+  <section class="card" id="background-card">
+    <h2><span class="step">4</span> الخلفية</h2>
+
+    <p class="card-lede" id="background-lede">
+      تُقرأ من شريط عبر أعلى القصّ ونزولاً على كل جانب، فوق الكتفين &mdash;
+      أجزاءِ الإطار التي ينبغي ألا يكون فيها إلا الخلفية. وتُقاس في فضاء
+      CIE Lab لا في RGB، لأن رماديَّين يفصل بينهما أربعون وحدة RGB لا يُفرَّق
+      بينهما، وأربعين وحدة من الأزرق لون آخر.
+    </p>
+
+    <div class="swatches" id="swatches" hidden>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-found"></span>
+        <span class="swatch-label">ماذا تُقرأ خلفيتك<br><output id="swatch-found-text"></output></span>
+      </div>
+      <div class="swatch">
+        <span class="swatch-chip" id="swatch-wanted"></span>
+        <span class="swatch-label">ماذا تطلب القاعدة<br><output id="swatch-wanted-text"></output></span>
+      </div>
+    </div>
+
+    <ul class="checks" id="background-checks"></ul>
+
+    <p class="field-note" id="background-note"></p>
+  </section>
+
+  <!-- Step 5 &mdash; the files -->
+  <section class="card" id="save-card">
+    <h2><span class="step">5</span> احفظها</h2>
+
+    <p class="card-lede" id="ready-line"></p>
+
+    <div class="settings">
+      <div class="field" id="dpi-field">
+        <label for="print-dpi">دقة الطباعة</label>
+        <select id="print-dpi">
+          <option value="300">300 dpi &mdash; الحدّ الأدنى الذي تنصّ عليه كل قاعدة تقريباً</option>
+          <option value="600">600 dpi &mdash; ما يستعمله مختبر تصوير جيد</option>
+        </select>
+        <p class="field-note" id="dpi-note"></p>
+      </div>
+
+      <div class="field" id="paper-field">
+        <label for="paper">الورقة التي يُطبَع عليها</label>
+        <select id="paper"></select>
+        <p class="field-note" id="paper-note"></p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make" class="primary big" disabled>اصنع الملفات</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>انتهى</h3>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+  <!--
+    The words script puts on the page, sitting in the markup so that a
+    translator meets them where they meet the rest of the page. The
+    `marks.why.*` lines are listed under the note, one line each, rather than
+    strung into the sentence: joining them would have meant a separator in the
+    JavaScript, and a semicolon is not the mark half these languages join with.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="marks.measured">قِيست الأربع كلها من الصورة &mdash;
+      التاج من الخطّ الخارجي لرأسك، والبؤبؤان من دكنتهما، والذقن من حيث يجري
+      الفكّ إلى العنق. تحقّق منها رغم ذلك، واسحب ما حطّ منها في غير موضعه:
+      فالقصّ يُؤخَذ من حيث تنتهي.</span>
+    <span data-phrase="marks.rough">وُضِعت، لكن لم يُقَس كلُّها. تحقّق من
+      النقاط الأربع كلها قبل أن تضبط الإطار.</span>
+    <span data-phrase="marks.none">لم يمكن قياس شيء على هذه الصورة. فالنقاط في
+      مواضع بدايتها بدلاً من ذلك &mdash; اسحبها إلى التاج والذقن وكل
+      بؤبؤ.</span>
+    <span data-phrase="marks.manual">النقاط الأربع لك، ولن يحرّكها شيء. اسحب كل
+      واحدة إلى التاج والذقن وبؤبؤ.</span>
+    <span data-phrase="marks.edited">حرّكت نقطةً، فصارت الأربع كلها لك الآن.
+      و&laquo;جِدها لي&raquo; تقيس الصورة من جديد.</span>
+
+    <span data-phrase="marks.why.background">الجدار الذي خلفك ليس من السدَاجة
+      بحيث يُوجَد حدُّ الرأس في مقابله.</span>
+    <span data-phrase="marks.why.top">الرأس يخرج من أعلى الصورة، فلم يكن ثمّة
+      تاج يُوجَد.</span>
+    <span data-phrase="marks.why.eyes">لم يمكن تمييز العينين، فوُضِعتا حيث تكون
+      عادةً في رأس بهذا الحجم.</span>
+    <span data-phrase="marks.why.chin">جاء الذقن من نِسَب الرأس عموماً لا من
+      الخطّ الخارجي لهذا الرأس.</span>
+
+    <span data-phrase="marks.button.again">جِد الوجه من جديد</span>
+    <span data-phrase="marks.button.back">أعِد النقاط</span>
+  </div>
+</main>

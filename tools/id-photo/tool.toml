@@ -21,7 +21,7 @@ roadmap_group = "images"
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker"]
-lastmod = "2026-08-20"
+lastmod = "2026-08-24"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -62,8 +62,10 @@ live_hint = """
 read_first = """
 , <code>src/specs.js</code> for the rulebook &mdash;
       every country's published figures, with the authority and the date each one
-      was read &mdash; <code>src/geometry.js</code> for the arithmetic that turns
-      four marked points into a crop, and <code>src/jpeg.js</code> for the two
+      was read &mdash; <code>src/detect.js</code> for how the four
+      points are found &mdash; an outline and two dark patches, with no model in
+      it anywhere &mdash; <code>src/geometry.js</code> for the arithmetic that turns
+      those four points into a crop, and <code>src/jpeg.js</code> for the two
       header edits that put the print resolution into the file and bring a
       too-small upload up to the size a form insists on."""
 
@@ -130,13 +132,17 @@ body = """
       photo against remotely."""
 
 [[privacy]]
-title = "There is no face detection, and that is on purpose."
+title = "The face is found without a face model."
 body = """
- The four points the
-      rules are measured from are dragged by you. Detecting them would mean
-      shipping a model and running inference on a picture of your face, and a
-      model that is wrong is wrong unevenly &mdash; worse on some faces than on
-      others. Four dots take eight seconds and are exact for everybody."""
+ There are no weights
+      to download, no inference runtime and nothing fetched: the crown comes
+      from the outline of your head against the wall behind it, the pupils from
+      the patches of the face that are darker than what surrounds them. Nothing
+      in it reads skin colour, which is the whole reason it is written that way
+      &mdash; a model that is wrong is wrong unevenly, worse on some faces than on
+      others. It is a starting position rather than a verdict: the page says
+      which of the four points it could not measure, every dot stays draggable,
+      and switching to <em>I&rsquo;ll place them</em> turns it off entirely."""
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -172,12 +178,15 @@ body = """
       sent that is not on it goes in under &ldquo;Anywhere else&rdquo;."""
 
 [[howto]]
-title = "Drag the four dots onto your face."
+title = "Check the four dots on your face."
 body = """
  Crown, chin, and each
-      pupil. Those four points are the whole of what the rule measures, which is
-      why this tool asks for them rather than guessing. Then press
-      <em>Fit the box</em> and the crop lands where that country wants it."""
+      pupil &mdash; those four points are the whole of what the rule measures. They
+      are placed by measuring the picture itself, and the line under them says
+      which of the four that managed and which it had to work out; drag any that
+      landed wrong, or switch to <em>I&rsquo;ll place them</em> and do all four
+      yourself. Then press <em>Fit the box</em> and the crop lands where that
+      country wants it."""
 
 [[howto]]
 title = "Read the four checks, and the background."
@@ -227,17 +236,42 @@ a = """
         starts on it."""
 
 [[faq]]
-q = "Why does it ask me to mark my own face instead of finding it?"
+q = "How does it find the crown, the chin and the eyes without a face model?"
 a = """
-        Because finding a face means shipping a model: weights to download, an
-        inference runtime to run them in, and a failure mode that is uneven &mdash;
-        detectors are measurably worse on some faces than on others, and the people
-        whose photographs already get rejected most often are the ones it would let
-        down. Four dragged dots take about eight seconds, are exact, and are the
-        same eight seconds for everybody. The browser's own experimental face
-        detector would have worked in one browser behind a flag, which is not a
-        feature, it is a tool that works differently depending on what you opened
-        it in."""
+        By using something a general face detector is not allowed to assume and this
+        tool is: every one of these specifications demands the same scene &mdash;
+        one person, facing the camera, against a plain evenly-lit wall. So the
+        colour of the wall is read from the border of the picture, everything that
+        is not that colour is the person, and the top of them is the crown, hair
+        included. The pupils are found as the best pair of patches that are darker
+        than their own surroundings, level with each other and either side of the
+        middle of the head &mdash; a comparison that is local, so nothing in it
+        depends on what colour a face is. The chin is the one that cannot be found
+        this way, because a jaw against a neck is a soft edge with no colour change
+        across it; it is worked out from the pupils, which sit at almost exactly
+        half the height of a head, and then checked against the outline. All of it
+        is arithmetic in <code>src/detect.js</code>: no weights, no inference
+        runtime, nothing fetched, and the same arithmetic for every face put through
+        it. That last part is the one that matters, because a shipped detector is
+        wrong unevenly &mdash; worse on some faces than on others &mdash; and the
+        people whose photographs already get rejected most often are the ones it
+        would let down."""
+
+[[faq]]
+q = "How much should I trust the dots it places?"
+a = """
+        Enough to start from, not enough to skip looking at. Each of the four has a
+        photograph it is wrong on: a patterned wall or a bookcase leaves no outline
+        to find a head against, a head cropped at the top has no crown in the
+        picture at all, and spectacles, a heavy fringe or closed eyes can put the
+        pupils on the wrong feature. So the tool says out loud which of the four it
+        measured and which it had to work out, refuses outright on a picture with no
+        plain background in it rather than inventing an answer, and leaves every dot
+        draggable. The crop is taken from where the dots end up, never from where
+        they started. If you would rather place all four yourself, the switch above
+        the picture says <em>I&rsquo;ll place them</em>, and moving any dot by hand
+        flips to that on its own &mdash; from that moment they are yours and nothing
+        will move them again."""
 
 [[faq]]
 q = "What is the head height rule, and why does mine keep failing it?"
@@ -342,19 +376,20 @@ a = """
 
 [schema]
 category = "MultimediaApplication"
-description = "Make a passport, visa or ID photograph to a country's published specification in the browser. Applies the print size, DPI, head-height band, eye line and background colour of the chosen document, shows a live overlay and measurement of each, checks the background, lays out a printable 4x6 sheet with cut marks, and writes an upload file at the mandated pixel size inside the portal's KB band. Nothing is uploaded."
+description = "Make a passport, visa or ID photograph to a country's published specification in the browser. Applies the print size, DPI, head-height band, eye line and background colour of the chosen document, places the crown, chin and pupils by measuring the picture rather than by running a face model, shows a live overlay and measurement of each, checks the background, lays out a printable 4x6 sheet with cut marks, and writes an upload file at the mandated pixel size inside the portal's KB band. Nothing is uploaded."
 features = [
   "A rulebook of published specifications, each naming its authority and the date it was read",
   "ICAO Doc 9303 geometry: head height as a fraction of the frame, and the eye line above the bottom edge",
   "A crop box locked to the specification's shape, with the eye band and chin band drawn inside it",
-  "Four dragged marks - crown, chin and both pupils - instead of face detection",
+  "Crown, chin and both pupils found from the outline of the head and the dark of the eyes, with no model shipped and nothing fetched",
+  "Every one of the four still draggable, with the page saying which it measured and which it worked out",
   "Live head height, eye line, centring and tilt, each saying which way to correct",
   "Background colour and evenness measured in CIE Lab, with the two reported separately",
   "Prints at the exact millimetres, with the resolution written into the JPEG header",
   "A 4 x 6, 5 x 7, A4 or Letter sheet, tiled with cut marks in the gaps and nothing over a picture",
   "An upload file at the mandated pixel size, searched into the portal's KB band at both ends",
   "SSC and UPSC form photos at 200 x 230 in 20-50 KB, and signatures at 140 x 60 in 10-20 KB",
-  "Runs offline; no upload, no account, no face detection",
+  "Runs offline; no upload, no account, no face model",
 ]
 
 # The drop zone. Rendered by templates/partials/file-picker.html, which

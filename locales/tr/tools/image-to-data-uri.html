@@ -1,0 +1,148 @@
+<!--
+  tools/image-to-data-uri/body.html, in Turkish.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosyalar -->
+  <section class="card">
+    <h2><span class="step">1</span> Görselleri seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Hepsini listeden çıkar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; asıl yapıştırılan satır -->
+  <section class="card" id="shape-card">
+    <h2><span class="step">2</span> Nereye gideceğini söyleyin</h2>
+
+    <p class="card-lede">
+      Tek başına bir data URI, nadiren birinin istediği şeydir. İstenen, stil
+      dosyasına giren satırdır &mdash; o yüzden satırı seçin; resim, onun içine
+      çoktan tırnaklanmış olarak gelsin. Yanlış yapılması kolay olan ve yalnızca
+      SVG'lerde çuvallayan kısım da odur.
+    </p>
+
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="Ne yapıştırılacak">
+      <label class="shape">
+        <input type="radio" name="shape" value="uri" checked>
+        <span class="shape-body">
+          <strong>Tek başına data URI</strong>
+          <span class="shape-note">
+            Virgülden sonraki her şey dosyanın kendisidir. Bir URL'nin gittiği her
+            yere yapıştırın.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-rule">
+        <span class="shape-body">
+          <strong>Bir CSS kuralı</strong>
+          <span class="shape-note">
+            Dosyanın adını taşıyan bir sınıfla, kuralın tamamı. Seçiciyi gerçekten
+            biçimlendirdiğiniz şeyle değiştirin.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="css-var">
+        <span class="shape-body">
+          <strong>Bir CSS özel özelliği</strong>
+          <span class="shape-note">
+            Stil dosyasının başında bir kez tanımlanır ve istediğiniz kadar
+            <code>var(--ad)</code> olarak kullanılır. Resim birden fazla kuralda
+            görünüyorsa seçilecek olan budur.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="html">
+        <span class="shape-body">
+          <strong>Bir HTML <code>&lt;img&gt;</code> etiketi</strong>
+          <span class="shape-note">
+            Piksel boyutu doldurulmuş hâlde; böylece sayfanın geri kalanı
+            yüklenirken sayfa zıplamaz.
+          </span>
+        </span>
+      </label>
+
+      <label class="shape">
+        <input type="radio" name="shape" value="markdown">
+        <span class="shape-body">
+          <strong>Markdown</strong>
+          <span class="shape-note">
+            Bir README ya da bir konu için: barındırılacak bir yere ihtiyaç duymak
+            yerine metinle birlikte yolculuk eden bir resim.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary">
+      <code>alt</code> metni bilerek boş bırakılıyor. Resmin bir anlam taşıyıp
+      taşımadığını ya da süs olup olmadığını yalnızca siz bilirsiniz ve bir dosya
+      adından tahmin edilmiş bir açıklama, ekran okuyucu kullanan biri için hiç
+      açıklama olmamasından daha kötüdür.
+    </p>
+
+    <fieldset class="options">
+      <legend>SVG</legend>
+
+      <label class="check">
+        <input type="checkbox" id="svg-base64">
+        <span>
+          <strong>SVG'leri de base64 yap</strong>
+          <span class="check-note">
+            Varsayılan olarak kapalı; çünkü bir SVG metindir ve base64 baytlar
+            içindir. Yüzde kodlaması, işaretlemeyi stil dosyasında okunur bırakır
+            ve genellikle beşte bir daha kısadır. <code>;base64</code> konusunda
+            ısrar eden nadir araç zincirleri için bunu açın.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+  </section>
+
+  <!-- Adım 3 &mdash; sonuç. Burada bilerek bir düğme yok: kodlama anında olur,
+       yani bir "dönüştür" basışının bekleyeceği bir şey yok. -->
+  <section class="card" id="output-card">
+    <h2><span class="step">3</span> Kopyalayın</h2>
+
+    <p id="empty-note" class="card-lede">
+      Henüz bir şey seçilmedi. Yukarıya bir resim bırakın, yapıştırılacak satır
+      burada görünsün.
+    </p>
+
+    <div id="results" hidden>
+      <div class="results-head">
+        <p id="results-summary" class="results-summary"></p>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Hepsini kopyala</button>
+          <button type="button" id="download-all" class="ghost">Tek dosya olarak indir</button>
+        </div>
+      </div>
+
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

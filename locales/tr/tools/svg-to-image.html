@@ -1,0 +1,214 @@
+<!--
+  tools/svg-to-image/body.html, in Turkish.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosyalar -->
+  <section class="card">
+    <h2><span class="step">1</span> SVG dosyalarını seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Hepsini listeden çıkar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; boyut -->
+  <section class="card" id="size-card">
+    <h2><span class="step">2</span> Ne kadar büyük olacağını söyleyin</h2>
+
+    <p class="card-lede">
+      Bir vektörün sizin yerinize yanıtlayamadığı tek soru budur. Bir SVG'nin
+      içinde piksel yoktur &mdash; çizim talimatları vardır ve onları
+      söyleyeceğiniz her boyutta uygular. Aşağıdaki sayı, bir fotoğrafta olduğu
+      gibi zorladığınız bir sınır değildir; 24&nbsp;piksellik bir simgeden çıkan
+      4000 piksel, 24'ün olduğu kadar keskindir.
+    </p>
+
+    <div class="option-row">
+      <label for="size-mode">Boyutu şununla belirle</label>
+      <select id="size-mode">
+        <option value="scale" selected>Dosyanın istediği boyutun bir katı</option>
+        <option value="width">Piksel cinsinden genişlik</option>
+        <option value="height">Piksel cinsinden yükseklik</option>
+        <option value="longest">En uzun kenar</option>
+        <option value="box">İki kenarı da verilmiş bir kutu</option>
+      </select>
+    </div>
+
+    <div class="size-fields" id="scale-fields">
+      <div class="numbers">
+        <label>Çarpan<input type="number" id="size-scale" min="0.01" max="200" step="0.5" value="4"></label>
+      </div>
+      <div class="presets" id="scale-presets" role="group" aria-label="Yaygın çarpanlar">
+        <button type="button" class="ghost" data-scale="1">1&times;</button>
+        <button type="button" class="ghost" data-scale="2">2&times;</button>
+        <button type="button" class="ghost" data-scale="4">4&times;</button>
+        <button type="button" class="ghost" data-scale="8">8&times;</button>
+        <button type="button" class="ghost" data-scale="16">16&times;</button>
+      </div>
+      <p class="hint-line">
+        Listedeki her dosya kendi boyutundan çarpılır; böylece farklı boyutlarda
+        çizilmiş bir simge yığını birbirine göre orantısını korur.
+      </p>
+    </div>
+
+    <div class="size-fields" id="width-fields" hidden>
+      <div class="numbers">
+        <label>Genişlik<input type="number" id="size-width" min="1" step="1" value="1024"></label>
+      </div>
+      <div class="presets" id="width-presets" role="group" aria-label="Yaygın genişlikler">
+        <button type="button" class="ghost" data-width="256">256</button>
+        <button type="button" class="ghost" data-width="512">512</button>
+        <button type="button" class="ghost" data-width="1024">1024</button>
+        <button type="button" class="ghost" data-width="2048">2048</button>
+      </div>
+      <p class="hint-line">Yükseklik, çizimin şeklinden gelir.</p>
+    </div>
+
+    <div class="size-fields" id="height-fields" hidden>
+      <div class="numbers">
+        <label>Yükseklik<input type="number" id="size-height" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">Genişlik, çizimin şeklinden gelir.</p>
+    </div>
+
+    <div class="size-fields" id="longest-fields" hidden>
+      <div class="numbers">
+        <label>En uzun kenar<input type="number" id="size-longest" min="1" step="1" value="1024"></label>
+      </div>
+      <p class="hint-line">
+        Hangi kenar daha uzunsa o bu olur ve diğeri ona uyar; böylece geniş bir
+        logo ile uzun bir logo, uzun kenarlarında aynı boyutta çıkar.
+      </p>
+    </div>
+
+    <div class="size-fields" id="box-fields" hidden>
+      <div class="numbers">
+        <label>Genişlik<input type="number" id="box-width" min="1" step="1" value="1200"></label>
+        <label>Yükseklik<input type="number" id="box-height" min="1" step="1" value="630"></label>
+      </div>
+      <div class="option-row">
+        <label for="box-fit">Çizim başka şekildeyse</label>
+        <select id="box-fit">
+          <option value="fit" selected>İçine sığdır &mdash; çizimin tamamı, bir kenar kısa çıkar</option>
+          <option value="pad">Doldur &mdash; tam bu boyut, iki yanında arka planla</option>
+          <option value="stretch">Esnet &mdash; tam bu boyut ve şekil bozulmuş hâlde</option>
+        </select>
+      </div>
+    </div>
+
+    <!--
+      The one thing people rasterise a vector for more than once: the same
+      drawing at 1x, 2x and 3x for a screen with more device pixels than CSS
+      pixels. Multiplied from the plan above rather than planned again, so an
+      @2x is exactly twice its @1x and cannot drift by a rounded pixel.
+    -->
+    <div class="option-row" id="density-row">
+      <label for="density">Yüksek yoğunluklu kopyaları da yaz</label>
+      <select id="density">
+        <option value="1" selected>Hayır &mdash; çizim başına tek dosya</option>
+        <option value="2">@2x de olsun &mdash; bir Retina ekran için</option>
+        <option value="3">@2x ve @3x &mdash; bir telefonun istediği tam set</option>
+      </select>
+    </div>
+
+    <p id="size-summary" class="field-summary"></p>
+    <p id="size-warning" class="field-summary warn" hidden></p>
+  </section>
+
+  <!-- Adım 3 &mdash; biçim -->
+  <section class="card" id="format-card">
+    <h2><span class="step">3</span> Biçimi seçin</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Biçim</label>
+        <select id="format">
+          <option value="image/png" selected>PNG &mdash; saydamlığı korur, kenarlar tam</option>
+          <option value="image/jpeg">JPEG &mdash; saydamlık yok, fotoğraflarda daha küçük</option>
+          <option value="image/webp">WebP &mdash; saydamlık ve daha küçük bir dosya</option>
+        </select>
+        <p class="field-note" id="format-note"></p>
+      </div>
+
+      <div class="field" id="quality-field" hidden>
+        <label for="quality">Kalite &mdash; <output id="quality-value" for="quality">90</output></label>
+        <input type="range" id="quality" min="30" max="100" step="1" value="90">
+        <p class="field-note">
+          Yalnızca JPEG ve WebP için; PNG kayıpsız olduğu için kalite düğmesi
+          yoktur. Düz renk ve sert kenarlar &mdash; bir SVG'nin büyük kısmı
+          bunlardan oluşur &mdash; tam da kayıplı bir kodlayıcının en kötü
+          başardığı şeydir; bu yüzden bu değer burada, bir fotoğrafta olacağından
+          daha yüksek durur.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="background-mode">Arka plan</label>
+        <select id="background-mode">
+          <option value="transparent" selected>Saydam</option>
+          <option value="colour">Bir renk</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="Arka plan rengi" hidden>
+        <p class="field-note" id="background-note"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Adım 4 &mdash; bakın, sonra alın -->
+  <section class="card" id="run-card">
+    <h2><span class="step">4</span> Bakın, sonra kaydedin</h2>
+
+    <p class="card-lede">
+      Ön izleme, dosyayı yazan aynı kod tarafından, seçtiğiniz dosyadan, bu
+      makinede çizilir. Denetlemeye değen şey, bir çizim piksele dönüştüğünde
+      değişen iki şeydir: yarım piksel genişliğindeyken grileşmiş bir saç teli
+      çizgi ve varsa metin; ki o da webden getirilmiş bir yazı tipiyle değil bu
+      makinede bulunan bir yazı tipiyle çizilir.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-stage">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <p id="preview-empty" class="field-summary">Bir SVG ekleyin, burada görünsün.</p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big" disabled>Piksele çevir</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Bitti</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Hepsini zip olarak indir</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+</main>

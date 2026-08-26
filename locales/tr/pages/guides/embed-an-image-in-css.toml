@@ -1,0 +1,18 @@
+#
+# Rehber: bir resmi stil dosyasının içine koymak - Türkçe.
+#
+
+nav = "CSS'e resim gömme"
+title = "CSS'te Data URI: Bir Görsel Ne Zaman Gömülür, Ne Zaman Gömülmez"
+description = "Bir data URI'nin bedeli, base64'ün neden üçte bir eklediği ve gzip'in bunu neden geri vermediği, bir SVG'nin neden asla base64 olmaması gerektiği ve satır içi SVG'leri sessizce bozan tırnak hatası."
+heading = "Bir resim CSS'inizin içine ne zaman konur, ne zaman konmaz"
+lede = """
+    Bir stil dosyasına yazılmış bir görsel onunla birlikte gelir: ikinci bir
+    istek yok, bekleme yok. Ayrıca dosya olmaktan çıkar &mdash; yani kendi başına
+    önbelleğe alınamaz ve çevresindeki her şey değiştiğinde yeniden indirilir. Bu
+    rehber bu takasın nerede yapmaya değdiğini ve nerede sessizce değmediğini
+    anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "Bir resim CSS'inizin içine ne zaman konur"
+og_description = "Bir data URI'nin bedeli, bir SVG'nin neden asla base64 olmaması gerektiği ve satır içi SVG'leri sessizce bozan tırnak hatası."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"
