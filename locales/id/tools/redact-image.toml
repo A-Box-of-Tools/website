@@ -1,0 +1,267 @@
+#
+# Penyensor Gambar - Bahasa Indonesia.
+#
+# Overrides for tools/redact-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Sensor" dipakai untuk redaction sepanjang locale ini - itu kata yang sudah
+# dipakai orang Indonesia untuk menutup bagian sebuah dokumen atau gambar.
+#
+
+name = "Penyensor Gambar"
+heading = "Penyensor&nbsp;Gambar <span class=\"h1-kw\">&mdash; hitamkan, pikselkan, atau buramkan</span>"
+tagline = "Apa yang Anda tutup dihapus dari file-nya, bukan ditutupi di dalamnya."
+
+title = "Sensor Sebuah Gambar &mdash; Hitamkan, Pikselkan, atau Buramkan, Tanpa Unggah"
+description = "Tutupi sebuah nama, alamat, atau nomor rekening di dalam foto atau tangkapan layar lalu kodekan ulang gambarnya, sehingga piksel yang disembunyikan hilang dari file alih-alih duduk di bawah sebuah persegi panjang. Berjalan sepenuhnya di peramban Anda."
+og_title = "Sensor sebuah gambar sehingga bagian yang tertutup benar-benar hilang"
+og_description = "Gambar kotak di atas apa yang tidak boleh terlihat. Piksel di bawahnya ditimpa sebelum file ditulis, jadi tidak ada lapisan untuk digeser dan tidak ada yang bisa dipulihkan. Tidak ada yang diunggah."
+og_image_alt = "Penyensor Gambar - piksel yang tertutup ditimpa, bukan disembunyikan"
+
+pledge = """
+    Gambar didekode, dicat di atasnya, dan dikodekan lagi oleh peramban Anda
+    sendiri, memakai kodek yang memang sudah dibawanya. Alat ini tidak punya
+    fitur jaringan dalam bentuk apa pun &mdash; tidak ada yang diambil, tidak ada
+    yang dikirim &mdash; dan itu lebih penting di sini daripada hampir di mana
+    pun di situs ini: gambar yang dibawa orang ke alat sensor adalah gambar yang
+    masih terbaca nama, alamat, atau nomor rekeningnya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu sensor sebuah tangkapan layar. Tidak satu pun permintaan membawa
+      gambar, gambar mini, nama file, atau posisi satu kotak pun. Atau cabut
+      koneksi internet dan tetap sensor satu."""
+
+read_first = """
+, <code>src/redact.js</code> untuk tiga fungsi yang
+      menimpa pikselnya, dan <code>src/preview.js</code> untuk alasan kenapa apa
+      yang Anda lihat di layar digambar oleh tiga fungsi yang sama itu."""
+
+howto_heading = "Cara menyensor gambar sehingga bagian yang tersembunyi benar-benar hilang"
+
+card = """
+            Hitamkan, pikselkan, atau buramkan sebagian gambar. Piksel yang
+            tertutup ditimpa sebelum file ditulis, jadi tidak ada lapisan untuk
+            digeser."""
+
+[words]
+plural = "gambar"
+choose = "sebuah gambar"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Gambar Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Piksel yang tertutup berhenti ada di sini, bukan di jalan keluar."
+body = """
+ Gambar didekode ke sebuah penyangga
+      piksel, kotaknya ditulis di atas penyangga itu, dan penyangganya diserahkan
+      ke encoder. Tidak ada versi gambar di halaman ini yang kotaknya menjadi
+      lapisan terpisah, karena versi seperti itu tidak pernah dibuat &mdash;
+      lihat <code>src/redact.js</code>."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di mana
+      pun di dalam <code>src/</code>. Pekerjaannya adalah
+      <code>getImageData</code>, tiga perulangan atas byte-nya, dan
+      <code>canvas.toBlob</code> &mdash; semuanya sudah terpasang di peramban
+      Anda."""
+
+[[privacy]]
+title = "Kotaknya tidak pernah dilaporkan ke mana pun."
+body = """
+ Di mana Anda menggambar, berapa banyak,
+      seberapa besar, dan gaya mana yang Anda pilih ditahan di memori halaman ini
+      sampai Anda menutupnya. Tidak ada peristiwa pengukuran khusus di repositori
+      ini yang membawa satu pun darinya, dan satu pertanyaan yang diajukan situs
+      ini setelah sebuah unduhan mengirim jempol ke atas atau ke bawah beserta
+      nama alatnya, tidak lebih."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Itulah bukti yang paling sederhana &mdash; dan yang layak dijalankan
+      sebelum Anda menyensor sebuah paspor."""
+
+[[howto]]
+title = "Pilih gambarnya."
+body = """
+ Tangkapan layar, pindaian, atau foto &mdash;
+      apa pun yang bisa dibuka peramban Anda. Ia dibaca langsung dari disk Anda;
+      tidak ada yang dikirim ke mana pun saat Anda melakukannya."""
+
+[[howto]]
+title = "Seret sebuah kotak di atas apa yang tidak boleh terlihat."
+body = """
+ Seret lagi untuk yang berikutnya.
+      Sebuah kotak bisa dipindahkan, diubah ukurannya lewat pegangannya, atau
+      dicapai dengan tombol Tab dan digeser dengan panahnya. Yang muncul di bawah
+      kotak itu adalah hasil sungguhan, digambar oleh kode yang sama yang menulis
+      file-nya."""
+
+[[howto]]
+title = "Pilih hitam, pikselkan, atau buramkan &mdash; dan pilihlah hitam."
+body = """
+ Isian hitam sama sekali tidak
+      meninggalkan apa pun. Memikselkan dan memburamkan mengganti pikselnya dengan
+      rata-rata dari dirinya sendiri, yang cukup untuk wajah di latar belakang dan
+      tidak cukup untuk apa pun yang terbaca sebagai teks."""
+
+[[howto]]
+title = "Tekan \"Sensor dan simpan\", lalu periksa file-nya."
+body = """
+ Gambar yang ditampilkan sesudahnya adalah
+      file yang sudah jadi, didekode lagi. Buka di sebuah penyunting dan cari
+      sebuah lapisan atau coba pilih teks yang tertutup: yang ada satu gambar
+      datar, dan bagian yang Anda tutup sudah ditimpa sebelum ia ditulis
+      keluar."""
+
+[[faq]]
+q = "Apakah gambar saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File didekode, disensor, dan dikodekan oleh peramban Anda sendiri
+        di perangkat keras Anda sendiri. Alat ini tidak punya fitur jaringan dalam
+        bentuk apa pun &mdash; ia tidak pernah mengambil apa pun dan tidak pernah
+        mengirim apa pun &mdash; dan <code>Content-Security-Policy</code> halaman
+        ini menyebut satu per satu setiap alamat yang boleh dihubunginya, dan
+        tidak satu pun milik situs ini. Muat halamannya sekali, cabut koneksi
+        internet, dan ia tetap bekerja."""
+
+[[faq]]
+q = "Apakah bagian yang tertutup benar-benar hilang dari file?"
+a = """
+        Ya, dan itulah alasan alat ini ada. Gambar didekode ke sebuah penyangga
+        piksel; kotaknya menimpa piksel di dalamnya; penyangganya lalu dikodekan
+        sebagai file baru. Nilai aslinya sudah hilang dari memori sebelum encoder
+        diberi apa pun, jadi tidak ada lapisan untuk disembunyikan, tidak ada
+        anotasi untuk dibuang, dan tidak ada riwayat untuk dibatalkan. Anda bisa
+        memeriksanya seperti Anda memeriksa klaim orang lain: buka hasilnya di
+        penyunting gambar dan cari lapisan kedua, atau coba pilih teks yang Anda
+        tutup."""
+
+[[faq]]
+q = "Bisakah area yang dipikselkan atau diburamkan dipulihkan?"
+a = """
+        Kadang, dan inilah satu hal yang layak dibaca sebelum memilih. Isian hitam
+        mengganti semua yang ada di bawahnya dengan satu warna datar, jadi tidak
+        ada yang selamat &mdash; tidak sebuah tepi, tidak sebuah rata-rata, tidak
+        jumlah karakternya. Memikselkan mengganti setiap blok dengan rata-rata
+        blok itu, dan kisi rata-rata tetaplah pengukuran atas apa yang ada di
+        bawahnya: untuk teks dengan huruf biasa pada ukuran yang bisa ditebak,
+        karya yang diterbitkan sudah merekonstruksi aslinya dengan menggambar
+        string kandidat dan membandingkan rata-ratanya. Memburamkan adalah sebuah
+        konvolusi, dan konvolusi pada prinsipnya bisa dikerjakan mundur. Jadi
+        pikselkan atau buramkan wajah di latar belakang kalau Anda mau, dan
+        hitamkan apa pun yang terbaca sebagai teks."""
+
+[[faq]]
+q = "Kenapa persegi panjang hitam yang digambar di penyunting dokumen bukan hal yang sama?"
+a = """
+        Karena kebanyakan penyunting menyimpan persegi panjang itu di samping
+        gambarnya, bukan ke dalamnya. Bentuk yang digambar di pembaca PDF, dek
+        salindia, pengolah kata, atau penyunting gambar berlapis adalah objek
+        dengan posisi, duduk di atas halamannya &mdash; dan memindahkannya,
+        menghapusnya, atau membuka file-nya di program berbeda mengembalikan
+        persis apa yang ditutupinya. Surat kabar, pengadilan, dan kementerian
+        semuanya pernah menerbitkan dokumen yang disensor dengan cara itu. Di sini
+        persegi panjangnya sama sekali tidak disimpan: ia adalah sekumpulan nilai
+        piksel yang ditulis di atas nilai yang tadinya ada."""
+
+[[faq]]
+q = "Apakah ia juga menghapus data EXIF dan GPS?"
+a = """
+        Ya, sebagai efek samping. Menyimpan berarti mengodekan sebuah kanvas penuh
+        piksel, dan sebuah kanvas tidak membawa tag, jadi lokasi, model kamera,
+        stempel waktu, dan gambar mini tertanamnya sama sekali tidak ditulis ke
+        file baru. Gambar mininya penting di sini: ia salinan kecil kedua dari
+        gambarnya, ia tidak selalu diperbarui ketika sebuah foto disunting, dan
+        foto tersensor yang bepergian bersama gambar mini yang belum disensor
+        adalah cara nyata untuk membatalkan seluruh pekerjaan ini. Kalau Anda mau
+        metadatanya hilang tanpa gambarnya dikodekan ulang sama sekali,
+        <a href="../hapus-data-exif/">Penampil dan Penghapus EXIF</a> menulis
+        ulang wadahnya saja."""
+
+[[faq]]
+q = "Format apa saja yang bisa dibaca dan ditulisnya?"
+a = """
+        Ia membaca apa pun yang bisa didekode peramban Anda, yang dalam praktiknya
+        berarti JPEG, PNG, WebP, GIF, BMP, dan &mdash; di sebagian besar peramban
+        masa kini &mdash; AVIF. Ia menulis JPEG, PNG, dan WebP, karena itulah
+        encoder yang dibawa peramban. Pada "otomatis", JPEG kembali sebagai JPEG
+        dan segala yang lain sebagai PNG, yang menjaga sebuah foto tetap seukuran
+        foto dan menjaga sisa teks di sebuah tangkapan layar tetap tajam.
+        Pilihannya tidak berpengaruh pada penyensorannya: pikselnya sudah hilang
+        sebelum encoder melihatnya."""
+
+[[faq]]
+q = "Bisakah saya melakukan ini tanpa tetikus?"
+a = """
+        Bisa. "Tambah kotak di tengah" menaruh satu di atas gambarnya, Tab
+        berpindah antar kotak, tombol panah menggeser yang terfokus dan Alt
+        bersama tombol panah mengubah ukurannya &mdash; Shift membuat setiap
+        langkah sepuluh piksel &mdash; dan Delete membuangnya. Setiap kotak juga
+        punya barisnya sendiri di bawah gambarnya dengan ukurannya, posisinya, apa
+        yang dilakukannya, dan sebuah tombol untuk membuangnya, jadi seluruh alat
+        ini bisa dipakai dari papan ketik dan bisa dibaca pembaca layar."""
+
+[[faq]]
+q = "Apakah ia jalan di ponsel?"
+a = """
+        Ya. Menggambar, memindahkan, dan mengubah ukuran semuanya adalah peristiwa
+        penunjuk alih-alih peristiwa tetikus, jadi jari bekerja dengan cara yang
+        sama, dan pegangannya digambar lebih besar di layar sentuh. Gambar di layar
+        digambar ulang seukuran layar sementara Anda bekerja &mdash; file-nya
+        sendiri selalu disensor pada resolusi penuhnya ketika Anda menekan
+        tombolnya."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Tidak ada batas ukuran gambarnya juga, karena tidak
+        ada server yang membayarnya &mdash; pekerjaannya terjadi di mesin Anda
+        sendiri. Situs ini memasang iklan, dan itulah yang membiayainya; iklan
+        tidak diberi apa pun tentang gambar Anda."""
+
+[schema]
+description = "Sensor sebuah gambar di peramban: gambar kotak di atas apa yang tidak boleh terlihat dan hitamkan, pikselkan, atau buramkan. Piksel yang tertutup ditimpa sebelum file dikodekan, jadi hasilnya tidak membawa lapisan, anotasi, maupun metadata. Tidak ada yang diunggah."
+features = [
+  "Isian hitam, pikselisasi, dan buram, dipilih per kotak",
+  "Piksel yang tertutup ditimpa sebelum pengodean, jadi tidak ada lapisan untuk digeser",
+  "Pratinjaunya digambar oleh kode yang sama yang menulis file-nya",
+  "Melaporkan sebuah mozaik terdiri dari berapa blok, alih-alih menyebutnya 'kuat'",
+  "Papan ketik dan sentuh selain tetikus: setiap kotak bisa ditambah, dipindah, diubah ukurannya, dan dibuang tanpanya",
+  "Membersihkan EXIF, GPS, dan gambar mini tertanam sebagai efek samping pengodean ulang",
+  "Keluaran JPEG, PNG, dan WebP, dengan pilihan otomatis",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan sebuah gambar di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, WebP, dan apa pun lain yang bisa dibuka peramban Anda"

@@ -1,0 +1,187 @@
+<!--
+  tools/redact-image/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; gambarnya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih gambarnya</h2>
+
+    <p class="card-lede">
+      Tangkapan layar rekening koran, foto paspor, tagihan yang ada alamatnya
+      &mdash; gambar yang perlu disensor orang justru gambar yang tidak boleh
+      mereka unggah ke server orang asing untuk keperluan itu. Gambar ini dibaca
+      peramban langsung dari disk Anda.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="loaded-row" hidden>
+      <p id="loaded-name" class="loaded-name"></p>
+      <button type="button" id="clear-image" class="ghost danger">Pilih yang lain</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; kotaknya -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Tutupi apa yang tidak boleh terlihat</h2>
+
+    <p id="edit-empty" class="field-summary">Pilih sebuah gambar; ia muncul di sini untuk digambari.</p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Seret di atas gambar untuk menggambar sebuah kotak. Seret kotaknya untuk
+        memindahkan, pegangannya untuk mengubah ukuran, atau tekan <kbd>Tab</kbd>
+        untuk mencapai salah satunya lalu pakai tombol panah &mdash; <kbd>Alt</kbd>
+        dan panah mengubah ukuran, <kbd>Delete</kbd> membuangnya. Apa yang Anda
+        lihat di bawah setiap kotak adalah hasil sungguhannya: pratinjaunya
+        digambar seukuran layar oleh kode yang sama yang menulis file-nya.
+      </p>
+
+      <!-- The picture is a canvas, not an <img>, because the redaction is
+           painted into it rather than laid over it. The boxes above it are
+           outlines and handles only; src/stage.js adds them. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="preview"></canvas>
+        </div>
+      </div>
+
+      <fieldset class="options" id="style-group">
+        <legend>Apa yang dilakukan sebuah kotak baru</legend>
+
+        <label class="check">
+          <input type="radio" name="style" value="fill" checked>
+          <span>
+            <strong>Hitamkan</strong>
+            <span class="check-note">
+              Satu warna datar dari tepi ke tepi. Tidak ada dari yang ada di sana
+              yang selamat &mdash; tidak sebuah garis luar, tidak sebuah
+              rata-rata, tidak jumlah karakternya. Ini satu-satunya dari ketiganya
+              yang menuntaskan pekerjaan, dan inilah yang dipakai untuk apa pun
+              yang terbaca sebagai teks.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="pixelate">
+          <span>
+            <strong>Pikselkan</strong>
+            <span class="check-note">
+              Setiap blok menjadi warna rata-rata blok itu. Piksel aslinya sudah
+              hilang dari file, tapi kisi rata-rata tetaplah pengukuran atas apa
+              yang ada di bawahnya &mdash; dan untuk teks dengan huruf biasa, itu
+              cukup untuk merekonstruksi aslinya dalam karya yang sudah
+              diterbitkan. Cocok untuk wajah di kerumunan; tidak untuk sebuah
+              nomor rekening.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="style" value="blur">
+          <span>
+            <strong>Buramkan</strong>
+            <span class="check-note">
+              Setiap piksel menjadi rata-rata terbobot dari tetangganya. Keberatan
+              yang sama dengan pikselisasi, sedikit lebih tajam: memburamkan
+              adalah sebuah konvolusi dan konvolusi pada prinsipnya bisa dibalik.
+              Pakai di tempat Anda ingin sesuatu melembut, bukan tersembunyi.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row">
+          <label for="strength">Seberapa keras pikselisasi dan buram diterapkan</label>
+          <select id="strength">
+            <option value="light">Ringan</option>
+            <option value="medium" selected>Sedang</option>
+            <option value="heavy">Berat</option>
+          </select>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <div class="frame-actions">
+        <button type="button" id="add-box" class="ghost">Tambah kotak di tengah</button>
+        <button type="button" id="undo" class="ghost" disabled>Batalkan</button>
+        <button type="button" id="clear-boxes" class="ghost danger" disabled>Buang setiap kotak</button>
+      </div>
+
+      <p id="box-summary" class="field-summary"></p>
+      <ul id="region-list" class="region-list"></ul>
+      <p id="risk-note" class="hint-line warn-line" hidden></p>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; file-nya -->
+  <section class="card" id="save-card">
+    <h2><span class="step">3</span> Simpan salinan yang sudah disensor</h2>
+
+    <p class="card-lede">
+      Gambar didekode menjadi piksel, kotaknya ditulis di atas piksel itu, dan
+      hasilnya dikodekan sebagai file baru. Tidak ada lapisan, anotasi, dan
+      catatan tentang di mana kotaknya berada; karena piksel yang tertutup
+      berhenti ada sebelum encoder diberi apa pun.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="format">Format</label>
+        <select id="format">
+          <option value="auto" selected>Otomatis &mdash; JPEG untuk foto, PNG untuk selebihnya</option>
+          <option value="png">PNG (tanpa kehilangan)</option>
+          <option value="jpeg">JPEG</option>
+          <option value="webp">WebP</option>
+        </select>
+        <p class="field-note">
+          Tidak ada bedanya bagi penyensorannya: pikselnya sudah hilang sebelum
+          encoder melihatnya. Ia hanya menentukan berapa biaya sisa gambarnya dan
+          bagaimana ia dikompres.
+        </p>
+      </div>
+
+      <div class="field" id="quality-row" hidden>
+        <label for="quality">Kualitas</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="90">
+          <output id="quality-value">90%</output>
+        </div>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save" class="primary big" disabled>Sensor dan simpan</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden>
+      Menyensor pada ukuran penuh&hellip;
+    </p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>File yang sudah jadi</h3>
+        <a id="download" class="primary as-button" href="#" download>Unduh</a>
+      </div>
+
+      <!-- This is the blob itself, decoded again by the browser - not the
+           canvas it was made on. What is on screen here is the file. -->
+      <img id="result-image" class="result-image" alt="">
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <p class="hint-line">
+        Sesudahnya, coba buka dan pilih teks yang tertutup, atau tempelkan ke
+        sebuah penyunting dan cari sebuah lapisan. Tidak ada yang bisa ditemukan:
+        yang ada satu gambar datar, dan bagian yang Anda tutup sudah ditimpa
+        sebelum file-nya ditulis.
+      </p>
+    </div>
+  </section>
+</main>

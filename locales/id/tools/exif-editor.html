@@ -1,0 +1,156 @@
+<!--
+  tools/exif-editor/body.html, in Indonesian.
+
+  Every id, class and data-download below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; file-nya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih foto</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Keluarkan semua dari daftar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; satu klik -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> Hapus semuanya</h2>
+
+    <p class="card-lede">
+      Satu tombol, setiap foto di daftar. Gambarnya tidak didekode, tidak
+      digambar ulang, dan tidak dikompres ulang &mdash; data gambar terkompresinya
+      disalin tanpa disentuh dan hanya metadata di sekelilingnya yang dibuang,
+      jadi hasilnya adalah foto yang sama tanpa apa pun yang menempel.
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>Hapus semua metadata</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>Apa yang disimpan</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>Tag orientasi</strong>
+          <span class="check-note">
+            Ponsel menyimpan sebuah foto sebagaimana dilihat sensornya dan
+            menambahkan satu tag yang mengatakan sisi mana yang di atas. Hapus itu
+            dan sebagian penampil menampilkannya miring. Kalau disimpan, sebuah
+            blok EXIF baru ditulis yang memuat tag ini dan tidak lebih &mdash; dan
+            hanya ketika fotonya memang belum menghadap benar.
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>Profil warna</strong>
+          <span class="check-note">
+            Profil ICC mengatakan apa arti angka-angka di dalam gambar sebagai
+            warna. Ia tidak mengatakan apa pun tentang Anda. Membuangnya bisa
+            menggeser warna sebuah foto bergamut lebar secara kasatmata, dan itulah
+            sebabnya ia disimpan kecuali Anda mengatakan lain.
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>Sudah dibersihkan</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Unduh semua sebagai zip</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; membaca dan menyunting -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> Lihat ke dalam, dan ubah sesuka Anda</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      Pilih sebuah foto di atas dan semua yang ada di dalamnya muncul di sini: apa
+      yang dikatakannya tentang di mana Anda berada, kapan, dan dengan apa. Tidak
+      ada yang dikirim ke mana pun untuk mengetahui itu.
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">Foto mana yang diperiksa</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">Apa yang dibocorkan file ini</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">Blok di dalam file ini</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">Setiap tag</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>Tambahkan sebuah tag</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">Tag</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">Nilai</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">Tambah</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" data-download disabled>Simpan foto ini</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>Batalkan perubahan saya</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

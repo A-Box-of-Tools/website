@@ -1,0 +1,322 @@
+#
+# SVG ke Gambar - Bahasa Indonesia.
+#
+# Overrides for tools/svg-to-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "SVG ke Gambar"
+heading = "SVG&nbsp;ke&nbsp;Gambar <span class=\"h1-kw\">&mdash; ubah vektor menjadi PNG, JPEG, atau WebP pada ukuran berapa pun</span>"
+tagline = "Sebutkan ukurannya. Sebuah vektor tidak punya ukuran sendiri untuk hilang."
+
+title = "SVG ke PNG &mdash; Ubah Vektor jadi Piksel pada Ukuran Berapa Pun, Tanpa Unggah"
+description = "Ubah SVG menjadi PNG, JPEG, atau WebP pada ukuran berapa pun, di peramban Anda. Sebutkan lebarnya, sebuah kelipatan, atau sebuah kotak; dapatkan salinan @2x dan @3x juga. Transparansi terjaga, tidak ada yang diunggah."
+og_title = "Ubah SVG menjadi PNG pada ukuran berapa pun, tanpa mengunggahnya"
+og_description = "Sebuah vektor tidak punya ukuran piksel sendiri, jadi angkanya Anda yang pilih - 32 atau 8000, dengan ketajaman yang sama. Semuanya berjalan di perangkat Anda sendiri."
+og_image_alt = "SVG ke Gambar - ubah vektor menjadi PNG, JPEG, atau WebP pada ukuran berapa pun"
+
+pledge = """
+    Gambarnya diubah menjadi piksel oleh mesin yang sama yang baru saja
+    menampilkannya di layar Anda. File Anda dibaca dari disk Anda, tag akarnya
+    ditulis ulang ke ukuran yang Anda minta oleh seratus baris di
+    <code>src/svg.js</code> yang bisa Anda baca, dan ia digambar ke sebuah kanvas
+    yang memang sudah dibawa peramban Anda. Alat ini tidak punya fitur jaringan
+    dalam bentuk apa pun &mdash; tidak ada yang diambil, tidak ada yang dikirim
+    &mdash; dan seandainya pun ada, tidak ada server di ujung lain halaman ini
+    untuk menerima sebuah logo."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu ubah sesuatu menjadi piksel. Tidak satu pun permintaan membawa file,
+      gambar mini, nama file, atau satu byte pun dari yang Anda pilih. Atau cabut
+      koneksi internet dan tetap ubah satu."""
+
+read_first = """
+, <code>src/svg.js</code> untuk bagaimana ukuran
+      milik sebuah file dibaca dan bagaimana tag akarnya ditulis ulang, dan
+      <code>src/render.js</code> untuk delapan baris yang melakukan pengubahannya
+      menjadi piksel &mdash; sebuah &lt;img&gt;, sebuah <code>drawImage</code>,
+      dan sebuah <code>toBlob</code>, tanpa apa pun di antaranya."""
+
+howto_heading = "Cara mengubah SVG menjadi PNG tanpa mengunggahnya"
+
+card = """
+            Sebuah SVG tidak punya ukuran piksel sendiri, jadi angkanya Anda yang
+            pilih &mdash; 32 atau 8000, dan ketajamannya sama saja."""
+
+[words]
+plural = "file SVG"
+choose = "sebuah SVG"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Karya Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat file Anda
+      bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di mana
+      pun di dalam <code>src/</code>. Seluruh pengubahnya adalah sebuah
+      <code>&lt;img&gt;</code> yang memuat blob dari file Anda sendiri, satu
+      <code>drawImage</code> ke sebuah kanvas, dan satu
+      <code>canvas.toBlob</code>."""
+
+[[privacy]]
+title = "Sebuah SVG adalah dokumen, dan ini mode di mana ia tidak bisa bertindak."
+body = """
+ Sebuah SVG bisa membawa
+      <code>&lt;script&gt;</code>, sebuah
+      <code>&lt;image href=&quot;https://&hellip;&quot;&gt;</code> jarak jauh,
+      sebuah lembar gaya, dan sebuah font web. Digambar lewat sebuah
+      <code>&lt;img&gt;</code>, ia berada dalam apa yang disebut spesifikasi
+      sebagai <em>mode statis aman</em>: skripnya tidak berjalan dan tidak satu
+      pun alamat itu diambil. Itu jaminan peramban, bukan janji kami, dan itulah
+      alasan halaman ini bisa membuka file yang belum pernah dilihatnya tanpa
+      file itu bisa menelepon pulang."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google, dan tombol donasi dari Buy Me a Coffee. Tidak satu pun diberi
+      apa pun tentang gambar Anda. Setiap baris yang membaca, menetapkan ukuran,
+      atau menggambar sebuah file disajikan dari asal ini dan terdaftar di
+      repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih SVG-nya."
+body = """
+ Jatuhkan satu ke pemilih file, atau pilih satu
+      folder berisi SVG dan ubah semuanya sekali jalan. File dibaca peramban
+      langsung dari disk Anda; tidak ada yang dikirim ke mana pun saat Anda
+      melakukannya. Setiap baris mengatakan file itu menganggap dirinya berukuran
+      berapa &mdash; dan mengatakannya secara berbeda kalau ukuran itu datang dari
+      <code>viewBox</code>-nya, atau diandaikan karena file-nya tidak menyatakan
+      apa pun."""
+
+[[howto]]
+title = "Sebutkan seberapa besar."
+body = """
+ Kelipatan dari ukuran milik file itu sendiri
+      adalah jawaban tercepat dan yang tepat untuk satu kumpulan: setiap gambar
+      diskalakan dari titik awalnya sendiri, jadi sekumpulan ikon tetap
+      sebanding. Selain itu, sebutkan sebuah lebar, sebuah tinggi, sisi
+      terpanjang, atau sebuah kotak dengan kedua sisinya diberikan. Tidak ada
+      hukuman untuk angka besar di sini seperti pada sebuah foto &mdash; gambarnya
+      digambar ulang pada ukuran itu, bukan diregangkan ke sana."""
+
+[[howto]]
+title = "Tambahkan salinan berkepadatan tinggi kalau Anda butuh."
+body = """
+ Ponsel dan laptop Retina menggambar dua
+      atau tiga piksel perangkat untuk setiap piksel CSS, jadi logo 200 piksel
+      butuh file 400 atau 600 piksel di belakangnya. Mintalah <code>@2x</code> dan
+      <code>@3x</code> dan mereka keluar dengan nama yang diharapkan Xcode,
+      perkakas Android, dan <code>image-set()</code> di CSS, dan masing-masing
+      persis dua atau tiga kali yang pertama alih-alih dibulatkan sendiri-sendiri."""
+
+[[howto]]
+title = "Pilih formatnya dan putuskan soal transparansinya."
+body = """
+ PNG kecuali Anda punya alasan: ia
+      tanpa kehilangan, ia menjaga transparansi, dan warna datar terkompres dengan baik di
+      dalamnya. JPEG sama sekali tidak punya transparansi, jadi sebuah warna latar
+      dicat masuk entah Anda memilihnya atau tidak &mdash; tanpanya setiap piksel
+      transparan keluar hitam. WebP melakukan keduanya dan membuat file lebih
+      kecil, dengan biaya perangkat lunak yang cukup tua sehingga tidak bisa
+      membacanya."""
+
+[[howto]]
+title = "Lihat pratinjaunya sebelum Anda mengunduh."
+body = """
+ Ia digambar oleh kode yang sama yang
+      menulis file-nya, dari file Anda, di mesin Anda. Dua hal berubah ketika
+      sebuah gambar menjadi piksel dan keduanya muncul di sini: garis setipis
+      rambut yang tadinya selebar setengah piksel menjadi abu-abu, dan teks apa
+      pun digambar dengan font yang dimiliki komputer ini alih-alih yang diambil
+      dari web."""
+
+[[howto]]
+title = "Ambil file-nya."
+body = """
+ Satu unduhan per file, atau seluruh kumpulan
+      sebagai satu zip. Namanya mengikuti SVG asalnya, dengan <code>@2x</code> dan
+      <code>@3x</code> pada salinannya, dan dua file yang akan bernama sama
+      diberi nomor alih-alih yang satu diam-diam menimpa yang lain."""
+
+[[faq]]
+q = "Apakah SVG saya diunggah ke suatu tempat?"
+a = """
+        Tidak. File dibaca oleh peramban Anda sendiri di perangkat keras Anda
+        sendiri, digambar ke sebuah kanvas oleh mesin yang sama yang menggambar
+        setiap gambar lain yang Anda lihat, dan diserahkan kembali sebagai sebuah
+        unduhan. Alat ini tidak punya fitur jaringan dalam bentuk apa pun &mdash;
+        ia tidak pernah mengambil apa pun dan tidak pernah mengirim apa pun
+        &mdash; dan <code>Content-Security-Policy</code> halaman ini menyebut satu
+        per satu setiap alamat yang boleh dihubunginya, dan tidak satu pun milik
+        situs ini."""
+
+[[faq]]
+q = "Pada ukuran berapa sebaiknya saya mengubah SVG menjadi piksel?"
+a = """
+        Berapa pun yang diminta oleh yang akan membacanya, dikalikan rasio piksel
+        perangkat layar tempat ia akan dilihat. Logo yang menempati 200 piksel CSS
+        butuh 400 untuk laptop Retina dan 600 untuk ponsel masa kini, dan itulah
+        salinan <code>@2x</code> dan <code>@3x</code> di sini. Untuk ikon aplikasi
+        atau kartu di toko aplikasi, tokonya menyebut angka yang persis dan itulah
+        angkanya. Kalau tidak ada yang memberi tahu Anda, 1024 pada sisi
+        terpanjang adalah bawaan yang berguna: cukup besar untuk hampir semua
+        keperluan dan cukup kecil untuk dikirim lewat email."""
+
+[[faq]]
+q = "Apakah memperbesarnya menurunkan kualitas?"
+a = """
+        Tidak, dan inilah satu tempat di mana jawaban itu benar-benar tidak.
+        Sebuah vektor adalah instruksi alih-alih piksel, jadi peramban menggambar
+        kurvanya lagi pada ukuran berapa pun yang diminta. 4000 piksel dari ikon
+        24 piksel persis setajam 24-nya. Yang tidak bisa Anda lakukan adalah arah
+        sebaliknya: begitu ia menjadi PNG ia adalah piksel seperti yang lain, jadi
+        ubahlah ke piksel pada ukuran yang Anda butuhkan alih-alih mengubah ukuran
+        hasilnya nanti."""
+
+[[faq]]
+q = "SVG saya tidak punya width atau height. Saya dapat ukuran berapa?"
+a = """
+        <code>viewBox</code>-nya, kalau ada &mdash; lebar dan tingginya adalah
+        satuan pengguna alih-alih piksel, tapi itulah satu-satunya angka di dalam
+        file dan peramban memperlakukannya sebagai ukuran alami gambarnya. Kalau
+        viewBox-nya juga tidak ada, halaman ini menulis <em>diandaikan</em> di
+        sebelah barisnya dan memakai 300&nbsp;&times;&nbsp;150, yang akan dipakai
+        sebuah <code>&lt;img&gt;</code> untuk menggambarnya. Bagaimanapun Anda bisa
+        menyebut ukuran yang Anda mau dan file-nya digambar pada ukuran itu."""
+
+[[faq]]
+q = "Kenapa teksnya tampak berbeda di PNG-nya?"
+a = """
+        Karena font-nya tidak ada di dalam SVG. Sebuah SVG yang menggambar teks
+        menyebut nama sebuah font dan menyerahkan pencariannya kepada mesin, dan
+        file yang menarik font dari Google Fonts lewat <code>@import</code> tidak
+        mendapat apa-apa di sini: SVG yang digambar lewat sebuah
+        <code>&lt;img&gt;</code> tidak diizinkan mengambil apa pun, dan itu aturan
+        yang sama yang menghentikannya menelepon pulang dengan file Anda.
+        Perbaikannya adalah yang sudah diketahui setiap desainer &mdash; ubah
+        teksnya menjadi jalur di program gambar sebelum mengekspor. Setelah itu ia
+        adalah geometri, dan ia tampak sama di mana-mana."""
+
+[[faq]]
+q = "Bisakah ia mengubah beberapa file sekaligus?"
+a = """
+        Bisa. Setiap SVG di daftar digambar dengan setelan yang sama dan
+        kumpulannya turun sebagai satu zip. Sebuah kelipatan &mdash; &ldquo;4&times;
+        ukuran yang diminta file-nya&rdquo; &mdash; biasanya setelan yang tepat
+        untuk satu kumpulan, karena setiap gambar diskalakan dari ukurannya
+        sendiri alih-alih semuanya dipaksa ke jumlah piksel yang sama. Klik baris
+        mana pun untuk menaruh yang itu di pratinjaunya."""
+
+[[faq]]
+q = "Adakah batas ukurannya?"
+a = """
+        Batas peramban, bukan batas kami. Sebuah kanvas menyerah di suatu titik
+        melewati 16.384 piksel di satu sisi, dan Safari di iPhone atau iPad
+        berhenti pada sekitar 16,7 megapiksel luas &mdash;
+        4096&nbsp;&times;&nbsp;4096. Di atas itu halaman ini memperingatkan Anda
+        alih-alih menyerahkan gambar kosong, yang justru dilakukan peramban ketika
+        ia kehabisan: <code>toBlob</code> tidak mengembalikan apa pun, tanpa galat
+        yang menjelaskan dirinya. Melewati 100 megapiksel alat ini menolak, karena
+        itu berarti 400&nbsp;MB kanvas sebelum satu byte pun dikodekan."""
+
+[[faq]]
+q = "Apa yang terjadi pada transparansinya?"
+a = """
+        Ia terjaga, di PNG dan di WebP. JPEG sama sekali tidak punya kanal alfa,
+        jadi sebuah warna dicat di belakang seluruh gambarnya entah Anda memintanya
+        atau tidak &mdash; tanpa itu, semua yang transparan akan keluar hitam, yang
+        tampak seperti kerusakan alih-alih seperti JPEG. Memilih warna latar dengan
+        PNG juga hal yang sangat lumrah untuk diinginkan: ia meratakan gambarnya ke
+        warna itu alih-alih meninggalkan lubang."""
+
+[[faq]]
+q = "Bisakah ia membaca SVG yang memuat skrip atau gambar eksternal?"
+a = """
+        Ia bisa membacanya, dan ia akan menggambar persis bagian yang mau digambar
+        sebuah peramban. SVG yang dimuat lewat sebuah <code>&lt;img&gt;</code>
+        berada dalam <em>mode statis aman</em>: skrip tidak berjalan, rujukan
+        eksternal tidak diambil, dan animasi tidak diputar &mdash; bingkai
+        pertamanyalah yang Anda dapat. Jadi file dengan
+        <code>&lt;image&gt;</code> jarak jauh di dalamnya keluar dengan bagian itu
+        hilang. Itu peramban yang menolak atas nama Anda, dan itulah alasan halaman
+        ini bisa dengan aman membuka file yang belum pernah dilihatnya."""
+
+[[faq]]
+q = "Apa bedanya ini dengan Pengubah Ukuran Gambar?"
+a = """
+        Sumbernya. Pengubah Ukuran Gambar mulai dari piksel &mdash; sebuah JPEG,
+        sebuah PNG &mdash; jadi memperbesarnya harus mengarang detail yang tidak
+        pernah ada. Yang ini mulai dari sebuah gambar, jadi tidak ada yang perlu
+        dikarang dan tidak ada batas atas yang layak dikhawatirkan. Kalau yang Anda
+        punya adalah SVG, inilah yang memberi hasil tajam; kalau yang Anda punya
+        adalah foto, itulah yang lain."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Tidak ada batas jumlah atau ukuran file-nya juga,
+        karena tidak ada server yang membayarnya &mdash; pekerjaannya terjadi di
+        mesin Anda sendiri. Situs ini memasang iklan, dan itulah yang
+        membiayainya; iklan tidak diberi apa pun tentang file Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim karya Anda ke tempat lain untuk digambar akan
+        berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Ubah SVG menjadi PNG, JPEG, atau WebP pada ukuran berapa pun, di peramban. Tetapkan ukurannya lewat sebuah kelipatan, lebar, tinggi, sisi terpanjang, atau sebuah kotak, tambahkan salinan @2x dan @3x, jaga atau ratakan transparansinya, dan ubah satu kumpulan sekaligus. Tidak ada yang diunggah."
+features = [
+  "Menggambar ulang vektornya pada setiap ukuran, jadi hasilnya tajam di semuanya",
+  "Ukuran lewat kelipatan, lebar, tinggi, sisi terpanjang, atau kotak dengan cara pas",
+  "Salinan @2x dan @3x, masing-masing kelipatan persis dari yang pertama alih-alih dibulatkan dua kali",
+  "PNG, JPEG, dan WebP, dengan transparansi dijaga atau diratakan ke sebuah warna",
+  "Membaca ukurannya dari width, height, atau viewBox, dan mengatakan yang mana yang dipakainya",
+  "Memperingatkan sebelum ukuran yang sebenarnya tidak bisa dihasilkan kanvas sebuah peramban",
+  "Pratinjau digambar oleh kode yang sama yang menulis file-nya",
+  "Kumpulan, dengan semua hasilnya dalam satu zip",
+  "Skrip dan rujukan jarak jauh di dalam file tidak pernah dijalankan atau diambil",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan sebuah SVG di sini"
+hint = "atau klik untuk menelusuri &mdash; beberapa sekaligus juga boleh"
