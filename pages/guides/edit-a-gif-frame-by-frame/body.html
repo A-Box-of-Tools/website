@@ -1,0 +1,93 @@
+  <section>
+    <h2>The short answer</h2>
+    <ol>
+      <li>
+        <strong>Take it apart.</strong> Open the
+        <a href="../../split-gif/">GIF Splitter</a> and drop the GIF in.
+        Every frame becomes its own PNG &mdash; as it appears on screen, with
+        the transparency kept &mdash; and the ZIP includes a timing list, the
+        per-frame delays written down for the rebuild.
+      </li>
+      <li>
+        <strong>Edit the folder.</strong> Delete the frames that should go,
+        retouch the ones that should change in any image editor, rename to
+        reorder. A folder of PNGs is a format everything understands.
+      </li>
+      <li>
+        <strong>Put it back together.</strong> Drop the folder on the
+        <a href="../../gif-maker/">GIF Maker</a>, set the hold times &mdash;
+        or lean on the timing list &mdash; choose the palette, and export.
+      </li>
+    </ol>
+    <p>
+      All three steps run in your browser. Nothing is uploaded at any point,
+      which matters more than usual here: the GIFs people fix are so often
+      screen recordings with something sensitive half-visible in them.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the splitter can tell you before you edit</h2>
+    <p>
+      The splitter shows, for every frame, its delay, position, size and
+      disposal &mdash; and that panel is worth a look before touching
+      anything, because it explains the two surprises in most GIFs.
+    </p>
+    <p>
+      First: frames are not all whole pictures. Many GIFs store only the
+      pixels that changed, patched over the frame before &mdash; the
+      splitter offers each frame <em>as it appears</em> or <em>as stored</em>,
+      and for editing you almost always want <em>as it appears</em>, so each
+      PNG stands alone. Second: delays are per frame, not one number. The
+      pause on the punchline is a real delay on a real frame, and the timing
+      list is what carries it across the round trip.
+    </p>
+    <p>
+      For the common cuts, the folder step is optional: keeping every second
+      or fifth frame, or ticking the frames to keep, is built into the
+      splitter itself &mdash; halving the frames is the single most effective
+      slimming a GIF can get.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the rebuild costs, honestly</h2>
+    <p>
+      A GIF holds at most 256 colours, chosen when it is built. The rebuild
+      quantises the frames again &mdash; one shared palette, or the best
+      colours per frame &mdash; and on photographic material that second
+      quantisation can show. On screen recordings and drawings, the usual
+      cargo, it does not: they never used 256 colours to begin with.
+    </p>
+    <p>
+      The maker's other levers are the ones the
+      <a href="../make-a-gif-from-part-of-a-video/">GIF budget guide</a>
+      describes: fewer colours, Floyd&ndash;Steinberg dithering for
+      gradients, and loop behaviour &mdash; forever, once, or a count.
+    </p>
+    <p>
+      To see whether the surgery worked &mdash; and where the bytes actually
+      live &mdash; drop the result on the
+      <a href="../../gif-analyzer/">GIF Analyzer</a>: it charts frames
+      against bytes, and the heavy frame is usually a full repaint someone
+      could crop.
+    </p>
+  </section>
+
+  <section>
+    <h2>If you do this every week</h2>
+    <p>
+      Split, folder, rebuild &mdash; the steps live on separate pages because
+      each does one job, and each can prove on its own that nothing leaves
+      your machine. But all of it is open source: MIT-licensed, one folder
+      per tool, dependency-free ES modules whose READMEs explain the decoder,
+      the disposal rules and the quantiser.
+    </p>
+    <p>
+      If GIF surgery is a recurring chore, point a coding agent at the
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      and ask it to fold the splitter's frame table and the maker's encoder
+      into one page where deleting a frame is one click. The modules were
+      written to be read, and lifting them is what the licence is for.
+    </p>
+  </section>

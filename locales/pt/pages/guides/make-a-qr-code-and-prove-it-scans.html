@@ -1,0 +1,95 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <ol>
+      <li>
+        <strong>Crie.</strong> Abra o
+        <a href="../../gerar-qr-code/">Gerador de QR e código de barras</a>,
+        escolha o trabalho &mdash; um link, uma rede Wi-Fi, um cartão de
+        contato &mdash; e confira a sequência exata que o código vai
+        carregar, que a página mostra em vez de esconder. Exporte o SVG para
+        impressão, o PNG para telas.
+      </li>
+      <li>
+        <strong>Imprima um.</strong> No tamanho real, no papel real, antes
+        da tiragem de duzentos.
+      </li>
+      <li>
+        <strong>Prove.</strong> Fotografe a prova com um celular &mdash; de
+        lado, na luz do lugar &mdash; e solte a foto no
+        <a href="../../ler-qr-code/">Leitor de QR e código de
+        barras</a>. Ele mostra a carga decodificada e, para um link, o host
+        que ele alcança de verdade. Se isso bate com o que você queria, a
+        tiragem está segura.
+      </li>
+    </ol>
+    <p>
+      As duas ferramentas rodam no seu navegador e não mandam nada para
+      lugar nenhum &mdash; o que, para um código de Wi-Fi, significa que a
+      senha dentro dele nunca foi digitada no site de ninguém.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que a verificação pega de verdade</h2>
+    <ul>
+      <li>
+        <strong>O erro de digitação.</strong> A falha mais comum não é o
+        código: é a URL dentro dele. Ler de volta é a única checagem que
+        testa o que realmente ficou codificado, e não o que você achava que
+        tinha colado.
+      </li>
+      <li>
+        <strong>O tamanho e a distância.</strong> Um código escaneado do
+        outro lado de um salão precisa de módulos maiores que um de cartão
+        de visita. Fotografar a prova de onde as pessoas vão estar é o teste
+        honesto; os níveis de correção de erro do gerador dizem em voz alta
+        o que cada um custa em densidade.
+      </li>
+      <li>
+        <strong>As cores.</strong> Códigos impressos em claro sobre escuro
+        escaneiam; paletas de marca com pouco contraste, muitas vezes não. O
+        leitor aguenta mais que a maioria dos celulares: se <em>ele</em>
+        sofre com a foto, o celular mais velho do saguão não tem chance
+        nenhuma.
+      </li>
+      <li>
+        <strong>A dobra e o reflexo.</strong> A correção Reed-Solomon faz um
+        código meio coberto ainda ler &mdash; até o nível que você escolheu.
+        Um cartaz destinado ao tempo merece o nível mais alto e o código um
+        pouco mais denso que ele custa.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>O mesmo leitor, para códigos que não são seus</h2>
+    <p>
+      Verificar é também o jeito seguro de abrir o QR que outra pessoa
+      imprimiu. O leitor mostra o endereço inteiro e o host que ele alcança
+      de verdade <em>antes de qualquer coisa abrir</em>, e nomeia os truques
+      que disfarçam um link: um nome de usuário antes do @, um alfabeto
+      sósia, um redirecionamento. O adesivo no parquímetro merece essa
+      inspeção; o crachá do congresso também. Nada é aberto por você, e nada
+      do que você escaneia é enviado a lugar nenhum.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se você faz isso toda semana</h2>
+    <p>
+      Criar e conferir moram em duas páginas de propósito: cada uma faz um
+      trabalho, e cada uma consegue provar sozinha que nada sai da sua
+      máquina. Mas as duas são código aberto: licença MIT, módulos ES sem
+      dependências &mdash; o codificador do gerador e o decodificador
+      Reed-Solomon do leitor, cada um com um README que o explica.
+    </p>
+    <p>
+      Se códigos saem da sua mesa toda semana, aponte um agente de código
+      para o
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a>
+      e peça uma página que gera e já faz o código desenhado passar de volta
+      pelo decodificador: um autoteste a cada exportação. Os módulos foram
+      escritos para serem lidos, e levá-los embora é exatamente para isso
+      que a licença existe.
+    </p>
+  </section>

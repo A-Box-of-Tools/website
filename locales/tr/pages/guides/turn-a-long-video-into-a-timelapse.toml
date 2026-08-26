@@ -1,0 +1,21 @@
+#
+# Rehber: uzun videoyu hizlandirilmis cekime cevirmek - Turkish.
+#
+
+nav = "Videodan hızlandırılmış çekim"
+title = "Uzun bir videoyu hızlandırılmış çekime çevirmek &mdash; hiçbir şey yüklemeden"
+description = "Bir saatlik görüntüyü izlenebilir bir dakikaya sığdırmak: hızı nasıl seçersiniz, hedef süreyi söylemek hesap yapmaktan neden iyidir ve sonuç ne zaman GIF olmalıdır."
+
+heading = "Uzun bir video hızlandırılmış çekime nasıl çevrilir"
+lede = """
+    Bir saatlik gün batımı, bir günlük şantiye, ön camdan her günkü yol:
+    saklamaya değer ama kimsenin o hızda izlemeyeceği görüntü. İş, biri
+    zaman biri varış yeri hakkında iki karardan ibarettir ve hepsi
+    tarayıcınızda, makinenizden hiç ayrılmayan bir dosya üzerinde
+    çalışır."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "Bir saatlik görüntü, izlenebilir bir dakikada, hiçbir şey yüklemeden"
+og_description = "Hızı seçin ya da doğrudan ne kadar sürmesi gerektiğini söyleyin, 4K'da bile dosyayı elde tutulur boyutta bırakın ve döngünün ne zaman GIF olmak istediğini bilin."
+og_image_alt = "abox.tools - hiçbir sunucuya dokunmayan araçlar"

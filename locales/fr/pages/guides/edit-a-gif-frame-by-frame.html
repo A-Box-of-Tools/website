@@ -1,0 +1,105 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <ol>
+      <li>
+        <strong>Décomposez-le.</strong> Ouvrez le
+        <a href="../../decouper-un-gif-en-images/">Découpeur de GIF</a> et déposez le GIF.
+        Chaque image devient son propre PNG &mdash; telle qu'elle apparaît à
+        l'écran, transparence gardée &mdash; et le ZIP contient une liste des
+        temps, les délais par image notés pour le remontage.
+      </li>
+      <li>
+        <strong>Retouchez le dossier.</strong> Supprimez les images de trop,
+        retouchez celles qui doivent changer dans n'importe quel éditeur
+        d'images, renommez pour réordonner. Un dossier de PNG est un format
+        que tout comprend.
+      </li>
+      <li>
+        <strong>Remontez-le.</strong> Déposez le dossier sur le
+        <a href="../../creer-un-gif/">Fabricant de GIF</a>, réglez les temps de
+        pose &mdash; ou appuyez-vous sur la liste &mdash; choisissez la
+        palette, et exportez.
+      </li>
+    </ol>
+    <p>
+      Les trois étapes tournent dans votre navigateur. Rien n'est envoyé à
+      aucun moment, ce qui compte plus que d'habitude ici&nbsp;: les GIF que
+      l'on répare sont si souvent des captures d'écran où quelque chose de
+      sensible reste à moitié visible.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que le découpeur peut vous dire avant la retouche</h2>
+    <p>
+      Le découpeur montre, pour chaque image, son délai, sa position, sa
+      taille et sa règle d'effacement &mdash; et ce panneau mérite un regard
+      avant de toucher à quoi que ce soit, parce qu'il explique les deux
+      surprises de la plupart des GIF.
+    </p>
+    <p>
+      D'abord&nbsp;: les images ne sont pas toutes entières. Beaucoup de GIF
+      ne stockent que les pixels qui ont changé, rapiécés sur l'image
+      d'avant &mdash; le découpeur offre chaque image <em>telle qu'elle
+      apparaît</em> ou <em>telle qu'elle est stockée</em>, et pour la
+      retouche vous voulez presque toujours <em>telle qu'elle apparaît</em>,
+      pour que chaque PNG tienne debout seul. Ensuite&nbsp;: les délais vont
+      par image, pas en un seul chiffre. La pause sur la chute est un vrai
+      délai sur une vraie image, et la liste des temps est ce qui la fait
+      traverser l'aller-retour.
+    </p>
+    <p>
+      Pour les coupes courantes, l'étape du dossier est même
+      facultative&nbsp;: garder une image sur deux ou sur cinq, ou cocher
+      celles à garder, est intégré au découpeur &mdash; et diviser les
+      images par deux est l'amaigrissement le plus efficace qu'un GIF puisse
+      recevoir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que coûte le remontage, honnêtement</h2>
+    <p>
+      Un GIF tient au plus 256 couleurs, choisies à la construction. Le
+      remontage quantifie les images de nouveau &mdash; une palette
+      partagée, ou les meilleures couleurs par image &mdash; et sur de la
+      matière photographique cette seconde quantification peut se voir. Sur
+      les captures d'écran et les dessins, la cargaison habituelle, elle ne
+      se voit pas&nbsp;: ils n'ont jamais utilisé 256 couleurs.
+    </p>
+    <p>
+      Les autres leviers du fabricant sont ceux que décrit le
+      <a href="../gif-a-partir-d-un-extrait-video/">guide du budget
+      GIF</a>&nbsp;: moins de couleurs, le tramage de Floyd-Steinberg pour
+      les dégradés, et le comportement de boucle &mdash; toujours, une fois,
+      ou un nombre.
+    </p>
+    <p>
+      Pour voir si l'opération a réussi &mdash; et où vivent vraiment les
+      octets &mdash; déposez le résultat sur
+      l'<a href="../../analyser-un-gif/">Analyseur de GIF</a>&nbsp;: il trace
+      les images contre les octets, et l'image lourde est en général un
+      repeint complet que quelqu'un aurait pu recadrer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Découper, dossier, remonter &mdash; les étapes vivent sur des pages
+      séparées parce que chacune fait un travail, et que chacune peut prouver
+      seule que rien ne quitte votre machine. Mais tout cela est
+      libre&nbsp;: licence MIT, un dossier par outil, des modules ES sans
+      dépendances dont les README expliquent le décodeur, les règles
+      d'effacement et le quantificateur.
+    </p>
+    <p>
+      Si la chirurgie de GIF est une corvée récurrente, pointez un agent de
+      code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui de plier la table d'images du découpeur et l'encodeur
+      du fabricant en une page où supprimer une image est un clic. Les
+      modules ont été écrits pour être lus, et les emporter est exactement ce
+      à quoi sert la licence.
+    </p>
+  </section>

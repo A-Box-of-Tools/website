@@ -1,0 +1,30 @@
+#
+# Guide: make a video thumbnail.
+#
+# Grab the exact frame, size it for the platform, land under the byte limit.
+# No `tool` key: all three tools in the chain carry their own guides.
+#
+
+slug = "guides/make-a-video-thumbnail"
+kind = "guide"
+nav = "Make a video thumbnail"
+group = "workflows"
+
+title = "Make a Video Thumbnail from the Exact Right Frame &mdash; No Upload"
+description = "Step to the precise frame, save it losslessly, size it for the platform, and hit the byte limit. Three browser tools in a row, and the footage never leaves your machine."
+
+heading = "How to make a video thumbnail from the exact right frame"
+lede = """
+    The difference between a thumbnail and a screenshot is about a quarter of
+    a second &mdash; the frame where the eyes are open and the ball is still
+    in the air. Getting that frame, at the platform's size, under the
+    platform's byte limit, is a three-step chain that runs entirely in your
+    browser."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "The exact frame, at the platform's size, under the byte limit"
+og_description = "Step frame by frame to the right instant, save it losslessly, crop to 16:9, and compress to the platform's ceiling - without uploading the footage."
+og_image_alt = "abox.tools - tools that never touch a server"

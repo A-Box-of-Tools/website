@@ -1,0 +1,103 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <ol>
+      <li>
+        <strong>Pak het beeld.</strong> Open de
+        <a href="../../frame-uit-video-halen/">Beeldgrijper</a>, sleep de video erin en
+        stap door de beeldlijst van het bestand zelf naar het exacte moment.
+        Sla het op als PNG: de verliesvrije kopie, zodat er nog niets
+        besloten is.
+      </li>
+      <li>
+        <strong>Kadreer het beeld.</strong> Breng de PNG naar
+        <a href="../../afbeelding-formaat-wijzigen/">Afbeelding verkleinen</a>: snijd naar
+        de vorm van het platform &mdash; 16:9 voor YouTube &mdash; en zet de
+        lange zijde vast; 1280 pixels is het getal waar YouTube echt om
+        vraagt.
+      </li>
+      <li>
+        <strong>Land op het plafond.</strong> Eindig bij
+        <a href="../../afbeelding-comprimeren/">Afbeelding comprimeren</a> met de
+        grens van het platform als doel &mdash; 2&nbsp;MB voor een
+        YouTube-miniatuur &mdash; en laat het JPEG of WebP kiezen.
+      </li>
+    </ol>
+    <p>
+      Niets in de keten uploadt iets &mdash; wat telt wanneer de video niet
+      gepubliceerd is, en een miniatuur maak je nu juist omdat de video nog
+      niet openbaar is.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom stappen wint van pauzeren</h2>
+    <p>
+      Een speler pauzeren en een schermafdruk maken verliest twee keer. De
+      pauze valt waar de speler kon stoppen &mdash; de dichtstbijzijnde
+      plek, niet het beeld dat je bedoelde &mdash; en de schermafdruk is een
+      foto van de speler: zijn resolutie, zijn interface, zijn
+      kleurbehandeling, niet die van het bestand.
+    </p>
+    <p>
+      De grijper loopt in plaats daarvan door de beeldlijst van het bestand
+      zelf, beeld voor beeld in beide richtingen, en levert het gedecodeerde
+      beeld zelf af, op de volledige resolutie van de video. Een kwart
+      seconde zoeken aan weerszijden van het moment is meestal waar de
+      miniatuur woont: het beeld <em>tussen</em> de twee voor de hand
+      liggende, waar de beweging leesbaar is en niets bewogen is.
+    </p>
+    <p>
+      Sla de vangst op als PNG, ook als de uiteindelijke miniatuur JPEG of
+      WebP wordt. De PNG is een exacte kopie van het beeld; elke beslissing
+      met verlies gebeurt dan één keer, aan het eind, binnen een bytebudget,
+      in plaats van twee keer, stapelend.
+    </p>
+  </section>
+
+  <section>
+    <h2>De rekensom van het platform</h2>
+    <p>
+      Snijd vóór je comprimeert, om dezelfde reden die de
+      <a href="../fotos-klaarmaken-voor-het-web/">fotogids</a> geeft: pixels
+      zijn het budget. Een 16:9-snede uit een 4K-beeld teruggebracht naar
+      1280&times;720 laat de compressor zijn 2&nbsp;MB uitgeven aan
+      kwaliteit waar niemand naar hoeft te turen. Het snijkader van de
+      verkleiner klikt vast op 16:9, dus de vorm is een sleep en geen som;
+      tekst en gezichten willen in het middelste tweederde blijven, want
+      feeds ronden de hoeken af en leggen de duur rechtsonder overheen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Een contactvel, als het moment zich niet laat vinden</h2>
+    <p>
+      Als het juiste moment ergens in tien minuten beeld verstopt zit,
+      slaat de andere stand van de grijper elke N seconden een stilstaand
+      beeld op en levert de partij als ZIP. Blader door de beelden als door
+      een contactvel, noteer de tijd van het dichtstbijzijnde, en stap
+      vandaar verder. Het is sneller dan de balk schrobben, en je houdt er
+      een map kandidaten aan over voor de dag dat het platform om een andere
+      vorm vraagt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Als je dit elke week doet</h2>
+    <p>
+      Dat de stappen hier op drie pagina's wonen is opzet: elke pagina doet
+      één klus, en elke kan in z'n eentje bewijzen dat niets je machine
+      verlaat. Maar elke stap is open source: MIT-licentie, één map per
+      gereedschap, ES-modules zonder dependencies met README's die de
+      decoder, het herbemonsteren en het zoeken naar het bytedoel
+      uitleggen.
+    </p>
+    <p>
+      Als miniaturen een wekelijkse klus zijn, wijs dan een code-agent naar
+      de
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      en vraag om de één-pagina-versie: stappen, snijden naar jouw
+      platformpreset, comprimeren tot zijn plafond, één knop. De modules
+      zijn geschreven om gelezen te worden, en ze meenemen is precies waar
+      de licentie voor bestaat.
+    </p>
+  </section>

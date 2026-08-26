@@ -135,6 +135,11 @@ complete = true
 "guides/scan-multiple-pages-into-one-pdf" = "gidsen/meerdere-paginas-naar-een-pdf-scannen"
 "guides/get-photos-ready-for-the-web" = "gidsen/fotos-klaarmaken-voor-het-web"
 "guides/compare-two-json-files" = "gidsen/twee-json-bestanden-vergelijken"
+"guides/turn-a-long-video-into-a-timelapse" = "gidsen/lange-video-naar-timelapse"
+"guides/make-a-video-thumbnail" = "gidsen/video-thumbnail-maken"
+"guides/edit-a-gif-frame-by-frame" = "gidsen/gif-beeld-voor-beeld-bewerken"
+"guides/make-a-qr-code-and-prove-it-scans" = "gidsen/qr-code-maken-en-bewijzen-dat-hij-scant"
+"guides/clean-up-a-voice-memo" = "gidsen/spraakmemo-opschonen"
 
 #
 # ---------------------------------------------------------------------------

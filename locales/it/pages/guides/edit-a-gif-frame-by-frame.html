@@ -1,0 +1,103 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <ol>
+      <li>
+        <strong>Smontala.</strong> Apri lo
+        <a href="../../dividere-gif-in-fotogrammi/">Scompositore di GIF</a> e trascina dentro
+        la GIF. Ogni fotogramma diventa il suo PNG &mdash; come appare sullo
+        schermo, con la trasparenza conservata &mdash; e nello ZIP c'è una
+        lista dei tempi: i ritardi per fotogramma scritti per la
+        ricostruzione.
+      </li>
+      <li>
+        <strong>Modifica la cartella.</strong> Cancella i fotogrammi che
+        devono andarsene, ritocca in qualsiasi editor di immagini quelli che
+        devono cambiare, rinomina per riordinare. Una cartella di PNG è un
+        formato che tutto capisce.
+      </li>
+      <li>
+        <strong>Rimettila insieme.</strong> Trascina la cartella sul
+        <a href="../../creare-gif/">Creatore di GIF</a>, imposta i tempi di
+        posa &mdash; o appoggiati alla lista &mdash; scegli la tavolozza, ed
+        esporta.
+      </li>
+    </ol>
+    <p>
+      Tutti e tre i passi girano nel tuo browser. Niente viene caricato in
+      nessun momento, e qui conta più del solito: le GIF che la gente
+      aggiusta sono così spesso registrazioni di schermo con qualcosa di
+      delicato mezzo visibile dentro.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cosa può dirti lo scompositore prima di modificare</h2>
+    <p>
+      Lo scompositore mostra, per ogni fotogramma, ritardo, posizione,
+      misura e regola di smaltimento &mdash; e quel pannello merita
+      un'occhiata prima di toccare qualsiasi cosa, perché spiega le due
+      sorprese della maggior parte delle GIF.
+    </p>
+    <p>
+      Prima: i fotogrammi non sono tutti immagini intere. Molte GIF salvano
+      solo i pixel cambiati, rattoppati sopra il fotogramma precedente; lo
+      scompositore offre ogni fotogramma <em>come appare</em> o <em>come è
+      salvato</em>, e per modificare vuoi quasi sempre <em>come appare</em>,
+      così ogni PNG sta in piedi da solo. Seconda: i ritardi vanno per
+      fotogramma, non in un numero solo. La pausa sulla battuta è un ritardo
+      vero su un fotogramma vero, e la lista dei tempi è ciò che lo porta
+      attraverso il viaggio.
+    </p>
+    <p>
+      Per i tagli soliti, il passo della cartella è perfino facoltativo:
+      tenere un fotogramma ogni due o ogni cinque, o spuntare quelli da
+      tenere, è già dentro lo scompositore &mdash; e dimezzare i fotogrammi
+      è la cura dimagrante più efficace che una GIF possa ricevere.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cosa costa la ricostruzione, con onestà</h2>
+    <p>
+      Una GIF tiene al massimo 256 colori, scelti quando viene costruita. La
+      ricostruzione quantizza i fotogrammi di nuovo &mdash; una tavolozza
+      condivisa, o i colori migliori per fotogramma &mdash; e su materiale
+      fotografico quella seconda quantizzazione può vedersi. Su
+      registrazioni di schermo e disegni, il carico solito, non si vede: non
+      hanno mai usato 256 colori.
+    </p>
+    <p>
+      Le altre leve del creatore sono quelle della
+      <a href="../gif-da-una-parte-di-un-video/">guida al budget
+      GIF</a>: meno colori, il dithering di Floyd-Steinberg per le
+      sfumature, e il comportamento del loop &mdash; per sempre, una volta,
+      o un numero.
+    </p>
+    <p>
+      Per vedere se l'operazione è riuscita &mdash; e dove abitano davvero i
+      byte &mdash; trascina il risultato
+      sull'<a href="../../analizzare-gif/">Analizzatore di GIF</a>: traccia i
+      fotogrammi contro i byte, e il fotogramma pesante è di solito una
+      ridipintura completa che qualcuno avrebbe potuto ritagliare.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se lo fai ogni settimana</h2>
+    <p>
+      Scomporre, cartella, ricostruire: i passi vivono su pagine separate
+      perché ognuna fa un lavoro, e ognuna può dimostrare da sola che niente
+      lascia la tua macchina. Ma è tutto open source: licenza MIT, una
+      cartella per strumento, moduli ES senza dipendenze i cui README
+      spiegano il decoder, le regole di smaltimento e il quantizzatore.
+    </p>
+    <p>
+      Se la chirurgia delle GIF è un'incombenza che torna, punta un agente
+      di codice sul
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      e chiedigli di piegare la tabella dei fotogrammi dello scompositore e
+      l'encoder del creatore in una pagina dove cancellare un fotogramma è
+      un clic. I moduli sono scritti per essere letti, e portarseli via è
+      esattamente ciò per cui la licenza esiste.
+    </p>
+  </section>

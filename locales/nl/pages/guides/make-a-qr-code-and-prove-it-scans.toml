@@ -1,0 +1,20 @@
+#
+# Gids: een QR-code maken en bewijzen dat hij scant - Dutch.
+#
+
+nav = "Bewijzen dat een QR scant"
+title = "Een QR-code maken en bewijzen dat hij scant &mdash; vóór je 200 posters drukt"
+description = "Genereer de code en controleer hem dan met de lezer van dezelfde site: de exacte inhoud, de echte link, op drukformaat en vanaf een foto, vóór de oplage. Alles in de browser, niets geüpload."
+
+heading = "Zo maak je een QR-code en bewijs je dat hij scant"
+lede = """
+    De dure QR-fout is niet de code maken: het is er ter plekke achter komen
+    dat de posters naar een typfout scannen. Genereren en controleren zijn
+    hier twee gereedschappen, en de tweede draaien vóór de oplage kost een
+    minuut en vangt bijna alles wat de drukgang anders had verstuurd."""
+
+updated = "26 augustus 2026"
+
+og_title = "Bewijs dat de poster scant vóór je er tweehonderd drukt"
+og_description = "Genereer de code, fotografeer de drukproef en lees hem terug met de lezer van dezelfde site - inhoud, link en al - vóór je de drukgang vrijgeeft."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

@@ -1,0 +1,21 @@
+#
+# Guide : nettoyer un mémo vocal - French.
+#
+
+nav = "Nettoyer un mémo vocal"
+title = "Nettoyer un mémo vocal avant de l'envoyer &mdash; sans envoi"
+description = "Couper les blancs et les faux départs, puis remonter le niveau presque à pleine échelle. Deux outils du navigateur à la suite, dans l'ordre qui préserve la qualité, et l'enregistrement ne quitte jamais votre machine."
+
+heading = "Comment nettoyer un mémo vocal avant de l'envoyer"
+lede = """
+    Un mémo vocal arrive avec trente secondes de bruit de poche, deux faux
+    départs, et un niveau réglé par la distance du téléphone. Le rendre
+    envoyable tient en deux pas &mdash; couper, puis remonter &mdash; et les
+    deux tournent dans votre navigateur, qui est l'endroit où doit rester un
+    enregistrement de votre propre voix disant des choses privées."""
+
+updated = "26 août 2026"
+
+og_title = "Couper les blancs, remonter le niveau, envoyer le mémo"
+og_description = "Tailler les faux départs à l'œil sur la forme d'onde, puis normaliser le volume - deux outils, le bon ordre, et l'enregistrement reste sur votre machine."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

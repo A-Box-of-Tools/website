@@ -1,0 +1,21 @@
+#
+# Guia: criar uma miniatura de vídeo - Brazilian Portuguese.
+#
+
+nav = "Criar miniatura de vídeo"
+title = "Criar uma miniatura de vídeo com o quadro exato &mdash; sem enviar nada"
+description = "Avance quadro a quadro até o instante certo, salve sem perda, ponha no formato da plataforma e acerte o limite de bytes dela. Três ferramentas do navegador em sequência, e a filmagem nunca sai da sua máquina."
+
+heading = "Como criar uma miniatura de vídeo com o quadro exato"
+lede = """
+    A diferença entre uma miniatura e um print é mais ou menos um quarto de
+    segundo: o quadro em que os olhos estão abertos e a bola ainda está no
+    ar. Chegar a esse quadro, no tamanho da plataforma, abaixo do limite de
+    bytes dela, é uma sequência de três passos que roda inteira no seu
+    navegador."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "O quadro exato, no tamanho da plataforma, abaixo do limite de bytes"
+og_description = "Avance quadro a quadro até o instante certo, salve sem perda, recorte em 16:9 e comprima até o teto da plataforma, sem enviar a filmagem."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

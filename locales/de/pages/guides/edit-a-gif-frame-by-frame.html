@@ -1,0 +1,102 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <ol>
+      <li>
+        <strong>Auseinandernehmen.</strong> Öffnen Sie den
+        <a href="../../gif-in-einzelbilder-zerlegen/">GIF-Zerleger</a> und ziehen Sie das GIF
+        hinein. Jedes Einzelbild wird sein eigenes PNG, so, wie es auf dem
+        Bildschirm erscheint, mit erhaltener Transparenz, und im Zip liegt
+        eine Timing-Liste: die Haltezeiten je Bild, aufgeschrieben für den
+        Wiederaufbau.
+      </li>
+      <li>
+        <strong>Den Ordner bearbeiten.</strong> Löschen Sie die Bilder, die
+        gehen sollen, retuschieren Sie in irgendeinem Bildeditor, was sich
+        ändern soll, benennen Sie um, um umzusortieren. Ein Ordner voller
+        PNGs ist ein Format, das alles versteht.
+      </li>
+      <li>
+        <strong>Wieder zusammensetzen.</strong> Ziehen Sie den Ordner auf
+        den <a href="../../gif-erstellen/">GIF-Macher</a>, setzen Sie die
+        Haltezeiten, oder stützen Sie sich auf die Timing-Liste, wählen Sie
+        die Palette und exportieren Sie.
+      </li>
+    </ol>
+    <p>
+      Alle drei Schritte laufen in Ihrem Browser. Nichts wird an irgendeiner
+      Stelle hochgeladen, was hier mehr zählt als sonst: Die GIFs, die
+      Menschen reparieren, sind so oft Bildschirmaufnahmen, in denen etwas
+      Heikles halb zu sehen ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was der Zerleger Ihnen vor dem Bearbeiten sagen kann</h2>
+    <p>
+      Der Zerleger zeigt zu jedem Bild Haltezeit, Position, Größe und
+      Entsorgung, und dieses Panel lohnt einen Blick, bevor Sie irgendetwas
+      anfassen, denn es erklärt die zwei Überraschungen in den meisten
+      GIFs.
+    </p>
+    <p>
+      Erstens: Nicht alle Bilder sind ganze Bilder. Viele GIFs speichern nur
+      die Pixel, die sich geändert haben, über das vorige Bild geflickt. Der
+      Zerleger bietet jedes Bild <em>wie es erscheint</em> oder <em>wie es
+      gespeichert ist</em> an, und zum Bearbeiten wollen Sie fast immer
+      <em>wie es erscheint</em>, damit jedes PNG für sich steht. Zweitens:
+      Haltezeiten gelten je Bild, nicht als eine Zahl. Die Pause auf der
+      Pointe ist eine echte Haltezeit auf einem echten Bild, und die
+      Timing-Liste ist, was sie über die Rundreise trägt.
+    </p>
+    <p>
+      Für die üblichen Kürzungen ist der Ordner-Schritt sogar optional: Jedes
+      zweite oder fünfte Bild behalten, oder die gewünschten ankreuzen, kann
+      der Zerleger selbst, und die Bilder zu halbieren ist die wirksamste
+      Abmagerung, die ein GIF bekommen kann.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was der Neubau kostet, ehrlich</h2>
+    <p>
+      Ein GIF hält höchstens 256 Farben, gewählt beim Bauen. Der Neubau
+      quantisiert die Bilder erneut, eine gemeinsame Palette oder die besten
+      Farben je Bild, und auf fotografischem Material kann diese zweite
+      Quantisierung sichtbar werden. Auf Bildschirmaufnahmen und
+      Zeichnungen, der üblichen Fracht, wird sie es nicht: Die haben nie 256
+      Farben benutzt.
+    </p>
+    <p>
+      Die übrigen Hebel des Machers sind die aus dem
+      <a href="../gif-aus-videoausschnitt/">GIF-Budget-Ratgeber</a>:
+      weniger Farben, Floyd-Steinberg-Dithering für Verläufe, und das
+      Schleifenverhalten, für immer, einmal oder eine Anzahl.
+    </p>
+    <p>
+      Ob die Operation gelungen ist, und wo die Bytes wirklich wohnen, zeigt
+      der <a href="../../gif-analysieren/">GIF-Analysierer</a>: Er trägt Bilder
+      gegen Bytes auf, und das schwere Bild ist meist ein voller Neuanstrich,
+      den jemand hätte zuschneiden können.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wenn Sie das jede Woche tun</h2>
+    <p>
+      Zerlegen, Ordner, Neubau: Die Schritte leben auf getrennten Seiten,
+      weil jede eine Aufgabe macht und jede für sich beweisen kann, dass
+      nichts Ihr Gerät verlässt. Aber alles davon ist quelloffen:
+      MIT-lizenziert, ein Ordner je Werkzeug, abhängigkeitsfreie ES-Module,
+      deren READMEs den Decoder, die Entsorgungsregeln und den Quantisierer
+      erklären.
+    </p>
+    <p>
+      Ist GIF-Chirurgie eine wiederkehrende Pflicht, setzen Sie einen
+      Coding-Agenten auf das
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">Repository</a>
+      an und lassen Sie sich die Bildtabelle des Zerlegers und den Encoder
+      des Machers in eine Seite falten, auf der ein Bild zu löschen ein Klick
+      ist. Die Module sind zum Lesen geschrieben, und sie herauszuheben ist
+      genau das, wofür die Lizenz da ist.
+    </p>
+  </section>

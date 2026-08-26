@@ -1,0 +1,21 @@
+#
+# Gids: een spraakmemo opschonen - Dutch.
+#
+
+nav = "Spraakmemo opschonen"
+title = "Een spraakmemo opschonen vóór het versturen &mdash; zonder iets te uploaden"
+description = "Knip de dode lucht en de valse starts weg, en breng dan het volume tot vlak onder vol uit. Twee browsergereedschappen op een rij, in de volgorde die de kwaliteit spaart, en de opname verlaat je machine nooit."
+
+heading = "Zo schoon je een spraakmemo op vóór het versturen"
+lede = """
+    Een spraakmemo komt binnen met dertig seconden broekzakgeruis, twee
+    valse starts en een volume dat door de afstand tot de telefoon is
+    bepaald. Hem verstuurbaar maken zijn twee stappen &mdash; knippen, dan
+    optillen &mdash; en beide draaien in je browser, waar een opname van je
+    eigen stem die privédingen zegt ook hoort te blijven."""
+
+updated = "26 augustus 2026"
+
+og_title = "Dode lucht eruit, volume omhoog, memo versturen"
+og_description = "Knip de valse starts op het oog weg langs de golfvorm, en normaliseer dan het volume: twee gereedschappen, de juiste volgorde, en de opname blijft op je machine."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

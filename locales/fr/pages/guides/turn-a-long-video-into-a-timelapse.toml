@@ -1,0 +1,21 @@
+#
+# Guide : transformer une longue vidéo en timelapse - French.
+#
+
+nav = "Vidéo en timelapse"
+title = "Transformer une longue vidéo en timelapse &mdash; sans envoi"
+description = "Une heure d'images en une minute regardable : comment choisir la vitesse, pourquoi donner la durée finale vaut mieux que faire l'arithmétique, et quand le résultat doit devenir un GIF."
+
+heading = "Comment transformer une longue vidéo en timelapse"
+lede = """
+    Une heure de coucher de soleil, une journée de chantier, le trajet
+    quotidien à travers le pare-brise &mdash; des images qui valent la peine,
+    à une vitesse que personne ne regardera. Le travail tient en une décision
+    sur le temps et une sur la destination, et le tout tourne dans votre
+    navigateur, sur un fichier qui ne quitte jamais votre machine."""
+
+updated = "26 août 2026"
+
+og_title = "Une heure d'images en une minute regardable, sans envoi"
+og_description = "Choisir la vitesse ou simplement dire la durée finale, garder le fichier maniable même en 4K, et savoir quand la boucle veut être un GIF."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

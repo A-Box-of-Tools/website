@@ -1,0 +1,21 @@
+#
+# Rehber: sesli notu temizlemek - Turkish.
+#
+
+nav = "Sesli notu temizlemek"
+title = "Sesli notu göndermeden önce temizlemek &mdash; hiçbir şey yüklemeden"
+description = "Ölü havayı ve yanlış başlangıçları kesin, sonra seviyeyi tavanın hemen altına çıkarın. Art arda iki tarayıcı aracı, kaliteyi koruyan sırayla ve kayıt makinenizden hiç ayrılmıyor."
+
+heading = "Sesli not göndermeden önce nasıl temizlenir"
+lede = """
+    Sesli not, otuz saniyelik cep hışırtısı, iki yanlış başlangıç ve
+    telefonun uzaklığının belirlediği bir ses düzeyiyle gelir. Onu
+    gönderilebilir yapmak iki adımdır &mdash; kes, sonra yükselt &mdash; ve
+    ikisi de tarayıcınızda çalışır; özel şeyler söyleyen kendi sesinizin
+    kaydının durması gereken yer de orasıdır."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "Ölü hava gitsin, seviye yükselsin, not gönderilsin"
+og_description = "Yanlış başlangıçları dalga biçimine bakarak gözle kırpın, sonra sesi normalleştirin: iki araç, doğru sıra ve kayıt makinenizde kalır."
+og_image_alt = "abox.tools - hiçbir sunucuya dokunmayan araçlar"

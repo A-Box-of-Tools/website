@@ -1,0 +1,20 @@
+#
+# Guía: editar un GIF fotograma a fotograma - Spanish.
+#
+
+nav = "Editar un GIF fotograma a fotograma"
+title = "Editar un GIF fotograma a fotograma &mdash; partir, arreglar, reconstruir, sin subir nada"
+description = "Desarma un GIF en sus fotogramas, quita o reordena los que haga falta, y reconstrúyelo conservando los tiempos. Qué sobrevive al viaje de ida y vuelta, qué cuesta la paleta, y cómo ver por qué un GIF pesa."
+
+heading = "Cómo editar un GIF fotograma a fotograma"
+lede = """
+    Aquí no hay editor de GIF, y no hace falta: un separador que desarma la
+    animación en fotogramas y un creador que construye una a partir de
+    fotogramas son un editor con una carpeta en medio, y la carpeta es la
+    parte donde editas tú, con lo que ya uses para imágenes."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Desarma un GIF, arregla los fotogramas, vuélvelo a montar"
+og_description = "Parte un GIF en PNG con los tiempos guardados, quita o retoca fotogramas y reconstruye, todo en el navegador, con los costes del viaje escritos con honestidad."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

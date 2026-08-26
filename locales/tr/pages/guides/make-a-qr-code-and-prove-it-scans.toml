@@ -1,0 +1,20 @@
+#
+# Rehber: QR kod olusturup okundugunu kanitlamak - Turkish.
+#
+
+nav = "QR'ın okunduğunu kanıtlamak"
+title = "QR kod oluşturmak ve okunduğunu kanıtlamak &mdash; 200 afiş basmadan önce"
+description = "Kodu üretin, sonra aynı sitenin okuyucusuyla doğrulayın: tam içerik, gerçek bağlantı, baskı boyutunda ve bir fotoğraftan, baskıya gitmeden önce. Hepsi tarayıcıda, hiçbir şey yüklenmeden."
+
+heading = "QR kod nasıl oluşturulur ve okunduğu nasıl kanıtlanır"
+lede = """
+    QR'ın pahalı hatası kodu yapmak değildir: afişlerin bir yazım hatasına
+    okunduğunu sahada öğrenmektir. Üretmek ve doğrulamak burada iki ayrı
+    araçtır; ikincisini baskıdan önce çalıştırmak bir dakika sürer ve
+    baskının yollayacağı hataların neredeyse hepsini yakalar."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "İki yüz afiş basmadan önce afişin okunduğunu kanıtlayın"
+og_description = "Kodu üretin, baskı provasını fotoğraflayın ve aynı sitenin okuyucusuyla geri okuyun - içerik, bağlantı, hepsi - baskıya onay vermeden önce."
+og_image_alt = "abox.tools - hiçbir sunucuya dokunmayan araçlar"

@@ -1,0 +1,21 @@
+#
+# Ratgeber: langes Video in Zeitraffer verwandeln - German.
+#
+
+nav = "Video in Zeitraffer"
+title = "Ein langes Video in einen Zeitraffer verwandeln &mdash; ohne Upload"
+description = "Aus einer Stunde Material eine anschaubare Minute: wie man die Geschwindigkeit wählt, warum die Ziellänge besser ist als Kopfrechnen, und wann das Ergebnis ein GIF werden sollte."
+
+heading = "So verwandeln Sie ein langes Video in einen Zeitraffer"
+lede = """
+    Eine Stunde Sonnenuntergang, ein Tag Baustelle, die Pendelstrecke durch
+    die Windschutzscheibe: Material, das sich lohnt, in einem Tempo, das sich
+    niemand ansieht. Die Aufgabe ist eine Entscheidung über die Zeit und eine
+    über das Ziel, und das Ganze läuft in Ihrem Browser, mit einer Datei, die
+    Ihr Gerät nie verlässt."""
+
+updated = "26. August 2026"
+
+og_title = "Aus einer Stunde Material eine anschaubare Minute, ohne Upload"
+og_description = "Die Geschwindigkeit wählen oder einfach die Ziellänge sagen, die Datei auch bei 4K handlich halten, und wissen, wann die Schleife ein GIF sein will."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

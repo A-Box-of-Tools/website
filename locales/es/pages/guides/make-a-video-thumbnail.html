@@ -1,0 +1,103 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <ol>
+      <li>
+        <strong>Consigue el fotograma.</strong> Abre el
+        <a href="../../capturar-fotograma-de-video/">Capturador de fotogramas</a>, suelta el
+        video y avanza por la lista de fotogramas del propio archivo hasta
+        el instante exacto. Guárdalo como PNG: la copia sin pérdida, para
+        que nada quede decidido todavía.
+      </li>
+      <li>
+        <strong>Encuadra el fotograma.</strong> Lleva el PNG al
+        <a href="../../redimensionar-imagen/">Redimensionador de imágenes</a>:
+        recorta a la forma de la plataforma &mdash; 16:9 para YouTube
+        &mdash; y fija el lado largo; 1280 píxeles es el número que YouTube
+        pide de verdad.
+      </li>
+      <li>
+        <strong>Clava el techo.</strong> Termina en el
+        <a href="../../comprimir-imagen/">Compresor de imágenes</a> con el
+        límite de la plataforma como objetivo &mdash; 2&nbsp;MB para una
+        miniatura de YouTube &mdash; y deja que elija JPEG o WebP.
+      </li>
+    </ol>
+    <p>
+      Nada en la cadena sube nada, que es justo lo que quieres cuando el
+      video está sin publicar; la miniatura se hace precisamente porque el
+      video aún no es público.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué avanzar gana a pausar</h2>
+    <p>
+      Pausar un reproductor y hacerle un pantallazo pierde dos veces. La
+      pausa cae donde el reproductor pudo pararse &mdash; el sitio más
+      cercano, no el fotograma que querías &mdash; y el pantallazo es una
+      foto del reproductor: su resolución, su interfaz, su manejo del color,
+      no los del archivo.
+    </p>
+    <p>
+      El capturador recorre en cambio la lista de fotogramas del propio
+      archivo, uno a uno en ambos sentidos, y te entrega el fotograma
+      decodificado en sí, a la resolución completa del video. Un cuarto de
+      segundo de búsqueda a cada lado del momento suele ser donde vive la
+      miniatura: el fotograma <em>entre</em> los dos evidentes, donde el
+      movimiento se lee y nada sale movido.
+    </p>
+    <p>
+      Guarda la captura como PNG aunque la miniatura final vaya a ser JPEG o
+      WebP. El PNG es una copia exacta del fotograma; toda decisión con
+      pérdida ocurre entonces una sola vez, al final, dentro de un
+      presupuesto de bytes, en vez de dos veces y acumulándose.
+    </p>
+  </section>
+
+  <section>
+    <h2>La aritmética de la plataforma</h2>
+    <p>
+      Recorta antes de comprimir, por la misma razón que da la
+      <a href="../preparar-fotos-para-la-web/">guía de fotos</a>: los
+      píxeles son el presupuesto. Un recorte 16:9 de un fotograma 4K llevado
+      a 1280&times;720 deja que el compresor gaste sus 2&nbsp;MB en calidad
+      que nadie tendrá que entornar los ojos para ver. La caja de recorte
+      del redimensionador se bloquea en 16:9, así que la forma es un
+      arrastre y no un cálculo; el texto y las caras quieren quedar en los
+      dos tercios centrales, porque los feeds redondean las esquinas y
+      superponen la duración abajo a la derecha.
+    </p>
+  </section>
+
+  <section>
+    <h2>Una hoja de contactos, cuando el momento no aparece</h2>
+    <p>
+      Cuando el instante justo anda perdido en diez minutos de metraje, el
+      otro modo del capturador guarda un fotograma cada N segundos y entrega
+      el lote en un ZIP. Repasa las imágenes como una hoja de contactos,
+      apunta el tiempo de la más cercana y avanza desde ahí. Es más rápido
+      que frotar la barra, y deja una carpeta de candidatas para el día en
+      que la plataforma pida otra forma.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si haces esto cada semana</h2>
+    <p>
+      Que los pasos vivan aquí en tres páginas es a propósito: cada página
+      hace un trabajo, y cada una puede demostrar por sí sola que nada sale
+      de tu equipo. Pero cada paso es código abierto: licencia MIT, una
+      carpeta por herramienta, módulos ES sin dependencias con README que
+      explican el decodificador, el remuestreo y la búsqueda del objetivo de
+      bytes.
+    </p>
+    <p>
+      Si las miniaturas son un entregable semanal, apunta un agente de
+      código al
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositorio</a>
+      y pídele la versión de una sola página: avanzar, recortar al preajuste
+      de tu plataforma, comprimir a su techo, un botón. Los módulos se
+      escribieron para leerse, y llevárselos es exactamente para lo que está
+      la licencia.
+    </p>
+  </section>

@@ -1,0 +1,100 @@
+  <section>
+    <h2>Kısa yanıt</h2>
+    <ol>
+      <li>
+        <strong>Ayırın.</strong>
+        <a href="../../gifi-karelere-ayirma/">GIF ayırıcıyı</a> açın ve GIF'i içine
+        bırakın. Her kare kendi PNG'sine dönüşür &mdash; ekranda göründüğü
+        gibi, saydamlığı korunmuş &mdash; ve ZIP'in içinde bir zamanlama
+        listesi vardır: yeniden kurulum için yazılmış, kare başına
+        gecikmeler.
+      </li>
+      <li>
+        <strong>Klasörü düzenleyin.</strong> Gitmesi gereken kareleri silin,
+        değişmesi gerekenleri herhangi bir görsel düzenleyicide rötuşlayın,
+        sıralamak için yeniden adlandırın. PNG dolu bir klasör, her şeyin
+        anladığı bir biçimdir.
+      </li>
+      <li>
+        <strong>Yeniden kurun.</strong> Klasörü
+        <a href="../../gif-olusturma/">GIF oluşturucuya</a> bırakın, kare
+        sürelerini ayarlayın &mdash; ya da listeye yaslanın &mdash; paleti
+        seçin ve dışa aktarın.
+      </li>
+    </ol>
+    <p>
+      Üç adım da tarayıcınızda çalışır. Hiçbir aşamada hiçbir şey yüklenmez
+      ve bu burada her zamankinden önemlidir: insanların onardığı GIF'ler
+      çoğu zaman içinde hassas bir şeyin yarı görünür durduğu ekran
+      kayıtlarıdır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Düzenlemeden önce ayırıcının söyleyebilecekleri</h2>
+    <p>
+      Ayırıcı her kare için gecikmeyi, konumu, boyutu ve eleme kuralını
+      gösterir &mdash; ve bir şeye dokunmadan önce o panele bakmaya değer,
+      çünkü çoğu GIF'in iki sürprizini açıklar.
+    </p>
+    <p>
+      Birincisi: kareler her zaman tam resim değildir. Birçok GIF yalnızca
+      değişen pikselleri saklar, önceki karenin üstüne yamanmış hâlde;
+      ayırıcı her kareyi <em>göründüğü gibi</em> ya da <em>saklandığı
+      gibi</em> sunar ve düzenlemek için neredeyse her zaman <em>göründüğü
+      gibi</em> olanı istersiniz; böylece her PNG kendi başına ayakta durur.
+      İkincisi: gecikmeler tek bir sayı değil, kare başınadır. Vuruş
+      anındaki duraklama, gerçek bir karedeki gerçek bir gecikmedir ve onu
+      gidiş dönüşten geçiren şey zamanlama listesidir.
+    </p>
+    <p>
+      Sıradan kırpmalar için klasör adımı isteğe bağlı bile kalır: her
+      ikinci ya da beşinci kareyi tutmak veya kalacakları işaretlemek zaten
+      ayırıcının içindedir &mdash; ve kare sayısını yarıya indirmek, bir
+      GIF'in görebileceği en etkili zayıflama kürüdür.
+    </p>
+  </section>
+
+  <section>
+    <h2>Yeniden kurmanın bedeli, dürüstçe</h2>
+    <p>
+      Bir GIF en fazla 256 renk taşır ve bunlar kurulurken seçilir. Yeniden
+      kurulum kareleri yeniden nicemler &mdash; ortak bir palet ya da kare
+      başına en iyi renkler &mdash; ve fotoğrafik malzemede bu ikinci
+      niceleme görünebilir. Ekran kayıtlarında ve çizimlerde, yani olağan
+      yükte görünmez: onlar 256 rengi zaten hiç kullanmamıştır.
+    </p>
+    <p>
+      Oluşturucunun diğer kolları
+      <a href="../videonun-bir-kisminden-gif/">GIF bütçe
+      rehberindekilerle</a> aynıdır: daha az renk, geçişler için
+      Floyd-Steinberg titremesi ve döngü davranışı &mdash; sonsuz, bir kez
+      ya da bir sayı.
+    </p>
+    <p>
+      Ameliyatın tutup tutmadığını &mdash; ve baytların gerçekte nerede
+      oturduğunu &mdash; görmek için sonucu
+      <a href="../../gif-analiz-etme/">GIF çözümleyiciye</a> bırakın: kareleri
+      baytlara karşı çizer ve ağır kare genellikle birilerinin kırpabileceği
+      tam bir yeniden boyamadır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bunu her hafta yapıyorsanız</h2>
+    <p>
+      Ayır, klasör, yeniden kur: adımlar ayrı sayfalarda yaşar, çünkü her
+      sayfa tek bir iş yapar ve her biri hiçbir şeyin makinenizden
+      ayrılmadığını tek başına kanıtlayabilir. Ama hepsi açık kaynaktır: MIT
+      lisansı, araç başına bir klasör, README'leri çözücüyü, eleme
+      kurallarını ve nicemleyiciyi anlatan bağımlılıksız ES modülleri.
+    </p>
+    <p>
+      GIF cerrahisi dönüp duran bir işse, bir kod aracısını
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">depoya</a>
+      yönlendirin ve ayırıcının kare tablosuyla oluşturucunun kodlayıcısını,
+      kare silmenin tek tık olduğu tek bir sayfada katlamasını isteyin.
+      Modüller okunmak için yazıldı ve onları alıp götürmek, lisansın tam da
+      var olma nedenidir.
+    </p>
+  </section>

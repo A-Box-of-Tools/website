@@ -1,0 +1,22 @@
+#
+# Panduan: mengubah video panjang menjadi timelapse - Indonesian.
+#
+
+nav = "Video jadi timelapse"
+title = "Mengubah video panjang menjadi timelapse &mdash; tanpa mengunggah apa pun"
+description = "Satu jam rekaman menjadi satu menit yang enak ditonton: cara memilih kecepatan, mengapa menyebutkan durasi akhir lebih baik daripada berhitung, dan kapan hasilnya perlu menjadi GIF."
+
+heading = "Cara mengubah video panjang menjadi timelapse"
+lede = """
+    Satu jam matahari terbenam, sehari penuh proyek bangunan, perjalanan
+    harian dari balik kaca depan: rekaman yang layak disimpan, pada
+    kecepatan yang tidak akan ditonton siapa pun. Pekerjaannya hanyalah satu
+    keputusan tentang waktu dan satu tentang tujuan, dan semuanya berjalan
+    di peramban Anda, pada berkas yang tidak pernah meninggalkan komputer
+    Anda."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Satu jam rekaman dalam satu menit yang enak ditonton, tanpa mengunggah"
+og_description = "Pilih kecepatannya atau langsung sebutkan berapa lama hasilnya, jaga berkas tetap ringkas bahkan pada 4K, dan ketahui kapan putaran itu ingin menjadi GIF."
+og_image_alt = "abox.tools - perkakas yang tidak pernah menyentuh server"

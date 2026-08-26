@@ -1,0 +1,21 @@
+#
+# Panduan: merapikan memo suara - Indonesian.
+#
+
+nav = "Merapikan memo suara"
+title = "Merapikan memo suara sebelum mengirimnya &mdash; tanpa mengunggah apa pun"
+description = "Potong hening kosong dan awalan yang gagal, lalu naikkan volumenya sampai tepat di bawah penuh. Dua perkakas peramban berurutan, dengan urutan yang menjaga mutu, dan rekaman tidak pernah meninggalkan komputer Anda."
+
+heading = "Cara merapikan memo suara sebelum mengirimnya"
+lede = """
+    Memo suara datang dengan tiga puluh detik gemerisik saku, dua awalan
+    yang gagal, dan volume yang ditentukan oleh jarak ponsel. Membuatnya
+    layak kirim hanyalah dua langkah &mdash; potong, lalu naikkan &mdash;
+    dan keduanya berjalan di peramban Anda, tempat yang memang semestinya
+    bagi rekaman suara Anda sendiri yang mengucapkan hal-hal pribadi."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Buang hening kosong, naikkan volume, kirim memonya"
+og_description = "Pangkas awalan yang gagal cukup dengan mata lewat bentuk gelombang, lalu normalkan volumenya: dua perkakas, urutan yang benar, dan rekaman tetap di komputer Anda."
+og_image_alt = "abox.tools - perkakas yang tidak pernah menyentuh server"

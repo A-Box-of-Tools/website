@@ -1,0 +1,21 @@
+#
+# Guide : modifier un GIF image par image - French.
+#
+
+nav = "Modifier un GIF image par image"
+title = "Modifier un GIF image par image &mdash; découper, corriger, rebâtir, sans envoi"
+description = "Décomposer un GIF en ses images, en retirer ou en réordonner, et le rebâtir en gardant les temps. Ce qui survit à l'aller-retour, ce que coûte la palette, et comment voir pourquoi un GIF est lourd."
+
+heading = "Comment modifier un GIF image par image"
+lede = """
+    Il n'y a pas d'éditeur de GIF ici, et il n'en faut pas&nbsp;: un
+    découpeur qui décompose l'animation en images, et un fabricant qui en
+    bâtit une à partir d'images, forment un éditeur avec un dossier au
+    milieu &mdash; et le dossier est l'endroit où vous faites la retouche,
+    avec ce que vous utilisez déjà pour les images."""
+
+updated = "26 août 2026"
+
+og_title = "Décomposer un GIF, corriger les images, le remonter"
+og_description = "Découper un GIF en PNG avec les temps sauvegardés, retirer ou retoucher les images, et rebâtir - tout dans le navigateur, les coûts de l'aller-retour écrits noir sur blanc."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

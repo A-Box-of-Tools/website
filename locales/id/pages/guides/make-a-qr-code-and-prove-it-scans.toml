@@ -1,0 +1,21 @@
+#
+# Panduan: membuat kode QR dan membuktikannya terbaca - Indonesian.
+#
+
+nav = "Membuktikan QR terbaca"
+title = "Membuat kode QR dan membuktikannya terbaca &mdash; sebelum mencetak 200 poster"
+description = "Buat kodenya, lalu periksa dengan pembaca dari situs yang sama: isi persisnya, tautan sebenarnya, pada ukuran cetak dan dari sebuah foto, sebelum naik cetak. Semuanya di peramban, tidak ada yang diunggah."
+
+heading = "Cara membuat kode QR dan membuktikannya terbaca"
+lede = """
+    Kesalahan QR yang mahal bukan membuat kodenya: melainkan mendapati di
+    lokasi bahwa poster-poster itu terbaca menuju salah ketik. Membuat dan
+    memeriksa adalah dua perkakas di sini, dan menjalankan yang kedua
+    sebelum naik cetak hanya makan satu menit serta menangkap hampir semua
+    yang akan dikirimkan oleh cetakan itu."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Buktikan posternya terbaca sebelum mencetak dua ratus"
+og_description = "Buat kodenya, foto cetakan percobaannya, dan baca kembali dengan pembaca dari situs yang sama - isi, tautan, semuanya - sebelum memberi lampu hijau ke percetakan."
+og_image_alt = "abox.tools - perkakas yang tidak pernah menyentuh server"

@@ -1,0 +1,33 @@
+#
+# Guide: make a QR code and prove it scans.
+#
+# Generate, then verify with the reader before printing two hundred of them -
+# the reader is the tool this guide claims, since the generator's guide
+# existed first. The verification section is also where the guide teaches
+# reading OTHER people's codes safely, which is the reader's real day job.
+#
+
+slug = "guides/make-a-qr-code-and-prove-it-scans"
+kind = "guide"
+nav = "Prove a QR code scans"
+group = "workflows"
+tool = "qr-barcode-reader"
+
+title = "Make a QR Code and Prove It Scans &mdash; Before You Print 200 Posters"
+description = "Generate the code, then verify it with a reader on the same site - the exact payload, the real link, at print size and from a photo - before the print run. All in the browser, nothing uploaded."
+
+heading = "How to make a QR code and prove it scans"
+lede = """
+    The expensive QR mistake is not making the code &mdash; it is finding
+    out at the venue that the posters scan into a typo. Generating and
+    verifying are two tools here, and running the second before the print
+    run costs one minute and catches almost everything the print run would
+    have shipped."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Prove the poster scans before printing two hundred of them"
+og_description = "Generate the code, photograph the test print, and read it back with the same site's reader - payload, link and all - before committing to the print run."
+og_image_alt = "abox.tools - tools that never touch a server"

@@ -160,6 +160,11 @@ complete = true
 "guides/scan-multiple-pages-into-one-pdf" = "가이드/여러-장을-pdf-한-개로-스캔"
 "guides/get-photos-ready-for-the-web" = "가이드/웹에-올릴-사진-준비"
 "guides/compare-two-json-files" = "가이드/json-파일-두-개-비교"
+"guides/turn-a-long-video-into-a-timelapse" = "가이드/긴-영상을-타임랩스로"
+"guides/make-a-video-thumbnail" = "가이드/영상-썸네일-만들기"
+"guides/edit-a-gif-frame-by-frame" = "가이드/gif-프레임별로-편집"
+"guides/make-a-qr-code-and-prove-it-scans" = "가이드/qr코드-만들고-스캔-확인"
+"guides/clean-up-a-voice-memo" = "가이드/음성-메모-정리하기"
 
 #
 # ---------------------------------------------------------------------------

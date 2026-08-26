@@ -1,0 +1,31 @@
+#
+# Guide: edit a GIF frame by frame.
+#
+# Split, curate, rebuild - the only GIF editor here is the pair of tools
+# either side of a folder of frames, and the guide is honest about what the
+# round trip costs. No `tool` key: all three tools carry their own guides.
+#
+
+slug = "guides/edit-a-gif-frame-by-frame"
+kind = "guide"
+nav = "Edit a GIF frame by frame"
+group = "workflows"
+
+title = "Edit a GIF Frame by Frame &mdash; Split, Fix, Rebuild, No Upload"
+description = "Take a GIF apart into its frames, drop or reorder them, and rebuild it with the timing kept. What survives the round trip, what the palette costs, and how to see why a GIF is heavy."
+
+heading = "How to edit a GIF frame by frame"
+lede = """
+    There is no GIF editor here, and there does not need to be: a splitter
+    that takes the animation apart into frames, and a maker that builds one
+    from frames, are an editor with a folder in the middle &mdash; and the
+    folder is the part where you do the editing, with whatever you already
+    use for images."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Take a GIF apart, fix the frames, put it back together"
+og_description = "Split a GIF into PNGs with the timing saved, drop or retouch the frames, and rebuild - all in the browser, with the round trip's costs written down."
+og_image_alt = "abox.tools - tools that never touch a server"

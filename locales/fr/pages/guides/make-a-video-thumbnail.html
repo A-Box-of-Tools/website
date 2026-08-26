@@ -1,0 +1,103 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <ol>
+      <li>
+        <strong>Prendre l'image.</strong> Ouvrez
+        l'<a href="../../extraire-une-image-d-une-video/">Extracteur d'images</a>, déposez la
+        vidéo, et avancez dans la liste d'images du fichier lui-même
+        jusqu'à l'instant exact. Enregistrez en PNG &mdash; la copie sans
+        perte, pour que rien ne soit encore décidé.
+      </li>
+      <li>
+        <strong>Cadrer l'image.</strong> Portez le PNG au
+        <a href="../../redimensionner-une-image/">Redimensionneur d'images</a>&nbsp;:
+        recadrez à la forme de la plateforme &mdash; 16:9 pour YouTube
+        &mdash; et fixez le grand côté, 1280 pixels étant le chiffre que
+        YouTube demande réellement.
+      </li>
+      <li>
+        <strong>Tenir le plafond.</strong> Finissez dans le
+        <a href="../../compresser-une-image/">Compresseur d'images</a> avec la
+        limite de la plateforme pour cible &mdash; 2&nbsp;Mo pour une
+        miniature YouTube &mdash; et laissez-le choisir JPEG ou WebP.
+      </li>
+    </ol>
+    <p>
+      Rien dans la chaîne n'envoie quoi que ce soit &mdash; ce qui compte
+      quand la vidéo n'est pas publiée, et une miniature se fabrique
+      précisément parce que la vidéo n'est pas encore publique.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi avancer image par image bat la pause</h2>
+    <p>
+      Mettre un lecteur en pause et capturer l'écran perd deux fois. La
+      pause tombe là où le lecteur a pu s'arrêter &mdash; l'endroit le plus
+      proche, pas l'image que vous vouliez &mdash; et la capture est une
+      photo du lecteur&nbsp;: sa résolution, son habillage, son traitement
+      des couleurs, pas ceux du fichier.
+    </p>
+    <p>
+      L'extracteur parcourt au contraire la liste d'images du fichier
+      lui-même, une image à la fois dans les deux sens, et vous tend l'image
+      décodée elle-même, à la pleine résolution de la vidéo. Un quart de
+      seconde de recherche de part et d'autre du moment est en général là où
+      vit la miniature &mdash; l'image <em>entre</em> les deux évidentes, où
+      le mouvement se lit sans que rien soit flou.
+    </p>
+    <p>
+      Enregistrez la prise en PNG même si la miniature finale sera JPEG ou
+      WebP. Le PNG est une copie exacte de l'image&nbsp;; toute décision
+      avec perte n'arrive alors qu'une fois, à la fin, dans un budget
+      d'octets &mdash; plutôt que deux fois, en s'additionnant.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'arithmétique de la plateforme</h2>
+    <p>
+      Recadrez avant de compresser, pour la raison que donne déjà le
+      <a href="../preparer-des-photos-pour-le-web/">guide des photos</a>&nbsp;:
+      les pixels sont le budget. Un recadrage 16:9 d'une image 4K ramené à
+      1280&times;720 laisse le compresseur dépenser ses 2&nbsp;Mo en qualité
+      que personne n'aura à plisser les yeux pour voir. La boîte de recadrage
+      du redimensionneur se verrouille en 16:9, la forme est donc un geste
+      plutôt qu'un calcul&nbsp;; le texte et les visages veulent tenir dans
+      les deux tiers du milieu, parce que les fils arrondissent les coins et
+      superposent la durée en bas à droite.
+    </p>
+  </section>
+
+  <section>
+    <h2>Une planche-contact, quand le moment se dérobe</h2>
+    <p>
+      Quand le bon instant se cache quelque part dans dix minutes d'images,
+      l'autre mode de l'extracteur enregistre une image toutes les N secondes
+      et rend le tout en ZIP. Parcourez les images comme une planche-contact,
+      notez l'heure de la plus proche, et avancez à partir de là. C'est plus
+      rapide que de frotter la barre, et il en reste un dossier de candidates
+      pour le jour où la plateforme demandera un autre format.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Les étapes vivent ici sur trois pages, à dessein &mdash; chaque page
+      fait un travail, et chacune peut prouver seule que rien ne quitte votre
+      machine. Mais chaque étape est libre&nbsp;: licence MIT, un dossier par
+      outil, des modules ES sans dépendances, avec des README qui expliquent
+      le décodeur, le rééchantillonnage et la recherche de la cible
+      d'octets.
+    </p>
+    <p>
+      Si les miniatures sont un livrable hebdomadaire, pointez un agent de
+      code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui la version en une page&nbsp;: avancer, recadrer au
+      gabarit de votre plateforme, compresser à son plafond, un bouton. Les
+      modules ont été écrits pour être lus, et les emporter est exactement ce
+      à quoi sert la licence.
+    </p>
+  </section>

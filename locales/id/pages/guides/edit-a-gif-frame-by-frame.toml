@@ -1,0 +1,21 @@
+#
+# Panduan: menyunting GIF bingkai demi bingkai - Indonesian.
+#
+
+nav = "Menyunting GIF per bingkai"
+title = "Menyunting GIF bingkai demi bingkai &mdash; bongkar, benahi, rakit ulang, tanpa mengunggah apa pun"
+description = "Bongkar GIF menjadi bingkai-bingkainya, buang atau susun ulang, lalu rakit kembali dengan pewaktuan yang terjaga. Apa yang selamat dari perjalanan bolak-balik, apa harga paletnya, dan cara melihat mengapa sebuah GIF berat."
+
+heading = "Cara menyunting GIF bingkai demi bingkai"
+lede = """
+    Tidak ada penyunting GIF di sini, dan memang tidak perlu: pemisah yang
+    membongkar animasi menjadi bingkai dan pembuat yang merakit animasi dari
+    bingkai adalah sebuah penyunting dengan satu folder di tengahnya
+    &mdash; dan folder itulah bagian tempat Anda menyunting, dengan apa pun
+    yang sudah Anda pakai untuk gambar."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Bongkar GIF, benahi bingkainya, rakit kembali"
+og_description = "Pisahkan GIF menjadi PNG dengan pewaktuan tersimpan, buang atau poles bingkainya, lalu rakit ulang - semuanya di peramban, dengan ongkos bolak-baliknya ditulis jujur."
+og_image_alt = "abox.tools - perkakas yang tidak pernah menyentuh server"

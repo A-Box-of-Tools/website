@@ -1,0 +1,101 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <ol>
+      <li>
+        <strong>Taglia.</strong> Apri il
+        <a href="../../tagliare-audio/">Tagliaudio</a>, trascina dentro il memo
+        e segna le parti da tenere con <kbd>I</kbd> e <kbd>O</kbd> mentre
+        suona. La forma d'onda mostra i silenzi e le false partenze come
+        tratti piatti, quindi gran parte del taglio si fa a occhio. Esporta
+        un solo file.
+      </li>
+      <li>
+        <strong>Alza.</strong> Porta quel file
+        all'<a href="../../modificare-audio/">Editor audio</a> e normalizza: il
+        livello sale fin quasi al fondo scala, il massimo che una
+        registrazione può essere senza distorcere. Esporta, e manda
+        quello.
+      </li>
+    </ol>
+    <p>
+      Entrambi i passi girano sulla tua macchina. Un memo vocale è più o
+      meno la cosa più personale che un file possa essere, e i soliti siti
+      di &laquo;migliora l'audio online&raquo; se ne prendono una copia
+      come prezzo del cursore.
+    </p>
+  </section>
+
+  <section>
+    <h2>Perché tagliare prima di alzare</h2>
+    <p>
+      Perché normalizzare legge il file intero per trovarne il momento più
+      forte, e in un memo grezzo il momento più forte è spesso proprio la
+      cosa che stai per cancellare: il tonfo del telefono appoggiato, il
+      colpo di tosse prima della seconda ripresa. Normalizza prima e quel
+      picco fissa il tetto, così la voce esce bassa com'è entrata. Taglia
+      via la zavorra e la cosa più forte rimasta è la voce stessa, che è
+      quella su cui il margine va speso.
+    </p>
+    <p>
+      Il tagliaudio taglia sul campione esatto e sfuma ogni giuntura per
+      pochi millisecondi, così un taglio in mezzo al rumore della stanza non
+      può schioccare. Solo le giunture: l'audio intatto tra di esse viene
+      copiato, non ricodificato.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cosa sistema l'editor, e cosa no</h2>
+    <p>
+      Normalizzare sistema il <em>basso</em>. Non sistema il rumoroso: il
+      livello del condizionatore sale con quello della voce, perché è una
+      registrazione sola e ci stanno dentro insieme. Ciò che tiene un memo
+      comprensibile è soprattutto il taglio &mdash; l'aria morta è il posto
+      dove il rumore si sente da solo &mdash; più il controllo di velocità a
+      beneficio di chi ascolta: 1,25&times; tenendo l'intonazione è il
+      trucco dei podcast, e funziona altrettanto bene su un memo che
+      divaga.
+    </p>
+    <p>
+      L'editor scrive WAV &mdash; campioni esatti, nessun encoder in mezzo
+      &mdash; quindi il file pesa più dell'originale compresso. Per un memo
+      che si misura in minuti è un prezzo giusto per non impilare mai una
+      seconda codifica con perdita sopra la prima fatta dal telefono; il
+      messenger che lo manderà lo comprimerà comunque un'altra volta, e
+      quella dovrebbe essere l'unica.
+    </p>
+  </section>
+
+  <section>
+    <h2>La stessa catena, registrazioni più lunghe</h2>
+    <p>
+      Un'intervista, una lezione, una riunione: la catena è la stessa, il
+      taglio rende solo di più. Segna le domande che contano, lascia andare
+      il resto, e i segni stessi si salvano come semplice file di testo e si
+      ricaricano, il che trasforma una pulizia lunga in qualcosa che si può
+      posare e riprendere. Per l'audio che vive dentro un video, l'editor
+      tira fuori la traccia anche da un MP4 o un MOV senza toccare
+      l'immagine: il primo passo per fare di una chiamata registrata
+      qualcosa di ascoltabile in viaggio.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se lo fai ogni settimana</h2>
+    <p>
+      Tagliare e alzare vivono su due pagine apposta: ognuna fa un lavoro, e
+      ognuna può dimostrare da sola che la registrazione non ha mai lasciato
+      la tua macchina. Ma entrambe sono open source: licenza MIT, una
+      cartella per strumento, moduli ES senza dipendenze i cui README
+      spiegano i tagli al campione esatto e lo scrittore di WAV.
+    </p>
+    <p>
+      Se i memo ti piovono addosso ogni giorno, punta un agente di codice
+      sul
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      e chiedigli la versione in una pagina: forma d'onda, segni,
+      normalizzazione all'esportazione. I moduli sono scritti per essere
+      letti, e portarseli via è esattamente ciò per cui la licenza
+      esiste.
+    </p>
+  </section>

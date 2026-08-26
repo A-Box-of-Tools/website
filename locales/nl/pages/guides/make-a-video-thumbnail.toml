@@ -1,0 +1,21 @@
+#
+# Gids: een videominiatuur maken - Dutch.
+#
+
+nav = "Videominiatuur maken"
+title = "Een videominiatuur maken van precies het juiste beeld &mdash; zonder iets te uploaden"
+description = "Stap beeld voor beeld naar het juiste moment, sla het verliesvrij op, breng het naar het formaat van het platform en land op de bytegrens. Drie browsergereedschappen op een rij, en het beeldmateriaal verlaat je machine nooit."
+
+heading = "Zo maak je een videominiatuur van precies het juiste beeld"
+lede = """
+    Het verschil tussen een miniatuur en een schermafdruk is ongeveer een
+    kwart seconde: het beeld waarin de ogen open zijn en de bal nog in de
+    lucht hangt. Bij dat beeld komen, op het formaat van het platform, onder
+    zijn bytegrens, is een keten van drie stappen die volledig in je browser
+    draait."""
+
+updated = "26 augustus 2026"
+
+og_title = "Precies het juiste beeld, op platformformaat, onder de bytegrens"
+og_description = "Stap beeld voor beeld naar het moment, sla het verliesvrij op, snijd naar 16:9 en comprimeer tot het plafond van het platform, zonder het beeldmateriaal te uploaden."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

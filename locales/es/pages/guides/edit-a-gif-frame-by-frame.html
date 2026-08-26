@@ -1,0 +1,104 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <ol>
+      <li>
+        <strong>Desármalo.</strong> Abre el
+        <a href="../../separar-gif-en-fotogramas/">Separador de GIF</a> y suelta el GIF.
+        Cada fotograma se vuelve su propio PNG &mdash; tal como aparece en
+        pantalla, con la transparencia conservada &mdash; y el ZIP incluye
+        una lista de tiempos: los retardos por fotograma apuntados para la
+        reconstrucción.
+      </li>
+      <li>
+        <strong>Edita la carpeta.</strong> Borra los fotogramas que sobren,
+        retoca en cualquier editor de imágenes los que deban cambiar,
+        renombra para reordenar. Una carpeta de PNG es un formato que todo
+        entiende.
+      </li>
+      <li>
+        <strong>Vuélvelo a montar.</strong> Suelta la carpeta en el
+        <a href="../../crear-gif/">Creador de GIF</a>, pon los tiempos de
+        cada fotograma &mdash; o apóyate en la lista &mdash; elige la paleta
+        y exporta.
+      </li>
+    </ol>
+    <p>
+      Los tres pasos corren en tu navegador. Nada se sube en ningún momento,
+      y aquí importa más que de costumbre: los GIF que la gente arregla son
+      tantas veces grabaciones de pantalla con algo sensible a medio ver.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lo que el separador puede contarte antes de editar</h2>
+    <p>
+      El separador muestra, para cada fotograma, su retardo, su posición, su
+      tamaño y su regla de borrado &mdash; y ese panel merece un vistazo
+      antes de tocar nada, porque explica las dos sorpresas de la mayoría de
+      los GIF.
+    </p>
+    <p>
+      Primera: no todos los fotogramas son imágenes completas. Muchos GIF
+      guardan solo los píxeles que cambiaron, parcheados sobre el fotograma
+      anterior; el separador ofrece cada fotograma <em>como aparece</em> o
+      <em>como está guardado</em>, y para editar casi siempre quieres
+      <em>como aparece</em>, para que cada PNG se sostenga solo. Segunda:
+      los retardos van por fotograma, no en un único número. La pausa sobre
+      el remate es un retardo real sobre un fotograma real, y la lista de
+      tiempos es lo que lo lleva a través del viaje de ida y vuelta.
+    </p>
+    <p>
+      Para los cortes corrientes, el paso de la carpeta es incluso opcional:
+      quedarse con un fotograma de cada dos o de cada cinco, o marcar los
+      que quieres, viene incorporado en el separador &mdash; y partir los
+      fotogramas por la mitad es el adelgazamiento más eficaz que un GIF
+      puede recibir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lo que cuesta la reconstrucción, con honestidad</h2>
+    <p>
+      Un GIF guarda como mucho 256 colores, elegidos al construirlo. La
+      reconstrucción cuantiza los fotogramas otra vez &mdash; una paleta
+      compartida o los mejores colores por fotograma &mdash; y en material
+      fotográfico esa segunda cuantización puede notarse. En grabaciones de
+      pantalla y dibujos, la carga habitual, no se nota: nunca usaron 256
+      colores.
+    </p>
+    <p>
+      Las otras palancas del creador son las de la
+      <a href="../gif-de-una-parte-de-un-video/">guía del presupuesto
+      GIF</a>: menos colores, el difuminado de Floyd-Steinberg para los
+      degradados, y el comportamiento del bucle: para siempre, una vez o un
+      número.
+    </p>
+    <p>
+      Para ver si la cirugía funcionó &mdash; y dónde viven de verdad los
+      bytes &mdash; suelta el resultado en el
+      <a href="../../analizar-gif/">Analizador de GIF</a>: dibuja fotogramas
+      contra bytes, y el fotograma pesado suele ser un repintado completo
+      que alguien podría haber recortado.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si haces esto cada semana</h2>
+    <p>
+      Partir, carpeta, reconstruir: los pasos viven en páginas separadas
+      porque cada una hace un trabajo, y cada una puede demostrar por sí
+      sola que nada sale de tu equipo. Pero todo es código abierto: licencia
+      MIT, una carpeta por herramienta, módulos ES sin dependencias cuyos
+      README explican el decodificador, las reglas de borrado y el
+      cuantizador.
+    </p>
+    <p>
+      Si la cirugía de GIF es una tarea recurrente, apunta un agente de
+      código al
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositorio</a>
+      y pídele que pliegue la tabla de fotogramas del separador y el
+      codificador del creador en una página donde borrar un fotograma sea un
+      clic. Los módulos se escribieron para leerse, y llevárselos es
+      exactamente para lo que está la licencia.
+    </p>
+  </section>

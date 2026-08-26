@@ -1,0 +1,102 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <ol>
+      <li>
+        <strong>Prendi il fotogramma.</strong> Apri
+        l'<a href="../../estrarre-fotogramma-video/">Estrattore di fotogrammi</a>, trascina
+        dentro il video e avanza lungo la lista dei fotogrammi del file
+        stesso fino all'istante esatto. Salvalo come PNG: la copia senza
+        perdite, così non è ancora deciso niente.
+      </li>
+      <li>
+        <strong>Inquadra il fotogramma.</strong> Porta il PNG al
+        <a href="../../ridimensionare-immagine/">Ridimensiona immagini</a>: ritaglia
+        alla forma della piattaforma &mdash; 16:9 per YouTube &mdash; e
+        fissa il lato lungo; 1280 pixel è il numero che YouTube chiede
+        davvero.
+      </li>
+      <li>
+        <strong>Centra il tetto.</strong> Chiudi nel
+        <a href="../../comprimere-immagine/">Comprimi immagini</a> con il limite
+        della piattaforma come obiettivo &mdash; 2&nbsp;MB per una miniatura
+        di YouTube &mdash; e lasciagli scegliere JPEG o WebP.
+      </li>
+    </ol>
+    <p>
+      Niente nella catena carica niente: cosa che conta quando il video non
+      è pubblicato, e una miniatura si fa proprio perché il video non è
+      ancora pubblico.
+    </p>
+  </section>
+
+  <section>
+    <h2>Perché avanzare batte mettere in pausa</h2>
+    <p>
+      Mettere in pausa un player e fare uno screenshot perde due volte. La
+      pausa cade dove il player è riuscito a fermarsi &mdash; il punto più
+      vicino, non il fotogramma che intendevi &mdash; e lo screenshot è una
+      foto del player: la sua risoluzione, la sua interfaccia, la sua
+      gestione del colore, non quelle del file.
+    </p>
+    <p>
+      L'estrattore percorre invece la lista dei fotogrammi del file stesso,
+      un fotogramma alla volta in entrambe le direzioni, e ti consegna il
+      fotogramma decodificato in sé, alla piena risoluzione del video. Un
+      quarto di secondo di ricerca ai due lati del momento è di solito dove
+      abita la miniatura: il fotogramma <em>tra</em> i due ovvi, dove il
+      movimento si legge e niente è mosso.
+    </p>
+    <p>
+      Salva la presa come PNG anche se la miniatura finale sarà JPEG o WebP.
+      Il PNG è una copia esatta del fotogramma; ogni decisione con perdita
+      avviene allora una volta sola, alla fine, dentro un budget di byte,
+      invece che due volte, sommandosi.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'aritmetica della piattaforma</h2>
+    <p>
+      Ritaglia prima di comprimere, per la stessa ragione che dà la
+      <a href="../preparare-le-foto-per-il-web/">guida alle foto</a>: i
+      pixel sono il budget. Un ritaglio 16:9 di un fotogramma 4K portato a
+      1280&times;720 lascia che il compressore spenda i suoi 2&nbsp;MB in
+      qualità che nessuno dovrà strizzare gli occhi per vedere. Il riquadro
+      di ritaglio del ridimensiona si blocca sul 16:9, quindi la forma è un
+      trascinamento e non un calcolo; testo e volti vogliono stare nei due
+      terzi centrali, perché i feed arrotondano gli angoli e sovrappongono
+      la durata in basso a destra.
+    </p>
+  </section>
+
+  <section>
+    <h2>Un provino a contatto, quando il momento non si trova</h2>
+    <p>
+      Quando l'attimo giusto è da qualche parte in dieci minuti di girato,
+      l'altra modalità dell'estrattore salva un fermo immagine ogni N
+      secondi e consegna il tutto in uno ZIP. Scorri i fermi come un provino
+      a contatto, segnati il tempo del più vicino, e avanza da lì. È più
+      rapido che strofinare la barra, e lascia una cartella di candidati per
+      il giorno in cui la piattaforma chiederà un'altra forma.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se lo fai ogni settimana</h2>
+    <p>
+      Che i passi vivano qui su tre pagine è voluto: ogni pagina fa un
+      lavoro, e ognuna può dimostrare da sola che niente lascia la tua
+      macchina. Ma ogni passo è open source: licenza MIT, una cartella per
+      strumento, moduli ES senza dipendenze con README che spiegano il
+      decoder, il ricampionamento e la ricerca dell'obiettivo di byte.
+    </p>
+    <p>
+      Se le miniature sono una consegna settimanale, punta un agente di
+      codice sul
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      e chiedigli la versione in una pagina: avanzare, ritagliare al preset
+      della tua piattaforma, comprimere al suo tetto, un pulsante. I moduli
+      sono scritti per essere letti, e portarseli via è esattamente ciò per
+      cui la licenza esiste.
+    </p>
+  </section>

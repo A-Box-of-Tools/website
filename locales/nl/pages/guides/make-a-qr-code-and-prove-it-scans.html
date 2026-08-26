@@ -1,0 +1,96 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <ol>
+      <li>
+        <strong>Maak hem.</strong> Open de
+        <a href="../../qr-code-maken/">QR- en streepjescodemaker</a>, kies de
+        klus &mdash; een link, een wifi-netwerk, een contactkaart &mdash; en
+        controleer de exacte tekenreeks die de code zal dragen, die de
+        pagina laat zien in plaats van verstopt. Exporteer de SVG voor druk,
+        de PNG voor schermen.
+      </li>
+      <li>
+        <strong>Druk er één.</strong> Op het echte formaat, op het echte
+        papier, vóór de oplage van tweehonderd.
+      </li>
+      <li>
+        <strong>Bewijs het.</strong> Fotografeer de drukproef met een
+        telefoon &mdash; schuin, in het licht van de plek &mdash; en sleep
+        de foto op de <a href="../../qr-code-scannen/">QR- en
+        streepjescodelezer</a>. Die toont de gedecodeerde inhoud en, bij een
+        link, de host die hij werkelijk bereikt. Klopt dat met wat je
+        bedoelde, dan is de oplage veilig.
+      </li>
+    </ol>
+    <p>
+      Beide gereedschappen draaien in je browser en versturen niets &mdash;
+      wat voor een wificode betekent dat het wachtwoord erin nooit in
+      andermans website is getikt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat de controle werkelijk vangt</h2>
+    <ul>
+      <li>
+        <strong>De typfout.</strong> De gewoonste storing is niet de code:
+        het is de URL erin. Teruglezen is de enige controle die test wat er
+        werkelijk gecodeerd is in plaats van wat je dacht te hebben
+        geplakt.
+      </li>
+      <li>
+        <strong>Formaat en afstand.</strong> Een code die van de andere kant
+        van een zaal gescand wordt, heeft grotere blokjes nodig dan een op
+        een visitekaartje. De proef fotograferen vanaf waar de mensen zullen
+        staan is de eerlijke test; de foutcorrectieniveaus van de maker
+        zeggen hardop wat elk niveau aan dichtheid kost.
+      </li>
+      <li>
+        <strong>De kleuren.</strong> Donker op licht gedrukte codes scannen;
+        contrastarme merkpaletten vaak niet. De lezer kan meer aan dan de
+        meeste telefoons: als <em>hij</em> al worstelt met de foto, maakt de
+        oudste telefoon in de hal geen schijn van kans.
+      </li>
+      <li>
+        <strong>De vouw en de weerkaatsing.</strong> Reed-Solomon-correctie
+        laat een half afgedekte code nog lezen &mdash; tot het niveau dat
+        jij koos. Een poster die weer en wind in gaat, verdient het hoogste
+        niveau en de iets dichtere code die dat kost.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Dezelfde lezer, voor codes die niet van jou zijn</h2>
+    <p>
+      Controleren is ook de veilige manier om andermans gedrukte QR te
+      openen. De lezer toont het volledige adres en de host die hij
+      werkelijk bereikt <em>voordat er iets opent</em>, en benoemt de trucs
+      die een link vermommen: een gebruikersnaam vóór de @, een
+      look-alike-alfabet, een omleiding. De sticker op de parkeermeter
+      verdient die inspectie; het congresbadge ook. Er wordt niets namens
+      jou geopend, en niets van wat je scant wordt ergens heen
+      gestuurd.
+    </p>
+  </section>
+
+  <section>
+    <h2>Als je dit elke week doet</h2>
+    <p>
+      Maken en controleren wonen met opzet op twee pagina's: elke doet één
+      klus, en elke kan in z'n eentje bewijzen dat niets je machine
+      verlaat. Maar beide zijn open source: MIT-licentie, ES-modules zonder
+      dependencies &mdash; de encoder van de maker en de
+      Reed-Solomon-decoder van de lezer, elk met een README die hem
+      uitlegt.
+    </p>
+    <p>
+      Als er elke week codes van jouw bureau vertrekken, wijs dan een
+      code-agent naar de
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      en vraag om een pagina die genereert en de getekende code meteen terug
+      door de decoder haalt: een zelftest bij elke export. De modules zijn
+      geschreven om gelezen te worden, en ze meenemen is precies waar de
+      licentie voor bestaat.
+    </p>
+  </section>

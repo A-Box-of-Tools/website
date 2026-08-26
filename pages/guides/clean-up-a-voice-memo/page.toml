@@ -1,0 +1,32 @@
+#
+# Guide: clean up a voice memo.
+#
+# Trim the dead air, then fix the level - and why that order. Claims
+# edit-audio, the audio tool that had no guide; the trimmer's guide existed
+# first.
+#
+
+slug = "guides/clean-up-a-voice-memo"
+kind = "guide"
+nav = "Clean up a voice memo"
+group = "workflows"
+tool = "edit-audio"
+
+title = "Clean Up a Voice Memo Before Sending It &mdash; No Upload"
+description = "Cut the dead air and the false starts, then bring the level up to full scale. Two browser tools in a row, in the order that keeps the quality, and the recording never leaves your machine."
+
+heading = "How to clean up a voice memo before sending it"
+lede = """
+    A voice memo arrives with thirty seconds of pocket noise, two false
+    starts, and a level set by how far away the phone was. Making it
+    sendable is two steps &mdash; cut, then lift &mdash; and both run in
+    your browser, which is where a recording of your own voice saying
+    private things belongs."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Cut the dead air, lift the level, send the memo"
+og_description = "Trim the false starts by eye on the waveform, then normalise the volume - two tools, the right order, and the recording never leaves your machine."
+og_image_alt = "abox.tools - tools that never touch a server"

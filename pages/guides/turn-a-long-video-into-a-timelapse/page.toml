@@ -1,0 +1,32 @@
+#
+# Guide: turn a long video into a timelapse.
+#
+# The workflow behind "speed up a video": the speed decision, and then the
+# choice of container for where it is going. It claims the timelapse tool,
+# which had no guide - the other half of the chain, the GIF converter, kept
+# its own long ago.
+#
+
+slug = "guides/turn-a-long-video-into-a-timelapse"
+kind = "guide"
+nav = "Video into a timelapse"
+group = "workflows"
+tool = "timelapse-video"
+
+title = "Turn a Long Video into a Timelapse &mdash; No Upload"
+description = "An hour of footage into a watchable minute: how to choose the speed, why saying the finished length beats doing arithmetic, and when the result should become a GIF."
+
+heading = "How to turn a long video into a timelapse"
+lede = """
+    An hour of sunset, a day of building work, a commute out the windscreen
+    &mdash; footage worth having, at a speed nobody will sit through. The job
+    is one decision about time and one about where it is going, and the whole
+    of it runs in your browser, on a file that never leaves your machine."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "An hour of footage into a watchable minute, without uploading it"
+og_description = "Choose the speed or just say how long the result should be, keep the file readable at 4K, and know when the loop wants to be a GIF."
+og_image_alt = "abox.tools - tools that never touch a server"

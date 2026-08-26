@@ -1,0 +1,17 @@
+#
+# Guide: edit a GIF frame by frame - Simplified Chinese.
+#
+
+nav = "逐帧编辑 GIF"
+title = "逐帧编辑 GIF &mdash; 拆开、修好、重组，什么都不用上传"
+description = "把 GIF 拆成一帧一帧，删掉或重排，再在保住节奏的前提下重组。往返一趟什么能活下来、调色板的代价是什么、以及怎么看清一个 GIF 为什么重。"
+
+heading = "怎么逐帧编辑 GIF"
+lede = """
+    这里没有 GIF 编辑器，也不需要：一个把动画拆成帧的拆分器，加一个用帧组装动画的生成器，就是一个中间夹着文件夹的编辑器 &mdash; 而那个文件夹正是你亲自动手的部分，用的就是你平时处理图片的那些东西。"""
+
+updated = "2026年8月26日"
+
+og_title = "把 GIF 拆开，修好帧，再装回去"
+og_description = "把 GIF 拆成带节奏记录的 PNG，删帧或修帧后重组 &mdash; 全在浏览器里，往返的代价明明白白写着。"
+og_image_alt = "abox.tools - 从不碰服务器的工具"

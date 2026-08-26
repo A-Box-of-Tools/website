@@ -1,0 +1,102 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Abre el <a href="../../crear-timelapse/">Creador de timelapse</a>,
+      suelta la grabación, y fija o una velocidad &mdash; cualquiera entre
+      1,1&times; y 1000&times; &mdash; o, sin hacer cuentas, cuánto debe
+      durar el resultado. Sesenta segundos es un buen punto de partida para
+      cualquier cosa que vaya a un feed. Elige los fotogramas por segundo,
+      reduce el tamaño si el original es 4K, y exporta.
+    </p>
+    <p>
+      Si el destino solo anima GIF, pasa después el clip exportado por el
+      conversor de <a href="../../convertir-video-a-gif/">Video a GIF</a>; pero lee
+      antes la última sección, porque un timelapse es lo más caro que se le
+      puede pedir a un GIF que cargue.
+    </p>
+  </section>
+
+  <section>
+    <h2>Di la duración, no la velocidad</h2>
+    <p>
+      «¿A qué velocidad?» es la pregunta equivocada, porque la respuesta
+      honesta es una división que no deberías tener que hacer: noventa
+      minutos de metraje en un minuto de resultado son 90&times;; un día de
+      obra en treinta segundos queda más cerca de 3000&times; que de nada
+      que sugiera un control deslizante. La herramienta acepta la duración
+      final directamente y calcula el factor por su cuenta, con lo que la
+      respuesta sobrevive al día en que metas una grabación más larga.
+    </p>
+    <p>
+      Para lo que sigue sirviendo un factor de velocidad es para los números
+      pequeños. Entre 1,1&times; y 2&times; un video sigue siendo
+      <em>mirable como video</em> &mdash; una clase, una demostración
+      &mdash; y por encima de más o menos 8&times; deja de ser reproducción
+      rápida y se vuelve timelapse, donde cada fotograma de salida es una
+      muestra arrancada del flujo del tiempo y todo lo que hay entre
+      muestras sencillamente ya no está.
+    </p>
+    <p>
+      Ese muestreo es también lo que hace rápido el trabajo. La herramienta
+      lee solo los instantes que la salida necesita &mdash; a 100&times;,
+      alrededor de una centésima del archivo &mdash; en vez de decodificar
+      una hora para quedarse con un minuto.
+    </p>
+  </section>
+
+  <section>
+    <h2>Fotogramas y tamaño, en corto</h2>
+    <ul>
+      <li>
+        <strong>Fotogramas por segundo.</strong> 30 se lee como movimiento
+        fluido para casi todo; 60 solo se gana su tamaño doble cuando el
+        movimiento es el tema, y 24 da a nubes y multitudes un tictac
+        agradablemente de cine.
+      </li>
+      <li>
+        <strong>Tamaño.</strong> Un timelapse se mira casi siempre en
+        pequeño. Bajar 4K a 1080p deja en un cuarto los píxeles que el
+        codificador debe describir, y en la pantalla de un teléfono nadie lo
+        notará jamás.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cuándo el timelapse quiere ser un GIF</h2>
+    <p>
+      Casi nunca. Un timelapse es cambio constante del cuadro entero
+      &mdash; exactamente aquello en lo que la compresión GIF es peor
+      &mdash; así que hasta uno corto cae en las decenas de megabytes
+      mientras el MP4 pesa la décima parte, más nítido. Publica el video en
+      cualquier sitio donde el video se reproduzca.
+    </p>
+    <p>
+      Cuando el destino de verdad solo anima GIF, corta la secuencia a unos
+      pocos segundos con bucle en la
+      <a href="../../convertir-video-a-gif/">línea de tiempo del conversor</a>,
+      mantén el ancho modesto y deja caer los fotogramas a 10&ndash;12. La
+      <a href="../gif-de-una-parte-de-un-video/">guía del GIF parcial</a>
+      es la versión larga de ese presupuesto.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si haces esto cada semana</h2>
+    <p>
+      Que los dos pasos vivan aquí en dos páginas es a propósito: cada
+      página hace un trabajo, y cada una puede demostrar por sí sola que
+      nada sale de tu equipo. Pero todo lo que ejecutan es código abierto:
+      licencia MIT, una carpeta por herramienta, módulos ES sin dependencias
+      con un README que nombra cada uno.
+    </p>
+    <p>
+      Si una cámara en trípode es parte de tu rutina, apunta un agente de
+      código al
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositorio</a>
+      y pídele que componga el muestreador y el codificador de GIF en una
+      página con tu velocidad y tamaño ya puestos. Los módulos se
+      escribieron para leerse, y llevárselos es exactamente para lo que está
+      la licencia.
+    </p>
+  </section>

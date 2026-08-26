@@ -1,0 +1,97 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open the <a href="../../timelapse-video/">Timelapse Maker</a>, drop the
+      recording in, and either set a speed &mdash; anything from 1.1&times; to
+      1000&times; &mdash; or skip the arithmetic and say how long the result
+      should be. Sixty seconds is a good default for anything headed to a
+      feed. Pick a frame rate, scale it down if the original is 4K, and
+      export.
+    </p>
+    <p>
+      If the destination only animates GIFs, take the exported clip through
+      the <a href="../../video-to-gif/">Video to GIF</a> converter afterwards
+      &mdash; but read the last section first, because a timelapse is the
+      most expensive thing a GIF can be asked to hold.
+    </p>
+  </section>
+
+  <section>
+    <h2>Say the length, not the speed</h2>
+    <p>
+      &ldquo;How fast&rdquo; is the wrong question, because the honest answer
+      is a division you should not have to do: ninety minutes of footage into
+      a minute of result is 90&times;, a day of building work into thirty
+      seconds is nearer 3000&times; than anything a slider suggests. The tool
+      takes the result length directly and works the factor out itself,
+      which also means the answer survives you swapping in a longer
+      recording.
+    </p>
+    <p>
+      What a speed factor is still good for is small numbers. Between
+      1.1&times; and 2&times; a video stays <em>watchable as video</em> - a
+      lecture, a demonstration - and above roughly 8&times; it stops being
+      fast playback and becomes a timelapse, where each output frame is a
+      sample plucked from the flow of time and everything between samples is
+      simply gone.
+    </p>
+    <p>
+      That sampling is also why the job is quick. The tool reads only the
+      instants the output needs - at 100&times;, about one hundredth of the
+      file - rather than decoding an hour to keep a minute.
+    </p>
+  </section>
+
+  <section>
+    <h2>Frame rate and size, briefly</h2>
+    <ul>
+      <li>
+        <strong>Frame rate.</strong> 30 frames a second reads as smooth
+        motion for almost everything; 60 only earns its doubled size when the
+        motion itself is the subject, and 24 gives clouds and crowds a
+        pleasant film-like tick.
+      </li>
+      <li>
+        <strong>Size.</strong> A timelapse is usually watched small. Scaling
+        4K down to 1080p quarters the pixels the encoder must describe, and
+        on a phone screen nobody will ever know.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>When the timelapse wants to be a GIF</h2>
+    <p>
+      Mostly it does not. A timelapse is constant whole-frame change &mdash;
+      the exact thing GIF compression is worst at &mdash; so even a short one
+      lands in the tens of megabytes while the MP4 sits at a tenth of that,
+      sharper. Post the video anywhere video plays.
+    </p>
+    <p>
+      When the destination truly only animates GIFs, cut the sequence to a
+      loopable few seconds in the
+      <a href="../../video-to-gif/">converter's own timeline</a>, keep the
+      width modest, and let the frame rate fall to 10&ndash;12. The
+      <a href="../make-a-gif-from-part-of-a-video/">partial-GIF guide</a> is
+      the long version of that budget.
+    </p>
+  </section>
+
+  <section>
+    <h2>If you do this every week</h2>
+    <p>
+      The two steps live on two pages here on purpose &mdash; each page does
+      one job, and each can prove on its own that nothing leaves your
+      machine. But everything both pages run is open source: MIT-licensed,
+      one folder per tool, dependency-free ES modules with a README that
+      names each one.
+    </p>
+    <p>
+      If a camera on a tripod is part of your routine, point a coding agent
+      at the
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      and ask it to compose the sampler and the GIF encoder into one page
+      with your speed and size already set. The modules were written to be
+      read, and lifting them is what the licence is for.
+    </p>
+  </section>

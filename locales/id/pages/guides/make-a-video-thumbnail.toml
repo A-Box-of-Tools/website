@@ -1,0 +1,20 @@
+#
+# Panduan: membuat thumbnail video - Indonesian.
+#
+
+nav = "Membuat thumbnail video"
+title = "Membuat thumbnail video dari bingkai yang tepat &mdash; tanpa mengunggah apa pun"
+description = "Melangkah bingkai demi bingkai ke saat yang tepat, simpan tanpa kehilangan mutu, sesuaikan dengan bentuk platform, dan tepat di bawah batas bitenya. Tiga perkakas peramban berurutan, dan rekaman tidak pernah meninggalkan komputer Anda."
+
+heading = "Cara membuat thumbnail video dari bingkai yang tepat"
+lede = """
+    Beda antara thumbnail dan tangkapan layar kira-kira seperempat detik:
+    bingkai ketika mata terbuka dan bola masih di udara. Sampai ke bingkai
+    itu, pada ukuran platform, di bawah batas bitenya, adalah rangkaian tiga
+    langkah yang berjalan seluruhnya di peramban Anda."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Bingkai yang tepat, seukuran platform, di bawah batas bite"
+og_description = "Melangkah bingkai demi bingkai ke saat yang tepat, simpan tanpa kehilangan mutu, pangkas ke 16:9, dan mampatkan sampai pagu platform - tanpa mengunggah rekaman."
+og_image_alt = "abox.tools - perkakas yang tidak pernah menyentuh server"
