@@ -1,0 +1,258 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../heic-ke-jpg/">Pengubah HEIC ke JPG</a>, jatuhkan
+      fotonya, lalu tekan &ldquo;Ubah&rdquo;. Biarkan penggeser kualitasnya di
+      tempatnya dan biarkan &ldquo;simpan tanggal, kamera, dan setelannya&rdquo;
+      tercentang kecuali Anda punya alasan lain. Anda mendapat JPEG kembali, satu
+      tombol unduh masing-masing, atau sebuah zip kalau ada beberapa.
+    </p>
+    <p>
+      Tidak ada yang diunggah saat Anda melakukannya. Itu tidak biasa untuk
+      pekerjaan yang satu ini, dan alasannya adalah separuh yang menarik dari
+      halaman ini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa sebenarnya HEIC itu</h2>
+    <p>
+      HEIC sebenarnya bukan format gambar seperti halnya JPEG. Ia sebuah wadah
+      &mdash; struktur kotak yang sama yang menyusun sebuah MP4 &mdash; dengan
+      sebuah bingkai diam video <strong>HEVC</strong> di dalamnya. HEVC, yang
+      juga disebut H.265, adalah kodek yang menggantikan kodek yang dipakai
+      camcorder lama Anda, dan ia sangat bagus: foto iPhone dalam HEIC kira-kira
+      separuh ukuran foto yang sama sebagai JPEG pada kualitas yang sama.
+    </p>
+    <p>
+      Apple beralih ke sana di iOS 11, pada 2017, dan menjadikannya bawaan.
+      Artinya, kecuali seseorang sudah masuk ke Settings lalu memilih &ldquo;Most
+      Compatible&rdquo;, setiap foto yang diambil ponsel mereka selama hampir
+      satu dekade ada dalam format yang:
+    </p>
+    <ul>
+      <li>tidak akan dipratinjau Windows tanpa sebuah ekstensi dari Store;</li>
+      <li>ditolak mentah-mentah kebanyakan formulir unggahan web;</li>
+      <li>tidak pernah didengar sangat banyak perangkat lunak desktop yang lebih
+        tua;</li>
+      <li>dan tidak akan ditampilkan peramban web mana pun selain Safari.</li>
+    </ul>
+    <p>
+      Fotonya baik-baik saja. Ia file yang lebih baik daripada JPEG-nya nanti.
+      Ia sekadar ditulis dalam bahasa yang tidak pernah dipelajari sebagian besar
+      dunia.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa hanya Safari yang membukanya</h2>
+    <p>
+      Inilah bagian yang menjelaskan setiap pengubah yang pernah Anda pakai, jadi
+      ia layak satu paragraf.
+    </p>
+    <p>
+      Mendekodekan HEVC butuh sebuah dekoder HEVC, dan HEVC itu dipatenkan.
+      Perizinannya dikelola lebih dari satu kumpulan paten, dan mengirimkan
+      sebuah dekoder berarti membayar seseorang. Peramban menangani ini dengan
+      bersandar pada sistem operasinya &mdash; Chrome akan memutar
+      <em>video</em> HEVC di mesin yang perangkat kerasnya sudah punya dekoder
+      berlisensi &mdash; tapi jalur itu dipasang untuk pemutaran video dan bukan
+      untuk gambar diam. Jadi HEIC yang diserahkan ke
+      <code>&lt;img&gt;</code> ditolak, di Chrome, Firefox, dan Edge sama saja,
+      di setiap sistem operasi.
+    </p>
+    <p>
+      Safari di perangkat keras Apple adalah pengecualiannya, karena macOS dan
+      iOS punya dekodernya dan Safari boleh memintanya. Di semua tempat lain,
+      gambarnya sekadar tidak bisa didekodekan peramban.
+    </p>
+    <p>
+      Yang meninggalkan sebuah pengubah tepat dua pilihan, dan pilihan di antara
+      keduanya adalah seluruh cerita alat semacam ini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa hampir setiap pengubah HEIC menginginkan unggahan</h2>
+    <p>
+      Pilihan satu: taruh dekodernya di sebuah server. Fotonya diunggah,
+      didekodekan di mesin yang belum pernah Anda lihat, dikodekan ulang sebagai
+      JPEG, lalu dikirim kembali. Inilah yang dilakukan hampir setiap
+      &ldquo;pengubah HEIC daring gratis&rdquo;, dan itulah sebabnya mereka semua
+      butuh file Anda. Itu bukan kemalasan &mdash; perambannya memang sungguh
+      tidak bisa melakukannya tanpa bantuan.
+    </p>
+    <p>
+      Berapa harganya layak dinyatakan dengan blak-blakan. Foto dari sebuah
+      ponsel adalah file paling pribadi yang dimiliki kebanyakan orang, dan HEIC
+      yang langsung dari iPhone biasanya membawa koordinat tempat ia diambil,
+      akurat sampai beberapa meter, berikut tanggalnya sampai ke detik dan sebuah
+      pengenal kamera. Mengunggah satu folder penuh ke layanan gratis berarti
+      menyerahkan gambarnya sekaligus itu. Apa yang terjadi berikutnya diatur
+      oleh kebijakan privasi yang tidak Anda baca, di sebuah server yang tidak
+      bisa Anda periksa, di sebuah yurisdiksi yang tidak Anda pilih.
+    </p>
+    <p>
+      Pilihan dua: taruh dekodernya di halamannya. Itulah yang dilakukan
+      <a href="../../heic-ke-jpg/">yang ini</a>. Ia membawa
+      <code>libheif</code>, yang dikompilasi menjadi WebAssembly, sebagai file
+      yang disajikan dari situs ini &mdash; sekitar 1,4 MB, diunduh sekali lalu
+      disinggahkan. Peramban Anda menjalankannya di mesin Anda sendiri, di
+      perangkat keras Anda sendiri, dan fotonya tidak pergi ke mana pun. Muat
+      halamannya sekali dan Anda bisa mencabut koneksi internet sama sekali dan
+      ia terus bekerja, dan itu hal yang tidak bisa dilakukan pengubah yang
+      mengunggah dan bukti paling sederhana yang ada.
+    </p>
+    <p>
+      1,4 MB itu seluruh harganya. Kalau Anda memakai koneksi berkuota, itu
+      ongkos yang nyata dan layak diketahui; itulah sebabnya halamannya
+      mengatakannya dengan lantang alih-alih mengunduhnya diam-diam.
+    </p>
+  </section>
+
+  <section>
+    <h2>Berapa harga pengubahannya bagi gambarnya</h2>
+    <p>
+      HEIC dan JPEG adalah kodek yang berbeda, jadi tidak ada jalan menyeberang
+      yang tidak melibatkan pendekodean gambarnya lalu pengodeannya lagi.
+      Pengodean kedua itu merugikan. Pada praktiknya ini jauh kurang penting
+      daripada kedengarannya:
+    </p>
+    <ul>
+      <li>
+        <strong>Pada kualitas 92</strong> &mdash; tempat pengubahnya mulai
+        &mdash; sebuah foto sangat sulit dibedakan dari aslinya pada ukuran
+        pandang normal mana pun. Anda akan mencari perbedaan di gradien yang
+        mulus, seperti langit yang cerah, dan Anda umumnya tidak akan
+        menemukannya.
+      </li>
+      <li>
+        <strong>JPEG-nya akan lebih besar.</strong> Biasanya di suatu tempat
+        antara sepertiga lebih besar dan dua kali lipat ukurannya, karena JPEG
+        adalah kodek dari 1992 dan HEVC bukan. Itulah pertukarannya: file yang
+        lebih besar yang bisa dibuka segala hal.
+      </li>
+      <li>
+        <strong>Mengubah dua kali itulah yang harus dihindari.</strong> Setiap
+        pengodean yang merugikan berbiaya sedikit. Ubah dari HEIC aslinya, bukan
+        dari JPEG yang sudah dibuatkan seseorang untuk Anda, dan kerjakan
+        sekali.
+      </li>
+    </ul>
+    <p>
+      Kalau Anda sama sekali tidak ingin kehilangan apa pun, PNG ada di menu
+      formatnya. Siapkan diri untuk file-nya: sebuah foto sebagai PNG biasanya
+      lima sampai sepuluh kali ukuran JPEG-nya, karena kompresi PNG dirancang
+      untuk warna datar dan gambar garis alih-alih untuk rumput dan kulit.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tanggal, kamera, dan koordinatnya</h2>
+    <p>
+      Keluhan yang biasa tentang pengubah HEIC adalah fotonya kembali sudah
+      kehilangan hari pengambilannya, sehingga foto seliburan penuh terurut ke
+      dasar galeri di bawah tanggal hari ini. Itu terjadi karena mengubah lewat
+      sebuah kanvas memberi Anda piksel dan tidak lebih &mdash; sebuah kanvas
+      tidak menyimpan tag &mdash; jadi kecuali sebuah pengubah pergi mengambil
+      metadatanya secara terpisah, ia sekadar hilang.
+    </p>
+    <p>
+      Alat di sini menyalin blok EXIF-nya dari HEIC-nya lalu menuliskannya ke
+      JPEG-nya, jadi tanggalnya selamat. Ada sebuah kotak centang, dan ia
+      tercentang secara bawaan. Lepas centangnya dan JPEG-nya keluar dengan
+      gambarnya dan tidak lebih.
+    </p>
+    <p>
+      Sebelum Anda memutuskan, lihat daftarnya: baris setiap foto mengatakan
+      apakah file-nya membawa koordinat GPS, dan ia mengatakannya sebelum apa pun
+      diubah. Kalau fotonya akan pergi ke suatu tempat yang publik, itulah baris
+      yang harus dibaca. Kalau mereka akan masuk ke galeri Anda sendiri,
+      menyimpan metadatanya hampir pasti yang Anda mau.
+    </p>
+    <p>
+      Satu tag diubah apa pun yang Anda pilih, dan layak diketahui kenapa. Sebuah
+      HEIC merekam rotasinya di dua tempat: di wadahnya, dan di blok EXIF-nya.
+      Dekodernya menerapkan rotasi wadahnya sambil mendekodekan, jadi piksel yang
+      diserahkan sudah tegak. Kalau EXIF-nya lalu masih berkata &ldquo;putar ini
+      90 derajat&rdquo;, sebuah penampil akan melakukannya sekali lagi dan setiap
+      foto potret akan keluar miring. Jadi tag orientasinya disetel ke tegak dan
+      semua yang lain disalin persis seperti yang ditulis ponselnya.
+    </p>
+    <p>
+      Kalau yang Anda mau adalah menelusuri tagnya dengan rinci, atau
+      membersihkannya dari foto yang sudah berupa JPEG, itu pekerjaan yang
+      berbeda dan ada
+      <a href="../hapus-data-exif-dan-gps/">panduannya sendiri</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hal-hal yang menjebak orang</h2>
+    <ul>
+      <li>
+        <strong>HEIC bernama &ldquo;.jpg&rdquo;.</strong> Sangat umum: sesuatu di
+        sepanjang jalan menamainya ulang tanpa mengubahnya, dan itulah sebabnya
+        ia tetap tidak mau terbuka. Setiap file yang dijatuhkan ke pengubahnya
+        dikenali dari byte pertamanya alih-alih dari namanya, jadi salah satu
+        dari ini bekerja dengan baik. Itu juga sebabnya file yang memang sungguh
+        JPEG diberi tahu begitu alih-alih diubah menjadi salinan dirinya
+        sendiri.
+      </li>
+      <li>
+        <strong>Satu file, beberapa gambar.</strong> Sebuah burst atau Live Photo
+        bisa menyimpan lebih dari satu gambar diam. Semuanya diubah, dan yang
+        tambahan dinomori mengikuti nama aslinya. Bagian video sebuah Live Photo
+        adalah file terpisah yang disimpan ponselnya di sebelah HEIC-nya, jadi ia
+        tidak ada di sana untuk diubah.
+      </li>
+      <li>
+        <strong>AVIF bukan HEIC.</strong> Keduanya mirip &mdash; wadah yang sama,
+        kodek yang berbeda di dalamnya &mdash; tapi setiap peramban masa kini
+        membuka sebuah AVIF secara bawaan, jadi tidak ada yang perlu diubah dan
+        alatnya mengatakannya alih-alih berpura-pura bekerja.
+      </li>
+      <li>
+        <strong>Menghentikan masalahnya di sumbernya.</strong> Di ponselnya:
+        Settings &rarr; Camera &rarr; Formats &rarr; Most Compatible. Foto baru
+        menjadi JPEG sejak saat itu. Ia memakai lebih banyak penyimpanan dan ia
+        tidak menyentuh foto yang sudah Anda punya, tapi ia berarti tidak pernah
+        melakukan ini lagi.
+      </li>
+      <li>
+        <strong>Berbagi kadang sudah mengubah.</strong> Meng-AirDrop atau
+        mengirim surel sebuah foto ke perangkat non-Apple sering menyerahkan
+        sebuah JPEG, karena iOS mengubahnya di jalan keluar. Kalau sebuah foto
+        toh tiba sebagai HEIC, ia menyeberang lewat rute yang tidak begitu.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Bagaimana tahu apakah sebuah pengubah mengunggah</h2>
+    <p>
+      Ini berlaku untuk alat mana pun, bukan hanya yang ini, dan ia memakan
+      sekitar lima belas detik.
+    </p>
+    <ol>
+      <li>
+        Buka halamannya, lalu buka alat pengembang peramban Anda dan pergi ke tab
+        Network.
+      </li>
+      <li>
+        Ubah sebuah foto, dan perhatikan. Alat yang mendekodekan di mesin Anda
+        sama sekali tidak membuat permintaan pada saat itu. Alat yang mengunggah
+        membuat satu seukuran foto Anda, dan Anda bisa melihat ukurannya.
+      </li>
+      <li>
+        Atau, lebih sederhana: muat halamannya, putuskan koneksi internet, lalu
+        coba ubah sesuatu. Alat yang mengirim foto Anda pergi untuk didekodekan
+        berhenti bekerja. Alat yang membawa dekodernya tidak.
+      </li>
+    </ol>
+    <p>
+      Pengubah di sini dibangun untuk lolos kedua pemeriksaan itu, dan ada versi
+      yang lebih panjang dari argumen ini di
+      <a href="../apakah-aman-mengunggah-file/">amankah mengunggah file</a>.
+    </p>
+  </section>

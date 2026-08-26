@@ -1,0 +1,252 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../svg-ke-png/">SVG ke Gambar</a>, jatuhkan file-nya, lalu
+      sebutkan sebuah ukuran. Kalau tidak ada yang memberi tahu Anda ukuran apa
+      yang dipakai, <strong>1024 piksel di sisi terpanjang</strong> adalah bawaan
+      yang baik: cukup besar untuk hampir apa saja dan cukup kecil untuk dikirim
+      lewat surel. Biarkan formatnya di PNG, biarkan latarnya transparan, lalu
+      ambil file-nya.
+    </p>
+    <p>
+      Semua di bawah ini adalah apa yang dilakukan ketika bawaan itu tidak cukup
+      baik &mdash; ketika sebuah angka sudah ditetapkan untuk Anda, ketika ia
+      akan dicetak, atau ketika ia kembali tampak keliru.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa ukurannya keputusan Anda dan bukan keputusan file-nya</h2>
+    <p>
+      Sebuah JPEG adalah kisi piksel terukur; menanyakan seberapa besar dia punya
+      jawaban. Sebuah SVG sama sekali bukan sebuah gambar, ia sekumpulan
+      instruksi &mdash; gambar lingkaran di sini, jalur ini dalam warna itu
+      &mdash; dan instruksi tidak punya ukuran. Sebuah peramban bisa
+      melaksanakannya pada 16 piksel atau pada 4000 dan hasilnya sama tajamnya
+      bagaimanapun juga, karena ia tidak sedang menskalakan apa pun. Ia sedang
+      menggambar lagi.
+    </p>
+    <p>
+      Itulah sebabnya pengubahannya tidak bisa memilih sebuah angka untuk Anda,
+      dan sebabnya memilih yang besar tidak mengorbankan apa pun. Inilah
+      satu-satunya pekerjaan gambar yang &ldquo;buat lebih besar&rdquo;-nya
+      gratis.
+    </p>
+    <p>
+      Kebanyakan file SVG memang membawa atribut <code>width</code> dan
+      <code>height</code>, dan sebuah alat akan menampilkannya &mdash; tapi itu
+      sebuah bawaan, bukan sebuah batas. Ikon yang berkata
+      <code>width="24"</code> hanya berkata bahwa orang yang menggambarnya punya
+      bilah alat 24&nbsp;piksel dalam pikirannya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dari mana sebenarnya angkanya datang</h2>
+    <p><strong>Untuk sebuah situs web.</strong> Ambil ukuran yang ditempati
+      gambarnya di halamannya dalam piksel CSS lalu kalikan dengan kepadatan
+      piksel layar yang Anda pedulikan. Sebuah logo di slot selebar
+      200&nbsp;piksel butuh file 400&nbsp;piksel untuk laptop Retina dan 600
+      untuk ponsel keluaran baru. Itulah seluruh yang dimaksud
+      <code>@2x</code> dan <code>@3x</code>, dan itulah sebabnya alat yang
+      menuliskannya menghemat Anda mengerjakan hitungannya tiga kali.
+    </p>
+    <p><strong>Untuk ikon aplikasi, iklan toko, atau favicon.</strong> Angkanya
+      diterbitkan dan tidak ada yang perlu diperhitungkan: apa pun yang dikatakan
+      halaman tokonya, persis. Untuk sebuah favicon, jangan diraster sama sekali
+      &mdash; <a href="../buat-favicon/">buat sebuah .ico</a>, yang menyimpan
+      beberapa ukuran dalam satu file, karena tab peramban, sebuah markah, dan
+      pintasan Windows semuanya meminta ukuran yang berbeda.
+    </p>
+    <p><strong>Untuk cetak.</strong> Kalikan ukuran fisiknya dalam inci dengan
+      resolusi pencetaknya. Sebuah logo yang akan masuk ke kartu nama selebar dua
+      inci pada 300&nbsp;DPI adalah 600 piksel; logo yang sama melintasi halaman
+      A4, pada 8,3&nbsp;inci, adalah sekitar 2500. Percetakan meminta
+      300&nbsp;DPI sebagai kelaziman, dan untuk spanduk format besar yang dilihat
+      dari seberang ruangan 150 sudah lebih dari cukup.
+    </p>
+    <p><strong>Untuk pratinjau sosial atau gambar OG.</strong> Lapaknya
+      menyebutkan sebuah kotak &mdash; 1200&nbsp;&times;&nbsp;630 untuk
+      kebanyakan pratinjau tautan &mdash; dan kotaknya berbeda bentuk dari logo
+      Anda. Untuk itulah setelan &ldquo;isi sisanya&rdquo; ada: gambarnya
+      diletakkan di tengah pada proporsinya sendiri, dengan sebuah warna latar
+      mengisi sisanya, alih-alih logo yang teregang yang memberi tahu semua orang
+      bahwa Anda tidak memeriksanya.
+    </p>
+    <p>
+      Ketika dua di antaranya berlaku, pakai yang lebih besar. PNG yang lebih
+      besar daripada yang dibutuhkannya adalah unduhan yang sedikit lebih besar;
+      yang terlalu kecil tidak bisa dibetulkan belakangan, karena alasan di
+      bagian berikutnya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Anda tidak bisa kembali</h2>
+    <p>
+      Perasteran itu satu arah. Begitu gambarnya menjadi sebuah PNG, ia piksel
+      seperti gambar lain mana pun, dan membesarkannya sesudahnya harus mengarang
+      detail yang tidak pernah terukur &mdash; hasil lembek dan tercoreng yang
+      sama seperti yang Anda dapat dari membesarkan sebuah foto.
+    </p>
+    <p>
+      Jadi simpan SVG-nya. Ia salinan induknya, ia hampir selalu file yang lebih
+      kecil, dan setiap ukuran di masa depan keluar darinya dengan sempurna.
+      PNG-nya adalah sebuah ekspor untuk satu pemakaian tertentu, dan ketika Anda
+      butuh ukuran lain, langkah yang benar adalah mengekspor lagi alih-alih
+      mengubah ukuran yang sudah Anda ekspor.
+    </p>
+    <p>
+      Ada perangkat lunak yang mengaku mengubah sebuah PNG kembali menjadi SVG.
+      Yang dilakukannya adalah menjiplak: menebak kurva mana yang mungkin
+      menjelaskan sebuah kisi piksel. Ia bekerja lumayan pada karya seni datar
+      dua warna dan menghasilkan omong kosong yang mahal pada apa pun yang lain,
+      dan ia tidak pernah memulihkan apa yang dimiliki gambar aslinya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tiga hal berubah begitu ia menjadi piksel</h2>
+    <p>
+      SVG yang dirasterkan yang tampak keliru hampir selalu tampak keliru karena
+      salah satu dari tiga hal ini, dan ketiganya layak diketahui sebelum Anda
+      mengekspor alih-alih sesudahnya.
+    </p>
+    <p>
+      <strong>Teks digambar dengan fon apa pun yang dimiliki mesinnya.</strong>
+      SVG yang memuat teks tidak memuat fonnya &mdash; ia menyebut satu lalu
+      membiarkan perendernya mencarinya. Kalau fonnya tidak terpasang, sebuah
+      pengganti dipakai, dan penggantinya punya bentuk huruf yang berbeda dan
+      lebar yang berbeda, jadi teksnya bisa tertata ulang atau meluber. File yang
+      menarik fonnya dari sebuah alamat web bernasib lebih buruk lagi: SVG yang
+      dirasterkan lewat sebuah <code>&lt;img&gt;</code> sama sekali tidak
+      diizinkan mengambil apa pun, jadi tidak ada yang tiba.
+    </p>
+    <p>
+      Solusinya adalah yang sudah diketahui setiap perancang: <strong>ubah teks
+      menjadi outline</strong> sebelum mengekspor SVG-nya (Illustrator
+      menyebutnya Create Outlines, Figma menyebutnya Flatten, Inkscape
+      menyebutnya Object to Path). Hurufnya menjadi geometri, fonnya berhenti jadi
+      soal, dan gambarnya tampak sama di setiap mesin. Kerjakan pada salinan
+      &mdash; teks yang sudah di-outline tidak lagi bisa disunting sebagai teks.
+    </p>
+    <p>
+      <strong>Garis rambut menjadi abu-abu atau lenyap.</strong> Goresan yang
+      terhitung kurang dari satu piksel pada ukuran pilihan Anda tidak bisa
+      digambar sebagai garis padat, jadi ia digambar sebagai garis samar. Inilah
+      sebabnya logo yang halus yang dirasterkan pada 64&nbsp;piksel tampak pucat
+      sementara file yang sama pada 512 tampak sempurna. Kalau ukuran kecil
+      memang syaratnya, jawabannya adalah gambar yang disederhanakan dengan
+      goresan yang lebih tebal alih-alih setelan ekspor yang berbeda &mdash; dan
+      itu alasan yang sama kenapa sebuah favicon berupa lambang dan bukan logo
+      kata.
+    </p>
+    <p>
+      <strong>Animasi berhenti.</strong> SVG beranimasi terraster menjadi satu
+      gambar diam: bingkai pertamanya, apa pun itu. Tidak ada setelan ekspor yang
+      mengubah ini. Kalau Anda butuh gerakannya, Anda butuh sebuah GIF atau
+      video, dibuat dengan cara yang berbeda.
+    </p>
+  </section>
+
+  <section>
+    <h2>Transparansi, dan format mana yang dipilih</h2>
+    <p>
+      <strong>PNG</strong> kecuali Anda punya alasan. Ia tanpa kehilangan, ia
+      menyimpan transparansi, dan warna datar dengan tepi keras &mdash; dan
+      itulah sebagian besar penyusun sebuah gambar vektor &mdash; terkompres
+      dengan baik di dalamnya. Logo yang dirasterkan biasanya berupa PNG yang
+      <em>lebih kecil</em> daripada kalau ia JPEG, sekaligus lebih bersih.
+    </p>
+    <p>
+      <strong>JPEG</strong> sama sekali tidak punya transparansi. Setiap piksel
+      transparan harus menjadi suatu warna, dan kalau tidak ada yang memilihkan
+      satu untuk Anda ia menjadi hitam &mdash; dan dari situlah hasil
+      logo-di-kotak-hitam yang dikira orang sebuah bug berasal. Ia juga merugikan
+      dengan cara yang paling kelihatan justru pada jenis gambar ini: sebuah
+      lingkaran bintik-bintik di sekeliling setiap tepi keras. Pakai ketika ada
+      yang bersikeras memintanya.
+    </p>
+    <p>
+      <strong>WebP</strong> melakukan semua yang dilakukan PNG, dalam file yang
+      lebih kecil, dan dibaca setiap peramban masa kini. Alasan untuk tidak
+      memakainya adalah apa yang terjadi setelah perambannya: perangkat lunak
+      yang lebih tua, sebagian percetakan, dan cukup banyak formulir unggahan
+      masih tidak mau membukanya.
+    </p>
+    <p>
+      Memilih warna latar dengan PNG juga hal yang sangat biasa untuk diinginkan.
+      Transparansi hanya berguna ketika apa pun tempat gambarnya mendarat berwarna
+      yang tidak bisa Anda ramalkan; ketika Anda sudah tahu ia sebuah halaman
+      putih, meratakannya ke putih menghindari satu kategori kejutan yang utuh.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ketika ekspornya keluar kosong atau keliru</h2>
+    <p>
+      <strong>Tidak ada apa-apa selain ruang kosong.</strong> Biasanya atribut
+      <code>xmlns</code> yang hilang di elemen akarnya. File tanpa itu bukanlah
+      SVG sejauh yang dipahami sebuah tag gambar, dan ia tergambar sebagai
+      ketiadaan. Membuka file-nya di sebuah peramban adalah uji cepatnya: kalau
+      perambannya juga tidak menampilkan apa-apa, file-nyalah masalahnya
+      alih-alih pengubahnya.
+    </p>
+    <p>
+      <strong>Gambarnya kecil, di sudut kiri atas.</strong> File-nya punya
+      <code>width</code> dan <code>height</code> tapi tidak punya
+      <code>viewBox</code>, jadi tidak ada sistem koordinat untuk diskalakan dan
+      karya seninya mempertahankan satuan aslinya di atas kanvas yang lebih
+      besar. Pengubah yang baik memasukkan sebuah viewBox untuk Anda; kalau punya
+      Anda belum, menambahkan
+      <code>viewBox="0 0 <em>lebar</em> <em>tinggi</em>"</code> ke elemen akarnya
+      dengan tangan membereskannya, dan file-nya teks biasa jadi Anda bisa.
+    </p>
+    <p>
+      <strong>Sebagian gambarnya hilang.</strong> Sesuatu di dalam file-nya
+      menunjuk ke sebuah alamat alih-alih memuat karya seninya &mdash; sebuah
+      foto tersemat yang disimpan sebagai tautan, sebuah lembar gaya, sebuah fon.
+      Peraster yang menolak mengambilnya sedang melakukan hal yang benar, dan itu
+      penolakan yang sama yang mencegah SVG yang Anda unduh dari suatu tempat
+      melapor balik ke siapa pun yang membuatnya. Ekspor ulang dari program
+      gambarnya dengan gambar-gambarnya disematkan.
+    </p>
+    <p>
+      <strong>Ia menolak ukuran yang sangat besar.</strong> Peramban membatasi
+      seberapa besar sebuah kanvas boleh, dan mereka tidak sepakat soal di mana:
+      lewat sekitar 16.000&nbsp;piksel di satu sisi tidak ada yang kembali, dan
+      Safari di sebuah iPhone atau iPad menyerah jauh lebih awal, di sekitar
+      4096&nbsp;&times;&nbsp;4096. Alat yang memperingatkan Anda sedang
+      menyelamatkan Anda dari file yang kosong, karena itulah yang dihasilkan
+      sebuah peramban ketika ia kehabisan alih-alih sebuah pesan galat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tidak satu pun dari ini butuh unggahan</h2>
+    <p>
+      Merasterkan sebuah SVG adalah sesuatu yang dilakukan setiap peramban ribuan
+      kali sehari &mdash; ia mesin yang sama yang menggambar sebuah ikon di
+      halaman web. Tidak ada alasan teknis bagi karya seni Anda untuk bepergian
+      ke sebuah server dan kembali supaya ia keluar sebagai PNG, dan alat di sini
+      tidak mengirimnya ke mana pun: <code>Content-Security-Policy</code>
+      halamannya menyebut satu per satu setiap alamat yang boleh dihubunginya,
+      dan tidak satu pun milik situs ini.
+    </p>
+    <p>
+      Itu lebih penting daripada biasanya dengan SVG, karena sebuah SVG adalah
+      sebuah dokumen alih-alih sebuah gambar. Ia bisa memuat sebuah skrip dan
+      sebuah alamat jauh, dan logo yang dikirimkan sebuah agensi kepada Anda
+      adalah file yang tidak Anda tulis. Digambar lewat sebuah tag gambar, ia
+      berada dalam apa yang disebut spesifikasinya sebagai <em>secure static
+      mode</em>: skripnya tidak bisa berjalan dan alamatnya tidak pernah
+      dihubungi. Perambannya yang menegakkan itu, bukan situs webnya.
+    </p>
+    <p>
+      Muat halamannya, cabut koneksi internet, lalu ubah sesuatu kalau Anda lebih
+      suka memeriksa daripada diberi tahu.
+      <a href="../apakah-aman-mengunggah-file/">Amankah mengunggah file ke
+      pengubah daring?</a> memaparkan tiga pemeriksaan lain yang bisa Anda
+      jalankan pada alat mana pun.
+    </p>
+  </section>

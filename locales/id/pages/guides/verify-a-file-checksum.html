@@ -1,0 +1,258 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../hitung-checksum/">Hash &amp; Checksum</a>, jatuhkan
+      file yang Anda unduh ke atasnya, lalu tempelkan checksum dari halaman
+      unduhannya ke kotak di bawah. Halamannya memperhitungkan angkanya berasal
+      dari algoritma yang mana dari panjangnya, lalu menjawab dalam satu kalimat.
+    </p>
+    <p>
+      Kalau ia cocok, byte di disk Anda adalah byte yang diukur penerbitnya.
+      Kalau tidak, unduh lagi file-nya sebelum Anda membukanya. Semua di bawah
+      ini adalah apa yang tidak disebutkan kalimat itu.
+    </p>
+  </section>
+
+  <section>
+    <h2>Angka di bawah tautan unduhan itu apa</h2>
+    <p>
+      Ia keluaran sebuah fungsi hash: sebuah perhitungan yang membaca setiap byte
+      sebuah file lalu menghasilkan jawaban pendek berpanjang tetap. File yang
+      sama selalu memberi jawaban yang sama, dan file yang berbeda satu bit saja
+      memberi jawaban yang sama sekali berbeda &mdash; bukan yang nyaris identik,
+      melainkan yang tidak berhubungan. Sifat itulah seluruh yang diandalkan.
+    </p>
+    <p>
+      Karena jawabannya pendek dan file-nya tidak, perhitungannya membuang
+      informasi, dan mau tidak mau ada banyak file yang berbagi jawaban tertentu
+      mana pun. Menemukan salah satunya dengan sengaja itulah bagian yang sulit,
+      dan seberapa sulitnya itulah yang membedakan algoritma di bawah satu sama
+      lain.
+    </p>
+    <p>
+      Tidak ada yang rahasia tentang sebuah checksum dan tidak ada yang bisa
+      dibalik darinya. Ia sebuah sidik jari, diterbitkan supaya dua orang bisa
+      sepakat bahwa mereka memegang benda yang sama.
+    </p>
+  </section>
+
+  <section>
+    <h2>Anda sedang melihat algoritma yang mana</h2>
+    <p>
+      Anda tidak perlu memilih &mdash; penerbitnya sudah memilih, dan tugas Anda
+      adalah menghitung yang sama. Anda bisa tahu yang mana hanya dari
+      panjangnya:
+    </p>
+    <ul>
+      <li><strong>32 karakter heksadesimal</strong> &mdash; MD5.</li>
+      <li><strong>40</strong> &mdash; SHA-1.</li>
+      <li><strong>64</strong> &mdash; SHA-256, dan inilah yang paling akan Anda lihat.</li>
+      <li><strong>96</strong> &mdash; SHA-384.</li>
+      <li><strong>128</strong> &mdash; SHA-512.</li>
+    </ul>
+    <p>
+      Tidak ada dua di antaranya yang sama panjang, dan itulah sebabnya alatnya
+      bisa mengenali sebuah nilai yang ditempelkan tanpa diberi tahu. Teks
+      sepanjang 63 karakter bukan checksum apa pun; ia sebuah SHA-256 yang
+      kehilangan satu karakter dalam perjalanan ke papan klip Anda.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mengerjakannya di mesin Anda sendiri, tanpa peramban</h2>
+    <p>
+      Setiap sistem operasi membawa sesuatu yang melakukan ini, dan perintahnya
+      layak diketahui bahkan kalau Anda memakai sebuah halaman untuk itu &mdash;
+      tidak ada jawaban yang lebih baik untuk "bagaimana saya tahu situs Anda
+      menghitungnya dengan jujur" selain menjalankan file yang sama melalui alat
+      yang datang bersama komputer Anda.
+    </p>
+    <p><strong>Windows</strong>, di PowerShell:</p>
+    <pre><code>Get-FileHash .\disk.iso -Algorithm SHA256</code></pre>
+    <p>
+      Mesin yang lebih tua punya <code>certutil -hashfile disk.iso SHA256</code>
+      sebagai gantinya, yang mencetak dalam huruf besar dengan spasi di dalamnya.
+      Besar kecilnya huruf tidak pernah jadi soal dalam perbandingan checksum;
+      hurufnya adalah digit, bukan kata.
+    </p>
+    <p><strong>macOS</strong>:</p>
+    <pre><code>shasum -a 256 disk.iso</code></pre>
+    <p><strong>Linux</strong>:</p>
+    <pre><code>sha256sum disk.iso</code></pre>
+    <p>
+      Ketiganya mencetak teks yang sama untuk file yang sama, dan begitu juga
+      situs ini. Mereka spesifikasi yang tepat dengan vektor uji yang
+      diterbitkan; tidak ada ruang bagi sebuah wujud implementasi untuk punya
+      pendapat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Membandingkannya tanpa membuat mata juling</h2>
+    <p>
+      Jangan membaca enam puluh empat karakter dari dua layar lalu memutuskan
+      keduanya tampak sama. Orang memeriksa empat karakter pertama dan empat
+      terakhir lalu berhenti, dan persis itulah perbandingan yang akan diatur
+      seorang penyerang supaya lolos, dan itu juga cara sebuah kekeliruan jujur
+      dilambaikan lewat.
+    </p>
+    <p>
+      Tempelkan keduanya ke sesuatu yang bisa membandingkannya untuk Anda. Di
+      sebuah baris perintah, untuk itulah bendera <code>-c</code> ada:
+    </p>
+    <pre><code>sha256sum -c SHA256SUMS</code></pre>
+    <p>
+      Di sebuah peramban, itulah kotak perbandingan di
+      <a href="../../hitung-checksum/">Hash &amp; Checksum</a>, yang menerima
+      nilainya dalam bentuk apa pun yang ditulis penerbitnya &mdash; heksadesimal
+      telanjang, sebaris keluaran <code>sha256sum</code>, sebuah file
+      <code>SHA256SUMS</code> utuh, bentuk
+      <code>SHA256 (disk.iso) = &hellip;</code>, atau sebuah atribut
+      <code>integrity="sha384-&hellip;"</code> dari sebuah tag skrip &mdash; lalu
+      mengatakan ya atau tidak dalam satu kalimat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa yang dibuktikan sebuah kecocokan, persisnya</h2>
+    <p>
+      Bahwa byte di disk Anda adalah byte yang ada di hadapan seseorang ketika
+      mereka menuliskan angka itu. Itu hal yang sungguh berguna untuk diketahui
+      dan ia lebih sempit daripada dugaan kebanyakan orang, jadi layak
+      didaftarkan apa yang dicakupnya dan apa yang tidak.
+    </p>
+    <p><strong>Sebuah kecocokan menyingkirkan:</strong></p>
+    <ul>
+      <li>unduhan yang berhenti lebih awal lalu meninggalkan Anda file yang tampak utuh;</li>
+      <li>kerusakan dalam perjalanan, di disk yang mulai gagal, atau di kabel USB yang buruk;</li>
+      <li>file yang keliru &mdash; hasil bangun ARM alih-alih yang x86, atau rilis
+        bulan lalu;</li>
+      <li>mirror yang diam-diam menyajikan sesuatu selain yang diiklankannya.</li>
+    </ul>
+    <p><strong>Sebuah kecocokan tidak menyingkirkan:</strong></p>
+    <ul>
+      <li><strong>file-nya sendiri jahat.</strong> Sebuah penerbit bisa mengukur
+        perangkat perusak sama persis akuratnya dengan apa pun yang lain. Sebuah
+        checksum berkata "inilah yang mereka kirimkan", tidak pernah "ini
+        aman";</li>
+      <li><strong>penerbitnya sudah dibobol.</strong> Kalau ada yang mengganti
+        file-nya di servernya, mereka mengganti checksum di sebelahnya pada menit
+        yang sama. Yang membawa kita ke bagian berikutnya.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Kekeliruan yang membuat seluruh latihannya sia-sia</h2>
+    <p>
+      Mengambil checksum-nya dari halaman yang sama, lewat koneksi yang sama,
+      dengan file-nya.
+    </p>
+    <p>
+      Pikirkan apa yang sedang Anda pertahankan. Kalau kekhawatirannya adalah
+      unduhan yang rusak, checksum-nya bisa datang dari mana saja dan
+      pemeriksaannya bekerja. Kalau kekhawatirannya adalah seseorang mengutak-atik
+      file-nya, maka siapa pun yang bisa mengubah file-nya bisa mengubah baris
+      heksadesimal yang tercetak di bawahnya, karena keduanya datang dari server
+      yang sama lewat koneksi yang sama. Anda akan meminta pemalsunya
+      mengukuhkan tanda tangannya.
+    </p>
+    <p>
+      Sebuah checksum paling berharga ketika ia mencapai Anda lewat rute yang
+      tidak dilalui file-nya:
+    </p>
+    <ul>
+      <li>sebuah file <code>SHA256SUMS</code> dengan tanda tangan GPG terpisah,
+        diperiksa terhadap kunci yang sudah Anda punya &mdash; inilah yang
+        diterbitkan distribusi dan inilah jawaban yang sesungguhnya;</li>
+      <li>pengumuman rilisnya di sebuah milis, atau sebuah tag di sebuah
+        repositori sumber, alih-alih halaman unduhannya;</li>
+      <li>sebuah mirror kedua di domain yang berbeda, lalu keduanya dibandingkan
+        satu sama lain;</li>
+      <li>sebuah pengelola paket, yang mengerjakan ini untuk Anda terhadap kunci
+        yang dikirim bersama sistem operasinya.</li>
+    </ul>
+    <p>
+      Tidak satu pun dari itu membuat memeriksa checksum dari halaman yang sama
+      jadi tak berguna. Ia menangkap unduhan yang rusak, dan itulah kegagalan
+      yang benar-benar menimpa orang. Hanya saja jangan mengatakan pada diri
+      sendiri bahwa ia menangkap hal lain.
+    </p>
+  </section>
+
+  <section>
+    <h2>MD5 dan SHA-1 sudah patah. Pakai saja, kadang-kadang</h2>
+    <p>
+      Keduanya sudah dipatahkan dalam makna terkuat yang penting di sini:
+      <em>tabrakan</em> bisa dibangun dengan sengaja. Dua file berbeda dengan MD5
+      yang sama sudah bisa dibangun di perangkat keras biasa sejak 2004, dan pada
+      2017 sebuah tim menghasilkan dua PDF berbeda dengan SHA-1 yang sama. Pada
+      2020, versi berawalan pilihan dari serangan itu turun ke beberapa puluh
+      ribu dolar komputasi sewaan.
+    </p>
+    <p>
+      Apa artinya pada praktiknya: MD5 yang cocok tidak lagi memberi tahu Anda
+      bahwa tidak ada yang mengutak-atik file-nya, karena orang yang mau bisa saja
+      sudah membangun file berbeda dengan angka yang sama. Ia tetap memberi tahu
+      Anda bahwa unduhannya tidak terpotong atau rusak, karena kecelakaan acak
+      tidak akan mendarat pada sebuah tabrakan &mdash; itu peluang yang tidak
+      pernah dimiliki kecelakaan mana pun.
+    </p>
+    <p>
+      Jadi kalau penerbitnya mencetak sebuah MD5 dan tidak lebih, periksa. Ia
+      lebih berharga daripada tidak memeriksa. Dan kalau Anda yang menerbitkan,
+      cetak sebuah SHA-256.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ia tidak cocok. Sekarang bagaimana?</h2>
+    <ol>
+      <li>
+        <strong>Unduh lagi</strong>, dari tempat yang sama. Transfer yang
+        terputus atau dilanjutkan adalah sejauh ini penyebab paling umum dan
+        salinan kedua biasanya menyelesaikannya.
+      </li>
+      <li>
+        <strong>Periksa Anda ada di baris yang benar.</strong> Halaman rilis
+        mendaftar beberapa file; checksum untuk pemasangnya tidak akan pernah
+        cocok dengan arsipnya, dan hasil bangun ARM tidak akan pernah cocok
+        dengan yang x86.
+      </li>
+      <li>
+        <strong>Periksa versinya.</strong> Halaman checksum yang dimarkahi jadi
+        basi pada hari sebuah rilis kecil dikirimkan.
+      </li>
+      <li>
+        <strong>Coba mirror yang lain</strong> lalu bandingkan checksum kedua
+        file-nya satu sama lain. Dua mirror yang sepakat satu sama lain dan tidak
+        sepakat dengan angka yang diterbitkan adalah masalah yang berbeda dari
+        satu mirror yang tidak sepakat dengan keduanya.
+      </li>
+      <li>
+        <strong>Jangan buka sementara itu.</strong> File yang gagal checksum-nya
+        paling baik berarti rusak dan paling buruk berarti bukan file yang Anda
+        minta.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Kenapa mengerjakan ini di sebuah peramban sama sekali</h2>
+    <p>
+      Karena baris perintah bukan tempat kebanyakan orang berada, dan karena
+      alternatif yang gamblang &mdash; sebuah situs web yang meminta Anda
+      mengunggah file-nya &mdash; adalah hal yang aneh untuk dilakukan pada
+      sebuah pemasang yang sudah Anda ragukan. Mengirim sebuah file ke suatu
+      tempat untuk mencari tahu apakah ia diutak-atik dalam perjalanan menambahkan
+      satu tempat lagi ia bisa diutak-atik.
+    </p>
+    <p>
+      <a href="../../hitung-checksum/">Hash &amp; Checksum</a> membaca file-nya
+      dalam potongan empat megabita di mesin Anda sendiri, jadi tidak ada
+      unggahan, tidak ada batas ukuran, dan tidak ada yang perlu dipercayai selain
+      halamannya sendiri &mdash; yang bisa Anda baca, dan yang terus bekerja
+      dengan jaringan tercabut. Kalau Anda lebih suka memercayai sistem operasi
+      Anda sendiri, jalankan perintah dari bagian di atas lalu bandingkan kedua
+      jawabannya. Mereka akan sepakat.
+    </p>
+  </section>

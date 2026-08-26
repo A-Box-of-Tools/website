@@ -1,0 +1,20 @@
+#
+# Panduan: mengubah video menjadi GIF - Bahasa Indonesia.
+#
+
+nav = "Membuat GIF dari video"
+title = "Cara Mengubah Video Menjadi GIF (dan Menjaganya Tetap Kecil)"
+description = "Bagian mana, lebar berapa, dan frame rate mana yang dipilih, kenapa GIF dari sebuah video sepuluh kali ukuran videonya, dan kapan sebaiknya memakai GIF sama sekali."
+
+heading = "Cara mengubah video menjadi GIF"
+lede = """
+    GIF adalah format dari tahun 1987 yang menyimpan gambar utuh alih-alih
+    gerakan, jadi GIF yang dibuat dari sebuah video selalu besar. Ini tentang
+    setelan mana dari ketiganya yang digerakkan ketika ia terlalu besar, dan
+    seberapa banyak yang Anda dapat dari masing-masing."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara mengubah video menjadi GIF, dan menjaganya tetap kecil"
+og_description = "Tiga setelan yang menentukan ukuran sebuah GIF, berapa harga masing-masing, dan kapan GIF adalah jawaban yang sama sekali keliru."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
