@@ -296,6 +296,9 @@ kbd {
 }
 
 .transport button { padding: 0.4rem 0.9rem; font-size: 0.86rem; }
+/* The play button shows a glyph, not a word, so the glyph gets a size a
+   thumb can find and the padding is retuned to keep the row one height. */
+.transport #play { min-width: 3.2rem; font-size: 1rem; line-height: 1; padding-block: 0.55rem; }
 .transport kbd { margin-inline-end: 0.3rem; }
 
 .speed-row {
