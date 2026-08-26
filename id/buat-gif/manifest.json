@@ -1,8 +1,8 @@
 {
   "id": "/id/buat-gif/",
-  "name": "GIF Maker",
-  "short_name": "GIF Maker",
-  "description": "Turn a set of pictures into one animation.",
+  "name": "Pembuat GIF",
+  "short_name": "Pembuat GIF",
+  "description": "Ubah sekumpulan gambar menjadi satu animasi.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

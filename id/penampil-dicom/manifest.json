@@ -1,8 +1,8 @@
 {
-  "id": "/id/stack-images/",
-  "name": "Image Stacker",
-  "short_name": "Image Stacker",
-  "description": "Twenty frames into one, without twenty uploads or a RAW converter.",
+  "id": "/id/penampil-dicom/",
+  "name": "Penampil DICOM",
+  "short_name": "Penampil DICOM",
+  "description": "CT, MR, rontgen, dan USG, lengkap dengan jendela, headernya, dan pengukurannya.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/id/analisis-gif/",
-  "name": "GIF Analyzer",
-  "short_name": "GIF Analyzer",
-  "description": "Frames, delays, palettes, and where every byte went.",
+  "name": "Penganalisis GIF",
+  "short_name": "Penganalisis GIF",
+  "description": "Bingkai, jeda, palet, dan ke mana setiap byte pergi.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

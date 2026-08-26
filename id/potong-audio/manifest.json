@@ -1,8 +1,8 @@
 {
   "id": "/id/potong-audio/",
-  "name": "Audio Trimmer",
-  "short_name": "Audio Trimmer",
-  "description": "Mark the parts worth keeping as it plays. Get them back as one file, cut where you said.",
+  "name": "Pemotong Audio",
+  "short_name": "Pemotong Audio",
+  "description": "Tandai bagian yang layak disimpan sambil diputar. Dapatkan kembali sebagai satu file, dipotong di tempat yang Anda sebutkan.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

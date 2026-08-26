@@ -1,8 +1,8 @@
 {
   "id": "/id/hapus-data-exif/",
-  "name": "EXIF Viewer & Remover",
-  "short_name": "EXIF Viewer & Remover",
-  "description": "See what a photo says about you. Then take it out.",
+  "name": "Penampil dan Penghapus EXIF",
+  "short_name": "Penampil dan Penghapus EXIF",
+  "description": "Lihat apa yang dikatakan sebuah foto tentang Anda. Lalu keluarkan.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

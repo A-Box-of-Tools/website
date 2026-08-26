@@ -1,8 +1,8 @@
 {
   "id": "/id/gabung-pdf/",
-  "name": "PDF Merger & Splitter",
-  "short_name": "PDF Merger & Splitter",
-  "description": "Pages moved around without a round trip to a server.",
+  "name": "Penggabung dan Pemisah PDF",
+  "short_name": "Penggabung dan Pemisah PDF",
+  "description": "Halaman dipindah-pindah tanpa perjalanan bolak-balik ke server.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

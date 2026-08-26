@@ -1,8 +1,8 @@
 {
   "id": "/id/pangkas-video/",
-  "name": "Video Cropper",
-  "short_name": "Video Cropper",
-  "description": "Cut a clip down to the part that matters.",
+  "name": "Pemangkas Video",
+  "short_name": "Pemangkas Video",
+  "description": "Potong klip sampai tersisa bagian yang penting.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

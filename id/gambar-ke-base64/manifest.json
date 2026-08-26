@@ -1,8 +1,8 @@
 {
   "id": "/id/gambar-ke-base64/",
-  "name": "Image to Data URI",
-  "short_name": "Image to Data URI",
-  "description": "The whole picture as one line of text. Paste it straight into CSS or HTML.",
+  "name": "Gambar ke Data URI",
+  "short_name": "Gambar ke Data URI",
+  "description": "Seluruh gambar sebagai satu baris teks. Tempelkan langsung ke CSS atau HTML.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/id/hitung-checksum/",
-  "name": "Hash & Checksum",
-  "short_name": "Hash & Checksum",
-  "description": "Check a download against the number the publisher printed, without sending it to anyone.",
+  "name": "Hash dan Checksum",
+  "short_name": "Hash dan Checksum",
+  "description": "Periksa sebuah unduhan terhadap angka yang dicetak penerbitnya, tanpa mengirimnya ke siapa pun.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

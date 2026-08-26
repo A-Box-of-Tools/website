@@ -1,8 +1,8 @@
 {
   "id": "/id/sensor-gambar/",
-  "name": "Image Redactor",
-  "short_name": "Image Redactor",
-  "description": "What you cover is deleted from the file, not covered up in it.",
+  "name": "Penyensor Gambar",
+  "short_name": "Penyensor Gambar",
+  "description": "Apa yang Anda tutup dihapus dari file-nya, bukan ditutupi di dalamnya.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

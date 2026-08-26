@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/gerador-de-senha/:';
-const CACHE_NAME=CACHE_PREFIX+'d21f647f23';
+const CACHE_NAME=CACHE_PREFIX+'5b13b3d3b1';
 const ASSETS=[
 './',
 'index.html',

@@ -1,8 +1,8 @@
 {
   "id": "/id/buat-video-time-lapse/",
-  "name": "Time-Lapse Maker",
-  "short_name": "Time-Lapse Maker",
-  "description": "An hour of footage, in twenty seconds.",
+  "name": "Pembuat Time-Lapse",
+  "short_name": "Pembuat Time-Lapse",
+  "description": "Rekaman satu jam, dalam dua puluh detik.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

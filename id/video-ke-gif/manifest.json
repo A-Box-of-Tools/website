@@ -1,8 +1,8 @@
 {
   "id": "/id/video-ke-gif/",
-  "name": "Video to GIF",
-  "short_name": "Video to GIF",
-  "description": "Pick the section, the size, and the frame rate.",
+  "name": "Video ke GIF",
+  "short_name": "Video ke GIF",
+  "description": "Pilih bagiannya, ukurannya, dan laju bingkainya.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

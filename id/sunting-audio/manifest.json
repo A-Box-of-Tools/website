@@ -1,8 +1,8 @@
 {
   "id": "/id/sunting-audio/",
-  "name": "Audio Editor",
-  "short_name": "Audio Editor",
-  "description": "Play it backwards, change the speed, lift a quiet recording - all of it here, on your machine.",
+  "name": "Penyunting Audio",
+  "short_name": "Penyunting Audio",
+  "description": "Putar terbalik, ubah kecepatannya, angkat rekaman yang pelan - semuanya di sini, di mesin Anda.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

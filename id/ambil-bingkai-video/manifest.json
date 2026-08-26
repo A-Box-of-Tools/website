@@ -1,8 +1,8 @@
 {
   "id": "/id/ambil-bingkai-video/",
-  "name": "Video Frame Grabber",
-  "short_name": "Video Frame Grabber",
-  "description": "A full-quality still from any point.",
+  "name": "Pengambil Bingkai Video",
+  "short_name": "Pengambil Bingkai Video",
+  "description": "Gambar diam berkualitas penuh dari titik mana pun.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

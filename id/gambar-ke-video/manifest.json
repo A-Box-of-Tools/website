@@ -1,8 +1,8 @@
 {
   "id": "/id/gambar-ke-video/",
-  "name": "Images to Video",
-  "short_name": "Images to Video",
-  "description": "Turn a folder of images into a video.",
+  "name": "Gambar ke Video",
+  "short_name": "Gambar ke Video",
+  "description": "Ubah satu folder gambar menjadi sebuah video.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

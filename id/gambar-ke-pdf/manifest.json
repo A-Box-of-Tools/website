@@ -1,8 +1,8 @@
 {
   "id": "/id/gambar-ke-pdf/",
-  "name": "Images to PDF",
-  "short_name": "Images to PDF",
-  "description": "Put your pictures into one document.",
+  "name": "Gambar ke PDF",
+  "short_name": "Gambar ke PDF",
+  "description": "Masukkan gambar Anda ke dalam satu dokumen.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

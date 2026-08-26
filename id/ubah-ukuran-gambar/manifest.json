@@ -1,8 +1,8 @@
 {
   "id": "/id/ubah-ukuran-gambar/",
-  "name": "Image Resizer",
-  "short_name": "Image Resizer",
-  "description": "Say the size. Draw the box. Pick the format.",
+  "name": "Pengubah Ukuran Gambar",
+  "short_name": "Pengubah Ukuran Gambar",
+  "description": "Sebutkan ukurannya. Gambar kotaknya. Pilih formatnya.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

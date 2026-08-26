@@ -1,8 +1,8 @@
 {
-  "id": "/id/document-scanner/",
-  "name": "Document Scanner",
-  "short_name": "Document Scanner",
-  "description": "Photograph the page. Get back something that looks scanned.",
+  "id": "/id/pemindai-dokumen/",
+  "name": "Pemindai Dokumen",
+  "short_name": "Pemindai Dokumen",
+  "description": "Foto halamannya. Dapatkan sesuatu yang tampak seperti hasil pindaian.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
-  "id": "/id/dicom-viewer/",
-  "name": "DICOM Viewer",
-  "short_name": "DICOM Viewer",
-  "description": "CT, MR, X-ray and ultrasound, with the window, the header and the measurements.",
+  "id": "/id/tumpuk-gambar/",
+  "name": "Penumpuk Gambar",
+  "short_name": "Penumpuk Gambar",
+  "description": "Dua puluh bingkai menjadi satu, tanpa dua puluh unggahan dan tanpa pengubah RAW.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

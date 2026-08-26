@@ -1,8 +1,8 @@
 {
   "id": "/id/pindai-kode-qr/",
-  "name": "QR & Barcode Reader",
-  "short_name": "QR & Barcode Reader",
-  "description": "Point it at a code, or drop a picture of one. It is read here, and nowhere else.",
+  "name": "Pembaca QR & Barcode",
+  "short_name": "Pembaca QR & Barcode",
+  "description": "Arahkan ke sebuah kode, atau jatuhkan gambarnya. Ia dibaca di sini, dan tidak di tempat lain.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

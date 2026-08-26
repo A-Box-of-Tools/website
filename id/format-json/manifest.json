@@ -1,8 +1,8 @@
 {
   "id": "/id/format-json/",
-  "name": "Text & Code",
-  "short_name": "Text & Code",
-  "description": "Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server.",
+  "name": "Teks dan Kode",
+  "short_name": "Teks dan Kode",
+  "description": "Rapikan tata letaknya, lihat apa yang berubah, kodekan, atau ubah ke format yang lain. Tidak ada yang ditempelkan ke server orang lain.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

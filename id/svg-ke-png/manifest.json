@@ -1,8 +1,8 @@
 {
   "id": "/id/svg-ke-png/",
-  "name": "SVG to Image",
-  "short_name": "SVG to Image",
-  "description": "Name the size. A vector has none of its own to lose.",
+  "name": "SVG ke Gambar",
+  "short_name": "SVG ke Gambar",
+  "description": "Sebutkan ukurannya. Sebuah vektor tidak punya ukuran sendiri untuk hilang.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

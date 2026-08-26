@@ -1,27 +1,25 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-const CACHE_PREFIX='abox:/id/dicom-viewer/:';
-const CACHE_NAME=CACHE_PREFIX+'5a0c3fae7e';
+const CACHE_PREFIX='abox:/id/pemindai-dokumen/:';
+const CACHE_NAME=CACHE_PREFIX+'b877e2dcef';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=aee8dcd6b0',
+'styles.css?v=ee77a3a385',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
-'src/dicom.js',
-'src/dictionary.js',
-'src/format.js',
-'src/identity.js',
-'src/jpeg-lossless.js',
+'src/shared/zip.js',
+'src/shared/crc32.js',
+'src/clean.js',
+'src/detect.js',
+'src/document.js',
+'src/encode.js',
+'src/geometry.js',
 'src/main.js',
-'src/pixels.js',
-'src/reader.js',
-'src/report.js',
-'src/rle.js',
-'src/series.js',
-'src/uids.js',
-'src/values.js',
-'src/window.js',
+'src/pages.js',
+'src/pdf.js',
+'src/stage.js',
+'src/warp.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

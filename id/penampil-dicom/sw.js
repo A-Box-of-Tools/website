@@ -1,25 +1,27 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-const CACHE_PREFIX='abox:/id/document-scanner/:';
-const CACHE_NAME=CACHE_PREFIX+'68876e253a';
+const CACHE_PREFIX='abox:/id/penampil-dicom/:';
+const CACHE_NAME=CACHE_PREFIX+'c6f54e1840';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=ee77a3a385',
+'styles.css?v=aee8dcd6b0',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
-'src/shared/zip.js',
-'src/shared/crc32.js',
-'src/clean.js',
-'src/detect.js',
-'src/document.js',
-'src/encode.js',
-'src/geometry.js',
+'src/dicom.js',
+'src/dictionary.js',
+'src/format.js',
+'src/identity.js',
+'src/jpeg-lossless.js',
 'src/main.js',
-'src/pages.js',
-'src/pdf.js',
-'src/stage.js',
-'src/warp.js',
+'src/pixels.js',
+'src/reader.js',
+'src/report.js',
+'src/rle.js',
+'src/series.js',
+'src/uids.js',
+'src/values.js',
+'src/window.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

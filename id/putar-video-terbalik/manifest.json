@@ -1,8 +1,8 @@
 {
   "id": "/id/putar-video-terbalik/",
-  "name": "Video Reverser",
-  "short_name": "Video Reverser",
-  "description": "Last frame first, sound and all.",
+  "name": "Pembalik Video",
+  "short_name": "Pembalik Video",
+  "description": "Bingkai terakhir lebih dulu, lengkap dengan suaranya.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

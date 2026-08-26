@@ -1,8 +1,8 @@
 {
   "id": "/id/buat-favicon/",
-  "name": "Image to ICO",
-  "short_name": "Image to ICO",
-  "description": "One picture in. Every size a browser, Windows or a Mac asks for, out.",
+  "name": "Gambar ke ICO",
+  "short_name": "Gambar ke ICO",
+  "description": "Satu gambar masuk. Setiap ukuran yang diminta peramban, Windows, atau sebuah Mac, keluar.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

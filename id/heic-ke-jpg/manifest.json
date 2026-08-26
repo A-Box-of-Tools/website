@@ -1,8 +1,8 @@
 {
   "id": "/id/heic-ke-jpg/",
-  "name": "HEIC to JPG",
-  "short_name": "HEIC to JPG",
-  "description": "The photos an iPhone makes, in a format everything opens.",
+  "name": "HEIC ke JPG",
+  "short_name": "HEIC ke JPG",
+  "description": "Foto yang dibuat iPhone, dalam format yang bisa dibuka apa saja.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

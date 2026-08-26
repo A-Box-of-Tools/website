@@ -1,8 +1,8 @@
 {
   "id": "/id/kompres-pdf/",
-  "name": "PDF Compressor",
-  "short_name": "PDF Compressor",
-  "description": "Shrink a document without sending it anywhere.",
+  "name": "Kompresor PDF",
+  "short_name": "Kompresor PDF",
+  "description": "Perkecil sebuah dokumen tanpa mengirimnya ke mana pun.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/id/potong-video/",
-  "name": "Video Cutter",
-  "short_name": "Video Cutter",
-  "description": "Mark the parts worth keeping as it plays. Get them back as one video.",
+  "name": "Pemotong Video",
+  "short_name": "Pemotong Video",
+  "description": "Tandai bagian yang layak disimpan sambil diputar. Dapatkan kembali sebagai satu video.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/id/pisah-gif-ke-bingkai/",
-  "name": "GIF Splitter",
-  "short_name": "GIF Splitter",
-  "description": "Every frame out as its own PNG.",
+  "name": "Pemisah GIF",
+  "short_name": "Pemisah GIF",
+  "description": "Setiap bingkai keluar sebagai PNG-nya sendiri.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",

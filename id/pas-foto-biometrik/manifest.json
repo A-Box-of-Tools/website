@@ -1,8 +1,8 @@
 {
   "id": "/id/pas-foto-biometrik/",
-  "name": "ID Photo Maker",
-  "short_name": "ID Photo Maker",
-  "description": "Pick the country. It applies that country's rule, exactly.",
+  "name": "Pembuat Pas Foto",
+  "short_name": "Pembuat Pas Foto",
+  "description": "Pilih negaranya. Ia menerapkan aturan negara itu, persis.",
   "lang": "id",
   "dir": "ltr",
   "start_url": "./",
