@@ -131,5 +131,5 @@ locale copy carries a different number of them than the English body.
 
 The words are `[ui.feedback]` in `config/site.toml`, translated in every
 `locale.toml` beside the rest of the frame — so adding a string there is a debt
-in ten languages, and `complete = true` will not build until they are written.
+in every language, and `complete = true` will not build until they are written.
 

@@ -147,7 +147,7 @@ against this locale's own work, exactly as without `fallback`. See
 
 Nothing under `shared/js/` or `tools/<slug>/src/` is translated. The build
 copies both byte for byte into every language, so a sentence written in a
-module is that sentence in English at ten of the eleven addresses its page has.
+module is that sentence in English at all of its page's addresses but one.
 
 The answer is not to translate the JavaScript. It is to keep the words out of
 it. HTML already goes through the locale machinery, so a sentence held in the
@@ -190,7 +190,7 @@ and whoever has the DOM resolves it — `qr-barcode-reader/src/camera.js` is the
 worked example. That also keeps the module unit-testable: a key is a value to
 assert on, and a translated sentence is not.
 
-**Done:** the frame's seven, in all ten languages — the four "Offline:" lines,
+**Done:** the frame's seven, in every language — the four "Offline:" lines,
 what the window's error handlers say, and the drop zone's "Reading 3 files…".
 They used to be written out twenty-nine times, once per `main.js`.
 

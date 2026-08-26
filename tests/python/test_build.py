@@ -517,7 +517,7 @@ class BuildTheSite(unittest.TestCase):
                 manifest = json.loads(
                     (self.out / folder / 'manifest.json').read_text(encoding='utf-8'))
                 # Relative, so the app that opens is this folder and not the
-                # site - and so the same two values are right in ten languages.
+                # site - and so the same two values are right in every language.
                 self.assertEqual(manifest['start_url'], './')
                 self.assertEqual(manifest['scope'], './')
                 # The identity is written down rather than defaulted, so the
@@ -792,7 +792,7 @@ class BuildTheSite(unittest.TestCase):
         Which page that is comes off the build rather than being named here.
         This used to be spelled `gif-analyzer`, and it failed the day
         gif-analyzer was translated: a test breaking because the site got
-        better. Every page now exists in all ten languages, so the loop below
+        better. Every page now exists in every language, so the loop below
         runs on nothing today, and runs again the moment a tool ships - a tool
         page is written before its translations are, and that is the day this
         markup has to hold.

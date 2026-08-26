@@ -27,7 +27,7 @@
  * Every label and every warning is a key, not a sentence. The words are in
  * body.html, which is translated per language; this file decides which of them
  * to show and what to put in the gaps. A module that returned "Network name"
- * would be English at all eleven of this page's addresses, because a tool's
+ * would be English at every one of this page's addresses, because a tool's
  * JavaScript is the same file in every language - see the comment at the top of
  * templates/partials/feedback.html, which is the same argument.
  */

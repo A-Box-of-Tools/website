@@ -125,8 +125,8 @@ overwritten by the next frame. Nothing is recorded and nothing is kept.
 
 `payload.js` returns keys — `field.host`, `warn.shortener` — and never
 sentences. The words are in `body.html`, inside `#phrases`, because a tool's
-`src/*.js` is one file serving all eleven addresses this page has, and a sentence
-written in JavaScript would be English on nine of them. `main.js` looks each key
+`src/*.js` is one file serving every address this page has, and a sentence
+written in JavaScript would be English on all of them but one. `main.js` looks each key
 up and fills in `{host}`-style gaps. It is the same argument as the comment at
 the top of `templates/partials/feedback.html`.
 

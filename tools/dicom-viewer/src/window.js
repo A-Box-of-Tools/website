@@ -38,7 +38,7 @@
  * this page live in the markup, so what comes out of here is a key the page
  * resolves - see the note about the strings in the JavaScript in the repository
  * README. Copying "Soft tissue" into a module would make it "Soft tissue" in
- * all eleven languages.
+ * every language.
  */
 export const CT_PRESETS = [
   { id: 'soft', center: 40, width: 400 },

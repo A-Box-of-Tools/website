@@ -391,8 +391,8 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     out/ for English, whose pages keep the addresses they have always had.
 
     Nothing here re-reads a source file. The tools and the prose pages were
-    loaded once, in English, and are localized into copies, so eleven languages
-    cost eleven renders rather than eleven parses - and, more to the point, a
+    loaded once, in English, and are localized into copies, so each language
+    costs a render rather than a parse - and, more to the point, a
     tool cannot exist in one language and not another, because there is only one
     list of which tools there are.
     """
@@ -871,7 +871,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # Required, not optional. templates/tool.html writes og:image and
     # twitter:image on every tool page whether or not the file is there, and
     # check_links only reads <a href>, so a tool without one used to build
-    # clean and serve a share card that 404s - in ten languages, and visible
+    # clean and serve a share card that 404s - in every language, and visible
     # only to whoever pasted the link somewhere. Draw it with
     # `.\og-image.ps1 -Only <slug>`.
     og = tool['dir'] / 'og.png'
@@ -1131,8 +1131,8 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
         'jsonld': sitelib.hub_jsonld(root, ordered),
         # Root-absolute and versioned, like lang.js and for the same reason. It
         # is the same bytes in every language - `register('sw.js')` resolves
-        # against the page that loaded it, not against the script - so eleven
-        # copies of it would be eleven ways to fetch one file.
+        # against the page that loaded it, not against the script - so a copy
+        # per language would be that many ways to fetch one file.
         'offline_href': f'/offline.js?v={offline_v}',
     })
     context['ui'] = i18n.render_ui(templates, root['ui'], context,

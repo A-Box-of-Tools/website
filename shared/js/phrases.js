@@ -10,9 +10,8 @@
  * WHY THE WORDS ARE NOT IN THE JAVASCRIPT
  *
  * Nothing under shared/js/ or tools/<slug>/src/ is translated. The build copies
- * both byte for byte into all eleven languages, so a sentence written in a
- * module is that sentence in English at ten of the eleven addresses the page
- * has. That is how a German reader whose browser refused the service worker
+ * both byte for byte into every language, so a sentence written in a
+ * module is that sentence in English at all of the page's addresses but one. That is how a German reader whose browser refused the service worker
  * came to be told about it in English, on a page that was otherwise entirely
  * in German, in twenty-nine tools at once.
  *
