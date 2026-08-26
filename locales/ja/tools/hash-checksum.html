@@ -26,10 +26,7 @@
   <section class="card" id="run-card">
     <h2><span class="step">2</span> チェックサム</h2>
     <p class="card-lede">
-      MD5 と SHA-256 は最初から計算します。この二つで、世に出ているダウンロード
-      ページのほとんどをまかなえるからです。ほかにチェックを入れると、その分だけ
-      ファイルをもう一度読み直します。時間がかかるのは読み取りのほうなので、
-      ファイルを選ぶ前に入れておいたものは一度の読み取りでまとめて出ます。
+      MD5 と SHA-256 は最初から計算します。この二つで、世に出ているダウンロードページのほとんどをまかなえるからです。ほかにチェックを入れると、その分だけファイルをもう一度読み直します。時間がかかるのは読み取りのほうなので、ファイルを選ぶ前に入れておいたものは一度の読み取りでまとめて出ます。
     </p>
 
     <fieldset class="algorithms">
@@ -96,36 +93,31 @@
         <li class="digest" data-algorithm="md5" hidden>
           <span class="digest-name">MD5</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span><span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
           <button type="button" class="ghost" data-slot="copy">コピー</button>
         </li>
         <li class="digest" data-algorithm="sha1" hidden>
           <span class="digest-name">SHA-1</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span><span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
           <button type="button" class="ghost" data-slot="copy">コピー</button>
         </li>
         <li class="digest" data-algorithm="sha256" hidden>
           <span class="digest-name">SHA-256</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span><span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
           <button type="button" class="ghost" data-slot="copy">コピー</button>
         </li>
         <li class="digest" data-algorithm="sha384" hidden>
           <span class="digest-name">SHA-384</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span><span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
           <button type="button" class="ghost" data-slot="copy">コピー</button>
         </li>
         <li class="digest" data-algorithm="sha512" hidden>
           <span class="digest-name">SHA-512</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>一致</span><span class="digest-verdict is-differs" data-slot="differs" hidden>不一致</span>
           <button type="button" class="ghost" data-slot="copy">コピー</button>
         </li>
       </ul>
@@ -137,12 +129,10 @@
   <section class="card" id="compare-card">
     <h2><span class="step">3</span> 本来の値と照らし合わせる</h2>
     <p class="card-lede">
-      ダウンロードページに書いてあったチェックサムを貼り付けてください。書き方は
-      問いません。十六進数そのまま、<code>sha256sum</code> の出力、
+      ダウンロードページに書いてあったチェックサムを貼り付けてください。書き方は問いません。十六進数そのまま、<code>sha256sum</code> の出力、
       <code>SHA256SUMS</code> ファイルまるごと、
       <code>SHA256 (ファイル名) = &hellip;</code> の形、script タグの
-      <code>integrity</code> 属性、どれでも読み取ります。どの方式かは長さで決まる
-      ので、選ぶ必要はありません。
+      <code>integrity</code> 属性、どれでも読み取ります。どの方式かは長さで決まるので、選ぶ必要はありません。
     </p>
 
     <label class="visually-hidden" for="expected">本来のチェックサム</label>
@@ -151,10 +141,7 @@
               placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
 
     <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
-      <span data-read="one">これは <b data-slot="algorithm"></b> です。</span>
-      <span data-read="many">これは一覧です。チェックサムが <b data-slot="count"></b> 件入っています。</span>
-      <span data-read="stray">十六進数 <b data-slot="length"></b> 文字ですが、ここにあるどの方式もその長さではありません。末尾が欠けたコピーであることがほとんどです。</span>
-      <span data-read="nothing">チェックサムらしきものが見当たりません。</span>
+      <span data-read="one">これは <b data-slot="algorithm"></b> です。</span><span data-read="many">これは一覧です。チェックサムが <b data-slot="count"></b> 件入っています。</span><span data-read="stray">十六進数 <b data-slot="length"></b> 文字ですが、ここにあるどの方式もその長さではありません。末尾が欠けたコピーであることがほとんどです。</span><span data-read="nothing">チェックサムらしきものが見当たりません。</span>
     </p>
 
     <div class="verdict" id="verdict" hidden>

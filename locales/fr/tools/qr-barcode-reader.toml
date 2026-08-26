@@ -64,7 +64,7 @@ title = "Déposez ici une image contenant un code"
 hint = "ou cliquez pour parcourir &mdash; une photo, une capture d'écran, un PNG, tout ce que votre navigateur sait ouvrir"
 
 [words]
-plural = "les images et les codes qu'elles contiennent"
+plural = "images et les codes qu'elles contiennent"
 choose = "l'image à lire"
 
 [[facts]]
@@ -339,9 +339,9 @@ features = [
   "Lit les codes imprimés en clair sur fond sombre et les codes photographiés à l'envers",
   "EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128 et Code 39",
   "Affiche l'adresse entière, et l'hôte réellement atteint, avant que rien ne soit ouvert",
-  "Nomme les astuces qui déguisent un lien : un nom d'utilisateur devant le @, un alphabet sosie, une redirection",
+  "Nomme les astuces qui déguisent un lien&nbsp;: un nom d'utilisateur devant le @, un alphabet sosie, une redirection",
   "Décompose les charges Wi-Fi, carte de visite, e-mail, SMS, téléphone et carte en champs lisibles",
   "Dessine les modules échantillonnés, pour que la lecture se vérifie au lieu de se croire",
-  "Aucune image de la caméra n'est enregistrée ni conservée ; le flux s'arrête avec l'onglet",
+  "Aucune image de la caméra n'est enregistrée ni conservée&nbsp;; le flux s'arrête avec l'onglet",
   "Fonctionne hors ligne, sans envoi et sans compte",
 ]

@@ -232,14 +232,14 @@ a = """
         finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
 
 [schema]
-browser_requirements = "Nécessite JavaScript et un navigateur doté de l'encodage vidéo WebCodecs : Chrome, Edge, Safari 16.4 ou plus récent, ou Firefox 133 ou plus récent."
-description = "Inversez une vidéo dans le navigateur, son compris. MP4, MOV et M4V sont décodés groupe par groupe depuis la fin et réencodés avec les temps d'image d'origine ; tout ce que le navigateur sait lire par ailleurs est parcouru à rebours. Rien n'est envoyé."
+browser_requirements = "Nécessite JavaScript et un navigateur doté de l'encodage vidéo WebCodecs&nbsp;: Chrome, Edge, Safari 16.4 ou plus récent, ou Firefox 133 ou plus récent."
+description = "Inversez une vidéo dans le navigateur, son compris. MP4, MOV et M4V sont décodés groupe par groupe depuis la fin et réencodés avec les temps d'image d'origine&nbsp;; tout ce que le navigateur sait lire par ailleurs est parcouru à rebours. Rien n'est envoyé."
 features = [
   "Inverse les vidéos MP4, MOV, M4V et WebM",
   "Sources H.264, HEVC, AV1 et VP9, décodées via WebCodecs",
   "Inverse le son échantillon par échantillon, ou le laisse de côté",
   "Conserve les temps d'image d'origine, cadences irrégulières comprises",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

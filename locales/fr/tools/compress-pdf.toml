@@ -263,7 +263,7 @@ features = [
   "Laisse une image tranquille quand la réencoder ne l'allégerait pas",
   "Jette les objets laissés par une modification précédente, et les métadonnées facultatives",
   "Rouvre et vérifie le fichier fini avant de le proposer",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans limite de taille",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans limite de taille",
 ]
 
 [picker]

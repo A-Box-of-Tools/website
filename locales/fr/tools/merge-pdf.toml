@@ -310,7 +310,7 @@ features = [
   "Reconstruit les signets et les liens internes d'après les pages conservées",
   "Conserve les champs de formulaire remplis et signale quand deux d'entre eux partagent un nom",
   "Rouvre et recompte chaque fichier fini avant de le proposer",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans limite de taille",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans limite de taille",
 ]
 
 [picker]

@@ -42,7 +42,7 @@ card = """
             أنت، بعتادك أنت."""
 
 [words]
-plural = "صور"
+plural = "صورك"
 choose = "صوراً"
 
 [[facts]]

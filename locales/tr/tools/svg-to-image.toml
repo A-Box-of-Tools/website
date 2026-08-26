@@ -48,7 +48,7 @@ card = """
             &mdash; 32 ya da 8000 ve ikisinde de aynı keskinlikte."""
 
 [words]
-plural = "SVG dosyaları"
+plural = "SVG dosyalarınız"
 choose = "bir SVG"
 
 [[facts]]

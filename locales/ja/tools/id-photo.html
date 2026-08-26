@@ -4,9 +4,7 @@
     <h2><span class="step">1</span> 写真を選ぶ</h2>
 
     <p class="card-lede">
-      ブラウザで開ける画像なら何でも構いません。無地の壁を背に、日中の光で、
-      1メートル半ほど離れて撮ったスマートフォンの写真が、これらの規定の多くが
-      想定しているものです。読み込みはディスクから直接で、どこにも送られません。
+      ブラウザで開ける画像なら何でも構いません。無地の壁を背に、日中の光で、1メートル半ほど離れて撮ったスマートフォンの写真が、これらの規定の多くが想定しているものです。読み込みはディスクから直接で、どこにも送られません。
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -24,9 +22,7 @@
     <h2><span class="step">2</span> 国と書類を選ぶ</h2>
 
     <p class="card-lede">
-      以下の数値はすべて公表された要件で、その下に示す当局から書き写したものです。
-      この一覧に推測はひとつもなく、取りに行くものもありません。
-      <code>src/specs.js</code>の中の表で、ページと一緒に配信されます。
+      以下の数値はすべて公表された要件で、その下に示す当局から書き写したものです。この一覧に推測はひとつもなく、取りに行くものもありません。<code>src/specs.js</code>の中の表で、ページと一緒に配信されます。
     </p>
 
     <div class="option-row">
@@ -84,13 +80,7 @@
 
     <div id="frame-controls" hidden>
       <p class="stage-hint" id="mark-hint">
-        頭頂、あご、そして左右の瞳。規定が測るのはこの4点だけで、切り抜きは
-        4点が最終的にある場所から取られます。ずれて置かれた点はドラッグして直し、
-        それから<strong>枠を合わせる</strong>を押してください。4点を見つける
-        作業は、写真そのものを測ることです&mdash;背後の壁に対する頭の輪郭と、
-        目のある暗い部分。そこにモデルはなく、何も取りに行きません。判定では
-        なく出発点なので、直すのはあなたの側で、どの点が測れなかったかは下の行が
-        述べます。
+        頭頂、あご、そして左右の瞳。規定が測るのはこの4点だけで、切り抜きは4点が最終的にある場所から取られます。ずれて置かれた点はドラッグして直し、それから<strong>枠を合わせる</strong>を押してください。4点を見つける作業は、写真そのものを測ることです&mdash;背後の壁に対する頭の輪郭と、目のある暗い部分。そこにモデルはなく、何も取りに行きません。判定ではなく出発点なので、直すのはあなたの側で、どの点が測れなかったかは下の行が述べます。
       </p>
 
       <!--
@@ -142,9 +132,7 @@
     <h2><span class="step">4</span> 背景</h2>
 
     <p class="card-lede" id="background-lede">
-      切り抜きの上辺を横切る帯と、肩より上の左右から読み取ります。背景しか
-      写っていないはずの部分です。RGBではなくCIE Labで測ります。RGBで40離れた
-      2つのグレーは見分けがつきませんが、青で40離れれば別の色だからです。
+      切り抜きの上辺を横切る帯と、肩より上の左右から読み取ります。背景しか写っていないはずの部分です。RGBではなくCIE Labで測ります。RGBで40離れた2つのグレーは見分けがつきませんが、青で40離れれば別の色だからです。
     </p>
 
     <div class="swatches" id="swatches" hidden>
@@ -209,18 +197,11 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="marks.measured">4点とも写真から測りました&mdash;頭頂は頭の輪郭から、瞳はその暗さから、あごは下顎が首に入るところから。それでも確かめて、ずれている点はドラッグしてください。切り抜きは4点が最終的にある場所から取られます。</span>
-    <span data-phrase="marks.rough">置きましたが、すべてを測れたわけではありません。枠を合わせる前に4点とも確かめてください。</span>
-    <span data-phrase="marks.none">この写真からは何も測れませんでした。点は代わりに初期位置にあります。頭頂、あご、左右の瞳へドラッグしてください。</span>
-    <span data-phrase="marks.manual">4つの点はあなたのもので、何も動かしません。それぞれを頭頂、あご、瞳へドラッグしてください。</span>
-    <span data-phrase="marks.edited">点を動かしたので、4つともあなたのものになりました。「探してもらう」を選ぶと写真をもう一度測ります。</span>
+    <span data-phrase="marks.measured">4点とも写真から測りました&mdash;頭頂は頭の輪郭から、瞳はその暗さから、あごは下顎が首に入るところから。それでも確かめて、ずれている点はドラッグしてください。切り抜きは4点が最終的にある場所から取られます。</span><span data-phrase="marks.rough">置きましたが、すべてを測れたわけではありません。枠を合わせる前に4点とも確かめてください。</span><span data-phrase="marks.none">この写真からは何も測れませんでした。点は代わりに初期位置にあります。頭頂、あご、左右の瞳へドラッグしてください。</span>
+    <span data-phrase="marks.manual">4つの点はあなたのもので、何も動かしません。それぞれを頭頂、あご、瞳へドラッグしてください。</span><span data-phrase="marks.edited">点を動かしたので、4つともあなたのものになりました。「探してもらう」を選ぶと写真をもう一度測ります。</span>
 
-    <span data-phrase="marks.why.background">背後の壁が無地でなく、頭の輪郭を切り出せません。</span>
-    <span data-phrase="marks.why.top">頭が写真の上に切れていて、探すべき頭頂がありません。</span>
-    <span data-phrase="marks.why.eyes">目を見分けられなかったため、この大きさの頭でよくある位置に両方を置きました。</span>
-    <span data-phrase="marks.why.chin">あごはこの頭の輪郭からではなく、頭の一般的な比率から求めました。</span>
+    <span data-phrase="marks.why.background">背後の壁が無地でなく、頭の輪郭を切り出せません。</span><span data-phrase="marks.why.top">頭が写真の上に切れていて、探すべき頭頂がありません。</span><span data-phrase="marks.why.eyes">目を見分けられなかったため、この大きさの頭でよくある位置に両方を置きました。</span><span data-phrase="marks.why.chin">あごはこの頭の輪郭からではなく、頭の一般的な比率から求めました。</span>
 
-    <span data-phrase="marks.button.again">もう一度顔を探す</span>
-    <span data-phrase="marks.button.back">点を戻す</span>
+    <span data-phrase="marks.button.again">もう一度顔を探す</span><span data-phrase="marks.button.back">点を戻す</span>
   </div>
 </main>

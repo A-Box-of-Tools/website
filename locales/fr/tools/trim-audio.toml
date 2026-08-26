@@ -324,7 +324,7 @@ features = [
   "Dessine la forme d'onde, pour repérer silences et blancs à l'œil",
   "Enregistre et recharge les repères sous forme de fichier texte de temps",
   "Découpe l'audio contenu dans un MP4, MOV ou WebM sans toucher à l'image",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

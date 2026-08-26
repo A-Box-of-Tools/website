@@ -4,9 +4,7 @@
     <h2><span class="step">1</span> 选好照片</h2>
 
     <p class="card-lede">
-      你浏览器能打开的任何图片都行。白天对着一面素净的墙、从大约一米半外用手机拍
-      的那种，正是这些规定当初设想的样子。照片直接从你的磁盘上读，不会发到任何
-      地方。
+      你浏览器能打开的任何图片都行。白天对着一面素净的墙、从大约一米半外用手机拍的那种，正是这些规定当初设想的样子。照片直接从你的磁盘上读，不会发到任何地方。
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -24,9 +22,7 @@
     <h2><span class="step">2</span> 选好国家和证件</h2>
 
     <p class="card-lede">
-      下面每一个数字都是公布的要求，抄录自其下注明的机构。这份清单里没有一条是猜
-      的，也没有一条是去网上取的：它是 <code>src/specs.js</code> 里的一张表，随
-      页面一起送来。
+      下面每一个数字都是公布的要求，抄录自其下注明的机构。这份清单里没有一条是猜的，也没有一条是去网上取的：它是 <code>src/specs.js</code> 里的一张表，随页面一起送来。
     </p>
 
     <div class="option-row">
@@ -84,12 +80,7 @@
 
     <div id="frame-controls" hidden>
       <p class="stage-hint" id="mark-hint">
-        头顶、下巴，还有左右瞳孔。规定要量的全部就是这四个点，裁切框取自它们
-        最后停在哪里&mdash;&mdash;哪个落偏了就拖回来，然后按<strong>套用裁切框
-        </strong>。找这四个点，靠的是量这张照片本身：你的头在背后那面墙前的
-        轮廓，以及眼睛所在的那两块偏暗的地方。里头没有模型，也不去取任何东西；
-        它是个起点，不是判决&mdash;&mdash;所以改它是你的事，下面那行也会说清楚
-        四个点里哪一个它量不出来。
+        头顶、下巴，还有左右瞳孔。规定要量的全部就是这四个点，裁切框取自它们最后停在哪里&mdash;&mdash;哪个落偏了就拖回来，然后按<strong>套用裁切框</strong>。找这四个点，靠的是量这张照片本身：你的头在背后那面墙前的轮廓，以及眼睛所在的那两块偏暗的地方。里头没有模型，也不去取任何东西；它是个起点，不是判决&mdash;&mdash;所以改它是你的事，下面那行也会说清楚四个点里哪一个它量不出来。
       </p>
 
       <!--
@@ -141,9 +132,7 @@
     <h2><span class="step">4</span> 背景</h2>
 
     <p class="card-lede" id="background-lede">
-      取自裁切框顶部的一条带子，以及两侧肩膀以上的部分，也就是画面里本该只有背景
-      的地方。在 CIE Lab 里测量，而不是在 RGB 里，因为相差四十个 RGB 单位的两种灰
-      根本分不出来，而四十个单位的蓝就是另一种颜色了。
+      取自裁切框顶部的一条带子，以及两侧肩膀以上的部分，也就是画面里本该只有背景的地方。在 CIE Lab 里测量，而不是在 RGB 里，因为相差四十个 RGB 单位的两种灰根本分不出来，而四十个单位的蓝就是另一种颜色了。
     </p>
 
     <div class="swatches" id="swatches" hidden>
@@ -208,18 +197,10 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="marks.measured">四个点都是从照片上量出来的：头顶取自你头部的轮廓，瞳孔取自它们的暗，下巴取自下颌收进脖子的地方。还是看一眼，哪个落偏了就拖回来：裁切框取自它们最后停在哪里。</span>
-    <span data-phrase="marks.rough">放好了，但不是每一处都量得出来。套用裁切框之前，请把四个点都看一遍。</span>
-    <span data-phrase="marks.none">这张照片上什么也量不出来。四个点改为停在起始位置上&mdash;&mdash;请把它们拖到头顶、下巴和左右瞳孔上。</span>
-    <span data-phrase="marks.manual">这四个点归你，什么都不会去动它们。请把每一个拖到头顶、下巴和瞳孔上。</span>
-    <span data-phrase="marks.edited">你动过一个点，所以四个点现在都归你了。选「替我找」会重新量一遍这张照片。</span>
+    <span data-phrase="marks.measured">四个点都是从照片上量出来的：头顶取自你头部的轮廓，瞳孔取自它们的暗，下巴取自下颌收进脖子的地方。还是看一眼，哪个落偏了就拖回来：裁切框取自它们最后停在哪里。</span><span data-phrase="marks.rough">放好了，但不是每一处都量得出来。套用裁切框之前，请把四个点都看一遍。</span><span data-phrase="marks.none">这张照片上什么也量不出来。四个点改为停在起始位置上&mdash;&mdash;请把它们拖到头顶、下巴和左右瞳孔上。</span><span data-phrase="marks.manual">这四个点归你，什么都不会去动它们。请把每一个拖到头顶、下巴和瞳孔上。</span><span data-phrase="marks.edited">你动过一个点，所以四个点现在都归你了。选「替我找」会重新量一遍这张照片。</span>
 
-    <span data-phrase="marks.why.background">你背后那面墙不够干净，衬不出一个头的轮廓。</span>
-    <span data-phrase="marks.why.top">头从照片上方出了框，没有头顶可找。</span>
-    <span data-phrase="marks.why.eyes">眼睛认不出来，于是两只都放在这么大的头通常长眼睛的位置。</span>
-    <span data-phrase="marks.why.chin">下巴来自头的一般比例，而不是这个头的轮廓。</span>
+    <span data-phrase="marks.why.background">你背后那面墙不够干净，衬不出一个头的轮廓。</span><span data-phrase="marks.why.top">头从照片上方出了框，没有头顶可找。</span><span data-phrase="marks.why.eyes">眼睛认不出来，于是两只都放在这么大的头通常长眼睛的位置。</span><span data-phrase="marks.why.chin">下巴来自头的一般比例，而不是这个头的轮廓。</span>
 
-    <span data-phrase="marks.button.again">重新找一次脸</span>
-    <span data-phrase="marks.button.back">把点放回去</span>
+    <span data-phrase="marks.button.again">重新找一次脸</span><span data-phrase="marks.button.back">把点放回去</span>
   </div>
 </main>

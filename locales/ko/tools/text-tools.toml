@@ -46,7 +46,7 @@ card = """
 
 [words]
 plural = "텍스트와 코드"
-choose = "파일"
+choose = "파일을"
 
 [[facts]]
 text = "업로드 없음"

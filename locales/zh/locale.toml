@@ -252,19 +252,19 @@ footer_source = "在 GitHub 上读代码"
 guarantees_note = """
     上面这些不用你信。
     <a href="{{ base }}{{ links.safety_guide }}/">
-      怎么判断一个工具是不是真需要你的文件</a>
+      怎么判断一个工具是不是真需要你的文件</a>\
     里有四项你自己动手就能做的检查，用在本站管用，用在别家也一样。"""
 
 hub_guides_note = """
-    不知道该动哪个设置，也不清楚代价？
+    不知道该动哪个设置，也不清楚代价？\
     <a href="{{ base }}{{ links.guides }}/">每个工具都配了一篇指南</a>。"""
 
 hub_roadmap_note = """
-    后面还有，清单也是公开的。
+    后面还有，清单也是公开的。\
     <a href="{{ base }}{{ links.roadmap }}/">看看接下来做什么</a>。"""
 
 guides_all_note = """
-    这里每篇指南讲的工具，都跑在你自己的机器上。
+    这里每篇指南讲的工具，都跑在你自己的机器上。\
     <a href="{{ base }}">全都在这儿</a>。"""
 
 [ui.tool]
@@ -341,7 +341,7 @@ open_tool = "打开{{ tool.name | e }}"
 
 [ui.picker]
 warning = """
-      <strong>这是唯一一处会碰网络的功能。</strong>
+      <strong>这是唯一一处会碰网络的功能。</strong>\
       抓一个网址，等于告诉那台服务器你的 IP 地址，以及你要的是哪个{{ tool.picker.urls.noun }}。\
       {{ tool.picker.urls.noun }}到手之后复制进本地内存，不会再请求第二次。你这边\
       始终没有东西发出去，这个页面照样做不了任何形式的上传。"""

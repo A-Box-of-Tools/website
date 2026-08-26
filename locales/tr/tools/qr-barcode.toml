@@ -49,8 +49,8 @@ card = """
             PNG."""
 
 [words]
-plural = "kodlar ve içlerindeki metin"
-choose = "içine ne gireceğini"
+plural = "kodlarınız ve içlerindeki metin"
+choose = "içine ne gireceği"
 
 [[facts]]
 text = "Yükleme yok"

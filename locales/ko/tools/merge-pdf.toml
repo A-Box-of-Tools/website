@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "문서"
-choose = "PDF"
+choose = "PDF를"
 
 [[facts]]
 text = "업로드 없음"

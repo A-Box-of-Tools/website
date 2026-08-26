@@ -223,7 +223,7 @@ note = "Le lire, le vérifier ou le fabriquer ici. Aucun jeton, aucun fichier de
 [guides]
 nav = "Tous les guides"
 title = "Guides&nbsp;: comment faire, et ce que chaque choix coûte"
-description = "Des guides pour compresser, redimensionner, recadrer, couper et convertir ses fichiers : ce que veulent dire les réglages, ce qu'ils coûtent, et pourquoi aucun envoi n'est nécessaire."
+description = "Des guides pour compresser, redimensionner, recadrer, couper et convertir ses fichiers&nbsp;: ce que veulent dire les réglages, ce qu'ils coûtent, et pourquoi aucun envoi n'est nécessaire."
 heading = "Guides"
 lede = """
     Un guide par outil, écrit pour qui s'est vu imposer une taille ou un format
@@ -237,7 +237,7 @@ og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
 [[guides.groups]]
 id = "doing-the-job"
 name = "Faire le travail"
-note = "Un guide par outil : en quoi consiste la tâche, quel réglage compte, et ce qu'il vous coûte."
+note = "Un guide par outil&nbsp;: en quoi consiste la tâche, quel réglage compte, et ce qu'il vous coûte."
 
 [[guides.groups]]
 id = "before-you-upload"
@@ -302,7 +302,7 @@ og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
 
 [not_found]
 title = "Page introuvable &mdash; abox.tools"
-description = "Cette adresse n'existe pas sur abox.tools. Voici celles qui existent : que des outils gratuits, dont aucun n'envoie vos fichiers où que ce soit."
+description = "Cette adresse n'existe pas sur abox.tools. Voici celles qui existent&nbsp;: que des outils gratuits, dont aucun n'envoie vos fichiers où que ce soit."
 heading = "Cette page n'est pas ici"
 tools_heading = "Tous les outils, au même endroit"
 tools_note = "Tous gratuits, tous dans votre navigateur, aucun n'envoie quoi que ce soit."

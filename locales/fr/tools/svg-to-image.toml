@@ -15,7 +15,7 @@ tagline = "Vous donnez la taille. Un vectoriel n'en a aucune à perdre."
 title = "SVG en PNG &mdash; rastériser un vectoriel à n'importe quelle taille, sans envoi"
 description = "Convertissez un SVG en PNG, JPEG ou WebP à n'importe quelle taille, dans votre navigateur. Donnez la largeur, un multiple ou un cadre&nbsp;; récupérez aussi les copies @2x et @3x. Transparence gardée, rien n'est envoyé."
 og_title = "Transformer un SVG en PNG à n'importe quelle taille, sans l'envoyer"
-og_description = "Un vectoriel n'a pas de taille en pixels à lui : le nombre est à vous de le choisir - 32 ou 8000, avec la même netteté dans les deux cas. Tout tourne sur votre propre machine."
+og_description = "Un vectoriel n'a pas de taille en pixels à lui&nbsp;: le nombre est à vous de le choisir - 32 ou 8000, avec la même netteté dans les deux cas. Tout tourne sur votre propre machine."
 og_image_alt = "SVG en image - rastériser un vectoriel en PNG, JPEG ou WebP à n'importe quelle taille"
 
 pledge = """
@@ -319,7 +319,7 @@ features = [
   "Aperçu dessiné par le code même qui écrit le fichier",
   "Traitement par lots, tous les résultats dans un seul zip",
   "Les scripts et les références distantes du fichier ne sont jamais exécutés ni récupérés",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

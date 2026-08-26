@@ -241,15 +241,15 @@ a = """
         finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
 
 [schema]
-browser_requirements = "Nécessite JavaScript. L'extraction à l'image près demande un navigateur doté de WebCodecs ; les autres se rabattent sur le déplacement du lecteur."
-description = "Enregistrez n'importe quelle image d'une vidéo en PNG, JPEG ou WebP pleine taille dans le navigateur. MP4, MOV et M4V sont lus image par image via WebCodecs, si bien que l'image demandée est celle qui est enregistrée ; tout ce que le navigateur sait lire par ailleurs est capturé depuis le lecteur. Rien n'est envoyé."
+browser_requirements = "Nécessite JavaScript. L'extraction à l'image près demande un navigateur doté de WebCodecs&nbsp;; les autres se rabattent sur le déplacement du lecteur."
+description = "Enregistrez n'importe quelle image d'une vidéo en PNG, JPEG ou WebP pleine taille dans le navigateur. MP4, MOV et M4V sont lus image par image via WebCodecs, si bien que l'image demandée est celle qui est enregistrée&nbsp;; tout ce que le navigateur sait lire par ailleurs est capturé depuis le lecteur. Rien n'est envoyé."
 features = [
   "Enregistre un arrêt sur image depuis des vidéos MP4, MOV, M4V et WebM",
   "Sources H.264, HEVC, AV1 et VP9, décodées via WebCodecs",
   "Avance image par image dans la liste d'images du fichier lui-même",
   "PNG pour une copie exacte de l'image, JPEG et WebP pour une version plus légère",
   "Un arrêt sur image toutes les N secondes, téléchargés ensemble en ZIP",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

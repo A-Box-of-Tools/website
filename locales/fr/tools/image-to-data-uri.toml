@@ -22,7 +22,7 @@ heading = "Image&nbsp;en&nbsp;data&nbsp;URI <span class=\"h1-kw\">&mdash; encode
 tagline = "L'image entière en une ligne de texte. À coller directement dans du CSS ou du HTML."
 
 title = "Image en data URI &mdash; encodage base64 pour le CSS, gratuit, sans envoi"
-description = "Transformez un PNG, un JPEG, un SVG ou un WebP en data URI à coller dans du CSS ou du HTML. Les SVG sont encodés en pourcents plutôt qu'en base64 : ils restent lisibles et plus courts. Rien n'est envoyé."
+description = "Transformez un PNG, un JPEG, un SVG ou un WebP en data URI à coller dans du CSS ou du HTML. Les SVG sont encodés en pourcents plutôt qu'en base64&nbsp;: ils restent lisibles et plus courts. Rien n'est envoyé."
 og_title = "Transformer une image en une ligne à coller dans du CSS"
 og_description = "Base64 pour les images, encodage en pourcents pour le SVG, et la règle, la propriété personnalisée ou la balise img déjà faites autour. Tout tourne sur votre machine&nbsp;; rien n'est envoyé."
 og_image_alt = "Image en data URI - coller l'image dans la feuille de style"
@@ -324,9 +324,9 @@ features = [
   "Le type de média lu dans les octets du fichier, pas dans son extension",
   "Dit ce que l'encodage a coûté en caractères, et si l'intégration vaut le coup à cette taille",
   "Prévient quand de l'EXIF, du XMP ou un profil colorimétrique est sur le point d'être copié dans votre feuille de style",
-  "Copie le fichier octet pour octet : aucun réencodage et aucune perte de qualité",
+  "Copie le fichier octet pour octet&nbsp;: aucun réencodage et aucune perte de qualité",
   "Traitement par lots, tout copié ou téléchargé en un seul fichier",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

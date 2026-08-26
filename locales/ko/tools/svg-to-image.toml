@@ -47,7 +47,7 @@ card = """
 
 [words]
 plural = "SVG 파일"
-choose = "SVG 파일"
+choose = "SVG 파일을"
 
 [[facts]]
 text = "업로드 없음"

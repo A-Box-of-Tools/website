@@ -56,8 +56,8 @@ title = "Bir kodun resmini buraya bırakın"
 hint = "ya da göz atmak için tıklayın &mdash; bir fotoğraf, bir ekran görüntüsü, bir PNG, tarayıcınızın açabildiği her şey"
 
 [words]
-plural = "resimler ve içlerindeki kodlar"
-choose = "okunacak resmi"
+plural = "resimleriniz ve içlerindeki kodlar"
+choose = "okunacak resim"
 
 [[facts]]
 text = "Yükleme yok"

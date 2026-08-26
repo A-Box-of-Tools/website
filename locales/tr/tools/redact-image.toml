@@ -47,7 +47,7 @@ card = """
             yazılır; yani kenara itilecek bir katman yoktur."""
 
 [words]
-plural = "görseller"
+plural = "görselleriniz"
 choose = "bir görsel"
 
 [[facts]]

@@ -48,7 +48,7 @@ card = """
 
 [words]
 plural = "파일"
-choose = "파일"
+choose = "파일을"
 analytics_extra = """, 체크섬도"""
 
 [[facts]]

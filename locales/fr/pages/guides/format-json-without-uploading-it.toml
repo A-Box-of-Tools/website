@@ -4,7 +4,7 @@
 
 nav = "Formater du JSON"
 title = "Comment formater du JSON sans l'envoyer nulle part"
-description = "Mettre en forme, vérifier et minifier du JSON dans son propre navigateur : ce qu'un formateur ne doit jamais changer dans votre fichier, comment lire le message d'erreur, et pourquoi le site où vous collez compte."
+description = "Mettre en forme, vérifier et minifier du JSON dans son propre navigateur&nbsp;: ce qu'un formateur ne doit jamais changer dans votre fichier, comment lire le message d'erreur, et pourquoi le site où vous collez compte."
 heading = "Comment formater du JSON sans le confier à personne"
 lede = """
     Formater du JSON devrait changer les espaces et rien d'autre. La plupart des

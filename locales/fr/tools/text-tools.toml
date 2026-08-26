@@ -330,7 +330,7 @@ features = [
   "Convertit JSON en YAML et en XML, et inversement, en disant ce que chaque sens perd",
   "Lit le YAML 1.2, si bien que yes et no restent des chaînes",
   "Fonctionne sur un fichier déposé comme sur un collage",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

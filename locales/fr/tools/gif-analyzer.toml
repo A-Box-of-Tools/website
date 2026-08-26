@@ -300,16 +300,16 @@ a = """
         l'analyser s'arrêterait à l'instant où vous débranchez."""
 
 [schema]
-description = "Démontez un GIF dans le navigateur : chaque image avec sa durée, son rectangle et son mode d'effacement, les tables de couleurs, le nombre de boucles, les métadonnées éventuelles et un compte octet par octet de la taille du fichier. Rien n'est envoyé."
+description = "Démontez un GIF dans le navigateur&nbsp;: chaque image avec sa durée, son rectangle et son mode d'effacement, les tables de couleurs, le nombre de boucles, les métadonnées éventuelles et un compte octet par octet de la taille du fichier. Rien n'est envoyé."
 features = [
   "Chaque image avec sa durée, son rectangle, son effacement et sa taille compressée",
-  "Les deux vues d'une image : ce qu'elle stocke, et le canevas que voit une visionneuse",
+  "Les deux vues d'une image&nbsp;: ce qu'elle stocke, et le canevas que voit une visionneuse",
   "Un budget d'octets qui fait le fichier, pour que rien ne reste inexpliqué",
   "Tables de couleurs dessinées, entrées qu'aucun pixel n'utilise signalées",
   "Lit les commentaires, les paquets XMP, les profils ICC et le bloc de boucle Netscape",
   "Signale les durées qu'aucun navigateur ne respectera, et la vitesse réelle de l'animation",
   "Ouvre les fichiers abîmés et tronqués et dit où ils s'arrêtent",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans toucher à votre fichier",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans toucher à votre fichier",
 ]
 
 [picker]

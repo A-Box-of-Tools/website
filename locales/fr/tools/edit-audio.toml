@@ -284,7 +284,7 @@ features = [
   "Monte ou baisse le niveau, ou le normalise juste sous la pleine échelle",
   "Récupère l'audio d'un MP4, d'un MOV ou d'un WebM sans toucher à l'image",
   "Écrit du WAV 16 bits ou 32 bits flottant, sans encodeur dans la boucle",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

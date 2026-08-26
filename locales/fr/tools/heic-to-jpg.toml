@@ -13,9 +13,9 @@ heading = "HEIC&nbsp;vers&nbsp;JPG <span class=\"h1-kw\">&mdash; convertir les p
 tagline = "Les photos que fait un iPhone, dans un format que tout ouvre."
 
 title = "Convertisseur HEIC vers JPG &mdash; gratuit, sans envoi"
-description = "Convertissez vos photos HEIC d'iPhone en JPG dans votre navigateur. Le décodeur tourne sur votre machine : rien n'est envoyé, aucun compte, et la date comme l'appareil peuvent suivre."
+description = "Convertissez vos photos HEIC d'iPhone en JPG dans votre navigateur. Le décodeur tourne sur votre machine&nbsp;: rien n'est envoyé, aucun compte, et la date comme l'appareil peuvent suivre."
 og_title = "Transformer des photos HEIC en JPG sans les envoyer"
-og_description = "Le convertisseur qui ne veut pas de vos photos. Le décodeur HEIC est servi depuis cette page et tourne sur votre propre machine : les images ne la quittent donc jamais."
+og_description = "Le convertisseur qui ne veut pas de vos photos. Le décodeur HEIC est servi depuis cette page et tourne sur votre propre machine&nbsp;: les images ne la quittent donc jamais."
 og_image_alt = "HEIC vers JPG - les photos d'iPhone dans un format que tout ouvre"
 
 pledge = """
@@ -288,7 +288,7 @@ a = """
         l'instant où vous débranchez, et celui-ci ne s'arrête pas."""
 
 [schema]
-description = "Convertissez des photos HEIC et HEIF d'iPhone en JPEG, PNG ou WebP. Le décodeur HEIC est du WebAssembly servi par la page elle-même : les images sont donc décodées sur votre propre machine et ne sont jamais envoyées. La date, l'appareil et le lieu peuvent être portés dans le JPEG ou laissés de côté."
+description = "Convertissez des photos HEIC et HEIF d'iPhone en JPEG, PNG ou WebP. Le décodeur HEIC est du WebAssembly servi par la page elle-même&nbsp;: les images sont donc décodées sur votre propre machine et ne sont jamais envoyées. La date, l'appareil et le lieu peuvent être portés dans le JPEG ou laissés de côté."
 features = [
   "Convertit le HEIC et le HEIF en JPEG, PNG ou WebP",
   "Décode dans le navigateur, sur n'importe quel navigateur - pas seulement Safari",

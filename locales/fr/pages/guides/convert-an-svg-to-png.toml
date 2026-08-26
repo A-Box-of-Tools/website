@@ -4,7 +4,7 @@
 
 nav = "Convertir un SVG en PNG"
 title = "Comment convertir un SVG en PNG à la bonne taille"
-description = "Un vectoriel n'a pas de taille en pixels à lui : le nombre est à vous de le choisir. D'où vient ce nombre pour un écran, une icône d'application et une imprimante, et ce qui change quand un dessin devient des pixels."
+description = "Un vectoriel n'a pas de taille en pixels à lui&nbsp;: le nombre est à vous de le choisir. D'où vient ce nombre pour un écran, une icône d'application et une imprimante, et ce qui change quand un dessin devient des pixels."
 heading = "Comment convertir un SVG en PNG à la bonne taille"
 lede = """
     Convertir est la moitié facile. La question qui décide si le résultat sert à

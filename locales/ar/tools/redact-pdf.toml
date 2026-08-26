@@ -52,7 +52,7 @@ card = """
             فيه."""
 
 [words]
-plural = "مستندات"
+plural = "مستنداتك"
 choose = "ملف PDF"
 analytics_extra = """، ولا شيء عمّا
   بحثت عنه ولا عمّا أخرجته"""

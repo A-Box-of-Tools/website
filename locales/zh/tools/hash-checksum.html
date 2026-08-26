@@ -24,8 +24,7 @@
   <section class="card" id="run-card">
     <h2><span class="step">2</span> 校验和</h2>
     <p class="card-lede">
-      默认算 MD5 和 SHA-256，这两个加起来几乎覆盖了所有下载页面。再勾一个，文件
-      就会为它重读一遍：慢的那一半是读，所以在选文件之前勾好的，一遍读完一起出。
+      默认算 MD5 和 SHA-256，这两个加起来几乎覆盖了所有下载页面。再勾一个，文件就会为它重读一遍：慢的那一半是读，所以在选文件之前勾好的，一遍读完一起出。
     </p>
 
     <fieldset class="algorithms">
@@ -92,36 +91,31 @@
         <li class="digest" data-algorithm="md5" hidden>
           <span class="digest-name">MD5</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
           <button type="button" class="ghost" data-slot="copy">复制</button>
         </li>
         <li class="digest" data-algorithm="sha1" hidden>
           <span class="digest-name">SHA-1</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
           <button type="button" class="ghost" data-slot="copy">复制</button>
         </li>
         <li class="digest" data-algorithm="sha256" hidden>
           <span class="digest-name">SHA-256</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
           <button type="button" class="ghost" data-slot="copy">复制</button>
         </li>
         <li class="digest" data-algorithm="sha384" hidden>
           <span class="digest-name">SHA-384</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
           <button type="button" class="ghost" data-slot="copy">复制</button>
         </li>
         <li class="digest" data-algorithm="sha512" hidden>
           <span class="digest-name">SHA-512</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>对得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>对不上</span>
           <button type="button" class="ghost" data-slot="copy">复制</button>
         </li>
       </ul>
@@ -145,10 +139,7 @@
               placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
 
     <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
-      <span data-read="one">这是一个 <b data-slot="algorithm"></b>。</span>
-      <span data-read="many">这是一份清单，里面有 <b data-slot="count"></b> 个校验和。</span>
-      <span data-read="stray">这是 <b data-slot="length"></b> 个十六进制字符，而这里没有哪一种是这个长度。多半是复制时丢了结尾。</span>
-      <span data-read="nothing">里面没有看起来像校验和的东西。</span>
+      <span data-read="one">这是一个 <b data-slot="algorithm"></b>。</span><span data-read="many">这是一份清单，里面有 <b data-slot="count"></b> 个校验和。</span><span data-read="stray">这是 <b data-slot="length"></b> 个十六进制字符，而这里没有哪一种是这个长度。多半是复制时丢了结尾。</span><span data-read="nothing">里面没有看起来像校验和的东西。</span>
     </p>
 
     <div class="verdict" id="verdict" hidden>

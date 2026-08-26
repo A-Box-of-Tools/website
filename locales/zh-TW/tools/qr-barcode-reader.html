@@ -11,26 +11,26 @@
     <h2><span class="step">1</span> 把碼給它看</h2>
 
     <p class="card-lede">
-      一張照片、一張截圖，或者攝像頭。不管你選哪個，圖片都在這裡讀，在這一頁裡，在你自己的機器上——什麼都不上傳，攝像頭的一幀是被看一眼就扔掉，不是被錄下來。
+      一張照片、一張截圖，或者鏡頭。不管你選哪個，圖片都在這裡讀，在這一頁裡，在你自己的機器上——什麼都不上傳，鏡頭的一幀是被看一眼就扔掉，不是被錄下來。
     </p>
 
     {% include "partials/file-picker.html" %}
 
     <div class="run-row">
-      <button type="button" id="start-camera" class="primary">用攝像頭</button>
-      <button type="button" id="stop-camera" class="ghost" hidden>停止攝像頭</button>
+      <button type="button" id="start-camera" class="primary">用鏡頭</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>停止鏡頭</button>
     </div>
 
     <p class="field-summary" id="pick-note">
-      你也可以用 <kbd>Ctrl</kbd>+<kbd>V</kbd> 直接把圖片粘進來——螢幕上已經有的那個碼，截個圖是最快的路子。
+      你也可以用 <kbd>Ctrl</kbd>+<kbd>V</kbd> 直接把圖片貼進來——螢幕上已經有的那個碼，截個圖是最快的方法。
     </p>
 
     <p id="pick-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- 攝像頭，開起來之後才出現 -->
+  <!-- 鏡頭，開起來之後才出現 -->
   <section class="card" id="camera-card" hidden>
-    <h2>攝像頭</h2>
+    <h2>鏡頭</h2>
 
     <div class="viewfinder">
       <video id="video" playsinline muted disablepictureinpicture></video>
@@ -39,7 +39,7 @@
 
     <div class="camera-controls">
       <div class="option-row" id="camera-pick-row" hidden>
-        <label for="camera-pick">用哪個攝像頭</label>
+        <label for="camera-pick">用哪個鏡頭</label>
         <select id="camera-pick"></select>
       </div>
 
@@ -48,7 +48,7 @@
         <span>
           <strong>把燈開啟</strong>
           <span class="check-note">
-            只有一部分攝像頭帶燈，也只有一部分瀏覽器允許網頁去要它。這裡沒給你這個選項，就是沒有。
+            只有一部分鏡頭帶燈，也只有一部分瀏覽器允許網頁去要它。這裡沒給你這個選項，就是沒有。
           </span>
         </span>
       </label>
@@ -57,7 +57,7 @@
     <p class="field-summary" id="camera-status" role="status"></p>
 
     <p class="field-summary">
-      這裡最誠實的指示是攝像頭那盞燈：有畫面進來它就亮著，你一停它就滅。這兩點之間的任何東西都不會寫到硬碟上，而這一頁的 <code>Content-Security-Policy</code> 里根本沒有一個能讓圖片發出去的地址。
+      這裡最誠實的指示是鏡頭那盞燈：有畫面進來它就亮著，你一停它就滅。這兩點之間的任何東西都不會寫到硬碟上，而這一頁的 <code>Content-Security-Policy</code> 里根本沒有一個能讓圖片發出去的地址。
     </p>
   </section>
 
@@ -88,7 +88,7 @@
       <div class="run-row">
         <button type="button" class="primary copy">複製這段文字</button>
         <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
-          在新標籤頁開啟
+          在新分頁開啟
         </a>
       </div>
 
@@ -127,89 +127,25 @@
     遇到它們。裡面的 {host} 會被讀到的主機填上，別的都不替換。
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="kind.url">一個網址</span>
-    <span data-phrase="kind.url-plain">一個網址，沒有加密</span>
-    <span data-phrase="kind.wifi">一個 Wi-Fi 網路</span>
-    <span data-phrase="kind.vcard">一張名片</span>
-    <span data-phrase="kind.mecard">一張名片</span>
-    <span data-phrase="kind.email">一封郵件</span>
-    <span data-phrase="kind.phone">一個電話號碼</span>
-    <span data-phrase="kind.sms">一條簡訊</span>
-    <span data-phrase="kind.place">地圖上的一個點</span>
-    <span data-phrase="kind.otp">一個兩步驗證的金鑰</span>
-    <span data-phrase="kind.other-scheme">要交給別的程式開啟的東西</span>
-    <span data-phrase="kind.number">一個數字</span>
-    <span data-phrase="kind.text">純文字</span>
-    <span data-phrase="symbology.qr">二維碼</span>
+    <span data-phrase="kind.url">一個網址</span><span data-phrase="kind.url-plain">一個網址，沒有加密</span><span data-phrase="kind.wifi">一個 Wi-Fi 網路</span><span data-phrase="kind.vcard">一張名片</span><span data-phrase="kind.mecard">一張名片</span><span data-phrase="kind.email">一封郵件</span><span data-phrase="kind.phone">一個電話號碼</span><span data-phrase="kind.sms">一條簡訊</span><span data-phrase="kind.place">地圖上的一個點</span><span data-phrase="kind.otp">一個兩步驗證的金鑰</span><span data-phrase="kind.other-scheme">要交給別的程式開啟的東西</span><span data-phrase="kind.number">一個數字</span><span data-phrase="kind.text">純文字</span><span data-phrase="symbology.qr">QR Code</span>
 
 
-    <span data-phrase="field.host">通向</span>
-    <span data-phrase="field.port">埠</span>
-    <span data-phrase="field.path">路徑</span>
-    <span data-phrase="field.ssid">網路名稱</span>
-    <span data-phrase="field.security">加密方式</span>
-    <span data-phrase="field.password">密碼</span>
-    <span data-phrase="field.hidden">隱藏網路</span>
-    <span data-phrase="field.name">姓名</span>
-    <span data-phrase="field.org">單位</span>
-    <span data-phrase="field.title">職務</span>
-    <span data-phrase="field.phone">電話</span>
-    <span data-phrase="field.email">郵箱</span>
-    <span data-phrase="field.web">網站</span>
-    <span data-phrase="field.address">地址</span>
-    <span data-phrase="field.note">備註</span>
-    <span data-phrase="field.to">收件人</span>
-    <span data-phrase="field.subject">主題</span>
-    <span data-phrase="field.message">內容</span>
-    <span data-phrase="field.number">號碼</span>
-    <span data-phrase="field.latitude">緯度</span>
-    <span data-phrase="field.longitude">經度</span>
-    <span data-phrase="field.account">帳戶</span>
-    <span data-phrase="field.issuer">簽發方</span>
-    <span data-phrase="field.secret">金鑰</span>
-    <span data-phrase="field.scheme">協議</span>
+    <span data-phrase="field.host">通向</span><span data-phrase="field.port">埠</span><span data-phrase="field.path">路徑</span><span data-phrase="field.ssid">網路名稱</span><span data-phrase="field.security">加密方式</span><span data-phrase="field.password">密碼</span><span data-phrase="field.hidden">隱藏網路</span><span data-phrase="field.name">姓名</span><span data-phrase="field.org">單位</span><span data-phrase="field.title">職務</span><span data-phrase="field.phone">電話</span><span data-phrase="field.email">信箱</span><span data-phrase="field.web">網站</span><span data-phrase="field.address">地址</span><span data-phrase="field.note">備註</span><span data-phrase="field.to">收件人</span><span data-phrase="field.subject">主題</span><span data-phrase="field.message">內容</span><span data-phrase="field.number">號碼</span><span data-phrase="field.latitude">緯度</span><span data-phrase="field.longitude">經度</span><span data-phrase="field.account">帳戶</span><span data-phrase="field.issuer">簽發方</span><span data-phrase="field.secret">金鑰</span><span data-phrase="field.scheme">協議</span>
 
-    <span data-phrase="value.yes">是</span>
-    <span data-phrase="value.open-network">開放｜沒有密碼</span>
-    <span data-phrase="value.none">沒有</span>
-    <span data-phrase="value.copied">已複製</span>
-    <span data-phrase="value.modules">每邊 {n} 個模組</span>
+    <span data-phrase="value.yes">是</span><span data-phrase="value.open-network">開放｜沒有密碼</span><span data-phrase="value.none">沒有</span><span data-phrase="value.copied">已複製</span><span data-phrase="value.modules">每邊 {n} 個模組</span>
 
-    <span data-phrase="warn.userinfo">@ 前面的所有東西都是使用者名稱，不是地址。這個連結看起來說的是什麼都不算數，它通向 {host}。</span>
-    <span data-phrase="warn.punycode">這個地址是用非拉丁文字寫的。別的文字裡有些字母的形狀和我們的一模一樣，把一個名字做得像你早就信任的那個，靠的就是這個。</span>
-    <span data-phrase="warn.unicode-host">主機名裡有基本拉丁字母之外的字元，這可以用來把一個名字弄得像另一個。</span>
-    <span data-phrase="warn.plain-http">這是一個光禿禿的 http:// 地址，所以你發給它的東西是不加密地走的，中間的任何東西都能讀，也能改。</span>
-    <span data-phrase="warn.shortener">{host} 是個轉跳。你真正會落到的地址不在這個碼裡，而要弄清楚它是什麼就得去聯絡一臺伺服器——這是這一頁從來不做的事。</span>
-    <span data-phrase="warn.wifi-secret">這個碼裡帶著明文密碼。誰把碼拍下來，誰就拿到了它。在這樣的碼貼上牆之前，這件事值得先知道。</span>
-    <span data-phrase="warn.otp-secret">這是驗證器應用的種子：拿到它的人可以一直生成你那個帳戶的驗證碼。它沒有離開過這一頁，而它接下來去哪裡，值得你多留個心。</span>
-    <span data-phrase="warn.not-openable">這不是網址，所以也沒有連結可以給你。上面已經原樣印出來了；你機器上有沒有東西會照著它做，是你和那個程式之間的事。</span>
+    <span data-phrase="warn.userinfo">@ 前面的所有東西都是使用者名稱，不是地址。這個連結看起來說的是什麼都不算數，它通向 {host}。</span><span data-phrase="warn.punycode">這個地址是用非拉丁文字寫的。別的文字裡有些字母的形狀和我們的一模一樣，把一個名字做得像你早就信任的那個，靠的就是這個。</span><span data-phrase="warn.unicode-host">主機名裡有基本拉丁字母之外的字元，這可以用來把一個名字弄得像另一個。</span><span data-phrase="warn.plain-http">這是一個光禿禿的 http:// 地址，所以你發給它的東西是不加密地走的，中間的任何東西都能讀，也能改。</span>
+    <span data-phrase="warn.shortener">{host} 是個轉跳。你真正會落到的地址不在這個碼裡，而要弄清楚它是什麼就得去聯絡一臺伺服器——這是這一頁從來不做的事。</span><span data-phrase="warn.wifi-secret">這個碼裡帶著明文密碼。誰把碼拍下來，誰就拿到了它。在這樣的碼貼上牆之前，這件事值得先知道。</span><span data-phrase="warn.otp-secret">這是驗證器應用的種子：拿到它的人可以一直產生你那個帳戶的驗證碼。它沒有離開過這一頁，而它接下來去哪裡，值得你多留個心。</span><span data-phrase="warn.not-openable">這不是網址，所以也沒有連結可以給你。上面已經原樣印出來了；你機器上有沒有東西會照著它做，是你和那個程式之間的事。</span>
 
-    <span data-phrase="mode.numeric">只有數字</span>
-    <span data-phrase="mode.alphanumeric">大寫字母和數字</span>
-    <span data-phrase="mode.byte">位元組</span>
-    <span data-phrase="mode.kanji">漢字</span>
+    <span data-phrase="mode.numeric">只有數字</span><span data-phrase="mode.alphanumeric">大寫字母和數字</span><span data-phrase="mode.byte">位元組</span><span data-phrase="mode.kanji">漢字</span>
 
-    <span data-phrase="how.local">一塊一塊算出來的閾值</span>
-    <span data-phrase="how.inverted">把深淺對調</span>
-    <span data-phrase="how.global">整張圖共用一個閾值</span>
-    <span data-phrase="how.softened">先把圖片放柔一點</span>
-    <span data-phrase="how.dense">，並且逐行都查了一遍</span>
+    <span data-phrase="how.local">一塊一塊算出來的閾值</span><span data-phrase="how.inverted">把深淺對調</span><span data-phrase="how.global">整張圖共用一個閾值</span><span data-phrase="how.softened">先把圖片放柔一點</span><span data-phrase="how.dense">，並且逐行都查了一遍</span>
 
     <span data-phrase="status.reading">正在讀這張圖&hellip;</span>
-    <span data-phrase="status.nothing">這張圖裡沒找到碼。需要整個符號連同白色留白都在畫面裡，光也要夠，讓深色方塊真的是深的。</span>
-    <span data-phrase="status.broken">這個檔案打不開成圖片。</span>
-    <span data-phrase="status.looking">正在找&hellip;把碼拿穩，讓它佔到畫面一半左右。</span>
-    <span data-phrase="status.on">攝像頭開著。什麼都沒有在錄。</span>
+    <span data-phrase="status.nothing">這張圖裡沒找到碼。需要整個符號連同白色留白都在畫面裡，光也要夠，讓深色方塊真的是深的。</span><span data-phrase="status.broken">這個檔案打不開成圖片。</span><span data-phrase="status.looking">正在找&hellip;把碼拿穩，讓它佔到畫面一半左右。</span><span data-phrase="status.on">鏡頭開著。什麼都沒有在錄。</span>
 
-    <span data-phrase="camera.denied">瀏覽器拒絕把攝像頭給這一頁。這是一個你可以改的許可權：看看位址列裡那個攝像頭圖示。改成挑一張圖片的話，什麼許可權都不需要。</span>
-    <span data-phrase="camera.none">這臺機器上沒找到攝像頭。往上面丟一張照片或者截圖，讀法是一樣的。</span>
-    <span data-phrase="camera.busy">攝像頭是有的，但被別的東西佔著。把佔著它的那個關掉——一般是視訊通話——再試一次。</span>
-    <span data-phrase="camera.insecure">瀏覽器只把攝像頭交給用 https 提供的頁面，而這一頁眼下不是。</span>
-    <span data-phrase="camera.unsupported">這個瀏覽器裡沒有網頁可以去要的攝像頭介面。這裡其餘的東西照樣能用。</span>
-    <span data-phrase="camera.failed">攝像頭沒能啟動，瀏覽器也沒說為什麼。</span>
+    <span data-phrase="camera.denied">瀏覽器拒絕把鏡頭給這一頁。這是一個你可以改的許可權：看看位址列裡那個鏡頭圖示。改成挑一張圖片的話，什麼許可權都不需要。</span><span data-phrase="camera.none">這臺機器上沒找到鏡頭。往上面丟一張照片或者截圖，讀法是一樣的。</span><span data-phrase="camera.busy">鏡頭是有的，但被別的東西佔著。把佔著它的那個關掉——一般是視訊通話——再試一次。</span><span data-phrase="camera.insecure">瀏覽器只把鏡頭交給用 https 提供的頁面，而這一頁眼下不是。</span><span data-phrase="camera.unsupported">這個瀏覽器裡沒有網頁可以去要的鏡頭介面。這裡其餘的東西照樣能用。</span><span data-phrase="camera.failed">鏡頭沒能啟動，瀏覽器也沒說為什麼。</span>
 
-    <span data-phrase="live.clean">你的圖片哪裡也沒去。一共載入了 {total} 個檔案，全是這一頁自己的。</span>
-    <span data-phrase="live.dirty">有東西聯絡了 {hosts}，這是這個工具從來不做的事。值得去查一查。</span>
-    <span data-phrase="live.platform">這一頁自己的廣告、統計和捐助按鈕指令碼從 {count} 臺主機載入；它們誰也沒拿到一張圖片、一幀畫面，或者某個碼裡寫著的一個字。</span>
+    <span data-phrase="live.clean">你的圖片哪裡也沒去。一共載入了 {total} 個檔案，全是這一頁自己的。</span><span data-phrase="live.dirty">有東西聯絡了 {hosts}，這是這個工具從來不做的事。值得去查一查。</span><span data-phrase="live.platform">這一頁自己的廣告、統計和捐助按鈕指令碼從 {count} 臺主機載入；它們誰也沒拿到一張圖片、一幀畫面，或者某個碼裡寫著的一個字。</span>
   </div>
 </main>

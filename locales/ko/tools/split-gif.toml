@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "GIF"
-choose = "GIF 한 개"
+choose = "GIF 한 개를"
 analytics_extra = """, 프레임도
   재생 시간도 그림도"""
 

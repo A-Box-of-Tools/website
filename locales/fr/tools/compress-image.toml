@@ -20,9 +20,9 @@ heading = "Compresseur&nbsp;d'images <span class=\"h1-kw\">&mdash; compresser à
 tagline = "Vous donnez la taille. Il se charge du reste."
 
 title = "Compresser une image à une taille précise &mdash; gratuit, sans envoi"
-description = "Compressez un JPEG, un PNG ou un WebP à une taille exacte : 100 KB, 2 MB, ce que vous voulez. Tout se passe dans votre navigateur, sans envoi, sans compte et même hors ligne."
+description = "Compressez un JPEG, un PNG ou un WebP à une taille exacte&nbsp;: 100 KB, 2 MB, ce que vous voulez. Tout se passe dans votre navigateur, sans envoi, sans compte et même hors ligne."
 og_title = "Compresser une image à la taille que vous choisissez"
-og_description = "Donnez une taille à atteindre : l'outil cherche la compression la plus légère qui y arrive, puis mesure ce que cela a coûté. Il tourne sur votre machine et n'envoie rien."
+og_description = "Donnez une taille à atteindre&nbsp;: l'outil cherche la compression la plus légère qui y arrive, puis mesure ce que cela a coûté. Il tourne sur votre machine et n'envoie rien."
 og_image_alt = "Compresseur d'images - donnez une taille, gardez la qualité"
 
 pledge = """
@@ -246,12 +246,12 @@ description = "Compressez des images JPEG, PNG et WebP à une taille que vous no
 features = [
   "Compresse vers une taille de fichier que vous choisissez, pas vers un chiffre de qualité à deviner",
   "Garde la pleine résolution quand il le peut, et ne redimensionne que si la qualité seule n'atteint pas la cible",
-  "Dépense tout le budget : le résultat arrive juste sous la cible plutôt que loin en dessous",
+  "Dépense tout le budget&nbsp;: le résultat arrive juste sous la cible plutôt que loin en dessous",
   "Mesure le résultat par rapport à l'original avec le SSIM et le PSNR",
   "Laisse totalement intacts les fichiers déjà sous la cible",
   "JPEG, PNG et WebP, avec un choix de format automatique",
   "Traitement par lots, tous les résultats dans un seul zip",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

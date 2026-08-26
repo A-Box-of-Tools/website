@@ -3,9 +3,10 @@
 #
 # What is here is the frame: the hub, the guides index, the roadmap, the 404,
 # the footer, and the words the templates themselves use. The tools and the
-# guides are NOT translated yet - they stay in English, fall back page by
-# page, and are held out of the sitemap, the hreflang sets and the switcher
-# exactly as an unfinished part of any other locale is. See buildlib/i18n.py.
+# guides are translated too; a page this locale has not caught up to yet - a
+# newly shipped tool, usually - stays English, falls back page by page, and is
+# held out of the sitemap, the hreflang sets and the switcher exactly as an
+# unfinished part of any other locale is. See buildlib/i18n.py.
 #
 # Nothing structural is repeated here. There is no list of which tools exist,
 # no category ids, no ordering, no Content-Security-Policy - all of that is
@@ -37,10 +38,10 @@ endonym = "Türkçe"
 hreflang = "tr"
 
 # The frame is finished: the nav, the footer, the hub and every [ui] word in
-# this file are Turkish. That is all this flag claims - the tools and the
-# guides are still English, held back a page at a time. See the note at the
-# top of buildlib/i18n.py for why the unit is the page rather than the
-# language.
+# this file are Turkish. That is all this flag claims - a page the
+# translation has not reached yet falls back to English one page at a time.
+# See the note at the top of buildlib/i18n.py for why the unit is the page
+# rather than the language.
 complete = true
 
 #

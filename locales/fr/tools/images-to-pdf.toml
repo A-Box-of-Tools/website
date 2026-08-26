@@ -15,7 +15,7 @@ tagline = "Réunir vos images dans un seul document."
 title = "Convertisseur d'images en PDF &mdash; JPG en PDF gratuit, sans envoi"
 description = "Réunissez des images JPG, PNG ou WebP dans un seul PDF, gratuitement et entièrement dans votre navigateur. Les photos entrent sans être réencodées, et rien n'est envoyé."
 og_title = "Images en PDF &mdash; convertisseur JPG en PDF gratuit"
-og_description = "Réunissez des images dans un seul PDF sur votre propre machine. Les photos JPEG y sont recopiées intactes : rien ne perd en qualité et rien n'est envoyé."
+og_description = "Réunissez des images dans un seul PDF sur votre propre machine. Les photos JPEG y sont recopiées intactes&nbsp;: rien ne perd en qualité et rien n'est envoyé."
 og_image_alt = "Images en PDF - réunir des images dans un document sans les envoyer"
 
 pledge = """
@@ -228,7 +228,7 @@ features = [
   "Formats de page de l'A5 au Tabloid, ou une page ajustée à chaque image",
   "Réordonner, faire tourner, régler les marges et une couleur de page",
   "Stockage sans perte facultatif pour les scans et les captures d'écran",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

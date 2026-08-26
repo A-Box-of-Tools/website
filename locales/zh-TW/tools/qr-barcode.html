@@ -11,14 +11,14 @@
     <h2><span class="step">1</span> 挑碼的種類</h2>
 
     <p class="card-lede">
-      二維碼什麼都裝得下，也是手機攝像頭預設要找的東西。條形碼裝的是一串數字，而且要哪一種，通常輪不到你決定，商店、倉庫或者貨運公司要什麼就是什麼。
+      QR Code 什麼都裝得下，也是手機鏡頭預設要找的東西。條碼裝的是一串數字，而且要哪一種，通常輪不到你決定，商店、倉庫或者貨運公司要什麼就是什麼。
     </p>
 
     <div class="option-row">
       <label for="symbology">碼的種類</label>
       <select id="symbology">
         <optgroup label="方塊">
-          <option value="qr" selected>二維碼</option>
+          <option value="qr" selected>QR Code</option>
         </optgroup>
         <optgroup label="條狀">
           <option value="code128">Code 128</option>
@@ -67,7 +67,7 @@
     <h2><span class="step">3</span> 決定它長什麼樣</h2>
 
     <fieldset class="options" id="qr-options">
-      <legend>二維碼</legend>
+      <legend>QR Code</legend>
 
       <div class="option-row">
         <label for="level">能挨多少損傷</label>
@@ -90,7 +90,7 @@
     </fieldset>
 
     <fieldset class="options" id="barcode-options" hidden>
-      <legend>條形碼</legend>
+      <legend>條碼</legend>
 
       <div class="option-row">
         <label for="bar-width">最細的條有幾個畫素</label>
@@ -105,8 +105,7 @@
       <label class="check">
         <input type="checkbox" id="show-text" checked>
         <span>
-          <strong>在下面印出字元</strong>
-          <span class="check-note">掃描器讀不出來的時候，得靠人來讀。零售條碼上還有幾位數字落在留白裡，那是故意的，它們標出了誰都不該裁掉的那片空白。
+          <strong>在下面印出字元</strong><span class="check-note">掃描器讀不出來的時候，得靠人來讀。零售條碼上還有幾位數字落在留白裡，那是故意的，它們標出了誰都不該裁掉的那片空白。
           </span>
         </span>
       </label>
@@ -138,8 +137,7 @@
       <label class="check">
         <input type="checkbox" id="transparent">
         <span>
-          <strong>乾脆不要背景</strong>
-          <span class="check-note">透明，用來放在本來就有顏色的東西上。SVG 和 PNG 都保住透明。不過最後墊在它後面的那層得是淺色，否則掃描器根本量不到對比。
+          <strong>乾脆不要背景</strong><span class="check-note">透明，用來放在本來就有顏色的東西上。SVG 和 PNG 都保住透明。不過最後墊在它後面的那層得是淺色，否則掃描器根本量不到對比。
           </span>
         </span>
       </label>

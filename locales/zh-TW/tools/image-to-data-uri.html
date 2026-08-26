@@ -30,21 +30,21 @@
     <p id="load-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- 第 2 步，真正被粘出去的那一行 -->
+  <!-- 第 2 步，真正被貼出去的那一行 -->
   <section class="card" id="shape-card">
-    <h2><span class="step">2</span> 說清楚它要粘到哪裡</h2>
+    <h2><span class="step">2</span> 說清楚它要貼到哪裡</h2>
 
     <p class="card-lede">
       光給一串 data URI，其實很少有人真想要。大家要的是能直接貼進樣式表的那一行。所以先挑好這一行的樣子，圖片進去時引號已經加好了。引號這東西最容易弄錯，偏偏還只有 SVG 會因此出事。
     </p>
 
-    <div class="shapes" id="shapes" role="radiogroup" aria-label="要粘出去的形式">
+    <div class="shapes" id="shapes" role="radiogroup" aria-label="要貼出去的形式">
       <label class="shape">
         <input type="radio" name="shape" value="uri" checked>
         <span class="shape-body">
           <strong>光要 data URI</strong>
           <span class="shape-note">
-            逗號後面那一整串就是檔案本身。哪裡能寫網址就能粘哪裡。
+            逗號後面那一整串就是檔案本身。哪裡能寫網址就能貼哪裡。
           </span>
         </span>
       </label>
@@ -91,7 +91,7 @@
     </div>
 
     <p class="field-summary">
-      <code>alt</code> 是故意留空的。這張圖到底有實際含義還是純裝飾，只有你知道。拿檔名瞎猜一句描述，對用讀屏軟體的人來說，比沒有描述更糟。
+      <code>alt</code> 是故意留空的。這張圖到底有實際含義還是純裝飾，只有你知道。拿檔名瞎猜一句描述，對用螢幕閱讀器的人來說，比沒有描述更糟。
     </p>
 
     <fieldset class="options">
@@ -114,7 +114,7 @@
     <h2><span class="step">3</span> 複製</h2>
 
     <p id="empty-note" class="card-lede">
-      還沒選東西。往上面丟一張圖，能粘出去的那一行就出現在這裡。
+      還沒選東西。往上面丟一張圖，能貼出去的那一行就出現在這裡。
     </p>
 
     <div id="results" hidden>

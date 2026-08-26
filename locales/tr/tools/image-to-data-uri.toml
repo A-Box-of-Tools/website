@@ -51,7 +51,7 @@ card = """
             kurulmuş CSS kuralı ya da <code>&lt;img&gt;</code> etiketi."""
 
 [words]
-plural = "görseller"
+plural = "görselleriniz"
 choose = "bir görsel"
 
 [[facts]]

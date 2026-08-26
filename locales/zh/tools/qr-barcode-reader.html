@@ -127,89 +127,25 @@
     遇到它们。里面的 {host} 会被读到的主机填上，别的都不替换。
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="kind.url">一个网址</span>
-    <span data-phrase="kind.url-plain">一个网址，没有加密</span>
-    <span data-phrase="kind.wifi">一个 Wi-Fi 网络</span>
-    <span data-phrase="kind.vcard">一张名片</span>
-    <span data-phrase="kind.mecard">一张名片</span>
-    <span data-phrase="kind.email">一封邮件</span>
-    <span data-phrase="kind.phone">一个电话号码</span>
-    <span data-phrase="kind.sms">一条短信</span>
-    <span data-phrase="kind.place">地图上的一个点</span>
-    <span data-phrase="kind.otp">一个两步验证的密钥</span>
-    <span data-phrase="kind.other-scheme">要交给别的程序打开的东西</span>
-    <span data-phrase="kind.number">一个数字</span>
-    <span data-phrase="kind.text">纯文字</span>
-    <span data-phrase="symbology.qr">二维码</span>
+    <span data-phrase="kind.url">一个网址</span><span data-phrase="kind.url-plain">一个网址，没有加密</span><span data-phrase="kind.wifi">一个 Wi-Fi 网络</span><span data-phrase="kind.vcard">一张名片</span><span data-phrase="kind.mecard">一张名片</span><span data-phrase="kind.email">一封邮件</span><span data-phrase="kind.phone">一个电话号码</span><span data-phrase="kind.sms">一条短信</span><span data-phrase="kind.place">地图上的一个点</span><span data-phrase="kind.otp">一个两步验证的密钥</span><span data-phrase="kind.other-scheme">要交给别的程序打开的东西</span><span data-phrase="kind.number">一个数字</span><span data-phrase="kind.text">纯文字</span><span data-phrase="symbology.qr">二维码</span>
 
 
-    <span data-phrase="field.host">通向</span>
-    <span data-phrase="field.port">端口</span>
-    <span data-phrase="field.path">路径</span>
-    <span data-phrase="field.ssid">网络名称</span>
-    <span data-phrase="field.security">加密方式</span>
-    <span data-phrase="field.password">密码</span>
-    <span data-phrase="field.hidden">隐藏网络</span>
-    <span data-phrase="field.name">姓名</span>
-    <span data-phrase="field.org">单位</span>
-    <span data-phrase="field.title">职务</span>
-    <span data-phrase="field.phone">电话</span>
-    <span data-phrase="field.email">邮箱</span>
-    <span data-phrase="field.web">网站</span>
-    <span data-phrase="field.address">地址</span>
-    <span data-phrase="field.note">备注</span>
-    <span data-phrase="field.to">收件人</span>
-    <span data-phrase="field.subject">主题</span>
-    <span data-phrase="field.message">内容</span>
-    <span data-phrase="field.number">号码</span>
-    <span data-phrase="field.latitude">纬度</span>
-    <span data-phrase="field.longitude">经度</span>
-    <span data-phrase="field.account">账户</span>
-    <span data-phrase="field.issuer">签发方</span>
-    <span data-phrase="field.secret">密钥</span>
-    <span data-phrase="field.scheme">协议</span>
+    <span data-phrase="field.host">通向</span><span data-phrase="field.port">端口</span><span data-phrase="field.path">路径</span><span data-phrase="field.ssid">网络名称</span><span data-phrase="field.security">加密方式</span><span data-phrase="field.password">密码</span><span data-phrase="field.hidden">隐藏网络</span><span data-phrase="field.name">姓名</span><span data-phrase="field.org">单位</span><span data-phrase="field.title">职务</span><span data-phrase="field.phone">电话</span><span data-phrase="field.email">邮箱</span><span data-phrase="field.web">网站</span><span data-phrase="field.address">地址</span><span data-phrase="field.note">备注</span><span data-phrase="field.to">收件人</span><span data-phrase="field.subject">主题</span><span data-phrase="field.message">内容</span><span data-phrase="field.number">号码</span><span data-phrase="field.latitude">纬度</span><span data-phrase="field.longitude">经度</span><span data-phrase="field.account">账户</span><span data-phrase="field.issuer">签发方</span><span data-phrase="field.secret">密钥</span><span data-phrase="field.scheme">协议</span>
 
-    <span data-phrase="value.yes">是</span>
-    <span data-phrase="value.open-network">开放｜没有密码</span>
-    <span data-phrase="value.none">没有</span>
-    <span data-phrase="value.copied">已复制</span>
-    <span data-phrase="value.modules">每边 {n} 个模块</span>
+    <span data-phrase="value.yes">是</span><span data-phrase="value.open-network">开放｜没有密码</span><span data-phrase="value.none">没有</span><span data-phrase="value.copied">已复制</span><span data-phrase="value.modules">每边 {n} 个模块</span>
 
-    <span data-phrase="warn.userinfo">@ 前面的所有东西都是用户名，不是地址。这个链接看起来说的是什么都不算数，它通向 {host}。</span>
-    <span data-phrase="warn.punycode">这个地址是用非拉丁文字写的。别的文字里有些字母的形状和我们的一模一样，把一个名字做得像你早就信任的那个，靠的就是这个。</span>
-    <span data-phrase="warn.unicode-host">主机名里有基本拉丁字母之外的字符，这可以用来把一个名字弄得像另一个。</span>
-    <span data-phrase="warn.plain-http">这是一个光秃秃的 http:// 地址，所以你发给它的东西是不加密地走的，中间的任何东西都能读，也能改。</span>
-    <span data-phrase="warn.shortener">{host} 是个转跳。你真正会落到的地址不在这个码里，而要弄清楚它是什么就得去联系一台服务器——这是这一页从来不做的事。</span>
-    <span data-phrase="warn.wifi-secret">这个码里带着明文密码。谁把码拍下来，谁就拿到了它。在这样的码贴上墙之前，这件事值得先知道。</span>
-    <span data-phrase="warn.otp-secret">这是验证器应用的种子：拿到它的人可以一直生成你那个账户的验证码。它没有离开过这一页，而它接下来去哪儿，值得你多留个心。</span>
-    <span data-phrase="warn.not-openable">这不是网址，所以也没有链接可以给你。上面已经原样印出来了；你机器上有没有东西会照着它做，是你和那个程序之间的事。</span>
+    <span data-phrase="warn.userinfo">@ 前面的所有东西都是用户名，不是地址。这个链接看起来说的是什么都不算数，它通向 {host}。</span><span data-phrase="warn.punycode">这个地址是用非拉丁文字写的。别的文字里有些字母的形状和我们的一模一样，把一个名字做得像你早就信任的那个，靠的就是这个。</span><span data-phrase="warn.unicode-host">主机名里有基本拉丁字母之外的字符，这可以用来把一个名字弄得像另一个。</span><span data-phrase="warn.plain-http">这是一个光秃秃的 http:// 地址，所以你发给它的东西是不加密地走的，中间的任何东西都能读，也能改。</span>
+    <span data-phrase="warn.shortener">{host} 是个转跳。你真正会落到的地址不在这个码里，而要弄清楚它是什么就得去联系一台服务器——这是这一页从来不做的事。</span><span data-phrase="warn.wifi-secret">这个码里带着明文密码。谁把码拍下来，谁就拿到了它。在这样的码贴上墙之前，这件事值得先知道。</span><span data-phrase="warn.otp-secret">这是验证器应用的种子：拿到它的人可以一直生成你那个账户的验证码。它没有离开过这一页，而它接下来去哪儿，值得你多留个心。</span><span data-phrase="warn.not-openable">这不是网址，所以也没有链接可以给你。上面已经原样印出来了；你机器上有没有东西会照着它做，是你和那个程序之间的事。</span>
 
-    <span data-phrase="mode.numeric">只有数字</span>
-    <span data-phrase="mode.alphanumeric">大写字母和数字</span>
-    <span data-phrase="mode.byte">字节</span>
-    <span data-phrase="mode.kanji">汉字</span>
+    <span data-phrase="mode.numeric">只有数字</span><span data-phrase="mode.alphanumeric">大写字母和数字</span><span data-phrase="mode.byte">字节</span><span data-phrase="mode.kanji">汉字</span>
 
-    <span data-phrase="how.local">一块一块算出来的阈值</span>
-    <span data-phrase="how.inverted">把深浅对调</span>
-    <span data-phrase="how.global">整张图共用一个阈值</span>
-    <span data-phrase="how.softened">先把图片放柔一点</span>
-    <span data-phrase="how.dense">，并且逐行都查了一遍</span>
+    <span data-phrase="how.local">一块一块算出来的阈值</span><span data-phrase="how.inverted">把深浅对调</span><span data-phrase="how.global">整张图共用一个阈值</span><span data-phrase="how.softened">先把图片放柔一点</span><span data-phrase="how.dense">，并且逐行都查了一遍</span>
 
     <span data-phrase="status.reading">正在读这张图&hellip;</span>
-    <span data-phrase="status.nothing">这张图里没找到码。需要整个符号连同白色留白都在画面里，光也要够，让深色方块真的是深的。</span>
-    <span data-phrase="status.broken">这个文件打不开成图片。</span>
-    <span data-phrase="status.looking">正在找&hellip;把码拿稳，让它占到画面一半左右。</span>
-    <span data-phrase="status.on">摄像头开着。什么都没有在录。</span>
+    <span data-phrase="status.nothing">这张图里没找到码。需要整个符号连同白色留白都在画面里，光也要够，让深色方块真的是深的。</span><span data-phrase="status.broken">这个文件打不开成图片。</span><span data-phrase="status.looking">正在找&hellip;把码拿稳，让它占到画面一半左右。</span><span data-phrase="status.on">摄像头开着。什么都没有在录。</span>
 
-    <span data-phrase="camera.denied">浏览器拒绝把摄像头给这一页。这是一个你可以改的权限：看看地址栏里那个摄像头图标。改成挑一张图片的话，什么权限都不需要。</span>
-    <span data-phrase="camera.none">这台机器上没找到摄像头。往上面丢一张照片或者截图，读法是一样的。</span>
-    <span data-phrase="camera.busy">摄像头是有的，但被别的东西占着。把占着它的那个关掉——一般是视频通话——再试一次。</span>
-    <span data-phrase="camera.insecure">浏览器只把摄像头交给用 https 提供的页面，而这一页眼下不是。</span>
-    <span data-phrase="camera.unsupported">这个浏览器里没有网页可以去要的摄像头接口。这里其余的东西照样能用。</span>
-    <span data-phrase="camera.failed">摄像头没能启动，浏览器也没说为什么。</span>
+    <span data-phrase="camera.denied">浏览器拒绝把摄像头给这一页。这是一个你可以改的权限：看看地址栏里那个摄像头图标。改成挑一张图片的话，什么权限都不需要。</span><span data-phrase="camera.none">这台机器上没找到摄像头。往上面丢一张照片或者截图，读法是一样的。</span><span data-phrase="camera.busy">摄像头是有的，但被别的东西占着。把占着它的那个关掉——一般是视频通话——再试一次。</span><span data-phrase="camera.insecure">浏览器只把摄像头交给用 https 提供的页面，而这一页眼下不是。</span><span data-phrase="camera.unsupported">这个浏览器里没有网页可以去要的摄像头接口。这里其余的东西照样能用。</span><span data-phrase="camera.failed">摄像头没能启动，浏览器也没说为什么。</span>
 
-    <span data-phrase="live.clean">你的图片哪儿也没去。一共加载了 {total} 个文件，全是这一页自己的。</span>
-    <span data-phrase="live.dirty">有东西联系了 {hosts}，这是这个工具从来不做的事。值得去查一查。</span>
-    <span data-phrase="live.platform">这一页自己的广告、统计和捐助按钮脚本从 {count} 台主机加载；它们谁也没拿到一张图片、一帧画面，或者某个码里写着的一个字。</span>
+    <span data-phrase="live.clean">你的图片哪儿也没去。一共加载了 {total} 个文件，全是这一页自己的。</span><span data-phrase="live.dirty">有东西联系了 {hosts}，这是这个工具从来不做的事。值得去查一查。</span><span data-phrase="live.platform">这一页自己的广告、统计和捐助按钮脚本从 {count} 台主机加载；它们谁也没拿到一张图片、一帧画面，或者某个码里写着的一个字。</span>
   </div>
 </main>

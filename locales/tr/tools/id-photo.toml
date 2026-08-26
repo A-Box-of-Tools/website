@@ -51,7 +51,7 @@ card = """
             KB aralığına sıkıştırır."""
 
 [words]
-plural = "fotoğraflar"
+plural = "fotoğraflarınız"
 choose = "bir fotoğraf"
 
 [[facts]]

@@ -44,7 +44,7 @@ card = """
             herhangi birini düzenleyin ya da tek tıklamayla hepsini silin."""
 
 [words]
-plural = "fotoğraflar"
+plural = "fotoğraflarınız"
 choose = "bir fotoğraf"
 
 [[facts]]

@@ -53,7 +53,7 @@ card = """
             hâlde."""
 
 [words]
-plural = "fotoğraflar"
+plural = "fotoğraflarınız"
 choose = "bir fotoğraf"
 
 [[facts]]

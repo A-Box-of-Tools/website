@@ -240,7 +240,7 @@ features = [
   "Retire l'EXIF, le GPS, le XMP, l'IPTC, les commentaires et la vignette incorporée d'un clic",
   "JPEG, PNG et WebP",
   "Ne réécrit que le conteneur, si bien que l'image n'est jamais recompressée",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

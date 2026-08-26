@@ -67,8 +67,8 @@
           <button type="button" data-aspect="16:9">16:9</button>
           <button type="button" data-aspect="4:3">4:3</button>
           <button type="button" data-aspect="3:2">3:2</button>
-          <button type="button" id="swap-aspect" class="ghost" title="把鎖定的比例橫豎對調">
-            橫豎對調
+          <button type="button" id="swap-aspect" class="ghost" title="把鎖定的比例橫直對調">
+            橫直對調
           </button>
         </div>
 
@@ -152,7 +152,7 @@
         <label>最長邊<input type="number" id="size-longest" min="1" step="1" value="1920"></label>
       </div>
       <p class="hint-line">
-        哪邊長哪邊就變成這個數，另一邊跟著走。同一批裡的豎構圖和橫構圖，長邊就都一樣大了，相簿通常要的就是這個。
+        哪邊長哪邊就變成這個數，另一邊跟著走。同一批裡的直幅構圖和橫幅構圖，長邊就都一樣大了，相簿通常要的就是這個。
       </p>
       <div class="presets" id="longest-presets" role="group" aria-label="常用長邊">
         <button type="button" class="ghost" data-longest="640">640</button>
@@ -177,8 +177,7 @@
     <label class="check" id="enlarge-row">
       <input type="checkbox" id="no-enlarge" checked>
       <span>
-        <strong>絕不把圖片放大</strong>
-        <span class="check-note">放大是在編造當初根本沒拍到的畫素，所以一張小圖硬要撐到大尺寸，出來只會更糊，不會更清楚。開著這個，本來就比你要的尺寸小的圖，就按它自己的尺寸留著。
+        <strong>絕不把圖片放大</strong><span class="check-note">放大是在編造當初根本沒拍到的畫素，所以一張小圖硬要撐到大尺寸，出來只會更糊，不會更清楚。開著這個，本來就比你要的尺寸小的圖，就按它自己的尺寸留著。
         </span>
       </span>
     </label>

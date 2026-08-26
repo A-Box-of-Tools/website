@@ -13,7 +13,7 @@ heading = "Recadrer&nbsp;une&nbsp;vidéo <span class=\"h1-kw\">&mdash; recadrer 
 tagline = "Ramener un clip à ce qui compte dedans."
 
 title = "Recadrer une vidéo en ligne &mdash; gratuit, sans envoi, hors ligne"
-description = "Recadrez un MP4, un MOV ou un WebM dans la forme que vous voulez : carré, 9:16, ou un cadre en pixels exact. Tout se passe dans votre navigateur, le son est gardé et rien n'est envoyé."
+description = "Recadrez un MP4, un MOV ou un WebM dans la forme que vous voulez&nbsp;: carré, 9:16, ou un cadre en pixels exact. Tout se passe dans votre navigateur, le son est gardé et rien n'est envoyé."
 og_title = "Recadreur de vidéos &mdash; recadrer un clip sans l'envoyer"
 og_description = "Tracez un cadre sur votre clip et recadrez-le dans la forme que vous voulez. Les images sont décodées et réencodées sur votre propre machine, et le son d'origine est repris intact."
 og_image_alt = "Recadreur de vidéos - recadrer un clip dans votre navigateur, sans rien envoyer"
@@ -234,14 +234,14 @@ a = """
         finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
 
 [schema]
-browser_requirements = "Nécessite JavaScript. La sortie MP4 demande un navigateur avec WebCodecs ; les autres se rabattent sur un enregistrement WebM."
-description = "Recadrez une vidéo dans n'importe quelle forme ou dans un cadre en pixels exact, depuis le navigateur. Les MP4, MOV et M4V sont décodés et réencodés image par image, avec l'audio d'origine repris intact ; tout ce que le navigateur sait jouer est recadré par enregistrement. Rien n'est envoyé."
+browser_requirements = "Nécessite JavaScript. La sortie MP4 demande un navigateur avec WebCodecs&nbsp;; les autres se rabattent sur un enregistrement WebM."
+description = "Recadrez une vidéo dans n'importe quelle forme ou dans un cadre en pixels exact, depuis le navigateur. Les MP4, MOV et M4V sont décodés et réencodés image par image, avec l'audio d'origine repris intact&nbsp;; tout ce que le navigateur sait jouer est recadré par enregistrement. Rien n'est envoyé."
 features = [
   "Recadre des vidéos MP4, MOV, M4V et WebM",
   "Sources H.264, HEVC, AV1 et VP9, décodées par WebCodecs",
   "Recadrage libre, proportions verrouillées (1:1, 4:5, 9:16, 16:9, 4:3, 3:2) ou cadre en pixels exact",
   "Garde l'audio d'origine sans le réencoder",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

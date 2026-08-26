@@ -45,7 +45,7 @@ card = """
             kutusu ve bir biçim değişikliğiyle. Tek bir resim ya da bir klasör."""
 
 [words]
-plural = "görseller"
+plural = "görselleriniz"
 choose = "bir görsel"
 
 [[facts]]

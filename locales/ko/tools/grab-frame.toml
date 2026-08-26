@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "동영상"
-choose = "동영상 하나"
+choose = "동영상 하나를"
 analytics_extra = """, 프레임도
   타임코드도 그림도"""
 

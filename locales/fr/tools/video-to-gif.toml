@@ -243,14 +243,14 @@ a = """
         finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
 
 [schema]
-browser_requirements = "Nécessite JavaScript. Le MP4 et le MOV demandent un navigateur avec WebCodecs ; tout ce que le navigateur sait jouer fonctionne sans."
+browser_requirements = "Nécessite JavaScript. Le MP4 et le MOV demandent un navigateur avec WebCodecs&nbsp;; tout ce que le navigateur sait jouer fonctionne sans."
 description = "Convertissez un passage d'une vidéo en GIF animé, dans le navigateur. Les images sont échantillonnées à la cadence choisie, une seule palette de 256 couleurs est choisie pour toute l'animation par coupe médiane, et chaque image n'est écrite que sur la région qui a changé. Rien n'est envoyé."
 features = [
   "Convertit des vidéos MP4, MOV, M4V et WebM en GIF animé",
   "Sources H.264, HEVC, AV1 et VP9, décodées par WebCodecs",
   "Marquez le passage sur une ligne de temps, ou tapez des temps exacts",
   "N'importe quelle largeur, de 5 à 25 images par seconde, tramage ordonné facultatif",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

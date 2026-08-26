@@ -41,7 +41,7 @@ card = """
 
 [words]
 plural = "GIF"
-choose = "GIF 한 개"
+choose = "GIF 한 개를"
 analytics_extra = """, 파일 속
   프레임도 팔레트도 주석도"""
 

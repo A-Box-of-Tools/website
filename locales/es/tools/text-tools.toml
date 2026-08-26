@@ -45,7 +45,7 @@ card = """
             entregárselo a nadie."""
 
 [words]
-plural = "texto y código"
+plural = "textos y códigos"
 choose = "un archivo"
 analytics_extra = """, ni ninguno de los
   lenguajes, codificaciones o diferencias que esta herramienta calcula"""

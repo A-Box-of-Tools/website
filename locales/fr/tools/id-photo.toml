@@ -349,7 +349,7 @@ a = """
 description = "Faites une photographie de passeport, de visa ou d'identité selon la spécification publiée d'un pays, dans le navigateur. L'outil applique la taille d'impression, les DPI, la fourchette de hauteur de tête, la ligne des yeux et la couleur de fond du document choisi, affiche et mesure chacun en direct, contrôle le fond, met en page une planche 10x15 imprimable avec repères de coupe, et écrit un fichier d'envoi à la taille en pixels imposée, dans la fourchette en Ko du portail. Rien n'est envoyé."
 features = [
   "Un recueil de spécifications publiées, chacune nommant son autorité et sa date de relevé",
-  "La géométrie du Doc 9303 de l'OACI : hauteur de tête en fraction du cadre, et ligne des yeux au-dessus du bord inférieur",
+  "La géométrie du Doc 9303 de l'OACI&nbsp;: hauteur de tête en fraction du cadre, et ligne des yeux au-dessus du bord inférieur",
   "Un cadre de recadrage verrouillé à la forme de la spécification, avec la bande des yeux et celle du menton tracées dedans",
   "Sommet du crâne, menton et les deux pupilles trouvés d&rsquo;après le contour de la tête et le sombre des yeux, sans modèle livré et sans rien récupérer",
   "Les quatre restent déplaçables, la page disant lesquels ont été mesurés et lesquels déduits",
@@ -359,7 +359,7 @@ features = [
   "Une planche 10 x 15, 13 x 18, A4 ou Letter, pavée avec repères de coupe dans les intervalles et rien par-dessus une image",
   "Un fichier d'envoi à la taille en pixels imposée, calibré sur la fourchette en Ko du portail aux deux extrémités",
   "Photos de formulaire SSC et UPSC en 200 x 230 entre 20 et 50 Ko, et signatures en 140 x 60 entre 10 et 20 Ko",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans modèle de visage",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans modèle de visage",
 ]
 
 [picker]
