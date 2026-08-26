@@ -1,0 +1,11 @@
+<!--
+  This language's Atom feed, so a reader that finds any page of the site can
+  subscribe from it without being told where to look.
+
+  Root-absolute and per language, the same shape as the canonical above: a
+  German page offers the German feed, and the two never cross. A locale that
+  has not finished its frame has no feed built for it and no line here either -
+  the same rule the hreflang set and the sitemap follow, for the same reason.
+-->
+{% if feed_href %}<link rel="alternate" type="application/atom+xml" title="{{ feed_title | e }}" href="{{ feed_href }}">
+{% endif %}

@@ -20,6 +20,7 @@ import re
 import subprocess
 import tempfile
 import unittest
+import xml.etree.ElementTree as ElementTree
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -933,6 +934,77 @@ class BuildTheSite(unittest.TestCase):
             slug = name[:-len('index.html')]
             with self.subTest(page=slug):
                 self.assertNotIn(f'<loc>{site["domain"]}{slug}</loc>', sitemap)
+
+    def test_every_published_language_has_a_feed_and_no_other_does(self):
+        """The fourth thing built from i18n.published, held to the same rule.
+
+        A feed for a language nobody is told about would be a way back into the
+        half-translated pages that the sitemap, the hreflang set and the
+        switcher all exist to keep out - and a quieter one, because a feed
+        reader keeps the URL after the site stops offering it.
+        """
+        feeds = {name for name in self.written if name.endswith('feed.xml')}
+        for locale in buildmod.i18n.published(self.locales):
+            with self.subTest(lang=locale['lang']):
+                self.assertIn(f'{locale["prefix"]}feed.xml', feeds)
+        for lang in self.unfinished:
+            with self.subTest(lang=lang):
+                self.assertNotIn(f'{lang}/feed.xml', feeds)
+
+    def test_a_feed_is_well_formed_and_stays_in_its_own_language(self):
+        """Two failures at once, because they have the same cause.
+
+        A feed is XML that nothing in this build parses, so a stray character
+        in a title would ship and only break in the reader - and every title
+        here comes from a TOML file where an author may well write an ampersand.
+        The second half is the one that would be embarrassing: a German
+        subscriber sent to English pages. Both come of assembling entries by
+        hand, so both are checked on the built files rather than on the values
+        that went into them.
+        """
+        atom = '{http://www.w3.org/2005/Atom}'
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        for locale in buildmod.i18n.published(self.locales):
+            home = buildmod.i18n.locale_url(locale, '', site)
+            with self.subTest(lang=locale['lang']):
+                feed = ElementTree.parse(
+                    self.out / locale['prefix'] / 'feed.xml').getroot()
+                entries = feed.findall(f'{atom}entry')
+                self.assertTrue(entries, 'a feed with no entries in it')
+                for entry in entries:
+                    link = entry.find(f'{atom}link').get('href')
+                    self.assertTrue(
+                        link.startswith(home),
+                        f'{locale["lang"]} feed points outside its language: {link}')
+
+    def test_every_page_offers_the_feed_of_its_own_language(self):
+        """A file nothing links to is a file nobody subscribes to.
+
+        And the language has to match: the German pages offering the English
+        feed would be the hreflang mistake again, in a place no crawler reports.
+        """
+        for locale in buildmod.i18n.published(self.locales):
+            expected = f'href="/{locale["prefix"]}feed.xml"'
+            pages = [name for name in self.written
+                     if name.endswith('index.html')
+                     and name.startswith(locale['prefix'])
+                     and self.locale_of(name) == locale['prefix']]
+            self.assertTrue(pages, f'no pages built for {locale["lang"]}')
+            for name in pages:
+                with self.subTest(page=name):
+                    text = (self.out / name).read_text(encoding='utf-8')
+                    self.assertIn(expected, text)
+
+    def locale_of(self, name):
+        """The locale prefix a built page sits under, '' for English.
+
+        Worked out from the tree rather than from the locale list, so that a
+        page under a slug that merely begins with a language's letters is not
+        mistaken for a page in that language.
+        """
+        head = name.split('/', 1)[0]
+        known = {locale['lang'] for locale in self.locales}
+        return f'{head}/' if head in known else ''
 
     def test_an_unfinished_language_is_never_offered(self):
         """The other two of the three: no page anywhere points at it.

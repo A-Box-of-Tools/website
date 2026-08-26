@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ feed.lang }}">
+  <title type="html">{{ feed.title | e }}</title>
+  <subtitle type="html">{{ feed.subtitle | e }}</subtitle>
+  <id>{{ feed.home }}</id>
+  <link rel="self" type="application/atom+xml" href="{{ feed.self }}"/>
+  <link rel="alternate" type="text/html" href="{{ feed.home }}"/>
+  <updated>{{ feed.updated }}</updated>
+  <author>
+    <name>{{ feed.author | e }}</name>
+    <uri>{{ feed.home }}</uri>
+  </author>
+{% for entry in feed.entries %}  <entry>
+    <title type="html">{{ entry.title | e }}</title>
+    <id>{{ entry.url }}</id>
+    <link rel="alternate" type="text/html" href="{{ entry.url }}"/>
+    <updated>{{ entry.updated }}</updated>
+    <summary type="html">{{ entry.summary | e }}</summary>
+  </entry>
+{% endfor %}</feed>
