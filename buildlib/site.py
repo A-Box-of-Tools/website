@@ -545,19 +545,30 @@ def picker_csp(tool):
     return {'img-src': ['http:']}
 
 
-def cache_hash(paths, extra=()):
+def cache_hash(named, extra=()):
     """A short digest of everything the service worker caches, used as its cache
     name. It changes exactly when one of the cached files changes, which is what
     the old hand-bumped version number was trying and regularly failing to do.
 
-    `extra` is for a cached file that is not on disk when this runs. The site
-    stylesheet is the one: it is the same bytes in every language and is written
-    once, after the languages are built, so the hub's worker hashes the text it
-    is going to be rather than a file that is not there yet."""
+    `named` is (name, text-or-bytes) pairs: the files as emitted, handed over
+    as the strings the build just wrote rather than read back off the disk.
+    This used to take paths and re-open every one - files it had itself
+    written moments earlier - and on a machine whose antivirus taxes each
+    open, that reading was a measurable slice of the whole build.
+
+    Only the last segment of a name reaches the digest, because that is what
+    hashing Path.name always did, and the digest's recipe is the deployed
+    cache names: changing it would rename every cache on the site in one
+    deploy for no visitor-visible reason. The sort on it is stable, so pairs
+    sharing a basename keep the order the caller gave them.
+
+    `extra` is for a cached file whose bytes belong to the site rather than
+    the page: the hub's worker hashes the shared stylesheet this way, with no
+    name in front, as it always has - see the recipe point above."""
     digest = hashlib.sha256()
-    for path in sorted(paths, key=lambda p: p.name):
-        digest.update(path.name.encode('utf-8'))
-        digest.update(path.read_bytes())
+    for name, data in sorted(named, key=lambda pair: pair[0].rpartition('/')[2]):
+        digest.update(name.rpartition('/')[2].encode('utf-8'))
+        digest.update(data if isinstance(data, bytes) else data.encode('utf-8'))
     for text in extra:
         digest.update(text.encode('utf-8'))
     return digest.hexdigest()[:10]

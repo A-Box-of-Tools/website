@@ -716,10 +716,12 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     src_dir = tool['dir'] / 'src'
     assets = tool_assets(tool)
 
+    emitted = []
     for name, path in assets:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)
-        emit.js(dest / name, path.read_text(encoding='utf-8'),
-                where=f'{locale["prefix"]}{tool["out_slug"]}/{name}')
+        emitted.append((name, emit.js(
+            dest / name, path.read_text(encoding='utf-8'),
+            where=f'{locale["prefix"]}{tool["out_slug"]}/{name}')))
 
     for extra in sorted(src_dir.iterdir()):
         if extra.is_file() and extra.suffix != '.js':
@@ -783,7 +785,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'network permission the importer needs, but body.html never includes '
             '{% include "partials/url-import.html" %}. Add it, or drop [picker.urls].')
 
-    emit.html(dest / 'index.html', templates.render(
+    page = emit.html(dest / 'index.html', templates.render(
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
             'guide': guide,
@@ -801,9 +803,9 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'body': body,
         })))
 
-    write(dest / 'styles.css', css)
+    css = write(dest / 'styles.css', css)
 
-    emit.js(dest / 'analytics.js', templates.render('analytics.js', {
+    analytics = emit.js(dest / 'analytics.js', templates.render('analytics.js', {
         'site': root,
         'words': tool['words'],
     }), where=f'{locale["prefix"]}{tool["out_slug"]}/analytics.js')
@@ -813,22 +815,26 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     # the app the German page installs is called what the German page calls it,
     # and it is scoped to this folder - the front page has its own, scoped to the
     # language root, and build_hub says how the two sit together.
-    write(dest / 'manifest.json',
-          sitelib.app_manifest(root, tool['url'], tool['name'], tool['tagline'],
-                               locale['dir'], root['manifest']['tool_icons']))
+    manifest = write(dest / 'manifest.json',
+                     sitelib.app_manifest(root, tool['url'], tool['name'],
+                                          tool['tagline'], locale['dir'],
+                                          root['manifest']['tool_icons']))
 
     # The service worker caches './', its own src/*.js, analytics.js and the
-    # manifest. The list is read off the disk rather than written down, so a new
-    # module is cached the moment it exists.
+    # manifest. The list is derived from what was just emitted rather than
+    # written down, so a new module is cached the moment it exists.
     #
     # Hashed from the files as emitted, not as authored: minifying changes the
     # bytes a browser receives, so turning it on or off has to invalidate the
     # cache. Hashing the sources instead would leave a visitor holding the old
-    # copy of a file that had genuinely changed.
-    cached = ([dest / 'index.html', dest / 'styles.css', dest / 'analytics.js',
-               dest / 'manifest.json']
-              + [dest / name for name, _ in assets]
-              + [dest / name for name in vendored])
+    # copy of a file that had genuinely changed. The texts are the returns of
+    # the writes above - the same bytes the files hold - so nothing written a
+    # moment ago is opened again just to be hashed. The vendored files were
+    # never emitted, only copied, so theirs are read from where they live.
+    cached = ([('index.html', page), ('styles.css', css),
+               ('analytics.js', analytics), ('manifest.json', manifest)]
+              + emitted
+              + [(name, (tool['dir'] / name).read_bytes()) for name in vendored])
     emit.js(dest / 'sw.js', templates.render('sw.js', {
         'words': tool['words'],
         'assets': (['index.html', css_href, 'manifest.json']
@@ -1107,9 +1113,9 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     context['ui'] = i18n.render_ui(templates, root['ui'], context,
                                    f'ui [{locale["lang"]}]')
 
-    emit.html(out / 'index.html', templates.render('hub.html', context))
+    page = emit.html(out / 'index.html', templates.render('hub.html', context))
 
-    emit.js(out / 'analytics.js', templates.render('analytics.js', {
+    analytics = emit.js(out / 'analytics.js', templates.render('analytics.js', {
         'site': root,
         'words': {'plural': 'files', 'analytics_extra': ''},
     }), where=f'{locale["prefix"]}analytics.js')
@@ -1118,19 +1124,22 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
     # an app called "A Box of Tools"; the description and the language tag are
     # this language's. `home` is this language's front door rather than the
     # site's, which is what keeps the German app from opening the English page.
-    write(out / 'manifest.json',
-          sitelib.app_manifest(root, root['home'], site['name'],
-                               root['hub']['og_description'], locale['dir'],
-                               root['manifest']['icons']))
+    manifest = write(out / 'manifest.json',
+                     sitelib.app_manifest(root, root['home'], site['name'],
+                                          root['hub']['og_description'],
+                                          locale['dir'],
+                                          root['manifest']['icons']))
 
-    # site.css is hashed as text rather than read off the disk: one copy is
-    # written per language at the end of the build, which has not happened yet.
+    # site.css goes in as `extra`: one copy of it is written per language at
+    # the end of the build, which has not happened yet, and it has always been
+    # hashed nameless - see cache_hash on why that must not change.
     emit.js(out / 'sw.js', templates.render('sw.js', {
         'words': {'plural': 'files'},
         'assets': ['index.html', css_href, 'manifest.json'],
         'cache_scope': f'/{locale["prefix"]}',
         'cache_hash': sitelib.cache_hash(
-            [out / 'index.html', out / 'analytics.js', out / 'manifest.json'],
+            [('index.html', page), ('analytics.js', analytics),
+             ('manifest.json', manifest)],
             [site_css]),
     }), where=f'{locale["prefix"]}sw.js')
 
@@ -1582,9 +1591,14 @@ def copy_shared(out):
 
 def write(path, text):
     """Always LF, always UTF-8. A build that produced CRLF on Windows and LF in
-    CI would show every line of every file as changed on alternate deploys."""
-    path.write_text(text if text.endswith('\n') else text + '\n',
-                    encoding='utf-8', newline='\n')
+    CI would show every line of every file as changed on alternate deploys.
+
+    Returns the text as written - trailing newline included - so a caller that
+    goes on to hash what the file holds can hash this instead of opening the
+    file it just closed."""
+    text = text if text.endswith('\n') else text + '\n'
+    path.write_text(text, encoding='utf-8', newline='\n')
+    return text
 
 
 class Emitter:
@@ -1613,10 +1627,11 @@ class Emitter:
         self.css_banner = f' {verify} '
 
     def html(self, path, text):
-        write(path, minify.html(text, self.html_banner) if self.enabled else text)
+        return write(path, minify.html(text, self.html_banner)
+                     if self.enabled else text)
 
     def js(self, path, text, where):
-        write(path, self.js_text(text, where))
+        return write(path, self.js_text(text, where))
 
     def js_text(self, text, where):
         """Returns rather than writes, for the one script that is hashed before
