@@ -1,0 +1,392 @@
+#
+# DICOM Viewer - Portuguese.
+#
+# Overrides for tools/dicom-viewer/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Os nomes dos campos DICOM ficam em inglês e carregam o número - Pixel Spacing
+# (0028,0030), Series Instance UID (0020,000E). É assim que estão escritos no
+# arquivo e é assim que estão no padrão: quem procura um campo procura
+# exatamente essas palavras. O mesmo vale para as transfer syntaxes e para a
+# PS3.15.
+#
+# Nesta página a promessa do site tem o fio mais afiado de todas: o arquivo é um
+# prontuário com uma imagem dentro. As frases sobre o que está escrito nele são
+# traduzidas com o mesmo cuidado que as frases sobre onde ele não vai parar.
+#
+
+name = "Visualizador DICOM"
+heading = "Visualizador&nbsp;DICOM <span class=\"h1-kw\">&mdash; abra um exame .dcm no navegador</span>"
+tagline = "Tomografia, ressonância, raio X e ultrassom, com a janela, o cabeçalho e as medidas."
+
+title = "Visualizador DICOM &mdash; abra um arquivo .dcm no navegador, sem enviar nada"
+description = "Abra exames de tomografia, ressonância, raio X e ultrassom no navegador. Janela e nível, percorra uma série inteira, meça em milímetros, leia cada tag DICOM e veja exatamente o que no arquivo identifica o paciente. Nada é enviado."
+og_title = "Visualizador DICOM &mdash; abra um exame sem enviá-lo"
+og_description = "Um arquivo .dcm aberto na sua própria máquina: janela e nível, a série inteira empilhada na ordem certa, medidas em milímetros e cada tag do cabeçalho. Sem envio, sem conta."
+og_image_alt = "Visualizador DICOM - abra uma tomografia, ressonância ou raio X no navegador"
+
+pledge = """
+    O exame é aberto e decodificado pelo seu próprio navegador: o cabeçalho, os
+    pixels, a janela, as medidas. Do outro lado desta página não existe servidor
+    algum para receber dados de saúde, nem se algo aqui quisesse mandar, e nada
+    sobre o arquivo &mdash; nem o nome do paciente, nem o estudo, nem o nome do
+    arquivo &mdash; é contado a ninguém."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra as ferramentas do desenvolvedor, olhe a
+      aba Rede e abra um exame. Nenhuma requisição carrega uma imagem, uma tag ou
+      um nome de arquivo. Ou tire o cabo da internet e abra um mesmo assim."""
+
+read_first = """
+, <code>src/dicom.js</code> para o parser que
+      percorre o arquivo, <code>src/pixels.js</code> para a decodificação dos
+      pixels, <code>src/jpeg-lossless.js</code> para o codec que a maioria dos
+      hospitais usa ao exportar, e <code>src/window.js</code> para a janela e o
+      nível &mdash; e em nenhum deles existe uma linha capaz de alcançar a
+      rede."""
+
+howto_heading = "Como abrir um arquivo DICOM"
+
+card = """
+            Abra uma tomografia, ressonância, raio X ou ultrassom na sua própria
+            máquina. Ajuste janela e nível, percorra a série inteira, meça em
+            milímetros e leia cada tag do cabeçalho."""
+
+[words]
+plural = "exames"
+choose = "um exame"
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[facts]]
+text = "Os arquivos ficam no seu dispositivo"
+
+[[privacy]]
+title = "O seu exame não tem para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todos os endereços que esta página pode
+      contatar, e nenhum deles pertence a este site. Não existe aqui um endpoint
+      onde o seu arquivo pudesse ser recolhido, e não existe no código nada que o
+      enviasse se existisse. Antes estava escrito <code>connect-src 'none'</code>,
+      que era absoluto; acrescentar publicidade custou isso, e dizê-lo faz parte do
+      acordo."""
+
+[[privacy]]
+title = "Aqui isso pesa mais do que nas outras páginas."
+body = """
+
+      Um arquivo DICOM não é uma imagem com alguns metadados. É um prontuário com
+      uma imagem dentro: o nome do paciente, a data de nascimento, o número do
+      prontuário, o número do pedido, o médico solicitante, a instituição e o
+      número de série do aparelho são todos campos do cabeçalho, e viajam com o
+      arquivo para onde quer que ele vá. Enviar um para um site só para olhá-lo
+      significa entregar tudo isso a quem administra o site. É exatamente o que
+      esta página existe para não fazer."""
+
+[[privacy]]
+title = "O leitor são catorze arquivos neste repositório."
+body = """
+ Nada aqui usa uma
+      biblioteca buscada em outro lugar. <code>src/dicom.js</code> percorre o
+      arquivo, <code>src/dictionary.js</code> sabe como as tags se chamam,
+      <code>src/pixels.js</code> devolve os bytes à condição de medidas,
+      <code>src/rle.js</code> e <code>src/jpeg-lossless.js</code> expandem as duas
+      formas comprimidas que esta página sabe decodificar, e
+      <code>src/window.js</code> mapeia o que foi medido nos cinzas da sua
+      tela."""
+
+[[privacy]]
+title = "Os identificadores estão listados para você, e para mais ninguém."
+body = """
+
+      A página imprime todos os campos do seu arquivo que nomeiam ou estreitam a
+      pessoa de quem é o exame, porque essa é a pergunta que precisa de resposta
+      para quem está prestes a compartilhar um corte, e nenhum visualizador
+      responde. Fica na tela à sua frente e não vai a lugar nenhum: não existe
+      neste repositório um evento de analytics que carregue qualquer parte disso, e
+      a página não conseguiria enviá-lo mesmo que existisse."""
+
+[[privacy]]
+title = "Ele lê. Ele não escreve."
+body = """
+ Não existe aqui um botão que
+      altere o seu arquivo, nem código que pudesse fazê-lo. O que você pode levar é
+      um PNG da imagem na tela e uma cópia do cabeçalho em texto, ambos montados na
+      página a partir do que já está nela. O seu original continua intacto no seu
+      disco, o que é também a resposta honesta para o que acontece se você fechar a
+      aba."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não recebe."
+body = """
+ Os scripts de
+      publicidade e medição vêm do Google. Nenhum dos dois recebe nada sobre o seu
+      arquivo: nem os pixels, nem uma miniatura, nem um nome, uma tag, um paciente
+      ou um nome de arquivo. Cada linha que lê, decodifica ou desenha um exame é
+      servida desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "O que o botão de doação carrega, e o que não recebe."
+body = """
+
+      O botão &ldquo;Buy me a coffee&rdquo; no topo é desenhado por um script de
+      cdnjs.buymeacoffee.com e busca as letras no Google Fonts. É um link e nada
+      mais: não relata visita alguma, e não recebe nada sobre você nem sobre os
+      seus arquivos. Nada acontece a menos que você clique, e para onde você iria
+      ao clicar é o site de outra pessoa."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desconecte da rede e todas as partes desta
+      página continuam funcionando. É a prova mais simples de todas: uma ferramenta
+      que mandasse o seu exame para ser desenhado em outro lugar pararia no
+      instante em que você tirasse o cabo."""
+
+[[howto]]
+title = "Escolha os arquivos."
+body = """
+ Um arquivo <code>.dcm</code>, ou a
+      pasta inteira do disco &mdash; uma tomografia ou uma ressonância é um arquivo
+      por corte, e arrastar todos de uma vez é o que remonta a série. Os arquivos
+      são lidos direto do seu disco pelo navegador; nada é enviado a lugar nenhum
+      enquanto você faz isso."""
+
+[[howto]]
+title = "Escolha a série."
+body = """
+ Um estudo costuma trazer várias: o
+      escanograma e depois cada aquisição. Cada uma é empilhada na ordem em que o
+      aparelho a registrou, deduzida de onde cada corte está no corpo e não da
+      numeração, que nem sempre corre no mesmo sentido."""
+
+[[howto]]
+title = "Ajuste a janela."
+body = """
+ É o controle que deixa um exame
+      legível, e é o que um editor de imagens não tem. Arraste sobre a imagem para
+      alargar a janela e para cima ou para baixo para deslocar o centro, ou escolha
+      uma das janelas com nome &mdash; pulmão, osso, cérebro, partes moles &mdash;
+      numa tomografia, onde as unidades são as mesmas em qualquer aparelho do
+      mundo."""
+
+[[howto]]
+title = "Percorra a pilha."
+body = """
+ O controle deslizante abaixo da
+      imagem anda pelos cortes, e as setas do teclado fazem o mesmo depois que você
+      clica na imagem. Um arquivo com vários quadros &mdash; um laço de ultrassom,
+      uma angiografia &mdash; toca com o botão ao lado."""
+
+[[howto]]
+title = "Meça alguma coisa."
+body = """
+ Passe para Medir e arraste uma
+      linha. Onde o arquivo diz a que distância estão os seus pixels, a resposta
+      vem em milímetros e leva em conta pixels que não são quadrados; onde o
+      arquivo não diz, a resposta vem em pixels e avisa, em vez de inventar uma
+      escala."""
+
+[[howto]]
+title = "Leia o cabeçalho."
+body = """
+ Cada elemento do arquivo, com o seu
+      número, o nome que o padrão lhe dá e o que ele guarda, pesquisável. Acima
+      dele, a lista do que neste arquivo em particular identifica o paciente
+      &mdash; que é bem mais do que o nome."""
+
+[[howto]]
+title = "Leve o que precisar."
+body = """
+ A imagem na tela como PNG, com a
+      janela que você ajustou e sem nada gravado por cima, ou o cabeçalho inteiro
+      em texto simples. Os dois são montados na página a partir do que já está
+      lá."""
+
+[[faq]]
+q = "O meu exame é enviado para algum lugar?"
+a = """
+        Não. O arquivo é lido, decodificado e desenhado pelo seu próprio navegador
+        no seu próprio hardware. Esta ferramenta não tem lado servidor, e a
+        <code>Content-Security-Policy</code> da página lista todos os endereços que
+        ela pode contatar &mdash; nenhum deles pertence a este site. Tire o cabo da
+        rede e ele continua abrindo exames.
+        <br><br>
+        Isso vale mais aqui do que em qualquer outra página deste site. Um arquivo
+        DICOM carrega no cabeçalho o nome do paciente, a data de nascimento e o
+        número do prontuário, então enviar um para um visualizador significa
+        entregar a um estranho um prontuário, e não uma imagem."""
+
+[[faq]]
+q = "Quais arquivos DICOM ele consegue abrir?"
+a = """
+        Arquivos não comprimidos em qualquer uma das três transfer syntaxes básicas
+        &mdash; implicit e explicit little endian, e a big endian já retirada
+        &mdash; além de deflated, RLE Lossless, JPEG baseline e JPEG Lossless, que é
+        como está comprimida a maioria dos estudos de tomografia e ressonância num
+        disco de hospital.
+        <br><br>
+        Ele não decodifica JPEG 2000, JPEG-LS, nem as sintaxes MPEG e HEVC usadas
+        para vídeo. Essas exigem codecs que são megabytes de biblioteca compilada, e
+        uma página que buscasse um deles quando desse na telha não seria uma página
+        que funciona offline. Um arquivo em uma dessas abre do mesmo jeito: o
+        cabeçalho inteiro é lido e mostrado, e no lugar da imagem aparece uma linha
+        nomeando o codec, em vez de um ícone de imagem quebrada que não diz nada."""
+
+[[faq]]
+q = "O que é &ldquo;janela e nível&rdquo;, e por que eu preciso disso?"
+a = """
+        Um corte de tomografia guarda cerca de quatro mil valores distintos e a sua
+        tela mostra duzentos e cinquenta e seis cinzas. A janela é a escolha de qual
+        fatia dessa faixa fica com todos eles: tudo abaixo é preto, tudo acima é
+        branco, e o que está no meio se espalha pelos cinzas.
+        <br><br>
+        É por isso que o mesmo arquivo parece um exame diferente sob dois ajustes, e
+        por que pulmão e osso não podem ser vistos ao mesmo tempo. Numa tomografia os
+        números são unidades Hounsfield, definidas em absoluto &mdash; a água é 0 e
+        o ar é &minus;1000 &mdash; então as janelas com nome nesta página são os
+        mesmos números que um radiologista usa na estação de trabalho. Numa
+        ressonância ou num ultrassom não existe escala assim, e a janela que abre é
+        aquela que o próprio arquivo pede."""
+
+[[faq]]
+q = "Por que ele diz que a minha medida está em pixels?"
+a = """
+        Porque aquele arquivo não diz qual é o tamanho de um pixel. Pixel Spacing
+        (0028,0030) é o campo que carrega isso, em milímetros, e muitíssimas imagens
+        de ultrassom, documentos digitalizados e secondary captures simplesmente não
+        o têm.
+        <br><br>
+        Onde ele existe, a medida vem em milímetros e cada eixo é medido com o seu
+        próprio espaçamento, o que importa nas imagens cujos pixels não são
+        quadrados. Onde não existe, a resposta honesta é uma contagem de pixels, e é
+        isso que ele diz, em vez de escolher uma escala e apresentar o resultado como
+        um comprimento."""
+
+[[faq]]
+q = "Ele abriu a minha pasta como várias séries. Por quê?"
+a = """
+        Porque é isso que há nela. Um estudo é feito de séries &mdash; o escanograma
+        e depois cada aquisição ou reconstrução &mdash; e cada arquivo declara a qual
+        pertence em Series Instance UID (0020,000E). O menu é montado a partir disso
+        e não da pasta, que normalmente tem todas misturadas numa única lista de
+        nomes.
+        <br><br>
+        Dentro de uma série os cortes são ordenados por onde cada um está no corpo,
+        deduzido de Image Position e Image Orientation. Instance Number é a chave
+        óbvia e é o recurso de reserva, não a primeira escolha: ele é atribuído por
+        seja lá o que tenha escrito os arquivos e não precisa correr no mesmo sentido
+        que o paciente."""
+
+[[faq]]
+q = "O que significa a lista &ldquo;o que identifica o paciente&rdquo;?"
+a = """
+        É cada campo do seu arquivo que nomeia a pessoa de quem é o exame, ou que
+        estreita quem ela poderia ser, lido deste arquivo na sua máquina. A lista vem
+        da PS3.15 do padrão DICOM &mdash; a parte que diz o que precisa sair antes de
+        um conjunto de dados poder ser chamado de desidentificado.
+        <br><br>
+        Ela está aí porque o que as pessoas erram não é achar que um exame tem um
+        nome dentro. É quanta coisa mais ele tem: a data de nascimento, o número do
+        pedido, o médico solicitante, a instituição, o número de série do aparelho e
+        os UIDs do estudo, que são chaves perfeitas de volta ao arquivo que o gerou.
+        Um exame de que só se apagou o nome não é anônimo.
+        <br><br>
+        Esta ferramenta apenas mostra. Ela não escreve nada e não altera nada, então
+        não consegue tirar nada disso."""
+
+[[faq]]
+q = "Ele consegue anonimizar um exame?"
+a = """
+        Não, e de propósito não finge que consegue. Esta página lê; não tem código
+        que escreva um arquivo DICOM. O que ela faz é dizer exatamente o que há no
+        seu, que é a parte difícil de descobrir e a parte sobre a qual as pessoas se
+        enganam.
+        <br><br>
+        Uma ferramenta que tira os identificadores é um trabalho à parte, com uma
+        régua bem mais alta &mdash; precisa reescrever o arquivo sem tocar nos
+        pixels, substituir os UIDs de forma coerente por um estudo inteiro e acertar
+        nos elementos privados em que alguns aparelhos escondem uma segunda cópia do
+        nome. Está no roteiro deste site, e não pregada num visualizador."""
+
+[[faq]]
+q = "Ele abre um arquivo sem a extensão .dcm, ou um arquivo danificado?"
+a = """
+        Sim para os dois. A extensão não é olhada: o que se verifica é o próprio
+        arquivo. Um conjunto de dados escrito sem o preâmbulo habitual de 128 bytes
+        &mdash; que é a cara de um exame puxado direto da rede &mdash; é lido
+        deduzindo a codificação a partir do primeiro elemento, e a página diz que foi
+        isso que ela fez.
+        <br><br>
+        Um arquivo que termina no meio é lido até onde vai. Tudo o que vem antes do
+        dano é mostrado, com uma nota dizendo em que byte ele parou. É justamente o
+        caso em que um visualizador é mais necessário, então jogar o arquivo inteiro
+        fora por causa dos últimos doze bytes seria o comportamento errado."""
+
+[[faq]]
+q = "Este é um visualizador diagnóstico?"
+a = """
+        Não. Não é um dispositivo médico, não passou por avaliação regulatória
+        alguma, e nada aqui deve ser usado para tomar uma decisão clínica. A sua tela
+        não é calibrada, o navegador não é uma cadeia de renderização validada, e
+        nenhuma das duas coisas se resolve de dentro de uma página web.
+        <br><br>
+        Para o que ele serve muito bem é todo o resto pelo qual se abre um exame:
+        conferir o que há num disco, tirar um corte para uma aula ou um artigo, ler
+        um cabeçalho, descobrir por que outro programa recusa o arquivo, e ver o que
+        um exame carrega sobre a pessoa de quem ele é."""
+
+[[faq]]
+q = "Ele altera o meu arquivo?"
+a = """
+        Não. Esta ferramenta apenas lê. Não há arquivo de saída, não há recodificação
+        e não há aqui um botão que escreva um DICOM &mdash; o que você pode baixar é
+        um PNG da imagem na tela e uma cópia do cabeçalho em texto simples. O seu
+        original continua intacto no seu disco."""
+
+[[faq]]
+q = "É grátis, e eu preciso de conta?"
+a = """
+        É grátis, e não há conta, nem login, nem teste. Não há limite de tamanho de
+        arquivo nem de quantos arquivos você abre, além da memória da sua própria
+        máquina. O site exibe publicidade, e é ela que o paga; os anunciantes não
+        recebem nada sobre o seu arquivo."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Sim. Carregue a página uma vez, depois desconecte da internet e ela continua
+        funcionando. É também a maneira mais simples de provar que nada é enviado:
+        uma ferramenta que mandasse o seu exame para ser desenhado em outro lugar
+        pararia no instante em que você tirasse o cabo."""
+
+[schema]
+description = "Abra exames DICOM (.dcm) no navegador: tomografia, ressonância, raio X e ultrassom, com janela e nível, uma série inteira empilhada na ordem certa, medidas em milímetros e cada tag do cabeçalho. Nada é enviado."
+features = [
+  "Abre tomografia, ressonância, raio X, ultrassom, PET e secondary capture",
+  "Janela e nível arrastando, digitando ou por um preset de tomografia com nome",
+  "Uma pasta inteira agrupada em séries e ordenada pela posição no corpo",
+  "Arquivos com vários quadros tocam em laço",
+  "Mede em milímetros, levando em conta pixels não quadrados",
+  "Lê o valor do pixel sob o cursor em unidades Hounsfield",
+  "Cada tag DICOM com nome e valor, pesquisável",
+  "Lista o que no arquivo identifica o paciente, segundo o perfil da PS3.15",
+  "Decodifica RLE, JPEG baseline e JPEG Lossless sem biblioteca embutida",
+  "Salva a imagem como PNG e o cabeçalho como texto simples",
+  "Funciona offline; sem envio, sem conta, sem alteração no seu arquivo",
+]
+
+[picker]
+title = "Arraste um exame para cá"
+hint = "ou clique para procurar &mdash; um arquivo .dcm, ou uma pasta inteira deles"

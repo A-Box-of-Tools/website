@@ -1,0 +1,20 @@
+#
+# Guia: tarjar um PDF para que o texto suma de verdade - Portuguese.
+#
+
+nav = "Tarjar um PDF"
+title = "Como tarjar um PDF para que o texto suma de verdade"
+description = "Uma tarja preta desenhada num leitor de PDF normalmente deixa as palavras embaixo dela, e copiar e colar as traz de volta na hora. O que uma tarjagem de verdade retira, os quatro lugares em que uma palavra se esconde fora da página, e como conferir um arquivo antes de mandá-lo."
+
+heading = "Como tarjar um PDF para que o texto suma de verdade"
+lede = """
+    Um retângulo preto sobre um nome e um nome que foi apagado são idênticos na
+    tela. Um dos dois sobrevive a ser selecionado e copiado. Esta é a diferença, os
+    lugares em que uma palavra se esconde e que não estão na página, e a conferência
+    de trinta segundos que lhe diz qual dos dois você tem."""
+
+updated = "25 de agosto de 2026"
+
+og_title = "Como tarjar um PDF para que o texto suma de verdade"
+og_description = "Por que uma tarja preta num leitor de PDF normalmente não é uma tarjagem, os quatro lugares em que uma palavra se esconde fora da página, e como conferir um arquivo antes de mandá-lo."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"
