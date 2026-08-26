@@ -1,0 +1,77 @@
+<main id="main">
+  <!-- Step 1 &mdash; which codec, and which way -->
+  <section class="card">
+    <h2><span class="step">1</span> 인코딩 고르기</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="codec">인코딩</label>
+        <select id="codec"></select>
+        <p class="field-note" id="codec-note"></p>
+      </div>
+
+      <div class="field">
+        <fieldset class="modes">
+          <legend>어느 방향으로</legend>
+          <label class="mode">
+            <input type="radio" name="direction" value="encode" checked>
+            <span><strong>인코딩</strong> 평문을 넣으면 인코딩된 것이 나옵니다.</span>
+          </label>
+          <label class="mode">
+            <input type="radio" name="direction" value="decode">
+            <span><strong>디코딩</strong> 인코딩된 것을 넣으면 평문이 나옵니다.</span>
+          </label>
+        </fieldset>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> 붙여 넣기</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">입력한 텍스트</label>
+          <span class="count" id="input-count">비어 있음</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="인코딩할 텍스트나 디코딩할 Base64를 여기에 붙여 넣으세요 - 또는 위에 파일을 놓으세요."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">예시로 해 보기</button>
+        <button type="button" id="clear" class="ghost danger">지우기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card">
+    <h2><span class="step">3</span> 결과 가져가기</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">아직 없습니다.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>복사</button>
+        <a id="download" class="ghost as-button" hidden download>내려받기</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+</main>

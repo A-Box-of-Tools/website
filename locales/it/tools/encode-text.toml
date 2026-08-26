@@ -1,0 +1,243 @@
+#
+# Codificatore e decodificatore Base64 - Italian.
+#
+# Overrides for tools/encode-text/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Codificatore e decodificatore Base64"
+heading = "Codificatore&nbsp;e&nbsp;decodificatore&nbsp;Base64 <span class=\"h1-kw\">&mdash; e URL, entità HTML, esadecimale ed escape</span>"
+tagline = "Base64, codifica percentuale, entità HTML, esadecimale ed escape con barra rovesciata, in entrambi i versi. Niente finisce incollato nel server di qualcun altro."
+
+title = "Codificare &amp; decodificare Base64 &mdash; URL, entità HTML, esadecimale &mdash; senza caricare niente"
+description = "Codifica e decodifica Base64 in entrambi gli alfabeti, codifica URL in percentuale, fai l'escape delle entità HTML e leggi esadecimale ed escape con barra rovesciata. Gira tutto nel tuo browser e non viene caricato niente: un token non lascia mai il tuo dispositivo."
+og_title = "Decodifica Base64 senza incollarlo in un server"
+og_description = "Un codificatore e decodificatore che gira sul tuo dispositivo. Base64 in entrambi gli alfabeti, URL, entità HTML, esadecimale ed escape; e quello che incolli non va da nessuna parte."
+og_image_alt = "Codificatore e decodificatore Base64 - in entrambi i versi, senza caricare niente"
+
+pledge = """
+    Ogni codifica qui è aritmetica su una stringa, fatta qui, in questa pagina.
+    I codec sono scritti a mano e stanno in <code>src/encode.js</code>; e non
+    c'è altro. Questo strumento non ha nessuna funzione di rete, niente da
+    scaricare e niente da mandare, e qui conta più che quasi ovunque: quello che
+    la gente incolla in un decodificatore Base64 online è un token, e incollare
+    un token nel sito di qualcun altro vuol dire consegnarglielo."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e decodifica qualcosa. Non c'è una sola richiesta che
+      porti con sé un carattere di quello che hai incollato. Oppure stacca la
+      connessione e decodificalo lo stesso."""
+
+read_first = """
+ e <code>src/encode.js</code> per il
+      Base64 verificato contro i vettori di prova della RFC&nbsp;4648 invece che
+      contro sé stesso, e che rifiuta gli input sbagliati invece di restituire
+      qualcosa di plausibile come fa <code>atob</code>."""
+
+howto_heading = "Come codificare o decodificare Base64 senza caricarlo"
+
+card = """
+            Base64, URL, entità HTML, esadecimale ed escape con barra
+            rovesciata, codificati o decodificati. Incolla un token senza
+            consegnarlo a nessuno."""
+
+[words]
+plural = "testo"
+choose = "un file"
+analytics_extra = """, e nessuna delle
+  codifiche che questo strumento legge o scrive"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessun limite di dimensione"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Quello che incolli non ha una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Qui non esiste un recapito dove un token
+      incollato possa essere raccolto, e nel codice non c'è niente che lo manderebbe lì
+      se esistesse."""
+
+[[privacy]]
+title = "Qui niente va a prendere niente."
+body = """
+ In <code>src/</code> non c'è da nessuna
+      parte un <code>fetch</code>, un <code>XMLHttpRequest</code> o un
+      <code>sendBeacon</code>. Ogni codificatore e ogni decodificatore sono funzioni
+      di questa pagina che prendono una stringa e restituiscono una stringa."""
+
+[[privacy]]
+title = "Il decodificatore ti dice quando qualcosa non va."
+body = """
+ Il <code>atob</code> del browser
+      accetta input che dovrebbe rifiutare e restituisce qualcosa di plausibile. Il
+      Base64 di qui è scritto a mano e verificato contro i vettori di prova della
+      RFC&nbsp;4648, e quando quello che hai incollato non è Base64 lo dice, e dice
+      perché. I test in <code>tests/js/text-encode.test.js</code> verificano
+      esattamente questo."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della pubblicità e
+      della misurazione arrivano da Google, il pulsante delle donazioni da Buy Me a
+      Coffee. A nessuno di loro arriva un carattere del tuo testo. Ogni riga che lo
+      legge, lo analizza o lo scrive è servita da questa origine ed è elencata nel
+      repository."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento resta identico,
+      perché al suo interno non c'è mai stato un passaggio di rete. È la prova più
+      semplice che ci sia."""
+
+[[howto]]
+title = "Scegli la codifica."
+body = """
+ Base64 in entrambi gli alfabeti, codifica
+      percentuale per un valore singolo o per un URL intero, le cinque entità HTML,
+      i byte in esadecimale e gli escape con barra rovesciata di un letterale
+      stringa. La nota sotto il menu dice a cosa serve ciascuna."""
+
+[[howto]]
+title = "Scegli il verso."
+body = """
+ <em>Codifica</em> prende testo in chiaro e
+      produce la forma codificata; <em>Decodifica</em> riporta la forma codificata a
+      testo in chiaro. Il risultato segue la tua digitazione: cambiare verso è un
+      clic, e niente da riscrivere."""
+
+[[howto]]
+title = "Incollalo, oppure trascina il file."
+body = """
+ Va bene qualunque cosa tu possa
+      selezionare e copiare. Un file trascinato sul selettore lo legge il tuo browser e
+      lo mette nella casella: qui non c'è nessun passaggio di caricamento da
+      saltare."""
+
+[[howto]]
+title = "Leggi l'errore, se c'è."
+body = """
+ Un decodificatore che fallisce qui dice cosa
+      ha trovato &mdash; un carattere che il Base64 non usa, riempimento nel posto
+      sbagliato, byte che non sono testo &mdash; invece di restituire qualcosa di
+      plausibile e sbagliato."""
+
+[[howto]]
+title = "Prenditi il risultato."
+body = """
+ Copialo, oppure scaricalo come file di
+      testo. I contatori sotto la casella dicono quanti byte sono entrati e quanti
+      sono usciti."""
+
+[[faq]]
+q = "Il mio testo viene caricato da qualche parte?"
+a = """
+        No. Ogni codificatore e ogni decodificatore di questa pagina è una funzione
+        che gira nel tuo browser, sul tuo hardware. Questo strumento non ha nessuna
+        funzione di rete: non scarica mai niente e non manda mai niente, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare, nessuno dei quali appartiene a questo sito. È questo il
+        motivo per usarlo con un token di accesso o un cookie di sessione: incollare
+        una di queste cose nel decodificatore di qualcun altro vuol dire gliela stai
+        dando."""
+
+[[faq]]
+q = "Il Base64 qui è lo stesso Base64 di tutti gli altri?"
+a = """
+        Sì: viene verificato contro i vettori di test dell'RFC 4648 e non contro sé
+        stesso. Si decodificano entrambi gli alfabeti, quindi un JWT scritto con
+        <code>-</code> e <code>_</code> si legge bene quanto uno scritto con
+        <code>+</code> e <code>/</code>, e un input spezzato a 64 caratteri viene
+        ricongiunto per te. La codifica passa dai byte UTF-8, quindi una lettera
+        accentata o un'emoji sopravvive al giro di andata e ritorno."""
+
+[[faq]]
+q = "Base64 è una cifratura?"
+a = """
+        No, e prenderlo per una cifratura è l'errore classico. Base64 è una grafia:
+        gli stessi byte, scritti in un alfabeto che sopravvive a un URL, a una mail o
+        a una stringa JSON. Chiunque può rileggerlo &mdash; questa pagina lo fa in un
+        millisecondo &mdash;, quindi non nasconde niente e non protegge niente. Se
+        quello che hai è segreto, gli serve una cifratura vera prima di essere
+        codificato, non al suo posto."""
+
+[[faq]]
+q = "Perché la decodifica è fallita?"
+a = """
+        Perché quello che è stato incollato non è esattamente quello che il codec
+        credeva di ricevere, e l'errore dice in che senso: un carattere fuori
+        dall'alfabeto Base64, riempimento nel posto sbagliato, un segno di percento
+        senza due cifre esadecimali dietro, oppure byte che dal Base64 si decodificano
+        ma non sono testo UTF-8 &mdash; il che di solito vuol dire che l'originale era
+        un file e non una stringa. Il <code>atob</code> del browser avrebbe
+        restituito qualcosa di plausibile al suo posto; sentirselo dire è tutto il
+        senso di incollare qualcosa in un decodificatore."""
+
+[[faq]]
+q = "Che differenza c'è tra le due codifiche per indirizzi web?"
+a = """
+        Un valore singolo, o l'indirizzo intero. Codificare <em>un valore</em> fa
+        l'escape di tutto ciò a cui un URL dà un significato &mdash; le barre, i punti
+        interrogativi, le e commerciali &mdash;, che è quello che vuoi per un singolo
+        parametro della query. Codificare un <em>URL intero</em> lascia l'indirizzo
+        funzionante: le barre e il <code>?</code> restano, e vengono mascherati solo i
+        caratteri che un URL non può proprio portare. La prima usata su un indirizzo
+        intero rompe l'indirizzo; la seconda usata su un valore perde dove il valore
+        finisce."""
+
+[[faq]]
+q = "Quanto può essere grande il file?"
+a = """
+        Qui non c'è nessun limite impostato, perché non c'è nessun server che lo paghi.
+        Il tetto vero è il tuo dispositivo: qualche megabyte di testo va benissimo, e
+        su un documento molto lungo la pagina aspetta una pausa nella tua digitazione
+        prima di ricodificare, invece di litigarti la tastiera."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova e
+        non c'è limite a quanto incolli. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sul tuo testo."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene caricato
+        niente, perché uno strumento che spedisse via il tuo testo per decodificarlo si
+        fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Codificare e decodificare Base64 in entrambi gli alfabeti, codificare in percentuale un valore o un URL intero, fare e disfare l'escape di entità HTML, byte esadecimali ed escape con barra rovesciata. Gira tutto nel browser e non viene caricato niente."
+features = [
+  "Base64 in entrambi gli alfabeti, codificato e decodificato",
+  "Legge Base64 spezzato in righe e dice esattamente perché un input sbagliato è sbagliato",
+  "Verificato contro i vettori di prova della RFC 4648",
+  "Codifica percentuale per un valore singolo e per un URL intero",
+  "Le cinque entità HTML, e le entità numeriche e con nome rilette",
+  "Byte esadecimali con qualsiasi separatore, ed escape con barra rovesciata",
+  "Codifica per byte UTF-8, così le emoji sopravvivono al viaggio",
+  "Funziona con un file trascinato come con del testo incollato",
+  "Funziona offline; niente caricamenti, niente account",
+]
+
+[picker]
+title = "Trascina qui un file"
+hint = "oppure clicca per sceglierlo &mdash; qualsiasi file di testo"

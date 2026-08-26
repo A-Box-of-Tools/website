@@ -1,0 +1,96 @@
+<main id="main">
+  <!-- Step 1 &mdash; the two texts -->
+  <section class="card">
+    <h2><span class="step">1</span> 貼上兩段文字</h2>
+
+    <!--
+      The picker is here for the files that are easier to drop than to open,
+      select all and copy - twice. Nothing about it leaves the machine: each
+      file is read with FileReader into a box below, and that is the whole
+      journey. Two at once land one either side.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">原文</label>
+          <span class="count" id="input-count">空的</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="把原文貼到這裡 - 或者把兩個檔案拖到上面。"></textarea>
+      </div>
+
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input-b">改過的那份</label>
+          <span class="count" id="input-b-count">空的</span>
+        </div>
+        <textarea id="input-b" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="把用來比對的那一版貼進來。"></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">試個例子</button>
+        <button type="button" id="swap" class="ghost">左右對調</button>
+        <button type="button" id="clear" class="ghost danger">清空</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; how to read it -->
+  <section class="card">
+    <h2><span class="step">2</span> 選好怎麼讀</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="view">怎麼顯示</label>
+        <select id="view">
+          <option value="split" selected>左右並排</option>
+          <option value="unified">單列</option>
+        </select>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="only-changes">
+          <input type="checkbox" id="only-changes" checked>
+          只顯示改動的地方，前後各帶三行
+        </label>
+        <label class="check" for="ignore-whitespace">
+          <input type="checkbox" id="ignore-whitespace">
+          忽略空白
+        </label>
+        <label class="check" for="ignore-case">
+          <input type="checkbox" id="ignore-case">
+          忽略大小寫
+        </label>
+        <label class="check" for="ignore-blank">
+          <input type="checkbox" id="ignore-blank">
+          忽略空行
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what changed -->
+  <section class="card">
+    <h2><span class="step">3</span> 讀一讀改了什麼</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">還沒有結果。</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>複製</button>
+        <a id="download" class="ghost as-button" hidden download>下載</a>
+      </div>
+    </div>
+
+    <div id="diff-view" class="diff"></div>
+  </section>
+</main>

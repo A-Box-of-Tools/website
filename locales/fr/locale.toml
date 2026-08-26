@@ -81,7 +81,9 @@ complete = true
 "merge-pdf" = "fusionner-des-pdf"
 "reverse-video" = "inverser-une-video"
 "split-gif" = "decouper-un-gif-en-images"
-"text-tools" = "formater-du-json"
+"format-json" = "formater-du-json"
+"encode-text" = "encoder-base64"
+"compare-text" = "comparer-des-textes"
 "trim-audio" = "couper-un-audio"
 # Un nom, comme le générateur de QR code au-dessus, et pour la même raison :
 # c'est la formule qui se tape. Le singulier, parce que la recherche est

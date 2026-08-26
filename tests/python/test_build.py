@@ -979,7 +979,7 @@ class BuildTheSite(unittest.TestCase):
         text = (self.out / 'llms.txt').read_text(encoding='utf-8')
         site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
         # Only the languages section. A tool's address has the same shape as a
-        # language's, so searching the whole file would count `text-tools` as a
+        # language's, so searching the whole file would count `format-json` as a
         # language and pass for the wrong reason.
         after = text.split('## Other languages')[1]
         section = after.split('\n## ')[0]

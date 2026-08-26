@@ -1,0 +1,243 @@
+#
+# Encodeur & décodeur Base64 - French.
+#
+# Overrides for tools/encode-text/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Encodeur &amp; décodeur Base64"
+heading = "Encodeur&nbsp;&amp;&nbsp;décodeur&nbsp;Base64 <span class=\"h1-kw\">&mdash; et URL, entités HTML, hexadécimal et échappements</span>"
+tagline = "Base64, encodage pourcent, entités HTML, hexadécimal et échappements antislash, dans les deux sens. Rien n'est collé dans le serveur de quelqu'un d'autre."
+
+title = "Encoder &amp; décoder du Base64 &mdash; URL, entités HTML, hexadécimal &mdash; sans envoi"
+description = "Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine."
+og_title = "Décoder du Base64 sans le coller dans un serveur"
+og_description = "Un encodeur et un décodeur exécutés sur votre propre machine. Base64 dans les deux alphabets, URL, entités HTML, hexadécimal et échappements - et ce que vous collez ne va nulle part."
+og_image_alt = "Encodeur & décodeur Base64 - dans les deux sens, sans envoi"
+
+pledge = """
+    Chaque encodage ici est de l'arithmétique sur une chaîne de caractères, faite
+    ici, dans cette page. Les codecs sont écrits à la main et se trouvent dans
+    <code>src/encode.js</code>&nbsp;; et il n'y a rien d'autre. Cet outil n'a
+    aucune fonction réseau&nbsp;: rien à aller chercher, rien à envoyer. Cela
+    compte ici plus que presque partout ailleurs&nbsp;: ce que les gens collent
+    dans un décodeur Base64 en ligne, c'est un jeton, et coller un jeton dans le
+    site de quelqu'un d'autre, c'est le lui remettre."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les outils de développement,
+      surveillez l'onglet &laquo;&nbsp;Réseau&nbsp;&raquo; et décodez quelque chose.
+      Pas une seule requête ne transporte un caractère de ce que vous avez collé. Vous
+      pouvez aussi couper la connexion et le décoder quand même."""
+
+read_first = """
+ et <code>src/encode.js</code> pour le
+      Base64 vérifié contre les vecteurs de test de la RFC&nbsp;4648 plutôt que
+      contre lui-même, et qui refuse les mauvaises entrées au lieu de renvoyer
+      quelque chose de plausible comme le fait <code>atob</code>."""
+
+howto_heading = "Comment encoder ou décoder du Base64 sans l'envoyer"
+
+card = """
+            Base64, URL, entités HTML, hexadécimal et échappements antislash,
+            encodés ou décodés. Collez un jeton sans le confier à personne."""
+
+[words]
+plural = "texte"
+choose = "un fichier"
+analytics_extra = """, ni aucun des
+  encodages que cet outil lit ou écrit"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans limite de taille"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Ce que vous collez n'a nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page a le droit de
+      contacter, et pas une seule ne nous appartient. Il n'existe ici aucun point de
+      collecte où un jeton collé pourrait atterrir, ni rien dans le code qui l'y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "Rien ici ne va chercher quoi que ce soit."
+body = """
+ Il n'y a nulle part dans
+      <code>src/</code> ni <code>fetch</code>, ni <code>XMLHttpRequest</code>, ni
+      <code>sendBeacon</code>. Chaque encodeur et chaque décodeur sont des
+      fonctions de cette page qui prennent une chaîne et renvoient une chaîne."""
+
+[[privacy]]
+title = "Le décodeur vous dit quand quelque chose ne va pas."
+body = """
+ Le <code>atob</code> du navigateur
+      accepte des entrées qu'il devrait refuser et renvoie quelque chose de
+      plausible. Le Base64 d'ici est écrit à la main et vérifié contre les vecteurs
+      de test de la RFC&nbsp;4648, et quand ce que vous avez collé n'est pas du
+      Base64, il le dit, et dit pourquoi. Les tests dans
+      <code>tests/js/text-encode.test.js</code> vérifient exactement cela."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les scripts
+      publicitaires et de mesure viennent de Google, et le bouton de don de Buy Me a
+      Coffee. Aucun d'eux ne reçoit un caractère de votre texte. Chaque ligne qui le
+      lit, l'analyse ou l'écrit est servie depuis cette origine et figure dans le
+      dépôt."""
+
+[[privacy]]
+title = "Tout fonctionne hors ligne."
+body = """
+ Coupez le réseau&nbsp;: l'outil reste
+      identique, puisqu'il n'a jamais comporté la moindre étape réseau. C'est la preuve
+      la plus simple de toutes."""
+
+[[howto]]
+title = "Choisissez l'encodage."
+body = """
+ Base64 dans les deux alphabets, encodage
+      pourcent pour une valeur seule ou une URL entière, les cinq entités HTML, les
+      octets en hexadécimal et les échappements antislash d'un littéral de chaîne.
+      La note sous le menu dit à quoi sert chacun."""
+
+[[howto]]
+title = "Choisissez le sens."
+body = """
+ <em>Encoder</em> prend du texte en clair et
+      produit la forme encodée&nbsp;; <em>Décoder</em> ramène la forme encodée au
+      texte en clair. Le résultat suit votre frappe&nbsp;: changer de sens est un
+      clic, sans rien retaper."""
+
+[[howto]]
+title = "Collez-le, ou déposez le fichier."
+body = """
+ Tout ce que vous pouvez
+      sélectionner et copier fonctionne. Un fichier déposé sur le sélecteur est lu par
+      votre propre navigateur et mis dans la zone&nbsp;: il n'y a pas d'étape d'envoi à
+      éviter."""
+
+[[howto]]
+title = "Lisez l'erreur, s'il y en a une."
+body = """
+ Un décodeur qui échoue ici dit ce qu'il a
+      trouvé &mdash; un caractère que le Base64 n'utilise pas, un remplissage au
+      mauvais endroit, des octets qui ne sont pas du texte &mdash; plutôt que de
+      renvoyer quelque chose de plausible et de faux."""
+
+[[howto]]
+title = "Emportez le résultat."
+body = """
+ Copiez-le, ou téléchargez-le comme fichier
+      texte. Les compteurs sous la zone disent combien d'octets sont entrés et
+      combien sont sortis."""
+
+[[faq]]
+q = "Mon texte est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. Chaque encodeur et chaque décodeur de cette page sont des fonctions qui
+        s'exécutent dans votre propre navigateur, sur votre propre matériel. Cet
+        outil n'a aucune fonction réseau&nbsp;: il ne va jamais rien chercher et
+        n'envoie jamais rien, et la <code>Content-Security-Policy</code> de la page
+        nomme chaque adresse qu'elle a le droit de contacter, dont aucune ne nous
+        appartient. C'est la raison de s'en servir pour un jeton d'accès ou un
+        cookie de session&nbsp;: coller l'un de ceux-là dans le décodeur de
+        quelqu'un d'autre, c'est le lui donner."""
+
+[[faq]]
+q = "Le Base64 d'ici est-il le même Base64 que partout ailleurs&nbsp;?"
+a = """
+        Oui &mdash; il est vérifié par rapport aux vecteurs de test du RFC 4648 plutôt
+        que par rapport à lui-même. Les deux alphabets se décodent, si bien qu'un JWT
+        écrit avec <code>-</code> et <code>_</code> se lit aussi facilement qu'un autre
+        écrit avec <code>+</code> et <code>/</code>, et une entrée coupée à 64
+        caractères est recollée pour vous. L'encodage passe par les octets UTF-8, si
+        bien qu'une lettre accentuée ou un émoji survit à l'aller-retour."""
+
+[[faq]]
+q = "Le Base64 est-il un chiffrement&nbsp;?"
+a = """
+        Non, et le prendre pour tel est l'erreur classique. Le Base64 est une
+        orthographe&nbsp;: les mêmes octets, écrits dans un alphabet qui survit à une
+        URL, à un courriel ou à une chaîne JSON. N'importe qui peut le relire &mdash;
+        cette page le fait en une milliseconde &mdash;, il ne cache donc rien et ne
+        protège rien. Si ce que vous avez est secret, il lui faut un vrai chiffrement
+        avant d'être encodé, pas à la place."""
+
+[[faq]]
+q = "Pourquoi le décodage a-t-il échoué&nbsp;?"
+a = """
+        Parce que ce qui a été collé n'est pas tout à fait ce que le codec croyait
+        recevoir, et l'erreur dit en quoi&nbsp;: un caractère hors de l'alphabet
+        Base64, un remplissage au mauvais endroit, un signe pourcent sans deux
+        chiffres hexadécimaux derrière, ou des octets qui se décodent bien depuis le
+        Base64 mais ne sont pas du texte UTF-8 &mdash; ce qui veut généralement dire
+        que l'original était un fichier et non une chaîne. Le <code>atob</code> du
+        navigateur aurait renvoyé quelque chose de plausible à la place&nbsp;; être
+        prévenu est tout l'intérêt de coller quelque chose dans un décodeur."""
+
+[[faq]]
+q = "Quelle est la différence entre les deux encodages d'adresse web&nbsp;?"
+a = """
+        Une valeur seule, ou l'adresse entière. Encoder <em>une valeur</em> échappe
+        tout ce à quoi une URL donne un sens &mdash; les barres obliques, les points
+        d'interrogation, les esperluettes &mdash;, ce que vous voulez pour un seul
+        paramètre de requête. Encoder une <em>URL entière</em> laisse l'adresse
+        fonctionner&nbsp;: les barres obliques et le <code>?</code> restent, et seuls
+        les caractères qu'une URL ne peut pas porter du tout sont échappés. Le
+        premier appliqué à une adresse entière casse l'adresse&nbsp;; le second
+        appliqué à une valeur perd l'endroit où la valeur s'arrête."""
+
+[[faq]]
+q = "Quelle taille de fichier peut-il traiter&nbsp;?"
+a = """
+        Aucune limite n'est fixée ici, puisqu'aucun serveur ne la paie. Le plafond réel
+        est votre machine&nbsp;: quelques mégaoctets de texte ne posent pas de
+        problème, et sur un très long document la page attend une pause dans votre
+        frappe avant de réencoder, plutôt que de vous disputer le clavier."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période d'essai, ni
+        limite sur ce que vous collez. Le site affiche de la publicité, et c'est elle
+        qui le finance&nbsp;; les annonces ne reçoivent rien sur votre texte."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, coupez ensuite votre connexion et elle continue
+        de travailler. C'est aussi la façon la plus simple de prouver que rien n'est
+        envoyé, car un outil qui expédierait votre texte ailleurs pour le décoder
+        s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Encoder et décoder du Base64 dans les deux alphabets, encoder en pourcent une valeur ou une URL entière, échapper et lire les entités HTML, les octets hexadécimaux et les échappements antislash. Tout tourne dans le navigateur et rien n'est envoyé."
+features = [
+  "Base64 dans les deux alphabets, encodé et décodé",
+  "Lit le Base64 replié en lignes et dit exactement pourquoi une mauvaise entrée est mauvaise",
+  "Vérifié contre les vecteurs de test de la RFC 4648",
+  "Encodage pourcent pour une valeur seule et pour une URL entière",
+  "Les cinq entités HTML, et les entités numériques et nommées relues",
+  "Octets hexadécimaux avec n'importe quel séparateur, et échappements antislash",
+  "Encode par octets UTF-8, les emojis survivent donc à la boucle",
+  "Fonctionne sur un fichier déposé comme sur un collage",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
+]
+
+[picker]
+title = "Déposez un fichier ici"
+hint = "ou cliquez pour parcourir &mdash; n'importe quel fichier texte"

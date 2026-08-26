@@ -1,0 +1,306 @@
+#
+# Text Diff
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This page, format-json and encode-text used to be one tool at /text-tools/,
+# four jobs behind four tabs. The comparison was the only tab with a second
+# box, which made it the odd one out in the shared layout as well as in the
+# search results - so the split gave it a page shaped for two texts and an
+# address of its own. src/diff.js moved here unchanged.
+#
+
+slug = "compare-text"
+name = "Text Diff"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Text&nbsp;Diff <span class=\"h1-kw\">&mdash; compare two texts, side by side</span>"
+tagline = "Two texts in, every difference marked, line by line and word by word. Nothing is pasted into anyone else's server."
+icon = "&#9878;&#65039;"    # the mark beside the page heading
+favicon = "&#9878;"        # the tab icon, drawn into an inline SVG
+category = "text-codes-and-passwords"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "beyond"
+
+# Shared modules this tool asks for. file-picker brings in the drop zone, which
+# is here for the two files that are easier to drop than to open, select all
+# and copy - twice.
+js_parts = ["file-picker"]
+lastmod = "2026-08-26"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Text Compare &amp; Diff Checker &mdash; Side by Side &mdash; No Upload"
+description = "Compare two texts and see every difference, line by line and word by word, side by side or in one column. The comparison runs in your browser - nothing is uploaded, so unreleased code never leaves your machine."
+og_title = "Compare two texts without pasting them into a server"
+og_description = "A diff checker running on your own machine. Line and word differences, side by side, and a patch a code review can read - and what you paste goes nowhere."
+og_image_alt = "Text Diff - compare two texts, no upload"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Line by line and word by word, every difference marked - and neither text goes anywhere."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  This tool needs no directive of its own. It fetches nothing, decodes nothing
+  from the network, and draws no picture: the one blob: URL it makes is the
+  download link for the patch, which is a link rather than an image, and
+  needs no permission at all.
+  img-src still carries blob: because every tool page does, and https: because
+  ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    A comparison is arithmetic over two strings, done here, in this page. The
+    algorithm is Myers' &mdash; the one <code>git diff</code> uses &mdash; and
+    it is hand-written in <code>src/diff.js</code>, where you can read it.
+    This tool has no network feature of any kind &mdash; nothing to fetch,
+    nothing to send &mdash; which matters here because the things people
+    compare are contracts, config files and unreleased code, in pairs."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      compare something. Not one request carries a character of what you
+      pasted. Or unplug from the internet and compare it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+ and <code>src/diff.js</code> for
+      Myers' algorithm, the word-level pass inside each changed line, and the
+      three guards that keep a pathological comparison from freezing the
+      page."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to compare two texts without uploading them"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Compare two texts and see what changed, line by line and word by
+            word. Paste a contract or unreleased code without handing it to
+            anybody."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "texts"
+choose = "a file"
+analytics_extra = """, and neither
+  side of anything this tool compares"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "What you paste has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that a pasted
+      contract could be collected at, and nothing in the code that would send it
+      if there were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The comparison is
+      a function in this page that takes two strings and returns what
+      changed."""
+
+[[privacy]]
+title = "The algorithm is the standard one, readable in full."
+body = """
+ Myers' shortest-edit-script
+      algorithm, the one <code>git diff</code> uses, hand-written in
+      <code>src/diff.js</code> with the decisions commented. The tests in
+      <code>tests/js/text-diff.test.js</code> prove the deletions rebuild the
+      left-hand text and the insertions rebuild the right-hand one, which is
+      what correct means for a diff."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed a character of either text. Every line
+      that reads or compares them is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Paste the two texts, or drop the two files."
+body = """
+ The original on the left, the
+      changed one on the right. Two files dropped on the picker at once land
+      one either side, in the order you dropped them; swap sides if that was
+      the wrong way round."""
+
+[[howto]]
+title = "Choose how to read it."
+body = """
+ Side by side, or one column. A phone
+      starts on one column, because side by side needs two columns of text and
+      a phone has room for about one; the menu is right there either way."""
+
+[[howto]]
+title = "Ignore what does not matter."
+body = """
+ Whitespace, upper and lower case,
+      blank lines &mdash; each can be ignored so that a reformatted file does
+      not read as a hundred changes. By default the unchanged middle is folded
+      to a count, with three lines kept either side of every change."""
+
+[[howto]]
+title = "Read what changed."
+body = """
+ Removed lines are marked on the left,
+      added ones on the right, and inside a changed line the words that differ
+      are highlighted &mdash; so a diff of two paragraphs shows the word that
+      moved rather than two whole paragraphs."""
+
+[[howto]]
+title = "Take the patch."
+body = """
+ The download is a <code>.patch</code> in
+      the unified format, which is what a code review, <code>git apply</code>
+      and every diff viewer expect. Copy puts the same thing on your
+      clipboard."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Are my texts uploaded anywhere?"
+a = """
+        No. The comparison is a function that runs in your own browser, on your
+        own hardware. This tool has no network feature of any kind &mdash; it
+        never fetches anything and never sends anything &mdash; and the page's
+        <code>Content-Security-Policy</code> names every address it may
+        contact, none of which belongs to this site. That is the reason to use
+        it for a contract, a config file or unreleased code: pasting those into
+        somebody else's diff checker is giving them away, both versions at
+        once."""
+
+[[faq]]
+q = "What does the comparison actually do?"
+a = """
+        It finds the shortest set of edits that turns the left-hand text into
+        the right-hand one, using Myers' algorithm &mdash; the one
+        <code>git diff</code> uses. Shortest is what makes a diff readable: a
+        line inserted in the middle should show as one insertion rather than as
+        every line after it having changed. Inside a changed line the words that
+        differ are marked as well, so a diff of two paragraphs shows the word
+        that moved rather than two whole paragraphs."""
+
+[[faq]]
+q = "Can it compare two files rather than two pastes?"
+a = """
+        Yes. Drop both onto the picker at once and they land one either side,
+        in the order you dropped them. They are read by your browser into this
+        page, which is the only place they go. Swap sides if you dropped them
+        the wrong way round."""
+
+[[faq]]
+q = "What comes out of a comparison, and can I apply it?"
+a = """
+        The download is a unified diff &mdash; the <code>@@ -3,5 +3,5 @@</code>
+        format that <code>git apply</code>, <code>patch</code> and every code
+        review tool read. Copy does the same thing to your clipboard. What is on
+        screen is a view of it: side by side, or one column, with the unchanged
+        parts collapsed to a count unless you ask for all of them."""
+
+[[faq]]
+q = "Can it ignore whitespace, case or blank lines?"
+a = """
+        Yes, each separately. Ignoring whitespace makes a reformatted file
+        compare as unchanged; ignoring case treats <code>Error</code> and
+        <code>error</code> as the same word; ignoring blank lines skips the
+        lines that hold nothing. The counts above the result then say the two
+        are the same once the differences you asked to ignore are ignored
+        &mdash; which is not the same claim as identical, and the page keeps
+        the two claims apart."""
+
+[[faq]]
+q = "How big a comparison can it handle?"
+a = """
+        There is no limit set here, because there is no server paying for one.
+        Two texts of twenty thousand lines with a handful of edits compare
+        instantly, because the common beginning and end are trimmed before the
+        real work starts. A comparison of two texts with nothing whatever in
+        common stops early and says so, rather than spending a minute proving
+        what was already obvious, and a very long comparison draws the first
+        few thousand rows and leaves the rest to the downloaded patch."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no limit on
+        how much you paste. The site carries advertising, which is what pays for
+        it; the ads are not given anything about your texts."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your texts away to be compared would stop
+        the moment you unplugged."""
+
+[schema]
+category = "DeveloperApplication"
+description = "Compare two texts with a line and word diff, side by side or in one column, and download the result as a unified patch. The comparison runs in the browser and nothing is uploaded."
+features = [
+  "Compares two texts with Myers' algorithm, the one git diff uses",
+  "Marks the words that changed inside a changed line",
+  "Side by side or one column, with the unchanged middle folded to a count",
+  "Ignores whitespace, case or blank lines, each separately",
+  "Downloads a unified diff that git apply and every review tool read",
+  "Compares two dropped files as easily as two pastes",
+  "Trims the common beginning and end, so long similar files compare instantly",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = ".txt,.json,.xml,.html,.htm,.css,.yaml,.yml,.md,.csv,.log,.svg,.sql,.js,.ts,.toml,.ini,.conf,text/*,application/json,application/xml"
+multiple = true
+title = "Drop two files here"
+hint = "or click to browse &mdash; any text files, one for each side"

@@ -1,0 +1,96 @@
+<main id="main">
+  <!-- Step 1 &mdash; the two texts -->
+  <section class="card">
+    <h2><span class="step">1</span> Pega los dos textos</h2>
+
+    <!--
+      The picker is here for the files that are easier to drop than to open,
+      select all and copy - twice. Nothing about it leaves the machine: each
+      file is read with FileReader into a box below, and that is the whole
+      journey. Two at once land one either side.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">El original</label>
+          <span class="count" id="input-count">vacío</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Pega aquí el original - o suelta arriba los dos archivos."></textarea>
+      </div>
+
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input-b">La versión cambiada</label>
+          <span class="count" id="input-b-count">vacío</span>
+        </div>
+        <textarea id="input-b" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Pega la versión con la que comparar."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Probar un ejemplo</button>
+        <button type="button" id="swap" class="ghost">Cambiar los lados</button>
+        <button type="button" id="clear" class="ghost danger">Vaciar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; how to read it -->
+  <section class="card">
+    <h2><span class="step">2</span> Elige cómo leerlo</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="view">Cómo enseñarlo</label>
+        <select id="view">
+          <option value="split" selected>En paralelo</option>
+          <option value="unified">En una columna</option>
+        </select>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="only-changes">
+          <input type="checkbox" id="only-changes" checked>
+          Enseñar solo lo que cambió, con tres líneas a cada lado
+        </label>
+        <label class="check" for="ignore-whitespace">
+          <input type="checkbox" id="ignore-whitespace">
+          Ignorar los espacios en blanco
+        </label>
+        <label class="check" for="ignore-case">
+          <input type="checkbox" id="ignore-case">
+          Ignorar mayúsculas y minúsculas
+        </label>
+        <label class="check" for="ignore-blank">
+          <input type="checkbox" id="ignore-blank">
+          Ignorar las líneas en blanco
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what changed -->
+  <section class="card">
+    <h2><span class="step">3</span> Lee qué cambió</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">Todavía nada.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>Copiar</button>
+        <a id="download" class="ghost as-button" hidden download>Descargar</a>
+      </div>
+    </div>
+
+    <div id="diff-view" class="diff"></div>
+  </section>
+</main>

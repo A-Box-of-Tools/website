@@ -1,0 +1,241 @@
+#
+# Base64-codeerder & -decodeerder - Dutch.
+#
+# Overrides for tools/encode-text/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Base64-codeerder & -decodeerder"
+heading = "Base64-codeerder&nbsp;&amp;&nbsp;-decodeerder <span class=\"h1-kw\">&mdash; en URL's, HTML-entiteiten, hex en escapes</span>"
+tagline = "Base64, procentcodering, HTML-entiteiten, hex en backslash-escapes, beide kanten op. Er wordt niets in andermans server geplakt."
+
+title = "Base64 coderen &amp; decoderen &mdash; URL, HTML-entiteiten, hex &mdash; zonder uploaden"
+description = "Codeer en decodeer Base64 in beide alfabetten, procentcodeer URL's, escape HTML-entiteiten en lees hex en backslash-escapes. Het draait allemaal in je browser en er wordt niets geüpload: een token verlaat je machine dus nooit."
+og_title = "Base64 decoderen zonder het in een server te plakken"
+og_description = "Een codeerder en decodeerder op je eigen apparaat. Base64 in beide alfabetten, URL's, HTML-entiteiten, hex en escapes; en wat je plakt gaat nergens heen."
+og_image_alt = "Base64-codeerder & -decodeerder - beide kanten op, zonder uploaden"
+
+pledge = """
+    Elke codering hier is rekenwerk op een tekenreeks, hier gedaan, in deze
+    pagina. De codecs zijn met de hand geschreven en staan in
+    <code>src/encode.js</code>; en meer is er niet. Deze tool heeft geen enkele
+    netwerkfunctie, niets op te halen en niets te versturen, en dat telt hier
+    zwaarder dan bijna waar ook: wat mensen in een online Base64-decodeerder
+    plakken is een token, en een token in andermans website plakken is het
+    afgeven."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en decodeer iets. Geen enkel verzoek draagt
+      één teken van wat je plakte. Of trek de stekker uit je internet en decodeer
+      het alsnog."""
+
+read_first = """
+ en <code>src/encode.js</code> voor de
+      Base64 die tegen de testvectoren van RFC&nbsp;4648 wordt gecontroleerd in
+      plaats van tegen zichzelf, en die foute invoer weigert in plaats van iets
+      aannemelijks terug te geven zoals <code>atob</code> doet."""
+
+howto_heading = "Zo codeer of decodeer je Base64 zonder het te uploaden"
+
+card = """
+            Base64, URL's, HTML-entiteiten, hex en backslash-escapes, gecodeerd
+            of gedecodeerd. Plak een token zonder het aan iemand te geven."""
+
+[words]
+plural = "tekst"
+choose = "een bestand"
+analytics_extra = """, en geen van de
+  coderingen die deze tool leest of schrijft"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen groottelimiet"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Wat je plakt kan nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen
+      daarvan is van ons. Er is hier geen eindpunt waar een geplakt token verzameld zou
+      kunnen worden, en er staat ook niets in de code dat het daarheen zou sturen als
+      dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er staat nergens in <code>src/</code> een
+      <code>fetch</code>, een <code>XMLHttpRequest</code> of een
+      <code>sendBeacon</code>. Elke codeerder en elke decodeerder zijn functies in
+      deze pagina die een tekenreeks aannemen en een tekenreeks teruggeven."""
+
+[[privacy]]
+title = "De decodeerder zegt het als er iets mis is."
+body = """
+ De <code>atob</code> van de browser
+      accepteert invoer die hij zou moeten weigeren en geeft iets aannemelijks
+      terug. De Base64 hier is met de hand geschreven en wordt gecontroleerd tegen
+      de testvectoren van RFC&nbsp;4648, en als wat je plakte geen Base64 is, zegt
+      hij dat, en zegt hij waarom. De tests in
+      <code>tests/js/text-encode.test.js</code> controleren precies dat."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen van alle
+      krijgt één teken van je tekst mee. Elke regel die hem leest, ontleedt of
+      wegschrijft, wordt vanaf deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool werkt
+      onveranderd door, omdat er nooit een netwerkstap in zat. Eenvoudiger bewijs
+      bestaat er niet."""
+
+[[howto]]
+title = "Kies de codering."
+body = """
+ Base64 in beide alfabetten, procentcodering
+      voor één waarde of een hele URL, de vijf HTML-entiteiten, hexbytes en de
+      backslash-escapes van een tekenreeksliteral. Het briefje onder het menu zegt
+      waar elk voor dient."""
+
+[[howto]]
+title = "Kies de richting."
+body = """
+ <em>Coderen</em> neemt platte tekst en maakt
+      er de gecodeerde vorm van; <em>Decoderen</em> brengt de gecodeerde vorm terug
+      naar platte tekst. Het resultaat volgt je typen: van richting wisselen is één
+      klik, zonder iets opnieuw te tikken."""
+
+[[howto]]
+title = "Plak hem, of sleep het bestand."
+body = """
+ Alles wat je kunt selecteren en
+      kopiëren werkt. Een bestand dat je op de kiezer sleept wordt door je eigen
+      browser gelezen en in het vak gezet: er is hier geen uploadstap om over te
+      slaan."""
+
+[[howto]]
+title = "Lees de fout, als die er is."
+body = """
+ Een decodeerder die hier faalt zegt wat hij
+      aantrof &mdash; een teken dat Base64 niet gebruikt, opvulling op de verkeerde
+      plek, bytes die geen tekst zijn &mdash; in plaats van iets aannemelijks en
+      fouts terug te geven."""
+
+[[howto]]
+title = "Neem het resultaat mee."
+body = """
+ Kopieer het, of download het als
+      tekstbestand. De tellers onder het vak zeggen hoeveel bytes erin gingen en
+      hoeveel eruit kwamen."""
+
+[[faq]]
+q = "Wordt mijn tekst ergens naartoe geüpload?"
+a = """
+        Nee. Elke codeerder en elke decodeerder op deze pagina is een functie die in
+        je eigen browser draait, op je eigen hardware. Deze tool heeft geen enkele
+        netwerkfunctie: hij haalt nooit iets op en verstuurt nooit iets, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze
+        mag benaderen, waarvan er geen enkele van ons is. Dat is de reden om hem te
+        gebruiken voor een toegangstoken of een sessiecookie: zoiets in andermans
+        decodeerder plakken is het weggeven."""
+
+[[faq]]
+q = "Is de Base64 hier dezelfde Base64 als overal?"
+a = """
+        Ja: hij wordt getoetst aan de testvectoren uit RFC 4648 en niet aan zichzelf.
+        Beide alfabetten decoderen, dus een JWT geschreven met <code>-</code> en
+        <code>_</code> leest net zo makkelijk als een met <code>+</code> en
+        <code>/</code>, en invoer die op 64 tekens is afgebroken wordt voor je
+        aaneengeplakt. Coderen gaat via UTF-8-bytes, dus een letter met een accent of
+        een emoji overleeft de heen- en terugweg."""
+
+[[faq]]
+q = "Is Base64 versleuteling?"
+a = """
+        Nee, en het daarvoor aanzien is de klassieke fout. Base64 is een spelling:
+        dezelfde bytes, geschreven in een alfabet dat een URL, een e-mail of een
+        JSON-tekenreeks overleeft. Iedereen kan het terugvertalen &mdash; deze
+        pagina doet het in een milliseconde &mdash;, dus het verbergt niets en
+        beschermt niets. Als wat je hebt geheim is, heeft het echte versleuteling
+        nodig voordat het gecodeerd wordt, niet in plaats daarvan."""
+
+[[faq]]
+q = "Waarom mislukte het decoderen?"
+a = """
+        Omdat wat er geplakt is net niet is wat de codec verteld werd dat het was,
+        en de fout zegt waar het aan ligt: een teken buiten het Base64-alfabet,
+        opvulling op de verkeerde plek, een procentteken zonder twee hexcijfers
+        erachter, of bytes die wel uit Base64 te decoderen zijn maar geen UTF-8-tekst
+        zijn &mdash; wat meestal betekent dat het origineel een bestand was en geen
+        tekenreeks. De <code>atob</code> van de browser had in plaats daarvan iets
+        aannemelijks teruggegeven; het te horen krijgen is precies waarom je iets in
+        een decodeerder plakt."""
+
+[[faq]]
+q = "Wat is het verschil tussen de twee webadres-coderingen?"
+a = """
+        Eén waarde, of het hele adres. <em>Eén waarde</em> coderen escapet alles
+        waar een URL betekenis aan geeft &mdash; schuine strepen, vraagtekens,
+        ampersands &mdash;, wat je wilt voor één parameter in een querystring. Een
+        <em>hele URL</em> coderen laat het adres werken: de schuine strepen en het
+        <code>?</code> blijven staan, en alleen de tekens die een URL helemaal niet
+        kan dragen worden ge-escapet. Het eerste op een heel adres toepassen breekt
+        het adres; het tweede op een waarde toepassen verliest waar de waarde
+        ophoudt."""
+
+[[faq]]
+q = "Hoe groot mag het bestand zijn?"
+a = """
+        Hier is geen limiet ingesteld, want er is geen server die ervoor betaalt. Het
+        echte plafond is je eigen machine: een paar megabyte tekst gaat prima, en bij
+        een heel lang document wacht de pagina op een pauze in je typen voordat ze
+        opnieuw codeert, in plaats van met je om het toetsenbord te vechten."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        limiet op hoeveel je plakt aan te pas. De site draait op advertenties, en die
+        betalen hem; die advertenties krijgen niets over je tekst mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij
+        werkt gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er
+        niets geüpload wordt, want een tool die je tekst wegstuurde om hem te laten
+        decoderen zou ermee ophouden zodra je de stekker eruit trok."""
+
+[schema]
+description = "Base64 coderen en decoderen in beide alfabetten, één waarde of een hele URL procentcoderen, HTML-entiteiten, hexbytes en backslash-escapes maken en teruglezen. Alles draait in de browser en er wordt niets geüpload."
+features = [
+  "Base64 in beide alfabetten, gecodeerd en gedecodeerd",
+  "Leest afgebroken Base64 en zegt precies waarom foute invoer fout is",
+  "Gecontroleerd tegen de testvectoren van RFC 4648",
+  "Procentcodering voor één waarde en voor een hele URL",
+  "De vijf HTML-entiteiten, en numerieke en benoemde entiteiten teruggelezen",
+  "Hexbytes met elk scheidingsteken, en backslash-escapes",
+  "Codeert per UTF-8-byte, dus emoji's overleven de rondreis",
+  "Werkt net zo goed met een gesleept bestand als met geplakte tekst",
+  "Werkt offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep hier een bestand naartoe"
+hint = "of klik om te bladeren &mdash; elk tekstbestand"
