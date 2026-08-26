@@ -20,12 +20,30 @@ import re
 import subprocess
 import tempfile
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import build as buildmod
 
 
 ROOT = Path(__file__).resolve().parents[2]
+
+
+def warm(tree):
+    """Open every file under `tree` once, many at a time.
+
+    On Windows the antivirus prices the FIRST open of a freshly written file
+    at tens of milliseconds while its scan finishes. The build no longer
+    reads back anything it writes, so the first reader of most of the tree is
+    whichever test method gets there - thousands of opens, one at a time, and
+    the class that took two minutes took six. Paying the scans here, all at
+    once, turns that wait into seconds; anywhere without a scanner this is a
+    moment of warm page cache.
+    """
+    files = [path for path in tree.rglob('*') if path.is_file()]
+    with ThreadPoolExecutor(max_workers=32) as pool:
+        for _ in pool.map(Path.read_bytes, files):
+            pass
 
 
 class Write(unittest.TestCase):
@@ -332,6 +350,7 @@ class BuildTheSite(unittest.TestCase):
         cls.tmp = tempfile.TemporaryDirectory()
         cls.out = Path(cls.tmp.name) / 'dist'
         cls.written = buildmod.build(cls.out, clean=True, minify_output=False)
+        warm(cls.out)
 
         # Which languages are built but not yet advertised. Read off the locale
         # files rather than written down here, so adding a language - or
@@ -1116,6 +1135,10 @@ class BuildTheSite(unittest.TestCase):
         with tempfile.TemporaryDirectory() as second:
             other = Path(second) / 'dist'
             buildmod.build(other, clean=True, minify_output=False)
+            # The comparison below is the first thing to open every one of
+            # these ten thousand fresh files - see warm() on what that costs
+            # read one at a time.
+            warm(other)
             for path in sorted(self.out.rglob('*')):
                 if not path.is_file():
                     continue
