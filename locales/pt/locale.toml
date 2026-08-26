@@ -78,6 +78,14 @@ complete = true
 # procura, e "timelapse" aparece ate' em legenda de celular.
 "timelapse-video" = "fazer-timelapse"
 "hash-checksum" = "verificar-checksum"
+# DICOM continua DICOM: e a sigla que vem escrita no disco que o hospital
+# entrega, e ninguem a procura traduzida.
+"dicom-viewer" = "visualizador-dicom"
+"document-scanner" = "digitalizar-documentos"
+# O mesmo verbo de tarjar-imagem, porque e a mesma promessa: o texto sai do
+# arquivo, nao fica coberto por um retangulo.
+"redact-pdf" = "tarjar-pdf"
+"stack-images" = "empilhar-imagens"
 
 "guides" = "guias"
 "roadmap" = "roteiro"
@@ -110,6 +118,11 @@ complete = true
 "guides/trim-an-audio-file" = "guias/cortar-um-arquivo-de-audio"
 "guides/whats-inside-a-gif" = "guias/o-que-tem-dentro-de-um-gif"
 "guides/verify-a-file-checksum" = "guias/verificar-o-checksum-de-um-download"
+"guides/open-a-dicom-file" = "guias/abrir-um-arquivo-dicom"
+"guides/redact-a-pdf" = "guias/tarjar-um-pdf"
+"guides/scan-a-document-with-your-phone" = "guias/digitalizar-um-documento-com-o-celular"
+# Quem empilha nao procura "empilhar": procura o ruido, que e o problema.
+"guides/stack-photos-to-reduce-noise" = "guias/empilhar-fotos-para-reduzir-ruido"
 
 #
 # ---------------------------------------------------------------------------
