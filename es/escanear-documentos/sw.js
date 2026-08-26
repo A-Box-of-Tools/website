@@ -1,28 +1,25 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-const CACHE_PREFIX='abox:/es/redact-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'fa4f77cc8b';
+const CACHE_PREFIX='abox:/es/escanear-documentos/:';
+const CACHE_NAME=CACHE_PREFIX+'f167f168ed';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0dc19b513c',
+'styles.css?v=ee77a3a385',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
-'src/base14.js',
-'src/content.js',
-'src/edit.js',
-'src/filters.js',
-'src/fonts.js',
-'src/format.js',
+'src/shared/zip.js',
+'src/shared/crc32.js',
+'src/clean.js',
+'src/detect.js',
+'src/document.js',
+'src/encode.js',
+'src/geometry.js',
 'src/main.js',
-'src/matches.js',
-'src/objects.js',
-'src/reader.js',
-'src/redact.js',
-'src/strings.js',
-'src/text.js',
-'src/verify.js',
-'src/writer.js',
+'src/pages.js',
+'src/pdf.js',
+'src/stage.js',
+'src/warp.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

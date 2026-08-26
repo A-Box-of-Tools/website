@@ -1,8 +1,8 @@
 {
-  "id": "/es/dicom-viewer/",
-  "name": "DICOM Viewer",
-  "short_name": "DICOM Viewer",
-  "description": "CT, MR, X-ray and ultrasound, with the window, the header and the measurements.",
+  "id": "/es/apilar-imagenes/",
+  "name": "Apilador de im\u00e1genes",
+  "short_name": "Apilador de im\u00e1genes",
+  "description": "Veinte tomas se convierten en una, sin veinte subidas y sin revelador RAW.",
   "lang": "es",
   "dir": "ltr",
   "start_url": "./",

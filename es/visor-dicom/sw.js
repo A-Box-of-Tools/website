@@ -1,21 +1,27 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-const CACHE_PREFIX='abox:/es/stack-images/:';
-const CACHE_NAME=CACHE_PREFIX+'01b2fd5188';
+const CACHE_PREFIX='abox:/es/visor-dicom/:';
+const CACHE_NAME=CACHE_PREFIX+'6dcb2bcba3';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=e1f811ac57',
+'styles.css?v=aee8dcd6b0',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
-'src/align.js',
-'src/fft.js',
+'src/dicom.js',
+'src/dictionary.js',
+'src/format.js',
+'src/identity.js',
+'src/jpeg-lossless.js',
 'src/main.js',
-'src/pipeline.js',
-'src/plan.js',
-'src/raw.js',
-'src/stack.js',
-'src/worker.js',
+'src/pixels.js',
+'src/reader.js',
+'src/report.js',
+'src/rle.js',
+'src/series.js',
+'src/uids.js',
+'src/values.js',
+'src/window.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

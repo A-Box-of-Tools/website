@@ -1,8 +1,8 @@
 {
-  "id": "/es/stack-images/",
-  "name": "Image Stacker",
-  "short_name": "Image Stacker",
-  "description": "Twenty frames into one, without twenty uploads or a RAW converter.",
+  "id": "/es/visor-dicom/",
+  "name": "Visor DICOM",
+  "short_name": "Visor DICOM",
+  "description": "TC, resonancia, radiograf\u00eda y ecograf\u00eda, con la ventana, la cabecera y las medidas.",
   "lang": "es",
   "dir": "ltr",
   "start_url": "./",

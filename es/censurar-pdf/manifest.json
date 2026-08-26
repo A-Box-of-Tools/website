@@ -1,8 +1,8 @@
 {
-  "id": "/es/redact-pdf/",
-  "name": "PDF Redactor",
-  "short_name": "PDF Redactor",
-  "description": "The letters are deleted from the file, and the file is searched afterwards to prove it.",
+  "id": "/es/censurar-pdf/",
+  "name": "Censor de PDF",
+  "short_name": "Censor de PDF",
+  "description": "Las letras se borran del archivo, y despu\u00e9s se busca en el archivo para demostrarlo.",
   "lang": "es",
   "dir": "ltr",
   "start_url": "./",

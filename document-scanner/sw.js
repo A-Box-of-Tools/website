@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/document-scanner/:';
-const CACHE_NAME=CACHE_PREFIX+'9eb9c0b787';
+const CACHE_NAME=CACHE_PREFIX+'bf27ba1af2';
 const ASSETS=[
 './',
 'index.html',
