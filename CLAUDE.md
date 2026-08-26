@@ -3,7 +3,11 @@
 Orientation for an agent. [README.md](README.md) and the files it links to
 under [`docs/`](docs/) are the real documentation and this does not replace
 them — this is the short list of things that are not obvious from reading the
-tree, and where to look for the rest.
+tree, and where to look for the rest. The ordered checklists for the common
+jobs — adding a tool, updating one, sharing a part, writing a guide — live in
+the `tool-development` skill at
+[.claude/skills/tool-development/SKILL.md](.claude/skills/tool-development/SKILL.md),
+which Claude Code offers on demand and a person can read as a runbook.
 
 ## What this is
 
