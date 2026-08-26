@@ -1,0 +1,239 @@
+<!--
+  tools/stack-images/body.html, in Korean.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- 1단계 &mdash; 프레임 -->
+  <section class="card">
+    <h2><span class="step">1</span> 프레임 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      RAW 파일은 카메라가 이미 안에 써 둔 전체 크기 JPEG을 읽어서 엽니다. 디렉터리
+      몇 킬로바이트를 읽고 그다음 한 조각입니다. 센서 데이터는 아예 디코딩하지
+      않으므로 60&nbsp;MB짜리 한 장이 JPEG과 비슷한 속도로 열립니다.
+      <a href="#faq-raw">그것이 결과에 어떤 뜻인지</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">이름순 정렬</button>
+        <button type="button" id="clear-all" class="ghost danger">전부 지우기</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- 2단계 &mdash; 어떻게 합칠지 -->
+  <section class="card">
+    <h2><span class="step">2</span> 어떻게 합칠지</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">방법</label>
+        <select id="mode">
+          <option value="mean" selected>평균 &mdash; 노이즈 줄이기</option>
+          <option value="median">중앙값 &mdash; 사람과 지나가는 차 없애기</option>
+          <option value="sigma">시그마 클리핑 &mdash; 둘 다 한 번에</option>
+          <option value="max">밝게 &mdash; 별 궤적, 불꽃놀이, 라이트 페인팅</option>
+          <option value="min">어둡게 &mdash; 움직인 밝은 것 없애기</option>
+          <option value="sum">더하기 &mdash; 긴 노출 흉내 내기</option>
+          <option value="focus">포커스 스태킹 &mdash; 초점 맞은 부분 남기기</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">프레임 정렬</label>
+        <select id="align">
+          <option value="translate" selected>예 &mdash; 이동만</option>
+          <option value="similarity">예 &mdash; 이동, 회전, 배율</option>
+          <option value="none">아니오 &mdash; 있는 그대로 쓰기</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">작업 해상도</label>
+        <select id="scale">
+          <option value="full" selected>전체 크기</option>
+          <option value="half">절반 &mdash; 메모리 4분의 1</option>
+          <option value="quarter">4분의 1 &mdash; 16분의 1</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">이 값을 넘으면 버림</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          낮출수록 더 많이 버리고, 진짜 세부까지 함께 버립니다. 표준편차 두 배가
+          보통의 출발점입니다.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">선명도를 재는 범위</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          크게 잡으면 한 프레임에서 넓은 영역을 통째로 가져오고, 작게 잡으면 고운
+          세부를 따라가다가 매끄러운 배경을 프레임 사이에서 어지럽힐 수 있습니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">노출</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">저장 형식</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; 무손실</option>
+          <option value="jpeg">JPEG &mdash; 더 작은 파일</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>결과</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>작업 메모리</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>디코딩 횟수</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>디스크에서 읽은 양</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- 3단계 &mdash; 실행 -->
+  <section class="card">
+    <h2><span class="step">3</span> 스택하기</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>이미지 스택하기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="스택한 결과">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>이미지 내려받기</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1장</span>
+    <span data-phrase="count.many">{count}장</span>
+    <span data-phrase="count.none">아직 프레임이 없습니다</span>
+
+    <span data-phrase="frame.reference">기준</span>
+    <span data-phrase="frame.make-reference">기준으로 삼기</span>
+    <span data-phrase="frame.remove">지우기</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; 카메라 자신의 미리보기, {width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; 미리보기 {width} &times; {height}</span>
+    <span data-phrase="frame.raw-unreadable">이 RAW 파일에서 미리보기를 찾지 못했습니다</span>
+    <span data-phrase="frame.read">{total} 중 {read} 읽음</span>
+
+    <span data-phrase="mode.mean">프레임마다 평균을 냅니다. 무작위 노이즈는 높게 나오는 만큼 낮게도 나오므로, {count}장의 평균을 내면 대략 {factor}배 줄어듭니다. 조용한 묶음을 위한 방법이고, 지나가는 새 한 마리에 망가지는 방법이기도 합니다.</span>
+    <span data-phrase="mode.median">각 픽셀의 가운뎃값을 취합니다. 일부 프레임에만 있던 것 &mdash; 관광객, 자동차, 비행기 &mdash; 은 사라집니다. 모든 프레임을 한꺼번에 들고 있어야 하는 유일한 방법이고, 그래서 아래에서 띠로 나뉠 수 있습니다.</span>
+    <span data-phrase="mode.sigma">각 픽셀이 보통 무엇인지 배운 다음, 그것과 맞는 값만 평균 냅니다. 중앙값의 결과에 평균의 노이즈 감소를 더한 것입니다. 프레임을 두 번 읽습니다.</span>
+    <span data-phrase="mode.max">각 픽셀이 지녔던 가장 밝은 값을 남깁니다. 짧은 노출을 여러 장 이어 별 궤적을 만들고, 불꽃놀이를 그 자신의 프레임들로 다시 쌓아 올리는 것이 이것입니다.</span>
+    <span data-phrase="mode.min">각 픽셀이 지녔던 가장 어두운 값을 남깁니다. 모든 프레임에서 밝았던 픽셀만 밝게 남으므로, 유리창의 반사와 지나가는 전조등과 플래시에 비친 빗방울이 사라집니다.</span>
+    <span data-phrase="mode.sum">나누지 않고 프레임을 더합니다. {count}배 긴 노출이 모았을 값입니다. 그 노출이 그러하듯 흰색으로 넘칩니다. 노출 슬라이더로 되돌리십시오.</span>
+    <span data-phrase="mode.focus">이미지의 각 부분을 그것이 선명했던 프레임에서 가져옵니다. 작은 피사체를 포커스 링을 돌려 가며 찍으면, 이것이 선명한 부분들을 이어 붙입니다.</span>
+
+    <span data-phrase="align.translate">각 프레임이 얼마나 옮겨졌는지 찾아 픽셀 이하 단위로 되돌립니다. 손 흔들림과 삼각대 흘러감을 고칩니다. 회전은 고치지 못합니다.</span>
+    <span data-phrase="align.similarity">회전과 배율까지 찾습니다. 프레임마다 측정이 한 번 더 들고, 프레임이 반듯하다고 드러나면 아무 값도 들지 않습니다. 회전은 언제나 반 바퀴 안에서만 되살립니다.</span>
+    <span data-phrase="align.none">프레임을 들어온 그대로 스택합니다. 고정된 삼각대나 인터벌 촬영에는 맞고, 손으로 들고 찍은 것에는 맞지 않습니다.</span>
+
+    <span data-phrase="scale.note">각 프레임은 브라우저 자신의 디코더가 이 크기로 디코딩하므로, 작게 잡는 것은 메모리만이 아니라 일 자체가 줄어드는 것입니다.</span>
+    <span data-phrase="gain.note">계산이 끝나고 반올림하기 전, 맨 마지막에 결과에 곱합니다.</span>
+    <span data-phrase="gain.sum-note">{count}장을 더하면 거의 틀림없이 넘칩니다. 무엇이 모였는지 보려면 {suggested}쯤으로 낮추십시오.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">대략 {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}회, 프레임당 한 번</span>
+    <span data-phrase="plan.decodes.passes">{count}회 &mdash; 프레임마다 {passes}번</span>
+    <span data-phrase="plan.decodes.banded">{count}회 &mdash; 프레임마다, {bands}개 띠마다 한 번씩</span>
+    <span data-phrase="plan.read">디스크의 {total} 중 {read}</span>
+    <span data-phrase="plan.banded">이것은 메모리에 한 번에 들어가지 않으므로, 이미지를 {bands}개 띠로 잘라 띠마다 프레임을 다시 읽습니다. {suggested}을(를) 고르면 한 번에 끝납니다.</span>
+    <span data-phrase="plan.banded-anyway">이것은 메모리에 한 번에 들어가지 않으므로, 이미지를 {bands}개 띠로 잘라 띠마다 프레임을 다시 읽습니다. 프레임을 줄이거나 작업 해상도를 낮추면 한 번에 끝납니다.</span>
+
+    <span data-phrase="progress.open">{name} 안을 들여다보는 중&hellip;</span>
+    <span data-phrase="progress.survey">{name} 읽는 중&hellip;</span>
+    <span data-phrase="progress.measure">{name}이(가) 얼마나 움직였는지 재는 중&hellip;</span>
+    <span data-phrase="progress.stack">스택하는 중 &mdash; {total}장 중 {done}장 읽음</span>
+    <span data-phrase="progress.stack-banded">스택하는 중 &mdash; {bands}개 띠 중 {band}번째, {total}장 중 {done}장 읽음</span>
+    <span data-phrase="progress.encode">이미지를 쓰는 중&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count}장을 {seconds}초에 합쳤습니다</span>
+    <span data-phrase="result.moves">프레임마다 재어서 제자리로 밀어 넣었습니다.</span>
+    <span data-phrase="result.moves-some">{total}장 가운데 {count}장은 확실하게 잴 수 없어 있던 자리에 두었습니다.</span>
+    <span data-phrase="result.moves-none">프레임을 들어온 그대로 스택했습니다.</span>
+    <span data-phrase="result.moves-clamped">{count}장이 연사에 비해 지나치게 큰 회전을 알려 와서, 이동만으로 고쳤습니다.</span>
+    <span data-phrase="result.cropped">서로 밀어 놓으니 모든 프레임이 닿지 못하는 가장자리가 남아서, 그 부분은 잘라 냈습니다.</span>
+
+    <span data-phrase="error.no.files">먼저 이미지를 적어도 하나 더하십시오.</span>
+    <span data-phrase="error.no.size">이 파일 가운데 이미지로 열린 것이 하나도 없습니다.</span>
+    <span data-phrase="error.one.frame">스택하려면 프레임이 적어도 둘 있어야 합니다.</span>
+    <span data-phrase="error.unknown">스택하는 중에 문제가 생겼습니다. 이 파일 가운데 특이한 것이 있다면 그것만 따로 해 보십시오.</span>
+    <span data-phrase="error.memory">브라우저의 메모리가 바닥났습니다. 작업 해상도를 낮추거나 프레임을 줄여 보십시오.</span>
+    <span data-phrase="error.unreadable">{name}은(는) 이미지로 열리지 않아 빠졌습니다.</span>
+    <span data-phrase="error.busy">프레임을 더 넣기 전에 이 스택이 끝나기를 기다리거나, 취소하십시오.</span>
+  </div>
+</main>

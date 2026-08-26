@@ -1,0 +1,368 @@
+<!--
+  tools/document-scanner/body.html, in Korean.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- 1단계 &mdash; 사진 -->
+  <section class="card">
+    <h2><span class="step">1</span> 사진 고르기</h2>
+
+    <p class="card-lede">
+      한 장에 사진 하나씩, 위쪽 어딘가에서 찍으십시오. 종이 전체가 화면에 들어와야
+      하고, 네 모서리는 보이거나 거의 보여야 합니다. 나머지 &mdash; 기울기, 그림자,
+      아래의 책상 &mdash; 는 모두 이 도구가 있는 이유입니다. 여러 장을 더하면
+      더하는 순서대로 한 문서의 장들이 됩니다.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">모든 장 다시 찾기</button>
+        <button type="button" id="clear-all" class="ghost danger">전부 지우기</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- 2단계 &mdash; 모서리 -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> 모서리를 종이에 맞추기</h2>
+
+    <p id="edit-empty" class="field-summary">
+      사진을 고르면 여기에 나타나고, 네 모서리는 찾아 놓은 상태입니다.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        사진 아무 데나 누르면 가장 가까운 모서리가 손가락으로 옵니다. 그것을 종이의
+        모서리로 끌어다 놓으십시오. <kbd>Tab</kbd>으로 키보드에서 모서리를 잡고,
+        화살표 키로 한 픽셀씩, <kbd>Shift</kbd>와 함께 누르면 열 픽셀씩 옮깁니다.
+        어느 것도 되돌릴 수 없는 것이 아닙니다. 스캔은 네 모서리가 최종적으로 놓인
+        자리에서 뜹니다.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">모서리 다시 찾기</button>
+        <button type="button" id="whole-photo" class="ghost">사진 전체 쓰기</button>
+        <button type="button" id="turn-left" class="ghost">왼쪽으로 돌리기</button>
+        <button type="button" id="turn-right" class="ghost">오른쪽으로 돌리기</button>
+        <button type="button" id="undo" class="ghost" disabled>되돌리기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3단계 &mdash; 정리 -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> 정리하기</h2>
+
+    <p id="clean-empty" class="field-summary">
+      반듯하게 펼 사진이 생기면 그 결과가 여기에 나타납니다.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        아래에 있는 것이 실제 결과이고, 파일을 쓰는 것과 같은 코드가 만든
+        것입니다. 반듯하게 펴고 고르지 않은 빛을 나눠 걷어 낸 상태입니다. 고르는
+        동안 화면에는 화면 크기로 그려지고, 파일 자체는 사진의 해상도로
+        만들어집니다.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          반듯하게 펴는 중&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>빛과 색을 어떻게 할지</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>색, 고르게</strong>
+            <span class="check-note">
+              종이의 밝기를 지면 전체에 걸쳐 재서 나눠 걷어 냅니다. 그래서
+              그림자가 사라지고 종이는 다시 하얘지는 한편, 도장이나 파란 잉크
+              서명이나 형광펜으로 그은 줄은 제 색을 지킵니다. 색이 문서의 일부일
+              때 쓰는 모드입니다.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>회색조</strong>
+            <span class="check-note">
+              색 없이 같은 방식으로 고르게 만듭니다. 컬러보다 작고, 사진이나
+              서명에는 흑백보다 너그럽습니다.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>흑백</strong>
+            <span class="check-note">
+              각 픽셀을 지면 전체의 한 숫자가 아니라 제 이웃에 견주어 정하는데,
+              바로 그것이 그림자 속 글씨를 읽을 수 있게 지켜 줍니다. 스캔을 작게
+              만드는 것이 이것입니다. 스무 장짜리 계약서가 이 모드에서는 일
+              메가바이트 아래로 나오고, 사진으로는 십오 메가바이트쯤이 됩니다. 중간
+              톤을 모르므로 사진이 얹힌 것에는 쓰지 않는 편이 좋습니다.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>그대로 두기</strong>
+            <span class="check-note">
+              반듯하게만 펴고 그 밖에는 아무것도 하지 않습니다. 종이 자체가 중요한
+              장에 씁니다. 오래된 것, 색이 있는 것, 사진 같은 것입니다.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">얼마나 세게</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        이 설정은 모든 장에 적용됩니다. 한 문서 안에서 서로 다르게 정리된 장들은
+        두 개의 문서처럼 보입니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- 4단계 &mdash; 파일 -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> 문서 저장하기</h2>
+
+    <p class="card-lede">
+      PDF는 여기, 이 페이지의 메모리에서 한 장씩 만들어집니다. 이 도구 건너편에는
+      급여명세서나 여권이나 계약서를 보낼 서버가 없고, 설령 있다 해도 그렇게 할
+      코드가 없습니다.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">페이지 크기</label>
+        <select id="page-size">
+          <option value="fit" selected>종이 자체에 맞추기</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8.5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8.5 &times; 14 in</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">인쇄 해상도</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; 사무기기</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          픽셀이 그만큼 있는 종이를 얼마나 큰 종이라고 부를지입니다. 문서가 인쇄될
+          크기를 바꿀 뿐, 스캔의 픽셀은 하나도 바꾸지 않습니다.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">여백</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="여백, 밀리미터">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">가장 긴 변</label>
+        <select id="max-side">
+          <option value="1600">1600 픽셀 &mdash; 작게</option>
+          <option value="2400" selected>2400 픽셀</option>
+          <option value="3500">3500 픽셀</option>
+          <option value="0">사진이 허락하는 만큼 크게</option>
+        </select>
+        <p class="field-note">
+          반듯하게 편 장의 상한입니다. 종이를 찍은 사진에는 그 종이가 값하는 것보다
+          훨씬 많은 픽셀이 들어 있고, 긴 변 2400은 A4에서 대략 200 DPI입니다.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">품질</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          JPEG으로 저장되는 컬러와 회색조 모드에 적용됩니다. 흑백 장은 정확하게
+          저장되므로 이 설정이 아무 일도 하지 않습니다.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">문서 제목 <span class="optional">(선택)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="비워 두면 PDF에 제목이 들어가지 않습니다">
+        <p class="field-note">
+          장들 말고 문서에 쓰이는 유일한 것입니다. 날짜도, 작성자도, 이 기기에 대한
+          것도 없습니다. <code>src/document.js</code>를 보십시오.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>PDF로 저장</button>
+      <button type="button" id="save-images" class="ghost big" disabled>장들을 이미지로 저장</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>완성된 파일</h3>
+        <a id="download" class="primary as-button" href="#" download>내려받기</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        보내기 전에 열어 보십시오. 문서에 들어 있는 것은 3단계에서 화면에 있던
+        것이고, 장마다 그렇습니다.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">네 모서리를 찾았습니다. 확인하고 어긋난 것은
+      끌어다 맞추십시오.</span>
+    <span data-phrase="detect.unsure">종이의 가장자리가 확신할 만큼 뚜렷하지
+      않았습니다. 이 모서리는 추측입니다. 계속하기 전에 종이 위로 끌어다
+      놓으십시오.</span>
+    <span data-phrase="detect.nothing">이 사진에서는 종이를 가려낼 수 없어서
+      모서리가 사진의 가장자리에 놓여 있습니다. 종이 위로 끌어다 놓으십시오.</span>
+    <span data-phrase="detect.flat">이 이미지에서는 찾을 것이 없습니다. 가장자리가
+      아예 없습니다.</span>
+    <span data-phrase="detect.tiny">이 이미지는 그 안에서 종이를 찾기에는 너무
+      작습니다.</span>
+    <span data-phrase="detect.edited">이제 이 모서리는 당신 것입니다. &lsquo;모서리
+      다시 찾기&rsquo;는 사진을 처음부터 다시 잽니다.</span>
+
+    <span data-phrase="corner.tl">왼쪽 위 모서리</span>
+    <span data-phrase="corner.tr">오른쪽 위 모서리</span>
+    <span data-phrase="corner.br">오른쪽 아래 모서리</span>
+    <span data-phrase="corner.bl">왼쪽 아래 모서리</span>
+    <span data-phrase="corner.at">{corner}, 가로 {x}, 세로 {y} 지점. 화살표 키가
+      옮기고, Shift를 함께 누르면 한 번에 열 픽셀씩 옮깁니다.</span>
+
+    <span data-phrase="page.select">{index}번째 장 편집</span>
+    <span data-phrase="page.remove">{index}번째 장 지우기</span>
+    <span data-phrase="page.earlier">{index}번째 장을 앞으로</span>
+    <span data-phrase="page.later">{index}번째 장을 뒤로</span>
+    <span data-phrase="page.count">{count}장</span>
+    <span data-phrase="page.counts">{count}장</span>
+
+    <span data-phrase="paper.a">A4 또는 A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">명함</span>
+    <span data-phrase="shape.known">장이 {ratio}로 나왔고, 그것은 {paper}의
+      모양입니다.</span>
+    <span data-phrase="shape.sideways">장이 {ratio}로 나왔고, 그것은 {paper}를
+      가로로 놓은 모양입니다.</span>
+    <span data-phrase="shape.unknown">장이 {ratio}로 나왔고, 그것은 표준 규격이
+      아닙니다.</span>
+
+    <span data-phrase="method.perspective">모양을 사진 속 원근에서 되살렸습니다.
+      그래서 이것은 종이의 모양이지, 사진에 나타난 모양이 아닙니다.</span>
+    <span data-phrase="method.edges">사진을 정면으로 찍어서, 모양을 가장자리에서
+      바로 쟀습니다.</span>
+
+    <span data-phrase="quality.good">{width} 곱하기 {height} 픽셀. 이 크기의
+      종이에서 대략 {dpi} DPI이고, 인쇄하기에 충분합니다.</span>
+    <span data-phrase="quality.fair">{width} 곱하기 {height} 픽셀. 이 크기의
+      종이에서 대략 {dpi} DPI입니다. 화면에서는 괜찮고 종이에서는 조금
+      흐물합니다.</span>
+    <span data-phrase="quality.low">{width} 곱하기 {height} 픽셀. 이 크기의
+      종이에서 대략 {dpi} DPI입니다. 인쇄할 것이라면 더 가까이 가십시오.</span>
+    <span data-phrase="quality.pixels">{width} 곱하기 {height} 픽셀.</span>
+    <span data-phrase="coverage.note">종이가 사진의 {percent}%를 채웠습니다.</span>
+    <span data-phrase="coverage.small">종이가 사진의 {percent}%밖에 채우지
+      못했습니다. 찍은 것의 대부분이 책상이었다는 뜻입니다. 다음에는 더
+      가까이.</span>
+
+    <span data-phrase="strength.gentle">약하게. 종이를 고르게 만드는 정도에서
+      그칩니다. 흐린 연필이나 사진이 얹힌 장에 씁니다.</span>
+    <span data-phrase="strength.middling">보통 설정. 종이는 다시 하얘지고 인쇄된
+      글자는 다시 새까매집니다.</span>
+    <span data-phrase="strength.hard">세게. 회색인 것을 모두 검정이나 흰색으로
+      밀어붙입니다. 인쇄 글자만 있는 장에서 가장 깨끗하고, 이미지가 얹힌 것에는
+      파괴적입니다.</span>
+
+    <span data-phrase="busy.page">{total}장 중 {done}장&hellip;</span>
+    <span data-phrase="busy.writing">문서를 쓰는 중&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">픽셀당 1비트로 저장하고 정확하게 압축했습니다.
+      그래서 이렇게 작습니다.</span>
+    <span data-phrase="result.jpeg">장들은 고른 품질의 JPEG으로 저장했습니다.</span>
+    <span data-phrase="result.png">장들은 PNG로 저장했습니다. 무손실이고, 색이 둘인
+      이미지가 원하는 형식입니다. JPEG이라면 더 크면서 글자마다 가장자리가 번졌을
+      것입니다.</span>
+    <span data-phrase="result.clean">날짜도, 작성자도, 컴퓨터 이름도 없습니다.
+      장들 말고 문서에 들어 있는 것은 이 도구의 이름뿐입니다.</span>
+
+    <span data-phrase="size.fit">각 장은 제 종이가 실제로 가지는 크기를, 위에서
+      고른 해상도로 받습니다. 여백 띠로 채우는 일은 없습니다.</span>
+    <span data-phrase="size.named">각 장은 어떤 모양이 되었든 여백 안쪽의 {name}
+      용지에 놓입니다.</span>
+
+    <span data-phrase="error.decode">이 브라우저가 {name}을(를) 열지 못했습니다.
+      아이폰의 HEIC 사진이라면 먼저 변환하십시오.</span>
+    <span data-phrase="error.none">먼저 사진을 적어도 하나 고르십시오.</span>
+    <span data-phrase="error.failed">파일을 만드는 중에 문제가 생겼습니다.
+      {detail}</span>
+  </div>
+</main>

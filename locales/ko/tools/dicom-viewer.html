@@ -1,0 +1,263 @@
+<!--
+  tools/dicom-viewer/body.html, in Korean.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  열 제목 "VR"은 그대로 둡니다. 파일에 그렇게 적혀 있는 두 글자짜리 코드이고,
+  표준에서 태그를 찾아보는 사람은 바로 그 두 글자를 찾습니다.
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> 영상 고르기</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      폴더 전체를 한꺼번에 끌어다 놓으면 파일이 각자의 시리즈로 다시 묶이고 순서도
+      맞춰집니다. 아무것도 업로드되지 않고, 파일에 다시 쓰이는 것도 없습니다.
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- 뷰어. -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>이 영상을 PNG로 저장</button>
+        <button type="button" id="copy-header" class="ghost">헤더 복사</button>
+        <button type="button" id="download-header" class="ghost">내려받기</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">시리즈</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="고른 파일에서 그려 낸, 화면 위의 영상"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="영상 재생">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="어느 장 또는 어느 프레임을 보여 줄지">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">영상 위에서 끌면 무엇이 되는지</legend>
+        <label><input type="radio" name="mode" value="window" checked> 창과 레벨</label>
+        <label><input type="radio" name="mode" value="pan"> 이동</label>
+        <label><input type="radio" name="mode" value="measure"> 계측</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">확대</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">맞추기</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">창</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">중심</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">너비</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> 반전</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> 환자 정보를 영상 위에 겹쳐 보기</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- 이 파일이 무엇인가. -->
+  <section class="card" id="facts-card" hidden>
+    <h2>이 파일이 무엇인가</h2>
+    <dl class="facts">
+      <div><dt>객체</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>촬영 방식</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>영상</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>저장 형식</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfer syntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>픽셀 간격</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>값의 범위</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>파일</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- 그 사람에 대해 무엇이 적혀 있는가. -->
+  <section class="card" id="identity-card" hidden>
+    <h2>이 파일에서 무엇이 환자를 가리키는가</h2>
+    <p class="card-lede">
+      이 파일에서 이 기기에서 읽어 낸 것이고, 다른 누구에게도 보여 주지 않습니다.
+      이 도구는 아무것도 쓰지 않습니다. 그중 어느 것도 빼 줄 수 없고, 그중 어느
+      것도 어디로 보낸 적이 없습니다. 이것이 여기 있는 이유는 영상이 이름보다 훨씬
+      많은 것을 지니고 있어서이고, 나머지가 바로 허술한 익명화에서 살아남는
+      것들이기 때문입니다.
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- 파일의 모든 태그. -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>파일의 모든 태그</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">태그 검색</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="이름, 번호, 값으로 검색">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">이 파일의 모든 요소</caption>
+        <thead>
+          <tr>
+            <th scope="col">태그</th>
+            <th scope="col">VR</th>
+            <th scope="col">이름</th>
+            <th scope="col">값</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">영상 위를 가로로 끌면 창이 넓어지거나 좁아지고, 위아래로 끌면 중심이 움직입니다. 두 숫자는 아래에 있고, 직접 입력해도 같습니다.</span>
+    <span data-phrase="mode.pan">끌어서 영상을 틀 안에서 움직입니다. 마우스 휠로 확대되고, &lsquo;맞추기&rsquo;가 모두 되돌립니다.</span>
+    <span data-phrase="mode.measure">영상 위에 선을 그어 잽니다. 파일이 픽셀 간격을 밝혀 두었다면 결과는 밀리미터로, 밝혀 두지 않았다면 픽셀로 나오고 그렇다고 말합니다.</span>
+
+    <span data-phrase="probe.value">{column}열 {row}행에서 {value}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; 이 파일은 픽셀 간격을 밝히지 않아서 밀리미터로 낼 수 없습니다</span>
+
+    <span data-phrase="stack.position">각 장이 몸의 어디에 있는지로 쌓았고, 그것이 장비가 찍은 순서입니다.</span>
+    <span data-phrase="stack.number">Instance Number로 쌓았습니다. 이 파일들에는 정렬할 몸에서의 위치가 없습니다.</span>
+    <span data-phrase="stack.gap">장 사이의 간격이 고르지 않아서, 이 시리즈에는 적어도 한 장이 빠져 있습니다.</span>
+
+    <span data-phrase="pixels.none">이 파일의 픽셀은 {codec}으로 압축되어 있습니다. 어느 브라우저도 그것을 디코딩하지 못하고, 이 페이지는 그 디코더를 들고 다니지 않습니다. 파일에 대한 나머지는 모두 아래에 있습니다.</span>
+    <span data-phrase="pixels.failed">영상을 디코딩하지 못했습니다. {reason}. 아래의 헤더는 전부 읽었습니다.</span>
+    <span data-phrase="pixels.absent">이 파일에는 픽셀 데이터가 아예 없습니다. 헤더이고, 그 안의 모든 것이 아래에 있습니다.</span>
+    <span data-phrase="pixels.jpeg">이 픽셀은 baseline JPEG이라서 브라우저의 디코더가 풀었고, 돌아온 것은 8비트 깊이입니다. 창은 그대로 동작하지만, 장비가 기록한 정밀도가 다 있지는 않습니다.</span>
+
+    <span data-phrase="tags.count">{total}개 중 {shown}개. {hidden}개 더 있습니다.</span>
+    <span data-phrase="tags.all">이 파일의 요소 {total}개 전부입니다.</span>
+    <span data-phrase="tags.found">&lsquo;{query}&rsquo;에 맞는 요소가 {total}개 있습니다.</span>
+    <span data-phrase="tags.found.one">&lsquo;{query}&rsquo;에 맞는 요소가 하나 있습니다.</span>
+    <span data-phrase="tags.none">&lsquo;{query}&rsquo;에 맞는 것이 없습니다.</span>
+    <span data-phrase="tags.more">나머지 {count}개 보기</span>
+    <span data-phrase="tags.private">비공개 요소</span>
+    <span data-phrase="tags.unknown">이 사전에 없음</span>
+    <span data-phrase="tags.guessed">파일이 말해 주지 않았습니다. 이것은 데이터 사전이 이 태그에 대해 알려 주는 값입니다.</span>
+
+    <span data-phrase="working.one">{name} 읽는 중&hellip;</span>
+    <span data-phrase="working.many">{total}개 중 {at}개 읽는 중&hellip;</span>
+    <span data-phrase="error.none">이 중 어느 것도 DICOM으로 읽히지 않았습니다. {why} 이 도구는 DICOM 형식 자체를 읽으므로, 다른 파일에 대해서는 할 말이 없습니다.</span>
+    <span data-phrase="error.skipped.one">파일 하나를 건너뛰었습니다. {files}</span>
+    <span data-phrase="error.skipped">파일 {count}개를 건너뛰었습니다. {files}</span>
+
+    <span data-phrase="series.number">시리즈 {number}</span>
+    <span data-phrase="series.files.one">파일 1개</span>
+    <span data-phrase="series.files">파일 {count}개</span>
+    <span data-phrase="stack.spacing">장 사이 간격은 {gap}입니다.</span>
+
+    <span data-phrase="at.position">{total} 중 {at}</span>
+    <span data-phrase="net.clean">영상은 어디로도 가지 않았습니다. 파일 {total}개를
+      불러왔고 모두 이 사이트의 것입니다. {platform}</span>
+    <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대
+      그러지 않습니다. 살펴볼 만합니다. {platform}</span>
+    <span data-phrase="net.platform.one">광고와 측정과 후원 버튼을 위한 이 사이트
+      자신의 스크립트가 호스트 {hosts}곳에서 왔습니다. 그중 어느 쪽도 영상이나
+      그 픽셀이나 헤더의 한 마디도 받지 않았습니다.</span>
+    <span data-phrase="net.platform.many">광고와 측정과 후원 버튼을 위한 이
+      사이트 자신의 스크립트가 호스트 {hosts}곳에서 왔습니다. 그중 어느 쪽도
+      영상이나 그 픽셀이나 헤더의 한 마디도 받지 않았습니다.</span>
+    <span data-phrase="at.frame">{total} 프레임 중 {at}</span>
+    <span data-phrase="at.instance">인스턴스 {number}</span>
+
+    <span data-phrase="window.file">파일에서</span>
+    <span data-phrase="window.file.n">파일에서, {n}</span>
+    <span data-phrase="window.full">이 영상의 전체 범위</span>
+    <span data-phrase="window.custom">직접 맞춤</span>
+    <span data-phrase="window.soft">연부조직</span>
+    <span data-phrase="window.lung">폐</span>
+    <span data-phrase="window.bone">뼈</span>
+    <span data-phrase="window.brain">뇌</span>
+    <span data-phrase="window.liver">간</span>
+    <span data-phrase="window.mediastinum">종격</span>
+    <span data-phrase="window.angio">혈관조영</span>
+
+    <span data-phrase="facts.frames">프레임 {count}개</span>
+    <span data-phrase="facts.nopixels">픽셀 데이터 없음</span>
+    <span data-phrase="facts.nospacing">이 파일에 적혀 있지 않음</span>
+    <span data-phrase="facts.signed">부호 있음</span>
+    <span data-phrase="facts.unsigned">부호 없음</span>
+    <span data-phrase="facts.stored.one">{bits}비트, {sign}, 픽셀당 1채널, {photometric}</span>
+    <span data-phrase="facts.stored">{bits}비트, {sign}, 픽셀당 {samples}채널, {photometric}</span>
+    <span data-phrase="facts.range">{low}에서 {high}까지</span>
+    <span data-phrase="facts.colour">컬러 &mdash; 측정된 값으로 전할 것이 없음</span>
+
+    <span data-phrase="identity.clean">이 파일에는 사람의 이름을 적거나 번호를 매긴 것이 없습니다. 영상이 보통 지니는 식별 정보가 없거나 비어 있습니다.</span>
+    <span data-phrase="identity.uids">그 밖에 자체 식별자 {count}개, 곧 검사와 시리즈와 인스턴스의 UID를 지니고 있습니다. 그중 이름은 하나도 없지만, 하나하나가 이 파일이 나온 아카이브로 정확히 되돌아가는 열쇠입니다.</span>
+    <span data-phrase="identity.private">여기에 뜻이 어디에도 공개되지 않은 비공개 요소 {count}개가 더 있습니다. 어떤 장비는 그중 하나에 환자 이름의 두 번째 사본을 넣어 둡니다.</span>
+
+    <span data-phrase="copied">복사했습니다.</span>
+    <span data-phrase="copy.failed">브라우저가 이 페이지의 복사를 막았습니다. 옆의 버튼이 같은 내용을 파일로 씁니다.</span>
+    <span data-phrase="saved">{name} 저장했습니다.</span>
+  </div>
+</main>
