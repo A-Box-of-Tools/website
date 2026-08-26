@@ -1,0 +1,312 @@
+<!--
+  tools/document-scanner/body.html, in Traditional Chinese.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  句子內部不換行：兩個漢字之間的換行會變成讀者看得見的空隙。
+-->
+<main>
+  <!-- 第 1 步 | 照片 -->
+  <section class="card">
+    <h2><span class="step">1</span> 選照片</h2>
+
+    <p class="card-lede">
+      一頁一張照片，從上方拍。整張紙要在畫面裡，四個角看得見或者接近看得見。別的一切，傾斜、陰影、下面那張桌子，都是這個工具存在的理由。加進來好幾張，它們就按你加的順序變成一份文件的各頁。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">所有頁面重新找一遍</button>
+        <button type="button" id="clear-all" class="ghost danger">全部移除</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- 第 2 步 | 四個角 -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> 把角對到紙上</h2>
+
+    <p id="edit-empty" class="field-summary">
+      選一張照片，它會出現在這裡，四個角已經替你找好了。
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        在照片上隨便點一下，最近的那個角就到你手指這裡來，把它拖到紙的角上。用 <kbd>Tab</kbd> 可以從鍵盤選中一個角，方向鍵挪一個畫素，按住 <kbd>Shift</kbd> 挪十個。這些都不是不可挽回的，掃描的是四個角最後停在哪裡。
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">重新找角</button>
+        <button type="button" id="whole-photo" class="ghost">用整張照片</button>
+        <button type="button" id="turn-left" class="ghost">向左轉</button>
+        <button type="button" id="turn-right" class="ghost">向右轉</button>
+        <button type="button" id="undo" class="ghost" disabled>撤銷</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 第 3 步 | 清理 -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> 清理</h2>
+
+    <p id="clean-empty" class="field-summary">
+      一有照片可以擺正，擺正後的頁面就出現在這裡。
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        下面這個就是真結果，做它的和寫檔案的是同一段程式碼：擺正過，不勻的光也除掉了。你在挑的時候，螢幕上按螢幕的尺寸畫；檔案本身按照片的解析度做。
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          正在擺正&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>光和顏色怎麼處理</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>彩色，去掉不勻</strong>
+            <span class="check-note">
+              把紙的亮度在整頁上量一遍再除掉，於是陰影消失、紙重新變白，而印章、藍墨水的簽字、熒光筆劃的那一行都保住自己的顏色。顏色本身屬於文件的時候，用這個。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>灰度</strong>
+            <span class="check-note">
+              同樣去掉不勻，只是不要顏色。比彩色小，對照片和簽字也比黑白溫和。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>黑白</strong>
+            <span class="check-note">
+              每個畫素是拿它自己的鄰域來判，而不是拿整頁一個數字，這正是陰影裡的字還看得清的原因。掃描件小下來靠的就是它：二十頁的合同用這個模式在一兆以內，存成照片則要十五兆上下。這個模式沒有中間調，所以帶照片的頁面別選它。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>保持原樣</strong>
+            <span class="check-note">
+              只擺正，別的什麼都不做。給那種紙本身也要緊的頁面用：有年頭的、帶顏色的、或者一張照片。
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">力度</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        這個設定對每一頁都生效。同一份文件裡清理方式不同的頁面，看著像兩份文件。
+      </p>
+    </div>
+  </section>
+
+  <!-- 第 4 步 | 檔案 -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> 儲存文件</h2>
+
+    <p class="card-lede">
+      PDF 就在這裡、在這一頁的記憶體裡一頁一頁地做出來。這個工具的另一頭沒有伺服器可以接收工資單、護照或者合同，程式碼裡也沒有任何東西會去做這件事。
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">頁面尺寸</label>
+        <select id="page-size">
+          <option value="fit" selected>紙張按頁面本身的大小</option>
+          <option value="a4">A4 | 210 &times; 297 mm</option>
+          <option value="letter">Letter | 8.5 &times; 11 in</option>
+          <option value="legal">Legal | 8.5 &times; 14 in</option>
+          <option value="a5">A5 | 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">列印解析度</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI | 辦公裝置</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          一張由這麼多畫素組成的紙，要管它叫多大，就這麼回事。它改的是文件列印出來的尺寸，掃描件裡一個畫素也不會變。
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">頁邊距</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="頁邊距，單位毫米">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">最長邊</label>
+        <select id="max-side">
+          <option value="1600">1600 畫素 | 小</option>
+          <option value="2400" selected>2400 畫素</option>
+          <option value="3500">3500 畫素</option>
+          <option value="0">照片允許多大就多大</option>
+        </select>
+        <p class="field-note">
+          擺正後頁面的上限。一張紙的照片帶的畫素遠多於這張紙值得的，長邊 2400 在 A4 上大約是 200 DPI。
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">品質</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          用於存成 JPEG 的彩色和灰度模式。黑白頁面是精確儲存的，對它們這一項不起作用。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">文件標題 <span class="optional">（可選）</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="留空的話 PDF 裡不帶標題">
+        <p class="field-note">
+          除了頁面之外，寫進文件裡的只有這一樣。沒有日期，沒有作者，也沒有關於這臺裝置的任何東西。看 <code>src/document.js</code>。
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>存成 PDF</button>
+      <button type="button" id="save-images" class="ghost big" disabled>把頁面存成圖片</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>做好的檔案</h3>
+        <a id="download" class="primary as-button" href="#" download>下載</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        發出去之前先開啟看一眼。文件裡的內容，就是第 3 步螢幕上一頁一頁顯示過的那些。
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">四個角找到了。核對一下，偏了的拖回去。</span>
+    <span data-phrase="detect.unsure">紙的邊緣不夠清楚，沒法確定。這四個角是猜的，繼續之前先把它們拖到紙上。</span>
+    <span data-phrase="detect.nothing">這張照片裡認不出一張紙，所以角放在照片的邊上。把它們拖到紙上。</span>
+    <span data-phrase="detect.flat">這張圖裡沒有可找的東西，它根本沒有邊緣。</span>
+    <span data-phrase="detect.tiny">這張圖太小了，在裡面找不出一張紙。</span>
+    <span data-phrase="detect.edited">這四個角現在歸你了。「重新找角」會把照片從頭量一遍。</span>
+
+    <span data-phrase="corner.tl">左上角</span>
+    <span data-phrase="corner.tr">右上角</span>
+    <span data-phrase="corner.br">右下角</span>
+    <span data-phrase="corner.bl">左下角</span>
+    <span data-phrase="corner.at">{corner}，橫向 {x}，縱向 {y}。方向鍵可以挪它，按住 Shift 一次挪十個畫素。</span>
+
+    <span data-phrase="page.select">編輯第 {index} 頁</span>
+    <span data-phrase="page.remove">移除第 {index} 頁</span>
+    <span data-phrase="page.earlier">把第 {index} 頁往前挪</span>
+    <span data-phrase="page.later">把第 {index} 頁往後挪</span>
+    <span data-phrase="page.count">{count} 頁</span>
+    <span data-phrase="page.counts">{count} 頁</span>
+
+    <span data-phrase="paper.a">A4 或者 A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">一張名片</span>
+    <span data-phrase="shape.known">頁面出來是 {ratio}，這正是 {paper} 的形狀。</span>
+    <span data-phrase="shape.sideways">頁面出來是 {ratio}，這正是橫放的 {paper}。</span>
+    <span data-phrase="shape.unknown">頁面出來是 {ratio}，這不是標準開本。</span>
+
+    <span data-phrase="method.perspective">形狀是從照片的透視裡還原出來的，所以這是紙的形狀，不是它在畫面裡顯出來的樣子。</span>
+    <span data-phrase="method.edges">照片是正對著拍的，所以形狀直接從邊緣量得。</span>
+
+    <span data-phrase="quality.good">{width} 乘 {height} 畫素，在這個尺寸的頁面上大約 {dpi} DPI，列印夠用。</span>
+    <span data-phrase="quality.fair">{width} 乘 {height} 畫素，在這個尺寸的頁面上大約 {dpi} DPI。螢幕上沒問題，紙上略微發虛。</span>
+    <span data-phrase="quality.low">{width} 乘 {height} 畫素，在這個尺寸的頁面上大約 {dpi} DPI。要列印的話，再走近點。</span>
+    <span data-phrase="quality.pixels">{width} 乘 {height} 畫素。</span>
+    <span data-phrase="coverage.note">紙填滿了照片的 {percent}%。</span>
+    <span data-phrase="coverage.small">紙只填滿了照片的 {percent}%，也就是說你拍到的大半是桌子。下次靠近些。</span>
+
+    <span data-phrase="strength.gentle">輕：把紙弄勻，別的基本不動。給那種寫著淺鉛筆字或者帶照片的頁面用。</span>
+    <span data-phrase="strength.middling">常用的一檔：紙重新變白，印刷體重新變黑。</span>
+    <span data-phrase="strength.hard">重：所有發灰的都往黑或者白推。在只有印刷體的頁面上最乾淨，在任何帶圖的東西上則是毀滅性的。</span>
+
+    <span data-phrase="busy.page">第 {done} 頁，共 {total} 頁&hellip;</span>
+    <span data-phrase="busy.writing">正在寫文件&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} | {size}，{pages}。</span>
+    <span data-phrase="result.images">{name} | {size}，{pages}。</span>
+    <span data-phrase="result.mono">按每畫素一位儲存並精確壓縮，所以才這麼小。</span>
+    <span data-phrase="result.jpeg">頁面按你選的品質存成了 JPEG。</span>
+    <span data-phrase="result.png">頁面存成了 PNG，它是無損的，也正是兩種顏色的影象需要的。換成 JPEG 會更大，而且每個字周圍都發糊。</span>
+    <span data-phrase="result.clean">沒有日期，沒有作者，沒有電腦名。除了頁面，文件裡只有這個工具的名字。</span>
+
+    <span data-phrase="size.fit">每張紙拿到的就是它那一頁真實的尺寸，按上面選的解析度算。不會加白邊去湊。</span>
+    <span data-phrase="size.named">每一頁都放在 {name} 的紙上、頁邊距以內，不管它最後成了什麼形狀。</span>
+
+    <span data-phrase="error.decode">這個瀏覽器打不開 {name}。要是 iPhone 拍的 HEIC 照片，先轉換一下。</span>
+    <span data-phrase="error.none">先至少選一張照片。</span>
+    <span data-phrase="error.failed">做檔案的時候出了岔子：{detail}</span>
+  </div>
+</main>

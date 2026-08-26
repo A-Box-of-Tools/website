@@ -1,0 +1,236 @@
+<!--
+  tools/stack-images/body.html, in Simplified Chinese.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+
+  句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
+-->
+<main>
+  <!-- 第 1 步 | 帧 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选帧</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      RAW 文件是靠读相机早就写进去的那张原尺寸 JPEG 打开的：几十 KB 的目录，然后取其中一段。传感器数据从来不解码，所以一张 60&nbsp;MB 的帧开起来跟 JPEG 差不多快。<a href="#faq-raw">这对结果意味着什么</a>。
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">按名字排序</button>
+        <button type="button" id="clear-all" class="ghost danger">全部移除</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- 第 2 步 | 怎么合到一起 -->
+  <section class="card">
+    <h2><span class="step">2</span> 怎么合到一起</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">手法</label>
+        <select id="mode">
+          <option value="mean" selected>平均值 | 压低噪点</option>
+          <option value="median">中位数 | 去掉人和开过去的车</option>
+          <option value="sigma">Sigma 裁剪 | 两样一起</option>
+          <option value="max">最亮 | 星轨、烟花、光绘</option>
+          <option value="min">最暗 | 去掉动过的亮东西</option>
+          <option value="sum">相加 | 模拟一次长曝光</option>
+          <option value="focus">景深合成 | 留下清楚的那部分</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">对齐各帧</label>
+        <select id="align">
+          <option value="translate" selected>对齐 | 只平移</option>
+          <option value="similarity">对齐 | 平移、旋转、缩放</option>
+          <option value="none">不对齐 | 就照它们原样</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">工作分辨率</label>
+        <select id="scale">
+          <option value="full" selected>原尺寸</option>
+          <option value="half">一半 | 四分之一的内存</option>
+          <option value="quarter">四分之一 | 十六分之一</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">超出这个就丢掉</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          调低会丢得更多，也会连真的细节一起丢掉。两个标准差是常用的起点。
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">在多大范围内衡量清晰度</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          调大会整片整片地从某一帧里取；调小会跟着细节走，但可能让一块平滑的背景在各帧之间变得斑驳。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">曝光</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">存成</label>
+        <select id="format">
+          <option value="png" selected>PNG | 无损</option>
+          <option value="jpeg">JPEG | 文件更小</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>结果</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>工作内存</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>解码次数</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>从硬盘读了</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- 第 3 步 | 跑 -->
+  <section class="card">
+    <h2><span class="step">3</span> 堆栈</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>把这些图堆起来</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="堆栈的结果">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>下载图片</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 帧</span>
+    <span data-phrase="count.many">{count} 帧</span>
+    <span data-phrase="count.none">还没有帧</span>
+
+    <span data-phrase="frame.reference">基准</span>
+    <span data-phrase="frame.make-reference">拿它当基准</span>
+    <span data-phrase="frame.remove">移除</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW | 相机自己的预览图，{width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} | {width} &times; {height} 的预览图</span>
+    <span data-phrase="frame.raw-unreadable">这个 RAW 文件里没找到预览图</span>
+    <span data-phrase="frame.read">读了 {total} 里的 {read}</span>
+
+    <span data-phrase="mode.mean">对每一帧取平均值。随机噪点偏高和偏低的次数一样多，所以把 {count} 帧平均一下，噪点大约降到原来的 {factor} 分之一。这是给安静一组用的手法，也是被一只飞过去的鸟就毁掉的那种。</span>
+    <span data-phrase="mode.median">取每个像素的中间那个值。只在一部分帧里出现过的东西，游客也好、车也好、飞机也好，都会消失。它是唯一一种必须同时抱着每一帧的手法，所以下面才会被切成横条。</span>
+    <span data-phrase="mode.sigma">先学出每个像素通常是什么，再只对跟这个说法一致的数值取平均。既有中位数的结果，又有平均值那种消噪能力。它会把这些帧读两遍。</span>
+    <span data-phrase="mode.max">留下每个像素出现过的最亮值。把一串短曝光变成星轨、把一场烟花从它自己的帧里重新拼起来，靠的就是它。</span>
+    <span data-phrase="mode.min">留下每个像素出现过的最暗值。一个像素只有在每一帧里都亮才会保持亮，所以窗户上的反光、开过去的车灯、被闪光灯打亮的雨滴，全都会消失。</span>
+    <span data-phrase="mode.sum">把这些帧相加，不做除法，也就是一次长 {count} 倍的曝光会收到的量。它会过曝，就像那次曝光本来也会过曝一样。用曝光那个滑杆拉回来。</span>
+    <span data-phrase="mode.focus">图像的每一部分，都从它在那一帧里清楚的那一帧取。沿着对焦环拍一个小东西，这个手法会把清楚的部分接起来。</span>
+
+    <span data-phrase="align.translate">算出每一帧偏了多少，再挪回去，精度到一个像素的几分之一。能纠正手持的抖动和三脚架的漂移，纠正不了旋转。</span>
+    <span data-phrase="align.similarity">连旋转和缩放也一起算出来。每帧多花一次测量，而如果这些帧本来就是正的，那就一点不多花。旋转永远只能在半圈范围内还原。</span>
+    <span data-phrase="align.none">照这些帧进来的样子直接堆。对锁死的三脚架或者间隔拍摄是对的，对任何手持的东西都是错的。</span>
+
+    <span data-phrase="scale.note">每一帧都是由浏览器自己的解码器按这个尺寸解出来的，所以调小不只是省内存，是活本来就少了。</span>
+    <span data-phrase="gain.note">在算完之后、取整之前，最后一步乘进结果里。</span>
+    <span data-phrase="gain.sum-note">把 {count} 帧相加，几乎肯定会过曝。降到 {suggested} 上下，看看到底收到了什么。</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">大约 {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count} 次，每帧一次</span>
+    <span data-phrase="plan.decodes.passes">{count} 次 | 每一帧 {passes} 遍</span>
+    <span data-phrase="plan.decodes.banded">{count} 次 | 每一帧，在 {bands} 个横条上各一次</span>
+    <span data-phrase="plan.read">硬盘上 {total} 里的 {read}</span>
+    <span data-phrase="plan.banded">这个没法一次装进内存，所以图会被切成 {bands} 个横条，每一条都把这些帧重读一遍。选 {suggested} 就能一遍跑完。</span>
+    <span data-phrase="plan.banded-anyway">这个没法一次装进内存，所以图会被切成 {bands} 个横条，每一条都把这些帧重读一遍。少几帧或者把工作分辨率调小，就能一遍跑完。</span>
+
+    <span data-phrase="progress.open">正在看 {name} 里面&hellip;</span>
+    <span data-phrase="progress.survey">正在读 {name}&hellip;</span>
+    <span data-phrase="progress.measure">正在量 {name} 偏了多少&hellip;</span>
+    <span data-phrase="progress.stack">正在堆栈 | 已读 {total} 帧里的 {done} 帧</span>
+    <span data-phrase="progress.stack-banded">正在堆栈 | 第 {band} 条，共 {bands} 条，已读 {total} 帧里的 {done} 帧</span>
+    <span data-phrase="progress.encode">正在写出图片&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}，{size} | {count} 帧在 {seconds} 秒里合到了一起</span>
+    <span data-phrase="result.moves">每一帧都量过，也都推回了自己的位置。</span>
+    <span data-phrase="result.moves-some">{total} 帧里有 {count} 帧没法有把握地量出来，就留在原处了。</span>
+    <span data-phrase="result.moves-none">这些帧是照进来的样子直接堆的。</span>
+    <span data-phrase="result.moves-clamped">有 {count} 帧报出的旋转量对一串连拍来说太大了，就只用平移纠正了。</span>
+    <span data-phrase="result.cropped">把它们各自推开之后，边上留下了不是每一帧都够得到的地方，那些被裁掉了。</span>
+
+    <span data-phrase="error.no.files">先至少加一张图。</span>
+    <span data-phrase="error.no.size">这些文件没有一个打得开成图片。</span>
+    <span data-phrase="error.one.frame">堆栈至少要两帧。</span>
+    <span data-phrase="error.unknown">堆栈的时候出了岔子。这里面要是有哪个文件比较特别，单独试一下它。</span>
+    <span data-phrase="error.memory">浏览器的内存用完了。试试更小的工作分辨率，或者少几帧。</span>
+    <span data-phrase="error.unreadable">{name} 打不开成图片，被撇下了。</span>
+    <span data-phrase="error.busy">再加帧之前先等这一次堆完，或者把它取消掉。</span>
+  </div>
+</main>
