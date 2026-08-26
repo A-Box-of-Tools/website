@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Passo 1 &mdash; o arquivo -->
   <section class="card">
     <h2><span class="step">1</span> Escolha um vídeo</h2>
@@ -39,8 +39,8 @@
          and for the files this browser can play but this reader cannot open. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline></video>
-        <canvas id="still" hidden></canvas>
+        <video id="preview" playsinline aria-label="Pré-visualização"></video>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
         <p class="stage-busy" id="stage-busy" hidden>Decodificando&hellip;</p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Step 1 &mdash; where the picture comes from -->
   <section class="card">
     <h2><span class="step">1</span> أرِه الرمز</h2>
@@ -29,7 +29,7 @@
     <h2>الكاميرا</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="معاينة"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -117,7 +117,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             الوحدات التي أخذت هذه الصفحة عيّناتها، مرسومةً من جديد. فإن بدت هذه
             الرمزَ الذي صوّرته، فقد قرأ الشيء الصحيح؛ وإن بدت تشويشاً، فلم

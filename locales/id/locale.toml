@@ -340,6 +340,7 @@ base = "Setiap klaim di situs ini dimaksudkan untuk diperiksa, bukan dipercaya b
 [ui]
 languages = "Bahasa"
 lang_auto = "Halaman ini ditampilkan dalam bahasa Indonesia, bahasa yang diminta peramban Anda."
+skip_to_content = "Langsung ke konten"
 breadcrumb = "Jejak navigasi"
 all_tools = "Semua alat"
 last_updated = "Terakhir diperbarui"

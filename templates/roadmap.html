@@ -71,6 +71,12 @@
 </head>
 <body>
 
+<!--
+  The first focusable thing on the page, and invisible until it is: the way a
+  keyboard or screen-reader visitor gets past the header without walking it.
+-->
+<a class="skip-link" href="#main">{{ ui.skip_to_content }}</a>
+
 {% include "partials/lang-notice.html" %}
 
 <!--
@@ -111,7 +117,7 @@
   coming, which is a question you answer by reading a list, not by looking at a
   grid of cards for tools you already saw on the front page.
 -->
-<main class="prose">
+<main id="main" class="prose">
 
   <section>
     <h2>{{ site.roadmap.intro_heading }}</h2>

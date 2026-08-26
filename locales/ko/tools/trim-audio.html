@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- 1단계 &mdash; 녹음 -->
   <section class="card">
     <h2><span class="step">1</span> 녹음 고르기</h2>
@@ -99,7 +99,7 @@
         <button type="button" id="reset-segments" class="ghost danger">전부 지우기</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">표시 불러오기&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="시간 파일 형식">
           <option value="seconds" selected>초</option>
           <option value="HHMMSSmmm">HH:MM:SS.mmm</option>

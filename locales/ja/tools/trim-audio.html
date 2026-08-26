@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- ステップ1 &mdash; 録音 -->
   <section class="card">
     <h2><span class="step">1</span> 録音を選ぶ</h2>
@@ -94,7 +94,7 @@
         <button type="button" id="reset-segments" class="ghost danger">すべて消す</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">印を読み込む&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="時刻ファイルの形式">
           <option value="seconds" selected>秒数</option>
           <option value="HHMMSSmmm">HH:MM:SS.mmm</option>

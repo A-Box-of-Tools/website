@@ -7,7 +7,7 @@
 
   句子內部不換行：兩個漢字之間的換行會變成讀者看得見的空隙。
 -->
-<main>
+<main id="main">
   <!-- 第 1 步 | 照片 -->
   <section class="card">
     <h2><span class="step">1</span> 選照片</h2>
@@ -50,7 +50,7 @@
            in percentages, so it needs no redraw when the window changes. -->
       <div class="stage-wrap">
         <div class="stage" id="stage">
-          <canvas id="photo"></canvas>
+          <canvas id="photo" role="img" aria-label="預覽"></canvas>
         </div>
       </div>
 
@@ -80,7 +80,7 @@
       </p>
 
       <div class="result-wrap">
-        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <canvas id="scan-preview" class="scan-preview" role="img" aria-label="預覽"></canvas>
         <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
           正在擺正&hellip;
         </p>

@@ -76,6 +76,12 @@
 </head>
 <body>
 
+<!--
+  The first focusable thing on the page, and invisible until it is: the way a
+  keyboard or screen-reader visitor gets past the header without walking it.
+-->
+<a class="skip-link" href="#main">{{ ui.skip_to_content }}</a>
+
 {% include "partials/lang-notice.html" %}
 
 <!--
@@ -123,7 +129,7 @@
   the class is still worth getting right, because a stylesheet that calls a
   guide a legal page is a stylesheet nobody can search.
 -->
-<main class="{{ main_class }}">
+<main id="main" class="{{ main_class }}">
 {{ body }}
 </main>
 

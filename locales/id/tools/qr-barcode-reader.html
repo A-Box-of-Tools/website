@@ -5,7 +5,7 @@
   what the JavaScript reaches for, so they are the same in every language.
   Only the words change.
 -->
-<main>
+<main id="main">
   <!-- Langkah 1 &mdash; dari mana gambarnya datang -->
   <section class="card">
     <h2><span class="step">1</span> Tunjukkan kodenya</h2>
@@ -38,7 +38,7 @@
     <h2>Kameranya</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="Pratinjau"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -129,7 +129,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             Modul yang disampel halaman ini, digambar kembali. Kalau ini tampak
             seperti kode yang Anda foto, ia membaca yang benar; kalau tampak

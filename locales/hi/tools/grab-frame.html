@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- चरण 1 &mdash; फ़ाइल -->
   <section class="card">
     <h2><span class="step">1</span> एक वीडियो चुनिए</h2>
@@ -40,8 +40,8 @@
          and for the files this browser can play but this reader cannot open. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline></video>
-        <canvas id="still" hidden></canvas>
+        <video id="preview" playsinline aria-label="पूर्वावलोकन"></video>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
         <p class="stage-busy" id="stage-busy" hidden>डिकोड हो रहा है&hellip;</p>
       </div>
     </div>

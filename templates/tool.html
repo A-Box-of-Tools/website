@@ -120,6 +120,15 @@
 </head>
 <body>
 
+<!--
+  The first focusable thing on the page, and invisible until it is. A keyboard
+  or screen-reader visitor otherwise crosses the breadcrumb, the header and the
+  whole pledge before reaching the tool they came for - on every page, every
+  visit. It lands on the <main> in this tool's body.html, which carries
+  id="main" for exactly this link.
+-->
+<a class="skip-link" href="#main">{{ ui.skip_to_content }}</a>
+
 {% include "partials/lang-notice.html" %}
 
 <!--

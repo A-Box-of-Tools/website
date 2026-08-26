@@ -6,7 +6,7 @@
   the words change. The #faq-raw anchor is a link target from the note in step
   one, so it stays as it is.
 -->
-<main>
+<main id="main">
   <!-- Passo 1 &mdash; i fotogrammi -->
   <section class="card">
     <h2><span class="step">1</span> Scegli i fotogrammi</h2>
@@ -118,6 +118,7 @@
           <option value="jpeg">JPEG &mdash; file più piccolo</option>
         </select>
         <div id="quality-row" class="inline-pair" hidden>
+          <label for="quality" class="visually-hidden">Qualità</label>
           <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
           <output id="quality-value" for="quality">92</output>
         </div>

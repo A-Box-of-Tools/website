@@ -232,6 +232,7 @@ base = "本站说的每一句话，都是写来给你核对的，不是写来让
 [ui]
 languages = "语言"
 lang_auto = "你的浏览器要的是简体中文，所以这个页面按简体中文显示。"
+skip_to_content = "跳到主要内容"
 breadcrumb = "面包屑导航"
 all_tools = "全部工具"
 last_updated = "最后更新"

@@ -4,7 +4,7 @@
   Every id, class and template tag below is what src/main.js and the frame
   reach for, so they are the same in every language. Only the words change.
 -->
-<main>
+<main id="main">
   <!-- Adım 1 &mdash; video -->
   <section class="card">
     <h2><span class="step">1</span> Bir video seçin</h2>
@@ -42,8 +42,8 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline></video>
-        <canvas id="still" hidden></canvas>
+        <video id="preview" playsinline aria-label="Önizleme"></video>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
 
@@ -110,7 +110,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Hepsini temizle</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">İşaretleri yükle&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Zaman damgası dosya biçimi">
           <option value="seconds" selected>saniye</option>
           <option value="HHMMSSmmm">SS:DD:SS.mmm</option>

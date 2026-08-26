@@ -330,6 +330,7 @@ base = "Bu sitedeki her iddia inanılmak için değil, doğrulanmak için var."
 [ui]
 languages = "Dil"
 lang_auto = "Bu sayfa, tarayıcınızın tercih ettiği dil olan Türkçe olarak gösteriliyor."
+skip_to_content = "İçeriğe atla"
 breadcrumb = "Gezinme yolu"
 all_tools = "Tüm araçlar"
 last_updated = "Son güncelleme"

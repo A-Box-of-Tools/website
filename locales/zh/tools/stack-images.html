@@ -8,7 +8,7 @@
 
   句子内部不换行：两个汉字之间的换行会变成读者看得见的空隙。
 -->
-<main>
+<main id="main">
   <!-- 第 1 步 | 帧 -->
   <section class="card">
     <h2><span class="step">1</span> 选帧</h2>
@@ -113,6 +113,7 @@
           <option value="jpeg">JPEG | 文件更小</option>
         </select>
         <div id="quality-row" class="inline-pair" hidden>
+          <label for="quality" class="visually-hidden">画质</label>
           <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
           <output id="quality-value" for="quality">92</output>
         </div>

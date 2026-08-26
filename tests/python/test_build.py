@@ -760,7 +760,8 @@ class BuildTheSite(unittest.TestCase):
         and nothing else.
         """
         page = (self.out / 'de' / 'index.html').read_text(encoding='utf-8')
-        self.assertIn('<div class="lang-auto" id="lang-auto" hidden>', page)
+        self.assertIn('<div class="lang-auto" id="lang-auto" role="status" hidden>',
+                      page)
 
     def test_every_page_offers_a_way_out_of_the_language_it_is_in(self):
         """The control is for a person, and a person can always want it.

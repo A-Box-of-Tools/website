@@ -7,7 +7,7 @@
   page.count and page.counts are singular and plural in English; Turkish does
   not put a plural suffix on a counted noun, so both carry the same bare form.
 -->
-<main>
+<main id="main">
   <!-- Adım 1 &mdash; fotoğraflar -->
   <section class="card">
     <h2><span class="step">1</span> Fotoğrafları seçin</h2>
@@ -59,7 +59,7 @@
            in percentages, so it needs no redraw when the window changes. -->
       <div class="stage-wrap">
         <div class="stage" id="stage">
-          <canvas id="photo"></canvas>
+          <canvas id="photo" role="img" aria-label="Önizleme"></canvas>
         </div>
       </div>
 
@@ -92,7 +92,7 @@
       </p>
 
       <div class="result-wrap">
-        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <canvas id="scan-preview" class="scan-preview" role="img" aria-label="Önizleme"></canvas>
         <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
           Düzeltiliyor&hellip;
         </p>

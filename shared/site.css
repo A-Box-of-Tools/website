@@ -618,6 +618,32 @@ footer a:hover { text-decoration: underline; }
    and the price is that anything drawn on every page is written in both, the
    way .crumbs already is. If you change one, change the other. */
 
+/* The skip link: the first focusable thing on every page, parked off-screen
+   until the keyboard reaches it. Off-screen rather than clipped like
+   .visually-hidden below, because this one has to come BACK - a clipped box
+   cannot be un-clipped into something readable, but a moved one can simply be
+   put down where it belongs. Logical properties, so it appears at the right
+   end of an RTL page. The same rule twice, here and in tool-frame.css - see
+   the notice above. */
+.skip-link {
+  position: absolute;
+  inset-block-start: -100vh;
+  inset-inline-start: 0.75rem;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  inset-block-start: 0.75rem;
+}
+
 /* Drawn nowhere, read everywhere: the summary says "Language: Deutsch" to a
    screen reader and "Deutsch" to everybody else. The same rule as the one in
    shared/css/tool-frame.css, which needed it first for the file input. */

@@ -7,7 +7,11 @@
    `src/*.js` including a `main.js`, and `og.png`. Copying the nearest existing
    tool and editing it is the fastest way in — `tool.toml` is commented
    throughout, and every key in it is required, so nothing can be silently
-   forgotten.
+   forgotten. The `<main>` opens as `<main id="main">` — the skip link on every
+   page points at that id — and every control, canvas and bare `<video>` in the
+   body needs a name a screen reader can say;
+   `tests/python/test_accessibility.py` spells out the rules and fails the
+   suite on a body that breaks one.
 2. Add the slug to the `order` of the matching `[[hub.categories]]` in
    `config/site.toml`, and set the same category id in the tool's `category`.
    The card on the hub, the sitemap entry, the structured data and the handful

@@ -5,7 +5,7 @@
   collapses to a space in HTML, and a space between two Japanese characters is
   visible on the page.
 -->
-<main>
+<main id="main">
   <!-- ステップ1｜画像はどこから来るか -->
   <section class="card">
     <h2><span class="step">1</span> コードを見せる</h2>
@@ -33,7 +33,7 @@
     <h2>カメラ</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="プレビュー"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -114,7 +114,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             このページが読み取ったモジュールを描き戻したものです。撮ったコードに似ていれば正しいものを読んでいます。砂嵐に見えるなら読めておらず、上の答えは信用できません。
           </figcaption>

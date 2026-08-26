@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- चरण 1 &mdash; रिकॉर्डिंग -->
   <section class="card">
     <h2><span class="step">1</span> एक रिकॉर्डिंग चुनिए</h2>
@@ -100,7 +100,7 @@
         <button type="button" id="reset-segments" class="ghost danger">सब हटा दीजिए</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">निशान लोड कीजिए&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="समय वाली फ़ाइल का फ़ॉर्मैट">
           <option value="seconds" selected>सेकंड</option>
           <option value="HHMMSSmmm">HH:MM:SS.mmm</option>

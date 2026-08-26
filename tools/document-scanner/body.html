@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Step 1 &mdash; the photographs -->
   <section class="card">
     <h2><span class="step">1</span> Choose the photos</h2>
@@ -49,7 +49,7 @@
            in percentages, so it needs no redraw when the window changes. -->
       <div class="stage-wrap">
         <div class="stage" id="stage">
-          <canvas id="photo"></canvas>
+          <canvas id="photo" role="img" aria-label="Preview"></canvas>
         </div>
       </div>
 
@@ -82,7 +82,7 @@
       </p>
 
       <div class="result-wrap">
-        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <canvas id="scan-preview" class="scan-preview" role="img" aria-label="Preview"></canvas>
         <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
           Straightening&hellip;
         </p>

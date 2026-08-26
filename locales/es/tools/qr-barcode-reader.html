@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Paso 1 &mdash; de dónde sale la imagen -->
   <section class="card">
     <h2><span class="step">1</span> Enséñale el código</h2>
@@ -30,7 +30,7 @@
     <h2>La cámara</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="Vista previa"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -119,7 +119,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             Los módulos que esta página muestreó, vueltos a dibujar. Si se parece
             al código que fotografiaste, leyó lo correcto; si parece ruido, no, y
