@@ -1,0 +1,21 @@
+#
+# Ratgeber: ein PDF schwärzen - German.
+#
+
+nav = "Ein PDF schwärzen"
+title = "PDF schwärzen, sodass der Text wirklich weg ist"
+description = "Ein in einem PDF-Betrachter gezeichneter schwarzer Kasten lässt die Wörter darunter meist stehen, und Kopieren und Einfügen holt sie sofort zurück. Was eine echte Schwärzung entfernt, die vier Orte, an denen ein Wort außerhalb der Seite steckt, und wie Sie eine Datei prüfen, bevor Sie sie verschicken."
+
+heading = "So schwärzen Sie ein PDF, damit der Text wirklich weg ist"
+lede = """
+    Ein schwarzes Rechteck über einem Namen und ein gelöschter Name sehen auf
+    dem Bildschirm gleich aus. Eines von beiden übersteht das Markieren und
+    Kopieren. Hier steht der Unterschied, die Orte, an denen ein Wort steckt und
+    die gar keine Seite sind, und die Prüfung von dreißig Sekunden, die Ihnen
+    sagt, welches der beiden Sie vor sich haben."""
+
+updated = "25. August 2026"
+
+og_title = "So schwärzen Sie ein PDF, damit der Text wirklich weg ist"
+og_description = "Warum ein schwarzer Kasten in einem PDF-Betrachter meist keine Schwärzung ist, die vier Orte, an denen ein Wort außerhalb der Seite steckt, und wie Sie eine Datei prüfen, bevor Sie sie verschicken."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

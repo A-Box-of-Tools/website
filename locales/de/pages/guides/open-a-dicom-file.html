@@ -1,0 +1,255 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den <a href="../../dicom-viewer/">DICOM-Viewer</a> und ziehen
+      Sie den ganzen Ordner mit den Dateien hinein. Sie werden auf Ihrem eigenen
+      Gerät gelesen, wieder ihren Serien zugeordnet und in der Reihenfolge
+      gestapelt, in der das Gerät sie aufgenommen hat. Nichts wird hochgeladen,
+      und nichts wird in Ihre Dateien zurückgeschrieben.
+    </p>
+    <p>
+      Falls Sie eine CD bekommen haben und sich fragen, welche der Dateien Sie
+      öffnen sollen: alle, auf einmal. Ein CT oder ein MRT ist nicht eine Datei.
+      Es ist eine Datei pro Schicht, und eine Thoraxstudie sind dreihundert
+      davon.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was auf einer Klinik-CD liegt</h2>
+    <p>
+      Meist vier Dinge, und nur eines davon zählt.
+    </p>
+    <ul>
+      <li>
+        <strong>Ein Ordner mit Aufnahmen</strong>, oft <code>DICOM</code>,
+        <code>IMAGES</code> oder <code>ST0001</code> genannt, mit Dateien namens
+        <code>IM000001</code>, <code>I0000001</code> oder einer langen Zahl mit
+        Punkten. Häufig ganz ohne Endung. Das ist die Aufnahme.
+      </li>
+      <li>
+        <strong>Eine Datei namens <code>DICOMDIR</code></strong>. Ein Verzeichnis
+        über den Rest, geschrieben, damit ein Viewer die Studien auf der CD
+        auflisten kann, ohne jede Datei zu öffnen. Sie brauchen sie nicht.
+      </li>
+      <li>
+        <strong>Ein Viewer</strong>, als Windows-Programm, als Autostart-Eintrag
+        oder gelegentlich als Java-Applet. Er wurde für das kompiliert, was
+        aktuell war, als die CD gebrannt wurde, und deshalb laufen so viele davon
+        nicht mehr.
+      </li>
+      <li>
+        <strong>Eine HTML-Seite oder ein PDF</strong> mit dem Logo der Klinik,
+        das erklärt, wie der Viewer zu starten ist.
+      </li>
+    </ul>
+    <p>
+      Die Aufnahmen brauchen den Viewer nicht. Das Format ist ein
+      veröffentlichter Standard, und die Dateien sind für sich lesbar; das
+      Programm auf der CD ist eines, das sie lesen könnte, und nicht das einzige.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum die Dateien keine Endung haben</h2>
+    <p>
+      Weil DICOM keine braucht. Jede Datei trägt ihre eigene Markierung: 128 Byte
+      Nichts, dann die vier Buchstaben <code>DICM</code>, dann ein kleiner Block
+      von Feldern, der beschreibt, wie der Rest der Datei geschrieben ist. Ein
+      Leser prüft auf diese vier Buchstaben und nicht auf einen Namen, der auf
+      <code>.dcm</code> endet.
+    </p>
+    <p>
+      Deshalb ändert es auch nichts, eine Datei in <code>.dcm</code> umzubenennen,
+      und deshalb ist ein Viewer, der auf der Endung besteht, unnötig streng.
+      Dateien, die direkt aus einem Kliniknetz geschrieben wurden, haben nicht
+      einmal die 128 Byte und die Markierung. Sie sind die nackten Daten ohne
+      irgendetwas davor, und ein Leser muss aus dem ersten Feld erschließen, wie
+      sie kodiert sind. Das ist eine normale Datei und keine kaputte.
+    </p>
+  </section>
+
+  <section>
+    <h2>Fenster und Zentrum, und das ist der Regler, auf den es ankommt</h2>
+    <p>
+      Das ist das eine, was ein medizinisches Bild von einem Foto unterscheidet,
+      und der Grund, warum ein Bildbearbeitungsprogramm dafür nichts taugt.
+    </p>
+    <p>
+      Eine CT-Schicht enthält rund viertausend unterscheidbare Werte. Ihr
+      Bildschirm zeigt zweihundertsechsundfünfzig Graustufen. Irgendetwas muss
+      entscheiden, welche viertausend auf welche zweihundertsechsundfünfzig
+      abgebildet werden, und diese Entscheidung ist das <strong>Fenster</strong>:
+      Alles darunter ist schwarz, alles darüber ist weiß, und der Bereich
+      dazwischen verteilt sich auf die Graustufen.
+    </p>
+    <p>
+      Verschieben Sie das Fenster, und dieselbe Datei sieht aus wie eine andere
+      Aufnahme. Das ist kein Darstellungsfehler, das ist der Sinn der Sache.
+      Lunge und Knochen sind beide in der Schicht und lassen sich nicht
+      gleichzeitig sehen: Ein Fenster, das die Textur belüfteter Lunge zeigt,
+      setzt jeden Knochen auf reines Weiß, und eines, das die Bälkchenstruktur
+      einer Rippe zeigt, setzt die ganze Lunge auf reines Schwarz.
+    </p>
+    <p>
+      Bei einem CT sind die Zahlen <strong>Hounsfield-Einheiten</strong>, und die
+      sind absolut festgelegt und nicht je Gerät: Wasser ist 0 und Luft ist
+      &minus;1000, per Definition, auf jedem CT der Welt. Deshalb kann ein Viewer
+      benannte Fenster anbieten, Lunge, Knochen, Hirn, Weichteile, und sie
+      bedeuten bei Ihrer Datei dasselbe wie an der Befundungsstation, an der die
+      Aufnahme gelesen wurde. Die üblichen:
+    </p>
+    <ul>
+      <li><strong>Weichteile</strong> &mdash; Zentrum 40, Breite 400.</li>
+      <li><strong>Lunge</strong> &mdash; Zentrum &minus;600, Breite 1500.</li>
+      <li><strong>Knochen</strong> &mdash; Zentrum 300, Breite 1500.</li>
+      <li><strong>Hirn</strong> &mdash; Zentrum 40, Breite 80. Ein schmales,
+        weil graue und weiße Substanz sich nur um wenige Einheiten
+        unterscheiden.</li>
+    </ul>
+    <p>
+      Bei einem MRT gibt es keine solche Skala. Die Werte hängen von der Sequenz,
+      der Spule und dem Gerät ab, es gibt also nichts, wonach sich ein Preset
+      benennen ließe, und das Fenster zum Anfangen ist das, um das die Datei
+      selbst bittet. Jede Aufnahme trägt einen Vorschlag.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum die Schichten manchmal falsch herum laufen</h2>
+    <p>
+      Ein Viewer muss entscheiden, in welche Reihenfolge er die Dateien bringt,
+      und dafür stehen zwei Dinge in der Datei zur Verfügung.
+    </p>
+    <p>
+      <strong>Instance Number</strong> ist ein Zähler. Das ist die naheliegende
+      Wahl, und sie wird von dem vergeben, was die Dateien geschrieben hat, und
+      das muss nicht in der Richtung nummerieren, in der die Patientin liegt.
+      Eine von den Füßen aufwärts rekonstruierte und vom Kopf abwärts nummerierte
+      Studie läuft rückwärts, und eine aus zwei Rekonstruktionen zusammengesetzte
+      Serie kann die Nummern schlicht wiederholen.
+    </p>
+    <p>
+      <strong>Image Position (Patient)</strong> ist, wo die Schicht physisch
+      liegt, in Millimetern, in einem Koordinatensystem, das an der Patientin
+      hängt und nicht am Gerät. Danach zu sortieren ist richtig, was die
+      Nummerierung auch getan hat, und es hat einen nützlichen Nebeneffekt:
+      Liegen die Schichten erst einmal in physischer Reihenfolge, ist der Abstand
+      zwischen ihnen messbar. Ein Viewer kann Ihnen also sagen, dass die
+      Schichten 5&nbsp;mm auseinanderliegen, und bemerken, wenn eine fehlt, was
+      die Datei nie sagt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Etwas messen</h2>
+    <p>
+      Eine Aufnahme ist gemessene Information, eine Länge darauf ist also eine
+      echte Länge, sofern die Datei sagt, wie weit ihre Pixel auseinanderliegen.
+      Das ist ein Feld, Pixel Spacing, in Millimetern, und bei praktisch jedem CT
+      und MRT ist es vorhanden.
+    </p>
+    <p>
+      Bei Ultraschallbildern, eingescannten Dokumenten und als DICOM
+      gespeicherten Bildschirmaufnahmen fehlt es oft. Wo es fehlt, gibt es keine
+      ehrliche Antwort in Millimetern, und ein Viewer, der trotzdem eine gibt,
+      hat einen Maßstab erfunden. Eine Anzahl Pixel ist die richtige Antwort auf
+      eine Frage, die die Datei nicht beantworten kann.
+    </p>
+    <p>
+      Achten Sie außerdem auf nicht quadratische Pixel, was außerhalb des CT
+      normal ist. In Pixeln zu messen und mit einem einzigen Abstandswert zu
+      multiplizieren stimmt nur dort, wo die beiden übereinstimmen; jede Achse
+      muss mit ihrem eigenen gemessen werden.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was eine Aufnahme außer dem Bild noch trägt</h2>
+    <p>
+      Das ist der Teil, bei dem Leute sich irren, und der Grund, mit diesen
+      Dateien vorsichtig zu sein.
+    </p>
+    <p>
+      Eine DICOM-Datei ist kein Bild mit ein paar angehängten Metadaten. Sie ist
+      eine Krankenakte mit einem Bild darin. Der Header ist eine Liste von
+      Feldern, und bei einer üblichen klinischen Aufnahme enthält er:
+    </p>
+    <ul>
+      <li>Name, Patientennummer, Geburtsdatum und Geschlecht;</li>
+      <li>die Auftragsnummer, die der Schlüssel zur Anforderung im System der
+        Klinik ist;</li>
+      <li>die überweisende Ärztin, die durchführende MTR, die befundende
+        Radiologin;</li>
+      <li>die Einrichtung, ihre Adresse und die Abteilung;</li>
+      <li>Hersteller, Modell und Seriennummer des Geräts;</li>
+      <li>Datum und Uhrzeit der Aufnahme auf die Sekunde;</li>
+      <li>und eine Reihe eindeutiger Kennungen für Studie, Serie und Instanz, die
+        perfekte Schlüssel zurück in das Archiv sind, aus dem sie stammt.</li>
+    </ul>
+    <p>
+      Jede Datei, die Sie bekommen haben, trägt all das, und es reist mit der
+      Datei, wohin sie auch geht. Den Namen zu löschen genügt nicht: Ein
+      Geburtsdatum, eine Einrichtung von der Größe einer Postleitzahl und ein
+      Aufnahmezeitpunkt identifizieren eine Person etwa so gut wie ein Name, und
+      die Studien-UID identifiziert sie exakt für jeden mit Zugang zum Archiv.
+    </p>
+    <p>
+      Manche Geräte legen zusätzlich eine zweite Kopie des Patientennamens in
+      einem privaten Feld ab, also einem Feld, dessen Bedeutung nirgends
+      veröffentlicht ist und das die meisten Anonymisierer in Ruhe lassen, weil
+      sie nicht wissen können, was darin steht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Laden Sie die Aufnahme nicht hoch, um sie anzusehen</h2>
+    <p>
+      Der übliche Weg, dieses Problem zu lösen, ist eine Suche nach
+      &bdquo;dicom viewer online&ldquo; und ein Upload-Feld. Was gerade passiert
+      ist: Ein Fremder hat eine Kopie einer Krankenakte, die Pixel, den Namen,
+      das Geburtsdatum, die Patientennummer und den Schlüssel zurück ins Archiv.
+    </p>
+    <p>
+      Es gibt keinen Grund dafür. Eine DICOM-Datei zu lesen heißt, einen Header
+      zu parsen und ein paar Ganzzahlen auszupacken, und ein Browser kann das
+      hervorragend. Deshalb hat der <a href="../../dicom-viewer/">Viewer hier</a>
+      überhaupt keine Netzfunktion: kein <code>fetch</code>, kein
+      <code>XMLHttpRequest</code>, nichts, was eine Datei senden könnte, selbst
+      wenn etwas es versuchte. Laden Sie die Seite einmal, trennen Sie die
+      Internetverbindung, und sie öffnet weiter Aufnahmen.
+    </p>
+    <p>
+      <a href="../ist-das-hochladen-von-dateien-sicher/">Ist das Hochladen von
+      Dateien zu Online-Konvertern sicher?</a> zeigt, wie sich diese Behauptung
+      auf dieser Seite und auf jeder anderen prüfen lässt. Das ist der Dateityp,
+      bei dem sich das Prüfen am meisten lohnt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was ein Browser nicht kann</h2>
+    <p>
+      Zwei Dinge, und beide gehören deutlich gesagt.
+    </p>
+    <p>
+      <strong>Er ist kein Befundungs-Viewer.</strong> Ihr Bildschirm ist nicht
+      kalibriert, der Browser ist keine validierte Rendering-Kette, und keine
+      Webseite hat ein Zulassungsverfahren durchlaufen. Eine Aufnahme zu lesen,
+      um eine klinische Entscheidung zu treffen, ist Sache der Station, an der
+      sie befundet wurde. Nachzusehen, was auf einer CD ist, eine Schicht für
+      eine Lehrveranstaltung herauszuziehen, einen Header zu lesen oder
+      herauszufinden, warum ein anderes Programm die Datei verweigert, sind
+      allesamt gute Gründe, eine im Browser zu öffnen.
+    </p>
+    <p>
+      <strong>Manche komprimierten Aufnahmen lassen sich nicht dekodieren.</strong>
+      DICOM erlaubt mehrere Kompressionsverfahren, und Browser bringen eines
+      davon mit. Schlichte Dateien, lauflängenkodierte, Baseline JPEG und JPEG
+      Lossless, und Letzteres verwenden die meisten Klinik-Exporte, öffnen alle.
+      JPEG 2000, JPEG-LS und die Videoformate brauchen Codecs, die als
+      kompilierte Bibliothek mehrere Megabyte wiegen. Wo sich das Bild nicht
+      dekodieren lässt, ist der Header trotzdem vollständig lesbar, und das ist
+      meist ohnehin die Hälfte, wegen der Sie gekommen sind.
+    </p>
+  </section>

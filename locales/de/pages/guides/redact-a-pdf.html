@@ -1,0 +1,246 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Öffnen Sie den <a href="../../pdf-schwaerzen/">PDF-Schwärzer</a>, ziehen
+      Sie das Dokument hinein, tippen Sie die Wörter, die weg müssen, kreuzen Sie
+      die an, die Sie meinen, und drücken Sie &bdquo;Entfernen&ldquo;. Die
+      Buchstaben werden aus den Zeichenanweisungen der Seite gelöscht, dieselben
+      Wörter werden aus Lesezeichen, Kommentaren, Formularfeldern und
+      Dokumenteigenschaften entfernt, und die fertige Datei wird vor Ihren Augen
+      erneut geöffnet und durchsucht, bevor sie Ihnen angeboten wird.
+    </p>
+    <p>
+      Alles Folgende erklärt, warum der letzte Halbsatz der wichtige ist, und wie
+      Sie erkennen, ob das Werkzeug, das Sie ohnehin benutzen, dasselbe von sich
+      sagen kann.
+    </p>
+  </section>
+
+  <section>
+    <h2>Um welches Versagen es hier geht</h2>
+    <p>
+      Zeichnen Sie in einem PDF-Betrachter ein schwarzes Rechteck über einen
+      Namen. Was Sie sehen, ist ein Name mit einem schwarzen Rechteck darüber.
+      Was die meisten Betrachter <em>speichern</em>, ist ein Dokument, das den
+      Namen enthält, und daneben ein Rechteck mit Position, Größe und Farbe.
+    </p>
+    <p>
+      Ein so gezeichnetes Rechteck ist eine <strong>Anmerkung</strong>: ein
+      Objekt, das neben der Seite sitzt und nicht in ihr. Der Text darunter ist
+      genau, wie er war. Markieren Sie den Bereich und drücken Sie Kopieren,
+      öffnen Sie die Datei in einem Programm, das Anmerkungen anders zeichnet,
+      oder lassen Sie irgendeinen Text-Extraktor darüberlaufen, und der Name ist
+      zurück. Nichts auf dem Bildschirm unterscheidet das von einer echten
+      Schwärzung, und genau deshalb passiert es weiterhin Organisationen, die
+      Juristen beschäftigen.
+    </p>
+    <p>
+      Es hat Gerichtsakten veröffentlicht, nachrichtendienstliche Bewertungen,
+      Verträge und im Dezember 2025 geschwärzte Namen in einer
+      Massenveröffentlichung von Dokumenten des US-Justizministeriums, die binnen
+      Stunden nach Erscheinen lesbar waren. Das Muster ist immer dasselbe. Das
+      Rechteck war die Anmerkung, und die Anmerkung war nie der Text.
+    </p>
+  </section>
+
+  <section>
+    <h2>Was eine echte Schwärzung stattdessen tut</h2>
+    <p>
+      Eine Seite in einem PDF ist eine Liste von Anweisungen: setze diese
+      Schrift, führe den Stift hierhin, zeichne diese Glyphen. Die Wörter auf der
+      Seite existieren an genau einer Stelle, als Operanden dieser
+      Zeichenanweisungen:
+    </p>
+    <pre><code>BT /F1 12 Tf 72 700 Td (Sehr geehrter Herr Schmidt) Tj ET</code></pre>
+    <p>
+      Den Namen zu schwärzen heißt, <strong>diese Buchstaben aus dieser Anweisung
+      zu löschen</strong> und die Seite wieder herauszuschreiben. Danach gibt es
+      nichts wiederherzustellen, nicht weil die Datei es gut versteckt, sondern
+      weil die Buchstaben nicht in der Datei sind. Es gibt kein Rechteck mit
+      etwas darunter, weil darunter nichts ist.
+    </p>
+    <p>
+      Eines muss wieder hinein, sonst ist das Ergebnis sichtbar falsch. Text wird
+      gezeichnet, indem ein Stift über die Seite vorrückt, fünf Buchstaben zu
+      löschen zieht den Rest der Zeile also um fünf Buchstaben nach links:
+      Spalten stehen nicht mehr in einer Flucht, und Summen rutschen unter die
+      falsche Überschrift. Ein Werkzeug, das das richtig macht, misst, wie weit
+      die entfernten Buchstaben den Stift vorgerückt hätten, und setzt diesen
+      Abstand als Anweisung wieder ein, die den Stift bewegt, ohne etwas zu
+      zeichnen.
+    </p>
+    <p>
+      Der schwarze Kasten wird, wenn es einen gibt, <em>danach</em> gezeichnet,
+      über eine bereits leere Lücke. Er ist eine Höflichkeit gegenüber dem, der
+      das Dokument liest, ein Zeichen, dass etwas entfernt wurde, und nicht die
+      Schwärzung. Das ist der ganze Unterschied in einem Satz: Bei einer echten
+      Schwärzung ist der Kasten Verzierung; bei einer falschen <em>ist</em> der
+      Kasten die Schwärzung.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die vier Orte, an denen ein Wort steckt und die keine Seite sind</h2>
+    <p>
+      Das ist der Teil, der die erwischt, die den ersten Teil richtig gemacht
+      haben. Ein PDF trägt Text an mehreren Stellen gleichzeitig, und ein
+      Betrachter zeigt, durchsucht oder kopiert sie alle. Einen Namen von der
+      Seite zu entfernen und an einer dieser Stellen zu lassen heißt, ihn nicht
+      entfernt zu haben.
+    </p>
+    <ul>
+      <li>
+        <strong>Die Dokumenteigenschaften.</strong> Titel, Autor und der Name der
+        Datei, aus der diese exportiert wurde. Ein Dokument, aus dessen Seiten ein
+        Name entfernt wurde und dessen Eigenschaften weiterhin
+        <code>Schmidt Vergleich Entwurf 3.docx</code> lauten, ist nicht
+        geschwärzt. Meist gibt es eine zweite Kopie derselben Angaben in einem
+        XMP-Paket, das ebenfalls gehen muss.
+      </li>
+      <li>
+        <strong>Lesezeichen.</strong> Die Gliederung am Rand eines Betrachters
+        ist eine Liste von Überschriften mit angehängten Seitenzahlen, und eine
+        Überschrift ist eine Textzeile, über die nichts auf der Seite bestimmt.
+      </li>
+      <li>
+        <strong>Formularfelder und Kommentare.</strong> Was jemand in ein Formular
+        getippt hat, wird zweimal gespeichert: einmal als Wert des Feldes und
+        einmal als das Aussehen, das der Betrachter zeichnet. Beides muss gehen.
+        Ein Notizzettel trägt seinen Text und den Namen dessen, der ihn
+        geschrieben hat.
+      </li>
+      <li>
+        <strong>Der Ersatztext.</strong> Ein PDF darf erklären, dass eine Folge
+        von Glyphen etwas anderes &bdquo;buchstabiert&ldquo;, damit eine Ligatur
+        oder eine getrennte Zeile als das Wort kopiert, für das sie steht. Das
+        heißt, ein Dokument kann das eine zeigen und einem Leser bei Strg+C etwas
+        anderes übergeben, und eine Schwärzung, die nur das Gezeichnete entfernt,
+        ließe den Satz für jeden intakt, der den Absatz markiert.
+      </li>
+    </ul>
+    <p>
+      Anhänge sind der fünfte. Ein PDF kann ganze andere Dateien in sich tragen,
+      und nichts, was Sie mit den Seiten tun, berührt sie.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wie Sie eine Datei prüfen, in dreißig Sekunden</h2>
+    <p>
+      Machen Sie das mit allem, was Sie verschicken wollen, gleich welches
+      Werkzeug es erzeugt hat. Es ist die Prüfung, die jedes einzelne der
+      veröffentlichten Versagen aufgedeckt hätte.
+    </p>
+    <ol>
+      <li>
+        <strong>Öffnen Sie die fertige Datei und drücken Sie Strg+F</strong>
+        (Cmd+F auf einem Mac). Suchen Sie nach dem entfernten Wort. Eine echte
+        Schwärzung liefert nichts. Springt der Betrachter zu einem schwarzen
+        Rechteck, ist das Wort noch da und das Rechteck sitzt darauf.
+      </li>
+      <li>
+        <strong>Markieren Sie den geschwärzten Bereich und kopieren Sie ihn.</strong>
+        Ziehen Sie über das Rechteck, drücken Sie Strg+C und fügen Sie es in ein
+        Textfeld ein. Kommt irgendetwas an, haben Sie dasselbe Versagen von der
+        anderen Seite gefunden.
+      </li>
+      <li>
+        <strong>Markieren Sie das ganze Dokument und kopieren Sie das.</strong>
+        Strg+A, dann Strg+C, in einen beliebigen Texteditor einfügen und lesen,
+        was herauskommt. Das ist die nützlichste der drei, weil sie Ihnen das
+        Dokument so zeigt, wie ein Text-Extraktor es sieht, einschließlich Text,
+        von dem Sie nichts wussten, was auf einer eingescannten Seite häufig
+        vorkommt.
+      </li>
+      <li>
+        <strong>Sehen Sie in die Eigenschaften</strong>, in den meisten
+        Betrachtern unter Datei → Eigenschaften, und in die Lesezeichenleiste.
+        Beides sind Orte, an denen ein Name eine auf der Seite perfekte
+        Schwärzung überlebt.
+      </li>
+    </ol>
+    <p>
+      Der <a href="../../pdf-schwaerzen/">PDF-Schwärzer</a> führt die erste und
+      die dritte für Sie aus und zeigt die Zahl, denn ein Werkzeug, das behauptet,
+      es habe etwas entfernt, ist kein Beleg, und eine Suche in der fertigen Datei
+      ist einer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Eingescannte Dokumente sind ein anderes Problem</h2>
+    <p>
+      Ein Scan ist ein Foto einer Seite. Die Wörter darauf sind Pixel und kein
+      Text, und keine noch so gründliche Bearbeitung der Textebene berührt sie,
+      weil es keine Textebene gibt oder weil die vorhandene das Bild beschreibt,
+      statt es zu sein.
+    </p>
+    <p>
+      Die meisten heutigen Scanner und PDF-Werkzeuge legen eine unsichtbare
+      Textebene über das Bild, geschrieben von einer Zeichenerkennung, damit die
+      Seite durchsuchbar ist. Diese Ebene ist echter Text und lässt sich
+      entfernen. Sie zu entfernen lohnt sich: Sie ist das, was eine Suche, ein
+      Kopieren und jedes automatische System, das Dokumente liest, gefunden
+      hätten. Am Bild ändert es nichts, und dort sind die Wörter für jeden, der
+      auf die Seite sieht, weiterhin bestens lesbar.
+    </p>
+    <p>
+      Für einen Scan ist die ehrliche Reihenfolge also: die Wörter aus der
+      Textebene nehmen und sich dann getrennt um das Bild kümmern, und das heißt
+      Pixel überschreiben. Genau das tut der
+      <a href="../bild-unkenntlich-machen/">Bild-Schwärzer</a>, und der Ratgeber
+      daneben erklärt, warum Weichzeichnen oder ein Mosaik für Text nicht
+      genügen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum nicht einfach ausdrucken und neu einscannen</h2>
+    <p>
+      Weil es funktioniert und Sie alles andere kostet. Eine geschwärzte Seite
+      auszudrucken und wieder einzuscannen liefert tatsächlich ein Dokument ohne
+      Textebene, die lecken könnte, und ein Dokument, das niemand durchsuchen
+      kann, das kein Screenreader lesen kann, das fünf- bis fünfzigmal so groß
+      ist und dessen Qualität davon abhängt, wozu der Bürokopierer gerade
+      aufgelegt war. Es setzt außerdem voraus, dass die Seite so gedruckt hat,
+      wie sie aussah: Eine Anmerkung kann als &bdquo;am Bildschirm anzeigen, nicht
+      drucken&ldquo; markiert sein, und wenn das Ihr schwarzer Kasten war, steht
+      auf dem Blatt aus dem Drucker der Name.
+    </p>
+    <p>
+      Dasselbe Argument gilt für &bdquo;auf ein Bild reduzieren&ldquo;, das
+      manche Werkzeuge als Schwärzung anbieten. Es macht aus jeder Seite ein Foto
+      ihrer selbst. Waren die Wörter verdeckt statt gelöscht, ist die Verdeckung
+      nun dauerhaft, aber alles andere am Dokument ist mit ihr gegangen, und die
+      Datei, die Sie verschicken, ist eine, mit der niemand arbeiten kann.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum diese Aufgabe einen Upload am wenigsten verträgt</h2>
+    <p>
+      Einem Schwärzungsdienst muss die ungeschwärzte Datei übergeben werden. Das
+      ist der ganze Vorgang: Die private Fassung kommt zuerst an, vollständig,
+      und ist die Fassung, die auf einer fremden Festplatte liegt. Was die
+      Datenschutzerklärung auch sagt, an der Reihenfolge lässt sich nicht rütteln:
+      Das Dokument, mit dem Sie vorsichtig sein wollten, ist das, das Sie
+      herausgegeben haben.
+    </p>
+    <p>
+      Was Leute schwärzen, macht das schlimmer, als es klingt. Zeugenaussagen,
+      Arztbriefe, Kontoauszüge für den Vermieter, ein Vertrag mit dem Namen eines
+      Mandanten darin, der an einen anderen geht, ein Schriftsatz mit einer
+      Privatadresse. Das sind die Dokumente, und genau deshalb sollte das Werkzeug
+      dafür keinen Server am anderen Ende haben.
+    </p>
+    <p>
+      Alles am <a href="../../pdf-schwaerzen/">Schwärzer dieser Seite</a> passiert
+      in Ihrem eigenen Browser: Die Datei wird auf Ihrem Gerät gelesen,
+      bearbeitet, geschrieben und geprüft, und die Wörter, nach denen Sie suchen,
+      verlassen den Tab ebenfalls nie. Trennen Sie die Internetverbindung, und es
+      arbeitet weiter, und das ist der einfachste Beleg dafür, dass nichts
+      irgendwohin gesendet wird. Was ein Upload eigentlich bedeutet, steht unter
+      <a href="../ist-das-hochladen-von-dateien-sicher/">ist das Hochladen von
+      Dateien sicher</a>.
+    </p>
+  </section>

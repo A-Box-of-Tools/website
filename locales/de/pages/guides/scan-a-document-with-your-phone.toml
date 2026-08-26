@@ -1,0 +1,21 @@
+#
+# Ratgeber: ein Dokument mit dem Handy scannen - German.
+#
+
+nav = "Mit dem Handy scannen"
+title = "Dokument mit dem Handy scannen, ohne App und ohne Upload"
+description = "Was ein Foto einer Seite von einem Scan derselben Seite unterscheidet: die Schräglage, das ungleichmäßige Licht und die Dateigröße. Wie Sie das Foto machen, was sich danach beheben lässt und warum nichts davon einen Server braucht."
+
+heading = "So scannen Sie ein Dokument mit dem Handy"
+lede = """
+    Jemand hat Sie gebeten, ein Formular &bdquo;eingescannt zurück&ldquo; zu
+    schicken, und Sie haben ein Handy und keinen Scanner. Der Abstand zwischen
+    einem Foto einer Seite und einem Scan derselben Seite ist kleiner, als er
+    aussieht, und es geht dabei überwiegend nicht um die Schräglage. Hier steht,
+    was die beiden wirklich trennt und was gegen jeden Teil davon hilft."""
+
+updated = "25. August 2026"
+
+og_title = "So scannen Sie ein Dokument mit dem Handy"
+og_description = "Die Schräglage, der Schatten und die Dateigröße - was ein Foto einer Seite von einem Scan unterscheidet und wie Sie jedes davon beheben, ohne die Seite hochzuladen."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

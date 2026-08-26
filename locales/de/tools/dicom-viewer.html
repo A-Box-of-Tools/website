@@ -1,0 +1,265 @@
+<!--
+  tools/dicom-viewer/body.html, in German.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  Die Spaltenüberschrift "VR" bleibt stehen: das ist der zweibuchstabige Code,
+  der so in der Datei steht, und wer einen Tag im Standard nachschlägt, sucht
+  genau diese beiden Buchstaben.
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Aufnahme wählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      Ziehen Sie einen ganzen Ordner auf einmal hinein, und die Dateien werden
+      wieder ihren Serien zugeordnet und in die richtige Reihenfolge gebracht.
+      Nichts wird hochgeladen, und nichts wird in Ihre Dateien zurückgeschrieben.
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Der Viewer. -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>Dieses Bild als PNG speichern</button>
+        <button type="button" id="copy-header" class="ghost">Header kopieren</button>
+        <button type="button" id="download-header" class="ghost">Herunterladen</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">Serie</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="Das Bild auf dem Schirm, gezeichnet aus der Datei, die Sie gewählt haben"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="Die Bilder abspielen">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="Welche Schicht oder welches Bild gezeigt wird">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">Was das Ziehen auf dem Bild bewirkt</legend>
+        <label><input type="radio" name="mode" value="window" checked> Fenster &amp; Zentrum</label>
+        <label><input type="radio" name="mode" value="pan"> Verschieben</label>
+        <label><input type="radio" name="mode" value="measure"> Messen</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">Zoom</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">Einpassen</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">Fenster</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">Zentrum</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">Breite</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> Invertieren</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> Patientendaten ins Bild einblenden</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Was diese Datei ist. -->
+  <section class="card" id="facts-card" hidden>
+    <h2>Was diese Datei ist</h2>
+    <dl class="facts">
+      <div><dt>Objekt</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>Modalität</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>Bild</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>Gespeichert als</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfersyntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>Pixelabstand</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>Wertebereich</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>Datei</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- Was über die Person darin steht. -->
+  <section class="card" id="identity-card" hidden>
+    <h2>Was in dieser Datei die Patientin oder den Patienten benennt</h2>
+    <p class="card-lede">
+      Aus dieser Datei gelesen, auf diesem Gerät, und niemandem sonst gezeigt.
+      Dieses Werkzeug schreibt nichts: Es kann nichts davon entfernen, und es hat
+      nichts davon irgendwohin gesendet. Es steht hier, weil eine Aufnahme weit
+      mehr trägt als einen Namen, und weil der Rest genau das ist, was eine
+      nachlässige Anonymisierung überlebt.
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- Jeder Tag in der Datei. -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>Jeder Tag in der Datei</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">Tags durchsuchen</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="Nach Name, Nummer oder Wert suchen">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">Jedes Element in dieser Datei</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tag</th>
+            <th scope="col">VR</th>
+            <th scope="col">Name</th>
+            <th scope="col">Wert</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">Ziehen Sie quer über das Bild, um das Fenster zu weiten oder zu verengen, und nach oben oder unten, um sein Zentrum zu verschieben. Beide Zahlen stehen darunter, und sie einzutippen bewirkt dasselbe.</span>
+    <span data-phrase="mode.pan">Ziehen Sie, um das Bild in seinem Rahmen zu verschieben. Das Mausrad zoomt, und &bdquo;Einpassen&ldquo; setzt alles zurück.</span>
+    <span data-phrase="mode.measure">Ziehen Sie eine Linie über das Bild, um zu messen. Wo die Datei sagt, wie weit ihre Pixel auseinanderliegen, steht das Ergebnis in Millimetern; wo nicht, steht es in Pixeln und sagt das auch.</span>
+
+    <span data-phrase="probe.value">{value} bei Spalte {column}, Zeile {row}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; diese Datei sagt nicht, wie weit ihre Pixel auseinanderliegen, deshalb kann das nicht in Millimetern stehen</span>
+
+    <span data-phrase="stack.position">Nach der Lage jeder Schicht im Körper gestapelt, und das ist die Reihenfolge, in der das Gerät sie aufgenommen hat.</span>
+    <span data-phrase="stack.number">Nach Instance Number gestapelt: Diese Dateien tragen keine Lage im Körper, nach der sich sortieren ließe.</span>
+    <span data-phrase="stack.gap">Der Abstand zwischen den Schichten ist nicht durchgehend gleich, in dieser Serie fehlt also mindestens eine.</span>
+
+    <span data-phrase="pixels.none">Die Pixel dieser Datei sind mit {codec} komprimiert. Das kann kein Browser dekodieren, und einen Decoder dafür bringt diese Seite nicht mit. Alles andere über die Datei steht unten.</span>
+    <span data-phrase="pixels.failed">Das Bild ließ sich nicht dekodieren: {reason}. Der Header unten wurde vollständig gelesen.</span>
+    <span data-phrase="pixels.absent">Diese Datei trägt überhaupt keine Pixeldaten. Sie ist ein Header, und alles darin steht unten.</span>
+    <span data-phrase="pixels.jpeg">Diese Pixel sind Baseline JPEG, also hat der Decoder des Browsers sie ausgepackt, und was er zurückgibt, ist acht Bit tief. Das Fenster arbeitet weiter; die Genauigkeit, die das Gerät aufgezeichnet hat, ist nicht vollständig da.</span>
+
+    <span data-phrase="tags.count">{shown} von {total} Elementen. {hidden} weitere.</span>
+    <span data-phrase="tags.all">Alle {total} Elemente dieser Datei.</span>
+    <span data-phrase="tags.found">{total} Elemente passen zu &bdquo;{query}&ldquo;.</span>
+    <span data-phrase="tags.found.one">Ein Element passt zu &bdquo;{query}&ldquo;.</span>
+    <span data-phrase="tags.none">Nichts passt zu &bdquo;{query}&ldquo;.</span>
+    <span data-phrase="tags.more">Die restlichen {count} anzeigen</span>
+    <span data-phrase="tags.private">privates Element</span>
+    <span data-phrase="tags.unknown">nicht in diesem Wörterbuch</span>
+    <span data-phrase="tags.guessed">Die Datei hat es nicht gesagt; das ist, was das Datenwörterbuch für diesen Tag angibt.</span>
+
+    <span data-phrase="working.one">{name} wird gelesen&hellip;</span>
+    <span data-phrase="working.many">{at} von {total} wird gelesen&hellip;</span>
+    <span data-phrase="error.none">Nichts hiervon ließ sich als DICOM lesen. {why} Dieses Werkzeug liest das DICOM-Format selbst, zu anderen Dateien kann es deshalb nichts sagen.</span>
+    <span data-phrase="error.skipped.one">Eine Datei wurde übersprungen: {files}</span>
+    <span data-phrase="error.skipped">{count} Dateien wurden übersprungen: {files}</span>
+
+    <span data-phrase="series.number">Serie {number}</span>
+    <span data-phrase="series.files.one">1 Datei</span>
+    <span data-phrase="series.files">{count} Dateien</span>
+    <span data-phrase="stack.spacing">Die Schichten liegen {gap} auseinander.</span>
+
+    <span data-phrase="at.position">{at} von {total}</span>
+    <span data-phrase="net.clean">Ihre Aufnahme ist nirgendwohin gegangen. {total} Dateien
+      geladen, allesamt eigene dieser Seite. {platform}</span>
+    <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut dieses
+      Werkzeug nie. Das ist es wert, nachgesehen zu werden. {platform}</span>
+    <span data-phrase="net.platform.one">Die eigenen Skripte der Seite für Werbung,
+      Messung und den Spenden-Knopf kamen von {hosts} Host; keines davon hat eine
+      Aufnahme, ein Pixel davon oder ein Wort aus ihrem Header bekommen.</span>
+    <span data-phrase="net.platform.many">Die eigenen Skripte der Seite für Werbung,
+      Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines davon hat eine
+      Aufnahme, ein Pixel davon oder ein Wort aus ihrem Header bekommen.</span>
+    <span data-phrase="at.frame">Bild {at} von {total}</span>
+    <span data-phrase="at.instance">Instanz {number}</span>
+
+    <span data-phrase="window.file">Aus der Datei</span>
+    <span data-phrase="window.file.n">Aus der Datei, {n}</span>
+    <span data-phrase="window.full">Alles in diesem Bild</span>
+    <span data-phrase="window.custom">Von Hand gesetzt</span>
+    <span data-phrase="window.soft">Weichteile</span>
+    <span data-phrase="window.lung">Lunge</span>
+    <span data-phrase="window.bone">Knochen</span>
+    <span data-phrase="window.brain">Hirn</span>
+    <span data-phrase="window.liver">Leber</span>
+    <span data-phrase="window.mediastinum">Mediastinum</span>
+    <span data-phrase="window.angio">Angiografie</span>
+
+    <span data-phrase="facts.frames">{count} Bilder</span>
+    <span data-phrase="facts.nopixels">keine Pixeldaten</span>
+    <span data-phrase="facts.nospacing">in dieser Datei nicht angegeben</span>
+    <span data-phrase="facts.signed">vorzeichenbehaftet</span>
+    <span data-phrase="facts.unsigned">vorzeichenlos</span>
+    <span data-phrase="facts.stored.one">{bits} Bit, {sign}, 1 Kanal pro Pixel, {photometric}</span>
+    <span data-phrase="facts.stored">{bits} Bit, {sign}, {samples} Kanäle pro Pixel, {photometric}</span>
+    <span data-phrase="facts.range">{low} bis {high}</span>
+    <span data-phrase="facts.colour">Farbe &mdash; nichts Gemessenes zu berichten</span>
+
+    <span data-phrase="identity.clean">Nichts in dieser Datei benennt oder nummeriert eine Person. Die Identifikatoren, die eine Aufnahme sonst trägt, fehlen oder sind leer.</span>
+    <span data-phrase="identity.uids">Sie trägt außerdem {count} eigene Identifikatoren, die UIDs von Studie, Serie und Instanz. Keiner davon ist ein Name, und jeder einzelne ist ein perfekter Schlüssel in das Archiv, aus dem die Datei stammt.</span>
+    <span data-phrase="identity.private">Dazu {count} private Elemente, deren Bedeutung nirgends veröffentlicht ist: Manche Geräte legen in einem davon eine zweite Kopie des Patientennamens ab.</span>
+
+    <span data-phrase="copied">Kopiert.</span>
+    <span data-phrase="copy.failed">Ihr Browser hat der Seite das Kopieren verwehrt. Der Knopf daneben schreibt denselben Text in eine Datei.</span>
+    <span data-phrase="saved">{name} gespeichert.</span>
+  </div>
+</main>
