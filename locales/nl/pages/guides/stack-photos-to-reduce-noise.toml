@@ -1,0 +1,20 @@
+#
+# Gids: foto's stacken tegen ruis - Dutch.
+#
+
+nav = "Foto's stacken"
+title = "Hoe je foto's stackt om ruis te verlagen, of mensen weg te halen"
+description = "Stacken voegt een reeks frames samen tot &eacute;&eacute;n beeld. Welke methode je nodig hebt hangt af van wat je kwijt wilt: ruis, voorbijgangers, of de flinterdunne scherptediepte van een macro-opname. Hoe elke methode werkt, wat hij kost, en waar RAW-bestanden in passen."
+
+heading = "Hoe je foto's stackt om ruis te verlagen, of mensen weg te halen"
+lede = """
+    Een reeks frames bevat meer informatie dan &eacute;&eacute;n frame ervan. Ze
+    middelen heft de ruis op; de middelste waarde van elke pixel nemen wist alles
+    wat er maar een deel van de tijd was. Welke van de twee je wilt hangt volledig
+    af van wat er bewoog."""
+
+updated = "25 augustus 2026"
+
+og_title = "Hoe je foto's stackt om ruis te verlagen, of mensen weg te halen"
+og_description = "Middel een reeks om ruis te doden, neem de mediaan om een druk plein leeg te maken, licht op voor sterrensporen. Welke methode welk probleem oplost, en waar RAW-bestanden in passen."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

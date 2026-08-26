@@ -1,0 +1,21 @@
+#
+# Gids: een DICOM-bestand openen - Dutch.
+#
+
+nav = "Een DICOM-bestand openen"
+title = "Hoe je een DICOM-bestand (.dcm) opent zonder iets te installeren"
+description = "Wat er op een ziekenhuisschijfje staat, waarom de bestanden geen extensie hebben, hoe je een .dcm-scan in een browser opent, wat venster en niveau nu eigenlijk doet, en wat een scan behalve het beeld over de pati&euml;nt meedraagt."
+
+heading = "Hoe je een DICOM-bestand opent, en wat erin zit"
+lede = """
+    Een ziekenhuisschijfje is een map met bestanden zonder extensie en een viewer
+    die voor Windows XP geschreven is. De bestanden zijn DICOM, en daar is niets
+    exotisch aan: een scan is een header vol velden en een blok pixels. Zo kijk je
+    ernaar, dit betekenen de knoppen, en dit draagt het bestand behalve het beeld
+    verder nog mee."""
+
+updated = "25 augustus 2026"
+
+og_title = "Hoe je een DICOM-bestand opent zonder iets te installeren"
+og_description = "Wat er op een ziekenhuisschijfje staat, waarom de bestanden geen extensie hebben, en wat een .dcm-scan behalve het beeld over de pati&euml;nt meedraagt."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

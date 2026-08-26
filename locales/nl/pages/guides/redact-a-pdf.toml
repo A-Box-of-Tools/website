@@ -1,0 +1,21 @@
+#
+# Gids: een PDF onleesbaar maken zodat de tekst echt weg is - Dutch.
+#
+
+nav = "Een PDF onleesbaar maken"
+title = "Hoe je een PDF onleesbaar maakt zodat de tekst echt weg is"
+description = "Een zwarte balk die in een PDF-lezer getekend is laat de woorden er meestal onder staan, en met kopi&euml;ren en plakken heb je ze zo terug. Wat een echte onleesbaarmaking weghaalt, de vier plekken waar een woord zich buiten de pagina verstopt, en hoe je een bestand nakijkt voordat je het verstuurt."
+
+heading = "Hoe je een PDF onleesbaar maakt zodat de tekst echt weg is"
+lede = """
+    Een zwarte rechthoek over een naam en een naam die gewist is, zien er op het
+    scherm hetzelfde uit. Een van de twee overleeft het om geselecteerd en
+    gekopieerd te worden. Dit is het verschil, dit zijn de plekken waar een woord
+    zich verstopt die helemaal niet op de pagina staan, en dit is de controle van
+    dertig seconden die je vertelt welke van de twee je hebt."""
+
+updated = "25 augustus 2026"
+
+og_title = "Hoe je een PDF onleesbaar maakt zodat de tekst echt weg is"
+og_description = "Waarom een zwarte balk in een PDF-lezer meestal geen onleesbaarmaking is, de vier plekken waar een woord zich buiten de pagina verstopt, en hoe je een bestand nakijkt voordat je het verstuurt."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

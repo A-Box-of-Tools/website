@@ -1,0 +1,341 @@
+#
+# Image Stacker - Dutch.
+#
+# Overrides for tools/stack-images/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Stacken" is het leenwoord dat fotografen schrijven en zoeken; "stapelen" gaat
+# over doosjes. De namen van de methodes blijven wat er in Nederlandse
+# fotografieteksten staat: mediaan, sigma clipping, focus stacking. RAW wordt
+# niet vertaald, en de formaatafkortingen ook niet.
+#
+
+name = "Afbeeldingen stacken"
+heading = "Afbeeldingen&nbsp;stacken <span class=\"h1-kw\">&mdash; een reeks samenvoegen, RAW-bestanden inbegrepen</span>"
+tagline = "Twintig frames tot &eacute;&eacute;n, zonder twintig uploads en zonder RAW-converter."
+
+title = "Afbeeldingen stacken &mdash; gemiddelde, mediaan en focus stacking in je browser"
+description = "Voeg een reeks foto's samen tot &eacute;&eacute;n: middel ze om ruis te doden, neem de mediaan om mensen uit een sc&egrave;ne te halen, licht op voor sterrensporen, of focus-stack een macro-opname. Leest CR2, NEF, ARW, DNG, RAF en CR3 door het eigen voorbeeld van de camera eruit te halen. Draait helemaal in je browser."
+og_title = "Een reeks foto's stacken, RAW-bestanden inbegrepen"
+og_description = "Gemiddelde, mediaan, sigma clipping, oplichten, verdonkeren, optellen of focus stacking &mdash; met de frames eerst uitgelijnd. RAW-bestanden worden geopend door het voorbeeld te lezen dat de camera er al in heeft geschreven, dus een frame van 60 MB opent net zo snel als een JPEG. Er wordt niets ge&uuml;pload."
+og_image_alt = "Afbeeldingen stacken - meerdere frames samengevoegd tot &eacute;&eacute;n, in de browser"
+
+pledge = """
+    Elk frame wordt door je eigen browser geopend, gedecodeerd, uitgelijnd,
+    samengevoegd en weggeschreven, op je eigen machine. Een stapel van twintig
+    RAW-bestanden van 60&nbsp;MB is ongeveer een gigabyte aan foto's, en er
+    verplaatst zich geen byte van: het gereedschap heeft geen enkele
+    netwerkfunctie, en de bestanden worden rechtstreeks van je schijf gelezen door
+    een worker die nergens iets heen kan sturen."""
+
+live_hint = """
+      Neem het niet van ons aan: open DevTools, kijk naar het tabblad Netwerk en
+      stack een map met RAW-bestanden. Geen enkel verzoek draagt een foto, een
+      miniatuur, een bestandsnaam of een cameramodel mee. Of trek de stekker uit
+      het internet en stack ze toch &mdash; aan het gereedschap verandert
+      niets."""
+
+read_first = """
+, <code>src/raw.js</code> voor hoe een
+      RAW-bestand geopend wordt door kilobytes te lezen in plaats van megabytes,
+      <code>src/stack.js</code> voor het rekenwerk van elke methode, en
+      <code>src/plan.js</code> voor waar de geheugen- en decodeergetallen op de
+      pagina vandaan komen &mdash; dat zijn de antwoorden van dat bestand, geen
+      schattingen."""
+
+howto_heading = "Zo stack je een reeks foto's in je browser"
+
+card = """
+            Voeg een reeks samen tot &eacute;&eacute;n beeld: middel de ruis
+            weg, neem de mediaan om de voorbijgangers kwijt te raken, of licht
+            op voor sterrensporen. Leest RAW-bestanden zonder converter."""
+
+[words]
+plural = "foto's"
+choose = "een paar foto's"
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Leest RAW"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Je foto's kunnen nergens heen."
+body = """
+ Het
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen enkel adres daarvan hoort bij deze site. Er is hier geen eindpunt waar
+      je bestanden verzameld zouden kunnen worden, en niets in de code dat ze zou
+      versturen als dat er wel was &mdash; geen <code>fetch</code>, geen
+      <code>XMLHttpRequest</code>, geen <code>sendBeacon</code>, niet in
+      <code>src/</code> en niet in de worker."""
+
+[[privacy]]
+title = "De RAW-bestanden worden gelezen, niet ge&uuml;pload &mdash; en nauwelijks gelezen."
+body = """
+ Een RAW-bestand van
+      een camera bevat al een JPEG op volledig formaat dat de camera bij het
+      maken van de opname heeft gerenderd. Dit gereedschap vindt het door een paar
+      mappenverwijzingen af te lopen en dan om &eacute;&eacute;n stuk te vragen,
+      wat bij een bestand van 60&nbsp;MB meestal onder de honderd kilobyte blijft.
+      De pagina laat je dat getal zien naast de grootte van je bestanden terwijl je
+      werkt. De sensorgegevens worden helemaal nooit gelezen."""
+
+[[privacy]]
+title = "Het werk gebeurt in een Worker op deze machine, niet op een server."
+body = """
+ Dit is het enige
+      gereedschap hier dat er een gebruikt, want stacken is minuten rekenwerk in
+      plaats van seconden, en een bevroren pagina kan geen voortgang tonen en niet
+      afgebroken worden. Een Worker is een tweede draad in deze zelfde browser
+      &mdash; zie <code>src/worker.js</code>. Hij krijgt de bestanden zelf, wat
+      gratis is, want een verwijzing naar een bestand is niet de bytes; en hij
+      heeft precies hetzelfde Content-Security-Policy als de pagina, oftewel
+      nergens om ze heen te sturen."""
+
+[[privacy]]
+title = "Over de reeks wordt nergens iets gemeld."
+body = """
+ Hoeveel frames je hebt
+      gestackt, welke camera ze geschreven heeft, hoe ver elk frame verschoven was,
+      welke methode je hebt gekozen en hoe lang het duurde, blijven in het geheugen
+      van deze pagina tot je hem sluit. Er is in deze repository geen eigen
+      analytics-gebeurtenis die er iets van meedraagt, en de ene vraag die deze
+      site na een download stelt, stuurt een duim omhoog of omlaag en de naam van
+      het gereedschap, verder niets."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en het gereedschap is
+      onveranderd, want er heeft nooit een netwerkstap in gezeten. De worker en elke
+      module die hij laadt worden gecachet door de eigen service worker van deze
+      pagina, dus een ge&iuml;nstalleerde kopie stackt RAW-bestanden met de stekker
+      uit het netwerk."""
+
+[[howto]]
+title = "Kies de frames."
+body = """
+ Een reeks, een bracketserie, een
+      intervalopname of een map met RAW-bestanden. Elk bestand wordt geopend zodra
+      het binnenkomt en de regel vertelt je wat eruit kwam &mdash; bij een
+      RAW-bestand de camera, de grootte van het voorbeeld dat erin gevonden is, en
+      hoe weinig van het bestand gelezen hoefde te worden om het te vinden."""
+
+[[howto]]
+title = "Kies de methode die past bij wat je kwijt wilt."
+body = """
+ Ruis:
+      gemiddelde, of sigma clipping als er iets bewogen heeft. Mensen, auto's of
+      een overvliegend vliegtuig: mediaan. Een donkere lucht die je als
+      sterrensporen wilt: oplichten. Een macro-opname langs de scherpstelring:
+      focus stacking. De notitie onder het menu zegt wat elke methode doet met
+      jouw aantal frames."""
+
+[[howto]]
+title = "Bepaal of de frames uitgelijnd moeten worden."
+body = """
+ Uit de hand: ja,
+      alleen verschuiven. Uit de hand en je draaide ook: verschuiven, draaien en
+      schalen. Vast statief of intervalmeter: nee, en het gaat sneller. Elk frame
+      wordt gemeten tegen het eerste in de lijst, en daarom kan elk frame tot dat
+      eerste gepromoveerd worden."""
+
+[[howto]]
+title = "Lees de vier getallen, druk dan op de knop."
+body = """
+ Voordat er iets
+      draait, zegt de pagina hoe groot het resultaat wordt, ruwweg hoeveel geheugen
+      het kost, hoe vaak de frames gedecodeerd worden en hoeveel van je bestanden
+      er gelezen is. Als de reeks niet in &eacute;&eacute;n stuk in het geheugen
+      past, zegt hij dat, en zegt hij welke werkresolutie dat zou oplossen."""
+
+[[faq]]
+q = "Worden mijn foto's ergens naartoe ge&uuml;pload?"
+a = """
+        Nee. Elk frame wordt door je eigen browser op je eigen hardware geopend,
+        gedecodeerd, uitgelijnd, gestackt en weggeschreven. Dit gereedschap heeft
+        geen enkele netwerkfunctie &mdash; het haalt nooit iets op en verstuurt
+        nooit iets &mdash; en het <code>Content-Security-Policy</code> van de pagina
+        noemt elk adres dat hij mag benaderen, en geen daarvan hoort bij deze site.
+        Laad de pagina &eacute;&eacute;n keer, trek de stekker uit het internet, en
+        hij werkt nog steeds. Dat telt hier zwaarder dan bij de meeste gereedschappen
+        alleen al door het volume: een stapel van twintig RAW-frames is ongeveer een
+        gigabyte, en een gigabyte aan foto's uploaden om er een gemiddelde van te
+        laten nemen is nu juist waar dit gereedschap voor bestaat om te
+        vermijden."""
+
+[[faq]]
+q = "Welke RAW-formaten kan het lezen, en hoe?"
+a = """
+        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF, RAF,
+        RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL en nog een paar &mdash; en
+        dat is het meeste van wat camera's schrijven. Wat het eruit leest is het
+        JPEG-voorbeeld op volledig formaat dat de camera zelf gerenderd heeft toen de
+        opname gemaakt werd: het beeld op de achterkant van de camera, en het beeld
+        dat je besturingssysteem als miniatuur tekent. Het wordt gevonden door de
+        mappenstructuur van het bestand af te lopen, wat een paar leesacties van een
+        paar kilobyte elk kost, en dan &eacute;&eacute;n stuk te nemen. <strong>Het
+        is geen demosaicing van de sensorgegevens.</strong> Het resultaat draagt de
+        witbalans en de beeldstijl van de camera op acht bit per kanaal, in plaats
+        van de twaalf of veertien bit lineaire sensorgegevens die een RAW-converter
+        je zou geven."""
+
+[[faq]]
+q = "Waarom dan niet de sensorgegevens netjes decoderen?"
+a = """
+        Omdat dat zou betekenen dat LibRaw of dcraw meegeleverd moet worden &mdash;
+        een tweede motor van tientallen megabytes, voor &eacute;&eacute;n familie
+        formaten, waarvan het meeste compressieschema's per fabrikant zijn. Die
+        afweging wordt uitgevochten in
+        <code>docs/what-can-be-built-here.md</code> in de broncode van deze site,
+        waar camera-RAW al op de uitgesloten lijst stond voordat dit gereedschap
+        bestond. Wat er veranderd is, is niet het antwoord op die vraag maar de
+        ontdekking dat stacken het niet nodig heeft: de voorbeelden zijn op volledige
+        resolutie, ze zijn wat de camera je toch als JPEG gegeven zou hebben, en ze
+        lezen is ongeveer honderd keer sneller dan demosaicing zou zijn. Wil je de
+        sensorgegevens, ontwikkel de frames dan eerst in een RAW-converter en stack
+        de TIFF's of JPEG's die eruit komen &mdash; dit gereedschap neemt die ook
+        aan."""
+
+[[faq]]
+q = "Hoeveel frames kan het aan, en hoe groot?"
+a = """
+        Zes van de zeven methoden stromen: ze houden &eacute;&eacute;n accumulator
+        vast en lezen elk frame precies &eacute;&eacute;n keer, dus honderd frames
+        kosten evenveel geheugen als twee en het enige dat groeit is de tijd. De
+        mediaan is de uitzondering, want de middelste waarde van een reeks is niet te
+        weten totdat je hem helemaal hebt, dus die houdt elk frame tegelijk vast
+        &mdash; twintig frames van 24 megapixel is ongeveer 1,4&nbsp;GB, en dat geeft
+        geen enkele browser je. Als dat gebeurt wordt het beeld in horizontale banden
+        gesneden en band voor band gestackt, wat kost dat de frames voor elke band
+        opnieuw gelezen worden. De pagina rekent dit allemaal uit voordat je op de
+        knop drukt en laat je het getal zien, zodat een trage run nooit een
+        verrassing is."""
+
+[[faq]]
+q = "Wat doet het uitlijnen van de frames nu eigenlijk?"
+a = """
+        Het zoekt uit hoe ver elk frame ten opzichte van het eerste verschoven is en
+        schuift het terug, tot op een fractie van een pixel. De methode is
+        fasecorrelatie: de verschuiving tussen twee beelden komt naar voren als een
+        faseverschil tussen hun spectra, dus &eacute;&eacute;n Fouriertransformatie
+        per beeld vindt een verschuiving van tweehonderd pixels net zo goedkoop als
+        een van twee. De tweede instelling haalt ook draaiing en schaal terug, met
+        dezelfde truc toegepast op het spectrum in log-polaire co&ouml;rdinaten. Het
+        is allemaal globaal &mdash; &eacute;&eacute;n verschuiving, &eacute;&eacute;n
+        hoek, &eacute;&eacute;n schaal voor het hele frame &mdash; dus het corrigeert
+        een camera die bewoog en het kan een onderwerp dat bewoog niet corrigeren, en
+        een foto die een stap naar links genomen is ook niet. E&eacute;n zichtbaar
+        gevolg: een frame dat twintig pixels naar links geschoven is, reikt niet meer
+        tot de rechterrand, dus het resultaat wordt bijgesneden tot het deel dat elk
+        frame bedekt. Daarom komt een uitgelijnde stapel er heel iets kleiner uit dan
+        de frames die erin gingen, en het is het enige alternatief voor een donkere
+        rand gemaakt van de frames die er niet waren."""
+
+[[faq]]
+q = "Welke methode moet ik gebruiken?"
+a = """
+        <strong>Gemiddelde</strong> voor ruis, op een reeks waarin niets bewoog: het
+        snijdt willekeurige ruis met ongeveer de wortel van het aantal frames.
+        <strong>Mediaan</strong> om dingen weg te halen die er maar een deel van de
+        tijd waren &mdash; het klassieke gebruik is een druk plein een stuk of twaalf
+        keer fotograferen en het leeg terugkrijgen. <strong>Sigma clipping</strong>
+        als je allebei wilt: het leert wat elke pixel meestal is en middelt alleen de
+        waarden die daarmee overeenkomen, dus het heeft de immuniteit van de mediaan
+        voor een langsrijdende auto en de ruisreductie van het gemiddelde.
+        <strong>Oplichten</strong> voor sterrensporen, vuurwerk en light painting.
+        <strong>Verdonkeren</strong> om alles helders weg te halen dat bewoog.
+        <strong>Optellen</strong> om &eacute;&eacute;n lange belichting na te bootsen.
+        <strong>Focus stacking</strong> voor een macro-opname langs de
+        scherpstelring."""
+
+[[faq]]
+q = "Waarom is mijn resultaat acht bit als mijn RAW-bestanden veertien zijn?"
+a = """
+        Omdat wat er gestackt wordt het eigen voorbeeld van de camera is, en dat is
+        een JPEG. Het is het vermelden waard dat stacken een deel terugwint van wat
+        dat kost: zestien acht-bits frames middelen geeft een resultaat met werkelijk
+        fijnere overgangen dan er in &eacute;&eacute;n van de frames zaten, want juist
+        de ruis die elk frame anders liet afronden is wat het gemiddelde tussen de
+        niveaus in laat landen. Het rekenwerk gebeurt hier in drijvende komma en
+        wordt &eacute;&eacute;n keer helemaal aan het eind afgerond, dus er wordt
+        onderweg niets van weggegooid. Het is nog steeds niet hetzelfde als lineaire
+        sensorgegevens stacken, en dit gereedschap doet niet alsof."""
+
+[[faq]]
+q = "Kan ik frames van verschillende afmetingen stacken, of van verschillende camera's?"
+a = """
+        Ja, al is het meestal een vergissing en de moeite waard om te controleren of
+        je het bedoelde. Het resultaat krijgt de grootte van het grootste frame, en
+        elk ander frame wordt passend geschaald en erin gecentreerd. Camera's mengen
+        mengt ook de kleurweergave, dus een gemiddelde van de twee is een gemiddelde
+        van twee verschillende interpretaties van hetzelfde licht. Waar het echt
+        helpt is een reeks die op twee resoluties is opgenomen, of een RAW-bestand en
+        een JPEG van hetzelfde frame."""
+
+[[faq]]
+q = "Er staat dat de run in banden gaat. Wat betekent dat?"
+a = """
+        Dat het werkgeheugen dat de methode nodig heeft meer is dan het gereedschap
+        in &eacute;&eacute;n keer wil reserveren, dus het beeld wordt in horizontale
+        stroken gesneden en strook voor strook gestackt. Het levert nog steeds precies
+        hetzelfde resultaat; het leest de frames alleen opnieuw voor elke strook, dus
+        het duurt langer, en de pagina vertelt je hoeveel decodeeracties dat worden.
+        De werkresolutie &eacute;&eacute;n stap verlagen deelt het geheugen door vier,
+        wat een run in banden bijna altijd terugbrengt tot &eacute;&eacute;n doorgang
+        &mdash; de notitie zegt welke instelling dat zou doen."""
+
+[[faq]]
+q = "Waarom gebruikt dit gereedschap een Worker en geen van de andere?"
+a = """
+        Omdat het het enige is waarvan het werk in minuten gemeten wordt. Elk ander
+        gereedschap hier doet iets dat een seconde of twee kost, waar het werk van de
+        hoofddraad halen ceremonie zou zijn. Twintig grote frames stacken is stevig
+        rekenwerk over honderden megabytes, en op de hoofddraad betekent dat een
+        bevroren pagina: geen voortgangsbalk die beweegt, een Annuleren-knop die niet
+        antwoordt, en uiteindelijk een browser die aanbiedt het tabblad af te sluiten.
+        De Worker is een tweede draad in deze zelfde browser, die een bestand uit
+        deze zelfde map draait, onder dit zelfde beleid. Het is geen server en het is
+        geen netwerkfunctie."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en geen
+        watermerk. Er is ook geen limiet op hoeveel frames je stackt of hoe groot ze
+        zijn, want er is geen server die ervoor betaalt &mdash; het werk gebeurt op je
+        eigen machine en het enige plafond is je eigen geheugen. De site draait
+        advertenties, en dat is wat hem betaalt; de adverteerders krijgen niets over
+        je foto's."""
+
+[schema]
+description = "Stack een reeks foto's in de browser: gemiddelde, mediaan, sigma-geklipt gemiddelde, oplichten, verdonkeren, optellen of focus stacking, met de frames eerst uitgelijnd door fasecorrelatie. Leest camera-RAW-bestanden door het ingebedde voorbeeld op volledig formaat eruit te halen, dus er is geen RAW-converter nodig. Er wordt niets ge&uuml;pload."
+features = [
+  "Zeven stackmethoden: gemiddelde, mediaan, sigma-geklipt gemiddelde, oplichten, verdonkeren, optellen en focus stacking",
+  "Leest CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 en meer door het eigen voorbeeld op volledig formaat van de camera eruit te halen",
+  "Opent een RAW-bestand van 60 MB door er ongeveer honderd kilobyte van te lezen",
+  "Automatisch uitlijnen: alleen verschuiven, of verschuiven met draaiing en schaal, of niet",
+  "Uitlijning onder de pixel door fasecorrelatie, niet door verschuivingen af te zoeken",
+  "Zes van de zeven methoden houden &eacute;&eacute;n accumulator vast, dus honderd frames kosten het geheugen van twee",
+  "Geheugen- en decodeerkosten uitgerekend en getoond voordat de run begint",
+  "Het werk draait in een Worker, dus de voortgang beweegt en Annuleren antwoordt",
+  "PNG of JPEG eruit; werkt offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep de frames hierheen"
+hint = "of klik om te bladeren &mdash; JPEG, PNG, WebP, TIFF en camera-RAW"

@@ -1,0 +1,265 @@
+<!--
+  tools/dicom-viewer/body.html, in Dutch.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  De kolomkop "VR" blijft staan: dat is de code van twee letters die zo in het
+  bestand staat, en wie een tag in de standaard opzoekt, zoekt precies die twee
+  letters.
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies een scan</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      Sleep er een hele map in &eacute;&eacute;n keer in, en de bestanden worden
+      weer bij hun series gezet en op de goede volgorde gelegd. Er wordt niets
+      ge&uuml;pload, en er wordt niets terug in je bestanden geschreven.
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- De viewer. -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>Dit beeld opslaan als PNG</button>
+        <button type="button" id="copy-header" class="ghost">Header kopi&euml;ren</button>
+        <button type="button" id="download-header" class="ghost">Downloaden</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">Serie</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="Het beeld op het scherm, getekend uit het bestand dat je gekozen hebt"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="De beelden afspelen">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="Welke coupe of welk beeld getoond wordt">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">Wat slepen op het beeld doet</legend>
+        <label><input type="radio" name="mode" value="window" checked> Venster &amp; niveau</label>
+        <label><input type="radio" name="mode" value="pan"> Verschuiven</label>
+        <label><input type="radio" name="mode" value="measure"> Meten</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">Zoom</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">Passend maken</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">Venster</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">Midden</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">Breedte</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> Omkeren</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> Pati&euml;ntgegevens over het beeld tonen</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Wat dit bestand is. -->
+  <section class="card" id="facts-card" hidden>
+    <h2>Wat dit bestand is</h2>
+    <dl class="facts">
+      <div><dt>Object</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>Modaliteit</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>Beeld</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>Opgeslagen als</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfer syntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>Pixelafstand</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>Waardebereik</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>Bestand</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- Wat er over de persoon in staat. -->
+  <section class="card" id="identity-card" hidden>
+    <h2>Wat er in dit bestand de pati&euml;nt aanwijst</h2>
+    <p class="card-lede">
+      Uit dit bestand gelezen, op dit apparaat, en aan niemand anders getoond.
+      Dit gereedschap schrijft niets: het kan er niets van weghalen, en het heeft
+      er niets van ergens heen gestuurd. Het staat hier omdat een scan veel meer
+      meedraagt dan een naam, en omdat de rest precies is wat een slordige
+      anonimisering overleeft.
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- Elke tag in het bestand. -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>Elke tag in het bestand</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">Tags doorzoeken</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="Zoek op naam, nummer of waarde">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">Elk element in dit bestand</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tag</th>
+            <th scope="col">VR</th>
+            <th scope="col">Naam</th>
+            <th scope="col">Waarde</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">Sleep dwars over het beeld om het venster wijder of smaller te maken, en omhoog of omlaag om het midden te verschuiven. Beide getallen staan eronder, en ze intypen doet hetzelfde.</span>
+    <span data-phrase="mode.pan">Sleep om het beeld binnen zijn kader te verschuiven. Het muiswiel zoomt, en &bdquo;Passend maken&rdquo; zet alles terug.</span>
+    <span data-phrase="mode.measure">Sleep een lijn over het beeld om te meten. Waar het bestand zegt hoe ver zijn pixels uit elkaar liggen, staat het antwoord in millimeters; waar niet, staat het in pixels en zegt het dat er ook bij.</span>
+
+    <span data-phrase="probe.value">{value} bij kolom {column}, rij {row}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; dit bestand zegt niet hoe ver zijn pixels uit elkaar liggen, dus dit kan niet in millimeters</span>
+
+    <span data-phrase="stack.position">Gestapeld naar waar elke coupe in het lichaam ligt, en dat is de volgorde waarin het apparaat ze heeft opgenomen.</span>
+    <span data-phrase="stack.number">Gestapeld op Instance Number: deze bestanden dragen geen ligging in het lichaam om op te sorteren.</span>
+    <span data-phrase="stack.gap">De afstand tussen de coupes is niet overal gelijk, dus in deze serie ontbreekt er minstens &eacute;&eacute;n.</span>
+
+    <span data-phrase="pixels.none">De pixels van dit bestand zijn gecomprimeerd met {codec}. Geen enkele browser kan dat decoderen, en een decoder ervoor brengt deze pagina niet mee. Al het andere over het bestand staat hieronder.</span>
+    <span data-phrase="pixels.failed">Het beeld kon niet gedecodeerd worden: {reason}. De header hieronder is volledig gelezen.</span>
+    <span data-phrase="pixels.absent">Dit bestand draagt helemaal geen pixelgegevens. Het is een header, en alles wat erin staat staat hieronder.</span>
+    <span data-phrase="pixels.jpeg">Deze pixels zijn baseline JPEG, dus de decoder van de browser heeft ze uitgepakt, en wat die teruggeeft is acht bit diep. Het venster blijft werken; de nauwkeurigheid die het apparaat heeft vastgelegd is er niet helemaal.</span>
+
+    <span data-phrase="tags.count">{shown} van {total} elementen. Nog {hidden}.</span>
+    <span data-phrase="tags.all">Alle {total} elementen van dit bestand.</span>
+    <span data-phrase="tags.found">{total} elementen passen bij &bdquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.found.one">E&eacute;n element past bij &bdquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.none">Niets past bij &bdquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.more">De overige {count} tonen</span>
+    <span data-phrase="tags.private">priv&eacute;-element</span>
+    <span data-phrase="tags.unknown">niet in dit woordenboek</span>
+    <span data-phrase="tags.guessed">Het bestand zei het niet; dit is wat het gegevenswoordenboek voor deze tag opgeeft.</span>
+
+    <span data-phrase="working.one">{name} wordt gelezen&hellip;</span>
+    <span data-phrase="working.many">{at} van {total} wordt gelezen&hellip;</span>
+    <span data-phrase="error.none">Hier was niets van als DICOM te lezen. {why} Dit gereedschap leest het DICOM-formaat zelf, dus over andere bestanden kan het niets zeggen.</span>
+    <span data-phrase="error.skipped.one">E&eacute;n bestand is overgeslagen: {files}</span>
+    <span data-phrase="error.skipped">{count} bestanden zijn overgeslagen: {files}</span>
+
+    <span data-phrase="series.number">Serie {number}</span>
+    <span data-phrase="series.files.one">1 bestand</span>
+    <span data-phrase="series.files">{count} bestanden</span>
+    <span data-phrase="stack.spacing">De coupes liggen {gap} uit elkaar.</span>
+
+    <span data-phrase="at.position">{at} van {total}</span>
+    <span data-phrase="net.clean">Je scan is nergens heen gegaan. {total} bestanden
+      geladen, allemaal van deze site zelf. {platform}</span>
+    <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
+      gereedschap nooit. Dat is het waard om na te kijken. {platform}</span>
+    <span data-phrase="net.platform.one">De eigen scripts van de site voor
+      advertenties, meting en de donatieknop kwamen van {hosts} host; geen daarvan
+      heeft een scan, een pixel ervan of een woord uit de header gekregen.</span>
+    <span data-phrase="net.platform.many">De eigen scripts van de site voor
+      advertenties, meting en de donatieknop kwamen van {hosts} hosts; geen daarvan
+      heeft een scan, een pixel ervan of een woord uit de header gekregen.</span>
+    <span data-phrase="at.frame">Beeld {at} van {total}</span>
+    <span data-phrase="at.instance">Instantie {number}</span>
+
+    <span data-phrase="window.file">Uit het bestand</span>
+    <span data-phrase="window.file.n">Uit het bestand, {n}</span>
+    <span data-phrase="window.full">Alles in dit beeld</span>
+    <span data-phrase="window.custom">Met de hand gezet</span>
+    <span data-phrase="window.soft">Zacht weefsel</span>
+    <span data-phrase="window.lung">Long</span>
+    <span data-phrase="window.bone">Bot</span>
+    <span data-phrase="window.brain">Hersenen</span>
+    <span data-phrase="window.liver">Lever</span>
+    <span data-phrase="window.mediastinum">Mediastinum</span>
+    <span data-phrase="window.angio">Angiografie</span>
+
+    <span data-phrase="facts.frames">{count} beelden</span>
+    <span data-phrase="facts.nopixels">geen pixelgegevens</span>
+    <span data-phrase="facts.nospacing">in dit bestand niet opgegeven</span>
+    <span data-phrase="facts.signed">met teken</span>
+    <span data-phrase="facts.unsigned">zonder teken</span>
+    <span data-phrase="facts.stored.one">{bits} bit, {sign}, 1 kanaal per pixel, {photometric}</span>
+    <span data-phrase="facts.stored">{bits} bit, {sign}, {samples} kanalen per pixel, {photometric}</span>
+    <span data-phrase="facts.range">{low} tot {high}</span>
+    <span data-phrase="facts.colour">kleur &mdash; niets gemetens te melden</span>
+
+    <span data-phrase="identity.clean">Niets in dit bestand benoemt of nummert een persoon. De identificatoren die een scan anders meedraagt ontbreken of zijn leeg.</span>
+    <span data-phrase="identity.uids">Het draagt daarnaast {count} eigen identificatoren, de UID's van onderzoek, serie en instantie. Geen daarvan is een naam, en elk ervan is een perfecte sleutel naar het archief waar het bestand vandaan komt.</span>
+    <span data-phrase="identity.private">Daarbij {count} priv&eacute;-elementen waarvan de betekenis nergens gepubliceerd is: sommige apparaten leggen in zo'n element een tweede kopie van de pati&euml;ntnaam neer.</span>
+
+    <span data-phrase="copied">Gekopieerd.</span>
+    <span data-phrase="copy.failed">Je browser heeft de pagina het kopi&euml;ren geweigerd. De knop ernaast schrijft dezelfde tekst naar een bestand.</span>
+    <span data-phrase="saved">{name} opgeslagen.</span>
+  </div>
+</main>

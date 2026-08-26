@@ -1,0 +1,21 @@
+#
+# Gids: een document scannen met je telefoon - Dutch.
+#
+
+nav = "Scannen met je telefoon"
+title = "Hoe je een document scant met je telefoon (geen app, geen upload)"
+description = "Wat een foto van een pagina scheidt van een scan ervan: de hoek, het ongelijke licht en de bestandsgrootte. Hoe je de foto maakt, wat je daarna herstelt, en waarom er nergens een server aan te pas komt."
+
+heading = "Hoe je een document scant met je telefoon"
+lede = """
+    Iemand heeft je gevraagd een formulier te &bdquo;scannen en terug te
+    sturen&rdquo;, en je hebt een telefoon en geen scanner. Het gat tussen een foto
+    van een pagina en een scan ervan is kleiner dan het lijkt, en het gaat niet
+    vooral over de hoek &mdash; dit is wat ze werkelijk scheidt, en wat je aan elk
+    onderdeel doet."""
+
+updated = "25 augustus 2026"
+
+og_title = "Hoe je een document scant met je telefoon"
+og_description = "De hoek, de schaduw en de bestandsgrootte - wat een foto van een pagina scheidt van een scan ervan, en hoe je elk onderdeel herstelt zonder de pagina te uploaden."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

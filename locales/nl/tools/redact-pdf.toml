@@ -1,0 +1,378 @@
+#
+# Redact a PDF - Dutch.
+#
+# Overrides for tools/redact-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Onleesbaar maken" is hetzelfde werkwoord als bij afbeelding-onleesbaar-maken,
+# en het draagt dezelfde belofte: de letters gaan uit het bestand, er komt geen
+# balk overheen. "Lakken" komt uit de Woo-hoek en leest als jargon; "afdekken"
+# zou precies de fout beschrijven waar deze pagina voor waarschuwt.
+#
+
+name = "PDF onleesbaar maken"
+heading = "PDF&nbsp;onleesbaar&nbsp;maken <span class=\"h1-kw\">&mdash; de woorden gaan eruit, er komt geen balk overheen</span>"
+tagline = "De letters worden uit het bestand gewist, en daarna wordt het bestand doorzocht om het te bewijzen."
+
+title = "Een PDF onleesbaar maken &mdash; de tekst echt wissen, gratis, zonder uploaden"
+description = "Haal woorden uit een PDF in plaats van er een zwarte rechthoek overheen te tekenen. De letters worden gewist uit de tekeninstructies van de pagina zelf, het klare bestand wordt opnieuw geopend en doorzocht om te bewijzen dat ze weg zijn, en er wordt niets ge&uuml;pload."
+og_title = "Een PDF goed onleesbaar maken &mdash; de woorden worden gewist, niet afgedekt"
+og_description = "Bij de meeste gereedschappen ligt de zwarte rechthoek op de tekst en is die er vanonder weg te kopi&euml;ren. Dit gereedschap wist de letters uit het bestand en doorzoekt daarna het resultaat om te laten zien dat ze er niet in staan."
+og_image_alt = "Een PDF onleesbaar maken door de tekst te wissen, niet door hem af te dekken"
+
+pledge = """
+    Het document dat je kiest wordt in het geheugen op deze machine geopend,
+    gelezen, bewerkt en weer weggeschreven, door code die vanaf dit adres wordt
+    geserveerd. Er is hier niets dat een upload kan doen, en aan de andere kant
+    van deze pagina staat geen server om er een te ontvangen. Noch het bestand
+    noch de woorden waar je op zocht verlaten het tabblad."""
+
+live_hint = """
+      Neem het niet van ons aan: open DevTools, kijk naar het tabblad Netwerk en
+      maak iets onleesbaar. Geen enkel verzoek draagt een pagina, een woord of een
+      bestandsnaam mee. Of trek de stekker uit het internet en doe het toch."""
+
+read_first = """
+, <code>src/text.js</code> voor hoe elk woord op
+      een pagina gevonden en gelokaliseerd wordt, en <code>src/edit.js</code> voor
+      het wissen zelf &mdash; wat er uit de instructies van de pagina geknipt
+      wordt en wat er teruggezet wordt zodat de rest van de regel niet verschuift.
+      Geen van deze kan het netwerk bereiken, en de lezer en de schrijver ernaast
+      ook niet."""
+
+howto_heading = "Zo maak je een PDF onleesbaar zodat de woorden echt weg zijn"
+
+card = """
+            Wis woorden uit een PDF in plaats van ze af te dekken. De letters
+            worden uit de tekeninstructies van de pagina zelf gehaald, het gat
+            wordt opengehouden zodat er niets anders verschuift, en het klare
+            bestand wordt hier opnieuw geopend en doorzocht om te bewijzen dat de
+            woorden er niet in staan."""
+
+[words]
+plural = "documenten"
+choose = "een PDF"
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[facts]]
+text = "Bestanden blijven op je apparaat"
+
+[[privacy]]
+title = "Een zwarte rechthoek is geen onleesbaarmaking, en hier wordt er geen over iets heen getekend."
+body = """
+
+      In vrijwel elk programma dat aanbiedt een pagina onleesbaar te maken &mdash;
+      een PDF-lezer, een tekstverwerker, een ontwerpprogramma &mdash; is de
+      rechthoek een object dat n&aacute;&aacute;st de tekst wordt opgeslagen en
+      niet erin. De tekst staat er nog steeds, in hetzelfde bestand, op dezelfde
+      plek, en het gebied selecteren en op kopi&euml;ren drukken geeft hem terug.
+      Die fout heeft rechtbankstukken, inlichtingenrapporten en, in december 2025,
+      zwartgemaakte namen in een massale vrijgave van documenten van het Amerikaanse
+      ministerie van Justitie gepubliceerd die binnen enkele uren leesbaar waren.
+      Dit gereedschap wist de letters uit de instructies die de pagina tekenen. Er
+      is geen rechthoek met iets eronder, want er is niets eronder."""
+
+[[privacy]]
+title = "Het klare bestand wordt hier opnieuw geopend en doorzocht, voordat het je aangeboden wordt."
+body = """
+
+      Tot dat gebeurt is elke bewering hierboven dit gereedschap dat zijn eigen
+      huiswerk nakijkt. Dus de bytes die op het punt staan je download te worden
+      gaan terug naar dezelfde lezer alsof een vreemde ze had opgestuurd, elke
+      pagina wordt opnieuw gelezen, elke bladwijzer, opmerking, formuliervak en
+      documenteigenschap wordt verzameld, en er wordt gezocht naar de woorden die je
+      hebt weggehaald. Het aantal staat bij de resultaten. Als er iets is
+      overgebleven, wordt de run als mislukt gemeld en is er geen download."""
+
+[[privacy]]
+title = "De woorden verlaten het tabblad nooit, en de zoekopdracht ook niet."
+body = """
+ Het
+      Content-Security-Policy noemt elk adres dat deze pagina mag benaderen, en
+      geen enkel adres daarvan hoort bij deze site. Dit gereedschap voegt daar
+      niets aan toe: het heeft geen eigen netwerkfunctie, ook geen optionele. Wat
+      je in het zoekvak typt is een reeks tekens die vergeleken wordt met tekst in
+      het geheugen van dit tabblad, en er is voor geen van beide ergens heen te
+      gaan."""
+
+[[privacy]]
+title = "Onleesbaar maken is de klus die een upload het slechtst overleeft."
+body = """
+
+      Wat mensen onleesbaar maken is de reden waarom het niet ge&uuml;pload mag
+      worden. Een getuigenverklaring, een brief van de arts, een bankafschrift dat
+      naar een verhuurder gaat, een contract met de naam van de ene klant erin dat
+      naar een andere gaat. Dat aan de server van een vreemde geven om er het
+      priv&eacute;-deel uit te laten halen betekent dat het priv&eacute;-deel eerst
+      aankomt, ongeschonden, en dat is de versie die zij houden. Deze pagina heeft
+      geen andere helft."""
+
+[[privacy]]
+title = "Wat er overblijft wordt onaangeroerd doorgegeven."
+body = """
+
+      De enige bytes die op een pagina veranderen zijn de tekst-tekeninstructies
+      waar de weggehaalde letters deel van uitmaakten. Elke andere instructie, en
+      elk lettertype, beeld en lijn waar de pagina naar verwijst, wordt precies
+      gekopieerd zoals het binnenkwam &mdash; er wordt niets opnieuw getekend,
+      hergecodeerd of anders afgebroken. De breedte van wat eruit is gehaald wordt
+      gemeten en teruggezet als een afstandsinstructie, zodat de rest van de regel
+      blijft staan waar het document hem gezet had."""
+
+[[privacy]]
+title = "Het kan geen woorden uit een foto halen, en het zegt om welke pagina's het gaat."
+body = """
+
+      Een gescande pagina is een beeld. De woorden erop zijn pixels, geen tekst, en
+      niets hier kan ze aanraken. Als de scan de onzichtbare doorzoekbare laag
+      draagt die de OCR van een scanner maakt, haalt dit gereedschap die laag weg
+      &mdash; en dat is wat een zoekopdracht en een kopieeractie gevonden zouden
+      hebben &mdash; en het zegt op de pagina met zoveel woorden dat het beeld de
+      woorden nog steeds toont. Dat beeld afdekken is een andere klus; de
+      <a href=\"../afbeelding-onleesbaar-maken/\">afbeelding onleesbaar maken</a> is
+      het gereedschap dat pixels overschrijft."""
+
+[[privacy]]
+title = "Het document houdt op te vertellen waar het vandaan komt."
+body = """
+
+      De eigenschappen en het XMP-pakket gaan er bij elke run uit: geen
+      producer-regel, geen aanmaakdatum, geen auteur, geen titel, en geen van de
+      priv&eacute;-blokken die een opmaakprogramma achterlaat. Een bestand waarvan
+      uit de pagina's een naam is gehaald en waarvan de eigenschappen nog steeds
+      <code>Jansen schikking versie 3.docx</code> luiden, is niet onleesbaar
+      gemaakt, en dat is niet iets om aan een vinkje over te laten."""
+
+[[privacy]]
+title = "Versleutelde bestanden worden geweigerd in plaats van geopend."
+body = """
+
+      Een PDF met een wachtwoord wordt geweigerd, ook het soort dat scanners
+      maken met een leeg wachtwoord en dat technisch gezien open zou gaan. De
+      beveiliging van een document afhalen is een andere klus dan er woorden uit
+      halen, en het stilletjes doen zou een verrassende daad zijn voor een
+      gereedschap dat namens jou handelt."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De scripts voor
+      advertenties en meting komen van Google. Geen van beide krijgt iets over je
+      document: geen bestand, geen pagina, geen naam, geen grootte, geen
+      paginatelling en geen woord waar je op gezocht hebt. Elke regel die een PDF
+      leest, bewerkt of schrijft wordt vanaf deze oorsprong geserveerd en staat in
+      de repository."""
+
+[[privacy]]
+title = "Wat de donatieknop laadt, en wat hij niet krijgt."
+body = """
+
+      De &bdquo;Buy me a coffee&rdquo;-knop bovenaan wordt getekend door een script
+      van cdnjs.buymeacoffee.com en haalt zijn letters bij Google Fonts. Het is een
+      link en verder niets: hij meldt geen bezoek, en hij krijgt niets over jou of
+      je documenten. Er gebeurt niets tenzij je erop klikt, en waar je dan
+      terechtkomt is de site van iemand anders."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en alles op deze pagina
+      blijft werken. Dat is het eenvoudigste bewijs van allemaal: een gereedschap
+      dat je document wegstuurde om het onleesbaar te laten maken, zou
+      stoppen."""
+
+[[howto]]
+title = "Kies de PDF."
+body = """
+ E&eacute;n document tegelijk, met opzet:
+      onleesbaar maken is een klus die pagina voor pagina bekeken moet worden, en
+      een gereedschap dat je woorden in het ene bestand liet aanvinken en ze
+      stilletjes op een ander toepaste, is precies hoe het verkeerde ding verstuurd
+      wordt. Hij wordt door de browser rechtstreeks van je schijf gelezen."""
+
+[[howto]]
+title = "Zeg wat er weg moet."
+body = """
+ Typ de woorden &mdash; een naam,
+      een adres, een kenmerk &mdash; en elke plek waar ze voorkomen wordt
+      opgesomd met de regel waar ze op staan en een vakje om aan te vinken. De
+      zoekers naast het vakje kijken naar e-mailadressen, kaartnummers, IBAN's,
+      BSN's en socialezekerheidsnummers, en telefoonnummers. Die worden
+      aangeboden, nooit voor je aangevinkt: een patroon kan een telefoonnummer niet
+      van een kenmerk onderscheiden."""
+
+[[howto]]
+title = "Lees de pagina en pik er woorden vanaf."
+body = """
+
+      Het paneel toont de tekst van het document zoals die werkelijk is
+      opgeslagen, in de volgorde waarin een lezer hem zou kopi&euml;ren. Klik een
+      willekeurig woord aan om het weg te halen en klik het nog eens aan om het te
+      houden. Alles wat doorgestreept is, is wat er weg zal zijn &mdash; en dat
+      maakt dit zowel de controle als de selectie, en het is de moeite waard om dit
+      op elke pagina te doen voordat je op de knop drukt."""
+
+[[howto]]
+title = "Haal ze eruit, en lees de regel die zegt dat het gecontroleerd is."
+body = """
+
+      De letters worden gewist, het gat dat ze achterlieten wordt opengehouden, er
+      wordt een zwarte balk overheen getekend als je daarom gevraagd hebt, en
+      dezelfde woorden worden uit de bladwijzers, opmerkingen, formuliervakken en
+      documenteigenschappen gehaald. Daarna wordt het klare bestand hier opnieuw
+      geopend en doorzocht. Als een woord dat je hebt weggehaald er nog steeds in te
+      vinden is, krijg je geen download en een bericht dat dat zegt."""
+
+[[faq]]
+q = "Hoe verschilt dit van een zwarte balk tekenen in een PDF-lezer?"
+a = """
+        Een rechthoek die in een lezer getekend is, is een annotatie: een object met
+        een positie, naast de pagina opgeslagen. De tekst eronder is onaangeroerd.
+        Iedereen die dat gebied selecteert en op kopi&euml;ren drukt, of het bestand
+        in een ander programma opent, of er een willekeurige tekstextractor
+        overheen haalt, krijgt de woorden terug. Sommige lezers bieden een
+        &bdquo;redact&rdquo;-opdracht die de verwijdering w&eacute;l goed toepast
+        &mdash; en verschillende bieden alleen het tekenen. Dit gereedschap heeft
+        geen rechthoek om opzij te schuiven: de letters worden uit de
+        tekeninstructies van de pagina geknipt, en de zwarte balk wordt, als je hem
+        aan laat staan, daarna getekend over een gat dat al leeg is."""
+
+[[faq]]
+q = "Hoe weet ik dat de woorden echt weg zijn?"
+a = """
+        Omdat het gereedschap het nakijkt, op jouw machine, en je het aantal laat
+        zien. Als het bestand geschreven is wordt het opnieuw geopend door dezelfde
+        lezer op deze pagina, wordt elke pagina gelezen, wordt elke bladwijzer,
+        opmerking, formuliervak en eigenschap verzameld, en wordt er naar elk woord
+        gezocht dat je hebt weggehaald. De resultatenregel zegt hoeveel er waren en
+        hoeveel er over zijn. Als het antwoord niet is wat het zou moeten zijn,
+        mislukt de run en wordt er niets ter download aangeboden. Je kunt het
+        achteraf ook zelf nakijken in elke willekeurige lezer: druk op Ctrl+F en zoek
+        het woord."""
+
+[[faq]]
+q = "Verschuift de rest van de pagina als er een woord weggehaald wordt?"
+a = """
+        Nee. Tekst wordt getekend door een pen over de pagina te laten opschuiven,
+        dus vijf letters wissen zou de rest van de regel normaal gesproken vijf
+        letters naar links trekken. De exacte breedte van wat er weggehaald is wordt
+        uit de eigen metriek van het lettertype gemeten en teruggezet als een
+        afstandsinstructie, die de pen verplaatst zonder iets te tekenen. Kolommen
+        blijven uitgelijnd en totalen blijven onder hun koppen staan."""
+
+[[faq]]
+q = "Kan het een gescand document onleesbaar maken?"
+a = """
+        Het beeld niet, en het zegt dat in plaats van te doen alsof. Een scan is een
+        foto van een pagina: de woorden zijn pixels en er is geen tekst om weg te
+        halen. Wat een scan vaak w&eacute;l draagt is een onzichtbare tekstlaag die
+        de OCR van de scanner over het beeld heen heeft geschreven zodat de pagina
+        doorzoekbaar is &mdash; dit gereedschap vindt die laag, haalt eruit wat jij
+        kiest, en vertelt je op de pagina dat het beeld onveranderd is. Dus een
+        zoekopdracht en een kopieeractie vinden het woord niet meer, en iemand die
+        naar de pagina kijkt leest het nog steeds. Voor een beeld overschrijft de
+        <a href=\"../afbeelding-onleesbaar-maken/\">afbeelding onleesbaar maken</a> de
+        pixels zelf."""
+
+[[faq]]
+q = "En de delen van een document die niet op een pagina staan?"
+a = """
+        Die worden meegenomen, want daar lekt een onleesbaarmaking meestal. Dezelfde
+        woorden worden weggehaald uit bladwijzers, opmerkingen en plaknotities, uit
+        wat er in formuliervakken getypt is, uit de tekst die een schermlezer krijgt,
+        en uit de vervangtekst die een lezer kopieert <em>in plaats van</em> de
+        letters op de pagina &mdash; dat laatste bestaat zodat ligaturen en met een
+        koppelteken afgebroken woorden goed kopi&euml;ren, en het kan een hele zin
+        bevatten. De documenteigenschappen en het XMP-pakket worden helemaal
+        verwijderd. Bijlagen en alles wat draait als het bestand opengaat worden
+        weggegooid, want in geen van beide is te zoeken naar de woorden die je
+        weghaalt."""
+
+[[faq]]
+q = "Worden mijn documenten ergens naartoe ge&uuml;pload?"
+a = """
+        Nee. Het bestand wordt door je eigen browser op je eigen hardware gelezen,
+        bewerkt en geschreven. Dit gereedschap heeft geen serverkant, en het
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat hij
+        mag benaderen &mdash; geen daarvan hoort bij deze site. Wat je in het
+        zoekvak typt wordt vergeleken met tekst in het geheugen van dit tabblad en
+        gaat ook nergens heen."""
+
+[[faq]]
+q = "Waarom kan ik geen kader over de pagina slepen zoals bij andere gereedschappen?"
+a = """
+        Omdat een pagina tekenen een volledige PDF-renderer betekent &mdash;
+        lettertypen, verlopen, transparantie, overvloeimodi &mdash; en dat is een
+        megabyte of meer aan motor om op te halen en te draaien, en deze site levert
+        er geen. Dat blijkt bij de klus te passen: een rechthoek slepen selecteert
+        een <em>stuk papier</em>, en een stuk papier is niet hetzelfde als de tekst
+        eronder, en zo begint de zwarte-balkfout. Wat je in plaats daarvan krijgt is
+        de tekst van het document, op leesvolgorde, met elk woord aanklikbaar. Het is
+        ook de enige weergave die je kan vertellen wat een beeld van de pagina niet
+        kan: of de woorden voor je &uuml;berhaupt tekst zijn."""
+
+[[faq]]
+q = "Gaat het klare bestand overal open?"
+a = """
+        Ja. De uitvoer wordt geschreven als PDF 1.5, of de hoogste versie die het
+        bestand dat je gaf nodig had, en 1.5 wordt begrepen door elke lezer die sinds
+        2003 is uitgekomen. Er wordt niets op de pagina hergecodeerd: de
+        lettertypen, beelden en vectortekeningen komen er byte voor byte doorheen,
+        dus wat er van de tekst overblijft blijft precies zo selecteerbaar en
+        doorzoekbaar als het was."""
+
+[[faq]]
+q = "Kan het een met een wachtwoord beveiligde PDF openen?"
+a = """
+        Nee, en dat is met opzet. Een versleuteld document wordt geweigerd met een
+        bericht dat dat zegt, ook als het wachtwoord leeg is &mdash; en zo slaan veel
+        scanners en kopieerapparaten op. De beveiliging van een bestand afhalen is
+        een andere klus dan er woorden uit halen, en een gereedschap dat het
+        stilletjes deed, zou iets doen waar je niet om gevraagd hebt."""
+
+[[faq]]
+q = "Is er een groottelimiet, en kost het iets?"
+a = """
+        Er staat geen limiet in het gereedschap geschreven. De limiet is je eigen
+        machine: het document wordt in het geheugen gehouden terwijl eraan gewerkt
+        wordt, dus een laptop neemt een paar honderd megabyte zonder klagen en gaat
+        ergens daarboven worstelen. Het is gratis, er is geen account, geen inloggen
+        en geen proefperiode. De site draait advertenties, en dat is wat hem betaalt;
+        de adverteerders krijgen niets over je documenten."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina &eacute;&eacute;n keer, verbreek daarna de
+        internetverbinding en hij blijft werken. Dat is meteen de eenvoudigste
+        manier om te bewijzen dat er niets ge&uuml;pload wordt: een gereedschap dat
+        je document wegstuurde om het onleesbaar te laten maken, stopt op het moment
+        dat je de stekker eruit trekt."""
+
+[schema]
+description = "Maak een PDF onleesbaar in je browser door de tekst te wissen in plaats van hem af te dekken. De letters worden uit de content stream van de pagina gehaald, het klare bestand wordt opnieuw geopend en doorzocht om te bewijzen dat ze weg zijn, en er wordt niets ge&uuml;pload."
+features = [
+  "Wist de letters uit de pagina in plaats van er een rechthoek overheen te tekenen",
+  "Opent het klare bestand opnieuw en doorzoekt het om te bewijzen dat de woorden weg zijn",
+  "Vindt elk voorkomen van een woord, of zoekt naar e-mailadressen, kaartnummers, IBAN's en nationale identificatienummers",
+  "Toont de tekst van het document op leesvolgorde zodat elk woord aan te klikken is",
+  "Haalt dezelfde woorden uit bladwijzers, opmerkingen, formuliervakken en eigenschappen",
+  "Houdt het gat open zodat de rest van de regel niet verschuift",
+  "Zegt welke pagina's scans zijn, waar er geen tekst is om weg te halen",
+  "Werkt offline; geen upload, geen account, geen groottelimiet",
+]
+
+[picker]
+title = "Sleep hier je PDF naartoe"
+hint = "of klik om te bladeren &mdash; &eacute;&eacute;n document tegelijk"
