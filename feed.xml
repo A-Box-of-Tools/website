@@ -39,11 +39,25 @@
     <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
   </entry>
   <entry>
+    <title type="html">How to clean up a voice memo before sending it</title>
+    <id>https://abox.tools/guides/clean-up-a-voice-memo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/clean-up-a-voice-memo/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Cut the dead air and the false starts, then bring the level up to full scale. Two browser tools in a row, in the order that keeps the quality, and the recording never leaves your machine.</summary>
+  </entry>
+  <entry>
     <title type="html">How to compare two JSON files</title>
     <id>https://abox.tools/guides/compare-two-json-files/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/compare-two-json-files/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Format both files the same way, sort the keys, then diff them. Why a raw JSON diff is mostly noise, how to canonicalise both sides in the browser, and what survives to the patch.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to edit a GIF frame by frame</title>
+    <id>https://abox.tools/guides/edit-a-gif-frame-by-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/edit-a-gif-frame-by-frame/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Take a GIF apart into its frames, drop or reorder them, and rebuild it with the timing kept. What survives the round trip, what the palette costs, and how to see why a GIF is heavy.</summary>
   </entry>
   <entry>
     <title type="html">How to get phone photos ready for the web</title>
@@ -60,6 +74,13 @@
     <summary type="html">Cut the seconds that matter first, then convert only those. When the GIF converter's own timeline is enough, when to cut with the video cutter instead, and why every second of GIF costs so much.</summary>
   </entry>
   <entry>
+    <title type="html">How to make a QR code and prove it scans</title>
+    <id>https://abox.tools/guides/make-a-qr-code-and-prove-it-scans/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-qr-code-and-prove-it-scans/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Generate the code, then verify it with a reader on the same site - the exact payload, the real link, at print size and from a photo - before the print run. All in the browser, nothing uploaded.</summary>
+  </entry>
+  <entry>
     <title type="html">How to make a boomerang video</title>
     <id>https://abox.tools/guides/make-a-boomerang-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-boomerang-video/"/>
@@ -67,11 +88,25 @@
     <summary type="html">Cut the moment, reverse the copy, join the two, and loop it. Three tools in a row, all running in your browser, and the order that keeps the whole job down to a minute.</summary>
   </entry>
   <entry>
+    <title type="html">How to make a video thumbnail from the exact right frame</title>
+    <id>https://abox.tools/guides/make-a-video-thumbnail/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-video-thumbnail/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Step to the precise frame, save it losslessly, size it for the platform, and hit the byte limit. Three browser tools in a row, and the footage never leaves your machine.</summary>
+  </entry>
+  <entry>
     <title type="html">How to scan multiple pages into one small PDF</title>
     <id>https://abox.tools/guides/scan-multiple-pages-into-one-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/scan-multiple-pages-into-one-pdf/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Photograph every page, get one PDF, combine it with documents you already have, and shrink it until it sends. Three browser tools in a row, and the paperwork never leaves your phone.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to turn a long video into a timelapse</title>
+    <id>https://abox.tools/guides/turn-a-long-video-into-a-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/turn-a-long-video-into-a-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">An hour of footage into a watchable minute: how to choose the speed, why saying the finished length beats doing arithmetic, and when the result should become a GIF.</summary>
   </entry>
   <entry>
     <title type="html">JSON Formatter</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to merge, split and reorder PDF pages</title>
-    <id>https://abox.tools/guides/merge-and-split-pdf-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/merge-and-split-pdf-files/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Combine PDFs, cut one into several, and move pages around: what survives the reshuffle, what no tool can carry across, and why none of it needs uploading your documents anywhere.</summary>
-  </entry>
-  <entry>
-    <title type="html">What is actually inside a GIF</title>
-    <id>https://abox.tools/guides/whats-inside-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/whats-inside-a-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Frames, delays, disposal methods and colour tables explained, why browsers refuse the fastest delays, and how to work out where a GIF's file size really went.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio Trimmer</title>
-    <id>https://abox.tools/trim-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/trim-audio/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Play a recording and mark every part worth keeping as it goes past, then save those parts as one file. Sample-exact cuts, no clicks at the joins, nothing uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Splitter</title>
-    <id>https://abox.tools/split-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/split-gif/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Split an animated GIF into its frames and save each one as a PNG, free and entirely in your browser. Keeps the transparency and the timing. Nothing is uploaded, and it works offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to split a GIF into frames</title>
-    <id>https://abox.tools/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Get every frame of an animated GIF as a PNG: why some frames are only a small patch of the picture, what happens to the transparency, and how to keep the timing so you can put it back together.</summary>
   </entry>
 </feed>

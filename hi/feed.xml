@@ -39,11 +39,25 @@
     <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
   </entry>
   <entry>
+    <title type="html">GIF को फ़्रेम-दर-फ़्रेम कैसे संपादित करें</title>
+    <id>https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">GIF को उसके फ़्रेमों में खोलें, जो हटाना हो हटाएँ या क्रम बदलें, और समय-सारणी बचाए हुए फिर जोड़ दें। आने-जाने में क्या बचता है, पैलेट की क़ीमत क्या है, और GIF के भारी होने की वजह कैसे देखें।</summary>
+  </entry>
+  <entry>
     <title type="html">JSON फ़ॉर्मैटर</title>
     <id>https://abox.tools/hi/format-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/format-json/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">QR कोड कैसे बनाएँ और कैसे साबित करें कि वह पढ़ा जाता है</title>
+    <id>https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">कोड बनाइए, फिर उसी साइट के रीडर से जाँचिए: हू-ब-हू सामग्री, असली लिंक, छपाई के आकार में और एक तस्वीर से, छपाई से पहले। सब ब्राउज़र में, कुछ भी अपलोड नहीं।</summary>
   </entry>
   <entry>
     <title type="html">कई पन्ने एक छोटे PDF में कैसे स्कैन करें</title>
@@ -58,6 +72,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-text/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क़ देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
+    <title type="html">ठीक उसी फ़्रेम से वीडियो थंबनेल कैसे बनाएँ</title>
+    <id>https://abox.tools/hi/guides/make-a-video-thumbnail/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-video-thumbnail/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">फ़्रेम-दर-फ़्रेम सही पल तक पहुँचें, बिना क्षति सहेजें, प्लैटफ़ॉर्म के आकार में ढालें और उसकी बाइट-सीमा के ठीक नीचे उतारें। ब्राउज़र के तीन औज़ार कतार में, और फ़ुटेज आपकी मशीन कभी नहीं छोड़ती।</summary>
   </entry>
   <entry>
     <title type="html">दो JSON फ़ाइलों की तुलना कैसे करें</title>
@@ -79,6 +100,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-boomerang-video/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">पल काटिए, प्रति उलटिए, दोनों जोड़िए और लूप होने दीजिए। तीन टूल एक के बाद एक, सब ब्राउज़र में, और वह क्रम जो पूरा काम एक मिनट में निपटा देता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">भेजने से पहले वॉइस मेमो कैसे सँवारें</title>
+    <id>https://abox.tools/hi/guides/clean-up-a-voice-memo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/clean-up-a-voice-memo/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">ख़ाली हवा और अटकी शुरुआतें काटिए, फिर आवाज़ को ऊपरी हद के ठीक नीचे तक उठाइए। ब्राउज़र के दो औज़ार कतार में, उस क्रम में जो गुणवत्ता बचाता है, और रिकॉर्डिंग आपकी मशीन कभी नहीं छोड़ती।</summary>
+  </entry>
+  <entry>
+    <title type="html">लंबे वीडियो को टाइमलैप्स में कैसे बदलें</title>
+    <id>https://abox.tools/hi/guides/turn-a-long-video-into-a-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/turn-a-long-video-into-a-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">एक घंटे की फ़ुटेज देखने लायक एक मिनट में: रफ़्तार कैसे चुनें, हिसाब लगाने के बजाय आख़िरी लंबाई बता देना क्यों बेहतर है, और नतीजा कब GIF बनना चाहिए।</summary>
   </entry>
   <entry>
     <title type="html">वीडियो के एक हिस्से से GIF कैसे बनाएँ</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-analyzer/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">GIF को अपने ब्राउज़र में खोलकर देखिए: हर फ़्रेम की देरी और डिस्पोज़ल, कलर टेबल, लूप की गिनती, और फ़ाइल का साइज़ कहाँ गया इसका बाइट-दर-बाइट ब्योरा। कुछ अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF के भीतर असल में क्या है</title>
-    <id>https://abox.tools/hi/guides/whats-inside-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/whats-inside-a-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">फ़्रेम, देरी, निपटाने के तरीके और रंगों की तालिकाएँ समझाई गईं, ब्राउज़र सबसे तेज़ देरी क्यों नहीं मानते, और किसी GIF का आकार असल में कहाँ चला गया यह कैसे पता करें।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF के पन्ने कैसे जोड़ें, अलग करें और क्रम बदलें</title>
-    <id>https://abox.tools/hi/guides/merge-and-split-pdf-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/merge-and-split-pdf-files/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">कई PDF को एक करना, एक को कई में काटना और पन्नों को इधर-उधर करना: फेरबदल के बाद क्या बचता है, कौन-सी चीज़ें कोई भी टूल साथ नहीं ले जा सकता, और यह सब बिना अपने दस्तावेज़ कहीं भेजे क्यों हो जाता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF को फ़्रेमों में कैसे बाँटें</title>
-    <id>https://abox.tools/hi/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">चलती GIF का हर फ़्रेम PNG में निकालिए: कुछ फ़्रेम तस्वीर का सिर्फ़ एक छोटा टुकड़ा क्यों होते हैं, पारदर्शिता का क्या होता है, और समय कैसे सँभालें ताकि सब वापस जोड़ा जा सके।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF फ़्रेम स्प्लिटर</title>
-    <id>https://abox.tools/hi/split-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/split-gif/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">किसी एनिमेटेड GIF को उसके फ़्रेम में बाँटिए और हर फ़्रेम को PNG में सहेजिए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। ट्रांसपेरेंसी और टाइमिंग बनी रहती है। कुछ अपलोड नहीं होता और ऑफ़लाइन भी चलता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF मर्जर और स्प्लिटर</title>
-    <id>https://abox.tools/hi/merge-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/merge-pdf/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">कई PDF को एक कीजिए, एक को कई में बाँटिए, और पेजों को खींचकर मनचाहे क्रम में लगाइए, सब कुछ आपके अपने ब्राउज़र के भीतर। कुछ अपलोड नहीं होता, खाता नहीं चाहिए, और तैयार फ़ाइल आपको देने से पहले दोबारा खोलकर उसके पेज गिने जाते हैं।</summary>
   </entry>
 </feed>

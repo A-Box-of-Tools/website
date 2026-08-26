@@ -53,11 +53,25 @@
     <summary type="html">Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit.</summary>
   </entry>
   <entry>
+    <title type="html">Zo bewerk je een GIF beeld voor beeld</title>
+    <id>https://abox.tools/nl/gidsen/gif-beeld-voor-beeld-bewerken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/gif-beeld-voor-beeld-bewerken/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Haal een GIF uiteen in zijn beelden, verwijder of herschik ze, en bouw hem weer op met behoud van de timing. Wat de rondreis overleeft, wat het palet kost, en hoe je ziet waarom een GIF zwaar is.</summary>
+  </entry>
+  <entry>
     <title type="html">Zo maak je een GIF van een deel van een video</title>
     <id>https://abox.tools/nl/gidsen/gif-van-een-stuk-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/gif-van-een-stuk-video/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Knip eerst de seconden die ertoe doen en zet alleen die om. Wanneer de tijdlijn van de GIF-omzetter genoeg is, wanneer je eerst knipt met de videosnijder, en waarom elke seconde GIF zo duur is.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo maak je een QR-code en bewijs je dat hij scant</title>
+    <id>https://abox.tools/nl/gidsen/qr-code-maken-en-bewijzen-dat-hij-scant/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/qr-code-maken-en-bewijzen-dat-hij-scant/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Genereer de code en controleer hem dan met de lezer van dezelfde site: de exacte inhoud, de echte link, op drukformaat en vanaf een foto, vóór de oplage. Alles in de browser, niets geüpload.</summary>
   </entry>
   <entry>
     <title type="html">Zo maak je een boomerangvideo</title>
@@ -67,6 +81,13 @@
     <summary type="html">Knip het moment, keer de kopie om, voeg de twee samen en laat het lussen. Drie tools op rij, allemaal in de browser, en de volgorde die het hele werk op een minuut houdt.</summary>
   </entry>
   <entry>
+    <title type="html">Zo maak je een videominiatuur van precies het juiste beeld</title>
+    <id>https://abox.tools/nl/gidsen/video-thumbnail-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/video-thumbnail-maken/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Stap beeld voor beeld naar het juiste moment, sla het verliesvrij op, breng het naar het formaat van het platform en land op de bytegrens. Drie browsergereedschappen op een rij, en het beeldmateriaal verlaat je machine nooit.</summary>
+  </entry>
+  <entry>
     <title type="html">Zo maak je telefoonfoto's klaar voor het web</title>
     <id>https://abox.tools/nl/gidsen/fotos-klaarmaken-voor-het-web/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/fotos-klaarmaken-voor-het-web/"/>
@@ -74,11 +95,25 @@
     <summary type="html">HEIC naar JPEG, GPS eruit, geschaald voor de pagina en gecomprimeerd op een budget: de hele keten in de browser, en de originelen verlaten je machine nooit.</summary>
   </entry>
   <entry>
+    <title type="html">Zo maak je van een lange video een timelapse</title>
+    <id>https://abox.tools/nl/gidsen/lange-video-naar-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/lange-video-naar-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Een uur beeld in een minuut die je uitkijkt: hoe je de snelheid kiest, waarom de einduur opgeven wint van rekenen, en wanneer het resultaat een GIF moet worden.</summary>
+  </entry>
+  <entry>
     <title type="html">Zo scan je meerdere pagina's naar één kleine PDF</title>
     <id>https://abox.tools/nl/gidsen/meerdere-paginas-naar-een-pdf-scannen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/meerdere-paginas-naar-een-pdf-scannen/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Fotografeer elke pagina, krijg één PDF, combineer hem met documenten die je al hebt, en krimp hem tot hij verstuurd kan worden. Drie browsertools op rij, en het papierwerk verlaat de telefoon nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo schoon je een spraakmemo op vóór het versturen</title>
+    <id>https://abox.tools/nl/gidsen/spraakmemo-opschonen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/spraakmemo-opschonen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Knip de dode lucht en de valse starts weg, en breng dan het volume tot vlak onder vol uit. Twee browsergereedschappen op een rij, in de volgorde die de kwaliteit spaart, en de opname verlaat je machine nooit.</summary>
   </entry>
   <entry>
     <title type="html">Zo vergelijk je twee JSON-bestanden</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-analyseren/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">Haal een GIF uit elkaar in je browser: elk frame met zijn vertraging en opruimregel, de kleurtabellen, het aantal herhalingen en een byte-voor-byte overzicht van waar de bestandsgrootte heen ging. Er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pdf-pagina's samenvoegen, splitsen en herschikken</title>
-    <id>https://abox.tools/nl/gidsen/pdf-bestanden-samenvoegen-en-splitsen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/pdf-bestanden-samenvoegen-en-splitsen/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Pdf's combineren, er één in meerdere knippen en pagina's verplaatsen: wat de herschikking overleeft, wat geen enkel hulpmiddel kan meenemen, en waarom je je documenten hiervoor nergens hoeft te uploaden.</summary>
-  </entry>
-  <entry>
-    <title type="html">Wat er werkelijk in een GIF zit</title>
-    <id>https://abox.tools/nl/gidsen/wat-zit-er-in-een-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/wat-zit-er-in-een-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Frames, vertragingen, opruimmethoden en kleurtabellen uitgelegd, waarom browsers de snelste vertragingen weigeren, en hoe je uitzoekt waar de bestandsgrootte van een GIF echt heen is.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio knippen zonder kwaliteitsverlies</title>
-    <id>https://abox.tools/nl/gidsen/een-audiobestand-inkorten/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-audiobestand-inkorten/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Waar een audioknip werkelijk valt, waarom die exact kan zijn terwijl een videoknip dat niet kan, waarom een naad soms klikt, en wat een fade van vijf milliseconden echt doet.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audioknipper</title>
-    <id>https://abox.tools/nl/audio-knippen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-knippen/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">Een GIF splitsen in frames</title>
-    <id>https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Elk frame van een geanimeerde GIF als PNG: waarom sommige frames maar een klein lapje van het plaatje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart om het weer in elkaar te zetten.</summary>
   </entry>
 </feed>

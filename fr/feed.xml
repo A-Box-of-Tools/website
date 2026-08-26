@@ -39,6 +39,20 @@
     <summary type="html">Formater les deux fichiers de la même façon, trier les clés, puis les comparer. Pourquoi un diff JSON brut n'est presque que du bruit, comment canoniser les deux côtés dans le navigateur, et ce qui survit jusqu'au correctif.</summary>
   </entry>
   <entry>
+    <title type="html">Comment créer un code QR et prouver qu'il se scanne</title>
+    <id>https://abox.tools/fr/guides/creer-un-code-qr-et-prouver-qu-il-se-scanne/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/creer-un-code-qr-et-prouver-qu-il-se-scanne/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Générer le code, puis le vérifier avec le lecteur du même site - la charge exacte, le vrai lien, à la taille d'impression et depuis une photo - avant le tirage. Tout dans le navigateur, rien d'envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment créer une miniature de vidéo depuis l'image exacte</title>
+    <id>https://abox.tools/fr/guides/creer-une-miniature-de-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/creer-une-miniature-de-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Avancer image par image jusqu'au bon instant, l'enregistrer sans perte, la mettre au format de la plateforme et tenir sa limite d'octets. Trois outils du navigateur à la suite, et la vidéo ne quitte jamais votre machine.</summary>
+  </entry>
+  <entry>
     <title type="html">Comment faire un GIF à partir d'une partie d'une vidéo</title>
     <id>https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/"/>
@@ -53,6 +67,20 @@
     <summary type="html">Couper le moment, inverser la copie, joindre les deux et boucler. Trois outils à la suite, tous dans le navigateur, et l'ordre qui ramène tout le travail à une minute.</summary>
   </entry>
   <entry>
+    <title type="html">Comment modifier un GIF image par image</title>
+    <id>https://abox.tools/fr/guides/modifier-un-gif-image-par-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/modifier-un-gif-image-par-image/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Décomposer un GIF en ses images, en retirer ou en réordonner, et le rebâtir en gardant les temps. Ce qui survit à l'aller-retour, ce que coûte la palette, et comment voir pourquoi un GIF est lourd.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment nettoyer un mémo vocal avant de l'envoyer</title>
+    <id>https://abox.tools/fr/guides/nettoyer-un-memo-vocal/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/nettoyer-un-memo-vocal/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Couper les blancs et les faux départs, puis remonter le niveau presque à pleine échelle. Deux outils du navigateur à la suite, dans l'ordre qui préserve la qualité, et l'enregistrement ne quitte jamais votre machine.</summary>
+  </entry>
+  <entry>
     <title type="html">Comment préparer les photos du téléphone pour le web</title>
     <id>https://abox.tools/fr/guides/preparer-des-photos-pour-le-web/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/preparer-des-photos-pour-le-web/"/>
@@ -65,6 +93,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/scanner-plusieurs-pages-en-un-pdf/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Photographier chaque page, obtenir un PDF, le combiner avec les documents déjà en PDF, et le réduire jusqu'à ce qu'il parte. Trois outils du navigateur à la suite, et les papiers ne quittent jamais le téléphone.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment transformer une longue vidéo en timelapse</title>
+    <id>https://abox.tools/fr/guides/transformer-une-longue-video-en-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/transformer-une-longue-video-en-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Une heure d'images en une minute regardable : comment choisir la vitesse, pourquoi donner la durée finale vaut mieux que faire l'arithmétique, et quand le résultat doit devenir un GIF.</summary>
   </entry>
   <entry>
     <title type="html">Comparateur de textes</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/analyser-un-gif/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">Démontez un GIF dans votre navigateur&amp;nbsp;: chaque image avec sa durée et son effacement, les tables de couleurs, le nombre de boucles, et le détail octet par octet de la taille du fichier. Rien n'est envoyé.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ce qu'il y a vraiment dans un GIF</title>
-    <id>https://abox.tools/fr/guides/ce-qu-il-y-a-dans-un-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/ce-qu-il-y-a-dans-un-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Images, délais, méthodes d'effacement et tables de couleurs expliqués, pourquoi les navigateurs refusent les délais les plus courts, et comment savoir où est passé le poids d'un GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment fusionner, diviser et réordonner des pages PDF</title>
-    <id>https://abox.tools/fr/guides/fusionner-et-diviser-des-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/fusionner-et-diviser-des-pdf/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Réunir des PDF, en couper un en plusieurs et déplacer des pages&amp;nbsp;: ce qui survit au remaniement, ce qu'aucun outil ne peut emporter, et pourquoi rien de tout cela n'exige d'envoyer vos documents quelque part.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment couper un audio sans perdre en qualité</title>
-    <id>https://abox.tools/fr/guides/couper-un-fichier-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/couper-un-fichier-audio/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Où tombe vraiment une coupe audio, pourquoi elle peut être exacte alors qu'une coupe vidéo ne le peut pas, pourquoi un raccord claque parfois, et ce que fait réellement un fondu de cinq millisecondes.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment découper un GIF en images</title>
-    <id>https://abox.tools/fr/guides/decouper-un-gif-en-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/decouper-un-gif-en-images/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Récupérer chaque image d'un GIF animé en PNG&amp;nbsp;: pourquoi certaines images ne sont qu'un petit morceau, ce que devient la transparence, et comment garder les durées pour tout remonter ensuite.</summary>
-  </entry>
-  <entry>
-    <title type="html">Découpeur audio</title>
-    <id>https://abox.tools/fr/couper-un-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-un-audio/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
   </entry>
 </feed>

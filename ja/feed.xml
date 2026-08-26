@@ -46,11 +46,25 @@
     <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
   </entry>
   <entry>
+    <title type="html">GIFをコマ単位で編集する方法</title>
+    <id>https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">GIFをコマに分解し、抜いたり並べ替えたりして、タイミングを保ったまま組み直します。往復で何が生き残るか、パレットの代償はいくらか、GIFが重い理由をどう見るか。</summary>
+  </entry>
+  <entry>
     <title type="html">JSONフォーマッター</title>
     <id>https://abox.tools/ja/format-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/format-json/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコードを作り、読めることを証明する方法</title>
+    <id>https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">コードを生成したら、同じサイトのリーダーで検証します。正確な中身と本当のリンクを、印刷サイズで、写真から、大量印刷の前に。すべてブラウザーで、何もアップロードせずに。</summary>
   </entry>
   <entry>
     <title type="html">スマホ写真をウェブ用に準備する方法</title>
@@ -81,11 +95,32 @@
     <summary type="html">大事な数秒だけを先に切り出し、そこだけを変換する。GIF変換器のタイムラインで足りる場合、先に動画カッターで切るべき場合、そしてGIFの1秒がなぜあれほど高くつくのか。</summary>
   </entry>
   <entry>
+    <title type="html">狙ったフレームから動画サムネイルを作る方法</title>
+    <id>https://abox.tools/ja/guides/make-a-video-thumbnail/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-video-thumbnail/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">コマ送りで正確な瞬間まで進み、無劣化で保存し、プラットフォームの形に整え、容量上限のすぐ下に収める。ブラウザーの道具3つの連携で、映像はマシンを離れません。</summary>
+  </entry>
+  <entry>
     <title type="html">複数ページを1つの小さなPDFにスキャンする方法</title>
     <id>https://abox.tools/ja/guides/scan-multiple-pages-into-one-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/scan-multiple-pages-into-one-pdf/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">全ページを撮影して1つのPDFを受け取り、すでにある文書と組み合わせ、送れるサイズまで縮める。ブラウザの道具を3つ順に、書類は電話を一度も離れない。</summary>
+  </entry>
+  <entry>
+    <title type="html">送る前にボイスメモを整える方法</title>
+    <id>https://abox.tools/ja/guides/clean-up-a-voice-memo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/clean-up-a-voice-memo/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">無音と言い直しを切り落とし、音量を上限のすぐ下まで引き上げます。ブラウザーの道具ふたつの連携、音質を守る順序、そして録音はマシンを離れません。</summary>
+  </entry>
+  <entry>
+    <title type="html">長い動画をタイムラプスにする方法</title>
+    <id>https://abox.tools/ja/guides/turn-a-long-video-into-a-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/turn-a-long-video-into-a-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">1時間の映像を見られる1分に。速度の選び方、計算するより仕上がりの長さを指定したほうがよい理由、そして結果をGIFにすべき場面について。</summary>
   </entry>
   <entry>
     <title type="html">DICOMビューア</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/whats-inside-a-gif/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">コマ、待ち時間、後始末の方法、色表の説明。ブラウザがいちばん短い待ち時間を受け付けない理由と、GIFの容量がどこへ消えたのかを突き止める方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF解析</title>
-    <id>https://abox.tools/ja/gif-analyzer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-analyzer/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">GIFをブラウザの中で分解します。各コマの表示時間と破棄方法、カラーテーブル、繰り返し回数、そしてファイルサイズがどこへ消えたかの1バイト単位の内訳まで。アップロードは一切ありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDFのページを結合・分割・並べ替えする方法</title>
-    <id>https://abox.tools/ja/guides/merge-and-split-pdf-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/merge-and-split-pdf-files/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">複数のPDFをまとめ、1つを何本かに切り分け、ページを動かします。並べ替えて何が残り、どの道具にも運べないものは何か、そしてなぜ書類をどこかへ送らずに済むのか。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIFをコマに分解する方法</title>
-    <id>https://abox.tools/ja/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">アニメーションGIFの全コマをPNGで取り出します。なぜ一部のコマが絵の小さな断片でしかないのか、透明はどうなるのか、そして組み立て直せるように間隔を残しておく方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF分解</title>
-    <id>https://abox.tools/ja/split-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/split-gif/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">アニメーションGIFをコマに分解し、1枚ずつPNGとして保存します。無料で、処理はすべてブラウザの中。透過も表示時間もそのまま残ります。アップロードは一切なく、オフラインでも動きます。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF結合・分割</title>
-    <id>https://abox.tools/ja/merge-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/merge-pdf/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">PDFをまとめる、1つを複数に分ける、ページをドラッグして好きな順にする。すべてお使いのブラウザの中で行われます。アップロードもアカウントも不要で、仕上がったファイルは渡す前にもう一度開いてページ数を数え直します。</summary>
   </entry>
 </feed>

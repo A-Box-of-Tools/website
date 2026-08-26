@@ -421,6 +421,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/guides/turn-a-long-video-into-a-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/guides/make-a-video-thumbnail/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/guides/edit-a-gif-frame-by-frame/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/guides/scan-multiple-pages-into-one-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -428,6 +446,18 @@
   </url>
   <url>
     <loc>https://abox.tools/guides/get-photos-ready-for-the-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/guides/make-a-qr-code-and-prove-it-scans/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/guides/clean-up-a-voice-memo/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -871,6 +901,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ar/أدلة/تحويل-فيديو-طويل-الى-تايم-لابس/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/أدلة/صنع-صورة-مصغرة-لفيديو/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/أدلة/تحرير-gif-اطارا-اطارا/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ar/أدلة/مسح-عدة-صفحات-في-pdf-واحد/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -878,6 +926,18 @@
   </url>
   <url>
     <loc>https://abox.tools/ar/أدلة/تجهيز-الصور-للنشر/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/أدلة/صنع-رمز-qr-والتاكد-انه-يقرا/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/أدلة/تنظيف-تسجيل-صوتي/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1315,6 +1375,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/ratgeber/langes-video-in-zeitraffer-verwandeln/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/ratgeber/video-thumbnail-erstellen/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/ratgeber/gif-bild-fuer-bild-bearbeiten/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/ratgeber/mehrere-seiten-in-ein-pdf-scannen/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -1322,6 +1400,18 @@
   </url>
   <url>
     <loc>https://abox.tools/de/ratgeber/fotos-fuers-web-vorbereiten/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/ratgeber/qr-code-erstellen-und-scan-beweisen/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/ratgeber/sprachmemo-aufraeumen/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1765,6 +1855,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/guias/convertir-un-video-largo-en-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/guias/crear-una-miniatura-de-video/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/guias/editar-un-gif-fotograma-a-fotograma/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/guias/escanear-varias-paginas-en-un-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -1772,6 +1880,18 @@
   </url>
   <url>
     <loc>https://abox.tools/es/guias/preparar-fotos-para-la-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/guias/crear-un-codigo-qr-y-comprobar-que-escanea/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/guias/limpiar-una-nota-de-voz/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -2215,6 +2335,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/fr/guides/transformer-une-longue-video-en-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/guides/creer-une-miniature-de-video/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/guides/modifier-un-gif-image-par-image/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/fr/guides/scanner-plusieurs-pages-en-un-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -2222,6 +2360,18 @@
   </url>
   <url>
     <loc>https://abox.tools/fr/guides/preparer-des-photos-pour-le-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/guides/creer-un-code-qr-et-prouver-qu-il-se-scanne/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/guides/nettoyer-un-memo-vocal/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -2665,6 +2815,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/hi/guides/turn-a-long-video-into-a-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/guides/make-a-video-thumbnail/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/hi/guides/scan-multiple-pages-into-one-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -2672,6 +2840,18 @@
   </url>
   <url>
     <loc>https://abox.tools/hi/guides/get-photos-ready-for-the-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/guides/clean-up-a-voice-memo/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -3115,6 +3295,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/id/panduan/mengubah-video-panjang-jadi-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/panduan/membuat-thumbnail-video/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/panduan/mengedit-gif-bingkai-demi-bingkai/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/id/panduan/memindai-banyak-halaman-jadi-satu-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -3122,6 +3320,18 @@
   </url>
   <url>
     <loc>https://abox.tools/id/panduan/menyiapkan-foto-untuk-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/panduan/membuat-kode-qr-dan-membuktikannya-terbaca/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/panduan/merapikan-memo-suara/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -3559,6 +3769,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/guide/trasformare-un-video-lungo-in-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/guide/creare-una-miniatura-per-un-video/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/guide/modificare-una-gif-fotogramma-per-fotogramma/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/guide/scansionare-piu-pagine-in-un-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -3566,6 +3794,18 @@
   </url>
   <url>
     <loc>https://abox.tools/it/guide/preparare-le-foto-per-il-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/guide/creare-un-codice-qr-e-provare-che-si-legge/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/guide/ripulire-un-memo-vocale/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -4009,6 +4249,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ja/guides/turn-a-long-video-into-a-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/guides/make-a-video-thumbnail/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ja/guides/scan-multiple-pages-into-one-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -4016,6 +4274,18 @@
   </url>
   <url>
     <loc>https://abox.tools/ja/guides/get-photos-ready-for-the-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/guides/clean-up-a-voice-memo/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -4459,6 +4729,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ko/가이드/긴-영상을-타임랩스로/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/가이드/영상-썸네일-만들기/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/가이드/gif-프레임별로-편집/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ko/가이드/여러-장을-pdf-한-개로-스캔/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -4466,6 +4754,18 @@
   </url>
   <url>
     <loc>https://abox.tools/ko/가이드/웹에-올릴-사진-준비/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/가이드/qr코드-만들고-스캔-확인/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/가이드/음성-메모-정리하기/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -4909,6 +5209,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/gidsen/lange-video-naar-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/gidsen/video-thumbnail-maken/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/gidsen/gif-beeld-voor-beeld-bewerken/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/gidsen/meerdere-paginas-naar-een-pdf-scannen/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -4916,6 +5234,18 @@
   </url>
   <url>
     <loc>https://abox.tools/nl/gidsen/fotos-klaarmaken-voor-het-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/gidsen/qr-code-maken-en-bewijzen-dat-hij-scant/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/gidsen/spraakmemo-opschonen/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -5359,6 +5689,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/guias/transformar-video-longo-em-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/guias/criar-uma-miniatura-de-video/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/guias/editar-um-gif-quadro-a-quadro/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/guias/digitalizar-varias-paginas-em-um-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -5366,6 +5714,18 @@
   </url>
   <url>
     <loc>https://abox.tools/pt/guias/preparar-fotos-para-a-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/guias/criar-um-codigo-qr-e-provar-que-escaneia/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/guias/limpar-uma-nota-de-voz/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -5809,6 +6169,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/tr/rehberler/uzun-videoyu-hizlandirilmis-videoya-cevirme/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/rehberler/video-kucuk-resmi-yapma/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/rehberler/gif-kare-kare-duzenleme/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/tr/rehberler/birden-cok-sayfayi-tek-pdf-tarama/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -5816,6 +6194,18 @@
   </url>
   <url>
     <loc>https://abox.tools/tr/rehberler/fotograflari-web-icin-hazirlama/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/rehberler/qr-kod-yapip-okundugunu-kanitlama/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/rehberler/sesli-notu-temizleme/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -6253,6 +6643,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/zh/guides/turn-a-long-video-into-a-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/guides/make-a-video-thumbnail/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/guides/edit-a-gif-frame-by-frame/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/zh/guides/scan-multiple-pages-into-one-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -6260,6 +6668,18 @@
   </url>
   <url>
     <loc>https://abox.tools/zh/guides/get-photos-ready-for-the-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/guides/make-a-qr-code-and-prove-it-scans/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/guides/clean-up-a-voice-memo/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -6703,6 +7123,24 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/zh-TW/guides/turn-a-long-video-into-a-timelapse/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/guides/make-a-video-thumbnail/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/guides/edit-a-gif-frame-by-frame/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/zh-TW/guides/scan-multiple-pages-into-one-pdf/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
@@ -6710,6 +7148,18 @@
   </url>
   <url>
     <loc>https://abox.tools/zh-TW/guides/get-photos-ready-for-the-web/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/guides/make-a-qr-code-and-prove-it-scans/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/guides/clean-up-a-voice-memo/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

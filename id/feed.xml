@@ -46,6 +46,20 @@
     <summary type="html">Potong dulu detik-detik yang penting, lalu ubah hanya bagian itu. Kapan garis waktu pengubah GIF sudah cukup, kapan memotong dulu dengan pemotong video, dan kenapa tiap detik GIF semahal itu.</summary>
   </entry>
   <entry>
+    <title type="html">Cara membuat kode QR dan membuktikannya terbaca</title>
+    <id>https://abox.tools/id/panduan/membuat-kode-qr-dan-membuktikannya-terbaca/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-kode-qr-dan-membuktikannya-terbaca/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Buat kodenya, lalu periksa dengan pembaca dari situs yang sama: isi persisnya, tautan sebenarnya, pada ukuran cetak dan dari sebuah foto, sebelum naik cetak. Semuanya di peramban, tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara membuat thumbnail video dari bingkai yang tepat</title>
+    <id>https://abox.tools/id/panduan/membuat-thumbnail-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-thumbnail-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Melangkah bingkai demi bingkai ke saat yang tepat, simpan tanpa kehilangan mutu, sesuaikan dengan bentuk platform, dan tepat di bawah batas bitenya. Tiga perkakas peramban berurutan, dan rekaman tidak pernah meninggalkan komputer Anda.</summary>
+  </entry>
+  <entry>
     <title type="html">Cara membuat video boomerang</title>
     <id>https://abox.tools/id/panduan/membuat-video-boomerang/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-video-boomerang/"/>
@@ -60,11 +74,32 @@
     <summary type="html">Foto tiap halaman, dapatkan satu PDF, gabungkan dengan dokumen yang sudah ada, dan kecilkan sampai bisa terkirim. Tiga alat peramban berturut-turut, dan berkasnya tidak pernah meninggalkan ponsel.</summary>
   </entry>
   <entry>
+    <title type="html">Cara mengubah video panjang menjadi timelapse</title>
+    <id>https://abox.tools/id/panduan/mengubah-video-panjang-jadi-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/mengubah-video-panjang-jadi-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Satu jam rekaman menjadi satu menit yang enak ditonton: cara memilih kecepatan, mengapa menyebutkan durasi akhir lebih baik daripada berhitung, dan kapan hasilnya perlu menjadi GIF.</summary>
+  </entry>
+  <entry>
     <title type="html">Cara menyiapkan foto ponsel untuk web</title>
     <id>https://abox.tools/id/panduan/menyiapkan-foto-untuk-web/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/menyiapkan-foto-untuk-web/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">HEIC ke JPEG, GPS dibuang, diubah ukurannya untuk halaman dan dimampatkan ke anggaran: seluruh rantai di peramban, dan foto aslinya tidak pernah meninggalkan mesin Anda.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara menyunting GIF bingkai demi bingkai</title>
+    <id>https://abox.tools/id/panduan/mengedit-gif-bingkai-demi-bingkai/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/mengedit-gif-bingkai-demi-bingkai/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bongkar GIF menjadi bingkai-bingkainya, buang atau susun ulang, lalu rakit kembali dengan pewaktuan yang terjaga. Apa yang selamat dari perjalanan bolak-balik, apa harga paletnya, dan cara melihat mengapa sebuah GIF berat.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara merapikan memo suara sebelum mengirimnya</title>
+    <id>https://abox.tools/id/panduan/merapikan-memo-suara/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/merapikan-memo-suara/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Potong hening kosong dan awalan yang gagal, lalu naikkan volumenya sampai tepat di bawah penuh. Dua perkakas peramban berurutan, dengan urutan yang menjaga mutu, dan rekaman tidak pernah meninggalkan komputer Anda.</summary>
   </entry>
   <entry>
     <title type="html">Pembanding Teks</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/apa-isi-di-dalam-gif/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">Bingkai, jeda, metode pembuangan, dan tabel warna dijelaskan, kenapa peramban menolak jeda tercepatnya, dan bagaimana memperhitungkan ke mana sebenarnya ukuran file sebuah GIF pergi.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara menggabung, memisah, dan menyusun ulang halaman PDF</title>
-    <id>https://abox.tools/id/panduan/gabung-dan-pisah-file-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/gabung-dan-pisah-file-pdf/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Gabungkan PDF, potong satu menjadi beberapa, dan pindahkan halamannya: apa yang selamat dari penyusunan ulang, apa yang tidak bisa dibawa alat mana pun, dan kenapa tidak satu pun dari itu perlu mengunggah dokumen Anda ke mana pun.</summary>
-  </entry>
-  <entry>
-    <title type="html">Penganalisis GIF</title>
-    <id>https://abox.tools/id/analisis-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/analisis-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Bongkar sebuah GIF di peramban Anda: setiap bingkai dengan jeda dan cara pembuangannya, tabel warnanya, jumlah pengulangannya, dan rincian byte demi byte tentang ke mana ukuran file-nya pergi. Tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara memisah GIF menjadi bingkai</title>
-    <id>https://abox.tools/id/panduan/pisah-gif-ke-bingkai/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/pisah-gif-ke-bingkai/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Dapatkan setiap bingkai sebuah GIF animasi sebagai PNG: kenapa sebagian bingkai hanya berupa tambalan kecil dari gambarnya, apa yang terjadi pada transparansinya, dan bagaimana menyimpan pewaktuannya supaya Anda bisa menyusunnya kembali.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara memotong audio tanpa kehilangan kualitas</title>
-    <id>https://abox.tools/id/panduan/potong-file-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/potong-file-audio/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Di mana sebenarnya sebuah potongan audio mendarat, kenapa ia bisa tepat padahal potongan video tidak, kenapa sebuah sambungan kadang berdetak, dan apa sebenarnya yang dilakukan lesapan lima milidetik.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pemisah GIF</title>
-    <id>https://abox.tools/id/pisah-gif-ke-bingkai/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pisah-gif-ke-bingkai/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Pisahkan GIF bergerak menjadi bingkai-bingkainya dan simpan masing-masing sebagai PNG, gratis dan sepenuhnya di peramban Anda. Menjaga transparansi dan waktunya. Tidak ada yang diunggah, dan jalan tanpa internet.</summary>
   </entry>
 </feed>

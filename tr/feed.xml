@@ -39,6 +39,13 @@
     <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">Bir GIF kare kare nasıl düzenlenir</title>
+    <id>https://abox.tools/tr/rehberler/gif-kare-kare-duzenleme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gif-kare-kare-duzenleme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">GIF'i karelerine ayırın, istediklerinizi çıkarın ya da sıralayın, zamanlamayı koruyarak yeniden kurun. Gidiş dönüşten neyin sağ çıktığı, paletin bedeli ve bir GIF'in neden ağır olduğunu görmenin yolu.</summary>
+  </entry>
+  <entry>
     <title type="html">Birden çok sayfa tek ve küçük bir PDF'e nasıl taranır</title>
     <id>https://abox.tools/tr/rehberler/birden-cok-sayfayi-tek-pdf-tarama/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/birden-cok-sayfayi-tek-pdf-tarama/"/>
@@ -67,11 +74,39 @@
     <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">QR kod nasıl oluşturulur ve okunduğu nasıl kanıtlanır</title>
+    <id>https://abox.tools/tr/rehberler/qr-kod-yapip-okundugunu-kanitlama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/qr-kod-yapip-okundugunu-kanitlama/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Kodu üretin, sonra aynı sitenin okuyucusuyla doğrulayın: tam içerik, gerçek bağlantı, baskı boyutunda ve bir fotoğraftan, baskıya gitmeden önce. Hepsi tarayıcıda, hiçbir şey yüklenmeden.</summary>
+  </entry>
+  <entry>
+    <title type="html">Sesli not göndermeden önce nasıl temizlenir</title>
+    <id>https://abox.tools/tr/rehberler/sesli-notu-temizleme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/sesli-notu-temizleme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Ölü havayı ve yanlış başlangıçları kesin, sonra seviyeyi tavanın hemen altına çıkarın. Art arda iki tarayıcı aracı, kaliteyi koruyan sırayla ve kayıt makinenizden hiç ayrılmıyor.</summary>
+  </entry>
+  <entry>
+    <title type="html">Tam istediğiniz kareden video küçük resmi nasıl yapılır</title>
+    <id>https://abox.tools/tr/rehberler/video-kucuk-resmi-yapma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/video-kucuk-resmi-yapma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Doğru ana kare kare ilerleyin, kayıpsız kaydedin, platformun biçimine getirin ve bayt sınırının tam altına inin. Art arda üç tarayıcı aracı ve görüntü makinenizden hiç ayrılmıyor.</summary>
+  </entry>
+  <entry>
     <title type="html">Telefon fotoğrafları web için nasıl hazırlanır</title>
     <id>https://abox.tools/tr/rehberler/fotograflari-web-icin-hazirlama/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/fotograflari-web-icin-hazirlama/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">HEIC'ten JPEG'e, GPS temizlenmiş, sayfa için boyutlanmış ve bir bütçeye sıkıştırılmış: bütün zincir tarayıcıda ve asıllar makinenizden hiç çıkmıyor.</summary>
+  </entry>
+  <entry>
+    <title type="html">Uzun bir video hızlandırılmış çekime nasıl çevrilir</title>
+    <id>https://abox.tools/tr/rehberler/uzun-videoyu-hizlandirilmis-videoya-cevirme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/uzun-videoyu-hizlandirilmis-videoya-cevirme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir saatlik görüntüyü izlenebilir bir dakikaya sığdırmak: hızı nasıl seçersiniz, hedef süreyi söylemek hesap yapmaktan neden iyidir ve sonuç ne zaman GIF olmalıdır.</summary>
   </entry>
   <entry>
     <title type="html">Videonun bir kısmından nasıl GIF yapılır</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gifin-icinde-ne-var/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">Kareler, gecikmeler, elden çıkarma yöntemleri ve renk tabloları anlatılıyor; tarayıcılar en hızlı gecikmeleri neden reddediyor ve bir GIF'in dosya boyutunun gerçekte nereye gittiğini nasıl bulursunuz.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Çözümleyici</title>
-    <id>https://abox.tools/tr/gif-analiz-etme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gif-analiz-etme/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Bir GIF'i tarayıcınızda parçalarına ayırın: gecikmesi ve tasfiye kuralıyla her kare, renk tabloları, döngü sayısı ve dosya boyutunun nereye gittiğine dair bayt bayt bir döküm. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF sayfaları nasıl birleştirilir, bölünür ve yeniden sıralanır</title>
-    <id>https://abox.tools/tr/rehberler/pdf-birlestirme-ve-bolme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/pdf-birlestirme-ve-bolme/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">PDF'leri birleştirin, birini birkaç parçaya ayırın ve sayfaları oynatın: yeniden dizmeden neyin sağ çıktığı, hiçbir aracın karşıya taşıyamadığı şeyler ve bunların hiçbirinin neden belgelerinizi bir yere yüklemeyi gerektirmediği.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir GIF karelerine nasıl ayrılır</title>
-    <id>https://abox.tools/tr/rehberler/gifi-karelere-ayirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gifi-karelere-ayirma/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Hareketli bir GIF'in her karesini PNG olarak alın: bazı kareler neden resmin yalnızca küçük bir yamasıdır, saydamlığa ne olur ve yeniden birleştirebilmek için zamanlamayı nasıl korursunuz.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Ayırıcı</title>
-    <id>https://abox.tools/tr/gifi-karelere-ayirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gifi-karelere-ayirma/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Hareketli bir GIF'i karelerine ayırın ve her birini PNG olarak kaydedin; ücretsiz ve tamamen tarayıcınızda. Saydamlığı ve zamanlamayı korur. Hiçbir şey yüklenmez ve çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF Birleştirici ve Bölücü</title>
-    <id>https://abox.tools/tr/pdf-birlestirme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-birlestirme/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">PDF'leri birleştirin, birini birkaç dosyaya bölün ve sayfaları istediğiniz sıraya sürükleyin &amp;mdash; hepsi kendi tarayıcınızın içinde. Hiçbir şey yüklenmez, hesap gerekmez ve bitmiş dosya size sunulmadan önce yeniden açılıp sayılır.</summary>
   </entry>
 </feed>

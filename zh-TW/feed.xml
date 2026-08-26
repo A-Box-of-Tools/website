@@ -81,6 +81,41 @@
     <summary type="html">兩個檔案用同一種方式格式化，鍵排好序，再比對。為什麼生比 JSON 幾乎全是噪音，怎麼在瀏覽器裡把兩邊化成規範形，以及什麼能一路留到補丁裡。</summary>
   </entry>
   <entry>
+    <title type="html">怎麼做一個 QR Code，並證明它掃得出來</title>
+    <id>https://abox.tools/zh-TW/guides/make-a-qr-code-and-prove-it-scans/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/make-a-qr-code-and-prove-it-scans/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">產生 QR Code，再用同一個網站的識別器驗證：一字不差的內容、真正的連結，按印刷尺寸、用一張照片，在批次印刷之前。全在瀏覽器裡，什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼在發出去之前整理好語音備忘錄</title>
+    <id>https://abox.tools/zh-TW/guides/clean-up-a-voice-memo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/clean-up-a-voice-memo/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">剪掉空白和口誤重來的開頭，再把音量提到滿格線的正下方。兩個瀏覽器工具接力，按保住音質的順序來，錄音從不離開你的電腦。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼從正好那一幀做影片封面圖</title>
+    <id>https://abox.tools/zh-TW/guides/make-a-video-thumbnail/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/make-a-video-thumbnail/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">逐幀走到正確的瞬間，無損儲存，裁成平臺的形狀，壓到位元組上限的正下方。三個瀏覽器工具接力，素材從不離開你的電腦。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼把長影片變成延時攝影</title>
+    <id>https://abox.tools/zh-TW/guides/turn-a-long-video-into-a-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/turn-a-long-video-into-a-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">一小時的素材濃縮成看得下去的一分鐘：怎麼選速度，為什麼直接說成片多長比做除法更好，以及什麼時候成品該做成 GIF。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼逐幀編輯 GIF</title>
+    <id>https://abox.tools/zh-TW/guides/edit-a-gif-frame-by-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/edit-a-gif-frame-by-frame/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">把 GIF 拆成一幀一幀，刪掉或重排，再在保住節奏的前提下重組。往返一趟什麼能活下來、調色盤的代價是什麼、以及怎麼看清一個 GIF 為什麼重。</summary>
+  </entry>
+  <entry>
     <title type="html">文字比對</title>
     <id>https://abox.tools/zh-TW/compare-text/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compare-text/"/>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/gif-analyzer/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">在瀏覽器裡把 GIF 拆開看：每一幀的延時和處置方式、顏色表、循環次數，以及體積去了哪裡的逐位元組明細。什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">一個 GIF 裡到底裝著什麼</title>
-    <id>https://abox.tools/zh-TW/guides/whats-inside-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/whats-inside-a-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">幀、延時、處置方式和調色盤都講清楚：瀏覽器為什麼不認最短的延時，以及怎麼查出一個 GIF 的體積究竟花在了哪裡。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎麼合併、拆分和重排 PDF 頁面</title>
-    <id>https://abox.tools/zh-TW/guides/merge-and-split-pdf-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/merge-and-split-pdf-files/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">把幾個 PDF 合到一起、把一個切成好幾個、把頁面挪來挪去：重排之後什麼留得下、什麼是任何工具都帶不過去的，以及為什麼這些事都不必把你的檔案傳到別處。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 拆幀</title>
-    <id>https://abox.tools/zh-TW/split-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/split-gif/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">把動圖 GIF 拆成一幀一幀，每幀單獨存成 PNG，免費，全程在瀏覽器裡完成。透明和時長都保留下來。什麼都不上傳，斷網也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 合併與拆分</title>
-    <id>https://abox.tools/zh-TW/merge-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/merge-pdf/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">把多個 PDF 合到一起，把一個拆成好幾個，把頁面拖成你要的順序，全都在你自己的瀏覽器裡完成。什麼都不上傳，不用註冊，成品檔案在交給你之前還會被重新開啟、重新數一遍頁數。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎麼剪音訊而不掉音質</title>
-    <id>https://abox.tools/zh-TW/guides/trim-an-audio-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/trim-an-audio-file/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">一刀落在哪裡、為什麼音訊能剪得準而影片不能、為什麼接縫有時會「咔」一聲，以及那五毫秒的淡入淡出到底在做什麼。</summary>
   </entry>
 </feed>

@@ -46,11 +46,25 @@
     <summary type="html">JSON, XML, HTML, CSS und YAML formatieren und minimieren und JSON in YAML oder XML umwandeln und zurück. Die Parser laufen in Ihrem Browser, hochgeladen wird nichts - ein Token oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
+    <title type="html">So bearbeiten Sie ein GIF Bild für Bild</title>
+    <id>https://abox.tools/de/ratgeber/gif-bild-fuer-bild-bearbeiten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/gif-bild-fuer-bild-bearbeiten/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Ein GIF in seine Einzelbilder zerlegen, Bilder streichen oder umsortieren und es mit erhaltenem Timing neu bauen. Was die Rundreise übersteht, was die Palette kostet, und wie man sieht, warum ein GIF schwer ist.</summary>
+  </entry>
+  <entry>
     <title type="html">So erstellen Sie ein Boomerang-Video</title>
     <id>https://abox.tools/de/ratgeber/boomerang-video-erstellen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/boomerang-video-erstellen/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Den Moment schneiden, die Kopie umkehren, beide zusammenfügen und schleifen lassen. Drei Werkzeuge nacheinander, alle im Browser, und die Reihenfolge, die die ganze Arbeit auf eine Minute bringt.</summary>
+  </entry>
+  <entry>
+    <title type="html">So erstellen Sie einen QR-Code und beweisen, dass er scannt</title>
+    <id>https://abox.tools/de/ratgeber/qr-code-erstellen-und-scan-beweisen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/qr-code-erstellen-und-scan-beweisen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Den Code erzeugen, dann mit dem Leser derselben Seite prüfen: die genaue Nutzlast, den echten Link, in Druckgröße und vom Foto, vor der Auflage. Alles im Browser, nichts hochgeladen.</summary>
   </entry>
   <entry>
     <title type="html">So machen Sie Handyfotos fertig fürs Web</title>
@@ -67,6 +81,20 @@
     <summary type="html">Erst die Sekunden schneiden, die zählen, dann nur diese umwandeln. Wann die Zeitleiste des GIF-Konverters reicht, wann der Videoschneider zuerst drankommt, und warum jede GIF-Sekunde so teuer ist.</summary>
   </entry>
   <entry>
+    <title type="html">So machen Sie ein Video-Thumbnail aus genau dem richtigen Bild</title>
+    <id>https://abox.tools/de/ratgeber/video-thumbnail-erstellen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/video-thumbnail-erstellen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bildgenau zum richtigen Augenblick steppen, verlustfrei sichern, auf das Format der Plattform bringen und unter ihr Byte-Limit kommen. Drei Browser-Werkzeuge nacheinander, und das Material verlässt Ihr Gerät nie.</summary>
+  </entry>
+  <entry>
+    <title type="html">So räumen Sie ein Sprachmemo auf, bevor Sie es verschicken</title>
+    <id>https://abox.tools/de/ratgeber/sprachmemo-aufraeumen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/sprachmemo-aufraeumen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Die tote Luft und die Fehlstarts wegschneiden, dann den Pegel auf Vollaussteuerung heben. Zwei Browser-Werkzeuge nacheinander, in der Reihenfolge, die die Qualität bewahrt, und die Aufnahme verlässt Ihr Gerät nie.</summary>
+  </entry>
+  <entry>
     <title type="html">So scannen Sie mehrere Seiten in ein kleines PDF</title>
     <id>https://abox.tools/de/ratgeber/mehrere-seiten-in-ein-pdf-scannen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/mehrere-seiten-in-ein-pdf-scannen/"/>
@@ -79,6 +107,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/zwei-json-dateien-vergleichen/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Beide Dateien gleich formatieren, die Schlüssel sortieren, dann vergleichen. Warum ein roher JSON-Vergleich fast nur Rauschen ist, wie Sie beide Seiten im Browser in Normalform bringen, und was davon in die Patch-Datei gelangt.</summary>
+  </entry>
+  <entry>
+    <title type="html">So verwandeln Sie ein langes Video in einen Zeitraffer</title>
+    <id>https://abox.tools/de/ratgeber/langes-video-in-zeitraffer-verwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/langes-video-in-zeitraffer-verwandeln/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Aus einer Stunde Material eine anschaubare Minute: wie man die Geschwindigkeit wählt, warum die Ziellänge besser ist als Kopfrechnen, und wann das Ergebnis ein GIF werden sollte.</summary>
   </entry>
   <entry>
     <title type="html">Textvergleich</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-analysieren/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">Ein GIF im Browser auseinandernehmen: jedes Einzelbild mit Anzeigedauer und Entsorgungsart, die Farbtabellen, die Wiederholungen und eine Byte-für-Byte-Aufstellung, wohin die Dateigröße gegangen ist. Es wird nichts hochgeladen.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF-Seiten zusammenfügen, teilen und umsortieren</title>
-    <id>https://abox.tools/de/ratgeber/pdf-zusammenfuegen-und-teilen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/pdf-zusammenfuegen-und-teilen/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">PDFs verbinden, eines in mehrere zerlegen und Seiten umstellen: was die Umsortierung übersteht, was kein Werkzeug mitnehmen kann, und warum dafür nichts hochgeladen werden muss.</summary>
-  </entry>
-  <entry>
-    <title type="html">Was wirklich in einem GIF steckt</title>
-    <id>https://abox.tools/de/ratgeber/was-steckt-in-einem-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/was-steckt-in-einem-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Einzelbilder, Verzögerungen, Aufräummethoden und Farbtabellen erklärt, warum Browser die schnellsten Verzögerungen verweigern, und wie Sie herausfinden, wohin die Dateigröße eines GIFs wirklich geht.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio schneiden, ohne Qualität zu verlieren</title>
-    <id>https://abox.tools/de/ratgeber/audiodatei-kuerzen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/audiodatei-kuerzen/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Wo ein Audioschnitt wirklich landet, warum er exakt sein kann und ein Videoschnitt nicht, warum eine Naht manchmal knackt, und was fünf Millisekunden Blende in Wahrheit tun.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio-Schneider</title>
-    <id>https://abox.tools/de/audio-schneiden/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-schneiden/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ein GIF in Einzelbilder zerlegen</title>
-    <id>https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Jedes Bild eines animierten GIFs als PNG: warum manche Bilder nur ein kleiner Ausschnitt sind, was mit der Transparenz passiert und wie Sie die Zeiten behalten, um die Animation wieder zusammenzusetzen.</summary>
   </entry>
 </feed>

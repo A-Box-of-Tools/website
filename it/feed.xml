@@ -46,11 +46,25 @@
     <summary type="html">Formatta i due file allo stesso modo, ordina le chiavi, poi confrontali. Perché un diff JSON grezzo è quasi solo rumore, come portare i due lati in forma canonica nel browser, e cosa sopravvive fino alla patch.</summary>
   </entry>
   <entry>
+    <title type="html">Come creare un codice QR e provare che si legge</title>
+    <id>https://abox.tools/it/guide/creare-un-codice-qr-e-provare-che-si-legge/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-un-codice-qr-e-provare-che-si-legge/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Genera il codice, poi verificalo con il lettore dello stesso sito: il contenuto esatto, il vero link, a misura di stampa e da una foto, prima della tiratura. Tutto nel browser, niente caricato.</summary>
+  </entry>
+  <entry>
     <title type="html">Come creare un video boomerang</title>
     <id>https://abox.tools/it/guide/creare-un-video-boomerang/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-un-video-boomerang/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Taglia il momento, inverti la copia, unisci le due e mettilo in loop. Tre strumenti in fila, tutti nel browser, e l'ordine che riduce tutto il lavoro a un minuto.</summary>
+  </entry>
+  <entry>
+    <title type="html">Come creare una miniatura video dal fotogramma esatto</title>
+    <id>https://abox.tools/it/guide/creare-una-miniatura-per-un-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-una-miniatura-per-un-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Avanza fotogramma per fotogramma fino all'istante giusto, salvalo senza perdite, portalo al formato della piattaforma e centra il suo limite di byte. Tre strumenti del browser in fila, e il girato non lascia mai la tua macchina.</summary>
   </entry>
   <entry>
     <title type="html">Come fare una GIF da una parte di un video</title>
@@ -60,6 +74,13 @@
     <summary type="html">Prima taglia i secondi che contano, poi converti solo quelli. Quando basta la timeline del convertitore GIF, quando tagliare prima con il tagliavideo, e perché ogni secondo di GIF costa così tanto.</summary>
   </entry>
   <entry>
+    <title type="html">Come modificare una GIF fotogramma per fotogramma</title>
+    <id>https://abox.tools/it/guide/modificare-una-gif-fotogramma-per-fotogramma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/modificare-una-gif-fotogramma-per-fotogramma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Scomponi una GIF nei suoi fotogrammi, toglline o riordinali, e ricostruiscila conservando i tempi. Cosa sopravvive al viaggio di andata e ritorno, cosa costa la tavolozza, e come vedere perché una GIF pesa.</summary>
+  </entry>
+  <entry>
     <title type="html">Come preparare le foto del telefono per il web</title>
     <id>https://abox.tools/it/guide/preparare-le-foto-per-il-web/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/preparare-le-foto-per-il-web/"/>
@@ -67,11 +88,25 @@
     <summary type="html">HEIC in JPEG, GPS tolto, ridimensionate per la pagina e compresse a un budget: tutta la catena nel browser, e gli originali non lasciano mai la tua macchina.</summary>
   </entry>
   <entry>
+    <title type="html">Come ripulire un memo vocale prima di mandarlo</title>
+    <id>https://abox.tools/it/guide/ripulire-un-memo-vocale/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/ripulire-un-memo-vocale/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Taglia l'aria morta e le false partenze, poi porta il livello quasi a fondo scala. Due strumenti del browser in fila, nell'ordine che conserva la qualità, e la registrazione non lascia mai la tua macchina.</summary>
+  </entry>
+  <entry>
     <title type="html">Come scansionare più pagine in un PDF piccolo</title>
     <id>https://abox.tools/it/guide/scansionare-piu-pagine-in-un-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/scansionare-piu-pagine-in-un-pdf/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Fotografa ogni pagina, ottieni un PDF, combinalo con i documenti che hai già e rimpiccioliscilo finché non parte. Tre strumenti del browser in fila, e le carte non lasciano mai il telefono.</summary>
+  </entry>
+  <entry>
+    <title type="html">Come trasformare un video lungo in un timelapse</title>
+    <id>https://abox.tools/it/guide/trasformare-un-video-lungo-in-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/trasformare-un-video-lungo-in-timelapse/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Un'ora di girato in un minuto guardabile: come scegliere la velocità, perché dire la durata finale batte fare i conti, e quando il risultato deve diventare una GIF.</summary>
   </entry>
   <entry>
     <title type="html">Confronto testi</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/analizzare-gif/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">Smonta una GIF nel browser: ogni fotogramma con la sua durata e il suo smaltimento, le tavole dei colori, le ripetizioni e il conto byte per byte di dove è finito il peso del file. Non viene caricato niente.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come unire, dividere e riordinare le pagine di un PDF</title>
-    <id>https://abox.tools/it/guide/unire-e-dividere-file-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/unire-e-dividere-file-pdf/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Mettere insieme più PDF, tagliarne uno in tanti e spostare le pagine: cosa sopravvive al rimescolamento, cosa nessuno strumento riesce a portarsi dietro, e perché niente di tutto questo richiede di caricare i tuoi documenti da qualche parte.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cosa c'è davvero dentro una GIF</title>
-    <id>https://abox.tools/it/guide/cosa-ce-dentro-una-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/cosa-ce-dentro-una-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Fotogrammi, ritardi, metodi di smaltimento e tavolozze spiegati, perché i browser rifiutano i ritardi più veloci, e come capire dove se n'è andato davvero il peso di una GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come dividere una GIF in fotogrammi</title>
-    <id>https://abox.tools/it/guide/dividere-una-gif-in-fotogrammi/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/dividere-una-gif-in-fotogrammi/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Tirare fuori ogni fotogramma di una GIF animata come PNG: perché certi fotogrammi sono solo un pezzetto dell'immagine, che fine fa la trasparenza e come tenere i tempi per rimetterla insieme.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come tagliare l'audio senza perdere qualità</title>
-    <id>https://abox.tools/it/guide/tagliare-un-file-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/tagliare-un-file-audio/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Dove cade davvero un taglio audio, perché può essere esatto quando quello video non può, perché a volte una giunzione fa click, e cosa sta facendo davvero una dissolvenza di cinque millesimi di secondo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Divisore di GIF</title>
-    <id>https://abox.tools/it/dividere-gif-in-fotogrammi/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/dividere-gif-in-fotogrammi/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">Dividi una GIF animata nei suoi fotogrammi e salva ognuno come PNG, gratis e interamente nel browser. Trasparenza e tempi restano intatti. Non viene caricato niente e funziona anche offline.</summary>
   </entry>
 </feed>

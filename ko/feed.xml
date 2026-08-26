@@ -39,6 +39,13 @@
     <summary type="html">Base64를 두 알파벳 모두로 인코딩·디코딩하고, URL을 퍼센트 인코딩하고, HTML 엔티티를 이스케이프하고, 16진수와 역슬래시 이스케이프를 읽습니다. 전부 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이 내 기기를 떠날 일이 없습니다.</summary>
   </entry>
   <entry>
+    <title type="html">GIF를 프레임 단위로 편집하는 방법</title>
+    <id>https://abox.tools/ko/가이드/gif-프레임별로-편집/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/gif-프레임별로-편집/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">GIF를 프레임으로 분해해 빼거나 순서를 바꾸고, 타이밍을 지킨 채 다시 조립합니다. 왕복에서 무엇이 살아남는지, 팔레트의 값은 얼마인지, GIF가 무거운 이유를 어떻게 보는지.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON 파일 두 개를 비교하는 방법</title>
     <id>https://abox.tools/ko/가이드/json-파일-두-개-비교/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/json-파일-두-개-비교/"/>
@@ -51,6 +58,34 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/json-포맷터/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">JSON, XML, HTML, CSS, YAML을 정렬하고 압축하고, JSON을 YAML이나 XML로 바꾸고 되돌립니다. 파서는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이나 설정 파일이 내 기기를 떠날 일이 없습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">QR 코드를 만들고 찍힌다는 것을 증명하는 방법</title>
+    <id>https://abox.tools/ko/가이드/qr코드-만들고-스캔-확인/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/qr코드-만들고-스캔-확인/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">코드를 생성한 뒤 같은 사이트의 리더로 검증합니다. 정확한 내용물, 진짜 링크를, 인쇄 크기에서 사진으로, 대량 인쇄 전에. 전부 브라우저에서, 아무것도 업로드하지 않고.</summary>
+  </entry>
+  <entry>
+    <title type="html">긴 동영상을 타임랩스로 바꾸는 방법</title>
+    <id>https://abox.tools/ko/가이드/긴-영상을-타임랩스로/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/긴-영상을-타임랩스로/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">한 시간짜리 촬영본을 볼 만한 1분으로: 속도를 고르는 법, 계산 대신 최종 길이를 말하는 편이 나은 이유, 그리고 결과물이 GIF가 되어야 하는 경우.</summary>
+  </entry>
+  <entry>
+    <title type="html">딱 그 프레임으로 동영상 썸네일을 만드는 방법</title>
+    <id>https://abox.tools/ko/가이드/영상-썸네일-만들기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/영상-썸네일-만들기/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">프레임 단위로 정확한 순간까지 이동해 무손실로 저장하고, 플랫폼의 비율로 다듬어 용량 상한 바로 아래에 맞춥니다. 브라우저 도구 세 개의 연결이고, 촬영본은 컴퓨터를 떠나지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">보내기 전에 음성 메모를 정리하는 방법</title>
+    <id>https://abox.tools/ko/가이드/음성-메모-정리하기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/음성-메모-정리하기/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">무음과 헛시작을 잘라낸 뒤, 음량을 최대치 바로 아래까지 끌어올립니다. 브라우저 도구 두 개의 연결, 음질을 지키는 순서, 그리고 녹음은 컴퓨터를 떠나지 않습니다.</summary>
   </entry>
   <entry>
     <title type="html">부메랑 영상을 만드는 방법</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/gif-분석/"/>
     <updated>2026-08-22T00:00:00Z</updated>
     <summary type="html">브라우저에서 GIF를 뜯어봅니다. 프레임마다의 재생 시간과 폐기 방식, 색상 표, 반복 횟수, 그리고 용량이 어디로 갔는지 바이트 단위로 보여 줍니다. 아무것도 업로드되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 안에는 실제로 무엇이 있나</title>
-    <id>https://abox.tools/ko/가이드/gif-파일-구조/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/gif-파일-구조/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">프레임, 지연 시간, 처리 방식, 색 표를 설명합니다. 브라우저가 가장 짧은 지연 시간을 받아 주지 않는 이유, 그리고 GIF의 용량이 실제로 어디로 갔는지 알아내는 법.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 페이지를 합치고 나누고 순서 바꾸는 법</title>
-    <id>https://abox.tools/ko/가이드/pdf-합치기와-나누기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/pdf-합치기와-나누기/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">여러 PDF를 하나로 묶고, 하나를 여럿으로 자르고, 페이지를 옮기는 법. 순서를 바꾸면 무엇이 살아남고 어떤 도구도 못 가져가는 것은 무엇인지, 그리고 왜 문서를 어디에도 올릴 필요가 없는지.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 프레임 분리</title>
-    <id>https://abox.tools/ko/gif-프레임-분리/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/gif-프레임-분리/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">움직이는 GIF를 프레임으로 나눠 한 장씩 PNG로 저장합니다. 무료이고 전부 브라우저 안에서 돌아갑니다. 투명도와 재생 시간이 그대로 남고, 업로드는 없으며 오프라인에서도 됩니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF를 프레임으로 나누는 법</title>
-    <id>https://abox.tools/ko/가이드/gif-프레임-분리하기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/gif-프레임-분리하기/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">움직이는 GIF의 모든 프레임을 PNG로 뽑는 방법. 어떤 프레임은 왜 그림의 작은 조각뿐인지, 투명은 어떻게 되는지, 그리고 다시 합칠 수 있도록 시간 정보를 남기는 법.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 합치기 &amp; 나누기</title>
-    <id>https://abox.tools/ko/pdf-합치기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-합치기/"/>
-    <updated>2026-08-21T00:00:00Z</updated>
-    <summary type="html">PDF를 합치고, 하나를 여럿으로 나누고, 페이지를 끌어서 원하는 순서로 놓습니다. 전부 내 브라우저 안에서 일어납니다. 업로드도 계정도 없고, 완성된 파일은 건네기 전에 한 번 더 열어서 페이지를 세어 봅니다.</summary>
   </entry>
 </feed>
