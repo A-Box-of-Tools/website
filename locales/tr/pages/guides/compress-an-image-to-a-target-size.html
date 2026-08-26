@@ -1,0 +1,233 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      <a href="../../resim-sikistirma/">Görsel Sıkıştırıcı</a>'yı açın, fotoğrafı
+      bırakın, size verilen sayıyı yazın ve düğmeye basın. Araç resmi birkaç kez
+      kodlar, hedefinizin altına sığan en iyi sonucu tutar ve bunun neye mal
+      olduğunu söyler. Çoğu fotoğraf ve çoğu hedef için dürüst özet şudur: aradaki
+      farkı göremeyeceksiniz.
+    </p>
+    <p>
+      Bu sayfanın geri kalanı, bu olmadığında içindir: sonuç yumuşak göründüğünde,
+      bir PNG neredeyse hiç kıpırdamadığında ya da resminizi birine göndermeden
+      önce aracın ona tam olarak ne yaptığını bilmek istediğinizde.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir dosya boyutu sınırı aslında ne istiyor</h2>
+    <p>
+      Bir JPEG ya da bir WebP fotoğrafınızı saklamaz. Onun bir tarifini saklar ve
+      kalite ayarı, bu tarifin ne kadar ayrıntılı olabileceğine karar verir. Ayarı
+      düşürün, dosya küçülür; çünkü tarif belirsizleşir: ince doku ortalanıp gider,
+      renk geçişleri bantlanır ve kenarlar hafif bir blok halesi kapar.
+    </p>
+    <p>
+      Yani bir boyut sınırı, ayrıntı için bir bütçedir. İşe yarayan soru
+      &ldquo;500&nbsp;KB'yi tutturabilir miyim&rdquo; değil &mdash; her sayıyı her
+      zaman tutturabilirsiniz &mdash; &ldquo;oraya varmak için resmin ne kadarından
+      vazgeçmem gerekiyor ve bu, onunla yapacağım iş için önemli mi?&rdquo;
+      sorusudur.
+    </p>
+    <p>
+      İki kaba kural. Gerçek bir sahnenin fotoğrafı &mdash; yüzler, yapraklar,
+      kumaş &mdash; sıkıştırmayı iyi gizler; çünkü gözün hasarı fark edeceği
+      kusursuzca düz bir alan yoktur. Bir ekran görüntüsü, bir grafik, bir logo ya
+      da geniş düz renkleri ve sert metin kenarları olan her şey ise bunu hemen
+      gösterir ve genellikle JPEG olmak yerine PNG ya da WebP olmalıdır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Neden bir formül yok ve bu konuda ne yapmalı</h2>
+    <p>
+      500&nbsp;KB'lik bir dosya üreten kalite ayarını hesaplamanın bir yolu yoktur.
+      İkisi arasındaki ilişki tamamen resmin içindekine bağlıdır: aynı ayarda, düz
+      bir duvarın fotoğrafı bir ormanın fotoğrafının onda biri boyutunda çıkabilir.
+      Size &ldquo;kalite: 60&rdquo; önerip umut eden her araç, sizin adınıza tahmin
+      yürütüyordur.
+    </p>
+    <p>
+      Tek güvenilir yöntem denemektir. Görseli kodla, boyuta bak, ayarla, yeniden
+      kodla. Bunu elle yapmak yorucudur; sıkıştırıcıların bunun yerine bir kalite
+      sayısı istemesinin sebebi de budur &mdash; yorgunluğu size aktarır. Otomatik
+      yapmak kabaca sekiz kodlamadır ve bir telefon fotoğrafının sekiz kodlaması,
+      bu on yılda yapılmış herhangi bir makinede saniyenin küçük bir kısmıdır; bu
+      sitedeki aracın boyutu isteyip aramayı kendisi yapmasının sebebi de budur.
+    </p>
+    <p>
+      Bildirdiği her boyut bir tahmin değil, gerçekten kodlanmış bir dosyadır. Bir
+      formun katı bir sınırı olduğunda bu önemlidir: %2 iyimser bir tahmin,
+      reddedilmiş bir yükleme demektir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Piksel harcamadan önce kalite harcayın</h2>
+    <p>
+      Bir görsel dosyasını küçültmenin yalnızca iki yolu vardır. Aynı resmi daha az
+      hassas tarif edebilirsiniz ki bu kalitedir. Ya da daha az piksel tarif
+      edebilirsiniz ki bu boyutlandırmadır. Bunlar denk değildir ve sıra önemlidir.
+    </p>
+    <p>
+      Kalite önce gelir; çünkü kalite düşüşünün ilk %30 kadarı bir fotoğrafta
+      gerçekten görünmezdir &mdash; biçimin, hiçbir gözün denetleyemeyeceği kadar
+      özenle sakladığı ayrıntıyı atıyorsunuzdur. Pikseller sonra gelir; çünkü
+      kalite bozulmaların görüneceği kadar düştüğünde, makul kalitede küçük bir
+      resim, mahvedilmiş tam boyutlu bir resimden iyi görünür. Az sayıda iyi
+      piksel, çok sayıda kötü pikseli yener.
+    </p>
+    <p>
+      Bütün strateji budur ve başka bir araç kullansanız bile bilmeye değer:
+      kaliteyi yanlış görünmeye başlayana kadar düşürün, sonra daha da düşürmek
+      yerine resmi küçültün.
+    </p>
+    <h3>Bilerek ne zaman boyutlandırmalı</h3>
+    <p>
+      Bazen o piksellere zaten hiç ihtiyaç yoktu. Bir web sayfasında 600 piksel
+      genişliğinde bir sütunda gösterilen 4000 piksel genişliğindeki bir fotoğraf,
+      kimsenin göreceğinin altı katı ayrıntı taşıyor demektir. Resmin son yerini
+      biliyorsanız önce ona göre boyutlandırın; boyut sorunu çoğu zaman hiç kalite
+      harcanmadan ortadan kalkar. Bu iş için araç
+      <a href="../../resim-boyutlandirma/">Görsel Boyutlandırıcı</a>'dır ve boyut
+      seçmeyi <a href="../resim-boyutlandirma/">kendi rehberi</a> anlatıyor.
+    </p>
+  </section>
+
+  <section>
+    <h2>Biçim seçmek</h2>
+    <p>
+      Bilmeye değer üç biçim var ve tarayıcılar üçünü de yazabiliyor.
+    </p>
+    <ul>
+      <li>
+        <strong>JPEG</strong> fotoğraflar içindir. Kayıplıdır, şimdiye kadar
+        yapılmış her şey tarafından anlaşılır ve gerçek bir sahnenin resmi için
+        hâlâ mükemmel bir seçimdir. Saydamlık saklayamaz.
+      </li>
+      <li>
+        <strong>WebP</strong> aynı işi daha iyi yapar: ayırt edemeyeceğiniz bir
+        kalitede JPEG'den kabaca %25&ndash;35 daha küçüktür ve saydamlığı korur.
+        Güncel her tarayıcı onu okur. Birkaç eski masaüstü uygulaması ve bazı
+        kurumsal yükleme formları hâlâ okumuyor; onu kullanmamak için tek gerçek
+        sebep de budur.
+      </li>
+      <li>
+        <strong>PNG</strong> kayıpsızdır; yani tamdır ve büyüktür. Ekran
+        görüntüleri, logolar, çizgi çalışmaları ve keskin kenarları ya da düz rengi
+        olan her şey için doğru, bir fotoğraf için yanlış cevaptır.
+      </li>
+    </ul>
+    <p>
+      Dosyayı isteyen taraftan gelen bir kısıt yoksa WebP sizi bir hedefe JPEG'den
+      daha az görünür hasarla götürür. Dosya eski bir şeyin ya da deneyemeyeceğiniz
+      bir sistemin içine gidiyorsa güvenli cevap JPEG'dir.
+    </p>
+  </section>
+
+  <section>
+    <h2>PNG'niz neden pek küçülmeyecek</h2>
+    <p>
+      Bu, en sık karşılaşılan sürprizdir ve kullandığınız araçtaki bir hata
+      değildir. PNG kayıpsız bir biçimdir: pikselleri tam olarak saklar ve
+      çevrilecek bir kalite düğmesi yoktur; çünkü birini çevirmek onu başka bir
+      biçim yapardı. Bir PNG sıkıştırıcısının yapabileceği tek şey aynı pikselleri
+      daha akıllıca paketlemektir ki bu genellikle yüzde birkaç eder.
+    </p>
+    <p>
+      Yani çok daha küçük bir dosyanız olması ve dosyanın PNG kalması gerekiyorsa
+      geriye kalan tek kol boyuttur &mdash; daha az piksel ya da daha az renk. PNG
+      olmaktan çıkabilecekse, soru içinde ne olduğudur:
+    </p>
+    <ul>
+      <li>
+        <strong>PNG olarak kaydedilmiş bir fotoğraf.</strong> Çok yaygın,
+        genellikle kazara ve bu sayfadaki en kolay kazanç: JPEG veya WebP'ye
+        çevirmek çoğu zaman onu görünür bir değişiklik olmadan beş ila on kat
+        küçültür.
+      </li>
+      <li>
+        <strong>Bir ekran görüntüsü ya da bir şema.</strong> WebP'ye çevirin; o da
+        istediğinizde kayıpsızdır ve aynı pikseller için genellikle PNG'den
+        küçüktür. JPEG'e gitmek metin kenarlarını bulandırır.
+      </li>
+      <li>
+        <strong>Saydamlığı olan bir logo.</strong> WebP saydamlığı korur; JPEG
+        onu düz bir renkle doldurur ki bu neredeyse hiçbir zaman istediğiniz şey
+        değildir.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Sonucun yeterince iyi olup olmadığını nasıl anlarsınız</h2>
+    <p>
+      Bir küçük resme bakmak hiçbir şey kanıtlamaz &mdash; küçük resim boyutunda
+      her şey iyi görünür. Daha iyi iki denetim:
+    </p>
+    <p>
+      <strong>Tam boyutta ve karedeki en düz şeye bakın.</strong> Gökyüzü, ten,
+      boyalı bir duvar. Sıkıştırma hasarı, ayrıntılı alanlara dokunmadan çok önce,
+      önce yumuşak geçişlerde silik bloklar ya da bantlar olarak ortaya çıkar.
+    </p>
+    <p>
+      <strong>Araç size bir ölçüm veriyorsa onu okuyun.</strong> Buradaki
+      sıkıştırıcı kendi sonucunu yeniden çözüp özgün hâliyle karşılaştırır ve SSIM
+      bildirir: değişen piksel saymak yerine yerel parlaklığı, karşıtlığı ve yapıyı
+      karşılaştıran bir sayı; gözün itiraz ettiği şeye çok daha yakın. Kabaca
+      0,98'in üstünde iki resim yan yana bile ayırt edilemez. Yaklaşık 0,95'in
+      altında, göndermeden önce bakın. Tercih edenler için geleneksel desibel
+      rakamı olan PSNR de bildirilir.
+    </p>
+    <p>
+      İkisi de kendi makinenizde hesaplanır ve size gösterilir; onları bulundurmanın
+      amacı da budur: &ldquo;asgari kalite kaybı&rdquo;nı bir iddia olmaktan çıkarıp
+      denetleyebileceğiniz bir sayıya çevirir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dosyayı göndermeden önce bilmeye değer üç şey</h2>
+    <p>
+      <strong>Sıkıştırmak üstveriyi siler.</strong> Yeniden kodlamak, resmi
+      piksellere çözüp o pikselleri yeniden kodlamak demektir ve piksellerle dolu
+      bir tuval hiçbir etiket taşımaz &mdash; yani GPS konumu, kamera modeli, zaman
+      damgaları ve gerisi yeni dosyaya yazılmaz. Genellikle bu bir kazançtır.
+      Etiketlerin gitmesini ama resmin el değmemiş kalmasını istiyorsanız, o başka
+      bir iştir: <a href="../../exif-verisi-silme/">EXIF Görüntüleyici ve
+      Silici</a> kabı hiçbir şeyi yeniden sıkıştırmadan yeniden yazar ve içinde ne
+      olduğunu <a href="../exif-ve-gps-verisini-silme/">kendi rehberi</a>
+      anlatıyor.
+    </p>
+    <p>
+      <strong>Aynı dosyayı asla iki kez sıkıştırmayın.</strong> Her kayıplı kodlama
+      ayrıntıyı kalıcı olarak atar ve zaten sıkıştırılmış bir resmi kodlamak daha
+      fazlasını atar &mdash; buna ilk geçişten kalan bozulmalar da dâhildir; onları
+      gerçek ayrıntı pahasına sadakatle korur. Her zaman özgün dosyaya dönün ve bir
+      kez sıkıştırın.
+    </p>
+    <p>
+      <strong>Özgün dosyayı saklayın.</strong> Kayıplı bir kodlamadan geri dönüş
+      yoktur. Ne gönderirseniz gönderin, başladığınız dosyayı bir yerde saklayın.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bunların hiçbirinin bir yüklemeye ihtiyacı yok</h2>
+    <p>
+      Her tarayıcı yıllardır bir JPEG, PNG ve WebP kodlayıcıyla geliyor &mdash; bir
+      resmi bir tuvalden kaydeden kodun aynısı. Bir görseli sıkıştırmak, bir
+      sunucunun karışmasını gerektiren hiçbir teknik sebebi olmayan işlerden
+      biridir; buradaki aracın bir sunucusu olmamasının sebebi de budur: resim
+      kendi makinenizde çözülür, kodlanır ve ölçülür ve sayfanın
+      <code>Content-Security-Policy</code>'sinde onun gönderilebileceği, bu siteye
+      ait bir adres yoktur.
+    </p>
+    <p>
+      Bunu ister burada ister başka bir yerde doğrulamanın en basit yolu sayfayı
+      yüklemek, internet bağlantısını kesmek ve yine de bir şey sıkıştırmaktır.
+      Hâlâ çalışıyorsa hiçbir şey yüklenmiyordu.
+      <a href="../dosya-yuklemek-guvenli-mi/">Çevrimiçi dönüştürücülere dosya
+      yüklemek güvenli mi?</a> buna benzer üç denetim daha anlatıyor.
+    </p>
+  </section>

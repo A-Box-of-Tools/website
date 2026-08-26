@@ -1,0 +1,18 @@
+#
+# Rehber: bir DICOM dosyasını açmak - Türkçe.
+#
+
+nav = "DICOM dosyası açma"
+title = "Bir DICOM Dosyası (.dcm) Hiçbir Şey Kurmadan Nasıl Açılır"
+description = "Bir hastane diskinde ne var, dosyaların neden uzantısı yok, bir .dcm taraması tarayıcıda nasıl açılır, pencere ve düzey gerçekte ne yapar ve bir tarama resmin dışında hasta hakkında neler taşır."
+heading = "Bir DICOM dosyası nasıl açılır ve içinde ne var"
+lede = """
+    Bir hastane diski, uzantısı olmayan dosyalardan oluşan bir klasör ve Windows
+    XP için yazılmış bir görüntüleyicidir. Dosyalar DICOM'dur ve onlarda egzotik
+    hiçbir şey yoktur: bir tarama, alanlarla dolu bir başlık ve bir piksel
+    bloğudur. Bu rehber bir tanesine nasıl bakacağınızı, denetimlerin ne anlama
+    geldiğini ve dosyanın resmin dışında başka neler taşıdığını anlatıyor."""
+updated = "25 Ağustos 2026"
+og_title = "Bir DICOM dosyası hiçbir şey kurmadan nasıl açılır"
+og_description = "Bir hastane diskinde ne var, dosyaların neden uzantısı yok ve bir .dcm taraması resmin dışında hasta hakkında neler taşır."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

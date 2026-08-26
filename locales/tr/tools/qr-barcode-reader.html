@@ -1,0 +1,265 @@
+<!--
+  tools/qr-barcode-reader/body.html, in Turkish.
+
+  Every id, class, data-phrase key, data-fact key, data-only value and
+  {placeholder} below is what src/main.js reaches for, so they are the same in
+  every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; resim nereden geliyor -->
+  <section class="card">
+    <h2><span class="step">1</span> Kodu gösterin</h2>
+
+    <p class="card-lede">
+      Bir fotoğraf, bir ekran görüntüsü ya da kamera. Hangisini seçerseniz
+      seçin, resim burada, bu sayfada, sizin makinenizde okunur &mdash; hiçbir
+      şey yüklenmez ve bir kamera karesi kaydedilmez, incelenip atılır.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div class="run-row">
+      <button type="button" id="start-camera" class="primary">Kamerayı kullan</button>
+      <button type="button" id="stop-camera" class="ghost" hidden>Kamerayı durdur</button>
+    </div>
+
+    <p class="field-summary" id="pick-note">
+      <kbd>Ctrl</kbd>+<kbd>V</kbd> ile doğrudan bir resim de yapıştırabilirsiniz
+      &mdash; ekrandaki bir kodun ekran görüntüsü en hızlı yoldur.
+    </p>
+
+    <p id="pick-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- The camera, which only appears once it is running -->
+  <section class="card" id="camera-card" hidden>
+    <h2>Kamera</h2>
+
+    <div class="viewfinder">
+      <video id="video" playsinline muted disablepictureinpicture></video>
+      <div class="reticle" aria-hidden="true"></div>
+    </div>
+
+    <div class="camera-controls">
+      <div class="option-row" id="camera-pick-row" hidden>
+        <label for="camera-pick">Hangi kamera</label>
+        <select id="camera-pick"></select>
+      </div>
+
+      <label class="check" id="torch-row" hidden>
+        <input type="checkbox" id="torch">
+        <span>
+          <strong>Işığı aç</strong>
+          <span class="check-note">
+            Yalnızca bazı kameralarda vardır ve yalnızca bazı tarayıcılar bir
+            sayfanın onu istemesine izin verir. Sunulmadığı yerde yok
+            demektir.
+          </span>
+        </span>
+      </label>
+    </div>
+
+    <p class="field-summary" id="camera-status" role="status"></p>
+
+    <p class="field-summary">
+      Buradaki dürüst gösterge kamera ışığıdır: kareler gelirken yanar ve siz
+      durdurduğunuz anda söner. Bu iki nokta arasında hiçbir şey diske yazılmaz
+      ve bu sayfanın <code>Content-Security-Policy</code>'sinde bir resmin
+      gönderilebileceği bir adres yoktur.
+    </p>
+  </section>
+
+  <!-- Adım 2 &mdash; cevap -->
+  <section class="card" id="results-card" hidden>
+    <h2><span class="step">2</span> Ne diyor</h2>
+
+    <p class="card-lede">
+      Gösterilir, asla açılmaz. Basılı bir kod, kimsenin okuyamadığı bir
+      adrestir; üzerine yapıştırılmış bir çıkartmayı birinin zahmetine değer
+      kılan da tam olarak budur &mdash; bu yüzden dizenin tamamı önce burada,
+      bakmanız için durur ve gerçekten ulaşacağı sunucu kendi satırında
+      belirtilir.
+    </p>
+
+    <div id="results"></div>
+  </section>
+
+  <!--
+    One result. Cloned per code found, with only the values filled in from
+    script: every word in it is here, in the markup, because this file is
+    translated per language and src/*.js is one file serving all eleven.
+  -->
+  <template id="result-template">
+    <article class="result">
+      <header class="result-head">
+        <span class="result-kind"></span>
+        <span class="result-symbology"></span>
+      </header>
+
+      <pre class="result-text"></pre>
+
+      <div class="run-row">
+        <button type="button" class="primary copy">Metni kopyala</button>
+        <a class="as-button open" target="_blank" rel="noopener noreferrer nofollow" hidden>
+          Yeni sekmede aç
+        </a>
+      </div>
+
+      <dl class="result-rows"></dl>
+      <ul class="result-warnings"></ul>
+
+      <details class="result-facts">
+        <summary>Bu nasıl okundu</summary>
+
+        <dl class="facts-list">
+          <div><dt>Simge</dt><dd data-fact="symbol"></dd></div>
+          <div data-only="qr"><dt>Sürüm</dt><dd data-fact="version"></dd></div>
+          <div data-only="qr"><dt>Hata düzeltme</dt><dd data-fact="level"></dd></div>
+          <div data-only="qr"><dt>Maske</dt><dd data-fact="mask"></dd></div>
+          <div data-only="qr"><dt>Onarılan kod kelimesi</dt><dd data-fact="repaired"></dd></div>
+          <div data-only="qr"><dt>Yazılış kipi</dt><dd data-fact="mode"></dd></div>
+          <div data-only="qr" data-optional><dt>Bildirilen karakter kümesi</dt><dd data-fact="eci"></dd></div>
+          <div data-only="qr" data-optional><dt>Bir kümenin parçası</dt><dd data-fact="part"></dd></div>
+          <div data-only="linear" data-optional><dt>Uyuşan tarama satırı</dt><dd data-fact="lines"></dd></div>
+          <div><dt>Karakter</dt><dd data-fact="characters"></dd></div>
+          <div><dt>Bulunma yolu</dt><dd data-fact="how"></dd></div>
+        </dl>
+
+        <figure class="grid-figure" hidden>
+          <canvas class="grid" width="1" height="1"></canvas>
+          <figcaption>
+            Bu sayfanın örneklediği modüllerin geri çizilmiş hâli.
+            Fotoğrafladığınız koda benziyorsa doğru şeyi okumuştur; parazite
+            benziyorsa okumamıştır ve üstündeki cevaba güvenilmez.
+          </figcaption>
+        </figure>
+      </details>
+    </article>
+  </template>
+
+  <!--
+    The words script needs, sitting in the markup so that a translator meets
+    them where they meet the rest of the page. A `{host}` in one of these is
+    filled in with the host that was read; nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="kind.url">Bir web adresi</span>
+    <span data-phrase="kind.url-plain">Bir web adresi, şifresiz</span>
+    <span data-phrase="kind.wifi">Bir Wi-Fi ağı</span>
+    <span data-phrase="kind.vcard">Bir kartvizit</span>
+    <span data-phrase="kind.mecard">Bir kartvizit</span>
+    <span data-phrase="kind.email">Bir e-posta</span>
+    <span data-phrase="kind.phone">Bir telefon numarası</span>
+    <span data-phrase="kind.sms">Bir kısa mesaj</span>
+    <span data-phrase="kind.place">Haritada bir yer</span>
+    <span data-phrase="kind.otp">Bir iki adımlı doğrulama sırrı</span>
+    <span data-phrase="kind.other-scheme">Başka bir programın açacağı bir şey</span>
+    <span data-phrase="kind.number">Bir sayı</span>
+    <span data-phrase="kind.text">Düz metin</span>
+    <span data-phrase="symbology.qr">QR kod</span>
+
+
+    <span data-phrase="field.host">Gittiği yer</span>
+    <span data-phrase="field.port">Bağlantı noktası</span>
+    <span data-phrase="field.path">Yol</span>
+    <span data-phrase="field.ssid">Ağ adı</span>
+    <span data-phrase="field.security">Güvenlik</span>
+    <span data-phrase="field.password">Şifre</span>
+    <span data-phrase="field.hidden">Gizli ağ</span>
+    <span data-phrase="field.name">Ad</span>
+    <span data-phrase="field.org">Kurum</span>
+    <span data-phrase="field.title">Unvan</span>
+    <span data-phrase="field.phone">Telefon</span>
+    <span data-phrase="field.email">E-posta</span>
+    <span data-phrase="field.web">Web sitesi</span>
+    <span data-phrase="field.address">Adres</span>
+    <span data-phrase="field.note">Not</span>
+    <span data-phrase="field.to">Kime</span>
+    <span data-phrase="field.subject">Konu</span>
+    <span data-phrase="field.message">Mesaj</span>
+    <span data-phrase="field.number">Numara</span>
+    <span data-phrase="field.latitude">Enlem</span>
+    <span data-phrase="field.longitude">Boylam</span>
+    <span data-phrase="field.account">Hesap</span>
+    <span data-phrase="field.issuer">Veren</span>
+    <span data-phrase="field.secret">Sır</span>
+    <span data-phrase="field.scheme">Şema</span>
+
+    <span data-phrase="value.yes">Evet</span>
+    <span data-phrase="value.open-network">Açık &mdash; şifre yok</span>
+    <span data-phrase="value.none">Yok</span>
+    <span data-phrase="value.copied">Kopyalandı</span>
+    <span data-phrase="value.modules">{n} modül kare</span>
+
+    <span data-phrase="warn.userinfo">@ işaretinden önceki her şey bir kullanıcı
+      adıdır, bir adres değil. Bu bağlantı ne diyor görünürse görünsün, gittiği
+      yer {host}.</span>
+    <span data-phrase="warn.punycode">Bu adres Latin olmayan bir alfabeyle
+      yazılmış. Başka alfabelerdeki bazı harfler tam olarak bizimkiler gibi
+      görünür; bir adın, zaten güvendiğiniz bir ada benzetilmesi de böyle
+      olur.</span>
+    <span data-phrase="warn.unicode-host">Sunucu adında düz Latin alfabesinin
+      dışında karakterler var; bu, bir adı bir başkasına benzetmek için
+      kullanılabilir.</span>
+    <span data-phrase="warn.plain-http">Bu düz bir http:// adresi; yani ona
+      gönderdiğiniz her şey şifresiz yolculuk eder ve aradaki her şey onu
+      okuyabilir ya da değiştirebilir.</span>
+    <span data-phrase="warn.shortener">{host} bir yönlendirme. Gerçekten
+      varacağınız adres bu kodda yok ve ne olduğunu öğrenmek bir sunucuyla
+      iletişim kurmak demek olurdu &mdash; ki bu sayfa bunu asla yapmaz.</span>
+    <span data-phrase="warn.wifi-secret">Bu kod, düz metin hâlinde bir şifre
+      taşıyor. Kodu fotoğraflayan herkes ona sahip olur ve bu, kod bir duvara
+      asılmadan önce bilinmeye değer.</span>
+    <span data-phrase="warn.otp-secret">Bu, bir kimlik doğrulayıcı uygulamanın
+      tohumu: onu elinde tutan herkes o hesap için kodlarınızı süresiz
+      üretebilir. Bu sayfadan çıkmadı ve başka nereye gittiği konusunda dikkatli
+      olmaya değer.</span>
+    <span data-phrase="warn.not-openable">Bu bir web adresi değil, dolayısıyla
+      sunulacak bir bağlantı yok. Yukarıda tam olarak basılı; makinenizde bir
+      şeyin ona göre davranıp davranmayacağı sizinle o program arasında.</span>
+
+    <span data-phrase="mode.numeric">yalnızca rakam</span>
+    <span data-phrase="mode.alphanumeric">büyük harf ve rakam</span>
+    <span data-phrase="mode.byte">bayt</span>
+    <span data-phrase="mode.kanji">kanji</span>
+
+    <span data-phrase="how.local">blok blok hesaplanmış bir eşik</span>
+    <span data-phrase="how.inverted">koyuyla açığın yer değiştirmesi</span>
+    <span data-phrase="how.global">resmin tamamı için tek bir eşik</span>
+    <span data-phrase="how.softened">resmin önce yumuşatılması</span>
+    <span data-phrase="how.dense">, her satır denetlenerek</span>
+
+    <span data-phrase="status.reading">Resim okunuyor&hellip;</span>
+    <span data-phrase="status.nothing">O resimde kod bulunamadı. Simgenin
+      tamamının, beyaz kenar boşluğuyla birlikte kadrajda olması ve koyu
+      karelerin düzgün koyu olmasına yetecek ışığın bulunması gerekir.</span>
+    <span data-phrase="status.broken">O dosya resim olarak açılamadı.</span>
+    <span data-phrase="status.looking">Aranıyor&hellip; kodu sabit tutun ve
+      kadrajın yaklaşık yarısını onunla doldurun.</span>
+    <span data-phrase="status.on">Kamera açık. Hiçbir şey kaydedilmiyor.</span>
+
+    <span data-phrase="camera.denied">Tarayıcı bu sayfa için kamerayı reddetti.
+      Bu, değiştirebileceğiniz bir izin: adres çubuğundaki kamera simgesine
+      bakın. Bunun yerine bir resim seçmek hiçbir izin gerektirmez.</span>
+    <span data-phrase="camera.none">Bu makinede kamera bulunamadı. Yukarıya bir
+      fotoğraf ya da ekran görüntüsü bırakın, aynı şekilde okunacaktır.</span>
+    <span data-phrase="camera.busy">Kamera var ama başka bir şey onu
+      kullanıyor. Onu açık tutan neyse kapatın &mdash; genellikle bir görüntülü
+      görüşme &mdash; ve yeniden deneyin.</span>
+    <span data-phrase="camera.insecure">Bir tarayıcı kamerayı yalnızca https
+      üzerinden sunulan bir sayfaya verir; bu sayfa şu anda öyle değil.</span>
+    <span data-phrase="camera.unsupported">Bu tarayıcıda, bir sayfanın
+      isteyebileceği bir kamera arayüzü yok. Buradaki diğer her şey yine
+      çalışır.</span>
+    <span data-phrase="camera.failed">Kamera başlatılamadı ve tarayıcı nedenini
+      söylemedi.</span>
+
+    <span data-phrase="live.clean">resimleriniz hiçbir yere gitmedi. {total}
+      dosya yüklendi, hepsi bu sayfanın kendi dosyaları.</span>
+    <span data-phrase="live.dirty">bir şey {hosts} ile iletişim kurdu; bu araç
+      bunu asla yapmaz. Bunu araştırmaya değer sayın.</span>
+    <span data-phrase="live.platform">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {count} sunucudan yüklendi; hiçbirine bir resim, bir kare
+      ya da bir kodun söylediklerinden bir karakter verilmedi.</span>
+  </div>
+</main>

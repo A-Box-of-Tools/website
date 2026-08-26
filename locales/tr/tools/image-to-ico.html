@@ -1,0 +1,192 @@
+<!--
+  tools/image-to-ico/body.html, in Turkish.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; resim -->
+  <section class="card">
+    <h2><span class="step">1</span> Bir resim seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Hepsini listeden çıkar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="shape-note" class="field-summary" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; hangi standart -->
+  <section class="card" id="preset-card">
+    <h2><span class="step">2</span> Simgenin ne için olduğunu söyleyin</h2>
+
+    <p class="card-lede">
+      Bir simge dosyası tek bir resim değil, birkaç resimdir: aynı logo, onu
+      okuyan şeyin istediği her boyutta yeniden çizilir. Bunların hangi boyutlar
+      olduğu bir zevk meselesi değildir &mdash; bir tarayıcı üç tanesini ister,
+      yüksek yoğunluklu bir dizüstündeki bir uygulama on tanesini ister, bir Mac
+      kendi onunu ister ve Windows Vista'dan önce yazılmış bir şey onların
+      tamamen başka türlü saklanmasını ister.
+    </p>
+
+    <!--
+      Which files to write. Windows and macOS read different containers and
+      neither will look at the other's, so this is a set of checkboxes rather
+      than a menu: wanting both is the normal case for anything shipped on both.
+    -->
+    <fieldset class="options outputs">
+      <legend>Ne yapılacak</legend>
+
+      <label class="check">
+        <input type="checkbox" id="want-ico" checked>
+        <span>
+          <strong>Windows simgesi &mdash; <code>.ico</code></strong>
+          <span class="check-note">
+            Her tarayıcı tarafından favicon olarak, Windows tarafından da bir
+            uygulama, bir kısayol ve bir klasör için okunur. Boyutları aşağıdan
+            siz seçersiniz.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="want-icns">
+        <span>
+          <strong>macOS simgesi &mdash; <code>.icns</code></strong>
+          <span class="check-note">
+            Bir Mac uygulama paketinin taşıdığı şey. Apple, 16 pikselden 1024
+            piksele tam olarak on yuva belirler; yani seçilecek bir şey yoktur:
+            onunun tamamı girer ve bunlar yedi çizimden çıkarılır, çünkü bir
+            Retina yuvası ile bir üstündeki boyut aynı resimdir.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="pack-row">
+        <input type="checkbox" id="want-pack">
+        <span>
+          <strong>Bir web sitesinin simge setinin geri kalanı</strong>
+          <span class="check-note">
+            Bir .ico, tarayıcı sekmesini ve Windows'u kapsar. Bir iPhone
+            ana ekranını, bir Android kurulum istemini ya da başlat menüsüne
+            sabitlenmiş bir kutucuğu kapsamaz &mdash; onlar 180 piksellik bir
+            PNG, bir web uygulaması bildirimi ve bir XML dosyası okur ve hiçbiri
+            bir .ico'nun içine bakmaz. Bunu işaretleyin, hepsini,
+            bildirimi ve sayfanıza yapıştıracağınız HTML bloğunu da alın.
+          </span>
+        </span>
+      </label>
+
+      <p id="output-summary" class="field-summary"></p>
+    </fieldset>
+
+    <div id="ico-settings">
+      <div class="presets" id="preset-list" role="radiogroup" aria-label="Simgenin ne için olduğu"></div>
+
+      <p id="preset-note" class="field-summary"></p>
+
+      <fieldset class="options" id="size-set">
+        <legend>.ico içine girecek boyutlar</legend>
+        <div class="size-grid" id="size-grid"></div>
+        <p id="size-summary" class="field-summary"></p>
+      </fieldset>
+    </div>
+
+    <fieldset class="options">
+      <legend>Nasıl çizileceği</legend>
+
+      <div class="option-row">
+        <label for="fit-select">Resim kare değilse</label>
+        <select id="fit-select">
+          <option value="pad" selected>Kareye tamamla &mdash; resmin tamamı korunur</option>
+          <option value="crop">Ortadaki kareye kırp</option>
+          <option value="stretch">Kareye esnet</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="background-mode">Arka plan</label>
+        <select id="background-mode">
+          <option value="transparent" selected>Saydam</option>
+          <option value="colour">Bir renk</option>
+        </select>
+        <input type="color" id="background-colour" value="#ffffff" aria-label="Arka plan rengi" hidden>
+      </div>
+
+      <div class="option-row" id="storage-row">
+        <label for="storage-select">Her boyutun .ico içinde nasıl saklanacağı</label>
+        <select id="storage-select">
+          <option value="auto" selected>Otomatik &mdash; ucuza geliyorsa uyumlu, gelmiyorsa PNG</option>
+          <option value="png">Her boyut için PNG &mdash; en küçük dosya, Vista ya da üstünü ister</option>
+          <option value="bmp">Her boyut için sıkıştırılmamış &mdash; her şeyde açılır, birkaç kat büyük</option>
+        </select>
+      </div>
+
+      <p id="storage-note" class="field-summary"></p>
+    </fieldset>
+
+  </section>
+
+  <!-- Adım 3 &mdash; küçük hâline bakın, sonra alın -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Görüleceği boyutta denetleyin</h2>
+
+    <p class="card-lede">
+      Bir şey indirmeden önce bakmaya değen kısım burasıdır. 512 pikselde
+      kusursuz okunan bir logo, bir tarayıcı sekmesinde on altı piksel
+      genişliğindedir ve onun ince kısımları &mdash; bir kelime logosundaki
+      çizgiler, saç teli bir çerçeve, bir renk geçişi &mdash; bunu atlatamaz.
+      Aşağıdaki her kare, seçtiğiniz dosyadan gerçek boyutunda çizilir.
+    </p>
+
+    <div id="preview" class="preview" hidden>
+      <div class="preview-strip" id="preview-strip"></div>
+      <p class="preview-note" id="preview-note"></p>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="make-icon" class="primary big" disabled>Simgeyi yap</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Hazır</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Hepsini zip olarak indir</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+
+      <!--
+        The block to paste into a page's <head>, shown rather than only zipped:
+        most people making a favicon are about to paste this into a template,
+        and a copy button is a shorter route than a download and a text editor.
+      -->
+      <div id="snippet" class="snippet" hidden>
+        <div class="snippet-head">
+          <h4>Bunu <code>&lt;head&gt;</code> içine yapıştırın</h4>
+          <button type="button" id="copy-snippet" class="ghost">Kopyala</button>
+        </div>
+        <pre id="snippet-text"></pre>
+      </div>
+    </div>
+  </section>
+</main>

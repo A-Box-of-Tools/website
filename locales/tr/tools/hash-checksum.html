@@ -1,0 +1,191 @@
+<!--
+  tools/hash-checksum/body.html, in Turkish.
+
+  Every id, class, data-* attribute and data-slot below is what src/main.js
+  reaches for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!--
+    Three steps, and the third one is the reason anybody is here.
+
+    Computing a checksum is not the job. Finding out whether the file you just
+    downloaded is the file the publisher signed is the job, and a page that
+    stops at "here is your hash" leaves the last and only difficult part -
+    comparing sixty-four characters by eye - to the visitor. So the comparison
+    is a step of its own, it accepts the checksum in whatever shape it was
+    published in, and it answers in a sentence rather than in a colour.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Bir dosya seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <section class="card" id="run-card">
+    <h2><span class="step">2</span> Sağlama toplamları</h2>
+    <p class="card-lede">
+      MD5 ve SHA-256 varsayılan olarak hesaplanır, çünkü ikisi birlikte var olan
+      neredeyse her indirme sayfasını karşılar. Bir başkasını işaretleyin, dosya
+      onun için yeniden okunsun &mdash; yavaş olan yarı okumadır, bu yüzden dosya
+      seçilmeden önce işaretlenmiş olan her şey, üzerinden tek bir geçişte
+      çıkar.
+    </p>
+
+    <fieldset class="algorithms">
+      <legend class="visually-hidden">Hangi sağlama toplamları hesaplansın</legend>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="md5" checked>
+        <span class="algorithm-name">MD5</span>
+        <span class="algorithm-note">Çakışmalar 2004'ten beri ucuz. Yine de internetteki indirmelerin yarısının yanında basılan sayı bu.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha1">
+        <span class="algorithm-name">SHA-1</span>
+        <span class="algorithm-note">2017'de herkesin gözü önünde kırıldı. Yine de Git bir nesneyi böyle adlandırıyor ve pek çok sürüm sayfasında hâlâ duruyor.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha256" checked>
+        <span class="algorithm-name">SHA-256</span>
+        <span class="algorithm-note">Bugün bir sağlama toplamı dendiğinde kastedilen şey. Bir tane yayımlayan her dağıtım bunu yayımlıyor.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha384">
+        <span class="algorithm-name">SHA-384</span>
+        <span class="algorithm-note">Kısaltılmış SHA-512. Çoğunlukla betik etiketlerindeki integrity özniteliklerinde karşınıza çıkar.</span>
+      </label>
+
+      <label class="algorithm">
+        <input type="checkbox" data-algorithm="sha512">
+        <span class="algorithm-name">SHA-512</span>
+        <span class="algorithm-note">Daha geniş ve pratikte hiçbir zaman önemli olmuş bir yönden daha güçlü değil. Yine de bazı projeler onu yayımlıyor.</span>
+      </label>
+    </fieldset>
+
+    <div class="progress" id="progress" hidden>
+      <div class="progress-track" role="progressbar" id="progress-track"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span class="progress-fill" id="progress-fill"></span>
+      </div>
+      <p class="progress-line">
+        <span id="progress-text" role="status" aria-live="polite"></span>
+        <button type="button" id="stop" class="ghost danger">Durdur</button>
+      </p>
+    </div>
+
+    <p class="stopped" id="stopped" hidden>
+      Durduruldu. Bu dosya için hiçbir şey hesaplanmadı.
+      <button type="button" id="restart" class="ghost">Baştan başla</button>
+    </p>
+
+    <div class="results" id="results" hidden>
+      <div class="toolbar">
+        <h3 class="file-name" id="file-name">&mdash;</h3>
+        <div class="toolbar-actions">
+          <button type="button" id="copy-all" class="ghost">Hepsini kopyala</button>
+          <button type="button" id="download-checksums" class="ghost">Dosya olarak kaydet</button>
+        </div>
+      </div>
+
+      <p class="file-facts" id="file-facts"></p>
+
+      <ul class="digests" id="digests">
+        <li class="digest" data-algorithm="md5" hidden>
+          <span class="digest-name">MD5</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>eşleşiyor</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>farklı</span>
+          <button type="button" class="ghost" data-slot="copy">Kopyala</button>
+        </li>
+        <li class="digest" data-algorithm="sha1" hidden>
+          <span class="digest-name">SHA-1</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>eşleşiyor</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>farklı</span>
+          <button type="button" class="ghost" data-slot="copy">Kopyala</button>
+        </li>
+        <li class="digest" data-algorithm="sha256" hidden>
+          <span class="digest-name">SHA-256</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>eşleşiyor</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>farklı</span>
+          <button type="button" class="ghost" data-slot="copy">Kopyala</button>
+        </li>
+        <li class="digest" data-algorithm="sha384" hidden>
+          <span class="digest-name">SHA-384</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>eşleşiyor</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>farklı</span>
+          <button type="button" class="ghost" data-slot="copy">Kopyala</button>
+        </li>
+        <li class="digest" data-algorithm="sha512" hidden>
+          <span class="digest-name">SHA-512</span>
+          <code class="digest-value" data-slot="value"></code>
+          <span class="digest-verdict is-match" data-slot="match" hidden>eşleşiyor</span>
+          <span class="digest-verdict is-differs" data-slot="differs" hidden>farklı</span>
+          <button type="button" class="ghost" data-slot="copy">Kopyala</button>
+        </li>
+      </ul>
+
+      <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="card" id="compare-card">
+    <h2><span class="step">3</span> Olması gerekene karşı denetleyin</h2>
+    <p class="card-lede">
+      İndirme sayfasının size verdiği sağlama toplamını yapıştırın. Şekli önemli
+      değil &mdash; düz onaltılık, <code>sha256sum</code> çıktısı, bütün bir
+      <code>SHA256SUMS</code> dosyası, <code>SHA256 (dosya) = &hellip;</code>
+      biçimi ya da bir betik etiketinden alınmış <code>integrity</code>
+      özniteliği. Hangi algoritma olduğu uzunluğundan gelir, yani seçilecek bir
+      şey yok.
+    </p>
+
+    <label class="visually-hidden" for="expected">Olması gereken sağlama toplamı</label>
+    <textarea id="expected" rows="3" spellcheck="false" autocapitalize="off"
+              autocomplete="off"
+              placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
+
+    <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
+      <span data-read="one">Bu bir <b data-slot="algorithm"></b>.</span>
+      <span data-read="many">Bu bir liste. İçinde <b data-slot="count"></b> sağlama toplamı var.</span>
+      <span data-read="stray">Bu <b data-slot="length"></b> karakterlik onaltılık ve bunların hiçbiri bu uzunlukta değil. Olağan sebebi, sonunu kaybetmiş bir kopyalamadır.</span>
+      <span data-read="nothing">İçinde sağlama toplamına benzeyen bir şey yok.</span>
+    </p>
+
+    <div class="verdict" id="verdict" hidden>
+      <p class="verdict-line good" data-outcome="match">
+        <span class="verdict-mark">&#10003;</span>
+        <span>Bu, o sağlama toplamının tarif ettiği dosya. <b data-slot="algorithm"></b> değeri, yapıştırdığınızla karakter karakter aynı.</span>
+      </p>
+      <p class="verdict-line good" data-outcome="renamed">
+        <span class="verdict-mark">&#10003;</span>
+        <span>Baytlar eşleşiyor ama başka bir satırla. Yapıştırdığınız şey buna <b data-slot="name"></b> diyor, seçtiğiniz dosyanın adı ise başka. Ya size gelirken adı değiştirildi ya da denetlemek istediğiniz indirme bu değil &mdash; <b data-slot="algorithm"></b> her iki durumda da doğru.</span>
+      </p>
+      <p class="verdict-line bad" data-outcome="mismatch">
+        <span class="verdict-mark">&#10007;</span>
+        <span>Bu, o sağlama toplamının tarif ettiği dosya <b>değil</b>. <b data-slot="algorithm"></b> değeri farklı, yani baytlar farklı: yarıda kesilmiş bir indirme, yanlış sürüm ya da başka bir şey dağıtan bir yansı. Çalıştırmadan önce onu yeniden alın.</span>
+      </p>
+      <p class="verdict-line" data-outcome="waiting">
+        <span class="verdict-mark">&hellip;</span>
+        <span>Karşılaştırmak için <b data-slot="algorithm"></b> hesaplanıyor.</span>
+      </p>
+      <p class="verdict-line" data-outcome="nofile">
+        <span class="verdict-mark">&hellip;</span>
+        <span>Yukarıdan bir dosya seçin, eşleşip eşleşmediğini burası söylesin.</span>
+      </p>
+    </div>
+  </section>
+</main>

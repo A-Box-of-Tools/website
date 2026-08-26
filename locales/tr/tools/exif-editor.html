@@ -1,0 +1,156 @@
+<!--
+  tools/exif-editor/body.html, in Turkish.
+
+  Every id, class and template tag below is what src/main.js and the frame
+  reach for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosyalar -->
+  <section class="card">
+    <h2><span class="step">1</span> Fotoğrafları seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Hepsini listeden çıkar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; tek tıklama -->
+  <section class="card" id="strip-card">
+    <h2><span class="step">2</span> Her şeyi silin</h2>
+
+    <p class="card-lede">
+      Tek düğme, listedeki her fotoğraf. Resim çözülmez, yeniden çizilmez ya da
+      yeniden sıkıştırılmaz &mdash; sıkıştırılmış görüntü verisi el değmeden
+      kopyalanır ve yalnızca etrafındaki üst veri atılır; yani sonuç, hiçbir şey
+      iliştirilmemiş aynı fotoğraftır.
+    </p>
+
+    <div class="strip-row">
+      <button type="button" id="strip-all" class="primary big" disabled>Tüm üst veriyi sil</button>
+      <span id="strip-status" class="strip-status" role="status" aria-live="polite"></span>
+    </div>
+
+    <!--
+      Two things are kept by default, and both are stated on the button's own
+      line rather than buried in a settings panel. "Remove all" that quietly
+      keeps things is a broken promise; "remove all except these two, and here
+      they are" is a choice.
+    -->
+    <fieldset class="keep-options">
+      <legend>Neler korunsun</legend>
+      <label class="check">
+        <input type="checkbox" id="keep-orientation" checked>
+        <span>
+          <strong>Yön etiketi</strong>
+          <span class="check-note">
+            Telefonlar bir fotoğrafı mercekten göründüğü gibi saklar ve hangi
+            tarafının üst olduğunu söyleyen tek bir etiket ekler. Onu silin, bazı
+            görüntüleyiciler fotoğrafı yan gösterir. Korunduğunda, yalnızca bu
+            etiketi içeren yeni bir EXIF bloğu yazılır &mdash; ve yalnızca
+            fotoğraf zaten doğru durmuyorsa.
+          </span>
+        </span>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="keep-icc" checked>
+        <span>
+          <strong>Renk profili</strong>
+          <span class="check-note">
+            ICC profili, resimdeki sayıların renk olarak ne anlama geldiğini
+            söyler. Sizin hakkınızda hiçbir şey söylemez. Onu atmak, geniş
+            renk gamlı bir fotoğrafın renklerini gözle görülür biçimde
+            kaydırabilir; siz aksini söylemedikçe korunmasının sebebi de budur.
+          </span>
+        </span>
+      </label>
+      <p class="keep-summary" id="keep-summary"></p>
+    </fieldset>
+
+    <div id="clean-results" class="results" hidden>
+      <div class="results-head">
+        <h3>Temizlendi</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Hepsini zip olarak indir</button>
+      </div>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!-- Adım 3 &mdash; okuma ve düzenleme -->
+  <section class="card" id="inspect-card">
+    <h2><span class="step">3</span> İçine bakın ve istediğinizi değiştirin</h2>
+
+    <p id="inspect-empty" class="empty-note">
+      Yukarıdan bir fotoğraf seçin; içindeki her şey burada görünsün: nerede
+      olduğunuz, ne zaman ve neyle çekildiği hakkında ne söylediği. Bunu
+      anlamak için hiçbir yere hiçbir şey gönderilmez.
+    </p>
+
+    <div id="inspector" hidden>
+      <div class="inspect-head">
+        <div class="inspect-file">
+          <img id="inspect-thumb" class="inspect-thumb" alt="" hidden>
+          <div>
+            <p class="inspect-name" id="inspect-name"></p>
+            <p class="inspect-sub" id="inspect-sub"></p>
+          </div>
+        </div>
+        <div class="inspect-switch">
+          <label for="inspect-select" class="visually-hidden">Hangi fotoğraf incelensin</label>
+          <select id="inspect-select"></select>
+        </div>
+      </div>
+
+      <!-- The findings: the part of this page that answers the actual question. -->
+      <section class="findings" aria-labelledby="findings-h">
+        <h3 id="findings-h">Bu dosya neyi ele veriyor</h3>
+        <ul id="findings-list" class="findings-list"></ul>
+      </section>
+
+      <!-- Whole blocks, each removable on its own. -->
+      <section class="blocks" aria-labelledby="blocks-h">
+        <h3 id="blocks-h">Bu dosyadaki bloklar</h3>
+        <ul id="block-list" class="block-list"></ul>
+      </section>
+
+      <!-- Every tag, editable. -->
+      <section class="tags" aria-labelledby="tags-h">
+        <h3 id="tags-h">Her etiket</h3>
+        <p class="tags-note" id="tags-note"></p>
+        <div id="tag-groups"></div>
+
+        <details class="add-tag" id="add-tag">
+          <summary>Etiket ekle</summary>
+          <div class="add-tag-body">
+            <label for="add-tag-select">Etiket</label>
+            <select id="add-tag-select"></select>
+            <label for="add-tag-value">Değer</label>
+            <input type="text" id="add-tag-value" spellcheck="false">
+            <button type="button" id="add-tag-go" class="ghost">Ekle</button>
+          </div>
+        </details>
+      </section>
+
+      <div class="save-row">
+        <button type="button" id="save-edits" class="primary" data-download disabled>Bu fotoğrafı kaydet</button>
+        <button type="button" id="revert-edits" class="ghost" disabled>Değişikliklerimi geri al</button>
+        <span id="save-status" class="save-status" role="status" aria-live="polite"></span>
+      </div>
+      <p id="edit-error" class="error" role="alert" hidden></p>
+    </div>
+  </section>
+</main>

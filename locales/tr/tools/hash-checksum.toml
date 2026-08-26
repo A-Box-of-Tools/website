@@ -1,0 +1,352 @@
+#
+# Özet ve Sağlama Toplamı - Türkçe.
+#
+# Overrides for tools/hash-checksum/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+# Algoritma adları, komut adları (sha256sum, certutil), dosya adları
+# (SHA256SUMS) ve integrity özniteliği Latin harflerinde kalıyor: bunlar
+# yazılan ve aranan şeyler.
+#
+
+name = "Özet ve Sağlama Toplamı"
+heading = "Özet&nbsp;ve&nbsp;sağlama&nbsp;toplamı <span class=\"h1-kw\">&mdash; MD5, SHA-1, SHA-256, SHA-512</span>"
+tagline = "Bir indirmeyi, yayıncının bastığı sayıya karşı, kimseye göndermeden denetleyin."
+
+title = "SHA-256 ve MD5 Sağlama Toplamı Aracı &mdash; Bir İndirmeyi Doğrulayın, Yüklemesiz"
+description = "Herhangi bir dosyanın MD5, SHA-1, SHA-256, SHA-384 ya da SHA-512 değerini hesaplayın ve indirme sayfasının yayımladığı sağlama toplamıyla karşılaştırın. Dosya tarayıcınızda okunur ve hiçbir boyutta yüklenmez."
+og_title = "Bir indirmeyi kimseye yüklemeden doğrulayın"
+og_description = "MD5, SHA-1, SHA-256, SHA-384 ve SHA-512, kendi tarayıcınızda hesaplanır. Yayıncının bastığı sağlama toplamını yapıştırın, sayfa eşleşip eşleşmediğini söylesin. Boyut sınırı yok, çünkü dosya parçalar hâlinde okunur."
+og_image_alt = "Özet ve Sağlama Toplamı - bir indirmeyi tarayıcınızda doğrulayın, yükleme yok"
+
+pledge = """
+    Bir sağlama toplamı, dosyanızın baytları üzerinde yapılan bir hesaptır ve
+    burada, bu sayfada, kendi işlemcinizde yapılır. Dosya diskinizden dört
+    megabaytlık parçalar hâlinde okunur ve her parça sayılır sayılmaz atılır;
+    yani hiçbir şey hiçbir yerde bir araya getirilmez &mdash; ne bellekte, ne de
+    elbette bir sunucuda. Buradaki herhangi bir şey istese bile bu sayfanın öbür
+    ucunda bir dosyanın gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir dosya denetleyin. Tek bir istek bile ondan tek bir bayt,
+      adını ya da boyutunu taşımıyor. Ya da internet bağlantısını kesip yine de
+      bir tanesini denetleyin."""
+
+read_first = """
+, dört sıkıştırma işlevi için <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> ve
+      <code>src/sha512.js</code>, paylaştıkları dolgu için
+      <code>src/blocks.js</code> ve dosyanızı parçalar hâlinde okuyan döngü için
+      <code>src/hash.js</code> &mdash; hiçbirinde ağa erişebilecek tek bir satır
+      yok."""
+
+howto_heading = "Bir indirme, sağlama toplamına karşı nasıl denetlenir"
+
+card = """
+            Bir dosyanın MD5, SHA-1, SHA-256, SHA-384 ya da SHA-512 değerini
+            hesaplayın ve indirme sayfasının bastığıyla karşılaştırın. Her
+            boyutta: dosya parçalar hâlinde okunur, hiçbir zaman bütün olarak
+            tutulmaz."""
+
+[words]
+plural = "dosyalarınız"
+choose = "bir dosya"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Boyut sınırı yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[facts]]
+text = "Dosyalar cihazınızda kalır"
+
+[[privacy]]
+title = "Dosyanızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyanızın toplanabileceği bir uç nokta burada yok,
+      olsaydı bile onu oraya gönderecek bir kod yok. Burada eskiden
+      <code>connect-src 'none'</code> yazıyordu ki bu mutlaktı; reklam eklemek
+      buna mal oldu ve bunu söylemek anlaşmanın bir parçası."""
+
+[[privacy]]
+title = "Dosya hiçbir boyutta bütün olarak tutulmaz."
+body = """
+
+      Dört megabaytlık parçalar hâlinde okunur ve her parça yürüyen duruma
+      katılıp bırakılır. Yani bu sayfanın kullandığı bellek, kırk gigabaytlık bir
+      disk imajı için de bir metin dosyası için de aynıdır ve pes ettiği bir
+      boyut yoktur. Tarayıcının kendi <code>crypto.subtle.digest</code>
+      çağrısının kullanılmamasının sebebi de budur: o, dosyanın tamamını bir
+      seferde bellekte ister ki bu araç tam da bu tavana sahip olmamak için
+      var."""
+
+[[privacy]]
+title = "Beş algoritma, bu depoda beş dosya."
+body = """
+ <code>src/md5.js</code>,
+      <code>src/sha1.js</code>, <code>src/sha256.js</code> ve
+      <code>src/sha512.js</code>, yayımlanmış şartnamelerin yazıya dökülmüş
+      hâlidir; her biri yaklaşık altmış satır ve sabit tabloları hesaplanmak
+      yerine tek tek yazılmış, böylece cevapla ilgili hiçbir şey tarayıcınıza
+      bağlı olamaz. Her biri, yayımlanmadan önce resmî test vektörlerine ve
+      işletim sisteminin kendi uygulamasına karşı denetlenir."""
+
+[[privacy]]
+title = "Yapıştırdığınız sağlama toplamı da hiçbir yere gönderilmez."
+body = """
+
+      Burada, sayfada, burada hesaplanan özetle karşılaştırılır.
+      Karşılaştırmayla ilgili hiçbir şey &mdash; ne değer, ne eşleşip
+      eşleşmediği, ne de dosyanın adı &mdash; kimseye okunmaz. Bu kulağa
+      geldiğinden daha önemli: bir sağlama toplamı artı bir dosya adı, onu
+      toplayana hangi yazılımın hangi sürümünü az önce indirdiğinizi tam olarak
+      söyler."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine dosyanız hakkında bir şey verilmiyor: ne
+      dosya, ne adı, ne boyutu, ne de özetlerden herhangi biri. Bir baytı okuyan
+      ya da özetleyen her satır bu kaynaktan sunuluyor ve depoda
+      listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de dosyalarınız
+      hakkında bir şey verilir. Siz tıklamadıkça hiçbir şey olmaz ve
+      tıkladığınızda gideceğiniz yer başkasının sitesidir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfanın her
+      parçası çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu:
+      dosyanızı özetlenmek üzere uzağa gönderen bir araç, siz fişi çeker çekmez
+      dururdu."""
+
+[[howto]]
+title = "Dosyayı seçin."
+body = """
+ Seçiciye bırakın ya da elle seçin. Doğrudan
+      diskinizden parçalar hâlinde okunur; siz bunu yaparken hiçbir yere hiçbir
+      şey gönderilmez ve sayfanın pes ettiği bir boyut yoktur."""
+
+[[howto]]
+title = "Okumasını bekleyin."
+body = """
+ MD5 ve SHA-256 varsayılan olarak, tek bir
+      geçişte hesaplanır. Çubuk, dosyanın ne kadarında olduğunu ve bunun ne
+      hızda gittiğini gösterir &mdash; büyük bir disk imajı, kopyalamak kadar
+      sürer, çünkü aynı miktarda okuma yapılır."""
+
+[[howto]]
+title = "Ne olması gerektiğini yapıştırın."
+body = """
+ İndirme sayfası size ne
+      verdiyse, hangi şekilde verdiyse: düz onaltılık, bir
+      <code>sha256sum</code> çıktısı satırı, bütün bir
+      <code>SHA256SUMS</code> dosyası ya da bir betik etiketinden alınmış
+      <code>integrity</code> özniteliği. Hangi algoritma olduğu uzunluğundan
+      anlaşılır ve doğru kutu kendini işaretler."""
+
+[[howto]]
+title = "Rengi değil cevabı okuyun."
+body = """
+ Sayfa, bunun o sağlama
+      toplamının tarif ettiği dosya olup olmadığını bir cümleyle söyler. Eşleşme,
+      baytların yayıncının ölçtüğü baytlarla aynı olduğu anlamına gelir.
+      Eşleşmeme ise aynı olmadıkları anlamına gelir ve indirme, açılmadan önce
+      yeniden alınmalıdır."""
+
+[[howto]]
+title = "Gerekiyorsa sağlama toplamlarını alın."
+body = """
+
+      Birini kopyalayın, hepsini kopyalayın ya da komut satırı araçlarının
+      yazdığı etiketli biçimde küçük bir metin dosyası olarak kaydedin; böylece
+      algoritma sayıyla birlikte yolculuk eder."""
+
+[[faq]]
+q = "Dosyam herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi tarayıcınız tarafından diskinizden okunur ve kendi
+        işlemcinizde, dört megabaytlık parçalar hâlinde özetlenir. Bu aracın
+        sunucu tarafı yoktur ve sayfanın <code>Content-Security-Policy</code>'si
+        iletişim kurabileceği her adresi tek tek sayar &mdash; bunların hiçbiri
+        bu siteye ait değildir. Ağ bağlantısını kesin, yine de çalışır."""
+
+[[faq]]
+q = "Boyut sınırı var mı?"
+a = """
+        Hayır. Dosya hiçbir zaman bütün olarak tutulmaz: parçalar hâlinde okunur
+        ve her parça sayılıp bırakılır; yani kırk gigabaytlık bir disk imajı, bir
+        metin dosyasıyla aynı birkaç megabayt belleği kullanır. Maliyeti
+        zamandır ve sayfa ilerledikçe bunun ne kadar olduğunu söyler.
+        <br><br>
+        Algoritmaların, daha hızlı olacak olan tarayıcının kendi
+        <code>crypto.subtle.digest</code> çağrısına verilmek yerine burada
+        yazılmış olmasının sebebi de budur. O çağrı mesajın tamamını tek bir
+        arabellekte alır ve ona bir dosyayı parçalar hâlinde vermenin yolu
+        yoktur; yani onu kullanmak, denetleyebileceğiniz en büyük dosyayı bu
+        sekmenin ne kadar belleğe izin verildiğinin insafına bırakırdı. Bir
+        telefonda bu birkaç yüz megabayttır ve insanların en çok denetlemek
+        istediği dosya bir disk imajıdır."""
+
+[[faq]]
+q = "Sağlama toplamı eşleşti. Bu aslında neyi kanıtladı?"
+a = """
+        Diskinizdeki baytların, o sayıyı yazan kişinin ölçtüğü baytlar olduğunu.
+        Daha fazlasını değil ve sınırları konusunda kesin olmaya değer.
+        <br><br>
+        İndirmenin yarıda kesilmediğini, bozuk bir diskten zarar görmediğini ya
+        da yolda başka bir şeyle değiştirilmediğini kanıtlar. Dosyanın güvenli
+        olduğunu <strong>kanıtlamaz</strong>, çünkü bir yayıncı zararlı bir
+        yazılımı da diğer her şey kadar doğru ölçebilir. Ve sağlama toplamı,
+        dosyayla aynı sayfadan, aynı bağlantı üzerinden geldiyse çok az şey
+        kanıtlar: birini değiştirebilen, diğerini de değiştirebilirdi. Bir
+        sağlama toplamı en çok, size farklı bir yoldan ulaştığında değerlidir
+        &mdash; imzalı bir <code>SHA256SUMS</code> dosyası, bir dağıtımın sürüm
+        duyurusu, ikinci bir yansı ya da onu zaten bilen bir paket yöneticisi."""
+
+[[faq]]
+q = "Eşleşmedi. Şimdi ne olacak?"
+a = """
+        Önce onu aynı yerden yeniden indirin. Yarıda kesilmiş ya da devam
+        ettirilmiş bir aktarım, en yaygın sebeptir ve ikinci bir kopya genelde
+        meseleyi çözer.
+        <br><br>
+        İkinci kopya da aynı yanlış cevabı veriyorsa doğru satırla
+        karşılaştırdığınızdan emin olun: sürüm sayfaları birkaç dosya listeler ve
+        ARM sürümünün sağlama toplamı x86 sürümüyle asla eşleşmez. Sonra sürüm
+        numarasını denetleyin. Bunların hepsi doğruysa ve yine eşleşmiyorsa
+        dosyayı açmayın. Onu başka bir yansıdan alın ve iki sağlama toplamını
+        birbiriyle karşılaştırın."""
+
+[[faq]]
+q = "Hangisini kullanmalıyım?"
+a = """
+        Yayıncı hangisini bastıysa onu. Bu işin bütün amacı onların sayısıyla
+        karşılaştırmaktır ve onlarınkini onlar adına siz seçemezsiniz.
+        <br><br>
+        Bir sağlama toplamını denetlemek yerine üretiyorsanız SHA-256 kullanın.
+        MD5 ve SHA-1, önemli olan anlamda kırıktır: aynı özete sahip iki farklı
+        dosya bilerek üretilebilir; MD5'te saatler içinde, SHA-1'de ise makul bir
+        masrafla. Bu, onları kazalara karşı işe yaramaz yapmaz &mdash; yarıda
+        kesilmiş bir indirme, orijinaliyle tesadüfen çakışmaz &mdash; ama hiçbiri
+        size kimsenin karışmadığını söyleyemez demektir. SHA-384 ve SHA-512
+        gayet iyidir ve pratikte daha iyi değildir; burada olmalarının sebebi
+        bazı projelerin onları yayımlamasıdır."""
+
+[[faq]]
+q = "MD5 kırıksa neden burada?"
+a = """
+        Çünkü hâlâ basılan şey o. Yansılar, donanım yazılımı indirmeleri,
+        üniversite yazılım sayfaları ve pek çok üretici sitesi yirmi yıl önce bir
+        MD5 yayımladı ve o sayfaya bir daha bakmadı; bir tane hesaplamayı
+        reddeden bir araç, ziyaretçilerinin gerçekten geldiği soruyu yanıtlamayı
+        reddediyor olurdu.
+        <br><br>
+        Bunun yerine yapabileceği şey, cevabın ne değerde olduğunu söylemektir;
+        onay kutusunun yanındaki notun yaptığı da budur. Eşleşen bir MD5, bozuk
+        bir indirmeyi hâlâ eler. Kasıtlı bir tanesini elemez."""
+
+[[faq]]
+q = "Karşılaştırma kutusuna hangi biçimleri yapıştırabilirim?"
+a = """
+        Alışıldık olanların hepsini ve hangisinin hangisi olduğunu kendisi
+        çıkarır.
+        <br><br>
+        Aralarında boşluk olsun olmasın düz onaltılık. Bir <code>md5sum</code> ya
+        da <code>sha256sum</code> çıktısı satırı, arkasında dosya adıyla. Kırk
+        satırlık bütün bir <code>SHA256SUMS</code> dosyası; bu durumda dosyanızı
+        adlandıran satır kullanılır. BSD biçimi,
+        <code>SHA256 (disk.iso) = &hellip;</code>. Önünde bir etiket, örneğin
+        <code>SHA-256: &hellip;</code>. Ve bir alt kaynak bütünlüğü özniteliği,
+        <code>sha384-&hellip;</code>; bu onaltılık değil base64'tür ve
+        karşılaştırılmadan önce çözülür.
+        <br><br>
+        Hangi algoritma olduğu uzunluğundan gelir: 32 onaltılık karakter bir MD5,
+        40 bir SHA-1, 64 bir SHA-256, 96 bir SHA-384 ve 128 bir SHA-512'dir.
+        İkisi aynı uzunlukta değildir, yani seçilecek bir şey ve yanlış
+        yapılacak bir şey yoktur."""
+
+[[faq]]
+q = "sha256sum ya da certutil ile aynı cevabı verir mi?"
+a = """
+        Evet, bayt bayt. Bunlar, yayımlanmış test vektörleri olan kesin
+        şartnamelerdir ve buradaki her algoritma her yapımda hem o vektörlere hem
+        de işletim sisteminin kendi uygulamasına karşı denetlenir.
+        <br><br>
+        Göreceğiniz tek fark sunumdur. Windows'un
+        <code>certutil -hashfile</code> komutu büyük harfle basar ve araya
+        boşluk koyar; bu sayfa küçük harfle basar ki neredeyse her yayıncının
+        kullandığı budur. Karşılaştırma ikisini de yok sayar, yani certutil'den
+        kopyalanmış bir sağlama toplamı, buraya yapıştırılmış küçük harfli bir
+        tanesiyle eşleşir."""
+
+[[faq]]
+q = "İki dosyayı birbirine karşı denetleyebilir miyim?"
+a = """
+        Evet, tek bir ek adımla: birincisini denetleyin, sağlama toplamını
+        kopyalayın, sonra ikincisini seçin ve o sağlama toplamını kutuya
+        yapıştırın. İki dosya aynıysa sayfa bunu söyler.
+        <br><br>
+        Bu, sağlama toplamlarının sessizce en iyi olduğu durum için bilinmeye
+        değer &mdash; yedek diskteki kopyanın gerçekten dizüstündekiyle aynı
+        dosya olup olmadığına karar vermek; ikisi de aynı boyutu ve aynı tarihi
+        iddia ederken."""
+
+[[faq]]
+q = "Dosyamı değiştiriyor mu?"
+a = """
+        Hayır. Bu araç yalnızca okur. Çıktı dosyası, yeniden kodlama ya da geri
+        yazılan bir şey yoktur &mdash; indirebileceğiniz tek şey, sağlama
+        toplamlarını listeleyen küçük bir metin dosyasıdır. Orijinaliniz
+        diskinizde el değmemiş durur; sekmeyi kapatırsanız ne olacağının dürüst
+        cevabı da budur."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok. Dosya boyutunda ve kaç
+        dosya denetlediğinizde bir sınır da yok. Sitede reklam var, masrafı
+        karşılayan da o; reklamlara dosyanız hakkında hiçbir şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: dosyanızı özetlenmek üzere uzağa gönderen bir
+        araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Herhangi bir dosyanın MD5, SHA-1, SHA-256, SHA-384 ya da SHA-512 sağlama toplamını tarayıcıda hesaplayın ve bir indirme sayfasının yayımladığı değerle karşılaştırın. Dosya parçalar hâlinde okunur ve hiçbir zaman yüklenmez."
+features = [
+  "MD5, SHA-1, SHA-256, SHA-384 ve SHA-512, dosya üzerinde tek geçişte",
+  "Boyut sınırı yok: dosya parçalar hâlinde okunur ve hiçbir zaman bütün olarak tutulmaz",
+  "Beklenen değeri yayımlanmış herhangi bir biçimde yapıştırın; hangi algoritma olduğunu kendisi çıkarır",
+  "sha256sum çıktısını, SHA256SUMS dosyalarını, BSD etiketli biçimi ve integrity özniteliklerini okur",
+  "Dosyanın eşleşip eşleşmediğini yalnızca bir renkle değil bir cümleyle söyler",
+  "Bir sağlama toplamını, hepsini kopyalayın ya da etiketli bir metin dosyası olarak kaydedin",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, dosyanızda değişiklik yok",
+]
+
+[picker]
+title = "Bir dosyayı buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; her dosya, her boyut, hiçbir şey yüklenmez"

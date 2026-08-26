@@ -1,0 +1,274 @@
+#
+# Görsel Boyutlandırıcı - Türkçe.
+#
+# Overrides for tools/resize-image/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# The two cross-links in the FAQ point at other tools, so their hrefs carry the
+# Turkish slugs from [slugs] in locale.toml - ../exif-verisi-silme/ and
+# ../resim-sikistirma/ - and not the English ones.
+#
+
+name = "Görsel Boyutlandırıcı"
+heading = "Görsel&nbsp;Boyutlandırıcı <span class=\"h1-kw\">&mdash; boyutlandırın, kırpın, dönüştürün</span>"
+tagline = "Boyutu söyleyin. Kutuyu çizin. Biçimi seçin."
+
+title = "Görsel Boyutlandırma &mdash; Kırpma ve Dönüştürme de Var, Yüklemesiz"
+description = "JPEG, PNG ve WebP görselleri tarayıcınızda boyutlandırın, kırpın ve dönüştürün. Tam piksel, yüzde ya da uzun kenar &mdash; tek bir görsel veya koca bir klasör. Hiçbir şey yüklenmez."
+og_title = "Bir görseli yüklemeden boyutlandırın, kırpın ve dönüştürün"
+og_description = "Boyutu piksel ya da yüzde olarak verin, bir kırpma kutusu sürükleyin, biçimi değiştirin &mdash; tek bir resim ya da koca bir yığın için. Hepsi kendi makinenizde çalışır."
+og_image_alt = "Görsel Boyutlandırıcı - yüklemeden boyutlandırın, kırpın, dönüştürün"
+
+pledge = """
+    Boyutlandırma, kırpma ve biçim değişikliğinin hepsi kendi tarayıcınızda,
+    kendi donanımınızda, tarayıcının zaten beraberinde getirdiği görsel
+    kodlayıcılarla çalışır. Bu aracın hiçbir türde ağ özelliği yoktur &mdash;
+    getirecek bir şey yok, gönderecek bir şey yok &mdash; ve olsaydı bile bu
+    sayfanın öbür ucunda bir resmin gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir fotoğrafı boyutlandırın. Tek bir istek bile bir görsel, bir
+      küçük resim, bir dosya adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor.
+      Ya da internet bağlantısını kesip yine de bir tane boyutlandırın."""
+
+read_first = """
+, neyin korunacağına ve sonucun ne kadar
+      büyük çıkacağına karar veren aritmetik için <code>src/geometry.js</code> ve
+      kırpma ile boyutlandırmayı birlikte yapan tek <code>drawImage</code>
+      çağrısı için <code>src/codecs.js</code>."""
+
+howto_heading = "Bir görsel yüklemeden nasıl boyutlandırılır"
+
+card = """
+            Tam piksel, yüzde ya da uzun kenar &mdash; yol üstünde bir kırpma
+            kutusu ve bir biçim değişikliğiyle. Tek bir resim ya da bir klasör."""
+
+[words]
+plural = "görseller"
+choose = "bir görsel"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Görsellerinizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir
+      yerde <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Boyutlandırma, bir tuvale yapılan bir
+      <code>drawImage</code> ve bir <code>canvas.toBlob</code>'dur &mdash;
+      tarayıcınızda zaten kurulu olan ölçekleyici ve kodlayıcı."""
+
+[[privacy]]
+title = "Değiştirilmesi istenmeyen dosya değiştirilmez."
+body = """
+ Kırpma yoksa,
+      boyutlandırma yoksa ve biçim değişikliği yoksa seçtiğiniz dosya yeniden
+      kaydedilmez, size baytı baytına geri verilir. Bu yalnızca bir nezaket
+      değildir: bu aracın bir resmi sessizce yeniden kodlayamamasının ya da
+      yalnızca bakmak istediğiniz bir resmin üstverisini sessizce
+      düşürememesinin sebebi budur."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi de Buy Me a Coffee'den geliyor. Hiçbirine
+      resimleriniz hakkında bir şey verilmiyor. Bir dosyayı okuyan, kırpan,
+      ölçekleyen ya da yazan her satır bu kaynaktan sunuluyor ve depoda
+      listeleniyor."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "Görsellerinizi seçin."
+body = """
+ Seçiciye bırakın ya da elle seçin. Tarayıcı
+      onları doğrudan diskinizden okur; siz bunu yaparken hiçbir yere hiçbir şey
+      gönderilmez."""
+
+[[howto]]
+title = "İsterseniz kırpın."
+body = """
+ Kutu resmin tamamının üstünde başlar; yani
+      ona dokunmazsanız hiçbir şey kırpılmaz. Sürükleyin ya da bir şekle
+      kilitleyin &mdash; profil fotoğrafı için 1:1, hikâye için 9:16, küçük resim
+      için 16:9 &mdash; ve sığanların en büyüğü için "En büyük"e basın. Her görsel
+      kendi kutusunu taşır: bunun yerine bir başkasının üstüne çizmek için
+      listedeki herhangi bir satıra tıklayın. Hepsinin aynı şekilde
+      çerçevelenmesi gerekiyorsa onu da tek bir düğme yapar."""
+
+[[howto]]
+title = "Ne boyutta çıkacağını söyleyin."
+body = """
+ Bir genişlik, bir yükseklik
+      ya da ikisi; dikey ve yatay çekimleri birbiriyle aynı boyutta tutan bir uzun
+      kenar; ya da düpedüz bir yüzde. İki kutudan birini boş bırakın, resim kendi
+      şeklini korusun."""
+
+[[howto]]
+title = "Biçimi seçin, sonra düğmeye basın."
+body = """
+ Her dosyayı geldiği hâliyle
+      bırakın ya da hepsini JPEG, PNG veya WebP olarak yazın. Her sonuç neye
+      dönüştüğünü ve ne kadar küçüldüğünü söyler; arkasındaki her rakamla birlikte
+      tam boyutta açmak ve karşılaştırmak için yanındaki özgün hâliyle görmek üzere
+      birine tıklayın. Bir yığın tek bir zip olarak iner."""
+
+[[faq]]
+q = "Görselim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya, tarayıcının zaten beraberinde getirdiği JPEG, PNG ve WebP
+        kodlayıcılarıyla, kendi donanımınızda, kendi tarayıcınız tarafından
+        çözülür, kırpılır, ölçeklenir ve yazılır. Bu aracın hiçbir türde ağ
+        özelliği yoktur &mdash; hiçbir zaman bir şey getirmez ve hiçbir zaman bir
+        şey göndermez &mdash; ve sayfanın <code>Content-Security-Policy</code>'si
+        iletişim kurabileceği her adresi tek tek sayar; bunların hiçbiri bu siteye
+        ait değildir."""
+
+[[faq]]
+q = "Genişlik verip yükseklik vermezsem ne olur?"
+a = """
+        Yükseklik, resmin kendi şeklinden gelir ki neredeyse her zaman istenen de
+        budur: "1920 genişliğinde", "1920 genişliğinde ve bunun getirdiği yükseklikte"
+        demektir. İkisini birden doldurun, ikisi resmin şekliyle çelişebilir; "şekiller
+        uyuşmazsa" seçiminin ortaya çıktığı tek an da budur &mdash; kutunun içine
+        sığdır, kutuyu doldur ve taşanı kes, arka planla tamamla ya da esnetip
+        bozulmayı kabul et."""
+
+[[faq]]
+q = "Boyutlandırmak görselin kalitesini düşürür mü?"
+a = """
+        Bir resmi küçültmek, görebileceğiniz hiçbir biçimde düşürmez: içeri giren
+        piksel, dışarı çıkandan fazladır; yani korunan ayrıntı gerçek ayrıntıdır.
+        Bir resmi büyütmek ise hiç fotoğraflanmamış olanı ekleyemez &mdash; sonuç
+        aynı resmin daha keskin değil daha yumuşak bir kopyasıdır &mdash; "bir resmi
+        başladığından büyük yapma"nın varsayılan olarak açık olmasının sebebi de
+        budur. Bir parça bedeli olan şey, biçim JPEG ya da WebP ise sonrasındaki
+        yeniden kodlamadır; kalite kaydırağı da orada harcadığınızdır."""
+
+[[faq]]
+q = "Her görseli farklı kırpabilir miyim?"
+a = """
+        Evet &mdash; varsayılan da budur. Listedeki her görsel kendi pikselleriyle
+        kendi kutusunu taşır ve bir satıra tıklamak o görseli, kendi kutusu ve kendi
+        kilitli şekliyle birlikte ön izlemeye koyar. Birine yaptığınız hiçbir şey
+        bir diğerini etkilemez. Her kutu ayrıca resmin tamamının üstünde başlar;
+        yani hiç üstüne çizmediğiniz bir görsel hiç kırpılmaz."""
+
+[[faq]]
+q = "Koca bir yığını tek seferde aynı şekilde kırpabilir mi?"
+a = """
+        Evet, ön izlemenin altındaki düğmeyle. Diğer her görsele aynı göreli alanı
+        &mdash; kendi genişlik ve yüksekliğinin aynı kesirlerini &mdash; verir ki
+        hepsi aynı boyutta olan bir ekran görüntüsü ya da dışa aktarım seti için bu,
+        tam olarak aynı kutu demektir ve sayfa da bunu söyler. Bir şekil kilitliyse
+        bunun yerine her birine, o alanın içindeki o şekilden en büyük kutuyu verir;
+        yani 1:1'e ve ardından o düğmeye basmak, dikey ve yatay çekimlerin karışık
+        olduğu bir klasörden size kareler çıkarır. Her kutu sonrasında da
+        düzenlenebilir kalır."""
+
+[[faq]]
+q = "Hangi biçimleri okuyabiliyor ve yazabiliyor?"
+a = """
+        Tarayıcınızın çözebildiği her şeyi okur; pratikte bu JPEG, PNG, WebP, GIF,
+        BMP ve &mdash; güncel tarayıcıların çoğunda &mdash; AVIF demektir. JPEG, PNG
+        ve WebP yazar; çünkü tarayıcıların beraberinde getirdiği kodlayıcılar
+        bunlardır. "Biçimi koru"da bir JPEG JPEG kalır ve bir PNG PNG kalır;
+        tarayıcının yazamadığı bir şey, örneğin bir GIF ya da bir BMP, PNG olarak
+        çıkar &mdash; saydamlığı ve düz rengi bozulmadan koruyan biçim odur."""
+
+[[faq]]
+q = "JPEG olarak kaydettiğimde saydamlığa ne olur?"
+a = """
+        Arka plan rengiyle doldurulur; çünkü JPEG'in onu saklayacak bir alfa kanalı
+        yoktur. Rengi siz seçersiniz ve beyazdan başlar; çoğu insanın istediği ve
+        başka hemen her aracın size söylemeden yaptığı da budur. Tamamlanmış bir
+        çerçevenin arkasında da aynı renk kullanılır. Bunun yerine PNG ya da WebP
+        olarak kaydedin, saydamlık dokunulmadan geçsin."""
+
+[[faq]]
+q = "EXIF ve GPS verisini siliyor mu?"
+a = """
+        Gerçekten işlediği her şeyde evet, bir yan etki olarak: kırpmak ya da
+        boyutlandırmak, resmi piksellere çözmek ve o pikselleri yeniden kodlamak
+        demektir; piksellerle dolu bir tuval de hiçbir etiket taşımaz, yani konum,
+        kamera modeli ve zaman damgaları yeni dosyaya yazılmaz. Hiç değiştirmediğiniz
+        bir dosya ise başka bir durumdur &mdash; etiketleriyle birlikte, baytı
+        baytına geri verilir. Üstverinin gitmesini ama resmin el değmemiş kalmasını
+        istiyorsanız, kabı hiçbir şeyi yeniden sıkıştırmadan yeniden yazan
+        <a href="../exif-verisi-silme/">EXIF Görüntüleyici ve Silici</a>'yi
+        kullanın."""
+
+[[faq]]
+q = "Bunun görsel sıkıştırıcıdan farkı ne?"
+a = """
+        Bu araç boyutlarla ilgilidir: kaç piksel istediğinizi söylersiniz, o da size
+        onu verir. <a href="../resim-sikistirma/">Görsel Sıkıştırıcı</a> ise dosya
+        boyutuyla ilgilidir: kaç kilobayta izniniz olduğunu söylersiniz, o da sığan
+        en yüksek kaliteyi arar ve yalnızca kalite tek başına yetmiyorsa
+        boyutlandırır. Size "1200 piksel genişliğinde" dendiyse doğru yerdesiniz.
+        "500 KB'nin altında" dendiyse diğeri sizi daha yakına götürür."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Dosyaların
+        sayısında ya da boyutunda da bir sınır yok, çünkü bunların bedelini ödeyen
+        bir sunucu yok &mdash; iş sizin kendi cihazınızda oluyor. Sitede reklam var,
+        masrafı karşılayan da o; reklamlara görselleriniz hakkında hiçbir şey
+        verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin, çalışmaya
+        devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini kanıtlamanın en basit
+        yolu: görsellerinizi boyutlandırılmak üzere uzağa gönderen bir araç, siz fişi
+        çeker çekmez dururdu."""
+
+[schema]
+description = "JPEG, PNG ve WebP görselleri tarayıcıda boyutlandırın, kırpın ve dönüştürün. Tam bir piksel boyutu, bir yüzde ya da bir uzun kenar verin, bir kırpma kutusu sürükleyin ya da onu bir şekle kilitleyin ve sonucu JPEG, PNG veya WebP olarak yazın. Yığın işleme var ve hiçbir şey yüklenmez."
+features = [
+  "Tam piksele, bir uzun kenara ya da bir yüzdeye göre boyutlandırma",
+  "Bir kenarı doldurun, diğeri resmin kendi şeklinden gelsin",
+  "İçine sığdırın, doldurup kırpın, tam bir çerçeveye tamamlayın ya da esnetin",
+  "Görsel başına sürüklenebilir bir kırpma kutusu; 1:1, 4:5, 9:16, 16:9, 4:3 ya da 3:2'ye kilitlenebilir",
+  "Her görseli farklı kırpar ya da tek tıkla bütün yığına tek bir çerçeveleme uygular",
+  "Biten her resmi, arkasındaki her rakamla ve karşılaştırmak için özgün hâliyle birlikte tam boyutta açar",
+  "Bir kalite denetimi ve bir arka plan rengiyle JPEG, PNG ve WebP arasında dönüştürür",
+  "Siz istemedikçe bir resmi asla büyütmez",
+  "Değiştirilmesi istenmeyen dosyayı el değmemiş hâlde geri verir",
+  "Yığın işleme; tüm sonuçlar tek bir zip içinde",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Görselleri buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; JPEG, PNG, WebP ve tarayıcınızın açabildiği her şey"

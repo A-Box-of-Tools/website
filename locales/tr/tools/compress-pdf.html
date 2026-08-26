@@ -1,0 +1,166 @@
+<!--
+  tools/compress-pdf/body.html, in Turkish.
+
+  Every id, class and template tag below is what src/main.js and the frame
+  reach for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosya -->
+  <section class="card">
+    <h2><span class="step">1</span> Bir PDF seçin</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="file-row" class="file-row" hidden>
+      <div class="file-facts">
+        <strong id="file-name" class="file-name"></strong>
+        <span id="file-facts" class="file-sub"></span>
+      </div>
+      <button type="button" id="clear-file" class="ghost danger">Başkasını seç</button>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; bu araç tek bir ekran tutabilseydi tutacağı ekran -->
+  <section class="card" id="inventory-card" hidden>
+    <h2><span class="step">2</span> Boyutun nerede olduğunu görün</h2>
+
+    <p class="card-lede">
+      "PDF sıkıştırma" tek bir adı paylaşan iki ayrı iştir. Bir tarama, üst üste
+      dizilmiş fotoğraflardır; onları yeniden kodlamak dosyanın büyük kısmını
+      kazandırır. Bir sözleşme ise metin ve yazı tipidir ve onu üreten yazılım
+      bunları zaten sıkıştırmıştır &mdash; içinde saklanan bir yüzde seksen
+      yoktur, hiçbir araç da öyle bir şey bulamaz. Elinizdekinin hangisi olduğu
+      bir görüş meselesi değil; o yüzden hiçbir şeye dokunulmadan önce burada.
+    </p>
+
+    <p id="verdict" class="verdict"></p>
+
+    <div class="breakdown">
+      <div id="breakdown-bar" class="breakdown-bar" role="img" aria-labelledby="breakdown-list"></div>
+      <ul id="breakdown-list" class="breakdown-list"></ul>
+    </div>
+
+    <p id="inventory-notes" class="field-summary"></p>
+  </section>
+
+  <!-- Adım 3 &mdash; ne kadar harcanacağı -->
+  <section class="card" id="settings-card" hidden>
+    <h2><span class="step">3</span> Ne kadar sıkacağını söyleyin</h2>
+
+    <p class="card-lede">
+      Bir PDF, her görselin ne kadar büyük çizildiğini kaydeder; böylece bu araç
+      tahmin yürütmek yerine sayfanın gerçekte kullandığını ölçebilir. Yirmi
+      santimlik bir kâğıda yerleştirilmiş 4000 piksellik bir tarama inç başına
+      500 piksel taşır; 150'de de aynı basılır ve ekranda aynı görünür.
+      Kimsenin göremeyeceği pikseller ilk önce harcanır, çünkü hiçbir şeye mal
+      olmazlar.
+    </p>
+
+    <fieldset class="presets-set">
+      <legend class="visually-hidden">Ne kadar kalite harcanabilir</legend>
+      <div class="presets" id="presets" role="radiogroup" aria-label="Ne kadar kalite harcanabilir">
+        <label class="preset">
+          <input type="radio" name="preset" value="smallest">
+          <span class="preset-body">
+            <strong>En küçük</strong>
+            <span class="preset-note">96 DPI. Yalnızca ekranda okunacak bir şey için.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="screen" checked>
+          <span class="preset-body">
+            <strong>Ekranda iyi</strong>
+            <span class="preset-note">130 DPI. E-postayla göndermeniz gereken bir dosya için olağan cevap.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="print">
+          <span class="preset-body">
+            <strong>Kâğıtta hâlâ iyi</strong>
+            <span class="preset-note">220 DPI. Daha küçük ve düzgün basılmaya devam eder.</span>
+          </span>
+        </label>
+        <label class="preset">
+          <input type="radio" name="preset" value="gentle">
+          <span class="preset-body">
+            <strong>Görsellere neredeyse dokunma</strong>
+            <span class="preset-note">Hiç yeniden boyutlandırma yok. Kazancın çoğu dosyayı yeniden paketlemekten gelir.</span>
+          </span>
+        </label>
+      </div>
+    </fieldset>
+
+    <details class="advanced">
+      <summary>İki sayıyı kendiniz belirleyin</summary>
+      <div class="option-row">
+        <label for="dpi-value">Çizilen alanın inçi başına en fazla piksel</label>
+        <div class="inline-pair">
+          <input type="number" id="dpi-value" min="0" max="1200" step="10" value="130" inputmode="numeric">
+          <span class="unit">DPI &mdash; 0, her görseli tam boyutunda bırakır</span>
+        </div>
+      </div>
+      <div class="option-row">
+        <label for="quality-value">JPEG kalitesi</label>
+        <div class="inline-pair">
+          <input type="range" id="quality-value" min="30" max="95" step="1" value="68">
+          <output id="quality-out" for="quality-value">68</output>
+        </div>
+      </div>
+    </details>
+
+    <label class="check">
+      <input type="checkbox" id="strip-meta" checked>
+      <span>
+        <strong>Dosyanın nereden geldiğine dair hatırladıklarını çıkar</strong>
+        <span class="check-note">
+          Onu yapan programın adı ve sürümü, ne zaman yapıldığı ve en son ne
+          zaman düzenlendiği, XMP paketi ve bir sayfa düzeni uygulamasının kendi
+          işini yeniden içeri alabilmek için geride bıraktığı özel yığın
+          &mdash; ki bu zaman zaman megabaytlarca olur. Belgeyi görüntülemek
+          için bunların hiçbiri gerekmez.
+        </span>
+      </span>
+    </label>
+
+    <p id="settings-summary" class="field-summary"></p>
+  </section>
+
+  <!-- Adım 4 &mdash; tek tıklama -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Sıkıştırın</h2>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Bu PDF'i sıkıştır</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>İndir</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+
+      <ul id="result-facts" class="result-facts"></ul>
+
+      <details id="per-image" class="advanced" hidden>
+        <summary>Her görsele ne oldu</summary>
+        <ul id="image-list" class="image-list"></ul>
+      </details>
+    </div>
+  </section>
+</main>

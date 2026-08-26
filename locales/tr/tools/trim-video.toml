@@ -1,0 +1,317 @@
+#
+# Video Kesici - Türkçe.
+#
+# Overrides for tools/trim-video/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# Burada "kesme", klibi kısaltmak; kadrajı kesmek "kırpma" ve o yan kapıdaki
+# araç. locale.toml'un başındaki nota bakın.
+#
+
+name = "Video Kesici"
+heading = "Video&nbsp;Kesici <span class=\"h1-kw\">&mdash; videoyu çevrimiçi kesin</span>"
+tagline = "Tutmaya değer parçaları oynarken işaretleyin. Onları tek video olarak geri alın."
+
+title = "Videoyu Çevrimiçi Kesme &mdash; Yalnızca İstediğiniz Parçalar, Yüklemesiz"
+description = "Bir videoyu izleyin, oynarken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Tarayıcınızda çalışır: hiçbir şey yüklenmez, hiçbir şey yeniden kodlanmaz, çevrimdışı da çalışır."
+og_title = "Video Kesici &mdash; hiçbir şey yüklemeden yalnızca istediğiniz parçalar"
+og_description = "Oynarken tutmaya değer her parçayı işaretlemek için I ve O'ya basın. İşaretli parçalar tek video olarak, kare kare, hiçbir şey yüklenmeden yeniden yazılır."
+og_image_alt = "Video Kesici - istediğiniz parçaları işaretleyip tek video olarak kaydedin, tarayıcınızda"
+
+pledge = """
+    Videonuz kendi tarayıcınız tarafından, kendi donanımınızda okunur,
+    işaretlenir, kesilir ve yazılır. Buradaki hiçbir şey bir şey getiremez ya da
+    gönderemez &mdash; bu araçta hiçbir türde ağ özelliği yok &mdash; ve
+    olsaydı bile bu sayfanın öbür ucunda bir videonun gönderilebileceği bir
+    sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir video kesin. Tek bir istek bile bir kare, bir dosya adı ya
+      da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet bağlantısını
+      kesip yine de bir tane kesin &mdash; videonuzu kesilmek üzere uzağa
+      gönderen bir araç öylece dururdu."""
+
+read_first = """
+, işaretler ve kaydedildikleri dosya için
+      <code>src/segments.js</code>, bir MP4 içindeki kareleri bulan okuyucu için
+      <code>src/demux.js</code>, bir işareti örnek dizisine çeviren hesap için
+      <code>src/ranges.js</code> ve o örnekleri yeni dosyaya taşıyan döngü için
+      <code>src/copy.js</code>. Hiçbiri istek yapabilecek bir şeyi içeri
+      almaz."""
+
+howto_heading = "Bir video nasıl kesilir"
+
+card = """
+            Oynarken tutmaya değer her parçayı işaretleyin, sonra onları tek
+            video olarak kaydedin. Kareler yeniden kodlanmaz, kopyalanır; yani
+            hiçbir şey kaybolmaz."""
+
+[words]
+plural = "videolarınız"
+choose = "bir video"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "İstediğiniz kadar parça"
+
+[[facts]]
+text = "Kalite kaybı yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Videolarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Videonuza dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Olağan yolda hiçbir şey çözülmüyor bile."
+body = """
+
+      Kesmek hiçbir karenin görüntüsünü değiştirmez; bu yüzden işaretlediğiniz
+      parçaların kodlanmış kareleri yeni dosyaya bulundukları hâliyle taşınır.
+      Her biri diskinizdeki dosyanın bir dilimi olarak saklanır &mdash; hangi
+      baytlar olduğunu söyleyen bir not, baytların kendisi değil &mdash; ve
+      tarayıcınız onları ilk kez indirmeyi yazarken okur. Buradaki hiçbir şey
+      videonuzu tekrar bir görüntüye dönüştürmez."""
+
+[[privacy]]
+title = "İşaret dosyası sayfada üretiliyor."
+body = """
+ İşaretlerinizi
+      kaydetmek, zaten ekranda duran sayılardan bir metin dosyası yazar ve
+      doğrudan indirmelerinize gönderir. Bir tanesini yüklemek onu burada okur.
+      İkisi de ağa yaklaşmaz ve ikisi de zamanlardan başka bir şey taşımaz."""
+
+[[privacy]]
+title = "Ses kopyalanıyor, dinlenmiyor."
+body = """
+ Her iki MP4 yolunda da ses
+      örnekleri hiç çözülmeden karşıya taşınır &mdash; buradaki hiçbir şey
+      onları tekrar sese dönüştürmez ve dönüştürse bile hiçbir şey onları bir
+      yere iletemezdi."""
+
+[[privacy]]
+title = "Kareler nerede çözülüyorsa, burada çözülüyor."
+body = """
+ Tam
+      kesim ve bu tarayıcının oynatmayacağı bir dosyanın ön izlemesi, kendi
+      cihazınızdaki WebCodecs üzerinden geçer. Bu, videoyu zaten size gösterecek
+      olan aynı çözücüdür ve aynı yerde çalışır."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine videonuz hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir kare, ne bir ad, bir boyut, bir uzunluk ya da nereden
+      kestiğiniz. Okuyan, kesen ve yazan her satır bu kaynaktan sunuluyor ve
+      depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de videonuz
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir video seçin."
+body = """
+ Seçiciye bir MP4, MOV, M4V ya da WebM
+      bırakın. Tarayıcı onu doğrudan diskinizden okur; siz bunu yaparken hiçbir
+      yere hiçbir şey gönderilmez. Birkaç tane bırakırsanız koyduğunuz sırayla
+      birleştirilirler."""
+
+[[howto]]
+title = "Oynatın ve istediğiniz parçaları işaretleyin."
+body = """
+ Bir parçanın
+      başlaması gereken yerde <kbd>I</kbd>'ya, bitmesi gereken yerde
+      <kbd>O</kbd>'ya basın. Bunu istediğiniz kadar yapın &mdash; her çift,
+      alttaki tabloda bir satır ve zaman çizelgesinde bir şerit olur.
+      <kbd>U</kbd> sonuncuyu geri alır, <kbd>Space</kbd> oynatır ve duraklatır,
+      ok tuşları beşer saniye atlar. An yakalanması zorsa oynatmayı
+      yavaşlatın."""
+
+[[howto]]
+title = "İşaretleri düzeltin."
+body = """
+ Her satır tek başına oynatılabilir,
+      içine tam bir zaman yazılarak yeniden zamanlanabilir, sırada yukarı aşağı
+      taşınabilir ya da silinebilir. Seçili parçanın iki ucu zaman çizelgesi
+      boyunca sürüklenebilir de. Üstteki toplam, bitmiş videonun süresidir."""
+
+[[howto]]
+title = "Onları tutun ya da onları çıkarın."
+body = """
+ Olağan yön tutmaktır:
+      bitmiş video, işaretlediğiniz parçaların sırayla birleştirilmiş hâlidir.
+      Onları çıkarmak ise insanların isteyip nadiren bulduğu öbür iştir
+      &mdash; reklamları, sessizlikleri ya da yanlış başlangıçları işaretleyin;
+      geriye kalan onlarsız birleştirilir."""
+
+[[howto]]
+title = "Kesin ve indirin."
+body = """
+ "Her baytı koru" kareleri el
+      değmeden taşır: hızlıdır ve kaliteye mal olamaz, ama her parça sizin
+      işaretinizden önceki anahtar karede başlar. "Tam burada kes" ise görüntüyü
+      çözüp yeniden yazar, böylece her parça seçtiğiniz karede başlar. Sayfa,
+      düğmeye basmadan önce hangisini alacağınızı ve bunun neye mal olduğunu
+      söyler."""
+
+[[faq]]
+q = "Videom herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        işaretlenir, kesilir ve yazılır. Bu aracın sunucu tarafı yoktur ve
+        sayfanın <code>Content-Security-Policy</code>'si iletişim kurabileceği
+        her adresi tek tek sayar &mdash; bunların hiçbiri bu siteye ait
+        değildir. Size söylenene güvenmek yerine denetlemeyi tercih
+        ediyorsanız internet bağlantısını kesin ve yine de bir video kesin."""
+
+[[faq]]
+q = "Aynı videonun birkaç parçasını tutabilir miyim?"
+a = """
+        Bu araç bunun için var. Oynarken istediğiniz kadar <kbd>I</kbd> ve
+        <kbd>O</kbd>'ya basın; her çift bir satır olur ve bitmiş video, o
+        satırların sırayla birleştirilmiş hâlidir, geri kalan her şey gitmiş
+        olarak. Çoğu çevrimiçi kesici size tek bir tutamak çifti verip hangi tek
+        aralığı tutacağınızı sorar; bu bir klibin başını sonunu almak için
+        yeterlidir ve bir saatlik görüntüyü bir kez izleyip tutmaya değer altı
+        anı almak için hiçbir işe yaramaz."""
+
+[[faq]]
+q = "Kesmek kalite kaybettirir mi?"
+a = """
+        Olağan yolda hayır ve önemli olan anlamda hayır. Kesmek hiçbir karenin
+        görüntüsünü değiştirmez; bu yüzden kareler yeni dosyaya oldukları gibi
+        taşınır: aynı baytlar, aynı kodlayıcı ayarları, her şey aynı. Burada bir
+        şeyi yeniden kodlayan tek yol tam kesimdir ve bunu düğmenin üzerinde
+        yazar."""
+
+[[faq]]
+q = "Bir parça neden işaretlediğimden daha erken başlıyor?"
+a = """
+        Videonun nasıl saklandığı yüzünden ve yalnızca biçimin standart bir
+        parçasını yok sayan oynatıcılarda. Çoğu kare, komşularından nasıl
+        ayrıldığının tarifi olarak tutulur; dolayısıyla onlar olmadan
+        çözülemezler. Yalnızca anahtar kare tek başına durur ve anahtar kareler
+        tipik olarak bir ile on saniye arayla gelir. Kareleri kopyalayan bir
+        kesim bu yüzden işaretinizden önceki anahtar kareden başlayan diziyi de
+        taşımak zorundadır &mdash; ve dosya <em>işaretinizde oynatmaya
+        başla</em> der ki bunu her yaygın oynatıcı yerine getirir. Her
+        oynatıcıda tam olması gerekiyorsa yeniden kodlayan "Tam burada kes"i
+        seçin. Sayfa, dışa aktarmadan önce hangi durumda olduğunuzu ve ne kadar
+        fark olduğunu söyler."""
+
+[[faq]]
+q = "Bunun yerine reklamları çıkarabilir miyim?"
+a = """
+        Evet. Onları işaretleyin, sonra "Onları çıkar"ı seçin: bu kez
+        işaretlemediğiniz <em>her şey</em> sırayla birleştirilir. Aynı işaret
+        listesi iki soruyu da yanıtlar; böylece ikisi arasında geçiş yapıp
+        süresinin değiştiğini hiçbir şeyi iki kez işaretlemeden
+        görebilirsiniz."""
+
+[[faq]]
+q = "İşaretlerimi kaydedip sonra dönebilir miyim?"
+a = """
+        Evet. "İşaretleri kaydet" düz bir metin dosyası yazar &mdash; her satır
+        bir parça, başlangıç ve bitiş virgülle ayrılmış &mdash; "İşaretleri
+        yükle" de birini geri okur. İki biçim sunuluyor: düz saniye ve
+        <code>SS:DD:SS.mmm</code>; ikisi de bu şekilde çalışan başka araçların
+        zaten kullandığı düzene uyar, yani burada yazılan bir dosya onlara
+        verilebilir, orada yazılan bir dosya da bu sayfaya bırakılabilir.
+        İşaretlemek özenli bir iştir ve kimse onu iki kez yapmak zorunda
+        kalmamalı."""
+
+[[faq]]
+q = "Hangi video biçimlerini kesebilirim?"
+a = """
+        MP4, M4V ve MOV içlerinde ne olursa olsun doğrudan okunur: H.264, HEVC,
+        AV1 ya da VP9. Kareleri kopyalamak onları çözmeyi gerektirmez; bu yüzden
+        bu yol, tarayıcınızın hiç çözücüsü olmayan bir kodlayıcı için bile
+        çalışır. Tarayıcınızın oynatabildiği başka her şey &mdash; en bilineni
+        WebM &mdash; bunun yerine oynatılıp sonucu kaydedilerek kesilir; bu da
+        işe yarar, sonuç ne kadar uzunsa o kadar sürer ve yalnızca tek parça
+        tutabilir. Tarayıcının ne okuyabildiği ne de oynatabildiği bir dosya, ki
+        pratikte AVI, WMV, FLV ve çoğu MKV demektir, yarı yolda başarısız olmak
+        yerine bunu söyleyen bir mesajla geri çevrilir."""
+
+[[faq]]
+q = "Videonun boyutunda veya uzunluğunda bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok ve kopyalama yolunda dosya neredeyse hiç
+        okunmuyor: tuttuğunuz kareler yüklenmek yerine işaret ediliyor, yani
+        dört gigabaytlık bir kayıttan dört dakika tutmak, o dört dakikayı diske
+        yazmanın maliyetine yakın. Tam kesim ise dosyayı birkaç megabaytlık
+        parçalar hâlinde geziyor. Her iki durumda da pratik tavan, indirmeden
+        önce bellekte kurulan bitmiş dosyadır."""
+
+[[faq]]
+q = "Ses hayatta kalıyor mu?"
+a = """
+        Her iki MP4 yolunda da hiç çözülmeden örnek örnek kopyalanır, yani
+        dosyada ne varsa bayt bayt odur; bir düzenleme işareti de her parçayı
+        görüntüsüyle binde bir saniye hassasiyetinde hizalı tutar. Tek istisna,
+        sesi farklı tanımlanmış &mdash; diyelim ki farklı örnekleme hızlarında
+        &mdash; ayrı videoları birleştirmektir; orada ikisini çözmeden tek bir
+        parçaya koymanın yolu yoktur ve sayfa bunu yapmadan önce söyler. Kayıt
+        yolunda ise oynatmadan yakalanıp yeniden kodlanır. Her durumda onu
+        tümüyle dışarıda bırakan bir onay kutusu var."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara videonuz hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript gerekir. Kareleri kopyalamak hiçbir video kodlayıcı desteği gerektirmez; tam kesim için WebCodecs destekleyen bir tarayıcı gerekir ve diğer biçimler kayda düşer."
+description = "Bir videonun istediğiniz kadar parçasını oynarken işaretleyin, sonra o parçaları tek dosya olarak kaydedin &mdash; ya da onları çıkarıp gerisini tutun. MP4, MOV ve M4V, kodlanmış kareler el değmeden yeni bir dosyaya taşınarak kesilir ve orijinal ses örnek örnek karşıya taşınır; hiçbir şey yüklenmez ve hiçbir şey yeniden kodlanmaz."
+features = [
+  "Video oynarken I ve O ile istediğiniz kadar parça işaretler",
+  "İşaretli parçaları seçtiğiniz sırayla tek dosyada birleştirir",
+  "Ya da işaretli parçaları çıkarıp geri kalan her şeyi tutar",
+  "Yeniden kodlamadan keser, böylece kalite kaybolmaz",
+  "İşaretleri düz metin zaman damgası dosyası olarak kaydeder ve geri yükler",
+  "Kare hassasiyetinde işaretler, zaman çizelgesinde gösterilen anahtar karelerle",
+  "Orijinal sesi yeniden kodlamadan korur",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP4, MOV, M4V, WebM. Birleştirmek için birkaç tane bırakın."

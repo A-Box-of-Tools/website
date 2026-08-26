@@ -1,0 +1,247 @@
+#
+# Videodan GIF'e - Türkçe.
+#
+# Overrides for tools/video-to-gif/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Videodan GIF'e"
+heading = "Videodan&nbsp;GIF'e <span class=\"h1-kw\">&mdash; videoyu GIF'e dönüştürün</span>"
+tagline = "Bölümü, boyutu ve kare hızını siz seçin."
+
+title = "Videodan GIF Dönüştürücü &mdash; Ücretsiz, Yüklemesiz, Çevrimdışı Çalışır"
+description = "Bir MP4, MOV veya WebM'in bir bölümünü hareketli GIF'e çevirin. Bölümü, genişliği ve kare hızını seçin; kareler okunur ve GIF tarayıcınızda yazılır. Hiçbir şey yüklenmez."
+og_title = "Videodan GIF'e &mdash; klibi yüklemeden GIF yapın"
+og_description = "İstediğiniz saniyeleri işaretleyin, bir genişlik ve kare hızı seçin, hareketli bir GIF alın. Kare örnekleme, palet, dithering ve LZW'nin hepsi kendi cihazınızda yapılır."
+og_image_alt = "Videodan GIF'e - tarayıcınızda hareketli GIF yapın, hiçbir şey yüklenmesin"
+
+pledge = """
+    Her kare kendi tarayıcınız tarafından, kendi donanımınızda okunur, yeniden
+    boyutlandırılır, renk sayısı düşürülür ve yazılır. Buradaki hiçbir şey bir
+    şey getiremez ya da gönderemez &mdash; bu araçta hiçbir türde ağ özelliği
+    yok &mdash; ve olsaydı bile bu sayfanın öbür ucunda bir videonun
+    gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir GIF yapın. Tek bir istek bile bir kare, bir dosya adı ya da
+      seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet bağlantısını kesip
+      yine de bir tane yapın &mdash; videonuzu dönüştürülmek üzere uzağa gönderen
+      bir araç öylece dururdu."""
+
+read_first = """
+, karelerin bir videodan okunmasının iki yolu için
+      <code>src/frames.js</code>, palet için <code>src/quantize.js</code> ve
+      LZW'siyle birlikte dosyanın kendisi için <code>src/gif.js</code>. Hiçbiri
+      istek yapabilecek bir şeyi içeri almaz."""
+
+howto_heading = "Bir video GIF'e nasıl çevrilir"
+
+card = """
+            İstediğiniz saniyeleri işaretleyin, bir genişlik ve kare hızı seçin
+            ve hareketli bir GIF alın &mdash; paleti, dithering'i ve
+            hepsiyle."""
+
+[words]
+plural = "videolarınız"
+choose = "bir video"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Her uzunlukta"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Videolarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Videonuza dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Çözme işi yerelde."
+body = """
+ Kareler kendi tarayıcınızdaki
+      WebCodecs'ten geçer ya da klibi zaten size gösterecek olan aynı oynatma
+      motorundan. Hangisinin kullanıldığı sayfanın üstünde yazar, çünkü bu
+      karelerin nasıl seçildiğini değiştirir ve bunu görebilmelisiniz."""
+
+[[privacy]]
+title = "GIF burada, okuyabileceğiniz bir kodla yazılıyor."
+body = """
+      Palet, dithering ve LZW sıkıştırması bu aracın kendi klasöründe yaklaşık
+      altı yüz satır. Bir kodlayıcı hizmeti, çalışma anında getirilen bir
+      kitaplık ya da bunların herhangi bir yerinde bir görselin
+      gönderilebileceği bir yer yok."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine videonuz hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir kare, ne bir ad, bir boyut, bir uzunluk ya da işaretlediğiniz
+      bölüm. Okuyan, örnekleyen, renk sayısını düşüren ya da kodlayan her satır
+      bu kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de videonuz
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir video seçin."
+body = """
+ Seçiciye bir MP4, MOV, M4V ya da WebM
+      bırakın veya elle seçin. Tarayıcı onu doğrudan diskinizden okur; siz bunu
+      yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Bölümü işaretleyin."
+body = """
+ Klibi oynatın ve başlaması gereken
+      yerde <kbd>I</kbd>'ya, bitmesi gereken yerde <kbd>O</kbd>'ya basın ya da
+      çubuktaki tutamakları sürükleyin. Bir GIF birkaç saniyeliktir &mdash;
+      dosyanın küçük mü yoksa devasa mı olacağına karar veren ayar, diğer
+      ikisinden çok daha fazla, budur."""
+
+[[howto]]
+title = "Genişliği ve kare hızını seçin."
+body = """
+ 480 piksel genişlik ve
+      saniyede 12 kare, bir GIF'in işine yarayan çoğu şeye uyar. Genişliği
+      yarıya indirmek piksel sayısını dörtte bire düşürür; saniyede on iki kare,
+      kimsenin görmediği kareleri ödemeden hareket olarak okunur."""
+
+[[howto]]
+title = "Yapın ve indirin."
+body = """
+ Kareler okunur, animasyonun tamamı için
+      256 renklik tek bir palet seçilir ve her kare yalnızca görüntünün değişen
+      bölümü olarak yazılır. Bittiğinde sayfada oynar; indirmenin size verdiği
+      de aynı dosyadır."""
+
+[[faq]]
+q = "Videom herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        örneklenir ve dönüştürülür. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Size
+        söylenene güvenmek yerine denetlemeyi tercih ediyorsanız internet
+        bağlantısını kesin ve yine de bir GIF yapın."""
+
+[[faq]]
+q = "Hangi video biçimlerini dönüştürebilirim?"
+a = """
+        MP4, M4V ve MOV içlerinde ne olursa olsun doğrudan okunur: H.264, HEVC,
+        AV1 ya da VP9 &mdash; yeter ki tarayıcınız o kodlayıcıyı çözebilsin.
+        Tarayıcınızın oynatabildiği başka her şey &mdash; en bilineni WebM
+        &mdash; bunun yerine oynatıcı her ana ayrı ayrı aranarak okunur; bu daha
+        yavaştır ve hangi karenin nereye düşeceği konusunda biraz daha az
+        kesindir. Tarayıcının ne okuyabildiği ne de oynatabildiği bir dosya, ki
+        pratikte AVI, WMV, FLV ve çoğu MKV demektir, yarı yolda başarısız olmak
+        yerine bunu söyleyen bir mesajla geri çevrilir."""
+
+[[faq]]
+q = "GIF'im neden bu kadar büyük?"
+a = """
+        Çünkü GIF, hareketi değil bütün görüntüleri saklayan 1987'den kalma bir
+        biçim. Beş saniyelik bir klipten, geldiği beş saniyelik MP4 kadar küçük
+        bir GIF yapmanın yolu yok &mdash; bir videonun GIF'i çoğu zaman videonun
+        on katı olur. Bunu asıl belirleyen üç ayar, sırasıyla: bölümün ne kadar
+        uzun olduğu, görüntünün ne kadar geniş olduğu ve saniyedeki kare sayısı.
+        Genişliği yarıya indirmek piksel sayısını dörtte bire düşürür ve maliyeti
+        yaratan pikseldir."""
+
+[[faq]]
+q = "Neden yalnızca 256 renk?"
+a = """
+        Biçim böyle: bir GIF en fazla 256 renkten oluşan tek bir tablo taşır ve
+        her pikseli o tabloya bir sayı olarak saklar. Bu araç, bölümünüzün her
+        karesindeki renkleri sayıp 256 gruba bölerek o 256'yı seçer &mdash;
+        medyan kesme, standart yöntem &mdash; böylece palet sabit bir renk
+        kümesi olmak yerine klibinize uyar. Bir rengin eksik olduğu yerde
+        dithering en yakın iki rengi karıştırır, böylece bir geçiş çizgilere
+        dönüşmek yerine geçiş olarak kalır."""
+
+[[faq]]
+q = "Dithering ayarı ne yapıyor?"
+a = """
+        Az miktarda gürültüyü çok miktarda bantlaşmayla takas eder. Açıkken,
+        yoksa dört düz banda dönüşecek bir gökyüzü geçiş olarak kalır; bunun
+        bedeli hafif bir doku ve daha büyük bir dosyadır. Kapalıyken görüntü
+        daha düz, dosya daha küçük olur ki bu da ekran kayıtlarına, çizgi
+        çalışmalarına ve zaten düz renkten oluşan her şeye uyar. Burada
+        kullanılan dithering, hata yayan türden değil sıralı türdendir; böylece
+        değişmeyen bir arka plan kareler arasında titremek yerine tam olarak
+        sabit kalır."""
+
+[[faq]]
+q = "Uzunlukta veya boyutta bir sınır var mı?"
+a = """
+        Sınırlı olan bölüm ve bunu bir kural değil bellek belirliyor: palet
+        seçilirken bölümün her karesi aynı anda tutulur, bu yüzden sayfa
+        ayarlarınızın neye mal olacağını hesaplar ve başlamadan önce söyler.
+        Sekmenin belleği tüketip yok olmasına izin vermek yerine reddeder. Daha
+        kısa bir bölüm, daha küçük bir genişlik ya da daha düşük bir kare hızı,
+        üçü de bunu aşağı çeker."""
+
+[[faq]]
+q = "Sesi koruyor mu?"
+a = """
+        Bir GIF ses taşıyamaz. Biçimin sesi olan bir sürümü yok; webin GIF'lerin
+        yerine büyük ölçüde sessiz döngü videolarını koymasının başlıca sebebi de
+        bu. Ses önemliyse videoyu saklayın &mdash;
+        <a href="../video-kesme/">Video Kesici</a> ondan bir bölümü tek bir
+        kareyi bile yeniden kodlamadan keser."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara videonuz hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript gerekir. MP4 ve MOV için WebCodecs destekleyen bir tarayıcı gerekir; tarayıcının oynatabildiği her şey onsuz da çalışır."
+description = "Bir videonun bir bölümünü tarayıcıda hareketli GIF'e dönüştürün. Kareler seçtiğiniz hızda örneklenir, animasyonun tamamı için medyan kesmeyle 256 renklik tek bir palet seçilir ve her kare yalnızca değişen bölge olarak yazılır. Hiçbir şey yüklenmez."
+features = [
+  "MP4, MOV, M4V ve WebM videoyu hareketli GIF'e dönüştürür",
+  "H.264, HEVC, AV1 ve VP9 kaynakları, WebCodecs üzerinden çözülür",
+  "Bölümü zaman çizelgesinde işaretleyin ya da tam zamanları yazın",
+  "Her genişlik, saniyede 5 ila 25 kare, isteğe bağlı sıralı dithering",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP4, MOV, M4V, WebM ve bu tarayıcının oynattığı her şey"

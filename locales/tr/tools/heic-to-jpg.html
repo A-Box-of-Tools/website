@@ -1,0 +1,131 @@
+<!--
+  tools/heic-to-jpg/body.html, in Turkish.
+
+  Every id, class, option value and data-phrase key below is what src/main.js
+  and the frame reach for, so they are the same in every language. Only the
+  words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosyalar -->
+  <section class="card">
+    <h2><span class="step">1</span> HEIC fotoğraflarınızı seçin</h2>
+
+    <p class="card-lede">
+      Doğrudan telefondan, bir yedekten ya da bir hafıza kartından kopyalanmış
+      hâlde. Dosya burada, bu makinede okunur ve resim de burada çözülür &mdash;
+      bu sayfada bir yükleme adımı ve arkasında bir sunucu yoktur.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-all" class="ghost danger">Hepsini listeden çıkar</button>
+      </div>
+    </div>
+
+    <ul id="file-list" class="file-list"></ul>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; ne çıkacağı -->
+  <section class="card" id="options-card">
+    <h2><span class="step">2</span> Ne istediğinizi söyleyin</h2>
+
+    <fieldset class="options">
+      <legend>Biçim</legend>
+
+      <div class="option-row">
+        <label for="format-select">Resimleri şu olarak yaz</label>
+        <select id="format-select">
+          <option value="image/jpeg" selected>JPEG &mdash; her yerde açılır, yanlışlıkla bu yüzyılda yapılmış şeylerde bile</option>
+          <option value="image/png">PNG &mdash; kayıpsız ve birkaç kat büyük</option>
+          <option value="image/webp">WebP &mdash; aynı kalitede JPEG'den küçük, yalnızca modern tarayıcılarda</option>
+        </select>
+      </div>
+
+      <div class="option-row" id="quality-row">
+        <label for="quality">Kalite</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="50" max="100" step="1" value="92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+
+      <p class="field-summary" id="format-note"></p>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Fotoğraf ayrıntıları</legend>
+
+      <label class="check">
+        <input type="checkbox" id="keep-exif" checked>
+        <span>
+          <strong>Tarihi, kamerayı ve ayarları koru</strong>
+          <span class="check-note">
+            Telefonun yazdığı hâliyle tam olarak kopyalanır; böylece
+            dönüştürülmüş fotoğraf, dönüştürüldüğü güne göre değil çekildiği güne
+            göre sıralanmaya devam eder. Fotoğrafta varsa GPS koordinatları da
+            buna dahildir &mdash; yukarıdaki liste sizinkilerden hangisinde
+            olduğunu söyler. Bunu kapatın, JPEG resimden başka hiçbir şey
+            içermeden çıksın.
+          </span>
+        </span>
+      </label>
+
+      <p class="field-summary">
+        Her iki durumda da buradaki hiçbir şey kimseye okunmaz: seçim, bu
+        sayfanın onunla ne yaptığıyla değil geri aldığınız dosyaya neyin
+        gireceğiyle ilgilidir. Etiketleri ayrıntılı gözden geçirmek ya da zaten
+        JPEG olan fotoğraflardan onları silmek isterseniz
+        <a href="../exif-verisi-silme/">EXIF Görüntüleyici ve Silici</a> bunun
+        aracıdır.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Adım 3 &mdash; tek tıklama -->
+  <section class="card" id="run-card">
+    <h2><span class="step">3</span> Dönüştürün</h2>
+
+    <div class="run-row">
+      <button type="button" id="convert-all" class="primary big" disabled>Dönüştür</button>
+    </div>
+
+    <!--
+      The decoder's own status line. This page is the only one on the site that
+      carries a codec, so it is the only one with anything to report here, and
+      saying where the megabyte came from is the point: it is served from this
+      origin, it is cached with the rest of the page, and it is what makes the
+      offline promise hold on a browser that cannot open a HEIC at all.
+    -->
+    <p id="engine-status" class="engine-status" role="status" aria-live="polite"></p>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <div id="results" class="results" hidden>
+      <div class="results-head">
+        <h3>Dönüştürüldü</h3>
+        <button type="button" id="download-zip" class="ghost" hidden>Hepsini zip olarak indir</button>
+      </div>
+      <p id="results-summary" class="results-summary"></p>
+      <ul id="result-list" class="result-list"></ul>
+    </div>
+  </section>
+
+  <!--
+    The frame's "offline" line says only that this page keeps working. What is
+    worth saying here is what that covers: the HEIC decoder is a vendored
+    WebAssembly engine, and it is cached with the rest. A key defined here wins
+    over the frame's one - see shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="offline.ready">hazır &mdash; çözücü de önbelleğe alındı,
+      yani bu, ağ bağlantısı kesikken de çalışır.</span>
+  </div>
+</main>

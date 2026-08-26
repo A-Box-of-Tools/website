@@ -1,0 +1,240 @@
+#
+# EXIF Görüntüleyici ve Silici - Türkçe.
+#
+# Overrides for tools/exif-editor/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# EXIF, XMP, IPTC ve etiket adları (Orientation) Latin harflerinde kalıyor:
+# bunlar dosyanın içinde harfi harfine böyle yazar ve okuyucu onları başka
+# programlarda da böyle görür.
+#
+
+name = "EXIF Görüntüleyici ve Silici"
+heading = "EXIF&nbsp;Görüntüleyici ve Silici <span class=\"h1-kw\">&mdash; fotoğraf üst verisini silin</span>"
+tagline = "Bir fotoğrafın sizin hakkınızda ne söylediğini görün. Sonra onu çıkarın."
+
+title = "EXIF Görüntüleyici ve Silici &mdash; Ücretsiz Fotoğraf Üst Verisi Düzenleyici"
+description = "Bir fotoğrafta saklı EXIF ve GPS verisini görün, düzenleyin ya da tek tıklamayla hepsini silin. Tarayıcınızda: hiçbir şey yüklenmez ve fotoğraf hiçbir zaman yeniden kodlanmaz."
+og_title = "EXIF Görüntüleyici ve Silici &mdash; görün, düzenleyin ya da silin"
+og_description = "Bir fotoğrafta saklı üst veriyi okuyun ve tek tıklamayla hepsini silin. Kendi makinenizde çalışır; resmin kendisi hiçbir zaman yeniden kodlanmaz."
+og_image_alt = "EXIF Görüntüleyici ve Silici - bir fotoğraftaki üst veriyi okuyun, düzenleyin ya da silin"
+
+pledge = """
+    Dosya kendi tarayıcınız tarafından açılır, ayrıştırılır ve yeniden yazılır.
+    Bu aracın hiçbir türde ağ özelliği yoktur &mdash; getirecek bir şey yok,
+    gönderecek bir şey yok &mdash; ve olsaydı bile bu sayfanın öbür ucunda bir
+    fotoğrafın gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir fotoğrafı temizleyin. Tek bir istek bile bir görsel, bir
+      küçük resim, bir dosya adı ya da dosyanızdan okuduğumuz bir etiket
+      taşımıyor. Ya da internet bağlantısını kesip yine de bir tanesini
+      temizleyin."""
+
+read_first = """
+, EXIF ayrıştırıcısı için <code>src/tiff.js</code> ve
+      resmin kendisinin yalnızca kopyalandığının kanıtı için
+      <code>src/jpeg.js</code>."""
+
+howto_heading = "Bir fotoğraftan EXIF verisi nasıl silinir"
+
+card = """
+            Bir fotoğrafta saklı konumu, kamerayı ve seri numaralarını görün,
+            herhangi birini düzenleyin ya da tek tıklamayla hepsini silin."""
+
+[words]
+plural = "fotoğraflar"
+choose = "bir fotoğraf"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[facts]]
+text = "Resmi asla yeniden kodlamaz"
+
+[[privacy]]
+title = "Fotoğraflarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu kutudaki diğer araçların
+      aksine bunun bir "web adresinden yükle" özelliği ve hiçbir isteğe bağlı ağ
+      adımı yok. <code>src/</code> içinde hiçbir yerde <code>fetch</code>,
+      <code>XMLHttpRequest</code> ya da <code>sendBeacon</code> yok."""
+
+[[privacy]]
+title = "Okuduğumuz üst veri hiçbir zaman birine okunmaz."
+body = """
+ GPS konumunuz bu
+      sayfada gösterilir ve başka hiçbir yere gitmez. Bu depoda bir etiket, bir
+      dosya adı, bir boyut ya da bir sayı taşıyan özel bir analitik olayı
+      yoktur."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine fotoğraflarınız hakkında bir şey verilmiyor.
+      Bir dosyayı okuyan, ayrıştıran ya da yeniden yazan her satır bu kaynaktan
+      sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de dosyalarınız
+      hakkında bir şey verilir. Siz tıklamadıkça hiçbir şey olmaz ve
+      tıkladığınızda gideceğiniz yer başkasının sitesidir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "Fotoğraflarınızı seçin."
+body = """
+ Seçiciye bırakın ya da elle seçin.
+      Tarayıcı onları doğrudan diskinizden okur; siz bunu yaparken hiçbir yere
+      hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "İsterseniz içlerinde ne olduğunu okuyun."
+body = """
+ Bulgular listesi, her
+      etiketin tam tablosundan önce bilinmeye değer şeyleri adıyla anar &mdash;
+      GPS konumu, zaman damgaları, seri numaraları."""
+
+[[howto]]
+title = "\"Tüm üst veriyi sil\"e basın."
+body = """
+ Çoğu kişi için işin tamamı
+      budur. Her etiket, XMP ve IPTC blokları, yorumlar ve gömülü küçük resim;
+      listedeki her fotoğrafta hepsi birden gider."""
+
+[[howto]]
+title = "Ya da silmek yerine düzenleyin."
+body = """
+ Bir tarihi değiştirin, bir
+      telif satırını düzeltin, konumu atıp kamera ayarlarını koruyun &mdash;
+      sonra o fotoğrafı tek başına kaydedin."""
+
+[[faq]]
+q = "Fotoğrafım herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        ayrıştırılır ve yeniden yazılır. Bu aracın hiçbir türde ağ özelliği
+        yoktur &mdash; hiçbir zaman bir şey getirmez ve hiçbir zaman bir şey
+        göndermez &mdash; ve sayfanın <code>Content-Security-Policy</code>'si
+        iletişim kurabileceği her adresi tek tek sayar; bunların hiçbiri bu
+        siteye ait değildir."""
+
+[[faq]]
+q = "EXIF nedir ve bir fotoğrafta başka ne saklanır?"
+a = """
+        EXIF, bir kameranın resmin yanına yazdığı bir etiket bloğudur: marka ve
+        model, pozlama ayarları, saniyesine kadar tarih ve saat, çoğu zaman bir
+        GPS konumu ve bazen bir seri numarası. Fotoğraflar sık sık bunun ötesinde
+        de bir şeyler taşır &mdash; bir düzenleyiciden gelen XML'den oluşan bir
+        XMP paketi, açıklama ve künye alanlarından oluşan bir IPTC bloğu, bir
+        renk profili, görüntünün küçük ikinci bir kopyası olan bir küçük resim ve
+        belgelenmemiş üretici verisinden oluşan bir üretici notu. Bu araç
+        hepsini listeler."""
+
+[[faq]]
+q = "Üst veriyi silmek görüntü kalitesini düşürür mü?"
+a = """
+        Hayır ve fotoğrafı yeniden kaydetmek yerine böyle bir araç kullanmanın
+        başlıca sebebi budur. Üst veri, sıkıştırılmış resmin içinde değil
+        etrafındaki kapta durur. Onu silmek, bir listeden öğe silip listeyi
+        yeniden yazmak demektir; sıkıştırılmış görüntü verisi bayt bayt kopyalanır,
+        yani sonuç tam olarak aynı piksellere çözülür. Hiçbir şey çözülmez ve
+        hiçbir şey yeniden sıkıştırılmaz."""
+
+[[faq]]
+q = "Hangi dosya biçimlerini işliyor?"
+a = """
+        JPEG, PNG ve WebP. HEIC ve AVIF tanınır ama yeniden yazılmaz: iç içe
+        geçmiş atomlardan kurulmuş kap biçimleridir ve farklı bir ayrıştırıcı
+        gerektirirler; bu yüzden araç, bozuk bir dosya üretmek yerine bunu söyler.
+        Çıplak bir TIFF de işlenmez, çünkü bir TIFF'te üst veri ile pikseller aynı
+        ofsetlerle adreslenir."""
+
+[[faq]]
+q = "Üst veri silindikten sonra fotoğrafım döndürülmüş görünür mü?"
+a = """
+        Görünebilir ve bunun için bir ayar var. Telefonlar genellikle resmi
+        mercekten göründüğü gibi kaydeder ve nasıl döndürüleceğini söyleyen bir
+        Orientation etiketi ekler. O etiketi silin, bazı görüntüleyiciler
+        fotoğrafı yan gösterir. Varsayılan olarak açık olan "yön etiketini koru"
+        seçeneği, yalnızca o tek etiketi içeren ufacık bir EXIF bloğunu geri
+        yazar &mdash; ve yalnızca fotoğrafın gerçekten ihtiyacı olduğunda.
+        Dosyanın hiç EXIF taşımamasını tercih ediyorsanız kapatın."""
+
+[[faq]]
+q = "GPS konumunu siliyor mu?"
+a = """
+        Evet. Her şeyi silmek GPS dizininin tamamını siler; ayrıca konumu tek
+        başına silip gerisini de koruyabilirsiniz. Konum önce ondalık derece
+        olarak gösterilir; çünkü "51 derece, 30 dakika, 26 saniye", bir fotoğrafın
+        çekildiği binayı adlandırdığını bariz hâle getirmez."""
+
+[[faq]]
+q = "Bir etiketi silmek yerine değiştirebilir miyim?"
+a = """
+        Evet. Metin etiketleri, tarihler, ISO, yön ve çözünürlük düzenlenebilir ve
+        hiç etiketi olmayan bir fotoğrafa birkaç yaygın etiket eklenebilir. Bir
+        tek uyarı: dosyayı yazmak EXIF bloğunu yeniden kurar ve bir üretici notu
+        orijinal bloğa ofsetler içerir; dolayısıyla yeniden kurulmuş bir üretici
+        notu, sonrasında üreticinin kendi yazılımı tarafından okunamayabilir. Bu
+        sizin için önemliyse onu silin ya da dosyayı düzenlemeden bırakın."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok. Sitede reklam var,
+        masrafı karşılayan da o; reklamlara fotoğraflarınız hakkında hiçbir şey
+        verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: fotoğraflarınızı işlenmek üzere uzağa gönderen
+        bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Bir fotoğrafın içindeki EXIF, GPS, XMP ve IPTC üst verisini okuyun, tek tek etiketleri düzenleyin ya da tek tıklamayla hepsini silin. JPEG, PNG ve WebP; görüntü yeniden kodlanmadan tarayıcıda işlenir."
+features = [
+  "GPS konumu, kamera seri numaraları ve üretici notları dahil her EXIF etiketini gösterir",
+  "Tek tek etiketleri düzenler ya da siler ve dosyayı geri yazar",
+  "EXIF, GPS, XMP, IPTC, yorumlar ve gömülü küçük resmi tek tıklamayla siler",
+  "JPEG, PNG ve WebP",
+  "Yalnızca kabı yeniden yazar, böylece görüntü hiçbir zaman yeniden sıkıştırılmaz",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Fotoğrafları buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; JPEG, PNG ve WebP"

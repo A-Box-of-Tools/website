@@ -1,0 +1,238 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      <a href="../../saglama-toplami-hesaplama/">Özet ve Sağlama Toplamı</a>'nı açın,
+      indirdiğiniz dosyayı üzerine bırakın ve indirme sayfasındaki sağlama toplamını
+      alttaki kutuya yapıştırın. Sayfa, sayının hangi algoritmadan geldiğini uzunluğuna
+      bakarak bulur ve tek bir cümleyle cevap verir.
+    </p>
+    <p>
+      Eşleşiyorsa diskinizdeki baytlar, yayıncının ölçtüğü baytlardır. Eşleşmiyorsa
+      dosyayı açmadan önce yeniden indirin. Aşağıdaki her şey, o cümlenin dışarıda
+      bıraktığıdır.
+    </p>
+  </section>
+
+  <section>
+    <h2>İndirme bağlantısının altındaki sayı nedir</h2>
+    <p>
+      Bir özet işlevinin çıktısıdır: bir dosyanın her baytını okuyan ve kısa, sabit
+      uzunlukta bir cevap üreten bir hesap. Aynı dosya her zaman aynı cevabı verir ve
+      tek bir bit farklı olan bir dosya tamamen başka bir cevap verir &mdash; neredeyse
+      aynı olan biri değil, ilgisiz biri. Dayanılan özelliğin tamamı budur.
+    </p>
+    <p>
+      Cevap kısa, dosya kısa olmadığı için hesap bilgiyi atar ve herhangi bir cevabı
+      paylaşan zorunlu olarak birçok dosya vardır. Bunlardan birini bilerek bulmak zor
+      olan kısımdır ve ne kadar zor olduğu, aşağıdaki algoritmaları birbirinden ayıran
+      şeydir.
+    </p>
+    <p>
+      Bir sağlama toplamıyla ilgili hiçbir şey gizli değildir ve hiçbir şey tersine
+      çevrilebilir değildir. Bu bir parmak izidir; iki insan aynı şeyi ellerinde
+      tuttukları konusunda anlaşabilsin diye yayımlanır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hangi algoritmaya bakıyorsunuz</h2>
+    <p>
+      Seçmek zorunda değilsiniz &mdash; yayıncı zaten seçti ve sizin işiniz aynısını
+      hesaplamak. Hangisi olduğunu yalnızca uzunluğundan anlarsınız:
+    </p>
+    <ul>
+      <li><strong>32 onaltılık karakter</strong> &mdash; MD5.</li>
+      <li><strong>40</strong> &mdash; SHA-1.</li>
+      <li><strong>64</strong> &mdash; SHA-256 ve en çok göreceğiniz budur.</li>
+      <li><strong>96</strong> &mdash; SHA-384.</li>
+      <li><strong>128</strong> &mdash; SHA-512.</li>
+    </ul>
+    <p>
+      İkisi de aynı uzunlukta değildir; aracın, yapıştırılan bir değeri kendisine
+      söylenmeden tanıyabilmesinin sebebi de budur. 63 karakter uzunluğunda bir dizge
+      hiçbir şeyin sağlama toplamı değildir; panonuza giderken bir karakterini kaybetmiş
+      bir SHA-256'dır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bunu tarayıcısız, kendi makinenizde yapmak</h2>
+    <p>
+      Her işletim sistemi bunu yapan bir şeyle gelir ve bunun için bir sayfa kullansanız
+      bile komutu bilmeye değer &mdash; "sitenizin bunu dürüstçe hesapladığını nereden
+      bileyim" sorusuna, aynı dosyayı bilgisayarınızla gelen araçtan geçirmekten daha iyi
+      bir cevap yok.
+    </p>
+    <p><strong>Windows</strong>, PowerShell'de:</p>
+    <pre><code>Get-FileHash .\disk.iso -Algorithm SHA256</code></pre>
+    <p>
+      Daha eski makinelerde bunun yerine
+      <code>certutil -hashfile disk.iso SHA256</code> vardır; o da büyük harfle ve
+      aralarında boşluklarla yazdırır. Bir sağlama toplamı karşılaştırmasında büyük
+      küçük harf hiçbir zaman önemli değildir; harfler kelime değil, rakamdır.
+    </p>
+    <p><strong>macOS</strong>:</p>
+    <pre><code>shasum -a 256 disk.iso</code></pre>
+    <p><strong>Linux</strong>:</p>
+    <pre><code>sha256sum disk.iso</code></pre>
+    <p>
+      Üçü de aynı dosya için aynı dizgeyi yazdırır ve bu site de öyle. Bunlar
+      yayımlanmış test vektörleri olan kesin belirtimlerdir; bir uygulamanın kendi
+      görüşünü koymasına yer yoktur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Gözlerinizi bozmadan karşılaştırmak</h2>
+    <p>
+      Altmış dört karakteri iki ekrandan okuyup aynı göründüklerine karar vermeyin.
+      İnsanlar ilk dördüne ve son dördüne bakıp durur ki bu, bir saldırganın geçmesini
+      ayarlayacağı karşılaştırmanın tam olarak kendisidir ve aynı zamanda dürüst bir
+      hatanın da böyle geçiştirildiği yerdir.
+    </p>
+    <p>
+      İkisini de sizin için karşılaştırabilecek bir şeye yapıştırın. Bir komut satırında
+      <code>-c</code> bayrağının varlık sebebi budur:
+    </p>
+    <pre><code>sha256sum -c SHA256SUMS</code></pre>
+    <p>
+      Bir tarayıcıda ise
+      <a href="../../saglama-toplami-hesaplama/">Özet ve Sağlama Toplamı</a>'ndaki
+      karşılaştırma kutusudur; değeri yayıncı hangi şekilde yazdıysa o şekilde kabul
+      eder &mdash; çıplak onaltılık, bir <code>sha256sum</code> çıktısı satırı, bütün
+      bir <code>SHA256SUMS</code> dosyası, <code>SHA256 (disk.iso) = &hellip;</code>
+      biçimi ya da bir betik etiketinden alınmış bir
+      <code>integrity="sha384-&hellip;"</code> özniteliği &mdash; ve tek bir cümleyle
+      evet ya da hayır der.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir eşleşme tam olarak neyi kanıtlar</h2>
+    <p>
+      Diskinizdeki baytların, o sayıyı yazan kişinin önünde duran baytlar olduğunu.
+      Bu gerçekten bilmeye değer bir şeydir ve çoğu insanın sandığından dardır; o
+      yüzden neyi kapsayıp neyi kapsamadığını listelemeye değer.
+    </p>
+    <p><strong>Bir eşleşmenin dışladıkları:</strong></p>
+    <ul>
+      <li>erken duran ve size eksiksiz görünen bir dosya bırakan bir indirme;</li>
+      <li>aktarım sırasında, bozulan bir diskte ya da kötü bir USB kablosunda
+        bozulma;</li>
+      <li>yanlış dosya &mdash; x86 yerine ARM derlemesi ya da geçen ayın sürümü;</li>
+      <li>duyurduğundan başka bir şey sunan bir yansı.</li>
+    </ul>
+    <p><strong>Bir eşleşmenin dışlamadıkları:</strong></p>
+    <ul>
+      <li><strong>dosyanın kötü niyetli olması.</strong> Bir yayıncı, kötücül yazılımı
+        başka her şey kadar isabetle ölçebilir. Bir sağlama toplamı "gönderdikleri şey
+        budur" der, hiçbir zaman "bu güvenlidir" demez;</li>
+      <li><strong>yayıncının ele geçirilmiş olması.</strong> Biri sunucudaki dosyayı
+        değiştirdiyse yanındaki sağlama toplamını da aynı dakikada değiştirmiştir. Ki
+        bu bizi bir sonraki bölüme getiriyor.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Bütün işi anlamsız kılan hata</h2>
+    <p>
+      Sağlama toplamını dosyayla aynı sayfadan, aynı bağlantı üzerinden almak.
+    </p>
+    <p>
+      Neye karşı savunma yaptığınızı düşünün. Endişe bozulmuş bir indirmeyse sağlama
+      toplamı her yerden gelebilir ve denetim işe yarar. Endişe birinin dosyayı
+      kurcalamasıysa, dosyayı değiştirebilen kişi altındaki onaltılık satırı da
+      değiştirebilirdi; çünkü ikisi de aynı sunucudan, aynı bağlantı üzerinden geldi.
+      Sahtecinin imzayı onaylamasını istiyor olurdunuz.
+    </p>
+    <p>
+      Bir sağlama toplamı, size dosyanın gelmediği bir yoldan ulaştığında en
+      değerlidir:
+    </p>
+    <ul>
+      <li>zaten sahip olduğunuz bir anahtara karşı denetlenmiş, ayrık bir GPG imzası
+        olan bir <code>SHA256SUMS</code> dosyası &mdash; dağıtımların yayımladığı budur
+        ve gerçek cevap da budur;</li>
+      <li>indirme sayfası yerine bir posta listesindeki sürüm duyurusu ya da bir kaynak
+        deposundaki bir etiket;</li>
+      <li>başka bir alan adındaki ikinci bir yansı ve ikisinin birbiriyle
+        karşılaştırılması;</li>
+      <li>bunu sizin için, işletim sistemiyle gelen anahtarlara karşı yapan bir paket
+        yöneticisi.</li>
+    </ul>
+    <p>
+      Bunların hiçbiri aynı sayfadaki bir sağlama toplamını denetlemeyi yararsız
+      kılmaz. Bozuk indirmeyi yakalar ki insanların gerçekten başına gelen çuvallama
+      odur. Yalnızca kendinize başka bir şeyi yakaladığını söylemeyin.
+    </p>
+  </section>
+
+  <section>
+    <h2>MD5 ve SHA-1 kırıldı. Yine de bazen kullanın</h2>
+    <p>
+      İkisi de burada önemli olan en güçlü anlamda kırıldı: <em>çakışmalar</em> bilerek
+      kurulabiliyor. Aynı MD5'e sahip iki farklı dosya 2004'ten beri sıradan donanımda
+      kurulabiliyor ve 2017'de bir ekip aynı SHA-1'e sahip iki farklı PDF üretti. 2020'de
+      bu saldırının seçilmiş önek sürümü, kiralanmış birkaç on bin dolarlık hesaplamaya
+      kadar indi.
+    </p>
+    <p>
+      Bunun pratikteki anlamı: eşleşen bir MD5 artık size kimsenin dosyayı
+      kurcalamadığını söylemez; çünkü isteyen biri aynı sayıya sahip farklı bir dosya
+      kurabilirdi. Yine de indirmenin kesilmediğini ya da bozulmadığını söyler; çünkü
+      rastgele bir kaza bir çakışmaya denk gelmez &mdash; bu, hiçbir kazanın sahip
+      olmadığı bir olasılıktır.
+    </p>
+    <p>
+      Yani yayıncı bir MD5 ve başka bir şey yazmadıysa onu denetleyin. Hiç
+      denetlememekten değerlidir. Ve yayımlayan sizseniz bir SHA-256 yazın.
+    </p>
+  </section>
+
+  <section>
+    <h2>Eşleşmedi. Şimdi ne olacak?</h2>
+    <ol>
+      <li>
+        <strong>Aynı yerden yeniden indirin.</strong> Kesilmiş ya da sürdürülmüş bir
+        aktarım açık ara en yaygın sebeptir ve ikinci bir kopya genellikle işi
+        halleder.
+      </li>
+      <li>
+        <strong>Doğru satırda olduğunuzu denetleyin.</strong> Sürüm sayfaları birkaç
+        dosya listeler; yükleyicinin sağlama toplamı hiçbir zaman arşivle eşleşmez ve
+        ARM derlemesi hiçbir zaman x86'yla eşleşmez.
+      </li>
+      <li>
+        <strong>Sürümü denetleyin.</strong> Yer imine eklenmiş sağlama toplamı
+        sayfaları, bir ara sürüm çıktığı gün bayatlar.
+      </li>
+      <li>
+        <strong>Başka bir yansı deneyin</strong> ve iki dosyanın sağlama toplamlarını
+        birbiriyle karşılaştırın. Birbiriyle uyuşup yayımlanan sayıyla uyuşmayan iki
+        yansı, ikisiyle de uyuşmayan tek bir yansıdan başka bir sorundur.
+      </li>
+      <li>
+        <strong>Bu arada onu açmayın.</strong> Sağlama toplamını geçemeyen bir dosya en
+        iyi ihtimalle hasarlıdır, en kötü ihtimalle istediğiniz dosya değildir.
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Bunu neden bir tarayıcıda yapmalı</h2>
+    <p>
+      Çünkü çoğu insan komut satırında değil ve çünkü apaçık alternatif &mdash; sizden
+      dosyayı yüklemenizi isteyen bir web sitesi &mdash; zaten emin olmadığınız bir
+      yükleyiciyle yapılacak tuhaf bir şey. Aktarım sırasında kurcalanıp
+      kurcalanmadığını öğrenmek için bir dosyayı bir yere göndermek, kurcalanabileceği
+      bir yer daha ekler.
+    </p>
+    <p>
+      <a href="../../saglama-toplami-hesaplama/">Özet ve Sağlama Toplamı</a>, dosyayı
+      kendi makinenizde dört megabaytlık parçalar hâlinde okur; yani yükleme yok, boyut
+      sınırı yok ve sayfanın kendisi dışında güvenilecek bir şey yok &mdash; ki onu
+      okuyabilirsiniz ve ağ fişi çekilmişken de çalışmaya devam eder. Kendi işletim
+      sisteminize güvenmeyi tercih ederseniz yukarıdaki bölümdeki komutu çalıştırın ve
+      iki cevabı karşılaştırın. Uyuşacaklar.
+    </p>
+  </section>

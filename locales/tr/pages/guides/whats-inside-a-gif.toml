@@ -1,0 +1,17 @@
+#
+# Rehber: bir GIF dosyasının içinde gerçekte ne var - Türkçe.
+#
+
+nav = "GIF'in içinde ne var"
+title = "Bir GIF Dosyasının İçinde Gerçekte Ne Var (ve Sizinki Neden Bu Kadar Büyük)"
+description = "Kareler, gecikmeler, elden çıkarma yöntemleri ve renk tabloları anlatılıyor; tarayıcılar en hızlı gecikmeleri neden reddediyor ve bir GIF'in dosya boyutunun gerçekte nereye gittiğini nasıl bulursunuz."
+heading = "Bir GIF'in içinde gerçekte ne var"
+lede = """
+    Bir GIF, her birinin bir zamanlayıcısı ve bir renk tablosu olan bir
+    dikdörtgenler yığınıdır ve insanların bu biçim hakkındaki hemen her
+    şikâyeti bu üç şeyden birinden doğar. Bu rehber her parçanın ne yaptığını ve
+    dosyanızın boyutunu hangisine harcadığını nasıl öğreneceğinizi anlatıyor."""
+updated = "22 Ağustos 2026"
+og_title = "Bir GIF dosyasının içinde gerçekte ne var"
+og_description = "Kareler, gecikmeler, elden çıkarma ve paletler - her biri ne yapar, GIF'iniz neden söylediğinden yavaş oynar ve dosya boyutu nereye gitti."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

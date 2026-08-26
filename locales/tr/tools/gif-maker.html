@@ -1,0 +1,182 @@
+<!--
+  tools/gif-maker/body.html, in Turkish.
+
+  Every id, class and template tag below is what src/main.js and the frame
+  reach for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; kareler -->
+  <section class="card">
+    <h2><span class="step">1</span> Görselleri seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <div class="view-switch" role="group" aria-label="Karelerin nasıl gösterileceğini değiştir">
+          <button type="button" data-view="large" class="active" aria-pressed="true">Büyük</button>
+          <button type="button" data-view="small" aria-pressed="false">Küçük</button>
+        </div>
+        <button type="button" data-sort="name" class="ghost">Ada göre sırala</button>
+        <button type="button" data-sort="date" class="ghost">Tarihe göre sırala</button>
+        <button type="button" data-sort="reverse" class="ghost">Ters çevir</button>
+        <button type="button" id="clear-all" class="ghost danger">Hepsini kaldır</button>
+      </div>
+    </div>
+
+    <p id="reorder-hint" class="reorder-hint" hidden>
+      Sıralamayı değiştirmek için herhangi bir kareyi
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> tutamağından
+      sürükleyin ya da her birinin üzerindeki okları kullanın. Buradaki sıra,
+      oynayacakları sıradır.
+    </p>
+
+    <ul id="frame-list" class="frame-list view-large"></ul>
+
+    <div id="bulk-delay" class="bulk" hidden>
+      <label for="bulk-amount">Her kareyi şu kadar tut</label>
+      <input type="number" id="bulk-amount" min="0.02" max="60" step="0.05" value="0.5">
+      <select id="bulk-unit" aria-label="Her karenin ne kadar tutulacağının birimi">
+        <option value="seconds" selected>saniye</option>
+        <option value="fps">saniyedeki kare</option>
+      </select>
+      <button type="button" id="apply-bulk" class="ghost">Hepsine uygula</button>
+      <span class="bulk-note" id="bulk-note"></span>
+    </div>
+  </section>
+
+  <!-- Adım 2 &mdash; ayarlar -->
+  <section class="card">
+    <h2><span class="step">2</span> GIF ayarları</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="size">Boyut</label>
+        <select id="size">
+          <option value="480" selected>480 px &mdash; iyi bir varsayılan</option>
+          <option value="640">640 px</option>
+          <option value="320">320 px</option>
+          <option value="240">240 px</option>
+          <option value="original">Görsellerle aynı</option>
+          <option value="custom">Özel&hellip;</option>
+        </select>
+        <div id="size-custom" class="inline-pair" hidden>
+          <input type="number" id="custom-width" min="16" max="1000" step="1" value="480"
+                 aria-label="Piksel olarak özel genişlik">
+          <span aria-hidden="true">&times;</span>
+          <input type="number" id="custom-height" min="16" max="1000" step="1" value="270"
+                 aria-label="Piksel olarak özel yükseklik">
+        </div>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="fit">Görsel yerleşimi</label>
+        <select id="fit">
+          <option value="contain" selected>İçine sığdır (bantlı)</option>
+          <option value="cover">Kareyi doldur (kenarları kırpar)</option>
+          <option value="stretch">Doldurmak için esnet (bozar)</option>
+        </select>
+      </div>
+
+      <div class="field" id="background-field">
+        <label for="background">Arka plan rengi</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <div class="field">
+        <label for="colors">Renkler</label>
+        <select id="colors">
+          <option value="256" selected>256 &mdash; bir GIF'in tuttuğu en fazla</option>
+          <option value="128">128</option>
+          <option value="64">64</option>
+          <option value="32">32 &mdash; en küçük dosya</option>
+        </select>
+        <p class="field-note">Daha az renk, daha küçük dosya, daha çok bantlaşma.</p>
+      </div>
+
+      <div class="field">
+        <label for="palette-mode">Palet</label>
+        <select id="palette-mode">
+          <option value="per-frame" selected>Her kare için en iyi renkler</option>
+          <option value="shared">GIF'in tamamı için tek palet</option>
+        </select>
+        <p class="field-note" id="palette-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Dithering</label>
+        <select id="dither">
+          <option value="on" selected>Açık &mdash; daha yumuşak geçişler</option>
+          <option value="off">Kapalı &mdash; daha düz, daha temiz kenarlar</option>
+        </select>
+        <p class="field-note">Logolar, çizgi çalışmaları ve ekran görüntüleri için kapatın.</p>
+      </div>
+
+      <div class="field">
+        <label for="loop-mode">Döngü</label>
+        <select id="loop-mode">
+          <option value="forever" selected>Sonsuza kadar döngü</option>
+          <option value="once">Bir kez oynat</option>
+          <option value="times">Belirli sayıda oynat&hellip;</option>
+        </select>
+        <input type="number" id="loop-times" class="spaced" min="1" max="1000" step="1" value="3"
+               aria-label="Animasyonun kaç kez oynayacağı" hidden>
+      </div>
+
+      <div class="field">
+        <label for="transparent">Saydamlık</label>
+        <select id="transparent">
+          <option value="off" selected>Arka plana düzleştir</option>
+          <option value="on">Saydam alanları koru</option>
+        </select>
+        <p class="field-note" id="transparent-note"></p>
+      </div>
+    </div>
+
+    <div class="preview-row">
+      <div class="preview-frame" id="preview-frame">
+        <canvas id="preview" width="480" height="270" aria-label="İlk karenin ön izlemesi"></canvas>
+        <p id="preview-empty" class="preview-empty">Ön izleme için görsel ekleyin</p>
+      </div>
+      <dl class="summary" id="summary">
+        <div><dt>Kareler</dt><dd id="sum-frames">&mdash;</dd></div>
+        <div><dt>Süresi</dt><dd id="sum-duration">&mdash;</dd></div>
+        <div><dt>Kare boyutu</dt><dd id="sum-size">&mdash;</dd></div>
+        <div><dt>Oynatma</dt><dd id="sum-loop">&mdash;</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Adım 3 &mdash; dışa aktarma -->
+  <section class="card">
+    <h2><span class="step">3</span> GIF'i yapın</h2>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF yap</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame"><img id="result-image" alt="Bitmiş animasyon, oynuyor"></div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF'i indir</a>
+      </div>
+    </div>
+  </section>
+</main>

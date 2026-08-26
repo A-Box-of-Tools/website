@@ -1,0 +1,255 @@
+#
+# Time-Lapse Yapıcı - Türkçe.
+#
+# Overrides for tools/timelapse-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Time-lapse" Türkçede de bu şekilde yerleşmiş; "hızlandırılmış çekim" tarifi
+# doğru ama insanların arattığı kelime bu değil. Slug ve ad Latin harflerinde
+# kalıyor, locale.toml'un başındaki kısaltma kuralıyla aynı gerekçeyle.
+#
+
+name = "Time-Lapse Yapıcı"
+heading = "Time&#8209;Lapse&nbsp;Yapıcı <span class=\"h1-kw\">&mdash; uzun bir videoyu hızlandırın</span>"
+tagline = "Bir saatlik görüntü, yirmi saniyede."
+
+title = "Time-Lapse Video Yapıcı &mdash; Ücretsiz, Yüklemesiz, Çevrimdışı Çalışır"
+description = "Uzun bir videoyu time-lapse'e çevirin: 10 kat, 60 kat ya da yazdığınız herhangi bir hız. Tarayıcınızda çalışır, yani hiçbir şey yüklenmez, filigran yoktur ve çevrimdışı da çalışır."
+og_title = "Time-Lapse Yapıcı &mdash; bir videoyu yüklemeden hızlandırın"
+og_description = "Uzun bir klipten birkaç saniyede bir kare alın ve onları kısa bir klip olarak geri yazın. Dosyayı kendi tarayıcınız okur, çözer ve kodlar."
+og_image_alt = "Time-Lapse Yapıcı - uzun bir videoyu tarayıcınızda hızlandırın, hiçbir şey yüklenmesin"
+
+pledge = """
+    Her kare kendi tarayıcınız tarafından, kendi donanımınızda seçilir, çözülür
+    ve yeniden kodlanır. Buradaki hiçbir şey bir şey getiremez ya da gönderemez
+    &mdash; bu araçta hiçbir türde ağ özelliği yok &mdash; ve olsaydı bile bu
+    sayfanın öbür ucunda bir videonun gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir time-lapse yapın. Tek bir istek bile bir kare, bir dosya adı
+      ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet bağlantısını
+      kesip yine de bir tane yapın &mdash; videonuzu işlenmek üzere uzağa
+      gönderen bir araç öylece dururdu."""
+
+read_first = """
+, her karenin hangi andan geleceğine karar veren hesap için
+      <code>src/plan.js</code> ve dosyanın yalnızca o anların gerektirdiği
+      bölümlerini okuyan döngü için <code>src/decode.js</code>. Hiçbiri istek
+      yapabilecek bir şeyi içeri almaz."""
+
+howto_heading = "Bir videodan nasıl time-lapse yapılır"
+
+card = """
+            Uzun bir klibi kısa bir klibe çevirin &mdash; saatleri saniyelere
+            &mdash; onu hiçbir yere göndermeden."""
+
+[words]
+plural = "videolarınız"
+choose = "bir video"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Yazdığınız her hız"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Videolarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Dosyanızın toplanabileceği bir uç nokta burada yok,
+      olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Videonuza dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Çözme ve kodlama yerelde."
+body = """
+ Kareler kendi tarayıcınızdaki
+      WebCodecs'ten geçer ya da klibi zaten size gösterecek olan aynı oynatma
+      motorundan. Bitmiş dosya bu makinenin belleğinde kurulur ve doğrudan bir
+      indirmeye verilir."""
+
+[[privacy]]
+title = "Dosyanın büyük kısmı hiç okunmuyor bile."
+body = """
+ Bir time-lapse
+      birkaç saniyede bir kare ister; bu yüzden araç dosyanın bu anların
+      çevresindeki kısa bölümlerini okur ve gerisini atlar. Bu bir gizlilik
+      kararından çok bir hız kararı ama yine de bilinmeye değer: yerelde bile
+      videonuzun büyük kısmı hiç açılmıyor."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine videonuz hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir kare, ne bir ad, bir boyut ya da bir uzunluk. Okuyan, çözen,
+      örnekleyen ya da kodlayan her satır bu kaynaktan sunuluyor ve depoda
+      listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de videonuz
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir video seçin."
+body = """
+ Seçiciye bir MP4, MOV, M4V ya da WebM
+      bırakın veya elle seçin. Tarayıcı onu doğrudan diskinizden okur; siz bunu
+      yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Ne kadar hızlı olacağını söyleyin."
+body = """
+ Hazır hızlardan birine
+      basın ya da kendinizinkini yazın. Sonucun ne kadar süreceğini söylemeyi
+      tercih ederseniz &mdash; &laquo;bu yirmi saniyeye sığsın&raquo; &mdash;
+      onu yazın, hız ona uyar."""
+
+[[howto]]
+title = "Aralığı denetleyin."
+body = """
+ Hızın altındaki satır, aracın
+      gerçekte ne yapmak üzere olduğunu söyler: orijinalin her kaç saniyesinde
+      bir kare. Bir fotoğrafçının kamerada ayarlayacağı sayı budur ve başlamadan
+      önce gözden geçirmeye değen de budur."""
+
+[[howto]]
+title = "Yapın ve indirin."
+body = """
+ İş kendi donanımınızda olduğu için ne
+      kadar süreceği bir sıraya değil makinenize bağlıdır. Bitmiş video doğrudan
+      tarayıcınızın indirmelerine verilir."""
+
+[[faq]]
+q = "Videom herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur, çözülür,
+        örneklenir ve kodlanır. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Size
+        söylenene güvenmek yerine denetlemeyi tercih ediyorsanız internet
+        bağlantısını kesin ve yine de bir time-lapse yapın."""
+
+[[faq]]
+q = "Hız aslında ne demek?"
+a = """
+        Girenle çıkan arasındaki oran. 60&times;'te bir saatlik görüntü bir
+        dakika olur; geri oynatırken kare hızınız ne olursa olsun. Altta yatan
+        şey şu: araç her <em>hız &divide; kare hızı</em> saniyede bir kare alır
+        &mdash; saniyede 30 karede 60&times;, iki saniyede bir kare demektir
+        &mdash; ve sayfa bu aralığı siz başlamadan önce gösterir, çünkü gerçekte
+        ne olduğunu söyleyen sayı odur."""
+
+[[faq]]
+q = "Hangi video biçimlerini hızlandırabilirim?"
+a = """
+        MP4, M4V ve MOV içlerinde ne olursa olsun doğrudan okunur: H.264, HEVC,
+        AV1 ya da VP9 &mdash; yeter ki tarayıcınız o kodlayıcıyı çözebilsin.
+        Tarayıcınızın oynatabildiği başka her şey &mdash; en bilineni WebM
+        &mdash; bunun yerine tarayıcının kendi oynatıcısı her ana aranarak
+        okunur; bu, oynattığı her biçimde çalışır. Tarayıcının ne okuyabildiği ne
+        de oynatabildiği bir dosya, ki pratikte AVI, WMV, FLV ve çoğu MKV
+        demektir, yarı yolda başarısız olmak yerine bunu söyleyen bir mesajla
+        geri çevrilir. Çıkan şey her zaman bir MP4'tür."""
+
+[[faq]]
+q = "Time-lapse'in neden sesi yok?"
+a = """
+        Çünkü tutmaya değer bir şey yok. Otuz kat hızlı oynatılan ses konuşma ya
+        da müzik değil, bir cıvıltıdır; alternatif ise &mdash; sesi kendi
+        hızında, önünden koşup gitmiş bir görüntünün altında tutmak &mdash;
+        istediğinizden başka bir klip olurdu. Bu yüzden parça atılır; bir saatlik
+        videonun birkaç megabayt olarak çıkmasının da başlıca sebebi budur. Sesi
+        tek başına istiyorsanız <a href="../ses-duzenleme/">Ses Düzenleyici</a>
+        onu kaydeder."""
+
+[[faq]]
+q = "Videonun tamamını dönüştürmekten daha mı hızlı?"
+a = """
+        Çok daha hızlı ve dosyayı doğrudan okumanın bütün anlamı bu. Bir kare
+        ancak kendinden önceki anahtar kareden başlanarak çözülebilir, ama
+        aradaki karelerin tutulması gerektiğini söyleyen bir kural yok &mdash;
+        yani bir saatin 60&times; time-lapse'i yüz bin karenin hepsini değil
+        birkaç binini çözer. Özet, düğmeye basmadan önce kaç kare okuyacağını tam
+        olarak söyler."""
+
+[[faq]]
+q = "Kalite kaybettiriyor mu?"
+a = """
+        Tuttuğu kareler ikinci kez kodlanır ve bu biraz kaliteye mal olur; bundan
+        kaçınmak mümkün değil, çünkü bitmiş klip onları orijinal dosyadaki hiçbir
+        şeyin kodlanmadığı zamanlarda gösterir. Bu aracın buradaki diğer video
+        araçlarından daha fazla harcadığı şey ise bilinçli olarak bit hızıdır. İki
+        saniye arayla çekilmiş iki karenin ortak yanı, saniyenin otuzda biri
+        arayla çekilmiş iki kareden çok daha azdır; yani bir kodlayıcının yeniden
+        kullanacağı şey azdır ve sıradan görüntü için ayarlanmış bir rakam
+        bloklu çıkardı."""
+
+[[faq]]
+q = "Videonun boyutunda veya uzunluğunda bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok ve dosya belleğe bir seferde tümüyle
+        okunmuyor &mdash; her anın çevresinden kısa bölümler hâlinde ve yalnızca
+        onlar okunuyor. Pratik tavan, indirmeden önce bellekte kurulan bitmiş
+        time-lapse'tir ve bir time-lapse tanımı gereği kısadır: özet, siz
+        başlamadan önce kabaca ne kadar büyük olacağını gösterir."""
+
+[[faq]]
+q = "Bir klibin yalnızca bir bölümünü hızlandırabilir miyim?"
+a = """
+        Burada değil. Bu araç ilk kareden son kareye kadar bütününü alır. Önce
+        istediğiniz bölümü <a href="../video-kesme/">Video Kesici</a> ile kesin
+        &mdash; ki o bunu tek bir kareyi bile yeniden kodlamadan yapar &mdash;
+        sonra oradan çıkanı hızlandırın."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara videonuz hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript ve WebCodecs video kodlama destekleyen bir tarayıcı gerekir: Chrome, Edge, Safari 16.4 veya üzeri ya da Firefox 133 veya üzeri."
+description = "Uzun bir videoyu tarayıcıda time-lapse'e çevirin. Orijinalin her birkaç saniyesinden bir kare alınır ve kareler saniyede 24, 30 ya da 60 kareyle kısa bir MP4 olarak geri yazılır. MP4, MOV ve M4V doğrudan ve yalnızca gereken anların çevresinden okunur; tarayıcının oynatabildiği başka her şey aranarak gezilir. Hiçbir şey yüklenmez."
+features = [
+  "MP4, MOV, M4V ve WebM videoyu 1,1 kattan 1000 kata kadar herhangi bir oranda hızlandırır",
+  "Hızı söyleyin ya da sonucun ne kadar süreceğini söyleyin",
+  "Dosyanın yalnızca seçilen anların gerektirdiği bölümlerini okur",
+  "Saniyede 24, 30 ya da 60 kare; orijinal boyutta ya da küçültülmüş",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP4, MOV, M4V, WebM ve bu tarayıcının oynattığı her şey"

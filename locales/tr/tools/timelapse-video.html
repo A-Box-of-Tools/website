@@ -1,0 +1,161 @@
+<!--
+  tools/timelapse-video/body.html, in Turkish.
+
+  Every id, class and template tag below is what src/main.js and the frame
+  reach for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosya -->
+  <section class="card">
+    <h2><span class="step">1</span> Bir video seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="preview-wrap" id="preview-wrap" hidden>
+      <video id="preview" playsinline controls muted></video>
+      <canvas id="still" hidden></canvas>
+    </div>
+    <p id="preview-note" class="path-note" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Dosya</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Boyut</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Kare</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Süre</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Kare hızı</dt><dd id="src-fps">&mdash;</dd></div>
+      <div><dt>Görüntü</dt><dd id="src-codec">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; hız -->
+  <section class="card" id="speed-card" hidden>
+    <h2><span class="step">2</span> Hızı seçin</h2>
+
+    <div class="speed-row" role="group" aria-label="Klip ne kadar hızlandırılsın">
+      <button type="button" data-speed="2">2&times;</button>
+      <button type="button" data-speed="5">5&times;</button>
+      <button type="button" data-speed="10" class="active">10&times;</button>
+      <button type="button" data-speed="20">20&times;</button>
+      <button type="button" data-speed="30">30&times;</button>
+      <button type="button" data-speed="60">60&times;</button>
+      <button type="button" data-speed="120">120&times;</button>
+      <button type="button" data-speed="300">300&times;</button>
+    </div>
+
+    <!--
+      Two ways of saying the same thing, because people arrive with one of two
+      questions: "speed this up thirty times" and "make this fit in twenty
+      seconds". Typing in either box fills in the other.
+    -->
+    <div class="numbers">
+      <label>Hız
+        <span class="with-unit">
+          <input type="number" id="speed" min="1.1" max="1000" step="0.1" value="10">
+          <span class="unit">&times;</span>
+        </span>
+      </label>
+      <label>Bitmiş süre
+        <span class="with-unit">
+          <input type="number" id="length" min="0.1" step="0.1">
+          <span class="unit">sn</span>
+        </span>
+      </label>
+    </div>
+
+    <p class="interval-note" id="interval-note"></p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="fps">Oynatma hızı</label>
+        <select id="fps">
+          <option value="24">saniyede 24 kare</option>
+          <option value="30" selected>saniyede 30 kare</option>
+          <option value="60">saniyede 60 kare</option>
+        </select>
+        <p class="field-note">
+          Bitmiş klibin oynadığı hız. Klibin ne kadar hızlı olduğunu değiştirmez
+          &mdash; onu yukarıdaki hız belirler &mdash; yalnızca ne kadar akıcı
+          göründüğünü.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="size">Boyut</label>
+        <select id="size">
+          <option value="0" selected>Orijinal boyut</option>
+          <option value="1080">1080p</option>
+          <option value="720">720p</option>
+          <option value="480">480p</option>
+        </select>
+        <p class="field-note" id="size-note">
+          Yalnızca küçültür. Bir time-lapse genellikle küçük izlenir.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="quality">Kalite</label>
+        <select id="quality">
+          <option value="low">Daha küçük dosya</option>
+          <option value="medium" selected>Dengeli</option>
+          <option value="high">En iyi kalite</option>
+        </select>
+        <p class="field-note">
+          Buradaki video araçlarının genelde harcadığından yüksek, çünkü bir
+          time-lapse'in ardışık karelerinin sıkıştırılıp atılacak ortak yanı
+          azdır.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Adım 3 &mdash; dışa aktarma -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Time-lapse'i yapın</h2>
+
+    <dl class="summary" id="summary">
+      <div><dt>Tutulan kare</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Kare aralığı</dt><dd id="sum-interval">&mdash;</dd></div>
+      <div><dt>Bitmiş süre</dt><dd id="sum-length">&mdash;</dd></div>
+      <div><dt>Çıktı karesi</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Okuma</dt><dd id="sum-read">&mdash;</dd></div>
+      <div><dt>Yaklaşık</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-note" class="path-note" hidden></p>
+
+    <p class="silent-note">
+      Sonuçta ses yoktur. Otuz kat hızlandırılmış konuşma ve müzik, konuşma ve
+      müzik değildir; yani burada tutmaya değer bir şey yok &mdash; ve onu
+      atmak, bir saatin time-lapse'inin birkaç megabayt olarak çıkmasının
+      sebebidir.
+    </p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>Time-lapse yap</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <video id="result-video" controls playsinline loop></video>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Time-lapse'i indir</a>
+      </div>
+    </div>
+  </section>
+</main>

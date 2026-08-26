@@ -1,0 +1,18 @@
+#
+# Rehber: favicon ve uygulama simgesi yapmak - Türkçe.
+#
+
+nav = "Favicon oluşturma"
+title = "Nasıl Favicon (ve Windows Uygulama Simgesi) Yapılır"
+description = "Bir favicon.ico'nun gerçekte hangi boyutlara ihtiyacı olduğu, iPhone'ların, Android'in ve bir Mac'in hangi ek dosyaları istediği ve bir afişte işe yarayan bir logonun on altı pikselde neden kaybolduğu."
+heading = "On altı pikselde hâlâ okunan bir favicon nasıl yapılır"
+lede = """
+    Bir favicon, logonuzun küçük bir resmi değildir. Sabit boyutlarda, çoğu
+    insanın hiç açmadığı bir kabın içinde duran bir resimler kümesidir ve
+    herkesin gerçekten gördüğü, bunların en küçüğüdür. Bu rehber hangi boyutlara
+    ihtiyacınız olduğunu, yanlarına hangi dosyaların gittiğini ve logonuz bu
+    küçülmeden sağ çıkmadığında ne yapacağınızı anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "On altı pikselde hâlâ okunan bir favicon yapmak"
+og_description = "Bir favicon.ico'nun hangi boyutlara ihtiyacı olduğu, iPhone'ların ve Android'in istediği ek dosyalar ve logonuz küçültülmekten sağ çıkmadığında ne yapacağınız."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

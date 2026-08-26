@@ -1,0 +1,316 @@
+#
+# Görselden Data URI'ye - Türkçe.
+#
+# Overrides for tools/image-to-data-uri/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# The cross-links in the FAQ carry the Turkish slugs from [slugs] in
+# locale.toml - ../exif-verisi-silme/, ../resim-sikistirma/ and
+# ../resim-boyutlandirma/ - because a published locale is held to every one of
+# its internal links landing on a page that was built.
+#
+# "data URI", "base64", "gzip", "EXIF", "XMP" ve etiket adları olduğu gibi
+# kalıyor: bunlar yazılan ve aranan adlar.
+#
+
+name = "Görselden Data URI'ye"
+heading = "Görselden&nbsp;Data&nbsp;URI'ye <span class=\"h1-kw\">&mdash; CSS ya da HTML için bir resmi base64 ile kodlayın</span>"
+tagline = "Resmin tamamı tek satır metin olarak. Doğrudan CSS ya da HTML içine yapıştırın."
+
+title = "Görselden Data URI'ye &mdash; CSS için Base64, Ücretsiz, Yüklemesiz"
+description = "Bir PNG, JPEG, SVG veya WebP'yi CSS ya da HTML içine yapıştırabileceğiniz bir data URI'ye çevirin. SVG'ler base64 yerine yüzde kodlamasıyla yazılır; böylece hem okunur kalır hem de daha kısadır. Tarayıcınızda çalışır, hiçbir şey yüklenmez."
+og_title = "Bir görseli CSS içine yapıştırabileceğiniz bir satıra çevirin"
+og_description = "Resimler için base64, SVG için yüzde kodlaması ve çevresinde hazır kural, özel özellik ya da img etiketi. Kendi makinenizde çalışır, hiçbir şey yüklenmez."
+og_image_alt = "Görselden Data URI'ye - resmi stil dosyasının içine yapıştırın"
+
+pledge = """
+    Kodlama kendi tarayıcınızda, kendi donanımınızda çalışır. Sayfanın zaten
+    elinde olan baytlar üzerinde bir aritmetiktir: kodlayıcı yok, sunucu yok ve
+    dışarıda bırakılacak bir ağ adımı yok. Bu aracın hiçbir türde ağ özelliği
+    yoktur &mdash; getirecek bir şey yok, gönderecek bir şey yok &mdash; ve
+    olsaydı bile bu sayfanın öbür ucunda bir resmin gönderilebileceği bir sunucu
+    yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir resim bırakın. Tek bir istek bile bir görsel, bir küçük
+      resim, bir dosya adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da
+      internet bağlantısını kesip yine de bir tane kodlayın."""
+
+read_first = """
+, iki kodlama ve her birinin ardındaki gerekçe
+      için <code>src/encode.js</code>, ortam türünün dosyanın adından değil
+      kendisinden nasıl okunduğu için <code>src/sniff.js</code> ve
+      yapıştırmak üzere olduğunuz şeyin ne kadarının resim olmadığını söyleyen
+      denetim için <code>src/metadata.js</code>."""
+
+howto_heading = "Bir görsel data URI'ye nasıl çevrilir"
+
+card = """
+            Resimler için base64, SVG için yüzde kodlaması ve çevresine çoktan
+            kurulmuş CSS kuralı ya da <code>&lt;img&gt;</code> etiketi."""
+
+[words]
+plural = "görseller"
+choose = "bir görsel"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Yeniden kodlama yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Görsellerinizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir
+      yerde <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Kodlama, <code>btoa</code> ve
+      <code>encodeURIComponent</code>'tir &mdash; tarayıcının en başından beri
+      sahip olduğu iki işlev; ikisi de bayt alır ve hiçbir yere gitmeden metin
+      döndürür."""
+
+[[privacy]]
+title = "Ön izleme, kanıtın kendisi."
+body = """
+ Her sonucun yanındaki resim, sizin
+      dosyanızdan değil bu sayfanın az önce kurduğu data URI'den çizilir. URI
+      doğru olduğu için, sizin makinenizde, hiçbir sunucu karışmadan görüntülenir
+      &mdash; ve görüntülenmezse sayfa size bozuk bir şey vermek yerine bunu
+      söyler."""
+
+[[privacy]]
+title = "Üstveri uyarısı sizin tarafınızda."
+body = """
+ Bir data URI dosyayı olduğu
+      gibi kopyalar; yani bir fotoğrafın GPS konumu da onunla birlikte stil
+      dosyanıza gider. Bu sayfa bunun ne kadarının orada olduğunu okur ve size
+      söyler; çünkü alternatifi, siz bunu depoya işlendikten sonra
+      öğrenmenizdir."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi de Buy Me a Coffee'den geliyor. Hiçbirine
+      resimleriniz hakkında bir şey verilmiyor. Bir dosyayı okuyan ya da kodlayan
+      her satır bu kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "Görsellerinizi seçin."
+body = """
+ Seçiciye bırakın ya da elle seçin. Tarayıcı
+      onları doğrudan diskinizden okur; siz bunu yaparken hiçbir yere hiçbir şey
+      gönderilmez."""
+
+[[howto]]
+title = "Sonucun nereye gideceğini söyleyin."
+body = """
+ URI'nin kendisi, bir CSS
+      kuralı, bir özel özellik, bir <code>&lt;img&gt;</code> etiketi ya da
+      Markdown. Hepsi URI'yi tırnak içine alır; satır içine alınmış bir SVG'nin
+      çalışıp çalışmayacağına sessizce karar veren ayrıntı da budur."""
+
+[[howto]]
+title = "Neye mal olduğunu okuyun."
+body = """
+ Her sonuç kaç karaktere dönüştüğünü,
+      bunun dosyadan ne kadar büyük olduğunu ve bu boyutta bir şeyi satır içine
+      almanın iyi bir fikir olup olmadığını söyler. Base64 üçte bir ekler; o üçte
+      birin kazanılan bir isteğe değip değmediği tamamen boyuta bağlıdır, bu
+      yüzden sayfa çizginin hangi tarafında olduğunuzu söyler."""
+
+[[howto]]
+title = "Uyarılara bakın."
+body = """
+ Resim EXIF, bir renk profili ya da XMP
+      taşıyorsa, sonucunuzun kaç baytının bunlar olduğuyla birlikte adı verilir.
+      Uzantı gerçek biçimle çelişiyorsa sayfa biçimi kullanır ve size söyler.
+      Tarayıcınız sonucu çizemiyorsa onu da söyler."""
+
+[[howto]]
+title = "Kopyalayın ya da indirin."
+body = """
+ Sonuç başına bir düğme, hepsi için
+      birden bir düğme &mdash; özel özellikler bir <code>:root</code> bloğuna
+      sarılı olarak, bir stil dosyasının başına yapıştırılmaya hazır çıkar."""
+
+[[faq]]
+q = "Görselim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya, tarayıcının zaten sahip olduğu iki işlevle, kendi
+        donanımınızda, kendi tarayıcınız tarafından okunur ve kodlanır. Bu aracın
+        hiçbir türde ağ özelliği yoktur &mdash; hiçbir zaman bir şey getirmez ve
+        hiçbir zaman bir şey göndermez &mdash; ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar; bunların hiçbiri bu siteye ait değildir."""
+
+[[faq]]
+q = "Data URI nedir?"
+a = """
+        Normalde bir web adresinin gideceği yere bütün bir dosyayı yazma
+        yöntemidir. Tarayıcıya gidip bir şey getirmesini söyleyen
+        <code>url("logo.png")</code> yerine, resmin kendisini içeren
+        <code>url("data:image/png;base64,iVBORw0...")</code> yazarsınız. Tarayıcı
+        onu olduğu yerde çözer. Pratikteki etkisi bir istek eksilmesidir: resim,
+        stil dosyasından ya da sayfadan sonra değil onlarla birlikte gelir."""
+
+[[faq]]
+q = "SVG'm neden base64 değil?"
+a = """
+        Çünkü base64 onun için yanlış kodlamadır. Bir SVG metindir ve bir URL
+        zaten metin taşıyabilir &mdash; yalnızca bir avuç karakterin kaçırılması
+        gerekir. Onları yüzde kodlamasıyla yazıp gerisine dokunmamak, aynı
+        dosyanın base64'ünden tipik olarak beşte bir daha kısa ve stil dosyanızda
+        hâlâ okuyabileceğiniz bir URI üretir: öğe adları, renkler ve
+        <code>viewBox</code> düzenlemek için yerli yerindedir. Bunda ısrar eden
+        nadir bir araç zinciri için base64'ü zorlayan bir onay kutusu var."""
+
+[[faq]]
+q = "Base64 görselimi ne kadar büyütüyor?"
+a = """
+        Yaklaşık üçte bir. Dosyanın üç baytı base64'ün dört karakteri olur; bu da
+        öndeki <code>data:image/png;base64,</code>'dan önce %33 demektir. Bu
+        tabandır ve kaçınılmazdır: rastgele baytları yalnızca bir URL'nin izin
+        verdiği karakterlerle yazmanın bedeli budur. Sayfanın karakter sayısını
+        dosya boyutunun yanında göstermesinin, siz bunu stil dosyası yayına
+        alındığında öğrenesiniz diye bırakmamasının sebebi de budur."""
+
+[[faq]]
+q = "Bir görseli satır içine almak ne zaman gerçekten iyi bir fikir?"
+a = """
+        Küçük olduğunda ve hemen gerektiğinde. Her sayfanın yüklediği bir stil
+        dosyasındaki 2 KB'lik bir simge açık bir kazançtır: bir gidiş dönüş
+        eksilir ve resim, CSS oradaysa oradadır. Yaklaşık 10 KB'den sonra takas
+        döner. Satır içine alınmış bir resim artık ayrı bir dosya değildir; yani
+        kendi başına önbelleğe alınamaz, başka bir şeyle paralel olarak
+        getirilemez ve çevresindeki dosya her değiştiğinde baştan sona yeniden
+        indirilir &mdash; bir stil dosyasındaki 200 KB'lik bir fotoğraf, sitedeki
+        her sayfanın kritik yoluna eklenen 200 KB demektir. Sayfa, her sonucun o
+        çizginin hangi tarafına düştüğünü size söyler."""
+
+[[faq]]
+q = "Gzip, base64'ün getirdiği fazlalığı geri alır mı?"
+a = """
+        İnsanların beklediğinden azını. Zaten sıkıştırılmış bir dosyanın
+        &mdash; bir PNG, bir JPEG ve bir WebP bunların hepsidir &mdash; base64'ü
+        kötü sıkışır; çünkü sıkıştırıcının bulacağı neredeyse hiç fazlalık
+        kalmamıştır; tipik olarak base64'ün eklediği üçte birin onda biri kadarını
+        geri alırsınız, tamamını değil. Yüzde kodlamasıyla yazılmış bir SVG ise
+        tam tersi bir durumdur: hâlâ metindir, yani eskiden ne kadar sıkışıyorsa o
+        kadar sıkışır &mdash; bir SVG'yi base64'lememek için bir sebep daha."""
+
+[[faq]]
+q = "Bu, görselimi herhangi bir şekilde değiştiriyor mu?"
+a = """
+        Hayır ve bu, buradaki araçların çoğundan bilinçli bir farktır. Hiçbir şey
+        piksele çözülüp yeniden kodlanmaz: diskinizden gelen baytlar, URI'ye giren
+        baytlardır. Bir JPEG, aynı kalitede ve aynı boyutlarda, tam olarak olduğu
+        JPEG kalır. Sonucun bir kopyası değil de aynı dosya olarak tarif
+        edilebilmesinin sebebi budur."""
+
+[[faq]]
+q = "Yani EXIF ve GPS verim de mi stil dosyasına giriyor?"
+a = """
+        Evet ve yapıştırmadan önce üzerinde düşünmeye değen kısım da budur. Hiçbir
+        şey yeniden kodlanmadığı için kameranın yazdığı her şey resimle birlikte
+        yolculuk eder: konum, zaman damgası, kameranın seri numarası. Bir telefon
+        fotoğrafında bu, dosyanın 30 KB'si olabilir; bu da sayfanızın kritik
+        yolunda 40 KB base64 ve bir depoya işlenecek bir şeyin içinde bir ev
+        adresi demektir. Sayfa, bir JPEG, PNG ya da WebP içinde ne kadar üstveri
+        olduğunu okur ve söyler. Önce onu çıkarmak için
+        <a href="../exif-verisi-silme/">EXIF Görüntüleyici ve Silici</a>'yi
+        kullanın."""
+
+[[faq]]
+q = "Neden dosyamın uzantısından farklı bir tür kullandı?"
+a = """
+        Çünkü uzantı yanlış olabilir, baytlar olamaz. Aslında JPEG olarak dışa
+        aktarılmış <code>logo.png</code> adlı bir dosya, her görsel aracının başa
+        çıkmak zorunda olduğu kadar yaygındır ve yanlış türü bildiren bir data URI
+        düpedüz görüntülenmez &mdash; bir yedeği ve okumaya değer bir hata iletisi
+        yoktur. Bu yüzden tür, dosyanın ilk birkaç baytından okunur &mdash;
+        buradaki her biçimde ne olduğunu tereddütsüz söyleyen kısım orasıdır
+        &mdash; ve ikisi çeliştiğinde sayfa size söyler."""
+
+[[faq]]
+q = "Ön izleme boş. Ne ters gitti?"
+a = """
+        Muhtemelen URI'yle ilgili bir şey değil. HEIC ve TIFF, Safari dışında
+        hiçbir tarayıcının çizmeyeceği ama gayet geçerli data URI'ler üretir; yani
+        resim, yapıştırdığınız yerde de eksik olacaktır &mdash; önce
+        <a href="../resim-sikistirma/">Görsel Sıkıştırıcı</a> ya da
+        <a href="../resim-boyutlandirma/">Görsel Boyutlandırıcı</a> ile PNG, JPEG
+        veya WebP'ye çevirin. Biçim sıradan bir biçimse dosyanın kendisi büyük
+        olasılıkla bozuktur: ön izleme bu sayfanın kurduğu URI'den çizilir, yani
+        boş bir ön izleme resmin çözülmediği anlamına gelir."""
+
+[[faq]]
+q = "Bir data URI'de boyut sınırı var mı?"
+a = """
+        CSS'te ya da bir <code>&lt;img&gt;</code> etiketinde karşılaşacağınız bir
+        sınır yok; güncel tarayıcılar orada pratikte bir tavan koymuyor.
+        Tarayıcıların sınırladığı şey, bir data URI'yi adres çubuğuna yazmaktır ki
+        çoğu artık bunu, bu kullanımla hiç ilgisi olmayan güvenlik sebepleriyle,
+        önemsiz olmayan her şey için reddediyor. Gerçek sınır yukarıdakidir: teknik
+        olarak bir şey bozulmadan çok önce, içinde bulunduğu sayfa sıradan bir
+        görsel dosyasıyla olacağından daha yavaş hâle gelmiştir."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Dosyaların
+        sayısında ya da boyutunda da bir sınır yok, çünkü bunların bedelini ödeyen
+        bir sunucu yok &mdash; iş sizin kendi cihazınızda oluyor. Sitede reklam
+        var, masrafı karşılayan da o; reklamlara görselleriniz hakkında hiçbir şey
+        verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: görsellerinizi kodlanmak üzere uzağa gönderen
+        bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Bir PNG, JPEG, SVG, WebP, GIF veya ICO'yu CSS ya da HTML içine yapıştırmaya hazır bir data URI'ye dönüştürün. Tarama biçimleri için base64, SVG için yüzde kodlaması; bir CSS kuralına, bir özel özelliğe, bir img etiketine ya da Markdown'a sarılı, boyut bedeli ve gömülü üstveri raporuyla. Tamamen tarayıcıda çalışır, yükleme yoktur."
+features = [
+  "PNG, JPEG, WebP, GIF, ICO, AVIF ve daha fazlası için base64 data URI'ler",
+  "Base64'ten kısa olan ve okunur kalan, yüzde kodlamalı SVG data URI'leri",
+  "Hazır CSS kuralı, CSS özel özelliği, HTML img etiketi ya da Markdown; her zaman doğru tırnaklanmış",
+  "Ortam türü, uzantıdan değil dosyanın kendi baytlarından okunur",
+  "Kodlamanın kaç karaktere mal olduğunu ve bu boyutta satır içine almanın değip değmediğini söyler",
+  "EXIF, XMP ya da bir renk profili stil dosyanıza kopyalanmak üzereyken uyarır",
+  "Dosyayı baytı baytına kopyalar: yeniden kodlama yok, kalite kaybı yok",
+  "Yığın işleme; her şey tek bir dosya olarak kopyalanır ya da indirilir",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Görselleri buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; PNG, JPEG, SVG, WebP, GIF, ICO ve daha fazlası"

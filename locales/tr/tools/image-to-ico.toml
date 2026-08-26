@@ -1,0 +1,344 @@
+#
+# Görselden ICO'ya - Türkçe.
+#
+# Overrides for tools/image-to-ico/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Dosya adları (favicon.ico, app.ico, browserconfig.xml, Info.plist), Apple
+# anahtarları (CFBundleIconFile) ve araç adları (iconutil, Visual Studio)
+# olduğu gibi kalıyor: bunlar yazılan ve aranan adlar.
+#
+
+name = "Görselden ICO'ya"
+heading = "Görselden&nbsp;ICO'ya <span class=\"h1-kw\">&mdash; favicon, Windows ve macOS simge yapıcı</span>"
+tagline = "Bir resim girer. Bir tarayıcının, Windows'un ya da bir Mac'in istediği her boyut çıkar."
+
+title = "Görselden ICO'ya &mdash; Favicon, Uygulama Simgesi ya da ICNS Yapın, Yüklemesiz"
+description = "Bir PNG, JPEG veya SVG'yi tarayıcınızda gerçek, çok boyutlu bir .ico ya da bir macOS .icns dosyasına dönüştürün. Favicon, Windows uygulama simgesi, Mac uygulama simgesi ve bir sitenin ihtiyaç duyduğu Apple ile Android dosyaları. Hiçbir şey yüklenmez."
+og_title = "İçinde her boyutu olan bir .ico ya da .icns'i hiçbir şey yüklemeden yapın"
+og_description = "Bir web sitesi için favicon.ico, bir Windows programı için app.ico, bir Mac için .icns &mdash; indirmeden önce 16 piksellik ön izlemesiyle. Hepsi kendi makinenizde çalışır."
+og_image_alt = "Görselden ICO'ya - favicon, Windows ve macOS simge yapıcı, yükleme yok"
+
+pledge = """
+    Ölçekleme de simge dosyalarının kendisi de kendi tarayıcınızda üretilir.
+    Resim, tarayıcınızın zaten beraberinde getirdiği tuval tarafından çizilir ve
+    her kap &mdash; Windows <code>.ico</code>'su, macOS <code>.icns</code>'i
+    &mdash; o piksellerden, <code>src/ico.js</code> ve <code>src/icns.js</code>
+    içindeki, okuyabileceğiniz birkaç yüz satırla kurulur. Bu aracın hiçbir türde
+    ağ özelliği yoktur &mdash; getirecek bir şey yok, gönderecek bir şey yok
+    &mdash; ve olsaydı bile bu sayfanın öbür ucunda bir logonun
+    gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir simge yapın. Tek bir istek bile bir görsel, bir küçük resim,
+      bir dosya adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet
+      bağlantısını kesip yine de bir tane yapın."""
+
+read_first = """
+, iki simge biçimi için <code>src/ico.js</code> ve
+      <code>src/icns.js</code> &mdash; birinde dizin, girdiler ve maske;
+      diğerinde Apple'ın adlandırılmış on yuvası &mdash; ve sayfadaki her boyutun
+      nereden geldiği için <code>src/sizes.js</code>."""
+
+howto_heading = "Hiçbir şey yüklemeden nasıl .ico dosyası yapılır"
+
+card = """
+            Bir favicon, bir Windows uygulama simgesi ya da bir macOS .icns
+            &mdash; her boyut tek dosyada, indirmeden önce 16 piksellik
+            ön izlemesiyle."""
+
+[words]
+plural = "görseller"
+choose = "bir resim"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Logonuzun gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir yerde
+      <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Ölçekleme, bir tuvale yapılan bir
+      <code>drawImage</code>'dir; her simge de bu sayfada, o piksellerin önüne
+      <code>src/ico.js</code> ya da <code>src/icns.js</code> tarafından yazılmış
+      bir başlıktır."""
+
+[[privacy]]
+title = "Dosya kendi baytlarından tarif ediliyor."
+body = """
+ Bitmiş bir simgenin
+      yanında gösterilen boyut listesi, istediğiniz boyutların listesi değildir.
+      Az önce yazılan dosyadan <code>readIcoDirectory</code> ya da
+      <code>readIcnsElements</code> tarafından geri okunur; yani bir yazıcı
+      ayarlarla çelişseydi sayfa bunu söylerdi, siz Windows hiçbir şey çizmediğinde
+      ve macOS boş bir kâğıt çizdiğinde öğrenmezdiniz."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi de Buy Me a Coffee'den geliyor. Hiçbirine resminiz
+      hakkında bir şey verilmiyor. Bir dosyayı okuyan, ölçekleyen ya da yazan her
+      satır bu kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "Resmi seçin."
+body = """
+ Seçiciye bir PNG, JPEG, WebP ya da SVG bırakın
+      veya birkaç tane seçip hepsini tek seferde dönüştürün. Kare olanı en
+      kolayıdır ve 256 pikselden yukarısı her boyut için yeterli ayrıntı taşır.
+      Tarayıcı onu doğrudan diskinizden okur; siz bunu yaparken hiçbir yere hiçbir
+      şey gönderilmez."""
+
+[[howto]]
+title = "İhtiyacınız olan dosyaları seçin."
+body = """
+ Windows ve bir tarayıcı
+      <code>.ico</code> okur; bir Mac <code>.icns</code> okur ve diğerine hiç
+      bakmaz. Birini işaretleyin ya da yaptığınız şey ikisinde de yayımlanacaksa
+      ikisini birden. Bir web sitesi ayrıca Apple, Android ve kutucuk görsellerini
+      de ister ve üçüncü kutu odur."""
+
+[[howto]]
+title = "Simgenin ne için olduğunu söyleyin."
+body = """
+ Bir web sitesi faviconu 16,
+      32 ve 48 pikseldir; bir Windows uygulaması 256'yı da ister; yüksek
+      yoğunluklu bir dizüstünde düzgün görünmesi gereken bir uygulama, Windows'un
+      %125 ve %150 ölçeklemede istediği ara boyutları ister. İşe uyanı seçin ya da
+      boyutları kendiniz işaretleyin. Listedeki her boyut, onu neyin istediğini
+      söyler. <code>.icns</code>'te böyle bir seçim yoktur: Apple tam olarak on
+      yuva belirler ve onu da girer."""
+
+[[howto]]
+title = "Şekli ve arka planı halledin."
+body = """
+ Bir simge karedir ve çoğu logo
+      değildir. Doldurun; resmin tamamı, üstünde ve altında boşlukla korunur.
+      Kırpın; ortası alınır. Esnetin; ezilir. Arkasına oturacak bir renk
+      seçmediğiniz sürece saydamlık saydamlık olarak korunur."""
+
+[[howto]]
+title = "İndirmeden önce 16 piksellik olana bakın."
+body = """
+ Simgenin en sık
+      görüleceği boyut odur ve ince çizgilerle küçük harflerin kaybolduğu yer de
+      orasıdır. Ön izlemedeki her kare, sizin dosyanızdan gerçek boyutunda
+      çizilir. En küçüğü bir lekeyse çözüm başka bir ayar değil, daha basit bir
+      çizimdir."""
+
+[[howto]]
+title = "Dosyaları alın."
+body = """
+ İçinde her boyutu olan tek bir .ico; istediğiniz
+      buysa <code>favicon.ico</code> adıyla, çünkü tarayıcıların aradığı adres
+      odur. İşaretlediyseniz yanında bir .icns; bir Mac uygulama paketine girmeye
+      hazır. Web sitesi setini de işaretleyin; Apple, Android ve Windows kutucuk
+      görsellerini, bildirimi ve sayfanıza yapıştıracağınız HTML bloğunu da alın.
+      Tek dosyadan fazlası tek bir zip olarak iner."""
+
+[[faq]]
+q = "Görselim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Resim kendi donanımınızda, kendi tarayıcınız tarafından çözülür ve
+        ölçeklenir; .ico da o piksellerden, bu sayfadan sunulan kodla kurulur. Bu
+        aracın hiçbir türde ağ özelliği yoktur &mdash; hiçbir zaman bir şey
+        getirmez ve hiçbir zaman bir şey göndermez &mdash; ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar; bunların hiçbiri bu siteye ait değildir."""
+
+[[faq]]
+q = "Bir favicon.ico hangi boyutları içermeli?"
+a = """
+        16, 32 ve 48. Bu bir tercih değildir: 16, bir tarayıcının bir sekmede
+        çizdiğidir; 32, Windows'un bir masaüstü kısayolu için kullandığı ve
+        birkaç tarayıcının bir yer imi için kullandığıdır; 48 ise Google'ın bir
+        site simgesini okuduğu boyuttur. Daha büyüğü .ico'nun içinde değil
+        yanında bir PNG'de olmalıdır &mdash; buradaki web sitesi setinin ürettiği
+        de budur."""
+
+[[faq]]
+q = "Bir Windows uygulama simgesi hangi boyutlara ihtiyaç duyar?"
+a = """
+        16, 32, 48 ve 256; Visual Studio'nun kendi varsayılan app.ico'sunun
+        tuttuğu da budur. 16 başlık çubuğu ve küçük Explorer görünümü, 32 masaüstü
+        ve görev çubuğu, 48 Explorer'ın orta simgeleri ve 256 başlat menüsü ile
+        çok büyük görünümdür. Yüksek yoğunluklu bir ekranda Windows ayrıca 20, 24,
+        40, 64 ve 96'yı da ister ve yoklarsa elindeki en yakın boyuttan yeniden
+        örnekler &mdash; "her ölçek" hazır ayarı onları da koyar."""
+
+[[faq]]
+q = "Dosya neden başladığım resimden büyük?"
+a = """
+        Çünkü bir .ico tek bir resim değil birkaç resimdir ve küçük olanlar, her
+        şey okuyabilsin diye sıkıştırılmadan saklanır. 32x32'lik bir girdi içinde
+        ne olursa olsun tam 4.264 bayttır ve sıkıştırılmamış bir 256x256 girdisi
+        264 KB'dir &mdash; 64'ün üstündeki boyutların varsayılan olarak PNG
+        saklanmasının sebebi de budur. "Her boyut için PNG" seçmek var olan en
+        küçük dosyayı yapar; her boyut için sıkıştırılmamışı seçmek ise en
+        uyumlusunu."""
+
+[[faq]]
+q = "PNG ve sıkıştırılmamış girdiler arasındaki fark ne?"
+a = """
+        Yalnızca piksellerin .ico içinde nasıl saklandığı. Sıkıştırılmamış bir
+        girdi, özgün Windows düzenidir &mdash; bir bit eşlem başlığı, baş aşağı
+        pikseller ve bir bitlik bir saydamlık maskesi &mdash; ve şimdiye kadar
+        çıkmış her Windows sürümü onu okuyabilir. Bir PNG girdisi ise simgenin
+        içine sıkıştırılmış bütün bir PNG dosyasıdır; büyük boyutlarda üç ila on
+        kat daha küçüktür ama yalnızca Windows Vista'dan itibaren anlaşılır.
+        Varsayılan, her birini kazandığı yerde kullanır: 64 piksele kadar
+        sıkıştırılmamış, üstünde PNG."""
+
+[[faq]]
+q = "256 pikselden büyük bir simge yapabilir mi?"
+a = """
+        Hayır ve hiçbir şey yapamaz. Biçim her kenarı tek bir baytta saklar ve
+        0'ın bir karşılığı vardır &mdash; 256 demektir. Tavan budur; yani içinde
+        512 piksellik bir görüntü olan bir .ico daha büyük bir simge değil bozuk
+        bir simgedir. 512 gerekiyorsa bir PNG gerekir ki web sitesi setinin
+        Android ve bir web uygulamasının açılış ekranı için içerdiği de odur."""
+
+[[faq]]
+q = "Saydamlığı koruyor mu?"
+a = """
+        Evet, her iki girdi türünde de; ayrıca alfa kanalının yanına eski bir
+        bitlik maskeyi de yazar, böylece alfayı okuyamayacak kadar eski yazılımlar
+        siyah bir kutu çizmek yerine simgeyi yine de kesip çıkarır. Bilinçli
+        olarak opak yapılan tek dosya, web sitesi setindeki Apple dokunma
+        simgesidir: iOS onu kendi kutucuğuna yerleştirir ve saydamlığı siyaha
+        çevirir; bu yüzden varsayılan olarak beyaz olan arka plan renginize
+        düzleştirilir."""
+
+[[faq]]
+q = "Logom geniş, kelime biçiminde. Ona ne olur?"
+a = """
+        Bir şey olmak zorunda, çünkü bir simge karedir. Doldurmak her şeyi korur
+        ve küçültür &mdash; 16 piksellik bir kareye doldurulmuş bir kelime logosu
+        yaklaşık üç piksel yüksekliğinde ve okunmazdır. Ortaya kırpmak genellikle
+        daha iyi sonuç verir: neredeyse her markanın faviconu için yaptığı gibi,
+        semboli kompozisyondan çıkarıp onu kullanın. Ön izleme, siz bir şey
+        indirmeden önce hangisinin hayatta kaldığını gösterir."""
+
+[[faq]]
+q = "Web sitesi setinde neler var ve hepsine ihtiyacım var mı?"
+a = """
+        Yedi PNG, bir web uygulaması bildirimi, bir browserconfig.xml ve
+        yapıştırılacak bir HTML bloğu. Onlara ihtiyacınız var, çünkü bir .ico
+        tarayıcıları ve Windows'u kapsar, başka hiçbir şeyi kapsamaz: bir iPhone
+        ana ekranı kendi adıyla 180 piksellik bir PNG okur, Android ve her kurulum
+        istemi bildirimi okur ve başlat menüsüne sabitlenmiş bir kutucuk XML'i
+        okur. Bunların hiçbiri bir .ico'nun içine bakmaz. Her şey burada, sizin
+        makinenizde üretilir ve zip'in içinde her dosyanın ne işe yaradığını
+        söyleyen bir not vardır."""
+
+[[faq]]
+q = "Bir macOS simgesi de yapabilir mi?"
+a = """
+        Evet &mdash; <em>macOS simgesi</em>'ni işaretleyin;
+        <code>.ico</code>'nun yanında ya da onun yerine bir <code>.icns</code>
+        alın. Aynı fikrin başka bir kabıdır ve iki sistem de diğerininkini
+        okumaz: Windows .ico ister, bir Mac uygulama paketi ise .icns ister.
+        Orada boyutlar bir seçim değildir, çünkü Apple tam olarak on yuva
+        yayımlar &mdash; 16, 32, 64, 128, 256, 512 ve 1024 piksel; bunlardan üçü,
+        bir altındaki boyutun Retina sürümü olarak iki kez görünür. Onu da girer;
+        yedi çizimden çıkarılırlar ve bir .icns'in daha büyük dosya olmasının
+        sebebi de budur."""
+
+[[faq]]
+q = ".icns dosyasını nasıl kullanırım?"
+a = """
+        Bir uygulama için, pakette
+        <code>YourApp.app/Contents/Resources/</code> içine konur ve
+        <code>Info.plist</code> içinde <code>CFBundleIconFile</code> altında
+        adlandırılır; her Mac paketleme aracının bunun için bir alanı vardır.
+        Başka her şey için dosyayı Finder'da seçin, Command-C'ye basın, sonra
+        değiştirmek istediğiniz klasör ya da disk imajında Get Info açın, sol
+        üstteki küçük simgeye tıklayın ve Command-V'ye basın."""
+
+[[faq]]
+q = ".icns, iconutil'in ürettiğiyle aynı mı?"
+a = """
+        Aynı dört harfli türlerle aynı on yuva ve her birinde PNG; bir
+        <code>.iconset</code> klasöründen <code>iconutil</code>'in ürettiği de
+        budur. Bilinçli tek fark: Apple'ın aracı ayrıca, ardından gelen türlerin
+        ve uzunlukların bir dizini olan bir <code>TOC&nbsp;</code> öğesi yazar. Bu,
+        biçimin parçası değil bir iyileştirmedir &mdash; onsuz bir okuyucu öğeleri
+        baştan sona gezer ve aynı cevaba varır &mdash; ve yanlış bir dizin,
+        dizinsizlikten kötüdür; bu yüzden dışarıda bırakılır."""
+
+[[faq]]
+q = "Aynı anda birkaç resmi dönüştürebilir miyim?"
+a = """
+        Evet. Listedeki her resim aynı ayarlarla kendi .ico'suna dönüşür ve yığın,
+        resim başına bir klasör içeren tek bir zip olarak iner &mdash; yoksa
+        ikisinin de adı favicon.ico olur ve biri diğerinin üzerine yazardı.
+        İşaretlediğiniz her çıktı, her resim için üretilir. O resmi ön izlemeye
+        koymak için herhangi bir satıra tıklayın."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok.
+        Dosyaların sayısında ya da boyutunda da bir sınır yok, çünkü bunların
+        bedelini ödeyen bir sunucu yok &mdash; iş sizin kendi cihazınızda oluyor.
+        Sitede reklam var, masrafı karşılayan da o; reklamlara görselleriniz
+        hakkında hiçbir şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: logonuzu dönüştürülmek üzere uzağa gönderen
+        bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Bir görseli tarayıcıda çok boyutlu bir Windows ICO dosyasına ya da bir macOS ICNS dosyasına dönüştürün. Web sitesi faviconu, Windows uygulama simgesi ve yüksek yoğunluklu uygulama simgesi için hazır ayarlar, Apple'ın on icns yuvası, her boyutun gerçek piksel boyutunda ön izlemesi ve bir web sitesinin ihtiyaç duyduğu Apple, Android ve Windows kutucuk dosyalarından oluşan isteğe bağlı bir set. Hiçbir şey yüklenmez."
+features = [
+  "16'dan 256 piksele, gerçek çok boyutlu bir .ico yazar",
+  "16'dan 1024 piksele, Apple'ın on yuvasının hepsiyle bir macOS .icns yazar",
+  "Tek resimden, tek geçişte iki biçim; her boyut yalnızca bir kez çizilir",
+  "Web sitesi faviconu, Windows uygulama simgesi, yüksek yoğunluklu Windows ve azami uyum için hazır ayarlar",
+  "Her boyut onu neyin istediğini söyler, böylece hiçbir şey boşuna girmez",
+  "Küçük boyutlar için sıkıştırılmamış girdiler ve büyükler için PNG ya da tamamı ikisinden biri",
+  "Saydamlığı korur ve Vista öncesi saydamlık maskesini de yazar",
+  "Kare olmayan bir resmi doldurun, kırpın ya da esnetin; bir rengin üzerinde ya da hiçbir şeyin",
+  "İndirmeden önce her boyutu gerçek piksel boyutunda gösterir",
+  "İsteğe bağlı web sitesi seti: Apple dokunma simgesi, Android simgeleri, maskelenebilir simge, Windows kutucuğu, bildirim ve yapıştırılacak HTML",
+  "Toplu işlem, tüm sonuçlar tek bir zip içinde",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Bir resmi buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; PNG, JPEG, WebP, SVG ve tarayıcınızın açabildiği her şey"

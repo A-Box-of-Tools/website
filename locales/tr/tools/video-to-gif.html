@@ -1,0 +1,175 @@
+<!--
+  tools/video-to-gif/body.html, in Turkish.
+
+  Every id, class and template tag below is what src/main.js and the frame
+  reach for, so they are the same in every language. Only the words change.
+-->
+<main>
+  <!-- Adım 1 &mdash; dosya -->
+  <section class="card">
+    <h2><span class="step">1</span> Bir video seçin</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <dl class="source" id="source" hidden>
+      <div><dt>Dosya</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Boyut</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Kare</dt><dd id="src-frame">&mdash;</dd></div>
+      <div><dt>Süre</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Görüntü</dt><dd id="src-codec">&mdash;</dd></div>
+      <div><dt>Okuyan</dt><dd id="src-path">&mdash;</dd></div>
+    </dl>
+
+    <p id="path-note" class="path-note" hidden></p>
+  </section>
+
+  <!-- Adım 2 &mdash; bölüm -->
+  <section class="card" id="section-card" hidden>
+    <h2><span class="step">2</span> Bölümü seçin</h2>
+
+    <p class="hint">
+      Klibi oynatın ve istediğiniz kısmı işaretleyin. <kbd>I</kbd> başlangıcı
+      oynatma başlığının olduğu yere koyar, <kbd>O</kbd> bitişi koyar ve
+      çubuktaki iki tutamak da sürüklenebilir.
+    </p>
+
+    <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <video id="preview" playsinline controls></video>
+        <canvas id="still" hidden></canvas>
+      </div>
+    </div>
+
+    <p id="stage-note" class="stage-note" hidden></p>
+
+    <!-- The bar itself is built by src/range.js. -->
+    <div id="rangebar"></div>
+    <div class="rb-scale">
+      <span>0:00.000</span>
+      <span id="scale-end">&mdash;</span>
+    </div>
+
+    <div class="marks">
+      <label>Başlangıç
+        <input type="text" id="start-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-in" class="ghost" title="Başlangıcı oynatma başlığının olduğu yere koy (I)">
+        Başlığa ayarla
+      </button>
+
+      <label>Bitiş
+        <input type="text" id="end-time" inputmode="decimal" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" id="mark-out" class="ghost" title="Bitişi oynatma başlığının olduğu yere koy (O)">
+        Başlığa ayarla
+      </button>
+
+      <div class="mark-actions">
+        <button type="button" id="play-section" class="ghost">Bölümü oynat</button>
+        <button type="button" id="whole-clip" class="ghost">Klibin tamamı</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Adım 3 &mdash; GIF -->
+  <section class="card" id="export-card" hidden>
+    <h2><span class="step">3</span> Boyut ve kare hızı</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="width">Genişlik</label>
+        <select id="width">
+          <option value="240">240 px</option>
+          <option value="320">320 px</option>
+          <option value="480" selected>480 px</option>
+          <option value="640">640 px</option>
+          <option value="source">Orijinal boyut</option>
+          <option value="custom">Tam olarak&hellip;</option>
+        </select>
+        <p class="field-note">
+          Yükseklik ona uyar, yani şekil hiç değişmez. Bir GIF'in maliyeti
+          genişliktir: yarı genişlik, dörtte bir piksel demektir.
+        </p>
+        <p class="field-note" id="width-note" hidden></p>
+      </div>
+
+      <div class="field" id="custom-width-field" hidden>
+        <label for="custom-width">Tam genişlik</label>
+        <input type="number" id="custom-width" min="16" max="1920" step="1" value="480">
+        <p class="field-note">Piksel olarak, 16 ile 1920 arasında.</p>
+      </div>
+
+      <div class="field">
+        <label for="fps">Saniyedeki kare</label>
+        <select id="fps">
+          <option value="5">5 &mdash; en küçük</option>
+          <option value="10">10</option>
+          <option value="12" selected>12 &mdash; yeterince akıcı</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+          <option value="25">25 &mdash; en akıcı</option>
+        </select>
+        <p class="field-note">
+          Videonun kendi hızı değil: kareler ondan örneklenir. On iki, hareket
+          olarak okunur; yirminin üstünde dosya, akıcılığın görünmesinden daha
+          hızlı büyür.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="dither">Dithering</label>
+        <select id="dither">
+          <option value="on" selected>Açık &mdash; daha yumuşak geçişler</option>
+          <option value="off">Kapalı &mdash; daha düz, daha küçük</option>
+        </select>
+        <p class="field-note">
+          Doğrusunun bulunmadığı yerde iki palet rengini karıştırır. Sıralı
+          türden, yani sabit bir arka plan titremez.
+        </p>
+      </div>
+
+      <div class="field">
+        <label class="check" for="loop">
+          <input type="checkbox" id="loop" checked>
+          Sonsuza kadar döngü
+        </label>
+        <p class="field-note">Kapalıysa bir kez baştan sona oynar ve durur.</p>
+      </div>
+    </div>
+
+    <dl class="summary" id="summary">
+      <div><dt>Bölüm</dt><dd id="sum-section">&mdash;</dd></div>
+      <div><dt>Çıktı</dt><dd id="sum-size">&mdash;</dd></div>
+      <div><dt>Kareler</dt><dd id="sum-frames">&mdash;</dd></div>
+      <div><dt>Yaklaşık dosya boyutu</dt><dd id="sum-bytes">&mdash;</dd></div>
+    </dl>
+
+    <p id="memory-note" class="field-note" hidden></p>
+
+    <div class="export-row">
+      <button type="button" id="export" class="primary" disabled>GIF'i yap</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <img id="result-image" alt="Bitmiş animasyon, oynuyor">
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>GIF'i indir</a>
+      </div>
+    </div>
+  </section>
+</main>

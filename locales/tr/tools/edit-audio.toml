@@ -1,0 +1,274 @@
+#
+# Ses Düzenleyici - Türkçe.
+#
+# Overrides for tools/edit-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Ses Düzenleyici"
+heading = "Ses&nbsp;Düzenleyici <span class=\"h1-kw\">&mdash; bir parçayı ters çevirin, hızlandırın ya da yükseltin</span>"
+tagline = "Geriye oynatın, hızını değiştirin, sessiz bir kaydı yükseltin &mdash; hepsi burada, kendi makinenizde."
+
+title = "Sesi Ters Çevirme, Hız Değiştirme ve Ses Yükseltme &mdash; Ücretsiz, Yüklemesiz"
+description = "Bir parçayı geriye oynatın, hızlandırın ya da yavaşlatın ve sessiz bir kaydı daha yüksek yapın. Bir videonun sesini de çıkarır. Tarayıcınızda çalışır: hiçbir şey yüklenmez."
+og_title = "Ses Düzenleyici &mdash; hiçbir şey yüklemeden ters çevirin, yeniden zamanlayın, yükseltin"
+og_description = "Bir parçayı ters çevirin, perdeyi kaydırarak ya da kaydırmadan hızını değiştirin ve seviyeyi ayarlayın; sonra bir WAV indirin. Dosyayı kendi tarayıcınız okur ve yazar."
+og_image_alt = "Ses Düzenleyici - tarayıcınızda sesi ters çevirin, yeniden zamanlayın ve yükseltin"
+
+pledge = """
+    Dosyanız kendi tarayıcınız tarafından, kendi donanımınızda okunur,
+    düzenlenir ve yazılır. Buradaki hiçbir şey bir şey getiremez ya da
+    gönderemez &mdash; bu araçta hiçbir türde ağ özelliği yok &mdash; ve
+    olsaydı bile bu sayfanın öbür ucunda bir kaydın gönderilebileceği bir sunucu
+    yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir şeyi ters çevirin. Tek bir istek bile bir örnek, bir dosya
+      adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet
+      bağlantısını kesip yine de bir parça düzenleyin &mdash; sesinizi işlenmek
+      üzere uzağa gönderen bir araç öylece dururdu."""
+
+read_first = """
+, dosyanızı tarayıcının kendi çözücüsüne veren yirmi
+      satır için <code>src/decode.js</code>, zaman esneticisi için
+      <code>src/stretch.js</code>, yeniden örnekleyici için
+      <code>src/speed.js</code> ve örneklerin önüne giden başlık için
+      <code>src/wav.js</code>. Hiçbiri istek yapabilecek bir şeyi içeri
+      almaz."""
+
+howto_heading = "Bir ses dosyası nasıl düzenlenir"
+
+card = """
+            Bir parçayı ters çevirin, perdeyi kaydırarak ya da kaydırmadan
+            hızını değiştirin ve sessiz bir kaydı yukarı getirin. Bir videonun
+            sesini de çıkarır."""
+
+[words]
+plural = "kayıtlarınız"
+choose = "bir dosya"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Video girer, ses çıkar"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Kayıtlarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyanızın toplanabileceği bir uç nokta burada yok,
+      olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Sesinize dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Çözücü, tarayıcınızda zaten olan çözücü."
+body = """
+
+      Dosya <code>decodeAudioData</code>'ya verilir; bir parçayı bir
+      <code>&lt;audio&gt;</code> öğesinde çalan kodun aynısı. Biçiminizi okumak
+      için buraya hiçbir şey getirilmiyor ve onu okumak için bu sayfanın
+      dışındaki hiçbir şeyden bir şey istenmiyor."""
+
+[[privacy]]
+title = "Bir videonun görüntüsü hiç çözülmez."
+body = """
+ Bir video bıraktığınızda
+      yalnızca ses parçası istenir. Kareler okunmaz, çözülmez, çizilmez ve
+      onlara bakılmaz &mdash; bu sayfada bunu yapabilecek bir kod yok ve çıkan
+      dosya ses tutar, başka hiçbir şey tutmaz."""
+
+[[privacy]]
+title = "Örnekler yeniden kodlanmaz, olduğu gibi yazılır."
+body = """
+
+      Bir WAV, bu sayfanın hesapladığı örneklerin önüne bir başlık konmuş
+      hâlidir. Döngüde kaydınız hakkında karar veren bir kodlayıcı yok ve o
+      kararların alınabileceği, yükleme diye tarif edilebilecek bir şey de
+      yok."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine kaydınız hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir örnek, ne bir ad, bir boyut, bir uzunluk ya da ne kadar
+      yüksek olduğu. Okuyan, düzenleyen ve yazan her satır bu kaynaktan sunuluyor
+      ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de dosyanız
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir dosya seçin."
+body = """
+ Seçiciye bir MP3, WAV, FLAC, M4A, Ogg ya
+      da Opus dosyası bırakın &mdash; istediğiniz şey içindeki sesse bir video da
+      olur. Tarayıcı onu doğrudan diskinizden okur; siz bunu yaparken hiçbir yere
+      hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Geldiğiniz iş buysa onu ters çevirin."
+body = """
+ Tek bir onay
+      kutusu. Örnekler sondan başa yazılır ki bu tam olarak geri alınabilir: iki
+      kez yapın, örnek örnek başladığınız dosyayı elde edersiniz."""
+
+[[howto]]
+title = "Hızı ayarlayın."
+body = """
+ Kaydırıcıyı sürükleyin, bir çarpan yazın ya da
+      hazır ayarlardan birine basın. Sonra perdeye ne olacağını seçin: olduğu
+      yerde tutun &mdash; 1,5&times; hızda bir ders için isteyeceğiniz budur
+      &mdash; ya da hızla birlikte kaymasına izin verin; bir bandın yaptığı ve
+      bir sesi tizleştirip pesleştiren de budur."""
+
+[[howto]]
+title = "Seviyeyi ayarlayın."
+body = """
+ Ya desibel cinsinden bir değişim
+      belirtin ya da kaydın, en yüksek anı tavanın hemen altına oturana kadar
+      yükseltilmesini isteyin. Sayfa, siz hiçbir şeye basmadan önce o anın nereye
+      düşeceğini söyler ve seçtiğiniz ayar onu tam ölçeğin ötesine iterse sizi
+      uyarır."""
+
+[[howto]]
+title = "Kaydedin."
+body = """
+ İş kendi donanımınızda olduğu için ne kadar süreceği
+      bir sıraya değil makinenize bağlıdır. Çıkan şey bir WAV'dir &mdash;
+      örneklerin kendisi, önlerinde bir başlıkla &mdash; önce sayfada çalınır,
+      sonra doğrudan tarayıcınızın indirmelerine verilir."""
+
+[[faq]]
+q = "Sesim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        düzenlenir ve yazılır. Bu aracın sunucu tarafı yoktur ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar &mdash; bunların hiçbiri bu siteye ait değildir. Size
+        söylenene güvenmek yerine denetlemeyi tercih ediyorsanız internet
+        bağlantısını kesin ve yine de bir parçayı ters çevirin."""
+
+[[faq]]
+q = "Bir videonun sesini alabilir miyim?"
+a = """
+        Evet ve bu, burada bir MP3 açmakla aynı iştir. Bir MP4, MOV ya da WebM
+        bırakın; yalnızca ses parçası çözülür: görüntü hiç okunmaz ve çıkan şey
+        içinde video olmayan bir ses dosyasıdır. Bu aynı zamanda bir klibin
+        sesini hiç düzenlemeden kaydetmenin de yoludur &mdash; her ayarı olduğu
+        gibi bırakın ve düğmeye basın."""
+
+[[faq]]
+q = "Hızı değiştirmek perdeyi değiştirir mi?"
+a = """
+        Yalnızca siz isterseniz. "Perdeyi koru", kaydı yaklaşık elli
+        milisaniyelik örtüşen pencerelere böler ve onları birbirine daha yakın ya
+        da daha uzak yeniden yerleştirir; her konumu, dalgalar kesiştikleri yerde
+        hizalanacak şekilde seçer &mdash; bir ses 1,5&times; hızda aynı ses
+        kalır. "Kaymasına izin ver" ise yeniden örnekler; bir bandı daha hızlı
+        çalmanın yaptığı budur: iki kat hız tam olarak bir oktav tizdir."""
+
+[[faq]]
+q = "Neden MP3 yerine WAV kaydediyor?"
+a = """
+        Çünkü hiçbir tarayıcı MP3 kodlayıcısı getirmez ve bu araç kaydınızı böyle
+        bir kodlayıcısı olan bir sunucuya göndermeyi reddeder. Bir WAV hiçbir
+        kodlayıcı gerektirmez &mdash; önüne kırk dört baytlık bir başlık konmuş
+        örneklerdir &mdash; yani hem dürüst seçenektir hem de kaliteye mal
+        olamayacak tek seçenektir. Daha büyüktür: stereoda dakikada yaklaşık on
+        megabayt. Her oynatıcı, telefon ve düzenleyici bir tanesini açar ve MP3
+        isteyen her şey ondan bir tane yapabilir."""
+
+[[faq]]
+q = "Hangi biçimleri açabilirim?"
+a = """
+        Tarayıcınızın çözdüğü her şeyi; pratikte bu MP3, WAV, FLAC, M4A ve AAC,
+        Ogg Vorbis ve Opus ile MP4, M4V, MOV ve WebM videoların içindeki ses
+        demektir. Dışarıda kalan, her yerdekiyle aynı kısa listedir: AVI, WMA ve
+        çoğu MKV. Bu tarayıcının okumayacağı bir dosya, yarı yolda başarısız
+        olmak yerine bunu söyleyen bir mesajla geri çevrilir."""
+
+[[faq]]
+q = "Daha yüksek yapmak sesi bozar mı?"
+a = """
+        Yalnızca tam ölçeğin ötesine geçerseniz ve sayfa siz geçmeden önce bunu
+        söyler. Dijital sesin sert bir tavanı vardır: bir örnek tam ölçekten daha
+        yüksek olamaz, dolayısıyla üstündeki her şey tavana yassılanır ve
+        bozulmanın sesi de budur. "Gidebildiği kadar yüksek", bunu yapamayan
+        ayardır &mdash; kaydın ne kadar yeri kaldığını hesaplar ve tam olarak o
+        kadarını kullanır. Tavanın altındaki her şey yalnızca çarpmadır: 6 dB
+        yükseltin, 6 dB indirin, örnekler başladıkları yerdedir."""
+
+[[faq]]
+q = "Ters çevirmek ya da yeniden zamanlamak kalite kaybettirir mi?"
+a = """
+        Ters çevirmek kaybettirmez: aynı örnekler öbür sırayla çıkar ve bu tamdır.
+        Hızı değiştirmek ise her örneği oynatır, yani bir kopyalama değil bir
+        hesaptır &mdash; yeniden örnekleyici yol boyunca düzgün filtreler, böylece
+        hızlandırmak yüksek notaları metalik bir çınlama olarak geri katlamaz ve
+        esneticinin pencereleri, hesabın denk getirdiği yere değil dalgaların
+        hizalandığı yere konur. İki yol da hiçbir şeyi yeniden kodlamaz, çünkü
+        burada yeniden kodlayacak bir kodlayıcı yok."""
+
+[[faq]]
+q = "Dosyanın uzunluğunda bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok. Pratik tavan bellek: kaydın tamamı bu
+        sayfaya bir seferde çözülür ve indirmeden önce bellekte bir WAV kurulur;
+        yani bir saatlik stereo, çalışmak için bir gigabaytın biraz altında yer
+        ister. Dört gigabaytlık bir WAV doğrudan reddedilir, çünkü biçimin kendi
+        boyut alanı böyle bir dosyayı tarif edemez."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara kaydınız hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript ve Web Audio destekleyen bir tarayıcı gerekir; bu da her güncel tarayıcı demektir. Dosyayı çalmak için tarayıcıda zaten olanın ötesinde bir kodlayıcı desteği gerekmez."
+description = "Bir ses parçasını tarayıcıda ters çevirin, perdeyi kaydırarak ya da kaydırmadan hızını değiştirin ve seviyesini ayarlayın. Bir videonun içindeki sesle de çalışır. Hiçbir şey yüklenmez ve sonuç WAV olarak yazılır, yani hiçbir şey yeniden kodlanmaz."
+features = [
+  "Bir parçayı tam olarak geriye oynatır",
+  "Hızı çeyrek kattan dört kata kadar değiştirir; perdeyi koruyarak ya da kaydırarak",
+  "Seviyeyi yükseltir ya da düşürür, ya da tam ölçeğin hemen altına normalleştirir",
+  "Bir MP4, MOV ya da WebM içindeki sesi, görüntüye dokunmadan çıkarır",
+  "Döngüde hiçbir kodlayıcı olmadan 16 bit ya da 32 bit kayan noktalı WAV yazar",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir ses dosyasını ya da videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP3, WAV, FLAC, M4A, Ogg ve MP4, MOV ya da WebM içindeki ses"

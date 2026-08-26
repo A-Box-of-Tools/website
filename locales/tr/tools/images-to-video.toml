@@ -1,0 +1,237 @@
+#
+# Görsellerden Videoya - Türkçe.
+#
+# Overrides for tools/images-to-video/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Görsellerden Videoya"
+heading = "Görsellerden&nbsp;Videoya <span class=\"h1-kw\">&mdash; MP4 slayt gösterisi yapın</span>"
+tagline = "Bir görsel klasörünü videoya çevirin."
+
+title = "Görsel Dizisinden MP4'e &mdash; Ücretsiz, Yüklemesiz, Çevrimdışı Çalışır"
+description = "JPG, PNG veya WebP görselleri MP4 slayt gösterisi videosuna çevirin; ücretsiz ve tamamen tarayıcınızda. Hiçbir şey yüklenmez, kayıt gerekmez ve çevrimdışı da çalışır."
+og_title = "Görsel Dizisinden MP4'e &mdash; ücretsiz, tarayıcınızda"
+og_description = "Bir render dizisini, bir time-lapse'i ya da bir fotoğraf klasörünü MP4'e çevirin. Kodlama kendi cihazınızda çalışır; hiçbir şey yüklenmez."
+og_image_alt = "Görsellerden Videoya - bir görsel klasörünü MP4 slayt gösterisine çevirin"
+
+pledge = """
+    Her kare kendi tarayıcınız tarafından kodlanır ve video bu makinenin
+    belleğinde kurulur. Kodlayıcı ağa hiç dokunmaz ve dokunsaydı bile bu
+    sayfanın öbür ucunda bir görselin gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir video yapın. Tek bir istek bile bir görsel, bir küçük resim
+      ya da bir dosya adı taşımıyor. Ya da internet bağlantısını kesip yine de
+      bir tane yapın."""
+
+read_first = """
+, ve ağa hiç dokunmayan kodlama döngüsü için
+      <code>src/encoder.js</code>."""
+
+howto_heading = "Görseller videoya nasıl çevrilir"
+
+card = """
+            Bir görsel klasörünü MP4 slayt gösterisine çevirin. Kodlama kendi
+            cihazınızda, kendi donanımınızla çalışır."""
+
+[words]
+plural = "görselleriniz"
+choose = "görseller"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[facts]]
+text = "Dosyalar cihazınızda kalır"
+
+[[privacy]]
+title = "Görsellerinizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyalarınızın toplanabileceği bir uç nokta burada
+      yok, olsaydı bile onları oraya gönderecek bir kod yok. Burada eskiden
+      <code>connect-src 'none'</code> yazıyordu ki bu mutlaktı; reklam eklemek
+      buna mal oldu ve bunu söylemek anlaşmanın bir parçası."""
+
+[[privacy]]
+title = "Kodlama yerelde."
+body = """
+ WebCodecs tarayıcınızda çalışır ve bitmiş
+      dosya doğrudan bir indirmeye verilir. Bu uygulamanın sunucu tarafı
+      yoktur."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine görselleriniz hakkında bir şey verilmiyor: ne
+      bir dosya, ne bir küçük resim, ne bir ad, bir boyut ya da bir sayı. Bir
+      görseli okuyan, çözen, yerleştiren ya da kodlayan her satır bu kaynaktan
+      sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de görselleriniz
+      hakkında bir şey verilir. Siz tıklamadıkça hiçbir şey olmaz ve
+      tıkladığınızda gideceğiniz yer başkasının sitesidir."""
+
+[[privacy]]
+title = "Bilinçli tek istisna."
+body = """
+ "Bir web adresinden ekle"yi
+      kullanırsanız, görseli getirmek için o sunucuyla iletişim kurulur ve o
+      sunucu IP adresinizi görür. Yalnızca sizin yapıştırdığınız görseller
+      getirilir ve yalnızca içeri doğru: <code>img-src</code> açılmıştır,
+      <code>connect-src</code> açılmamıştır. Aşağıdaki sayaç, iletişim kurulan
+      her dış kaynağı listeler."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, web adresinden
+      yükleme dışında her şey çalışmaya devam eder. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "Görsellerinizi seçin."
+body = """
+ Seçiciye bir klasör bırakın ya da
+      dosyaları elle seçin. Tarayıcı onları doğrudan diskinizden okur; siz bunu
+      yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Sıraya koyun ve her birinin ne kadar duracağını ayarlayın."
+body = """
+      Sıralamayı değiştirmek için sürükleyin. Bekleme süresi kare ya da saniye
+      olarak verilebilir; ya hepsine birden ya da tek tek."""
+
+[[howto]]
+title = "Bir çözünürlük ve kare hızı seçin."
+body = """
+ "En yüksek
+      çözünürlükle eşleş" en büyük görselinizi izler; hazır ayarlar 4K, 1080p,
+      720p, kare ve dikeyi kapsar ve hiçbiri uymazsa özel bir boyut da var."""
+
+[[howto]]
+title = "Videoyu oluşturun ve indirin."
+body = """
+ Kodlama kendi donanımınızda
+      çalışır, yani ne kadar süreceği bir sıraya değil makinenize bağlıdır.
+      Bitmiş MP4 doğrudan tarayıcınızın indirmelerine verilir."""
+
+[[faq]]
+q = "Görsellerim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Görselleriniz kendi donanımınızda, kendi tarayıcınız tarafından
+        okunur, yerleştirilir ve kodlanır. Bu aracın sunucu tarafı yoktur ve
+        sayfanın <code>Content-Security-Policy</code>'si iletişim kurabileceği
+        her adresi tek tek sayar &mdash; bunların hiçbiri bu siteye ait
+        değildir. Tek istisna, yapıştırdığınız bir görseli getiren isteğe bağlı
+        "bir web adresinden ekle" özelliğidir ve o sunucu IP adresinizi
+        görür."""
+
+[[faq]]
+q = "Hangi görsel biçimlerini kullanabilirim?"
+a = """
+        Tarayıcınızın çözebildiği her hareketsiz görsel biçimini; pratikte bu
+        JPG, PNG, WebP, GIF, AVIF ve Apple cihazlarda HEIC demektir. Burada
+        güncel tutulacak ayrı bir liste yok, çünkü çözme işi bizim değil
+        tarayıcının işi."""
+
+[[faq]]
+q = "Hangi video biçimini üretiyor?"
+a = """
+        H.264 görüntülü MP4 ki bu neredeyse her şeyde oynar. WebCodecs olmayan
+        bir tarayıcıda araç bunun yerine WebM kaydına düşer &mdash; aynı
+        görüntü, daha az düzenleyicinin kabul ettiği bir kapta."""
+
+[[faq]]
+q = "Bunu bir Blender veya After Effects render dizisi için kullanabilir miyim?"
+a = """
+        Evet &mdash; numaralandırılmış bir render dizisi tam da bunun için.
+        Render'ınızın yazdığı kareleri ekleyin, bekleme süresini kare başına bir
+        karede bırakın ve kare hızını render'la eşleştirin. "Ada göre sırala"
+        beklediğiniz gibi sayar, yani <code>frame_2</code>, sonrasına değil
+        <code>frame_10</code>'un öncesine düşer.
+        <br><br>
+        Başlamadan önce bilinmeye değer bir şey: H.264'ün alfa kanalı yoktur, bu
+        yüzden saydamlık karşıya taşınmaz, arka plan rengine düzleştirilir. Alfa
+        kanalını korumanız gerekiyorsa kareleri kendi düzenleyicinizde
+        birleştirin."""
+
+[[faq]]
+q = "Fotoğraflardan time-lapse yapabilir miyim?"
+a = """
+        Evet ve bu, bir render dizisiyle aynı iş: her fotoğrafı tek bir kare
+        tutun ve bir kare hızı seçin. 30 fps'te her otuz fotoğraf bir saniye
+        video olur; 12 fps'te aynı fotoğraflar iki buçuk saniye sürer.
+        <br><br>
+        "Tarihe göre sırala" bir kamera rulosunu çekildiği sıraya geri koyar ki
+        dosya adları 0001'den yeniden başlamışsa bu önemlidir. Farklı
+        boyutlardaki fotoğraflar sorun değil &mdash; "En yüksek çözünürlükle
+        eşleş" videoyu hiçbiri küçültülmeyecek şekilde boyutlandırır."""
+
+[[faq]]
+q = "Kaç görsel kullanabileceğime ya da videonun ne kadar uzun olabileceğine dair bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok. Pratik tavan kendi makinenizin belleği,
+        çünkü bitmiş video siz indirmeden önce orada kuruluyor. Bunu ilk hisseden
+        şey çok büyük 4K slayt gösterileridir."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok. Sitede reklam var,
+        masrafı karşılayan da o; reklamlara görselleriniz hakkında hiçbir şey
+        verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: görsellerinizi işlenmek üzere uzağa gönderen
+        bir araç, siz fişi çeker çekmez dururdu."""
+
+[[faq]]
+q = "Müzik veya ses parçası ekleyebilir miyim?"
+a = """
+        Henüz değil. Araç yalnızca görüntü üretir: yazdığı MP4'te tek bir video
+        parçası vardır, ses parçası yoktur. Gerekiyorsa ses parçasını sonradan
+        bir video düzenleyicide ekleyin."""
+
+[schema]
+browser_requirements = "JavaScript gerekir. MP4 çıktısı için WebCodecs destekleyen bir tarayıcı gerekir; diğerleri WebM'e düşer."
+description = "Bir görsel klasörünü MP4 slayt gösterisi videosuna çevirin. Her adım tarayıcınızda çalışır; böylece hiçbir görsel yüklenmez."
+features = [
+  "JPG, PNG, WebP, GIF ve AVIF görselleri videoya dönüştürür",
+  "MP4 (H.264) çıktı, yedek olarak WebM",
+  "3840x2160'a kadar çözünürlükler, 12 ila 60 fps kare hızları",
+  "Görsel başına kare ya da saniye cinsinden bekleme süresi",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Görselleri buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; JPEG, PNG, WebP, GIF, AVIF"
+
+[picker.urls]
+summary = "Bir web adresinden ekle"
+button = "Görselleri indir"
+noun = "görsel"

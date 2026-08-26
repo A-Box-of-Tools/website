@@ -1,0 +1,17 @@
+#
+# Rehber: çevrimiçi dönüştürücülere dosya yüklemek güvenli mi? - Türkçe.
+#
+
+nav = "Dosya yüklemek güvenli mi?"
+title = "Çevrimiçi Dönüştürücülere Dosya Yüklemek Güvenli mi?"
+description = "Çevrimiçi dönüştürücülerin çoğu dosyanızı bir sunucuya gönderir. Bunun ne anlama geldiği, dosyanın orada başına ne geldiği ve bir aracın buna gerçekten ihtiyacı olup olmadığını söyleyen dört denetim."
+heading = "Çevrimiçi dönüştürücülere dosya yüklemek güvenli mi?"
+lede = """
+    Dürüst cevap genellikle &ldquo;muhtemelen, ama denetleyemezsiniz&rdquo;dır.
+    Bu rehber, yüklemenin dosyanıza gerçekte ne yaptığını, çoğu aracın bunu neden
+    hâlâ yaptığını ve önünüzdekinin buna mecbur olup olmadığını söyleyen dört
+    denemeyi anlatıyor."""
+updated = "20 Ağustos 2026"
+og_title = "Çevrimiçi dönüştürücülere dosya yüklemek güvenli mi?"
+og_description = "Bir dönüştürücüye yüklediğiniz dosyanın başına ne geldiği, çoğu aracın neden hâlâ dosya istediği ve kendiniz çalıştırabileceğiniz dört denetim."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

@@ -1,0 +1,318 @@
+#
+# Ses Kesici - Türkçe.
+#
+# Overrides for tools/trim-audio/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Ses Kesici"
+heading = "Ses&nbsp;Kesici <span class=\"h1-kw\">&mdash; sesi çevrimiçi kesin</span>"
+tagline = "Tutmaya değer parçaları oynarken işaretleyin. Onları tek dosya olarak, tam söylediğiniz yerden kesilmiş hâlde geri alın."
+
+title = "Sesi Çevrimiçi Kesme &mdash; Yalnızca İstediğiniz Parçalar, Yüklemesiz"
+description = "Bir kaydı oynatın, geçerken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Örnek hassasiyetinde kesimler, birleşme yerlerinde tıklama yok, hiçbir şey yüklenmez."
+og_title = "Ses Kesici &mdash; hiçbir şey yüklemeden yalnızca istediğiniz parçalar"
+og_description = "Oynarken tutmaya değer her parçayı işaretlemek için I ve O'ya basın. İşaretli parçalar tek dosya olarak, tam örneğin üzerinden kesilmiş hâlde ve hiçbir şey yüklenmeden yeniden yazılır."
+og_image_alt = "Ses Kesici - istediğiniz parçaları işaretleyip tek kayıt olarak kaydedin, tarayıcınızda"
+
+pledge = """
+    Kaydınız kendi tarayıcınız tarafından, kendi donanımınızda okunur,
+    işaretlenir, kesilir ve yazılır. Buradaki hiçbir şey bir şey getiremez ya da
+    gönderemez &mdash; bu araçta hiçbir türde ağ özelliği yok &mdash; ve
+    olsaydı bile bu sayfanın öbür ucunda bir kaydın gönderilebileceği bir sunucu
+    yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir şey kesin. Tek bir istek bile bir örnek, bir dosya adı ya da
+      seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da internet bağlantısını kesip
+      yine de bir kayıt kesin &mdash; sesinizi kesilmek üzere uzağa gönderen bir
+      araç öylece dururdu."""
+
+read_first = """
+, işaretler ve kaydedildikleri dosya için
+      <code>src/segments.js</code>, dosyanızı tarayıcının kendi çözücüsüne veren
+      yirmi satır için <code>src/decode.js</code>, bir işareti örnek dizisine
+      çeviren hesap ve onları kopyalayan döngü için <code>src/trim.js</code> ve
+      önlerine giden başlık için <code>src/wav.js</code>. Hiçbiri istek
+      yapabilecek bir şeyi içeri almaz."""
+
+howto_heading = "Bir ses dosyası nasıl kesilir"
+
+card = """
+            Oynarken tutmaya değer her parçayı işaretleyin, sonra onları tek
+            kayıt olarak kaydedin. Kesimler tam örneğin üzerine düşer ve
+            birleşme yerleri tıklamaz."""
+
+[words]
+plural = "kayıtlarınız"
+choose = "bir kayıt"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "İstediğiniz kadar parça"
+
+[[facts]]
+text = "Tam işaretlediğiniz yerden keser"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[privacy]]
+title = "Kayıtlarınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Dosyanızın toplanabileceği bir uç nokta burada yok,
+      olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ Bu araçta hiçbir türde ağ
+      özelliği yok: yapıştırılacak bir adres, indirilecek bir şey, ilk
+      kullanımda getirilen bir motor yok. Sesinize dokunan her bayt, sayfa
+      yüklenirken bu kaynaktan geldi."""
+
+[[privacy]]
+title = "Çözücü, tarayıcınızda zaten olan çözücü."
+body = """
+
+      Dosya <code>decodeAudioData</code>'ya verilir; bir parçayı bir
+      <code>&lt;audio&gt;</code> öğesinde çalan kodun aynısı. Biçiminizi okumak
+      için buraya hiçbir şey getirilmiyor ve onu okumak için bu sayfanın
+      dışındaki hiçbir şeyden bir şey istenmiyor."""
+
+[[privacy]]
+title = "Bir videonun görüntüsü hiç çözülmez."
+body = """
+ Bir video bıraktığınızda
+      yalnızca ses parçası istenir. Kareler okunmaz, çözülmez, çizilmez ve
+      onlara bakılmaz &mdash; bu sayfada bunu yapabilecek bir kod yok ve çıkan
+      dosya ses tutar, başka hiçbir şey tutmaz."""
+
+[[privacy]]
+title = "Kesim, bu makinede, bellekte yapılan bir kopyalamadır."
+body = """
+
+      Kesmek, kanal başına parça başına tek bir <code>set</code> işlemidir:
+      tuttuğunuz örnekler, koyduğunuz sırayla yeni bir diziye taşınır. Bir şeyle
+      çarpılan tek örnekler, her tanışmanın içindeki birkaç yüz tanedir ve sayfa
+      düğmeye basmadan önce kaç tane olduğunu söyler."""
+
+[[privacy]]
+title = "Örnekler yeniden kodlanmaz, olduğu gibi yazılır."
+body = """
+
+      Bir WAV, bu sayfanın tuttuğu örneklerin önüne bir başlık konmuş hâlidir.
+      Döngüde kaydınız hakkında karar veren bir kodlayıcı yok ve o kararların
+      alınabileceği, yükleme diye tarif edilebilecek bir şey de yok."""
+
+[[privacy]]
+title = "İşaret dosyası sayfada üretiliyor."
+body = """
+ İşaretlerinizi
+      kaydetmek, zaten ekranda duran sayılardan bir metin dosyası yazar ve
+      doğrudan indirmelerinize gönderir. Bir tanesini yüklemek onu burada okur.
+      İkisi de ağa yaklaşmaz ve ikisi de zamanlardan başka bir şey taşımaz."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine kaydınız hakkında bir şey verilmiyor: ne bir
+      dosya, ne bir örnek, ne bir ad, bir boyut, bir uzunluk ya da nereden
+      kestiğiniz. Okuyan, kesen ve yazan her satır bu kaynaktan sunuluyor ve
+      depoda listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de kaydınız
+      hakkında bir şey verilir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu."""
+
+[[howto]]
+title = "Bir kayıt seçin."
+body = """
+ Seçiciye bir MP3, WAV, FLAC, M4A, Ogg ya
+      da Opus dosyası bırakın &mdash; istediğiniz şey sesinin bir parçasıysa bir
+      video da olur. Tarayıcı onu doğrudan diskinizden okur ve bir dalga formu
+      olarak çizer; siz bunu yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Oynatın ve istediğiniz parçaları işaretleyin."
+body = """
+ Bir parçanın
+      başlaması gereken yerde <kbd>I</kbd>'ya, bitmesi gereken yerde
+      <kbd>O</kbd>'ya basın. Bunu istediğiniz kadar yapın &mdash; her çift,
+      alttaki tabloda bir satır ve dalga formunda bir şerit olur. <kbd>U</kbd>
+      sonuncuyu geri alır, <kbd>Space</kbd> oynatır ve duraklatır, ok tuşları
+      beşer saniye atlar ve biriyle birlikte <kbd>Shift</kbd>'i basılı tutmak on
+      milisaniye oynatır. An yakalanması zorsa oynatmayı yavaşlatın."""
+
+[[howto]]
+title = "İşaretleri düzeltin."
+body = """
+ Her satır tek başına oynatılabilir,
+      içine tam bir zaman yazılarak yeniden zamanlanabilir, sırada yukarı aşağı
+      taşınabilir ya da silinebilir. Seçili parçanın iki ucu dalga formu boyunca
+      da sürüklenebilir; bir işareti, öncesindeki nefese değil sessizliğe koymanın
+      en hızlı yolu budur. Üstteki toplam, bitmiş kaydın süresidir."""
+
+[[howto]]
+title = "Onları tutun ya da onları çıkarın."
+body = """
+ Olağan yön tutmaktır:
+      bitmiş kayıt, işaretlediğiniz parçaların sırayla birleştirilmiş hâlidir.
+      Onları çıkarmak ise insanların isteyip nadiren bulduğu öbür iştir
+      &mdash; "ııı"ları, çalan telefonu ya da yanlış başlangıçları işaretleyin;
+      geriye kalan onlarsız birleştirilir."""
+
+[[howto]]
+title = "Kesin ve indirin."
+body = """
+ Her kesim, işaretlediğiniz örneğin
+      üzerine düşer; burada bir anahtar kareye yuvarlama yoktur, çünkü sesin
+      anahtar karesi yoktur. Seçmeye değen tek şey, her birleşme yerine ne kadar
+      tanışma konacağıdır &mdash; beş milisaniye bir tıklamayı durdurmaya yeter
+      ve tanışma olarak duyulamayacak kadar kısadır. Çıkan şey bir WAV'dir; önce
+      sayfada çalınır, sonra doğrudan tarayıcınızın indirmelerine verilir."""
+
+[[faq]]
+q = "Sesim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Kendi donanımınızda, kendi tarayıcınız tarafından okunur,
+        işaretlenir, kesilir ve yazılır. Bu aracın sunucu tarafı yoktur ve
+        sayfanın <code>Content-Security-Policy</code>'si iletişim kurabileceği
+        her adresi tek tek sayar &mdash; bunların hiçbiri bu siteye ait
+        değildir. Size söylenene güvenmek yerine denetlemeyi tercih ediyorsanız
+        internet bağlantısını kesin ve yine de bir kayıt kesin."""
+
+[[faq]]
+q = "Aynı kaydın birkaç parçasını tutabilir miyim?"
+a = """
+        Bu araç bunun için var. Oynarken istediğiniz kadar <kbd>I</kbd> ve
+        <kbd>O</kbd>'ya basın; her çift bir satır olur ve bitmiş dosya, o
+        satırların sırayla birleştirilmiş hâlidir, geri kalan her şey gitmiş
+        olarak. Çoğu çevrimiçi kesici size tek bir tutamak çifti verip hangi tek
+        aralığı tutacağınızı sorar; bu bir jenerik parçasının başını sonunu almak
+        için yeterlidir ve bir saatlik röportajı bir kez dinleyip tutmaya değer
+        altı cevabı almak için hiçbir işe yaramaz."""
+
+[[faq]]
+q = "Kesim tam işaretlediğim yere mi düşüyor?"
+a = """
+        Evet; her parçada, her oynatıcıda. Sesin videodan daha basit olduğu tek
+        yer burasıdır: çözülmüş bir kayıt bir sayı dizisidir ve her biri tek
+        başına durur; dolayısıyla geri yuvarlanacak bir anahtar kare karşılığı
+        ve bir kesimin erken başlaması için bir sebep yoktur. Sayfa, sonucun
+        başladığı örnek numarasını gösterir; bu da yaptığınız işaretin örnekleme
+        hızıyla çarpılıp en yakın tam örneğe yuvarlanmış hâlidir."""
+
+[[faq]]
+q = "Bir birleşme yeri neden tıklar ve tanışma ne işe yarar?"
+a = """
+        Çünkü bir kelimenin ortasından bir başkasının ortasına kesmek, birbiriyle
+        ilgisiz iki dalga formunu yan yana koyar ve aralarında sıçraması istenen
+        bir hoparlör bir tıklama üretir. Bu, kesimdeki bir hata değildir &mdash;
+        bir süreksizliğin sesi budur. Çözüm, her birleşme yerinin iki yanına
+        birkaç milisaniyelik bir tanışma koymaktır: koninin oraya varmasına
+        yetecek kadar uzun, tanışma olarak duyulamayacak kadar kısa. Beş
+        milisaniye varsayılandır ve kapatılabilir. Tanışma yalnızca gerçekten bir
+        kesim olan bir kenara konur; yani kaydın en başındaki ya da en sonundaki
+        bir kenar tam olarak olduğu gibi bırakılır."""
+
+[[faq]]
+q = "Bunun yerine kötü kısımları çıkarabilir miyim?"
+a = """
+        Evet. Onları işaretleyin, sonra "Onları çıkar"ı seçin: bu kez
+        işaretlemediğiniz <em>her şey</em> sırayla birleştirilir. Aynı işaret
+        listesi iki soruyu da yanıtlar; böylece ikisi arasında geçiş yapıp
+        süresinin değiştiğini hiçbir şeyi iki kez işaretlemeden
+        görebilirsiniz."""
+
+[[faq]]
+q = "İşaretlerimi kaydedip sonra dönebilir miyim?"
+a = """
+        Evet. "İşaretleri kaydet" düz bir metin dosyası yazar &mdash; her satır
+        bir parça, başlangıç ve bitiş virgülle ayrılmış &mdash; "İşaretleri
+        yükle" de birini geri okur. İki biçim sunuluyor: düz saniye ve
+        <code>SS:DD:SS.mmm</code>; ikisi de bu sitedeki video kesicinin yazdığı
+        düzendir, yani videoya karşı yapılmış bir dosya onun sesine bırakılabilir
+        ve tersi de olur. İşaretlemek özenli bir iştir ve kimse onu iki kez
+        yapmak zorunda kalmamalı."""
+
+[[faq]]
+q = "Hangi biçimleri açabilirim?"
+a = """
+        Tarayıcınızın çözdüğü her şeyi; pratikte bu MP3, WAV, FLAC, M4A ve AAC,
+        Ogg Vorbis ve Opus ile MP4, M4V, MOV ve WebM videoların içindeki ses
+        demektir. Dışarıda kalan, her yerdekiyle aynı kısa listedir: AVI, WMA ve
+        çoğu MKV. Bu tarayıcının okumayacağı bir dosya, yarı yolda başarısız
+        olmak yerine bunu söyleyen bir mesajla geri çevrilir."""
+
+[[faq]]
+q = "Neden MP3 yerine WAV kaydediyor?"
+a = """
+        Çünkü hiçbir tarayıcı MP3 kodlayıcısı getirmez ve bu araç kaydınızı böyle
+        bir kodlayıcısı olan bir sunucuya göndermeyi reddeder. Bir WAV hiçbir
+        kodlayıcı gerektirmez &mdash; önüne kısa bir başlık konmuş örneklerdir
+        &mdash; yani hem dürüst seçenektir hem de çıkış yolunda kaliteye mal
+        olamayacak tek seçenektir. Daha büyüktür: stereoda dakikada yaklaşık on
+        megabayt. Her oynatıcı, telefon ve düzenleyici bir tanesini açar ve MP3
+        isteyen her şey ondan bir tane yapabilir. Bir MP3'ü karelerini
+        kopyalayarak kesmek dosyayı küçük tutardı, ama aynı zamanda her kesimi en
+        yakın kare sınırına taşırdı; bu araç tam da bu yuvarlamayı yapmamak için
+        var."""
+
+[[faq]]
+q = "Kaydın uzunluğunda bir sınır var mı?"
+a = """
+        Araçta yerleşik bir sınır yok. Pratik tavan bellek: kaydın tamamı bu
+        sayfaya bir seferde çözülür ve indirmeden önce bellekte bir WAV kurulur;
+        yani bir saatlik stereo, çalışmak için bir gigabaytın biraz altında yer
+        ister. Dört gigabaytlık bir WAV doğrudan reddedilir, çünkü biçimin kendi
+        boyut alanı böyle bir dosyayı tarif edemez."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok, filigran yok. Sitede
+        reklam var, masrafı karşılayan da o; reklamlara kaydınız hakkında hiçbir
+        şey verilmiyor."""
+
+[schema]
+browser_requirements = "JavaScript ve Web Audio destekleyen bir tarayıcı gerekir; bu da her güncel tarayıcı demektir. Dosyayı çalmak için tarayıcıda zaten olanın ötesinde bir kodlayıcı desteği gerekmez."
+description = "Bir kaydın istediğiniz kadar parçasını oynarken işaretleyin, sonra o parçaları tek dosya olarak kaydedin &mdash; ya da onları çıkarıp gerisini tutun. Kesimler tam işaretlenen örneğin üzerine düşer ve birleşme yerleri tıklamasın diye isteğe bağlı birkaç milisaniyelik tanışma konur. Hiçbir şey yüklenmez ve sonuç WAV olarak yazılır, yani hiçbir şey yeniden kodlanmaz."
+features = [
+  "Kayıt oynarken I ve O ile istediğiniz kadar parça işaretler",
+  "İşaretli parçaları seçtiğiniz sırayla tek dosyada birleştirir",
+  "Ya da işaretli parçaları çıkarıp geri kalan her şeyi tutar",
+  "Bir kareye ya da anahtar kareye yuvarlamadan, tam örneğin üzerinden keser",
+  "Her birleşme yerini birkaç milisaniye tanıştırır, böylece tıklayamaz",
+  "Dalga formunu çizer, böylece sessizlikler ve boşluklar gözle işaretlenebilir",
+  "İşaretleri düz metin zaman damgası dosyası olarak kaydeder ve geri yükler",
+  "Bir MP4, MOV ya da WebM içindeki sesi, görüntüye dokunmadan keser",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, filigran yok",
+]
+
+[picker]
+title = "Bir ses dosyasını ya da videoyu buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; MP3, WAV, FLAC, M4A, Ogg ve MP4, MOV ya da WebM içindeki ses"

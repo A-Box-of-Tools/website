@@ -1,0 +1,18 @@
+#
+# Rehber: bir görseli, gizlenen kısım gerçekten gidecek şekilde karartmak -
+# Türkçe.
+#
+
+nav = "Görsel karartma"
+title = "Bir Görsel, Gizlenen Kısım Gerçekten Gidecek Şekilde Nasıl Karartılır"
+description = "Çoğu programda çizilen siyah kutular resmin üstünde oturur ve kenara çekilebilir. Gerçek bir karartmayı örtülmüş bir karartmadan ayıran şey, pikselleştirilmiş metnin neden geri okunabildiği ve bir dosyayı göndermeden önce nasıl denetleyeceğiniz."
+heading = "Bir görsel, gizlenen kısım gerçekten gidecek şekilde nasıl karartılır"
+lede = """
+    Bir şeyi örtmek ile onu kaldırmak ekranda birbirinin aynısı görünür ve hiç de
+    aynı şey değildir. Bu rehber aradaki farkı, insanların beklediğinden fazlasını
+    geride bırakan iki biçemi ve az önce hangisini yaptığınızı söyleyen denetimleri
+    anlatıyor."""
+updated = "23 Ağustos 2026"
+og_title = "Bir görsel, gizlenen kısım gerçekten gidecek şekilde nasıl karartılır"
+og_description = "Siyah bir dikdörtgen neden genellikle bir karartma değildir, pikselleştirilmiş metin neden geri okunabilir ve bir dosyayı göndermeden önce nasıl denetleyeceğiniz."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

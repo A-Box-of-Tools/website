@@ -1,0 +1,243 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      <a href="../../heic-jpg-donusturme/">HEIC'ten JPG'ye dönüştürücüyü</a> açın,
+      fotoğrafları bırakın ve &ldquo;Dönüştür&rdquo;e basın. Kalite kaydırağını
+      olduğu yerde bırakın ve aksini gerektiren bir sebebiniz yoksa &ldquo;tarihi,
+      kamerayı ve ayarları koru&rdquo;yu işaretli bırakın. Geriye JPEG'ler
+      alırsınız; her birinin bir indirme düğmesi olur, birkaç tane varsa bir zip.
+    </p>
+    <p>
+      Siz bunu yaparken hiçbir şey yüklenmiyor. Bu, tam da bu iş için alışılmadık
+      bir durumdur ve sebebi bu sayfanın ilginç yarısıdır.
+    </p>
+  </section>
+
+  <section>
+    <h2>HEIC aslında nedir</h2>
+    <p>
+      HEIC, JPEG'in olduğu anlamda gerçekten bir görsel biçimi değildir. Bir
+      kaptır &mdash; bir MP4'ün kurulduğu kutu yapısının aynısı &mdash; ve içinde
+      bir <strong>HEVC</strong> videosunun tek bir karesi vardır. H.265 de denen
+      HEVC, eski kameranızın kullandığı kodlayıcının yerini alan kodlayıcıdır ve
+      çok iyidir: HEIC'teki bir iPhone fotoğrafı, aynı kalitedeki JPEG hâlinin
+      kabaca yarısı boyutundadır.
+    </p>
+    <p>
+      Apple 2017'de, iOS 11'de buna geçti ve varsayılan yaptı. Yani biri
+      Ayarlar'a girip &ldquo;En Uyumlu&rdquo;yu seçmediyse, telefonunun neredeyse
+      on yıldır çektiği her fotoğraf şu özelliklere sahip bir biçimdedir:
+    </p>
+    <ul>
+      <li>Windows, Mağaza'dan bir uzantı olmadan ön izlemesini göstermez;</li>
+      <li>çoğu web yükleme formu düpedüz reddeder;</li>
+      <li>epeyce eski masaüstü yazılımı adını bile duymamıştır;</li>
+      <li>ve Safari dışında hiçbir web tarayıcısı göstermez.</li>
+    </ul>
+    <p>
+      Fotoğrafta bir sorun yok. JPEG'in olacağından daha iyi bir dosya. Yalnızca
+      dünyanın çoğunun hiç öğrenmediği bir dilde yazılmış.
+    </p>
+  </section>
+
+  <section>
+    <h2>Neden bir tanesini yalnızca Safari açıyor</h2>
+    <p>
+      Bu kısım şimdiye kadar kullandığınız her dönüştürücüyü açıklıyor, o yüzden
+      bir paragrafa değer.
+    </p>
+    <p>
+      HEVC'yi çözmek bir HEVC çözücüsü ister ve HEVC patentlidir. Lisanslama birden
+      fazla patent havuzu tarafından yürütülür ve bir çözücü göndermek birine para
+      ödemek demektir. Tarayıcılar bunu işletim sistemine yaslanarak çözer &mdash;
+      Chrome, donanımında lisanslı bir çözücü zaten bulunan bir makinede HEVC
+      <em>videosu</em> oynatır &mdash; ama o yol video oynatımı için döşenmiştir,
+      duran görüntüler için değil. Yani <code>&lt;img&gt;</code>'e verilen bir HEIC,
+      her işletim sisteminde, Chrome'da da Firefox'ta da Edge'de de reddedilir.
+    </p>
+    <p>
+      Apple donanımındaki Safari istisnadır; çünkü macOS ve iOS çözücüye sahiptir ve
+      Safari'nin ona sormasına izin verilir. Başka her yerde resim, tarayıcı
+      açısından düpedüz çözülemezdir.
+    </p>
+    <p>
+      Bu da bir dönüştürücüye tam olarak iki seçenek bırakır ve ikisi arasındaki
+      seçim, bu tür bir aracın bütün hikâyesidir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Neredeyse her HEIC dönüştürücüsü neden bir yükleme istiyor</h2>
+    <p>
+      Birinci seçenek: çözücüyü bir sunucuya koymak. Fotoğraf yüklenir, hiç
+      görmediğiniz bir makinede çözülür, JPEG olarak yeniden kodlanır ve geri
+      gönderilir. Hemen her &ldquo;ücretsiz çevrimiçi HEIC dönüştürücü&rdquo;nün
+      yaptığı budur ve hepsinin dosyalarınıza ihtiyaç duymasının sebebi de budur.
+      Tembellik değil &mdash; tarayıcı bunu gerçekten yardımsız yapamıyor.
+    </p>
+    <p>
+      Bunun bedeli konusunda açık sözlü olmaya değer. Telefondan çıkan fotoğraflar
+      çoğu insanın sahip olduğu en kişisel dosyalardır ve bir iPhone'dan doğrudan
+      çıkan bir HEIC tipik olarak, çekildiği yerin birkaç metre hassasiyetindeki
+      koordinatlarını, saniyesine kadar tarihi ve bir kamera tanımlayıcısını taşır.
+      Bir klasör dolusunu ücretsiz bir hizmete yüklemek, hem resimleri hem de bunu
+      teslim etmek demektir. Sonrasında ne olacağını, okumadığınız bir gizlilik
+      politikası, inceleyemediğiniz bir sunucu ve seçmediğiniz bir yargı bölgesi
+      belirler.
+    </p>
+    <p>
+      İkinci seçenek: çözücüyü sayfaya koymak. <a href="../../heic-jpg-donusturme/">Bu
+      araç</a> onu yapıyor. WebAssembly'ye derlenmiş <code>libheif</code>'i, bu
+      siteden sunulan bir dosya olarak taşıyor &mdash; yaklaşık 1,4 MB, bir kez
+      indirilip sonra önbelleğe alınıyor. Tarayıcınız onu kendi makinenizde, kendi
+      donanımınızda çalıştırır ve fotoğraf hiçbir yere gitmez. Sayfayı bir kez
+      yükleyin, sonra internet bağlantısını tamamen kesin, çalışmaya devam eder ki
+      bu, yükleme yapan hiçbir dönüştürücünün yapamayacağı bir şeydir ve var olan
+      en basit kanıttır.
+    </p>
+    <p>
+      1,4 MB'nin tamamı, ödenen bedeldir. Ölçülen bir bağlantıdaysanız bu gerçek bir
+      maliyettir ve bilmeye değer; sayfanın onu sessizce indirmek yerine yüksek
+      sesle söylemesinin sebebi de budur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dönüştürmek resme neye mal oluyor</h2>
+    <p>
+      HEIC ve JPEG farklı kodlayıcılardır; yani resmi çözüp yeniden kodlamayı
+      içermeyen bir geçiş yolu yoktur. O ikinci kodlama kayıplıdır. Pratikte bu,
+      kulağa geldiğinden çok daha az önemlidir:
+    </p>
+    <ul>
+      <li>
+        <strong>92 kalitede</strong> &mdash; dönüştürücünün başladığı yer &mdash;
+        bir fotoğrafı normal bir izleme boyutunda özgün hâlinden ayırmak çok
+        zordur. Açık bir gökyüzü gibi yumuşak geçişlerde fark ararsınız ve
+        genellikle bulamazsınız.
+      </li>
+      <li>
+        <strong>JPEG daha büyük olacak.</strong> Genellikle üçte bir büyükle iki
+        katı arasında bir yerde; çünkü JPEG 1992'den kalma bir kodlayıcıdır, HEVC
+        ise değil. Takas budur: her şeyin açtığı, daha büyük bir dosya.
+      </li>
+      <li>
+        <strong>Kaçınılacak şey iki kez dönüştürmektir.</strong> Her kayıplı kodlama
+        bir parça bedele mal olur. Birinin sizin için çoktan yaptığı bir JPEG'den
+        değil, özgün HEIC'ten dönüştürün ve bunu bir kez yapın.
+      </li>
+    </ul>
+    <p>
+      Hiç kayıp istemiyorsanız biçim menüsünde PNG var. Dosyaya hazır olun: bir
+      fotoğraf PNG olarak, genellikle JPEG hâlinin beş ila on katı boyutundadır;
+      çünkü PNG'nin sıkıştırması çimen ve ten için değil, düz renk ve çizgi çalışması
+      için tasarlanmıştı.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tarih, kamera ve koordinatlar</h2>
+    <p>
+      HEIC dönüştürücüleriyle ilgili alışıldık şikâyet, fotoğrafların çekildikleri
+      günü kaybetmiş olarak geri gelmesidir; böylece bir tatil dolusu resim,
+      kütüphanenin en altına bugünün tarihiyle sıralanır. Bu, bir tuval üzerinden
+      dönüştürmenin size piksellerden başka bir şey vermemesinden olur &mdash; bir
+      tuval hiçbir etiket tutmaz &mdash; yani bir dönüştürücü gidip üstveriyi ayrıca
+      getirmediyse üstveri düpedüz gitmiştir.
+    </p>
+    <p>
+      Buradaki araç EXIF bloğunu HEIC'ten kopyalayıp JPEG'in içine yazar, böylece
+      tarih hayatta kalır. Bir onay kutusu var ve varsayılan olarak işaretli.
+      İşareti kaldırın, JPEG resimden başka bir şey olmadan çıksın.
+    </p>
+    <p>
+      Karar vermeden önce listeye bakın: her fotoğrafın satırı, dosyanın GPS
+      koordinatları taşıyıp taşımadığını söyler ve bunu herhangi bir şey
+      dönüştürülmeden önce söyler. Fotoğraflar herkese açık bir yere gidiyorsa
+      okunacak satır odur. Kendi kütüphanenize gidiyorlarsa üstveriyi korumak
+      neredeyse kesinlikle istediğiniz şeydir.
+    </p>
+    <p>
+      Ne seçerseniz seçin bir etiket değişir ve sebebini bilmeye değer. Bir HEIC
+      döndürmesini iki yerde kaydeder: kapta ve EXIF bloğunda. Çözücü, çözerken kabın
+      döndürmesini uygular, yani teslim edilen pikseller zaten doğru yöndedir. EXIF
+      hâlâ &ldquo;bunu 90 derece döndür&rdquo; deseydi bir görüntüleyici bunu bir
+      kez daha yapardı ve her dikey fotoğraf yan yatmış çıkardı. Bu yüzden yön
+      etiketi dik olarak ayarlanır ve geri kalan her şey telefonun yazdığı gibi,
+      olduğu gibi kopyalanır.
+    </p>
+    <p>
+      İstediğiniz şey etiketleri ayrıntısıyla gözden geçirmek ya da zaten JPEG olan
+      fotoğraflardan silmekse, o başka bir iştir ve onun için bir
+      <a href="../exif-ve-gps-verisini-silme/">rehberi var</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>İnsanları yanıltan şeyler</h2>
+    <ul>
+      <li>
+        <strong>&ldquo;.jpg&rdquo; adlı bir HEIC.</strong> Son derece yaygın: yol
+        boyunca bir şey onu dönüştürmeden yeniden adlandırmıştır; hâlâ
+        açılmamasının sebebi de budur. Dönüştürücüye bırakılan her dosya adından
+        değil ilk baytlarından tanınır, yani bunlardan biri sorunsuz çalışır.
+        Gerçekten JPEG olan bir dosyanın kendisinin bir kopyasına dönüştürülmek
+        yerine bunun söylenmesinin sebebi de budur.
+      </li>
+      <li>
+        <strong>Tek dosya, birkaç resim.</strong> Bir seri çekim ya da bir Live
+        Photo birden fazla kare tutabilir. Hepsi dönüştürülür ve fazladan olanlar
+        özgün adın ardından numaralanır. Bir Live Photo'nun video yarısı,
+        telefonun HEIC'in yanında tuttuğu ayrı bir dosyadır, yani dönüştürülmek
+        üzere orada değildir.
+      </li>
+      <li>
+        <strong>AVIF, HEIC değildir.</strong> Birbirlerine benzerler &mdash; aynı
+        kap, içinde farklı kodlayıcı &mdash; ama güncel her tarayıcı bir AVIF'i
+        kendiliğinden açar, yani dönüştürülecek bir şey yoktur ve araç, çalışıyormuş
+        gibi yapmak yerine bunu söyler.
+      </li>
+      <li>
+        <strong>Sorunu kaynağında durdurmak.</strong> Telefonda: Ayarlar &rarr;
+        Kamera &rarr; Biçimler &rarr; En Uyumlu. O andan sonra yeni fotoğraflar
+        JPEG olur. Daha fazla depolama kullanır ve zaten sahip olduğunuz fotoğraflara
+        dokunmaz, ama bunu bir daha hiç yapmamak demektir.
+      </li>
+      <li>
+        <strong>Paylaşmak bazen zaten dönüştürüyor.</strong> Bir fotoğrafı
+        Apple dışı bir cihaza AirDrop'lamak ya da e-postayla göndermek çoğu zaman
+        bir JPEG teslim eder; çünkü iOS çıkışta dönüştürür. Bir fotoğraf yine de
+        HEIC olarak geldiyse, dönüştürmeyen bir yoldan gelmiştir.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Bir dönüştürücünün yükleme yapıp yapmadığını nasıl anlarsınız</h2>
+    <p>
+      Bu, yalnızca bu araç için değil her araç için geçerlidir ve yaklaşık on beş
+      saniye sürer.
+    </p>
+    <ol>
+      <li>
+        Sayfayı açın, sonra tarayıcınızın geliştirici araçlarını açıp Ağ sekmesine
+        gidin.
+      </li>
+      <li>
+        Bir fotoğraf dönüştürün ve izleyin. Sizin makinenizde çözen bir araç o anda
+        hiçbir istek yapmaz. Yükleme yapan bir araç, fotoğrafınızın boyutunda bir
+        istek yapar ve boyutunu görebilirsiniz.
+      </li>
+      <li>
+        Ya da daha basiti: sayfayı yükleyin, internet bağlantısını kesin ve bir şey
+        dönüştürmeye çalışın. Fotoğrafınızı çözülmek üzere uzağa gönderen bir araç
+        çalışmayı bırakır. Çözücüyü taşıyan bir araç bırakmaz.
+      </li>
+    </ol>
+    <p>
+      Buradaki dönüştürücü iki denetimi de geçecek şekilde kuruldu ve bu tartışmanın
+      daha uzun bir sürümü
+      <a href="../dosya-yuklemek-guvenli-mi/">dosya yüklemek güvenli mi</a>
+      sayfasında.
+    </p>
+  </section>

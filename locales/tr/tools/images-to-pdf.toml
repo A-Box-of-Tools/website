@@ -1,0 +1,225 @@
+#
+# Görsellerden PDF'e - Türkçe.
+#
+# Overrides for tools/images-to-pdf/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Görsellerden PDF'e"
+heading = "Görsellerden&nbsp;PDF'e <span class=\"h1-kw\">&mdash; JPG'den PDF'e dönüştürücü</span>"
+tagline = "Resimlerinizi tek bir belgeye koyun."
+
+title = "Görsellerden PDF Dönüştürücü &mdash; Ücretsiz JPG'den PDF'e, Yüklemesiz"
+description = "JPG, PNG veya WebP görselleri tek bir PDF'te birleştirin; ücretsiz ve tamamen tarayıcınızda. Fotoğraflar yeniden kodlanmadan girer ve hiçbir şey yüklenmez."
+og_title = "Görsellerden PDF'e &mdash; ücretsiz JPG'den PDF'e dönüştürücü"
+og_description = "Görselleri kendi cihazınızda tek bir PDF'te birleştirin. JPEG fotoğraflar el değmeden kopyalanır; yani hiçbir şey kalite kaybetmez ve hiçbir şey yüklenmez."
+og_image_alt = "Görsellerden PDF'e - resimleri yüklemeden tek bir belgede birleştirin"
+
+pledge = """
+    Belge bu makinenin belleğinde, sayfa sayfa yazılır; bunu yapan kod da bu
+    adresten sunuluyor. Buradaki hiçbir şey bir yükleme yapamaz ve bu sayfanın
+    öbür ucunda bir yüklemeyi alacak bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir PDF yapın. Tek bir istek bile bir görsel, bir küçük resim ya
+      da bir dosya adı taşımıyor. Ya da internet bağlantısını kesip yine de bir
+      tane yapın."""
+
+read_first = """
+, ve dosya yazma işinin tamamı için
+      <code>src/pdf.js</code> ile <code>src/document.js</code>; ikisi de ağa hiç
+      dokunmaz."""
+
+howto_heading = "Görseller PDF'e nasıl çevrilir"
+
+card = """
+            Görselleri tek bir PDF'te, sayfa başına bir resim olacak şekilde
+            birleştirin. JPEG fotoğraflar tam olarak oldukları gibi kopyalanır;
+            yani hiçbir şey kalite kaybetmez."""
+
+[words]
+plural = "görselleriniz"
+choose = "görseller"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[facts]]
+text = "Dosyalar cihazınızda kalır"
+
+[[privacy]]
+title = "Görsellerinizin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu sayfanın
+      iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri bu
+      siteye ait değildir. Bu araç o listeye hiçbir şey eklemez: isteğe bağlı
+      olanı bile yok, kendine ait bir ağ özelliği hiç yok. Dosyalarınızın
+      toplanabileceği bir uç nokta burada yok, olsaydı bile onları oraya
+      gönderecek bir kod yok."""
+
+[[privacy]]
+title = "PDF burada yazılıyor."
+body = """
+ Bir PDF, nesnelerden oluşan bir liste ve
+      her birinin nerede başladığını gösteren bir tablodur;
+      <code>src/pdf.js</code> ikisini de yazar. Hiçbir kitaplık getirilmiyor,
+      hiçbir şey bir sunucuda çizilmiyor ve bitmiş dosya bellekten doğrudan bir
+      indirmeye veriliyor."""
+
+[[privacy]]
+title = "Belgeye sizin hakkınızda hiçbir şey söylenmiyor."
+body = """
+ Çoğu araç bir
+      PDF'e bir zaman damgası ve onu yapan programın adını basar. Bu araç bir
+      başlığı, bir yazarı ve bir tarihi yalnızca siz yazarsanız yazar;
+      resimlerinizin dosya adları belgede hiç görünmez, makineniz hakkında bir
+      şey de görünmez."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan geliyor. Hiçbirine görselleriniz hakkında bir şey verilmiyor: ne
+      bir dosya, ne bir küçük resim, ne bir ad, bir boyut ya da bir sayı. Bir
+      resmi okuyan, çözen ya da yazan her satır bu kaynaktan sunuluyor ve depoda
+      listeleniyor."""
+
+[[privacy]]
+title = "Bağış düğmesi neyi yüklüyor, neyi almıyor."
+body = """
+
+      Başlıktaki "Buy me a coffee" düğmesini cdnjs.buymeacoffee.com'dan gelen
+      bir betik çiziyor ve harflerini Google Fonts'tan alıyor. O bir bağlantıdan
+      ibarettir: hiçbir ziyareti bildirmez ve ona ne sizin ne de görselleriniz
+      hakkında bir şey verilir. Siz tıklamadıkça hiçbir şey olmaz ve
+      tıkladığınızda gideceğiniz yer başkasının sitesidir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, bu sayfadaki her
+      şey çalışmaya devam eder. Hepsinin içindeki en basit kanıt bu: resimlerinizi
+      belge yapılmak üzere uzağa gönderen bir araç dururdu."""
+
+[[howto]]
+title = "Görsellerinizi seçin."
+body = """
+ Seçiciye bir klasör bırakın ya da
+      dosyaları elle seçin. Tarayıcı onları doğrudan diskinizden okur; siz bunu
+      yaparken hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Sayfaları sıraya koyun ve gerekenleri döndürün."
+body = """
+ Bir görsel,
+      gösterilen sırayla bir sayfa olur. Bir kutucuğu taşımak için tutamağından
+      sürükleyin ya da okları kullanın; döndürme düğmeleri bir sayfayı çeyrek
+      çeyrek çevirir ki yan taranmış bir belgenin genellikle ihtiyacı budur."""
+
+[[howto]]
+title = "Bir sayfa boyutu seçin."
+body = """
+ "Sayfayı her görsele uydur", her
+      sayfayı tam olarak kendi resmi yapar; hiçbir şey kırpılmaz ve beyaz bantlar
+      olmaz. Adlandırılmış boyutlar &mdash; A4, Letter, Legal ve gerisi &mdash;
+      bunun yerine her resmi sabit bir sayfaya yerleştirir, isterseniz bir
+      kenar boşluğuyla."""
+
+[[howto]]
+title = "PDF'i oluşturun ve indirin."
+body = """
+ Belge kendi cihazınızda yazılır,
+      yani ne kadar süreceği bir sıraya değil donanımınıza bağlıdır. Bitmiş dosya
+      doğrudan tarayıcınızın indirmelerine verilir."""
+
+[[faq]]
+q = "Görsellerim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Görselleriniz kendi donanımınızda, kendi tarayıcınız tarafından
+        okunur ve PDF de orada yazılır. Bu aracın sunucu tarafı yoktur ve
+        sayfanın <code>Content-Security-Policy</code>'si iletişim kurabileceği
+        her adresi tek tek sayar &mdash; bunların hiçbiri bu siteye ait
+        değildir. Buradaki bazı diğer araçların aksine bunun isteğe bağlı bir ağ
+        özelliği de hiç yoktur."""
+
+[[faq]]
+q = "PDF'e dönüştürmek kalite kaybettirir mi?"
+a = """
+        Varsayılan ayarda bir JPEG için hayır. PDF, JPEG verisini doğrudan
+        taşıyabilir; yani bir fotoğraf belgeye bayt bayt kopyalanır: hiç
+        çözülmez ve bir daha hiç sıkıştırılmaz, PDF'teki görüntü dosyadaki
+        görüntüdür. Diğer biçimlerin yeniden kodlanması gerekir, çünkü PDF'te
+        onlar için bir filtre yoktur &mdash; daha büyük bir dosya pahasına onları
+        tam olarak saklayan kayıpsız ayarı seçmediğiniz sürece."""
+
+[[faq]]
+q = "Hangi görsel biçimlerini kullanabilirim?"
+a = """
+        Tarayıcınızın çözebildiği her hareketsiz görseli; pratikte bu JPG, PNG,
+        WebP, GIF, AVIF ve Apple cihazlarda HEIC demektir. Burada güncel
+        tutulacak ayrı bir liste yok, çünkü çözme işi bizim değil tarayıcının
+        işi."""
+
+[[faq]]
+q = "Sayfa boyutunu ve sayfaların sırasını seçebilir miyim?"
+a = """
+        Evet. Sayfalar A4, Letter, Legal, A3, A5, Tabloid, yazdığınız bir boyut
+        ya da tam olarak her resmin boyutu olabilir. Sıralamak için kutucukları
+        sürükleyin, ada ya da tarihe göre sıralayın, herhangi birini çeyrek dönüş
+        döndürün ve milimetre cinsinden kenar boşluğu verin."""
+
+[[faq]]
+q = "Bir PDF'e kaç görsel koyabilirim?"
+a = """
+        Araçta yerleşik bir sınır yok. Pratik tavan kendi makinenizin belleği,
+        çünkü bitmiş belge siz indirmeden önce orada kuruluyor. Bunu ilk hisseden
+        şey, tam çözünürlükte birkaç yüz telefon fotoğrafıdır; ayarlardan en uzun
+        kenarı küçültmek o tavanı epeyce yukarı taşır."""
+
+[[faq]]
+q = "PDF, dosya adlarımı ya da bir zaman damgası içeriyor mu?"
+a = """
+        Siz istemedikçe hayır. Belge bilgi bloğu, bu aracın adı dışında boş
+        bırakılır: dosya adı yok, makine adı yok, kullanıcı adı yok ve kutusunu
+        işaretlemediğiniz sürece oluşturulma tarihi yok. Bu bilinçli bir tercih
+        &mdash; bir PDF, insanların başka insanlara gönderdiği bir şeydir."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok. Sitede reklam var,
+        masrafı karşılayan da o; reklamlara görselleriniz hakkında hiçbir şey
+        verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: görsellerinizi belge yapılmak üzere uzağa
+        gönderen bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "JPG, PNG ve WebP görselleri tek bir PDF belgesinde birleştirin. Her sayfa tarayıcınızda yazılır; böylece hiçbir görsel yüklenmez."
+features = [
+  "JPG, PNG, WebP, GIF ve AVIF görselleri tek bir PDF'te birleştirir",
+  "JPEG fotoğraflar yeniden kodlanmadan gömülür",
+  "A5'ten Tabloid'e sayfa boyutları ya da her görsele uydurulmuş sayfa",
+  "Sıralama, döndürme, kenar boşluğu ve sayfa rengi",
+  "Taramalar ve ekran görüntüleri için isteğe bağlı kayıpsız saklama",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Görselleri buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; JPEG, PNG, WebP, GIF, AVIF"
