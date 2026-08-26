@@ -1,0 +1,346 @@
+#
+# Pembuat QR dan Barkode - Bahasa Indonesia.
+#
+# Overrides for tools/qr-barcode/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# Nama simbologi (EAN-13, UPC-A, ITF-14, Code 128, Code 39) dan tingkat koreksi
+# galat (L, M, Q, H) tetap Latin: itulah yang diminta orang yang akan memindai.
+#
+
+name = "Pembuat QR dan Barkode"
+heading = "QR&nbsp;dan&nbsp;Barkode <span class=\"h1-kw\">&mdash; buat kode QR atau barkode, tanpa internet</span>"
+tagline = "Ketik, dan ia menjadi sebuah kode. Tidak ada yang dikirim untuk membuatnya."
+
+title = "Pembuat Kode QR &amp; Barkode &mdash; Gratis, Tanpa Pendaftaran, Tanpa Unggah"
+description = "Buat kode QR untuk sebuah tautan, jaringan Wi-Fi, atau kartu kontak, atau barkode EAN-13, UPC-A, Code 128, atau Code 39. Unduh sebagai SVG atau PNG. Semuanya terjadi di peramban Anda."
+og_title = "Buat kode QR atau barkode tanpa mengirim apa pun ke siapa pun"
+og_description = "Tautan, kata sandi Wi-Fi, kartu kontak, dan barkode ritel, digambar di peramban Anda sendiri dan diunduh sebagai SVG atau PNG. Tanpa akun, tanpa tanda air, tanpa piksel pelacak di tengah kode Anda."
+og_image_alt = "Pembuat QR dan Barkode - buat kode QR atau barkode, tanpa ada yang diunggah"
+
+pledge = """
+    Sebuah kode QR adalah aritmetika atas sebuah string: tidak ada file untuk
+    dikirim dan tidak ada layanan untuk dimintai. Setiap langkah &mdash; memilih
+    modenya, memilih versinya, koreksi galat Reed-Solomon, maskernya, batang
+    sebuah barkode dan angka periksa di bawahnya &mdash; terjadi dalam kira-kira
+    seribu baris JavaScript di halaman ini yang bisa Anda baca. Alat ini tidak
+    punya fitur jaringan dalam bentuk apa pun, dan itu lebih penting di sini
+    daripada di sebagian besar halaman: yang dikodekan sering kali adalah kata
+    sandi Wi-Fi."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu ketik sebuah kata sandi ke formulir Wi-Fi. Tidak satu pun permintaan
+      membawa satu karakter pun darinya. Atau cabut koneksi internet dan tetap
+      buat kodenya."""
+
+read_first = """
+, <code>src/qr-encode.js</code> dan
+      <code>src/qr.js</code> untuk kode QR-nya sendiri &mdash; mode, versi, dan
+      bloknya di yang satu, dan pola, masker, serta bit formatnya di yang lain
+      &mdash; <code>src/gf256.js</code> untuk koreksi galatnya, dan
+      <code>src/barcode.js</code> untuk yang bergaris-garis."""
+
+howto_heading = "Cara membuat kode QR tanpa mengunggah apa pun"
+
+card = """
+            Kode QR untuk sebuah tautan, jaringan Wi-Fi, atau kartu kontak
+            &mdash; atau barkode ritel dengan angka periksanya sudah dihitung.
+            SVG atau PNG."""
+
+[words]
+plural = "kode dan teks di dalamnya"
+choose = "apa yang masuk ke dalamnya"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa masa berlaku"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Tidak ada tujuan ke mana pun bagi apa yang Anda ketik."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat kata sandi
+      Wi-Fi bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di mana
+      pun di dalam <code>src/</code>. Kodenya dibangun dari string itu dengan
+      aritmetika dan digambar sebagai SVG, di halaman ini, di mesin Anda."""
+
+[[privacy]]
+title = "Kodenya tidak menunjuk ke kami."
+body = """
+ Apa yang Anda ketik itulah isi kodenya.
+      Beberapa pembuat gratis mengembalikan kode yang memuat tautan ke situs
+      mereka sendiri, yang kemudian mengalihkan ke situs Anda &mdash; jadi setiap
+      pemindaian dihitung oleh mereka, dan kodenya berhenti bekerja pada hari
+      mereka berhenti membayar nama domainnya atau memutuskan kuota gratisnya
+      habis. Tidak ada di sini yang memendekkan, mengalihkan, atau melacak:
+      string yang ditampilkan di halaman adalah string di dalam gambarnya."""
+
+[[privacy]]
+title = "PNG-nya dibuat dari SVG yang ada di layar."
+body = """
+ Unduhannya bukan penggambaran kedua yang
+      mungkin berbeda dari pratinjaunya. Markah yang sama diserahkan ke peramban
+      dan dicat ke sebuah kanvas, dan itu juga sebabnya hal itu bisa dilakukan
+      tanpa menghubungi apa pun: tidak ada font untuk diambil dan tidak ada
+      gambar untuk dimuat di dalamnya."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google, dan tombol donasi dari Buy Me a Coffee. Tidak satu pun diberi
+      apa pun yang Anda ketik. Setiap baris yang mengubah sebuah string menjadi
+      sebuah kode disajikan dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih jenis kodenya."
+body = """
+ Kode QR memuat apa saja dan itulah yang
+      dicari kamera ponsel, jadi itulah jawabannya kecuali ada yang mengatakan
+      lain kepada Anda. Barkode memuat sebuah angka, dan yang mana yang Anda
+      butuhkan ditentukan oleh siapa pun yang akan memindainya &mdash; sebuah
+      toko mau EAN-13 atau UPC-A, kardus pengiriman mau ITF-14, dan apa pun yang
+      internal biasanya Code 128."""
+
+[[howto]]
+title = "Sebutkan apa yang masuk ke dalamnya."
+body = """
+ Tautan adalah kasus yang lazim, dan
+      kotak-kotak di atasnya membangun format lain yang dikenal ponsel: jaringan
+      Wi-Fi yang menawarkan diri untuk disambungkan, kartu kontak yang menawarkan
+      diri untuk disimpan, sebuah email, sebuah pesan teks, sebuah nomor telepon,
+      sebuah tempat di peta. Apa pun yang Anda pilih, string yang sudah jadi
+      ditampilkan di halaman &mdash; hanya itulah yang pernah dimuat sebuah kode
+      QR."""
+
+[[howto]]
+title = "Pilih seberapa banyak kerusakan yang boleh ditanggungnya."
+body = """
+ Empat tingkat itu memasukkan lebih
+      banyak atau lebih sedikit koreksi galat, dan lebih banyak koreksi berarti
+      kode yang lebih besar dan lebih padat. L cukup untuk layar, M untuk kertas
+      biasa, dan H untuk sesuatu yang akan dipegang-pegang, dicetak kecil, atau
+      ditempel di jendela yang kena matahari. Kode di menu yang dilap setiap hari
+      layak diberi Q atau H."""
+
+[[howto]]
+title = "Atur ukuran, margin, dan warnanya."
+body = """
+ Margin adalah bagian dari kodenya:
+      empat modul ruang sunyi mengelilinginya adalah yang diminta spesifikasinya,
+      dan memangkasnya adalah alasan tunggal yang paling umum kenapa kode
+      tercetak tidak mau terpindai. Gelap di atas terang, dengan kontras
+      sungguhan &mdash; pemindai membaca selisih antara keduanya, jadi abu-abu
+      pucat di atas putih tidak akan cukup, dan terang di atas gelap gagal
+      mentah-mentah pada cukup banyak pembaca."""
+
+[[howto]]
+title = "Periksa dengan ponsel yang Anda punya."
+body = """
+ Sebelum Anda mencetak seribu, pindai
+      yang ada di layar Anda. Itu memakan sepuluh detik dan menangkap seluruh
+      kategori kesalahan yang tidak bisa ditangkap sebuah pratinjau: kata sandi
+      Wi-Fi dengan karakter yang perlu dikaburkan, tautan yang kehilangan
+      <code>https://</code>-nya, nomor barkode yang kurang satu digit."""
+
+[[howto]]
+title = "Ambil SVG-nya."
+body = """
+ Ia adalah kodenya sebagai instruksi alih-alih
+      sebagai piksel, jadi ia tercetak pada ukuran apa pun tanpa melembut, dan
+      tepi yang lembut justru yang tidak bisa ditangkap pemindai. Ambil PNG-nya
+      juga kalau apa pun tempat Anda menempelkannya tidak menerima SVG; ia
+      digambar pada jumlah piksel bulat per modul, jadi tepinya juga tidak
+      kabur."""
+
+[[faq]]
+q = "Apakah yang saya ketik dikirim ke suatu tempat?"
+a = """
+        Tidak. Sebuah kode QR adalah aritmetika atas sebuah string, dan
+        aritmetika itu berjalan di peramban Anda sendiri di mesin Anda sendiri.
+        Alat ini tidak punya fitur jaringan dalam bentuk apa pun &mdash; ia tidak
+        pernah mengambil apa pun dan tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya, dan tidak satu pun milik situs
+        ini. Itu lebih bernilai di sini daripada di sebagian besar halaman,
+        karena yang paling sering dimasukkan orang ke dalam kode QR adalah kata
+        sandi Wi-Fi mereka."""
+
+[[faq]]
+q = "Apakah kode ini kedaluwarsa, atau berhenti bekerja nanti?"
+a = """
+        Tidak, dan memang tidak bisa. Apa yang Anda ketik itulah isi kodenya,
+        jadi memindainya mengembalikan persis string itu selamanya. Kode yang
+        kedaluwarsa adalah yang di dalamnya ada alamat orang lain: kode QR
+        "dinamis" memuat tautan ke server pembuatnya, yang mengalihkan ke server
+        Anda, yang berarti mereka bisa menghitung setiap pemindaian, mengubah
+        tujuannya, atau mematikannya ketika masa coba berakhir. Tidak ada di sini
+        yang mengalihkan lewat apa pun."""
+
+[[faq]]
+q = "Apakah gratis, dan bisakah saya memakainya untuk keperluan komersial?"
+a = """
+        Gratis, tidak ada akun, tidak ada tanda air, dan tidak ada batas berapa
+        banyak yang Anda buat, dan Anda boleh menaruh hasilnya di sebuah produk,
+        poster, atau etalase. QR Code adalah merek dagang terdaftar milik Denso
+        Wave, yang telah menyatakan tidak akan menegakkannya terhadap orang yang
+        memakai kodenya &mdash; spesifikasinya diterbitkan sebagai ISO/IEC 18004
+        dan bebas diimplementasikan, dan itulah yang dilakukan halaman ini. Situs
+        ini memasang iklan, dan itulah yang membiayainya."""
+
+[[faq]]
+q = "Tingkat koreksi galat mana yang harus saya pilih?"
+a = """
+        M kecuali Anda punya alasan. L membuat kode terkecil dan cukup untuk
+        layar; M bertahan terhadap penanganan biasa; Q dan H untuk kode yang akan
+        dicetak kecil, dilaminasi, ditempel di jendela, atau tertutup sebagian
+        oleh logo. Setiap kenaikan memasukkan lebih banyak data periksa, yang
+        butuh simbol lebih besar untuk jumlah teks yang sama &mdash; naik dari L
+        ke H kira-kira menggandakan jumlah modul untuk string yang sama."""
+
+[[faq]]
+q = "Berapa banyak yang bisa dimuat sebuah kode QR?"
+a = """
+        Pada ukuran terbesar, 177 modul persegi, sampai 7.089 digit, 4.296 huruf
+        kapital dan digit, atau 2.953 byte apa pun lainnya &mdash; dan itu pada
+        koreksi galat terlemah; pada yang terkuat kira-kira sepertiganya. Dalam
+        praktik, batasnya bukan formatnya melainkan pemindainya: lewat beberapa
+        ratus karakter, modulnya menjadi begitu kecil sehingga kamera ponsel biasa
+        tidak bisa menangkapnya pada jarak lengan. Kode yang panjang biasanya
+        pertanda bahwa yang seharusnya ada di dalamnya adalah tautan pendek."""
+
+[[faq]]
+q = "Kenapa kode saya lebih besar kalau tautannya saya tulis dengan huruf kecil?"
+a = """
+        Karena kode QR punya mode untuk huruf kapital dan digit yang mengemas dua
+        karakter ke dalam sebelas bit, dan tidak punya mode seperti itu untuk
+        huruf kecil, yang memakan delapan bit masing-masing. URL yang ditulis
+        <code>HTTPS://EXAMPLE.COM/PAGE</code> bisa sepertiga lebih kecil daripada
+        URL yang sama dengan huruf kecil. Skema dan hos-nya tidak peka huruf
+        besar-kecil, jadi meneriakkannya tidak mengubah apa pun selain ukurannya;
+        jalur setelah hos-nya peka, jadi biarkan bagian itu."""
+
+[[faq]]
+q = "Bisakah ia membaca kode QR sekaligus membuatnya?"
+a = """
+        Bukan halaman ini, tapi yang di sebelah bisa:
+        <a href="../pindai-kode-qr/">pembacanya</a> menerima sebuah foto,
+        tangkapan layar, atau kamera Anda dan mengembalikan string-nya. Itu
+        pekerjaan yang jauh lebih besar daripada menggambar satu &mdash; mencari
+        simbolnya di dalam sebuah gambar, mengoreksi sudut pengambilannya, dan
+        memperbaiki kerusakannya adalah tiga masalah yang tidak dimiliki halaman
+        ini &mdash; dan itulah sebabnya ia menjadi alat tersendiri alih-alih
+        sebuah tombol di sini. Ia berjalan dengan syarat yang sama seperti segala
+        yang lain: tidak ada yang diunggah, dan tidak ada bingkai kamera yang
+        disimpan."""
+
+[[faq]]
+q = "Untuk apa marginnya, dan bisakah saya membuatnya lebih kecil?"
+a = """
+        Ruang putih di sekeliling kode QR adalah bagian dari kodenya. Sebuah
+        pembaca memakainya untuk menemukan di mana simbolnya berakhir, dan
+        spesifikasinya meminta empat modul di setiap sisi; sebuah barkode mau
+        sekitar sepuluh. Anda bisa mengaturnya ke nol di sini dan gambarnya akan
+        tampak lebih rapi, dan cukup banyak pemindai kemudian tidak akan
+        melihatnya sama sekali &mdash; terutama di atas latar yang ramai. Kalau
+        ruangnya yang jadi masalah, perkecil kodenya alih-alih memangkas
+        marginnya."""
+
+[[faq]]
+q = "Barkode mana yang saya butuhkan?"
+a = """
+        Mana pun yang diminta orang yang akan memindainya. EAN-13 adalah barkode
+        ritel di luar Amerika Utara dan UPC-A yang di Amerika Utara &mdash;
+        keduanya butuh nomor yang diterbitkan GS1 untuk Anda, karena nomornya
+        menandai perusahaan Anda, bukan sekadar produknya. EAN-8 adalah versi
+        pendek untuk kemasan kecil. ITF-14 dipasang di kardus pengiriman. Code
+        128 dan Code 39 memuat teks selain digit dan sama sekali tidak butuh
+        pendaftaran, yang membuatnya jawaban tepat untuk apa pun yang internal:
+        aset, rak, lembar kerja."""
+
+[[faq]]
+q = "Apa itu angka periksa, dan kenapa alat ini menambahkannya?"
+a = """
+        Ia adalah digit terakhir sebuah barkode ritel, dihitung dari digit-digit
+        sebelumnya, sehingga sebuah pemindai bisa membedakan salah baca dari
+        berhasil baca. EAN-13 mau dua belas digit dan menghitung yang ketiga
+        belas; UPC-A mau sebelas dan menghitung yang kedua belas. Ketik nomor
+        pendeknya dan halaman ini menambahkannya. Ketik nomor lengkapnya dan ia
+        memeriksa yang Anda berikan &mdash; dan menolak, alih-alih diam-diam
+        membetulkannya, karena digit yang salah lalu diperbaiki diam-diam adalah
+        label yang terpindai sebagai produk orang lain."""
+
+[[faq]]
+q = "Bisakah saya menaruh logo di tengah kode QR?"
+a = """
+        Tidak di sini, tapi alasan hal itu berhasil di tempat lain layak
+        diketahui: koreksi galatlah yang memungkinkannya. Pada tingkat H, kira-kira
+        30% modulnya bisa hancur dan kodenya tetap terbaca, jadi logo yang menutupi
+        kurang dari itu di bagian tengah &mdash; tempat tidak ada pola pencari
+        &mdash; adalah kerusakan yang bisa diperbaiki. Masukkan kodenya ke
+        penyunting gambar Anda pada tingkat H, jaga logonya di bawah sekitar
+        seperlima luasnya, dan ujilah dengan ponsel sungguhan alih-alih
+        mempercayainya begitu saja."""
+
+[[faq]]
+q = "Kenapa SVG lebih baik daripada PNG?"
+a = """
+        Karena sebuah kode terdiri dari tepi, dan sebuah PNG punya jumlah piksel
+        tetap untuk membuatnya. Perbesar satu dan setiap tepinya melembut; tepi
+        yang lembut justru yang menyulitkan pemindai, dan pencetak 1200 dpi yang
+        diberi PNG 512 piksel sedang diminta mengarang selisihnya. Sebuah SVG
+        adalah kotak-kotaknya sebagai instruksi, jadi ia tercetak tajam di
+        kartunama maupun di bilbor. PNG di sini digambar pada jumlah piksel bulat
+        per modul, dan itu yang terbaik yang bisa dilakukan sebuah PNG."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim teks Anda ke tempat lain untuk digambarkan
+        kodenya akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Buat kode QR atau barkode linear dari sebuah string di peramban. Kode QR untuk tautan, jaringan Wi-Fi, kartu kontak, email, SMS, nomor telepon, dan koordinat, dengan keempat tingkat koreksi galat; barkode EAN-13, EAN-8, UPC-A, ITF-14, Interleaved 2 of 5, Code 128, dan Code 39 beserta angka periksanya. Unduh sebagai SVG atau PNG. Tidak ada yang diunggah."
+features = [
+  "Kode QR pada setiap versi dari 1 sampai 40, dalam mode numerik, alfanumerik, dan byte",
+  "Keempat tingkat koreksi galat, dengan biaya masing-masing disebutkan terang-terangan",
+  "Format siap pakai: jaringan Wi-Fi, kartu kontak, email, pesan teks, nomor telepon, lokasi peta",
+  "Menampilkan string persis yang akan dimuat kodenya, alih-alih menyembunyikannya",
+  "EAN-13, EAN-8, dan UPC-A, dengan angka periksa dihitung atau diverifikasi",
+  "ITF-14 dan Interleaved 2 of 5 untuk kardus dan pergudangan",
+  "Code 128 dengan pemakaian otomatis mode numeriknya, dan Code 39 dengan karakter periksa opsional",
+  "Digit yang terbaca manusia dicetak di bawah barkode, di tempat yang tepat",
+  "Keluaran SVG, jadi ia tercetak tajam pada ukuran apa pun, dan PNG yang digambar pada piksel bulat per modul",
+  "Dua warna apa pun, atau tanpa latar sama sekali",
+  "Tidak pernah mengalihkan: tanpa tautan pendek, tanpa pelacakan, tanpa apa pun yang bisa kedaluwarsa",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]

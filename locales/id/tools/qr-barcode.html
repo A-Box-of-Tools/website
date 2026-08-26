@@ -1,0 +1,194 @@
+<!--
+  tools/qr-barcode/body.html, in Indonesian.
+
+  Every id, class and option value below is what src/main.js reaches for, so
+  they are the same in every language. The symbology names in the menu are the
+  names of the standards and stay as they are. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; jenis kodenya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih jenis kodenya</h2>
+
+    <p class="card-lede">
+      Kode QR memuat apa saja dan itulah yang dicari kamera ponsel. Barkode
+      memuat sebuah angka, dan yang mana yang Anda butuhkan biasanya sudah
+      ditentukan untuk Anda &mdash; oleh toko, gudang, atau perusahaan pengiriman
+      yang memintanya.
+    </p>
+
+    <div class="option-row">
+      <label for="symbology">Jenis kode</label>
+      <select id="symbology">
+        <optgroup label="Persegi">
+          <option value="qr" selected>Kode QR</option>
+        </optgroup>
+        <optgroup label="Batang">
+          <option value="code128">Code 128</option>
+          <option value="ean13">EAN-13</option>
+          <option value="upca">UPC-A</option>
+          <option value="ean8">EAN-8</option>
+          <option value="itf14">ITF-14</option>
+          <option value="itf">Interleaved 2 of 5</option>
+          <option value="code39">Code 39</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary" id="symbology-note"></p>
+  </section>
+
+  <!-- Langkah 2 &mdash; string-nya sendiri -->
+  <section class="card">
+    <h2><span class="step">2</span> Sebutkan apa yang masuk ke dalamnya</h2>
+
+    <div class="option-row" id="format-row">
+      <label for="format">Apa yang dimuatnya</label>
+      <select id="format"></select>
+    </div>
+
+    <p class="card-lede" id="format-note"></p>
+
+    <div id="fields" class="fields"></div>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+
+    <!--
+      The finished string, shown rather than hidden. A "Wi-Fi QR code" is an
+      ordinary QR code holding a line of text in a format phones recognise, and
+      when a phone does not act on one, this line is the thing to look at.
+    -->
+    <details class="encoded" id="encoded-panel">
+      <summary>String persis yang akan dimuat kode ini</summary>
+      <pre id="encoded"></pre>
+      <p class="field-summary" id="encoded-note"></p>
+    </details>
+  </section>
+
+  <!-- Langkah 3 &mdash; bagaimana ia digambar -->
+  <section class="card">
+    <h2><span class="step">3</span> Pilih tampilannya</h2>
+
+    <fieldset class="options" id="qr-options">
+      <legend>Kode QR-nya</legend>
+
+      <div class="option-row">
+        <label for="level">Seberapa banyak kerusakan yang bisa ditanggungnya</label>
+        <select id="level">
+          <option value="L">L &mdash; sekitar 7% bisa dipulihkan, kode terkecil</option>
+          <option value="M" selected>M &mdash; sekitar 15%, pilihan yang biasa</option>
+          <option value="Q">Q &mdash; sekitar 25%</option>
+          <option value="H">H &mdash; sekitar 30%, untuk cetakan yang akan aus</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="quiet">Margin, dalam modul</label>
+        <input type="number" id="quiet" value="4" min="0" max="16" step="1" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Margin adalah bagian dari kodenya, bukan ruang di sekelilingnya. Empat
+        modul adalah yang diminta spesifikasinya, dan kode yang dipangkas sampai
+        tepinya adalah kode yang tidak akan dilihat banyak pemindai sama sekali.
+      </p>
+    </fieldset>
+
+    <fieldset class="options" id="barcode-options" hidden>
+      <legend>Barkodenya</legend>
+
+      <div class="option-row">
+        <label for="bar-width">Batang tersempit, dalam piksel</label>
+        <input type="number" id="bar-width" value="2" min="1" max="10" step="1" inputmode="numeric">
+      </div>
+
+      <div class="option-row">
+        <label for="bar-height">Tinggi batangnya, dalam piksel</label>
+        <input type="number" id="bar-height" value="120" min="20" max="600" step="10" inputmode="numeric">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-text" checked>
+        <span>
+          <strong>Cetak karakternya di bawah</strong>
+          <span class="check-note">
+            Apa yang dibaca seseorang ketika pemindainya tidak mau. Pada kode
+            ritel, digitnya juga duduk di marginnya, dan itu disengaja: mereka
+            menandai ruang putih yang tidak boleh dipangkas siapa pun.
+          </span>
+        </span>
+      </label>
+
+      <label class="check" id="code39-check-row" hidden>
+        <input type="checkbox" id="code39-check">
+        <span>
+          <strong>Tambahkan karakter periksa</strong>
+          <span class="check-note">
+            Code 39 biasanya tidak membawanya. Sebagian sistem bersikeras
+            memintanya; tambahkan hanya kalau sistem Anda begitu, karena pembaca
+            yang tidak mengharapkannya akan membacanya sebagai karakter tambahan
+            di ujung.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Warna dan ukuran</legend>
+
+      <div class="colour-row">
+        <div class="option-row">
+          <label for="foreground">Kodenya</label>
+          <input type="color" id="foreground" value="#000000">
+        </div>
+        <div class="option-row">
+          <label for="background">Di belakangnya</label>
+          <input type="color" id="background" value="#ffffff">
+        </div>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Tanpa latar sama sekali</strong>
+          <span class="check-note">
+            Transparan, untuk ditaruh di atas sesuatu yang sudah punya warna.
+            SVG dan PNG-nya sama-sama menjaganya; apa pun yang berakhir di
+            belakangnya harus pucat, atau pemindai tidak akan menemukan kontras.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row" id="size-row">
+        <label for="size">Ukuran gambarnya, dalam piksel</label>
+        <input type="number" id="size" value="512" min="64" max="4096" step="16" inputmode="numeric">
+      </div>
+
+      <p class="field-summary" id="size-note"></p>
+    </fieldset>
+  </section>
+
+  <!-- Langkah 4 &mdash; hasilnya -->
+  <section class="card" id="result-card">
+    <h2><span class="step">4</span> Ambil</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Kode yang Anda buat"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Unduh SVG-nya</button>
+      <button type="button" id="download-png" class="primary">Unduh PNG-nya</button>
+      <button type="button" id="copy-png" class="ghost">Salin gambarnya</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      SVG-lah yang layak disimpan. Ia adalah kodenya sebagai instruksi alih-alih
+      sebagai piksel, jadi ia tercetak pada ukuran apa pun tanpa melembut
+      &mdash; dan itu lebih penting di sini daripada pada kebanyakan gambar,
+      karena tepi yang kabur justru yang tidak bisa ditangkap pemindai.
+    </p>
+  </section>
+</main>
