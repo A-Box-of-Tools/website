@@ -1,0 +1,388 @@
+<!--
+  tools/document-scanner/body.html, in Indonesian.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- Langkah 1 &mdash; fotonya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih fotonya</h2>
+
+    <p class="card-lede">
+      Sebuah foto tiap halaman, diambil dari mana pun di atasnya. Seluruh
+      halamannya harus ada di dalam bingkai, dan keempat sudutnya sebaiknya
+      terlihat atau hampir terlihat &mdash; selebihnya, sudutnya, bayangannya,
+      meja tempatnya terbaring, itulah yang menjadi tugas alat ini. Tambahkan
+      beberapa dan mereka menjadi halaman-halaman satu dokumen, dalam urutan Anda
+      menambahkannya.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">Cari setiap halaman lagi</button>
+        <button type="button" id="clear-all" class="ghost danger">Buang semua</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- Langkah 2 &mdash; sudutnya -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Taruh sudutnya di halamannya</h2>
+
+    <p id="edit-empty" class="field-summary">
+      Pilih sebuah foto dan ia muncul di sini, dengan keempat sudutnya dicarikan
+      untuk Anda.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Tekan di mana pun pada fotonya dan sudut terdekat datang ke jari Anda;
+        seret ke sudut halamannya. <kbd>Tab</kbd> menjangkau sebuah sudut dari
+        papan ketik, tombol panah memindahkannya satu piksel dan
+        <kbd>Shift</kbd> bersamanya sepuluh. Tidak ada di sini yang final
+        &mdash; pindaiannya diambil dari di mana pun keempat sudutnya berakhir.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">Cari sudutnya lagi</button>
+        <button type="button" id="whole-photo" class="ghost">Pakai seluruh fotonya</button>
+        <button type="button" id="turn-left" class="ghost">Putar ke kiri</button>
+        <button type="button" id="turn-right" class="ghost">Putar ke kanan</button>
+        <button type="button" id="undo" class="ghost" disabled>Urungkan</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Langkah 3 &mdash; pembersihannya -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> Bersihkan</h2>
+
+    <p id="clean-empty" class="field-summary">
+      Halaman yang sudah lurus muncul di sini begitu ada foto untuk diluruskan.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        Yang di bawah adalah hasil sebenarnya, dihasilkan oleh kode yang sama
+        yang menulis file-nya &mdash; sudah lurus, dan dengan cahaya yang tidak
+        rata sudah dibagi keluar. Ia digambar seukuran layar selagi Anda memilih;
+        file-nya sendiri dibuat pada resolusi fotonya.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          Meluruskan&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>Apa yang dilakukan pada cahaya dan warnanya</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>Warna, diratakan</strong>
+            <span class="check-note">
+              Kertasnya diukur di seluruh halaman lalu dibagi keluar, sehingga
+              bayangannya hilang dan kertasnya kembali putih, sementara sebuah
+              stempel, tanda tangan bertinta biru, atau baris yang distabilo
+              tetap berwarna seperti semula. Inilah yang dipakai ketika warnanya
+              bagian dari dokumennya.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>Skala abu-abu</strong>
+            <span class="check-note">
+              Perataan yang sama, tanpa warnanya. Lebih kecil daripada warna dan
+              lebih murah hati kepada sebuah foto atau tanda tangan daripada
+              hitam putih.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>Hitam putih</strong>
+            <span class="check-note">
+              Setiap piksel diputuskan terhadap sekelilingnya sendiri alih-alih
+              terhadap satu angka untuk seluruh halaman, dan itulah yang menjaga
+              tulisan di dalam bayangan tetap terbaca. Inilah yang membuat sebuah
+              pindaian kecil: kontrak dua puluh halaman keluar di bawah satu
+              megabita dengan cara ini dan di sekitar lima belas sebagai foto. Ia
+              tidak punya nada tengah, jadi apa pun yang ada fotonya sebaiknya
+              tidak memakainya.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>Biarkan saja</strong>
+            <span class="check-note">
+              Diluruskan dan tidak lebih. Untuk halaman yang kertasnya sendiri
+              penting &mdash; sesuatu yang tua, sesuatu yang berwarna, sebuah
+              foto.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">Seberapa keras mendorongnya</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        Setelannya berlaku untuk setiap halaman. Halaman dalam satu dokumen yang
+        dibersihkan secara berbeda tampak seperti dua dokumen.
+      </p>
+    </div>
+  </section>
+
+  <!-- Langkah 4 &mdash; file-nya -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> Simpan dokumennya</h2>
+
+    <p class="card-lede">
+      PDF-nya ditulis di sini, di dalam memori halaman ini, satu halaman sekali
+      jalan. Tidak ada server di ujung lain alat ini untuk menerima slip gaji,
+      paspor, atau kontrak, dan tidak ada kode yang akan mengirimnya seandainya
+      ada.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Ukuran halaman</label>
+        <select id="page-size">
+          <option value="fit" selected>Paskan lembarnya ke halamannya sendiri</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8,5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8,5 &times; 14 in</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Resolusi cetak</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; pemindai kantor</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          Seberapa besar selembar kertas yang disebut oleh sejumlah piksel
+          tertentu. Ia mengubah ukuran cetak dokumennya, dan tidak satu piksel pun
+          dari pindaiannya.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">Margin</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="Margin dalam milimeter">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Sisi terpanjang</label>
+        <select id="max-side">
+          <option value="1600">1600 piksel &mdash; kecil</option>
+          <option value="2400" selected>2400 piksel</option>
+          <option value="3500">3500 piksel</option>
+          <option value="0">Sebesar yang diizinkan fotonya</option>
+        </select>
+        <p class="field-note">
+          Sebuah langit-langit untuk halaman yang sudah lurus. Foto sebuah halaman
+          menyimpan jauh lebih banyak piksel daripada yang pantas bagi halamannya,
+          dan 2400 di sisi panjangnya kira-kira 200 DPI di atas A4.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Kualitas</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          Untuk mode warna dan skala abu-abu, yang disimpan sebagai JPEG. Halaman
+          hitam putih disimpan dengan tepat, jadi ini tidak berpengaruh
+          padanya.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">Judul dokumen <span class="optional">(opsional)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="Kalau dibiarkan kosong, PDF-nya tidak membawa judul">
+        <p class="field-note">
+          Satu-satunya yang ditulis ke dalam dokumennya selain halamannya. Tidak
+          ada tanggal, tidak ada penulis, dan tidak ada apa pun tentang mesin ini
+          &mdash; lihat <code>src/document.js</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>Simpan sebagai PDF</button>
+      <button type="button" id="save-images" class="ghost big" disabled>Simpan halamannya sebagai gambar</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>File jadinya</h3>
+        <a id="download" class="primary as-button" href="#" download>Unduh</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Buka sebelum Anda mengirimnya. Yang ada di dokumennya adalah yang ada di
+        layar pada langkah 3, halaman demi halaman.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">Keempat sudutnya ditemukan. Periksa, dan
+      seret yang mendarat keliru.</span>
+    <span data-phrase="detect.unsure">Tepi halamannya tidak cukup jelas untuk
+      diyakini. Sudut-sudut ini sebuah tebakan &mdash; seret ke halamannya
+      sebelum Anda lanjut.</span>
+    <span data-phrase="detect.nothing">Tidak ada halaman yang bisa dikenali dari
+      foto ini, jadi sudutnya berada di tepi fotonya. Seret ke halamannya.</span>
+    <span data-phrase="detect.flat">Tidak ada yang bisa ditemukan di gambar ini
+      &mdash; ia sama sekali tidak punya tepi di dalamnya.</span>
+    <span data-phrase="detect.tiny">Gambar ini terlalu kecil untuk menemukan
+      sebuah halaman di dalamnya.</span>
+    <span data-phrase="detect.edited">Sudut-sudut ini sekarang milik Anda.
+      &ldquo;Cari sudutnya lagi&rdquo; mengukur fotonya dari awal.</span>
+
+    <span data-phrase="corner.tl">Sudut kiri atas</span>
+    <span data-phrase="corner.tr">Sudut kanan atas</span>
+    <span data-phrase="corner.br">Sudut kanan bawah</span>
+    <span data-phrase="corner.bl">Sudut kiri bawah</span>
+    <span data-phrase="corner.at">{corner}, pada {x} melintang dan {y} ke bawah.
+      Tombol panah memindahkannya, dan Shift bersamanya memindahkannya sepuluh
+      piksel sekali tekan.</span>
+
+    <span data-phrase="page.select">Sunting halaman {index}</span>
+    <span data-phrase="page.remove">Buang halaman {index}</span>
+    <span data-phrase="page.earlier">Pindahkan halaman {index} lebih awal</span>
+    <span data-phrase="page.later">Pindahkan halaman {index} lebih akhir</span>
+    <span data-phrase="page.count">{count} halaman</span>
+    <span data-phrase="page.counts">{count} halaman</span>
+
+    <span data-phrase="paper.a">A4 atau A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">sebuah kartu nama</span>
+    <span data-phrase="shape.known">Halamannya keluar {ratio}, dan itu bentuk
+      {paper}.</span>
+    <span data-phrase="shape.sideways">Halamannya keluar {ratio}, dan itu bentuk
+      {paper} dalam posisi menyamping.</span>
+    <span data-phrase="shape.unknown">Halamannya keluar {ratio}, dan itu bukan
+      lembar standar.</span>
+
+    <span data-phrase="method.perspective">Bentuknya diperhitungkan dari
+      perspektif di dalam fotonya, jadi ia bentuk halamannya alih-alih bentuk yang
+      tampak di gambarnya.</span>
+    <span data-phrase="method.edges">Fotonya diambil tegak lurus, jadi bentuknya
+      diukur langsung dari tepinya.</span>
+
+    <span data-phrase="quality.good">{width} kali {height} piksel, sekitar {dpi}
+      DPI di atas halaman seukuran itu &mdash; cukup untuk dicetak.</span>
+    <span data-phrase="quality.fair">{width} kali {height} piksel, sekitar {dpi}
+      DPI di atas halaman seukuran itu. Baik di layar, sedikit lembek di
+      kertas.</span>
+    <span data-phrase="quality.low">{width} kali {height} piksel, sekitar {dpi}
+      DPI di atas halaman seukuran itu. Ambil fotonya lebih dekat kalau ini harus
+      dicetak.</span>
+    <span data-phrase="quality.pixels">{width} kali {height} piksel.</span>
+    <span data-phrase="coverage.note">Halamannya mengisi {percent}% fotonya.</span>
+    <span data-phrase="coverage.small">Halamannya hanya mengisi {percent}%
+      fotonya, jadi sebagian besar yang difoto adalah meja. Lebih dekat lain
+      kali.</span>
+
+    <span data-phrase="strength.gentle">Lembut: kertasnya diratakan dan tidak
+      banyak lagi. Untuk halaman dengan pensil samar atau sebuah foto di
+      atasnya.</span>
+    <span data-phrase="strength.middling">Setelan yang biasa: kertasnya kembali
+      putih dan teks tercetak kembali hitam.</span>
+    <span data-phrase="strength.hard">Keras: apa pun yang abu-abu didorong ke
+      hitam atau ke putih. Paling bersih pada halaman cetak polos, dan merusak
+      pada apa pun yang ada gambarnya.</span>
+
+    <span data-phrase="busy.page">Halaman {done} dari {total}&hellip;</span>
+    <span data-phrase="busy.writing">Menulis dokumennya&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">Disimpan pada satu bit per piksel dan
+      dikompres dengan tepat, dan itulah sebabnya ia sekecil ini.</span>
+    <span data-phrase="result.jpeg">Halamannya disimpan sebagai JPEG pada kualitas
+      yang Anda pilih.</span>
+    <span data-phrase="result.png">Halamannya disimpan sebagai PNG, yang tanpa
+      kehilangan dan itulah yang diinginkan gambar dua warna &mdash; JPEG akan
+      sekaligus lebih besar dan buram di sekeliling setiap huruf.</span>
+    <span data-phrase="result.clean">Tidak ada tanggal, tidak ada penulis, tidak
+      ada nama mesin: satu-satunya yang ada di dokumennya selain halamannya adalah
+      nama alat ini.</span>
+
+    <span data-phrase="size.fit">Setiap lembar menjadi seukuran halamannya sendiri
+      yang sebenarnya, pada resolusi di atas. Tidak ada yang diberi bilah
+      kosong.</span>
+    <span data-phrase="size.named">Setiap halaman ditaruh di atas lembar {name},
+      di dalam marginnya, apa pun bentuk yang keluar.</span>
+
+    <span data-phrase="error.decode">Peramban ini tidak bisa membuka {name}. Kalau
+      itu foto HEIC dari sebuah iPhone, ubah dulu.</span>
+    <span data-phrase="error.none">Pilih setidaknya satu foto dulu.</span>
+    <span data-phrase="error.failed">Ada yang tidak beres saat membuat file-nya:
+      {detail}</span>
+  </div>
+</main>

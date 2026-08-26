@@ -1,0 +1,265 @@
+<!--
+  tools/dicom-viewer/body.html, in Indonesian.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  The column headings of the tag table keep "VR": it is the two-letter code
+  written in the file itself, and a reader checking a tag against the standard
+  is looking for those letters.
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih sebuah pindaian</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      Jatuhkan isi satu folder penuh sekaligus dan mereka dikembalikan ke serinya
+      lalu disusun berurutan. Tidak ada yang diunggah, dan tidak ada yang ditulis
+      kembali ke file Anda.
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Penampilnya. -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>Simpan bingkai ini sebagai PNG</button>
+        <button type="button" id="copy-header" class="ghost">Salin headernya</button>
+        <button type="button" id="download-header" class="ghost">Unduh</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">Seri</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="Bingkai di layar, digambar dari file yang Anda pilih"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="Putar melalui bingkainya">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="Irisan atau bingkai mana yang ditampilkan">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">Apa yang dilakukan seretan pada gambarnya</legend>
+        <label><input type="radio" name="mode" value="window" checked> Jendela &amp; level</label>
+        <label><input type="radio" name="mode" value="pan"> Geser</label>
+        <label><input type="radio" name="mode" value="measure"> Ukur</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">Perbesaran</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">Paskan</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">Jendela</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">Pusat</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">Lebar</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> Balikkan</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> Tampilkan detail pasiennya di atas gambarnya</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- File ini apa. -->
+  <section class="card" id="facts-card" hidden>
+    <h2>File ini apa</h2>
+    <dl class="facts">
+      <div><dt>Objek</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>Modalitas</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>Gambar</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>Disimpan sebagai</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Sintaks transfer</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>Jarak piksel</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>Rentang nilai</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>File</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- Apa isinya tentang orangnya. -->
+  <section class="card" id="identity-card" hidden>
+    <h2>Apa di file ini yang mengenali pasiennya</h2>
+    <p class="card-lede">
+      Dibaca dari file ini, di mesin ini, dan tidak ditampilkan kepada siapa pun
+      lain. Alat ini tidak menulis apa pun: ia tidak bisa mengeluarkan satu pun
+      darinya, dan ia tidak mengirimkan satu pun ke mana pun. Ia ada di sini
+      karena sebuah pindaian membawa jauh lebih banyak daripada sebuah nama, dan
+      sisanya itulah yang selamat dari penganoniman yang sembrono.
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- Setiap tag di dalam file-nya. -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>Setiap tag di dalam file-nya</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">Cari di tagnya</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="Cari menurut nama, nomor, atau nilai">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">Setiap elemen di dalam file ini</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tag</th>
+            <th scope="col">VR</th>
+            <th scope="col">Nama</th>
+            <th scope="col">Nilai</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">Seret melintasi gambarnya untuk melebarkan atau menyempitkan jendelanya, dan ke atas atau ke bawah untuk menggeser pusatnya. Kedua angkanya ada di bawah, dan mengetik ke dalamnya melakukan hal yang sama.</span>
+    <span data-phrase="mode.pan">Seret untuk memindahkan gambarnya di dalam bingkainya. Roda gulir memperbesar, dan &ldquo;Paskan&rdquo; mengembalikannya.</span>
+    <span data-phrase="mode.measure">Seret sebuah garis melintasi gambarnya untuk mengukurnya. Kalau file-nya mengatakan seberapa jauh jarak antar pikselnya, jawabannya dalam milimeter; kalau tidak, jawabannya dalam piksel dan ia mengatakannya.</span>
+
+    <span data-phrase="probe.value">{value} di kolom {column}, baris {row}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; file ini tidak mengatakan seberapa jauh jarak antar pikselnya, jadi ini tidak bisa dalam milimeter</span>
+
+    <span data-phrase="stack.position">Disusun menurut letak setiap irisan di dalam tubuh pasiennya, dan itulah urutan pengambilan pemindainya.</span>
+    <span data-phrase="stack.number">Disusun menurut nomor instansnya: file-file ini tidak membawa letak di dalam tubuh pasien untuk diurutkan.</span>
+    <span data-phrase="stack.gap">Jarak antar irisannya tidak sama sepanjang serinya, jadi setidaknya satu irisan hilang dari seri ini.</span>
+
+    <span data-phrase="pixels.none">Piksel file ini dikompres dengan {codec}, yang tidak bisa didekodekan peramban mana pun dan yang dekodernya tidak dibawa halaman ini. Semua hal lain tentang file-nya ada di bawah.</span>
+    <span data-phrase="pixels.failed">Gambarnya tidak bisa didekodekan: {reason}. Header di bawah dibaca utuh.</span>
+    <span data-phrase="pixels.absent">File ini sama sekali tidak membawa data piksel. Ia sebuah header, dan semua isinya ada di bawah.</span>
+    <span data-phrase="pixels.jpeg">Piksel ini adalah baseline JPEG, jadi dekoder milik peramban sendiri yang membukanya dan yang diserahkannya kembali sedalam delapan bit. Jendelanya tetap bekerja; ketelitian yang direkam pemindainya tidak seluruhnya ada di sana.</span>
+
+    <span data-phrase="tags.count">{shown} dari {total} elemen. {hidden} lagi.</span>
+    <span data-phrase="tags.all">Semua {total} elemen di file ini.</span>
+    <span data-phrase="tags.found">{total} elemen cocok dengan &ldquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.found.one">Satu elemen cocok dengan &ldquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.none">Tidak ada yang cocok dengan &ldquo;{query}&rdquo;.</span>
+    <span data-phrase="tags.more">Tampilkan {count} sisanya</span>
+    <span data-phrase="tags.private">elemen privat</span>
+    <span data-phrase="tags.unknown">tidak ada di kamus ini</span>
+    <span data-phrase="tags.guessed">File-nya tidak mengatakannya; inilah yang diberikan kamus datanya untuk tag ini.</span>
+
+    <span data-phrase="working.one">Membaca {name}&hellip;</span>
+    <span data-phrase="working.many">Membaca {at} dari {total}&hellip;</span>
+    <span data-phrase="error.none">Tidak ada di sini yang bisa dibaca sebagai DICOM. {why} Alat ini membaca format DICOM itu sendiri, jadi ia tidak punya apa-apa untuk dikatakan tentang file lain.</span>
+    <span data-phrase="error.skipped.one">Satu file dilewati: {files}</span>
+    <span data-phrase="error.skipped">{count} file dilewati: {files}</span>
+
+    <span data-phrase="series.number">Seri {number}</span>
+    <span data-phrase="series.files.one">1 file</span>
+    <span data-phrase="series.files">{count} file</span>
+    <span data-phrase="stack.spacing">Jarak antar irisannya {gap}.</span>
+
+    <span data-phrase="at.position">{at} dari {total}</span>
+    <span data-phrase="net.clean">pindaian Anda tidak pergi ke mana pun. {total}
+      file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
+    <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak
+      pernah dilakukan alat ini. Anggap itu layak diselidiki. {platform}</span>
+    <span data-phrase="net.platform.one">Skrip iklan, pengukuran, dan tombol
+      donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi
+      sebuah pindaian, sebuah pikselnya, atau sepatah kata dari headernya.</span>
+    <span data-phrase="net.platform.many">Skrip iklan, pengukuran, dan tombol
+      donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi
+      sebuah pindaian, sebuah pikselnya, atau sepatah kata dari headernya.</span>
+    <span data-phrase="at.frame">bingkai {at} dari {total}</span>
+    <span data-phrase="at.instance">instans {number}</span>
+
+    <span data-phrase="window.file">Dari file-nya</span>
+    <span data-phrase="window.file.n">Dari file-nya, {n}</span>
+    <span data-phrase="window.full">Semua di bingkai ini</span>
+    <span data-phrase="window.custom">Disetel sendiri</span>
+    <span data-phrase="window.soft">Jaringan lunak</span>
+    <span data-phrase="window.lung">Paru</span>
+    <span data-phrase="window.bone">Tulang</span>
+    <span data-phrase="window.brain">Otak</span>
+    <span data-phrase="window.liver">Hati</span>
+    <span data-phrase="window.mediastinum">Mediastinum</span>
+    <span data-phrase="window.angio">Angiografi</span>
+
+    <span data-phrase="facts.frames">{count} bingkai</span>
+    <span data-phrase="facts.nopixels">tidak ada data piksel</span>
+    <span data-phrase="facts.nospacing">tidak dinyatakan di file ini</span>
+    <span data-phrase="facts.signed">bertanda</span>
+    <span data-phrase="facts.unsigned">tak bertanda</span>
+    <span data-phrase="facts.stored.one">{bits} bit, {sign}, 1 sampel per piksel, {photometric}</span>
+    <span data-phrase="facts.stored">{bits} bit, {sign}, {samples} sampel per piksel, {photometric}</span>
+    <span data-phrase="facts.range">{low} sampai {high}</span>
+    <span data-phrase="facts.colour">warna &mdash; tidak ada yang terukur untuk dilaporkan</span>
+
+    <span data-phrase="identity.clean">Tidak ada di file ini yang menamai atau menomori seseorang. Pengenal yang biasanya dibawa sebuah pindaian entah tidak ada entah kosong.</span>
+    <span data-phrase="identity.uids">Ia juga membawa {count} pengenal miliknya sendiri &mdash; UID studinya, serinya, dan instansnya. Tidak satu pun berupa nama, dan setiap satunya adalah kunci sempurna ke dalam arsip yang membuat file itu.</span>
+    <span data-phrase="identity.private">Dan {count} elemen privat, yang maknanya tidak diterbitkan di mana pun: sebagian pemindai menyimpan salinan kedua nama pasiennya di salah satunya.</span>
+
+    <span data-phrase="copied">Tersalin.</span>
+    <span data-phrase="copy.failed">Peramban Anda tidak mengizinkan halaman ini menyalin. Tombol unduh di sebelahnya menulis teks yang sama ke sebuah file.</span>
+    <span data-phrase="saved">{name} tersimpan.</span>
+  </div>
+</main>

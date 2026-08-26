@@ -1,0 +1,311 @@
+<!--
+  tools/redact-pdf/body.html, in Indonesian.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+
+  Indonesian does not mark a noun for number, so each count.* pair reads the
+  same in both halves. They are still both here, because the JavaScript picks
+  one by the count and a missing key is a missing sentence.
+-->
+<main>
+  <!-- Langkah 1 &mdash; dokumennya -->
+  <section class="card">
+    <h2><span class="step">1</span> Pilih PDF Anda</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- Langkah 2 &mdash; menemukannya -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> Sebutkan apa yang harus hilang</h2>
+
+    <p class="card-lede">
+      Ketik kata-katanya &mdash; sebuah nama, sebuah alamat, sebuah nomor rujukan
+      &mdash; dan setiap tempat ia muncul didaftar di bawah lengkap dengan baris
+      tempatnya duduk. Tidak ada yang dibuang sampai langkah 4, dan tidak ada
+      yang dibuang kalau Anda belum mencentangnya.
+    </p>
+
+    <label class="find-label" for="terms">Kata dan frasa, satu per baris</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="Santoso&#10;Jalan Merdeka 14&#10;REF-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">Cari</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>Cocokkan huruf besar kecilnya</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>Hanya kata utuh</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>Atau cari hal-hal yang biasanya sensitif</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        Ini adalah pola, dan sebuah pola tidak bisa membedakan nomor telepon dari
+        nomor rujukan. Nomor kartu dan IBAN dicocokkan dengan digit periksanya
+        sendiri; sisanya ditawarkan, tidak pernah dicentangkan untuk Anda, dan
+        masing-masing layak dibaca.
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">Centang semua</button>
+        <button type="button" id="tick-none" class="ghost">Lepas semua centang</button>
+        <button type="button" id="clear-found" class="ghost danger">Bersihkan daftarnya</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- Langkah 3 &mdash; membaca halamannya -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> Baca halamannya, dan pilih kata dari atasnya</h2>
+
+    <p class="card-lede">
+      Inilah teksnya sebagaimana ia disimpan di dalam dokumennya, dalam urutan
+      yang akan disalin seorang pembaca &mdash; yang tidak selalu sama dengan
+      urutan tercetaknya. Klik kata mana pun untuk mengeluarkannya, klik lagi
+      untuk menyimpannya. Semua yang tercoret di sini adalah yang akan hilang.
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; Sebelumnya</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">Berikutnya &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">Simpan semua di halaman ini</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="Teks halaman ini"></div>
+  </section>
+
+  <!-- Langkah 4 &mdash; melakukannya -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Keluarkan kata-katanya</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>Gambar kotak hitam di tempat masing-masing berada</strong>
+        <span class="check-note">
+          Supaya seorang pembaca bisa melihat ada yang dibuang. Kotaknya hiasan
+          di sini dan bukan penyensorannya: hurufnya sudah hilang dari file-nya
+          pada saat kotak itu digambar. Matikan dan kata-katanya sekadar lenyap,
+          meninggalkan ruang yang ditempatinya.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>Keluarkan kata yang sama dari bagian dokumen lainnya</strong>
+        <span class="check-note">
+          Markah, komentar, catatan tempel, dan yang sudah diketik ke kolom
+          formulir. Kata yang dibuang dari sebuah halaman tapi ditinggalkan di
+          sebuah markah belum dibuang. Properti dokumennya hilang apa pun kata
+          pilihan ini, dan begitu juga teks pengganti yang disalin seorang
+          pembaca alih-alih huruf di halamannya &mdash; keduanya adalah dokumen
+          yang mengucapkan katanya, bukan tempat lain yang menyimpan salinannya.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>Buang lampiran dan apa pun yang berjalan</strong>
+        <span class="check-note">
+          Sebuah PDF bisa membawa file utuh di dalamnya dan JavaScript yang
+          berjalan ketika ia dibuka. Keduanya tidak bisa dicari untuk kata yang
+          sedang Anda buang, dan keduanya tidak dibutuhkan untuk membaca sebuah
+          dokumen.
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Keluarkan</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Unduh</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">Itu bukan PDF, jadi tidak ada teks di dalamnya untuk dikeluarkan.</span>
+    <span data-phrase="load.encrypted">PDF ini berkata sandi. Melepas
+      perlindungan sebuah dokumen adalah pekerjaan yang berbeda dari
+      mengeluarkan kata darinya, dan alat ini tidak akan melakukannya di
+      belakang Anda.</span>
+    <span data-phrase="load.broken">File ini tidak bisa dibuka sebagai PDF ({detail}).</span>
+    <span data-phrase="load.nopages">Ini terbuka, tapi tidak ada halaman yang bisa ditemukan di dalamnya.</span>
+    <span data-phrase="load.repaired">Tabel rujukan silang dokumen ini tidak
+      cocok dengan isinya, jadi ia dibaca dengan memindai objek sebagai
+      gantinya. Itu sebuah perbaikan, dan ia berhasil &mdash; periksa hasilnya
+      dengan saksama sebelum Anda mengirimnya ke mana pun.</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} teks &middot; {size}</span>
+    <span data-phrase="doc.notext">{count} dari halaman ini sama sekali tidak
+      punya teks di dalamnya. Halaman seperti itu adalah gambar sebuah halaman,
+      dan tidak ada apa pun di sini untuk dibuang alat ini &mdash; kata-kata di
+      dalam gambarnya tetap persis di tempatnya.</span>
+    <span data-phrase="doc.unreadable">{count} huruf di dokumen ini tidak bisa
+      dibaca sebagai karakter, karena fon yang dipakainya tidak membawa peta dari
+      glifnya kembali ke teks. Huruf-huruf itu tidak bisa dicari, jadi periksa
+      halaman tempat mereka berada alih-alih memercayai pencariannya.</span>
+    <span data-phrase="doc.scan">Sebagian halaman membawa teks tak kasatmata yang
+      diletakkan di atas sebuah gambar, dan begitulah sebuah pemindai merekam apa
+      yang dipahami pembacanya dari halamannya. Membuang teks itu membuang apa
+      yang akan ditemukan sebuah pencarian dan sebuah salinan. Ia tidak mengubah
+      gambarnya, dan di dalam gambarnya kata-katanya masih terbaca.</span>
+
+    <span data-phrase="find.none">Tidak ada di halaman mana pun yang cocok.</span>
+    <span data-phrase="find.some">{count} di {pages}.</span>
+    <span data-phrase="find.more">{shown} yang pertama didaftar. Sisanya sudah
+      ditemukan dan akan ikut dikeluarkan kalau Anda mencentang semuanya.</span>
+    <span data-phrase="find.terms">Ketik sebuah kata di atas, atau pilih sebuah pola, sebelum menekan Cari.</span>
+
+    <span data-phrase="page.of">Halaman {number} dari {total}</span>
+    <span data-phrase="page.picked">{count} akan dibuang dari halaman ini</span>
+    <span data-phrase="page.notext">Tidak ada teks di halaman ini. Entah ia
+      kosong, entah ia gambar sebuah halaman &mdash; sebuah pindaian, sebuah
+      foto, sebuah ekspor yang menggambar kata-katanya sebagai bentuk. Tidak ada
+      di atasnya yang bisa dicari, dan tidak ada di atasnya yang bisa dibuang di
+      sini.</span>
+    <span data-phrase="page.unreadable">{count} huruf di halaman ini tidak bisa
+      dibaca sebagai karakter. Mereka ditampilkan sebagai &#9647; di bawah, dan
+      pencarian tidak akan menemukannya.</span>
+    <span data-phrase="page.scan">Teks di halaman ini tak kasatmata: ia
+      diletakkan di atas sebuah gambar halamannya, dan begitulah sebuah pindaian
+      dibuat bisa dicari. Yang Anda keluarkan di sini adalah yang akan ditemukan
+      sebuah pencarian dan sebuah salinan. Gambarnya menyimpan kata-katanya.</span>
+
+    <span data-phrase="run.summary">{words} di {pages} akan dikeluarkan.</span>
+    <span data-phrase="run.nothing">Belum ada yang dicentang. Cari sebuah kata di langkah 2, atau klik satu di langkah 3.</span>
+    <span data-phrase="run.editing">Mengeluarkan kata-katanya&hellip;</span>
+    <span data-phrase="run.writing">Menulis dokumennya&hellip;</span>
+    <span data-phrase="run.checking">Membuka file jadinya dan mencarinya&hellip;</span>
+    <span data-phrase="run.failed">Ada yang tidak beres saat menulis ulang dokumen ini ({detail}).</span>
+    <span data-phrase="run.cancelled">Dibatalkan. Tidak ada yang ditulis.</span>
+
+    <span data-phrase="result.headline">{words} dibuang</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} berubah &middot; {boxes}</span>
+    <span data-phrase="check.good">Dibuka lagi di sini dan dicari, dengan cara
+      yang sama seperti seorang pembaca: tidak satu pun dari mereka ada di file
+      jadinya.</span>
+    <span data-phrase="check.partial">Dibuka lagi di sini dan dicari: setiap
+      kemunculan yang Anda centang sudah hilang, dan yang Anda tinggalkan masih
+      di sana.</span>
+    <span data-phrase="check.survived">File ini TIDAK ditulis. Dokumen jadinya
+      dibuka lagi dan sebagian dari yang Anda buang masih bisa ditemukan di
+      dalamnya, yang berarti penyensorannya belum tuntas. Tidak ada yang
+      ditawarkan untuk diunduh.</span>
+    <span data-phrase="check.pages">File ini TIDAK ditulis. Dokumen jadinya
+      kembali dengan jumlah halaman yang berbeda dari saat ia masuk, jadi ada
+      yang tidak beres di luar kata-katanya. Tidak ada yang ditawarkan untuk
+      diunduh.</span>
+
+    <span data-phrase="fact.boxes">{count} digambar di atas celahnya.</span>
+    <span data-phrase="fact.noboxes">Tidak ada kotak yang digambar, jadi
+      kata-katanya hilang tanpa apa pun yang mengatakan di mana mereka
+      dulu.</span>
+    <span data-phrase="fact.elsewhere">Kata yang sama dikeluarkan dari {where}.</span>
+    <span data-phrase="fact.metadata">Properti dokumen dan paket XMP-nya dibuang,
+      jadi file jadinya tidak mengatakan apa yang membuatnya, kapan, atau dulu ia
+      bernama apa.</span>
+    <span data-phrase="fact.carried">{attachments} dan {actions} dibuang.</span>
+    <span data-phrase="fact.shared">Sebagian dari yang Anda buang digambar oleh
+      sebuah blok yang dipakai ulang dokumennya di lebih dari satu halaman, jadi
+      ia sudah hilang dari setiap halaman yang menggambarnya. Itu lebih banyak
+      daripada yang Anda centang, tidak pernah lebih sedikit.</span>
+    <span data-phrase="fact.overimage">{count} dari huruf yang Anda buang
+      terbaring di atas sebuah gambar halaman yang sama. Mereka keluar dari
+      lapisan teksnya dan masih ada di gambarnya: seorang pembaca tidak bisa lagi
+      mencari atau menyalinnya, dan tetap bisa melihatnya.</span>
+    <span data-phrase="fact.untouched">Semua yang lain di setiap halaman disalin
+      lewat byte demi byte. Tidak ada fon, gambar, atau garis yang dikodekan
+      ulang.</span>
+
+    <span data-phrase="count.pages">{count} halaman</span>
+    <span data-phrase="count.page">{count} halaman</span>
+    <span data-phrase="count.words">{count} kata</span>
+    <span data-phrase="count.word">{count} kata</span>
+    <span data-phrase="count.pieces">{count} potongan teks</span>
+    <span data-phrase="count.piece">{count} potongan teks</span>
+    <span data-phrase="count.matches">{count} kecocokan</span>
+    <span data-phrase="count.match">{count} kecocokan</span>
+    <span data-phrase="count.boxes">{count} kotak hitam</span>
+    <span data-phrase="count.box">{count} kotak hitam</span>
+    <span data-phrase="count.attachments">{count} lampiran</span>
+    <span data-phrase="count.attachment">{count} lampiran</span>
+    <span data-phrase="count.actions">{count} tindakan</span>
+    <span data-phrase="count.action">{count} tindakan</span>
+    <span data-phrase="count.hosts">{count} host</span>
+    <span data-phrase="count.host">{count} host</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">dokumen Anda tidak pergi ke mana pun. {total}
+      file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
+    <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak
+      pernah dilakukan alat ini. Anggap itu layak diselidiki. {platform}</span>
+    <span data-phrase="net.platform">Skrip iklan, pengukuran, dan tombol donasi
+      milik halaman ini dimuat dari {hosts}; tidak satu pun diberi sebuah
+      dokumen, sepatah kata darinya, atau apa pun yang Anda cari.</span>
+
+    <span data-phrase="finder.email">Alamat email</span>
+    <span data-phrase="finder.card">Nomor kartu</span>
+    <span data-phrase="finder.iban">Rekening bank (IBAN)</span>
+    <span data-phrase="finder.nationalid">Nomor jaminan sosial &amp; asuransi nasional</span>
+    <span data-phrase="finder.phone">Nomor telepon</span>
+  </div>
+</main>

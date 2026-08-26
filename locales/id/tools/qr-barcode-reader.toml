@@ -1,0 +1,348 @@
+#
+# Pembaca QR & Barcode - Bahasa Indonesia.
+#
+# Overrides for tools/qr-barcode-reader/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Nama format (QR, EAN-13, UPC-A, ITF-14, Code 128, Code 39, Data Matrix,
+# PDF417, Aztec, MaxiCode, Reed-Solomon) tetap seperti adanya: itulah yang
+# tercetak di kemasan dan di lembar spesifikasi.
+#
+# "Modul" dipakai untuk kotak-kotak kecil di dalam sebuah QR, karena itulah
+# sebutan resminya dan tidak ada kata Indonesia yang lebih jelas.
+#
+
+name = "Pembaca QR & Barcode"
+heading = "Pembaca&nbsp;QR&nbsp;&amp;&nbsp;Barcode <span class=\"h1-kw\">&mdash; pindai kode QR dari sebuah gambar atau kamera Anda</span>"
+tagline = "Arahkan ke sebuah kode, atau jatuhkan gambarnya. Ia dibaca di sini, dan tidak di tempat lain."
+
+title = "Pembaca Kode QR &amp; Pemindai Barcode &mdash; Dari Sebuah Gambar, Tanpa Unggah"
+description = "Baca kode QR dari sebuah foto, tangkapan layar, atau kamera Anda, dan lihat persis ke mana tautannya pergi sebelum Anda membukanya. Barcode EAN, UPC, Code 128, Code 39, dan ITF juga. Tidak ada yang diunggah."
+og_title = "Baca kode QR tanpa mengirim gambarnya kepada siapa pun"
+og_description = "Pindai kode QR dari sebuah gambar atau kamera Anda dan lihat seluruh alamatnya sebelum Anda memutuskan untuk membukanya. Gambarnya tidak pernah meninggalkan mesin Anda, dan tidak ada bingkai kamera yang pernah direkam."
+og_image_alt = "Pembaca QR & Barcode - pindai kode dari sebuah gambar atau kamera, tanpa unggah"
+
+pledge = """
+    Membaca sebuah kode adalah hitungan atas piksel, dan pikselnya sudah ada di
+    sini. Menemukan simbolnya, membetulkan sudutnya, membuka maskernya,
+    memperbaiki kerusakannya dengan Reed-Solomon, dan membaca bitnya kembali
+    semuanya terjadi di sekitar dua ribu baris JavaScript di halaman ini yang
+    bisa Anda baca. <strong>Kameranya adalah janji yang sama, bukan
+    pengecualiannya:</strong> sebuah bingkai datang sebagai piksel di tab ini,
+    diperiksa, lalu hilang. Tidak ada yang direkam, tidak ada yang disimpan, dan
+    halaman ini tidak punya fitur jaringan dalam bentuk apa pun untuk
+    mengirimnya."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu pindai sebuah kode dengan kamera menyala. Tidak satu pun permintaan
+      membawa sebuah bingkai atau satu huruf pun dari apa yang dikatakannya.
+      Atau cabut koneksi internet dan tetap baca kodenya."""
+
+read_first = """
+, <code>src/binarize.js</code>
+      dan <code>src/detect.js</code> untuk menemukan sebuah simbol di dalam
+      sebuah foto &mdash; ambangnya, pola pencarinya, dan transformasi
+      perspektifnya &mdash; <code>src/qr-decode.js</code> untuk membacanya
+      kembali, <code>src/reed-solomon.js</code> untuk memperbaiki yang salah
+      terbaca, <code>src/linear.js</code> untuk yang bergaris, dan
+      <code>src/camera.js</code>, yang berisi setiap baris di halaman ini yang
+      menyentuh sebuah kamera."""
+
+howto_heading = "Cara membaca kode QR tanpa mengunggah gambarnya"
+
+card = """
+            Baca kode QR dari sebuah foto, tangkapan layar, atau kamera Anda
+            &mdash; dan lihat seluruh alamatnya sebelum Anda membukanya. Barcode
+            juga."""
+
+[words]
+plural = "gambar dan kode di dalamnya"
+choose = "gambar yang akan dibaca"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tidak ada yang direkam"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Gambarnya tidak pernah diunggah, dan kameranya bukan pengecualian."
+body = """
+ Foto yang Anda jatuhkan
+      di sini didekodekan ke sebuah kanvas di halaman ini dan dibaca di sana.
+      Sebuah bingkai kamera adalah hal yang sama yang datang tiga puluh kali
+      sedetik: ia digambar ke kanvas itu, diperiksa, lalu ditimpa oleh yang
+      berikutnya. Tidak ada bingkai yang direkam, tidak ada yang disimpan, dan
+      lampu kamera yang padam saat Anda menekan berhenti adalah seluruhnya."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada
+      <code>fetch</code>, tidak ada <code>XMLHttpRequest</code>, dan tidak ada
+      <code>sendBeacon</code> di mana pun di dalam <code>src/</code>, dan
+      <code>Content-Security-Policy</code> halaman ini tidak menyisakan satu
+      alamat pun yang bisa dikirimi asal ini seandainya pun ada. Itulah sebabnya
+      halaman ini tidak bisa memberi tahu Anda ke mana sebuah tautan pendek
+      berakhir: mencari tahu berarti bertanya, dan ia tidak bertanya."""
+
+[[privacy]]
+title = "Ia menunjukkan alamatnya kepada Anda. Ia tidak pernah membukanya."
+body = """
+ Sebuah kode QR
+      tercetak adalah alamat yang tidak bisa dibaca siapa pun, dan justru itulah
+      yang membuat sebuah stiker di atasnya sepadan dengan repotnya seseorang.
+      Tidak ada yang dibuka di sini. Seluruh teksnya dicetak untuk Anda lihat,
+      host yang sebenarnya akan dituju disebutkan tersendiri, dan trik yang
+      membuat satu alamat tampak seperti yang lain &mdash; nama pengguna sebelum
+      sebuah <code>@</code>, nama yang ditulis dalam aksara yang hurufnya
+      berbentuk seperti huruf kita, sebuah pengalihan &mdash; disebutkan di
+      tempat ia muncul."""
+
+[[privacy]]
+title = "Ia juga menunjukkan apa yang disampelnya."
+body = """
+ Di bawah setiap hasil QR ada
+      gambar modul yang benar-benar dibaca halaman ini dari foto Anda. Kalau ia
+      tampak seperti kode yang Anda pindai, jawaban di atasnya sehat; kalau ia
+      tampak seperti semut di layar, tidak. Tidak ada pembaca yang hanya
+      menyerahkan sebuah teks dan tidak lebih yang bisa diperiksa seperti
+      itu."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan
+      pengukuran berasal dari Google, dan tombol donasi dari Buy Me a Coffee.
+      Tidak satu pun diberi sebuah gambar, sebuah bingkai, atau apa pun yang
+      dibaca darinya. Setiap baris yang mengubah piksel menjadi teks disajikan
+      dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, kamera termasuk, karena sejak awal memang tidak ada langkah
+      jaringan di dalamnya. Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Berikan gambarnya."
+body = """
+ Jatuhkan sebuah foto atau tangkapan layar ke
+      kotaknya, tempelkan langsung, atau tekan tombol kameranya. Beberapa
+      sekaligus tidak masalah &mdash; masing-masing dibaca sendiri dan
+      masing-masing mendapat jawabannya sendiri. Tangkapan layar dari kode yang
+      sudah ada di layar Anda adalah jalan masuk tercepat dan paling bisa
+      diandalkan, karena tidak ada lensa, tidak ada sudut, dan tidak ada cahaya
+      yang terlibat."""
+
+[[howto]]
+title = "Masukkan seluruh simbolnya ke dalam bingkai, marginnya termasuk."
+body = """
+ Ruang putih di sekeliling
+      sebuah kode adalah bagian dari kodenya: begitulah cara sebuah pembaca
+      menemukan di mana simbolnya berakhir. Foto yang dipangkas sampai ke tepi
+      kotak-kotaknya adalah alasan tunggal yang paling umum sebuah kode tidak
+      terbaca, dan mengisi sekitar separuh bingkai dengan kodenya kira-kira pas
+      &mdash; lebih dekat dari itu dan sudut-sudutnya jatuh di luar gambar."""
+
+[[howto]]
+title = "Baca alamatnya sebelum Anda memutuskan apa pun."
+body = """
+ Maksud memindai sebuah kode di
+      poster, mesin parkir, atau surat adalah untuk tahu ke mana ia pergi, dan
+      itulah satu hal yang sebenarnya tidak diizinkan kamera ponsel Anda
+      lakukan. Host-nya dicetak di sini di barisnya sendiri. Kalau itu bukan nama
+      yang Anda harapkan, Anda sudah mendapat apa yang Anda cari dan tidak ada
+      lagi yang perlu dibuka."""
+
+[[howto]]
+title = "Anggap serius peringatannya, terutama yang tenang."
+body = """
+ Alamat
+      <code>http://</code> polos, nama dalam abjad yang bukan abjad yang tampak,
+      sebuah pemendek tautan, atau apa pun sebelum sebuah <code>@</code> di
+      alamatnya &mdash; masing-masing disebutkan di tempat ia muncul. Tidak satu
+      pun membuktikan apa-apa sendirian. Semuanya sepadan dengan sepuluh detik
+      sebelum Anda pergi ke sana."""
+
+[[howto]]
+title = "Kalau tidak mau terbaca, ubah cahayanya sebelum mengubah yang lain."
+body = """
+ Hampir setiap
+      kegagalan adalah masalah ambang: pantulan melintang di tengah, bayangan di
+      salah satu sudut, atau layar yang difoto dari sudut yang menangkap cahaya
+      latarnya. Bergeserlah supaya silaunya lepas dari kodenya, atau nyalakan
+      lampu kameranya. Kalau tetap gagal, ambil satu foto datar dari depan dan
+      jatuhkan itu &mdash; gambar diam mendapat pencarian yang jauh lebih
+      menyeluruh daripada yang bisa didapat sebuah bingkai langsung."""
+
+[[howto]]
+title = "Periksa gambar sampelnya kalau jawabannya tampak ganjil."
+body = """
+ Buka &ldquo;bagaimana yang satu ini
+      dibaca&rdquo; dan lihat kisi kecilnya. Itulah yang diyakini halaman ini
+      sebagai kodenya, digambar kembali dari modul yang disampelnya. Pembaca yang
+      salah membaca sebuah simbol lalu memperbaikinya menjadi sesuatu yang masuk
+      akal akan memperlihatkannya di sana, dan tidak di tempat lain."""
+
+[[faq]]
+q = "Apakah gambarnya diunggah ke suatu tempat?"
+a = """
+        Tidak, dan begitu juga apa pun yang dibaca darinya. Gambarnya didekodekan
+        ke sebuah kanvas di halaman ini dan dibaca di sana, oleh JavaScript yang
+        disajikan dari situs ini. Alat ini tidak punya fitur jaringan dalam bentuk
+        apa pun &mdash; ia tidak pernah mengambil apa pun dan tidak pernah
+        mengirim apa pun &mdash; dan <code>Content-Security-Policy</code> halaman
+        ini menyebut satu per satu setiap alamat yang boleh dihubunginya, dan
+        tidak satu pun milik kami. Bukti yang paling gamblang adalah memutuskan
+        koneksi internet: ia terus bekerja."""
+
+[[faq]]
+q = "Apakah kameranya merekam sesuatu?"
+a = """
+        Tidak. Sebuah bingkai kamera datang sebagai piksel di tab ini, digambar ke
+        sebuah kanvas, diperiksa, lalu ditimpa oleh bingkai berikutnya sekitar
+        sepersepuluh detik kemudian. Tidak ada yang ditulis ke disk dan tidak ada
+        yang disimpan. Alirannya berhenti pada saat Anda menekan berhenti, ketika
+        tabnya masuk ke latar belakang, dan ketika Anda meninggalkan halamannya
+        &mdash; dan lampu di kamera Anda adalah penanda yang layak dipercaya,
+        karena tidak ada halaman yang bisa mematikannya."""
+
+[[faq]]
+q = "Kenapa ia menunjukkan tautannya alih-alih membukanya?"
+a = """
+        Karena itulah bagian yang berguna. Sebuah kode QR adalah alamat yang tidak
+        bisa Anda baca, dan itulah seluruh alasan sebuah stiker di atas kode pada
+        mesin parkir berhasil: pada saat Anda tahu ke mana ia pergi, Anda sudah di
+        sana. Di sini teksnya dicetak utuh, host-nya disebutkan di barisnya
+        sendiri, dan membukanya adalah tombol terpisah yang Anda tekan setelah
+        membacanya. Itu satu klik tambahan dan itulah klik yang selalu dibutuhkan
+        format ini."""
+
+[[faq]]
+q = "Apa saja yang bisa dibacanya?"
+a = """
+        Kode QR di setiap versi dari 1 sampai 40, pada keempat tingkat koreksi
+        galatnya, dalam mode numerik, alfanumerik, byte, dan kanji, dengan set
+        karakter ECI dan simbol structured-append yang dilaporkan alih-alih
+        dibuang diam-diam. Di sisi yang bergaris: EAN-13, EAN-8, UPC-A, UPC-E,
+        ITF-14, Interleaved 2 of 5, Code 128, dan Code 39. Ia tidak membaca Data
+        Matrix, PDF417, Aztec, atau MaxiCode."""
+
+[[faq]]
+q = "Kode saya tidak mau terbaca. Apa yang salah?"
+a = """
+        Sembilan dari sepuluh kali penyebabnya salah satu dari tiga hal. Margin
+        putihnya terpangkas, padahal sebuah pembaca memakai margin itu untuk
+        menemukan di mana simbolnya berakhir. Ada pantulan atau bayangan melintang
+        di sebagian kodenya, sehingga tidak ada ambang yang memisahkan kotak
+        gelapnya dari yang terang. Atau kodenya terlalu kecil di bingkainya
+        sehingga modulnya tidak lebih dari satu dua piksel lebarnya. Pindahkan
+        cahayanya, isi sekitar separuh bingkai, dan ambil gambarnya dari depan
+        alih-alih dari sudut."""
+
+[[faq]]
+q = "Bisakah ia membaca kode yang rusak atau tertutup sebagian?"
+a = """
+        Sering kali bisa, dan itu formatnya yang bekerja sebagaimana dirancang,
+        bukan kepintaran apa pun di sini. Setiap kode QR membawa data periksa
+        Reed-Solomon, dan simbol yang dibuat pada tingkat H bisa kehilangan
+        sekitar 30% modulnya dan tetap dibangun ulang dengan persis. Halaman ini
+        mengatakan berapa banyak codeword yang harus diperbaikinya di bawah
+        &ldquo;bagaimana yang satu ini dibaca&rdquo;, jadi Anda bisa melihat
+        seberapa dekat ia dengan batasnya. Yang tidak akan dilakukannya adalah
+        menebak: simbol yang rusak melampaui yang bisa ditanggung pemeriksaannya
+        dilaporkan tidak terbaca alih-alih dijawab keliru."""
+
+[[faq]]
+q = "Kenapa ia bilang tidak bisa memberi tahu ke mana tautan bit.ly saya pergi?"
+a = """
+        Karena mencari tahu berarti bertanya kepada bit.ly, dan itu sebuah
+        permintaan jaringan. Setiap klaim lain di halaman ini bertumpu pada tidak
+        adanya kode di sini yang menghubungi apa pun, dan diam-diam membuat
+        pengecualian untuk yang satu ini akan lebih tidak berharga daripada
+        jawabannya. Jadi pemendeknya disebutkan, dan apa yang disembunyikannya
+        dibiarkan jujur tidak diketahui. Kalau Anda ingin menyelesaikannya,
+        tempelkan ke sesuatu yang memang bersedia mengambil."""
+
+[[faq]]
+q = "Apakah memindai kode QR itu aman?"
+a = """
+        Memindainya aman. Menindaklanjutinya itulah risikonya, dan risikonya
+        nyata: kode yang ditempel di atas kode asli pada mesin parkir, di meja
+        restoran, dan di kartu pengiriman paket kini cukup umum sampai punya nama
+        sendiri. Yang membuatnya berhasil adalah tidak ada orang yang bisa membaca
+        sebuah kode dengan memandanginya. Membacanya tanpa membukanya &mdash;
+        dan itulah yang dilakukan halaman ini &mdash; melenyapkan seluruh
+        keuntungan itu, dan sepuluh detik yang dibutuhkan untuk melihat host-nya
+        adalah seluruh pertahanannya."""
+
+[[faq]]
+q = "Kisi kecil di bawah setiap hasil itu apa?"
+a = """
+        Modul yang benar-benar disampel halaman ini dari gambar Anda, digambar
+        kembali dengan satu kotak per modul. Ia ada di sana supaya pembacaannya
+        bisa diperiksa dengan mata alih-alih dipercaya: kalau kisi itu tampak
+        seperti kode yang Anda foto, jawaban di atasnya datang dari piksel yang
+        benar. Hampir tidak ada pembaca yang menunjukkan ini kepada Anda, dan
+        itulah bedanya alat yang bisa Anda periksa dengan alat yang harus Anda
+        percayai."""
+
+[[faq]]
+q = "Apakah ia membaca beberapa kode dalam satu gambar?"
+a = """
+        Satu per gambar, untuk saat ini. Jatuhkan beberapa gambar sekaligus dan
+        masing-masing dibaca sendiri, dan kameranya membaca kode demi kode saat
+        Anda menggerakkannya, menyimpan setiap kode baru yang belum dilihatnya.
+        Satu foto berisi selembar penuh kode adalah pekerjaan untuk memangkasnya,
+        atau untuk mengarahkan kameranya satu per satu."""
+
+[[faq]]
+q = "Kenapa ia bilang barcode saya formatnya berbeda dari yang saya minta?"
+a = """
+        Karena sebuah barcode tidak membawa namanya sendiri. UPC-A adalah EAN-13
+        yang digit pertamanya nol, ITF-14 adalah Interleaved 2 of 5 dengan empat
+        belas digit dan digit periksa yang sah, dan Code 128 dalam mode numeriknya
+        tidak mirip apa pun yang lain. Yang dilaporkan halaman ini adalah apa yang
+        dikatakan garis-garisnya ditambah apa yang dikukuhkan digit periksanya,
+        dan itu sebanyak yang diketahui simbolnya sendiri."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia terus
+        bekerja, kamera dan semuanya. Itu juga cara paling sederhana untuk
+        membuktikan tidak ada yang diunggah: pembaca yang mengirim gambar Anda
+        pergi untuk didekodekan akan berhenti pada saat Anda mencabut koneksi."""
+
+[schema]
+description = "Baca kode QR atau barcode linear dari sebuah gambar, tangkapan layar, atau kamera langsung, sepenuhnya di peramban. Menampilkan teks hasil dekode dan, untuk tautan, host yang akan dituju, sebelum apa pun dibuka. Mendukung QR versi 1 sampai 40 dengan koreksi galat Reed-Solomon, serta EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128, dan Code 39. Tidak ada yang diunggah dan tidak ada bingkai kamera yang direkam."
+features = [
+  "Membaca kode QR dari sebuah foto, tangkapan layar, gambar yang ditempelkan, atau kamera langsung",
+  "Setiap versi QR dari 1 sampai 40, keempat tingkat koreksi galat, dan mode numerik, alfanumerik, byte, serta kanji",
+  "Koreksi Reed-Solomon, jadi kode yang tergores, terlipat, atau tertutup sebagian tetap terbaca",
+  "Membetulkan sudut dan perspektif memakai pola perataannya",
+  "Membaca kode yang tercetak terang di atas gelap, dan kode yang difoto terbalik",
+  "EAN-13, EAN-8, UPC-A, UPC-E, ITF-14, Interleaved 2 of 5, Code 128, dan Code 39",
+  "Menampilkan seluruh alamatnya, dan host yang sungguh dituju, sebelum apa pun dibuka",
+  "Menyebutkan trik yang menyamarkan sebuah tautan: nama pengguna sebelum @, abjad yang mirip, sebuah pengalihan",
+  "Membongkar muatan Wi-Fi, kartu kontak, email, SMS, telepon, dan peta menjadi kolom yang terbaca",
+  "Menggambar modul yang disampelnya, jadi pembacaannya bisa diperiksa alih-alih dipercaya",
+  "Tidak ada bingkai kamera yang direkam atau disimpan; alirannya berhenti bersama tabnya",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan gambar sebuah kode di sini"
+hint = "atau klik untuk menelusuri &mdash; sebuah foto, tangkapan layar, PNG, apa pun yang bisa dibuka peramban Anda"
