@@ -130,6 +130,11 @@ complete = true
 "guides/scan-a-document-with-your-phone" = "gidsen/een-document-scannen-met-je-telefoon"
 # Wie stackt zoekt niet op "stacken", maar op de ruis: dat is het probleem.
 "guides/stack-photos-to-reduce-noise" = "gidsen/fotos-stacken-tegen-ruis"
+"guides/make-a-gif-from-part-of-a-video" = "gidsen/gif-van-een-stuk-video"
+"guides/make-a-boomerang-video" = "gidsen/boomerang-video-maken"
+"guides/scan-multiple-pages-into-one-pdf" = "gidsen/meerdere-paginas-naar-een-pdf-scannen"
+"guides/get-photos-ready-for-the-web" = "gidsen/fotos-klaarmaken-voor-het-web"
+"guides/compare-two-json-files" = "gidsen/twee-json-bestanden-vergelijken"
 
 #
 # ---------------------------------------------------------------------------
@@ -225,6 +230,11 @@ og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
 id = "doing-the-job"
 name = "De klus klaren"
 note = "Eén per tool: waar de klus uit bestaat, welke instelling telt en wat die je kost."
+
+[[guides.groups]]
+id = "workflows"
+name = "Tools combineren"
+note = "Klussen die twee of drie tools na elkaar vragen: in welke volgorde, en waarom de volgorde telt."
 
 [[guides.groups]]
 id = "before-you-upload"

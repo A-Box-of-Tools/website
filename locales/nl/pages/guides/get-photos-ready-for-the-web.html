@@ -1,0 +1,122 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <ol>
+      <li>
+        <strong>iPhone-foto's eerst:</strong> haal alle HEIC-bestanden door
+        de <a href="../../heic-naar-jpg/">HEIC-omzetter</a>, en kies ervoor de
+        metadata weg te laten. Hij vertelt je, voordat er iets wordt
+        omgezet, welke foto's GPS-coördinaten dragen. Foto's die al JPEG
+        zijn, slaan deze stap over.
+      </li>
+      <li>
+        <strong>Kadreren en schalen:</strong> sleep de partij op de
+        <a href="../../afbeelding-formaat-wijzigen/">Afbeeldingsschaler</a>. Stel een lange
+        zijde in &mdash; 1600 pixels past bij de meeste pagina's, 2000 als
+        lezers gaan inzoomen &mdash; of snijd de hele partij met één klik op
+        dezelfde verhouding bij.
+      </li>
+      <li>
+        <strong>Het budget halen:</strong> eindig in de
+        <a href="../../afbeelding-comprimeren/">Afbeeldingsverkleiner</a>, die een
+        doel in kilobytes neemt in plaats van een kwaliteitsschuif, en een
+        partij als één zip teruggeeft.
+      </li>
+    </ol>
+    <p>
+      Alles draait in je browser. De originelen &mdash; volle resolutie, GPS
+      en al &mdash; verlaten je machine nooit, en dat is precies de reden om
+      dit lokaal te doen in plaats van via een conversiesite.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waar de metadata heen gaat</h2>
+    <p>
+      Het stille risico van een telefoonfoto zijn niet de pixels; het zijn de
+      labels. EXIF-metadata legt de camera vast, de tijdstempels en &mdash;
+      op bijna elke telefoon &mdash; de GPS-coördinaten van waar de foto is
+      genomen. Post dat en je publiceert misschien je huisadres in een vorm
+      die elke kijker kan lezen.
+    </p>
+    <p>
+      Het nuttige feit van deze keten is dat ze de labels zelf afhandelt.
+      Schalen en comprimeren tekenen het beeld allebei opnieuw vanuit pixels,
+      en opnieuw getekende pixels dragen geen labels &mdash; dus alles wat
+      uit stap 2 of 3 komt is schoon zonder dat je erom vraagt. De twee
+      gevallen die een beslissing vragen:
+    </p>
+    <ul>
+      <li>
+        <strong>HEIC omzetten:</strong> de omzetter kan de metadata meenemen
+        of weglaten &mdash; het is een vinkje &mdash; en hij waarschuwt
+        welke foto's GPS aan boord hebben. Voor alles wat openbaar wordt:
+        weglaten.
+      </li>
+      <li>
+        <strong>Een foto die je niet schaalt:</strong> moeten de pixels byte
+        voor byte onaangeroerd blijven, gebruik dan de
+        <a href="../../exif-gegevens-verwijderen/">EXIF-bewerker</a>, die de labels
+        verwijdert zonder het beeld opnieuw te coderen. De
+        <a href="../exif-en-gps-gegevens-verwijderen/">metadatagids</a> is de lange
+        versie.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Waarom schalen vóór comprimeren</h2>
+    <p>
+      Omdat pixels het budget zijn. Een foto van 12 megapixel, hard genoeg
+      geperst voor een vak van 300&nbsp;KB, ziet er zichtbaar slechter uit
+      dan een foto van 2 megapixel die zachtjes in hetzelfde vak is
+      gecomprimeerd &mdash; dezelfde kilobytes worden over zes keer de
+      oppervlakte uitgesmeerd. Eerst de weergavegrootte beslissen laat de
+      verkleiner zijn budget uitgeven aan kwaliteit in plaats van aan
+      resolutie die niemand zal zien.
+    </p>
+    <p>
+      De verkleiner schaalt uit zichzelf wanneer het doel anders niet te
+      halen is, maar behandelt dat als laatste redmiddel. Het kadreren zelf
+      in de schaler doen houdt de beslissing &mdash; wat eraf gaat, welke
+      rand telt &mdash; waar ze hoort.
+    </p>
+    <p>
+      De <a href="../formaat-van-een-afbeelding-wijzigen/">schaalgids</a> en de
+      <a href="../afbeelding-naar-exact-formaat-comprimeren/">compressiegids</a>
+      gaan elk dieper op hun helft in, ook op wat de kwaliteitscijfers echt
+      meten.
+    </p>
+  </section>
+
+  <section>
+    <h2>De hele partij in één keer</h2>
+    <p>
+      Elke tool in de keten neemt een map vol bestanden in één sleep: de
+      omzetter doet elke HEIC inclusief burstopnames, de schaler legt één
+      kadrering over de hele set of laat je elke foto anders bijsnijden, en
+      de verkleiner geeft het geheel terug als één zip. Twintig foto's
+      kosten nauwelijks meer van je aandacht dan één &mdash; de machinetijd
+      is die van jouw machine, en hij is korter dan welke upload dan ook
+      geweest zou zijn.
+    </p>
+  </section>
+
+  <section>
+    <h2>Als je dit elke week doet</h2>
+    <p>
+      Dat de keten hier op drie of vier pagina's woont is opzet &mdash; elke
+      pagina doet één klus, en elke bewijst op zichzelf dat niets je machine
+      verlaat. Maar elke stap is open source: MIT-licentie, één map per
+      tool, ES-modules zonder afhankelijkheden met README's die de decoder,
+      het herbemonsteren en het zoeken naar de doelgrootte uitleggen.
+    </p>
+    <p>
+      Nemen je foto's elke keer dezelfde vorm aan &mdash; zelfde lange
+      zijde, zelfde budget, zelfde labels-eruit &mdash; zet dan een
+      codeeragent op de
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      en vraag hem die modules samen te stellen tot één sleepvak met jouw
+      voorinstellingen erin gebakken. De modules zijn geschreven om gelezen
+      te worden, en ze meenemen is precies waar de licentie voor is.
+    </p>
+  </section>

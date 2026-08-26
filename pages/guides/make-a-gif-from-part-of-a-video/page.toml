@@ -1,0 +1,35 @@
+#
+# Guide: make a GIF from part of a video.
+#
+# The first of the workflow guides - pages about jobs that take two tools in a
+# row rather than about one tool's settings. This one exists because the
+# question people actually type is "video to gif" plus a complaint: the GIF
+# came out huge, because it was made from the whole clip. The answer is a
+# decision about where to cut, and which tool should be the one cutting.
+#
+# No `tool` key: the two tools this chains already carry their own guides, and
+# a tool page has room for exactly one link. Prose lives next door in body.html.
+#
+
+slug = "guides/make-a-gif-from-part-of-a-video"
+kind = "guide"
+nav = "GIF from part of a video"
+group = "workflows"
+
+title = "How to Make a GIF from Part of a Video &mdash; No Upload"
+description = "Cut the seconds that matter first, then convert only those. When the GIF converter's own timeline is enough, when to cut with the video cutter instead, and why every second of GIF costs so much."
+
+heading = "How to make a GIF from part of a video"
+lede = """
+    A GIF made from a whole clip is huge, and almost all of it is footage
+    nobody wanted. The job is really two decisions &mdash; which seconds, then
+    which settings &mdash; and both happen on your own machine, because neither
+    tool here uploads anything."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Make a GIF from part of a video, without uploading either"
+og_description = "Cut first, convert second. Which tool should do the cutting, what a second of GIF really costs, and how to keep the result under a forum's size limit."
+og_image_alt = "abox.tools - tools that never touch a server"

@@ -1,0 +1,21 @@
+#
+# Guia: preparar fotos para a web - Brazilian Portuguese.
+#
+
+nav = "Fotos prontas para a web"
+title = "Preparar as fotos do celular para a web &mdash; formato, tamanho, privacidade, sem enviar nada"
+description = "HEIC para JPEG, GPS removido, redimensionadas para a página e comprimidas a um orçamento: a sequência inteira no navegador, e os originais nunca saem da sua máquina."
+
+heading = "Como preparar as fotos do celular para a web"
+lede = """
+    Uma foto de celular está no formato errado, é quatro vezes maior do que
+    precisa e sabe onde você mora. Deixá-la postável é uma sequência curta
+    &mdash; converter, enquadrar, comprimir &mdash; e cada passo roda na sua
+    própria máquina, que é exatamente onde fotos com o seu GPS dentro devem
+    ficar."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "De fotos de celular a fotos postáveis, sem enviar os originais"
+og_description = "HEIC para JPEG, GPS fora, tamanho para a página, compressão a um orçamento. Qual ferramenta faz qual passo, em que ordem, e por que os metadados se resolvem sozinhos."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

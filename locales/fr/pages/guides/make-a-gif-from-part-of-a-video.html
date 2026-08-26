@@ -1,0 +1,152 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Pour un seul moment continu, ouvrez le convertisseur
+      <a href="../../video-en-gif/">Vidéo en GIF</a>, déposez la vidéo et
+      marquez la section sur sa timeline &mdash; il ne convertit que ce qui se
+      trouve entre les marques, il n'y a donc rien à couper d'avance.
+      Choisissez une largeur et une cadence, puis exportez.
+    </p>
+    <p>
+      Pour tout ce qui dépasse un seul moment &mdash; deux buts du même match,
+      la préparation et la chute &mdash; assemblez d'abord le clip avec le
+      <a href="../../couper-une-video/">Découpeur vidéo</a>, puis confiez le résultat
+      au convertisseur. Le découpeur joint autant de parties marquées que vous
+      voulez en un seul fichier sans les réencoder&nbsp;: ce premier pas ne
+      coûte rien en qualité et quelques secondes en temps.
+    </p>
+    <p>
+      Dans les deux cas, l'ordre est le même&nbsp;: décider des secondes
+      d'abord, dépenser les réglages ensuite. Le reste de cette page explique
+      pourquoi cet ordre compte tellement plus pour un GIF que pour tout ce que
+      ce site fabrique d'autre.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi chaque seconde de GIF coûte si cher</h2>
+    <p>
+      Un GIF n'est pas de la vidéo. C'est une pile d'images complètes, chacune
+      tirée d'une palette d'au plus 256 couleurs, compressée par un procédé de
+      1987 qui ignore tout du mouvement. Un codec moderne décrit ce qui a
+      <em>changé</em> entre les images&nbsp;; un GIF répète en grande partie ce
+      qui est resté pareil.
+    </p>
+    <p>
+      Conséquence pratique&nbsp;: un GIF de dix secondes, large de 480 pixels,
+      à 12 images par seconde, pèse couramment 5 à 10&nbsp;Mo &mdash; dix fois
+      le même clip en MP4, pour une fraction de la qualité. Le convertisseur
+      n'y est pour rien&nbsp;; le format est ainsi. Le
+      <a href="../transformer-une-video-en-gif/">guide de conversion en GIF</a>
+      explique quand un GIF vaut encore le coup, et quand une vidéo muette en
+      boucle sert mieux.
+    </p>
+    <p>
+      Comme la taille grandit à chaque image, les mégaoctets les moins chers à
+      économiser sont des secondes entières. Réduire la largeur de moitié
+      divise la taille par quatre environ&nbsp;; réduire la cadence de moitié
+      la divise par deux environ&nbsp;; mais couper des images qui n'auraient
+      jamais dû être là économise leur coût entier et améliore le
+      résultat &mdash; un GIF qui commence à l'action se lit mieux qu'un GIF
+      qui passe deux secondes à y marcher.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quand la timeline du convertisseur suffit</h2>
+    <p>
+      La timeline du convertisseur marque une section&nbsp;: un début, une
+      fin, et tout ce qui est entre les deux devient le GIF. Si le moment que
+      vous voulez est continu &mdash; quelle que soit sa longueur &mdash;
+      c'est tout le travail, et mettre le découpeur devant ne ferait que
+      donner un second logis aux deux mêmes marques.
+    </p>
+    <p>
+      Posez les marques un rien trop serrées plutôt qu'un rien trop larges.
+      Une boucle cache sa couture quand la dernière image se tient près de la
+      première, et chaque image rasée aux extrémités se rembourse en taille de
+      fichier.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quand couper d'abord avec le Découpeur vidéo</h2>
+    <p>
+      Le découpeur gagne sa place dès que le GIF a besoin de plus d'un
+      morceau&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Plusieurs moments, un GIF.</strong> Marquez chaque partie avec
+        <kbd>I</kbd> et <kbd>O</kbd> pendant que la vidéo joue, réordonnez si
+        le meilleur passage doit ouvrir, et exportez un seul fichier. Les
+        parties sont copiées, pas réencodées&nbsp;: l'assemblage ne perd
+        rien.
+      </li>
+      <li>
+        <strong>Deux vidéos, un GIF.</strong> Le découpeur accepte plusieurs
+        fichiers et joint des parties marquées à travers eux &mdash; il copie
+        quand les fichiers s'accordent sur leur format, réencode quand ils ne
+        s'accordent pas, et dit ce qu'il a fait.
+      </li>
+      <li>
+        <strong>Vous voulez aussi le clip en vidéo.</strong> Le MP4 assemblé
+        vaut d'être gardé&nbsp;: il est plus petit et plus net que n'importe
+        quel GIF qui en sortira, et c'est la bonne chose à poster partout où la
+        vidéo se joue.
+      </li>
+    </ul>
+    <p>
+      Déposez ensuite le clip assemblé dans le convertisseur et ne marquez
+      rien&nbsp;: le fichier entier est désormais exactement le GIF que vous
+      vouliez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dépenser les réglages</h2>
+    <p>
+      Les secondes décidées, trois commandes fixent la taille, par ordre de
+      coût&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>La largeur.</strong> Le plus gros levier. 480 pixels suffisent
+        largement pour un chat ou un forum&nbsp;; 320 reste lisible pour une
+        capture d'écran sans texte. La taille tombe avec le carré de la
+        largeur.
+      </li>
+      <li>
+        <strong>La cadence.</strong> 10 à 12 images par seconde est le pays
+        des GIF&nbsp;; le mouvement se lit encore, et le fichier est moitié
+        moindre qu'à 25. Sous 8, cela commence à ressembler à un diaporama.
+      </li>
+      <li>
+        <strong>Le tramage.</strong> Avec 256 couleurs, les dégradés doux font
+        des bandes. Le tramage ordonné échange ces bandes contre un motif
+        fin&nbsp;; c'est en général plus joli et un peu moins compressible.
+        Essayez l'export des deux façons &mdash; c'est votre machine qui
+        travaille, un second essai ne coûte rien et n'envoie rien.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Les deux étapes vivent ici sur deux pages, à dessein &mdash; chaque page
+      fait un travail, et chacune peut prouver seule que rien ne quitte votre
+      machine. Mais tout ce que ces pages exécutent est libre&nbsp;: licence
+      MIT, un dossier par outil, des modules ES sans dépendances avec un
+      README qui nomme chacun.
+    </p>
+    <p>
+      Alors si la même chaîne fait partie de votre semaine, inutile de la
+      refaire à la main. Pointez un agent de code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui de composer la logique de segments du découpeur et
+      l'encodeur GIF en une seule page taillée pour votre cas. Les modules ont
+      été écrits pour être lus, et les emporter est exactement ce à quoi sert
+      la licence.
+    </p>
+  </section>

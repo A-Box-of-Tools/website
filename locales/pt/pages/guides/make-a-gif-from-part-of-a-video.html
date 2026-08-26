@@ -1,0 +1,147 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Para um único momento contínuo, abra o conversor de
+      <a href="../../video-para-gif/">Vídeo para GIF</a>, solte o vídeo e marque
+      o trecho na linha do tempo dele: só é convertido o que fica entre as
+      marcas, então não há nada para cortar antes. Escolha largura e quadros
+      por segundo, e exporte.
+    </p>
+    <p>
+      Para qualquer coisa além de um momento &mdash; dois gols do mesmo jogo,
+      a preparação e o desfecho &mdash; monte o clipe primeiro com o
+      <a href="../../aparar-video/">Cortador de vídeo</a> e entregue o resultado
+      ao conversor. O cortador junta quantas partes marcadas você quiser em um
+      arquivo só, sem recodificar: esse primeiro passo não custa nada de
+      qualidade e só alguns segundos de tempo.
+    </p>
+    <p>
+      Nos dois casos a ordem é a mesma: decidir os segundos primeiro, gastar
+      os ajustes depois. O resto desta página explica por que essa ordem
+      importa muito mais para um GIF do que para qualquer outra coisa que este
+      site produz.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que cada segundo de GIF custa tão caro</h2>
+    <p>
+      GIF não é vídeo. É uma pilha de imagens completas, cada uma tirada de
+      uma paleta de no máximo 256 cores, comprimida com um método de 1987 que
+      não sabe nada de movimento. Um codec moderno descreve o que
+      <em>mudou</em> entre quadros; um GIF em grande parte repete o que ficou
+      igual.
+    </p>
+    <p>
+      A consequência prática: um GIF de dez segundos, 480 pixels de largura,
+      a 12 quadros por segundo, pesa normalmente de 5 a 10&nbsp;MB, dez vezes
+      o mesmo clipe em MP4, com uma fração da qualidade. O conversor não tem
+      culpa; o formato é assim. O
+      <a href="../transformar-um-video-em-gif/">guia de conversão para GIF</a>
+      cobre quando um GIF ainda vale a pena e quando um vídeo mudo em loop
+      serve melhor.
+    </p>
+    <p>
+      Como o tamanho cresce a cada quadro, os megabytes mais baratos de
+      economizar são segundos inteiros. Reduzir a largura à metade divide o
+      tamanho mais ou menos por quatro; reduzir os quadros à metade divide
+      mais ou menos por dois; mas cortar imagens que nunca deviam estar ali
+      economiza o custo inteiro delas e melhora o resultado: um GIF que
+      começa na ação se lê melhor do que um que gasta dois segundos andando
+      até ela.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando a linha do tempo do conversor basta</h2>
+    <p>
+      A linha do tempo do conversor marca um trecho: um começo, um fim, e
+      tudo que fica no meio vira o GIF. Se o momento que você quer é
+      contínuo, dure o que durar, esse é o trabalho todo, e colocar o
+      cortador na frente só daria uma segunda casa às mesmas duas marcas.
+    </p>
+    <p>
+      Marque um tiquinho mais apertado do que folgado. Um loop esconde a
+      costura quando o último quadro fica perto do primeiro, e cada quadro
+      raspado das pontas volta em tamanho de arquivo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando cortar antes com o Cortador de vídeo</h2>
+    <p>
+      O cortador ganha o lugar dele assim que o GIF precisa de mais de um
+      pedaço:
+    </p>
+    <ul>
+      <li>
+        <strong>Vários momentos, um GIF.</strong> Marque cada parte com
+        <kbd>I</kbd> e <kbd>O</kbd> enquanto o vídeo toca, reordene se o
+        melhor pedaço deve abrir, e exporte um arquivo só. As partes são
+        copiadas, não recodificadas: a montagem não perde nada.
+      </li>
+      <li>
+        <strong>Dois vídeos, um GIF.</strong> O cortador aceita mais de um
+        arquivo e junta partes marcadas de um e de outro: copia quando os
+        arquivos combinam no formato, recodifica quando não combinam, e diz
+        qual das duas coisas fez.
+      </li>
+      <li>
+        <strong>Você quer o clipe também como vídeo.</strong> O MP4 montado
+        vale guardar: é menor e mais nítido do que qualquer GIF que sair
+        dele, e é a coisa certa para postar onde vídeo toca.
+      </li>
+    </ul>
+    <p>
+      Depois solte o clipe montado no conversor e não marque nada: o arquivo
+      inteiro agora é exatamente o GIF que você queria.
+    </p>
+  </section>
+
+  <section>
+    <h2>Gastando os ajustes</h2>
+    <p>
+      Com os segundos decididos, três controles definem o tamanho, em ordem
+      do quanto custam:
+    </p>
+    <ul>
+      <li>
+        <strong>Largura.</strong> A maior alavanca. 480 pixels sobram para um
+        chat ou um fórum; 320 ainda se lê bem em gravações de tela sem texto.
+        O tamanho cai com o quadrado da largura.
+      </li>
+      <li>
+        <strong>Quadros por segundo.</strong> De 10 a 12 é onde a maioria dos
+        GIFs mora; o movimento ainda se lê, e o arquivo cai pela metade
+        contra 25. Abaixo de 8 começa a parecer uma apresentação de
+        slides.
+      </li>
+      <li>
+        <strong>Pontilhado (dithering).</strong> Com 256 cores, degradês
+        suaves viram faixas. O pontilhado ordenado troca as faixas por um
+        padrão fino; costuma ficar melhor e comprimir um pouco pior. Exporte
+        dos dois jeitos: quem trabalha é a sua máquina, então uma segunda
+        tentativa não custa nada e não envia nada.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Se você faz isso toda semana</h2>
+    <p>
+      Os dois passos morarem aqui em duas páginas é de propósito: cada página
+      faz um trabalho, e cada uma consegue provar sozinha que nada sai da sua
+      máquina. Mas tudo que as duas executam é código aberto: licença MIT,
+      uma pasta por ferramenta, módulos ES sem dependências com um README que
+      nomeia cada um.
+    </p>
+    <p>
+      Então, se essa mesma sequência faz parte da sua semana, não precisa
+      percorrê-la na mão toda vez. Aponte um agente de código para o
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a>
+      e peça para compor a lógica de trechos do cortador e o codificador de
+      GIF numa página só, do jeito do seu caso. Os módulos foram escritos
+      para serem lidos, e levá-los embora é exatamente para isso que a
+      licença existe.
+    </p>
+  </section>

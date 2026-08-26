@@ -1,0 +1,21 @@
+#
+# Guia: digitalizar várias páginas em um PDF - Brazilian Portuguese.
+#
+
+nav = "Digitalizar páginas em um PDF"
+title = "Digitalizar várias páginas em um só PDF &mdash; e deixar abaixo do limite de tamanho"
+description = "Fotografe cada página, receba um PDF, combine com os documentos que já existem e encolha até dar para enviar. Três ferramentas do navegador em sequência, e a papelada nunca sai do telefone."
+
+heading = "Como digitalizar várias páginas em um PDF pequeno"
+lede = """
+    A tarefa raramente é uma página. É um contrato com a folha de
+    assinaturas, ou um ano de recibos, e no fim uma caixa de e-mail que
+    recusa qualquer coisa acima de uns poucos megabytes. Três ferramentas
+    cobrem o caminho inteiro, e a papelada fica na sua própria máquina do
+    começo ao fim."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Digitalize uma pilha de páginas num PDF que realmente é enviado"
+og_description = "Fotografe as páginas, receba um PDF, funda com o que já existe em PDF e encolha o resultado abaixo do limite do anexo, tudo no navegador."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

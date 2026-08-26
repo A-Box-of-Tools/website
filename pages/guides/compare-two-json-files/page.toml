@@ -1,0 +1,37 @@
+#
+# Guide: compare two JSON files.
+#
+# The workflow that made Format and Compare neighbours when they shared a
+# page, written down now that they have a page each: put both files through
+# the formatter the same way, then diff the results. It exists because a raw
+# diff of two JSON files is mostly noise - indentation, line wrapping, key
+# order - and the fix is not a smarter diff but a canonical form.
+#
+# `tool` points at compare-text: the diff is the page this guide ends on, and
+# compare-text was the one tool in the chain without a guide.
+#
+
+slug = "guides/compare-two-json-files"
+kind = "guide"
+nav = "Compare two JSON files"
+group = "workflows"
+tool = "compare-text"
+
+title = "How to Compare Two JSON Files &mdash; Without the Formatting Noise"
+description = "Format both files the same way, sort the keys, then diff them. Why a raw JSON diff is mostly noise, how to canonicalise both sides in the browser, and what survives to the patch."
+
+heading = "How to compare two JSON files"
+lede = """
+    Diff two JSON files as they come and most of what lights up is nothing:
+    indentation, line wrapping, keys in a different order. The fix is not a
+    cleverer diff &mdash; it is putting both files through the same formatter
+    first, so that the only differences left are real ones. Both steps run in
+    your browser, which is where config files with secrets in them belong."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Compare two JSON files without the formatting noise"
+og_description = "Canonicalise both files - same indent, sorted keys - then diff them. What lights up after that is real, and none of it was uploaded."
+og_image_alt = "abox.tools - tools that never touch a server"

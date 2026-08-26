@@ -1,0 +1,21 @@
+#
+# Panduan: GIF dari potongan video - Bahasa Indonesia.
+#
+
+nav = "GIF dari potongan video"
+title = "Membuat GIF dari Sebagian Video &mdash; Tanpa Unggah"
+description = "Potong dulu detik-detik yang penting, lalu ubah hanya bagian itu. Kapan garis waktu pengubah GIF sudah cukup, kapan memotong dulu dengan pemotong video, dan kenapa tiap detik GIF semahal itu."
+
+heading = "Cara membuat GIF dari sebagian video"
+lede = """
+    GIF yang dibuat dari seluruh klip itu raksasa, dan hampir semua isinya
+    tidak ingin dilihat siapa pun. Pekerjaannya sebenarnya dua keputusan:
+    dulu detik yang mana, lalu setelan yang mana. Keduanya terjadi di mesin
+    Anda sendiri, karena tidak satu pun dari kedua alat ini mengunggah apa
+    pun."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Buat GIF dari potongan video tanpa mengunggah keduanya"
+og_description = "Potong dulu, ubah kemudian. Alat mana yang harus memotong, berapa sebenarnya harga satu detik GIF, dan cara tetap di bawah batas ukuran sebuah forum."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

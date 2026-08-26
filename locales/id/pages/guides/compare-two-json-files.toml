@@ -1,0 +1,22 @@
+#
+# Panduan: membandingkan dua file JSON - Bahasa Indonesia.
+#
+
+nav = "Membandingkan dua file JSON"
+title = "Membandingkan Dua File JSON &mdash; Tanpa Derau Pemformatan"
+description = "Format kedua file dengan cara yang sama, urutkan kuncinya, lalu bandingkan. Kenapa diff JSON mentah hampir seluruhnya derau, cara membakukan kedua sisi di peramban, dan apa yang bertahan sampai ke tambalan."
+
+heading = "Cara membandingkan dua file JSON"
+lede = """
+    Bandingkan dua file JSON apa adanya dan hampir semua yang menyala bukan
+    apa-apa: indentasi, pemenggalan baris, kunci dalam urutan lain. Obatnya
+    bukan diff yang lebih pintar &mdash; melainkan melewatkan kedua file
+    lebih dulu lewat pemformat yang sama, supaya yang tersisa hanya
+    perbedaan sungguhan. Kedua langkah berjalan di peramban Anda, tempat yang
+    memang seharusnya bagi file konfigurasi yang menyimpan rahasia."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Bandingkan dua file JSON tanpa derau pemformatan"
+og_description = "Bakukan kedua file, indentasi sama, kunci terurut, lalu bandingkan. Yang menyala setelah itu sungguhan, dan tidak ada yang diunggah."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

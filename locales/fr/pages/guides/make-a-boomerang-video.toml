@@ -1,0 +1,20 @@
+#
+# Guide : faire une vidéo boomerang - French.
+#
+
+nav = "Faire un boomerang"
+title = "Faire une vidéo boomerang &mdash; aller, retour, sans envoi"
+description = "Couper le moment, inverser la copie, joindre les deux et boucler. Trois outils à la suite, tous dans le navigateur, et l'ordre qui ramène tout le travail à une minute."
+
+heading = "Comment faire une vidéo boomerang"
+lede = """
+    Un boomerang est un clip qui joue en avant, puis en arrière, et qui
+    boucle. Aucun outil ici n'a de bouton boomerang&nbsp;; il naît de trois
+    outils qui font chacun leur travail &mdash; couper, inverser,
+    joindre &mdash; et toute la chaîne tourne sur votre propre machine."""
+
+updated = "26 août 2026"
+
+og_title = "Faire une vidéo boomerang sans l'envoyer nulle part"
+og_description = "Couper le moment, inverser la copie, joindre les deux. Pourquoi cet ordre, quoi faire du son, et quand la boucle veut être un GIF."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

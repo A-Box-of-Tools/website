@@ -1,0 +1,20 @@
+#
+# Panduan: membuat video boomerang - Bahasa Indonesia.
+#
+
+nav = "Membuat boomerang"
+title = "Membuat Video Boomerang &mdash; Maju, Mundur, Tanpa Unggah"
+description = "Potong momennya, balik salinannya, gabungkan keduanya, dan biarkan berulang. Tiga alat berturut-turut, semuanya di peramban, dan urutan yang membuat seluruh pekerjaan selesai dalam semenit."
+
+heading = "Cara membuat video boomerang"
+lede = """
+    Boomerang adalah klip yang berjalan maju, lalu mundur, lalu berulang.
+    Tidak ada alat di sini yang punya tombol boomerang; ia lahir dari tiga
+    alat yang masing-masing mengerjakan satu hal &mdash; potong, balik,
+    gabung &mdash; dan seluruh rantainya berjalan di mesin Anda sendiri."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Buat video boomerang tanpa mengunggahnya ke mana pun"
+og_description = "Potong momennya, balik salinannya, gabungkan keduanya. Kenapa urutan itu, suaranya diapakan, dan kapan pengulangan itu ingin jadi GIF."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

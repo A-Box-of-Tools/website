@@ -1,0 +1,22 @@
+#
+# Gids: twee JSON-bestanden vergelijken - Dutch.
+#
+
+nav = "Twee JSON-bestanden vergelijken"
+title = "Twee JSON-bestanden vergelijken &mdash; zonder de opmaakruis"
+description = "Formatteer beide bestanden hetzelfde, sorteer de sleutels, en vergelijk dan. Waarom een rauwe JSON-diff vooral ruis is, hoe je beide kanten in de browser in canonieke vorm brengt, en wat er overleeft tot in de patch."
+
+heading = "Zo vergelijk je twee JSON-bestanden"
+lede = """
+    Vergelijk twee JSON-bestanden zoals ze komen en bijna alles wat oplicht
+    is niets: inspringing, regelafbrekingen, sleutels in een andere
+    volgorde. De remedie is geen slimmere diff &mdash; het is beide bestanden
+    eerst door dezelfde formatter halen, zodat alleen de echte verschillen
+    overblijven. Beide stappen draaien in je browser, en daar horen
+    configuratiebestanden met geheimen erin thuis."""
+
+updated = "26 augustus 2026"
+
+og_title = "Vergelijk twee JSON-bestanden zonder de opmaakruis"
+og_description = "Breng beide bestanden in canonieke vorm, zelfde inspringing, gesorteerde sleutels, en vergelijk dan. Wat daarna oplicht is echt, en niets ervan werd geüpload."
+og_image_alt = "abox.tools - tools die nooit een server aanraken"

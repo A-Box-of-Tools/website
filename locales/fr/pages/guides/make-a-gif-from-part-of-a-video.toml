@@ -1,0 +1,20 @@
+#
+# Guide : GIF à partir d'un extrait vidéo - French.
+#
+
+nav = "GIF depuis un extrait vidéo"
+title = "Faire un GIF à partir d'une partie d'une vidéo &mdash; sans envoi"
+description = "Couper d'abord les secondes qui comptent, puis ne convertir que celles-là. Quand la timeline du convertisseur GIF suffit, quand couper d'abord avec le découpeur vidéo, et pourquoi chaque seconde de GIF coûte si cher."
+
+heading = "Comment faire un GIF à partir d'une partie d'une vidéo"
+lede = """
+    Un GIF fait du clip entier est énorme, et presque tout dedans n'intéressait
+    personne. Le travail tient en réalité en deux décisions &mdash; quelles
+    secondes, puis quels réglages &mdash; et les deux se font sur votre propre
+    machine, car aucun des deux outils n'envoie quoi que ce soit."""
+
+updated = "26 août 2026"
+
+og_title = "Faire un GIF d'un extrait vidéo, sans envoyer ni l'un ni l'autre"
+og_description = "Couper d'abord, convertir ensuite. Quel outil doit couper, ce que coûte vraiment une seconde de GIF, et comment rester sous la limite de taille d'un forum."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

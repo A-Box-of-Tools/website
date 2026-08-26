@@ -1,0 +1,120 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <ol>
+      <li>
+        <strong>Corte o momento.</strong> Abra o
+        <a href="../../aparar-video/">Cortador de vídeo</a>, marque o segundo ou
+        dois que devem ir e voltar, e exporte como um clipe próprio.
+      </li>
+      <li>
+        <strong>Inverta uma cópia.</strong> Solte esse clipe no
+        <a href="../../inverter-video/">Inversor de vídeo</a>, deixe o som de
+        fora e exporte. Agora você tem o mesmo momento duas vezes, uma em
+        cada sentido.
+      </li>
+      <li>
+        <strong>Junte as duas.</strong> De volta ao Cortador de vídeo, solte
+        os dois arquivos, marque cada um inteiro, coloque a versão para a
+        frente primeiro e exporte um arquivo só.
+      </li>
+    </ol>
+    <p>
+      Esse arquivo é o boomerang. Poste como está em qualquer lugar onde
+      vídeo mudo roda em loop, ou passe pelo conversor de
+      <a href="../../video-para-gif/">Vídeo para GIF</a> se o destino só anima
+      GIF. Cada passo acontece no seu navegador; nada dessa sequência é
+      enviado, em ponto nenhum, para ninguém.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que cortar primeiro</h2>
+    <p>
+      Inverter precisa decodificar e recodificar cada quadro que toca; o
+      <a href="../inverter-um-video/">guia de inversão</a> explica por que não
+      existe jeito mais barato. Cortar, por outro lado, é quase de graça: o
+      cortador passa os quadros inteiros adiante sem recodificar.
+    </p>
+    <p>
+      Então a ordem é o truque todo. Inverta um clipe de dois segundos e o
+      passo caro trabalha em dois segundos; inverta o original e ele trabalha
+      em tudo, sendo que a maior parte você vai jogar fora. Numa gravação de
+      celular de qualquer duração, cortar primeiro é a diferença entre um
+      boomerang em menos de um minuto e uma barra de progresso para
+      encarar.
+    </p>
+    <p>
+      Corte apertado. Um boomerang se lê melhor quando balança sobre um único
+      movimento &mdash; um pulo, um respingo, uma virada &mdash; e cada
+      quadro mantido é pago duas vezes, uma por sentido.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que fazer com o som</h2>
+    <p>
+      Deixe de fora, e faça isso no passo da inversão: o inversor tem uma
+      caixinha exatamente para isso. O áudio de um boomerang tocaria para a
+      frente e depois para trás; som invertido soa esquisito na hora, e quase
+      todo lugar onde um boomerang termina toca mudo de qualquer jeito. Sem o
+      som, a inversão também fica mais rápida e os dois arquivos, menores.
+    </p>
+    <p>
+      Se mesmo assim você mantiver, o cortador junta os dois clipes do mesmo
+      jeito; mas a costura que o olho perdoa, o ouvido não perdoa.
+    </p>
+  </section>
+
+  <section>
+    <h2>A junção, e o que o cortador vai dizer</h2>
+    <p>
+      Os dois arquivos juntados são parentes próximos &mdash; um foi feito do
+      outro &mdash; mas passaram por codificadores diferentes e não precisam
+      combinar byte a byte no formato. O cortador confere. Onde os dois
+      combinam, ele copia os quadros direto; onde não, recodifica uma vez e
+      avisa no painel de exportação, em vez de deixar você adivinhando.
+    </p>
+    <p>
+      Ordene as partes antes de exportar: ida primeiro, volta depois. Um
+      boomerang que começa pela volta se lê como um engano.
+    </p>
+    <p>
+      Um refinamento que vale os dez segundos: apare um quadro do começo do
+      clipe invertido antes de juntar. O último quadro da ida e o primeiro da
+      volta são a mesma imagem, e mostrá-la duas vezes faz a virada travar
+      por um instante.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vídeo ou GIF no final</h2>
+    <p>
+      Fique com o MP4 se o destino toca vídeo: é muito menor, muito mais
+      nítido, e repete igualzinho. Converta para GIF só quando o lugar exigir
+      um, e aí fique de olho no medidor: um GIF paga cada quadro, e um
+      boomerang é o clipe dele em dobro. O
+      <a href="../gif-de-um-trecho-de-video/">guia do GIF parcial</a>
+      cobre as alavancas de largura e quadros que o mantêm abaixo de um
+      limite de tamanho.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se você faz isso toda semana</h2>
+    <p>
+      Três páginas para um efeito é de propósito: cada ferramenta faz um
+      trabalho, e cada página consegue provar sozinha que o seu material
+      nunca sai da máquina. Mas as três são código aberto: licença MIT, uma
+      pasta por ferramenta, módulos ES sem dependências em
+      <code>src/</code>, com READMEs que os explicam.
+    </p>
+    <p>
+      Se boomerang é parte regular do seu trabalho, aponte um agente de
+      código para o
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a>
+      e peça para dobrar a caminhada de quadros do inversor e a junção do
+      cortador numa página de um botão só. Os módulos foram escritos para
+      serem lidos, e levá-los embora é exatamente para isso que a licença
+      existe.
+    </p>
+  </section>

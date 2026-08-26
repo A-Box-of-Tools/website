@@ -1,0 +1,22 @@
+#
+# Rehber: iki JSON dosyasını karşılaştırma - Türkçe.
+#
+
+nav = "İki JSON dosyasını karşılaştırma"
+title = "İki JSON Dosyasını Karşılaştırma &mdash; Biçimlendirme Gürültüsü Olmadan"
+description = "İki dosyayı aynı biçimde biçimlendirin, anahtarları sıralayın, sonra karşılaştırın. Ham bir JSON karşılaştırması neden neredeyse tamamen gürültüdür, iki taraf tarayıcıda nasıl kurallı biçime sokulur ve yamaya ne kalır."
+
+heading = "İki JSON dosyası nasıl karşılaştırılır"
+lede = """
+    İki JSON dosyasını geldikleri gibi karşılaştırın; yanan şeylerin çoğu
+    hiçbir şeydir: girinti, satır sarmaları, farklı sırada anahtarlar. Çare
+    daha akıllı bir karşılaştırma değil &mdash; iki dosyayı önce aynı
+    biçimlendiriciden geçirmektir; geriye yalnızca gerçek farklar kalır. İki
+    adım da tarayıcınızda çalışır; içinde sırlar olan yapılandırma
+    dosyalarının ait olduğu yer de orasıdır."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "İki JSON dosyasını biçimlendirme gürültüsü olmadan karşılaştırın"
+og_description = "İki dosyayı kurallı biçime sokun, aynı girinti, sıralı anahtarlar, sonra karşılaştırın. Ondan sonra yanan gerçektir ve hiçbir şey yüklenmemiştir."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

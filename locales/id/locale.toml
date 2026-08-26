@@ -139,6 +139,11 @@ complete = true
 # camera menu the reader just came from.
 "stack-images" = "tumpuk-gambar"
 "guides/stack-photos-to-reduce-noise" = "panduan/tumpuk-foto-untuk-mengurangi-derau"
+"guides/make-a-gif-from-part-of-a-video" = "panduan/gif-dari-potongan-video"
+"guides/make-a-boomerang-video" = "panduan/membuat-video-boomerang"
+"guides/scan-multiple-pages-into-one-pdf" = "panduan/memindai-banyak-halaman-jadi-satu-pdf"
+"guides/get-photos-ready-for-the-web" = "panduan/menyiapkan-foto-untuk-web"
+"guides/compare-two-json-files" = "panduan/membandingkan-dua-file-json"
 
 #
 # ---------------------------------------------------------------------------
@@ -235,6 +240,11 @@ og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
 id = "doing-the-job"
 name = "Mengerjakan tugasnya"
 note = "Satu untuk setiap alat: apa inti tugasnya, pengaturan mana yang penting, dan apa biayanya."
+
+[[guides.groups]]
+id = "workflows"
+name = "Merangkai alat"
+note = "Pekerjaan yang butuh dua atau tiga alat berurutan: urutannya bagaimana, dan kenapa urutan itu penting."
 
 [[guides.groups]]
 id = "before-you-upload"

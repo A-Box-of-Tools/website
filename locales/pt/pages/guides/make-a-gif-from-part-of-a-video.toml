@@ -1,0 +1,20 @@
+#
+# Guia: GIF de um trecho de vídeo - Brazilian Portuguese.
+#
+
+nav = "GIF de um trecho de vídeo"
+title = "Fazer um GIF de uma parte de um vídeo &mdash; sem enviar nada"
+description = "Corte primeiro os segundos que importam e converta só esses. Quando a linha do tempo do conversor de GIF basta, quando cortar antes com o cortador de vídeo, e por que cada segundo de GIF custa tão caro."
+
+heading = "Como fazer um GIF de uma parte de um vídeo"
+lede = """
+    Um GIF feito do clipe inteiro é enorme, e quase tudo dentro dele ninguém
+    queria ver. O trabalho são, na verdade, duas decisões: primeiro quais
+    segundos, depois quais ajustes. As duas acontecem na sua própria máquina,
+    porque nenhuma das duas ferramentas envia nada."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Faça um GIF de um trecho de vídeo sem enviar nenhum dos dois"
+og_description = "Corte primeiro, converta depois. Qual ferramenta deve cortar, o que um segundo de GIF custa de verdade, e como ficar abaixo do limite de tamanho de um fórum."
+og_image_alt = "abox.tools - ferramentas que nunca tocam um servidor"

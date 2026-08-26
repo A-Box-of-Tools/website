@@ -1,0 +1,20 @@
+#
+# Ratgeber: Boomerang-Video erstellen - German.
+#
+
+nav = "Boomerang erstellen"
+title = "Boomerang-Video erstellen &mdash; vor, zurück, ohne Upload"
+description = "Den Moment schneiden, die Kopie umkehren, beide zusammenfügen und schleifen lassen. Drei Werkzeuge nacheinander, alle im Browser, und die Reihenfolge, die die ganze Arbeit auf eine Minute bringt."
+
+heading = "So erstellen Sie ein Boomerang-Video"
+lede = """
+    Ein Boomerang ist ein Clip, der vorwärts läuft, dann rückwärts, und das in
+    Schleife. Kein Werkzeug hier hat einen Boomerang-Knopf; er ergibt sich aus
+    dreien, die je eine Sache tun: schneiden, umkehren, zusammenfügen. Die
+    ganze Kette läuft auf Ihrem eigenen Gerät."""
+
+updated = "26. August 2026"
+
+og_title = "Ein Boomerang-Video erstellen, ohne es irgendwohin hochzuladen"
+og_description = "Den Moment schneiden, die Kopie umkehren, beide zusammenfügen. Warum diese Reihenfolge, was der Ton tun sollte, und wann die Schleife ein GIF sein will."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

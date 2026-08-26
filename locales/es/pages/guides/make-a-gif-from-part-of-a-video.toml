@@ -1,0 +1,20 @@
+#
+# Guía: GIF de una parte de un vídeo - Spanish.
+#
+
+nav = "GIF de una parte de un video"
+title = "Hacer un GIF de una parte de un video &mdash; sin subir nada"
+description = "Corta primero los segundos que importan y convierte solo esos. Cuándo basta la línea de tiempo del conversor a GIF, cuándo cortar antes con el cortador de video, y por qué cada segundo de GIF sale tan caro."
+
+heading = "Cómo hacer un GIF de una parte de un video"
+lede = """
+    Un GIF hecho del clip entero es enorme, y casi todo lo que lleva dentro no
+    lo quería ver nadie. El trabajo son en realidad dos decisiones: primero
+    qué segundos, después qué ajustes. Las dos ocurren en tu propio equipo,
+    porque ninguna de las dos herramientas sube nada."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Haz un GIF de un trozo de video sin subir ninguno de los dos"
+og_description = "Corta primero, convierte después. Qué herramienta debe cortar, lo que de verdad cuesta un segundo de GIF, y cómo quedar por debajo del límite de tamaño de un foro."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

@@ -1,0 +1,36 @@
+#
+# Guide: get photos ready for the web.
+#
+# The pipeline nobody names but everybody runs: phone photos out, something
+# postable in - the right format, no GPS, a sensible size in pixels, and a
+# sensible size in kilobytes. Four tools cover it, and the interesting fact
+# the guide is built around is that metadata answers itself along the way:
+# anything resized or compressed is redrawn from pixels, and redrawn pixels
+# carry no tags.
+#
+# No `tool` key: all four tools this chains already carry their own guides.
+# Prose lives next door in body.html.
+#
+
+slug = "guides/get-photos-ready-for-the-web"
+kind = "guide"
+nav = "Photos ready for the web"
+group = "workflows"
+
+title = "Get Phone Photos Ready for the Web &mdash; Format, Size, Privacy, No Upload"
+description = "HEIC to JPEG, GPS stripped, resized for the page and compressed to a budget - the whole pipeline in the browser, and the originals never leave your machine."
+
+heading = "How to get phone photos ready for the web"
+lede = """
+    A phone photo is the wrong format, four times too large, and knows where
+    you live. Getting it postable is a short pipeline &mdash; convert, frame,
+    compress &mdash; and every step of it runs on your own machine, which is
+    exactly where photos with your GPS in them belong."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Phone photos to postable photos, without uploading the originals"
+og_description = "HEIC to JPEG, GPS gone, sized for the page, compressed to a budget. Which tool does which step, in which order, and why the metadata takes care of itself."
+og_image_alt = "abox.tools - tools that never touch a server"

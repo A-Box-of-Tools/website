@@ -1,0 +1,135 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <ol>
+      <li>
+        Ouvrez le <a href="../../formater-du-json/">Formateur JSON</a>, collez le
+        premier fichier, réglez l'indentation sur deux espaces et cochez
+        <em>Trier les clés de chaque objet</em>. Copiez le résultat.
+      </li>
+      <li>
+        Ouvrez le <a href="../../comparer-des-textes/">Comparateur de textes</a> et
+        collez-le dans la zone de gauche.
+      </li>
+      <li>
+        Faites de même avec le second fichier, dans la zone de droite.
+      </li>
+    </ol>
+    <p>
+      Ce qui s'allume maintenant est réel&nbsp;: une valeur qui a changé, une
+      clé apparue, une entrée partie. Les différences de mise en forme et les
+      clés réordonnées qui auraient noyé un diff ordinaire ont disparu, parce
+      que les deux côtés étaient écrits pareil avant que la comparaison
+      commence.
+    </p>
+    <p>
+      Aucune des deux pages n'a la moindre fonction réseau &mdash; bon à
+      savoir, puisque le JSON que l'on compare est si souvent un fichier de
+      configuration avec ses identifiants encore dedans.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi un diff JSON brut n'est presque que du bruit</h2>
+    <p>
+      JSON se moque des espaces, et il ne donne aucun sens à l'ordre des
+      clés. Le même document peut tenir en une ligne ou en quatre cents, les
+      clés dans l'ordre où on les a tapées ou dans celui qu'une bibliothèque a
+      émis &mdash; et les outils réécrivent tout cela librement. Un côté
+      minifié, l'autre déplié&nbsp;; un côté enregistré à la main, l'autre par
+      un sérialiseur qui trie par ordre alphabétique&nbsp;: un diff de lignes
+      voit deux fichiers étrangers.
+    </p>
+    <p>
+      Les deux pires cas suffisent à la démonstration. Un fichier
+      <strong>minifié</strong> est une ligne, donc un diff contre lui est une
+      seule ligne changée, gigantesque &mdash; vrai et inutile. Et deux
+      fichiers au <strong>même contenu dans un autre ordre</strong> se
+      comparent comme tout-a-changé, quand la réponse honnête serait
+      &laquo;&nbsp;rien&nbsp;&raquo;.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que la forme canonique du formateur répare</h2>
+    <p>
+      Passer les deux fichiers par le même formateur avec les mêmes réglages
+      est exactement ce qu'il faut à un diff&nbsp;: une écriture par
+      document.
+    </p>
+    <ul>
+      <li>
+        <strong>La même indentation</strong> met chaque clé sur sa propre
+        ligne, si bien que le diff travaille ligne à ligne et que son
+        marquage des mots peut pointer la seule valeur qui a changé dans une
+        ligne.
+      </li>
+      <li>
+        <strong>Les clés triées</strong> mettent les deux côtés dans le même
+        ordre, et l'ordre cesse d'être une différence. Le tri suit la façon
+        dont les clés se lisent, pas les points de code &mdash;
+        <code>item2</code> avant <code>item10</code> &mdash; et il s'applique
+        à l'identique des deux côtés.
+      </li>
+      <li>
+        <strong>Rien d'autre ne bouge.</strong> Ce formateur garde les
+        nombres tels que vous les avez écrits et garde les clés en double
+        plutôt que de les trancher &mdash; la canonisation ne peut donc pas
+        inventer elle-même une différence. Le
+        <a href="../formater-du-json/">guide du formateur</a>
+        explique pourquoi c'est plus rare que cela ne devrait l'être.
+      </li>
+    </ul>
+    <p>
+      Une réserve honnête&nbsp;: la sortie triée est le document avec ses
+      clés déplacées. Si un outil en aval tient à l'ordre des clés &mdash;
+      peu le font, mais il en existe &mdash; traitez les copies triées comme
+      la chose comparée, pas comme un remplacement des originaux.
+    </p>
+  </section>
+
+  <section>
+    <h2>Lire le résultat, et l'emporter</h2>
+    <p>
+      Le comparateur marque les lignes retirées à gauche, les ajoutées à
+      droite, et surligne dans une ligne changée les mots qui diffèrent
+      &mdash; sur une forme canonique, c'est typiquement la seule valeur
+      passée de <code>false</code> à <code>true</code>. Le milieu inchangé se
+      replie en un compte, si bien qu'une configuration de deux mille lignes
+      avec trois retouches se lit comme trois courts passages.
+    </p>
+    <p>
+      Le téléchargement est un correctif unifié, un <code>.patch</code>
+      &mdash; le format que la revue de code comprend. Il décrit les formes
+      canoniques, ce qui est en général ce qu'une revue veut de toute
+      façon&nbsp;: le changement, sans le reformatage.
+    </p>
+    <p>
+      La même recette marche pour tout ce que les deux pages parlent. YAML et
+      XML se canonisent pareil&nbsp;; et pour deux fichiers de même forme
+      venus de sources différentes, les interrupteurs d'ignorance du
+      comparateur &mdash; espaces, casse, lignes vides &mdash; sont une
+      version plus légère de la même idée.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Formater deux fois, coller deux fois &mdash; les étapes vivent sur deux
+      pages parce que chaque page fait un travail, et que chacune peut prouver
+      seule que rien de ce que vous avez collé n'est allé nulle part. Mais les
+      deux sont libres&nbsp;: licence MIT, des modules ES sans
+      dépendances &mdash; le parseur du formateur garde l'ordre des clés et
+      les chiffres, le diff est l'algorithme de Myers &mdash; chacun avec un
+      README qui l'explique.
+    </p>
+    <p>
+      Si cela fait partie de vos journées, pointez un agent de code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui une page à deux zones qui canonise en
+      comparant &mdash; <code>parseJson</code>, <code>printJson</code> et
+      <code>compareText</code> sont à trois imports de là. Les modules ont été
+      écrits pour être lus, et les emporter est exactement ce à quoi sert la
+      licence.
+    </p>
+  </section>

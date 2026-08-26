@@ -1,0 +1,36 @@
+#
+# Guide: make a boomerang video.
+#
+# The workflow the reversing guide waves at in one bullet - "reverse a short
+# clip and join it to the original" - walked through properly: cut, reverse,
+# join, and then the choice of container. It earns a page of its own because
+# the searches are their own phrase ("boomerang effect", "video that plays
+# forward then backward") and because the order of the three steps is the
+# difference between seconds and minutes of waiting.
+#
+# No `tool` key: all three tools this chains already carry their own guides.
+# Prose lives next door in body.html.
+#
+
+slug = "guides/make-a-boomerang-video"
+kind = "guide"
+nav = "Make a boomerang"
+group = "workflows"
+
+title = "How to Make a Boomerang Video &mdash; Forward, Then Back, No Upload"
+description = "Cut the moment, reverse the copy, join the two, and loop it. Three tools in a row, all running in your browser, and the order that keeps the whole job down to a minute."
+
+heading = "How to make a boomerang video"
+lede = """
+    A boomerang is a clip that plays forwards, then backwards, and loops.
+    No tool here has a boomerang button; it falls out of three that do their
+    one job each &mdash; cut, reverse, join &mdash; and the whole chain runs
+    on your own machine."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Make a boomerang video without uploading it anywhere"
+og_description = "Cut the moment, reverse the copy, join the two. Why that order, what the sound should do, and when the loop wants to be a GIF."
+og_image_alt = "abox.tools - tools that never touch a server"

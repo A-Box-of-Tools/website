@@ -1,0 +1,149 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <p>
+      Per un solo momento continuo, apri il convertitore
+      <a href="../../video-in-gif/">Video in GIF</a>, trascina dentro il video
+      e segna la sezione sulla sua timeline: converte solo quello che sta tra
+      i segni, quindi non c'è niente da tagliare in anticipo. Scegli larghezza
+      e fotogrammi al secondo, ed esporta.
+    </p>
+    <p>
+      Per tutto ciò che è più di un momento &mdash; due gol della stessa
+      partita, la preparazione e la battuta finale &mdash; monta prima il clip
+      con il <a href="../../tagliare-video/">Tagliavideo</a>, poi passa il
+      risultato al convertitore. Il tagliavideo unisce quante parti segnate
+      vuoi in un solo file senza ricodificarle: quel primo passo non costa
+      niente in qualità e pochi secondi in tempo.
+    </p>
+    <p>
+      In entrambi i casi l'ordine è lo stesso: prima decidere i secondi, poi
+      spendere le impostazioni. Il resto di questa pagina spiega perché
+      quell'ordine conta molto più per una GIF che per qualsiasi altra cosa
+      questo sito produca.
+    </p>
+  </section>
+
+  <section>
+    <h2>Perché ogni secondo di GIF costa così tanto</h2>
+    <p>
+      Una GIF non è video. È una pila di immagini complete, ciascuna presa da
+      una tavolozza di al massimo 256 colori, compressa con un metodo del 1987
+      che del movimento non sa nulla. Un codec moderno descrive cosa è
+      <em>cambiato</em> tra i fotogrammi; una GIF in gran parte ripete quello
+      che è rimasto uguale.
+    </p>
+    <p>
+      La conseguenza pratica: una GIF di dieci secondi, larga 480 pixel, a 12
+      fotogrammi al secondo pesa di norma 5&ndash;10&nbsp;MB, dieci volte lo
+      stesso clip in MP4, con una frazione della qualità. Il convertitore non
+      c'entra; il formato è fatto così. La
+      <a href="../trasformare-un-video-in-gif/">guida alla conversione in GIF</a>
+      spiega quando una GIF vale ancora la pena e quando serve meglio un video
+      muto in loop.
+    </p>
+    <p>
+      Siccome il peso cresce con ogni fotogramma, i megabyte più economici da
+      risparmiare sono secondi interi. Dimezzare la larghezza divide il peso
+      circa per quattro; dimezzare i fotogrammi lo divide circa per due; ma
+      tagliare materiale che non doveva esserci risparmia il suo costo intero
+      e migliora il risultato: una GIF che parte sull'azione si legge meglio
+      di una che ci arriva camminando per due secondi.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando basta la timeline del convertitore</h2>
+    <p>
+      La timeline del convertitore segna una sezione: un inizio, una fine, e
+      tutto quello che sta in mezzo diventa la GIF. Se il momento che vuoi è
+      continuo, lungo quanto vuoi, quello è già tutto il lavoro, e mettere il
+      tagliavideo davanti darebbe soltanto una seconda casa agli stessi due
+      segni.
+    </p>
+    <p>
+      Metti i segni un filo più stretti che larghi. Un loop nasconde la
+      cucitura quando l'ultimo fotogramma sta vicino al primo, e ogni
+      fotogramma raspato via dalle estremità si ripaga in peso del file.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando tagliare prima con il Tagliavideo</h2>
+    <p>
+      Il tagliavideo si guadagna il posto appena la GIF ha bisogno di più di
+      un pezzo:
+    </p>
+    <ul>
+      <li>
+        <strong>Più momenti, una GIF.</strong> Segna ogni parte con
+        <kbd>I</kbd> e <kbd>O</kbd> mentre il video scorre, riordina se il
+        pezzo migliore deve aprire, ed esporta un solo file. Le parti vengono
+        copiate, non ricodificate: il montaggio non perde niente.
+      </li>
+      <li>
+        <strong>Due video, una GIF.</strong> Il tagliavideo accetta più di un
+        file e unisce parti segnate attraverso di essi: copia dove i file
+        concordano sul formato, ricodifica dove no, e dice quale delle due
+        cose ha fatto.
+      </li>
+      <li>
+        <strong>Vuoi il clip anche come video.</strong> L'MP4 montato vale la
+        pena di tenerlo: è più piccolo e più nitido di qualsiasi GIF che ne
+        uscirà, ed è la cosa giusta da pubblicare ovunque il video si
+        riproduca.
+      </li>
+    </ul>
+    <p>
+      Poi trascina il clip montato nel convertitore e non segnare niente: il
+      file intero ormai è esattamente la GIF che intendevi.
+    </p>
+  </section>
+
+  <section>
+    <h2>Spendere le impostazioni</h2>
+    <p>
+      Decisi i secondi, tre controlli fissano il peso, in ordine di quanto
+      costano:
+    </p>
+    <ul>
+      <li>
+        <strong>Larghezza.</strong> La leva più grossa. 480 pixel bastano e
+        avanzano per una chat o un forum; 320 si legge ancora bene per
+        registrazioni di schermo senza testo. Il peso scende con il quadrato
+        della larghezza.
+      </li>
+      <li>
+        <strong>Fotogrammi al secondo.</strong> Tra 10 e 12 abita la maggior
+        parte delle GIF; il movimento si legge ancora e il file si dimezza
+        rispetto a 25. Sotto 8 comincia a sembrare una proiezione di
+        diapositive.
+      </li>
+      <li>
+        <strong>Dithering.</strong> Con 256 colori le sfumature morbide fanno
+        bande. Il dithering ordinato scambia le bande con una trama fine; di
+        solito rende meglio e comprime un po' peggio. Prova a esportare in
+        tutti e due i modi: lavora la tua macchina, quindi un secondo
+        tentativo non costa niente e non carica niente.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Se lo fai ogni settimana</h2>
+    <p>
+      Che i due passi vivano qui su due pagine è voluto: ogni pagina fa un
+      lavoro, e ognuna può dimostrare da sola che niente lascia la tua
+      macchina. Ma tutto quello che le due pagine eseguono è open source:
+      licenza MIT, una cartella per strumento, moduli ES senza dipendenze con
+      un README che li nomina uno per uno.
+    </p>
+    <p>
+      Quindi se questa catena fa parte della tua settimana, non serve
+      ripercorrerla a mano ogni volta. Punta un agente di codice sul
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      e chiedigli di comporre la logica dei segmenti del tagliavideo e
+      l'encoder GIF in una sola pagina fatta per il tuo caso. I moduli sono
+      scritti per essere letti, e portarseli via è esattamente ciò per cui la
+      licenza esiste.
+    </p>
+  </section>

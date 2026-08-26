@@ -1,0 +1,20 @@
+#
+# Gids: GIF van een stuk video - Dutch.
+#
+
+nav = "GIF van een stuk video"
+title = "Een GIF maken van een deel van een video &mdash; zonder uploaden"
+description = "Knip eerst de seconden die ertoe doen en zet alleen die om. Wanneer de tijdlijn van de GIF-omzetter genoeg is, wanneer je eerst knipt met de videosnijder, en waarom elke seconde GIF zo duur is."
+
+heading = "Zo maak je een GIF van een deel van een video"
+lede = """
+    Een GIF van de hele clip is enorm, en bijna alles erin wilde niemand
+    zien. Het werk bestaat eigenlijk uit twee beslissingen &mdash; welke
+    seconden, en dan welke instellingen &mdash; en allebei gebeuren ze op je
+    eigen machine, want geen van beide tools uploadt iets."""
+
+updated = "26 augustus 2026"
+
+og_title = "Maak een GIF van een stuk video zonder een van beide te uploaden"
+og_description = "Eerst knippen, dan omzetten. Welke tool moet knippen, wat een seconde GIF echt kost, en hoe je onder de maximale bestandsgrootte van een forum blijft."
+og_image_alt = "abox.tools - tools die nooit een server aanraken"

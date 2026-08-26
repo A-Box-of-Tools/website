@@ -1,0 +1,124 @@
+  <section>
+    <h2>The short answer</h2>
+    <ol>
+      <li>
+        Open the <a href="../../format-json/">JSON Formatter</a>, paste the
+        first file, set the indentation to two spaces, and tick
+        <em>Sort the keys of every object</em>. Copy the result.
+      </li>
+      <li>
+        Open the <a href="../../compare-text/">Text Diff</a> and paste it into
+        the left-hand box.
+      </li>
+      <li>
+        Do the same with the second file, into the right-hand box.
+      </li>
+    </ol>
+    <p>
+      What lights up now is real: a value that changed, a key that appeared, an
+      entry that went. The formatting differences and the reordered keys that
+      would have drowned an ordinary diff are gone, because both sides were
+      spelled the same way before the comparison started.
+    </p>
+    <p>
+      Neither page has any network feature at all &mdash; worth knowing, since
+      the JSON people compare is so often config files with credentials still
+      inside.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why a raw JSON diff is mostly noise</h2>
+    <p>
+      JSON does not care about whitespace, and it does not give key order a
+      meaning. The same document can be one line or four hundred, keys in the
+      order they were typed or the order some library emitted them &mdash;
+      and tools rewrite both freely. One side minified, one side pretty; one
+      side saved by hand, the other by a serialiser that sorts alphabetically:
+      a line diff sees two unrelated files.
+    </p>
+    <p>
+      The two worst cases make the point. A <strong>minified</strong> file is
+      one line, so a diff against it is one giant changed line &mdash; true and
+      useless. And two files with the <strong>same content in a different
+      order</strong> diff as everything-changed, when the honest answer is
+      &ldquo;nothing&rdquo;.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the formatter's canonical form fixes</h2>
+    <p>
+      Running both files through the same formatter with the same settings is
+      what a diff needs: one spelling per document.
+    </p>
+    <ul>
+      <li>
+        <strong>Same indentation</strong> puts each key on its own line, so
+        the diff works line by line, and its word-level marks can point at the
+        one value that changed inside a line.
+      </li>
+      <li>
+        <strong>Sorted keys</strong> puts both sides in the same order, so
+        order stops being a difference. The sort is by how keys read, not by
+        code points &mdash; <code>item2</code> before <code>item10</code>
+        &mdash; and it is applied identically to both sides.
+      </li>
+      <li>
+        <strong>Nothing else moves.</strong> This formatter keeps numbers as
+        the digits you wrote and keeps duplicate keys rather than resolving
+        them &mdash; so canonicalising cannot itself invent a difference. The
+        <a href="../format-json-without-uploading-it/">formatter guide</a>
+        explains why that is rarer than it should be.
+      </li>
+    </ul>
+    <p>
+      One honest caveat: sorted output is the document with its keys moved.
+      If a downstream tool cares about key order &mdash; few do, but they
+      exist &mdash; treat the sorted copies as the things being compared, not
+      as replacements for the originals.
+    </p>
+  </section>
+
+  <section>
+    <h2>Reading the result, and taking it with you</h2>
+    <p>
+      The diff marks removed lines on the left, added lines on the right, and
+      highlights the words that changed inside a changed line &mdash; on a
+      canonical form, that is typically the single value that moved from
+      <code>false</code> to <code>true</code>. The unchanged middle folds to a
+      count, so a two-thousand-line config with three edits reads as three
+      short passages.
+    </p>
+    <p>
+      The download is a unified <code>.patch</code> &mdash; the format code
+      review understands. It describes the canonical forms, which is usually
+      what a review wants anyway: the change, without the reformatting.
+    </p>
+    <p>
+      The same recipe works for anything else both pages speak. YAML and XML
+      canonicalise the same way; and for two files of the same shape from
+      different sources, the diff's ignore switches &mdash; whitespace, case,
+      blank lines &mdash; are a lighter version of the same idea.
+    </p>
+  </section>
+
+  <section>
+    <h2>If you do this every week</h2>
+    <p>
+      Format twice, paste twice &mdash; the steps live on two pages because
+      each page does one job, and each can prove on its own that nothing you
+      pasted went anywhere. But both are open source: MIT-licensed,
+      dependency-free ES modules &mdash; the formatter's parser keeps key
+      order and digits, the diff is Myers' algorithm &mdash; each with a
+      README that explains it.
+    </p>
+    <p>
+      If this is part of your day, point a coding agent at the
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      and ask it for a two-box page that canonicalises as it compares &mdash;
+      <code>parseJson</code>, <code>printJson</code> and
+      <code>compareText</code> are three imports away. The modules were
+      written to be read, and lifting them is what the licence is for.
+    </p>
+  </section>

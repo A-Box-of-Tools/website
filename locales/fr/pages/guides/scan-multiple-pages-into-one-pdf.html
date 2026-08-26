@@ -1,0 +1,119 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Photographiez chaque page, puis déposez toutes les photos d'un coup sur
+      le <a href="../../scanner-un-document/">Scanner de documents</a>. Il trouve
+      les coins de chaque page, redresse chaque photo et écrit <em>un PDF avec
+      une page par photo</em> &mdash; il n'y a pas d'étape de combinaison à
+      faire, et les pages sont dans l'ordre où vous les avez ajoutées.
+    </p>
+    <p>
+      Deux outils prennent le relais là où le scanner s'arrête. Si une partie
+      du document <em>est</em> déjà un PDF &mdash; le contrat reçu par mail,
+      autour de votre page de signature scannée &mdash; entrelacez-les avec le
+      <a href="../../fusionner-des-pdf/">Fusionneur de PDF</a>. Et si le fichier fini
+      dépasse encore ce que la boîte accepte, le
+      <a href="../../compresser-un-pdf/">Compresseur de PDF</a> le fait passer sous
+      la limite.
+    </p>
+    <p>
+      Rien dans la chaîne n'envoie quoi que ce soit. Cela compte ici plus que
+      presque partout&nbsp;: ce qui se scanne, ce sont des contrats, des
+      pièces d'identité et des papiers médicaux, et les applications
+      habituelles font passer chaque page par leurs serveurs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Réussir les photos</h2>
+    <p>
+      Le scanner rattrape énormément &mdash; prises de biais, lampe inégale,
+      ombre en travers de la page &mdash; mais il ne peut pas rattraper ce que
+      l'appareil n'a jamais capturé. Trois habitudes couvrent
+      l'essentiel&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Remplir le cadre</strong>, avec une marge de table visible
+        autour de chaque bord. Les coins se trouvent en cherchant la page
+        contre le fond&nbsp;; une page qui déborde de la photo n'a pas de coin
+        à trouver.
+      </li>
+      <li>
+        <strong>Photographier d'au-dessus</strong>, à peu près d'aplomb. La
+        perspective se corrige, mais le bord lointain d'une prise rasante a
+        moins de pixels, et la correction ne peut pas en inventer.
+      </li>
+      <li>
+        <strong>Une page par photo</strong>, dans l'ordre de lecture.
+        Réordonner après coup marche aussi, mais l'ordre de prise est l'ordre
+        obtenu, et photographier dans l'ordre est gratuit.
+      </li>
+    </ul>
+    <p>
+      Le <a href="../scanner-un-document-avec-son-telephone/">guide du scan</a>
+      couvre le reste &mdash; comment les coins sont trouvés, quand les
+      déplacer vous-même, et ce que le mode noir et blanc fait à la taille du
+      fichier.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quand le fusionneur gagne sa place</h2>
+    <p>
+      Le scanner combine des <em>photos</em>. Le fusionneur combine des
+      <em>PDF</em> &mdash; et le milieu d'une vraie corvée est souvent les
+      deux&nbsp;: une page signée photographiée à l'instant, dans un document
+      arrivé en fichier. Scannez d'abord vos pages, puis déposez le scan et le
+      PDF d'origine ensemble dans le fusionneur, glissez les pages à leur
+      place, et exportez un seul document. Les signets et les liens internes de
+      l'original sont reconstruits sur les pages qui restent, et les champs de
+      formulaire remplis suivent.
+    </p>
+    <p>
+      Il en va de même des scans faits à des jours différents&nbsp;: le PDF de
+      chaque séance tombe comme un bloc de pages, et le fusionneur est
+      l'endroit où les blocs deviennent un fichier.
+    </p>
+  </section>
+
+  <section>
+    <h2>Passer sous la limite de taille</h2>
+    <p>
+      Essayez d'abord le levier bon marché, et il est dans le scanner&nbsp;:
+      pour les pages qui sont de l'encre sur du papier &mdash; texte,
+      formulaires, reçus &mdash; le mode noir et blanc stocke chaque page à un
+      bit par pixel, et le PDF atterrit en général bien sous le mégaoctet par
+      page, sans compresser quoi que ce soit. La couleur ne vaut son coût que
+      là où la couleur veut dire quelque chose.
+    </p>
+    <p>
+      Quand le fichier ne part toujours pas &mdash; pages en couleur, ou
+      fusion qui a fait entrer le scan de quelqu'un d'autre &mdash; le
+      compresseur commence par montrer où la taille se trouve vraiment, puis
+      réencode les images de page à la résolution où elles s'affichent. Il
+      vérifie aussi que le résultat s'ouvre avant de l'offrir, ce qui compte
+      quand le fichier est un contrat sous délai.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Les étapes vivent ici sur trois pages, à dessein &mdash; chaque page
+      fait un travail, et chacune prouve seule que les papiers n'ont jamais
+      quitté votre machine. Mais tout cela est libre&nbsp;: licence MIT, un
+      dossier par outil, des modules ES sans dépendances, avec des README qui
+      expliquent le chercheur de coins, la copie de pages du fusionneur et le
+      budget du compresseur.
+    </p>
+    <p>
+      Si la même corvée atterrit chaque semaine sur votre bureau, pointez un
+      agent de code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui de composer ces modules en une page faite pour
+      elle &mdash; scanner droit vers un document fusionné, compressé, votre
+      page de garde déjà en place. Les modules ont été écrits pour être lus,
+      et les emporter est exactement ce à quoi sert la licence.
+    </p>
+  </section>

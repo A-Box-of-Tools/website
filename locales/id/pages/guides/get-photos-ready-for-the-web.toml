@@ -1,0 +1,21 @@
+#
+# Panduan: menyiapkan foto untuk web - Bahasa Indonesia.
+#
+
+nav = "Foto siap untuk web"
+title = "Menyiapkan Foto Ponsel untuk Web &mdash; Format, Ukuran, Privasi, Tanpa Unggah"
+description = "HEIC ke JPEG, GPS dibuang, diubah ukurannya untuk halaman dan dimampatkan ke anggaran: seluruh rantai di peramban, dan foto aslinya tidak pernah meninggalkan mesin Anda."
+
+heading = "Cara menyiapkan foto ponsel untuk web"
+lede = """
+    Foto ponsel formatnya salah, empat kali lebih besar dari perlunya, dan
+    tahu di mana Anda tinggal. Membuatnya layak unggah adalah rantai pendek
+    &mdash; ubah, bingkai, mampatkan &mdash; dan tiap langkahnya berjalan di
+    mesin Anda sendiri, tempat yang memang seharusnya bagi foto dengan GPS
+    Anda di dalamnya."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Dari foto ponsel ke foto siap unggah, tanpa mengunggah aslinya"
+og_description = "HEIC ke JPEG, GPS hilang, ukuran untuk halaman, pemampatan ke anggaran. Alat mana mengerjakan langkah mana, dalam urutan apa, dan kenapa metadata beres dengan sendirinya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

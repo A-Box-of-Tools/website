@@ -1,0 +1,21 @@
+#
+# Guida: scansionare più pagine in un PDF - Italian.
+#
+
+nav = "Scansionare pagine in un PDF"
+title = "Scansionare più pagine in un solo PDF &mdash; e farlo stare sotto il limite"
+description = "Fotografa ogni pagina, ottieni un PDF, combinalo con i documenti che hai già e rimpiccioliscilo finché non parte. Tre strumenti del browser in fila, e le carte non lasciano mai il telefono."
+
+heading = "Come scansionare più pagine in un PDF piccolo"
+lede = """
+    La commissione raramente è una pagina. È un contratto con il suo foglio
+    delle firme, o un anno di ricevute, e alla fine una casella di posta che
+    rifiuta tutto quello che supera pochi megabyte. Tre strumenti coprono
+    l'intero percorso, e le carte restano sul tuo dispositivo per tutto il
+    tempo."""
+
+updated = "26 agosto 2026"
+
+og_title = "Scansiona una pila di pagine in un PDF che parte davvero"
+og_description = "Fotografa le pagine, ottieni un PDF, fondici quello che esiste già come PDF e rimpicciolisci il risultato sotto il limite dell'allegato, tutto nel browser."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

@@ -1,0 +1,20 @@
+#
+# Rehber: birden çok sayfayı tek PDF'e tarama - Türkçe.
+#
+
+nav = "Sayfaları tek PDF'e tarama"
+title = "Birden Çok Sayfayı Tek PDF'e Tarama &mdash; ve Boyut Sınırının Altına İndirme"
+description = "Her sayfayı fotoğraflayın, tek PDF alın, elinizdeki belgelerle birleştirin ve gönderilene kadar küçültün. Arka arkaya üç tarayıcı aracı ve evraklar telefondan hiç çıkmıyor."
+
+heading = "Birden çok sayfa tek ve küçük bir PDF'e nasıl taranır"
+lede = """
+    Bu iş nadiren tek sayfadır. Bir sözleşme ve imza sayfasıdır, ya da bir
+    yıllık fişlerdir; sonunda da birkaç megabaytın üstünü reddeden bir posta
+    kutusu vardır. Üç araç yolun tamamını kapsar ve evraklar baştan sona
+    kendi makinenizde kalır."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "Bir deste sayfayı, gerçekten gönderilebilen bir PDF'e tarayın"
+og_description = "Sayfaları fotoğraflayın, tek PDF alın, zaten PDF olanları içine katın ve sonucu ek sınırının altına küçültün; hepsi tarayıcıda."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

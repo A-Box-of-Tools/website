@@ -1,0 +1,134 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <ol>
+      <li>
+        Abre el <a href="../../formatear-json/">Formateador de JSON</a>, pega el
+        primer archivo, pon la sangría en dos espacios y marca <em>Ordenar
+        las claves de cada objeto</em>. Copia el resultado.
+      </li>
+      <li>
+        Abre el <a href="../../comparar-textos/">Comparador de textos</a> y
+        pégalo en la caja izquierda.
+      </li>
+      <li>
+        Haz lo mismo con el segundo archivo, en la caja derecha.
+      </li>
+    </ol>
+    <p>
+      Lo que se enciende ahora es real: un valor que cambió, una clave que
+      apareció, una entrada que se fue. Las diferencias de formato y las
+      claves reordenadas que habrían ahogado un diff corriente ya no están,
+      porque los dos lados estaban escritos igual antes de que la comparación
+      empezara.
+    </p>
+    <p>
+      Ninguna de las dos páginas tiene función de red alguna, y conviene
+      saberlo: el JSON que la gente compara es tantas veces un archivo de
+      configuración con las credenciales todavía dentro.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué un diff de JSON en crudo es casi todo ruido</h2>
+    <p>
+      A JSON el espacio en blanco le da igual, y al orden de las claves no le
+      da significado. El mismo documento puede ser una línea o cuatrocientas,
+      con las claves en el orden en que se teclearon o en el que las soltó
+      alguna biblioteca, y las herramientas reescriben ambas cosas sin
+      preguntar. Un lado minificado y el otro desplegado; uno guardado a mano
+      y el otro por un serializador que ordena alfabéticamente: un diff de
+      líneas ve dos archivos sin parentesco.
+    </p>
+    <p>
+      Los dos peores casos bastan para verlo. Un archivo
+      <strong>minificado</strong> es una línea, así que un diff contra él es
+      una única línea cambiada y gigantesca: verdadero e inútil. Y dos
+      archivos con <strong>el mismo contenido en otro orden</strong> se
+      comparan como todo-cambió, cuando la respuesta honesta sería
+      «nada».
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué arregla la forma canónica del formateador</h2>
+    <p>
+      Pasar los dos archivos por el mismo formateador con los mismos ajustes
+      es justo lo que un diff necesita: una escritura por documento.
+    </p>
+    <ul>
+      <li>
+        <strong>La misma sangría</strong> pone cada clave en su propia línea:
+        el diff trabaja entonces línea a línea, y sus marcas de palabras
+        pueden señalar el único valor que cambió dentro de una.
+      </li>
+      <li>
+        <strong>Las claves ordenadas</strong> ponen los dos lados en el mismo
+        orden, y el orden deja de contar como diferencia. Se ordena por cómo
+        se leen las claves, no por puntos de código &mdash;
+        <code>item2</code> antes que <code>item10</code> &mdash; y se aplica
+        idéntico a ambos lados.
+      </li>
+      <li>
+        <strong>Nada más se mueve.</strong> Este formateador conserva los
+        números con los dígitos que escribiste y conserva las claves
+        duplicadas en vez de resolverlas: canonizar no puede inventar por sí
+        mismo una diferencia. La
+        <a href="../formatear-json/">guía del
+        formateador</a> explica por qué eso es más raro de lo que debería.
+      </li>
+    </ul>
+    <p>
+      Una salvedad honesta: la salida ordenada es el documento con las claves
+      movidas. Si alguna herramienta posterior atiende al orden de las
+      claves &mdash; pocas lo hacen, pero existen &mdash; trata las copias
+      ordenadas como lo que se compara, no como sustituto de los
+      originales.
+    </p>
+  </section>
+
+  <section>
+    <h2>Leer el resultado, y llevárselo</h2>
+    <p>
+      El comparador marca a la izquierda las líneas quitadas, a la derecha
+      las añadidas, y resalta dentro de una línea cambiada las palabras que
+      difieren: sobre una forma canónica, eso suele ser el único valor que
+      pasó de <code>false</code> a <code>true</code>. El medio sin cambios se
+      pliega a un recuento, así que una configuración de dos mil líneas con
+      tres retoques se lee como tres pasajes cortos.
+    </p>
+    <p>
+      La descarga es un parche unificado, un <code>.patch</code>: el formato
+      que entiende la revisión de código. Describe las formas canónicas, que
+      suele ser lo que una revisión quiere de todos modos: el cambio, sin el
+      reformateo.
+    </p>
+    <p>
+      La misma receta sirve para todo lo demás que hablan las dos páginas.
+      YAML y XML se canonizan igual; y para dos archivos de la misma forma
+      venidos de fuentes distintas, los interruptores de ignorar del
+      comparador &mdash; espacios, mayúsculas, líneas vacías &mdash; son una
+      versión ligera de la misma idea.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si haces esto cada semana</h2>
+    <p>
+      Formatear dos veces, pegar dos veces: los pasos viven en dos páginas
+      porque cada página hace un trabajo, y cada una puede demostrar por sí
+      sola que nada de lo que pegaste fue a ninguna parte. Pero las dos son
+      código abierto: licencia MIT, módulos ES sin dependencias &mdash; el
+      analizador del formateador conserva orden de claves y dígitos, el diff
+      es el algoritmo de Myers &mdash; cada uno con un README que lo
+      explica.
+    </p>
+    <p>
+      Si esto es parte de tu día, apunta un agente de código al
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositorio</a>
+      y pídele una página de dos cajas que canonice mientras compara:
+      <code>parseJson</code>, <code>printJson</code> y
+      <code>compareText</code> están a tres imports. Los módulos se
+      escribieron para leerse, y llevárselos es exactamente para lo que está
+      la licencia.
+    </p>
+  </section>
