@@ -60,6 +60,7 @@ import argparse
 import hashlib
 import html
 import os
+import posixpath
 import re
 import shutil
 import subprocess
@@ -1496,24 +1497,41 @@ def check_links(out, locales, site):
     unpublished = {f'{locale["lang"]}/' for locale in locales
                    if not locale['is_base'] and locale['lang'] not in published}
 
+    # Every file the build wrote, walked once. Each link is then a set lookup
+    # rather than a question for the filesystem, which is what keeps this
+    # check from being most of the build: the tree holds tens of thousands of
+    # links, and a stat call per link costs more than every render put
+    # together. The lookup is also exact where a stat is not - is_file() on
+    # Windows matches any case, so a link whose case differs from its target
+    # would pass here and 404 once GitHub Pages served it.
+    files = {path.relative_to(out).as_posix()
+             for path in out.rglob('*') if path.is_file()}
+
     broken = []
-    for path in sorted(out.rglob('*.html')):
-        rel = path.relative_to(out).as_posix()
+    for rel in sorted(files):
         # Skip a locale that is not published yet, and the 404, whose links are
         # root-absolute for a reason templates/404.html explains.
+        if not rel.endswith('.html'):
+            continue
         if rel == '404.html' or rel.startswith(tuple(unpublished)):
             continue
 
-        text = path.read_text(encoding='utf-8')
+        text = (out / rel).read_text(encoding='utf-8')
+        here = posixpath.dirname(rel)
         for href in LINK.findall(text):
             if href.startswith(SKIP_LINK) or not href:
                 continue
-            target = (out / href.lstrip('/')) if href.startswith('/') \
-                else (path.parent / href)
-            target = target.resolve()
-            if target.is_dir():
-                target = target / 'index.html'
-            if not target.is_file():
+            target = posixpath.normpath(
+                href.lstrip('/') if href.startswith('/')
+                else posixpath.join(here, href))
+            # normpath turns the root itself - "/", or "../" from one level
+            # down - into ".". A link to a folder means its index.html, and a
+            # path that climbs out of the tree entirely lands on neither test.
+            if target == '.':
+                target = 'index.html'
+            elif target not in files:
+                target = f'{target}/index.html'
+            if target not in files:
                 broken.append(f'{rel} -> {href}')
 
     if broken:

@@ -693,6 +693,17 @@ class LinksThatLeadNowhere(unittest.TestCase):
         self.page('site.css', 'body{}')
         buildmod.check_links(self.out, self.locales, SITE)
 
+    def test_a_link_that_differs_only_in_case_fails(self):
+        """The check compares names, not files, so it is case-exact even on a
+        filesystem that is not. An is_file() on Windows matches any case, which
+        let a miscased link pass a local build and 404 once GitHub Pages -
+        which serves case-sensitively - got it."""
+        self.page('index.html', '<a href="widget/">Widget</a>')
+        self.page('Widget/index.html', '<a href="../">Home</a>')
+        with self.assertRaises(ConfigError) as caught:
+            buildmod.check_links(self.out, self.locales, SITE)
+        self.assertIn('widget/', str(caught.exception))
+
 
 class LoadingALocale(unittest.TestCase):
     def setUp(self):
