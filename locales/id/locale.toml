@@ -130,6 +130,13 @@ complete = true
 "guides/redact-a-pdf" = "panduan/sensor-pdf"
 "guides/scan-a-document-with-your-phone" = "panduan/memindai-dokumen-dengan-ponsel"
 
+# The stacker, which shipped after the three above. "Tumpuk" is the ordinary
+# word for piling one thing on another, and it is what the tool does to a
+# burst; RAW keeps its Latin spelling because that is what is printed on the
+# camera menu the reader just came from.
+"stack-images" = "tumpuk-gambar"
+"guides/stack-photos-to-reduce-noise" = "panduan/tumpuk-foto-untuk-mengurangi-derau"
+
 #
 # ---------------------------------------------------------------------------
 # The hub.

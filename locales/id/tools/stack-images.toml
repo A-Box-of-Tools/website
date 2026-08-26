@@ -1,0 +1,352 @@
+#
+# Penumpuk Gambar - Bahasa Indonesia.
+#
+# Overrides for tools/stack-images/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Nama format RAW (CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2) dan nama pustaka
+# (LibRaw, dcraw) tetap seperti adanya: itulah yang tertulis di kamera dan di
+# folder orang. "Worker" juga tetap, karena itu nama sebuah hal di peramban dan
+# bukan sebutan umum untuk pekerja.
+#
+
+name = "Penumpuk Gambar"
+heading = "Penumpuk&nbsp;Gambar <span class=\"h1-kw\">&mdash; gabungkan sebuah burst, file RAW termasuk</span>"
+tagline = "Dua puluh bingkai menjadi satu, tanpa dua puluh unggahan dan tanpa pengubah RAW."
+
+title = "Penumpuk Gambar &mdash; Rata-rata, Median &amp; Tumpuk Fokus di Peramban Anda"
+description = "Gabungkan sebuah burst foto menjadi satu: rata-ratakan untuk membunuh derau, ambil mediannya untuk membuang orang dari sebuah pemandangan, terangkan untuk jejak bintang, atau tumpuk fokus sebuah bidikan makro. Membaca CR2, NEF, ARW, DNG, RAF, dan CR3 dengan menarik keluar pratinjau milik kameranya sendiri. Berjalan sepenuhnya di peramban Anda."
+og_title = "Tumpuk sebuah burst foto, file RAW termasuk"
+og_description = "Rata-rata, median, sigma-clip, terangkan, gelapkan, tambahkan, atau tumpuk fokus &mdash; dengan bingkainya disejajarkan lebih dulu. File RAW dibuka dengan membaca pratinjau yang sudah ditulis kameranya, jadi bingkai 60 MB terbuka secepat sebuah JPEG. Tidak ada yang diunggah."
+og_image_alt = "Penumpuk Gambar - beberapa bingkai digabungkan menjadi satu, di peramban"
+
+pledge = """
+    Setiap bingkai dibuka, didekodekan, disejajarkan, digabungkan, dan ditulis
+    oleh peramban Anda sendiri, di mesin Anda sendiri. Setumpuk dua puluh file
+    RAW 60&nbsp;MB adalah sekitar satu gigabita foto, dan tidak satu byte pun
+    darinya berpindah: alatnya tidak punya fitur jaringan dalam bentuk apa pun,
+    dan file-nya dibaca langsung dari disk Anda oleh sebuah worker yang tidak
+    punya tujuan untuk mengirim apa pun."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu tumpuk satu folder file RAW. Tidak satu pun permintaan membawa sebuah
+      foto, gambar mini, nama file, atau model kamera. Atau cabut koneksi
+      internet lalu tetap tumpuk mereka &mdash; tidak ada yang berubah tentang
+      alatnya."""
+
+read_first = """
+, <code>src/raw.js</code> untuk cara sebuah file
+      RAW dibuka dengan membaca kilobita alih-alih megabita,
+      <code>src/stack.js</code> untuk hitungan setiap metodenya, dan
+      <code>src/plan.js</code> untuk asal angka memori dan pendekodean yang
+      ditampilkan di halamannya &mdash; mereka jawaban file itu, bukan
+      perkiraan."""
+
+howto_heading = "Cara menumpuk sekumpulan foto di peramban Anda"
+
+card = """
+            Gabungkan sebuah burst menjadi satu gambar: rata-ratakan deraunya
+            hingga hilang, ambil mediannya untuk kehilangan orang yang lewat,
+            atau terangkan untuk jejak bintang. Membaca file RAW tanpa sebuah
+            pengubah."""
+
+[words]
+plural = "foto"
+choose = "beberapa foto"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Membaca RAW"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Foto Anda tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy
+      menyebut satu per satu setiap alamat yang boleh dihubungi halaman ini, dan
+      tidak satu pun milik situs ini. Tidak ada titik akhir di sini tempat file
+      Anda bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya seandainya
+      ada &mdash; tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, tidak ada <code>sendBeacon</code>, di
+      <code>src/</code> maupun di workernya."""
+
+[[privacy]]
+title = "File RAW-nya dibaca, bukan diunggah &mdash; dan nyaris tidak dibaca."
+body = """
+ Sebuah file RAW kamera
+      sudah memuat sebuah JPEG berukuran penuh yang digambar kameranya ketika ia
+      mengambil bidikannya. Alat ini menemukannya dengan menyusuri beberapa entri
+      direktori lalu meminta satu irisan, dan pada file 60&nbsp;MB itu biasanya
+      di bawah seratus kilobita. Halamannya menunjukkan angka itu kepada Anda
+      dibandingkan dengan ukuran file Anda sambil Anda bekerja. Data sensornya
+      sama sekali tidak pernah dibaca."""
+
+[[privacy]]
+title = "Pekerjaannya terjadi di sebuah Worker di mesin ini, bukan di sebuah server."
+body = """
+ Inilah
+      satu-satunya alat di sini yang memakai satu, karena penumpukan adalah
+      hitungan bermenit-menit alih-alih berdetik-detik dan halaman yang membeku
+      tidak bisa menampilkan kemajuan atau dibatalkan. Sebuah Worker adalah utas
+      kedua di peramban yang sama ini &mdash; lihat <code>src/worker.js</code>.
+      Ia diserahi file-nya sendiri, dan itu gratis, karena sebuah pegangan file
+      bukanlah byte-nya; dan ia punya Content-Security-Policy yang persis sama
+      dengan halamannya, yang artinya tidak punya tujuan untuk mengirimnya."""
+
+[[privacy]]
+title = "Tidak ada apa pun tentang kumpulannya yang dilaporkan ke mana pun."
+body = """
+ Berapa bingkai yang
+      Anda tumpuk, kamera apa yang menulisnya, seberapa jauh masing-masing sudah
+      bergerak, metode mana yang Anda pilih, dan berapa lama waktunya ditahan di
+      memori halaman ini sampai Anda menutupnya. Tidak ada peristiwa analitik
+      khusus di repositori ini yang membawa satu pun darinya, dan satu pertanyaan
+      yang diajukan situs ini setelah sebuah unduhan mengirim sebuah jempol ke
+      atas atau ke bawah dan nama alatnya, tidak lebih."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Workernya dan setiap modul yang dimuatnya disinggahkan service worker
+      milik halaman ini sendiri, jadi salinan yang terpasang menumpuk file RAW
+      dengan jaringan tercabut."""
+
+[[howto]]
+title = "Pilih bingkainya."
+body = """
+ Sebuah burst, sekumpulan bracket, sebuah
+      runtutan intervalometer, atau satu folder file RAW. Masing-masing dibuka
+      begitu ia tiba dan barisnya memberi tahu Anda apa yang keluar darinya
+      &mdash; untuk file RAW, kameranya, ukuran pratinjau yang ditemukan di
+      dalamnya, dan betapa sedikit file-nya yang harus dibaca untuk
+      menemukannya."""
+
+[[howto]]
+title = "Pilih metode yang cocok dengan apa yang ingin Anda hilangkan."
+body = """
+ Derau:
+      rata-rata, atau sigma-clip kalau ada yang bergerak. Orang, mobil, atau
+      pesawat yang lewat: median. Langit gelap yang ingin Anda ubah menjadi jejak
+      bintang: terangkan. Bidikan makro yang diambil di sepanjang cincin fokus:
+      penumpukan fokus. Catatan di bawah menunya mengatakan apa yang dilakukan
+      masing-masing pada jumlah bingkai Anda yang tertentu itu."""
+
+[[howto]]
+title = "Putuskan apakah bingkainya perlu disejajarkan."
+body = """
+ Dipegang tangan: ya,
+      geser saja. Dipegang tangan dan Anda juga berputar: geser, rotasi, dan
+      skala. Tripod terkunci atau sebuah intervalometer: tidak, dan ia akan lebih
+      cepat. Setiap bingkai diukur terhadap yang pertama di daftarnya, dan itulah
+      sebabnya bingkai mana pun bisa dinaikkan menjadi yang pertama itu."""
+
+[[howto]]
+title = "Baca keempat angkanya, lalu tekan tombolnya."
+body = """
+ Sebelum apa pun
+      berjalan, halamannya mengatakan seberapa besar hasilnya nanti, kira-kira
+      berapa banyak memori yang akan dipakainya, berapa kali bingkainya akan
+      didekodekan, dan berapa banyak file Anda yang dibaca. Kalau kumpulannya
+      tidak akan muat di memori dalam satu potong, ia mengatakannya, dan
+      mengatakan resolusi kerja mana yang akan membereskannya."""
+
+[[faq]]
+q = "Apakah foto saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Setiap bingkai dibuka, didekodekan, disejajarkan, ditumpuk, dan
+        ditulis oleh peramban Anda sendiri di perangkat keras Anda sendiri. Alat
+        ini tidak punya fitur jaringan dalam bentuk apa pun &mdash; ia tidak
+        pernah mengambil apa pun dan tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya, dan tidak satu pun milik situs
+        ini. Muat halamannya sekali, cabut koneksi internet, dan ia tetap
+        bekerja. Itu lebih penting di sini daripada di kebanyakan alat semata
+        karena volumenya: setumpuk dua puluh bingkai RAW adalah sekitar satu
+        gigabita, dan mengunggah satu gigabita foto untuk diambil rata-ratanya
+        adalah hal yang justru ingin dihindari alat ini."""
+
+[[faq]]
+q = "Format RAW mana saja yang bisa dibacanya, dan bagaimana?"
+a = """
+        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF,
+        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL, dan beberapa lagi
+        &mdash; dan itu sebagian besar dari apa yang ditulis kamera. Yang
+        dibacanya dari mereka adalah pratinjau JPEG berukuran penuh yang digambar
+        kameranya sendiri ketika ia mengambil bidikannya: gambar di punggung
+        kameranya, dan gambar yang digambar sistem operasi Anda sebagai gambar
+        mininya. Ia ditemukan dengan menyusuri struktur direktori file-nya, yang
+        berbiaya beberapa pembacaan beberapa kilobita masing-masing, lalu
+        mengambil satu irisan. <strong>Ia bukan hasil demosaik data
+        sensornya.</strong> Hasilnya membawa keseimbangan putih dan gaya gambar
+        kameranya pada delapan bit per kanal, alih-alih dua belas atau empat
+        belas bit data sensor linear yang akan diberikan sebuah pengubah RAW
+        kepada Anda."""
+
+[[faq]]
+q = "Kalau begitu kenapa tidak mendekodekan data sensornya dengan benar?"
+a = """
+        Karena itu berarti menyertakan LibRaw atau dcraw &mdash; sebuah mesin
+        kedua berukuran puluhan megabita, untuk satu keluarga format, yang
+        sebagian besarnya adalah skema kompresi per pabrikan. Pertukaran itu
+        diperdebatkan sampai tuntas di
+        <code>docs/what-can-be-built-here.md</code> di sumber situs ini, tempat
+        RAW kamera sudah ada di daftar yang dikesampingkan sejak sebelum alat ini
+        ada. Yang berubah bukan jawaban atas pertanyaan itu melainkan penemuan
+        bahwa penumpukan tidak membutuhkannya: pratinjaunya beresolusi penuh,
+        mereka toh yang akan diberikan kameranya kepada Anda sebagai sebuah JPEG,
+        dan membacanya kira-kira seratus kali lebih cepat daripada mendemosaik.
+        Kalau Anda menginginkan data sensornya, kembangkan bingkainya di sebuah
+        pengubah RAW lebih dulu lalu tumpuk TIFF atau JPEG yang dihasilkannya
+        &mdash; alat ini menerima itu juga."""
+
+[[faq]]
+q = "Berapa banyak bingkai yang bisa ditanganinya, dan seberapa besar?"
+a = """
+        Enam dari ketujuh metodenya mengalir: mereka menahan satu akumulator lalu
+        membaca setiap bingkai tepat sekali, jadi seratus bingkai berbiaya memori
+        yang sama dengan dua dan satu-satunya yang bertambah adalah waktunya.
+        Mediannya adalah pengecualiannya, karena nilai tengah sebuah kumpulan
+        tidak bisa diketahui sampai Anda punya seluruhnya, jadi ia menahan setiap
+        bingkai sekaligus &mdash; dua puluh bingkai 24 megapiksel adalah sekitar
+        1,4&nbsp;GB, dan tidak ada peramban yang akan memberikannya kepada Anda.
+        Ketika itu terjadi, gambarnya dipotong menjadi pita mendatar lalu
+        ditumpuk sepita demi sepita, dan itu berbiaya membaca ulang bingkainya
+        untuk setiap pitanya. Halamannya memperhitungkan semua ini sebelum Anda
+        menekan tombolnya lalu menunjukkan angkanya kepada Anda, jadi jalan yang
+        lambat tidak pernah menjadi kejutan."""
+
+[[faq]]
+q = "Apa sebenarnya yang dilakukan penyejajaran bingkainya?"
+a = """
+        Ia menemukan seberapa jauh setiap bingkai bergerak relatif terhadap yang
+        pertama lalu memindahkannya kembali, sampai sepersekian piksel. Metodenya
+        adalah korelasi fase: pergeseran antara dua gambar muncul sebagai
+        perbedaan fase antara spektrumnya, jadi satu transformasi Fourier
+        masing-masing menemukan pergeseran dua ratus piksel semurah pergeseran
+        dua piksel. Setelan yang kedua juga memulihkan rotasi dan skalanya,
+        dengan trik yang sama yang diterapkan pada spektrumnya dalam koordinat
+        log-polar. Semuanya bersifat menyeluruh &mdash; satu pergeseran, satu
+        sudut, satu skala untuk seluruh bingkainya &mdash; jadi ia membetulkan
+        kamera yang bergerak dan tidak bisa membetulkan subjek yang bergerak,
+        atau foto yang diambil dari satu langkah ke kiri. Satu akibat yang
+        kelihatan: bingkai yang dipindahkan dua puluh piksel ke kiri tidak lagi
+        mencapai tepi kanannya, jadi hasilnya dirapikan ke bagian yang dicakup
+        setiap bingkainya. Itulah sebabnya tumpukan yang disejajarkan kembali
+        sedikit lebih kecil daripada bingkai yang masuk ke dalamnya, dan itu
+        satu-satunya alternatif dari sebuah batas gelap yang terbuat dari bingkai
+        yang tidak ada di sana."""
+
+[[faq]]
+q = "Metode mana yang sebaiknya saya pakai?"
+a = """
+        <strong>Rata-rata</strong> untuk derau, pada kumpulan yang tidak ada yang
+        bergerak: ia memangkas derau acak kira-kira sebesar akar jumlah
+        bingkainya. <strong>Median</strong> untuk membuang hal-hal yang hanya ada
+        sebagian waktu &mdash; pemakaian klasiknya adalah memotret sebuah alun-alun
+        yang ramai selusin kali lalu mendapatkannya kosong. <strong>Sigma
+        clipping</strong> ketika Anda ingin keduanya: ia mempelajari apa biasanya
+        setiap piksel lalu merata-ratakan hanya nilai yang sepakat, jadi ia punya
+        kekebalan median terhadap mobil yang lewat dan pengurangan derau
+        rata-rata. <strong>Terangkan</strong> untuk jejak bintang, kembang api,
+        dan lukisan cahaya. <strong>Gelapkan</strong> untuk membuang apa pun yang
+        terang yang bergerak. <strong>Tambahkan</strong> untuk meniru satu
+        pencahayaan panjang. <strong>Penumpukan fokus</strong> untuk bidikan
+        makro yang diambil di sepanjang cincin fokus."""
+
+[[faq]]
+q = "Kenapa hasil saya delapan bit padahal file RAW saya empat belas?"
+a = """
+        Karena yang ditumpuk adalah pratinjau milik kameranya sendiri, yang berupa
+        sebuah JPEG. Layak dikatakan bahwa penumpukan memulihkan sebagian dari
+        yang dikorbankan itu: merata-ratakan enam belas bingkai delapan bit
+        memberi hasil dengan gradasi yang sungguh lebih halus daripada yang
+        dimiliki satu pun di antaranya, karena derau yang membuat pembulatan
+        setiap bingkai berbeda justru itulah yang membuat rata-ratanya mendarat
+        di antara tingkatannya. Hitungannya di sini dikerjakan dalam bilangan
+        titik-mengambang lalu dibulatkan sekali di ujungnya, jadi tidak ada
+        satu pun dari itu yang dibuang di tengah jalan. Ia tetap tidak sama
+        dengan menumpuk data sensor linear, dan alat ini tidak berpura-pura
+        sebaliknya."""
+
+[[faq]]
+q = "Bisakah saya menumpuk bingkai yang berbeda ukuran, atau dari kamera berbeda?"
+a = """
+        Bisa, meski itu biasanya sebuah kekeliruan dan layak diperiksa bahwa Anda
+        memang memaksudkannya. Hasilnya seukuran bingkai terbesarnya, dan setiap
+        bingkai lain diskalakan agar muat lalu diletakkan di tengahnya. Mencampur
+        kamera juga mencampur penggambaran warnanya, jadi rata-rata keduanya
+        adalah rata-rata dua tafsir berbeda atas cahaya yang sama. Tempat ia
+        memang membantu adalah sebuah kumpulan yang dibidik pada dua resolusi,
+        atau sebuah file RAW dan sebuah JPEG dari bingkai yang sama."""
+
+[[faq]]
+q = "Ia bilang jalannya akan berpita. Apa maksudnya?"
+a = """
+        Bahwa memori kerja yang dibutuhkan metodenya lebih dari yang bersedia
+        dialokasikan alatnya sekaligus, jadi gambarnya akan dipotong menjadi
+        jalur-jalur mendatar lalu ditumpuk sejalur demi sejalur. Ia tetap
+        menghasilkan hasil yang persis sama; ia hanya membaca bingkainya lagi
+        untuk setiap jalurnya, jadi ia memakan waktu lebih lama, dan halamannya
+        memberi tahu Anda berapa banyak pendekodean itu nanti. Menurunkan resolusi
+        kerjanya satu langkah memangkas memorinya menjadi seperempat, dan itu
+        hampir selalu mengubah jalan yang berpita menjadi satu jalan tunggal
+        &mdash; catatannya mengatakan setelan mana yang akan melakukannya."""
+
+[[faq]]
+q = "Kenapa alat ini memakai sebuah Worker padahal tidak satu pun yang lain?"
+a = """
+        Karena ia satu-satunya yang pekerjaannya diukur dalam menit. Setiap alat
+        lain di sini melakukan sesuatu yang memakan satu dua detik, dan di sana
+        memindahkan pekerjaannya keluar dari utas utamanya akan menjadi upacara.
+        Menumpuk dua puluh bingkai besar adalah hitungan padat atas ratusan
+        megabita, dan di utas utama itu berarti halaman yang membeku: tidak ada
+        bilah kemajuan yang bergerak, sebuah tombol Batalkan yang tidak menjawab,
+        dan akhirnya sebuah peramban yang menawarkan membunuh tabnya. Workernya
+        adalah utas kedua di peramban yang sama ini, menjalankan sebuah file dari
+        folder yang sama ini, di bawah kebijakan yang sama ini. Ia bukan sebuah
+        server dan ia bukan sebuah fitur jaringan."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis; tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada tanda air. Tidak ada batas berapa banyak bingkai yang Anda
+        tumpuk atau seberapa besar mereka juga, karena tidak ada server yang
+        membayarnya &mdash; pekerjaannya terjadi di mesin Anda sendiri dan
+        satu-satunya langit-langitnya adalah memori Anda sendiri. Situs ini
+        memasang iklan, dan itulah yang membiayainya; iklan tidak diberi apa pun
+        tentang foto Anda."""
+
+[schema]
+description = "Tumpuk sebuah burst foto di peramban: rata-rata, median, rata-rata dengan sigma-clip, terangkan, gelapkan, tambahkan, atau tumpuk fokus, dengan bingkainya disejajarkan lebih dulu lewat korelasi fase. Membaca file RAW kamera dengan menarik keluar pratinjau berukuran penuh yang disematkan kameranya, jadi tidak dibutuhkan pengubah RAW. Tidak ada yang diunggah."
+features = [
+  "Tujuh metode penumpukan: rata-rata, median, rata-rata dengan sigma-clip, terangkan, gelapkan, tambahkan, dan penumpukan fokus",
+  "Membaca CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2, dan lainnya dengan menarik keluar pratinjau berukuran penuh milik kameranya sendiri",
+  "Membuka file RAW 60 MB dengan membaca sekitar seratus kilobita darinya",
+  "Penyejajaran otomatis: geser saja, atau geser dengan rotasi dan skala, atau tidak sama sekali",
+  "Penyejajaran sub-piksel lewat korelasi fase, bukan lewat pencarian pergeseran",
+  "Enam dari ketujuh metodenya menahan satu akumulator, jadi seratus bingkai berbiaya memori dua bingkai",
+  "Biaya memori dan pendekodeannya diperhitungkan lalu ditampilkan sebelum jalannya dimulai",
+  "Pekerjaannya berjalan di sebuah Worker, jadi kemajuannya bergerak dan Batalkan menjawab",
+  "Keluar sebagai PNG atau JPEG; jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan bingkainya di sini"
+hint = "atau klik untuk menelusuri &mdash; JPEG, PNG, WebP, TIFF, dan RAW kamera"
