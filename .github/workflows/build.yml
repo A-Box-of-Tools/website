@@ -153,6 +153,14 @@ jobs:
             git -C .publish checkout --orphan dist
           fi
 
+          # The sitemap as it is deployed right now, saved before the line
+          # below deletes it. It is the baseline the IndexNow step diffs
+          # against to work out which pages actually changed, and this is the
+          # last moment it exists.
+          if [ -f .publish/sitemap.xml ]; then
+            cp .publish/sitemap.xml "$RUNNER_TEMP/deployed-sitemap.xml"
+          fi
+
           # Replace the tree wholesale rather than copying over it: a page that
           # was deleted from the sources has to disappear from the branch too.
           git -C .publish rm -rq --cached . --ignore-unmatch
@@ -168,6 +176,58 @@ jobs:
           subject=$(git log -1 --pretty=%s "$SHA")
           git -C .publish commit -m "Build ${SHA:0:7}: ${subject}"
           git -C .publish push origin dist
+
+      # Bing, Yandex, Seznam and Naver accept being told that a page changed,
+      # and fetch it within hours instead of whenever a crawler next comes
+      # round. Google takes no part in this and is still reached through the
+      # sitemap alone; see the comment at the top of indexnow.py, which also
+      # explains why the URLs come from a diff of the two sitemaps rather than
+      # from a diff of the deployed files.
+      #
+      # It runs after the publish, deliberately: it announces pages that are
+      # already live, and a URL submitted a minute before it exists is fetched,
+      # found stale, and believed.
+      #
+      # It cannot fail the workflow. The deploy has already happened by now and
+      # a refused submission does not undo it, so a red run here would say
+      # something untrue about the build. The status goes to the step summary
+      # instead, and the step marks itself failed without stopping the job.
+      - name: Tell IndexNow what changed
+        if: github.event_name != 'pull_request'
+        continue-on-error: true
+        run: |
+          set -uo pipefail
+
+          status=0
+          python indexnow.py \
+            --old "$RUNNER_TEMP/deployed-sitemap.xml" \
+            --new _site/sitemap.xml \
+            --out "$RUNNER_TEMP/submitted.txt" \
+            --submit || status=$?
+
+          {
+            echo '### IndexNow'
+            echo
+            # The list is written even when it is empty, so a missing file
+            # means the script did not get that far - which is worth reading
+            # as nothing submitted rather than as an error in the summary.
+            count=0
+            if [ -f "$RUNNER_TEMP/submitted.txt" ]; then
+              count=$(wc -l < "$RUNNER_TEMP/submitted.txt")
+            fi
+            if [ "$count" -gt 0 ]; then
+              if [ "$count" -eq 1 ]; then echo 'Submitted 1 URL:'
+              else echo "Submitted $count URLs:"; fi
+              echo
+              echo '```'
+              cat "$RUNNER_TEMP/submitted.txt"
+              echo '```'
+            else
+              echo 'No page moved its `lastmod`, so nothing was submitted.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit $status
 
       - name: Summary
         if: always()

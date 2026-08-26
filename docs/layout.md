@@ -73,6 +73,7 @@ LICENSE-CONTENT          CC BY 4.0: the words the site publishes
 package.json             says the .js files are ES modules; no dependencies
 og-image.ps1             draws the share cards and the icons from shared/logo.svg
 serve.ps1                builds, then serves dist/ locally
+indexnow.py              tells Bing which pages a deploy actually changed
 cloudflare/              the edge config that adds the security headers
 ```
 

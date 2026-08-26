@@ -147,6 +147,95 @@ address. If the site ever answers on a second hostname — a staging deployment,
 mirror, `www`, the `github.io` address — this keeps search engines treating one of
 them as the original rather than splitting the ranking between duplicates.
 
+## Telling the search engines a page changed
+
+A sitemap is an invitation, not a notification: it says what exists and leaves
+the timing to the crawler, which is why a new tool can sit unindexed for weeks.
+Half of that is fixable and half is not, and the two halves are worth keeping
+straight.
+
+**Bing, Yandex, Seznam and Naver take IndexNow.** POST a list of URLs and a key
+that proves the host is yours, and they fetch them within hours.
+
+**Google does not, and there is no equivalent.** It does not participate in
+IndexNow. Its Indexing API only accepts `JobPosting` and `BroadcastEvent`
+markup, so a tool page submitted there is discarded — and using it for anything
+else is against its terms, whatever the blog posts say. The sitemap ping
+endpoint was withdrawn in 2023. What is left is *URL Inspection → Request
+indexing* in Search Console, by hand, about a dozen a day: useful for a page
+that has just launched, useless against a thousand. For Google, indexing speed
+is an outcome of crawl budget and how much the site is worth crawling, not
+something a deploy can ask for.
+
+So the deploy submits to IndexNow and leaves Google to the sitemap.
+
+### Which URLs get submitted
+
+This is the whole design, and the obvious answer is wrong. A diff of the
+deployed files would submit almost every page almost every time: the footer
+lists every tool, so shipping one rewrites all thousand-odd pages, and a change
+to the frame or the stylesheet rewrites them without moving a word anybody
+reads. Submitting URLs that did not change is how a host stops being trusted
+with the protocol, which would cost the site the one lever it has here.
+
+What does track real change is already in the repository. `lastmod` in
+`sitemap.xml` is one date per page, written by hand in `tool.toml` and
+`config/site.toml`, and moved only when the wording on that page moves — see
+the comment in [`templates/sitemap.xml`](../templates/sitemap.xml). So
+[`indexnow.py`](../indexnow.py) compares the sitemap about to be deployed
+against the one already deployed, and submits the entries that are new or whose
+date moved:
+
+| What changed | What is submitted |
+|---|---|
+| A tool's wording, with its `lastmod` bumped | that tool, in all fifteen languages |
+| A new tool | its pages, and the hubs, if their dates moved |
+| The footer, the CSS, the build | nothing |
+
+Because the list comes from the sitemap rather than from the output directory,
+it inherits every rule the sitemap already applies: an untranslated page is not
+in it, a locale still being translated is not in it, and the redirect stub left
+behind by a renamed tool is not in it either.
+
+The [Build workflow](../.github/workflows/build.yml) saves the deployed
+`sitemap.xml` before it replaces the `dist` tree, and submits after the push —
+announcing a URL a minute before it exists gets it fetched, found stale, and
+believed. The step cannot fail the build: by the time it runs the deploy has
+happened, and a refused submission does not undo it. It writes what it sent to
+the run summary instead.
+
+To see what a deploy would submit, without submitting it:
+
+```bash
+python indexnow.py --old deployed-sitemap.xml --new _site/sitemap.xml
+```
+
+### The key file
+
+`shared/dce2cc4dac3134c897d6caccad94d0c2.txt` contains that same hex string and
+nothing else. `shared/` is copied to the site root, so it is served at
+`https://abox.tools/dce2cc4dac3134c897d6caccad94d0c2.txt`, which is where the
+protocol looks to confirm that whoever submitted the URLs controls the host.
+
+**It is not a secret.** Publishing it is the point. What matters is that it and
+the `KEY` constant in `indexnow.py` stay identical: a submission carrying a key
+the file does not match is accepted, fails validation out of band, and is
+dropped without an error anywhere. `tests/python/test_indexnow.py` asserts the
+two agree, which is the only thing standing between that and silence.
+
+The file has no explanatory comment at the top, unlike everything else in
+`shared/`, because the format has no room for one — the key is the entire
+contents.
+
+### Cloudflare's Crawler Hints
+
+*Caching → Configuration → Crawler Hints* in the dashboard is a second,
+independent route to the same protocol: Cloudflare notices content changing at
+the edge and sends IndexNow itself. It is one toggle and it costs nothing, so it
+is worth having on, but it is a guess made from cache behaviour rather than from
+the dates in the sitemap. The workflow above is the accurate one; this is a net
+underneath it.
+
 ## HTTPS
 
 Service workers require a secure context, so offline mode activates on `https://`
