@@ -89,6 +89,19 @@
 <link rel="apple-touch-icon" href="/icon-180.png">
 
 <!--
+  Every module the tool ships, named up front. Nothing is bundled, so without
+  these the browser discovers the modules one import at a time: fetch main.js,
+  parse it, fetch what it imports, parse those - three round trips down the
+  deeper graphs before the tool can boot, paid precisely on the first visit,
+  when no service worker has cached anything yet. This list is the same one
+  the build hands that service worker, so it cannot name a file the tool does
+  not ship, and a module only a dynamic import reaches is fetched moments
+  earlier than the worker would have fetched it anyway.
+-->
+{% for module in modules %}<link rel="modulepreload" href="{{ module }}">
+{% endfor %}
+
+<!--
   What lets this page be installed as an app. The manifest sits in this tool's
   own folder and is scoped to it, so what gets installed is the folder the
   service worker has already cached - an app that opens with the network
