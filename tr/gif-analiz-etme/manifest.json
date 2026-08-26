@@ -1,8 +1,8 @@
 {
   "id": "/tr/gif-analiz-etme/",
-  "name": "GIF Analyzer",
-  "short_name": "GIF Analyzer",
-  "description": "Frames, delays, palettes, and where every byte went.",
+  "name": "GIF \u00c7\u00f6z\u00fcmleyici",
+  "short_name": "GIF \u00c7\u00f6z\u00fcmleyici",
+  "description": "Kareler, gecikmeler, paletler ve her bayt\u0131n nereye gitti\u011fi.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

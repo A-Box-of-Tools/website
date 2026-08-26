@@ -1,8 +1,8 @@
 {
   "id": "/tr/videoyu-ters-oynatma/",
-  "name": "Video Reverser",
-  "short_name": "Video Reverser",
-  "description": "Last frame first, sound and all.",
+  "name": "Video Tersleyici",
+  "short_name": "Video Tersleyici",
+  "description": "\u00d6nce son kare, sesiyle birlikte.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

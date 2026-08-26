@@ -1,8 +1,8 @@
 {
   "id": "/tr/resimleri-videoya-donusturme/",
-  "name": "Images to Video",
-  "short_name": "Images to Video",
-  "description": "Turn a folder of images into a video.",
+  "name": "G\u00f6rsellerden Videoya",
+  "short_name": "G\u00f6rsellerden Videoya",
+  "description": "Bir g\u00f6rsel klas\u00f6r\u00fcn\u00fc videoya \u00e7evirin.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

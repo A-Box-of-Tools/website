@@ -1,8 +1,8 @@
 {
   "id": "/tr/ses-kesme/",
-  "name": "Audio Trimmer",
-  "short_name": "Audio Trimmer",
-  "description": "Mark the parts worth keeping as it plays. Get them back as one file, cut where you said.",
+  "name": "Ses Kesici",
+  "short_name": "Ses Kesici",
+  "description": "Tutmaya de\u011fer par\u00e7alar\u0131 oynarken i\u015faretleyin. Onlar\u0131 tek dosya olarak, tam s\u00f6yledi\u011finiz yerden kesilmi\u015f h\u00e2lde geri al\u0131n.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

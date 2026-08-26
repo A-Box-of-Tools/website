@@ -1,8 +1,8 @@
 {
   "id": "/tr/video-kesme/",
-  "name": "Video Cutter",
-  "short_name": "Video Cutter",
-  "description": "Mark the parts worth keeping as it plays. Get them back as one video.",
+  "name": "Video Kesici",
+  "short_name": "Video Kesici",
+  "description": "Tutmaya de\u011fer par\u00e7alar\u0131 oynarken i\u015faretleyin. Onlar\u0131 tek video olarak geri al\u0131n.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

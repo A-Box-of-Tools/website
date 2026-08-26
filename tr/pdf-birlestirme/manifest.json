@@ -1,8 +1,8 @@
 {
   "id": "/tr/pdf-birlestirme/",
-  "name": "PDF Merger & Splitter",
-  "short_name": "PDF Merger & Splitter",
-  "description": "Pages moved around without a round trip to a server.",
+  "name": "PDF Birle\u015ftirici ve B\u00f6l\u00fcc\u00fc",
+  "short_name": "PDF Birle\u015ftirici ve B\u00f6l\u00fcc\u00fc",
+  "description": "Sunucuya gidip gelmeden yerinden oynat\u0131lm\u0131\u015f sayfalar.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/tr/videodan-kare-yakalama/",
-  "name": "Video Frame Grabber",
-  "short_name": "Video Frame Grabber",
-  "description": "A full-quality still from any point.",
+  "name": "Video Kare Yakalay\u0131c\u0131",
+  "short_name": "Video Kare Yakalay\u0131c\u0131",
+  "description": "Herhangi bir andan tam kaliteli bir kare.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

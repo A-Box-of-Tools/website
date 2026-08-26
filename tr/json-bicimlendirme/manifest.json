@@ -1,8 +1,8 @@
 {
   "id": "/tr/json-bicimlendirme/",
-  "name": "Text & Code",
-  "short_name": "Text & Code",
-  "description": "Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server.",
+  "name": "Metin ve Kod",
+  "short_name": "Metin ve Kod",
+  "description": "D\u00fczenli yazd\u0131r\u0131n, neyin de\u011fi\u015fti\u011fini g\u00f6r\u00fcn, kodlay\u0131n ya da \u00f6b\u00fcr bi\u00e7ime \u00e7evirin. Hi\u00e7bir \u015fey bir ba\u015fkas\u0131n\u0131n sunucusuna yap\u0131\u015ft\u0131r\u0131lm\u0131yor.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

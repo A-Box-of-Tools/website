@@ -1,28 +1,27 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-const CACHE_PREFIX='abox:/tr/redact-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'8416edbe39';
+const CACHE_PREFIX='abox:/tr/dicom-goruntuleyici/:';
+const CACHE_NAME=CACHE_PREFIX+'9276a43583';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0dc19b513c',
+'styles.css?v=aee8dcd6b0',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
-'src/base14.js',
-'src/content.js',
-'src/edit.js',
-'src/filters.js',
-'src/fonts.js',
+'src/dicom.js',
+'src/dictionary.js',
 'src/format.js',
+'src/identity.js',
+'src/jpeg-lossless.js',
 'src/main.js',
-'src/matches.js',
-'src/objects.js',
+'src/pixels.js',
 'src/reader.js',
-'src/redact.js',
-'src/strings.js',
-'src/text.js',
-'src/verify.js',
-'src/writer.js',
+'src/report.js',
+'src/rle.js',
+'src/series.js',
+'src/uids.js',
+'src/values.js',
+'src/window.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

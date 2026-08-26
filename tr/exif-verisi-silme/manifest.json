@@ -1,8 +1,8 @@
 {
   "id": "/tr/exif-verisi-silme/",
-  "name": "EXIF Viewer & Remover",
-  "short_name": "EXIF Viewer & Remover",
-  "description": "See what a photo says about you. Then take it out.",
+  "name": "EXIF G\u00f6r\u00fcnt\u00fcleyici ve Silici",
+  "short_name": "EXIF G\u00f6r\u00fcnt\u00fcleyici ve Silici",
+  "description": "Bir foto\u011fraf\u0131n sizin hakk\u0131n\u0131zda ne s\u00f6yledi\u011fini g\u00f6r\u00fcn. Sonra onu \u00e7\u0131kar\u0131n.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

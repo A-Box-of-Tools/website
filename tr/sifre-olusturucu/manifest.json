@@ -1,8 +1,8 @@
 {
   "id": "/tr/sifre-olusturucu/",
-  "name": "Password & Passphrase Generator",
-  "short_name": "Password & Passphrase Generator",
-  "description": "Made here, by your own browser, and never sent anywhere. Nothing is stored and there is no history.",
+  "name": "\u015eifre ve Parola C\u00fcmlesi \u00dcreteci",
+  "short_name": "\u015eifre ve Parola C\u00fcmlesi \u00dcreteci",
+  "description": "Burada, kendi taray\u0131c\u0131n\u0131z taraf\u0131ndan \u00fcretilir ve hi\u00e7bir yere g\u00f6nderilmez. Hi\u00e7bir \u015fey saklanmaz ve ge\u00e7mi\u015f yoktur.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

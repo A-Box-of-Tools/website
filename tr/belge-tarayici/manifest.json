@@ -1,8 +1,8 @@
 {
-  "id": "/tr/dicom-viewer/",
-  "name": "DICOM Viewer",
-  "short_name": "DICOM Viewer",
-  "description": "CT, MR, X-ray and ultrasound, with the window, the header and the measurements.",
+  "id": "/tr/belge-tarayici/",
+  "name": "Belge Taray\u0131c\u0131",
+  "short_name": "Belge Taray\u0131c\u0131",
+  "description": "Sayfay\u0131 foto\u011fraflay\u0131n. Taranm\u0131\u015f g\u00f6r\u00fcnen bir \u015fey geri al\u0131n.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/tr/saglama-toplami-hesaplama/",
-  "name": "Hash & Checksum",
-  "short_name": "Hash & Checksum",
-  "description": "Check a download against the number the publisher printed, without sending it to anyone.",
+  "name": "\u00d6zet ve Sa\u011flama Toplam\u0131",
+  "short_name": "\u00d6zet ve Sa\u011flama Toplam\u0131",
+  "description": "Bir indirmeyi, yay\u0131nc\u0131n\u0131n bast\u0131\u011f\u0131 say\u0131ya kar\u015f\u0131, kimseye g\u00f6ndermeden denetleyin.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

@@ -1,8 +1,8 @@
 {
   "id": "/tr/videoyu-gife-donusturme/",
-  "name": "Video to GIF",
-  "short_name": "Video to GIF",
-  "description": "Pick the section, the size, and the frame rate.",
+  "name": "Videodan GIF'e",
+  "short_name": "Videodan GIF'e",
+  "description": "B\u00f6l\u00fcm\u00fc, boyutu ve kare h\u0131z\u0131n\u0131 siz se\u00e7in.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

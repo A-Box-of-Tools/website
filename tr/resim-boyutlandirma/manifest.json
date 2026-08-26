@@ -1,8 +1,8 @@
 {
   "id": "/tr/resim-boyutlandirma/",
-  "name": "Image Resizer",
-  "short_name": "Image Resizer",
-  "description": "Say the size. Draw the box. Pick the format.",
+  "name": "G\u00f6rsel Boyutland\u0131r\u0131c\u0131",
+  "short_name": "G\u00f6rsel Boyutland\u0131r\u0131c\u0131",
+  "description": "Boyutu s\u00f6yleyin. Kutuyu \u00e7izin. Bi\u00e7imi se\u00e7in.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

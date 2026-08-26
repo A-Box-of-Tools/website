@@ -1,8 +1,8 @@
 {
-  "id": "/tr/document-scanner/",
-  "name": "Document Scanner",
-  "short_name": "Document Scanner",
-  "description": "Photograph the page. Get back something that looks scanned.",
+  "id": "/tr/dicom-goruntuleyici/",
+  "name": "DICOM G\u00f6r\u00fcnt\u00fcleyici",
+  "short_name": "DICOM G\u00f6r\u00fcnt\u00fcleyici",
+  "description": "BT, MR, r\u00f6ntgen ve ultrason; penceresi, ba\u015fl\u0131\u011f\u0131 ve \u00f6l\u00e7\u00fcmleriyle.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

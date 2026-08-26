@@ -1,8 +1,8 @@
 {
   "id": "/tr/resim-karartma/",
-  "name": "Image Redactor",
-  "short_name": "Image Redactor",
-  "description": "What you cover is deleted from the file, not covered up in it.",
+  "name": "G\u00f6rsel Karart\u0131c\u0131",
+  "short_name": "G\u00f6rsel Karart\u0131c\u0131",
+  "description": "Kapatt\u0131\u011f\u0131n\u0131z \u015fey dosyan\u0131n i\u00e7inde \u00f6rt\u00fclmez, dosyadan silinir.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

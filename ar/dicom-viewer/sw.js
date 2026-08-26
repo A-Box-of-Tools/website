@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/dicom-viewer/:';
-const CACHE_NAME=CACHE_PREFIX+'c875fcd8c4';
+const CACHE_NAME=CACHE_PREFIX+'2b89701904';
 const ASSETS=[
 './',
 'index.html',

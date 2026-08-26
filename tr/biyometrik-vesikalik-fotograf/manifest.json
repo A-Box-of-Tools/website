@@ -1,8 +1,8 @@
 {
   "id": "/tr/biyometrik-vesikalik-fotograf/",
-  "name": "ID Photo Maker",
-  "short_name": "ID Photo Maker",
-  "description": "Pick the country. It applies that country's rule, exactly.",
+  "name": "Vesikal\u0131k Foto\u011fraf Yap\u0131c\u0131",
+  "short_name": "Vesikal\u0131k Foto\u011fraf Yap\u0131c\u0131",
+  "description": "\u00dclkeyi se\u00e7in. O \u00fclkenin kural\u0131n\u0131 tam olarak uygular.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

@@ -1,27 +1,28 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-const CACHE_PREFIX='abox:/tr/dicom-viewer/:';
-const CACHE_NAME=CACHE_PREFIX+'731641e6f1';
+const CACHE_PREFIX='abox:/tr/pdf-karartma/:';
+const CACHE_NAME=CACHE_PREFIX+'6d3dad5fdc';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=aee8dcd6b0',
+'styles.css?v=0dc19b513c',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
-'src/dicom.js',
-'src/dictionary.js',
+'src/base14.js',
+'src/content.js',
+'src/edit.js',
+'src/filters.js',
+'src/fonts.js',
 'src/format.js',
-'src/identity.js',
-'src/jpeg-lossless.js',
 'src/main.js',
-'src/pixels.js',
+'src/matches.js',
+'src/objects.js',
 'src/reader.js',
-'src/report.js',
-'src/rle.js',
-'src/series.js',
-'src/uids.js',
-'src/values.js',
-'src/window.js',
+'src/redact.js',
+'src/strings.js',
+'src/text.js',
+'src/verify.js',
+'src/writer.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

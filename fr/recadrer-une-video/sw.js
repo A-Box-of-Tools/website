@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/recadrer-une-video/:';
-const CACHE_NAME=CACHE_PREFIX+'c3cba16193';
+const CACHE_NAME=CACHE_PREFIX+'ab64dcee0e';
 const ASSETS=[
 './',
 'index.html',

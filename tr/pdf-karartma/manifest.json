@@ -1,8 +1,8 @@
 {
-  "id": "/tr/redact-pdf/",
-  "name": "PDF Redactor",
-  "short_name": "PDF Redactor",
-  "description": "The letters are deleted from the file, and the file is searched afterwards to prove it.",
+  "id": "/tr/pdf-karartma/",
+  "name": "PDF Karart\u0131c\u0131",
+  "short_name": "PDF Karart\u0131c\u0131",
+  "description": "Harfler dosyadan silinir ve sonra bunu kan\u0131tlamak i\u00e7in dosyada arama yap\u0131l\u0131r.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

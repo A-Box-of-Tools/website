@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/pdf-sikistirma/:';
-const CACHE_NAME=CACHE_PREFIX+'aaba7a86af';
+const CACHE_NAME=CACHE_PREFIX+'e8164f25b0';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/gif-olusturma/:';
-const CACHE_NAME=CACHE_PREFIX+'5016ef6d8a';
+const CACHE_NAME=CACHE_PREFIX+'3c34ad2f0e';
 const ASSETS=[
 './',
 'index.html',

@@ -1,8 +1,8 @@
 {
   "id": "/tr/heic-jpg-donusturme/",
-  "name": "HEIC to JPG",
-  "short_name": "HEIC to JPG",
-  "description": "The photos an iPhone makes, in a format everything opens.",
+  "name": "HEIC'ten JPG'ye",
+  "short_name": "HEIC'ten JPG'ye",
+  "description": "Bir iPhone'un \u00fcretti\u011fi foto\u011fraflar, her \u015feyin a\u00e7t\u0131\u011f\u0131 bir bi\u00e7imde.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

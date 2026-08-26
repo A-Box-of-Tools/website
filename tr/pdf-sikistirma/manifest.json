@@ -1,8 +1,8 @@
 {
   "id": "/tr/pdf-sikistirma/",
-  "name": "PDF Compressor",
-  "short_name": "PDF Compressor",
-  "description": "Shrink a document without sending it anywhere.",
+  "name": "PDF S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "short_name": "PDF S\u0131k\u0131\u015ft\u0131r\u0131c\u0131",
+  "description": "Belgeyi hi\u00e7bir yere g\u00f6ndermeden k\u00fc\u00e7\u00fclt\u00fcn.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

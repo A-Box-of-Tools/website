@@ -1,8 +1,8 @@
 {
   "id": "/tr/qr-kod-okuma/",
-  "name": "QR & Barcode Reader",
-  "short_name": "QR & Barcode Reader",
-  "description": "Point it at a code, or drop a picture of one. It is read here, and nowhere else.",
+  "name": "QR ve Barkod Okuyucu",
+  "short_name": "QR ve Barkod Okuyucu",
+  "description": "Bir koda do\u011frultun ya da onun bir resmini b\u0131rak\u0131n. Burada okunur, ba\u015fka hi\u00e7bir yerde.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

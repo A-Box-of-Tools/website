@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/tarjar-imagem/:';
-const CACHE_NAME=CACHE_PREFIX+'5066fe7ed1';
+const CACHE_NAME=CACHE_PREFIX+'7034e09536';
 const ASSETS=[
 './',
 'index.html',

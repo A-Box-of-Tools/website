@@ -1,8 +1,8 @@
 {
   "id": "/tr/resmi-base64e-donusturme/",
-  "name": "Image to Data URI",
-  "short_name": "Image to Data URI",
-  "description": "The whole picture as one line of text. Paste it straight into CSS or HTML.",
+  "name": "G\u00f6rselden Data URI'ye",
+  "short_name": "G\u00f6rselden Data URI'ye",
+  "description": "Resmin tamam\u0131 tek sat\u0131r metin olarak. Do\u011frudan CSS ya da HTML i\u00e7ine yap\u0131\u015ft\u0131r\u0131n.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

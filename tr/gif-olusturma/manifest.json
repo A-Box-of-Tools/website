@@ -1,8 +1,8 @@
 {
   "id": "/tr/gif-olusturma/",
-  "name": "GIF Maker",
-  "short_name": "GIF Maker",
-  "description": "Turn a set of pictures into one animation.",
+  "name": "GIF Yap\u0131c\u0131",
+  "short_name": "GIF Yap\u0131c\u0131",
+  "description": "Bir dizi resmi tek bir animasyona \u00e7evirin.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

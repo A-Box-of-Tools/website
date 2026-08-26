@@ -1,8 +1,8 @@
 {
   "id": "/tr/resimleri-pdfe-donusturme/",
-  "name": "Images to PDF",
-  "short_name": "Images to PDF",
-  "description": "Put your pictures into one document.",
+  "name": "G\u00f6rsellerden PDF'e",
+  "short_name": "G\u00f6rsellerden PDF'e",
+  "description": "Resimlerinizi tek bir belgeye koyun.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

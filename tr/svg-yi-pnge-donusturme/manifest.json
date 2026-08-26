@@ -1,8 +1,8 @@
 {
   "id": "/tr/svg-yi-pnge-donusturme/",
-  "name": "SVG to Image",
-  "short_name": "SVG to Image",
-  "description": "Name the size. A vector has none of its own to lose.",
+  "name": "SVG'den G\u00f6rsele",
+  "short_name": "SVG'den G\u00f6rsele",
+  "description": "Boyutu siz s\u00f6yleyin. Bir vekt\u00f6r\u00fcn kaybedecek kendi boyutu yok.",
   "lang": "tr",
   "dir": "ltr",
   "start_url": "./",

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/pdf-용량-줄이기/:';
-const CACHE_NAME=CACHE_PREFIX+'7b44310c8c';
+const CACHE_NAME=CACHE_PREFIX+'d9270b1f80';
 const ASSETS=[
 './',
 'index.html',
