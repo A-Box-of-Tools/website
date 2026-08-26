@@ -1,0 +1,22 @@
+#
+# Panduan: memindai dokumen dengan ponsel - Bahasa Indonesia.
+#
+
+nav = "Memindai dengan ponsel"
+title = "Cara Memindai Dokumen dengan Ponsel Anda (Tanpa Aplikasi, Tanpa Unggah)"
+description = "Apa yang memisahkan foto sebuah halaman dari pindaian sebuah halaman: sudutnya, cahaya yang tidak rata, dan ukuran file-nya. Bagaimana mengambil fotonya, apa yang dibetulkan sesudahnya, dan kenapa tidak satu pun dari itu butuh server."
+
+heading = "Cara memindai dokumen dengan ponsel Anda"
+lede = """
+    Seseorang meminta Anda &ldquo;memindai dan mengembalikan&rdquo; sebuah
+    formulir, dan Anda punya sebuah ponsel dan tidak punya pemindai. Jarak antara
+    foto sebuah halaman dan pindaian sebuah halaman lebih kecil daripada
+    tampaknya, dan ia sebagian besar bukan soal sudutnya &mdash; inilah apa yang
+    sebenarnya memisahkan keduanya, dan apa yang dilakukan tentang tiap
+    bagiannya."""
+
+updated = "25 Agustus 2026"
+
+og_title = "Cara memindai dokumen dengan ponsel Anda"
+og_description = "Sudutnya, bayangannya, dan ukuran file-nya - apa yang memisahkan foto sebuah halaman dari pindaian sebuah halaman, dan bagaimana membetulkan masing-masing tanpa mengunggah halamannya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

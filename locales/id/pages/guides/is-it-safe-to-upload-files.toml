@@ -1,0 +1,24 @@
+#
+# Panduan: amankah mengunggah file - Bahasa Indonesia.
+#
+# Halaman ini menutup dengan situs ini menjawab pemeriksaannya sendiri, jadi
+# tautannya harus benar: setiap tautan alat memakai slug bahasa Indonesia.
+#
+
+nav = "Amankah mengunggah file?"
+title = "Amankah Mengunggah File ke Pengubah Daring?"
+description = "Kebanyakan pengubah daring mengirim file Anda ke sebuah server. Apa artinya, apa yang terjadi padanya di sana, dan empat pemeriksaan yang memberi tahu Anda apakah sebuah alat memang harus begitu."
+
+heading = "Amankah mengunggah file ke pengubah daring?"
+lede = """
+    Biasanya jawaban yang jujur adalah &ldquo;mungkin aman, tapi Anda tidak bisa
+    memeriksanya.&rdquo; Ini menjelaskan apa yang sebenarnya dilakukan
+    pengunggahan terhadap file Anda, kenapa kebanyakan alat masih
+    melakukannya, dan empat uji yang memberi tahu Anda apakah alat di hadapan
+    Anda memang harus."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Amankah mengunggah file ke pengubah daring?"
+og_description = "Apa yang terjadi pada file yang Anda unggah ke sebuah pengubah, kenapa kebanyakan alat masih memintanya, dan empat pemeriksaan yang bisa Anda jalankan sendiri."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

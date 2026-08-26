@@ -1,0 +1,24 @@
+#
+# Panduan: memformat JSON tanpa mengunggahnya - Bahasa Indonesia.
+#
+# Potongan kode dan pesan galat tidak diterjemahkan: itulah yang muncul di
+# layar pembacanya, huruf demi huruf.
+#
+
+nav = "Memformat JSON"
+title = "Cara Memformat JSON Tanpa Mengunggahnya"
+description = "Cara menata, memeriksa, dan memampatkan JSON di peramban Anda sendiri - apa yang tidak boleh diubah sebuah pemformat pada file Anda, cara membaca pesan galatnya, dan kenapa situs tempat Anda menempelkannya itu penting."
+
+heading = "Cara memformat JSON tanpa menyerahkannya kepada siapa pun"
+lede = """
+    Memformat JSON seharusnya mengubah spasinya dan tidak lebih. Kebanyakan alat
+    yang menawarkan melakukannya mengubah lebih dari itu, dan tidak satu pun
+    menyebutkannya. Inilah apa yang harus diwaspadai, cara membaca galatnya
+    ketika file-nya tidak mau terbaca, dan kenapa kotak tempat Anda menempelkan
+    sebuah file konfigurasi layak dipikirkan."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Memformat JSON tanpa menyerahkannya kepada siapa pun"
+og_description = "Apa yang tidak boleh diubah sebuah pemformat JSON pada file Anda, cara membaca galat pembacaannya, dan kenapa situs tempat Anda menempelkannya itu penting."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

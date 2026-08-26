@@ -1,0 +1,21 @@
+#
+# Panduan: apa isi di dalam sebuah GIF - Bahasa Indonesia.
+#
+
+nav = "Apa isi di dalam sebuah GIF"
+title = "Apa Sebenarnya Isi Sebuah File GIF (dan Kenapa Punya Anda Begitu Besar)"
+description = "Bingkai, jeda, metode pembuangan, dan tabel warna dijelaskan, kenapa peramban menolak jeda tercepatnya, dan bagaimana memperhitungkan ke mana sebenarnya ukuran file sebuah GIF pergi."
+
+heading = "Apa sebenarnya isi di dalam sebuah GIF"
+lede = """
+    GIF adalah setumpuk persegi panjang, masing-masing dengan sebuah pewaktu dan
+    sebuah tabel warna, dan hampir setiap keluhan orang tentang formatnya
+    berasal dari salah satu dari ketiga hal itu. Inilah apa yang dilakukan setiap
+    bagiannya, dan bagaimana mencari tahu yang mana yang dipakai file Anda untuk
+    membelanjakan ukurannya."""
+
+updated = "22 Agustus 2026"
+
+og_title = "Apa sebenarnya isi di dalam sebuah file GIF"
+og_description = "Bingkai, jeda, pembuangan, dan palet - apa yang dilakukan masing-masing, kenapa GIF Anda diputar lebih lambat daripada yang dikatakannya, dan ke mana ukuran file-nya pergi."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

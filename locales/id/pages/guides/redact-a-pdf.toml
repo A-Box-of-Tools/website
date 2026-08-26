@@ -1,0 +1,21 @@
+#
+# Panduan: menyensor sebuah PDF - Bahasa Indonesia.
+#
+
+nav = "Menyensor PDF"
+title = "Cara Menyensor PDF Supaya Teksnya Sungguh Hilang"
+description = "Kotak hitam yang digambar di sebuah pembaca PDF biasanya meninggalkan kata-kata di bawahnya, dan salin-tempel mengembalikannya begitu saja. Apa yang dibuang penyensoran sungguhan, empat tempat sebuah kata bersembunyi di luar halamannya, dan bagaimana memeriksa sebuah file sebelum Anda mengirimnya."
+
+heading = "Cara menyensor PDF supaya teksnya sungguh hilang"
+lede = """
+    Persegi hitam di atas sebuah nama dan sebuah nama yang sudah dihapus tampak
+    identik di layar. Salah satunya selamat ketika dipilih dan disalin. Inilah
+    bedanya, tempat-tempat sebuah kata bersembunyi yang sama sekali bukan di
+    halamannya, dan pemeriksaan tiga puluh detik yang memberi tahu Anda punya
+    yang mana dari keduanya."""
+
+updated = "25 Agustus 2026"
+
+og_title = "Cara menyensor PDF supaya teksnya sungguh hilang"
+og_description = "Kenapa kotak hitam di sebuah pembaca PDF biasanya bukan penyensoran, empat tempat sebuah kata bersembunyi di luar halamannya, dan bagaimana memeriksa sebuah file sebelum Anda mengirimnya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
