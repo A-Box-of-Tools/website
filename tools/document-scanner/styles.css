@@ -258,6 +258,11 @@ kbd {
   margin-top: 0.9rem;
 }
 
+/* The two rotate buttons show arrows, not words. In the longer languages the
+   words alone forced this row onto a third line on a phone. */
+#turn-left,
+#turn-right { min-width: 2.8rem; font-size: 1.15rem; line-height: 1; padding-block: 0.45rem; }
+
 /* --------------------------------------------------- the straightened page */
 
 .result-wrap {

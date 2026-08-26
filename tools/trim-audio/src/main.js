@@ -240,12 +240,12 @@ function tick() {
 }
 
 el.preview.addEventListener('play', () => {
-  el.play.textContent = 'Pause';
+  el.play.textContent = '❚❚';
   if (!ticking) ticking = requestAnimationFrame(tick);
 });
 
 el.preview.addEventListener('pause', () => {
-  el.play.textContent = 'Play';
+  el.play.textContent = '▶';
   // One last reading, so the playhead lands where the sound actually stopped
   // rather than wherever the previous frame left it.
   playAt = el.preview.currentTime;

@@ -535,8 +535,8 @@ el.preview.addEventListener('timeupdate', () => {
   }
 });
 
-el.preview.addEventListener('play', () => { el.play.textContent = 'Pause'; });
-el.preview.addEventListener('pause', () => { el.play.textContent = 'Play'; });
+el.preview.addEventListener('play', () => { el.play.textContent = '❚❚'; });
+el.preview.addEventListener('pause', () => { el.play.textContent = '▶'; });
 
 function togglePlay() {
   if (!clip()?.playable) return;
