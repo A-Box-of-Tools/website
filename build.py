@@ -192,6 +192,20 @@ def build(out, clean=False, minify_output=True, jobs=None):
     if not tools:
         raise sitelib.ConfigError(f'no tools found under {TOOLS}')
 
+    # Nothing is bundled, so the browser fetches every module by the name an
+    # import gives it. A specifier naming a file this tool does not ship is
+    # therefore not a build error but a 404 on the visitor's machine, after the
+    # page has rendered - and the commonest cause is a shared module that needs
+    # a second shared module the tool never asked for in js_parts. Checked
+    # here, once per tool, rather than in build_tool: the modules are copied
+    # byte for byte into every language, so asking again per locale was
+    # re-reading and re-parsing every file for an answer that cannot change.
+    # See buildlib/imports.py.
+    for tool in tools:
+        sources = {name: path.read_text(encoding='utf-8')
+                   for name, path in tool_assets(tool)}
+        imports.check(set(sources), sources.__getitem__, tool['slug'])
+
     # ** rather than *, because a guide lives at pages/guides/<slug>/ and a
     # legal page at pages/<slug>/. The slug in each page.toml has to match the
     # folder either way, so a page cannot end up at a URL nobody wrote down.
@@ -696,34 +710,11 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     dest.mkdir(parents=True, exist_ok=True)
 
     # The app code. Every module keeps its own file and its own name; only the
-    # comments and the indentation come out. See buildlib/minify.py.
+    # comments and the indentation come out. See buildlib/minify.py. The
+    # imports were already checked, once, in build() - the modules are the
+    # same bytes in every language, so the answer is too.
     src_dir = tool['dir'] / 'src'
-    if not src_dir.is_dir():
-        raise sitelib.ConfigError(f'{tool["slug"]}: no src/ folder')
-    own = sorted(src_dir.glob('*.js'))
-    if not any(path.name == 'main.js' for path in own):
-        raise sitelib.ConfigError(f'{tool["slug"]}: src/main.js is required')
-
-    # Shared modules land in src/shared/ rather than beside the tool's own
-    # files, so that an import in main.js says where the thing came from. A tool
-    # folder in dist/ is still complete on its own - nothing is bundled, nothing
-    # is fetched from a neighbour, and the service worker below caches these
-    # exactly like the rest.
-    shared = shared_js(tool)
-    assets = [(f'src/shared/{path.name}', path) for path in shared]
-    assets += [(f'src/{path.name}', path) for path in own]
-
-    # Nothing is bundled, so the browser fetches every module by the name an
-    # import gives it. A specifier naming a file this tool does not ship is
-    # therefore not a build error but a 404 on the visitor's machine, after the
-    # page has rendered - and the commonest cause is a shared module that needs
-    # a second shared module the tool never asked for in js_parts. This is the
-    # one place that knows exactly what the tool ships, so it is where that is
-    # checked. See buildlib/imports.py.
-    sources = dict(assets)
-    imports.check(set(sources),
-                  lambda name: sources[name].read_text(encoding='utf-8'),
-                  tool['slug'])
+    assets = tool_assets(tool)
 
     for name, path in assets:
         (dest / name).parent.mkdir(parents=True, exist_ok=True)
@@ -912,6 +903,31 @@ def vendor_files(tool, dest):
         shutil.copy2(path, dest / name)
         shipped.append(name)
     return shipped
+
+
+def tool_assets(tool):
+    """The JavaScript this tool ships, as (path in dist, source file) pairs.
+
+    Shared modules land in src/shared/ rather than beside the tool's own
+    files, so that an import in main.js says where the thing came from. A tool
+    folder in dist/ is still complete on its own - nothing is bundled, nothing
+    is fetched from a neighbour, and the service worker caches these exactly
+    like the rest.
+
+    The order is the service worker's asset list, so it is part of the bytes
+    the build emits and not free to change: shared modules first, then the
+    tool's own, each half sorted by name.
+    """
+    src_dir = tool['dir'] / 'src'
+    if not src_dir.is_dir():
+        raise sitelib.ConfigError(f'{tool["slug"]}: no src/ folder')
+    own = sorted(src_dir.glob('*.js'))
+    if not any(path.name == 'main.js' for path in own):
+        raise sitelib.ConfigError(f'{tool["slug"]}: src/main.js is required')
+
+    assets = [(f'src/shared/{path.name}', path) for path in shared_js(tool)]
+    assets += [(f'src/{path.name}', path) for path in own]
+    return assets
 
 
 def shared_js(tool):
