@@ -19,6 +19,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image Resizer](resize-image/) | `/resize-image/` | Say the size. Draw the box. Pick the format. |
 | [HEIC to JPG](heic-to-jpg/) | `/heic-to-jpg/` | The photos an iPhone makes, in a format everything opens. |
 | [ID Photo Maker](id-photo/) | `/id-photo/` | Pick the country. It applies that country's rule, exactly. |
+| [Image Stacker](stack-images/) | `/stack-images/` | Twenty frames into one, without twenty uploads or a RAW converter. |
 | [Image Redactor](redact-image/) | `/redact-image/` | What you cover is deleted from the file, not covered up in it. |
 | [EXIF Viewer & Remover](exif-editor/) | `/exif-editor/` | See what a photo says about you. Then take it out. |
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |

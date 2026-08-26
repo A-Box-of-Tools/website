@@ -1,0 +1,391 @@
+#
+# Image Stacker
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+
+slug = "stack-images"
+name = "Image Stacker"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Image&nbsp;Stacker <span class=\"h1-kw\">&mdash; combine a burst, RAW files included</span>"
+tagline = "Twenty frames into one, without twenty uploads or a RAW converter."
+icon = "&#128450;&#65039;"  # the mark beside the page heading
+favicon = "&#128450;"       # the tab icon, drawn into an inline SVG
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "images"
+
+# Shared modules this tool asks for. Only the drop zone: the list underneath it
+# is this tool's own, because a row in it carries what was found inside a RAW
+# file rather than what the operating system said about the file.
+js_parts = ["file-picker"]
+lastmod = "2026-08-25"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Image Stacker &mdash; Average, Median &amp; Focus Stack in Your Browser"
+description = "Combine a burst of photographs into one: average them to kill noise, take the median to remove people from a scene, lighten for star trails, or focus stack a macro shot. Reads CR2, NEF, ARW, DNG, RAF and CR3 by pulling out the camera's own preview. Runs entirely in your browser."
+og_title = "Stack a burst of photographs, RAW files included"
+og_description = "Average, median, sigma-clip, lighten, darken, add or focus stack &mdash; with the frames aligned first. RAW files are opened by reading the preview the camera already wrote, so a 60 MB frame opens as fast as a JPEG. Nothing is uploaded."
+og_image_alt = "Image Stacker - several frames combined into one, in the browser"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Twenty frames become one. The noise averages away; the tourists do not survive the median."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  worker-src is named explicitly because this is the only tool here that runs
+  its work in a Worker, and a directive that is merely inherited is one nobody
+  reading the policy can see was intended. It is 'self' and nothing else: the
+  worker is a file in this folder, cached by the service worker beside it."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every frame is opened, decoded, aligned, combined and written by your own
+    browser, on your own machine. A stack of twenty 60&nbsp;MB RAW files is
+    about a gigabyte of photographs, and not one byte of it moves: the tool has
+    no network feature of any kind, and the files are read straight off your
+    disk by a worker that has nowhere to send anything."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and stack
+      a folder of RAW files. Not one request carries a photograph, a thumbnail, a
+      filename or a camera model. Or unplug from the internet and stack them
+      anyway &mdash; nothing about the tool changes."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/raw.js</code> for how a RAW
+      file is opened by reading kilobytes rather than megabytes,
+      <code>src/stack.js</code> for the arithmetic of each method, and
+      <code>src/plan.js</code> for where the memory and decode figures shown on
+      the page come from &mdash; they are that file's answers, not estimates."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to stack a set of photographs in your browser"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Combine a burst into one picture: average away the noise, take the
+            median to lose the passers-by, or lighten for star trails. Reads
+            RAW files without a converter."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "photographs"
+choose = "some photographs"
+analytics_extra = """, and nothing about
+  what was in them, how many you stacked or which camera wrote them"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Reads RAW"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your photographs have nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your files
+      could be collected at, and nothing in the code that would send them if there
+      were &mdash; no <code>fetch</code>, no <code>XMLHttpRequest</code>, no
+      <code>sendBeacon</code>, in <code>src/</code> or in the worker."""
+
+[[privacy]]
+title = "The RAW files are read, not uploaded &mdash; and barely read."
+body = """
+ A camera RAW file
+      already contains a full-size JPEG that the camera rendered when it took the
+      shot. This tool finds it by walking a few directory entries and then asking
+      for one slice, which on a 60&nbsp;MB file is usually under a hundred
+      kilobytes. The page shows you that figure against the size of your files
+      while you work. The sensor data is never read at all."""
+
+[[privacy]]
+title = "The work happens in a Worker on this machine, not on a server."
+body = """
+ This is the
+      only tool here that uses one, because stacking is minutes of arithmetic
+      rather than seconds and a frozen page cannot show progress or be cancelled.
+      A Worker is a second thread in this same browser &mdash; see
+      <code>src/worker.js</code>. It is handed the files themselves, which is
+      free, because a file handle is not the bytes; and it has exactly the same
+      Content-Security-Policy as the page, which is to say nowhere to send them."""
+
+[[privacy]]
+title = "Nothing about the set is reported anywhere."
+body = """
+ How many frames you
+      stacked, what camera wrote them, how far each one had moved, which method
+      you chose and how long it took are held in this page's memory until you
+      close it. There is no custom analytics event in this repository that
+      carries any of it, and the one question this site asks after a download
+      sends a thumb up or down and the name of the tool, nothing else."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. The worker and
+      every module it loads are cached by this page's own service worker, so an
+      installed copy stacks RAW files with the network unplugged."""
+
+[[howto]]
+title = "Choose the frames."
+body = """
+ A burst, a bracketed set, an
+      intervalometer sequence, or a folder of RAW files. Each one is opened as it
+      arrives and the row tells you what came out of it &mdash; for a RAW file,
+      the camera, the size of the preview found inside, and how little of the file
+      had to be read to find it."""
+
+[[howto]]
+title = "Pick the method that matches what you are trying to lose."
+body = """
+ Noise:
+      average, or sigma-clip if anything moved. People, cars or a passing
+      aeroplane: median. A dark sky you want turned into star trails: lighten. A
+      macro shot taken along the focus ring: focus stacking. The note under the
+      menu says what each one does to your particular number of frames."""
+
+[[howto]]
+title = "Decide whether the frames need aligning."
+body = """
+ Hand-held: yes,
+      shift only. Hand-held and you were also turning: shift, rotation and scale.
+      Locked-off tripod or an intervalometer: no, and it will be quicker. Every
+      frame is measured against the first one in the list, which is why any frame
+      can be promoted to be that one."""
+
+[[howto]]
+title = "Read the four figures, then press the button."
+body = """
+ Before anything
+      runs, the page says how large the result will be, roughly how much memory it
+      will take, how many times the frames will be decoded and how much of your
+      files was read. If the set will not fit in memory in one piece it says so,
+      and says which working resolution would fix it."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Are my photographs uploaded anywhere?"
+a = """
+        No. Every frame is opened, decoded, aligned, stacked and written by your
+        own browser on your own hardware. This tool has no network feature of any
+        kind &mdash; it never fetches anything and never sends anything &mdash;
+        and the page's <code>Content-Security-Policy</code> names every address it
+        may contact, none of which belongs to this site. Load the page once,
+        unplug from the internet, and it still works. That matters more here than
+        on most tools simply because of the volume: a stack of twenty RAW frames
+        is about a gigabyte, and uploading a gigabyte of photographs to have an
+        average taken of them is the thing this tool exists to avoid."""
+
+[[faq]]
+q = "Which RAW formats can it read, and how?"
+a = """
+        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF,
+        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL and a few more
+        &mdash; which is most of what cameras write. What it reads out of them is
+        the full-size JPEG preview the camera itself rendered when it took the
+        shot: the picture on the back of the camera, and the one your operating
+        system draws as the thumbnail. It is found by walking the file's directory
+        structure, which costs a few reads of a few kilobytes each, and then
+        taking one slice. <strong>It is not a demosaic of the sensor data.</strong>
+        The result carries the camera's white balance and picture style at eight
+        bits a channel, rather than the twelve or fourteen bits of linear sensor
+        data a RAW converter would give you."""
+
+[[faq]]
+q = "Then why not decode the sensor data properly?"
+a = """
+        Because it would mean vendoring LibRaw or dcraw &mdash; a second engine of
+        tens of megabytes, for one family of formats, most of which is per-vendor
+        compression schemes. That trade is argued out in
+        <code>docs/what-can-be-built-here.md</code> in this site's source, where
+        camera RAW has been on the ruled-out list since before this tool existed.
+        What changed is not the answer to that question but the discovery that
+        stacking does not need it: the previews are full resolution, they are what
+        the camera would have given you as a JPEG anyway, and reading them is
+        roughly a hundred times faster than demosaicing would be. If you want the
+        sensor data, develop the frames in a RAW converter first and stack the
+        TIFFs or JPEGs it produces &mdash; this tool will take those too."""
+
+[[faq]]
+q = "How many frames can it handle, and how large?"
+a = """
+        Six of the seven methods stream: they hold one accumulator and read each
+        frame exactly once, so a hundred frames costs the same memory as two and
+        the only thing that grows is the time. The median is the exception,
+        because the middle value of a set is not knowable until you have all of
+        it, so it holds every frame at once &mdash; twenty 24-megapixel frames is
+        about 1.4&nbsp;GB, which no browser will give you. When that happens the
+        picture is cut into horizontal bands and stacked a band at a time, which
+        costs re-reading the frames for each band. The page works all of this out
+        before you press the button and shows you the number, so a slow run is
+        never a surprise."""
+
+[[faq]]
+q = "What does aligning the frames actually do?"
+a = """
+        It finds how far each frame moved relative to the first one and moves it
+        back, to a fraction of a pixel. The method is phase correlation: the
+        shift between two pictures shows up as a phase difference between their
+        spectra, so one Fourier transform each finds a two-hundred-pixel offset as
+        cheaply as a two-pixel one. The second setting also recovers rotation and
+        scale, by the same trick applied to the spectrum in log-polar coordinates.
+        All of it is global &mdash; one shift, one angle, one scale for the whole
+        frame &mdash; so it corrects a camera that moved and cannot correct a
+        subject that moved, or a photograph taken from a step to the left. One
+        visible consequence: a frame moved twenty pixels left no longer reaches
+        the right-hand edge, so the result is trimmed to the part every frame
+        covers. That is why an aligned stack comes back very slightly smaller
+        than the frames that went into it, and it is the only alternative to a
+        dark border made of the frames that were not there."""
+
+[[faq]]
+q = "Which method should I use?"
+a = """
+        <strong>Average</strong> for noise, on a set where nothing moved: it cuts
+        random noise by roughly the square root of the number of frames.
+        <strong>Median</strong> to remove things that were only there some of the
+        time &mdash; the classic use is photographing a busy square a dozen times
+        and getting it empty. <strong>Sigma clipping</strong> when you want both:
+        it learns what each pixel usually is and averages only the values that
+        agree, so it has the median's immunity to a passing car and the average's
+        noise reduction. <strong>Lighten</strong> for star trails, fireworks and
+        light painting. <strong>Darken</strong> to remove anything bright that
+        moved. <strong>Add</strong> to simulate one long exposure.
+        <strong>Focus stacking</strong> for a macro shot taken along the focus
+        ring."""
+
+[[faq]]
+q = "Why is my result eight bits when my RAW files are fourteen?"
+a = """
+        Because what is being stacked is the camera's own preview, which is a
+        JPEG. It is worth saying that stacking recovers some of what that costs:
+        averaging sixteen eight-bit frames gives a result with genuinely finer
+        gradations than any one of them had, because the noise that made each
+        frame's rounding differ is exactly what lets the average land between the
+        levels. The arithmetic here is done in floating point and rounded once at
+        the very end, so none of that is thrown away in the middle. It is still
+        not the same as stacking linear sensor data, and this tool does not
+        pretend otherwise."""
+
+[[faq]]
+q = "Can I stack frames of different sizes, or from different cameras?"
+a = """
+        Yes, though it is usually a mistake and worth checking you meant it. The
+        result is the size of the largest frame, and every other frame is scaled
+        to fit and centred inside it. Mixing cameras also mixes colour rendering,
+        so an average of the two is an average of two different interpretations of
+        the same light. Where it genuinely helps is a set shot at two resolutions,
+        or a RAW file and a JPEG of the same frame."""
+
+[[faq]]
+q = "It says the run will be banded. What does that mean?"
+a = """
+        That the working memory the method needs is more than the tool is willing
+        to allocate in one go, so the picture will be cut into horizontal strips
+        and stacked a strip at a time. It still produces exactly the same result;
+        it just reads the frames again for each strip, so it takes longer, and the
+        page tells you how many decodes that will be. Dropping the working
+        resolution one step cuts the memory by four, which almost always turns a
+        banded run into a single pass &mdash; the note says which setting would do
+        it."""
+
+[[faq]]
+q = "Why does this tool use a Worker when none of the others do?"
+a = """
+        Because it is the only one whose work is measured in minutes. Every other
+        tool here does something that takes a second or two, where moving the work
+        off the main thread would be ceremony. Stacking twenty large frames is
+        solid arithmetic over hundreds of megabytes, and on the main thread that
+        means a frozen page: no progress bar moving, a Cancel button that does not
+        answer, and eventually a browser offering to kill the tab. The Worker is a
+        second thread in this same browser, running a file from this same folder,
+        under this same policy. It is not a server and it is not a network
+        feature."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. There is no limit on how many frames you stack or how large
+        they are either, because there is no server paying for it &mdash; the work
+        happens on your own machine and the only ceiling is your own memory. The
+        site carries advertising, which is what pays for it; the ads are not given
+        anything about your photographs."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Stack a burst of photographs in the browser: average, median, sigma-clipped mean, lighten, darken, add or focus stack, with the frames aligned first by phase correlation. Reads camera RAW files by extracting the full-size preview the camera embedded, so no RAW converter is needed. Nothing is uploaded."
+features = [
+  "Seven stacking methods: average, median, sigma-clipped mean, lighten, darken, add and focus stacking",
+  "Reads CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 and more by extracting the camera's own full-size preview",
+  "Opens a 60 MB RAW file by reading about a hundred kilobytes of it",
+  "Automatic alignment: shift only, or shift with rotation and scale, or none",
+  "Sub-pixel alignment by phase correlation, not by searching offsets",
+  "Six of the seven methods hold one accumulator, so a hundred frames costs the memory of two",
+  "Memory and decode cost worked out and shown before the run starts",
+  "The work runs in a Worker, so progress moves and Cancel answers",
+  "PNG or JPEG out; runs offline; no upload, no account",
+]
+
+# This tool needs one directive the rest of the site does not: worker-src, for
+# the Worker the stacking runs in. It is 'self' - a file in this folder, cached
+# by the service worker beside it - and there is no blob: on it, because nothing
+# here ever builds a script at runtime. A tool can only widen its own page this
+# way; it cannot narrow the site policy and cannot touch another tool's.
+[csp]
+"worker-src" = ["'self'"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+#
+# The accept list names the RAW extensions one at a time because a browser's
+# file dialog matches on extension and the operating system does not agree that
+# a .CR3 is an image/*. Leaving it at image/* hides every RAW file in the folder
+# somebody opened the dialog to find.
+[picker]
+accept = "image/*,.cr2,.cr3,.crw,.nef,.nrw,.arw,.srf,.sr2,.dng,.orf,.raf,.rw2,.pef,.srw,.erf,.mrw,.dcr,.kdc,.mos,.iiq,.3fr,.rwl,.mef"
+multiple = true
+title = "Drop the frames here"
+hint = "or click to browse &mdash; JPEG, PNG, WebP, TIFF and camera RAW"

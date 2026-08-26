@@ -1,0 +1,247 @@
+/* Rules only the image stacker needs. The frame around it - the header, the
+   pledge, the cards, the buttons - is shared/css/tool-frame.css. */
+
+/* ------------------------------------------------------------- the frames */
+
+.note {
+  margin: 0.9rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+}
+
+.frame-list {
+  list-style: none;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.frame-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+/* The first row is the reference every other frame is aligned to, so it is
+   marked rather than merely first. Somebody who has just pressed "use as
+   reference" needs to see that it took. */
+.frame-row:first-child {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+
+.frame-thumb {
+  flex: none;
+  width: 72px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.frame-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.frame-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.frame-detail,
+.frame-read {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.frame-read {
+  font-variant-numeric: tabular-nums;
+}
+
+.frame-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.frame-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 99px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+@media (width <= 34rem) {
+  .frame-row { flex-wrap: wrap; }
+  .frame-body { flex-basis: calc(100% - 5rem); }
+  .frame-actions { flex-basis: 100%; justify-content: flex-start; }
+}
+
+/* ----------------------------------------------------------- the settings */
+
+.settings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.9rem;
+}
+
+/* The method decides what every other control means, so it gets the whole row
+   and its explanation has room to be a sentence rather than a label. */
+.field-wide { grid-column: 1 / -1; }
+
+.field { display: flex; flex-direction: column; gap: 0.3rem; }
+
+.field label { font-size: 0.85rem; font-weight: 600; }
+
+.field-note {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  min-height: 1em;
+}
+
+.inline-pair { display: flex; align-items: center; gap: 0.5rem; }
+
+.inline-pair input[type="range"] { width: 100%; min-width: 0; }
+
+.inline-pair output {
+  flex: none;
+  min-width: 3.2rem;
+  text-align: end;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+}
+
+/* ---------------------------------------------------------------- the plan */
+
+.plan {
+  margin: 1.1rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0 1.2rem;
+  font-size: 0.86rem;
+}
+
+.plan > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.plan dt { color: var(--text-dim); flex: none; }
+
+.plan dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: end;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+}
+
+.path-note {
+  margin: 0.9rem 0 0;
+  padding: 0.6rem 0.8rem;
+  border-radius: 7px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+/* ----------------------------------------------------------- running it */
+
+.export-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+
+.progress-wrap { margin-top: 1rem; }
+
+.progress {
+  height: 8px;
+  background: var(--surface-2);
+  border-radius: 99px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.15s linear;
+}
+
+.progress-label {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+
+/* ------------------------------------------------------------- the result */
+
+.result { margin-top: 1.25rem; }
+
+/* A checkerboard behind the picture, because a stack in Lighten mode over a
+   night sky is very nearly black and would otherwise be indistinguishable from
+   an empty box. */
+.result-frame {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    repeating-conic-gradient(var(--surface-2) 0% 25%, var(--surface) 0% 50%) 50% / 20px 20px;
+}
+
+.result-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
+  object-fit: contain;
+}
+
+.result-meta {
+  margin-top: 0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.result-meta p { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
+
+.result-meta .field-note { flex-basis: 100%; }

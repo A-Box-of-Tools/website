@@ -1,0 +1,40 @@
+#
+# Guide: stacking photographs, and what each method is actually for.
+#
+# Written for the person who has a burst on their card and has been told that
+# stacking will "clean it up". The failure this page is about is not doing it
+# wrong; it is choosing the method that solves a different problem - averaging a
+# scene with people walking through it, or taking a median of a set where
+# nothing moved and wondering why it looks the same. So the page leads with the
+# question that picks the method, and only then with the arithmetic.
+#
+# The RAW section exists because it is the thing people expect to be impossible
+# in a browser, and because being precise about what comes out of a RAW file
+# here - the camera's preview, not the sensor - matters more than being brief.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/stack-photos-to-reduce-noise"
+kind = "guide"
+nav = "Stacking photographs"
+group = "doing-the-job"
+tool = "stack-images"
+
+title = "How to Stack Photographs to Reduce Noise, or Remove People"
+description = "Stacking combines a burst of frames into one picture. Which method to use depends on what you are trying to lose: noise, passers-by, or the shallow depth of field on a macro shot. How each one works, what it costs, and how RAW files fit in."
+
+heading = "How to stack photographs to reduce noise, or remove people"
+lede = """
+    A burst of frames holds more information than any one of them. Averaging
+    them cancels the noise; taking the middle value of each pixel deletes
+    anything that was only there some of the time. Which one you want depends
+    entirely on what moved."""
+
+updated = "25 August 2026"
+published = "2026-08-25"
+lastmod = "2026-08-25"
+
+og_title = "How to stack photographs to reduce noise, or remove people"
+og_description = "Average a burst to kill noise, take the median to empty a busy square, lighten for star trails. Which method solves which problem, and where RAW files fit in."
+og_image_alt = "abox.tools - tools that never touch a server"
