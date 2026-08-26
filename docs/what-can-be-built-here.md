@@ -100,6 +100,35 @@ all of it is knowable up front:
 | Ruled out | Why |
 |---|---|
 | Background removal | A segmentation model, not a codec. FFmpeg does not do it and would not help — this needs weights and an inference runtime, which is a separate argument on a separate day |
-| Camera RAW (CR2, NEF, ARW) | FFmpeg does not decode these either. It would take LibRaw or dcraw on top: a second engine, for one family of formats |
+| Camera RAW, **decoded** (CR2, NEF, ARW) | FFmpeg does not decode these either. It would take LibRaw or dcraw on top: a second engine, for one family of formats. Still ruled out — but see below, because reading a RAW file turned out not to require it |
 | Raster to vector (image to SVG) | A tracing algorithm, not a conversion: large, and the output disappoints everyone who expected their photo back as shapes |
+
+### Camera RAW, read rather than decoded
+
+The line above says what it says, and `/stack-images/` reads CR2, NEF, ARW, DNG,
+RAF, RW2 and a dozen others anyway. Both are true, and the distinction is worth
+keeping straight, because it is the one that decides whether a future tool can
+do the same.
+
+Every RAW file already contains a **full-size JPEG that the camera rendered when
+it took the shot** — the picture on the back of the camera, and the one an
+operating system draws as the thumbnail. Finding it is directory walking, not
+decoding: a TIFF chain, a Fujifilm header, or an ISO-BMFF track table, and then
+one slice. Roughly four hundred lines, no engine, and no change to the policy.
+
+The rule that makes it safe is not in the tags. Cameras write directories that
+point at packed sensor data with a compression field claiming JPEG, so a
+candidate only counts once its first bytes are `FF D8 FF` — see
+`tools/stack-images/src/raw.js` and the fixture for exactly that case in
+`tests/js/stack-images-raw.test.js`.
+
+So the test for a new tool is which of the two it needs:
+
+| | |
+|---|---|
+| **Reading a RAW file** | available now, cheaply. Full resolution, the camera's own rendering, eight bits a channel. Enough for stacking, for a contact sheet, for a format conversion, for anything that would have accepted the camera's JPEG |
+| **Decoding a RAW file** | still ruled out. Linear sensor data at twelve or fourteen bits, your own white balance, highlight recovery. That is LibRaw, and the paragraph above still applies |
+
+A tool must say which it did. `/stack-images/` says so on the page, in its
+second FAQ answer, rather than letting "reads RAW" imply the other thing.
 
