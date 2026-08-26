@@ -157,6 +157,35 @@
     return href.indexOf('blob:') === 0 ? anchor : null;
   }
 
+  /**
+   * The block the carry row belongs at the end of.
+   *
+   * Every tool that offers a handoff puts its download link in a row beside
+   * the result's own numbers - `.result-meta`, `.results-head` - and those rows
+   * are flex containers. Dropping the nav in next to the link there makes it a
+   * flex item: it lands to the *right* of the button and squeezes the layout
+   * the tool arranged, or wraps to a half-width band on its own line, and
+   * which of the two happens depends on how long the numbers happen to be in
+   * the reader's language. Climbing out of those rows to the nearest ordinary
+   * block and appending puts the row under the finished result instead, which
+   * is where a next step belongs and is the same place in every tool, at every
+   * window width, in every language.
+   */
+  function seat(anchor) {
+    var node = anchor;
+    while (node.parentNode && node.parentNode !== document.body) {
+      var parent = node.parentNode;
+      var display = window.getComputedStyle(parent).display;
+      // `none` is the tool holding the whole result back; seating the row
+      // inside it hides the row too, which is the right answer anyway.
+      if (display === 'block' || display === 'flow-root' || display === 'none') {
+        return parent;
+      }
+      node = parent;
+    }
+    return null;
+  }
+
   function show() {
     var anchor = result();
     // Every write in here is guarded by a read. The observer below watches
@@ -168,11 +197,15 @@
       if (!nav.hidden) nav.hidden = true;
       return;
     }
-    // Beside the download it belongs to: after the row of actions when the
-    // anchor sits in one, after the anchor itself when it does not.
-    var host = anchor.closest('.toolbar') || anchor;
-    if (!host.parentNode) return;
-    if (host.nextElementSibling !== nav) host.insertAdjacentElement('afterend', nav);
+    // Under the result the download belongs to. A tool laid out in a way this
+    // finds no block in falls back to the link's own side, which is where the
+    // row used to sit unconditionally.
+    var host = seat(anchor);
+    if (host) {
+      if (host.lastElementChild !== nav) host.appendChild(nav);
+    } else if (anchor.parentNode && anchor.nextElementSibling !== nav) {
+      anchor.insertAdjacentElement('afterend', nav);
+    }
     if (nav.hidden) nav.hidden = false;
   }
 
@@ -185,14 +218,26 @@
   });
   show();
 
+  // Reading the bytes back and parking them is fast - a blob: URL is a
+  // reference, not a copy, and IndexedDB stores it as one - but it is not
+  // instant, and the navigation only starts once it is done. A second click in
+  // that window would park a second file, addressed to a tool the reader is
+  // not about to open, where it would sit until the sweep. One carry at a time.
+  var carrying = false;
+
   nav.addEventListener('click', function (event) {
     var link = event.target && event.target.closest
       ? event.target.closest('a[data-slug]') : null;
     if (!link) return;
+    if (carrying) { event.preventDefault(); return; }
     var anchor = result();
     if (!anchor) return;    // stale click; let the plain navigation happen
 
     event.preventDefault();
+    carrying = true;
+    // Says "this click landed" for the moment before the page changes, in the
+    // one way that needs no words: the styling is in tool-frame.css.
+    link.setAttribute('aria-busy', 'true');
     var name = anchor.getAttribute('download') || 'result';
 
     // Read the page's own bytes back out of the blob: URL, park them for the

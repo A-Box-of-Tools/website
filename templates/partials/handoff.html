@@ -10,14 +10,19 @@
   panel is: the lead line is translated in every locale's [ui.tool], and each
   link borrows the target tool's own localized name and address - so the row
   cannot promise a tool the language does not have.
+
+  The lead names the nav through aria-labelledby rather than a second copy of
+  itself in aria-label, so the sentence is translated once. The arrow after
+  each name is drawn in CSS, where Arabic can turn it around; written here it
+  would point out of the page in the one language that reads the other way.
 -->
-<nav class="handoff" id="handoff" aria-label="{{ ui.tool.handoff_lead }}" hidden>
-  <p class="handoff-lead">{{ ui.tool.handoff_lead }}</p>
+<nav class="handoff" id="handoff" aria-labelledby="handoff-lead" hidden>
+  <p class="handoff-lead" id="handoff-lead">{{ ui.tool.handoff_lead }}</p>
   <ul class="handoff-targets">
 {% for other in handoff %}    <li>
       <a href="{{ base }}{{ other.out_slug }}/" data-slug="{{ other.slug }}">
         <span aria-hidden="true">{{ other.icon }}</span>
-        {{ other.name | e }} <span aria-hidden="true">&rarr;</span>
+        {{ other.name | e }}
       </a>
     </li>
 {% endfor %}  </ul>

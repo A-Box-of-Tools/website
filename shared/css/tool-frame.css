@@ -1164,7 +1164,23 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
   text-decoration: none;
 }
 
-.handoff-targets a:hover {
+.handoff-targets a:hover,
+.handoff-targets a:focus-visible {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+/* Drawn here rather than written into the markup so that Arabic gets an arrow
+   pointing the way Arabic reads - the same trick .lang-auto-back plays above,
+   and the reason the icon beside it is left alone: a magnifier is not a
+   direction. */
+.handoff-targets a::after { content: "\00a0\2192"; }
+[dir="rtl"] .handoff-targets a::after { content: "\00a0\2190"; }
+
+/* The moment between the click and the next page: the file is being read back
+   out of the page and parked for the tool that is about to open. It is short,
+   and this is only here so that a slow disk does not look like a dead link. */
+.handoff-targets a[aria-busy="true"] {
+  opacity: 0.55;
+  cursor: progress;
 }
