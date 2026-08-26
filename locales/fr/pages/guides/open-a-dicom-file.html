@@ -1,0 +1,259 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez la <a href="../../visionneuse-dicom/">visionneuse DICOM</a> et
+      faites-y glisser le dossier entier. Les fichiers sont lus sur votre propre
+      machine, remis dans les séries dont ils viennent et empilés dans l'ordre où
+      la machine les a pris. Rien n'est envoyé, et rien n'est réécrit dans vos
+      fichiers.
+    </p>
+    <p>
+      Si l'on vous a remis un disque et que vous vous demandez lequel des
+      fichiers ouvrir&nbsp;: tous, d'un coup. Un scanner ou une IRM, ce n'est pas
+      un fichier. C'est un fichier par coupe, et un examen thoracique en compte
+      trois cents.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que contient un disque hospitalier</h2>
+    <p>
+      En général quatre choses, dont une seule compte.
+    </p>
+    <ul>
+      <li>
+        <strong>Un dossier d'examens</strong>, souvent nommé <code>DICOM</code>,
+        <code>IMAGES</code> ou <code>ST0001</code>, contenant des fichiers appelés
+        <code>IM000001</code>, <code>I0000001</code> ou un long nombre à points.
+        Fréquemment sans aucune extension. C'est l'examen.
+      </li>
+      <li>
+        <strong>Un fichier nommé <code>DICOMDIR</code></strong>. Un index du
+        reste, écrit pour qu'une visionneuse puisse lister les examens du disque
+        sans ouvrir chaque fichier. Vous n'en avez pas besoin.
+      </li>
+      <li>
+        <strong>Une visionneuse</strong>, sous forme d'exécutable Windows,
+        d'entrée d'autorun ou parfois d'applet Java. Elle a été compilée pour ce
+        qui était courant à la gravure du disque, et c'est pourquoi tant d'entre
+        elles ne se lancent plus.
+      </li>
+      <li>
+        <strong>Une page HTML ou un PDF</strong> au logo de l'hôpital, expliquant
+        comment démarrer la visionneuse.
+      </li>
+    </ul>
+    <p>
+      Les examens n'ont pas besoin de la visionneuse. Le format est une norme
+      publiée et les fichiers se lisent seuls&nbsp;; l'exécutable du disque est un
+      logiciel capable de les lire, pas le seul.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi les fichiers n'ont pas d'extension</h2>
+    <p>
+      Parce que DICOM n'en a pas besoin. Chaque fichier porte sa propre
+      marque&nbsp;: 128 octets de rien, puis les quatre lettres
+      <code>DICM</code>, puis un petit bloc de champs décrivant comment le reste
+      du fichier est écrit. Un lecteur cherche ces quatre lettres, et non un nom
+      se terminant par <code>.dcm</code>.
+    </p>
+    <p>
+      C'est aussi pourquoi renommer un fichier en <code>.dcm</code> ne change
+      rien, et pourquoi une visionneuse qui exige l'extension se montre
+      inutilement stricte. Les fichiers écrits directement depuis un réseau
+      hospitalier n'ont même pas les 128 octets ni la marque&nbsp;: ce sont les
+      données nues sans rien devant, et un lecteur doit déduire de leur premier
+      champ comment elles sont encodées. C'est un fichier normal, pas un fichier
+      cassé.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le fenêtrage, la commande qui compte</h2>
+    <p>
+      C'est la seule chose qui distingue une image médicale d'une photographie, et
+      la raison pour laquelle un logiciel de retouche ne vaut rien pour en
+      regarder une.
+    </p>
+    <p>
+      Une coupe de scanner contient environ quatre mille valeurs distinctes. Votre
+      écran affiche deux cent cinquante-six gris. Quelque chose doit décider
+      quelles quatre mille valeurs se projettent sur quels deux cent
+      cinquante-six gris, et cette décision est la <strong>fenêtre</strong>&nbsp;:
+      tout ce qui est en dessous est noir, tout ce qui est au-dessus est blanc, et
+      l'intervalle du milieu se répartit sur les gris.
+    </p>
+    <p>
+      Déplacez la fenêtre et le même fichier ressemble à un autre examen. Ce n'est
+      pas un artefact d'affichage, c'est tout l'intérêt. Le poumon et l'os sont
+      tous deux dans la coupe et ne peuvent pas être vus en même temps&nbsp;: une
+      fenêtre qui montre la texture d'un poumon ventilé met chaque os en blanc
+      pur, et une qui montre le détail trabéculaire d'une côte met le poumon
+      entier en noir pur.
+    </p>
+    <p>
+      Sur un scanner, les nombres sont des <strong>unités Hounsfield</strong>, et
+      elles sont définies de façon absolue et non machine par machine&nbsp;: l'eau
+      vaut 0 et l'air &minus;1000, par définition, sur tous les scanners du monde.
+      C'est pourquoi une visionneuse peut proposer des fenêtres nommées &mdash;
+      poumon, os, cerveau, parties molles &mdash; et qu'elles signifient la même
+      chose sur votre fichier que sur la console où l'examen a été interprété. Les
+      usuelles&nbsp;:
+    </p>
+    <ul>
+      <li><strong>Parties molles</strong> &mdash; centre 40, largeur 400.</li>
+      <li><strong>Poumon</strong> &mdash; centre &minus;600, largeur 1500.</li>
+      <li><strong>Os</strong> &mdash; centre 300, largeur 1500.</li>
+      <li><strong>Cerveau</strong> &mdash; centre 40, largeur 80. Une fenêtre
+        étroite, parce que substance grise et substance blanche ne diffèrent que
+        de quelques unités.</li>
+    </ul>
+    <p>
+      Sur une IRM, une telle échelle n'existe pas. Les valeurs dépendent de la
+      séquence, de l'antenne et de la machine&nbsp;: il n'y a donc rien pour
+      nommer un préréglage, et la fenêtre de départ est celle que demande le
+      fichier lui-même. Chaque examen en porte une suggestion.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi les coupes défilent parfois à l'envers</h2>
+    <p>
+      Une visionneuse doit décider dans quel ordre ranger les fichiers, et il y a
+      deux choses dans le fichier qu'elle pourrait employer.
+    </p>
+    <p>
+      <strong>Instance Number</strong> est un compteur. C'est le choix évident, et
+      il est attribué par ce qui a écrit les fichiers, qui n'a pas à les numéroter
+      dans le sens où le patient est allongé. Un examen reconstruit des pieds vers
+      le haut et numéroté de la tête vers le bas défile à l'envers, et une série
+      assemblée à partir de deux reconstructions peut répéter les numéros purement
+      et simplement.
+    </p>
+    <p>
+      <strong>Image Position (Patient)</strong> est l'endroit où se trouve
+      physiquement la coupe, en millimètres, dans un repère fixé au patient et non
+      à la machine. Trier là-dessus est juste quoi qu'ait fait la numérotation, et
+      cela a un effet secondaire utile&nbsp;: une fois les coupes en ordre
+      physique, l'écart entre elles est mesurable, si bien qu'une visionneuse peut
+      vous dire que les coupes sont espacées de 5&nbsp;mm &mdash; et remarquer
+      qu'il en manque une, ce que le fichier ne dit jamais.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mesurer quelque chose</h2>
+    <p>
+      Un examen, ce sont des données mesurées&nbsp;: une longueur dessus est donc
+      une longueur réelle, si le fichier indique l'écartement de ses pixels. C'est
+      un champ, Pixel Spacing, en millimètres, et il est présent sur pratiquement
+      tous les scanners et toutes les IRM.
+    </p>
+    <p>
+      Il manque souvent sur les images d'échographie, les documents numérisés et
+      les captures d'écran enregistrées en DICOM. Là où il manque, il n'y a pas de
+      réponse honnête en millimètres, et une visionneuse qui en donne une quand
+      même a inventé une échelle. Un décompte de pixels est la bonne réponse à une
+      question à laquelle le fichier ne peut pas répondre.
+    </p>
+    <p>
+      Attention aussi aux pixels non carrés, ce qui est normal en dehors du
+      scanner. Mesurer en pixels et multiplier par un seul chiffre d'écartement
+      n'est juste que là où les deux coïncident&nbsp;; chaque axe doit être mesuré
+      avec le sien.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'un examen transporte en plus de l'image</h2>
+    <p>
+      C'est la partie sur laquelle on se trompe, et la raison d'être prudent avec
+      ces fichiers.
+    </p>
+    <p>
+      Un fichier DICOM n'est pas une image avec quelques métadonnées accrochées.
+      C'est un dossier médical avec une image dedans. L'en-tête est une liste de
+      champs, et sur un examen clinique ordinaire il contient&nbsp;:
+    </p>
+    <ul>
+      <li>le nom du patient, son numéro de dossier, sa date de naissance et son
+        sexe&nbsp;;</li>
+      <li>le numéro de demande, qui est la clé vers la prescription dans le
+        système de l'hôpital&nbsp;;</li>
+      <li>le médecin prescripteur, le manipulateur qui l'a réalisé, le radiologue
+        qui l'a interprété&nbsp;;</li>
+      <li>l'établissement, son adresse et le service&nbsp;;</li>
+      <li>le constructeur, le modèle et le numéro de série de la machine&nbsp;;</li>
+      <li>la date et l'heure de l'examen à la seconde&nbsp;;</li>
+      <li>et une série d'identifiants uniques &mdash; examen, série, instance
+        &mdash; qui sont des clés parfaites vers l'archive dont il provient.</li>
+    </ul>
+    <p>
+      Tout fichier qu'on vous a remis porte tout cela, et cela voyage avec le
+      fichier partout où il va. Supprimer le nom ne suffit pas&nbsp;: une date de
+      naissance, un établissement de la taille d'un code postal et une heure
+      d'examen identifient une personne à peu près aussi bien qu'un nom, et l'UID
+      de l'examen l'identifie exactement pour quiconque a accès à l'archive.
+    </p>
+    <p>
+      Certaines machines gardent en outre une seconde copie du nom du patient dans
+      un champ privé, c'est-à-dire un champ dont la signification n'est publiée
+      nulle part et que la plupart des outils d'anonymisation laissent tranquille,
+      faute de pouvoir savoir ce qu'il contient.
+    </p>
+  </section>
+
+  <section>
+    <h2>N'envoyez pas l'examen pour le regarder</h2>
+    <p>
+      La façon habituelle de régler ce problème, c'est une recherche
+      &laquo;&nbsp;dicom viewer online&nbsp;&raquo; et un champ d'envoi. Ce qui
+      vient de se passer, c'est qu'un inconnu détient une copie d'un dossier
+      médical&nbsp;: les pixels, le nom, la date de naissance, le numéro de
+      dossier et la clé vers l'archive.
+    </p>
+    <p>
+      Il n'y a aucune raison à cela. Lire un fichier DICOM, c'est analyser un
+      en-tête et déballer quelques entiers, et un navigateur le fait parfaitement.
+      C'est pourquoi la <a href="../../visionneuse-dicom/">visionneuse d'ici</a>
+      n'a aucune fonction réseau&nbsp;: pas de <code>fetch</code>, pas de
+      <code>XMLHttpRequest</code>, rien qui puisse envoyer un fichier même si
+      quelque chose l'essayait. Chargez la page une fois, débranchez-vous
+      d'internet&nbsp;: elle continue d'ouvrir des examens.
+    </p>
+    <p>
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">Est-il sûr d'envoyer ses
+      fichiers à des convertisseurs en ligne&nbsp;?</a> explique comment vérifier
+      cette affirmation sur ce site comme sur n'importe quel autre. C'est le type
+      de fichier pour lequel la vérification en vaut le plus la peine.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'un navigateur ne peut pas faire</h2>
+    <p>
+      Deux choses, et il vaut mieux les dire franchement.
+    </p>
+    <p>
+      <strong>Ce n'est pas une visionneuse de diagnostic.</strong> Votre écran
+      n'est pas calibré, le navigateur n'est pas une chaîne de rendu validée, et
+      aucune page web n'a fait l'objet d'une évaluation réglementaire. Lire un
+      examen pour prendre une décision clinique est l'affaire de la console sur
+      laquelle il a été interprété. Vérifier ce qu'il y a sur un disque, extraire
+      une coupe pour un cours, lire un en-tête ou comprendre pourquoi un autre
+      logiciel refuse le fichier sont autant de raisons parfaitement valables d'en
+      ouvrir un dans un navigateur.
+    </p>
+    <p>
+      <strong>Certains examens compressés ne se décoderont pas.</strong> DICOM
+      autorise plusieurs schémas de compression et les navigateurs en implémentent
+      un. Les fichiers simples, ceux codés en longueurs de plage, le JPEG baseline
+      et le JPEG Lossless &mdash; celui qu'emploient la plupart des exports
+      hospitaliers &mdash; s'ouvrent tous. JPEG 2000, JPEG-LS et les formats vidéo
+      exigent des codecs qui pèsent plusieurs mégaoctets de bibliothèque compilée.
+      Là où l'image ne peut pas être décodée, l'en-tête reste entièrement lisible,
+      ce qui est de toute façon la moitié pour laquelle vous étiez venu.
+    </p>
+  </section>

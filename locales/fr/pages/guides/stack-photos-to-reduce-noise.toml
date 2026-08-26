@@ -1,0 +1,20 @@
+#
+# Guide : empiler des photos contre le bruit - French.
+#
+
+nav = "Empiler des photographies"
+title = "Comment empiler des photographies pour réduire le bruit, ou retirer les gens"
+description = "L'empilement combine une rafale de prises en une seule image. La méthode qu'il vous faut dépend de ce que vous cherchez à perdre&nbsp;: le bruit, les passants, ou la faible profondeur de champ d'une macro. Comment chacune fonctionne, ce qu'elle coûte, et où les fichiers RAW s'insèrent."
+
+heading = "Comment empiler des photographies pour réduire le bruit, ou retirer les gens"
+lede = """
+    Une rafale de prises porte plus d'information que n'importe laquelle d'entre
+    elles. Les moyenner annule le bruit&nbsp;; prendre la valeur centrale de
+    chaque pixel efface tout ce qui n'était là qu'une partie du temps. Laquelle
+    des deux vous voulez dépend entièrement de ce qui a bougé."""
+
+updated = "25 août 2026"
+
+og_title = "Comment empiler des photographies pour réduire le bruit, ou retirer les gens"
+og_description = "Moyennez une rafale pour tuer le bruit, prenez la médiane pour vider une place animée, éclaircissez pour des filés d'étoiles. Quelle méthode résout quel problème, et où les fichiers RAW s'insèrent."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

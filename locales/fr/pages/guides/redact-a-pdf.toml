@@ -1,0 +1,20 @@
+#
+# Guide : caviarder un PDF - French.
+#
+
+nav = "Caviarder un PDF"
+title = "Comment caviarder un PDF pour que le texte disparaisse vraiment"
+description = "Un cadre noir dessiné dans une visionneuse PDF laisse le plus souvent les mots dessous, et un copier-coller les récupère aussitôt. Ce qu'une vraie suppression retire, les quatre endroits où un mot se cache hors de la page, et comment vérifier un fichier avant de l'envoyer."
+
+heading = "Comment caviarder un PDF pour que le texte disparaisse vraiment"
+lede = """
+    Un rectangle noir sur un nom et un nom supprimé sont identiques à l'écran.
+    L'un des deux survit à une sélection et un copier. Voici la différence, les
+    endroits où un mot se cache et qui ne sont pas du tout la page, et la
+    vérification de trente secondes qui vous dit lequel des deux vous avez."""
+
+updated = "25 août 2026"
+
+og_title = "Comment caviarder un PDF pour que le texte disparaisse vraiment"
+og_description = "Pourquoi un cadre noir dans une visionneuse PDF n'est en général pas un caviardage, les quatre endroits où un mot se cache hors de la page, et comment vérifier un fichier avant de l'envoyer."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

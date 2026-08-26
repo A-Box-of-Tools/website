@@ -1,0 +1,21 @@
+#
+# Guide : scanner un document avec son téléphone - French.
+#
+
+nav = "Scanner avec son téléphone"
+title = "Comment scanner un document avec son téléphone, sans application ni envoi"
+description = "Ce qui sépare la photo d'une page d'un scan de cette même page&nbsp;: l'inclinaison, la lumière inégale et la taille du fichier. Comment prendre la photo, quoi corriger ensuite, et pourquoi rien de tout cela n'a besoin d'un serveur."
+
+heading = "Comment scanner un document avec son téléphone"
+lede = """
+    On vous a demandé de renvoyer un formulaire &laquo;&nbsp;scanné&nbsp;&raquo;,
+    et vous avez un téléphone et pas de scanner. L'écart entre la photo d'une
+    page et un scan de cette page est plus petit qu'il n'y paraît, et il ne tient
+    pas surtout à l'inclinaison&nbsp;: voici ce qui les sépare réellement, et
+    quoi faire de chaque morceau."""
+
+updated = "25 août 2026"
+
+og_title = "Comment scanner un document avec son téléphone"
+og_description = "L'inclinaison, l'ombre et la taille du fichier &mdash; ce qui sépare la photo d'une page d'un scan de cette page, et comment corriger chacun sans envoyer la page."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

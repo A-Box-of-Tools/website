@@ -1,0 +1,311 @@
+#
+# Scanner de documents - French.
+#
+# Overrides for tools/document-scanner/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Les noms de la litterature restent tels quels - Zhang et He pour la
+# recuperation des proportions, Sauvola pour le seuillage. Qui veut verifier
+# cherche exactement ces noms-la.
+#
+
+name = "Scanner de documents"
+heading = "Scanner&nbsp;de&nbsp;documents <span class=\"h1-kw\">&mdash; une photo de page, redressée</span>"
+tagline = "Photographiez la page. Vous récupérez quelque chose qui a l'air scanné."
+
+title = "Scanner de documents &mdash; d'une photo à un PDF scanné, sans envoi"
+description = "Transformez la photo d'une page prise au téléphone en un PDF redressé et éclairé uniformément. Les coins sont trouvés pour vous, la perspective est défaite, l'ombre est divisée. Tout se passe dans votre navigateur&nbsp;: rien n'est envoyé."
+og_title = "Scanner un document avec une photo, sans l'envoyer"
+og_description = "Les coins de la page sont trouvés, l'inclinaison est défaite et la lumière inégale est divisée, dans votre propre navigateur. Ce que l'on photographie ainsi, c'est un passeport, une fiche de paie ou un contrat&nbsp;: précisément ce qui n'a pas à être envoyé."
+og_image_alt = "Scanner de documents - une photo de page, redressée et nettoyée, sans envoi"
+
+pledge = """
+    La photo est décodée, redressée, nettoyée et écrite dans un PDF par votre
+    propre navigateur, avec rien d'autre que du calcul et les codecs qu'il
+    embarque déjà. Cet outil n'a aucune fonction réseau, ni pour récupérer ni
+    pour envoyer, et la raison pour laquelle cela compte ici tient à ce dont les
+    gens photographient les pages&nbsp;: un passeport, une fiche de paie, un
+    bail, un formulaire qu'une administration a demandé
+    &laquo;&nbsp;scanné&nbsp;&raquo;."""
+
+live_hint = """
+      Ne nous croyez pas sur parole&nbsp;: ouvrez les DevTools, regardez
+      l'onglet Réseau et scannez une page. Aucune requête ne transporte une
+      photo, une vignette, un nom de fichier ou la position d'un seul coin. Ou
+      débranchez-vous d'internet et scannez-en une quand même."""
+
+read_first = """
+, <code>src/detect.js</code> pour la façon dont les
+      coins sont trouvés sans le moindre modèle, <code>src/warp.js</code> pour le
+      redressement, et <code>src/clean.js</code> pour la façon dont la lumière
+      inégale est divisée."""
+
+howto_heading = "Comment scanner un document avec l'appareil photo du téléphone"
+
+card = """
+            Une photo de page, redressée et nettoyée jusqu'à devenir un
+            document. Les coins sont trouvés pour vous, l'inclinaison est défaite
+            et l'ombre est divisée."""
+
+[words]
+plural = "documents"
+choose = "une photo de page"
+
+[[facts]]
+text = "Aucun envoi"
+
+[[facts]]
+text = "Aucun compte"
+
+[[facts]]
+text = "Aucun filigrane"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Code ouvert"
+
+[[privacy]]
+title = "Vos documents n'ont nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page peut
+      contacter, et aucune ne nous appartient. Il n'y a ici aucun point de
+      collecte où vos photos pourraient atterrir, ni de code qui les enverrait
+      s'il y en avait un."""
+
+[[privacy]]
+title = "Il n'y a pas de modèle, donc rien à télécharger et rien à demander."
+body = """
+ Trouver les quatre coins
+      d'une page est du calcul&nbsp;: le gradient de l'image, un vote pour les
+      droites qu'elle contient, et une vérification de ce qui se trouve
+      réellement sous chaque côté du rectangle gagnant. Aucun poids, aucun moteur
+      d'inférence, rien qui se télécharge à la première utilisation, et rien qui
+      se comporte autrement sur le document de quelqu'un d'autre que sur le
+      vôtre. Voir <code>src/detect.js</code>."""
+
+[[privacy]]
+title = "Le document ne porte ni date, ni auteur, ni nom de machine."
+body = """
+ Un scan est une chose que
+      l'on envoie à d'autres, le plus souvent parce qu'une administration l'a
+      demandé. La seule chose écrite dans le PDF en dehors des pages elles-mêmes
+      est le nom de cet outil, et un titre si vous en saisissez un. Aucune date
+      de création, aucun auteur, aucun numéro de série, et rien tiré de votre
+      horloge, de vos noms de fichiers ou de votre ordinateur. Voir
+      <code>src/document.js</code>."""
+
+[[privacy]]
+title = "Rien ici ne va chercher quoi que ce soit."
+body = """
+ Il n'y a aucun
+      <code>fetch</code>, aucun <code>XMLHttpRequest</code> et aucun
+      <code>sendBeacon</code> nulle part dans <code>src/</code>. Le travail, c'est
+      un <code>getImageData</code>, quelques boucles sur les octets et l'encodeur
+      JPEG du navigateur lui-même&nbsp;: tout cela est déjà installé sur votre
+      machine."""
+
+[[privacy]]
+title = "Il fonctionne hors ligne."
+body = """
+ Débranchez-vous du réseau et l'outil ne
+      change pas, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+      preuve la plus simple de toutes, et celle qu'il vaut la peine de faire
+      avant de scanner un passeport."""
+
+[[howto]]
+title = "Photographiez la page."
+body = """
+ D'au-dessus, avec la page entière dans
+      le cadre et les quatre coins visibles ou presque. Il n'est pas nécessaire
+      d'être perpendiculaire ni d'avoir un éclairage uniforme&nbsp;: l'inclinaison
+      et l'ombre sont précisément ce à quoi sert cet outil. Ce qui compte, c'est
+      de remplir le cadre&nbsp;: une page photographiée depuis l'autre bout de la
+      pièce n'a plus de détail à récupérer."""
+
+[[howto]]
+title = "Vérifiez les quatre coins."
+body = """
+ Ils sont trouvés pour vous à la
+      lecture de la photo, et la page le dit quand elle n'est pas sûre&nbsp;: une
+      page posée sur un bureau de la même couleur a un bord réellement difficile à
+      voir. Appuyez n'importe où sur la photo et le coin le plus proche vient sous
+      votre doigt, ou atteignez-en un avec <kbd>Tab</kbd> et déplacez-le avec les
+      flèches."""
+
+[[howto]]
+title = "Décidez du sort de la lumière."
+body = """
+ &laquo;&nbsp;Couleur,
+      égalisée&nbsp;&raquo; mesure le papier sur toute la page et le divise, si
+      bien que l'ombre disparaît et qu'un tampon ou une signature gardent leur
+      couleur. &laquo;&nbsp;Noir et blanc&nbsp;&raquo; va plus loin et c'est ce
+      qui rend un scan assez petit pour un courriel. Ce que vous voyez à l'écran
+      est le résultat réel, produit par le code même qui écrit le fichier."""
+
+[[howto]]
+title = "Ajoutez les autres pages."
+body = """
+ Chaque photo ajoutée devient une page
+      de plus du même document, dans l'ordre de la liste, et chacune garde ses
+      propres coins. Les flèches d'une page dans la bande la déplacent vers
+      l'avant ou vers l'arrière."""
+
+[[howto]]
+title = "Enregistrez le PDF, et ouvrez-le avant de l'envoyer."
+body = """
+ Le document est écrit
+      ici, dans la mémoire de cette page. Rien n'a été envoyé pour le faire, et
+      rien à son sujet n'a été rapporté nulle part."""
+
+[[faq]]
+q = "Mon document est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. La photo est décodée, redressée, nettoyée et écrite dans un PDF par
+        votre propre navigateur, sur votre propre matériel. Cet outil n'a aucune
+        fonction réseau, il ne va jamais rien chercher et n'envoie jamais rien, et
+        la <code>Content-Security-Policy</code> de la page nomme chaque adresse
+        qu'elle peut contacter, dont aucune ne nous appartient. Chargez la page
+        une fois, débranchez-vous d'internet&nbsp;: elle continue de
+        fonctionner."""
+
+[[faq]]
+q = "Comment trouve-t-il les coins de la page sans modèle&nbsp;?"
+a = """
+        En cherchant les quatre longues droites dont un rectangle est fait. La
+        photo est réduite, le gradient est calculé &mdash; où l'image change, et
+        dans quelle direction &mdash; et chaque pixel posé sur un bord vote pour la
+        droite sur laquelle il se trouverait. Les droites fortes sont appariées en
+        rectangles candidats, et chaque candidat est noté en parcourant ses quatre
+        côtés&nbsp;: quelle part de chacun a réellement un bord dessous, et les
+        quatre forment-ils la frontière d'une seule et même chose&nbsp;? Une page
+        est plus claire que ce qui l'entoure, ou plus sombre, mais elle l'est de la
+        même façon sur ses quatre côtés, et c'est cela qui empêche de prendre une
+        ligne de texte pour le bas de la page. Il n'y a aucun poids, rien n'est
+        téléchargé, et le calcul est le même pour tous les documents qui y
+        passent."""
+
+[[faq]]
+q = "Les coins trouvés sont faux. Et maintenant&nbsp;?"
+a = """
+        Faites-les glisser. Les coins sont une position de départ et jamais une
+        décision&nbsp;: le scan est pris là où les quatre finissent. Appuyez
+        n'importe où sur la photo et le coin le plus proche saute sous votre
+        doigt, ce qui est plus facile que d'atteindre une petite poignée, et les
+        flèches déplacent le coin sélectionné pixel par pixel. La page vous dit
+        aussi quand les coins sont une supposition plutôt qu'une trouvaille, et
+        marque cette page dans la bande&nbsp;: la raison habituelle est une page
+        posée sur un bureau à peu près de sa couleur, parce qu'il n'y a alors
+        vraiment presque aucun bord à trouver."""
+
+[[faq]]
+q = "Pourquoi la page redressée sort-elle à la bonne forme et non écrasée&nbsp;?"
+a = """
+        Parce que la forme est récupérée depuis la perspective plutôt que mesurée
+        sur les bords. Une page photographiée de biais a son bord lointain
+        raccourci, si bien que la méthode évidente &mdash; prendre la plus longue
+        paire de bords opposés et appeler cela le rapport &mdash; produit un A4
+        visiblement trapu, ce que donnent la plupart des scanners en ligne. La
+        photo d'un rectangle porte en réalité assez d'information pour récupérer à
+        la fois les proportions du rectangle et la focale de l'appareil, pourvu que
+        ce soit un appareil ordinaire&nbsp;; c'est un résultat de Zhang et He de
+        2003, et c'est ce que fait <code>src/geometry.js</code>. Là où la photo a
+        été prise perpendiculairement, il n'y a pas de perspective d'où partir et
+        il n'en faut pas, puisque les bords sont alors exacts&nbsp;: l'outil s'y
+        rabat, et la page dit laquelle des deux a répondu."""
+
+[[faq]]
+q = "Que fait exactement le &laquo;&nbsp;nettoyage&nbsp;&raquo; à l'image&nbsp;?"
+a = """
+        Il divise la lumière. La clarté du papier lui-même est mesurée sur toute la
+        page &mdash; une grille de tuiles, et dans chaque tuile un centile élevé de
+        la clarté, que le texte est trop sombre et trop clairsemé pour déplacer
+        &mdash; et chaque pixel est divisé par le papier estimé en ce point. Ce
+        qui reste, c'est l'encre, uniformément éclairée, sans l'ombre et sans la
+        chute vers les bords. Ce n'est pas la même chose que de monter le
+        contraste&nbsp;: monter le contraste d'une page photographiée rend la
+        partie claire blanche, la partie sombre noire et l'écriture de la partie
+        sombre illisible, et c'est pourquoi les
+        &laquo;&nbsp;niveaux&nbsp;automatiques&nbsp;&raquo; empirent ces images au
+        lieu de les améliorer."""
+
+[[faq]]
+q = "Pourquoi le mode noir et blanc est-il tellement plus petit&nbsp;?"
+a = """
+        Parce qu'une image à deux couleurs représente réellement une fraction des
+        données d'une image à seize millions, et parce qu'elle est stockée ainsi
+        ici&nbsp;: un bit par pixel, empaquetés par huit dans un octet et
+        compressés exactement, plutôt qu'en JPEG d'une image en noir et blanc. Sur
+        les mêmes pages, cela sort environ dix-huit fois plus petit que le mode
+        couleur, si bien qu'un contrat de vingt pages passe sous le mégaoctet au
+        lieu d'en peser une quinzaine. Le seuil est celui de Sauvola, qui décide
+        chaque pixel face à la moyenne et à la dispersion de son propre voisinage
+        plutôt que face à un nombre unique pour toute la page, et c'est cela qui
+        garde lisible l'écriture prise dans une ombre. Il n'a pas de demi-teintes,
+        une page portant une photographie devrait donc utiliser l'un des autres
+        modes."""
+
+[[faq]]
+q = "Puis-je mettre plusieurs pages dans un seul PDF&nbsp;?"
+a = """
+        Oui. Chaque photo ajoutée devient une page de plus, dans l'ordre de la
+        liste, et chaque page garde ses propres coins&nbsp;: une pile de pages
+        photographiées les unes après les autres devient donc un document. Les
+        flèches de chaque page dans la bande la déplacent vers l'avant ou vers
+        l'arrière. Le réglage de nettoyage est commun à toutes, et c'est
+        volontaire&nbsp;: des pages nettoyées différemment dans un même document
+        ressemblent à deux documents."""
+
+[[faq]]
+q = "Lit-il le texte, pour que je puisse chercher dans le PDF&nbsp;?"
+a = """
+        Non. Il n'y a ni couche de texte ni reconnaissance de caractères&nbsp;: ce
+        qui sort est une image de la page sur une page. Le faire correctement
+        supposerait un moteur d'OCR, soit des dizaines de mégaoctets de modèle à
+        télécharger, et un scanner de documents qui irait chercher un modèle avant
+        de pouvoir lire votre fiche de paie serait un scanner de documents ayant
+        une raison de téléphoner à la maison au sujet des fiches de paie. Si vous
+        avez besoin du texte, le mode noir et blanc produit exactement le type de
+        fichier avec lequel les logiciels d'OCR de votre propre machine travaillent
+        le mieux."""
+
+[[faq]]
+q = "C'est sorti flou. Pourquoi&nbsp;?"
+a = """
+        Presque toujours parce que la page était petite dans la photo. Le panneau
+        sous l'aperçu indique quelle part du cadre la page occupait et à combien de
+        points par pouce cela revient à peu près sur une feuille de cette
+        taille&nbsp;: en dessous d'environ 150 DPI, un scan imprimé paraît mou, et
+        contre du détail qui n'a jamais été dans le fichier, aucun outil ne peut
+        rien. Approchez-vous plutôt que de zoomer, tenez immobile, et laissez
+        l'appareil faire le point sur la page avant de déclencher. Le bougé est
+        l'autre cause, et il ne se récupère pas davantage."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni connexion, ni période d'essai, ni
+        limite de pages, ni filigrane. Il n'y a pas non plus de limite à la taille
+        des photos, parce qu'aucun serveur ne les paie&nbsp;: le travail se fait
+        sur votre propre machine. Le site porte de la publicité, et c'est elle qui
+        le paie&nbsp;; on ne donne rien aux annonces sur vos documents."""
+
+[schema]
+description = "Scanner un document dans le navigateur&nbsp;: photographiez une page, et les quatre coins sont trouvés, la perspective est défaite, la lumière inégale est divisée et le résultat est écrit dans un PDF. Plusieurs pages font un seul document. Rien n'est envoyé."
+features = [
+  "Trouve les quatre coins de la page sans modèle, sans téléchargement et sans requête",
+  "Récupère la forme réelle de la page depuis la perspective, si bien qu'une photo de biais ne sort pas écrasée",
+  "Divise la lumière inégale et l'ombre au lieu de monter le contraste",
+  "Pages en noir et blanc stockées à un bit par pixel, ce qui rend un scan assez petit pour un courriel",
+  "Plusieurs photos deviennent les pages d'un même PDF, chacune avec ses coins",
+  "Les coins se déplacent à la souris, ou au clavier pixel par pixel",
+  "Dit quand les coins sont une supposition plutôt qu'une trouvaille",
+  "N'écrit ni date, ni auteur, ni nom de machine dans le document",
+  "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte",
+]
+
+[picker]
+title = "Déposez ici les photos de vos pages"
+hint = "ou cliquez pour parcourir &mdash; une photo par page, dans l'ordre des pages"
