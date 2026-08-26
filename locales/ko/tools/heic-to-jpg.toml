@@ -46,7 +46,7 @@ card = """
             디코딩은 남의 서버가 아니라 내 기기에서 합니다."""
 
 [words]
-plural = "사진"
+plural = "사진은"
 choose = "사진을"
 
 [[facts]]

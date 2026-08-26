@@ -44,7 +44,7 @@ card = """
             <code>&lt;img&gt;</code> 태그까지 이미 씌워서 드립니다."""
 
 [words]
-plural = "이미지 파일"
+plural = "이미지 파일은"
 choose = "이미지 파일을"
 
 [[facts]]

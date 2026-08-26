@@ -43,7 +43,7 @@ card = """
             않습니다."""
 
 [words]
-plural = "녹음"
+plural = "녹음은"
 choose = "녹음 하나를"
 analytics_extra = """, 파형도
   길이도 자른 지점도"""

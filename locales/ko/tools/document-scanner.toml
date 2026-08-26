@@ -43,8 +43,8 @@ card = """
             주고, 기울기는 되돌리고, 그림자는 나눠서 걷어 냅니다."""
 
 [words]
-plural = "문서"
-choose = "종이 사진 하나"
+plural = "문서는"
+choose = "종이 사진 하나를"
 
 [[facts]]
 text = "업로드 없음"

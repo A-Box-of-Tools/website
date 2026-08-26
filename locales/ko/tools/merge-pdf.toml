@@ -39,7 +39,7 @@ card = """
             완성된 파일은 건네기 전에 한 번 더 열어서 페이지를 세어 봅니다."""
 
 [words]
-plural = "문서"
+plural = "문서는"
 choose = "PDF를"
 
 [[facts]]

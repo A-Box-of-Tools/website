@@ -39,7 +39,7 @@ card = """
             한 장씩도, 몇 초마다 한 장씩도."""
 
 [words]
-plural = "동영상"
+plural = "동영상은"
 choose = "동영상 하나를"
 analytics_extra = """, 프레임도
   타임코드도 그림도"""

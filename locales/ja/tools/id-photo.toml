@@ -45,7 +45,7 @@ card = """
 
 [words]
 plural = "写真"
-choose = "写真を1枚"
+choose = "写真"
 analytics_extra = """。この道具が算出する\
   寸法も、切り抜きも、選んだ国も同じです"""
 

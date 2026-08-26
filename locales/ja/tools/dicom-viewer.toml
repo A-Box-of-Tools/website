@@ -51,7 +51,7 @@ card = """
 
 [words]
 plural = "検査画像"
-choose = "検査画像を1件"
+choose = "検査画像"
 
 [[facts]]
 text = "アップロードなし"

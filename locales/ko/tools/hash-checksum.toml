@@ -47,7 +47,7 @@ card = """
             읽고 통째로 들고 있지 않습니다."""
 
 [words]
-plural = "파일"
+plural = "파일은"
 choose = "파일을"
 analytics_extra = """, 체크섬도"""
 

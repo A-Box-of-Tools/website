@@ -45,7 +45,7 @@ card = """
 
 [words]
 plural = "写真"
-choose = "写真を何枚か"
+choose = "何枚かの写真"
 
 [[facts]]
 text = "アップロードなし"

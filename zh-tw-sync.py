@@ -194,6 +194,16 @@ TAIWAN_REGISTER = [
     # A barcode is a 條碼.
     ('條形碼', '條碼'),
 
+    # Vocabulary the scanner, stacker and DICOM pages brought in. A scanned
+    # document is a 掃描檔, ultrasound is 超音波, greyscale is 灰階, and
+    # image noise is 雜訊 - 噪點 and 噪聲 both read mainland.
+    ('掃描件', '掃描檔'),
+    ('超聲', '超音波'),
+    ('灰度', '灰階'),
+    ('噪點', '雜訊'),
+    ('噪聲', '雜訊'),
+    ('位深', '位元深度'),
+
     # Devices and UI. 攝像頭 is the one mainland word every Taiwan reader
     # trips on; the pages that talk about cameras already use 鏡頭 half the
     # time, so this also makes them consistent.

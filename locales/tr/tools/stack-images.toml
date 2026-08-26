@@ -47,7 +47,7 @@ card = """
             dönüştürücü olmadan okur."""
 
 [words]
-plural = "fotoğraf"
+plural = "fotoğraflarınız"
 choose = "birkaç fotoğraf"
 
 [[facts]]

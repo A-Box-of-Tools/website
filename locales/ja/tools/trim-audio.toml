@@ -42,7 +42,7 @@ card = """
 
 [words]
 plural = "録音"
-choose = "録音を1つ"
+choose = "録音"
 analytics_extra = """。波形も、\
   長さも、切る位置も同じです"""
 

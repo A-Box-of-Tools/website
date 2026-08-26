@@ -39,7 +39,7 @@ card = """
             일어납니다."""
 
 [words]
-plural = "GIF"
+plural = "GIF는"
 choose = "GIF 한 개를"
 analytics_extra = """, 프레임도
   재생 시간도 그림도"""

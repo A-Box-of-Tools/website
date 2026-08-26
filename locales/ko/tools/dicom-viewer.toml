@@ -51,8 +51,8 @@ card = """
             읽습니다."""
 
 [words]
-plural = "영상"
-choose = "영상 하나"
+plural = "영상은"
+choose = "영상 하나를"
 
 [[facts]]
 text = "업로드 없음"

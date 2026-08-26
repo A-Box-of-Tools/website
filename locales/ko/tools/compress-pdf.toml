@@ -38,7 +38,7 @@ card = """
             말합니다."""
 
 [words]
-plural = "PDF 파일"
+plural = "PDF 파일은"
 choose = "PDF 파일을"
 
 [[facts]]
