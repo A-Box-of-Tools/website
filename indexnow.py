@@ -2,7 +2,7 @@
 """Tell the search engines that accept being told, about the pages that changed.
 
 IndexNow is a small protocol: POST a list of URLs plus a key that proves the
-host is yours, and Bing, Yandex, Seznam and Naver fetch them within hours
+host is yours, and Bing, Yandex, Seznam, Naver and Yep fetch them within hours
 rather than whenever a crawler next comes round. Google does not take part.
 There is no equivalent for it either - its Indexing API is restricted to job
 postings and livestreams, and a tool page submitted there is discarded - so
