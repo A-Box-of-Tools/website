@@ -50,12 +50,25 @@ LABEL_FOR = re.compile(r'<label[^>]*\bfor\s*=\s*"([^"]+)"')
 COMMENT = re.compile(r'<!--.*?-->', re.S)
 
 
-def bodies():
+def tool_bodies():
     """Every tool body in every language, as (name, text) pairs."""
     for path in sorted(ROOT.glob('tools/*/body.html')):
         yield f'tools/{path.parent.name}', path.read_text(encoding='utf-8')
     for path in sorted(ROOT.glob('locales/*/tools/*.html')):
         name = f'{path.parents[1].name}/{path.stem}'
+        yield name, path.read_text(encoding='utf-8')
+
+
+def bodies():
+    """Those, plus every guide and legal body: prose gets its <main> from the
+    template, but an unlabeled control or a bare image is wrong wherever it is
+    written."""
+    yield from tool_bodies()
+    for path in sorted(ROOT.glob('pages/**/body.html')):
+        name = path.parent.relative_to(ROOT).as_posix()
+        yield name, path.read_text(encoding='utf-8')
+    for path in sorted(ROOT.glob('locales/*/pages/**/*.html')):
+        name = path.relative_to(ROOT / 'locales').as_posix()
         yield name, path.read_text(encoding='utf-8')
 
 
@@ -69,10 +82,10 @@ def has_attr(tag, name):
 
 
 class BodyRules(unittest.TestCase):
-    def check(self, rule):
+    def check(self, rule, over=bodies):
         """Run one rule over every body and report every failure at once."""
         wrong = []
-        for name, text in bodies():
+        for name, text in over():
             wrong += [f'{name}: {found}' for found in rule(COMMENT.sub('', text))]
         self.assertEqual([], wrong, '\n' + '\n'.join(wrong))
 
@@ -80,7 +93,7 @@ class BodyRules(unittest.TestCase):
         def rule(text):
             if text.count('<main id="main">') != 1 or re.search(r'<main[ >](?!id="main">)', text):
                 yield 'does not open with exactly one <main id="main">'
-        self.check(rule)
+        self.check(rule, over=tool_bodies)
 
     def test_every_control_has_a_name(self):
         def rule(text):
