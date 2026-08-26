@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bilder-in-pdf-umwandeln/:';
-const CACHE_NAME=CACHE_PREFIX+'12f1732feb';
+const CACHE_NAME=CACHE_PREFIX+'e7c9812615';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=1750618098',
+'styles.css?v=149ce20afb',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

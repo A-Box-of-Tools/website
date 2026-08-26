@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/svg-yi-pnge-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'0812572187';
+const CACHE_NAME=CACHE_PREFIX+'623295b048';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0c3c8438b3',
+'styles.css?v=a42cc80b1e',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
