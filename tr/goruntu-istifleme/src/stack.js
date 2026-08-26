@@ -7,7 +7,11 @@ if(!build)throw new RangeError(`unknown mode: ${mode}`);
 const{width,height,frames}=options;
 if(!(width>0)||!(height>0))throw new RangeError('a band with no size');
 if(!(frames>0))throw new RangeError('a stack of no frames');
-return build({kappa:2,gain:1,radius:3,...options,pixels:width*height});
+const given={};
+for(const[key,value]of Object.entries(options)){
+if(value!==undefined)given[key]=value;
+}
+return build({kappa:2,gain:1,radius:3,...given,pixels:width*height});
 }
 function pack(pixels,gain,value){
 const out=new Uint8ClampedArray(pixels*4);

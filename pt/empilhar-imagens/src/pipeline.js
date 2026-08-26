@@ -1,10 +1,12 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{estimate,window2d}from'./align.js';
-import{bands,commonArea,outputSize,placement,planRun,workingSize}from'./plan.js';
+import{WEAK_PEAK,estimate,phaseCorrelate,window2d}from'./align.js';
+import{
+bands,commonArea,outputSize,placement,planRun,refineMargin,refineWindow,workingSize,
+}from'./plan.js';
 import{findPreview,jpegSize,looksRaw}from'./raw.js';
 import{createStack}from'./stack.js';
 export const ALIGN_SIZE=256;
-const THUMB_SIZE=160;
+const THUMB_SIZE=256;
 const MIN_PREVIEW_PIXELS=640*480;
 const PNG_SIGNATURE=[0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a];
 class Cancelled extends Error{}
@@ -120,6 +122,17 @@ out[i]=pixels[at]*0.299+pixels[at+1]*0.587+pixels[at+2]*0.114;
 canvas.width=0;
 return window2d(out,ALIGN_SIZE);
 }
+function refineSquare(bitmap,spot,output,move,at,size){
+const{canvas,context}=surface(size,size);
+drawAligned(context,bitmap,spot,output,move,at,0);
+const pixels=context.getImageData(0,0,size,size).data;
+const out=new Float64Array(size*size);
+for(let i=0,p=0;i<out.length;i+=1,p+=4){
+out[i]=pixels[p]*0.299+pixels[p+1]*0.587+pixels[p+2]*0.114;
+}
+canvas.width=0;
+return window2d(out,size);
+}
 export async function runStack(request,hooks){
 const{files,mode,align,scale=1}=request;
 const stop=()=>{if(hooks.cancelled())throw new Cancelled();};
@@ -168,6 +181,18 @@ dy:found.dy/fit.scale,
 }
 for(const frame of frames)frame.thumb.close();
 const crop=commonArea(moves,output);
+const refine=align==='none'?0:refineWindow(crop);
+const margin=refine?refineMargin(moves):0;
+crop.x+=margin;
+crop.y+=margin;
+crop.width-=margin*2;
+crop.height-=margin*2;
+const refineAt=refine?{
+x:Math.round(crop.x+(crop.width-refine)/2),
+y:Math.round(crop.y+(crop.height-refine)/2),
+}:null;
+let referenceWindow=null;
+const refined=frames.map(()=>false);
 const plan=planRun({
 width:crop.width,height:crop.height,frames:frames.length,mode,
 budget:request.budget,
@@ -200,6 +225,20 @@ band:bandIndex+1,bands:list.length,pass:pass+1,passes:stack.passes,
 const spot=placement(frame,output);
 const working=workingSize(frame.width,frame.height,1);
 const bitmap=await decodeAt(frame.blob,working,spot);
+if(refine&&!refined[index]){
+refined[index]=true;
+const square=refineSquare(bitmap,spot,output,moves[index],refineAt,refine);
+if(index===0){
+referenceWindow=square;
+}else if(referenceWindow){
+const residual=phaseCorrelate(referenceWindow,square,refine);
+if(residual.confidence>=WEAK_PEAK
+&&Math.abs(residual.dx)<=margin&&Math.abs(residual.dy)<=margin){
+moves[index].dx+=residual.dx;
+moves[index].dy+=residual.dy;
+}
+}
+}
 context.setTransform(1,0,0,1,0,0);
 context.clearRect(0,0,crop.width,band.readRows);
 drawAligned(context,bitmap,spot,output,moves[index],crop,band.readY);

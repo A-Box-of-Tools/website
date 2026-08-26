@@ -117,6 +117,20 @@ return{x:0,y:0,width:output.width,height:output.height};
 }
 return{x,y,width,height};
 }
+export function refineWindow({width,height}){
+const room=Math.min(width,height)-16;
+if(room<64)return 0;
+let size=64;
+while(size*2<=Math.min(room,512))size*=2;
+return size;
+}
+export function refineMargin(moves){
+let most=0;
+for(const move of moves){
+most=Math.max(most,Math.abs(move.dx??0),Math.abs(move.dy??0));
+}
+return most<0.5?1:8;
+}
 export function scaleThatFits({width,height,frames,mode,budget=DEFAULT_BUDGET}){
 for(const[name,scale]of Object.entries(SCALES)){
 const size=workingSize(width,height,scale);
