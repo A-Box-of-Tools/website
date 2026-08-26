@@ -1,0 +1,134 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Open <a href="../../share-text/">Share Text &amp; Files</a> on the
+      machine that has the thing, write or attach it, and press <em>Start
+      sharing</em>. The page gives the share a name like
+      <code>brave-otter-42</code>; on the other device, open the same page and
+      put <code>#brave-otter-42</code> on the end of the address &mdash; or
+      just follow the copied link. The other device asks before connecting,
+      you let it in, and the text or file crosses directly from one browser to
+      the other, encrypted. Close the sharing tab and the share is over,
+      everywhere.
+    </p>
+    <p>
+      Nothing was uploaded at any point. That is not a policy; it is the
+      shape of the thing. The rest of this page is why that matters, and
+      what the honest limits of it are.
+    </p>
+  </section>
+
+  <section>
+    <h2>Where the usual ways leave a copy</h2>
+    <p>
+      Email yourself a note and it now exists in a sent folder and an inbox,
+      both synced, both backed up, both searchable years from now. Paste a
+      password into a chat app and it sits in that conversation's history
+      &mdash; and in the app's cloud backup &mdash; for as long as the
+      conversation exists. Use a pastebin or a file-drop site and the content
+      sits on their server behind an expiry setting and a delete button, and
+      the only part of that arrangement you can verify is the button's
+      colour. Every one of these is a storage service wearing sharing as a
+      feature.
+    </p>
+    <p>
+      Sometimes that is exactly what you want &mdash; a copy that waits until
+      the other person is ready. But most quick shares are the opposite: the
+      other device is right there, the content is momentary, and every stored
+      copy is pure liability. The Wi-Fi password for a guest, an address read
+      over the phone, an error message that needs a second pair of eyes, a
+      config snippet moving to the machine it belongs on. None of these wants
+      an archive.
+    </p>
+  </section>
+
+  <section>
+    <h2>What &ldquo;direct&rdquo; actually means</h2>
+    <p>
+      The tool uses WebRTC, the same machinery as browser video calls: two
+      browsers open an encrypted channel to each other and send data through
+      it without a server in the path. On the same network the bytes travel
+      the local network only &mdash; two laptops on one Wi-Fi hand the file
+      across the room, not across the internet.
+    </p>
+    <p>
+      One honest asterisk, stated on the tool page too: two browsers cannot
+      find each other unaided. A small server &mdash; the rendezvous &mdash;
+      matches the person who typed the name with the person sharing under it
+      and carries a few kilobytes of connection set-up between them. It
+      stores nothing, and the content never passes through it; its whole
+      source is published beside the tool's. It is the introduction, not the
+      conversation &mdash; and it is the one server anything on this site
+      talks to, which is why the tool's own page spells out exactly what it
+      can and cannot see.
+    </p>
+    <p>
+      Direct also means mutual: each browser learns the other's network
+      address, as with a phone call. The reading side is told this before
+      any connection exists and connects only by choosing to.
+    </p>
+  </section>
+
+  <section>
+    <h2>The name is the address, and the only secret</h2>
+    <p>
+      A share link differs from every other sharing link in one practical
+      way: it survives being spoken. <code>brave-otter-42</code> can be said
+      across a room, read down a phone, or written on a whiteboard, and typed
+      on the other end without anybody's thumbs giving out. That is the whole
+      reason the names look the way they do.
+    </p>
+    <p>
+      It cuts both ways: anyone who knows or guesses a live name can open the
+      share behind it. For anything sensitive, either give the share a name
+      nobody would guess, or lean on the default instead &mdash; shares are
+      <em>private</em> unless you untick the box, which means every arriving
+      reader has to introduce themselves and you decide, message by message,
+      who gets in. The introduction travels the encrypted direct channel, so
+      not even the rendezvous learns who asked.
+    </p>
+  </section>
+
+  <section>
+    <h2>What closing the tab actually ends</h2>
+    <p>
+      The share lives in the sharing tab and nowhere else, so closing that
+      tab is the deletion &mdash; not a request for one. The link dies within
+      a couple of seconds, and readers still looking at the share see their
+      page clear. There is no server copy with its own lifecycle, no trash
+      folder, no thirty-day retention. The draft you typed stays in your own
+      browser so it is there next time, and even that can be switched off
+      with the one-off setting.
+    </p>
+    <p>
+      What it does not end is possession. A reader who copied the text or
+      downloaded the file while the share was open has it, exactly as if you
+      had handed it over any other way. No tool can unsend, and a tool that
+      claimed to would be lying to you about somebody else's computer.
+      Ending the share governs the future &mdash; nobody new, nothing more
+      &mdash; and that is the part a stored-copy service cannot give you.
+    </p>
+  </section>
+
+  <section>
+    <h2>When this is the wrong tool</h2>
+    <p>
+      Both ends have to be present: this is a hand-off, not a mailbox. If the
+      other person is asleep, use something that stores &mdash; knowingly.
+      The sharing tab has to stay open and awake, which in practice means a
+      desktop or laptop does the sharing; phones suspend background tabs in
+      seconds, though they read a share perfectly well. It cannot work
+      offline, alone on this site, because reaching another machine is a
+      network act &mdash; although the editor half works with no connection
+      at all. And a small minority of network pairs &mdash; typically both
+      ends on strict corporate or mobile-carrier connections &mdash; cannot
+      be joined directly at all; the tool says so plainly after twenty
+      seconds rather than quietly routing your content through a relay.
+    </p>
+    <p>
+      For everything else &mdash; the note, the password, the config file,
+      the 100&nbsp;MB video that is one Wi-Fi hop away &mdash; the direct
+      version is faster, simpler, and leaves the world exactly as it found
+      it.
+    </p>
+  </section>

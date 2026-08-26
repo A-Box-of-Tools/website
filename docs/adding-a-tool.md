@@ -200,9 +200,10 @@ Content-Security-Policy, is in [What can be built here](what-can-be-built-here.m
 
 ## Adding from a web address
 
-Setting `[picker.urls]` in a tool.toml switches on the one feature here that
-contacts anything. It is the only part of this repository that a tool must
-*qualify* for rather than simply ask for.
+Setting `[picker.urls]` in a tool.toml switches on one of the two features
+here that contact anything — the other being `/share-text/`'s rendezvous,
+argued on that tool's own page and in `workers/rendezvous/`. Both are parts a
+tool must *qualify* for rather than simply ask for.
 
 ```toml
 [picker.urls]

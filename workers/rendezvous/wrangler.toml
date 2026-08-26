@@ -1,0 +1,17 @@
+# The rendezvous for /share-text/. Deployed by hand with `npx wrangler
+# deploy` from this directory; nothing in build.py reads this folder.
+
+name = "rendezvous"
+main = "worker.js"
+compatibility_date = "2026-08-01"
+
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "Room"
+
+# SQLite-backed classes are the kind the free plan allows. The object never
+# touches its storage - its whole state is the sockets connected to it - but
+# the class still has to be declared this way to deploy at all.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Room"]

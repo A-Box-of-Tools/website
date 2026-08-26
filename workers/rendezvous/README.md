@@ -1,0 +1,48 @@
+# The rendezvous
+
+The one server component anything on this site has. `/share-text/` moves
+text and files directly between two browsers over WebRTC, and a direct
+connection needs an introduction: the two sides must exchange a few KB of
+session descriptions before a channel can exist, and something has to carry
+them and match "the person who typed `brave-otter-42`" with the other person
+who typed it. This Worker is that something, and deliberately nothing more.
+
+One Durable Object per code word, holding nothing but the open sockets - no
+storage is ever written, so a room ceases to exist the moment its sharer
+disconnects, and an idle deployment costs nothing at all. What it can see:
+that a code word is in use, when peers come and go, their IP addresses, and
+the negotiation blobs. What it cannot see: the text, the files, who was
+admitted, or what anybody said - all of that travels the encrypted peer
+channel, including the knock on a private share.
+
+## Deploy
+
+```
+npx wrangler deploy
+```
+
+from this directory, logged in to the site's Cloudflare account. The tool
+page names this worker's hostname in its `connect-src` and in one constant
+in `tools/share-text/src/main.js`; if the worker is ever renamed or moved to
+a custom domain, those are the two places that change.
+
+This folder is invisible to `build.py` - the deploy is by hand, and rare,
+because every feature the tool has gained since the first version has been
+page-side. The protocol here is a dumb switchboard and has not needed to
+change.
+
+## The protocol, in full
+
+- A host connects to `/ws/<code>?role=host`; a second host on a live code is
+  refused with close code 4409.
+- A viewer connects with `?role=viewer`; with no host present it is refused
+  4404, past the room cap 4429. Otherwise the host learns `{join, id}` and
+  the viewer gets `{ready}`.
+- Everything a viewer sends is wrapped as `{signal, from, data}` and handed
+  to the host; everything the host sends with a `to` goes to that viewer.
+  The payloads are WebRTC offers, answers and ICE candidates; the switchboard
+  does not read them.
+- When the host's socket drops, every viewer is closed with 4410
+  "host-gone" - the instant, authoritative end-of-share signal, long before
+  WebRTC's own ~30s consent expiry would notice.
+- `ping` is answered `pong` by the runtime without waking the object.
