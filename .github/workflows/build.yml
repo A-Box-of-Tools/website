@@ -177,12 +177,12 @@ jobs:
           git -C .publish commit -m "Build ${SHA:0:7}: ${subject}"
           git -C .publish push origin dist
 
-      # Bing, Yandex, Seznam and Naver accept being told that a page changed,
-      # and fetch it within hours instead of whenever a crawler next comes
-      # round. Google takes no part in this and is still reached through the
-      # sitemap alone; see the comment at the top of indexnow.py, which also
-      # explains why the URLs come from a diff of the two sitemaps rather than
-      # from a diff of the deployed files.
+      # Bing, Yandex, Seznam, Naver and Yep accept being told that a page
+      # changed, and fetch it within hours instead of whenever a crawler next
+      # comes round. Google takes no part in this and is still reached through
+      # the sitemap alone; see the comment at the top of indexnow.py, which
+      # also explains why the URLs come from a diff of the two sitemaps rather
+      # than from a diff of the deployed files.
       #
       # It runs after the publish, deliberately: it announces pages that are
       # already live, and a URL submitted a minute before it exists is fetched,
