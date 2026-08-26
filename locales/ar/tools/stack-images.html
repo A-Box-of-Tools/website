@@ -1,0 +1,239 @@
+<!--
+  tools/stack-images/body.html, in Arabic.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- الخطوة 1 &mdash; الإطارات -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الإطارات</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      تُفتح ملفات RAW بقراءة صورة JPEG بالحجم الكامل التي كتبتها الكاميرا داخلها
+      سلفاً: بضعة كيلوبايتات من الدليل ثم شريحة واحدة. أما بيانات المستشعر فلا
+      يُفكّ ترميزها قطّ، فيُفتح إطار حجمه 60&nbsp;ميغابايت بسرعة صورة JPEG تقريباً.
+      <a href="#faq-raw">ماذا يعني ذلك للناتج</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">رتّب بالاسم</button>
+        <button type="button" id="clear-all" class="ghost danger">أزل الكل</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- الخطوة 2 &mdash; كيف تجتمع -->
+  <section class="card">
+    <h2><span class="step">2</span> كيف تجتمع</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">الطريقة</label>
+        <select id="mode">
+          <option value="mean" selected>المتوسط &mdash; خفض الضجيج</option>
+          <option value="median">الوسيط &mdash; إزالة الناس والسيارات العابرة</option>
+          <option value="sigma">قصّ سيغما &mdash; الاثنان معاً</option>
+          <option value="max">إضاءة &mdash; مسارات النجوم والألعاب النارية والرسم بالضوء</option>
+          <option value="min">إعتام &mdash; إزالة كل ساطعٍ تحرّك</option>
+          <option value="sum">جمع &mdash; محاكاة تعريض طويل</option>
+          <option value="focus">تكديس البؤرة &mdash; إبقاء ما كان حادّاً</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">محاذاة الإطارات</label>
+        <select id="align">
+          <option value="translate" selected>نعم &mdash; إزاحة فقط</option>
+          <option value="similarity">نعم &mdash; إزاحة ودوران وقياس</option>
+          <option value="none">لا &mdash; خذها كما هي تماماً</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">دقة العمل</label>
+        <select id="scale">
+          <option value="full" selected>الحجم الكامل</option>
+          <option value="half">النصف &mdash; ربع الذاكرة</option>
+          <option value="quarter">الربع &mdash; جزء من ستة عشر</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">اطرح ما تجاوز</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          كلما خفضته طرح أكثر، وطرح معه تفاصيل حقيقية. وانحرافان معياريان هما
+          نقطة البدء المعتادة.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">تُقاس الحدّة على مدى</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          الأكبر يأخذ مناطق كاملة من إطار واحد؛ والأصغر يتتبّع التفاصيل الدقيقة وقد
+          يبعثر خلفيةً ملساء بين الإطارات.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">التعريض</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">احفظ بصيغة</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; بلا فقد</option>
+          <option value="jpeg">JPEG &mdash; ملف أصغر</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>الناتج</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>ذاكرة العمل</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>عمليات فكّ الترميز</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>المقروء من القرص</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- الخطوة 3 &mdash; التشغيل -->
+  <section class="card">
+    <h2><span class="step">3</span> كدّس</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>كدّس الصور</button>
+      <button type="button" id="cancel" class="ghost" hidden>إلغاء</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="الناتج المكدَّس">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>نزّل الصورة</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">إطار واحد</span>
+    <span data-phrase="count.many">{count} إطاراً</span>
+    <span data-phrase="count.none">لا إطارات بعد</span>
+
+    <span data-phrase="frame.reference">المرجع</span>
+    <span data-phrase="frame.make-reference">اجعله المرجع</span>
+    <span data-phrase="frame.remove">أزل</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; معاينة الكاميرا نفسها، {width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; معاينة {width} &times; {height}</span>
+    <span data-phrase="frame.raw-unreadable">لم تُوجد معاينة في ملف RAW هذا</span>
+    <span data-phrase="frame.read">قُرئ {read} من {total}</span>
+
+    <span data-phrase="mode.mean">يأخذ متوسط كل إطار. الضجيج العشوائي يعلو بقدر ما ينخفض، فأخذ متوسط {count} إطاراً يخفضه نحو {factor} مرة. هي الطريقة لمجموعة ساكنة، وهي التي يفسدها طائر واحد عابر.</span>
+    <span data-phrase="mode.median">يأخذ القيمة الوسطى لكل بكسل. وكل ما كان موجوداً في بعض الإطارات فقط، سائحٌ أو سيارة أو طائرة، يزول. وهي الطريقة الوحيدة التي عليها أن تمسك كل الإطارات دفعةً واحدة، ولذلك يمكن تقسيمها إلى أشرطة أدناه.</span>
+    <span data-phrase="mode.sigma">يتعلّم ما يكونه كل بكسل عادةً، ثم يأخذ متوسط القيم الموافقة له وحدها. نتيجة الوسيط مع خفض الضجيج الذي للمتوسط. ويقرأ الإطارات مرتين.</span>
+    <span data-phrase="mode.max">يبقي أسطع قيمة بلغها كل بكسل. وهو ما يجعل من سلسلة تعريضات قصيرة مساراتِ نجوم، ويجمع لعبةً ناريةً من إطارات انفجارها نفسه.</span>
+    <span data-phrase="mode.min">يبقي أعتم قيمة بلغها كل بكسل. ولا يبقى البكسل ساطعاً إلا إن كان ساطعاً في كل إطار، فتزول الانعكاسات في الزجاج والمصابيح العابرة وقطرات المطر التي أضاءها الفلاش.</span>
+    <span data-phrase="mode.sum">يجمع الإطارات بلا قسمة: ما كان سيجمعه تعريضٌ أطول {count} مرة. وسيحترق بياضاً، تماماً كما كان ذلك التعريض ليحترق. أعده بمنزلق التعريض.</span>
+    <span data-phrase="mode.focus">يأخذ كل جزء من الصورة من الإطار الذي كان فيه حادّاً. صوّر شيئاً صغيراً على امتداد حلقة البؤرة، وهذا يجمع الأجزاء الحادّة.</span>
+
+    <span data-phrase="align.translate">يجد كم أُزيح كل إطار ويعيده، إلى كسور من البكسل. يصحّح اهتزاز اليد وانزلاق الحامل الثلاثي. أما الدوران فلا يصحّحه.</span>
+    <span data-phrase="align.similarity">يجد الدوران والقياس أيضاً. يكلّف قياساً إضافياً لكل إطار، ولا يكلّف شيئاً البتة إن تبيّن أن الإطارات مستقيمة. والدوران لا يُستعاد إلا ضمن نصف دورة دائماً.</span>
+    <span data-phrase="align.none">يكدّس الإطارات كما تصل تماماً. صحيحٌ لحامل ثلاثي مثبَّت أو لسلسلة بفواصل، وخطأ لكل ما أُخذ باليد.</span>
+
+    <span data-phrase="scale.note">كل إطار يفكّ مفكِّك ترميز المتصفح نفسه ترميزه بهذا الحجم، فالإعداد الأصغر عملٌ أقل لا ذاكرة أقل فحسب.</span>
+    <span data-phrase="gain.note">يُضرب في الناتج في النهاية تماماً، بعد الحساب وقبل التقريب.</span>
+    <span data-phrase="gain.sum-note">جمع {count} إطاراً سيحترق بياضاً على الأرجح القريب من اليقين. اخفضه إلى نحو {suggested} لترى ما جُمِع.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">نحو {mb} ميغابايت</span>
+    <span data-phrase="plan.decodes.simple">{count}، واحدة لكل إطار</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; كل إطار، {passes} مرات</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; كل إطار، مرةً لكل شريط من {bands}</span>
+    <span data-phrase="plan.read">{read} من {total} على القرص</span>
+    <span data-phrase="plan.banded">هذا لا يتّسع في الذاكرة دفعةً واحدة، فستُقطع الصورة إلى {bands} شريطاً وتُقرأ الإطارات من جديد لكل شريط. واختيار {suggested} كان سيجعله مروراً واحداً.</span>
+    <span data-phrase="plan.banded-anyway">هذا لا يتّسع في الذاكرة دفعةً واحدة، فستُقطع الصورة إلى {bands} شريطاً وتُقرأ الإطارات من جديد لكل شريط. وإطاراتٌ أقل أو دقة عمل أصغر كانت ستجعله مروراً واحداً.</span>
+
+    <span data-phrase="progress.open">يُنظر داخل {name}&hellip;</span>
+    <span data-phrase="progress.survey">يُقرأ {name}&hellip;</span>
+    <span data-phrase="progress.measure">يُقاس كم تحرّك {name}&hellip;</span>
+    <span data-phrase="progress.stack">يُكدَّس &mdash; قُرئ {done} من {total} إطاراً</span>
+    <span data-phrase="progress.stack-banded">يُكدَّس &mdash; الشريط {band} من {bands}، قُرئ {done} من {total} إطاراً</span>
+    <span data-phrase="progress.encode">تُكتب الصورة&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}، {size} &mdash; جُمِع {count} إطاراً في {seconds} ثانية</span>
+    <span data-phrase="result.moves">قِيس كل إطار ودُفع إلى مكانه.</span>
+    <span data-phrase="result.moves-some">{count} من {total} إطاراً تعذّر قياسها بثقة فتُركت حيث كانت.</span>
+    <span data-phrase="result.moves-none">كُدِّست الإطارات كما وصلت تماماً.</span>
+    <span data-phrase="result.moves-clamped">{count} إطاراً أبلغت عن دوران أكبر مما يليق بسلسلة لقطات، فصُحِّحت بالإزاحة وحدها.</span>
+    <span data-phrase="result.cropped">دفعُها بعيداً عن بعضها ترك حوافّ لا يبلغها كل إطار، وقد قُصّت.</span>
+
+    <span data-phrase="error.no.files">أضف صورةً واحدة على الأقل أولاً.</span>
+    <span data-phrase="error.no.size">لم يُفتح أيٌّ من هذه الملفات كصورة.</span>
+    <span data-phrase="error.one.frame">التكديس يحتاج إطارين على الأقل.</span>
+    <span data-phrase="error.unknown">حدث خطأ أثناء التكديس. إن كان أحد هذه الملفات غير مألوف، فجرّبه وحده.</span>
+    <span data-phrase="error.memory">نفدت ذاكرة المتصفح. جرّب دقة عمل أصغر أو إطارات أقل.</span>
+    <span data-phrase="error.unreadable">{name} لم يُفتح كصورة فبقي خارجاً.</span>
+    <span data-phrase="error.busy">انتظر انتهاء هذه الكدسة قبل إضافة إطارات أخرى، أو ألغِها.</span>
+  </div>
+</main>

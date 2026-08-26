@@ -105,6 +105,7 @@ complete = true
 "password-generator" = "مولد-كلمات-المرور"
 "timelapse-video" = "إنشاء-فيديو-تايم-لابس"
 "hash-checksum" = "حساب-قيمة-التجزئة"
+"stack-images" = "تكديس-الصور"
 
 # The indexes and the legal pages.
 "guides" = "أدلة"
@@ -141,6 +142,8 @@ complete = true
 "guides/trim-an-audio-file" = "أدلة/قص-ملف-صوتي"
 "guides/whats-inside-a-gif" = "أدلة/ماذا-يوجد-داخل-gif"
 "guides/verify-a-file-checksum" = "أدلة/التحقق-من-قيمة-تجزئة-الملف"
+# من يكدّس لا يبحث عن «التكديس»، بل عن الضجيج، فهو المشكلة.
+"guides/stack-photos-to-reduce-noise" = "أدلة/تكديس-الصور-لتقليل-الضجيج"
 
 # The three that shipped after this file was first written. The tools keep
 # their Latin acronyms in the address for the reason given at the top: DICOM
