@@ -39,8 +39,8 @@ card = """
             기기의 성능으로 합니다."""
 
 [words]
-plural = "이미지 파일"
-choose = "이미지 파일"
+plural = "이미지 파일은"
+choose = "이미지 파일을"
 
 [[facts]]
 text = "업로드 없음"

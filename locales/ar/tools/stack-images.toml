@@ -43,7 +43,7 @@ card = """
             محوِّل."""
 
 [words]
-plural = "صور"
+plural = "صورك"
 choose = "بعض الصور"
 
 [[facts]]

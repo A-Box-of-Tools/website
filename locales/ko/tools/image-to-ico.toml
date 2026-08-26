@@ -46,8 +46,8 @@ card = """
             담고 내려받기 전에 16픽셀로 미리 보여 줍니다."""
 
 [words]
-plural = "이미지 파일"
-choose = "그림"
+plural = "이미지 파일은"
+choose = "그림을"
 
 [[facts]]
 text = "업로드 없음"

@@ -278,7 +278,7 @@ features = [
   "N'agrandit jamais une image sans qu'on le lui demande",
   "Rend intact tout fichier qu'on ne lui a pas demandé de changer",
   "Traitement par lots, tous les résultats dans un seul zip",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

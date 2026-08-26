@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "動画"
-choose = "動画を1つ"
+choose = "動画"
 analytics_extra = """。コマも、\
   長さも、ファイル名も同じです"""
 

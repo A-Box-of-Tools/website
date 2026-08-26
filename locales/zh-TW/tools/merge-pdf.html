@@ -17,9 +17,7 @@
 
     <p class="card-lede">
       你選的每個檔案的每一頁，都按出來的順序排在這裡。抓住
-      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖動就能挪，
-      用箭頭可以轉，用 &times; 可以刪。這裡還什麼都沒寫出去，文件要等你在第四步
-      按下按鈕才會拼起來。
+      <span class="grip" aria-hidden="true">&#8942;&#8942;</span> 把手拖動就能挪，用箭頭可以轉，用 &times; 可以刪。這裡還什麼都沒寫出去，文件要等你在第四步按下按鈕才會拼起來。
     </p>
 
     <div class="toolbar">
@@ -59,8 +57,7 @@
         <label class="preset">
           <input type="radio" name="split" value="single" checked>
           <span class="preset-body">
-            <strong>一份文件</strong>
-            <span class="preset-note">上面的全部內容，按那個順序，做成一個 PDF。</span>
+            <strong>一份文件</strong><span class="preset-note">上面的全部內容，按那個順序，做成一個 PDF。</span>
           </span>
         </label>
         <label class="preset">
@@ -68,7 +65,7 @@
           <span class="preset-body">
             <strong>每隔多少頁拆一次</strong>
             <span class="preset-note">
-              把長掃描件切成每份
+              把長掃描檔切成每份
               <input type="number" id="split-size" min="1" max="5000" step="1" value="10"
                      inputmode="numeric" aria-label="每個檔案包含的頁數">
               頁的小冊。
@@ -90,15 +87,13 @@
         <label class="preset">
           <input type="radio" name="split" value="each">
           <span class="preset-body">
-            <strong>每頁各成一個</strong>
-            <span class="preset-note">一頁一個 PDF。想單獨抽出簽字頁的時候好用。</span>
+            <strong>每頁各成一個</strong><span class="preset-note">一頁一個 PDF。想單獨抽出簽字頁的時候好用。</span>
           </span>
         </label>
         <label class="preset" id="by-file-preset" hidden>
           <input type="radio" name="split" value="file">
           <span class="preset-body">
-            <strong>切回它們原來的檔案</strong>
-            <span class="preset-note">你選的每個檔案各出一份文件，你的改動都留著。</span>
+            <strong>切回它們原來的檔案</strong><span class="preset-note">你選的每個檔案各出一份文件，你的改動都留著。</span>
           </span>
         </label>
       </div>
@@ -109,9 +104,7 @@
       <span>
         <strong>保留書籤</strong>
         <span class="check-note">
-          每個檔案自帶的那份目錄，會按真正留下來的頁面重新搭一遍：目標頁被你刪掉
-          的條目會消失，所在章節還在的條目會留下。合併多個檔案時，每個檔案的書籤
-          會歸到一個以它命名的標題下面。
+          每個檔案內建的那份目錄，會按真正留下來的頁面重新搭一遍：目標頁被你刪掉的條目會消失，所在章節還在的條目會留下。合併多個檔案時，每個檔案的書籤會歸到一個以它命名的標題下面。
         </span>
       </span>
     </label>
@@ -124,7 +117,7 @@
     <h2><span class="step">4</span> 拼起來</h2>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big">生成文件</button>
+      <button type="button" id="run" class="primary big">產生文件</button>
       <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 

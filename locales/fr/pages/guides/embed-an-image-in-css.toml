@@ -3,7 +3,7 @@
 #
 
 nav = "Intégrer une image dans le CSS"
-title = "Les data URI en CSS : quand intégrer une image, et quand s'abstenir"
+title = "Les data URI en CSS&nbsp;: quand intégrer une image, et quand s'abstenir"
 description = "Ce que coûte un data URI, pourquoi le base64 ajoute un tiers que le gzip ne rend pas, pourquoi un SVG ne devrait jamais être en base64, et l'erreur de guillemets qui casse les SVG intégrés sans rien dire."
 heading = "Quand mettre une image dans votre CSS, et quand s'abstenir"
 lede = """

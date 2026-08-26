@@ -41,8 +41,8 @@ card = """
             않고요."""
 
 [words]
-plural = "동영상"
-choose = "동영상"
+plural = "동영상은"
+choose = "동영상을"
 
 [[facts]]
 text = "업로드 없음"

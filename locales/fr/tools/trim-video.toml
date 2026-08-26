@@ -17,7 +17,7 @@ heading = "Couper&nbsp;une&nbsp;vidéo <span class=\"h1-kw\">&mdash; couper une 
 tagline = "Marquez les passages à garder pendant la lecture. Récupérez-les en une seule vidéo."
 
 title = "Couper une vidéo en ligne &mdash; ne garder que ce que vous voulez, sans envoi"
-description = "Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur : rien n'est envoyé et rien n'est réencodé."
+description = "Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur&nbsp;: rien n'est envoyé et rien n'est réencodé."
 og_title = "Coupeur de vidéos &mdash; ne garder que ce que vous voulez, sans rien envoyer"
 og_description = "Appuyez sur I et O pendant la lecture pour marquer chaque passage à garder. Les passages marqués sont réécrits en une seule vidéo, image pour image, sans rien envoyer."
 og_image_alt = "Coupeur de vidéos - marquez ce que vous voulez et enregistrez-le en une seule vidéo, dans votre navigateur"
@@ -314,8 +314,8 @@ a = """
         finance&nbsp;; les annonces ne reçoivent rien sur votre vidéo."""
 
 [schema]
-browser_requirements = "Nécessite JavaScript. Recopier les images ne demande aucune prise en charge de codec vidéo ; la coupe exacte demande un navigateur avec WebCodecs, et les autres formats se rabattent sur l'enregistrement."
-description = "Marquez autant de passages que vous voulez pendant la lecture d'une vidéo, puis enregistrez ces passages en un seul fichier - ou coupez-les et gardez le reste. Les MP4, MOV et M4V sont coupés en déplaçant les images encodées intactes dans un nouveau fichier, avec l'audio d'origine repris échantillon par échantillon ; rien n'est envoyé et rien n'est réencodé."
+browser_requirements = "Nécessite JavaScript. Recopier les images ne demande aucune prise en charge de codec vidéo&nbsp;; la coupe exacte demande un navigateur avec WebCodecs, et les autres formats se rabattent sur l'enregistrement."
+description = "Marquez autant de passages que vous voulez pendant la lecture d'une vidéo, puis enregistrez ces passages en un seul fichier - ou coupez-les et gardez le reste. Les MP4, MOV et M4V sont coupés en déplaçant les images encodées intactes dans un nouveau fichier, avec l'audio d'origine repris échantillon par échantillon&nbsp;; rien n'est envoyé et rien n'est réencodé."
 features = [
   "Marque autant de passages que voulu avec I et O pendant la lecture",
   "Raccorde les passages marqués en un seul fichier, dans l'ordre que vous choisissez",
@@ -324,7 +324,7 @@ features = [
   "Enregistre et recharge les marques dans un fichier texte d'horodatages",
   "Marques à l'image près, avec les images clés montrées sur la ligne de temps",
   "Garde l'audio d'origine sans le réencoder",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

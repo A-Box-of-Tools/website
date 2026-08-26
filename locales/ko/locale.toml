@@ -396,12 +396,12 @@ related_heading = "상자 속 다른 도구"
 privacy_heading = "이 약속을 직접 확인하는 방법"
 
 pledge_line = """
-    {{ tool.words.plural }}은 <strong>절대 업로드되지 않습니다</strong>. 서버가 아예 없으니까요."""
+    {{ tool.words.plural }} <strong>절대 업로드되지 않습니다</strong>. 서버가 아예 없으니까요."""
 
 boot_title = "이 페이지의 코드가 시작되지 않았습니다."
 boot_body = """
     <code>index.html</code>을 폴더에서 바로 열면 브라우저가 JavaScript 모듈을 막습니다.
-    그래서 {{ tool.words.choose }}을 골라도 아무 일도 일어나지 않아요. 폴더를 http로 띄워서 여세요:"""
+    그래서 {{ tool.words.choose }} 골라도 아무 일도 일어나지 않아요. 폴더를 http로 띄워서 여세요:"""
 boot_then = "그런 다음 <code>http://localhost:8080/</code>을 여세요."
 
 noscript_title = "JavaScript가 꺼져 있습니다."

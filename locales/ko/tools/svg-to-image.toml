@@ -46,8 +46,8 @@ card = """
             8000이든 어느 쪽이든 똑같이 선명합니다."""
 
 [words]
-plural = "SVG 파일"
-choose = "SVG 파일"
+plural = "SVG 파일은"
+choose = "SVG 파일을"
 
 [[facts]]
 text = "업로드 없음"

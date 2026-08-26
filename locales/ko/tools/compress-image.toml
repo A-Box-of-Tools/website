@@ -46,8 +46,8 @@ card = """
 # Ends in a 받침 because the frame puts 은 and 을 straight after it. See the
 # note above [ui] in ../locale.toml.
 [words]
-plural = "이미지 파일"
-choose = "이미지 파일"
+plural = "이미지 파일은"
+choose = "이미지 파일을"
 
 [[facts]]
 text = "업로드 없음"

@@ -41,7 +41,7 @@ card = """
 
 [words]
 plural = "動画"
-choose = "動画を1つ"
+choose = "動画"
 analytics_extra = """。コマも、\
   タイムコードも、画像も同じです"""
 

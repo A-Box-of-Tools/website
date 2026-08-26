@@ -423,7 +423,7 @@ pledge_line = """
 boot_title = "Der Code dieser Seite ist nicht gestartet."
 boot_body = """
     Wird <code>index.html</code> direkt aus einem Ordner geöffnet, blockiert der Browser
-    JavaScript-Module, und beim Auswählen von {{ tool.words.choose }} passiert nichts. Stellen Sie den Ordner
+    JavaScript-Module, und wenn Sie {{ tool.words.choose }} auswählen, passiert nichts. Stellen Sie den Ordner
     stattdessen über HTTP bereit:"""
 boot_then = "Öffnen Sie dann <code>http://localhost:8080/</code>."
 

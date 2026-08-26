@@ -43,7 +43,7 @@ card = """
 
 [words]
 plural = "テキストとコード"
-choose = "ファイルを1つ"
+choose = "ファイル"
 analytics_extra = """。この道具が判定する\
   言語も、エンコードも、差分も同じです"""
 

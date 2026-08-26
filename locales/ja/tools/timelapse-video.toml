@@ -50,7 +50,7 @@ card = """
 
 [words]
 plural = "動画"
-choose = "動画を"
+choose = "動画"
 
 [[facts]]
 text = "アップロードなし"

@@ -49,7 +49,7 @@ card = """
             ön izlemesiyle."""
 
 [words]
-plural = "görseller"
+plural = "görselleriniz"
 choose = "bir resim"
 
 [[facts]]

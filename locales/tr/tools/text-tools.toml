@@ -51,7 +51,7 @@ card = """
             dosyasını kimseye vermeden yapıştırın."""
 
 [words]
-plural = "metin ve kod"
+plural = "metniniz ve kodunuz"
 choose = "bir dosya"
 
 [[facts]]

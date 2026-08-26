@@ -340,11 +340,11 @@ a = """
         un code s'arrêterait à l'instant où vous débranchez."""
 
 [schema]
-description = "Produisez un QR code ou un code-barres linéaire à partir d'une chaîne de caractères, dans le navigateur. QR codes pour des liens, des réseaux Wi-Fi, des cartes de visite, des courriels, des SMS, des numéros de téléphone et des coordonnées, avec les quatre niveaux de correction d'erreurs ; codes-barres EAN-13, EAN-8, UPC-A, ITF-14, Interleaved 2 of 5, Code 128 et Code 39 avec leurs clés de contrôle. Téléchargement en SVG ou en PNG. Rien n'est envoyé."
+description = "Produisez un QR code ou un code-barres linéaire à partir d'une chaîne de caractères, dans le navigateur. QR codes pour des liens, des réseaux Wi-Fi, des cartes de visite, des courriels, des SMS, des numéros de téléphone et des coordonnées, avec les quatre niveaux de correction d'erreurs&nbsp;; codes-barres EAN-13, EAN-8, UPC-A, ITF-14, Interleaved 2 of 5, Code 128 et Code 39 avec leurs clés de contrôle. Téléchargement en SVG ou en PNG. Rien n'est envoyé."
 features = [
   "QR codes de la version 1 à la version 40, en mode numérique, alphanumérique et octet",
   "Les quatre niveaux de correction d'erreurs, avec ce que chacun coûte dit à voix haute",
-  "Formats prêts à l'emploi : réseau Wi-Fi, carte de visite, courriel, SMS, numéro de téléphone, point sur une carte",
+  "Formats prêts à l'emploi&nbsp;: réseau Wi-Fi, carte de visite, courriel, SMS, numéro de téléphone, point sur une carte",
   "Montre la chaîne exacte que le code contiendra, au lieu de la cacher",
   "EAN-13, EAN-8 et UPC-A, avec la clé de contrôle calculée ou vérifiée",
   "ITF-14 et Interleaved 2 of 5 pour les cartons et la logistique",
@@ -352,6 +352,6 @@ features = [
   "Chiffres lisibles imprimés sous un code-barres, aux bons endroits",
   "Sortie SVG, qui s'imprime net à toute taille, et un PNG dessiné à un nombre entier de pixels par module",
   "Deux couleurs quelconques, ou pas de fond du tout",
-  "Ne redirige jamais : pas de lien court, pas de pistage, rien qui puisse expirer",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Ne redirige jamais&nbsp;: pas de lien court, pas de pistage, rien qui puisse expirer",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]

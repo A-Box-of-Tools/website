@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "GIF"
-choose = "GIFを1つ"
+choose = "GIF"
 analytics_extra = """。ファイルの中のコマも、\
   パレットも、コメントも同じです"""
 

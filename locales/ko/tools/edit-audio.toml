@@ -41,8 +41,8 @@ card = """
             됩니다."""
 
 [words]
-plural = "녹음 파일"
-choose = "파일"
+plural = "녹음 파일은"
+choose = "파일을"
 
 [[facts]]
 text = "업로드 없음"

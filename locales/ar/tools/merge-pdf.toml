@@ -47,7 +47,7 @@ card = """
             يُعرَض عليك."""
 
 [words]
-plural = "مستندات"
+plural = "مستنداتك"
 choose = "ملفات PDF"
 
 [[facts]]

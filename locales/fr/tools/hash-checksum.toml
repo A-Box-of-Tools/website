@@ -371,12 +371,12 @@ a = """
 description = "Calculer la somme de contrôle MD5, SHA-1, SHA-256, SHA-384 ou SHA-512 de n'importe quel fichier dans le navigateur et la comparer à la valeur publiée par une page de téléchargement. Le fichier est lu par morceaux et n'est jamais envoyé."
 features = [
   "MD5, SHA-1, SHA-256, SHA-384 et SHA-512, en une seule passe sur le fichier",
-  "Aucune limite de taille : le fichier est lu par morceaux et jamais gardé entier",
-  "Collez la valeur attendue sous n'importe quelle forme publiée : l'algorithme est déduit",
+  "Aucune limite de taille&nbsp;: le fichier est lu par morceaux et jamais gardé entier",
+  "Collez la valeur attendue sous n'importe quelle forme publiée&nbsp;: l'algorithme est déduit",
   "Lit la sortie de sha256sum, les fichiers SHA256SUMS, la forme BSD et les attributs integrity",
   "Dit en une phrase si le fichier correspond, et pas seulement par une couleur",
   "Copier une somme, toutes les copier, ou les enregistrer en texte avec l'algorithme en tête",
-  "Fonctionne hors ligne ; aucun envoi, aucun compte, aucune modification du fichier",
+  "Fonctionne hors ligne&nbsp;; aucun envoi, aucun compte, aucune modification du fichier",
 ]
 
 [picker]

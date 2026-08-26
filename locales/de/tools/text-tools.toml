@@ -46,7 +46,7 @@ card = """
             sie jemandem zu geben."""
 
 [words]
-plural = "Text und Code"
+plural = "Texte und Codes"
 choose = "eine Datei"
 analytics_extra = """, und keine der
   Sprachen, Kodierungen oder Unterschiede, die dieses Werkzeug ermittelt"""

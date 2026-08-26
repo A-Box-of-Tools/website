@@ -239,14 +239,14 @@ a = """
         logiciel de montage s'il vous en faut une."""
 
 [schema]
-browser_requirements = "Nécessite JavaScript. La sortie MP4 demande un navigateur avec WebCodecs ; les autres se rabattent sur le WebM."
+browser_requirements = "Nécessite JavaScript. La sortie MP4 demande un navigateur avec WebCodecs&nbsp;; les autres se rabattent sur le WebM."
 description = "Transformez un dossier d'images en un diaporama vidéo MP4. Chaque étape tourne dans votre navigateur, si bien qu'aucune image n'est jamais envoyée."
 features = [
   "Convertit des images JPG, PNG, WebP, GIF et AVIF en vidéo",
   "Sortie MP4 (H.264), avec le WebM comme repli",
   "Résolutions jusqu'à 3840 × 2160, cadences de 12 à 60 images par seconde",
   "Durée d'affichage par image, en images ou en secondes",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

@@ -11,7 +11,7 @@
     <h2><span class="step">1</span> 選好你的 HEIC 照片</h2>
 
     <p class="card-lede">
-      手機裡直接拷的、備份裡翻出來的、儲存卡上拿的，都行。檔案就在這臺機器上讀，畫面也在這裡解碼。這個頁面沒有上傳這一步，背後也沒有伺服器。
+      手機裡直接複製的、備份裡翻出來的、儲存卡上拿的，都行。檔案就在這臺機器上讀，畫面也在這裡解碼。這個頁面沒有上傳這一步，背後也沒有伺服器。
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -61,14 +61,13 @@
       <label class="check">
         <input type="checkbox" id="keep-exif" checked>
         <span>
-          <strong>保留日期、相機和引數</strong>
-          <span class="check-note">按手機寫的樣子原樣複製過去，所以轉換後的照片還是按拍攝那天排序，不是按轉換那天。照片帶 GPS 座標的話，座標也一起帶上，上面那份列表寫明瞭你的哪幾張帶著。關掉它，出來的 JPEG 裡只剩畫面。
+          <strong>保留日期、相機和引數</strong><span class="check-note">按手機寫的樣子原樣複製過去，所以轉換後的照片還是按拍攝那天排序，不是按轉換那天。照片帶 GPS 座標的話，座標也一起帶上，上面那份列表寫明瞭你的哪幾張帶著。關掉它，出來的 JPEG 裡只剩畫面。
           </span>
         </span>
       </label>
 
       <p class="field-summary">
-        選哪邊都一樣，這裡沒有任何東西會被讀給誰聽。這個選擇管的是你拿回去的檔案裡裝什麼，不是這個頁面拿它做什麼。想逐條細看那些標籤，或者把已經是 JPEG 的照片裡的標籤清掉，那是 <a href="../exif-editor/">EXIF 檢視與清除</a>乾的活。
+        選哪邊都一樣，這裡沒有任何東西會被讀給誰聽。這個選擇管的是你拿回去的檔案裡裝什麼，不是這個頁面拿它做什麼。想逐條細看那些標籤，或者把已經是 JPEG 的照片裡的標籤清掉，那是 <a href="../exif-editor/">EXIF 檢視與清除</a>做的事。
       </p>
     </fieldset>
   </section>

@@ -111,7 +111,7 @@
       <span>
         <strong>同樣的詞也從文件其餘部分拿走</strong>
         <span class="check-note">
-          書籤、批註、便籤，以及表單域裡填過的內容。從頁面上拿掉、卻留在某個書籤裡的詞，不算拿掉。文件屬性不受這個開關影響，反正都會走；閱讀器用來代替頁面字元去複製的那段替換文字也一樣。這兩樣都是文件自己在說那個詞，不是別處存了一份副本。
+          書籤、註解、便籤，以及表單域裡填過的內容。從頁面上拿掉、卻留在某個書籤裡的詞，不算拿掉。文件屬性不受這個開關影響，反正都會走；閱讀器用來代替頁面字元去複製的那段替換文字也一樣。這兩樣都是文件自己在說那個詞，不是別處存了一份副本。
         </span>
       </span>
     </label>
@@ -161,51 +161,26 @@
     languages; see "The strings in the JavaScript" in the repository README.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="load.notpdf">這不是 PDF，所以裡面根本沒有可以拿掉的文字。</span>
-    <span data-phrase="load.encrypted">這份 PDF 帶密碼。去掉一份文件的保護，跟從裡面拿走幾個詞是兩件事，這個工具不會揹著你去做。</span>
-    <span data-phrase="load.broken">這個檔案打不開成 PDF（{detail}）。</span>
-    <span data-phrase="load.nopages">它是開啟了，但裡面找不到頁面。</span>
-    <span data-phrase="load.repaired">這份文件的交叉引用表跟它的內容對不上，所以是靠一個一個找物件讀出來的。這是一次修復，而且成功了。發出去之前請仔細核對結果。</span>
+    <span data-phrase="load.notpdf">這不是 PDF，所以裡面根本沒有可以拿掉的文字。</span><span data-phrase="load.encrypted">這份 PDF 帶密碼。去掉一份文件的保護，跟從裡面拿走幾個詞是兩件事，這個工具不會揹著你去做。</span><span data-phrase="load.broken">這個檔案打不開成 PDF（{detail}）。</span><span data-phrase="load.nopages">它是開啟了，但裡面找不到頁面。</span><span data-phrase="load.repaired">這份文件的交叉引用表跟它的內容對不上，所以是靠一個一個找物件讀出來的。這是一次修復，而且成功了。發出去之前請仔細核對結果。</span>
 
     <span data-phrase="doc.sub">{pages} | 文字 {words} | {size}</span>
-    <span data-phrase="doc.notext">其中 {count} 頁根本沒有文字。這樣的頁面是一頁紙的影象，對這個工具來說那裡沒有可拿的東西。圖裡的詞還在原處。</span>
-    <span data-phrase="doc.unreadable">這份文件裡有 {count} 個字元讀不成文字，因為用到的字型沒有帶上從它的字形回到文字的對照表。這些字元搜不到，所以別信搜尋，去看它們所在的那幾頁。</span>
-    <span data-phrase="doc.scan">有些頁面在一張圖上面壓著看不見的文字，掃描器就是這樣記下它讀出來的內容的。把那些文字拿掉，拿掉的正是搜尋和複製會找到的東西。圖一點不變，圖裡的詞照樣看得清。</span>
+    <span data-phrase="doc.notext">其中 {count} 頁根本沒有文字。這樣的頁面是一頁紙的影像，對這個工具來說那裡沒有可拿的東西。圖裡的詞還在原處。</span><span data-phrase="doc.unreadable">這份文件裡有 {count} 個字元讀不成文字，因為用到的字型沒有帶上從它的字形回到文字的對照表。這些字元搜不到，所以別信搜尋，去看它們所在的那幾頁。</span><span data-phrase="doc.scan">有些頁面在一張圖上面壓著看不見的文字，掃描器就是這樣記下它讀出來的內容的。把那些文字拿掉，拿掉的正是搜尋和複製會找到的東西。圖一點不變，圖裡的詞照樣看得清。</span>
 
     <span data-phrase="find.none">哪一頁都沒找到。</span>
-    <span data-phrase="find.some">{pages} 上共 {count} 處。</span>
-    <span data-phrase="find.more">列出的是前 {shown} 處。其餘的也都找到了，你要是全選，它們會一起被拿掉。</span>
-    <span data-phrase="find.terms">按搜尋之前，先在上面打一個詞，或者選一個模式。</span>
+    <span data-phrase="find.some">{pages} 上共 {count} 處。</span><span data-phrase="find.more">列出的是前 {shown} 處。其餘的也都找到了，你要是全選，它們會一起被拿掉。</span><span data-phrase="find.terms">按搜尋之前，先在上面打一個詞，或者選一個模式。</span>
 
-    <span data-phrase="page.of">第 {number} 頁，共 {total} 頁</span>
-    <span data-phrase="page.picked">這一頁要拿掉 {count} 處</span>
-    <span data-phrase="page.notext">這一頁上沒有文字。它要麼是空的，要麼是一頁紙的影象：一份掃描件、一張照片，或者一次把詞畫成了圖形的匯出。上面的東西搜不了，也沒法在這裡拿掉。</span>
-    <span data-phrase="page.unreadable">這一頁有 {count} 個字元讀不成文字。它們在下面顯示成 &#9647;，搜尋找不到。</span>
-    <span data-phrase="page.scan">這一頁的文字是看不見的，它壓在這一頁的圖上面，掃描件就是這樣變得可搜尋的。你在這裡拿掉的，正是搜尋和複製會找到的東西。圖還帶著那些詞。</span>
+    <span data-phrase="page.of">第 {number} 頁，共 {total} 頁</span><span data-phrase="page.picked">這一頁要拿掉 {count} 處</span><span data-phrase="page.notext">這一頁上沒有文字。它要麼是空的，要麼是一頁紙的影像：一份掃描檔、一張照片，或者一次把詞畫成了圖形的匯出。上面的東西搜不了，也沒法在這裡拿掉。</span><span data-phrase="page.unreadable">這一頁有 {count} 個字元讀不成文字。它們在下面顯示成 &#9647;，搜尋找不到。</span><span data-phrase="page.scan">這一頁的文字是看不見的，它壓在這一頁的圖上面，掃描檔就是這樣變得可搜尋的。你在這裡拿掉的，正是搜尋和複製會找到的東西。圖還帶著那些詞。</span>
 
-    <span data-phrase="run.summary">要從 {pages} 上拿掉 {words}。</span>
-    <span data-phrase="run.nothing">還什麼都沒勾。到第 2 步搜一個詞，或者到第 3 步點一個。</span>
-    <span data-phrase="run.editing">正在拿掉這些詞&hellip;</span>
+    <span data-phrase="run.summary">要從 {pages} 上拿掉 {words}。</span><span data-phrase="run.nothing">還什麼都沒勾。到第 2 步搜一個詞，或者到第 3 步點一個。</span><span data-phrase="run.editing">正在拿掉這些詞&hellip;</span>
     <span data-phrase="run.writing">正在寫文件&hellip;</span>
     <span data-phrase="run.checking">正在重新開啟做好的檔案並搜尋&hellip;</span>
-    <span data-phrase="run.failed">重寫這份文件的時候出了岔子（{detail}）。</span>
-    <span data-phrase="run.cancelled">已取消。什麼都沒寫。</span>
+    <span data-phrase="run.failed">重寫這份文件的時候出了差錯（{detail}）。</span><span data-phrase="run.cancelled">已取消。什麼都沒寫。</span>
 
     <span data-phrase="result.headline">拿掉了 {words}</span>
     <span data-phrase="result.sub">{size} | 改動 {pages} | {boxes}</span>
-    <span data-phrase="check.good">像一個讀者那樣，在這裡重新開啟搜了一遍：做好的檔案裡一個都沒有。</span>
-    <span data-phrase="check.partial">在這裡重新開啟搜了一遍：你勾過的每一處都沒了，你留下的還在。</span>
-    <span data-phrase="check.survived">這個檔案沒有寫出來。做好的文件重新開啟之後，你拿掉的內容裡還有一部分搜得到，也就是說塗黑並不徹底。什麼都不給下載。</span>
-    <span data-phrase="check.pages">這個檔案沒有寫出來。做好的文件回來時頁數跟進去時不一樣，說明除了那些詞之外還有別的地方出了問題。什麼都不給下載。</span>
+    <span data-phrase="check.good">像一個讀者那樣，在這裡重新開啟搜了一遍：做好的檔案裡一個都沒有。</span><span data-phrase="check.partial">在這裡重新開啟搜了一遍：你勾過的每一處都沒了，你留下的還在。</span><span data-phrase="check.survived">這個檔案沒有寫出來。做好的文件重新開啟之後，你拿掉的內容裡還有一部分搜得到，也就是說塗黑並不徹底。什麼都不給下載。</span><span data-phrase="check.pages">這個檔案沒有寫出來。做好的文件回來時頁數跟進去時不一樣，說明除了那些詞之外還有別的地方出了問題。什麼都不給下載。</span>
 
-    <span data-phrase="fact.boxes">在空出來的位置上畫了 {count} 個。</span>
-    <span data-phrase="fact.noboxes">一個黑塊都沒畫，所以那些詞是悄無聲息地沒了，沒有任何東西指出它們原來在哪裡。</span>
-    <span data-phrase="fact.elsewhere">同樣的詞也從{where}拿走了。</span>
-    <span data-phrase="fact.metadata">文件屬性和 XMP 包已經刪除，所以做好的檔案不會說是什麼做的它、什麼時候做的，以及它以前叫什麼。</span>
-    <span data-phrase="fact.carried">丟掉了 {attachments} 和 {actions}。</span>
-    <span data-phrase="fact.shared">你拿掉的內容裡有一部分是由一個被文件在多頁上覆用的塊畫出來的，所以它從每一個畫這個塊的頁面上都消失了。這比你勾的要多，絕不會更少。</span>
-    <span data-phrase="fact.overimage">拿掉的字元裡有 {count} 個壓在同一頁的一張圖上面。它們從文字層裡沒了，在圖裡還在，也就是說讀的人再也搜不到、複製不走，但還看得見。</span>
-    <span data-phrase="fact.untouched">每一頁上其餘的一切都逐位元組傳了過去。沒有字型、圖片或者線條被重新編碼。</span>
+    <span data-phrase="fact.boxes">在空出來的位置上畫了 {count} 個。</span><span data-phrase="fact.noboxes">一個黑塊都沒畫，所以那些詞是悄無聲息地沒了，沒有任何東西指出它們原來在哪裡。</span><span data-phrase="fact.elsewhere">同樣的詞也從{where}拿走了。</span><span data-phrase="fact.metadata">文件屬性和 XMP 包已經刪除，所以做好的檔案不會說是什麼做的它、什麼時候做的，以及它以前叫什麼。</span><span data-phrase="fact.carried">丟掉了 {attachments} 和 {actions}。</span><span data-phrase="fact.shared">你拿掉的內容裡有一部分是由一個被文件在多頁上覆用的塊畫出來的，所以它從每一個畫這個塊的頁面上都消失了。這比你勾的要多，絕不會更少。</span><span data-phrase="fact.overimage">拿掉的字元裡有 {count} 個壓在同一頁的一張圖上面。它們從文字層裡沒了，在圖裡還在，也就是說讀的人再也搜不到、複製不走，但還看得見。</span><span data-phrase="fact.untouched">每一頁上其餘的一切都逐位元組傳了過去。沒有字型、圖片或者線條被重新編碼。</span>
 
     <span data-phrase="count.pages">{count} 頁</span>
     <span data-phrase="count.page">{count} 頁</span>
@@ -231,10 +206,6 @@
     <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts}，它們誰也沒拿到文件、文件裡的一個詞，或者你搜過的任何東西。</span>
 
-    <span data-phrase="finder.email">電子郵箱</span>
-    <span data-phrase="finder.card">卡號</span>
-    <span data-phrase="finder.iban">銀行帳戶（IBAN）</span>
-    <span data-phrase="finder.nationalid">身份證號與社保號</span>
-    <span data-phrase="finder.phone">電話號碼</span>
+    <span data-phrase="finder.email">電子信箱</span><span data-phrase="finder.card">卡號</span><span data-phrase="finder.iban">銀行帳戶（IBAN）</span><span data-phrase="finder.nationalid">身份證號與社保號</span><span data-phrase="finder.phone">電話號碼</span>
   </div>
 </main>

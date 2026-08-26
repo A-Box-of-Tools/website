@@ -67,7 +67,7 @@
           <option value="1920x1080">1920 &times; 1080，1080p</option>
           <option value="1280x720">1280 &times; 720，720p</option>
           <option value="1080x1080">1080 &times; 1080，方形</option>
-          <option value="1080x1920">1080 &times; 1920，豎屏</option>
+          <option value="1080x1920">1080 &times; 1920，直式</option>
           <option value="custom">自己填&hellip;</option>
         </select>
         <div id="resolution-custom" class="inline-pair" hidden>
@@ -125,7 +125,7 @@
         <label for="format">格式</label>
         <select id="format">
           <option value="auto" selected>MP4（推薦）</option>
-          <option value="webm">WebM（兜底）</option>
+          <option value="webm">WebM（備援）</option>
         </select>
         <p class="field-note" id="format-note"></p>
       </div>
@@ -147,10 +147,10 @@
 
   <!-- 第 3 步，匯出 -->
   <section class="card">
-    <h2><span class="step">3</span> 生成影片</h2>
+    <h2><span class="step">3</span> 產生影片</h2>
 
     <div class="export-row">
-      <button type="button" id="export" class="primary" disabled>生成影片</button>
+      <button type="button" id="export" class="primary" disabled>產生影片</button>
       <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 

@@ -13,7 +13,7 @@ heading = "Faire&nbsp;un&nbsp;timelapse <span class=\"h1-kw\">&mdash; accélére
 tagline = "Une heure de rushes en vingt secondes."
 
 title = "Faire un timelapse en ligne &mdash; gratuit, sans envoi, hors ligne"
-description = "Transformez une longue vidéo en timelapse : 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne."
+description = "Transformez une longue vidéo en timelapse&nbsp;: 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne."
 og_title = "Créateur de timelapse &mdash; accélérer une vidéo sans l'envoyer"
 og_description = "Prenez une image toutes les quelques secondes d'un long clip et récupérez-en un court. Votre propre navigateur lit, décode et encode le fichier."
 og_image_alt = "Créateur de timelapse - accélérer une longue vidéo dans votre navigateur, sans rien envoyer"
@@ -251,14 +251,14 @@ a = """
         aux annonces sur votre vidéo."""
 
 [schema]
-browser_requirements = "Nécessite JavaScript et un navigateur capable d'encoder de la vidéo avec WebCodecs : Chrome, Edge, Safari 16.4 ou plus récent, ou Firefox 133 ou plus récent."
-description = "Transformer une longue vidéo en timelapse dans le navigateur. Une image est prise toutes les quelques secondes de l'original, puis les images sont réécrites en un MP4 court à 24, 30 ou 60 images par seconde. Les MP4, MOV et M4V sont lus directement, et seulement autour des instants nécessaires ; tout le reste que le navigateur sait lire est parcouru par déplacements. Rien n'est envoyé."
+browser_requirements = "Nécessite JavaScript et un navigateur capable d'encoder de la vidéo avec WebCodecs&nbsp;: Chrome, Edge, Safari 16.4 ou plus récent, ou Firefox 133 ou plus récent."
+description = "Transformer une longue vidéo en timelapse dans le navigateur. Une image est prise toutes les quelques secondes de l'original, puis les images sont réécrites en un MP4 court à 24, 30 ou 60 images par seconde. Les MP4, MOV et M4V sont lus directement, et seulement autour des instants nécessaires&nbsp;; tout le reste que le navigateur sait lire est parcouru par déplacements. Rien n'est envoyé."
 features = [
   "Accélère les vidéos MP4, MOV, M4V et WebM de 1,1x à 1000x",
   "Dites la vitesse, ou dites la durée que doit faire le résultat",
   "Ne lit que les portions du fichier dont les instants choisis ont besoin",
   "24, 30 ou 60 images par seconde, à la taille d'origine ou réduite",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

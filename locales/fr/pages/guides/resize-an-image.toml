@@ -4,7 +4,7 @@
 
 nav = "Redimensionner une image"
 title = "Comment redimensionner une image sans l'abîmer"
-description = "Ce qui arrive à une image quand on change ses dimensions en pixels : pourquoi réduire est sans danger et agrandir ne l'est pas, que faire quand le cadre n'a pas la bonne forme, et quand recadrer plutôt."
+description = "Ce qui arrive à une image quand on change ses dimensions en pixels&nbsp;: pourquoi réduire est sans danger et agrandir ne l'est pas, que faire quand le cadre n'a pas la bonne forme, et quand recadrer plutôt."
 heading = "Comment redimensionner une image sans l'abîmer"
 lede = """
     Le redimensionnement est le seul travail d'image où les dégâts sont décidés

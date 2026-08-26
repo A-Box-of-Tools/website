@@ -24,8 +24,7 @@
   <section class="card" id="run-card">
     <h2><span class="step">2</span> 校驗和</h2>
     <p class="card-lede">
-      預設算 MD5 和 SHA-256，這兩個加起來幾乎覆蓋了所有下載頁面。再勾一個，檔案
-      就會為它重讀一遍：慢的那一半是讀，所以在選檔案之前勾好的，一遍讀完一起出。
+      預設算 MD5 和 SHA-256，這兩個加起來幾乎覆蓋了所有下載頁面。再勾一個，檔案就會為它重讀一遍：慢的那一半是讀，所以在選檔案之前勾好的，一遍讀完一起出。
     </p>
 
     <fieldset class="algorithms">
@@ -92,36 +91,31 @@
         <li class="digest" data-algorithm="md5" hidden>
           <span class="digest-name">MD5</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
           <button type="button" class="ghost" data-slot="copy">複製</button>
         </li>
         <li class="digest" data-algorithm="sha1" hidden>
           <span class="digest-name">SHA-1</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
           <button type="button" class="ghost" data-slot="copy">複製</button>
         </li>
         <li class="digest" data-algorithm="sha256" hidden>
           <span class="digest-name">SHA-256</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
           <button type="button" class="ghost" data-slot="copy">複製</button>
         </li>
         <li class="digest" data-algorithm="sha384" hidden>
           <span class="digest-name">SHA-384</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
           <button type="button" class="ghost" data-slot="copy">複製</button>
         </li>
         <li class="digest" data-algorithm="sha512" hidden>
           <span class="digest-name">SHA-512</span>
           <code class="digest-value" data-slot="value"></code>
-          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span>
-          <span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
+          <span class="digest-verdict is-match" data-slot="match" hidden>對得上</span><span class="digest-verdict is-differs" data-slot="differs" hidden>對不上</span>
           <button type="button" class="ghost" data-slot="copy">複製</button>
         </li>
       </ul>
@@ -133,7 +127,7 @@
   <section class="card" id="compare-card">
     <h2><span class="step">3</span> 和本該是的值對一下</h2>
     <p class="card-lede">
-      把下載頁面給你的校驗和粘進來。什麼形式都不要緊：光是十六進位、
+      把下載頁面給你的校驗和貼進來。什麼形式都不要緊：光是十六進位、
       <code>sha256sum</code> 的輸出、整份 <code>SHA256SUMS</code> 檔案、
       <code>SHA256 (檔名) = &hellip;</code> 這種寫法，或者 script 標籤上的
       <code>integrity</code> 屬性。是哪種演算法由長度決定，所以沒有什麼要選的。
@@ -145,20 +139,17 @@
               placeholder="e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"></textarea>
 
     <p class="expected-read" id="expected-read" role="status" aria-live="polite" hidden>
-      <span data-read="one">這是一個 <b data-slot="algorithm"></b>。</span>
-      <span data-read="many">這是一份清單，裡面有 <b data-slot="count"></b> 個校驗和。</span>
-      <span data-read="stray">這是 <b data-slot="length"></b> 個十六進位字元，而這裡沒有哪一種是這個長度。多半是複製時丟了結尾。</span>
-      <span data-read="nothing">裡面沒有看起來像校驗和的東西。</span>
+      <span data-read="one">這是一個 <b data-slot="algorithm"></b>。</span><span data-read="many">這是一份清單，裡面有 <b data-slot="count"></b> 個校驗和。</span><span data-read="stray">這是 <b data-slot="length"></b> 個十六進位字元，而這裡沒有哪一種是這個長度。多半是複製時丟了結尾。</span><span data-read="nothing">裡面沒有看起來像校驗和的東西。</span>
     </p>
 
     <div class="verdict" id="verdict" hidden>
       <p class="verdict-line good" data-outcome="match">
         <span class="verdict-mark">&#10003;</span>
-        <span>這就是那串校驗和所描述的檔案。它的 <b data-slot="algorithm"></b> 和你粘進來的一字不差。</span>
+        <span>這就是那串校驗和所描述的檔案。它的 <b data-slot="algorithm"></b> 和你貼進來的一字不差。</span>
       </p>
       <p class="verdict-line good" data-outcome="renamed">
         <span class="verdict-mark">&#10003;</span>
-        <span>位元組對得上，但對上的是另一行。你粘進來的內容把這個檔案叫作 <b data-slot="name"></b>，而你選的檔案叫別的名字。要麼它在路上被改了名，要麼它不是你想核對的那次下載；無論哪種，<b data-slot="algorithm"></b> 都是對的。</span>
+        <span>位元組對得上，但對上的是另一行。你貼進來的內容把這個檔案叫作 <b data-slot="name"></b>，而你選的檔案叫別的名字。要麼它在路上被改了名，要麼它不是你想核對的那次下載；無論哪種，<b data-slot="algorithm"></b> 都是對的。</span>
       </p>
       <p class="verdict-line bad" data-outcome="mismatch">
         <span class="verdict-mark">&#10007;</span>

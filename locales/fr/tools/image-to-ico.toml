@@ -346,9 +346,9 @@ features = [
   "Garde la transparence, et écrit aussi le masque de transparence d'avant Vista",
   "Compléter, recadrer ou étirer une image qui n'est pas carrée, sur une couleur ou sur rien",
   "Montre chaque taille à sa taille réelle en pixels avant le téléchargement",
-  "Jeu facultatif pour site web : icône Apple touch, icônes Android, icône masquable, tuile Windows, manifeste et le HTML à coller",
+  "Jeu facultatif pour site web&nbsp;: icône Apple touch, icônes Android, icône masquable, tuile Windows, manifeste et le HTML à coller",
   "Traitement par lots, tous les résultats dans un seul zip",
-  "Fonctionne hors ligne ; sans envoi, sans compte",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
 ]
 
 [picker]

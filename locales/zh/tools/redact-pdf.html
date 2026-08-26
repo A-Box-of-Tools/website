@@ -161,51 +161,26 @@
     languages; see "The strings in the JavaScript" in the repository README.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="load.notpdf">这不是 PDF，所以里面根本没有可以拿掉的文字。</span>
-    <span data-phrase="load.encrypted">这份 PDF 带密码。去掉一份文档的保护，跟从里面拿走几个词是两件事，这个工具不会背着你去做。</span>
-    <span data-phrase="load.broken">这个文件打不开成 PDF（{detail}）。</span>
-    <span data-phrase="load.nopages">它是打开了，但里面找不到页面。</span>
-    <span data-phrase="load.repaired">这份文档的交叉引用表跟它的内容对不上，所以是靠一个一个找对象读出来的。这是一次修复，而且成功了。发出去之前请仔细核对结果。</span>
+    <span data-phrase="load.notpdf">这不是 PDF，所以里面根本没有可以拿掉的文字。</span><span data-phrase="load.encrypted">这份 PDF 带密码。去掉一份文档的保护，跟从里面拿走几个词是两件事，这个工具不会背着你去做。</span><span data-phrase="load.broken">这个文件打不开成 PDF（{detail}）。</span><span data-phrase="load.nopages">它是打开了，但里面找不到页面。</span><span data-phrase="load.repaired">这份文档的交叉引用表跟它的内容对不上，所以是靠一个一个找对象读出来的。这是一次修复，而且成功了。发出去之前请仔细核对结果。</span>
 
     <span data-phrase="doc.sub">{pages} | 文字 {words} | {size}</span>
-    <span data-phrase="doc.notext">其中 {count} 页根本没有文字。这样的页面是一页纸的图像，对这个工具来说那里没有可拿的东西。图里的词还在原处。</span>
-    <span data-phrase="doc.unreadable">这份文档里有 {count} 个字符读不成文字，因为用到的字体没有带上从它的字形回到文字的对照表。这些字符搜不到，所以别信搜索，去看它们所在的那几页。</span>
-    <span data-phrase="doc.scan">有些页面在一张图上面压着看不见的文字，扫描仪就是这样记下它读出来的内容的。把那些文字拿掉，拿掉的正是搜索和复制会找到的东西。图一点不变，图里的词照样看得清。</span>
+    <span data-phrase="doc.notext">其中 {count} 页根本没有文字。这样的页面是一页纸的图像，对这个工具来说那里没有可拿的东西。图里的词还在原处。</span><span data-phrase="doc.unreadable">这份文档里有 {count} 个字符读不成文字，因为用到的字体没有带上从它的字形回到文字的对照表。这些字符搜不到，所以别信搜索，去看它们所在的那几页。</span><span data-phrase="doc.scan">有些页面在一张图上面压着看不见的文字，扫描仪就是这样记下它读出来的内容的。把那些文字拿掉，拿掉的正是搜索和复制会找到的东西。图一点不变，图里的词照样看得清。</span>
 
     <span data-phrase="find.none">哪一页都没找到。</span>
-    <span data-phrase="find.some">{pages} 上共 {count} 处。</span>
-    <span data-phrase="find.more">列出的是前 {shown} 处。其余的也都找到了，你要是全选，它们会一起被拿掉。</span>
-    <span data-phrase="find.terms">按搜索之前，先在上面打一个词，或者选一个模式。</span>
+    <span data-phrase="find.some">{pages} 上共 {count} 处。</span><span data-phrase="find.more">列出的是前 {shown} 处。其余的也都找到了，你要是全选，它们会一起被拿掉。</span><span data-phrase="find.terms">按搜索之前，先在上面打一个词，或者选一个模式。</span>
 
-    <span data-phrase="page.of">第 {number} 页，共 {total} 页</span>
-    <span data-phrase="page.picked">这一页要拿掉 {count} 处</span>
-    <span data-phrase="page.notext">这一页上没有文字。它要么是空的，要么是一页纸的图像：一份扫描件、一张照片，或者一次把词画成了图形的导出。上面的东西搜不了，也没法在这里拿掉。</span>
-    <span data-phrase="page.unreadable">这一页有 {count} 个字符读不成文字。它们在下面显示成 &#9647;，搜索找不到。</span>
-    <span data-phrase="page.scan">这一页的文字是看不见的，它压在这一页的图上面，扫描件就是这样变得可搜索的。你在这里拿掉的，正是搜索和复制会找到的东西。图还带着那些词。</span>
+    <span data-phrase="page.of">第 {number} 页，共 {total} 页</span><span data-phrase="page.picked">这一页要拿掉 {count} 处</span><span data-phrase="page.notext">这一页上没有文字。它要么是空的，要么是一页纸的图像：一份扫描件、一张照片，或者一次把词画成了图形的导出。上面的东西搜不了，也没法在这里拿掉。</span><span data-phrase="page.unreadable">这一页有 {count} 个字符读不成文字。它们在下面显示成 &#9647;，搜索找不到。</span><span data-phrase="page.scan">这一页的文字是看不见的，它压在这一页的图上面，扫描件就是这样变得可搜索的。你在这里拿掉的，正是搜索和复制会找到的东西。图还带着那些词。</span>
 
-    <span data-phrase="run.summary">要从 {pages} 上拿掉 {words}。</span>
-    <span data-phrase="run.nothing">还什么都没勾。到第 2 步搜一个词，或者到第 3 步点一个。</span>
-    <span data-phrase="run.editing">正在拿掉这些词&hellip;</span>
+    <span data-phrase="run.summary">要从 {pages} 上拿掉 {words}。</span><span data-phrase="run.nothing">还什么都没勾。到第 2 步搜一个词，或者到第 3 步点一个。</span><span data-phrase="run.editing">正在拿掉这些词&hellip;</span>
     <span data-phrase="run.writing">正在写文档&hellip;</span>
     <span data-phrase="run.checking">正在重新打开做好的文件并搜索&hellip;</span>
-    <span data-phrase="run.failed">重写这份文档的时候出了岔子（{detail}）。</span>
-    <span data-phrase="run.cancelled">已取消。什么都没写。</span>
+    <span data-phrase="run.failed">重写这份文档的时候出了岔子（{detail}）。</span><span data-phrase="run.cancelled">已取消。什么都没写。</span>
 
     <span data-phrase="result.headline">拿掉了 {words}</span>
     <span data-phrase="result.sub">{size} | 改动 {pages} | {boxes}</span>
-    <span data-phrase="check.good">像一个读者那样，在这里重新打开搜了一遍：做好的文件里一个都没有。</span>
-    <span data-phrase="check.partial">在这里重新打开搜了一遍：你勾过的每一处都没了，你留下的还在。</span>
-    <span data-phrase="check.survived">这个文件没有写出来。做好的文档重新打开之后，你拿掉的内容里还有一部分搜得到，也就是说涂黑并不彻底。什么都不给下载。</span>
-    <span data-phrase="check.pages">这个文件没有写出来。做好的文档回来时页数跟进去时不一样，说明除了那些词之外还有别的地方出了问题。什么都不给下载。</span>
+    <span data-phrase="check.good">像一个读者那样，在这里重新打开搜了一遍：做好的文件里一个都没有。</span><span data-phrase="check.partial">在这里重新打开搜了一遍：你勾过的每一处都没了，你留下的还在。</span><span data-phrase="check.survived">这个文件没有写出来。做好的文档重新打开之后，你拿掉的内容里还有一部分搜得到，也就是说涂黑并不彻底。什么都不给下载。</span><span data-phrase="check.pages">这个文件没有写出来。做好的文档回来时页数跟进去时不一样，说明除了那些词之外还有别的地方出了问题。什么都不给下载。</span>
 
-    <span data-phrase="fact.boxes">在空出来的位置上画了 {count} 个。</span>
-    <span data-phrase="fact.noboxes">一个黑块都没画，所以那些词是悄无声息地没了，没有任何东西指出它们原来在哪里。</span>
-    <span data-phrase="fact.elsewhere">同样的词也从{where}拿走了。</span>
-    <span data-phrase="fact.metadata">文档属性和 XMP 包已经删除，所以做好的文件不会说是什么做的它、什么时候做的，以及它以前叫什么。</span>
-    <span data-phrase="fact.carried">丢掉了 {attachments} 和 {actions}。</span>
-    <span data-phrase="fact.shared">你拿掉的内容里有一部分是由一个被文档在多页上复用的块画出来的，所以它从每一个画这个块的页面上都消失了。这比你勾的要多，绝不会更少。</span>
-    <span data-phrase="fact.overimage">拿掉的字符里有 {count} 个压在同一页的一张图上面。它们从文字层里没了，在图里还在，也就是说读的人再也搜不到、复制不走，但还看得见。</span>
-    <span data-phrase="fact.untouched">每一页上其余的一切都逐字节传了过去。没有字体、图片或者线条被重新编码。</span>
+    <span data-phrase="fact.boxes">在空出来的位置上画了 {count} 个。</span><span data-phrase="fact.noboxes">一个黑块都没画，所以那些词是悄无声息地没了，没有任何东西指出它们原来在哪里。</span><span data-phrase="fact.elsewhere">同样的词也从{where}拿走了。</span><span data-phrase="fact.metadata">文档属性和 XMP 包已经删除，所以做好的文件不会说是什么做的它、什么时候做的，以及它以前叫什么。</span><span data-phrase="fact.carried">丢掉了 {attachments} 和 {actions}。</span><span data-phrase="fact.shared">你拿掉的内容里有一部分是由一个被文档在多页上复用的块画出来的，所以它从每一个画这个块的页面上都消失了。这比你勾的要多，绝不会更少。</span><span data-phrase="fact.overimage">拿掉的字符里有 {count} 个压在同一页的一张图上面。它们从文字层里没了，在图里还在，也就是说读的人再也搜不到、复制不走，但还看得见。</span><span data-phrase="fact.untouched">每一页上其余的一切都逐字节传了过去。没有字体、图片或者线条被重新编码。</span>
 
     <span data-phrase="count.pages">{count} 页</span>
     <span data-phrase="count.page">{count} 页</span>
@@ -231,10 +206,6 @@
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts}，它们谁也没拿到文档、文档里的一个词，或者你搜过的任何东西。</span>
 
-    <span data-phrase="finder.email">电子邮箱</span>
-    <span data-phrase="finder.card">卡号</span>
-    <span data-phrase="finder.iban">银行账户（IBAN）</span>
-    <span data-phrase="finder.nationalid">身份证号与社保号</span>
-    <span data-phrase="finder.phone">电话号码</span>
+    <span data-phrase="finder.email">电子邮箱</span><span data-phrase="finder.card">卡号</span><span data-phrase="finder.iban">银行账户（IBAN）</span><span data-phrase="finder.nationalid">身份证号与社保号</span><span data-phrase="finder.phone">电话号码</span>
   </div>
 </main>

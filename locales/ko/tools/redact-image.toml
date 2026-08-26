@@ -43,7 +43,7 @@ card = """
             않습니다."""
 
 [words]
-plural = "이미지"
+plural = "이미지는"
 choose = "이미지를"
 
 [[facts]]

@@ -12,7 +12,7 @@ tagline = "Transformer une série d'images en une seule animation."
 title = "Créer un GIF à partir d'images &mdash; gratuit, sans envoi de fichier"
 description = "Transformez des images JPG, PNG ou WebP en GIF animé, gratuitement et entièrement dans le navigateur. Vous fixez l'ordre, la vitesse et la taille. Rien n'est envoyé, et cela marche hors ligne."
 og_title = "Créateur de GIF &mdash; des images en GIF animé, dans votre navigateur"
-og_description = "Rangez les images, dites combien de temps chacune reste à l'écran, choisissez une taille, et repartez avec un GIF. La palette et la compression sont calculées sur votre machine ; rien n'est envoyé."
+og_description = "Rangez les images, dites combien de temps chacune reste à l'écran, choisissez une taille, et repartez avec un GIF. La palette et la compression sont calculées sur votre machine&nbsp;; rien n'est envoyé."
 og_image_alt = "Créateur de GIF - transformer une série d'images en un GIF animé"
 
 pledge = """
@@ -252,7 +252,7 @@ features = [
   "256, 128, 64 ou 32 couleurs, avec tramage Floyd-Steinberg facultatif",
   "Une palette commune ou les meilleures couleurs pour chaque image",
   "Transparence à un bit facultative, et lecture en boucle, une fois ou un nombre fixé de fois",
-  "Fonctionne hors ligne ; sans envoi, sans compte, sans filigrane",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte, sans filigrane",
 ]
 
 [picker]

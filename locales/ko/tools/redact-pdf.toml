@@ -45,8 +45,8 @@ card = """
             다시 열어 검색해서 그 낱말이 없음을 증명합니다."""
 
 [words]
-plural = "문서"
-choose = "PDF 하나"
+plural = "문서는"
+choose = "PDF 하나를"
 
 [[facts]]
 text = "업로드 없음"

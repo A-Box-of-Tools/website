@@ -4,9 +4,7 @@
     <h2><span class="step">1</span> 選好照片</h2>
 
     <p class="card-lede">
-      你瀏覽器能開啟的任何圖片都行。白天對著一面素淨的牆、從大約一米半外用手機拍
-      的那種，正是這些規定當初設想的樣子。照片直接從你的磁碟上讀，不會發到任何
-      地方。
+      你瀏覽器能開啟的任何圖片都行。白天對著一面素淨的牆、從大約一米半外用手機拍的那種，正是這些規定當初設想的樣子。照片直接從你的磁碟上讀，不會發到任何地方。
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -24,9 +22,7 @@
     <h2><span class="step">2</span> 選好國家和證件</h2>
 
     <p class="card-lede">
-      下面每一個數字都是公佈的要求，抄錄自其下注明的機構。這份清單裡沒有一條是猜
-      的，也沒有一條是去網上取的：它是 <code>src/specs.js</code> 裡的一張表，隨
-      頁面一起送來。
+      下面每一個數字都是公佈的要求，抄錄自其下注明的機構。這份清單裡沒有一條是猜的，也沒有一條是去網上取的：它是 <code>src/specs.js</code> 裡的一張表，隨頁面一起送來。
     </p>
 
     <div class="option-row">
@@ -84,12 +80,7 @@
 
     <div id="frame-controls" hidden>
       <p class="stage-hint" id="mark-hint">
-        頭頂、下巴，還有左右瞳孔。規定要量的全部就是這四個點，裁切框取自它們
-        最後停在哪裡&mdash;&mdash;哪個落偏了就拖回來，然後按<strong>套用裁切框
-        </strong>。找這四個點，靠的是量這張照片本身：你的頭在背後那面牆前的
-        輪廓，以及眼睛所在的那兩塊偏暗的地方。裡頭沒有模型，也不去取任何東西；
-        它是個起點，不是判決&mdash;&mdash;所以改它是你的事，下面那行也會說清楚
-        四個點裡哪一個它量不出來。
+        頭頂、下巴，還有左右瞳孔。規定要量的全部就是這四個點，裁切框取自它們最後停在哪裡&mdash;&mdash;哪個落偏了就拖回來，然後按<strong>套用裁切框</strong>。找這四個點，靠的是量這張照片本身：你的頭在背後那面牆前的輪廓，以及眼睛所在的那兩塊偏暗的地方。裡頭沒有模型，也不去取任何東西；它是個起點，不是判決&mdash;&mdash;所以改它是你的事，下面那行也會說清楚四個點裡哪一個它量不出來。
       </p>
 
       <!--
@@ -141,9 +132,7 @@
     <h2><span class="step">4</span> 背景</h2>
 
     <p class="card-lede" id="background-lede">
-      取自裁切框頂部的一條帶子，以及兩側肩膀以上的部分，也就是畫面裡本該只有背景
-      的地方。在 CIE Lab 裡測量，而不是在 RGB 裡，因為相差四十個 RGB 單位的兩種灰
-      根本分不出來，而四十個單位的藍就是另一種顏色了。
+      取自裁切框頂部的一條帶子，以及兩側肩膀以上的部分，也就是畫面裡本該只有背景的地方。在 CIE Lab 裡測量，而不是在 RGB 裡，因為相差四十個 RGB 單位的兩種灰根本分不出來，而四十個單位的藍就是另一種顏色了。
     </p>
 
     <div class="swatches" id="swatches" hidden>
@@ -186,7 +175,7 @@
     </div>
 
     <div class="run-row">
-      <button type="button" id="make" class="primary big" disabled>生成檔案</button>
+      <button type="button" id="make" class="primary big" disabled>產生檔案</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -208,18 +197,10 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="marks.measured">四個點都是從照片上量出來的：頭頂取自你頭部的輪廓，瞳孔取自它們的暗，下巴取自下頜收進脖子的地方。還是看一眼，哪個落偏了就拖回來：裁切框取自它們最後停在哪裡。</span>
-    <span data-phrase="marks.rough">放好了，但不是每一處都量得出來。套用裁切框之前，請把四個點都看一遍。</span>
-    <span data-phrase="marks.none">這張照片上什麼也量不出來。四個點改為停在起始位置上&mdash;&mdash;請把它們拖到頭頂、下巴和左右瞳孔上。</span>
-    <span data-phrase="marks.manual">這四個點歸你，什麼都不會去動它們。請把每一個拖到頭頂、下巴和瞳孔上。</span>
-    <span data-phrase="marks.edited">你動過一個點，所以四個點現在都歸你了。選「替我找」會重新量一遍這張照片。</span>
+    <span data-phrase="marks.measured">四個點都是從照片上量出來的：頭頂取自你頭部的輪廓，瞳孔取自它們的暗，下巴取自下頜收進脖子的地方。還是看一眼，哪個落偏了就拖回來：裁切框取自它們最後停在哪裡。</span><span data-phrase="marks.rough">放好了，但不是每一處都量得出來。套用裁切框之前，請把四個點都看一遍。</span><span data-phrase="marks.none">這張照片上什麼也量不出來。四個點改為停在起始位置上&mdash;&mdash;請把它們拖到頭頂、下巴和左右瞳孔上。</span><span data-phrase="marks.manual">這四個點歸你，什麼都不會去動它們。請把每一個拖到頭頂、下巴和瞳孔上。</span><span data-phrase="marks.edited">你動過一個點，所以四個點現在都歸你了。選「替我找」會重新量一遍這張照片。</span>
 
-    <span data-phrase="marks.why.background">你背後那面牆不夠乾淨，襯不出一個頭的輪廓。</span>
-    <span data-phrase="marks.why.top">頭從照片上方出了框，沒有頭頂可找。</span>
-    <span data-phrase="marks.why.eyes">眼睛認不出來，於是兩隻都放在這麼大的頭通常長眼睛的位置。</span>
-    <span data-phrase="marks.why.chin">下巴來自頭的一般比例，而不是這個頭的輪廓。</span>
+    <span data-phrase="marks.why.background">你背後那面牆不夠乾淨，襯不出一個頭的輪廓。</span><span data-phrase="marks.why.top">頭從照片上方出了框，沒有頭頂可找。</span><span data-phrase="marks.why.eyes">眼睛認不出來，於是兩隻都放在這麼大的頭通常長眼睛的位置。</span><span data-phrase="marks.why.chin">下巴來自頭的一般比例，而不是這個頭的輪廓。</span>
 
-    <span data-phrase="marks.button.again">重新找一次臉</span>
-    <span data-phrase="marks.button.back">把點放回去</span>
+    <span data-phrase="marks.button.again">重新找一次臉</span><span data-phrase="marks.button.back">把點放回去</span>
   </div>
 </main>

@@ -46,7 +46,7 @@ card = """
             mencapainya."""
 
 [words]
-plural = "gambar Anda"
+plural = "gambar"
 choose = "sebuah gambar"
 
 [[facts]]

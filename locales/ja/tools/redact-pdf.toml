@@ -45,7 +45,7 @@ card = """
 
 [words]
 plural = "書類"
-choose = "PDFを1つ"
+choose = "PDF"
 
 [[facts]]
 text = "アップロードなし"

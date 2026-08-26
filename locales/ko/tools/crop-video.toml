@@ -47,8 +47,8 @@ card = """
             정사각형, 세로로 긴 휴대폰 화면, 픽셀 단위로 정확한 상자까지."""
 
 [words]
-plural = "동영상"
-choose = "동영상"
+plural = "동영상은"
+choose = "동영상을"
 
 [[facts]]
 text = "업로드 없음"

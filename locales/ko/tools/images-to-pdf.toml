@@ -37,8 +37,8 @@ card = """
             그대로 복사되므로 화질을 잃지 않습니다."""
 
 [words]
-plural = "이미지 파일"
-choose = "이미지 파일"
+plural = "이미지 파일은"
+choose = "이미지 파일을"
 
 [[facts]]
 text = "업로드 없음"

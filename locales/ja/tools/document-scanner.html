@@ -11,9 +11,7 @@
     <h2><span class="step">1</span> 写真を選ぶ</h2>
 
     <p class="card-lede">
-      1ページにつき写真1枚を、真上あたりから撮ってください。紙全体が画面に入り、四隅は
-      見えているかほぼ見えている必要があります。ほかのすべて、つまり傾きも影も下の机も、
-      この道具がある理由です。複数を足すと、足した順に1つの書類のページになります。
+      1ページにつき写真1枚を、真上あたりから撮ってください。紙全体が画面に入り、四隅は見えているかほぼ見えている必要があります。ほかのすべて、つまり傾きも影も下の机も、この道具がある理由です。複数を足すと、足した順に1つの書類のページになります。
     </p>
 
     {% include "partials/file-picker.html" %}
@@ -41,10 +39,7 @@
 
     <div id="edit-controls" hidden>
       <p class="stage-hint">
-        写真のどこかを触るといちばん近い隅が指のところへ来ます。それを紙の角まで
-        ドラッグしてください。<kbd>Tab</kbd>でキーボードから隅に移れ、矢印キーで1画素、
-        <kbd>Shift</kbd>と一緒なら10画素動きます。どれも取り返しのつかないものでは
-        ありません。スキャンは4つの隅が最後に落ち着いた場所から取られます。
+        写真のどこかを触るといちばん近い隅が指のところへ来ます。それを紙の角までドラッグしてください。<kbd>Tab</kbd>でキーボードから隅に移れ、矢印キーで1画素、<kbd>Shift</kbd>と一緒なら10画素動きます。どれも取り返しのつかないものではありません。スキャンは4つの隅が最後に落ち着いた場所から取られます。
       </p>
 
       <!-- The photo is a canvas rather than an <img> because it is drawn at
@@ -79,9 +74,7 @@
 
     <div id="clean-controls" hidden>
       <p class="card-lede">
-        下にあるものが本当の結果で、ファイルを書くのと同じコードが作っています。まっすぐに
-        され、むらのある明るさを割って取り除いた状態です。選んでいるあいだ画面には画面の
-        大きさで描かれますが、ファイル自体は写真の解像度で作られます。
+        下にあるものが本当の結果で、ファイルを書くのと同じコードが作っています。まっすぐにされ、むらのある明るさを割って取り除いた状態です。選んでいるあいだ画面には画面の大きさで描かれますが、ファイル自体は写真の解像度で作られます。
       </p>
 
       <div class="result-wrap">
@@ -101,9 +94,7 @@
           <span>
             <strong>色つき、むらを取る</strong>
             <span class="check-note">
-              紙をページ全体で測って割るので、影が消えて紙は白に戻り、その一方で印影や
-              青インクの署名や蛍光ペンで引いた行は色を保ちます。色が書類の一部であるときは
-              このモードです。
+              紙をページ全体で測って割るので、影が消えて紙は白に戻り、その一方で印影や青インクの署名や蛍光ペンで引いた行は色を保ちます。色が書類の一部であるときはこのモードです。
             </span>
           </span>
         </label>
@@ -113,8 +104,7 @@
           <span>
             <strong>グレースケール</strong>
             <span class="check-note">
-              同じむら取りを、色なしで。カラーより小さく、写真や署名には白黒より
-              やさしい仕上がりです。
+              同じむら取りを、色なしで。カラーより小さく、写真や署名には白黒よりやさしい仕上がりです。
             </span>
           </span>
         </label>
@@ -124,11 +114,7 @@
           <span>
             <strong>白黒</strong>
             <span class="check-note">
-              各画素をページ全体のひとつの数値ではなく、その画素自身の近傍に照らして
-              決めます。それが影の中の文字を読めるまま保ちます。スキャンを小さくするのが
-              これです。20ページの契約書がこのモードなら1メガバイト未満で、写真として
-              なら15メガバイト前後になります。中間調がないので、写真の載ったものは
-              これを選ばないでください。
+              各画素をページ全体のひとつの数値ではなく、その画素自身の近傍に照らして決めます。それが影の中の文字を読めるまま保ちます。スキャンを小さくするのがこれです。20ページの契約書がこのモードなら1メガバイト未満で、写真としてなら15メガバイト前後になります。中間調がないので、写真の載ったものはこれを選ばないでください。
             </span>
           </span>
         </label>
@@ -138,8 +124,7 @@
           <span>
             <strong>そのまま</strong>
             <span class="check-note">
-              まっすぐにするだけで、ほかは何もしません。紙そのものが意味を持つページ、
-              つまり古いもの、色のあるもの、写真のためのモードです。
+              まっすぐにするだけで、ほかは何もしません。紙そのものが意味を持つページ、つまり古いもの、色のあるもの、写真のためのモードです。
             </span>
           </span>
         </label>
@@ -156,8 +141,7 @@
       </fieldset>
 
       <p class="hint-line">
-        この設定はすべてのページに適用されます。同じ書類の中で違う整え方をされたページは、
-        2つの書類のように見えます。
+        この設定はすべてのページに適用されます。同じ書類の中で違う整え方をされたページは、2つの書類のように見えます。
       </p>
     </div>
   </section>
@@ -167,9 +151,7 @@
     <h2><span class="step">4</span> 書類を保存する</h2>
 
     <p class="card-lede">
-      PDFはここ、このページのメモリの中で1ページずつ作られます。この道具の向こう側には
-      給与明細やパスポートや契約書を送る先のサーバーがなく、コードにもそうするものは
-      ありません。
+      PDFはここ、このページのメモリの中で1ページずつ作られます。この道具の向こう側には給与明細やパスポートや契約書を送る先のサーバーがなく、コードにもそうするものはありません。
     </p>
 
     <div class="settings">
@@ -194,8 +176,7 @@
           <option value="600">600 DPI</option>
         </select>
         <p class="field-note">
-          ある画素数でできた用紙をどれだけ大きいと呼ぶか、それだけです。書類が印刷される
-          寸法は変わりますが、スキャンの画素は1つも変わりません。
+          ある画素数でできた用紙をどれだけ大きいと呼ぶか、それだけです。書類が印刷される寸法は変わりますが、スキャンの画素は1つも変わりません。
         </p>
       </div>
 
@@ -217,8 +198,7 @@
           <option value="0">写真が許すかぎり大きく</option>
         </select>
         <p class="field-note">
-          まっすぐにしたページの上限です。紙の写真にはその紙に必要な量よりずっと多くの
-          画素が入っていますし、長辺2400はA4でおよそ200 DPIにあたります。
+          まっすぐにしたページの上限です。紙の写真にはその紙に必要な量よりずっと多くの画素が入っていますし、長辺2400はA4でおよそ200 DPIにあたります。
         </p>
       </div>
 
@@ -229,8 +209,7 @@
           <output id="quality-value">82%</output>
         </div>
         <p class="field-note">
-          JPEGで保存されるカラーとグレースケールのモード向けです。白黒のページは正確に
-          保存されるので、そちらには効きません。
+          JPEGで保存されるカラーとグレースケールのモード向けです。白黒のページは正確に保存されるので、そちらには効きません。
         </p>
       </div>
 
@@ -238,8 +217,7 @@
         <label for="title">書類の題名 <span class="optional">(任意)</span></label>
         <input type="text" id="title" maxlength="120" placeholder="空のままならPDFに題名は入りません">
         <p class="field-note">
-          ページ以外で書類に書かれる唯一のものです。日付も作成者も、この端末についての
-          情報もありません。<code>src/document.js</code>を見てください。
+          ページ以外で書類に書かれる唯一のものです。日付も作成者も、この端末についての情報もありません。<code>src/document.js</code>を見てください。
         </p>
       </div>
     </div>
@@ -258,8 +236,7 @@
       </div>
       <ul id="result-facts" class="result-facts"></ul>
       <p class="hint-line">
-        送る前に開いて確かめてください。書類に入っているのは、手順3で画面に出ていたもの
-        そのままです。
+        送る前に開いて確かめてください。書類に入っているのは、手順3で画面に出ていたものそのままです。
       </p>
     </div>
   </section>
@@ -271,24 +248,10 @@
     shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="detect.found">四隅が見つかりました。確かめて、外れているものは
-      ドラッグして直してください。</span>
-    <span data-phrase="detect.unsure">紙の縁が、確信できるほどはっきりしていません
-      でした。この四隅は推測なので、進む前に紙の上までドラッグしてください。</span>
-    <span data-phrase="detect.nothing">この写真では紙を見分けられなかったので、四隅は
-      写真の縁に置いてあります。紙の上までドラッグしてください。</span>
-    <span data-phrase="detect.flat">この画像には見つけるものがありません。縁がそもそも
-      ありません。</span>
-    <span data-phrase="detect.tiny">この画像は、中から紙を見つけるには小さすぎます。</span>
-    <span data-phrase="detect.edited">この四隅はもうあなたのものです。「四隅を探し直す」
-      は写真を最初から測り直します。</span>
+    <span data-phrase="detect.found">四隅が見つかりました。確かめて、外れているものはドラッグして直してください。</span><span data-phrase="detect.unsure">紙の縁が、確信できるほどはっきりしていませんでした。この四隅は推測なので、進む前に紙の上までドラッグしてください。</span><span data-phrase="detect.nothing">この写真では紙を見分けられなかったので、四隅は写真の縁に置いてあります。紙の上までドラッグしてください。</span><span data-phrase="detect.flat">この画像には見つけるものがありません。縁がそもそもありません。</span><span data-phrase="detect.tiny">この画像は、中から紙を見つけるには小さすぎます。</span><span data-phrase="detect.edited">この四隅はもうあなたのものです。「四隅を探し直す」は写真を最初から測り直します。</span>
 
-    <span data-phrase="corner.tl">左上の隅</span>
-    <span data-phrase="corner.tr">右上の隅</span>
-    <span data-phrase="corner.br">右下の隅</span>
-    <span data-phrase="corner.bl">左下の隅</span>
-    <span data-phrase="corner.at">{corner}、横{x}・縦{y}の位置。矢印キーで動き、Shiftを
-      押しながらなら一度に10画素動きます。</span>
+    <span data-phrase="corner.tl">左上の隅</span><span data-phrase="corner.tr">右上の隅</span><span data-phrase="corner.br">右下の隅</span><span data-phrase="corner.bl">左下の隅</span>
+    <span data-phrase="corner.at">{corner}、横{x}・縦{y}の位置。矢印キーで動き、Shiftを押しながらなら一度に10画素動きます。</span>
 
     <span data-phrase="page.select">{index}ページ目を編集</span>
     <span data-phrase="page.remove">{index}ページ目を削除</span>
@@ -300,57 +263,27 @@
     <span data-phrase="paper.a">A4またはA5</span>
     <span data-phrase="paper.letter">US Letter</span>
     <span data-phrase="paper.legal">US Legal</span>
-    <span data-phrase="paper.card">名刺</span>
-    <span data-phrase="shape.known">ページは{ratio}になり、それは{paper}の形です。</span>
-    <span data-phrase="shape.sideways">ページは{ratio}になり、それは{paper}を横に
-      した形です。</span>
-    <span data-phrase="shape.unknown">ページは{ratio}になり、それは標準の判型では
-      ありません。</span>
+    <span data-phrase="paper.card">名刺</span><span data-phrase="shape.known">ページは{ratio}になり、それは{paper}の形です。</span><span data-phrase="shape.sideways">ページは{ratio}になり、それは{paper}を横にした形です。</span><span data-phrase="shape.unknown">ページは{ratio}になり、それは標準の判型ではありません。</span>
 
-    <span data-phrase="method.perspective">形は写真の遠近から復元しました。ですから
-      これは紙の形であって、画像に写っていた形ではありません。</span>
-    <span data-phrase="method.edges">写真が正面から撮られていたので、形は縁から直接
-      測りました。</span>
+    <span data-phrase="method.perspective">形は写真の遠近から復元しました。ですからこれは紙の形であって、画像に写っていた形ではありません。</span><span data-phrase="method.edges">写真が正面から撮られていたので、形は縁から直接測りました。</span>
 
-    <span data-phrase="quality.good">{width}かける{height}画素。この大きさのページで
-      およそ{dpi} DPIで、印刷に十分です。</span>
-    <span data-phrase="quality.fair">{width}かける{height}画素。この大きさのページで
-      およそ{dpi} DPIです。画面では十分、紙では少し眠く見えます。</span>
-    <span data-phrase="quality.low">{width}かける{height}画素。この大きさのページで
-      およそ{dpi} DPIです。印刷するなら、もっと近づいてください。</span>
-    <span data-phrase="quality.pixels">{width}かける{height}画素。</span>
-    <span data-phrase="coverage.note">紙が写真の{percent}%を埋めました。</span>
-    <span data-phrase="coverage.small">紙が写真の{percent}%しか埋めていないので、撮った
-      ものの大半は机でした。次はもっと近づいてください。</span>
+    <span data-phrase="quality.good">{width}かける{height}画素。この大きさのページでおよそ{dpi} DPIで、印刷に十分です。</span>
+    <span data-phrase="quality.fair">{width}かける{height}画素。この大きさのページでおよそ{dpi} DPIです。画面では十分、紙では少し眠く見えます。</span>
+    <span data-phrase="quality.low">{width}かける{height}画素。この大きさのページでおよそ{dpi} DPIです。印刷するなら、もっと近づいてください。</span>
+    <span data-phrase="quality.pixels">{width}かける{height}画素。</span><span data-phrase="coverage.note">紙が写真の{percent}%を埋めました。</span><span data-phrase="coverage.small">紙が写真の{percent}%しか埋めていないので、撮ったものの大半は机でした。次はもっと近づいてください。</span>
 
-    <span data-phrase="strength.gentle">弱め。紙のむらを取るくらいで止めます。薄い鉛筆
-      や写真の載ったページ向けです。</span>
-    <span data-phrase="strength.middling">ふつうの設定。紙は白に戻り、印刷された文字は
-      黒に戻ります。</span>
-    <span data-phrase="strength.hard">強め。グレーのものはすべて黒か白へ押し込みます。
-      印刷文字だけのページではいちばんきれいで、画像の載ったものには破壊的です。</span>
+    <span data-phrase="strength.gentle">弱め。紙のむらを取るくらいで止めます。薄い鉛筆や写真の載ったページ向けです。</span><span data-phrase="strength.middling">ふつうの設定。紙は白に戻り、印刷された文字は黒に戻ります。</span><span data-phrase="strength.hard">強め。グレーのものはすべて黒か白へ押し込みます。印刷文字だけのページではいちばんきれいで、画像の載ったものには破壊的です。</span>
 
     <span data-phrase="busy.page">{total}ページ中{done}ページ目&hellip;</span>
     <span data-phrase="busy.writing">書類を書いています&hellip;</span>
 
     <span data-phrase="result.pdf">{name}｜{size}、{pages}。</span>
     <span data-phrase="result.images">{name}｜{size}、{pages}。</span>
-    <span data-phrase="result.mono">1画素1ビットで保存し、正確に圧縮しました。それが
-      これほど小さい理由です。</span>
-    <span data-phrase="result.jpeg">ページは選んだ画質のJPEGで保存しました。</span>
-    <span data-phrase="result.png">ページはPNGで保存しました。可逆で、色が2つの画像が
-      求めるのがこれです。JPEGなら大きくなるうえ、文字の周りがにじみます。</span>
-    <span data-phrase="result.clean">日付も作成者も端末名もありません。ページ以外で
-      書類に入っているのは、この道具の名前だけです。</span>
+    <span data-phrase="result.mono">1画素1ビットで保存し、正確に圧縮しました。それがこれほど小さい理由です。</span><span data-phrase="result.jpeg">ページは選んだ画質のJPEGで保存しました。</span><span data-phrase="result.png">ページはPNGで保存しました。可逆で、色が2つの画像が求めるのがこれです。JPEGなら大きくなるうえ、文字の周りがにじみます。</span><span data-phrase="result.clean">日付も作成者も端末名もありません。ページ以外で書類に入っているのは、この道具の名前だけです。</span>
 
-    <span data-phrase="size.fit">各用紙は、そのページが実際に持つ寸法を、上で選んだ
-      解像度で受け取ります。帯で埋めることはしません。</span>
-    <span data-phrase="size.named">各ページは、どんな形になっていても、余白の内側で
+    <span data-phrase="size.fit">各用紙は、そのページが実際に持つ寸法を、上で選んだ解像度で受け取ります。帯で埋めることはしません。</span><span data-phrase="size.named">各ページは、どんな形になっていても、余白の内側で
       {name}の用紙に置かれます。</span>
 
-    <span data-phrase="error.decode">このブラウザは{name}を開けませんでした。iPhoneの
-      HEIC写真なら、先に変換してください。</span>
-    <span data-phrase="error.none">まず写真を少なくとも1枚選んでください。</span>
-    <span data-phrase="error.failed">ファイルを作る途中で問題が起きました。{detail}</span>
+    <span data-phrase="error.decode">このブラウザは{name}を開けませんでした。iPhoneのHEIC写真なら、先に変換してください。</span><span data-phrase="error.none">まず写真を少なくとも1枚選んでください。</span><span data-phrase="error.failed">ファイルを作る途中で問題が起きました。{detail}</span>
   </div>
 </main>

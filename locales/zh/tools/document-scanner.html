@@ -250,63 +250,37 @@
     shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="detect.found">四个角找到了。核对一下，偏了的拖回去。</span>
-    <span data-phrase="detect.unsure">纸的边缘不够清楚，没法确定。这四个角是猜的，继续之前先把它们拖到纸上。</span>
-    <span data-phrase="detect.nothing">这张照片里认不出一张纸，所以角放在照片的边上。把它们拖到纸上。</span>
-    <span data-phrase="detect.flat">这张图里没有可找的东西，它根本没有边缘。</span>
-    <span data-phrase="detect.tiny">这张图太小了，在里面找不出一张纸。</span>
-    <span data-phrase="detect.edited">这四个角现在归你了。「重新找角」会把照片从头量一遍。</span>
+    <span data-phrase="detect.found">四个角找到了。核对一下，偏了的拖回去。</span><span data-phrase="detect.unsure">纸的边缘不够清楚，没法确定。这四个角是猜的，继续之前先把它们拖到纸上。</span><span data-phrase="detect.nothing">这张照片里认不出一张纸，所以角放在照片的边上。把它们拖到纸上。</span><span data-phrase="detect.flat">这张图里没有可找的东西，它根本没有边缘。</span><span data-phrase="detect.tiny">这张图太小了，在里面找不出一张纸。</span><span data-phrase="detect.edited">这四个角现在归你了。「重新找角」会把照片从头量一遍。</span>
 
-    <span data-phrase="corner.tl">左上角</span>
-    <span data-phrase="corner.tr">右上角</span>
-    <span data-phrase="corner.br">右下角</span>
-    <span data-phrase="corner.bl">左下角</span>
+    <span data-phrase="corner.tl">左上角</span><span data-phrase="corner.tr">右上角</span><span data-phrase="corner.br">右下角</span><span data-phrase="corner.bl">左下角</span>
     <span data-phrase="corner.at">{corner}，横向 {x}，纵向 {y}。方向键可以挪它，按住 Shift 一次挪十个像素。</span>
 
-    <span data-phrase="page.select">编辑第 {index} 页</span>
-    <span data-phrase="page.remove">移除第 {index} 页</span>
-    <span data-phrase="page.earlier">把第 {index} 页往前挪</span>
-    <span data-phrase="page.later">把第 {index} 页往后挪</span>
+    <span data-phrase="page.select">编辑第 {index} 页</span><span data-phrase="page.remove">移除第 {index} 页</span><span data-phrase="page.earlier">把第 {index} 页往前挪</span><span data-phrase="page.later">把第 {index} 页往后挪</span>
     <span data-phrase="page.count">{count} 页</span>
     <span data-phrase="page.counts">{count} 页</span>
 
     <span data-phrase="paper.a">A4 或者 A5</span>
     <span data-phrase="paper.letter">US Letter</span>
     <span data-phrase="paper.legal">US Legal</span>
-    <span data-phrase="paper.card">一张名片</span>
-    <span data-phrase="shape.known">页面出来是 {ratio}，这正是 {paper} 的形状。</span>
-    <span data-phrase="shape.sideways">页面出来是 {ratio}，这正是横放的 {paper}。</span>
-    <span data-phrase="shape.unknown">页面出来是 {ratio}，这不是标准开本。</span>
+    <span data-phrase="paper.card">一张名片</span><span data-phrase="shape.known">页面出来是 {ratio}，这正是 {paper} 的形状。</span><span data-phrase="shape.sideways">页面出来是 {ratio}，这正是横放的 {paper}。</span><span data-phrase="shape.unknown">页面出来是 {ratio}，这不是标准开本。</span>
 
-    <span data-phrase="method.perspective">形状是从照片的透视里还原出来的，所以这是纸的形状，不是它在画面里显出来的样子。</span>
-    <span data-phrase="method.edges">照片是正对着拍的，所以形状直接从边缘量得。</span>
+    <span data-phrase="method.perspective">形状是从照片的透视里还原出来的，所以这是纸的形状，不是它在画面里显出来的样子。</span><span data-phrase="method.edges">照片是正对着拍的，所以形状直接从边缘量得。</span>
 
     <span data-phrase="quality.good">{width} 乘 {height} 像素，在这个尺寸的页面上大约 {dpi} DPI，打印够用。</span>
     <span data-phrase="quality.fair">{width} 乘 {height} 像素，在这个尺寸的页面上大约 {dpi} DPI。屏幕上没问题，纸上略微发虚。</span>
     <span data-phrase="quality.low">{width} 乘 {height} 像素，在这个尺寸的页面上大约 {dpi} DPI。要打印的话，再走近点。</span>
-    <span data-phrase="quality.pixels">{width} 乘 {height} 像素。</span>
-    <span data-phrase="coverage.note">纸填满了照片的 {percent}%。</span>
-    <span data-phrase="coverage.small">纸只填满了照片的 {percent}%，也就是说你拍到的大半是桌子。下次靠近些。</span>
+    <span data-phrase="quality.pixels">{width} 乘 {height} 像素。</span><span data-phrase="coverage.note">纸填满了照片的 {percent}%。</span><span data-phrase="coverage.small">纸只填满了照片的 {percent}%，也就是说你拍到的大半是桌子。下次靠近些。</span>
 
-    <span data-phrase="strength.gentle">轻：把纸弄匀，别的基本不动。给那种写着浅铅笔字或者带照片的页面用。</span>
-    <span data-phrase="strength.middling">常用的一档：纸重新变白，印刷体重新变黑。</span>
-    <span data-phrase="strength.hard">重：所有发灰的都往黑或者白推。在只有印刷体的页面上最干净，在任何带图的东西上则是毁灭性的。</span>
+    <span data-phrase="strength.gentle">轻：把纸弄匀，别的基本不动。给那种写着浅铅笔字或者带照片的页面用。</span><span data-phrase="strength.middling">常用的一档：纸重新变白，印刷体重新变黑。</span><span data-phrase="strength.hard">重：所有发灰的都往黑或者白推。在只有印刷体的页面上最干净，在任何带图的东西上则是毁灭性的。</span>
 
     <span data-phrase="busy.page">第 {done} 页，共 {total} 页&hellip;</span>
     <span data-phrase="busy.writing">正在写文档&hellip;</span>
 
     <span data-phrase="result.pdf">{name} | {size}，{pages}。</span>
-    <span data-phrase="result.images">{name} | {size}，{pages}。</span>
-    <span data-phrase="result.mono">按每像素一位保存并精确压缩，所以才这么小。</span>
-    <span data-phrase="result.jpeg">页面按你选的质量存成了 JPEG。</span>
-    <span data-phrase="result.png">页面存成了 PNG，它是无损的，也正是两种颜色的图像需要的。换成 JPEG 会更大，而且每个字周围都发糊。</span>
-    <span data-phrase="result.clean">没有日期，没有作者，没有电脑名。除了页面，文档里只有这个工具的名字。</span>
+    <span data-phrase="result.images">{name} | {size}，{pages}。</span><span data-phrase="result.mono">按每像素一位保存并精确压缩，所以才这么小。</span><span data-phrase="result.jpeg">页面按你选的质量存成了 JPEG。</span><span data-phrase="result.png">页面存成了 PNG，它是无损的，也正是两种颜色的图像需要的。换成 JPEG 会更大，而且每个字周围都发糊。</span><span data-phrase="result.clean">没有日期，没有作者，没有电脑名。除了页面，文档里只有这个工具的名字。</span>
 
-    <span data-phrase="size.fit">每张纸拿到的就是它那一页真实的尺寸，按上面选的分辨率算。不会加白边去凑。</span>
-    <span data-phrase="size.named">每一页都放在 {name} 的纸上、页边距以内，不管它最后成了什么形状。</span>
+    <span data-phrase="size.fit">每张纸拿到的就是它那一页真实的尺寸，按上面选的分辨率算。不会加白边去凑。</span><span data-phrase="size.named">每一页都放在 {name} 的纸上、页边距以内，不管它最后成了什么形状。</span>
 
-    <span data-phrase="error.decode">这个浏览器打不开 {name}。要是 iPhone 拍的 HEIC 照片，先转换一下。</span>
-    <span data-phrase="error.none">先至少选一张照片。</span>
-    <span data-phrase="error.failed">做文件的时候出了岔子：{detail}</span>
+    <span data-phrase="error.decode">这个浏览器打不开 {name}。要是 iPhone 拍的 HEIC 照片，先转换一下。</span><span data-phrase="error.none">先至少选一张照片。</span><span data-phrase="error.failed">做文件的时候出了岔子：{detail}</span>
   </div>
 </main>

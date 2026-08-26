@@ -104,7 +104,7 @@
         <label class="check">
           <input type="radio" name="mode" value="grey">
           <span>
-            <strong>灰度</strong>
+            <strong>灰階</strong>
             <span class="check-note">
               同樣去掉不勻，只是不要顏色。比彩色小，對照片和簽字也比黑白溫和。
             </span>
@@ -116,7 +116,7 @@
           <span>
             <strong>黑白</strong>
             <span class="check-note">
-              每個畫素是拿它自己的鄰域來判，而不是拿整頁一個數字，這正是陰影裡的字還看得清的原因。掃描件小下來靠的就是它：二十頁的合同用這個模式在一兆以內，存成照片則要十五兆上下。這個模式沒有中間調，所以帶照片的頁面別選它。
+              每個畫素是拿它自己的鄰域來判，而不是拿整頁一個數字，這正是陰影裡的字還看得清的原因。掃描檔小下來靠的就是它：二十頁的合同用這個模式在一兆以內，存成照片則要十五兆上下。這個模式沒有中間調，所以帶照片的頁面別選它。
             </span>
           </span>
         </label>
@@ -143,7 +143,7 @@
       </fieldset>
 
       <p class="hint-line">
-        這個設定對每一頁都生效。同一份文件裡清理方式不同的頁面，看著像兩份文件。
+        這個設定對每一頁都生效。同一份文件裡清理方式不同的頁面，看起來像兩份文件。
       </p>
     </div>
   </section>
@@ -178,7 +178,7 @@
           <option value="600">600 DPI</option>
         </select>
         <p class="field-note">
-          一張由這麼多畫素組成的紙，要管它叫多大，就這麼回事。它改的是文件列印出來的尺寸，掃描件裡一個畫素也不會變。
+          一張由這麼多畫素組成的紙，要管它叫多大，就這麼回事。它改的是文件列印出來的尺寸，掃描檔裡一個畫素也不會變。
         </p>
       </div>
 
@@ -211,7 +211,7 @@
           <output id="quality-value">82%</output>
         </div>
         <p class="field-note">
-          用於存成 JPEG 的彩色和灰度模式。黑白頁面是精確儲存的，對它們這一項不起作用。
+          用於存成 JPEG 的彩色和灰階模式。黑白頁面是精確儲存的，對它們這一項不起作用。
         </p>
       </div>
 
@@ -250,63 +250,37 @@
     shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="detect.found">四個角找到了。核對一下，偏了的拖回去。</span>
-    <span data-phrase="detect.unsure">紙的邊緣不夠清楚，沒法確定。這四個角是猜的，繼續之前先把它們拖到紙上。</span>
-    <span data-phrase="detect.nothing">這張照片裡認不出一張紙，所以角放在照片的邊上。把它們拖到紙上。</span>
-    <span data-phrase="detect.flat">這張圖裡沒有可找的東西，它根本沒有邊緣。</span>
-    <span data-phrase="detect.tiny">這張圖太小了，在裡面找不出一張紙。</span>
-    <span data-phrase="detect.edited">這四個角現在歸你了。「重新找角」會把照片從頭量一遍。</span>
+    <span data-phrase="detect.found">四個角找到了。核對一下，偏了的拖回去。</span><span data-phrase="detect.unsure">紙的邊緣不夠清楚，沒法確定。這四個角是猜的，繼續之前先把它們拖到紙上。</span><span data-phrase="detect.nothing">這張照片裡認不出一張紙，所以角放在照片的邊上。把它們拖到紙上。</span><span data-phrase="detect.flat">這張圖裡沒有可找的東西，它根本沒有邊緣。</span><span data-phrase="detect.tiny">這張圖太小了，在裡面找不出一張紙。</span><span data-phrase="detect.edited">這四個角現在歸你了。「重新找角」會把照片從頭量一遍。</span>
 
-    <span data-phrase="corner.tl">左上角</span>
-    <span data-phrase="corner.tr">右上角</span>
-    <span data-phrase="corner.br">右下角</span>
-    <span data-phrase="corner.bl">左下角</span>
+    <span data-phrase="corner.tl">左上角</span><span data-phrase="corner.tr">右上角</span><span data-phrase="corner.br">右下角</span><span data-phrase="corner.bl">左下角</span>
     <span data-phrase="corner.at">{corner}，橫向 {x}，縱向 {y}。方向鍵可以挪它，按住 Shift 一次挪十個畫素。</span>
 
-    <span data-phrase="page.select">編輯第 {index} 頁</span>
-    <span data-phrase="page.remove">移除第 {index} 頁</span>
-    <span data-phrase="page.earlier">把第 {index} 頁往前挪</span>
-    <span data-phrase="page.later">把第 {index} 頁往後挪</span>
+    <span data-phrase="page.select">編輯第 {index} 頁</span><span data-phrase="page.remove">移除第 {index} 頁</span><span data-phrase="page.earlier">把第 {index} 頁往前挪</span><span data-phrase="page.later">把第 {index} 頁往後挪</span>
     <span data-phrase="page.count">{count} 頁</span>
     <span data-phrase="page.counts">{count} 頁</span>
 
     <span data-phrase="paper.a">A4 或者 A5</span>
     <span data-phrase="paper.letter">US Letter</span>
     <span data-phrase="paper.legal">US Legal</span>
-    <span data-phrase="paper.card">一張名片</span>
-    <span data-phrase="shape.known">頁面出來是 {ratio}，這正是 {paper} 的形狀。</span>
-    <span data-phrase="shape.sideways">頁面出來是 {ratio}，這正是橫放的 {paper}。</span>
-    <span data-phrase="shape.unknown">頁面出來是 {ratio}，這不是標準開本。</span>
+    <span data-phrase="paper.card">一張名片</span><span data-phrase="shape.known">頁面出來是 {ratio}，這正是 {paper} 的形狀。</span><span data-phrase="shape.sideways">頁面出來是 {ratio}，這正是橫放的 {paper}。</span><span data-phrase="shape.unknown">頁面出來是 {ratio}，這不是標準開本。</span>
 
-    <span data-phrase="method.perspective">形狀是從照片的透視裡還原出來的，所以這是紙的形狀，不是它在畫面裡顯出來的樣子。</span>
-    <span data-phrase="method.edges">照片是正對著拍的，所以形狀直接從邊緣量得。</span>
+    <span data-phrase="method.perspective">形狀是從照片的透視裡還原出來的，所以這是紙的形狀，不是它在畫面裡顯出來的樣子。</span><span data-phrase="method.edges">照片是正對著拍的，所以形狀直接從邊緣量得。</span>
 
     <span data-phrase="quality.good">{width} 乘 {height} 畫素，在這個尺寸的頁面上大約 {dpi} DPI，列印夠用。</span>
     <span data-phrase="quality.fair">{width} 乘 {height} 畫素，在這個尺寸的頁面上大約 {dpi} DPI。螢幕上沒問題，紙上略微發虛。</span>
     <span data-phrase="quality.low">{width} 乘 {height} 畫素，在這個尺寸的頁面上大約 {dpi} DPI。要列印的話，再走近點。</span>
-    <span data-phrase="quality.pixels">{width} 乘 {height} 畫素。</span>
-    <span data-phrase="coverage.note">紙填滿了照片的 {percent}%。</span>
-    <span data-phrase="coverage.small">紙只填滿了照片的 {percent}%，也就是說你拍到的大半是桌子。下次靠近些。</span>
+    <span data-phrase="quality.pixels">{width} 乘 {height} 畫素。</span><span data-phrase="coverage.note">紙填滿了照片的 {percent}%。</span><span data-phrase="coverage.small">紙只填滿了照片的 {percent}%，也就是說你拍到的大半是桌子。下次靠近些。</span>
 
-    <span data-phrase="strength.gentle">輕：把紙弄勻，別的基本不動。給那種寫著淺鉛筆字或者帶照片的頁面用。</span>
-    <span data-phrase="strength.middling">常用的一檔：紙重新變白，印刷體重新變黑。</span>
-    <span data-phrase="strength.hard">重：所有發灰的都往黑或者白推。在只有印刷體的頁面上最乾淨，在任何帶圖的東西上則是毀滅性的。</span>
+    <span data-phrase="strength.gentle">輕：把紙弄勻，別的基本不動。給那種寫著淺鉛筆字或者帶照片的頁面用。</span><span data-phrase="strength.middling">常用的一檔：紙重新變白，印刷體重新變黑。</span><span data-phrase="strength.hard">重：所有發灰的都往黑或者白推。在只有印刷體的頁面上最乾淨，在任何帶圖的東西上則是毀滅性的。</span>
 
     <span data-phrase="busy.page">第 {done} 頁，共 {total} 頁&hellip;</span>
     <span data-phrase="busy.writing">正在寫文件&hellip;</span>
 
     <span data-phrase="result.pdf">{name} | {size}，{pages}。</span>
-    <span data-phrase="result.images">{name} | {size}，{pages}。</span>
-    <span data-phrase="result.mono">按每畫素一位儲存並精確壓縮，所以才這麼小。</span>
-    <span data-phrase="result.jpeg">頁面按你選的品質存成了 JPEG。</span>
-    <span data-phrase="result.png">頁面存成了 PNG，它是無損的，也正是兩種顏色的影象需要的。換成 JPEG 會更大，而且每個字周圍都發糊。</span>
-    <span data-phrase="result.clean">沒有日期，沒有作者，沒有電腦名。除了頁面，文件裡只有這個工具的名字。</span>
+    <span data-phrase="result.images">{name} | {size}，{pages}。</span><span data-phrase="result.mono">按每畫素一位儲存並精確壓縮，所以才這麼小。</span><span data-phrase="result.jpeg">頁面按你選的品質存成了 JPEG。</span><span data-phrase="result.png">頁面存成了 PNG，它是無損的，也正是兩種顏色的影像需要的。換成 JPEG 會更大，而且每個字周圍都發糊。</span><span data-phrase="result.clean">沒有日期，沒有作者，沒有電腦名。除了頁面，文件裡只有這個工具的名字。</span>
 
-    <span data-phrase="size.fit">每張紙拿到的就是它那一頁真實的尺寸，按上面選的解析度算。不會加白邊去湊。</span>
-    <span data-phrase="size.named">每一頁都放在 {name} 的紙上、頁邊距以內，不管它最後成了什麼形狀。</span>
+    <span data-phrase="size.fit">每張紙拿到的就是它那一頁真實的尺寸，按上面選的解析度算。不會加白邊去湊。</span><span data-phrase="size.named">每一頁都放在 {name} 的紙上、頁邊距以內，不管它最後成了什麼形狀。</span>
 
-    <span data-phrase="error.decode">這個瀏覽器打不開 {name}。要是 iPhone 拍的 HEIC 照片，先轉換一下。</span>
-    <span data-phrase="error.none">先至少選一張照片。</span>
-    <span data-phrase="error.failed">做檔案的時候出了岔子：{detail}</span>
+    <span data-phrase="error.decode">這個瀏覽器打不開 {name}。要是 iPhone 拍的 HEIC 照片，先轉換一下。</span><span data-phrase="error.none">先至少選一張照片。</span><span data-phrase="error.failed">做檔案的時候出了差錯：{detail}</span>
   </div>
 </main>

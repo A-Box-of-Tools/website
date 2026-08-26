@@ -47,8 +47,8 @@ card = """
             주는 유통용 바코드. SVG나 PNG로 나옵니다."""
 
 [words]
-plural = "코드와 그 안에 담긴 내용"
-choose = "담을 내용"
+plural = "코드와 그 안에 담긴 내용은"
+choose = "담을 내용을"
 
 [[facts]]
 text = "업로드 없음"
