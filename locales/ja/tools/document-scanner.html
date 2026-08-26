@@ -1,0 +1,356 @@
+<!--
+  tools/document-scanner/body.html, in Japanese.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- 手順1｜写真 -->
+  <section class="card">
+    <h2><span class="step">1</span> 写真を選ぶ</h2>
+
+    <p class="card-lede">
+      1ページにつき写真1枚を、真上あたりから撮ってください。紙全体が画面に入り、四隅は
+      見えているかほぼ見えている必要があります。ほかのすべて、つまり傾きも影も下の机も、
+      この道具がある理由です。複数を足すと、足した順に1つの書類のページになります。
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">すべてのページで探し直す</button>
+        <button type="button" id="clear-all" class="ghost danger">すべて削除</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- 手順2｜四隅 -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> 四隅を紙に合わせる</h2>
+
+    <p id="edit-empty" class="field-summary">
+      写真を選ぶとここに出ます。四隅はすでに見つけてあります。
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        写真のどこかを触るといちばん近い隅が指のところへ来ます。それを紙の角まで
+        ドラッグしてください。<kbd>Tab</kbd>でキーボードから隅に移れ、矢印キーで1画素、
+        <kbd>Shift</kbd>と一緒なら10画素動きます。どれも取り返しのつかないものでは
+        ありません。スキャンは4つの隅が最後に落ち着いた場所から取られます。
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">四隅を探し直す</button>
+        <button type="button" id="whole-photo" class="ghost">写真全体を使う</button>
+        <button type="button" id="turn-left" class="ghost">左に回す</button>
+        <button type="button" id="turn-right" class="ghost">右に回す</button>
+        <button type="button" id="undo" class="ghost" disabled>元に戻す</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 手順3｜整える -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> 整える</h2>
+
+    <p id="clean-empty" class="field-summary">
+      まっすぐにする写真ができ次第、整えたページがここに出ます。
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        下にあるものが本当の結果で、ファイルを書くのと同じコードが作っています。まっすぐに
+        され、むらのある明るさを割って取り除いた状態です。選んでいるあいだ画面には画面の
+        大きさで描かれますが、ファイル自体は写真の解像度で作られます。
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          まっすぐにしています&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>明るさと色をどうするか</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>色つき、むらを取る</strong>
+            <span class="check-note">
+              紙をページ全体で測って割るので、影が消えて紙は白に戻り、その一方で印影や
+              青インクの署名や蛍光ペンで引いた行は色を保ちます。色が書類の一部であるときは
+              このモードです。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>グレースケール</strong>
+            <span class="check-note">
+              同じむら取りを、色なしで。カラーより小さく、写真や署名には白黒より
+              やさしい仕上がりです。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>白黒</strong>
+            <span class="check-note">
+              各画素をページ全体のひとつの数値ではなく、その画素自身の近傍に照らして
+              決めます。それが影の中の文字を読めるまま保ちます。スキャンを小さくするのが
+              これです。20ページの契約書がこのモードなら1メガバイト未満で、写真として
+              なら15メガバイト前後になります。中間調がないので、写真の載ったものは
+              これを選ばないでください。
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>そのまま</strong>
+            <span class="check-note">
+              まっすぐにするだけで、ほかは何もしません。紙そのものが意味を持つページ、
+              つまり古いもの、色のあるもの、写真のためのモードです。
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">どのくらい強く</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        この設定はすべてのページに適用されます。同じ書類の中で違う整え方をされたページは、
+        2つの書類のように見えます。
+      </p>
+    </div>
+  </section>
+
+  <!-- 手順4｜ファイル -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> 書類を保存する</h2>
+
+    <p class="card-lede">
+      PDFはここ、このページのメモリの中で1ページずつ作られます。この道具の向こう側には
+      給与明細やパスポートや契約書を送る先のサーバーがなく、コードにもそうするものは
+      ありません。
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">ページの大きさ</label>
+        <select id="page-size">
+          <option value="fit" selected>用紙をページ自身に合わせる</option>
+          <option value="a4">A4｜210 &times; 297 mm</option>
+          <option value="letter">Letter｜8.5 &times; 11 in</option>
+          <option value="legal">Legal｜8.5 &times; 14 in</option>
+          <option value="a5">A5｜148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">印刷解像度</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI｜オフィス機</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          ある画素数でできた用紙をどれだけ大きいと呼ぶか、それだけです。書類が印刷される
+          寸法は変わりますが、スキャンの画素は1つも変わりません。
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">余白</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="余白、ミリ単位">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">長辺</label>
+        <select id="max-side">
+          <option value="1600">1600画素｜小さめ</option>
+          <option value="2400" selected>2400画素</option>
+          <option value="3500">3500画素</option>
+          <option value="0">写真が許すかぎり大きく</option>
+        </select>
+        <p class="field-note">
+          まっすぐにしたページの上限です。紙の写真にはその紙に必要な量よりずっと多くの
+          画素が入っていますし、長辺2400はA4でおよそ200 DPIにあたります。
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">画質</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          JPEGで保存されるカラーとグレースケールのモード向けです。白黒のページは正確に
+          保存されるので、そちらには効きません。
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">書類の題名 <span class="optional">(任意)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="空のままならPDFに題名は入りません">
+        <p class="field-note">
+          ページ以外で書類に書かれる唯一のものです。日付も作成者も、この端末についての
+          情報もありません。<code>src/document.js</code>を見てください。
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>PDFで保存</button>
+      <button type="button" id="save-images" class="ghost big" disabled>ページを画像で保存</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>できあがったファイル</h3>
+        <a id="download" class="primary as-button" href="#" download>ダウンロード</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        送る前に開いて確かめてください。書類に入っているのは、手順3で画面に出ていたもの
+        そのままです。
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">四隅が見つかりました。確かめて、外れているものは
+      ドラッグして直してください。</span>
+    <span data-phrase="detect.unsure">紙の縁が、確信できるほどはっきりしていません
+      でした。この四隅は推測なので、進む前に紙の上までドラッグしてください。</span>
+    <span data-phrase="detect.nothing">この写真では紙を見分けられなかったので、四隅は
+      写真の縁に置いてあります。紙の上までドラッグしてください。</span>
+    <span data-phrase="detect.flat">この画像には見つけるものがありません。縁がそもそも
+      ありません。</span>
+    <span data-phrase="detect.tiny">この画像は、中から紙を見つけるには小さすぎます。</span>
+    <span data-phrase="detect.edited">この四隅はもうあなたのものです。「四隅を探し直す」
+      は写真を最初から測り直します。</span>
+
+    <span data-phrase="corner.tl">左上の隅</span>
+    <span data-phrase="corner.tr">右上の隅</span>
+    <span data-phrase="corner.br">右下の隅</span>
+    <span data-phrase="corner.bl">左下の隅</span>
+    <span data-phrase="corner.at">{corner}、横{x}・縦{y}の位置。矢印キーで動き、Shiftを
+      押しながらなら一度に10画素動きます。</span>
+
+    <span data-phrase="page.select">{index}ページ目を編集</span>
+    <span data-phrase="page.remove">{index}ページ目を削除</span>
+    <span data-phrase="page.earlier">{index}ページ目を前へ</span>
+    <span data-phrase="page.later">{index}ページ目を後ろへ</span>
+    <span data-phrase="page.count">{count}ページ</span>
+    <span data-phrase="page.counts">{count}ページ</span>
+
+    <span data-phrase="paper.a">A4またはA5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">名刺</span>
+    <span data-phrase="shape.known">ページは{ratio}になり、それは{paper}の形です。</span>
+    <span data-phrase="shape.sideways">ページは{ratio}になり、それは{paper}を横に
+      した形です。</span>
+    <span data-phrase="shape.unknown">ページは{ratio}になり、それは標準の判型では
+      ありません。</span>
+
+    <span data-phrase="method.perspective">形は写真の遠近から復元しました。ですから
+      これは紙の形であって、画像に写っていた形ではありません。</span>
+    <span data-phrase="method.edges">写真が正面から撮られていたので、形は縁から直接
+      測りました。</span>
+
+    <span data-phrase="quality.good">{width}かける{height}画素。この大きさのページで
+      およそ{dpi} DPIで、印刷に十分です。</span>
+    <span data-phrase="quality.fair">{width}かける{height}画素。この大きさのページで
+      およそ{dpi} DPIです。画面では十分、紙では少し眠く見えます。</span>
+    <span data-phrase="quality.low">{width}かける{height}画素。この大きさのページで
+      およそ{dpi} DPIです。印刷するなら、もっと近づいてください。</span>
+    <span data-phrase="quality.pixels">{width}かける{height}画素。</span>
+    <span data-phrase="coverage.note">紙が写真の{percent}%を埋めました。</span>
+    <span data-phrase="coverage.small">紙が写真の{percent}%しか埋めていないので、撮った
+      ものの大半は机でした。次はもっと近づいてください。</span>
+
+    <span data-phrase="strength.gentle">弱め。紙のむらを取るくらいで止めます。薄い鉛筆
+      や写真の載ったページ向けです。</span>
+    <span data-phrase="strength.middling">ふつうの設定。紙は白に戻り、印刷された文字は
+      黒に戻ります。</span>
+    <span data-phrase="strength.hard">強め。グレーのものはすべて黒か白へ押し込みます。
+      印刷文字だけのページではいちばんきれいで、画像の載ったものには破壊的です。</span>
+
+    <span data-phrase="busy.page">{total}ページ中{done}ページ目&hellip;</span>
+    <span data-phrase="busy.writing">書類を書いています&hellip;</span>
+
+    <span data-phrase="result.pdf">{name}｜{size}、{pages}。</span>
+    <span data-phrase="result.images">{name}｜{size}、{pages}。</span>
+    <span data-phrase="result.mono">1画素1ビットで保存し、正確に圧縮しました。それが
+      これほど小さい理由です。</span>
+    <span data-phrase="result.jpeg">ページは選んだ画質のJPEGで保存しました。</span>
+    <span data-phrase="result.png">ページはPNGで保存しました。可逆で、色が2つの画像が
+      求めるのがこれです。JPEGなら大きくなるうえ、文字の周りがにじみます。</span>
+    <span data-phrase="result.clean">日付も作成者も端末名もありません。ページ以外で
+      書類に入っているのは、この道具の名前だけです。</span>
+
+    <span data-phrase="size.fit">各用紙は、そのページが実際に持つ寸法を、上で選んだ
+      解像度で受け取ります。帯で埋めることはしません。</span>
+    <span data-phrase="size.named">各ページは、どんな形になっていても、余白の内側で
+      {name}の用紙に置かれます。</span>
+
+    <span data-phrase="error.decode">このブラウザは{name}を開けませんでした。iPhoneの
+      HEIC写真なら、先に変換してください。</span>
+    <span data-phrase="error.none">まず写真を少なくとも1枚選んでください。</span>
+    <span data-phrase="error.failed">ファイルを作る途中で問題が起きました。{detail}</span>
+  </div>
+</main>

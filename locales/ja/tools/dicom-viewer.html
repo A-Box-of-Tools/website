@@ -1,0 +1,263 @@
+<!--
+  tools/dicom-viewer/body.html, in Japanese.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  列見出しの「VR」はそのままにします。ファイルにそう書かれている2文字のコードで、
+  規格でタグを調べる人はまさにその2文字を探すからです。
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> 検査画像を選ぶ</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      フォルダごとまとめてドラッグして入れると、ファイルはそれぞれのシリーズに戻され、
+      正しい順に並びます。何もアップロードされませんし、ファイルに書き戻されるものも
+      ありません。
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- ビューア。 -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>この画像をPNGで保存</button>
+        <button type="button" id="copy-header" class="ghost">ヘッダーをコピー</button>
+        <button type="button" id="download-header" class="ghost">ダウンロード</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">シリーズ</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="選んだファイルから描かれた、画面上の画像"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="画像を再生">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="どのスライスまたはどのフレームを表示しているか">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">画像の上でドラッグしたときの動作</legend>
+        <label><input type="radio" name="mode" value="window" checked> ウィンドウと中心値</label>
+        <label><input type="radio" name="mode" value="pan"> 移動</label>
+        <label><input type="radio" name="mode" value="measure"> 計測</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">拡大</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">全体に合わせる</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">ウィンドウ</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">中心</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">幅</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> 白黒反転</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> 患者情報を画像に重ねて表示</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- このファイルは何か。 -->
+  <section class="card" id="facts-card" hidden>
+    <h2>このファイルは何か</h2>
+    <dl class="facts">
+      <div><dt>オブジェクト</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>撮影方法</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>画像</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>保存形式</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfer syntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>画素の間隔</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>値の範囲</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>ファイル</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- その人について何が書かれているか。 -->
+  <section class="card" id="identity-card" hidden>
+    <h2>このファイルの何が患者を特定するのか</h2>
+    <p class="card-lede">
+      このファイルから、この端末で読み取ったもので、ほかの誰にも見せていません。この
+      道具は何も書きません。そのどれかを取り除くこともできませんし、そのどれかをどこかへ
+      送ったこともありません。ここに出しているのは、検査画像が氏名よりはるかに多くを
+      抱えているからであり、残りこそが雑な匿名化を生き延びるものだからです。
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- ファイルのすべてのタグ。 -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>ファイルのすべてのタグ</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">タグを検索</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="名前・番号・値で検索">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">このファイルのすべての要素</caption>
+        <thead>
+          <tr>
+            <th scope="col">タグ</th>
+            <th scope="col">VR</th>
+            <th scope="col">名前</th>
+            <th scope="col">値</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">画像の上を横にドラッグするとウィンドウが広がったり狭まったりし、上下にドラッグすると中心が動きます。どちらの数値も下に出ていて、直接入力しても同じです。</span>
+    <span data-phrase="mode.pan">ドラッグすると画像が枠の中で動きます。ホイールで拡大縮小し、「全体に合わせる」ですべて戻ります。</span>
+    <span data-phrase="mode.measure">画像の上に線を引くと計測できます。ファイルが画素の間隔を書いていれば結果はミリで、書いていなければ画素で返り、そうだと明記します。</span>
+
+    <span data-phrase="probe.value">列{column}、行{row}で{value}</span>
+    <span data-phrase="measure.pixels">{length} px｜このファイルは画素の間隔を書いていないので、ミリでは出せません</span>
+
+    <span data-phrase="stack.position">各スライスが体のどこにあるかで重ねてあり、それが装置の撮った順です。</span>
+    <span data-phrase="stack.number">Instance Numberで重ねてあります。これらのファイルには、並べ替えに使える体内の位置がありません。</span>
+    <span data-phrase="stack.gap">スライスの間隔が一定ではないので、このシリーズには少なくとも1枚欠けています。</span>
+
+    <span data-phrase="pixels.none">このファイルの画素は{codec}で圧縮されています。どのブラウザもそれをデコードできませんし、このページはそのデコーダーを持ち歩きません。ファイルについてのそれ以外はすべて下にあります。</span>
+    <span data-phrase="pixels.failed">画像をデコードできませんでした。{reason}。下のヘッダーはすべて読めています。</span>
+    <span data-phrase="pixels.absent">このファイルには画素データがそもそもありません。ヘッダーであり、その中身はすべて下にあります。</span>
+    <span data-phrase="pixels.jpeg">この画素はbaseline JPEGなので、ブラウザのデコーダーが展開しました。返ってくるものは8ビット深度です。ウィンドウは動きますが、装置が記録した精度がすべてそろっているわけではありません。</span>
+
+    <span data-phrase="tags.count">{total}件中{shown}件。ほかに{hidden}件あります。</span>
+    <span data-phrase="tags.all">このファイルの{total}件すべてです。</span>
+    <span data-phrase="tags.found">「{query}」に一致する要素が{total}件あります。</span>
+    <span data-phrase="tags.found.one">「{query}」に一致する要素が1件あります。</span>
+    <span data-phrase="tags.none">「{query}」に一致するものはありません。</span>
+    <span data-phrase="tags.more">残りの{count}件を表示</span>
+    <span data-phrase="tags.private">私的要素</span>
+    <span data-phrase="tags.unknown">この辞書にありません</span>
+    <span data-phrase="tags.guessed">ファイルには書かれていませんでした。これはデータ辞書がこのタグについて示している内容です。</span>
+
+    <span data-phrase="working.one">{name}を読み込み中&hellip;</span>
+    <span data-phrase="working.many">{total}件中{at}件を読み込み中&hellip;</span>
+    <span data-phrase="error.none">どれもDICOMとして読めませんでした。{why} この道具はDICOM形式そのものを読むので、ほかのファイルについては何も言えません。</span>
+    <span data-phrase="error.skipped.one">1件のファイルを飛ばしました。{files}</span>
+    <span data-phrase="error.skipped">{count}件のファイルを飛ばしました。{files}</span>
+
+    <span data-phrase="series.number">シリーズ{number}</span>
+    <span data-phrase="series.files.one">1ファイル</span>
+    <span data-phrase="series.files">{count}ファイル</span>
+    <span data-phrase="stack.spacing">スライスの間隔は{gap}です。</span>
+
+    <span data-phrase="at.position">{total}件中{at}件目</span>
+    <span data-phrase="net.clean">検査画像はどこへも出ていません。{total}件のファイルを
+      読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれを
+      しません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身の
+      スクリプトが{hosts}のホストから読み込まれました。そのどれにも、検査画像も、その
+      画素も、ヘッダーの一語も渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身の
+      スクリプトが{hosts}のホストから読み込まれました。そのどれにも、検査画像も、その
+      画素も、ヘッダーの一語も渡っていません。</span>
+    <span data-phrase="at.frame">{total}フレーム中{at}フレーム目</span>
+    <span data-phrase="at.instance">インスタンス{number}</span>
+
+    <span data-phrase="window.file">ファイルから</span>
+    <span data-phrase="window.file.n">ファイルから、{n}</span>
+    <span data-phrase="window.full">この画像の全範囲</span>
+    <span data-phrase="window.custom">手動で設定</span>
+    <span data-phrase="window.soft">軟部組織</span>
+    <span data-phrase="window.lung">肺</span>
+    <span data-phrase="window.bone">骨</span>
+    <span data-phrase="window.brain">脳</span>
+    <span data-phrase="window.liver">肝臓</span>
+    <span data-phrase="window.mediastinum">縦隔</span>
+    <span data-phrase="window.angio">血管造影</span>
+
+    <span data-phrase="facts.frames">{count}フレーム</span>
+    <span data-phrase="facts.nopixels">画素データなし</span>
+    <span data-phrase="facts.nospacing">このファイルには書かれていません</span>
+    <span data-phrase="facts.signed">符号あり</span>
+    <span data-phrase="facts.unsigned">符号なし</span>
+    <span data-phrase="facts.stored.one">{bits}ビット、{sign}、1画素あたり1チャンネル、{photometric}</span>
+    <span data-phrase="facts.stored">{bits}ビット、{sign}、1画素あたり{samples}チャンネル、{photometric}</span>
+    <span data-phrase="facts.range">{low}から{high}まで</span>
+    <span data-phrase="facts.colour">カラー｜測定値として報告するものはありません</span>
+
+    <span data-phrase="identity.clean">このファイルには、人を名指ししたり番号で示したりするものはありません。検査画像がふつう抱えている識別情報が、欠けているか空です。</span>
+    <span data-phrase="identity.uids">さらに{count}件の固有の識別子、つまり検査・シリーズ・インスタンスのUIDを抱えています。どれも氏名ではありませんが、その一つひとつがこのファイルを生んだアーカイブへ戻る完璧な鍵です。</span>
+    <span data-phrase="identity.private">加えて、意味がどこにも公開されていない私的要素が{count}件あります。装置によっては、そのどれかに患者氏名の2つめの写しを入れています。</span>
+
+    <span data-phrase="copied">コピーしました。</span>
+    <span data-phrase="copy.failed">ブラウザがこのページのコピーを拒みました。隣のボタンが同じ文章をファイルに書き出します。</span>
+    <span data-phrase="saved">{name}を保存しました。</span>
+  </div>
+</main>
