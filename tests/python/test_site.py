@@ -500,27 +500,35 @@ class Hashes(TempTree):
         self.assertNotEqual(sitelib.text_hash('a'), sitelib.text_hash('b'))
 
     def test_cache_hash_ignores_the_order_it_is_given(self):
-        a = self.write('a.js', 'one')
-        b = self.write('b.js', 'two')
+        a, b = ('a.js', 'one'), ('b.js', 'two')
         self.assertEqual(sitelib.cache_hash([a, b]), sitelib.cache_hash([b, a]))
 
     def test_cache_hash_changes_when_a_file_changes(self):
-        a = self.write('a.js', 'one')
-        before = sitelib.cache_hash([a])
-        a.write_text('two', encoding='utf-8')
-        self.assertNotEqual(before, sitelib.cache_hash([a]))
+        self.assertNotEqual(sitelib.cache_hash([('a.js', 'one')]),
+                            sitelib.cache_hash([('a.js', 'two')]))
 
     def test_cache_hash_changes_when_a_file_is_renamed(self):
         # The name is hashed as well as the bytes, so a module that moved
         # invalidates the cache even if its contents did not change.
-        a = self.write('a.js', 'one')
-        b = self.write('b.js', 'one')
-        self.assertNotEqual(sitelib.cache_hash([a]), sitelib.cache_hash([b]))
+        self.assertNotEqual(sitelib.cache_hash([('a.js', 'one')]),
+                            sitelib.cache_hash([('b.js', 'one')]))
 
     def test_cache_hash_changes_when_a_file_is_added(self):
-        a = self.write('a.js', 'one')
-        b = self.write('b.js', 'two')
+        a, b = ('a.js', 'one'), ('b.js', 'two')
         self.assertNotEqual(sitelib.cache_hash([a]), sitelib.cache_hash([a, b]))
+
+    def test_cache_hash_reads_only_the_last_path_segment(self):
+        # What hashing Path.name always did, kept deliberately: the digest's
+        # recipe is the deployed cache names, so changing what goes into it
+        # would rename every cache on the site in one deploy for nothing.
+        self.assertEqual(sitelib.cache_hash([('src/a.js', 'one')]),
+                         sitelib.cache_hash([('a.js', 'one')]))
+
+    def test_cache_hash_takes_text_and_bytes_alike(self):
+        # A vendored engine arrives as bytes read off the disk; everything the
+        # build emitted arrives as the text it wrote. Same file, same digest.
+        self.assertEqual(sitelib.cache_hash([('a.js', 'one')]),
+                         sitelib.cache_hash([('a.js', b'one')]))
 
 
 if __name__ == '__main__':
