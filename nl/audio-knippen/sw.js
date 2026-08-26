@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/audio-knippen/:';
-const CACHE_NAME=CACHE_PREFIX+'d522f2e5d3';
+const CACHE_NAME=CACHE_PREFIX+'b3fb4a8e30';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bildgroesse-aendern/:';
-const CACHE_NAME=CACHE_PREFIX+'13ee997bcf';
+const CACHE_NAME=CACHE_PREFIX+'e07bd60bae';
 const ASSETS=[
 './',
 'index.html',

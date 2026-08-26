@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/dicom-goruntuleyici/:';
-const CACHE_NAME=CACHE_PREFIX+'07b42d001f';
+const CACHE_NAME=CACHE_PREFIX+'f99c7ec8bf';
 const ASSETS=[
 './',
 'index.html',

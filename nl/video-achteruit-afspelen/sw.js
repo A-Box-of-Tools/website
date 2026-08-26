@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/video-achteruit-afspelen/:';
-const CACHE_NAME=CACHE_PREFIX+'dd645e2de2';
+const CACHE_NAME=CACHE_PREFIX+'aca2dd493e';
 const ASSETS=[
 './',
 'index.html',

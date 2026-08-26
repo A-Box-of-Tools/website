@@ -2,5 +2,8 @@
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 window.gtag=gtag;
+if(navigator.webdriver){
+window['ga-disable-G-SCBN29XZ31']=true;
+}
 gtag('js',new Date());
 gtag('config','G-SCBN29XZ31');
