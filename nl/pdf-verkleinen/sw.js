@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/pdf-verkleinen/:';
-const CACHE_NAME=CACHE_PREFIX+'5c27ac79b1';
+const CACHE_NAME=CACHE_PREFIX+'ba7acd8866';
 const ASSETS=[
 './',
 'index.html',

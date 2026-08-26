@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/calcular-checksum/:';
-const CACHE_NAME=CACHE_PREFIX+'dea8e03eb7';
+const CACHE_NAME=CACHE_PREFIX+'883912aa17';
 const ASSETS=[
 './',
 'index.html',

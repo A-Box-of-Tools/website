@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pindai-kode-qr/:';
-const CACHE_NAME=CACHE_PREFIX+'8f1fea5dd3';
+const CACHE_NAME=CACHE_PREFIX+'d59d7e172b';
 const ASSETS=[
 './',
 'index.html',
