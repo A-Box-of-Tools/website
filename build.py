@@ -469,6 +469,21 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
                    related_of.get(tool['slug'], []), emit)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
 
+    # Old addresses that moved. A static host cannot answer 301, so the page
+    # that used to be at the address says where the tool went and sends the
+    # browser on. Only written where the address actually changed: a locale
+    # whose slug for the tool survived the rename keeps its address, and a
+    # stub there would shadow nothing and help nobody.
+    # Not appended to `written`: that list is the site's pages, and a stub is
+    # a signpost rather than a page - it carries no frame, asks for no script,
+    # and must stay out of the sitemap, which is exactly what the tests hold
+    # every entry in the list to.
+    for old_slug, new_slug in site.get('redirects', {}).items():
+        target = by_slug.get(new_slug)
+        if target is None or target['out_slug'] == old_slug:
+            continue
+        build_redirect(dest_root, locale, site, old_slug, target)
+
     for page in lprose:
         build_page(dest_root, templates, locale, locales, site, page, footer,
                    links, css_v, lang_v, by_slug, emit)
@@ -1619,6 +1634,36 @@ def copy_shared(out):
 
 
 # ---------------------------------------------------------------------------
+
+
+def build_redirect(out, locale, site, old_slug, target):
+    """The page at an address a tool used to have, saying where it went.
+
+    GitHub Pages cannot be told to answer 301, so the redirect is the page
+    itself: an instant meta refresh for a person, a canonical for a crawler,
+    and a plain link for whichever of the two ignores the other. It is not in
+    the sitemap - build_sitemap works from the tool list, and this is not a
+    tool - and it never carries the old page's content, so nothing here can
+    drift out of date except the target's address, which comes from the same
+    table every real link to the tool comes from.
+    """
+    url = i18n.locale_url(locale, target['out_slug'], site)
+    name = target['name']
+    write(_redirect_path(out, old_slug),
+          f'<!doctype html>\n'
+          f'<html lang="{locale["hreflang"]}" dir="{locale.get("dir", "ltr")}">\n'
+          f'<meta charset="utf-8">\n'
+          f'<meta http-equiv="refresh" content="0; url=../{target["out_slug"]}/">\n'
+          f'<meta name="robots" content="noindex">\n'
+          f'<link rel="canonical" href="{url}">\n'
+          f'<title>{name}</title>\n'
+          f'<p><a href="../{target["out_slug"]}/">{name}</a></p>\n')
+
+
+def _redirect_path(out, old_slug):
+    path = out / old_slug
+    path.mkdir(parents=True, exist_ok=True)
+    return path / 'index.html'
 
 
 def write(path, text):

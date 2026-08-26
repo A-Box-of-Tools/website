@@ -1,0 +1,245 @@
+#
+# Confronto testi - Italian.
+#
+# Overrides for tools/compare-text/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Confronto testi"
+heading = "Confronto&nbsp;testi <span class=\"h1-kw\">&mdash; confronta due testi, fianco a fianco</span>"
+tagline = "Due testi dentro, ogni differenza segnata, riga per riga e parola per parola. Niente finisce incollato nel server di qualcun altro."
+
+title = "Confrontare testi &mdash; diff fianco a fianco &mdash; senza caricare niente"
+description = "Confronta due testi e guarda ogni differenza, riga per riga e parola per parola, fianco a fianco o in una colonna. Il confronto gira nel tuo browser e non viene caricato niente: il codice non ancora pubblicato non lascia mai il tuo dispositivo."
+og_title = "Confronta due testi senza incollarli in un server"
+og_description = "Un confronto che gira sul tuo dispositivo. Differenze di righe e di parole, fianco a fianco, e una patch che una revisione del codice può leggere; e quello che incolli non va da nessuna parte."
+og_image_alt = "Confronto testi - confronta due testi, senza caricare niente"
+
+pledge = """
+    Un confronto è aritmetica su due stringhe, fatta qui, in questa pagina.
+    L'algoritmo è quello di Myers &mdash; lo stesso che usa
+    <code>git diff</code> &mdash;, scritto a mano in <code>src/diff.js</code>,
+    dove puoi leggerlo. Questo strumento non ha nessuna funzione di rete, niente
+    da scaricare e niente da mandare, e qui conta: quello che la gente confronta
+    sono contratti, file di configurazione e codice non ancora pubblicato,
+    sempre in coppia."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e confronta qualcosa. Non c'è una sola richiesta che
+      porti con sé un carattere di quello che hai incollato. Oppure stacca la
+      connessione e confrontalo lo stesso."""
+
+read_first = """
+ e <code>src/diff.js</code> per
+      l'algoritmo di Myers, il passaggio parola per parola dentro ogni riga cambiata
+      e le tre protezioni che impediscono a un confronto patologico di bloccare la
+      pagina."""
+
+howto_heading = "Come confrontare due testi senza caricarli"
+
+card = """
+            Confronta due testi e guarda cos'è cambiato, riga per riga e parola
+            per parola. Incolla un contratto o del codice non pubblicato senza
+            consegnarlo a nessuno."""
+
+[words]
+plural = "testi"
+choose = "un file"
+analytics_extra = """, e nessuno dei
+  due lati di quello che questo strumento confronta"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessun limite di dimensione"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Quello che incolli non ha una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Qui non esiste un recapito dove un token
+      incollato possa essere raccolto, e nel codice non c'è niente che lo manderebbe lì
+      se esistesse."""
+
+[[privacy]]
+title = "Qui niente va a prendere niente."
+body = """
+ In <code>src/</code> non c'è da nessuna
+      parte un <code>fetch</code>, un <code>XMLHttpRequest</code> o un
+      <code>sendBeacon</code>. Il confronto è una funzione di questa pagina che
+      prende due stringhe e restituisce cos'è cambiato."""
+
+[[privacy]]
+title = "L'algoritmo è quello standard, leggibile per intero."
+body = """
+ L'algoritmo del più corto script di
+      modifica di Myers, lo stesso che usa <code>git diff</code>, scritto a mano in
+      <code>src/diff.js</code> con le decisioni commentate. I test in
+      <code>tests/js/text-diff.test.js</code> dimostrano che le cancellazioni
+      ricostruiscono il testo di sinistra e le inserzioni quello di destra, che è
+      quello che vuol dire corretto per un diff."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della pubblicità e
+      della misurazione arrivano da Google, il pulsante delle donazioni da Buy Me a
+      Coffee. A nessuno di loro arriva un carattere del tuo testo. Ogni riga che lo
+      legge, lo analizza o lo scrive è servita da questa origine ed è elencata nel
+      repository."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento resta identico,
+      perché al suo interno non c'è mai stato un passaggio di rete. È la prova più
+      semplice che ci sia."""
+
+[[howto]]
+title = "Incolla i due testi, oppure trascina i due file."
+body = """
+ L'originale a sinistra, la
+      versione cambiata a destra. Due file trascinati insieme sul selettore
+      finiscono uno per parte, nell'ordine in cui li hai lasciati; scambia i lati se
+      era al contrario."""
+
+[[howto]]
+title = "Scegli come leggerlo."
+body = """
+ Fianco a fianco, o in una colonna. Un
+      telefono parte con una colonna, perché fianco a fianco servono due colonne di
+      testo e su un telefono ce ne sta più o meno una; il menu comunque è lì
+      accanto."""
+
+[[howto]]
+title = "Ignora quello che non conta."
+body = """
+ Spazi, maiuscole e minuscole, righe
+      vuote &mdash; ognuno si può ignorare, così un file riformattato non si legge
+      come cento modifiche. Per impostazione la parte centrale senza modifiche viene
+      ripiegata in un conteggio, con tre righe tenute da ogni lato di ogni
+      modifica."""
+
+[[howto]]
+title = "Leggi cos'è cambiato."
+body = """
+ Le righe tolte sono segnate a sinistra,
+      quelle aggiunte a destra, e dentro una riga cambiata sono evidenziate le
+      parole che differiscono &mdash; così il diff di due paragrafi mostra la parola
+      che si è spostata e non due paragrafi interi."""
+
+[[howto]]
+title = "Prenditi la patch."
+body = """
+ Il download è un <code>.patch</code> in
+      formato unificato, che è quello che si aspettano una revisione del codice,
+      <code>git apply</code> e qualsiasi visualizzatore di differenze. Copia mette
+      la stessa cosa negli appunti."""
+
+[[faq]]
+q = "I miei testi vengono caricati da qualche parte?"
+a = """
+        No. Il confronto è una funzione che gira nel tuo browser, sul tuo hardware.
+        Questo strumento non ha nessuna funzione di rete: non scarica mai niente e
+        non manda mai niente, e la <code>Content-Security-Policy</code> della pagina
+        elenca ogni indirizzo che può contattare, nessuno dei quali appartiene a
+        questo sito. È questo il motivo per usarlo con un contratto, un file di
+        configurazione o del codice non pubblicato: incollare queste cose nel diff
+        di qualcun altro vuol dire consegnare tutte e due le versioni in un colpo
+        solo."""
+
+[[faq]]
+q = "Cosa fa davvero il confronto?"
+a = """
+        Trova l'insieme più corto di modifiche che trasforma il testo di sinistra in
+        quello di destra, con l'algoritmo di Myers, lo stesso che usa
+        <code>git diff</code>. È il fatto che sia il più corto a rendere leggibile un
+        confronto: una riga inserita in mezzo dovrebbe comparire come un inserimento e
+        non come se fossero cambiate tutte le righe successive. Dentro una riga
+        modificata vengono segnate anche le parole che differiscono, quindi il confronto
+        di due paragrafi mostra la parola che si è spostata e non due paragrafi
+        interi."""
+
+[[faq]]
+q = "Può confrontare due file invece di due incollate?"
+a = """
+        Sì. Trascinali entrambi insieme sul selettore e finiscono uno per parte,
+        nell'ordine in cui li hai lasciati. Li legge il tuo browser dentro questa
+        pagina, che è l'unico posto in cui vanno. Scambia i lati se li hai messi al
+        contrario."""
+
+[[faq]]
+q = "Cosa esce da un confronto, e posso applicarlo?"
+a = """
+        Il download è un diff unificato, cioè il formato
+        <code>@@ -3,5 +3,5 @@</code> che leggono <code>git apply</code>,
+        <code>patch</code> e qualsiasi strumento di revisione del codice. Copiare fa la
+        stessa cosa negli appunti. Quello che vedi a schermo ne è una vista: affiancata,
+        oppure su una colonna, con le parti immutate ridotte a un conteggio a meno che
+        non le chieda tutte."""
+
+[[faq]]
+q = "Può ignorare spazi, maiuscole o righe vuote?"
+a = """
+        Sì, ognuno per conto suo. Ignorare gli spazi fa sì che un file riformattato
+        risulti identico; ignorare maiuscole e minuscole tratta <code>Error</code> ed
+        <code>error</code> come la stessa parola; ignorare le righe vuote salta le
+        righe che non contengono niente. I contatori sopra il risultato dicono
+        allora che i due sono uguali una volta ignorate le differenze che hai chiesto
+        di ignorare &mdash; che non è la stessa affermazione di identici, e la pagina
+        tiene le due affermazioni separate."""
+
+[[faq]]
+q = "Quanto può essere grande il confronto?"
+a = """
+        Qui non c'è nessun limite impostato, perché non c'è nessun server che lo
+        paghi. Due testi da ventimila righe con una manciata di modifiche si
+        confrontano all'istante, perché l'inizio e la fine in comune vengono tagliati
+        prima che cominci il lavoro vero. Il confronto di due testi che non hanno
+        assolutamente niente in comune si ferma presto e lo dice, invece di passare
+        un minuto a dimostrare l'ovvio; e un confronto molto lungo disegna le prime
+        migliaia di righe e lascia il resto alla patch scaricata."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova e
+        non c'è limite a quanto incolli. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sul tuo testo."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente, perché uno strumento che spedisse via i tuoi testi per
+        confrontarli si fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Confrontare due testi con un diff di righe e parole, fianco a fianco o in una colonna, e scaricare il risultato come patch unificata. Il confronto gira nel browser e non viene caricato niente."
+features = [
+  "Confronta due testi con l'algoritmo di Myers, affiancati o su una colonna",
+  "Segna le parole cambiate dentro una riga modificata",
+  "Fianco a fianco o in una colonna, con la parte centrale immutata ripiegata in un conteggio",
+  "Ignora spazi, maiuscole o righe vuote, ognuno per conto suo",
+  "Scarica un confronto come diff unificato che una revisione del codice sa leggere",
+  "Confronta due file trascinati con la stessa facilità di due incollate",
+  "Taglia l'inizio e la fine in comune, così i file lunghi e simili si confrontano all'istante",
+  "Funziona offline; niente caricamenti, niente account",
+]
+
+[picker]
+title = "Trascina qui due file"
+hint = "oppure clicca per sceglierli &mdash; qualsiasi file di testo, uno per lato"

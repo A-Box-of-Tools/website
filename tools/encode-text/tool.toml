@@ -1,0 +1,307 @@
+#
+# Base64 Encoder & Decoder
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# This page, format-json and compare-text used to be one tool at /text-tools/,
+# four jobs behind four tabs. The encoders were the tab people arrived at from
+# a search for "base64 decode", which is a search the combined page's address
+# never answered - so the split gave them an address of their own. src/encode.js
+# moved here unchanged.
+#
+
+slug = "encode-text"
+name = "Base64 Encoder & Decoder"
+# The trailing span is the rest of what the page does. The product name stays
+# the loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Base64&nbsp;Encoder&nbsp;&amp;&nbsp;Decoder <span class=\"h1-kw\">&mdash; and URLs, HTML entities, hex and escapes</span>"
+tagline = "Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server."
+icon = "&#128291;"          # the mark beside the page heading
+favicon = "&#128291;"       # the tab icon, drawn into an inline SVG
+category = "text-codes-and-passwords"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "beyond"
+
+# Shared modules this tool asks for. file-picker brings in the drop zone, which
+# is here for the file that is easier to drop than to open, select all and copy.
+js_parts = ["file-picker"]
+lastmod = "2026-08-26"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Base64 Encode &amp; Decode &mdash; URL, HTML Entities, Hex &mdash; No Upload"
+description = "Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine."
+og_title = "Decode Base64 without pasting it into a server"
+og_description = "An encoder and decoder running on your own machine. Base64 in both alphabets, URLs, HTML entities, hex and escapes - and what you paste goes nowhere."
+og_image_alt = "Base64 Encoder &amp; Decoder - both ways, no upload"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Base64, URLs, HTML entities, hex and escapes, both ways - and what you paste goes nowhere."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  This tool needs no directive of its own. It fetches nothing, decodes nothing
+  from the network, and draws no picture: the one blob: URL it makes is the
+  download link for the result, which is a link rather than an image, and
+  needs no permission at all.
+  img-src still carries blob: because every tool page does, and https: because
+  ad creatives come from anywhere."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    Every encoding here is arithmetic over a string, done here, in this page.
+    The codecs are hand-written and in <code>src/encode.js</code> &mdash; and
+    there is nothing else. This tool has no network feature of any kind
+    &mdash; nothing to fetch, nothing to send &mdash; which matters more here
+    than almost anywhere: the thing people paste into an online Base64 decoder
+    is a token, and pasting a token into somebody's website is handing it
+    over."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      decode something. Not one request carries a character of what you pasted.
+      Or unplug from the internet and decode it anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+ and <code>src/encode.js</code> for the
+      Base64 that is checked against the RFC&nbsp;4648 test vectors rather than
+      against itself, and that refuses bad input instead of returning something
+      plausible the way <code>atob</code> does."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to encode or decode Base64 without uploading it"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Base64, URLs, HTML entities, hex and backslash escapes, encoded
+            or decoded. Paste a token without handing it to anybody."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "text"
+choose = "a file"
+analytics_extra = """, and none of the
+  encodings this tool reads or writes"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "What you paste has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that a pasted
+      token could be collected at, and nothing in the code that would send it if
+      there were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. Every encoder and
+      every decoder is a function in this page that takes a string and returns
+      a string."""
+
+[[privacy]]
+title = "The decoder tells you when something is wrong."
+body = """
+ The browser's own <code>atob</code>
+      accepts input it should refuse and returns something plausible. The
+      Base64 here is written out by hand and checked against the test vectors
+      in RFC&nbsp;4648, and when what you pasted is not Base64 it says so, and
+      says why. The tests in <code>tests/js/text-encode.test.js</code> check
+      exactly that."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed a character of your text. Every line that
+      reads, encodes or decodes it is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Pick the encoding."
+body = """
+ Base64 in both alphabets, percent-encoding
+      for a single value or a whole URL, the five HTML entities, hex bytes, and
+      the backslash escapes a string literal uses. The note under the menu says
+      what each one is for."""
+
+[[howto]]
+title = "Pick the direction."
+body = """
+ <em>Encode</em> takes plain text and
+      produces the encoded form; <em>Decode</em> takes the encoded form back to
+      plain text. The result updates as you type, so switching direction is one
+      click and no retyping."""
+
+[[howto]]
+title = "Paste it in, or drop the file."
+body = """
+ Anything you can select and copy
+      works. A file dropped on the picker is read by your own browser and put in
+      the box &mdash; there is no upload step to leave out."""
+
+[[howto]]
+title = "Read the error if there is one."
+body = """
+ A decoder that fails here says what
+      it found &mdash; a character Base64 does not use, padding in the wrong
+      place, bytes that are not text &mdash; rather than returning something
+      plausible and wrong."""
+
+[[howto]]
+title = "Take the result."
+body = """
+ Copy it, or download it as a text
+      file. The counts under the box say how many bytes went in and how many
+      came out."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my text uploaded anywhere?"
+a = """
+        No. Every encoder and decoder on this page is a function that runs in
+        your own browser, on your own hardware. This tool has no network
+        feature of any kind &mdash; it never fetches anything and never sends
+        anything &mdash; and the page's <code>Content-Security-Policy</code>
+        names every address it may contact, none of which belongs to this site.
+        That is the reason to use it for an access token or a session cookie:
+        pasting one of those into somebody else's decoder is giving it to
+        them."""
+
+[[faq]]
+q = "Is Base64 here the same Base64 as everywhere else?"
+a = """
+        Yes &mdash; it is checked against the test vectors in RFC 4648 rather
+        than against itself. Both alphabets decode, so a JWT written with
+        <code>-</code> and <code>_</code> reads as easily as one written with
+        <code>+</code> and <code>/</code>, and input wrapped at 64 characters is
+        unwrapped for you. Encoding is by UTF-8 bytes, so an accented letter or
+        an emoji survives the round trip."""
+
+[[faq]]
+q = "Is Base64 encryption?"
+a = """
+        No, and treating it as encryption is the classic mistake. Base64 is a
+        spelling: the same bytes written in an alphabet that survives being put
+        in a URL, an email or a JSON string. Anyone can read it back &mdash;
+        this page does it in a millisecond &mdash; so it hides nothing and
+        protects nothing. If what you have is secret, it needs actual
+        encryption before it is encoded, not instead of it."""
+
+[[faq]]
+q = "Why did decoding fail?"
+a = """
+        Because what was pasted is not quite what the codec was told it was,
+        and the error says which way: a character outside the Base64 alphabet,
+        padding in the wrong place, a percent sign with no two hex digits after
+        it, or bytes that decode from Base64 but are not UTF-8 text &mdash;
+        which usually means the original was a file rather than a string. The
+        browser's own <code>atob</code> would have returned something plausible
+        instead; being told is the whole point of pasting something into a
+        decoder."""
+
+[[faq]]
+q = "What is the difference between the two web-address encodings?"
+a = """
+        One value, or the whole address. Encoding <em>one value</em> escapes
+        everything a URL gives a meaning to &mdash; slashes, question marks,
+        ampersands &mdash; which is what you want for a single query-string
+        parameter. Encoding a <em>whole URL</em> leaves the address working:
+        the slashes and the <code>?</code> stay, and only the characters a URL
+        cannot carry at all are escaped. Using the first on a whole address
+        breaks the address; using the second on a value loses where the value
+        ends."""
+
+[[faq]]
+q = "How big a file can it handle?"
+a = """
+        There is no limit set here, because there is no server paying for one.
+        The practical ceiling is your own machine: a few megabytes of text is
+        fine, and the page waits for a pause in your typing before it re-encodes
+        a very long document rather than fighting you for the keyboard."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no limit on
+        how much you paste. The site carries advertising, which is what pays for
+        it; the ads are not given anything about your text."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your text away to be decoded would stop the
+        moment you unplugged."""
+
+[schema]
+category = "DeveloperApplication"
+description = "Encode and decode Base64 in both alphabets, percent-encode a value or a whole URL, escape and unescape HTML entities, hex bytes and backslash escapes. Everything runs in the browser and nothing is uploaded."
+features = [
+  "Base64 in both alphabets, encoded and decoded",
+  "Reads wrapped Base64 and says exactly why bad input is bad",
+  "Checked against the RFC 4648 test vectors",
+  "Percent-encoding for a single value and for a whole URL",
+  "The five HTML entities, and numeric and named entities read back",
+  "Hex bytes with any separator, and backslash escapes",
+  "Encodes by UTF-8 bytes, so emoji survive the round trip",
+  "Works on a dropped file as well as on a paste",
+  "Runs offline; no upload, no account",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = ".txt,.json,.xml,.html,.htm,.css,.yaml,.yml,.md,.csv,.log,.svg,.sql,.js,.ts,.toml,.ini,.conf,.pem,.crt,text/*,application/json,application/xml"
+multiple = false
+title = "Drop a file here"
+hint = "or click to browse &mdash; any text file"

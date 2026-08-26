@@ -1,0 +1,239 @@
+#
+# Metin Karşılaştırma - Türkçe.
+#
+# Overrides for tools/compare-text/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+# "diff" için karşılaştırma, indirilen dosya için de yama.
+#
+
+name = "Metin Karşılaştırma"
+heading = "Metin&nbsp;Karşılaştırma <span class=\"h1-kw\">&mdash; iki metni yan yana karşılaştırın</span>"
+tagline = "İki metin girer; her fark satır satır ve sözcük sözcük işaretlenmiş çıkar. Hiçbir şey bir başkasının sunucusuna yapıştırılmıyor."
+
+title = "Metin Karşılaştırma &mdash; Yan Yana Fark &mdash; Yüklemesiz"
+description = "İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &mdash; yayımlanmamış kod makinenizden hiç çıkmaz."
+og_title = "İki metni bir sunucuya yapıştırmadan karşılaştırın"
+og_description = "Kendi makinenizde çalışan bir karşılaştırıcı. Satır ve sözcük farkları, yan yana; ve bir kod incelemesinin okuyabileceği bir yama. Yapıştırdığınız şey hiçbir yere gitmez."
+og_image_alt = "Metin Karşılaştırma - iki metni karşılaştırın, yükleme yok"
+
+pledge = """
+    Bir karşılaştırma, burada, bu sayfada yapılan, iki dizge üzerinde bir
+    aritmetiktir. Algoritma Myers'ınkidir &mdash; <code>git diff</code>'in
+    kullandığının aynısı &mdash; ve <code>src/diff.js</code> içinde elle
+    yazılmıştır; gidip okuyabilirsiniz. Bu aracın hiçbir türde ağ özelliği
+    yoktur &mdash; getirecek bir şey yok, gönderecek bir şey yok &mdash; ve
+    burada bu önemlidir: insanların karşılaştırdığı şeyler sözleşmeler,
+    yapılandırma dosyaları ve yayımlanmamış kodlardır; hem de hep çift
+    halinde."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir şey karşılaştırın. Tek bir istek bile yapıştırdığınız şeyden
+      tek bir karakter taşımıyor. Ya da internet bağlantısını kesip yine de
+      karşılaştırın."""
+
+read_first = """
+ ve Myers algoritması, her değişen satırın
+      içindeki sözcük sözcük geçiş ve patolojik bir karşılaştırmanın sayfayı
+      dondurmasını önleyen üç koruma için <code>src/diff.js</code>."""
+
+howto_heading = "İki metin yüklemeden nasıl karşılaştırılır"
+
+card = """
+            İki metni karşılaştırın ve neyin değiştiğini satır satır, sözcük
+            sözcük görün. Bir sözleşmeyi ya da yayımlanmamış kodu kimseye
+            vermeden yapıştırın."""
+
+[words]
+plural = "metinleriniz"
+choose = "bir dosya"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Boyut sınırı yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Yapıştırdığınız şeyin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Yapıştırılan bir belirtecin toplanabileceği bir uç
+      nokta burada yok, olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir
+      yerde <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Karşılaştırma, bu sayfada iki dizge alıp neyin
+      değiştiğini döndüren bir işlevdir."""
+
+[[privacy]]
+title = "Algoritma bilinen algoritma; baştan sona okunabilir."
+body = """
+ Myers'ın en kısa düzenleme betiği
+      algoritması, <code>git diff</code>'in kullandığının aynısı;
+      <code>src/diff.js</code> içinde elle yazılmış, kararları yorumlarla
+      açıklanmış. <code>tests/js/text-diff.test.js</code> içindeki testler,
+      silmelerin soldaki metni, eklemelerin de sağdakini yeniden kurduğunu
+      kanıtlar; bir karşılaştırma için doğru olmak tam da budur."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi de Buy Me a Coffee'den geliyor. Hiçbirine
+      metninizden tek bir karakter verilmiyor. Onu okuyan, ayrıştıran ya da yazan
+      her satır bu kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "İki metni yapıştırın ya da iki dosyayı bırakın."
+body = """
+ Asıl solda, değişmiş olan sağda.
+      Seçiciye aynı anda bırakılan iki dosya, bıraktığınız sırayla biri bir yana
+      biri öbür yana düşer; ters olduysa yanları değiştirin."""
+
+[[howto]]
+title = "Nasıl okuyacağınızı seçin."
+body = """
+ Yan yana ya da tek sütun. Telefon tek
+      sütunla başlar; çünkü yan yana iki metin sütunu ister ve telefonda aşağı
+      yukarı bir tanesine yer vardır. Menü zaten hemen orada."""
+
+[[howto]]
+title = "Önemsiz olanı görmezden gelin."
+body = """
+ Boşluk, büyük-küçük harf, boş satırlar
+      &mdash; her biri ayrı ayrı görmezden gelinebilir; böylece yeniden
+      biçimlendirilmiş bir dosya yüz değişiklik gibi okunmaz. Varsayılan olarak
+      değişmeyen orta kısım bir sayıya katlanır; her değişikliğin iki yanında üçer
+      satır tutulur."""
+
+[[howto]]
+title = "Neyin değiştiğini okuyun."
+body = """
+ Silinen satırlar solda, eklenenler sağda
+      işaretlidir; değişen bir satırın içinde de farklı olan sözcükler vurgulanır
+      &mdash; iki paragrafın karşılaştırması böylece iki koca paragrafı değil, yer
+      değiştiren sözcüğü gösterir."""
+
+[[howto]]
+title = "Yamayı alın."
+body = """
+ İndirilen dosya, birleşik biçimde bir
+      <code>.patch</code>'tir; bir kod incelemesinin, <code>git apply</code>'ın ve
+      her fark görüntüleyicisinin beklediği de budur. Kopyala aynısını panonuza
+      koyar."""
+
+[[faq]]
+q = "Metinlerim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Karşılaştırma, kendi donanımınızda, kendi tarayıcınızda çalışan bir
+        işlevdir. Bu aracın hiçbir türde ağ özelliği yoktur &mdash; hiçbir zaman bir
+        şey getirmez ve hiçbir zaman bir şey göndermez &mdash; ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        tek tek sayar; bunların hiçbiri bu siteye ait değildir. Bunu bir sözleşme,
+        bir yapılandırma dosyası ya da yayımlanmamış kod için kullanmanın sebebi
+        budur: bunları bir başkasının karşılaştırıcısına yapıştırmak, iki sürümü
+        birden aynı anda vermektir."""
+
+[[faq]]
+q = "Karşılaştırma tam olarak ne yapıyor?"
+a = """
+        Soldaki metni sağdakine çeviren en kısa düzenleme kümesini, Myers
+        algoritmasıyla bulur &mdash; <code>git diff</code>'in kullandığı algoritma.
+        Bir karşılaştırmayı okunur kılan şey en kısa olmasıdır: ortaya eklenmiş bir
+        satır, ondan sonraki her satır değişmiş gibi değil tek bir ekleme olarak
+        görünmelidir. Değişmiş bir satırın içinde farklı olan kelimeler de
+        işaretlenir; yani iki paragrafın karşılaştırması, iki koca paragrafı değil
+        yer değiştiren kelimeyi gösterir."""
+
+[[faq]]
+q = "İki yapıştırma yerine iki dosyayı karşılaştırabilir mi?"
+a = """
+        Evet. İkisini birden aynı anda seçiciye bırakın; bıraktığınız sırayla biri
+        bir yana biri öbür yana düşer. Tarayıcınız tarafından bu sayfaya okunurlar;
+        gittikleri tek yer de burasıdır. Ters bıraktıysanız yanları değiştirin."""
+
+[[faq]]
+q = "Bir karşılaştırmadan ne çıkıyor ve onu uygulayabilir miyim?"
+a = """
+        İnen dosya birleşik bir karşılaştırmadır &mdash; <code>git apply</code>,
+        <code>patch</code> ve her kod inceleme aracının okuduğu
+        <code>@@ -3,5 +3,5 @@</code> biçimi. Kopyala da panonuza aynı şeyi yapar.
+        Ekranda gördüğünüz onun bir görünümüdür: yan yana ya da tek sütunda,
+        hepsini istemediğiniz sürece değişmemiş kısımlar bir sayıya
+        katlanmış hâlde."""
+
+[[faq]]
+q = "Boşluğu, büyük-küçük harfi ya da boş satırları görmezden gelebilir mi?"
+a = """
+        Evet, her birini ayrı ayrı. Boşluğu görmezden gelmek, yeniden
+        biçimlendirilmiş bir dosyanın değişmemiş olarak karşılaştırılmasını sağlar;
+        büyük-küçük harfi görmezden gelmek <code>Error</code> ile
+        <code>error</code>'u aynı sözcük sayar; boş satırları görmezden gelmek
+        hiçbir şey taşımayan satırları atlar. Sonucun üstündeki sayaçlar o zaman,
+        görmezden gelinmesini istediğiniz farklar görmezden gelindiğinde ikisinin
+        aynı olduğunu söyler &mdash; bu, birebir aynı demekle aynı iddia değildir
+        ve sayfa iki iddiayı birbirinden ayrı tutar."""
+
+[[faq]]
+q = "Ne kadar büyük bir karşılaştırmayı kaldırabiliyor?"
+a = """
+        Burada konmuş bir sınır yok; çünkü bunun bedelini ödeyen bir sunucu yok.
+        Bir avuç değişikliği olan yirmi bin satırlık iki metin anında
+        karşılaştırılır; çünkü ortak baş ve son, asıl iş başlamadan önce kırpılır.
+        Ortak hiçbir yanı olmayan iki metnin karşılaştırması, zaten apaçık olanı
+        kanıtlamak için bir dakika harcamak yerine erken durur ve bunu söyler; çok
+        uzun bir karşılaştırma ise ilk birkaç bin satırı çizer ve gerisini indirilen
+        yamaya bırakır."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok ve ne kadar
+        yapıştırdığınıza dair bir sınır yok. Sitede reklam var, masrafı karşılayan
+        da o; reklamlara metniniz hakkında hiçbir şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: metinlerinizi karşılaştırılmak üzere uzağa
+        gönderen bir araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "İki metni satır ve sözcük farkıyla, yan yana ya da tek sütunda karşılaştırma ve sonucu birleşik yama olarak indirme. Karşılaştırma tarayıcıda çalışır ve hiçbir şey yüklenmez."
+features = [
+  "İki metni Myers algoritmasıyla, yan yana ya da tek sütunda karşılaştırır",
+  "Değişmiş bir satırın içinde değişen kelimeleri işaretler",
+  "Yan yana ya da tek sütun; değişmeyen orta kısım bir sayıya katlanır",
+  "Boşluğu, büyük-küçük harfi ya da boş satırları ayrı ayrı görmezden gelir",
+  "Bir karşılaştırmayı, bir kod incelemesinin okuyabileceği birleşik yama olarak indirir",
+  "Bırakılan iki dosyayı iki yapıştırma kadar kolay karşılaştırır",
+  "Ortak başı ve sonu kırpar; uzun ve benzer dosyalar böylece anında karşılaştırılır",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "İki dosyayı buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; her yana bir tane, herhangi metin dosyaları"

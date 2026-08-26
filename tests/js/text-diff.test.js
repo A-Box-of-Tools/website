@@ -1,5 +1,5 @@
 /**
- * tools/text-tools/src/diff.js - Myers, and what the page draws from it.
+ * tools/compare-text/src/diff.js - Myers, and what the page draws from it.
  *
  * Two things are being checked. The first is that the diff is *correct*:
  * applying the deletions and insertions to the left-hand text produces the
@@ -14,7 +14,7 @@ import assert from 'node:assert/strict';
 
 import {
   compareText, diffSequences, diffWords, alignRows, formatUnified, splitLines, splitWords,
-} from '../../tools/text-tools/src/diff.js';
+} from '../../tools/compare-text/src/diff.js';
 
 /** Rebuild both sides from the ops, which is what "correct" means here. */
 function rebuild(ops) {

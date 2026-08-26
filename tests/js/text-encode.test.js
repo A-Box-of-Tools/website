@@ -1,5 +1,5 @@
 /**
- * tools/text-tools/src/encode.js - the encoders.
+ * tools/encode-text/src/encode.js - the encoders.
  *
  * Base64 is checked against the vectors in RFC 4648 rather than against
  * itself, which is the same rule the CRC-32 tests follow: a codec that agrees
@@ -14,7 +14,7 @@ import {
   CODECS, codecById, CodecError,
   bytesToBase64, base64ToBytes, bytesToHex, hexToBytes,
   escapeHtml, unescapeHtml, escapeUnicode, unescapeUnicode,
-} from '../../tools/text-tools/src/encode.js';
+} from '../../tools/encode-text/src/encode.js';
 
 const ascii = (text) => new TextEncoder().encode(text);
 const base64 = (text) => bytesToBase64(ascii(text));

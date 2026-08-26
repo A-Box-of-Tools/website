@@ -237,7 +237,7 @@ check `tools/` before adding a name here rather than after.
 
 CSV in both directions, with RFC 4180 quoting done properly, the delimiter and
 encoding sniffed rather than assumed, and the mess a spreadsheet exported
-tidied up. [`text-tools`](tools/text-tools/src/json.js) already owns a JSON
+tidied up. [`format-json`](tools/format-json/src/json.js) already owns a JSON
 parser that keeps key order, keeps numbers as the text they were written as and
 keeps duplicate keys, so one half of this is a printer away. The files are
 payroll, customer lists and exports from systems people are not allowed to

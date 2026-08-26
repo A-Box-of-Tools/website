@@ -103,7 +103,9 @@ complete = true
 "merge-pdf" = "pdf-zusammenfuegen"
 "reverse-video" = "video-rueckwaerts-abspielen"
 "split-gif" = "gif-in-einzelbilder-zerlegen"
-"text-tools" = "json-formatieren"
+"format-json" = "json-formatieren"
+"encode-text" = "base64-kodieren"
+"compare-text" = "text-vergleichen"
 "trim-audio" = "audio-schneiden"
 # "Passwort Generator" ist genau das, was getippt wird, und zwar in dieser
 # Reihenfolge. Die Passphrase steht im Titel, nicht in der Adresse.

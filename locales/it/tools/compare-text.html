@@ -1,0 +1,96 @@
+<main id="main">
+  <!-- Step 1 &mdash; the two texts -->
+  <section class="card">
+    <h2><span class="step">1</span> Incolla i due testi</h2>
+
+    <!--
+      The picker is here for the files that are easier to drop than to open,
+      select all and copy - twice. Nothing about it leaves the machine: each
+      file is read with FileReader into a box below, and that is the whole
+      journey. Two at once land one either side.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">L'originale</label>
+          <span class="count" id="input-count">vuoto</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Incolla qui l'originale - oppure trascina sopra i due file."></textarea>
+      </div>
+
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input-b">La versione cambiata</label>
+          <span class="count" id="input-b-count">vuoto</span>
+        </div>
+        <textarea id="input-b" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Incolla la versione con cui confrontare."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Prova un esempio</button>
+        <button type="button" id="swap" class="ghost">Scambia i lati</button>
+        <button type="button" id="clear" class="ghost danger">Svuota</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; how to read it -->
+  <section class="card">
+    <h2><span class="step">2</span> Scegli come leggerlo</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="view">Come mostrarlo</label>
+        <select id="view">
+          <option value="split" selected>Affiancato</option>
+          <option value="unified">Su una colonna</option>
+        </select>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="only-changes">
+          <input type="checkbox" id="only-changes" checked>
+          Mostra solo quello che è cambiato, con tre righe per parte
+        </label>
+        <label class="check" for="ignore-whitespace">
+          <input type="checkbox" id="ignore-whitespace">
+          Ignora gli spazi
+        </label>
+        <label class="check" for="ignore-case">
+          <input type="checkbox" id="ignore-case">
+          Ignora maiuscole e minuscole
+        </label>
+        <label class="check" for="ignore-blank">
+          <input type="checkbox" id="ignore-blank">
+          Ignora le righe vuote
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what changed -->
+  <section class="card">
+    <h2><span class="step">3</span> Leggi cos'è cambiato</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">Ancora niente.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>Copia</button>
+        <a id="download" class="ghost as-button" hidden download>Scarica</a>
+      </div>
+    </div>
+
+    <div id="diff-view" class="diff"></div>
+  </section>
+</main>

@@ -338,7 +338,16 @@ order = ["merge-pdf", "compress-pdf", "redact-pdf", "images-to-pdf", "document-s
 id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
-order = ["text-tools", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+order = ["format-json", "compare-text", "encode-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+
+# Addresses that moved. Each key is a slug a tool used to answer at, each
+# value the slug of the tool that answers now; build.py writes a stub at the
+# old address for every locale whose address actually changed. text-tools was
+# one page doing four jobs, and in 2026 it became three tools - the locales
+# that had renamed their slug to a search phrase kept their address, so the
+# stubs are for English and the locales that write no slugs at all.
+[redirects]
+"text-tools" = "format-json"
 
 #
 # ---------------------------------------------------------------------------

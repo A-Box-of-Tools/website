@@ -15,7 +15,7 @@ slug = "guides/format-json-without-uploading-it"
 kind = "guide"
 nav = "Formatting JSON"
 group = "doing-the-job"
-tool = "text-tools"
+tool = "format-json"
 
 title = "How to Format JSON Without Uploading It"
 description = "How to lay out, check and minify JSON in your own browser - what a formatter must never change about your file, how to read the error message, and why the site you paste it into matters."

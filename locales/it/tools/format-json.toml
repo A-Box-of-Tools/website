@@ -1,0 +1,278 @@
+#
+# Formattatore JSON - Italian.
+#
+# Overrides for tools/format-json/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Formattatore JSON"
+heading = "Formattatore&nbsp;JSON <span class=\"h1-kw\">&mdash; mettilo in ordine, comprimilo o convertilo</span>"
+tagline = "JSON, XML, HTML, CSS e YAML, formattati o convertiti. Niente finisce incollato nel server di qualcun altro."
+
+title = "Formattare JSON &amp; convertire in YAML &mdash; XML, HTML, CSS &mdash; senza caricare niente"
+description = "Formatta e minimizza JSON, XML, HTML, CSS e YAML, e converti JSON in YAML o XML e viceversa. I parser girano nel tuo browser e non viene caricato niente: un token o un file di configurazione non lascia mai il tuo dispositivo."
+og_title = "Formatta e converti JSON senza incollarlo in un server"
+og_description = "Un formattatore e convertitore JSON che gira sul tuo dispositivo. Le chiavi tengono il loro ordine, i numeri le loro cifre, e quello che incolli non va da nessuna parte."
+og_image_alt = "Formattatore JSON - formattare, minimizzare e convertire, senza caricare niente"
+
+pledge = """
+    Formattare e convertire sono aritmetica su una stringa, fatta qui, in questa
+    pagina. I parser sono scritti a mano e stanno in <code>src/</code>:
+    <code>json.js</code>, <code>xml.js</code>, <code>css.js</code>,
+    <code>yaml.js</code>; e non c'è altro. Questo strumento non ha nessuna
+    funzione di rete, niente da scaricare e niente da mandare, e qui conta più
+    che quasi in qualsiasi altro punto di questo sito: quello che la gente
+    incolla in un formattatore sono token di accesso, cookie di sessione, dati
+    di clienti e codice non ancora pubblicato."""
+
+live_hint = """
+      Non fidarti della nostra parola: apri gli strumenti per sviluppatori, tieni
+      d'occhio il pannello Rete e formatta qualcosa. Non c'è una sola richiesta che
+      porti con sé un carattere di quello che hai incollato. Oppure stacca la
+      connessione e formattalo lo stesso."""
+
+read_first = """
+, <code>src/json.js</code> per il parser che tiene le
+      tue chiavi nell'ordine in cui le hai scritte, e <code>src/convert.js</code>
+      per capire perché una conversione è un parser e uno scrittore, senza niente
+      in mezzo che conosca i due formati insieme."""
+
+howto_heading = "Come formattare o convertire JSON senza caricarlo"
+
+card = """
+            Formatta e minimizza JSON, XML, HTML, CSS e YAML, o converti
+            dall'uno all'altro. Incolla un token o un file di configurazione
+            senza consegnarlo a nessuno."""
+
+[words]
+plural = "testo e codice"
+choose = "un file"
+analytics_extra = """, e nessuno dei
+  linguaggi che questo strumento legge o scrive"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessun limite di dimensione"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Quello che incolli non ha una strada per uscire."
+body = """
+ Nella
+      Content-Security-Policy c'è ogni indirizzo che questa pagina può contattare, e
+      non ne appartiene uno a questo sito. Qui non esiste un recapito dove un token
+      incollato possa essere raccolto, e nel codice non c'è niente che lo manderebbe lì
+      se esistesse."""
+
+[[privacy]]
+title = "Qui niente va a prendere niente."
+body = """
+ In <code>src/</code> non c'è da nessuna
+      parte un <code>fetch</code>, un <code>XMLHttpRequest</code> o un
+      <code>sendBeacon</code>. Ogni parser e ogni scrittore sono funzioni di questa
+      pagina che prendono una stringa e restituiscono una stringa."""
+
+[[privacy]]
+title = "I formattatori tengono quello che gli è stato dato."
+body = """
+ Un oggetto JSON torna
+      indietro con le chiavi nell'ordine in cui le hai scritte e i numeri scritti come
+      li hai scritti tu, perché <code>src/json.js</code> è un parser e non una chiamata
+      a <code>JSON.parse</code>, che riordina le chiavi che sembrano interi e trasforma
+      un id di venti cifre nel double più vicino. I test in
+      <code>tests/js/text-format.test.js</code> controllano esattamente questo."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della pubblicità e
+      della misurazione arrivano da Google, il pulsante delle donazioni da Buy Me a
+      Coffee. A nessuno di loro arriva un carattere del tuo testo. Ogni riga che lo
+      legge, lo analizza o lo scrive è servita da questa origine ed è elencata nel
+      repository."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento resta identico,
+      perché al suo interno non c'è mai stato un passaggio di rete. È la prova più
+      semplice che ci sia."""
+
+[[howto]]
+title = "Scegli il lavoro."
+body = """
+ Due schede, una casella sola:
+      <em>Formatta</em> mette in ordine o comprime JSON, XML, HTML, CSS e YAML;
+      <em>Converti</em> trasforma JSON in YAML o XML e viceversa. Il testo che hai
+      appena formattato è il testo che converti, senza incollarlo due volte."""
+
+[[howto]]
+title = "Incollalo, oppure trascina il file."
+body = """
+ Va bene qualunque cosa tu possa
+      selezionare e copiare. Un file trascinato sul selettore lo legge il tuo browser e
+      lo mette nella casella: qui non c'è nessun passaggio di caricamento da
+      saltare."""
+
+[[howto]]
+title = "Lascia che capisca il linguaggio, oppure diglielo."
+body = """
+ Il menu dice come ha
+      letto il testo, e correggerlo è un clic. Un'ipotesi è solo un punto di partenza,
+      ed è per questo che viene mostrata invece che applicata in silenzio."""
+
+[[howto]]
+title = "Scegli il rientro, oppure comprimi tutto."
+body = """
+ Due spazi, quattro, o una
+      tabulazione. Comprimere è lo stesso documento senza ogni spazio che c'era solo
+      per leggerlo, e il risultato dice quanti byte ha fatto risparmiare."""
+
+[[howto]]
+title = "Leggi l'errore dov'è l'errore."
+body = """
+ Un parser che qui fallisce dice cosa ha
+      trovato e a quale riga e colonna, invece di «token inatteso alla posizione
+      4193». Di solito basta a sistemare un file di configurazione senza aprire
+      nient'altro."""
+
+[[howto]]
+title = "Prenditi il risultato."
+body = """
+ Copialo, oppure scaricalo come file,
+      con il nome del linguaggio in cui è uscito."""
+
+[[faq]]
+q = "Il mio testo viene caricato da qualche parte?"
+a = """
+        No. Ogni parser e ogni scrittore di questa pagina è una funzione che gira nel
+        tuo browser, sul tuo hardware. Questo strumento non ha nessuna funzione di
+        rete: non scarica mai niente e non manda mai niente, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare, nessuno dei quali appartiene a questo sito. È questo il motivo
+        per usarlo con un token di accesso, un cookie di sessione o i dati di un
+        cliente: incollare una di queste cose nel formattatore di qualcun altro vuol
+        dire gliela stai dando."""
+
+[[faq]]
+q = "Formattare JSON cambia qualcosa oltre alla disposizione?"
+a = """
+        No, ed è più difficile di quanto sembri. Le chiavi mantengono l'ordine in cui le
+        hai scritte: un formattatore costruito su <code>JSON.parse</code> sposta in
+        silenzio in cima le chiavi che sembrano interi, quindi
+        <code>{"10":a,"2":b}</code> torna indietro come <code>{"2":b,"10":a}</code>. I
+        numeri mantengono le cifre che hai digitato, quindi un id di venti cifre non
+        perde le ultime tre per colpa di un double e <code>1e999</code> non diventa
+        <code>null</code>. Le chiavi doppie restano entrambe, perché lo standard non dice
+        quale vince e buttarne una vorrebbe dire scegliere al posto tuo."""
+
+[[faq]]
+q = "Quali linguaggi sa formattare?"
+a = """
+        JSON, XML, HTML, CSS e YAML. JSON, XML, HTML e CSS si possono anche comprimere;
+        YAML no, perché la sua forma breve è lo stile in flusso, che è illeggibile, e
+        illeggibile è l'opposto del motivo per cui si tiene un file in YAML. JavaScript
+        di proposito non è nell'elenco: vedi la domanda più sotto."""
+
+[[faq]]
+q = "Perché non formatta JavaScript, Python o SQL?"
+a = """
+        Perché mettere in ordine un linguaggio di programmazione vuol dire analizzarlo
+        per bene, e un formattatore che ci va quasi è peggio di nessun formattatore:
+        produce codice che sembra a posto e fa un'altra cosa. JSON, XML, CSS e YAML
+        hanno grammatiche abbastanza piccole da essere lette a mano e verificate con
+        test che puoi eseguire. Un formattatore JavaScript è Prettier, che è un megabyte
+        di parser, e il suo posto è nel tuo editor, non su una pagina web."""
+
+[[faq]]
+q = "Il mio YAML dice no e il JSON è uscito come stringa. Perché?"
+a = """
+        Perché è una stringa, e qui si legge YAML 1.2 e non 1.1. In YAML 1.1,
+        <code>yes</code>, <code>no</code>, <code>on</code> e <code>off</code> erano
+        booleani, ed è il famoso baco che trasforma il codice del paese della Norvegia
+        in <code>false</code>. YAML 1.2 l'ha tolto, e lo toglie anche questo: solo
+        <code>true</code>, <code>false</code>, <code>null</code> e <code>~</code>
+        vengono letti come qualcosa di diverso dal testo. Nell'altro verso, quelle
+        parole vengono riscritte <em>tra virgolette</em>, anche se questo strumento le
+        leggerebbe come testo pure senza, perché quello che aprirà il file dopo magari
+        no. PyYAML usa ancora 1.1 come impostazione predefinita. Leggere in modo severo
+        e scrivere in modo prudente è l'unica combinazione giusta in entrambi i
+        versi."""
+
+[[faq]]
+q = "Cosa si perde convertendo YAML in JSON?"
+a = """
+        I commenti, perché JSON non ha dove metterli. Ancore, alias e tag vengono
+        rifiutati del tutto invece che indovinati: ognuno di loro dice qualcosa che JSON
+        non sa dire, e un convertitore che scegliesse in silenzio un'interpretazione ti
+        consegnerebbe un documento che non è quello che diceva il file. Nell'altro verso
+        non si perde niente: ogni documento JSON è già un documento YAML."""
+
+[[faq]]
+q = "Cosa si perde convertendo JSON in XML?"
+a = """
+        La differenza tra un oggetto vuoto, un array vuoto e una stringa vuota, che
+        diventano tutti un elemento vuoto, e il tipo di ogni valore, perché XML non ha
+        tipi: ed è per questo che la conversione inversa lascia tutto come stringa
+        invece di decidere che <code>8080</code> fosse un numero. Un array diventa un
+        elemento ripetuto, che è l'unica forma che si rilegge, e a una chiave che un
+        nome di elemento non può contenere vengono sostituiti i caratteri scomodi,
+        invece di produrre un documento che nessun parser leggerà."""
+
+[[faq]]
+q = "Rifare i rientri dell'HTML cambia l'aspetto della pagina?"
+a = """
+        Può cambiarlo, e qui lo si dice onestamente. Lo spazio tra due elementi inline è
+        uno spazio tra due parole, quindi spostarlo non è gratis. Due cose tengono la
+        cosa a bada: <code>&lt;pre&gt;</code> e <code>&lt;textarea&gt;</code> vengono
+        copiati esattamente com'erano, e un elemento che contiene solo testo resta su
+        una riga. Tutto il resto viene messo in ordine."""
+
+[[faq]]
+q = "Quanto può essere grande il file?"
+a = """
+        Qui non c'è nessun limite impostato, perché non c'è nessun server che lo paghi.
+        Il tetto vero è il tuo dispositivo: qualche megabyte di JSON va benissimo, e su
+        un documento molto lungo la pagina aspetta una pausa nella tua digitazione
+        prima di riformattare, invece di litigarti la tastiera."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di prova e
+        non c'è limite a quanto incolli. Il sito ha della pubblicità, ed è quella che lo
+        mantiene; agli annunci non arriva niente sul tuo testo."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la connessione e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene caricato
+        niente, perché uno strumento che spedisse via il tuo testo per formattarlo si
+        fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Formattare e minimizzare JSON, XML, HTML, CSS e YAML, e convertire JSON in YAML o XML e viceversa. I parser girano nel browser e non viene caricato niente."
+features = [
+  "Formatta e comprime JSON, XML, HTML e CSS, e mette in ordine YAML",
+  "Mantiene l'ordine delle chiavi JSON e le cifre esatte di ogni numero",
+  "Dice a quale riga e colonna sta un errore, a parole",
+  "Converte JSON in YAML e XML, e viceversa, dicendo cosa si perde in ogni verso",
+  "Legge YAML 1.2, così yes e no restano stringhe",
+  "Funziona con un file trascinato come con del testo incollato",
+  "Funziona offline; niente caricamenti, niente account",
+]
+
+[picker]
+title = "Trascina qui un file"
+hint = "oppure clicca per sceglierlo &mdash; qualsiasi file di testo"

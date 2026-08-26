@@ -43,7 +43,9 @@ browser and uploads nothing; how the site around them is built is in the
 | [Document Scanner](document-scanner/) | `/document-scanner/` | Photograph the page. Get back something that looks scanned. |
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
-| [Text & Code](text-tools/) | `/text-tools/` | Lay it out, see what changed, encode it, or turn it into the other format. Nothing is pasted into anyone else's server. |
+| [JSON Formatter](format-json/) | `/format-json/` | JSON, XML, HTML, CSS and YAML, formatted or converted. Nothing is pasted into anyone else's server. |
+| [Text Diff](compare-text/) | `/compare-text/` | Two texts in, every difference marked, line by line and word by word. Nothing is pasted into anyone else's server. |
+| [Base64 Encoder & Decoder](encode-text/) | `/encode-text/` | Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server. |
 | [QR & Barcode Generator](qr-barcode/) | `/qr-barcode/` | Type it, and it becomes a code. Nothing is sent to make one. |
 | [QR & Barcode Reader](qr-barcode-reader/) | `/qr-barcode-reader/` | Point it at a code, or drop a picture of one. It is read here, and nowhere else. |
 | [Hash & Checksum](hash-checksum/) | `/hash-checksum/` | Check a download against the number the publisher printed, without sending it to anyone. |

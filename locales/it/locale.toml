@@ -62,7 +62,9 @@ complete = true
 "merge-pdf" = "unire-pdf"
 "reverse-video" = "invertire-video"
 "split-gif" = "dividere-gif-in-fotogrammi"
-"text-tools" = "formattare-json"
+"format-json" = "formattare-json"
+"encode-text" = "codifica-base64"
+"compare-text" = "confrontare-testi"
 "trim-audio" = "tagliare-audio"
 # Un nome e non un verbo, come per il QR code: "generatore password" è la
 # forma che si scrive, senza la preposizione che l'italiano scritto vorrebbe.

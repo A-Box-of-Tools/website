@@ -1,0 +1,238 @@
+#
+# Codificador e decodificador Base64 - Brazilian Portuguese.
+#
+# Overrides for tools/encode-text/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Codificador e decodificador Base64"
+heading = "Codificador&nbsp;e&nbsp;decodificador&nbsp;Base64 <span class=\"h1-kw\">&mdash; e URL, entidades HTML, hexadecimal e escapes</span>"
+tagline = "Base64, codificação percentual, entidades HTML, hexadecimal e escapes com barra invertida, nos dois sentidos. Nada é colado no servidor de ninguém."
+
+title = "Codificar &amp; decodificar Base64 &mdash; URL, entidades HTML, hexadecimal &mdash; sem enviar nada"
+description = "Codifique e decodifique Base64 nos dois alfabetos, codifique URL em porcentagem, escape entidades HTML e leia hexadecimal e escapes com barra invertida. Tudo roda no seu navegador e nada é enviado: um token nunca sai do seu computador."
+og_title = "Decodifique Base64 sem colar num servidor"
+og_description = "Um codificador e decodificador rodando no seu próprio computador. Base64 nos dois alfabetos, URL, entidades HTML, hexadecimal e escapes; e o que você cola não vai a lugar nenhum."
+og_image_alt = "Codificador e decodificador Base64 - nos dois sentidos, sem enviar nada"
+
+pledge = """
+    Cada codificação daqui é aritmética sobre uma string, feita aqui, nesta
+    página. Os codecs são escritos à mão e ficam em <code>src/encode.js</code>;
+    e não há mais nada. Esta ferramenta não tem função de rede de espécie
+    alguma, nada para buscar e nada para mandar, e isso pesa aqui mais do que em
+    quase qualquer outro lugar: o que as pessoas colam num decodificador de
+    Base64 online é um token, e colar um token no site de outra pessoa é
+    entregá-lo a ela."""
+
+live_hint = """
+      Você não precisa confiar na nossa palavra. Abra as ferramentas do
+      desenvolvedor, deixe a aba &ldquo;Rede&rdquo; à vista e decodifique alguma
+      coisa. Nenhuma requisição leva um caractere do que você colou. Ou então
+      desligue a internet e decodifique assim mesmo."""
+
+read_first = """
+ e <code>src/encode.js</code> para o
+      Base64 conferido contra os vetores de teste da RFC&nbsp;4648 em vez de contra
+      si mesmo, e que recusa entradas ruins em vez de devolver algo plausível como
+      o <code>atob</code> faz."""
+
+howto_heading = "Como codificar ou decodificar Base64 sem enviá-lo"
+
+card = """
+            Base64, URL, entidades HTML, hexadecimal e escapes com barra
+            invertida, codificados ou decodificados. Cole um token sem entregar
+            para ninguém."""
+
+[words]
+plural = "texto"
+choose = "um arquivo"
+analytics_extra = """, e nenhuma das
+  codificações que esta ferramenta lê ou escreve"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem limite de tamanho"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "O que você cola não tem para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todo endereço que esta página pode contatar, e
+      nenhum deles é nosso. Aqui não existe um ponto de coleta onde um token colado
+      pudesse parar, nem nada no código que o mandasse para lá se existisse."""
+
+[[privacy]]
+title = "Aqui nada busca nada."
+body = """
+ Não existe em lugar nenhum de
+      <code>src/</code> um <code>fetch</code>, um <code>XMLHttpRequest</code> ou um
+      <code>sendBeacon</code>. Cada codificador e cada decodificador são funções
+      desta página que recebem uma string e devolvem uma string."""
+
+[[privacy]]
+title = "O decodificador avisa quando algo está errado."
+body = """
+ O <code>atob</code> do navegador aceita
+      entradas que deveria recusar e devolve algo plausível. O Base64 daqui é
+      escrito à mão e conferido contra os vetores de teste da RFC&nbsp;4648, e
+      quando o que você colou não é Base64 ele diz isso, e diz por quê. Os testes
+      em <code>tests/js/text-encode.test.js</code> conferem exatamente isso."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = """
+ Os scripts de publicidade
+      e de medição vêm do Google, e o botão de doação vem do Buy Me a Coffee. Nenhum
+      deles recebe um caractere do seu texto. Toda linha que o lê, analisa ou escreve é
+      servida desta origem e está listada no repositório."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e a ferramenta continua
+      igualzinha, porque nunca houve uma etapa de rede nela. Essa é a prova mais
+      simples de todas."""
+
+[[howto]]
+title = "Escolha a codificação."
+body = """
+ Base64 nos dois alfabetos, codificação
+      percentual para um valor sozinho ou para uma URL inteira, as cinco entidades
+      HTML, bytes em hexadecimal e os escapes com barra invertida de um literal de
+      string. A nota embaixo do menu diz para que serve cada uma."""
+
+[[howto]]
+title = "Escolha o sentido."
+body = """
+ <em>Codificar</em> pega texto puro e produz a
+      forma codificada; <em>Decodificar</em> traz a forma codificada de volta ao
+      texto puro. O resultado acompanha a sua digitação: mudar de sentido é um
+      clique, sem redigitar nada."""
+
+[[howto]]
+title = "Cole, ou solte o arquivo."
+body = """
+ Qualquer coisa que você consiga
+      selecionar e copiar serve. Um arquivo solto no seletor é lido pelo seu próprio
+      navegador e vai para a caixa: aqui não existe etapa de envio para pular."""
+
+[[howto]]
+title = "Leia o erro, se houver um."
+body = """
+ Um decodificador que falha aqui diz o que
+      encontrou &mdash; um caractere que o Base64 não usa, preenchimento no lugar
+      errado, bytes que não são texto &mdash; em vez de devolver algo plausível e
+      errado."""
+
+[[howto]]
+title = "Leve o resultado."
+body = """
+ Copie, ou baixe como arquivo de texto. Os
+      contadores embaixo da caixa dizem quantos bytes entraram e quantos
+      saíram."""
+
+[[faq]]
+q = "O meu texto é enviado para algum lugar?"
+a = """
+        Não. Cada codificador e cada decodificador desta página é uma função que
+        roda no seu próprio navegador, no seu próprio hardware. Esta ferramenta não
+        tem função de rede de espécie alguma: nunca busca nada e nunca manda nada, e
+        a <code>Content-Security-Policy</code> da página lista todo endereço que ela
+        pode contatar, e nenhum deles é nosso. É esse o motivo para usá-la com um
+        token de acesso ou um cookie de sessão: colar uma dessas coisas no
+        decodificador de outra pessoa é entregá-la a ela."""
+
+[[faq]]
+q = "O Base64 daqui é o mesmo Base64 de todo mundo?"
+a = """
+        É: ele é conferido contra os vetores de teste do RFC 4648, e não contra ele
+        mesmo. Os dois alfabetos decodificam, então um JWT escrito com <code>-</code> e
+        <code>_</code> se lê tão fácil quanto um escrito com <code>+</code> e
+        <code>/</code>, e uma entrada quebrada a cada 64 caracteres é juntada para você.
+        A codificação passa por bytes UTF-8, então uma letra acentuada ou um emoji
+        sobrevive à ida e à volta."""
+
+[[faq]]
+q = "Base64 é criptografia?"
+a = """
+        Não, e tratá-lo como criptografia é o erro clássico. Base64 é uma grafia: os
+        mesmos bytes, escritos num alfabeto que sobrevive a uma URL, a um e-mail ou a
+        uma string JSON. Qualquer um pode ler de volta &mdash; esta página faz isso
+        em um milissegundo &mdash;, então ele não esconde nada e não protege nada. Se
+        o que você tem é segredo, precisa de criptografia de verdade antes de ser
+        codificado, não no lugar dela."""
+
+[[faq]]
+q = "Por que a decodificação falhou?"
+a = """
+        Porque o que foi colado não é exatamente o que o codec esperava receber, e o
+        erro diz em que sentido: um caractere fora do alfabeto Base64, preenchimento
+        no lugar errado, um sinal de porcentagem sem dois dígitos hexadecimais
+        atrás, ou bytes que até se decodificam do Base64 mas não são texto UTF-8
+        &mdash; o que geralmente significa que o original era um arquivo, e não uma
+        string. O <code>atob</code> do navegador teria devolvido algo plausível no
+        lugar; ser avisado é todo o sentido de colar algo num decodificador."""
+
+[[faq]]
+q = "Qual é a diferença entre as duas codificações de endereço web?"
+a = """
+        Um valor sozinho, ou o endereço inteiro. Codificar <em>um valor</em> escapa
+        tudo a que uma URL dá significado &mdash; as barras, os pontos de
+        interrogação, os e comerciais &mdash;, que é o que você quer para um único
+        parâmetro de consulta. Codificar uma <em>URL inteira</em> deixa o endereço
+        funcionando: as barras e o <code>?</code> ficam, e só os caracteres que uma
+        URL não consegue carregar de jeito nenhum são escapados. Usar o primeiro num
+        endereço inteiro quebra o endereço; usar o segundo num valor perde onde o
+        valor termina."""
+
+[[faq]]
+q = "De que tamanho pode ser o arquivo?"
+a = """
+        Aqui não tem limite definido, porque não existe servidor pagando por um. O
+        teto de verdade é o seu próprio computador: alguns megabytes de texto vão
+        bem, e num documento muito longo a página espera uma pausa na sua digitação
+        antes de recodificar, em vez de brigar com você pelo teclado."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não tem conta, nem login, nem período de teste, nem limite de quanto
+        você cola. O site exibe publicidade, e é ela que paga a conta; os anúncios não
+        recebem nada sobre o seu texto."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Funciona. Carregue a página uma vez, depois desligue a internet e ela
+        continua funcionando. Esse é também o jeito mais simples de provar que nada
+        está sendo enviado: uma ferramenta que mandasse o seu texto embora para ser
+        decodificado pararia no instante em que você tirasse da tomada."""
+
+[schema]
+description = "Codificar e decodificar Base64 nos dois alfabetos, codificar em porcentagem um valor ou uma URL inteira, escapar e ler entidades HTML, bytes hexadecimais e escapes com barra invertida. Tudo roda no navegador e nada é enviado."
+features = [
+  "Base64 nos dois alfabetos, codificado e decodificado",
+  "Lê Base64 quebrado em linhas e diz exatamente por que uma entrada ruim é ruim",
+  "Conferido contra os vetores de teste da RFC 4648",
+  "Codificação percentual para um valor sozinho e para uma URL inteira",
+  "As cinco entidades HTML, e as entidades numéricas e nomeadas lidas de volta",
+  "Bytes hexadecimais com qualquer separador, e escapes com barra invertida",
+  "Codifica por bytes UTF-8, então os emojis sobrevivem à viagem",
+  "Funciona com um arquivo solto tão bem quanto com texto colado",
+  "Funciona offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste um arquivo para cá"
+hint = "ou clique para procurar &mdash; qualquer arquivo de texto"

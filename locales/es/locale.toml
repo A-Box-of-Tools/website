@@ -74,7 +74,9 @@ complete = true
 "merge-pdf" = "unir-pdf"
 "reverse-video" = "invertir-video"
 "split-gif" = "separar-gif-en-fotogramas"
-"text-tools" = "formatear-json"
+"format-json" = "formatear-json"
+"encode-text" = "codificar-base64"
+"compare-text" = "comparar-textos"
 "trim-audio" = "cortar-audio"
 # Con "de": "generador de contraseñas" es lo que se teclea, y el
 # "generador-contrasenas" sin la preposición no es español que nadie escriba.
