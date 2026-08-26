@@ -1,0 +1,329 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../gambar-ke-base64/">Gambar ke Data URI</a>, jatuhkan
+      gambarnya, pilih <em>Sebuah properti khusus CSS</em>, lalu tempelkan
+      barisnya ke bagian atas lembar gaya Anda. Lalu pakai sebagai
+      <code>background-image: var(--logo)</code> di mana pun Anda
+      membutuhkannya.
+    </p>
+    <p>
+      Lakukan itu ketika gambarnya kecil &mdash; sebuah ikon, sebuah bulatan
+      butir, sebuah tanda panah, sebuah pola &mdash; dan ia dibutuhkan di setiap
+      halaman. Jangan lakukan dengan sebuah foto. Semua di bawah ini adalah
+      kenapa dua kalimat itu berbeda, dan bagaimana tahu Anda sedang melihat yang
+      mana.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa sebenarnya sebuah data URI</h2>
+    <p>
+      Sebuah alamat yang memuat bendanya alih-alih menunjuk padanya. Kalau sebuah
+      lembar gaya biasanya berkata
+    </p>
+    <pre><code>background-image: url("logo.png");</code></pre>
+    <p>
+      dan perambannya pergi mengambil <code>logo.png</code>, sebuah data URI
+      berkata
+    </p>
+    <pre class="wrap"><code>background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...");</code></pre>
+    <p>
+      dan tidak ada yang perlu diambil: gambarnya sudah ada di sana, tertulis
+      dalam karakter. Ada tiga bagian. <code>data:</code> adalah skemanya.
+      <code>image/png</code> adalah jenis medianya, dan perambannya
+      memercayainya sepenuhnya &mdash; lebih lanjut soal itu di bawah. Semua
+      setelah komanya adalah file-nya.
+    </p>
+    <p>
+      Itulah seluruh gagasannya. Ia bukan trik atau akal-akalan; ia sudah ada di
+      standarnya sejak 1998 dan bekerja di setiap peramban yang dirilis sejak
+      itu.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa yang Anda dapat: satu perjalanan bolak-balik lebih sedikit</h2>
+    <p>
+      Penghematannya bukan lebar pita. Melainkan permintaannya.
+    </p>
+    <p>
+      Sebuah peramban tidak bisa meminta <code>logo.png</code> sampai ia membaca
+      lembar gaya yang menyebutnya, dan ia tidak bisa membaca lembar gayanya
+      sampai ia mengambilnya. Jadi gambar latar biasa berada setidaknya dua
+      perjalanan bolak-balik dalamnya di pemuatan halamannya, dan di sebuah
+      ponsel di jaringan yang lambat, satu perjalanan bolak-balik bisa beberapa
+      ratus milidetik tanpa peduli sekecil apa file-nya. Tanda panah 600 byte
+      nyaris tidak berbiaya untuk ditransfer dan tetap bisa berbiaya seperempat
+      detik untuk tiba.
+    </p>
+    <p>
+      Kalau disisipkan, ia tiba bersama lembar gayanya. Itulah seluruh
+      manfaatnya, dan untuk ikon kecil yang muncul di bagian atas layar itu
+      manfaat yang nyata.
+    </p>
+  </section>
+
+  <section>
+    <h2>Berapa harganya: sepertiga, lalu penyinggahannya</h2>
+    <p>
+      <strong>Base64 menambah sekitar sepertiga.</strong> Tiga byte file menjadi
+      empat karakter, karena itulah yang dibutuhkan untuk menuliskan byte
+      sembarang hanya dengan karakter yang diizinkan sebuah URL. Tidak ada
+      pengode cerdik yang menghindarinya. PNG 9 KB adalah 12 KB lembar gaya.
+    </p>
+    <p>
+      <strong>Kompresi tidak mengembalikannya.</strong> Inilah bagian yang
+      diandaikan orang begitu saja. Gzip dan Brotli bekerja dengan menemukan
+      pengulangan, dan sebuah PNG, JPEG, dan WebP sudah dikompres &mdash; sangat
+      sedikit pengulangan yang tersisa di dalamnya, dan base64 tidak menambahkan
+      apa pun. Pada praktiknya Anda mendapat kembali sekitar sepersepuluh dari
+      sepertiganya, bukan seluruhnya. (SVG adalah kasus sebaliknya, dan bagian
+      berikutnya tentang itu.)
+    </p>
+    <p>
+      <strong>Ia berhenti menjadi sebuah file.</strong> Inilah ongkos yang tidak
+      muncul di pengukuran mana pun yang mungkin Anda ambil, dan inilah yang
+      penting pada skala besar:
+    </p>
+    <ul>
+      <li>
+        <strong>Ia tidak bisa disinggahkan sendiri.</strong> Gambar biasa diambil
+        sekali lalu dipakai ulang selama setahun. Yang disisipkan adalah bagian
+        dari lembar gayanya, jadi ia hidup dan mati mengikuti entri singgahan
+        lembar gayanya.
+      </li>
+      <li>
+        <strong>Mengubah apa pun mengunduh ulang semuanya.</strong> Perbaiki
+        sebuah margin, kirimkan lembar gaya baru, dan setiap pengunjung mengunduh
+        gambar yang disisipkan itu lagi bersamanya &mdash; sebuah gambar yang
+        belum berubah selama dua tahun.
+      </li>
+      <li>
+        <strong>Ia berada di jalur kritis.</strong> Lembar gaya menahan
+        penggambaran. Gambar tidak. Menyisipkan sebuah gambar memindahkannya dari
+        kategori kedua ke kategori pertama: halamannya tidak bisa terlukis sampai
+        seluruhnya, gambarnya termasuk, sudah tiba.
+      </li>
+      <li>
+        <strong>Ia tidak bisa diambil secara paralel.</strong> Peramban mengunduh
+        banyak hal sekaligus. Gambar yang disisipkan bukan hal yang terpisah,
+        jadi ia tidak mendapat satu pun dari itu.
+      </li>
+    </ul>
+    <p>
+      Ambang kasarnya, yang merupakan tempat nasihatnya berubah alih-alih tempat
+      sebuah peramban melakukan sesuatu yang berbeda: di bawah sekitar 2 KB ia
+      kemenangan yang jelas; sampai sekitar 10 KB ia biasanya masih sepadan untuk
+      sesuatu yang ada di setiap halaman; lewat 50 KB ia sebuah kekeliruan tanpa
+      pesan galat. <a href="../../gambar-ke-base64/">Alatnya</a> memberi tahu
+      Anda setiap hasilnya mendarat di pita yang mana, dengan jumlah karakternya
+      di sebelahnya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Jangan pernah mem-base64-kan sebuah SVG</h2>
+    <p>
+      Inilah kekeliruan tunggal yang paling umum pada gambar yang disisipkan, dan
+      ia dibuat pengekspor dan pengaya bangun sesering dibuat orang.
+    </p>
+    <p>
+      SVG adalah teks. Sebuah URL sudah membawa teks. Hanya segelintir karakter
+      yang harus dilepaskan &mdash; <code>%</code>, <code>#</code>,
+      <code>&lt;</code>, <code>&gt;</code>, dan tanda kutip yang Anda pakai
+      membungkusnya &mdash; dan semua yang lain bisa dibiarkan persis apa adanya.
+      Mengodekannya dengan cara itu memberi Anda URI yang biasanya sekitar
+      seperlima lebih pendek daripada base64 file yang sama, dan yang sesudahnya
+      terkompres seperti teks alih-alih seperti derau.
+    </p>
+    <p>
+      Ia juga masih terbaca:
+    </p>
+    <pre class="wrap"><code>background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E...");</code></pre>
+    <p>
+      Anda bisa melihat <code>viewBox</code>-nya. Anda bisa mengubah warna
+      isiannya di penyunting Anda tanpa mendekodekan apa pun. Base64-kan file
+      yang sama dan ia menjadi tembok huruf yang tidak akan pernah disentuh
+      siapa pun lagi. <a href="../../gambar-ke-base64/">Gambar ke Data URI</a>
+      melakukan ini secara otomatis untuk apa pun yang ternyata sebuah SVG, dan
+      punya sebuah kotak centang untuk rantai perkakas langka yang bersikeras
+      meminta <code>;base64</code>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kekeliruan tanda kutip yang hanya merusak SVG</h2>
+    <p>
+      CSS mengizinkan Anda menulis <code>url()</code> tanpa tanda kutip, dan
+      untuk nama file biasa itu tidak masalah:
+    </p>
+    <pre><code>background-image: url(logo.png);</code></pre>
+    <p>
+      Lakukan hal yang sama dengan SVG berkode persen dan ia rusak. Token
+      <code>url()</code> tanpa tanda kutip berakhir di spasi, kurung, tanda
+      kutip, atau karakter kendali yang pertama &mdash; dan sebuah SVG penuh
+      spasi, di antara setiap atribut dan setiap angka di sebuah jalur.
+      Deklarasinya lalu menjadi tidak sah, CSS membuang deklarasi yang tidak sah
+      secara diam-diam, dan Anda tidak mendapat latar dan tidak mendapat galat.
+    </p>
+    <p>
+      Solusinya adalah tanda kutip, setiap kali:
+    </p>
+    <pre><code>background-image: url("data:image/svg+xml,%3Csvg ... %3E");</code></pre>
+    <p>
+      Itu juga sebabnya sebuah pengode tidak perlu melepaskan spasinya &mdash;
+      mereka sepenuhnya sah di dalam URL yang berkutip, dan melepaskan
+      masing-masing sebagai <code>%20</code> akan berbiaya tiga karakter untuk
+      setiap spasi di file-nya. Kedua keputusannya berjalan bersama: beri tanda
+      kutip pada URI-nya, dan Anda bisa membiarkan spasinya. Setiap bentuk yang
+      dihasilkan alatnya diberi tanda kutip persis karena alasan ini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Jenis medianya harus benar</h2>
+    <p>
+      Sebuah data URI menyatakan jenisnya sendiri, dan perambannya menerimanya
+      apa adanya. Tidak ada pengendusan cadangan seperti yang ada untuk file yang
+      diambil: katakan <code>image/png</code> tentang sesuatu yang sebenarnya
+      JPEG dan gambarnya tidak tergambar, tanpa pesan di mana pun yang berguna.
+    </p>
+    <p>
+      Dan itu penting karena ekstensi file berbohong. Foto yang diekspor sebagai
+      JPEG lalu dinamai ulang <code>logo.png</code> adalah hal biasa yang
+      ditemukan di sebuah disk. Beberapa byte pertama sebuah file gambar, di sisi
+      lain, mengatakan ia apa tanpa ambiguitas &mdash; setiap format punya sebuah
+      tanda tangan &mdash; jadi sebuah alat sebaiknya membaca file-nya alih-alih
+      namanya. Yang di sini melakukannya, dan memberi tahu Anda ketika keduanya
+      tidak sepakat.
+    </p>
+    <p>
+      Dua format layak diketahui karena mereka gagal dengan cara yang
+      membingungkan. <strong>HEIC</strong>, yang menjadi format pemotretan
+      iPhone, dan <strong>TIFF</strong>, yang dihasilkan pemindai, keduanya
+      membuat data URI yang sepenuhnya sah yang tidak akan digambar peramban mana
+      pun selain Safari. URI-nya tidak rusak; formatnya sekadar bukan format yang
+      didukung web. Ubah dulu.
+    </p>
+  </section>
+
+  <section>
+    <h2>Metadata yang tidak Anda maksudkan untuk diterbitkan</h2>
+    <p>
+      Data URI adalah salinan file-nya, byte demi byte. Tidak ada yang
+      didekodekan dan dikodekan ulang, dan biasanya itulah intinya &mdash; tidak
+      ada kualitas yang hilang &mdash; tapi ia juga berarti semua yang lain di
+      file-nya ikut serta.
+    </p>
+    <p>
+      Foto yang langsung dari sebuah ponsel membawa EXIF: koordinat GPS tempat ia
+      diambil, cap waktunya, model kameranya, dan sering nomor serinya. Itu bisa
+      30 KB dari file-nya. Kalau disisipkan, ia menjadi 40 KB base64 di lembar
+      gaya Anda, di jalur kritis setiap halaman &mdash; dan sebuah alamat rumah
+      yang tersimpan di sebuah repositori, dalam bentuk yang tidak akan pernah
+      terpikir siapa pun untuk dilihat.
+    </p>
+    <p>
+      Bersihkan lebih dulu dengan
+      <a href="../../hapus-data-exif/">Penampil &amp; Penghapus EXIF</a>, yang
+      menulis ulang wadahnya tanpa menyentuh gambarnya; ada
+      <a href="../hapus-data-exif-dan-gps/">panduannya</a> juga. Gambar ke Data
+      URI membaca berapa banyak metadata yang ada di sebuah JPEG, PNG, atau WebP
+      lalu mengatakannya sebelum Anda menyalin apa pun.
+    </p>
+  </section>
+
+  <section>
+    <h2>Di mana menaruhnya, setelah Anda punya</h2>
+    <p>
+      Kalau gambarnya muncul di satu aturan, taruh URI-nya di aturan itu. Kalau
+      ia muncul di lebih dari satu &mdash; dan ikon biasanya begitu, begitu Anda
+      menghitung keadaan tunjuk dan tema gelapnya &mdash; nyatakan sekali sebagai
+      sebuah properti khusus:
+    </p>
+    <pre><code>:root {
+  --icon-search: url("data:image/svg+xml,%3Csvg ... %3E");
+}
+
+.search-field { background-image: var(--icon-search); }
+.search-button::before { content: var(--icon-search); }</code></pre>
+    <p>
+      URI 3 KB yang ditempelkan ke empat aturan adalah 12 KB lembar gaya dan
+      empat tempat untuk disunting ketika ikonnya berubah. Properti khususnya
+      adalah satu dari masing-masing. Ia juga bentuk yang membuat penemaan
+      bekerja: definisikan ulang <code>--icon-search</code> di dalam sebuah kueri
+      media dan setiap pemakaiannya mengikuti.
+    </p>
+    <p>
+      Untuk sebuah tag <code>&lt;img&gt;</code> alih-alih CSS, sertakan
+      <code>width</code> dan <code>height</code>. Gambar yang disisipkan dimuat
+      seketika, jadi ukuran yang hilang adalah pergeseran tata letak yang terjadi
+      terlalu cepat untuk dilihat dan tetap dihitung merugikan Anda.
+      Pengecualiannya adalah SVG: yang hanya membawa sebuah <code>viewBox</code>
+      tidak punya ukuran piksel miliknya sendiri, dan menuliskan bawaan
+      300&times;150 peramban ke tagnya memaku sebuah gambar yang bisa diskalakan
+      pada ukuran yang tidak dipilih siapa pun.
+    </p>
+    <p>
+      Biarkan <code>alt</code>-nya kosong kecuali Anda punya sesuatu yang benar
+      untuk ditaruh di dalamnya. Hanya Anda yang tahu apakah gambarnya membawa
+      makna atau sekadar hiasan, dan keterangan yang ditebak dari sebuah nama
+      file lebih buruk bagi orang yang memakai pembaca layar daripada tidak ada
+      keterangan sama sekali.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ketika jawabannya &ldquo;jangan&rdquo;</h2>
+    <p>
+      Kalau gambarnya lebih dari sekitar 50 KB setelah dikodekan, penyisipan
+      adalah alat yang keliru dan kecermatan sebanyak apa pun pada pengodeannya
+      tidak membereskannya. Alternatifnya, dalam urutan yang layak dicoba:
+    </p>
+    <ul>
+      <li>
+        <strong>Kecilkan.</strong> Kebanyakan gambar yang terlalu besar untuk
+        disisipkan memang terlalu besar secara umum.
+        <a href="../../kompres-gambar/">Kompresor Gambar</a> akan membawa sebuah
+        foto ke ukuran yang Anda sebutkan, dan
+        <a href="../../ubah-ukuran-gambar/">Pengubah Ukuran Gambar</a> akan
+        memotong dimensi pikselnya turun ke yang sebenarnya dipakai tata letaknya
+        &mdash; dan itu sangat sering masalah yang sesungguhnya.
+      </li>
+      <li>
+        <strong>Gambar ulang sebagai SVG.</strong> Ikon yang diekspor sebagai PNG
+        40 KB sering kali adalah SVG 900 byte. Itu bukan perbedaan kompresi, itu
+        perbedaan format, dan ia juga menyelesaikan masalah retinanya.
+      </li>
+      <li>
+        <strong>Biarkan sebagai sebuah file lalu pramuat.</strong>
+        <code>&lt;link rel="preload" as="image"&gt;</code> memulai pengambilannya
+        segera tanpa memindahkan byte-nya ke jalur kritis. Ia mendapat sebagian
+        besar manfaat penyisipan dan tidak satu pun ongkos penyinggahannya.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Tidak satu pun dari ini butuh unggahan</h2>
+    <p>
+      Mengodekan sebuah file sebagai base64 adalah hitungan. Ia dua fungsi yang
+      sudah dipunyai peramban sejak awal &mdash; <code>btoa</code> dan
+      <code>encodeURIComponent</code> &mdash; dan sama sekali tidak ada alasan
+      teknis bagi sebuah gambar untuk bepergian ke sebuah server dan kembali
+      supaya ia ditulis dengan cara yang berbeda. Pengubah mana pun yang
+      mengunggah file Anda untuk melakukan ini sedang mengunggahnya demi alasannya
+      sendiri, bukan demi alasan Anda.
+    </p>
+    <p>
+      <a href="../../gambar-ke-base64/">Alat di sini</a> tidak mengirimnya ke
+      mana pun: <code>Content-Security-Policy</code> halamannya menyebut satu per
+      satu setiap alamat yang boleh dihubunginya, dan tidak satu pun milik situs
+      ini. Muat halamannya, cabut koneksi internet, lalu kodekan sesuatu kalau
+      Anda lebih suka memeriksa daripada diberi tahu.
+      <a href="../apakah-aman-mengunggah-file/">Amankah mengunggah file ke
+      pengubah daring?</a> memaparkan tiga pemeriksaan lain yang bisa Anda
+      jalankan pada alat mana pun.
+    </p>
+  </section>

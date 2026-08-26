@@ -1,0 +1,25 @@
+#
+# Panduan: membuat favicon - Bahasa Indonesia.
+#
+# Nama file (favicon.ico, apple-touch-icon.png, site.webmanifest,
+# browserconfig.xml, app.ico, Info.plist) tetap seperti adanya: itulah nama
+# yang harus diketik pembacanya, huruf demi huruf.
+#
+
+nav = "Membuat favicon"
+title = "Cara Membuat Favicon (dan Ikon Aplikasi Windows)"
+description = "Ukuran apa saja yang sebenarnya dibutuhkan sebuah favicon.ico, file tambahan apa yang diminta iPhone, Android, dan sebuah Mac, dan kenapa logo yang berhasil di sebuah poster lenyap pada enam belas piksel."
+
+heading = "Cara membuat favicon yang tetap terbaca pada enam belas piksel"
+lede = """
+    Favicon bukan gambar kecil dari logo Anda. Ia sekumpulan gambar pada ukuran
+    tetap, di dalam sebuah wadah yang tidak pernah dibuka kebanyakan orang, dan
+    yang terkecil di antaranya adalah yang sebenarnya dilihat semua orang. Inilah
+    ukuran mana yang Anda butuhkan, file apa yang mendampinginya, dan apa yang
+    dilakukan ketika logo Anda tidak selamat dalam perjalanannya ke bawah."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Membuat favicon yang tetap terbaca pada enam belas piksel"
+og_description = "Ukuran apa saja yang dibutuhkan sebuah favicon.ico, file tambahan yang diminta iPhone dan Android, dan apa yang dilakukan ketika logo Anda tidak selamat dari pengecilan."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

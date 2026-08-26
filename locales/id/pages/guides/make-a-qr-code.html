@@ -1,0 +1,273 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../buat-kode-qr/">Pembuat QR &amp; Barcode</a>, tempelkan
+      tautan Anda, biarkan tingkatnya di <strong>M</strong> dan marginnya di
+      <strong>4</strong>, lalu unduh SVG-nya. Cetak setidaknya selebar dua
+      sentimeter, di atas sesuatu yang matte, gelap di atas terang. Lalu pindai
+      yang tercetak dengan ponsel yang bukan punya Anda sebelum Anda memesan
+      seribu di antaranya.
+    </p>
+    <p>
+      Itu mencakup hampir setiap kasus. Sisa halaman ini adalah apa yang
+      dilakukan ketika ia bukan salah satunya: kode yang harus selamat dari
+      penanganan, kode dengan logo di atasnya, kode yang akan ditaruh di sesuatu
+      yang kecil, dan satu keputusan yang gampang dikelirukan dengan cara yang
+      baru Anda ketahui setahun kemudian.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa sebenarnya yang ada di dalam sebuah kode QR</h2>
+    <p>
+      Sebuah teks. Itulah seluruhnya. Memindai sebuah kode QR menyerahkan sepotong
+      teks kepada ponselnya, dan semua yang lain &mdash; membuka sebuah halaman,
+      bergabung ke sebuah jaringan, menawarkan menyimpan sebuah kontak &mdash;
+      adalah ponselnya yang mengenali bentuk teks itu lalu menawarkan
+      menindaklanjutinya.
+    </p>
+    <p>
+      Jadi tidak ada yang namanya "kode QR Wi-Fi" sebagai sejenis kode. Yang ada
+      adalah kode QR yang menyimpan
+      <code>WIFI:T:WPA;S:Jaringan Saya;P:kata sandinya;;</code>, yang bisa dibaca
+      setiap ponsel buatan satu dekade terakhir. Pembuatnya menampilkan teks
+      jadinya kepada Anda persis karena alasan ini: ketika sebuah kode tidak
+      melakukan yang Anda harapkan, teksnya adalah satu-satunya hal yang layak
+      dilihat.
+    </p>
+    <p>
+      Ia juga berarti sebuah kode QR tidak bisa diubah setelah dicetak, tidak
+      bisa menelepon pulang, dan tidak bisa kedaluwarsa &mdash; kecuali ada yang
+      menaruh sebuah tautan ke server mereka sendiri di dalamnya, dan itulah
+      pokok bagian terakhir di sini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keputusan satu: tingkat koreksi galatnya</h2>
+    <p>
+      Sebuah kode QR membawa sekumpulan codeword periksa di samping datanya,
+      dihitung supaya sebuah pembaca bisa membangun ulang apa yang tidak bisa
+      dilihatnya. Itulah sebabnya kode yang sudutnya robek tetap terpindai. Berapa
+      banyak codeword itu adalah tingkatnya, dan ada empat:
+    </p>
+    <ul>
+      <li><strong>L</strong> &mdash; sekitar 7% kodenya boleh hilang.</li>
+      <li><strong>M</strong> &mdash; sekitar 15%.</li>
+      <li><strong>Q</strong> &mdash; sekitar 25%.</li>
+      <li><strong>H</strong> &mdash; sekitar 30%.</li>
+    </ul>
+    <p>
+      Koreksi yang lebih banyak tidak gratis: data periksanya masuk ke persegi
+      yang sama, jadi teks yang sama pada H butuh kode yang lebih besar dan lebih
+      rapat daripada pada L. Kira-kira, berpindah dari L ke H menggandakan jumlah
+      modulnya untuk teks yang sama, dan modul yang lebih rapat lebih sulit
+      dipisahkan sebuah kamera. Ada pertukaran yang nyata di sini dan jawabannya
+      tergantung ke mana kodenya akan pergi.
+    </p>
+    <p>
+      <strong>L</strong> untuk sebuah layar: kode di sebuah slide, sebuah surel,
+      sebuah halaman web. Tidak ada yang akan merusaknya dan setiap modul
+      tambahan membuatnya lebih sulit dibaca dari jauh.
+    </p>
+    <p>
+      <strong>M</strong> adalah bawaannya dan jawaban yang benar untuk kebanyakan
+      pencetakan. Kertas yang akan sedikit ditangani, selebaran, kartu nama.
+    </p>
+    <p>
+      <strong>Q dan H</strong> untuk kode yang akan diperlakukan kasar: menu yang
+      dilap setiap hari, stiker di sebuah mesin di bengkel, label di sebuah peti,
+      kode di jendela yang terkena matahari langsung. H juga yang memungkinkan
+      sebuah logo di tengahnya &mdash; lihat di bawah.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keputusan dua: marginnya, yang merupakan bagian dari kodenya</h2>
+    <p>
+      Ruang putih di sekeliling sebuah kode QR bukan isian, dan bukan pilihan
+      desain. Sebuah pembaca memakainya untuk menemukan di mana simbolnya
+      berakhir. Spesifikasinya meminta empat modul ruang tenang di setiap
+      sisinya, dan kode yang dipangkas sampai ke tepinya adalah alasan tunggal
+      yang paling umum sebuah kode tercetak gagal.
+    </p>
+    <p>
+      Ini layak dinyatakan blak-blakan karena memangkas adalah hal yang begitu
+      wajar untuk dilakukan. Kodenya tampak punya terlalu banyak putih di
+      sekelilingnya, jadi ia dipangkas di tata letaknya, atau dijatuhkan ke sebuah
+      panel berwarna yang merapat sampai ke kotak-kotaknya, atau ditaruh di atas
+      sebuah foto. Masing-masing itu membuang batas yang akan dipakai pembacanya.
+    </p>
+    <p>
+      Kalau kodenya tampak terlalu besar dengan marginnya, kecilkan kodenya.
+      Jangan buang marginnya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keputusan tiga: seberapa besar mencetaknya</h2>
+    <p>
+      Patokan kasar yang selamat dari benturan dengan kenyataan adalah
+      <strong>satu banding sepuluh</strong>: sebuah kode perlu selebar kira-kira
+      sepersepuluh jarak dari mana ia akan dipindai.
+    </p>
+    <ul>
+      <li>Kartu nama atau menu, dibaca dari 30 cm: sekitar 2 cm lebarnya.</li>
+      <li>Poster yang dibaca dari dua meter: sekitar 20 cm.</li>
+      <li>Halte bus atau etalase toko yang dibaca dari lima meter: sekitar 50 cm.</li>
+    </ul>
+    <p>
+      Dua sentimeter itu lantai, bukan sasaran. Di bawah sekitar 1,5 cm sebuah
+      ponsel biasa mulai kepayahan tanpa peduli sebagus apa cetakannya, karena
+      masing-masing modulnya mendekati ukuran sebuah piksel di kameranya.
+    </p>
+    <p>
+      Teks yang lebih sedikit berarti modul yang lebih sedikit berarti kode yang
+      terbaca dari jauh pada ukuran cetak tertentu &mdash; dan itu alasan yang
+      bagus untuk mengarahkan sebuah kode ke <code>contoh.com/x</code> alih-alih
+      ke sebuah URL dengan seratus karakter parameter pelacakan di ujungnya.
+    </p>
+    <p>
+      Dan cetak dari <strong>SVG</strong>-nya. Sebuah kode QR terbuat dari tepi,
+      dan sebuah PNG punya jumlah piksel yang tetap untuk membuatnya; besarkan
+      satu dan setiap tepinya melembek, dan justru itulah yang menyulitkan sebuah
+      pemindai. SVG adalah kotaknya sebagai instruksi, jadi ia keluar tajam di
+      sebuah kartu nama maupun sebuah baliho.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warna, kontras, dan dua kekeliruannya</h2>
+    <p>
+      Sebuah pembaca mengukur selisih antara modul gelap dan modul terangnya,
+      jadi kontras adalah seluruhnya. Dua hal rutin keliru:
+    </p>
+    <p>
+      <strong>Kode terang di atas latar gelap.</strong> Ia tampak mencolok, dan
+      cukup banyak pembaca menolaknya mentah-mentah: mereka mencari gelap di atas
+      terang dan tidak mencoba kebalikannya. Sebagian mencoba. Anda tidak akan
+      tahu pelanggan Anda punya yang mana.
+    </p>
+    <p>
+      <strong>Selisihnya tidak cukup.</strong> Abu-abu sedang di atas putih, atau
+      dua warna merek yang bobotnya mirip, bisa terukur baik-baik saja di layar
+      lalu gagal di kertas begitu penyebaran tinta dan pencahayaan otomatis
+      sebuah ponsel terlibat. Kalau Anda mewarnai sebuah kode, jaga bagian
+      gelapnya benar-benar gelap.
+    </p>
+    <p>
+      Matte mengalahkan glossy untuk apa pun yang akan dipindai di bawah cahaya,
+      dan keduanya mengalahkan mencetak ke atas sebuah foto. Latar transparan
+      berguna untuk menaruh sebuah kode ke panel berwarna &mdash; tapi periksa
+      apa yang sebenarnya berakhir di belakangnya, karena kode transparan di atas
+      panel gelap adalah kekeliruan pertama di atas dengan langkah tambahan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Logo di tengahnya</h2>
+    <p>
+      Ini bekerja, dan ia bekerja karena koreksi galatnya alih-alih meski ada
+      koreksi galatnya. Pada tingkat H kira-kira 30% modulnya boleh dihancurkan
+      dan kodenya tetap terbaca, jadi logo yang menutupi lebih sedikit daripada
+      itu &mdash; di tengah, tempat tidak ada pola pencari duduk &mdash; adalah
+      kerusakan yang diperbaiki pembacanya.
+    </p>
+    <p>
+      Tiga hal yang harus dipegang. Pakai tingkat H. Jaga logonya di bawah
+      seperlima luasnya, jauh di bawah batas teoretisnya, karena cetakan bukan
+      satu-satunya hal yang menggerogoti kelonggaran Anda. Dan jangan pernah
+      menutupi tiga persegi besar di sudutnya atau yang lebih kecil di dekatnya:
+      itulah cara sebuah pembaca menemukan dan mengarahkan simbolnya sejak awal,
+      dan tidak ada koreksi galat sebanyak apa pun yang membangunnya kembali.
+    </p>
+    <p>
+      Lalu uji di ponsel sungguhan. Sebuah logo membawa sebuah kode dari "selalu
+      bekerja" menjadi "bekerja dengan kelonggaran sekian", dan satu-satunya cara
+      mengetahui berapa kelonggaran yang tersisa adalah mencobanya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Keputusan yang disesali orang: statis atau "dinamis"</h2>
+    <p>
+      Cari sebuah pembuat QR dan kebanyakan hasilnya ingin Anda membuat sebuah
+      akun, karena mereka menjual kode <em>dinamis</em>. Kode dinamis tidak memuat
+      tautan Anda. Ia memuat sebuah tautan pendek ke server pembuatnya sendiri,
+      yang mengalihkan ke tautan Anda.
+    </p>
+    <p>
+      Yang Anda dapat dari situ nyata: Anda bisa mengubah ke mana kodenya menunjuk
+      setelah ia dicetak, dan Anda mendapat hitungan setiap pemindaian. Untuk
+      sebuah kampanye dengan cetakan enam digit, itu sepadan dibayar.
+    </p>
+    <p>
+      Berapa harganya juga nyata, dan layak diketahui sebelumnya alih-alih
+      sesudahnya:
+    </p>
+    <ul>
+      <li>
+        <strong>Kodenya berhenti bekerja ketika mereka berhenti bekerja.</strong>
+        Kalau layanannya tutup, domainnya kedaluwarsa, atau paket gratisnya
+        habis, setiap kode yang Anda cetak mati &mdash; dan saat itu mereka sudah
+        ada di sepuluh ribu menu.
+      </li>
+      <li>
+        <strong>Setiap pemindaian adalah data orang lain.</strong> Pengalihannya
+        melihat alamat IP, waktu, dan perangkat setiap orang yang memindai kode
+        Anda.
+      </li>
+      <li>
+        <strong>Tautannya milik mereka, bukan milik Anda.</strong> Siapa pun yang
+        memindainya melihat sebuah domain asing berkelebat, dan justru itulah yang
+        sedang diberitahukan kepada orang-orang untuk dicurigai.
+      </li>
+    </ul>
+    <p>
+      Jalan tengahnya tidak berbiaya: taruh kode QR statis di sekeliling sebuah
+      URL pendek <em>di domain Anda sendiri</em>, lalu alihkan itu sendiri. Anda
+      menyimpan kemampuan mengubah tujuannya, Anda menyimpan analitiknya, dan
+      tidak ada apa pun tentang kodenya yang bergantung pada perusahaan yang belum
+      pernah Anda temui masih ada tahun depan.
+    </p>
+    <p>
+      <a href="../../buat-kode-qr/">Pembuat di sini</a> hanya membuat kode
+      statis, dan ia tidak punya akun untuk dibuat. Yang Anda ketik itulah yang
+      disimpan kodenya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sebelum Anda mencetak seribu di antaranya</h2>
+    <p>
+      Pindai kodenya. Bukan yang di layar Anda &mdash; cetakan contohnya, di
+      tempat ia akan ditaruh, dengan ponsel yang bukan ponsel tempat Anda
+      membuatnya. Itu memakan satu menit dan menangkap seluruh kategori masalah
+      yang menjadi pokok halaman ini: margin yang dimakan tata letaknya, tautan
+      yang kehilangan <code>https://</code>-nya, warna yang terukur berbeda di
+      kertas, kode yang dicetak pada ukuran yang bekerja di meja dan tidak di
+      dinding.
+    </p>
+    <p>
+      Dan periksa apa yang terjadi setelah pemindaiannya. Kode yang membuka
+      halaman yang tidak terbaca di sebuah ponsel adalah kode yang gagal, meskipun
+      ia terpindai.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tidak satu pun dari ini menuntut mengunggah apa pun</h2>
+    <p>
+      Kode QR adalah hitungan atas sebuah teks. Tidak ada file untuk dikirim dan
+      tidak ada yang bisa dilakukan sebuah server yang tidak bisa dilakukan sebuah
+      peramban, dan itulah sebabnya <a href="../../buat-kode-qr/">alat di
+      sini</a> melakukan semuanya di mesin Anda sendiri dan bekerja dengan
+      jaringan tercabut.
+    </p>
+    <p>
+      Itu lebih penting daripada kedengarannya, karena apa yang ditaruh orang di
+      kode QR. Pemakaian paling umum untuk format Wi-Fi adalah kata sandi
+      sesungguhnya sebuah jaringan, diketik ke sebuah halaman web. Layak
+      diketahui apakah halaman itu punya tempat untuk mengirimnya.
+    </p>
+  </section>

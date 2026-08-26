@@ -1,0 +1,21 @@
+#
+# Panduan: membuat pas foto - Bahasa Indonesia.
+#
+
+nav = "Membuat pas foto"
+title = "Cara Mengambil Pas Foto Paspor di Rumah (dan Tidak Ditolak)"
+description = "Apa yang sebenarnya diukur pada sebuah pas foto paspor - tinggi kepala, garis mata, latar - negara mana meminta angka yang mana, dan bagaimana memenuhi batas piksel dan KB yang ditegakkan sebuah formulir daring."
+
+heading = "Cara mengambil pas foto paspor yang tidak dikembalikan"
+lede = """
+    Pas foto paspor bukan gambar wajah Anda pada ukuran tertentu. Ia sekumpulan
+    pengukuran, dan yang gagal hampir tidak pernah yang dikhawatirkan orang.
+    Inilah apa yang sebenarnya diukur, negara mana meminta angka yang mana, dan
+    apa yang dilakukan tentang formulir yang menolak sebuah file karena terlalu
+    kecil."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara mengambil pas foto paspor yang tidak dikembalikan"
+og_description = "Tinggi kepala, garis mata, latar, dan ukuran file - apa yang diukur kantor paspor, dan bagaimana memenuhinya dengan sebuah ponsel dan dinding polos."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
