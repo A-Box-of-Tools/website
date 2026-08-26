@@ -1,0 +1,237 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../buat-gif/">Pembuat GIF</a>, jatuhkan gambarnya, susun
+      dalam urutan seharusnya mereka diputar, setel berapa lama setiap bingkai
+      ditahan, lalu buat GIF-nya. Ia diputar di halamannya sebelum Anda
+      menyimpannya.
+    </p>
+    <p>
+      Semua di bawah ini adalah tentang dua hal yang keliru sesudahnya: file-nya
+      jauh lebih besar daripada dugaan, atau animasinya diputar lebih lambat
+      daripada yang dikatakan angkanya. Keduanya punya sebab tertentu dan tidak
+      satu pun kesalahan alatnya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa sebuah GIF jauh lebih besar daripada dugaan Anda</h2>
+    <p>
+      GIF 20 bingkai pada 640 piksel rutin berukuran 8 sampai 15 MB. Animasi yang
+      sama sebagai MP4 adalah beberapa ratus kilobita. Itu bukan GIF yang dibuat
+      dengan buruk; memang begitulah formatnya.
+    </p>
+    <p>
+      Setiap format gambar bergerak lain yang pernah Anda pakai menyimpan
+      <em>selisih</em>. Kodek video menulis satu bingkai penuh lalu, untuk
+      bingkai sesudahnya, hanya apa yang bergerak dan ke mana ia bergerak &mdash;
+      dan itulah sebabnya video orang yang berbicara di depan latar diam nyaris
+      tidak berbiaya per bingkainya. Sebuah GIF tidak bisa melakukan itu. Setiap
+      bingkai disimpan sebagai piksel utuh, dilewatkan melalui kompresor tanpa
+      kehilangan, dan itulah seluruh perkakasnya.
+    </p>
+    <p>
+      Juga tidak ada setelan kualitas, karena tidak ada langkah merugikan yang
+      bisa dikecilkan. JPEG pada kualitas 60% adalah pilihan sungguhan dengan
+      penggeser sungguhan di belakangnya; GIF tidak punya padanannya. Jadi
+      ukurannya kira-kira <strong>luas &times; jumlah bingkai</strong>, dan
+      satu-satunya cara menggerakkannya adalah menggerakkan salah satu dari kedua
+      angka itu.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tiga hal yang benar-benar membuatnya lebih kecil</h2>
+    <p>
+      Dalam urutan seberapa besar bantuannya:
+    </p>
+    <p>
+      <strong>1. Kecilkan.</strong> Ini bukan salah satu dari beberapa pilihan,
+      ini pilihannya. Ukuran adalah luas, jadi menyetengahkan sisi panjangnya
+      menyeperempatkan file-nya: 640&nbsp;px turun ke 320&nbsp;px mengubah
+      12&nbsp;MB menjadi sekitar 3&nbsp;MB. GIF di sebuah halaman web atau di
+      jendela obrolan toh dilihat pada beberapa ratus piksel. 480&nbsp;px adalah
+      bawaan di alatnya persis karena alasan ini, dan 320&nbsp;px adalah jawaban
+      yang sangat terhormat.
+    </p>
+    <p>
+      <strong>2. Pakai lebih sedikit bingkai.</strong> Sepuluh bingkai yang
+      ditahan seperlima detik masing-masing adalah animasi dua detik yang sama
+      dengan dua puluh bingkai pada sepersepuluh, dan separuh file-nya.
+      Kehalusan berbiaya byte secara sebanding, jadi belanjakan ia hanya di tempat
+      gerakannya membutuhkannya.
+    </p>
+    <p>
+      <strong>3. Matikan dithering, dan turunkan jumlah warnanya.</strong> Yang
+      ini berlawanan dengan naluri. Dithering menaburkan pola halus berisi piksel
+      berselang-seling untuk memalsukan warna yang tidak dimiliki paletnya, dan
+      pola itu adalah <em>derau</em> &mdash; dan justru itulah yang tidak bisa
+      dikompres sebuah kompresor tanpa kehilangan. Pada karya seni datar,
+      tangkapan layar, dan gambar garis, mematikannya bisa memangkas sepertiga
+      file-nya dan tampak lebih baik pula. Pada foto, ia menukar pita warna yang
+      terlihat dengan penghematannya, jadi coba keduanya lalu lihat.
+    </p>
+    <p>
+      Menurunkan dari 256 ke 64 warna juga membantu, meski kurang dari harapan
+      orang: ia memendekkan kata kodenya alih-alih membuang piksel mana pun.
+    </p>
+    <p>
+      Kalau tidak satu pun dari itu membuatnya cukup kecil, jawaban yang jujur
+      adalah bahwa yang Anda buat itu sebuah video.
+      <a href="../gambar-ke-video/">Mengubah gambar yang sama menjadi sebuah
+      MP4</a> mungkin sepersepuluh ukurannya, dan setiap tempat yang menerima
+      sebuah GIF untuk apa pun selain sebuah tag <code>&lt;img&gt;</code>
+      &mdash; termasuk setiap jejaring sosial &mdash; toh mengubahnya menjadi
+      video saat diunggah.
+    </p>
+  </section>
+
+  <section>
+    <h2>Seberapa cepat sebuah GIF sebenarnya bisa diputar</h2>
+    <p>
+      Formatnya menyimpan jeda setiap bingkai dalam perseratus detik, yang
+      seolah-olah berarti Anda bisa meminta 0,01d lalu mendapat seratus bingkai
+      sedetik. Anda tidak bisa.
+    </p>
+    <p>
+      Setiap peramban menjepit jeda di bawah dua perseratus detik naik ke
+      sepersepuluh detik. Aturannya berasal dari 1990-an, ketika halaman penuh
+      animasi yang disetel berputar secepat mungkin dan mesin masa itu tidak
+      sanggup bertahan, dan ia hidup lebih lama daripada setiap alasan
+      pengenalannya. Ia tidak pernah dicabut, dan ia berlaku untuk GIF Anda hari
+      ini.
+    </p>
+    <p>
+      Jadi rentang praktisnya adalah:
+    </p>
+    <ul>
+      <li><strong>0,02d</strong> (50 bingkai sedetik) &mdash; secepat yang boleh
+      dicapai sebuah GIF, dan lebih cepat daripada yang biasanya
+      dibutuhkannya.</li>
+      <li><strong>0,05d</strong> (20 bingkai sedetik) &mdash; animasi yang halus,
+      dan tempat memulai kalau Anda menganimasikan gerakan.</li>
+      <li><strong>0,1d</strong> (10 bingkai sedetik) &mdash; rupa GIF yang
+      klasik. Separuh bingkainya, separuh file-nya, dan ia terbaca sebagai
+      disengaja.</li>
+      <li><strong>0,5d ke atas</strong> &mdash; sebuah tayangan slide. Setiap
+      gambar sedang dipandangi alih-alih dianimasikan.</li>
+    </ul>
+    <p>
+      Apa pun di bawah 0,02d tidak ditawarkan, karena itu angka yang akan
+      diam-diam menjadi 0,1d di setiap peramban yang ada.
+    </p>
+  </section>
+
+  <section>
+    <h2>Paletnya, dan apa yang sebenarnya dipilihnya</h2>
+    <p>
+      Sebuah bingkai GIF menyimpan paling banyak 256 warna. Sebuah foto punya
+      puluhan ribu. Sesuatu harus memilih 256 di antaranya, dan pilihan itulah
+      rupa keluarannya &mdash; lebih daripada setelan mana pun lainnya.
+    </p>
+    <p>
+      Alatnya menawarkan dua cara membuatnya:
+    </p>
+    <p>
+      <strong>Warna terbaik untuk setiap bingkai</strong> memberi setiap gambar
+      256 miliknya sendiri. Ia tampak paling tajam, dan ia benar untuk sekumpulan
+      foto yang tidak berhubungan, tempat masing-masing toh menginginkan
+      sekumpulan warna yang sama sekali berbeda.
+    </p>
+    <p>
+      <strong>Satu palet untuk seluruh GIF-nya</strong> membangun satu tabel dari
+      setiap bingkainya sekaligus. Pakai itu ketika bingkainya sebuah
+      <em>runtutan</em> &mdash; adegan yang sama, berselang beberapa momen.
+      Dengan palet per bingkai, perubahan apa pun pada gambarnya mengubah 256
+      warna mana yang terpilih, dan seluruh latarnya bergeser warna sedikit di
+      setiap bingkai. Kerlipan itulah yang membuat GIF buatan sendiri tampak
+      buatan sendiri. Palet bersama menghilangkannya, dan sekaligus menghasilkan
+      file yang lebih kecil, karena tabelnya ditulis sekali alih-alih di setiap
+      bingkai.
+    </p>
+    <p>
+      Lebih sedikit warna &mdash; 128, 64, 32 &mdash; layak dicoba pada apa pun
+      yang datar. Animasi logo dengan delapan warna di dalamnya tidak kehilangan
+      apa pun pada 32, dan Anda bisa langsung melihat bedanya pada sebuah foto.
+    </p>
+  </section>
+
+  <section>
+    <h2>Transparansi itu satu bit, dan itulah seluruh ceritanya</h2>
+    <p>
+      Sebuah piksel GIF entah terlukis penuh entah sama sekali tak terlihat.
+      Tidak ada apa pun di antaranya: tidak ada bayangan 50%, tidak ada tepi
+      lembut, tidak ada lesapan.
+    </p>
+    <p>
+      Jadi kalau gambar sumber Anda punya transparansi, menyalakannya menjaga
+      area transparannya tetap transparan &mdash; tapi setiap tepi yang
+      dihaluskan, yang berupa gradien dari bentuknya menuju ketiadaan, dipotong
+      di titik tengahnya menjadi tepi yang keras dan tampak bergerigi. Bentuk
+      bulat dan teks paling menderita.
+    </p>
+    <p>
+      Kalau Anda tahu di atas warna apa GIF-nya akan duduk, meratakannya ke warna
+      itu akan tampak lebih baik setiap kali. Simpan transparansinya hanya ketika
+      latar tempatnya mendarat memang sungguh tidak diketahui &mdash; dan kalau
+      jawabannya "ia butuh tepi lembut di atas latar apa pun", format untuk itu
+      adalah PNG atau WebP animasi, bukan GIF.
+    </p>
+  </section>
+
+  <section>
+    <h2>Urutan, pewaktuan, dan membuat lupnya duduk pas</h2>
+    <p>
+      Beberapa hal yang lebih cepat diketahui daripada ditemukan sendiri:
+    </p>
+    <p>
+      <strong>Urutkan menurut nama dengan hitungan yang benar.</strong> Runtutan
+      render atau ekspor terurut sesuai maksud Anda, jadi <code>bingkai_2</code>
+      mendarat sebelum <code>bingkai_10</code> alih-alih sesudahnya. Mengurutkan
+      menurut tanggal mengembalikan galeri kamera ke urutan pengambilannya, dan
+      itulah yang Anda mau ketika nama file-nya sudah mulai ulang dari 0001.
+    </p>
+    <p>
+      <strong>Beri bingkai terakhir waktu lebih lama.</strong> Lup yang setiap
+      bingkainya sama panjang terbaca seperti tanpa jeda. Menahan bingkai
+      terakhirnya sekitar setengah detik memberi mata tempat beristirahat dan
+      membuat keseluruhannya tampak disengaja. Setiap bingkai punya waktu tahan
+      sendiri untuk ini.
+    </p>
+    <p>
+      <strong>Sebuah lup seharusnya tidak melompat.</strong> Bingkai terakhir
+      langsung disusul yang pertama, jadi kalau keduanya sangat berbeda, lupnya
+      terasa menyentak. Buat keduanya mirip, atau justru manfaatkan potongannya
+      dengan menahan bingkai terakhirnya.
+    </p>
+    <p>
+      <strong>Putar sekali berarti putar sekali.</strong> Sebagian alat menulis
+      hitungan lup satu, dan dekoder tidak pernah sepenuhnya sepakat soal itu
+      &mdash; beberapa memutarnya dua kali. Memilih "Putar sekali" di sini sama
+      sekali tidak menulis informasi lup, dan setiap dekoder yang pernah dibangun
+      memperlakukannya dengan cara yang sama.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa ini tidak butuh server</h2>
+    <p>
+      Membuat sebuah GIF adalah dua pekerjaan yang tidak ditawarkan peramban:
+      memilih paletnya, dan mengompres pikselnya dengan LZW. Tidak satu pun besar.
+      Keduanya mungkin empat ratus baris bersama-sama, keduanya tertulis di
+      repositori, dan keduanya berjalan di mesin Anda sendiri seperti semua yang
+      lain di sini &mdash; dan itulah sebabnya halamannya terus bekerja dengan
+      jaringan tercabut.
+    </p>
+    <p>
+      Alasan begitu banyak pembuat GIF mengunggah bukanlah bahwa pekerjaannya
+      sulit. Melainkan bahwa server adalah tempat iklan dan akunnya berada. Tidak
+      ada apa pun tentang mengubah sekumpulan foto menjadi sebuah animasi yang
+      menuntut foto Anda meninggalkan ruangan tempatnya berada.
+    </p>
+    <p>
+      <a href="../apakah-aman-mengunggah-file/">Amankah mengunggah file ke
+      pengubah daring?</a> memaparkan empat pemeriksaan yang akan memberi tahu
+      Anda hal yang sama tentang alat mana pun, termasuk yang ini.
+    </p>
+  </section>

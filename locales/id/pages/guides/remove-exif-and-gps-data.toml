@@ -1,0 +1,21 @@
+#
+# Panduan: menghapus data EXIF dan GPS - Bahasa Indonesia.
+#
+
+nav = "Data EXIF dan GPS"
+title = "Cara Menghapus Data EXIF dan GPS dari Sebuah Foto"
+description = "Foto dari sebuah ponsel biasanya membawa titik persis tempat ia diambil, waktunya sampai ke detik, dan nomor seri kameranya. Apa saja yang ada di dalamnya, siapa yang bisa membacanya, dan bagaimana mengeluarkannya tanpa menyentuh gambarnya."
+
+heading = "Apa yang dikatakan sebuah foto tentang Anda, dan bagaimana mengeluarkannya"
+lede = """
+    Gambar yang langsung dari sebuah ponsel biasanya membawa koordinat tempat ia
+    diambil, waktunya sampai ke detik, dan cukup banyak tentang kameranya untuk
+    mengaitkannya dengan setiap foto lain dari perangkat yang sama. Tidak satu
+    pun terlihat di layar. Inilah apa saja yang ada di dalamnya dan bagaimana
+    membuangnya."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Apa yang dikatakan sebuah foto tentang Anda, dan bagaimana mengeluarkannya"
+og_description = "Koordinat GPS, cap waktu, dan nomor seri bepergian di dalam foto biasa. Apa saja yang ada di dalamnya, siapa yang bisa membacanya, dan bagaimana membersihkannya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

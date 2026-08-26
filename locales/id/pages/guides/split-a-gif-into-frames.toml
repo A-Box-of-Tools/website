@@ -1,0 +1,21 @@
+#
+# Panduan: memisah GIF menjadi bingkai - Bahasa Indonesia.
+#
+
+nav = "Pisah sebuah GIF"
+title = "Cara Memisah GIF Menjadi Bingkai (dan Apa Sebenarnya Sebuah Bingkai)"
+description = "Dapatkan setiap bingkai sebuah GIF animasi sebagai PNG: kenapa sebagian bingkai hanya berupa tambalan kecil dari gambarnya, apa yang terjadi pada transparansinya, dan bagaimana menyimpan pewaktuannya supaya Anda bisa menyusunnya kembali."
+
+heading = "Cara memisah GIF menjadi bingkai"
+lede = """
+    Mengeluarkan bingkainya cukup satu jatuhan dan satu tombol. Yang layak
+    dipahami adalah apa sebenarnya sebuah "bingkai" GIF itu, karena formatnya
+    menyimpan sesuatu yang agak berbeda dari yang Anda lihat &mdash; dan
+    perbedaan itulah sebabnya bingkai keempat belas Anda berupa sebuah persegi
+    panjang berisi mulut seseorang."""
+
+updated = "21 Agustus 2026"
+
+og_title = "Cara memisah GIF menjadi bingkai"
+og_description = "Setiap bingkai sebuah GIF sebagai PNG: kenapa sebagian bingkai hanya berupa tambalan, apa yang terjadi pada transparansinya, dan bagaimana menyimpan pewaktuannya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

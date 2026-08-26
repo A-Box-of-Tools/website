@@ -1,0 +1,193 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Buka <a href="../../pisah-gif-ke-bingkai/">Pemisah GIF</a>, jatuhkan
+      GIF-nya, dan setiap bingkai muncul sebagai PNG yang bisa Anda unduh &mdash;
+      satu per satu, atau semuanya sebagai satu ZIP. Biarkan setelannya apa
+      adanya dan Anda mendapat persis yang dimaksud kebanyakan orang: setiap
+      bingkai sebagai gambar utuh, seperti rupanya pada momen itu di animasinya.
+    </p>
+    <p>
+      Sisa halaman ini adalah tentang tiga hal yang mengejutkan orang
+      sesudahnya: bingkai yang hanya berupa tambalan kecil, transparansi yang
+      berubah hitam di tempat lain, dan pewaktuan yang tidak ada lagi begitu
+      bingkainya menjadi file terpisah.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa sebenarnya sebuah bingkai GIF</h2>
+    <p>
+      GIF bukan setumpuk gambar. Ia <em>satu</em> gambar, diikuti serangkaian
+      tambalan.
+    </p>
+    <p>
+      Setiap bingkai setelah yang pertama hanya menyimpan persegi panjang yang
+      berubah, berikut sebuah aturan tentang apa yang dilakukan pada kanvasnya
+      sesudah itu. Semua hal lain di layar sekadar apa yang ditinggalkan bingkai
+      sebelumnya di sana. Orang yang berbicara di depan dinding yang diam memakan
+      biaya sebuah persegi panjang berisi wajah per bingkai alih-alih gambar utuh
+      per bingkai, dan itulah seluruh alasan format tanpa kompensasi gerak dan
+      tanpa langkah yang merugikan ini tidak sama sekali tidak terpakai.
+    </p>
+    <p>
+      Jadi ada dua jawaban yang berbeda dan sama jujurnya untuk "berikan saya
+      bingkai 14", dan alatnya menawarkan keduanya:
+    </p>
+    <p>
+      <strong>Bingkainya sebagaimana ia tampak.</strong> Gambar utuh pada momen
+      itu: bingkai 14 digambar di atas semua yang sebelumnya. Inilah bawaannya,
+      dan inilah yang Anda mau untuk sebuah lembar kontak, sebuah gambar mini,
+      sebuah gambar diam untuk diunggah, atau bingkai yang akan masuk ke sebuah
+      penyunting video.
+    </p>
+    <p>
+      <strong>Hanya piksel yang disimpan bingkai itu.</strong> Tambalannya
+      sendiri, pada ukurannya sendiri, di posisinya sendiri, dengan semua yang
+      tidak dibawanya dibiarkan transparan. Bingkai 14 bisa jadi
+      60&nbsp;&times;&nbsp;40 piksel berisi mulut. Inilah tampilan yang
+      menjelaskan ke mana byte sebuah GIF pergi, dan inilah yang Anda mau kalau
+      Anda menyunting animasinya alih-alih memanen gambar darinya.
+    </p>
+    <p>
+      Tidak ada yang salah dengan file Anda ketika sebuah bingkai tersimpan
+      tampak seperti serpihan. Memang begitulah file-nya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Aturan pembuangan, dan kenapa sebagian bingkai meninggalkan lubang</h2>
+    <p>
+      Setiap bingkai juga membawa salah satu dari empat instruksi tentang apa
+      yang terjadi pada persegi panjangnya sebelum bingkai berikutnya digambar.
+      Alatnya menampilkannya di bawah setiap bingkai pada tampilan tersimpan:
+    </p>
+    <p>
+      <strong>Bertahan di layar.</strong> Yang biasa. Tambalannya tetap di tempat
+      ia mendarat dan bingkai berikutnya menggambar di atasnya.
+    </p>
+    <p>
+      <strong>Membersihkan areanya sesudahnya.</strong> Persegi panjangnya dihapus
+      sebelum bingkai berikutnya mendarat. Inilah yang dilakukan animasi dengan
+      objek transparan yang bergerak, dan ini juga penyebab klasik GIF yang
+      berkedip-kedip.
+    </p>
+    <p>
+      <strong>Memulihkan apa yang ada di bawahnya.</strong> Kanvasnya kembali ke
+      rupanya sebelum bingkai ini menggambar &mdash; sebuah cap, lalu sebuah
+      pengurungan. Jarang, dan yang paling sering salah dipahami pembaca GIF
+      buatan sendiri.
+    </p>
+    <p>
+      Satu detail yang layak diketahui kalau Anda membandingkan alat:
+      spesifikasinya mengatakan "membersihkan areanya" seharusnya memulihkan
+      <em>warna latar</em>, tapi setiap peramban sejak 1990-an membersihkannya
+      menjadi <em>transparan</em>, karena itulah yang diandaikan animasi masa itu.
+      Alat ini mengikuti peramban dengan sengaja, jadi bingkai yang Anda dapat
+      adalah bingkai yang Anda lihat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa yang terjadi pada transparansinya</h2>
+    <p>
+      Transparansi GIF itu satu bit. Sebuah piksel entah terlukis entah tak
+      terlihat, dan tidak ada apa pun di antaranya &mdash; tidak ada tepi lembut,
+      tidak ada bayangan separuh. Itulah sebabnya GIF berlatar transparan punya
+      siluet yang keras dan sedikit bergerigi.
+    </p>
+    <p>
+      PNG menyimpan persis itu, tanpa kehilangan, jadi bingkainya keluar dengan
+      transparansinya utuh dan tidak ada yang dikarang.  Simpan itu kalau
+      bingkainya akan pergi ke tempat yang memahami transparansi.
+    </p>
+    <p>
+      Isi dengan sebuah warna kalau tidak. Perangkat lunak yang mengabaikan kanal
+      alfa biasanya menggambarnya hitam, jadi bingkai yang tampak baik-baik saja
+      di peramban tiba dengan latar hitam &mdash; dan sebuah tambalan tersimpan,
+      yang transparan hampir di seluruhnya, tiba sebagai persegi panjang hitam
+      berisi mulut. Memilih warnanya di muka adalah solusinya. Ia ditulis ke dalam
+      PNG-nya dan tidak bisa diurungkan sesudahnya, dan itulah satu-satunya alasan
+      ia bukan bawaannya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pewaktuannya, yang tidak bisa dibawa bingkainya</h2>
+    <p>
+      Sebuah PNG tidak punya tempat untuk mencatat berapa lama ia ada di layar.
+      Pisah sebuah animasi menjadi PNG dan pewaktuannya hilang, dan itu penting
+      begitu Anda ingin menyusunnya kembali.
+    </p>
+    <p>
+      Untuk itulah <code>frames.txt</code> di dalam ZIP-nya ada. Ia mendaftar
+      jeda, posisi, dan ukuran setiap bingkai, sehingga animasinya bisa dibangun
+      ulang di <a href="../../buat-gif/">Pembuat GIF</a> atau di tempat lain mana
+      pun. Ia memakan beberapa kilobita dan tidak ada cara untuk menyusunnya
+      kembali belakangan.
+    </p>
+    <p>
+      Dua hal tentang jeda GIF yang menjebak semua orang:
+    </p>
+    <p>
+      <strong>Satuannya perseratus detik</strong>, jadi langkah terhalus yang
+      dipunyai formatnya adalah 0,01&nbsp;d. Tidak ada yang namanya GIF
+      30&nbsp;fps yang tepat; 0,03&nbsp;d per bingkai adalah 33,3&nbsp;fps dan
+      0,04&nbsp;d adalah 25.
+    </p>
+    <p>
+      <strong>Apa pun di bawah 0,02&nbsp;d diputar pada 0,10&nbsp;d.</strong>
+      Peramban sudah menjepitnya sejak 1990-an &mdash; sebuah aturan yang ditulis
+      untuk bola dunia berputar masa itu dan tidak pernah dicabut. GIF yang
+      file-nya berkata 0,01&nbsp;d per bingkai mengaku 100&nbsp;fps dan diputar
+      pada 10. Alatnya menampilkan jedanya sebagaimana ia benar-benar diputar,
+      dan menyebutkan apa yang disimpan file-nya di sebelahnya ketika keduanya
+      berbeda, karena selisih itulah sebabnya GIF yang Anda pisah lalu bangun
+      ulang bisa keluar lebih lambat daripada aslinya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Nomor bingkai, dan kenapa ia diberi nol di depan</h2>
+    <p>
+      Bingkainya keluar sebagai <code>nama-001.png</code>,
+      <code>nama-002.png</code>, dinomori mulai dari satu dan diberi nol di depan
+      sampai selebar nomor terakhirnya. Itu bukan hiasan:
+      <code>bingkai9.png</code> terurut <em>setelah</em>
+      <code>bingkai10.png</code> di setiap pengelola file dan di kebanyakan
+      perangkat lunak yang mengimpor sebuah runtutan, karena mereka mengurutkan
+      teks alih-alih angka. Nama yang diberi nol di depan terurut benar di mana
+      saja, dan setiap penyunting video yang mengimpor runtutan gambar
+      mengharapkannya.
+    </p>
+    <p>
+      Menjarangkan animasi yang panjang dengan "simpan setiap bingkai kedua"
+      tidak menomori ulang apa pun. Bingkai 42 tetap bernama bingkai 42, jadi
+      file-nya sejajar dengan aslinya dan dengan daftar pewaktuannya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa ini tidak butuh server</h2>
+    <p>
+      Membaca sebuah GIF itu dua pekerjaan: menyusuri blok file-nya, dan membuka
+      kompresi LZW tempat pikselnya terbungkus. Bersama-sama keduanya beberapa
+      ratus baris, keduanya tertulis di repositori, dan keduanya berjalan di
+      mesin Anda sendiri &mdash; dan itulah sebabnya halamannya terus bekerja
+      dengan jaringan tercabut.
+    </p>
+    <p>
+      Peramban Anda sudah bisa memutar sebuah GIF, tapi ia tidak akan menyerahkan
+      bagian-bagiannya: sebuah <code>&lt;img&gt;</code> memberi Anda sebuah
+      animasi, menggambar satu ke sebuah kanvas memberi Anda bingkai pertama
+      selamanya, dan satu-satunya API yang berbuat lebih tidak ada di Safari.
+      Jadi formatnya dibaca sendiri di sini, dengan cara yang sama di setiap
+      peramban &mdash; dan membacanya sendiri juga itulah yang memungkinkan
+      menampilkan tambalan dan aturan pembuangannya kepada Anda sama sekali.
+    </p>
+    <p>
+      <a href="../apakah-aman-mengunggah-file/">Amankah mengunggah file ke
+      pengubah daring?</a> memaparkan empat pemeriksaan yang akan memberi tahu
+      Anda hal yang sama tentang alat mana pun, termasuk yang ini.
+    </p>
+  </section>

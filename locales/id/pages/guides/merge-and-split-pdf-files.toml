@@ -1,0 +1,21 @@
+#
+# Panduan: menggabung dan memisah file PDF - Bahasa Indonesia.
+#
+
+nav = "Menggabung &amp; memisah PDF"
+title = "Cara Menggabung, Memisah, dan Menyusun Ulang Halaman PDF"
+description = "Gabungkan PDF, potong satu menjadi beberapa, dan pindahkan halamannya: apa yang selamat dari penyusunan ulang, apa yang tidak bisa dibawa alat mana pun, dan kenapa tidak satu pun dari itu perlu mengunggah dokumen Anda ke mana pun."
+
+heading = "Cara menggabung, memisah, dan menyusun ulang halaman PDF"
+lede = """
+    Menyatukan dua dokumen adalah hal paling biasa yang dilakukan siapa pun
+    pada sebuah PDF, dan yang paling sering dikerjakan dengan menyerahkan kedua
+    file itu ke server orang asing. Ia tidak membutuhkannya. Ini membahas cara
+    melakukannya, dan apa yang diam-diam hilang ketika sebuah alat menyusun ulang
+    halaman."""
+
+updated = "22 Agustus 2026"
+
+og_title = "Cara menggabung, memisah, dan menyusun ulang halaman PDF"
+og_description = "Gabungkan PDF, potong satu menjadi beberapa, pindahkan halamannya - dan ketahui apa yang selamat dari penyusunan ulang dan apa yang tidak."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

@@ -1,0 +1,19 @@
+#
+# Panduan: mengambil bingkai dari video - Bahasa Indonesia.
+#
+
+nav = "Mengambil sebuah bingkai"
+title = "Cara Menyimpan Bingkai dari Video sebagai Gambar"
+description = "Dapatkan gambar diam dari sebuah klip pada resolusi aslinya: kenapa tangkapan layar dari pemutar yang dijeda bukan gambar yang sama, format apa yang dipakai menyimpannya, dan bagaimana mendarat tepat di bingkai yang Anda maksud."
+
+heading = "Cara menyimpan bingkai dari video sebagai gambar"
+lede = """
+    Menjeda pemutarnya lalu menekan tombol tangkapan layar memberi Anda gambar
+    sebuah jendela. Kadang itu sudah cukup. Inilah apa bedanya, dan bagaimana
+    mendapatkan bingkainya sendiri ketika itu penting."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara menyimpan bingkai dari video sebagai gambar"
+og_description = "Kenapa tangkapan layar dari pemutar yang dijeda bukan bingkainya, format apa yang dipakai menyimpan sebuah gambar diam, dan bagaimana mendarat tepat di bingkai yang Anda maksud."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

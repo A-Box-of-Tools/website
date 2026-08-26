@@ -1,0 +1,20 @@
+#
+# Panduan: membuat GIF dari gambar - Bahasa Indonesia.
+#
+
+nav = "Gambar menjadi GIF"
+title = "Cara Membuat GIF Animasi dari Gambar"
+description = "Ubah sekumpulan gambar menjadi satu GIF animasi: seberapa cepat sebuah GIF sebenarnya bisa diputar, apa yang diubah setelan paletnya, dan tiga hal yang benar-benar membuat file-nya lebih kecil."
+
+heading = "Cara membuat GIF animasi dari gambar"
+lede = """
+    Membuat GIF-nya adalah bagian yang mudah. Mendapatkan satu yang cukup kecil
+    untuk benar-benar diunggah adalah bagian yang layak dibaca, karena sebuah GIF
+    tidak punya penggeser kualitas dan hanya tiga hal yang sama sekali
+    menggerakkan ukurannya."""
+
+updated = "20 Agustus 2026"
+
+og_title = "Cara membuat GIF animasi dari gambar"
+og_description = "Seberapa cepat sebuah GIF sebenarnya bisa diputar, apa yang diubah setelan paletnya, dan tiga hal yang benar-benar membuat file-nya lebih kecil."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
