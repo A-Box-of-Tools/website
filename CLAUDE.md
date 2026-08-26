@@ -91,6 +91,15 @@ of them but one. Put it in the markup - `#phrases` in the tool's `body.html`, or
 it asks. A module too deep to reach the DOM returns a *key* and lets the caller
 resolve it. See "The strings in the JavaScript" in [README.md](README.md).
 
+**`lastmod` now decides who hears about a change.** It used to be a hint in
+`sitemap.xml`; since `indexnow.py` joined the deploy it is also the signal that
+tells Bing which pages to refetch. Change the wording on a page and leave its
+`lastmod` alone and the deploy announces nothing — the change is live and no
+crawler is told. The reverse is worse: bumping every date to be safe submits
+the whole site and spends the host's standing with the protocol. Bump the dates
+that moved. See "Telling the search engines a page changed" in
+[docs/deploying.md](docs/deploying.md).
+
 **Some modules are deliberately copied, and must stay in step.** The MP4
 reader is in five tools and the writer in two, because the rule above blocks
 sharing them. `tests/python/test_duplicates.py` declares which copies must
