@@ -158,6 +158,11 @@ complete = true
 "guides/open-a-dicom-file" = "أدلة/فتح-ملف-dicom"
 "guides/redact-a-pdf" = "أدلة/طمس-ملف-pdf"
 "guides/scan-a-document-with-your-phone" = "أدلة/مسح-مستند-بهاتفك"
+"guides/make-a-gif-from-part-of-a-video" = "أدلة/gif-من-جزء-من-فيديو"
+"guides/make-a-boomerang-video" = "أدلة/فيديو-بوميرانغ"
+"guides/scan-multiple-pages-into-one-pdf" = "أدلة/مسح-عدة-صفحات-في-pdf-واحد"
+"guides/get-photos-ready-for-the-web" = "أدلة/تجهيز-الصور-للنشر"
+"guides/compare-two-json-files" = "أدلة/مقارنة-ملفي-json"
 
 #
 # ---------------------------------------------------------------------------
@@ -248,6 +253,11 @@ og_image_alt = "abox.tools - صندوق أدوات لا يلامس خادما أ
 id = "doing-the-job"
 name = "إنجاز المهمة"
 note = "دليل واحد لكل أداة: عن ماذا تدور المهمة، وأي إعداد يهم، وماذا يكلف."
+
+[[guides.groups]]
+id = "workflows"
+name = "أداةٌ بعد أداة"
+note = "مهامّ تحتاج أداتين أو ثلاثاً على التوالي: بأي ترتيب تُشغَّل، ولماذا الترتيب مهم."
 
 [[guides.groups]]
 id = "before-you-upload"

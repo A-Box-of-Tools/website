@@ -155,6 +155,11 @@ complete = true
 "guides/scan-a-document-with-your-phone" = "가이드/휴대폰으로-문서-스캔하기"
 # 스택하는 사람이 찾는 말은 '스택'이 아니라 '노이즈'입니다. 그쪽이 문제니까요.
 "guides/stack-photos-to-reduce-noise" = "가이드/사진-스택으로-노이즈-줄이기"
+"guides/make-a-gif-from-part-of-a-video" = "가이드/영상-일부로-gif-만들기"
+"guides/make-a-boomerang-video" = "가이드/부메랑-영상-만들기"
+"guides/scan-multiple-pages-into-one-pdf" = "가이드/여러-장을-pdf-한-개로-스캔"
+"guides/get-photos-ready-for-the-web" = "가이드/웹에-올릴-사진-준비"
+"guides/compare-two-json-files" = "가이드/json-파일-두-개-비교"
 
 #
 # ---------------------------------------------------------------------------
@@ -248,6 +253,11 @@ og_image_alt = "abox.tools - 서버를 거치지 않는 도구들"
 id = "doing-the-job"
 name = "하는 방법"
 note = "도구마다 하나씩. 어떤 작업인지, 어떤 설정이 중요한지, 그 대가로 무엇을 내주는지."
+
+[[guides.groups]]
+id = "workflows"
+name = "도구 이어 쓰기"
+note = "도구 두세 개를 차례로 쓰는 일들. 어떤 순서로 쓰는지, 그리고 순서가 왜 중요한지."
 
 [[guides.groups]]
 id = "before-you-upload"

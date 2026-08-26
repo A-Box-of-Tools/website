@@ -1,0 +1,36 @@
+#
+# Guide: scan multiple pages into one small PDF.
+#
+# The scanning guide explains one page; this one is about the errand - a
+# contract, a stack of receipts, a form with a signature page - which is
+# several photos, one attachment, and usually a size limit at the end. The
+# scanner already turns several photos into one PDF, so the chain here is
+# about the two tools that pick up where it stops: merging scans with PDFs
+# that already exist, and getting the result under an attachment limit.
+#
+# No `tool` key: all three tools this chains already carry their own guides.
+# Prose lives next door in body.html.
+#
+
+slug = "guides/scan-multiple-pages-into-one-pdf"
+kind = "guide"
+nav = "Scan pages into one PDF"
+group = "workflows"
+
+title = "Scan Multiple Pages into One PDF &mdash; and Get It Under the Size Limit"
+description = "Photograph every page, get one PDF, combine it with documents you already have, and shrink it until it sends. Three browser tools in a row, and the paperwork never leaves your phone."
+
+heading = "How to scan multiple pages into one small PDF"
+lede = """
+    The errand is rarely one page. It is a contract and its signature page, or
+    a year of receipts, and at the end an inbox that refuses anything over a
+    few megabytes. Three tools cover the whole path, and the paperwork stays
+    on your own machine for all of it."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Scan a stack of pages into one PDF that actually sends"
+og_description = "Photograph the pages, get one PDF, merge in what already exists as PDF, and shrink the result under the attachment limit - all in the browser."
+og_image_alt = "abox.tools - tools that never touch a server"

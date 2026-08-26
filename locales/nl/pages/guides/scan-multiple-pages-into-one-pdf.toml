@@ -1,0 +1,21 @@
+#
+# Gids: meerdere pagina's naar één PDF scannen - Dutch.
+#
+
+nav = "Pagina's naar één PDF scannen"
+title = "Meerdere pagina's naar één PDF scannen &mdash; en onder de groottelimiet krijgen"
+description = "Fotografeer elke pagina, krijg één PDF, combineer hem met documenten die je al hebt, en krimp hem tot hij verstuurd kan worden. Drie browsertools op rij, en het papierwerk verlaat de telefoon nooit."
+
+heading = "Zo scan je meerdere pagina's naar één kleine PDF"
+lede = """
+    Het klusje is zelden één pagina. Het is een contract met zijn
+    handtekeningenblad, of een jaar aan bonnetjes, en aan het eind een
+    mailbox die alles boven een paar megabyte weigert. Drie tools dekken de
+    hele weg, en het papierwerk blijft er van begin tot eind bij op je eigen
+    machine."""
+
+updated = "26 augustus 2026"
+
+og_title = "Scan een stapel pagina's naar een PDF die echt verstuurd wordt"
+og_description = "Fotografeer de pagina's, krijg één PDF, meng erin wat al als PDF bestaat, en krimp het resultaat onder de bijlagelimiet, alles in de browser."
+og_image_alt = "abox.tools - tools die nooit een server aanraken"

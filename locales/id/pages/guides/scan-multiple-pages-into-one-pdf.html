@@ -1,0 +1,120 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Foto tiap halaman, lalu jatuhkan semua fotonya sekaligus ke
+      <a href="../../pemindai-dokumen/">Pemindai Dokumen</a>. Ia menemukan
+      sudut tiap halaman, meluruskan tiap foto, dan menulis <em>satu PDF
+      dengan satu halaman per foto</em>: tidak ada langkah penggabungan
+      terpisah, dan halaman-halamannya duduk dalam urutan Anda
+      menambahkannya.
+    </p>
+    <p>
+      Dua alat melanjutkan dari tempat pemindai berhenti. Kalau sebagian
+      dokumen memang sudah <em>berupa</em> PDF &mdash; kontrak yang mereka
+      kirim lewat surel, mengelilingi lembar tanda tangan hasil pindaian Anda
+      &mdash; jalinkan keduanya dengan
+      <a href="../../gabung-pdf/">Penggabung PDF</a>. Dan kalau file jadinya
+      masih lebih besar daripada yang diizinkan kotak surat,
+      <a href="../../kompres-pdf/">Pemampat PDF</a> menekannya di bawah
+      batas.
+    </p>
+    <p>
+      Tidak ada apa pun dalam rantai ini yang mengunggah apa pun. Itu lebih
+      penting di sini daripada hampir di mana pun: yang dipindai adalah
+      kontrak, kartu identitas, dan berkas medis, sementara aplikasi yang
+      biasa dipakai untuk ini melewatkan tiap halaman lewat server mereka.
+    </p>
+  </section>
+
+  <section>
+    <h2>Memotret dengan benar</h2>
+    <p>
+      Pemindai menyelamatkan banyak sekali &mdash; jepretan miring, cahaya
+      lampu tak rata, bayangan melintang di halaman &mdash; tetapi ia tidak
+      bisa menyelamatkan yang tidak pernah ditangkap kamera. Tiga kebiasaan
+      menutup sebagian besarnya:
+    </p>
+    <ul>
+      <li>
+        <strong>Penuhi bingkainya</strong>, dengan pinggiran meja terlihat di
+        sekeliling tiap tepi. Sudut dicari dengan membandingkan halaman
+        terhadap latar; halaman yang keluar dari foto tidak punya sudut untuk
+        ditemukan.
+      </li>
+      <li>
+        <strong>Jepret dari atas</strong>, kira-kira tegak lurus. Perspektif
+        bisa dikoreksi, tetapi tepi jauh dari jepretan landai punya lebih
+        sedikit piksel, dan koreksi tidak bisa mengarangnya.
+      </li>
+      <li>
+        <strong>Satu halaman per foto</strong>, dalam urutan baca. Menyusun
+        ulang belakangan juga bisa, tetapi urutan Anda memotret adalah urutan
+        yang Anda dapat, dan memotret berurutan itu gratis.
+      </li>
+    </ul>
+    <p>
+      <a href="../memindai-dokumen-dengan-ponsel/">Panduan pemindaian</a>
+      membahas sisanya: bagaimana sudut ditemukan, kapan menyeretnya sendiri,
+      dan apa yang dilakukan mode hitam-putih terhadap ukuran file.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kapan penggabung berhak atas tempatnya</h2>
+    <p>
+      Pemindai menggabungkan <em>foto</em>. Penggabung menggabungkan
+      <em>PDF</em>, dan tengah-tengah urusan sungguhan sering kali keduanya:
+      lembar bertanda tangan yang baru saja difoto, di dalam dokumen yang
+      datang sebagai file. Pindai dulu halaman Anda, lalu jatuhkan pindaian
+      dan PDF aslinya bersama-sama ke penggabung, seret halaman ke tempatnya,
+      dan ekspor satu dokumen. Penanda buku dan tautan internal dokumen asli
+      dibangun ulang terhadap halaman yang bertahan, dan isian formulir ikut
+      serta.
+    </p>
+    <p>
+      Hal yang sama berlaku untuk pindaian dari hari yang berbeda: PDF tiap
+      sesi jatuh sebagai satu blok halaman, dan penggabunglah tempat
+      blok-blok itu menjadi satu file.
+    </p>
+  </section>
+
+  <section>
+    <h2>Turun di bawah batas ukuran</h2>
+    <p>
+      Coba dulu tuas yang murah, dan letaknya di dalam pemindai: untuk
+      halaman yang berupa tinta di atas kertas &mdash; teks, formulir,
+      kuitansi &mdash; mode hitam-putih menyimpan tiap halaman satu bit per
+      piksel, dan PDF-nya biasanya jatuh jauh di bawah satu megabyte per
+      halaman tanpa memampatkan apa pun. Warna baru sepadan biayanya kalau
+      warnanya memang berarti.
+    </p>
+    <p>
+      Kalau file-nya masih tak mau terkirim &mdash; halaman berwarna, atau
+      penggabungan yang membawa masuk pindaian orang lain &mdash; pemampat
+      mulai dengan menunjukkan di mana ukuran itu sebenarnya tinggal, lalu
+      mengodekan ulang gambar halaman terhadap resolusi tempat mereka
+      ditampilkan. Ia juga memeriksa hasilnya terbuka sebelum menawarkannya,
+      dan itu berharga ketika file-nya kontrak dengan tenggat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kalau Anda melakukannya tiap minggu</h2>
+    <p>
+      Langkah-langkahnya sengaja tinggal di tiga halaman: tiap halaman
+      mengerjakan satu hal, dan masing-masing membuktikan sendiri bahwa
+      berkasnya tidak pernah meninggalkan mesin Anda. Tetapi semuanya open
+      source: berlisensi MIT, satu folder per alat, modul ES bebas dependensi
+      dengan README yang menjelaskan pencari sudut, penyalinan halaman si
+      penggabung, dan anggaran si pemampat.
+    </p>
+    <p>
+      Kalau urusan yang sama mendarat di meja Anda tiap minggu, arahkan agen
+      kode ke
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositorinya</a>
+      dan minta ia merangkai modul-modul itu jadi satu halaman khusus:
+      memindai langsung menjadi dokumen tergabung dan termampat, dengan
+      halaman pengantar Anda sudah di tempatnya. Modul-modulnya ditulis untuk
+      dibaca, dan mengangkatnya keluar memang gunanya lisensi itu.
+    </p>
+  </section>

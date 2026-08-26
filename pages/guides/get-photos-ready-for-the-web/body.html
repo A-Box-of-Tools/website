@@ -1,0 +1,117 @@
+  <section>
+    <h2>The short answer</h2>
+    <ol>
+      <li>
+        <strong>iPhone photos first:</strong> run any HEIC files through the
+        <a href="../../heic-to-jpg/">HEIC converter</a>, and choose to leave
+        the metadata out. It tells you, before converting anything, which
+        photos are carrying GPS coordinates. Photos that are already JPEG skip
+        this step.
+      </li>
+      <li>
+        <strong>Frame and size:</strong> drop the batch on the
+        <a href="../../resize-image/">Image Resizer</a>. Set a long edge
+        &mdash; 1600 pixels suits most pages, 2000 if readers will zoom
+        &mdash; or crop the whole batch to one aspect ratio in a click.
+      </li>
+      <li>
+        <strong>Hit the budget:</strong> finish in the
+        <a href="../../compress-image/">Image Compressor</a>, which takes a
+        target in kilobytes rather than a quality slider, and hands a batch
+        back as one zip.
+      </li>
+    </ol>
+    <p>
+      Everything runs in your browser. The originals &mdash; full resolution,
+      GPS and all &mdash; never leave your machine, which is the point of
+      doing this locally rather than through a converter site.
+    </p>
+  </section>
+
+  <section>
+    <h2>Where the metadata goes</h2>
+    <p>
+      The quiet risk in a phone photo is not the pixels; it is the tags. EXIF
+      metadata records the camera, the timestamps, and &mdash; on nearly every
+      phone &mdash; the GPS coordinates of where the photo was taken. Post it
+      and you may be publishing your home address in a form any viewer can
+      read.
+    </p>
+    <p>
+      The useful fact about this pipeline is that it deals with the tags on
+      its own. Resizing and compressing both redraw the image from pixels, and
+      redrawn pixels carry no tags &mdash; so anything that comes out of steps
+      2 or 3 is clean without you asking. The two cases that need a decision:
+    </p>
+    <ul>
+      <li>
+        <strong>Converting HEIC:</strong> the converter can carry the
+        metadata across or leave it out &mdash; it is a checkbox, and it
+        warns you which photos have GPS aboard. For anything public, leave it
+        out.
+      </li>
+      <li>
+        <strong>A photo you are not resizing:</strong> if the pixels should
+        stay untouched, byte for byte, use the
+        <a href="../../exif-editor/">EXIF editor</a>, which removes the tags
+        without re-encoding the image. The
+        <a href="../remove-exif-and-gps-data/">metadata guide</a> is the long
+        version.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Why resize before compressing</h2>
+    <p>
+      Because pixels are the budget. A 12-megapixel photo squeezed hard enough
+      to fit a 300&nbsp;KB slot looks visibly worse than a 2-megapixel photo
+      compressed gently into the same slot &mdash; the same kilobytes are
+      spread over six times the area. Deciding the display size first lets the
+      compressor spend its budget on quality instead of on resolution nobody
+      will see.
+    </p>
+    <p>
+      The compressor will resize on its own when there is no other way to
+      reach the target, but it treats that as a last resort. Doing the framing
+      yourself in the resizer keeps the decision &mdash; what to crop, which
+      edge matters &mdash; where it belongs.
+    </p>
+    <p>
+      The <a href="../resize-an-image/">resizing guide</a> and the
+      <a href="../compress-an-image-to-a-target-size/">compression guide</a>
+      each go deeper on their half, including what the quality numbers
+      actually measure.
+    </p>
+  </section>
+
+  <section>
+    <h2>The whole batch at once</h2>
+    <p>
+      Each tool in the chain takes a folder's worth of files in one drop: the
+      converter does every HEIC including bursts, the resizer can put one
+      framing across the whole set or let you crop each photo differently, and
+      the compressor returns the lot as a single zip. Twenty photos cost
+      barely more of your attention than one &mdash; the machine time is your
+      machine's, and it is quicker than any upload would have been.
+    </p>
+  </section>
+
+  <section>
+    <h2>If you do this every week</h2>
+    <p>
+      The pipeline lives on three or four pages here on purpose &mdash; each
+      page does one job, and each proves on its own that nothing leaves your
+      machine. But every step is open source: MIT-licensed, one folder per
+      tool, dependency-free ES modules with READMEs that explain the decoder,
+      the resampler and the size-target search.
+    </p>
+    <p>
+      If your photos take the same shape every time &mdash; same long edge,
+      same budget, same strip-the-tags &mdash; point a coding agent at the
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      and ask it to compose those modules into a single drop zone with your
+      presets baked in. The modules were written to be read, and lifting them
+      is what the licence is for.
+    </p>
+  </section>

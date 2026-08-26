@@ -1,0 +1,122 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Fotografieren Sie jede Seite und ziehen Sie dann alle Fotos auf einmal
+      auf den <a href="../../dokumente-scannen/">Dokumentenscanner</a>. Er
+      findet die Ecken jeder Seite, richtet jedes Foto gerade und schreibt
+      <em>ein PDF mit einer Seite je Foto</em>. Ein eigener Schritt zum
+      Zusammenfügen entfällt, und die Seiten sitzen in der Reihenfolge, in der
+      Sie sie hinzugefügt haben.
+    </p>
+    <p>
+      Zwei Werkzeuge übernehmen dort, wo der Scanner aufhört. Ist ein Teil
+      des Dokuments bereits ein PDF, etwa der Vertrag, den man Ihnen gemailt
+      hat, um Ihre gescannte Unterschriftenseite herum, dann verschachteln
+      Sie beides mit dem <a href="../../pdf-zusammenfuegen/">PDF-Zusammenführer</a>.
+      Und ist die fertige Datei immer noch größer, als das Postfach erlaubt,
+      bringt der <a href="../../pdf-verkleinern/">PDF-Verkleinerer</a> sie unter
+      das Limit.
+    </p>
+    <p>
+      Nichts in der Kette lädt irgendetwas hoch. Das zählt hier mehr als fast
+      überall sonst: Gescannt werden Verträge, Ausweise und
+      Krankenunterlagen, und die üblichen Apps dafür schicken jede Seite über
+      ihre Server.
+    </p>
+  </section>
+
+  <section>
+    <h2>Die Fotos richtig machen</h2>
+    <p>
+      Der Scanner rettet erstaunlich viel, schräge Aufnahmen, ungleichmäßiges
+      Lampenlicht, einen Schatten quer über der Seite, aber er kann nicht
+      retten, was die Kamera nie erfasst hat. Drei Gewohnheiten decken das
+      meiste ab:
+    </p>
+    <ul>
+      <li>
+        <strong>Den Rahmen füllen</strong>, mit einem sichtbaren Rand Tisch um
+        jede Kante. Die Ecken werden gefunden, indem die Seite gegen den
+        Hintergrund gesucht wird; eine Seite, die aus dem Foto läuft, hat
+        keine Ecke, die sich finden ließe.
+      </li>
+      <li>
+        <strong>Von oben fotografieren</strong>, ungefähr senkrecht. Die
+        Perspektive wird korrigiert, aber die ferne Kante einer flachen
+        Aufnahme hat weniger Pixel, und die Korrektur kann keine erfinden.
+      </li>
+      <li>
+        <strong>Eine Seite je Foto</strong>, in Lesereihenfolge. Umsortieren
+        geht auch hinterher, aber die Reihenfolge des Fotografierens ist die
+        Reihenfolge, die Sie bekommen, und in Ordnung zu fotografieren ist
+        umsonst.
+      </li>
+    </ul>
+    <p>
+      Der <a href="../dokument-mit-handy-scannen/">Scan-Ratgeber</a>
+      behandelt den Rest: wie die Ecken gefunden werden, wann Sie sie selbst
+      ziehen sollten und was der Schwarzweißmodus mit der Dateigröße macht.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wann der Zusammenführer seinen Platz verdient</h2>
+    <p>
+      Der Scanner kombiniert <em>Fotos</em>. Der Zusammenführer kombiniert
+      <em>PDFs</em>, und die Mitte eines echten Botengangs ist oft beides:
+      eine eben fotografierte unterschriebene Seite in einem Dokument, das
+      als Datei ankam. Scannen Sie erst Ihre Seiten, ziehen Sie dann den Scan
+      und das Original-PDF zusammen in den Zusammenführer, schieben Sie die
+      Seiten an ihren Platz und exportieren Sie ein Dokument. Lesezeichen und
+      interne Verweise des Originals werden gegen die überlebenden Seiten neu
+      aufgebaut, und ausgefüllte Formularfelder kommen mit.
+    </p>
+    <p>
+      Dasselbe gilt für Scans von verschiedenen Tagen: Das PDF jeder Sitzung
+      fällt als Seitenblock hinein, und der Zusammenführer ist der Ort, an dem
+      die Blöcke eine Datei werden.
+    </p>
+  </section>
+
+  <section>
+    <h2>Unter das Größenlimit kommen</h2>
+    <p>
+      Probieren Sie zuerst den billigen Hebel, und der sitzt im Scanner: Für
+      Seiten, die Tinte auf Papier sind, Text, Formulare, Belege, speichert
+      der Schwarzweißmodus jede Seite mit einem Bit je Pixel, und das PDF
+      landet meist deutlich unter einem Megabyte je Seite, ganz ohne
+      Verkleinern. Farbe ist ihre Kosten nur wert, wo die Farbe etwas
+      bedeutet.
+    </p>
+    <p>
+      Wenn die Datei trotzdem nicht abgeschickt werden will, bei farbigen
+      Seiten, oder nach einem Zusammenführen, das den Scan eines anderen
+      hereingeholt hat, zeigt der Verkleinerer zuerst, wo die Größe wirklich
+      sitzt, und kodiert dann die Seitenbilder gegen die Auflösung neu, mit
+      der sie gezeigt werden. Er prüft außerdem, dass sich das Ergebnis
+      öffnen lässt, bevor er es anbietet, was man zu schätzen weiß, wenn die
+      Datei ein Vertrag mit Frist ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wenn Sie das jede Woche tun</h2>
+    <p>
+      Dass die Schritte hier auf drei Seiten leben, ist Absicht: Jede Seite
+      macht eine Aufgabe, und jede beweist für sich, dass die Unterlagen Ihr
+      Gerät nie verlassen haben. Aber alles davon ist quelloffen:
+      MIT-lizenziert, ein Ordner je Werkzeug, abhängigkeitsfreie ES-Module
+      mit READMEs, die den Eckenfinder, das Seitenkopieren des
+      Zusammenführers und das Budget des Verkleinerers erklären.
+    </p>
+    <p>
+      Wenn derselbe Botengang jede Woche auf Ihrem Tisch landet, setzen Sie
+      einen Coding-Agenten auf das
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">Repository</a>
+      an und lassen Sie ihn diese Module zu einer Seite dafür zusammensetzen:
+      scannen, direkt hinein in ein zusammengeführtes, verkleinertes Dokument
+      mit Ihrem Deckblatt schon an Ort und Stelle. Die Module sind zum Lesen
+      geschrieben, und sie herauszuheben ist genau das, wofür die Lizenz da
+      ist.
+    </p>
+  </section>

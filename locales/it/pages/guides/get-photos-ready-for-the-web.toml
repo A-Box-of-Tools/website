@@ -1,0 +1,21 @@
+#
+# Guida: preparare le foto per il web - Italian.
+#
+
+nav = "Foto pronte per il web"
+title = "Preparare le foto del telefono per il web &mdash; formato, misura, privacy, senza caricare niente"
+description = "HEIC in JPEG, GPS tolto, ridimensionate per la pagina e compresse a un budget: tutta la catena nel browser, e gli originali non lasciano mai la tua macchina."
+
+heading = "Come preparare le foto del telefono per il web"
+lede = """
+    Una foto del telefono è nel formato sbagliato, quattro volte troppo
+    grande, e sa dove abiti. Renderla pubblicabile è una catena corta
+    &mdash; convertire, inquadrare, comprimere &mdash; e ogni passo gira sul
+    tuo dispositivo, che è esattamente dove devono stare le foto con dentro
+    le tue coordinate."""
+
+updated = "26 agosto 2026"
+
+og_title = "Da foto del telefono a foto pubblicabili, senza caricare gli originali"
+og_description = "HEIC in JPEG, GPS via, misura per la pagina, compressione a un budget. Quale strumento fa quale passo, in che ordine, e perché i metadati si sistemano da soli."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

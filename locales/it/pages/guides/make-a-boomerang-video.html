@@ -1,0 +1,122 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <ol>
+      <li>
+        <strong>Taglia il momento.</strong> Apri il
+        <a href="../../tagliare-video/">Tagliavideo</a>, segna il secondo o due
+        che devono oscillare avanti e indietro, ed esportali come clip a
+        parte.
+      </li>
+      <li>
+        <strong>Inverti una copia.</strong> Trascina quel clip
+        nell'<a href="../../invertire-video/">Invertitore video</a>, lascia
+        fuori l'audio, ed esporta. Ora hai lo stesso momento due volte, una
+        per verso.
+      </li>
+      <li>
+        <strong>Unisci le due.</strong> Di nuovo nel Tagliavideo, trascina
+        dentro entrambi i file, segna ciascuno per intero, metti prima la
+        versione in avanti, ed esporta un solo file.
+      </li>
+    </ol>
+    <p>
+      Quel file è il boomerang. Pubblicalo così com'è ovunque il video muto
+      giri in loop, oppure passalo per il convertitore
+      <a href="../../video-in-gif/">Video in GIF</a> se la destinazione anima
+      solo GIF. Ogni passo avviene nel tuo browser; niente di questa catena
+      viene caricato, in nessun punto, da nessuno.
+    </p>
+  </section>
+
+  <section>
+    <h2>Perché tagliare per primo</h2>
+    <p>
+      Invertire deve decodificare e ricodificare ogni fotogramma che tocca;
+      la <a href="../invertire-un-video/">guida all'inversione</a> spiega perché
+      non c'è modo più economico. Tagliare, invece, è quasi gratis: il
+      tagliavideo fa passare i fotogrammi interi senza ricodificarli.
+    </p>
+    <p>
+      L'ordine è quindi tutto il trucco. Inverti un clip di due secondi e il
+      passo costoso lavora su due secondi; inverti l'originale e lavora su
+      tutto, e la maggior parte la stai per buttare. Su una ripresa da
+      telefono di qualsiasi durata, tagliare prima è la differenza tra un
+      boomerang in meno di un minuto e una barra di avanzamento da fissare.
+    </p>
+    <p>
+      Taglia stretto. Un boomerang si legge al meglio quando oscilla su un
+      solo movimento &mdash; un salto, uno schizzo, una giravolta &mdash; e
+      ogni fotogramma tenuto si paga due volte, una per verso.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cosa fare dell'audio</h2>
+    <p>
+      Lascialo fuori, e fallo al passaggio dell'inversione: l'invertitore ha
+      una casella esattamente per questo. L'audio di un boomerang suonerebbe
+      in avanti e poi all'indietro; il suono invertito è inconfondibilmente
+      strano, e quasi ovunque un boomerang finisca viene comunque riprodotto
+      muto. Senza audio, poi, l'inversione è più rapida e i due file più
+      leggeri.
+    </p>
+    <p>
+      Se proprio lo tieni, il tagliavideo unirà comunque i due clip; ma la
+      cucitura che l'occhio perdona, l'orecchio non la perdona.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'unione, e cosa ti dirà il tagliavideo</h2>
+    <p>
+      I due file da unire sono parenti stretti &mdash; uno è stato fatto
+      dall'altro &mdash; ma sono passati per encoder diversi e non è detto
+      che concordino byte per byte sul formato. Il tagliavideo controlla.
+      Dove i due concordano copia i fotogrammi così come sono; dove no,
+      ricodifica una volta e lo dice sul pannello di esportazione, invece di
+      lasciarti indovinare.
+    </p>
+    <p>
+      Ordina le parti prima di esportare: prima l'andata, poi il ritorno. Un
+      boomerang che parte dal ritorno si legge come un errore.
+    </p>
+    <p>
+      Una rifinitura che vale i suoi dieci secondi: togli un fotogramma
+      dall'inizio del clip invertito prima di unire. L'ultimo fotogramma
+      dell'andata e il primo del ritorno sono la stessa immagine, e mostrarla
+      due volte fa esitare la sterzata per un attimo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Video o GIF alla fine</h2>
+    <p>
+      Tieni l'MP4 se la destinazione riproduce video: è molto più piccolo,
+      molto più nitido, e gira in loop altrettanto bene. Converti in GIF solo
+      quando il posto ne pretende una, e allora tieni d'occhio il contatore:
+      una GIF paga ogni fotogramma, e un boomerang è il suo clip due volte.
+      La <a href="../gif-da-una-parte-di-un-video/">guida alla GIF
+      parziale</a> copre le leve di larghezza e fotogrammi che la tengono
+      sotto un limite di peso.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se lo fai ogni settimana</h2>
+    <p>
+      Tre pagine per un effetto sono volute: ogni strumento fa un lavoro, e
+      ogni pagina può dimostrare da sola che il tuo materiale non lascia mai
+      la macchina. Ma tutti e tre sono open source: licenza MIT, una cartella
+      per strumento, moduli ES senza dipendenze sotto <code>src/</code> con
+      README che li spiegano.
+    </p>
+    <p>
+      Se i boomerang sono parte regolare del tuo lavoro, punta un agente di
+      codice sul
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      e chiedigli di piegare la camminata sui fotogrammi dell'invertitore e
+      l'unione del tagliavideo in una pagina con un solo pulsante. I moduli
+      sono scritti per essere letti, e portarseli via è esattamente ciò per
+      cui la licenza esiste.
+    </p>
+  </section>

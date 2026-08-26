@@ -119,6 +119,11 @@ complete = true
 "guides/scan-a-document-with-your-phone" = "guide/scansionare-un-documento-col-telefono"
 # Chi impila non cerca "impilare": cerca il rumore, che e il problema.
 "guides/stack-photos-to-reduce-noise" = "guide/impilare-foto-per-ridurre-il-rumore"
+"guides/make-a-gif-from-part-of-a-video" = "guide/gif-da-una-parte-di-un-video"
+"guides/make-a-boomerang-video" = "guide/creare-un-video-boomerang"
+"guides/scan-multiple-pages-into-one-pdf" = "guide/scansionare-piu-pagine-in-un-pdf"
+"guides/get-photos-ready-for-the-web" = "guide/preparare-le-foto-per-il-web"
+"guides/compare-two-json-files" = "guide/confrontare-due-file-json"
 
 #
 # ---------------------------------------------------------------------------
@@ -218,6 +223,11 @@ og_image_alt = "abox.tools - strumenti che non passano da nessun server"
 id = "doing-the-job"
 name = "Fare il lavoro"
 note = "Una per strumento: in cosa consiste il lavoro, quale impostazione conta e quanto ti costa."
+
+[[guides.groups]]
+id = "workflows"
+name = "Concatenare gli strumenti"
+note = "Lavori che richiedono due o tre strumenti in fila: in che ordine usarli, e perché l'ordine conta."
 
 [[guides.groups]]
 id = "before-you-upload"

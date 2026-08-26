@@ -1,0 +1,20 @@
+#
+# Guía: escanear varias páginas en un PDF - Spanish.
+#
+
+nav = "Escanear páginas en un PDF"
+title = "Escanear varias páginas en un solo PDF &mdash; y dejarlo bajo el límite de tamaño"
+description = "Fotografía cada página, consigue un PDF, combínalo con los documentos que ya tienes y encógelo hasta que se pueda enviar. Tres herramientas del navegador seguidas, y el papeleo nunca sale del teléfono."
+
+heading = "Cómo escanear varias páginas en un PDF pequeño"
+lede = """
+    El recado rara vez es una página. Es un contrato con su hoja de firmas, o
+    un año de recibos, y al final un buzón que rechaza lo que pase de unos
+    pocos megas. Tres herramientas cubren el camino entero, y el papeleo se
+    queda en tu propio equipo durante todo él."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Escanea un montón de páginas en un PDF que de verdad se envía"
+og_description = "Fotografía las páginas, consigue un PDF, fúndelo con lo que ya existe en PDF y encoge el resultado bajo el límite del adjunto, todo en el navegador."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

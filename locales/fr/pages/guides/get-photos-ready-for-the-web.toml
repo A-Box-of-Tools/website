@@ -1,0 +1,21 @@
+#
+# Guide : préparer des photos pour le web - French.
+#
+
+nav = "Photos prêtes pour le web"
+title = "Préparer les photos du téléphone pour le web &mdash; format, taille, vie privée, sans envoi"
+description = "HEIC en JPEG, GPS retiré, redimensionnées pour la page et compressées à un budget : toute la chaîne dans le navigateur, et les originaux ne quittent jamais votre machine."
+
+heading = "Comment préparer les photos du téléphone pour le web"
+lede = """
+    Une photo de téléphone est au mauvais format, quatre fois trop grande, et
+    elle sait où vous habitez. La rendre postable est une chaîne
+    courte &mdash; convertir, cadrer, compresser &mdash; et chaque étape
+    tourne sur votre propre machine, qui est exactement là où doivent rester
+    des photos avec votre GPS dedans."""
+
+updated = "26 août 2026"
+
+og_title = "Des photos de téléphone aux photos postables, sans envoyer les originaux"
+og_description = "HEIC en JPEG, GPS parti, taille pour la page, compression à un budget. Quel outil fait quelle étape, dans quel ordre, et pourquoi les métadonnées se règlent toutes seules."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

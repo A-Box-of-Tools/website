@@ -137,6 +137,11 @@ complete = true
 "guides/open-a-dicom-file" = "rehberler/dicom-dosyasi-acma"
 "guides/redact-a-pdf" = "rehberler/pdf-karartma"
 "guides/scan-a-document-with-your-phone" = "rehberler/telefonla-belge-tarama"
+"guides/make-a-gif-from-part-of-a-video" = "rehberler/videonun-bir-kisminden-gif"
+"guides/make-a-boomerang-video" = "rehberler/bumerang-video-yapma"
+"guides/scan-multiple-pages-into-one-pdf" = "rehberler/birden-cok-sayfayi-tek-pdf-tarama"
+"guides/get-photos-ready-for-the-web" = "rehberler/fotograflari-web-icin-hazirlama"
+"guides/compare-two-json-files" = "rehberler/iki-json-dosyasini-karsilastirma"
 
 #
 # ---------------------------------------------------------------------------
@@ -230,6 +235,11 @@ og_image_alt = "abox.tools - sunucuya hiç dokunmayan araçlar"
 id = "doing-the-job"
 name = "İşi yapmak"
 note = "Her araç için bir tane: iş neyle ilgili, hangi ayar önemli ve bedeli ne."
+
+[[guides.groups]]
+id = "workflows"
+name = "Araçları zincirleme"
+note = "Arka arkaya iki ya da üç araç isteyen işler: hangi sırayla ve sıranın neden önemli olduğu."
 
 [[guides.groups]]
 id = "before-you-upload"

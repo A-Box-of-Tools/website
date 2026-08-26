@@ -1,0 +1,20 @@
+#
+# Ratgeber: Fotos fürs Web vorbereiten - German.
+#
+
+nav = "Fotos fürs Web"
+title = "Handyfotos fürs Web vorbereiten &mdash; Format, Größe, Privatsphäre, ohne Upload"
+description = "HEIC zu JPEG, GPS entfernt, für die Seite skaliert und auf ein Budget komprimiert: die ganze Kette im Browser, und die Originale verlassen Ihr Gerät nie."
+
+heading = "So machen Sie Handyfotos fertig fürs Web"
+lede = """
+    Ein Handyfoto hat das falsche Format, ist viermal zu groß und weiß, wo
+    Sie wohnen. Es postbar zu machen ist eine kurze Kette: umwandeln,
+    zuschneiden, komprimieren. Jeder Schritt läuft auf Ihrem eigenen Gerät,
+    und genau dorthin gehören Fotos mit Ihren GPS-Koordinaten darin."""
+
+updated = "26. August 2026"
+
+og_title = "Aus Handyfotos postbare Fotos, ohne die Originale hochzuladen"
+og_description = "HEIC zu JPEG, GPS weg, für die Seite skaliert, auf ein Budget komprimiert. Welches Werkzeug welchen Schritt macht, in welcher Reihenfolge, und warum sich die Metadaten von selbst erledigen."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

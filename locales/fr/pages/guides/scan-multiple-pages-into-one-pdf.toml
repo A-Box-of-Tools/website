@@ -1,0 +1,21 @@
+#
+# Guide : scanner plusieurs pages en un PDF - French.
+#
+
+nav = "Scanner des pages en un PDF"
+title = "Scanner plusieurs pages en un seul PDF &mdash; et le faire passer sous la limite"
+description = "Photographier chaque page, obtenir un PDF, le combiner avec les documents déjà en PDF, et le réduire jusqu'à ce qu'il parte. Trois outils du navigateur à la suite, et les papiers ne quittent jamais le téléphone."
+
+heading = "Comment scanner plusieurs pages en un petit PDF"
+lede = """
+    La corvée fait rarement une page. C'est un contrat et sa page de
+    signature, ou une année de reçus, et au bout une boîte mail qui refuse
+    tout ce qui dépasse quelques mégaoctets. Trois outils couvrent tout le
+    chemin, et les papiers restent sur votre propre machine d'un bout à
+    l'autre."""
+
+updated = "26 août 2026"
+
+og_title = "Scanner une pile de pages en un PDF qui part vraiment"
+og_description = "Photographier les pages, obtenir un PDF, y fondre ce qui existe déjà en PDF, et réduire le résultat sous la limite de pièce jointe, le tout dans le navigateur."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

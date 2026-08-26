@@ -125,6 +125,11 @@ complete = true
 "guides/scan-a-document-with-your-phone" = "guias/digitalizar-um-documento-com-o-celular"
 # Quem empilha nao procura "empilhar": procura o ruido, que e o problema.
 "guides/stack-photos-to-reduce-noise" = "guias/empilhar-fotos-para-reduzir-ruido"
+"guides/make-a-gif-from-part-of-a-video" = "guias/gif-de-um-trecho-de-video"
+"guides/make-a-boomerang-video" = "guias/fazer-um-video-boomerang"
+"guides/scan-multiple-pages-into-one-pdf" = "guias/digitalizar-varias-paginas-em-um-pdf"
+"guides/get-photos-ready-for-the-web" = "guias/preparar-fotos-para-a-web"
+"guides/compare-two-json-files" = "guias/comparar-dois-arquivos-json"
 
 #
 # ---------------------------------------------------------------------------
@@ -221,6 +226,11 @@ og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
 id = "doing-the-job"
 name = "Mão na massa"
 note = "Um para cada ferramenta, com o que a tarefa exige, qual ajuste importa de verdade e o que ele custa a você."
+
+[[guides.groups]]
+id = "workflows"
+name = "Encadear as ferramentas"
+note = "Tarefas que levam duas ou três ferramentas em sequência: em que ordem usá-las e por que a ordem importa."
 
 [[guides.groups]]
 id = "before-you-upload"

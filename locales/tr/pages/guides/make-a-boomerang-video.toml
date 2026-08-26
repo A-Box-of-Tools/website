@@ -1,0 +1,20 @@
+#
+# Rehber: bumerang video yapma - Türkçe.
+#
+
+nav = "Bumerang yapma"
+title = "Bumerang Video Yapma &mdash; İleri, Geri, Yüklemesiz"
+description = "Anı kesin, kopyayı ters çevirin, ikisini birleştirin ve döngüye alın. Arka arkaya üç araç, hepsi tarayıcıda ve bütün işi bir dakikaya indiren sıra."
+
+heading = "Bumerang video nasıl yapılır"
+lede = """
+    Bumerang; ileri, sonra geri oynayan ve dönüp duran bir kliptir. Buradaki
+    hiçbir araçta bumerang düğmesi yok; her biri kendi tek işini yapan üç
+    araçtan doğar &mdash; kes, ters çevir, birleştir &mdash; ve zincirin
+    tamamı kendi makinenizde çalışır."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "Hiçbir yere yüklemeden bumerang video yapın"
+og_description = "Anı kesin, kopyayı ters çevirin, ikisini birleştirin. Neden bu sıra, sese ne yapmalı ve döngü ne zaman GIF olmak ister."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

@@ -1,0 +1,121 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <ol>
+      <li>
+        <strong>Prima le foto dell'iPhone:</strong> passa i file HEIC per il
+        <a href="../../heic-in-jpg/">convertitore HEIC</a> e scegli di
+        lasciare fuori i metadati. Ti dice, prima di convertire qualsiasi
+        cosa, quali foto portano coordinate GPS. Le foto già in JPEG saltano
+        questo passo.
+      </li>
+      <li>
+        <strong>Inquadratura e misura:</strong> trascina il lotto sul
+        <a href="../../ridimensionare-immagine/">Ridimensiona immagini</a>. Fissa un
+        lato lungo &mdash; 1600 pixel vanno bene per la maggior parte delle
+        pagine, 2000 se i lettori ingrandiranno &mdash; oppure ritaglia
+        l'intero lotto alla stessa proporzione con un clic.
+      </li>
+      <li>
+        <strong>Centra il budget:</strong> chiudi nel
+        <a href="../../comprimere-immagine/">Comprimi immagini</a>, che accetta un
+        obiettivo in kilobyte invece di un cursore di qualità, e restituisce
+        il lotto in un solo zip.
+      </li>
+    </ol>
+    <p>
+      Tutto gira nel tuo browser. Gli originali &mdash; risoluzione piena,
+      GPS e tutto &mdash; non lasciano mai la tua macchina, ed è questo il
+      motivo di farlo in locale invece che su un sito di conversione.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dove vanno i metadati</h2>
+    <p>
+      Il rischio silenzioso di una foto del telefono non sono i pixel; sono le
+      etichette. I metadati EXIF registrano la fotocamera, gli orari e, su
+      quasi ogni telefono, le coordinate GPS di dove la foto è stata
+      scattata. Pubblicala e potresti star pubblicando il tuo indirizzo in una
+      forma che chiunque guardi sa leggere.
+    </p>
+    <p>
+      Il fatto utile di questa catena è che delle etichette si occupa da
+      sola. Ridimensionare e comprimere ridisegnano entrambi l'immagine dai
+      pixel, e pixel ridisegnati non portano etichette: quello che esce dai
+      passi 2 o 3 è pulito senza che tu lo chieda. I due casi che chiedono una
+      decisione:
+    </p>
+    <ul>
+      <li>
+        <strong>Convertire HEIC:</strong> il convertitore può portarsi dietro
+        i metadati o lasciarli fuori &mdash; è una casella &mdash; e avvisa
+        quali foto hanno il GPS a bordo. Per qualsiasi cosa pubblica,
+        fuori.
+      </li>
+      <li>
+        <strong>Una foto che non ridimensioni:</strong> se i pixel devono
+        restare intatti, byte per byte, usa
+        l'<a href="../../rimuovere-dati-exif/">editor EXIF</a>, che toglie le
+        etichette senza ricodificare l'immagine. La
+        <a href="../rimuovere-i-dati-exif-e-gps/">guida ai metadati</a> è la
+        versione lunga.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Perché ridimensionare prima di comprimere</h2>
+    <p>
+      Perché i pixel sono il budget. Una foto da 12 megapixel strizzata
+      abbastanza da stare in 300&nbsp;KB si vede peggio, e si nota, di una da
+      2 megapixel compressa con dolcezza nello stesso spazio: gli stessi
+      kilobyte si spalmano su sei volte l'area. Decidere prima la misura a
+      cui verrà mostrata lascia che il compressore spenda il budget in
+      qualità invece che in risoluzione che nessuno vedrà.
+    </p>
+    <p>
+      Il compressore ridimensiona da solo quando non c'è altro modo di
+      raggiungere l'obiettivo, ma lo tratta come ultima spiaggia. Fare
+      l'inquadratura tu nel ridimensiona tiene la decisione &mdash; cosa
+      tagliare, quale bordo conta &mdash; dove deve stare.
+    </p>
+    <p>
+      La <a href="../ridimensionare-un-immagine/">guida al ridimensionamento</a> e la
+      <a href="../comprimere-un-immagine-a-una-dimensione-esatta/">guida alla
+      compressione</a> vanno più a fondo ciascuna sulla propria metà,
+      compreso cosa misurano davvero i numeri della qualità.
+    </p>
+  </section>
+
+  <section>
+    <h2>Tutto il lotto in una volta</h2>
+    <p>
+      Ogni strumento della catena prende una cartella intera in un solo
+      trascinamento: il convertitore fa ogni HEIC, raffiche comprese, il
+      ridimensiona mette la stessa inquadratura su tutto il set o ti lascia
+      ritagliare ogni foto a modo suo, e il compressore restituisce il tutto
+      in un unico zip. Venti foto costano appena più attenzione di una: il
+      tempo macchina è della tua macchina, ed è meno di quanto sarebbe durato
+      qualsiasi caricamento.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se lo fai ogni settimana</h2>
+    <p>
+      Che la catena viva qui su tre o quattro pagine è voluto: ogni pagina fa
+      un lavoro, e ognuna dimostra da sola che niente lascia la tua macchina.
+      Ma ogni passo è open source: licenza MIT, una cartella per strumento,
+      moduli ES senza dipendenze con README che spiegano il decoder, il
+      ricampionamento e la ricerca della misura obiettivo.
+    </p>
+    <p>
+      Se le tue foto prendono ogni volta la stessa forma &mdash; stesso lato
+      lungo, stesso budget, stesse etichette via &mdash; punta un agente di
+      codice sul
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      e chiedigli di comporre quei moduli in un'unica zona di trascinamento
+      con i tuoi preset già dentro. I moduli sono scritti per essere letti, e
+      portarseli via è esattamente ciò per cui la licenza esiste.
+    </p>
+  </section>

@@ -1,0 +1,20 @@
+#
+# Panduan: memindai banyak halaman jadi satu PDF - Bahasa Indonesia.
+#
+
+nav = "Memindai halaman jadi satu PDF"
+title = "Memindai Banyak Halaman jadi Satu PDF &mdash; dan Menekannya di Bawah Batas Ukuran"
+description = "Foto tiap halaman, dapatkan satu PDF, gabungkan dengan dokumen yang sudah ada, dan kecilkan sampai bisa terkirim. Tiga alat peramban berturut-turut, dan berkasnya tidak pernah meninggalkan ponsel."
+
+heading = "Cara memindai banyak halaman jadi satu PDF kecil"
+lede = """
+    Urusannya jarang cuma satu halaman. Ia kontrak dengan lembar tanda
+    tangannya, atau setahun kuitansi, dan di ujungnya kotak surat yang
+    menolak apa pun di atas beberapa megabyte. Tiga alat menempuh seluruh
+    jalannya, dan berkasnya tinggal di mesin Anda sendiri sepanjang itu."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Pindai setumpuk halaman jadi PDF yang benar-benar terkirim"
+og_description = "Foto halamannya, dapatkan satu PDF, leburkan yang sudah berbentuk PDF, dan kecilkan hasilnya di bawah batas lampiran, semuanya di peramban."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

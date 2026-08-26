@@ -1,0 +1,20 @@
+#
+# Guida: creare un video boomerang - Italian.
+#
+
+nav = "Creare un boomerang"
+title = "Creare un video boomerang &mdash; avanti, indietro, senza caricare niente"
+description = "Taglia il momento, inverti la copia, unisci le due e mettilo in loop. Tre strumenti in fila, tutti nel browser, e l'ordine che riduce tutto il lavoro a un minuto."
+
+heading = "Come creare un video boomerang"
+lede = """
+    Un boomerang è un clip che va avanti, poi indietro, e ricomincia. Nessuno
+    strumento qui ha un pulsante boomerang; nasce da tre che fanno ciascuno il
+    proprio lavoro &mdash; tagliare, invertire, unire &mdash; e l'intera
+    catena gira sul tuo dispositivo."""
+
+updated = "26 agosto 2026"
+
+og_title = "Crea un video boomerang senza caricarlo da nessuna parte"
+og_description = "Taglia il momento, inverti la copia, unisci le due. Perché quell'ordine, cosa fare dell'audio, e quando il loop vuole essere una GIF."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

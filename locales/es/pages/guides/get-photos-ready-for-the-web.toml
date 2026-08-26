@@ -1,0 +1,21 @@
+#
+# Guía: preparar fotos para la web - Spanish.
+#
+
+nav = "Fotos listas para la web"
+title = "Preparar las fotos del móvil para la web &mdash; formato, tamaño, privacidad, sin subir nada"
+description = "HEIC a JPEG, GPS fuera, redimensionadas para la página y comprimidas a un presupuesto: toda la cadena en el navegador, y los originales nunca salen de tu equipo."
+
+heading = "Cómo preparar las fotos del móvil para la web"
+lede = """
+    Una foto de móvil está en el formato equivocado, es cuatro veces más
+    grande de la cuenta y sabe dónde vives. Dejarla publicable es una cadena
+    corta &mdash; convertir, encuadrar, comprimir &mdash; y cada paso corre en
+    tu propio equipo, que es exactamente donde deben estar las fotos con tu
+    GPS dentro."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "De fotos de móvil a fotos publicables, sin subir los originales"
+og_description = "HEIC a JPEG, GPS fuera, tamaño para la página, compresión a un presupuesto. Qué herramienta hace cada paso, en qué orden, y por qué los metadatos se resuelven solos."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

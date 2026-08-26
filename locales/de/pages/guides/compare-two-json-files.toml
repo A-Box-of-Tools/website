@@ -1,0 +1,22 @@
+#
+# Ratgeber: zwei JSON-Dateien vergleichen - German.
+#
+
+nav = "Zwei JSON-Dateien vergleichen"
+title = "Zwei JSON-Dateien vergleichen &mdash; ohne das Formatierungsrauschen"
+description = "Beide Dateien gleich formatieren, die Schlüssel sortieren, dann vergleichen. Warum ein roher JSON-Vergleich fast nur Rauschen ist, wie Sie beide Seiten im Browser in Normalform bringen, und was davon in die Patch-Datei gelangt."
+
+heading = "So vergleichen Sie zwei JSON-Dateien"
+lede = """
+    Vergleichen Sie zwei JSON-Dateien, wie sie kommen, und das meiste, was
+    aufleuchtet, ist nichts: Einrückung, Zeilenumbrüche, Schlüssel in anderer
+    Reihenfolge. Die Lösung ist kein klügerer Vergleich, sondern beide
+    Dateien vorher durch denselben Formatierer zu schicken, sodass nur echte
+    Unterschiede übrig bleiben. Beide Schritte laufen in Ihrem Browser, und
+    dorthin gehören Konfigurationsdateien mit Geheimnissen darin."""
+
+updated = "26. August 2026"
+
+og_title = "Zwei JSON-Dateien vergleichen, ohne das Formatierungsrauschen"
+og_description = "Beide Dateien in Normalform bringen, gleiche Einrückung, sortierte Schlüssel, dann vergleichen. Was danach aufleuchtet, ist echt, und nichts davon wurde hochgeladen."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

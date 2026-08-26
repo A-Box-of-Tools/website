@@ -1,0 +1,20 @@
+#
+# Ratgeber: GIF aus einem Videoausschnitt - German.
+#
+
+nav = "GIF aus einem Videoausschnitt"
+title = "GIF aus einem Teil eines Videos machen &mdash; ohne Upload"
+description = "Erst die Sekunden schneiden, die zählen, dann nur diese umwandeln. Wann die Zeitleiste des GIF-Konverters reicht, wann der Videoschneider zuerst drankommt, und warum jede GIF-Sekunde so teuer ist."
+
+heading = "So machen Sie ein GIF aus einem Teil eines Videos"
+lede = """
+    Ein GIF aus dem ganzen Clip ist riesig, und fast alles darin wollte
+    niemand sehen. Die Aufgabe besteht in Wahrheit aus zwei Entscheidungen:
+    erst welche Sekunden, dann welche Einstellungen. Beides passiert auf Ihrem
+    eigenen Gerät, denn keines der beiden Werkzeuge lädt irgendetwas hoch."""
+
+updated = "26. August 2026"
+
+og_title = "Ein GIF aus einem Videoausschnitt machen, ohne eines von beiden hochzuladen"
+og_description = "Erst schneiden, dann umwandeln. Welches Werkzeug schneiden sollte, was eine GIF-Sekunde wirklich kostet, und wie das Ergebnis unter dem Größenlimit eines Forums bleibt."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

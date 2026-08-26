@@ -1,0 +1,135 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <ol>
+      <li>
+        Open de <a href="../../json-formatteren/">JSON-formatter</a>, plak het
+        eerste bestand, zet de inspringing op twee spaties en vink <em>De
+        sleutels van elk object sorteren</em> aan. Kopieer het resultaat.
+      </li>
+      <li>
+        Open de <a href="../../tekst-vergelijken/">Tekstvergelijker</a> en plak
+        het in het linkervak.
+      </li>
+      <li>
+        Doe hetzelfde met het tweede bestand, in het rechtervak.
+      </li>
+    </ol>
+    <p>
+      Wat nu oplicht is echt: een waarde die veranderde, een sleutel die
+      verscheen, een regel die verdween. De opmaakverschillen en de
+      herschikte sleutels waarin een gewone diff verdronken zou zijn, zijn
+      weg, omdat beide kanten hetzelfde gespeld waren voordat de
+      vergelijking begon.
+    </p>
+    <p>
+      Geen van beide pagina's heeft ook maar één netwerkfunctie &mdash; goed
+      om te weten, want de JSON die mensen vergelijken is zo vaak een
+      configuratiebestand met de inloggegevens er nog in.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom een rauwe JSON-diff vooral ruis is</h2>
+    <p>
+      JSON geeft niets om witruimte, en het geeft sleutelvolgorde geen
+      betekenis. Hetzelfde document kan één regel zijn of vierhonderd, de
+      sleutels in de volgorde waarin ze getypt zijn of in die welke een of
+      andere bibliotheek uitspuwde &mdash; en tools herschrijven allebei
+      vrijelijk. De ene kant geminificeerd, de andere uitgevouwen; de ene
+      met de hand opgeslagen, de andere door een serializer die alfabetisch
+      sorteert: een regeldiff ziet twee bestanden zonder verwantschap.
+    </p>
+    <p>
+      De twee ergste gevallen maken het punt. Een
+      <strong>geminificeerd</strong> bestand is één regel, dus een diff
+      ertegen is één gigantische veranderde regel &mdash; waar en nutteloos.
+      En twee bestanden met <strong>dezelfde inhoud in een andere
+      volgorde</strong> vergelijken als alles-veranderd, terwijl het eerlijke
+      antwoord &ldquo;niets&rdquo; zou zijn.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat de canonieke vorm van de formatter oplost</h2>
+    <p>
+      Beide bestanden door dezelfde formatter met dezelfde instellingen halen
+      is precies wat een diff nodig heeft: één spelling per document.
+    </p>
+    <ul>
+      <li>
+        <strong>Dezelfde inspringing</strong> zet elke sleutel op zijn eigen
+        regel, zodat de diff regel voor regel werkt en zijn
+        woordmarkeringen kunnen wijzen naar de ene waarde die in een regel
+        veranderde.
+      </li>
+      <li>
+        <strong>Gesorteerde sleutels</strong> zetten beide kanten in
+        dezelfde volgorde, zodat volgorde ophoudt een verschil te zijn. Er
+        wordt gesorteerd op hoe sleutels lezen, niet op codepunten &mdash;
+        <code>item2</code> vóór <code>item10</code> &mdash; en identiek op
+        beide kanten toegepast.
+      </li>
+      <li>
+        <strong>Verder beweegt er niets.</strong> Deze formatter houdt
+        getallen als de cijfers die je schreef en houdt dubbele sleutels in
+        plaats van ze te beslechten &mdash; canoniek maken kan dus zelf geen
+        verschil verzinnen. De
+        <a href="../json-formatteren/">formattergids</a>
+        legt uit waarom dat zeldzamer is dan het zou moeten zijn.
+      </li>
+    </ul>
+    <p>
+      Eén eerlijke kanttekening: de gesorteerde uitvoer is het document met
+      zijn sleutels verplaatst. Geeft een tool verderop om sleutelvolgorde
+      &mdash; weinige doen dat, maar ze bestaan &mdash; behandel de
+      gesorteerde kopieën dan als het ding dat vergeleken wordt, niet als
+      vervanging van de originelen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Het resultaat lezen, en meenemen</h2>
+    <p>
+      De vergelijker markeert verwijderde regels links, toegevoegde rechts,
+      en licht binnen een veranderde regel de woorden op die verschillen
+      &mdash; op een canonieke vorm is dat doorgaans de ene waarde die van
+      <code>false</code> naar <code>true</code> ging. Het onveranderde
+      midden vouwt samen tot een telling, zodat een configuratie van
+      tweeduizend regels met drie wijzigingen leest als drie korte
+      passages.
+    </p>
+    <p>
+      De download is een unified <code>.patch</code> &mdash; het formaat dat
+      codereview begrijpt. Hij beschrijft de canonieke vormen, en dat is
+      meestal wat een review toch al wil: de wijziging, zonder de
+      heropmaak.
+    </p>
+    <p>
+      Hetzelfde recept werkt voor al het andere dat beide pagina's spreken.
+      YAML en XML worden op dezelfde manier canoniek; en voor twee bestanden
+      van dezelfde vorm uit verschillende bronnen zijn de negeerschakelaars
+      van de vergelijker &mdash; witruimte, hoofdletters, lege regels
+      &mdash; een lichtere versie van hetzelfde idee.
+    </p>
+  </section>
+
+  <section>
+    <h2>Als je dit elke week doet</h2>
+    <p>
+      Twee keer formatteren, twee keer plakken &mdash; de stappen wonen op
+      twee pagina's omdat elke pagina één klus doet, en elke op zichzelf kan
+      bewijzen dat niets van wat je plakte ergens heen ging. Maar beide zijn
+      open source: MIT-licentie, ES-modules zonder afhankelijkheden &mdash;
+      de parser van de formatter houdt sleutelvolgorde en cijfers, de diff
+      is Myers' algoritme &mdash; elk met een README die het uitlegt.
+    </p>
+    <p>
+      Hoort dit bij je dag, zet dan een codeeragent op de
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      en vraag om een pagina met twee vakken die canoniek maakt terwijl ze
+      vergelijkt &mdash; <code>parseJson</code>, <code>printJson</code> en
+      <code>compareText</code> zijn drie imports ver. De modules zijn
+      geschreven om gelezen te worden, en ze meenemen is precies waar de
+      licentie voor is.
+    </p>
+  </section>

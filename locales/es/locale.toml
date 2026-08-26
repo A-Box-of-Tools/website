@@ -128,6 +128,11 @@ complete = true
 "guides/redact-a-pdf" = "guias/censurar-un-pdf"
 "guides/scan-a-document-with-your-phone" = "guias/escanear-un-documento-con-el-telefono"
 "guides/stack-photos-to-reduce-noise" = "guias/apilar-fotos-para-reducir-el-ruido"
+"guides/make-a-gif-from-part-of-a-video" = "guias/gif-de-una-parte-de-un-video"
+"guides/make-a-boomerang-video" = "guias/hacer-un-video-boomerang"
+"guides/scan-multiple-pages-into-one-pdf" = "guias/escanear-varias-paginas-en-un-pdf"
+"guides/get-photos-ready-for-the-web" = "guias/preparar-fotos-para-la-web"
+"guides/compare-two-json-files" = "guias/comparar-dos-archivos-json"
 
 #
 # ---------------------------------------------------------------------------
@@ -224,6 +229,11 @@ og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"
 id = "doing-the-job"
 name = "Hacer el trabajo"
 note = "Una por herramienta: en qué consiste la tarea, qué ajuste importa y qué te cuesta."
+
+[[guides.groups]]
+id = "workflows"
+name = "Encadenar las herramientas"
+note = "Tareas que llevan dos o tres herramientas seguidas: en qué orden usarlas y por qué el orden importa."
 
 [[guides.groups]]
 id = "before-you-upload"

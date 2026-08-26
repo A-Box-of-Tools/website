@@ -1,0 +1,20 @@
+#
+# Gids: foto's klaarmaken voor het web - Dutch.
+#
+
+nav = "Foto's klaar voor het web"
+title = "Telefoonfoto's klaarmaken voor het web &mdash; formaat, grootte, privacy, zonder uploaden"
+description = "HEIC naar JPEG, GPS eruit, geschaald voor de pagina en gecomprimeerd op een budget: de hele keten in de browser, en de originelen verlaten je machine nooit."
+
+heading = "Zo maak je telefoonfoto's klaar voor het web"
+lede = """
+    Een telefoonfoto heeft het verkeerde formaat, is vier keer te groot en
+    weet waar je woont. Haar postbaar maken is een korte keten &mdash;
+    omzetten, kadreren, comprimeren &mdash; en elke stap draait op je eigen
+    machine, precies waar foto's met jouw GPS erin thuishoren."""
+
+updated = "26 augustus 2026"
+
+og_title = "Van telefoonfoto's naar postbare foto's, zonder de originelen te uploaden"
+og_description = "HEIC naar JPEG, GPS weg, grootte voor de pagina, compressie op een budget. Welke tool welke stap doet, in welke volgorde, en waarom de metadata zichzelf oplost."
+og_image_alt = "abox.tools - tools die nooit een server aanraken"

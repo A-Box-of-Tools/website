@@ -1,0 +1,117 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Fotografe cada página e depois solte todas as fotos de uma vez no
+      <a href="../../digitalizar-documentos/">Scanner de documentos</a>. Ele acha
+      os cantos de cada página, endireita cada foto e escreve <em>um PDF com
+      uma página por foto</em>: não existe passo separado de juntar, e as
+      páginas ficam na ordem em que você as adicionou.
+    </p>
+    <p>
+      Duas ferramentas continuam de onde o scanner para. Se parte do
+      documento já <em>é</em> um PDF &mdash; o contrato que mandaram por
+      e-mail, em volta da sua folha de assinaturas digitalizada &mdash;
+      entrelace os dois com o <a href="../../juntar-pdf/">Juntador de PDF</a>.
+      E se o arquivo pronto ainda pesa mais do que a caixa aceita, o
+      <a href="../../comprimir-pdf/">Compressor de PDF</a> o deixa abaixo do
+      limite.
+    </p>
+    <p>
+      Nada na sequência envia nada. Isso importa aqui mais do que em quase
+      qualquer outro lugar: o que se digitaliza são contratos, documentos de
+      identidade e papéis médicos, e os aplicativos de sempre passam cada
+      página pelos servidores deles.
+    </p>
+  </section>
+
+  <section>
+    <h2>Acertando as fotos</h2>
+    <p>
+      O scanner recupera muita coisa &mdash; fotos de viés, luz de abajur
+      desigual, uma sombra atravessada na página &mdash; mas não recupera o
+      que a câmera nunca capturou. Três hábitos cobrem quase tudo:
+    </p>
+    <ul>
+      <li>
+        <strong>Preencha o quadro</strong>, com uma margem de mesa visível em
+        volta de cada borda. Os cantos são achados procurando a página contra
+        o fundo; uma página que vaza da foto não tem canto para achar.
+      </li>
+      <li>
+        <strong>Fotografe de cima</strong>, mais ou menos no prumo. A
+        perspectiva se corrige, mas a borda distante de uma foto rasante tem
+        menos pixels, e a correção não pode inventá-los.
+      </li>
+      <li>
+        <strong>Uma página por foto</strong>, na ordem de leitura. Reordenar
+        depois funciona, mas a ordem em que você fotografa é a ordem que
+        recebe, e fotografar em ordem é de graça.
+      </li>
+    </ul>
+    <p>
+      O <a href="../digitalizar-um-documento-com-o-celular/">guia de
+      digitalização</a> cobre o resto: como os cantos são achados, quando
+      arrastá-los você mesmo, e o que o modo preto e branco faz com o tamanho
+      do arquivo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando o juntador ganha o lugar dele</h2>
+    <p>
+      O scanner combina <em>fotos</em>. O juntador combina <em>PDFs</em>, e o
+      meio de uma tarefa de verdade costuma ser os dois: uma folha assinada
+      fotografada agora, dentro de um documento que chegou como arquivo.
+      Digitalize primeiro as suas páginas, depois solte a digitalização e o
+      PDF original juntos no juntador, arraste as páginas para o lugar e
+      exporte um documento só. Os marcadores e os links internos do original
+      são reconstruídos sobre as páginas que ficam, e os campos de formulário
+      preenchidos vêm junto.
+    </p>
+    <p>
+      O mesmo vale para digitalizações de dias diferentes: o PDF de cada
+      sessão cai como um bloco de páginas, e o juntador é onde os blocos
+      viram um arquivo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ficando abaixo do limite de tamanho</h2>
+    <p>
+      Tente primeiro a alavanca barata, e ela fica dentro do scanner: para
+      páginas que são tinta sobre papel &mdash; texto, formulários,
+      recibos &mdash; o modo preto e branco guarda cada página a um bit por
+      pixel, e o PDF costuma ficar bem abaixo de um megabyte por página sem
+      comprimir nada. Cor só vale o custo onde a cor significa alguma
+      coisa.
+    </p>
+    <p>
+      Quando o arquivo mesmo assim não quer ir &mdash; páginas coloridas, ou
+      uma junção que trouxe a digitalização de outra pessoa &mdash; o
+      compressor começa mostrando onde o tamanho mora de verdade, e depois
+      recodifica as imagens de página contra a resolução em que aparecem. Ele
+      também confere que o resultado abre antes de oferecê-lo, o que se
+      agradece quando o arquivo é um contrato com prazo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se você faz isso toda semana</h2>
+    <p>
+      Os passos morarem aqui em três páginas é de propósito: cada página faz
+      um trabalho, e cada uma prova sozinha que a papelada nunca saiu da sua
+      máquina. Mas é tudo código aberto: licença MIT, uma pasta por
+      ferramenta, módulos ES sem dependências, com READMEs que explicam o
+      achador de cantos, a cópia de páginas do juntador e o orçamento do
+      compressor.
+    </p>
+    <p>
+      Se a mesma tarefa cai na sua mesa toda semana, aponte um agente de
+      código para o
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a>
+      e peça para compor esses módulos numa página feita para ela:
+      digitalizar direto para um documento juntado e comprimido, com a sua
+      folha de rosto já no lugar. Os módulos foram escritos para serem lidos,
+      e levá-los embora é exatamente para isso que a licença existe.
+    </p>
+  </section>

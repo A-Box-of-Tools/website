@@ -1,0 +1,131 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <ol>
+      <li>
+        Buka <a href="../../format-json/">Pemformat JSON</a>, tempel file
+        pertama, setel indentasi ke dua spasi, dan centang <em>Urutkan kunci
+        tiap objek</em>. Salin hasilnya.
+      </li>
+      <li>
+        Buka <a href="../../bandingkan-teks/">Pembanding Teks</a> dan tempelkan
+        ke kotak kiri.
+      </li>
+      <li>
+        Lakukan hal yang sama pada file kedua, ke kotak kanan.
+      </li>
+    </ol>
+    <p>
+      Yang menyala sekarang sungguhan: nilai yang berubah, kunci yang
+      muncul, entri yang pergi. Perbedaan pemformatan dan kunci yang berpindah
+      urutan, yang akan menenggelamkan diff biasa, sudah tidak ada, karena
+      kedua sisi dieja sama sebelum perbandingannya mulai.
+    </p>
+    <p>
+      Kedua halaman itu sama sekali tidak punya fitur jaringan, dan itu layak
+      diketahui: JSON yang dibandingkan orang begitu sering adalah file
+      konfigurasi dengan kredensial masih di dalamnya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kenapa diff JSON mentah hampir seluruhnya derau</h2>
+    <p>
+      JSON tidak peduli spasi, dan tidak memberi makna pada urutan kunci.
+      Dokumen yang sama bisa satu baris atau empat ratus, kuncinya dalam
+      urutan diketik atau urutan yang dikeluarkan suatu pustaka &mdash; dan
+      alat-alat menulis ulang keduanya sesuka hati. Satu sisi dimampatkan,
+      satu sisi dijabarkan; satu disimpan tangan, satunya oleh serializer
+      yang mengurutkan menurut abjad: diff baris melihat dua file yang tak
+      berkerabat.
+    </p>
+    <p>
+      Dua kasus terburuknya cukup jadi bukti. File <strong>termampat</strong>
+      adalah satu baris, jadi diff terhadapnya adalah satu baris berubah yang
+      raksasa: benar dan tak berguna. Dan dua file dengan <strong>isi sama
+      dalam urutan berbeda</strong> dibandingkan sebagai semua-berubah,
+      padahal jawaban jujurnya &ldquo;tidak ada&rdquo;.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa yang dibereskan bentuk baku si pemformat</h2>
+    <p>
+      Melewatkan kedua file lewat pemformat yang sama dengan setelan yang
+      sama persis yang dibutuhkan diff: satu ejaan per dokumen.
+    </p>
+    <ul>
+      <li>
+        <strong>Indentasi yang sama</strong> menaruh tiap kunci di barisnya
+        sendiri: diff lalu bekerja baris demi baris, dan penanda katanya bisa
+        menunjuk satu nilai yang berubah di dalam sebuah baris.
+      </li>
+      <li>
+        <strong>Kunci terurut</strong> menaruh kedua sisi dalam urutan yang
+        sama, dan urutan berhenti menjadi perbedaan. Pengurutannya menurut
+        cara kunci terbaca, bukan menurut titik kode &mdash;
+        <code>item2</code> sebelum <code>item10</code> &mdash; dan diterapkan
+        identik di kedua sisi.
+      </li>
+      <li>
+        <strong>Selain itu tidak ada yang bergeser.</strong> Pemformat ini
+        menjaga angka sebagai digit yang Anda tulis dan menjaga kunci ganda
+        alih-alih memutuskannya: pembakuan tidak bisa mengarang perbedaan
+        sendiri. <a href="../format-json-tanpa-mengunggah/">Panduan
+        pemformat</a> menjelaskan kenapa itu lebih langka dari
+        seharusnya.
+      </li>
+    </ul>
+    <p>
+      Satu catatan jujur: keluaran terurut adalah dokumen dengan kunci yang
+      berpindah. Kalau alat di hilir peduli urutan kunci &mdash; sedikit yang
+      peduli, tapi ada &mdash; perlakukan salinan terurut sebagai yang
+      dibandingkan, bukan pengganti aslinya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Membaca hasilnya, dan membawanya pergi</h2>
+    <p>
+      Pembanding menandai baris yang hilang di kiri, yang bertambah di kanan,
+      dan menyorot kata yang berbeda di dalam baris yang berubah: pada bentuk
+      baku, biasanya itu satu-satunya nilai yang berpindah dari
+      <code>false</code> ke <code>true</code>. Bagian tengah yang tak berubah
+      terlipat jadi hitungan, jadi konfigurasi dua ribu baris dengan tiga
+      suntingan terbaca sebagai tiga penggalan pendek.
+    </p>
+    <p>
+      Unduhannya tambalan terpadu, sebuah <code>.patch</code>: format yang
+      dimengerti tinjauan kode. Ia menggambarkan bentuk-bentuk baku, dan
+      biasanya memang itu yang diinginkan tinjauan: perubahannya, tanpa
+      pemformatan ulangnya.
+    </p>
+    <p>
+      Resep yang sama bekerja untuk semua hal lain yang dipahami kedua
+      halaman. YAML dan XML dibakukan dengan cara yang sama; dan untuk dua
+      file berbentuk sama dari sumber berbeda, sakelar pengabaian si
+      pembanding &mdash; spasi, kapital, baris kosong &mdash; adalah versi
+      ringan dari gagasan yang sama.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kalau Anda melakukannya tiap minggu</h2>
+    <p>
+      Memformat dua kali, menempel dua kali: langkah-langkahnya tinggal di
+      dua halaman karena tiap halaman mengerjakan satu hal, dan masing-masing
+      bisa membuktikan sendiri bahwa tidak ada tempelan Anda yang pergi ke
+      mana pun. Tetapi keduanya open source: berlisensi MIT, modul ES bebas
+      dependensi &mdash; parser si pemformat menjaga urutan kunci dan digit,
+      diff-nya algoritma Myers &mdash; masing-masing dengan README yang
+      menjelaskannya.
+    </p>
+    <p>
+      Kalau ini bagian dari hari Anda, arahkan agen kode ke
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositorinya</a>
+      dan minta halaman dua kotak yang membakukan sambil membandingkan:
+      <code>parseJson</code>, <code>printJson</code>, dan
+      <code>compareText</code> tinggal tiga impor jauhnya. Modul-modulnya
+      ditulis untuk dibaca, dan mengangkatnya keluar memang gunanya lisensi
+      itu.
+    </p>
+  </section>

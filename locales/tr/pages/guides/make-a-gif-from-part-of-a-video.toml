@@ -1,0 +1,20 @@
+#
+# Rehber: videonun bir kısmından GIF - Türkçe.
+#
+
+nav = "Videonun bir kısmından GIF"
+title = "Videonun Bir Kısmından GIF Yapma &mdash; Yüklemesiz"
+description = "Önce işe yarayan saniyeleri kesin, sonra yalnızca onları dönüştürün. GIF dönüştürücünün kendi zaman çizgisi ne zaman yeter, ne zaman önce video kesiciyle kesilir ve GIF'in her saniyesi neden bu kadar pahalıdır."
+
+heading = "Videonun bir kısmından nasıl GIF yapılır"
+lede = """
+    Klibin tamamından yapılmış bir GIF kocamandır ve içindekilerin neredeyse
+    hiçbirini kimse istememiştir. İş aslında iki karardan ibarettir: önce
+    hangi saniyeler, sonra hangi ayarlar. İkisi de kendi makinenizde olur;
+    çünkü bu iki araçtan hiçbiri hiçbir şey yüklemez."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "İkisini de yüklemeden, videonun bir kısmından GIF yapın"
+og_description = "Önce kes, sonra dönüştür. Kesme işini hangi araç yapmalı, bir saniyelik GIF gerçekte kaça mal olur ve sonuç bir forumun boyut sınırının altında nasıl kalır."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

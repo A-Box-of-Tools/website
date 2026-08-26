@@ -163,6 +163,11 @@ complete = true
 "guides/redact-a-pdf" = "ratgeber/pdf-schwaerzen"
 "guides/scan-a-document-with-your-phone" = "ratgeber/dokument-mit-handy-scannen"
 "guides/stack-photos-to-reduce-noise" = "ratgeber/fotos-stacken-gegen-bildrauschen"
+"guides/make-a-gif-from-part-of-a-video" = "ratgeber/gif-aus-videoausschnitt"
+"guides/make-a-boomerang-video" = "ratgeber/boomerang-video-erstellen"
+"guides/scan-multiple-pages-into-one-pdf" = "ratgeber/mehrere-seiten-in-ein-pdf-scannen"
+"guides/get-photos-ready-for-the-web" = "ratgeber/fotos-fuers-web-vorbereiten"
+"guides/compare-two-json-files" = "ratgeber/zwei-json-dateien-vergleichen"
 
 #
 # ---------------------------------------------------------------------------
@@ -260,6 +265,11 @@ og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
 id = "doing-the-job"
 name = "Die Arbeit erledigen"
 note = "Einer je Werkzeug: worum es geht, welche Einstellung zählt und was sie kostet."
+
+[[guides.groups]]
+id = "workflows"
+name = "Werkzeuge verketten"
+note = "Aufgaben, die zwei oder drei Werkzeuge nacheinander brauchen. In welcher Reihenfolge, und warum die Reihenfolge zählt."
 
 [[guides.groups]]
 id = "before-you-upload"

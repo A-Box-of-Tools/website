@@ -1,0 +1,127 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <ol>
+      <li>
+        <strong>Coupez le moment.</strong> Ouvrez le
+        <a href="../../couper-une-video/">Découpeur vidéo</a>, marquez la seconde ou
+        les deux secondes qui doivent balancer, et exportez-les comme clip à
+        part.
+      </li>
+      <li>
+        <strong>Inversez une copie.</strong> Déposez ce clip dans
+        l'<a href="../../inverser-une-video/">Inverseur vidéo</a>, laissez le son de
+        côté, et exportez. Vous avez maintenant le même moment deux fois, une
+        fois dans chaque sens.
+      </li>
+      <li>
+        <strong>Joignez les deux.</strong> De retour dans le Découpeur vidéo,
+        déposez les deux fichiers, marquez chacun en entier, placez la version
+        à l'endroit en premier, et exportez un seul fichier.
+      </li>
+    </ol>
+    <p>
+      Ce fichier est le boomerang. Postez-le tel quel partout où la vidéo
+      muette boucle, ou passez-le par le convertisseur
+      <a href="../../video-en-gif/">Vidéo en GIF</a> si la destination
+      n'anime que des GIF. Chaque étape se déroule dans votre
+      navigateur&nbsp;; rien de cette chaîne n'est envoyé, à aucun moment, à
+      personne.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi couper d'abord</h2>
+    <p>
+      Inverser doit décoder et réencoder chaque image touchée &mdash; le
+      <a href="../inverser-une-video/">guide de l'inversion</a> explique pourquoi
+      il n'y a pas moins cher. Couper, en revanche, est presque
+      gratuit&nbsp;: le découpeur fait passer les images entières sans les
+      réencoder.
+    </p>
+    <p>
+      L'ordre est donc tout le secret. Inversez un clip de deux secondes et
+      l'étape coûteuse travaille sur deux secondes&nbsp;; inversez l'original
+      et elle travaille sur tout, dont vous allez jeter presque tout. Sur un
+      enregistrement de téléphone d'une longueur quelconque, couper d'abord
+      fait la différence entre un boomerang en moins d'une minute et une barre
+      de progression derrière laquelle vous attendez.
+    </p>
+    <p>
+      Coupez serré. Un boomerang se lit le mieux quand il balance sur un seul
+      mouvement &mdash; un saut, une éclaboussure, un demi-tour &mdash; et
+      chaque image gardée se paie deux fois, une par sens.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quoi faire du son</h2>
+    <p>
+      Laissez-le de côté, et faites-le à l'étape de l'inversion &mdash;
+      l'inverseur a une case exactement pour cela. Le son d'un boomerang
+      jouerait à l'endroit, puis à l'envers&nbsp;; un son inversé est
+      étrange sans équivoque, et presque tous les endroits où finit un
+      boomerang le jouent muet de toute façon. Sans le son, l'inversion va
+      aussi plus vite et les deux fichiers sont plus petits.
+    </p>
+    <p>
+      Si vous le gardez, le découpeur joindra quand même les deux
+      clips &mdash; mais la couture que l'œil pardonne, l'oreille ne la
+      pardonne pas.
+    </p>
+  </section>
+
+  <section>
+    <h2>La jonction, et ce que le découpeur vous dira</h2>
+    <p>
+      Les deux fichiers joints sont proches parents &mdash; l'un a été fait de
+      l'autre &mdash; mais ils sont passés par des encodeurs différents et
+      peuvent ne pas s'accorder octet pour octet sur leur format. Le découpeur
+      vérifie. Là où les deux s'accordent, il copie les images telles
+      quelles&nbsp;; là où ils diffèrent, il réencode, une fois, et le dit sur
+      le panneau d'export plutôt que de vous laisser deviner.
+    </p>
+    <p>
+      Ordonnez les parties avant d'exporter&nbsp;: l'endroit d'abord,
+      l'envers ensuite. Un boomerang qui commence par le retour se lit comme
+      une erreur.
+    </p>
+    <p>
+      Un raffinement qui vaut ses dix secondes&nbsp;: rognez une image au
+      début du clip inversé avant la jonction. La dernière image de l'aller et
+      la première du retour sont la même, et la montrer deux fois fait
+      hésiter le virage un instant.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vidéo ou GIF à la fin</h2>
+    <p>
+      Gardez le MP4 si la destination joue la vidéo &mdash; il est bien plus
+      petit, bien plus net, et boucle tout aussi bien. Ne convertissez en GIF
+      que si l'endroit l'exige, et surveillez alors le compteur&nbsp;: un GIF
+      paie chaque image, et un boomerang est son clip en double. Le
+      <a href="../gif-a-partir-d-un-extrait-video/">guide du GIF partiel</a>
+      couvre les leviers de largeur et de cadence qui le gardent sous une
+      limite de taille.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Trois pages pour un effet, c'est voulu &mdash; chaque outil fait un
+      travail, et chaque page peut prouver seule que vos images ne quittent
+      jamais la machine. Mais les trois sont libres&nbsp;: licence MIT, un
+      dossier par outil, des modules ES sans dépendances sous
+      <code>src/</code>, avec des README qui les expliquent.
+    </p>
+    <p>
+      Si les boomerangs font régulièrement partie de votre travail, pointez un
+      agent de code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui de plier la marche des images de l'inverseur et la
+      jonction du découpeur en une page à un seul bouton. Les modules ont été
+      écrits pour être lus, et les emporter est exactement ce à quoi sert la
+      licence.
+    </p>
+  </section>

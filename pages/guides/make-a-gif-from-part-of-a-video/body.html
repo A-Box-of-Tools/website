@@ -1,0 +1,140 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      For one continuous moment, open the
+      <a href="../../video-to-gif/">Video to GIF</a> converter, drop the video
+      in, and mark the section on its timeline &mdash; it converts only what
+      sits between the marks, so there is nothing to cut in advance. Pick a
+      width and a frame rate, and export.
+    </p>
+    <p>
+      For anything more than one moment &mdash; two goals from the same match,
+      the setup and the punchline &mdash; assemble the clip first with the
+      <a href="../../trim-video/">Video Cutter</a>, then hand the result to the
+      converter. The cutter joins any number of marked parts into one file
+      without re-encoding them, so that first step costs nothing in quality
+      and a few seconds in time.
+    </p>
+    <p>
+      Either way the order is the same: decide the seconds first, spend the
+      settings second. The rest of this page is why that order matters so much
+      more for a GIF than for anything else this site makes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why every second of GIF is so expensive</h2>
+    <p>
+      A GIF is not video. It is a stack of complete pictures, each drawn from a
+      palette of at most 256 colours, compressed with a scheme from 1987 that
+      knows nothing about motion. A modern codec describes what <em>changed</em>
+      between frames; a GIF largely repeats what stayed the same.
+    </p>
+    <p>
+      The practical consequence: a ten-second 480-pixel GIF at 12 frames a
+      second is routinely 5&nbsp;to 10&nbsp;MB &mdash; ten times the size of the
+      same clip as MP4, at a fraction of the quality. Nothing about the
+      converter is at fault; that is what the format is. The
+      <a href="../turn-a-video-into-a-gif/">GIF conversion guide</a> covers when
+      a GIF is still worth it, and when a muted looping video serves better.
+    </p>
+    <p>
+      Because size grows with every frame, the cheapest megabytes to save are
+      whole seconds. Halving the width roughly quarters the size; halving the
+      frame rate roughly halves it; but cutting footage that should never have
+      been there saves its full cost and improves the result &mdash; a GIF that
+      starts at the action reads better than one that spends two seconds
+      walking to it.
+    </p>
+  </section>
+
+  <section>
+    <h2>When the converter's own timeline is enough</h2>
+    <p>
+      The converter's timeline marks one section: a start, an end, and
+      everything between them becomes the GIF. If the moment you want is
+      continuous &mdash; however long &mdash; that is the whole job, and adding
+      the cutter to the front of it would only give the same two marks a second
+      home.
+    </p>
+    <p>
+      Set the marks a touch tight rather than a touch loose. A loop hides its
+      seam when the last frame sits close to the first, and every frame you
+      shave from either end is paid back in file size.
+    </p>
+  </section>
+
+  <section>
+    <h2>When to cut with the Video Cutter first</h2>
+    <p>
+      The cutter earns its place the moment the GIF needs more than one piece:
+    </p>
+    <ul>
+      <li>
+        <strong>Several moments, one GIF.</strong> Mark each part with
+        <kbd>I</kbd> and <kbd>O</kbd> as the video plays, reorder them if the
+        best bit belongs first, and export one file. The parts are copied,
+        not re-encoded, so nothing is lost in the assembly.
+      </li>
+      <li>
+        <strong>Two videos, one GIF.</strong> The cutter takes more than one
+        file and joins marked parts across them &mdash; it copies when the
+        files agree about their format and re-encodes when they do not, and it
+        says which it did.
+      </li>
+      <li>
+        <strong>You want the clip as a video too.</strong> The assembled MP4 is
+        worth keeping: it is smaller and sharper than any GIF made from it,
+        and the right thing to post anywhere that plays video.
+      </li>
+    </ul>
+    <p>
+      Then drop the assembled clip into the converter and mark nothing &mdash;
+      the whole file is now exactly the GIF you meant.
+    </p>
+  </section>
+
+  <section>
+    <h2>Spending the settings</h2>
+    <p>
+      With the seconds decided, three controls set the size, in order of how
+      much they cost:
+    </p>
+    <ul>
+      <li>
+        <strong>Width.</strong> The biggest lever. 480 pixels is plenty for a
+        chat or a forum post; 320 still reads clearly for screen recordings of
+        text-free action. Size falls with the square of the width.
+      </li>
+      <li>
+        <strong>Frame rate.</strong> 10 to 12 frames a second is where most
+        GIFs live; motion still reads, and the file halves against 25. Below 8
+        it starts to look like a slideshow.
+      </li>
+      <li>
+        <strong>Dithering.</strong> With 256 colours, smooth gradients band.
+        Ordered dithering trades that banding for a fine pattern; it usually
+        looks better and compresses slightly worse. Try the export both ways
+        &mdash; it is your machine doing the work, so a second attempt costs
+        nothing and uploads nothing.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>If you do this every week</h2>
+    <p>
+      The two steps live on two pages here on purpose &mdash; each page does
+      one job, and each can prove on its own that nothing leaves your machine.
+      But everything both pages run is open source: MIT-licensed, one folder
+      per tool, dependency-free ES modules with a README that names each one.
+    </p>
+    <p>
+      So if the same chain is part of your week, you do not have to keep
+      walking it by hand. Point a coding agent at the
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a> and
+      ask it to compose the cutter's segment logic and the GIF encoder into a
+      single page shaped for your exact case. The modules were written to be
+      read, and lifting them is what the licence is for.
+    </p>
+  </section>

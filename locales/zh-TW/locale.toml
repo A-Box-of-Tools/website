@@ -126,6 +126,11 @@ name = "把工作做完"
 note = "一個工具一篇：這件事要做什麼，哪個設定真管用，代價又是什麼。"
 
 [[guides.groups]]
+id = "workflows"
+name = "工具接力"
+note = "要接連用上兩三個工具的工作：按什麼順序用，順序又為什麼要緊。"
+
+[[guides.groups]]
 id = "before-you-upload"
 name = "上傳之前"
 note = "把檔案交給一個網站，到底等於交出了什麼，以及這一步是不是非做不可。"

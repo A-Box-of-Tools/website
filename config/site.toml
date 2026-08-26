@@ -489,6 +489,18 @@ order = [
 ]
 
 [[guides.groups]]
+id = "workflows"
+name = "Chaining the tools"
+note = "Jobs that take two or three tools in a row - which order to run them in, and why the order matters."
+order = [
+  "make-a-gif-from-part-of-a-video",
+  "make-a-boomerang-video",
+  "scan-multiple-pages-into-one-pdf",
+  "get-photos-ready-for-the-web",
+  "compare-two-json-files",
+]
+
+[[guides.groups]]
 id = "before-you-upload"
 name = "Before you upload anything"
 note = "What handing a file to a website actually does, and how to tell whether it had to happen."

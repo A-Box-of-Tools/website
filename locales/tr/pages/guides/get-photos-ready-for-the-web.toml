@@ -1,0 +1,21 @@
+#
+# Rehber: fotoğrafları web için hazırlama - Türkçe.
+#
+
+nav = "Web'e hazır fotoğraflar"
+title = "Telefon Fotoğraflarını Web İçin Hazırlama &mdash; Biçim, Boyut, Gizlilik, Yüklemesiz"
+description = "HEIC'ten JPEG'e, GPS temizlenmiş, sayfa için boyutlanmış ve bir bütçeye sıkıştırılmış: bütün zincir tarayıcıda ve asıllar makinenizden hiç çıkmıyor."
+
+heading = "Telefon fotoğrafları web için nasıl hazırlanır"
+lede = """
+    Bir telefon fotoğrafı yanlış biçimdedir, gerekenden dört kat büyüktür ve
+    nerede oturduğunuzu bilir. Paylaşılır hale getirmek kısa bir zincirdir
+    &mdash; dönüştür, kadrajla, sıkıştır &mdash; ve her adım kendi
+    makinenizde çalışır; içinde GPS'iniz olan fotoğrafların ait olduğu yer de
+    tam orasıdır."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "Asılları yüklemeden, telefon fotoğraflarından paylaşılır fotoğraflara"
+og_description = "HEIC'ten JPEG'e, GPS gitti, sayfaya göre boyut, bütçeye göre sıkıştırma. Hangi araç hangi adımı yapar, hangi sırayla ve üstveri neden kendi kendini halleder."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

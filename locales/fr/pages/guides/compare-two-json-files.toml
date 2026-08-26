@@ -1,0 +1,23 @@
+#
+# Guide : comparer deux fichiers JSON - French.
+#
+
+nav = "Comparer deux fichiers JSON"
+title = "Comparer deux fichiers JSON &mdash; sans le bruit de mise en forme"
+description = "Formater les deux fichiers de la même façon, trier les clés, puis les comparer. Pourquoi un diff JSON brut n'est presque que du bruit, comment canoniser les deux côtés dans le navigateur, et ce qui survit jusqu'au correctif."
+
+heading = "Comment comparer deux fichiers JSON"
+lede = """
+    Comparez deux fichiers JSON tels quels et presque tout ce qui s'allume
+    n'est rien&nbsp;: indentation, retours à la ligne, clés dans un autre
+    ordre. Le remède n'est pas un diff plus malin &mdash; c'est de passer les
+    deux fichiers par le même formateur d'abord, pour qu'il ne reste que les
+    vraies différences. Les deux étapes tournent dans votre navigateur, qui
+    est là où doivent rester des fichiers de configuration avec des secrets
+    dedans."""
+
+updated = "26 août 2026"
+
+og_title = "Comparer deux fichiers JSON sans le bruit de mise en forme"
+og_description = "Canoniser les deux fichiers, même indentation, clés triées, puis les comparer. Ce qui s'allume ensuite est réel, et rien n'a été envoyé."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

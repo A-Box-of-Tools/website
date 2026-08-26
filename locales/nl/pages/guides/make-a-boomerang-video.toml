@@ -1,0 +1,20 @@
+#
+# Gids: een boomerangvideo maken - Dutch.
+#
+
+nav = "Een boomerang maken"
+title = "Een boomerangvideo maken &mdash; heen, terug, zonder uploaden"
+description = "Knip het moment, keer de kopie om, voeg de twee samen en laat het lussen. Drie tools op rij, allemaal in de browser, en de volgorde die het hele werk op een minuut houdt."
+
+heading = "Zo maak je een boomerangvideo"
+lede = """
+    Een boomerang is een clip die vooruit speelt, dan achteruit, en dat in
+    een lus. Geen tool hier heeft een boomerangknop; hij ontstaat uit drie
+    tools die elk hun ene klus doen &mdash; knippen, omkeren,
+    samenvoegen &mdash; en de hele keten draait op je eigen machine."""
+
+updated = "26 augustus 2026"
+
+og_title = "Maak een boomerangvideo zonder hem ergens te uploaden"
+og_description = "Knip het moment, keer de kopie om, voeg de twee samen. Waarom die volgorde, wat het geluid moet doen, en wanneer de lus een GIF wil zijn."
+og_image_alt = "abox.tools - tools die nooit een server aanraken"
