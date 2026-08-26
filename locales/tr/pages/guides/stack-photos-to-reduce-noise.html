@@ -1,0 +1,285 @@
+  <section>
+    <h2>Kısa yanıt</h2>
+    <p>
+      <a href="../../goruntu-istifleme/">Görüntü istifleyiciyi</a> açın, serinin
+      tamamını içine bırakın ve neden kurtulmak istediğinize göre yöntemi seçin:
+    </p>
+    <ul>
+      <li><strong>Gürültü</strong> ve hiçbir şey kımıldamadıysa &mdash; ortalama.</li>
+      <li><strong>Gürültü</strong> ve bir şey kımıldadıysa &mdash; sigma kırpma.</li>
+      <li><strong>İnsanlar, arabalar, bir uçak</strong> &mdash; medyan.</li>
+      <li><strong>Yıldız izine dönüşmesini istediğiniz karanlık bir gökyüzü</strong> &mdash; açma.</li>
+      <li><strong>Neredeyse hiç alan derinliği olmayan bir makro çekim</strong> &mdash; odak istifleme.</li>
+    </ul>
+    <p>
+      Makine elinizdeyse hizalamayı açık bırakın, tripottaysa kapatın. RAW dosyaları
+      doğrudan girebilir; önce geliştirmeye gerek yoktur.
+    </p>
+    <p>
+      Aşağıdaki her şey, o beş satırın neden öyle olduğunu anlatıyor.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir seri neden tek bir kareden fazlasını taşır</h2>
+    <p>
+      Zayıf ışıkta çekilmiş bir fotoğraf, görüntü artı gürültüdür ve gürültü her
+      seferinde başkadır. İstiflemeyi işe yaratan da işte bu son kısımdır. Aynı
+      çekimi on altı kez yapın: görüntü on altısında da aynıdır, gürültü ise değil;
+      dolayısıyla ortalamalarını almak görüntüyü bırakır ve gürültünün çoğunu
+      söndürür.
+    </p>
+    <p>
+      İyileşme, kare sayısının kareköküdür. Dört kare gürültüyü yarıya indirir. On
+      altı kare dörtte bire. Yüz kare onda bire. Üstünde bulunmak için zalim bir
+      eğridir bu &mdash; on altı kareden altmış dört kareye çıkmak aynı iyileşmeyi
+      bir kez daha satın alır, dört katı çekim karşılığında &mdash; ve neredeyse her
+      pratik istifin sekiz ile otuz kare arasında olmasının nedeni de budur.
+    </p>
+    <p>
+      İkinci ve daha sessiz bir kazanç daha var. Sekiz bitlik on altı karenin
+      ortalaması, herhangi birinde olduğundan daha ince geçişler taşıyan bir sonuç
+      verir, çünkü her karenin yuvarlanmasını farklı kılan gürültünün ta kendisi,
+      ortalamanın iki basamak arasına oturmasını sağlar. Gürültülü bir kümeyi
+      istiflemek yalnızca gürültüyü kaldırmaz; tek bir karenin nicemleyerek yitirdiği
+      tonu da geri getirir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Yöntemi seçen soru</h2>
+    <p>
+      Soru "neyi saklamak istiyorum" değil, <strong>kareler arasında neyin farklı
+      olduğu</strong>. Geri kalan her şey bundan çıkar.
+    </p>
+
+    <h3>Hiçbir şey kımıldamadı: ortalama</h3>
+    <p>
+      Düpedüz aritmetik ortalama. Kareler arasındaki tek farkın gürültü olduğu bir
+      kümede elde edilebilecek en etkili gürültü azaltmadır ve bozulması da en
+      kolayıdır: içinde bir kuş olan tek bir kare, istifin tamamına soluk bir kuş
+      koyar, çünkü ortalamanın, diğerleriyle uyuşmayan bir değer hakkında bir görüşü
+      yoktur. Onu da hesaba katar, o kadar.
+    </p>
+
+    <h3>Kareyi bir şey kesip geçti: medyan</h3>
+    <p>
+      Kalabalık bir meydanın on iki fotoğrafını üst üste getirin ve tek bir piksele
+      bakın. Çoğunda o piksel kaldırım taşıdır; birinde ikisinde birinin paltosu.
+      Bu on iki değeri sıralayıp ortadakini alın, kaldırım taşını elde edersiniz,
+      çünkü palto hiçbir zaman çoğunlukta olmadı.
+    </p>
+    <p>
+      Bunu her piksel için yapın, meydan boş çıkar. "Tatil fotoğrafınızdan turistleri
+      kaldırın" tarzı her yazının arkasındaki numara budur ve bir seri çekim ile
+      sabırdan daha zekice bir şey gerektirmez. Tek dayattığı şey, <strong>sahnenin
+      hiçbir parçasının zamanın yarısından fazlasında dolu olmaması</strong>dır. On
+      iki karenizin sekizinde kımıldamadan duran biri, o piksellerde çoğunluktur ve
+      medyan onu saklar.
+    </p>
+
+    <h3>İkisi birden: sigma kırpma</h3>
+    <p>
+      Medyan, sağlamlığını kazanmak için bilginin çoğunu atar &mdash; her pikselde
+      on iki değerinizden on biri atılır &mdash; dolayısıyla gürültüyü, aynı kümenin
+      ortalamasının indireceğinden çok daha az indirir.
+    </p>
+    <p>
+      Sigma kırpma bu uzlaşmadır ve gerçek dünyadan gelen herhangi bir küme için
+      genellikle doğru varsayılandır. Her piksele bütün kareler boyunca bakar, onun
+      genelde ne olduğunu ve ne kadar değiştiğini çıkarır, sonra yalnızca bununla
+      uyuşan değerlerin ortalamasını alır. Bir kareyi kesip geçen bir araba o
+      piksellerde dışarıda bırakılır; diğer her kare ise her yerde saymaya devam
+      eder. Böylece medyanın kımıldayan şeylere karşı bağışıklığını ve ortalamanın
+      gürültü azaltmasının çoğunu birlikte elde edersiniz.
+    </p>
+    <p>
+      Eşik standart sapma cinsindendir ve iki, alışılmış başlangıç noktasıdır. Daha
+      düşüğü daha çok eler ve arabayla birlikte gerçek ayrıntıyı da elemeye başlar.
+    </p>
+
+    <h3>Yalnızca parlak şeyler önemli: açma</h3>
+    <p>
+      Her pikselin ulaştığı en parlak değeri saklayın. Gece gökyüzünü otuz saniyelik
+      iki yüz pozlama olarak çekin ve bunları açarak birleştirin: her yıldız sonuç
+      üzerinde kendi yayını çizer &mdash; tek tek hiçbiri yanmamış kısa pozlamalardan
+      kurulmuş bir yıldız izi. Aynı yöntem bir havai fişeği kendi patlamasının
+      karelerinden kurar, karanlık bir odada elde fenerle yürümeyi de bir ışık
+      resmine çevirir.
+    </p>
+    <p>
+      Karşıtı olan koyulaştırma, bu ikilinin sessiz olanıdır: bir piksel yalnızca
+      <em>her</em> karede parlaksa parlak kalır, dolayısıyla camdaki yansımalar,
+      geçen farlar ve flaşın aydınlattığı yağmur damlaları yok olur.
+    </p>
+
+    <h3>Özne odaktan daha derin: odak istifleme</h3>
+    <p>
+      f/8'de bir makro çekimde belki bir milimetre odaktadır ve bu bir böcek için
+      yetmez. Yanıt, odak halkası boyunca yirmi kare çekmek ve her birinden yalnızca
+      o karede net olan bölümü saklamaktır. Araç, her pikselin komşularından ne kadar
+      farklı olduğunu ölçer &mdash; bir kenarda büyük, bir bulanıklıkta sıfıra yakın
+      &mdash; ve kazananı alır.
+    </p>
+    <p>
+      Bu yöntem tripodu diğerlerinin hepsinden çok ister, çünkü odak halkasını elle
+      çevirmek makineyi oynatır ve azıcık daha uzaktan çekilmiş bir kare, aynı
+      görüntünün başka bir odaktaki hâli değildir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kareleri hizalamak</h2>
+    <p>
+      İstifleme piksel başına aritmetiktir, dolayısıyla belirli bir pikselin her
+      karede sahnenin aynı parçası olduğunu varsayar. Elde tutulduğunda öyle
+      değildir: bir seri onlarca piksel kayar ve bunun ortalamasını almak temiz bir
+      görüntü yerine bir bulanıklık üretir. İstiflemedeki ilk denemenin hayal
+      kırıklığı yaratmasının en yaygın nedeni budur.
+    </p>
+    <p>
+      Bu yüzden kareler önce içlerinden birine göre ölçülür ve yerlerine geri
+      taşınır, bir pikselin kesirine varan hassasiyetle. Üç ayar vardır:
+    </p>
+    <ul>
+      <li>
+        <strong>Yalnızca kaydırma</strong> elde tutulan hemen her şey için doğrudur.
+        Kaymayı ve titremeyi düzeltir.
+      </li>
+      <li>
+        <strong>Kaydırma, döndürme ve ölçekleme</strong>, hafifçe de dönmekte
+        olduğunuz ya da yakınlaştırmanın sinsice kaydığı bir küme için. Kare başına
+        bir ölçüm fazladan maliyeti vardır ve kareler düz çıkarsa hiçbir maliyeti
+        olmaz.
+      </li>
+      <li>
+        <strong>Hiçbiri</strong>, sabitlenmiş bir tripod ya da aralıklı bir dizi
+        için; kareler zaten hizalıdır ve onları ölçmek boşa geçen zamandır.
+      </li>
+    </ul>
+    <p>
+      Hiçbir hizalamanın düzeltemeyeceği şey, kımıldamış bir makine yerine kımıldamış
+      bir öznedir; bir adım soldan çekilmiş bir fotoğrafı da düzeltemez. Yana
+      hareket etmek, yakındaki şeylerin uzaktakilere göre ne kadar kaydığını
+      değiştirir ve tek bir düzeltme ikisini birden anlatmaz. Olduğunuz yerde dönmek
+      sorun değil; yürümek sorundur.
+    </p>
+  </section>
+
+  <section>
+    <h2>RAW dosyaları bu işin neresinde</h2>
+    <p>
+      CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF ve gerisini doğrudan bırakabilirsiniz;
+      onlara ne olduğu konusunda kesin konuşmakta yarar var, çünkü bu, bir RAW
+      dönüştürücünün yaptığı şey değildir.
+    </p>
+    <p>
+      Her RAW dosyası, <strong>makinenin çekim anında oluşturduğu tam boyutlu bir
+      JPEG</strong>'i zaten içerir. Makinenin arkasında size gösterilen görüntü budur
+      ve işletim sisteminizin küçük resim olarak çizdiği de budur. İstifleyici o
+      görüntüyü bulur ve onu kullanır. Sensör verisini çözmez.
+    </p>
+    <p>
+      Bunun iki sonucu vardır; biri iyi, biri bilinmeye değer:
+    </p>
+    <ul>
+      <li>
+        <strong>Hızlıdır.</strong> Önizlemeyi bulmak birkaç kilobaytlık dizin okumak
+        ve sonra tek bir dilim almak demektir, dolayısıyla 60&nbsp;MB'lık bir kare
+        aşağı yukarı bir JPEG kadar hızlı açılır. Bir RAW dönüştürücünün tek bir
+        kareye harcayacağı sürede yirmi tanesi açılır. Sayfa, dosyalarınızın ne kadar
+        azını gerçekten okuduğunu size gösterir.
+      </li>
+      <li>
+        <strong>Bu, sizin değil makinenin yorumudur.</strong> Kanal başına sekiz bit,
+        makinenin ayarlı olduğu beyaz dengesi ve resim stiliyle &mdash; bir
+        dönüştürücüden alacağınız on iki ya da on dört bitlik doğrusal sensör verisi
+        değil.
+      </li>
+    </ul>
+    <p>
+      Gürültü azaltma, yıldız izleri, geçenleri kaldırma ve odak istifleme için bu
+      takas neredeyse her zaman kârlıdır: önizlemeler tam çözünürlüktedir ve zaten
+      JPEG olarak alacağınız görüntüdür. Gölgeleri sertçe kaldırıyorsanız ya da
+      dinamik aralığın son kırıntısının bütün mesele olduğu astrofotoğrafçılık için
+      istifliyorsanız, kareleri önce bir RAW dönüştürücüde geliştirin ve onun verdiği
+      TIFF ya da JPEG'leri istifleyin. Onlar da aynı şekilde girer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Çalıştırmanın maliyeti</h2>
+    <p>
+      Bilmeye değer, çünkü sekiz saniye süren bir istif ile iki dakika süren bir
+      istif arasındaki fark budur.
+    </p>
+    <p>
+      Yedi yöntemin altısının yalnızca tek bir şeyi hatırlaması gerekir. Yürüyen bir
+      maksimum, daha önce gördüğü kareleri umursamaz; yürüyen bir toplam da öyle. Bu
+      yüzden o yöntemler her kareyi tam olarak bir kez okur ve yüz kare için iki kare
+      kadar bellek kullanır.
+    </p>
+    <p>
+      Medyan böyle çalışamaz, çünkü bir kümenin ortadaki değeri, küme tamamlanmadan
+      bilinemez. Yirmi tane 24 megapiksel kare, aynı anda tutulan yaklaşık
+      1,4&nbsp;GB pikseldir ve bunu hiçbir tarayıcı size vermez; bu yüzden görüntü
+      yatay şeritlere kesilir ve şerit şerit istiflenir &mdash; doğru, ve daha yavaş,
+      çünkü kareler her şerit için yeniden okunur.
+    </p>
+    <p>
+      Araç bunların hepsini siz düğmeye basmadan hesaplar ve size söyler: sonucun ne
+      kadar büyük olacağını, kabaca ne kadar belleğe ihtiyaç duyduğunu ve karelerinizin
+      kaç kez çözüleceğini. Çalıştırmanın şeritli olacağını söylüyorsa, çalışma
+      çözünürlüğünü bir kademe düşürmek belleği dörde böler ve bunu neredeyse her
+      zaman tek geçişe döndürür &mdash; üstelik gürültüyü kaldırmak için
+      istifliyorsanız, yarım çözünürlük zaten tamdan daha temiz görünecekti.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bunun için çekmek</h2>
+    <p>
+      Bir istifin kalitesinin çoğu, herhangi bir yazılım onu görmeden önce belirlenir.
+    </p>
+    <ul>
+      <li>
+        <strong>İhtiyacınız olduğunu sandığınızdan fazla kare çekin.</strong> Karekök
+        eğrisi başta acımasız, sonda merhametlidir: dört kareden dokuza çıkmak, yirmi
+        kareden kırka çıkmaktan daha büyük bir görünür değişikliktir.
+      </li>
+      <li>
+        <strong>Kareler arasında pozlamayı değiştirmeyin.</strong> İstifleme,
+        karelerin aynı parlaklıkta aynı sahne olduğunu varsayar. Pozlamayı kilitleyin,
+        yoksa araç iki farklı görüntünün ortalamasını alıyor olur.
+      </li>
+      <li>
+        <strong>İnsanları kaldırmak için kareler arasında bekleyin.</strong> İki
+        saniyede çekilmiş bir seri, aynı kişiyi her karede aynı yerde yakalar ve
+        medyan onu saklar. Birkaç saniye arayla çekilmiş on kare, seri hâlinde çekilmiş
+        elli kareden çok daha iyi iş görür.
+      </li>
+      <li>
+        <strong>Yıldız izleri için araları kısa tutun.</strong> Açma, karelerin tam
+        olarak neyi kaydettiğini çizer, dolayısıyla iki pozlama arasındaki duraklama
+        her izde görünür bir kesinti hâline gelir.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Bunların hiçbiri makinenizden ayrılmaz</h2>
+    <p>
+      Yirmi RAW kareden oluşan bir istif yaklaşık bir gigabayt fotoğraf eder ve
+      ortalamasının alınması için bunu bir web sitesine vermek epey fazladır.
+      <a href="../../goruntu-istifleme/">Görüntü istifleyici</a> dosyaları kendi
+      diskinizden okur ve aritmetiği kendi tarayıcınızda yapar. Yükleme adımı yok,
+      hesap yok, kuyruk yok; ve bu iddiayı herkesinkini kontrol edeceğiniz gibi
+      kontrol edebilirsiniz: çalışırken tarayıcınızın ağ panelini açın ya da doğrudan
+      internet bağlantısını kesip yine de istifleyin.
+    </p>
+    <p>
+      İlgili soru &mdash; herhangi bir araç için, ona bir dosya vermenin gerekli olup
+      olmadığını nasıl anlarsınız &mdash;
+      <a href="../dosya-yuklemek-guvenli-mi/">kendi rehberine</a> sahiptir.
+    </p>
+  </section>
