@@ -233,6 +233,7 @@ base = "このサイトの主張はどれも、信じてもらうためではな
 [ui]
 languages = "言語"
 lang_auto = "ブラウザの言語設定が日本語なので、このページは日本語で表示しています。"
+skip_to_content = "本文へスキップ"
 breadcrumb = "パンくずリスト"
 all_tools = "すべてのツール"
 last_updated = "最終更新"

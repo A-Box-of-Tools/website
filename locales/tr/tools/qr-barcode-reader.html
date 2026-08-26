@@ -5,7 +5,7 @@
   {placeholder} below is what src/main.js reaches for, so they are the same in
   every language. Only the words change.
 -->
-<main>
+<main id="main">
   <!-- Adım 1 &mdash; resim nereden geliyor -->
   <section class="card">
     <h2><span class="step">1</span> Kodu gösterin</h2>
@@ -36,7 +36,7 @@
     <h2>Kamera</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="Önizleme"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -126,7 +126,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             Bu sayfanın örneklediği modüllerin geri çizilmiş hâli.
             Fotoğrafladığınız koda benziyorsa doğru şeyi okumuştur; parazite

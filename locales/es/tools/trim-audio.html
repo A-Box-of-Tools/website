@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Paso 1 &mdash; la grabación -->
   <section class="card">
     <h2><span class="step">1</span> Elige una grabación</h2>
@@ -101,7 +101,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Borrarlas todas</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">Cargar marcas&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Formato del archivo de tiempos">
           <option value="seconds" selected>segundos</option>
           <option value="HHMMSSmmm">HH:MM:SS.mmm</option>

@@ -366,6 +366,7 @@ base = "Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum 
 [ui]
 languages = "Sprache"
 lang_auto = "Diese Seite wird auf Deutsch angezeigt, weil Ihr Browser diese Sprache bevorzugt."
+skip_to_content = "Zum Inhalt springen"
 # "Navigationspfad", nicht "Brotkrumennavigation": das ist die Beschriftung, die
 # deutsche Screenreader-Nutzer an dieser Stelle gewohnt sind.
 breadcrumb = "Navigationspfad"

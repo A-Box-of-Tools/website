@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Step 1 &mdash; the recording -->
   <section class="card">
     <h2><span class="step">1</span> Choose a recording</h2>
@@ -100,7 +100,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Clear them all</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">Load marks&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Timestamp file format">
           <option value="seconds" selected>seconds</option>
           <option value="HHMMSSmmm">HH:MM:SS.mmm</option>

@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Schritt 1 &mdash; das Video -->
   <section class="card">
     <h2><span class="step">1</span> Ein Video auswählen</h2>
@@ -37,8 +37,8 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline></video>
-        <canvas id="still" hidden></canvas>
+        <video id="preview" playsinline aria-label="Vorschau"></video>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
 
@@ -105,7 +105,7 @@
         <button type="button" id="reset-segments" class="ghost danger">Alle löschen</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">Markierungen laden&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="Format der Zeitstempeldatei">
           <option value="seconds" selected>Sekunden</option>
           <option value="HHMMSSmmm">HH:MM:SS.mmm</option>

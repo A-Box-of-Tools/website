@@ -5,7 +5,7 @@
   below is what the JavaScript reaches for, so they are the same in every
   language. Only the words change.
 -->
-<main>
+<main id="main">
   <!-- कदम 1 &mdash; तस्वीरें -->
   <section class="card">
     <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
@@ -56,7 +56,7 @@
            in percentages, so it needs no redraw when the window changes. -->
       <div class="stage-wrap">
         <div class="stage" id="stage">
-          <canvas id="photo"></canvas>
+          <canvas id="photo" role="img" aria-label="पूर्वावलोकन"></canvas>
         </div>
       </div>
 
@@ -89,7 +89,7 @@
       </p>
 
       <div class="result-wrap">
-        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <canvas id="scan-preview" class="scan-preview" role="img" aria-label="पूर्वावलोकन"></canvas>
         <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
           सीधा किया जा रहा है&hellip;
         </p>

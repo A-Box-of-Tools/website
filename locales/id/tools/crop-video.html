@@ -5,7 +5,7 @@
   src/cropper.js reach for, so they are the same in every language. Only the
   words change.
 -->
-<main>
+<main id="main">
   <!-- Langkah 1 &mdash; file -->
   <section class="card">
     <h2><span class="step">1</span> Pilih sebuah video</h2>
@@ -47,7 +47,7 @@
     <div class="stage-wrap">
       <div class="stage" id="stage">
         <video id="preview" playsinline controls></video>
-        <canvas id="still" hidden></canvas>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
 

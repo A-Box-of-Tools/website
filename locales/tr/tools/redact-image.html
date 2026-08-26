@@ -4,7 +4,7 @@
   Every id, class and option value below is what src/main.js reaches for, so
   they are the same in every language. Only the words change.
 -->
-<main>
+<main id="main">
   <!-- Adım 1 &mdash; resim -->
   <section class="card">
     <h2><span class="step">1</span> Görseli seçin</h2>
@@ -47,7 +47,7 @@
            outlines and handles only; src/stage.js adds them. -->
       <div class="stage-wrap">
         <div class="stage" id="stage">
-          <canvas id="preview"></canvas>
+          <canvas id="preview" role="img" aria-label="Önizleme"></canvas>
         </div>
       </div>
 

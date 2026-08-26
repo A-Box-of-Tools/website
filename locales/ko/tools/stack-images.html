@@ -6,7 +6,7 @@
   the words change. The #faq-raw anchor is a link target from the note in step
   one, so it stays as it is.
 -->
-<main>
+<main id="main">
   <!-- 1단계 &mdash; 프레임 -->
   <section class="card">
     <h2><span class="step">1</span> 프레임 고르기</h2>
@@ -116,6 +116,7 @@
           <option value="jpeg">JPEG &mdash; 더 작은 파일</option>
         </select>
         <div id="quality-row" class="inline-pair" hidden>
+          <label for="quality" class="visually-hidden">품질</label>
           <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
           <output id="quality-value" for="quality">92</output>
         </div>

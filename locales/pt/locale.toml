@@ -312,6 +312,7 @@ base = "Toda afirmação deste site é para ser conferida, não para ser aceita 
 [ui]
 languages = "Idioma"
 lang_auto = "Esta página está em português porque é o idioma que o navegador pede."
+skip_to_content = "Ir para o conteúdo"
 breadcrumb = "Trilha de navegação"
 all_tools = "Todas as ferramentas"
 last_updated = "Última atualização"

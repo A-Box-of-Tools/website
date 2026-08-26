@@ -5,7 +5,7 @@
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
 -->
-<main>
+<main id="main">
   <!-- 第 1 步，选视频 -->
   <section class="card">
     <h2><span class="step">1</span> 选一段视频</h2>
@@ -39,8 +39,8 @@
 
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline></video>
-        <canvas id="still" hidden></canvas>
+        <video id="preview" playsinline aria-label="预览"></video>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
 
@@ -106,7 +106,7 @@
         <button type="button" id="reset-segments" class="ghost danger">全部清掉</button>
         <span class="segment-actions-spacer"></span>
         <button type="button" id="import-marks" class="ghost">载入标记&hellip;</button>
-        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden">
+        <input type="file" id="marks-input" accept=".txt,text/plain" class="visually-hidden" aria-labelledby="import-marks">
         <select id="marks-format" aria-label="时间戳文件格式">
           <option value="seconds" selected>秒数</option>
           <option value="HHMMSSmmm">HH:MM:SS.mmm</option>

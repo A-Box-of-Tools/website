@@ -209,6 +209,7 @@ base = "本站說的每一句話，都是寫來給你核對的，不是寫來讓
 [ui]
 languages = "語言"
 lang_auto = "你的瀏覽器要的是繁體中文，所以這個頁面按繁體中文顯示。"
+skip_to_content = "跳至主要內容"
 breadcrumb = "麵包屑導覽"
 all_tools = "全部工具"
 last_updated = "最後更新"

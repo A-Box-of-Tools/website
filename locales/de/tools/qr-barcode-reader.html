@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Schritt 1 &mdash; woher das Bild kommt -->
   <section class="card">
     <h2><span class="step">1</span> Zeigen Sie ihm den Code</h2>
@@ -31,7 +31,7 @@
     <h2>Die Kamera</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="Vorschau"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -120,7 +120,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             Die Module, die diese Seite abgetastet hat, zurückgezeichnet. Sieht
             das aus wie der Code, den Sie fotografiert haben, dann wurde das

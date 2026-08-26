@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- ステップ1 &mdash; ファイル -->
   <section class="card">
     <h2><span class="step">1</span> 動画を選ぶ</h2>
@@ -37,8 +37,8 @@
          and for the files this browser can play but this reader cannot open. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline></video>
-        <canvas id="still" hidden></canvas>
+        <video id="preview" playsinline aria-label="プレビュー"></video>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
         <p class="stage-busy" id="stage-busy" hidden>展開中&hellip;</p>
       </div>
     </div>

@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- Stap 1 &mdash; waar de afbeelding vandaan komt -->
   <section class="card">
     <h2><span class="step">1</span> Laat hem de code zien</h2>
@@ -31,7 +31,7 @@
     <h2>De camera</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="Voorbeeld"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -121,7 +121,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             De modules die deze pagina bemonsterd heeft, teruggetekend. Lijkt dit
             op de code die je gefotografeerd hebt, dan is het juiste gelezen;

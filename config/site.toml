@@ -526,6 +526,12 @@ languages = "Language"
 # other language's own name, taken from the switcher rather than written here.
 lang_auto = "This page is shown in English, the language your browser asks for."
 
+# The first focusable thing on every page. A keyboard or screen-reader visitor
+# otherwise crosses the breadcrumb, the header and the whole pledge before
+# reaching the tool they came for - on every page, every visit. Invisible until
+# it is focused; sighted mouse users never see it.
+skip_to_content = "Skip to content"
+
 breadcrumb = "Breadcrumb"
 all_tools = "All tools"
 last_updated = "Last updated"

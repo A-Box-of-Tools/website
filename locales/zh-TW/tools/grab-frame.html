@@ -1,4 +1,4 @@
-<main>
+<main id="main">
   <!-- 第一步 &mdash; 檔案 -->
   <section class="card">
     <h2><span class="step">1</span> 選一個影片</h2>
@@ -38,8 +38,8 @@
          and for the files this browser can play but this reader cannot open. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline></video>
-        <canvas id="still" hidden></canvas>
+        <video id="preview" playsinline aria-label="預覽"></video>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
         <p class="stage-busy" id="stage-busy" hidden>正在解碼&hellip;</p>
       </div>
     </div>

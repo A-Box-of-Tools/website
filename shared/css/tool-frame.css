@@ -388,6 +388,32 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   outline: none;
 }
 
+/* The skip link: the first focusable thing on every page, parked off-screen
+   until the keyboard reaches it. Off-screen rather than clipped like
+   .visually-hidden below, because this one has to come BACK - a clipped box
+   cannot be un-clipped into something readable, but a moved one can simply be
+   put down where it belongs. Logical properties, so it appears at the right
+   end of an RTL page. The same rule twice, here and in shared/site.css - see
+   the notice there. */
+.skip-link {
+  position: absolute;
+  inset-block-start: -100vh;
+  inset-inline-start: 0.75rem;
+  z-index: 10;
+  padding: 0.6rem 1rem;
+  background: var(--surface);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  inset-block-start: 0.75rem;
+}
+
 /* The file input must stay in the layout — a display:none input cannot reliably
    open the picker, and could not be focused by keyboard. This hides it visually
    while leaving it functional. */

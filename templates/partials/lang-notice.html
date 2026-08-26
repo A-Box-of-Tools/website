@@ -13,7 +13,13 @@
   the switcher at the bottom of this same page, so there is one list of
   languages on the page and not two.
 -->
-{% if languages %}<div class="lang-auto" id="lang-auto" hidden>
+<!--
+  role="status", so that unhiding it is also announcing it. The reader this
+  line exists for most is the one who cannot see that the page changed under
+  them; without the role, the redirect it explains stays as silent for a screen
+  reader as it was before the line existed.
+-->
+{% if languages %}<div class="lang-auto" id="lang-auto" role="status" hidden>
   <p>
 {{ ui.lang_auto }}
     <a class="lang-auto-back" href="{{ base }}"></a>

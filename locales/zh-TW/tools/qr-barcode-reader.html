@@ -5,7 +5,7 @@
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
 -->
-<main>
+<main id="main">
   <!-- 第 1 步，圖片從哪裡來 -->
   <section class="card">
     <h2><span class="step">1</span> 把碼給它看</h2>
@@ -33,7 +33,7 @@
     <h2>鏡頭</h2>
 
     <div class="viewfinder">
-      <video id="video" playsinline muted disablepictureinpicture></video>
+      <video id="video" playsinline muted disablepictureinpicture aria-label="預覽"></video>
       <div class="reticle" aria-hidden="true"></div>
     </div>
 
@@ -113,7 +113,7 @@
         </dl>
 
         <figure class="grid-figure" hidden>
-          <canvas class="grid" width="1" height="1"></canvas>
+          <canvas class="grid" width="1" height="1" aria-hidden="true"></canvas>
           <figcaption>
             這一頁採到的那些模組，重新畫了回去。如果它看起來就是你拍的那個碼，說明讀對了東西；如果它看起來像雪花點，那就沒讀對，上面那個答案也信不得。
           </figcaption>

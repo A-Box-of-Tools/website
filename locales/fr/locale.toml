@@ -335,6 +335,7 @@ base = "Chaque affirmation de ce site est faite pour être vérifiée, pas pour 
 [ui]
 languages = "Langue"
 lang_auto = "Cette page s'affiche en français parce que c'est la langue demandée par votre navigateur."
+skip_to_content = "Aller au contenu"
 breadcrumb = "Fil d'Ariane"
 all_tools = "Tous les outils"
 last_updated = "Dernière mise à jour"

@@ -61,6 +61,12 @@
 </head>
 <body>
 
+<!--
+  The first focusable thing on the page, and invisible until it is: the way a
+  keyboard or screen-reader visitor gets past the header without walking it.
+-->
+<a class="skip-link" href="#main">{{ ui.skip_to_content }}</a>
+
 {% include "partials/lang-notice.html" %}
 
 <header class="hub-head">
@@ -78,7 +84,7 @@
   </p>
 </header>
 
-<main>
+<main id="main">
   <!--
     The tools, drawn from the same list the hub is built from. Somebody who
     landed here was looking for one of them, and a list of the things that do

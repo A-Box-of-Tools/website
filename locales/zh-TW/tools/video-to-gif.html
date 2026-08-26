@@ -5,7 +5,7 @@
   text collapses to a space in HTML, and a space between two Han characters is
   visible on the page.
 -->
-<main>
+<main id="main">
   <!-- 第 1 步，選檔案 -->
   <section class="card">
     <h2><span class="step">1</span> 選一段影片</h2>
@@ -41,7 +41,7 @@
     <div class="stage-wrap">
       <div class="stage" id="stage">
         <video id="preview" playsinline controls></video>
-        <canvas id="still" hidden></canvas>
+        <canvas id="still" hidden aria-hidden="true"></canvas>
       </div>
     </div>
 
