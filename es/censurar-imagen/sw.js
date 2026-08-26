@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/censurar-imagen/:';
-const CACHE_NAME=CACHE_PREFIX+'7361a892e5';
+const CACHE_NAME=CACHE_PREFIX+'99c3f3516c';
 const ASSETS=[
 './',
 'index.html',

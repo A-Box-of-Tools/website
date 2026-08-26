@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/pdf-birlestirme/:';
-const CACHE_NAME=CACHE_PREFIX+'d50321db5c';
+const CACHE_NAME=CACHE_PREFIX+'a929d5a727';
 const ASSETS=[
 './',
 'index.html',

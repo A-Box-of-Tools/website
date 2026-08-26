@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/impilare-immagini/:';
-const CACHE_NAME=CACHE_PREFIX+'8ff7e3c8b7';
+const CACHE_NAME=CACHE_PREFIX+'dc749a983e';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bild-schwaerzen/:';
-const CACHE_NAME=CACHE_PREFIX+'3cf8e3fb1c';
+const CACHE_NAME=CACHE_PREFIX+'0156c137ba';
 const ASSETS=[
 './',
 'index.html',

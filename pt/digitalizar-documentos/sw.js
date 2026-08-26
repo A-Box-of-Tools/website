@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/digitalizar-documentos/:';
-const CACHE_NAME=CACHE_PREFIX+'8fc43d2b02';
+const CACHE_NAME=CACHE_PREFIX+'fd65fc2c0d';
 const ASSETS=[
 './',
 'index.html',

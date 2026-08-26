@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/pruefsumme-berechnen/:';
-const CACHE_NAME=CACHE_PREFIX+'09069d2495';
+const CACHE_NAME=CACHE_PREFIX+'b0d18bd67b';
 const ASSETS=[
 './',
 'index.html',
