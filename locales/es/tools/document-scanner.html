@@ -1,0 +1,380 @@
+<!--
+  tools/document-scanner/body.html, in Spanish.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- Paso 1 &mdash; las fotos -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige las fotos</h2>
+
+    <p class="card-lede">
+      Una foto de cada hoja, tomada desde cualquier punto por encima. La hoja
+      entera tiene que estar en el encuadre, y conviene que las cuatro esquinas
+      se vean o casi; todo lo demás, el ángulo, la sombra, la mesa sobre la que
+      está, es para lo que existe esta herramienta. Añade varias y se convierten
+      en las páginas de un documento, en el orden en que las añadas.
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">Volver a buscar en todas</button>
+        <button type="button" id="clear-all" class="ghost danger">Quitar todas</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- Paso 2 &mdash; las esquinas -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> Pon las esquinas sobre la hoja</h2>
+
+    <p id="edit-empty" class="field-summary">
+      Elige una foto y aparecerá aquí, con sus cuatro esquinas ya encontradas.
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        Pulsa en cualquier punto de la foto y la esquina más cercana viene a tu
+        dedo; arrástrala hasta la esquina de la hoja. Con <kbd>Tab</kbd> llegas a
+        una esquina desde el teclado, las flechas la mueven un píxel y
+        <kbd>Shift</kbd> diez. Nada de esto es definitivo: el escaneo se toma de
+        donde acaben las cuatro esquinas.
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">Volver a buscar las esquinas</button>
+        <button type="button" id="whole-photo" class="ghost">Usar la foto entera</button>
+        <button type="button" id="turn-left" class="ghost">Girar a la izquierda</button>
+        <button type="button" id="turn-right" class="ghost">Girar a la derecha</button>
+        <button type="button" id="undo" class="ghost" disabled>Deshacer</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Paso 3 &mdash; la limpieza -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> Límpiala</h2>
+
+    <p id="clean-empty" class="field-summary">
+      La hoja enderezada aparece aquí en cuanto haya una foto que enderezar.
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        Lo de abajo es el resultado real, producido por el mismo código que
+        escribe el archivo: enderezado y con la luz desigual ya dividida. En
+        pantalla se dibuja al tamaño de la pantalla mientras eliges; el archivo
+        se hace a la resolución de la propia foto.
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          Enderezando&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>Qué hacer con la luz y con el color</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>Color, igualado</strong>
+            <span class="check-note">
+              El papel se mide a lo largo de la hoja y se divide, así que la
+              sombra desaparece y el papel vuelve a ser blanco, mientras que un
+              sello, una firma en tinta azul o una línea subrayada conservan el
+              color que tenían. Es el que hay que usar cuando el color forma
+              parte del documento.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>Escala de grises</strong>
+            <span class="check-note">
+              El mismo igualado, sin el color. Más pequeño que el color y más
+              amable con una fotografía o una firma de lo que es el blanco y
+              negro.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>Blanco y negro</strong>
+            <span class="check-note">
+              Cada píxel se decide contra su propio entorno en vez de contra un
+              número único para toda la hoja, y eso es lo que mantiene legible la
+              escritura que cae en una sombra. Es lo que hace pequeño un escaneo:
+              un contrato de veinte páginas sale así por debajo del megabyte, y
+              como fotografías ronda los quince. No tiene medios tonos, así que
+              nada con una fotografía debería usarlo.
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>Dejarla como está</strong>
+            <span class="check-note">
+              Enderezada y nada más. Para una hoja en la que importa el propio
+              papel: algo antiguo, algo de color, una fotografía.
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">Con cuánta fuerza</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        El ajuste vale para todas las páginas. Unas páginas limpiadas de forma
+        distinta dentro de un mismo documento parecen dos documentos.
+      </p>
+    </div>
+  </section>
+
+  <!-- Paso 4 &mdash; el archivo -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> Guarda el documento</h2>
+
+    <p class="card-lede">
+      El PDF se escribe aquí, en la memoria de esta página, página a página. Al
+      otro lado de esta herramienta no hay ningún servidor al que mandar una
+      nómina, un pasaporte o un contrato, ni código que lo enviaría si lo
+      hubiera.
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">Tamaño de página</label>
+        <select id="page-size">
+          <option value="fit" selected>Ajustar la hoja a la propia página</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Carta &mdash; 8,5 &times; 11 in</option>
+          <option value="legal">Oficio &mdash; 8,5 &times; 14 in</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">Resolución de impresión</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; escáner de oficina</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          De qué tamaño se dice que es una hoja hecha con un número dado de
+          píxeles. Cambia el tamaño al que se imprime el documento, y ni un solo
+          píxel del escaneo.
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">Margen</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="Margen en milímetros">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">Lado más largo</label>
+        <select id="max-side">
+          <option value="1600">1600 píxeles &mdash; pequeño</option>
+          <option value="2400" selected>2400 píxeles</option>
+          <option value="3500">3500 píxeles</option>
+          <option value="0">Todo lo grande que permita la foto</option>
+        </select>
+        <p class="field-note">
+          Un techo para la hoja enderezada. La foto de una hoja lleva muchos más
+          píxeles de los que la hoja vale, y 2400 en el lado largo son unos 200
+          DPI en A4.
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">Calidad</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          Para los modos color y escala de grises, que se guardan como JPEG. Las
+          páginas en blanco y negro se guardan de forma exacta, así que esto no
+          les hace nada.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">Título del documento <span class="optional">(opcional)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="En blanco, el PDF no lleva título">
+        <p class="field-note">
+          Lo único que se escribe en el documento además de las páginas. No hay
+          fecha, ni autor, ni nada sobre este equipo. Mira
+          <code>src/document.js</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>Guardar como PDF</button>
+      <button type="button" id="save-images" class="ghost big" disabled>Guardar las páginas como imágenes</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>El archivo terminado</h3>
+        <a id="download" class="primary as-button" href="#" download>Descargar</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        Ábrelo antes de mandarlo. Lo que hay en el documento es lo que había en
+        pantalla en el paso 3, página por página.
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">Se han encontrado las cuatro esquinas.
+      Compruébalas y arrastra las que hayan caído mal.</span>
+    <span data-phrase="detect.unsure">Los bordes de la hoja no estaban lo
+      bastante claros como para estar seguros. Estas esquinas son una suposición:
+      arrástralas sobre la hoja antes de seguir.</span>
+    <span data-phrase="detect.nothing">No se ha podido distinguir ninguna hoja en
+      esta foto, así que las esquinas están en sus bordes. Arrástralas sobre la
+      hoja.</span>
+    <span data-phrase="detect.flat">En esta imagen no hay nada que encontrar: no
+      tiene ni un borde.</span>
+    <span data-phrase="detect.tiny">Esta imagen es demasiado pequeña para
+      encontrar una hoja dentro.</span>
+    <span data-phrase="detect.edited">Estas esquinas ya son tuyas. &laquo;Volver
+      a buscar las esquinas&raquo; mide la foto otra vez desde cero.</span>
+
+    <span data-phrase="corner.tl">Esquina superior izquierda</span>
+    <span data-phrase="corner.tr">Esquina superior derecha</span>
+    <span data-phrase="corner.br">Esquina inferior derecha</span>
+    <span data-phrase="corner.bl">Esquina inferior izquierda</span>
+    <span data-phrase="corner.at">{corner}, a {x} de ancho y {y} de alto. Las
+      flechas la mueven, y Shift con ellas la mueve diez píxeles de una vez.</span>
+
+    <span data-phrase="page.select">Editar la página {index}</span>
+    <span data-phrase="page.remove">Quitar la página {index}</span>
+    <span data-phrase="page.earlier">Mover la página {index} antes</span>
+    <span data-phrase="page.later">Mover la página {index} después</span>
+    <span data-phrase="page.count">{count} página</span>
+    <span data-phrase="page.counts">{count} páginas</span>
+
+    <span data-phrase="paper.a">A4 o A5</span>
+    <span data-phrase="paper.letter">Carta de EE. UU.</span>
+    <span data-phrase="paper.legal">Oficio de EE. UU.</span>
+    <span data-phrase="paper.card">una tarjeta de visita</span>
+    <span data-phrase="shape.known">La hoja ha salido {ratio}, que es la forma de
+      {paper}.</span>
+    <span data-phrase="shape.sideways">La hoja ha salido {ratio}, que es la forma
+      de {paper} en horizontal.</span>
+    <span data-phrase="shape.unknown">La hoja ha salido {ratio}, que no es un
+      tamaño normalizado.</span>
+
+    <span data-phrase="method.perspective">La forma se ha deducido de la
+      perspectiva de la foto, así que es la forma de la hoja y no la que aparentaba
+      en la imagen.</span>
+    <span data-phrase="method.edges">La foto se tomó perpendicular, así que la
+      forma está medida directamente en los bordes.</span>
+
+    <span data-phrase="quality.good">{width} por {height} píxeles, unos {dpi} DPI
+      en una hoja de ese tamaño: suficiente para imprimir.</span>
+    <span data-phrase="quality.fair">{width} por {height} píxeles, unos {dpi} DPI
+      en una hoja de ese tamaño. Bien en pantalla, algo blando en papel.</span>
+    <span data-phrase="quality.low">{width} por {height} píxeles, unos {dpi} DPI
+      en una hoja de ese tamaño. Acércate más si esto hay que imprimirlo.</span>
+    <span data-phrase="quality.pixels">{width} por {height} píxeles.</span>
+    <span data-phrase="coverage.note">La hoja ocupaba el {percent}% de la foto.</span>
+    <span data-phrase="coverage.small">La hoja ocupaba solo el {percent}% de la
+      foto, así que casi todo lo fotografiado era mesa. Más cerca la próxima
+      vez.</span>
+
+    <span data-phrase="strength.gentle">Suave: se iguala el papel y poco más.
+      Para una hoja con lápiz flojo o con una fotografía.</span>
+    <span data-phrase="strength.middling">El ajuste habitual: el papel vuelve a
+      blanco y el texto impreso vuelve a negro.</span>
+    <span data-phrase="strength.hard">Fuerte: todo lo gris se empuja a negro o a
+      blanco. Lo más limpio en una hoja impresa normal, y destructivo en cualquier
+      cosa con una imagen.</span>
+
+    <span data-phrase="busy.page">Página {done} de {total}&hellip;</span>
+    <span data-phrase="busy.writing">Escribiendo el documento&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">Guardado a un bit por píxel y comprimido de
+      forma exacta, y por eso es así de pequeño.</span>
+    <span data-phrase="result.jpeg">Las páginas se guardan como JPEG con la
+      calidad que has elegido.</span>
+    <span data-phrase="result.png">Las páginas se guardan como PNG, que es sin
+      pérdida y es lo que quiere una imagen de dos colores: JPEG sería a la vez
+      más grande y borroso alrededor de cada letra.</span>
+    <span data-phrase="result.clean">Sin fecha, sin autor, sin nombre de equipo:
+      lo único que hay en el documento además de las páginas es el nombre de esta
+      herramienta.</span>
+
+    <span data-phrase="size.fit">Cada hoja toma el tamaño que su propia página
+      tiene de verdad, a la resolución de arriba. Nada se rodea de bandas.</span>
+    <span data-phrase="size.named">Cada página se coloca en una hoja {name},
+      dentro del margen, con la forma que le haya salido.</span>
+
+    <span data-phrase="error.decode">Este navegador no ha podido abrir {name}. Si
+      es una foto HEIC de un iPhone, conviértela primero.</span>
+    <span data-phrase="error.none">Elige antes al menos una foto.</span>
+    <span data-phrase="error.failed">Algo ha salido mal al hacer el archivo:
+      {detail}</span>
+  </div>
+</main>

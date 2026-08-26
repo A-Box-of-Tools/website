@@ -1,0 +1,377 @@
+#
+# Censor de PDF - Spanish.
+#
+# Overrides for tools/redact-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Censurar" es el verbo que ya usa el censor de imagenes de al lado, por lo
+# mismo: es lo que la gente escribe en el buscador. "Tachar" aparece donde hace
+# falta el gesto concreto de la raya encima.
+#
+# Lo unico que no puede perderse al tocar cualquier frase de aqui: esta pagina
+# hace una afirmacion que otras herramientas de censura no pueden hacer, y la
+# afirmacion no vale nada si se exagera. Lo que se quita es texto. Una pagina
+# que es la foto de una pagina no tiene texto encima, y esta herramienta lo
+# dice en vez de fingir.
+#
+
+name = "Censor de PDF"
+heading = "Censurar&nbsp;PDF <span class=\"h1-kw\">&mdash; las palabras salen, no se tapan</span>"
+tagline = "Las letras se borran del archivo, y después se busca en el archivo para demostrarlo."
+
+title = "Censurar un PDF &mdash; borrar el texto de verdad, gratis y sin subidas"
+description = "Saca palabras de un PDF en vez de pintar un rectángulo negro encima. Las letras se borran de las propias instrucciones de dibujo de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada."
+og_title = "Censurar un PDF como es debido &mdash; las palabras se borran, no se tapan"
+og_description = "En casi todas las herramientas el rectángulo negro se apoya sobre el texto y este se puede copiar desde debajo. Esta borra las letras del archivo y después busca en el resultado para enseñarte que no están."
+og_image_alt = "Censurar un PDF borrando el texto, no tapándolo"
+
+pledge = """
+    El documento que elijas se abre, se lee, se edita y se vuelve a escribir en
+    memoria en este equipo, con código servido desde esta dirección. Aquí nada
+    puede subir nada, y al otro lado de esta página no hay ningún servidor que
+    lo reciba. Ni el archivo ni las palabras que has buscado salen de la
+    pestaña."""
+
+live_hint = """
+      No hace falta que nos creas: abre las DevTools, mira la pestaña Red y
+      censura algo. Ninguna petición lleva una página, una palabra ni un nombre
+      de archivo. O desconéctate de internet y censúralo igualmente."""
+
+read_first = """
+, <code>src/text.js</code> para cómo se encuentra y
+      se sitúa cada palabra de una página, y <code>src/edit.js</code> para el
+      borrado en sí: qué se recorta de las instrucciones de la página y qué se
+      pone en su lugar para que el resto de la línea no se mueva. Ninguno de los
+      dos llega a la red, y el lector y el escritor de al lado tampoco."""
+
+howto_heading = "Cómo censurar un PDF para que las palabras desaparezcan de verdad"
+
+card = """
+            Borra palabras de un PDF en vez de taparlas. Las letras salen de las
+            propias instrucciones de dibujo de la página, el hueco se mantiene
+            abierto para que no se mueva nada más, y el archivo terminado se
+            vuelve a abrir y se busca aquí para demostrar que las palabras no
+            están."""
+
+[words]
+plural = "documentos"
+choose = "un PDF"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[facts]]
+text = "Los archivos no salen de tu equipo"
+
+[[privacy]]
+title = "Un rectángulo negro no es una censura, y esto no pinta ninguno encima de nada."
+body = """
+
+      En casi todos los programas que ofrecen censurar una página &mdash; un
+      lector de PDF, un procesador de textos, una herramienta de diseño &mdash;
+      el rectángulo es un objeto guardado junto al texto y no dentro de él. El
+      texto sigue ahí, en el mismo archivo, en el mismo sitio, y seleccionar la
+      zona y pulsar copiar te lo devuelve. Ese fallo ha publicado sumarios
+      judiciales, informes de inteligencia y, en diciembre de 2025, nombres
+      tachados en una publicación masiva de documentos del Departamento de
+      Justicia de EE. UU. que eran legibles en cuestión de horas. Esta
+      herramienta borra las letras de las instrucciones que dibujan la página. No
+      hay ningún rectángulo con algo debajo, porque debajo no hay nada."""
+
+[[privacy]]
+title = "El archivo terminado se vuelve a abrir y se busca dentro, aquí, antes de ofrecértelo."
+body = """
+
+      Hasta que eso pasa, todo lo de arriba es esta herramienta corrigiéndose sus
+      propios deberes. Así que los bytes que están a punto de ser tu descarga se
+      le entregan al mismo lector como si los hubiera mandado un desconocido,
+      cada página se lee otra vez, se recogen todos los marcadores, comentarios,
+      campos de formulario y propiedades del documento, y se buscan las palabras
+      que has quitado. La cuenta aparece en los resultados. Si algo ha
+      sobrevivido, la pasada se da por fallida y no hay descarga."""
+
+[[privacy]]
+title = "Las palabras no salen nunca de la pestaña, y la búsqueda tampoco."
+body = """
+ La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna es nuestra. Esta herramienta no añade nada a esa
+      lista: no tiene función de red propia, ni siquiera opcional. Lo que
+      escribes en el cuadro de búsqueda es una cadena que se compara con texto
+      que está en la memoria de esta pestaña, y ninguna de las dos cosas tiene
+      adónde ir."""
+
+[[privacy]]
+title = "Censurar es el trabajo que peor sobrevive a una subida."
+body = """
+
+      Lo que la gente censura es el motivo por el que no debe subirse. Una
+      declaración testifical, un informe médico, un extracto bancario que va al
+      casero, un contrato con el nombre de un cliente que va a otro. Entregarle
+      eso al servidor de un desconocido para que quite la parte privada
+      significa que la parte privada llega primero, entera, y esa es la versión
+      que ellos se quedan. Esta página no tiene otra mitad."""
+
+[[privacy]]
+title = "Lo que queda se copia intacto."
+body = """
+
+      Los únicos bytes que cambian en una página son las instrucciones de texto
+      de las que formaban parte las letras quitadas. Cualquier otra instrucción,
+      y cada tipografía, imagen y línea a las que se refiera la página, se copian
+      exactamente como llegaron: nada se vuelve a dibujar, ni a codificar, ni a
+      recomponer. La anchura de lo quitado se mide y se devuelve como una
+      instrucción de espaciado, para que el resto de la línea se quede donde el
+      documento lo puso."""
+
+[[privacy]]
+title = "No puede sacar palabras de una fotografía, y dice qué páginas son esas."
+body = """
+
+      Una página escaneada es una imagen. Las palabras que hay en ella son
+      píxeles y no texto, y aquí nada puede tocarlas. Si el escaneo lleva la capa
+      invisible de búsqueda que produce el OCR de un escáner, esta herramienta
+      quita esa capa &mdash; que es lo que habrían encontrado una búsqueda y una
+      copia &mdash; y dice claramente en la página que la imagen sigue enseñando
+      las palabras. Tapar esa imagen es otro trabajo; el
+      <a href=\"../censurar-imagen/\">censor de imágenes</a> es la herramienta que
+      sobrescribe píxeles."""
+
+[[privacy]]
+title = "El documento deja de decir de dónde viene."
+body = """
+
+      Las propiedades y el paquete XMP se van en cada pasada: sin línea de
+      productor, sin fecha de creación, sin autor, sin título y sin ninguno de
+      los bloques privados que deja detrás un programa de maquetación. Un archivo
+      al que se le ha quitado un nombre de las páginas y cuyas propiedades siguen
+      diciendo <code>Acuerdo Pérez borrador 3.docx</code> no está censurado, y eso
+      no es algo que convenga dejar en manos de una casilla."""
+
+[[privacy]]
+title = "Los archivos cifrados se rechazan en vez de abrirse."
+body = """
+
+      Un PDF con contraseña se rechaza, incluidos los que producen los escáneres
+      con contraseña vacía y que técnicamente se abrirían. Quitarle la protección
+      a un documento es otro trabajo distinto de sacarle palabras, y hacerlo sin
+      avisar sería una cosa sorprendente para que una herramienta la hiciera en tu
+      nombre."""
+
+[[privacy]]
+title = "Qué carga Google y qué no se le entrega."
+body = """
+ Los scripts de publicidad
+      y de medición vienen de Google. A ninguno de los dos se le entrega nada de
+      tu documento: ni un archivo, ni una página, ni un nombre, ni un tamaño, ni
+      un número de páginas, ni una palabra que hayas buscado. Todas las líneas que
+      leen, editan o escriben un PDF se sirven desde este origen y están en el
+      repositorio."""
+
+[[privacy]]
+title = "Qué carga el botón de donación y qué no se le entrega."
+body = """
+
+      El botón &laquo;Buy me a coffee&raquo; de la cabecera lo dibuja un script
+      de cdnjs.buymeacoffee.com y toma su tipografía de Google Fonts. Es un
+      enlace y nada más: no informa de ninguna visita y no se le entrega nada
+      sobre ti ni sobre tus documentos. No pasa nada hasta que lo pulsas, y
+      entonces estás en el sitio de otra gente."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconéctate de la red y todo en esta página
+      sigue funcionando. Es la prueba más sencilla de todas: una herramienta que
+      mandara tu documento fuera para censurarlo se pararía."""
+
+[[howto]]
+title = "Elige el PDF."
+body = """
+ Un documento cada vez, y a propósito:
+      censurar es un trabajo que hay que mirar página a página, y una herramienta
+      que te dejara marcar palabras en un archivo y las aplicara sin avisar a otro
+      es exactamente la forma en que se manda lo que no se debía. El navegador lo
+      lee directamente de tu disco."""
+
+[[howto]]
+title = "Di qué tiene que irse."
+body = """
+ Escribe las palabras &mdash; un
+      nombre, una dirección, una referencia &mdash; y cada sitio donde aparecen
+      se enumera con la línea en la que está y una casilla para marcarlo. Los
+      buscadores de al lado buscan direcciones de correo, números de tarjeta,
+      IBAN, números de la seguridad social y números de teléfono. Se ofrecen, y
+      nunca se marcan por ti: un patrón no distingue un número de teléfono de un
+      número de expediente."""
+
+[[howto]]
+title = "Lee la página y ve eligiendo palabras."
+body = """
+
+      El panel enseña el texto del documento tal y como está guardado, en el
+      orden en que lo copiaría un lector. Pulsa cualquier palabra para sacarla y
+      vuelve a pulsarla para conservarla. Todo lo tachado es lo que va a
+      desaparecer, y eso convierte este paso en la revisión además de en la
+      selección: merece la pena hacerlo en cada página antes de pulsar el
+      botón."""
+
+[[howto]]
+title = "Sácalas y lee la línea que dice que se ha comprobado."
+body = """
+
+      Las letras se borran, el hueco que dejan se mantiene abierto, se pinta una
+      caja negra encima si la has pedido, y las mismas palabras se sacan de los
+      marcadores, los comentarios, los campos de formulario y las propiedades del
+      documento. Después el archivo terminado se vuelve a abrir aquí y se busca
+      dentro. Si una palabra que has quitado sigue encontrándose, no hay descarga
+      y sí un mensaje que lo dice."""
+
+[[faq]]
+q = "¿En qué se diferencia de pintar una caja negra en un lector de PDF?"
+a = """
+        Un rectángulo pintado en un lector es una anotación: un objeto con una
+        posición, guardado junto a la página. El texto de debajo está intacto.
+        Cualquiera que seleccione esa zona y pulse copiar, o abra el archivo en
+        otro programa, o le pase cualquier extractor de texto, recupera las
+        palabras. Algunos lectores tienen una orden de &laquo;censurar&raquo; que
+        sí aplica el borrado como es debido, y varios ofrecen solo el dibujo. Esta
+        herramienta no tiene ningún rectángulo que apartar: las letras se recortan
+        de las instrucciones de dibujo de la página, y la caja negra, si la dejas
+        activada, se pinta después sobre un hueco que ya está vacío."""
+
+[[faq]]
+q = "¿Cómo sé que las palabras han desaparecido de verdad?"
+a = """
+        Porque la herramienta lo comprueba, en tu equipo, y te enseña la cuenta.
+        Cuando el archivo está escrito, lo vuelve a abrir el mismo lector de esta
+        página, se lee cada página, se recogen todos los marcadores, comentarios,
+        campos de formulario y propiedades, y se busca cada palabra que has
+        quitado. La línea de resultados dice cuántas había y cuántas quedan. Si la
+        respuesta no es la que debería, la pasada falla y no se ofrece nada para
+        descargar. También puedes comprobarlo tú después en cualquier lector:
+        pulsa Ctrl+F y busca la palabra."""
+
+[[faq]]
+q = "¿Se mueve el resto de la página cuando se quita una palabra?"
+a = """
+        No. El texto se dibuja avanzando una pluma por la página, así que borrar
+        cinco letras arrastraría normalmente el resto de la línea cinco letras
+        hacia la izquierda. La anchura exacta de lo quitado se mide con las
+        propias métricas de la tipografía y se devuelve como una instrucción de
+        espaciado, que mueve la pluma sin dibujar nada. Las columnas siguen
+        alineadas y los totales siguen bajo su encabezado."""
+
+[[faq]]
+q = "¿Puede censurar un documento escaneado?"
+a = """
+        La imagen no, y lo dice en vez de fingir. Un escaneo es la fotografía de
+        una página: las palabras son píxeles y no hay texto que quitar. Lo que un
+        escaneo sí suele llevar es una capa de texto invisible que el OCR del
+        escáner escribió sobre la imagen para que la página se pueda buscar; esta
+        herramienta encuentra esa capa, quita de ella lo que elijas y te dice en
+        la página que la imagen no ha cambiado. Así que una búsqueda y una copia
+        dejan de encontrar la palabra, y quien mire la página la sigue leyendo.
+        Para una imagen, el <a href=\"../censurar-imagen/\">censor de imágenes</a>
+        sobrescribe los píxeles."""
+
+[[faq]]
+q = "¿Y las partes de un documento que no están en una página?"
+a = """
+        Se tratan, porque ahí es donde una censura suele escaparse. Las mismas
+        palabras se sacan de los marcadores, los comentarios y las notas, de lo
+        que se haya escrito en los campos de formulario, del texto que se le
+        entrega a un lector de pantalla y del texto de reemplazo que un lector
+        copia <em>en lugar de</em> las letras de la página. Este último existe
+        para que las ligaduras y las palabras partidas se copien bien, y puede
+        contener una frase entera. Las propiedades del documento y el paquete XMP
+        se eliminan directamente. Los adjuntos y todo lo que se ejecute al abrir
+        el archivo se descartan, porque en ninguno de los dos se puede buscar las
+        palabras que estás quitando."""
+
+[[faq]]
+q = "¿Se suben mis documentos a alguna parte?"
+a = """
+        No. El archivo lo lee, edita y escribe tu propio navegador en tu propio
+        equipo. Esta herramienta no tiene lado servidor, y la
+        <code>Content-Security-Policy</code> de la página nombra todas las
+        direcciones que puede contactar, ninguna de las cuales es nuestra. Lo que
+        escribes en el cuadro de búsqueda se compara con texto que está en la
+        memoria de esta pestaña y tampoco va a ninguna parte."""
+
+[[faq]]
+q = "¿Por qué no puedo arrastrar una caja sobre la página como en otras herramientas?"
+a = """
+        Porque dibujar una página significa un motor de PDF completo &mdash;
+        tipografías, degradados, transparencia, modos de fusión &mdash;, que es un
+        megabyte o más de motor que descargar y ejecutar, y este sitio no lleva
+        ninguno. Resulta que eso encaja con el trabajo: arrastrar un rectángulo
+        selecciona un <em>trozo de papel</em>, y un trozo de papel no es lo mismo
+        que el texto que hay debajo, que es justo por donde empieza el fallo de la
+        caja negra. Lo que obtienes en su lugar es el texto del documento, en
+        orden de lectura, con cada palabra pulsable. Y es además la única vista
+        que puede decirte lo que una imagen de la página no puede: si las palabras
+        que tienes delante son texto siquiera."""
+
+[[faq]]
+q = "¿El archivo terminado se abrirá en todas partes?"
+a = """
+        Sí. La salida se escribe como PDF 1.5, o como la versión más alta que
+        necesitara el archivo que le diste, y la 1.5 la entiende cualquier lector
+        publicado desde 2003. Nada de la página se vuelve a codificar: las
+        tipografías, las imágenes y el dibujo vectorial pasan byte a byte, así que
+        lo que quede del texto sigue siendo seleccionable y buscable igual que
+        antes."""
+
+[[faq]]
+q = "¿Puede abrir un PDF protegido con contraseña?"
+a = """
+        No, y es a propósito. Un documento cifrado se rechaza con un mensaje que
+        lo dice, incluso cuando la contraseña está en blanco, que es como guardan
+        muchos escáneres y fotocopiadoras. Quitarle la protección a un archivo es
+        otro trabajo distinto de sacarle palabras, y una herramienta que lo hiciera
+        en silencio estaría haciendo algo que no le has pedido."""
+
+[[faq]]
+q = "¿Hay límite de tamaño y cuesta algo?"
+a = """
+        No hay ningún límite escrito en la herramienta. El límite es tu propio
+        equipo: el documento se sostiene en memoria mientras se trabaja con él,
+        así que un portátil aguantará unos cientos de megabytes sin quejarse y
+        empezará a sufrir en algún punto por encima. Es gratis, no hay cuenta, ni
+        registro, ni prueba. El sitio lleva publicidad, que es lo que lo paga; a
+        los anuncios no se les da nada sobre tus documentos."""
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = """
+        Sí. Carga la página una vez, desconéctate de internet y sigue
+        funcionando. Es además la forma más sencilla de comprobar que no se sube
+        nada: una herramienta que mandara tu documento fuera para censurarlo se
+        pararía en el momento en que tiraras del cable."""
+
+[schema]
+description = "Censura un PDF en el navegador borrando el texto en vez de taparlo. Las letras se quitan del flujo de contenido de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada."
+features = [
+  "Borra las letras de la página en vez de pintar un rectángulo encima",
+  "Vuelve a abrir el archivo terminado y busca dentro para demostrar que las palabras no están",
+  "Encuentra cada aparición de una palabra, o busca correos, tarjetas, IBAN y números de identidad",
+  "Enseña el texto del documento en orden de lectura, para poder pulsar cualquier palabra",
+  "Quita las mismas palabras de marcadores, comentarios, campos de formulario y propiedades",
+  "Mantiene el hueco abierto para que el resto de la línea no se mueva",
+  "Dice qué páginas son escaneos, donde no hay texto que quitar",
+  "Funciona sin conexión; sin subidas, sin cuenta y sin límite de tamaño",
+]
+
+[picker]
+title = "Suelta aquí tu PDF"
+hint = "o pulsa para elegir &mdash; un documento cada vez"

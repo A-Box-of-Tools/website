@@ -1,0 +1,297 @@
+#
+# Escáner de documentos - Spanish.
+#
+# Overrides for tools/document-scanner/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Los nombres de la literatura se quedan como estan - Zhang y He para la
+# recuperacion de la proporcion, Sauvola para el umbral. Quien vaya a
+# consultarlo busca exactamente esos nombres.
+#
+
+name = "Escáner de documentos"
+heading = "Escáner&nbsp;de&nbsp;documentos <span class=\"h1-kw\">&mdash; una foto de una hoja, enderezada</span>"
+tagline = "Fotografía la hoja. Te devuelve algo que parece escaneado."
+
+title = "Escáner de documentos &mdash; de foto a PDF escaneado, sin subir nada"
+description = "Convierte la foto de una hoja hecha con el teléfono en un PDF enderezado y con luz uniforme. Las esquinas se buscan solas, la perspectiva se deshace y la sombra se divide. Funciona entero en el navegador: no se sube nada."
+og_title = "Escanea un documento con una foto, sin subirlo"
+og_description = "Las esquinas de la hoja se encuentran, el ángulo se deshace y la luz desigual se divide, en tu propio navegador. Lo que la gente fotografía así es un pasaporte, una nómina o un contrato, que es justo lo que no debería subirse."
+og_image_alt = "Escáner de documentos - una foto de una hoja, enderezada y limpiada, sin subirla"
+
+pledge = """
+    El navegador decodifica la foto, la endereza, la limpia y la escribe en un
+    PDF, sin más que aritmética y los códecs que ya trae. Esta herramienta no
+    tiene ninguna función de red, ni para pedir ni para enviar, y aquí eso
+    importa por lo que la gente fotografía: un pasaporte, una nómina, un
+    contrato de alquiler, un formulario que una oficina pidió
+    &laquo;escaneado&raquo;."""
+
+live_hint = """
+      No hace falta que nos creas: abre las DevTools, mira la pestaña Red y
+      escanea una hoja. Ninguna petición lleva una foto, una miniatura, un nombre
+      de archivo ni la posición de una sola esquina. O desconéctate de internet y
+      escanéala igualmente."""
+
+read_first = """
+, <code>src/detect.js</code> para cómo se
+      encuentran las esquinas sin ningún modelo, <code>src/warp.js</code> para el
+      enderezado y <code>src/clean.js</code> para cómo se divide la luz
+      desigual."""
+
+howto_heading = "Cómo escanear un documento con la cámara del teléfono"
+
+card = """
+            Una foto de una hoja, enderezada y limpiada hasta convertirse en un
+            documento. Las esquinas se buscan solas, el ángulo se deshace y la
+            sombra se divide."""
+
+[words]
+plural = "documentos"
+choose = "una foto de una hoja"
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Tus documentos no tienen adónde ir."
+body = """
+ La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna es nuestra. Aquí no hay ningún destino donde recoger
+      tus fotos, ni código que las enviaría si lo hubiera."""
+
+[[privacy]]
+title = "No hay modelo, así que no hay nada que descargar ni nada que preguntar."
+body = """
+ Encontrar las cuatro
+      esquinas de una hoja es aritmética: el gradiente de la imagen, una votación
+      de las rectas que hay en ella y una comprobación de qué hay realmente
+      debajo de cada lado del rectángulo que gana. Sin pesos, sin motor de
+      inferencia, sin nada que se descargue la primera vez y sin nada que se
+      comporte distinto con el documento de otra persona que con el tuyo. Mira
+      <code>src/detect.js</code>."""
+
+[[privacy]]
+title = "El documento no lleva fecha, ni autor, ni nombre de equipo."
+body = """
+ Un escaneo es algo que la
+      gente manda a otra gente, normalmente porque una oficina lo ha pedido. Lo
+      único que se escribe en el PDF además de las propias páginas es el nombre
+      de esta herramienta, y un título si escribes uno. No hay fecha de creación,
+      ni autor, ni número de serie, ni nada sacado de tu reloj, de tus nombres de
+      archivo o de tu equipo. Mira <code>src/document.js</code>."""
+
+[[privacy]]
+title = "Aquí nada pide nada."
+body = """
+ No hay ningún <code>fetch</code>, ni
+      <code>XMLHttpRequest</code>, ni <code>sendBeacon</code> en ninguna parte de
+      <code>src/</code>. El trabajo es un <code>getImageData</code>, unos cuantos
+      bucles sobre los bytes y el propio codificador JPEG del navegador, y todo
+      eso ya está instalado en tu equipo."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconéctate de la red y la herramienta no
+      cambia, porque nunca hubo un paso de red dentro. Es la prueba más sencilla
+      de todas, y la que conviene hacer antes de escanear un pasaporte."""
+
+[[howto]]
+title = "Fotografía la hoja."
+body = """
+ Desde arriba, con la hoja entera en el
+      encuadre y las cuatro esquinas visibles o casi. No hace falta que sea
+      perpendicular ni que la luz sea uniforme: el ángulo y la sombra son para lo
+      que existe esta herramienta. Lo que sí importa es llenar el encuadre; una
+      hoja fotografiada desde el otro lado de la habitación no tiene detalle que
+      recuperar."""
+
+[[howto]]
+title = "Comprueba las cuatro esquinas."
+body = """
+ Se encuentran solas al leer la
+      foto, y la página lo dice cuando no está segura: la de una hoja sobre una
+      mesa del mismo color es una orilla realmente difícil de ver. Pulsa en
+      cualquier punto de la foto y la esquina más cercana viene a tu dedo, o
+      llega a una con <kbd>Tab</kbd> y muévela con las flechas."""
+
+[[howto]]
+title = "Decide qué hacer con la luz."
+body = """
+ &laquo;Color, igualado&raquo; mide
+      el papel a lo largo de la hoja y lo divide, así que la sombra desaparece y
+      un sello o una firma conservan su color. &laquo;Blanco y negro&raquo; va
+      más allá y es lo que hace que un escaneo quepa en un correo. Lo que ves en
+      pantalla es el resultado real, producido por el mismo código que escribe el
+      archivo."""
+
+[[howto]]
+title = "Añade las demás páginas."
+body = """
+ Cada foto que añadas se convierte en
+      otra página del mismo documento, en el orden de la lista, y cada una
+      conserva sus propias esquinas. Las flechas de una página de la tira la
+      mueven antes o después."""
+
+[[howto]]
+title = "Guarda el PDF y ábrelo antes de mandarlo."
+body = """
+ El documento se escribe
+      aquí, en la memoria de esta página. No se ha subido nada para hacerlo, y no
+      se ha informado de nada a ninguna parte."""
+
+[[faq]]
+q = "¿Se sube mi documento a alguna parte?"
+a = """
+        No. La foto la decodifica, endereza, limpia y escribe en un PDF tu propio
+        navegador en tu propio equipo. Esta herramienta no tiene ninguna función
+        de red, nunca pide ni envía nada, y la
+        <code>Content-Security-Policy</code> de la página nombra todas las
+        direcciones que puede contactar, ninguna de las cuales es nuestra. Carga
+        la página una vez, desconéctate de internet y sigue funcionando."""
+
+[[faq]]
+q = "¿Cómo encuentra las esquinas de la hoja sin un modelo?"
+a = """
+        Buscando las cuatro rectas largas de las que se compone un rectángulo. La
+        foto se reduce, se toma el gradiente &mdash; dónde cambia la imagen y en
+        qué dirección &mdash; y cada píxel que cae sobre un borde vota por la
+        recta sobre la que estaría. Las rectas fuertes se emparejan en
+        rectángulos candidatos, y cada candidato se puntúa recorriendo sus cuatro
+        lados y preguntando cuánto de cada uno tiene realmente un borde debajo, y
+        si los cuatro son la frontera de una misma cosa: una hoja es más clara
+        que lo que la rodea, o más oscura, pero es la misma en los cuatro lados, y
+        eso es lo que impide confundir una línea de texto con el borde inferior de
+        la hoja. No hay pesos, no se descarga nada, y la aritmética es la misma
+        para cualquier documento que pase por ella."""
+
+[[faq]]
+q = "Las esquinas que ha encontrado están mal. ¿Y ahora?"
+a = """
+        Arrástralas. Las esquinas son una posición de partida y nunca una
+        decisión: el escaneo se toma de donde acaben las cuatro. Pulsa en
+        cualquier punto de la foto y la esquina más cercana salta a tu dedo, que
+        es más fácil que acertar con un tirador pequeño, y las flechas mueven la
+        esquina enfocada píxel a píxel. La página además te dice cuándo las
+        esquinas son una suposición y no un hallazgo, y marca esa página en la
+        tira: el motivo habitual es una hoja apoyada en una mesa más o menos de su
+        mismo color, porque ahí de verdad casi no hay borde que encontrar."""
+
+[[faq]]
+q = "¿Por qué la hoja enderezada sale con la forma correcta y no achatada?"
+a = """
+        Porque la forma se recupera de la perspectiva en vez de medirse en los
+        bordes. Una hoja fotografiada en ángulo tiene el borde lejano escorzado,
+        así que el método evidente &mdash; tomar el par de bordes opuestos más
+        largo y llamar a eso la proporción &mdash; produce un A4 visiblemente
+        achatado, que es lo que dan la mayoría de los escáneres web. La foto de un
+        rectángulo lleva en realidad información suficiente para recuperar tanto
+        la proporción del rectángulo como la distancia focal de la cámara, con tal
+        de que sea una cámara corriente; es un resultado de Zhang y He de 2003, y
+        es lo que hace <code>src/geometry.js</code>. Cuando la foto se ha tomado
+        perpendicular no hay perspectiva de la que partir y tampoco hace falta,
+        porque entonces los bordes son exactos: ahí recurre a ellos, y la página
+        dice cuál de los dos ha respondido."""
+
+[[faq]]
+q = "¿Qué le hace exactamente a la imagen eso de &laquo;limpiar&raquo;?"
+a = """
+        Divide la luz. El brillo del propio papel se mide a lo largo de la hoja
+        &mdash; una rejilla de casillas, y en cada casilla un percentil alto del
+        brillo, que el texto es demasiado oscuro y demasiado escaso para mover
+        &mdash; y cada píxel se divide por el papel estimado en ese punto. Lo que
+        queda es la tinta, con luz uniforme, sin la sombra y sin la caída hacia
+        los bordes. No es lo mismo que subir el contraste: subir el contraste de
+        una hoja fotografiada deja la parte clara en blanco, la oscura en negro y
+        la escritura de la parte oscura ilegible, y por eso el
+        &laquo;autonivel&raquo; empeora estas imágenes en lugar de mejorarlas."""
+
+[[faq]]
+q = "¿Por qué el modo blanco y negro es tanto más pequeño?"
+a = """
+        Porque una imagen con dos colores es de verdad una fracción de los datos
+        de una imagen con dieciséis millones, y aquí se guarda así: un bit por
+        píxel, empaquetados de ocho en ocho y comprimidos de forma exacta, en vez
+        de como un JPEG de una imagen en blanco y negro. En las mismas páginas
+        sale unas dieciocho veces más pequeño que el modo en color, así que un
+        contrato de veinte páginas se queda por debajo del megabyte en lugar de
+        rondar los quince. El umbral es el de Sauvola, que decide cada píxel
+        contra la media y la dispersión de su propio vecindario en vez de contra
+        un número único para toda la hoja, y eso es lo que mantiene legible la
+        escritura dentro de una sombra. No tiene medios tonos, así que una hoja
+        con una fotografía debería usar alguno de los otros modos."""
+
+[[faq]]
+q = "¿Puedo meter varias páginas en un PDF?"
+a = """
+        Sí. Cada foto que añadas se convierte en otra página, en el orden de la
+        lista, y cada página conserva sus propias esquinas, así que un montón de
+        hojas fotografiadas una detrás de otra se convierte en un documento. Las
+        flechas de cada página de la tira la mueven antes o después. El ajuste de
+        limpieza es común a todas a propósito: unas páginas limpiadas de forma
+        distinta dentro de un mismo documento parecen dos documentos."""
+
+[[faq]]
+q = "¿Lee el texto, para que pueda buscar dentro del PDF?"
+a = """
+        No. No hay capa de texto ni reconocimiento de caracteres: lo que sale es
+        una imagen de la hoja sobre una página. Hacerlo bien significaría un motor
+        de OCR, que son decenas de megabytes de modelo que descargar, y un escáner
+        de documentos que se bajara un modelo antes de poder leer tu nómina sería
+        un escáner de documentos con un motivo para llamar a casa a propósito de
+        nóminas. Si necesitas el texto, el modo blanco y negro produce justo el
+        tipo de archivo con el que mejor trabaja el software de OCR de tu propio
+        equipo."""
+
+[[faq]]
+q = "Ha salido borroso. ¿Por qué?"
+a = """
+        Casi siempre porque la hoja era pequeña dentro de la foto. El panel de
+        debajo de la vista previa dice cuánto del encuadre ocupaba la hoja y a
+        cuántos puntos por pulgada equivale eso aproximadamente en una hoja de ese
+        tamaño: por debajo de unos 150 DPI un escaneo impreso se ve blando, y
+        contra el detalle que nunca estuvo en el archivo no puede hacer nada
+        ninguna herramienta. Acércate en vez de usar el zoom, aguanta quieto y
+        deja que la cámara enfoque la hoja antes de disparar. El pulso es la otra
+        causa, y tampoco se recupera."""
+
+[[faq]]
+q = "¿Es gratis y hace falta cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni registro, ni prueba, ni límite de páginas,
+        ni marca de agua. Tampoco hay límite para el tamaño de las fotos, porque
+        no hay ningún servidor pagándolas: el trabajo ocurre en tu propio equipo.
+        El sitio lleva publicidad, que es lo que lo paga; a los anuncios no se les
+        da nada sobre tus documentos."""
+
+[schema]
+description = "Escanea un documento en el navegador: fotografía una hoja y se encuentran las cuatro esquinas, se deshace la perspectiva, se divide la luz desigual y el resultado se escribe en un PDF. Varias páginas se convierten en un documento. No se sube nada."
+features = [
+  "Encuentra las cuatro esquinas de la hoja sin modelo, sin descargas y sin peticiones",
+  "Recupera la forma real de la hoja a partir de la perspectiva, así que una foto en ángulo no sale achatada",
+  "Divide la luz desigual y la sombra en vez de subir el contraste",
+  "Páginas en blanco y negro a un bit por píxel, que es lo que hace que un escaneo quepa en un correo",
+  "Varias fotos se convierten en las páginas de un PDF, cada una con sus esquinas",
+  "Las esquinas se pueden arrastrar, o mover con el teclado píxel a píxel",
+  "Dice cuándo las esquinas son una suposición y no un hallazgo",
+  "No escribe fecha, ni autor, ni nombre de equipo en el documento",
+  "Funciona sin conexión; sin subidas y sin cuenta",
+]
+
+[picker]
+title = "Suelta aquí las fotos de tus hojas"
+hint = "o pulsa para elegir &mdash; una foto por hoja, en el orden de las páginas"

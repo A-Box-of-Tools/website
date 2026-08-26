@@ -1,0 +1,20 @@
+#
+# Guía: apilar fotos para reducir el ruido - Spanish.
+#
+
+nav = "Apilar fotografías"
+title = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
+description = "Apilar combina una ráfaga de tomas en una sola imagen. Qué método te hace falta depende de qué quieras perder: el ruido, los transeúntes o la poca profundidad de campo de una macro. Cómo funciona cada uno, qué cuesta y dónde encajan los archivos RAW."
+
+heading = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
+lede = """
+    Una ráfaga de tomas lleva más información que cualquiera de ellas.
+    Promediarlas cancela el ruido; tomar el valor central de cada píxel borra
+    todo lo que solo estaba parte del tiempo. Cuál de las dos quieres depende
+    enteramente de qué se movió."""
+
+updated = "25 de agosto de 2026"
+
+og_title = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
+og_description = "Promedia una ráfaga para matar el ruido, toma la mediana para vaciar una plaza concurrida, aclara para dejar estelas de estrellas. Qué método resuelve qué problema, y dónde encajan los archivos RAW."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

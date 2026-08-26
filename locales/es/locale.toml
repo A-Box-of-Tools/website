@@ -115,6 +115,18 @@ complete = true
 "guides/whats-inside-a-gif" = "guias/que-hay-dentro-de-un-gif"
 "guides/verify-a-file-checksum" = "guias/verificar-el-checksum-de-una-descarga"
 
+# Las cuatro paginas que llegaron despues de esta lista. "telefono" en lugar de
+# "movil" o "celular", por lo mismo que "dispositivo" en lugar de "ordenador" o
+# "computadora": ninguna de las dos suena ajena a ningun lado del Atlantico.
+"dicom-viewer" = "visor-dicom"
+"document-scanner" = "escanear-documentos"
+"redact-pdf" = "censurar-pdf"
+"stack-images" = "apilar-imagenes"
+"guides/open-a-dicom-file" = "guias/abrir-un-archivo-dicom"
+"guides/redact-a-pdf" = "guias/censurar-un-pdf"
+"guides/scan-a-document-with-your-phone" = "guias/escanear-un-documento-con-el-telefono"
+"guides/stack-photos-to-reduce-noise" = "guias/apilar-fotos-para-reducir-el-ruido"
+
 #
 # ---------------------------------------------------------------------------
 # The hub.
