@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/qr-kod-okuma/:';
-const CACHE_NAME=CACHE_PREFIX+'f0f2c9216a';
+const CACHE_NAME=CACHE_PREFIX+'0cd43c9e57';
 const ASSETS=[
 './',
 'index.html',

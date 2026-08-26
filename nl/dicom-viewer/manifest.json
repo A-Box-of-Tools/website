@@ -1,8 +1,8 @@
 {
   "id": "/nl/dicom-viewer/",
-  "name": "DICOM Viewer",
-  "short_name": "DICOM Viewer",
-  "description": "CT, MR, X-ray and ultrasound, with the window, the header and the measurements.",
+  "name": "DICOM-viewer",
+  "short_name": "DICOM-viewer",
+  "description": "CT, MRI, r\u00f6ntgen en echo, met het venster, de header en de metingen.",
   "lang": "nl",
   "dir": "ltr",
   "start_url": "./",

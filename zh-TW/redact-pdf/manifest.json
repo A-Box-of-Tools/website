@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/redact-pdf/",
-  "name": "PDF Redactor",
-  "short_name": "PDF Redactor",
-  "description": "The letters are deleted from the file, and the file is searched afterwards to prove it.",
+  "name": "PDF \u5857\u9ed1",
+  "short_name": "PDF \u5857\u9ed1",
+  "description": "\u5b57\u5f9e\u6a94\u6848\u88e1\u522a\u6389\uff0c\u7136\u5f8c\u518d\u641c\u4e00\u904d\u9019\u500b\u6a94\u6848\u4f86\u8b49\u660e\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

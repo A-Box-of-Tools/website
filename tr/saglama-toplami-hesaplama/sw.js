@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/saglama-toplami-hesaplama/:';
-const CACHE_NAME=CACHE_PREFIX+'4ea5f3022c';
+const CACHE_NAME=CACHE_PREFIX+'6d51a529c9';
 const ASSETS=[
 './',
 'index.html',

@@ -1,8 +1,8 @@
 {
   "id": "/zh/document-scanner/",
-  "name": "Document Scanner",
-  "short_name": "Document Scanner",
-  "description": "Photograph the page. Get back something that looks scanned.",
+  "name": "\u6587\u6863\u626b\u63cf",
+  "short_name": "\u6587\u6863\u626b\u63cf",
+  "description": "\u628a\u7eb8\u62cd\u4e0b\u6765\uff0c\u56de\u6765\u7684\u662f\u4e00\u4efd\u770b\u7740\u50cf\u626b\u63cf\u7684\u4e1c\u897f\u3002",
   "lang": "zh-Hans",
   "dir": "ltr",
   "start_url": "./",

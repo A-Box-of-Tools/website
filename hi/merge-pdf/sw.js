@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/merge-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'77ae366217';
+const CACHE_NAME=CACHE_PREFIX+'0021a78206';
 const ASSETS=[
 './',
 'index.html',

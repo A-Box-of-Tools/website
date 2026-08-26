@@ -1,0 +1,26 @@
+{
+  "id": "/tr/goruntu-istifleme/",
+  "name": "G\u00f6r\u00fcnt\u00fc istifleyici",
+  "short_name": "G\u00f6r\u00fcnt\u00fc istifleyici",
+  "description": "Yirmi kare tek karede, yirmi y\u00fckleme ve RAW d\u00f6n\u00fc\u015ft\u00fcr\u00fcc\u00fc olmadan.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

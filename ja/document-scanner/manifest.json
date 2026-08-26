@@ -1,8 +1,8 @@
 {
   "id": "/ja/document-scanner/",
-  "name": "Document Scanner",
-  "short_name": "Document Scanner",
-  "description": "Photograph the page. Get back something that looks scanned.",
+  "name": "\u66f8\u985e\u30b9\u30ad\u30e3\u30ca\u30fc",
+  "short_name": "\u66f8\u985e\u30b9\u30ad\u30e3\u30ca\u30fc",
+  "description": "\u7d19\u3092\u64ae\u3063\u3066\u304f\u3060\u3055\u3044\u3002\u30b9\u30ad\u30e3\u30f3\u3057\u305f\u3088\u3046\u306b\u898b\u3048\u308b\u3082\u306e\u304c\u8fd4\u308a\u307e\u3059\u3002",
   "lang": "ja",
   "dir": "ltr",
   "start_url": "./",

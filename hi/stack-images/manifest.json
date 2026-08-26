@@ -1,8 +1,8 @@
 {
   "id": "/hi/stack-images/",
-  "name": "Image Stacker",
-  "short_name": "Image Stacker",
-  "description": "Twenty frames into one, without twenty uploads or a RAW converter.",
+  "name": "\u0907\u092e\u0947\u091c \u0938\u094d\u091f\u0948\u0915\u0930",
+  "short_name": "\u0907\u092e\u0947\u091c \u0938\u094d\u091f\u0948\u0915\u0930",
+  "description": "\u092c\u0940\u0938 \u092b\u093c\u094d\u0930\u0947\u092e \u090f\u0915 \u092e\u0947\u0902, \u0928 \u092c\u0940\u0938 \u0905\u092a\u0932\u094b\u0921, \u0928 \u0915\u094b\u0908 RAW \u0915\u0928\u094d\u0935\u0930\u094d\u091f\u0930\u0964",
   "lang": "hi",
   "dir": "ltr",
   "start_url": "./",

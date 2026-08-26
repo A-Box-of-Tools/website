@@ -1,8 +1,8 @@
 {
   "id": "/zh/stack-images/",
-  "name": "Image Stacker",
-  "short_name": "Image Stacker",
-  "description": "Twenty frames into one, without twenty uploads or a RAW converter.",
+  "name": "\u56fe\u7247\u5806\u6808",
+  "short_name": "\u56fe\u7247\u5806\u6808",
+  "description": "\u4e8c\u5341\u5f20\u53d8\u4e00\u5f20\uff0c\u4e0d\u7528\u4f20\u4e8c\u5341\u6b21\uff0c\u4e5f\u4e0d\u7528 RAW \u8f6c\u6362\u5668\u3002",
   "lang": "zh-Hans",
   "dir": "ltr",
   "start_url": "./",
