@@ -613,6 +613,11 @@ guide_heading = "The longer version"
 # not always related - two categories hold one tool each, and those two pages
 # get the nearest thing the hub has instead. See related_tools() in build.py.
 related_heading = "Also in the box"
+
+# The lead-in on the carry-the-result-on row - see shared/handoff.js. It ends
+# in a colon because the links that follow are the sentence's object: the
+# names of the tools the result can go straight into, in this language.
+handoff_lead = "Carry the result straight into:"
 privacy_heading = "How the privacy claim is verifiable"
 
 # The headline claim. The noun in the middle is this tool's own - "files",

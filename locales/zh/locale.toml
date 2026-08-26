@@ -282,6 +282,7 @@ checking = "检查中&hellip;"
 questions_heading = "常见问题"
 guide_heading = "说得更细的版本"
 related_heading = "工具箱里还有"
+handoff_lead = "把结果直接带到："
 privacy_heading = "这条隐私承诺怎么核实"
 
 pledge_line = """

@@ -180,7 +180,7 @@ TRANSLATABLE_SITE_PATHS = (
 STRUCTURAL_KEYS = frozenset({
     'slug', 'id', 'order', 'lastmod', 'published', 'category', 'group',
     'mark', 'icon', 'favicon', 'brand_mark', 'kind', 'tool',
-    'css_parts', 'js_parts', 'roadmap_group',
+    'css_parts', 'js_parts', 'roadmap_group', 'handoff',
     # `analytics_extra` is prose, and is still structure, which looks like a
     # contradiction until you see where it lands: the tail of one sentence in
     # the comment at the top of templates/analytics.js. That comment is written

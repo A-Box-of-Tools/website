@@ -173,6 +173,10 @@ def build(out, clean=False, minify_output=True, jobs=None):
     feedback_js = emit.js_text(
         (SHARED / 'feedback.js').read_text(encoding='utf-8'), 'shared/feedback.js')
     feedback_v = sitelib.text_hash(feedback_js)
+    handoff_js = emit.js_text(
+        (SHARED / 'handoff.js').read_text(encoding='utf-8'), 'shared/handoff.js')
+    handoff_v = sitelib.text_hash(handoff_js)
+
 
     # The eight lines that register the front page's service worker. Written
     # here rather than into each language because there is nothing in it that
@@ -191,6 +195,21 @@ def build(out, clean=False, minify_output=True, jobs=None):
              for path in sorted(TOOLS.glob('*/tool.toml'))]
     if not tools:
         raise sitelib.ConfigError(f'no tools found under {TOOLS}')
+
+    # A tool may declare `handoff` targets - the tools its finished result can
+    # be carried straight into (see shared/handoff.js). Checked here the way
+    # roadmap_group is checked elsewhere: against the tools that exist, before
+    # anything renders, with the file named.
+    slugs = {tool['slug'] for tool in tools}
+    for tool in tools:
+        for target in tool.get('handoff', []):
+            if target == tool['slug']:
+                raise sitelib.ConfigError(
+                    f'{tool["slug"]}: handoff names itself.')
+            if target not in slugs:
+                raise sitelib.ConfigError(
+                    f'{tool["slug"]}: handoff names {target!r}, which is not a '
+                    'tool. Name a folder under tools/.')
 
     # Nothing is bundled, so the browser fetches every module by the name an
     # import gives it. A specifier naming a file this tool does not ship is
@@ -262,7 +281,7 @@ def build(out, clean=False, minify_output=True, jobs=None):
         with ProcessPoolExecutor(max_workers=jobs) as pool:
             pending = [
                 pool.submit(build_locale, out, templates, locale, locales, site,
-                            tools, prose, planned, css_v, lang_v, feedback_v,
+                            tools, prose, planned, css_v, lang_v, feedback_v, handoff_v,
                             offline_v, site_css, emit)
                 for locale in locales
             ]
@@ -358,6 +377,7 @@ def build(out, clean=False, minify_output=True, jobs=None):
     write(out / 'lang.js', lang_js)
     write(out / 'offline.js', offline_js)
     write(out / 'feedback.js', feedback_js)
+    write(out / 'handoff.js', handoff_js)
 
     # Last, because a link is only checkable once everything it could point at
     # has been written. The pages the parent wrote itself - the 404 - joined
@@ -386,7 +406,7 @@ def build(out, clean=False, minify_output=True, jobs=None):
 
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
-                 css_v, lang_v, feedback_v, offline_v, site_css, emit):
+                 css_v, lang_v, feedback_v, handoff_v, offline_v, site_css, emit):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
 
@@ -465,8 +485,10 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written = []
     for tool in ltools:
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, lang_v, feedback_v, guide_of.get(tool['slug'], {}),
-                   related_of.get(tool['slug'], []), emit)
+                   links, lang_v, feedback_v, handoff_v,
+                   guide_of.get(tool['slug'], {}),
+                   related_of.get(tool['slug'], []),
+                   [by_slug[s] for s in tool.get('handoff', [])], emit)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
 
     # Old addresses that moved. A static host cannot answer 301, so the page
@@ -743,7 +765,7 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               lang_v, feedback_v, guide, related, emit):
+               lang_v, feedback_v, handoff_v, guide, related, handoff, emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -839,6 +861,12 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             # Root-absolute and versioned, exactly like lang_href beside it and
             # for the same cache reason. Only a tool page asks for this one.
             'feedback_href': f'/feedback.js?v={feedback_v}',
+            # The carry-the-result-on row and its script. The row renders only
+            # where tool.toml declares targets; the script goes on every tool
+            # page, because the receiving half is what feeds a carried file
+            # through the picker. See shared/handoff.js.
+            'handoff': handoff,
+            'handoff_href': f'/handoff.js?v={handoff_v}',
             'jsonld': sitelib.tool_jsonld(root, tool),
             'body': body,
         })))

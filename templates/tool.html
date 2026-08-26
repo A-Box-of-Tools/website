@@ -286,6 +286,10 @@
 {{ body }}
 
 {% include "partials/feedback.html" %}
+{% if handoff %}{% include "partials/handoff.html" %}
+{% endif %}<!-- On every tool page, not only the senders: the receiving half reads
+     the parked file and feeds it through the file input. -->
+<script src="{{ handoff_href }}" defer></script>
 
 <!--
   ============================================================================

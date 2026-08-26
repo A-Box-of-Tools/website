@@ -406,6 +406,7 @@ checking = "جارٍ الفحص&hellip;"
 questions_heading = "أسئلة"
 guide_heading = "النسخة الأطول"
 related_heading = "أيضا في الصندوق"
+handoff_lead = "احمل الناتج مباشرة إلى:"
 privacy_heading = "كيف يمكن التحقق من وعد الخصوصية"
 
 pledge_line = """

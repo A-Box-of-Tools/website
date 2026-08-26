@@ -733,6 +733,41 @@ class BuildTheSite(unittest.TestCase):
         # is minified like every other script the site serves.
         self.assertIn('abox-lang', (self.out / 'lang.js').read_text(encoding='utf-8'))
 
+    def test_the_handoff_row_names_tools_that_exist_at_their_local_address(self):
+        """The carry-the-result-on row - see shared/handoff.js.
+
+        Three claims, checked in the built pages rather than the config: a tool
+        that declares targets renders the row with each target as a link to
+        that tool's address in the same language; the link's data-slug is the
+        English slug, because that is the key the next page takes the file out
+        of storage by; and every tool page - senders and receivers alike -
+        asks for /handoff.js, since the receiving half is what feeds a carried
+        file through the picker.
+        """
+        senders = {tool.parent.name: buildmod.sitelib.load_toml(tool).get('handoff', [])
+                   for tool in ROOT.glob('tools/*/tool.toml')}
+        self.assertTrue(any(senders.values()), 'no tool declares handoff targets')
+
+        for name in self.tool_pages():
+            text = (self.out / name).read_text(encoding='utf-8')
+            with self.subTest(page=name):
+                self.assertIn('/handoff.js?v=', text)
+
+        for locale in self.locales:
+            by_slug = {slug: buildmod.i18n.locale_path(locale, slug).strip('/')
+                       for slug in senders}
+            for slug, targets in senders.items():
+                if not targets:
+                    continue
+                page = (self.out / by_slug[slug] / 'index.html'
+                        ).read_text(encoding='utf-8')
+                with self.subTest(locale=locale['lang'], tool=slug):
+                    self.assertIn('<nav class="handoff"', page)
+                    for target in targets:
+                        self.assertIn(f'data-slug="{target}"', page)
+                        folder = by_slug[target].split('/')[-1]
+                        self.assertIn(f'href="../{folder}/"', page)
+
     def test_every_page_asks_for_the_language_script_by_a_versioned_url(self):
         """One URL, root-absolute, the same on every page in every language.
 

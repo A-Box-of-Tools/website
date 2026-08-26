@@ -406,6 +406,7 @@ checking = "확인 중&hellip;"
 questions_heading = "자주 묻는 질문"
 guide_heading = "자세한 설명"
 related_heading = "상자 속 다른 도구"
+handoff_lead = "결과를 곧바로 이어서:"
 privacy_heading = "이 약속을 직접 확인하는 방법"
 
 pledge_line = """

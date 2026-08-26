@@ -283,6 +283,7 @@ checking = "確認中&hellip;"
 questions_heading = "よくある質問"
 guide_heading = "詳しい解説"
 related_heading = "箱の中のほかのツール"
+handoff_lead = "結果をそのまま次へ："
 privacy_heading = "この主張を確かめる方法"
 
 pledge_line = """

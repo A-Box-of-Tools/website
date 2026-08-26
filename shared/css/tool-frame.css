@@ -1113,3 +1113,58 @@ ins.adsbygoogle { display: block; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------------------------------------------------------------- handoff */
+
+/*
+  "Carry the result on" - see shared/handoff.js and templates/partials/
+  handoff.html. It appears beside the download link it belongs to, so it
+  borrows the feedback panel's register: an aside in the flow of the page, on
+  --surface-2, never a second call to action shouting over the first. The
+  links are the other tools' names, which is all they need to be.
+*/
+.handoff {
+  margin-top: 0.8rem;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+}
+
+.handoff-lead {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.handoff-targets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
+}
+
+.handoff-targets a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.handoff-targets a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}

@@ -401,6 +401,7 @@ checking = "memeriksa&hellip;"
 questions_heading = "Pertanyaan"
 guide_heading = "Versi lebih lengkap"
 related_heading = "Juga ada di dalam kotak"
+handoff_lead = "Bawa hasilnya langsung ke:"
 privacy_heading = "Cara memverifikasi klaim privasi ini"
 
 pledge_line = """

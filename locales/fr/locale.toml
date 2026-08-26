@@ -393,6 +393,7 @@ checking = "vérification&hellip;"
 questions_heading = "Questions"
 guide_heading = "La version longue"
 related_heading = "Aussi dans la boîte"
+handoff_lead = "Poursuivre avec le résultat dans&nbsp;:"
 privacy_heading = "Comment cette promesse se vérifie"
 
 # Tournée à l'actif : le participe passé s'accorderait avec

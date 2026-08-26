@@ -379,6 +379,7 @@ checking = "bezig met controleren&hellip;"
 questions_heading = "Vragen"
 guide_heading = "De uitgebreide versie"
 related_heading = "Ook in de gereedschapskist"
+handoff_lead = "Neem het resultaat rechtstreeks mee naar:"
 privacy_heading = "Hoe je de privacybelofte controleert"
 
 pledge_line = """
