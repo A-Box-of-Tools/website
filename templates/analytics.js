@@ -32,5 +32,25 @@ function gtag() { dataLayer.push(arguments); }
 // everything in every test.
 window.gtag = gtag;
 
+// An automated browser is not a visit, and says as much: Playwright, Selenium
+// and Puppeteer all set navigator.webdriver. This site's own QA suite opens
+// every page several times a day, and without this every one of those loads
+// arrives as a session - a bounce rate, a country, an audience of robots
+// averaged in with the people the numbers are kept for.
+//
+// `ga-disable-<id>` is Google's own switch rather than something invented
+// here, and it is the reason this is two lines and not a fork in the code
+// below: gtag stays defined and callable, so this file, shared/feedback.js
+// and anything else that calls it carry on working unchanged. The calls
+// simply stop leaving the machine.
+//
+// It is set before the config call below, which is what sends the page view;
+// the tag script above is async and sends nothing on its own. Deliberately
+// not an inline script in the head, for the same CSP reason this whole file
+// exists.
+if (navigator.webdriver) {
+  window['ga-disable-{{ site.analytics_id }}'] = true;
+}
+
 gtag('js', new Date());
 gtag('config', '{{ site.analytics_id }}');
