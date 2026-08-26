@@ -19,8 +19,8 @@ import assert from 'node:assert/strict';
 
 import {
   DEFAULT_BUDGET, MIN_BAND_ROWS, MODES, MODE_IDS, SCALES,
-  bands, bytesPerPixel, commonArea, isMode, outputSize, placement, planRun, scaleThatFits,
-  workingSize,
+  bands, bytesPerPixel, commonArea, isMode, outputSize, placement, planRun, refineMargin,
+  refineWindow, scaleThatFits, workingSize,
 } from '../../tools/stack-images/src/plan.js';
 
 const MEGAPIXEL_24 = { width: 6000, height: 4000 };
@@ -305,4 +305,32 @@ test('the crop never leaves the output, whatever it is handed', () => {
     assert.ok(area.y + area.height <= output.height, `${JSON.stringify(move)} ran off the bottom`);
     assert.ok(area.width > 0 && area.height > 0, `${JSON.stringify(move)} cropped to nothing`);
   }
+});
+
+test('the refinement window is the largest power of two the crop leaves room for', () => {
+  // The 16 held back is the two margins the crop gives up so that a refined
+  // frame still covers what the crop assumed; a window that ignored them would
+  // be measuring rows the run is about to throw away.
+  assert.equal(refineWindow({ width: 1575, height: 1179 }), 512);
+  assert.equal(refineWindow({ width: 4000, height: 3000 }), 512);
+  assert.equal(refineWindow({ width: 300, height: 528 }), 256);
+  assert.equal(refineWindow({ width: 100, height: 90 }), 64);
+});
+
+test('a crop too small to refine gets no window rather than a tiny one', () => {
+  // 64 minus the margins is the floor: below it the correlation peak is noise
+  // with a coordinate, and applying that is worse than keeping the coarse
+  // answer.
+  assert.equal(refineWindow({ width: 79, height: 200 }), 0);
+  assert.equal(refineWindow({ width: 16, height: 16 }), 0);
+});
+
+test('the margin matches how wrong the coarse answer can be', () => {
+  // The coarse error lives in the sub-pixel fraction of the shift, so a set
+  // that barely moved cannot have been mismeasured by much: it keeps a
+  // one-pixel allowance instead of being charged sixteen rows for nothing.
+  assert.equal(refineMargin([{ dx: 0, dy: 0 }, { dx: 0.2, dy: -0.3 }]), 1);
+  assert.equal(refineMargin([{ dx: 0, dy: 0 }, { dx: 7.3, dy: -4.6 }]), 8);
+  assert.equal(refineMargin([{ dx: 0, dy: 0 }, { dx: 0, dy: 0.6 }]), 8);
+  assert.equal(refineMargin([{}]), 1);
 });

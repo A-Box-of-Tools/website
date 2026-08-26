@@ -9,11 +9,11 @@
  * cost, and it is the cost that decides whether a tool can align twenty
  * 24-megapixel frames while somebody waits.
  *
- * It is used on small buffers. align.js resamples each frame down to a square
- * of 256 or 512 pixels a side before any of this runs, because the shift
- * between two frames of a burst is a property of the picture and not of its
- * resolution: finding it at 512 and multiplying up is as accurate as finding it
- * at 6000, and about a hundred and forty times less work.
+ * It is used on small buffers: the 256 square the coarse alignment runs in,
+ * and the 512 window the refinement correlates at output resolution. The whole
+ * frame never goes through it - the coarse square finds the large offset
+ * cheaply, and the window finishes the sub-pixel part where there is nothing
+ * to multiply back up. See "The alignment, and the sign" in the README.
  *
  * WHY IT IS WRITTEN OUT RATHER THAN IMPORTED
  *

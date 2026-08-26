@@ -151,9 +151,27 @@ offset between them. One transform each finds a two-hundred-pixel shift as
 cheaply as a two-pixel one; searching offsets is quadratic in the range and
 would be the slowest thing in the tool.
 
-It runs on a 256-pixel square, because the offset between two frames of a burst
-is a property of the picture and not of its resolution. Measuring it there and
-multiplying up is as accurate as measuring it at 6000 across.
+It measures twice. The first pass runs on a 256-pixel square, which finds a
+two-hundred-pixel shift as cheaply as a two-pixel one — but only the *integer*
+part of the answer survives the trip back up. The sub-pixel part is estimated,
+and multiplying a 256-square answer up to 6000 across multiplies its estimation
+error by twenty-three: a twentieth of a pixel of fitting error comes back as
+more than a pixel of blur, per frame, which is exactly the softness the
+alignment exists to prevent. Measured on synthetic bursts with known shifts,
+the coarse answer alone was off by one to two output pixels per frame and the
+stack came out *worse* than a single input frame.
+
+So the answer is finished during the stack itself: when each frame's full-size
+decode is first in hand — a decode the stack was going to pay for anyway — a
+512-pixel window from the middle of the crop is correlated against the same
+window of the reference at output resolution, and the residual corrects the
+coarse answer in place. At output resolution there is nothing to multiply up,
+so a twentieth of a pixel of error stays a twentieth of a pixel. The same
+synthetic bursts land within a quarter of a pixel per frame. The residual is
+gated — a weak peak, or a correction larger than the coarse pass could
+plausibly have been wrong by, leaves the coarse answer alone — and the crop
+gives up a small margin on every side up front, because a frame that moves
+after the crop was decided stops covering ground the crop assumed.
 
 Rotation and scale come from the same trick applied twice: in log-polar
 coordinates a rotation *is* a shift along one axis and a scale *is* a shift
@@ -179,14 +197,25 @@ Two limits, both on the page:
 - rotation is only ever recovered within half a turn, because the magnitude
   spectrum of a real picture is symmetric and 175° looks exactly like −5°.
 
+The refinement corrects translation only. The angle and the scale keep the
+coarse pass's answer — good to roughly a tenth of a degree — and a tenth of a
+degree is a pixel and a half at the corner of a 24-megapixel frame, so a
+similarity stack keeps a corner softness its middle does not have. Refining
+them too would mean correlating the window at a spread of candidate angles,
+which is a different cost class, and the translation-only refinement already
+removes the error that affected every pixel equally.
+
 **Aligning means cropping, and the crop is not cosmetic.** A frame moved twenty
 pixels left stops covering the right-hand edge, whatever is not covered is
 transparent, and transparent reads as zero to an accumulator — so without the
 crop an averaged hand-held burst comes back with a dark border, which somebody
 would reasonably blame on the stacking. `commonArea` in `plan.js` returns the
 largest rectangle every frame still covers, taking the inner of each pair of
-corners so a rotated quad is handled conservatively. With no alignment every
-transform is the identity and nothing is cropped. A set that overlaps in almost
+corners so a rotated quad is handled conservatively. When the refinement is
+running, the crop then gives up `refineMargin`'s allowance on every side —
+eight pixels for a set that really moved, one for a set that did not — which is
+the room the refined corrections spend. With no alignment every transform is
+the identity, nothing is refined and nothing is cropped. A set that overlaps in almost
 nothing falls back to the whole frame rather than a sliver: a stack with visible
 edges is something a person can look at and understand, and a postage stamp is
 not.

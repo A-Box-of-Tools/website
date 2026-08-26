@@ -13,7 +13,12 @@
  *             range of the preview inside it. Kilobytes are read, not files
  *   survey    every frame is decoded once, small, for its thumbnail and for the
  *             luma square the alignment works on
- *   measure   each frame is correlated against the first to find how it moved
+ *   measure   each frame is correlated against the first to find how it moved.
+ *             This answer is coarse - it was read in a small square and
+ *             multiplied up, sub-pixel error and all - and is finished during
+ *             the stack, where each frame's first full-size decode is already
+ *             in hand and a window of it can be correlated at output
+ *             resolution, where sub-pixel error stays sub-pixel
  *   stack     the real work: bands, passes and frames, exactly as plan.js said
  *   encode    the accumulated picture is written out as PNG or JPEG
  *
@@ -31,8 +36,10 @@
  * and neither the fill nor the readback pays for rows nobody is looking at.
  */
 
-import { estimate, window2d } from './align.js';
-import { bands, commonArea, outputSize, placement, planRun, workingSize } from './plan.js';
+import { WEAK_PEAK, estimate, phaseCorrelate, window2d } from './align.js';
+import {
+  bands, commonArea, outputSize, placement, planRun, refineMargin, refineWindow, workingSize,
+} from './plan.js';
 import { findPreview, jpegSize, looksRaw } from './raw.js';
 import { createStack } from './stack.js';
 
@@ -45,8 +52,14 @@ import { createStack } from './stack.js';
  */
 export const ALIGN_SIZE = 256;
 
-/** How large a thumbnail the list shows. */
-const THUMB_SIZE = 160;
+/**
+ * How large the survey decode is. It is the picture the list shows, and it is
+ * also what the coarse alignment square is built from, which is why it matches
+ * ALIGN_SIZE rather than the hundred-odd pixels a list row needs: a 256 square
+ * fed from a smaller decode holds less picture than its own area, and the
+ * alignment can only be as good as what it is shown.
+ */
+const THUMB_SIZE = 256;
 
 /** Anything at least this big is a picture worth stacking. */
 const MIN_PREVIEW_PIXELS = 640 * 480;
@@ -252,6 +265,28 @@ function lumaSquare(bitmap, spot, output, fit) {
   return window2d(out, ALIGN_SIZE);
 }
 
+/**
+ * The luma window the refinement correlates, cut from the middle of the crop
+ * at output resolution, with the frame's coarse correction already applied.
+ *
+ * Drawn through drawAligned exactly as the stack will draw it - the window's
+ * corner standing in for the crop - so what the correlation sees is what the
+ * accumulator would have seen, and the residual it reports is in output pixels
+ * with nothing to multiply back up. That is the whole point of measuring
+ * twice: here, an error of a twentieth of a pixel is a twentieth of a pixel.
+ */
+function refineSquare(bitmap, spot, output, move, at, size) {
+  const { canvas, context } = surface(size, size);
+  drawAligned(context, bitmap, spot, output, move, at, 0);
+  const pixels = context.getImageData(0, 0, size, size).data;
+  const out = new Float64Array(size * size);
+  for (let i = 0, p = 0; i < out.length; i += 1, p += 4) {
+    out[i] = pixels[p] * 0.299 + pixels[p + 1] * 0.587 + pixels[p + 2] * 0.114;
+  }
+  canvas.width = 0;
+  return window2d(out, size);
+}
+
 /* -------------------------------------------------------------------- run */
 
 /**
@@ -349,6 +384,30 @@ export async function runStack(request, hooks) {
   // What every frame covers once moved. With no alignment this is the whole
   // output; with alignment it is the output less however far the frames went.
   const crop = commonArea(moves, output);
+
+  // The refinement the measure stage promised. The moves above were read in a
+  // small square and multiplied back up to output pixels, and the multiply-up
+  // scales their sub-pixel error with them - enough to blur the stack by more
+  // than it blurs a frame. So during the stack, when each frame's full-size
+  // decode is in hand anyway, a window of it is correlated against the same
+  // window of the reference at output resolution and the answer is corrected in
+  // place. It costs no extra decode, which is why it happens there and not
+  // here. The margin is the room those corrections need: a frame moved after
+  // the crop was decided stops covering ground the crop assumed, so the crop
+  // gives up that much on every side up front.
+  const refine = align === 'none' ? 0 : refineWindow(crop);
+  const margin = refine ? refineMargin(moves) : 0;
+  crop.x += margin;
+  crop.y += margin;
+  crop.width -= margin * 2;
+  crop.height -= margin * 2;
+  const refineAt = refine ? {
+    x: Math.round(crop.x + (crop.width - refine) / 2),
+    y: Math.round(crop.y + (crop.height - refine) / 2),
+  } : null;
+  let referenceWindow = null;
+  const refined = frames.map(() => false);
+
   const plan = planRun({
     width: crop.width, height: crop.height, frames: frames.length, mode,
     budget: request.budget,
@@ -385,6 +444,28 @@ export async function runStack(request, hooks) {
         const spot = placement(frame, output);
         const working = workingSize(frame.width, frame.height, 1);
         const bitmap = await decodeAt(frame.blob, working, spot);
+
+        // Each frame's first full-size appearance settles its final position.
+        // Later bands and passes reuse the answer, so a banded run stays
+        // consistent with itself. The gates keep a bad peak from undoing a
+        // good coarse answer: a window without enough texture to correlate, or
+        // a residual larger than the coarse pass could plausibly have been
+        // wrong by, leaves the frame where the coarse measurement put it.
+        if (refine && !refined[index]) {
+          refined[index] = true;
+          const square = refineSquare(bitmap, spot, output, moves[index], refineAt, refine);
+          if (index === 0) {
+            referenceWindow = square;
+          } else if (referenceWindow) {
+            const residual = phaseCorrelate(referenceWindow, square, refine);
+            if (residual.confidence >= WEAK_PEAK
+                && Math.abs(residual.dx) <= margin && Math.abs(residual.dy) <= margin) {
+              moves[index].dx += residual.dx;
+              moves[index].dy += residual.dy;
+            }
+          }
+        }
+
         context.setTransform(1, 0, 0, 1, 0, 0);
         context.clearRect(0, 0, crop.width, band.readRows);
         drawAligned(context, bitmap, spot, output, moves[index], crop, band.readY);
