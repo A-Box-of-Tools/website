@@ -1,0 +1,21 @@
+#
+# Guía: escanear un documento con el teléfono - Spanish.
+#
+
+nav = "Escanear con el teléfono"
+title = "Cómo escanear un documento con el teléfono, sin app y sin subirlo"
+description = "Qué separa la foto de una hoja de un escaneo de esa misma hoja: el ángulo, la luz desigual y el tamaño del archivo. Cómo hacer la foto, qué arreglar después y por qué nada de esto necesita un servidor."
+
+heading = "Cómo escanear un documento con el teléfono"
+lede = """
+    Alguien te ha pedido un formulario &laquo;escaneado&raquo; y tienes un
+    teléfono y ningún escáner. La distancia entre la foto de una hoja y un
+    escaneo de esa hoja es menor de lo que parece, y no va sobre todo del
+    ángulo: esto es lo que de verdad los separa, y qué hacer con cada
+    parte."""
+
+updated = "25 de agosto de 2026"
+
+og_title = "Cómo escanear un documento con el teléfono"
+og_description = "El ángulo, la sombra y el tamaño del archivo: qué separa la foto de una hoja de un escaneo de esa hoja, y cómo arreglar cada cosa sin subir la página."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

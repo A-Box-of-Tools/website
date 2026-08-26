@@ -1,0 +1,240 @@
+<!--
+  tools/stack-images/body.html, in Spanish.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- Paso 1 &mdash; las tomas -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige las tomas</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      Los archivos RAW se abren leyendo el JPEG a tamaño completo que la cámara
+      ya escribió dentro: unos kilobytes de directorio y después un solo trozo.
+      Los datos del sensor no se decodifican nunca, así que una toma de
+      60&nbsp;MB abre casi tan rápido como un JPEG.
+      <a href="#faq-raw">Qué significa eso para el resultado</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">Ordenar por nombre</button>
+        <button type="button" id="clear-all" class="ghost danger">Quitar todas</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- Paso 2 &mdash; cómo combinarlas -->
+  <section class="card">
+    <h2><span class="step">2</span> Cómo combinarlas</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">Método de apilado</label>
+        <select id="mode">
+          <option value="mean" selected>Media &mdash; reducir el ruido</option>
+          <option value="median">Mediana &mdash; quitar gente y coches que pasan</option>
+          <option value="sigma">Recorte sigma &mdash; las dos cosas a la vez</option>
+          <option value="max">Aclarar &mdash; estelas de estrellas, fuegos artificiales, pintura con luz</option>
+          <option value="min">Oscurecer &mdash; quitar lo brillante que se movió</option>
+          <option value="sum">Sumar &mdash; simular una exposición larga</option>
+          <option value="focus">Apilado de enfoque &mdash; conservar lo que estaba nítido</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">Alinear las tomas</label>
+        <select id="align">
+          <option value="translate" selected>Sí &mdash; solo desplazamiento</option>
+          <option value="similarity">Sí &mdash; desplazamiento, rotación y escala</option>
+          <option value="none">No &mdash; usarlas exactamente como están</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">Resolución de trabajo</label>
+        <select id="scale">
+          <option value="full" selected>Tamaño completo</option>
+          <option value="half">Mitad &mdash; una cuarta parte de la memoria</option>
+          <option value="quarter">Cuarto &mdash; una dieciseisava parte</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">Descartar más allá de</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          Más bajo descarta más, y descarta detalle real con ello. Dos
+          desviaciones típicas son el punto de partida habitual.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">La nitidez se mide sobre</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          Más grande toma regiones enteras de una sola toma; más pequeño sigue el
+          detalle fino y puede revolver un fondo liso entre tomas.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">Exposición</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">Guardar como</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; sin pérdida</option>
+          <option value="jpeg">JPEG &mdash; archivo más pequeño</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>Resultado</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>Memoria de trabajo</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>Tomas decodificadas</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Leído del disco</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- Paso 3 &mdash; ejecutarlo -->
+  <section class="card">
+    <h2><span class="step">3</span> Apílalas</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>Apilar imágenes</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="El resultado apilado">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>Descargar la imagen</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 toma</span>
+    <span data-phrase="count.many">{count} tomas</span>
+    <span data-phrase="count.none">Todavía no hay tomas</span>
+
+    <span data-phrase="frame.reference">Referencia</span>
+    <span data-phrase="frame.make-reference">Usar como referencia</span>
+    <span data-phrase="frame.remove">Quitar</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; la propia vista previa de {width} &times; {height} de la cámara</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; vista previa de {width} &times; {height}</span>
+    <span data-phrase="frame.raw-unreadable">No se ha encontrado ninguna vista previa dentro de este archivo RAW</span>
+    <span data-phrase="frame.read">{read} leídos de {total}</span>
+
+    <span data-phrase="mode.mean">Promedia todas las tomas. El ruido aleatorio está tan a menudo por encima como por debajo, así que promediar {count} tomas lo reduce unas {factor} veces. El método para un conjunto estable, y el que echa a perder un solo pájaro que pase.</span>
+    <span data-phrase="mode.median">Toma el valor central de cada píxel. Todo lo que solo estaba en algunas tomas &mdash; un turista, un coche, un avión &mdash; desaparece. Es el único método que tiene que sostener todas las tomas a la vez, y por eso puede ir por bandas más abajo.</span>
+    <span data-phrase="mode.sigma">Aprende qué suele ser cada píxel y después promedia solo los valores que concuerdan. El resultado de la mediana con la reducción de ruido de la media. Lee las tomas dos veces.</span>
+    <span data-phrase="mode.max">Conserva el valor más brillante que haya tenido cada píxel. Es lo que convierte una secuencia de exposiciones cortas en estelas de estrellas, y lo que monta unos fuegos artificiales a partir de sus propias tomas.</span>
+    <span data-phrase="mode.min">Conserva el valor más oscuro que haya tenido cada píxel. Un píxel solo sigue brillante si lo estaba en todas las tomas, así que los reflejos, los faros y las gotas de lluvia iluminadas desaparecen.</span>
+    <span data-phrase="mode.sum">Suma las tomas sin dividir: lo que habría recogido una única exposición {count} veces más larga. Se satura, exactamente como se habría saturado esa exposición. Usa el deslizador de exposición para recuperarlo.</span>
+    <span data-phrase="mode.focus">Toma cada parte de la imagen de la toma en la que estaba enfocada. Fotografía un sujeto pequeño a lo largo del anillo de enfoque y esto monta las partes que estaban nítidas.</span>
+
+    <span data-phrase="align.translate">Encuentra cuánto se ha desplazado cada toma y la devuelve a su sitio, con precisión de fracciones de píxel. Corrige el pulso y la deriva del trípode. No puede corregir la rotación.</span>
+    <span data-phrase="align.similarity">Encuentra además la rotación y la escala. Cuesta una medición más por toma y nada en absoluto cuando las tomas resultan estar derechas. La rotación solo se recupera dentro de media vuelta.</span>
+    <span data-phrase="align.none">Apila las tomas exactamente como se le dan. Correcto para un trípode fijo o una secuencia de intervalómetro, y equivocado para cualquier cosa a pulso.</span>
+
+    <span data-phrase="scale.note">Cada toma la decodifica a este tamaño el propio decodificador del navegador, así que un ajuste más pequeño es menos trabajo además de menos memoria.</span>
+    <span data-phrase="gain.note">Se multiplica en el resultado al final del todo, después de la aritmética y antes de redondear.</span>
+    <span data-phrase="gain.sum-note">Sumar {count} tomas se saturará casi con toda seguridad. Baja esto a alrededor de {suggested} para ver lo que se recogió.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">unos {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}, una por toma</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; todas las tomas, {passes} veces</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; todas las tomas, una vez por cada una de las {bands} bandas</span>
+    <span data-phrase="plan.read">{read} de {total} en el disco</span>
+    <span data-phrase="plan.banded">Esto no cabe entero en memoria, así que la imagen se corta en {bands} bandas y las tomas se releen para cada una. Elegir {suggested} lo convertiría en una sola pasada.</span>
+    <span data-phrase="plan.banded-anyway">Esto no cabe entero en memoria, así que la imagen se corta en {bands} bandas y las tomas se releen para cada una. Menos tomas, o una resolución de trabajo más pequeña, lo convertirían en una sola pasada.</span>
+
+    <span data-phrase="progress.open">Mirando dentro de {name}&hellip;</span>
+    <span data-phrase="progress.survey">Leyendo {name}&hellip;</span>
+    <span data-phrase="progress.measure">Midiendo cuánto se ha movido {name}&hellip;</span>
+    <span data-phrase="progress.stack">Apilando &mdash; {done} de {total} tomas leídas</span>
+    <span data-phrase="progress.stack-banded">Apilando &mdash; banda {band} de {bands}, {done} de {total} tomas leídas</span>
+    <span data-phrase="progress.encode">Escribiendo la imagen&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count} tomas combinadas en {seconds} segundos</span>
+    <span data-phrase="result.moves">Todas las tomas se han medido y se han llevado a su sitio.</span>
+    <span data-phrase="result.moves-some">{count} de {total} tomas no se han podido medir con confianza y se han dejado donde estaban.</span>
+    <span data-phrase="result.moves-none">Las tomas se han apilado exactamente como se dieron.</span>
+    <span data-phrase="result.moves-clamped">{count} tomas han dado una rotación demasiado grande para una ráfaga, y se han corregido solo desplazándolas.</span>
+    <span data-phrase="result.cropped">Separarlas ha dejado bordes a los que no llegaban todas las tomas, y esos se han recortado.</span>
+
+    <span data-phrase="error.no.files">Añade antes al menos una imagen.</span>
+    <span data-phrase="error.no.size">Ninguno de estos archivos se ha podido abrir como imagen.</span>
+    <span data-phrase="error.one.frame">Apilar necesita al menos dos tomas.</span>
+    <span data-phrase="error.unknown">Algo ha salido mal al apilar. Si alguno de estos archivos es raro, pruébalo por su cuenta.</span>
+    <span data-phrase="error.memory">El navegador se ha quedado sin memoria. Prueba con una resolución de trabajo más pequeña, o con menos tomas.</span>
+    <span data-phrase="error.unreadable">{name} no se ha podido abrir como imagen y se ha dejado fuera.</span>
+    <span data-phrase="error.busy">Espera a que termine esta pila antes de añadir más tomas, o cancélala.</span>
+  </div>
+</main>

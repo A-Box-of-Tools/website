@@ -1,0 +1,25 @@
+#
+# Guía: abrir un archivo DICOM - Spanish.
+#
+# Los nombres de campo DICOM y los nombres de archivo de un disco hospitalario
+# se quedan en ingles con su numero - DICOMDIR, IM000001, Instance Number,
+# Image Position (Patient). Asi estan en el disco y asi estan en la norma.
+#
+
+nav = "Abrir un archivo DICOM"
+title = "Cómo abrir un archivo DICOM (.dcm) sin instalar nada"
+description = "Qué hay en un disco hospitalario, por qué los archivos no tienen extensión, cómo abrir un estudio .dcm en el navegador, qué hacen de verdad la ventana y el centro, y qué lleva un estudio sobre el paciente además de la imagen."
+
+heading = "Cómo abrir un archivo DICOM, y qué hay dentro de uno"
+lede = """
+    Un disco hospitalario es una carpeta de archivos sin extensión y un visor
+    escrito para Windows XP. Los archivos son DICOM, y no tienen nada de
+    exótico: un estudio es una cabecera llena de campos y un bloque de píxeles.
+    Aquí está cómo mirar uno, qué significan los controles y qué más lleva el
+    archivo además de la imagen."""
+
+updated = "25 de agosto de 2026"
+
+og_title = "Cómo abrir un archivo DICOM sin instalar nada"
+og_description = "Qué hay en un disco hospitalario, por qué los archivos no tienen extensión y qué lleva un estudio .dcm sobre el paciente además de la imagen."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

@@ -1,0 +1,21 @@
+#
+# Guía: censurar un PDF - Spanish.
+#
+
+nav = "Censurar un PDF"
+title = "Cómo censurar un PDF para que el texto desaparezca de verdad"
+description = "Una caja negra pintada en un lector de PDF suele dejar debajo las palabras, y copiar y pegar las recupera al instante. Qué quita una censura de verdad, los cuatro sitios donde se esconde una palabra fuera de la página, y cómo comprobar un archivo antes de mandarlo."
+
+heading = "Cómo censurar un PDF para que el texto desaparezca de verdad"
+lede = """
+    Un rectángulo negro sobre un nombre y un nombre borrado se ven idénticos en
+    pantalla. Uno de los dos sobrevive a que lo seleccionen y lo copien. Aquí
+    está la diferencia, los sitios donde se esconde una palabra que no son la
+    página, y la comprobación de treinta segundos que te dice cuál de los dos
+    tienes."""
+
+updated = "25 de agosto de 2026"
+
+og_title = "Cómo censurar un PDF para que el texto desaparezca de verdad"
+og_description = "Por qué una caja negra en un lector de PDF no suele ser una censura, los cuatro sitios donde se esconde una palabra fuera de la página, y cómo comprobar un archivo antes de mandarlo."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

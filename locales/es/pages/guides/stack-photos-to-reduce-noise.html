@@ -1,0 +1,295 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <p>
+      Abre el <a href="../../apilar-imagenes/">Apilador de imágenes</a>, suelta la
+      ráfaga entera y elige el método por lo que quieras quitar de en medio:
+    </p>
+    <ul>
+      <li><strong>Ruido</strong>, y no se movió nada &mdash; media.</li>
+      <li><strong>Ruido</strong>, y se movió algo &mdash; recorte sigma.</li>
+      <li><strong>Gente, coches, un avión</strong> &mdash; mediana.</li>
+      <li><strong>Un cielo oscuro que quieres como estelas de estrellas</strong> &mdash; aclarar.</li>
+      <li><strong>Una macro con casi nada de profundidad de campo</strong> &mdash; apilado de enfoque.</li>
+    </ul>
+    <p>
+      Deja la alineación puesta si la cámara estaba en tus manos y quítala si
+      estaba en un trípode. Los archivos RAW pueden entrar directamente; no hace
+      falta revelarlos antes.
+    </p>
+    <p>
+      Todo lo que sigue es por qué esas cinco líneas dicen lo que dicen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por qué una ráfaga lleva más que una toma</h2>
+    <p>
+      Una fotografía hecha con poca luz es la imagen más ruido, y el ruido es
+      distinto cada vez. Esa última parte es lo que hace que apilar funcione. Haz
+      la misma toma dieciséis veces y la imagen es idéntica en las dieciséis
+      mientras que el ruido no lo es, así que promediarlas deja la imagen y
+      cancela la mayor parte del ruido.
+    </p>
+    <p>
+      La mejora es la raíz cuadrada del número de tomas. Cuatro tomas reducen el
+      ruido a la mitad. Dieciséis, a la cuarta parte. Cien, a la décima. Es una
+      curva brutal en la que estar &mdash; pasar de dieciséis tomas a sesenta y
+      cuatro te da la misma mejora otra vez, a cambio de cuatro veces el disparo
+      &mdash; y por eso casi cualquier pila práctica está entre ocho y treinta
+      tomas.
+    </p>
+    <p>
+      Hay una segunda ganancia, más callada. Promediar dieciséis tomas de ocho
+      bits da un resultado con gradaciones más finas que las que tenía cualquiera
+      de ellas, porque el ruido que hacía que cada toma redondeara distinto es
+      justo lo que permite que la media caiga entre los niveles. Apilar un
+      conjunto ruidoso no solo quita ruido; recupera tono que una sola toma había
+      cuantizado.
+    </p>
+  </section>
+
+  <section>
+    <h2>La pregunta que elige el método</h2>
+    <p>
+      No &laquo;qué quiero conservar&raquo;, sino <strong>qué era distinto entre
+      las tomas</strong>. Todo lo demás sale de ahí.
+    </p>
+
+    <h3>No se movió nada: media</h3>
+    <p>
+      La media aritmética a secas. Es la reducción de ruido más eficaz que existe
+      en un conjunto donde lo único que cambia entre tomas es el ruido, y la más
+      fácil de arruinar: una toma con un pájaro pone un pájaro tenue sobre toda la
+      pila, porque una media no tiene opinión sobre un valor que no concuerda con
+      los demás. Simplemente lo incluye.
+    </p>
+
+    <h3>Algo cruzó el encuadre: mediana</h3>
+    <p>
+      Alinea una docena de fotografías de una plaza concurrida y mira un píxel. En
+      la mayoría es acera; en una o dos es el abrigo de alguien. Ordena esos doce
+      valores, toma el del medio y sale acera, porque el abrigo nunca fue mayoría.
+    </p>
+    <p>
+      Haz eso para cada píxel y la plaza sale vacía. Es el truco detrás de
+      cualquier artículo de &laquo;quita a los turistas de tu foto de
+      vacaciones&raquo;, y no necesita nada más listo que una ráfaga y paciencia.
+      Lo único que exige es que <strong>ninguna parte de la escena esté ocupada
+      más de la mitad del tiempo</strong>. Una persona quieta en ocho de tus doce
+      tomas es mayoría en esos píxeles, y la mediana la conserva.
+    </p>
+
+    <h3>Las dos cosas: recorte sigma</h3>
+    <p>
+      La mediana tira la mayor parte de la información para conseguir su
+      robustez: en cada píxel se descartan once de tus doce valores, así que
+      reduce el ruido mucho menos de lo que lo haría una media del mismo conjunto.
+    </p>
+    <p>
+      El recorte sigma es el término medio, y suele ser el ajuste correcto por
+      defecto para cualquier conjunto del mundo real. Mira cada píxel a lo largo
+      de todas las tomas, calcula qué suele ser y cuánto varía, y después promedia
+      solo los valores que concuerdan con eso. Un coche que cruzó una toma queda
+      excluido en esos píxeles; todas las demás tomas siguen contando en todas
+      partes. Consigues la inmunidad de la mediana ante lo que se movió y la mayor
+      parte de la reducción de ruido de la media.
+    </p>
+    <p>
+      El umbral va en desviaciones típicas, y dos es el punto de partida habitual.
+      Más bajo descarta más, y empieza a descartar detalle real junto con el
+      coche.
+    </p>
+
+    <h3>Solo importa lo brillante: aclarar</h3>
+    <p>
+      Conservar el valor más brillante que haya tenido cada píxel. Fotografía el
+      cielo nocturno como doscientas exposiciones de treinta segundos y acláralas
+      juntas, y cada estrella dibuja su propio arco sobre el resultado: una estela
+      de estrellas, montada a partir de exposiciones cortas que nunca se quemaron
+      por separado. El mismo método monta unos fuegos artificiales a partir de las
+      tomas de su propia explosión, y una pintura con luz a partir de un paseo con
+      una linterna por una habitación oscura.
+    </p>
+    <p>
+      Su contrario, oscurecer, es el callado de la pareja: un píxel solo sigue
+      brillante si lo estaba en <em>todas</em> las tomas, así que los reflejos en
+      una ventana, los faros que pasan y las gotas de lluvia iluminadas por un
+      flash desaparecen.
+    </p>
+
+    <h3>El sujeto es más profundo que el enfoque: apilado de enfoque</h3>
+    <p>
+      Una macro a f/8 tiene quizá un milímetro enfocado, y eso no basta para un
+      insecto. La respuesta es hacer veinte tomas a lo largo del anillo de enfoque
+      y conservar de cada una solo la parte que estaba nítida en ella. La
+      herramienta mide cuánto se diferencia cada píxel de sus vecinos &mdash;
+      mucho en un borde, casi nada en un desenfoque &mdash; y se queda con el
+      ganador.
+    </p>
+    <p>
+      Este quiere trípode más que ninguno de los otros, porque mover el anillo de
+      enfoque a mano mueve la cámara, y una toma hecha desde un poco más lejos no
+      es la misma imagen a otro enfoque.
+    </p>
+  </section>
+
+  <section>
+    <h2>Alinear las tomas</h2>
+    <p>
+      Apilar es aritmética píxel a píxel, así que da por hecho que un píxel dado
+      es la misma parte de la escena en todas las tomas. A pulso no lo es: una
+      ráfaga deriva decenas de píxeles, y promediar eso produce un desenfoque en
+      vez de una imagen limpia. Ese es el motivo más común de que un primer
+      intento de apilado decepcione.
+    </p>
+    <p>
+      Así que las tomas se miden contra una de ellas y se devuelven antes a su
+      sitio, con precisión de fracciones de píxel. Tres ajustes:
+    </p>
+    <ul>
+      <li>
+        <strong>Solo desplazamiento</strong> es lo correcto para casi todo lo
+        hecho a pulso. Corrige la deriva y el temblor.
+      </li>
+      <li>
+        <strong>Desplazamiento, rotación y escala</strong> para un conjunto en el
+        que además girabas un poco, o en el que se coló un zoom. Cuesta una
+        medición más por toma y nada en absoluto cuando las tomas resultan estar
+        derechas.
+      </li>
+      <li>
+        <strong>Ninguna</strong> para un trípode fijo o una secuencia de
+        intervalómetro, donde las tomas ya están alineadas y medirlas es tiempo
+        perdido.
+      </li>
+    </ul>
+    <p>
+      Lo que ninguna alineación puede arreglar es un sujeto que se movió en vez de
+      una cámara que se movió, ni una fotografía hecha un paso más a la izquierda.
+      Moverse de lado cambia cuánto se desplaza lo cercano respecto a lo lejano, y
+      ninguna corrección única describe las dos cosas a la vez. Girar sobre el
+      sitio vale; andar no.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dónde encajan los archivos RAW</h2>
+    <p>
+      Puedes soltar CR2, CR3, NEF, ARW, DNG, RAF, RW2, ORF y el resto
+      directamente, y conviene ser exacto sobre qué les pasa, porque no es lo que
+      hace un revelador RAW.
+    </p>
+    <p>
+      Todo archivo RAW ya contiene un <strong>JPEG a tamaño completo que la cámara
+      reveló al disparar</strong>. Es lo que te enseña la pantalla trasera de la
+      cámara y lo que dibuja tu sistema operativo como miniatura. El apilador
+      encuentra esa imagen y la usa. No decodifica los datos del sensor.
+    </p>
+    <p>
+      Dos consecuencias, una buena y otra que conviene conocer:
+    </p>
+    <ul>
+      <li>
+        <strong>Es rápido.</strong> Encontrar la vista previa significa leer unos
+        kilobytes de directorio y después un solo trozo, así que una toma de
+        60&nbsp;MB abre casi tan rápido como un JPEG. Veinte de ellas abren en el
+        tiempo que un revelador RAW dedicaría a una. La página te enseña qué poco
+        de tus archivos ha leído realmente.
+      </li>
+      <li>
+        <strong>Es la interpretación de la cámara, no la tuya.</strong> Ocho bits
+        por canal, con el balance de blancos y el estilo de imagen que tuviera
+        puestos la cámara, y no los doce o catorce bits de datos lineales de
+        sensor que sacarías de un revelador.
+      </li>
+    </ul>
+    <p>
+      Para reducir ruido, estelas de estrellas, quitar transeúntes y apilado de
+      enfoque, ese intercambio casi siempre compensa: las vistas previas están a
+      resolución completa y son lo que habrías obtenido como JPEG de todas formas.
+      Si estás levantando mucho las sombras, o apilando para astrofotografía donde
+      el último bit de rango dinámico es todo el objetivo, revela antes las tomas
+      en un revelador RAW y apila los TIFF o los JPEG que dé. Entran igual.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué cuesta ejecutarlo</h2>
+    <p>
+      Conviene saberlo porque es la diferencia entre una pila que tarda ocho
+      segundos y una que tarda dos minutos.
+    </p>
+    <p>
+      Seis de los siete métodos solo necesitan recordar una cosa. Un máximo
+      corriente no se preocupa por las tomas que ya ha visto, y una suma corriente
+      tampoco, así que esos métodos leen cada toma exactamente una vez y usan la
+      misma memoria para cien tomas que para dos.
+    </p>
+    <p>
+      La mediana no puede funcionar así, porque no se puede saber el valor central
+      de un conjunto hasta tenerlo entero. Veinte tomas de 24 megapíxeles son
+      alrededor de 1,4&nbsp;GB de píxeles sostenidos a la vez, y eso no te lo da
+      ningún navegador, así que la imagen se corta en bandas horizontales y se
+      apila banda a banda: correcto, y más lento, porque las tomas se releen para
+      cada banda.
+    </p>
+    <p>
+      La herramienta calcula todo esto antes de que pulses el botón y te lo dice:
+      cómo de grande será el resultado, cuánta memoria necesita aproximadamente y
+      cuántas veces se decodificarán tus tomas. Si dice que la pasada irá por
+      bandas, bajar un escalón la resolución de trabajo divide la memoria entre
+      cuatro y casi siempre la convierte otra vez en una sola pasada &mdash; y si
+      estás apilando para quitar ruido, media resolución ya iba a verse más limpia
+      que la completa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Disparar pensando en esto</h2>
+    <p>
+      La mayor parte de la calidad de una pila se decide antes de que la vea
+      ningún programa.
+    </p>
+    <ul>
+      <li>
+        <strong>Haz más tomas de las que crees necesitar.</strong> La curva de la
+        raíz cuadrada es implacable en la parte baja y generosa en la alta: pasar
+        de cuatro a nueve tomas es un cambio más visible que pasar de veinte a
+        cuarenta.
+      </li>
+      <li>
+        <strong>No cambies la exposición entre tomas.</strong> Apilar da por hecho
+        que las tomas son de la misma escena con el mismo brillo. Fija la
+        exposición, o la herramienta estará promediando dos imágenes distintas.
+      </li>
+      <li>
+        <strong>Para quitar gente, espera entre tomas.</strong> Una ráfaga hecha
+        en dos segundos pilla a la misma persona en el mismo sitio en todas las
+        tomas, y la mediana la conserva. Diez tomas separadas por unos segundos
+        funcionan mucho mejor que cincuenta en ráfaga.
+      </li>
+      <li>
+        <strong>Para estelas de estrellas, deja huecos cortos.</strong> Aclarar
+        dibuja exactamente lo que registraron las tomas, así que una pausa entre
+        exposiciones se convierte en un guion visible en todas las estelas.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Nada de esto sale de tu equipo</h2>
+    <p>
+      Una pila de veinte tomas RAW es alrededor de un gigabyte de fotografías, que
+      es mucho para entregárselo a una web para que le saque la media. El
+      <a href="../../apilar-imagenes/">Apilador de imágenes</a> lee los archivos de
+      tu propio disco y hace la aritmética en tu propio navegador. No hay paso de
+      subida, ni cuenta, ni cola, y puedes comprobar esa afirmación como
+      comprobarías la de cualquiera: abre el panel de red de tu navegador mientras
+      se ejecuta, o simplemente desconéctate de internet y apílalas igualmente.
+    </p>
+    <p>
+      La pregunta relacionada &mdash; cómo saber, para cualquier herramienta, si
+      entregarle un archivo hacía falta &mdash; tiene
+      <a href="../es-seguro-subir-archivos/">su propia guía</a>.
+    </p>
+  </section>

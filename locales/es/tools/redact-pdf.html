@@ -1,0 +1,304 @@
+<!--
+  tools/redact-pdf/body.html, in Spanish.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+-->
+<main>
+  <!-- Paso 1 &mdash; el documento -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige tu PDF</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- Paso 2 &mdash; encontrarlas -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> Di qué tiene que irse</h2>
+
+    <p class="card-lede">
+      Escribe las palabras &mdash; un nombre, una dirección, una referencia
+      &mdash; y cada sitio donde aparecen se enumera abajo con la línea en la que
+      está. No se quita nada hasta el paso 4, y no se quita nada que no hayas
+      marcado.
+    </p>
+
+    <label class="find-label" for="terms">Palabras y frases, una por línea</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="Pérez&#10;Calle del Puente 14&#10;REF-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">Buscarlas</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>Distinguir mayúsculas</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>Solo palabras completas</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>O busca lo que suele ser sensible</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        Esto son patrones, y un patrón no distingue un número de teléfono de un
+        número de expediente. Los números de tarjeta y los IBAN se comprueban
+        contra sus propios dígitos de control; el resto se ofrece, nunca se marca
+        por ti, y merece la pena leer cada uno.
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">Marcar todas</button>
+        <button type="button" id="tick-none" class="ghost">Desmarcar todas</button>
+        <button type="button" id="clear-found" class="ghost danger">Vaciar la lista</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- Paso 3 &mdash; leer la página -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> Lee la página y ve eligiendo palabras</h2>
+
+    <p class="card-lede">
+      Este es el texto tal y como está guardado en el documento, en el orden en
+      que lo copiaría un lector, que no siempre es el orden en que está impreso.
+      Pulsa cualquier palabra para sacarla, vuelve a pulsarla para conservarla.
+      Todo lo tachado aquí es lo que va a desaparecer.
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; Anterior</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">Siguiente &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">Conservarlo todo en esta página</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="El texto de esta página"></div>
+  </section>
+
+  <!-- Paso 4 &mdash; hacerlo -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Saca las palabras</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>Pintar una caja negra donde estaba cada una</strong>
+        <span class="check-note">
+          Para que quien lea vea que se ha quitado algo. Aquí la caja es adorno y
+          no la censura: las letras ya han desaparecido del archivo cuando se
+          pinta. Desactívala y las palabras simplemente desaparecen, dejando el
+          espacio que ocupaban.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>Sacar las mismas palabras del resto del documento</strong>
+        <span class="check-note">
+          Marcadores, comentarios, notas y lo que se haya escrito en los campos
+          de formulario. Una palabra quitada de una página y dejada en un
+          marcador no está quitada. Las propiedades del documento se van diga lo
+          que diga esta casilla, y también el texto de reemplazo que un lector
+          copia en lugar de las letras de la página: los dos son el documento
+          diciendo la palabra, no otro sitio guardando una copia.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>Descartar los adjuntos y todo lo que se ejecute</strong>
+        <span class="check-note">
+          Un PDF puede llevar archivos enteros dentro y JavaScript que se ejecuta
+          al abrirlo. En ninguno de los dos se puede buscar las palabras que
+          estás quitando, y ninguno hace falta para leer un documento.
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Sacarlas</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Descargar</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">Eso no es un PDF, así que no hay texto dentro que sacar.</span>
+    <span data-phrase="load.encrypted">Este PDF tiene contraseña. Quitarle la
+      protección a un documento es otro trabajo distinto de sacarle palabras, y
+      esta herramienta no lo va a hacer a tus espaldas.</span>
+    <span data-phrase="load.broken">Este archivo no se ha podido abrir como PDF ({detail}).</span>
+    <span data-phrase="load.nopages">Se ha abierto, pero no se han encontrado páginas dentro.</span>
+    <span data-phrase="load.repaired">La tabla de referencias cruzadas de este
+      documento no coincidía con su contenido, así que se ha leído buscando
+      objetos. Eso es una reparación, y ha funcionado: revisa el resultado con
+      cuidado antes de mandarlo a ninguna parte.</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} de texto &middot; {size}</span>
+    <span data-phrase="doc.notext">{count} de estas páginas no tienen texto en
+      absoluto. Una página así es la imagen de una página, y aquí no hay nada que
+      esta herramienta pueda quitar: las palabras de la imagen se quedan
+      exactamente donde están.</span>
+    <span data-phrase="doc.unreadable">{count} letras de este documento no se han
+      podido leer como caracteres, porque las tipografías que usan no llevan un
+      mapa de sus glifos de vuelta al texto. Esas letras no se pueden buscar, así
+      que revisa las páginas en las que están en vez de fiarte de la
+      búsqueda.</span>
+    <span data-phrase="doc.scan">Algunas páginas llevan texto invisible colocado
+      sobre una imagen, que es como un escáner registra lo que su lector entendió
+      de la página. Quitar ese texto quita lo que encontrarían una búsqueda y una
+      copia. No cambia la imagen, y en la imagen las palabras siguen siendo
+      legibles.</span>
+
+    <span data-phrase="find.none">No ha coincidido nada en ninguna página.</span>
+    <span data-phrase="find.some">{count} en {pages}.</span>
+    <span data-phrase="find.more">Se enumeran las primeras {shown}. El resto está
+      encontrado y se sacará también si las marcas todas.</span>
+    <span data-phrase="find.terms">Escribe arriba una palabra, o elige un patrón, antes de pulsar Buscar.</span>
+
+    <span data-phrase="page.of">Página {number} de {total}</span>
+    <span data-phrase="page.picked">{count} se quitarán de esta página</span>
+    <span data-phrase="page.notext">En esta página no hay texto. O está en blanco,
+      o es la imagen de una página: un escaneo, una foto, una exportación que
+      dibujó sus palabras como formas. Nada de lo que hay en ella se puede buscar,
+      y nada de lo que hay en ella se puede quitar aquí.</span>
+    <span data-phrase="page.unreadable">{count} letras de esta página no se han
+      podido leer como caracteres. Aparecen abajo como &#9647;, y la búsqueda no
+      las encuentra.</span>
+    <span data-phrase="page.scan">El texto de esta página es invisible: está
+      colocado sobre una imagen de la página, que es como se hace buscable un
+      escaneo. Lo que saques aquí es lo que encontrarían una búsqueda y una copia.
+      La imagen conserva las palabras.</span>
+
+    <span data-phrase="run.summary">Se quitarán {words} en {pages}.</span>
+    <span data-phrase="run.nothing">Todavía no hay nada marcado. Busca una palabra en el paso 2, o pulsa una en el paso 3.</span>
+    <span data-phrase="run.editing">Sacando las palabras&hellip;</span>
+    <span data-phrase="run.writing">Escribiendo el documento&hellip;</span>
+    <span data-phrase="run.checking">Abriendo el archivo terminado y buscando dentro&hellip;</span>
+    <span data-phrase="run.failed">Algo ha salido mal al reescribir este documento ({detail}).</span>
+    <span data-phrase="run.cancelled">Cancelado. No se ha escrito nada.</span>
+
+    <span data-phrase="result.headline">{words} quitadas</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} cambiadas &middot; {boxes}</span>
+    <span data-phrase="check.good">Abierto otra vez aquí y buscado, igual que
+      haría un lector: ninguna de ellas está en el archivo terminado.</span>
+    <span data-phrase="check.partial">Abierto otra vez aquí y buscado: todas las
+      apariciones que marcaste han desaparecido, y las que dejaste siguen
+      ahí.</span>
+    <span data-phrase="check.survived">Este archivo NO se ha escrito. El documento
+      terminado se abrió otra vez y parte de lo que quitaste seguía
+      encontrándose dentro, lo que significa que la censura no estaba completa. No
+      se ofrece nada para descargar.</span>
+    <span data-phrase="check.pages">Este archivo NO se ha escrito. El documento
+      terminado ha vuelto con un número de páginas distinto del que tenía al
+      entrar, así que algo ha salido mal más allá de las palabras. No se ofrece
+      nada para descargar.</span>
+
+    <span data-phrase="fact.boxes">{count} pintadas sobre los huecos.</span>
+    <span data-phrase="fact.noboxes">No se ha pintado ninguna caja, así que las
+      palabras han desaparecido sin nada que diga dónde estaban.</span>
+    <span data-phrase="fact.elsewhere">Las mismas palabras se han sacado de {where}.</span>
+    <span data-phrase="fact.metadata">Las propiedades del documento y el paquete
+      XMP se han eliminado, así que el archivo terminado no dice qué lo hizo, ni
+      cuándo, ni cómo se llamaba antes.</span>
+    <span data-phrase="fact.carried">Se han descartado {attachments} y {actions}.</span>
+    <span data-phrase="fact.shared">Parte de lo que quitaste lo dibujaba un bloque
+      que el documento reutiliza en más de una página, así que ha desaparecido de
+      todas las páginas que lo dibujan. Eso es más de lo que marcaste, nunca
+      menos.</span>
+    <span data-phrase="fact.overimage">{count} de las letras que quitaste estaban
+      sobre una imagen de la misma página. Están fuera de la capa de texto y
+      siguen dentro de la imagen: un lector ya no puede buscarlas ni copiarlas, y
+      sigue pudiendo verlas.</span>
+    <span data-phrase="fact.untouched">Todo lo demás de cada página se ha copiado
+      byte a byte. No se ha recodificado ninguna tipografía, imagen ni
+      línea.</span>
+
+    <span data-phrase="count.pages">{count} páginas</span>
+    <span data-phrase="count.page">{count} página</span>
+    <span data-phrase="count.words">{count} palabras</span>
+    <span data-phrase="count.word">{count} palabra</span>
+    <span data-phrase="count.pieces">{count} fragmentos de texto</span>
+    <span data-phrase="count.piece">{count} fragmento de texto</span>
+    <span data-phrase="count.matches">{count} coincidencias</span>
+    <span data-phrase="count.match">{count} coincidencia</span>
+    <span data-phrase="count.boxes">{count} cajas negras</span>
+    <span data-phrase="count.box">{count} caja negra</span>
+    <span data-phrase="count.attachments">{count} adjuntos</span>
+    <span data-phrase="count.attachment">{count} adjunto</span>
+    <span data-phrase="count.actions">{count} acciones</span>
+    <span data-phrase="count.action">{count} acción</span>
+    <span data-phrase="count.hosts">{count} hosts</span>
+    <span data-phrase="count.host">{count} host</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">tu documento no ha ido a ninguna parte. {total}
+      archivos cargados, todos ellos de esta misma página. {platform}</span>
+    <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
+      herramienta no hace nunca. Vale la pena investigarlo. {platform}</span>
+    <span data-phrase="net.platform">Los scripts propios de la página para
+      publicidad, medición y el botón de donación se han cargado desde {hosts}; a
+      ninguno se le ha dado un documento, una palabra de uno ni nada de lo que
+      hayas buscado.</span>
+
+    <span data-phrase="finder.email">Direcciones de correo</span>
+    <span data-phrase="finder.card">Números de tarjeta</span>
+    <span data-phrase="finder.iban">Cuentas bancarias (IBAN)</span>
+    <span data-phrase="finder.nationalid">Números de la seguridad social</span>
+    <span data-phrase="finder.phone">Números de teléfono</span>
+  </div>
+</main>
