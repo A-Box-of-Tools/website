@@ -84,7 +84,7 @@ class Merging(unittest.TestCase):
         self.assertIn('3', str(caught.exception))
 
     def test_a_shorter_list_falls_back_and_is_counted(self):
-        """English grows a category; ten locales do not break that afternoon.
+        """English grows a category; the locales do not break that afternoon.
 
         This used to raise, and raising was wrong. A list that is short is a
         locale that was finished before English added an entry - which is the

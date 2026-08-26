@@ -80,8 +80,8 @@ import tool modules straight off the disk. So `./shared/` imports belong in
 import does not land on a file the tool ships.
 
 **A sentence a visitor reads never lives in the JavaScript.** `src/` is copied
-byte for byte into all eleven languages, so a string written there is English
-at ten of them. Put it in the markup - `#phrases` in the tool's `body.html`, or
+byte for byte into every language, so a string written there is English at all
+of them but one. Put it in the markup - `#phrases` in the tool's `body.html`, or
 `[ui.tool]` for something the whole frame says - and read it back with
 `phrase()` from `shared/js/phrases.js`, which every tool ships whether or not
 it asks. A module too deep to reach the DOM returns a *key* and lets the caller
@@ -112,7 +112,8 @@ three are generated.
 
 ## Languages
 
-Ten locales. Publishing is judged **per page**: a page that is not translated
+One folder under `locales/` per language. Publishing is judged **per page**: a
+page that is not translated
 is still built and readable, and is kept out of the sitemap, the hreflang sets
 and the switcher. `complete = true` claims only that the frame is translated,
 so shipping a tool does not break the finished languages.

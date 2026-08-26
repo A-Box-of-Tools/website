@@ -10,8 +10,8 @@ what the Content-Security-Policy allows. None of that is language. A locale
 supplies only the words, plus the one structural thing that genuinely differs
 between languages: the slug in the URL.
 
-That split is the whole design, and it is what stops eleven languages from
-becoming eleven sites to keep in step. Ship a new tool and every locale gains a
+That split is the whole design, and it is what stops the languages from
+becoming as many separate sites to keep in step. Ship a new tool and every locale gains a
 page for it the same day - in English until somebody translates it, but present,
 linked, and in the right category, because the category was never a translated
 string in the first place.
@@ -59,7 +59,7 @@ in the code.
 enforced by failing the build on any fallback at all. It reads like the strict
 option, and it is - but English is not finished either. This site ships a tool
 most weeks, and each one arrives untranslated in every language at once, so the
-rule failed the build for ten languages every time English grew. German hit it
+rule failed the build for every language every time English grew. German hit it
 three times while it was being written; the third time it was also holding up
 nine other languages that had nothing to do with it. A rule that turns a normal
 Tuesday into a broken build is not strictness, it is a rule measuring the wrong
@@ -726,8 +726,8 @@ def localize_tool(tool, locale, site):
 
     The returned tool is a copy. `dir` still points at the English source folder
     - the JavaScript, the stylesheet and the share card are the same files in
-    every language, and building eleven copies of a tool out of eleven folders
-    is the drift this whole arrangement exists to avoid.
+    every language, and building one copy of a tool per language out of as
+    many folders is the drift this whole arrangement exists to avoid.
     """
     slug = tool['slug']
     merged = dict(tool)

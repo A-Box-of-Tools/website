@@ -13,7 +13,7 @@
  * WHY THIS ONE IS SHORT
  *
  * PS3.6 has about four thousand entries. Shipping all of them would be a
- * quarter of a megabyte of JavaScript in eleven languages for the sake of tags
+ * quarter of a megabyte of JavaScript in every language for the sake of tags
  * a viewer never reads and a reader has never seen. What is here is everything
  * this tool actually uses - the pixel module, the modality and VOI transforms,
  * the geometry a slice needs - plus everything the identification panel has an
