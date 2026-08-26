@@ -1,0 +1,264 @@
+<!--
+  tools/dicom-viewer/body.html, in Hindi.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  कॉलम का शीर्षक "VR" वैसा ही रहता है। यह दो अक्षरों का वही कोड है जो फ़ाइल में
+  लिखा होता है, और स्टैंडर्ड में टैग खोजने वाला ठीक यही दो अक्षर खोजता है।
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> स्कैन चुनिए</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      पूरा फ़ोल्डर एक साथ खींचकर डालिए, और फ़ाइलें अपनी-अपनी सीरीज़ में वापस बँधकर
+      सही क्रम में लग जाएँगी। कुछ भी अपलोड नहीं होता, और आपकी फ़ाइलों में कुछ
+      दोबारा लिखा भी नहीं जाता।
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- व्यूअर। -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>यह तस्वीर PNG में सेव करें</button>
+        <button type="button" id="copy-header" class="ghost">हेडर कॉपी करें</button>
+        <button type="button" id="download-header" class="ghost">डाउनलोड करें</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">सीरीज़</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="आपकी चुनी हुई फ़ाइल से बनी, स्क्रीन पर दिख रही तस्वीर"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="तस्वीरें चलाएँ">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="कौन-सी स्लाइस या कौन-सा फ़्रेम दिखाया जा रहा है">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">तस्वीर पर खींचने से क्या होता है</legend>
+        <label><input type="radio" name="mode" value="window" checked> विंडो और लेवल</label>
+        <label><input type="radio" name="mode" value="pan"> खिसकाएँ</label>
+        <label><input type="radio" name="mode" value="measure"> नापें</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">ज़ूम</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">फ़िट करें</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">विंडो</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">केंद्र</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">चौड़ाई</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> उलटें</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> मरीज़ की जानकारी तस्वीर पर दिखाएँ</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- यह फ़ाइल क्या है। -->
+  <section class="card" id="facts-card" hidden>
+    <h2>यह फ़ाइल क्या है</h2>
+    <dl class="facts">
+      <div><dt>ऑब्जेक्ट</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>तरीका</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>तस्वीर</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>किस रूप में रखी</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfer syntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>पिक्सल की दूरी</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>मानों का दायरा</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>फ़ाइल</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- उस इंसान के बारे में क्या लिखा है। -->
+  <section class="card" id="identity-card" hidden>
+    <h2>इस फ़ाइल में मरीज़ की पहचान क्या कराता है</h2>
+    <p class="card-lede">
+      यह सब इसी फ़ाइल से, इसी डिवाइस पर पढ़ा गया है और किसी और को नहीं दिखाया गया।
+      यह टूल कुछ लिखता नहीं है। न यह इसमें से कुछ निकाल सकता है, न इसने इसमें से
+      कुछ कहीं भेजा है। यह यहाँ इसलिए है कि स्कैन नाम से कहीं ज़्यादा कुछ लिए चलता
+      है, और बाकी सब ठीक वही है जो लापरवाही से की गई गुमनामी के बाद भी बचा रह जाता
+      है।
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- फ़ाइल का हर टैग। -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>फ़ाइल का हर टैग</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">टैग खोजें</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="नाम, नंबर या मान से खोजें">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">इस फ़ाइल का हर एलिमेंट</caption>
+        <thead>
+          <tr>
+            <th scope="col">टैग</th>
+            <th scope="col">VR</th>
+            <th scope="col">नाम</th>
+            <th scope="col">मान</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">तस्वीर पर आड़ा खींचिए तो विंडो चौड़ी या सँकरी होती है, और ऊपर-नीचे खींचिए तो उसका केंद्र सरकता है। दोनों संख्याएँ नीचे दी हैं, और उन्हें टाइप करने से भी यही होता है।</span>
+    <span data-phrase="mode.pan">तस्वीर को उसके फ़्रेम के भीतर सरकाने के लिए खींचिए। माउस का पहिया ज़ूम करता है, और &lsquo;फ़िट करें&rsquo; सब कुछ वापस कर देता है।</span>
+    <span data-phrase="mode.measure">नापने के लिए तस्वीर पर एक रेखा खींचिए। जहाँ फ़ाइल बताती है कि उसके पिक्सल कितनी दूर हैं, वहाँ नतीजा मिलीमीटर में आता है। जहाँ नहीं बताती, वहाँ पिक्सल में आता है और यह कह भी दिया जाता है।</span>
+
+    <span data-phrase="probe.value">कॉलम {column}, पंक्ति {row} पर {value}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; यह फ़ाइल नहीं बताती कि उसके पिक्सल कितनी दूर हैं, इसलिए यह मिलीमीटर में नहीं आ सकता</span>
+
+    <span data-phrase="stack.position">हर स्लाइस शरीर में कहाँ है, इस हिसाब से लगाई गई हैं, और यही वह क्रम है जिसमें मशीन ने उन्हें लिया।</span>
+    <span data-phrase="stack.number">Instance Number से लगाई गई हैं, क्योंकि इन फ़ाइलों में शरीर में जगह का वह ब्योरा है ही नहीं जिससे क्रम लगाया जाए।</span>
+    <span data-phrase="stack.gap">स्लाइस के बीच की दूरी हर जगह एक जैसी नहीं है, इसलिए इस सीरीज़ में कम से कम एक स्लाइस गायब है।</span>
+
+    <span data-phrase="pixels.none">इस फ़ाइल के पिक्सल {codec} से कंप्रेस किए गए हैं। कोई भी ब्राउज़र उसे डीकोड नहीं कर सकता, और यह पेज उसका डीकोडर साथ नहीं लाता। फ़ाइल के बारे में बाकी सब नीचे है।</span>
+    <span data-phrase="pixels.failed">तस्वीर डीकोड नहीं हो सकी: {reason}. नीचे वाला हेडर पूरा पढ़ा गया है।</span>
+    <span data-phrase="pixels.absent">इस फ़ाइल में पिक्सल का डेटा है ही नहीं। यह एक हेडर है, और उसमें जो कुछ है वह नीचे है।</span>
+    <span data-phrase="pixels.jpeg">ये पिक्सल baseline JPEG हैं, इसलिए इन्हें ब्राउज़र के डीकोडर ने खोला है और जो वापस आता है वह आठ बिट गहरा है। विंडो काम करती रहती है, पर मशीन ने जितनी बारीकी दर्ज की थी वह पूरी नहीं है।</span>
+
+    <span data-phrase="tags.count">{total} में से {shown} एलिमेंट। {hidden} और हैं।</span>
+    <span data-phrase="tags.all">इस फ़ाइल के सभी {total} एलिमेंट।</span>
+    <span data-phrase="tags.found">&lsquo;{query}&rsquo; से {total} एलिमेंट मिलते हैं।</span>
+    <span data-phrase="tags.found.one">&lsquo;{query}&rsquo; से एक एलिमेंट मिलता है।</span>
+    <span data-phrase="tags.none">&lsquo;{query}&rsquo; से कुछ नहीं मिलता।</span>
+    <span data-phrase="tags.more">बाकी {count} दिखाएँ</span>
+    <span data-phrase="tags.private">प्राइवेट एलिमेंट</span>
+    <span data-phrase="tags.unknown">इस शब्दकोश में नहीं</span>
+    <span data-phrase="tags.guessed">फ़ाइल ने यह नहीं बताया। यह वह है जो डेटा डिक्शनरी इस टैग के बारे में बताती है।</span>
+
+    <span data-phrase="working.one">{name} पढ़ा जा रहा है&hellip;</span>
+    <span data-phrase="working.many">{total} में से {at} पढ़ा जा रहा है&hellip;</span>
+    <span data-phrase="error.none">इनमें से कुछ भी DICOM की तरह नहीं पढ़ा जा सका। {why} यह टूल DICOM फ़ॉर्मैट को ही पढ़ता है, इसलिए दूसरी फ़ाइलों के बारे में यह कुछ नहीं कह सकता।</span>
+    <span data-phrase="error.skipped.one">एक फ़ाइल छोड़ दी गई: {files}</span>
+    <span data-phrase="error.skipped">{count} फ़ाइलें छोड़ दी गईं: {files}</span>
+
+    <span data-phrase="series.number">सीरीज़ {number}</span>
+    <span data-phrase="series.files.one">1 फ़ाइल</span>
+    <span data-phrase="series.files">{count} फ़ाइलें</span>
+    <span data-phrase="stack.spacing">स्लाइस आपस में {gap} की दूरी पर हैं।</span>
+
+    <span data-phrase="at.position">{total} में से {at}</span>
+    <span data-phrase="net.clean">आपका स्कैन कहीं नहीं गया। {total} फ़ाइलें लोड हुईं,
+      और वे सब इसी साइट की अपनी हैं। {platform}</span>
+    <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल ऐसा
+      कभी नहीं करता। यह देखने लायक बात है। {platform}</span>
+    <span data-phrase="net.platform.one">विज्ञापन, माप और दान वाले बटन के लिए साइट
+      की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को न कोई स्कैन मिला, न
+      उसका कोई पिक्सल, न उसके हेडर का कोई शब्द।</span>
+    <span data-phrase="net.platform.many">विज्ञापन, माप और दान वाले बटन के लिए साइट
+      की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को न कोई स्कैन मिला, न
+      उसका कोई पिक्सल, न उसके हेडर का कोई शब्द।</span>
+    <span data-phrase="at.frame">{total} में से फ़्रेम {at}</span>
+    <span data-phrase="at.instance">इंस्टेंस {number}</span>
+
+    <span data-phrase="window.file">फ़ाइल से</span>
+    <span data-phrase="window.file.n">फ़ाइल से, {n}</span>
+    <span data-phrase="window.full">इस तस्वीर का पूरा दायरा</span>
+    <span data-phrase="window.custom">हाथ से सेट की हुई</span>
+    <span data-phrase="window.soft">नरम ऊतक</span>
+    <span data-phrase="window.lung">फेफड़ा</span>
+    <span data-phrase="window.bone">हड्डी</span>
+    <span data-phrase="window.brain">दिमाग़</span>
+    <span data-phrase="window.liver">जिगर</span>
+    <span data-phrase="window.mediastinum">मीडियास्टिनम</span>
+    <span data-phrase="window.angio">एंजियोग्राफ़ी</span>
+
+    <span data-phrase="facts.frames">{count} फ़्रेम</span>
+    <span data-phrase="facts.nopixels">पिक्सल का डेटा नहीं</span>
+    <span data-phrase="facts.nospacing">इस फ़ाइल में नहीं बताया गया</span>
+    <span data-phrase="facts.signed">चिह्न सहित</span>
+    <span data-phrase="facts.unsigned">चिह्न रहित</span>
+    <span data-phrase="facts.stored.one">{bits} बिट, {sign}, हर पिक्सल पर 1 चैनल, {photometric}</span>
+    <span data-phrase="facts.stored">{bits} बिट, {sign}, हर पिक्सल पर {samples} चैनल, {photometric}</span>
+    <span data-phrase="facts.range">{low} से {high} तक</span>
+    <span data-phrase="facts.colour">रंगीन &mdash; नापा हुआ कुछ बताने को नहीं</span>
+
+    <span data-phrase="identity.clean">इस फ़ाइल में कुछ भी किसी इंसान का नाम या नंबर नहीं बताता। स्कैन आम तौर पर जो पहचान लिए चलता है वह यहाँ या तो है ही नहीं या खाली है।</span>
+    <span data-phrase="identity.uids">इसके अलावा यह अपने {count} पहचान-चिह्न लिए चलती है, यानी जाँच, सीरीज़ और इंस्टेंस के UID। इनमें से कोई नाम नहीं है, पर हर एक उस आर्काइव तक लौटने की एकदम सटीक कुंजी है जहाँ से यह फ़ाइल आई।</span>
+    <span data-phrase="identity.private">इनके साथ {count} प्राइवेट एलिमेंट भी हैं जिनका मतलब कहीं छपा नहीं है। कुछ मशीनें उनमें से किसी एक में मरीज़ के नाम की दूसरी कॉपी रख देती हैं।</span>
+
+    <span data-phrase="copied">कॉपी हो गया।</span>
+    <span data-phrase="copy.failed">आपके ब्राउज़र ने इस पेज को कॉपी करने से रोक दिया। बगल वाला बटन वही टेक्स्ट एक फ़ाइल में लिख देता है।</span>
+    <span data-phrase="saved">{name} सेव हो गया।</span>
+  </div>
+</main>

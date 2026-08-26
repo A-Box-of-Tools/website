@@ -1,0 +1,373 @@
+<!--
+  tools/document-scanner/body.html, in Hindi.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+-->
+<main>
+  <!-- कदम 1 &mdash; तस्वीरें -->
+  <section class="card">
+    <h2><span class="step">1</span> तस्वीरें चुनिए</h2>
+
+    <p class="card-lede">
+      हर पन्ने की एक तस्वीर, कहीं ऊपर से ली हुई। पूरा काग़ज़ फ़्रेम में होना चाहिए
+      और चारों कोने दिखने चाहिए या लगभग दिखने चाहिए। बाकी सब, यानी तिरछापन, छाया
+      और नीचे की मेज़, वही है जिसके लिए यह टूल बना है। कई तस्वीरें जोड़िए और वे उसी
+      क्रम में एक डॉक्यूमेंट के पन्ने बन जाएँगी जिसमें आपने उन्हें जोड़ा।
+    </p>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+
+    <div id="strip-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="detect-all" class="ghost">सभी पन्नों पर दोबारा ढूँढ़ें</button>
+        <button type="button" id="clear-all" class="ghost danger">सब हटाएँ</button>
+      </div>
+    </div>
+
+    <ul id="page-strip" class="page-strip"></ul>
+  </section>
+
+  <!-- कदम 2 &mdash; कोने -->
+  <section class="card" id="edit-card">
+    <h2><span class="step">2</span> कोनों को काग़ज़ पर बिठाइए</h2>
+
+    <p id="edit-empty" class="field-summary">
+      कोई तस्वीर चुनिए, वह यहाँ आ जाएगी और उसके चारों कोने आपके लिए ढूँढ़े हुए
+      होंगे।
+    </p>
+
+    <div id="edit-controls" hidden>
+      <p class="stage-hint">
+        तस्वीर पर कहीं भी छूइए और सबसे पास वाला कोना आपकी उँगली के पास आ जाएगा। उसे
+        खींचकर काग़ज़ के कोने पर ले जाइए। <kbd>Tab</kbd> से आप कीबोर्ड के ज़रिए
+        किसी कोने तक पहुँच सकते हैं, तीर की कुंजियाँ उसे एक पिक्सल सरकाती हैं और
+        <kbd>Shift</kbd> के साथ दस। इसमें कुछ भी आख़िरी नहीं है, क्योंकि स्कैन वहीं
+        से लिया जाता है जहाँ चारों कोने आख़िर में पहुँचते हैं।
+      </p>
+
+      <!-- The photo is a canvas rather than an <img> because it is drawn at
+           screen size from the decoded picture, and because the same canvas is
+           what the corner finder reads. The outline over it is an SVG polygon
+           in percentages, so it needs no redraw when the window changes. -->
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="photo"></canvas>
+        </div>
+      </div>
+
+      <p id="detect-note" class="hint-line" role="status" aria-live="polite"></p>
+
+      <div class="frame-actions">
+        <button type="button" id="detect-one" class="ghost">कोने दोबारा ढूँढ़ें</button>
+        <button type="button" id="whole-photo" class="ghost">पूरी तस्वीर लें</button>
+        <button type="button" id="turn-left" class="ghost">बाएँ घुमाएँ</button>
+        <button type="button" id="turn-right" class="ghost">दाएँ घुमाएँ</button>
+        <button type="button" id="undo" class="ghost" disabled>वापस लें</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- कदम 3 &mdash; साफ़ करना -->
+  <section class="card" id="clean-card">
+    <h2><span class="step">3</span> साफ़ कीजिए</h2>
+
+    <p id="clean-empty" class="field-summary">
+      सीधा करने लायक कोई तस्वीर आते ही सीधा किया हुआ पन्ना यहाँ दिखने लगेगा।
+    </p>
+
+    <div id="clean-controls" hidden>
+      <p class="card-lede">
+        नीचे जो है वही असली नतीजा है, उसी कोड का बनाया हुआ जो फ़ाइल लिखता है, सीधा
+        किया हुआ और असमान रोशनी को भाग देकर हटाया हुआ। जब तक आप चुनते हैं तब तक वह
+        स्क्रीन पर स्क्रीन की नाप में बनता है, और फ़ाइल ख़ुद तस्वीर के रिज़ॉल्यूशन
+        में बनती है।
+      </p>
+
+      <div class="result-wrap">
+        <canvas id="scan-preview" class="scan-preview"></canvas>
+        <p id="scan-busy" class="progress-label" role="status" aria-live="polite" hidden>
+          सीधा किया जा रहा है&hellip;
+        </p>
+      </div>
+
+      <ul id="scan-facts" class="result-facts"></ul>
+
+      <fieldset class="options" id="mode-group">
+        <legend>रोशनी और रंग का क्या किया जाए</legend>
+
+        <label class="check">
+          <input type="radio" name="mode" value="colour" checked>
+          <span>
+            <strong>रंग, बराबर किया हुआ</strong>
+            <span class="check-note">
+              काग़ज़ को पूरे पन्ने पर नापकर भाग दे दिया जाता है, जिससे छाया चली
+              जाती है और काग़ज़ फिर सफ़ेद हो जाता है, जबकि मुहर, नीली स्याही के
+              दस्तख़त या हाइलाइट की गई लाइन अपना रंग बनाए रखते हैं। जब रंग
+              डॉक्यूमेंट का हिस्सा हो तब यही मोड चाहिए।
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="grey">
+          <span>
+            <strong>ग्रेस्केल</strong>
+            <span class="check-note">
+              वही बराबर करना, बिना रंग के। रंग से छोटा, और किसी तस्वीर या दस्तख़त
+              के साथ काले-सफ़ेद से ज़्यादा नरम।
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="mono">
+          <span>
+            <strong>काला-सफ़ेद</strong>
+            <span class="check-note">
+              हर पिक्सल का फ़ैसला पूरे पन्ने के किसी एक नंबर के बजाय उसके अपने
+              पड़ोस से होता है, और ठीक यही छाया के भीतर लिखे को पढ़ने लायक रखता
+              है। स्कैन को छोटा यही बनाता है। बीस पन्ने का अनुबंध इसमें एक
+              मेगाबाइट से नीचे रह जाता है, जबकि तस्वीरों के रूप में वह पंद्रह के
+              आसपास होता। इस मोड में मध्यम छायाएँ नहीं होतीं, इसलिए जिस पन्ने पर
+              तस्वीर हो उसे यह नहीं चुनना चाहिए।
+            </span>
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="radio" name="mode" value="photo">
+          <span>
+            <strong>जैसा है वैसा रहने दें</strong>
+            <span class="check-note">
+              सीधा किया हुआ, और कुछ नहीं। उस पन्ने के लिए जहाँ काग़ज़ ख़ुद मायने
+              रखता है, जैसे कुछ पुराना, कुछ रंगीन, या कोई तस्वीर।
+            </span>
+          </span>
+        </label>
+
+        <div class="option-row" id="strength-row">
+          <label for="strength">कितना ज़ोर</label>
+          <div class="inline-pair">
+            <input type="range" id="strength" min="0" max="100" step="5" value="50">
+            <output id="strength-value">50</output>
+          </div>
+        </div>
+
+        <p class="field-summary" id="strength-note"></p>
+      </fieldset>
+
+      <p class="hint-line">
+        यह सेटिंग हर पन्ने पर लागू होती है। एक ही डॉक्यूमेंट के अलग-अलग तरह से
+        साफ़ किए गए पन्ने दो डॉक्यूमेंट जैसे दिखते हैं।
+      </p>
+    </div>
+  </section>
+
+  <!-- कदम 4 &mdash; फ़ाइल -->
+  <section class="card" id="save-card">
+    <h2><span class="step">4</span> डॉक्यूमेंट सेव कीजिए</h2>
+
+    <p class="card-lede">
+      PDF यहीं बनती है, इसी पेज की मेमोरी में, एक-एक पन्ना करके। इस टूल के दूसरी
+      तरफ़ कोई सर्वर नहीं है जिसे सैलरी स्लिप, पासपोर्ट या अनुबंध भेजा जा सके, और
+      कोड में ऐसा कुछ नहीं है जो होता तो भी ऐसा करता।
+    </p>
+
+    <div class="settings">
+      <div class="field">
+        <label for="page-size">पन्ने की नाप</label>
+        <select id="page-size">
+          <option value="fit" selected>काग़ज़ को पन्ने के हिसाब से रखें</option>
+          <option value="a4">A4 &mdash; 210 &times; 297 mm</option>
+          <option value="letter">Letter &mdash; 8.5 &times; 11 in</option>
+          <option value="legal">Legal &mdash; 8.5 &times; 14 in</option>
+          <option value="a5">A5 &mdash; 148 &times; 210 mm</option>
+        </select>
+        <p class="field-note" id="size-note"></p>
+      </div>
+
+      <div class="field" id="dpi-field">
+        <label for="dpi">छपाई का रिज़ॉल्यूशन</label>
+        <select id="dpi">
+          <option value="150">150 DPI</option>
+          <option value="200" selected>200 DPI</option>
+          <option value="300">300 DPI &mdash; दफ़्तर की मशीन</option>
+          <option value="600">600 DPI</option>
+        </select>
+        <p class="field-note">
+          इतने पिक्सल वाले काग़ज़ को कितना बड़ा कहा जाएगा, बस यही। इससे यह बदलता है
+          कि डॉक्यूमेंट किस नाप में छपेगा, और स्कैन का एक भी पिक्सल नहीं बदलता।
+        </p>
+      </div>
+
+      <div class="field" id="margin-field" hidden>
+        <label for="margin">हाशिया</label>
+        <div class="inline-pair">
+          <input type="number" id="margin" min="0" max="50" step="1" value="10"
+                 aria-label="हाशिया, मिलीमीटर में">
+          <span class="unit-label">mm</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="max-side">सबसे लंबी भुजा</label>
+        <select id="max-side">
+          <option value="1600">1600 पिक्सल &mdash; छोटा</option>
+          <option value="2400" selected>2400 पिक्सल</option>
+          <option value="3500">3500 पिक्सल</option>
+          <option value="0">जितना बड़ा तस्वीर इजाज़त दे</option>
+        </select>
+        <p class="field-note">
+          सीधे किए गए पन्ने की ऊपरी सीमा। काग़ज़ की तस्वीर में उस काग़ज़ की ज़रूरत
+          से कहीं ज़्यादा पिक्सल होते हैं, और लंबी भुजा पर 2400 का मतलब A4 पर करीब
+          200 DPI है।
+        </p>
+      </div>
+
+      <div class="field" id="quality-field">
+        <label for="quality">गुणवत्ता</label>
+        <div class="inline-pair">
+          <input type="range" id="quality" min="40" max="100" step="1" value="82">
+          <output id="quality-value">82%</output>
+        </div>
+        <p class="field-note">
+          रंग और ग्रेस्केल मोड के लिए, जो JPEG में सेव होते हैं। काले-सफ़ेद पन्ने
+          ठीक-ठीक सेव होते हैं, इसलिए उन पर इसका कोई असर नहीं होता।
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="title">डॉक्यूमेंट का शीर्षक <span class="optional">(वैकल्पिक)</span></label>
+        <input type="text" id="title" maxlength="120" placeholder="खाली छोड़ने पर PDF में कोई शीर्षक नहीं जाता">
+        <p class="field-note">
+          पन्नों के अलावा डॉक्यूमेंट में लिखी जाने वाली यही एक चीज़ है। न तारीख़, न
+          लेखक, और न इस डिवाइस के बारे में कुछ। देखिए <code>src/document.js</code>।
+        </p>
+      </div>
+    </div>
+
+    <div class="run-row">
+      <button type="button" id="save-pdf" class="primary big" disabled>PDF में सेव करें</button>
+      <button type="button" id="save-images" class="ghost big" disabled>पन्ने इमेज में सेव करें</button>
+    </div>
+
+    <p id="busy" class="progress-label" role="status" aria-live="polite" hidden></p>
+
+    <div id="result" class="results" hidden>
+      <div class="results-head">
+        <h3>तैयार फ़ाइल</h3>
+        <a id="download" class="primary as-button" href="#" download>डाउनलोड करें</a>
+      </div>
+      <ul id="result-facts" class="result-facts"></ul>
+      <p class="hint-line">
+        भेजने से पहले इसे खोलकर देखिए। डॉक्यूमेंट में वही है जो कदम 3 में स्क्रीन
+        पर था, हर पन्ने के लिए।
+      </p>
+    </div>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on this page. They live here rather than
+    in src/, because src/ is copied byte for byte into all eleven languages and
+    a sentence written there would be English in ten of them. See
+    shared/js/phrases.js.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="detect.found">चारों कोने मिल गए। इन्हें जाँच लीजिए और जो
+      हटे हुए हैं उन्हें खींचकर ठीक कर दीजिए।</span>
+    <span data-phrase="detect.unsure">काग़ज़ के किनारे इतने साफ़ नहीं थे कि भरोसा
+      किया जा सके। ये कोने अंदाज़े से लगाए गए हैं, इसलिए आगे बढ़ने से पहले इन्हें
+      खींचकर काग़ज़ पर ले जाइए।</span>
+    <span data-phrase="detect.nothing">इस तस्वीर में कोई काग़ज़ पहचाना नहीं जा सका,
+      इसलिए कोने उसके किनारों पर रखे हैं। इन्हें खींचकर काग़ज़ पर ले जाइए।</span>
+    <span data-phrase="detect.flat">इस तस्वीर में ढूँढ़ने को कुछ है ही नहीं, इसमें
+      कोई किनारा है ही नहीं।</span>
+    <span data-phrase="detect.tiny">यह तस्वीर इतनी छोटी है कि इसमें कोई काग़ज़
+      ढूँढ़ा नहीं जा सकता।</span>
+    <span data-phrase="detect.edited">अब ये कोने आपके हैं। &lsquo;कोने दोबारा
+      ढूँढ़ें&rsquo; तस्वीर को शुरू से नापता है।</span>
+
+    <span data-phrase="corner.tl">ऊपर बायाँ कोना</span>
+    <span data-phrase="corner.tr">ऊपर दायाँ कोना</span>
+    <span data-phrase="corner.br">नीचे दायाँ कोना</span>
+    <span data-phrase="corner.bl">नीचे बायाँ कोना</span>
+    <span data-phrase="corner.at">{corner}, आड़े में {x} और खड़े में {y} पर। तीर की
+      कुंजियाँ इसे सरकाती हैं, और Shift के साथ एक बार में दस पिक्सल।</span>
+
+    <span data-phrase="page.select">पन्ना {index} बदलें</span>
+    <span data-phrase="page.remove">पन्ना {index} हटाएँ</span>
+    <span data-phrase="page.earlier">पन्ना {index} आगे करें</span>
+    <span data-phrase="page.later">पन्ना {index} पीछे करें</span>
+    <span data-phrase="page.count">{count} पन्ना</span>
+    <span data-phrase="page.counts">{count} पन्ने</span>
+
+    <span data-phrase="paper.a">A4 या A5</span>
+    <span data-phrase="paper.letter">US Letter</span>
+    <span data-phrase="paper.legal">US Legal</span>
+    <span data-phrase="paper.card">विज़िटिंग कार्ड</span>
+    <span data-phrase="shape.known">पन्ना {ratio} निकला, और यह {paper} का आकार
+      है।</span>
+    <span data-phrase="shape.sideways">पन्ना {ratio} निकला, और यह आड़े रखे {paper}
+      का आकार है।</span>
+    <span data-phrase="shape.unknown">पन्ना {ratio} निकला, और यह कोई मानक नाप नहीं
+      है।</span>
+
+    <span data-phrase="method.perspective">आकार तस्वीर के परिप्रेक्ष्य से वापस
+      निकाला गया है, इसलिए यह काग़ज़ का आकार है, वह नहीं जिसमें वह तस्वीर में
+      दिखा।</span>
+    <span data-phrase="method.edges">तस्वीर सामने से ली गई थी, इसलिए आकार सीधे
+      किनारों से नापा गया है।</span>
+
+    <span data-phrase="quality.good">{width} गुणा {height} पिक्सल, इस नाप के पन्ने
+      पर करीब {dpi} DPI, छापने के लिए काफ़ी।</span>
+    <span data-phrase="quality.fair">{width} गुणा {height} पिक्सल, इस नाप के पन्ने
+      पर करीब {dpi} DPI। स्क्रीन पर ठीक है, काग़ज़ पर थोड़ा ढीला।</span>
+    <span data-phrase="quality.low">{width} गुणा {height} पिक्सल, इस नाप के पन्ने
+      पर करीब {dpi} DPI। अगर इसे छापना है तो और पास जाइए।</span>
+    <span data-phrase="quality.pixels">{width} गुणा {height} पिक्सल।</span>
+    <span data-phrase="coverage.note">काग़ज़ ने तस्वीर का {percent}% हिस्सा
+      भरा।</span>
+    <span data-phrase="coverage.small">काग़ज़ ने तस्वीर का सिर्फ़ {percent}% हिस्सा
+      भरा, यानी आपने जो खींचा उसका ज़्यादातर मेज़ थी। अगली बार और पास से।</span>
+
+    <span data-phrase="strength.gentle">हल्का। काग़ज़ बराबर हो जाता है और उससे
+      ज़्यादा कुछ नहीं। उस पन्ने के लिए जिस पर हल्की पेंसिल या कोई तस्वीर
+      हो।</span>
+    <span data-phrase="strength.middling">आम सेटिंग। काग़ज़ फिर सफ़ेद हो जाता है और
+      छपा हुआ टेक्स्ट फिर काला।</span>
+    <span data-phrase="strength.hard">तेज़। जो कुछ धूसर है उसे काले या सफ़ेद की
+      तरफ़ धकेल दिया जाता है। सिर्फ़ छपे टेक्स्ट वाले पन्ने पर यह सबसे साफ़ है और
+      जिस पर कोई तस्वीर हो उस पर विनाशकारी।</span>
+
+    <span data-phrase="busy.page">{total} में से पन्ना {done}&hellip;</span>
+    <span data-phrase="busy.writing">डॉक्यूमेंट लिखा जा रहा है&hellip;</span>
+
+    <span data-phrase="result.pdf">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.images">{name} &mdash; {size}, {pages}.</span>
+    <span data-phrase="result.mono">हर पिक्सल पर एक बिट में सेव किया और ठीक-ठीक
+      कंप्रेस किया, और इसीलिए यह इतना छोटा है।</span>
+    <span data-phrase="result.jpeg">पन्ने आपकी चुनी हुई गुणवत्ता पर JPEG में सेव
+      किए गए हैं।</span>
+    <span data-phrase="result.png">पन्ने PNG में सेव किए गए हैं, जो बिना नुकसान का
+      है और दो रंगों वाली तस्वीर को यही चाहिए। JPEG एक साथ बड़ा भी होता और हर अक्षर
+      के चारों ओर धुँधला भी।</span>
+    <span data-phrase="result.clean">न तारीख़, न लेखक, न कंप्यूटर का नाम। पन्नों के
+      अलावा डॉक्यूमेंट में सिर्फ़ इस टूल का नाम है।</span>
+
+    <span data-phrase="size.fit">हर काग़ज़ को वही नाप मिलती है जो उसके अपने पन्ने
+      की वाकई है, ऊपर चुने गए रिज़ॉल्यूशन पर। कहीं पट्टियाँ लगाकर जगह नहीं भरी
+      जाती।</span>
+    <span data-phrase="size.named">हर पन्ना {name} काग़ज़ पर, हाशिये के भीतर रखा
+      जाता है, चाहे उसका आकार जो भी निकला हो।</span>
+
+    <span data-phrase="error.decode">यह ब्राउज़र {name} को नहीं खोल सका। अगर यह
+      किसी iPhone की HEIC तस्वीर है तो पहले उसे बदल लीजिए।</span>
+    <span data-phrase="error.none">पहले कम से कम एक तस्वीर चुनिए।</span>
+    <span data-phrase="error.failed">फ़ाइल बनाते समय कुछ गड़बड़ हो गई: {detail}</span>
+  </div>
+</main>

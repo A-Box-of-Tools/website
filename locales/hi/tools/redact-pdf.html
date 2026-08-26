@@ -1,0 +1,297 @@
+<!--
+  tools/redact-pdf/body.html, in Hindi.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+
+  count.* की जोड़ियाँ दोहरी ही रहती हैं, क्योंकि हिंदी में एकवचन और बहुवचन का
+  फ़र्क़ है और यहाँ वे वाकई दो रूप लिए हुए हैं।
+-->
+<main>
+  <!-- कदम 1 &mdash; डॉक्यूमेंट -->
+  <section class="card">
+    <h2><span class="step">1</span> PDF चुनिए</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- कदम 2 &mdash; खोजना -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> बताइए कि क्या हटना है</h2>
+
+    <p class="card-lede">
+      शब्द टाइप कीजिए, जैसे कोई नाम, पता या केस नंबर, और वे जहाँ-जहाँ आते हैं वह सब
+      नीचे उनकी लाइन के साथ गिना दिया जाएगा। कदम 4 तक कुछ नहीं हटता, और जो आपने
+      चुना नहीं वह कभी नहीं हटता।
+    </p>
+
+    <label class="find-label" for="terms">शब्द और वाक्यांश, हर लाइन पर एक</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="शर्मा&#10;14, माल रोड&#10;केस-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">खोजें</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>छोटे-बड़े अक्षर का ध्यान रखें</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>सिर्फ़ पूरे शब्द</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>या वह खोजिए जो आम तौर पर संवेदनशील होता है</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        ये पैटर्न हैं, और कोई पैटर्न फ़ोन नंबर और केस नंबर में फ़र्क नहीं कर सकता।
+        कार्ड नंबर और IBAN अपने ही जाँच-अंकों से परखे जाते हैं, बाकी सब सुझाए जाते
+        हैं और आपके लिए कभी चुने नहीं जाते, और हर नतीजे को एक बार देख लेना चाहिए।
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">सब चुनें</button>
+        <button type="button" id="tick-none" class="ghost">सब हटाएँ</button>
+        <button type="button" id="clear-found" class="ghost danger">सूची खाली करें</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- कदम 3 &mdash; पन्ना पढ़ना -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> पन्ना पढ़िए और उसमें से शब्द चुनिए</h2>
+
+    <p class="card-lede">
+      यह वही टेक्स्ट है जैसे वह डॉक्यूमेंट में रखा गया है, उसी क्रम में जिसमें कोई
+      पढ़ने वाला उसे कॉपी करता, और वह क्रम हमेशा वही नहीं होता जिसमें वह छपा है।
+      किसी शब्द पर क्लिक कीजिए और वह हट जाएगा, दोबारा क्लिक कीजिए और वह रह जाएगा।
+      यहाँ जिस पर लकीर खिंची है वही जाने वाला है।
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; पीछे</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">आगे &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">इस पन्ने पर सब रहने दें</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="इस पन्ने का टेक्स्ट"></div>
+  </section>
+
+  <!-- कदम 4 &mdash; करना -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> शब्द हटाइए</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>जहाँ हर शब्द था वहाँ एक काला डिब्बा बनाएँ</strong>
+        <span class="check-note">
+          ताकि पढ़ने वाले को दिखे कि कुछ हटाया गया है। यहाँ वह डिब्बा सजावट है,
+          मिटाना नहीं, क्योंकि उसके बनने से पहले ही अक्षर फ़ाइल से जा चुके होते
+          हैं। इसे बंद कर दीजिए तो शब्द बस चले जाते हैं और उनकी घेरी हुई जगह पीछे
+          रह जाती है।
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>वही शब्द बाकी डॉक्यूमेंट से भी हटाएँ</strong>
+        <span class="check-note">
+          बुकमार्क, टिप्पणियाँ, चिपकाए हुए नोट, और फ़ॉर्म फ़ील्ड में टाइप की गई
+          चीज़ें। जो शब्द पन्ने से हटा दिया गया पर किसी बुकमार्क में रह गया, वह
+          हटाया नहीं गया। डॉक्यूमेंट की प्रॉपर्टी इस सेटिंग से अलग वैसे भी चली
+          जाती हैं, और वह बदला हुआ टेक्स्ट भी जिसे कोई रीडर पन्ने के अक्षरों की
+          जगह कॉपी करता है। दोनों वही डॉक्यूमेंट हैं जो वह शब्द कह रहा है, कोई
+          दूसरी जगह नहीं जो उसकी कॉपी रखे हो।
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>अटैचमेंट और चलने वाली चीज़ें फेंक दें</strong>
+        <span class="check-note">
+          कोई PDF अपने भीतर पूरी फ़ाइलें और खुलते ही चलने वाला JavaScript लिए चल
+          सकती है। इनमें से किसी में भी वे शब्द खोजे नहीं जा सकते जो आप हटा रहे
+          हैं, और डॉक्यूमेंट पढ़ने के लिए इनमें से कोई ज़रूरी भी नहीं।
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">हटाएँ</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द करें</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>डाउनलोड करें</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">यह PDF नहीं है, इसलिए इसमें हटाने लायक कोई टेक्स्ट है ही नहीं।</span>
+    <span data-phrase="load.encrypted">इस PDF पर पासवर्ड लगा है। किसी डॉक्यूमेंट की
+      सुरक्षा हटाना उसमें से शब्द निकालने से अलग काम है, और यह टूल उसे आपकी पीठ
+      पीछे नहीं करता।</span>
+    <span data-phrase="load.broken">यह फ़ाइल PDF की तरह नहीं खुल सकी ({detail})।</span>
+    <span data-phrase="load.nopages">यह खुल तो गई, पर इसमें कोई पन्ना नहीं मिला।</span>
+    <span data-phrase="load.repaired">इस डॉक्यूमेंट की क्रॉस-रेफ़रेंस तालिका उसकी
+      सामग्री से मेल नहीं खाती थी, इसलिए इसे ऑब्जेक्ट ढूँढ़-ढूँढ़कर पढ़ा गया। यह
+      एक मरम्मत है और यह कामयाब रही। इसे कहीं भेजने से पहले नतीजा ध्यान से जाँच
+      लीजिए।</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} टेक्स्ट &middot; {size}</span>
+    <span data-phrase="doc.notext">इनमें से {count} पन्नों पर कोई टेक्स्ट है ही
+      नहीं। ऐसा पन्ना किसी पन्ने की तस्वीर है, और इस टूल के लिए वहाँ हटाने को कुछ
+      नहीं है। तस्वीर में मौजूद शब्द ठीक वहीं रह जाते हैं जहाँ हैं।</span>
+    <span data-phrase="doc.unreadable">इस डॉक्यूमेंट के {count} अक्षर वर्णों की तरह
+      नहीं पढ़े जा सके, क्योंकि इस्तेमाल किए गए फ़ॉन्ट अपने ग्लिफ़ से वापस टेक्स्ट
+      तक की कोई मैपिंग साथ नहीं लाते। इन अक्षरों को खोजा नहीं जा सकता, इसलिए खोज पर
+      भरोसा करने के बजाय वे जिन पन्नों पर हैं उन्हें देख लीजिए।</span>
+    <span data-phrase="doc.scan">कुछ पन्ने किसी तस्वीर के ऊपर अदृश्य टेक्स्ट लिए
+      हुए हैं, और स्कैनर अपने पढ़े हुए को इसी तरह दर्ज करता है। उस टेक्स्ट को हटाने
+      से वह हट जाता है जो खोज और कॉपी को मिलता। इससे तस्वीर में कुछ नहीं बदलता, और
+      तस्वीर में शब्द अब भी पढ़े जा सकते हैं।</span>
+
+    <span data-phrase="find.none">किसी भी पन्ने पर कुछ नहीं मिला।</span>
+    <span data-phrase="find.some">{pages} पर {count}।</span>
+    <span data-phrase="find.more">पहले {shown} गिनाए गए हैं। बाकी भी मिल चुके हैं और
+      अगर आप सब चुन लें तो वे साथ ही हट जाएँगे।</span>
+    <span data-phrase="find.terms">खोजें दबाने से पहले ऊपर कोई शब्द टाइप कीजिए या कोई पैटर्न चुनिए।</span>
+
+    <span data-phrase="page.of">{total} में से पन्ना {number}</span>
+    <span data-phrase="page.picked">इस पन्ने से {count} हटेंगे</span>
+    <span data-phrase="page.notext">इस पन्ने पर कोई टेक्स्ट नहीं है। या तो यह खाली
+      है, या यह किसी पन्ने की तस्वीर है, यानी कोई स्कैन, कोई फ़ोटो, या ऐसा एक्सपोर्ट
+      जिसने अपने शब्द आकृतियों की तरह बनाए। इस पर न कुछ खोजा जा सकता है और न यहाँ
+      कुछ हटाया जा सकता है।</span>
+    <span data-phrase="page.unreadable">इस पन्ने के {count} अक्षर वर्णों की तरह नहीं
+      पढ़े जा सके। वे नीचे &#9647; के रूप में हैं, और खोज उन्हें नहीं ढूँढ़
+      पाती।</span>
+    <span data-phrase="page.scan">इस पन्ने का टेक्स्ट अदृश्य है, क्योंकि वह पन्ने की
+      एक तस्वीर के ऊपर पड़ा है, और स्कैन को खोजने लायक इसी तरह बनाया जाता है। आप
+      यहाँ जो हटा रहे हैं वही खोज और कॉपी को मिलता। तस्वीर शब्द अपने पास रखे रहती
+      है।</span>
+
+    <span data-phrase="run.summary">{pages} पर {words} हटाए जाएँगे।</span>
+    <span data-phrase="run.nothing">अभी कुछ चुना नहीं गया है। कदम 2 में कोई शब्द खोजिए, या कदम 3 में किसी पर क्लिक कीजिए।</span>
+    <span data-phrase="run.editing">शब्द हटाए जा रहे हैं&hellip;</span>
+    <span data-phrase="run.writing">डॉक्यूमेंट लिखा जा रहा है&hellip;</span>
+    <span data-phrase="run.checking">तैयार फ़ाइल खोली और खोजी जा रही है&hellip;</span>
+    <span data-phrase="run.failed">इस डॉक्यूमेंट को दोबारा लिखते समय कुछ गड़बड़ हो गई ({detail})।</span>
+    <span data-phrase="run.cancelled">रद्द कर दिया गया। कुछ नहीं लिखा गया।</span>
+
+    <span data-phrase="result.headline">{words} हटाए गए</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} बदले &middot; {boxes}</span>
+    <span data-phrase="check.good">यहीं दोबारा खोलकर खोजा गया, ठीक वैसे जैसे कोई
+      पढ़ने वाला करता। इनमें से एक भी तैयार फ़ाइल में नहीं है।</span>
+    <span data-phrase="check.partial">यहीं दोबारा खोलकर खोजा गया। आपके चुने हुए हर
+      ठिकाने से वे जा चुके हैं, और जो आपने रहने दिए वे अब भी हैं।</span>
+    <span data-phrase="check.survived">यह फ़ाइल लिखी नहीं गई। तैयार डॉक्यूमेंट दोबारा
+      खोला गया और आपके हटाए हुए में से कुछ उसमें अब भी मिल रहा था। यानी मिटाना पूरा
+      नहीं हुआ था। डाउनलोड के लिए कुछ नहीं दिया जा रहा।</span>
+    <span data-phrase="check.pages">यह फ़ाइल लिखी नहीं गई। तैयार डॉक्यूमेंट जितने
+      पन्नों के साथ गया था उससे अलग गिनती लेकर लौटा, यानी शब्दों के अलावा भी कुछ
+      गड़बड़ हुआ। डाउनलोड के लिए कुछ नहीं दिया जा रहा।</span>
+
+    <span data-phrase="fact.boxes">खाली जगहों पर {count} बनाए गए।</span>
+    <span data-phrase="fact.noboxes">कोई डिब्बा नहीं बनाया गया, इसलिए शब्द बिना यह
+      बताए चले गए कि वे कहाँ थे।</span>
+    <span data-phrase="fact.elsewhere">वही शब्द {where} से भी हटाए गए।</span>
+    <span data-phrase="fact.metadata">डॉक्यूमेंट की प्रॉपर्टी और XMP पैकेट हटा दिए
+      गए, इसलिए तैयार फ़ाइल यह नहीं बताती कि उसे किसने बनाया, कब बनाया, या पहले उसका
+      नाम क्या था।</span>
+    <span data-phrase="fact.carried">{attachments} और {actions} फेंक दिए गए।</span>
+    <span data-phrase="fact.shared">आपके हटाए हुए का कुछ हिस्सा एक ऐसे ब्लॉक से बनता
+      था जिसे डॉक्यूमेंट एक से ज़्यादा पन्नों पर दोबारा इस्तेमाल करता है, इसलिए वह
+      उन सभी पन्नों से चला गया जो उसे बनाते हैं। यह आपके चुने हुए से ज़्यादा है, और
+      कभी कम नहीं।</span>
+    <span data-phrase="fact.overimage">हटाए गए अक्षरों में से {count} उसी पन्ने की
+      एक तस्वीर के ऊपर थे। टेक्स्ट लेयर से वे निकल गए हैं और तस्वीर में अब भी हैं,
+      यानी पढ़ने वाला उन्हें अब न खोज सकता है न कॉपी कर सकता है, पर देख अब भी सकता
+      है।</span>
+    <span data-phrase="fact.untouched">हर पन्ने की बाकी हर चीज़ बाइट-दर-बाइट आगे
+      भेज दी गई। न कोई फ़ॉन्ट दोबारा एन्कोड हुआ, न कोई तस्वीर, न कोई रेखा।</span>
+
+    <span data-phrase="count.pages">{count} पन्ने</span>
+    <span data-phrase="count.page">{count} पन्ना</span>
+    <span data-phrase="count.words">{count} शब्द</span>
+    <span data-phrase="count.word">{count} शब्द</span>
+    <span data-phrase="count.pieces">टेक्स्ट के {count} टुकड़े</span>
+    <span data-phrase="count.piece">टेक्स्ट का {count} टुकड़ा</span>
+    <span data-phrase="count.matches">{count} नतीजे</span>
+    <span data-phrase="count.match">{count} नतीजा</span>
+    <span data-phrase="count.boxes">{count} काले डिब्बे</span>
+    <span data-phrase="count.box">{count} काला डिब्बा</span>
+    <span data-phrase="count.attachments">{count} अटैचमेंट</span>
+    <span data-phrase="count.attachment">{count} अटैचमेंट</span>
+    <span data-phrase="count.actions">{count} क्रियाएँ</span>
+    <span data-phrase="count.action">{count} क्रिया</span>
+    <span data-phrase="count.hosts">{count} होस्ट</span>
+    <span data-phrase="count.host">{count} होस्ट</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">आपका डॉक्यूमेंट कहीं नहीं गया। {total} फ़ाइलें लोड
+      हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
+    <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल ऐसा
+      कभी नहीं करता। यह देखने लायक बात है। {platform}</span>
+    <span data-phrase="net.platform">विज्ञापन, माप और दान वाले बटन के लिए साइट की
+      अपनी स्क्रिप्ट {hosts} से आईं। उनमें से किसी को न कोई डॉक्यूमेंट मिला, न उसका
+      कोई शब्द, न वह जो आपने खोजा।</span>
+
+    <span data-phrase="finder.email">ईमेल पते</span>
+    <span data-phrase="finder.card">कार्ड नंबर</span>
+    <span data-phrase="finder.iban">बैंक खाते (IBAN)</span>
+    <span data-phrase="finder.nationalid">आधार और सामाजिक सुरक्षा नंबर</span>
+    <span data-phrase="finder.phone">फ़ोन नंबर</span>
+  </div>
+</main>
