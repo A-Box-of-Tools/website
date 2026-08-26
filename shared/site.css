@@ -20,7 +20,7 @@
   /* Green means "this is true" across the site: the pledge ticks on a tool page
      use it, and so does the Built tag on the roadmap. Same values as
      shared/css/tool-frame.css, which defines it for the tool pages. */
-  --ok: #1f7a4d;
+  --ok: #1a6a43;
   --radius: 10px;
   --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
 }
