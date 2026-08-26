@@ -146,7 +146,7 @@
   <!-- Ogni tag del file. -->
   <section class="card" id="tags-card" hidden>
     <div class="toolbar">
-      <h2>Ogni tag del file</h2>
+      <h2 id="tags-heading">Ogni tag del file</h2>
       <div class="toolbar-actions">
         <label for="tag-search" class="visually-hidden">Cerca tra i tag</label>
         <input type="search" id="tag-search" class="tag-search" placeholder="Cerca per nome, numero o valore">
@@ -155,7 +155,7 @@
 
     <p class="card-lede" id="tags-lede"></p>
 
-    <div class="table-wrap">
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="tags-heading">
       <table class="tags">
         <caption class="visually-hidden">Ogni elemento di questo file</caption>
         <thead>

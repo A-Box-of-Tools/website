@@ -146,7 +146,7 @@
   <!-- Chaque étiquette du fichier. -->
   <section class="card" id="tags-card" hidden>
     <div class="toolbar">
-      <h2>Chaque étiquette du fichier</h2>
+      <h2 id="tags-heading">Chaque étiquette du fichier</h2>
       <div class="toolbar-actions">
         <label for="tag-search" class="visually-hidden">Rechercher dans les étiquettes</label>
         <input type="search" id="tag-search" class="tag-search" placeholder="Rechercher par nom, numéro ou valeur">
@@ -155,7 +155,7 @@
 
     <p class="card-lede" id="tags-lede"></p>
 
-    <div class="table-wrap">
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="tags-heading">
       <table class="tags">
         <caption class="visually-hidden">Chaque élément de ce fichier</caption>
         <thead>

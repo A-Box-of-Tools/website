@@ -141,7 +141,7 @@
   <!-- 檔案裡的每一個標籤。 -->
   <section class="card" id="tags-card" hidden>
     <div class="toolbar">
-      <h2>檔案裡的每一個標籤</h2>
+      <h2 id="tags-heading">檔案裡的每一個標籤</h2>
       <div class="toolbar-actions">
         <label for="tag-search" class="visually-hidden">搜尋標籤</label>
         <input type="search" id="tag-search" class="tag-search" placeholder="按名字、編號或者數值搜尋">
@@ -150,7 +150,7 @@
 
     <p class="card-lede" id="tags-lede"></p>
 
-    <div class="table-wrap">
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="tags-heading">
       <table class="tags">
         <caption class="visually-hidden">這個檔案裡的每一個元素</caption>
         <thead>

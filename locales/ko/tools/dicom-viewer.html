@@ -144,7 +144,7 @@
   <!-- 파일의 모든 태그. -->
   <section class="card" id="tags-card" hidden>
     <div class="toolbar">
-      <h2>파일의 모든 태그</h2>
+      <h2 id="tags-heading">파일의 모든 태그</h2>
       <div class="toolbar-actions">
         <label for="tag-search" class="visually-hidden">태그 검색</label>
         <input type="search" id="tag-search" class="tag-search" placeholder="이름, 번호, 값으로 검색">
@@ -153,7 +153,7 @@
 
     <p class="card-lede" id="tags-lede"></p>
 
-    <div class="table-wrap">
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="tags-heading">
       <table class="tags">
         <caption class="visually-hidden">이 파일의 모든 요소</caption>
         <thead>
