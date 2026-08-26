@@ -1,0 +1,20 @@
+#
+# Ratgeber: Fotos stacken gegen Bildrauschen - German.
+#
+
+nav = "Fotos stacken"
+title = "Fotos stacken gegen Bildrauschen &mdash; oder um Leute zu entfernen"
+description = "Stacken rechnet eine Serie von Aufnahmen zu einem Bild zusammen. Welche Methode Sie brauchen, hängt davon ab, was weg soll: das Rauschen, die Passanten oder die geringe Schärfentiefe einer Makroaufnahme. Wie jede funktioniert, was sie kostet und wo RAW-Dateien hineinpassen."
+
+heading = "So stacken Sie Fotos gegen Bildrauschen oder um Leute zu entfernen"
+lede = """
+    Eine Serie von Aufnahmen trägt mehr Information als jede einzelne davon. Sie
+    zu mitteln hebt das Rauschen auf; den mittleren Wert jedes Pixels zu nehmen
+    löscht alles, was nur zeitweise da war. Welches von beidem Sie wollen, hängt
+    ganz davon ab, was sich bewegt hat."""
+
+updated = "25. August 2026"
+
+og_title = "So stacken Sie Fotos gegen Bildrauschen oder um Leute zu entfernen"
+og_description = "Eine Serie mitteln gegen das Rauschen, den Median nehmen, um einen belebten Platz zu leeren, aufhellen für Sternspuren. Welche Methode welches Problem löst und wo RAW-Dateien hineinpassen."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

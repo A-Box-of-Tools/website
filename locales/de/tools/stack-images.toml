@@ -1,0 +1,344 @@
+#
+# Bild-Stacker - German.
+#
+# Overrides for tools/stack-images/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Stacken" ist in der deutschen Fotografie das gängige Verb, und "Stacking"
+# das gängige Substantiv; beide stehen so in jedem Fotoforum und in jeder
+# Zeitschrift. Die RAW-Kürzel (CR2, NEF, ARW, DNG) und die Bibliotheksnamen
+# (LibRaw, dcraw) bleiben, wie sie sind - so heißen die Dateien im Ordner.
+#
+# "Worker" bleibt ebenfalls stehen: Das benennt eine bestimmte Sache im
+# Browser, und ein deutsches Wort dafür wäre eine andere Behauptung darüber,
+# was die Seite tut.
+#
+
+name = "Bild-Stacker"
+heading = "Bild-Stacker <span class=\"h1-kw\">&mdash; eine Serie zusammenrechnen, RAW eingeschlossen</span>"
+tagline = "Zwanzig Aufnahmen werden eine, ohne zwanzig Uploads und ohne RAW-Konverter."
+
+title = "Bild-Stacker &mdash; Mittelwert, Median und Focus Stacking im Browser"
+description = "Eine Serie von Fotos zu einem Bild zusammenrechnen: mitteln gegen das Rauschen, den Median nehmen, um Passanten aus einer Szene zu entfernen, aufhellen für Sternspuren oder eine Makroaufnahme fokusstacken. Liest CR2, NEF, ARW, DNG, RAF und CR3, indem es die Vorschau der Kamera selbst herausholt. Läuft komplett im Browser."
+og_title = "Eine Fotoserie stacken, RAW-Dateien eingeschlossen"
+og_description = "Mittelwert, Median, Sigma-Clipping, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher ausgerichteten Aufnahmen. RAW-Dateien werden geöffnet, indem die Vorschau gelesen wird, die die Kamera bereits geschrieben hat, sodass eine 60-MB-Aufnahme so schnell öffnet wie ein JPEG. Nichts wird hochgeladen."
+og_image_alt = "Bild-Stacker - mehrere Aufnahmen zu einer zusammengerechnet, im Browser"
+
+pledge = """
+    Jede Aufnahme wird von Ihrem eigenen Browser auf Ihrem eigenen Gerät
+    geöffnet, dekodiert, ausgerichtet, zusammengerechnet und geschrieben. Ein
+    Stapel aus zwanzig 60&nbsp;MB großen RAW-Dateien ist rund ein Gigabyte
+    Fotos, und kein einziges Byte davon bewegt sich: Netzfunktionen hat dieses
+    Werkzeug keine, und die Dateien werden direkt von Ihrer Festplatte gelesen,
+    von einem Worker, der nirgendwohin etwas senden könnte."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und stacken Sie einen Ordner voller RAW-Dateien.
+      Keine einzige Anfrage trägt ein Foto, ein Vorschaubild, einen Dateinamen
+      oder ein Kameramodell. Oder trennen Sie die Internetverbindung und stacken
+      Sie sie trotzdem, am Werkzeug ändert sich dadurch nichts."""
+
+read_first = """
+, <code>src/raw.js</code> dafür, wie eine
+      RAW-Datei geöffnet wird, indem Kilobyte statt Megabyte gelesen werden,
+      <code>src/stack.js</code> für die Rechnung hinter jeder Methode und
+      <code>src/plan.js</code> dafür, woher die Speicher- und Dekodierzahlen auf
+      der Seite kommen: Sie sind die Antworten dieser Datei und keine
+      Schätzungen."""
+
+howto_heading = "So stacken Sie eine Reihe von Fotos im Browser"
+
+card = """
+            Eine Serie zu einem Bild zusammenrechnen: das Rauschen wegmitteln,
+            den Median nehmen, um die Passanten loszuwerden, oder aufhellen für
+            Sternspuren. Liest RAW-Dateien ohne Konverter."""
+
+[words]
+plural = "Fotos"
+choose = "ein paar Fotos"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Liest RAW"
+
+[[facts]]
+text = "Läuft offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Ihre Fotos haben keinen Ort, an den sie gehen könnten."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört uns. Es gibt hier keinen Endpunkt, an dem Ihre
+      Dateien gesammelt werden könnten, und keinen Code, der sie senden würde,
+      wenn es ihn gäbe: kein <code>fetch</code>, kein
+      <code>XMLHttpRequest</code>, kein <code>sendBeacon</code>, weder in
+      <code>src/</code> noch im Worker."""
+
+[[privacy]]
+title = "Die RAW-Dateien werden gelesen, nicht hochgeladen, und kaum gelesen."
+body = """
+ Eine RAW-Datei aus einer
+      Kamera enthält bereits ein JPEG in voller Größe, das die Kamera beim
+      Auslösen gerendert hat. Dieses Werkzeug findet es, indem es ein paar
+      Verzeichniseinträge abläuft und dann um genau einen Ausschnitt bittet, was
+      bei einer 60&nbsp;MB großen Datei meist unter hundert Kilobyte sind. Die
+      Seite zeigt Ihnen diese Zahl neben der Größe Ihrer Dateien, während Sie
+      arbeiten. Die Sensordaten werden überhaupt nicht gelesen."""
+
+[[privacy]]
+title = "Die Arbeit passiert in einem Worker auf diesem Gerät, nicht auf einem Server."
+body = """
+ Das ist das einzige
+      Werkzeug hier, das einen verwendet, weil Stacken Minuten an Rechnerei ist
+      statt Sekunden und eine eingefrorene Seite weder Fortschritt zeigen noch
+      abgebrochen werden kann. Ein Worker ist ein zweiter Strang in genau diesem
+      Browser, siehe <code>src/worker.js</code>. Ihm werden die Dateien selbst
+      übergeben, was nichts kostet, weil ein Dateihandle nicht die Bytes ist, und
+      er hat genau dieselbe Content-Security-Policy wie die Seite, also ebenso
+      wenig einen Ort, an den er sie senden könnte."""
+
+[[privacy]]
+title = "Über die Serie wird nirgendwohin etwas gemeldet."
+body = """
+ Wie viele Aufnahmen Sie
+      gestackt haben, welche Kamera sie geschrieben hat, wie weit jede sich bewegt
+      hatte, welche Methode Sie gewählt haben und wie lange es gedauert hat,
+      liegen im Speicher dieser Seite, bis Sie sie schließen. In diesem Repository
+      gibt es kein Analytics-Ereignis, das irgendetwas davon trüge, und die eine
+      Frage, die diese Seite nach einem Download stellt, sendet einen Daumen hoch
+      oder runter und den Namen des Werkzeugs, sonst nichts."""
+
+[[privacy]]
+title = "Läuft offline."
+body = """
+ Trennen Sie die Netzverbindung, und das Werkzeug
+      bleibt, wie es ist, weil nie ein Netzschritt darin war. Der Worker und jedes
+      Modul, das er lädt, werden vom Service Worker dieser Seite
+      zwischengespeichert, eine installierte Kopie stackt RAW-Dateien also mit
+      gezogenem Stecker."""
+
+[[howto]]
+title = "Wählen Sie die Aufnahmen."
+body = """
+ Eine Serie, eine Belichtungsreihe,
+      eine Intervallaufnahme oder ein Ordner voller RAW-Dateien. Jede wird beim
+      Ankommen geöffnet, und die Zeile sagt Ihnen, was herauskam: bei einer
+      RAW-Datei die Kamera, die Größe der darin gefundenen Vorschau und wie wenig
+      von der Datei gelesen werden musste, um sie zu finden."""
+
+[[howto]]
+title = "Nehmen Sie die Methode, die zu dem passt, was weg soll."
+body = """
+ Rauschen: Mittelwert,
+      oder Sigma-Clipping, wenn sich etwas bewegt hat. Leute, Autos oder ein
+      vorbeifliegendes Flugzeug: Median. Ein dunkler Himmel, der zu Sternspuren
+      werden soll: Aufhellen. Eine Makroaufnahme entlang des Fokusrings: Focus
+      Stacking. Der Hinweis unter dem Menü sagt, was jede Methode mit genau Ihrer
+      Anzahl Aufnahmen macht."""
+
+[[howto]]
+title = "Entscheiden Sie, ob die Aufnahmen ausgerichtet werden müssen."
+body = """
+ Aus der Hand: ja, nur
+      verschieben. Aus der Hand und dabei gedreht: verschieben, drehen und
+      skalieren. Festes Stativ oder Intervallauslöser: nein, und es geht
+      schneller. Jede Aufnahme wird gegen die erste in der Liste vermessen, und
+      deshalb lässt sich jede Aufnahme zu dieser ersten machen."""
+
+[[howto]]
+title = "Lesen Sie die vier Zahlen und drücken Sie dann den Knopf."
+body = """
+ Bevor irgendetwas läuft,
+      sagt die Seite, wie groß das Ergebnis wird, wie viel Speicher es ungefähr
+      braucht, wie oft die Aufnahmen dekodiert werden und wie viel von Ihren
+      Dateien gelesen wurde. Passt die Serie nicht am Stück in den Speicher, sagt
+      sie das und nennt die Arbeitsauflösung, die es beheben würde."""
+
+[[faq]]
+q = "Werden meine Fotos irgendwohin hochgeladen?"
+a = """
+        Nein. Jede Aufnahme wird von Ihrem eigenen Browser auf Ihrer eigenen
+        Hardware geöffnet, dekodiert, ausgerichtet, gestackt und geschrieben.
+        Netzfunktionen hat dieses Werkzeug keine, es ruft nie etwas ab und sendet
+        nie etwas, und in der <code>Content-Security-Policy</code> der Seite steht
+        jede Adresse, die sie kontaktieren darf. Keine davon gehört uns. Laden Sie
+        die Seite einmal, trennen Sie die Internetverbindung, und sie arbeitet
+        weiter. Das zählt hier schwerer als bei den meisten Werkzeugen, schlicht
+        wegen der Menge: Ein Stapel aus zwanzig RAW-Aufnahmen ist rund ein
+        Gigabyte, und ein Gigabyte Fotos hochzuladen, damit jemand den Mittelwert
+        daraus bildet, ist genau das, wozu es dieses Werkzeug gibt."""
+
+[[faq]]
+q = "Welche RAW-Formate kann er lesen, und wie?"
+a = """
+        <span id="faq-raw"></span>CR2, CR3, NEF, NRW, ARW, SR2, SRF, DNG, ORF,
+        RAF, RW2, PEF, SRW, 3FR, IIQ, DCR, KDC, MRW, MEF, RWL und ein paar mehr,
+        also das meiste, was Kameras schreiben. Gelesen wird daraus das JPEG in
+        voller Größe, das die Kamera beim Auslösen selbst gerendert hat: das Bild
+        auf dem Kameradisplay und das, was Ihr Betriebssystem als Vorschaubild
+        zeichnet. Gefunden wird es, indem die Verzeichnisstruktur der Datei
+        abgelaufen wird, was ein paar Lesevorgänge von je ein paar Kilobyte
+        kostet, und dann ein Ausschnitt genommen wird.
+        <strong>Es ist kein Demosaicing der Sensordaten.</strong> Das Ergebnis
+        trägt den Weißabgleich und den Bildstil der Kamera mit acht Bit pro Kanal
+        und nicht die zwölf oder vierzehn Bit linearer Sensordaten, die ein
+        RAW-Konverter Ihnen gäbe."""
+
+[[faq]]
+q = "Warum dann nicht die Sensordaten richtig dekodieren?"
+a = """
+        Weil das hieße, LibRaw oder dcraw mitzuliefern, also eine zweite Engine
+        von zig Megabyte für eine einzige Formatfamilie, und der größte Teil davon
+        sind herstellereigene Kompressionsverfahren. Diese Abwägung wird in
+        <code>docs/what-can-be-built-here.md</code> im Quelltext dieser Seite
+        ausgetragen, wo Kamera-RAW schon auf der Ausschlussliste stand, bevor es
+        dieses Werkzeug gab. Geändert hat sich nicht die Antwort auf diese Frage,
+        sondern die Erkenntnis, dass Stacken sie nicht braucht: Die Vorschauen
+        haben volle Auflösung, sie sind das, was die Kamera Ihnen ohnehin als JPEG
+        gegeben hätte, und sie zu lesen ist rund hundertmal schneller als
+        Demosaicing. Wenn Sie die Sensordaten wollen, entwickeln Sie die Aufnahmen
+        zuerst in einem RAW-Konverter und stacken Sie die TIFFs oder JPEGs, die er
+        ausgibt. Die nimmt dieses Werkzeug auch."""
+
+[[faq]]
+q = "Wie viele Aufnahmen schafft er, und wie groß?"
+a = """
+        Sechs der sieben Methoden strömen: Sie halten einen Akkumulator und lesen
+        jede Aufnahme genau einmal, hundert Aufnahmen kosten also so viel Speicher
+        wie zwei, und größer wird allein die Zeit. Der Median ist die Ausnahme,
+        weil sich der mittlere Wert einer Menge nicht kennen lässt, bevor man sie
+        ganz hat, und er deshalb jede Aufnahme gleichzeitig hält. Zwanzig Aufnahmen
+        mit 24 Megapixeln sind rund 1,4&nbsp;GB, und so viel gibt kein Browser
+        heraus. Dann wird das Bild in waagerechte Bänder geschnitten und Band für
+        Band gestackt, was das erneute Lesen der Aufnahmen für jedes Band kostet.
+        Die Seite rechnet das alles aus, bevor Sie den Knopf drücken, und zeigt
+        Ihnen die Zahl, ein langsamer Durchlauf ist also nie eine Überraschung."""
+
+[[faq]]
+q = "Was macht das Ausrichten der Aufnahmen eigentlich?"
+a = """
+        Es findet heraus, wie weit jede Aufnahme sich gegenüber der ersten bewegt
+        hat, und schiebt sie zurück, auf Bruchteile eines Pixels genau. Die
+        Methode ist Phasenkorrelation: Die Verschiebung zwischen zwei Bildern
+        zeigt sich als Phasenunterschied zwischen ihren Spektren, eine
+        Fouriertransformation je Bild findet einen Versatz von zweihundert Pixeln
+        also so billig wie einen von zwei. Die zweite Einstellung holt zusätzlich
+        Drehung und Maßstab zurück, mit demselben Kniff, angewandt auf das
+        Spektrum in logarithmisch-polaren Koordinaten. Das alles ist global, eine
+        Verschiebung, ein Winkel, ein Maßstab für das ganze Bild, und es
+        korrigiert deshalb eine Kamera, die sich bewegt hat, und kein Motiv, das
+        sich bewegt hat, und kein Foto, das einen Schritt weiter links aufgenommen
+        wurde. Eine sichtbare Folge: Eine um zwanzig Pixel nach links geschobene
+        Aufnahme reicht nicht mehr bis an den rechten Rand, deshalb wird das
+        Ergebnis auf den Teil beschnitten, den jede Aufnahme abdeckt. Darum kommt
+        ein ausgerichteter Stapel ein wenig kleiner heraus als die Aufnahmen, die
+        hineingingen, und das ist die einzige Alternative zu einem dunklen Rand
+        aus den Aufnahmen, die dort nicht waren."""
+
+[[faq]]
+q = "Welche Methode soll ich nehmen?"
+a = """
+        <strong>Mittelwert</strong> gegen Rauschen, auf einer Serie, in der sich
+        nichts bewegt hat: Er senkt zufälliges Rauschen um rund die Wurzel aus der
+        Anzahl der Aufnahmen. <strong>Median</strong>, um Dinge zu entfernen, die
+        nur zeitweise da waren; der klassische Fall ist, einen belebten Platz ein
+        Dutzend Mal zu fotografieren und ihn leer zu bekommen.
+        <strong>Sigma-Clipping</strong>, wenn Sie beides wollen: Es lernt, was
+        jedes Pixel üblicherweise ist, und mittelt nur die Werte, die dazu passen,
+        hat also die Unempfindlichkeit des Medians gegen ein vorbeifahrendes Auto
+        und die Rauschminderung des Mittelwerts. <strong>Aufhellen</strong> für
+        Sternspuren, Feuerwerk und Lichtmalerei. <strong>Abdunkeln</strong>, um
+        alles Helle zu entfernen, das sich bewegt hat. <strong>Addieren</strong>,
+        um eine einzelne lange Belichtung nachzubilden. <strong>Focus
+        Stacking</strong> für eine Makroaufnahme entlang des Fokusrings."""
+
+[[faq]]
+q = "Warum hat mein Ergebnis acht Bit, wenn meine RAW-Dateien vierzehn haben?"
+a = """
+        Weil gestackt wird, was die Kamera selbst als Vorschau abgelegt hat, und
+        das ist ein JPEG. Dazu gehört gesagt, dass Stacken einen Teil davon
+        zurückholt: Sechzehn Acht-Bit-Aufnahmen zu mitteln ergibt ein Bild mit
+        tatsächlich feineren Abstufungen, als eine einzelne von ihnen hatte, weil
+        genau das Rauschen, das jede Aufnahme anders runden ließ, den Mittelwert
+        zwischen den Stufen landen lässt. Gerechnet wird hier in Fließkomma und
+        erst ganz am Ende einmal gerundet, dazwischen geht davon also nichts
+        verloren. Dasselbe wie lineare Sensordaten zu stacken ist es trotzdem
+        nicht, und dieses Werkzeug tut nicht so."""
+
+[[faq]]
+q = "Kann ich Aufnahmen unterschiedlicher Größe oder aus verschiedenen Kameras stacken?"
+a = """
+        Ja, auch wenn es meist ein Versehen ist und einen prüfenden Blick lohnt.
+        Das Ergebnis hat die Größe der größten Aufnahme, und jede andere wird
+        eingepasst und mittig gesetzt. Kameras zu mischen mischt auch die
+        Farbwiedergabe, ein Mittelwert aus beiden ist also ein Mittelwert aus zwei
+        verschiedenen Deutungen desselben Lichts. Wirklich hilfreich ist es bei
+        einer Serie, die in zwei Auflösungen aufgenommen wurde, oder bei einer
+        RAW-Datei und einem JPEG derselben Aufnahme."""
+
+[[faq]]
+q = "Er sagt, der Durchlauf werde in Bänder geteilt. Was heißt das?"
+a = """
+        Dass der Arbeitsspeicher, den die Methode braucht, mehr ist, als das
+        Werkzeug am Stück belegen will, und das Bild deshalb in waagerechte
+        Streifen geschnitten und Streifen für Streifen gestackt wird. Das Ergebnis
+        ist genau dasselbe; es liest die Aufnahmen nur für jeden Streifen erneut,
+        dauert also länger, und die Seite sagt Ihnen, wie viele Dekodiervorgänge
+        das werden. Die Arbeitsauflösung eine Stufe zu senken viertelt den
+        Speicher und macht aus einem gebänderten Durchlauf fast immer einen
+        einzigen; der Hinweis nennt die Einstellung, die das täte."""
+
+[[faq]]
+q = "Warum verwendet dieses Werkzeug einen Worker und keines der anderen?"
+a = """
+        Weil es das einzige ist, dessen Arbeit in Minuten gemessen wird. Jedes
+        andere Werkzeug hier tut etwas, das ein bis zwei Sekunden dauert, und
+        dabei wäre es Zeremonie, die Arbeit vom Hauptstrang zu holen. Zwanzig
+        große Aufnahmen zu stacken ist solide Rechnerei über hunderte Megabyte,
+        und auf dem Hauptstrang heißt das eine eingefrorene Seite: ein
+        Fortschrittsbalken, der sich nicht bewegt, ein Abbrechen-Knopf, der nicht
+        antwortet, und irgendwann ein Browser, der anbietet, den Tab zu beenden.
+        Der Worker ist ein zweiter Strang in genau diesem Browser, der eine Datei
+        aus genau diesem Ordner unter genau dieser Policy ausführt. Er ist kein
+        Server und keine Netzfunktion."""
+
+[[faq]]
+q = "Ist das kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase
+        und kein Wasserzeichen. Es gibt auch keine Grenze dafür, wie viele
+        Aufnahmen Sie stacken oder wie groß sie sind, weil kein Server dafür
+        bezahlt: Die Arbeit passiert auf Ihrem eigenen Gerät, und die einzige
+        Decke ist Ihr eigener Speicher. Die Seite trägt Werbung, und die bezahlt
+        sie; die Werbung bekommt nichts über Ihre Fotos."""
+
+[schema]
+description = "Eine Fotoserie im Browser stacken: Mittelwert, Median, sigma-geclippter Mittelwert, Aufhellen, Abdunkeln, Addieren oder Focus Stacking, mit vorher per Phasenkorrelation ausgerichteten Aufnahmen. Liest Kamera-RAW-Dateien, indem die eingebettete Vorschau in voller Größe herausgeholt wird, ein RAW-Konverter ist also nicht nötig. Nichts wird hochgeladen."
+features = [
+  "Sieben Methoden: Mittelwert, Median, sigma-geclippter Mittelwert, Aufhellen, Abdunkeln, Addieren und Focus Stacking",
+  "Liest CR2, CR3, NEF, ARW, DNG, ORF, RAF, RW2 und mehr, indem die Vorschau der Kamera in voller Größe herausgeholt wird",
+  "Öffnet eine 60-MB-RAW-Datei, indem rund hundert Kilobyte davon gelesen werden",
+  "Automatisches Ausrichten: nur verschieben, verschieben mit Drehung und Maßstab, oder gar nicht",
+  "Ausrichtung auf Subpixel genau per Phasenkorrelation statt durch Absuchen von Versätzen",
+  "Sechs der sieben Methoden halten einen Akkumulator, hundert Aufnahmen kosten also den Speicher von zweien",
+  "Speicher- und Dekodierkosten werden vor dem Start ausgerechnet und angezeigt",
+  "Die Arbeit läuft in einem Worker, der Fortschritt bewegt sich und Abbrechen antwortet",
+  "PNG oder JPEG heraus; läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Aufnahmen hier ablegen"
+hint = "oder klicken zum Auswählen &mdash; JPEG, PNG, WebP, TIFF und Kamera-RAW"

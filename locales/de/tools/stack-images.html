@@ -1,0 +1,241 @@
+<!--
+  tools/stack-images/body.html, in German.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- Schritt 1 &mdash; die Aufnahmen -->
+  <section class="card">
+    <h2><span class="step">1</span> Aufnahmen wählen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      RAW-Dateien werden geöffnet, indem das JPEG in voller Größe gelesen wird,
+      das die Kamera bereits hineingeschrieben hat: ein paar Kilobyte
+      Verzeichnis und dann ein Ausschnitt. Die Sensordaten werden nie dekodiert,
+      eine 60&nbsp;MB große Aufnahme öffnet also ungefähr so schnell wie ein
+      JPEG. <a href="#faq-raw">Was das für das Ergebnis bedeutet</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">Nach Namen sortieren</button>
+        <button type="button" id="clear-all" class="ghost danger">Alle entfernen</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- Schritt 2 &mdash; wie sie zusammenkommen -->
+  <section class="card">
+    <h2><span class="step">2</span> Wie sie zusammenkommen</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">Methode</label>
+        <select id="mode">
+          <option value="mean" selected>Mittelwert &mdash; Rauschen senken</option>
+          <option value="median">Median &mdash; Leute und vorbeifahrende Autos entfernen</option>
+          <option value="sigma">Sigma-Clipping &mdash; beides auf einmal</option>
+          <option value="max">Aufhellen &mdash; Sternspuren, Feuerwerk, Lichtmalerei</option>
+          <option value="min">Abdunkeln &mdash; alles Helle entfernen, das sich bewegt hat</option>
+          <option value="sum">Addieren &mdash; eine lange Belichtung nachbilden</option>
+          <option value="focus">Focus Stacking &mdash; behalten, was scharf war</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">Aufnahmen ausrichten</label>
+        <select id="align">
+          <option value="translate" selected>Ja &mdash; nur verschieben</option>
+          <option value="similarity">Ja &mdash; verschieben, drehen und skalieren</option>
+          <option value="none">Nein &mdash; genau so nehmen, wie sie sind</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">Arbeitsauflösung</label>
+        <select id="scale">
+          <option value="full" selected>Volle Größe</option>
+          <option value="half">Halb &mdash; ein Viertel des Speichers</option>
+          <option value="quarter">Viertel &mdash; ein Sechzehntel</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">Verwerfen jenseits von</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          Niedriger verwirft mehr, und verwirft echte Details mit. Zwei
+          Standardabweichungen sind der übliche Ausgangspunkt.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">Schärfe wird gemessen über</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          Größer nimmt ganze Bereiche aus einer Aufnahme; kleiner folgt feinen
+          Details und kann einen glatten Hintergrund zwischen den Aufnahmen
+          zerwürfeln.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">Belichtung</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">Speichern als</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; verlustfrei</option>
+          <option value="jpeg">JPEG &mdash; kleinere Datei</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>Ergebnis</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>Arbeitsspeicher</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>Dekodiervorgänge</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Von der Platte gelesen</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- Schritt 3 &mdash; laufen lassen -->
+  <section class="card">
+    <h2><span class="step">3</span> Stacken</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>Bilder stacken</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="Das gestackte Ergebnis">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>Bild herunterladen</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 Aufnahme</span>
+    <span data-phrase="count.many">{count} Aufnahmen</span>
+    <span data-phrase="count.none">Noch keine Aufnahmen</span>
+
+    <span data-phrase="frame.reference">Bezug</span>
+    <span data-phrase="frame.make-reference">Als Bezug nehmen</span>
+    <span data-phrase="frame.remove">Entfernen</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; die kamera-eigene Vorschau mit {width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; Vorschau mit {width} &times; {height}</span>
+    <span data-phrase="frame.raw-unreadable">In dieser RAW-Datei war keine Vorschau zu finden</span>
+    <span data-phrase="frame.read">{read} von {total} gelesen</span>
+
+    <span data-phrase="mode.mean">Mittelt jede Aufnahme. Zufälliges Rauschen ist so oft zu hoch wie zu niedrig, {count} Aufnahmen zu mitteln senkt es also um rund das {factor}-fache. Die Methode für eine ruhige Serie, und die, die ein einzelner vorbeifliegender Vogel verdirbt.</span>
+    <span data-phrase="mode.median">Nimmt den mittleren Wert jedes Pixels. Alles, was nur in einem Teil der Aufnahmen da war, ein Tourist, ein Auto, ein Flugzeug, verschwindet. Es ist die einzige Methode, die jede Aufnahme gleichzeitig halten muss, und deshalb kann sie unten in Bänder geteilt werden.</span>
+    <span data-phrase="mode.sigma">Lernt, was jedes Pixel üblicherweise ist, und mittelt dann nur die Werte, die dazu passen. Das Ergebnis des Medians mit der Rauschminderung des Mittelwerts. Er liest die Aufnahmen zweimal.</span>
+    <span data-phrase="mode.max">Behält den hellsten Wert, den jedes Pixel je hatte. Das ist es, was aus einer Reihe kurzer Belichtungen Sternspuren macht und ein Feuerwerk aus seinen eigenen Aufnahmen zusammensetzt.</span>
+    <span data-phrase="mode.min">Behält den dunkelsten Wert, den jedes Pixel je hatte. Ein Pixel bleibt nur hell, wenn es in jeder Aufnahme hell war, also gehen Spiegelungen, Scheinwerfer und angeleuchtete Regentropfen.</span>
+    <span data-phrase="mode.sum">Addiert die Aufnahmen, ohne zu teilen: was eine {count}-mal so lange Belichtung gesammelt hätte. Sie läuft an, genau wie diese Belichtung es täte. Holen Sie es mit dem Belichtungsregler zurück.</span>
+    <span data-phrase="mode.focus">Nimmt jeden Teil des Bildes aus der Aufnahme, in der er scharf war. Fotografieren Sie ein kleines Motiv entlang des Fokusrings, und das hier setzt die scharfen Teile zusammen.</span>
+
+    <span data-phrase="align.translate">Findet, wie weit jede Aufnahme verschoben war, und schiebt sie zurück, auf Bruchteile eines Pixels genau. Korrigiert Wackeln aus der Hand und Stativdrift. Drehung kann es nicht korrigieren.</span>
+    <span data-phrase="align.similarity">Findet zusätzlich Drehung und Maßstab. Kostet eine Messung mehr je Aufnahme und gar nichts, wenn die Aufnahmen sich als gerade erweisen. Drehung wird immer nur innerhalb einer halben Umdrehung zurückgewonnen.</span>
+    <span data-phrase="align.none">Stackt die Aufnahmen genau so, wie sie kommen. Richtig für ein festes Stativ oder eine Intervallserie, falsch für alles aus der Hand.</span>
+
+    <span data-phrase="scale.note">Jede Aufnahme wird vom Decoder des Browsers selbst in dieser Größe dekodiert, eine kleinere Einstellung ist also weniger Arbeit und nicht nur weniger Speicher.</span>
+    <span data-phrase="gain.note">Ganz am Ende in das Ergebnis multipliziert, nach der Rechnung und vor dem Runden.</span>
+    <span data-phrase="gain.sum-note">{count} Aufnahmen zu addieren wird mit ziemlicher Sicherheit anlaufen. Nehmen Sie das auf etwa {suggested} herunter, um zu sehen, was gesammelt wurde.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">etwa {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}, einer je Aufnahme</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; jede Aufnahme, {passes} mal</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; jede Aufnahme, einmal für jedes der {bands} Bänder</span>
+    <span data-phrase="plan.read">{read} von {total} auf der Platte</span>
+    <span data-phrase="plan.banded">Das passt nicht am Stück in den Speicher, deshalb wird das Bild in {bands} Bänder geschnitten und die Aufnahmen werden für jedes erneut gelesen. {suggested} zu wählen machte daraus einen einzigen Durchlauf.</span>
+    <span data-phrase="plan.banded-anyway">Das passt nicht am Stück in den Speicher, deshalb wird das Bild in {bands} Bänder geschnitten und die Aufnahmen werden für jedes erneut gelesen. Weniger Aufnahmen oder eine kleinere Arbeitsauflösung machten daraus einen einzigen Durchlauf.</span>
+
+    <span data-phrase="progress.open">In {name} wird hineingesehen&hellip;</span>
+    <span data-phrase="progress.survey">{name} wird gelesen&hellip;</span>
+    <span data-phrase="progress.measure">Es wird gemessen, wie weit {name} sich bewegt hat&hellip;</span>
+    <span data-phrase="progress.stack">Wird gestackt &mdash; {done} von {total} Aufnahmen gelesen</span>
+    <span data-phrase="progress.stack-banded">Wird gestackt &mdash; Band {band} von {bands}, {done} von {total} Aufnahmen gelesen</span>
+    <span data-phrase="progress.encode">Das Bild wird geschrieben&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count} Aufnahmen in {seconds} Sekunden zusammengerechnet</span>
+    <span data-phrase="result.moves">Jede Aufnahme wurde vermessen und an ihren Platz geschoben.</span>
+    <span data-phrase="result.moves-some">{count} von {total} Aufnahmen ließen sich nicht sicher vermessen und blieben, wo sie waren.</span>
+    <span data-phrase="result.moves-none">Die Aufnahmen wurden genau so gestackt, wie sie kamen.</span>
+    <span data-phrase="result.moves-clamped">{count} Aufnahmen meldeten eine Drehung, die für eine Serie zu groß ist, und wurden allein durch Verschieben korrigiert.</span>
+    <span data-phrase="result.cropped">Sie auseinanderzuschieben ließ Ränder zurück, die nicht jede Aufnahme erreichte, und die wurden abgeschnitten.</span>
+
+    <span data-phrase="error.no.files">Fügen Sie zuerst mindestens ein Bild hinzu.</span>
+    <span data-phrase="error.no.size">Keine dieser Dateien ließ sich als Bild öffnen.</span>
+    <span data-phrase="error.one.frame">Stacken braucht mindestens zwei Aufnahmen.</span>
+    <span data-phrase="error.unknown">Beim Stacken ist etwas schiefgegangen. Wenn eine dieser Dateien ungewöhnlich ist, versuchen Sie sie einzeln.</span>
+    <span data-phrase="error.memory">Dem Browser ist der Speicher ausgegangen. Versuchen Sie eine kleinere Arbeitsauflösung oder weniger Aufnahmen.</span>
+    <span data-phrase="error.unreadable">{name} ließ sich nicht als Bild öffnen und blieb außen vor.</span>
+    <span data-phrase="error.busy">Warten Sie, bis dieser Stapel fertig ist, bevor Sie weitere Aufnahmen hinzufügen, oder brechen Sie ihn ab.</span>
+  </div>
+</main>

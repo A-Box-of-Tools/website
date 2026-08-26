@@ -1,0 +1,25 @@
+#
+# Ratgeber: eine DICOM-Datei öffnen - German.
+#
+# Die DICOM-Feldnamen und die Dateinamen auf einer Klinik-CD bleiben englisch
+# und behalten ihre Nummern - DICOMDIR, IM000001, Instance Number, Image
+# Position (Patient). So stehen sie auf der CD und im Standard.
+#
+
+nav = "Eine DICOM-Datei öffnen"
+title = "DICOM-Datei (.dcm) öffnen, ohne etwas zu installieren"
+description = "Was auf einer Klinik-CD liegt, warum die Dateien keine Endung haben, wie sich eine .dcm-Aufnahme im Browser öffnen lässt, was Fenster und Zentrum wirklich tun und was eine Aufnahme außer dem Bild noch über die Patientin trägt."
+
+heading = "Wie Sie eine DICOM-Datei öffnen, und was in einer steckt"
+lede = """
+    Eine Klinik-CD ist ein Ordner voller Dateien ohne Endung und ein Viewer, der
+    für Windows XP geschrieben wurde. Die Dateien sind DICOM, und daran ist
+    nichts Exotisches: Eine Aufnahme ist ein Header voller Felder und ein Block
+    Pixel. Hier steht, wie Sie eine ansehen, was die Regler bedeuten und was die
+    Datei außer dem Bild noch mit sich trägt."""
+
+updated = "25. August 2026"
+
+og_title = "Eine DICOM-Datei öffnen, ohne etwas zu installieren"
+og_description = "Was auf einer Klinik-CD liegt, warum die Dateien keine Endung haben und was eine .dcm-Aufnahme außer dem Bild noch über die Patientin trägt."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

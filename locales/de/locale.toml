@@ -149,6 +149,19 @@ complete = true
 "guides/whats-inside-a-gif" = "ratgeber/was-steckt-in-einem-gif"
 "guides/verify-a-file-checksum" = "ratgeber/pruefsumme-vergleichen"
 
+# Die vier Seiten, die nach dieser Liste dazugekommen sind. "dicom-viewer"
+# bleibt, wie es ist, weil genau das getippt wird - eine Eindeutschung waere
+# ein Wort, nach dem niemand sucht. "Stacken" ist in der Fotografie das
+# gelaeufige Verb und steht deshalb da statt "stapeln".
+"dicom-viewer" = "dicom-viewer"
+"document-scanner" = "dokumente-scannen"
+"redact-pdf" = "pdf-schwaerzen"
+"stack-images" = "bilder-stacken"
+"guides/open-a-dicom-file" = "ratgeber/dicom-datei-oeffnen"
+"guides/redact-a-pdf" = "ratgeber/pdf-schwaerzen"
+"guides/scan-a-document-with-your-phone" = "ratgeber/dokument-mit-handy-scannen"
+"guides/stack-photos-to-reduce-noise" = "ratgeber/fotos-stacken-gegen-bildrauschen"
+
 #
 # ---------------------------------------------------------------------------
 # The hub.

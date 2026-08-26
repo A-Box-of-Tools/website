@@ -1,0 +1,310 @@
+<!--
+  tools/redact-pdf/body.html, in German.
+
+  Every id, class, data-phrase key and brace placeholder below is what the
+  JavaScript reaches for, so they are the same in every language. Only the
+  words change.
+
+  Die count.*-Paare gibt es weiterhin doppelt: Deutsch unterscheidet Singular
+  und Plural, also tragen sie hier tatsächlich zwei Formen.
+-->
+<main>
+  <!-- Schritt 1 &mdash; das Dokument -->
+  <section class="card">
+    <h2><span class="step">1</span> PDF wählen</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="load-note" class="field-summary" role="status" aria-live="polite" hidden></p>
+
+    <div id="doc-facts" class="doc-facts" hidden>
+      <p id="doc-name" class="doc-name"></p>
+      <p id="doc-sub" class="doc-sub"></p>
+      <ul id="doc-warnings" class="doc-warnings"></ul>
+    </div>
+  </section>
+
+  <!-- Schritt 2 &mdash; finden -->
+  <section class="card" id="find-card" hidden>
+    <h2><span class="step">2</span> Sagen, was weg muss</h2>
+
+    <p class="card-lede">
+      Tippen Sie die Wörter, einen Namen, eine Adresse, ein Aktenzeichen, und
+      jede Stelle, an der sie vorkommen, wird unten mit ihrer Zeile aufgelistet.
+      Bis Schritt 4 wird nichts entfernt, und nichts wird entfernt, was Sie nicht
+      angekreuzt haben.
+    </p>
+
+    <label class="find-label" for="terms">Wörter und Wendungen, eines pro Zeile</label>
+    <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
+              placeholder="Schmidt&#10;Brückenstraße 14&#10;AZ-40219"></textarea>
+
+    <div class="find-row">
+      <button type="button" id="find" class="primary">Suchen</button>
+      <label class="inline-check">
+        <input type="checkbox" id="match-case"> <span>Groß- und Kleinschreibung beachten</span>
+      </label>
+      <label class="inline-check">
+        <input type="checkbox" id="whole-word"> <span>Nur ganze Wörter</span>
+      </label>
+    </div>
+
+    <fieldset class="finders">
+      <legend>Oder nach dem suchen, was üblicherweise heikel ist</legend>
+      <div class="chips" id="finders"></div>
+      <p class="field-note" id="finder-note">
+        Das sind Muster, und ein Muster kann eine Telefonnummer nicht von einem
+        Aktenzeichen unterscheiden. Kartennummern und IBANs werden gegen ihre
+        eigenen Prüfziffern geprüft; der Rest wird angeboten und nie für Sie
+        angekreuzt, und jeder Treffer lohnt einen Blick.
+      </p>
+    </fieldset>
+
+    <div class="toolbar" id="match-bar" hidden>
+      <span id="match-count" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="tick-all" class="ghost">Alle ankreuzen</button>
+        <button type="button" id="tick-none" class="ghost">Alle abwählen</button>
+        <button type="button" id="clear-found" class="ghost danger">Liste leeren</button>
+      </div>
+    </div>
+
+    <ul id="match-list" class="match-list" hidden></ul>
+    <p id="match-more" class="field-note" hidden></p>
+  </section>
+
+  <!-- Schritt 3 &mdash; die Seite lesen -->
+  <section class="card" id="page-card" hidden>
+    <h2><span class="step">3</span> Die Seite lesen und Wörter herauspicken</h2>
+
+    <p class="card-lede">
+      Das ist der Text, wie er im Dokument gespeichert ist, in der Reihenfolge,
+      in der ein Leser ihn kopieren würde, und die ist nicht immer die, in der er
+      gedruckt ist. Klicken Sie ein Wort an, um es zu entfernen, und noch einmal,
+      um es zu behalten. Alles hier Durchgestrichene ist das, was verschwinden
+      wird.
+    </p>
+
+    <div class="pager">
+      <button type="button" id="prev-page" class="ghost">&#8592; Zurück</button>
+      <span id="page-of" class="count"></span>
+      <button type="button" id="next-page" class="ghost">Weiter &#8594;</button>
+      <span class="pager-spacer"></span>
+      <span id="page-picked" class="count"></span>
+      <button type="button" id="clear-page" class="ghost danger">Auf dieser Seite alles behalten</button>
+    </div>
+
+    <p id="page-note" class="field-summary" hidden></p>
+
+    <div id="page-text" class="page-text" role="group" aria-label="Der Text dieser Seite"></div>
+  </section>
+
+  <!-- Schritt 4 &mdash; tun -->
+  <section class="card" id="run-card" hidden>
+    <h2><span class="step">4</span> Die Wörter entfernen</h2>
+
+    <label class="check">
+      <input type="checkbox" id="opt-boxes" checked>
+      <span>
+        <strong>Einen schwarzen Kasten zeichnen, wo jedes stand</strong>
+        <span class="check-note">
+          Damit ein Leser sieht, dass etwas entfernt wurde. Der Kasten ist hier
+          Verzierung und nicht die Schwärzung: Die Buchstaben sind aus der Datei
+          verschwunden, bevor er gezeichnet wird. Schalten Sie ihn ab, und die
+          Wörter verschwinden einfach und lassen den Platz zurück, den sie
+          belegt haben.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-elsewhere" checked>
+      <span>
+        <strong>Dieselben Wörter aus dem übrigen Dokument entfernen</strong>
+        <span class="check-note">
+          Lesezeichen, Kommentare, Notizzettel und das, was in Formularfelder
+          getippt wurde. Ein Wort, das von einer Seite entfernt und in einem
+          Lesezeichen gelassen wurde, ist nicht entfernt. Die Eigenschaften des
+          Dokuments gehen unabhängig davon, und der Ersatztext, den ein
+          Betrachter anstelle der Buchstaben auf der Seite kopiert, ebenso: Beides
+          ist das Dokument, das das Wort sagt, und nicht ein anderer Ort, der eine
+          Kopie davon behält.
+        </span>
+      </span>
+    </label>
+
+    <label class="check">
+      <input type="checkbox" id="opt-attachments" checked>
+      <span>
+        <strong>Anhänge und alles, was ausgeführt wird, verwerfen</strong>
+        <span class="check-note">
+          Ein PDF kann ganze Dateien in sich tragen und JavaScript, das beim
+          Öffnen läuft. In beidem lässt sich nicht nach den Wörtern suchen, die
+          Sie entfernen, und für das Lesen eines Dokuments braucht es beides
+          nicht.
+        </span>
+      </span>
+    </label>
+
+    <p class="field-summary" id="run-summary"></p>
+
+    <div class="run-row">
+      <button type="button" id="run" class="primary big">Entfernen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
+    </div>
+
+    <div id="progress" class="progress" hidden>
+      <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="run-error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-head">
+        <div>
+          <p id="result-size" class="result-size"></p>
+          <p id="result-sub" class="result-sub"></p>
+        </div>
+        <a id="download" class="primary big" download>Herunterladen</a>
+      </div>
+
+      <p id="check-line" class="check-line"></p>
+      <ul id="check-terms" class="check-terms" hidden></ul>
+      <ul id="result-facts" class="result-facts"></ul>
+    </div>
+  </section>
+
+  <!--
+    The sentences this tool's JavaScript puts on screen. They live here rather
+    than in src/ because src/ is copied byte for byte into all eleven
+    languages; see "The strings in the JavaScript" in the repository README.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notpdf">Das ist kein PDF, es gibt darin also keinen Text zum Entfernen.</span>
+    <span data-phrase="load.encrypted">Dieses PDF hat ein Passwort. Einem
+      Dokument den Schutz zu nehmen ist eine andere Aufgabe, als Wörter daraus zu
+      entfernen, und dieses Werkzeug tut es nicht hinter Ihrem Rücken.</span>
+    <span data-phrase="load.broken">Diese Datei ließ sich nicht als PDF öffnen ({detail}).</span>
+    <span data-phrase="load.nopages">Sie öffnete, aber es waren keine Seiten darin zu finden.</span>
+    <span data-phrase="load.repaired">Die Querverweistabelle dieses Dokuments
+      passte nicht zu seinem Inhalt, deshalb wurde es gelesen, indem nach Objekten
+      gesucht wurde. Das ist eine Reparatur, und sie hat funktioniert. Prüfen Sie
+      das Ergebnis sorgfältig, bevor Sie es irgendwohin schicken.</span>
+
+    <span data-phrase="doc.sub">{pages} &middot; {words} Text &middot; {size}</span>
+    <span data-phrase="doc.notext">{count} dieser Seiten haben überhaupt keinen
+      Text. Eine solche Seite ist ein Bild einer Seite, und für dieses Werkzeug
+      gibt es dort nichts zu entfernen: Die Wörter im Bild bleiben genau, wo sie
+      sind.</span>
+    <span data-phrase="doc.unreadable">{count} Buchstaben dieses Dokuments ließen
+      sich nicht als Zeichen lesen, weil die verwendeten Schriften keine Zuordnung
+      von ihren Glyphen zurück zu Text mitbringen. Nach diesen Buchstaben lässt
+      sich nicht suchen, sehen Sie sich also die Seiten an, auf denen sie stehen,
+      statt der Suche zu vertrauen.</span>
+    <span data-phrase="doc.scan">Manche Seiten tragen unsichtbaren Text über
+      einem Bild, und so hält ein Scanner fest, was sein Leser aus der Seite
+      gemacht hat. Diesen Text zu entfernen entfernt das, was eine Suche und ein
+      Kopieren finden würden. Es ändert nichts am Bild, und im Bild sind die
+      Wörter weiterhin lesbar.</span>
+
+    <span data-phrase="find.none">Auf keiner Seite gab es einen Treffer.</span>
+    <span data-phrase="find.some">{count} auf {pages}.</span>
+    <span data-phrase="find.more">Die ersten {shown} sind aufgelistet. Der Rest
+      ist gefunden und wird mit entfernt, wenn Sie alle ankreuzen.</span>
+    <span data-phrase="find.terms">Tippen Sie oben ein Wort oder wählen Sie ein Muster, bevor Sie Suchen drücken.</span>
+
+    <span data-phrase="page.of">Seite {number} von {total}</span>
+    <span data-phrase="page.picked">{count} werden von dieser Seite entfernt</span>
+    <span data-phrase="page.notext">Auf dieser Seite gibt es keinen Text.
+      Entweder ist sie leer, oder sie ist ein Bild einer Seite: ein Scan, ein
+      Foto, ein Export, der seine Wörter als Formen gezeichnet hat. Nichts darauf
+      lässt sich durchsuchen, und nichts darauf lässt sich hier entfernen.</span>
+    <span data-phrase="page.unreadable">{count} Buchstaben auf dieser Seite
+      ließen sich nicht als Zeichen lesen. Sie stehen unten als &#9647;, und die
+      Suche findet sie nicht.</span>
+    <span data-phrase="page.scan">Der Text auf dieser Seite ist unsichtbar: Er
+      liegt über einem Bild der Seite, und so wird ein Scan durchsuchbar gemacht.
+      Was Sie hier entfernen, ist das, was eine Suche und ein Kopieren finden
+      würden. Das Bild behält die Wörter.</span>
+
+    <span data-phrase="run.summary">{words} auf {pages} werden entfernt.</span>
+    <span data-phrase="run.nothing">Es ist noch nichts angekreuzt. Suchen Sie in Schritt 2 ein Wort, oder klicken Sie in Schritt 3 eines an.</span>
+    <span data-phrase="run.editing">Die Wörter werden entfernt&hellip;</span>
+    <span data-phrase="run.writing">Das Dokument wird geschrieben&hellip;</span>
+    <span data-phrase="run.checking">Die fertige Datei wird geöffnet und durchsucht&hellip;</span>
+    <span data-phrase="run.failed">Beim Neuschreiben dieses Dokuments ist etwas schiefgegangen ({detail}).</span>
+    <span data-phrase="run.cancelled">Abgebrochen. Es wurde nichts geschrieben.</span>
+
+    <span data-phrase="result.headline">{words} entfernt</span>
+    <span data-phrase="result.sub">{size} &middot; {pages} geändert &middot; {boxes}</span>
+    <span data-phrase="check.good">Hier erneut geöffnet und durchsucht, so wie
+      ein Leser es täte: Keines davon steht in der fertigen Datei.</span>
+    <span data-phrase="check.partial">Hier erneut geöffnet und durchsucht: Jedes
+      Vorkommen, das Sie angekreuzt haben, ist weg, und die, die Sie gelassen
+      haben, sind noch da.</span>
+    <span data-phrase="check.survived">Diese Datei wurde NICHT geschrieben. Das
+      fertige Dokument wurde erneut geöffnet, und ein Teil dessen, was Sie
+      entfernt haben, war darin weiterhin zu finden. Die Schwärzung war also
+      nicht vollständig. Es wird nichts zum Herunterladen angeboten.</span>
+    <span data-phrase="check.pages">Diese Datei wurde NICHT geschrieben. Das
+      fertige Dokument kam mit einer anderen Seitenzahl zurück, als es
+      hineinging, es ist also über die Wörter hinaus etwas schiefgegangen. Es wird
+      nichts zum Herunterladen angeboten.</span>
+
+    <span data-phrase="fact.boxes">{count} über die Lücken gezeichnet.</span>
+    <span data-phrase="fact.noboxes">Es wurden keine Kästen gezeichnet, die
+      Wörter sind also weg, ohne dass irgendetwas sagt, wo sie standen.</span>
+    <span data-phrase="fact.elsewhere">Dieselben Wörter wurden aus {where} entfernt.</span>
+    <span data-phrase="fact.metadata">Die Dokumenteigenschaften und das XMP-Paket
+      wurden entfernt, die fertige Datei sagt also nicht, was sie erzeugt hat,
+      wann, oder wie sie früher hieß.</span>
+    <span data-phrase="fact.carried">{attachments} und {actions} wurden verworfen.</span>
+    <span data-phrase="fact.shared">Ein Teil dessen, was Sie entfernt haben,
+      wurde von einem Block gezeichnet, den das Dokument auf mehr als einer Seite
+      wiederverwendet, es ist also von jeder Seite verschwunden, die ihn zeichnet.
+      Das ist mehr, als Sie angekreuzt haben, und nie weniger.</span>
+    <span data-phrase="fact.overimage">{count} der entfernten Buchstaben lagen
+      über einem Bild derselben Seite. Aus der Textebene sind sie heraus und im
+      Bild sind sie noch: Ein Leser kann sie nicht mehr suchen oder kopieren und
+      weiterhin sehen.</span>
+    <span data-phrase="fact.untouched">Alles andere auf jeder Seite wurde Byte
+      für Byte durchgereicht. Keine Schrift, kein Bild und keine Linie wurde neu
+      kodiert.</span>
+
+    <span data-phrase="count.pages">{count} Seiten</span>
+    <span data-phrase="count.page">{count} Seite</span>
+    <span data-phrase="count.words">{count} Wörter</span>
+    <span data-phrase="count.word">{count} Wort</span>
+    <span data-phrase="count.pieces">{count} Textstücke</span>
+    <span data-phrase="count.piece">{count} Textstück</span>
+    <span data-phrase="count.matches">{count} Treffer</span>
+    <span data-phrase="count.match">{count} Treffer</span>
+    <span data-phrase="count.boxes">{count} schwarze Kästen</span>
+    <span data-phrase="count.box">{count} schwarzer Kasten</span>
+    <span data-phrase="count.attachments">{count} Anhänge</span>
+    <span data-phrase="count.attachment">{count} Anhang</span>
+    <span data-phrase="count.actions">{count} Aktionen</span>
+    <span data-phrase="count.action">{count} Aktion</span>
+    <span data-phrase="count.hosts">{count} Hosts</span>
+    <span data-phrase="count.host">{count} Host</span>
+
+    <!-- The space before {platform} belongs to these two rather than to the
+         phrase it lets in, because phrases.js collapses and trims the markup
+         it reads and a leading space would not survive the trip. -->
+    <span data-phrase="net.clean">Ihr Dokument ist nirgendwohin gegangen. {total}
+      Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
+    <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
+      dieses Werkzeug nie. Das ist es wert, nachgesehen zu werden. {platform}</span>
+    <span data-phrase="net.platform">Die eigenen Skripte der Seite für Werbung,
+      Messung und den Spenden-Knopf kamen von {hosts}; keines davon hat ein
+      Dokument, ein Wort daraus oder irgendetwas Gesuchtes bekommen.</span>
+
+    <span data-phrase="finder.email">E-Mail-Adressen</span>
+    <span data-phrase="finder.card">Kartennummern</span>
+    <span data-phrase="finder.iban">Bankkonten (IBAN)</span>
+    <span data-phrase="finder.nationalid">Sozialversicherungs- &amp; Rentenversicherungsnummern</span>
+    <span data-phrase="finder.phone">Telefonnummern</span>
+  </div>
+</main>

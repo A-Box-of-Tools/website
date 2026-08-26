@@ -1,0 +1,405 @@
+#
+# DICOM-Viewer - German.
+#
+# Overrides for tools/dicom-viewer/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Die DICOM-Feldnamen bleiben englisch und behalten ihre Nummern - Pixel
+# Spacing (0028,0030), Series Instance UID (0020,000E). So stehen sie in der
+# Datei und so stehen sie im Standard; wer ein Feld nachschlagen will, sucht
+# genau diese Wörter. Dasselbe gilt für die Transfersyntaxen und für PS3.15.
+#
+# Auf dieser Seite hat das Versprechen der Seite die schärfste Kante: die Datei
+# ist eine Krankenakte mit einem Bild darin. Die Sätze darüber, was in ihr
+# steht, sind deshalb genauso sorgfältig übersetzt wie die darüber, wohin sie
+# nicht geht.
+#
+
+name = "DICOM-Viewer"
+heading = "DICOM-Viewer <span class=\"h1-kw\">&mdash; eine .dcm-Aufnahme im Browser öffnen</span>"
+tagline = "CT, MRT, Röntgen und Ultraschall, mit Fenster, Header und Messungen."
+
+title = "DICOM-Viewer &mdash; .dcm-Datei im Browser öffnen, ohne Upload"
+description = "Öffnen Sie CT-, MRT-, Röntgen- und Ultraschallaufnahmen im Browser. Fenster und Zentrum, eine ganze Serie durchblättern, in Millimetern messen, jeden DICOM-Tag lesen und genau sehen, was in der Datei die Patientin oder den Patienten benennt. Nichts wird hochgeladen."
+og_title = "DICOM-Viewer &mdash; eine Aufnahme öffnen, ohne sie hochzuladen"
+og_description = "Eine .dcm-Datei, geöffnet auf Ihrem eigenen Gerät: Fenster und Zentrum, die ganze Serie in der richtigen Reihenfolge, Messungen in Millimetern und jeder Tag im Header. Kein Upload, kein Konto."
+og_image_alt = "DICOM-Viewer - eine CT-, MRT- oder Röntgenaufnahme im Browser öffnen"
+
+pledge = """
+    Die Aufnahme wird von Ihrem eigenen Browser geöffnet und dekodiert: der
+    Header, die Pixel, das Fenster, die Messungen. Am anderen Ende dieser Seite
+    steht kein Server, an den sich geschützte Gesundheitsdaten senden ließen,
+    selbst wenn hier etwas das wollte, und nichts über die Datei wird
+    irgendwem mitgeteilt, weder der Name der Patientin noch die Studie noch der
+    Dateiname."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und öffnen Sie eine Aufnahme. Keine einzige
+      Anfrage trägt ein Bild, einen Tag oder einen Dateinamen. Oder trennen Sie
+      die Internetverbindung und öffnen Sie trotzdem eine."""
+
+read_first = """
+, <code>src/dicom.js</code> für den Parser, der
+      durch die Datei läuft, <code>src/pixels.js</code> für das Dekodieren der
+      Pixel, <code>src/jpeg-lossless.js</code> für den Codec, den die meisten
+      Klinik-Exporte verwenden, und <code>src/window.js</code> für Fenster und
+      Zentrum. In keiner dieser Dateien steht eine Zeile, die ins Netz käme."""
+
+howto_heading = "So öffnen Sie eine DICOM-Datei"
+
+card = """
+            Öffnen Sie eine CT-, MRT-, Röntgen- oder Ultraschallaufnahme auf
+            Ihrem eigenen Gerät. Fenster und Zentrum einstellen, die ganze Serie
+            durchblättern, in Millimetern messen und jeden Tag im Header
+            lesen."""
+
+[words]
+plural = "Aufnahmen"
+choose = "eine Aufnahme"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Läuft offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Ihre Aufnahme hat keinen Ort, an den sie gehen könnte."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört uns. Es gibt hier keinen Endpunkt, an dem
+      Ihre Datei gesammelt werden könnte, und keinen Code, der sie senden würde,
+      wenn es ihn gäbe. Früher stand hier <code>connect-src 'none'</code>, und
+      das war absolut. Die Werbung hat das gekostet, und das gehört dazugesagt."""
+
+[[privacy]]
+title = "Hier wiegt das schwerer als auf den anderen Seiten."
+body = """
+
+      Eine DICOM-Datei ist kein Bild mit ein paar Metadaten daran. Sie ist eine
+      Krankenakte mit einem Bild darin: Name, Geburtsdatum, Patientennummer,
+      Auftragsnummer, überweisende Ärztin, Einrichtung und die Seriennummer des
+      Geräts stehen alle als Felder im Header und reisen mit der Datei, wohin sie
+      auch geht. Wer so eine Datei auf eine Website hochlädt, um sie anzusehen,
+      übergibt all das an die Leute, die diese Website betreiben. Genau das tut
+      diese Seite nicht."""
+
+[[privacy]]
+title = "Der Leser besteht aus vierzehn Dateien in diesem Repository."
+body = """
+ Nichts hier verwendet
+      eine Bibliothek, die von irgendwoher geladen wird.
+      <code>src/dicom.js</code> läuft durch die Datei,
+      <code>src/dictionary.js</code> weiß, wie die Tags heißen,
+      <code>src/pixels.js</code> macht aus den Bytes wieder Messwerte,
+      <code>src/rle.js</code> und <code>src/jpeg-lossless.js</code> packen die
+      zwei komprimierten Formen aus, die diese Seite dekodieren kann, und
+      <code>src/window.js</code> bildet das Gemessene auf die Grauwerte Ihres
+      Bildschirms ab."""
+
+[[privacy]]
+title = "Die Identifikatoren werden für Sie aufgelistet, und für sonst niemanden."
+body = """
+
+      Die Seite zeigt jedes Feld Ihrer Datei an, das die abgebildete Person
+      benennt oder eingrenzt. Das ist die Frage, die jemand beantwortet haben
+      möchte, bevor er eine Schicht weitergibt, und kein Viewer beantwortet sie.
+      Sie steht auf dem Bildschirm vor Ihnen und geht nirgendwo sonst hin: In
+      diesem Repository gibt es kein Analytics-Ereignis, das irgendetwas davon
+      trüge, und die Seite könnte es auch nicht senden, wenn es eines gäbe."""
+
+[[privacy]]
+title = "Sie liest. Sie schreibt nicht."
+body = """
+ Es gibt hier keinen Knopf, der Ihre
+      Datei verändert, und keinen Code, der das könnte. Mitnehmen können Sie ein
+      PNG des Bildes auf dem Schirm und eine Textfassung des Headers, beide in
+      der Seite aus dem gebaut, was ohnehin schon da ist. Ihr Original liegt
+      unberührt auf Ihrer Festplatte, was zugleich die ehrliche Antwort darauf
+      ist, was passiert, wenn Sie den Tab schließen."""
+
+[[privacy]]
+title = "Was Google lädt und was es nicht bekommt."
+body = """
+ Die Skripte für Werbung
+      und Messung kommen von Google. Keines von beiden bekommt irgendetwas über
+      Ihre Datei: nicht die Pixel, kein Vorschaubild, keinen Namen, keinen Tag,
+      keine Patientin, keinen Dateinamen. Jede Zeile, die eine Aufnahme liest,
+      dekodiert oder zeichnet, wird von dieser Domain ausgeliefert und steht im
+      Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Knopf lädt und was er nicht bekommt."
+body = """
+
+      Der Knopf &bdquo;Buy me a coffee&ldquo; im Kopfbereich wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und sonst nichts: Er meldet keinen Besuch,
+      und er bekommt nichts über Sie oder Ihre Dateien. Es passiert nichts, bis
+      Sie ihn anklicken, und dann sind Sie auf einer fremden Seite."""
+
+[[privacy]]
+title = "Läuft offline."
+body = """
+ Trennen Sie die Netzverbindung, und jeder Teil
+      dieser Seite arbeitet weiter. Das ist der einfachste Beweis von allen: Ein
+      Werkzeug, das Ihre Aufnahme zum Rendern wegschickt, hört in dem Moment auf,
+      in dem Sie den Stecker ziehen."""
+
+[[howto]]
+title = "Wählen Sie die Dateien."
+body = """
+ Eine einzelne
+      <code>.dcm</code>-Datei oder gleich den ganzen Ordner von der CD. Ein CT
+      oder ein MRT ist eine Datei pro Schicht, und erst wenn Sie alle auf einmal
+      hineinziehen, setzt sich die Serie wieder zusammen. Der Browser liest sie
+      direkt von Ihrer Festplatte, dabei geht nichts irgendwohin."""
+
+[[howto]]
+title = "Wählen Sie die Serie."
+body = """
+ Eine Studie enthält meist mehrere: die
+      Übersichtsaufnahme und dann jede Akquisition. Jede wird in der Reihenfolge
+      gestapelt, in der das Gerät sie aufgenommen hat, ermittelt aus der Lage
+      jeder Schicht im Körper und nicht aus der Nummerierung, die nicht immer in
+      dieselbe Richtung läuft."""
+
+[[howto]]
+title = "Stellen Sie das Fenster ein."
+body = """
+ Das ist der Regler, der eine
+      Aufnahme lesbar macht, und der, den ein Bildbearbeitungsprogramm nicht hat.
+      Ziehen Sie quer über das Bild, um das Fenster zu weiten, und nach oben oder
+      unten, um sein Zentrum zu verschieben. Oder nehmen Sie bei einem CT eines
+      der benannten Fenster: Lunge, Knochen, Hirn, Weichteile. Dort bedeuten die
+      Werte auf jedem Gerät der Welt dasselbe."""
+
+[[howto]]
+title = "Blättern Sie durch den Stapel."
+body = """
+ Der Regler unter dem Bild geht
+      durch die Schichten, und sobald Sie das Bild angeklickt haben, tun das die
+      Pfeiltasten auch. Eine Mehrbild-Datei, eine Ultraschallschleife oder ein
+      Angiogramm, läuft über den Knopf daneben als Film."""
+
+[[howto]]
+title = "Messen Sie etwas."
+body = """
+ Wechseln Sie auf Messen und ziehen Sie eine
+      Linie. Wo die Datei sagt, wie weit ihre Pixel auseinanderliegen, steht das
+      Ergebnis in Millimetern und rechnet nicht quadratische Pixel mit ein. Wo
+      sie es nicht sagt, steht es in Pixeln und sagt das auch, statt einen
+      Maßstab zu erfinden."""
+
+[[howto]]
+title = "Lesen Sie den Header."
+body = """
+ Jedes Element der Datei, mit seiner
+      Nummer, seinem Namen aus dem Standard und seinem Inhalt, durchsuchbar.
+      Darüber die Liste dessen, was in genau dieser Datei die Patientin oder den
+      Patienten benennt, und das ist erheblich mehr als der Name."""
+
+[[howto]]
+title = "Nehmen Sie mit, was Sie brauchen."
+body = """
+ Das Bild auf dem Schirm als
+      PNG, mit dem Fenster, das Sie eingestellt haben, und ohne eingebrannte
+      Beschriftung. Oder den ganzen Header als Text. Beides entsteht in der Seite
+      aus dem, was ohnehin schon da ist."""
+
+[[faq]]
+q = "Wird meine Aufnahme irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        gelesen, dekodiert und gezeichnet. Dieses Werkzeug hat keine Serverseite,
+        und in der <code>Content-Security-Policy</code> der Seite steht jede
+        Adresse, die sie kontaktieren darf. Keine davon gehört uns. Trennen Sie
+        die Netzverbindung, und sie öffnet weiter Aufnahmen.
+        <br><br>
+        Das wiegt hier schwerer als auf jeder anderen Seite dieser Website. Eine
+        DICOM-Datei trägt Name, Geburtsdatum und Patientennummer im Header. Wer
+        sie in einen Online-Viewer lädt, übergibt einem Fremden eine
+        Krankenakte, kein Bild."""
+
+[[faq]]
+q = "Welche DICOM-Dateien kann er öffnen?"
+a = """
+        Unkomprimierte Dateien in allen drei Basis-Transfersyntaxen, also
+        implicit und explicit little endian sowie die zurückgezogene
+        big-endian-Variante, dazu deflated, RLE Lossless, Baseline JPEG und JPEG
+        Lossless. Letzteres ist das, womit die meisten CT- und MRT-Studien auf
+        einer Klinik-CD komprimiert sind.
+        <br><br>
+        Nicht dekodieren kann er JPEG 2000, JPEG-LS und die MPEG- und
+        HEVC-Syntaxen für Video. Dafür bräuchte es Codecs, die als kompilierte
+        Bibliothek mehrere Megabyte wiegen, und eine Seite, die so etwas bei
+        Bedarf nachlädt, wäre keine Seite, die offline arbeitet. Eine Datei in
+        einem dieser Formate öffnet trotzdem: Der ganze Header wird gelesen und
+        angezeigt, und an die Stelle des Bildes tritt eine Zeile, die den Codec
+        benennt, statt eines Platzhaltersymbols, das Ihnen nichts sagt."""
+
+[[faq]]
+q = "Was ist &bdquo;Fenster und Zentrum&ldquo;, und wozu brauche ich das?"
+a = """
+        Eine CT-Schicht enthält rund viertausend unterscheidbare Werte, Ihr
+        Bildschirm zeigt zweihundertsechsundfünfzig Graustufen. Das Fenster ist
+        die Entscheidung, welcher Ausschnitt dieses Bereichs alle davon bekommt:
+        Alles darunter ist schwarz, alles darüber weiß, und was dazwischen liegt,
+        verteilt sich auf die Graustufen.
+        <br><br>
+        Deshalb sieht dieselbe Datei unter zwei Einstellungen aus wie zwei
+        verschiedene Aufnahmen, und deshalb lassen sich Lunge und Knochen nicht
+        gleichzeitig sehen. Bei einem CT sind die Zahlen Hounsfield-Einheiten,
+        und die sind absolut festgelegt: Wasser ist 0 und Luft ist &minus;1000.
+        Die benannten Fenster auf dieser Seite tragen deshalb genau die Werte,
+        die eine Radiologin an ihrer Befundungsstation verwendet. Bei einem MRT
+        oder einem Ultraschall gibt es keine solche Skala, und das Fenster, mit
+        dem geöffnet wird, ist das, um das die Datei selbst bittet."""
+
+[[faq]]
+q = "Warum steht meine Messung in Pixeln?"
+a = """
+        Weil diese Datei nicht sagt, wie groß ein Pixel ist. Das trägt Pixel
+        Spacing (0028,0030), in Millimetern, und sehr vielen Ultraschallbildern,
+        eingescannten Dokumenten und Secondary Captures fehlt es schlicht.
+        <br><br>
+        Wo es da ist, steht die Messung in Millimetern, und jede Achse wird mit
+        ihrem eigenen Abstand gerechnet, was bei den Bildern zählt, deren Pixel
+        nicht quadratisch sind. Wo es fehlt, ist eine Anzahl Pixel die ehrliche
+        Antwort, und die steht dann da, statt dass ein Maßstab gewählt und das
+        Ergebnis als Länge ausgegeben würde."""
+
+[[faq]]
+q = "Er hat meinen Ordner als mehrere Serien geöffnet. Warum?"
+a = """
+        Weil das drinsteht. Eine Studie besteht aus Serien, der Übersichtsaufnahme
+        und dann jeder Akquisition oder Rekonstruktion, und jede Datei sagt in
+        Series Instance UID (0020,000E), zu welcher sie gehört. Die Auswahlliste
+        wird daraus gebaut und nicht aus dem Ordner, in dem meist alles
+        durcheinander in einer Namensliste liegt.
+        <br><br>
+        Innerhalb einer Serie werden die Schichten nach ihrer Lage im Körper
+        sortiert, ermittelt aus Image Position und Image Orientation. Instance
+        Number wäre der naheliegende Schlüssel und ist hier nur der Rückfall: Sie
+        wird von dem vergeben, was die Dateien geschrieben hat, und muss nicht in
+        dieselbe Richtung laufen wie die Patientin auf dem Tisch."""
+
+[[faq]]
+q = "Was bedeutet die Liste &bdquo;was in dieser Datei die Patientin benennt&ldquo;?"
+a = """
+        Sie enthält jedes Feld Ihrer Datei, das die abgebildete Person benennt
+        oder eingrenzt, wer sie sein könnte, ausgelesen aus dieser Datei auf Ihrem
+        Gerät. Die Liste stammt aus PS3.15 des DICOM-Standards, also aus dem Teil,
+        der festlegt, was weg muss, bevor ein Datensatz anonymisiert heißen darf.
+        <br><br>
+        Sie steht da, weil das, was Leute falsch einschätzen, nicht die Tatsache
+        ist, dass ein Name in einer Aufnahme steht. Es ist, wie viel sonst noch
+        darin steht: Geburtsdatum, Auftragsnummer, überweisende Ärztin,
+        Einrichtung, Seriennummer des Geräts und die Studien-UIDs, die perfekte
+        Schlüssel zurück in das Archiv sind, aus dem die Datei stammt. Eine
+        Aufnahme, bei der nur der Name geleert wurde, ist nicht anonym.
+        <br><br>
+        Dieses Werkzeug zeigt Ihnen das nur. Es schreibt nichts und ändert nichts,
+        also kann es auch nichts davon entfernen."""
+
+[[faq]]
+q = "Kann er eine Aufnahme anonymisieren?"
+a = """
+        Nein, und er tut auch nicht so. Diese Seite liest; sie hat keinen Code,
+        der eine DICOM-Datei schreibt. Was sie tut, ist Ihnen genau zu sagen, was
+        in Ihrer drinsteht, und das ist der Teil, der schwer herauszufinden ist
+        und bei dem sich Leute irren.
+        <br><br>
+        Ein Werkzeug, das die Identifikatoren entfernt, ist eine eigene Aufgabe
+        mit deutlich höherer Messlatte: Es muss die Datei neu schreiben, ohne die
+        Pixel anzufassen, die UIDs über eine ganze Studie hinweg konsistent
+        ersetzen und bei den privaten Elementen richtig liegen, in denen manche
+        Geräte eine zweite Kopie des Namens verstecken. Es steht auf der Roadmap
+        dieser Seite und wird nicht an einen Viewer angeflanscht."""
+
+[[faq]]
+q = "Kann er eine Datei ohne .dcm-Endung öffnen, oder eine beschädigte?"
+a = """
+        Beides ja. Die Endung wird nicht angesehen, geprüft wird die Datei selbst.
+        Ein Datensatz ohne die üblichen 128 Byte Vorspann, und so sieht eine
+        Aufnahme aus, die direkt aus dem Netz gezogen wurde, wird gelesen, indem
+        seine Kodierung aus dem ersten Element erschlossen wird, und die Seite
+        sagt Ihnen, dass sie das getan hat.
+        <br><br>
+        Eine Datei, die mittendrin endet, wird so weit gelesen, wie sie reicht.
+        Alles vor dem Bruch wird angezeigt, mit einem Hinweis, bei welchem Byte
+        Schluss war. Genau dafür will man einen Viewer am dringendsten, und die
+        ganze Datei wegen ihrer letzten zwölf Byte wegzuwerfen wäre das falsche
+        Verhalten."""
+
+[[faq]]
+q = "Ist das ein Befundungs-Viewer?"
+a = """
+        Nein. Er ist kein Medizinprodukt, hat kein Zulassungsverfahren durchlaufen,
+        und nichts hier gehört zur Grundlage einer klinischen Entscheidung. Ihr
+        Bildschirm ist nicht kalibriert, der Browser ist keine validierte
+        Rendering-Kette, und beides lässt sich aus einer Webseite heraus nicht
+        beheben.
+        <br><br>
+        Gut ist er für alles andere, wofür Leute eine Aufnahme öffnen: nachsehen,
+        was auf einer CD ist, eine Schicht für eine Lehrveranstaltung oder ein
+        Paper herausziehen, einen Header lesen, herausfinden, warum ein anderes
+        Programm die Datei verweigert, und sehen, was eine Aufnahme über die
+        abgebildete Person mit sich trägt."""
+
+[[faq]]
+q = "Verändert er meine Datei?"
+a = """
+        Nein. Dieses Werkzeug liest nur. Es gibt keine Ausgabedatei, keine
+        Neukodierung und keinen Knopf, der ein DICOM schreibt. Herunterladen
+        können Sie ein PNG des Bildes auf dem Schirm und eine Textfassung des
+        Headers. Ihr Original liegt unberührt auf Ihrer Festplatte."""
+
+[[faq]]
+q = "Ist das kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung und keine
+        Testphase. Es gibt auch keine Grenze für die Dateigröße oder die Anzahl
+        der Dateien außer dem Speicher Ihres eigenen Geräts. Die Seite trägt
+        Werbung, und die bezahlt sie; die Werbung bekommt nichts über Ihre
+        Datei."""
+
+[[faq]]
+q = "Läuft er offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie danach die
+        Internetverbindung, und sie arbeitet weiter. Das ist zugleich der
+        einfachste Weg zu prüfen, dass nichts hochgeladen wird: Ein Werkzeug, das
+        Ihre Aufnahme zum Rendern wegschickt, hört in dem Moment auf, in dem Sie
+        den Stecker ziehen."""
+
+[schema]
+description = "DICOM-Dateien (.dcm) im Browser öffnen: CT, MRT, Röntgen und Ultraschall, mit Fenster und Zentrum, einer ganzen Serie in der richtigen Reihenfolge, Messungen in Millimetern und jedem Tag im Header. Nichts wird hochgeladen."
+features = [
+  "Öffnet CT, MRT, Röntgen, Ultraschall, PET und Secondary Capture",
+  "Fenster und Zentrum durch Ziehen, durch Eingabe oder über ein benanntes CT-Preset",
+  "Ein ganzer Ordner wird zu Serien gebündelt und nach der Lage im Körper sortiert",
+  "Mehrbild-Dateien laufen als Schleife",
+  "Misst in Millimetern und rechnet nicht quadratische Pixel mit ein",
+  "Liest den Pixelwert unter dem Zeiger in Hounsfield-Einheiten",
+  "Jeder DICOM-Tag mit Name und Wert, durchsuchbar",
+  "Listet auf, was in der Datei die Patientin oder den Patienten benennt, nach dem Profil aus PS3.15",
+  "Dekodiert RLE, Baseline JPEG und JPEG Lossless ohne mitgelieferte Bibliothek",
+  "Speichert das Bild als PNG und den Header als Text",
+  "Läuft offline; kein Upload, kein Konto, keine Änderung an Ihrer Datei",
+]
+
+[picker]
+title = "Aufnahme hier ablegen"
+hint = "oder klicken zum Auswählen &mdash; eine .dcm-Datei oder ein ganzer Ordner davon"

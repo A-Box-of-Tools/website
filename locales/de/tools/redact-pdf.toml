@@ -1,0 +1,386 @@
+#
+# PDF-Schwärzer - German.
+#
+# Overrides for tools/redact-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Schwärzen" ist der Begriff, den deutsche Behörden und Gerichte für genau
+# diese Sache verwenden, und er trägt die Bedeutung mit, auf die es hier
+# ankommt: entfernt, nicht verdeckt. Der Bild-Schwärzer nebenan verwendet ihn
+# aus demselben Grund.
+#
+# Das eine, was beim Bearbeiten dieser Prosa nicht verloren gehen darf: Diese
+# Seite erhebt einen Anspruch, den andere Schwärzungswerkzeuge nicht erheben
+# können, und der Anspruch ist nichts wert, wenn er überzogen wird. Entfernt
+# wird Text. Eine Seite, die ein Foto einer Seite ist, hat keinen Text darauf,
+# und dieses Werkzeug sagt das, statt so zu tun.
+#
+
+name = "PDF-Schwärzer"
+heading = "PDF&nbsp;schwärzen <span class=\"h1-kw\">&mdash; die Wörter kommen heraus, kein Kasten darüber</span>"
+tagline = "Die Buchstaben werden aus der Datei gelöscht, und danach wird die Datei durchsucht, um es zu belegen."
+
+title = "PDF schwärzen &mdash; den Text wirklich löschen, kostenlos, ohne Upload"
+description = "Wörter aus einem PDF entfernen, statt ein schwarzes Rechteck darüber zu legen. Die Buchstaben werden aus den Zeichenanweisungen der Seite gelöscht, die fertige Datei wird erneut geöffnet und durchsucht, um zu belegen, dass sie weg sind, und nichts wird hochgeladen."
+og_title = "Ein PDF richtig schwärzen &mdash; die Wörter werden gelöscht, nicht verdeckt"
+og_description = "Ein schwarzes Rechteck liegt in den meisten Werkzeugen auf dem Text und lässt sich darunter hervorkopieren. Dieses hier löscht die Buchstaben aus der Datei und durchsucht anschließend das Ergebnis, um zu zeigen, dass sie nicht darin sind."
+og_image_alt = "Ein PDF schwärzen, indem der Text gelöscht und nicht verdeckt wird"
+
+pledge = """
+    Das Dokument, das Sie wählen, wird auf diesem Gerät im Speicher geöffnet,
+    gelesen, bearbeitet und wieder herausgeschrieben, von Code, der von dieser
+    Adresse ausgeliefert wird. Nichts hier kann etwas hochladen, und am anderen
+    Ende dieser Seite steht kein Server, der etwas entgegennähme. Weder die
+    Datei noch die Wörter, nach denen Sie gesucht haben, verlassen den Tab."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und schwärzen Sie etwas. Keine einzige Anfrage
+      trägt eine Seite, ein Wort oder einen Dateinamen. Oder trennen Sie die
+      Internetverbindung und schwärzen Sie es trotzdem."""
+
+read_first = """
+, <code>src/text.js</code> dafür, wie jedes Wort
+      einer Seite gefunden und verortet wird, und <code>src/edit.js</code> für
+      das Löschen selbst: was aus den Anweisungen der Seite herausgeschnitten
+      wird und was wieder hineinkommt, damit der Rest der Zeile stehen bleibt.
+      Keine dieser Dateien kommt ins Netz, und der Leser und der Schreiber
+      daneben auch nicht."""
+
+howto_heading = "So schwärzen Sie ein PDF, damit die Wörter wirklich weg sind"
+
+card = """
+            Wörter aus einem PDF löschen, statt sie zu verdecken. Die Buchstaben
+            kommen aus den Zeichenanweisungen der Seite heraus, die Lücke wird
+            offen gehalten, damit sonst nichts verrutscht, und die fertige Datei
+            wird hier erneut geöffnet und durchsucht, um zu belegen, dass die
+            Wörter nicht darin sind."""
+
+[words]
+plural = "Dokumente"
+choose = "ein PDF"
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Läuft offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[facts]]
+text = "Dateien bleiben auf Ihrem Gerät"
+
+[[privacy]]
+title = "Ein schwarzes Rechteck ist keine Schwärzung, und hier wird keines über irgendetwas gelegt."
+body = """
+
+      In fast jedem Programm, das anbietet, eine Seite zu schwärzen, sei es ein
+      PDF-Betrachter, eine Textverarbeitung oder ein Layoutprogramm, ist das
+      Rechteck ein Objekt, das neben dem Text gespeichert wird und nicht in ihm.
+      Der Text ist weiterhin da, in derselben Datei, an derselben Stelle, und wer
+      den Bereich markiert und Kopieren drückt, bekommt ihn zurück. Dieses
+      Versagen hat Gerichtsakten veröffentlicht, Geheimdienstberichte und im
+      Dezember 2025 geschwärzte Namen in einer Massenveröffentlichung von
+      Dokumenten des US-Justizministeriums, die binnen Stunden lesbar waren.
+      Dieses Werkzeug löscht die Buchstaben aus den Anweisungen, die die Seite
+      zeichnen. Es gibt kein Rechteck mit etwas darunter, weil darunter nichts
+      ist."""
+
+[[privacy]]
+title = "Die fertige Datei wird hier erneut geöffnet und durchsucht, bevor sie Ihnen angeboten wird."
+body = """
+
+      Bis das geschehen ist, korrigiert dieses Werkzeug nur seine eigene
+      Hausaufgabe. Also werden die Bytes, die gleich Ihr Download werden,
+      demselben Leser übergeben, als hätte sie ein Fremder geschickt, jede Seite
+      wird erneut gelesen, jedes Lesezeichen, jeder Kommentar, jedes Formularfeld
+      und jede Dokumenteigenschaft wird eingesammelt, und nach den Wörtern, die
+      Sie entfernt haben, wird gesucht. Die Zahl steht bei den Ergebnissen. Hat
+      etwas überlebt, gilt der Durchlauf als gescheitert, und es gibt keinen
+      Download."""
+
+[[privacy]]
+title = "Die Wörter verlassen den Tab nie, und die Suche auch nicht."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine davon gehört uns. Dieses Werkzeug fügt dieser Liste nichts
+      hinzu: Es hat keine eigene Netzfunktion, nicht einmal eine optionale. Was
+      Sie in das Suchfeld tippen, ist eine Zeichenkette, die mit Text im Speicher
+      dieses Tabs verglichen wird, und für beides gibt es keinen Ort, an den es
+      gehen könnte."""
+
+[[privacy]]
+title = "Schwärzen ist die Aufgabe, die einen Upload am wenigsten verträgt."
+body = """
+
+      Was Leute schwärzen, ist der Grund, warum es nicht hochgeladen werden darf.
+      Eine Zeugenaussage, ein Arztbrief, ein Kontoauszug für den Vermieter, ein
+      Vertrag mit dem Namen eines Mandanten darin, der an einen anderen gehen
+      soll. Das einem fremden Server zu übergeben, damit er den privaten Teil
+      entfernt, heißt: Der private Teil kommt zuerst an, vollständig, und das ist
+      die Fassung, die dort bleibt. Diese Seite hat keine andere Hälfte."""
+
+[[privacy]]
+title = "Was übrig bleibt, wird unverändert durchgereicht."
+body = """
+
+      Die einzigen Bytes, die sich auf einer Seite ändern, sind die
+      Textanweisungen, zu denen die entfernten Buchstaben gehörten. Jede andere
+      Anweisung und jede Schrift, jedes Bild und jede Linie, auf die die Seite
+      sich bezieht, wird genau so kopiert, wie sie ankam. Nichts wird neu
+      gerendert, neu kodiert oder neu umbrochen. Die Breite des Entfernten wird
+      gemessen und als Abstandsanweisung wieder eingesetzt, damit der Rest der
+      Zeile dort bleibt, wo das Dokument ihn hingesetzt hat."""
+
+[[privacy]]
+title = "Aus einem Foto kann es keine Wörter entfernen, und es sagt, welche Seiten das sind."
+body = """
+
+      Eine eingescannte Seite ist ein Bild. Die Wörter darauf sind Pixel und kein
+      Text, und nichts hier kann sie anfassen. Trägt der Scan die unsichtbare
+      durchsuchbare Ebene, die die OCR eines Scanners erzeugt, entfernt dieses
+      Werkzeug diese Ebene, also genau das, was eine Suche und ein Kopieren
+      gefunden hätten, und sagt auf der Seite deutlich, dass das Bild die Wörter
+      weiterhin zeigt. Dieses Bild zu verdecken ist eine andere Aufgabe; der
+      <a href=\"../bild-schwaerzen/\">Bild-Schwärzer</a> ist das Werkzeug, das
+      Pixel überschreibt."""
+
+[[privacy]]
+title = "Das Dokument hört auf zu sagen, woher es kommt."
+body = """
+
+      Die Eigenschaften und das XMP-Paket gehen bei jedem Durchlauf: keine
+      Producer-Zeile, kein Erstellungsdatum, kein Autor, kein Titel und keiner
+      der privaten Blöcke, die ein Layoutprogramm hinterlässt. Eine Datei, aus
+      deren Seiten ein Name entfernt wurde und deren Eigenschaften weiterhin
+      <code>Schmidt Vergleich Entwurf 3.docx</code> lauten, ist nicht geschwärzt,
+      und das sollte man nicht einem Häkchen überlassen."""
+
+[[privacy]]
+title = "Verschlüsselte Dateien werden abgewiesen statt geöffnet."
+body = """
+
+      Ein PDF mit Passwort wird abgelehnt, auch die Sorte, die Scanner mit leerem
+      Passwort erzeugen und die sich technisch öffnen ließe. Einem Dokument den
+      Schutz zu nehmen ist eine andere Aufgabe, als Wörter daraus zu entfernen,
+      und es stillschweigend zu tun wäre für ein Werkzeug eine überraschende
+      Sache, in Ihrem Namen zu erledigen."""
+
+[[privacy]]
+title = "Was Google lädt und was es nicht bekommt."
+body = """
+ Die Skripte für Werbung
+      und Messung kommen von Google. Keines von beiden bekommt irgendetwas über
+      Ihr Dokument: keine Datei, keine Seite, keinen Namen, keine Größe, keine
+      Seitenzahl und kein Wort, nach dem Sie gesucht haben. Jede Zeile, die ein
+      PDF liest, bearbeitet oder schreibt, wird von dieser Domain ausgeliefert
+      und steht im Repository."""
+
+[[privacy]]
+title = "Was der Spenden-Knopf lädt und was er nicht bekommt."
+body = """
+
+      Der Knopf &bdquo;Buy me a coffee&ldquo; im Kopfbereich wird von einem
+      Skript von cdnjs.buymeacoffee.com gezeichnet und holt seine Schrift von
+      Google Fonts. Er ist ein Link und sonst nichts: Er meldet keinen Besuch,
+      und er bekommt nichts über Sie oder Ihre Dokumente. Es passiert nichts, bis
+      Sie ihn anklicken, und dann sind Sie auf einer fremden Seite."""
+
+[[privacy]]
+title = "Läuft offline."
+body = """
+ Trennen Sie die Netzverbindung, und alles auf dieser
+      Seite arbeitet weiter. Das ist der einfachste Beweis von allen: Ein
+      Werkzeug, das Ihr Dokument zum Schwärzen wegschickt, hörte auf."""
+
+[[howto]]
+title = "Wählen Sie das PDF."
+body = """
+ Ein Dokument nach dem anderen, und zwar
+      mit Absicht: Schwärzen ist eine Aufgabe, die Seite für Seite angesehen
+      werden muss, und ein Werkzeug, in dem Sie Wörter in einer Datei ankreuzen
+      und das sie stillschweigend auf eine andere anwendet, ist genau der Weg,
+      auf dem das Falsche verschickt wird. Der Browser liest es direkt von Ihrer
+      Festplatte."""
+
+[[howto]]
+title = "Sagen Sie, was weg muss."
+body = """
+ Tippen Sie die Wörter, einen Namen,
+      eine Adresse, ein Aktenzeichen, und jede Stelle, an der sie vorkommen, wird
+      mit ihrer Zeile und einem Kästchen zum Ankreuzen aufgelistet. Die Suchen
+      daneben finden E-Mail-Adressen, Kartennummern, IBANs, Sozialversicherungs-
+      und Rentenversicherungsnummern und Telefonnummern. Die werden angeboten und
+      nie für Sie angekreuzt: Ein Muster kann eine Telefonnummer nicht von einem
+      Aktenzeichen unterscheiden."""
+
+[[howto]]
+title = "Lesen Sie die Seite und picken Sie Wörter heraus."
+body = """
+
+      Die Leiste zeigt den Text des Dokuments so, wie er tatsächlich gespeichert
+      ist, in der Reihenfolge, in der ein Leser ihn kopieren würde. Klicken Sie
+      ein Wort an, um es zu entfernen, und noch einmal, um es zu behalten. Alles
+      Durchgestrichene ist das, was verschwinden wird, und damit ist dieser
+      Schritt zugleich die Durchsicht und die Auswahl. Er lohnt sich auf jeder
+      Seite, bevor Sie den Knopf drücken."""
+
+[[howto]]
+title = "Entfernen Sie sie und lesen Sie die Zeile, die sagt, dass geprüft wurde."
+body = """
+
+      Die Buchstaben werden gelöscht, die Lücke wird offen gehalten, ein
+      schwarzer Kasten wird darüber gezeichnet, wenn Sie einen wollten, und
+      dieselben Wörter werden aus Lesezeichen, Kommentaren, Formularfeldern und
+      den Eigenschaften des Dokuments entfernt. Dann wird die fertige Datei hier
+      erneut geöffnet und durchsucht. Ist ein entferntes Wort darin noch zu
+      finden, bekommen Sie keinen Download und eine Meldung, die das sagt."""
+
+[[faq]]
+q = "Was ist daran anders als an einem schwarzen Kasten in einem PDF-Betrachter?"
+a = """
+        Ein in einem Betrachter gezeichnetes Rechteck ist eine Anmerkung: ein
+        Objekt mit einer Position, neben der Seite gespeichert. Der Text darunter
+        ist unberührt. Wer diesen Bereich markiert und Kopieren drückt, wer die
+        Datei in einem anderen Programm öffnet oder wer irgendeinen
+        Text-Extraktor darüberlaufen lässt, bekommt die Wörter zurück. Manche
+        Betrachter haben einen &bdquo;Schwärzen&ldquo;-Befehl, der die Entfernung
+        tatsächlich anwendet, und einige bieten nur das Zeichnen an. Dieses
+        Werkzeug hat kein Rechteck zum Beiseiteschieben: Die Buchstaben werden
+        aus den Zeichenanweisungen der Seite herausgeschnitten, und der schwarze
+        Kasten wird, wenn Sie ihn eingeschaltet lassen, danach über eine Lücke
+        gezeichnet, die bereits leer ist."""
+
+[[faq]]
+q = "Woher weiß ich, dass die Wörter wirklich weg sind?"
+a = """
+        Weil das Werkzeug es auf Ihrem Gerät nachprüft und Ihnen die Zahl zeigt.
+        Ist die Datei geschrieben, wird sie von demselben Leser auf dieser Seite
+        erneut geöffnet, jede Seite wird gelesen, jedes Lesezeichen, jeder
+        Kommentar, jedes Formularfeld und jede Eigenschaft wird eingesammelt, und
+        nach jedem entfernten Wort wird gesucht. Die Ergebniszeile sagt, wie viele
+        es waren und wie viele übrig sind. Stimmt die Antwort nicht, scheitert der
+        Durchlauf, und es wird nichts zum Herunterladen angeboten. Nachprüfen
+        können Sie es anschließend auch selbst in jedem Betrachter: Strg+F, und
+        suchen Sie nach dem Wort."""
+
+[[faq]]
+q = "Verrutscht der Rest der Seite, wenn ein Wort entfernt wird?"
+a = """
+        Nein. Text wird gezeichnet, indem ein Stift über die Seite vorrückt, also
+        würde das Löschen von fünf Buchstaben den Rest der Zeile um fünf
+        Buchstaben nach links ziehen. Die genaue Breite des Entfernten wird aus
+        den Metriken der Schrift selbst gemessen und als Abstandsanweisung wieder
+        eingesetzt, die den Stift bewegt, ohne etwas zu zeichnen. Spalten bleiben
+        in einer Flucht, und Summen bleiben unter ihren Überschriften."""
+
+[[faq]]
+q = "Kann er ein eingescanntes Dokument schwärzen?"
+a = """
+        Das Bild nicht, und er sagt das, statt so zu tun. Ein Scan ist ein Foto
+        einer Seite: Die Wörter sind Pixel, und es gibt keinen Text zum Entfernen.
+        Was ein Scan häufig doch trägt, ist eine unsichtbare Textebene, die die
+        OCR des Scanners über das Bild geschrieben hat, damit die Seite
+        durchsuchbar ist. Dieses Werkzeug findet diese Ebene, entfernt daraus,
+        was Sie wählen, und sagt Ihnen auf der Seite, dass das Bild unverändert
+        ist. Eine Suche und ein Kopieren finden das Wort also nicht mehr, und wer
+        auf die Seite sieht, liest es weiterhin. Für ein Bild überschreibt der
+        <a href=\"../bild-schwaerzen/\">Bild-Schwärzer</a> die Pixel selbst."""
+
+[[faq]]
+q = "Was ist mit den Teilen eines Dokuments, die nicht auf einer Seite stehen?"
+a = """
+        Die werden mitbehandelt, denn dort läuft eine Schwärzung meist aus.
+        Dieselben Wörter werden aus Lesezeichen, Kommentaren und Notizzetteln
+        entfernt, aus dem, was in Formularfelder getippt wurde, aus dem Text, der
+        einem Screenreader übergeben wird, und aus dem Ersatztext, den ein
+        Betrachter <em>anstelle</em> der Buchstaben auf der Seite kopiert. Den
+        letzten gibt es, damit Ligaturen und getrennte Wörter sauber kopieren, und
+        er kann einen ganzen Satz enthalten. Die Dokumenteigenschaften und das
+        XMP-Paket werden ganz entfernt. Anhänge und alles, was beim Öffnen der
+        Datei ausgeführt wird, fallen weg, weil sich in beidem nicht nach den
+        Wörtern suchen lässt, die Sie entfernen."""
+
+[[faq]]
+q = "Werden meine Dokumente irgendwohin hochgeladen?"
+a = """
+        Nein. Die Datei wird von Ihrem eigenen Browser auf Ihrer eigenen Hardware
+        gelesen, bearbeitet und geschrieben. Dieses Werkzeug hat keine
+        Serverseite, und in der <code>Content-Security-Policy</code> der Seite
+        steht jede Adresse, die sie kontaktieren darf. Keine davon gehört uns.
+        Was Sie in das Suchfeld tippen, wird mit Text im Speicher dieses Tabs
+        verglichen und geht ebenfalls nirgendwohin."""
+
+[[faq]]
+q = "Warum kann ich keinen Kasten über die Seite ziehen wie in anderen Werkzeugen?"
+a = """
+        Weil eine Seite zu zeichnen einen vollständigen PDF-Renderer bedeutet, mit
+        Schriften, Verläufen, Transparenz und Mischmodi, also ein Megabyte oder
+        mehr an Engine zum Nachladen und Ausführen, und diese Seite liefert davon
+        nichts mit. Das passt zur Aufgabe: Ein gezogenes Rechteck wählt eine
+        <em>Fläche Papier</em>, und eine Fläche Papier ist nicht dasselbe wie der
+        Text darunter. Genau so fängt das Versagen mit dem schwarzen Kasten an.
+        Was Sie stattdessen bekommen, ist der Text des Dokuments in Lesereihenfolge
+        mit jedem Wort anklickbar. Und es ist die einzige Ansicht, die Ihnen sagen
+        kann, was ein Bild der Seite nicht kann: ob die Wörter vor Ihnen überhaupt
+        Text sind."""
+
+[[faq]]
+q = "Öffnet die fertige Datei überall?"
+a = """
+        Ja. Die Ausgabe wird als PDF 1.5 geschrieben oder in der höchsten Version,
+        die die übergebene Datei gebraucht hat, und 1.5 versteht jeder Betrachter,
+        der seit 2003 erschienen ist. Nichts auf der Seite wird neu kodiert: Die
+        Schriften, Bilder und Vektorzeichnungen kommen Byte für Byte durch, und
+        was vom Text übrig ist, bleibt markierbar und durchsuchbar wie zuvor."""
+
+[[faq]]
+q = "Kann er ein passwortgeschütztes PDF öffnen?"
+a = """
+        Nein, und das ist Absicht. Ein verschlüsseltes Dokument wird mit einer
+        Meldung abgewiesen, auch wenn das Passwort leer ist, und so speichern
+        viele Scanner und Kopierer. Einer Datei den Schutz zu nehmen ist eine
+        andere Aufgabe, als Wörter daraus zu entfernen, und ein Werkzeug, das das
+        stillschweigend täte, täte etwas, worum Sie nicht gebeten haben."""
+
+[[faq]]
+q = "Gibt es eine Größenbeschränkung, und kostet es etwas?"
+a = """
+        In das Werkzeug ist keine Grenze geschrieben. Die Grenze ist Ihr eigenes
+        Gerät: Das Dokument liegt während der Bearbeitung im Speicher, ein Laptop
+        nimmt also ein paar hundert Megabyte klaglos hin und kommt irgendwo
+        darüber ins Straucheln. Es ist kostenlos, es gibt kein Konto, keine
+        Anmeldung und keine Testphase. Die Seite trägt Werbung, und die bezahlt
+        sie; die Werbung bekommt nichts über Ihre Dokumente."""
+
+[[faq]]
+q = "Läuft er offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie danach die
+        Internetverbindung, und sie arbeitet weiter. Das ist zugleich der
+        einfachste Weg zu prüfen, dass nichts hochgeladen wird: Ein Werkzeug, das
+        Ihr Dokument zum Schwärzen wegschickt, hörte in dem Moment auf, in dem Sie
+        den Stecker ziehen."""
+
+[schema]
+description = "Ein PDF im Browser schwärzen, indem der Text gelöscht und nicht verdeckt wird. Die Buchstaben werden aus dem Inhaltsstrom der Seite entfernt, die fertige Datei wird erneut geöffnet und durchsucht, um zu belegen, dass sie weg sind, und nichts wird hochgeladen."
+features = [
+  "Löscht die Buchstaben aus der Seite, statt ein Rechteck darüber zu zeichnen",
+  "Öffnet die fertige Datei erneut und durchsucht sie, um zu belegen, dass die Wörter weg sind",
+  "Findet jedes Vorkommen eines Wortes, oder sucht nach E-Mails, Kartennummern, IBANs und Ausweisnummern",
+  "Zeigt den Text des Dokuments in Lesereihenfolge, sodass jedes Wort anklickbar ist",
+  "Entfernt dieselben Wörter aus Lesezeichen, Kommentaren, Formularfeldern und Eigenschaften",
+  "Hält die Lücke offen, damit der Rest der Zeile nicht verrutscht",
+  "Sagt, welche Seiten Scans sind, auf denen es keinen Text zu entfernen gibt",
+  "Läuft offline; kein Upload, kein Konto, keine Größenbeschränkung",
+]
+
+[picker]
+title = "PDF hier ablegen"
+hint = "oder klicken zum Auswählen &mdash; ein Dokument nach dem anderen"
