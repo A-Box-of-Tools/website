@@ -145,7 +145,7 @@
   <!-- Every tag in the file. -->
   <section class="card" id="tags-card" hidden>
     <div class="toolbar">
-      <h2>Dosyadaki her etiket</h2>
+      <h2 id="tags-heading">Dosyadaki her etiket</h2>
       <div class="toolbar-actions">
         <label for="tag-search" class="visually-hidden">Etiketlerde ara</label>
         <input type="search" id="tag-search" class="tag-search" placeholder="Ada, numaraya ya da değere göre ara">
@@ -154,7 +154,7 @@
 
     <p class="card-lede" id="tags-lede"></p>
 
-    <div class="table-wrap">
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="tags-heading">
       <table class="tags">
         <caption class="visually-hidden">Bu dosyadaki her öğe</caption>
         <thead>

@@ -134,7 +134,7 @@
   <!-- Every tag in the file. -->
   <section class="card" id="tags-card" hidden>
     <div class="toolbar">
-      <h2>Every tag in the file</h2>
+      <h2 id="tags-heading">Every tag in the file</h2>
       <div class="toolbar-actions">
         <label for="tag-search" class="visually-hidden">Search the tags</label>
         <input type="search" id="tag-search" class="tag-search" placeholder="Search by name, number or value">
@@ -143,7 +143,14 @@
 
     <p class="card-lede" id="tags-lede"></p>
 
-    <div class="table-wrap">
+    <!-- Focusable, because it scrolls. A box with overflow can be dragged
+         sideways with a mouse and reached with a finger, but without a tab
+         stop a keyboard cannot move it at all - and on this tool the column
+         that ends up out of view is Value, which is the whole point of the
+         page. role and aria-labelledby give the stop a name when it gets
+         one, borrowed from the heading above so there is no new string for
+         eleven locales to translate. -->
+    <div class="table-wrap" tabindex="0" role="region" aria-labelledby="tags-heading">
       <table class="tags">
         <caption class="visually-hidden">Every element in this file</caption>
         <thead>
