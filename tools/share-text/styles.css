@@ -1,0 +1,149 @@
+/* Only the rules this tool needs. The frame is shared/css/tool-frame.css. */
+
+/* ---------------------------------------------------------- the editor panel */
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.panel:focus-within { border-color: var(--accent); }
+
+.toolbar {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.toolbar label { display: flex; gap: 0.4rem; align-items: center; }
+.toolbar .spacer { flex: 1; }
+.toolbar .ghost { padding: 0.25rem 0.8rem; font-size: 0.85rem; }
+
+/* The editor and, with markdown on, the live rendering beside it. On a
+   narrow screen the rendering sits below instead. */
+#editbody { display: flex; flex-direction: column; }
+#editbody textarea {
+  display: block;
+  width: 100%;
+  min-height: 14rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  resize: vertical;
+}
+#editbody textarea:focus { outline: none; }
+#editbody #live:not([hidden]) { border-top: 1px solid var(--border); }
+@media (min-width: 44rem) {
+  #editbody { flex-direction: row; }
+  #editbody > * { flex: 1 1 50%; min-width: 0; }
+  #editbody #live:not([hidden]) { border-top: none; border-left: 1px solid var(--border); }
+}
+
+.panel pre,
+.panel .md { border: none; border-radius: 0; margin: 0; }
+
+/* ------------------------------------------------------- rendered markdown */
+
+.md { padding: 0.75rem; overflow-wrap: anywhere; }
+.md > :first-child { margin-top: 0; }
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 { margin: 0.75rem 0 0.35rem; line-height: 1.25; }
+.md h1 { font-size: 1.25rem; }
+.md h2 { font-size: 1.1rem; }
+.md h3 { font-size: 1rem; }
+.md p { margin: 0.5rem 0; }
+.md pre {
+  overflow-x: auto;
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+}
+.md code { background: var(--surface-2); padding: 0.1em 0.3em; border-radius: 4px; }
+.md pre code { background: none; padding: 0; }
+.md blockquote {
+  margin: 0.5rem 0;
+  padding: 0.25rem 0 0.25rem 0.75rem;
+  border-left: 3px solid var(--border);
+  color: var(--text-dim);
+}
+.md ul, .md ol { margin: 0.5rem 0; padding-left: 1.5rem; }
+.md a { color: var(--accent); }
+.md hr { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+/* -------------------------------------------------- names, links, statuses */
+
+.namerow { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin: 0.5rem 0; }
+.namerow input {
+  flex: 1;
+  min-width: 12rem;
+  font: inherit;
+  padding: 0.5rem 0.65rem;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.namerow input:focus { outline: none; border-color: var(--accent); }
+
+#status.warn { color: var(--danger, #b4552d); }
+
+/* ------------------------------------------- reader requests and file rows */
+
+.request,
+.filerow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.45rem 0.75rem;
+  margin: 0.5rem 0;
+  background: var(--surface);
+}
+.request span { flex: 1; min-width: 10rem; font-style: italic; }
+.filerow .fname { flex: 1; min-width: 10rem; overflow-wrap: anywhere; }
+.filerow .fsize { color: var(--text-dim); font-size: 0.85rem; }
+
+/* ------------------------------------------------------- the reader's panel */
+
+#live-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: 0 0 auto;
+}
+
+.seg {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.seg button {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-dim);
+  padding: 0.25rem 0.7rem;
+  font-size: 0.85rem;
+}
+.seg button.active { background: var(--accent); color: var(--surface); }
+
+#received {
+  padding: 0.75rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 0.92rem;
+}

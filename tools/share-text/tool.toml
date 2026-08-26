@@ -1,0 +1,396 @@
+#
+# Share Text & Files
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it comes from templates/tool.html, and the site-wide parts, the
+# Content-Security-Policy among them, from config/site.toml.
+#
+# The first tool on this site with a network step, which is why every claim
+# below is worded from scratch rather than copied. The product is a share
+# that lives only in the sharer's open tab: readers fetch the text and files
+# over a direct, encrypted, browser-to-browser channel, and closing the tab
+# is the whole of the deletion. A direct channel needs an introduction, so
+# this tool - alone on the site - names a server of ours in its CSP: the
+# rendezvous, a Cloudflare Worker whose entire code is in workers/rendezvous/
+# and whose entire job is to match the two ends of a code word and forward
+# their connection negotiation. It stores nothing and cannot read anything.
+# The docs' rule for network features is that a tool says so on its own page,
+# in plain language, and does not weaken the site-wide claim quietly; this
+# file is where most of that saying happens.
+#
+
+slug = "share-text"
+name = "Share Text &amp; Files"
+heading = "Share text &amp; files <span class=\"h1-kw\">&mdash; straight from your browser to theirs, nothing uploaded</span>"
+tagline = "The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server."
+icon = "&#128279;"           # the mark beside the page heading
+favicon = "&#128279;"        # the tab icon, drawn into an inline SVG
+category = "text-codes-and-passwords"
+roadmap_group = "beyond"
+lastmod = "2026-08-26"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Share Text &amp; Files Between Devices &mdash; Direct, Encrypted, Nothing Stored"
+description = "Send text or files from one browser to another over a direct encrypted connection. A speakable link name, live updates as you type, approval for each reader - and nothing stored on any server, ever. Free, no sign-up."
+og_title = "A share that ends the moment you close the tab"
+og_description = "Text and files travel straight from your browser to the reader's, encrypted. The server only introduces the two of you and never sees the content. No storage, no history, no account - close the tab and it is gone, everywhere."
+og_image_alt = "Share Text & Files - direct from browser to browser, nothing stored"
+
+og_card = "Text and files, straight from your open tab to theirs - and gone the moment you close it."
+
+# Appended to the Content-Security-Policy comment in the generated page.
+csp_note = """
+  The one tool on this site whose CSP names an origin of ours: connect-src
+  carries the rendezvous, the WebSocket that matches the two ends of a link
+  name and relays their WebRTC negotiation. It is the introduction only -
+  the text and files travel the peer-to-peer channel, which CSP does not
+  govern and no server touches. The worker's whole source is in the
+  repository at workers/rendezvous/."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    What you share here travels from your browser to each reader's browser
+    over a WebRTC channel that is encrypted end to end, and it goes nowhere
+    else. The one server involved &mdash; named in this page's
+    <code>Content-Security-Policy</code>, source in the repository &mdash;
+    introduces the two browsers and then stands aside: it stores nothing, and
+    the content never passes through it. There is no history and no account.
+    Close this tab and the share ends everywhere at once, including on
+    readers' open pages."""
+
+live_hint = """
+      Open DevTools and watch the Network tab while you share. You will see
+      one WebSocket to the rendezvous carrying a few kilobytes of connection
+      set-up &mdash; and however much you type or attach, not one request
+      carrying any of it."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/main.js</code> for both
+      halves of the exchange &mdash; the sharer's tab and the reader's are the
+      same file &mdash; and <code>src/markdown.js</code> for the renderer that
+      runs on text from the other side of the wire, which escapes everything
+      before it emits anything. The server's whole source is
+      <code>workers/rendezvous/worker.js</code> in the same repository: one
+      room per link name, holding nothing but the open connections."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to share text and files without uploading them anywhere"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Text and files, browser to browser over an encrypted direct
+            connection. Nothing stored anywhere; the share ends when you
+            close the tab."""
+
+# The one directive this tool widens: its own rendezvous. See csp_note.
+[csp]
+"connect-src" = ["wss://rendezvous.a-box-of-tools.workers.dev"]
+
+[words]
+plural = "shared text and files"
+choose = "a link name"
+analytics_extra = """, and nothing
+  about what this tool shares - not the text, the files, their names or
+  sizes, or who read them"""
+
+[[facts]]
+mark = "&#10007;"
+text = "Nothing stored"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10003;"
+text = "End-to-end encrypted"
+
+[[facts]]
+mark = "&#10003;"
+text = "Ends with your tab"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "The content goes to your reader, and nowhere else."
+body = """
+ The text and the files travel
+      over a WebRTC data channel: a direct, DTLS-encrypted connection between
+      your browser and each reader's. There is no server in that path. On the
+      same network the bytes never even leave the building &mdash; two laptops
+      on one Wi-Fi exchange them locally."""
+
+[[privacy]]
+title = "What the rendezvous is, and the whole of what it sees."
+body = """
+ A direct connection needs an
+      introduction, so this page &mdash; alone on this site &mdash; opens one
+      WebSocket to a server of ours. That server matches the person who typed
+      a link name with the person sharing under it, forwards a few kilobytes
+      of connection negotiation between them, and holds nothing: no storage
+      is ever written, and a room ceases to exist the moment the sharer
+      disconnects. It can see that a name is in use, when peers come and go,
+      and their IP addresses. It cannot see the text, the files, who was let
+      in, or what anybody said &mdash; even the knock on a private share
+      travels the encrypted peer channel. Its entire source is in the
+      repository beside this tool's."""
+
+[[privacy]]
+title = "Nothing is stored, so closing the tab is the deletion."
+body = """
+ The share exists only while
+      your tab is open. Close it and new readers find nothing, and readers
+      already looking at it see their copy clear &mdash; though what someone
+      copied out or downloaded before that moment is theirs, as it would be
+      with anything you had handed them. The draft you type is kept in your
+      own browser's storage so it is still here next time, and only there;
+      mark it one-off and it is kept nowhere at all."""
+
+[[privacy]]
+title = "The link name is the only secret, and private mode is the lock."
+body = """
+ Anyone who knows or
+      guesses a name can open the share behind it, which is why the
+      suggestions are three random words and why anything sensitive deserves
+      an unguessable name &mdash; or the private switch, which is on by
+      default: each arriving reader must introduce themselves, over the
+      direct channel, and nothing is sent until you let them in."""
+
+[[privacy]]
+title = "A direct connection shows each side the other's address."
+body = """
+ That is what
+      peer-to-peer means, and the reader is told before it happens: opening a
+      share link only asks the rendezvous whether anyone is sharing, and the
+      page then says plainly that connecting reveals each side's IP address
+      to the other, and waits for a click. Until that click, the sharer has
+      not even learned the reader exists."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and measurement
+      scripts come from Google, and the donate button from Buy Me a Coffee.
+      None of them is handed anything about what this page shares &mdash; not
+      the text, the files, their names or sizes, the link name, or who
+      connected. Every line that touches the content is served from this
+      origin and listed in the repository."""
+
+[[howto]]
+title = "Write the text, or attach the files."
+body = """
+ The editor is the share: whatever
+      is in it when a reader connects is what they receive, and edits after
+      that reach connected readers live, as you type. Files ride the same
+      channel, up to 200&nbsp;MB each; readers see the list and fetch only
+      what they ask for, so nobody's bandwidth is spent on a file they did
+      not want."""
+
+[[howto]]
+title = "Turn on Markdown if the text deserves formatting."
+body = """
+ One toggle. Headings, bold,
+      lists, code and links render live beside the editor as you type, and
+      readers get the formatted view by default with a switch back to the
+      raw source. The renderer ships with this page and escapes everything:
+      shared text cannot become script on a reader's machine, whoever wrote
+      it."""
+
+[[howto]]
+title = "Name the link, or keep the suggestion."
+body = """
+ The name is the address:
+      <code>brave-otter-42</code> can be said across a room, read over the
+      phone, or typed from a whiteboard. It is also the only secret, so for
+      anything private either pick a name nobody would guess or rely on the
+      private switch instead. A name someone else is actively sharing under
+      is refused, and yours frees up the moment you stop."""
+
+[[howto]]
+title = "Decide who gets in."
+body = """
+ Private is on by default: each reader
+      is asked to introduce themselves &mdash; a name, a hint, anything you
+      would recognise &mdash; and you see the message with a button to let
+      them read or turn them away. The introduction travels the direct
+      channel, so not even the rendezvous learns who asked. Untick it for an
+      open share that anyone with the name can read."""
+
+[[howto]]
+title = "Start sharing, and keep the tab open."
+body = """
+ The tab is the server: the
+      share is reachable while it is open and awake, and stops the moment it
+      is not. A laptop lid closing ends it too. Copy the link, or just say
+      the name &mdash; a reader can type it into this page's address as
+      <code>#name</code> on the end."""
+
+[[howto]]
+title = "On the other side: consent, then knock."
+body = """
+ A reader opening the link is
+      told someone is sharing, warned that a direct connection shows each
+      side the other's network address, and connects only by choosing to.
+      On a private share they introduce themselves and wait for you. What
+      they receive updates live while you edit, and clears when you close
+      the tab."""
+
+[[faq]]
+q = "Is anything uploaded, anywhere?"
+a = """
+        No. The text and the files go from your browser to each reader's
+        browser over an encrypted WebRTC channel, directly. The one server
+        involved carries the introduction &mdash; a few kilobytes of
+        connection negotiation &mdash; and never the content. There is
+        nothing on it to breach, subpoena or leak: it holds no bytes of
+        yours, and a room ceases to exist the moment you disconnect."""
+
+[[faq]]
+q = "So why does this tool contact a server at all, on this site of all sites?"
+a = """
+        Because two browsers cannot find each other unaided: something has to
+        match the person who typed <code>brave-otter-42</code> with the
+        person sharing under it, and carry the connection offer between them.
+        That something is the rendezvous, this page's one network
+        dependency, named in its <code>Content-Security-Policy</code> and
+        published in the same repository as this page. It is the smallest
+        server that could do the job &mdash; it stores nothing, reads
+        nothing, and stands aside once the two browsers hold a direct
+        channel."""
+
+[[faq]]
+q = "What exactly can that server see?"
+a = """
+        That a link name is in use, when a sharer and readers connect and
+        leave, their IP addresses, and the encrypted-connection set-up they
+        exchange. Not the text, not the files, not their names or sizes, not
+        who was admitted to a private share, and not what anyone wrote in an
+        introduction &mdash; all of that travels the peer channel, which is
+        encrypted end to end and does not pass through the server."""
+
+[[faq]]
+q = "What happens when I close the tab?"
+a = """
+        The share ends everywhere at once. The link stops working within a
+        second or two, and readers who still have the page open see their
+        copy clear with a note that the share has ended. That is not a
+        deletion request to a server &mdash; there is no server copy to
+        delete. The tab was the only place the share existed, and closing it
+        is the whole of the cleanup."""
+
+[[faq]]
+q = "Can a reader keep what I shared?"
+a = """
+        While the share is open, yes &mdash; that is what sharing is. A
+        reader can copy the text or download a file, and what they took is
+        theirs, exactly as if you had handed it over any other way. What
+        ending the share guarantees is the future: nobody new can get it,
+        and open pages stop showing it. No tool can unsend what has already
+        arrived, and this page does not pretend otherwise."""
+
+[[faq]]
+q = "What is private mode?"
+a = """
+        The default. Each arriving reader is told the share is private and
+        asked to introduce themselves; you see the message &mdash;
+        &ldquo;it&rsquo;s Alice from the standup&rdquo; &mdash; with buttons
+        to let them read or turn them away, and nothing is sent until you
+        choose. The introduction travels the already-encrypted direct
+        channel, so the server never learns who asked or what you decided.
+        Untick the box before sharing for an open share instead."""
+
+[[faq]]
+q = "Why will the reader see my IP address?"
+a = """
+        Because the connection is genuinely direct, and a direct connection
+        is between two addresses &mdash; each end necessarily learns the
+        other's, as with a phone call. The reader is warned before any
+        connection exists and connects only by choosing to; until then you
+        have not even learned they opened the link. If that trade is wrong
+        for a given share, a service that relays through a server is the
+        alternative &mdash; with the opposite trade."""
+
+[[faq]]
+q = "How big can the files be, and how fast is it?"
+a = """
+        Up to 200&nbsp;MB per file, any type, and as fast as the slower of
+        the two connections &mdash; there is no server in the middle to slow
+        it down or meter it. Two machines on the same Wi-Fi transfer at
+        local-network speed, and the bytes never leave the building. Readers
+        fetch each file on demand, so attaching something large costs
+        nothing until somebody actually asks for it."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Half of it, honestly: the editor does &mdash; the page loads, your
+        draft is here, markdown renders, and you can write and save with no
+        network at all. Sharing does not, and cannot: reaching another
+        person's browser is a network act, and the introduction needs the
+        rendezvous. This is the one tool on this site with a job that is
+        impossible offline, and it would be dishonest to imply otherwise."""
+
+[[faq]]
+q = "What if we can't connect?"
+a = """
+        Most pairs of browsers can reach each other directly once
+        introduced; a minority cannot, typically when both sides sit behind
+        the strictest kind of mobile-carrier or corporate network. This page
+        does not fall back to relaying through a server &mdash; that would
+        quietly change what this tool is &mdash; so after twenty seconds it
+        says plainly that a direct connection could not be made. Trying from
+        a different network usually resolves it."""
+
+[[faq]]
+q = "Is the markdown safe to render, if anyone can share anything?"
+a = """
+        That question is why the renderer is eighty lines in this page's own
+        source rather than a library. Every character is entity-escaped
+        before any tag is emitted, only a fixed set of harmless tags can be
+        produced, and links accept only <code>http</code>, <code>https</code>
+        and <code>mailto</code> &mdash; a <code>javascript:</code> link stays
+        inert text. Shared text cannot become script on your machine, no
+        matter who wrote it, and you can read the eighty lines."""
+
+[[faq]]
+q = "Can two people share under the same name?"
+a = """
+        Not at the same time. One live share per name, enforced at the
+        rendezvous: a second sharer is refused and asked to pick another. The
+        moment a share ends its name is free again, which also means a saved
+        link is only as fresh as the share behind it &mdash; the same name
+        next week may be somebody else. Treat a link as belonging to a
+        moment, not to a person."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        Free, no account, no sign-in, and no limit worth mentioning &mdash;
+        sixteen simultaneous readers per share. The site carries advertising,
+        which is what pays for it; the ads are given nothing about what this
+        page shares, and the rendezvous runs comfortably inside a free tier
+        precisely because it stores nothing and does almost nothing."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Share text and files from one browser to another over a direct, end-to-end encrypted WebRTC connection. Speakable link names, live updates while typing, markdown rendering, and per-reader approval. Nothing is stored on any server; the share ends when the sharer closes the tab."
+features = [
+  "Text and files travel browser to browser, end-to-end encrypted, never through a server",
+  "The share lives in the open tab: closing it ends the share and clears readers' pages",
+  "Speakable link names - brave-otter-42 - editable, one live share per name",
+  "Private by default: each reader introduces themselves and the sharer admits or refuses",
+  "Readers consent before any connection exists, told plainly that IPs become visible",
+  "Live updates: edits reach connected readers as the sharer types",
+  "Markdown, toggleable on both sides, rendered by an escaping-first built-in renderer",
+  "Files to 200 MB each, fetched on demand with per-file progress",
+  "The draft persists only in the sharer's own browser, or nowhere if marked one-off",
+  "The whole server component is a storage-less rendezvous, published in the repository",
+]
