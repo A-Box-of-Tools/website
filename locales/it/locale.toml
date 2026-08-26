@@ -70,6 +70,14 @@ complete = true
 # Il prestito, non "ripresa accelerata": timelapse e' quello che si scrive.
 "timelapse-video" = "creare-timelapse"
 "hash-checksum" = "verificare-checksum"
+# Il DICOM resta DICOM: e la sigla che sta scritta sul CD che consegna
+# l’ospedale, e nessuno la cerca tradotta.
+"dicom-viewer" = "visualizzatore-dicom"
+"document-scanner" = "scansionare-documenti"
+# Lo stesso verbo di "oscurare-immagine", perche e la stessa promessa: il testo
+# viene tolto dal file, non coperto con un rettangolo.
+"redact-pdf" = "oscurare-pdf"
+"stack-images" = "impilare-immagini"
 
 "guides" = "guide"
 "roadmap" = "roadmap"
@@ -104,6 +112,11 @@ complete = true
 "guides/trim-an-audio-file" = "guide/tagliare-un-file-audio"
 "guides/whats-inside-a-gif" = "guide/cosa-ce-dentro-una-gif"
 "guides/verify-a-file-checksum" = "guide/verificare-il-checksum-di-un-file"
+"guides/open-a-dicom-file" = "guide/aprire-un-file-dicom"
+"guides/redact-a-pdf" = "guide/oscurare-un-pdf"
+"guides/scan-a-document-with-your-phone" = "guide/scansionare-un-documento-col-telefono"
+# Chi impila non cerca "impilare": cerca il rumore, che e il problema.
+"guides/stack-photos-to-reduce-noise" = "guide/impilare-foto-per-ridurre-il-rumore"
 
 #
 # ---------------------------------------------------------------------------

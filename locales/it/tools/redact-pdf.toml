@@ -1,0 +1,377 @@
+#
+# Redact a PDF - Italian.
+#
+# Overrides for tools/redact-pdf/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+# "Oscurare" è lo stesso verbo di oscurare-immagine, e porta con sé la stessa
+# distinzione su cui vive la pagina: le lettere vengono tolte dal file, non
+# coperte con un rettangolo. Dove l'inglese dice "redaction" e non "covering",
+# l'italiano deve tenere la coppia togliere / coprire, perché è tutta lì la
+# differenza che questo strumento rivendica.
+#
+
+name = "Oscuratore di PDF"
+heading = "Oscura&nbsp;un&nbsp;PDF <span class=\"h1-kw\">&mdash; le parole escono, non ci va sopra un rettangolo</span>"
+tagline = "Le lettere vengono cancellate dal file, e poi il file viene cercato per dimostrarlo."
+
+title = "Oscurare un PDF &mdash; cancellare davvero il testo, gratis, senza caricarlo"
+description = "Togli le parole da un PDF invece di disegnarci sopra un rettangolo nero. Le lettere vengono cancellate dalle istruzioni con cui la pagina si disegna, il file finito viene riaperto e cercato per dimostrare che non ci sono più, e non viene caricato niente."
+og_title = "Oscurare un PDF come si deve &mdash; le parole sono cancellate, non coperte"
+og_description = "Nella maggior parte degli strumenti il rettangolo nero sta sopra il testo, e da sotto lo si può copiare via. Questo cancella le lettere dal file e poi cerca nel risultato per mostrare che non ci sono."
+og_image_alt = "Oscurare un PDF cancellando il testo, non coprendolo"
+
+pledge = """
+    Il documento che scegli viene aperto, letto, modificato e riscritto in memoria
+    su questa macchina, da codice servito da questo indirizzo. Qui dentro non c'è
+    niente che possa fare un caricamento, e dall'altra parte di questa pagina non
+    c'è nessun server che possa riceverlo. Né il file né le parole che hai cercato
+    escono dalla scheda."""
+
+live_hint = """
+      Non fidarti sulla parola: apri gli strumenti di sviluppo, guarda la scheda
+      Rete e oscura qualcosa. Non una richiesta porta con sé una pagina, una parola
+      o un nome di file. Oppure stacca la rete e oscuralo lo stesso."""
+
+read_first = """
+, <code>src/text.js</code> per come ogni parola di
+      una pagina viene trovata e localizzata, e <code>src/edit.js</code> per la
+      cancellazione vera e propria &mdash; che cosa viene tagliato dalle istruzioni
+      della pagina e che cosa viene rimesso perché il resto della riga non si
+      sposti. Nessuno di questi può raggiungere la rete, e non possono nemmeno il
+      lettore e lo scrittore che stanno lì accanto."""
+
+howto_heading = "Come oscurare un PDF in modo che le parole spariscano davvero"
+
+card = """
+            Cancella le parole da un PDF invece di coprirle. Le lettere vengono
+            tolte dalle istruzioni con cui la pagina si disegna, il vuoto viene
+            tenuto aperto perché niente si sposti, e il file finito viene
+            riaperto e cercato qui per dimostrare che quelle parole non ci
+            sono."""
+
+[words]
+plural = "documenti"
+choose = "un PDF"
+
+[[facts]]
+text = "Nessun caricamento"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Codice aperto"
+
+[[facts]]
+text = "I file restano sul tuo dispositivo"
+
+[[privacy]]
+title = "Un rettangolo nero non è un oscuramento, e qui non ne viene disegnato uno sopra niente."
+body = """
+
+      In quasi tutti i programmi che si offrono di oscurare una pagina &mdash; un
+      lettore di PDF, un elaboratore di testi, un programma di grafica &mdash; il
+      rettangolo è un oggetto salvato accanto al testo e non dentro di esso. Il
+      testo è ancora lì, nello stesso file, nello stesso punto, e selezionare
+      l'area e premere copia te lo restituisce. Quel modo di sbagliare ha
+      pubblicato atti giudiziari, rapporti dei servizi e, nel dicembre 2025, nomi
+      anneriti in una diffusione di massa di documenti del Dipartimento di
+      Giustizia statunitense che erano leggibili nel giro di poche ore. Questo
+      strumento cancella le lettere dalle istruzioni che disegnano la pagina. Non
+      c'è un rettangolo con qualcosa sotto, perché sotto non c'è niente."""
+
+[[privacy]]
+title = "Il file finito viene riaperto e cercato, qui, prima che ti venga offerto."
+body = """
+
+      Finché non succede, ogni affermazione qui sopra è questo strumento che si
+      corregge i compiti da solo. Quindi i byte che stanno per diventare il tuo
+      download vengono ripassati allo stesso lettore come se li avesse mandati uno
+      sconosciuto, ogni pagina viene riletta, ogni segnalibro, commento, campo di
+      modulo e proprietà del documento viene raccolto, e le parole che hai tolto
+      vengono cercate. Il conto sta nei risultati. Se è sopravvissuto qualcosa,
+      l'operazione viene dichiarata fallita e non c'è nessun download."""
+
+[[privacy]]
+title = "Le parole non escono mai dalla scheda, e non ne esce nemmeno la ricerca."
+body = """
+ La
+      Content-Security-Policy elenca ogni indirizzo che questa pagina può
+      contattare, e nemmeno uno appartiene a questo sito. Questo strumento non
+      aggiunge niente a quella lista: non ha una funzione di rete propria, nemmeno
+      facoltativa. Quello che scrivi nella casella di ricerca è una stringa
+      confrontata con del testo nella memoria di questa scheda, e non c'è nessun
+      posto dove l'uno o l'altro possano andare."""
+
+[[privacy]]
+title = "L'oscuramento è il lavoro che meno di tutti sopravvive a un caricamento."
+body = """
+
+      Quello che si oscura è il motivo per cui non va caricato. La dichiarazione di
+      un testimone, una lettera medica, un estratto conto che va a un padrone di
+      casa, un contratto con dentro il nome di un cliente che va a un altro
+      cliente. Consegnare quella roba al server di uno sconosciuto perché ne tolga
+      la parte privata vuol dire che la parte privata arriva per prima, intatta, ed
+      è quella la versione che loro si tengono. Questa pagina non ha un'altra
+      metà."""
+
+[[privacy]]
+title = "Quello che resta viene copiato intatto."
+body = """
+
+      Gli unici byte che cambiano in una pagina sono le istruzioni di scrittura del
+      testo di cui facevano parte le lettere tolte. Ogni altra istruzione, e ogni
+      font, immagine e linea a cui la pagina fa riferimento, viene copiata
+      esattamente come è arrivata &mdash; non viene ridisegnato, ricodificato o
+      riflusso niente. La larghezza di quello che è stato tolto viene misurata e
+      rimessa come un'istruzione di spaziatura, così il resto della riga resta dove
+      il documento lo aveva messo."""
+
+[[privacy]]
+title = "Non può togliere parole da una fotografia, e dice quali pagine sono."
+body = """
+
+      Una pagina scansionata è un'immagine. Le parole che ci stanno sopra sono
+      pixel, non testo, e qui dentro niente può toccarle. Se la scansione porta con
+      sé il livello invisibile e ricercabile che produce l'OCR di uno scanner,
+      questo strumento quel livello lo toglie &mdash; ed è quello che avrebbero
+      trovato una ricerca e una copia &mdash; e dice chiaramente sulla pagina che
+      l'immagine continua a mostrare le parole. Coprire quell'immagine è un altro
+      lavoro; l'<a href=\"../oscurare-immagine/\">oscuratore di immagini</a> è lo
+      strumento che riscrive i pixel."""
+
+[[privacy]]
+title = "Il documento smette di dire da dove viene."
+body = """
+
+      Le proprietà e il pacchetto XMP se ne vanno a ogni esecuzione: nessuna riga
+      di produttore, nessuna data di creazione, nessun autore, nessun titolo, e
+      nessuno dei blocchi privati che un programma di impaginazione si lascia
+      dietro. Un file alle cui pagine è stato tolto un nome e le cui proprietà
+      dicono ancora <code>bozza 3 transazione Rossi.docx</code> non è stato
+      oscurato, e non è una cosa da lasciare a una casella da spuntare."""
+
+[[privacy]]
+title = "I file cifrati vengono respinti invece che aperti."
+body = """
+
+      Un PDF con una password viene rifiutato, compreso quello che gli scanner
+      producono con la password vuota e che tecnicamente si aprirebbe. Togliere la
+      protezione a un documento è un lavoro diverso dal togliergli delle parole, e
+      farlo in silenzio sarebbe una cosa sorprendente da parte di uno strumento che
+      agisce per conto tuo."""
+
+[[privacy]]
+title = "Che cosa carica Google, e che cosa non gli viene dato."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google. A nessuno dei due viene
+      passato niente del tuo documento: non un file, non una pagina, non un nome,
+      una dimensione, un numero di pagine o una parola che hai cercato. Ogni riga
+      che legge, modifica o scrive un PDF è servita da questa origine ed è elencata
+      nel repository."""
+
+[[privacy]]
+title = "Che cosa carica il pulsante delle donazioni, e che cosa non gli viene dato."
+body = """
+
+      Il pulsante &laquo;Buy me a coffee&raquo; in cima è disegnato da uno script di
+      cdnjs.buymeacoffee.com e prende i caratteri da Google Fonts. È un link e
+      niente di più: non segnala nessuna visita e non gli viene passato niente su di
+      te o sui tuoi documenti. Non succede nulla se non lo clicchi, e quello a cui
+      arriveresti cliccando è il sito di qualcun altro."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e tutto quello che c'è su questa
+      pagina continua a funzionare. È la prova più semplice di tutte: uno strumento
+      che mandasse via il tuo documento per farlo oscurare altrove si
+      fermerebbe."""
+
+[[howto]]
+title = "Scegli il PDF."
+body = """
+ Un documento per volta, apposta:
+      l'oscuramento è un lavoro che va guardato pagina per pagina, e uno strumento
+      che ti lasciasse spuntare delle parole in un file e le applicasse in silenzio
+      a un altro è esattamente il modo in cui parte la cosa sbagliata. Viene letto
+      direttamente dal tuo disco dal browser."""
+
+[[howto]]
+title = "Di' che cosa deve sparire."
+body = """
+ Scrivi le parole &mdash; un
+      nome, un indirizzo, un riferimento &mdash; e ogni punto in cui compaiono
+      viene elencato con la riga su cui si trova e una casella da spuntare. I
+      cercatori accanto alla casella cercano indirizzi email, numeri di carta,
+      IBAN, codici fiscali e numeri di previdenza, e numeri di telefono. Vengono
+      proposti, mai spuntati per te: uno schema non sa distinguere un numero di
+      telefono da un riferimento."""
+
+[[howto]]
+title = "Leggi la pagina e prendi le parole da lì."
+body = """
+
+      Il pannello mostra il testo del documento come è davvero conservato,
+      nell'ordine in cui lo copierebbe un lettore. Clicca una parola qualsiasi per
+      toglierla e ricliccala per tenerla. Tutto quello che è barrato è quello che
+      sparirà &mdash; il che rende questa la revisione oltre che la selezione, ed è
+      una cosa che vale la pena fare su ogni pagina prima di premere il
+      pulsante."""
+
+[[howto]]
+title = "Toglile, e leggi la riga che dice che è stato verificato."
+body = """
+
+      Le lettere vengono cancellate, il vuoto che hanno lasciato viene tenuto
+      aperto, ci viene disegnato sopra un rettangolo nero se lo hai chiesto, e le
+      stesse parole vengono tolte dai segnalibri, dai commenti, dai campi dei
+      moduli e dalle proprietà del documento. Poi il file finito viene riaperto qui
+      e cercato. Se una parola che hai tolto si trova ancora, non ottieni nessun
+      download e un messaggio che te lo dice."""
+
+[[faq]]
+q = "In che cosa è diverso dal disegnare un rettangolo nero in un lettore di PDF?"
+a = """
+        Un rettangolo disegnato in un lettore è un'annotazione: un oggetto con una
+        posizione, salvato accanto alla pagina. Il testo che ci sta sotto è
+        intatto. Chiunque selezioni quell'area e prema copia, o apra il file in un
+        altro programma, o ci passi sopra un qualsiasi estrattore di testo, si
+        riprende le parole. Certi lettori offrono un comando &laquo;oscura&raquo;
+        che la rimozione la applica davvero &mdash; e parecchi offrono solo il
+        disegno. Questo strumento non ha nessun rettangolo da spostare: le lettere
+        vengono tagliate via dalle istruzioni di disegno della pagina, e il
+        rettangolo nero, se lo lasci acceso, viene disegnato dopo sopra un vuoto
+        che è già vuoto."""
+
+[[faq]]
+q = "Come faccio a sapere che le parole sono sparite davvero?"
+a = """
+        Perché lo strumento controlla, sulla tua macchina, e ti mostra il conto.
+        Quando il file è stato scritto viene riaperto dallo stesso lettore che sta
+        in questa pagina, ogni pagina viene riletta, ogni segnalibro, commento,
+        campo di modulo e proprietà viene raccolto, e ogni parola che hai tolto
+        viene cercata. La riga dei risultati dice quante ce n'erano e quante ne
+        restano. Se la risposta non è quella che dovrebbe essere, l'operazione
+        fallisce e non viene offerto niente da scaricare. Puoi anche controllare da
+        te, dopo, in un lettore qualsiasi: premi Ctrl+F e cerca la parola."""
+
+[[faq]]
+q = "Il resto della pagina si sposta quando si toglie una parola?"
+a = """
+        No. Il testo viene disegnato facendo avanzare una penna lungo la pagina,
+        quindi cancellare cinque lettere tirerebbe normalmente il resto della riga
+        indietro di cinque lettere. La larghezza esatta di quello che è stato tolto
+        viene misurata sulle metriche del font stesso e rimessa come un'istruzione
+        di spaziatura, che sposta la penna senza disegnare niente. Le colonne
+        restano allineate e i totali restano sotto le loro intestazioni."""
+
+[[faq]]
+q = "Può oscurare un documento scansionato?"
+a = """
+        Non l'immagine, e lo dice invece di fare finta. Una scansione è la
+        fotografia di una pagina: le parole sono pixel e non c'è testo da togliere.
+        Quello che una scansione spesso porta con sé è un livello di testo
+        invisibile che l'OCR dello scanner ha scritto sopra l'immagine perché la
+        pagina si possa cercare &mdash; questo strumento quel livello lo trova, ne
+        toglie quello che scegli, e ti dice sulla pagina che l'immagine è rimasta
+        com'era. Così una ricerca e una copia smettono di trovare la parola, e una
+        persona che guarda la pagina continua a leggerla. Per un'immagine, è
+        l'<a href=\"../oscurare-immagine/\">oscuratore di immagini</a> a riscrivere
+        i pixel stessi."""
+
+[[faq]]
+q = "E le parti di un documento che non stanno su una pagina?"
+a = """
+        Vengono gestite, perché sono il punto da cui di solito un oscuramento
+        perde. Le stesse parole vengono tolte dai segnalibri, dai commenti e dalle
+        note adesive, da quello che è stato scritto nei campi dei moduli, dal testo
+        che viene dato a un lettore di schermo, e dal testo di sostituzione che un
+        lettore copia <em>al posto</em> delle lettere sulla pagina &mdash;
+        quest'ultimo esiste perché le legature e le parole spezzate a fine riga si
+        copino come si deve, e può contenere una frase intera. Le proprietà del
+        documento e il pacchetto XMP vengono rimossi del tutto. Gli allegati e
+        qualunque cosa parta all'apertura del file vengono buttati via, perché in
+        nessuno dei due si possono cercare le parole che stai togliendo."""
+
+[[faq]]
+q = "I miei documenti vengono caricati da qualche parte?"
+a = """
+        No. Il file viene letto, modificato e scritto dal tuo browser sul tuo
+        hardware. Questo strumento non ha un lato server, e la
+        <code>Content-Security-Policy</code> della pagina elenca ogni indirizzo che
+        può contattare &mdash; nessuno dei quali appartiene a questo sito. Quello
+        che scrivi nella casella di ricerca viene confrontato con del testo nella
+        memoria di questa scheda e non va da nessuna parte nemmeno lui."""
+
+[[faq]]
+q = "Perché non posso trascinare un riquadro sulla pagina come negli altri strumenti?"
+a = """
+        Perché disegnare una pagina vuol dire un motore di rendering PDF completo
+        &mdash; font, sfumature, trasparenza, modalità di fusione &mdash; che è un
+        megabyte o più di motore da scaricare e far girare, e questo sito non ne
+        spedisce nessuno. Il che si scopre essere adatto al lavoro: trascinare un
+        rettangolo seleziona un'<em>area di carta</em>, e un'area di carta non è la
+        stessa cosa del testo che ci sta sotto, ed è così che comincia il fallimento
+        del rettangolo nero. Quello che ottieni invece è il testo del documento,
+        nell'ordine di lettura, con ogni parola cliccabile. Ed è anche l'unica vista
+        capace di dirti quello che un'immagine della pagina non può: se le parole
+        che hai davanti siano testo o no."""
+
+[[faq]]
+q = "Il file finito si aprirà dappertutto?"
+a = """
+        Sì. Il risultato viene scritto come PDF 1.5, o la versione più alta di cui
+        aveva bisogno il file che gli hai dato, e la 1.5 la capisce ogni lettore
+        uscito dal 2003 in poi. Sulla pagina non viene ricodificato niente: i font,
+        le immagini e il disegno vettoriale passano byte per byte, quindi quello che
+        resta del testo resta selezionabile e ricercabile esattamente com'era."""
+
+[[faq]]
+q = "Può aprire un PDF protetto da password?"
+a = """
+        No, ed è voluto. Un documento cifrato viene rifiutato con un messaggio che
+        lo dice, anche quando la password è vuota &mdash; che è il modo in cui
+        salvano parecchi scanner e fotocopiatrici. Togliere la protezione a un file
+        è un lavoro diverso dal togliergli delle parole, e uno strumento che lo
+        facesse in silenzio starebbe facendo una cosa che non hai chiesto."""
+
+[[faq]]
+q = "C'è un limite di dimensione, e costa qualcosa?"
+a = """
+        Nello strumento non c'è nessun limite scritto. Il limite è la tua macchina:
+        il documento viene tenuto in memoria mentre ci si lavora, quindi un portatile
+        regge qualche centinaio di megabyte senza lamentarsi e comincia a faticare da
+        lì in su. È gratis, non c'è un account, non c'è un accesso e non c'è una
+        prova. Il sito ospita pubblicità, ed è quella che lo paga; agli inserzionisti
+        non viene dato niente dei tuoi documenti."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca la rete e continua a funzionare.
+        È anche il modo più semplice per dimostrare che non viene caricato niente:
+        uno strumento che mandasse via il tuo documento per farlo oscurare altrove
+        si fermerebbe nell'istante in cui stacchi la spina."""
+
+[schema]
+description = "Oscura un PDF nel browser cancellando il testo invece di coprirlo. Le lettere vengono tolte dal content stream della pagina, il file finito viene riaperto e cercato per dimostrare che non ci sono più, e non viene caricato niente."
+features = [
+  "Cancella le lettere dalla pagina invece di disegnarci sopra un rettangolo",
+  "Riapre il file finito e ci cerca dentro per dimostrare che le parole sono sparite",
+  "Trova ogni occorrenza di una parola, oppure cerca email, numeri di carta, IBAN e codici identificativi nazionali",
+  "Mostra il testo del documento nell'ordine di lettura, così ogni parola è cliccabile",
+  "Toglie le stesse parole da segnalibri, commenti, campi dei moduli e proprietà",
+  "Tiene aperto il vuoto perché il resto della riga non si sposti",
+  "Dice quali pagine sono scansioni, dove non c'è testo da togliere",
+  "Funziona offline; nessun caricamento, nessun account, nessun limite di dimensione",
+]
+
+[picker]
+title = "Trascina qui il tuo PDF"
+hint = "oppure clicca per sfogliare &mdash; un documento per volta"

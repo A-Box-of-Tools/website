@@ -1,0 +1,241 @@
+<!--
+  tools/stack-images/body.html, in Italian.
+
+  Every id, class, option value, data-phrase key and brace placeholder below is
+  what the JavaScript reaches for, so they are the same in every language. Only
+  the words change. The #faq-raw anchor is a link target from the note in step
+  one, so it stays as it is.
+-->
+<main>
+  <!-- Passo 1 &mdash; i fotogrammi -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli i fotogrammi</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p class="note">
+      I file RAW vengono aperti leggendo il JPEG a piena risoluzione che la
+      fotocamera ci ha già scritto dentro: qualche kilobyte di directory e poi una
+      fetta. I dati del sensore non vengono decodificati mai, quindi un fotogramma
+      da 60&nbsp;MB si apre più o meno alla velocità di un JPEG.
+      <a href="#faq-raw">Che cosa vuol dire per il risultato</a>.
+    </p>
+
+    <div id="list-toolbar" class="toolbar" hidden>
+      <span id="count-label" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="sort-name" class="ghost">Ordina per nome</button>
+        <button type="button" id="clear-all" class="ghost danger">Togli tutti</button>
+      </div>
+    </div>
+
+    <ul id="frame-list" class="frame-list"></ul>
+  </section>
+
+  <!-- Passo 2 &mdash; come si mettono insieme -->
+  <section class="card">
+    <h2><span class="step">2</span> Come si mettono insieme</h2>
+
+    <div class="settings">
+      <div class="field field-wide">
+        <label for="mode">Metodo</label>
+        <select id="mode">
+          <option value="mean" selected>Media &mdash; abbassare il rumore</option>
+          <option value="median">Mediana &mdash; togliere persone e macchine di passaggio</option>
+          <option value="sigma">Sigma clipping &mdash; tutte e due le cose insieme</option>
+          <option value="max">Schiarisci &mdash; scie stellari, fuochi d'artificio, light painting</option>
+          <option value="min">Scurisci &mdash; togliere tutto quello di luminoso che si è mosso</option>
+          <option value="sum">Somma &mdash; simulare una lunga esposizione</option>
+          <option value="focus">Focus stacking &mdash; tenere quello che era a fuoco</option>
+        </select>
+        <p class="field-note" id="mode-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="align">Allinea i fotogrammi</label>
+        <select id="align">
+          <option value="translate" selected>Sì &mdash; solo traslazione</option>
+          <option value="similarity">Sì &mdash; trasla, ruota e scala</option>
+          <option value="none">No &mdash; prendili esattamente come sono</option>
+        </select>
+        <p class="field-note" id="align-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="scale">Risoluzione di lavoro</label>
+        <select id="scale">
+          <option value="full" selected>Piena</option>
+          <option value="half">Metà &mdash; un quarto della memoria</option>
+          <option value="quarter">Un quarto &mdash; un sedicesimo</option>
+        </select>
+        <p class="field-note" id="scale-note"></p>
+      </div>
+
+      <div class="field" id="kappa-field" hidden>
+        <label for="kappa">Scarta oltre</label>
+        <div class="inline-pair">
+          <input type="range" id="kappa" min="0.5" max="4" step="0.1" value="2">
+          <output id="kappa-value" for="kappa">2.0&sigma;</output>
+        </div>
+        <p class="field-note">
+          Più basso scarta di più, e scarta insieme del dettaglio vero. Due
+          deviazioni standard sono il punto di partenza solito.
+        </p>
+      </div>
+
+      <div class="field" id="radius-field" hidden>
+        <label for="radius">La nitidezza viene misurata su</label>
+        <div class="inline-pair">
+          <input type="range" id="radius" min="1" max="12" step="1" value="3">
+          <output id="radius-value" for="radius">3 px</output>
+        </div>
+        <p class="field-note">
+          Più grande prende intere zone da un fotogramma; più piccolo segue i
+          dettagli fini e può scompigliare uno sfondo liscio da un fotogramma
+          all'altro.
+        </p>
+      </div>
+
+      <div class="field">
+        <label for="gain">Esposizione</label>
+        <div class="inline-pair">
+          <input type="range" id="gain" min="0.1" max="4" step="0.05" value="1">
+          <output id="gain-value" for="gain">1.00&times;</output>
+        </div>
+        <p class="field-note" id="gain-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="format">Salva come</label>
+        <select id="format">
+          <option value="png" selected>PNG &mdash; senza perdite</option>
+          <option value="jpeg">JPEG &mdash; file più piccolo</option>
+        </select>
+        <div id="quality-row" class="inline-pair" hidden>
+          <input type="range" id="quality" min="0.5" max="1" step="0.01" value="0.92">
+          <output id="quality-value" for="quality">92</output>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      What the run will cost, worked out before it starts. Every figure here is
+      an answer from src/plan.js rather than an estimate, which is why they are
+      shown at all: a median of twenty large frames is a genuinely different
+      proposition from an average of them, and that should be visible before
+      the button is pressed rather than afterwards.
+    -->
+    <dl class="plan" id="plan" hidden>
+      <div><dt>Risultato</dt><dd id="plan-output">&mdash;</dd></div>
+      <div><dt>Memoria di lavoro</dt><dd id="plan-memory">&mdash;</dd></div>
+      <div><dt>Decodifiche</dt><dd id="plan-decodes">&mdash;</dd></div>
+      <div><dt>Letto dal disco</dt><dd id="plan-read">&mdash;</dd></div>
+    </dl>
+
+    <p id="plan-warning" class="path-note" hidden></p>
+  </section>
+
+  <!-- Passo 3 &mdash; farlo partire -->
+  <section class="card">
+    <h2><span class="step">3</span> Impila</h2>
+
+    <div class="export-row">
+      <button type="button" id="run" class="primary" disabled>Impila le immagini</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annulla</button>
+    </div>
+
+    <div id="progress-wrap" class="progress-wrap" hidden>
+      <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <p id="progress-label" class="progress-label" role="status" aria-live="polite"></p>
+    </div>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div id="result" class="result" hidden>
+      <div class="result-frame">
+        <img id="result-image" alt="Il risultato impilato">
+      </div>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <p id="result-moves" class="field-note"></p>
+        <a id="download" class="primary as-button" download>Scarica l'immagine</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen, kept out of the
+    JavaScript so that a translator can reach it. src/ is copied byte for byte
+    into all eleven languages, so a string written in a module is English at ten
+    of them. See shared/js/phrases.js.
+
+    A {name} is filled in by the caller. Nothing else is substituted.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.one">1 fotogramma</span>
+    <span data-phrase="count.many">{count} fotogrammi</span>
+    <span data-phrase="count.none">Ancora nessun fotogramma</span>
+
+    <span data-phrase="frame.reference">Riferimento</span>
+    <span data-phrase="frame.make-reference">Prendi come riferimento</span>
+    <span data-phrase="frame.remove">Togli</span>
+    <span data-phrase="frame.size">{width} &times; {height}</span>
+    <span data-phrase="frame.raw">RAW &mdash; l'anteprima della fotocamera, {width} &times; {height}</span>
+    <span data-phrase="frame.raw-camera">{camera} &mdash; anteprima {width} &times; {height}</span>
+    <span data-phrase="frame.raw-unreadable">In questo file RAW non si è trovata nessuna anteprima</span>
+    <span data-phrase="frame.read">letti {read} su {total}</span>
+
+    <span data-phrase="mode.mean">Fa la media di ogni fotogramma. Il rumore casuale è troppo alto tante volte quante è troppo basso, quindi fare la media di {count} fotogrammi lo abbassa di circa {factor} volte. È il metodo per una serie tranquilla, ed è quello che un solo uccello di passaggio rovina.</span>
+    <span data-phrase="mode.median">Prende il valore centrale di ogni pixel. Tutto quello che c'era solo in una parte dei fotogrammi, un turista, una macchina, un aereo, sparisce. È l'unico metodo che deve tenere tutti i fotogrammi insieme, ed è per questo che qui sotto può essere diviso in bande.</span>
+    <span data-phrase="mode.sigma">Impara che cosa ogni pixel di solito è, e poi fa la media solo dei valori che ci vanno d'accordo. Il risultato della mediana con la riduzione del rumore della media. Legge i fotogrammi due volte.</span>
+    <span data-phrase="mode.max">Tiene il valore più chiaro che ogni pixel abbia mai avuto. È quello che trasforma una serie di brevi esposizioni in scie stellari e rimette insieme un fuoco d'artificio dai suoi stessi fotogrammi.</span>
+    <span data-phrase="mode.min">Tiene il valore più scuro che ogni pixel abbia mai avuto. Un pixel resta chiaro solo se era chiaro in ogni fotogramma, quindi se ne vanno riflessi, fari e gocce di pioggia illuminate.</span>
+    <span data-phrase="mode.sum">Somma i fotogrammi senza dividere: quello che avrebbe raccolto un'esposizione {count} volte più lunga. Va a fuoco, esattamente come ci andrebbe quell'esposizione. Recuperalo con il cursore dell'esposizione.</span>
+    <span data-phrase="mode.focus">Prende ogni parte dell'immagine dal fotogramma in cui era a fuoco. Fotografa un soggetto piccolo lungo la ghiera di messa a fuoco, e questo rimette insieme le parti nitide.</span>
+
+    <span data-phrase="align.translate">Trova di quanto era spostato ogni fotogramma e lo rimette indietro, con la precisione di frazioni di pixel. Corregge il tremolio a mano libera e la deriva del treppiede. La rotazione non la può correggere.</span>
+    <span data-phrase="align.similarity">Trova anche rotazione e scala. Costa una misurazione in più per fotogramma e non costa niente se i fotogrammi risultano dritti. La rotazione viene sempre recuperata solo entro mezzo giro.</span>
+    <span data-phrase="align.none">Impila i fotogrammi esattamente come arrivano. Giusto per un treppiede fisso o una serie a intervalli, sbagliato per qualsiasi cosa fatta a mano libera.</span>
+
+    <span data-phrase="scale.note">Ogni fotogramma viene decodificato a questa dimensione dal decoder del browser stesso, quindi un'impostazione più piccola è meno lavoro e non solo meno memoria.</span>
+    <span data-phrase="gain.note">Moltiplicato nel risultato proprio alla fine, dopo il calcolo e prima dell'arrotondamento.</span>
+    <span data-phrase="gain.sum-note">Sommare {count} fotogrammi andrà quasi di sicuro a fuoco. Abbassalo a circa {suggested} per vedere che cosa è stato raccolto.</span>
+
+    <span data-phrase="plan.output">{width} &times; {height}</span>
+    <span data-phrase="plan.memory">circa {mb} MB</span>
+    <span data-phrase="plan.decodes.simple">{count}, una per fotogramma</span>
+    <span data-phrase="plan.decodes.passes">{count} &mdash; ogni fotogramma, {passes} volte</span>
+    <span data-phrase="plan.decodes.banded">{count} &mdash; ogni fotogramma, una volta per ognuna delle {bands} bande</span>
+    <span data-phrase="plan.read">{read} su {total} sul disco</span>
+    <span data-phrase="plan.banded">Questo non entra in memoria in un pezzo solo, quindi l'immagine viene tagliata in {bands} bande e i fotogrammi vengono riletti per ognuna. Scegliere {suggested} ne farebbe un passaggio unico.</span>
+    <span data-phrase="plan.banded-anyway">Questo non entra in memoria in un pezzo solo, quindi l'immagine viene tagliata in {bands} bande e i fotogrammi vengono riletti per ognuna. Meno fotogrammi o una risoluzione di lavoro più piccola ne farebbero un passaggio unico.</span>
+
+    <span data-phrase="progress.open">Si sta guardando dentro {name}&hellip;</span>
+    <span data-phrase="progress.survey">Lettura di {name}&hellip;</span>
+    <span data-phrase="progress.measure">Si misura di quanto si è mosso {name}&hellip;</span>
+    <span data-phrase="progress.stack">Impilamento &mdash; letti {done} fotogrammi su {total}</span>
+    <span data-phrase="progress.stack-banded">Impilamento &mdash; banda {band} di {bands}, letti {done} fotogrammi su {total}</span>
+    <span data-phrase="progress.encode">Scrittura dell'immagine&hellip;</span>
+
+    <span data-phrase="result.info">{width} &times; {height}, {size} &mdash; {count} fotogrammi messi insieme in {seconds} secondi</span>
+    <span data-phrase="result.moves">Ogni fotogramma è stato misurato e spinto al suo posto.</span>
+    <span data-phrase="result.moves-some">{count} fotogrammi su {total} non si sono potuti misurare con sicurezza e sono rimasti dov'erano.</span>
+    <span data-phrase="result.moves-none">I fotogrammi sono stati impilati esattamente come sono arrivati.</span>
+    <span data-phrase="result.moves-clamped">{count} fotogrammi hanno segnalato una rotazione troppo grande per una serie, e sono stati corretti con la sola traslazione.</span>
+    <span data-phrase="result.cropped">Spostarli ha lasciato dei bordi che non tutti i fotogrammi raggiungevano, e quelli sono stati tagliati.</span>
+
+    <span data-phrase="error.no.files">Aggiungi prima almeno un'immagine.</span>
+    <span data-phrase="error.no.size">Nessuno di questi file si è potuto aprire come immagine.</span>
+    <span data-phrase="error.one.frame">Per impilare servono almeno due fotogrammi.</span>
+    <span data-phrase="error.unknown">Qualcosa è andato storto nell'impilamento. Se uno di questi file è particolare, prova a farlo da solo.</span>
+    <span data-phrase="error.memory">Il browser ha esaurito la memoria. Prova una risoluzione di lavoro più piccola o meno fotogrammi.</span>
+    <span data-phrase="error.unreadable">{name} non si è potuto aprire come immagine ed è rimasto fuori.</span>
+    <span data-phrase="error.busy">Aspetta che questa pila sia finita prima di aggiungere altri fotogrammi, oppure annullala.</span>
+  </div>
+</main>

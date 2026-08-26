@@ -1,0 +1,21 @@
+#
+# Guida: aprire un file DICOM - Italian.
+#
+
+nav = "Aprire un file DICOM"
+title = "Come aprire un file DICOM (.dcm) senza installare niente"
+description = "Che cosa c'è su un disco dell'ospedale, perché i file non hanno estensione, come aprire una scansione .dcm in un browser, che cosa fa davvero finestra e livello, e che cosa si porta dietro una scansione sul paziente oltre all'immagine."
+
+heading = "Come aprire un file DICOM, e che cosa c'è dentro"
+lede = """
+    Un disco dell'ospedale è una cartella di file senza estensione e un
+    visualizzatore scritto per Windows XP. I file sono DICOM, e non hanno niente
+    di esotico: una scansione è un header pieno di campi e un blocco di pixel.
+    Ecco come guardarne una, che cosa vogliono dire i comandi, e che altro il file
+    si porta dietro oltre all'immagine."""
+
+updated = "25 agosto 2026"
+
+og_title = "Come aprire un file DICOM senza installare niente"
+og_description = "Che cosa c'è su un disco dell'ospedale, perché i file non hanno estensione, e che cosa si porta dietro sul paziente una scansione .dcm oltre all'immagine."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

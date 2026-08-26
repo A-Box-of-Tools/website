@@ -1,0 +1,267 @@
+<!--
+  tools/dicom-viewer/body.html, in Italian.
+
+  Every id, class, name, option value, data-phrase key and brace placeholder
+  below is what the JavaScript reaches for, so they are the same in every
+  language. Only the words change.
+
+  L'intestazione di colonna "VR" resta com'è: è il codice di due lettere che sta
+  scritto così nel file, e chi cerca un tag nello standard cerca esattamente
+  quelle due lettere.
+-->
+<main>
+  <!--
+    One numbered step, and then the viewer.
+
+    Every other tool on this site numbers its cards because every card is
+    something the visitor does. Here there is one thing to do - choose the
+    files - and everything below it is the scan. Numbering the picture would
+    promise a sequence of decisions that does not exist.
+  -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli la scansione</h2>
+
+    {% include "partials/file-picker.html" %}
+
+    <p class="picker-note">
+      Trascina dentro un'intera cartella in una volta sola, e i file vengono
+      riassegnati alle loro serie e rimessi nell'ordine giusto. Non viene caricato
+      niente, e nei tuoi file non viene riscritto niente.
+    </p>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+    <p id="working" class="working" role="status" aria-live="polite" hidden></p>
+  </section>
+
+  <!-- Il visualizzatore. -->
+  <section class="card" id="viewer-card" hidden>
+    <div class="toolbar">
+      <h2 id="file-name" class="file-name">&mdash;</h2>
+      <div class="toolbar-actions">
+        <button type="button" id="save-frame" class="ghost" data-download>Salva questo fotogramma come PNG</button>
+        <button type="button" id="copy-header" class="ghost">Copia l'header</button>
+        <button type="button" id="download-header" class="ghost">Scarica</button>
+      </div>
+    </div>
+
+    <div class="series-row" id="series-row" hidden>
+      <label for="series-pick" class="inline-label">Serie</label>
+      <select id="series-pick"></select>
+      <span class="count" id="series-note"></span>
+    </div>
+
+    <!--
+      The canvas is sized in CSS and its backing store is set to the frame's own
+      pixels, so a 512-pixel slice is drawn at 512 pixels and scaled by the
+      browser rather than resampled here. That is what makes the zoom honest:
+      what is on screen at 400% is the stored pixels made bigger, not a guess at
+      what was between them.
+    -->
+    <div class="viewport" id="viewport">
+      <canvas id="canvas" width="1" height="1" role="img"
+              aria-label="L'immagine sullo schermo, disegnata dal file che hai scelto"></canvas>
+      <div class="overlay overlay-tl" id="overlay-tl" hidden></div>
+      <div class="overlay overlay-tr" id="overlay-tr"></div>
+      <div class="overlay overlay-bl" id="overlay-bl"></div>
+      <div class="overlay overlay-br" id="overlay-br"></div>
+      <svg class="marks" id="marks" aria-hidden="true"></svg>
+      <p class="viewport-fail" id="viewport-fail" hidden></p>
+    </div>
+
+    <div class="scrub" id="scrub-row" hidden>
+      <button type="button" id="play" class="ghost" aria-label="Riproduci i fotogrammi">▶</button>
+      <input type="range" id="scrub" min="0" max="0" value="0" step="1"
+             aria-label="Quale slice o quale fotogramma viene mostrato">
+      <span class="count" id="scrub-label">&mdash;</span>
+    </div>
+
+    <div class="tools">
+      <fieldset class="modes">
+        <legend class="visually-hidden">Che cosa fa il trascinamento sull'immagine</legend>
+        <label><input type="radio" name="mode" value="window" checked> Finestra e livello</label>
+        <label><input type="radio" name="mode" value="pan"> Sposta</label>
+        <label><input type="radio" name="mode" value="measure"> Misura</label>
+      </fieldset>
+
+      <div class="zoom">
+        <label for="zoom" class="inline-label">Zoom</label>
+        <input type="range" id="zoom" min="5" max="800" step="5" value="100">
+        <span class="count" id="zoom-label">100%</span>
+        <button type="button" id="reset-view" class="ghost">Adatta</button>
+      </div>
+    </div>
+
+    <div class="levels" id="levels">
+      <div class="level-field">
+        <label for="preset" class="inline-label">Finestra</label>
+        <select id="preset"></select>
+      </div>
+      <div class="level-field">
+        <label for="center" class="inline-label">Centro</label>
+        <input type="number" id="center" step="1">
+      </div>
+      <div class="level-field">
+        <label for="width" class="inline-label">Ampiezza</label>
+        <input type="number" id="width" step="1" min="1">
+      </div>
+      <label class="level-check"><input type="checkbox" id="invert"> Inverti</label>
+      <label class="level-check"><input type="checkbox" id="show-details"> Sovrapponi i dati del paziente all'immagine</label>
+    </div>
+
+    <p class="hint" id="mode-hint"></p>
+    <p id="copy-status" class="copy-status" role="status" aria-live="polite"></p>
+  </section>
+
+  <!-- Che cos'è questo file. -->
+  <section class="card" id="facts-card" hidden>
+    <h2>Che cos'è questo file</h2>
+    <dl class="facts">
+      <div><dt>Oggetto</dt><dd id="fact-sop">&mdash;</dd></div>
+      <div><dt>Modalità</dt><dd id="fact-modality">&mdash;</dd></div>
+      <div><dt>Immagine</dt><dd id="fact-size">&mdash;</dd></div>
+      <div><dt>Memorizzato come</dt><dd id="fact-stored">&mdash;</dd></div>
+      <div><dt>Transfer syntax</dt><dd id="fact-syntax">&mdash;</dd></div>
+      <div><dt>Spaziatura dei pixel</dt><dd id="fact-spacing">&mdash;</dd></div>
+      <div><dt>Intervallo dei valori</dt><dd id="fact-range">&mdash;</dd></div>
+      <div><dt>File</dt><dd id="fact-file">&mdash;</dd></div>
+    </dl>
+
+    <ul class="notes" id="notes" hidden></ul>
+  </section>
+
+  <!-- Che cosa c'è scritto sulla persona. -->
+  <section class="card" id="identity-card" hidden>
+    <h2>Che cosa in questo file identifica il paziente</h2>
+    <p class="card-lede">
+      Letto da questo file, su questo dispositivo, e mostrato a nessun altro.
+      Questo strumento non scrive niente: non può togliere niente di tutto ciò, e
+      non ne ha mandato niente da nessuna parte. Sta qui perché una scansione porta
+      con sé molto più di un nome, e perché il resto è esattamente quello che
+      sopravvive a un'anonimizzazione fatta con sufficienza.
+    </p>
+    <ul class="identity" id="identity"></ul>
+    <p class="identity-extra" id="identity-extra"></p>
+  </section>
+
+  <!-- Ogni tag del file. -->
+  <section class="card" id="tags-card" hidden>
+    <div class="toolbar">
+      <h2>Ogni tag del file</h2>
+      <div class="toolbar-actions">
+        <label for="tag-search" class="visually-hidden">Cerca tra i tag</label>
+        <input type="search" id="tag-search" class="tag-search" placeholder="Cerca per nome, numero o valore">
+      </div>
+    </div>
+
+    <p class="card-lede" id="tags-lede"></p>
+
+    <div class="table-wrap">
+      <table class="tags">
+        <caption class="visually-hidden">Ogni elemento di questo file</caption>
+        <thead>
+          <tr>
+            <th scope="col">Tag</th>
+            <th scope="col">VR</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Valore</th>
+          </tr>
+        </thead>
+        <tbody id="tag-rows"></tbody>
+      </table>
+    </div>
+
+    <div class="more-row">
+      <button type="button" id="show-more" class="ghost" hidden></button>
+    </div>
+  </section>
+
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="mode.window">Trascina di traverso sull'immagine per allargare o stringere la finestra, e in alto o in basso per spostarne il centro. Tutti e due i numeri stanno lì sotto, e digitarli fa la stessa cosa.</span>
+    <span data-phrase="mode.pan">Trascina per spostare l'immagine dentro la sua cornice. La rotella zooma, e &laquo;Adatta&raquo; rimette tutto a posto.</span>
+    <span data-phrase="mode.measure">Traccia una linea sull'immagine per misurare. Dove il file dice quanto sono distanti i suoi pixel, il risultato è in millimetri; dove non lo dice, è in pixel e lo dichiara.</span>
+
+    <span data-phrase="probe.value">{value} alla colonna {column}, riga {row}</span>
+    <span data-phrase="measure.pixels">{length} px &mdash; questo file non dice quanto sono distanti i suoi pixel, quindi la misura non può essere in millimetri</span>
+
+    <span data-phrase="stack.position">Impilate in base a dove ogni slice si trova nel corpo, ed è l'ordine in cui l'apparecchio le ha prese.</span>
+    <span data-phrase="stack.number">Impilate per Instance Number: questi file non portano una posizione nel corpo su cui ordinarli.</span>
+    <span data-phrase="stack.gap">La distanza tra una slice e l'altra non è sempre la stessa, quindi in questa serie ne manca almeno una.</span>
+
+    <span data-phrase="pixels.none">I pixel di questo file sono compressi con {codec}. Nessun browser sa decodificarlo, e questa pagina non si porta dietro un decoder apposta. Tutto il resto del file sta qui sotto.</span>
+    <span data-phrase="pixels.failed">Non è stato possibile decodificare l'immagine: {reason}. L'header qui sotto è stato letto per intero.</span>
+    <span data-phrase="pixels.absent">Questo file non porta proprio nessun dato di pixel. È un header, e tutto quello che contiene sta qui sotto.</span>
+    <span data-phrase="pixels.jpeg">Questi pixel sono JPEG baseline, quindi li ha aperti il decoder del browser, e quello che restituisce è profondo otto bit. La finestra continua a funzionare; la precisione che l'apparecchio ha registrato non c'è tutta.</span>
+
+    <span data-phrase="tags.count">{shown} elementi su {total}. Altri {hidden}.</span>
+    <span data-phrase="tags.all">Tutti i {total} elementi di questo file.</span>
+    <span data-phrase="tags.found">{total} elementi corrispondono a &laquo;{query}&raquo;.</span>
+    <span data-phrase="tags.found.one">Un elemento corrisponde a &laquo;{query}&raquo;.</span>
+    <span data-phrase="tags.none">Niente corrisponde a &laquo;{query}&raquo;.</span>
+    <span data-phrase="tags.more">Mostra gli altri {count}</span>
+    <span data-phrase="tags.private">elemento privato</span>
+    <span data-phrase="tags.unknown">non in questo dizionario</span>
+    <span data-phrase="tags.guessed">Il file non lo ha detto; è quello che il dizionario dei dati indica per questo tag.</span>
+
+    <span data-phrase="working.one">Lettura di {name}&hellip;</span>
+    <span data-phrase="working.many">Lettura di {at} su {total}&hellip;</span>
+    <span data-phrase="error.none">Non è stato possibile leggere niente di tutto questo come DICOM. {why} Questo strumento legge il formato DICOM in sé, quindi sugli altri file non ha niente da dire.</span>
+    <span data-phrase="error.skipped.one">Un file è stato saltato: {files}</span>
+    <span data-phrase="error.skipped">{count} file sono stati saltati: {files}</span>
+
+    <span data-phrase="series.number">Serie {number}</span>
+    <span data-phrase="series.files.one">1 file</span>
+    <span data-phrase="series.files">{count} file</span>
+    <span data-phrase="stack.spacing">Le slice distano {gap} l'una dall'altra.</span>
+
+    <span data-phrase="at.position">{at} di {total}</span>
+    <span data-phrase="net.clean">La tua scansione non è andata da nessuna parte. {total} file
+      caricati, tutti quanti di questo sito. {platform}</span>
+    <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo strumento non
+      lo fa mai. Vale la pena andare a vedere. {platform}</span>
+    <span data-phrase="net.platform.one">Gli script del sito per la pubblicità, la
+      misurazione e il pulsante delle donazioni sono arrivati da {hosts} host; a
+      nessuno di questi è arrivata una scansione, un suo pixel o una parola del suo
+      header.</span>
+    <span data-phrase="net.platform.many">Gli script del sito per la pubblicità, la
+      misurazione e il pulsante delle donazioni sono arrivati da {hosts} host; a
+      nessuno di questi è arrivata una scansione, un suo pixel o una parola del suo
+      header.</span>
+    <span data-phrase="at.frame">Fotogramma {at} di {total}</span>
+    <span data-phrase="at.instance">Istanza {number}</span>
+
+    <span data-phrase="window.file">Dal file</span>
+    <span data-phrase="window.file.n">Dal file, {n}</span>
+    <span data-phrase="window.full">Tutto quello che c'è in questo fotogramma</span>
+    <span data-phrase="window.custom">Impostata a mano</span>
+    <span data-phrase="window.soft">Tessuti molli</span>
+    <span data-phrase="window.lung">Polmone</span>
+    <span data-phrase="window.bone">Osso</span>
+    <span data-phrase="window.brain">Cervello</span>
+    <span data-phrase="window.liver">Fegato</span>
+    <span data-phrase="window.mediastinum">Mediastino</span>
+    <span data-phrase="window.angio">Angiografia</span>
+
+    <span data-phrase="facts.frames">{count} fotogrammi</span>
+    <span data-phrase="facts.nopixels">nessun dato di pixel</span>
+    <span data-phrase="facts.nospacing">non indicata in questo file</span>
+    <span data-phrase="facts.signed">con segno</span>
+    <span data-phrase="facts.unsigned">senza segno</span>
+    <span data-phrase="facts.stored.one">{bits} bit, {sign}, 1 canale per pixel, {photometric}</span>
+    <span data-phrase="facts.stored">{bits} bit, {sign}, {samples} canali per pixel, {photometric}</span>
+    <span data-phrase="facts.range">da {low} a {high}</span>
+    <span data-phrase="facts.colour">colore &mdash; niente di misurato da riferire</span>
+
+    <span data-phrase="identity.clean">Niente in questo file nomina o numera una persona. Gli identificatori che una scansione di solito porta con sé mancano o sono vuoti.</span>
+    <span data-phrase="identity.uids">Porta inoltre {count} identificatori propri, gli UID dello studio, della serie e dell'istanza. Nessuno di questi è un nome, e ognuno di essi è una chiave perfetta per rientrare nell'archivio da cui viene il file.</span>
+    <span data-phrase="identity.private">In più {count} elementi privati, il cui significato non è pubblicato da nessuna parte: certi apparecchi ne usano uno per tenere una seconda copia del nome del paziente.</span>
+
+    <span data-phrase="copied">Copiato.</span>
+    <span data-phrase="copy.failed">Il tuo browser ha negato alla pagina il permesso di copiare. Il pulsante qui accanto scrive lo stesso testo in un file.</span>
+    <span data-phrase="saved">{name} salvato.</span>
+  </div>
+</main>

@@ -1,0 +1,21 @@
+#
+# Guida: scansionare un documento col telefono - Italian.
+#
+
+nav = "Scansionare col telefono"
+title = "Come scansionare un documento col telefono (senza app, senza caricarlo)"
+description = "Che cosa separa la fotografia di una pagina dalla scansione di quella pagina: l'inclinazione, la luce irregolare e la dimensione del file. Come scattare la foto, che cosa sistemare dopo, e perché niente di tutto questo ha bisogno di un server."
+
+heading = "Come scansionare un documento col telefono"
+lede = """
+    Qualcuno ti ha chiesto di &laquo;scansionare e rispedire&raquo; un modulo, e
+    tu hai un telefono e non hai uno scanner. La distanza tra la fotografia di una
+    pagina e la scansione di quella pagina è più piccola di quanto sembri, e non
+    riguarda soprattutto l'inclinazione &mdash; ecco che cosa le separa davvero, e
+    che cosa fare per ogni pezzo."""
+
+updated = "25 agosto 2026"
+
+og_title = "Come scansionare un documento col telefono"
+og_description = "L'inclinazione, l'ombra e la dimensione del file: che cosa separa la foto di una pagina dalla scansione di quella pagina, e come sistemare ogni cosa senza caricare la pagina."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"
