@@ -1,0 +1,21 @@
+#
+# Guide : créer une miniature de vidéo - French.
+#
+
+nav = "Créer une miniature de vidéo"
+title = "Créer une miniature de vidéo depuis l'image exacte &mdash; sans envoi"
+description = "Avancer image par image jusqu'au bon instant, l'enregistrer sans perte, la mettre au format de la plateforme et tenir sa limite d'octets. Trois outils du navigateur à la suite, et la vidéo ne quitte jamais votre machine."
+
+heading = "Comment créer une miniature de vidéo depuis l'image exacte"
+lede = """
+    La différence entre une miniature et une capture d'écran tient à un quart
+    de seconde &mdash; l'image où les yeux sont ouverts et où le ballon est
+    encore en l'air. Obtenir cette image, à la taille de la plateforme, sous
+    sa limite d'octets, est une chaîne de trois pas qui tourne entièrement
+    dans votre navigateur."""
+
+updated = "26 août 2026"
+
+og_title = "L'image exacte, à la taille de la plateforme, sous la limite d'octets"
+og_description = "Avancer image par image jusqu'au bon instant, l'enregistrer sans perte, recadrer en 16:9 et compresser jusqu'au plafond de la plateforme, sans envoyer la vidéo."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

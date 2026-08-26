@@ -1,0 +1,21 @@
+#
+# Gids: van een lange video een timelapse maken - Dutch.
+#
+
+nav = "Video naar timelapse"
+title = "Van een lange video een timelapse maken &mdash; zonder iets te uploaden"
+description = "Een uur beeld in een minuut die je uitkijkt: hoe je de snelheid kiest, waarom de einduur opgeven wint van rekenen, en wanneer het resultaat een GIF moet worden."
+
+heading = "Zo maak je van een lange video een timelapse"
+lede = """
+    Een uur zonsondergang, een dag op de bouwplaats, de dagelijkse rit door
+    de voorruit: beeld dat de moeite waard is, op een snelheid waar niemand
+    naar blijft kijken. Het werk is één beslissing over tijd en één over de
+    bestemming, en alles draait in je browser, op een bestand dat je machine
+    nooit verlaat."""
+
+updated = "26 augustus 2026"
+
+og_title = "Een uur beeld in een kijkbare minuut, zonder iets te uploaden"
+og_description = "Kies de snelheid of zeg gewoon hoe lang het moet duren, houd het bestand hanteerbaar zelfs bij 4K, en weet wanneer de loop een GIF wil zijn."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

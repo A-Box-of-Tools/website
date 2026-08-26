@@ -1,0 +1,100 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <ol>
+      <li>
+        <strong>Créez-le.</strong> Ouvrez le
+        <a href="../../generateur-de-qr-code/">Générateur de QR &amp; codes-barres</a>,
+        choisissez la tâche &mdash; un lien, un réseau Wi-Fi, une carte de
+        contact &mdash; et vérifiez la chaîne exacte que le code contiendra,
+        que la page montre au lieu de la cacher. Exportez le SVG pour
+        l'impression, le PNG pour les écrans.
+      </li>
+      <li>
+        <strong>Imprimez-en un.</strong> À la vraie taille, sur le vrai
+        papier, avant le tirage de deux cents.
+      </li>
+      <li>
+        <strong>Prouvez-le.</strong> Photographiez le tirage d'essai avec un
+        téléphone &mdash; de biais, dans la lumière du lieu &mdash; et
+        déposez la photo sur le
+        <a href="../../lecteur-de-qr-code/">Lecteur de QR &amp;
+        codes-barres</a>. Il montre la charge décodée et, pour un lien,
+        l'hôte qu'il atteint vraiment. Si cela correspond à ce que vous
+        vouliez, le tirage ne risque rien.
+      </li>
+    </ol>
+    <p>
+      Les deux outils tournent dans votre navigateur et n'envoient rien
+      nulle part &mdash; ce qui, pour un code Wi-Fi, veut dire que le mot de
+      passe qu'il contient n'a jamais été tapé dans le site de quelqu'un
+      d'autre.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que la vérification attrape vraiment</h2>
+    <ul>
+      <li>
+        <strong>La faute de frappe.</strong> L'échec le plus courant n'est
+        pas le code &mdash; c'est l'URL dedans. Le relire est la seule
+        vérification qui teste ce qui est réellement encodé plutôt que ce que
+        vous pensiez coller.
+      </li>
+      <li>
+        <strong>La taille et la distance.</strong> Un code scanné à travers
+        une salle demande de plus gros modules qu'un code sur une carte de
+        visite. Photographier le tirage d'essai depuis l'endroit où les gens
+        se tiendront est le test honnête&nbsp;; les niveaux de correction
+        d'erreur du générateur disent tout haut ce que chacun coûte en
+        densité.
+      </li>
+      <li>
+        <strong>Les couleurs.</strong> Les codes imprimés clair sur foncé se
+        scannent&nbsp;; les palettes de marque à faible contraste, souvent
+        pas. Le lecteur encaisse plus que la plupart des téléphones &mdash;
+        si <em>lui</em> peine sur la photo, le plus vieux téléphone du hall
+        n'a aucune chance.
+      </li>
+      <li>
+        <strong>Le pli et le reflet.</strong> La correction de Reed-Solomon
+        fait qu'un code en partie couvert se lit encore &mdash; jusqu'au
+        niveau que vous avez choisi. Une affiche promise aux intempéries
+        mérite le niveau supérieur et le code un peu plus dense qu'il
+        coûte.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Le même lecteur, pour les codes qui ne sont pas les vôtres</h2>
+    <p>
+      Vérifier est aussi la façon sûre d'ouvrir le code QR imprimé par
+      quelqu'un d'autre. Le lecteur montre l'adresse entière et l'hôte
+      qu'elle atteint vraiment <em>avant que rien ne s'ouvre</em>, et il
+      nomme les ruses qui déguisent un lien &mdash; un nom d'utilisateur
+      devant le @, un alphabet sosie, une redirection. L'autocollant sur
+      l'horodateur mérite cette inspection&nbsp;; le badge de conférence
+      aussi. Rien ne s'ouvre à votre place, et rien de ce que vous scannez
+      n'est envoyé nulle part.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Créer et vérifier vivent sur deux pages à dessein &mdash; chacune fait
+      un travail, et chacune peut prouver seule que rien ne quitte votre
+      machine. Mais les deux sont libres&nbsp;: licence MIT, des modules ES
+      sans dépendances &mdash; l'encodeur du générateur et le décodeur
+      Reed-Solomon du lecteur, chacun avec un README qui l'explique.
+    </p>
+    <p>
+      Si des codes partent chaque semaine de votre bureau, pointez un agent
+      de code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui une page qui génère et fait aussitôt repasser le code
+      rendu par le décodeur &mdash; un autotest à chaque export. Les modules
+      ont été écrits pour être lus, et les emporter est exactement ce à quoi
+      sert la licence.
+    </p>
+  </section>

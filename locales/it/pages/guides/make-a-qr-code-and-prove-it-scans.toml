@@ -1,0 +1,20 @@
+#
+# Guida: creare un codice QR e provare che si legge - Italian.
+#
+
+nav = "Provare che un QR si legge"
+title = "Creare un codice QR e provare che si legge &mdash; prima di stampare 200 manifesti"
+description = "Genera il codice, poi verificalo con il lettore dello stesso sito: il contenuto esatto, il vero link, a misura di stampa e da una foto, prima della tiratura. Tutto nel browser, niente caricato."
+
+heading = "Come creare un codice QR e provare che si legge"
+lede = """
+    L'errore costoso del QR non è fare il codice: è scoprire sul posto che i
+    manifesti si leggono verso un refuso. Generare e verificare qui sono due
+    strumenti, e far girare il secondo prima della tiratura costa un minuto e
+    acchiappa quasi tutto quello che la tiratura avrebbe spedito."""
+
+updated = "26 agosto 2026"
+
+og_title = "Prova che il manifesto si legge prima di stamparne duecento"
+og_description = "Genera il codice, fotografa la prova di stampa e rileggila con il lettore dello stesso sito - contenuto, link e tutto - prima di dare il via alla stampa."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

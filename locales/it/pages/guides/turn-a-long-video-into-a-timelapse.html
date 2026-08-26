@@ -1,0 +1,102 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <p>
+      Apri il <a href="../../creare-timelapse/">Creatore di timelapse</a>,
+      trascina dentro la registrazione, e imposta o una velocità &mdash;
+      qualsiasi cosa da 1,1&times; a 1000&times; &mdash; oppure, senza far
+      di conto, quanto deve durare il risultato. Sessanta secondi sono un
+      buon punto di partenza per tutto ciò che va in un feed. Scegli i
+      fotogrammi al secondo, riduci la misura se l'originale è in 4K, ed
+      esporta.
+    </p>
+    <p>
+      Se la destinazione anima solo GIF, passa poi il clip esportato per il
+      convertitore <a href="../../video-in-gif/">Video in GIF</a>; ma leggi
+      prima l'ultima sezione, perché un timelapse è la cosa più costosa che
+      si possa chiedere a una GIF di reggere.
+    </p>
+  </section>
+
+  <section>
+    <h2>Di' la durata, non la velocità</h2>
+    <p>
+      &laquo;Quanto veloce&raquo; è la domanda sbagliata, perché la risposta
+      onesta è una divisione che non dovresti dover fare: novanta minuti di
+      girato in un minuto di risultato fanno 90&times;; una giornata di
+      cantiere in trenta secondi sta più vicina a 3000&times; che a
+      qualsiasi cosa suggerisca un cursore. Lo strumento prende la durata
+      finale direttamente e si calcola il fattore da solo, così la risposta
+      sopravvive al giorno in cui infili una registrazione più lunga.
+    </p>
+    <p>
+      A cosa serve ancora un fattore di velocità sono i numeri piccoli. Tra
+      1,1&times; e 2&times; un video resta <em>guardabile come video</em>
+      &mdash; una lezione, una dimostrazione &mdash; e sopra circa
+      8&times; smette di essere riproduzione veloce e diventa un timelapse,
+      dove ogni fotogramma in uscita è un campione colto dal flusso del
+      tempo e tutto ciò che sta tra i campioni semplicemente non c'è più.
+    </p>
+    <p>
+      Quel campionare è anche il motivo per cui il lavoro è rapido. Lo
+      strumento legge solo gli istanti che servono all'uscita &mdash; a
+      100&times;, circa un centesimo del file &mdash; invece di decodificare
+      un'ora per tenerne un minuto.
+    </p>
+  </section>
+
+  <section>
+    <h2>Fotogrammi e misura, in breve</h2>
+    <ul>
+      <li>
+        <strong>Fotogrammi al secondo.</strong> 30 si legge come movimento
+        fluido per quasi tutto; 60 si guadagna il peso doppio solo quando il
+        movimento è il soggetto, e 24 dà a nuvole e folle un gradevole
+        ticchettio da pellicola.
+      </li>
+      <li>
+        <strong>Misura.</strong> Un timelapse si guarda quasi sempre in
+        piccolo. Ridurre il 4K a 1080p porta a un quarto i pixel che
+        l'encoder deve descrivere, e sullo schermo di un telefono nessuno lo
+        saprà mai.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Quando il timelapse vuole essere una GIF</h2>
+    <p>
+      Quasi mai. Un timelapse è cambiamento costante dell'intero quadro
+      &mdash; esattamente ciò in cui la compressione GIF è peggiore &mdash;
+      così anche uno corto finisce nelle decine di megabyte mentre l'MP4 ne
+      pesa un decimo, più nitido. Pubblica il video ovunque il video si
+      riproduca.
+    </p>
+    <p>
+      Quando la destinazione davvero anima solo GIF, taglia la sequenza a
+      pochi secondi che girino in loop nella
+      <a href="../../video-in-gif/">timeline del convertitore</a>, tieni la
+      larghezza modesta e lascia scendere i fotogrammi a 10&ndash;12. La
+      <a href="../gif-da-una-parte-di-un-video/">guida alla GIF
+      parziale</a> è la versione lunga di quel budget.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se lo fai ogni settimana</h2>
+    <p>
+      Che i due passi vivano qui su due pagine è voluto: ogni pagina fa un
+      lavoro, e ognuna può dimostrare da sola che niente lascia la tua
+      macchina. Ma tutto quello che le due pagine eseguono è open source:
+      licenza MIT, una cartella per strumento, moduli ES senza dipendenze
+      con un README che li nomina uno per uno.
+    </p>
+    <p>
+      Se una macchina su treppiede fa parte della tua routine, punta un
+      agente di codice sul
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      e chiedigli di comporre il campionatore e l'encoder GIF in una pagina
+      con la tua velocità e la tua misura già impostate. I moduli sono
+      scritti per essere letti, e portarseli via è esattamente ciò per cui la
+      licenza esiste.
+    </p>
+  </section>

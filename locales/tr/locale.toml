@@ -142,6 +142,11 @@ complete = true
 "guides/scan-multiple-pages-into-one-pdf" = "rehberler/birden-cok-sayfayi-tek-pdf-tarama"
 "guides/get-photos-ready-for-the-web" = "rehberler/fotograflari-web-icin-hazirlama"
 "guides/compare-two-json-files" = "rehberler/iki-json-dosyasini-karsilastirma"
+"guides/turn-a-long-video-into-a-timelapse" = "rehberler/uzun-videoyu-hizlandirilmis-videoya-cevirme"
+"guides/make-a-video-thumbnail" = "rehberler/video-kucuk-resmi-yapma"
+"guides/edit-a-gif-frame-by-frame" = "rehberler/gif-kare-kare-duzenleme"
+"guides/make-a-qr-code-and-prove-it-scans" = "rehberler/qr-kod-yapip-okundugunu-kanitlama"
+"guides/clean-up-a-voice-memo" = "rehberler/sesli-notu-temizleme"
 
 #
 # ---------------------------------------------------------------------------

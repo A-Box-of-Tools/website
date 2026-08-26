@@ -1,0 +1,103 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez le <a href="../../faire-un-timelapse/">Créateur de timelapse</a>,
+      déposez l'enregistrement, et fixez soit une vitesse &mdash; n'importe
+      quoi de 1,1&times; à 1000&times; &mdash; soit, sans arithmétique, la
+      durée que doit faire le résultat. Soixante secondes est un bon défaut
+      pour tout ce qui part vers un fil. Choisissez la cadence, réduisez la
+      taille si l'original est en 4K, et exportez.
+    </p>
+    <p>
+      Si la destination n'anime que des GIF, passez ensuite le clip exporté
+      par le convertisseur <a href="../../video-en-gif/">Vidéo en GIF</a>
+      &mdash; mais lisez d'abord la dernière section, car un timelapse est la
+      chose la plus chère qu'on puisse demander à un GIF de porter.
+    </p>
+  </section>
+
+  <section>
+    <h2>Dites la durée, pas la vitesse</h2>
+    <p>
+      &laquo;&nbsp;À quelle vitesse&nbsp;&raquo; est la mauvaise question,
+      parce que la réponse honnête est une division que vous ne devriez pas
+      avoir à faire&nbsp;: quatre-vingt-dix minutes d'images en une minute de
+      résultat, c'est 90&times;&nbsp;; une journée de chantier en trente
+      secondes est plus près de 3000&times; que de tout ce qu'un curseur
+      suggère. L'outil prend directement la durée finale et calcule le
+      facteur lui-même, si bien que la réponse survit au jour où vous glissez
+      un enregistrement plus long.
+    </p>
+    <p>
+      Ce à quoi un facteur de vitesse sert encore, ce sont les petits
+      nombres. Entre 1,1&times; et 2&times;, une vidéo reste <em>regardable
+      comme vidéo</em> &mdash; un cours, une démonstration &mdash; et
+      au-dessus de 8&times; environ, elle cesse d'être une lecture rapide et
+      devient un timelapse, où chaque image de sortie est un échantillon
+      cueilli dans le flux du temps et où tout ce qui sépare les
+      échantillons a simplement disparu.
+    </p>
+    <p>
+      Cet échantillonnage est aussi ce qui rend le travail rapide. L'outil ne
+      lit que les instants dont la sortie a besoin &mdash; à 100&times;,
+      environ un centième du fichier &mdash; au lieu de décoder une heure
+      pour en garder une minute.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cadence et taille, en bref</h2>
+    <ul>
+      <li>
+        <strong>La cadence.</strong> 30 images par seconde se lit comme un
+        mouvement fluide pour presque tout&nbsp;; 60 ne mérite sa taille
+        doublée que si le mouvement est le sujet, et 24 donne aux nuages et
+        aux foules un joli tic-tac de cinéma.
+      </li>
+      <li>
+        <strong>La taille.</strong> Un timelapse se regarde en général en
+        petit. Réduire la 4K en 1080p divise par quatre les pixels que
+        l'encodeur doit décrire, et sur un écran de téléphone personne ne le
+        saura jamais.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Quand le timelapse veut être un GIF</h2>
+    <p>
+      La plupart du temps, il ne le veut pas. Un timelapse est un changement
+      constant de l'image entière &mdash; exactement ce que la compression
+      GIF fait le plus mal &mdash; si bien que même un court atterrit dans
+      les dizaines de mégaoctets quand le MP4 en pèse le dixième, plus net.
+      Postez la vidéo partout où la vidéo se joue.
+    </p>
+    <p>
+      Quand la destination n'anime vraiment que des GIF, coupez la séquence
+      à quelques secondes bouclables dans la
+      <a href="../../video-en-gif/">timeline du convertisseur</a>, gardez la
+      largeur modeste, et laissez la cadence descendre à 10&ndash;12. Le
+      <a href="../gif-a-partir-d-un-extrait-video/">guide du GIF partiel</a>
+      est la version longue de ce budget.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Les deux étapes vivent ici sur deux pages, à dessein &mdash; chaque
+      page fait un travail, et chacune peut prouver seule que rien ne quitte
+      votre machine. Mais tout ce que ces pages exécutent est libre&nbsp;:
+      licence MIT, un dossier par outil, des modules ES sans dépendances
+      avec un README qui nomme chacun.
+    </p>
+    <p>
+      Si une caméra sur trépied fait partie de votre routine, pointez un
+      agent de code vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui de composer l'échantillonneur et l'encodeur GIF en une
+      page où votre vitesse et votre taille sont déjà réglées. Les modules
+      ont été écrits pour être lus, et les emporter est exactement ce à quoi
+      sert la licence.
+    </p>
+  </section>

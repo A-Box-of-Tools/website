@@ -1,0 +1,95 @@
+  <section>
+    <h2>La respuesta corta</h2>
+    <ol>
+      <li>
+        <strong>Créalo.</strong> Abre el
+        <a href="../../generar-codigo-qr/">Generador de QR y códigos de barras</a>,
+        elige el trabajo &mdash; un enlace, una red Wi-Fi, una tarjeta de
+        contacto &mdash; y comprueba la cadena exacta que llevará el código,
+        que la página enseña en vez de esconder. Exporta el SVG para
+        imprenta, el PNG para pantallas.
+      </li>
+      <li>
+        <strong>Imprime uno.</strong> Al tamaño real, en el papel real,
+        antes de la tirada de doscientos.
+      </li>
+      <li>
+        <strong>Demuéstralo.</strong> Fotografía la prueba con un móvil
+        &mdash; en ángulo, con la luz del sitio &mdash; y suelta la foto en
+        el <a href="../../escanear-codigo-qr/">Lector de QR y códigos de
+        barras</a>. Muestra la carga decodificada y, si es un enlace, el
+        host que alcanza de verdad. Si eso coincide con lo que querías, la
+        tirada va segura.
+      </li>
+    </ol>
+    <p>
+      Las dos herramientas corren en tu navegador y no mandan nada a ninguna
+      parte, lo que en un código de Wi-Fi significa que la contraseña que
+      lleva dentro nunca se tecleó en la web de nadie.
+    </p>
+  </section>
+
+  <section>
+    <h2>Qué atrapa de verdad la verificación</h2>
+    <ul>
+      <li>
+        <strong>La errata.</strong> El fallo más común no es el código: es
+        la URL de dentro. Leerlo de vuelta es la única comprobación que
+        prueba lo que de verdad quedó codificado, y no lo que creías haber
+        pegado.
+      </li>
+      <li>
+        <strong>El tamaño y la distancia.</strong> Un código que se escanea
+        desde el otro lado de una sala necesita módulos más grandes que uno
+        en una tarjeta de visita. Fotografiar la prueba desde donde estará
+        la gente es el test honesto; los niveles de corrección de errores
+        del generador dicen en voz alta lo que cuesta cada uno en
+        densidad.
+      </li>
+      <li>
+        <strong>Los colores.</strong> Los códigos impresos en claro sobre
+        oscuro escanean; las paletas de marca con poco contraste, muchas
+        veces no. El lector aguanta más que la mayoría de los móviles: si a
+        <em>él</em> le cuesta con la foto, el móvil más viejo del vestíbulo
+        no tiene ninguna opción.
+      </li>
+      <li>
+        <strong>La arruga y el reflejo.</strong> La corrección Reed-Solomon
+        hace que un código a medio tapar siga leyéndose, hasta el nivel que
+        elegiste. Un cartel destinado a la intemperie merece el nivel alto y
+        el código algo más denso que cuesta.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>El mismo lector, para códigos que no son tuyos</h2>
+    <p>
+      Verificar es también la manera segura de abrir el QR que imprimió otro.
+      El lector enseña la dirección entera y el host que alcanza de verdad
+      <em>antes de que nada se abra</em>, y nombra los trucos que disfrazan
+      un enlace: un nombre de usuario delante de la @, un alfabeto gemelo,
+      una redirección. La pegatina del parquímetro merece esa inspección; la
+      acreditación del congreso, también. Nada se abre por ti, y nada de lo
+      que escaneas se manda a ninguna parte.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si haces esto cada semana</h2>
+    <p>
+      Crear y comprobar viven en dos páginas a propósito: cada una hace un
+      trabajo, y cada una puede demostrar por sí sola que nada sale de tu
+      equipo. Pero las dos son código abierto: licencia MIT, módulos ES sin
+      dependencias &mdash; el codificador del generador y el decodificador
+      Reed-Solomon del lector, cada uno con un README que lo explica.
+    </p>
+    <p>
+      Si de tu mesa salen códigos cada semana, apunta un agente de código al
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositorio</a>
+      y pídele una página que genere y haga pasar al momento el código
+      dibujado por el decodificador: un autotest en cada exportación. Los
+      módulos se escribieron para leerse, y llevárselos es exactamente para
+      lo que está la licencia.
+    </p>
+  </section>

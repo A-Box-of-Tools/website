@@ -1,0 +1,21 @@
+#
+# Guida: modificare una GIF fotogramma per fotogramma - Italian.
+#
+
+nav = "Modificare una GIF per fotogrammi"
+title = "Modificare una GIF fotogramma per fotogramma &mdash; scomporre, sistemare, ricostruire, senza caricare niente"
+description = "Scomponi una GIF nei suoi fotogrammi, toglline o riordinali, e ricostruiscila conservando i tempi. Cosa sopravvive al viaggio di andata e ritorno, cosa costa la tavolozza, e come vedere perché una GIF pesa."
+
+heading = "Come modificare una GIF fotogramma per fotogramma"
+lede = """
+    Un editor di GIF qui non c'è, e non serve: uno scompositore che smonta
+    l'animazione in fotogrammi e un creatore che ne costruisce una dai
+    fotogrammi sono un editor con una cartella in mezzo &mdash; e la
+    cartella è la parte in cui la modifica la fai tu, con quello che usi già
+    per le immagini."""
+
+updated = "26 agosto 2026"
+
+og_title = "Smonta una GIF, sistema i fotogrammi, rimettila insieme"
+og_description = "Scomponi una GIF in PNG con i tempi salvati, togli o ritocca i fotogrammi e ricostruisci - tutto nel browser, con i costi del viaggio scritti con onestà."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

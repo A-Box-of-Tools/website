@@ -1,0 +1,103 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <ol>
+      <li>
+        <strong>Haal hem uiteen.</strong> Open de
+        <a href="../../gif-splitsen-in-frames/">GIF-splitser</a> en sleep de GIF erin.
+        Elk beeld wordt zijn eigen PNG &mdash; zoals het op het scherm
+        verschijnt, met de transparantie bewaard &mdash; en in de ZIP zit
+        een timinglijst: de vertraging per beeld, opgeschreven voor de
+        heropbouw.
+      </li>
+      <li>
+        <strong>Bewerk de map.</strong> Gooi de beelden weg die weg moeten,
+        retoucheer in elke afbeeldingseditor de beelden die moeten
+        veranderen, hernoem om te herschikken. Een map PNG's is een formaat
+        dat alles begrijpt.
+      </li>
+      <li>
+        <strong>Zet hem weer in elkaar.</strong> Sleep de map op de
+        <a href="../../gif-maken/">GIF-maker</a>, stel de tijden per beeld
+        in &mdash; of leun op de lijst &mdash; kies het palet en
+        exporteer.
+      </li>
+    </ol>
+    <p>
+      Alle drie de stappen draaien in je browser. Er wordt op geen enkel
+      moment iets geüpload, en dat telt hier zwaarder dan gewoonlijk: de
+      GIF's die mensen herstellen zijn zó vaak schermopnames met iets
+      gevoeligs half in beeld.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat de splitser je kan vertellen vóór je bewerkt</h2>
+    <p>
+      De splitser toont per beeld de vertraging, de positie, het formaat en
+      de verwijderingsregel &mdash; en dat paneel verdient een blik voordat
+      je iets aanraakt, want het verklaart de twee verrassingen van de
+      meeste GIF's.
+    </p>
+    <p>
+      Eén: beelden zijn niet allemaal volledige afbeeldingen. Veel GIF's
+      slaan alleen de veranderde pixels op, gelapt over het vorige beeld; de
+      splitser biedt elk beeld aan <em>zoals het verschijnt</em> of
+      <em>zoals het is opgeslagen</em>, en voor bewerken wil je vrijwel
+      altijd <em>zoals het verschijnt</em>, zodat elke PNG op zichzelf
+      staat. Twee: de vertragingen zijn per beeld, niet één getal. De pauze
+      op de clou is een echte vertraging op een echt beeld, en de
+      timinglijst is wat haar door de rondreis heen draagt.
+    </p>
+    <p>
+      Voor de gebruikelijke knippen is de mapstap zelfs optioneel: elk
+      tweede of vijfde beeld houden, of aanvinken welke blijven, zit al in
+      de splitser &mdash; en de beelden halveren is de effectiefste
+      vermageringskuur die een GIF kan krijgen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat de heropbouw kost, eerlijk gezegd</h2>
+    <p>
+      Een GIF bevat hoogstens 256 kleuren, gekozen bij de bouw. De heropbouw
+      kwantiseert de beelden opnieuw &mdash; één gedeeld palet, of de beste
+      kleuren per beeld &mdash; en op fotografisch materiaal kan die tweede
+      kwantisering zichtbaar zijn. Op schermopnames en tekenwerk, de
+      gebruikelijke lading, is hij dat niet: die hebben nooit 256 kleuren
+      gebruikt.
+    </p>
+    <p>
+      De andere hendels van de maker zijn die van de
+      <a href="../gif-van-een-stuk-video/">GIF-budgetgids</a>:
+      minder kleuren, Floyd-Steinberg-dithering voor verlopen, en het
+      loopgedrag &mdash; eeuwig, één keer, of een aantal.
+    </p>
+    <p>
+      Om te zien of de operatie gelukt is &mdash; en waar de bytes echt
+      wonen &mdash; sleep het resultaat op de
+      <a href="../../gif-analyseren/">GIF-analysator</a>: die zet beelden
+      tegen bytes uit, en het zware beeld is meestal een volledige
+      overschildering die iemand had kunnen bijsnijden.
+    </p>
+  </section>
+
+  <section>
+    <h2>Als je dit elke week doet</h2>
+    <p>
+      Splitsen, map, heropbouwen: de stappen wonen op aparte pagina's omdat
+      elke één klus doet, en elke in z'n eentje kan bewijzen dat niets je
+      machine verlaat. Maar het is allemaal open source: MIT-licentie, één
+      map per gereedschap, ES-modules zonder dependencies waarvan de
+      README's de decoder, de verwijderingsregels en de kwantiseerder
+      uitleggen.
+    </p>
+    <p>
+      Als GIF-chirurgie een terugkerend klusje is, wijs dan een code-agent
+      naar de
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      en vraag hem de beeldtabel van de splitser en de encoder van de maker
+      samen te vouwen tot één pagina waarin een beeld wissen één klik is. De
+      modules zijn geschreven om gelezen te worden, en ze meenemen is
+      precies waar de licentie voor bestaat.
+    </p>
+  </section>

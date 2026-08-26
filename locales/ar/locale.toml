@@ -163,6 +163,11 @@ complete = true
 "guides/scan-multiple-pages-into-one-pdf" = "أدلة/مسح-عدة-صفحات-في-pdf-واحد"
 "guides/get-photos-ready-for-the-web" = "أدلة/تجهيز-الصور-للنشر"
 "guides/compare-two-json-files" = "أدلة/مقارنة-ملفي-json"
+"guides/turn-a-long-video-into-a-timelapse" = "أدلة/تحويل-فيديو-طويل-الى-تايم-لابس"
+"guides/make-a-video-thumbnail" = "أدلة/صنع-صورة-مصغرة-لفيديو"
+"guides/edit-a-gif-frame-by-frame" = "أدلة/تحرير-gif-اطارا-اطارا"
+"guides/make-a-qr-code-and-prove-it-scans" = "أدلة/صنع-رمز-qr-والتاكد-انه-يقرا"
+"guides/clean-up-a-voice-memo" = "أدلة/تنظيف-تسجيل-صوتي"
 
 #
 # ---------------------------------------------------------------------------

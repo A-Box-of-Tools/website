@@ -1,0 +1,21 @@
+#
+# Gids: een GIF beeld voor beeld bewerken - Dutch.
+#
+
+nav = "GIF beeld voor beeld bewerken"
+title = "Een GIF beeld voor beeld bewerken &mdash; uit elkaar halen, herstellen, weer opbouwen, zonder iets te uploaden"
+description = "Haal een GIF uiteen in zijn beelden, verwijder of herschik ze, en bouw hem weer op met behoud van de timing. Wat de rondreis overleeft, wat het palet kost, en hoe je ziet waarom een GIF zwaar is."
+
+heading = "Zo bewerk je een GIF beeld voor beeld"
+lede = """
+    Een GIF-editor is hier niet, en dat hoeft ook niet: een splitser die de
+    animatie in beelden uiteenlegt en een maker die er een uit beelden
+    opbouwt, zijn samen een editor met een map ertussen &mdash; en de map is
+    het deel waarin jij bewerkt, met wat je al voor afbeeldingen
+    gebruikt."""
+
+updated = "26 augustus 2026"
+
+og_title = "Haal een GIF uiteen, herstel de beelden, zet hem weer in elkaar"
+og_description = "Splits een GIF in PNG's met de timing bewaard, verwijder of retoucheer beelden en bouw opnieuw - alles in de browser, met de kosten van de rondreis eerlijk opgeschreven."
+og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

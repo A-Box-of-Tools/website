@@ -1,0 +1,21 @@
+#
+# Guida: ripulire un memo vocale - Italian.
+#
+
+nav = "Ripulire un memo vocale"
+title = "Ripulire un memo vocale prima di mandarlo &mdash; senza caricare niente"
+description = "Taglia l'aria morta e le false partenze, poi porta il livello quasi a fondo scala. Due strumenti del browser in fila, nell'ordine che conserva la qualità, e la registrazione non lascia mai la tua macchina."
+
+heading = "Come ripulire un memo vocale prima di mandarlo"
+lede = """
+    Un memo vocale arriva con trenta secondi di fruscio da tasca, due false
+    partenze e un livello deciso dalla distanza del telefono. Renderlo
+    mandabile sono due passi &mdash; tagliare, poi alzare &mdash; e girano
+    entrambi nel tuo browser, che è dove deve stare una registrazione della
+    tua voce che dice cose private."""
+
+updated = "26 agosto 2026"
+
+og_title = "Via l'aria morta, su il livello, e il memo parte"
+og_description = "Rifila le false partenze a occhio sulla forma d'onda, poi normalizza il volume: due strumenti, l'ordine giusto, e la registrazione resta sulla tua macchina."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

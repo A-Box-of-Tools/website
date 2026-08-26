@@ -1,0 +1,96 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <ol>
+      <li>
+        <strong>Corte.</strong> Abra o
+        <a href="../../cortar-audio/">Cortador de áudio</a>, solte a nota e
+        marque as partes que valem com <kbd>I</kbd> e <kbd>O</kbd> enquanto
+        toca. A forma de onda mostra os silêncios e os falsos começos como
+        trechos chapados, então a maior parte do corte é feita no olho.
+        Exporte um arquivo só.
+      </li>
+      <li>
+        <strong>Suba.</strong> Leve esse arquivo ao
+        <a href="../../editar-audio/">Editor de áudio</a> e normalize: o nível
+        sobe até logo abaixo do fundo de escala, o máximo que uma gravação
+        pode ser sem estourar. Exporte, e envie isso.
+      </li>
+    </ol>
+    <p>
+      Os dois passos rodam na sua própria máquina. Nota de voz é mais ou
+      menos o mais pessoal que um arquivo consegue ser, e os sites de
+      sempre de "melhorar áudio online" ficam com uma cópia como preço do
+      controle.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que cortar antes de subir</h2>
+    <p>
+      Porque normalizar lê o arquivo inteiro para achar o momento mais alto
+      dele, e numa nota crua o momento mais alto costuma ser justamente o
+      que você está prestes a apagar: o baque do telefone largado, a tosse
+      antes da segunda tentativa. Normalize primeiro e esse pico define o
+      teto, e a voz sai tão baixa quanto entrou. Corte o entulho e o mais
+      alto que sobra é a própria voz, que é onde a folga deve ser gasta.
+    </p>
+    <p>
+      O cortador corta na amostra exata e esmaece cada emenda por alguns
+      milissegundos, então um corte no meio do ruído da sala não consegue
+      estalar. Só as emendas: o áudio intocado entre elas é copiado, não
+      recodificado.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que o editor conserta, e o que não</h2>
+    <p>
+      Normalizar conserta o <em>baixo</em>. Não conserta o barulhento: o
+      nível do ar-condicionado sobe com o da voz, porque é uma gravação só e
+      os dois estão dentro juntos. O que mantém uma nota inteligível é
+      principalmente o corte &mdash; ar morto é onde o ruído se ouve sozinho
+      &mdash; mais o controle de velocidade por consideração ao ouvinte:
+      1,25&times; mantendo o tom é o truque dos podcasts, e funciona
+      igualmente bem numa nota que se espalha.
+    </p>
+    <p>
+      O editor escreve WAV &mdash; amostras exatas, nenhum codificador no
+      caminho &mdash; então o arquivo pesa mais que o original comprimido.
+      Para uma nota medida em minutos é um preço justo por nunca empilhar
+      uma segunda codificação com perda sobre a primeira que o telefone fez;
+      o mensageiro que a enviar vai comprimi-la mais uma vez de qualquer
+      jeito, e essa deveria ser a única.
+    </p>
+  </section>
+
+  <section>
+    <h2>A mesma sequência, gravações mais longas</h2>
+    <p>
+      Uma entrevista, uma aula, uma reunião: a sequência é a mesma, o corte
+      só rende mais. Marque as perguntas que importam, deixe o resto cair, e
+      as próprias marcas se salvam como arquivo de texto simples e se
+      recarregam, o que transforma uma limpeza longa em algo que se pode
+      largar e retomar. Para áudio que mora dentro de um vídeo, o editor
+      também tira a trilha de um MP4 ou MOV sem tocar na imagem: o primeiro
+      passo para transformar uma chamada gravada em algo escutável no
+      caminho do trabalho.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se você faz isso toda semana</h2>
+    <p>
+      Cortar e subir moram em duas páginas de propósito: cada uma faz um
+      trabalho, e cada uma consegue provar sozinha que a gravação nunca saiu
+      da sua máquina. Mas as duas são código aberto: licença MIT, uma pasta
+      por ferramenta, módulos ES sem dependências cujos READMEs explicam os
+      cortes na amostra exata e o escritor de WAV.
+    </p>
+    <p>
+      Se chovem notas em você todo dia, aponte um agente de código para o
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a>
+      e peça a versão de uma página: forma de onda, marcas, normalizar ao
+      exportar. Os módulos foram escritos para serem lidos, e levá-los
+      embora é exatamente para isso que a licença existe.
+    </p>
+  </section>

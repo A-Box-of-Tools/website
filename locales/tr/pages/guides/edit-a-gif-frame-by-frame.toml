@@ -1,0 +1,20 @@
+#
+# Rehber: GIF'i kare kare duzenlemek - Turkish.
+#
+
+nav = "GIF'i kare kare düzenlemek"
+title = "Bir GIF'i kare kare düzenlemek &mdash; ayır, düzelt, yeniden kur; hiçbir şey yüklemeden"
+description = "GIF'i karelerine ayırın, istediklerinizi çıkarın ya da sıralayın, zamanlamayı koruyarak yeniden kurun. Gidiş dönüşten neyin sağ çıktığı, paletin bedeli ve bir GIF'in neden ağır olduğunu görmenin yolu."
+
+heading = "Bir GIF kare kare nasıl düzenlenir"
+lede = """
+    Burada GIF düzenleyici yok ve gerek de yok: animasyonu karelere ayıran
+    bir ayırıcı ile karelerden animasyon kuran bir oluşturucu, ortasında bir
+    klasör olan bir düzenleyicidir &mdash; ve klasör, düzenlemeyi sizin,
+    görseller için zaten kullandıklarınızla yaptığınız kısımdır."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "GIF'i söküp karelerini düzeltin, sonra yeniden kurun"
+og_description = "GIF'i zamanlaması kayıtlı PNG'lere ayırın, kareleri çıkarın ya da rötuşlayın ve yeniden kurun - hepsi tarayıcıda, gidiş dönüşün bedeli dürüstçe yazılmış hâlde."
+og_image_alt = "abox.tools - hiçbir sunucuya dokunmayan araçlar"

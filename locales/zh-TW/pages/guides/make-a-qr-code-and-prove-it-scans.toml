@@ -1,0 +1,17 @@
+#
+# Guide: make a QR code and prove it scans - Traditional Chinese.
+#
+
+nav = "證明 QR Code 掃得出"
+title = "做一個 QR Code，並證明它掃得出來 &mdash; 在印兩百張海報之前"
+description = "產生 QR Code，再用同一個網站的識別器驗證：一字不差的內容、真正的連結，按印刷尺寸、用一張照片，在批次印刷之前。全在瀏覽器裡，什麼都不上傳。"
+
+heading = "怎麼做一個 QR Code，並證明它掃得出來"
+lede = """
+    QR Code 最貴的錯誤不是做碼：是在現場才發現海報掃出來指向一個錯別字。在這裡，產生和驗證是兩個工具；開印之前跑一遍第二個只花一分鐘，卻能攔下印刷廠本來會替你寄出去的幾乎所有事故。"""
+
+updated = "2026年8月26日"
+
+og_title = "印兩百張之前，先證明海報掃得出來"
+og_description = "產生 QR Code，給打樣拍張照，再用同一個網站的識別器讀回來 &mdash; 內容、連結，一樣不少 &mdash; 然後再給印刷放行。"
+og_image_alt = "abox.tools - 從不碰伺服器的工具"

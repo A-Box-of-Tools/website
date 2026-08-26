@@ -1,0 +1,101 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <ol>
+      <li>
+        <strong>Das Bild holen.</strong> Öffnen Sie den
+        <a href="../../standbild-aus-video/">Standbild-Greifer</a>, ziehen Sie das
+        Video hinein und steppen Sie durch die Bildliste der Datei bis zum
+        genauen Augenblick. Sichern Sie als PNG, die verlustfreie Kopie,
+        damit noch nichts entschieden ist.
+      </li>
+      <li>
+        <strong>Das Bild rahmen.</strong> Bringen Sie das PNG in den
+        <a href="../../bildgroesse-aendern/">Bildgrößen-Änderer</a>: auf das Format
+        der Plattform zuschneiden, 16:9 für YouTube, und die lange Kante
+        setzen; 1280 Pixel sind die Zahl, die YouTube tatsächlich verlangt.
+      </li>
+      <li>
+        <strong>Die Obergrenze treffen.</strong> Zum Schluss in den
+        <a href="../../bild-komprimieren/">Bildverkleinerer</a>, mit dem Limit
+        der Plattform als Ziel, 2&nbsp;MB bei einem YouTube-Thumbnail, und
+        lassen Sie ihn JPEG oder WebP wählen.
+      </li>
+    </ol>
+    <p>
+      Nichts in der Kette lädt irgendetwas hoch. Das zählt, wenn das Video
+      unveröffentlicht ist, und ein Thumbnail entsteht ja gerade deshalb,
+      weil das Video noch nicht öffentlich ist.
+    </p>
+  </section>
+
+  <section>
+    <h2>Warum Steppen das Pausieren schlägt</h2>
+    <p>
+      Einen Player anzuhalten und abzufotografieren verliert doppelt. Die
+      Pause landet dort, wo der Player anhalten konnte, nicht auf dem Bild,
+      das Sie meinten; und der Screenshot ist ein Foto des Players: seine
+      Auflösung, sein Overlay, seine Farbbehandlung, nicht die der Datei.
+    </p>
+    <p>
+      Der Greifer geht stattdessen die Bildliste der Datei selbst entlang,
+      Bild für Bild in beide Richtungen, und übergibt Ihnen das dekodierte
+      Bild in der vollen Auflösung des Videos. Eine Viertelsekunde Suchen
+      beiderseits des Moments ist meist der Ort, an dem das Thumbnail wohnt:
+      das Bild <em>zwischen</em> den zwei offensichtlichen, auf dem die
+      Bewegung lesbar ist und nichts verwischt.
+    </p>
+    <p>
+      Sichern Sie den Griff als PNG, auch wenn das fertige Thumbnail JPEG
+      oder WebP wird. Das PNG ist eine exakte Kopie des Bildes; jede
+      verlustbehaftete Entscheidung passiert dann einmal, am Ende, innerhalb
+      eines Byte-Budgets, statt zweimal und sich aufschaukelnd.
+    </p>
+  </section>
+
+  <section>
+    <h2>Das Rechnen der Plattform</h2>
+    <p>
+      Zuschneiden vor dem Komprimieren, aus demselben Grund, den der
+      <a href="../fotos-fuers-web-vorbereiten/">Foto-Ratgeber</a> nennt:
+      Pixel sind das Budget. Ein 16:9-Zuschnitt eines 4K-Bildes, auf
+      1280&times;720 gebracht, lässt den Verkleinerer seine 2&nbsp;MB für
+      Qualität ausgeben, nach der niemand schielen muss. Der Zuschneiderahmen
+      des Größen-Änderers rastet auf 16:9 ein, das Format ist also ein Ziehen
+      statt einer Rechnung; Text und Gesichter wollen ins mittlere
+      Zweidrittel, weil Feeds die Ecken runden und rechts unten die Dauer
+      einblenden.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ein Kontaktbogen, wenn der Moment nicht zu finden ist</h2>
+    <p>
+      Steckt der richtige Augenblick irgendwo in zehn Minuten Material,
+      sichert der andere Modus des Greifers alle N Sekunden ein Standbild und
+      übergibt alles als Zip. Überfliegen Sie die Bilder wie einen
+      Kontaktbogen, merken Sie sich die Zeit des nächstgelegenen, und steppen
+      Sie von dort. Es ist schneller als Spulen, und es hinterlässt einen
+      Ordner von Kandidaten für den Tag, an dem die Plattform ein anderes
+      Format verlangt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wenn Sie das jede Woche tun</h2>
+    <p>
+      Dass die Schritte hier auf drei Seiten leben, ist Absicht: Jede Seite
+      macht eine Aufgabe, und jede kann für sich beweisen, dass nichts Ihr
+      Gerät verlässt. Aber jeder Schritt ist quelloffen: MIT-lizenziert, ein
+      Ordner je Werkzeug, abhängigkeitsfreie ES-Module mit READMEs, die den
+      Decoder, das Resampling und die Byte-Zielsuche erklären.
+    </p>
+    <p>
+      Sind Thumbnails eine wöchentliche Lieferung, setzen Sie einen
+      Coding-Agenten auf das
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">Repository</a>
+      an und lassen Sie sich die Ein-Seiten-Fassung bauen: steppen, auf das
+      Preset Ihrer Plattform zuschneiden, auf ihre Obergrenze komprimieren,
+      ein Knopf. Die Module sind zum Lesen geschrieben, und sie herauszuheben
+      ist genau das, wofür die Lizenz da ist.
+    </p>
+  </section>

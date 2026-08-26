@@ -1,0 +1,100 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <ol>
+      <li>
+        <strong>Desmonte.</strong> Abra o
+        <a href="../../separar-gif-em-quadros/">Separador de GIF</a> e solte o GIF. Cada
+        quadro vira o próprio PNG &mdash; como aparece na tela, com a
+        transparência mantida &mdash; e o ZIP inclui uma lista de tempos: os
+        atrasos por quadro anotados para a reconstrução.
+      </li>
+      <li>
+        <strong>Edite a pasta.</strong> Apague os quadros que devem sair,
+        retoque em qualquer editor de imagens os que devem mudar, renomeie
+        para reordenar. Uma pasta de PNGs é um formato que tudo entende.
+      </li>
+      <li>
+        <strong>Monte de volta.</strong> Solte a pasta no
+        <a href="../../criar-gif/">Criador de GIF</a>, defina os tempos de
+        cada quadro &mdash; ou apoie-se na lista &mdash; escolha a paleta e
+        exporte.
+      </li>
+    </ol>
+    <p>
+      Os três passos rodam no seu navegador. Nada é enviado em momento
+      nenhum, o que aqui importa mais do que o normal: os GIFs que as
+      pessoas consertam são tantas vezes gravações de tela com algo sensível
+      meio visível dentro.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que o separador pode contar antes de editar</h2>
+    <p>
+      O separador mostra, para cada quadro, o atraso, a posição, o tamanho e
+      a regra de descarte &mdash; e esse painel merece uma olhada antes de
+      mexer em qualquer coisa, porque explica as duas surpresas da maioria
+      dos GIFs.
+    </p>
+    <p>
+      Primeira: nem todo quadro é uma imagem inteira. Muitos GIFs guardam só
+      os pixels que mudaram, remendados sobre o quadro anterior; o separador
+      oferece cada quadro <em>como aparece</em> ou <em>como está
+      guardado</em>, e para editar você quase sempre quer <em>como
+      aparece</em>, para cada PNG se sustentar sozinho. Segunda: os atrasos
+      são por quadro, não um número só. A pausa no desfecho é um atraso real
+      num quadro real, e a lista de tempos é o que o carrega pela ida e
+      volta.
+    </p>
+    <p>
+      Para os cortes comuns, o passo da pasta é até opcional: ficar com um
+      quadro a cada dois ou a cada cinco, ou marcar os que quer, já vem
+      dentro do separador &mdash; e cortar os quadros pela metade é o
+      emagrecimento mais eficaz que um GIF pode receber.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que a reconstrução custa, com honestidade</h2>
+    <p>
+      Um GIF guarda no máximo 256 cores, escolhidas quando é construído. A
+      reconstrução quantiza os quadros de novo &mdash; uma paleta
+      compartilhada, ou as melhores cores por quadro &mdash; e em material
+      fotográfico essa segunda quantização pode aparecer. Em gravações de
+      tela e desenhos, a carga habitual, não aparece: eles nunca usaram 256
+      cores.
+    </p>
+    <p>
+      As outras alavancas do criador são as do
+      <a href="../gif-de-um-trecho-de-video/">guia de orçamento de
+      GIF</a>: menos cores, o pontilhado de Floyd-Steinberg para degradês, e
+      o comportamento do loop &mdash; para sempre, uma vez, ou um número.
+    </p>
+    <p>
+      Para ver se a cirurgia funcionou &mdash; e onde os bytes moram de
+      verdade &mdash; solte o resultado no
+      <a href="../../analisar-gif/">Analisador de GIF</a>: ele traça quadros
+      contra bytes, e o quadro pesado costuma ser uma repintura completa que
+      alguém podia ter recortado.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se você faz isso toda semana</h2>
+    <p>
+      Separar, pasta, reconstruir: os passos moram em páginas separadas
+      porque cada uma faz um trabalho, e cada uma consegue provar sozinha
+      que nada sai da sua máquina. Mas é tudo código aberto: licença MIT,
+      uma pasta por ferramenta, módulos ES sem dependências cujos READMEs
+      explicam o decodificador, as regras de descarte e o quantizador.
+    </p>
+    <p>
+      Se cirurgia de GIF é tarefa recorrente, aponte um agente de código
+      para o
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a>
+      e peça para dobrar a tabela de quadros do separador e o codificador do
+      criador numa página em que apagar um quadro seja um clique. Os módulos
+      foram escritos para serem lidos, e levá-los embora é exatamente para
+      isso que a licença existe.
+    </p>
+  </section>

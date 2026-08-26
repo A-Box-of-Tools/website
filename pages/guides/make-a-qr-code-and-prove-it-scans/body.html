@@ -1,0 +1,91 @@
+  <section>
+    <h2>The short answer</h2>
+    <ol>
+      <li>
+        <strong>Make it.</strong> Open the
+        <a href="../../qr-barcode/">QR &amp; Barcode Generator</a>, pick the
+        job &mdash; a link, a Wi-Fi network, a contact card &mdash; and check
+        the exact string the code will hold, which the page shows rather than
+        hides. Export the SVG for print, the PNG for screens.
+      </li>
+      <li>
+        <strong>Print one.</strong> At the real size, on the real paper,
+        before the run of two hundred.
+      </li>
+      <li>
+        <strong>Prove it.</strong> Photograph the test print with a phone
+        &mdash; at an angle, in the venue's light &mdash; and drop the photo
+        on the <a href="../../qr-barcode-reader/">QR &amp; Barcode
+        Reader</a>. It shows the decoded payload and, for a link, the host it
+        really reaches. If that matches what you meant, the run is safe.
+      </li>
+    </ol>
+    <p>
+      Both tools run in your browser and send nothing anywhere &mdash; which
+      for a Wi-Fi code means the password in it was never typed into
+      someone's website.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the verification actually catches</h2>
+    <ul>
+      <li>
+        <strong>The typo.</strong> The most common failure is not the code
+        &mdash; it is the URL inside it. Reading it back is the only check
+        that tests what is actually encoded rather than what you meant to
+        paste.
+      </li>
+      <li>
+        <strong>The size and the distance.</strong> A code scanned across a
+        room needs bigger modules than one on a business card. Photographing
+        the test print from where readers will stand is the honest test; the
+        generator's error-correction levels say out loud what each one costs
+        in density.
+      </li>
+      <li>
+        <strong>The colours.</strong> Codes printed light on dark scan, but
+        low-contrast brand palettes often do not. The reader copes with more
+        than most phones &mdash; so if <em>it</em> struggles with the photo,
+        the lobby's oldest phone has no chance.
+      </li>
+      <li>
+        <strong>The crease and the glare.</strong> Reed&ndash;Solomon
+        correction means a partly covered code still reads &mdash; up to the
+        level you chose. A poster destined for weather deserves the higher
+        level and the slightly denser code it costs.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>The same reader, for codes that are not yours</h2>
+    <p>
+      Verification is also the safe way to open a QR code somebody else
+      printed. The reader shows the whole address and the host it really
+      reaches <em>before anything opens</em>, and it names the tricks that
+      disguise a link &mdash; a username in front of the @, a lookalike
+      alphabet, a redirect. A parking meter sticker deserves that inspection;
+      so does a conference lanyard. Nothing is opened on your behalf, and
+      nothing you scan is sent anywhere.
+    </p>
+  </section>
+
+  <section>
+    <h2>If you do this every week</h2>
+    <p>
+      Making and checking live on two pages on purpose &mdash; each does one
+      job, and each can prove on its own that nothing leaves your machine.
+      But both are open source: MIT-licensed, dependency-free ES modules
+      &mdash; the generator's encoder and the reader's Reed&ndash;Solomon
+      decoder each with a README that explains it.
+    </p>
+    <p>
+      If codes ship from your desk weekly, point a coding agent at the
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repository</a>
+      and ask it for a page that generates and immediately round-trips the
+      rendered code through the decoder &mdash; a self-test on every export.
+      The modules were written to be read, and lifting them is what the
+      licence is for.
+    </p>
+  </section>

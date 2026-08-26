@@ -144,6 +144,11 @@ complete = true
 "guides/scan-multiple-pages-into-one-pdf" = "panduan/memindai-banyak-halaman-jadi-satu-pdf"
 "guides/get-photos-ready-for-the-web" = "panduan/menyiapkan-foto-untuk-web"
 "guides/compare-two-json-files" = "panduan/membandingkan-dua-file-json"
+"guides/turn-a-long-video-into-a-timelapse" = "panduan/mengubah-video-panjang-jadi-timelapse"
+"guides/make-a-video-thumbnail" = "panduan/membuat-thumbnail-video"
+"guides/edit-a-gif-frame-by-frame" = "panduan/mengedit-gif-bingkai-demi-bingkai"
+"guides/make-a-qr-code-and-prove-it-scans" = "panduan/membuat-kode-qr-dan-membuktikannya-terbaca"
+"guides/clean-up-a-voice-memo" = "panduan/merapikan-memo-suara"
 
 #
 # ---------------------------------------------------------------------------

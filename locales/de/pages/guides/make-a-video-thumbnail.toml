@@ -1,0 +1,21 @@
+#
+# Ratgeber: Video-Thumbnail erstellen - German.
+#
+
+nav = "Video-Thumbnail erstellen"
+title = "Ein Video-Thumbnail aus genau dem richtigen Bild machen &mdash; ohne Upload"
+description = "Bildgenau zum richtigen Augenblick steppen, verlustfrei sichern, auf das Format der Plattform bringen und unter ihr Byte-Limit kommen. Drei Browser-Werkzeuge nacheinander, und das Material verlässt Ihr Gerät nie."
+
+heading = "So machen Sie ein Video-Thumbnail aus genau dem richtigen Bild"
+lede = """
+    Der Unterschied zwischen einem Thumbnail und einem Screenshot ist etwa
+    eine Viertelsekunde: das Bild, auf dem die Augen offen sind und der Ball
+    noch in der Luft. An dieses Bild zu kommen, im Format der Plattform,
+    unter ihrem Byte-Limit, ist eine Kette aus drei Schritten, die ganz in
+    Ihrem Browser läuft."""
+
+updated = "26. August 2026"
+
+og_title = "Genau das Bild, im Format der Plattform, unter dem Byte-Limit"
+og_description = "Bild für Bild zum richtigen Augenblick, verlustfrei sichern, auf 16:9 zuschneiden und auf die Obergrenze der Plattform komprimieren, ohne das Material hochzuladen."
+og_image_alt = "abox.tools - Werkzeuge, die nie einen Server anfassen"

@@ -1,0 +1,21 @@
+#
+# Guía: crear una miniatura de vídeo - Spanish.
+#
+
+nav = "Crear una miniatura de video"
+title = "Crear una miniatura de video con el fotograma exacto &mdash; sin subir nada"
+description = "Avanza fotograma a fotograma hasta el instante preciso, guárdalo sin pérdida, dale el formato de la plataforma y clava su límite de bytes. Tres herramientas del navegador seguidas, y el metraje nunca sale de tu equipo."
+
+heading = "Cómo crear una miniatura de video con el fotograma exacto"
+lede = """
+    La diferencia entre una miniatura y un pantallazo es más o menos un
+    cuarto de segundo: el fotograma donde los ojos están abiertos y el balón
+    sigue en el aire. Conseguir ese fotograma, al tamaño de la plataforma,
+    bajo su límite de bytes, es una cadena de tres pasos que corre entera en
+    tu navegador."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "El fotograma exacto, al tamaño de la plataforma, bajo el límite de bytes"
+og_description = "Avanza fotograma a fotograma hasta el instante justo, guárdalo sin pérdida, recorta a 16:9 y comprime hasta el techo de la plataforma, sin subir el metraje."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

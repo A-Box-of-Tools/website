@@ -1,0 +1,20 @@
+#
+# Rehber: video kucuk resmi olusturmak - Turkish.
+#
+
+nav = "Video küçük resmi yapmak"
+title = "Tam istediğiniz kareden video küçük resmi yapmak &mdash; hiçbir şey yüklemeden"
+description = "Doğru ana kare kare ilerleyin, kayıpsız kaydedin, platformun biçimine getirin ve bayt sınırının tam altına inin. Art arda üç tarayıcı aracı ve görüntü makinenizden hiç ayrılmıyor."
+
+heading = "Tam istediğiniz kareden video küçük resmi nasıl yapılır"
+lede = """
+    Küçük resimle ekran görüntüsü arasındaki fark aşağı yukarı çeyrek
+    saniyedir: gözlerin açık olduğu ve topun hâlâ havada durduğu kare. O
+    kareye, platformun boyutunda, bayt sınırının altında ulaşmak, tamamı
+    tarayıcınızda çalışan üç adımlık bir zincirdir."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "Tam o kare, platform boyutunda, bayt sınırının altında"
+og_description = "Doğru ana kare kare ilerleyin, kayıpsız kaydedin, 16:9 kırpın ve platformun tavanına kadar sıkıştırın - görüntüyü yüklemeden."
+og_image_alt = "abox.tools - hiçbir sunucuya dokunmayan araçlar"

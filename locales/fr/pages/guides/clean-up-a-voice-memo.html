@@ -1,0 +1,102 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <ol>
+      <li>
+        <strong>Coupez.</strong> Ouvrez le
+        <a href="../../couper-un-audio/">Découpeur audio</a>, déposez le mémo, et
+        marquez les parties à garder avec <kbd>I</kbd> et <kbd>O</kbd>
+        pendant la lecture. La forme d'onde montre les silences et les faux
+        départs comme des tronçons plats, l'essentiel de la coupe se fait
+        donc à l'œil. Exportez un seul fichier.
+      </li>
+      <li>
+        <strong>Remontez.</strong> Portez ce fichier à
+        l'<a href="../../modifier-un-audio/">Éditeur audio</a> et
+        normalisez &mdash; le niveau monte juste sous la pleine échelle, le
+        plus fort qu'un enregistrement puisse être sans saturer. Exportez, et
+        envoyez cela.
+      </li>
+    </ol>
+    <p>
+      Les deux pas tournent sur votre propre machine. Un mémo vocal est à peu
+      près ce qu'un fichier a de plus personnel, et les sites habituels
+      d'&laquo;&nbsp;amélioration audio en ligne&nbsp;&raquo; en prennent
+      une copie comme prix du curseur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi couper avant de remonter</h2>
+    <p>
+      Parce que normaliser lit le fichier entier pour trouver son moment le
+      plus fort, et dans un mémo brut le moment le plus fort est souvent la
+      chose que vous alliez supprimer &mdash; le choc du téléphone posé, la
+      toux avant la deuxième prise. Normalisez d'abord et cette pointe fixe
+      le plafond, si bien que la voix ressort aussi basse qu'elle est
+      entrée. Coupez le rebut, et le plus fort qui reste est la voix
+      elle-même, qui est ce à quoi la marge doit servir.
+    </p>
+    <p>
+      Le découpeur coupe à l'échantillon exact et fond chaque raccord sur
+      quelques millisecondes, si bien qu'une coupe au milieu du bruit de la
+      pièce ne peut pas cliquer. Les raccords seulement &mdash; l'audio
+      intact entre eux est copié, pas réencodé.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que l'éditeur répare, et ce qu'il ne répare pas</h2>
+    <p>
+      Normaliser répare le <em>trop bas</em>. Cela ne répare pas le
+      bruyant&nbsp;: le niveau de la climatisation monte avec celui de la
+      voix, parce que c'est un seul enregistrement et qu'ils y sont
+      ensemble. Ce qui garde un mémo intelligible, c'est surtout la
+      coupe &mdash; les blancs sont l'endroit où le bruit s'entend tout
+      seul &mdash; plus le réglage de vitesse pour l'auditeur&nbsp;:
+      1,25&times; en gardant la hauteur est l'astuce des podcasts, et elle
+      marche aussi bien sur un mémo qui s'étale.
+    </p>
+    <p>
+      L'éditeur écrit du WAV &mdash; des échantillons exacts, aucun encodeur
+      dans la boucle &mdash; le fichier est donc plus gros que l'original
+      compressé. Pour un mémo qui se compte en minutes, c'est un prix
+      honnête pour ne jamais empiler un second encodage avec perte sur le
+      premier fait par le téléphone&nbsp;; la messagerie qui l'enverra le
+      compressera de toute façon une fois de plus, et ce devrait être la
+      seule.
+    </p>
+  </section>
+
+  <section>
+    <h2>La même chaîne, des enregistrements plus longs</h2>
+    <p>
+      Un entretien, un cours, une réunion &mdash; la chaîne est la même, la
+      coupe rapporte simplement davantage. Marquez les questions qui
+      comptent, laissez tomber le reste, et les marques elles-mêmes se
+      sauvegardent en simple fichier texte et se rechargent, ce qui fait
+      d'un long nettoyage quelque chose qu'on peut poser et reprendre. Pour
+      l'audio logé dans une vidéo, l'éditeur sort aussi la piste d'un MP4 ou
+      d'un MOV sans toucher à l'image &mdash; le premier pas pour faire d'un
+      appel enregistré quelque chose d'écoutable dans les transports.
+    </p>
+  </section>
+
+  <section>
+    <h2>Si vous faites cela chaque semaine</h2>
+    <p>
+      Couper et remonter vivent sur deux pages à dessein &mdash; chacune
+      fait un travail, et chacune peut prouver seule que l'enregistrement
+      n'a jamais quitté votre machine. Mais les deux sont libres&nbsp;:
+      licence MIT, un dossier par outil, des modules ES sans dépendances
+      dont les README expliquent les coupes à l'échantillon près et
+      l'écriture du WAV.
+    </p>
+    <p>
+      Si des mémos vous tombent dessus chaque jour, pointez un agent de code
+      vers le
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">dépôt</a>
+      et demandez-lui la version en une page&nbsp;: forme d'onde, marques,
+      normalisation à l'export. Les modules ont été écrits pour être lus, et
+      les emporter est exactement ce à quoi sert la licence.
+    </p>
+  </section>

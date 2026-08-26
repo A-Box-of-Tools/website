@@ -1,0 +1,20 @@
+#
+# Guía: crear un código QR y comprobar que escanea - Spanish.
+#
+
+nav = "Probar que un QR escanea"
+title = "Crear un código QR y demostrar que escanea &mdash; antes de imprimir 200 carteles"
+description = "Genera el código y verifícalo después con el lector del mismo sitio: la carga exacta, el enlace real, a tamaño de imprenta y desde una foto, antes de la tirada. Todo en el navegador, nada subido."
+
+heading = "Cómo crear un código QR y demostrar que escanea"
+lede = """
+    El error caro del QR no es hacer el código: es descubrir en el local que
+    los carteles escanean hacia una errata. Generar y verificar son aquí dos
+    herramientas, y correr la segunda antes de la tirada cuesta un minuto y
+    atrapa casi todo lo que la tirada habría repartido."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Demuestra que el cartel escanea antes de imprimir doscientos"
+og_description = "Genera el código, fotografía la prueba de imprenta y léela de vuelta con el lector del mismo sitio - carga, enlace y todo - antes de dar la orden de imprimir."
+og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

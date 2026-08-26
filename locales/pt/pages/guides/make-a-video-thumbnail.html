@@ -1,0 +1,100 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <ol>
+      <li>
+        <strong>Pegue o quadro.</strong> Abra o
+        <a href="../../extrair-quadro-de-video/">Capturador de quadros</a>, solte o vídeo
+        e avance pela lista de quadros do próprio arquivo até o instante
+        exato. Salve como PNG: a cópia sem perda, para nada ficar decidido
+        ainda.
+      </li>
+      <li>
+        <strong>Enquadre o quadro.</strong> Leve o PNG ao
+        <a href="../../redimensionar-imagem/">Redimensionador de imagens</a>:
+        recorte no formato da plataforma &mdash; 16:9 para o YouTube
+        &mdash; e defina o lado maior; 1280 pixels é o número que o YouTube
+        pede de verdade.
+      </li>
+      <li>
+        <strong>Acerte o teto.</strong> Termine no
+        <a href="../../comprimir-imagem/">Compressor de imagens</a> com o
+        limite da plataforma como alvo &mdash; 2&nbsp;MB para miniatura de
+        YouTube &mdash; e deixe que ele escolha JPEG ou WebP.
+      </li>
+    </ol>
+    <p>
+      Nada na sequência envia nada &mdash; o que importa quando o vídeo não
+      foi publicado, e a miniatura está sendo feita justamente porque o
+      vídeo ainda não é público.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que avançar ganha de pausar</h2>
+    <p>
+      Pausar um player e tirar print perde duas vezes. A pausa cai onde o
+      player conseguiu parar &mdash; o lugar mais próximo, não o quadro que
+      você queria &mdash; e o print é uma foto do player: a resolução dele,
+      a interface dele, o tratamento de cor dele, não os do arquivo.
+    </p>
+    <p>
+      O capturador percorre, em vez disso, a lista de quadros do próprio
+      arquivo, um quadro por vez nos dois sentidos, e entrega o quadro
+      decodificado em si, na resolução cheia do vídeo. Um quarto de segundo
+      de busca de cada lado do momento costuma ser onde a miniatura mora: o
+      quadro <em>entre</em> os dois óbvios, onde o movimento se lê e nada
+      saiu borrado.
+    </p>
+    <p>
+      Salve a captura como PNG mesmo que a miniatura final vá ser JPEG ou
+      WebP. O PNG é uma cópia exata do quadro; toda decisão com perda
+      acontece então uma vez só, no final, dentro de um orçamento de bytes,
+      em vez de duas vezes, se somando.
+    </p>
+  </section>
+
+  <section>
+    <h2>A aritmética da plataforma</h2>
+    <p>
+      Recorte antes de comprimir, pela mesma razão que o
+      <a href="../preparar-fotos-para-a-web/">guia de fotos</a> dá: os
+      pixels são o orçamento. Um recorte 16:9 de um quadro 4K levado a
+      1280&times;720 deixa o compressor gastar os 2&nbsp;MB em qualidade que
+      ninguém vai precisar apertar os olhos para ver. A caixa de recorte do
+      redimensionador trava em 16:9, então o formato é um arrasto e não uma
+      conta; texto e rostos querem ficar nos dois terços do meio, porque os
+      feeds arredondam os cantos e sobrepõem a duração embaixo à
+      direita.
+    </p>
+  </section>
+
+  <section>
+    <h2>Uma folha de contatos, quando o momento não aparece</h2>
+    <p>
+      Quando o instante certo está perdido em dez minutos de filmagem, o
+      outro modo do capturador salva um quadro a cada N segundos e entrega o
+      lote num ZIP. Passe os olhos pelas imagens como numa folha de
+      contatos, anote o tempo da mais próxima e avance a partir dali. É mais
+      rápido do que esfregar a barra, e sobra uma pasta de candidatas para o
+      dia em que a plataforma pedir outro formato.
+    </p>
+  </section>
+
+  <section>
+    <h2>Se você faz isso toda semana</h2>
+    <p>
+      Os passos morarem aqui em três páginas é de propósito: cada página
+      faz um trabalho, e cada uma consegue provar sozinha que nada sai da
+      sua máquina. Mas cada passo é código aberto: licença MIT, uma pasta
+      por ferramenta, módulos ES sem dependências com READMEs que explicam o
+      decodificador, a reamostragem e a busca do alvo de bytes.
+    </p>
+    <p>
+      Se miniatura é entrega semanal, aponte um agente de código para o
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">repositório</a>
+      e peça a versão de uma página: avançar, recortar no padrão da sua
+      plataforma, comprimir no teto dela, um botão. Os módulos foram
+      escritos para serem lidos, e levá-los embora é exatamente para isso
+      que a licença existe.
+    </p>
+  </section>

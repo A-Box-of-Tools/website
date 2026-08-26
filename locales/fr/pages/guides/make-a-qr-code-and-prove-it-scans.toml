@@ -1,0 +1,21 @@
+#
+# Guide : créer un code QR et prouver qu'il se scanne - French.
+#
+
+nav = "Prouver qu'un code QR se scanne"
+title = "Créer un code QR et prouver qu'il se scanne &mdash; avant d'imprimer 200 affiches"
+description = "Générer le code, puis le vérifier avec le lecteur du même site - la charge exacte, le vrai lien, à la taille d'impression et depuis une photo - avant le tirage. Tout dans le navigateur, rien d'envoyé."
+
+heading = "Comment créer un code QR et prouver qu'il se scanne"
+lede = """
+    L'erreur QR qui coûte cher n'est pas de faire le code &mdash; c'est de
+    découvrir sur place que les affiches se scannent vers une faute de
+    frappe. Générer et vérifier sont deux outils ici, et lancer le second
+    avant le tirage coûte une minute et attrape presque tout ce que le
+    tirage aurait expédié."""
+
+updated = "26 août 2026"
+
+og_title = "Prouver que l'affiche se scanne avant d'en imprimer deux cents"
+og_description = "Générer le code, photographier le tirage d'essai, et le relire avec le lecteur du même site - charge, lien et tout - avant de lancer l'impression."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

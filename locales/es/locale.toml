@@ -133,6 +133,11 @@ complete = true
 "guides/scan-multiple-pages-into-one-pdf" = "guias/escanear-varias-paginas-en-un-pdf"
 "guides/get-photos-ready-for-the-web" = "guias/preparar-fotos-para-la-web"
 "guides/compare-two-json-files" = "guias/comparar-dos-archivos-json"
+"guides/turn-a-long-video-into-a-timelapse" = "guias/convertir-un-video-largo-en-timelapse"
+"guides/make-a-video-thumbnail" = "guias/crear-una-miniatura-de-video"
+"guides/edit-a-gif-frame-by-frame" = "guias/editar-un-gif-fotograma-a-fotograma"
+"guides/make-a-qr-code-and-prove-it-scans" = "guias/crear-un-codigo-qr-y-comprobar-que-escanea"
+"guides/clean-up-a-voice-memo" = "guias/limpiar-una-nota-de-voz"
 
 #
 # ---------------------------------------------------------------------------
