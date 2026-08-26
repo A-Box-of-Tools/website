@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resim-boyutlandirma/:';
-const CACHE_NAME=CACHE_PREFIX+'f60d32c5d2';
+const CACHE_NAME=CACHE_PREFIX+'575b285a0d';
 const ASSETS=[
 './',
 'index.html',

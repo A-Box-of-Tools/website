@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/hash-checksum/:';
-const CACHE_NAME=CACHE_PREFIX+'8d4cbb0f13';
+const CACHE_NAME=CACHE_PREFIX+'8d739c733f';
 const ASSETS=[
 './',
 'index.html',

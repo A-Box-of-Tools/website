@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-Hant">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">全部免費，檔案不用上傳。圖片拼成 PDF 或 MP4、把圖壓到指定大小、裁影片、清 EXIF，都在你自己的瀏覽器裡做完。</subtitle>
+  <id>https://abox.tools/zh-TW/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/zh-TW/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/"/>
+  <updated>2026-08-26T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/zh-TW/</uri>
+  </author>
+  <entry>
+    <title type="html">Base64 編碼解碼</title>
+    <id>https://abox.tools/zh-TW/encode-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/encode-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">用兩套字母表編碼和解碼 Base64，給 URL 做百分號編碼，轉義 HTML 實體，讀十六進位和反斜槓轉義。全都在你的瀏覽器裡跑，什麼都不上傳——token 從不離開你的機器。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON 格式化</title>
+    <id>https://abox.tools/zh-TW/format-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/format-json/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">格式化和壓縮 JSON、XML、HTML、CSS 和 YAML，把 JSON 轉成 YAML 或 XML 再轉回來。解析器在你的瀏覽器裡跑，什麼都不上傳——token 和配置檔案從不離開你的機器。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎樣做一個迴旋鏢影片</title>
+    <id>https://abox.tools/zh-TW/guides/make-a-boomerang-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/make-a-boomerang-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">剪出瞬間，倒轉副本，把兩段接起來迴圈。三個工具連著用，全在瀏覽器裡，還有一個把整件事壓進一分鐘的次序。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎樣把多頁掃成一個小 PDF</title>
+    <id>https://abox.tools/zh-TW/guides/scan-multiple-pages-into-one-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/scan-multiple-pages-into-one-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">每頁拍一張，得到一個 PDF，和已有的文件併到一起，再縮到發得出去為止。三個瀏覽器工具連著用，紙面材料從頭到尾不離開手機。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎樣把影片的一段做成 GIF</title>
+    <id>https://abox.tools/zh-TW/guides/make-a-gif-from-part-of-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/make-a-gif-from-part-of-a-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">先剪出要緊的那幾秒，再只轉換那一段。什麼時候 GIF 轉換器內建的時間軸就夠用，什麼時候該先用影片剪輯器剪，以及 GIF 的每一秒為什麼那麼貴。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎樣把手機照片弄妥了再上網</title>
+    <id>https://abox.tools/zh-TW/guides/get-photos-ready-for-the-web/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/get-photos-ready-for-the-web/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">HEIC 轉 JPEG，抹掉 GPS，按頁面縮好尺寸，再按預算壓縮：整條鏈子都在瀏覽器裡，原圖從不離開你的機器。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎樣比對兩個 JSON 檔案</title>
+    <id>https://abox.tools/zh-TW/guides/compare-two-json-files/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/compare-two-json-files/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">兩個檔案用同一種方式格式化，鍵排好序，再比對。為什麼生比 JSON 幾乎全是噪音，怎麼在瀏覽器裡把兩邊化成規範形，以及什麼能一路留到補丁裡。</summary>
+  </entry>
+  <entry>
+    <title type="html">文字比對</title>
+    <id>https://abox.tools/zh-TW/compare-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compare-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">比對兩段文字，逐行、逐詞看清每一處差異，並排或單列顯示。比對在你的瀏覽器裡跑，什麼都不上傳——尚未釋出的程式碼從不離開你的機器。</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM 閱片器</title>
+    <id>https://abox.tools/zh-TW/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/dicom-viewer/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">在瀏覽器裡開啟 CT、MR、X 光和超音波影像。調窗寬窗位，翻整套序列，按毫米測量，讀遍每一個 DICOM 標籤，還能看清這個檔案裡究竟什麼在指認病人。什麼都不會上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 塗黑</title>
+    <id>https://abox.tools/zh-TW/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/redact-pdf/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">把字從 PDF 裡拿掉，而不是在上面畫個黑塊。字是從繪製這一頁的指令裡刪掉的，做好的檔案會被重新開啟搜一遍，證明它們真的沒了，而且什麼都不會上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">圖片堆疊</title>
+    <id>https://abox.tools/zh-TW/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/stack-images/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">把一串連拍的照片合成一張：取平均值消雜訊，取中位數把人從畫面裡去掉，取最亮做星軌，或者給微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠讀出相機自己的預覽圖來開啟。全部在你的瀏覽器裡跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼堆疊照片來壓雜訊，或者把人去掉</title>
+    <id>https://abox.tools/zh-TW/guides/stack-photos-to-reduce-noise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/stack-photos-to-reduce-noise/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">堆疊把一串連拍合成一張。用哪種手法，取決於你想失去什麼：雜訊、路人，還是微距那淺得可憐的景深。每種手法怎麼運作、代價是什麼，以及 RAW 檔案在這裡是什麼位置。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼把 PDF 塗黑，讓文字真的消失</title>
+    <id>https://abox.tools/zh-TW/guides/redact-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/redact-a-pdf/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">在 PDF 閱讀器裡畫的黑塊，通常把詞原封不動地留在了下面，複製貼上就能拿回去。真正的塗黑拿掉的是什麼，詞在頁面之外藏身的四個地方，以及發出去之前怎麼檢查一個檔案。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼用手機掃描文件</title>
+    <id>https://abox.tools/zh-TW/guides/scan-a-document-with-your-phone/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/scan-a-document-with-your-phone/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">一張紙的照片和這張紙的掃描檔之間差在哪裡：傾斜、不勻的光，還有檔案大小。照片怎麼拍，之後要修什麼，以及為什麼這些都不需要伺服器。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼開啟一個 DICOM 檔案，以及裡面有什麼</title>
+    <id>https://abox.tools/zh-TW/guides/open-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/open-a-dicom-file/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">醫院給的光碟裡都有什麼，檔案為什麼沒有字尾，怎麼在瀏覽器裡開啟一份 .dcm 影像，窗寬窗位到底在做什麼，以及一份影像除了影像之外還帶著關於病人的哪些東西。</summary>
+  </entry>
+  <entry>
+    <title type="html">文件掃描</title>
+    <id>https://abox.tools/zh-TW/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/document-scanner/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">把手機拍的紙張照片變成一份擺正、亮度均勻的 PDF。四個角替你找好，透視給你掰正，陰影除掉。全部在你的瀏覽器裡跑，什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">證件照製作</title>
+    <id>https://abox.tools/zh-TW/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/id-photo/"/>
+    <updated>2026-08-24T00:00:00Z</updated>
+    <summary type="html">按你所在國家公佈的規定做護照或簽證照片：毫米和 DPI 精確到位，頭高和眼線即時疊加提示，檢查背景，一張可直接列印的 10x15 拼版，以及一個壓進辦事門戶 KB 限制裡的檔案。什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">QR Code 與條碼識讀</title>
+    <id>https://abox.tools/zh-TW/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode-reader/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">從照片、截圖或鏡頭讀取 QR Code，在開啟之前就看清這個連結到底通向哪裡。EAN、UPC、Code 128、Code 39 和 ITF 條碼也能讀。什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">圖片塗黑與打碼</title>
+    <id>https://abox.tools/zh-TW/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/redact-image/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">把照片或截圖裡的姓名、地址、帳號遮住再存一份，被遮的畫素是從檔案裡沒了，不是壓在一個矩形下面。全程在瀏覽器裡跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">圖片怎麼塗黑，才能讓被遮住的那塊真的沒了</title>
+    <id>https://abox.tools/zh-TW/guides/redact-an-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/redact-an-image/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">大多數軟體畫出來的黑色方塊只是壓在圖片上面，隨手就能挪開。真正的塗黑和只是遮住差在哪裡，打過碼的文字為什麼能被讀回來，以及發出去之前怎麼檢查一個檔案。</summary>
+  </entry>
+  <entry>
+    <title type="html">密碼與密碼短語產生器</title>
+    <id>https://abox.tools/zh-TW/password-generator/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/password-generator/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">產生一個強隨機密碼，或者用頁面內建的 7776 個詞的詞表產生一條 diceware 密碼短語。由瀏覽器自身的加密隨機數產生，不發往任何地方，也不儲存。免費，不用註冊。</summary>
+  </entry>
+  <entry>
+    <title type="html">延時影片</title>
+    <id>https://abox.tools/zh-TW/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/timelapse-video/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">把長影片做成延時攝影，10 倍、60 倍，或者你自己填的倍數。在瀏覽器裡跑，不上傳，沒有水印，斷網也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎樣用校驗和核對下載的檔案</title>
+    <id>https://abox.tools/zh-TW/guides/verify-a-file-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/verify-a-file-checksum/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">在 Windows、macOS、Linux 或瀏覽器裡比對 MD5 與 SHA-256 校驗和的辦法，對上了究竟證明了什麼，以及那個讓整件事白做的錯誤。</summary>
+  </entry>
+  <entry>
+    <title type="html">雜湊與校驗和</title>
+    <id>https://abox.tools/zh-TW/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/hash-checksum/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">計算任意檔案的 MD5、SHA-1、SHA-256、SHA-384 或 SHA-512，並和下載頁面上公佈的校驗和對照。檔案在瀏覽器裡讀取，多大都不會上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 分析</title>
+    <id>https://abox.tools/zh-TW/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/gif-analyzer/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">在瀏覽器裡把 GIF 拆開看：每一幀的延時和處置方式、顏色表、循環次數，以及體積去了哪裡的逐位元組明細。什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">一個 GIF 裡到底裝著什麼</title>
+    <id>https://abox.tools/zh-TW/guides/whats-inside-a-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/whats-inside-a-gif/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">幀、延時、處置方式和調色盤都講清楚：瀏覽器為什麼不認最短的延時，以及怎麼查出一個 GIF 的體積究竟花在了哪裡。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼合併、拆分和重排 PDF 頁面</title>
+    <id>https://abox.tools/zh-TW/guides/merge-and-split-pdf-files/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/merge-and-split-pdf-files/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">把幾個 PDF 合到一起、把一個切成好幾個、把頁面挪來挪去：重排之後什麼留得下、什麼是任何工具都帶不過去的，以及為什麼這些事都不必把你的檔案傳到別處。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 拆幀</title>
+    <id>https://abox.tools/zh-TW/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/split-gif/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">把動圖 GIF 拆成一幀一幀，每幀單獨存成 PNG，免費，全程在瀏覽器裡完成。透明和時長都保留下來。什麼都不上傳，斷網也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 合併與拆分</title>
+    <id>https://abox.tools/zh-TW/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/merge-pdf/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">把多個 PDF 合到一起，把一個拆成好幾個，把頁面拖成你要的順序，全都在你自己的瀏覽器裡完成。什麼都不上傳，不用註冊，成品檔案在交給你之前還會被重新開啟、重新數一遍頁數。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼剪音訊而不掉音質</title>
+    <id>https://abox.tools/zh-TW/guides/trim-an-audio-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/trim-an-audio-file/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">一刀落在哪裡、為什麼音訊能剪得準而影片不能、為什麼接縫有時會「咔」一聲，以及那五毫秒的淡入淡出到底在做什麼。</summary>
+  </entry>
+</feed>

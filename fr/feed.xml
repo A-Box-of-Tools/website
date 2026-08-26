@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="fr">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Des outils gratuits qui n'envoient jamais vos fichiers. Réunir des images en PDF ou en MP4, compresser une image à la taille voulue, recadrer une vidéo.</subtitle>
+  <id>https://abox.tools/fr/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/fr/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/fr/"/>
+  <updated>2026-08-26T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/fr/</uri>
+  </author>
+  <entry>
+    <title type="html">Comment comparer deux fichiers JSON</title>
+    <id>https://abox.tools/fr/guides/comparer-deux-fichiers-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/comparer-deux-fichiers-json/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Formater les deux fichiers de la même façon, trier les clés, puis les comparer. Pourquoi un diff JSON brut n'est presque que du bruit, comment canoniser les deux côtés dans le navigateur, et ce qui survit jusqu'au correctif.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment faire un GIF à partir d'une partie d'une vidéo</title>
+    <id>https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Couper d'abord les secondes qui comptent, puis ne convertir que celles-là. Quand la timeline du convertisseur GIF suffit, quand couper d'abord avec le découpeur vidéo, et pourquoi chaque seconde de GIF coûte si cher.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment faire une vidéo boomerang</title>
+    <id>https://abox.tools/fr/guides/faire-une-video-boomerang/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/faire-une-video-boomerang/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Couper le moment, inverser la copie, joindre les deux et boucler. Trois outils à la suite, tous dans le navigateur, et l'ordre qui ramène tout le travail à une minute.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment préparer les photos du téléphone pour le web</title>
+    <id>https://abox.tools/fr/guides/preparer-des-photos-pour-le-web/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/preparer-des-photos-pour-le-web/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">HEIC en JPEG, GPS retiré, redimensionnées pour la page et compressées à un budget : toute la chaîne dans le navigateur, et les originaux ne quittent jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment scanner plusieurs pages en un petit PDF</title>
+    <id>https://abox.tools/fr/guides/scanner-plusieurs-pages-en-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/scanner-plusieurs-pages-en-un-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Photographier chaque page, obtenir un PDF, le combiner avec les documents déjà en PDF, et le réduire jusqu'à ce qu'il parte. Trois outils du navigateur à la suite, et les papiers ne quittent jamais le téléphone.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comparateur de textes</title>
+    <id>https://abox.tools/fr/comparer-des-textes/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-textes/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Comparez deux textes et voyez chaque différence, ligne à ligne et mot à mot, côte à côte ou en une colonne. La comparaison tourne dans votre navigateur, rien n'est envoyé - du code non publié ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Encodeur &amp;amp; décodeur Base64</title>
+    <id>https://abox.tools/fr/encoder-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/encoder-base64/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formateur JSON</title>
+    <id>https://abox.tools/fr/formater-du-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-json/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Formatez et compactez du JSON, du XML, du HTML, du CSS et du YAML, et convertissez du JSON en YAML ou en XML et inversement. Les analyseurs tournent dans votre navigateur, rien n'est envoyé - un jeton ou un fichier de configuration ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Caviardeur de PDF</title>
+    <id>https://abox.tools/fr/caviarder-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/caviarder-un-pdf/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Retirez des mots d'un PDF au lieu de peindre un rectangle noir par-dessus. Les lettres sont supprimées des instructions de dessin de la page, le fichier terminé est rouvert et fouillé pour prouver qu'elles ont disparu, et rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment caviarder un PDF pour que le texte disparaisse vraiment</title>
+    <id>https://abox.tools/fr/guides/caviarder-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/caviarder-un-pdf/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Un cadre noir dessiné dans une visionneuse PDF laisse le plus souvent les mots dessous, et un copier-coller les récupère aussitôt. Ce qu'une vraie suppression retire, les quatre endroits où un mot se cache hors de la page, et comment vérifier un fichier avant de l'envoyer.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment empiler des photographies pour réduire le bruit, ou retirer les gens</title>
+    <id>https://abox.tools/fr/guides/empiler-des-photos-contre-le-bruit/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/empiler-des-photos-contre-le-bruit/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">L'empilement combine une rafale de prises en une seule image. La méthode qu'il vous faut dépend de ce que vous cherchez à perdre&amp;nbsp;: le bruit, les passants, ou la faible profondeur de champ d'une macro. Comment chacune fonctionne, ce qu'elle coûte, et où les fichiers RAW s'insèrent.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment ouvrir un fichier DICOM, et ce qu'il y a dedans</title>
+    <id>https://abox.tools/fr/guides/ouvrir-un-fichier-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/ouvrir-un-fichier-dicom/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Ce que contient un disque hospitalier, pourquoi les fichiers n'ont pas d'extension, comment ouvrir un examen .dcm dans un navigateur, ce que fait vraiment le fenêtrage, et ce qu'un examen transporte sur le patient en plus de l'image.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment scanner un document avec son téléphone</title>
+    <id>https://abox.tools/fr/guides/scanner-un-document-avec-son-telephone/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/scanner-un-document-avec-son-telephone/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Ce qui sépare la photo d'une page d'un scan de cette même page&amp;nbsp;: l'inclinaison, la lumière inégale et la taille du fichier. Comment prendre la photo, quoi corriger ensuite, et pourquoi rien de tout cela n'a besoin d'un serveur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Empileur d'images</title>
+    <id>https://abox.tools/fr/empiler-des-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/empiler-des-images/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Combinez une rafale de photographies en une seule&amp;nbsp;: moyennez-les pour tuer le bruit, prenez la médiane pour retirer les gens d'une scène, éclaircissez pour des filés d'étoiles, ou empilez la mise au point d'une macro. Lit CR2, NEF, ARW, DNG, RAF et CR3 en extrayant l'aperçu de l'appareil lui-même. Tout se passe dans votre navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Scanner de documents</title>
+    <id>https://abox.tools/fr/scanner-un-document/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/scanner-un-document/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Transformez la photo d'une page prise au téléphone en un PDF redressé et éclairé uniformément. Les coins sont trouvés pour vous, la perspective est défaite, l'ombre est divisée. Tout se passe dans votre navigateur&amp;nbsp;: rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Visionneuse DICOM</title>
+    <id>https://abox.tools/fr/visionneuse-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/visionneuse-dicom/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Ouvrez des examens de scanner, d'IRM, de radiologie et d'échographie dans votre navigateur. Fenêtrage, parcours d'une série entière, mesures en millimètres, lecture de chaque étiquette DICOM et liste exacte de ce qui, dans le fichier, identifie le patient. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Photo d'identité</title>
+    <id>https://abox.tools/fr/photo-d-identite/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/photo-d-identite/"/>
+    <updated>2026-08-24T00:00:00Z</updated>
+    <summary type="html">Faites une photo de passeport ou de visa selon la règle publiée de votre pays&amp;nbsp;: millimètres et DPI exacts, repères en direct pour la hauteur de tête et la ligne des yeux, contrôle du fond, une planche 10x15 prête à imprimer et un fichier calibré sur la limite en Ko du portail. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Caviardage d'image</title>
+    <id>https://abox.tools/fr/caviarder-une-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/caviarder-une-image/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Recouvrez un nom, une adresse ou un numéro de compte sur une photo ou une capture, puis réenregistrez l'image&amp;nbsp;: les pixels masqués disparaissent du fichier au lieu de rester sous un rectangle. Tout se passe dans le navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment caviarder une image pour que le masqué disparaisse vraiment</title>
+    <id>https://abox.tools/fr/guides/caviarder-une-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/caviarder-une-image/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Les rectangles noirs tracés par la plupart des logiciels reposent sur l'image et peuvent être écartés. Ce qui sépare un vrai caviardage d'un simple recouvrement, pourquoi un texte pixellisé peut être relu, et comment vérifier un fichier avant de l'envoyer.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment vérifier un téléchargement avec sa somme de contrôle</title>
+    <id>https://abox.tools/fr/guides/verifier-la-somme-de-controle-d-un-telechargement/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/verifier-la-somme-de-controle-d-un-telechargement/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Comment comparer une somme MD5 ou SHA-256 sous Windows, macOS et Linux ou dans le navigateur, ce qu'une correspondance prouve vraiment, et l'erreur qui vide l'exercice de son sens.</summary>
+  </entry>
+  <entry>
+    <title type="html">Créateur de timelapse</title>
+    <id>https://abox.tools/fr/faire-un-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/faire-un-timelapse/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Transformez une longue vidéo en timelapse&amp;nbsp;: 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Générateur de mot de passe &amp; de phrase secrète</title>
+    <id>https://abox.tools/fr/generateur-de-mot-de-passe/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/generateur-de-mot-de-passe/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Générez un mot de passe aléatoire solide, ou une phrase secrète diceware tirée d'une liste de 7&amp;nbsp;776 mots livrée avec la page. Tirage par le générateur cryptographique de votre navigateur, aucun envoi, aucun enregistrement. Gratuit, sans inscription.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hachage &amp; somme de contrôle</title>
+    <id>https://abox.tools/fr/verifier-une-somme-de-controle/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/verifier-une-somme-de-controle/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Calculez le MD5, SHA-1, SHA-256, SHA-384 ou SHA-512 de n&amp;rsquo;importe quel fichier et comparez-le à la somme de contrôle publiée sur la page de téléchargement. Le fichier est lu dans le navigateur et n&amp;rsquo;est jamais envoyé, quelle que soit sa taille.</summary>
+  </entry>
+  <entry>
+    <title type="html">Lecteur de QR codes et de codes-barres</title>
+    <id>https://abox.tools/fr/lecteur-de-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/lecteur-de-qr-code/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Lisez un QR code depuis une photo, une capture d'écran ou votre caméra, et voyez exactement où mène le lien avant de l'ouvrir. Codes-barres EAN, UPC, Code 128, Code 39 et ITF aussi. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Analyseur de GIF</title>
+    <id>https://abox.tools/fr/analyser-un-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/analyser-un-gif/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">Démontez un GIF dans votre navigateur&amp;nbsp;: chaque image avec sa durée et son effacement, les tables de couleurs, le nombre de boucles, et le détail octet par octet de la taille du fichier. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ce qu'il y a vraiment dans un GIF</title>
+    <id>https://abox.tools/fr/guides/ce-qu-il-y-a-dans-un-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/ce-qu-il-y-a-dans-un-gif/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">Images, délais, méthodes d'effacement et tables de couleurs expliqués, pourquoi les navigateurs refusent les délais les plus courts, et comment savoir où est passé le poids d'un GIF.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment fusionner, diviser et réordonner des pages PDF</title>
+    <id>https://abox.tools/fr/guides/fusionner-et-diviser-des-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/fusionner-et-diviser-des-pdf/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">Réunir des PDF, en couper un en plusieurs et déplacer des pages&amp;nbsp;: ce qui survit au remaniement, ce qu'aucun outil ne peut emporter, et pourquoi rien de tout cela n'exige d'envoyer vos documents quelque part.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment couper un audio sans perdre en qualité</title>
+    <id>https://abox.tools/fr/guides/couper-un-fichier-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/couper-un-fichier-audio/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">Où tombe vraiment une coupe audio, pourquoi elle peut être exacte alors qu'une coupe vidéo ne le peut pas, pourquoi un raccord claque parfois, et ce que fait réellement un fondu de cinq millisecondes.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comment découper un GIF en images</title>
+    <id>https://abox.tools/fr/guides/decouper-un-gif-en-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/decouper-un-gif-en-images/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">Récupérer chaque image d'un GIF animé en PNG&amp;nbsp;: pourquoi certaines images ne sont qu'un petit morceau, ce que devient la transparence, et comment garder les durées pour tout remonter ensuite.</summary>
+  </entry>
+  <entry>
+    <title type="html">Découpeur audio</title>
+    <id>https://abox.tools/fr/couper-un-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-un-audio/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
+  </entry>
+</feed>

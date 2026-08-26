@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/biyometrik-vesikalik-fotograf/:';
-const CACHE_NAME=CACHE_PREFIX+'17cdacf8e7';
+const CACHE_NAME=CACHE_PREFIX+'5d92e49a0b';
 const ASSETS=[
 './',
 'index.html',

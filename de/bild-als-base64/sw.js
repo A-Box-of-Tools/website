@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bild-als-base64/:';
-const CACHE_NAME=CACHE_PREFIX+'9ca0e67b9e';
+const CACHE_NAME=CACHE_PREFIX+'96c082d03d';
 const ASSETS=[
 './',
 'index.html',

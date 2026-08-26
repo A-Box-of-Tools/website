@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="nl">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">Gratis tools in je browser die niets uploaden. Voeg afbeeldingen samen tot pdf of mp4, comprimeer een foto naar een exacte grootte, wis EXIF.</subtitle>
+  <id>https://abox.tools/nl/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/nl/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/nl/"/>
+  <updated>2026-08-26T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/nl/</uri>
+  </author>
+  <entry>
+    <title type="html">Base64-codeerder &amp; -decodeerder</title>
+    <id>https://abox.tools/nl/base64-coderen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/base64-coderen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Codeer en decodeer Base64 in beide alfabetten, procentcodeer URL's, escape HTML-entiteiten en lees hex en backslash-escapes. Het draait allemaal in je browser en er wordt niets geüpload: een token verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON-formatter</title>
+    <id>https://abox.tools/nl/json-formatteren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/json-formatteren/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">Tekstvergelijker</title>
+    <id>https://abox.tools/nl/tekst-vergelijken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo maak je een GIF van een deel van een video</title>
+    <id>https://abox.tools/nl/gidsen/gif-van-een-stuk-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/gif-van-een-stuk-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Knip eerst de seconden die ertoe doen en zet alleen die om. Wanneer de tijdlijn van de GIF-omzetter genoeg is, wanneer je eerst knipt met de videosnijder, en waarom elke seconde GIF zo duur is.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo maak je een boomerangvideo</title>
+    <id>https://abox.tools/nl/gidsen/boomerang-video-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/boomerang-video-maken/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Knip het moment, keer de kopie om, voeg de twee samen en laat het lussen. Drie tools op rij, allemaal in de browser, en de volgorde die het hele werk op een minuut houdt.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo maak je telefoonfoto's klaar voor het web</title>
+    <id>https://abox.tools/nl/gidsen/fotos-klaarmaken-voor-het-web/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/fotos-klaarmaken-voor-het-web/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">HEIC naar JPEG, GPS eruit, geschaald voor de pagina en gecomprimeerd op een budget: de hele keten in de browser, en de originelen verlaten je machine nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo scan je meerdere pagina's naar één kleine PDF</title>
+    <id>https://abox.tools/nl/gidsen/meerdere-paginas-naar-een-pdf-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/meerdere-paginas-naar-een-pdf-scannen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Fotografeer elke pagina, krijg één PDF, combineer hem met documenten die je al hebt, en krimp hem tot hij verstuurd kan worden. Drie browsertools op rij, en het papierwerk verlaat de telefoon nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo vergelijk je twee JSON-bestanden</title>
+    <id>https://abox.tools/nl/gidsen/twee-json-bestanden-vergelijken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/twee-json-bestanden-vergelijken/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Formatteer beide bestanden hetzelfde, sorteer de sleutels, en vergelijk dan. Waarom een rauwe JSON-diff vooral ruis is, hoe je beide kanten in de browser in canonieke vorm brengt, en wat er overleeft tot in de patch.</summary>
+  </entry>
+  <entry>
+    <title type="html">Afbeeldingen stacken</title>
+    <id>https://abox.tools/nl/afbeeldingen-stacken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-stacken/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Voeg een reeks foto's samen tot &amp;eacute;&amp;eacute;n: middel ze om ruis te doden, neem de mediaan om mensen uit een sc&amp;egrave;ne te halen, licht op voor sterrensporen, of focus-stack een macro-opname. Leest CR2, NEF, ARW, DNG, RAF en CR3 door het eigen voorbeeld van de camera eruit te halen. Draait helemaal in je browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM-viewer</title>
+    <id>https://abox.tools/nl/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/dicom-viewer/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Open CT-, MRI-, r&amp;ouml;ntgen- en echoscans in je browser. Venster en niveau, een hele serie doorbladeren, meten in millimeters, elke DICOM-tag lezen en precies zien wat er in het bestand de pati&amp;euml;nt aanwijst. Er wordt niets ge&amp;uuml;pload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Documentscanner</title>
+    <id>https://abox.tools/nl/documenten-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/documenten-scannen/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Maak van een telefoonfoto van een pagina een rechtgetrokken, gelijkmatig belichte PDF. De hoeken worden voor je gevonden, het perspectief wordt teruggedraaid, de schaduw wordt eruit gedeeld. Draait helemaal in je browser: er wordt niets ge&amp;uuml;pload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hoe je een DICOM-bestand opent, en wat erin zit</title>
+    <id>https://abox.tools/nl/gidsen/een-dicom-bestand-openen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-dicom-bestand-openen/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Wat er op een ziekenhuisschijfje staat, waarom de bestanden geen extensie hebben, hoe je een .dcm-scan in een browser opent, wat venster en niveau nu eigenlijk doet, en wat een scan behalve het beeld over de pati&amp;euml;nt meedraagt.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hoe je een PDF onleesbaar maakt zodat de tekst echt weg is</title>
+    <id>https://abox.tools/nl/gidsen/een-pdf-onleesbaar-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-pdf-onleesbaar-maken/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Een zwarte balk die in een PDF-lezer getekend is laat de woorden er meestal onder staan, en met kopi&amp;euml;ren en plakken heb je ze zo terug. Wat een echte onleesbaarmaking weghaalt, de vier plekken waar een woord zich buiten de pagina verstopt, en hoe je een bestand nakijkt voordat je het verstuurt.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hoe je een document scant met je telefoon</title>
+    <id>https://abox.tools/nl/gidsen/een-document-scannen-met-je-telefoon/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-document-scannen-met-je-telefoon/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Wat een foto van een pagina scheidt van een scan ervan: de hoek, het ongelijke licht en de bestandsgrootte. Hoe je de foto maakt, wat je daarna herstelt, en waarom er nergens een server aan te pas komt.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hoe je foto's stackt om ruis te verlagen, of mensen weg te halen</title>
+    <id>https://abox.tools/nl/gidsen/fotos-stacken-tegen-ruis/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/fotos-stacken-tegen-ruis/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Stacken voegt een reeks frames samen tot &amp;eacute;&amp;eacute;n beeld. Welke methode je nodig hebt hangt af van wat je kwijt wilt: ruis, voorbijgangers, of de flinterdunne scherptediepte van een macro-opname. Hoe elke methode werkt, wat hij kost, en waar RAW-bestanden in passen.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF onleesbaar maken</title>
+    <id>https://abox.tools/nl/pdf-onleesbaar-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-onleesbaar-maken/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">Haal woorden uit een PDF in plaats van er een zwarte rechthoek overheen te tekenen. De letters worden gewist uit de tekeninstructies van de pagina zelf, het klare bestand wordt opnieuw geopend en doorzocht om te bewijzen dat ze weg zijn, en er wordt niets ge&amp;uuml;pload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pasfotomaker</title>
+    <id>https://abox.tools/nl/pasfoto-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pasfoto-maken/"/>
+    <updated>2026-08-24T00:00:00Z</updated>
+    <summary type="html">Maak een paspoort- of visumfoto volgens de gepubliceerde regel van je land: exacte millimeters en dpi, een meelopende hulplijn voor hoofdhoogte en ooglijn, een achtergrondcontrole, een printklaar vel van 10x15 en een bestand dat binnen de KB-grens van het portaal past. Er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Afbeelding onleesbaar maken</title>
+    <id>https://abox.tools/nl/afbeelding-onleesbaar-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeelding-onleesbaar-maken/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Dek een naam, een adres of een rekeningnummer in een foto of screenshot af en sla de afbeelding opnieuw op, zodat de verborgen pixels echt uit het bestand zijn en niet onder een rechthoek blijven liggen. Alles gebeurt in de browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Een afbeelding zo onleesbaar maken dat het afgedekte echt weg is</title>
+    <id>https://abox.tools/nl/gidsen/een-afbeelding-onleesbaar-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-afbeelding-onleesbaar-maken/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">De zwarte vakken die de meeste programma's tekenen liggen op de afbeelding en kunnen worden weggeschoven. Wat een echte redactie onderscheidt van een afdekking, waarom gepixelde tekst terug te lezen is en hoe je een bestand controleert voordat je het verstuurt.</summary>
+  </entry>
+  <entry>
+    <title type="html">Hash en checksum</title>
+    <id>https://abox.tools/nl/checksum-controleren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/checksum-controleren/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Bereken de MD5, SHA-1, SHA-256, SHA-384 of SHA-512 van elk bestand en vergelijk die met de checksum op de downloadpagina. Het bestand wordt in je browser gelezen en nooit geüpload, hoe groot het ook is.</summary>
+  </entry>
+  <entry>
+    <title type="html">Qr- &amp; barcodescanner</title>
+    <id>https://abox.tools/nl/qr-code-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/qr-code-scannen/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Lees een qr-code vanaf een foto, een schermafbeelding of je camera, en zie precies waar de link heen gaat voordat je hem opent. Ook EAN, UPC, Code 128, Code 39 en ITF. Er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Timelapsemaker</title>
+    <id>https://abox.tools/nl/timelapse-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/timelapse-maken/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Maak van een lange video een timelapse: 10x, 60x of elke snelheid die je intypt. Draait in je browser, uploadt niets, zet er geen watermerk op en werkt offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Wachtwoord- &amp; wachtwoordzingenerator</title>
+    <id>https://abox.tools/nl/wachtwoord-generator/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/wachtwoord-generator/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Genereer een sterk willekeurig wachtwoord, of een diceware-wachtwoordzin uit een meegeleverde lijst van 7.776 woorden. Getrokken door de cryptografische generator van je browser, nergens naartoe gestuurd en nergens opgeslagen. Gratis, zonder registratie.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo controleer je een download tegen zijn checksum</title>
+    <id>https://abox.tools/nl/gidsen/de-checksum-van-een-download-controleren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/de-checksum-van-een-download-controleren/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">Hoe je een MD5- of SHA-256-checksum vergelijkt op Windows, macOS en Linux of in je browser, wat een treffer werkelijk bewijst, en de fout waardoor de hele exercitie niets meer voorstelt.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF-analyse</title>
+    <id>https://abox.tools/nl/gif-analyseren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-analyseren/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">Haal een GIF uit elkaar in je browser: elk frame met zijn vertraging en opruimregel, de kleurtabellen, het aantal herhalingen en een byte-voor-byte overzicht van waar de bestandsgrootte heen ging. Er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pdf-pagina's samenvoegen, splitsen en herschikken</title>
+    <id>https://abox.tools/nl/gidsen/pdf-bestanden-samenvoegen-en-splitsen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/pdf-bestanden-samenvoegen-en-splitsen/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">Pdf's combineren, er één in meerdere knippen en pagina's verplaatsen: wat de herschikking overleeft, wat geen enkel hulpmiddel kan meenemen, en waarom je je documenten hiervoor nergens hoeft te uploaden.</summary>
+  </entry>
+  <entry>
+    <title type="html">Wat er werkelijk in een GIF zit</title>
+    <id>https://abox.tools/nl/gidsen/wat-zit-er-in-een-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/wat-zit-er-in-een-gif/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">Frames, vertragingen, opruimmethoden en kleurtabellen uitgelegd, waarom browsers de snelste vertragingen weigeren, en hoe je uitzoekt waar de bestandsgrootte van een GIF echt heen is.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audio knippen zonder kwaliteitsverlies</title>
+    <id>https://abox.tools/nl/gidsen/een-audiobestand-inkorten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-audiobestand-inkorten/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">Waar een audioknip werkelijk valt, waarom die exact kan zijn terwijl een videoknip dat niet kan, waarom een naad soms klikt, en wat een fade van vijf milliseconden echt doet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audioknipper</title>
+    <id>https://abox.tools/nl/audio-knippen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-knippen/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Een GIF splitsen in frames</title>
+    <id>https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">Elk frame van een geanimeerde GIF als PNG: waarom sommige frames maar een klein lapje van het plaatje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart om het weer in elkaar te zetten.</summary>
+  </entry>
+</feed>

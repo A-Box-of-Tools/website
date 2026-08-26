@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  GENERATED FILE - do not edit; see templates/feed.xml.
+
+  Atom rather than RSS, for one reason that matters here: Atom requires
+  `updated` on the feed and on every entry, and this site already keeps an
+  honest per-page date in `lastmod`. RSS's `pubDate` is optional and its
+  `lastBuildDate` means "when the file was generated", which on a static site
+  that rebuilds on every deploy would say a page changed when nothing about it
+  did. The sitemap makes the same choice for the same reason.
+
+  `type="html"` on the titles and summaries is not decoration. The strings come
+  from tool.toml and page.toml, where punctuation is written as entities so the
+  files stay ASCII on disk - `&mdash;` and friends. Escaped into an Atom text
+  construct they would arrive at a reader as the literal characters
+  `&mdash;`; declared as HTML they are unescaped once by the XML parser and
+  once more as markup, which is what the author wrote.
+
+  The feed lists tools and guides, newest first, and stops at a fixed count. It
+  is a "what changed lately" stream and not a second sitemap: something that
+  wants the whole site has sitemap.xml next door, and llms.txt after that.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="hi">
+  <title type="html">A Box of Tools</title>
+  <subtitle type="html">मुफ़्त ब्राउज़र टूल, जो आपकी फ़ाइलें कभी अपलोड नहीं करते। तस्वीरों से PDF या MP4 बनाइए, इमेज तय साइज़ तक कंप्रेस कीजिए, वीडियो क्रॉप कीजिए, EXIF हटाइए।</subtitle>
+  <id>https://abox.tools/hi/</id>
+  <link rel="self" type="application/atom+xml" href="https://abox.tools/hi/feed.xml"/>
+  <link rel="alternate" type="text/html" href="https://abox.tools/hi/"/>
+  <updated>2026-08-26T00:00:00Z</updated>
+  <author>
+    <name>A Box of Tools</name>
+    <uri>https://abox.tools/hi/</uri>
+  </author>
+  <entry>
+    <title type="html">Base64 एनकोडर-डिकोडर</title>
+    <id>https://abox.tools/hi/encode-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/encode-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON फ़ॉर्मैटर</title>
+    <id>https://abox.tools/hi/format-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/format-json/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">कई पन्ने एक छोटे PDF में कैसे स्कैन करें</title>
+    <id>https://abox.tools/hi/guides/scan-multiple-pages-into-one-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/scan-multiple-pages-into-one-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">हर पन्ने की फ़ोटो लीजिए, एक PDF पाइए, पहले से मौजूद दस्तावेज़ों से जोड़िए, और तब तक छोटा कीजिए जब तक भेजा न जा सके। तीन ब्राउज़र-टूल एक के बाद एक, और काग़ज़ात कभी फ़ोन से बाहर नहीं जाते।</summary>
+  </entry>
+  <entry>
+    <title type="html">टेक्स्ट डिफ़</title>
+    <id>https://abox.tools/hi/compare-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क़ देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
+    <title type="html">दो JSON फ़ाइलों की तुलना कैसे करें</title>
+    <id>https://abox.tools/hi/guides/compare-two-json-files/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/compare-two-json-files/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">दोनों फ़ाइलें एक ही तरह फ़ॉर्मैट कीजिए, कुंजियाँ क्रम में लगाइए, फिर मिलाइए। कच्चा JSON डिफ़ लगभग पूरा शोर क्यों है, ब्राउज़र में दोनों पक्षों को मानक रूप में कैसे लाएँ, और पैच तक क्या बचता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">फ़ोन की फ़ोटो वेब के लिए कैसे तैयार करें</title>
+    <id>https://abox.tools/hi/guides/get-photos-ready-for-the-web/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/get-photos-ready-for-the-web/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">HEIC से JPEG, GPS हटा, पन्ने के हिसाब से आकार, और बजट पर कंप्रेस: पूरी कड़ी ब्राउज़र में, और असली फ़ोटो कभी आपकी मशीन से बाहर नहीं जातीं।</summary>
+  </entry>
+  <entry>
+    <title type="html">बूमरैंग वीडियो कैसे बनाएँ</title>
+    <id>https://abox.tools/hi/guides/make-a-boomerang-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-boomerang-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">पल काटिए, प्रति उलटिए, दोनों जोड़िए और लूप होने दीजिए। तीन टूल एक के बाद एक, सब ब्राउज़र में, और वह क्रम जो पूरा काम एक मिनट में निपटा देता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">वीडियो के एक हिस्से से GIF कैसे बनाएँ</title>
+    <id>https://abox.tools/hi/guides/make-a-gif-from-part-of-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-gif-from-part-of-a-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">पहले वे सेकंड काटिए जो मायने रखते हैं, फिर सिर्फ़ उन्हीं को बदलिए। कब GIF कन्वर्टर की अपनी टाइमलाइन काफ़ी है, कब पहले वीडियो कटर से काटना चाहिए, और GIF का हर सेकंड इतना महँगा क्यों पड़ता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM फ़ाइल कैसे खोलें, और उसमें क्या होता है</title>
+    <id>https://abox.tools/hi/guides/open-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/open-a-dicom-file/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">अस्पताल की डिस्क में क्या होता है, फ़ाइलों पर एक्सटेंशन क्यों नहीं होता, .dcm स्कैन ब्राउज़र में कैसे खोलें, विंडो और लेवल असल में क्या करता है, और स्कैन तस्वीर के अलावा मरीज़ के बारे में क्या-क्या लिए चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM व्यूअर</title>
+    <id>https://abox.tools/hi/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/dicom-viewer/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">CT, MRI, एक्स-रे और अल्ट्रासाउंड स्कैन अपने ब्राउज़र में खोलिए। विंडो और लेवल, पूरी सीरीज़ पलटना, मिलीमीटर में नापना, हर DICOM टैग पढ़ना, और यह देखना कि फ़ाइल में मरीज़ की पहचान क्या-क्या कराता है। कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF से टेक्स्ट इस तरह कैसे मिटाएँ कि वह वाकई चला जाए</title>
+    <id>https://abox.tools/hi/guides/redact-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/redact-a-pdf/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">PDF रीडर में बनाया गया काला डिब्बा आम तौर पर शब्दों को अपने नीचे छोड़ देता है, और कॉपी-पेस्ट से वे तुरंत वापस मिल जाते हैं। असली मिटाना क्या हटाता है, शब्द पन्ने के बाहर किन चार जगहों पर छिपते हैं, और भेजने से पहले फ़ाइल कैसे जाँचें।</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF से मिटाइए</title>
+    <id>https://abox.tools/hi/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/redact-pdf/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">PDF में शब्दों पर काला चौकोर बनाने के बजाय उन्हें निकाल दीजिए। अक्षर उन्हीं निर्देशों से मिटा दिए जाते हैं जिनसे पन्ना बनता है, तैयार फ़ाइल को दोबारा खोलकर खोजा जाता है कि वे वाकई चले गए, और कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज स्टैकर</title>
+    <id>https://abox.tools/hi/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/stack-images/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">एक बर्स्ट में ली गई तस्वीरों को एक में जोड़िए। औसत लेकर नॉइज़ खत्म कीजिए, माध्यिका से दृश्य में से लोगों को हटाइए, तारों की लकीरों के लिए हल्का कीजिए, या किसी मैक्रो शॉट की फ़ोकस स्टैकिंग कीजिए। CR2, NEF, ARW, DNG, RAF और CR3 को कैमरे की अपनी झलक निकालकर पढ़ता है। सब कुछ आपके ब्राउज़र में ही चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">डॉक्यूमेंट स्कैनर</title>
+    <id>https://abox.tools/hi/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/document-scanner/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">फ़ोन से लिए गए कागज़ के फ़ोटो को सीधी और एक जैसी रोशनी वाली PDF में बदलिए। कोने खुद ढूँढ़ लिए जाते हैं, तिरछापन हटा दिया जाता है, और छाया भाग देकर निकाल दी जाती है। सब कुछ आपके ब्राउज़र में ही चलता है और कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">नॉइज़ घटाने या लोगों को हटाने के लिए तस्वीरें कैसे स्टैक करें</title>
+    <id>https://abox.tools/hi/guides/stack-photos-to-reduce-noise/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/stack-photos-to-reduce-noise/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">स्टैक करना एक बर्स्ट के कई फ़्रेमों को एक तस्वीर में जोड़ देता है। कौन-सा तरीका चाहिए यह इस पर निर्भर है कि आप क्या खोना चाहते हैं: नॉइज़, राह चलते लोग, या किसी मैक्रो शॉट की उथली गहराई। हर तरीका कैसे काम करता है, उसका क्या खर्च है, और RAW फ़ाइलें कहाँ बैठती हैं।</summary>
+  </entry>
+  <entry>
+    <title type="html">फ़ोन से डॉक्यूमेंट कैसे स्कैन करें</title>
+    <id>https://abox.tools/hi/guides/scan-a-document-with-your-phone/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/scan-a-document-with-your-phone/"/>
+    <updated>2026-08-25T00:00:00Z</updated>
+    <summary type="html">किसी पन्ने की तस्वीर और उसी पन्ने के स्कैन में फ़र्क क्या है: तिरछापन, असमान रोशनी और फ़ाइल का साइज़। तस्वीर कैसे लें, बाद में क्या ठीक करें, और इसमें से किसी को भी सर्वर की ज़रूरत क्यों नहीं।</summary>
+  </entry>
+  <entry>
+    <title type="html">ID फ़ोटो मेकर</title>
+    <id>https://abox.tools/hi/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/id-photo/"/>
+    <updated>2026-08-24T00:00:00Z</updated>
+    <summary type="html">अपने देश के प्रकाशित नियम के मुताबिक पासपोर्ट या वीज़ा फ़ोटो बनाइए। ठीक mm और DPI, सिर की ऊँचाई और आँखों की रेखा दिखाता लाइव ओवरले, बैकग्राउंड की जाँच, छपाई लायक 4x6 शीट, और पोर्टल की KB सीमा तक कंप्रेस की हुई फ़ाइल। कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">QR और बारकोड रीडर</title>
+    <id>https://abox.tools/hi/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/qr-barcode-reader/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">किसी फ़ोटो, स्क्रीनशॉट या अपने कैमरे से QR कोड पढ़िए, और खोलने से पहले देखिए कि लिंक असल में कहाँ जाता है। EAN, UPC, Code 128, Code 39 और ITF बारकोड भी। कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज को ऐसे कैसे छिपाएँ कि ढका हुआ हिस्सा सचमुच चला जाए</title>
+    <id>https://abox.tools/hi/guides/redact-an-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/redact-an-image/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">ज़्यादातर प्रोग्राम जो काले डिब्बे बनाते हैं वे इमेज के ऊपर पड़े रहते हैं और हटाए जा सकते हैं। असल में छिपाने और सिर्फ़ ढक देने में फ़र्क क्या है, पिक्सेलेट किए अक्षर वापस क्यों पढ़े जा सकते हैं, और भेजने से पहले फ़ाइल कैसे जाँचें।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज ब्लैकआउट टूल</title>
+    <id>https://abox.tools/hi/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/redact-image/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">फ़ोटो या स्क्रीनशॉट में नाम, पता या खाता नंबर ढककर इमेज दोबारा सेव कीजिए। ढके हुए पिक्सेल किसी आयत के नीचे बचे नहीं रहते, फ़ाइल से चले जाते हैं। पूरा काम आपके ब्राउज़र में होता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">चेकसम से डाउनलोड कैसे जाँचें</title>
+    <id>https://abox.tools/hi/guides/verify-a-file-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/verify-a-file-checksum/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">विंडोज़, मैक और लिनक्स पर या ब्राउज़र में MD5 या SHA-256 चेकसम मिलाने का तरीका, मिल जाने से सचमुच क्या साबित होता है, और वह गलती जिससे पूरी कसरत बेकार हो जाती है।</summary>
+  </entry>
+  <entry>
+    <title type="html">टाइमलैप्स मेकर</title>
+    <id>https://abox.tools/hi/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/timelapse-video/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">किसी लंबे वीडियो को टाइमलैप्स में बदलिए - 10x, 60x, या जो रफ़्तार आप टाइप करें। सब आपके ब्राउज़र में चलता है। कुछ अपलोड नहीं होता, कोई वॉटरमार्क नहीं, और ऑफ़लाइन भी काम करता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">पासवर्ड और पासफ़्रेज़ जनरेटर</title>
+    <id>https://abox.tools/hi/password-generator/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/password-generator/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">एक मज़बूत रैंडम पासवर्ड बनाइए, या पेज के साथ आने वाली 7,776 शब्दों की सूची से डाइसवेयर पासफ़्रेज़ बनाइए। ब्राउज़र के अपने क्रिप्टोग्राफ़िक जनरेटर से निकलता है, कहीं नहीं जाता और कहीं सेव नहीं होता। मुफ़्त, बिना साइन-अप।</summary>
+  </entry>
+  <entry>
+    <title type="html">हैश और चेकसम</title>
+    <id>https://abox.tools/hi/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/hash-checksum/"/>
+    <updated>2026-08-23T00:00:00Z</updated>
+    <summary type="html">किसी भी फ़ाइल का MD5, SHA-1, SHA-256, SHA-384 या SHA-512 निकालिए और डाउनलोड पेज पर दिए चेकसम से मिलाइए। फ़ाइल आपके ब्राउज़र में पढ़ी जाती है और किसी भी साइज़ में अपलोड नहीं होती।</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF एनालाइज़र</title>
+    <id>https://abox.tools/hi/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-analyzer/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">GIF को अपने ब्राउज़र में खोलकर देखिए: हर फ़्रेम की देरी और डिस्पोज़ल, कलर टेबल, लूप की गिनती, और फ़ाइल का साइज़ कहाँ गया इसका बाइट-दर-बाइट ब्योरा। कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF के भीतर असल में क्या है</title>
+    <id>https://abox.tools/hi/guides/whats-inside-a-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/whats-inside-a-gif/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">फ़्रेम, देरी, निपटाने के तरीके और रंगों की तालिकाएँ समझाई गईं, ब्राउज़र सबसे तेज़ देरी क्यों नहीं मानते, और किसी GIF का आकार असल में कहाँ चला गया यह कैसे पता करें।</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF के पन्ने कैसे जोड़ें, अलग करें और क्रम बदलें</title>
+    <id>https://abox.tools/hi/guides/merge-and-split-pdf-files/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/merge-and-split-pdf-files/"/>
+    <updated>2026-08-22T00:00:00Z</updated>
+    <summary type="html">कई PDF को एक करना, एक को कई में काटना और पन्नों को इधर-उधर करना: फेरबदल के बाद क्या बचता है, कौन-सी चीज़ें कोई भी टूल साथ नहीं ले जा सकता, और यह सब बिना अपने दस्तावेज़ कहीं भेजे क्यों हो जाता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF को फ़्रेमों में कैसे बाँटें</title>
+    <id>https://abox.tools/hi/guides/split-a-gif-into-frames/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/split-a-gif-into-frames/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">चलती GIF का हर फ़्रेम PNG में निकालिए: कुछ फ़्रेम तस्वीर का सिर्फ़ एक छोटा टुकड़ा क्यों होते हैं, पारदर्शिता का क्या होता है, और समय कैसे सँभालें ताकि सब वापस जोड़ा जा सके।</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF फ़्रेम स्प्लिटर</title>
+    <id>https://abox.tools/hi/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/split-gif/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">किसी एनिमेटेड GIF को उसके फ़्रेम में बाँटिए और हर फ़्रेम को PNG में सहेजिए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। ट्रांसपेरेंसी और टाइमिंग बनी रहती है। कुछ अपलोड नहीं होता और ऑफ़लाइन भी चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF मर्जर और स्प्लिटर</title>
+    <id>https://abox.tools/hi/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/merge-pdf/"/>
+    <updated>2026-08-21T00:00:00Z</updated>
+    <summary type="html">कई PDF को एक कीजिए, एक को कई में बाँटिए, और पेजों को खींचकर मनचाहे क्रम में लगाइए, सब कुछ आपके अपने ब्राउज़र के भीतर। कुछ अपलोड नहीं होता, खाता नहीं चाहिए, और तैयार फ़ाइल आपको देने से पहले दोबारा खोलकर उसके पेज गिने जाते हैं।</summary>
+  </entry>
+</feed>

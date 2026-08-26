@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/favicon-olusturma/:';
-const CACHE_NAME=CACHE_PREFIX+'681e7e3aea';
+const CACHE_NAME=CACHE_PREFIX+'f4a74ab3c9';
 const ASSETS=[
 './',
 'index.html',

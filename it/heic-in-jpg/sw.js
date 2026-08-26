@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/heic-in-jpg/:';
-const CACHE_NAME=CACHE_PREFIX+'4297fb9caa';
+const CACHE_NAME=CACHE_PREFIX+'953b126c5c';
 const ASSETS=[
 './',
 'index.html',
