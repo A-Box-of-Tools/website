@@ -201,10 +201,19 @@ def build(out, clean=False, minify_output=True, jobs=None):
     # byte for byte into every language, so asking again per locale was
     # re-reading and re-parsing every file for an answer that cannot change.
     # See buildlib/imports.py.
+    #
+    # The sources are in hand here anyway, so this is also where the emitter's
+    # cache is filled - every module and every tool stylesheet minified once,
+    # in this process, before the language workers are forked with a copy of
+    # the warmed cache. The languages then emit these same bytes fifteen ways
+    # without one of them minifying anything a sibling already has.
     for tool in tools:
         sources = {name: path.read_text(encoding='utf-8')
                    for name, path in tool_assets(tool)}
         imports.check(set(sources), sources.__getitem__, tool['slug'])
+        for name, text in sources.items():
+            emit.js_text(text, f'{tool["slug"]}/{name}')
+        emit.css_text(tool_css(tool))
 
     # ** rather than *, because a guide lives at pages/guides/<slug>/ and a
     # legal page at pages/<slug>/. The slug in each page.toml has to match the
@@ -1626,6 +1635,21 @@ class Emitter:
         self.html_banner = f' {verify} '
         self.css_banner = f' {verify} '
 
+        # What each source text minified to, so a text seen before is not
+        # minified again. Most of what the build emits is seen many times
+        # over: a tool's modules are the same bytes in every language, and
+        # within one language every prose page's analytics.js is the same
+        # script. Minifying is deterministic - the module says so and stakes
+        # its --check on it - which is what makes the answer reusable at all.
+        #
+        # build() fills the JavaScript and CSS caches with every tool's
+        # sources before the languages start, and that placing is the point:
+        # each language builds in its own process and is handed a copy of this
+        # object, so work cached here once is carried into all of them, where
+        # a cache warmed inside a worker would die with it.
+        self._js_seen = {}
+        self._css_seen = {}
+
     def html(self, path, text):
         return write(path, minify.html(text, self.html_banner)
                      if self.enabled else text)
@@ -1637,15 +1661,23 @@ class Emitter:
         """Returns rather than writes, for the one script that is hashed before
         it is written - see the note beside lang.js in build(). Everything else
         goes through js() and never sees the string."""
-        if self.enabled:
-            return minify.js(text, self.js_banner, where)
-        return text
+        if not self.enabled:
+            return text
+        done = self._js_seen.get(text)
+        if done is None:
+            done = self._js_seen[text] = minify.js(text, self.js_banner, where)
+        return done
 
     def css_text(self, text):
         """Returns rather than writes, because a stylesheet has to be hashed
         after minifying and before being written - the hash goes in the URL the
         page asks for it by."""
-        return cssmin.css(text, self.css_banner) if self.enabled else text
+        if not self.enabled:
+            return text
+        done = self._css_seen.get(text)
+        if done is None:
+            done = self._css_seen[text] = cssmin.css(text, self.css_banner)
+        return done
 
 
 def check_against_branch(out, branch='dist'):
