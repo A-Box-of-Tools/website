@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/unire-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'3bb5e770c9';
+const CACHE_NAME=CACHE_PREFIX+'0c41984dc8';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=2f81abb25d',
+'styles.css?v=c18212863e',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

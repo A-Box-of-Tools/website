@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/trim-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'4df40b8111';
+const CACHE_NAME=CACHE_PREFIX+'a7eeaf8950';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=86fc833cb8',
+'styles.css?v=1841227420',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

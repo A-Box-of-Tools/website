@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحويل-heic-إلى-jpg/:';
-const CACHE_NAME=CACHE_PREFIX+'de77c5ad4d';
+const CACHE_NAME=CACHE_PREFIX+'c5b37d76c0';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4f7cc92f57',
+'styles.css?v=8f48e041bb',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
