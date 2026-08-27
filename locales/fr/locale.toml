@@ -164,6 +164,7 @@ complete = true
 "guides/what-a-pdf-remembers" = "guides/ce-qu-un-pdf-retient"
 "guides/does-converting-a-photo-remove-its-metadata" = "guides/convertir-une-photo-supprime-t-il-ses-metadonnees"
 "guides/how-can-a-web-page-work-offline" = "guides/comment-une-page-web-peut-elle-fonctionner-hors-ligne"
+"guides/whats-inside-a-dicom-file" = "guides/que-contient-un-fichier-dicom"
 
 #
 # ---------------------------------------------------------------------------

@@ -1,0 +1,141 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      Bir DICOM dosyası &mdash; hastanenin verdiği CD'deki
+      <code>.dcm</code> &mdash; JPEG gibi bir resim biçimi değildir.
+      İçinde resim olan bir tıbbi kayıt biçimidir. Pikseller başlamadan
+      önce dosya, yüzlerce etiketten oluşan bir başlık taşır ve bunların
+      arasında, rutin olarak: hastanın tam adı, doğum tarihi, cinsiyeti ve
+      hastane numarası; incelemenin tarihi, saati ve tanımı; sevk eden
+      hekim; kurum ve cihaz, seri numarasına kadar; ve onları üreten
+      arşive geri açılan anahtar işlevindeki bir dizi benzersiz
+      tanımlayıcı.
+    </p>
+    <p>
+      Resim ekrandayken bunların hiçbiri görünmez; unutulması da tam böyle
+      olur. Tarama, kaydın kendisidir. Dosyaya, içerdiği resim gibi değil,
+      olduğu belge gibi davranın.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bu dosya neden bu kadar rahat yükleniyor</h2>
+    <p>
+      Tuzağın pratiği şöyle: bir hastaya inceleme sonrası bir disk ya da
+      indirme verilir, açmayı dener ve makinedeki hiçbir şey açmaz &mdash;
+      DICOM sıradan yazılımın konuştuğu bir biçim değildir. Bunun üzerine
+      &ldquo;dcm dosyası aç online&rdquo; diye arar ve bulduklarının çoğu
+      bir yükleme kutusudur. Birkaç saniye sonra eksiksiz, kimlikli bir
+      tıbbi kayıt &mdash; ad, doğum tarihi, hastane numaraları, tanı
+      kokan inceleme tanımları, hepsi &mdash; o gün sıralamada kim
+      yukarıdaysa onun sunucusundadır.
+    </p>
+    <p>
+      Biçime dikkat edin: bu yine kimlik fotoğrafı meselesi &mdash; hassas
+      bir dosya, bir sürtünme ânı, bir arama motoru &mdash; ama ikinci
+      dereceden hassas bir dosyayla. Pasaport kim olduğunuzu sızdırır;
+      tarama, kim olduğunuzu <em>ve neyin araştırıldığını</em> sızdırır.
+      Yükleme üstüne genel sav
+      <a href="../dosya-yuklemek-guvenli-mi/">kendi sayfasında</a>; bu, o
+      savın hiçbir baharata ihtiyaç duymadığı dosyadır.
+    </p>
+    <p>
+      Dosyayı yerelde açmak devanın tamamıdır ve buradaki
+      <a href="../../dicom-goruntuleyici/">DICOM görüntüleyici</a> bunun
+      içindir: tarama, gerçek bir pencere/seviye kumandası, kendi serisine
+      geri istiflenen bir klasör, milimetre cinsinden ölçümler ve
+      başlığın her etiketi okunur hâlde &mdash; hiçbir şey makinenizden
+      çıkmadan. Adım adım anlatım
+      <a href="../dicom-dosyasi-acma/">açma rehberinde</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>&ldquo;Adı sildim&rdquo; anonimleştirme değildir</h2>
+    <p>
+      Sonraki hata daha ince ve daha iyi niyetlidir: bariz etiketi silip
+      taramayı paylaşmak &mdash; bir ikinci görüş hizmetiyle, bir
+      araştırmacıyla, bir forumla. Bunun ne kadar yetersiz olduğu
+      konusunda standardın kendisi acımasızdır. DICOM'un kendi
+      anonimleştirme profili, bir veri kümesine anonim denebilmesi için
+      ele alınması gereken etiketleri sıralar ve <em>yüzlerce</em> kalem
+      tutar; çünkü kimlik, ad alanından çok daha fazla yerde oturur:
+    </p>
+    <ul>
+      <li>
+        <strong>Adın ötesindeki doğrudan tanımlayıcılar</strong> &mdash;
+        doğum tarihi, hasta numarası, dosya numarası, hekimin ve kurumun
+        adları.
+      </li>
+      <li>
+        <strong>Anahtarlar</strong> &mdash; her dosyaya damgalanan
+        benzersiz tanımlayıcılar: kim olduğunuzu söylemezler ama orijinali
+        görmüş her sisteme, tam olarak <em>hangi kayıt olduğunuzu</em>
+        söylerler.
+      </li>
+      <li>
+        <strong>Yarı tanımlayıcılar</strong> &mdash; incelemenin tarihi ve
+        saati, cihazın modeli ve seri numarası, vücut bölgesi, hastanın
+        yaşı: tek tek belirsiz, bir arada dar.
+      </li>
+      <li>
+        <strong>Piksellerin kendisi</strong> &mdash; ultrason ve bazı
+        başka yöntemler hastanın adını doğruca görüntünün içine yakar;
+        oraya hiçbir etiket düzenlemesi erişemez. (Dışa aktarılmış bir
+        resim için bu, üstveri aracının değil,
+        <a href="../../resim-karartma/">piksel düzeyinde karartmanın</a>
+        işidir.)
+      </li>
+    </ul>
+    <p>
+      Buradaki görüntüleyicinin, dosyanızda hastayı neyin ve ne kadar
+      doğrudan tanımladığını sıralayan bir paneli olması bundandır &mdash;
+      standardın kendi listesinden kurulmuştur. Görüntüleyicinin yalnızca
+      <em>okuması</em> da bundandır: DICOM dosyası yazan hiçbir kod
+      içermez; çünkü &ldquo;anonimleştirildi&rdquo;, bir görüntüleyicinin
+      atladığından çok daha yüksek bir çıtası olan bir vaattir &mdash; ve
+      onu yarım tutan bir araç, hiç vermeyeninden beterdir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Taramaya, olduğu kayıt gibi davranmak</h2>
+    <p>
+      Alışkanlıklar yukarıdakilerin hepsinden kendiliğinden dökülür:
+    </p>
+    <ul>
+      <li>
+        <strong>Yerelde bakın.</strong> Wi-Fi kapalıyken çalışan bir
+        görüntüleyici &mdash; buradaki çalışır &mdash; işin nerede
+        olduğunu kanıtlamıştır. Diskle gelen görüntüleyici de, sizin
+        makinenizde çalışıyorsa, gayet uygundur.
+      </li>
+      <li>
+        <strong>Mesele içerikse tıbbi kanallardan paylaşın.</strong> Bir
+        çalışmayı başka bir hastaneye göndermek, arkasında hesap veren
+        altyapısıyla çözülmüş bir problemdir; içinde <code>.dcm</code>
+        dosyalarıyla dolu bir <code>.zip</code> olan kişisel bir e-posta
+        ise kaydınızın posta sunucularındaki kopyasıdır, süresiz.
+      </li>
+      <li>
+        <strong>Bir dosyayı paylaşmanız gerekiyorsa, önce içinde ne
+        olduğunu bilin.</strong> Başlığı ve kimlik panelini okuyun ki
+        elden verdiğiniz şey sürpriz değil karar olsun &mdash; ve
+        &ldquo;usulünce anonimleştirilmiş&rdquo; hâli, sizin
+        uydurduğunuz bir onay kutusu değil, görüntüleme merkezinizin
+        istendiğinde size borçlu olduğu bir hizmet sayın.
+      </li>
+      <li>
+        <strong>Diskin işten uzun yaşadığını unutmayın.</strong> İndirilenler
+        klasöründeki kopya ile çekmecedeki CD de eksiksiz kayıtlardır;
+        tıpkı kimsenin sildiğini hatırlamadığı kimlik taraması gibi.
+      </li>
+    </ul>
+    <p>
+      Bunların hiçbiri taramayı asla paylaşmayın demiyor &mdash; ikinci
+      görüşler, kopyaların var olma sebebidir. Dediği şu: bu dosya sizin
+      hakkınızda bir belgedir; o hâlde bu rehber grubunun tekrar tekrar
+      vardığı iki soru burada da doğru sorulardır &mdash; kime teslim
+      ediliyor, ve o teslimatın olması gerçekten gerekiyor muydu.
+    </p>
+  </section>

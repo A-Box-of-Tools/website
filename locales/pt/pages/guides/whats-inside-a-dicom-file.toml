@@ -1,0 +1,18 @@
+#
+# Guia: o que há dentro de um arquivo DICOM? - Brazilian Portuguese.
+#
+
+nav = "O que há dentro de um DICOM?"
+title = "O que há dentro de um arquivo DICOM?"
+description = "Um exame de imagem é um prontuário de paciente com uma imagem dentro: nome, data de nascimento, números de hospital, a instituição e chaves de volta ao arquivo. O que o cabeçalho carrega, por que apagar o nome não é anonimizar, e como olhar sem enviar."
+heading = "O que há dentro de um arquivo DICOM?"
+lede = """
+    Mais do que o exame. Um arquivo DICOM é um prontuário médico com uma
+    imagem dentro: seu nome, sua data de nascimento e seu número de
+    hospital viajam no mesmo arquivo que os pixels &mdash; e isso importa
+    mais no exato momento em que alguém põe um CD na sua mão e você sai
+    procurando um visualizador."""
+updated = "26 de agosto de 2026"
+og_title = "O que há dentro de um arquivo DICOM?"
+og_description = "Um prontuário de paciente com uma imagem dentro: nome, data de nascimento, números de hospital e chaves de volta ao arquivo. O que o cabeçalho carrega, e como olhar sem enviá-lo."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

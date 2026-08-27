@@ -1,0 +1,18 @@
+#
+# Guida: cosa c'è dentro un file DICOM? - Italian.
+#
+
+nav = "Cosa c'è dentro un file DICOM?"
+title = "Cosa c'è dentro un file DICOM?"
+description = "Un esame di imaging è una cartella clinica con un'immagine dentro: nome, data di nascita, numeri d'ospedale, la struttura e chiavi verso l'archivio. Che cosa porta l'intestazione, perché cancellare il nome non è anonimizzare, e come guardare senza caricare."
+heading = "Cosa c'è dentro un file DICOM?"
+lede = """
+    Più dell'esame. Un file DICOM è una cartella clinica con un'immagine
+    dentro: il tuo nome, la tua data di nascita e il tuo numero d'ospedale
+    viaggiano nello stesso file dei pixel &mdash; e conta soprattutto nel
+    momento esatto in cui ti mettono in mano un CD e vai a cercare un
+    visore."""
+updated = "26 agosto 2026"
+og_title = "Cosa c'è dentro un file DICOM?"
+og_description = "Una cartella clinica con un'immagine dentro: nome, data di nascita, numeri d'ospedale e chiavi verso l'archivio. Che cosa porta l'intestazione, e come guardare senza caricarlo."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

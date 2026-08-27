@@ -1,0 +1,18 @@
+#
+# Panduan: apa isi file DICOM? - Indonesian.
+#
+
+nav = "Apa isi file DICOM?"
+title = "Apa Isi Sebuah File DICOM?"
+description = "Hasil pindai medis adalah rekam medis pasien dengan gambar di dalamnya: nama, tanggal lahir, nomor rumah sakit, institusinya, dan kunci kembali ke arsip. Apa yang dibawa kepala berkasnya, mengapa menghapus nama bukan anonimisasi, dan cara melihat tanpa mengunggah."
+heading = "Apa isi sebuah file DICOM?"
+lede = """
+    Lebih dari hasil pindainya. File DICOM adalah rekam medis dengan
+    gambar di dalamnya: nama Anda, tanggal lahir Anda, dan nomor rumah
+    sakit Anda berjalan dalam berkas yang sama dengan pikselnya &mdash;
+    dan itu paling penting justru pada saat Anda disodori CD lalu pergi
+    mencari penampil."""
+updated = "26 Agustus 2026"
+og_title = "Apa isi sebuah file DICOM?"
+og_description = "Rekam medis pasien dengan gambar di dalamnya: nama, tanggal lahir, nomor rumah sakit, dan kunci kembali ke arsip. Apa yang dibawa kepala berkasnya, dan cara melihat tanpa mengunggahnya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

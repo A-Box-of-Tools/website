@@ -1,0 +1,18 @@
+#
+# Ratgeber: Was in einer DICOM-Datei steckt. - German.
+#
+
+nav = "Was in einer DICOM-Datei steckt"
+title = "Was in einer DICOM-Datei steckt"
+description = "Ein medizinischer Scan ist eine Patientenakte mit Bild darin: Name, Geburtsdatum, Kliniknummern, die Einrichtung und Schlüssel zurück ins Archiv. Was der Header trägt, warum das Löschen des Namens kein Anonymisieren ist, und wie man hineinsieht, ohne hochzuladen."
+heading = "Was in einer DICOM-Datei steckt"
+lede = """
+    Mehr als der Scan. Eine DICOM-Datei ist eine Patientenakte mit einem
+    Bild darin: Ihr Name, Ihr Geburtsdatum und Ihre Kliniknummer reisen in
+    derselben Datei wie die Pixel &mdash; was genau in dem Moment am
+    meisten zählt, in dem man Ihnen eine CD in die Hand drückt und Sie
+    einen Betrachter suchen gehen."""
+updated = "26. August 2026"
+og_title = "Was in einer DICOM-Datei steckt"
+og_description = "Eine Patientenakte mit Bild darin: Name, Geburtsdatum, Kliniknummern und Schlüssel zurück ins Archiv. Was der Header trägt, und wie man hineinsieht, ohne die Datei hochzuladen."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
