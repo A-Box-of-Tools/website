@@ -91,7 +91,7 @@ jobs:
           set -uo pipefail
 
           code=true
-          why='could not work out what changed'
+          why='what changed could not be worked out'
           zero=0000000000000000000000000000000000000000
 
           if [ -n "$BASE" ] && [ "$BASE" != "$zero" ]; then
@@ -110,24 +110,29 @@ jobs:
                   docs/*|.claude/*) continue ;;
                 esac
                 code=true
-                why="$path"
+                why="\`$path\` is a file a test could see"
                 break
               done <<< "$files"
             fi
           fi
 
-          echo "code=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" = true ]; then
+            said="Running both suites, because $why."
+          else
+            said="Skipping both suites: everything this changed is prose the build never reads and no test opens. The build still runs."
+          fi
 
+          # Twice on purpose. The summary is where somebody looks to find out
+          # why a pull request did not run the tests; the log is where somebody
+          # looks when they suspect this step of never having worked. Said only
+          # in the summary, a step that always answered "run" because the API
+          # call was failing would look exactly like one doing its job.
+          echo "$said"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
           {
             echo '### Tests'
             echo
-            if [ "$code" = true ]; then
-              echo "Running both suites, because of \`$why\`."
-            else
-              echo 'Skipped. Everything this changed is prose the build never'
-              echo 'reads and no test opens, so neither suite has an opinion'
-              echo 'about it. The build still runs.'
-            fi
+            echo "$said"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/checkout@v4
