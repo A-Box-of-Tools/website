@@ -85,19 +85,6 @@
 
 {% include "partials/lang-notice.html" %}
 
-<!--
-  The visible half of the BreadcrumbList in the head, and only where there is
-  one: a guide sits two levels down, under an index, and saying so is worth the
-  line. A legal page is passed an empty trail and this block does not render -
-  markup is meant to describe what a visitor can see, so a page with nothing to
-  show describes nothing.
--->
-{% if crumbs %}<nav class="crumbs" aria-label="{{ ui.breadcrumb }}">
-{% for crumb in crumbs %}  <a href="{{ crumb.href }}">{{ crumb.name }}</a>
-  <span aria-hidden="true">&rsaquo;</span>
-{% endfor %}  <span aria-current="page">{{ page.nav }}</span>
-</nav>
-{% endif %}
 <header class="hub-head">
   <div class="head-row">
     <p class="brand">
@@ -107,7 +94,21 @@
     </p>
     {% include "partials/lang-pick.html" %}
   </div>
-  <h1>{{ page.heading }}</h1>
+  <!--
+    The visible half of the BreadcrumbList in the head, and only where there is
+    one: a guide sits two levels down, under an index, and saying so is worth
+    the line. It sits inside the header, under the site mark, so the trail
+    shares the header's column instead of floating alone at the top of the
+    window. A legal page is passed an empty trail and this block does not
+    render - markup is meant to describe what a visitor can see, so a page
+    with nothing to show describes nothing.
+  -->
+{% if crumbs %}  <nav class="crumbs" aria-label="{{ ui.breadcrumb }}">
+{% for crumb in crumbs %}    <a href="{{ crumb.href }}">{{ crumb.name }}</a>
+    <span aria-hidden="true">&rsaquo;</span>
+{% endfor %}    <span aria-current="page">{{ page.nav }}</span>
+  </nav>
+{% endif %}  <h1>{{ page.heading }}</h1>
   <p class="lede">
 {{ page.lede }}
   </p>
