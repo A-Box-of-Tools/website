@@ -176,6 +176,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "ratgeber/qr-code-erstellen-und-scan-beweisen"
 "guides/clean-up-a-voice-memo" = "ratgeber/sprachmemo-aufraeumen"
 "guides/is-it-safe-to-scan-a-qr-code" = "ratgeber/ist-das-scannen-von-qr-codes-sicher"
+"guides/is-it-safe-to-upload-a-photo-of-your-id" = "ratgeber/ist-das-hochladen-eines-ausweisfotos-sicher"
 
 #
 # ---------------------------------------------------------------------------

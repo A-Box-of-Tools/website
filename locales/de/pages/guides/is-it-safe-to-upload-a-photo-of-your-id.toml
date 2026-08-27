@@ -1,0 +1,18 @@
+#
+# Ratgeber: Ist das Hochladen eines Ausweisfotos sicher? - German.
+#
+
+nav = "Ausweis hochladen - ist das sicher?"
+title = "Ist es sicher, ein Foto des eigenen Ausweises hochzuladen?"
+description = "Ein Ausweis ist die eine Datei, bei der &bdquo;wahrscheinlich unbedenklich&ldquo; nicht genügt. Was ein Ausweis-Leck wirklich kostet, warum der riskante Moment die Größenanpassung vor dem Antrag ist, und wie alles davon geht, ohne dass das Dokument Ihren Rechner verlässt."
+heading = "Ist es sicher, ein Foto des eigenen Ausweises hochzuladen?"
+lede = """
+    In das Behördenformular, für das es bestimmt ist: ja &mdash; dafür ist
+    das Dokument da. Das Risiko wohnt einen Schritt davor: beim Konverter
+    oder Kompressor, den Sie aufsuchen, weil das Formular &bdquo;unter
+    300&nbsp;KB, JPEG&ldquo; verlangt hat. Und dieser Schritt muss nie
+    passieren."""
+updated = "26. August 2026"
+og_title = "Ist es sicher, ein Foto des eigenen Ausweises hochzuladen?"
+og_description = "Der riskante Schritt ist nicht das Antragsformular. Es ist der Umweg über Verkleinern und Komprimieren kurz davor - und der braucht Ihr Dokument nie von Ihrem Rechner zu lassen."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

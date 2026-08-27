@@ -1,0 +1,164 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Uploading your ID to the office that asked for it is normal and mostly
+      unavoidable: a visa application, a bank's know-your-customer check, an
+      exam registration. That upload is the point of the document, it travels
+      to a party you can name, and there is usually no other way to apply.
+    </p>
+    <p>
+      The upload worth worrying about is a different one, and it happens one
+      step earlier. The form says the photo must be 35 by 45 millimetres, or
+      under 300&nbsp;KB, or exactly 200 by 230 pixels &mdash; and your scan is
+      none of those things. So, five minutes before a deadline, holding the
+      most sensitive file you own, you search for &ldquo;resize photo
+      online&rdquo; and hand your passport to the first result: a site you
+      did not choose ten seconds ago and will never visit again. That is the
+      step this page is about, and it is the step that never needs to happen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why an ID is not like other files</h2>
+    <p>
+      Most files are embarrassing to leak. An identity document is
+      <em>useful</em> to leak, which is a different and worse thing. One image
+      carries, in a single rectangle, roughly everything a stranger needs to
+      open an account in your name: full legal name, date and place of birth,
+      document number, expiry date, a photograph of your face, and on many
+      documents a machine-readable strip that repeats all of it in a format
+      built to be parsed. Fraud guides call this a &ldquo;fullz&rdquo; when it
+      is sold as a bundle; an ID scan is the bundle, pre-assembled.
+    </p>
+    <p>
+      It is also unusually hard to walk back. A leaked password is changed in
+      a minute; a leaked card is reissued in a week. A date of birth is yours
+      for life, and replacing a passport number means replacing the passport.
+      That asymmetry is the whole argument for care: the cost of a leak is
+      high and permanent, and the cost of avoiding one, it turns out, is
+      nothing.
+    </p>
+    <p>
+      One more thing rides along uninvited. A photo taken with a phone
+      carries EXIF metadata &mdash; typically the exact GPS coordinates of
+      where it was taken, which for a document photographed on a kitchen
+      table is your home address, appended to the one file that already
+      holds your name and birthday. The general case of that problem has
+      <a href="../remove-exif-and-gps-data/">a guide of its own</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>The trap is the requirement, not the form</h2>
+    <p>
+      Notice the mechanics of the risky moment. The application form itself is
+      usually the most accountable party in the whole story &mdash; a
+      government portal or a regulated bank, with an address and an auditor.
+      What pushes people somewhere worse is the form's <em>requirements</em>:
+      a dimension in millimetres, a pixel count, a kilobyte ceiling, and
+      sometimes a kilobyte floor. The document has to be transformed, the
+      form will not do it, and the operating system's own tools do not speak
+      millimetres or kilobytes.
+    </p>
+    <p>
+      So the detour happens under the worst possible conditions: in a hurry,
+      with no time to evaluate anything, carrying the one file where the
+      stakes are highest. A converter that would be a perfectly reasonable
+      choice for a holiday photo inherits your passport instead. Nobody
+      chooses that deliberately; the deadline chooses it for them.
+    </p>
+    <p>
+      The general question &mdash; what uploading to any converter actually
+      does, and how to tell whether a tool uploads at all &mdash; has
+      <a href="../is-it-safe-to-upload-files/">a page of its own</a>. The
+      short version is that a checkable tool beats a trustworthy one, because
+      with a checkable tool the trust question never comes up. For an ID,
+      that preference stops being a nicety and becomes the whole point.
+    </p>
+  </section>
+
+  <section>
+    <h2>Doing the whole job without the document leaving</h2>
+    <p>
+      Everything the requirement asks for can be done by your own browser, on
+      your own machine, with nothing sent anywhere. This site has a tool for
+      each shape the requirement takes:
+    </p>
+    <ul>
+      <li>
+        <strong>&ldquo;35&nbsp;&times;&nbsp;45&nbsp;mm, head 70 to 80% of the
+        frame&rdquo;</strong> &mdash; the
+        <a href="../../id-photo/">ID Photo Maker</a> holds each country's
+        published rule: print size, head-height band, eye line, background,
+        and the pixel and kilobyte limits its web forms enforce, including
+        the floors. Pick the country and the document; it applies the rule
+        exactly.
+      </li>
+      <li>
+        <strong>&ldquo;a scan, not a photograph&rdquo;</strong> &mdash; the
+        <a href="../../document-scanner/">Document Scanner</a> finds the
+        page's corners in a phone photo, straightens the perspective and
+        evens the lighting, so a document photographed on a table comes out
+        looking scanned.
+      </li>
+      <li>
+        <strong>&ldquo;under 300&nbsp;KB&rdquo;</strong> &mdash; the
+        <a href="../../compress-image/">Image Compressor</a> takes the limit
+        as a number and finds the least compression that gets under it,
+        rather than making you guess with a quality slider.
+      </li>
+      <li>
+        <strong>Sharing a copy with less than everything on it</strong>
+        &mdash; when a hotel or a landlord wants proof of identity but has no
+        business keeping your document number, the
+        <a href="../../redact-image/">Image Redactor</a> overwrites the
+        pixels themselves rather than drawing a box over them, and the
+        <a href="../../exif-editor/">EXIF Viewer &amp; Remover</a> takes out
+        the metadata, location included.
+      </li>
+    </ul>
+    <p>
+      Every one of these keeps working with the wi-fi switched off, which is
+      not a feature so much as the proof: a page that cannot reach the
+      network cannot send a passport anywhere. That test &mdash; and three
+      more like it &mdash; are written up in
+      <a href="../is-it-safe-to-upload-files/">the guide on uploading</a>,
+      and they work on any site, this one included.
+    </p>
+  </section>
+
+  <section>
+    <h2>For the upload you do have to make</h2>
+    <p>
+      The application itself still ends in an upload, so spend the care where
+      it pays:
+    </p>
+    <ul>
+      <li>
+        Type the portal's address yourself or follow the link from official
+        paper, rather than searching for it. Application portals are
+        heavily impersonated, and an impersonation is most convincing to
+        somebody in a hurry.
+      </li>
+      <li>
+        Send documents through the form, not by email. Email is stored in
+        more places than either sender or receiver can list, indefinitely.
+      </li>
+      <li>
+        If a business asks for a full copy, it is fair to ask what for. In
+        many countries you may cross out what a private party does not need
+        &mdash; several governments explicitly recommend watermarking or
+        annotating a copy with its purpose and date. The redactor above
+        makes that a two-minute job.
+      </li>
+      <li>
+        Keep the working copies off shared machines, and delete the
+        leftovers: the oversized original in the downloads folder outlives
+        the application by years, and it is the copy nobody remembers.
+      </li>
+    </ul>
+    <p>
+      None of this is a reason not to apply for the passport. It is a reason
+      to make the one upload that matters the only one that happens.
+    </p>
+  </section>

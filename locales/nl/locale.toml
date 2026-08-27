@@ -143,6 +143,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "gidsen/qr-code-maken-en-bewijzen-dat-hij-scant"
 "guides/clean-up-a-voice-memo" = "gidsen/spraakmemo-opschonen"
 "guides/is-it-safe-to-scan-a-qr-code" = "gidsen/is-een-qr-code-scannen-veilig"
+"guides/is-it-safe-to-upload-a-photo-of-your-id" = "gidsen/is-je-identiteitsbewijs-uploaden-veilig"
 
 #
 # ---------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+#
+# Guida: è sicuro caricare un documento d'identità? - Italian.
+#
+
+nav = "È sicuro caricare un documento?"
+title = "È sicuro caricare una foto del proprio documento d'identità?"
+description = "Un documento d'identità è l'unico file per cui «probabilmente non succede niente» non basta. Che cosa costa davvero una fuga, perché il momento rischioso è il ridimensionamento appena prima della pratica, e come fare tutto senza che il documento lasci la tua macchina."
+heading = "È sicuro caricare una foto del proprio documento d'identità?"
+lede = """
+    Sul modulo ufficiale a cui è destinata: sì &mdash; il documento serve a
+    quello. Il rischio abita un passo prima: nel convertitore o compressore
+    da cui passi perché il modulo ha preteso «sotto i 300&nbsp;KB, JPEG», e
+    quel passo è quello che non serve mai fare."""
+updated = "26 agosto 2026"
+og_title = "È sicuro caricare una foto del proprio documento d'identità?"
+og_description = "Il passo rischioso non è il modulo della pratica. È la deviazione per ridimensionare e comprimere appena prima - e quella deviazione non ha mai bisogno che il documento lasci la tua macchina."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

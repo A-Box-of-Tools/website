@@ -1,0 +1,18 @@
+#
+# Guide : est-il sûr d'envoyer une photo de sa pièce d'identité ? - French.
+#
+
+nav = "Envoyer sa pièce d'identité, est-ce sûr ?"
+title = "Est-il sûr d'envoyer une photo de sa pièce d'identité ?"
+description = "Une pièce d'identité est le seul fichier où « probablement sans risque » ne suffit pas. Ce que coûte vraiment une fuite, pourquoi le moment risqué est le redimensionnement juste avant la démarche, et comment tout faire sans que le document quitte votre machine."
+heading = "Est-il sûr d'envoyer une photo de sa pièce d'identité ?"
+lede = """
+    Vers le formulaire officiel auquel elle est destinée&nbsp;: oui &mdash;
+    c'est à cela que sert le document. Le risque loge une étape plus tôt,
+    chez le convertisseur ou le compresseur où l'on passe parce que le
+    formulaire a exigé &laquo;&nbsp;moins de 300&nbsp;Ko, JPEG&nbsp;&raquo;
+    &mdash; et cette étape-là n'a jamais besoin d'exister."""
+updated = "26 août 2026"
+og_title = "Est-il sûr d'envoyer une photo de sa pièce d'identité ?"
+og_description = "L'étape risquée n'est pas le formulaire officiel. C'est le détour par le redimensionnement et la compression juste avant - et ce détour n'a jamais besoin que le document quitte votre machine."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
