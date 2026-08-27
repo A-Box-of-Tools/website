@@ -5,9 +5,10 @@ import{decodeGif,GifFormatError,playedDelay,totalDuration}from'./gif.js';
 import{GifCanvas,flatten,parseColour,patchPixels}from'./compose.js';
 import{
 disposalLabel,encodePng,formatBytes,formatSeconds,
-frameName,thumbnail,timingList,zipName,
+baseName,frameName,thumbnail,timingList,zipName,
 }from'./frames.js';
 import{makeZip}from'./shared/zip.js';
+import{cellAt,sheetName,sheetPlan}from'./sheet.js';
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),
@@ -32,6 +33,7 @@ everyNote:$('every-note'),
 timing:$('timing'),
 downloadAll:$('download-all'),
 downloadSelected:$('download-selected'),
+downloadSheet:$('download-sheet'),
 cancel:$('cancel'),
 progressWrap:$('progress-wrap'),
 progressBar:$('progress-bar'),
@@ -268,6 +270,68 @@ save(await encodePng(pixels,width,height),row.name);
 showError(`That frame could not be written: ${error.message}`);
 }
 }
+async function downloadSheet(){
+if(working)return;
+const options=settings();
+const wanted=rows.filter((row)=>row.checked);
+const kept=wanted.length?wanted:rows;
+if(!kept.length)return;
+const plan=sheetPlan(kept.length,gif.width,gif.height,0);
+if(plan.tooBig){
+showError(phrase('sheet.toobig',{width:plan.width,height:plan.height}));
+return;
+}
+working=true;
+cancelled=false;
+clearError();
+el.cancel.hidden=false;
+el.downloadAll.disabled=true;
+el.downloadSelected.disabled=true;
+el.downloadSheet.disabled=true;
+try{
+const sheet=document.createElement('canvas');
+sheet.width=plan.width;
+sheet.height=plan.height;
+const context=sheet.getContext('2d');
+const picked=new Set(kept.map((row)=>row.index));
+const canvas=new GifCanvas(gif);
+let done=0;
+for(const row of rows){
+if(cancelled)break;
+const step=canvas.next();
+if(!picked.has(row.index))continue;
+const pixels=step.pixels.slice();
+if(options.colour)flatten(pixels,options.colour);
+const{x,y}=cellAt(done,plan,gif.width,gif.height);
+context.putImageData(new ImageData(pixels,gif.width,gif.height),x,y);
+done+=1;
+progress(done,kept.length,
+options.stored?phrase('sheet.stored'):phrase('sheet.drawing'));
+await new Promise((resolve)=>setTimeout(resolve,0));
+}
+if(cancelled){
+hideProgress();
+return;
+}
+const blob=await new Promise((resolve,reject)=>{
+sheet.toBlob((made)=>{
+if(made)resolve(made);
+else reject(new Error('This browser would not write a PNG.'));
+},'image/png');
+});
+save(blob,sheetName(baseName(file.name),plan));
+hideProgress();
+}catch(error){
+hideProgress();
+showError(`That sheet could not be written: ${error.message}`);
+}finally{
+working=false;
+el.cancel.hidden=true;
+el.downloadAll.disabled=false;
+el.downloadSelected.disabled=false;
+el.downloadSheet.disabled=false;
+}
+}
 async function downloadZip(wanted){
 if(working||!wanted.length)return;
 working=true;
@@ -408,6 +472,7 @@ el.selectNone.addEventListener('click',()=>pick(false));
 el.clear.addEventListener('click',()=>{reset();clearError();});
 el.downloadAll.addEventListener('click',()=>downloadZip(rows));
 el.downloadSelected.addEventListener('click',()=>downloadZip(rows.filter((row)=>row.checked)));
+el.downloadSheet.addEventListener('click',()=>downloadSheet());
 el.cancel.addEventListener('click',()=>{cancelled=true;});
 window.addEventListener('beforeunload',(event)=>{
 if(!working)return;

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/separar-gif-en-fotogramas/:';
-const CACHE_NAME=CACHE_PREFIX+'bc94323364';
+const CACHE_NAME=CACHE_PREFIX+'9bfc3b06f6';
 const ASSETS=[
 './',
 'index.html',
@@ -14,6 +14,7 @@ const ASSETS=[
 'src/frames.js',
 'src/gif.js',
 'src/main.js',
+'src/sheet.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

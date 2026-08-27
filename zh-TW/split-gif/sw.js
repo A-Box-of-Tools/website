@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/split-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'ff2f9991b1';
+const CACHE_NAME=CACHE_PREFIX+'25d5d1bb3b';
 const ASSETS=[
 './',
 'index.html',
@@ -14,6 +14,7 @@ const ASSETS=[
 'src/frames.js',
 'src/gif.js',
 'src/main.js',
+'src/sheet.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/gifi-karelere-ayirma/:';
-const CACHE_NAME=CACHE_PREFIX+'f51f49becb';
+const CACHE_NAME=CACHE_PREFIX+'2d5f78f3ec';
 const ASSETS=[
 './',
 'index.html',
@@ -14,6 +14,7 @@ const ASSETS=[
 'src/frames.js',
 'src/gif.js',
 'src/main.js',
+'src/sheet.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{
