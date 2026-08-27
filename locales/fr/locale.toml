@@ -162,6 +162,7 @@ complete = true
 "guides/is-it-safe-to-use-an-online-password-generator" = "guides/les-generateurs-de-mots-de-passe-en-ligne-sont-ils-surs"
 "guides/is-base64-encryption" = "guides/base64-est-il-un-chiffrement"
 "guides/what-a-pdf-remembers" = "guides/ce-qu-un-pdf-retient"
+"guides/does-converting-a-photo-remove-its-metadata" = "guides/convertir-une-photo-supprime-t-il-ses-metadonnees"
 
 #
 # ---------------------------------------------------------------------------

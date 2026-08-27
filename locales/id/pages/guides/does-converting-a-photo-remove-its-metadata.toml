@@ -1,0 +1,18 @@
+#
+# Panduan: apakah konversi foto menghapus metadata? - Indonesian.
+#
+
+nav = "Konversi menghapus metadata?"
+title = "Apakah Mengonversi Foto Menghapus Metadatanya?"
+description = "Kadang-kadang - dan kedua akhirnya sama-sama mengejutkan. Operasi mana yang mencabut EXIF, mana yang diam-diam menyimpannya, mengapa layar tidak menunjukkan beda pada kedua kasus, dan cara memeriksa berkas alih-alih menebak."
+heading = "Apakah mengonversi foto menghapus metadatanya?"
+lede = """
+    Kadang-kadang, dan kedua jawaban itu sudah pernah membakar orang.
+    Mengodekan ulang lewat kanvas melucuti semuanya; pengonversi yang
+    teliti membawa semuanya; gambarnya tampak sama pada kedua kasus.
+    Satu-satunya langkah yang andal adalah berhenti meramal dan melihat
+    berkasnya."""
+updated = "26 Agustus 2026"
+og_title = "Apakah mengonversi foto menghapus metadatanya?"
+og_description = "Kadang-kadang - dan kedua akhirnya mengejutkan. Operasi mana yang mencabut EXIF, mana yang menyimpannya, dan cara memeriksa berkas alih-alih menebak."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

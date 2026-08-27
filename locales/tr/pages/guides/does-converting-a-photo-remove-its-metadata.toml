@@ -1,0 +1,17 @@
+#
+# Rehber: fotoğraf dönüştürmek üst veriyi siler mi? - Turkish.
+#
+
+nav = "Dönüştürmek üst veriyi siler mi?"
+title = "Fotoğrafı Dönüştürmek Üst Verisini Siler mi?"
+description = "Bazen - ve iki sonuç da şaşırtır. Hangi işlemler EXIF'i söker, hangileri sessizce tutar, ekran neden iki durumda da fark göstermez, ve tahmin etmek yerine dosyaya nasıl bakılır."
+heading = "Fotoğrafı dönüştürmek üst verisini siler mi?"
+lede = """
+    Bazen; ve iki cevap da insanları yakmıştır. Bir tuval üzerinden
+    yeniden kodlamak her şeyi söker; özenli bir dönüştürücü her şeyi
+    taşır; resim iki durumda da aynı görünür. Güvenilir tek hamle, tahmin
+    etmeyi bırakıp dosyaya bakmaktır."""
+updated = "26 Ağustos 2026"
+og_title = "Fotoğrafı dönüştürmek üst verisini siler mi?"
+og_description = "Bazen - ve iki sonuç da şaşırtır. Hangi işlemler EXIF'i söker, hangileri tutar, ve tahmin etmek yerine dosyaya nasıl bakılır."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

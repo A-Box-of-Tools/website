@@ -1,0 +1,120 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      Bazen. Bir fotoğrafı dönüştürmek, boyutlandırmak ya da sıkıştırmak,
+      araç resmi piksellerden yeniden kuruyorsa üst verisini siler; araç
+      üst veriyi bile isteye taşıyorsa tutar &mdash; ve ekranda hangisinin
+      olduğunu söyleyen hiçbir şey yoktur. Resim iki durumda da aynı
+      görünür, çünkü üst veri zaten hiçbir zaman resmin parçası olmadı.
+    </p>
+    <p>
+      İki sonuç da şaşırtır; ters yönlerde. Biri konumun &ldquo;şöyle bir
+      boyutlandırmakla&rdquo; silineceğine güvenir; konum sağ çıkar. Bir
+      başkası çekim tarihinin format değişikliğini atlatacağına güvenir;
+      tarih gitmiştir. İki yanılgının da devası aynıdır: aracın muhtemelen
+      ne yaptığını tahmin etmeyi bırakmak ve dosyanın gerçekte ne
+      içerdiğine bakmak.
+    </p>
+  </section>
+
+  <section>
+    <h2>Yanında ne yolculuk ediyor, ve neden ayrı</h2>
+    <p>
+      Bir fotoğraf dosyası tek kapta iki şeydir: kodlanmış resim ve onun
+      hakkında bir etiket bloğu &mdash; EXIF, çoğu kez yanında XMP ve bir
+      renk profili. Etiketler genellikle fotoğrafın ne zaman çekildiğini,
+      makineyi ve objektifi, pozlamayı, durduğunuz yerin GPS
+      koordinatlarını ve sıklıkla gömülü küçük bir önizlemeyi taşır
+      &mdash; bazen resmin bir düzenlemeden <em>önceki</em> hâlinin
+      önizlemesini; bir kırpmanın tam da kırptığı şeyi kaçırabilmesi
+      bundandır. O bloğun tam turu
+      <a href="../exif-ve-gps-verisini-silme/">EXIF rehberinde</a>.
+    </p>
+    <p>
+      Her şeyi belirleyen nokta: etiketler piksellerin <em>yanında</em>
+      durur, içinde değil. Resmi çözen araç, piksel alır, etiket almaz;
+      dışarı yazdığı, geri koymayı seçtiklerinden ibarettir. Dosyayı
+      yeniden kodlamadan düzenleyen araç ise etiketlere hiç dokunmayabilir
+      &mdash; ya da tam olarak onları söküp başka hiçbir şeye
+      dokunmayabilir.
+    </p>
+  </section>
+
+  <section>
+    <h2>Yeniden kodlamak neden söker, kopyalamak neden tutar</h2>
+    <p>
+      Tarayıcıdaki resim işlerinin çoğu bir tuvalden geçer: dosyayı ham
+      piksellere çöz, dönüştür, taze bir dosya kodla. Tuval etiket
+      taşımaz; taze dosyada da olmaz &mdash; ilke gereği değil, yapı
+      gereği. Buradaki <a href="../../resim-sikistirma/">resim
+      sıkıştırıcının</a> ve <a href="../../resim-boyutlandirma/">resim
+      boyutlandırıcının</a> çıktılarında EXIF, GPS ve XMP olmamasının
+      sebebi budur ve sayfaları bunu söyler: kaçınılmazdır &mdash; ve
+      çekim tarihini tutmak istiyorduysanız bilmeye değer.
+    </p>
+    <p>
+      Bir dönüştürücü ise korumak için özel çaba harcayabilir. Bu sitenin
+      <a href="../../heic-jpg-donusturme/">HEIC'ten JPG'ye
+      dönüştürücüsü</a> tam olarak bunu yapar: üst veri bloğunu HEIC
+      kabından kaldırıp JPEG'e yerleştirir; tarihler, GPS, hepsi &mdash;
+      çünkü dönüştürme, aynı fotoğrafın başka bir palto giymesi olmalıdır.
+      (Bir etiket bilerek yeniden yazılır: yön, resim yan yatmasın diye;
+      ve blok yalnızca JPEG çıktısına sığar &mdash; format menüsü bunu
+      söyler.) İki dürüst araç, iki zıt davranış, ikisi de kendi işi için
+      doğru &mdash; araç türünden tahmin yürütmenin işe yaramamasının
+      sebebi tam da bu.
+    </p>
+    <p>
+      Tarayıcının dışında tablo aynı ölçüde karışıktır ve altında aynı
+      mantık yatar. Ekran görüntüleri ve dışa aktarmalar taze
+      kodlamalardır: makine üst verisi yok. Mesaj uygulamaları sertçe
+      yeniden sıkıştırır; fotoğraf olarak gönderilen fotoğraflar
+      etiketlerini genellikle kaybeder &mdash; ama aynı dosya
+      &ldquo;belge olarak&rdquo; gönderilirse bayt bayt yolculuk eder,
+      etiketler dahil. E-posta ekleri ve bulut sürücüleri dosyaları
+      değiştirmeden taşır. Desen tutar: yeniden kurulan söküktür,
+      kopyalanan tutulmuştur.
+    </p>
+  </section>
+
+  <section>
+    <h2>Varsaymak yerine denetlemek</h2>
+    <p>
+      Denetim bir dakikadan kısa sürer: çıktı dosyasını &mdash; orijinali
+      değil &mdash; <a href="../../exif-verisi-silme/">EXIF görüntüleyici
+      ve silicide</a> açın ve içinde ne olduğunu okuyun. Dosyayı kendi
+      makinenizde ayrıştırır ve gömülü önizleme dahil her etiketi
+      gösterir. İçinde bir şey yoksa, sızan da yoktur. Hâlâ oradaysa, tam
+      olarak neyin orada olduğunu görürsünüz.
+    </p>
+    <p>
+      Yukarıdakilerin hepsinden üç alışkanlık çıkar:
+    </p>
+    <ul>
+      <li>
+        <strong>Amaç mahremiyetse, bilerek silin.</strong> Etiketleri EXIF
+        aracıyla sökün &mdash; dosyayı yeniden kodlamadan düzenler, resim
+        hiçbir şey kaybetmez &mdash; sonra sonucu denetleyin. Yan etki
+        olarak söken bir boyutlandırmaya bel bağlamayın.
+      </li>
+      <li>
+        <strong>Amaç kaydı korumaksa, koruduğunu söyleyen bir araçla
+        dönüştürün</strong> &mdash; ve onu da denetleyin; çünkü
+        &ldquo;herhalde tutmuştur&rdquo; öbür yönde de yanılır: tarihleri
+        uçup gitmiş bir fotoğraf arşivi de bir kayıptır.
+      </li>
+      <li>
+        <strong>Gerçekten gönderdiğiniz dosyayı denetleyin</strong>;
+        zincirinizin son adımından sonra. Zincirdeki her araç kendi
+        kararını verir ve yalnızca son dosyanın içeriği sayılır.
+      </li>
+    </ul>
+    <p>
+      Ve denetleme aracının kendisi bir web sayfasıysa, alışıldık soru ona
+      da sorulur &mdash; bir üst veri görüntüleyici fotoğrafınızı alır,
+      GPS'iyle birlikte. Buradaki, hiçbir şeyi hiçbir yere göndermeden
+      tamamen tarayıcınızda çalışır ve
+      <a href="../dosya-yuklemek-guvenli-mi/">yükleme rehberi</a> bu
+      iddiayı inanmak yerine nasıl doğrulayacağınızı gösterir.
+    </p>
+  </section>

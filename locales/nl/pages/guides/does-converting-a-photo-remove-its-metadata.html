@@ -1,0 +1,126 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Soms. Een foto converteren, verkleinen of comprimeren verwijdert de
+      metadata wanneer het gereedschap het beeld opnieuw opbouwt uit
+      pixels, en bewaart ze wanneer het gereedschap ze opzettelijk
+      overdraagt &mdash; en niets op het scherm vertelt je welke van de
+      twee er gebeurde. Het beeld ziet er in beide gevallen hetzelfde uit,
+      omdat metadata nooit deel van het beeld was.
+    </p>
+    <p>
+      Beide uitkomsten verrassen, in tegengestelde richtingen. Iemand
+      rekent erop dat &ldquo;alleen even verkleinen&rdquo; de locatie
+      wist, en ze overleeft. Iemand anders rekent erop dat de opnamedatum
+      een formaatwissel overleeft, en ze is weg. De twee vergissingen
+      hebben dezelfde remedie: stoppen met voorspellen wat een gereedschap
+      waarschijnlijk deed, en kijken wat het bestand werkelijk bevat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat er meereist, en waarom het gescheiden is</h2>
+    <p>
+      Een fotobestand is twee dingen in één omhulsel: het gecodeerde
+      beeld, en een blok etiketten erover &mdash; EXIF, vaak met XMP en
+      een kleurprofiel erbij. De etiketten vermelden doorgaans wanneer de
+      foto genomen is, camera en lens, de belichting, de gps-coördinaten
+      van waar je stond, en dikwijls een kleine ingebedde miniatuur
+      &mdash; soms van het beeld zoals het <em>vóór</em> een bewerking
+      was, en zo kan een bijsnijding missen wat ze wegsneed. De volledige
+      rondleiding door dat blok staat in
+      <a href="../exif-en-gps-gegevens-verwijderen/">de EXIF-gids</a>.
+    </p>
+    <p>
+      Het punt dat alles beslist: de etiketten liggen <em>naast</em> de
+      pixels, niet erin. Een gereedschap dat het beeld decodeert, krijgt
+      pixels en geen etiketten; wat het wegschrijft bevat alleen wat het
+      terug kiest te leggen. Een gereedschap dat het bestand bewerkt
+      zonder te hercoderen, kan de etiketten onaangeroerd laten &mdash; of
+      precies die verwijderen en niets anders.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom hercoderen afstroopt, en kopiëren bewaart</h2>
+    <p>
+      Het meeste beeldwerk in een browser loopt via een canvas: het
+      bestand decoderen tot rauwe pixels, ze transformeren, een vers
+      bestand coderen. Een canvas draagt geen etiketten, dus het verse
+      bestand heeft er geen &mdash; niet uit beleid maar uit bouw. Daarom
+      leveren de <a href="../../afbeelding-comprimeren/">
+      afbeeldingscompressor</a> en het gereedschap om het
+      <a href="../../afbeelding-formaat-wijzigen/">formaat van een
+      afbeelding te wijzigen</a> hier uitvoer zonder EXIF, gps en XMP, en
+      hun pagina's zeggen het: het is onvermijdelijk &mdash; en goed om te
+      weten wanneer je de opnamedatum wilde houden.
+    </p>
+    <p>
+      Een converter kan daarentegen moeite doen om te bewaren. De
+      <a href="../../heic-naar-jpg/">HEIC-naar-JPG-converter</a> van deze
+      site doet precies dat: hij tilt het metadatablok uit de
+      HEIC-container en zet het in de JPEG, data, gps en al &mdash; omdat
+      een conversie dezelfde foto in een andere jas hoort te zijn. (Eén
+      etiket wordt bewust herschreven: de oriëntatie, zodat het beeld niet
+      kantelt; en het blok past alleen in de JPEG-uitvoer &mdash; het
+      formaatmenu zegt het erbij.) Twee eerlijke gereedschappen,
+      tegengesteld gedrag, elk juist voor zijn taak &mdash; en precies
+      daarom werkt gokken op soort gereedschap niet.
+    </p>
+    <p>
+      Buiten de browser is het beeld even gemengd, met dezelfde logica
+      eronder. Schermafbeeldingen en exports zijn verse coderingen: geen
+      camerametadata. Berichtenapps hercomprimeren stevig, dus foto's die
+      als foto verstuurd worden verliezen meestal hun etiketten &mdash;
+      maar hetzelfde bestand &ldquo;als document&rdquo; verstuurd, reist
+      byte voor byte, etiketten inbegrepen. E-mailbijlagen en
+      clouddiensten verplaatsen bestanden ongewijzigd. Het patroon houdt:
+      opnieuw opgebouwd betekent afgestroopt, gekopieerd betekent
+      bewaard.
+    </p>
+  </section>
+
+  <section>
+    <h2>Controleren in plaats van aannemen</h2>
+    <p>
+      De controle duurt nog geen minuut: open het uitvoerbestand &mdash;
+      niet het origineel &mdash; in de
+      <a href="../../exif-gegevens-verwijderen/">EXIF-bekijker en
+      -verwijderaar</a> en lees wat erin staat. Hij ontleedt het bestand
+      op je eigen machine en toont elk etiket, de ingebedde miniatuur
+      inbegrepen. Niets erin, niets gelekt. Nog wel erin, en je ziet
+      precies wat.
+    </p>
+    <p>
+      Uit al het bovenstaande volgen drie gewoontes:
+    </p>
+    <ul>
+      <li>
+        <strong>Als het doel privacy is, verwijder dan opzettelijk.</strong>
+        Stroop de etiketten af met het EXIF-gereedschap &mdash; het
+        bewerkt het bestand zonder te hercoderen, dus het beeld verliest
+        niets &mdash; en controleer daarna het resultaat. Vertrouw niet op
+        een verkleining die toevallig afstroopt.
+      </li>
+      <li>
+        <strong>Als het doel het bewaren van de gegevens is, converteer
+        dan met een gereedschap dat zegt te bewaren</strong> &mdash; en
+        controleer ook dat, want &ldquo;waarschijnlijk bewaard&rdquo;
+        faalt in de andere richting: een fotoarchief met verdampte data is
+        ook een verlies.
+      </li>
+      <li>
+        <strong>Controleer het bestand dat je werkelijk verstuurt</strong>,
+        na de laatste stap in je keten. Elk gereedschap beslist voor
+        zichzelf, en alleen de inhoud van het eindbestand telt.
+      </li>
+    </ul>
+    <p>
+      En als het controleergereedschap zelf een webpagina is, geldt de
+      gebruikelijke vraag ook voor hem &mdash; een metadatabekijker
+      ontvangt je foto, gps en al. Die van hier draait volledig in je
+      browser zonder iets ergens heen te sturen, en
+      <a href="../is-bestanden-uploaden-veilig/">de gids over uploaden</a>
+      laat zien hoe je die bewering controleert in plaats van gelooft.
+    </p>
+  </section>

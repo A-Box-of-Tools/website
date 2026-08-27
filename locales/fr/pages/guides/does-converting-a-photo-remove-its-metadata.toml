@@ -1,0 +1,17 @@
+#
+# Guide : convertir une photo supprime-t-il ses métadonnées ? - French.
+#
+
+nav = "Convertir efface-t-il l'EXIF ?"
+title = "Convertir une photo supprime-t-il ses métadonnées ?"
+description = "Parfois - et les deux issues surprennent. Quelles opérations retirent l'EXIF, lesquelles le gardent en silence, pourquoi l'écran ne montre aucune différence dans les deux cas, et comment vérifier le fichier au lieu de supposer."
+heading = "Convertir une photo supprime-t-il ses métadonnées ?"
+lede = """
+    Parfois, et les deux réponses ont déjà brûlé du monde. Réencoder par
+    un canevas décape tout&nbsp;; un convertisseur soigneux transporte
+    tout&nbsp;; l'image est identique dans les deux cas. Le seul geste
+    fiable est d'arrêter de prédire et de regarder le fichier."""
+updated = "26 août 2026"
+og_title = "Convertir une photo supprime-t-il ses métadonnées ?"
+og_description = "Parfois - et les deux issues surprennent. Quelles opérations retirent l'EXIF, lesquelles le gardent, et comment vérifier le fichier au lieu de supposer."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

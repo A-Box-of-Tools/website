@@ -1,0 +1,124 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Às vezes. Converter, redimensionar ou comprimir uma foto remove os
+      metadados quando a ferramenta reconstrói a imagem a partir de
+      pixels, e os mantém quando a ferramenta os copia de propósito
+      &mdash; e nada na tela diz qual das duas coisas aconteceu. A imagem
+      fica igual nos dois casos, porque os metadados nunca fizeram parte
+      da imagem.
+    </p>
+    <p>
+      Os dois desfechos surpreendem, em direções opostas. Alguém conta que
+      &ldquo;só redimensionar&rdquo; apague a localização, e ela
+      sobrevive. Outro conta que a data da captura sobreviva a uma troca
+      de formato, e ela se foi. Os dois erros têm a mesma cura: parar de
+      prever o que a ferramenta provavelmente fez, e olhar o que o arquivo
+      realmente contém.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que viaja ao lado, e por que vai separado</h2>
+    <p>
+      Um arquivo de foto é duas coisas num contêiner só: a imagem
+      codificada, e um bloco de etiquetas sobre ela &mdash; EXIF, muitas
+      vezes com XMP e um perfil de cor. As etiquetas costumam dizer quando
+      a foto foi tirada, a câmera e a lente, a exposição, as coordenadas
+      GPS de onde você estava, e com frequência uma miniatura embutida
+      &mdash; às vezes da imagem como ela era <em>antes</em> de uma
+      edição, que é como um corte pode deixar de remover o que cortou. O
+      passeio completo por esse bloco está no
+      <a href="../remover-dados-exif-e-gps/">guia de EXIF</a>.
+    </p>
+    <p>
+      O ponto que decide tudo: as etiquetas ficam <em>ao lado</em> dos
+      pixels, não dentro deles. Uma ferramenta que decodifica a imagem
+      recebe pixels e nenhuma etiqueta; o que ela escrever de saída contém
+      só o que ela escolher devolver. Uma ferramenta que edita o arquivo
+      sem reencodar pode deixar as etiquetas intactas &mdash; ou remover
+      exatamente elas e nada mais.
+    </p>
+  </section>
+
+  <section>
+    <h2>Por que reencodar arranca, e copiar mantém</h2>
+    <p>
+      Quase todo trabalho de imagem num navegador passa por um canvas:
+      decodificar o arquivo em pixels crus, transformá-los, codificar um
+      arquivo novo. Um canvas não carrega etiquetas, então o arquivo novo
+      não tem nenhuma &mdash; não por política, e sim por construção. Por
+      isso o <a href="../../comprimir-imagem/">compressor de imagens</a> e
+      a ferramenta de <a href="../../redimensionar-imagem/">redimensionar
+      imagens</a> daqui produzem saídas sem EXIF, sem GPS e sem XMP, e as
+      páginas deles dizem isso: é inevitável &mdash; e vale saber quando
+      você queria manter a data.
+    </p>
+    <p>
+      Um conversor, ao contrário, pode se esforçar para preservar. O
+      <a href="../../heic-para-jpg/">conversor de HEIC para JPG</a> deste
+      site faz exatamente isso: levanta o bloco de metadados do contêiner
+      HEIC e o instala no JPEG, datas, GPS e tudo, porque uma conversão
+      deve ser a mesma foto com outro casaco. (Uma etiqueta é reescrita de
+      propósito: a orientação, para a imagem não tombar; e o bloco só cabe
+      na saída JPEG &mdash; o menu de formatos avisa.) Duas ferramentas
+      honestas, comportamentos opostos, cada uma certa para o seu trabalho
+      &mdash; e é exatamente por isso que adivinhar pelo tipo de
+      ferramenta não funciona.
+    </p>
+    <p>
+      Fora do navegador o quadro é igualmente misto, com a mesma lógica
+      por baixo. Capturas de tela e exportações são codificações novas:
+      sem metadados de câmera. Apps de mensagem recomprimem forte, então
+      fotos mandadas como fotos costumam perder as etiquetas &mdash; mas o
+      mesmo arquivo mandado &ldquo;como documento&rdquo; viaja byte a
+      byte, etiquetas incluídas. Anexos de e-mail e nuvens movem arquivos
+      sem mudanças. O padrão se sustenta: reconstruído quer dizer
+      arrancado, copiado quer dizer mantido.
+    </p>
+  </section>
+
+  <section>
+    <h2>Conferir em vez de supor</h2>
+    <p>
+      A conferência leva menos de um minuto: abra o arquivo de saída
+      &mdash; não o original &mdash; no
+      <a href="../../remover-dados-exif/">visualizador e removedor de
+      EXIF</a> e leia o que está lá. Ele analisa o arquivo na sua própria
+      máquina e mostra cada etiqueta, miniatura embutida incluída. Nada
+      lá, nada vazou. Ainda lá, e você vê exatamente o quê.
+    </p>
+    <p>
+      De tudo isso saem três hábitos:
+    </p>
+    <ul>
+      <li>
+        <strong>Quando a meta é privacidade, remova de
+        propósito.</strong> Arranque as etiquetas com a ferramenta de EXIF
+        &mdash; ela edita o arquivo sem reencodar, então a imagem não
+        perde nada &mdash; e depois confira o resultado. Não conte com um
+        redimensionamento que arranca por acaso.
+      </li>
+      <li>
+        <strong>Quando a meta é manter o registro, converta com uma
+        ferramenta que declare preservar</strong> &mdash; e confira isso
+        também, porque &ldquo;deve ter mantido&rdquo; falha na outra
+        direção: um acervo de fotos com as datas evaporadas também é uma
+        perda.
+      </li>
+      <li>
+        <strong>Confira o arquivo que você de fato envia</strong>, depois
+        do último passo da sua cadeia. Cada ferramenta decide por conta
+        própria, e só o conteúdo do arquivo final conta.
+      </li>
+    </ul>
+    <p>
+      E se a ferramenta de conferir for ela mesma uma página web, a
+      pergunta de sempre vale para ela também: um visualizador de
+      metadados recebe a sua foto, GPS incluído. O daqui roda inteiro no
+      seu navegador, sem mandar nada a lugar nenhum, e
+      <a href="../e-seguro-enviar-arquivos/">o guia sobre enviar
+      arquivos</a> mostra como verificar essa afirmação em vez de
+      acreditar nela.
+    </p>
+  </section>

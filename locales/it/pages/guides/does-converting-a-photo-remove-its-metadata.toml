@@ -1,0 +1,18 @@
+#
+# Guida: convertire una foto ne rimuove i metadati? - Italian.
+#
+
+nav = "Convertire toglie i metadati?"
+title = "Convertire una foto ne rimuove i metadati?"
+description = "A volte - ed entrambi gli esiti sorprendono. Quali operazioni tolgono l'EXIF, quali lo tengono in silenzio, perché lo schermo non mostra differenze in nessun caso, e come controllare il file invece di supporre."
+heading = "Convertire una foto ne rimuove i metadati?"
+lede = """
+    A volte, ed entrambe le risposte hanno già scottato qualcuno.
+    Ricodificare attraverso un canvas spoglia tutto; un convertitore
+    accurato trasporta tutto; l'immagine è identica in entrambi i casi.
+    L'unica mossa affidabile è smettere di prevedere e guardare il
+    file."""
+updated = "26 agosto 2026"
+og_title = "Convertire una foto ne rimuove i metadati?"
+og_description = "A volte - ed entrambi gli esiti sorprendono. Quali operazioni tolgono l'EXIF, quali lo tengono, e come controllare il file invece di supporre."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"
