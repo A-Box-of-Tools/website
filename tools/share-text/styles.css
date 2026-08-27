@@ -95,7 +95,16 @@
 }
 .namerow input:focus { outline: none; border-color: var(--accent); }
 
-#status.warn { color: var(--danger, #b4552d); }
+#status.warn,
+#view-status.warn { color: var(--danger); }
+
+/* Ending the share is the one destructive act on the page, and the button
+   that does it should not dress like its neighbours. */
+button.danger {
+  background: var(--danger);
+  border: 1px solid var(--danger);
+  color: #fff;
+}
 
 /* ------------------------------------------- reader requests and file rows */
 
