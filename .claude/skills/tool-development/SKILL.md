@@ -103,8 +103,9 @@ with the steps that bite marked.
    someone reading the code. The build refuses to finish without it. Do not
    add the tool to the repository README or `tools/README.md`; the first
    covers the site, the second is generated.
-9. **Build, test, and open it in a browser** — see "Verify" below. A tool that
-   only passed its tests has not been used yet.
+9. **Build it and open it in a browser** — see "Verify" below. Write the tests
+   it owes and leave the running of them to CI; a tool that only passed its
+   tests has not been used yet, and that is the half nothing else can check.
 
 ## Job: update an existing tool
 
@@ -210,21 +211,25 @@ and unadvertised until then. What a change does owe them:
 python build.py --out _plain --clean --no-minify
 ```
 
-```bash
-python -m unittest discover -t . -s tests/python
-```
+That is exactly what CI runs, and the only thing in this section you run over
+the code rather than over the site it made. `--clean` matters: building
+several branches into one output directory leaves pages from all of them, and
+the link checker then reports dozens of broken links that look exactly like
+"main is broken". `python build.py --check` compares against the deployed
+`dist` branch, which tracks `main` — on a feature branch it exits 1 by
+construction, so do not read that as failure.
 
-```bash
-node --test "tests/js/*.test.js"
-```
-
-The first is exactly what CI runs. `--clean` matters: building several
-branches into one output directory leaves pages from all of them, and the link
-checker then reports dozens of broken links that look exactly like "main is
-broken". Node 21+ needs the glob quoted; on 20 and earlier pass the directory
-instead. `python build.py --check` compares against the deployed `dist`
-branch, which tracks `main` — on a feature branch it exits 1 by construction,
-so do not read that as failure.
+**The two test suites are not yours to run.** `tests/README.md` says how, and
+a person is welcome to; an agent working here is not. CI runs both on every
+push and every pull request and the build job needs them, so a failure stops
+the deploy without your help — while the Python suite costs the better part of
+half an hour locally, because most of its cases build the whole site before
+they assert anything. Write the tests a change owes (the checklists above still
+mean it), let CI run them, and spend the time on the browser instead. If CI
+reports a failure, reproduce that one case by name — `python -m unittest
+tests.python.test_build -v -k <name>`, or `node --test
+--test-name-pattern="<name>" "tests/js/*.test.js"` — rather than the suite
+around it.
 
 Then use the thing:
 
