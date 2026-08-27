@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pangkas-video/:';
-const CACHE_NAME=CACHE_PREFIX+'d0ea255c8f';
+const CACHE_NAME=CACHE_PREFIX+'99387d0a5f';
 const ASSETS=[
 './',
 'index.html',

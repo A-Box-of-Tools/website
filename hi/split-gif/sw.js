@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/split-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'de095a3671';
+const CACHE_NAME=CACHE_PREFIX+'ab36d18e5b';
 const ASSETS=[
 './',
 'index.html',

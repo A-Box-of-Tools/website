@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/qr-code-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'376b120b0e';
+const CACHE_NAME=CACHE_PREFIX+'1ee2f5b4ef';
 const ASSETS=[
 './',
 'index.html',

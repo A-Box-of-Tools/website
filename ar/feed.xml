@@ -53,6 +53,13 @@
     <summary type="html">ساعة من التصوير في دقيقة تُشاهَد: كيف تختار السرعة، ولماذا تحديد المدة النهائية أفضل من الحساب، ومتى ينبغي أن يصير الناتج صورة GIF.</summary>
   </entry>
   <entry>
+    <title type="html">كيف تشارك النص والملفات بين الأجهزة دون رفعها</title>
+    <id>https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">انقل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر - دون أن تراسل نفسك بالبريد، ودون سجلّ محادثة، ودون حساب، ودون أن يحتفظ أي خادم بنسخة.</summary>
+  </entry>
+  <entry>
     <title type="html">كيف تصنع GIF من جزء من فيديو</title>
     <id>https://abox.tools/ar/أدلة/gif-من-جزء-من-فيديو/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/gif-من-جزء-من-فيديو/"/>
@@ -107,6 +114,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/ترميز-base64/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">رمِّز وفكِّك Base64 بأبجديتَيه، ورمِّز العناوين ترميزاً مئوياً، واهرُب كيانات HTML، واقرأ السداسي عشري وهروبات الشرطة المائلة العكسية. كل ذلك يجري في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز جهازك أبداً.</summary>
+  </entry>
+  <entry>
+    <title type="html">مشاركة النص والملفات</title>
+    <id>https://abox.tools/ar/مشاركة-النص/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مشاركة-النص/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">أرسل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر. اسم رابط يُقال بصوت مسموع، وتحديث حي أثناء الكتابة، وموافقة لكل قارئ - ولا شيء على أي خادم أبداً. مجاني، دون تسجيل.</summary>
   </entry>
   <entry>
     <title type="html">مقارن النصوص</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/التحقق-من-قيمة-تجزئة-الملف/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">كيف تفحص مجموعاً تحقّقياً من نوع MD5 أو SHA-256 على Windows وmacOS وLinux أو في متصفحك، وماذا تثبت المطابقةُ فعلاً، والخطأُ الذي يجعل التمرين كلَّه بلا معنى.</summary>
-  </entry>
-  <entry>
-    <title type="html">مولّد كلمات المرور والعبارات</title>
-    <id>https://abox.tools/ar/مولد-كلمات-المرور/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مولد-كلمات-المرور/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">اصنع كلمة مرور قوية عشوائية، أو عبارة مرور بطريقة diceware من قائمة من 7,776 كلمة مشحونة مع الصفحة. تُسحَب بالمولّد التعمياني الخاص بمتصفحك، ولا تُرسَل إلى أي مكان أبداً، ولا تُخزَّن أبداً. مجاناً وبلا تسجيل.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تدمج صفحات PDF وتقسّمها وتعيد ترتيبها</title>
-    <id>https://abox.tools/ar/أدلة/دمج-وتقسيم-ملفات-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/دمج-وتقسيم-ملفات-pdf/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">اجمع ملفات PDF، أو اقطع واحداً إلى عدة ملفات، أو حرّك الصفحات: ما الذي ينجو من إعادة الخلط، وما الذي لا تستطيع أي أداة نقله، ولماذا لا يحتاج شيءٌ من ذلك إلى رفع مستنداتك إلى أي مكان.</summary>
   </entry>
 </feed>

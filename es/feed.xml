@@ -46,11 +46,25 @@
     <summary type="html">Compara dos textos y mira cada diferencia, línea a línea y palabra a palabra, lado a lado o en una columna. La comparación corre en tu navegador y no se sube nada: el código sin publicar nunca sale de tu equipo.</summary>
   </entry>
   <entry>
+    <title type="html">Compartir texto y archivos</title>
+    <id>https://abox.tools/es/compartir-texto/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/compartir-texto/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Envía texto o archivos de un navegador a otro por una conexión directa y cifrada. Un nombre de enlace que se puede decir en voz alta, actualización en vivo mientras escribes, aprobación por lector - y nada guardado en ningún servidor, nunca. Gratis y sin registro.</summary>
+  </entry>
+  <entry>
     <title type="html">Cómo comparar dos archivos JSON</title>
     <id>https://abox.tools/es/guias/comparar-dos-archivos-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/comparar-dos-archivos-json/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Formatea los dos archivos igual, ordena las claves y compáralos después. Por qué un diff de JSON en crudo es casi todo ruido, cómo canonizar los dos lados en el navegador, y qué sobrevive hasta el parche.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo compartir texto y archivos entre dispositivos sin subirlos</title>
+    <id>https://abox.tools/es/guias/compartir-texto-entre-dispositivos/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/compartir-texto-entre-dispositivos/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Llevar texto o archivos de un navegador a otro por una conexión directa y cifrada: sin mandarse correos a uno mismo, sin historial de chat, sin cuenta, y sin que ningún servidor se quede una copia.</summary>
   </entry>
   <entry>
     <title type="html">Cómo convertir un video largo en un timelapse</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/calcular-checksum/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Calcula el MD5, SHA-1, SHA-256, SHA-384 o SHA-512 de cualquier archivo y compáralo con el checksum que publicó la página de descarga. El archivo se lee en el navegador y no se sube nunca, sea del tamaño que sea.</summary>
-  </entry>
-  <entry>
-    <title type="html">Lector de códigos QR y de barras</title>
-    <id>https://abox.tools/es/escanear-codigo-qr/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/escanear-codigo-qr/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Lee un código QR desde una foto, una captura o tu cámara y mira exactamente adónde lleva el enlace antes de abrirlo. También EAN, UPC, Code 128, Code 39 e ITF. No se sube nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">Analizador de GIF</title>
-    <id>https://abox.tools/es/analizar-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/analizar-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Desmonta un GIF en el navegador: cada fotograma con su duración y su descarte, las tablas de color, las repeticiones y un desglose byte a byte de adónde se fue el tamaño del archivo. No se sube nada.</summary>
   </entry>
 </feed>

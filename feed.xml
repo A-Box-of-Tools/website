@@ -102,6 +102,13 @@
     <summary type="html">Photograph every page, get one PDF, combine it with documents you already have, and shrink it until it sends. Three browser tools in a row, and the paperwork never leaves your phone.</summary>
   </entry>
   <entry>
+    <title type="html">How to share text and files between devices without uploading them</title>
+    <id>https://abox.tools/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/share-text-between-devices/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later.</summary>
+  </entry>
+  <entry>
     <title type="html">How to turn a long video into a timelapse</title>
     <id>https://abox.tools/guides/turn-a-long-video-into-a-timelapse/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/turn-a-long-video-into-a-timelapse/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/format-json/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Format and minify JSON, XML, HTML, CSS and YAML, and convert JSON to YAML or XML and back. The parsers run in your browser - nothing is uploaded, so a token or a config file never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Share Text &amp;amp; Files</title>
+    <id>https://abox.tools/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/share-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Send text or files from one browser to another over a direct encrypted connection. A speakable link name, live updates as you type, approval for each reader - and nothing stored on any server, ever. Free, no sign-up.</summary>
   </entry>
   <entry>
     <title type="html">Text Diff</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/qr-barcode-reader/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Read a QR code from a photo, a screenshot or your camera, and see exactly where the link goes before you open it. EAN, UPC, Code 128, Code 39 and ITF barcodes too. Nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">Time-Lapse Maker</title>
-    <id>https://abox.tools/timelapse-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/timelapse-video/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Turn a long video into a time-lapse: 10x, 60x or any speed you type. Runs in your browser, so nothing is uploaded, there is no watermark, and it works offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Analyzer</title>
-    <id>https://abox.tools/gif-analyzer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded.</summary>
   </entry>
 </feed>

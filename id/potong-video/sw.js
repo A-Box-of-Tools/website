@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/potong-video/:';
-const CACHE_NAME=CACHE_PREFIX+'7eb713ba5f';
+const CACHE_NAME=CACHE_PREFIX+'2751cf4dab';
 const ASSETS=[
 './',
 'index.html',

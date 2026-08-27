@@ -1,0 +1,26 @@
+{
+  "id": "/fr/partager-du-texte/",
+  "name": "Partager du texte et des fichiers",
+  "short_name": "Partager du texte et des fichiers",
+  "description": "Le partage vit dans cet onglet ouvert. Les lecteurs le re\u00e7oivent chiffr\u00e9, directement depuis votre navigateur, et fermer l'onglet y met fin - aucun serveur ne conserve quoi que ce soit.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

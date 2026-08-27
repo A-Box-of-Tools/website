@@ -1,0 +1,26 @@
+{
+  "id": "/ko/\ud14d\uc2a4\ud2b8-\uacf5\uc720/",
+  "name": "\ud14d\uc2a4\ud2b8\u00b7\ud30c\uc77c \uacf5\uc720",
+  "short_name": "\ud14d\uc2a4\ud2b8\u00b7\ud30c\uc77c \uacf5\uc720",
+  "description": "\uacf5\uc720\ub294 \uc774 \uc5f4\ub9b0 \ud0ed \uc548\uc5d0\uc11c\ub9cc \uc0bd\ub2c8\ub2e4. \uc77d\ub294 \uc0ac\ub78c\uc740 \uc554\ud638\ud654\ub41c \ub0b4\uc6a9\uc744 \ub2f9\uc2e0\uc758 \ube0c\ub77c\uc6b0\uc800\uc5d0\uc11c \uc9c1\uc811 \ubc1b\uc544 \uac00\uace0, \ud0ed\uc744 \ub2eb\uc73c\uba74 \ub05d\ub0a9\ub2c8\ub2e4 - \uc5b4\ub5a4 \uc11c\ubc84\uc5d0\ub3c4 \uc544\ubb34\uac83\ub3c4 \ub0a8\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

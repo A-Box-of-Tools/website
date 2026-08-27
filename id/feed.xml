@@ -32,6 +32,20 @@
     <uri>https://abox.tools/id/</uri>
   </author>
   <entry>
+    <title type="html">Berbagi teks dan berkas</title>
+    <id>https://abox.tools/id/berbagi-teks/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/berbagi-teks/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Kirim teks atau berkas dari satu browser ke browser lain lewat koneksi langsung yang terenkripsi. Nama tautan yang bisa diucapkan, pembaruan langsung saat mengetik, persetujuan per pembaca - dan tidak pernah ada apa pun di server mana pun. Gratis, tanpa daftar.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara berbagi teks dan berkas antar perangkat tanpa mengunggahnya</title>
+    <id>https://abox.tools/id/panduan/berbagi-teks-antar-perangkat/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/berbagi-teks-antar-perangkat/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Memindahkan teks atau berkas dari satu browser ke browser lain lewat koneksi langsung yang terenkripsi - tanpa mengirim email ke diri sendiri, tanpa riwayat chat, tanpa akun, dan tanpa server yang menyimpan salinan.</summary>
+  </entry>
+  <entry>
     <title type="html">Cara membandingkan dua file JSON</title>
     <id>https://abox.tools/id/panduan/membandingkan-dua-file-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membandingkan-dua-file-json/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/buat-video-time-lapse/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Ubah video panjang menjadi time-lapse: 10x, 60x, atau kecepatan berapa pun yang Anda ketik. Berjalan di peramban Anda, jadi tidak ada yang diunggah, tidak ada tanda air, dan jalan tanpa internet.</summary>
-  </entry>
-  <entry>
-    <title type="html">Penyensor Gambar</title>
-    <id>https://abox.tools/id/sensor-gambar/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/sensor-gambar/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Tutupi sebuah nama, alamat, atau nomor rekening di dalam foto atau tangkapan layar lalu kodekan ulang gambarnya, sehingga piksel yang disembunyikan hilang dari file alih-alih duduk di bawah sebuah persegi panjang. Berjalan sepenuhnya di peramban Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Apa sebenarnya isi di dalam sebuah GIF</title>
-    <id>https://abox.tools/id/panduan/apa-isi-di-dalam-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/apa-isi-di-dalam-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Bingkai, jeda, metode pembuangan, dan tabel warna dijelaskan, kenapa peramban menolak jeda tercepatnya, dan bagaimana memperhitungkan ke mana sebenarnya ukuran file sebuah GIF pergi.</summary>
   </entry>
 </feed>

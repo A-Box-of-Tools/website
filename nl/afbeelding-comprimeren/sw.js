@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/afbeelding-comprimeren/:';
-const CACHE_NAME=CACHE_PREFIX+'4fbc8db198';
+const CACHE_NAME=CACHE_PREFIX+'4ae1b5ba93';
 const ASSETS=[
 './',
 'index.html',

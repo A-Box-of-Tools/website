@@ -102,6 +102,13 @@
     <summary type="html">Jede Seite fotografieren, ein PDF bekommen, mit vorhandenen Dokumenten zusammenführen und schrumpfen, bis es sich versenden lässt. Drei Browser-Werkzeuge nacheinander, und die Unterlagen verlassen das Telefon nie.</summary>
   </entry>
   <entry>
+    <title type="html">So teilen Sie Text und Dateien zwischen Geräten, ohne sie hochzuladen</title>
+    <id>https://abox.tools/de/ratgeber/text-zwischen-geraeten-teilen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/text-zwischen-geraeten-teilen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen bringen - ohne Mail an sich selbst, ohne Chatverlauf, ohne Konto, und ohne dass ein Server eine Kopie behält.</summary>
+  </entry>
+  <entry>
     <title type="html">So vergleichen Sie zwei JSON-Dateien</title>
     <id>https://abox.tools/de/ratgeber/zwei-json-dateien-vergleichen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/zwei-json-dateien-vergleichen/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/langes-video-in-zeitraffer-verwandeln/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Aus einer Stunde Material eine anschaubare Minute: wie man die Geschwindigkeit wählt, warum die Ziellänge besser ist als Kopfrechnen, und wann das Ergebnis ein GIF werden sollte.</summary>
+  </entry>
+  <entry>
+    <title type="html">Text &amp;amp; Dateien teilen</title>
+    <id>https://abox.tools/de/text-teilen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/text-teilen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen schicken. Ein aussprechbarer Link-Name, Live-Aktualisierung beim Tippen, Freigabe pro Leser - und niemals etwas auf einem Server. Kostenlos, ohne Anmeldung.</summary>
   </entry>
   <entry>
     <title type="html">Textvergleich</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/pruefsumme-vergleichen/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Wie Sie eine MD5- oder SHA-256-Prüfsumme unter Windows, macOS und Linux oder im Browser vergleichen, was ein Treffer wirklich beweist und welcher Fehler die ganze Übung wertlos macht.</summary>
-  </entry>
-  <entry>
-    <title type="html">Zeitraffer-Generator</title>
-    <id>https://abox.tools/de/zeitraffer-erstellen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/zeitraffer-erstellen/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Ein langes Video zum Zeitraffer machen, mit 10x, 60x oder jedem Tempo, das Sie eintippen. Läuft im Browser: kein Upload, kein Wasserzeichen, auch offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF-Analyse</title>
-    <id>https://abox.tools/de/gif-analysieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-analysieren/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Ein GIF im Browser auseinandernehmen: jedes Einzelbild mit Anzeigedauer und Entsorgungsart, die Farbtabellen, die Wiederholungen und eine Byte-für-Byte-Aufstellung, wohin die Dateigröße gegangen ist. Es wird nichts hochgeladen.</summary>
   </entry>
 </feed>

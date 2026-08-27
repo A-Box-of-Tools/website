@@ -67,6 +67,13 @@
     <summary type="html">हर पन्ने की फ़ोटो लीजिए, एक PDF पाइए, पहले से मौजूद दस्तावेज़ों से जोड़िए, और तब तक छोटा कीजिए जब तक भेजा न जा सके। तीन ब्राउज़र-टूल एक के बाद एक, और काग़ज़ात कभी फ़ोन से बाहर नहीं जाते।</summary>
   </entry>
   <entry>
+    <title type="html">टेक्स्ट और फ़ाइलें साझा करें</title>
+    <id>https://abox.tools/hi/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/share-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से भेजिए। बोलकर बताने लायक लिंक-नाम, टाइप करते-करते लाइव अपडेट, हर पाठक के लिए अनुमति - और किसी सर्वर पर कभी कुछ नहीं। मुफ़्त, बिना साइन-अप।</summary>
+  </entry>
+  <entry>
     <title type="html">टेक्स्ट डिफ़</title>
     <id>https://abox.tools/hi/compare-text/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-text/"/>
@@ -93,6 +100,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/get-photos-ready-for-the-web/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">HEIC से JPEG, GPS हटा, पन्ने के हिसाब से आकार, और बजट पर कंप्रेस: पूरी कड़ी ब्राउज़र में, और असली फ़ोटो कभी आपकी मशीन से बाहर नहीं जातीं।</summary>
+  </entry>
+  <entry>
+    <title type="html">बिना अपलोड किए डिवाइसों के बीच टेक्स्ट और फ़ाइलें कैसे साझा करें</title>
+    <id>https://abox.tools/hi/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/share-text-between-devices/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से पहुँचाइए - खुद को ईमेल किए बिना, चैट-इतिहास छोड़े बिना, खाते के बिना, और बिना किसी सर्वर के प्रति रखे।</summary>
   </entry>
   <entry>
     <title type="html">बूमरैंग वीडियो कैसे बनाएँ</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/password-generator/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">एक मज़बूत रैंडम पासवर्ड बनाइए, या पेज के साथ आने वाली 7,776 शब्दों की सूची से डाइसवेयर पासफ़्रेज़ बनाइए। ब्राउज़र के अपने क्रिप्टोग्राफ़िक जनरेटर से निकलता है, कहीं नहीं जाता और कहीं सेव नहीं होता। मुफ़्त, बिना साइन-अप।</summary>
-  </entry>
-  <entry>
-    <title type="html">हैश और चेकसम</title>
-    <id>https://abox.tools/hi/hash-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/hash-checksum/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">किसी भी फ़ाइल का MD5, SHA-1, SHA-256, SHA-384 या SHA-512 निकालिए और डाउनलोड पेज पर दिए चेकसम से मिलाइए। फ़ाइल आपके ब्राउज़र में पढ़ी जाती है और किसी भी साइज़ में अपलोड नहीं होती।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF एनालाइज़र</title>
-    <id>https://abox.tools/hi/gif-analyzer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-analyzer/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">GIF को अपने ब्राउज़र में खोलकर देखिए: हर फ़्रेम की देरी और डिस्पोज़ल, कलर टेबल, लूप की गिनती, और फ़ाइल का साइज़ कहाँ गया इसका बाइट-दर-बाइट ब्योरा। कुछ अपलोड नहीं होता।</summary>
   </entry>
 </feed>

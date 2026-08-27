@@ -46,6 +46,13 @@
     <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
   </entry>
   <entry>
+    <title type="html">Tekst en bestanden delen</title>
+    <id>https://abox.tools/nl/tekst-delen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-delen/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Stuur tekst of bestanden van de ene browser naar de andere over een rechtstreekse, versleutelde verbinding. Een uitspreekbare linknaam, live bijgewerkt terwijl je typt, goedkeuring per lezer - en nooit iets op een server. Gratis, zonder account.</summary>
+  </entry>
+  <entry>
     <title type="html">Tekstvergelijker</title>
     <id>https://abox.tools/nl/tekst-vergelijken/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
@@ -58,6 +65,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/gif-beeld-voor-beeld-bewerken/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Haal een GIF uiteen in zijn beelden, verwijder of herschik ze, en bouw hem weer op met behoud van de timing. Wat de rondreis overleeft, wat het palet kost, en hoe je ziet waarom een GIF zwaar is.</summary>
+  </entry>
+  <entry>
+    <title type="html">Zo deel je tekst en bestanden tussen apparaten zonder ze te uploaden</title>
+    <id>https://abox.tools/nl/gidsen/tekst-delen-tussen-apparaten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/tekst-delen-tussen-apparaten/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Tekst of bestanden van de ene browser naar de andere brengen over een rechtstreekse, versleutelde verbinding - zonder jezelf te mailen, zonder chatgeschiedenis, zonder account, en zonder server die een kopie houdt.</summary>
   </entry>
   <entry>
     <title type="html">Zo maak je een GIF van een deel van een video</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/wachtwoord-generator/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Genereer een sterk willekeurig wachtwoord, of een diceware-wachtwoordzin uit een meegeleverde lijst van 7.776 woorden. Getrokken door de cryptografische generator van je browser, nergens naartoe gestuurd en nergens opgeslagen. Gratis, zonder registratie.</summary>
-  </entry>
-  <entry>
-    <title type="html">Zo controleer je een download tegen zijn checksum</title>
-    <id>https://abox.tools/nl/gidsen/de-checksum-van-een-download-controleren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/de-checksum-van-een-download-controleren/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Hoe je een MD5- of SHA-256-checksum vergelijkt op Windows, macOS en Linux of in je browser, wat een treffer werkelijk bewijst, en de fout waardoor de hele exercitie niets meer voorstelt.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF-analyse</title>
-    <id>https://abox.tools/nl/gif-analyseren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-analyseren/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Haal een GIF uit elkaar in je browser: elk frame met zijn vertraging en opruimregel, de kleurtabellen, het aantal herhalingen en een byte-voor-byte overzicht van waar de bestandsgrootte heen ging. Er wordt niets geüpload.</summary>
   </entry>
 </feed>

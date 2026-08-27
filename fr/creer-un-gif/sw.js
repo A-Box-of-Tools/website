@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/creer-un-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'db88d42f03';
+const CACHE_NAME=CACHE_PREFIX+'c5e95d254c';
 const ASSETS=[
 './',
 'index.html',

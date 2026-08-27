@@ -67,11 +67,25 @@
     <summary type="html">コードを生成したら、同じサイトのリーダーで検証します。正確な中身と本当のリンクを、印刷サイズで、写真から、大量印刷の前に。すべてブラウザーで、何もアップロードせずに。</summary>
   </entry>
   <entry>
+    <title type="html">アップロードせずに端末間でテキストとファイルを共有する方法</title>
+    <id>https://abox.tools/ja/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/share-text-between-devices/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ。自分宛てのメールも、チャット履歴も、アカウントも要らず、どのサーバーにも写しは残りません。</summary>
+  </entry>
+  <entry>
     <title type="html">スマホ写真をウェブ用に準備する方法</title>
     <id>https://abox.tools/ja/guides/get-photos-ready-for-the-web/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/get-photos-ready-for-the-web/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">HEICをJPEGに、GPSを剥がし、ページに合わせてリサイズし、予算まで圧縮する。連鎖の全部がブラウザの中で、原本は端末を一度も離れない。</summary>
+  </entry>
+  <entry>
+    <title type="html">テキストとファイルの共有</title>
+    <id>https://abox.tools/ja/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/share-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ送れます。声に出して伝えられるリンク名、入力と同時のライブ更新、読む人ごとの承認。そしてどのサーバーにも何も残りません。無料、登録不要。</summary>
   </entry>
   <entry>
     <title type="html">テキスト差分</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/redact-image/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">写真やスクリーンショットの名前・住所・口座番号を隠して保存し直します。隠した画素は四角形の下に残るのではなく、ファイルから消えます。処理はすべてブラウザ内です。</summary>
-  </entry>
-  <entry>
-    <title type="html">隠した部分が本当に消える画像の黒塗りのやり方</title>
-    <id>https://abox.tools/ja/guides/redact-an-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/redact-an-image/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">たいていのソフトが描く黒い四角は画像の上に乗っているだけで、動かせてしまいます。本当の黒塗りと、ただ覆っただけの状態は何が違うのか。モザイクをかけた文字がなぜ読み戻せるのか。送る前にファイルを確かめる方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIFの中には本当は何があるのか</title>
-    <id>https://abox.tools/ja/guides/whats-inside-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/whats-inside-a-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">コマ、待ち時間、後始末の方法、色表の説明。ブラウザがいちばん短い待ち時間を受け付けない理由と、GIFの容量がどこへ消えたのかを突き止める方法。</summary>
   </entry>
 </feed>

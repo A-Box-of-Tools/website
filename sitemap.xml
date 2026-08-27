@@ -187,6 +187,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/share-text/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/split-gif/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -405,6 +411,12 @@
   <url>
     <loc>https://abox.tools/guides/format-json-without-uploading-it/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/guides/share-text-between-devices/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -667,6 +679,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ar/مشاركة-النص/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ar/تقسيم-gif-إلى-إطارات/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -885,6 +903,12 @@
   <url>
     <loc>https://abox.tools/ar/أدلة/تنسيق-json-دون-رفعه/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -1141,6 +1165,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/text-teilen/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/gif-in-einzelbilder-zerlegen/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -1359,6 +1389,12 @@
   <url>
     <loc>https://abox.tools/de/ratgeber/json-formatieren/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/ratgeber/text-zwischen-geraeten-teilen/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -1621,6 +1657,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/compartir-texto/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/separar-gif-en-fotogramas/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -1839,6 +1881,12 @@
   <url>
     <loc>https://abox.tools/es/guias/formatear-json/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/guias/compartir-texto-entre-dispositivos/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -2101,6 +2149,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/fr/partager-du-texte/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/fr/decouper-un-gif-en-images/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -2319,6 +2373,12 @@
   <url>
     <loc>https://abox.tools/fr/guides/formater-du-json/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/guides/partager-du-texte-entre-appareils/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -2581,6 +2641,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/hi/share-text/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/hi/split-gif/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -2799,6 +2865,12 @@
   <url>
     <loc>https://abox.tools/hi/guides/format-json-without-uploading-it/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/guides/share-text-between-devices/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -3061,6 +3133,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/id/berbagi-teks/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/id/pisah-gif-ke-bingkai/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -3279,6 +3357,12 @@
   <url>
     <loc>https://abox.tools/id/panduan/format-json-tanpa-mengunggah/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/panduan/berbagi-teks-antar-perangkat/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -3535,6 +3619,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/condividere-testo/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/dividere-gif-in-fotogrammi/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -3753,6 +3843,12 @@
   <url>
     <loc>https://abox.tools/it/guide/formattare-json/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/guide/condividere-testo-tra-dispositivi/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -4015,6 +4111,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ja/share-text/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ja/split-gif/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -4233,6 +4335,12 @@
   <url>
     <loc>https://abox.tools/ja/guides/format-json-without-uploading-it/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/guides/share-text-between-devices/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -4495,6 +4603,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ko/텍스트-공유/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ko/gif-프레임-분리/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -4713,6 +4827,12 @@
   <url>
     <loc>https://abox.tools/ko/가이드/json-정렬하기/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/가이드/기기-간-텍스트-공유/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -4975,6 +5095,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/tekst-delen/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/gif-splitsen-in-frames/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -5193,6 +5319,12 @@
   <url>
     <loc>https://abox.tools/nl/gidsen/json-formatteren/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/gidsen/tekst-delen-tussen-apparaten/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -5455,6 +5587,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/compartilhar-texto/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/separar-gif-em-quadros/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -5673,6 +5811,12 @@
   <url>
     <loc>https://abox.tools/pt/guias/formatar-json/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/guias/compartilhar-texto-entre-dispositivos/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -5935,6 +6079,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/tr/metin-paylasma/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/tr/gifi-karelere-ayirma/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -6153,6 +6303,12 @@
   <url>
     <loc>https://abox.tools/tr/rehberler/json-yuklemeden-bicimlendirme/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/rehberler/cihazlar-arasi-metin-paylasma/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -6409,6 +6565,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/zh/share-text/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/zh/split-gif/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -6627,6 +6789,12 @@
   <url>
     <loc>https://abox.tools/zh/guides/format-json-without-uploading-it/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/guides/share-text-between-devices/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -6889,6 +7057,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/zh-TW/share-text/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/zh-TW/split-gif/</loc>
     <lastmod>2026-08-21</lastmod>
     <changefreq>monthly</changefreq>
@@ -7107,6 +7281,12 @@
   <url>
     <loc>https://abox.tools/zh-TW/guides/format-json-without-uploading-it/</loc>
     <lastmod>2026-08-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/guides/share-text-between-devices/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

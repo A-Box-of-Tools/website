@@ -39,6 +39,13 @@
     <summary type="html">Codifica e decodifica Base64 in entrambi gli alfabeti, codifica URL in percentuale, fai l'escape delle entità HTML e leggi esadecimale ed escape con barra rovesciata. Gira tutto nel tuo browser e non viene caricato niente: un token non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
+    <title type="html">Come condividere testo e file tra dispositivi senza caricarli</title>
+    <id>https://abox.tools/it/guide/condividere-testo-tra-dispositivi/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/condividere-testo-tra-dispositivi/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Portare testo o file da un browser all'altro su una connessione diretta e cifrata: senza mandarsi email, senza cronologia di chat, senza account, e senza che nessun server tenga una copia.</summary>
+  </entry>
+  <entry>
     <title type="html">Come confrontare due file JSON</title>
     <id>https://abox.tools/it/guide/confrontare-due-file-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/confrontare-due-file-json/"/>
@@ -107,6 +114,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/trasformare-un-video-lungo-in-timelapse/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Un'ora di girato in un minuto guardabile: come scegliere la velocità, perché dire la durata finale batte fare i conti, e quando il risultato deve diventare una GIF.</summary>
+  </entry>
+  <entry>
+    <title type="html">Condividere testo e file</title>
+    <id>https://abox.tools/it/condividere-testo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/condividere-testo/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Manda testo o file da un browser all'altro su una connessione diretta e cifrata. Un nome di link pronunciabile, aggiornamento in tempo reale mentre scrivi, approvazione lettore per lettore - e mai niente su nessun server. Gratis, senza registrazione.</summary>
   </entry>
   <entry>
     <title type="html">Confronto testi</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/leggere-qr-code/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Leggi un QR code da una foto, uno screenshot o dalla fotocamera, e guarda esattamente dove porta il link prima di aprirlo. Anche EAN, UPC, Code 128, Code 39 e ITF. Non viene caricato niente.</summary>
-  </entry>
-  <entry>
-    <title type="html">Oscuratore di immagini</title>
-    <id>https://abox.tools/it/oscurare-immagine/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/oscurare-immagine/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Copri un nome, un indirizzo o un numero di conto in una foto o in uno screenshot e salva di nuovo l'immagine: i pixel nascosti spariscono dal file invece di restare sotto un rettangolo. Tutto avviene nel browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Analizzatore di GIF</title>
-    <id>https://abox.tools/it/analizzare-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/analizzare-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Smonta una GIF nel browser: ogni fotogramma con la sua durata e il suo smaltimento, le tavole dei colori, le ripetizioni e il conto byte per byte di dove è finito il peso del file. Non viene caricato niente.</summary>
   </entry>
 </feed>

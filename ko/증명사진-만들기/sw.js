@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/증명사진-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'d37b60be63';
+const CACHE_NAME=CACHE_PREFIX+'e8d021814b';
 const ASSETS=[
 './',
 'index.html',

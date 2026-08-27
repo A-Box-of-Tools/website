@@ -74,6 +74,20 @@
     <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">Metin ve dosya paylaşımı</title>
+    <id>https://abox.tools/tr/metin-paylasma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-paylasma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Metni veya dosyaları bir tarayıcıdan diğerine doğrudan ve şifreli bir bağlantıyla gönderin. Söylenebilir bir bağlantı adı, siz yazarken canlı güncelleme, okuyucu başına onay - ve hiçbir sunucuda asla hiçbir şey. Ücretsiz, kayıt yok.</summary>
+  </entry>
+  <entry>
+    <title type="html">Metin ve dosyaları yüklemeden cihazlar arasında nasıl paylaşırsınız</title>
+    <id>https://abox.tools/tr/rehberler/cihazlar-arasi-metin-paylasma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/cihazlar-arasi-metin-paylasma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Metni veya dosyaları doğrudan ve şifreli bir bağlantıyla bir tarayıcıdan diğerine taşıyın - kendinize e-posta atmadan, sohbet geçmişi bırakmadan, hesap açmadan ve hiçbir sunucu kopya tutmadan.</summary>
+  </entry>
+  <entry>
     <title type="html">QR kod nasıl oluşturulur ve okunduğu nasıl kanıtlanır</title>
     <id>https://abox.tools/tr/rehberler/qr-kod-yapip-okundugunu-kanitlama/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/qr-kod-yapip-okundugunu-kanitlama/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/saglama-toplami-hesaplama/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Herhangi bir dosyanın MD5, SHA-1, SHA-256, SHA-384 ya da SHA-512 değerini hesaplayın ve indirme sayfasının yayımladığı sağlama toplamıyla karşılaştırın. Dosya tarayıcınızda okunur ve hiçbir boyutta yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Şifre ve Parola Cümlesi Üreteci</title>
-    <id>https://abox.tools/tr/sifre-olusturucu/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/sifre-olusturucu/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Güçlü ve rastgele bir şifre ya da beraberinde gelen 7.776 kelimelik listeden bir diceware parola cümlesi üretin. Tarayıcınızın kendi kriptografik üreteciyle çekilir, hiçbir yere gönderilmez, hiçbir zaman saklanmaz. Ücretsiz, kayıt gerekmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir GIF'in içinde gerçekte ne var</title>
-    <id>https://abox.tools/tr/rehberler/gifin-icinde-ne-var/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gifin-icinde-ne-var/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Kareler, gecikmeler, elden çıkarma yöntemleri ve renk tabloları anlatılıyor; tarayıcılar en hızlı gecikmeleri neden reddediyor ve bir GIF'in dosya boyutunun gerçekte nereye gittiğini nasıl bulursunuz.</summary>
   </entry>
 </feed>

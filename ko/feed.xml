@@ -95,6 +95,13 @@
     <summary type="html">순간을 자르고, 복사본을 뒤집고, 둘을 이어 붙여 반복시킵니다. 도구 세 개를 차례로, 전부 브라우저에서, 그리고 전체 작업을 1분으로 줄이는 순서.</summary>
   </entry>
   <entry>
+    <title type="html">업로드하지 않고 기기 간에 텍스트와 파일을 공유하는 방법</title>
+    <id>https://abox.tools/ko/가이드/기기-간-텍스트-공유/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/기기-간-텍스트-공유/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">텍스트나 파일을 직접적이고 암호화된 연결로 한 브라우저에서 다른 브라우저로 옮기세요. 자기 자신에게 이메일을 보내지 않고, 채팅 기록을 남기지 않고, 계정 없이, 어떤 서버도 사본을 쥐지 않은 채.</summary>
+  </entry>
+  <entry>
     <title type="html">여러 장을 작은 PDF 한 개로 스캔하는 방법</title>
     <id>https://abox.tools/ko/가이드/여러-장을-pdf-한-개로-스캔/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/여러-장을-pdf-한-개로-스캔/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/텍스트-비교/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">두 텍스트를 비교해 모든 차이를 줄 단위, 단어 단위로, 나란히 또는 한 열로 봅니다. 비교는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 공개 전 코드가 내 기기를 떠날 일이 없습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">텍스트·파일 공유</title>
+    <id>https://abox.tools/ko/텍스트-공유/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/텍스트-공유/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">텍스트나 파일을 직접적이고 암호화된 연결로 한 브라우저에서 다른 브라우저로 보내세요. 말로 전할 수 있는 링크 이름, 입력하는 대로 실시간 반영, 읽는 사람마다 승인 - 그리고 어떤 서버에도 아무것도 남지 않습니다. 무료, 가입 없음.</summary>
   </entry>
   <entry>
     <title type="html">폰 사진을 웹에 올릴 준비하는 방법</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/타임랩스-만들기/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">긴 동영상을 타임랩스로 바꿉니다. 10배, 60배, 직접 입력한 배속까지. 브라우저에서 돌아갑니다. 업로드 없음, 워터마크 없음, 오프라인 동작.</summary>
-  </entry>
-  <entry>
-    <title type="html">해시와 체크섬</title>
-    <id>https://abox.tools/ko/체크섬-확인/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/체크섬-확인/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">어떤 파일이든 MD5, SHA-1, SHA-256, SHA-384, SHA-512를 계산해 다운로드 페이지에 적힌 체크섬과 맞춰 봅니다. 파일은 브라우저 안에서 읽고, 크기와 상관없이 업로드하지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 분석</title>
-    <id>https://abox.tools/ko/gif-분석/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/gif-분석/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">브라우저에서 GIF를 뜯어봅니다. 프레임마다의 재생 시간과 폐기 방식, 색상 표, 반복 횟수, 그리고 용량이 어디로 갔는지 바이트 단위로 보여 줍니다. 아무것도 업로드되지 않습니다.</summary>
   </entry>
 </feed>

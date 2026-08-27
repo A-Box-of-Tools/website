@@ -81,6 +81,13 @@
     <summary type="html">Couper les blancs et les faux départs, puis remonter le niveau presque à pleine échelle. Deux outils du navigateur à la suite, dans l'ordre qui préserve la qualité, et l'enregistrement ne quitte jamais votre machine.</summary>
   </entry>
   <entry>
+    <title type="html">Comment partager du texte et des fichiers entre appareils sans les téléverser</title>
+    <id>https://abox.tools/fr/guides/partager-du-texte-entre-appareils/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/partager-du-texte-entre-appareils/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Faire passer du texte ou des fichiers d'un navigateur à un autre par une connexion directe et chiffrée - sans s'envoyer de courriel, sans historique de discussion, sans compte, et sans qu'un serveur garde une copie.</summary>
+  </entry>
+  <entry>
     <title type="html">Comment préparer les photos du téléphone pour le web</title>
     <id>https://abox.tools/fr/guides/preparer-des-photos-pour-le-web/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/preparer-des-photos-pour-le-web/"/>
@@ -121,6 +128,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-json/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Formatez et compactez du JSON, du XML, du HTML, du CSS et du YAML, et convertissez du JSON en YAML ou en XML et inversement. Les analyseurs tournent dans votre navigateur, rien n'est envoyé - un jeton ou un fichier de configuration ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Partager du texte et des fichiers</title>
+    <id>https://abox.tools/fr/partager-du-texte/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/partager-du-texte/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Envoyez du texte ou des fichiers d'un navigateur à un autre par une connexion directe et chiffrée. Un nom de lien prononçable, mise à jour en direct pendant la frappe, approbation lecteur par lecteur - et jamais rien sur aucun serveur. Gratuit, sans inscription.</summary>
   </entry>
   <entry>
     <title type="html">Caviardeur de PDF</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/verifier-une-somme-de-controle/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">Calculez le MD5, SHA-1, SHA-256, SHA-384 ou SHA-512 de n&amp;rsquo;importe quel fichier et comparez-le à la somme de contrôle publiée sur la page de téléchargement. Le fichier est lu dans le navigateur et n&amp;rsquo;est jamais envoyé, quelle que soit sa taille.</summary>
-  </entry>
-  <entry>
-    <title type="html">Lecteur de QR codes et de codes-barres</title>
-    <id>https://abox.tools/fr/lecteur-de-qr-code/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/lecteur-de-qr-code/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Lisez un QR code depuis une photo, une capture d'écran ou votre caméra, et voyez exactement où mène le lien avant de l'ouvrir. Codes-barres EAN, UPC, Code 128, Code 39 et ITF aussi. Rien n'est envoyé.</summary>
-  </entry>
-  <entry>
-    <title type="html">Analyseur de GIF</title>
-    <id>https://abox.tools/fr/analyser-un-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/analyser-un-gif/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">Démontez un GIF dans votre navigateur&amp;nbsp;: chaque image avec sa durée et son effacement, les tables de couleurs, le nombre de boucles, et le détail octet par octet de la taille du fichier. Rien n'est envoyé.</summary>
   </entry>
 </feed>

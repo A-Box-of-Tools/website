@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/video-rueckwaerts-abspielen/:';
-const CACHE_NAME=CACHE_PREFIX+'5056ab4e31';
+const CACHE_NAME=CACHE_PREFIX+'8e4e7b982b';
 const ASSETS=[
 './',
 'index.html',

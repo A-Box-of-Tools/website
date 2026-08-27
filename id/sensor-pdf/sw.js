@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/sensor-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'e660bf1f5f';
+const CACHE_NAME=CACHE_PREFIX+'c6fb9a4906';
 const ASSETS=[
 './',
 'index.html',

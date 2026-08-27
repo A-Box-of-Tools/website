@@ -46,6 +46,13 @@
     <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
   </entry>
   <entry>
+    <title type="html">如何不上传就在设备间分享文本与文件</title>
+    <id>https://abox.tools/zh/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/share-text-between-devices/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">把文本或文件经直连加密通道从一个浏览器送到另一个——不用给自己发邮件，不留聊天记录，不需要账号，也没有哪台服务器留着副本。</summary>
+  </entry>
+  <entry>
     <title type="html">怎么从正好那一帧做视频封面图</title>
     <id>https://abox.tools/zh/guides/make-a-video-thumbnail/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-video-thumbnail/"/>
@@ -114,6 +121,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/compare-two-json-files/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">两个文件用同一种方式格式化，键排好序，再比对。为什么生比 JSON 几乎全是噪音，怎么在浏览器里把两边化成规范形，以及什么能一路留到补丁里。</summary>
+  </entry>
+  <entry>
+    <title type="html">文本与文件分享</title>
+    <id>https://abox.tools/zh/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/share-text/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">把文本或文件经由直连加密通道从一个浏览器送到另一个。链接名说得出口，边打字边实时同步，逐个批准读者——任何服务器上永远不存任何东西。免费，无需注册。</summary>
   </entry>
   <entry>
     <title type="html">文本比对</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/timelapse-video/"/>
     <updated>2026-08-23T00:00:00Z</updated>
     <summary type="html">把长视频做成延时摄影，10 倍、60 倍，或者你自己填的倍数。在浏览器里跑，不上传，没有水印，断网也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎样用校验和核对下载的文件</title>
-    <id>https://abox.tools/zh/guides/verify-a-file-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/verify-a-file-checksum/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">在 Windows、macOS、Linux 或浏览器里比对 MD5 与 SHA-256 校验和的办法，对上了究竟证明了什么，以及那个让整件事白做的错误。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF 分析</title>
-    <id>https://abox.tools/zh/gif-analyzer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-analyzer/"/>
-    <updated>2026-08-22T00:00:00Z</updated>
-    <summary type="html">在浏览器里把 GIF 拆开看：每一帧的延时和处置方式、颜色表、循环次数，以及体积去了哪里的逐字节明细。什么都不上传。</summary>
   </entry>
 </feed>

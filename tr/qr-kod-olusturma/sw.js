@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/qr-kod-olusturma/:';
-const CACHE_NAME=CACHE_PREFIX+'3a2615d5dd';
+const CACHE_NAME=CACHE_PREFIX+'2e985c9f53';
 const ASSETS=[
 './',
 'index.html',

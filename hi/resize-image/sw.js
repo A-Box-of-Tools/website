@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/resize-image/:';
-const CACHE_NAME=CACHE_PREFIX+'6ee21f5a84';
+const CACHE_NAME=CACHE_PREFIX+'38a83a42ba';
 const ASSETS=[
 './',
 'index.html',
