@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/이미지-크기-조절/:';
-const CACHE_NAME=CACHE_PREFIX+'b64f208045';
+const CACHE_NAME=CACHE_PREFIX+'ecfc71f304';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=d548e2ab50',
+'styles.css?v=6d65342870',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

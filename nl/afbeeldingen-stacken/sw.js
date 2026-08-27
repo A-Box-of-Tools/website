@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/afbeeldingen-stacken/:';
-const CACHE_NAME=CACHE_PREFIX+'3ac47c7cf7';
+const CACHE_NAME=CACHE_PREFIX+'88ad9686dd';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=b7b2996c33',
+'styles.css?v=14925f45cc',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

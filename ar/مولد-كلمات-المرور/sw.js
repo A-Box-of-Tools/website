@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/مولد-كلمات-المرور/:';
-const CACHE_NAME=CACHE_PREFIX+'b7b39516cf';
+const CACHE_NAME=CACHE_PREFIX+'56f817e22e';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=ee47b444ab',
+'styles.css?v=d05cafb40d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/generate.js',

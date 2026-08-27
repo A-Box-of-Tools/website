@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/generador-de-contrasenas/:';
-const CACHE_NAME=CACHE_PREFIX+'b6fb1d31e4';
+const CACHE_NAME=CACHE_PREFIX+'f85230793a';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=ee47b444ab',
+'styles.css?v=d05cafb40d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/generate.js',
