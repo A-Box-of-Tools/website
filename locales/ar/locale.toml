@@ -180,6 +180,7 @@ complete = true
 "guides/does-converting-a-photo-remove-its-metadata" = "أدلة/هل-التحويل-يزيل-بيانات-الصورة"
 "guides/how-can-a-web-page-work-offline" = "أدلة/كيف-تعمل-صفحة-ويب-دون-إنترنت"
 "guides/whats-inside-a-dicom-file" = "أدلة/ماذا-يوجد-داخل-ملف-dicom"
+"guides/can-an-ai-agent-use-these-tools" = "أدلة/هل-يستخدم-وكيل-ai-هذه-الأدوات"
 
 #
 # ---------------------------------------------------------------------------

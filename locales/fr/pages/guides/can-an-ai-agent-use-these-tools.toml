@@ -1,0 +1,19 @@
+#
+# Guide : un agent IA peut-il utiliser ces outils ? - French.
+#
+
+nav = "Un agent IA peut-il utiliser ces outils ?"
+title = "Un agent IA peut-il utiliser ces outils ?"
+description = "Oui : ce sont des pages web ordinaires, sans compte, aux commandes étiquetées, et un agent les pilote comme n'importe quoi d'autre. Ce qui compte, c'est où tourne le navigateur de l'agent - cela décide si votre fichier reste sur votre machine."
+heading = "Un agent IA peut-il utiliser ces outils ?"
+lede = """
+    Oui. Ce sont des pages web ordinaires, sans compte, sans captcha, aux
+    commandes toutes étiquetées, et un agent les pilote comme il pilote le
+    reste. La question qui mérite une page est celle d'en dessous&nbsp;:
+    quand vous confiez une corvée de fichier à un agent, où va le
+    fichier&nbsp;? La réponse tient tout entière à l'endroit où tourne le
+    navigateur de l'agent."""
+updated = "27 août 2026"
+og_title = "Un agent IA peut-il utiliser ces outils ?"
+og_description = "Des pages web ordinaires, commandes étiquetées, aucun compte : donc oui. Ce qui compte, c'est où tourne le navigateur de l'agent - cela décide si votre fichier reste sur votre machine."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
