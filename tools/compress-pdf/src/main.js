@@ -112,9 +112,6 @@ async function load(file) {
     el.fileRow.hidden = false;
 
     renderInventory(inventory);
-    el.inventoryCard.hidden = false;
-    el.settingsCard.hidden = false;
-    el.runCard.hidden = false;
     renderSettings();
 
     if (doc.repaired) {
@@ -148,9 +145,6 @@ function messageFor(error) {
 function reset() {
   loaded = null;
   el.fileRow.hidden = true;
-  el.inventoryCard.hidden = true;
-  el.settingsCard.hidden = true;
-  el.runCard.hidden = true;
   el.result.hidden = true;
   el.progress.hidden = true;
   el.loadError.hidden = true;

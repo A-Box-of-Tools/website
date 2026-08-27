@@ -207,9 +207,6 @@ function breathe() {
 function renderDocument() {
   const ready = pages.length > 0 && source !== null;
   el.docFacts.hidden = !ready;
-  el.findCard.hidden = !ready;
-  el.pageCard.hidden = !ready;
-  el.runCard.hidden = !ready;
   if (!ready) return;
 
   el.docName.textContent = source.file.name;

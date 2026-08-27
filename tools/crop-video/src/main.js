@@ -194,8 +194,6 @@ async function loadFile(picked) {
     cropper.setSource(source.width, source.height);
     setAspect('free', el.aspectRow.querySelector('[data-aspect="free"]'));
 
-    el.cropCard.hidden = false;
-    el.exportCard.hidden = false;
     el.exportBtn.disabled = false;
     updateFormatOptions();
     updateSummary();
@@ -286,8 +284,6 @@ function releaseFile() {
 
 function resetView() {
   el.source.hidden = true;
-  el.cropCard.hidden = true;
-  el.exportCard.hidden = true;
   el.pathNote.hidden = true;
   releaseFile();
 }

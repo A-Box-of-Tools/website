@@ -151,8 +151,6 @@ async function loadFile(picked) {
     watchUntil = null;
 
     showSource();
-    el.sectionCard.hidden = false;
-    el.exportCard.hidden = false;
 
     timeline.setSource({ duration: decoded.duration, summary });
     timeline.setEnabled(true);

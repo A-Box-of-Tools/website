@@ -266,7 +266,6 @@ function report(found) {
 
   el.results.prepend(render(found));
   while (el.results.children.length > MOST_KEPT) el.results.lastElementChild.remove();
-  el.resultsCard.hidden = false;
   return true;
 }
 

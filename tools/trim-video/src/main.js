@@ -147,8 +147,6 @@ async function addFiles(files) {
   if (!clips.length) return;
   describeSelection();
   renderClips();
-  el.sectionCard.hidden = false;
-  el.exportCard.hidden = false;
   updateMethodOptions();
 }
 
@@ -378,8 +376,6 @@ function removeClip(index) {
 
   if (!clips.length) {
     selected = -1;
-    el.sectionCard.hidden = true;
-    el.exportCard.hidden = true;
     el.preview.removeAttribute('src');
     el.preview.load();
     renderClips();

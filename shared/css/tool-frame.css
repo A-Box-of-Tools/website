@@ -374,6 +374,32 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   box-shadow: var(--shadow);
 }
 
+/* A step that cannot do anything yet.
+
+   Every numbered step is on the page from the first moment, so the whole job
+   is readable before a file is handed over - which is the point of a site
+   that asks for your files. The last step is the one that acts, so it waits:
+   greyed, and inert, until there is something to act on.
+
+   `inert` does the real work - it takes the whole card out of the tab order
+   and stops every control in it - and the two lines under it are for the
+   browsers that do not know the attribute yet, where the card would otherwise
+   look disabled and not be. The buttons inside are disabled in their own
+   right, so this is the belt rather than the braces.
+
+   No transition on the opacity. One was tried and the card stayed grey: a
+   transition begun inside an inert subtree sits at currentTime 0 and never
+   advances, so the card kept the value it was animating away from long after
+   the attribute had gone. Instant is also the honest reading - the step
+   becomes usable the moment the file lands, and a fade would say it was still
+   thinking. */
+.card[inert] {
+  opacity: 0.55;
+  pointer-events: none;
+  user-select: none;
+}
+
+
 /* A step's heading, whether it stands on its own or is the summary of the fold
    its explanation went into. buildlib/cards.py moves it inside a <summary>
    wherever a card opens with a `card-lede`, so a rule that only knew the first
@@ -1293,6 +1319,11 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
   --surface-2, never a second call to action shouting over the first. The
   links are the other tools' names, which is all they need to be.
 */
+/* Greyed while there is nothing to carry, the same way a step that cannot act
+   yet is greyed. It is readable throughout - the point of showing it early is
+   that somebody can see where this tool leads before they commit a file. */
+.handoff[inert] { opacity: 0.55; pointer-events: none; }
+
 .handoff {
   margin-top: 0.8rem;
   padding: 0.6rem 0.9rem;

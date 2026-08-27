@@ -48,7 +48,17 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
 
   const hand = (files) => {
     const picked = Array.from(files ?? []);
-    if (picked.length) onFiles(picked);
+    if (!picked.length) return;
+    // The last step of a tool is on the page from the start but inert, so the
+    // whole job can be read before anything is handed over. This is the moment
+    // it stops waiting, and it is done here because this is the one place every
+    // tool's files arrive through - from the input or from a drop - so no tool
+    // has to remember to do it. `inert` is used for nothing else on these
+    // pages; see .card[inert] in tool-frame.css.
+    for (const card of document.querySelectorAll('main .card[inert]')) {
+      card.removeAttribute('inert');
+    }
+    onFiles(picked);
   };
 
   input.addEventListener('change', () => {
