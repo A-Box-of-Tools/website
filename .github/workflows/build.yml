@@ -164,7 +164,22 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     steps:
+      # `fetch-tags` because the version is a tag now. Without it the default
+      # checkout brings none, `git tag --list` on the runner is empty, and
+      # scripts/next_version.py takes its "nothing has ever been tagged"
+      # branch and proposes the FIRST version on every single deploy - which
+      # the remote then rejects, because 1.0.0 has existed since the day the
+      # scheme started. That is not a hypothetical: it failed nine deploys in
+      # a row, starting with the one that introduced the script.
+      #
+      # `fetch-depth` stays at the default 1. The tags come with the commits
+      # they point at, and `git diff <tag>..HEAD` compares two commit objects
+      # rather than walking between them, so the shallow history is enough.
+      # `fetch-depth: 0` would work too and would drag in the whole of the
+      # dist branch to do it.
       - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
 
       # The build uses tomllib, which is standard library from 3.11 onwards.
       # Python alone produces a working, readable site: that is what plain
@@ -225,6 +240,7 @@ jobs:
           exit $status
 
       - name: Publish to the dist branch
+        id: publish
         if: github.event_name != 'pull_request'
         env:
           SHA: ${{ github.sha }}
@@ -317,7 +333,15 @@ jobs:
           # exists - but a step that pushes a ref should say what it does when
           # it is asked twice rather than fail the workflow after the site is
           # already live.
-          if git rev-parse -q --verify "refs/tags/$version" >/dev/null; then
+          #
+          # Asked of the REMOTE, which is where the push will be refused. This
+          # used to be `git rev-parse refs/tags/$version`, a local lookup, and
+          # a local lookup is worth nothing on a checkout that has no tags -
+          # the guard and the thing it guards against were both blind to the
+          # same fact. The step above now fetches them, so the local answer
+          # would be right today; asking the remote is right whether or not
+          # that stays true.
+          if git ls-remote --exit-code --tags origin "refs/tags/$version" >/dev/null 2>&1; then
             echo "Version $version is already tagged; nothing to do."
             exit 0
           fi
@@ -354,8 +378,22 @@ jobs:
       # a refused submission does not undo it, so a red run here would say
       # something untrue about the build. The status goes to the step summary
       # instead, and the step marks itself failed without stopping the job.
+      # Named against the publish rather than against whatever happens to sit
+      # above it. It carried `continue-on-error` and no condition, which reads
+      # as "this must never fail the deploy" and is only half of that: a step
+      # with an ordinary condition is SKIPPED once an earlier one has failed,
+      # so `continue-on-error` protected the job from IndexNow and left
+      # IndexNow at the mercy of the tag step. When tagging broke, nine deploys
+      # went out and no search engine was told about any of them - the exact
+      # failure the sitemap's `lastmod` work exists to prevent, and a silent
+      # one, because a skipped step is not a red mark on the run.
+      #
+      # `!cancelled()` rather than `always()`: a cancelled run should stop.
+      # The `steps.publish` test is the real dependency - there is nothing to
+      # announce if nothing was published, and `_site/sitemap.xml` might not
+      # even exist.
       - name: Tell IndexNow what changed
-        if: github.event_name != 'pull_request'
+        if: ${{ !cancelled() && github.event_name != 'pull_request' && steps.publish.outcome == 'success' }}
         continue-on-error: true
         run: |
           set -uo pipefail

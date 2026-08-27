@@ -176,5 +176,60 @@ class WritingTheVersionBack(unittest.TestCase):
                 self.assertEqual(version.parse(version.dotted(nxt)), nxt)
 
 
+class TheCheckoutTheDeployRunsOn(unittest.TestCase):
+    """The rule above is pure, and the deploy still got the version wrong.
+
+    Not because the arithmetic failed. Because the checkout it runs on carried
+    no tags: `git tag --list` came back empty, `latest` returned None, and
+    next_version.py took its "nothing has ever been tagged" branch and proposed
+    FIRST. The remote has held 1.0.0 since the day the scheme started, so every
+    push was rejected - nine deploys in a row, each failing after the site was
+    already live and taking the IndexNow submission down with it.
+
+    Nothing in the rule could have caught that, because the rule was right. The
+    wrong thing was the ground it stood on, and the only place that is written
+    down is the workflow.
+
+    Read as text rather than parsed. The test job installs Python and Node and
+    nothing else, so there is no YAML parser here to reach for - and the
+    alternative to a crude assertion is the one the workflow's own comments
+    warn about: a decision that can only be tested by opening a pull request
+    against it.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        text = (ROOT / '.github' / 'workflows' / 'build.yml').read_text(
+            encoding='utf-8')
+        # The build job, and not the test job above it: both check out, and
+        # only one of them works out a version.
+        head, sep, tail = text.partition('\n  build:\n')
+        assert sep, 'build.yml has no build job'
+        cls.build = tail
+
+    def test_it_asks_for_the_tags(self):
+        # Without this the version is worked out on a checkout that cannot see
+        # a single tag, and the answer is always FIRST.
+        checkout = self.build.partition('actions/checkout')[2]
+        self.assertIn('fetch-tags: true', checkout.partition('- name:')[0])
+
+    def test_the_tag_guard_asks_the_remote(self):
+        # A local `git rev-parse refs/tags/...` is worth nothing on a checkout
+        # with no tags, which is exactly the case it existed to survive: the
+        # guard and the failure were blind to the same fact.
+        self.assertIn('git ls-remote --exit-code --tags origin', self.build)
+        self.assertNotIn('git rev-parse -q --verify "refs/tags/$version"',
+                         self.build)
+
+    def test_indexnow_does_not_ride_on_the_tag_step(self):
+        # `continue-on-error` stops IndexNow failing the deploy. It does not
+        # stop IndexNow being SKIPPED when an earlier step fails, which is how
+        # nine deploys went out with no search engine told about any of them.
+        indexnow = self.build.partition('Tell IndexNow what changed')[2]
+        condition = indexnow.partition('run:')[0]
+        self.assertIn('!cancelled()', condition)
+        self.assertIn("steps.publish.outcome == 'success'", condition)
+
+
 if __name__ == '__main__':
     unittest.main()
