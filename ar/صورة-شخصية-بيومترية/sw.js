@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/صورة-شخصية-بيومترية/:';
-const CACHE_NAME=CACHE_PREFIX+'f2aa8f6810';
+const CACHE_NAME=CACHE_PREFIX+'4b3fb4e1b5';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a859ae443b',
+'styles.css?v=f4cc52737d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

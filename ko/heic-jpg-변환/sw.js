@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/heic-jpg-변환/:';
-const CACHE_NAME=CACHE_PREFIX+'241cd2d398';
+const CACHE_NAME=CACHE_PREFIX+'3a1d0d30f9';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=e71f64fe72',
+'styles.css?v=e96c35d9dc',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

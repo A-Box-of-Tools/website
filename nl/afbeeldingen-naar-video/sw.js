@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/afbeeldingen-naar-video/:';
-const CACHE_NAME=CACHE_PREFIX+'0d58a1f52d';
+const CACHE_NAME=CACHE_PREFIX+'06dca62782';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=ee7629b28c',
+'styles.css?v=de3b095219',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

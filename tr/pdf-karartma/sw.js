@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/pdf-karartma/:';
-const CACHE_NAME=CACHE_PREFIX+'5c2c400f46';
+const CACHE_NAME=CACHE_PREFIX+'32c1497e3e';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=d56d3dadc5',
+'styles.css?v=a2d2fed7e2',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

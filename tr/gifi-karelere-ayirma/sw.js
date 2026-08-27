@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/gifi-karelere-ayirma/:';
-const CACHE_NAME=CACHE_PREFIX+'4137261053';
+const CACHE_NAME=CACHE_PREFIX+'0152eb1ee5';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=cd27abe36a',
+'styles.css?v=c5a46f1d7e',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

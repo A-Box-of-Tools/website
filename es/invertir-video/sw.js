@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/invertir-video/:';
-const CACHE_NAME=CACHE_PREFIX+'4aaf44c2c9';
+const CACHE_NAME=CACHE_PREFIX+'e80335aaac';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=38e0d79bde',
+'styles.css?v=c3cb66554b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

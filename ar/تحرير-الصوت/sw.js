@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحرير-الصوت/:';
-const CACHE_NAME=CACHE_PREFIX+'bee703506c';
+const CACHE_NAME=CACHE_PREFIX+'892761ab8e';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=8954f2d68f',
+'styles.css?v=5a8cfe7fa1',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
