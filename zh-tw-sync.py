@@ -324,6 +324,11 @@ TAIWAN_REGISTER_RE = [
     # 隻能, 隻想, 隻看. A 隻 in front of a verb is always that mis-split
     # (the one idiom spelled 隻字 has no verb after it).
     (re.compile(r'隻(?=[能想看讀說播會])'), '只'),
+    # s2twp reads 个中 as the idiom 箇中 ("therein") and writes the archaic
+    # counter, so "一个中间夹着文件夹的编辑器" came out as 一箇中間. Nothing in
+    # this corpus uses that idiom: every 个中 in it is the counter 個 followed
+    # by 中間 or 中的.
+    (re.compile(r'箇(?=中)'), '個'),
     # 看著 as "looks/appears" is mainland; Taiwan says 看起來. The watching
     # sense (看著它, 看著時長變化) is real in both and must survive, so the
     # appears-sense is recognised by what follows.
