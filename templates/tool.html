@@ -233,35 +233,53 @@
   to your files does it by taking them off you first, so the difference is worth
   stating before the first file is asked for, not in a panel you have to go
   looking for.
+
+  Only the claim, though. The paragraph, the fact chips and the live check's
+  words used to sit open under it and together they pushed the tool itself
+  below the fold, so everything but the one sentence now folds into a native
+  <details> - chosen over a scripted panel because it needs nothing from
+  main.js (the live-check code is copied into every tool) and the folded text
+  stays in the page for a crawler to read. The two live dots live in the
+  summary line, so the measured proof stays on screen even folded; the words
+  behind them are one click away. The dots keep bare class="live-dot" because
+  every tool's main.js assigns className outright, wiping anything else.
 -->
 <section class="pledge">
-  <p class="pledge-line">
-    <span class="pledge-mark" aria-hidden="true">&#9679;</span>
+  <details class="pledge-fold">
+    <summary class="pledge-line">
+      <span class="pledge-mark" aria-hidden="true">&#9679;</span>
+      <span class="pledge-title">
 {{ ui.tool.pledge_line }}
-  </p>
-  <p class="pledge-sub">
+      </span>
+      <span class="pledge-glance" aria-hidden="true">
+        <span id="network-dot" class="live-dot"></span>
+        <span id="offline-dot" class="live-dot"></span>
+        <span class="pledge-caret"></span>
+      </span>
+    </summary>
+
+    <p class="pledge-sub">
 {{ tool.pledge }}
-  </p>
-
-  <ul class="pledge-facts">
-{% for fact in tool.facts %}    <li><span aria-hidden="true">{{ fact.mark }}</span> {{ fact.text }}</li>
-{% endfor %}  </ul>
-
-  <!-- Live, measured, and wrong-provable: this is the part that turns the
-       claim above into something a sceptical visitor can check. -->
-  <div class="pledge-live">
-    <p class="live-row">
-      <span id="network-dot" class="live-dot" aria-hidden="true"></span>
-      <span><strong>{{ ui.tool.live_check }}</strong> <span id="network-count">{{ ui.tool.checking }}</span></span>
     </p>
-    <p class="live-row">
-      <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
-      <span><strong>{{ ui.tool.offline }}</strong> <span id="offline-status">{{ ui.tool.checking }}</span></span>
-    </p>
-    <p class="live-hint">
+
+    <ul class="pledge-facts">
+{% for fact in tool.facts %}      <li><span aria-hidden="true">{{ fact.mark }}</span> {{ fact.text }}</li>
+{% endfor %}    </ul>
+
+    <!-- Live, measured, and wrong-provable: this is the part that turns the
+         claim above into something a sceptical visitor can check. -->
+    <div class="pledge-live">
+      <p class="live-row">
+        <strong>{{ ui.tool.live_check }}</strong> <span id="network-count">{{ ui.tool.checking }}</span>
+      </p>
+      <p class="live-row">
+        <strong>{{ ui.tool.offline }}</strong> <span id="offline-status">{{ ui.tool.checking }}</span>
+      </p>
+      <p class="live-hint">
 {{ tool.live_hint }}
-    </p>
-  </div>
+      </p>
+    </div>
+  </details>
 </section>
 
 <section id="privacy-panel" class="privacy" hidden>
