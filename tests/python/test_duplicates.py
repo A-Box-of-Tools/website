@@ -19,6 +19,14 @@ applied to one copy leaves the others wrong, silently, with nothing to say so -
 each copy has its own tests and they all keep passing. So the copies are
 declared here, and this fails if any group stops agreeing.
 
+Declaring is not left to whoever remembers. The copies are found from disk: two
+files of the same name whose tokens are equal are a copy, and one that is not
+declared fails. It has to work that way round, because a module copied into a
+second tool arrives under a name of its author's choosing - and a file the
+declarations have never heard of is exactly the one nobody will think to add.
+The name alone proves nothing in the other direction: thirty-six tools have a
+main.js and no two of them are the same file.
+
 Comments are not compared. Each copy explains itself in terms of the tool it
 sits in, and that is correct - `minify.tokenize_js` drops comments, so what is
 compared is the code and only the code.
@@ -65,10 +73,13 @@ The groups are deliberate, not accidental:
     repair all three want.
 
 Adding a sixth copy of one of these, or a new duplicated module, means adding
-it here. `test_every_copy_is_declared` fails if a copy exists that no group
-names, so that cannot be forgotten.
+it here. `test_identical_copies_are_declared` finds it on disk and fails until
+it is, and `test_every_copy_is_declared` then holds the other copies of that
+name to being either grouped or listed below with a reason.
 """
 
+import collections
+import itertools
 import pathlib
 import unittest
 
@@ -89,6 +100,16 @@ GROUPS = [
     ('reader.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
     ('filters.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
     ('writer.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
+    # The seven below were already identical, token for token, and were found
+    # by test_identical_copies_are_declared the day it was written rather than
+    # by anybody noticing. They are declared as what they are.
+    ('crc32.js', ['exif-editor', 'merge-pdf']),
+    ('zip.js', ['exif-editor', 'merge-pdf']),
+    ('wav.js', ['edit-audio', 'trim-audio']),
+    ('samplerate.js', ['edit-audio', 'trim-audio']),
+    ('decode.js', ['edit-audio', 'trim-audio']),
+    ('support.js', ['crop-video', 'trim-video']),
+    ('support.js', ['reverse-video', 'timelapse-video']),
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that
@@ -101,6 +122,16 @@ SINGLETONS = {
     # reading a PDF has any reason to do.
     ('reader.js', 'gif-analyzer'): 'a GIF reader, related to the PDF one by name only',
     ('reader.js', 'dicom-viewer'): 'a DICOM reader, related to the PDF one by name only',
+    # decode.js and support.js each ask their tool's own question, and the
+    # copies below answer a different one from the group that shares the name.
+    ('decode.js', 'timelapse-video'):
+        'decodes the few runs of samples a time-lapse samples, not a whole track',
+    ('support.js', 'grab-frame'):
+        'asks about still formats, because this tool writes pictures and encodes no video',
+    ('support.js', 'images-to-video'):
+        'asks only about encoding, because nothing here reads a video in',
+    ('support.js', 'video-to-gif'):
+        'asks only about reading, because the GIF encoder is in this folder',
 }
 
 
@@ -135,6 +166,40 @@ class Groups(unittest.TestCase):
 
 
 class Coverage(unittest.TestCase):
+    def test_identical_copies_are_declared(self):
+        """A file copied to a second tool has to be declared, whatever it is called.
+
+        The test below this one only ever looked at module names it had already
+        been told about, so it could confirm that the copies of a DECLARED name
+        were all accounted for and could not see a name nobody had mentioned.
+        That is the wrong way round for the thing the file exists to catch: a
+        module copied into a second tool arrives under a name of its author's
+        choosing, and stayed invisible here precisely because it was new.
+
+        So this one starts from disk. Two files with the same name whose token
+        streams are equal are a copy by any reading, and have to sit in a group
+        that keeps them in step. Nothing is inferred from the name alone -
+        thirty-six tools have a main.js and no two of them are the same file.
+        """
+        by_name = collections.defaultdict(list)
+        for path in sorted(TOOLS.glob('*/src/*.js')):
+            by_name[path.name].append(path.parts[-3])
+
+        for module, tools in sorted(by_name.items()):
+            if len(tools) < 2:
+                continue
+            streams = {tool: tokens(module, tool) for tool in tools}
+            groups = [set(group) for name, group in GROUPS if name == module]
+            for one, other in itertools.combinations(tools, 2):
+                if streams[one] != streams[other]:
+                    continue
+                with self.subTest(module=module, tools=(one, other)):
+                    self.assertTrue(
+                        any({one, other} <= group for group in groups),
+                        f'{module}: the copies in {one} and {other} are identical '
+                        f'and are not declared together in GROUPS. Declare them, '
+                        f'or give one of them a reason to differ.')
+
     def test_every_copy_is_declared(self):
         for module in sorted({module for module, _ in GROUPS}
                              | {m for m, _ in SINGLETONS}):
