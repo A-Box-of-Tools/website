@@ -25,12 +25,9 @@ const magicAt=bytes.length>=PREAMBLE+4
 if(magicAt!==MAGIC){
 const guess=sniff(bytes);
 if(!guess){
-throw new NotDicom('there is no DICM marker at byte 128, and the first '
-+'bytes are not a DICOM element either');
+throw new NotDicom('open.notdicom');
 }
-warnings.push(`This file has no DICM marker, so it was read as a bare dataset in ${
-      guess.name}. That was worked out from its first element rather than declared.`
-);
+warnings.push({key:'note.baredataset',values:{syntax:guess.name}});
 return{
 hasPreamble:false,
 meta:emptyDataset(),
@@ -47,14 +44,11 @@ syntax:metaSyntax,
 });
 const uid=metaValue(meta,'00020010');
 if(!uid){
-warnings.push('The file meta group names no transfer syntax, so the dataset was '
-+'read as Implicit VR Little Endian, which is what the standard says to assume.');
+warnings.push({key:'note.nosyntax'});
 }
 const syntax=transferSyntax(uid||IMPLICIT_LITTLE);
 if(uid&&!syntax.known){
-warnings.push(`Transfer syntax ${uid} is not one this tool recognises. The header `
-+'below was read as Explicit VR Little Endian, which every syntax registered '
-+'since 1995 uses; the pixels could not be decoded.');
+warnings.push({key:'note.unknownsyntax',values:{uid}});
 }
 return{
 hasPreamble:true,
@@ -131,9 +125,7 @@ try{
 element=readElement(reader,syntax,true);
 }catch(error){
 if(!(error instanceof Truncated))throw error;
-dataset.warnings.push(`The file ends part-way through the element at byte ${at
-      }; everything before it was read.`
-);
+dataset.warnings.push({key:'note.truncated',values:{at}});
 reader.at=end;
 break;
 }
@@ -210,15 +202,15 @@ element.fragments=encapsulated.items;
 element.offsetTable=encapsulated.table;
 return;
 }
-element.stopped=`The element ${tag} declares an undefined length, which only a `
-+'sequence may do. Nothing after it could be read.';
+element.stopped={key:'stop.undefinedlength',values:{tag}};
 reader.at=reader.end;
 return;
 }
 if(length>reader.left){
-element.stopped=`The element at byte ${element.offsetOfTag} says its value is ${
-      length} bytes, and only ${reader.left} are left in the file.`
-;
+element.stopped={
+key:'stop.toolong',
+values:{at:element.offsetOfTag,length,left:reader.left},
+};
 element.length=reader.left;
 element.value=keep(reader.slice(reader.left));
 return;

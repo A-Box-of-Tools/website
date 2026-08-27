@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/gif-analyseren/:';
-const CACHE_NAME=CACHE_PREFIX+'b0f9063ba8';
+const CACHE_NAME=CACHE_PREFIX+'703f11cc50';
 const ASSETS=[
 './',
 'index.html',

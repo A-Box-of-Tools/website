@@ -115,7 +115,7 @@ await pause();
 try{
 instances.push(await scan(files[at]));
 }catch(error){
-refused.push(`${files[at].name}: ${error.message}`);
+refused.push(`${files[at].name}: ${phrase(error.message, error.values)}`);
 }
 }
 }finally{
@@ -306,7 +306,9 @@ let frame;
 try{
 frame=await frameOf(file,index);
 }catch(error){
-return fail(phrase('pixels.failed',{reason:error.message}));
+return fail(phrase('pixels.failed',{
+reason:phrase(error.message,error.values),
+}));
 }
 shown=frame;
 const series=stack.series[stack.index];
@@ -703,7 +705,7 @@ el.factSpacing.textContent=info?.spacing
 el.factFile.textContent=fileSize(file.size);
 el.factFile.title=exact(file.size);
 el.factRange.textContent=NOTHING;
-const notes=file.warnings.slice();
+const notes=file.warnings.map((note)=>phrase(note.key,note.values));
 if(file.syntax.pixels==='jpeg')notes.push(phrase('pixels.jpeg'));
 el.notes.replaceChildren();
 for(const note of notes){
@@ -849,13 +851,13 @@ el.copyStatus.textContent=phrase('saved',{name});
 });
 el.downloadHeader.addEventListener('click',()=>{
 if(!open)return;
-save(new Blob([report(open,open.decoder)],{type:'text/plain'}),
+save(new Blob([report(open,open.decoder,phrase)],{type:'text/plain'}),
 `${open.name.replace(/\.dcm$/i, '')}-header.txt`);
 });
 el.copyHeader.addEventListener('click',async()=>{
 if(!open)return;
 try{
-await navigator.clipboard.writeText(report(open,open.decoder));
+await navigator.clipboard.writeText(report(open,open.decoder,phrase));
 el.copyStatus.textContent=phrase('copied');
 }catch{
 el.copyStatus.textContent=phrase('copy.failed');

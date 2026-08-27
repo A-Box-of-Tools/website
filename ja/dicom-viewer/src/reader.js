@@ -1,7 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 export class Truncated extends Error{
 constructor(at,wanted,available){
-super(`the file ends at ${available} bytes; ${wanted} more were needed at ${at}`);
+super('read.pastend');
+this.values={at,wanted,available};
 this.name='Truncated';
 this.at=at;
 this.wanted=wanted;

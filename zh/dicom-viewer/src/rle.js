@@ -1,16 +1,17 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{refuse}from'./refusal.js';
 export function decodeRLE(bytes,pixels,samples,bytesPerSample){
 if(bytes.length<64){
-throw new Error('the RLE segment header is 64 bytes and this fragment is shorter');
+throw refuse('rle.short');
 }
 const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
 const count=view.getUint32(0,true);
 const wanted=samples*bytesPerSample;
 if(count<1||count>15){
-throw new Error(`an RLE frame declares ${count} segments, and the format allows 1 to 15`);
+throw refuse('rle.segments',{count});
 }
 if(count<wanted){
-throw new Error(`this image needs ${wanted} RLE segments and the frame has ${count}`);
+throw refuse('rle.wrongcount',{wanted,count});
 }
 const offsets=[];
 for(let at=0;at<count;at+=1)offsets.push(view.getUint32(4+at*4,true));
@@ -19,7 +20,7 @@ for(let segment=0;segment<wanted;segment+=1){
 const from=offsets[segment];
 const to=segment+1<count?offsets[segment+1]:bytes.length;
 if(from<64||from>bytes.length||to>bytes.length||to<from){
-throw new Error(`RLE segment ${segment} points outside the fragment`);
+throw refuse('rle.outside',{segment});
 }
 const sample=Math.floor(segment/bytesPerSample);
 const byte=segment%bytesPerSample;

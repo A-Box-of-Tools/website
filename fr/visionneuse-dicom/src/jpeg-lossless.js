@@ -1,4 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{refuse}from'./refusal.js';
 const SOF3=0xc3;
 const DHT=0xc4;
 const SOI=0xd8;
@@ -14,7 +15,7 @@ output:null,
 };
 let at=0;
 if(!(bytes[0]===0xff&&bytes[1]===SOI)){
-throw new Error('this fragment does not start with a JPEG SOI marker');
+throw refuse('jpeg.nosoi');
 }
 at=2;
 while(at<bytes.length){
@@ -39,15 +40,15 @@ readHuffmanTables(bytes,from,to,state.huffman);
 }else if(marker===DRI){
 state.restartInterval=(bytes[from]<<8)|bytes[from+1];
 }else if(marker===SOS){
-if(!state.frame)throw new Error('a JPEG scan arrived before its frame header');
+if(!state.frame)throw refuse('jpeg.scanfirst');
 at=readScan(bytes,from,to,state);
 continue;
 }else if(isBaseline(marker)){
-throw new Error('this fragment is a DCT-based JPEG, not a lossless one');
+throw refuse('jpeg.dct');
 }
 at=to;
 }
-if(!state.frame)throw new Error('this fragment carries no JPEG frame header');
+if(!state.frame)throw refuse('jpeg.noframe');
 return{
 width:state.frame.width,
 height:state.frame.height,
@@ -71,15 +72,14 @@ const sampling=bytes[base+1];
 const horizontal=sampling>>4;
 const vertical=sampling&15;
 if(horizontal!==1||vertical!==1){
-throw new Error('this frame subsamples its components, which lossless JPEG '
-+'here does not support');
+throw refuse('jpeg.subsampled');
 }
 components.push({id:bytes[base],index});
 }
 if(precision<2||precision>16){
-throw new Error(`a JPEG frame of ${precision} bits, which is outside the 2 to 16 the format allows`);
+throw refuse('jpeg.precision',{bits:precision});
 }
-if(width===0||height===0)throw new Error('a JPEG frame with no size');
+if(width===0||height===0)throw refuse('jpeg.nosize');
 return{precision,width,height,components};
 }
 function readHuffmanTables(bytes,from,to,tables){
@@ -171,7 +171,7 @@ return false;
 }
 }
 function decodeSymbol(reader,table){
-if(!table)throw new Error('this scan names a Huffman table the file never defined');
+if(!table)throw refuse('jpeg.notable');
 let code=reader.bit();
 for(let length=1;length<=16;length+=1){
 if(table.maxcode[length]>=0&&code<=table.maxcode[length]){
@@ -179,7 +179,7 @@ return table.symbols[table.valptr[length]+code-table.mincode[length]];
 }
 code=(code<<1)|reader.bit();
 }
-throw new Error('a Huffman code longer than the sixteen bits the format allows');
+throw refuse('jpeg.longcode');
 }
 function difference(reader,category){
 if(category===0)return 0;

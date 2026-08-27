@@ -3,42 +3,55 @@ import{walk}from'./dicom.js';
 import{describe,formatTag}from'./dictionary.js';
 import{display}from'./values.js';
 import{fileSize}from'./format.js';
-export function report(file,decoder){
+export function report(file,decoder,t){
 const lines=[];
 const say=(text='')=>lines.push(text);
-say(`DICOM header — ${file.name}`);
+const labels=['report.filesize','report.syntax','report.object','report.image',
+'report.frames','report.spacing'].map((key)=>t(key));
+const width=Math.max(...labels.map((label)=>label.length))+2;
+const[size,syntax,object,image,frames,spacing]=labels;
+const row=(label,value)=>say(`${pad(label, width)}${value}`);
+say(t('report.title',{name:file.name}));
 say('='.repeat(Math.min(72,16+file.name.length)));
 say();
-say(`File size          ${fileSize(file.size)} (${file.size.toLocaleString()} bytes)`);
-say(`Transfer syntax    ${file.syntax.name}`);
-say(`                   ${file.syntax.uid}`);
-if(file.sopClass)say(`Object             ${file.sopClass}`);
-if(file.image){
-const{rows,columns,samplesPerPixel,bitsStored,frames,photometric}=file.image;
-say(`Image              ${columns} × ${rows}, ${bitsStored}-bit, ${
-      samplesPerPixel === 1 ? 'greyscale' : `${samplesPerPixel} samples`}, ${photometric}`
+row(size,`${fileSize(file.size)} (${t('report.bytes', {
+    count: file.size.toLocaleString(),
+  })})`
 );
-if(frames>1)say(`Frames             ${frames}`);
+row(syntax,file.syntax.name);
+row('',file.syntax.uid);
+if(file.sopClass)row(object,file.sopClass);
+if(file.image){
+const{rows,columns,samplesPerPixel,bitsStored,frames:count,photometric}=file.image;
+row(image,`${columns} × ${rows}, ${t('report.bits', { bits: bitsStored })}, ${
+      samplesPerPixel === 1
+        ? t('report.greyscale')
+        : t('report.samples', { count: samplesPerPixel })}, ${photometric}`
+);
+if(count>1)row(frames,count);
 if(file.image.spacing){
-say(`Pixel spacing      ${file.image.spacing.row} × ${file.image.spacing.column} mm`);
+row(spacing,`${file.image.spacing.row} × ${file.image.spacing.column} mm`);
 }
 }
 if(file.warnings.length){
+const heading=t('report.notes');
 say();
-say('Notes on reading this file');
-say('-'.repeat(26));
-for(const warning of file.warnings)say(`  • ${warning}`);
+say(heading);
+say('-'.repeat(heading.length));
+for(const warning of file.warnings)say(`  • ${t(warning.key, warning.values)}`);
 }
+const meta=t('report.meta');
 say();
-say('File meta information');
-say('-'.repeat(21));
+say(meta);
+say('-'.repeat(meta.length));
 dump(file.meta,decoder,say);
+const dataset=t('report.dataset');
 say();
-say('Dataset');
-say('-'.repeat(7));
+say(dataset);
+say('-'.repeat(dataset.length));
 dump(file.dataset,decoder,say);
 say();
-say(`Read in a browser at ${file.origin}, which uploads nothing.`);
+say(t('report.origin',{origin:file.origin}));
 return lines.join('\n');
 }
 function dump(dataset,decoder,say){

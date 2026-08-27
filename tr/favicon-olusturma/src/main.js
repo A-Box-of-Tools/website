@@ -22,6 +22,7 @@ loadError:$('load-error'),
 shapeNote:$('shape-note'),
 presetList:$('preset-list'),
 presetNote:$('preset-note'),
+sizeSet:$('size-set'),
 sizeGrid:$('size-grid'),
 sizeSummary:$('size-summary'),
 fitSelect:$('fit-select'),
@@ -269,7 +270,7 @@ el.fileList.append(row);
 }
 }
 function renderSizes(){
-el.sizeGrid.hidden=presetId!=='custom';
+el.sizeSet.hidden=presetId!=='custom';
 for(const label of el.sizeGrid.querySelectorAll('.size-choice')){
 const px=Number(label.dataset.px);
 const input=label.querySelector('input');
