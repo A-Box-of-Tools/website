@@ -220,21 +220,14 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 .pledge-fold summary { list-style: none; cursor: pointer; }
 .pledge-fold summary::-webkit-details-marker { display: none; }
 
-.pledge-glance {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-inline-start: auto;
-  align-self: center;
-  padding-inline-start: 0.55rem;
-}
-
 /* The affordance the hidden default marker was providing. Physical borders on
    purpose: a caret that points down or up needs no mirroring for RTL. */
 .pledge-caret {
+  flex: none;
   width: 0.5rem;
   height: 0.5rem;
-  margin-inline-start: 0.25rem;
+  margin-inline-start: auto;
+  align-self: center;
   border-right: 2px solid var(--text-dim);
   border-bottom: 2px solid var(--text-dim);
   transform: rotate(45deg);
