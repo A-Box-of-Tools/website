@@ -30,7 +30,7 @@ roadmap_group = "beyond"
 # is here for the two files that are easier to drop than to open, select all
 # and copy - twice.
 js_parts = ["file-picker"]
-lastmod = "2026-08-26"
+lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------
 

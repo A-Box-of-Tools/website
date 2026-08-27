@@ -29,7 +29,7 @@ js_parts = ["file-picker"]
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["trim-audio"]
-lastmod = "2026-08-20"
+lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------
 

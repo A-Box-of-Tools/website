@@ -156,4 +156,23 @@
       <ul id="file-list" class="out-list" hidden></ul>
     </div>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">Je documenten zijn nergens heen gegaan.
+      {total} bestanden geladen, allemaal van deze site zelf. {platform}</span>
+    <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
+      gereedschap nooit. Dat is het waard om na te kijken. {platform}</span>
+    <span data-phrase="net.platform.one">De eigen scripts van de site voor
+      advertenties, meting en de donatieknop kwamen van {hosts} host; geen
+      daarvan heeft een document of een byte ervan gekregen.</span>
+    <span data-phrase="net.platform.many">De eigen scripts van de site voor
+      advertenties, meting en de donatieknop kwamen van {hosts} hosts; geen
+      daarvan heeft een document of een byte ervan gekregen.</span>
+  </div>
 </main>
