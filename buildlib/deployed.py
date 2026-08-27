@@ -44,8 +44,12 @@ def check_against_branch(out, branch='dist'):
     than shrugging and reporting success.
     """
     for ref_name in (branch, f'origin/{branch}'):
+        # utf-8 for the same reason as the call in compare() below. This one
+        # reads back a hex id and would survive any codec, but it captures
+        # git's stderr too, and a git that has been translated writes that in
+        # whatever it likes.
         found = subprocess.run(['git', 'rev-parse', '--verify', f'{ref_name}^{{tree}}'],
-                               capture_output=True, text=True, cwd=ROOT)
+                               capture_output=True, encoding='utf-8', cwd=ROOT)
         if found.returncode == 0:
             branch = ref_name
             break
@@ -77,8 +81,18 @@ def compare(built, branch):
     of them was. A blob id is the bytes as committed, and nothing can filter
     it on the way past.
     """
+    # encoding rather than text=True, and this is not a style choice.
+    # text=True decodes with the machine's locale encoding, and this site has
+    # 1,512 paths that are not ASCII - the translated slugs, in Arabic,
+    # Japanese and Chinese. On a Windows install whose locale is not UTF-8
+    # (cp936 is a common one) those bytes cannot be decoded, the reader thread
+    # dies, and `stdout` arrives as None. What reached the person running
+    # --check was "AttributeError: 'NoneType' object has no attribute 'split'",
+    # which names neither git nor an encoding. Git writes paths as UTF-8, so
+    # that is what this reads them as, on every machine.
     listing = subprocess.run(['git', 'ls-tree', '-r', '-z', branch],
-                             capture_output=True, text=True, cwd=ROOT, check=True)
+                             capture_output=True, encoding='utf-8', cwd=ROOT,
+                             check=True)
     committed = {}
     for entry in listing.stdout.split('\0'):
         if not entry:
