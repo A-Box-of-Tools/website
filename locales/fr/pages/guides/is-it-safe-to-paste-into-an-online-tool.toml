@@ -1,0 +1,18 @@
+#
+# Guide : est-il sûr de coller du texte dans un outil en ligne ? - French.
+#
+
+nav = "Coller du texte en ligne, sûr ?"
+title = "Est-il sûr de coller du texte dans un outil en ligne ?"
+description = "Coller ressemble à déplacer du texte entre ses propres fenêtres, et pour bien des outils web c'est un envoi silencieux. Ce qu'un texte collé transporte, où il va, et comment savoir si le formateur en garde une copie."
+heading = "Est-il sûr de coller du texte dans un outil en ligne ?"
+lede = """
+    Coller ne ressemble pas à envoyer, et c'est là le piège&nbsp;: les
+    mêmes octets quittent votre machine dans les deux cas si la page les
+    expédie. Cette page dit ce qu'une config ou un journal collé
+    transporte vraiment &mdash; et comment savoir si l'outil devant vous a
+    seulement un endroit où l'envoyer."""
+updated = "26 août 2026"
+og_title = "Est-il sûr de coller du texte dans un outil en ligne ?"
+og_description = "Un collage peut être un envoi silencieux. Ce qu'une config, un journal ou une requête transporte vraiment, et comment savoir si le formateur en garde une copie."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

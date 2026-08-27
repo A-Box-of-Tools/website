@@ -1,0 +1,25 @@
+#
+# Guide: is it safe to paste text into an online tool? - Traditional Chinese.
+#
+# Overrides for pages/guides/is-it-safe-to-paste-into-an-online-tool/page.toml.
+# Prose in the .html beside this file. Written in Chinese rather than
+# translated out of the English; the house style is at the top of
+# locales/zh/locale.toml.
+#
+
+nav = "把文字貼上到線上工具安全嗎？"
+
+title = "把文字貼上到線上工具裡安全嗎？"
+description = "貼上感覺像在自己的兩個視窗之間挪動文字，在不少網頁工具那裡，它是一次沒有聲響的上傳。貼上的文字都裝著什麼，去了哪裡，怎麼看出格式化工具留沒留底。"
+
+heading = "把文字貼上到線上工具裡安全嗎？"
+lede = """
+    貼上不像上傳，陷阱恰恰在這裡：只要頁面把它發出去，同樣的位元組照樣離開\
+    你的機器。這一頁講貼上進去的配置或日誌究竟裝著什麼，也講怎麼看出眼前\
+    的工具到底有沒有地方可發。"""
+
+updated = "2026年8月26日"
+
+og_title = "把文字貼上到線上工具裡安全嗎？"
+og_description = "一次貼上可以是一次無聲的上傳。配置、日誌或查詢究竟裝著什麼，怎麼看出格式化工具有沒有留底。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

@@ -1,0 +1,136 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Menempelkan teks ke sebuah halaman web bisa berakibat persis sebesar
+      mengunggah berkas ke sana. Kalau rasanya tidak begitu, itu karena
+      gerakannya berasal dari tempat yang aman: di antara dua jendela
+      milik sendiri, menempel memindahkan teks dari satu tempat yang Anda
+      kendalikan ke tempat lain yang juga Anda kendalikan. Di halaman web,
+      tempat kedua itu adalah kotak teks yang bisa dibaca skrip &mdash;
+      dan apa yang terjadi selanjutnya sepenuhnya urusan halaman itu,
+      bukan urusan gerakannya.
+    </p>
+    <p>
+      Banyak alat berbentuk tempelan mengerjakan tugasnya di server:
+      halaman mengirim teks Anda pergi, server memformat, memvalidasi,
+      atau membandingkan, lalu hasilnya kembali. Tidak ada apa pun di
+      layar yang memberi tahu jenis mana yang sedang Anda pakai. Kotak
+      teksnya sama saja; tombol &ldquo;Format&rdquo;-nya juga. Bedanya
+      satu permintaan jaringan, tak terlihat kecuali Anda mencarinya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa yang sebenarnya terbawa dalam tempelan</h2>
+    <p>
+      Yang mendarat di alat online jarang berupa prosa. Ia teks kerja dari
+      pekerjaan seseorang, dan jenisnya penting, karena beberapa untaian
+      paling sensitif dalam komputasi justru yang ditempelkan ke pemformat
+      tengah malam:
+    </p>
+    <ul>
+      <li>
+        <strong>Berkas konfigurasi</strong> ada untuk menyimpan hal-hal
+        yang tidak boleh ditanam mati di program, dan hal-hal itu adalah
+        kata sandi basis data, kunci API, dan rahasia tanda tangan. Config
+        yang ditempel utuh membawa semuanya.
+      </li>
+      <li>
+        <strong>Log dan stack trace</strong> membawa token sesi di URL,
+        alamat email, nama mesin internal, dan sesekali badan permintaan
+        berisi data pribadi seseorang.
+      </li>
+      <li>
+        <strong>Respons API</strong> adalah potret data produksi &mdash;
+        pelanggan sungguhan, saldo sungguhan &mdash; ditempel di tempat
+        yang enak untuk dibaca.
+      </li>
+      <li>
+        <strong>Apa pun yang berbentuk base64</strong> yang masuk ke
+        dekoder biasanya dikodekan justru karena penting: token yang
+        sedang di-debug, sertifikat, header autentikasi.
+      </li>
+    </ul>
+    <p>
+      Kunci yang pernah lewat server orang tak dikenal harus dianggap
+      terbuka begitu Anda sadar: dicabut dan diterbitkan ulang, yang di
+      sistem produksi berarti satu sore yang tidak direncanakan siapa pun.
+      Intinya bukan bahwa situs pemformat memanen kredensial. Intinya Anda
+      tidak bisa tahu apa yang dicatat sebuah server, dan rahasia yang
+      keterbukaannya tidak bisa Anda kesampingkan adalah rahasia yang
+      harus Anda ganti.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mengapa alatnya tidak butuh teks Anda pergi</h2>
+    <p>
+      Ini fakta teknis yang menutup pertanyaannya: memformat, memvalidasi,
+      mengonversi, dan membandingkan teks termasuk pekerjaan termudah
+      dalam komputasi. Mengurai JSON, merapikan XML, membandingkan dua
+      berkas, mengodekan base64 &mdash; peramban melakukannya dalam
+      milidetik, secara lokal, dan sudah bisa sejak bertahun-tahun. Server
+      tidak menambahkan apa pun pada pekerjaannya. Kalau sebuah alat
+      tempelan mengunggah teks Anda, itu sisa arsitektur atau kemudahan
+      bagi pengelolanya, tidak pernah kebutuhan pekerjaan.
+    </p>
+    <p>
+      Untuk itulah alat-alat teks situs ini menjadi contoh tandingan.
+      <a href="../../format-json/">Pemformat JSON</a> mengurai, memformat,
+      dan mengonversi JSON, XML, HTML, CSS, dan YAML;
+      <a href="../../bandingkan-teks/">pembanding teks</a> menandai setiap
+      perbedaan antara dua teks, baris demi baris dan kata demi kata;
+      <a href="../../encode-base64/">pengode dan pendekode base64</a>
+      berjalan dua arah antara teks dan pengodeannya. Ketiganya berjalan
+      di mesin Anda, dan apa yang Anda tempel tidak punya tempat untuk
+      pergi &mdash; halaman-halaman ini tidak membawa jalur kode yang bisa
+      mengirimkannya.
+    </p>
+    <p>
+      Dua di antaranya sudah punya panduan pendamping:
+      <a href="../format-json-tanpa-mengunggah/">memformat JSON tanpa
+      mengunggahnya</a> dan
+      <a href="../membandingkan-dua-file-json/">membandingkan dua berkas
+      JSON</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Cara tahu jenis mana yang Anda pakai</h2>
+    <p>
+      Pemeriksaannya sama dengan alat berkas, dan tertulis lengkap di
+      <a href="../apakah-aman-mengunggah-file/">panduan tentang
+      mengunggah</a>. Versi pendeknya, dalam kunci tempelan:
+    </p>
+    <ul>
+      <li>
+        <strong>Cabut colokannya.</strong> Muat halamannya, putuskan
+        koneksi, tempel, tekan tombolnya. Alat lokal jalan terus; alat
+        server berhenti. Tiga puluh detik, tanpa keahlian, tak mungkin
+        dipalsukan.
+      </li>
+      <li>
+        <strong>Awasi tab Jaringan saat menekan Format.</strong>
+        Permintaan yang berangkat pada saat itu, kira-kira sebesar
+        tempelan Anda, adalah tempelan Anda yang berangkat. Tak ada
+        permintaan, tak ada unggahan.
+      </li>
+      <li>
+        <strong>Curigai pernak-pernik yang membantu.</strong> Tombol
+        &ldquo;bagikan cuplikan ini&rdquo;, riwayat tempelan yang
+        tersinkron antarperangkat, tautan untuk dikirim ke rekan &mdash;
+        masing-masing hanya mungkin kalau teksnya disimpan di server.
+        Fitur adalah pengakuan: halaman yang bisa memperlihatkan tempelan
+        Anda kepada orang lain berarti menyimpannya.
+      </li>
+    </ul>
+    <p>
+      Dan satu kebiasaan mengalahkan ketiga pemeriksaan itu: menempel
+      lebih sedikit. Validator tidak butuh kata sandi asli untuk
+      memvalidasi bentuk sebuah config &mdash; <code>"REDACTED"</code>
+      terurai sama persis. Dan untuk tempelan yang justru rahasianya itu
+      sendiri, aturannya menciut jadi lebih sederhana lagi: satu-satunya
+      halaman yang pantas menerima kata sandi adalah halaman masuk tempat
+      kata sandi itu berlaku.
+    </p>
+  </section>

@@ -170,6 +170,7 @@ complete = true
 "guides/is-it-safe-to-scan-a-qr-code" = "guides/est-il-sur-de-scanner-un-qr-code"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "guides/est-il-sur-d-envoyer-sa-piece-d-identite"
 "guides/can-blacked-out-text-be-recovered" = "guides/peut-on-recuperer-un-texte-caviarde"
+"guides/is-it-safe-to-paste-into-an-online-tool" = "guides/est-il-sur-de-coller-du-texte-dans-un-outil-en-ligne"
 
 #
 # ---------------------------------------------------------------------------
