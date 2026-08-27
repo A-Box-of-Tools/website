@@ -1,0 +1,127 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Kadang-kadang. Mengonversi, mengubah ukuran, atau mengompres foto
+      akan menghapus metadatanya bila alatnya membangun ulang gambar dari
+      piksel, dan menyimpannya bila alatnya sengaja memindahkannya &mdash;
+      dan tidak ada apa pun di layar yang memberi tahu yang mana yang
+      terjadi. Gambarnya tampak sama pada kedua kasus, karena metadata
+      memang tidak pernah menjadi bagian dari gambar.
+    </p>
+    <p>
+      Kedua akhirnya sama-sama mengejutkan, ke arah yang berlawanan. Ada
+      yang mengandalkan &ldquo;cuma mengubah ukuran&rdquo; untuk menghapus
+      lokasi, dan lokasinya selamat. Ada pula yang mengandalkan tanggal
+      pemotretan bertahan melewati ganti format, dan tanggal itu lenyap.
+      Kedua kekeliruan itu obatnya sama: berhenti meramal apa yang
+      kira-kira dilakukan sebuah alat, dan lihat apa yang sungguh ada di
+      dalam berkas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Apa yang ikut menumpang, dan mengapa terpisah</h2>
+    <p>
+      Berkas foto adalah dua hal dalam satu wadah: gambar yang terkodekan,
+      dan satu blok penanda tentangnya &mdash; EXIF, sering ditemani XMP
+      dan profil warna. Penandanya biasanya memuat kapan foto diambil,
+      kamera dan lensanya, pencahayaan, koordinat GPS tempat Anda berdiri,
+      dan sering pula sebuah gambar mini tertanam &mdash; kadang gambar
+      sebagaimana adanya <em>sebelum</em> penyuntingan, itulah sebabnya
+      pemotongan bisa gagal membuang justru yang dipotongnya. Tur lengkap
+      blok itu ada di <a href="../hapus-data-exif-dan-gps/">panduan
+      EXIF</a>.
+    </p>
+    <p>
+      Titik yang menentukan segalanya: penanda berada <em>di samping</em>
+      piksel, bukan di dalamnya. Alat yang mendekodekan gambar menerima
+      piksel tanpa penanda; apa pun yang ditulisnya keluar hanya memuat
+      yang ia pilih untuk dikembalikan. Alat yang menyunting berkas tanpa
+      mengodekan ulang bisa membiarkan penanda tak tersentuh &mdash; atau
+      mencabut tepat penanda itu dan tidak yang lain.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mengapa mengodekan ulang melucuti, dan menyalin menyimpan</h2>
+    <p>
+      Hampir semua kerja gambar di peramban lewat kanvas: dekodekan berkas
+      jadi piksel mentah, ubah, kodekan berkas baru. Kanvas tidak membawa
+      penanda, maka berkas barunya tidak punya &mdash; bukan karena
+      kebijakan melainkan karena konstruksi. Itulah sebabnya
+      <a href="../../kompres-gambar/">pengompres gambar</a> dan alat
+      <a href="../../ubah-ukuran-gambar/">pengubah ukuran gambar</a> di
+      sini menghasilkan keluaran tanpa EXIF, tanpa GPS, tanpa XMP, dan
+      halaman keduanya mengatakannya: tak terhindarkan &mdash; dan layak
+      diketahui bila Anda justru ingin tanggalnya bertahan.
+    </p>
+    <p>
+      Pengonversi, sebaliknya, bisa bersusah payah untuk mempertahankan.
+      <a href="../../heic-ke-jpg/">Pengonversi HEIC ke JPG</a> situs ini
+      melakukan persis itu: mengangkat blok metadata dari wadah HEIC dan
+      memasangnya di JPEG, tanggal, GPS, dan semuanya &mdash; karena
+      konversi semestinya foto yang sama berganti mantel. (Satu penanda
+      sengaja ditulis ulang: orientasi, supaya gambar tidak rebah; dan
+      blok itu hanya muat di keluaran JPEG &mdash; menu formatnya bilang
+      begitu.) Dua alat yang jujur, dua perilaku berlawanan,
+      masing-masing benar untuk tugasnya &mdash; dan justru karena itulah
+      menebak dari jenis alat tidak jalan.
+    </p>
+    <p>
+      Di luar peramban, gambarannya sama campur-baurnya, dengan logika
+      yang sama di bawahnya. Tangkapan layar dan hasil ekspor adalah
+      pengodean segar: tanpa metadata kamera. Aplikasi pesan mengompres
+      ulang dengan keras, jadi foto yang dikirim sebagai foto biasanya
+      kehilangan penandanya &mdash; tetapi berkas yang sama dikirim
+      &ldquo;sebagai dokumen&rdquo; berjalan byte demi byte, penanda
+      termasuk. Lampiran email dan drive awan memindahkan berkas tanpa
+      perubahan. Polanya bertahan: dibangun ulang berarti dilucuti,
+      disalin berarti disimpan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Memeriksa alih-alih menganggap</h2>
+    <p>
+      Pemeriksaannya kurang dari semenit: buka berkas keluarannya &mdash;
+      bukan aslinya &mdash; di
+      <a href="../../hapus-data-exif/">penampil dan penghapus EXIF</a> dan
+      baca apa yang ada. Ia mengurai berkas di mesin Anda sendiri dan
+      menampilkan setiap penanda, gambar mini tertanam termasuk. Tidak ada
+      apa-apa, tidak ada yang bocor. Masih ada, dan Anda melihat persis
+      apa.
+    </p>
+    <p>
+      Dari semua di atas lahir tiga kebiasaan:
+    </p>
+    <ul>
+      <li>
+        <strong>Kalau tujuannya privasi, hapus dengan sengaja.</strong>
+        Lucuti penandanya dengan alat EXIF &mdash; ia menyunting berkas
+        tanpa mengodekan ulang, jadi gambarnya tidak kehilangan apa-apa
+        &mdash; lalu periksa hasilnya. Jangan bergantung pada pengubahan
+        ukuran yang kebetulan ikut melucuti.
+      </li>
+      <li>
+        <strong>Kalau tujuannya menjaga catatan, konversikan dengan alat
+        yang menyatakan mempertahankan</strong> &mdash; dan periksa juga,
+        karena &ldquo;mungkin tersimpan&rdquo; gagal ke arah satunya:
+        arsip foto yang tanggal-tanggalnya menguap juga sebuah
+        kehilangan.
+      </li>
+      <li>
+        <strong>Periksa berkas yang benar-benar Anda kirim</strong>,
+        setelah langkah terakhir rantai Anda. Tiap alat memutuskan
+        sendiri-sendiri, dan hanya isi berkas terakhir yang dihitung.
+      </li>
+    </ul>
+    <p>
+      Dan kalau alat pemeriksanya sendiri halaman web, pertanyaan yang
+      biasa berlaku juga padanya &mdash; penampil metadata menerima foto
+      Anda, GPS dan semuanya. Yang di sini berjalan sepenuhnya di peramban
+      Anda tanpa mengirim apa pun ke mana pun, dan
+      <a href="../apakah-aman-mengunggah-file/">panduan tentang
+      mengunggah</a> menunjukkan cara membuktikan klaim itu alih-alih
+      memercayainya.
+    </p>
+  </section>

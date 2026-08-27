@@ -1,0 +1,127 @@
+  <section>
+    <h2>La risposta breve</h2>
+    <p>
+      A volte. Convertire, ridimensionare o comprimere una foto ne rimuove
+      i metadati quando lo strumento ricostruisce l'immagine dai pixel, e
+      li conserva quando lo strumento li ricopia apposta &mdash; e nulla
+      sullo schermo dice quale delle due cose sia successa. L'immagine
+      appare uguale in entrambi i casi, perché i metadati non sono mai
+      stati parte dell'immagine.
+    </p>
+    <p>
+      Entrambi gli esiti sorprendono, in direzioni opposte. Qualcuno conta
+      sul fatto che «solo ridimensionare» cancelli la posizione, e la
+      posizione sopravvive. Qualcun altro conta che la data di scatto
+      sopravviva a un cambio di formato, e non c'è più. I due errori hanno
+      la stessa cura: smettere di prevedere ciò che uno strumento
+      probabilmente ha fatto, e guardare ciò che il file contiene
+      davvero.
+    </p>
+  </section>
+
+  <section>
+    <h2>Che cosa viaggia accanto, e perché è separato</h2>
+    <p>
+      Un file fotografico è due cose in un contenitore: l'immagine
+      codificata, e un blocco di etichette che la riguardano &mdash; EXIF,
+      spesso con XMP e un profilo colore. Le etichette dicono
+      tipicamente quando la foto è stata scattata, fotocamera e obiettivo,
+      l'esposizione, le coordinate GPS di dove ti trovavi, e spesso una
+      piccola miniatura incorporata &mdash; a volte dell'immagine com'era
+      <em>prima</em> di una modifica, ed è così che un ritaglio può
+      mancare proprio ciò che ritagliava. Il giro completo di quel blocco
+      è nella <a href="../rimuovere-i-dati-exif-e-gps/">guida EXIF</a>.
+    </p>
+    <p>
+      Il punto che decide tutto: le etichette stanno <em>accanto</em> ai
+      pixel, non dentro. Uno strumento che decodifica l'immagine riceve
+      pixel e nessuna etichetta; ciò che scrive in uscita contiene solo
+      ciò che sceglie di rimetterci. Uno strumento che modifica il file
+      senza ricodificare può lasciare le etichette intatte &mdash; o
+      togliere esattamente quelle e nient'altro.
+    </p>
+  </section>
+
+  <section>
+    <h2>Perché ricodificare spoglia, e copiare conserva</h2>
+    <p>
+      Quasi tutto il lavoro sulle immagini in un browser passa da un
+      canvas: decodificare il file in pixel grezzi, trasformarli,
+      codificare un file nuovo. Un canvas non porta etichette, quindi il
+      file nuovo non ne ha &mdash; non per scelta ma per costruzione. Per
+      questo il <a href="../../comprimere-immagine/">compressore di
+      immagini</a> e lo strumento per
+      <a href="../../ridimensionare-immagine/">ridimensionare le
+      immagini</a> di qui producono uscite senza EXIF, senza GPS e senza
+      XMP, e le loro pagine lo dicono: è inevitabile, e vale la pena
+      saperlo quando volevi conservare la data.
+    </p>
+    <p>
+      Un convertitore, al contrario, può sforzarsi di preservare. Il
+      <a href="../../heic-in-jpg/">convertitore da HEIC a JPG</a> di
+      questo sito fa esattamente questo: solleva il blocco dei metadati
+      dal contenitore HEIC e lo installa nel JPEG, date, GPS e tutto,
+      perché una conversione dev'essere la stessa foto con un altro
+      cappotto. (Un'etichetta viene riscritta apposta: l'orientamento,
+      perché l'immagine non si coricasse; e il blocco entra solo
+      nell'uscita JPEG &mdash; il menù dei formati lo dice.) Due strumenti
+      onesti, comportamenti opposti, ciascuno giusto per il proprio
+      compito &mdash; ed è proprio per questo che indovinare dal tipo di
+      strumento non funziona.
+    </p>
+    <p>
+      Fuori dal browser il quadro è altrettanto misto, con la stessa
+      logica sotto. Screenshot ed esportazioni sono codifiche fresche:
+      niente metadati di fotocamera. Le app di messaggi ricomprimono
+      forte, quindi le foto mandate come foto perdono in genere le loro
+      etichette &mdash; ma lo stesso file mandato «come documento» viaggia
+      byte per byte, etichette comprese. Allegati di posta e dischi cloud
+      spostano i file immutati. Lo schema regge: ricostruito significa
+      spogliato, copiato significa conservato.
+    </p>
+  </section>
+
+  <section>
+    <h2>Controllare invece di supporre</h2>
+    <p>
+      Il controllo richiede meno di un minuto: apri il file di uscita
+      &mdash; non l'originale &mdash; nel
+      <a href="../../rimuovere-dati-exif/">visore e rimotore EXIF</a> e
+      leggi che cosa c'è. Analizza il file sulla tua macchina e mostra
+      ogni etichetta, miniatura incorporata compresa. Niente lì dentro,
+      niente trapelato. Ancora lì, e vedi esattamente che cosa.
+    </p>
+    <p>
+      Da tutto quanto sopra discendono tre abitudini:
+    </p>
+    <ul>
+      <li>
+        <strong>Quando l'obiettivo è la privacy, rimuovi
+        deliberatamente.</strong> Spoglia le etichette con lo strumento
+        EXIF &mdash; modifica il file senza ricodificare, quindi
+        l'immagine non perde nulla &mdash; e poi controlla il risultato.
+        Non affidarti a un ridimensionamento che spoglia per caso.
+      </li>
+      <li>
+        <strong>Quando l'obiettivo è conservare la memoria, converti con
+        uno strumento che dichiara di preservare</strong> &mdash; e
+        controlla anche quello, perché «probabilmente l'ha tenuto»
+        fallisce nell'altra direzione: un archivio fotografico con le date
+        evaporate è anch'esso una perdita.
+      </li>
+      <li>
+        <strong>Controlla il file che spedisci davvero</strong>, dopo
+        l'ultimo passo della tua catena. Ogni strumento decide per sé, e
+        conta solo il contenuto del file finale.
+      </li>
+    </ul>
+    <p>
+      E se lo strumento di controllo è a sua volta una pagina web, la
+      domanda di sempre vale anche per lui: un visore di metadati riceve
+      la tua foto, GPS compreso. Quello di qui gira interamente nel tuo
+      browser senza spedire nulla da nessuna parte, e
+      <a href="../e-sicuro-caricare-i-propri-file/">la guida sul caricare
+      file</a> mostra come verificare quell'affermazione invece di
+      crederci.
+    </p>
+  </section>

@@ -151,6 +151,7 @@ complete = true
 "guides/is-it-safe-to-use-an-online-password-generator" = "guide/i-generatori-di-password-online-sono-sicuri"
 "guides/is-base64-encryption" = "guide/base64-e-una-cifratura"
 "guides/what-a-pdf-remembers" = "guide/che-cosa-ricorda-un-pdf"
+"guides/does-converting-a-photo-remove-its-metadata" = "guide/convertire-una-foto-ne-rimuove-i-metadati"
 
 #
 # ---------------------------------------------------------------------------

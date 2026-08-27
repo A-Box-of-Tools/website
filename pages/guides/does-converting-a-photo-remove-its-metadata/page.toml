@@ -1,0 +1,37 @@
+#
+# Guide: does converting a photo remove its metadata?
+#
+# The answer is "it depends on the tool", which is exactly why the page
+# exists: this site's own tools land on both sides on purpose. The
+# compressor and resizer cannot help stripping (a canvas carries no tags),
+# the HEIC converter goes out of its way to carry the block over, and the
+# EXIF tool removes without re-encoding. People assume one behaviour, ship
+# the other, and never see the difference on screen - both directions of
+# that mistake are worth a page.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/does-converting-a-photo-remove-its-metadata"
+kind = "guide"
+nav = "Does converting remove metadata?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Does Converting a Photo Remove Its Metadata?"
+description = "Sometimes - and both outcomes surprise people. Which operations strip EXIF, which quietly keep it, why the screen shows no difference either way, and how to check a file instead of assuming."
+
+heading = "Does converting a photo remove its metadata?"
+lede = """
+    Sometimes, and both answers have burned people. Re-encoding through a
+    canvas strips everything; a careful converter copies everything over;
+    the picture looks identical either way. The only reliable move is to
+    stop predicting and look at the file."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Does converting a photo remove its metadata?"
+og_description = "Sometimes - and both outcomes surprise people. Which operations strip EXIF, which keep it, and how to check the file instead of assuming."
+og_image_alt = "abox.tools - tools that never touch a server"

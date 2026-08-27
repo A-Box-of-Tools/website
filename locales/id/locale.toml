@@ -170,6 +170,7 @@ complete = true
 "guides/is-it-safe-to-use-an-online-password-generator" = "panduan/apakah-generator-kata-sandi-online-aman"
 "guides/is-base64-encryption" = "panduan/apakah-base64-enkripsi"
 "guides/what-a-pdf-remembers" = "panduan/apa-yang-diingat-sebuah-pdf"
+"guides/does-converting-a-photo-remove-its-metadata" = "panduan/apakah-konversi-foto-menghapus-metadata"
 
 #
 # ---------------------------------------------------------------------------

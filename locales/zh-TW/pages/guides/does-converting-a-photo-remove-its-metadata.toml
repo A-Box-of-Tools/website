@@ -1,0 +1,26 @@
+#
+# Guide: does converting a photo remove its metadata? - Traditional Chinese.
+#
+# Overrides for
+# pages/guides/does-converting-a-photo-remove-its-metadata/page.toml.
+# Prose in the .html beside this file. Written in Chinese rather than
+# translated out of the English; the house style is at the top of
+# locales/zh/locale.toml.
+#
+
+nav = "轉換照片會去掉後設資料嗎？"
+
+title = "照片轉換格式後，後設資料還在嗎？"
+description = "有時在，有時不在，兩種結局都坑過人。哪些操作會剝掉 EXIF，哪些會不聲不響地留著它，為什麼螢幕上兩種情況看不出分別，以及怎麼用查檔案代替猜。"
+
+heading = "照片轉換格式後，後設資料還在嗎？"
+lede = """
+    有時在，有時不在，兩個答案都燙過人。走畫布重編碼，什麼都剝得乾乾淨\
+    淨；用心的轉換器，什麼都原樣帶過去；照片在兩種情況下看起來一模一樣。\
+    唯一靠得住的動作，是別猜了，看檔案。"""
+
+updated = "2026年8月26日"
+
+og_title = "照片轉換格式後，後設資料還在嗎？"
+og_description = "有時在，有時不在，兩種結局都坑過人。哪些操作剝掉 EXIF，哪些留著它，怎麼用查檔案代替猜。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

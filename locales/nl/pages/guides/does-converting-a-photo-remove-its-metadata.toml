@@ -1,0 +1,18 @@
+#
+# Gids: verwijdert converteren de metadata van een foto? - Dutch.
+#
+
+nav = "Haalt converteren de metadata weg?"
+title = "Verwijdert het converteren van een foto de metadata?"
+description = "Soms - en beide uitkomsten verrassen. Welke bewerkingen EXIF weghalen, welke het stilletjes bewaren, waarom het scherm in geen van beide gevallen verschil toont, en hoe je het bestand controleert in plaats van aan te nemen."
+heading = "Verwijdert het converteren van een foto de metadata?"
+lede = """
+    Soms, en beide antwoorden hebben al mensen gebrand. Hercoderen via een
+    canvas stroopt alles af; een zorgvuldige converter draagt alles over;
+    het beeld ziet er in beide gevallen hetzelfde uit. De enige
+    betrouwbare zet is stoppen met voorspellen en in het bestand
+    kijken."""
+updated = "26 augustus 2026"
+og_title = "Verwijdert het converteren van een foto de metadata?"
+og_description = "Soms - en beide uitkomsten verrassen. Welke bewerkingen EXIF weghalen, welke het bewaren, en hoe je het bestand controleert in plaats van aan te nemen."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
