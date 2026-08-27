@@ -228,7 +228,9 @@ mark.className='finding-mark';
 mark.textContent=LEVEL_MARK[finding.level];
 mark.title=LEVEL_NAME[finding.level];
 const body=document.createElement('div');
-body.innerHTML=`<strong>${finding.title}</strong> ${finding.body}`;
+const title=phrase(finding.title,finding.values);
+const said=phrase(finding.body,finding.values);
+body.innerHTML=`<strong>${title}</strong> ${said}`;
 item.append(mark,body);
 el.findings.append(item);
 }

@@ -80,14 +80,13 @@ return{at,bytes:count*3,count,sorted,colors};
 }
 function walk(reader,gif){
 let control=null;
-const stop=(why)=>{
-gif.problems.push(why);
+const stop=(key,values={})=>{
+gif.problems.push({key,values});
 };
 while(true){
 if(reader.done){
 gif.truncated=true;
-stop('The file ends without a trailer byte, so it is incomplete - '
-+'a download that stopped early, or a file cut short.');
+stop('parse.notrailer');
 return;
 }
 const start=reader.at;
@@ -105,16 +104,20 @@ control=null;
 continue;
 }
 if(marker!==EXTENSION){
-stop(`Byte ${start} is 0x${marker.toString(16).padStart(2, '0')}, which is not the `
-+'start of any block this format has. Everything after it was ignored.');
+stop('parse.unknownblock',{
+at:start.toLocaleString(),
+marker:marker.toString(16).padStart(2,'0'),
+});
 gif.truncated=true;
 return;
 }
 const label=reader.u8();
 if(label===GRAPHIC_CONTROL){
 if(control){
-stop(`Two graphic control blocks in a row, at ${control.at} and ${start}. `
-+'The first one describes no image and does nothing.');
+stop('parse.twocontrols',{
+first:control.at.toLocaleString(),
+second:start.toLocaleString(),
+});
 }
 control=readControl(reader,start);
 continue;
@@ -123,8 +126,7 @@ gif.extensions.push(readExtension(reader,gif,label,start));
 }catch(error){
 if(!(error instanceof Truncated))throw error;
 gif.truncated=true;
-stop(`The file ends in the middle of a block that starts at ${start}. `
-+`${error.message}.`);
+stop('parse.midblock',{at:start.toLocaleString(),detail:error.message});
 return;
 }
 }
