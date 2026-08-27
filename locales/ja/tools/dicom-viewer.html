@@ -174,6 +174,49 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">128バイト目にDICMの印がなく、先頭のバイトもDICOM要素ではありません</span>
+    <span data-phrase="jpeg.nosoi">この断片はJPEGのSOIマーカーで始まっていません</span>
+    <span data-phrase="jpeg.scanfirst">JPEGのスキャンがフレームヘッダーより先に来ました</span>
+    <span data-phrase="jpeg.dct">この断片はDCTベースのJPEGで、可逆のものではありません</span>
+    <span data-phrase="jpeg.noframe">この断片はJPEGのフレームヘッダーを持っていません</span>
+    <span data-phrase="jpeg.nosize">大きさのないJPEGフレームです</span>
+    <span data-phrase="jpeg.subsampled">このフレームは成分を間引いていますが、ここの可逆JPEGはそれに対応していません</span>
+    <span data-phrase="jpeg.precision">{bits}ビットのJPEGフレームで、形式が許す2から16の外です</span>
+    <span data-phrase="jpeg.notable">このスキャンは、ファイルが一度も定義していないハフマン表を指しています</span>
+    <span data-phrase="jpeg.longcode">形式が許す十六ビットより長いハフマン符号です</span>
+    <span data-phrase="rle.short">RLEのセグメントヘッダーは64バイトで、この断片はそれより短いです</span>
+    <span data-phrase="rle.segments">RLEフレームがセグメントを{count}個宣言していますが、形式が許すのは1から15です</span>
+    <span data-phrase="rle.wrongcount">この画像にはRLEセグメントが{wanted}個必要ですが、フレームには{count}個しかありません</span>
+    <span data-phrase="rle.outside">RLEセグメント{segment}が断片の外を指しています</span>
+    <span data-phrase="pixels.nosize">このファイルは画像の大きさを書いていません</span>
+    <span data-phrase="pixels.nofragments">このファイルにはピクセルデータの断片がありません</span>
+    <span data-phrase="pixels.nodecoder">{syntax}は、このページが復号できない圧縮です</span>
+    <span data-phrase="pixels.pastend">コマ{frame}はピクセルデータの終わりより後ろにあります</span>
+    <span data-phrase="pixels.noframefragment">コマ{frame}を含むピクセルデータの断片がありません</span>
+    <span data-phrase="pixels.oddbits">1標本あたり{bits}ビットで、1でも8でも16でも32でもありません</span>
+    <span data-phrase="pixels.nooffsets">このファイルには{frames}コマ分のピクセルデータ断片が{fragments}個あり、どれがどのコマのものかを示すオフセット表がありません</span>
+    <span data-phrase="read.pastend">ファイルは{available}バイトで終わっています。{at}であと{wanted}バイト必要でした</span>
+    <span data-phrase="note.baredataset">このファイルにはDICMの印がないため、{syntax}の裸のデータセットとして読みました。宣言ではなく、最初の要素から割り出したものです。</span>
+    <span data-phrase="note.nosyntax">ファイルメタ群が転送構文を書いていないため、データセットはImplicit VR Little Endianとして読みました。標準がそう仮定せよと定めています。</span>
+    <span data-phrase="note.unknownsyntax">転送構文{uid}は、この道具が知っているものではありません。下のヘッダーは、1995年以降に登録されたどの構文も使っているExplicit VR Little Endianとして読みました。ピクセルは復号できませんでした。</span>
+    <span data-phrase="note.truncated">{at}バイト目の要素の途中でファイルが終わっています。その前はすべて読めました。</span>
+    <span data-phrase="stop.undefinedlength">要素{tag}が未定義長を宣言していますが、それができるのはシーケンスだけです。その後ろは何も読めませんでした。</span>
+    <span data-phrase="stop.toolong">{at}バイト目の要素は値が{length}バイトだと言っていますが、ファイルにはあと{left}バイトしか残っていません。</span>
+    <span data-phrase="report.title">DICOMヘッダー &mdash; {name}</span>
+    <span data-phrase="report.filesize">ファイルサイズ</span>
+    <span data-phrase="report.bytes">{count}バイト</span>
+    <span data-phrase="report.syntax">転送構文</span>
+    <span data-phrase="report.object">オブジェクト</span>
+    <span data-phrase="report.image">画像</span>
+    <span data-phrase="report.bits">{bits}ビット</span>
+    <span data-phrase="report.greyscale">グレースケール</span>
+    <span data-phrase="report.samples">{count}標本</span>
+    <span data-phrase="report.frames">コマ数</span>
+    <span data-phrase="report.spacing">ピクセル間隔</span>
+    <span data-phrase="report.notes">このファイルの読み取りについての覚え書き</span>
+    <span data-phrase="report.meta">ファイルメタ情報</span>
+    <span data-phrase="report.dataset">データセット</span>
+    <span data-phrase="report.origin">{origin}のブラウザーで読みました。何もアップロードしていません。</span>
     <span data-phrase="mode.window">画像の上を横にドラッグするとウィンドウが広がったり狭まったりし、上下にドラッグすると中心が動きます。どちらの数値も下に出ていて、直接入力しても同じです。</span><span data-phrase="mode.pan">ドラッグすると画像が枠の中で動きます。ホイールで拡大縮小し、「全体に合わせる」ですべて戻ります。</span><span data-phrase="mode.measure">画像の上に線を引くと計測できます。ファイルが画素の間隔を書いていれば結果はミリで、書いていなければ画素で返り、そうだと明記します。</span>
 
     <span data-phrase="probe.value">列{column}、行{row}で{value}</span>

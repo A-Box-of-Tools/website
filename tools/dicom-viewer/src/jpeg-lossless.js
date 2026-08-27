@@ -29,6 +29,8 @@
  * the original, and it decodes in one pass with no buffers but the previous row.
  */
 
+import { refuse } from './refusal.js';
+
 /** Markers, by the byte after the 0xFF. */
 const SOF3 = 0xc3;
 const DHT = 0xc4;
@@ -57,7 +59,7 @@ export function decodeJPEGLossless(bytes) {
 
   let at = 0;
   if (!(bytes[0] === 0xff && bytes[1] === SOI)) {
-    throw new Error('this fragment does not start with a JPEG SOI marker');
+    throw refuse('jpeg.nosoi');
   }
   at = 2;
 
@@ -86,17 +88,17 @@ export function decodeJPEGLossless(bytes) {
     } else if (marker === DRI) {
       state.restartInterval = (bytes[from] << 8) | bytes[from + 1];
     } else if (marker === SOS) {
-      if (!state.frame) throw new Error('a JPEG scan arrived before its frame header');
+      if (!state.frame) throw refuse('jpeg.scanfirst');
       at = readScan(bytes, from, to, state);
       continue;
     } else if (isBaseline(marker)) {
-      throw new Error('this fragment is a DCT-based JPEG, not a lossless one');
+      throw refuse('jpeg.dct');
     }
 
     at = to;
   }
 
-  if (!state.frame) throw new Error('this fragment carries no JPEG frame header');
+  if (!state.frame) throw refuse('jpeg.noframe');
 
   return {
     width: state.frame.width,
@@ -137,16 +139,15 @@ function readFrameHeader(bytes, at) {
       // and it is a lossy idea: it exists for photographs of faces, not for
       // measurements. No encoder writes a subsampled lossless frame, so rather
       // than carry an upsampler for a file that should not exist, this says so.
-      throw new Error('this frame subsamples its components, which lossless JPEG '
-        + 'here does not support');
+      throw refuse('jpeg.subsampled');
     }
     components.push({ id: bytes[base], index });
   }
 
   if (precision < 2 || precision > 16) {
-    throw new Error(`a JPEG frame of ${precision} bits, which is outside the 2 to 16 the format allows`);
+    throw refuse('jpeg.precision', { bits: precision });
   }
-  if (width === 0 || height === 0) throw new Error('a JPEG frame with no size');
+  if (width === 0 || height === 0) throw refuse('jpeg.nosize');
 
   return { precision, width, height, components };
 }
@@ -278,7 +279,7 @@ class BitReader {
 }
 
 function decodeSymbol(reader, table) {
-  if (!table) throw new Error('this scan names a Huffman table the file never defined');
+  if (!table) throw refuse('jpeg.notable');
   let code = reader.bit();
   for (let length = 1; length <= 16; length += 1) {
     if (table.maxcode[length] >= 0 && code <= table.maxcode[length]) {
@@ -286,7 +287,7 @@ function decodeSymbol(reader, table) {
     }
     code = (code << 1) | reader.bit();
   }
-  throw new Error('a Huffman code longer than the sixteen bits the format allows');
+  throw refuse('jpeg.longcode');
 }
 
 /**

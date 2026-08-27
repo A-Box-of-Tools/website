@@ -176,6 +176,49 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">第 128 個位元組處沒有 DICM 標記，開頭的位元組也不是一個 DICOM 元素</span>
+    <span data-phrase="jpeg.nosoi">這個片段不是以 JPEG 的 SOI 標記開頭的</span>
+    <span data-phrase="jpeg.scanfirst">JPEG 的掃描段出現在它的幀頭之前</span>
+    <span data-phrase="jpeg.dct">這個片段是基於 DCT 的 JPEG，不是無損的那種</span>
+    <span data-phrase="jpeg.noframe">這個片段沒有帶 JPEG 幀頭</span>
+    <span data-phrase="jpeg.nosize">一個沒有尺寸的 JPEG 幀</span>
+    <span data-phrase="jpeg.subsampled">這一幀對它的分量做了下采樣，而這裡的無損 JPEG 不支援</span>
+    <span data-phrase="jpeg.precision">一個 {bits} 位的 JPEG 幀，超出了格式允許的 2 到 16</span>
+    <span data-phrase="jpeg.notable">這個掃描段指名了一張檔案從未定義過的霍夫曼表</span>
+    <span data-phrase="jpeg.longcode">一個比格式允許的十六位更長的霍夫曼碼</span>
+    <span data-phrase="rle.short">RLE 的段頭是 64 個位元組，而這個片段比它還短</span>
+    <span data-phrase="rle.segments">一個 RLE 幀宣告瞭 {count} 個段，而格式只允許 1 到 15 個</span>
+    <span data-phrase="rle.wrongcount">這幅圖需要 {wanted} 個 RLE 段，而這一幀只有 {count} 個</span>
+    <span data-phrase="rle.outside">RLE 的第 {segment} 段指到了片段之外</span>
+    <span data-phrase="pixels.nosize">這個檔案沒有宣告影像尺寸</span>
+    <span data-phrase="pixels.nofragments">這個檔案沒有畫素資料片段</span>
+    <span data-phrase="pixels.nodecoder">{syntax} 是這個頁面解不開的壓縮</span>
+    <span data-phrase="pixels.pastend">第 {frame} 幀落在了畫素資料的末尾之外</span>
+    <span data-phrase="pixels.noframefragment">沒有哪個畫素資料片段裝著第 {frame} 幀</span>
+    <span data-phrase="pixels.oddbits">每個取樣 {bits} 位，既不是 1，也不是 8、16 或 32</span>
+    <span data-phrase="pixels.nooffsets">這個檔案為 {frames} 幀準備了 {fragments} 個畫素資料片段，卻沒有偏移表來說明哪個屬於哪一幀</span>
+    <span data-phrase="read.pastend">檔案在 {available} 個位元組處結束；在 {at} 處還需要 {wanted} 個</span>
+    <span data-phrase="note.baredataset">這個檔案沒有 DICM 標記，所以是按 {syntax} 當作一個裸資料集來讀的。這是從它的第一個元素推斷出來的，並不是檔案自己宣告的。</span>
+    <span data-phrase="note.nosyntax">檔案元資訊組沒有指名傳輸語法，所以資料集是按 Implicit VR Little Endian 讀的 —— 標準要求在這種情況下這樣假定。</span>
+    <span data-phrase="note.unknownsyntax">傳輸語法 {uid} 不是這個工具認識的。下面的檔案頭是按 Explicit VR Little Endian 讀的，1995 年以來註冊的每一種語法都用它；畫素則沒能解開。</span>
+    <span data-phrase="note.truncated">檔案在第 {at} 個位元組的那個元素中間就結束了；它之前的內容都已讀出。</span>
+    <span data-phrase="stop.undefinedlength">元素 {tag} 宣告瞭未定義長度，而這隻有序列才可以。它之後的內容都讀不出來了。</span>
+    <span data-phrase="stop.toolong">第 {at} 個位元組處的元素說自己的值有 {length} 個位元組，而檔案裡只剩下 {left} 個。</span>
+    <span data-phrase="report.title">DICOM 檔案頭 &mdash; {name}</span>
+    <span data-phrase="report.filesize">檔案大小</span>
+    <span data-phrase="report.bytes">{count} 個位元組</span>
+    <span data-phrase="report.syntax">傳輸語法</span>
+    <span data-phrase="report.object">物件</span>
+    <span data-phrase="report.image">影像</span>
+    <span data-phrase="report.bits">{bits} 位</span>
+    <span data-phrase="report.greyscale">灰階</span>
+    <span data-phrase="report.samples">{count} 個取樣</span>
+    <span data-phrase="report.frames">幀數</span>
+    <span data-phrase="report.spacing">畫素間距</span>
+    <span data-phrase="report.notes">關於讀取這個檔案的說明</span>
+    <span data-phrase="report.meta">檔案元資訊</span>
+    <span data-phrase="report.dataset">資料集</span>
+    <span data-phrase="report.origin">在 {origin} 用瀏覽器讀取，未上傳任何內容。</span>
     <span data-phrase="mode.window">在圖上橫著拖，窗就變寬或者變窄；上下拖，窗心就移動。兩個數字都在下面，直接輸入效果一樣。</span><span data-phrase="mode.pan">拖動可以讓圖在框裡移動。滾輪縮放，「適應視窗」把一切復位。</span><span data-phrase="mode.measure">在圖上拉一條線就能測量。檔案寫了畫素間距的，結果是毫米；沒寫的，結果是畫素，而且會明說。</span>
 
     <span data-phrase="probe.value">第 {column} 列第 {row} 行是 {value}</span>

@@ -179,6 +179,52 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">128번 바이트에 DICM 표식이 없고, 앞쪽 바이트도 DICOM 요소가 아닙니다</span>
+    <span data-phrase="jpeg.nosoi">이 조각은 JPEG SOI 표식으로 시작하지 않습니다</span>
+    <span data-phrase="jpeg.scanfirst">JPEG 스캔이 프레임 헤더보다 먼저 왔습니다</span>
+    <span data-phrase="jpeg.dct">이 조각은 무손실이 아니라 DCT 기반 JPEG입니다</span>
+    <span data-phrase="jpeg.noframe">이 조각에는 JPEG 프레임 헤더가 없습니다</span>
+    <span data-phrase="jpeg.nosize">크기가 없는 JPEG 프레임입니다</span>
+    <span data-phrase="jpeg.subsampled">이 프레임은 성분을 서브샘플링하는데, 여기의 무손실 JPEG는 그것을 지원하지 않습니다</span>
+    <span data-phrase="jpeg.precision">{bits}비트짜리 JPEG 프레임으로, 형식이 허용하는 2~16 범위를 벗어납니다</span>
+    <span data-phrase="jpeg.notable">이 스캔은 파일이 한 번도 정의하지 않은 허프만 표를 가리킵니다</span>
+    <span data-phrase="jpeg.longcode">형식이 허용하는 16비트보다 긴 허프만 코드입니다</span>
+    <span data-phrase="rle.short">RLE 세그먼트 헤더는 64바이트인데 이 조각은 그보다 짧습니다</span>
+    <span data-phrase="rle.segments">RLE 프레임이 세그먼트 {count}개를 선언했는데, 형식은 1~15개만 허용합니다</span>
+    <span data-phrase="rle.wrongcount">이 이미지에는 RLE 세그먼트가 {wanted}개 필요한데 프레임에는 {count}개뿐입니다</span>
+    <span data-phrase="rle.outside">RLE 세그먼트 {segment}이(가) 조각 바깥을 가리킵니다</span>
+    <span data-phrase="pixels.nosize">이 파일은 이미지 크기를 밝히지 않습니다</span>
+    <span data-phrase="pixels.nofragments">이 파일에는 픽셀 데이터 조각이 없습니다</span>
+    <span data-phrase="pixels.nodecoder">{syntax}은(는) 이 페이지가 풀 수 없는 압축입니다</span>
+    <span data-phrase="pixels.pastend">{frame}번 프레임이 픽셀 데이터의 끝을 넘어갑니다</span>
+    <span data-phrase="pixels.noframefragment">{frame}번 프레임을 담은 픽셀 데이터 조각이 없습니다</span>
+    <span data-phrase="pixels.oddbits">샘플당 {bits}비트인데, 1도 8도 16도 32도 아닙니다</span>
+    <span data-phrase="pixels.nooffsets">이 파일에는 프레임 {frames}개에 대한 픽셀 데이터 조각이 {fragments}개 있고, 어느 것이 어느 프레임에 속하는지 알려 줄 오프셋 표가
+      없습니다</span>
+    <span data-phrase="read.pastend">파일이 {available}바이트에서 끝납니다. {at}에서 {wanted}바이트가 더 필요했습니다</span>
+    <span data-phrase="note.baredataset">이 파일에는 DICM 표식이 없어 {syntax}(으)로 된 맨 데이터 집합으로 읽었습니다. 파일이 밝힌 것이 아니라 첫 요소에서 추론한 것입니다.</span>
+    <span data-phrase="note.nosyntax">파일 메타 그룹이 전송 구문을 밝히지 않아, 데이터 집합을 Implicit VR Little Endian으로 읽었습니다. 표준이 그렇게 가정하라고
+      정하고 있습니다.</span>
+    <span data-phrase="note.unknownsyntax">전송 구문 {uid}은(는) 이 도구가 아는 것이 아닙니다. 아래 헤더는 1995년 이후 등록된 모든 구문이 쓰는 Explicit VR Little
+      Endian으로 읽었고, 픽셀은 풀지 못했습니다.</span>
+    <span data-phrase="note.truncated">{at}번 바이트의 요소 중간에서 파일이 끝납니다. 그 앞은 모두 읽었습니다.</span>
+    <span data-phrase="stop.undefinedlength">{tag} 요소가 정의되지 않은 길이를 선언했는데, 그것은 시퀀스만 할 수 있습니다. 그 뒤로는 아무것도 읽지 못했습니다.</span>
+    <span data-phrase="stop.toolong">{at}번 바이트의 요소는 값이 {length}바이트라고 하는데, 파일에는 {left}바이트만 남아 있습니다.</span>
+    <span data-phrase="report.title">DICOM 헤더 &mdash; {name}</span>
+    <span data-phrase="report.filesize">파일 크기</span>
+    <span data-phrase="report.bytes">{count}바이트</span>
+    <span data-phrase="report.syntax">전송 구문</span>
+    <span data-phrase="report.object">객체</span>
+    <span data-phrase="report.image">이미지</span>
+    <span data-phrase="report.bits">{bits}비트</span>
+    <span data-phrase="report.greyscale">회색조</span>
+    <span data-phrase="report.samples">샘플 {count}개</span>
+    <span data-phrase="report.frames">프레임 수</span>
+    <span data-phrase="report.spacing">픽셀 간격</span>
+    <span data-phrase="report.notes">이 파일을 읽으며 남긴 메모</span>
+    <span data-phrase="report.meta">파일 메타 정보</span>
+    <span data-phrase="report.dataset">데이터 집합</span>
+    <span data-phrase="report.origin">{origin}에서 브라우저로 읽었습니다. 아무것도 업로드하지 않습니다.</span>
     <span data-phrase="mode.window">영상 위를 가로로 끌면 창이 넓어지거나 좁아지고, 위아래로 끌면 중심이 움직입니다. 두 숫자는 아래에 있고, 직접 입력해도 같습니다.</span>
     <span data-phrase="mode.pan">끌어서 영상을 틀 안에서 움직입니다. 마우스 휠로 확대되고, &lsquo;맞추기&rsquo;가 모두 되돌립니다.</span>
     <span data-phrase="mode.measure">영상 위에 선을 그어 잽니다. 파일이 픽셀 간격을 밝혀 두었다면 결과는 밀리미터로, 밝혀 두지 않았다면 픽셀로 나오고 그렇다고 말합니다.</span>

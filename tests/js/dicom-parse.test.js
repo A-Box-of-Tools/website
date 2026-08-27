@@ -261,7 +261,9 @@ test('a file that ends part-way through keeps everything before the damage', () 
   assert.equal(text(dataset, '00080060', latin1), 'CT');
   assert.equal(text(dataset, '00100010', latin1), 'DOE^JANE');
   assert.ok(dataset.warnings.length > 0, 'it says where it stopped');
-  assert.match(dataset.warnings.join(' '), /left in the file|ends part-way/);
+  // Warnings are keys and their numbers now, not sentences.
+  const keys = dataset.warnings.map((note) => note.key);
+  assert.ok(keys.includes('stop.toolong') || keys.includes('note.truncated'), keys.join(' '));
 });
 
 test('an element claiming more bytes than the file has does not throw', () => {
@@ -288,7 +290,7 @@ test('a file with no DICM marker is read as a bare dataset, and says so', () => 
   const head = parseFile(bare);
   assert.equal(head.hasPreamble, false);
   assert.equal(head.syntax.uid, EXPLICIT_LE);
-  assert.match(head.warnings.join(' '), /no DICM marker/);
+  assert.deepEqual(head.warnings.map((note) => note.key), ['note.baredataset']);
 
   const dataset = parseDataset(bare, { start: 0, syntax: head.syntax });
   assert.equal(text(dataset, '00080060', latin1), 'CT');
@@ -320,7 +322,7 @@ test('a file with no transfer syntax falls back to the standard default', () => 
 
   const head = parseFile(bytes);
   assert.equal(head.syntax.uid, IMPLICIT_LE);
-  assert.match(head.warnings.join(' '), /names no transfer syntax/);
+  assert.ok(head.warnings.some((note) => note.key === 'note.nosyntax'));
 });
 
 /* ------------------------------------------------------------ the dictionary */

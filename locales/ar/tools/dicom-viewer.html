@@ -168,6 +168,55 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">لا توجد علامة DICM عند البايت 128، والبايتات الأولى ليست عنصر DICOM أيضاً</span>
+    <span data-phrase="jpeg.nosoi">لا يبدأ هذا الجزء بعلامة JPEG SOI</span>
+    <span data-phrase="jpeg.scanfirst">وصل مسح JPEG قبل ترويسة إطاره</span>
+    <span data-phrase="jpeg.dct">هذا الجزء JPEG قائم على DCT، لا JPEG بلا فقد</span>
+    <span data-phrase="jpeg.noframe">لا يحمل هذا الجزء أي ترويسة إطار JPEG</span>
+    <span data-phrase="jpeg.nosize">إطار JPEG بلا مقاس</span>
+    <span data-phrase="jpeg.subsampled">يقلّل هذا الإطار من عيّنات مكوّناته، وهو ما لا يدعمه JPEG بلا فقد هنا</span>
+    <span data-phrase="jpeg.precision">إطار JPEG بـ{bits} بت، وهو خارج النطاق من 2 إلى 16 الذي يسمح به النسق</span>
+    <span data-phrase="jpeg.notable">يسمّي هذا المسح جدول هوفمان لم يعرّفه الملف قط</span>
+    <span data-phrase="jpeg.longcode">رمز هوفمان أطول من الستة عشر بت التي يسمح بها النسق</span>
+    <span data-phrase="rle.short">ترويسة مقاطع RLE أربعة وستون بايتاً، وهذا الجزء أقصر منها</span>
+    <span data-phrase="rle.segments">يعلن إطار RLE عن {count} مقاطع، والنسق يسمح بمن 1 إلى 15</span>
+    <span data-phrase="rle.wrongcount">تحتاج هذه الصورة إلى {wanted} مقاطع RLE، وفي الإطار {count}</span>
+    <span data-phrase="rle.outside">المقطع {segment} من RLE يشير إلى خارج الجزء</span>
+    <span data-phrase="pixels.nosize">لا يعلن هذا الملف عن أي مقاس للصورة</span>
+    <span data-phrase="pixels.nofragments">لا توجد في هذا الملف أجزاء بيانات بكسل</span>
+    <span data-phrase="pixels.nodecoder">{syntax} ضغط لا تستطيع هذه الصفحة فكّه</span>
+    <span data-phrase="pixels.pastend">الصورة {frame} تقع بعد نهاية بيانات البكسل</span>
+    <span data-phrase="pixels.noframefragment">لا يحمل أي جزء من بيانات البكسل الصورة {frame}</span>
+    <span data-phrase="pixels.oddbits">{bits} بت لكل عيّنة، وهو ليس 1 ولا 8 ولا 16 ولا 32</span>
+    <span data-phrase="pixels.nooffsets">في هذا الملف {fragments} من أجزاء بيانات البكسل مقابل {frames} صورة، وليس فيه جدول
+      إزاحات يقول أيّها لأيّها</span>
+    <span data-phrase="read.pastend">ينتهي الملف عند {available} بايت؛ وكانت هناك حاجة إلى {wanted} أخرى عند {at}</span>
+    <span data-phrase="note.baredataset">لا تحمل هذه الملف علامة DICM، فقُرئ كمجموعة بيانات عارية بـ{syntax}. استُنتج ذلك من
+      عنصره الأول ولم يكن معلناً.</span>
+    <span data-phrase="note.nosyntax">لا تسمّي مجموعة ميتا الملف أي صيغة نقل، فقُرئت مجموعة البيانات على أنها Implicit VR
+      Little Endian، وهو ما يأمر المعيار بافتراضه.</span>
+    <span data-phrase="note.unknownsyntax">صيغة النقل {uid} ليست مما تعرفه هذه الأداة. قُرئت الترويسة أدناه على أنها Explicit
+      VR Little Endian، وهي ما تستعمله كل صيغة سُجّلت منذ 1995؛ ولم يتيسّر فكّ ترميز
+      البكسلات.</span>
+    <span data-phrase="note.truncated">ينتهي الملف في منتصف العنصر عند البايت {at}؛ وقد قُرئ كل ما قبله.</span>
+    <span data-phrase="stop.undefinedlength">يعلن العنصر {tag} طولاً غير محدّد، وهو ما لا يجوز إلا لتسلسل. ولم يتيسّر قراءة شيء
+      بعده.</span>
+    <span data-phrase="stop.toolong">يقول العنصر عند البايت {at} إن قيمته {length} بايت، ولم يبقَ في الملف إلا {left}.</span>
+    <span data-phrase="report.title">ترويسة DICOM &mdash; {name}</span>
+    <span data-phrase="report.filesize">حجم الملف</span>
+    <span data-phrase="report.bytes">{count} بايت</span>
+    <span data-phrase="report.syntax">صيغة النقل</span>
+    <span data-phrase="report.object">الكائن</span>
+    <span data-phrase="report.image">الصورة</span>
+    <span data-phrase="report.bits">{bits} بت</span>
+    <span data-phrase="report.greyscale">تدرّج رمادي</span>
+    <span data-phrase="report.samples">{count} عيّنات</span>
+    <span data-phrase="report.frames">الصور</span>
+    <span data-phrase="report.spacing">تباعد البكسلات</span>
+    <span data-phrase="report.notes">ملاحظات على قراءة هذا الملف</span>
+    <span data-phrase="report.meta">معلومات ميتا الملف</span>
+    <span data-phrase="report.dataset">مجموعة البيانات</span>
+    <span data-phrase="report.origin">قُرئ في متصفح على {origin}، الذي لا يرفع شيئاً.</span>
     <span data-phrase="mode.window">اسحب عبر الصورة لتوسيع النافذة أو تضييقها، وإلى أعلى أو أسفل لتحريك مركزها. والرقمان كلاهما أدناه، والكتابة فيهما تفعل الشيء نفسه.</span>
     <span data-phrase="mode.pan">اسحب لتحريك الصورة داخل إطارها. وعجلة التمرير تكبّر، و&laquo;ملاءمة&raquo; تعيدها.</span>
     <span data-phrase="mode.measure">اسحب خطاً عبر الصورة لقياسه. فحيث يقول الملف كم تبعد بكسلاته بعضها عن بعض، يأتي الجواب بالمليمترات؛ وحيث لا يقول، يأتي بالبكسلات ويقول ذلك.</span>

@@ -61,7 +61,7 @@ BASELINE = {
     'compress-image': 2,
     'compress-pdf': 66,
     'crop-video': 55,
-    'dicom-viewer': 83,
+    'dicom-viewer': 15,
     'document-scanner': 13,
     'edit-audio': 25,
     'encode-text': 23,
@@ -93,6 +93,25 @@ BASELINE = {
     'trim-audio': 41,
     'trim-video': 101,
     'video-to-gif': 47,
+}
+
+# Modules that hold somebody else's vocabulary rather than this site's prose.
+#
+# A name published in a standard is not a sentence, and translating one makes a
+# header harder to read rather than easier: a radiographer matching a tag
+# against PS3.6, or against the last viewer they used, is looking for the
+# English the standard prints. Every DICOM tool in the world shows these in
+# English for that reason.
+#
+# The bar is that the WHOLE module is that vocabulary. exif-editor's tags.js is
+# not here, though it holds the EXIF tag names, because it also holds this
+# site's own readings of what a value means - "No flash on this camera" is ours
+# and has to move.
+NOT_OURS = {
+    ('dicom-viewer', 'dictionary.js'):
+        'the PS3.6 attribute names, which every DICOM tool prints in English',
+    ('dicom-viewer', 'uids.js'):
+        'the PS3.5 transfer syntax and PS3.4 SOP class names, likewise',
 }
 
 # A word here makes a string prose rather than a name. Deliberately ordinary
@@ -132,6 +151,8 @@ def prose_lines(tool):
     """
     found = []
     for module in sorted((TOOLS / tool / 'src').glob('*.js')):
+        if (tool, module.name) in NOT_OURS:
+            continue
         source = module.read_text(encoding='utf-8')
         for line, token in minify.tokenize_js(source, str(module)):
             if token[:1] not in ('"', "'", '`'):
@@ -181,6 +202,16 @@ class EnglishInJavaScript(unittest.TestCase):
                     f'says {allowed}. Somebody moved sentences into the markup '
                     f'and did not lower the number; lower it to {len(found)} in '
                     f'the same commit.')
+
+    def test_the_exemptions_name_modules_that_exist(self):
+        """An exemption for a file nobody has any more is an exemption for
+        nothing, and would quietly stop covering whatever replaced it."""
+        for (tool, module), reason in sorted(NOT_OURS.items()):
+            with self.subTest(tool=tool, module=module):
+                self.assertTrue(
+                    (TOOLS / tool / 'src' / module).is_file(),
+                    f'NOT_OURS names {tool}/src/{module}, which is not there')
+                self.assertTrue(reason.strip(), 'an exemption needs its reason')
 
     def test_the_baseline_names_only_tools_that_exist(self):
         on_disk = {p.parent.name for p in TOOLS.glob('*/src')}
