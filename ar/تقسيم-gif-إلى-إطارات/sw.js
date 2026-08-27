@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تقسيم-gif-إلى-إطارات/:';
-const CACHE_NAME=CACHE_PREFIX+'09f7a001c3';
+const CACHE_NAME=CACHE_PREFIX+'5ee5eaf0a4';
 const ASSETS=[
 './',
 'index.html',

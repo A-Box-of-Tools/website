@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/goruntu-istifleme/:';
-const CACHE_NAME=CACHE_PREFIX+'98689f8614';
+const CACHE_NAME=CACHE_PREFIX+'93eae8d0fa';
 const ASSETS=[
 './',
 'index.html',

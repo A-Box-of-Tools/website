@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/apilar-imagenes/:';
-const CACHE_NAME=CACHE_PREFIX+'b074cc9f21';
+const CACHE_NAME=CACHE_PREFIX+'470de5070e';
 const ASSETS=[
 './',
 'index.html',

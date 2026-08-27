@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/텍스트-비교/:';
-const CACHE_NAME=CACHE_PREFIX+'c5f2f38472';
+const CACHE_NAME=CACHE_PREFIX+'9529fab37b';
 const ASSETS=[
 './',
 'index.html',
