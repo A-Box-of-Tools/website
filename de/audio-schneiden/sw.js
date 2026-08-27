@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/audio-schneiden/:';
-const CACHE_NAME=CACHE_PREFIX+'7628c4944c';
+const CACHE_NAME=CACHE_PREFIX+'f1f41b6728';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=73b3c4a09f',
+'styles.css?v=5898e5361d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

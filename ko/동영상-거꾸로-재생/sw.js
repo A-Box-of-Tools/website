@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/동영상-거꾸로-재생/:';
-const CACHE_NAME=CACHE_PREFIX+'d454184db8';
+const CACHE_NAME=CACHE_PREFIX+'090d935859';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=f76d8d27ef',
+'styles.css?v=38e0d79bde',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

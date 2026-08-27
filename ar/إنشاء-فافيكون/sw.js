@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/إنشاء-فافيكون/:';
-const CACHE_NAME=CACHE_PREFIX+'c6a2810a86';
+const CACHE_NAME=CACHE_PREFIX+'76192aafa1';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=90b9806774',
+'styles.css?v=3ecf99038f',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
