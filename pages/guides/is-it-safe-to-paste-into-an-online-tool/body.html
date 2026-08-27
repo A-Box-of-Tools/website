@@ -1,0 +1,128 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Pasting text into a web page can be exactly as consequential as
+      uploading a file to it. The reason it does not feel that way is that
+      the gesture is borrowed from somewhere safe: between two of your own
+      windows, paste moves text from one place you control to another place
+      you control. On a web page, the second place is a text box that a
+      script can read &mdash; and what happens next depends entirely on the
+      page, not on the gesture.
+    </p>
+    <p>
+      Plenty of paste-shaped tools do their work on a server: the page sends
+      your text away, the server formats or validates or diffs it, and the
+      result comes back. Nothing about the screen tells you which kind you
+      are using. The text box looks the same either way; so does the
+      &ldquo;Format&rdquo; button. The difference is one network request,
+      invisible unless you look for it.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a paste actually carries</h2>
+    <p>
+      The pastes that end up in online tools are rarely prose. They are the
+      working text of somebody's job, and the genre matters, because some of
+      the most sensitive strings in computing are precisely the ones that get
+      pasted into formatters at midnight:
+    </p>
+    <ul>
+      <li>
+        <strong>Configuration files</strong> exist to hold the things a
+        program must not hard-code, and those things are database passwords,
+        API keys and signing secrets. A config pasted whole into a validator
+        carries every one of them.
+      </li>
+      <li>
+        <strong>Logs and stack traces</strong> carry session tokens in URLs,
+        email addresses, internal hostnames, and occasionally a request body
+        with somebody's personal data in it.
+      </li>
+      <li>
+        <strong>API responses</strong> are snapshots of production data
+        &mdash; real customers, real balances &mdash; pasted somewhere
+        convenient to be read.
+      </li>
+      <li>
+        <strong>Anything base64-shaped</strong> that gets pasted into a
+        decoder was usually encoded because it mattered: a token being
+        debugged, a certificate, an auth header.
+      </li>
+    </ul>
+    <p>
+      A key that transits somebody else's server has to be treated as
+      exposed the moment you notice &mdash; revoked and reissued, which on a
+      production system is an afternoon nobody planned. The point is not
+      that formatter sites are harvesting credentials. It is that you cannot
+      know what a server logs, and a secret whose exposure you cannot rule
+      out is a secret you have to rotate.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why the tool does not need your text to leave</h2>
+    <p>
+      Here is the technical fact that settles the question: formatting,
+      validating, converting and comparing text are among the easiest jobs
+      in computing. Parsing JSON, indenting XML, diffing two files, encoding
+      base64 &mdash; a browser does these in milliseconds, locally, and has
+      been able to for years. A server adds nothing to the job. When a
+      paste-shaped tool uploads your text, that is an architectural leftover
+      or a convenience for the operator, never a necessity of the work.
+    </p>
+    <p>
+      That is what this site's text tools are the counterexample to. The
+      <a href="../../format-json/">JSON Formatter</a> parses, formats and
+      converts JSON, XML, HTML, CSS and YAML; the
+      <a href="../../compare-text/">Text Diff</a> marks every difference
+      between two texts line by line and word by word; the
+      <a href="../../encode-text/">Base64 Encoder &amp; Decoder</a> goes both
+      ways between text and its encodings. All three run on your machine,
+      and what you paste has nowhere to go &mdash; the pages carry no code
+      path that could send it.
+    </p>
+    <p>
+      Two of them have companion guides already:
+      <a href="../format-json-without-uploading-it/">formatting JSON without
+      uploading it</a> and
+      <a href="../compare-two-json-files/">comparing two JSON files</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>How to tell which kind you are using</h2>
+    <p>
+      The checks are the same as for a file tool, and they are written up in
+      full in <a href="../is-it-safe-to-upload-files/">the guide on
+      uploading</a>. The paste-shaped short version:
+    </p>
+    <ul>
+      <li>
+        <strong>Pull the plug.</strong> Load the page, disconnect, paste,
+        press the button. A local tool carries on; a server tool stops.
+        Thirty seconds, no expertise, no way to fake it.
+      </li>
+      <li>
+        <strong>Watch the Network tab while you press Format.</strong> A
+        request that leaves at that moment, roughly the size of your paste,
+        is your paste leaving. No request, no upload.
+      </li>
+      <li>
+        <strong>Beware the helpful extras.</strong> A &ldquo;share this
+        snippet&rdquo; button, a history of your recent pastes across
+        devices, a link you can send a colleague &mdash; each of those is
+        only possible if the text was stored on a server. Features are
+        claims: a page that can show your paste to somebody else has kept
+        it.
+      </li>
+    </ul>
+    <p>
+      And one habit beats all three checks: paste less. A validator does not
+      need the real password to validate the shape of a config &mdash;
+      <code>"REDACTED"</code> parses identically. For the paste that is
+      itself the secret, the rule collapses to something even simpler: the
+      only page that should ever receive a password is the login page it
+      belongs to.
+    </p>
+  </section>

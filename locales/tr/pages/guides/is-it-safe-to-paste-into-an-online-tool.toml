@@ -1,0 +1,18 @@
+#
+# Rehber: online araca metin yapıştırmak güvenli mi? - Turkish.
+#
+
+nav = "Online araca yapıştırmak güvenli mi?"
+title = "Online Bir Araca Metin Yapıştırmak Güvenli mi?"
+description = "Yapıştırmak kendi pencereleriniz arasında metin taşımak gibi hissettirir; birçok web aracında ise sessiz bir yüklemedir. Yapıştırılan metnin neler taşıdığı, nereye gittiği ve biçimlendiricinin onu tutup tutmadığının nasıl anlaşılacağı."
+heading = "Online bir araca metin yapıştırmak güvenli mi?"
+lede = """
+    Yapıştırmak yüklemek gibi hissettirmez, tuzak da budur: sayfa onları
+    gönderiyorsa aynı baytlar makinenizden yine çıkar. Bu sayfa,
+    yapıştırılan bir config'in ya da log'un gerçekte neler taşıdığını ve
+    önünüzdeki aracın onları gönderecek bir yeri olup olmadığını nasıl
+    anlayacağınızı anlatır."""
+updated = "26 Ağustos 2026"
+og_title = "Online bir araca metin yapıştırmak güvenli mi?"
+og_description = "Bir yapıştırma sessiz bir yükleme olabilir. Bir config, log ya da sorgunun gerçekte neler taşıdığı ve biçimlendiricinin bir kopya tutup tutmadığının nasıl anlaşılacağı."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

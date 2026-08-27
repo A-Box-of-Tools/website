@@ -1,0 +1,18 @@
+#
+# Guia: é seguro colar texto em ferramenta online? - Brazilian Portuguese.
+#
+
+nav = "Colar texto online é seguro?"
+title = "É seguro colar texto numa ferramenta online?"
+description = "Colar parece mover texto entre as suas próprias janelas, e em muitas ferramentas web é um envio silencioso. O que um texto colado carrega, para onde vai, e como saber se o formatador fica com ele."
+heading = "É seguro colar texto numa ferramenta online?"
+lede = """
+    Colar não parece enviar, e essa é a armadilha: os mesmos bytes saem da
+    sua máquina de todo jeito, se a página os despachar. Isto aqui é sobre
+    o que uma config ou um log colados realmente carregam &mdash; e sobre
+    como saber se a ferramenta na sua frente tem sequer para onde
+    mandá-los."""
+updated = "26 de agosto de 2026"
+og_title = "É seguro colar texto numa ferramenta online?"
+og_description = "Um colar pode ser um envio silencioso. O que uma config, um log ou uma consulta realmente carregam, e como saber se o formatador guarda uma cópia."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

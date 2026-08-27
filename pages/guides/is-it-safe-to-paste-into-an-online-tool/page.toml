@@ -1,0 +1,35 @@
+#
+# Guide: is it safe to paste text into an online tool?
+#
+# The upload guide's sibling for the file that never was a file. Nobody
+# thinks of pasting as uploading, which is exactly why config blobs with
+# live credentials end up in web formatters: the paste feels like moving
+# text between two of your own windows, and for a tool with a server it is
+# neither. The three paste-shaped tools here are the counterexample.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-it-safe-to-paste-into-an-online-tool"
+kind = "guide"
+nav = "Is it safe to paste into an online tool?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Is It Safe to Paste Text Into an Online Tool?"
+description = "Pasting feels like moving text between your own windows, and for many web tools it is a quiet upload instead. What pasted text can carry, where it goes, and how to tell whether a formatter keeps it."
+
+heading = "Is it safe to paste text into an online tool?"
+lede = """
+    Pasting does not feel like uploading, and that is the trap: the same
+    bytes leave your machine either way if the page sends them. This is
+    about what a pasted config or log actually carries, and how to tell
+    whether the tool in front of you has anywhere to send it."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Is it safe to paste text into an online tool?"
+og_description = "A paste can be a quiet upload. What a config, log or query actually carries, and how to tell whether the formatter you pasted it into keeps a copy."
+og_image_alt = "abox.tools - tools that never touch a server"

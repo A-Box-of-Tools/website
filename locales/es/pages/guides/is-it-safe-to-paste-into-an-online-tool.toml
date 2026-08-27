@@ -1,0 +1,18 @@
+#
+# Guía: ¿es seguro pegar texto en una herramienta online? - Spanish.
+#
+
+nav = "¿Pegar texto online es seguro?"
+title = "¿Es seguro pegar texto en una herramienta online?"
+description = "Pegar parece mover texto entre tus propias ventanas, y en muchas herramientas web es una subida silenciosa. Qué lleva dentro un texto pegado, adónde va, y cómo saber si el formateador se lo queda."
+heading = "¿Es seguro pegar texto en una herramienta online?"
+lede = """
+    Pegar no se siente como subir, y esa es la trampa: los mismos bytes
+    salen de tu máquina igualmente si la página los envía. Esto va de lo
+    que de verdad lleva dentro una config o un log pegados &mdash; y de
+    cómo saber si la herramienta que tienes delante tiene siquiera adónde
+    mandarlos."""
+updated = "26 de agosto de 2026"
+og_title = "¿Es seguro pegar texto en una herramienta online?"
+og_description = "Un pegado puede ser una subida silenciosa. Qué lleva de verdad una config, un log o una consulta, y cómo saber si el formateador guarda una copia."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

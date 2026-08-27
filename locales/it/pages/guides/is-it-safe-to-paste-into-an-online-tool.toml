@@ -1,0 +1,18 @@
+#
+# Guida: è sicuro incollare testo in uno strumento online? - Italian.
+#
+
+nav = "Incollare testo online è sicuro?"
+title = "È sicuro incollare testo in uno strumento online?"
+description = "Incollare sembra spostare testo fra le proprie finestre, e per molti strumenti web è invece un caricamento silenzioso. Che cosa porta con sé un testo incollato, dove va, e come capire se il formattatore se lo tiene."
+heading = "È sicuro incollare testo in uno strumento online?"
+lede = """
+    Incollare non sembra caricare, ed è questa la trappola: gli stessi
+    byte lasciano la tua macchina in ogni caso, se la pagina li spedisce.
+    Qui si parla di che cosa porta davvero con sé una config o un log
+    incollati &mdash; e di come capire se lo strumento davanti a te ha
+    anche solo un posto dove mandarli."""
+updated = "26 agosto 2026"
+og_title = "È sicuro incollare testo in uno strumento online?"
+og_description = "Un incolla può essere un caricamento silenzioso. Che cosa porta davvero una config, un log o una query, e come capire se il formattatore ne tiene una copia."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"
