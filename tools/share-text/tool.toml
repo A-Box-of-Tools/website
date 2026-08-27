@@ -20,7 +20,7 @@
 #
 
 slug = "share-text"
-name = "Share Text &amp; Files"
+name = "Share Text & Files"
 heading = "Share text &amp; files <span class=\"h1-kw\">&mdash; straight from your browser to theirs, nothing uploaded</span>"
 tagline = "The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server."
 icon = "&#128279;"           # the mark beside the page heading
