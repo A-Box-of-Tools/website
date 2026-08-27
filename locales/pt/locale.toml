@@ -159,6 +159,7 @@ complete = true
 "guides/how-can-a-web-page-work-offline" = "guias/como-uma-pagina-web-funciona-offline"
 "guides/whats-inside-a-dicom-file" = "guias/o-que-ha-dentro-de-um-arquivo-dicom"
 "guides/can-an-ai-agent-use-these-tools" = "guias/um-agente-de-ia-pode-usar-estas-ferramentas"
+"guides/is-it-safe-to-upload-files-to-an-ai" = "guias/e-seguro-enviar-arquivos-para-uma-ia"
 
 #
 # ---------------------------------------------------------------------------

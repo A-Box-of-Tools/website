@@ -165,6 +165,7 @@ complete = true
 "guides/how-can-a-web-page-work-offline" = "gidsen/hoe-kan-een-webpagina-offline-werken"
 "guides/whats-inside-a-dicom-file" = "gidsen/wat-zit-er-in-een-dicom-bestand"
 "guides/can-an-ai-agent-use-these-tools" = "gidsen/kan-een-ai-agent-deze-tools-gebruiken"
+"guides/is-it-safe-to-upload-files-to-an-ai" = "gidsen/is-bestanden-uploaden-naar-ai-veilig"
 
 #
 # ---------------------------------------------------------------------------

@@ -1,0 +1,21 @@
+#
+# Guide : est-il sûr d'envoyer ses fichiers à une IA ? - French.
+#
+
+nav = "Envoyer ses fichiers à une IA, est-ce sûr ?"
+title = "Est-il sûr d'envoyer ses fichiers à une IA ?"
+description = "Une fenêtre de chat est un formulaire d'envoi qui n'en a pas l'air. Où va vraiment un fichier confié à une IA, ce qui distingue une IA d'un convertisseur, et comment envoyer moins - et l'envoyer propre - quand le jeu en vaut la chandelle."
+heading = "Est-il sûr d'envoyer ses fichiers à une IA ?"
+lede = """
+    La question que le premier guide de ce site posait sur les
+    convertisseurs, tournée vers l'endroit où les fichiers partent
+    réellement aujourd'hui. La réponse honnête a la même forme&nbsp;: la
+    plupart du temps il ne se passe rien de grave, et vous ne pouvez rien
+    en vérifier &mdash; plus une différence qui compte. Un convertisseur
+    transforme votre fichier sans se soucier de ce qu'il contient. À une
+    IA, on envoie le fichier précisément pour que quelque chose le
+    lise."""
+updated = "27 août 2026"
+og_title = "Est-il sûr d'envoyer ses fichiers à une IA ?"
+og_description = "Une fenêtre de chat est un formulaire d'envoi qui n'en a pas l'air. Où va vraiment le fichier, ce qui distingue une IA d'un convertisseur, et comment envoyer moins et l'envoyer propre."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

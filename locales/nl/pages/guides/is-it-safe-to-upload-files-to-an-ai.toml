@@ -1,0 +1,20 @@
+#
+# Gids: is bestanden uploaden naar AI veilig? - Dutch.
+#
+
+nav = "Is bestanden uploaden naar AI veilig?"
+title = "Is het veilig om bestanden naar een AI te uploaden?"
+description = "Een chatvenster is een uploadformulier dat er niet zo uitziet. Waar een bestand dat je aan een AI geeft werkelijk heengaat, hoe een AI verschilt van een converter, en hoe je minder stuurt - en het schoon stuurt - als het werk het waard is."
+heading = "Is het veilig om bestanden naar een AI te uploaden?"
+lede = """
+    Dezelfde vraag die de eerste gids van deze site over converters
+    stelde, gericht op de plek waar bestanden nu werkelijk heengaan. Het
+    eerlijke antwoord heeft dezelfde vorm: meestal gebeurt er niets ergs,
+    en je kunt er niets van controleren &mdash; plus één verschil dat
+    telt. Een converter zet je bestand om zonder zich te bekommeren om
+    wat erin staat. Naar een AI stuur je het bestand juist zodat iets het
+    leest."""
+updated = "27 augustus 2026"
+og_title = "Is het veilig om bestanden naar een AI te uploaden?"
+og_description = "Een chatvenster is een uploadformulier dat er niet zo uitziet. Waar het bestand werkelijk heengaat, hoe een AI van een converter verschilt, en hoe je minder stuurt en het schoon stuurt."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"
