@@ -134,12 +134,13 @@ body = """
 
 [[privacy]]
 title = "Wat Google laadt, en wat het niet krijgt."
-body = """
- De advertentie- en
+body = """ De advertentie- en
       meetscripts komen van Google, de donatieknop van Buy Me a Coffee.
-      Geen van beide krijgt iets over wat deze pagina deelt &mdash; niet de
-      tekst, niet de bestanden, hun namen of groottes, niet de linknaam, en
-      niet wie er verbond. Elke regel die de inhoud raakt wordt vanaf deze
+      Geen van beide krijgt de tekst, de bestanden, hun namen of groottes,
+      of wie er verbond. De uitzondering is het adres van deze pagina zelf:
+      de link van een lezer bevat de linknaam, en het advertentiescript
+      leest het adres. Een deling die privé moet blijven wil de
+      privéschakelaar. Elke regel die de inhoud raakt wordt vanaf deze
       oorsprong geserveerd en staat in de repository."""
 
 [[howto]]

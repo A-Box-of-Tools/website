@@ -134,13 +134,14 @@ body = """
 
 [[privacy]]
 title = "O que o Google carrega, e o que ele não recebe."
-body = """
- Os scripts de anúncio e
+body = """ Os scripts de anúncio e
       medição vêm do Google, e o botão de doação, do Buy Me a Coffee.
-      Nenhum deles recebe nada sobre o que esta página compartilha: nem o
-      texto, nem os arquivos, nem seus nomes ou tamanhos, nem o nome do
-      link, nem quem se conectou. Cada linha que toca o conteúdo é servida
-      desta origem e está no repositório."""
+      Nenhum deles recebe o texto, os arquivos, seus nomes ou tamanhos, nem
+      quem se conectou. A exceção é o próprio endereço desta página: o link
+      de um leitor carrega o nome do link, e o script de anúncio lê o
+      endereço. Um compartilhamento que deva ficar em segredo quer o
+      interruptor de privado. Cada linha que toca o conteúdo é servida desta
+      origem e está no repositório."""
 
 [[howto]]
 title = "Escreva o texto, ou anexe os arquivos."

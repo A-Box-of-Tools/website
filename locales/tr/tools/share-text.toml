@@ -133,13 +133,13 @@ body = """
 
 [[privacy]]
 title = "Google'ın yüklediği, ve eline geçmeyen."
-body = """
- Reklam ve ölçüm betikleri
-      Google'dan, bağış düğmesi Buy Me a Coffee'den gelir. Hiçbiri bu
-      sayfanın paylaştığı hiçbir şeyi almaz &mdash; ne metni, ne dosyaları,
-      ne adlarını ya da boyutlarını, ne bağlantı adını, ne de kimin
-      bağlandığını. İçeriğe dokunan her satır bu kaynaktan sunulur ve
-      depodadır."""
+body = """ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi Buy Me a Coffee'den gelir. Hiçbiri metni,
+      dosyaları, adlarını ya da boyutlarını, kimin bağlandığını almaz.
+      İstisna, bu sayfanın kendi adresidir: okuyucunun bağlantısı bağlantı
+      adını taşır ve reklam betiği adresi okur. Gizli kalması gereken bir
+      paylaşım, özel anahtarını ister. İçeriğe dokunan her satır bu
+      kaynaktan sunulur ve depodadır."""
 
 [[howto]]
 title = "Metni yazın, ya da dosyaları ekleyin."
