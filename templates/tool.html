@@ -308,6 +308,19 @@
 <script src="{{ handoff_href }}" defer></script>
 
 <!--
+  What a language switch carries with it: the files this page was given and the
+  settings the visitor moved, parked while the page changes and handed back on
+  the other side. Every tool page in every language, because either side of a
+  switch can be the one doing the carrying.
+
+  `defer` rather than a module, and deliberately above src/main.js: it listens
+  on the file input, and it has to be listening BEFORE the picker does - the
+  first thing the picker does with a chosen file is clear the input, which
+  would leave nothing to carry. See shared/lang-keep.js.
+-->
+<script src="{{ keep_href }}" defer></script>
+
+<!--
   ============================================================================
   THE WRITTEN PART OF THE PAGE
 

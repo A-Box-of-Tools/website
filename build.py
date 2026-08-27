@@ -178,6 +178,16 @@ def build(out, clean=False, minify_output=True, jobs=None):
         (SHARED / 'handoff.js').read_text(encoding='utf-8'), 'shared/handoff.js')
     handoff_v = sitelib.text_hash(handoff_js)
 
+    # What a language switch carries across with it - the chosen files and the
+    # settings the visitor moved. Served and hashed like the three above, and
+    # for the same reason: it lives at the root, every tool page in every
+    # language asks for the same copy, and a version in the URL is what gets a
+    # change past a service worker that was told to cache whatever it is asked
+    # for.
+    keep_js = emit.js_text(
+        (SHARED / 'lang-keep.js').read_text(encoding='utf-8'), 'shared/lang-keep.js')
+    keep_v = sitelib.text_hash(keep_js)
+
 
     # The eight lines that register the front page's service worker. Written
     # here rather than into each language because there is nothing in it that
@@ -283,15 +293,16 @@ def build(out, clean=False, minify_output=True, jobs=None):
         for locale in locales:
             done, links = build_locale(out, templates, locale, locales, site,
                                        tools, prose, planned, css_v, lang_v,
-                                       feedback_v, offline_v, site_css, emit)
+                                       feedback_v, handoff_v, keep_v,
+                                       offline_v, site_css, emit)
             written += done
             page_links.update(links)
     else:
         with ProcessPoolExecutor(max_workers=jobs) as pool:
             pending = [
                 pool.submit(build_locale, out, templates, locale, locales, site,
-                            tools, prose, planned, css_v, lang_v, feedback_v, handoff_v,
-                            offline_v, site_css, emit)
+                            tools, prose, planned, css_v, lang_v, feedback_v,
+                            handoff_v, keep_v, offline_v, site_css, emit)
                 for locale in locales
             ]
             for future in pending:
@@ -394,6 +405,7 @@ def build(out, clean=False, minify_output=True, jobs=None):
     write(out / 'offline.js', offline_js)
     write(out / 'feedback.js', feedback_js)
     write(out / 'handoff.js', handoff_js)
+    write(out / 'lang-keep.js', keep_js)
 
     # Last, because a link is only checkable once everything it could point at
     # has been written. The pages the parent wrote itself - the 404 - joined
@@ -422,7 +434,8 @@ def build(out, clean=False, minify_output=True, jobs=None):
 
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
-                 css_v, lang_v, feedback_v, handoff_v, offline_v, site_css, emit):
+                 css_v, lang_v, feedback_v, handoff_v, keep_v, offline_v,
+                 site_css, emit):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
 
@@ -501,7 +514,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written = []
     for tool in ltools:
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, lang_v, feedback_v, handoff_v,
+                   links, lang_v, feedback_v, handoff_v, keep_v,
                    guide_of.get(tool['slug'], {}),
                    related_of.get(tool['slug'], []),
                    [by_slug[s] for s in tool.get('handoff', [])], emit)
@@ -788,7 +801,8 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               lang_v, feedback_v, handoff_v, guide, related, handoff, emit):
+               lang_v, feedback_v, handoff_v, keep_v, guide, related, handoff,
+               emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -890,6 +904,10 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             # through the picker. See shared/handoff.js.
             'handoff': handoff,
             'handoff_href': f'/handoff.js?v={handoff_v}',
+            # The work already on the page when somebody changes the language.
+            # Every tool page, in every language, because either side of a
+            # switch can be the one doing the carrying. See shared/lang-keep.js.
+            'keep_href': f'/lang-keep.js?v={keep_v}',
             'jsonld': sitelib.tool_jsonld(root, tool),
             'body': body,
         })))
@@ -1764,10 +1782,11 @@ def copy_shared(out):
         # shared/css feeds the stylesheets the build assembles, and shared/js is
         # copied into each tool's src/shared/ by build_tool - minified, cached by
         # that tool's service worker. Copying either here would publish a second,
-        # raw copy at the site root that nothing references; site.css, lang.js
-        # and feedback.js are written separately, minified, by the caller -
+        # raw copy at the site root that nothing references; site.css and the
+        # frame scripts are written separately, minified, by the caller -
         # copying the source over one of them here would undo that.
-        if path.name in ('css', 'js', 'site.css', 'lang.js', 'feedback.js'):
+        if path.name in ('css', 'js', 'site.css', 'lang.js', 'feedback.js',
+                         'handoff.js', 'lang-keep.js'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)
