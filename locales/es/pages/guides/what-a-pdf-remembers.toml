@@ -1,0 +1,18 @@
+#
+# Guía: lo que un PDF recuerda. - Spanish.
+#
+
+nav = "Lo que un PDF recuerda"
+title = "Lo que un PDF recuerda"
+description = "Nombres de autor, el archivo de Word que fue, comentarios, adjuntos - y a veces cada versión anterior de sí mismo, borrados incluidos. Dónde guarda un PDF su memoria, y cómo enviar uno sin su historia."
+heading = "Lo que un PDF recuerda"
+lede = """
+    Más que sus páginas. Un PDF lleva de forma rutinaria el nombre de su
+    autor, el programa que lo produjo, el archivo que era antes de ser un
+    PDF &mdash; y, si se editó de cierta manera muy común, cada versión
+    anterior de sí mismo, borrados incluidos. Nada de eso aparece en
+    pantalla."""
+updated = "26 de agosto de 2026"
+og_title = "Lo que un PDF recuerda"
+og_description = "Nombres de autor, el archivo de Word que fue, comentarios, adjuntos - a veces cada versión anterior de sí mismo. Dónde vive esa memoria, y cómo enviar un PDF sin ella."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

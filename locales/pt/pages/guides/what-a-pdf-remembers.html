@@ -1,0 +1,160 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Um PDF não é uma imagem das suas páginas. É um contêiner, e as
+      páginas são só a parte da carga que aparece. Em volta delas, o
+      formato tem lugar para um bloco de informações do documento, uma
+      segunda cópia XML do mesmo bloco, comentários, dados de formulário,
+      arquivos anexados &mdash; e, por um jeito muito comum de salvar
+      edições, versões anteriores completas do documento, empilhadas
+      debaixo da atual.
+    </p>
+    <p>
+      Nada disso é defeito. Cada peça foi desenhada para um trabalho
+      razoável, e dentro de uma organização quase tudo é inofensivo ou
+      útil. O problema é a travessia de fronteira: no momento em que um
+      PDF sai &mdash; para a outra parte de um contrato, uma lista de
+      distribuição, um processo público &mdash; tudo de que ele se lembra
+      vai junto, e o que ele lembra não aparece em página nenhuma. As
+      pessoas conferem o que o documento diz e enviam o que o arquivo
+      contém, e são coisas diferentes.
+    </p>
+  </section>
+
+  <section>
+    <h2>O crachá: /Info e o pacote XMP</h2>
+    <p>
+      Todo PDF pode carregar um dicionário de informações do documento:
+      autor, título, datas de criação e modificação, e os nomes dos
+      programas que o criaram e produziram. A maioria carrega uma segunda
+      cópia, mais rica, dos mesmos fatos como XML embutido, chamada XMP.
+      Nenhuma das duas aparece com as páginas; ambas estão a um painel de
+      propriedades de distância.
+    </p>
+    <p>
+      Os valores se preenchem sozinhos, e é isso que os faz vazar.
+      <em>Autor</em> costuma ser o nome de conta com que o sistema
+      operacional foi instalado: um nome real e completo, em documentos
+      que seus autores acreditavam anônimos: candidaturas, pareceres,
+      reclamações, propostas. <em>Título</em> é rotineiramente o nome do
+      arquivo de onde o PDF foi exportado, então
+      <code>Rascunho-v7-ressalvas-juridicas.docx</code> sobrevive dentro
+      do PDF polido que veio substituí-lo. A linha do produtor data o
+      software; as datas desmentem versões oficiais. Já se escreveram
+      estudos inteiros sobre o que os PDFs institucionais confessam nesse
+      bloco.
+    </p>
+  </section>
+
+  <section>
+    <h2>O desfazer involuntário: salvamentos incrementais</h2>
+    <p>
+      A peça mais afiada do contêiner é a de que o formato mais se
+      orgulha. O PDF aceita <em>atualizações incrementais</em>: em vez de
+      reescrever o arquivo, um editor pode anexar as mudanças ao final e
+      deixar intacto tudo o que veio antes. O visualizador lê o arquivo de
+      trás para a frente e mostra a versão mais nova; as antigas continuam
+      lá, byte por byte, no mesmo arquivo.
+    </p>
+    <p>
+      Salvar anexando é rápido e à prova de travamento &mdash; e significa
+      que um documento editado assim contém a própria história. O texto
+      &ldquo;apagado&rdquo; não se foi: foi superado, e recuperá-lo é
+      questão de ler o arquivo como ele era antes do último acréscimo. Um
+      retângulo preto puxado sobre um nome, num editor que salva
+      incrementalmente, produz um arquivo que contém o nome <em>duas
+      vezes</em> &mdash; uma debaixo do retângulo, outra na história
+      &mdash;, o que dobra a falha descrita no
+      <a href="../da-para-recuperar-texto-tarjado/">guia das tarjas</a>.
+    </p>
+    <p>
+      O remédio é uma reescrita completa: abrir o arquivo, ficar com o que
+      a versão atual usa de verdade, escrever um arquivo novo sem passado.
+      É o que o <a href="../../comprimir-pdf/">compressor de PDF</a> daqui
+      faz por construção: uma reescrita não tem como não abandonar a
+      história, e a ferramenta conta o material superado que deixou para
+      trás no seu detalhamento de tamanhos &mdash; que é também o jeito
+      mais fácil de descobrir que o seu arquivo tinha uma história.
+    </p>
+  </section>
+
+  <section>
+    <h2>O porão: comentários, campos, anexos, camadas</h2>
+    <p>
+      O resto da memória é mais comum, e vaza do mesmo jeito:
+    </p>
+    <ul>
+      <li>
+        <strong>Comentários e anotações</strong>: a conversa da revisão,
+        viajando com o documento revisado, visível para quem souber
+        olhar.
+      </li>
+      <li>
+        <strong>Campos de formulário</strong> guardam os valores
+        preenchidos como dados mesmo onde uma página achatada já não os
+        mostra.
+      </li>
+      <li>
+        <strong>Anexos</strong>: um PDF pode embutir arquivos inteiros, de
+        qualquer tipo, e os visualizadores os mostram num painel lateral
+        que a maioria das pessoas nunca abriu. A planilha por trás do
+        gráfico às vezes vai anexada ao gráfico.
+      </li>
+      <li>
+        <strong>Camadas de conteúdo opcional</strong> podem guardar
+        conteúdo de página desligado em vez de removido: presente por
+        inteiro, exibido nunca.
+      </li>
+    </ul>
+    <p>
+      Cada um desses itens é dado que as páginas não mostram, num arquivo
+      que as pessoas julgam pelas páginas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Enviando um PDF sem a memória dele</h2>
+    <p>
+      O padrão em tudo isso: o que sobrevive é decidido por como o arquivo
+      foi escrito, então o conserto é passá-lo por algo que escreva com
+      esquecimento, na sua própria máquina &mdash; a história de um
+      documento é exatamente o que não se deve subir para o servidor de um
+      estranho, argumento que
+      <a href="../e-seguro-enviar-arquivos/">o guia sobre enviar
+      arquivos</a> desenvolve por inteiro. Três ferramentas deste site
+      escrevem PDF, e as três foram construídas para deixar a memória de
+      fora:
+    </p>
+    <ul>
+      <li>
+        A ferramenta de <a href="../../juntar-pdf/">juntar e dividir
+        PDF</a> escreve a saída <strong>sem dicionário de informações
+        nenhum</strong>: sem autor, sem datas, sem linha nomeando o
+        software. O que ela copia dos seus originais é o que as páginas
+        deles usam, não a bagagem. Há
+        <a href="../juntar-e-dividir-arquivos-pdf/">um guia</a>.
+      </li>
+      <li>
+        O <a href="../../comprimir-pdf/">compressor de PDF</a> reescreve o
+        arquivo por completo &mdash; história superada abandonada, pacote
+        XMP e dados privados de aplicativos não conservados &mdash; e
+        detalha o que removeu. Também
+        <a href="../deixar-um-pdf-menor/">com guia</a>.
+      </li>
+      <li>
+        A ferramenta de <a href="../../tarjar-pdf/">tarjar PDF</a>, para
+        quando a memória é justamente o assunto: a cada passada ela limpa
+        o bloco de informações, o pacote XMP, os marcadores, os
+        comentários, os valores de campos e os anexos, além da tarja em si
+        &mdash; <a href="../tarjar-um-pdf/">o guia dela</a> percorre
+        tudo.
+      </li>
+    </ul>
+    <p>
+      E o teste de aceitação espelha o vazamento: julgue o arquivo, não as
+      páginas. Abra o painel de propriedades e leia o que restou; procure
+      no arquivo bruto uma palavra removida; olhe o detalhamento do
+      compressor sobre o que o seu documento carregava. Um PDF sem memória
+      não tem nada a confessar, leia-o quem for.
+    </p>
+  </section>

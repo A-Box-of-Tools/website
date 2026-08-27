@@ -1,0 +1,17 @@
+#
+# Rehber: bir PDF neleri hatırlar. - Turkish.
+#
+
+nav = "Bir PDF neleri hatırlar"
+title = "Bir PDF Neleri Hatırlar"
+description = "Yazar adları, bir zamanlar olduğu Word dosyası, yorumlar, ekler - ve bazen kendisinin her eski sürümü, silinenler dahil. Bir PDF hafızasını nerede tutar, ve bir tanesi geçmişi olmadan nasıl gönderilir."
+heading = "Bir PDF neleri hatırlar"
+lede = """
+    Sayfalarından fazlasını. Bir PDF çoğu kez yazarının adını, onu üreten
+    yazılımı, PDF olmadan önce olduğu dosyayı taşır &mdash; ve çok yaygın
+    belli bir yöntemle düzenlendiyse, kendisinin her eski sürümünü,
+    silinenler dahil. Bunların hiçbiri ekranda görünmez."""
+updated = "26 Ağustos 2026"
+og_title = "Bir PDF neleri hatırlar"
+og_description = "Yazar adları, bir zamanlar olduğu Word dosyası, yorumlar, ekler - bazen kendi her eski sürümü. O hafıza nerede oturur, ve bir PDF onsuz nasıl gönderilir."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

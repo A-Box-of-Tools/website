@@ -1,0 +1,18 @@
+#
+# Guida: che cosa ricorda un PDF. - Italian.
+#
+
+nav = "Che cosa ricorda un PDF"
+title = "Che cosa ricorda un PDF"
+description = "Nomi d'autore, il file Word che è stato, commenti, allegati - e a volte ogni versione precedente di sé, cancellazioni comprese. Dove un PDF ripone la memoria, e come spedirne uno senza la sua storia."
+heading = "Che cosa ricorda un PDF"
+lede = """
+    Più delle sue pagine. Un PDF porta di norma il nome del suo autore, il
+    programma che lo ha prodotto, il file che era prima di diventare un
+    PDF &mdash; e, se è stato modificato in un certo modo molto diffuso,
+    ogni versione precedente di sé, cancellazioni comprese. Niente di
+    tutto questo compare sullo schermo."""
+updated = "26 agosto 2026"
+og_title = "Che cosa ricorda un PDF"
+og_description = "Nomi d'autore, il file Word che è stato, commenti, allegati - a volte ogni versione precedente di sé. Dove abita quella memoria, e come spedire un PDF senza."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

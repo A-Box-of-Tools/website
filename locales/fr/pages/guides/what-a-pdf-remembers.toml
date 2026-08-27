@@ -1,0 +1,18 @@
+#
+# Guide : ce qu'un PDF retient. - French.
+#
+
+nav = "Ce qu'un PDF retient"
+title = "Ce qu'un PDF retient"
+description = "Des noms d'auteurs, le fichier Word qu'il a été, des commentaires, des pièces jointes - et parfois chaque version antérieure de lui-même, suppressions comprises. Où un PDF range sa mémoire, et comment en envoyer un sans son histoire."
+heading = "Ce qu'un PDF retient"
+lede = """
+    Plus que ses pages. Un PDF transporte couramment le nom de son auteur,
+    le logiciel qui l'a produit, le fichier qu'il était avant de devenir
+    un PDF &mdash; et, s'il a été modifié d'une certaine façon très
+    répandue, chaque version antérieure de lui-même, suppressions
+    comprises. Rien de tout cela ne s'affiche à l'écran."""
+updated = "26 août 2026"
+og_title = "Ce qu'un PDF retient"
+og_description = "Des noms d'auteurs, le fichier Word qu'il a été, des commentaires, des pièces jointes - parfois chaque version antérieure de lui-même. Où loge cette mémoire, et comment envoyer un PDF sans elle."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

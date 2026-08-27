@@ -1,0 +1,168 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Un PDF n'est pas une image de ses pages. C'est un conteneur, et les
+      pages ne sont que la partie de la cargaison qui s'affiche. Autour
+      d'elles, le format a de la place pour un bloc d'informations sur le
+      document, une seconde copie XML du même, des commentaires, des
+      données de formulaire, des fichiers joints &mdash; et, par une façon
+      très répandue d'enregistrer les modifications, des versions
+      antérieures complètes du document, empilées sous la version
+      courante.
+    </p>
+    <p>
+      Rien de tout cela n'est un défaut. Chaque pièce a été conçue pour un
+      travail raisonnable, et à l'intérieur d'une organisation, la plupart
+      sont inoffensives ou utiles. Le problème est le passage de
+      frontière&nbsp;: à l'instant où un PDF s'en va &mdash; vers une
+      partie adverse, une liste de diffusion, un dossier public &mdash;
+      tout ce dont il se souvient part avec lui, et ce dont il se souvient
+      ne s'affiche sur aucune page. On vérifie ce qu'un document dit, et
+      on envoie ce que le fichier contient &mdash; deux choses
+      différentes.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'étiquette&nbsp;: /Info et le paquet XMP</h2>
+    <p>
+      Tout PDF peut porter un dictionnaire d'informations &mdash; auteur,
+      titre, dates de création et de modification, et les noms des
+      programmes qui l'ont créé et produit. La plupart portent une seconde
+      copie, plus riche, des mêmes faits en XML embarqué, appelée XMP. Ni
+      l'une ni l'autre ne s'affiche avec les pages&nbsp;; les deux sont à
+      un panneau de propriétés de distance.
+    </p>
+    <p>
+      Les valeurs se remplissent automatiquement, et c'est ce qui les rend
+      fuyantes. <em>Auteur</em> est typiquement le nom de compte avec
+      lequel le système a été installé &mdash; un vrai nom complet, sur
+      des documents que leurs auteurs croyaient anonymes&nbsp;:
+      candidatures, expertises, plaintes, offres. <em>Titre</em> est
+      couramment le nom du fichier dont le PDF a été exporté, si bien que
+      <code>Brouillon-v7-réserves-juridiques.docx</code> survit à
+      l'intérieur du PDF poli qui devait le remplacer. La ligne du
+      producteur date le logiciel&nbsp;; les dates contredisent les
+      versions officielles. Des études entières ont été écrites sur ce que
+      les PDF institutionnels avouent dans ce bloc.
+    </p>
+  </section>
+
+  <section>
+    <h2>La corbeille qui rend tout&nbsp;: les enregistrements incrémentaux</h2>
+    <p>
+      La pièce la plus tranchante du conteneur est celle dont le format
+      est le plus fier. Le PDF permet les <em>mises à jour
+      incrémentales</em>&nbsp;: au lieu de réécrire le fichier, un éditeur
+      peut ajouter ses changements à la fin et laisser tout ce qui précède
+      intact. Le lecteur lit le fichier par la fin et montre la version la
+      plus récente&nbsp;; les anciennes sont encore là, octet pour octet,
+      dans le même fichier.
+    </p>
+    <p>
+      Enregistrer en ajoutant est rapide et résistant aux plantages
+      &mdash; et cela signifie qu'un document modifié ainsi contient sa
+      propre histoire. Le texte &laquo;&nbsp;supprimé&nbsp;&raquo; n'est
+      pas parti&nbsp;: il est périmé, et le récupérer revient à lire le
+      fichier tel qu'il était avant le dernier ajout. Un rectangle noir
+      tiré sur un nom dans un éditeur qui enregistre incrémentalement
+      produit un fichier qui contient le nom <em>deux fois</em> &mdash;
+      une fois sous le rectangle, une fois dans l'histoire &mdash; ce qui
+      redouble l'échec décrit dans
+      <a href="../peut-on-recuperer-un-texte-caviarde/">le guide du
+      caviardage</a>.
+    </p>
+    <p>
+      Le remède est une réécriture complète&nbsp;: ouvrir le fichier,
+      garder ce que la version courante utilise vraiment, écrire un
+      fichier neuf sans passé. C'est ce que fait par construction le
+      <a href="../../compresser-un-pdf/">compresseur de PDF</a> d'ici
+      &mdash; une réécriture ne peut pas faire autrement que d'abandonner
+      l'histoire, et l'outil compte la matière périmée qu'il a laissée
+      derrière lui dans sa ventilation des tailles, qui est aussi la façon
+      la plus simple de découvrir que votre fichier avait une histoire.
+    </p>
+  </section>
+
+  <section>
+    <h2>La soute&nbsp;: commentaires, champs, pièces jointes, calques</h2>
+    <p>
+      Le reste de la mémoire est plus ordinaire, et fuit quand même&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Commentaires et annotations</strong> &mdash; la
+        conversation de relecture, voyageant avec le document relu,
+        visible pour quiconque pense à regarder.
+      </li>
+      <li>
+        <strong>Les champs de formulaire</strong> gardent leurs valeurs
+        saisies comme données, même là où une page aplatie ne les affiche
+        plus.
+      </li>
+      <li>
+        <strong>Les pièces jointes</strong>&nbsp;: un PDF peut embarquer
+        des fichiers entiers, de n'importe quel type, et les lecteurs les
+        montrent dans un panneau latéral que la plupart des gens n'ont
+        jamais ouvert. Le tableur derrière le graphique est parfois joint
+        au graphique.
+      </li>
+      <li>
+        <strong>Les calques de contenu optionnel</strong> peuvent porter
+        du contenu de page éteint plutôt que retiré &mdash; présent en
+        entier, affiché jamais.
+      </li>
+    </ul>
+    <p>
+      Chacun de ces éléments est une donnée que les pages ne montrent pas,
+      dans un fichier qu'on juge à ses pages.
+    </p>
+  </section>
+
+  <section>
+    <h2>Envoyer un PDF sans sa mémoire</h2>
+    <p>
+      Le motif dans tout cela&nbsp;: ce qui survit dépend de la façon dont
+      le fichier a été écrit, donc le remède est de le faire passer par
+      quelque chose qui écrit sans mémoire, sur votre propre machine
+      &mdash; l'histoire d'un document est exactement ce qu'il ne faut pas
+      téléverser vers le serveur d'un inconnu, argument que
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">le guide sur l'envoi
+      de fichiers</a> déroule en entier. Trois outils de ce site écrivent
+      des PDF, et tous trois ont été bâtis pour laisser la mémoire
+      dehors&nbsp;:
+    </p>
+    <ul>
+      <li>
+        L'outil pour <a href="../../fusionner-des-pdf/">fusionner et
+        diviser des PDF</a> écrit une sortie <strong>sans aucun
+        dictionnaire d'informations</strong> &mdash; pas d'auteur, pas de
+        dates, pas de ligne nommant le logiciel. Ce qu'il copie de vos
+        originaux, c'est ce que leurs pages utilisent, pas leurs bagages.
+        Il y a <a href="../fusionner-et-diviser-des-pdf/">un guide</a>.
+      </li>
+      <li>
+        Le <a href="../../compresser-un-pdf/">compresseur de PDF</a>
+        réécrit le fichier complètement &mdash; histoire périmée
+        abandonnée, paquet XMP et données privées d'applications non
+        repris &mdash; et détaille ce qu'il a retiré. Avec
+        <a href="../reduire-la-taille-d-un-pdf/">un guide</a> aussi.
+      </li>
+      <li>
+        L'outil pour <a href="../../caviarder-un-pdf/">caviarder un
+        PDF</a>, pour quand la mémoire est justement le sujet&nbsp;: à
+        chaque passage il nettoie le bloc d'informations, le paquet XMP,
+        les signets, les commentaires, les valeurs de champs et les pièces
+        jointes, en plus du caviardage lui-même &mdash;
+        <a href="../caviarder-un-pdf/">son guide</a> déroule le tout.
+      </li>
+    </ul>
+    <p>
+      Et le test de réception reflète la fuite&nbsp;: jugez le fichier,
+      pas les pages. Ouvrez le panneau des propriétés et lisez ce qui
+      reste&nbsp;; cherchez dans le fichier brut un mot retiré&nbsp;;
+      regardez la ventilation du compresseur sur ce que votre document
+      transportait. Un PDF sans mémoire n'a rien à avouer, quel que soit
+      son lecteur.
+    </p>
+  </section>
