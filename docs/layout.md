@@ -11,6 +11,9 @@ build.py                 the generator; run it to produce dist/
 buildlib/
   template.py            an eighty-line template engine, so this has no dependencies
   site.py                config loading, the CSP, the structured data, the checks
+  emit.py                the one function that writes a file, and what it minifies
+  catalogue.py           the whole site as one file: sitemap.xml, llms.txt, the feeds
+  deployed.py            --check: diffing a build against the branch being served
 config/
   site.toml              everything true of every page: the CSP, the ids, the hub
   planned.toml           the "Planned" list on the roadmap page

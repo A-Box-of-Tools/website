@@ -83,13 +83,11 @@ The build never reaches the network, whichever way it runs.
 """
 
 import argparse
-import hashlib
 import html
 import os
 import posixpath
 import re
 import shutil
-import subprocess
 import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -97,12 +95,18 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 
 from buildlib import cards
+from buildlib import catalogue
 from buildlib import cssmin
 from buildlib import i18n
 from buildlib import imports
 from buildlib import minify
 from buildlib import screens
 from buildlib import site as sitelib
+from buildlib.deployed import check_against_branch
+# LINK comes from the emitter because that is what gathers a page's links, on
+# the way past as it writes; check_links borrows the pattern for the one path
+# where it has to re-read a finished page instead. See buildlib/emit.py.
+from buildlib.emit import Emitter, LINK, write
 from buildlib.template import Loader, TemplateError
 
 ROOT = Path(__file__).parent.resolve()
@@ -484,20 +488,23 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         # After the 404 and deliberately not passed it: the 404 has no address
         # of its own to list, and inviting a crawler to index it would be
         # inviting it to serve "not found" in place of a real page.
-        build_sitemap(out, templates, site, locales, tools, ordered_prose)
+        catalogue.build_sitemap(out, templates, site, locales, tools,
+                                ordered_prose)
         written.append('sitemap.xml')
 
         # And the same site again, in plain text, for something that reads one
         # file and decides from it whether any of this is worth mentioning.
         # Built from the same list as the sitemap above and holding back the
         # same languages.
-        build_llms(out, templates, site, locales, ordered_tools, ordered_prose)
+        catalogue.build_llms(out, templates, site, locales, ordered_tools,
+                             ordered_prose)
         written.append('llms.txt')
 
         # And once more as a stream, for a reader who wants to be told when a
         # tool ships rather than to come back and check. One file per published
         # language, so this adds a name per locale rather than a single one.
-        build_feeds(out, templates, site, locales, ordered_tools, ordered_prose)
+        catalogue.build_feeds(out, templates, site, locales, ordered_tools,
+                              ordered_prose)
         written += [f'{locale["prefix"]}feed.xml'
                     for locale in i18n.published(locales)]
 
@@ -1607,252 +1614,6 @@ def write_tools_index(tools):
         print(f'  wrote {path.relative_to(ROOT).as_posix()}')
 
 
-def build_sitemap(out, templates, site, locales, tools, prose):
-    """One sitemap for the whole domain, listing every published language.
-
-    Published, not built. A locale still being translated is deliberately
-    absent: it carries no hreflang tag pointing at it and no link in the
-    switcher either, and a sitemap entry would be the one remaining way a
-    crawler could still be told to go and index a page that is half in English.
-
-    The order within a language is the order it always was - the hub, the
-    tools, the guides, the roadmap, the legal pages - and the languages follow
-    each other in the order locales/ sorts in, English first.
-
-    Priority does not decay down the list. It says what a page is worth against
-    the rest of the site, not against the rest of its own language: the German
-    hub is as much a front door as the English one, and marking it lower would
-    be saying the opposite of what the hreflang tags beside it say.
-    """
-    entries = []
-    for locale in i18n.published(locales):
-        def url(slug, locale=locale):
-            return i18n.locale_url(locale, slug, site)
-
-        # A page this language has not translated yet is built and readable,
-        # but it is not listed here. Inviting a crawler to index an English
-        # page sitting at a German URL is how a site ends up ranking its own
-        # untranslated half for the wrong language, and it is the single
-        # failure this whole arrangement exists to avoid.
-        def ready(slug, locale=locale):
-            return i18n.translated(locale, slug)
-
-        if ready(''):
-            entries.append({'url': url(''), 'lastmod': site['lastmod'],
-                            'changefreq': 'weekly', 'priority': '1.0'})
-        entries += [{'url': url(tool['slug']), 'lastmod': tool['lastmod'],
-                     'changefreq': 'monthly', 'priority': '0.8'}
-                    for tool in tools if ready(tool['slug'])]
-        # Guides below the tools and above the legal pages. A tool is what
-        # somebody came for; a guide is how they find out this site exists. The
-        # index they are listed on goes first and slightly higher: it is the
-        # page that gains from being crawled as a set rather than as nine
-        # unrelated articles.
-        if ready(site['guides']['slug']):
-            entries.append({'url': url(site['guides']['slug']),
-                            'lastmod': site['guides']['lastmod'],
-                            'changefreq': 'monthly', 'priority': '0.7'})
-        entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
-                     'changefreq': 'monthly', 'priority': '0.6'}
-                    for page in prose
-                    if page['kind'] == 'guide' and ready(page['slug'])]
-        # The roadmap: a real page, but not one anybody searches for. Below the
-        # guides, above the legal pages.
-        if ready(site['roadmap']['slug']):
-            entries.append({'url': url(site['roadmap']['slug']),
-                            'lastmod': site['roadmap']['lastmod'],
-                            'changefreq': 'monthly', 'priority': '0.5'})
-        # The legal pages last, and low: they matter for trust, not for search.
-        entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
-                     'changefreq': 'yearly', 'priority': '0.3'}
-                    for page in prose
-                    if page['kind'] == 'legal' and ready(page['slug'])]
-
-    write(out / 'sitemap.xml', templates.render('sitemap.xml', {'pages': entries}))
-
-
-# How many entries a feed carries. The site has more tools and guides than
-# this, and deliberately so: a feed answers "what has changed lately", which a
-# reader checks repeatedly, and the whole catalogue is already two files away
-# in sitemap.xml and llms.txt. Every entry past the first screenful is weight
-# on every poll for something nobody scrolls to.
-FEED_ENTRIES = 30
-
-
-def build_feeds(out, templates, site, locales, tools, prose):
-    """One Atom feed per published language, at /feed.xml and /<lang>/feed.xml.
-
-    Per language rather than one for the site, because a feed is a reading
-    experience and not an index: a German subscriber wants German titles at
-    German URLs, and mixing fifteen languages into one file would make it
-    useless to all of them. The same rule as everywhere else decides who gets
-    one - a locale that has not finished its frame is built and readable and
-    advertised to nobody, so it has no feed and no link to one.
-
-    Tools and guides, newest first. Not the legal pages, whose dates move for
-    reasons no reader subscribed to hear about, and not the hub or the roadmap,
-    which are indexes of things that appear here already.
-    """
-    for locale in i18n.published(locales):
-        entries = []
-        for tool in tools:
-            if not i18n.translated(locale, tool['slug']):
-                continue
-            said = i18n.localize_tool(tool, locale, site)
-            entries.append({'title': said['name'], 'url': said['url'],
-                            'summary': said['description'],
-                            'lastmod': said['lastmod']})
-        for page in prose:
-            if page['kind'] != 'guide' or not i18n.translated(locale, page['slug']):
-                continue
-            said = i18n.localize_page(page, locale, site)
-            entries.append({'title': said['heading'], 'url': said['url'],
-                            'summary': said['description'],
-                            'lastmod': said['lastmod']})
-
-        # Two passes, because Python's sort is stable: alphabetical first, then
-        # by date descending. A day on which four guides shipped then reads in
-        # a fixed order rather than in whatever order the folders were walked,
-        # which is what keeps a rebuild from reshuffling a feed that did not
-        # change and re-notifying everyone who subscribes to it.
-        entries.sort(key=lambda entry: entry['title'])
-        entries.sort(key=lambda entry: entry['lastmod'], reverse=True)
-        entries = entries[:FEED_ENTRIES]
-
-        for entry in entries:
-            entry['updated'] = f'{entry["lastmod"]}T00:00:00Z'
-
-        home = i18n.locale_url(locale, '', site)
-        said_site = locale['site']
-        feed = {
-            'lang': locale['hreflang'],
-            'title': said_site['name'],
-            'subtitle': said_site['hub']['description'],
-            'home': home,
-            'self': f'{home}feed.xml',
-            'author': said_site['name'],
-            # The newest entry, not the moment of the build. A feed whose
-            # timestamp moves on every deploy teaches a reader to ignore it,
-            # which is the same reason lastmod in the sitemap is a date somebody
-            # changed on purpose.
-            'updated': entries[0]['updated'] if entries else f'{site["lastmod"]}T00:00:00Z',
-            'entries': entries,
-        }
-        write(out / locale['prefix'] / 'feed.xml',
-              templates.render('feed.xml', {'feed': feed}))
-
-
-def build_llms(out, templates, site, locales, tools, prose):
-    """/llms.txt: the whole site as plain text, for a reader that gets one fetch.
-
-    A search engine is handed a page of structured data per tool and has the
-    patience to crawl all of them. An assistant deciding whether this site is
-    worth mentioning at all does not - it fetches one address, and if that
-    address does not say what the tools are and what they cannot do, it writes
-    its own EXIF parser instead of linking to the page that already strips one.
-    This is that address.
-
-    Built from the same tool.toml files as the hub, the sitemap and
-    tools/README.md, and in the same hub order, so it cannot fall behind the
-    tools that exist. That is the whole reason it is generated rather than
-    written: a hand-kept index of twenty-four tools is an index that is wrong.
-
-    Two deliberate departures from every other generated file here:
-
-      * No GENERATED FILE banner at the top. An llms.txt begins with an H1 by
-        convention, and the readers of one are strict about that shape. The
-        sentence saying the file is generated is the last paragraph of the
-        intro instead, where it reads as a fact about the file rather than as a
-        comment standing in front of it.
-      * English only, and at the root. It is an index OF the site, not a page
-        of it: the languages are a section inside it, and each hub linked from
-        there carries the rest of that language on its own.
-
-    Everything goes through site.to_text on the way in. This file is markdown,
-    and the configs it is built from are HTML fragments full of &mdash; and
-    <code>.
-    """
-    text = sitelib.to_text
-    by_slug = {tool['slug']: tool for tool in tools}
-
-    # The hub's categories, in the hub's order, carrying the hub's own note
-    # about each - so a machine reading this groups the tools the same way a
-    # visitor looking at the front page does.
-    groups = []
-    for category in site['hub']['categories']:
-        listed = [by_slug[slug] for slug in category['order'] if slug in by_slug]
-        if not listed:
-            continue
-        groups.append({
-            'name': text(category['name']),
-            'note': text(category['note']),
-            # `schema.description` rather than the tagline. The tagline is
-            # written to be read by somebody already looking at the page; this
-            # is the sentence written to tell a machine what the tool does, and
-            # it is the one that lets a task be matched to an address.
-            'tools': [{'name': text(tool['name']),
-                       'url': tool['url'],
-                       'description': text(tool['schema']['description'])}
-                      for tool in listed],
-        })
-
-    def entry(page):
-        return {'name': text(page['heading']), 'url': page['url'],
-                'description': text(page['description'])}
-
-    guides = [entry(page) for page in prose if page['kind'] == 'guide']
-
-    # A language is listed only if it has finished the frame AND its own hub -
-    # the same test the sitemap and the hreflang tags are built from. Handing a
-    # half-English hub to something that will quote it is the one failure worth
-    # avoiding here, and it is avoided the way it is avoided everywhere else.
-    # Named in English and described by the two things a machine wants next:
-    # the word the language calls itself, which is what the switcher on the
-    # site shows, and the hreflang code, which is how the addresses are keyed.
-    # One shape for every line in the file, rather than a special one here.
-    languages = [{'name': locale['name'],
-                  'url': i18n.locale_url(locale, '', site),
-                  'description': f'{text(locale["endonym"])} - {locale["hreflang"]}'}
-                 for locale in i18n.published(locales, '')
-                 if not locale['is_base']]
-
-    optional = [
-        {'name': text(site['guides']['nav']),
-         'url': f'{site["domain"]}{site["guides"]["slug"]}/',
-         'description': text(site['guides']['description'])},
-        {'name': text(site['roadmap']['nav']),
-         'url': f'{site["domain"]}{site["roadmap"]["slug"]}/',
-         'description': text(site['roadmap']['description'])},
-        {'name': site['source_label'],
-         'url': site['source_url'],
-         'description': text(site['llms']['source_note'])},
-        {'name': 'Sitemap',
-         'url': f'{site["domain"]}sitemap.xml',
-         'description': text(site['llms']['sitemap_note'])},
-    ]
-    # The legal pages last, for the same reason the sitemap puts them last.
-    optional += [entry(page) for page in prose if page['kind'] == 'legal']
-
-    write(out / 'llms.txt', templates.render('llms.txt', {
-        'site': site,
-        # Trimmed here rather than in the template: these are TOML multi-line
-        # strings, so each arrives with the newline its closing quotes sit on,
-        # and the template spaces its own sections.
-        'llms': {key: value.strip() for key, value in site['llms'].items()},
-        # One line, whatever config/site.toml wrapped it as. It is a
-        # blockquote, and a wrapped blockquote whose second line starts with
-        # "- " is read as a list that ends the quote - which is exactly how
-        # this one is worded.
-        'summary': ' '.join(site['llms']['summary'].split()),
-        'groups': groups,
-        'guides': guides,
-        'languages': languages,
-        'optional': optional,
-    }))
-
-
-LINK = re.compile(r'(?:href|src)="([^"#?]+)(?:[#?][^"]*)?"')
-
 SKIP_LINK = ('http://', 'https://', 'mailto:', 'data:', 'blob:', '//')
 
 
@@ -2005,164 +1766,6 @@ def _redirect_path(out, old_slug):
     path = out / old_slug
     path.mkdir(parents=True, exist_ok=True)
     return path / 'index.html'
-
-
-def write(path, text):
-    """Always LF, always UTF-8. A build that produced CRLF on Windows and LF in
-    CI would show every line of every file as changed on alternate deploys.
-
-    Returns the text as written - trailing newline included - so a caller that
-    goes on to hash what the file holds can hash this instead of opening the
-    file it just closed."""
-    text = text if text.endswith('\n') else text + '\n'
-    path.write_text(text, encoding='utf-8', newline='\n')
-    return text
-
-
-class Emitter:
-    """Writes the HTML, CSS and JavaScript, minified or not.
-
-    One object rather than a flag threaded everywhere, because the two things
-    that have to stay together - whether to minify, and what banner to leave
-    behind when we do - belong together.
-
-    The banner is the one comment minifying does not remove. A page that spends
-    four links telling you to go and read the code should not then hand you a
-    file with no way back to it, so every generated file keeps one line saying
-    where it came from and how to prove it.
-
-    `page_links` records, for every page written, the links on it as written -
-    check_links' input, gathered on the way past. It used to be gathered at
-    the end instead, by reading every page back off the disk, and on Windows
-    that was half the build: the antivirus scans a freshly written file on its
-    next open, at tens of milliseconds each, a thousand pages over.
-    """
-
-    def __init__(self, minify_output, site):
-        self.enabled = bool(minify_output)
-        self.page_links = {}
-        source = site['source_url']
-
-        # The same sentence in three comment syntaxes. Each minifier wraps it
-        # itself, so what is kept here is the text with no delimiters on it.
-        verify = (f'Built from {source} by build.py. '
-                  f'Verify with: python build.py --check')
-        self.js_banner = f'/* {verify} */'
-        self.html_banner = f' {verify} '
-        self.css_banner = f' {verify} '
-
-        # What each source text minified to, so a text seen before is not
-        # minified again. Most of what the build emits is seen many times
-        # over: a tool's modules are the same bytes in every language, and
-        # within one language every prose page's analytics.js is the same
-        # script. Minifying is deterministic - the module says so and stakes
-        # its --check on it - which is what makes the answer reusable at all.
-        #
-        # build() fills the JavaScript and CSS caches with every tool's
-        # sources before the languages start, and that placing is the point:
-        # each language builds in its own process and is handed a copy of this
-        # object, so work cached here once is carried into all of them, where
-        # a cache warmed inside a worker would die with it.
-        self._js_seen = {}
-        self._css_seen = {}
-
-    def html(self, path, text):
-        text = write(path, minify.html(text, self.html_banner)
-                     if self.enabled else text)
-        self.page_links[path] = LINK.findall(text)
-        return text
-
-    def js(self, path, text, where):
-        return write(path, self.js_text(text, where))
-
-    def js_text(self, text, where):
-        """Returns rather than writes, for the one script that is hashed before
-        it is written - see the note beside lang.js in build(). Everything else
-        goes through js() and never sees the string."""
-        if not self.enabled:
-            return text
-        done = self._js_seen.get(text)
-        if done is None:
-            done = self._js_seen[text] = minify.js(text, self.js_banner, where)
-        return done
-
-    def css_text(self, text):
-        """Returns rather than writes, because a stylesheet has to be hashed
-        after minifying and before being written - the hash goes in the URL the
-        page asks for it by."""
-        if not self.enabled:
-            return text
-        done = self._css_seen.get(text)
-        if done is None:
-            done = self._css_seen[text] = cssmin.css(text, self.css_banner)
-        return done
-
-
-def check_against_branch(out, branch='dist'):
-    """Compare a fresh build with what is committed on the dist branch. This is
-    the command the pages point at: it answers "is the deployed site really a
-    build of these sources?", which matters more now that what is served is
-    minified and no longer pleasant to read straight off.
-
-    A fresh clone has the branch only as origin/dist, so try that too rather
-    than shrugging and reporting success.
-    """
-    for ref_name in (branch, f'origin/{branch}'):
-        found = subprocess.run(['git', 'rev-parse', '--verify', f'{ref_name}^{{tree}}'],
-                               capture_output=True, text=True, cwd=ROOT)
-        if found.returncode == 0:
-            branch = ref_name
-            break
-    else:
-        print(f'\n  no {branch} branch here to check against '
-              f'(try: git fetch origin {branch})', file=sys.stderr)
-        return 0
-
-    differences = compare(out, branch)
-    if differences:
-        print(f'\n  {branch} is not this build ({len(differences)} files differ):',
-              file=sys.stderr)
-        for name in differences[:20]:
-            print(f'    {name}', file=sys.stderr)
-        if len(differences) > 20:
-            print(f'    ... and {len(differences) - 20} more', file=sys.stderr)
-        return 1
-    print(f'\n  {branch} matches a fresh build of these sources')
-    return 0
-
-
-def compare(built, branch):
-    """Which files differ between the build and a branch, by content.
-
-    Read out of the object store rather than checked out into a worktree.
-    Checking out runs the files through Git's end-of-line filters, and on a
-    machine with core.autocrlf on that rewrites every text file on the way to
-    disk - which made this report all sixty-odd files as changed when not one
-    of them was. A blob id is the bytes as committed, and nothing can filter
-    it on the way past.
-    """
-    listing = subprocess.run(['git', 'ls-tree', '-r', '-z', branch],
-                             capture_output=True, text=True, cwd=ROOT, check=True)
-    committed = {}
-    for entry in listing.stdout.split('\0'):
-        if not entry:
-            continue
-        info, path = entry.split('\t', 1)
-        committed[path] = info.split()[2]
-
-    fresh = {path.relative_to(built).as_posix(): blob_id(path)
-             for path in built.rglob('*') if path.is_file()}
-
-    names = sorted(set(committed) | set(fresh))
-    return [name for name in names if committed.get(name) != fresh.get(name)]
-
-
-def blob_id(path):
-    """The id Git would give this file's contents: sha1 over the bytes with
-    Git's blob header in front. The same rule Git uses, so the two are
-    comparable without shelling out once per file."""
-    data = path.read_bytes()
-    return hashlib.sha1(b'blob %d\0' % len(data) + data).hexdigest()
 
 
 if __name__ == '__main__':

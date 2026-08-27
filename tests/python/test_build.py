@@ -14,10 +14,8 @@ stopped rendering, a tool.toml that lost a key, or a page that quietly stopped
 being written. It needs nothing installed - the plain build is pure Python.
 """
 
-import hashlib
 import json
 import re
-import subprocess
 import tempfile
 import unittest
 import xml.etree.ElementTree as ElementTree
@@ -47,119 +45,13 @@ def warm(tree):
             pass
 
 
-class Write(unittest.TestCase):
-    def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.dir = Path(self.tmp.name)
-        self.addCleanup(self.tmp.cleanup)
-
-    def test_a_trailing_newline_is_added_when_missing(self):
-        path = self.dir / 'a.txt'
-        buildmod.write(path, 'x')
-        self.assertEqual(path.read_bytes(), b'x\n')
-
-    def test_a_trailing_newline_is_not_doubled(self):
-        path = self.dir / 'a.txt'
-        buildmod.write(path, 'x\n')
-        self.assertEqual(path.read_bytes(), b'x\n')
-
-    def test_line_endings_are_always_lf(self):
-        # Even on Windows, and even when the text already holds CRLF.
-        path = self.dir / 'a.txt'
-        buildmod.write(path, 'a\nb\n')
-        self.assertEqual(path.read_bytes(), b'a\nb\n')
-
-    def test_the_text_is_utf8(self):
-        path = self.dir / 'a.txt'
-        buildmod.write(path, 'café\n')
-        self.assertEqual(path.read_bytes(), 'café\n'.encode('utf-8'))
-
-
-class BlobId(unittest.TestCase):
-    """The id Git would give a file, computed without shelling out per file."""
-
-    def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.dir = Path(self.tmp.name)
-        self.addCleanup(self.tmp.cleanup)
-
-    def test_it_matches_the_documented_rule(self):
-        path = self.dir / 'a.txt'
-        path.write_bytes(b'hello\n')
-        expected = hashlib.sha1(b'blob 6\x00hello\n').hexdigest()
-        self.assertEqual(buildmod.blob_id(path), expected)
-
-    def test_an_empty_file_is_the_well_known_empty_blob(self):
-        path = self.dir / 'empty'
-        path.write_bytes(b'')
-        self.assertEqual(buildmod.blob_id(path),
-                         'e69de29bb2d1d6434b8b29ae775ad8c2e48c5391')
-
-    def test_it_agrees_with_git_itself(self):
-        path = self.dir / 'a.bin'
-        path.write_bytes(bytes(range(256)) + b'\r\n mixed \n endings \r\n')
-        found = subprocess.run(['git', 'hash-object', str(path)],
-                               capture_output=True, text=True, check=True)
-        self.assertEqual(buildmod.blob_id(path), found.stdout.strip())
-
-
-class EmitterSetup(unittest.TestCase):
-    SITE = {'source_url': 'https://example.test/repo'}
-
-    def test_the_banner_names_the_source_and_the_check_command(self):
-        emitter = buildmod.Emitter(True, self.SITE)
-        self.assertIn('https://example.test/repo', emitter.js_banner)
-        self.assertIn('build.py --check', emitter.js_banner)
-
-    def test_the_banner_does_not_claim_names_were_renamed(self):
-        # Identifiers are left alone, so nothing in the output should suggest
-        # otherwise to somebody reading a deployed file against its source.
-        emitter = buildmod.Emitter(True, self.SITE)
-        self.assertNotIn('mangl', emitter.js_banner.lower())
 
 
 
-class EmitterOutput(unittest.TestCase):
-    SITE = {'source_url': 'https://example.test/repo'}
 
-    def setUp(self):
-        self.tmp = tempfile.TemporaryDirectory()
-        self.dir = Path(self.tmp.name)
-        self.addCleanup(self.tmp.cleanup)
 
-    def test_minifying_off_writes_the_source_through(self):
-        emitter = buildmod.Emitter(False, self.SITE)
-        source = '// a note\nlet x = 1\n'
-        emitter.js(self.dir / 'a.js', source, where='a.js')
-        self.assertEqual((self.dir / 'a.js').read_text(encoding='utf-8'), source)
 
-    def test_minifying_on_strips_comments_and_keeps_the_banner(self):
-        emitter = buildmod.Emitter(True, self.SITE)
-        emitter.js(self.dir / 'a.js', '// a note\nlet x = 1\n', where='a.js')
-        out = (self.dir / 'a.js').read_text(encoding='utf-8')
-        self.assertNotIn('a note', out)
-        self.assertIn('let x=1', out)
-        self.assertIn('build.py --check', out)
 
-    def test_html_carries_the_banner_as_a_comment(self):
-        emitter = buildmod.Emitter(True, self.SITE)
-        emitter.html(self.dir / 'a.html', '<p>\n  a\n</p>\n')
-        out = (self.dir / 'a.html').read_text(encoding='utf-8')
-        self.assertTrue(out.startswith('<!--'))
-        self.assertIn('<p> a </p>', out)
-
-    def test_css_text_returns_rather_than_writes(self):
-        # The stylesheet has to be hashed after minifying and before being
-        # written, because the hash goes in the URL the page asks for it by.
-        emitter = buildmod.Emitter(True, self.SITE)
-        out = emitter.css_text('a {\n  color: red;\n}\n')
-        self.assertIn('a{color:red}', out)
-        self.assertEqual(list(self.dir.iterdir()), [])
-
-    def test_css_text_is_untouched_when_minifying_is_off(self):
-        source = 'a {\n  color: red;\n}\n'
-        self.assertEqual(buildmod.Emitter(False, self.SITE).css_text(source),
-                         source)
 
 
 class GuideGroups(unittest.TestCase):

@@ -87,7 +87,7 @@ exactly. On any feature branch it exits 1 by construction. CI does not run it.
 | Path | What it is |
 |---|---|
 | `build.py` | the generator; one function per kind of page |
-| `buildlib/` | the parts it is made of — templating, minifying, i18n, imports |
+| `buildlib/` | the parts it is made of — templating, minifying, i18n, imports, emitting, the catalogue files, `--check` |
 | `config/site.toml` | everything true of every page, the CSP included |
 | `config/planned.toml` | the roadmap list |
 | `tools/<slug>/` | one tool: `tool.toml`, `body.html`, `styles.css`, `src/`, `og.png`, `README.md` |
