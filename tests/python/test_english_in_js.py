@@ -88,7 +88,7 @@ BASELINE = {
     'share-text': 1,
     'split-gif': 36,
     'stack-images': 7,
-    'svg-to-image': 39,
+    'svg-to-image': 27,
     'timelapse-video': 57,
     'trim-audio': 41,
     'trim-video': 101,
