@@ -1,0 +1,122 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Een webpagina leeft en sterft normaal met haar verbinding, omdat
+      elk bezoek haar opnieuw ophaalt. Maar een pagina kan een klein
+      programma meebrengen, een <em>service worker</em>, die de browser
+      naast de pagina installeert en de baas maakt over haar
+      netwerkverkeer. Bij het eerste bezoek bergt die worker een complete
+      kopie op van alles waar de pagina uit bestaat &mdash; opmaak,
+      stijlen, scripts &mdash; in een cache op je machine. Vanaf dan
+      worden verzoeken uit die kopie beantwoord. Als de wifi sterft,
+      verandert er niets, want er werd toch al niets opgehaald.
+    </p>
+    <p>
+      Er zit geen magie en geen speciale toestemming in dit alles: het is
+      standaard browsermachinerie, al zo'n tien jaar aan boord van elke
+      grote browser. Wat ongewoon is, is een site die er zo zwaar op
+      leunt als deze &mdash; want voor een site waarvan de hele belofte
+      is dat je bestanden nooit vertrekken, is offline geen gemak. Het is
+      het bewijs.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat het overleven van de stekkertruc bewijst</h2>
+    <p>
+      De sterkste controle uit de uploadgids is
+      <a href="../is-bestanden-uploaden-veilig/">de stekker eruit</a>:
+      tool laden, verbinding verbreken, gebruiken. Het loont om precies te
+      zijn over waarom dat werkt. Een tool die je bestand op een server
+      converteert, heeft het netwerk nodig op exact het moment van het
+      werk &mdash; knip de draad door en het werk stopt. Een tool die
+      doorgaat, heeft aangetoond, niet beweerd, dat het werk op jouw
+      machine gebeurt; en een pagina die het netwerk niet kan bereiken,
+      kan je bestand nergens heen sturen, wat haar code ook zou willen.
+    </p>
+    <p>
+      Geen privacybeleid kan dat bieden. Een beleid beschrijft bedoelingen
+      en kan veranderen; een pagina die haar werk doet in vliegtuigmodus
+      is natuurkunde. Daarom werkt elke tool op deze site offline en
+      draagt hij een live-indicator die zegt of je dat op dit moment bent
+      &mdash; zodat je hem kunt zien omslaan terwijl je de verbinding
+      uitzet, en de sterkste controle die er is in een seconde of tien
+      kunt draaien.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hoe de kopie eerlijk blijft</h2>
+    <p>
+      Twee vragen beslissen of voor-altijd-bewaard een geschenk of een val
+      is, en de machinerie beantwoordt ze allebei:
+    </p>
+    <ul>
+      <li>
+        <strong>Veroudert de kopie?</strong> De worker kijkt naar een
+        nieuwere versie wanneer er verbinding is en wisselt haar in haar
+        geheel in. Versies gaan in hun geheel omdat de kopie altijd
+        samenhangend moet zijn &mdash; half oud, half nieuw is de ene
+        toestand die nooit geserveerd mag worden.
+      </li>
+      <li>
+        <strong>Wat is er precies gekopieerd?</strong> Alles wat de pagina
+        nodig heeft en niets anders &mdash; en elke tool hier bewaart zijn
+        kopie in zijn eigen vak. De cache van een tool bevat die tool; er
+        één installeren installeert er niet stilletjes tien. De kopie is
+        bovendien te inspecteren: de ontwikkelaarstools van je browser
+        sommen elk gecachet bestand op, en die lijst is dezelfde die de
+        pagina in het openbaar ophaalde.
+      </li>
+    </ul>
+    <p>
+      Het resultaat is een pagina die zich gedraagt als een applicatie die
+      je toevallig installeerde door haar te bezoeken &mdash; wat ook
+      letterlijk in de aanbieding is: de adresbalk van de browser
+      installeert elke tool hier als app, met het eigen pictogram van de
+      tool, rechtstreeks openend in de tool, zonder knop op de pagina en
+      zonder vragend script. Dezelfde machinerie, verkleed als
+      snelkoppeling.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat offline niet bewijst</h2>
+    <p>
+      De controle is sterk, niet magisch, en haar grenzen verdienen
+      dezelfde duidelijkheid als haar kracht:
+    </p>
+    <ul>
+      <li>
+        <strong>Ze bewijst het moment, niet de toekomst.</strong> Werk dat
+        offline gedaan is, bleef op je machine, punt. Een pagina zou in
+        principe gegevens kunnen vasthouden en versturen zodra de
+        verbinding terugkeert &mdash; sluit voor de gevoeligste bestanden
+        dus het tabblad voordat je opnieuw verbindt, of controleer ook de
+        andere richting: kijk naar het Netwerk-tabblad terwijl de
+        verbinding terugkomt.
+      </li>
+      <li>
+        <strong>Ze bewijst deze pagina, niet de site.</strong> Elke pagina
+        antwoordt voor zichzelf. De ene hier die het netwerk gebruikt,
+        zegt het op haar eigen pagina: de tool om
+        <a href="../../tekst-delen/">tekst te delen</a>, wiens hele vak
+        het verplaatsen van iets tussen twee apparaten is, en die precies
+        uitlegt wat zijn ene verbinding draagt.
+      </li>
+      <li>
+        <strong>Het verbergt je niet.</strong> De pagina laden heeft de
+        site je adres al verteld, zoals elke paginalading op het web.
+        Offline gaat over waar je bestanden heengaan, niet over
+        anonimiteit.
+      </li>
+    </ul>
+    <p>
+      Die grenzen zijn waarom de uploadgids vier controles leert in plaats
+      van één &mdash; het Netwerk-tabblad, het veiligheidsbeleid in de
+      broncode van de pagina en de leesbare code dekken wat de stekkertruc
+      niet kan. Maar als eerste filter is er geen snellere: kan een tool
+      zijn werk niet doen zonder netwerk, dan heb je geleerd waar het werk
+      gebeurt, en is verder lezen overbodig.
+    </p>
+  </section>

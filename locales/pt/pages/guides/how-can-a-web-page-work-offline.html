@@ -1,0 +1,118 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Uma página web normalmente vive e morre com a conexão, porque cada
+      visita a busca de novo. Mas uma página pode embarcar um programinha
+      chamado <em>service worker</em>, que o navegador instala ao lado
+      dela e põe no comando do seu tráfego de rede. Na primeira visita,
+      esse worker guarda uma cópia completa de tudo de que a página é
+      feita &mdash; marcação, estilos, scripts &mdash; num cache da sua
+      máquina. Dali em diante, as requisições são respondidas por essa
+      cópia. Quando o Wi-Fi morre, nada muda, porque nada estava sendo
+      buscado mesmo.
+    </p>
+    <p>
+      Não há mágica nem permissão especial em nada disso: é maquinário
+      padrão do navegador, embarcado em todos os grandes navegadores há
+      uma década. O incomum é um site se apoiar nele com a força que este
+      se apoia &mdash; porque, para um site cuja promessa inteira é que os
+      seus arquivos nunca saem, o offline não é conforto. É a prova.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que sobreviver ao puxão de cabo demonstra</h2>
+    <p>
+      A verificação mais forte do guia de envios é
+      <a href="../e-seguro-enviar-arquivos/">puxar o cabo</a>: carregar a
+      ferramenta, desconectar e usar. Vale ser preciso sobre por que isso
+      funciona. Uma ferramenta que converte o seu arquivo num servidor
+      precisa da rede no exato momento em que trabalha &mdash; corte o fio
+      e o trabalho para. Uma ferramenta que continua demonstrou, não
+      afirmou, que o trabalho acontece na sua máquina; e uma página que
+      não alcança a rede não consegue mandar o seu arquivo a lugar
+      nenhum, deseje o que desejar o código dela.
+    </p>
+    <p>
+      Nenhuma política de privacidade oferece isso. Uma política descreve
+      intenções e pode mudar; uma página fazendo o próprio trabalho em
+      modo avião é física. Por isso toda ferramenta deste site funciona
+      offline e carrega um indicador ao vivo dizendo se agora você está
+      &mdash; para você vê-lo virar enquanto desliga a conexão, e rodar a
+      verificação mais forte que existe em uns dez segundos.
+    </p>
+  </section>
+
+  <section>
+    <h2>Como a cópia se mantém honesta</h2>
+    <p>
+      Duas perguntas decidem se o guardado-para-sempre é presente ou
+      armadilha, e o maquinário responde às duas:
+    </p>
+    <ul>
+      <li>
+        <strong>A cópia envelhece?</strong> O worker procura uma versão
+        mais nova quando há conexão e a troca inteira. Versões vão
+        inteiras porque a cópia precisa ser sempre coerente: metade velha,
+        metade nova é o único estado que jamais deve ser servido.
+      </li>
+      <li>
+        <strong>O que exatamente foi copiado?</strong> Tudo de que a
+        página precisa e nada além &mdash; e cada ferramenta daqui guarda
+        a própria cópia no próprio compartimento. O cache de uma
+        ferramenta contém aquela ferramenta; instalar uma não instala dez
+        em silêncio. A cópia também é inspecionável: as ferramentas de
+        desenvolvedor do seu navegador listam cada arquivo em cache, e a
+        lista é a mesma que a página buscou às claras.
+      </li>
+    </ul>
+    <p>
+      O resultado é uma página que se comporta como um aplicativo que você
+      instalou só por visitá-la &mdash; o que, aliás, está literalmente em
+      oferta: a barra de endereço do navegador instala qualquer ferramenta
+      daqui como aplicativo, com o ícone próprio da ferramenta, abrindo
+      direto na ferramenta, sem botão na página e sem script pedindo. O
+      mesmo maquinário, vestido de atalho.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que o offline não prova</h2>
+    <p>
+      A verificação é forte, não mágica, e os limites dela merecem a mesma
+      clareza que a força:
+    </p>
+    <ul>
+      <li>
+        <strong>Prova o momento, não o futuro.</strong> Trabalho feito
+        offline ficou na sua máquina, ponto. Uma página poderia, em tese,
+        reter dados e enviá-los quando a conexão voltasse &mdash; então,
+        para os arquivos mais delicados, feche a aba antes de reconectar,
+        ou confira também a outra direção: olhe a aba de Rede enquanto a
+        conexão volta.
+      </li>
+      <li>
+        <strong>Prova esta página, não o site.</strong> Cada página
+        responde por si. A única daqui que usa a rede diz isso na própria
+        página: a ferramenta de
+        <a href="../../compartilhar-texto/">compartilhar texto</a>, cujo
+        ofício inteiro é mover algo entre dois aparelhos, e que explica
+        exatamente o que a sua única conexão carrega.
+      </li>
+      <li>
+        <strong>Não esconde você.</strong> Carregar a página já contou ao
+        site o seu endereço, como todo carregamento de página na web. O
+        offline trata de para onde vão os seus arquivos, não de
+        anonimato.
+      </li>
+    </ul>
+    <p>
+      Esses limites são a razão de o guia de envios ensinar quatro
+      verificações em vez de uma: a aba de Rede, a política de segurança
+      no código-fonte da página e o código legível cobrem o que o puxão de
+      cabo não cobre. Mas como primeiro filtro nenhum é mais rápido: se
+      uma ferramenta não consegue fazer o próprio trabalho sem rede, você
+      aprendeu onde o trabalho acontece, e leitura nenhuma a mais é
+      necessária.
+    </p>
+  </section>

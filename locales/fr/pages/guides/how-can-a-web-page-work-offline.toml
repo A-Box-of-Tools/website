@@ -1,0 +1,18 @@
+#
+# Guide : comment une page web peut-elle fonctionner hors ligne ? - French.
+#
+
+nav = "Des pages sans réseau ?"
+title = "Comment une page web peut-elle fonctionner hors ligne ?"
+description = "Une page qui continue de marcher wifi coupé n'a rien de magique - c'est un service worker et un cache, de la mécanique standard du navigateur. Comment cela marche, pourquoi le hors-ligne est la plus forte preuve de confidentialité qu'un outil puisse offrir, et ce qu'il ne prouve pas."
+heading = "Comment une page web peut-elle marcher sans le wifi ?"
+lede = """
+    Parce que le navigateur en a gardé une copie complète, et qu'un petit
+    programme livré avec la page sert cette copie chaque fois que le
+    réseau ne peut pas. La mécanique est standard et vaut d'être comprise,
+    parce qu'un outil qui travaille débranché vous montre quelque chose
+    qu'aucune politique de confidentialité ne peut montrer."""
+updated = "26 août 2026"
+og_title = "Comment une page web peut-elle marcher sans le wifi ?"
+og_description = "Un service worker et un cache - de la mécanique standard du navigateur. Comment marchent les pages hors ligne, pourquoi c'est la plus forte preuve de confidentialité, et ce que cela ne prouve pas."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

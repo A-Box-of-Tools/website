@@ -1,0 +1,116 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      A web page normally lives and dies by its connection because every
+      visit refetches it. But a page may ship a small program called a
+      <em>service worker</em>, which the browser installs alongside the
+      page and puts in charge of its network traffic. On the first visit,
+      that worker stores a complete copy of everything the page is made of
+      &mdash; markup, styles, scripts &mdash; in a cache on your machine.
+      From then on, requests are answered from that copy. When the wi-fi
+      dies, nothing changes, because nothing was being fetched anyway.
+    </p>
+    <p>
+      There is no magic and no special permission in any of this; it is
+      standard browser machinery, shipping in every major browser for
+      about a decade. What is unusual is a site leaning on it as hard as
+      this one does &mdash; because for a site whose whole promise is that
+      your files never leave, offline is not a convenience feature. It is
+      the proof.
+    </p>
+  </section>
+
+  <section>
+    <h2>What surviving the plug-pull proves</h2>
+    <p>
+      The upload guide's strongest check is
+      <a href="../is-it-safe-to-upload-files/">pull the plug</a>: load the
+      tool, disconnect, and use it. It is worth being precise about why
+      that works. A tool that converts your file on a server needs the
+      network at the exact moment it does its work &mdash; cut the cord and
+      the work stops. A tool that keeps working has demonstrated, not
+      claimed, that the work happens on your machine; and a page that
+      cannot reach the network cannot send your file anywhere, whatever
+      its code might wish.
+    </p>
+    <p>
+      No privacy policy can offer that. A policy describes intentions and
+      can change; a page doing its job in airplane mode is physics. That
+      is why every tool on this site works offline and carries a live
+      indicator telling you whether you currently are &mdash; so you can
+      watch it flip as you toggle the connection, and run the strongest
+      check there is in about ten seconds.
+    </p>
+  </section>
+
+  <section>
+    <h2>How the copy stays honest</h2>
+    <p>
+      Two questions decide whether cached-forever is a gift or a trap, and
+      the machinery answers both:
+    </p>
+    <ul>
+      <li>
+        <strong>Does the copy go stale?</strong> The worker checks for a
+        newer version when a connection is available and swaps it in
+        whole. Versions are whole because the copy must always be
+        coherent &mdash; half-old, half-new is the one state that must
+        never be served.
+      </li>
+      <li>
+        <strong>What exactly was copied?</strong> Everything the page
+        needs and nothing else, and each tool here keeps its own copy in
+        its own compartment. A tool's cache holds that tool; installing
+        one does not silently install ten. It also means the copy is
+        inspectable: your browser's developer tools list every cached
+        file, and the list is the same list the page fetched in the open.
+      </li>
+    </ul>
+    <p>
+      The result is a page that behaves like an application you happen to
+      have installed by visiting it &mdash; which is also literally on
+      offer: the browser's address bar will install any tool here as an
+      app, with the tool's own icon, opening straight to the tool, no
+      button on the page and no script asking. Same machinery, wearing a
+      shortcut.
+    </p>
+  </section>
+
+  <section>
+    <h2>What offline does not prove</h2>
+    <p>
+      The check is strong, not magic, and its limits are worth stating as
+      plainly as its strength:
+    </p>
+    <ul>
+      <li>
+        <strong>It proves the moment, not the future.</strong> Work done
+        offline stayed on your machine, full stop. A page could in
+        principle hold data and send it after the connection returns
+        &mdash; so for the sharpest files, close the tab before
+        reconnecting, or check the other direction too: watch the Network
+        tab as the connection comes back.
+      </li>
+      <li>
+        <strong>It proves this page, not the site.</strong> Each page
+        answers for itself. The one here that does use the network says
+        so on its own page: the
+        <a href="../../share-text/">text-sharing tool</a>, whose whole job is
+        moving something between two devices, and which explains exactly
+        what its one connection carries.
+      </li>
+      <li>
+        <strong>It does not hide you.</strong> Loading the page in the
+        first place told the site your address, like every page load on
+        the web. Offline is about where your files go, not anonymity.
+      </li>
+    </ul>
+    <p>
+      Those limits are why the upload guide teaches four checks rather
+      than one &mdash; the Network tab, the security policy in the page
+      source, and the readable code cover what the plug-pull cannot. But
+      as first filters go, none is faster: if a tool cannot do its job
+      with the network gone, you have learned where the job happens, and
+      no further reading is required.
+    </p>
+  </section>

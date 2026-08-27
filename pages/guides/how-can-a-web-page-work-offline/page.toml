@@ -1,0 +1,36 @@
+#
+# Guide: how can a web page work with the wi-fi off?
+#
+# The pull-the-plug check is the strongest test the upload guide offers,
+# and it deserves the explanation none of the tool pages has room for: the
+# machinery that makes a page survive its own network dying, why that
+# machinery is also the strongest privacy proof there is, and what it does
+# not prove. Also where "install it as an app" comes from, since it is the
+# same machinery wearing a shortcut.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/how-can-a-web-page-work-offline"
+kind = "guide"
+nav = "How can a web page work offline?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "How Can a Web Page Work Offline?"
+description = "A page that keeps working with the wi-fi off is not magic - it is a service worker and a cache, standard browser machinery. How that works, why offline is the strongest privacy proof a tool can offer, and what it does not prove."
+
+heading = "How can a web page work with the wi-fi off?"
+lede = """
+    Because the browser kept a complete copy, and a small program that
+    ships with the page serves that copy whenever the network cannot. The
+    machinery is standard and worth understanding, because a tool that
+    works disconnected is showing you something no privacy policy can."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "How can a web page work with the wi-fi off?"
+og_description = "A service worker and a cache - standard browser machinery. How offline pages work, why offline is the strongest privacy proof a tool can offer, and what it does not prove."
+og_image_alt = "abox.tools - tools that never touch a server"
