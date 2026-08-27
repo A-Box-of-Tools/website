@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">비어 있음</span>
+    <span data-phrase="count.lines.one">{count}줄</span>
+    <span data-phrase="count.lines.many">{count}줄</span>
+    <span data-phrase="count.characters.one">{count}자</span>
+    <span data-phrase="count.characters.many">{count}자</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">그 파일은 읽지 못했습니다: {detail}</span>
+
+    <span data-phrase="result.waiting">두 칸 모두에 무언가를 붙여 넣으세요.</span>
+    <span data-phrase="result.identical">둘은 바이트 하나까지 똑같습니다.</span>
+    <span data-phrase="result.ignored">무시하라고 하신 차이를 무시하고 나면 같습니다.</span>
+    <span data-phrase="result.counts">{added}줄 추가, {removed}줄 삭제</span>
+    <span data-phrase="result.summary">{changes} &mdash; 줄의 {percent}%가 양쪽에 다 있습니다. {note}</span>
+    <span data-phrase="result.newline">한쪽은 줄바꿈으로 끝나고 다른 쪽은 그렇지 않습니다.</span>
+    <span data-phrase="result.failed">나온 것이 없습니다.</span>
+
+    <span data-phrase="skip.one">바뀌지 않은 {count}줄</span>
+    <span data-phrase="skip.many">바뀌지 않은 {count}줄</span>
+    <span data-phrase="skip.rest">나머지는 그리지 않습니다 &mdash; 패치 전체는 &ldquo;내려받기&rdquo;로 받으세요.</span>
+
+    <span data-phrase="copy.done">복사됨</span>
+    <span data-phrase="copy.select">선택됨 &mdash; Ctrl+C를 누르세요</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">텍스트는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
       {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.

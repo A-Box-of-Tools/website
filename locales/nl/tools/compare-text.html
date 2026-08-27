@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">leeg</span>
+    <span data-phrase="count.lines.one">{count} regel</span>
+    <span data-phrase="count.lines.many">{count} regels</span>
+    <span data-phrase="count.characters.one">{count} teken</span>
+    <span data-phrase="count.characters.many">{count} tekens</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">Dat bestand kon niet gelezen worden: {detail}</span>
+
+    <span data-phrase="result.waiting">Plak in allebei de vakken iets.</span>
+    <span data-phrase="result.identical">De twee zijn identiek, byte voor byte.</span>
+    <span data-phrase="result.ignored">Gelijk, zodra de verschillen genegeerd zijn die je wilde negeren.</span>
+    <span data-phrase="result.counts">{added} erbij, {removed} eraf</span>
+    <span data-phrase="result.summary">{changes} &mdash; {percent}% van de regels staat in allebei. {note}</span>
+    <span data-phrase="result.newline">De ene eindigt met een regeleinde en de andere niet.</span>
+    <span data-phrase="result.failed">Er kwam niets uit.</span>
+
+    <span data-phrase="skip.one">{count} ongewijzigde regel</span>
+    <span data-phrase="skip.many">{count} ongewijzigde regels</span>
+    <span data-phrase="skip.rest">De rest wordt niet getekend &mdash; via &ldquo;Downloaden&rdquo; krijg je de hele patch.</span>
+
+    <span data-phrase="copy.done">Gekopieerd</span>
+    <span data-phrase="copy.select">Geselecteerd &mdash; druk op Ctrl+C</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">Je tekst is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

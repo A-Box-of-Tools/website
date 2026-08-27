@@ -88,7 +88,10 @@ const MAX_ENCODES = 16;
  * @param {number} options.targetBytes the ceiling to come in under
  * @param {string} options.mime the format to write
  * @param {boolean} options.allowResize whether resolution may be spent
- * @param {(note: string) => void} [options.onStep] progress, for the UI
+ * @param {(key: string) => void} [options.onStep] progress, for the UI. It is
+ *   handed the *key* of a phrase and not a sentence: this module is imported by
+ *   the tests off the disk and so cannot import `./shared/phrases.js`, and main
+ *   .js can reach the page it would have needed. The wording is in body.html.
  * @returns {Promise<Result>}
  */
 export async function fitToTarget(source, { targetBytes, mime, allowResize, onStep }) {
@@ -103,7 +106,10 @@ export async function fitToTarget(source, { targetBytes, mime, allowResize, onSt
   /** One encode, at a scale and a quality. Everything goes through here, so
    *  the count reported on the page is the true number of encodes. */
   const attempt = async (scale, quality) => {
-    if (encodes >= MAX_ENCODES) throw new Error('gave up after too many attempts.');
+    // A phrase key rather than a sentence, for the reason above: main.js puts
+    // every failure through phrase(), which hands back anything it does not
+    // recognise - so a real error from the encoder still arrives intact.
+    if (encodes >= MAX_ENCODES) throw new Error('error.attempts');
     encodes += 1;
     const width = Math.max(1, Math.round(source.width * scale));
     const height = Math.max(1, Math.round(source.height * scale));
@@ -124,7 +130,7 @@ export async function fitToTarget(source, { targetBytes, mime, allowResize, onSt
   const fits = (a) => a.blob.size <= targetBytes;
 
   // --- 1. Full size, best quality. If that fits there is nothing to search.
-  onStep?.('checking what it costs at full quality');
+  onStep?.('step.full');
   const top = await attempt(1, QUALITY_CEILING);
   if (fits(top)) return finish(top, true);
 
@@ -132,13 +138,13 @@ export async function fitToTarget(source, { targetBytes, mime, allowResize, onSt
   // somebody chooses it - so resolution is the only thing that can be spent.
   if (!lossy) {
     if (!allowResize) return finish(smallest, false);
-    onStep?.('finding the largest size that fits');
+    onStep?.('step.scale');
     await searchScale(attempt, fits, targetBytes, top.blob.size, undefined);
     return finish(best ?? smallest, Boolean(best));
   }
 
   // --- 2. Quality alone, down to the floor, at full resolution.
-  onStep?.('searching the quality dial');
+  onStep?.('step.quality');
   const atFloor = await attempt(1, QUALITY_FLOOR);
 
   if (fits(atFloor)) {
@@ -154,7 +160,7 @@ export async function fitToTarget(source, { targetBytes, mime, allowResize, onSt
     // Resizing was refused, so the only currency left is quality below the
     // floor. The visitor asked for a size, and quietly missing it would be
     // worse than meeting it and saying what it cost - which the page does.
-    onStep?.('going below the quality floor, because resizing is off');
+    onStep?.('step.belowFloor');
     const bottom = await attempt(1, QUALITY_HARD_MIN);
     if (!fits(bottom)) return finish(smallest, false);
     await bisectQuality(attempt, fits, 1, QUALITY_HARD_MIN, QUALITY_FLOOR, 5);
@@ -162,14 +168,14 @@ export async function fitToTarget(source, { targetBytes, mime, allowResize, onSt
   }
 
   // Fewer pixels encoded well, rather than every pixel encoded badly.
-  onStep?.('trading resolution for quality');
+  onStep?.('step.resolution');
   const reference = await attempt(1, SEARCH_QUALITY);
   await searchScale(attempt, fits, targetBytes, reference.blob.size, SEARCH_QUALITY);
 
   if (!best) return finish(smallest, false);
 
   // --- 4. Spend what is left of the budget on quality at that size.
-  onStep?.('spending what is left of the budget');
+  onStep?.('step.budget');
   await bisectQuality(attempt, fits, best.scale, SEARCH_QUALITY, QUALITY_CEILING, 3);
 
   return finish(best, true);

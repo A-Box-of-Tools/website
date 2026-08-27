@@ -1,7 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
-import { wireFilePicker } from './shared/file-picker.js';
+import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { compareText, alignRows, diffWords, formatUnified } from './diff.js';
 import { SAMPLES } from './samples.js';
 
@@ -39,6 +39,11 @@ const el = {
 let result = null;
 let downloadUrl = null;
 
+/** What the Copy button says at rest, read off the button rather than written
+ *  here, so that the word it goes back to after "Copied" is the translated one
+ *  the page loaded with. */
+const copyLabel = el.copy.textContent;
+
 /** How many rows of a comparison are drawn before it stops.
  *
  *  Not a limit on what can be compared - the comparison itself is done, and
@@ -57,7 +62,7 @@ const picker = wireFilePicker({
 });
 
 async function loadFiles(files) {
-  picker.busy(`Reading ${files.length === 1 ? 'the file' : `${files.length} files`}...`);
+  picker.busy(readingLabel(files.length));
   try {
     // Read as text, here, by the browser. There is no other step: the strings
     // go into the boxes below and never anywhere else.
@@ -75,7 +80,7 @@ async function loadFiles(files) {
     updateCounts();
     run();
   } catch (error) {
-    showError(`That file could not be read: ${error?.message ?? error}`);
+    showError(phrase('read.failed', { detail: error?.message ?? error }));
   } finally {
     picker.done();
   }
@@ -130,11 +135,16 @@ function updateCounts() {
 }
 
 function describe(text) {
-  if (text === '') return 'empty';
+  if (text === '') return phrase('count.empty');
   const lines = text.split('\n').length;
-  return `${lines.toLocaleString()} line${lines === 1 ? '' : 's'}, `
-    + `${text.length.toLocaleString()} character${text.length === 1 ? '' : 's'}, `
-    + humanBytes(byteLength(text));
+  const characters = text.length;
+  return phrase('count.summary', {
+    lines: phrase(lines === 1 ? 'count.lines.one' : 'count.lines.many',
+      { count: lines.toLocaleString() }),
+    characters: phrase(characters === 1 ? 'count.characters.one' : 'count.characters.many',
+      { count: characters.toLocaleString() }),
+    size: humanBytes(byteLength(text)),
+  });
 }
 
 const byteLength = (text) => new TextEncoder().encode(text).length;
@@ -158,7 +168,7 @@ function run() {
 
 function runDiff(aText, bText) {
   if (aText === '' && bText === '') {
-    el.resultNote.textContent = 'Paste something into both boxes.';
+    el.resultNote.textContent = phrase('result.waiting');
     el.diffView.replaceChildren();
     return;
   }
@@ -180,15 +190,23 @@ function runDiff(aText, bText) {
   offerDownload(patch, 'changes.patch');
 
   if (stats.identical) {
-    el.resultNote.textContent = 'These two are identical, byte for byte.';
+    el.resultNote.textContent = phrase('result.identical');
     return;
   }
-  const sameText = stats.added === 0 && stats.removed === 0
-    ? 'The same, once the differences you asked to ignore are ignored.'
-    : `${stats.added.toLocaleString()} added, ${stats.removed.toLocaleString()} removed`;
-  el.resultNote.textContent = `${sameText} - `
-    + `${Math.round(stats.similarity * 100)}% of the lines are shared.`
-    + (stats.trailingDiffers ? ' One of them ends with a newline and the other does not.' : '');
+  const changes = stats.added === 0 && stats.removed === 0
+    ? phrase('result.ignored')
+    : phrase('result.counts', {
+      added: stats.added.toLocaleString(),
+      removed: stats.removed.toLocaleString(),
+    });
+  // The trailing-newline note goes in as a blank rather than being appended,
+  // because the space that would join the two sentences is not a space in
+  // every language - and where there is no note there is no gap to trim.
+  el.resultNote.textContent = phrase('result.summary', {
+    changes,
+    percent: Math.round(stats.similarity * 100),
+    note: stats.trailingDiffers ? phrase('result.newline') : '',
+  }).trim();
 }
 
 /* -------------------------------------------------------------- drawing it */
@@ -203,15 +221,15 @@ function drawDiff(rows) {
     if (entry.skipped) {
       const gap = document.createElement('div');
       gap.className = 'diff-skip';
-      gap.textContent = `${entry.skipped.toLocaleString()} unchanged line`
-        + `${entry.skipped === 1 ? '' : 's'}`;
+      gap.textContent = phrase(entry.skipped === 1 ? 'skip.one' : 'skip.many',
+        { count: entry.skipped.toLocaleString() });
       table.append(gap);
       continue;
     }
     if (drawn >= MAX_ROWS) {
       const gap = document.createElement('div');
       gap.className = 'diff-skip';
-      gap.textContent = 'The rest is not drawn - use Download to get the whole patch.';
+      gap.textContent = phrase('skip.rest');
       table.append(gap);
       break;
     }
@@ -334,7 +352,7 @@ el.copy.addEventListener('click', async () => {
   if (!result) return;
   try {
     await navigator.clipboard.writeText(result.text);
-    el.copy.textContent = 'Copied';
+    el.copy.textContent = phrase('copy.done');
   } catch {
     // Clipboard access can be refused outright, and there is nothing to fix.
     // Selecting the view is a route that always works.
@@ -343,9 +361,9 @@ el.copy.addEventListener('click', async () => {
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
-    el.copy.textContent = 'Selected - press Ctrl+C';
+    el.copy.textContent = phrase('copy.select');
   }
-  setTimeout(() => { el.copy.textContent = 'Copy'; }, 2500);
+  setTimeout(() => { el.copy.textContent = copyLabel; }, 2500);
 });
 
 function clearResult() {
@@ -360,7 +378,7 @@ function clearResult() {
 function showError(message) {
   el.error.textContent = message;
   el.error.hidden = false;
-  el.resultNote.textContent = 'Nothing came out.';
+  el.resultNote.textContent = phrase('result.failed');
 }
 
 function clearError() {

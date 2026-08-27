@@ -116,14 +116,103 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount}바이트</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">이미지 {count}장, 모두 {size}</span>
+    <span data-phrase="list.count.many">이미지 {count}장, 모두 {size}</span>
+    <span data-phrase="row.under">이미 목표 아래입니다 &mdash; 이 장은 그대로 둡니다.</span>
+    <span data-phrase="row.remove">{name}을(를) 목록에서 빼기</span>
+    <span data-phrase="load.unreadable">{name}: 이 도구가 읽을 수 있는 이미지가 아닙니다.</span>
+    <span data-phrase="load.undecodable">{name}: 이 브라우저가 디코딩하지 못했습니다.</span>
+
+    <span data-phrase="target.none">목표로 삼을 용량을 적으세요.</span>
+    <span data-phrase="target.empty">모든 이미지를 {size} 아래로 내립니다.</span>
+    <span data-phrase="target.single.over">이 이미지는 {size}을(를) 넘으므로, 넘지 않을 때까지 압축합니다.</span>
+    <span data-phrase="target.single.under">이 이미지는 이미 {size} 아래여서 손대지 않고 그대로 내보냅니다.</span>
+    <span data-phrase="target.over.one">{total}장 가운데 {over}장이 {size}을(를) 넘습니다</span>
+    <span data-phrase="target.over.many">{total}장 가운데 {over}장이 {size}을(를) 넘습니다</span>
+    <span data-phrase="target.rest.one">나머지 한 장은 손대지 않고 그대로 내보냅니다</span>
+    <span data-phrase="target.rest.many">나머지 {count}장은 손대지 않고 그대로 내보냅니다</span>
+    <span data-phrase="target.summary">{over}.</span>
+    <span data-phrase="target.summary.rest">{over}, 그리고 {rest}.</span>
+
+    <span data-phrase="format.note">{format} {sizing}</span>
+    <span data-phrase="format.auto">형식은 그대로 두되, 목표가 빠듯해서 그대로 두는 것이 실제 화질을 깎아먹는다면 WebP를 쓰고, 해당 줄이 그 사실을 밝힙니다.</span>
+    <span data-phrase="format.keep">모든 이미지가 들어온 형식을 그대로 지킵니다.</span>
+    <span data-phrase="format.jpeg">전부 JPEG으로 씁니다. JPEG에는 알파 채널이 없어서 투명한 부분은 흰색이 됩니다.</span>
+    <span data-phrase="format.webp">전부 WebP로 씁니다. 같은 화질에서 JPEG보다 작고, 투명도도 지킵니다.</span>
+    <span data-phrase="format.png">전부 PNG로 씁니다. PNG에는 화질 조절이 없어서 목표에 닿는 길은 그림을 줄이는 것뿐입니다.</span>
+    <span data-phrase="format.resize.on">화질만으로 목표에 닿지 못하면, 짓뭉개는 대신 그림을 줄입니다.</span>
+    <span data-phrase="format.resize.off">그림은 원래 크기를 그대로 지키므로, 빠듯한 목표는 화질만으로 치러야 합니다.</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; 이 브라우저는 지원하지 않습니다</span>
+
+    <span data-phrase="progress.at">{total}개 중 {at}번째: {name} &mdash; {step}</span>
+    <span data-phrase="step.reading">읽는 중</span>
+    <span data-phrase="step.decoding">디코딩 중</span>
+    <span data-phrase="step.full">최고 화질에서 얼마나 드는지 보는 중</span>
+    <span data-phrase="step.scale">들어가는 가장 큰 크기를 찾는 중</span>
+    <span data-phrase="step.quality">화질 눈금을 훑는 중</span>
+    <span data-phrase="step.belowFloor">크기 줄이기가 꺼져 있어 화질 하한 아래로 내려가는 중</span>
+    <span data-phrase="step.resolution">해상도를 화질과 맞바꾸는 중</span>
+    <span data-phrase="step.budget">예산에 남은 만큼 쓰는 중</span>
+    <span data-phrase="step.trying">대신 {format}(으)로 해 보는 중</span>
+    <span data-phrase="error.attempts">너무 여러 번 시도한 끝에 포기했습니다.</span>
+    <span data-phrase="error.encode">이 브라우저가 {format}(으)로 인코딩하지 않았습니다.</span>
+    <span data-phrase="error.decode">이 브라우저가 그림을 디코딩하지 못했습니다.</span>
+
+    <span data-phrase="results.all">{before}에서 {after}(으)로 &mdash; {change}, 그리고 모든 이미지가 목표 아래입니다.</span>
+    <span data-phrase="results.missed.one">{before}에서 {after}(으)로. {count}장이 목표에 닿지 못했습니다 &mdash; 아래 줄을 보세요.</span>
+    <span data-phrase="results.missed.many">{before}에서 {after}(으)로. {count}장이 목표에 닿지 못했습니다 &mdash; 아래 줄들을 보세요.</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; 이미 목표 아래여서 아무것도 손대지 않았습니다.</span>
+    <span data-phrase="row.match">원본과 견주어 측정: {match} (SSIM {ssim}, PSNR {psnr}).</span>
+    <span data-phrase="row.missed">위 설정으로는 이 그림을 이보다 작게 만들 수 없었고, 아직 목표를 넘습니다. 크기 줄이기를 허용하거나, 더 큰 목표를 지정하세요.</span>
+    <span data-phrase="row.download">내려받기</span>
+    <span data-phrase="row.compare">비교</span>
+    <span data-phrase="row.hide">접기</span>
+
+    <span data-phrase="change.smaller">{percent}% 작아짐</span>
+    <span data-phrase="change.larger">{percent}% 커짐</span>
+    <span data-phrase="change.same">거의 같은 크기</span>
+
+    <span data-phrase="match.identical">{percent}% &mdash; 구별할 수 없음</span>
+    <span data-phrase="match.invisible">{percent}% &mdash; 눈에 띄는 차이 없음</span>
+    <span data-phrase="match.close">{percent}% &mdash; 매우 가까움</span>
+    <span data-phrase="match.softened">{percent}% &mdash; 살짝 부드러워짐</span>
+    <span data-phrase="match.visible">{percent}% &mdash; 압축이 눈에 보임</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">동일</span>
+
+    <span data-phrase="detail.untouched">이미 가지고 있던 용량에 닿자고 압축하면 화질만 깎였을 것이므로, 메타데이터까지 그대로 바이트 단위로 통과시켰습니다.</span>
+    <span data-phrase="detail.line">{format}, {size}, {encodes}.</span>
+    <span data-phrase="detail.line.quality">{format}, 품질 {quality}, {size}, {encodes}.</span>
+    <span data-phrase="detail.format">{format}(으)로 저장</span>
+    <span data-phrase="detail.format.changed">{format}(으)로 저장. 이 용량에서는 원래 형식보다 그림을 더 잘 버텨 냈습니다</span>
+    <span data-phrase="detail.resized">{from}에서 {to}(으)로 줄임</span>
+    <span data-phrase="detail.full">원래 크기 그대로 {size}</span>
+    <span data-phrase="detail.encodes.one">{count}번 인코딩해서 찾음</span>
+    <span data-phrase="detail.encodes.many">{count}번 인코딩해서 찾음</span>
+
+    <span data-phrase="compare.original">원본</span>
+    <span data-phrase="compare.compressed">압축본</span>
+    <span data-phrase="compare.alt">{label}: {name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">둘 다 같은 너비로 보여 줍니다. 차이는 원래 그렇게 판단하는 것입니다. 가까이 보려면 두 파일을 실제 크기로 여세요.</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">이미지는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이
       사이트의 것입니다. {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다. 살펴볼

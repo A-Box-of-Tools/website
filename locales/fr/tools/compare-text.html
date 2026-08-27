@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">vide</span>
+    <span data-phrase="count.lines.one">{count} ligne</span>
+    <span data-phrase="count.lines.many">{count} lignes</span>
+    <span data-phrase="count.characters.one">{count} caractère</span>
+    <span data-phrase="count.characters.many">{count} caractères</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">Ce fichier n&rsquo;a pas pu être lu : {detail}</span>
+
+    <span data-phrase="result.waiting">Collez quelque chose dans les deux zones.</span>
+    <span data-phrase="result.identical">Les deux sont identiques, octet pour octet.</span>
+    <span data-phrase="result.ignored">Identiques, une fois écartées les différences que vous avez demandé d&rsquo;ignorer.</span>
+    <span data-phrase="result.counts">{added} ajoutées, {removed} supprimées</span>
+    <span data-phrase="result.summary">{changes} &mdash; {percent}&nbsp;% des lignes sont communes aux deux. {note}</span>
+    <span data-phrase="result.newline">L&rsquo;un se termine par un saut de ligne et l&rsquo;autre non.</span>
+    <span data-phrase="result.failed">Rien n&rsquo;en est sorti.</span>
+
+    <span data-phrase="skip.one">{count} ligne inchangée</span>
+    <span data-phrase="skip.many">{count} lignes inchangées</span>
+    <span data-phrase="skip.rest">Le reste n&rsquo;est pas dessiné &mdash; passez par &laquo;&nbsp;Télécharger&nbsp;&raquo; pour avoir tout le correctif.</span>
+
+    <span data-phrase="copy.done">Copié</span>
+    <span data-phrase="copy.select">Sélectionné &mdash; appuyez sur Ctrl+C</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">votre texte n'est allé nulle part. {total}
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

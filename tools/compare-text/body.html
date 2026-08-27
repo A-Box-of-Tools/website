@@ -95,12 +95,49 @@
   </section>
 
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <!--
+      The line under each box. Four keys for two nouns rather than one sentence
+      with an `s` appended twice, and an outer key to hold them, because neither
+      the plural nor the order of the three parts is the same in every language.
+    -->
+    <span data-phrase="count.empty">empty</span>
+    <span data-phrase="count.lines.one">{count} line</span>
+    <span data-phrase="count.lines.many">{count} lines</span>
+    <span data-phrase="count.characters.one">{count} character</span>
+    <span data-phrase="count.characters.many">{count} characters</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <!-- `detail` is the browser's own message, in whatever language it speaks. -->
+    <span data-phrase="read.failed">That file could not be read: {detail}</span>
+
+    <!--
+      The line above the comparison. `note` is the sentence below it or nothing
+      at all, passed in rather than appended, so that a language that puts no
+      space between sentences does not get one.
+    -->
+    <span data-phrase="result.waiting">Paste something into both boxes.</span>
+    <span data-phrase="result.identical">These two are identical, byte for byte.</span>
+    <span data-phrase="result.ignored">The same, once the differences you asked to ignore are ignored.</span>
+    <span data-phrase="result.counts">{added} added, {removed} removed</span>
+    <span data-phrase="result.summary">{changes} - {percent}% of the lines are shared. {note}</span>
+    <span data-phrase="result.newline">One of them ends with a newline and the other does not.</span>
+    <span data-phrase="result.failed">Nothing came out.</span>
+
+    <span data-phrase="skip.one">{count} unchanged line</span>
+    <span data-phrase="skip.many">{count} unchanged lines</span>
+    <span data-phrase="skip.rest">The rest is not drawn - use Download to get the whole patch.</span>
+
+    <!-- What the Copy button says once it has. Its resting word is the button's
+         own, in the markup above, and is put back from there. -->
+    <span data-phrase="copy.done">Copied</span>
+    <span data-phrase="copy.select">Selected - press Ctrl+C</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">your text has gone nowhere. {total} files
       loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">खाली</span>
+    <span data-phrase="count.lines.one">{count} पंक्ति</span>
+    <span data-phrase="count.lines.many">{count} पंक्तियाँ</span>
+    <span data-phrase="count.characters.one">{count} वर्ण</span>
+    <span data-phrase="count.characters.many">{count} वर्ण</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">वह फ़ाइल पढ़ी नहीं जा सकी: {detail}</span>
+
+    <span data-phrase="result.waiting">दोनों खानों में कुछ चिपकाइए।</span>
+    <span data-phrase="result.identical">ये दोनों बाइट दर बाइट एक जैसे हैं।</span>
+    <span data-phrase="result.ignored">जिन अंतरों को छोड़ने के लिए आपने कहा, उन्हें छोड़ दें तो ये एक ही हैं।</span>
+    <span data-phrase="result.counts">{added} जुड़ीं, {removed} हटीं</span>
+    <span data-phrase="result.summary">{changes} &mdash; {percent}% पंक्तियाँ दोनों में हैं। {note}</span>
+    <span data-phrase="result.newline">एक के अंत में पंक्ति-विराम है और दूसरे के अंत में नहीं।</span>
+    <span data-phrase="result.failed">कुछ नहीं निकला।</span>
+
+    <span data-phrase="skip.one">{count} अपरिवर्तित पंक्ति</span>
+    <span data-phrase="skip.many">{count} अपरिवर्तित पंक्तियाँ</span>
+    <span data-phrase="skip.rest">बाकी नहीं बनाया जाता &mdash; पूरा पैच लेने के लिए &ldquo;डाउनलोड&rdquo; का उपयोग कीजिए।</span>
+
+    <span data-phrase="copy.done">कॉपी हो गया</span>
+    <span data-phrase="copy.select">चुन लिया &mdash; Ctrl+C दबाइए</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">आपका टेक्स्ट कहीं नहीं गया। {total} फ़ाइलें
       लोड हुईं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

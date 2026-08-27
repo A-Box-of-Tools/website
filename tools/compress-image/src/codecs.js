@@ -33,6 +33,21 @@ export const FORMATS = {
 export const READABLE = [JPEG, PNG, WEBP, 'image/gif', 'image/bmp', 'image/avif'];
 
 /**
+ * An error whose message is the key of a phrase rather than a sentence.
+ *
+ * This module is imported by the tests straight off the disk, so it cannot
+ * import `./shared/phrases.js` - that path only exists inside a built tool.
+ * main.js puts every failure through phrase(), passing `values` along, and
+ * phrase() hands back anything it does not recognise, so a real message from
+ * the browser still arrives intact.
+ */
+function saying(key, values) {
+  const error = new Error(key);
+  error.values = values;
+  return error;
+}
+
+/**
  * Ask the browser to encode a single pixel and see what comes back.
  *
  * `toBlob` does not report failure: handed a type it cannot write, Safari
@@ -90,7 +105,7 @@ export async function encode(source, { width, height, mime, quality }) {
   ctx.drawImage(source, 0, 0, canvas.width, canvas.height);
 
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
-  if (!blob) throw new Error(`This browser would not encode ${FORMATS[mime]?.label ?? mime}.`);
+  if (!blob) throw saying('error.encode', { format: FORMATS[mime]?.label ?? mime });
 
   // Free the backing store now rather than when the collector gets round to
   // it. A search runs a dozen of these; on a large photo the difference is
@@ -127,7 +142,7 @@ export async function decode(file) {
     const img = await new Promise((resolve, reject) => {
       const element = new Image();
       element.onload = () => resolve(element);
-      element.onerror = () => reject(new Error('this browser could not decode the picture.'));
+      element.onerror = () => reject(saying('error.decode'));
       element.src = url;
     });
     return { bitmap: img, width: img.naturalWidth, height: img.naturalHeight };

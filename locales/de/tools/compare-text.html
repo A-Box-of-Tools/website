@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">leer</span>
+    <span data-phrase="count.lines.one">{count} Zeile</span>
+    <span data-phrase="count.lines.many">{count} Zeilen</span>
+    <span data-phrase="count.characters.one">{count} Zeichen</span>
+    <span data-phrase="count.characters.many">{count} Zeichen</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">Diese Datei ließ sich nicht lesen: {detail}</span>
+
+    <span data-phrase="result.waiting">Fügen Sie in beide Felder etwas ein.</span>
+    <span data-phrase="result.identical">Die beiden sind identisch, Byte für Byte.</span>
+    <span data-phrase="result.ignored">Gleich, sobald die Unterschiede ignoriert sind, die Sie ignorieren wollten.</span>
+    <span data-phrase="result.counts">{added} hinzugefügt, {removed} entfernt</span>
+    <span data-phrase="result.summary">{changes} - {percent}% der Zeilen stehen in beiden. {note}</span>
+    <span data-phrase="result.newline">Die eine endet mit einem Zeilenumbruch, die andere nicht.</span>
+    <span data-phrase="result.failed">Es kam nichts heraus.</span>
+
+    <span data-phrase="skip.one">{count} unveränderte Zeile</span>
+    <span data-phrase="skip.many">{count} unveränderte Zeilen</span>
+    <span data-phrase="skip.rest">Der Rest wird nicht gezeichnet &mdash; über &bdquo;Herunterladen&ldquo; bekommen Sie den ganzen Patch.</span>
+
+    <span data-phrase="copy.done">Kopiert</span>
+    <span data-phrase="copy.select">Ausgewählt &mdash; Strg+C drücken</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">Ihr Text ist nirgendwohin gegangen. {total}
       Dateien geladen. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

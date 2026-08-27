@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">空</span>
+    <span data-phrase="count.lines.one">{count}行</span>
+    <span data-phrase="count.lines.many">{count}行</span>
+    <span data-phrase="count.characters.one">{count}文字</span>
+    <span data-phrase="count.characters.many">{count}文字</span>
+    <span data-phrase="count.summary">{lines}、{characters}、{size}</span>
+
+    <span data-phrase="read.failed">そのファイルは読めませんでした：{detail}</span>
+
+    <span data-phrase="result.waiting">両方の欄に何か貼り付けてください。</span>
+    <span data-phrase="result.identical">この2つはバイト単位で同一です。</span>
+    <span data-phrase="result.ignored">無視するよう指定した違いを無視すれば、同じです。</span>
+    <span data-phrase="result.counts">{added}行追加、{removed}行削除</span>
+    <span data-phrase="result.summary">{changes} &mdash; 行の{percent}%は両方にあります。{note}</span>
+    <span data-phrase="result.newline">片方は改行で終わっていて、もう片方は終わっていません。</span>
+    <span data-phrase="result.failed">何も出ませんでした。</span>
+
+    <span data-phrase="skip.one">変更のない{count}行</span>
+    <span data-phrase="skip.many">変更のない{count}行</span>
+    <span data-phrase="skip.rest">残りは描画されません。パッチ全体は「ダウンロード」から取れます。</span>
+
+    <span data-phrase="copy.done">コピーしました</span>
+    <span data-phrase="copy.select">選択しました &mdash; Ctrl+Cを押してください</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">テキストはどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、その一文字も渡っていません。</span>

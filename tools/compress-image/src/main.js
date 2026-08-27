@@ -10,11 +10,24 @@ import {
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { compare, hasTransparency } from './measure.js';
 import {
-  bytes as humanBytes, targetBytes, dimensions, outName, change, matchText, psnrText,
+  bytes, targetBytes, dimensions, outName, change, matchText, psnrText,
 } from './files.js';
 import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
+
+/**
+ * Resolve what files.js hands back.
+ *
+ * That module is imported by the tests straight off the disk, so it cannot
+ * import phrases.js - the path it would import only exists inside a built
+ * tool - and it returns the key of a phrase and the blanks to fill it with
+ * instead of a sentence. This is where the sentence is looked up.
+ */
+const say = (saying) => (saying ? phrase(saying.key, saying.values) : '');
+
+/** The same, for the one that is always a size. */
+const humanBytes = (n) => say(bytes(n));
 
 const el = {
   dropzone: $('dropzone'),
@@ -96,7 +109,7 @@ async function addFiles(files) {
   try {
     for (const file of files) {
       if (!isImage(file)) {
-        failures.push(`${file.name}: not an image this tool can read.`);
+        failures.push(phrase('load.unreadable', { name: file.name }));
         continue;
       }
 
@@ -113,7 +126,7 @@ async function addFiles(files) {
       item.size = await measure(item.thumbUrl);
       if (!item.size) {
         URL.revokeObjectURL(item.thumbUrl);
-        failures.push(`${file.name}: this browser could not decode it.`);
+        failures.push(phrase('load.undecodable', { name: file.name }));
         continue;
       }
 
@@ -182,7 +195,8 @@ function render() {
   // files whose thumbnails have already been revoked.
   el.clearAll.disabled = busy;
   el.countLabel.textContent = any
-    ? `${items.length} image${items.length === 1 ? '' : 's'}, ${humanBytes(totalBytes())} in total`
+    ? phrase(items.length === 1 ? 'list.count.one' : 'list.count.many',
+      { count: items.length, size: humanBytes(totalBytes()) })
     : '';
   // The button's state belongs to renderTargetSummary, which runs last here.
   renderList();
@@ -229,7 +243,7 @@ function renderList() {
     if (target && item.file.size <= target) {
       const note = document.createElement('p');
       note.className = 'file-note';
-      note.textContent = 'Already under the target - this one will be left exactly as it is.';
+      note.textContent = phrase('row.under');
       text.appendChild(note);
     }
 
@@ -239,8 +253,9 @@ function renderList() {
     const remove = document.createElement('button');
     remove.type = 'button';
     remove.className = 'row-remove';
-    remove.title = `Take ${item.file.name} off the list`;
-    remove.setAttribute('aria-label', `Take ${item.file.name} off the list`);
+    const takeOff = phrase('row.remove', { name: item.file.name });
+    remove.title = takeOff;
+    remove.setAttribute('aria-label', takeOff);
     remove.textContent = '×';
     remove.disabled = busy;
     remove.addEventListener('click', () => removeItem(item.id));
@@ -263,7 +278,7 @@ function renderTargetSummary() {
   el.compressAll.disabled = !target || !items.length || busy;
 
   if (!target) {
-    el.targetSummary.textContent = 'Enter a size to aim for.';
+    el.targetSummary.textContent = phrase('target.none');
     el.targetSummary.className = 'field-summary warn';
     return;
   }
@@ -272,41 +287,48 @@ function renderTargetSummary() {
 
   const over = items.filter((i) => i.file.size > target).length;
   const under = items.length - over;
+  const size = humanBytes(target);
 
   if (!items.length) {
-    el.targetSummary.textContent = `Every image will be brought under ${humanBytes(target)}.`;
+    el.targetSummary.textContent = phrase('target.empty', { size });
     return;
   }
 
   if (items.length === 1) {
-    el.targetSummary.textContent = over
-      ? `This image is over ${humanBytes(target)}, so it will be compressed until it is not.`
-      : `This image is already under ${humanBytes(target)}, so it will be passed through untouched.`;
+    el.targetSummary.textContent = phrase(over ? 'target.single.over' : 'target.single.under',
+      { size });
     return;
   }
 
-  const parts = [`${over} of ${items.length} ${over === 1 ? 'image is' : 'images are'} over ${humanBytes(target)}`];
-  if (under > 0) parts.push(`the other ${under === 1 ? 'one' : under} will be passed through untouched`);
-  el.targetSummary.textContent = `${parts.join(', and ')}.`;
+  // Two halves and the sentence that joins them, rather than one string built
+  // by concatenation: how many are over the target and how many are under it
+  // are separate plurals, and their order is not the same in every language.
+  const overPart = phrase(over === 1 ? 'target.over.one' : 'target.over.many',
+    { over, total: items.length, size });
+  el.targetSummary.textContent = under === 0
+    ? phrase('target.summary', { over: overPart })
+    : phrase('target.summary.rest', {
+      over: overPart,
+      rest: phrase(under === 1 ? 'target.rest.one' : 'target.rest.many', { count: under }),
+    });
 }
 
 function renderFormatNote() {
   const choice = el.formatSelect.value;
   const resize = el.allowResize.checked;
 
-  const format = {
-    auto: 'The format is kept unless the target is tight enough that keeping it would cost real quality, in which case WebP is used and the row says so.',
-    keep: 'Every image keeps the format it arrived in.',
-    [JPEG]: 'Everything is written as JPEG. Transparency becomes white, because JPEG has no alpha channel.',
-    [WEBP]: 'Everything is written as WebP: smaller than JPEG at the same quality, and it keeps transparency.',
-    [PNG]: 'Everything is written as PNG. PNG has no quality dial, so the only way to reach a target is to make the picture smaller.',
-  }[choice] ?? '';
+  const key = {
+    auto: 'format.auto',
+    keep: 'format.keep',
+    [JPEG]: 'format.jpeg',
+    [WEBP]: 'format.webp',
+    [PNG]: 'format.png',
+  }[choice];
 
-  const sizing = resize
-    ? 'If quality alone cannot reach the target, the picture is made smaller rather than crushed.'
-    : 'The picture keeps its full dimensions, so a tight target has to be paid for out of quality alone.';
-
-  el.formatNote.textContent = `${format} ${sizing}`;
+  el.formatNote.textContent = phrase('format.note', {
+    format: key ? phrase(key) : '',
+    sizing: phrase(resize ? 'format.resize.on' : 'format.resize.off'),
+  }).trim();
 }
 
 /* ------------------------------------------------------------- the options */
@@ -363,13 +385,16 @@ el.compressAll.addEventListener('click', async () => {
 
   try {
     for (const [index, item] of items.entries()) {
-      showProgress(index, items.length, item.file.name, 'reading');
+      showProgress(index, items.length, item.file.name, 'step.reading');
       try {
-        collected.push(await compressOne(item, target, (note) => {
-          showProgress(index, items.length, item.file.name, note);
+        collected.push(await compressOne(item, target, (step, values) => {
+          showProgress(index, items.length, item.file.name, step, values);
         }));
       } catch (error) {
-        failures.push(`${item.file.name}: ${error.message}`);
+        // Through phrase() because compress.js throws the key of a sentence
+        // when it gives up. Anything else - a real message from the encoder -
+        // is a key phrase() does not know, and comes back out unchanged.
+        failures.push(`${item.file.name}: ${phrase(error.message, error.values)}`);
       }
       // One turn of the event loop between images, so the progress bar is a
       // progress bar rather than a thing that appears finished at the end.
@@ -386,10 +411,12 @@ el.compressAll.addEventListener('click', async () => {
   showResults();
 });
 
-function showProgress(index, total, name, note) {
+function showProgress(index, total, name, step, values) {
   const done = index / total;
   el.progressBar.style.width = `${Math.round(done * 100)}%`;
-  el.progressLabel.textContent = `${index + 1} of ${total}: ${name} - ${note}`;
+  el.progressLabel.textContent = phrase('progress.at', {
+    at: index + 1, total, name, step: phrase(step, values),
+  });
 }
 
 /**
@@ -431,7 +458,7 @@ async function compressOne(item, target, onStep) {
     };
   }
 
-  onStep('decoding');
+  onStep('step.decoding');
   const source = await decode(item.file);
 
   try {
@@ -460,7 +487,7 @@ async function compressOne(item, target, onStep) {
     if (choice === 'auto' && compromised) {
       const other = alternativeFormat(firstMime, writable, alpha);
       if (other) {
-        onStep(`trying ${FORMATS[other].label} instead`);
+        onStep('step.trying', { format: FORMATS[other].label });
         const rival = await fitToTarget(source, {
           targetBytes: target, mime: other, allowResize, onStep,
         });
@@ -550,8 +577,11 @@ function showResults() {
   const missed = results.filter((r) => !r.fitted).length;
 
   el.resultsSummary.textContent = missed
-    ? `${humanBytes(before)} down to ${humanBytes(after)}. ${missed} ${missed === 1 ? 'image' : 'images'} could not reach the target - see the rows below.`
-    : `${humanBytes(before)} down to ${humanBytes(after)} - ${change(before, after)}, and every image is under the target.`;
+    ? phrase(missed === 1 ? 'results.missed.one' : 'results.missed.many',
+      { before: humanBytes(before), after: humanBytes(after), count: missed })
+    : phrase('results.all', {
+      before: humanBytes(before), after: humanBytes(after), change: say(change(before, after)),
+    });
 
   el.downloadZip.hidden = results.length < 2;
   el.downloadZip.onclick = async () => {
@@ -585,8 +615,12 @@ function resultRow(result) {
   const headline = document.createElement('p');
   headline.className = 'result-headline';
   headline.textContent = result.untouched
-    ? `${humanBytes(result.before)} - already under the target, so nothing was touched.`
-    : `${humanBytes(result.before)} → ${humanBytes(result.after)} · ${change(result.before, result.after)}`;
+    ? phrase('row.headline.untouched', { size: humanBytes(result.before) })
+    : phrase('row.headline', {
+      before: humanBytes(result.before),
+      after: humanBytes(result.after),
+      change: say(change(result.before, result.after)),
+    });
   text.appendChild(headline);
 
   const detail = document.createElement('p');
@@ -597,14 +631,18 @@ function resultRow(result) {
   if (result.match) {
     const match = document.createElement('p');
     match.className = 'result-match';
-    match.textContent = `Measured against the original: ${matchText(result.match.ssim)} (SSIM ${result.match.ssim.toFixed(3)}, PSNR ${psnrText(result.match.psnr)}).`;
+    match.textContent = phrase('row.match', {
+      match: say(matchText(result.match.ssim)),
+      ssim: result.match.ssim.toFixed(3),
+      psnr: say(psnrText(result.match.psnr)),
+    });
     text.appendChild(match);
   }
 
   if (!result.fitted) {
     const warn = document.createElement('p');
     warn.className = 'result-warn';
-    warn.textContent = 'This is the smallest this picture could be made under the settings above, and it is still over the target. Allow resizing, or ask for a larger target.';
+    warn.textContent = phrase('row.missed');
     text.appendChild(warn);
   }
 
@@ -620,7 +658,7 @@ function resultRow(result) {
   link.className = 'primary as-button';
   link.href = url;
   link.download = result.outName;
-  link.textContent = 'Download';
+  link.textContent = phrase('row.download');
   actions.appendChild(link);
 
   if (!result.untouched) {
@@ -628,7 +666,7 @@ function resultRow(result) {
     toggle.type = 'button';
     toggle.className = 'ghost';
     toggle.setAttribute('aria-expanded', 'false');
-    toggle.textContent = 'Compare';
+    toggle.textContent = phrase('row.compare');
     actions.appendChild(toggle);
 
     const panel = comparePanel(result, url);
@@ -638,7 +676,7 @@ function resultRow(result) {
     toggle.addEventListener('click', () => {
       panel.hidden = !panel.hidden;
       toggle.setAttribute('aria-expanded', String(!panel.hidden));
-      toggle.textContent = panel.hidden ? 'Compare' : 'Hide';
+      toggle.textContent = phrase(panel.hidden ? 'row.compare' : 'row.hide');
     });
   }
 
@@ -648,26 +686,27 @@ function resultRow(result) {
 
 /** One sentence saying exactly what was done to this picture, and at what. */
 function describe(result) {
-  if (result.untouched) {
-    return 'Compressing it would have cost quality to reach a size it already had, so it was passed through byte for byte - metadata and all.';
-  }
+  if (result.untouched) return phrase('detail.untouched');
 
-  const parts = [];
-  const format = FORMATS[result.mime]?.label ?? result.mime;
+  const label = FORMATS[result.mime]?.label ?? result.mime;
+  const lossy = FORMATS[result.mime]?.lossy;
 
-  parts.push(result.changedFormat
-    ? `Written as ${format}, which held the picture together better at this size than the original format did`
-    : `Written as ${format}`);
-
-  if (FORMATS[result.mime]?.lossy) parts.push(`quality ${result.quality.toFixed(2)}`);
-
-  parts.push(result.resized
-    ? `resized to ${dimensions(result.width, result.height)} from ${dimensions(result.size.width, result.size.height)}`
-    : `full size at ${dimensions(result.width, result.height)}`);
-
-  parts.push(`found in ${result.encodes} ${result.encodes === 1 ? 'encode' : 'encodes'}`);
-
-  return `${parts.join(', ')}.`;
+  // The clauses go in as blanks and the commas belong to the sentence around
+  // them, because a language whose list separator is not a comma has to be
+  // able to say so - and one with no quality dial has no clause to separate.
+  return phrase(lossy ? 'detail.line.quality' : 'detail.line', {
+    format: phrase(result.changedFormat ? 'detail.format.changed' : 'detail.format',
+      { format: label }),
+    quality: lossy ? result.quality.toFixed(2) : '',
+    size: result.resized
+      ? phrase('detail.resized', {
+        to: dimensions(result.width, result.height),
+        from: dimensions(result.size.width, result.size.height),
+      })
+      : phrase('detail.full', { size: dimensions(result.width, result.height) }),
+    encodes: phrase(result.encodes === 1 ? 'detail.encodes.one' : 'detail.encodes.many',
+      { count: result.encodes }),
+  });
 }
 
 /** Original and result, side by side and the same size on screen. */
@@ -676,15 +715,21 @@ function comparePanel(result, resultUrl) {
   panel.className = 'compare';
 
   for (const [label, src, note] of [
-    ['Original', result.item.thumbUrl, `${humanBytes(result.before)} · ${dimensions(result.size.width, result.size.height)}`],
-    ['Compressed', resultUrl, `${humanBytes(result.after)} · ${dimensions(result.width, result.height)}`],
+    [phrase('compare.original'), result.item.thumbUrl, phrase('compare.note', {
+      size: humanBytes(result.before),
+      dimensions: dimensions(result.size.width, result.size.height),
+    })],
+    [phrase('compare.compressed'), resultUrl, phrase('compare.note', {
+      size: humanBytes(result.after),
+      dimensions: dimensions(result.width, result.height),
+    })],
   ]) {
     const figure = document.createElement('figure');
     figure.className = 'compare-side';
 
     const img = document.createElement('img');
     img.src = src;
-    img.alt = `${label}: ${result.name}`;
+    img.alt = phrase('compare.alt', { label, name: result.name });
     img.loading = 'lazy';
     figure.appendChild(img);
 
@@ -700,7 +745,7 @@ function comparePanel(result, resultUrl) {
 
   const hint = document.createElement('p');
   hint.className = 'compare-hint';
-  hint.textContent = 'Both are shown at the same width, which is how the difference is actually judged. Open the two files at full size for the close look.';
+  hint.textContent = phrase('compare.hint');
   panel.appendChild(hint);
 
   return panel;
@@ -851,7 +896,7 @@ async function checkEncoders() {
   for (const option of el.formatSelect.options) {
     if (option.value === WEBP) {
       option.disabled = true;
-      option.textContent = 'WebP - not supported by this browser';
+      option.textContent = phrase('format.webp.unavailable');
     }
   }
   if (el.formatSelect.value === WEBP) el.formatSelect.value = 'auto';

@@ -117,14 +117,103 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} बाइट</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">{count} तस्वीर, कुल {size}</span>
+    <span data-phrase="list.count.many">{count} तस्वीरें, कुल {size}</span>
+    <span data-phrase="row.under">पहले से ही तय साइज़ से नीचे &mdash; यह जैसी है वैसी ही छोड़ दी जाएगी।</span>
+    <span data-phrase="row.remove">{name} को सूची से हटाइए</span>
+    <span data-phrase="load.unreadable">{name}: यह ऐसी तस्वीर नहीं जिसे यह औज़ार पढ़ सके।</span>
+    <span data-phrase="load.undecodable">{name}: यह ब्राउज़र इसे डिकोड नहीं कर सका।</span>
+
+    <span data-phrase="target.none">कोई साइज़ बताइए, जिस तक पहुँचना है।</span>
+    <span data-phrase="target.empty">हर तस्वीर को {size} से नीचे लाया जाएगा।</span>
+    <span data-phrase="target.single.over">यह तस्वीर {size} से ऊपर है, इसलिए तब तक कंप्रेस होगी जब तक ऐसा न रह जाए।</span>
+    <span data-phrase="target.single.under">यह तस्वीर पहले से ही {size} से नीचे है, इसलिए बिना छुए आगे भेज दी जाएगी।</span>
+    <span data-phrase="target.over.one">{total} में से {over} तस्वीर {size} से ऊपर है</span>
+    <span data-phrase="target.over.many">{total} में से {over} तस्वीरें {size} से ऊपर हैं</span>
+    <span data-phrase="target.rest.one">दूसरी बिना छुए आगे भेज दी जाएगी</span>
+    <span data-phrase="target.rest.many">बाकी {count} बिना छुए आगे भेज दी जाएँगी</span>
+    <span data-phrase="target.summary">{over}।</span>
+    <span data-phrase="target.summary.rest">{over}, और {rest}।</span>
+
+    <span data-phrase="format.note">{format} {sizing}</span>
+    <span data-phrase="format.auto">फ़ॉर्मैट वही रहता है, बशर्ते तय साइज़ इतना तंग न हो कि उसे रखना असली गुणवत्ता की कीमत माँगे &mdash; तब WebP लिया जाता है, और पंक्ति यह बता भी देती है।</span>
+    <span data-phrase="format.keep">हर तस्वीर वही फ़ॉर्मैट रखती है जिसमें वह आई थी।</span>
+    <span data-phrase="format.jpeg">सब कुछ JPEG में लिखा जाता है। पारदर्शिता सफ़ेद हो जाती है, क्योंकि JPEG में अल्फ़ा चैनल नहीं होता।</span>
+    <span data-phrase="format.webp">सब कुछ WebP में लिखा जाता है: उतनी ही गुणवत्ता पर JPEG से छोटा, और पारदर्शिता भी बची रहती है।</span>
+    <span data-phrase="format.png">सब कुछ PNG में लिखा जाता है। PNG में गुणवत्ता का कोई घुंडी नहीं होती, इसलिए तय साइज़ तक पहुँचने का एक ही रास्ता है &mdash; तस्वीर को छोटा करना।</span>
+    <span data-phrase="format.resize.on">अगर अकेली गुणवत्ता से तय साइज़ तक नहीं पहुँचा जा सकता, तो तस्वीर को कुचलने के बजाय छोटा किया जाता है।</span>
+    <span data-phrase="format.resize.off">तस्वीर अपनी पूरी नाप बनाए रखती है, इसलिए तंग तय साइज़ की कीमत अकेली गुणवत्ता से चुकानी पड़ती है।</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; यह ब्राउज़र इसका समर्थन नहीं करता</span>
+
+    <span data-phrase="progress.at">{total} में से {at}: {name} &mdash; {step}</span>
+    <span data-phrase="step.reading">पढ़ा जा रहा है</span>
+    <span data-phrase="step.decoding">डिकोड हो रहा है</span>
+    <span data-phrase="step.full">देखा जा रहा है कि पूरी गुणवत्ता पर कितना पड़ता है</span>
+    <span data-phrase="step.scale">जो सबसे बड़ी नाप समा जाए, वह खोजी जा रही है</span>
+    <span data-phrase="step.quality">गुणवत्ता की घुंडी टटोली जा रही है</span>
+    <span data-phrase="step.belowFloor">गुणवत्ता की न्यूनतम सीमा से नीचे जाया जा रहा है, क्योंकि छोटा करना बंद है</span>
+    <span data-phrase="step.resolution">रिज़ॉल्यूशन देकर गुणवत्ता ली जा रही है</span>
+    <span data-phrase="step.budget">बजट में जो बचा है वह खर्च किया जा रहा है</span>
+    <span data-phrase="step.trying">इसके बजाय {format} आज़माया जा रहा है</span>
+    <span data-phrase="error.attempts">बहुत सारी कोशिशों के बाद हार मान ली।</span>
+    <span data-phrase="error.encode">इस ब्राउज़र ने {format} में लिखने से मना कर दिया।</span>
+    <span data-phrase="error.decode">यह ब्राउज़र तस्वीर को डिकोड नहीं कर सका।</span>
+
+    <span data-phrase="results.all">{before} से घटकर {after} &mdash; {change}, और हर तस्वीर तय साइज़ से नीचे है।</span>
+    <span data-phrase="results.missed.one">{before} से घटकर {after}। {count} तस्वीर तय साइज़ तक नहीं पहुँच सकी &mdash; नीचे की पंक्ति देखिए।</span>
+    <span data-phrase="results.missed.many">{before} से घटकर {after}। {count} तस्वीरें तय साइज़ तक नहीं पहुँच सकीं &mdash; नीचे की पंक्तियाँ देखिए।</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; पहले से ही तय साइज़ से नीचे थी, इसलिए कुछ छुआ ही नहीं गया।</span>
+    <span data-phrase="row.match">असली के मुक़ाबले नापा गया: {match} (SSIM {ssim}, PSNR {psnr})।</span>
+    <span data-phrase="row.missed">ऊपर की सेटिंग्स में यह तस्वीर इससे छोटी नहीं हो सकती थी, और अब भी तय साइज़ से ऊपर है। छोटा करने की छूट दीजिए, या बड़ा साइज़ माँगिए।</span>
+    <span data-phrase="row.download">डाउनलोड</span>
+    <span data-phrase="row.compare">मिलाइए</span>
+    <span data-phrase="row.hide">छिपाइए</span>
+
+    <span data-phrase="change.smaller">{percent}% छोटी</span>
+    <span data-phrase="change.larger">{percent}% बड़ी</span>
+    <span data-phrase="change.same">लगभग उतनी ही बड़ी</span>
+
+    <span data-phrase="match.identical">{percent}% &mdash; फ़र्क़ पहचाना ही नहीं जा सकता</span>
+    <span data-phrase="match.invisible">{percent}% &mdash; कोई दिखने वाला फ़र्क़ नहीं</span>
+    <span data-phrase="match.close">{percent}% &mdash; बहुत क़रीब</span>
+    <span data-phrase="match.softened">{percent}% &mdash; थोड़ी नरम पड़ी</span>
+    <span data-phrase="match.visible">{percent}% &mdash; कंप्रेशन दिख रहा है</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">एक जैसी</span>
+
+    <span data-phrase="detail.untouched">जो साइज़ इसके पास पहले से था, उस तक पहुँचने के लिए कंप्रेस करना गुणवत्ता की कीमत माँगता, इसलिए इसे बाइट दर बाइट आगे भेज दिया गया &mdash; मेटाडेटा समेत।</span>
+    <span data-phrase="detail.line">{format}, {size}, {encodes}।</span>
+    <span data-phrase="detail.line.quality">{format}, गुणवत्ता {quality}, {size}, {encodes}।</span>
+    <span data-phrase="detail.format">{format} में लिखी गई</span>
+    <span data-phrase="detail.format.changed">{format} में लिखी गई, जिसने इस साइज़ पर तस्वीर को असली फ़ॉर्मैट से बेहतर सँभाला</span>
+    <span data-phrase="detail.resized">{from} से घटाकर {to} की गई</span>
+    <span data-phrase="detail.full">पूरे आकार में, {size}</span>
+    <span data-phrase="detail.encodes.one">{count} बार एनकोड करने पर मिली</span>
+    <span data-phrase="detail.encodes.many">{count} बार एनकोड करने पर मिली</span>
+
+    <span data-phrase="compare.original">असली</span>
+    <span data-phrase="compare.compressed">कंप्रेस की हुई</span>
+    <span data-phrase="compare.alt">{label}: {name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">दोनों एक ही चौड़ाई में दिखाई गई हैं, और फ़र्क़ असल में इसी तरह आँका जाता है। नज़दीक से देखने के लिए दोनों फ़ाइलें पूरे आकार में खोलिए।</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">आपकी तस्वीरें कहीं नहीं गईं। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

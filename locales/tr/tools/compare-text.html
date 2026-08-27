@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">boş</span>
+    <span data-phrase="count.lines.one">{count} satır</span>
+    <span data-phrase="count.lines.many">{count} satır</span>
+    <span data-phrase="count.characters.one">{count} karakter</span>
+    <span data-phrase="count.characters.many">{count} karakter</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">Bu dosya okunamadı: {detail}</span>
+
+    <span data-phrase="result.waiting">İki kutuya da bir şey yapıştırın.</span>
+    <span data-phrase="result.identical">İkisi bayt bayt aynı.</span>
+    <span data-phrase="result.ignored">Yok saymasını istediğiniz farklar yok sayılınca aynılar.</span>
+    <span data-phrase="result.counts">{added} eklendi, {removed} çıkarıldı</span>
+    <span data-phrase="result.summary">{changes} &mdash; satırların %{percent} kadarı ikisinde de var. {note}</span>
+    <span data-phrase="result.newline">Biri satır sonuyla bitiyor, öbürü bitmiyor.</span>
+    <span data-phrase="result.failed">Hiçbir şey çıkmadı.</span>
+
+    <span data-phrase="skip.one">{count} değişmemiş satır</span>
+    <span data-phrase="skip.many">{count} değişmemiş satır</span>
+    <span data-phrase="skip.rest">Gerisi çizilmiyor &mdash; yamanın tamamı için &laquo;İndir&raquo;i kullanın.</span>
+
+    <span data-phrase="copy.done">Kopyalandı</span>
+    <span data-phrase="copy.select">Seçildi &mdash; Ctrl+C&rsquo;ye basın</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">metniniz hiçbir yere gitmedi. {total} dosya
       yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

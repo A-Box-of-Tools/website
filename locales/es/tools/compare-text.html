@@ -93,14 +93,37 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
-
   <!--
-    The sentences the live network check puts on the pledge's live row,
-    held in the markup rather than src/ because src/ is copied byte for
-    byte into every language. shared/js/phrases.js reads them back;
-    a {name} is filled in by the caller.
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">vacío</span>
+    <span data-phrase="count.lines.one">{count} línea</span>
+    <span data-phrase="count.lines.many">{count} líneas</span>
+    <span data-phrase="count.characters.one">{count} carácter</span>
+    <span data-phrase="count.characters.many">{count} caracteres</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">Ese archivo no se pudo leer: {detail}</span>
+
+    <span data-phrase="result.waiting">Pega algo en las dos cajas.</span>
+    <span data-phrase="result.identical">Los dos son idénticos, byte a byte.</span>
+    <span data-phrase="result.ignored">Iguales, una vez ignoradas las diferencias que pediste ignorar.</span>
+    <span data-phrase="result.counts">{added} añadidas, {removed} quitadas</span>
+    <span data-phrase="result.summary">{changes} &mdash; el {percent}&nbsp;% de las líneas está en ambos. {note}</span>
+    <span data-phrase="result.newline">Uno termina en salto de línea y el otro no.</span>
+    <span data-phrase="result.failed">No salió nada.</span>
+
+    <span data-phrase="skip.one">{count} línea sin cambios</span>
+    <span data-phrase="skip.many">{count} líneas sin cambios</span>
+    <span data-phrase="skip.rest">El resto no se dibuja &mdash; usa &laquo;Descargar&raquo; para tener el parche entero.</span>
+
+    <span data-phrase="copy.done">Copiado</span>
+    <span data-phrase="copy.select">Seleccionado &mdash; pulsa Ctrl+C</span>
+
+    <!-- The live network check's verdict, on the pledge's live row. -->
     <span data-phrase="net.clean">tu texto no ha ido a ninguna parte. {total}
       archivos cargados. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
