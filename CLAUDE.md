@@ -189,6 +189,36 @@ Lists whose English entries carry an `id` are merged **by id**; lists of plain
 strings are still positional. That distinction is the whole reason
 `locales/*/planned.toml` needs care and `[[hub.categories]]` no longer does.
 
+## The version
+
+`config/site.toml` carries one, and every pull request has to answer for it.
+
+| what the change does | what the version does |
+|---|---|
+| adds a tool | the middle number, and the last one back to zero — `1.4.7` → `1.5.0` |
+| anything else a visitor could notice | the last number — `1.4.7` → `1.4.8` |
+| tests, CI, docs, the worker | nothing |
+
+One step per pull request, not per commit: a branch of six commits is one
+change to whoever reads the site.
+
+"A visitor could notice" is decided from the paths a change touches, and the
+list of what they cannot see is short and lives in `buildlib/version.py` —
+tests, `.github`, `docs`, `.claude`, `workers`, and the handful of root
+markdown files. Everything else counts, `build.py` included: a change there
+reaches the site through every page it renders, and `open_links_elsewhere`,
+which changed every link on every tool page, lived nowhere else. A refactor
+that genuinely alters nothing still asks for a digit, which is the cheaper of
+the two mistakes.
+
+The rule is enforced by `.github/workflows/version.yml` on every pull request,
+and is itself unit tested in `tests/python/test_version.py` — a presubmit that
+is wrong is worse than none, because the next person stops believing it.
+
+It starts at `1.0.0` rather than a number worked backwards from the tools
+already here: a version is a promise about what happens next, and inventing a
+history for it would be neither true nor useful.
+
 ## Conventions
 
 Prose in this repository — commit messages, comments, `tool.toml` — explains
