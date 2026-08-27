@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/pasfoto-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'21984b9aed';
+const CACHE_NAME=CACHE_PREFIX+'e416ab2209';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/ses-duzenleme/:';
-const CACHE_NAME=CACHE_PREFIX+'16dd7c2e5c';
+const CACHE_NAME=CACHE_PREFIX+'d1dba7c46c';
 const ASSETS=[
 './',
 'index.html',

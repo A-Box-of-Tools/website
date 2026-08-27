@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/penampil-dicom/:';
-const CACHE_NAME=CACHE_PREFIX+'25e587cd27';
+const CACHE_NAME=CACHE_PREFIX+'519b14d812';
 const ASSETS=[
 './',
 'index.html',

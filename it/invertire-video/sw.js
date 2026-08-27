@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/invertire-video/:';
-const CACHE_NAME=CACHE_PREFIX+'fb5c93cc73';
+const CACHE_NAME=CACHE_PREFIX+'e64edeaf0d';
 const ASSETS=[
 './',
 'index.html',
