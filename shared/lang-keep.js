@@ -47,7 +47,12 @@
  *   - THE SETTINGS the visitor moved: every input, textarea and select inside
  *     <main> whose value differs from the one written in the markup. Only the
  *     difference, so a page nobody has touched carries nothing at all and the
- *     switcher stays the plain link it was built as.
+ *     switcher stays the plain link it was built as. Each is named by its id,
+ *     or - for the mode switch at the top of a dozen tools, which is a group of
+ *     radios sharing a `name` and carrying no id at all - by that name and its
+ *     own value, or by whatever `data-` attribute the markup used instead. See
+ *     keyOf() below; asking for an id alone lost exactly the setting that says
+ *     what to do with the file.
  *
  * What it does not carry is anything a tool worked out for itself. A result
  * already computed is not restored - the tool recomputes it from the file, the
@@ -174,6 +179,50 @@
     return options.length ? options[0].value : '';
   }
 
+  /**
+   * What to call a control, so that the page in the other language can be
+   * asked for the same one.
+   *
+   * An `id` where there is one, which is most of them. But the control a
+   * visitor is most likely to have moved often has no id at all: the mode
+   * switch at the top of a tool - fill or pixelate, keep or cut, colour or
+   * mono - is a group of radios sharing a `name`, and a name is all the markup
+   * gives them, because the tool reads the group with a selector rather than
+   * one button at a time. Skipping those, which is what asking for an id alone
+   * did, meant a language switch handed back the file and lost the single
+   * setting that says what to do with it.
+   *
+   * So: the id, or the name, or whatever `data-` attribute the markup used
+   * instead - hash-checksum names its algorithms `data-algorithm` and nothing
+   * else. A radio or a checkbox addressed by name carries its own `value` too,
+   * since the name belongs to the group and the value is the half that says
+   * which button. Every one of those comes from the markup, and the markup is
+   * structurally the same in all fifteen languages, which is the whole reason
+   * any of this can be named on one page and found on another.
+   */
+  function keyOf(node) {
+    if (node.id) return '#' + node.id;
+
+    var type = String(node.type || '').toLowerCase();
+    var name = node.getAttribute('name');
+    if (name) {
+      return '@' + name
+        + (type === 'radio' || type === 'checkbox' ? '=' + node.value : '');
+    }
+
+    // Sorted, so that the key does not depend on the order the attributes
+    // happen to be written in - which is not something a translator copying a
+    // body across should have to preserve.
+    var data = [];
+    var attrs = node.attributes;
+    for (var i = 0; i < attrs.length; i += 1) {
+      if (attrs[i].name.indexOf('data-') === 0) {
+        data.push(attrs[i].name + '=' + attrs[i].value);
+      }
+    }
+    return data.length ? '~' + data.sort().join('&') : '';
+  }
+
   /** Every control inside the tool no longer showing its markup value. */
   function settings() {
     var out = [];
@@ -181,16 +230,35 @@
     for (var i = 0; i < nodes.length; i += 1) {
       var node = nodes[i];
       var type = String(node.type || '').toLowerCase();
-      if (!node.id || node.disabled || node.readOnly || IGNORE[type]) continue;
+      if (node.disabled || node.readOnly || IGNORE[type]) continue;
+      var key = keyOf(node);
+      if (!key) continue;
       if (type === 'checkbox' || type === 'radio') {
-        if (node.checked !== node.defaultChecked) out.push({ id: node.id, on: node.checked });
+        if (node.checked !== node.defaultChecked) out.push({ key: key, on: node.checked });
       } else if (node.tagName === 'SELECT') {
-        if (node.value !== fallback(node)) out.push({ id: node.id, value: node.value });
+        if (node.value !== fallback(node)) out.push({ key: key, value: node.value });
       } else if (node.value !== node.defaultValue) {
-        out.push({ id: node.id, value: node.value });
+        out.push({ key: key, value: node.value });
       }
     }
     return out;
+  }
+
+  /**
+   * The control on this page that a carried key names, or nothing.
+   *
+   * Walked rather than selected. A key is assembled from attribute values the
+   * markup chose, and putting one back into a selector would mean escaping it
+   * correctly for every character a tool might have used; comparing the keys
+   * this page computes for itself asks the same question and cannot be got
+   * wrong. It is a handful of controls either way.
+   */
+  function find(key) {
+    var nodes = main.querySelectorAll('input, textarea, select');
+    for (var i = 0; i < nodes.length; i += 1) {
+      if (keyOf(nodes[i]) === key) return nodes[i];
+    }
+    return null;
   }
 
   /**
@@ -210,8 +278,8 @@
   function apply(values) {
     for (var i = 0; i < values.length; i += 1) {
       var want = values[i];
-      var node = document.getElementById(want.id);
-      if (!node || !main.contains(node)) continue;
+      var node = want.key ? find(want.key) : null;
+      if (!node) continue;
       if (typeof want.on === 'boolean') {
         if (node.checked === want.on) continue;
         node.checked = want.on;
