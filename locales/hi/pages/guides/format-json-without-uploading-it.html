@@ -14,6 +14,14 @@
       बदलने की इजाज़त है, उनमें से ज़्यादातर फिर भी क्या बदल देते हैं, और जब
       फ़ाइल पार्स ही न हो तो त्रुटि कैसे पढ़ी जाए।
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="दो खाने: बाईं ओर JSON की एक ही पंक्ति, दाईं ओर वही दस्तावेज़ दो जगह की इंडेंट के साथ सजा हुआ।">
+      <figcaption>
+        एक पंक्ति गई, पढ़ने लायक कुछ निकला। इसके लिए कहीं कुछ भेजा नहीं गया।
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -162,6 +170,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       अगर किसी बिलकुल ठीक दिखती फ़ाइल पर त्रुटि पंक्ति 1, कॉलम 1 पर है, तो वह
       यही है।
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="वही टूल एक टूटे दस्तावेज़ के साथ: एक त्रुटि जो फ़ालतू अल्पविराम की पंक्ति और स्तंभ बताती है, और इनपुट खाने में वही दोषी पंक्ति।">
+      <figcaption>
+        जब वह पढ़ा न जाए, संदेश बता देता है कहाँ। फ़ालतू अल्पविराम सबसे आम कारण है और आँख से सबसे मुश्किल दिखने वाला।
+      </figcaption>
+    </figure>
   </section>
 
   <section>

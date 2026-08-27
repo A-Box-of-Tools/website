@@ -11,7 +11,7 @@ lede = """
     een hoop software nog steeds weigert te openen. Dit gaat over wat het
     formaat werkelijk is, wat omzetten het plaatje kost, en waarom vrijwel elke
     omzetter wil dat je het eerst uploadt."""
-updated = "20 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "HEIC naar JPG omzetten"
 og_description = "Waarom iPhone-foto's niet opengaan, wat omzetten kost, en hoe je het doet zonder de foto's aan iemand te geven."
 og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

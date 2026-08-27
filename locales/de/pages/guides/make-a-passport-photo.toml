@@ -12,7 +12,7 @@ lede = """
     die man sich sorgt. Hier steht, was tatsächlich gemessen wird, welches Land
     welche Werte will, und was man gegen Formulare tut, die eine Datei
     zurückweisen, weil sie zu klein ist."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Ein Passbild machen, das nicht zurückkommt"
 og_description = "Kopfhöhe, Augenlinie, Hintergrund und Dateigröße: was ein Passamt misst, und wie Sie es mit einem Handy und einer glatten Wand treffen."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

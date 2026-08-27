@@ -11,7 +11,7 @@ lede = """
     donc pas, il les déplace dans un nouveau fichier exactement telles qu'elles
     étaient. Voici ce que cela vous rapporte, et le seul endroit où cela se
     voit."""
-updated = "20 août 2026"
+updated = "26 août 2026"
 og_title = "Comment couper une vidéo sans la réencoder"
 og_description = "Pourquoi une coupe tombe parfois plus tôt que là où vous l'avez marquée, ce qu'une image clé vient y faire, et quand accepter un réencodage."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

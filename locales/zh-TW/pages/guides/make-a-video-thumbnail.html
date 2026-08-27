@@ -27,6 +27,14 @@
     <p>
       就算最終封面圖會是 JPEG 或 WebP，抓到的也先存 PNG。PNG 是那一幀的精確副本；這樣一來，所有有損的決定只在最後、在位元組預算之內發生一次，而不是發生兩次、層層疊加。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
+           alt="一段影片裡時間碼可見的靜幀，旁邊是逐幀與拖動的控制元件，以及它取自的精確時刻。">
+      <figcaption>
+        走到那一幀，而不是暫停後截圖。這兩者的差別究竟在哪，上面一節說得清楚。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -34,6 +42,14 @@
     <p>
       先裁再壓，理由和<a href="../get-photos-ready-for-the-web/">照片指南</a>裡的一樣：畫素就是預算。從 4K 幀裡裁出 16:9、降到 1280&times;720，壓縮器就能把那 2&nbsp;MB 花在沒人需要眯起眼睛才看得清的畫質上。改尺寸工具的裁剪框能鎖定 16:9，所以形狀是一次拖拽而不是一道算術題；文字和人臉要留在中間三分之二，因為資訊流會把四角削圓，還會把時長壓在右下角。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
+           alt="改尺寸工具裡填了寬 1280、高 720，下面是這張靜幀會變成什麼樣的摘要。">
+      <figcaption>
+        接下來就是算術：平臺要什麼，就當成兩個數字填進去。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

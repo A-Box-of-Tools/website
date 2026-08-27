@@ -12,7 +12,7 @@ lede = """
     più piccola di loro è quella che vedono davvero tutti. Vediamo le dimensioni
     che ti servono, i file che le stanno accanto, e cosa fare quando il tuo logo
     alla discesa non sopravvive."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Creare una favicon che si legga ancora a sedici pixel"
 og_description = "Di quali dimensioni ha bisogno un favicon.ico, i file in più che chiedono iPhone e Android, e cosa fare quando il tuo logo non sopravvive al rimpicciolimento."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

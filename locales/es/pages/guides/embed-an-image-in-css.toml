@@ -19,7 +19,7 @@ lede = """
     cambia algo a su alrededor. Aquí va dónde compensa ese trato y dónde no,
     aunque no se note."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Cuándo meter una imagen dentro de tu CSS"
 og_description = "Lo que cuesta un data URI, por qué un SVG no debería ir nunca en base64, y el error de comillas que rompe los SVG incrustados sin decir nada."

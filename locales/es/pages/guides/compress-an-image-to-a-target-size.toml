@@ -18,7 +18,7 @@ lede = """
     gastarlo y cómo saber si el resultado sigue estando lo bastante bien para
     mandarlo."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Comprimir una imagen a un tamaño de archivo exacto"
 og_description = "Lo que cuesta de verdad un límite de tamaño, qué ajuste hay que mover primero, y por qué un PNG no encoge como encoge un JPEG."

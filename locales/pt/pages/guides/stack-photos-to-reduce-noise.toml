@@ -13,7 +13,7 @@ lede = """
     que só estava ali parte do tempo. Qual dos dois você quer depende inteiramente
     do que se mexeu."""
 
-updated = "25 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Como empilhar fotografias para reduzir o ruído, ou tirar pessoas"
 og_description = "Tire a média de uma sequência para matar o ruído, use a mediana para esvaziar uma praça movimentada, clareie para rastros de estrelas. Qual método resolve qual problema, e onde os arquivos RAW entram."

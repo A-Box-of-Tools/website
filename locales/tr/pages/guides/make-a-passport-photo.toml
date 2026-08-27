@@ -12,7 +12,7 @@ lede = """
     endişelendiği ölçümler olmaz. Bu rehber gerçekte neyin ölçüldüğünü, hangi
     ülkenin hangi rakamları istediğini ve bir dosyayı fazla küçük diye reddeden
     formlar hakkında ne yapacağınızı anlatıyor."""
-updated = "20 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "Geri çevrilmeyen bir vesikalık fotoğraf nasıl çekilir"
 og_description = "Baş yüksekliği, göz hattı, arka plan ve dosya boyutu - bir pasaport ofisinin neyi ölçtüğü ve bunu bir telefon ile düz bir duvarla nasıl tutturacağınız."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

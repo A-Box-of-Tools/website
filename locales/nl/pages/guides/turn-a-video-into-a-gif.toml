@@ -11,7 +11,7 @@ lede = """
     beweging, dus een gif die van een video gemaakt is, is altijd groot. Dit
     gaat over welke van de drie instellingen je verzet wanneer hij te groot is,
     en hoeveel elk ervan je oplevert."""
-updated = "20 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Van een video een gif maken, en hem klein houden"
 og_description = "De drie instellingen die de grootte van een gif bepalen, wat elk ervan kost, en wanneer een gif juist het verkeerde antwoord is."
 og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

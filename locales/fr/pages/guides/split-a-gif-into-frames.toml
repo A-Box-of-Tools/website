@@ -11,7 +11,7 @@ lede = """
     d'être compris, c'est ce qu'est vraiment une «&nbsp;image&nbsp;» de GIF, car
     le format enregistre autre chose que ce que vous voyez &mdash; et c'est de là
     que vient votre quatorzième image, ce rectangle contenant une bouche."""
-updated = "21 août 2026"
+updated = "26 août 2026"
 og_title = "Comment découper un GIF en images"
 og_description = "Chaque image d'un GIF en PNG&nbsp;: pourquoi certaines ne sont qu'un morceau, ce que devient la transparence, et comment garder les durées."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

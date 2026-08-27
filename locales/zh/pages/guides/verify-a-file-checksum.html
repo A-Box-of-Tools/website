@@ -36,6 +36,14 @@
     <p>
       没有两种长度相同，所以工具能够在没人告诉它的情况下认出你粘进来的是什么。一串 63 个字符的东西不是任何东西的校验和：那是一个在去剪贴板的路上掉了一个字符的 SHA-256。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/verify-a-file-checksum/digests.webp" loading="lazy" decoding="async"
+           alt="结果卡片：同一个文件的 MD5、SHA-1、SHA-256 和 SHA-512 摘要，每个后面都有复制按钮。">
+      <figcaption>
+        一次全给出来，因为该用哪一个是发布文件的一方定的，不是你定的。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -71,6 +79,14 @@
       <code>SHA256SUMS</code> 文件、<code>SHA256 (disk.iso) = &hellip;</code> 这种写法，或者从 script 标签上扒下来的
       <code>integrity="sha384-&hellip;"</code>。然后用一句话回答是或不是。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/verify-a-file-checksum/compare.webp" loading="lazy" decoding="async"
+           alt="比对卡片：一串校验值被粘进输入框，下面给出与文件相符的判定。">
+      <figcaption>
+        把下载页面上写的那串粘进来，比对交给工具。盯着屏幕数六十四个字符，正是它要省掉的那一步。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

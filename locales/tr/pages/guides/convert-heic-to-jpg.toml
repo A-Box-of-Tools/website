@@ -11,7 +11,7 @@ lede = """
     iyidir ve epeyce yazılım onu hâlâ açmayı reddediyor. Bu rehber biçimin
     gerçekte ne olduğunu, dönüştürmenin resme neye mal olduğunu ve neredeyse her
     dönüştürücünün neden önce sizden onu yüklemenizi istediğini anlatıyor."""
-updated = "20 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "HEIC nasıl JPG'ye dönüştürülür"
 og_description = "iPhone fotoğraflarının neden açılmadığı, dönüştürmenin neye mal olduğu ve bunu fotoğrafları kimseye vermeden nasıl yapacağınız."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

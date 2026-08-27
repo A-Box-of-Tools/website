@@ -11,7 +11,7 @@ lede = """
     PDF, ed è anche quella che più spesso si fa consegnando entrambi i file al
     server di uno sconosciuto. Non serve. Qui c'è come farlo, e cosa sparisce in
     silenzio quando uno strumento rimette in fila le pagine."""
-updated = "22 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come unire, dividere e riordinare le pagine di un PDF"
 og_description = "Unire PDF, tagliarne uno in tanti, spostare pagine &mdash; e sapere cosa sopravvive al rimescolamento e cosa no."
 og_image_alt = "abox.tools - strumenti che non toccano mai un server"

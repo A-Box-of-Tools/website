@@ -12,7 +12,7 @@ lede = """
     een bestand te zijn, waardoor hij niet los in de cache kan en opnieuw
     gedownload wordt zodra er iets eromheen verandert. Dit gaat over waar die ruil
     het waard is, en waar hij dat stilletjes niet is."""
-updated = "20 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Wanneer je een plaatje in je CSS zet"
 og_description = "Wat een data-URI kost, waarom een svg nooit base64 hoort te zijn, en de aanhalingsfout die ingesloten svg's stilletjes breekt."
 og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

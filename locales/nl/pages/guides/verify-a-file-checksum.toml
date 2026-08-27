@@ -11,7 +11,7 @@ lede = """
     bestand ongeschonden is aangekomen. Hem vergelijken kost een minuut. Weten
     wat die vergelijking waard is, en welke gewoonte haar waardeloos maakt, kost
     de rest van deze pagina."""
-updated = "23 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Een download controleren tegen zijn checksum, en wat dat bewijst"
 og_description = "Waar de hex onder een downloadlink voor is, hoe je hem op elk besturingssysteem vergelijkt, en waarom hem van dezelfde pagina halen als het bestand het idee onderuithaalt."
 og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

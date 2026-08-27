@@ -12,7 +12,7 @@ lede = """
     qu'elle ne peut plus être mise en cache pour elle-même et qu'elle est
     retéléchargée dès que quoi que ce soit autour d'elle change. Voici où ce
     marché vaut la peine, et où il ne la vaut discrètement pas."""
-updated = "20 août 2026"
+updated = "26 août 2026"
 og_title = "Quand mettre une image dans votre CSS"
 og_description = "Ce que coûte un data URI, pourquoi un SVG ne devrait jamais être en base64, et l'erreur de guillemets qui casse les SVG intégrés sans rien dire."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

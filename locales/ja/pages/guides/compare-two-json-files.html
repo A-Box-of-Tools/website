@@ -27,6 +27,14 @@
     <p>
       最悪の2つの場合が要点を示します。<strong>ミニファイされた</strong>ファイルは1行なので、それに対する差分は巨大な変更行が1つ。正しくて、役に立ちません。そして<strong>同じ内容が別の順序</strong>の2ファイルは全部変更として比較されますが、正直な答えは「何も」のはずです。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
+           alt="比較のオプション。左右に並べるか一列にするかの表示、変更行だけを出すスイッチ、空白・大文字小文字・空行を無視するスイッチ。">
+      <figcaption>
+        片方のファイルが違う改行で保存されていただけで全行が違うと言い出す、あの事態を防ぐのがこれらです。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -61,6 +69,14 @@
     <p>
       同じ手順は、2つのページが話せるほかのすべてにも効きます。YAMLもXMLも同じやり方で正規形になりますし、出どころの違う同じ形の2ファイルには、差分の無視スイッチ&mdash;空白、大文字小文字、空行&mdash;が同じ発想の軽い版です。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/compare-two-json-files/diff.webp" loading="lazy" decoding="async"
+           alt="JSON設定の二つの版を左右に並べ、変わった行に印がついている。バージョン番号、再試行回数、追加された機能、追加されたリージョン。">
+      <figcaption>
+        本当の違いが4か所、それ以外は何も報告されていません。読むのは簡単なほうで、仕事をしたのは上の設定です。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

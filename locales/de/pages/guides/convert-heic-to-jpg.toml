@@ -11,7 +11,7 @@ lede = """
     und erstaunlich viel Software verweigert es bis heute. Hier steht, was
     hinter dem Format steckt, was die Umwandlung das Bild kostet und warum
     beinahe jeder Konverter die Fotos erst einmal hochgeladen haben will."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "So wandeln Sie HEIC in JPG um"
 og_description = "Warum iPhone-Fotos nirgends aufgehen, was die Umwandlung kostet und wie sie gelingt, ohne die Fotos aus der Hand zu geben."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

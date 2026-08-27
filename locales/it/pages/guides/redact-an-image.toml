@@ -12,7 +12,7 @@ lede = """
     la stessa cosa. Qui c'è la differenza, i due modi che lasciano più tracce di
     quanto si creda, e i controlli che ti dicono quale delle due hai appena
     fatto."""
-updated = "23 agosto 2026"
+updated = "26 agosto 2026"
 
 og_title = "Come oscurare un'immagine perché quel che è coperto sparisca davvero"
 og_description = "Perché un rettangolo nero quasi mai è un oscuramento, perché un testo pixelato si può rileggere e come controllare un file prima di mandarlo."

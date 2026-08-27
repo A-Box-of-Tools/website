@@ -11,7 +11,7 @@ lede = """
     Vier Entscheidungen verändern das Ergebnis tatsächlich: die Reihenfolge, das
     Seitenformat, die Qualität und das, was das Dokument über Sie preisgibt. An
     allem anderen können Sie getrost vorbeigehen."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "So fügen Sie mehrere Bilder zu einem PDF zusammen"
 og_description = "Seitenformat, Reihenfolge und Drehung, warum ein JPEG dabei nichts an Qualität einbüßt und was das fertige Dokument über Sie verrät."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

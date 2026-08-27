@@ -11,7 +11,7 @@ lede = """
     et celle qu'on fait le plus souvent en confiant les deux fichiers au serveur
     d'un inconnu. Il n'en faut aucun. Voici comment procéder, et ce qui disparaît
     discrètement quand un outil réordonne des pages."""
-updated = "22 août 2026"
+updated = "26 août 2026"
 og_title = "Comment fusionner, diviser et réordonner des pages PDF"
 og_description = "Réunir des PDF, en couper un en plusieurs, déplacer des pages &mdash; et savoir ce qui survit au remaniement et ce qui n'y survit pas."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

@@ -18,7 +18,7 @@ lede = """
     va cuál de los tres ajustes mover cuando se te va de tamaño, y cuánto te
     ahorra cada uno."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Cómo convertir un vídeo en un GIF y que salga pequeño"
 og_description = "Los tres ajustes que deciden el tamaño de un GIF, lo que cuesta cada uno, y cuándo un GIF es directamente la respuesta equivocada."

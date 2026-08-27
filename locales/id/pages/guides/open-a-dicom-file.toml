@@ -18,7 +18,7 @@ lede = """
     sebuah blok piksel. Inilah cara melihatnya, apa arti kendalinya, dan apa lagi
     yang dibawa file-nya selain gambarnya."""
 
-updated = "25 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Cara membuka file DICOM tanpa memasang apa pun"
 og_description = "Apa isi sebuah cakram rumah sakit, kenapa file-nya tidak punya ekstensi, dan apa yang dibawa sebuah pindaian .dcm tentang pasiennya selain gambarnya."

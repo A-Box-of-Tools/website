@@ -11,7 +11,7 @@ lede = """
     und fast jede Klage über das Format kommt von einem dieser drei Dinge. Hier
     steht, was jeder Teil tut &mdash; und wie Sie herausfinden, welcher davon
     die Größe Ihrer Datei verbraucht."""
-updated = "22. August 2026"
+updated = "26. August 2026"
 og_title = "Was wirklich in einer GIF-Datei steckt"
 og_description = "Einzelbilder, Verzögerungen, Aufräumen und Paletten: was jedes tut, warum Ihr GIF langsamer läuft als angegeben, und wohin seine Dateigröße gegangen ist."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

@@ -12,7 +12,7 @@ lede = """
     quindi non può stare in cache per conto suo e viene riscaricata ogni volta
     che cambia qualcosa attorno. Vediamo dove quello scambio conviene e dove
     invece, in silenzio, non conviene."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Quando mettere un'immagine dentro il tuo CSS"
 og_description = "Quanto costa un data URI, perché un SVG non va mai messo in base64, e l'errore di virgolette che rompe in silenzio gli SVG incorporati."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

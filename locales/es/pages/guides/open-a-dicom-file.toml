@@ -18,7 +18,7 @@ lede = """
     Aquí está cómo mirar uno, qué significan los controles y qué más lleva el
     archivo además de la imagen."""
 
-updated = "25 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Cómo abrir un archivo DICOM sin instalar nada"
 og_description = "Qué hay en un disco hospitalario, por qué los archivos no tienen extensión y qué lleva un estudio .dcm sobre el paciente además de la imagen."

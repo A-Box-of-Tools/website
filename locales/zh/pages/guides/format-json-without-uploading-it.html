@@ -6,6 +6,14 @@
     <p>
       底下所有内容，都是你在把一个配置文件粘进那些替代品之前值得知道的：一个格式化工具可以改什么、大多数工具无论如何都改了什么，以及在文件根本读不出来时，那条错误该怎么读。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="两个窗格：左边是一行 JSON，右边是同一份文档以两个空格缩进排好的样子。">
+      <figcaption>
+        一行进去，能读的东西出来。为此没有把任何东西送到任何地方。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -103,6 +111,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
     <p>
       还有一样不是错误、却长得像错误的东西：以字节序标记开头的文件。它在多数编辑器里看不见，它也不是空白，它让文档的第一个字符变得出人意料。要是一份看上去毫无问题的文件报错在第 1 行第 1 列，那就是它。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="同一个工具遇到一份坏掉的文档：错误提示指出多余逗号所在的行和列，输入窗格里正显示那一行。">
+      <figcaption>
+        读不动的时候，提示会说清在哪里。多余的逗号是最常见的原因，也是肉眼最难发现的原因。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

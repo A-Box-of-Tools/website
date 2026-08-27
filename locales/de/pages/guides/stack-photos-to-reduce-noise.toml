@@ -13,7 +13,7 @@ lede = """
     löscht alles, was nur zeitweise da war. Welches von beidem Sie wollen, hängt
     ganz davon ab, was sich bewegt hat."""
 
-updated = "25. August 2026"
+updated = "26. August 2026"
 
 og_title = "So stacken Sie Fotos gegen Bildrauschen oder um Leute zu entfernen"
 og_description = "Eine Serie mitteln gegen das Rauschen, den Median nehmen, um einen belebten Platz zu leeren, aufhellen für Sternspuren. Welche Methode welches Problem löst und wo RAW-Dateien hineinpassen."

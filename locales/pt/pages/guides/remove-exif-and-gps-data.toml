@@ -11,7 +11,7 @@ lede = """
     onde foi tirada, a hora com precisão de segundo e informação suficiente
     sobre a câmera para ligá-la a todas as outras fotos do mesmo aparelho. Nada
     disso aparece na tela. Aqui está o que tem lá dentro, e como tirar."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "O que uma foto conta sobre você, e como tirar isso"
 og_description = "Coordenadas de GPS, horários e números de série viajam dentro de fotos comuns. O que tem lá dentro, quem consegue ler, e como apagar."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

@@ -11,7 +11,7 @@ lede = """
     voller Bilder. Hier steht, woran Sie erkennen, ob Ihres dazugehört, was das
     Komprimieren kostet und warum jedes Werkzeug, das einen festen Prozentsatz
     verspricht, Ihre Datei gar nicht angesehen hat."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "So machen Sie ein PDF kleiner"
 og_description = "Wo bei einem PDF die Größe wirklich sitzt, warum ein Scan schrumpft und ein Vertrag nicht, und was dpi damit zu tun hat."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

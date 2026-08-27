@@ -12,7 +12,7 @@ lede = """
     ist zweierlei. Hier steht der Unterschied, dazu die zwei Arten, die mehr
     übrig lassen als gedacht, und die Prüfungen, mit denen Sie feststellen,
     welches von beidem Sie gerade getan haben."""
-updated = "23. August 2026"
+updated = "26. August 2026"
 
 og_title = "Ein Bild so schwärzen, dass das Verdeckte wirklich weg ist"
 og_description = "Warum ein schwarzes Rechteck meist keine Schwärzung ist, warum verpixelter Text zurückgelesen werden kann und wie Sie eine Datei vor dem Verschicken prüfen."

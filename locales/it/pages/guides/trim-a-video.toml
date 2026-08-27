@@ -11,7 +11,7 @@ lede = """
     tagliavideo i fotogrammi non li tocca: li sposta in un file nuovo esattamente
     com'erano. Vediamo cosa ti fa guadagnare, e l'unico punto in cui la cosa si
     vede."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come tagliare un video senza ricodificarlo"
 og_description = "Perché a volte un taglio cade prima di dove l'hai segnato, cosa c'entra un fotogramma chiave, e quando accettare una ricodifica."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

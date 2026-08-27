@@ -17,7 +17,7 @@ lede = """
     sebelumnya. Ini menjelaskan apa yang Anda dapat dari situ, dan satu tempat
     yang memperlihatkannya."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Cara memotong video tanpa mengodekannya ulang"
 og_description = "Kenapa sebuah potongan kadang mendarat lebih awal daripada tanda Anda, apa hubungan keyframe dengan itu, dan kapan sebaiknya menerima pengodean ulang."

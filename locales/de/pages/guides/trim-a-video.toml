@@ -11,7 +11,7 @@ lede = """
     rührt die Bilder deshalb gar nicht erst an, sondern schiebt sie unverändert
     in eine neue Datei. Hier steht, was Ihnen das einbringt und an welcher einen
     Stelle es sich trotzdem bemerkbar macht."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "So kürzen Sie ein Video, ohne es neu zu kodieren"
 og_description = "Warum ein Schnitt manchmal früher sitzt als markiert, was ein Keyframe damit zu tun hat und wann eine Neukodierung die bessere Wahl ist."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

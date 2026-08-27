@@ -14,6 +14,14 @@
       Formatierer ändern darf, was die meisten trotzdem ändern, und wie man den
       Fehler liest, wenn sich die Datei gar nicht erst lesen lässt.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="Zwei Bereiche: links eine einzige Zeile JSON, rechts dasselbe Dokument mit zwei Leerzeichen Einrückung formatiert.">
+      <figcaption>
+        Eine Zeile hinein, etwas Lesbares heraus. Dafür wurde nichts irgendwohin geschickt.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -167,6 +175,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       Dokuments unerwartet. Steht der Fehler bei Zeile 1, Spalte 1 in einer Datei,
       die makellos aussieht, dann ist es das.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="Dasselbe Werkzeug mit einem kaputten Dokument: eine Fehlermeldung mit Zeile und Spalte eines überzähligen Kommas, und links die betroffene Zeile.">
+      <figcaption>
+        Wenn es sich nicht lesen lässt, sagt die Meldung, wo. Ein überzähliges Komma ist die häufigste Ursache und mit bloßem Auge am schwersten zu finden.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

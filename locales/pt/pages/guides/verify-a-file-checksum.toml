@@ -11,7 +11,7 @@ lede = """
     poder provar que o arquivo chegou inteiro. Comparar leva cerca de um minuto.
     Saber quanto essa comparação vale &mdash; e qual hábito a torna inútil
     &mdash; leva o resto desta página."""
-updated = "23 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Conferir um download com o checksum dele, e o que isso prova"
 og_description = "Para que serve o hexadecimal embaixo de um link de download, como compará-lo em qualquer sistema operacional, e por que pegá-lo na mesma página do arquivo derruba a ideia."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

@@ -11,7 +11,7 @@ lede = """
     alguma coisa é aquela que ninguém responde para você: quantos pixels? Aqui
     está de onde vem esse número, e o que um desenho perde no caminho até virar
     um."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Converter um SVG em PNG no tamanho certo"
 og_description = "De onde vem de verdade o número de pixels, e as três coisas que mudam quando um desenho vira pixels."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

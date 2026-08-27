@@ -14,7 +14,7 @@ lede = """
     molhado, num ponto de ônibus ou num celular esticado no braço com pouca luz
     leva quatro decisões, e as quatro são tomadas antes de imprimir qualquer
     coisa. Aqui está o que cada uma faz."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Gerar um QR Code que ainda escaneia no celular dos outros"
 og_description = "As quatro decisões que definem se um QR Code impresso funciona: o nível, a margem, o tamanho e de quem é o endereço que está lá dentro."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

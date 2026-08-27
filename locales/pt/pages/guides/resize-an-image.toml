@@ -11,7 +11,7 @@ lede = """
     antes de você clicar no botão, pelo número que você digita e pelo formato que
     você pede. Aqui está o que cada escolha faz com a foto, e quais delas dá para
     desfazer."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Redimensionar uma imagem sem estragá-la"
 og_description = "Por que diminuir é seguro e aumentar não é, o que fazer quando a caixa tem outro formato, e quando é melhor cortar."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

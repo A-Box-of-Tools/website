@@ -11,7 +11,7 @@ lede = """
     2&nbsp;MB, e la tua foto non ci si avvicina nemmeno. Vediamo quanto costa
     quel numero, su cosa conviene spenderlo, e come capire se il risultato è
     ancora abbastanza buono da mandare."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Comprimere un'immagine a un peso esatto"
 og_description = "Quanto costa davvero un limite di peso, quale impostazione muovere per prima, e perché un PNG non si rimpicciolisce come un JPEG."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

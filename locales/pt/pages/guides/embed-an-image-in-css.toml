@@ -12,7 +12,7 @@ lede = """
     não pode ser guardada em cache sozinha, e é baixada de novo toda vez que
     qualquer coisa ao redor muda. Aqui está onde essa troca compensa, e onde ela
     discretamente não compensa."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Quando colocar uma imagem dentro do seu CSS"
 og_description = "O que uma data URI custa, por que um SVG nunca deveria ir em base64, e o erro de aspas que quebra SVGs embutidos em silêncio."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

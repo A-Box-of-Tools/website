@@ -11,7 +11,7 @@ lede = """
     2&nbsp;MB, und Ihr Foto liegt weit darüber. Hier steht, was diese Zahl an
     Bildqualität kostet, wofür Sie sie am besten ausgeben und woran Sie merken,
     ob das Ergebnis noch verschickbar ist."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Ein Bild auf eine exakte Dateigröße komprimieren"
 og_description = "Was eine Größengrenze an Bildqualität kostet, an welcher Einstellung Sie zuerst drehen und warum ein PNG nicht schrumpft wie ein JPEG."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

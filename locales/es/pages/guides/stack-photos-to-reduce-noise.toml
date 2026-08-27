@@ -13,7 +13,7 @@ lede = """
     todo lo que solo estaba parte del tiempo. Cuál de las dos quieres depende
     enteramente de qué se movió."""
 
-updated = "25 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Cómo apilar fotografías para reducir el ruido, o quitar gente"
 og_description = "Promedia una ráfaga para matar el ruido, toma la mediana para vaciar una plaza concurrida, aclara para dejar estelas de estrellas. Qué método resuelve qué problema, y dónde encajan los archivos RAW."

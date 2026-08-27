@@ -11,7 +11,7 @@ lede = """
     hangt af van de ene vraag waarop niemand je het antwoord aanreikt: hoeveel
     pixels? Hier staat waar dat getal vandaan komt, en wat een tekening onderweg
     naar pixels verliest."""
-updated = "20 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Een svg naar een png omzetten op het juiste formaat"
 og_description = "Waar het aantal pixels werkelijk vandaan komt, en de drie dingen die veranderen wanneer een tekening pixels wordt."
 og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

@@ -11,7 +11,7 @@ lede = """
     más veces se hace entregando los dos archivos al servidor de un
     desconocido. No hace falta ninguno. Aquí está cómo hacerlo, y qué se pierde
     en silencio cuando una herramienta reordena páginas."""
-updated = "22 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Cómo unir, separar y reordenar páginas de PDF"
 og_description = "Combina PDF, corta uno en varios, mueve páginas &mdash; y sabe qué sobrevive a la reorganización y qué no."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

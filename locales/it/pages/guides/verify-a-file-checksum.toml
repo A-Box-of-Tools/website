@@ -11,7 +11,7 @@ lede = """
     dimostrare che il file è arrivato intatto. Confrontarla richiede un minuto.
     Sapere quanto vale quel confronto, e quale abitudine lo rende inutile,
     richiede il resto di questa pagina."""
-updated = "23 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Controllare un download con il suo checksum, e cosa dimostra"
 og_description = "A cosa serve l'esadecimale sotto un link di download, come confrontarlo su qualunque sistema operativo, e perché prenderlo dalla stessa pagina del file manda all'aria tutto."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

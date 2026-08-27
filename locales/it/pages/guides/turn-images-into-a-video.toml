@@ -10,7 +10,7 @@ lede = """
     Una presentazione è una cosa semplice da fare e facilissima da dover rifare
     da capo, perché due delle impostazioni non vogliono dire quello che sembra.
     Vediamo cosa controlla ciascuna e cosa conviene scegliere."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come trasformare una cartella di immagini in un video"
 og_description = "Cosa controllano davvero la frequenza dei fotogrammi e la durata, come gestire le immagini della forma sbagliata, e perché non c'è colonna sonora."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

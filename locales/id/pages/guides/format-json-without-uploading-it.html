@@ -14,6 +14,14 @@
       diubah sebuah pemformat, apa yang tetap diubah kebanyakan dari mereka, dan
       cara membaca galatnya ketika file-nya sama sekali tidak mau terbaca.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="Dua panel: satu baris JSON di kiri, dokumen yang sama diformat dengan indentasi dua spasi di kanan.">
+      <figcaption>
+        Satu baris masuk, sesuatu yang terbaca keluar. Untuk itu tidak ada apa pun yang dikirim ke mana pun.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -168,6 +176,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       Kalau galatnya di baris 1, kolom 1 pada file yang tampak sempurna, itulah
       yang terjadi.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="Alat yang sama dengan dokumen rusak: pesan galat yang menyebut baris dan kolom sebuah koma berlebih, dan panel masukan yang menampilkan baris tersangkanya.">
+      <figcaption>
+        Kalau tidak terbaca, pesannya menyebut di mana. Koma berlebih adalah penyebab paling umum dan yang paling sulit dilihat dengan mata.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

@@ -11,7 +11,7 @@ lede = """
     pouvez pas le vérifier&nbsp;&raquo;. Voici ce que l'envoi fait réellement de
     votre fichier, pourquoi la plupart des outils le font encore, et quatre tests
     qui disent si celui que vous avez sous les yeux en a besoin."""
-updated = "20 août 2026"
+updated = "26 août 2026"
 og_title = "Est-il sûr d'envoyer ses fichiers à un convertisseur en ligne&nbsp;?"
 og_description = "Ce qu'il advient d'un fichier envoyé à un convertisseur, pourquoi la plupart des outils en réclament un, et quatre vérifications que vous pouvez faire vous-même."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

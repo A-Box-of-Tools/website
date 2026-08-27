@@ -36,6 +36,14 @@
     <p>
       沒有兩種長度相同，所以工具能夠在沒人告訴它的情況下認出你貼進來的是什麼。一串 63 個字元的東西不是任何東西的校驗和：那是一個在去剪貼簿的路上掉了一個字元的 SHA-256。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/verify-a-file-checksum/digests.webp" loading="lazy" decoding="async"
+           alt="結果卡片：同一個檔案的 MD5、SHA-1、SHA-256 和 SHA-512 摘要，每個後面都有複製按鈕。">
+      <figcaption>
+        一次全給出來，因為該用哪一個是釋出檔案的一方定的，不是你定的。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -71,6 +79,14 @@
       <code>SHA256SUMS</code> 檔案、<code>SHA256 (disk.iso) = &hellip;</code> 這種寫法，或者從 script 標籤上扒下來的
       <code>integrity="sha384-&hellip;"</code>。然後用一句話回答是或不是。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/verify-a-file-checksum/compare.webp" loading="lazy" decoding="async"
+           alt="比對卡片：一串校驗值被貼進輸入框，下面給出與檔案相符的判定。">
+      <figcaption>
+        把下載頁面上寫的那串貼進來，比對交給工具。盯著螢幕數六十四個字元，正是它要省掉的那一步。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

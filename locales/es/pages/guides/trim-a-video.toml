@@ -16,7 +16,7 @@ lede = """
     ni los toca: los traslada a un archivo nuevo tal y como estaban. Aquí va lo
     que eso te ahorra, y el único sitio donde se nota."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Cómo cortar un vídeo sin recodificarlo"
 og_description = "Por qué a veces el corte cae antes de donde lo marcaste, qué pinta ahí un fotograma clave, y cuándo conviene aceptar una recodificación."

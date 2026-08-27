@@ -11,7 +11,7 @@ lede = """
     monte de programa ainda se recusa a abrir. Aqui está o que o formato é de
     fato, o que a conversão custa à imagem, e por que quase todo conversor quer
     que você mande a foto para ele primeiro."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Como converter HEIC em JPG"
 og_description = "Por que fotos de iPhone não abrem, o que a conversão custa, e como fazer sem entregar as fotos a ninguém."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

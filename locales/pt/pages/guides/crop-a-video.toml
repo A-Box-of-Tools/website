@@ -14,7 +14,7 @@ lede = """
     Cortar muda o formato da imagem, o que significa escrever quadros novos. Não
     tem como escapar disso, e qualquer ferramenta que afirme o contrário está
     fazendo outra coisa. Aqui está o que isso custa, e como gastar bem."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Como cortar um vídeo para outro formato de tela"
 og_description = "Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

@@ -12,6 +12,14 @@
       أيٍّ من البدائل: ما الذي يُسمَح للمنسّق بتغييره، وما الذي يغيّره معظمُها على
       أي حال، وكيف تقرأ الخطأ حين يرفض الملفُّ أن يُحلَّل أصلاً.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="لوحتان: سطر واحد من JSON على اليسار، والمستند نفسه منسّقًا بمسافتي إزاحة على اليمين.">
+      <figcaption>
+        سطر يدخل، وشيء مقروء يخرج. ولم يُرسل شيء إلى أي مكان لأجل ذلك.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -149,6 +157,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       غيرَ متوقَّع. فإن كان الخطأ عند السطر 1 والعمود 1 في ملف يبدو مثالياً، فذلك
       هو.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="الأداة نفسها مع مستند معطوب: رسالة خطأ تسمّي سطر الفاصلة الزائدة وعمودها، ولوحة الإدخال تعرض السطر المخطئ.">
+      <figcaption>
+        حين لا يُقرأ الملف، تقول الرسالة أين الخلل. والفاصلة الزائدة أشيع الأسباب وأصعبها على العين.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

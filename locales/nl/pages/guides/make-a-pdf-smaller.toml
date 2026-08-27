@@ -11,7 +11,7 @@ lede = """
     plaatjes. Hier staat hoe je ziet of dat bij jou zo is, wat comprimeren kost,
     en waarom elke tool die een vast percentage belooft niet naar je bestand
     gekeken heeft."""
-updated = "20 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Hoe je een pdf kleiner maakt"
 og_description = "Waar de grootte van een pdf werkelijk zit, waarom een scan krimpt en een contract niet, en wat dpi ermee te maken heeft."
 og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

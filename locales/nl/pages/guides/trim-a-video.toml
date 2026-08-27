@@ -11,7 +11,7 @@ lede = """
     raakt ze niet aan, maar verplaatst ze precies zoals ze waren naar een nieuw
     bestand. Hier staat wat je dat oplevert, en de ene plek waar het zichtbaar
     wordt."""
-updated = "20 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Hoe je een video inkort zonder hem opnieuw te coderen"
 og_description = "Waarom een knip soms eerder landt dan waar je hem markeerde, wat een keyframe daarmee te maken heeft, en wanneer je een hercodering accepteert."
 og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

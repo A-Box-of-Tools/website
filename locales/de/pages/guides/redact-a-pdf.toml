@@ -14,7 +14,7 @@ lede = """
     die gar keine Seite sind, und die Prüfung von dreißig Sekunden, die Ihnen
     sagt, welches der beiden Sie vor sich haben."""
 
-updated = "25. August 2026"
+updated = "26. August 2026"
 
 og_title = "So schwärzen Sie ein PDF, damit der Text wirklich weg ist"
 og_description = "Warum ein schwarzer Kasten in einem PDF-Betrachter meist keine Schwärzung ist, die vier Orte, an denen ein Wort außerhalb der Seite steckt, und wie Sie eine Datei prüfen, bevor Sie sie verschicken."

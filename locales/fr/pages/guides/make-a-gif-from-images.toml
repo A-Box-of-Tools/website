@@ -10,7 +10,7 @@ lede = """
     Fabriquer le GIF est la partie facile. En obtenir un assez léger pour être
     publié, voilà ce qui mérite d'être lu, car un GIF n'a pas de curseur de
     qualité et seules trois choses font bouger son poids."""
-updated = "20 août 2026"
+updated = "26 août 2026"
 og_title = "Comment créer un GIF animé à partir d'images"
 og_description = "À quelle vitesse un GIF peut réellement défiler, ce que change le réglage de la palette, et les trois choses qui allègent vraiment le fichier."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

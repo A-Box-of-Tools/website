@@ -11,7 +11,7 @@ lede = """
     yani bir videodan yapılanı her zaman büyüktür. Bu rehber, fazla büyük
     olduğunda üç ayardan hangisini oynatacağınızı ve her birinin size ne
     kazandırdığını anlatıyor."""
-updated = "20 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "Bir video nasıl GIF'e çevrilir ve küçük tutulur"
 og_description = "Bir GIF'in boyutuna karar veren üç ayar, her birinin bedeli ve GIF'in tamamen yanlış cevap olduğu durumlar."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

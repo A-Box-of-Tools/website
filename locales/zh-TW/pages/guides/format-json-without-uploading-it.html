@@ -6,6 +6,14 @@
     <p>
       底下所有內容，都是你在把一個配置檔案貼進那些替代品之前值得知道的：一個格式化工具可以改什麼、大多數工具無論如何都改了什麼，以及在檔案根本讀不出來時，那條錯誤該怎麼讀。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="兩個窗格：左邊是一行 JSON，右邊是同一份文件以兩個空格縮排排好的樣子。">
+      <figcaption>
+        一行進去，能讀的東西出來。為此沒有把任何東西送到任何地方。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -103,6 +111,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
     <p>
       還有一樣不是錯誤、卻長得像錯誤的東西：以位元組序標記開頭的檔案。它在多數編輯器裡看不見，它也不是空白，它讓文件的第一個字元變得出人意料。要是一份看上去毫無問題的檔案報錯在第 1 行第 1 列，那就是它。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="同一個工具遇到一份壞掉的文件：錯誤提示指出多餘逗號所在的行和列，輸入窗格里正顯示那一行。">
+      <figcaption>
+        讀不動的時候，提示會說清在哪裡。多餘的逗號是最常見的原因，也是肉眼最難發現的原因。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

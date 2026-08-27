@@ -10,7 +10,7 @@ lede = """
     Hacer el GIF es la parte fácil. Conseguir uno lo bastante pequeño como para
     poder publicarlo es la parte que merece la pena leer, porque un GIF no tiene
     control de calidad y solo tres cosas mueven su tamaño."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Cómo hacer un GIF animado con imágenes"
 og_description = "A qué velocidad puede ir de verdad un GIF, qué cambia el ajuste de la paleta, y las tres cosas que de verdad hacen el archivo más pequeño."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

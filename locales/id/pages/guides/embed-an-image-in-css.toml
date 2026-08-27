@@ -17,7 +17,7 @@ lede = """
     kali apa pun di sekitarnya berubah. Inilah tempat pertukaran itu layak
     dilakukan, dan tempat diam-diam ia tidak layak."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Kapan menaruh gambar di dalam CSS Anda"
 og_description = "Berapa harga sebuah data URI, kenapa sebuah SVG tidak boleh berupa base64, dan kekeliruan tanda kutip yang diam-diam merusak SVG yang disisipkan."

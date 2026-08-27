@@ -12,7 +12,7 @@ lede = """
     guarda algo bastante distinto de lo que ves &mdash; y esa diferencia es la
     razón de que tu fotograma catorce sea un rectángulo con la boca de alguien
     dentro."""
-updated = "21 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Cómo separar un GIF en fotogramas"
 og_description = "Cada fotograma de un GIF como PNG: por qué algunos son solo un trozo, qué pasa con la transparencia y cómo conservar los tiempos."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

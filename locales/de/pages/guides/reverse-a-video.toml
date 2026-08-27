@@ -11,7 +11,7 @@ lede = """
     überhaupt, und es ist der, für den eine Videodatei am wenigsten gebaut ist. Hier
     steht, was dafür wirklich passieren muss, was es kostet, und welcher eine Schritt
     sich vorher lohnt."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "So spielen Sie ein Video rückwärts ab"
 og_description = "Warum ein Dekoder nicht rückwärts laufen kann, was das Umkehren Bild und Ton kostet, und der eine Schritt, der sich vorher lohnt."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

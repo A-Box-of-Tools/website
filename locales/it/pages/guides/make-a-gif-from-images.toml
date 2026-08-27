@@ -10,7 +10,7 @@ lede = """
     Fare la GIF è la parte facile. Ottenerne una abbastanza leggera da poterla
     davvero pubblicare è la parte che vale la pena leggere, perché una GIF non
     ha un cursore della qualità e a muoverne il peso ci sono solo tre cose."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come fare una GIF animata da immagini"
 og_description = "Quanto veloce può andare davvero una GIF, cosa cambia l'impostazione della tavolozza, e le tre cose che alleggeriscono il file sul serio."
 og_image_alt = "abox.tools - strumenti che non toccano mai un server"

@@ -12,7 +12,7 @@ lede = """
     denn das Format speichert etwas anderes als das, was Sie sehen &mdash; und
     genau daran liegt es, dass Ihr vierzehntes Bild ein Rechteck mit einem Mund
     darin ist."""
-updated = "21. August 2026"
+updated = "26. August 2026"
 og_title = "Ein GIF in Einzelbilder zerlegen"
 og_description = "Jedes Bild eines GIFs als PNG: warum manche nur ein Ausschnitt sind, was mit der Transparenz passiert und wie die Zeiten erhalten bleiben."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

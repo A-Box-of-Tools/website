@@ -14,7 +14,7 @@ lede = """
     sulla pagina, e il controllo da trenta secondi che ti dice quale dei due
     hai."""
 
-updated = "25 agosto 2026"
+updated = "26 agosto 2026"
 
 og_title = "Come oscurare un PDF perché il testo sparisca davvero"
 og_description = "Perché un rettangolo nero in un lettore di PDF di solito non è un oscuramento, i quattro posti in cui una parola si nasconde fuori dalla pagina, e come controllare un file prima di mandarlo."

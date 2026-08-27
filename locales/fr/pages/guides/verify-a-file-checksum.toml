@@ -11,7 +11,7 @@ lede = """
     puissiez prouver que le fichier est arrivé intact. La comparer prend une
     minute. Savoir ce que vaut cette comparaison &mdash; et quelle habitude la
     rend sans valeur &mdash; prend le reste de cette page."""
-updated = "23 août 2026"
+updated = "26 août 2026"
 og_title = "Vérifier un téléchargement avec sa somme de contrôle, et ce que cela prouve"
 og_description = "À quoi sert l'hexadécimal sous un lien de téléchargement, comment le comparer sur n'importe quel système, et pourquoi le prendre sur la même page que le fichier ruine l'idée."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

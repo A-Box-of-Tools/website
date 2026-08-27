@@ -12,7 +12,7 @@ lede = """
     está la diferencia, los dos estilos que dejan más rastro del que la gente
     supone, y las comprobaciones que te dicen cuál de las dos cosas acabas de
     hacer."""
-updated = "23 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Cómo censurar una imagen para que lo tapado desaparezca de verdad"
 og_description = "Por qué un rectángulo negro casi nunca es una censura, por qué el texto pixelado se puede volver a leer y cómo comprobar un archivo antes de enviarlo."

@@ -76,6 +76,14 @@
     <p>
       幾個粗略的分界線，它們是建議改變的地方，不是瀏覽器行為改變的地方：2 KB 以內是明擺著的賺；到 10 KB 上下，只要它每頁都要用，一般還是值；過了 50 KB，那就是個錯，而且沒有任何報錯提醒你。<a href="../../image-to-data-uri/">這個工具</a>會告訴你每個結果落在哪一檔，字元數就擺在旁邊。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/embed-an-image-in-css/output.webp" loading="lazy" decoding="async"
+           alt="輸出卡片：一條含 base64 資料 URI 的 CSS 規則，旁邊是原檔案大小和編碼後的大小。">
+      <figcaption>
+        編碼後的副本比來原始檔大三分之一左右。這一節要講的代價就是它，而且是寫出來的，不是留給你自己去發現的。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -159,6 +167,14 @@
     <p>
       <code>alt</code> 留空，除非你真有一句實話可寫。這張圖到底有實際含義還是純裝飾，只有你知道；而拿檔名瞎猜一句描述，對用螢幕閱讀器的人來說，比沒有描述更糟。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/embed-an-image-in-css/shape.webp" loading="lazy" decoding="async"
+           alt="形態卡片：幾個按鈕決定輸出什麼，CSS 背景規則、img 標籤或裸的 URI，另有一個 base64 與原樣 SVG 的開關。">
+      <figcaption>
+        去處決定產出，所以先問清楚，而不是丟給你當成複製貼上的練習。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

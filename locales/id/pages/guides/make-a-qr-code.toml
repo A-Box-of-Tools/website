@@ -13,7 +13,7 @@ lede = """
     yang buruk memakan empat keputusan, dan keempatnya dibuat sebelum Anda
     mencetak apa pun. Inilah apa yang dilakukan masing-masing."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Membuat kode QR yang tetap terpindai di ponsel orang lain"
 og_description = "Empat keputusan yang menentukan apakah kode QR tercetak bekerja: tingkatnya, marginnya, ukurannya, dan alamat siapa yang sebenarnya ada di dalamnya."

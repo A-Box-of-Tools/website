@@ -27,6 +27,14 @@
     <p>
       两个最糟的情形足以说明问题。<strong>压缩过的</strong>文件是一行，于是和它比对得到一条巨大无比的变更行——正确，且无用。而<strong>内容相同、顺序不同</strong>的两个文件会比出个处处皆变，诚实的答案本该是"什么都没变"。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/compare-two-json-files/options.webp" loading="lazy" decoding="async"
+           alt="比较选项：并排或单栏视图、只显示改动行的开关，以及忽略空白、忽略大小写、忽略空行的开关。">
+      <figcaption>
+        正是它们，让一份文件只因为换行符不同就被报成整篇都改了的事不再发生。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -61,6 +69,14 @@
     <p>
       同一套做法对两个页面会说的其他东西同样有效。YAML 和 XML 用同样的路子化成规范形；来源不同、形状相同的两个文件，比对的忽略开关——空白、大小写、空行——就是同一想法的轻量版。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/compare-two-json-files/diff.webp" loading="lazy" decoding="async"
+           alt="同一份 JSON 配置的两个版本并排显示，改动过的行都有标记：版本号、重试次数、新增的开关和新增的地区。">
+      <figcaption>
+        四处真正的差异，别的什么也没报。读是容易的那一半，活是上面那些设置干的。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

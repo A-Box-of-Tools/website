@@ -13,7 +13,7 @@ lede = """
     harga angka itu, untuk apa membelanjakannya, dan bagaimana tahu apakah
     hasilnya masih cukup baik untuk dikirim."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Mengompres gambar ke ukuran file yang tepat"
 og_description = "Berapa sebenarnya harga sebuah batas ukuran, setelan mana yang digerakkan lebih dulu, dan kenapa sebuah PNG tidak akan menyusut seperti JPEG."

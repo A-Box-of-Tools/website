@@ -12,7 +12,7 @@ lede = """
     comenta. Aqui está o que observar, como ler o erro quando o arquivo não
     passa pelo leitor, e por que a caixa em que você cola um arquivo de
     configuração merece um pensamento."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Formatar JSON sem entregar para ninguém"
 og_description = "O que um formatador de JSON nunca deve mudar no seu arquivo, como ler o erro de leitura, e por que importa o site em que você cola."
 og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

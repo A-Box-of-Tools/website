@@ -11,7 +11,7 @@ lede = """
     e quasi tutte le lamentele sul formato nascono da una di queste tre cose.
     Qui c'è cosa fa ogni pezzo, e come scoprire su quale di loro il tuo file sta
     spendendo il suo peso."""
-updated = "22 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Cosa c'è davvero dentro un file GIF"
 og_description = "Fotogrammi, ritardi, smaltimento e tavolozze: cosa fa ognuno, perché la tua GIF va più piano di quanto dichiara, e dove è finito il suo peso."
 og_image_alt = "abox.tools - strumenti che non toccano mai un server"

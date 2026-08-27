@@ -19,7 +19,7 @@ lede = """
     pixels. Voici comment en regarder un, ce que signifient les commandes, et ce
     que le fichier transporte d'autre en plus de l'image."""
 
-updated = "25 août 2026"
+updated = "26 août 2026"
 
 og_title = "Ouvrir un fichier DICOM sans rien installer"
 og_description = "Ce que contient un disque hospitalier, pourquoi les fichiers n'ont pas d'extension, et ce qu'un examen .dcm transporte sur le patient en plus de l'image."

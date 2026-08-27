@@ -14,6 +14,14 @@
       formattatore è permesso cambiare, cosa cambiano lo stesso quasi tutti, e
       come si legge l'errore quando il file non si lascia proprio leggere.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="Due riquadri: una sola riga di JSON a sinistra, lo stesso documento formattato con due spazi di rientro a destra.">
+      <figcaption>
+        Entra una riga, esce qualcosa di leggibile. Per farlo non è stato mandato niente da nessuna parte.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -159,6 +167,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       spazio, e rende inatteso il primissimo carattere del documento. Se l'errore è
       a riga 1, colonna 1 su un file che sembra perfetto, è quello.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="Lo stesso strumento con un documento rotto: un errore che indica riga e colonna di una virgola di troppo, e il riquadro di ingresso con la riga incriminata.">
+      <figcaption>
+        Quando non si legge, il messaggio dice dove. Una virgola di troppo è la causa più comune e la più difficile da vedere a occhio.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

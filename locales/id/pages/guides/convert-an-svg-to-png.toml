@@ -13,7 +13,7 @@ lede = """
     kepada Anda: berapa piksel? Inilah dari mana angka itu datang, dan apa yang
     hilang dari sebuah gambar dalam perjalanannya menjadi piksel."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Mengubah SVG menjadi PNG pada ukuran yang tepat"
 og_description = "Dari mana sebenarnya jumlah pikselnya datang, dan tiga hal yang berubah ketika sebuah gambar menjadi piksel."
