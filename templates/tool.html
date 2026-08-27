@@ -335,12 +335,27 @@
   ============================================================================
 -->
 <section class="faq" aria-labelledby="how-to-h">
-  <h2 id="how-to-h">{{ tool.howto_heading }}</h2>
-  <ol class="how-to">
-{% for step in tool.howto %}    <li>
-      <strong>{{ step.title }}</strong>{{ step.body }}
-    </li>
-{% endfor %}  </ol>
+  <!--
+    Folded, because by the time a reader reaches it the tool has already said
+    all of this. Every step names a control that is on the screen above with
+    its own heading, its own number and its own note, so open by default this
+    is the page explaining itself twice and pushing the questions - which the
+    tool does NOT answer - another screen down.
+
+    It stays in the markup rather than going away. It is the same list as the
+    HowTo in the head, it is what a search engine reads to know what this page
+    is for, and it is the thing to hand somebody who wants the order of
+    operations without hunting for it. A fold is not a deletion: the words are
+    in the page, one click from anybody who wants them.
+  -->
+  <details class="how-to-fold">
+    <summary><h2 id="how-to-h">{{ tool.howto_heading }}</h2></summary>
+    <ol class="how-to">
+{% for step in tool.howto %}      <li>
+        <strong>{{ step.title }}</strong>{{ step.body }}
+      </li>
+{% endfor %}    </ol>
+  </details>
 
   <h2 id="faq-h">{{ ui.tool.questions_heading }}</h2>
   <div class="faq-list">
