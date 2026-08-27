@@ -11,7 +11,7 @@ lede = """
     dikdörtgenler yığınıdır ve insanların bu biçim hakkındaki hemen her
     şikâyeti bu üç şeyden birinden doğar. Bu rehber her parçanın ne yaptığını ve
     dosyanızın boyutunu hangisine harcadığını nasıl öğreneceğinizi anlatıyor."""
-updated = "22 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "Bir GIF dosyasının içinde gerçekte ne var"
 og_description = "Kareler, gecikmeler, elden çıkarma ve paletler - her biri ne yapar, GIF'iniz neden söylediğinden yavaş oynar ve dosya boyutu nereye gitti."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

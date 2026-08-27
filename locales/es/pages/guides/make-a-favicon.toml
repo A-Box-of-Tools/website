@@ -18,7 +18,7 @@ lede = """
     necesitas, los archivos que van al lado y qué hacer cuando tu logotipo no
     sobrevive al viaje hacia abajo."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Hacer un favicon que todavía se lea a dieciséis píxeles"
 og_description = "Qué tamaños necesita un favicon.ico, los archivos extra que piden los iPhone y Android, y qué hacer cuando tu logotipo no sobrevive a encogerse."

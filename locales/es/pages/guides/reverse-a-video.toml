@@ -10,7 +10,7 @@ lede = """
     Reproducir un clip al revés suena como la edición más sencilla que hay, y es la
     que un archivo de vídeo está peor preparado para hacer. Esto es lo que tiene que
     pasar de verdad, lo que cuesta, y el único paso que conviene dar antes."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Cómo invertir un vídeo"
 og_description = "Por qué un decodificador no puede ir hacia atrás, qué le cuesta invertir a la imagen y al sonido, y el paso que conviene dar antes."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

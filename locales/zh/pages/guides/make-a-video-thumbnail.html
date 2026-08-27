@@ -27,6 +27,14 @@
     <p>
       就算最终封面图会是 JPEG 或 WebP，抓到的也先存 PNG。PNG 是那一帧的精确副本；这样一来，所有有损的决定只在最后、在字节预算之内发生一次，而不是发生两次、层层叠加。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/make-a-video-thumbnail/frame.webp" loading="lazy" decoding="async"
+           alt="一段视频里时间码可见的静帧，旁边是逐帧与拖动的控件，以及它取自的精确时刻。">
+      <figcaption>
+        走到那一帧，而不是暂停后截屏。这两者的差别究竟在哪，上面一节说得清楚。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -34,6 +42,14 @@
     <p>
       先裁再压，理由和<a href="../get-photos-ready-for-the-web/">照片指南</a>里的一样：像素就是预算。从 4K 帧里裁出 16:9、降到 1280&times;720，压缩器就能把那 2&nbsp;MB 花在没人需要眯起眼睛才看得清的画质上。改尺寸工具的裁剪框能锁定 16:9，所以形状是一次拖拽而不是一道算术题；文字和人脸要留在中间三分之二，因为信息流会把四角削圆，还会把时长压在右下角。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/make-a-video-thumbnail/size.webp" loading="lazy" decoding="async"
+           alt="改尺寸工具里填了宽 1280、高 720，下面是这张静帧会变成什么样的摘要。">
+      <figcaption>
+        接下来就是算术：平台要什么，就当成两个数字填进去。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

@@ -20,6 +20,14 @@
       所以倒放是一组一组做的：把一组正着解出来，把这些帧攥住，按相反的顺序交给编码器，再挪到前一组。那个显而易见的替代办法——把整个片子解成一张列表，再倒着走一遍——
       1080p 每帧要占约 3&nbsp;MB 内存，也就是每分钟 5&nbsp;GB，这也是为什么那样写的工具，碰上超过几秒的片子就趴下了。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/reverse-a-video/source.webp" loading="lazy" decoding="async"
+           alt="源文件卡片：片子的名称、大小、画面尺寸、时长和编码格式。">
+      <figcaption>
+        工具从这个文件里查出来的东西。倒放是唯一没法边读边做的操作，所以能不能装进内存，由这几个数字决定。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -36,6 +44,14 @@
     <p>
       如果你只要画面倒过来、完全不要声音——这也是发到默认静音播放的信息流里最常见的选择——就把那个勾去掉。这样更快，文件也更小。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/reverse-a-video/export.webp" loading="lazy" decoding="async"
+           alt="导出卡片：质量滑块、保留声音的开关，以及输出大小、时长和帧数的摘要。">
+      <figcaption>
+        声音开关摆在这里，是因为倒着的说话声几乎没人想要，而且导出之前决定比导出之后再决定容易得多。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

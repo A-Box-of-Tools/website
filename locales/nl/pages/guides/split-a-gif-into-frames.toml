@@ -11,7 +11,7 @@ lede = """
     begrijpen waard is, is wat een &ldquo;frame&rdquo; van een GIF eigenlijk is,
     want het formaat bewaart iets anders dan wat je ziet &mdash; en dat verschil
     is waarom je veertiende frame een rechthoek met iemands mond is."""
-updated = "21 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Een GIF splitsen in frames"
 og_description = "Elk frame van een GIF als PNG: waarom sommige maar een lapje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart."
 og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

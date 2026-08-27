@@ -12,7 +12,7 @@ lede = """
     formato conserva qualcosa di piuttosto diverso da quello che vedi &mdash; ed
     è per quello che il quattordicesimo fotogramma è un rettangolo con dentro la
     bocca di qualcuno."""
-updated = "21 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come dividere una GIF in fotogrammi"
 og_description = "Ogni fotogramma di una GIF come PNG: perché alcuni sono solo un pezzetto, che fine fa la trasparenza e come tenere i tempi."
 og_image_alt = "abox.tools - strumenti che non toccano mai un server"

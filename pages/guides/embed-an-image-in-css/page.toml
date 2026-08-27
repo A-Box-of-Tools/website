@@ -26,9 +26,9 @@ lede = """
     own, and it is downloaded again every time anything around it changes. This
     is where that trade is worth making, and where it quietly is not."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "When to put a picture inside your CSS"
 og_description = "What a data URI costs, why an SVG should never be base64, and the quoting mistake that breaks inlined SVGs silently."

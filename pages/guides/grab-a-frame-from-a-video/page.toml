@@ -24,9 +24,9 @@ lede = """
     window. Sometimes that is all you need. This is what the difference is, and
     how to get the frame itself when it matters."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to save a frame from a video as a picture"
 og_description = "Why a screenshot of a paused player is not the frame, which format to save a still in, and how to land on the exact frame you meant."

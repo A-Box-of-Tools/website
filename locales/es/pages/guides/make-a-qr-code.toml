@@ -17,7 +17,7 @@ lede = """
     mala luz depende de cuatro decisiones, y las cuatro se toman antes de imprimir
     nada. Aquí va lo que hace cada una."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Hacer un código QR que también escanee en el móvil de otro"
 og_description = "Las cuatro decisiones de las que depende que un código QR impreso funcione: el nivel, el margen, el tamaño y de quién es la dirección que lleva dentro."

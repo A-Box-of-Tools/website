@@ -31,9 +31,9 @@ lede = """
     the difference, the places a word hides that are not on the page at all, and
     the thirty-second check that tells you which of the two you have."""
 
-updated = "25 August 2026"
+updated = "26 August 2026"
 published = "2026-08-25"
-lastmod = "2026-08-25"
+lastmod = "2026-08-26"
 
 og_title = "How to redact a PDF so the text is really gone"
 og_description = "Why a black box in a PDF reader is usually not a redaction, the four places a word hides outside the page, and how to check a file before you send it."

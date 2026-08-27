@@ -11,7 +11,7 @@ lede = """
     Eines aus einem Video wird deshalb immer groß. Hier steht, an welcher der
     drei Einstellungen Sie drehen sollten, wenn es zu groß gerät, und wie viel
     jede davon bringt."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Aus einem Video ein GIF machen, und es klein halten"
 og_description = "Die drei Einstellungen, an denen die Größe eines GIFs hängt, was jede davon kostet und wann ein GIF die vollkommen falsche Antwort ist."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

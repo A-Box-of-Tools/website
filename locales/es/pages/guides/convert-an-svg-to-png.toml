@@ -17,7 +17,7 @@ lede = """
     la pregunta que no te responde nadie: ¿cuántos píxeles? Aquí va de dónde sale
     ese número, y qué pierde un dibujo camino de convertirse en uno."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Convertir un SVG en un PNG al tamaño correcto"
 og_description = "De dónde sale de verdad el número de píxeles, y las tres cosas que cambian cuando un dibujo se convierte en píxeles."

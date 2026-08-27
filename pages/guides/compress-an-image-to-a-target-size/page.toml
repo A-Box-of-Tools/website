@@ -25,9 +25,9 @@ lede = """
     what to spend it on, and how to tell whether the result is still good
     enough to send."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "Compressing an image to an exact file size"
 og_description = "What a size limit really costs, which setting to move first, and why a PNG will not shrink the way a JPEG does."

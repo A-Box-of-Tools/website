@@ -11,7 +11,7 @@ lede = """
     nachweisen können, dass die Datei unversehrt angekommen ist. Der Vergleich
     dauert etwa eine Minute. Zu wissen, was er wert ist, und welche Gewohnheit
     ihn wertlos macht, kostet den Rest dieser Seite."""
-updated = "23. August 2026"
+updated = "26. August 2026"
 og_title = "Einen Download gegen seine Prüfsumme prüfen, und was das beweist"
 og_description = "Wofür die Hexzeichen unter einem Downloadlink da sind, wie Sie sie auf jedem Betriebssystem vergleichen und warum sie nichts nützen, wenn sie von derselben Seite stammen wie die Datei."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

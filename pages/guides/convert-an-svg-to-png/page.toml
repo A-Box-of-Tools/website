@@ -25,9 +25,9 @@ lede = """
     where that number comes from, and what a drawing loses on the way to
     becoming one."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "Converting an SVG to a PNG at the right size"
 og_description = "Where the number of pixels actually comes from, and the three things that change when a drawing becomes pixels."

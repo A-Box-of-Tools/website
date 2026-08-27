@@ -11,7 +11,7 @@ lede = """
     kâğıt fotoğrafı var. Bu rehber, sonucu gerçekten değiştiren seçimleri
     &mdash; sayfa boyutu, sıra, kalite ve belgenin sizin hakkınızda söyledikleri
     &mdash; ve bunların hangilerini rahatça geçebileceğinizi anlatıyor."""
-updated = "20 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "Resimler tek bir PDF'te nasıl birleştirilir"
 og_description = "Sayfa boyutu, sıra ve döndürme, bir JPEG'in içeri girerken neden kalite kaybetmesi gerekmediği ve bir PDF'in gönderdiğiniz kişiye ne anlattığı."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

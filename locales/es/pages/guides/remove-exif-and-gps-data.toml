@@ -18,7 +18,7 @@ lede = """
     atarla a todas las demás fotos del mismo dispositivo. Nada de eso se ve en
     pantalla. Aquí va lo que hay ahí dentro y cómo quitarlo."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Lo que una foto cuenta de ti, y cómo quitarlo"
 og_description = "Las coordenadas GPS, las marcas de tiempo y los números de serie viajan dentro de fotos corrientes. Qué hay ahí dentro, quién puede leerlo y cómo eliminarlo."

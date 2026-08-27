@@ -27,9 +27,9 @@ lede = """
     format actually is, what converting costs the picture, and why almost every
     converter wants you to upload it first."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to convert HEIC to JPG"
 og_description = "Why iPhone photos will not open, what converting costs, and how to do it without handing the photos to anybody."

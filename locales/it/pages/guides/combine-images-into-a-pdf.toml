@@ -11,7 +11,7 @@ lede = """
     carta. Vediamo quali scelte cambiano davvero il risultato, cioè la
     dimensione della pagina, l'ordine, la qualità e quello che il documento dice
     di te, e quali invece puoi ignorare."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come unire delle immagini in un unico PDF"
 og_description = "Dimensione della pagina, ordine e rotazione, perché un JPEG non deve perdere qualità entrando, e cosa dice un PDF alla persona a cui lo mandi."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

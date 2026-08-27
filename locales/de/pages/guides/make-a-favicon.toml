@@ -12,7 +12,7 @@ lede = """
     ausgerechnet das kleinste davon bekommen alle zu sehen. Hier steht, welche
     Größen Sie brauchen, welche Dateien danebengehören und was zu tun ist, wenn
     Ihr Logo den Weg nach unten nicht übersteht."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Ein Favicon erstellen, das bei sechzehn Pixeln noch lesbar ist"
 og_description = "Welche Größen eine favicon.ico braucht, welche Dateien iPhone und Android zusätzlich verlangen und was zu tun ist, wenn Ihr Logo das Verkleinern nicht übersteht."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

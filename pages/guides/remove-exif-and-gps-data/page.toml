@@ -25,9 +25,9 @@ lede = """
     tie it to every other photo from the same device. None of it is visible on
     screen. This is what is in there and how to remove it."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "What a photo says about you, and how to take it out"
 og_description = "GPS coordinates, timestamps and serial numbers travel inside ordinary photos. What is in there, who can read it, and how to strip it."

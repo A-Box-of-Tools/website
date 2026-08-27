@@ -13,6 +13,14 @@
       değiştirmesine izin var, çoğu yine de neyi değiştiriyor ve dosya hiç
       ayrıştırılmadığında hata nasıl okunur.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="İki bölme: solda tek satır JSON, sağda aynı belge iki boşluk girintiyle biçimlendirilmiş.">
+      <figcaption>
+        Bir satır girer, okunabilir bir şey çıkar. Bunun için hiçbir yere hiçbir şey gönderilmedi.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -161,6 +169,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       karakterini beklenmedik kılar. Kusursuz görünen bir dosyada hata 1. satır 1.
       sütundaysa, olan budur.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="Aynı araç bozuk bir belgeyle: fazladan bir virgülün satırını ve sütununu söyleyen bir hata ve suçlu satırı gösteren giriş bölmesi.">
+      <figcaption>
+        Okunmuyorsa, ileti nerede olduğunu söyler. Fazladan virgül en sık görülen nedendir ve gözle en zor görülenidir.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

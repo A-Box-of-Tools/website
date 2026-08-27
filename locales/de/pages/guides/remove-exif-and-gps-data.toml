@@ -12,7 +12,7 @@ lede = """
     um es mit jedem anderen Foto desselben Geräts zu verknüpfen. Auf dem
     Bildschirm sehen Sie davon nichts. Hier steht, was da drinsteckt und wie Sie
     es wieder loswerden."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Was ein Foto über Sie verrät, und wie Sie es herausbekommen"
 og_description = "GPS-Koordinaten, Zeitstempel und Seriennummern reisen in ganz gewöhnlichen Fotos mit. Was da drinsteckt, wer es lesen kann und wie Sie es entfernen."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

@@ -12,7 +12,7 @@ lede = """
     wirklich mit Ihrer Datei passiert, warum die meisten Werkzeuge trotzdem
     darauf bestehen und mit welchen vier Proben Sie herausfinden, ob das
     Werkzeug vor Ihnen den Upload überhaupt braucht."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Ist es sicher, Dateien zu Online-Konvertern hochzuladen?"
 og_description = "Was mit einer hochgeladenen Datei geschieht, warum die meisten Werkzeuge danach verlangen und vier Proben, die Sie selbst machen können."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

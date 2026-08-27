@@ -7,7 +7,7 @@
       <h2><span class="step">1</span> 寫下來，或附上檔案</h2>
       <div class="panel" id="editor">
         <div class="toolbar">
-          <label title="讀者看到的是排好版的樣子，隨鍵入即時轉譯">
+          <label title="讀者看到的是排好版的樣子，隨鍵入即時渲染">
             <input type="checkbox" id="markdown"> Markdown
           </label>
           <span class="spacer"></span>
@@ -22,18 +22,18 @@
       </div>
       <input id="fileinput" type="file" multiple hidden aria-label="要附上的檔案">
       <div id="attachlist"></div>
-      <p class="field-note">檔案走和文字同一條直連通道，每個最大200&nbsp;MB。讀者看到清單，只有開口要，檔案才會傳給他。</p>
+      <p class="field-note">檔案走和文字同一條直連通道，每個最大200&nbsp;MB。讀者看到列表，只有開口要，檔案才會傳給他。</p>
     </section>
 
     <section class="card">
-      <h2><span class="step">2</span> 給連結取名</h2>
+      <h2><span class="step">2</span> 給連結起名</h2>
       <div class="field">
-        <label for="code">連結名稱</label>
+        <label for="code">連結名</label>
         <div class="namerow">
           <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
-          <button type="button" id="suggest" class="ghost" aria-label="換個建議名稱">&#8635;</button>
+          <button type="button" id="suggest" class="ghost" aria-label="換個建議名">&#8635;</button>
         </div>
-        <p class="field-note">名稱就是位址，也是唯一的秘密：短到能隔著房間喊出來；私密的東西，配個沒人猜得中的名稱。</p>
+        <p class="field-note">名字就是地址，也是唯一的秘密：短到能隔著房間喊出來；私密的東西，配個沒人猜得中的名字。</p>
       </div>
       <div class="field checks">
         <label class="check" for="private">
@@ -42,9 +42,9 @@
         </label>
         <label class="check" for="oneoff">
           <input type="checkbox" id="oneoff">
-          一次性 &mdash; 草稿不留在這台裝置上
+          一次性 &mdash; 草稿不留在這臺裝置上
         </label>
-        <p class="field-note">草稿只留在這個瀏覽器裡，下次打開還在&mdash;&mdash;勾選一次性就哪裡都不留。</p>
+        <p class="field-note">草稿只留在這個瀏覽器裡，下次開啟還在&mdash;&mdash;勾上一次性就哪裡都不留。</p>
       </div>
     </section>
 
@@ -64,7 +64,7 @@
 
     <section class="card note-card">
       <h2>哪裡都不存任何東西</h2>
-      <p>文字和檔案加密後從這個分頁直達每位讀者的分頁。唯一牽涉的伺服器只負責引介兩個瀏覽器，永遠看不到它們交換了什麼。關掉這個分頁，分享結束，讀者開著的頁面也隨之清空&mdash;&mdash;不過別人已經複製或下載的東西歸他。</p>
+      <p>文字和檔案加密後從這個分頁直達每位讀者的分頁。唯一牽涉的伺服器只負責引見兩個瀏覽器，永遠看不到它們交換了什麼。關掉這個分頁，分享結束，讀者開著的頁面也隨之清空&mdash;&mdash;不過別人已經複製或下載的東西歸他。</p>
     </section>
   </section>
 
@@ -75,7 +75,7 @@
       <p id="view-status" role="status" aria-live="polite">正在尋找分享的人&hellip;</p>
 
       <div id="consent" hidden>
-        <p>要讀它，你的瀏覽器會和分享方的瀏覽器直接相連&mdash;&mdash;這正是關鍵：這裡沒有任何東西碰伺服器。和一切直連一樣，雙方會看到彼此的網路（IP）位址。在你選擇連線之前，什麼都不會取得，關於你的任何資訊也不會外流。</p>
+        <p>要讀它，你的瀏覽器會和分享方的瀏覽器直接相連&mdash;&mdash;這正是關鍵：這裡沒有任何東西碰伺服器。和一切直連一樣，雙方會看到彼此的網路（IP）地址。在你選擇連線之前，什麼都不會獲取，關於你的任何資訊也不會外洩。</p>
         <div class="result-actions">
           <button type="button" id="connect" class="primary">連線並接收分享</button>
         </div>
@@ -119,7 +119,7 @@
     <span data-phrase="units.kb">KB</span>
     <span data-phrase="units.mb">MB</span>
 
-    <span data-phrase="share.waiting">分享中。等著有人打開連結&mdash;&mdash;別關這個分頁。</span>
+    <span data-phrase="share.waiting">分享中。等著有人開啟連結&mdash;&mdash;別關這個分頁。</span>
     <span data-phrase="share.reader-count.one">1位讀者已連線</span>
     <span data-phrase="share.reader-count.many">{n}位讀者已連線</span>
     <span data-phrase="share.knock-count.one">1人等你放行</span>
@@ -130,18 +130,18 @@
     <span data-phrase="share.deny">請回</span>
     <span data-phrase="share.remove-file">移除</span>
     <span data-phrase="share.setting-up">正在準備&hellip;</span>
-    <span data-phrase="share.name-first">先給連結取個名稱，或按一下建議按鈕。</span>
-    <span data-phrase="share.name-taken">「{name}」這個名稱正有別人在用&mdash;&mdash;換一個吧。</span>
-    <span data-phrase="share.lost-rendezvous">與引介伺服器失聯；正在重試。已連線的讀者不受影響。</span>
+    <span data-phrase="share.name-first">先給連結起個名字，或按一下建議按鈕。</span>
+    <span data-phrase="share.name-taken">"{name}"這個名字正有別人在用&mdash;&mdash;換一個吧。</span>
+    <span data-phrase="share.lost-rendezvous">與引見伺服器失聯；正在重試。已連線的讀者不受影響。</span>
     <span data-phrase="share.stopped">已停止。什麼都不再分享了。</span>
-    <span data-phrase="share.file-too-big">「{name}」超出了200 MB的上限。</span>
+    <span data-phrase="share.file-too-big">「{name}」超出了200 MB 的上限。</span>
     <span data-phrase="share.leave-warning">離開此頁面，分享對所有人結束。繼續嗎？</span>
 
     <span data-phrase="copy.done">已複製</span>
     <span data-phrase="copy.link">複製連結</span>
     <span data-phrase="copy.text">複製</span>
 
-    <span data-phrase="view.someone">這個位址上有人正在分享。</span>
+    <span data-phrase="view.someone">這個地址上有人正在分享。</span>
     <span data-phrase="view.connecting">正在直連&hellip;</span>
     <span data-phrase="view.private">分享的人把它設成了私密。</span>
     <span data-phrase="view.asked">已申請。等對方放行&hellip;</span>
@@ -149,7 +149,7 @@
     <span data-phrase="view.empty">已連線。分享的人還什麼都沒寫&mdash;&mdash;他一動筆，這個頁面就會跟著填起來。</span>
     <span data-phrase="view.ended">分享的人結束了分享，這份副本也隨之消失。</span>
     <span data-phrase="view.gone-early">東西還沒送到，分享的人就離開了。一切都隨他而去。</span>
-    <span data-phrase="view.nobody">這個位址上沒人在分享。可能分享的人關掉了分頁&mdash;&mdash;那樣的話，分享也隨之消失了。</span>
+    <span data-phrase="view.nobody">這個地址上沒人在分享。可能分享的人關掉了分頁&mdash;&mdash;那樣的話，分享也隨之消失了。</span>
     <span data-phrase="view.full">這次分享的讀者名額已滿。</span>
     <span data-phrase="view.no-connect">無法直連到分享的人。可能兩邊網路裡有一方不允許點對點連線。</span>
     <span data-phrase="view.error">連線時出了點問題。重新整理頁面再試一次。</span>

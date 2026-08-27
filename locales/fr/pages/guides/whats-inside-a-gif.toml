@@ -11,7 +11,7 @@ lede = """
     couleurs, et presque tous les reproches faits au format viennent de l'une de
     ces trois choses. Voici ce que fait chaque partie, et comment découvrir dans
     laquelle votre fichier dépense son poids."""
-updated = "22 août 2026"
+updated = "26 août 2026"
 og_title = "Ce qu'il y a vraiment dans un fichier GIF"
 og_description = "Images, délais, effacement et palettes&nbsp;: à quoi sert chacun, pourquoi votre GIF joue plus lentement qu'annoncé, et où est passé son poids."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

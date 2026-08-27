@@ -14,7 +14,7 @@ lede = """
     zich verstopt die helemaal niet op de pagina staan, en dit is de controle van
     dertig seconden die je vertelt welke van de twee je hebt."""
 
-updated = "25 augustus 2026"
+updated = "26 augustus 2026"
 
 og_title = "Hoe je een PDF onleesbaar maakt zodat de tekst echt weg is"
 og_description = "Waarom een zwarte balk in een PDF-lezer meestal geen onleesbaarmaking is, de vier plekken waar een woord zich buiten de pagina verstopt, en hoe je een bestand nakijkt voordat je het verstuurt."

@@ -12,7 +12,7 @@ lede = """
     Dateien dem Server eines Fremden übergibt. Nötig ist das nicht. Hier steht,
     wie es geht und was still verlorengeht, wenn ein Werkzeug Seiten
     umsortiert."""
-updated = "22. August 2026"
+updated = "26. August 2026"
 og_title = "PDF-Seiten zusammenfügen, teilen und umsortieren"
 og_description = "PDFs verbinden, eines in mehrere zerlegen, Seiten umstellen &mdash; und wissen, was die Umsortierung übersteht und was nicht."
 og_image_alt = "abox.tools - Werkzeuge, die keinen Server anfassen"

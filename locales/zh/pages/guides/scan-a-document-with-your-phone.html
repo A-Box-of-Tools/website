@@ -58,6 +58,14 @@
     <p>
       悄悄出错的是另一半：这页平的纸<em>该有多大</em>。最顺手的办法是量四边形的边、拿它们的比当比例，可斜着拍的纸远端那条边会被压短，于是做出来的 A4 明显偏矮胖，而网上多数扫描工具给你的正是这个。其实一张四边形的照片里，只要相机是台普通相机，信息就足够同时还原出这个四边形真实的长宽比和相机的焦距。这是 Zhang 和 He 在 2003 年的结果，也正是 <code>src/geometry.js</code> 做的事。正对着拍的照片没有透视可用，也不需要，因为那时边缘本来就是准的，于是它退回去用边缘，并且页面会说明是哪一种给出了答案。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/scan-a-document-with-your-phone/corners.webp" loading="lazy" decoding="async"
+           alt="斜着拍下的桌上一页纸，四角上画着检测出的四边形，还有用来调整的手柄。">
+      <figcaption>
+        检测出来的四个角，找错了就拖回去。把这几个角对准，才是把一张照片变成扫描件的那一步。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -71,6 +79,14 @@
     <p>
       「彩色，去掉不匀」和「灰度」做的就是这件事。颜色本身属于文档的时候就选彩色：印章、蓝墨水的签字、荧光笔划的那一行，以及任何日后可能有人问「这是不是原件」的东西。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/scan-a-document-with-your-phone/clean.webp" loading="lazy" decoding="async"
+           alt="清理卡片：已经拉平的页面、几种模式的选择，以及强度滑块。">
+      <figcaption>
+        把光除掉，靠的是相除而不是拉伸。模式从轻微提亮一直到纯黑白，哪一种用在什么时候，下面一节会说。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

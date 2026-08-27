@@ -18,7 +18,7 @@ lede = """
     Pixel. Hier steht, wie Sie eine ansehen, was die Regler bedeuten und was die
     Datei außer dem Bild noch mit sich trägt."""
 
-updated = "25. August 2026"
+updated = "26. August 2026"
 
 og_title = "Eine DICOM-Datei öffnen, ohne etwas zu installieren"
 og_description = "Was auf einer Klinik-CD liegt, warum die Dateien keine Endung haben und was eine .dcm-Aufnahme außer dem Bild noch über die Patientin trägt."

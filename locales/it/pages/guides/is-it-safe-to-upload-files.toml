@@ -11,7 +11,7 @@ lede = """
     verificare». Vediamo cosa fa davvero un caricamento al tuo file, perché
     quasi tutti gli strumenti lo fanno ancora, e quattro prove che ti dicono se
     quello che hai davanti ne ha bisogno."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "È sicuro caricare i propri file sui convertitori online?"
 og_description = "Cosa succede a un file che carichi su un convertitore, perché quasi tutti gli strumenti lo chiedono ancora, e quattro verifiche che puoi fare da solo."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

@@ -24,9 +24,9 @@ lede = """
     because two of the settings do not mean what they sound like. This is what
     each of them controls and what to choose."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to turn a folder of images into a video"
 og_description = "What frame rate and duration actually control, how to handle pictures that are the wrong shape, and why there is no soundtrack."

@@ -12,7 +12,7 @@ lede = """
     zwischenspeichern und wird jedes Mal neu geladen, wenn sich ringsherum
     irgendetwas ändert. Hier steht, wo sich dieser Handel lohnt und wo er
     klammheimlich schadet."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Wann ein Bild in Ihr CSS gehört"
 og_description = "Was eine Data-URI kostet, warum ein SVG nie base64 sein sollte und welcher Anführungszeichen-Fehler eingebettete SVGs klammheimlich zerlegt."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

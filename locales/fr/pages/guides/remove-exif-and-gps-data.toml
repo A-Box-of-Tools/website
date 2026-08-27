@@ -12,7 +12,7 @@ lede = """
     l'appareil pour la relier à toutes les autres photos du même téléphone. Rien
     de tout cela n'est visible à l'écran. Voici ce qu'il y a dedans et comment le
     supprimer."""
-updated = "20 août 2026"
+updated = "26 août 2026"
 og_title = "Ce qu'une photo raconte sur vous, et comment le retirer"
 og_description = "Coordonnées GPS, horodatages et numéros de série voyagent à l'intérieur des photos ordinaires. Ce qu'il y a dedans, qui peut le lire, et comment l'effacer."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

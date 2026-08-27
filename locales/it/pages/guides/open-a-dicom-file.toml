@@ -14,7 +14,7 @@ lede = """
     Ecco come guardarne una, che cosa vogliono dire i comandi, e che altro il file
     si porta dietro oltre all'immagine."""
 
-updated = "25 agosto 2026"
+updated = "26 agosto 2026"
 
 og_title = "Come aprire un file DICOM senza installare niente"
 og_description = "Che cosa c'è su un disco dell'ospedale, perché i file non hanno estensione, e che cosa si porta dietro sul paziente una scansione .dcm oltre all'immagine."

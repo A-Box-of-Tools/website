@@ -31,9 +31,9 @@ lede = """
     to look at one, what the controls mean, and what else the file is carrying
     besides the picture."""
 
-updated = "25 August 2026"
+updated = "26 August 2026"
 published = "2026-08-25"
-lastmod = "2026-08-25"
+lastmod = "2026-08-26"
 
 og_title = "How to open a DICOM file without installing anything"
 og_description = "What is on a hospital disc, why the files have no extension, and what a .dcm scan carries about the patient besides the picture."

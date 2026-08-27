@@ -13,6 +13,14 @@
       formateador, qué cambian casi todos de todas formas, y cómo leer el error
       cuando el archivo no se deja analizar siquiera.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="Dos paneles: una sola línea de JSON a la izquierda y el mismo documento formateado con dos espacios de sangría a la derecha.">
+      <figcaption>
+        Una línea entra, algo legible sale. Para eso no se envió nada a ningún sitio.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -164,6 +172,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       el error está en la línea 1, columna 1 de un archivo que se ve perfecto, es
       eso.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="La misma herramienta con un documento roto: un error que da la línea y la columna de una coma sobrante, y el panel de entrada mostrando la línea culpable.">
+      <figcaption>
+        Cuando no se puede leer, el mensaje dice dónde. Una coma sobrante es la causa más común y la más difícil de ver a simple vista.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

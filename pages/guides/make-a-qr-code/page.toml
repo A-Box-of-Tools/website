@@ -26,9 +26,9 @@ lede = """
     and all four are made before you print anything. Here is what each one
     does."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "Making a QR code that still scans on somebody else's phone"
 og_description = "The four decisions that decide whether a printed QR code works: the level, the margin, the size, and whose address is actually inside it."

@@ -27,9 +27,9 @@ lede = """
     files go beside them, and what to do when your logo does not survive the
     trip down."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "Making a favicon that still reads at sixteen pixels"
 og_description = "Which sizes a favicon.ico needs, the extra files iPhones and Android ask for, and what to do when your logo does not survive being shrunk."

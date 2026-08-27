@@ -11,7 +11,7 @@ lede = """
     de fato um &ldquo;quadro&rdquo; de GIF, porque o formato guarda uma coisa
     bem diferente do que você vê &mdash; e é dessa diferença que sai o seu
     décimo quarto quadro, um retângulo com a boca de alguém dentro."""
-updated = "21 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Como separar um GIF em quadros"
 og_description = "Cada quadro de um GIF em PNG: por que alguns são só um pedaço, o que acontece com a transparência, e como guardar os tempos."
 og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

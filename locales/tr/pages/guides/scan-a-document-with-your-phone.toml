@@ -12,7 +12,7 @@ lede = """
     arasındaki fark göründüğünden küçüktür ve büyük ölçüde açıyla ilgili değildir
     &mdash; bu rehber onları gerçekte neyin ayırdığını ve her parça için ne
     yapmanız gerektiğini anlatıyor."""
-updated = "25 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "Bir belge telefonla nasıl taranır"
 og_description = "Açı, gölge ve dosya boyutu - bir sayfanın fotoğrafını taramasından ayıran şey ve sayfayı yüklemeden her birini nasıl düzelteceğiniz."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

@@ -17,7 +17,7 @@ lede = """
     Aquí va lo que le hace cada elección a la foto, y cuáles tienen vuelta
     atrás."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Redimensionar una imagen sin destrozarla"
 og_description = "Por qué encogerla no tiene riesgo y agrandarla sí, qué hacer cuando la caja tiene otra forma, y cuándo lo que toca es recortar."

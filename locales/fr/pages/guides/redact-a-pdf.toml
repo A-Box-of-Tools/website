@@ -13,7 +13,7 @@ lede = """
     endroits où un mot se cache et qui ne sont pas du tout la page, et la
     vérification de trente secondes qui vous dit lequel des deux vous avez."""
 
-updated = "25 août 2026"
+updated = "26 août 2026"
 
 og_title = "Comment caviarder un PDF pour que le texte disparaisse vraiment"
 og_description = "Pourquoi un cadre noir dans une visionneuse PDF n'est en général pas un caviardage, les quatre endroits où un mot se cache hors de la page, et comment vérifier un fichier avant de l'envoyer."

@@ -14,6 +14,14 @@
       de mudar, o que a maioria muda mesmo assim, e como ler o erro quando o
       arquivo não passa de jeito nenhum.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="Dois painéis: uma única linha de JSON à esquerda, o mesmo documento formatado com dois espaços de recuo à direita.">
+      <figcaption>
+        Entra uma linha, sai algo legível. Para isso nada foi enviado a lugar nenhum.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -157,6 +165,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       com que o primeiríssimo caractere do documento seja inesperado. Se o erro está
       na linha 1, coluna 1 de um arquivo que parece perfeito, é isso.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="A mesma ferramenta com um documento quebrado: um erro que aponta a linha e a coluna de uma vírgula sobrando, e o painel de entrada mostrando a linha culpada.">
+      <figcaption>
+        Quando não dá para ler, a mensagem diz onde. Uma vírgula sobrando é a causa mais comum e a mais difícil de ver a olho nu.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

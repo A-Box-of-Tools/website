@@ -14,6 +14,14 @@
       qu'un formateur a le droit de changer, ce que la plupart changent quand
       même, et comment lire l'erreur quand le fichier refuse d'être analysé.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="Deux volets&nbsp;: une seule ligne de JSON à gauche, le même document formaté avec une indentation de deux espaces à droite.">
+      <figcaption>
+        Une ligne entre, quelque chose de lisible sort. Rien n'a été envoyé nulle part pour cela.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -164,6 +172,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       premier caractère du document. Si l'erreur est en ligne 1, colonne 1 sur un
       fichier qui paraît parfait, c'est cela.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="Le même outil avec un document cassé&nbsp;: une erreur nommant la ligne et la colonne d'une virgule en trop, et le volet d'entrée montrant la ligne fautive.">
+      <figcaption>
+        Quand cela ne se lit pas, le message dit où. Une virgule en trop est la cause la plus courante et la plus difficile à voir à l'œil.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

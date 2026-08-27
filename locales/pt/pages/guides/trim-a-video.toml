@@ -11,7 +11,7 @@ lede = """
     encosta neles: ele move os quadros para um arquivo novo exatamente como
     estavam. Aqui está o que isso garante a você, e o único lugar onde
     aparece."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Como aparar um vídeo sem recodificá-lo"
 og_description = "Por que um corte às vezes cai antes de onde você marcou, o que um keyframe tem a ver com isso, e quando aceitar uma recodificação."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

@@ -14,7 +14,7 @@ lede = """
     pun terlihat di layar. Inilah apa saja yang ada di dalamnya dan bagaimana
     membuangnya."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Apa yang dikatakan sebuah foto tentang Anda, dan bagaimana mengeluarkannya"
 og_description = "Koordinat GPS, cap waktu, dan nomor seri bepergian di dalam foto biasa. Apa saja yang ada di dalamnya, siapa yang bisa membacanya, dan bagaimana membersihkannya."

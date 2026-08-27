@@ -18,7 +18,7 @@ lede = """
     el tamaño de página, el orden, la calidad y qué acaba diciendo el documento
     sobre ti, y también cuáles puedes ignorar."""
 
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Cómo unir imágenes en un solo PDF"
 og_description = "Tamaño de página, orden y giro, por qué un JPEG no tiene por qué perder calidad al entrar, y qué le cuenta un PDF a la persona a la que se lo mandas."

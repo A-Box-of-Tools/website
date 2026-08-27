@@ -11,7 +11,7 @@ lede = """
     ve hangi şekli istediğinize göre &mdash; belirlendiği tek görsel işidir. Bu
     rehber her seçimin resme ne yaptığını ve hangilerinin geri alınabileceğini
     anlatıyor."""
-updated = "20 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "Bir görseli bozmadan boyutlandırmak"
 og_description = "Küçültmek neden güvenli, büyütmek neden değil, kutu yanlış şekilde olduğunda ne yapmalı ve ne zaman bunun yerine kırpmalı."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

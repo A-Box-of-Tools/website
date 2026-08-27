@@ -26,9 +26,9 @@ lede = """
     so one made from a video is always big. This is which of the three settings
     to move when it is too big, and how much each one buys you."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to turn a video into a GIF, and keep it small"
 og_description = "The three settings that decide a GIF's size, what each one costs, and when a GIF is the wrong answer entirely."

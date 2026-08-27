@@ -27,9 +27,9 @@ lede = """
     behind than people expect, and the checks that tell you which of the two you
     have just done."""
 
-updated = "23 August 2026"
+updated = "26 August 2026"
 published = "2026-08-23"
-lastmod = "2026-08-23"
+lastmod = "2026-08-26"
 
 og_title = "How to redact an image so the hidden part is really gone"
 og_description = "Why a black rectangle usually is not a redaction, why pixelated text can be read back, and how to check a file before you send it."

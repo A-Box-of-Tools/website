@@ -12,7 +12,7 @@ lede = """
     quelle di cui la gente si preoccupa. Qui c'è cosa viene misurato davvero,
     quali cifre vuole quale paese, e cosa fare con i moduli che rifiutano un file
     perché è troppo piccolo."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come farsi una foto tessera che non torna indietro"
 og_description = "Altezza della testa, linea degli occhi, sfondo e peso del file: cosa misura un ufficio passaporti, e come centrarlo con un telefono e un muro liscio."
 og_image_alt = "abox.tools - strumenti che non toccano mai un server"

@@ -17,7 +17,7 @@ lede = """
     yang membuatnya tidak bernilai sama sekali &mdash; memakan sisa halaman
     ini."""
 
-updated = "23 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Memeriksa unduhan terhadap checksum-nya, dan apa yang dibuktikannya"
 og_description = "Untuk apa heksadesimal di bawah sebuah tautan unduhan, bagaimana membandingkannya di sistem operasi mana pun, dan kenapa mengambilnya dari halaman yang sama dengan file-nya mementahkan maksudnya."

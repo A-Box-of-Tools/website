@@ -10,7 +10,7 @@ lede = """
     Eine Diashow ist schnell gebaut und ebenso schnell zweimal gerendert, weil
     zwei der Einstellungen nicht das bedeuten, wonach sie klingen. Hier steht,
     was jede davon steuert und wofür Sie sich entscheiden sollten."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "So machen Sie aus einem Ordner voller Bilder ein Video"
 og_description = "Was Bildrate und Standzeit wirklich steuern, was mit Bildern im falschen Format geschieht und warum es keine Tonspur gibt."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

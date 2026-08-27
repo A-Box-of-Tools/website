@@ -74,6 +74,7 @@ from buildlib import cssmin
 from buildlib import i18n
 from buildlib import imports
 from buildlib import minify
+from buildlib import screens
 from buildlib import site as sitelib
 from buildlib.template import Loader, TemplateError
 
@@ -240,6 +241,14 @@ def build(out, clean=False, minify_output=True, jobs=None):
     prose = [sitelib.load_page(path, site, PAGES)
              for path in sorted(PAGES.glob('**/page.toml'))]
 
+    # The screenshots each guide carries, measured here and carried on the page
+    # from now on. Every language shows the same pictures, so measuring them
+    # inside the languages would be reading the same headers fifteen times to
+    # get the same answer - and build_locale re-reads no source file, which is
+    # the rule that keeps the languages from having anything to race over.
+    for page in prose:
+        page['shots'] = screens.sizes(page)
+
     # Every language this site is written in, English first. English is the
     # sources themselves rather than a folder under locales/ - buildlib/i18n.py
     # says why at length, and the short version is that a translation of English
@@ -379,6 +388,7 @@ def build(out, clean=False, minify_output=True, jobs=None):
     written += [f'{locale["prefix"]}feed.xml' for locale in i18n.published(locales)]
 
     copy_shared(out)
+    copy_screens(out, prose)
     write(out / 'site.css', site_css)
     write(out / 'lang.js', lang_js)
     write(out / 'offline.js', offline_js)
@@ -1110,9 +1120,13 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
         'css_href': f'{up}site.css?v={css_v}',
         'jsonld': sitelib.page_jsonld(root, page),
         'csp': sitelib.render_csp(root['csp']),
-        'body': i18n.body_for(
-            locale, 'pages', page['slug'],
-            body_path.read_text(encoding='utf-8')).rstrip('\n'),
+        # The screenshots are measured on the way past, because the body that
+        # carries them is a different file in every language and the picture is
+        # the same picture in all of them. See buildlib/screens.py.
+        'body': screens.fill_sizes(
+            i18n.body_for(locale, 'pages', page['slug'],
+                          body_path.read_text(encoding='utf-8')).rstrip('\n'),
+            page['shots'], f'{page["slug"]} [{locale["lang"]}]'),
     })
     # [ui.guide] only where the page names a tool. It reaches for {{ tool }},
     # and a legal page has not got one - nor has a guide about no tool in
@@ -1725,6 +1739,22 @@ def check_links(out, locales, site, page_links=None):
         raise sitelib.ConfigError(
             f'{len(broken)} links lead to a page that was not built:\n    '
             + '\n    '.join(shown) + tail)
+
+
+def copy_screens(out, prose):
+    """The guides' screenshots, published once for all fifteen languages.
+
+    Once, and not per language, because the picture is the same picture: the
+    tool in it is photographed in English and the caption under it is
+    translated. Copying the set into every locale would multiply a few megabytes
+    by fifteen to change nothing anybody sees. buildlib/screens.py has the rest
+    of the reasoning, including why the bodies address them from the root.
+    """
+    for page in prose:
+        for source, published in screens.find(page):
+            dest = out / published.lstrip('/')
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, dest)
 
 
 def copy_shared(out):

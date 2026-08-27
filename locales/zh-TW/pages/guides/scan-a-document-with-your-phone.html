@@ -58,6 +58,14 @@
     <p>
       悄悄出錯的是另一半：這頁平的紙<em>該有多大</em>。最順手的辦法是量四邊形的邊、拿它們的比當比例，可斜著拍的紙遠端那條邊會被壓短，於是做出來的 A4 明顯偏矮胖，而網上多數掃描工具給你的正是這個。其實一張四邊形的照片裡，只要相機是臺普通相機，資訊就足夠同時還原出這個四邊形真實的長寬比和相機的焦距。這是 Zhang 和 He 在 2003 年的結果，也正是 <code>src/geometry.js</code> 做的事。正對著拍的照片沒有透視可用，也不需要，因為那時邊緣本來就是準的，於是它退回去用邊緣，並且頁面會說明是哪一種給出了答案。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/scan-a-document-with-your-phone/corners.webp" loading="lazy" decoding="async"
+           alt="斜著拍下的桌上一頁紙，四角上畫著檢測出的四邊形，還有用來調整的手柄。">
+      <figcaption>
+        檢測出來的四個角，找錯了就拖回去。把這幾個角對準，才是把一張照片變成掃描檔的那一步。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -71,6 +79,14 @@
     <p>
       「彩色，去掉不勻」和「灰階」做的就是這件事。顏色本身屬於文件的時候就選彩色：印章、藍墨水的簽字、熒光筆劃的那一行，以及任何日後可能有人問「這是不是原件」的東西。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/scan-a-document-with-your-phone/clean.webp" loading="lazy" decoding="async"
+           alt="清理卡片：已經拉平的頁面、幾種模式的選擇，以及強度滑塊。">
+      <figcaption>
+        把光除掉，靠的是相除而不是拉伸。模式從輕微提亮一直到純黑白，哪一種用在什麼時候，下面一節會說。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

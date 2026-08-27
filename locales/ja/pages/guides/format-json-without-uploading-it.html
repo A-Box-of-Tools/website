@@ -6,6 +6,14 @@
     <p>
       以下はすべて、ほかの選択肢のどれかに設定ファイルを貼り付ける前に知っておく値打ちのあることです。整形ツールが変えてよいものは何か、それでも多くのツールが変えてしまうものは何か、そしてファイルがまったく読めないときにエラーをどう読むか。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="二つの枠。左に1行のJSON、右に同じ文書が半角2つの字下げで整形されている。">
+      <figcaption>
+        1行が入って、読めるものが出てきます。そのためにどこへも何も送っていません。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -98,6 +106,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
     <p>
       誤りではないのに誤りに見えるものがひとつ。バイト順マークで始まるファイルです。たいていの編集ソフトでは見えず、空白でもなく、文書のいちばん最初の文字を予期しないものにしてしまいます。見た目に何の問題もないファイルで、エラーが1行1桁目なら、それです。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="同じツールに壊れた文書を渡したところ。余分なコンマの行と桁を示すエラーと、その行を映した入力枠。">
+      <figcaption>
+        読めないときは、どこが悪いかをメッセージが言います。余分なコンマがいちばん多い原因で、目でいちばん見つけにくい原因でもあります。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

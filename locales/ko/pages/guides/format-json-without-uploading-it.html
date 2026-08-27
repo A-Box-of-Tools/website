@@ -12,6 +12,14 @@
       부분입니다. 포매터가 무엇을 바꿔도 되는지, 그런데도 대부분이 무엇을
       바꾸는지, 그리고 파일이 아예 파싱되지 않을 때 오류를 어떻게 읽는지.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/panes.webp" loading="lazy" decoding="async"
+           alt="두 개의 창. 왼쪽에는 한 줄짜리 JSON, 오른쪽에는 같은 문서가 두 칸 들여쓰기로 정리되어 있다.">
+      <figcaption>
+        한 줄이 들어가고 읽을 만한 것이 나옵니다. 그러기 위해 어디로도 아무것도 보내지 않았습니다.
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -151,6 +159,14 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       문서의 맨 첫 글자를 예상 밖의 것으로 만듭니다. 멀쩡해 보이는 파일에서
       오류가 1행 1열에 있다면 그것입니다.
     </p>
+
+    <figure class="shot">
+      <img src="/screens/format-json-without-uploading-it/error.webp" loading="lazy" decoding="async"
+           alt="같은 도구에 망가진 문서를 넣은 모습. 남는 쉼표의 줄과 칸을 짚어 주는 오류와, 그 줄을 보여 주는 입력 창.">
+      <figcaption>
+        읽히지 않을 때는 어디가 문제인지 메시지가 말해 줍니다. 남는 쉼표가 가장 흔한 원인이고 눈으로는 가장 찾기 어려운 원인입니다.
+      </figcaption>
+    </figure>
   </section>
 
   <section>

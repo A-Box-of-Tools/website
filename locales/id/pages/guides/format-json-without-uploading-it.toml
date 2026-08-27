@@ -17,7 +17,7 @@ lede = """
     ketika file-nya tidak mau terbaca, dan kenapa kotak tempat Anda menempelkan
     sebuah file konfigurasi layak dipikirkan."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Memformat JSON tanpa menyerahkannya kepada siapa pun"
 og_description = "Apa yang tidak boleh diubah sebuah pemformat JSON pada file Anda, cara membaca galat pembacaannya, dan kenapa situs tempat Anda menempelkannya itu penting."

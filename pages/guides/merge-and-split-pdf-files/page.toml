@@ -29,9 +29,9 @@ lede = """
     server. It does not need one. This covers how to do it, and what quietly
     goes missing when a tool rearranges pages."""
 
-updated = "22 August 2026"
+updated = "26 August 2026"
 published = "2026-08-22"
-lastmod = "2026-08-22"
+lastmod = "2026-08-26"
 
 og_title = "How to merge, split and reorder PDF pages"
 og_description = "Combine PDFs, cut one into several, move pages around - and know what survives the reshuffle and what does not."

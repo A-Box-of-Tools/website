@@ -11,7 +11,7 @@ lede = """
     plein d'images. Voici comment savoir si c'est le cas du vôtre, ce que le
     compresser coûte, et pourquoi tout outil qui promet un pourcentage fixe n'a
     pas regardé votre fichier."""
-updated = "20 août 2026"
+updated = "26 août 2026"
 og_title = "Comment alléger un PDF"
 og_description = "Où se trouve vraiment le poids d'un PDF, pourquoi un scan maigrit et un contrat non, et ce que le DPI vient faire là-dedans."
 og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

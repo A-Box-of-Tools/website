@@ -12,7 +12,7 @@ lede = """
     pessoas. Aqui está o que é medido de verdade, quais números cada país quer,
     e o que fazer com os formulários que recusam um arquivo por ele ser pequeno
     demais."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Como fazer uma foto de passaporte que não volta recusada"
 og_description = "Altura da cabeça, linha dos olhos, fundo e tamanho do arquivo: o que um posto de passaporte mede, e como acertar com um celular e uma parede lisa."
 og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

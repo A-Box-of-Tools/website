@@ -11,7 +11,7 @@ lede = """
     prima di premere il pulsante, e lo decidono il numero che scrivi e la forma
     che chiedi. Vediamo cosa fa all'immagine ognuna di quelle scelte, e quali si
     possono disfare."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Ridimensionare un'immagine senza rovinarla"
 og_description = "Perché rimpicciolire è sicuro e ingrandire no, cosa fare quando il riquadro ha la forma sbagliata, e quando conviene invece ritagliare."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

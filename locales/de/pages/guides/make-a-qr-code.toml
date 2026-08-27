@@ -12,7 +12,7 @@ lede = """
     bei schlechtem Licht auf Armlänge gehaltenen Handy, kostet vier
     Entscheidungen, und alle vier fallen, bevor irgendetwas gedruckt wird. Hier
     steht, was jede davon bewirkt."""
-updated = "20. August 2026"
+updated = "26. August 2026"
 og_title = "Einen QR-Code erzeugen, der sich auch mit fremden Handys scannen lässt"
 og_description = "Die vier Entscheidungen, an denen hängt, ob ein gedruckter QR-Code funktioniert: die Stufe, der Rand, die Größe und wessen Adresse eigentlich darin steht."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

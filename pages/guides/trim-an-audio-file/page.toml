@@ -26,9 +26,9 @@ lede = """
     always &mdash; which is not true of video. This explains why, what the one
     real catch is, and what to do about it."""
 
-updated = "21 August 2026"
+updated = "26 August 2026"
 published = "2026-08-21"
-lastmod = "2026-08-21"
+lastmod = "2026-08-26"
 
 og_title = "How to trim audio without losing quality"
 og_description = "Why an audio cut can be exact when a video cut cannot, why a join sometimes clicks, and what a five-millisecond fade is really doing."

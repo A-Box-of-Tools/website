@@ -11,7 +11,7 @@ lede = """
     conferir&rdquo;. Aqui está o que enviar realmente faz com o seu arquivo, por
     que a maioria das ferramentas ainda faz isso, e quatro testes que dizem se a
     que está na sua frente precisa fazer."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "É seguro enviar arquivos para conversores online?"
 og_description = "O que acontece com um arquivo enviado a um conversor, por que a maioria das ferramentas ainda pede um, e quatro verificações que você mesmo pode fazer."
 og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

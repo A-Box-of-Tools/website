@@ -27,9 +27,9 @@ lede = """
     one is smaller than it looks, and it is not mostly about the angle &mdash;
     this is what actually separates them, and what to do about each part."""
 
-updated = "25 August 2026"
+updated = "26 August 2026"
 published = "2026-08-25"
-lastmod = "2026-08-25"
+lastmod = "2026-08-26"
 
 og_title = "How to scan a document with your phone"
 og_description = "The angle, the shadow and the file size - what separates a photo of a page from a scan of one, and how to fix each without uploading the page."

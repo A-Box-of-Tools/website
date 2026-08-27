@@ -12,7 +12,7 @@ lede = """
     même chose. Voici la différence, les deux traitements qui laissent plus de
     traces qu'on ne le croit, et les vérifications qui vous disent lequel des
     deux vous venez de faire."""
-updated = "23 août 2026"
+updated = "26 août 2026"
 
 og_title = "Comment caviarder une image pour que le masqué disparaisse vraiment"
 og_description = "Pourquoi un rectangle noir n'est presque jamais un caviardage, pourquoi un texte pixellisé peut être relu, et comment vérifier un fichier avant de l'envoyer."

@@ -12,7 +12,7 @@ lede = """
     herkesin gerçekten gördüğü, bunların en küçüğüdür. Bu rehber hangi boyutlara
     ihtiyacınız olduğunu, yanlarına hangi dosyaların gittiğini ve logonuz bu
     küçülmeden sağ çıkmadığında ne yapacağınızı anlatıyor."""
-updated = "20 Ağustos 2026"
+updated = "26 Ağustos 2026"
 og_title = "On altı pikselde hâlâ okunan bir favicon yapmak"
 og_description = "Bir favicon.ico'nun hangi boyutlara ihtiyacı olduğu, iPhone'ların ve Android'in istediği ek dosyalar ve logonuz küçültülmekten sağ çıkmadığında ne yapacağınız."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

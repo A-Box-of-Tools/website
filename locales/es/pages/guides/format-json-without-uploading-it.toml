@@ -12,7 +12,7 @@ lede = """
     menciona. Esto es en qué fijarse, cómo leer el error cuando el archivo no se
     deja analizar, y por qué merece la pena pensarse la casilla en la que pegas
     un archivo de configuración."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Formatear JSON sin entregárselo a nadie"
 og_description = "Qué no debe cambiar nunca un formateador de JSON en tu archivo, cómo leer el error de análisis, y por qué importa el sitio en el que lo pegas."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

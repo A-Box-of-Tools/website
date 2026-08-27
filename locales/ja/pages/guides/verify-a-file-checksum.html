@@ -36,6 +36,14 @@
     <p>
       同じ長さのものは二つとありません。だから、貼り付けられた値がどれなのかを、何も教えられなくても道具の側で判断できます。63文字の文字列は何のチェックサムでもありません。クリップボードへ運ばれる途中で一文字落ちた SHA-256 です。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/verify-a-file-checksum/digests.webp" loading="lazy" decoding="async"
+           alt="結果のカード。一つのファイルのMD5・SHA-1・SHA-256・SHA-512が、それぞれコピーボタン付きで並んでいる。">
+      <figcaption>
+        全部まとめて出します。どれを使うかを決めるのは、あなたではなくファイルを公開した側だからです。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -69,6 +77,14 @@
     <p>
       ブラウザーなら<a href="../../hash-checksum/">ハッシュとチェックサム</a>の照合欄です。配布元が書いたままの形で受け取ります。十六進数そのまま、<code>sha256sum</code> の一行、<code>SHA256SUMS</code> ファイルまるごと、<code>SHA256 (disk.iso) = &hellip;</code> の形、script タグから取った<code>integrity="sha384-&hellip;"</code> のどれでもかまいません。答えは一文で返ります。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/verify-a-file-checksum/compare.webp" loading="lazy" decoding="async"
+           alt="照合のカード。チェックサムが欄に貼り付けられ、ファイルと一致するという判定が出ている。">
+      <figcaption>
+        配布ページに書かれていたものを貼って、比べるのはツールに任せます。画面の64文字を目で追う作業こそ、これがなくすものです。
+      </figcaption>
+    </figure>
   </section>
 
   <section>

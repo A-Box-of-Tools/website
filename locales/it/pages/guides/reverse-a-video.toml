@@ -10,7 +10,7 @@ lede = """
     Far scorrere un video al contrario sembra il montaggio più semplice che ci sia, ed
     è quello per cui un file video è fatto peggio. Ecco cosa deve succedere davvero,
     quanto costa, e l'unico passo che vale la pena fare prima."""
-updated = "20 agosto 2026"
+updated = "26 agosto 2026"
 og_title = "Come invertire un video"
 og_description = "Perché un decodificatore non sa andare all'indietro, cosa costa l'inversione all'immagine e all'audio, e il passo da fare prima."
 og_image_alt = "abox.tools - strumenti che non toccano mai un server"

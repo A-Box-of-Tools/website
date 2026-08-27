@@ -13,7 +13,7 @@ lede = """
     lugares em que uma palavra se esconde e que não estão na página, e a conferência
     de trinta segundos que lhe diz qual dos dois você tem."""
 
-updated = "25 de agosto de 2026"
+updated = "26 de agosto de 2026"
 
 og_title = "Como tarjar um PDF para que o texto suma de verdade"
 og_description = "Por que uma tarja preta num leitor de PDF normalmente não é uma tarjagem, os quatro lugares em que uma palavra se esconde fora da página, e como conferir um arquivo antes de mandá-lo."

@@ -10,7 +10,7 @@ lede = """
     Pausar o player e apertar a tecla de captura dá uma imagem de uma janela. Às
     vezes é só isso que você precisa. Aqui está qual é a diferença, e como pegar
     o quadro em si quando ela importa."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Como salvar um quadro de um vídeo como imagem"
 og_description = "Por que uma captura de tela do player pausado não é o quadro, em que formato salvar uma imagem parada e como cair no quadro que você queria."
 og_image_alt = "abox.tools - ferramentas que nunca encostam num servidor"

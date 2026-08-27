@@ -29,9 +29,9 @@ lede = """
     comparison is worth &mdash; and the one habit that makes it worth nothing
     &mdash; takes the rest of this page."""
 
-updated = "23 August 2026"
+updated = "26 August 2026"
 published = "2026-08-23"
-lastmod = "2026-08-23"
+lastmod = "2026-08-26"
 
 og_title = "Checking a download against its checksum, and what that proves"
 og_description = "What the hex under a download link is for, how to compare it on any operating system, and why taking it off the same page as the file defeats the point."

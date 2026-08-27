@@ -12,7 +12,7 @@ lede = """
     la gente. Esto es lo que se mide de verdad, qué cifras quiere cada país, y
     qué hacer con los formularios que rechazan un archivo por ser demasiado
     pequeño."""
-updated = "20 de agosto de 2026"
+updated = "26 de agosto de 2026"
 og_title = "Cómo hacerse una foto de pasaporte que no te devuelvan"
 og_description = "Altura de la cabeza, línea de los ojos, fondo y tamaño de archivo: qué mide una oficina de pasaportes, y cómo acertar con un móvil y una pared lisa."
 og_image_alt = "abox.tools - herramientas que nunca tocan un servidor"

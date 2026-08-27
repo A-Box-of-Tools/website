@@ -12,7 +12,7 @@ lede = """
     Voici ce à quoi faire attention, comment lire l'erreur quand le fichier
     refuse d'être analysé, et pourquoi la case dans laquelle vous collez un
     fichier de configuration mérite réflexion."""
-updated = "20 août 2026"
+updated = "26 août 2026"
 og_title = "Formater du JSON sans le confier à personne"
 og_description = "Ce qu'un formateur JSON ne doit jamais changer dans votre fichier, comment lire l'erreur d'analyse, et pourquoi le site où vous collez compte."
 og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

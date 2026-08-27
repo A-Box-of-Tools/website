@@ -10,7 +10,7 @@ lede = """
     De speler pauzeren en op de schermafbeeldingstoets drukken levert een plaatje
     van een venster op. Soms is dat genoeg. Dit is waar het verschil zit, en hoe
     je het frame zelf krijgt als het ertoe doet."""
-updated = "20 augustus 2026"
+updated = "26 augustus 2026"
 og_title = "Een frame uit een video opslaan als afbeelding"
 og_description = "Waarom een schermafbeelding van een gepauzeerde speler niet het frame is, in welk formaat je een stilstaand beeld bewaart, en hoe je op het bedoelde frame belandt."
 og_image_alt = "abox.tools - gereedschap dat nooit een server aanraakt"

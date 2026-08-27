@@ -18,7 +18,7 @@ lede = """
     ukuran mana yang Anda butuhkan, file apa yang mendampinginya, dan apa yang
     dilakukan ketika logo Anda tidak selamat dalam perjalanannya ke bawah."""
 
-updated = "20 Agustus 2026"
+updated = "26 Agustus 2026"
 
 og_title = "Membuat favicon yang tetap terbaca pada enam belas piksel"
 og_description = "Ukuran apa saja yang dibutuhkan sebuah favicon.ico, file tambahan yang diminta iPhone dan Android, dan apa yang dilakukan ketika logo Anda tidak selamat dari pengecilan."

@@ -28,9 +28,9 @@ lede = """
     parse, and why the box you paste a config file into is worth thinking
     about."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "Formatting JSON without handing it to anybody"
 og_description = "What a JSON formatter must never change about your file, how to read the parse error, and why the site you paste it into matters."

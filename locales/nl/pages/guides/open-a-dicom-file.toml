@@ -14,7 +14,7 @@ lede = """
     ernaar, dit betekenen de knoppen, en dit draagt het bestand behalve het beeld
     verder nog mee."""
 
-updated = "25 augustus 2026"
+updated = "26 augustus 2026"
 
 og_title = "Hoe je een DICOM-bestand opent zonder iets te installeren"
 og_description = "Wat er op een ziekenhuisschijfje staat, waarom de bestanden geen extensie hebben, en wat een .dcm-scan behalve het beeld over de pati&euml;nt meedraagt."

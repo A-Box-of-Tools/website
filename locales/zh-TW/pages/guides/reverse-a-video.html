@@ -20,6 +20,14 @@
       所以倒放是一組一組做的：把一組正著解出來，把這些幀攥住，按相反的順序交給編碼器，再挪到前一組。那個顯而易見的替代辦法——把整個片子解成一張列表，再倒著走一遍——
       1080p 每幀要佔約 3&nbsp;MB 記憶體，也就是每分鐘 5&nbsp;GB，這也是為什麼那樣寫的工具，碰上超過幾秒的片子就趴下了。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/reverse-a-video/source.webp" loading="lazy" decoding="async"
+           alt="原始檔卡片：片子的名稱、大小、畫面尺寸、時長和編碼格式。">
+      <figcaption>
+        工具從這個檔案裡查出來的東西。倒放是唯一沒法邊讀邊做的操作，所以能不能裝進記憶體，由這幾個數字決定。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
@@ -36,6 +44,14 @@
     <p>
       如果你只要畫面倒過來、完全不要聲音——這也是發到預設靜音播放的資訊流裡最常見的選擇——就把那個勾去掉。這樣更快，檔案也更小。
     </p>
+
+    <figure class="shot">
+      <img src="/screens/reverse-a-video/export.webp" loading="lazy" decoding="async"
+           alt="匯出卡片：品質滑塊、保留聲音的開關，以及輸出大小、時長和幀數的摘要。">
+      <figcaption>
+        聲音開關擺在這裡，是因為倒著的說話聲幾乎沒人想要，而且匯出之前決定比匯出之後再決定容易得多。
+      </figcaption>
+    </figure>
   </section>
 
   <section>
