@@ -44,12 +44,97 @@ jobs:
   #
   # It runs before the build rather than beside it, and the build needs it, so
   # a failing test cannot deploy.
+  #
+  # WHY THE STEPS ARE SKIPPED AND NOT THE JOB
+  #
+  # A change that touches only the repository's own prose - the READMEs, docs/,
+  # and the agent instructions in CLAUDE.md and .claude/ - cannot alter what
+  # the build produces or what a test asserts. Running either suite over it
+  # answers a question nobody asked and delays the ones somebody did, so the
+  # first step below works out whether that is the case and the rest read its
+  # answer.
+  #
+  # The obvious shape - a job of its own, an `if:` on this one - was not taken,
+  # and the reason is the line above. A skipped job skips everything that needs
+  # it, so `build` would stop running too; keeping it would mean rewriting its
+  # `needs: test` as an expression that has to accept a skipped test. That
+  # `needs` is the only thing standing between a broken test and the deployed
+  # branch, and an expression that gets it wrong is invisible until the day it
+  # matters. This way `build` is untouched. A test job that reports success
+  # having skipped its steps costs half a minute of runner, and the deploy
+  # still cannot happen without it.
   test:
     runs-on: ubuntu-latest
     steps:
+      # What this actually changed, asked of the API rather than worked out
+      # from a clone: it is one request, and fetching enough history to diff
+      # for it would cost more than the job it is deciding about. `gh` is on
+      # the runner already, so this adds no dependency - the same bargain the
+      # rest of the repository makes.
+      #
+      # NOT KNOWING MEANS RUNNING THEM. Every branch here that cannot answer -
+      # a manual run with no `before`, a new branch, a request that failed, a
+      # comparison too long to come back whole - leaves `code` at true. The
+      # failure mode is a suite that ran when it need not have, and never a
+      # change that shipped untested.
+      #
+      # The exempt list is an allowlist, and short on purpose: prose the build
+      # never reads and no test opens. Anything else - anything new, anything
+      # unrecognised - runs the suites until somebody decides otherwise here.
+      - name: Is there anything here a test could see?
+        id: covered
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -uo pipefail
+
+          code=true
+          why='could not work out what changed'
+          zero=0000000000000000000000000000000000000000
+
+          if [ -n "$BASE" ] && [ "$BASE" != "$zero" ]; then
+            range="repos/$GITHUB_REPOSITORY/compare/$BASE...$HEAD"
+            files=$(gh api "$range" --jq '.files[].filename') || files=''
+            count=$(printf '%s\n' "$files" | grep -c . || true)
+
+            # 300 is where the compare endpoint stops listing files. A reply
+            # that long may have been cut short, and the file it left out is
+            # exactly the one this is looking for.
+            if [ "$count" -gt 0 ] && [ "$count" -lt 300 ]; then
+              code=false
+              while IFS= read -r path; do
+                case "$path" in
+                  README.md|CLAUDE.md|ROADMAP.md|LICENSE|LICENSE-CONTENT) continue ;;
+                  docs/*|.claude/*) continue ;;
+                esac
+                code=true
+                why="$path"
+                break
+              done <<< "$files"
+            fi
+          fi
+
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+
+          {
+            echo '### Tests'
+            echo
+            if [ "$code" = true ]; then
+              echo "Running both suites, because of \`$why\`."
+            else
+              echo 'Skipped. Everything this changed is prose the build never'
+              echo 'reads and no test opens, so neither suite has an opinion'
+              echo 'about it. The build still runs.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - uses: actions/checkout@v4
+        if: steps.covered.outputs.code == 'true'
 
       - uses: actions/setup-python@v5
+        if: steps.covered.outputs.code == 'true'
         with:
           python-version: '3.12'
 
@@ -58,13 +143,16 @@ jobs:
       # path that does not exist. Nothing is installed with either, so the two
       # versions are free to differ.
       - uses: actions/setup-node@v4
+        if: steps.covered.outputs.code == 'true'
         with:
           node-version: '24'
 
       - name: The build (Python)
+        if: steps.covered.outputs.code == 'true'
         run: python -m unittest discover -t . -s tests/python -v
 
       - name: The tools (JavaScript)
+        if: steps.covered.outputs.code == 'true'
         run: node --test "tests/js/*.test.js"
 
   build:

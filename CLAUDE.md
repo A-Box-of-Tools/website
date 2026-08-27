@@ -39,8 +39,9 @@ and earlier a directory argument works and a glob does not.
 
 **Do not run either suite locally.** They are listed above because they are
 part of the repository, not because they are part of the loop. CI runs both on
-every push and every pull request and the build job needs them, so nothing
-reaches `dist` past a failure — running them here buys an answer that is
+every push and every pull request that touches anything they cover, and the
+build job needs them, so nothing reaches `dist` past a failure — running them
+here buys an answer that is
 already on its way, and the Python suite takes the better part of half an hour
 on Windows because most of its cases build the whole site first. Build, then
 open the page; that is the part CI cannot do for you and the part that finds

@@ -25,8 +25,12 @@ node --test "tests/js/*.test.js"
 ```
 
 `npm test` runs the second one, and is the only thing `package.json` is for —
-see the note in that file. Both run in CI on every push and every pull request,
-and the build will not publish if either fails.
+see the note in that file. Both run in CI on every push and
+every pull request that changes something they could have an opinion about,
+and the build will not publish if either fails. A change confined to the
+repository's own prose — the READMEs, `docs/`, `CLAUDE.md`, `.claude/` — skips
+them; the comment on the `test` job in `.github/workflows/build.yml` says how
+that is decided and why it errs towards running them.
 
 To run one file, or one test:
 
