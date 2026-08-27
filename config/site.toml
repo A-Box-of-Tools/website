@@ -32,7 +32,7 @@ contact_email = "hi@abox.tools"
 # thirty-six tools already here, because a version is a promise about what
 # happens next and inventing a history for it would be neither true nor
 # useful.
-version = "1.0.1"
+version = "1.0.2"
 
 # The one guide that is linked to from inside a sentence rather than from a
 # list. The hub's three guarantees end by pointing at it, so it cannot be moved

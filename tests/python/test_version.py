@@ -159,5 +159,21 @@ class TheMessage(unittest.TestCase):
         self.assertIn('1.3.8', said)
 
 
+class WritingTheVersionBack(unittest.TestCase):
+    """`dotted` is the other half of `read`, and the deploy names a tag with
+    it. A tag that spelled the version differently from config/site.toml would
+    be a tag pointing at a version nobody can look up."""
+
+    def test_three_numbers_come_back_as_they_are_written(self):
+        self.assertEqual(version.dotted((1, 0, 0)), '1.0.0')
+        self.assertEqual(version.dotted((0, 12, 30)), '0.12.30')
+
+    def test_it_round_trips_with_read(self):
+        for text in ('1.0.0', '2.11.5'):
+            with self.subTest(version=text):
+                self.assertEqual(
+                    version.dotted(version.read(f'version = "{text}"')), text)
+
+
 if __name__ == '__main__':
     unittest.main()
