@@ -81,6 +81,18 @@ const parts=[n===1?phrase('share.reader-count.one'):phrase('share.reader-count.m
 if(w>0)parts.push(w===1?phrase('share.knock-count.one'):phrase('share.knock-count.many',{n:w}));
 setStatus(`${parts.join(', ')}. ${phrase('share.closing-note')}`);
 }
+const admitTokens=new Set();
+function admitViewer(id,dc){
+channels.set(id,dc);
+const token=crypto.randomUUID();
+admitTokens.add(token);
+try{
+dc.send(JSON.stringify({type:'token',token}));
+dc.send(payload());
+dc.send(filesMsg());
+}catch{}
+refreshCount();
+}
 function addRequest(id,dc,note){
 const row=document.createElement('div');
 row.className='request';
@@ -92,9 +104,7 @@ admit.textContent=phrase('share.admit');
 admit.onclick=()=>{
 pending.delete(id);
 row.remove();
-channels.set(id,dc);
-try{dc.send(payload());dc.send(filesMsg());}catch{}
-refreshCount();
+admitViewer(id,dc);
 };
 const deny=document.createElement('button');
 deny.type='button';
@@ -237,9 +247,8 @@ pc.ondatachannel=(e)=>{
 const dc=e.channel;
 dc.binaryType='arraybuffer';
 dc.onopen=()=>{
-if(isPrivate)dc.send(JSON.stringify({type:'private'}));
-else{channels.set(from,dc);dc.send(payload());dc.send(filesMsg());}
-refreshCount();
+if(isPrivate){dc.send(JSON.stringify({type:'private'}));refreshCount();}
+else admitViewer(from,dc);
 };
 dc.onmessage=(ev)=>{
 if(typeof ev.data!=='string')return;
@@ -251,6 +260,10 @@ sendQueue.set(from,chain.then(()=>sendFile(dc,String(m.id))).catch(()=>{}));
 return;
 }
 if(m.type==='knock'&&isPrivate&&!channels.has(from)&&!pending.has(from)){
+if(typeof m.token==='string'&&admitTokens.has(m.token)){
+admitViewer(from,dc);
+return;
+}
 addRequest(from,dc,String(m.note??'').slice(0,200));
 }
 };
@@ -332,9 +345,16 @@ $('consent').hidden=true;
 $('retryrow').hidden=false;
 $('view-status').textContent=text;
 }
+let viewerLive=false;
 function view(code){
 $('share').hidden=true;
 $('view').hidden=false;
+let carried=false;
+try{
+const stamp=Number(sessionStorage.getItem(`share-text-carry:${code}`)??0);
+carried=Date.now()-stamp<5*60*1000;
+sessionStorage.removeItem(`share-text-carry:${code}`);
+}catch{}
 const ws=new WebSocket(wsUrl(code,'viewer'));
 let pc=null;
 let dcRef=null;
@@ -415,6 +435,7 @@ rx=null;
 const sharerGone=()=>{
 if(done)return;
 done=true;
+viewerLive=false;
 $('knockrow').hidden=true;
 $('filelist').textContent='';
 rx=null;
@@ -454,7 +475,7 @@ if(connected&&(pc.connectionState==='failed'||pc.connectionState==='closed'))sha
 const dc=pc.createDataChannel('share');
 dc.binaryType='arraybuffer';
 dcRef=dc;
-dc.onopen=()=>{connected=true;};
+dc.onopen=()=>{connected=true;viewerLive=true;};
 dc.onmessage=(ev)=>{
 if(typeof ev.data!=='string'){fileChunk(ev.data);return;}
 const msg=JSON.parse(ev.data);
@@ -462,7 +483,17 @@ if(msg.type==='files'){renderFilelist(msg.list??[]);return;}
 if(msg.type==='file-begin'){fileBegin(msg);return;}
 if(msg.type==='file-end'){fileEnd();return;}
 if(msg.type==='file-gone'){fileGone();return;}
+if(msg.type==='token'){
+try{sessionStorage.setItem(`share-text-token:${code}`,String(msg.token));}catch{}
+return;
+}
 if(msg.type==='private'){
+let token=null;
+try{token=carried?sessionStorage.getItem(`share-text-token:${code}`):null;}catch{}
+if(token!==null){
+dc.send(JSON.stringify({type:'knock',note:'',token}));
+return;
+}
 $('view-status').textContent=phrase('view.private');
 $('knockrow').hidden=false;
 $('knock').focus();
@@ -500,8 +531,12 @@ if(e.data==='pong')return;
 const m=JSON.parse(e.data);
 try{
 if(m.type==='ready'){
+if(carried){
+await dial();
+}else{
 $('view-status').textContent=phrase('view.someone');
 $('consent').hidden=false;
+}
 }else if(m.type==='signal'&&pc){
 if(m.data.sdp)await pc.setRemoteDescription(m.data.sdp);
 else if(m.data.candidate)await pc.addIceCandidate(m.data.candidate);
@@ -608,11 +643,19 @@ const alternates=new Set(
 .map((link)=>new URL(link.href).pathname),
 );
 addEventListener('click',(event)=>{
-if(location.hash==='')return;
 const anchor=event.target.closest('a[href]');
-if(anchor&&anchor.origin===location.origin&&alternates.has(anchor.pathname)){
-anchor.href=anchor.pathname+location.hash;
+if(!anchor||anchor.origin!==location.origin||!alternates.has(anchor.pathname))return;
+if($('share').hidden===false&&$('publish').hidden){
+if(!window.confirm(phrase('share.leave-warning'))){
+event.preventDefault();
+return;
 }
+}
+if(location.hash==='')return;
+if(viewerLive){
+try{sessionStorage.setItem(`share-text-carry:${code}`,String(Date.now()));}catch{}
+}
+anchor.href=anchor.pathname+location.hash;
 },true);
 monitorNetwork();
 registerServiceWorker();
