@@ -138,14 +138,14 @@ body = """
 
 [[privacy]]
 title = "Was Google lädt, und was es nicht bekommt."
-body = """
- Die Werbe- und Messskripte
+body = """ Die Werbe- und Messskripte
       kommen von Google, der Spenden-Button von Buy Me a Coffee. Keines
-      davon bekommt irgendetwas über das, was diese Seite teilt &mdash;
-      weder den Text noch die Dateien, ihre Namen oder Größen, den
-      Link-Namen oder wer sich verbunden hat. Jede Zeile, die den Inhalt
-      berührt, wird von dieser Adresse ausgeliefert und steht im
-      Repository."""
+      davon bekommt den Text, die Dateien, ihre Namen oder Größen oder wer
+      sich verbunden hat. Die Ausnahme ist die Adresse dieser Seite selbst:
+      der Link eines Lesers trägt den Link-Namen, und das Werbeskript liest
+      die Adresse. Eine Freigabe, die für sich bleiben soll, will den
+      Privat-Schalter. Jede Zeile, die den Inhalt berührt, wird von dieser
+      Adresse ausgeliefert und steht im Repository."""
 
 [[howto]]
 title = "Schreiben Sie den Text, oder hängen Sie die Dateien an."

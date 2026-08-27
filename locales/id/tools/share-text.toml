@@ -136,13 +136,14 @@ body = """
 
 [[privacy]]
 title = "Apa yang dimuat Google, dan apa yang tidak diterimanya."
-body = """
- Skrip iklan dan
+body = """ Skrip iklan dan
       pengukuran datang dari Google, tombol donasi dari Buy Me a Coffee.
-      Tidak satu pun menerima apa-apa tentang yang dibagikan halaman ini:
-      bukan teksnya, bukan berkasnya, bukan nama atau ukurannya, bukan nama
-      tautannya, bukan pula siapa yang terhubung. Setiap baris yang
-      menyentuh isi disajikan dari origin ini dan ada di repositori."""
+      Tidak satu pun menerima teksnya, berkasnya, nama atau ukurannya, atau
+      siapa yang terhubung. Pengecualiannya adalah alamat halaman ini
+      sendiri: tautan pembaca memuat nama tautan, dan skrip iklan membaca
+      alamat itu. Berbagi yang layak dirahasiakan memerlukan sakelar privat.
+      Setiap baris yang menyentuh isi disajikan dari origin ini dan ada di
+      repositori."""
 
 [[howto]]
 title = "Tulis teksnya, atau lampirkan berkasnya."

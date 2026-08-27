@@ -176,13 +176,14 @@ body = """
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
-body = """
- The ad and measurement
+body = """ The ad and measurement
       scripts come from Google, and the donate button from Buy Me a Coffee.
-      None of them is handed anything about what this page shares &mdash; not
-      the text, the files, their names or sizes, the link name, or who
-      connected. Every line that touches the content is served from this
-      origin and listed in the repository."""
+      None of them is handed the text, the files, their names or sizes, or
+      who connected. The exception is this page's own address: a reader's
+      link carries the link name in it, and the ad script reads the address.
+      A share worth keeping to yourself wants the private switch. Every line
+      that touches the content is served from this origin and listed in the
+      repository."""
 
 [[howto]]
 title = "Write the text, or attach the files."
