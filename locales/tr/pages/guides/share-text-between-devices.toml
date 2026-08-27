@@ -15,7 +15,7 @@ lede = """
     bırakmayan bir yol var, çünkü hiçbir şey asla saklanmıyor - ve odanın
     öbür ucuna söylenebilecek bir adı olan tek yol da bu."""
 
-updated = "26 Ağustos 2026"
+updated = "27 Ağustos 2026"
 
 og_title = "Cihazlar arası paylaşım, sunucu kopya tutmadan"
 og_description = "Metin ve dosyalar, doğrudan ve şifreli bir bağlantıyla tarayıcıdan tarayıcıya - söylenebilir bir bağlantı adı, hiçbir yerde saklanan bir şey yok ve sekmeyle biten bir paylaşım."

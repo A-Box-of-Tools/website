@@ -16,7 +16,7 @@ lede = """
     jamais stocké - et c'est aussi la seule dont le nom se lance à travers
     une pièce."""
 
-updated = "26 août 2026"
+updated = "27 août 2026"
 
 og_title = "Partager entre appareils, sans qu'un serveur garde de copie"
 og_description = "Du texte et des fichiers d'un navigateur à l'autre par une connexion directe et chiffrée - un nom de lien prononçable, rien de stocké nulle part, et un partage qui s'arrête avec l'onglet."
