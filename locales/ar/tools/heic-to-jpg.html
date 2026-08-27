@@ -81,6 +81,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>حوِّل</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
     </div>
 
     <!--
@@ -114,6 +115,8 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">أُوقف بعد {done} من {total}. ما اكتمل موجود بالأسفل.</span>
+    <span data-phrase="progress.stopped.none">أُوقف قبل أن يكتمل الأول.</span>
     <span data-phrase="offline.ready">جاهزة &mdash; وفاكُّ الترميز مخبَّأ
       كذلك، فهذا يعمل والشبكة مفصولة.</span>
 

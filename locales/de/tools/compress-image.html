@@ -103,6 +103,7 @@
 
     <div class="run-row">
       <button type="button" id="compress-all" class="primary big" disabled>Auf Zielgröße komprimieren</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -162,6 +163,8 @@
     <span data-phrase="format.resize.off">Das Bild behält seine vollen Abmessungen, eine enge Zielgröße muss also allein aus der Qualität bezahlt werden.</span>
     <span data-phrase="format.webp.unavailable">WebP &mdash; von diesem Browser nicht unterstützt</span>
 
+    <span data-phrase="progress.stopped.none">Abgebrochen, bevor das erste fertig war.</span>
+    <span data-phrase="progress.stopped">Nach {done} von {total} abgebrochen. Was fertig wurde, steht unten.</span>
     <span data-phrase="progress.at">{at} von {total}: {name} &mdash; {step}</span>
     <span data-phrase="step.reading">wird gelesen</span>
     <span data-phrase="step.decoding">wird dekodiert</span>

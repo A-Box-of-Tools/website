@@ -100,6 +100,7 @@
 
     <div class="run-row">
       <button type="button" id="compress-all" class="primary big" disabled>목표 용량으로 압축</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -159,6 +160,8 @@
     <span data-phrase="format.resize.off">그림은 원래 크기를 그대로 지키므로, 빠듯한 목표는 화질만으로 치러야 합니다.</span>
     <span data-phrase="format.webp.unavailable">WebP &mdash; 이 브라우저는 지원하지 않습니다</span>
 
+    <span data-phrase="progress.stopped.none">첫 번째가 끝나기 전에 멈췄습니다.</span>
+    <span data-phrase="progress.stopped">{total}개 중 {done}개까지 하고 멈췄습니다. 끝난 것은 아래에 있습니다.</span>
     <span data-phrase="progress.at">{total}개 중 {at}번째: {name} &mdash; {step}</span>
     <span data-phrase="step.reading">읽는 중</span>
     <span data-phrase="step.decoding">디코딩 중</span>

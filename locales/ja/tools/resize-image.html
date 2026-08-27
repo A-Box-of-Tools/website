@@ -217,6 +217,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>画像をリサイズする</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -270,6 +271,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">{total}件のうち{done}件で中止しました。できた分は下にあります。</span>
+    <span data-phrase="progress.stopped.none">最初の1件が終わる前に中止しました。</span>
     <span data-phrase="net.clean">画像はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>

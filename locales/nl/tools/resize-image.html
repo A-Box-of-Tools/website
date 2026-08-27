@@ -234,6 +234,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>De afbeeldingen schalen</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -287,6 +288,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Gestopt na {done} van {total}. Wat af is, staat hieronder.</span>
+    <span data-phrase="progress.stopped.none">Gestopt voordat de eerste af was.</span>
     <span data-phrase="net.clean">Je afbeeldingen zijn nergens heen gegaan.
       {total} bestanden geladen, allemaal van deze site zelf. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

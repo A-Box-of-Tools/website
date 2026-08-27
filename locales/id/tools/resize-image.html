@@ -243,6 +243,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>Ubah ukuran gambarnya</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -296,6 +297,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Dihentikan setelah {done} dari {total}. Yang sudah selesai ada di bawah.</span>
+    <span data-phrase="progress.stopped.none">Dihentikan sebelum yang pertama selesai.</span>
     <span data-phrase="net.clean">gambar Anda tidak pergi ke mana pun. {total}
       file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

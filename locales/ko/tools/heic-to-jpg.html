@@ -83,6 +83,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>변환</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
     </div>
 
     <!--
@@ -116,6 +117,8 @@
     이긴다 - shared/js/phrases.js 참고.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">{total}개 중 {done}개까지 하고 멈췄습니다. 끝난 것은 아래에 있습니다.</span>
+    <span data-phrase="progress.stopped.none">첫 번째가 끝나기 전에 멈췄습니다.</span>
     <span data-phrase="offline.ready">준비됨 &mdash; 디코더까지 함께 저장되므로
       네트워크를 뽑아도 동작합니다.</span>
 

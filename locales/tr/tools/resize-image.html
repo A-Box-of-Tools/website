@@ -238,6 +238,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>Görselleri boyutlandır</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -291,6 +292,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">{total} işten {done} tanesinden sonra durduruldu. Bitenler aşağıda.</span>
+    <span data-phrase="progress.stopped.none">İlki bitmeden durduruldu.</span>
     <span data-phrase="net.clean">görselleriniz hiçbir yere gitmedi. {total}
       dosya yüklendi, hepsi bu sayfanın kendi dosyaları. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

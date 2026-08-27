@@ -84,6 +84,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>Convert</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 
     <!--
@@ -117,6 +118,8 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Stopped after {done} of {total}. What was finished is below.</span>
+    <span data-phrase="progress.stopped.none">Stopped before the first one was finished.</span>
     <span data-phrase="offline.ready">ready &mdash; the decoder is cached too,
       so this works with the network unplugged.</span>
 

@@ -45,6 +45,7 @@ const el = {
   allowResize: $('allow-resize'),
   formatNote: $('format-note'),
   compressAll: $('compress-all'),
+  cancel: $('cancel'),
   progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
@@ -72,6 +73,7 @@ const el = {
 let items = [];
 let nextId = 1;
 let busy = false;
+let stopping = false;
 
 /** Everything the run produced, kept so the rows can be redrawn and the zip
  *  built without compressing anything twice. */
@@ -375,22 +377,32 @@ el.compressAll.addEventListener('click', async () => {
   if (!target || !items.length || busy) return;
 
   busy = true;
+  stopping = false;
   clearResults();
   clearLoadError();
   render();
   el.progress.hidden = false;
+  el.cancel.hidden = false;
 
   const collected = [];
   const failures = [];
+  let stopped = false;
 
   try {
     for (const [index, item] of items.entries()) {
+      if (stopping) { stopped = true; break; }
       showProgress(index, items.length, item.file.name, 'step.reading');
       try {
         collected.push(await compressOne(item, target, (step, values) => {
+          // The search calls back between attempts, so Cancel is felt inside a
+          // picture rather than only between two of them - which on a large
+          // photograph is the difference between stopping and watching it
+          // finish.
+          if (stopping) throw new DOMException('Cancelled', 'AbortError');
           showProgress(index, items.length, item.file.name, step, values);
         }));
       } catch (error) {
+        if (error?.name === 'AbortError') { stopped = true; break; }
         // Through phrase() because compress.js throws the key of a sentence
         // when it gives up. Anything else - a real message from the encoder -
         // is a key phrase() does not know, and comes back out unchanged.
@@ -402,14 +414,28 @@ el.compressAll.addEventListener('click', async () => {
     }
   } finally {
     busy = false;
-    el.progress.hidden = true;
+    stopping = false;
+    el.cancel.hidden = true;
+    // Left up after a stop, so that pressing Cancel and watching the bar
+    // vanish does not read as nothing having happened.
+    el.progress.hidden = !stopped;
     render();
   }
 
+  if (stopped) {
+    el.progressLabel.textContent = collected.length
+      ? phrase('progress.stopped', { done: collected.length, total: items.length })
+      : phrase('progress.stopped.none');
+  }
   if (failures.length) showLoadError(failures.join('\n'));
+  // What finished is kept. One file per picture means a run stopped halfway
+  // still leaves half of them done, and dropping those would be taking work
+  // back off somebody who only asked it to stop.
   results = collected;
   showResults();
 });
+
+el.cancel.addEventListener('click', () => { stopping = true; });
 
 function showProgress(index, total, name, step, values) {
   const done = index / total;

@@ -86,6 +86,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>Umwandeln</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
     </div>
 
     <!--
@@ -120,6 +121,8 @@
     shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Nach {done} von {total} abgebrochen. Was fertig wurde, steht unten.</span>
+    <span data-phrase="progress.stopped.none">Abgebrochen, bevor das erste fertig war.</span>
     <span data-phrase="offline.ready">bereit &mdash; der Decoder ist mit
       zwischengespeichert, das hier funktioniert also auch ohne
       Netzverbindung.</span>

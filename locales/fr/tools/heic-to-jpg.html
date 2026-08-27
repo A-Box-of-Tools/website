@@ -85,6 +85,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>Convertir</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
     </div>
 
     <!--
@@ -119,6 +120,8 @@
     cadre&nbsp;; voir shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Arrêté après {done} sur {total}. Ce qui est terminé est ci-dessous.</span>
+    <span data-phrase="progress.stopped.none">Arrêté avant que le premier soit terminé.</span>
     <span data-phrase="offline.ready">prêt &mdash; le décodeur est mis en cache
       lui aussi, donc ceci fonctionne sans réseau.</span>
 

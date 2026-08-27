@@ -78,6 +78,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>转换</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 
     <!--
@@ -111,6 +112,8 @@
   -->
   <div id="phrases" hidden aria-hidden="true">
     <!-- 不要换行：行首的缩进会变成空格，落在句子中间。 -->
+    <span data-phrase="progress.stopped">在 {total} 个中的第 {done} 个之后停止。已完成的在下面。</span>
+    <span data-phrase="progress.stopped.none">在第一个完成之前就停止了。</span>
     <span data-phrase="offline.ready">已就绪——解码器也一起缓存了，所以拔掉网线这一页照样能用。</span>
 
     <span data-phrase="net.clean">你的照片没有去任何地方。加载了 {total} 个文件，全都是本站自己的——解码器也在其中。{platform}</span>

@@ -231,6 +231,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>이미지 크기 바꾸기</button>
+      <button type="button" id="cancel" class="ghost" hidden>취소</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -284,6 +285,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">{total}개 중 {done}개까지 하고 멈췄습니다. 끝난 것은 아래에 있습니다.</span>
+    <span data-phrase="progress.stopped.none">첫 번째가 끝나기 전에 멈췄습니다.</span>
     <span data-phrase="net.clean">이미지는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이
       사이트의 것입니다. {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다. 살펴볼
