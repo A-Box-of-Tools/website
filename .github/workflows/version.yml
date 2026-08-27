@@ -1,0 +1,54 @@
+#
+# The version rule, checked before a pull request can be merged.
+#
+#   a new tool                          the middle number, last one to zero
+#   anything else a visitor can notice  the last number
+#   tests, CI, documentation            nothing
+#
+# One step per pull request rather than per commit, which is why this runs on
+# the whole branch - base...head - and not on what the last push happened to
+# contain. A branch of six commits is one change to whoever reads the site.
+#
+# The rule itself is buildlib/version.py and is unit tested in
+# tests/python/test_version.py; scripts/check_version.py is the part that talks
+# to git. Keeping the decisions out of this file is deliberate: a rule that
+# only exists inside a workflow can only be tested by opening pull requests
+# against it.
+#
+
+name: Version
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: version-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      # The whole history, because the check compares this branch with the
+      # commit it started from and a shallow clone has neither.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # The rule's own tests run first. If they fail, the verdict below is not
+      # worth reading.
+      - name: The rule's tests
+        run: python -m unittest tests.python.test_version
+
+      - name: Does the version do what this change asks of it?
+        run: |
+          python scripts/check_version.py \
+            "${{ github.event.pull_request.base.sha }}" \
+            "${{ github.event.pull_request.head.sha }}"
