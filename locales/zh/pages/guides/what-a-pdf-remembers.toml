@@ -1,0 +1,24 @@
+#
+# Guide: what a PDF remembers. - Simplified Chinese.
+#
+# Overrides for pages/guides/what-a-pdf-remembers/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of
+# the English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "PDF 都记得些什么"
+
+title = "PDF 都记得些什么"
+description = "作者的名字、它曾经是的那份 Word 文档、批注、附件。有时候，还有它自己每一个旧版本，连删掉的都在。PDF 把记性藏在哪儿，怎么把一份不带履历的 PDF 发出去。"
+
+heading = "PDF 都记得些什么"
+lede = """
+    记得的比页面上多。一份 PDF 通常带着作者的名字、生成它的软件、它变成\
+    PDF 之前是哪份文档。要是用一种很常见的方式编辑过，还带着自己的每一个\
+    旧版本，删掉的也在。这些没有一样会显示在屏幕上。"""
+
+updated = "2026年8月26日"
+
+og_title = "PDF 都记得些什么"
+og_description = "作者的名字、它曾经是的 Word 文档、批注、附件，有时还有它自己的每个旧版本。那份记性住在哪儿，怎么发一份没有记性的 PDF。"
+og_image_alt = "abox.tools - 不走服务器的工具"

@@ -1,0 +1,151 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      A PDF is not a picture of its pages. It is a container, and the pages
+      are only the part of the cargo that gets displayed. Around them the
+      format has room for a document information block, a second XML copy of
+      the same, comments, form data, attached files, and &mdash; through one
+      very common way of saving edits &mdash; complete earlier versions of
+      the document, stacked underneath the current one.
+    </p>
+    <p>
+      None of this is a flaw. Every item was designed for a reasonable job,
+      and inside one organisation most of it is harmless or useful. The
+      problem is the boundary crossing: the moment a PDF leaves &mdash; to a
+      counterparty, a mailing list, a public docket &mdash; everything it
+      remembers goes with it, and what it remembers is not shown on any
+      page. People check what a document says and send what the file
+      contains, and those are different things.
+    </p>
+  </section>
+
+  <section>
+    <h2>The name tag: /Info and the XMP packet</h2>
+    <p>
+      Every PDF may carry a document information dictionary &mdash; author,
+      title, creation and modification dates, and the names of the programs
+      that created and produced it. Most carry a second, richer copy of the
+      same facts as embedded XML, called XMP. Neither is displayed with the
+      pages; both are one properties-panel away.
+    </p>
+    <p>
+      The values are filled in automatically, which is what makes them
+      leaky. <em>Author</em> is typically the account name the operating
+      system was installed with &mdash; a real, full name, on documents
+      people believed were anonymous: job applications, reviews, complaints,
+      bids. <em>Title</em> is routinely the filename of the document the PDF
+      was exported from, so <code>Draft-v7-legal-concerns.docx</code>
+      survives inside the polished PDF that replaced it. The producer line
+      dates the software; the dates contradict cover stories. Whole
+      research papers have been written on what institutional PDFs admit in
+      this block.
+    </p>
+  </section>
+
+  <section>
+    <h2>The undelete: incremental saves</h2>
+    <p>
+      The sharpest item in the container is the one the format is proudest
+      of. PDF supports <em>incremental updates</em>: instead of rewriting
+      the file, an editor may append its changes to the end and leave
+      everything before them untouched. The viewer reads the file from the
+      back and shows the newest version; the older versions are still
+      there, byte for byte, in the same file.
+    </p>
+    <p>
+      Append-only saving is fast and crash-safe, and it means a document
+      edited this way contains its own history. Text that was
+      &ldquo;deleted&rdquo; is not gone; it is superseded, and recovering
+      it is a matter of reading the file as it was before the last append.
+      A black rectangle drawn over a name in an editor that saves
+      incrementally produces a file that contains the name <em>twice</em>
+      &mdash; once under the rectangle, once in the history &mdash; which
+      compounds the failure described in
+      <a href="../can-blacked-out-text-be-recovered/">the redaction
+      guide</a>.
+    </p>
+    <p>
+      The remedy is a full rewrite: open the file, keep what the current
+      version actually uses, write a new file with no past. That is what
+      the <a href="../../compress-pdf/">PDF compressor</a> here does by
+      construction &mdash; a rewrite cannot help but abandon the history,
+      and the tool counts the superseded material it left behind in its
+      size breakdown, which is also the easiest way to discover your file
+      had a history at all.
+    </p>
+  </section>
+
+  <section>
+    <h2>The cargo hold: comments, fields, attachments, layers</h2>
+    <p>
+      The rest of the memory is more ordinary, and leaks anyway:
+    </p>
+    <ul>
+      <li>
+        <strong>Comments and annotations</strong> &mdash; the review
+        conversation, riding along with the reviewed document, visible to
+        whoever thinks to look.
+      </li>
+      <li>
+        <strong>Form fields</strong> keep their filled-in values as data
+        even where a flattened page no longer displays them.
+      </li>
+      <li>
+        <strong>Attachments</strong>: a PDF can embed whole files, of any
+        type, and readers surface them in a side panel most people have
+        never opened. The spreadsheet behind the chart is sometimes
+        attached to the chart.
+      </li>
+      <li>
+        <strong>Optional content layers</strong> can hold page content that
+        is switched off rather than removed &mdash; present in full,
+        displayed never.
+      </li>
+    </ul>
+    <p>
+      Each of these is data the pages do not show, in a file people judge
+      by its pages.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sending a PDF without its memory</h2>
+    <p>
+      The pattern in all of it: what survives is decided by how the file
+      was written, so the fix is to put the file through something that
+      writes forgetfully, on your own machine &mdash; a document's history
+      is exactly the thing not to upload to a stranger's server, a point
+      <a href="../is-it-safe-to-upload-files/">argued in full here</a>.
+      Three tools on this site write PDFs, and all three were built to
+      leave the memory out:
+    </p>
+    <ul>
+      <li>
+        The <a href="../../merge-pdf/">PDF merger &amp; splitter</a> writes
+        output with <strong>no information dictionary at all</strong> - no
+        author, no dates, no line naming the software. What it copies from
+        your originals is what their pages use, not their baggage. There is
+        <a href="../merge-and-split-pdf-files/">a guide</a>.
+      </li>
+      <li>
+        The <a href="../../compress-pdf/">PDF compressor</a> rewrites the
+        file completely &mdash; superseded history abandoned, XMP packet
+        and private application data not kept &mdash; and itemises what it
+        removed. Also <a href="../make-a-pdf-smaller/">with a guide</a>.
+      </li>
+      <li>
+        The <a href="../../redact-pdf/">PDF redactor</a>, for when the
+        memory is the point: it scrubs the information block, the XMP
+        packet, bookmarks, comments, field values and attachments on every
+        run, alongside the redaction itself &mdash;
+        <a href="../redact-a-pdf/">its guide</a> walks through it.
+      </li>
+    </ul>
+    <p>
+      And the acceptance test mirrors the leak: judge the file, not the
+      pages. Open the properties panel and read what is left; search the
+      raw file for a word you removed; look at the compressor's breakdown
+      of what your document was carrying. A PDF with no memory has nothing
+      to confess, no matter who reads it.
+    </p>
+  </section>

@@ -1,0 +1,36 @@
+#
+# Guide: what a PDF remembers.
+#
+# The container guide to go with the redaction guide's contents. Three PDF
+# tools here quietly strip or supersede a document's memory - the merger
+# ships no producer line at all, the compressor's rewrite abandons the
+# file's past versions, the redactor scrubs /Info and the XMP packet on
+# every run - and none of their pages has room to explain what a PDF was
+# remembering in the first place. This page is that explanation.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/what-a-pdf-remembers"
+kind = "guide"
+nav = "What a PDF remembers"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "What a PDF Remembers"
+description = "Author names, the Word file it used to be, comments, attachments - and sometimes every earlier version of itself, deletions included. Where a PDF keeps its memory, and how to send one without its history."
+
+heading = "What a PDF remembers"
+lede = """
+    More than its pages. A PDF routinely carries the name of its author, the
+    software that made it, the file it was before it was a PDF &mdash; and,
+    if it was edited a certain common way, every earlier version of itself,
+    deletions included. None of it shows on screen."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "What a PDF remembers"
+og_description = "Author names, the Word file it used to be, comments, attachments - sometimes every earlier version of itself. Where the memory lives, and how to send a PDF without it."
+og_image_alt = "abox.tools - tools that never touch a server"

@@ -1,0 +1,24 @@
+#
+# Guide: what a PDF remembers. - Traditional Chinese.
+#
+# Overrides for pages/guides/what-a-pdf-remembers/page.toml. Prose in the
+# .html beside this file. Written in Chinese rather than translated out of
+# the English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "PDF 都記得些什麼"
+
+title = "PDF 都記得些什麼"
+description = "作者的名字、它曾經是的那份 Word 文件、註解、附件。有時候，還有它自己每一箇舊版本，連刪掉的都在。PDF 把記性藏在哪裡，怎麼把一份不帶履歷的 PDF 發出去。"
+
+heading = "PDF 都記得些什麼"
+lede = """
+    記得的比頁面上多。一份 PDF 通常帶著作者的名字、產生它的軟體、它變成\
+    PDF 之前是哪份文件。要是用一種很常見的方式編輯過，還帶著自己的每一個\
+    舊版本，刪掉的也在。這些沒有一樣會顯示在螢幕上。"""
+
+updated = "2026年8月26日"
+
+og_title = "PDF 都記得些什麼"
+og_description = "作者的名字、它曾經是的 Word 文件、註解、附件，有時還有它自己的每個舊版本。那份記性住在哪裡，怎麼發一份沒有記性的 PDF。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

@@ -1,0 +1,18 @@
+#
+# Ratgeber: Was ein PDF sich merkt. - German.
+#
+
+nav = "Was ein PDF sich merkt"
+title = "Was ein PDF sich merkt"
+description = "Autorennamen, die Word-Datei, die es einmal war, Kommentare, Anhänge - und manchmal jede frühere Fassung seiner selbst, Löschungen eingeschlossen. Wo ein PDF sein Gedächtnis aufbewahrt, und wie man eines ohne seine Geschichte verschickt."
+heading = "Was ein PDF sich merkt"
+lede = """
+    Mehr als seine Seiten. Ein PDF trägt routinemäßig den Namen seines
+    Autors, die Software, die es erzeugte, die Datei, die es war, bevor es
+    ein PDF wurde &mdash; und, wenn es auf eine bestimmte verbreitete Art
+    bearbeitet wurde, jede frühere Fassung seiner selbst, Löschungen
+    eingeschlossen. Nichts davon erscheint auf dem Bildschirm."""
+updated = "26. August 2026"
+og_title = "Was ein PDF sich merkt"
+og_description = "Autorennamen, die Word-Datei, die es war, Kommentare, Anhänge - manchmal jede frühere Fassung seiner selbst. Wo das Gedächtnis wohnt, und wie ein PDF ohne es verschickt wird."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"
