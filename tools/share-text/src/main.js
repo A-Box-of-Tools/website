@@ -635,6 +635,108 @@ $('copytext').addEventListener('click', () => {
 
 $('retry').addEventListener('click', () => location.reload());
 
+/* ----------------------------------------------------- the frame's panels */
+
+$('privacy-toggle').addEventListener('click', () => {
+  const panel = $('privacy-panel');
+  const open = panel.hidden;
+  panel.hidden = !open;
+  $('privacy-toggle').setAttribute('aria-expanded', String(open));
+});
+
+const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
+const RENDEZVOUS_HOST = new URL(RENDEZVOUS.replace('wss:', 'https:')).hostname;
+
+/**
+ * Report what this page has actually fetched.
+ *
+ * The claim on trial here is sharper than on the rest of the site: this page
+ * does talk to a server, and says so. What must still be true is that no
+ * request carried the content - the rendezvous WebSocket ferries only the
+ * introduction, and everything else on the wire is the frame's own ads and
+ * measurement.
+ */
+function monitorNetwork() {
+  const platform = new Set();
+  const external = new Set();
+
+  const inspect = (entries) => {
+    for (const entry of entries) {
+      if (entry.name.startsWith('blob:') || entry.name.startsWith('data:')) continue;
+      const url = new URL(entry.name, location.href);
+      if (url.origin === location.origin) continue;
+      if (url.hostname === RENDEZVOUS_HOST) continue; // the introduction, declared on this page
+      if (PLATFORM_HOSTS.test(url.hostname)) platform.add(url.hostname);
+      else external.add(url.hostname);
+    }
+    const total = performance.getEntriesByType('resource')
+      .filter((entry) => !entry.name.startsWith('blob:') && !entry.name.startsWith('data:')).length;
+
+    const clean = external.size === 0;
+    const platformNote = platform.size === 0
+      ? ''
+      : ` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
+        + `host${platform.size === 1 ? '' : 's'}; not one of them was given a character of it.`;
+
+    $('network-count').textContent = clean
+      ? `what this page shares has gone through no server. ${total} files loaded.${platformNote}`
+      : `something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+
+    $('network-count').className = clean ? 'good' : 'warn';
+    $('network-dot').className = `live-dot ${clean ? 'good' : 'warn'}`;
+  };
+
+  inspect(performance.getEntriesByType('resource'));
+  try {
+    new PerformanceObserver((list) => inspect(list.getEntries()))
+      .observe({ type: 'resource', buffered: true });
+  } catch {
+    // PerformanceObserver is unavailable; the one-time snapshot above stands.
+  }
+}
+
+async function registerServiceWorker() {
+  const fail = (message, detail) => {
+    $('offline-status').textContent = message;
+    $('offline-dot').className = 'live-dot';
+    if (detail) {
+      $('offline-status').title = detail;
+      console.info('Offline caching unavailable:', detail);
+    }
+  };
+
+  if (!('serviceWorker' in navigator)) {
+    fail(phrase('offline.none'));
+    return;
+  }
+  if (!window.isSecureContext) {
+    fail(phrase('offline.insecure'));
+    return;
+  }
+
+  try {
+    await navigator.serviceWorker.register('sw.js');
+    await navigator.serviceWorker.ready;
+    $('offline-status').textContent = phrase('offline.ready');
+    $('offline-status').className = 'good';
+    $('offline-dot').className = 'live-dot good';
+  } catch (error) {
+    fail(phrase('offline.failed'), error.message);
+  }
+}
+
+// An error thrown after boot would otherwise only reach the console, leaving
+// the page looking functional but doing nothing. Whichever half is showing
+// carries the message.
+function bootError(detail) {
+  const target = $('share').hidden ? $('view-status') : $('status');
+  target.hidden = false;
+  target.classList.add('warn');
+  target.textContent = phrase('error.broke', { detail });
+}
+window.addEventListener('error', (event) => bootError(event.message));
+window.addEventListener('unhandledrejection', (event) => bootError(event.reason?.message ?? event.reason));
+
 /* --------------------------------------------------------------- routing */
 
 const code = location.hash.replace(/^#/, '').toLowerCase();
@@ -645,3 +747,27 @@ else { suggest(); restore(); }
 // hash navigation never reloads the document on its own - so make it, or
 // the page stays frozen on whatever the last share ended as.
 addEventListener('hashchange', () => location.reload());
+
+// The language switcher links to this page's siblings, and a fragment never
+// survives a plain navigation - so a reader who switched language landed on
+// the sharer's empty editor. Carry the share name across instead. Compared
+// by pathname, because the head's alternate links carry the deployed
+// domain and the switcher's anchors resolve against wherever the page is
+// actually being served from.
+const alternates = new Set(
+  [...document.querySelectorAll('link[rel="alternate"][hreflang]')]
+    .map((link) => new URL(link.href).pathname),
+);
+addEventListener('click', (event) => {
+  if (location.hash === '') return;
+  const anchor = event.target.closest('a[href]');
+  if (anchor && anchor.origin === location.origin && alternates.has(anchor.pathname)) {
+    anchor.href = anchor.pathname + location.hash;
+  }
+}, true);
+
+monitorNetwork();
+registerServiceWorker();
+
+// Reached only if every step above ran without throwing.
+document.getElementById('boot-warning')?.remove();

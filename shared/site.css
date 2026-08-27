@@ -360,7 +360,9 @@ code {
    one of the parts the build assembles. If one changes, change the other.
 
    Legal pages are passed an empty trail and never render the element, so these
-   rules apply to guides and to nothing else. */
+   rules apply to guides and to nothing else. On a guide the trail sits inside
+   the header, under the site mark - the scoped rule below adjusts the spacing
+   for that position and leaves this base copy identical to the tool page's. */
 
 .crumbs {
   display: flex;
@@ -380,8 +382,9 @@ code {
    mirrored rather than reworded when the trail itself reads the other way. */
 [dir="rtl"] .crumbs [aria-hidden="true"] { display: inline-block; transform: scaleX(-1); }
 
-/* A guide with a crumb above it does not also need the header's usual gap. */
-.crumbs + .hub-head { padding-top: 1.5rem; }
+/* Between the brand row and the heading, the base rule's padding-top would
+   read as a gap in the wrong place; the room it needs goes below instead. */
+.hub-head .crumbs { padding-top: 0; margin: 0 0 0.9rem; }
 
 .legal-date {
   margin: 1rem 0 0;
