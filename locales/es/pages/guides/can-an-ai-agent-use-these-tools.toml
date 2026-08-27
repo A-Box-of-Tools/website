@@ -1,0 +1,18 @@
+#
+# Guía: ¿puede un agente de IA usar estas herramientas? - Spanish.
+#
+
+nav = "¿Puede un agente de IA usar estas herramientas?"
+title = "¿Puede un agente de IA usar estas herramientas?"
+description = "Sí: son páginas web corrientes, sin cuentas y con los controles etiquetados, y un agente las maneja como cualquier otra cosa. Lo que importa es dónde corre el navegador del agente, porque eso decide si tu archivo sigue en tu máquina."
+heading = "¿Puede un agente de IA usar estas herramientas?"
+lede = """
+    Sí. Son páginas web corrientes, sin cuentas, sin captchas y con todos
+    los controles etiquetados, y un agente las maneja como maneja todo lo
+    demás. La pregunta que merece una página es la de detrás: cuando le
+    encargas una tarea con archivos a un agente, ¿adónde va el archivo? La
+    respuesta depende por entero de dónde corre el navegador del agente."""
+updated = "27 de agosto de 2026"
+og_title = "¿Puede un agente de IA usar estas herramientas?"
+og_description = "Páginas web corrientes, controles etiquetados, ninguna cuenta: así que sí. Lo que importa es dónde corre el navegador del agente, porque eso decide si tu archivo sigue en tu máquina."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

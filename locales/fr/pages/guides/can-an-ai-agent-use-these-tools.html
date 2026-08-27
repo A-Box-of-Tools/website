@@ -1,0 +1,171 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Oui. Chaque outil ici est une page web ordinaire&nbsp;: un sélecteur
+      de fichier, quelques commandes étiquetées, un bouton de
+      téléchargement. Il n'y a aucun compte où se connecter, aucun captcha à
+      résoudre, aucune étape qui exige un humain en particulier. Un agent IA
+      muni d'un navigateur pilote ces pages comme il pilote n'importe
+      quelle autre &mdash; et plusieurs choses que ce site fait déjà pour
+      les personnes servent aux agents par surcroît&nbsp;; la dernière
+      section en fait la liste.
+    </p>
+    <p>
+      Mais &laquo;&nbsp;peut-il appuyer sur les boutons&nbsp;&raquo; est la
+      petite question. Celle qui mérite une page&nbsp;: que devient la
+      promesse de ce site &mdash; <em>votre fichier ne quitte jamais votre
+      machine</em> &mdash; quand la machine qui appuie sur les boutons n'est
+      pas vous&nbsp;? La réponse est que la promesse survit parfaitement à
+      la délégation, ou pas du tout, selon une seule chose&nbsp;:
+      <strong>l'endroit où tourne le navigateur de l'agent.</strong>
+    </p>
+  </section>
+
+  <section>
+    <h2>Deux sortes d'agents, une distinction</h2>
+    <p>
+      Les agents qui se servent d'outils viennent en deux formes, et la
+      différence entre elles pèse plus que tout le reste de cette page.
+    </p>
+    <p>
+      <strong>Un agent local</strong> tourne sur votre machine&nbsp;: un
+      assistant installé sur votre ordinateur, ou un agent qui conduit le
+      navigateur que vous avez sous les yeux. Quand un agent de cette sorte
+      ouvre un outil ici et lui tend votre fichier, le travail se fait là où
+      il se fait toujours avec ces pages &mdash; dans un navigateur, sur
+      votre matériel. Le fichier est lu depuis votre disque, traité dans la
+      mémoire de votre navigateur, réécrit sur votre disque. La délégation
+      n'a rien changé au chemin des octets. Une IA a choisi les
+      réglages&nbsp;; le fichier, lui, n'est jamais parti.
+    </p>
+    <p>
+      <strong>Un agent en nuage</strong> fait tourner un navigateur sur
+      l'ordinateur de son fournisseur. Vous joignez un fichier à une
+      conversation, l'agent travaille dans une machine virtuelle quelque
+      part ailleurs, et tout ce qu'il fait avec ces outils se passe là-bas.
+      Les outils tiennent encore exactement leur promesse &mdash; le fichier
+      ne va pas plus loin que le navigateur où il se trouve &mdash; mais ce
+      navigateur n'est pas le vôtre, et l'envoi a déjà eu lieu à l'instant
+      où vous avez joint le fichier, avant qu'aucun outil ne soit ouvert.
+      Aucune page ne peut défaire un envoi qui l'a précédée.
+    </p>
+    <p>
+      La question que ce site pose sans cesse &mdash; ce travail exige-t-il
+      que mon fichier parte&nbsp;? &mdash; ne disparaît donc pas quand un
+      agent fait le travail. Elle recule d'un cran, vers le choix de
+      l'agent. Un agent local pilotant un outil qui tient tout entier dans
+      le navigateur est l'arrangement rare où déléguer ne coûte aucune vie
+      privée&nbsp;: l'IA fait le travail, et le fichier reste à la maison.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comment confier une tâche à un agent</h2>
+    <p>
+      Les agents travaillent mieux avec le même brief qu'un collègue&nbsp;:
+      l'outil, le fichier, et à quoi ressemble le travail fini. Quelques
+      schémas qui marchent&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Nommez le résultat, pas seulement l'outil.</strong>
+        &laquo;&nbsp;Ouvre abox.tools/compresser-une-image/ et fais passer
+        cette photo sous 200&nbsp;Ko&nbsp;&raquo; donne à l'agent le chiffre
+        que la page demandera. Le
+        <a href="../../compresser-une-image/">compresseur d'images</a>
+        prend une taille cible par son nom &mdash; exactement le genre de
+        consigne qu'un agent peut porter fidèlement.
+      </li>
+      <li>
+        <strong>Montrez-lui la carte.</strong> Ce site publie
+        <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
+        &mdash; chaque outil et chaque guide, avec une ligne de description
+        chacun, en texte brut et en une seule requête. Un agent qui le lit
+        sait ce qui existe ici sans rien parcourir.
+      </li>
+      <li>
+        <strong>Laissez-le lire la page où il se trouve.</strong> Chaque
+        outil porte ses questions et ses réponses dans la page même, et
+        chaque outil a son guide à un lien de distance. À un agent qui
+        semble hésiter sur un réglage, on peut dire de lire d'abord le
+        guide &mdash; le conseil qu'on donnerait à une personne.
+      </li>
+      <li>
+        <strong>Les chaînes fonctionnent.</strong> Les travaux que les
+        guides d'enchaînement de ce site décrivent aux personnes &mdash;
+        numériser puis assembler en
+        <a href="../../images-en-pdf/">PDF</a>&nbsp;; retirer les données
+        <a href="../../supprimer-les-donnees-exif/">EXIF</a> puis
+        redimensionner &mdash; sont ceux où les agents excellent, parce que
+        la sortie de chaque étape est l'entrée de la suivante et que rien
+        entre les deux ne demande de jugement.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Ce qu'il ne faut pas déléguer</h2>
+    <p>
+      Un agent peut piloter chaque outil d'ici. À deux endroits, piloter
+      n'est pas tout le travail, et le reste devrait demeurer chez vous.
+    </p>
+    <p>
+      <strong>Décider ce qui ne doit pas être vu.</strong> Les outils de
+      caviardage suppriment ce que vous couvrez &mdash; mais choisir quoi
+      couvrir, c'est cela, le travail, et un agent qui manque une ligne a
+      produit un fichier qui a l'air fini et ne l'est pas. Laissez un agent
+      manœuvrer le caviardeur si vous voulez&nbsp;; regardez le résultat
+      vous-même avant qu'il n'aille où que ce soit &mdash; la règle même que
+      les guides de ces outils donnent à l'opérateur humain.
+    </p>
+    <p>
+      <strong>Ouvrir ce qui a été lu.</strong> Le lecteur de QR codes de ce
+      site refuse d'ouvrir ce qu'il décode, parce que lire et suivre sont
+      deux actes différents. La même séparation vaut d'être imposée à un
+      agent&nbsp;: un agent qui lit un code, un lien ou une adresse dans un
+      fichier doit la rapporter, pas la visiter. Et un agent qui conduit
+      votre propre navigateur tient tout ce à quoi ce navigateur est
+      connecté &mdash; une raison de le regarder avec le même œil critique
+      que n'importe quel outil, ce qui est l'objet de la section suivante.
+    </p>
+  </section>
+
+  <section>
+    <h2>Un agent aussi peut vérifier la promesse</h2>
+    <p>
+      Les quatre vérifications que le guide sur
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">l'envoi de
+      fichiers</a> enseigne &mdash; débrancher, regarder l'onglet Réseau,
+      lire la Content-Security-Policy, lire le code &mdash; sont toutes à la
+      portée d'un agent, et elles lui sont même plus faciles qu'à une
+      personne&nbsp;: lire un en-tête CSP ou chercher les appels à
+      <code>fetch</code> dans le source servi est un travail mécanique. Si
+      vous faites vérifier les outils par un agent avant de leur faire
+      confiance, ce site s'attend à être vérifié de la même façon &mdash; et
+      le comportement hors ligne sur lequel reposent ces vérifications a
+      <a href="../comment-une-page-web-peut-elle-fonctionner-hors-ligne/">sa
+      propre page</a>.
+    </p>
+    <p>
+      Ce que ce site fait pour un agent, il le fait exprès et pour tout le
+      monde&nbsp;: chaque commande est étiquetée, parce que les lecteurs
+      d'écran ont besoin de noms et qu'un agent lit les mêmes noms&nbsp;;
+      les pages n'ont ni comptes, ni fenêtres surgissantes, ni murs de
+      consentement à contourner&nbsp;; le source est public et servi sans
+      étape de compilation, si bien que le code qu'un agent audite est le
+      code qui tourne&nbsp;; et
+      <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
+      est toute la boîte en une requête. Rien de tout cela n'a été ajouté
+      pour les machines. Une page lisible pour une personne équipée d'un
+      lecteur d'écran se révèle lisible pour tout le reste aussi.
+    </p>
+    <p>
+      Une limite honnête&nbsp;: cette page parle des agents qui utilisent
+      ces outils, pas des agents eux-mêmes. Ce que voit le fournisseur d'un
+      agent &mdash; vos consignes, vos captures d'écran, parfois vos
+      fichiers &mdash; est une question à part, et l'habitude à laquelle ce
+      groupe de guides revient sans cesse est le bon prisme pour elle
+      aussi&nbsp;: demandez-vous ce qui doit réellement quitter votre
+      machine, et dans quel état.
+    </p>
+  </section>

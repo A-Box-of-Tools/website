@@ -169,6 +169,7 @@ complete = true
 "guides/does-converting-a-photo-remove-its-metadata" = "rehberler/fotograf-donusturmek-ust-veriyi-siler-mi"
 "guides/how-can-a-web-page-work-offline" = "rehberler/bir-web-sayfasi-cevrimdisi-nasil-calisir"
 "guides/whats-inside-a-dicom-file" = "rehberler/bir-dicom-dosyasinin-icinde-ne-var"
+"guides/can-an-ai-agent-use-these-tools" = "rehberler/yapay-zeka-ajani-bu-araclari-kullanabilir-mi"
 
 #
 # ---------------------------------------------------------------------------

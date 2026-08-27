@@ -1,0 +1,153 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Yes. Every tool here is an ordinary web page: a file picker, some
+      labelled controls, a download button. There is no account to sign into,
+      no captcha to solve, no step that needs a human in particular. An AI
+      agent with a browser drives these pages the way it drives any other
+      &mdash; and several things this site already does for people turn out
+      to serve agents for free, which the last section lists.
+    </p>
+    <p>
+      But &ldquo;can it press the buttons&rdquo; is the small question. The
+      one worth a page is what happens to the site's promise &mdash;
+      <em>your file never leaves your machine</em> &mdash; when the machine
+      pressing the buttons is not you. The answer is that the promise
+      survives delegation perfectly, or not at all, depending on one thing:
+      <strong>where the agent's browser is running.</strong>
+    </p>
+  </section>
+
+  <section>
+    <h2>Two kinds of agent, one distinction</h2>
+    <p>
+      Agents that use tools come in two shapes, and the difference between
+      them matters more than anything else on this page.
+    </p>
+    <p>
+      <strong>A local agent</strong> runs on your machine: an assistant
+      installed on your computer, or one steering the browser you are looking
+      at. When an agent like that opens a tool here and hands it your file,
+      the work happens where the work always happens with these pages &mdash;
+      in a browser, on your hardware. The file is read from your disk,
+      processed in your browser's memory, and written back to your disk.
+      Nothing about the delegation changed the path the bytes take. An AI
+      chose the settings; the file still never left.
+    </p>
+    <p>
+      <strong>A cloud agent</strong> runs a browser on its vendor's computer.
+      You attach a file to a chat, the agent works in a virtual machine
+      somewhere else, and whatever it does with these tools happens there.
+      The tools still behave exactly as promised &mdash; the file goes no
+      further than the browser it is in &mdash; but that browser is not
+      yours, and the upload already happened at the moment you attached the
+      file, before any tool was opened. No page can undo an upload that
+      preceded it.
+    </p>
+    <p>
+      So the question this site keeps asking &mdash; does this job need my
+      file to leave at all? &mdash; does not disappear when an agent does the
+      job. It just moves one step earlier, to the choice of agent. A local
+      agent driving a browser-only tool is the rare arrangement where
+      delegation costs no privacy at all: the AI does the work, and the file
+      stays home.
+    </p>
+  </section>
+
+  <section>
+    <h2>How to hand a job to an agent</h2>
+    <p>
+      Agents do best with the same brief a colleague would want: the tool,
+      the file, and what done looks like. Some patterns that work:
+    </p>
+    <ul>
+      <li>
+        <strong>Name the outcome, not just the tool.</strong> &ldquo;Open
+        abox.tools/compress-image/ and get this photo under 200&nbsp;KB&rdquo;
+        gives the agent the number the page will ask for. The
+        <a href="../../compress-image/">image compressor</a> takes a target
+        size by name, which is exactly the kind of instruction an agent can
+        carry faithfully.
+      </li>
+      <li>
+        <strong>Point it at the map.</strong> This site publishes
+        <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
+        &mdash; every tool and guide, with a one-line description each, as
+        plain text in a single fetch. An agent that reads it knows what
+        exists here without crawling anything.
+      </li>
+      <li>
+        <strong>Let it read the page it is on.</strong> Every tool carries
+        its questions and answers in the page itself, and every tool has a
+        guide a link away. An agent that seems unsure of a setting can be
+        told to read the guide first, the same advice a person would get.
+      </li>
+      <li>
+        <strong>Chains work.</strong> The jobs this site's workflow guides
+        describe for people &mdash; scan, then combine into a
+        <a href="../../images-to-pdf/">PDF</a>; strip
+        <a href="../../exif-editor/">EXIF</a>, then resize &mdash; are the
+        jobs agents are best at, because each step's output is the next
+        step's input and nothing in between needs judgement.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What not to delegate</h2>
+    <p>
+      An agent can drive every tool here. There are two places where driving
+      is not the whole job, and the remainder should stay with you.
+    </p>
+    <p>
+      <strong>Deciding what must not be seen.</strong> The redaction tools
+      delete what you cover &mdash; but choosing what to cover is the job,
+      and an agent that misses one line has produced a file that looks
+      finished and is not. Let an agent operate a redactor if you like;
+      look at the result yourself before it goes anywhere, the same rule
+      those tools' own guides give a human operator.
+    </p>
+    <p>
+      <strong>Opening what was read.</strong> This site's QR reader refuses
+      to open what it decodes, because reading and following are different
+      acts. The same separation is worth imposing on an agent: an agent that
+      reads a code, a link or an address in a file should report it, not
+      visit it. And an agent steering your own browser is holding whatever
+      that browser is signed into &mdash; a reason to give it the same
+      squint you give any tool, which is the next section.
+    </p>
+  </section>
+
+  <section>
+    <h2>An agent can check the promise too</h2>
+    <p>
+      The four checks the <a href="../is-it-safe-to-upload-files/">upload
+      guide</a> teaches &mdash; pull the plug, watch the Network tab, read
+      the Content-Security-Policy, read the code &mdash; are all things an
+      agent can run, and they are actually easier for an agent than for a
+      person: reading a CSP header or searching served source for
+      <code>fetch</code> calls is mechanical work. If you use an agent to
+      vet tools before trusting them, this site expects to be vetted the
+      same way, and the offline behaviour the checks rely on has
+      <a href="../how-can-a-web-page-work-offline/">a page of its own</a>.
+    </p>
+    <p>
+      What this site does for an agent, it does on purpose and for everyone:
+      every control is labelled, because screen readers need names and an
+      agent reads the same names; the pages carry no accounts, no popups and
+      no consent walls to steer around; the source is public and served
+      without a build step, so the code an agent audits is the code that
+      runs; and <a href="/llms.txt" target="_blank" rel="noopener noreferrer">llms.txt</a>
+      is the whole box in one fetch. None of that was added for machines.
+      A page that is legible to a person with a screen reader turns out to
+      be legible to everything else as well.
+    </p>
+    <p>
+      One honest limit: this page is about agents using these tools, not
+      about the agents themselves. What an agent's own vendor sees &mdash;
+      your instructions, your screenshots, sometimes your files &mdash; is a
+      separate question, and the habit this whole group of guides keeps
+      arriving at is the right lens for it too: ask what actually needs to
+      leave your machine, and in what state.
+    </p>
+  </section>

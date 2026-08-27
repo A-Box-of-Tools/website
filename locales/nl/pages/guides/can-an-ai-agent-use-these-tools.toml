@@ -1,0 +1,18 @@
+#
+# Gids: kan een AI-agent deze tools gebruiken? - Dutch.
+#
+
+nav = "Kan een AI-agent deze tools gebruiken?"
+title = "Kan een AI-agent deze tools gebruiken?"
+description = "Ja - het zijn gewone webpagina's zonder accounts en met benoemde knoppen, en een agent bedient ze zoals al het andere. Wat telt is waar de browser van de agent draait: dat bepaalt of je bestand op je eigen machine blijft."
+heading = "Kan een AI-agent deze tools gebruiken?"
+lede = """
+    Ja. Het zijn gewone webpagina's, zonder accounts, zonder captcha's en
+    met elke knop benoemd, en een agent bedient ze zoals hij al het andere
+    bedient. De vraag die een pagina verdient zit erachter: als je een
+    bestandsklusje aan een agent geeft, waar gaat het bestand dan heen? Het
+    antwoord hangt volledig af van waar de browser van de agent draait."""
+updated = "27 augustus 2026"
+og_title = "Kan een AI-agent deze tools gebruiken?"
+og_description = "Gewone webpagina's, benoemde knoppen, geen accounts: dus ja. Wat telt is waar de browser van de agent draait - dat bepaalt of je bestand op je eigen machine blijft."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

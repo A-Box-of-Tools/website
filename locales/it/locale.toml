@@ -154,6 +154,7 @@ complete = true
 "guides/does-converting-a-photo-remove-its-metadata" = "guide/convertire-una-foto-ne-rimuove-i-metadati"
 "guides/how-can-a-web-page-work-offline" = "guide/come-fa-una-pagina-web-a-funzionare-offline"
 "guides/whats-inside-a-dicom-file" = "guide/cosa-c-e-dentro-un-file-dicom"
+"guides/can-an-ai-agent-use-these-tools" = "guide/un-agente-ia-puo-usare-questi-strumenti"
 
 #
 # ---------------------------------------------------------------------------
