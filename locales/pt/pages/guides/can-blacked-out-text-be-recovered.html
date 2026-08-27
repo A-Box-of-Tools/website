@@ -1,0 +1,163 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Desconfortavelmente muitas vezes, sim. Não com perícia forense:
+      selecionando a área coberta e apertando copiar. A maioria das
+      ferramentas a que as pessoas recorrem quando algo precisa ser
+      escondido desenha um retângulo <em>por cima</em> do conteúdo e o
+      salva <em>ao lado</em> dele, e tudo o que está embaixo viaja no
+      arquivo, pacientemente, até alguém olhar.
+    </p>
+    <p>
+      Não é um erro raro de gente desleixada. Ele já publicou nomes de
+      autos judiciais, números sem tarja de relatórios oficiais &mdash; e,
+      numa liberação em massa de documentos de um caso em dezembro de
+      2025, nomes cobertos de preto que estavam legíveis em questão de
+      horas. As pessoas por trás desses erros tinham advogados e
+      processos. O que não tinham é a distinção de que esta página trata:
+      a diferença entre cobrir e remover.
+    </p>
+  </section>
+
+  <section>
+    <h2>O retângulo que é um objeto</h2>
+    <p>
+      Num leitor de PDF, num editor de texto, num programa de slides ou
+      num editor de imagens com camadas, uma caixa preta desenhada não é
+      tinta. É um <em>objeto</em>: uma forma com posição, tamanho e cor,
+      guardada no arquivo como coisa própria, na frente de um texto que
+      continua inteiramente presente. O documento não diz &ldquo;esta
+      palavra se foi&rdquo;; diz &ldquo;esta palavra está aqui, e há um
+      retângulo na frente dela&rdquo;.
+    </p>
+    <p>
+      Tudo decorre daí. Selecione a área e copie, e a área de
+      transferência recebe o texto, porque copiar lê a camada de texto e
+      ignora a decoração na frente. Abra o arquivo num editor e o
+      retângulo simplesmente sai do lugar. Exporte para outro formato e as
+      camadas podem ser achatadas em outra ordem. Na tela, a caixa é
+      idêntica a uma tarja de verdade, e é exatamente por isso que o erro
+      sobrevive à revisão: o olho confere a página, e a página parece
+      certa.
+    </p>
+    <p>
+      O PDF acrescenta uma variante mais silenciosa. Um PDF pode declarar
+      que uma sequência de glifos &ldquo;soletra&rdquo; algo diferente do
+      que está desenhado &mdash; um recurso de acessibilidade chamado
+      <code>/ActualText</code> &mdash; e copiar lê a declaração em vez da
+      tinta. Um documento pode, portanto, vazar uma palavra que nem sequer
+      está visível na página.
+    </p>
+  </section>
+
+  <section>
+    <h2>O borrão que é aritmética</h2>
+    <p>
+      Pixelizar parece mais seguro do que é. Um mosaico é uma grade de
+      médias, e uma média é uma <em>medição</em> do que estava embaixo:
+      pequena e com perdas, mas medição mesmo assim. Para texto numa fonte
+      conhecida, num tamanho previsível, isso já bastou para lê-lo de
+      volta: pegar cada sequência plausível, desenhá-la, pixelizá-la do
+      mesmo jeito, e ficar com a candidata cujo mosaico bate. Nada disso
+      exige laboratório; é um laço e uma comparação.
+    </p>
+    <p>
+      O desfoque é pior em princípio. Um desfoque é uma convolução &mdash;
+      cada pixel de saída, uma média ponderada dos vizinhos &mdash; e
+      convoluções se desfazem bem o bastante, com frequência suficiente,
+      para a deconvolução ser ferramenta comum da fotografia, não um
+      ataque exótico. Os dois efeitos ainda compartilham uma falha que não
+      tem nada de matemática: eles anunciam que algo está escondido e
+      aproximadamente o comprimento desse algo &mdash; o que, para uma
+      senha de seis caracteres, já é uma pista.
+    </p>
+    <p>
+      Um preenchimento chapado não tem nenhuma dessas propriedades. Uma
+      cor só, de borda a borda, não carrega medição de coisa alguma. Por
+      isso ele é o padrão da ferramenta de
+      <a href="../../tarjar-imagem/">tarjar imagem</a> daqui, por isso as
+      opções de pixelizar e desfocar dizem no próprio rótulo o que não
+      prometem, e por isso o controle de intensidade informa um número em
+      vez de um adjetivo.
+    </p>
+  </section>
+
+  <section>
+    <h2>As cópias que um arquivo guarda do próprio passado</h2>
+    <p>
+      A terceira família de falhas não tem nada que ver com a cobertura.
+      Arquivos lembram, de jeitos que nada na tela mostra:
+    </p>
+    <ul>
+      <li>
+        <strong>Os metadados de uma foto costumam incluir uma
+        miniatura</strong> da imagem como ela era antes da edição. Recorte
+        seu endereço para fora de uma foto, e o bloco EXIF ainda pode
+        guardar o original inteiro em miniatura. O
+        <a href="../../remover-dados-exif/">visualizador e removedor de
+        EXIF</a> mostra esse bloco e o tira; há
+        <a href="../remover-dados-exif-e-gps/">um guia</a>.
+      </li>
+      <li>
+        <strong>Alguns editores salvam no lugar, sem truncar.</strong> Um
+        famoso par de defeitos de 2023 &mdash; na ferramenta de marcação
+        de capturas de um telefone e na de recorte de um sistema de
+        desktop &mdash; deixava os bytes da imagem original dentro do
+        arquivo depois do corte, de modo que a parte &ldquo;cortada
+        fora&rdquo; podia ser reconstruída das sobras.
+      </li>
+      <li>
+        <strong>PDFs podem carregar a própria história.</strong> Um PDF
+        editado com salvamentos incrementais anexa as mudanças ao fim do
+        arquivo e deixa a versão anterior intacta lá dentro, exclusões
+        incluídas.
+      </li>
+    </ul>
+    <p>
+      O fio comum: o que um visualizador mostra e o que um arquivo contém
+      são perguntas diferentes, e uma tarja conferida só no olho respondeu
+      apenas à primeira.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que remover exige de verdade</h2>
+    <p>
+      Uma tarja de verdade muda os dados, não a exibição, e se confere
+      pelo mesmo caminho por onde pode falhar: perguntando ao arquivo, não
+      à tela.
+    </p>
+    <p>
+      Para uma imagem, isso significa que os pixels sob a caixa deixam de
+      existir antes de qualquer arquivo ser escrito. É exatamente o que a
+      ferramenta de <a href="../../tarjar-imagem/">tarjar imagem</a> faz:
+      os valores cobertos são sobrescritos na memória e só então entregues
+      ao codificador, de modo que a saída contém pixels pretos onde o
+      conteúdo estava, não tinta preta na frente. A versão passo a passo
+      está no <a href="../tarjar-uma-imagem/">guia de tarjar uma
+      imagem</a>.
+    </p>
+    <p>
+      Para um PDF, significa que os glifos são apagados das instruções que
+      desenham a página, junto com os portadores escondidos: declarações
+      <code>/ActualText</code>, marcadores, comentários, campos de
+      formulário. É o que a ferramenta de
+      <a href="../../tarjar-pdf/">tarjar PDF</a> faz, e depois ela faz o
+      que mais importa: reabre a própria saída e procura nela as palavras
+      removidas, e <strong>se alguma coisa sobreviveu, não há
+      download</strong>. O passo a passo está no
+      <a href="../tarjar-um-pdf/">guia de tarjar um PDF</a>.
+    </p>
+    <p>
+      E seja qual for a ferramenta, onde for, o teste de aceitação é seu:
+      selecione por cima da área tarjada e copie; procure no arquivo a
+      palavra removida; abra-o em outro visualizador. Se o conteúdo foi
+      removido, nada consegue achá-lo &mdash; e se uma ferramenta faz isso
+      no seu navegador, sem o arquivo sair da máquina, essa também é uma
+      afirmação que você pode conferir em vez de acreditar:
+      <a href="../e-seguro-enviar-arquivos/">o guia sobre enviar
+      arquivos</a> mostra como. Tarjar é o único trabalho em que o arquivo
+      é sensível por definição, o que faz dele o último que deveria passar
+      pelo servidor de um estranho.
+    </p>
+  </section>

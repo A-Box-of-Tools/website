@@ -1,0 +1,169 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Ongemakkelijk vaak wel. Niet met forensische middelen: door het
+      zwartgelakte gebied te selecteren en op kopiëren te drukken. De
+      meeste gereedschappen waar mensen naar grijpen als iets verborgen
+      moet worden, tekenen een rechthoek <em>over</em> de inhoud en slaan
+      hem <em>ernaast</em> op, en alles eronder reist mee in het bestand,
+      geduldig, tot iemand kijkt.
+    </p>
+    <p>
+      Dit is geen zeldzame fout van slordige mensen. Ze heeft namen uit
+      rechtbankstukken gepubliceerd, ongelakte cijfers uit
+      overheidsrapporten &mdash; en in één massale vrijgave van
+      dossierstukken in december 2025 zwartgelakte namen die binnen uren
+      leesbaar waren. De mensen achter die fouten hadden advocaten en
+      procedures. Wat ze niet hadden, is het onderscheid waar deze pagina
+      over gaat: het verschil tussen bedekken en verwijderen.
+    </p>
+  </section>
+
+  <section>
+    <h2>De rechthoek die een object is</h2>
+    <p>
+      In een pdf-lezer, een tekstverwerker, een presentatieprogramma of
+      een beeldbewerker met lagen is een getekend zwart vak geen verf. Het
+      is een <em>object</em>: een vorm met een positie, een maat en een
+      kleur, in het bestand opgeslagen als eigen ding, vóór tekst die er
+      nog volledig in staat. Het document zegt niet &ldquo;dit woord is
+      weg&rdquo;; het zegt &ldquo;dit woord staat hier, en er staat een
+      rechthoek voor&rdquo;.
+    </p>
+    <p>
+      Al het andere volgt daaruit. Selecteer het gebied en kopieer, en het
+      klembord ontvangt de tekst, omdat kopiëren de tekstlaag leest en de
+      versiering ervoor negeert. Open het bestand in een editor en de
+      rechthoek is gewoon opzij te schuiven. Exporteer naar een ander
+      formaat en de lagen worden mogelijk in een andere volgorde
+      platgeslagen. Op het scherm is het vak identiek aan een echte
+      weglakking, en precies daarom overleeft de fout elke controle: het
+      oog controleert de pagina, en de pagina ziet er goed uit.
+    </p>
+    <p>
+      Pdf voegt er een stillere variant aan toe. Een pdf mag verklaren dat
+      een reeks glyfen iets anders &ldquo;spelt&rdquo; dan wat er getekend
+      staat &mdash; een toegankelijkheidsfunctie genaamd
+      <code>/ActualText</code> &mdash; en kopiëren leest de verklaring in
+      plaats van de inkt. Een document kan dus een woord lekken dat niet
+      eens zichtbaar op de pagina staat.
+    </p>
+  </section>
+
+  <section>
+    <h2>De vervaging die rekenwerk is</h2>
+    <p>
+      Pixeleren voelt veiliger dan het is. Een mozaïek is een raster van
+      gemiddelden, en een gemiddelde is een <em>meting</em> van wat
+      eronder lag: klein en met verlies, maar toch een meting. Voor tekst
+      in een bekend lettertype op een voorspelbare grootte is dat genoeg
+      gebleken om haar terug te lezen: neem elke aannemelijke reeks,
+      teken haar, pixeleer haar op dezelfde manier, en houd de kandidaat
+      over wiens mozaïek past. Niets daarvan vergt een laboratorium; het
+      is een lus en een vergelijking.
+    </p>
+    <p>
+      Vervagen is in principe erger. Een vervaging is een convolutie
+      &mdash; elke uitvoerpixel een gewogen gemiddelde van zijn buren
+      &mdash; en convoluties laten zich vaak goed genoeg terugrekenen:
+      deconvolutie is standaardgereedschap in de fotografie, geen exotische
+      aanval. Beide effecten delen bovendien een gebrek dat niets met
+      wiskunde te maken heeft: ze adverteren dat er iets verborgen is en
+      ongeveer hoe lang het is &mdash; wat bij een wachtwoord van zes
+      tekens al een aanwijzing is.
+    </p>
+    <p>
+      Een egale vulling heeft geen van die eigenschappen. Eén kleur, van
+      rand tot rand, draagt van niets een meting. Daarom is dat de
+      standaard in het gereedschap om een
+      <a href="../../afbeelding-onleesbaar-maken/">afbeelding onleesbaar
+      te maken</a>, daarom zeggen de opties pixeleren en vervagen op hun
+      eigen etiket wat ze niet beloven, en daarom meldt de
+      sterkteregelaar een getal in plaats van een bijvoeglijk naamwoord.
+    </p>
+  </section>
+
+  <section>
+    <h2>De kopieën die een bestand van zijn verleden bewaart</h2>
+    <p>
+      De derde familie van fouten heeft met het bedekken niets te maken.
+      Bestanden onthouden, op manieren die niets op het scherm laat zien:
+    </p>
+    <ul>
+      <li>
+        <strong>De metadata van een foto bevat vaak een miniatuur</strong>
+        van het beeld zoals het vóór de bewerking was. Snijd je adres uit
+        een foto, en het EXIF-blok kan nog een verkleinde versie van het
+        onbijgesneden origineel bevatten. De
+        <a href="../../exif-gegevens-verwijderen/">EXIF-bekijker en
+        -verwijderaar</a> toont dat blok en haalt het eruit; er is
+        <a href="../exif-en-gps-gegevens-verwijderen/">een gids</a>.
+      </li>
+      <li>
+        <strong>Sommige editors slaan ter plekke op zonder af te
+        kappen.</strong> Een beroemd paar fouten uit 2023 &mdash; in het
+        schermafbeeldingsgereedschap van een telefoon en het knipprogramma
+        van een desktop &mdash; liet na het bijsnijden de bytes van het
+        origineel in het bestand achter, zodat het
+        &ldquo;weggesneden&rdquo; deel uit de restanten te reconstrueren
+        was.
+      </li>
+      <li>
+        <strong>Pdf's kunnen hun eigen geschiedenis meedragen.</strong>
+        Een pdf die met incrementele opslag bewerkt is, hangt de
+        wijzigingen aan het einde van het bestand en laat de eerdere
+        versie er intact in staan, verwijderingen inbegrepen.
+      </li>
+    </ul>
+    <p>
+      De rode draad: wat een viewer toont en wat een bestand bevat zijn
+      verschillende vragen, en een weglakking die alleen op het oog
+      gecontroleerd is, heeft alleen de eerste beantwoord.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat verwijderen werkelijk vergt</h2>
+    <p>
+      Een echte weglakking verandert de gegevens, niet het beeld, en ze is
+      te controleren langs dezelfde weg waarlangs ze kan falen: door het
+      bestand te ondervragen, niet het scherm.
+    </p>
+    <p>
+      Voor een afbeelding betekent dat: de pixels onder het vak houden op
+      te bestaan voordat er ook maar een bestand geschreven wordt. Dat is
+      precies wat het gereedschap om een
+      <a href="../../afbeelding-onleesbaar-maken/">afbeelding onleesbaar
+      te maken</a> doet &mdash; de bedekte waarden worden in het geheugen
+      overschreven en pas daarna aan de encoder gegeven, zodat de uitvoer
+      zwarte pixels bevat waar de inhoud stond, geen zwarte inkt ervoor.
+      De stap-voor-stapversie staat in
+      <a href="../een-afbeelding-onleesbaar-maken/">de gids voor het
+      onleesbaar maken van een afbeelding</a>.
+    </p>
+    <p>
+      Voor een pdf betekent het: de glyfen worden verwijderd uit de
+      instructies die de pagina tekenen, samen met de verborgen dragers
+      &mdash; <code>/ActualText</code>-verklaringen, bladwijzers,
+      opmerkingen, formuliervelden. Dat doet het gereedschap om een
+      <a href="../../pdf-onleesbaar-maken/">pdf onleesbaar te maken</a>,
+      en daarna doet het het belangrijkste: het opent zijn eigen uitvoer
+      opnieuw en doorzoekt die op de verwijderde woorden, en
+      <strong>heeft er iets overleefd, dan is er geen download</strong>.
+      De rondleiding staat in
+      <a href="../een-pdf-onleesbaar-maken/">de gids voor het onleesbaar
+      maken van een pdf</a>.
+    </p>
+    <p>
+      En welk gereedschap je ook gebruikt, waar dan ook: de keuring is aan
+      jou. Selecteer over het weggelakte gebied en kopieer; doorzoek het
+      bestand op het verwijderde woord; open het in een andere viewer. Is
+      de inhoud verwijderd, dan kan niets hem vinden &mdash; en of een
+      gereedschap dit in je browser doet, zonder dat je bestand de machine
+      verlaat, is óók een bewering die je kunt controleren in plaats van
+      geloven: <a href="../is-bestanden-uploaden-veilig/">de gids over
+      uploaden</a> laat zien hoe. Weglakken is de ene klus waarbij het
+      bestand per definitie gevoelig is &mdash; en dus de laatste die
+      langs de server van een vreemde zou moeten gaan.
+    </p>
+  </section>

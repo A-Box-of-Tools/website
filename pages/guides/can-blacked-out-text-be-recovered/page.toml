@@ -1,0 +1,36 @@
+#
+# Guide: can blacked-out text be recovered?
+#
+# The failure this guide catalogues is the reason two tools on this site
+# exist at all - redact-image and redact-pdf are both built around "delete it
+# from the file, do not draw over it". The guide is the catalogue those two
+# pages have no room for: the rectangle that is an object, the mosaic that is
+# a measurement, and the copies a file keeps of its own past.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/can-blacked-out-text-be-recovered"
+kind = "guide"
+nav = "Can blacked-out text be recovered?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Can Blacked-Out Text Be Recovered?"
+description = "Often, yes - because most black boxes are drawn over the text rather than put in its place. The three ways redaction fails, the copies a file keeps of its own past, and how to remove something so it stays removed."
+
+heading = "Can blacked-out text be recovered?"
+lede = """
+    Uncomfortably often, yes &mdash; with the text selection tool, not a
+    laboratory. Most black rectangles are drawn <em>over</em> the words and
+    saved beside them, and the words ride along underneath. This page is the
+    catalogue of the ways that happens, and what removal has to mean
+    instead."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Can blacked-out text be recovered?"
+og_description = "Often with nothing more than select-and-copy. Why a drawn rectangle is not a redaction, why a mosaic can be read back, and what removing something from a file actually takes."
+og_image_alt = "abox.tools - tools that never touch a server"

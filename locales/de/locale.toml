@@ -177,6 +177,7 @@ complete = true
 "guides/clean-up-a-voice-memo" = "ratgeber/sprachmemo-aufraeumen"
 "guides/is-it-safe-to-scan-a-qr-code" = "ratgeber/ist-das-scannen-von-qr-codes-sicher"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "ratgeber/ist-das-hochladen-eines-ausweisfotos-sicher"
+"guides/can-blacked-out-text-be-recovered" = "ratgeber/kann-geschwaerzter-text-wiederhergestellt-werden"
 
 #
 # ---------------------------------------------------------------------------

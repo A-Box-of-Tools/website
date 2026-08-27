@@ -144,6 +144,7 @@ complete = true
 "guides/clean-up-a-voice-memo" = "gidsen/spraakmemo-opschonen"
 "guides/is-it-safe-to-scan-a-qr-code" = "gidsen/is-een-qr-code-scannen-veilig"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "gidsen/is-je-identiteitsbewijs-uploaden-veilig"
+"guides/can-blacked-out-text-be-recovered" = "gidsen/is-zwartgelakte-tekst-terug-te-halen"
 
 #
 # ---------------------------------------------------------------------------
