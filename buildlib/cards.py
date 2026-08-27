@@ -53,9 +53,39 @@ CARD = re.compile(r'(?P<open><section[^>]*class="[^"]*\bcard\b[^"]*"[^>]*>)'
 # The heading a card opens with. The tempered close tag matters: `.*?` alone
 # backtracks past its own card to find a heading that does have a paragraph
 # under it, and folds four screens of markup into one summary.
-HEADING = re.compile(r'(?P<indent>[ \t]*)(?P<tag><h2[^>]*>(?:(?!</h2>).)*</h2>)')
+# re.S, because a heading is allowed to wrap. Without it `.` stops at the end
+# of the line and a two-line <h2> is simply not found - which does not fail, it
+# quietly leaves that card unfolded. trim-video and trim-audio were both in that
+# state and looked like cards that had nothing to fold.
+HEADING = re.compile(r'(?P<indent>[ \t]*)(?P<tag><h2[^>]*>(?:(?!</h2>).)*</h2>)',
+                     re.S)
 
-LEDE = re.compile(r'[ \t]*<p class="card-lede">(?:(?!</p>).)*</p>\n?', re.S)
+# `[^>]*` and not `>` on the class: a lede often carries an id as well, because
+# the tool writes to it - password-generator's says which of the two things the
+# tab strip is currently making. Matching only the bare tag quietly skipped
+# seven of them across five tools, which is the sort of thing a regex over
+# markup does when it is written against one example.
+LEDE = re.compile(r'[ \t]*<p class="card-lede"[^>]*>(?:(?!</p>).)*</p>\n?', re.S)
+
+# A note under one field. Only the ones with words in them: an empty one is
+# filled by the tool as the setting changes - "this speed makes it 3x longer" -
+# and that is feedback about what you just did, not documentation. Feedback
+# belongs beside the control it is about, where it can be seen without being
+# asked for.
+FIELD_NOTE = re.compile(
+    r'[ \t]*(?P<open><p class="field-note"[^>]*>)(?P<body>(?:(?!</p>).)*)</p>\n?',
+    re.S)
+
+# The paragraph above a stage - a video, a waveform, a page to put corners on -
+# saying how to drive it. Eight tools have one, and it is the same kind of thing
+# as a lede: instructions for a control, not a report about what it is doing.
+STAGE_HINT = re.compile(
+    r'[ \t]*<p class="stage-hint"[^>]*>(?:(?!</p>).)*</p>\n?', re.S)
+
+# The label of the field a note belongs to, found by looking back from it.
+LABEL = re.compile(r'<label[^>]*>(?P<text>(?:(?!</label>).)*)</label>', re.S)
+
+TAGS = re.compile(r'<[^>]+>')
 
 # The small print under a checkbox, and the label it belongs to. Both are
 # captured so the fold can say which control the note is about.
@@ -82,34 +112,83 @@ def fold_ledes(html):
     return CARD.sub(_fold_card, html)
 
 
+def _named(inner, match):
+    """A field's note, with the name of the field in front of it.
+
+    "These ones: !#$%&()*+,-./:;<=>?@[]^_{|}~" is a sentence about the symbol
+    set, and away from the menu it sits under it is a sentence about nothing.
+    The nearest label before it is that menu's, so the note takes it along -
+    the same trick the checkbox notes use, where the name was already bold and
+    right there.
+    """
+    label = None
+    for found in LABEL.finditer(inner, 0, match.start()):
+        label = found
+    # The name is taken as plain text, because a label may hold the checkbox it
+    # names and copying that would put a second element with the same id in the
+    # page. The note keeps its markup exactly: several of them contain a <code>
+    # the tool writes into - password-generator prints the symbol set into one -
+    # and a note stripped to text would break the tool rather than tidy it.
+    name = TAGS.sub('', label.group('text')).strip() if label else ''
+    if not name:
+        return match.group(0).strip()
+    # The opening tag is kept exactly as it was, id and all: four of these are
+    # written to by their tool - edit-audio's depth-note, format-json's
+    # language-note, reverse-video's audio-note, timelapse-video's size-note -
+    # and a rebuilt <p> without the id is a tool that has lost its handle.
+    return (f'{match.group("open")}<strong>{name}</strong> '
+            f'{match.group("body").strip()}</p>')
+
+
 def _fold_card(card):
     inner = card.group('inner')
     heading = HEADING.search(inner)
     if not heading:
         return card.group(0)
 
-    notes = []
+    # Every note is found on the ORIGINAL text first, so that the fold can be
+    # assembled in the order a reader would have met the notes on the page.
+    # Doing it as three substitutions in a row put every checkbox's small print
+    # after every lede regardless of where they sat.
+    found = []
 
-    def take_lede(match):
-        notes.append(match.group(0).strip())
-        return ''
+    for match in LEDE.finditer(inner):
+        found.append((match.start(), match.end(), match.group(0).strip(), ''))
 
-    def take_check_note(match):
+    for match in CHECK_NOTE.finditer(inner):
         # The label keeps its <strong>; the fold gets a copy of it, so the note
         # arrives with the name of the setting it is about.
-        notes.append(f'<p class="fold-note">{match.group("strong")} '
-                     f'{match.group("note")}</p>')
-        return match.group('strong')
+        found.append((match.start(), match.end(),
+                      f'<p class="fold-note">{match.group("strong")} '
+                      f'{match.group("note")}</p>',
+                      match.group('strong')))
 
-    def take_closing_note(match):
-        notes.append(match.group('note'))
-        return match.group('tail')
+    for match in STAGE_HINT.finditer(inner):
+        found.append((match.start(), match.end(), match.group(0).strip(), ''))
 
-    body = LEDE.sub(take_lede, inner)
-    body = CHECK_NOTE.sub(take_check_note, body)
-    body = CLOSING_NOTE.sub(take_closing_note, body)
-    if not notes:
+    for match in CLOSING_NOTE.finditer(inner):
+        found.append((match.start(), match.end(),
+                      match.group('note'), match.group('tail')))
+
+    for match in FIELD_NOTE.finditer(inner):
+        if not TAGS.sub('', match.group('body')).strip():
+            continue
+        if any(start <= match.start() < end for start, end, _, _ in found):
+            continue
+        found.append((match.start(), match.end(),
+                      _named(inner, match), ''))
+
+    if not found:
         return card.group(0)
+
+    found.sort()
+    notes = [note for _, _, note, _ in found]
+
+    # Cut from the bottom up, so an offset taken from the original text is
+    # still the right offset when its turn comes.
+    body = inner
+    for start, end, _, keep in sorted(found, reverse=True):
+        body = body[:start] + keep + body[end:]
 
     indent = heading.group('indent')
     fold = (f'{indent}<details class="card-note">\n'
