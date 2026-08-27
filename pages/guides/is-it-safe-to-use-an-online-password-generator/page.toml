@@ -1,0 +1,36 @@
+#
+# Guide: is it safe to use an online password generator?
+#
+# The tool this stands beside handles the one string more sensitive than
+# any upload, and the guide answers the objection everybody correctly
+# raises before touching a password page: how would I know it was not
+# kept? The answer is the same four checks as the upload guide, applied to
+# the one page where they are not paranoia but table stakes, plus the part
+# nobody explains - where browser randomness actually comes from.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-it-safe-to-use-an-online-password-generator"
+kind = "guide"
+nav = "Are online password generators safe?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Is It Safe to Use an Online Password Generator?"
+description = "The right suspicion, examined: where a browser's randomness comes from, what a generator page could do wrong, and the checks that tell you whether the one in front of you can keep what it made."
+
+heading = "Is it safe to use an online password generator?"
+lede = """
+    Your suspicion is correct and worth keeping: a page that makes passwords
+    is exactly the page that must not remember them. The good news is that
+    this is checkable &mdash; randomness is made on your machine, sending is
+    visible, and a generator can be caught keeping what it made."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Is it safe to use an online password generator?"
+og_description = "Where browser randomness comes from, what a generator page could do wrong, and how to catch one keeping what it made - before you use anything it produced."
+og_image_alt = "abox.tools - tools that never touch a server"
