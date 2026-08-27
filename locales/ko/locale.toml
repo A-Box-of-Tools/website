@@ -178,6 +178,7 @@ complete = true
 "guides/how-can-a-web-page-work-offline" = "가이드/웹페이지가-오프라인에서-작동하는-원리"
 "guides/whats-inside-a-dicom-file" = "가이드/dicom-파일-안에-뭐가-있나"
 "guides/can-an-ai-agent-use-these-tools" = "가이드/ai-에이전트로-도구-사용"
+"guides/is-it-safe-to-upload-files-to-an-ai" = "가이드/ai에-파일-업로드-안전한가"
 
 #
 # ---------------------------------------------------------------------------

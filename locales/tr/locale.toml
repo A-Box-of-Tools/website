@@ -160,6 +160,7 @@ complete = true
 "guides/how-can-a-web-page-work-offline" = "rehberler/bir-web-sayfasi-cevrimdisi-nasil-calisir"
 "guides/whats-inside-a-dicom-file" = "rehberler/bir-dicom-dosyasinin-icinde-ne-var"
 "guides/can-an-ai-agent-use-these-tools" = "rehberler/yapay-zeka-ajani-bu-araclari-kullanabilir-mi"
+"guides/is-it-safe-to-upload-files-to-an-ai" = "rehberler/yapay-zekaya-dosya-yuklemek-guvenli-mi"
 
 #
 # ---------------------------------------------------------------------------

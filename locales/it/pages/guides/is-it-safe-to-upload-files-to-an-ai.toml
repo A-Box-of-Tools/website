@@ -1,0 +1,20 @@
+#
+# Guida: è sicuro caricare file su una IA? - Italian.
+#
+
+nav = "È sicuro caricare file su una IA?"
+title = "È sicuro caricare file su una IA?"
+description = "Una finestra di chat è un modulo di caricamento che non ne ha l'aria. Dove va davvero un file consegnato a una IA, in che cosa una IA differisce da un convertitore, e come mandare meno - e mandarlo pulito - quando il lavoro lo merita."
+heading = "È sicuro caricare file su una IA?"
+lede = """
+    La stessa domanda che la prima guida di questo sito fece sui
+    convertitori, puntata sul posto dove i file vanno davvero adesso. La
+    risposta onesta ha la stessa forma: quasi sempre non succede nulla di
+    male, e non puoi verificarne nulla &mdash; più una differenza che
+    conta. Un convertitore trasforma il tuo file senza curarsi di che cosa
+    contiene. A una IA il file lo si manda proprio perché qualcosa lo
+    legga."""
+updated = "27 agosto 2026"
+og_title = "È sicuro caricare file su una IA?"
+og_description = "Una finestra di chat è un modulo di caricamento che non ne ha l'aria. Dove va davvero il file, in che cosa una IA differisce da un convertitore, e come mandare meno e mandarlo pulito."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

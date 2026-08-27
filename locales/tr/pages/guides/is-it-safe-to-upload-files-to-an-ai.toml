@@ -1,0 +1,19 @@
+#
+# Rehber: yapay zekaya dosya yüklemek güvenli mi? - Turkish.
+#
+
+nav = "Yapay zekaya dosya yüklemek güvenli mi?"
+title = "Yapay Zekaya Dosya Yüklemek Güvenli mi?"
+description = "Bir sohbet penceresi, öyle görünmeyen bir yükleme formudur. Yapay zekaya verdiğiniz dosyanın gerçekte nereye gittiği, yapay zekayı bir dönüştürücüden ayıran şeyler ve iş buna değdiğinde nasıl daha az - ve temiz - gönderirsiniz."
+heading = "Yapay zekaya dosya yüklemek güvenli mi?"
+lede = """
+    Bu sitenin ilk rehberinin dönüştürücüler için sorduğu sorunun aynısı,
+    bu kez dosyaların bugün gerçekten gittiği yere çevrilmiş hali. Dürüst
+    cevap aynı biçimde: çoğu zaman kötü bir şey olmaz ve hiçbirini
+    doğrulayamazsınız &mdash; artı, önemli bir fark. Dönüştürücü,
+    dosyanızı içindekilere aldırmadan çevirir. Yapay zekaya ise dosya, tam
+    da bir şey onu okusun diye gönderilir."""
+updated = "27 Ağustos 2026"
+og_title = "Yapay zekaya dosya yüklemek güvenli mi?"
+og_description = "Bir sohbet penceresi, öyle görünmeyen bir yükleme formudur. Dosyanın gerçekte nereye gittiği, yapay zekayı dönüştürücüden ayıran şeyler ve nasıl daha az ve temiz gönderileceği."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"
