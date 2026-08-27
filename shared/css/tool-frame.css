@@ -190,7 +190,7 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 
 .pledge {
   margin-bottom: 1.25rem;
-  padding: 1.2rem 1.4rem;
+  padding: 0.9rem 1.4rem;
   border-radius: var(--radius);
   border: 1px solid color-mix(in srgb, var(--ok) 40%, var(--border));
   background:
@@ -213,6 +213,36 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 
 .pledge-line strong { color: var(--ok); }
 .pledge-mark { color: var(--ok); font-size: 0.7em; flex: none; }
+
+/* The fold. Everything under the headline sits in a native <details>, so the
+   tool itself starts near the top of the page; the summary - the claim and
+   the two live dots - never leaves the screen, folded or not. */
+.pledge-fold summary { list-style: none; cursor: pointer; }
+.pledge-fold summary::-webkit-details-marker { display: none; }
+
+.pledge-glance {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-inline-start: auto;
+  align-self: center;
+  padding-inline-start: 0.55rem;
+}
+
+/* The affordance the hidden default marker was providing. Physical borders on
+   purpose: a caret that points down or up needs no mirroring for RTL. */
+.pledge-caret {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-inline-start: 0.25rem;
+  border-right: 2px solid var(--text-dim);
+  border-bottom: 2px solid var(--text-dim);
+  transform: rotate(45deg);
+  transition: transform 0.15s ease;
+}
+
+.pledge-fold[open] .pledge-caret { transform: rotate(-135deg); }
+.pledge-fold summary:hover .pledge-caret { border-color: var(--accent); }
 
 .pledge-sub {
   margin: 0.5rem 0 0;
@@ -289,11 +319,11 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   max-width: 66ch;
 }
 
-/* On a phone the full-size pledge pushed the drop zone off screen entirely.
-   Tighten it rather than dropping anything: the "check it yourself" line is
-   exactly what a privacy-minded visitor on mobile came to read. */
+/* The fold above already keeps the pledge to one line, but on a phone even
+   that line is tight, and the folded-open text still deserves the smaller
+   sizes it had before the fold existed. */
 @media (max-width: 620px) {
-  .pledge { padding: 0.95rem 1rem; }
+  .pledge { padding: 0.8rem 1rem; }
   .pledge-line { font-size: 1.02rem; gap: 0.4rem; }
   .pledge-sub { font-size: 0.85rem; margin-top: 0.4rem; }
   .pledge-facts { margin-top: 0.7rem; gap: 0.3rem 0.35rem; }
