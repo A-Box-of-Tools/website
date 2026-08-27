@@ -1,0 +1,17 @@
+#
+# Guide : est-il sûr de scanner un QR code ? - French.
+#
+
+nav = "Scanner un QR code, est-ce sûr ?"
+title = "Est-il sûr de scanner un QR code ?"
+description = "Scanner, c'est lire, pas ouvrir - le danger commence une pression plus tard. Ce qu'un QR code contient vraiment, comment marche l'arnaque de l'autocollant, et les trois façons dont une adresse ment."
+heading = "Est-il sûr de scanner un QR code ?"
+lede = """
+    Le scan lui-même, oui. Un QR code est un morceau de texte, et pointer un
+    appareil photo dessus ne fait rien d'autre que lire ce texte. Tout ce qui
+    peut mal tourner arrive une pression plus tard, quand quelque chose ouvre
+    ce qui a été lu &mdash; et cette pression-là, vous pouvez la retenir."""
+updated = "26 août 2026"
+og_title = "Est-il sûr de scanner un QR code ?"
+og_description = "Le scan lit, il n'ouvre rien. Ce qu'un QR code contient vraiment, comment marche l'arnaque du code recollé, et comment voir où mène un lien avant d'y aller."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

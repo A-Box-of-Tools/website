@@ -1,0 +1,17 @@
+#
+# Gids: is een QR-code scannen veilig? - Dutch.
+#
+
+nav = "Is een QR-code scannen veilig?"
+title = "Is het veilig om een QR-code te scannen?"
+description = "Scannen is lezen, niet openen - het gevaar begint één tik later. Wat een QR-code werkelijk bevat, hoe de stickertruc werkt en de drie manieren waarop een adres liegt."
+heading = "Is het veilig om een QR-code te scannen?"
+lede = """
+    Het scannen zelf wel. Een QR-code is een stukje tekst, en er een camera
+    op richten doet niets anders dan die tekst lezen. Alles wat mis kan gaan
+    gebeurt één tik later, wanneer iets opent wat er gelezen is &mdash; en
+    die tik kunt u voor u houden."""
+updated = "26 augustus 2026"
+og_title = "Is het veilig om een QR-code te scannen?"
+og_description = "Scannen leest, het opent niets. Wat een QR-code werkelijk bevat, hoe de truc met de overgeplakte code werkt en hoe u ziet waar een link heengaat voordat u er bent."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

@@ -167,6 +167,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "가이드/gif-프레임별로-편집"
 "guides/make-a-qr-code-and-prove-it-scans" = "가이드/qr코드-만들고-스캔-확인"
 "guides/clean-up-a-voice-memo" = "가이드/음성-메모-정리하기"
+"guides/is-it-safe-to-scan-a-qr-code" = "가이드/qr코드-스캔-안전한가"
 
 #
 # ---------------------------------------------------------------------------

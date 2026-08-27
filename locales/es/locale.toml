@@ -140,6 +140,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "guias/editar-un-gif-fotograma-a-fotograma"
 "guides/make-a-qr-code-and-prove-it-scans" = "guias/crear-un-codigo-qr-y-comprobar-que-escanea"
 "guides/clean-up-a-voice-memo" = "guias/limpiar-una-nota-de-voz"
+"guides/is-it-safe-to-scan-a-qr-code" = "guias/es-seguro-escanear-un-codigo-qr"
 
 #
 # ---------------------------------------------------------------------------

@@ -437,7 +437,7 @@ slug = "guides"
 # than listed one by one, which is what stops that column growing by a line
 # every time one is written.
 nav = "All guides"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 title = "Guides &mdash; how to do the job, and what each choice costs"
 description = "Plain guides to compressing, resizing, cropping, trimming and converting your own files - what the settings mean, what they cost, and why none of it needs an upload."
@@ -510,7 +510,10 @@ order = [
 id = "before-you-upload"
 name = "Before you upload anything"
 note = "What handing a file to a website actually does, and how to tell whether it had to happen."
-order = ["is-it-safe-to-upload-files"]
+order = [
+  "is-it-safe-to-upload-files",
+  "is-it-safe-to-scan-a-qr-code",
+]
 
 #
 # ---------------------------------------------------------------------------
