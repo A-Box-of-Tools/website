@@ -559,6 +559,58 @@ class BuildTheSite(unittest.TestCase):
                 with self.subTest(page=name, tag=tag):
                     self.assertIn('target="_blank"', tag)
 
+    def test_every_numbered_step_is_on_the_page_and_only_the_last_one_waits(self):
+        """What a tool can do is readable before a file is handed over.
+
+        A step that appears only once the work has started tells somebody
+        nothing while they are deciding whether to start it, and this site asks
+        for people's files - so the whole job is on the page from the first
+        paint. The step that acts is the exception: it is there, and greyed,
+        until there is something to act on, which shared/js/file-picker.js
+        clears the moment a file arrives.
+
+        Panels that are not numbered steps are not covered. The GIF analyser's
+        findings and the DICOM viewer's facts have nothing to say before a
+        file, and four empty boxes would be worse than none.
+
+        The last rule is the one that matters most: the card holding the file
+        input can never be the waiting one. Two tools have a single numbered
+        step, and that step IS the picker - marking it inert made the tool
+        impossible to use at all, which is how this test came to exist.
+        """
+        card = re.compile(r'<section class="card"([^>]*)>(.*?)</section>', re.S)
+        step = re.compile(r'class="step"')
+
+        for name in self.tool_pages():
+            text = (self.out / name).read_text(encoding='utf-8')
+            cards = [(m.group(1), m.group(2)) for m in card.finditer(text)]
+            steps = [(attrs, inner) for attrs, inner in cards if step.search(inner)]
+            if not steps:
+                continue
+
+            with self.subTest(page=name):
+                for attrs, inner in steps:
+                    heading = re.search(r'<h2[^>]*>(.*?)</h2>', inner, re.S)
+                    where = ' '.join(re.sub(r'<[^>]+>', '', heading.group(1)).split())[:40]
+                    self.assertNotIn(
+                        ' hidden', attrs,
+                        f'the step "{where}" starts hidden, so what this tool '
+                        f'does cannot be read before a file is chosen')
+
+                waiting = [(attrs, inner) for attrs, inner in cards if ' inert' in attrs]
+                self.assertLessEqual(
+                    len(waiting), 1,
+                    'more than one card waits; only the step that acts should')
+                for attrs, inner in waiting:
+                    self.assertNotIn(
+                        'id="file-input"', inner,
+                        'the card holding the file input is inert, so there is '
+                        'no way to give the tool a file at all')
+                if waiting:
+                    self.assertIs(
+                        waiting[0][0], steps[-1][0],
+                        'the waiting card is not the last numbered step')
+
     def test_a_tool_page_asks_its_question(self):
         """The panel, and the one script that can act on it.
 

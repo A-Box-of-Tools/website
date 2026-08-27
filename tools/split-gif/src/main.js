@@ -165,8 +165,6 @@ function build() {
   }));
 
   el.frames.replaceChildren(...rows.map(makeRow));
-  el.settingsCard.hidden = false;
-  el.framesCard.hidden = false;
   applyEvery();
 }
 
@@ -593,8 +591,6 @@ function reset() {
   el.frames.replaceChildren();
   el.source.hidden = true;
   el.notice.hidden = true;
-  el.settingsCard.hidden = true;
-  el.framesCard.hidden = true;
   hideProgress();
 }
 

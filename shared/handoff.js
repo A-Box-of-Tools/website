@@ -194,7 +194,8 @@
     // re-runs this function, which sets it again - a microtask loop that
     // freezes the tab. Writing only on change is what breaks the cycle.
     if (!anchor) {
-      if (!nav.hidden) nav.hidden = true;
+      // No result yet. The row stays where the markup put it, saying what this
+      // tool feeds; whether it is still inert is file-picker.js's business.
       return;
     }
     // Under the result the download belongs to. A tool laid out in a way this
@@ -207,6 +208,9 @@
       anchor.insertAdjacentElement('afterend', nav);
     }
     if (nav.hidden) nav.hidden = false;
+    // A result is the strongest possible sign there is something to carry, so
+    // the row is live from here whatever the picker did.
+    if (nav.hasAttribute('inert')) nav.removeAttribute('inert');
   }
 
   // Tools reveal the link by unhiding it and swapping its href for each new

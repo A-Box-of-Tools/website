@@ -579,9 +579,6 @@ function render() {
   renderSources();
 
   const has = entries.length > 0;
-  el.pagesCard.hidden = sources.length === 0;
-  el.outputCard.hidden = !has;
-  el.runCard.hidden = !has;
 
   el.countLabel.textContent = has
     ? `${count(entries.length, 'page')} in the running order`

@@ -112,8 +112,6 @@ async function loadFile(picked) {
     sourcePeak = peak(decoded.channels);
 
     showSource();
-    el.editCard.hidden = false;
-    el.exportCard.hidden = false;
     updateSummary();
   } catch (error) {
     if (error instanceof UnreadableFile) showError(error.message);
