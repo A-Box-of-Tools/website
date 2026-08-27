@@ -503,7 +503,7 @@ async function runAll() {
   const made = [];
 
   for (const [index, job] of jobs.entries()) {
-    setProgress(index / jobs.length, `Drawing ${names[index]}…`);
+    setProgress(index / jobs.length, phrase('drawing.each', { name: names[index] }));
     // Yield so the line above is painted before the work starts.
     await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -512,7 +512,7 @@ async function runAll() {
     made.push({ ...job, plan, blob, name: names[index] });
   }
 
-  setProgress(1, 'Done.');
+  setProgress(1, phrase('progress.done'));
   busy = false;
   results = made;
   renderResults();
