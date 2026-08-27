@@ -180,9 +180,15 @@ function el(selectors = [], attrs = {}) {
  * guard is worth a test.
  */
 function control(tag, id, spec = {}) {
-  const node = el([], {});
+  const node = el([], spec.attrs ? { ...spec.attrs } : {});
   node.tagName = tag.toUpperCase();
   node.id = id;
+  // What keyOf() reads when there is no id: the `name` a radio group shares,
+  // and the `data-` attributes a tool used instead of either. Modelled as real
+  // attributes rather than as properties, because that is where the source
+  // looks for them and a stub that offered properties would pass while the
+  // browser found nothing.
+  node.attributes = Object.keys(node.attrs).map((name) => ({ name, value: node.attrs[name] }));
   node.type = spec.type || (tag === 'select' ? 'select-one' : 'text');
   node.disabled = !!spec.disabled;
   node.readOnly = !!spec.readOnly;
@@ -374,7 +380,7 @@ test('only the controls moved off their markup value travel', async () => {
   page.click(page.link);
   await page.settle();
 
-  assert.deepEqual(page.record().values, [{ id: 'width', value: '640' }]);
+  assert.deepEqual(page.record().values, [{ key: '#width', value: '640' }]);
 });
 
 test('a checkbox turned off travels, and one left alone does not', async () => {
@@ -386,7 +392,7 @@ test('a checkbox turned off travels, and one left alone does not', async () => {
   page.click(page.link);
   await page.settle();
 
-  assert.deepEqual(page.record().values, [{ id: 'use-symbols', on: false }]);
+  assert.deepEqual(page.record().values, [{ key: '#use-symbols', on: false }]);
 });
 
 test('a select is measured against the option the markup selected', async () => {
@@ -402,7 +408,7 @@ test('a select is measured against the option the markup selected', async () => 
   page.click(page.link);
   await page.settle();
 
-  assert.deepEqual(page.record().values, [{ id: 'capitals', value: 'title' }]);
+  assert.deepEqual(page.record().values, [{ key: '#capitals', value: 'title' }]);
 });
 
 test('a select with nothing selected in the markup defaults to its first option', async () => {
@@ -416,7 +422,7 @@ test('a select with nothing selected in the markup defaults to its first option'
   const moved = run({ controls: [node] });
   moved.click(moved.link);
   await moved.settle();
-  assert.deepEqual(moved.record().values, [{ id: 'format', value: 'jpeg' }]);
+  assert.deepEqual(moved.record().values, [{ key: '#format', value: 'jpeg' }]);
 });
 
 test('output is not input: readonly, disabled and password never travel', async () => {
@@ -433,7 +439,7 @@ test('output is not input: readonly, disabled and password never travel', async 
   page.click(page.link);
   await page.settle();
 
-  assert.deepEqual(page.record().values, [{ id: 'length', value: '32' }]);
+  assert.deepEqual(page.record().values, [{ key: '#length', value: '32' }]);
 });
 
 test('a control with no id has no name on the other side, so it is skipped', async () => {
@@ -443,6 +449,109 @@ test('a control with no id has no name on the other side, so it is skipped', asy
   page.click(page.link);
   await page.settle();
   assert.equal(page.record(), null);
+});
+
+/* ------------------------------------------------- controls without an id */
+
+/**
+ * The mode switch, as eleven tools actually write it.
+ *
+ * `redact-image` is the one that found this: fill / pixelate / blur is a group
+ * of radios sharing `name="style"`, with no id on any of them, because the tool
+ * reads the group with a selector rather than one button at a time. The first
+ * version of this file asked every control for an id and skipped the ones that
+ * had none - so a language switch handed the image back and threw away the one
+ * setting that says what to do with it. Same shape in compress-pdf,
+ * document-scanner, dicom-viewer, edit-audio, encode-text, image-to-data-uri,
+ * merge-pdf, trim-audio and trim-video.
+ */
+function radios(name, values, checked) {
+  return values.map((value) => {
+    const node = control('input', '', {
+      type: 'radio', checked: value === checked, attrs: { name, value },
+    });
+    node.value = value;
+    return node;
+  });
+}
+
+test('a radio group with no id travels by its name and its value', async () => {
+  const group = radios('style', ['fill', 'pixelate', 'blur'], 'fill');
+  const [fill, pixelate] = group;
+  fill.checked = false;
+  pixelate.checked = true;
+
+  const page = run({ controls: group });
+  page.click(page.link);
+  await page.settle();
+
+  assert.deepEqual(page.record().values, [
+    { key: '@style=fill', on: false },
+    { key: '@style=pixelate', on: true },
+  ]);
+});
+
+test('and lands on the right button on the other side', async () => {
+  const group = radios('style', ['fill', 'pixelate', 'blur'], 'fill');
+  const page = run({
+    lang: 'de',
+    ready: 'complete',
+    controls: group,
+    parked: {
+      lang: 'en',
+      time: Date.now(),
+      files: [],
+      values: [{ key: '@style=fill', on: false }, { key: '@style=pixelate', on: true }],
+    },
+  });
+  await page.settle();
+
+  assert.deepEqual(group.map((node) => node.checked), [false, true, false]);
+  assert.deepEqual(group[1].fired, ['input', 'change'], 'and the tool is told');
+});
+
+test('a control addressed by a data- attribute travels by it', async () => {
+  // hash-checksum's algorithms, which carry neither an id nor a name - only
+  // `data-algorithm`, which is what its own code reads them by.
+  const md5 = control('input', '', {
+    type: 'checkbox', checked: true, attrs: { 'data-algorithm': 'md5' },
+  });
+  const sha1 = control('input', '', {
+    type: 'checkbox', attrs: { 'data-algorithm': 'sha1' },
+  });
+  md5.checked = false;
+  sha1.checked = true;
+
+  const page = run({ controls: [md5, sha1] });
+  page.click(page.link);
+  await page.settle();
+
+  assert.deepEqual(page.record().values, [
+    { key: '~data-algorithm=md5', on: false },
+    { key: '~data-algorithm=sha1', on: true },
+  ]);
+});
+
+test('a control the markup gives no handle at all is still skipped', async () => {
+  // Nothing to call it by on the other page, so carrying it would mean
+  // guessing which control on a different document it meant.
+  const anonymous = control('input', '', { value: '1' });
+  anonymous.value = '2';
+  const page = run({ controls: [anonymous] });
+  page.click(page.link);
+  await page.settle();
+  assert.equal(page.record(), null);
+});
+
+test('an id still wins over a name, so nothing already working moves', async () => {
+  const node = control('input', 'quality', {
+    value: '85', attrs: { name: 'quality-field' },
+  });
+  node.value = '60';
+  const page = run({ controls: [node] });
+  page.click(page.link);
+  await page.settle();
+  assert.deepEqual(page.record().values, [{ key: '#quality', value: '60' }]);
 });
 
 /* ----------------------------------------------------------------- the files */
@@ -496,7 +605,7 @@ test('the far side of a switch hands the work back', async () => {
     controls: [width],
     parked: {
       lang: 'en', time: Date.now(), files: [file('holiday.jpg')],
-      values: [{ id: 'width', value: '640' }],
+      values: [{ key: '#width', value: '640' }],
     },
   });
   await page.settle();
@@ -528,7 +637,7 @@ test('a record parked in this same language is a reload, and is refused', async 
     controls: [width],
     parked: {
       lang: 'en', time: Date.now(), files: [file('a.jpg')],
-      values: [{ id: 'width', value: '640' }],
+      values: [{ key: '#width', value: '640' }],
     },
   });
   await page.settle();
@@ -592,7 +701,7 @@ test('a setting the tool has already filled in with the same value is not re-ann
     lang: 'de',
     ready: 'complete',
     controls: [width],
-    parked: { lang: 'en', time: Date.now(), files: [], values: [{ id: 'width', value: '640' }] },
+    parked: { lang: 'en', time: Date.now(), files: [], values: [{ key: '#width', value: '640' }] },
   });
   await page.settle();
   assert.deepEqual(width.fired, []);
@@ -604,7 +713,7 @@ test('a select whose options do not carry the value is left alone', async () => 
     lang: 'de',
     ready: 'complete',
     controls: [empty],
-    parked: { lang: 'en', time: Date.now(), files: [], values: [{ id: 'series', value: '3' }] },
+    parked: { lang: 'en', time: Date.now(), files: [], values: [{ key: '#series', value: '3' }] },
   });
   await page.settle();
   assert.equal(empty.value, '');
@@ -633,5 +742,5 @@ test('a page with no picker still carries its settings', async () => {
   page.click(page.link);
   await page.settle();
 
-  assert.deepEqual(page.record().values, [{ id: 'words', value: '9' }]);
+  assert.deepEqual(page.record().values, [{ key: '#words', value: '9' }]);
 });
