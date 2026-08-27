@@ -508,6 +508,46 @@ code {
 
 .legal pre.wrap code, .prose pre.wrap code { overflow-wrap: anywhere; }
 
+/* A screenshot in a guide.
+
+   It is allowed wider than the text, and that is the whole of the design here.
+   The column is 68ch because that is a comfortable line of prose; the picture
+   in it is a photograph of a tool that was laid out to a different measure
+   entirely, and shrunk to 68ch its labels are the size of the small print in
+   an advertisement. So a shot takes the width the window can spare, up to a
+   limit that keeps it inside the 940px the header and footer are drawn to, and
+   the negative start margin re-centres it on the column it broke out of.
+
+   Both halves of that width are one custom property rather than two matching
+   min() expressions, because they have to agree: the day they disagree is the
+   day the picture hangs off the side of a narrow window, which is the one
+   place nobody testing on a desktop would see it. */
+.prose figure.shot {
+  --shot: min(52rem, calc(100vw - 2rem));
+  width: var(--shot);
+  margin: 1.5rem 0 1.6rem;
+  margin-inline-start: min(0px, calc((100% - var(--shot)) / 2));
+}
+
+/* Bordered rather than shadowed. Every one of these is a photograph of a white
+   card on a pale ground, and without an edge of its own it reads as part of the
+   page it is sitting in rather than as a picture of another one. */
+.prose figure.shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.prose figure.shot figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
 /* ---- footer ------------------------------------------------------------ */
 
 /* A link footer in the shape the large media-tool sites use: a few columns of

@@ -25,9 +25,9 @@ lede = """
     actually post is the part worth reading about, because a GIF has no quality
     slider and only three things move its size at all."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to make an animated GIF from images"
 og_description = "How fast a GIF can really play, what the palette setting changes, and the three things that actually make the file smaller."

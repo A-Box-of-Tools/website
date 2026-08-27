@@ -25,9 +25,9 @@ lede = """
     costs, and why any tool promising a fixed percentage has not looked at your
     file."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to make a PDF smaller"
 og_description = "Where a PDF's size actually is, why a scan shrinks and a contract does not, and what DPI has to do with it."

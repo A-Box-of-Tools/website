@@ -28,9 +28,9 @@ lede = """
     three things. This is what each part does, and how to find out which one your
     file is spending its size on."""
 
-updated = "22 August 2026"
+updated = "26 August 2026"
 published = "2026-08-22"
-lastmod = "2026-08-22"
+lastmod = "2026-08-26"
 
 og_title = "What is actually inside a GIF file"
 og_description = "Frames, delays, disposal and palettes - what each one does, why your GIF plays slower than it says, and where its file size went."

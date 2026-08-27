@@ -31,9 +31,9 @@ lede = """
     anything that was only there some of the time. Which one you want depends
     entirely on what moved."""
 
-updated = "25 August 2026"
+updated = "26 August 2026"
 published = "2026-08-25"
-lastmod = "2026-08-25"
+lastmod = "2026-08-26"
 
 og_title = "How to stack photographs to reduce noise, or remove people"
 og_description = "Average a burst to kill noise, take the median to empty a busy square, lighten for star trails. Which method solves which problem, and where RAW files fit in."

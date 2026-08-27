@@ -25,6 +25,57 @@ between the guide and its tool. The footer needs nothing — it carries one link
 to the index, not an entry per guide, so it does not grow by a line every time
 somebody writes one.
 
+## The screenshots
+
+A guide explains which setting to move and what moving it costs. A picture of
+that setting is worth a paragraph of it, so most guides carry two or three, in
+the sections they belong to rather than one at the top.
+
+They are taken by driving the real tool:
+
+```bash
+python build.py                    # there has to be a site to photograph
+node screenshots/capture.mjs       # every guide
+node screenshots/capture.mjs trim-a-video   # one of them
+```
+
+`screenshots/capture.mjs` serves `dist/` from inside itself, opens a headless
+Edge over the DevTools protocol — the same browser `og-image.ps1` already
+leans on, and for the same reason — and follows one recipe per guide under
+`screenshots/recipes/`. A recipe says which tool to open, what to hand it and
+what to clip; its `run` bodies are serialised and evaluated **in the page**, so
+they may use only what the browser has plus the helpers in
+`screenshots/inpage.js`. There is no dependency and no lockfile, which is the
+rule everywhere else here.
+
+Nothing is mocked up and no sample files are checked in. The photograph, the
+scan, the clip, the voice memo, the PDF, the GIF and the DICOM are all *drawn*
+in the page a second before they are used — a canvas for the pictures,
+WebCodecs and crop-video's own MP4 writer for the video, gif-maker's own
+encoder for the GIF. A screenshot therefore cannot promise a control the tool
+has not got, and there is no photograph in this repository carrying somebody's
+copyright or somebody's face.
+
+Three things to know before changing any of it:
+
+- **The file lives with the guide and is published away from it.**
+  `pages/guides/<guide>/screens/<name>.webp` is served at
+  `/screens/<guide>/<name>.webp`, once, for all fifteen languages, and the
+  bodies address it from the root. Under the guide's own folder it would have
+  to be copied into every locale to be reachable from one. See
+  `buildlib/screens.py`.
+- **Never write `width` or `height` on one of these `<img>` tags.** The build
+  reads them out of the file and fills them in, and refuses a tag that carries
+  its own — the two numbers are exactly the kind that rot, sitting in fifteen
+  translated copies of a body while the picture they describe is recaptured a
+  few pixels taller.
+- **The tool in the picture is in English in every language.** The caption
+  under it is translated, the screenshot is not: fifteen photographs of fifteen
+  translated tools would cost several megabytes and a recapture of the world.
+  A locale that has not translated the caption simply has not got the figure —
+  its body is its own file, and adding a picture to the English one does not
+  touch it.
+
 ## The three refusals
 
 The build stops rather than quietly producing a page nothing links to. A guide

@@ -25,9 +25,9 @@ lede = """
     page size, order, quality and what the document says about you &mdash; and
     which of them you can ignore."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to combine images into one PDF"
 og_description = "Page size, order and rotation, why a JPEG need not lose quality on the way in, and what a PDF tells the person you send it to."

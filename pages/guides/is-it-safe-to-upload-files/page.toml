@@ -28,9 +28,9 @@ lede = """
     still do it, and four tests that tell you whether the one in front of you
     has to."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "Is it safe to upload files to online converters?"
 og_description = "What happens to a file you upload to a converter, why most tools still ask for one, and four checks you can run yourself."

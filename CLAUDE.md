@@ -26,6 +26,7 @@ python build.py                                   # readable build into dist/
 python build.py --out _plain --clean --no-minify  # what CI runs
 python -m unittest discover -t . -s tests/python  # the generator
 node --test "tests/js/*.test.js"                  # what the browser runs
+node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 ```
 
 Both suites need nothing installed. Node 21+ needs the glob **quoted**; on 20
@@ -82,6 +83,16 @@ time*; that path does not exist in the source tree, and the JavaScript tests
 import tool modules straight off the disk. So `./shared/` imports belong in
 `main.js`, which no test loads. `buildlib/imports.py` fails the build if an
 import does not land on a file the tool ships.
+
+**A guide's screenshots are taken, not drawn, and never measured by hand.**
+`node screenshots/capture.mjs [<guide>]` drives the built site in a headless
+Edge and writes `pages/guides/<guide>/screens/*.webp`; the build publishes them
+once at `/screens/<guide>/<name>.webp` for all fifteen languages and fills in
+each `<img>`'s `width` and `height` from the file itself. Writing those two
+attributes by hand fails the build, deliberately: they would otherwise sit in
+fifteen translated copies of one body, describing a picture that has since been
+recaptured a few pixels taller. See "The screenshots" in
+[docs/guides.md](docs/guides.md).
 
 **A sentence a visitor reads never lives in the JavaScript.** `src/` is copied
 byte for byte into every language, so a string written there is English at all

@@ -28,9 +28,9 @@ lede = """
     figures, and what to do about the forms that reject a file for being too
     small."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to take a passport photo that is not sent back"
 og_description = "Head height, eye line, background and file size - what a passport office measures, and how to hit it with a phone and a plain wall."

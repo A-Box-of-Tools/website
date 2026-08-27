@@ -26,9 +26,9 @@ lede = """
     the one a video file is least built for. This is what actually has to
     happen, what it costs, and the one step worth doing before it."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to reverse a video"
 og_description = "Why a decoder cannot run backwards, what reversing costs the picture and the sound, and the one step worth doing first."

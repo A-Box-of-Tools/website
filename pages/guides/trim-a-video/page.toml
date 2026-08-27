@@ -24,9 +24,9 @@ lede = """
     not touch them &mdash; it moves them into a new file exactly as they were.
     This explains what that buys you, and the one place it shows."""
 
-updated = "20 August 2026"
+updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-20"
+lastmod = "2026-08-26"
 
 og_title = "How to trim a video without re-encoding it"
 og_description = "Why a cut sometimes lands earlier than you marked it, what a keyframe has to do with it, and when to accept a re-encode."

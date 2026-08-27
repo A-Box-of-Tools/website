@@ -28,9 +28,9 @@ lede = """
     difference is why your fourteenth frame is a rectangle of somebody's
     mouth."""
 
-updated = "21 August 2026"
+updated = "26 August 2026"
 published = "2026-08-21"
-lastmod = "2026-08-21"
+lastmod = "2026-08-26"
 
 og_title = "How to split a GIF into frames"
 og_description = "Every frame of a GIF as a PNG: why some frames are only a patch, what happens to the transparency, and how to keep the timing."
