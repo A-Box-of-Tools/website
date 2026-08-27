@@ -8,6 +8,11 @@ export const FORMATS={
 [WEBP]:{label:'WebP',ext:'webp',lossy:true},
 };
 export const READABLE=[JPEG,PNG,WEBP,'image/gif','image/bmp','image/avif'];
+function saying(key,values){
+const error=new Error(key);
+error.values=values;
+return error;
+}
 async function canEncode(mime){
 const canvas=document.createElement('canvas');
 canvas.width=1;
@@ -33,7 +38,7 @@ ctx.fillRect(0,0,canvas.width,canvas.height);
 }
 ctx.drawImage(source,0,0,canvas.width,canvas.height);
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,quality));
-if(!blob)throw new Error(`This browser would not encode ${FORMATS[mime]?.label ?? mime}.`);
+if(!blob)throw saying('error.encode',{format:FORMATS[mime]?.label??mime});
 canvas.width=0;
 canvas.height=0;
 return blob;
@@ -51,7 +56,7 @@ try{
 const img=await new Promise((resolve,reject)=>{
 const element=new Image();
 element.onload=()=>resolve(element);
-element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.onerror=()=>reject(saying('error.decode'));
 element.src=url;
 });
 return{bitmap:img,width:img.naturalWidth,height:img.naturalHeight};

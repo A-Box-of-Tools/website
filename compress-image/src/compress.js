@@ -12,7 +12,7 @@ let encodes=0;
 let best=null;
 let smallest=null;
 const attempt=async(scale,quality)=>{
-if(encodes>=MAX_ENCODES)throw new Error('gave up after too many attempts.');
+if(encodes>=MAX_ENCODES)throw new Error('error.attempts');
 encodes+=1;
 const width=Math.max(1,Math.round(source.width*scale));
 const height=Math.max(1,Math.round(source.height*scale));
@@ -25,33 +25,33 @@ if(!smallest||blob.size<smallest.blob.size)smallest=made;
 return made;
 };
 const fits=(a)=>a.blob.size<=targetBytes;
-onStep?.('checking what it costs at full quality');
+onStep?.('step.full');
 const top=await attempt(1,QUALITY_CEILING);
 if(fits(top))return finish(top,true);
 if(!lossy){
 if(!allowResize)return finish(smallest,false);
-onStep?.('finding the largest size that fits');
+onStep?.('step.scale');
 await searchScale(attempt,fits,targetBytes,top.blob.size,undefined);
 return finish(best??smallest,Boolean(best));
 }
-onStep?.('searching the quality dial');
+onStep?.('step.quality');
 const atFloor=await attempt(1,QUALITY_FLOOR);
 if(fits(atFloor)){
 await bisectQuality(attempt,fits,1,QUALITY_FLOOR,QUALITY_CEILING,6);
 return finish(best,true);
 }
 if(!allowResize){
-onStep?.('going below the quality floor, because resizing is off');
+onStep?.('step.belowFloor');
 const bottom=await attempt(1,QUALITY_HARD_MIN);
 if(!fits(bottom))return finish(smallest,false);
 await bisectQuality(attempt,fits,1,QUALITY_HARD_MIN,QUALITY_FLOOR,5);
 return finish(best,true);
 }
-onStep?.('trading resolution for quality');
+onStep?.('step.resolution');
 const reference=await attempt(1,SEARCH_QUALITY);
 await searchScale(attempt,fits,targetBytes,reference.blob.size,SEARCH_QUALITY);
 if(!best)return finish(smallest,false);
-onStep?.('spending what is left of the budget');
+onStep?.('step.budget');
 await bisectQuality(attempt,fits,best.scale,SEARCH_QUALITY,QUALITY_CEILING,3);
 return finish(best,true);
 function finish(chosen,fitted){
