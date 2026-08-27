@@ -1316,6 +1316,94 @@ class BuildTheSite(unittest.TestCase):
                     self.assertEqual(path.read_bytes(),
                                      (other / name).read_bytes())
 
+    # --only and --locale, against the full build this class already has.
+    #
+    # The whole design of a scoped build rests on one claim: that narrowing
+    # what gets WRITTEN changes nothing about what each written page contains.
+    # If that fails the flags are worse than useless, because the page somebody
+    # previewed and approved is not the page that ships - and the likeliest
+    # place for it to fail is the parts of a page that are facts about the other
+    # languages, the hreflang set and the switcher, which is why this scopes to
+    # a translated language and not only to English.
+
+    def test_a_scoped_build_writes_the_same_bytes_as_a_whole_one(self):
+        slug = sorted(path.parent.name
+                      for path in (ROOT / 'tools').glob('*/tool.toml'))[0]
+        langs = ['en'] + [locale['lang'] for locale in self.locales
+                          if not locale['is_base'] and locale['complete']][:1]
+
+        with tempfile.TemporaryDirectory() as tmp:
+            scoped = Path(tmp) / 'dist'
+            buildmod.build(scoped, clean=True, minify_output=False,
+                           only=[slug], langs=langs)
+            warm(scoped)
+
+            files = [path for path in sorted(scoped.rglob('*')) if path.is_file()]
+            self.assertTrue(files, 'a scoped build wrote nothing at all')
+            for path in files:
+                name = path.relative_to(scoped)
+                with self.subTest(file=name.as_posix()):
+                    self.assertEqual(
+                        path.read_bytes(), (self.out / name).read_bytes(),
+                        f'{name.as_posix()} came out of a scoped build '
+                        f'differently from a whole one')
+
+    def test_a_scoped_build_leaves_out_the_pages_that_list_other_pages(self):
+        """A sitemap naming pages this run did not write would be a true
+        statement about a site that is not in the directory. See "A scoped
+        build" in build.py."""
+        slug = sorted(path.parent.name
+                      for path in (ROOT / 'tools').glob('*/tool.toml'))[0]
+        with tempfile.TemporaryDirectory() as tmp:
+            scoped = Path(tmp) / 'dist'
+            written = buildmod.build(scoped, clean=True, minify_output=False,
+                                     only=[slug], langs=['en'])
+            self.assertEqual(written, [f'{slug}/index.html'])
+            for name in ('index.html', '404.html', 'sitemap.xml', 'llms.txt',
+                         'feed.xml'):
+                with self.subTest(file=name):
+                    self.assertFalse((scoped / name).exists())
+
+
+class ScopedBuildRefusals(unittest.TestCase):
+    """What --only and --locale do with a name that is not there.
+
+    A typo has to stop the build rather than narrow it to nothing: a run that
+    built no pages and reported success would look exactly like a change that
+    did not take, and the next thing anybody does is go looking in the wrong
+    file. Neither of these needs a build to reach its check, so neither does
+    one.
+    """
+
+    def scoped(self, **kwargs):
+        with tempfile.TemporaryDirectory() as tmp:
+            buildmod.build(Path(tmp) / 'dist', minify_output=False, **kwargs)
+
+    def test_an_unknown_tool_is_refused_and_the_real_ones_named(self):
+        with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
+            self.scoped(only=['trim-vidoe'])
+        self.assertIn('trim-vidoe', str(caught.exception))
+        self.assertIn('trim-video', str(caught.exception))
+
+    def test_an_unknown_language_is_refused_and_the_real_ones_named(self):
+        with self.assertRaises(buildmod.sitelib.ConfigError) as caught:
+            self.scoped(langs=['xx'])
+        self.assertIn('xx', str(caught.exception))
+        self.assertIn('de', str(caught.exception))
+
+    def test_check_will_not_run_against_a_scoped_build(self):
+        """--check diffs against the whole deployed branch, so half a build
+        would report every page it did not write as a difference. Refused in
+        main() before anything is built, which is what the timing here asserts:
+        a temporary directory that stays empty."""
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / 'dist'
+            for scope in (['--only', 'trim-video'], ['--locale', 'de']):
+                with self.subTest(scope=scope[0]):
+                    code = buildmod.main(['--out', str(out), '--check'] + scope)
+                    self.assertEqual(code, 1)
+                    self.assertFalse(out.exists())
+
 
 class BuildMinified(unittest.TestCase):
     def test_a_minified_build_produces_the_same_file_list(self):

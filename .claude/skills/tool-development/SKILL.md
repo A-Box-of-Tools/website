@@ -219,6 +219,20 @@ the link checker then reports dozens of broken links that look exactly like
 `dist` branch, which tracks `main` — on a feature branch it exits 1 by
 construction, so do not read that as failure.
 
+While iterating on one tool, scope the build instead:
+
+```bash
+python build.py --only <slug> --locale en --quiet
+```
+
+Seconds rather than a couple of minutes, because it does not write the other
+thirty-five tools or the fifteen languages' worth of guides. The page it writes
+is byte for byte the page a full build writes, so it is worth looking at; what
+it does not write is everything that lists other pages — hub, guides, roadmap,
+404, sitemap, feeds — and it does not check links, since every link out of the
+scope would report broken. Run the full command above before calling the change
+done.
+
 **The two test suites are not yours to run.** `tests/README.md` says how, and
 a person is welcome to; an agent working here is not. CI runs both on every
 push and every pull request that touches anything they cover, and the build job
