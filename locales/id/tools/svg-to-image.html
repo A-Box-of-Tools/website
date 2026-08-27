@@ -197,7 +197,7 @@
     <p id="preview-empty" class="field-summary">Tambahkan sebuah SVG dan ia muncul di sini.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Ubah jadi piksel</button>
+      <button type="button" id="run" class="primary big" disabled>Buat gambarnya</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -222,6 +222,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Buat gambarnya</span>
+    <span data-phrase="run.many">Buat {count} gambarnya</span>
+    <span data-phrase="chosen.one">Satu berkas dipilih</span>
+    <span data-phrase="chosen.many">{count} berkas dipilih</span>
+    <span data-phrase="drawing.one">Menggambar satu gambar&hellip;</span>
+    <span data-phrase="drawing.many">Menggambar {count} gambar&hellip;</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} gambar ditulis dari {drawings} gambar sumber, total {bytes}.</span>
+    <span data-phrase="source.attributes">{size} &mdash; ukuran yang diminta berkasnya</span>
+    <span data-phrase="source.mixed">{size} &mdash; satu sisi dari berkasnya, satunya dari viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; tanpa ukuran piksel, diambil dari viewBox</span>
+    <span data-phrase="source.default">{size} diperkirakan &mdash; berkas ini tak menyebut ukuran maupun viewBox</span>
+    <span data-phrase="row.preview">Tampilkan yang ini di pratinjau</span>
+    <span data-phrase="row.remove">Keluarkan {name} dari daftar</span>
+    <span data-phrase="result.from">Dari {name}, yang menggambar dirinya pada {size} &mdash; {times} dari itu.</span>
+    <span data-phrase="result.from.density">Dari {name}, yang menggambar dirinya pada {size} &mdash; {times} dari itu, dan @{density}x berkas di atasnya.</span>
+    <span data-phrase="result.download">Unduh</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; peramban ini tidak bisa menulisnya</span>
     <span data-phrase="net.clean">file Anda tidak pergi ke mana pun. {total}
       file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

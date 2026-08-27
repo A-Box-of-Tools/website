@@ -174,7 +174,7 @@
     <p id="preview-empty" class="field-summary">SVGを追加すると、ここに出ます。</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>画像にする</button>
+      <button type="button" id="run" class="primary big" disabled>画像を作る</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -199,6 +199,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">画像を作る</span>
+    <span data-phrase="run.many">{count}枚の画像を作る</span>
+    <span data-phrase="chosen.one">ファイル1個を選択中</span>
+    <span data-phrase="chosen.many">ファイル{count}個を選択中</span>
+    <span data-phrase="drawing.one">画像を1枚描いています&hellip;</span>
+    <span data-phrase="drawing.many">画像を{count}枚描いています&hellip;</span>
+    <span data-phrase="written.one">{name}、{size}、{bytes}。</span>
+    <span data-phrase="written.many">{drawings}枚の図から{count}枚の画像を書き出しました。合計{bytes}。</span>
+    <span data-phrase="source.attributes">{size} &mdash; ファイルが求めている大きさ</span>
+    <span data-phrase="source.mixed">{size} &mdash; 一辺はファイルから、もう一辺はviewBoxから</span>
+    <span data-phrase="source.viewbox">{size} &mdash; ピクセル指定がなく、viewBoxから取りました</span>
+    <span data-phrase="source.default">{size}と仮定 &mdash; このファイルは大きさもviewBoxも書いていません</span>
+    <span data-phrase="row.preview">これをプレビューに表示</span>
+    <span data-phrase="row.remove">{name}をリストから外す</span>
+    <span data-phrase="result.from">{size}で自分を描く{name}から &mdash; その{times}。</span>
+    <span data-phrase="result.from.density">{size}で自分を描く{name}から &mdash; その{times}、そして上のファイルの@{density}x。</span>
+    <span data-phrase="result.download">ダウンロード</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; このブラウザーでは書き出せません</span>
     <span data-phrase="net.clean">ファイルはどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルも、その1バイトも渡っていません。</span>

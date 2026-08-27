@@ -192,7 +192,7 @@
     <p id="preview-empty" class="field-summary">Ajoutez un SVG et il apparaît ici.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Rastériser</button>
+      <button type="button" id="run" class="primary big" disabled>Créer les images</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -217,6 +217,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Créer l&rsquo;image</span>
+    <span data-phrase="run.many">Créer les {count} images</span>
+    <span data-phrase="chosen.one">Un fichier choisi</span>
+    <span data-phrase="chosen.many">{count} fichiers choisis</span>
+    <span data-phrase="drawing.one">Dessin d&rsquo;une image&hellip;</span>
+    <span data-phrase="drawing.many">Dessin de {count} images&hellip;</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} images écrites à partir de {drawings} dessins, {bytes} au total.</span>
+    <span data-phrase="source.attributes">{size} &mdash; la taille que le fichier demande</span>
+    <span data-phrase="source.mixed">{size} &mdash; un côté du fichier, l&rsquo;autre de sa viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; aucune taille en pixels, prise dans la viewBox</span>
+    <span data-phrase="source.default">{size} supposé &mdash; ce fichier ne déclare ni taille ni viewBox</span>
+    <span data-phrase="row.preview">Afficher celui-ci dans l&rsquo;aperçu</span>
+    <span data-phrase="row.remove">Retirer {name} de la liste</span>
+    <span data-phrase="result.from">D&rsquo;après {name}, qui se dessine à {size} &mdash; {times} cela.</span>
+    <span data-phrase="result.from.density">D&rsquo;après {name}, qui se dessine à {size} &mdash; {times} cela, et le @{density}x du fichier au-dessus.</span>
+    <span data-phrase="result.download">Télécharger</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; ce navigateur ne sait pas l&rsquo;écrire</span>
     <span data-phrase="net.clean">vos fichiers ne sont allés nulle part. {total}
       fichiers chargés, tous appartenant à cette page. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

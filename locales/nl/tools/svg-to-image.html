@@ -188,7 +188,7 @@
     <p id="preview-empty" class="field-summary">Voeg een svg toe en hij verschijnt hier.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Rasteren</button>
+      <button type="button" id="run" class="primary big" disabled>De afbeeldingen maken</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -213,6 +213,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">De afbeelding maken</span>
+    <span data-phrase="run.many">De {count} afbeeldingen maken</span>
+    <span data-phrase="chosen.one">Eén bestand gekozen</span>
+    <span data-phrase="chosen.many">{count} bestanden gekozen</span>
+    <span data-phrase="drawing.one">Eén afbeelding tekenen&hellip;</span>
+    <span data-phrase="drawing.many">{count} afbeeldingen tekenen&hellip;</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} afbeeldingen geschreven uit {drawings} tekeningen, {bytes} in totaal.</span>
+    <span data-phrase="source.attributes">{size} &mdash; de maat die het bestand vraagt</span>
+    <span data-phrase="source.mixed">{size} &mdash; de ene zijde uit het bestand, de andere uit de viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; geen pixelmaat, uit de viewBox gehaald</span>
+    <span data-phrase="source.default">{size} aangenomen &mdash; dit bestand noemt geen maat en geen viewBox</span>
+    <span data-phrase="row.preview">Deze in het voorbeeld tonen</span>
+    <span data-phrase="row.remove">{name} van de lijst halen</span>
+    <span data-phrase="result.from">Uit {name}, dat zichzelf op {size} tekent &mdash; {times} daarvan.</span>
+    <span data-phrase="result.from.density">Uit {name}, dat zichzelf op {size} tekent &mdash; {times} daarvan, en de @{density}x van het bestand erboven.</span>
+    <span data-phrase="result.download">Downloaden</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; deze browser kan het niet schrijven</span>
     <span data-phrase="net.clean">Je bestanden zijn nergens heen gegaan. {total}
       bestanden geladen, allemaal van deze site zelf. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

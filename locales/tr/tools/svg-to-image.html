@@ -194,7 +194,7 @@
     <p id="preview-empty" class="field-summary">Bir SVG ekleyin, burada görünsün.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Piksele çevir</button>
+      <button type="button" id="run" class="primary big" disabled>Görselleri oluştur</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -219,6 +219,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Görseli oluştur</span>
+    <span data-phrase="run.many">{count} görseli oluştur</span>
+    <span data-phrase="chosen.one">Bir dosya seçildi</span>
+    <span data-phrase="chosen.many">{count} dosya seçildi</span>
+    <span data-phrase="drawing.one">Bir görsel çiziliyor&hellip;</span>
+    <span data-phrase="drawing.many">{count} görsel çiziliyor&hellip;</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{drawings} çizimden {count} görsel yazıldı, toplam {bytes}.</span>
+    <span data-phrase="source.attributes">{size} &mdash; dosyanın istediği boyut</span>
+    <span data-phrase="source.mixed">{size} &mdash; bir kenarı dosyadan, öbürü viewBox&rsquo;undan</span>
+    <span data-phrase="source.viewbox">{size} &mdash; piksel boyutu yok, viewBox&rsquo;tan alındı</span>
+    <span data-phrase="source.default">{size} varsayıldı &mdash; bu dosya ne boyut ne viewBox bildiriyor</span>
+    <span data-phrase="row.preview">Bunu önizlemede göster</span>
+    <span data-phrase="row.remove">{name} dosyasını listeden çıkar</span>
+    <span data-phrase="result.from">Kendini {size} olarak çizen {name} dosyasından &mdash; onun {times} katı.</span>
+    <span data-phrase="result.from.density">Kendini {size} olarak çizen {name} dosyasından &mdash; onun {times} katı ve üstündeki dosyanın @{density}x hâli.</span>
+    <span data-phrase="result.download">İndir</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; bu tarayıcı yazamıyor</span>
     <span data-phrase="net.clean">dosyalarınız hiçbir yere gitmedi. {total}
       dosya yüklendi, hepsi bu sayfanın kendi dosyaları. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

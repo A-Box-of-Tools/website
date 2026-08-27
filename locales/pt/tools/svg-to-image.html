@@ -190,7 +190,7 @@
     <p id="preview-empty" class="field-summary">Adicione um SVG e ele aparece aqui.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Rasterizar</button>
+      <button type="button" id="run" class="primary big" disabled>Criar as imagens</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -215,6 +215,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Criar a imagem</span>
+    <span data-phrase="run.many">Criar as {count} imagens</span>
+    <span data-phrase="chosen.one">Um arquivo escolhido</span>
+    <span data-phrase="chosen.many">{count} arquivos escolhidos</span>
+    <span data-phrase="drawing.one">Desenhando uma imagem&hellip;</span>
+    <span data-phrase="drawing.many">Desenhando {count} imagens&hellip;</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} imagens escritas a partir de {drawings} desenhos, {bytes} no total.</span>
+    <span data-phrase="source.attributes">{size} &mdash; o tamanho que o arquivo pede</span>
+    <span data-phrase="source.mixed">{size} &mdash; um lado do arquivo, o outro da viewBox dele</span>
+    <span data-phrase="source.viewbox">{size} &mdash; sem tamanho em pixels, tirado da viewBox</span>
+    <span data-phrase="source.default">{size} presumido &mdash; este arquivo não declara tamanho nem viewBox</span>
+    <span data-phrase="row.preview">Mostrar este na prévia</span>
+    <span data-phrase="row.remove">Tirar {name} da lista</span>
+    <span data-phrase="result.from">De {name}, que se desenha a {size} &mdash; {times} isso.</span>
+    <span data-phrase="result.from.density">De {name}, que se desenha a {size} &mdash; {times} isso, e o @{density}x do arquivo acima.</span>
+    <span data-phrase="result.download">Baixar</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; este navegador não sabe escrever</span>
     <span data-phrase="net.clean">Os seus arquivos não foram a lugar nenhum.
       {total} arquivos carregados, todos do próprio site. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

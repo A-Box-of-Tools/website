@@ -181,7 +181,7 @@
     <p id="preview-empty" class="field-summary">加一个 SVG，它就出现在这儿。</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>开始转换</button>
+      <button type="button" id="run" class="primary big" disabled>生成图片</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -206,6 +206,24 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">生成图片</span>
+    <span data-phrase="run.many">生成 {count} 张图片</span>
+    <span data-phrase="chosen.one">已选 1 个文件</span>
+    <span data-phrase="chosen.many">已选 {count} 个文件</span>
+    <span data-phrase="drawing.one">正在绘制 1 张图片&hellip;</span>
+    <span data-phrase="drawing.many">正在绘制 {count} 张图片&hellip;</span>
+    <span data-phrase="written.one">{name}，{size}，{bytes}。</span>
+    <span data-phrase="written.many">从 {drawings} 张图形写出 {count} 张图片，共 {bytes}。</span>
+    <span data-phrase="source.attributes">{size} &mdash; 文件自己要求的尺寸</span>
+    <span data-phrase="source.mixed">{size} &mdash; 一边来自文件，另一边来自它的 viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; 没有像素尺寸，取自 viewBox</span>
+    <span data-phrase="source.default">{size}（推定）&mdash; 这个文件既没写尺寸也没写 viewBox</span>
+    <span data-phrase="row.preview">在预览里显示这一个</span>
+    <span data-phrase="row.remove">把 {name} 移出列表</span>
+    <span data-phrase="result.from">来自 {name}，它把自己画成 {size} &mdash; 是它的 {times}。</span>
+    <span data-phrase="result.from.density">来自 {name}，它把自己画成 {size} &mdash; 是它的 {times}，也是上面那个文件的 @{density}x。</span>
+    <span data-phrase="result.download">下载</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; 这个浏览器写不了</span>
     <span data-phrase="net.clean">你的文件没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到文件，或文件里的一个字节。</span>
