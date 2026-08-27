@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Download every frame as a ZIP</button>
       <button type="button" id="download-selected" class="ghost" hidden>Download the selected frames</button>
+      <button type="button" id="download-sheet" class="ghost">Download as one sprite sheet</button>
       <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 
@@ -113,6 +114,12 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Drawing the sheet&hellip;</span>
+    <span data-phrase="sheet.toobig">That sheet would be {width} by {height} pixels,
+      which no browser will draw. Keep every second frame instead, or save the
+      frames as a ZIP.</span>
+    <span data-phrase="sheet.stored">A sheet needs every cell the same size, so it
+      uses the frame as it appears rather than only the pixels a frame stores.</span>
     <span data-phrase="net.clean">your GIF has gone nowhere. {total} files
       loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

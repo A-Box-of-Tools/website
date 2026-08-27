@@ -84,6 +84,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Her kareyi ZIP olarak indir</button>
       <button type="button" id="download-selected" class="ghost" hidden>Seçili kareleri indir</button>
+      <button type="button" id="download-sheet" class="ghost">Tek bir sprite sayfas&#305; olarak indir</button>
       <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
     </div>
 
@@ -119,6 +120,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Sayfa &ccedil;iziliyor&hellip;</span>
+    <span data-phrase="sheet.toobig">Bu sayfa {width} &times; {height} piksel olurdu; hi&ccedil;bir taray&#305;c&#305; bunu &ccedil;izmez. Bunun yerine iki kareden birini tutun ya da kareleri ZIP olarak kaydedin.</span>
+    <span data-phrase="sheet.stored">Bir sayfada b&uuml;t&uuml;n h&uuml;creler ayn&#305; boyutta olmal&#305;d&#305;r; bu y&uuml;zden karenin saklad&#305;&#287;&#305; piksellerle de&#287;il, g&ouml;r&uuml;nd&uuml;&#287;&uuml; h&acirc;liyle kullan&#305;l&#305;r.</span>
     <span data-phrase="net.clean">GIF'iniz hiçbir yere gitmedi. {total} dosya
       yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

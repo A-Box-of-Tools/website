@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Baixar todos os quadros em um ZIP</button>
       <button type="button" id="download-selected" class="ghost" hidden>Baixar os quadros marcados</button>
+      <button type="button" id="download-sheet" class="ghost">Baixar como uma folha de sprites</button>
       <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
     </div>
 
@@ -113,6 +114,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Desenhando a folha&hellip;</span>
+    <span data-phrase="sheet.toobig">Essa folha teria {width} por {height} pixels, e nenhum navegador desenha isso. Guarde um quadro a cada dois, ou salve os quadros num ZIP.</span>
+    <span data-phrase="sheet.stored">Uma folha precisa que todas as c&eacute;lulas tenham o mesmo tamanho, por isso usa o quadro como ele aparece e n&atilde;o apenas os pixels que aquele quadro guarda.</span>
     <span data-phrase="net.clean">O seu GIF não foi a lugar nenhum. {total}
       arquivos carregados. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

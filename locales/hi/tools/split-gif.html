@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">सारे फ़्रेम ZIP में डाउनलोड कीजिए</button>
       <button type="button" id="download-selected" class="ghost" hidden>चुने हुए फ़्रेम डाउनलोड कीजिए</button>
+      <button type="button" id="download-sheet" class="ghost">एक स्प्राइट शीट के रूप में डाउनलोड करें</button>
       <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
     </div>
 
@@ -113,6 +114,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">शीट बनाई जा रही है&hellip;</span>
+    <span data-phrase="sheet.toobig">यह शीट {width} &times; {height} पिक्सेल की होगी, जिसे कोई भी ब्राउज़र नहीं बना सकता। इसके बजाय हर दूसरा फ़्रेम रखें, या फ़्रेम को ZIP में सहेजें।</span>
+    <span data-phrase="sheet.stored">शीट में हर ख़ाने का आकार एक जैसा होना चाहिए, इसलिए यह फ़्रेम को वैसा ही लेती है जैसा दिखता है, न कि केवल उन पिक्सेल को जो वह फ़्रेम संग्रहीत करता है।</span>
     <span data-phrase="net.clean">आपका GIF कहीं नहीं गया। {total} फ़ाइलें लोड
       हुईं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

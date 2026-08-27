@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Alle frames als ZIP downloaden</button>
       <button type="button" id="download-selected" class="ghost" hidden>De aangevinkte frames downloaden</button>
+      <button type="button" id="download-sheet" class="ghost">Downloaden als &eacute;&eacute;n spritesheet</button>
       <button type="button" id="cancel" class="ghost" hidden>Annuleren</button>
     </div>
 
@@ -113,6 +114,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Het blad wordt getekend&hellip;</span>
+    <span data-phrase="sheet.toobig">Dat blad zou {width} bij {height} pixels worden, en dat tekent geen enkele browser. Houd elk tweede beeld over, of sla de beelden op als ZIP.</span>
+    <span data-phrase="sheet.stored">Een blad heeft cellen van gelijke grootte nodig en gebruikt daarom het beeld zoals het eruitziet, niet alleen de pixels die dat beeld opslaat.</span>
     <span data-phrase="net.clean">Je GIF is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
