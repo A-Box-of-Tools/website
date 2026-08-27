@@ -221,8 +221,9 @@ construction, so do not read that as failure.
 
 **The two test suites are not yours to run.** `tests/README.md` says how, and
 a person is welcome to; an agent working here is not. CI runs both on every
-push and every pull request and the build job needs them, so a failure stops
-the deploy without your help — while the Python suite costs the better part of
+push and every pull request that touches anything they cover, and the build job
+needs them, so a failure stops the deploy without your help — while the Python
+suite costs the better part of
 half an hour locally, because most of its cases build the whole site before
 they assert anything. Write the tests a change owes (the checklists above still
 mean it), let CI run them, and spend the time on the browser instead. If CI
