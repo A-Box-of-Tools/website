@@ -856,3 +856,27 @@ ins.adsbygoogle { display: block; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- the language menu on a phone -------------------------------------- */
+
+/* The menu is ten rem wide and hangs from a button that can sit at either end
+   of its row: near the start of the actions on a tool page, near the end of
+   the head row on the hub. At phone widths neither anchor keeps it on screen -
+   hung from the button's end edge it runs off the left of a tool page by
+   forty-two pixels, and hung from the start edge it runs off the right of the
+   hub by the same amount. Reported from a phone, with every language name cut
+   in half: "ish", "sch", "nol", "cais".
+
+   So on a narrow screen it stops hanging from the button and hangs from the
+   row instead. The row spans the content width, so its end edge is on screen
+   in both layouts, and inset-inline keeps that true in a right-to-left
+   language without a second rule. The menu lands below the row rather than
+   directly under the button, which on a phone is where there is room for it.
+
+   620px because that is the width this frame already treats as a phone. */
+@media (max-width: 620px) {
+  .head-row { position: relative; }
+  .lang-pick { position: static; }
+  /* A long endonym cannot then push the menu wider than the window. */
+  .lang-pick-menu { max-width: calc(100vw - 1.5rem); }
+}
