@@ -1,0 +1,361 @@
+#
+# Compartir texto y archivos - Spanish.
+#
+# Overrides for tools/share-text/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+
+name = "Compartir texto y archivos"
+heading = "Compartir texto y archivos <span class=\"h1-kw\">&mdash; directo de tu navegador al suyo, sin subir nada</span>"
+tagline = "Lo compartido vive en esta pestaña abierta. Los lectores lo reciben cifrado, directamente desde tu navegador, y al cerrar la pestaña se acaba: ningún servidor guarda nada."
+
+title = "Compartir texto y archivos entre dispositivos &mdash; directo, cifrado, sin guardar nada"
+description = "Envía texto o archivos de un navegador a otro por una conexión directa y cifrada. Un nombre de enlace que se puede decir en voz alta, actualización en vivo mientras escribes, aprobación por lector - y nada guardado en ningún servidor, nunca. Gratis y sin registro."
+og_title = "Algo compartido que se acaba en cuanto cierras la pestaña"
+og_description = "El texto y los archivos viajan cifrados, directos de tu navegador al del lector. El servidor solo os presenta y nunca ve el contenido. Sin almacenamiento, sin historial, sin cuenta: cierra la pestaña y desaparece, en todas partes."
+og_image_alt = "Compartir texto y archivos - directo de navegador a navegador, sin guardar nada"
+
+pledge = """
+    Lo que compartes aquí viaja de tu navegador al de cada lector por un
+    canal WebRTC cifrado de extremo a extremo, y a ningún otro sitio. El
+    único servidor implicado &mdash; nombrado en la
+    <code>Content-Security-Policy</code> de esta página, con el código en el
+    repositorio &mdash; presenta a los dos navegadores y se aparta: no
+    guarda nada, y el contenido nunca pasa por él. No hay historial ni
+    cuenta. Cierra esta pestaña y lo compartido se acaba en todas partes a
+    la vez, también en las páginas abiertas de los lectores."""
+
+live_hint = """
+      Abre las herramientas de desarrollo y mira la pestaña «Red» mientras
+      compartes. Verás un WebSocket al intermediario con unos pocos
+      kilobytes de negociación &mdash; y por mucho que escribas o adjuntes,
+      ni una sola petición que lleve nada de ello."""
+
+read_first = """
+, <code>src/main.js</code> para las dos
+      mitades del intercambio &mdash; la pestaña de quien comparte y la del
+      lector son el mismo archivo &mdash; y <code>src/markdown.js</code>
+      para el renderizador que procesa texto llegado del otro lado del
+      cable, y que por eso escapa todo antes de emitir nada. El código
+      completo del servidor es <code>workers/rendezvous/worker.js</code>, en
+      el mismo repositorio: una sala por nombre de enlace, que no guarda más
+      que las conexiones abiertas."""
+
+howto_heading = "Cómo compartir texto y archivos sin subirlos a ninguna parte"
+
+card = """
+            Texto y archivos, de navegador a navegador por una conexión
+            directa cifrada. Nada guardado en ningún sitio; lo compartido se
+            acaba al cerrar la pestaña."""
+
+[words]
+plural = "textos y archivos compartidos"
+choose = "un nombre de enlace"
+analytics_extra = """, y nada de lo
+  que esta herramienta comparte: ni el texto, ni los archivos, ni sus
+  nombres o tamaños, ni quién lo leyó"""
+
+[[facts]]
+mark = "&#10007;"
+text = "Nada guardado"
+
+[[facts]]
+mark = "&#10007;"
+text = "Sin cuenta"
+
+[[facts]]
+mark = "&#10003;"
+text = "Cifrado de extremo a extremo"
+
+[[facts]]
+mark = "&#10003;"
+text = "Se acaba con tu pestaña"
+
+[[facts]]
+mark = "&#10003;"
+text = "Código abierto"
+
+[[privacy]]
+title = "El contenido va a tu lector, y a ningún otro sitio."
+body = """
+ El texto y los archivos
+      viajan por un canal de datos WebRTC: una conexión directa, cifrada con
+      DTLS, entre tu navegador y el de cada lector. En ese camino no hay
+      servidor. En la misma red, los bytes ni siquiera salen del edificio:
+      dos portátiles en el mismo wifi se los pasan en local."""
+
+[[privacy]]
+title = "Qué es el intermediario, y todo lo que ve."
+body = """
+ Una conexión directa
+      necesita una presentación, así que esta página &mdash; la única del
+      sitio &mdash; abre un WebSocket a un servidor nuestro. Ese servidor
+      junta a quien tecleó un nombre de enlace con quien comparte bajo ese
+      nombre, les pasa unos kilobytes de negociación y no retiene nada:
+      nunca escribe almacenamiento, y una sala deja de existir en cuanto
+      quien comparte se desconecta. Puede ver que un nombre está en uso,
+      cuándo llega y se va cada uno, y sus direcciones IP. No puede ver el
+      texto, los archivos, a quién se dejó entrar ni qué dijo nadie: hasta
+      la llamada a una compartición privada viaja por el canal directo
+      cifrado. Su código completo está en el repositorio, junto al de esta
+      herramienta."""
+
+[[privacy]]
+title = "Nada se guarda: cerrar la pestaña es el borrado."
+body = """
+ Lo compartido existe solo
+      mientras tu pestaña está abierta. Ciérrala y los lectores nuevos no
+      encuentran nada, y quien esté mirando ve desaparecer su copia &mdash;
+      aunque lo que alguien copió o descargó antes es suyo, como lo sería
+      cualquier cosa que le hubieras dado en mano. El borrador que escribes
+      queda en el almacenamiento de tu propio navegador, para que siga ahí
+      la próxima vez, y solo ahí; marcado como de un solo uso, no queda en
+      ninguna parte."""
+
+[[privacy]]
+title = "El nombre del enlace es el único secreto, y el modo privado, el cerrojo."
+body = """
+ Cualquiera que
+      conozca o adivine un nombre puede abrir lo que hay detrás. Por eso las
+      sugerencias son tres palabras al azar, por eso cualquier cosa delicada
+      merece un nombre inadivinable &mdash; o el interruptor de privado, que
+      viene activado: cada lector que llega debe presentarse, por el canal
+      directo, y no se envía nada hasta que tú lo dejas entrar."""
+
+[[privacy]]
+title = "Una conexión directa muestra a cada lado la dirección del otro."
+body = """
+ Eso es lo que
+      significa entre pares, y el lector lo sabe antes de que ocurra: abrir
+      un enlace compartido solo pregunta al intermediario si alguien está
+      compartiendo; después la página dice con claridad que conectar revela
+      a cada lado la dirección IP del otro, y espera un clic. Hasta ese
+      clic, quien comparte ni siquiera sabe que el lector existe."""
+
+[[privacy]]
+title = "Qué carga Google, y qué no recibe."
+body = """
+ Los scripts de anuncios y
+      medición vienen de Google, y el botón de donativos, de Buy Me a
+      Coffee. Ninguno recibe nada sobre lo que esta página comparte: ni el
+      texto, ni los archivos, ni sus nombres o tamaños, ni el nombre del
+      enlace, ni quién se conectó. Cada línea que toca el contenido se sirve
+      desde este origen y está en el repositorio."""
+
+[[howto]]
+title = "Escribe el texto, o adjunta los archivos."
+body = """
+ El editor es lo compartido:
+      lo que contenga cuando un lector se conecta es lo que recibe, y lo que
+      cambies después llega en vivo a los lectores conectados, mientras
+      escribes. Los archivos viajan por el mismo canal, hasta 200&nbsp;MB
+      cada uno; los lectores ven la lista y descargan solo lo que piden, así
+      que nadie gasta ancho de banda en un archivo que no quería."""
+
+[[howto]]
+title = "Activa Markdown si el texto merece formato."
+body = """
+ Un solo interruptor. Títulos,
+      negritas, listas, código y enlaces se renderizan en vivo junto al
+      editor mientras escribes, y los lectores reciben la vista formateada
+      por defecto, con un conmutador para volver al texto original. El
+      renderizador viaja con esta página y lo escapa todo: el texto
+      compartido no puede convertirse en script en la máquina de un lector,
+      lo haya escrito quien lo haya escrito."""
+
+[[howto]]
+title = "Ponle nombre al enlace, o quédate con la sugerencia."
+body = """
+ El nombre es la dirección:
+      <code>brave-otter-42</code> se puede decir de un lado a otro de una
+      sala, leer por teléfono o copiar de una pizarra. También es el único
+      secreto, así que para algo privado elige un nombre que nadie
+      adivinaría, o apóyate en el interruptor de privado. Un nombre bajo el
+      que ya comparte otra persona se rechaza, y el tuyo queda libre en
+      cuanto paras."""
+
+[[howto]]
+title = "Decide quién entra."
+body = """
+ Privado es lo predeterminado: a
+      cada lector se le pide presentarse &mdash; un nombre, una pista,
+      cualquier cosa que reconozcas &mdash; y tú ves el mensaje con un botón
+      para dejarle leer o rechazarlo. La presentación viaja por el canal
+      directo, así que ni el intermediario sabe quién llamó. Desmárcalo para
+      una compartición abierta que pueda leer cualquiera con el nombre."""
+
+[[howto]]
+title = "Empieza a compartir, y deja la pestaña abierta."
+body = """
+ La pestaña es el servidor:
+      lo compartido está disponible mientras siga abierta y despierta, y ni
+      un momento más. Un portátil que se cierra también lo termina. Copia el
+      enlace, o simplemente di el nombre: un lector puede escribirlo como
+      <code>#nombre</code> al final de la dirección de esta página."""
+
+[[howto]]
+title = "Al otro lado: primero consentir, después llamar."
+body = """
+ Quien abre el enlace se
+      entera de que alguien comparte, se le avisa de que una conexión
+      directa muestra a cada lado la dirección de red del otro, y solo se
+      conecta si lo decide. En una compartición privada se presenta y espera
+      a que le abras. Lo que recibe se actualiza en vivo mientras editas, y
+      desaparece cuando cierras la pestaña."""
+
+[[faq]]
+q = "¿Se sube algo, a alguna parte?"
+a = """
+        No. El texto y los archivos van de tu navegador al de cada lector
+        por un canal WebRTC cifrado, directamente. El único servidor
+        implicado lleva la presentación &mdash; unos kilobytes de
+        negociación de la conexión &mdash; y nunca el contenido. En él no
+        hay nada que filtrar, requisar o perder: no retiene ni un byte tuyo,
+        y una sala deja de existir en cuanto te desconectas."""
+
+[[faq]]
+q = "¿Y por qué esta herramienta habla con un servidor, precisamente en este sitio?"
+a = """
+        Porque dos navegadores no pueden encontrarse solos: algo tiene que
+        juntar a quien tecleó <code>brave-otter-42</code> con quien comparte
+        bajo ese nombre, y llevar la oferta de conexión entre ambos. Ese
+        algo es el intermediario, la única dependencia de red de esta
+        página, nombrado en su <code>Content-Security-Policy</code> y
+        publicado en el mismo repositorio que la página. Es el servidor más
+        pequeño capaz de hacer el trabajo: no guarda nada, no lee nada y se
+        aparta en cuanto los dos navegadores tienen un canal directo."""
+
+[[faq]]
+q = "¿Qué puede ver exactamente ese servidor?"
+a = """
+        Que un nombre de enlace está en uso, cuándo se conectan y se van
+        quien comparte y los lectores, sus direcciones IP y el
+        establecimiento de la conexión cifrada que intercambian. No el
+        texto, no los archivos, no sus nombres ni tamaños, no a quién se
+        dejó entrar en una compartición privada, y no lo que nadie escribió
+        al presentarse: todo eso viaja por el canal directo, cifrado de
+        extremo a extremo, que no pasa por el servidor."""
+
+[[faq]]
+q = "¿Qué pasa cuando cierro la pestaña?"
+a = """
+        Lo compartido se acaba en todas partes a la vez. El enlace deja de
+        funcionar en un par de segundos, y los lectores que aún tengan la
+        página abierta ven desaparecer su copia, con una nota de que la
+        compartición terminó. No es una petición de borrado a un servidor:
+        no hay copia en servidor que borrar. La pestaña era el único lugar
+        donde lo compartido existía, y cerrarla es toda la limpieza."""
+
+[[faq]]
+q = "¿Puede un lector quedarse con lo que compartí?"
+a = """
+        Mientras la compartición está abierta, sí: compartir es eso. Un
+        lector puede copiar el texto o descargar un archivo, y lo que se
+        llevó es suyo, exactamente como si se lo hubieras dado por cualquier
+        otro medio. Lo que garantiza terminar es el futuro: nadie nuevo
+        puede llegar a ello, y las páginas abiertas dejan de mostrarlo.
+        Ninguna herramienta puede des-enviar lo que ya llegó, y esta página
+        no finge lo contrario."""
+
+[[faq]]
+q = "¿Qué es el modo privado?"
+a = """
+        Lo predeterminado. A cada lector que llega se le dice que la
+        compartición es privada y se le pide presentarse; tú ves el mensaje
+        &mdash; «soy Alice, la de la reunión» &mdash; con botones para
+        dejarle leer o rechazarlo, y no se envía nada hasta que decides. La
+        presentación viaja por el canal directo ya cifrado, así que el
+        servidor nunca sabe quién llamó ni qué decidiste. Desmarcado antes
+        de compartir, queda una compartición abierta."""
+
+[[faq]]
+q = "¿Por qué verá el lector mi dirección IP?"
+a = """
+        Porque la conexión es directa de verdad, y una conexión directa va
+        entre dos direcciones: cada extremo conoce necesariamente la del
+        otro, como en una llamada de teléfono. Al lector se le avisa antes
+        de que exista conexión alguna y solo se conecta si lo decide; hasta
+        entonces, tú ni siquiera sabes que abrió el enlace. Si ese trato no
+        conviene para algo concreto, la alternativa es un servicio que pase
+        por un servidor &mdash; con el trato contrario."""
+
+[[faq]]
+q = "¿Cómo de grandes pueden ser los archivos, y qué velocidad tiene?"
+a = """
+        Hasta 200&nbsp;MB por archivo, de cualquier tipo, y tan rápido como
+        la más lenta de las dos conexiones: no hay servidor en medio que
+        frene ni ponga cuota. Dos máquinas en el mismo wifi transfieren a
+        velocidad de red local, y los bytes no salen del edificio. Los
+        lectores descargan cada archivo cuando lo piden, así que adjuntar
+        algo grande no cuesta nada hasta que alguien lo quiere de verdad."""
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = """
+        La mitad, siendo honestos: el editor sí. La página carga, tu
+        borrador está ahí, el Markdown se renderiza, y puedes escribir y
+        guardar sin red ninguna. Compartir no, y no puede: llegar al
+        navegador de otra persona es un acto de red, y la presentación
+        necesita el intermediario. Es la única herramienta de este sitio
+        cuyo trabajo es imposible sin conexión, y dar a entender otra cosa
+        sería deshonesto."""
+
+[[faq]]
+q = "¿Y si no conseguimos conectar?"
+a = """
+        La mayoría de los pares de navegadores se alcanzan directamente una
+        vez presentados; una minoría no, normalmente cuando los dos lados
+        están tras la clase más estricta de red móvil o corporativa. Esta
+        página no recurre en silencio a un servidor que retransmita &mdash;
+        eso cambiaría a escondidas lo que esta herramienta es &mdash;, sino
+        que a los veinte segundos dice claramente que no hubo conexión
+        directa. Probar desde otra red suele resolverlo."""
+
+[[faq]]
+q = "¿Es seguro renderizar Markdown, si cualquiera puede compartir cualquier cosa?"
+a = """
+        Esa pregunta es la razón de que el renderizador sean ochenta líneas
+        en el código de esta página y no una biblioteca. Cada carácter se
+        escapa antes de emitir ninguna etiqueta, solo puede producirse un
+        conjunto fijo de etiquetas inofensivas, y los enlaces aceptan solo
+        <code>http</code>, <code>https</code> y <code>mailto</code>: un
+        enlace <code>javascript:</code> se queda en texto inerte. El texto
+        compartido no puede convertirse en script en tu máquina, lo haya
+        escrito quien lo haya escrito, y las ochenta líneas puedes leerlas."""
+
+[[faq]]
+q = "¿Pueden dos personas compartir bajo el mismo nombre?"
+a = """
+        A la vez, no. Una compartición viva por nombre, impuesto en el
+        intermediario: quien llega segundo es rechazado y se le pide otro
+        nombre. En cuanto una compartición termina, su nombre queda libre
+        &mdash; lo que también significa que un enlace guardado vale lo que
+        valga la compartición que tenga detrás: el mismo nombre, la semana
+        que viene, puede ser de otra persona. Trata un enlace como algo de
+        un momento, no de una persona."""
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = """
+        Gratis, sin cuenta, sin registro, y sin ningún límite que merezca
+        mención: dieciséis lectores simultáneos por compartición. El sitio
+        lleva publicidad, que es lo que lo paga; los anuncios no reciben
+        nada sobre lo que esta página comparte, y el intermediario cabe de
+        sobra en un plan gratuito precisamente porque no guarda nada y casi
+        no hace nada."""
+
+[schema]
+description = "Comparte texto y archivos de un navegador a otro por una conexión WebRTC directa y cifrada de extremo a extremo. Nombres de enlace que se pueden decir en voz alta, actualización en vivo al escribir, Markdown y aprobación por lector. Ningún servidor guarda nada; lo compartido se acaba cuando quien comparte cierra la pestaña."
+features = [
+  "El texto y los archivos van de navegador a navegador, cifrados de extremo a extremo, nunca por un servidor",
+  "Lo compartido vive en la pestaña abierta: cerrarla lo termina y vacía las páginas de los lectores",
+  "Nombres de enlace pronunciables - brave-otter-42 -, editables, una compartición viva por nombre",
+  "Privado por defecto: cada lector se presenta y quien comparte le abre o lo rechaza",
+  "Los lectores consienten antes de que exista conexión, avisados de que las IP se hacen visibles",
+  "Actualización en vivo: los cambios llegan a los lectores conectados mientras se escribe",
+  "Markdown conmutable en ambos lados, renderizado por un renderizador propio que escapa primero",
+  "Archivos de hasta 200 MB cada uno, descargados a petición y con progreso por archivo",
+  "El borrador queda solo en el navegador de quien comparte - o en ninguna parte, si es de un solo uso",
+  "Todo el componente de servidor es un intermediario sin almacenamiento, publicado en el repositorio",
+]

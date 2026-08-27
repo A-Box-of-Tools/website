@@ -1,0 +1,23 @@
+#
+# Guide : partager du texte et des fichiers entre appareils - French.
+#
+
+nav = "Partager entre appareils"
+title = "Partager du texte et des fichiers entre appareils &mdash; sans les téléverser"
+description = "Faire passer du texte ou des fichiers d'un navigateur à un autre par une connexion directe et chiffrée - sans s'envoyer de courriel, sans historique de discussion, sans compte, et sans qu'un serveur garde une copie."
+
+heading = "Comment partager du texte et des fichiers entre appareils sans les téléverser"
+lede = """
+    Les façons habituelles de faire passer une note ou un fichier sur une
+    autre machine laissent toutes une copie derrière elles : dans un dossier
+    d'envoyés, un historique de discussion, ou sur le serveur d'un site de
+    partage, derrière un bouton de suppression qu'il faut croire sur parole.
+    Il existe une façon qui ne laisse rien nulle part, parce que rien n'est
+    jamais stocké - et c'est aussi la seule dont le nom se lance à travers
+    une pièce."""
+
+updated = "26 août 2026"
+
+og_title = "Partager entre appareils, sans qu'un serveur garde de copie"
+og_description = "Du texte et des fichiers d'un navigateur à l'autre par une connexion directe et chiffrée - un nom de lien prononçable, rien de stocké nulle part, et un partage qui s'arrête avec l'onglet."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

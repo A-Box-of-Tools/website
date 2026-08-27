@@ -1,0 +1,361 @@
+#
+# Tekst en bestanden delen - Dutch.
+#
+# Overrides for tools/share-text/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+
+name = "Tekst en bestanden delen"
+heading = "Tekst &amp; bestanden delen <span class=\"h1-kw\">&mdash; rechtstreeks van jouw browser naar de hunne, zonder upload</span>"
+tagline = "Wat je deelt leeft in dit open tabblad. Lezers halen het versleuteld rechtstreeks uit je browser, en het tabblad sluiten beëindigt het - geen server bewaart iets."
+
+title = "Tekst en bestanden delen tussen apparaten &mdash; rechtstreeks, versleuteld, niets opgeslagen"
+description = "Stuur tekst of bestanden van de ene browser naar de andere over een rechtstreekse, versleutelde verbinding. Een uitspreekbare linknaam, live bijgewerkt terwijl je typt, goedkeuring per lezer - en nooit iets op een server. Gratis, zonder account."
+og_title = "Iets delen dat stopt zodra je het tabblad sluit"
+og_description = "Tekst en bestanden reizen versleuteld, rechtstreeks van jouw browser naar die van de lezer. De server stelt jullie alleen aan elkaar voor en ziet de inhoud nooit. Geen opslag, geen geschiedenis, geen account - tabblad dicht en alles is weg, overal."
+og_image_alt = "Tekst en bestanden delen - van browser naar browser, niets opgeslagen"
+
+pledge = """
+    Wat je hier deelt reist van jouw browser naar die van elke lezer over
+    een eind-tot-eind versleuteld WebRTC-kanaal, en nergens anders heen. De
+    ene betrokken server &mdash; genoemd in de
+    <code>Content-Security-Policy</code> van deze pagina, broncode in de
+    repository &mdash; stelt de twee browsers aan elkaar voor en stapt dan
+    opzij: hij slaat niets op, en de inhoud passeert hem nooit. Er is geen
+    geschiedenis en geen account. Sluit dit tabblad en het delen stopt
+    overal tegelijk, ook op de open pagina's van de lezers."""
+
+live_hint = """
+      Open DevTools en hou het tabblad &ldquo;Netwerk&rdquo; in de gaten
+      terwijl je deelt. Je ziet één WebSocket naar de tussenpersoon met een
+      paar kilobyte verbindingsopbouw &mdash; en hoeveel je ook typt of
+      bijvoegt, geen enkel verzoek dat er iets van draagt."""
+
+read_first = """
+, <code>src/main.js</code> voor beide
+      helften van de uitwisseling &mdash; het tabblad van de deler en dat
+      van de lezer zijn hetzelfde bestand &mdash; en
+      <code>src/markdown.js</code> voor de renderer die draait op tekst van
+      de andere kant van de lijn, en die daarom alles escapet voordat hij
+      iets uitstuurt. De volledige broncode van de server is
+      <code>workers/rendezvous/worker.js</code>, in dezelfde repository: één
+      kamer per linknaam, die niets vasthoudt behalve de open verbindingen."""
+
+howto_heading = "Zo deel je tekst en bestanden zonder ze ergens te uploaden"
+
+card = """
+            Tekst en bestanden, van browser naar browser over een
+            rechtstreekse versleutelde verbinding. Nergens opgeslagen; het
+            delen stopt als je het tabblad sluit."""
+
+[words]
+plural = "gedeelde teksten en bestanden"
+choose = "een linknaam"
+analytics_extra = """, en niets van wat
+  dit gereedschap deelt - niet de tekst, niet de bestanden, hun namen of
+  groottes, en niet wie er meelas"""
+
+[[facts]]
+mark = "&#10007;"
+text = "Niets opgeslagen"
+
+[[facts]]
+mark = "&#10007;"
+text = "Geen account"
+
+[[facts]]
+mark = "&#10003;"
+text = "Eind-tot-eind versleuteld"
+
+[[facts]]
+mark = "&#10003;"
+text = "Stopt met je tabblad"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "De inhoud gaat naar je lezer, en nergens anders heen."
+body = """
+ Tekst en bestanden reizen
+      over een WebRTC-datakanaal: een rechtstreekse, met DTLS versleutelde
+      verbinding tussen jouw browser en die van elke lezer. Op dat pad staat
+      geen server. Op hetzelfde netwerk verlaten de bytes niet eens het
+      gebouw &mdash; twee laptops op dezelfde wifi geven ze lokaal door."""
+
+[[privacy]]
+title = "Wat de tussenpersoon is, en alles wat hij ziet."
+body = """
+ Een rechtstreekse verbinding
+      vraagt om een introductie, dus opent deze pagina &mdash; als enige op
+      deze site &mdash; één WebSocket naar een server van ons. Die brengt
+      degene die een linknaam intypte samen met degene die eronder deelt,
+      geeft een paar kilobyte onderhandeling door en houdt niets vast: er
+      wordt nooit opslag beschreven, en een kamer houdt op te bestaan zodra
+      de deler de verbinding verbreekt. Hij kan zien dat een naam in gebruik
+      is, wanneer iemand komt en gaat, en de IP-adressen. Hij kan niet zien:
+      de tekst, de bestanden, wie werd binnengelaten of wat iemand schreef
+      &mdash; zelfs het aankloppen bij privé delen reist over het
+      versleutelde rechtstreekse kanaal. Zijn volledige broncode staat in de
+      repository, naast die van dit gereedschap."""
+
+[[privacy]]
+title = "Niets wordt opgeslagen - het tabblad sluiten ís het wissen."
+body = """
+ Het delen bestaat alleen
+      zolang je tabblad open is. Sluit het en nieuwe lezers vinden niets
+      meer, en wie zat te lezen ziet zijn kopie verdwijnen &mdash; al is wat
+      iemand eerder kopieerde of downloadde van hem, zoals alles wat je
+      iemand in handen hebt gegeven. Het concept dat je typt staat in de
+      opslag van je eigen browser, zodat het er de volgende keer nog is, en
+      alleen daar; als eenmalig gemarkeerd staat het nergens."""
+
+[[privacy]]
+title = "De linknaam is het enige geheim, en de privéschakelaar het slot."
+body = """
+ Wie een naam kent of
+      raadt, kan openen wat erachter zit. Daarom zijn de suggesties drie
+      willekeurige woorden, daarom verdient alles wat gevoelig ligt een
+      onraadbare naam &mdash; of de privéschakelaar, die standaard aanstaat:
+      elke lezer die aankomt moet zich voorstellen, over het rechtstreekse
+      kanaal, en er wordt niets verstuurd voordat jij hem binnenlaat."""
+
+[[privacy]]
+title = "Een rechtstreekse verbinding toont elke kant het adres van de ander."
+body = """
+ Dat is wat
+      peer-to-peer betekent, en de lezer weet het voordat het gebeurt: een
+      deellink openen vraagt alleen aan de tussenpersoon of er iemand
+      deelt; daarna zegt de pagina duidelijk dat verbinden elke kant het
+      IP-adres van de ander laat zien, en wacht op een klik. Tot die klik
+      weet de deler niet eens dat de lezer bestaat."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de donatieknop van Buy Me a Coffee.
+      Geen van beide krijgt iets over wat deze pagina deelt &mdash; niet de
+      tekst, niet de bestanden, hun namen of groottes, niet de linknaam, en
+      niet wie er verbond. Elke regel die de inhoud raakt wordt vanaf deze
+      oorsprong geserveerd en staat in de repository."""
+
+[[howto]]
+title = "Schrijf de tekst, of voeg de bestanden bij."
+body = """
+ De editor ís wat je deelt:
+      wat erin staat wanneer een lezer verbindt, is wat hij krijgt, en alles
+      daarna bereikt verbonden lezers live, terwijl je typt. Bestanden
+      reizen over hetzelfde kanaal, tot 200&nbsp;MB per stuk; lezers zien de
+      lijst en halen alleen op wat ze vragen &mdash; niemands bandbreedte
+      gaat op aan een bestand dat hij niet wilde."""
+
+[[howto]]
+title = "Zet Markdown aan als de tekst opmaak verdient."
+body = """
+ Eén schakelaar. Koppen,
+      vet, lijsten, code en links worden live gerenderd naast de editor
+      terwijl je typt, en lezers krijgen standaard de opgemaakte weergave,
+      met een knop terug naar de brontekst. De renderer reist met deze
+      pagina mee en escapet alles: gedeelde tekst kan op de machine van een
+      lezer geen script worden, wie hem ook schreef."""
+
+[[howto]]
+title = "Geef de link een naam, of hou de suggestie."
+body = """
+ De naam is het adres:
+      <code>brave-otter-42</code> roep je door een kamer, lees je voor door
+      de telefoon, schrijf je over van een whiteboard. Het is ook het enige
+      geheim: kies voor iets privés óf een naam die niemand zou raden, óf
+      vertrouw op de privéschakelaar. Een naam waaronder iemand anders al
+      deelt wordt geweigerd, en de jouwe komt vrij zodra je stopt."""
+
+[[howto]]
+title = "Bepaal wie er binnenkomt."
+body = """
+ Privé is de standaard: elke
+      lezer wordt gevraagd zich voor te stellen &mdash; een naam, een hint,
+      iets wat jij herkent &mdash; en jij ziet het bericht met een knop om
+      hem te laten lezen of weg te sturen. De introductie reist over het
+      rechtstreekse kanaal, dus zelfs de tussenpersoon weet niet wie er
+      klopte. Vink het uit voor open delen dat iedereen met de naam kan
+      lezen."""
+
+[[howto]]
+title = "Begin met delen, en laat het tabblad open."
+body = """
+ Het tabblad is de server:
+      het gedeelde is bereikbaar zolang het open en wakker is, en geen
+      moment langer. Een dichtgeklapte laptop beëindigt het ook. Kopieer de
+      link, of zeg gewoon de naam &mdash; een lezer kan hem als
+      <code>#naam</code> achter het adres van deze pagina typen."""
+
+[[howto]]
+title = "Aan de andere kant: eerst toestemmen, dan aankloppen."
+body = """
+ Wie de link opent hoort
+      dat er iemand deelt, wordt gewaarschuwd dat een rechtstreekse
+      verbinding elke kant het netwerkadres van de ander laat zien, en
+      verbindt alleen uit eigen keuze. Bij privé delen stelt hij zich voor
+      en wacht op jou. Wat hij krijgt wordt live bijgewerkt terwijl jij
+      schrijft, en verdwijnt wanneer je het tabblad sluit."""
+
+[[faq]]
+q = "Wordt er iets geüpload, waarheen dan ook?"
+a = """
+        Nee. Tekst en bestanden gaan van jouw browser naar die van elke
+        lezer over een versleuteld WebRTC-kanaal, rechtstreeks. De ene
+        betrokken server draagt de introductie &mdash; een paar kilobyte
+        verbindingsonderhandeling &mdash; en nooit de inhoud. Er valt bij
+        hem niets te lekken, te vorderen of te verliezen: hij houdt geen
+        byte van je vast, en een kamer houdt op te bestaan zodra je de
+        verbinding verbreekt."""
+
+[[faq]]
+q = "Waarom praat dit gereedschap dan überhaupt met een server, juist op deze site?"
+a = """
+        Omdat twee browsers elkaar niet zelf kunnen vinden: iets moet
+        degene die <code>brave-otter-42</code> intypte samenbrengen met
+        degene die onder die naam deelt, en het verbindingsaanbod tussen hen
+        vervoeren. Dat iets is de tussenpersoon, de enige
+        netwerkafhankelijkheid van deze pagina, genoemd in zijn
+        <code>Content-Security-Policy</code> en gepubliceerd in dezelfde
+        repository als de pagina. Het is de kleinste server die het werk kan
+        doen: hij slaat niets op, leest niets en stapt opzij zodra de twee
+        browsers een rechtstreeks kanaal hebben."""
+
+[[faq]]
+q = "Wat kan die server precies zien?"
+a = """
+        Dat een linknaam in gebruik is, wanneer de deler en lezers
+        verbinden en vertrekken, hun IP-adressen, en de opbouw van de
+        versleutelde verbinding die ze uitwisselen. Niet de tekst, niet de
+        bestanden, niet hun namen of groottes, niet wie er bij privé delen
+        werd binnengelaten, en niet wat iemand bij het voorstellen schreef
+        &mdash; dat alles reist over het rechtstreekse, eind-tot-eind
+        versleutelde kanaal, dat niet langs de server loopt."""
+
+[[faq]]
+q = "Wat gebeurt er als ik het tabblad sluit?"
+a = """
+        Het delen stopt overal tegelijk. De link werkt binnen een seconde
+        of twee niet meer, en lezers die de pagina nog open hebben zien hun
+        kopie verdwijnen, met de melding dat het delen is beëindigd. Het is
+        geen verwijderverzoek aan een server &mdash; er is geen serverkopie
+        om te verwijderen. Het tabblad was de enige plek waar het gedeelde
+        bestond, en het sluiten is de hele opruiming."""
+
+[[faq]]
+q = "Kan een lezer houden wat ik deelde?"
+a = """
+        Zolang het delen open is, ja &mdash; dat is wat delen is. Een lezer
+        kan de tekst kopiëren of een bestand downloaden, en wat hij meenam
+        is van hem, precies alsof je het op elke andere manier had
+        overhandigd. Wat stoppen garandeert is de toekomst: niemand nieuw
+        kan erbij, en open pagina's tonen het niet meer. Geen gereedschap
+        kan terughalen wat al is aangekomen, en deze pagina doet niet alsof."""
+
+[[faq]]
+q = "Wat is de privémodus?"
+a = """
+        De standaard. Elke lezer die aankomt hoort dat het delen privé is
+        en wordt gevraagd zich voor te stellen; jij ziet het bericht &mdash;
+        &ldquo;ik ben het, Alice van de stand-up&rdquo; &mdash; met knoppen
+        om hem te laten lezen of weg te sturen, en er wordt niets verstuurd
+        voordat jij beslist. De introductie reist over het al versleutelde
+        rechtstreekse kanaal, dus de server weet nooit wie er klopte of wat
+        je besloot. Uitgevinkt vóór het delen wordt het open delen."""
+
+[[faq]]
+q = "Waarom ziet de lezer mijn IP-adres?"
+a = """
+        Omdat de verbinding echt rechtstreeks is, en een rechtstreekse
+        verbinding tussen twee adressen loopt: elk uiteinde leert
+        noodzakelijkerwijs dat van de ander, zoals bij een telefoongesprek.
+        De lezer wordt gewaarschuwd voordat er enige verbinding bestaat en
+        verbindt alleen uit eigen keuze; tot dan weet jij niet eens dat hij
+        de link opende. Past die ruil niet bij een bepaald delen, dan is een
+        dienst die via een server doorstuurt het alternatief &mdash; met de
+        omgekeerde ruil."""
+
+[[faq]]
+q = "Hoe groot mogen de bestanden zijn, en hoe snel is het?"
+a = """
+        Tot 200&nbsp;MB per bestand, elk type, en zo snel als de traagste
+        van de twee verbindingen &mdash; er zit geen server tussen om af te
+        remmen of te tellen. Twee machines op dezelfde wifi dragen over op
+        lokale netwerksnelheid, en de bytes verlaten het gebouw niet. Lezers
+        halen elk bestand op verzoek op, dus iets groots bijvoegen kost
+        niets totdat iemand er echt om vraagt."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        De helft, eerlijk gezegd: de editor wel &mdash; de pagina laadt, je
+        concept staat er, Markdown rendert, en schrijven en opslaan kan
+        zonder enig netwerk. Delen niet, en dat kan ook niet: de browser van
+        iemand anders bereiken is een netwerkhandeling, en de introductie
+        heeft de tussenpersoon nodig. Dit is het enige gereedschap op deze
+        site waarvan de taak offline onmogelijk is, en anders doen
+        voorkomen zou oneerlijk zijn."""
+
+[[faq]]
+q = "En als we geen verbinding krijgen?"
+a = """
+        De meeste browserparen bereiken elkaar rechtstreeks zodra ze zijn
+        voorgesteld; een minderheid niet, meestal wanneer beide kanten
+        achter het strengste soort bedrijfs- of mobiel netwerk zitten. Deze
+        pagina valt niet stiekem terug op een doorgeefserver &mdash; dat zou
+        in stilte veranderen wat dit gereedschap is &mdash;: na twintig
+        seconden zegt hij ronduit dat een rechtstreekse verbinding niet
+        lukte. Het vanaf een ander netwerk proberen lost het meestal op."""
+
+[[faq]]
+q = "Is Markdown renderen veilig, als iedereen alles kan delen?"
+a = """
+        Die vraag is de reden dat de renderer tachtig regels in de broncode
+        van deze pagina is en geen bibliotheek. Elk teken wordt ge-escapet
+        voordat er ook maar één tag wordt uitgestuurd, alleen een vaste set
+        onschuldige tags kan ontstaan, en links accepteren alleen
+        <code>http</code>, <code>https</code> en <code>mailto</code> &mdash;
+        een <code>javascript:</code>-link blijft dode tekst. Gedeelde tekst
+        kan op jouw machine geen script worden, wie hem ook schreef, en die
+        tachtig regels kun je lezen."""
+
+[[faq]]
+q = "Kunnen twee mensen onder dezelfde naam delen?"
+a = """
+        Niet tegelijk. Eén levend delen per naam, afgedwongen bij de
+        tussenpersoon: wie als tweede komt wordt geweigerd en gevraagd een
+        andere naam te kiezen. Zodra een delen stopt is de naam weer vrij
+        &mdash; wat ook betekent dat een bewaarde link maar zo vers is als
+        het delen erachter: dezelfde naam kan volgende week van iemand
+        anders zijn. Behandel een link als iets van een moment, niet van
+        een persoon."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Gratis, geen account, geen registratie, en geen limiet die het
+        noemen waard is &mdash; zestien gelijktijdige lezers per delen. De
+        site draagt advertenties, die hem betalen; de advertenties krijgen
+        niets over wat deze pagina deelt, en de tussenpersoon past ruim in
+        een gratis abonnement, juist omdat hij niets opslaat en bijna niets
+        doet."""
+
+[schema]
+description = "Deel tekst en bestanden van de ene browser naar de andere over een rechtstreekse, eind-tot-eind versleutelde WebRTC-verbinding. Uitspreekbare linknamen, live bijgewerkt tijdens het typen, Markdown en goedkeuring per lezer. Geen server slaat iets op; het delen stopt wanneer de deler het tabblad sluit."
+features = [
+  "Tekst en bestanden gaan van browser naar browser, eind-tot-eind versleuteld, nooit via een server",
+  "Het delen leeft in het open tabblad: het sluiten beëindigt het en maakt de pagina's van lezers leeg",
+  "Uitspreekbare linknamen - brave-otter-42 -, aanpasbaar, één levend delen per naam",
+  "Standaard privé: elke lezer stelt zich voor, en de deler laat binnen of weigert",
+  "Lezers stemmen toe voordat er een verbinding bestaat, gewaarschuwd dat IP's zichtbaar worden",
+  "Live bijgewerkt: wijzigingen bereiken verbonden lezers terwijl er wordt getypt",
+  "Markdown, aan beide kanten schakelbaar, gerenderd door een ingebouwde renderer die eerst escapet",
+  "Bestanden tot 200 MB per stuk, opgehaald op verzoek, met voortgang per bestand",
+  "Het concept blijft alleen in de browser van de deler - of nergens, als eenmalig gemarkeerd",
+  "De hele servercomponent is een tussenpersoon zonder opslag, gepubliceerd in de repository",
+]

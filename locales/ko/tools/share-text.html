@@ -1,0 +1,180 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> 쓰거나, 첨부하세요</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="읽는 사람에게는 서식이 적용되어 보이고, 입력하는 대로 실시간 렌더링됩니다">
+            <input type="checkbox" id="markdown"> 마크다운
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">파일 첨부</button>
+          <button type="button" id="save" class="ghost" data-download>파일로 저장</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="공유할 텍스트"
+                    placeholder="공유할 텍스트를 입력하거나 붙여 넣으세요&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="첨부할 파일">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        파일은 텍스트와 같은 직접 채널로, 개당 200&nbsp;MB까지 갑니다. 읽는
+        사람은 목록을 보고 요청할 때에만 파일을 받습니다.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> 링크에 이름을 붙이세요</h2>
+      <div class="field">
+        <label for="code">링크 이름</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="다른 이름 제안">&#8635;</button>
+        </div>
+        <p class="field-note">
+          이름이 곧 주소이자 유일한 비밀입니다. 방 저편으로 외칠 만큼 짧고,
+          사적인 것이라면 알아맞힐 수 없는 이름이 어울립니다.
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          비공개 &mdash; 읽는 사람마다 요청해야 하고, 당신이 들여보냅니다
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          일회용 &mdash; 초안을 이 기기에 남기지 않기
+        </label>
+        <p class="field-note">
+          초안은 이 브라우저에만 남아 다음에도 여기 있습니다 &mdash;
+          일회용으로 표시하면 어디에도 남지 않습니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> 공유하세요</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">공유 시작</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="공유 링크">
+        <button type="button" id="copylink" class="ghost">링크 복사</button>
+        <button type="button" id="stop" class="ghost">공유 중지</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>어디에도 아무것도 저장되지 않습니다</h2>
+      <p>
+        텍스트와 파일은 암호화된 채 이 탭에서 읽는 사람 각각의 탭으로 곧장
+        갑니다. 관여하는 유일한 서버는 두 브라우저를 소개할 뿐, 둘이
+        주고받는 것을 결코 보지 못합니다. 이 탭을 닫으면 공유가 끝나고 읽는
+        사람들의 열린 페이지도 비워집니다 &mdash; 다만 누군가 이미
+        복사하거나 내려받은 것은 그 사람의 것입니다.
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>누군가 당신과 공유하고 있습니다</h2>
+      <p id="view-status" role="status" aria-live="polite">공유하는 사람을 찾는 중&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          읽으려면 당신의 브라우저가 공유하는 사람의 브라우저와 직접
+          연결됩니다 &mdash; 바로 그게 핵심입니다. 여기서는 무엇도 서버에
+          닿지 않습니다. 모든 직접 연결이 그렇듯 양쪽은 서로의 네트워크
+          (IP) 주소를 보게 됩니다. 당신이 연결을 선택하기 전에는 아무것도
+          받지 않고, 당신에 관한 어떤 것도 공유되지 않습니다.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">연결하고 공유 받기</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          공유하는 사람이 알아볼 만한 것을 말해 주세요 &mdash; 이름이든,
+          힌트든 &mdash; 그러면 들여보내 줄 수 있습니다. 메시지는 곧장 그
+          사람의 브라우저로 갑니다.
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="공유하는 사람이 알아볼 메시지"
+                 placeholder="나야, 앨리스">
+          <button type="button" id="send-knock" class="primary">읽기 요청</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">이 링크 다시 확인</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="공유하는 사람이 입력하는 대로 바뀝니다">실시간</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">서식</button>
+            <button type="button" id="mode-src">원문</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="원문 텍스트를 복사합니다">복사</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">공유 중입니다. 누군가 링크를 열기를 기다리는 중 &mdash; 이 탭을 열어 두세요.</span>
+    <span data-phrase="share.reader-count.one">읽는 사람 1명 연결됨</span>
+    <span data-phrase="share.reader-count.many">읽는 사람 {n}명 연결됨</span>
+    <span data-phrase="share.knock-count.one">1명이 입장 허락을 기다리고 있습니다</span>
+    <span data-phrase="share.knock-count.many">{n}명이 입장 허락을 기다리고 있습니다</span>
+    <span data-phrase="share.closing-note">이 탭을 닫으면 공유가 끝납니다.</span>
+    <span data-phrase="share.no-message">(메시지 없음)</span>
+    <span data-phrase="share.admit">읽게 하기</span>
+    <span data-phrase="share.deny">돌려보내기</span>
+    <span data-phrase="share.remove-file">제거</span>
+    <span data-phrase="share.setting-up">준비 중&hellip;</span>
+    <span data-phrase="share.name-first">먼저 링크에 이름을 붙이거나, 제안 버튼을 누르세요.</span>
+    <span data-phrase="share.name-taken">&ldquo;{name}&rdquo;(으)로는 지금 다른 사람이 공유 중입니다 &mdash; 다른 이름을 고르세요.</span>
+    <span data-phrase="share.lost-rendezvous">중개자와의 연결이 끊겼습니다. 다시 시도 중입니다. 연결된 읽는 사람에게는 영향이 없습니다.</span>
+    <span data-phrase="share.stopped">중지됨. 더 이상 아무것도 공유되지 않습니다.</span>
+    <span data-phrase="share.file-too-big">&ldquo;{name}&rdquo;은(는) 200 MB 한도를 넘습니다.</span>
+
+    <span data-phrase="copy.done">복사됨</span>
+    <span data-phrase="copy.link">링크 복사</span>
+    <span data-phrase="copy.text">복사</span>
+
+    <span data-phrase="view.someone">이 주소에서 누군가 공유하고 있습니다.</span>
+    <span data-phrase="view.connecting">직접 연결 중&hellip;</span>
+    <span data-phrase="view.private">공유하는 사람이 비공개로 설정했습니다.</span>
+    <span data-phrase="view.asked">요청했습니다. 들여보내 주기를 기다리는 중&hellip;</span>
+    <span data-phrase="view.denied">공유하는 사람이 들여보내지 않았습니다.</span>
+    <span data-phrase="view.empty">연결됨. 공유하는 사람이 아직 아무것도 쓰지 않았습니다 &mdash; 입력하는 대로 이 페이지가 채워집니다.</span>
+    <span data-phrase="view.ended">공유하는 사람이 공유를 끝냈고, 이 사본도 함께 사라졌습니다.</span>
+    <span data-phrase="view.gone-early">무언가 도착하기 전에 공유하는 사람이 떠났습니다. 모두 함께 사라졌습니다.</span>
+    <span data-phrase="view.nobody">이 주소에서는 아무도 공유하고 있지 않습니다. 공유하던 탭이 닫혔을 수 있고 &mdash; 그렇다면 공유도 함께 사라졌습니다.</span>
+    <span data-phrase="view.full">이 공유는 이미 읽는 사람 정원이 찼습니다.</span>
+    <span data-phrase="view.no-connect">공유하는 사람에게 직접 닿을 수 없었습니다. 두 네트워크 중 하나가 피어 투 피어 연결을 막고 있을 수 있습니다.</span>
+    <span data-phrase="view.error">연결 중에 문제가 생겼습니다. 페이지를 새로 고치고 다시 시도하세요.</span>
+    <span data-phrase="view.download">내려받기</span>
+    <span data-phrase="view.file-gone">더 이상 공유되지 않음</span>
+  </div>
+</main>

@@ -1,0 +1,37 @@
+#
+# Guide: moving text and files between devices without a server keeping them.
+#
+# Written for the person emailing themselves a note, pasting a password into
+# a chat app, or hunting a USB stick because the file is on the wrong
+# machine. The thing they are not told anywhere: every "quick share" service
+# in the search results stores what they paste and promises to delete it,
+# and the promise is the only part they cannot check. The tool next door is
+# built so there is nothing to promise about.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/share-text-between-devices"
+kind = "guide"
+nav = "Sharing between devices"
+group = "doing-the-job"
+tool = "share-text"
+
+title = "How to Share Text and Files Between Devices Without Uploading Them"
+description = "Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later."
+
+heading = "How to share text and files between devices without uploading them"
+lede = """
+    The usual ways to move a note or a file to another machine all leave a
+    copy behind: in a sent folder, a chat history, or on a sharing site's
+    server behind a delete button you have to trust. There is a way to move
+    it that leaves nothing anywhere, because nothing is ever stored - and it
+    is also the only way that works with a name you can say across a room."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Sharing between devices, without a server keeping a copy"
+og_description = "Text and files from one browser to another over a direct encrypted connection - a speakable link name, nothing stored anywhere, and a share that ends when the tab closes."
+og_image_alt = "abox.tools - tools that never touch a server"

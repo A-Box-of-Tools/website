@@ -63,6 +63,11 @@ pages/
     body.html            the <main> of the page
   terms/                 the same two things
   guides/<slug>/         the same two things, plus a group and usually a tool
+workers/
+  rendezvous/            the one server: the introduction /share-text/ needs.
+                         Deployed by hand with wrangler; invisible to build.py,
+                         and in this repository so the tool's "the server's
+                         whole source is published" claim is checkable
 tests/
   python/                the generator: unittest, standard library only
   js/                    the tools: node --test, built in since Node 18

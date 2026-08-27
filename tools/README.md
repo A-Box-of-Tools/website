@@ -46,6 +46,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [JSON Formatter](format-json/) | `/format-json/` | JSON, XML, HTML, CSS and YAML, formatted or converted. Nothing is pasted into anyone else's server. |
 | [Text Diff](compare-text/) | `/compare-text/` | Two texts in, every difference marked, line by line and word by word. Nothing is pasted into anyone else's server. |
 | [Base64 Encoder & Decoder](encode-text/) | `/encode-text/` | Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server. |
+| [Share Text &amp; Files](share-text/) | `/share-text/` | The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server. |
 | [QR & Barcode Generator](qr-barcode/) | `/qr-barcode/` | Type it, and it becomes a code. Nothing is sent to make one. |
 | [QR & Barcode Reader](qr-barcode-reader/) | `/qr-barcode-reader/` | Point it at a code, or drop a picture of one. It is read here, and nowhere else. |
 | [Hash & Checksum](hash-checksum/) | `/hash-checksum/` | Check a download against the number the publisher printed, without sending it to anyone. |

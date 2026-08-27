@@ -1,0 +1,22 @@
+#
+# Guia: compartilhar texto e arquivos entre dispositivos - Brazilian Portuguese.
+#
+
+nav = "Compartilhar entre dispositivos"
+title = "Compartilhar texto e arquivos entre dispositivos &mdash; sem upload"
+description = "Levar texto ou arquivos de um navegador para outro por uma conexão direta e criptografada: sem mandar e-mail para si mesmo, sem histórico de chat, sem conta, e sem servidor guardando cópia."
+
+heading = "Como compartilhar texto e arquivos entre dispositivos sem fazer upload"
+lede = """
+    Os jeitos comuns de levar uma nota ou um arquivo para outra máquina
+    deixam todos uma cópia para trás: na pasta de enviados, no histórico de
+    um chat, ou no servidor de um site de compartilhamento, atrás de um
+    botão de excluir em que é preciso confiar. Existe um jeito que não deixa
+    nada em lugar nenhum, porque nada é guardado nunca - e é também o único
+    com um nome que dá para falar de um lado a outro da sala."""
+
+updated = "26 de agosto de 2026"
+
+og_title = "Compartilhar entre dispositivos, sem servidor guardando cópia"
+og_description = "Texto e arquivos de um navegador para outro por uma conexão direta e criptografada: um nome de link falável, nada guardado em lugar nenhum, e um compartilhamento que acaba com a aba."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

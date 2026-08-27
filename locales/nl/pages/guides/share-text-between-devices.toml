@@ -1,0 +1,23 @@
+#
+# Gids: tekst en bestanden delen tussen apparaten - Dutch.
+#
+
+nav = "Delen tussen apparaten"
+title = "Tekst en bestanden delen tussen apparaten &mdash; zonder upload"
+description = "Tekst of bestanden van de ene browser naar de andere brengen over een rechtstreekse, versleutelde verbinding - zonder jezelf te mailen, zonder chatgeschiedenis, zonder account, en zonder server die een kopie houdt."
+
+heading = "Zo deel je tekst en bestanden tussen apparaten zonder ze te uploaden"
+lede = """
+    De gebruikelijke manieren om een notitie of bestand naar een andere
+    machine te brengen laten allemaal een kopie achter: in een map met
+    verzonden items, in een chatgeschiedenis, of op de server van een
+    deelwebsite, achter een verwijderknop die je maar moet geloven. Er is
+    een manier die nergens iets achterlaat, omdat er nooit iets wordt
+    opgeslagen - en het is ook de enige met een naam die je door een kamer
+    kunt roepen."""
+
+updated = "26 augustus 2026"
+
+og_title = "Delen tussen apparaten, zonder server die een kopie houdt"
+og_description = "Tekst en bestanden van browser naar browser over een rechtstreekse, versleutelde verbinding - een uitspreekbare linknaam, nergens iets opgeslagen, en delen dat stopt met het tabblad."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

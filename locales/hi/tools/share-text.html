@@ -1,0 +1,181 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> लिखिए, या फ़ाइलें जोड़िए</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="पाठकों को फ़ॉर्मैटेड दिखता है, टाइप करते-करते लाइव रेंडर">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">फ़ाइलें जोड़ें</button>
+          <button type="button" id="save" class="ghost" data-download>फ़ाइल के रूप में सहेजें</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="साझा किया जाने वाला टेक्स्ट"
+                    placeholder="साझा करने के लिए टेक्स्ट लिखिए या चिपकाइए&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="जोड़ी जाने वाली फ़ाइलें">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        फ़ाइलें टेक्स्ट वाले ही सीधे चैनल से जाती हैं, हरेक 200&nbsp;MB
+        तक। पाठक सूची देखते हैं और फ़ाइल तभी डाउनलोड होती है जब वे माँगें।
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> लिंक को नाम दीजिए</h2>
+      <div class="field">
+        <label for="code">लिंक-नाम</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="कोई और नाम सुझाएँ">&#8635;</button>
+        </div>
+        <p class="field-note">
+          नाम ही पता है और इकलौता राज़ भी: इतना छोटा कि कमरे के आर-पार बोला
+          जा सके, और किसी निजी चीज़ के लिए ऐसा जो कोई अनुमान न लगा सके।
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          निजी &mdash; हर पाठक को माँगना होगा, और अंदर आप आने देंगे
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          एक-बार &mdash; मसौदा इस डिवाइस पर न रखें
+        </label>
+        <p class="field-note">
+          मसौदा सिर्फ़ इसी ब्राउज़र में रहता है, इसलिए अगली बार भी यहीं
+          मिलेगा &mdash; जब तक आप उसे एक-बार वाला चिह्नित न कर दें, तब वह
+          कहीं नहीं रहता।
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> साझा कीजिए</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">साझा करना शुरू करें</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="साझा करने का लिंक">
+        <button type="button" id="copylink" class="ghost">लिंक कॉपी करें</button>
+        <button type="button" id="stop" class="ghost">साझा करना रोकें</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>कहीं कुछ स्टोर नहीं होता</h2>
+      <p>
+        टेक्स्ट और फ़ाइलें एन्क्रिप्टेड होकर सीधे इस टैब से हर पाठक के टैब
+        तक जाती हैं। शामिल इकलौता सर्वर दोनों ब्राउज़रों की मुलाक़ात कराता
+        है और उनका आदान-प्रदान कभी नहीं देखता। यह टैब बंद करना साझा खत्म कर
+        देता है और पाठकों के खुले पन्ने भी खाली कर देता है &mdash; हालाँकि
+        जो किसी ने पहले ही कॉपी या डाउनलोड कर लिया, वह उसका है।
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>कोई आपके साथ कुछ साझा कर रहा है</h2>
+      <p id="view-status" role="status" aria-live="polite">साझा करने वाले को खोजा जा रहा है&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          पढ़ने के लिए आपका ब्राउज़र सीधे साझा करने वाले के ब्राउज़र से
+          जुड़ता है &mdash; यही तो बात है: यहाँ कुछ भी किसी सर्वर को नहीं
+          छूता। हर सीधे कनेक्शन की तरह, इसमें दोनों पक्ष एक-दूसरे का
+          नेटवर्क (IP) पता देख लेते हैं। जब तक आप खुद जुड़ना न चुनें, कुछ
+          नहीं मँगाया जाता और आपके बारे में कुछ साझा नहीं होता।
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">जुड़ें और साझा सामग्री पाएँ</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          साझा करने वाले को कुछ ऐसा बताइए जो वह पहचान ले &mdash; नाम, कोई
+          इशारा &mdash; ताकि वह आपको अंदर आने दे। आपका संदेश सीधे उसके
+          ब्राउज़र तक जाता है।
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="ऐसा संदेश जो साझा करने वाला पहचान ले"
+                 placeholder="मैं हूँ, ऐलिस">
+          <button type="button" id="send-knock" class="primary">पढ़ने की अनुमति माँगें</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">यह लिंक फिर जाँचें</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="साझा करने वाले के टाइप करते ही बदलता है">लाइव</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">फ़ॉर्मैटेड</button>
+            <button type="button" id="mode-src">स्रोत</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="कच्चा टेक्स्ट कॉपी करता है">कॉपी करें</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">साझा चालू है। किसी के लिंक खोलने का इंतज़ार &mdash; यह टैब खुला रखिए।</span>
+    <span data-phrase="share.reader-count.one">1 पाठक जुड़ा है</span>
+    <span data-phrase="share.reader-count.many">{n} पाठक जुड़े हैं</span>
+    <span data-phrase="share.knock-count.one">1 व्यक्ति आपके अंदर आने देने के इंतज़ार में है</span>
+    <span data-phrase="share.knock-count.many">{n} लोग आपके अंदर आने देने के इंतज़ार में हैं</span>
+    <span data-phrase="share.closing-note">यह टैब बंद करना साझा खत्म कर देता है।</span>
+    <span data-phrase="share.no-message">(कोई संदेश नहीं)</span>
+    <span data-phrase="share.admit">पढ़ने दें</span>
+    <span data-phrase="share.deny">लौटा दें</span>
+    <span data-phrase="share.remove-file">हटाएँ</span>
+    <span data-phrase="share.setting-up">तैयारी हो रही है&hellip;</span>
+    <span data-phrase="share.name-first">पहले लिंक को कोई नाम दीजिए, या सुझाव बटन दबाइए।</span>
+    <span data-phrase="share.name-taken">&ldquo;{name}&rdquo; नाम से अभी कोई और साझा कर रहा है &mdash; दूसरा नाम चुनिए।</span>
+    <span data-phrase="share.lost-rendezvous">बिचौलिए से संपर्क टूट गया; दोबारा कोशिश जारी। जुड़े पाठकों पर असर नहीं पड़ता।</span>
+    <span data-phrase="share.stopped">रुक गया। अब कुछ साझा नहीं हो रहा।</span>
+    <span data-phrase="share.file-too-big">&ldquo;{name}&rdquo; 200 MB की सीमा से बड़ी है।</span>
+
+    <span data-phrase="copy.done">कॉपी हो गया</span>
+    <span data-phrase="copy.link">लिंक कॉपी करें</span>
+    <span data-phrase="copy.text">कॉपी करें</span>
+
+    <span data-phrase="view.someone">इस पते पर कोई कुछ साझा कर रहा है।</span>
+    <span data-phrase="view.connecting">सीधे जुड़ा जा रहा है&hellip;</span>
+    <span data-phrase="view.private">साझा करने वाले ने इसे निजी रखा है।</span>
+    <span data-phrase="view.asked">माँग भेज दी। साझा करने वाले के अंदर आने देने का इंतज़ार&hellip;</span>
+    <span data-phrase="view.denied">साझा करने वाले ने आपको अंदर नहीं आने दिया।</span>
+    <span data-phrase="view.empty">जुड़ गए। साझा करने वाले ने अभी कुछ लिखा नहीं &mdash; उसके टाइप करते ही यह पन्ना भरता जाएगा।</span>
+    <span data-phrase="view.ended">साझा करने वाले ने साझा खत्म कर दिया, और यह प्रति भी उसी के साथ गई।</span>
+    <span data-phrase="view.gone-early">कुछ पहुँचने से पहले ही साझा करने वाला चला गया। सब उसी के साथ चला गया।</span>
+    <span data-phrase="view.nobody">इस पते पर कोई कुछ साझा नहीं कर रहा। शायद साझा करने वाले ने टैब बंद कर दिया &mdash; तब साझा भी उसी के साथ गया।</span>
+    <span data-phrase="view.full">इस साझा में पाठकों की अधिकतम संख्या पहले ही पूरी है।</span>
+    <span data-phrase="view.no-connect">साझा करने वाले तक सीधे नहीं पहुँचा जा सका। हो सकता है दोनों में से कोई नेटवर्क पीयर-टु-पीयर कनेक्शन न आने देता हो।</span>
+    <span data-phrase="view.error">जुड़ते समय कुछ गड़बड़ हो गई। पन्ना फिर लोड करके दोबारा कोशिश कीजिए।</span>
+    <span data-phrase="view.download">डाउनलोड करें</span>
+    <span data-phrase="view.file-gone">अब साझा नहीं है</span>
+  </div>
+</main>

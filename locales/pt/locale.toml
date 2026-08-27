@@ -80,6 +80,7 @@ complete = true
 # procura, e "timelapse" aparece ate' em legenda de celular.
 "timelapse-video" = "fazer-timelapse"
 "hash-checksum" = "verificar-checksum"
+"share-text" = "compartilhar-texto"
 # DICOM continua DICOM: e a sigla que vem escrita no disco que o hospital
 # entrega, e ninguem a procura traduzida.
 "dicom-viewer" = "visualizador-dicom"
@@ -111,6 +112,7 @@ complete = true
 "guides/make-a-qr-code" = "guias/gerar-um-qr-code"
 "guides/turn-a-video-into-a-gif" = "guias/transformar-um-video-em-gif"
 "guides/format-json-without-uploading-it" = "guias/formatar-json"
+"guides/share-text-between-devices" = "guias/compartilhar-texto-entre-dispositivos"
 "guides/grab-a-frame-from-a-video" = "guias/extrair-um-quadro-de-um-video"
 "guides/make-a-gif-from-images" = "guias/fazer-um-gif-com-imagens"
 "guides/make-a-passport-photo" = "guias/fazer-foto-3x4-em-casa"

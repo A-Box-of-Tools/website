@@ -1,0 +1,356 @@
+#
+# Metin ve dosya paylaşımı - Turkish.
+#
+# Overrides for tools/share-text/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+
+name = "Metin ve dosya paylaşımı"
+heading = "Metin ve dosya paylaşımı <span class=\"h1-kw\">&mdash; sizin tarayıcınızdan onlarınkine, hiçbir şey yüklemeden</span>"
+tagline = "Paylaşım bu açık sekmede yaşar. Okuyucular onu şifreli olarak doğrudan tarayıcınızdan alır ve sekmeyi kapattığınızda biter - hiçbir sunucu hiçbir şey saklamaz."
+
+title = "Cihazlar arasında metin ve dosya paylaşımı &mdash; doğrudan, şifreli, hiçbir şey saklanmadan"
+description = "Metni veya dosyaları bir tarayıcıdan diğerine doğrudan ve şifreli bir bağlantıyla gönderin. Söylenebilir bir bağlantı adı, siz yazarken canlı güncelleme, okuyucu başına onay - ve hiçbir sunucuda asla hiçbir şey. Ücretsiz, kayıt yok."
+og_title = "Sekmeyi kapattığınız anda biten bir paylaşım"
+og_description = "Metin ve dosyalar şifreli olarak, doğrudan sizin tarayıcınızdan okuyucununkine gider. Sunucu yalnızca ikinizi tanıştırır ve içeriği asla görmez. Depolama yok, geçmiş yok, hesap yok - sekmeyi kapatın, her yerde kaybolur."
+og_image_alt = "Metin ve dosya paylaşımı - tarayıcıdan tarayıcıya, hiçbir şey saklanmadan"
+
+pledge = """
+    Burada paylaştıklarınız, uçtan uca şifreli bir WebRTC kanalı üzerinden
+    sizin tarayıcınızdan her okuyucunun tarayıcısına gider, başka hiçbir
+    yere değil. İşin içindeki tek sunucu &mdash; bu sayfanın
+    <code>Content-Security-Policy</code>'sinde adı geçer, kodu depodadır
+    &mdash; iki tarayıcıyı birbirine tanıştırır ve kenara çekilir: hiçbir
+    şey saklamaz ve içerik asla ondan geçmez. Geçmiş de hesap da yoktur. Bu
+    sekmeyi kapatın; paylaşım, okuyucuların açık sayfaları dahil her yerde
+    aynı anda sona erer."""
+
+live_hint = """
+      Paylaşırken geliştirici araçlarını açın ve Ağ sekmesini izleyin.
+      Aracıya giden, birkaç kilobaytlık bağlantı kurulumu taşıyan tek bir
+      WebSocket göreceksiniz &mdash; ve ne kadar yazar ya da eklerseniz
+      ekleyin, bunlardan bir şey taşıyan tek bir istek bile yok."""
+
+read_first = """
+, alışverişin iki yarısı için
+      <code>src/main.js</code> &mdash; paylaşanın sekmesi ile okuyucununki
+      aynı dosyadır &mdash; ve telin öbür ucundan gelen metin üzerinde
+      çalıştığı için her şeyi önce kaçış karakterleriyle işleyen
+      işleyici için <code>src/markdown.js</code>. Sunucunun tam kaynak kodu
+      aynı depodaki <code>workers/rendezvous/worker.js</code> dosyasıdır:
+      bağlantı adı başına bir oda, açık bağlantılardan başka hiçbir şey
+      tutmaz."""
+
+howto_heading = "Metin ve dosyaları hiçbir yere yüklemeden nasıl paylaşırsınız"
+
+card = """
+            Metin ve dosyalar, tarayıcıdan tarayıcıya, şifreli doğrudan bir
+            bağlantıyla. Hiçbir yerde saklanmaz; sekmeyi kapattığınızda
+            paylaşım biter."""
+
+[words]
+plural = "paylaşılan metinler ve dosyalar"
+choose = "bir bağlantı adı"
+analytics_extra = """, ve bu aracın
+  paylaştığı hiçbir şey - ne metin, ne dosyalar, ne adları ya da boyutları,
+  ne de kimin okuduğu"""
+
+[[facts]]
+mark = "&#10007;"
+text = "Hiçbir şey saklanmaz"
+
+[[facts]]
+mark = "&#10007;"
+text = "Hesap yok"
+
+[[facts]]
+mark = "&#10003;"
+text = "Uçtan uca şifreli"
+
+[[facts]]
+mark = "&#10003;"
+text = "Sekmenizle biter"
+
+[[facts]]
+mark = "&#10003;"
+text = "Açık kaynak"
+
+[[privacy]]
+title = "İçerik okuyucunuza gider, başka hiçbir yere değil."
+body = """
+ Metin ve dosyalar bir WebRTC
+      veri kanalından gider: tarayıcınız ile her okuyucunun tarayıcısı
+      arasında doğrudan, DTLS ile şifreli bir bağlantı. O yolda sunucu
+      yoktur. Aynı ağda baytlar binadan bile çıkmaz &mdash; aynı Wi-Fi'daki
+      iki dizüstü her şeyi yerel olarak aktarır."""
+
+[[privacy]]
+title = "Aracı nedir, ve gördüğü her şey."
+body = """
+ Doğrudan bir bağlantı bir
+      tanıştırma ister; bu yüzden bu sayfa &mdash; bu sitede yalnızca bu
+      sayfa &mdash; bize ait bir sunucuya tek bir WebSocket açar. O sunucu,
+      bir bağlantı adını yazan kişiyle o adla paylaşan kişiyi buluşturur,
+      birkaç kilobaytlık pazarlığı iletir ve hiçbir şey tutmaz: hiçbir zaman
+      depolamaya yazmaz ve paylaşan bağlantıyı kestiği anda oda yok olur.
+      Görebildikleri: bir adın kullanımda olduğu, kimin ne zaman gelip
+      gittiği ve IP adresleri. Göremedikleri: metin, dosyalar, kimin içeri
+      alındığı ya da kimin ne yazdığı &mdash; özel bir paylaşımın kapısını
+      çalmak bile şifreli doğrudan kanaldan gider. Tam kaynak kodu, bu
+      aracınkiyle yan yana depodadır."""
+
+[[privacy]]
+title = "Hiçbir şey saklanmaz: sekmeyi kapatmak silmenin ta kendisidir."
+body = """
+ Paylaşım yalnızca
+      sekmeniz açıkken vardır. Kapatın: yeni okuyucular hiçbir şey bulamaz,
+      o an okuyanlar ise kopyalarının kaybolduğunu görür &mdash; gerçi
+      birinin daha önce kopyaladığı ya da indirdiği şey onundur, elden
+      verdiğiniz her şey gibi. Yazdığınız taslak, bir dahaki sefere yerinde
+      olsun diye kendi tarayıcınızın depolamasında durur, yalnızca orada;
+      tek seferlik işaretlenirse hiçbir yerde durmaz."""
+
+[[privacy]]
+title = "Bağlantı adı tek sırdır, özel modu ise kilit."
+body = """
+ Bir adı bilen ya da tahmin
+      eden herkes arkasındaki paylaşımı açabilir. Önerilerin üç rastgele
+      sözcük olması bu yüzdendir; hassas olan her şeyin tahmin edilemez bir
+      ad hak etmesi de &mdash; ya da varsayılan olarak açık gelen özel
+      anahtarı: gelen her okuyucu, doğrudan kanal üzerinden kendini tanıtmak
+      zorundadır ve siz onu içeri alana kadar hiçbir şey gönderilmez."""
+
+[[privacy]]
+title = "Doğrudan bağlantı, iki tarafa birbirinin adresini gösterir."
+body = """
+ Eşler arası
+      demek budur ve okuyucu bunu olmadan önce öğrenir: bir paylaşım
+      bağlantısını açmak yalnızca aracıya birinin paylaşıp paylaşmadığını
+      sorar; sonra sayfa, bağlanmanın iki tarafa birbirinin IP adresini
+      göstereceğini açıkça söyler ve bir tıklama bekler. O tıklamaya kadar
+      paylaşan, okuyucunun varlığından bile habersizdir."""
+
+[[privacy]]
+title = "Google'ın yüklediği, ve eline geçmeyen."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi Buy Me a Coffee'den gelir. Hiçbiri bu
+      sayfanın paylaştığı hiçbir şeyi almaz &mdash; ne metni, ne dosyaları,
+      ne adlarını ya da boyutlarını, ne bağlantı adını, ne de kimin
+      bağlandığını. İçeriğe dokunan her satır bu kaynaktan sunulur ve
+      depodadır."""
+
+[[howto]]
+title = "Metni yazın, ya da dosyaları ekleyin."
+body = """
+ Düzenleyici paylaşımın
+      kendisidir: bir okuyucu bağlandığında içinde ne varsa onu alır ve
+      sonrasındaki her değişiklik, siz yazarken bağlı okuyuculara canlı
+      ulaşır. Dosyalar aynı kanaldan gider, her biri 200&nbsp;MB'a kadar;
+      okuyucular listeyi görür ve yalnızca istediklerini indirir &mdash;
+      kimsenin bant genişliği istemediği bir dosyaya harcanmaz."""
+
+[[howto]]
+title = "Metin biçimlendirmeyi hak ediyorsa Markdown'ı açın."
+body = """
+ Tek bir anahtar.
+      Başlıklar, kalın yazı, listeler, kod ve bağlantılar siz yazarken
+      düzenleyicinin yanında canlı olarak işlenir; okuyucular varsayılan
+      olarak biçimli görünümü alır, kaynağa dönmek için bir düğmeleri
+      vardır. İşleyici bu sayfayla birlikte gelir ve her şeyi kaçışlar:
+      paylaşılan metin, kim yazmış olursa olsun, bir okuyucunun makinesinde
+      betiğe dönüşemez."""
+
+[[howto]]
+title = "Bağlantıya bir ad verin, ya da öneriyi bırakın."
+body = """
+ Ad, adresin kendisidir:
+      <code>brave-otter-42</code> bir odanın öbür ucuna söylenebilir,
+      telefonda okunabilir, tahtadan kopyalanabilir. Aynı zamanda tek
+      sırdır: özel bir şey için ya kimsenin tahmin edemeyeceği bir ad seçin
+      ya da özel anahtarına güvenin. Başkasının o an paylaştığı bir ad
+      reddedilir; sizinki, durduğunuz anda yeniden boşa çıkar."""
+
+[[howto]]
+title = "Kimin gireceğine karar verin."
+body = """
+ Özel, varsayılandır: her
+      okuyucudan kendini tanıtması istenir &mdash; bir ad, bir ipucu,
+      tanıyacağınız herhangi bir şey &mdash; ve siz mesajı, okumasına izin
+      vermek ya da geri çevirmek için düğmelerle görürsünüz. Tanıtım
+      doğrudan kanaldan gider; kapıyı kimin çaldığını aracı bile bilmez.
+      İşareti kaldırırsanız, adı bilen herkesin okuyabildiği açık bir
+      paylaşım olur."""
+
+[[howto]]
+title = "Paylaşımı başlatın ve sekmeyi açık tutun."
+body = """
+ Sekme sunucudur: paylaşım,
+      sekme açık ve uyanık olduğu sürece erişilebilir, bir an bile fazla
+      değil. Kapanan bir dizüstü de paylaşımı bitirir. Bağlantıyı
+      kopyalayın ya da adı söyleyin yeter &mdash; okuyucu onu bu sayfanın
+      adresinin sonuna <code>#ad</code> olarak yazabilir."""
+
+[[howto]]
+title = "Öbür tarafta: önce onay, sonra kapıyı çalmak."
+body = """
+ Bağlantıyı açan, birinin
+      paylaştığını öğrenir; doğrudan bir bağlantının iki tarafa birbirinin
+      ağ adresini göstereceği konusunda uyarılır ve yalnızca kendi
+      seçimiyle bağlanır. Özel bir paylaşımda kendini tanıtır ve sizi
+      bekler. Aldığı şey siz yazarken canlı güncellenir ve sekmeyi
+      kapattığınızda kaybolur."""
+
+[[faq]]
+q = "Herhangi bir şey herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Metin ve dosyalar, şifreli bir WebRTC kanalıyla doğrudan
+        sizin tarayıcınızdan her okuyucunun tarayıcısına gider. İşin
+        içindeki tek sunucu tanıştırmayı taşır &mdash; birkaç kilobaytlık
+        bağlantı pazarlığı &mdash; içeriği asla. Onda sızacak, el konacak
+        ya da kaybolacak hiçbir şey yoktur: sizden tek bayt tutmaz ve siz
+        bağlantıyı kestiğiniz anda oda yok olur."""
+
+[[faq]]
+q = "Peki bu araç neden bir sunucuyla konuşuyor, hem de bu sitede?"
+a = """
+        Çünkü iki tarayıcı birbirini kendi başına bulamaz: bir şeyin,
+        <code>brave-otter-42</code> yazan kişiyle o adla paylaşan kişiyi
+        buluşturması ve bağlantı teklifini aralarında taşıması gerekir. O
+        şey aracıdır: bu sayfanın tek ağ bağımlılığı,
+        <code>Content-Security-Policy</code>'sinde adı geçer ve sayfayla
+        aynı depoda yayımlanmıştır. İşi yapabilecek en küçük sunucudur:
+        hiçbir şey saklamaz, hiçbir şey okumaz ve iki tarayıcı doğrudan bir
+        kanala kavuştuğu anda kenara çekilir."""
+
+[[faq]]
+q = "O sunucu tam olarak ne görebilir?"
+a = """
+        Bir bağlantı adının kullanımda olduğunu, paylaşanın ve okuyucuların
+        ne zaman bağlanıp ayrıldığını, IP adreslerini ve aralarında
+        alışveriş ettikleri şifreli bağlantı kurulumunu. Metni göremez,
+        dosyaları göremez, adlarını ve boyutlarını göremez, özel bir
+        paylaşıma kimin alındığını göremez, kendini tanıtırken kimin ne
+        yazdığını da göremez &mdash; bunların hepsi, sunucudan geçmeyen
+        uçtan uca şifreli doğrudan kanaldan gider."""
+
+[[faq]]
+q = "Sekmeyi kapattığımda ne olur?"
+a = """
+        Paylaşım her yerde aynı anda biter. Bağlantı bir iki saniye içinde
+        çalışmaz olur; sayfası hâlâ açık olan okuyucular, paylaşımın sona
+        erdiğini söyleyen bir notla birlikte kopyalarının kaybolduğunu
+        görür. Bu bir sunucuya silme isteği değildir &mdash; silinecek bir
+        sunucu kopyası yoktur. Paylaşımın var olduğu tek yer sekmeydi ve onu
+        kapatmak temizliğin tamamıdır."""
+
+[[faq]]
+q = "Bir okuyucu paylaştığım şeyi saklayabilir mi?"
+a = """
+        Paylaşım açıkken, evet &mdash; paylaşmak budur. Bir okuyucu metni
+        kopyalayabilir ya da bir dosyayı indirebilir ve aldığı şey onundur;
+        tıpkı başka herhangi bir yolla elden vermişsiniz gibi. Bitirmenin
+        garanti ettiği şey gelecektir: yeni kimse ulaşamaz ve açık sayfalar
+        onu göstermeyi bırakır. Hiçbir araç, çoktan varmış olanı geri
+        çekemez ve bu sayfa aksini iddia etmez."""
+
+[[faq]]
+q = "Özel mod nedir?"
+a = """
+        Varsayılan. Gelen her okuyucuya paylaşımın özel olduğu söylenir ve
+        kendini tanıtması istenir; siz mesajı &mdash; &ldquo;benim, stand-up'taki
+        Alice&rdquo; &mdash; okumasına izin vermek ya da geri çevirmek için
+        düğmelerle görürsünüz ve siz karar verene dek hiçbir şey
+        gönderilmez. Tanıtım zaten şifreli olan doğrudan kanaldan gider;
+        yani sunucu kapıyı kimin çaldığını da ne karar verdiğinizi de asla
+        bilmez. Paylaşmadan önce işaret kaldırılırsa açık bir paylaşım
+        olur."""
+
+[[faq]]
+q = "Okuyucu IP adresimi neden görecek?"
+a = """
+        Çünkü bağlantı gerçekten doğrudandır ve doğrudan bir bağlantı iki
+        adres arasında kurulur: her uç, ötekininkini ister istemez öğrenir,
+        tıpkı bir telefon görüşmesindeki gibi. Okuyucu, herhangi bir
+        bağlantı var olmadan önce uyarılır ve yalnızca kendi seçimiyle
+        bağlanır; o ana dek siz bağlantıyı açtığını bile bilmezsiniz. Bu
+        takas belirli bir paylaşım için uygun değilse, alternatif bir
+        sunucu üzerinden aktaran bir hizmettir &mdash; ters takasla."""
+
+[[faq]]
+q = "Dosyalar ne kadar büyük olabilir, hız nasıl?"
+a = """
+        Dosya başına 200&nbsp;MB'a kadar, her tür; hız ise iki bağlantıdan
+        yavaş olanı kadardır &mdash; arada yavaşlatacak ya da sayacak bir
+        sunucu yoktur. Aynı Wi-Fi'daki iki makine yerel ağ hızında aktarır
+        ve baytlar binadan çıkmaz. Okuyucular her dosyayı istek üzerine
+        indirir; büyük bir şey eklemek, biri gerçekten isteyene dek hiçbir
+        şeye mal olmaz."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Dürüst olmak gerekirse: yarısı. Düzenleyici evet &mdash; sayfa
+        yüklenir, taslağınız yerindedir, Markdown işlenir; yazmak ve
+        kaydetmek hiç ağ olmadan olur. Paylaşmak hayır, olamaz da: bir
+        başkasının tarayıcısına ulaşmak bir ağ eylemidir ve tanıştırma
+        aracıyı gerektirir. Bu sitede görevi çevrimdışı imkânsız olan tek
+        araç budur; aksini ima etmek dürüst olmazdı."""
+
+[[faq]]
+q = "Ya bağlanamazsak?"
+a = """
+        Tarayıcı çiftlerinin çoğu tanıştırıldıktan sonra birbirine doğrudan
+        ulaşır; bir azınlık ulaşamaz, genellikle iki taraf da en katı türde
+        kurumsal ya da mobil ağın arkasındayken. Bu sayfa gizlice aktaran
+        bir sunucuya geri düşmez &mdash; bu, aracın ne olduğunu sessizce
+        değiştirirdi &mdash;: yirmi saniye sonra doğrudan bağlantının
+        kurulamadığını açıkça söyler. Başka bir ağdan denemek çoğu zaman
+        çözer."""
+
+[[faq]]
+q = "Herkes her şeyi paylaşabiliyorsa Markdown'ı işlemek güvenli mi?"
+a = """
+        Bu soru, işleyicinin bir kitaplık değil de bu sayfanın kodundaki
+        seksen satır olmasının nedenidir. Her karakter, herhangi bir etiket
+        üretilmeden önce kaçışlanır; yalnızca sabit ve zararsız bir etiket
+        kümesi doğabilir; bağlantılar yalnızca <code>http</code>,
+        <code>https</code> ve <code>mailto</code> kabul eder &mdash; bir
+        <code>javascript:</code> bağlantısı cansız metin olarak kalır.
+        Paylaşılan metin, kim yazmış olursa olsun makinenizde betiğe
+        dönüşemez ve o seksen satırı okuyabilirsiniz."""
+
+[[faq]]
+q = "İki kişi aynı adla paylaşabilir mi?"
+a = """
+        Aynı anda hayır. Ad başına tek canlı paylaşım, aracıda zorunlu
+        kılınır: ikinci gelen reddedilir ve başka bir ad seçmesi istenir.
+        Bir paylaşım biter bitmez adı yeniden boşa çıkar &mdash; bu, saklanan
+        bir bağlantının ancak arkasındaki paylaşım kadar taze olduğu
+        anlamına da gelir: aynı ad gelecek hafta başkasının olabilir. Bir
+        bağlantıya bir kişinin değil, bir anın malı gibi davranın."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, kayıt yok ve sözü edilecek bir sınır da yok
+        &mdash; paylaşım başına on altı eşzamanlı okuyucu. Site reklam
+        taşır, masrafını o karşılar; reklamlar bu sayfanın paylaştığı
+        hiçbir şeyi almaz ve aracı, tam da hiçbir şey saklamadığı ve
+        neredeyse hiçbir şey yapmadığı için ücretsiz pakete rahatça sığar."""
+
+[schema]
+description = "Metni ve dosyaları bir tarayıcıdan diğerine, doğrudan ve uçtan uca şifreli bir WebRTC bağlantısıyla paylaşın. Söylenebilir bağlantı adları, yazarken canlı güncelleme, Markdown ve okuyucu başına onay. Hiçbir sunucu hiçbir şey saklamaz; paylaşan sekmeyi kapattığında paylaşım biter."
+features = [
+  "Metin ve dosyalar tarayıcıdan tarayıcıya gider, uçtan uca şifreli, asla bir sunucudan geçmez",
+  "Paylaşım açık sekmede yaşar: kapatmak onu bitirir ve okuyucuların sayfalarını boşaltır",
+  "Söylenebilir bağlantı adları - brave-otter-42 -, düzenlenebilir, ad başına tek canlı paylaşım",
+  "Varsayılan olarak özel: her okuyucu kendini tanıtır, paylaşan içeri alır ya da geri çevirir",
+  "Okuyucular bağlantı var olmadan önce onay verir, IP'lerin görünür olacağı açıkça söylenir",
+  "Canlı güncelleme: değişiklikler, yazılırken bağlı okuyuculara ulaşır",
+  "İki tarafta da açılıp kapanabilen Markdown, önce kaçışlayan yerleşik bir işleyiciyle",
+  "Her biri 200 MB'a kadar dosyalar, istek üzerine indirilen, dosya başına ilerlemeli",
+  "Taslak yalnızca paylaşanın tarayıcısında kalır - tek seferlikse hiçbir yerde",
+  "Sunucu bileşeninin tamamı, depoda yayımlanmış depolamasız bir aracıdır",
+]
