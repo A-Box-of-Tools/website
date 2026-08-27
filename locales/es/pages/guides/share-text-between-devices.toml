@@ -15,7 +15,7 @@ lede = """
     ninguna parte, porque nunca se guarda nada - y es además la única con un
     nombre que se puede decir de un lado a otro de una sala."""
 
-updated = "26 de agosto de 2026"
+updated = "27 de agosto de 2026"
 
 og_title = "Compartir entre dispositivos sin que un servidor guarde copia"
 og_description = "Texto y archivos de un navegador a otro por una conexión directa y cifrada: un nombre de enlace pronunciable, nada guardado en ningún sitio, y una compartición que se acaba al cerrar la pestaña."

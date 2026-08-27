@@ -16,7 +16,7 @@ lede = """
     - ed è anche l'unico con un nome che si può gridare da un capo all'altro
     di una stanza."""
 
-updated = "26 agosto 2026"
+updated = "27 agosto 2026"
 
 og_title = "Condividere tra dispositivi, senza che un server tenga copia"
 og_description = "Testo e file da un browser all'altro su una connessione diretta e cifrata: un nome di link pronunciabile, niente salvato da nessuna parte, e una condivisione che finisce con la scheda."

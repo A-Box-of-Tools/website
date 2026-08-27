@@ -16,7 +16,7 @@ lede = """
     opgeslagen - en het is ook de enige met een naam die je door een kamer
     kunt roepen."""
 
-updated = "26 augustus 2026"
+updated = "27 augustus 2026"
 
 og_title = "Delen tussen apparaten, zonder server die een kopie houdt"
 og_description = "Tekst en bestanden van browser naar browser over een rechtstreekse, versleutelde verbinding - een uitspreekbare linknaam, nergens iets opgeslagen, en delen dat stopt met het tabblad."

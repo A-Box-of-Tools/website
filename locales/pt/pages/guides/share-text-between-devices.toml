@@ -15,7 +15,7 @@ lede = """
     nada em lugar nenhum, porque nada é guardado nunca - e é também o único
     com um nome que dá para falar de um lado a outro da sala."""
 
-updated = "26 de agosto de 2026"
+updated = "27 de agosto de 2026"
 
 og_title = "Compartilhar entre dispositivos, sem servidor guardando cópia"
 og_description = "Texto e arquivos de um navegador para outro por uma conexão direta e criptografada: um nome de link falável, nada guardado em lugar nenhum, e um compartilhamento que acaba com a aba."
