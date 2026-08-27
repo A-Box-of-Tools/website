@@ -32,11 +32,32 @@
     <uri>https://abox.tools/pt/</uri>
   </author>
   <entry>
+    <title type="html">A foto que seu celular salvou, e o formato que nada abre</title>
+    <id>https://abox.tools/pt/guias/converter-heic-para-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-heic-para-jpg/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">iPhones salvam fotos em HEIC, e metade da internet não consegue abrir uma. O que é o formato, por que só o Safari decodifica, o que a conversão custa à imagem, e como fazer isso sem entregar as fotos a ninguém.</summary>
+  </entry>
+  <entry>
     <title type="html">Codificador e decodificador Base64</title>
     <id>https://abox.tools/pt/codificar-base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/codificar-base64/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Codifique e decodifique Base64 nos dois alfabetos, codifique URL em porcentagem, escape entidades HTML e leia hexadecimal e escapes com barra invertida. Tudo roda no seu navegador e nada é enviado: um token nunca sai do seu computador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como abrir um arquivo DICOM, e o que há dentro de um</title>
+    <id>https://abox.tools/pt/guias/abrir-um-arquivo-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/abrir-um-arquivo-dicom/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">O que há num disco de hospital, por que os arquivos não têm extensão, como abrir um exame .dcm num navegador, o que janela e nível faz de fato, e o que um exame carrega sobre o paciente além da imagem.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como aparar um vídeo sem recodificá-lo</title>
+    <id>https://abox.tools/pt/guias/aparar-um-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/aparar-um-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Cortar um clipe não precisa perder um único byte de qualidade. Por que um corte às vezes cai antes de onde você marcou, o que um keyframe tem a ver com isso, e quando aceitar uma recodificação.</summary>
   </entry>
   <entry>
     <title type="html">Como comparar dois arquivos JSON</title>
@@ -53,6 +74,41 @@
     <summary type="html">Levar texto ou arquivos de um navegador para outro por uma conexão direta e criptografada: sem mandar e-mail para si mesmo, sem histórico de chat, sem conta, e sem servidor guardando cópia.</summary>
   </entry>
   <entry>
+    <title type="html">Como comprimir uma imagem para um tamanho de arquivo exato</title>
+    <id>https://abox.tools/pt/guias/comprimir-uma-imagem-para-um-tamanho-exato/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/comprimir-uma-imagem-para-um-tamanho-exato/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">O formulário quer 500 KB e sua foto tem 4 MB. O que um limite de tamanho custa de verdade, qual ajuste mexer primeiro, e por que um PNG não encolhe como um JPEG.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como conferir um download com o checksum dele</title>
+    <id>https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Como comparar um checksum MD5 ou SHA-256 no Windows, no macOS e no Linux ou no navegador, o que uma coincidência realmente prova, e o erro que deixa a operação inteira sem sentido.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como converter um SVG em PNG no tamanho certo</title>
+    <id>https://abox.tools/pt/guias/converter-svg-para-png/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-svg-para-png/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Um vetor não tem tamanho em pixels próprio, então o número é escolha sua. De onde vem esse número para uma tela, um ícone de aplicativo e uma impressora, e o que muda quando um desenho vira pixels.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como cortar um vídeo para outro formato de tela</title>
+    <id>https://abox.tools/pt/guias/cortar-um-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/cortar-um-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Reduza um clipe a um quadrado, a um retrato 9:16 ou a uma caixa exata em pixels. Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como cortar áudio sem perder qualidade</title>
+    <id>https://abox.tools/pt/guias/cortar-um-arquivo-de-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/cortar-um-arquivo-de-audio/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Onde um corte de áudio cai de verdade, por que ele pode ser exato quando o de vídeo não pode, por que uma emenda às vezes estala, e o que uma queda de cinco milissegundos está realmente fazendo.</summary>
+  </entry>
+  <entry>
     <title type="html">Como criar um código QR e provar que ele escaneia</title>
     <id>https://abox.tools/pt/guias/criar-um-codigo-qr-e-provar-que-escaneia/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/criar-um-codigo-qr-e-provar-que-escaneia/"/>
@@ -60,11 +116,32 @@
     <summary type="html">Gere o código e depois verifique com o leitor do mesmo site: a carga exata, o link real, no tamanho de impressão e a partir de uma foto, antes da tiragem. Tudo no navegador, nada enviado.</summary>
   </entry>
   <entry>
+    <title type="html">Como criar um favicon que ainda se lê a dezesseis pixels</title>
+    <id>https://abox.tools/pt/guias/criar-um-favicon/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/criar-um-favicon/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">De quais tamanhos um favicon.ico realmente precisa, quais arquivos extras o iPhone, o Android e o Mac pedem, e por que uma logomarca que funciona num cartaz desaparece a dezesseis pixels.</summary>
+  </entry>
+  <entry>
     <title type="html">Como criar uma miniatura de vídeo com o quadro exato</title>
     <id>https://abox.tools/pt/guias/criar-uma-miniatura-de-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/criar-uma-miniatura-de-video/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Avance quadro a quadro até o instante certo, salve sem perda, ponha no formato da plataforma e acerte o limite de bytes dela. Três ferramentas do navegador em sequência, e a filmagem nunca sai da sua máquina.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como deixar um PDF menor, e por que alguns não encolhem</title>
+    <id>https://abox.tools/pt/guias/deixar-um-pdf-menor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/deixar-um-pdf-menor/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Onde o tamanho de um PDF realmente está, por que uma digitalização comprime 80% e um contrato quase não se mexe, o que DPI significa aqui, e o que um compressor jamais deveria fazer com o seu documento.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como digitalizar um documento com o celular</title>
+    <id>https://abox.tools/pt/guias/digitalizar-um-documento-com-o-celular/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/digitalizar-um-documento-com-o-celular/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">O que separa a fotografia de uma página de uma digitalização dela: a inclinação, a luz irregular e o tamanho do arquivo. Como tirar a foto, o que corrigir depois, e por que nada disso precisa de servidor.</summary>
   </entry>
   <entry>
     <title type="html">Como digitalizar várias páginas em um PDF pequeno</title>
@@ -81,6 +158,20 @@
     <summary type="html">Desmonte um GIF nos quadros dele, tire ou reordene os que precisar, e reconstrua mantendo os tempos. O que sobrevive à ida e volta, o que a paleta custa, e como ver por que um GIF pesa.</summary>
   </entry>
   <entry>
+    <title type="html">Como empilhar fotografias para reduzir o ruído, ou tirar pessoas</title>
+    <id>https://abox.tools/pt/guias/empilhar-fotos-para-reduzir-ruido/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/empilhar-fotos-para-reduzir-ruido/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Empilhar junta uma sequência de quadros numa imagem só. Qual método usar depende do que você quer perder: ruído, transeuntes, ou a profundidade de campo rasa de uma macro. Como cada um funciona, quanto custa, e onde os arquivos RAW entram.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como fazer um GIF animado com imagens</title>
+    <id>https://abox.tools/pt/guias/fazer-um-gif-com-imagens/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/fazer-um-gif-com-imagens/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Transforme um conjunto de fotos num GIF animado: a que velocidade um GIF realmente toca, o que a opção de paleta muda, e as três coisas que de fato deixam o arquivo menor.</summary>
+  </entry>
+  <entry>
     <title type="html">Como fazer um GIF de uma parte de um vídeo</title>
     <id>https://abox.tools/pt/guias/gif-de-um-trecho-de-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/gif-de-um-trecho-de-video/"/>
@@ -95,6 +186,48 @@
     <summary type="html">Corte o momento, inverta a cópia, junte as duas e deixe em loop. Três ferramentas em sequência, todas no navegador, e a ordem que resolve o trabalho inteiro em um minuto.</summary>
   </entry>
   <entry>
+    <title type="html">Como fazer uma foto de passaporte que não volta recusada</title>
+    <id>https://abox.tools/pt/guias/fazer-foto-3x4-em-casa/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/fazer-foto-3x4-em-casa/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">O que realmente é medido numa foto de passaporte &amp;mdash; altura da cabeça, linha dos olhos, fundo &amp;mdash;, quais números cada país quer, e como bater os limites de pixels e de KB que um formulário online cobra.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como formatar JSON sem entregar para ninguém</title>
+    <id>https://abox.tools/pt/guias/formatar-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/formatar-json/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Como identar, conferir e minificar JSON no seu próprio navegador: o que um formatador nunca deve mudar no seu arquivo, como ler a mensagem de erro, e por que importa a caixa em que você cola.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como gerar um QR Code que ainda escaneia no celular dos outros</title>
+    <id>https://abox.tools/pt/guias/gerar-um-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/gerar-um-qr-code/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Qual nível de correção de erros escolher, por que a margem branca em volta do QR Code faz parte do código, de que tamanho imprimir, e quanto o código &quot;dinâmico&quot; de um gerador gratuito custa a você depois.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como inverter um vídeo</title>
+    <id>https://abox.tools/pt/guias/inverter-um-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/inverter-um-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Tocar um vídeo de trás para frente: o que a inversão faz com a imagem e com o som, por que não dá para fazer sem recodificar, por que demora mais do que cortar, e o que fazer antes.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como juntar imagens em um único PDF</title>
+    <id>https://abox.tools/pt/guias/juntar-imagens-em-um-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/juntar-imagens-em-um-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Transforme fotos ou digitalizações num só PDF: tamanho de página, ordem e rotação, por que um JPEG não precisa perder qualidade na entrada, e o que um PDF conta para quem o recebe.</summary>
+  </entry>
+  <entry>
+    <title type="html">Como juntar, dividir e reordenar páginas de PDF</title>
+    <id>https://abox.tools/pt/guias/juntar-e-dividir-arquivos-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/juntar-e-dividir-arquivos-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Junte PDFs, corte um em vários e mude páginas de lugar: o que sobrevive à remexida, o que ferramenta nenhuma consegue levar junto, e por que nada disso precisa enviar os seus documentos para lugar algum.</summary>
+  </entry>
+  <entry>
     <title type="html">Como limpar uma nota de voz antes de enviar</title>
     <id>https://abox.tools/pt/guias/limpar-uma-nota-de-voz/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/limpar-uma-nota-de-voz/"/>
@@ -107,138 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/preparar-fotos-para-a-web/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">HEIC para JPEG, GPS removido, redimensionadas para a página e comprimidas a um orçamento: a sequência inteira no navegador, e os originais nunca saem da sua máquina.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como transformar um vídeo longo em timelapse</title>
-    <id>https://abox.tools/pt/guias/transformar-video-longo-em-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/transformar-video-longo-em-timelapse/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Uma hora de filmagem num minuto que dá para assistir: como escolher a velocidade, por que dizer a duração final ganha de fazer conta, e quando o resultado deve virar um GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comparador de textos</title>
-    <id>https://abox.tools/pt/comparar-textos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/comparar-textos/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Compare dois textos e veja cada diferença, linha a linha e palavra por palavra, lado a lado ou numa coluna só. A comparação roda no seu navegador e nada é enviado: código ainda não lançado nunca sai do seu computador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compartilhar texto e arquivos</title>
-    <id>https://abox.tools/pt/compartilhar-texto/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/compartilhar-texto/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Envie texto ou arquivos de um navegador para outro por uma conexão direta e criptografada. Um nome de link que dá para falar em voz alta, atualização ao vivo enquanto digita, aprovação por leitor - e nada guardado em servidor nenhum, nunca. Grátis, sem cadastro.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formatador de JSON</title>
-    <id>https://abox.tools/pt/formatar-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/formatar-json/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Formate e minifique JSON, XML, HTML, CSS e YAML, e converta JSON para YAML ou XML e de volta. Os analisadores rodam no seu navegador e nada é enviado: um token ou um arquivo de configuração nunca sai do seu computador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como abrir um arquivo DICOM, e o que há dentro de um</title>
-    <id>https://abox.tools/pt/guias/abrir-um-arquivo-dicom/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/abrir-um-arquivo-dicom/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">O que há num disco de hospital, por que os arquivos não têm extensão, como abrir um exame .dcm num navegador, o que janela e nível faz de fato, e o que um exame carrega sobre o paciente além da imagem.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como digitalizar um documento com o celular</title>
-    <id>https://abox.tools/pt/guias/digitalizar-um-documento-com-o-celular/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/digitalizar-um-documento-com-o-celular/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">O que separa a fotografia de uma página de uma digitalização dela: a inclinação, a luz irregular e o tamanho do arquivo. Como tirar a foto, o que corrigir depois, e por que nada disso precisa de servidor.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como empilhar fotografias para reduzir o ruído, ou tirar pessoas</title>
-    <id>https://abox.tools/pt/guias/empilhar-fotos-para-reduzir-ruido/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/empilhar-fotos-para-reduzir-ruido/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Empilhar junta uma sequência de quadros numa imagem só. Qual método usar depende do que você quer perder: ruído, transeuntes, ou a profundidade de campo rasa de uma macro. Como cada um funciona, quanto custa, e onde os arquivos RAW entram.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como tarjar um PDF para que o texto suma de verdade</title>
-    <id>https://abox.tools/pt/guias/tarjar-um-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/tarjar-um-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Uma tarja preta desenhada num leitor de PDF normalmente deixa as palavras embaixo dela, e copiar e colar as traz de volta na hora. O que uma tarjagem de verdade retira, os quatro lugares em que uma palavra se esconde fora da página, e como conferir um arquivo antes de mandá-lo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Digitalizador de documentos</title>
-    <id>https://abox.tools/pt/digitalizar-documentos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/digitalizar-documentos/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Transforme a foto de uma página feita no celular num PDF endireitado e com luz uniforme. Os cantos são encontrados para você, a perspectiva é desfeita, a sombra é dividida para fora. Roda inteiramente no seu navegador: nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Empilhador de imagens</title>
-    <id>https://abox.tools/pt/empilhar-imagens/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/empilhar-imagens/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Junte uma sequência de fotografias numa só: tire a média para matar o ruído, use a mediana para tirar as pessoas de uma cena, clareie para rastros de estrelas, ou faça focus stacking de uma macro. Lê CR2, NEF, ARW, DNG, RAF e CR3 puxando a prévia da própria câmera. Roda inteiramente no seu navegador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Tarjador de PDF</title>
-    <id>https://abox.tools/pt/tarjar-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/tarjar-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Tire palavras de um PDF em vez de desenhar um retângulo preto por cima. As letras são apagadas das próprias instruções de desenho da página, o arquivo pronto é reaberto e pesquisado para provar que sumiram, e nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Visualizador DICOM</title>
-    <id>https://abox.tools/pt/visualizador-dicom/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/visualizador-dicom/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Abra exames de tomografia, ressonância, raio X e ultrassom no navegador. Janela e nível, percorra uma série inteira, meça em milímetros, leia cada tag DICOM e veja exatamente o que no arquivo identifica o paciente. Nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Criador de foto de documento</title>
-    <id>https://abox.tools/pt/foto-3x4/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/foto-3x4/"/>
-    <updated>2026-08-24T00:00:00Z</updated>
-    <summary type="html">Faça uma foto de passaporte ou visto conforme a regra publicada do seu país: milímetros e DPI exatos, uma marcação ao vivo de altura da cabeça e linha dos olhos, checagem do fundo, uma folha 10x15 pronta para imprimir e um arquivo espremido dentro do limite em KB do portal. Nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Censor de imagens</title>
-    <id>https://abox.tools/pt/tarjar-imagem/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/tarjar-imagem/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Cubra um nome, um endereço ou um número de conta em uma foto ou print e salve a imagem de novo, de modo que os pixels ocultos somem do arquivo em vez de ficarem embaixo de um retângulo. Tudo acontece no navegador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como conferir um download com o checksum dele</title>
-    <id>https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/verificar-o-checksum-de-um-download/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Como comparar um checksum MD5 ou SHA-256 no Windows, no macOS e no Linux ou no navegador, o que uma coincidência realmente prova, e o erro que deixa a operação inteira sem sentido.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como tarjar uma imagem para que o que foi coberto suma de verdade</title>
-    <id>https://abox.tools/pt/guias/tarjar-uma-imagem/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/tarjar-uma-imagem/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">As tarjas pretas desenhadas na maioria dos programas ficam por cima da imagem e podem ser arrastadas. O que separa uma tarja de verdade de uma simples cobertura, por que texto pixelado pode ser lido de volta e como conferir um arquivo antes de enviar.</summary>
-  </entry>
-  <entry>
-    <title type="html">Criador de timelapse</title>
-    <id>https://abox.tools/pt/fazer-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/fazer-timelapse/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Transforme um vídeo longo em timelapse: 10x, 60x ou a velocidade que você digitar. Roda no navegador, não envia nada, não põe marca d'água e funciona offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Gerador de senha e frase secreta</title>
-    <id>https://abox.tools/pt/gerador-de-senha/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/gerador-de-senha/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Gere uma senha aleatória forte, ou uma frase secreta diceware a partir de uma lista de 7.776 palavras que vem junto com a página. Sorteada pelo gerador criptográfico do seu navegador, não vai para lugar nenhum e não fica guardada. De graça, sem cadastro.</summary>
-  </entry>
-  <entry>
-    <title type="html">Hash e checksum</title>
-    <id>https://abox.tools/pt/verificar-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/verificar-checksum/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Calcule o MD5, SHA-1, SHA-256, SHA-384 ou SHA-512 de qualquer arquivo e compare com o checksum divulgado na página de download. O arquivo é lido no navegador e nunca é enviado, de qualquer tamanho.</summary>
   </entry>
 </feed>

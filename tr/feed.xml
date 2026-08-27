@@ -39,11 +39,151 @@
     <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">Bir DICOM dosyası nasıl açılır ve içinde ne var</title>
+    <id>https://abox.tools/tr/rehberler/dicom-dosyasi-acma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/dicom-dosyasi-acma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir hastane diskinde ne var, dosyaların neden uzantısı yok, bir .dcm taraması tarayıcıda nasıl açılır, pencere ve düzey gerçekte ne yapar ve bir tarama resmin dışında hasta hakkında neler taşır.</summary>
+  </entry>
+  <entry>
     <title type="html">Bir GIF kare kare nasıl düzenlenir</title>
     <id>https://abox.tools/tr/rehberler/gif-kare-kare-duzenleme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gif-kare-kare-duzenleme/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">GIF'i karelerine ayırın, istediklerinizi çıkarın ya da sıralayın, zamanlamayı koruyarak yeniden kurun. Gidiş dönüşten neyin sağ çıktığı, paletin bedeli ve bir GIF'in neden ağır olduğunu görmenin yolu.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir GIF karelerine nasıl ayrılır</title>
+    <id>https://abox.tools/tr/rehberler/gifi-karelere-ayirma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gifi-karelere-ayirma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Hareketli bir GIF'in her karesini PNG olarak alın: bazı kareler neden resmin yalnızca küçük bir yamasıdır, saydamlığa ne olur ve yeniden birleştirebilmek için zamanlamayı nasıl korursunuz.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir GIF'in içinde gerçekte ne var</title>
+    <id>https://abox.tools/tr/rehberler/gifin-icinde-ne-var/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gifin-icinde-ne-var/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Kareler, gecikmeler, elden çıkarma yöntemleri ve renk tabloları anlatılıyor; tarayıcılar en hızlı gecikmeleri neden reddediyor ve bir GIF'in dosya boyutunun gerçekte nereye gittiğini nasıl bulursunuz.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir PDF nasıl küçültülür ve bazıları neden küçülmez</title>
+    <id>https://abox.tools/tr/rehberler/pdf-boyutunu-kucultme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/pdf-boyutunu-kucultme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir PDF'in boyutunun gerçekte nerede olduğu, bir taramanın neden %80 sıkıştığı ama bir sözleşmenin neredeyse hiç kıpırdamadığı, burada DPI'ın ne anlama geldiği ve bir sıkıştırıcının belgenize asla yapmaması gerekenler.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir PDF, metin gerçekten gidecek şekilde nasıl karartılır</title>
+    <id>https://abox.tools/tr/rehberler/pdf-karartma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/pdf-karartma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir PDF okuyucusunda çizilen siyah bir kutu genellikle altındaki kelimeleri yerinde bırakır ve kopyala yapıştır onları doğrudan geri getirir. Gerçek bir karartmanın neyi kaldırdığı, bir kelimenin sayfanın dışında saklandığı dört yer ve bir dosyayı göndermeden önce nasıl denetleyeceğiniz.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir SVG doğru boyutta PNG'ye nasıl dönüştürülür</title>
+    <id>https://abox.tools/tr/rehberler/svg-yi-pnge-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/svg-yi-pnge-donusturme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir vektörün kendine ait bir piksel boyutu yoktur; yani sayıyı siz seçersiniz. O sayının bir ekran, bir uygulama simgesi ve bir yazıcı için nereden geldiği ve bir çizim piksele dönüştüğünde nelerin değiştiği.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir başkasının telefonunda da okunan bir QR kod nasıl yapılır</title>
+    <id>https://abox.tools/tr/rehberler/qr-kod-olusturma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/qr-kod-olusturma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Hangi hata düzeltme düzeyini seçmelisiniz, bir QR kodun etrafındaki beyaz boşluk neden kodun bir parçasıdır, ne kadar büyük basmalısınız ve ücretsiz bir üreticinin 'dinamik' kodu size sonradan neye mal olur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir belge telefonla nasıl taranır</title>
+    <id>https://abox.tools/tr/rehberler/telefonla-belge-tarama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/telefonla-belge-tarama/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir sayfanın fotoğrafını, o sayfanın taramasından ayıran şey: açı, dengesiz ışık ve dosya boyutu. Fotoğrafın nasıl çekileceği, sonradan neyin düzeltileceği ve bunların hiçbirinin neden bir sunucuya ihtiyacı olmadığı.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir fotoğraf sizin hakkınızda ne söyler ve bunu nasıl çıkarırsınız</title>
+    <id>https://abox.tools/tr/rehberler/exif-ve-gps-verisini-silme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/exif-ve-gps-verisini-silme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Telefondan çıkan bir fotoğraf genellikle çekildiği tam noktayı, saniyesine kadar saati ve kameranın seri numarasını taşır. İçinde ne var, kimler okuyabilir ve resme hiç dokunmadan bunu nasıl çıkarırsınız.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir görsel bozmadan nasıl boyutlandırılır</title>
+    <id>https://abox.tools/tr/rehberler/resim-boyutlandirma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resim-boyutlandirma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Piksel boyutlarını değiştirdiğinizde resminizin başına ne gelir: küçültmek neden güvenli, büyütmek neden değil, kutu yanlış şekilde olduğunda ne yapmalı ve ne zaman bunun yerine kırpmalı.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir görsel, gizlenen kısım gerçekten gidecek şekilde nasıl karartılır</title>
+    <id>https://abox.tools/tr/rehberler/resim-karartma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resim-karartma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Çoğu programda çizilen siyah kutular resmin üstünde oturur ve kenara çekilebilir. Gerçek bir karartmayı örtülmüş bir karartmadan ayıran şey, pikselleştirilmiş metnin neden geri okunabildiği ve bir dosyayı göndermeden önce nasıl denetleyeceğiniz.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir indirme, sağlama toplamına karşı nasıl denetlenir</title>
+    <id>https://abox.tools/tr/rehberler/dosya-saglama-toplamini-dogrulama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/dosya-saglama-toplamini-dogrulama/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Windows, macOS ve Linux'ta ya da tarayıcınızda bir MD5 veya SHA-256 sağlama toplamı nasıl denetlenir, bir eşleşme gerçekte neyi kanıtlar ve bütün işi anlamsız kılan hata.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir klasör dolusu görsel nasıl videoya çevrilir</title>
+    <id>https://abox.tools/tr/rehberler/resimleri-videoya-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resimleri-videoya-donusturme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Fotoğraflardan bir MP4 slayt gösterisi yapın: kare hızı ve süre gerçekte neyi denetler, yanlış şekildeki resimlerle nasıl başa çıkılır ve sonucun neden ses izi yoktur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir resim CSS'inizin içine ne zaman konur, ne zaman konmaz</title>
+    <id>https://abox.tools/tr/rehberler/cssye-resim-gomme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/cssye-resim-gomme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir data URI'nin bedeli, base64'ün neden üçte bir eklediği ve gzip'in bunu neden geri vermediği, bir SVG'nin neden asla base64 olmaması gerektiği ve satır içi SVG'leri sessizce bozan tırnak hatası.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir resim tam olarak istenen dosya boyutuna nasıl sıkıştırılır</title>
+    <id>https://abox.tools/tr/rehberler/resmi-hedef-boyuta-sikistirma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resmi-hedef-boyuta-sikistirma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir yükleme formu 500 KB istiyor, fotoğrafınız ise 4 MB. Bir boyut sınırının gerçek bedeli, önce hangi ayarı oynatmanız gerektiği ve bir PNG'nin neden bir JPEG gibi küçülmediği.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir video başka bir şekle nasıl kırpılır</title>
+    <id>https://abox.tools/tr/rehberler/video-kirpma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/video-kirpma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir klibi kareye, 9:16 dikeye ya da tam bir piksel kutusuna indirin. Hangi platformun hangi oranı istediği, kesme gerektirmezken kırpmanın neden yeniden kodlamak zorunda olduğu ve bunun bedeli.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir video nasıl GIF'e çevrilir</title>
+    <id>https://abox.tools/tr/rehberler/videoyu-gife-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/videoyu-gife-donusturme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Hangi bölümü, hangi genişliği ve hangi kare hızını seçmelisiniz, bir videonun GIF'i neden videonun on katı boyutunda olur ve GIF'i ne zaman kullanmalısınız.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir video nasıl ters oynatılır</title>
+    <id>https://abox.tools/tr/rehberler/videoyu-ters-oynatma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/videoyu-ters-oynatma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir klibi geriye doğru oynatın: ters çevirmenin resme ve sese ne yaptığı, neden yeniden kodlamadan yapılamayacağı, neden kesmekten yavaş olduğu ve önce ne yapılması gerektiği.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir video yeniden kodlamadan nasıl kesilir</title>
+    <id>https://abox.tools/tr/rehberler/video-kesme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/video-kesme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir klibi kesmek tek bir bayt kaliteye mal olmak zorunda değildir. Bir kesme neden bazen işaretlediğiniz yerden önce düşer, anahtar karenin bununla ne ilgisi var ve yeniden kodlamayı ne zaman kabul etmelisiniz.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir videodan kare nasıl resim olarak kaydedilir</title>
+    <id>https://abox.tools/tr/rehberler/videodan-kare-yakalama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/videodan-kare-yakalama/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir klipten gerçek çözünürlüğünde kare alın: duraklatılmış bir oynatıcının ekran görüntüsü neden aynı resim değildir, hangi biçimde kaydetmelisiniz ve tam olarak istediğiniz kareye nasıl konarsınız.</summary>
   </entry>
   <entry>
     <title type="html">Birden çok sayfa tek ve küçük bir PDF'e nasıl taranır</title>
@@ -60,6 +200,27 @@
     <summary type="html">Anı kesin, kopyayı ters çevirin, ikisini birleştirin ve döngüye alın. Arka arkaya üç araç, hepsi tarayıcıda ve bütün işi bir dakikaya indiren sıra.</summary>
   </entry>
   <entry>
+    <title type="html">Geri çevrilmeyen bir vesikalık fotoğraf nasıl çekilir</title>
+    <id>https://abox.tools/tr/rehberler/vesikalik-fotograf-cekme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/vesikalik-fotograf-cekme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir vesikalık fotoğrafta gerçekte neyin ölçüldüğü - baş yüksekliği, göz hattı, arka plan - hangi ülkenin hangi sayıları istediği ve çevrimiçi bir formun dayattığı piksel ve KB sınırlarının nasıl tutturulacağı.</summary>
+  </entry>
+  <entry>
+    <title type="html">Görsellerden nasıl hareketli GIF yapılır</title>
+    <id>https://abox.tools/tr/rehberler/resimlerden-gif-olusturma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resimlerden-gif-olusturma/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bir resim setini tek bir hareketli GIF'e çevirin: bir GIF gerçekte ne kadar hızlı oynayabilir, palet ayarı neyi değiştirir ve dosyayı gerçekten küçülten üç şey.</summary>
+  </entry>
+  <entry>
+    <title type="html">Gürültüyü azaltmak ya da insanları kaldırmak için fotoğraflar nasıl istiflenir</title>
+    <id>https://abox.tools/tr/rehberler/gurultuyu-azaltmak-icin-fotograf-istifleme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gurultuyu-azaltmak-icin-fotograf-istifleme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">İstifleme bir seri kareyi tek görüntüde birleştirir. Hangi yöntemi kullanacağınız neyi kaybetmek istediğinize bağlıdır: gürültü, geçenler ya da bir makro çekimin sığ alan derinliği. Her birinin nasıl çalıştığı, neye mal olduğu ve RAW dosyalarının bu işin neresinde durduğu.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON Biçimlendirici</title>
     <id>https://abox.tools/tr/json-bicimlendirme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/json-bicimlendirme/"/>
@@ -67,178 +228,17 @@
     <summary type="html">JSON, XML, HTML, CSS ve YAML biçimlendirin ve küçültün; JSON'u YAML ya da XML'e çevirin ve geri alın. Ayrıştırıcılar tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç ya da bir yapılandırma dosyası makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">JSON kimseye vermeden nasıl biçimlendirilir</title>
+    <id>https://abox.tools/tr/rehberler/json-yuklemeden-bicimlendirme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/json-yuklemeden-bicimlendirme/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">JSON'u kendi tarayıcınızda nasıl düzenli yazar, denetler ve küçültürsünüz: bir biçimlendiricinin dosyanızda asla değiştirmemesi gereken şeyler, hata iletisinin nasıl okunacağı ve yapıştırdığınız sitenin neden önemli olduğu.</summary>
+  </entry>
+  <entry>
     <title type="html">Metin Karşılaştırma</title>
     <id>https://abox.tools/tr/metin-karsilastirma/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-karsilastirma/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
-  </entry>
-  <entry>
-    <title type="html">Metin ve dosya paylaşımı</title>
-    <id>https://abox.tools/tr/metin-paylasma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-paylasma/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Metni veya dosyaları bir tarayıcıdan diğerine doğrudan ve şifreli bir bağlantıyla gönderin. Söylenebilir bir bağlantı adı, siz yazarken canlı güncelleme, okuyucu başına onay - ve hiçbir sunucuda asla hiçbir şey. Ücretsiz, kayıt yok.</summary>
-  </entry>
-  <entry>
-    <title type="html">Metin ve dosyaları yüklemeden cihazlar arasında nasıl paylaşırsınız</title>
-    <id>https://abox.tools/tr/rehberler/cihazlar-arasi-metin-paylasma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/cihazlar-arasi-metin-paylasma/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Metni veya dosyaları doğrudan ve şifreli bir bağlantıyla bir tarayıcıdan diğerine taşıyın - kendinize e-posta atmadan, sohbet geçmişi bırakmadan, hesap açmadan ve hiçbir sunucu kopya tutmadan.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR kod nasıl oluşturulur ve okunduğu nasıl kanıtlanır</title>
-    <id>https://abox.tools/tr/rehberler/qr-kod-yapip-okundugunu-kanitlama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/qr-kod-yapip-okundugunu-kanitlama/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Kodu üretin, sonra aynı sitenin okuyucusuyla doğrulayın: tam içerik, gerçek bağlantı, baskı boyutunda ve bir fotoğraftan, baskıya gitmeden önce. Hepsi tarayıcıda, hiçbir şey yüklenmeden.</summary>
-  </entry>
-  <entry>
-    <title type="html">Sesli not göndermeden önce nasıl temizlenir</title>
-    <id>https://abox.tools/tr/rehberler/sesli-notu-temizleme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/sesli-notu-temizleme/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Ölü havayı ve yanlış başlangıçları kesin, sonra seviyeyi tavanın hemen altına çıkarın. Art arda iki tarayıcı aracı, kaliteyi koruyan sırayla ve kayıt makinenizden hiç ayrılmıyor.</summary>
-  </entry>
-  <entry>
-    <title type="html">Tam istediğiniz kareden video küçük resmi nasıl yapılır</title>
-    <id>https://abox.tools/tr/rehberler/video-kucuk-resmi-yapma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/video-kucuk-resmi-yapma/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Doğru ana kare kare ilerleyin, kayıpsız kaydedin, platformun biçimine getirin ve bayt sınırının tam altına inin. Art arda üç tarayıcı aracı ve görüntü makinenizden hiç ayrılmıyor.</summary>
-  </entry>
-  <entry>
-    <title type="html">Telefon fotoğrafları web için nasıl hazırlanır</title>
-    <id>https://abox.tools/tr/rehberler/fotograflari-web-icin-hazirlama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/fotograflari-web-icin-hazirlama/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">HEIC'ten JPEG'e, GPS temizlenmiş, sayfa için boyutlanmış ve bir bütçeye sıkıştırılmış: bütün zincir tarayıcıda ve asıllar makinenizden hiç çıkmıyor.</summary>
-  </entry>
-  <entry>
-    <title type="html">Uzun bir video hızlandırılmış çekime nasıl çevrilir</title>
-    <id>https://abox.tools/tr/rehberler/uzun-videoyu-hizlandirilmis-videoya-cevirme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/uzun-videoyu-hizlandirilmis-videoya-cevirme/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Bir saatlik görüntüyü izlenebilir bir dakikaya sığdırmak: hızı nasıl seçersiniz, hedef süreyi söylemek hesap yapmaktan neden iyidir ve sonuç ne zaman GIF olmalıdır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Videonun bir kısmından nasıl GIF yapılır</title>
-    <id>https://abox.tools/tr/rehberler/videonun-bir-kisminden-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/videonun-bir-kisminden-gif/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Önce işe yarayan saniyeleri kesin, sonra yalnızca onları dönüştürün. GIF dönüştürücünün kendi zaman çizgisi ne zaman yeter, ne zaman önce video kesiciyle kesilir ve GIF'in her saniyesi neden bu kadar pahalıdır.</summary>
-  </entry>
-  <entry>
-    <title type="html">İki JSON dosyası nasıl karşılaştırılır</title>
-    <id>https://abox.tools/tr/rehberler/iki-json-dosyasini-karsilastirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/iki-json-dosyasini-karsilastirma/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">İki dosyayı aynı biçimde biçimlendirin, anahtarları sıralayın, sonra karşılaştırın. Ham bir JSON karşılaştırması neden neredeyse tamamen gürültüdür, iki taraf tarayıcıda nasıl kurallı biçime sokulur ve yamaya ne kalır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Belge Tarayıcı</title>
-    <id>https://abox.tools/tr/belge-tarayici/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/belge-tarayici/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Bir sayfanın telefon fotoğrafını düzeltilmiş, eşit aydınlatılmış bir PDF'e çevirin. Köşeler sizin için bulunur, perspektif geri alınır, gölge bölünüp atılır. Tamamen tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir DICOM dosyası nasıl açılır ve içinde ne var</title>
-    <id>https://abox.tools/tr/rehberler/dicom-dosyasi-acma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/dicom-dosyasi-acma/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Bir hastane diskinde ne var, dosyaların neden uzantısı yok, bir .dcm taraması tarayıcıda nasıl açılır, pencere ve düzey gerçekte ne yapar ve bir tarama resmin dışında hasta hakkında neler taşır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir PDF, metin gerçekten gidecek şekilde nasıl karartılır</title>
-    <id>https://abox.tools/tr/rehberler/pdf-karartma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/pdf-karartma/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Bir PDF okuyucusunda çizilen siyah bir kutu genellikle altındaki kelimeleri yerinde bırakır ve kopyala yapıştır onları doğrudan geri getirir. Gerçek bir karartmanın neyi kaldırdığı, bir kelimenin sayfanın dışında saklandığı dört yer ve bir dosyayı göndermeden önce nasıl denetleyeceğiniz.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir belge telefonla nasıl taranır</title>
-    <id>https://abox.tools/tr/rehberler/telefonla-belge-tarama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/telefonla-belge-tarama/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Bir sayfanın fotoğrafını, o sayfanın taramasından ayıran şey: açı, dengesiz ışık ve dosya boyutu. Fotoğrafın nasıl çekileceği, sonradan neyin düzeltileceği ve bunların hiçbirinin neden bir sunucuya ihtiyacı olmadığı.</summary>
-  </entry>
-  <entry>
-    <title type="html">DICOM Görüntüleyici</title>
-    <id>https://abox.tools/tr/dicom-goruntuleyici/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/dicom-goruntuleyici/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">BT, MR, röntgen ve ultrason taramalarını tarayıcınızda açın. Pencere ve seviye, bütün bir seriyi kaydırma, milimetre cinsinden ölçüm, her DICOM etiketini okuma ve dosyada hastayı tam olarak neyin tanımladığını görme. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görüntü istifleyici</title>
-    <id>https://abox.tools/tr/goruntu-istifleme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/goruntu-istifleme/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Bir seri fotoğrafı tek karede birleştirin: gürültüyü öldürmek için ortalamasını alın, sahneden insanları çıkarmak için medyanını alın, yıldız izleri için açın ya da bir makro çekimi odak istifleyin. CR2, NEF, ARW, DNG, RAF ve CR3 dosyalarını, fotoğraf makinesinin kendi önizlemesini çıkararak okur. Tümüyle tarayıcınızda çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Gürültüyü azaltmak ya da insanları kaldırmak için fotoğraflar nasıl istiflenir</title>
-    <id>https://abox.tools/tr/rehberler/gurultuyu-azaltmak-icin-fotograf-istifleme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gurultuyu-azaltmak-icin-fotograf-istifleme/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">İstifleme bir seri kareyi tek görüntüde birleştirir. Hangi yöntemi kullanacağınız neyi kaybetmek istediğinize bağlıdır: gürültü, geçenler ya da bir makro çekimin sığ alan derinliği. Her birinin nasıl çalıştığı, neye mal olduğu ve RAW dosyalarının bu işin neresinde durduğu.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF Karartıcı</title>
-    <id>https://abox.tools/tr/pdf-karartma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-karartma/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Bir PDF'ten kelimeleri, üzerlerine siyah dikdörtgen çizmek yerine çıkarın. Harfler sayfanın kendi çizim talimatlarından silinir, bitmiş dosya yeniden açılıp gittiklerini kanıtlamak için aranır ve hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Vesikalık Fotoğraf Yapıcı</title>
-    <id>https://abox.tools/tr/biyometrik-vesikalik-fotograf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/biyometrik-vesikalik-fotograf/"/>
-    <updated>2026-08-24T00:00:00Z</updated>
-    <summary type="html">Ülkenizin yayımlanmış kuralına uygun bir pasaport ya da vize fotoğrafı yapın: tam mm ve DPI, canlı kafa yüksekliği ve göz hattı yerleşimi, arka plan denetimi, basılabilir 4x6 sayfa ve portalın KB sınırına sığdırılmış bir dosya. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir görsel, gizlenen kısım gerçekten gidecek şekilde nasıl karartılır</title>
-    <id>https://abox.tools/tr/rehberler/resim-karartma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resim-karartma/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Çoğu programda çizilen siyah kutular resmin üstünde oturur ve kenara çekilebilir. Gerçek bir karartmayı örtülmüş bir karartmadan ayıran şey, pikselleştirilmiş metnin neden geri okunabildiği ve bir dosyayı göndermeden önce nasıl denetleyeceğiniz.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bir indirme, sağlama toplamına karşı nasıl denetlenir</title>
-    <id>https://abox.tools/tr/rehberler/dosya-saglama-toplamini-dogrulama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/dosya-saglama-toplamini-dogrulama/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Windows, macOS ve Linux'ta ya da tarayıcınızda bir MD5 veya SHA-256 sağlama toplamı nasıl denetlenir, bir eşleşme gerçekte neyi kanıtlar ve bütün işi anlamsız kılan hata.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görsel Karartıcı</title>
-    <id>https://abox.tools/tr/resim-karartma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resim-karartma/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Bir fotoğraftaki ya da ekran görüntüsündeki bir ismi, adresi veya hesap numarasını kapatın ve resmi yeniden kodlayın; böylece gizlenen pikseller bir dikdörtgenin altında durmak yerine dosyadan gitmiş olur. Tamamen tarayıcınızda çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR ve Barkod Okuyucu</title>
-    <id>https://abox.tools/tr/qr-kod-okuma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/qr-kod-okuma/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Bir fotoğraftan, ekran görüntüsünden ya da kameranızdan QR kod okuyun ve bağlantının nereye gittiğini açmadan önce tam olarak görün. EAN, UPC, Code 128, Code 39 ve ITF barkodları da. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Time-Lapse Yapıcı</title>
-    <id>https://abox.tools/tr/time-lapse-video-olusturma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/time-lapse-video-olusturma/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Uzun bir videoyu time-lapse'e çevirin: 10 kat, 60 kat ya da yazdığınız herhangi bir hız. Tarayıcınızda çalışır, yani hiçbir şey yüklenmez, filigran yoktur ve çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Özet ve Sağlama Toplamı</title>
-    <id>https://abox.tools/tr/saglama-toplami-hesaplama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/saglama-toplami-hesaplama/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Herhangi bir dosyanın MD5, SHA-1, SHA-256, SHA-384 ya da SHA-512 değerini hesaplayın ve indirme sayfasının yayımladığı sağlama toplamıyla karşılaştırın. Dosya tarayıcınızda okunur ve hiçbir boyutta yüklenmez.</summary>
   </entry>
 </feed>

@@ -32,6 +32,13 @@
     <uri>https://abox.tools/ar/</uri>
   </author>
   <entry>
+    <title type="html">الصورةُ التي حفظها هاتفُك، والصيغةُ التي لا يفتحها شيء</title>
+    <id>https://abox.tools/ar/أدلة/تحويل-heic-إلى-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-heic-إلى-jpg/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">هواتفُ iPhone تحفظ الصور بصيغة HEIC، ونصفُ الإنترنت لا يستطيع فتح واحدة. ما هذه الصيغة، ولماذا لا يفكّ ترميزها إلا Safari، وماذا يكلّف التحويلُ الصورةَ، وكيف تفعله دون أن ترفع الصور إلى أحد.</summary>
+  </entry>
+  <entry>
     <title type="html">كيف تجهِّز صور الهاتف للنشر</title>
     <id>https://abox.tools/ar/أدلة/تجهيز-الصور-للنشر/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تجهيز-الصور-للنشر/"/>
@@ -46,6 +53,20 @@
     <summary type="html">فكّك صورة GIF إلى إطاراتها، واحذف أو أعد الترتيب، ثم أعد بناءها والتوقيت محفوظ. ما الذي ينجو من الرحلة ذهابًا وإيابًا، وما ثمن اللوحة اللونية، وكيف ترى سبب ثقل GIF.</summary>
   </entry>
   <entry>
+    <title type="html">كيف تحفظ إطاراً من فيديو صورةً</title>
+    <id>https://abox.tools/ar/أدلة/استخراج-لقطة-من-فيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/استخراج-لقطة-من-فيديو/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">أخرِج صورة ساكنة من مقطع بدقتها الحقيقية: لماذا لقطةُ شاشة لمشغّل موقوف ليست الصورة نفسها، وبأي صيغة تحفظها، وكيف تحطّ على الإطار الذي قصدته بعينه.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تحوّل فيديو إلى GIF</title>
+    <id>https://abox.tools/ar/أدلة/تحويل-الفيديو-إلى-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-الفيديو-إلى-gif/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">أي مقطع وأي عرض وأي معدّل إطارات تختار، ولماذا يكون ملف GIF لفيديو عشرة أضعاف حجم الفيديو، ومتى تستعمل واحداً أصلاً.</summary>
+  </entry>
+  <entry>
     <title type="html">كيف تحوّل فيديو طويلًا إلى تصوير متسارع</title>
     <id>https://abox.tools/ar/أدلة/تحويل-فيديو-طويل-الى-تايم-لابس/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-فيديو-طويل-الى-تايم-لابس/"/>
@@ -53,11 +74,60 @@
     <summary type="html">ساعة من التصوير في دقيقة تُشاهَد: كيف تختار السرعة، ولماذا تحديد المدة النهائية أفضل من الحساب، ومتى ينبغي أن يصير الناتج صورة GIF.</summary>
   </entry>
   <entry>
+    <title type="html">كيف تحوّل مجلداً من الصور إلى فيديو</title>
+    <id>https://abox.tools/ar/أدلة/تحويل-الصور-إلى-فيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-الصور-إلى-فيديو/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">اصنع عرض شرائح MP4 من صور: ماذا يتحكّم فيه معدّل الإطارات والمدة فعلاً، وكيف تتعامل مع الصور ذات النسبة الخطأ، ولماذا لا مسار صوتياً في الناتج.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تحوّل ملف SVG إلى PNG بالمقاس الصحيح</title>
+    <id>https://abox.tools/ar/أدلة/تحويل-svg-إلى-png/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-svg-إلى-png/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">المتّجهُ ليس له مقاسٌ بالبكسل خاصٌّ به، فالرقمُ لك أنت أن تختاره. من أين يأتي ذلك الرقم لشاشة ولأيقونة تطبيق ولطابعة، وما الذي يتغيّر حين يصير الرسمُ بكسلات.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تدمج صفحات PDF وتقسّمها وتعيد ترتيبها</title>
+    <id>https://abox.tools/ar/أدلة/دمج-وتقسيم-ملفات-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/دمج-وتقسيم-ملفات-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">اجمع ملفات PDF، أو اقطع واحداً إلى عدة ملفات، أو حرّك الصفحات: ما الذي ينجو من إعادة الخلط، وما الذي لا تستطيع أي أداة نقله، ولماذا لا يحتاج شيءٌ من ذلك إلى رفع مستنداتك إلى أي مكان.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تدمج صوراً في ملف PDF واحد</title>
+    <id>https://abox.tools/ar/أدلة/دمج-الصور-في-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/دمج-الصور-في-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">حوّل صوراً أو مسوحاً ضوئية إلى ملف PDF واحد: مقاسُ الصفحة والترتيبُ والتدوير، ولماذا لا يلزم أن يخسر ملفُّ JPEG شيئاً في طريقه إلى الداخل، وماذا يقول ملفُّ PDF عنك لمن ترسله إليه.</summary>
+  </entry>
+  <entry>
     <title type="html">كيف تشارك النص والملفات بين الأجهزة دون رفعها</title>
     <id>https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">انقل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر - دون أن تراسل نفسك بالبريد، ودون سجلّ محادثة، ودون حساب، ودون أن يحتفظ أي خادم بنسخة.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تشغّل فيديو بالمقلوب</title>
+    <id>https://abox.tools/ar/أدلة/تشغيل-الفيديو-عكسيا/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تشغيل-الفيديو-عكسيا/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">شغّل مقطعاً بالمقلوب: ماذا يفعل العكس بالصورة والصوت، ولماذا لا يمكن فعله دون إعادة ترميز، ولماذا هو أبطأ من التقصير، وما الذي تفعله أولاً.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تصغّر ملف PDF، ولماذا لا يصغر بعضها</title>
+    <id>https://abox.tools/ar/أدلة/تصغير-حجم-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تصغير-حجم-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">أين يقع حجمُ ملف PDF فعلاً، ولماذا يُضغَط المسحُ الضوئي 80% بينما لا يكاد العقدُ يتحرّك، وماذا تعني DPI هنا، وما الذي ينبغي ألا يفعله الضاغطُ بمستندك أبداً.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تصنع GIF متحرّكة من صور</title>
+    <id>https://abox.tools/ar/أدلة/إنشاء-gif-من-الصور/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/إنشاء-gif-من-الصور/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">حوِّل طقماً من الصور إلى ملف GIF متحرّك واحد: بأي سرعة يستطيع ملف GIF أن يعمل حقاً، وماذا يغيّر إعدادُ لوحة الألوان، والأشياءُ الثلاثة التي تصغّر الملف فعلاً.</summary>
   </entry>
   <entry>
     <title type="html">كيف تصنع GIF من جزء من فيديو</title>
@@ -74,11 +144,25 @@
     <summary type="html">أنشئ الرمز ثم تحقق منه بقارئ الموقع نفسه: المحتوى الحرفي، والرابط الحقيقي، بمقاس الطباعة ومن صورة فوتوغرافية، قبل الدفعة. كل ذلك في المتصفح، ولا شيء يُرفع.</summary>
   </entry>
   <entry>
+    <title type="html">كيف تصنع رمز QR يظل يُقرأ على هاتف شخص آخر</title>
+    <id>https://abox.tools/ar/أدلة/إنشاء-رمز-qr/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/إنشاء-رمز-qr/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">أيَّ مستوى تصحيح أخطاء تختار، ولماذا يكون الهامشُ الأبيض حول رمز QR جزءاً من الرمز، وبأي مقاس تطبعه، وماذا يكلّفك لاحقاً الرمزُ &amp;laquo;الديناميكي&amp;raquo; في مولّد مجاني.</summary>
+  </entry>
+  <entry>
     <title type="html">كيف تصنع صورة مصغّرة لفيديو من الإطار الصحيح تمامًا</title>
     <id>https://abox.tools/ar/أدلة/صنع-صورة-مصغرة-لفيديو/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/صنع-صورة-مصغرة-لفيديو/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">تقدّم إطارًا إطارًا حتى اللحظة الصحيحة، واحفظها بلا فقد، وأوصلها إلى شكل المنصة، وأصِب حدّها من البايتات. ثلاث أدوات متصفح متتابعة، والتصوير لا يغادر جهازك أبدًا.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تصنع فافيكون يظل مقروءاً عند ستة عشر بكسلاً</title>
+    <id>https://abox.tools/ar/أدلة/إنشاء-فافيكون/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/إنشاء-فافيكون/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">أيَّ مقاسات يحتاج ملفُّ favicon.ico فعلاً، وأيَّ ملفات إضافية تطلبها هواتفُ iPhone وأجهزةُ Android وأجهزةُ Mac، ولماذا يختفي شعارٌ ينجح على ملصق عند ستة عشر بكسلاً.</summary>
   </entry>
   <entry>
     <title type="html">كيف تصنع فيديو بوميرانغ</title>
@@ -88,6 +172,48 @@
     <summary type="html">قصّ اللحظة، واعكس النسخة، وضمّ الاثنتين، ودعه يلتفّ. ثلاث أدوات على التوالي، كلها في المتصفح، والترتيب الذي يجعل العمل كله في دقيقة.</summary>
   </entry>
   <entry>
+    <title type="html">كيف تضغط صورة إلى حجم ملف محدد بالضبط</title>
+    <id>https://abox.tools/ar/أدلة/ضغط-الصورة-إلى-حجم-محدد/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/ضغط-الصورة-إلى-حجم-محدد/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">استمارةُ رفع تريد 500 كيلوبايت وصورتُك 4 ميغابايت. ماذا يكلّف حدُّ الحجم فعلاً، وأيَّ إعداد تحرّك أولاً، ولماذا لا يصغر ملف PNG كما يصغر ملف JPEG.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تطمس صورة بحيث يزول الجزء المخفيّ فعلاً</title>
+    <id>https://abox.tools/ar/أدلة/طمس-الصورة/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/طمس-الصورة/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">المربّعاتُ السوداء المرسومة في معظم البرامج تقبع فوق الصورة ويمكن تنحيتها. ما الذي يفصل الطمسَ الحقيقي عن التغطية، ولماذا يمكن استرجاعُ قراءة نصّ مفسفس، وكيف تفحص ملفاً قبل أن ترسله.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تطمس ملف PDF بحيث يزول النصّ فعلاً</title>
+    <id>https://abox.tools/ar/أدلة/طمس-ملف-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/طمس-ملف-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">المربّعُ الأسود المرسوم في قارئ PDF يترك الكلمات تحته عادةً، والنسخُ واللصقُ يعيدانها فوراً. ما الذي يحذفه الطمسُ الحقيقي، والمواضعُ الأربعة التي تختبئ فيها كلمةٌ خارج الصفحة، وكيف تفحص ملفاً قبل أن ترسله.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تغيّر حجم صورة دون أن تفسدها</title>
+    <id>https://abox.tools/ar/أدلة/تغيير-حجم-الصورة/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تغيير-حجم-الصورة/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">ماذا يحدث للصورة حين تغيّر أبعادها بالبكسل: لماذا التصغير آمن والتكبير ليس كذلك، وماذا تفعل حين يكون الإطار بشكل مختلف، ومتى تقتصّ بدل ذلك.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تفتح ملف DICOM، وما الذي بداخله</title>
+    <id>https://abox.tools/ar/أدلة/فتح-ملف-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/فتح-ملف-dicom/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">ما الذي على قرص المستشفى، ولماذا لا امتداد لهذه الملفات، وكيف تفتح فحص dcm. في متصفح، وماذا تفعل النافذةُ والمستوى فعلاً، وماذا يحمل الفحصُ عن المريض سوى الصورة.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تفحص تنزيلاً في مقابل مجموعه التحقّقي</title>
+    <id>https://abox.tools/ar/أدلة/التحقق-من-قيمة-تجزئة-الملف/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/التحقق-من-قيمة-تجزئة-الملف/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">كيف تفحص مجموعاً تحقّقياً من نوع MD5 أو SHA-256 على Windows وmacOS وLinux أو في متصفحك، وماذا تثبت المطابقةُ فعلاً، والخطأُ الذي يجعل التمرين كلَّه بلا معنى.</summary>
+  </entry>
+  <entry>
     <title type="html">كيف تقارن ملفي JSON</title>
     <id>https://abox.tools/ar/أدلة/مقارنة-ملفي-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مقارنة-ملفي-json/"/>
@@ -95,150 +221,24 @@
     <summary type="html">نسِّق الملفين بالطريقة نفسها، ورتِّب المفاتيح، ثم قارن. لماذا مقارنة JSON الخام جلّها ضجيج، وكيف تقيِّس الجانبين في المتصفح، وما الذي يبقى حتى الرقعة.</summary>
   </entry>
   <entry>
-    <title type="html">كيف تمسح عدة صفحات في PDF واحد صغير</title>
-    <id>https://abox.tools/ar/أدلة/مسح-عدة-صفحات-في-pdf-واحد/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مسح-عدة-صفحات-في-pdf-واحد/"/>
+    <title type="html">كيف تقتصّ فيديو إلى نسبة أخرى</title>
+    <id>https://abox.tools/ar/أدلة/اقتصاص-الفيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/اقتصاص-الفيديو/"/>
     <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">صوِّر كل صفحة، وخذ ملف PDF واحداً، وادمجه مع المستندات الموجودة أصلاً، وقلِّصه حتى يُرسَل. ثلاث أدوات متصفح على التوالي، والأوراق لا تغادر الهاتف أبداً.</summary>
+    <summary type="html">اختصر مقطعاً إلى مربّع أو إلى 9:16 طولي أو إلى إطار بكسل محدّد. أي نسبة تريدها كل منصة، ولماذا على الاقتصاص أن يعيد الترميز بينما لا يفعل التقصير، وماذا يكلّف ذلك.</summary>
   </entry>
   <entry>
-    <title type="html">كيف تنظّف مذكرة صوتية قبل إرسالها</title>
-    <id>https://abox.tools/ar/أدلة/تنظيف-تسجيل-صوتي/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تنظيف-تسجيل-صوتي/"/>
+    <title type="html">كيف تقسّم ملف GIF إلى إطارات</title>
+    <id>https://abox.tools/ar/أدلة/تقسيم-gif-إلى-إطارات/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تقسيم-gif-إلى-إطارات/"/>
     <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">اقطع الهواء الميت والبدايات الخاطئة، ثم ارفع المستوى إلى ما دون السقف مباشرة. أداتا متصفح متتابعتان، بالترتيب الذي يصون الجودة، والتسجيل لا يغادر جهازك أبدًا.</summary>
+    <summary type="html">أخرِج كل إطار من صورة GIF متحرّكة ملفَّ PNG: لماذا تكون بعض الإطارات رقعةً صغيرة من الصورة لا غير، وماذا يحدث للشفافية، وكيف تحفظ التوقيت لتستطيع إعادة بنائها.</summary>
   </entry>
   <entry>
-    <title type="html">مرمِّز Base64 ومفكِّكه</title>
-    <id>https://abox.tools/ar/ترميز-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/ترميز-base64/"/>
+    <title type="html">كيف تقصّ صوتاً دون أن تفقد جودة</title>
+    <id>https://abox.tools/ar/أدلة/قص-ملف-صوتي/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/قص-ملف-صوتي/"/>
     <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">رمِّز وفكِّك Base64 بأبجديتَيه، ورمِّز العناوين ترميزاً مئوياً، واهرُب كيانات HTML، واقرأ السداسي عشري وهروبات الشرطة المائلة العكسية. كل ذلك يجري في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">مشاركة النص والملفات</title>
-    <id>https://abox.tools/ar/مشاركة-النص/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مشاركة-النص/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">أرسل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر. اسم رابط يُقال بصوت مسموع، وتحديث حي أثناء الكتابة، وموافقة لكل قارئ - ولا شيء على أي خادم أبداً. مجاني، دون تسجيل.</summary>
-  </entry>
-  <entry>
-    <title type="html">مقارن النصوص</title>
-    <id>https://abox.tools/ar/مقارنة-النصوص/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مقارنة-النصوص/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">قارِن نصّين وانظر كل فرق، سطراً سطراً وكلمةً كلمة، جنباً إلى جنب أو في عمود واحد. المقارنة تعمل في متصفحك ولا يُرفع شيء - فلا تغادر الشيفرة غير المنشورة جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">منسِّق JSON</title>
-    <id>https://abox.tools/ar/تنسيق-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-json/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">نسِّق وصغِّر JSON وXML وHTML وCSS وYAML، وحوِّل JSON إلى YAML أو XML وبالعكس. المحلِّلات تعمل في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز أو ملف إعدادات جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">الماسح الضوئي للمستندات</title>
-    <id>https://abox.tools/ar/الماسح-الضوئي-للمستندات/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/الماسح-الضوئي-للمستندات/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">حوِّل صورةً بهاتف لصفحة إلى ملف PDF معدَّل ومتساوي الإضاءة. تُوجَد الأركان لك، ويُلغى أثر المنظور، ويُقسَم الظلّ خارجاً. يعمل بالكامل داخل متصفحك: ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">تكديس الصور</title>
-    <id>https://abox.tools/ar/تكديس-الصور/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تكديس-الصور/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">ادمج سلسلة لقطات في صورة واحدة: خذ متوسطها لتقتل الضجيج، أو خذ الوسيط لتزيل الناس من المشهد، أو أضئ لمسارات النجوم، أو كدّس بؤرة لقطة ماكرو. يقرأ CR2 وNEF وARW وDNG وRAF وCR3 باستخراج المعاينة التي كتبتها الكاميرا نفسها. يعمل كله داخل متصفحك.</summary>
-  </entry>
-  <entry>
-    <title type="html">طامس PDF</title>
-    <id>https://abox.tools/ar/طمس-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/طمس-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">أخرِج الكلمات من ملف PDF بدل رسم مستطيل أسود فوقها. تُحذَف الحروف من تعليمات رسم الصفحة نفسها، ويُفتَح الملف المنتهي من جديد ويُبحَث فيه برهاناً على أنها زالت، ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">عارض DICOM</title>
-    <id>https://abox.tools/ar/عارض-dicom/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/عارض-dicom/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">افتح صور CT وMR والأشعة السينية والموجات فوق الصوتية في متصفحك. اضبط النافذة والمستوى، وتصفّح سلسلة كاملة، وقِس بالمليمترات، واقرأ كل وسم DICOM، وانظر ما الذي في الملف يعرّف المريض بالضبط. ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تطمس ملف PDF بحيث يزول النصّ فعلاً</title>
-    <id>https://abox.tools/ar/أدلة/طمس-ملف-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/طمس-ملف-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">المربّعُ الأسود المرسوم في قارئ PDF يترك الكلمات تحته عادةً، والنسخُ واللصقُ يعيدانها فوراً. ما الذي يحذفه الطمسُ الحقيقي، والمواضعُ الأربعة التي تختبئ فيها كلمةٌ خارج الصفحة، وكيف تفحص ملفاً قبل أن ترسله.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تفتح ملف DICOM، وما الذي بداخله</title>
-    <id>https://abox.tools/ar/أدلة/فتح-ملف-dicom/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/فتح-ملف-dicom/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">ما الذي على قرص المستشفى، ولماذا لا امتداد لهذه الملفات، وكيف تفتح فحص dcm. في متصفح، وماذا تفعل النافذةُ والمستوى فعلاً، وماذا يحمل الفحصُ عن المريض سوى الصورة.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تكدّس الصور لتقليل الضجيج أو لإزالة الناس</title>
-    <id>https://abox.tools/ar/أدلة/تكديس-الصور-لتقليل-الضجيج/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تكديس-الصور-لتقليل-الضجيج/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">التكديس يدمج سلسلة لقطات في صورة واحدة. والطريقة التي تحتاجها تتوقف على ما تريد أن تفقده: الضجيج، أو المارّة، أو عمق الميدان الضحل في لقطة ماكرو. كيف تعمل كل طريقة، وما ثمنها، وأين تقع ملفات RAW من ذلك.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تمسح مستنداً ضوئياً بهاتفك</title>
-    <id>https://abox.tools/ar/أدلة/مسح-مستند-بهاتفك/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مسح-مستند-بهاتفك/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">ما الذي يفصل صورةً فوتوغرافية لصفحة عن مسحٍ ضوئي لها: الزاويةُ والضوءُ غيرُ المتساوي وحجمُ الملف. كيف تلتقط الصورة، وماذا تصلح بعدها، ولماذا لا يحتاج شيءٌ من ذلك إلى خادم.</summary>
-  </entry>
-  <entry>
-    <title type="html">صانع الصور الشخصية</title>
-    <id>https://abox.tools/ar/صورة-شخصية-بيومترية/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/صورة-شخصية-بيومترية/"/>
-    <updated>2026-08-24T00:00:00Z</updated>
-    <summary type="html">اصنع صورة جواز سفر أو تأشيرة على القاعدة المنشورة لبلدك: المليمترات والـ dpi بالضبط، وطبقة حيّة لارتفاع الرأس وخطّ العينين، وفحص للخلفية، وورقة طباعة مقاس 4×6، وملف مضغوط إلى حدّ الـ KB الذي تفرضه البوابة. ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">البصمة والمجموع التحقّقي</title>
-    <id>https://abox.tools/ar/حساب-قيمة-التجزئة/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/حساب-قيمة-التجزئة/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">احسب MD5 أو SHA-1 أو SHA-256 أو SHA-384 أو SHA-512 لأي ملف وقارنه بالمجموع التحقّقي الذي نشرته صفحة التنزيل. يُقرأ الملف في متصفحك ولا يُرفَع أبداً، بأي حجم كان.</summary>
-  </entry>
-  <entry>
-    <title type="html">صانع التايم لابس</title>
-    <id>https://abox.tools/ar/إنشاء-فيديو-تايم-لابس/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/إنشاء-فيديو-تايم-لابس/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">حوِّل فيديو طويلاً إلى تايم لابس: 10× أو 60× أو أي سرعة تكتبها. يعمل داخل متصفحك، فلا يُرفع شيء، ولا علامة مائية، ويعمل دون اتصال.</summary>
-  </entry>
-  <entry>
-    <title type="html">طمس الصور</title>
-    <id>https://abox.tools/ar/طمس-الصورة/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/طمس-الصورة/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">غطِّ اسماً أو عنواناً أو رقم حساب في صورة أو لقطة شاشة، ثم أعِد ترميز الصورة، فتزول البكسلات المخفية من الملف بدل أن تقبع تحت مستطيل. يعمل بالكامل داخل متصفحك.</summary>
-  </entry>
-  <entry>
-    <title type="html">قارئ رموز QR والباركود</title>
-    <id>https://abox.tools/ar/مسح-رمز-qr/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مسح-رمز-qr/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">اقرأ رمز QR من صورة أو لقطة شاشة أو كاميرتك، وانظر بالضبط إلى أين يذهب الرابط قبل أن تفتحه. وباركودات EAN وUPC وCode 128 وCode 39 وITF كذلك. ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تطمس صورة بحيث يزول الجزء المخفيّ فعلاً</title>
-    <id>https://abox.tools/ar/أدلة/طمس-الصورة/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/طمس-الصورة/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">المربّعاتُ السوداء المرسومة في معظم البرامج تقبع فوق الصورة ويمكن تنحيتها. ما الذي يفصل الطمسَ الحقيقي عن التغطية، ولماذا يمكن استرجاعُ قراءة نصّ مفسفس، وكيف تفحص ملفاً قبل أن ترسله.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تفحص تنزيلاً في مقابل مجموعه التحقّقي</title>
-    <id>https://abox.tools/ar/أدلة/التحقق-من-قيمة-تجزئة-الملف/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/التحقق-من-قيمة-تجزئة-الملف/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">كيف تفحص مجموعاً تحقّقياً من نوع MD5 أو SHA-256 على Windows وmacOS وLinux أو في متصفحك، وماذا تثبت المطابقةُ فعلاً، والخطأُ الذي يجعل التمرين كلَّه بلا معنى.</summary>
+    <summary type="html">أين تحطّ قَصّةُ الصوت فعلاً، ولماذا تستطيع أن تكون دقيقة بينما لا تستطيع قَصّةُ الفيديو، ولماذا تطقطق الوصلة أحياناً، وماذا يفعل تلاشٍ من خمسة أجزاء من الألف من الثانية حقاً.</summary>
   </entry>
 </feed>

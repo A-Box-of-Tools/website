@@ -39,11 +39,25 @@
     <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
   </entry>
   <entry>
+    <title type="html">How to check a download against its checksum</title>
+    <id>https://abox.tools/guides/verify-a-file-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/verify-a-file-checksum/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">How to check an MD5 or SHA-256 checksum on Windows, macOS and Linux or in your browser, what a match actually proves, and the mistake that makes the whole exercise pointless.</summary>
+  </entry>
+  <entry>
     <title type="html">How to clean up a voice memo before sending it</title>
     <id>https://abox.tools/guides/clean-up-a-voice-memo/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/clean-up-a-voice-memo/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Cut the dead air and the false starts, then bring the level up to full scale. Two browser tools in a row, in the order that keeps the quality, and the recording never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to combine images into one PDF</title>
+    <id>https://abox.tools/guides/combine-images-into-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/combine-images-into-a-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Turn photos or scans into a single PDF: page size, order and rotation, why a JPEG need not lose any quality on the way in, and what a PDF tells the person you send it to.</summary>
   </entry>
   <entry>
     <title type="html">How to compare two JSON files</title>
@@ -53,11 +67,39 @@
     <summary type="html">Format both files the same way, sort the keys, then diff them. Why a raw JSON diff is mostly noise, how to canonicalise both sides in the browser, and what survives to the patch.</summary>
   </entry>
   <entry>
+    <title type="html">How to compress an image to an exact file size</title>
+    <id>https://abox.tools/guides/compress-an-image-to-a-target-size/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/compress-an-image-to-a-target-size/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">An upload form wants 500 KB and your photo is 4 MB. What a size limit really costs, which setting to move first, and why a PNG will not shrink the way a JPEG does.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to convert an SVG to a PNG at the right size</title>
+    <id>https://abox.tools/guides/convert-an-svg-to-png/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/convert-an-svg-to-png/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">A vector has no pixel size of its own, so the number is yours to choose. Where that number comes from for a screen, an app icon and a printer, and what changes when a drawing becomes pixels.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to crop a video to a different shape</title>
+    <id>https://abox.tools/guides/crop-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/crop-a-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Cut a clip down to a square, a 9:16 portrait, or an exact pixel box. Which ratio each platform wants, why cropping has to re-encode when trimming does not, and what that costs.</summary>
+  </entry>
+  <entry>
     <title type="html">How to edit a GIF frame by frame</title>
     <id>https://abox.tools/guides/edit-a-gif-frame-by-frame/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/edit-a-gif-frame-by-frame/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Take a GIF apart into its frames, drop or reorder them, and rebuild it with the timing kept. What survives the round trip, what the palette costs, and how to see why a GIF is heavy.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to format JSON without handing it to anybody</title>
+    <id>https://abox.tools/guides/format-json-without-uploading-it/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/format-json-without-uploading-it/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">How to lay out, check and minify JSON in your own browser - what a formatter must never change about your file, how to read the error message, and why the site you paste it into matters.</summary>
   </entry>
   <entry>
     <title type="html">How to get phone photos ready for the web</title>
@@ -74,11 +116,25 @@
     <summary type="html">Cut the seconds that matter first, then convert only those. When the GIF converter's own timeline is enough, when to cut with the video cutter instead, and why every second of GIF costs so much.</summary>
   </entry>
   <entry>
+    <title type="html">How to make a PDF smaller, and why some will not shrink</title>
+    <id>https://abox.tools/guides/make-a-pdf-smaller/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-pdf-smaller/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Where a PDF's size actually is, why a scan compresses 80% and a contract barely moves, what DPI means here, and what a compressor should never do to your document.</summary>
+  </entry>
+  <entry>
     <title type="html">How to make a QR code and prove it scans</title>
     <id>https://abox.tools/guides/make-a-qr-code-and-prove-it-scans/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-qr-code-and-prove-it-scans/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Generate the code, then verify it with a reader on the same site - the exact payload, the real link, at print size and from a photo - before the print run. All in the browser, nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to make a QR code that still scans on somebody else's phone</title>
+    <id>https://abox.tools/guides/make-a-qr-code/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-qr-code/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Which error-correction level to pick, why the white margin around a QR code is part of the code, how big to print it, and what a free generator's 'dynamic' code costs you later.</summary>
   </entry>
   <entry>
     <title type="html">How to make a boomerang video</title>
@@ -88,11 +144,81 @@
     <summary type="html">Cut the moment, reverse the copy, join the two, and loop it. Three tools in a row, all running in your browser, and the order that keeps the whole job down to a minute.</summary>
   </entry>
   <entry>
+    <title type="html">How to make a favicon that still reads at sixteen pixels</title>
+    <id>https://abox.tools/guides/make-a-favicon/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-favicon/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Which sizes a favicon.ico actually needs, which extra files iPhones, Android and a Mac ask for, and why a logo that works on a poster disappears at sixteen pixels.</summary>
+  </entry>
+  <entry>
     <title type="html">How to make a video thumbnail from the exact right frame</title>
     <id>https://abox.tools/guides/make-a-video-thumbnail/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-video-thumbnail/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Step to the precise frame, save it losslessly, size it for the platform, and hit the byte limit. Three browser tools in a row, and the footage never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to make an animated GIF from images</title>
+    <id>https://abox.tools/guides/make-a-gif-from-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-gif-from-images/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Turn a set of pictures into one animated GIF: how fast a GIF can really play, what the palette setting changes, and the three things that actually make the file smaller.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to merge, split and reorder PDF pages</title>
+    <id>https://abox.tools/guides/merge-and-split-pdf-files/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/merge-and-split-pdf-files/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Combine PDFs, cut one into several, and move pages around: what survives the reshuffle, what no tool can carry across, and why none of it needs uploading your documents anywhere.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to open a DICOM file, and what is in one</title>
+    <id>https://abox.tools/guides/open-a-dicom-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/open-a-dicom-file/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">What is on a hospital disc, why the files have no extension, how to open a .dcm scan in a browser, what window and level actually does, and what a scan carries about the patient besides the picture.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to redact a PDF so the text is really gone</title>
+    <id>https://abox.tools/guides/redact-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/redact-a-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">A black box drawn in a PDF reader usually leaves the words underneath it, and copy-and-paste gets them straight back. What a real redaction removes, the four places a word hides outside the page, and how to check a file before you send it.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to redact an image so the hidden part is really gone</title>
+    <id>https://abox.tools/guides/redact-an-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/redact-an-image/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Black boxes drawn in most programs sit on top of the picture and can be moved aside. What separates a real redaction from a covered one, why pixelated text can be read back, and how to check a file before you send it.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to resize an image without wrecking it</title>
+    <id>https://abox.tools/guides/resize-an-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/resize-an-image/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">What happens to a picture when you change its pixel dimensions: why shrinking is safe and enlarging is not, what to do when the box is the wrong shape, and when to crop instead.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to reverse a video</title>
+    <id>https://abox.tools/guides/reverse-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/reverse-a-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Play a clip backwards: what reversing does to the picture and the sound, why it cannot be done without re-encoding, why it is slower than trimming, and what to do first.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to save a frame from a video as a picture</title>
+    <id>https://abox.tools/guides/grab-a-frame-from-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/grab-a-frame-from-a-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Get a still out of a clip at its real resolution: why a screenshot of a paused player is not the same picture, which format to save it in, and how to land on the exact frame you meant.</summary>
+  </entry>
+  <entry>
+    <title type="html">How to scan a document with your phone</title>
+    <id>https://abox.tools/guides/scan-a-document-with-your-phone/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/scan-a-document-with-your-phone/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">What separates a photograph of a page from a scan of one: the angle, the uneven light, and the file size. How to take the photo, what to fix afterwards, and why none of it needs a server.</summary>
   </entry>
   <entry>
     <title type="html">How to scan multiple pages into one small PDF</title>
@@ -109,136 +235,10 @@
     <summary type="html">Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later.</summary>
   </entry>
   <entry>
-    <title type="html">How to turn a long video into a timelapse</title>
-    <id>https://abox.tools/guides/turn-a-long-video-into-a-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/turn-a-long-video-into-a-timelapse/"/>
+    <title type="html">How to split a GIF into frames</title>
+    <id>https://abox.tools/guides/split-a-gif-into-frames/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/split-a-gif-into-frames/"/>
     <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">An hour of footage into a watchable minute: how to choose the speed, why saying the finished length beats doing arithmetic, and when the result should become a GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON Formatter</title>
-    <id>https://abox.tools/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/format-json/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Format and minify JSON, XML, HTML, CSS and YAML, and convert JSON to YAML or XML and back. The parsers run in your browser - nothing is uploaded, so a token or a config file never leaves your machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Share Text &amp;amp; Files</title>
-    <id>https://abox.tools/share-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/share-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Send text or files from one browser to another over a direct encrypted connection. A speakable link name, live updates as you type, approval for each reader - and nothing stored on any server, ever. Free, no sign-up.</summary>
-  </entry>
-  <entry>
-    <title type="html">Text Diff</title>
-    <id>https://abox.tools/compare-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/compare-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Compare two texts and see every difference, line by line and word by word, side by side or in one column. The comparison runs in your browser - nothing is uploaded, so unreleased code never leaves your machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">DICOM Viewer</title>
-    <id>https://abox.tools/dicom-viewer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/dicom-viewer/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Open CT, MR, X-ray and ultrasound scans in your browser. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">Document Scanner</title>
-    <id>https://abox.tools/document-scanner/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to open a DICOM file, and what is in one</title>
-    <id>https://abox.tools/guides/open-a-dicom-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/open-a-dicom-file/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">What is on a hospital disc, why the files have no extension, how to open a .dcm scan in a browser, what window and level actually does, and what a scan carries about the patient besides the picture.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to redact a PDF so the text is really gone</title>
-    <id>https://abox.tools/guides/redact-a-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/redact-a-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">A black box drawn in a PDF reader usually leaves the words underneath it, and copy-and-paste gets them straight back. What a real redaction removes, the four places a word hides outside the page, and how to check a file before you send it.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to scan a document with your phone</title>
-    <id>https://abox.tools/guides/scan-a-document-with-your-phone/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/scan-a-document-with-your-phone/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">What separates a photograph of a page from a scan of one: the angle, the uneven light, and the file size. How to take the photo, what to fix afterwards, and why none of it needs a server.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to stack photographs to reduce noise, or remove people</title>
-    <id>https://abox.tools/guides/stack-photos-to-reduce-noise/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/stack-photos-to-reduce-noise/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Stacking combines a burst of frames into one picture. Which method to use depends on what you are trying to lose: noise, passers-by, or the shallow depth of field on a macro shot. How each one works, what it costs, and how RAW files fit in.</summary>
-  </entry>
-  <entry>
-    <title type="html">Image Stacker</title>
-    <id>https://abox.tools/stack-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Combine a burst of photographs into one: average them to kill noise, take the median to remove people from a scene, lighten for star trails, or focus stack a macro shot. Reads CR2, NEF, ARW, DNG, RAF and CR3 by pulling out the camera's own preview. Runs entirely in your browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF Redactor</title>
-    <id>https://abox.tools/redact-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/redact-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Take words out of a PDF instead of drawing a black rectangle over them. The letters are deleted from the page's own drawing instructions, the finished file is opened again and searched to prove they have gone, and nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">ID Photo Maker</title>
-    <id>https://abox.tools/id-photo/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id-photo/"/>
-    <updated>2026-08-24T00:00:00Z</updated>
-    <summary type="html">Make a passport or visa photo to your country's published rule: exact mm and DPI, a live head-height and eye-line overlay, a background check, a printable 4x6 sheet, and a file squeezed to the portal's KB limit. Nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">Hash &amp; Checksum</title>
-    <id>https://abox.tools/hash-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hash-checksum/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Work out the MD5, SHA-1, SHA-256, SHA-384 or SHA-512 of any file and compare it with the checksum the download page published. The file is read in your browser and never uploaded, at any size.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to check a download against its checksum</title>
-    <id>https://abox.tools/guides/verify-a-file-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/verify-a-file-checksum/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">How to check an MD5 or SHA-256 checksum on Windows, macOS and Linux or in your browser, what a match actually proves, and the mistake that makes the whole exercise pointless.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to redact an image so the hidden part is really gone</title>
-    <id>https://abox.tools/guides/redact-an-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/redact-an-image/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Black boxes drawn in most programs sit on top of the picture and can be moved aside. What separates a real redaction from a covered one, why pixelated text can be read back, and how to check a file before you send it.</summary>
-  </entry>
-  <entry>
-    <title type="html">Image Redactor</title>
-    <id>https://abox.tools/redact-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/redact-image/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Cover a name, an address or an account number in a photo or screenshot and re-encode the picture, so the hidden pixels are gone from the file rather than sitting under a rectangle. Runs entirely in your browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Password &amp; Passphrase Generator</title>
-    <id>https://abox.tools/password-generator/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/password-generator/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Make a strong random password, or a diceware passphrase from a bundled 7,776-word list. Drawn by your browser's own cryptographic generator, never sent anywhere, never stored. Free, no sign-up.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR &amp; Barcode Reader</title>
-    <id>https://abox.tools/qr-barcode-reader/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/qr-barcode-reader/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Read a QR code from a photo, a screenshot or your camera, and see exactly where the link goes before you open it. EAN, UPC, Code 128, Code 39 and ITF barcodes too. Nothing is uploaded.</summary>
+    <summary type="html">Get every frame of an animated GIF as a PNG: why some frames are only a small patch of the picture, what happens to the transparency, and how to keep the timing so you can put it back together.</summary>
   </entry>
 </feed>

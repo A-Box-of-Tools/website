@@ -32,6 +32,27 @@
     <uri>https://abox.tools/id/</uri>
   </author>
   <entry>
+    <title type="html">Amankah mengunggah file ke pengubah daring?</title>
+    <id>https://abox.tools/id/panduan/apakah-aman-mengunggah-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/apakah-aman-mengunggah-file/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Kebanyakan pengubah daring mengirim file Anda ke sebuah server. Apa artinya, apa yang terjadi padanya di sana, dan empat pemeriksaan yang memberi tahu Anda apakah sebuah alat memang harus begitu.</summary>
+  </entry>
+  <entry>
+    <title type="html">Apa sebenarnya isi di dalam sebuah GIF</title>
+    <id>https://abox.tools/id/panduan/apa-isi-di-dalam-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/apa-isi-di-dalam-gif/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Bingkai, jeda, metode pembuangan, dan tabel warna dijelaskan, kenapa peramban menolak jeda tercepatnya, dan bagaimana memperhitungkan ke mana sebenarnya ukuran file sebuah GIF pergi.</summary>
+  </entry>
+  <entry>
+    <title type="html">Apa yang dikatakan sebuah foto tentang Anda, dan bagaimana mengeluarkannya</title>
+    <id>https://abox.tools/id/panduan/hapus-data-exif-dan-gps/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/hapus-data-exif-dan-gps/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Foto dari sebuah ponsel biasanya membawa titik persis tempat ia diambil, waktunya sampai ke detik, dan nomor seri kameranya. Apa saja yang ada di dalamnya, siapa yang bisa membacanya, dan bagaimana mengeluarkannya tanpa menyentuh gambarnya.</summary>
+  </entry>
+  <entry>
     <title type="html">Berbagi teks dan berkas</title>
     <id>https://abox.tools/id/berbagi-teks/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/berbagi-teks/"/>
@@ -46,11 +67,25 @@
     <summary type="html">Memindahkan teks atau berkas dari satu browser ke browser lain lewat koneksi langsung yang terenkripsi - tanpa mengirim email ke diri sendiri, tanpa riwayat chat, tanpa akun, dan tanpa server yang menyimpan salinan.</summary>
   </entry>
   <entry>
+    <title type="html">Cara memangkas video ke bentuk lain</title>
+    <id>https://abox.tools/id/panduan/pangkas-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/pangkas-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Pangkas sebuah klip menjadi persegi, potret 9:16, atau kotak piksel yang tepat. Rasio mana yang diminta tiap lapak, kenapa pemangkasan harus mengodekan ulang padahal pemotongan tidak, dan berapa harganya.</summary>
+  </entry>
+  <entry>
     <title type="html">Cara membandingkan dua file JSON</title>
     <id>https://abox.tools/id/panduan/membandingkan-dua-file-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membandingkan-dua-file-json/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Format kedua file dengan cara yang sama, urutkan kuncinya, lalu bandingkan. Kenapa diff JSON mentah hampir seluruhnya derau, cara membakukan kedua sisi di peramban, dan apa yang bertahan sampai ke tambalan.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara membuat GIF animasi dari gambar</title>
+    <id>https://abox.tools/id/panduan/buat-gif-dari-gambar/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/buat-gif-dari-gambar/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Ubah sekumpulan gambar menjadi satu GIF animasi: seberapa cepat sebuah GIF sebenarnya bisa diputar, apa yang diubah setelan paletnya, dan tiga hal yang benar-benar membuat file-nya lebih kecil.</summary>
   </entry>
   <entry>
     <title type="html">Cara membuat GIF dari sebagian video</title>
@@ -60,11 +95,25 @@
     <summary type="html">Potong dulu detik-detik yang penting, lalu ubah hanya bagian itu. Kapan garis waktu pengubah GIF sudah cukup, kapan memotong dulu dengan pemotong video, dan kenapa tiap detik GIF semahal itu.</summary>
   </entry>
   <entry>
+    <title type="html">Cara membuat favicon yang tetap terbaca pada enam belas piksel</title>
+    <id>https://abox.tools/id/panduan/buat-favicon/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/buat-favicon/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Ukuran apa saja yang sebenarnya dibutuhkan sebuah favicon.ico, file tambahan apa yang diminta iPhone, Android, dan sebuah Mac, dan kenapa logo yang berhasil di sebuah poster lenyap pada enam belas piksel.</summary>
+  </entry>
+  <entry>
     <title type="html">Cara membuat kode QR dan membuktikannya terbaca</title>
     <id>https://abox.tools/id/panduan/membuat-kode-qr-dan-membuktikannya-terbaca/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-kode-qr-dan-membuktikannya-terbaca/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Buat kodenya, lalu periksa dengan pembaca dari situs yang sama: isi persisnya, tautan sebenarnya, pada ukuran cetak dan dari sebuah foto, sebelum naik cetak. Semuanya di peramban, tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara membuat kode QR yang tetap terpindai di ponsel orang lain</title>
+    <id>https://abox.tools/id/panduan/buat-kode-qr/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/buat-kode-qr/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Tingkat koreksi galat mana yang dipilih, kenapa margin putih di sekeliling sebuah kode QR adalah bagian dari kodenya, seberapa besar mencetaknya, dan berapa harga kode 'dinamis' sebuah pembuat gratis bagi Anda belakangan.</summary>
   </entry>
   <entry>
     <title type="html">Cara membuat thumbnail video dari bingkai yang tepat</title>
@@ -81,6 +130,27 @@
     <summary type="html">Potong momennya, balik salinannya, gabungkan keduanya, dan biarkan berulang. Tiga alat berturut-turut, semuanya di peramban, dan urutan yang membuat seluruh pekerjaan selesai dalam semenit.</summary>
   </entry>
   <entry>
+    <title type="html">Cara membuka file DICOM, dan apa isinya</title>
+    <id>https://abox.tools/id/panduan/membuka-file-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuka-file-dicom/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Apa isi sebuah cakram rumah sakit, kenapa file-nya tidak punya ekstensi, bagaimana membuka pindaian .dcm di sebuah peramban, apa sebenarnya yang dilakukan jendela dan level, dan apa yang dibawa sebuah pindaian tentang pasiennya selain gambarnya.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara memeriksa unduhan terhadap checksum-nya</title>
+    <id>https://abox.tools/id/panduan/memverifikasi-checksum-file/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memverifikasi-checksum-file/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Cara memeriksa checksum MD5 atau SHA-256 di Windows, macOS, dan Linux atau di peramban Anda, apa yang sebenarnya dibuktikan sebuah kecocokan, dan kekeliruan yang membuat seluruh latihannya sia-sia.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cara memformat JSON tanpa menyerahkannya kepada siapa pun</title>
+    <id>https://abox.tools/id/panduan/format-json-tanpa-mengunggah/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/format-json-tanpa-mengunggah/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Cara menata, memeriksa, dan memampatkan JSON di peramban Anda sendiri - apa yang tidak boleh diubah sebuah pemformat pada file Anda, cara membaca pesan galatnya, dan kenapa situs tempat Anda menempelkannya itu penting.</summary>
+  </entry>
+  <entry>
     <title type="html">Cara memindai banyak halaman jadi satu PDF kecil</title>
     <id>https://abox.tools/id/panduan/memindai-banyak-halaman-jadi-satu-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memindai-banyak-halaman-jadi-satu-pdf/"/>
@@ -88,157 +158,87 @@
     <summary type="html">Foto tiap halaman, dapatkan satu PDF, gabungkan dengan dokumen yang sudah ada, dan kecilkan sampai bisa terkirim. Tiga alat peramban berturut-turut, dan berkasnya tidak pernah meninggalkan ponsel.</summary>
   </entry>
   <entry>
-    <title type="html">Cara mengubah video panjang menjadi timelapse</title>
-    <id>https://abox.tools/id/panduan/mengubah-video-panjang-jadi-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/mengubah-video-panjang-jadi-timelapse/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Satu jam rekaman menjadi satu menit yang enak ditonton: cara memilih kecepatan, mengapa menyebutkan durasi akhir lebih baik daripada berhitung, dan kapan hasilnya perlu menjadi GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara menyiapkan foto ponsel untuk web</title>
-    <id>https://abox.tools/id/panduan/menyiapkan-foto-untuk-web/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/menyiapkan-foto-untuk-web/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">HEIC ke JPEG, GPS dibuang, diubah ukurannya untuk halaman dan dimampatkan ke anggaran: seluruh rantai di peramban, dan foto aslinya tidak pernah meninggalkan mesin Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara menyunting GIF bingkai demi bingkai</title>
-    <id>https://abox.tools/id/panduan/mengedit-gif-bingkai-demi-bingkai/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/mengedit-gif-bingkai-demi-bingkai/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Bongkar GIF menjadi bingkai-bingkainya, buang atau susun ulang, lalu rakit kembali dengan pewaktuan yang terjaga. Apa yang selamat dari perjalanan bolak-balik, apa harga paletnya, dan cara melihat mengapa sebuah GIF berat.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara merapikan memo suara sebelum mengirimnya</title>
-    <id>https://abox.tools/id/panduan/merapikan-memo-suara/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/merapikan-memo-suara/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Potong hening kosong dan awalan yang gagal, lalu naikkan volumenya sampai tepat di bawah penuh. Dua perkakas peramban berurutan, dengan urutan yang menjaga mutu, dan rekaman tidak pernah meninggalkan komputer Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pembanding Teks</title>
-    <id>https://abox.tools/id/bandingkan-teks/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/bandingkan-teks/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Bandingkan dua teks dan lihat setiap perbedaannya, baris demi baris dan kata demi kata, berdampingan atau dalam satu kolom. Pembandingannya berjalan di peramban Anda dan tidak ada yang diunggah - kode yang belum dirilis tidak pernah meninggalkan mesin Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pemformat JSON</title>
-    <id>https://abox.tools/id/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/format-json/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Format dan padatkan JSON, XML, HTML, CSS, dan YAML, dan ubah JSON menjadi YAML atau XML dan sebaliknya. Penguraiannya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token atau file konfigurasi tidak pernah meninggalkan mesin Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pengode &amp;amp; Pengurai Base64</title>
-    <id>https://abox.tools/id/encode-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/encode-base64/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Kodekan dan uraikan Base64 dalam kedua alfabetnya, kodekan URL dengan persen, escape entitas HTML, dan baca heksadesimal serta escape garis miring terbalik. Semuanya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token tidak pernah meninggalkan mesin Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara membuka file DICOM, dan apa isinya</title>
-    <id>https://abox.tools/id/panduan/membuka-file-dicom/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuka-file-dicom/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Apa isi sebuah cakram rumah sakit, kenapa file-nya tidak punya ekstensi, bagaimana membuka pindaian .dcm di sebuah peramban, apa sebenarnya yang dilakukan jendela dan level, dan apa yang dibawa sebuah pindaian tentang pasiennya selain gambarnya.</summary>
-  </entry>
-  <entry>
     <title type="html">Cara memindai dokumen dengan ponsel Anda</title>
     <id>https://abox.tools/id/panduan/memindai-dokumen-dengan-ponsel/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memindai-dokumen-dengan-ponsel/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
+    <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Apa yang memisahkan foto sebuah halaman dari pindaian sebuah halaman: sudutnya, cahaya yang tidak rata, dan ukuran file-nya. Bagaimana mengambil fotonya, apa yang dibetulkan sesudahnya, dan kenapa tidak satu pun dari itu butuh server.</summary>
   </entry>
   <entry>
-    <title type="html">Cara menumpuk foto untuk mengurangi derau, atau membuang orang</title>
-    <id>https://abox.tools/id/panduan/tumpuk-foto-untuk-mengurangi-derau/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/tumpuk-foto-untuk-mengurangi-derau/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Menumpuk menggabungkan sebuah burst bingkai menjadi satu gambar. Metode mana yang dipakai tergantung apa yang ingin Anda hilangkan: derau, orang yang lewat, atau kedalaman bidang yang tipis pada sebuah bidikan makro. Cara kerja masing-masing, berapa harganya, dan di mana file RAW cocok.</summary>
+    <title type="html">Cara memisah GIF menjadi bingkai</title>
+    <id>https://abox.tools/id/panduan/pisah-gif-ke-bingkai/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/pisah-gif-ke-bingkai/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Dapatkan setiap bingkai sebuah GIF animasi sebagai PNG: kenapa sebagian bingkai hanya berupa tambalan kecil dari gambarnya, apa yang terjadi pada transparansinya, dan bagaimana menyimpan pewaktuannya supaya Anda bisa menyusunnya kembali.</summary>
   </entry>
   <entry>
-    <title type="html">Cara menyensor PDF supaya teksnya sungguh hilang</title>
-    <id>https://abox.tools/id/panduan/sensor-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/sensor-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Kotak hitam yang digambar di sebuah pembaca PDF biasanya meninggalkan kata-kata di bawahnya, dan salin-tempel mengembalikannya begitu saja. Apa yang dibuang penyensoran sungguhan, empat tempat sebuah kata bersembunyi di luar halamannya, dan bagaimana memeriksa sebuah file sebelum Anda mengirimnya.</summary>
+    <title type="html">Cara memotong audio tanpa kehilangan kualitas</title>
+    <id>https://abox.tools/id/panduan/potong-file-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/potong-file-audio/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Di mana sebenarnya sebuah potongan audio mendarat, kenapa ia bisa tepat padahal potongan video tidak, kenapa sebuah sambungan kadang berdetak, dan apa sebenarnya yang dilakukan lesapan lima milidetik.</summary>
   </entry>
   <entry>
-    <title type="html">Pemindai Dokumen</title>
-    <id>https://abox.tools/id/pemindai-dokumen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pemindai-dokumen/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Ubah foto ponsel sebuah halaman menjadi PDF yang lurus dan tercahayai rata. Sudutnya dicarikan untuk Anda, perspektifnya diluruskan, bayangannya dibagi keluar. Berjalan sepenuhnya di peramban Anda: tidak ada yang diunggah.</summary>
+    <title type="html">Cara memotong video tanpa mengodekannya ulang</title>
+    <id>https://abox.tools/id/panduan/potong-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/potong-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Memotong sebuah klip tidak perlu kehilangan satu byte pun kualitas. Kenapa sebuah potongan kadang mendarat lebih awal daripada tanda Anda, apa hubungan keyframe dengan itu, dan kapan sebaiknya menerima pengodean ulang.</summary>
   </entry>
   <entry>
-    <title type="html">Penampil DICOM</title>
-    <id>https://abox.tools/id/penampil-dicom/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/penampil-dicom/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Buka pindaian CT, MR, rontgen, dan USG di peramban Anda. Jendela dan levelnya, gulir satu seri utuh, ukur dalam milimeter, baca setiap tag DICOM, dan lihat persis apa di dalam file-nya yang mengenali pasiennya. Tidak ada yang diunggah.</summary>
+    <title type="html">Cara memperkecil ukuran PDF, dan kenapa sebagian tidak mau menyusut</title>
+    <id>https://abox.tools/id/panduan/perkecil-ukuran-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/perkecil-ukuran-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Di mana sebenarnya ukuran sebuah PDF berada, kenapa sebuah pindaian menyusut 80% sementara sebuah kontrak nyaris tidak bergerak, apa arti DPI di sini, dan apa yang tidak boleh dilakukan sebuah kompresor pada dokumen Anda.</summary>
   </entry>
   <entry>
-    <title type="html">Penumpuk Gambar</title>
-    <id>https://abox.tools/id/tumpuk-gambar/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/tumpuk-gambar/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Gabungkan sebuah burst foto menjadi satu: rata-ratakan untuk membunuh derau, ambil mediannya untuk membuang orang dari sebuah pemandangan, terangkan untuk jejak bintang, atau tumpuk fokus sebuah bidikan makro. Membaca CR2, NEF, ARW, DNG, RAF, dan CR3 dengan menarik keluar pratinjau milik kameranya sendiri. Berjalan sepenuhnya di peramban Anda.</summary>
+    <title type="html">Cara memutar video terbalik</title>
+    <id>https://abox.tools/id/panduan/memutar-video-terbalik/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memutar-video-terbalik/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Putar sebuah klip mundur: apa yang dilakukan pembalikan pada gambar dan suaranya, kenapa ia tidak bisa dilakukan tanpa pengodean ulang, kenapa ia lebih lambat daripada pemotongan, dan apa yang perlu dikerjakan lebih dulu.</summary>
   </entry>
   <entry>
-    <title type="html">Penyensor PDF</title>
-    <id>https://abox.tools/id/sensor-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/sensor-pdf/"/>
-    <updated>2026-08-25T00:00:00Z</updated>
-    <summary type="html">Keluarkan kata dari sebuah PDF alih-alih menggambar persegi hitam di atasnya. Hurufnya dihapus dari instruksi menggambar halamannya sendiri, file jadinya dibuka lagi dan dicari untuk membuktikan hurufnya sudah hilang, dan tidak ada yang diunggah.</summary>
+    <title type="html">Cara mengambil pas foto paspor yang tidak dikembalikan</title>
+    <id>https://abox.tools/id/panduan/membuat-pas-foto/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-pas-foto/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Apa yang sebenarnya diukur pada sebuah pas foto paspor - tinggi kepala, garis mata, latar - negara mana meminta angka yang mana, dan bagaimana memenuhi batas piksel dan KB yang ditegakkan sebuah formulir daring.</summary>
   </entry>
   <entry>
-    <title type="html">Pembuat Pas Foto</title>
-    <id>https://abox.tools/id/pas-foto-biometrik/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pas-foto-biometrik/"/>
-    <updated>2026-08-24T00:00:00Z</updated>
-    <summary type="html">Buat foto paspor atau visa sesuai aturan resmi negara Anda: mm dan DPI yang tepat, hamparan tinggi kepala dan garis mata secara langsung, pemeriksaan latar, lembar cetak 4x6, dan file yang dipadatkan ke batas KB milik portalnya. Tidak ada yang diunggah.</summary>
+    <title type="html">Cara menggabung, memisah, dan menyusun ulang halaman PDF</title>
+    <id>https://abox.tools/id/panduan/gabung-dan-pisah-file-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/gabung-dan-pisah-file-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Gabungkan PDF, potong satu menjadi beberapa, dan pindahkan halamannya: apa yang selamat dari penyusunan ulang, apa yang tidak bisa dibawa alat mana pun, dan kenapa tidak satu pun dari itu perlu mengunggah dokumen Anda ke mana pun.</summary>
   </entry>
   <entry>
-    <title type="html">Cara memeriksa unduhan terhadap checksum-nya</title>
-    <id>https://abox.tools/id/panduan/memverifikasi-checksum-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memverifikasi-checksum-file/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Cara memeriksa checksum MD5 atau SHA-256 di Windows, macOS, dan Linux atau di peramban Anda, apa yang sebenarnya dibuktikan sebuah kecocokan, dan kekeliruan yang membuat seluruh latihannya sia-sia.</summary>
+    <title type="html">Cara menggabungkan gambar menjadi satu PDF</title>
+    <id>https://abox.tools/id/panduan/gabung-gambar-ke-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/gabung-gambar-ke-pdf/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Ubah foto atau pindaian menjadi satu PDF: ukuran halaman, urutan dan rotasinya, kenapa sebuah JPEG tidak perlu kehilangan kualitas sedikit pun dalam perjalanannya masuk, dan apa yang dikatakan sebuah PDF kepada orang yang Anda kirimi.</summary>
   </entry>
   <entry>
-    <title type="html">Cara menyensor gambar supaya bagian yang disembunyikan sungguh hilang</title>
-    <id>https://abox.tools/id/panduan/sensor-gambar/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/sensor-gambar/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Kotak hitam yang digambar di kebanyakan program duduk di atas gambarnya dan bisa digeser. Apa yang membedakan penyensoran sungguhan dari penutupan, kenapa teks yang dipikselasi bisa dibaca kembali, dan bagaimana memeriksa sebuah file sebelum Anda mengirimnya.</summary>
+    <title type="html">Cara mengompres gambar ke ukuran file yang tepat</title>
+    <id>https://abox.tools/id/panduan/kompres-gambar-ke-ukuran-tertentu/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/kompres-gambar-ke-ukuran-tertentu/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Sebuah formulir unggahan meminta 500 KB dan foto Anda 4 MB. Berapa sebenarnya harga sebuah batas ukuran, setelan mana yang digerakkan lebih dulu, dan kenapa sebuah PNG tidak akan menyusut seperti JPEG.</summary>
   </entry>
   <entry>
-    <title type="html">Hash dan Checksum</title>
-    <id>https://abox.tools/id/hitung-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/hitung-checksum/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Hitung MD5, SHA-1, SHA-256, SHA-384, atau SHA-512 file apa pun dan bandingkan dengan checksum yang diterbitkan halaman unduhan. File dibaca di peramban Anda dan tidak pernah diunggah, pada ukuran berapa pun.</summary>
+    <title type="html">Cara mengubah SVG menjadi PNG pada ukuran yang tepat</title>
+    <id>https://abox.tools/id/panduan/svg-ke-png/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/svg-ke-png/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Sebuah vektor tidak punya ukuran piksel miliknya sendiri, jadi angkanya Anda yang pilih. Dari mana angka itu datang untuk sebuah layar, sebuah ikon aplikasi, dan sebuah pencetak, dan apa yang berubah ketika sebuah gambar menjadi piksel.</summary>
   </entry>
   <entry>
-    <title type="html">Pembaca QR &amp; Barcode</title>
-    <id>https://abox.tools/id/pindai-kode-qr/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pindai-kode-qr/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Baca kode QR dari sebuah foto, tangkapan layar, atau kamera Anda, dan lihat persis ke mana tautannya pergi sebelum Anda membukanya. Barcode EAN, UPC, Code 128, Code 39, dan ITF juga. Tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pembuat Kata Sandi dan Frasa Sandi</title>
-    <id>https://abox.tools/id/pembuat-kata-sandi/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pembuat-kata-sandi/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Buat kata sandi acak yang kuat, atau frasa sandi diceware dari daftar 7.776 kata yang disertakan. Ditarik oleh generator kriptografis milik peramban Anda sendiri, tidak pernah dikirim ke mana pun, tidak pernah disimpan. Gratis, tanpa pendaftaran.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pembuat Time-Lapse</title>
-    <id>https://abox.tools/id/buat-video-time-lapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/buat-video-time-lapse/"/>
-    <updated>2026-08-23T00:00:00Z</updated>
-    <summary type="html">Ubah video panjang menjadi time-lapse: 10x, 60x, atau kecepatan berapa pun yang Anda ketik. Berjalan di peramban Anda, jadi tidak ada yang diunggah, tidak ada tanda air, dan jalan tanpa internet.</summary>
+    <title type="html">Cara mengubah satu folder gambar menjadi video</title>
+    <id>https://abox.tools/id/panduan/gambar-ke-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/gambar-ke-video/"/>
+    <updated>2026-08-26T00:00:00Z</updated>
+    <summary type="html">Buat tayangan slide MP4 dari foto: apa yang sebenarnya dikendalikan frame rate dan durasi, bagaimana menangani gambar yang bentuknya tidak pas, dan kenapa hasilnya tidak bersuara.</summary>
   </entry>
 </feed>
