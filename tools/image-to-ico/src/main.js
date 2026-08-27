@@ -365,6 +365,17 @@ function renderList() {
 }
 
 function renderSizes() {
+  // Ten rows of tick boxes, each with a sentence saying what asks for that
+  // size, and under a named preset not one of them is a decision: they are the
+  // preset's own answer, drawn as controls. So they are shown when they are a
+  // question - "Choose the sizes yourself" - and the rest of the time the
+  // summary line underneath says which sizes went in, which is the part
+  // somebody on a preset actually wants to read.
+  //
+  // Switching to custom keeps whatever the preset had ticked, so the grid
+  // opens on the set you were already getting rather than on nothing.
+  el.sizeGrid.hidden = presetId !== 'custom';
+
   for (const label of el.sizeGrid.querySelectorAll('.size-choice')) {
     const px = Number(label.dataset.px);
     const input = label.querySelector('input');
