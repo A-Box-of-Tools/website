@@ -109,6 +109,24 @@ function refreshCount() {
   setStatus(`${parts.join(', ')}. ${phrase('share.closing-note')}`);
 }
 
+// Admission survives a reader's language switch: each admitted channel gets
+// a token, and a knock that carries a valid one is let straight back in -
+// so switching languages does not knock on the sharer's door twice. The
+// tokens live only in this tab's memory and die with the share.
+const admitTokens = new Set();
+
+function admitViewer(id, dc) {
+  channels.set(id, dc);
+  const token = crypto.randomUUID();
+  admitTokens.add(token);
+  try {
+    dc.send(JSON.stringify({ type: 'token', token }));
+    dc.send(payload());
+    dc.send(filesMsg());
+  } catch {}
+  refreshCount();
+}
+
 function addRequest(id, dc, note) {
   const row = document.createElement('div');
   row.className = 'request';
@@ -120,9 +138,7 @@ function addRequest(id, dc, note) {
   admit.onclick = () => {
     pending.delete(id);
     row.remove();
-    channels.set(id, dc);
-    try { dc.send(payload()); dc.send(filesMsg()); } catch {}
-    refreshCount();
+    admitViewer(id, dc);
   };
   const deny = document.createElement('button');
   deny.type = 'button';
@@ -292,9 +308,8 @@ async function hostSignal(from, data) {
       const dc = e.channel;
       dc.binaryType = 'arraybuffer';
       dc.onopen = () => {
-        if (isPrivate) dc.send(JSON.stringify({ type: 'private' }));
-        else { channels.set(from, dc); dc.send(payload()); dc.send(filesMsg()); }
-        refreshCount();
+        if (isPrivate) { dc.send(JSON.stringify({ type: 'private' })); refreshCount(); }
+        else admitViewer(from, dc);
       };
       dc.onmessage = (ev) => {
         if (typeof ev.data !== 'string') return;
@@ -307,6 +322,12 @@ async function hostSignal(from, data) {
           return;
         }
         if (m.type === 'knock' && isPrivate && !channels.has(from) && !pending.has(from)) {
+          // A knock carrying a token this share issued is a reader who was
+          // already let in and merely switched language - no second knock.
+          if (typeof m.token === 'string' && admitTokens.has(m.token)) {
+            admitViewer(from, dc);
+            return;
+          }
           addRequest(from, dc, String(m.note ?? '').slice(0, 200));
         }
       };
@@ -409,9 +430,21 @@ function fail(text) {
   $('view-status').textContent = text;
 }
 
+let viewerLive = false;
+
 function view(code) {
   $('share').hidden = true;
   $('view').hidden = false;
+
+  // A language switch made while connected sets this flag on the way out.
+  // It stands in for the consent the same reader gave moments ago on the
+  // same share, so the gate is not shown twice for one session.
+  let carried = false;
+  try {
+    const stamp = Number(sessionStorage.getItem(`share-text-carry:${code}`) ?? 0);
+    carried = Date.now() - stamp < 5 * 60 * 1000;
+    sessionStorage.removeItem(`share-text-carry:${code}`);
+  } catch {}
 
   const ws = new WebSocket(wsUrl(code, 'viewer'));
   let pc = null;
@@ -503,6 +536,7 @@ function view(code) {
   const sharerGone = () => {
     if (done) return;
     done = true;
+    viewerLive = false;
     $('knockrow').hidden = true;
     $('filelist').textContent = '';
     rx = null;
@@ -552,7 +586,7 @@ function view(code) {
     const dc = pc.createDataChannel('share');
     dc.binaryType = 'arraybuffer';
     dcRef = dc;
-    dc.onopen = () => { connected = true; };
+    dc.onopen = () => { connected = true; viewerLive = true; };
     dc.onmessage = (ev) => {
       if (typeof ev.data !== 'string') { fileChunk(ev.data); return; }
       const msg = JSON.parse(ev.data);
@@ -560,7 +594,19 @@ function view(code) {
       if (msg.type === 'file-begin') { fileBegin(msg); return; }
       if (msg.type === 'file-end') { fileEnd(); return; }
       if (msg.type === 'file-gone') { fileGone(); return; }
+      if (msg.type === 'token') {
+        try { sessionStorage.setItem(`share-text-token:${code}`, String(msg.token)); } catch {}
+        return;
+      }
       if (msg.type === 'private') {
+        // A reader who was admitted and switched language knocks again with
+        // the token the sharer issued, silently; anyone else knocks aloud.
+        let token = null;
+        try { token = carried ? sessionStorage.getItem(`share-text-token:${code}`) : null; } catch {}
+        if (token !== null) {
+          dc.send(JSON.stringify({ type: 'knock', note: '', token }));
+          return;
+        }
         $('view-status').textContent = phrase('view.private');
         $('knockrow').hidden = false;
         $('knock').focus();
@@ -605,8 +651,12 @@ function view(code) {
     const m = JSON.parse(e.data);
     try {
       if (m.type === 'ready') {
-        $('view-status').textContent = phrase('view.someone');
-        $('consent').hidden = false;
+        if (carried) {
+          await dial();
+        } else {
+          $('view-status').textContent = phrase('view.someone');
+          $('consent').hidden = false;
+        }
       } else if (m.type === 'signal' && pc) {
         if (m.data.sdp) await pc.setRemoteDescription(m.data.sdp);
         else if (m.data.candidate) await pc.addIceCandidate(m.data.candidate);
@@ -759,11 +809,24 @@ const alternates = new Set(
     .map((link) => new URL(link.href).pathname),
 );
 addEventListener('click', (event) => {
-  if (location.hash === '') return;
   const anchor = event.target.closest('a[href]');
-  if (anchor && anchor.origin === location.origin && alternates.has(anchor.pathname)) {
-    anchor.href = anchor.pathname + location.hash;
+  if (!anchor || anchor.origin !== location.origin || !alternates.has(anchor.pathname)) return;
+  // A sharer's tab is the server: navigating it anywhere ends the share,
+  // and that deserves a question rather than a silent loss.
+  if ($('share').hidden === false && $('publish').hidden) {
+    if (!window.confirm(phrase('share.leave-warning'))) {
+      event.preventDefault();
+      return;
+    }
   }
+  if (location.hash === '') return;
+  // A reader keeps their session across the switch: the flag stands in for
+  // the consent they gave moments ago, and the admission token (if any)
+  // lets them straight back into a private share.
+  if (viewerLive) {
+    try { sessionStorage.setItem(`share-text-carry:${code}`, String(Date.now())); } catch {}
+  }
+  anchor.href = anchor.pathname + location.hash;
 }, true);
 
 monitorNetwork();
