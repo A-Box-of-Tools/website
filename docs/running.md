@@ -54,6 +54,36 @@ repository and this command. To read the output instead of verifying it:
 python build.py --no-minify
 ```
 
+## Building one page while you work on it
+
+A full build writes about twelve hundred pages, in every language the site has,
+and takes a couple of minutes. While the change in hand is to one tool, most of
+that is pages nobody is about to look at:
+
+```bash
+python build.py --only trim-video --locale en --quiet
+```
+
+`--only <slug>` narrows the build to one tool, `--locale <lang>` to one
+language, and both are repeatable (`--only a --only b`). `--quiet` reports how
+many pages were written instead of naming each one.
+
+What is narrowed is only what gets **written**. Every tool and every language is
+still loaded, and each page is still rendered knowing every other language it
+exists in — so a page built this way is byte for byte the page a full build
+produces, which is what makes it worth looking at. There is a test that holds
+this to it.
+
+What a scoped build is *not* is a site. The pages that list other pages — the
+hub, the guides index, the roadmap, the 404, `sitemap.xml`, the feeds — are left
+unwritten rather than written wrong, and the link check is skipped, because
+every link to a page outside the scope would be reported broken and none of them
+would be. The build says so when it finishes. `--check` refuses to run against
+one at all.
+
+So: scope it while you are working, and build the whole thing before you believe
+anything about the site as a whole.
+
 > **Do not open a page's `index.html` by double-clicking it.** Browsers block ES
 > modules on `file://` URLs, so `main.js` never runs. The page still renders and the
 > file picker still opens — that part is plain HTML — but choosing images does nothing.

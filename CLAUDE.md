@@ -29,10 +29,23 @@ No dependencies, no lockfile, no build step for the JavaScript. What is in
 ```bash
 python build.py                                   # readable build into dist/
 python build.py --out _plain --clean --no-minify  # what CI runs
+python build.py --only <slug> --locale en --quiet # one tool, one language
 python -m unittest discover -t . -s tests/python  # the generator
 node --test "tests/js/*.test.js"                  # what the browser runs
 node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 ```
+
+**Scope the build while you are working on one tool.** The third line above is
+the loop: a full build writes about twelve hundred pages in fifteen languages
+and takes a couple of minutes, and `--only` cuts that to seconds by not writing
+the other thirty-five tools. The pages it writes are byte for byte the pages a
+full build writes — that is tested — so what you look at is what ships. What it
+does **not** write is anything that lists other pages: the hub, the guides, the
+roadmap, the 404, the sitemap and the feeds are skipped and links are not
+checked, because every link out of the scope would report as broken. Build the
+whole thing before believing anything about the site as a whole; `--check`
+refuses a scoped build outright. See
+[docs/running.md](docs/running.md#building-one-page-while-you-work-on-it).
 
 Both suites need nothing installed. Node 21+ needs the glob **quoted**; on 20
 and earlier a directory argument works and a glob does not.

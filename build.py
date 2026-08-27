@@ -7,6 +7,9 @@ Build the site into dist/.
     python build.py --no-minify  leave the output readable, for debugging
     python build.py --check      build, then fail if dist/ differs from git's
                                  copy of the branch it is committed on
+    python build.py --only <tool> --locale en --quiet
+                                 one tool's page in one language, for looking
+                                 at while working on it - see "A scoped build"
 
 Nothing to install: this uses only the Python standard library, on 3.11 or
 newer (for tomllib). That is the same bargain the tools themselves make - if
@@ -52,6 +55,29 @@ cannot be read against its source by anybody.
 It is also what makes `--check` mean something without help. One command, no
 esbuild, nothing pinned, nothing installed: build it and diff it against the
 branch that is being served.
+
+A SCOPED BUILD
+
+`--only` and `--locale` narrow what gets written, for the case that is most of
+the work and none of the interest: changing one tool and wanting to look at it.
+A full build writes about twelve hundred pages in every language the site has,
+and thirty-five of the thirty-six tools in it are not the one being worked on.
+
+What they narrow is only what is WRITTEN. Everything is still loaded, every
+language is still surveyed, and each page is still rendered knowing every other
+language it exists in - so a page built this way is the same bytes as the same
+page in a full build, and something that looks right in a scoped build looks
+right in the deployed one. That is the property worth having; a preview that
+were rendered against a shortened list of languages would differ from the real
+page in its hreflang set and its switcher, which is exactly where a mistake
+would hide.
+
+What a scoped build is NOT is a site. The pages that list other pages - the
+hub, the guides index, the roadmap, the 404, the sitemap, the feeds - are left
+unwritten rather than written wrong, and the link check is skipped, because
+every link to a page the scope left out would be reported broken and none of
+them would be. So this is for looking at a page, and `--check` refuses to work
+with it.
 
 The build never reaches the network, whichever way it runs.
 """
@@ -118,6 +144,14 @@ def main(argv=None):
     parser.add_argument('--jobs', type=int, default=0, metavar='N',
                         help='languages to build at once (default: one per core, '
                              '1 to build them one at a time)')
+    parser.add_argument('--only', action='append', metavar='SLUG',
+                        help='build only this tool, and none of the pages that '
+                             'list it (repeatable)')
+    parser.add_argument('--locale', action='append', metavar='LANG', dest='langs',
+                        help='build only this language (repeatable)')
+    parser.add_argument('--quiet', action='store_true',
+                        help='say how many pages were written rather than naming '
+                             'every one')
     args = parser.parse_args(argv)
 
     out = (ROOT / args.out).resolve()
@@ -126,24 +160,43 @@ def main(argv=None):
     # after another, which is what to reach for when a traceback from inside a
     # worker process is harder to read than the bug it is describing.
     args.jobs = args.jobs if args.jobs > 0 else (os.cpu_count() or 1)
+
+    # --check compares a build with the whole deployed branch, so it cannot be
+    # given half a build to compare: every page the scope left out would come
+    # back as a file the branch has and this build does not, and the report
+    # would be a list of things that are not wrong. Refused here rather than
+    # explained in the diff.
+    if args.check and (args.only or args.langs):
+        print('build failed: --check compares against the whole deployed site, '
+              'so it cannot be combined with --only or --locale.', file=sys.stderr)
+        return 1
+
     try:
         pages = build(out, clean=args.clean, minify_output=args.minify,
-                      jobs=args.jobs)
+                      jobs=args.jobs, only=args.only, langs=args.langs)
     except (sitelib.ConfigError, TemplateError, minify.MinifyError,
             cssmin.CssError) as err:
         print(f'build failed: {err}', file=sys.stderr)
         return 1
 
     print(f'\n  {len(pages)} pages -> {out}')
-    for page in pages:
-        print(f'    {page}')
+    if not args.quiet:
+        for page in pages:
+            print(f'    {page}')
 
     if args.check:
         return check_against_branch(out)
     return 0
 
 
-def build(out, clean=False, minify_output=True, jobs=None):
+def build(out, clean=False, minify_output=True, jobs=None, only=None,
+          langs=None):
+    """Everything, into `out`. `only` and `langs` narrow what is written to the
+    named tools and the named languages - see "A scoped build" above."""
+    only = set(only) if only else None
+    langs = set(langs) if langs else None
+    scoped = bool(only or langs)
+
     if clean and out.exists():
         shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
@@ -223,6 +276,17 @@ def build(out, clean=False, minify_output=True, jobs=None):
                     f'{tool["slug"]}: handoff names {target!r}, which is not a '
                     'tool. Name a folder under tools/.')
 
+    # A misspelled --only would otherwise build nothing at all and say it had
+    # succeeded, which is the one answer a scoped build must never give: the
+    # page looks unchanged because it was never written. Checked against the
+    # tools that exist, here, where that list is.
+    if only:
+        unknown = sorted(only - slugs)
+        if unknown:
+            raise sitelib.ConfigError(
+                f'--only names {", ".join(unknown)}, which is not a tool here. '
+                f'The tools are: {", ".join(sorted(slugs))}')
+
     # Nothing is bundled, so the browser fetches every module by the name an
     # import gives it. A specifier naming a file this tool does not ship is
     # therefore not a build error but a 404 on the visitor's machine, after the
@@ -238,7 +302,16 @@ def build(out, clean=False, minify_output=True, jobs=None):
     # in this process, before the language workers are forked with a copy of
     # the warmed cache. The languages then emit these same bytes fifteen ways
     # without one of them minifying anything a sibling already has.
+    #
+    # This is also most of what a scoped build saves. Reading and minifying
+    # every module of every tool is the largest fixed cost the build has, and
+    # thirty-five thirty-sixths of it is work on tools the run is not going to
+    # write. The import check goes with it, which is a real check being skipped
+    # - but it is a check on tools this run does not touch, and CI runs the
+    # whole build on every push.
     for tool in tools:
+        if only and tool['slug'] not in only:
+            continue
         sources = {name: path.read_text(encoding='utf-8')
                    for name, path in tool_assets(tool)}
         imports.check(set(sources), sources.__getitem__, tool['slug'])
@@ -269,6 +342,23 @@ def build(out, clean=False, minify_output=True, jobs=None):
         i18n.check_slugs(locale, [tool['slug'] for tool in tools],
                          [page['slug'] for page in prose], site)
 
+    # Same reasoning as --only above: a language named that does not exist has
+    # to say so rather than quietly write nothing.
+    if langs:
+        known = {locale['lang'] for locale in locales}
+        unknown = sorted(langs - known)
+        if unknown:
+            raise sitelib.ConfigError(
+                f'--locale names {", ".join(unknown)}, which is not a language '
+                f'here. The languages are: {", ".join(sorted(known))}')
+
+    # Which languages this run writes, as against every language the site has.
+    # Only the first list is looped over below; the second is what every page is
+    # rendered against, and passing it whole is what keeps a scoped page's
+    # hreflang set and language switcher identical to a full build's.
+    targets = [locale for locale in locales
+               if not langs or locale['lang'] in langs]
+
     # Before anything is written, because rendering one page needs to know which
     # OTHER languages have finished that same page - the hreflang set on the
     # English tool page is the set of languages it exists in. English is
@@ -290,12 +380,12 @@ def build(out, clean=False, minify_output=True, jobs=None):
     written = []
     page_links = {}
 
-    if jobs == 1 or len(locales) < 2:
-        for locale in locales:
+    if jobs == 1 or len(targets) < 2:
+        for locale in targets:
             done, links = build_locale(out, templates, locale, locales, site,
                                        tools, prose, planned, css_v, lang_v,
                                        feedback_v, handoff_v, keep_v,
-                                       offline_v, site_css, emit)
+                                       offline_v, site_css, emit, only)
             written += done
             page_links.update(links)
     else:
@@ -303,8 +393,8 @@ def build(out, clean=False, minify_output=True, jobs=None):
             pending = [
                 pool.submit(build_locale, out, templates, locale, locales, site,
                             tools, prose, planned, css_v, lang_v, feedback_v,
-                            handoff_v, keep_v, offline_v, site_css, emit)
-                for locale in locales
+                            handoff_v, keep_v, offline_v, site_css, emit, only)
+                for locale in targets
             ]
             for future in pending:
                 done, links = future.result()
@@ -315,7 +405,7 @@ def build(out, clean=False, minify_output=True, jobs=None):
     # page in it has been rendered and had the chance to fall back. Raising
     # here rather than at load time is what makes the report a list of
     # everything still to translate instead of the first thing missing.
-    for locale in locales:
+    for locale in targets:
         i18n.check_complete(locale)
 
     # How far along each language is, said out loud on every build. A
@@ -328,8 +418,12 @@ def build(out, clean=False, minify_output=True, jobs=None):
     # published, and owes a number of PAGES - which is the unit that decides
     # anything now, since a page with one string left is as held back as a page
     # with four hundred.
-    for locale in locales:
+    for locale in targets:
         if locale['is_base']:
+            continue
+        # A scoped run built some of this language's pages, so counting the ones
+        # it did not build as still in English would be counting its own scope.
+        if scoped:
             continue
         if not locale['complete']:
             left = len(set(i18n.all_debt(locale)))
@@ -377,27 +471,35 @@ def build(out, clean=False, minify_output=True, jobs=None):
     # no locale to be written per.
     write_tools_index(ordered_tools)
 
-    build_404(out, templates, base, locales, site, ordered_tools, ordered_prose,
-              css_v, lang_v, emit)
-    written.append('404.html')
+    # The files that describe the whole site rather than a page of it. A scoped
+    # run has not built the whole site, so each of these would be a true
+    # statement about a site that does not exist in this directory: a sitemap
+    # naming pages nothing wrote, a 404 whose links lead nowhere. Left unwritten
+    # rather than written wrong.
+    if not scoped:
+        build_404(out, templates, base, locales, site, ordered_tools,
+                  ordered_prose, css_v, lang_v, emit)
+        written.append('404.html')
 
-    # After the 404 and deliberately not passed it: the 404 has no address of
-    # its own to list, and inviting a crawler to index it would be inviting it
-    # to serve "not found" in place of a real page.
-    build_sitemap(out, templates, site, locales, tools, ordered_prose)
-    written.append('sitemap.xml')
+        # After the 404 and deliberately not passed it: the 404 has no address
+        # of its own to list, and inviting a crawler to index it would be
+        # inviting it to serve "not found" in place of a real page.
+        build_sitemap(out, templates, site, locales, tools, ordered_prose)
+        written.append('sitemap.xml')
 
-    # And the same site again, in plain text, for something that reads one file
-    # and decides from it whether any of this is worth mentioning. Built from
-    # the same list as the sitemap above and holding back the same languages.
-    build_llms(out, templates, site, locales, ordered_tools, ordered_prose)
-    written.append('llms.txt')
+        # And the same site again, in plain text, for something that reads one
+        # file and decides from it whether any of this is worth mentioning.
+        # Built from the same list as the sitemap above and holding back the
+        # same languages.
+        build_llms(out, templates, site, locales, ordered_tools, ordered_prose)
+        written.append('llms.txt')
 
-    # And once more as a stream, for a reader who wants to be told when a tool
-    # ships rather than to come back and check. One file per published
-    # language, so this adds a name per locale rather than a single one.
-    build_feeds(out, templates, site, locales, ordered_tools, ordered_prose)
-    written += [f'{locale["prefix"]}feed.xml' for locale in i18n.published(locales)]
+        # And once more as a stream, for a reader who wants to be told when a
+        # tool ships rather than to come back and check. One file per published
+        # language, so this adds a name per locale rather than a single one.
+        build_feeds(out, templates, site, locales, ordered_tools, ordered_prose)
+        written += [f'{locale["prefix"]}feed.xml'
+                    for locale in i18n.published(locales)]
 
     copy_shared(out)
     copy_screens(out, prose)
@@ -413,7 +515,17 @@ def build(out, clean=False, minify_output=True, jobs=None):
     # page_links as they were emitted, the same way the workers' pages did.
     page_links.update({path.relative_to(out).as_posix(): found
                        for path, found in emit.page_links.items()})
-    check_links(out, locales, site, page_links)
+
+    # Every link on a scoped build's pages that points at a page the scope left
+    # out is a link to a file that is not there, and every one of them is fine.
+    # Checking anyway would report the scope as a few hundred broken links and
+    # bury a real one among them, so this says what it did not do instead.
+    if scoped:
+        print('\n  scoped build: the hub, the guides, the roadmap, the 404, the '
+              'sitemap and the feeds were not written, and links were not '
+              'checked. Use a full build before trusting any of those.')
+    else:
+        check_links(out, locales, site, page_links)
     return written
 
 
@@ -436,9 +548,16 @@ def build(out, clean=False, minify_output=True, jobs=None):
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
                  css_v, lang_v, feedback_v, handoff_v, keep_v, offline_v,
-                 site_css, emit):
+                 site_css, emit, only=None):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
+
+    `only` is a set of tool slugs, from --only, and narrows that to those tools'
+    pages. The narrowing is the last thing that happens: every tool and every
+    page is still localized and every list is still worked out from all of them,
+    because the footer, the "Also in the box" ring and the guide each tool links
+    to are all facts about the whole site and have to read the same on a scoped
+    page as on a full one.
 
     Nothing here re-reads a source file. The tools and the prose pages were
     loaded once, in English, and are localized into copies, so each language
@@ -514,12 +633,23 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
 
     written = []
     for tool in ltools:
+        if only and tool['slug'] not in only:
+            continue
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
                    links, lang_v, feedback_v, handoff_v, keep_v,
                    guide_of.get(tool['slug'], {}),
                    related_of.get(tool['slug'], []),
                    [by_slug[s] for s in tool.get('handoff', [])], emit)
         written.append(f'{locale["prefix"]}{tool["out_slug"]}/index.html')
+
+    # Everything below is the language's own pages rather than its tools, and
+    # --only asked for a tool. The guides alone outnumber the tools, so this is
+    # where the rest of a scoped build's time goes.
+    if only:
+        scoped_links = {path.relative_to(out).as_posix(): found
+                        for path, found in emit.page_links.items()}
+        emit.page_links.clear()
+        return written, scoped_links
 
     # Old addresses that moved. A static host cannot answer 301, so the page
     # that used to be at the address says where the tool went and sends the
