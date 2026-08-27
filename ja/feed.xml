@@ -26,11 +26,18 @@
   <id>https://abox.tools/ja/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ja/</uri>
   </author>
+  <entry>
+    <title type="html">アップロードせずに端末間でテキストとファイルを共有する方法</title>
+    <id>https://abox.tools/ja/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/share-text-between-devices/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ。自分宛てのメールも、チャット履歴も、アカウントも要らず、どのサーバーにも写しは残りません。</summary>
+  </entry>
   <entry>
     <title type="html">16ピクセルでも読めるファビコンの作り方</title>
     <id>https://abox.tools/ja/guides/make-a-favicon/</id>
@@ -121,13 +128,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-an-svg-to-png/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">ベクターには固有のピクセルサイズがないので、数値はこちらで決めます。画面、アプリのアイコン、印刷機のそれぞれでその数値がどこから来るのか、そして図がピクセルになるとき何が変わるのか。</summary>
-  </entry>
-  <entry>
-    <title type="html">アップロードせずに端末間でテキストとファイルを共有する方法</title>
-    <id>https://abox.tools/ja/guides/share-text-between-devices/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/share-text-between-devices/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ。自分宛てのメールも、チャット履歴も、アカウントも要らず、どのサーバーにも写しは残りません。</summary>
   </entry>
   <entry>
     <title type="html">オンライン変換サイトにファイルをアップロードしても安全ですか？</title>

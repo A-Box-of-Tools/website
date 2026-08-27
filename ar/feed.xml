@@ -26,11 +26,18 @@
   <id>https://abox.tools/ar/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ar/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ar/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ar/</uri>
   </author>
+  <entry>
+    <title type="html">كيف تشارك النص والملفات بين الأجهزة دون رفعها</title>
+    <id>https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">انقل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر - دون أن تراسل نفسك بالبريد، ودون سجلّ محادثة، ودون حساب، ودون أن يحتفظ أي خادم بنسخة.</summary>
+  </entry>
   <entry>
     <title type="html">الصورةُ التي حفظها هاتفُك، والصيغةُ التي لا يفتحها شيء</title>
     <id>https://abox.tools/ar/أدلة/تحويل-heic-إلى-jpg/</id>
@@ -100,13 +107,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/دمج-الصور-في-pdf/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">حوّل صوراً أو مسوحاً ضوئية إلى ملف PDF واحد: مقاسُ الصفحة والترتيبُ والتدوير، ولماذا لا يلزم أن يخسر ملفُّ JPEG شيئاً في طريقه إلى الداخل، وماذا يقول ملفُّ PDF عنك لمن ترسله إليه.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تشارك النص والملفات بين الأجهزة دون رفعها</title>
-    <id>https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">انقل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر - دون أن تراسل نفسك بالبريد، ودون سجلّ محادثة، ودون حساب، ودون أن يحتفظ أي خادم بنسخة.</summary>
   </entry>
   <entry>
     <title type="html">كيف تشغّل فيديو بالمقلوب</title>

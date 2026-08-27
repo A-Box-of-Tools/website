@@ -26,11 +26,18 @@
   <id>https://abox.tools/ko/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ko/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ko/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ko/</uri>
   </author>
+  <entry>
+    <title type="html">업로드하지 않고 기기 간에 텍스트와 파일을 공유하는 방법</title>
+    <id>https://abox.tools/ko/가이드/기기-간-텍스트-공유/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/기기-간-텍스트-공유/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">텍스트나 파일을 직접적이고 암호화된 연결로 한 브라우저에서 다른 브라우저로 옮기세요. 자기 자신에게 이메일을 보내지 않고, 채팅 기록을 남기지 않고, 계정 없이, 어떤 서버도 사본을 쥐지 않은 채.</summary>
+  </entry>
   <entry>
     <title type="html">16픽셀에서도 읽히는 파비콘 만드는 방법</title>
     <id>https://abox.tools/ko/가이드/파비콘-만드는-법/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/css-이미지-넣기/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">데이터 URI의 대가, base64가 3분의 1을 더하는데 gzip이 그것을 돌려주지 않는 이유, SVG를 절대 base64로 만들면 안 되는 이유, 그리고 인라인 SVG를 조용히 망가뜨리는 따옴표 실수.</summary>
-  </entry>
-  <entry>
-    <title type="html">업로드하지 않고 기기 간에 텍스트와 파일을 공유하는 방법</title>
-    <id>https://abox.tools/ko/가이드/기기-간-텍스트-공유/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/기기-간-텍스트-공유/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">텍스트나 파일을 직접적이고 암호화된 연결로 한 브라우저에서 다른 브라우저로 옮기세요. 자기 자신에게 이메일을 보내지 않고, 채팅 기록을 남기지 않고, 계정 없이, 어떤 서버도 사본을 쥐지 않은 채.</summary>
   </entry>
 </feed>

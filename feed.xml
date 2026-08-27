@@ -26,11 +26,18 @@
   <id>https://abox.tools/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/</uri>
   </author>
+  <entry>
+    <title type="html">How to share text and files between devices without uploading them</title>
+    <id>https://abox.tools/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/share-text-between-devices/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later.</summary>
+  </entry>
   <entry>
     <title type="html">Base64 Encoder &amp; Decoder</title>
     <id>https://abox.tools/encode-text/</id>
@@ -226,13 +233,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/scan-multiple-pages-into-one-pdf/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Photograph every page, get one PDF, combine it with documents you already have, and shrink it until it sends. Three browser tools in a row, and the paperwork never leaves your phone.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to share text and files between devices without uploading them</title>
-    <id>https://abox.tools/guides/share-text-between-devices/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/share-text-between-devices/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later.</summary>
   </entry>
   <entry>
     <title type="html">How to split a GIF into frames</title>

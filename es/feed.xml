@@ -26,11 +26,18 @@
   <id>https://abox.tools/es/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/es/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/es/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/es/</uri>
   </author>
+  <entry>
+    <title type="html">Cómo compartir texto y archivos entre dispositivos sin subirlos</title>
+    <id>https://abox.tools/es/guias/compartir-texto-entre-dispositivos/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/compartir-texto-entre-dispositivos/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Llevar texto o archivos de un navegador a otro por una conexión directa y cifrada: sin mandarse correos a uno mismo, sin historial de chat, sin cuenta, y sin que ningún servidor se quede una copia.</summary>
+  </entry>
   <entry>
     <title type="html">Codificador y decodificador Base64</title>
     <id>https://abox.tools/es/codificar-base64/</id>
@@ -93,13 +100,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/comparar-dos-archivos-json/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Formatea los dos archivos igual, ordena las claves y compáralos después. Por qué un diff de JSON en crudo es casi todo ruido, cómo canonizar los dos lados en el navegador, y qué sobrevive hasta el parche.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cómo compartir texto y archivos entre dispositivos sin subirlos</title>
-    <id>https://abox.tools/es/guias/compartir-texto-entre-dispositivos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/compartir-texto-entre-dispositivos/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Llevar texto o archivos de un navegador a otro por una conexión directa y cifrada: sin mandarse correos a uno mismo, sin historial de chat, sin cuenta, y sin que ningún servidor se quede una copia.</summary>
   </entry>
   <entry>
     <title type="html">Cómo comprimir una imagen a un tamaño de archivo exacto</title>

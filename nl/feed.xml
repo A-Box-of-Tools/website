@@ -26,11 +26,18 @@
   <id>https://abox.tools/nl/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/nl/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/nl/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/nl/</uri>
   </author>
+  <entry>
+    <title type="html">Zo deel je tekst en bestanden tussen apparaten zonder ze te uploaden</title>
+    <id>https://abox.tools/nl/gidsen/tekst-delen-tussen-apparaten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/tekst-delen-tussen-apparaten/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Tekst of bestanden van de ene browser naar de andere brengen over een rechtstreekse, versleutelde verbinding - zonder jezelf te mailen, zonder chatgeschiedenis, zonder account, en zonder server die een kopie houdt.</summary>
+  </entry>
   <entry>
     <title type="html">Audio knippen zonder kwaliteitsverlies</title>
     <id>https://abox.tools/nl/gidsen/een-audiobestand-inkorten/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit.</summary>
-  </entry>
-  <entry>
-    <title type="html">Van afbeeldingen een geanimeerde GIF maken</title>
-    <id>https://abox.tools/nl/gidsen/van-afbeeldingen-een-gif-maken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/van-afbeeldingen-een-gif-maken/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Maak van een reeks plaatjes één geanimeerde GIF: hoe snel een GIF echt kan spelen, wat de palet-instelling verandert, en de drie dingen die het bestand werkelijk kleiner maken.</summary>
   </entry>
 </feed>

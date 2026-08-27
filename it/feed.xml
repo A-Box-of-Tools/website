@@ -26,11 +26,18 @@
   <id>https://abox.tools/it/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/it/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/it/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/it/</uri>
   </author>
+  <entry>
+    <title type="html">Come condividere testo e file tra dispositivi senza caricarli</title>
+    <id>https://abox.tools/it/guide/condividere-testo-tra-dispositivi/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/condividere-testo-tra-dispositivi/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Portare testo o file da un browser all'altro su una connessione diretta e cifrata: senza mandarsi email, senza cronologia di chat, senza account, e senza che nessun server tenga una copia.</summary>
+  </entry>
   <entry>
     <title type="html">Codificatore e decodificatore Base64</title>
     <id>https://abox.tools/it/codifica-base64/</id>
@@ -58,13 +65,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/comprimere-un-immagine-a-una-dimensione-esatta/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">Un modulo di caricamento vuole 500 KB e la tua foto pesa 4 MB. Quanto costa davvero un limite di peso, quale impostazione muovere per prima, e perché un PNG non si rimpicciolisce come un JPEG.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come condividere testo e file tra dispositivi senza caricarli</title>
-    <id>https://abox.tools/it/guide/condividere-testo-tra-dispositivi/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/condividere-testo-tra-dispositivi/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Portare testo o file da un browser all'altro su una connessione diretta e cifrata: senza mandarsi email, senza cronologia di chat, senza account, e senza che nessun server tenga una copia.</summary>
   </entry>
   <entry>
     <title type="html">Come confrontare due file JSON</title>

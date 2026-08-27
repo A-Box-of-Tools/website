@@ -26,11 +26,18 @@
   <id>https://abox.tools/zh/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/zh/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/zh/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/zh/</uri>
   </author>
+  <entry>
+    <title type="html">如何不上传就在设备间分享文本与文件</title>
+    <id>https://abox.tools/zh/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/share-text-between-devices/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把文本或文件经直连加密通道从一个浏览器送到另一个——不用给自己发邮件，不留聊天记录，不需要账号，也没有哪台服务器留着副本。</summary>
+  </entry>
   <entry>
     <title type="html">Base64 编码解码</title>
     <id>https://abox.tools/zh/encode-text/</id>
@@ -72,13 +79,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/redact-an-image/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">大多数软件画出来的黑色方块只是压在图片上面，随手就能挪开。真正的涂黑和只是遮住差在哪里，打过码的文字为什么能被读回来，以及发出去之前怎么检查一个文件。</summary>
-  </entry>
-  <entry>
-    <title type="html">如何不上传就在设备间分享文本与文件</title>
-    <id>https://abox.tools/zh/guides/share-text-between-devices/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/share-text-between-devices/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">把文本或文件经直连加密通道从一个浏览器送到另一个——不用给自己发邮件，不留聊天记录，不需要账号，也没有哪台服务器留着副本。</summary>
   </entry>
   <entry>
     <title type="html">怎么不把 JSON 交给任何人也能格式化</title>

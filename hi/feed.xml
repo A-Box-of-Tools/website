@@ -26,11 +26,18 @@
   <id>https://abox.tools/hi/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/hi/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/hi/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/hi/</uri>
   </author>
+  <entry>
+    <title type="html">बिना अपलोड किए डिवाइसों के बीच टेक्स्ट और फ़ाइलें कैसे साझा करें</title>
+    <id>https://abox.tools/hi/guides/share-text-between-devices/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/share-text-between-devices/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से पहुँचाइए - खुद को ईमेल किए बिना, चैट-इतिहास छोड़े बिना, खाते के बिना, और बिना किसी सर्वर के प्रति रखे।</summary>
+  </entry>
   <entry>
     <title type="html">Base64 एनकोडर-डिकोडर</title>
     <id>https://abox.tools/hi/encode-text/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/embed-an-image-in-css/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">data URI की कीमत क्या है, base64 एक-तिहाई क्यों जोड़ देता है और gzip उसे वापस क्यों नहीं करता, SVG को base64 क्यों नहीं करना चाहिए, और वह कोटेशन की गलती जो भीतर रखी SVG को चुपचाप तोड़ देती है।</summary>
-  </entry>
-  <entry>
-    <title type="html">तस्वीरों के एक फ़ोल्डर से वीडियो कैसे बनाएँ</title>
-    <id>https://abox.tools/hi/guides/turn-images-into-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/turn-images-into-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">फ़ोटो से MP4 स्लाइडशो बनाइए: फ़्रेम दर और अवधि असल में किस चीज़ पर काबू रखती हैं, गलत आकार की तस्वीरों का क्या करें, और नतीजे में आवाज़ क्यों नहीं होती।</summary>
   </entry>
 </feed>

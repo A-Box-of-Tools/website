@@ -26,11 +26,18 @@
   <id>https://abox.tools/tr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/tr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/tr/"/>
-  <updated>2026-08-26T00:00:00Z</updated>
+  <updated>2026-08-27T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/tr/</uri>
   </author>
+  <entry>
+    <title type="html">Metin ve dosyaları yüklemeden cihazlar arasında nasıl paylaşırsınız</title>
+    <id>https://abox.tools/tr/rehberler/cihazlar-arasi-metin-paylasma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/cihazlar-arasi-metin-paylasma/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Metni veya dosyaları doğrudan ve şifreli bir bağlantıyla bir tarayıcıdan diğerine taşıyın - kendinize e-posta atmadan, sohbet geçmişi bırakmadan, hesap açmadan ve hiçbir sunucu kopya tutmadan.</summary>
+  </entry>
   <entry>
     <title type="html">Base64 Kodlayıcı ve Çözücü</title>
     <id>https://abox.tools/tr/base64-kodlama/</id>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/json-yuklemeden-bicimlendirme/"/>
     <updated>2026-08-26T00:00:00Z</updated>
     <summary type="html">JSON'u kendi tarayıcınızda nasıl düzenli yazar, denetler ve küçültürsünüz: bir biçimlendiricinin dosyanızda asla değiştirmemesi gereken şeyler, hata iletisinin nasıl okunacağı ve yapıştırdığınız sitenin neden önemli olduğu.</summary>
-  </entry>
-  <entry>
-    <title type="html">Metin Karşılaştırma</title>
-    <id>https://abox.tools/tr/metin-karsilastirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-karsilastirma/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
   </entry>
 </feed>
