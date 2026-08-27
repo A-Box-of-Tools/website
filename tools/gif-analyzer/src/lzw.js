@@ -37,7 +37,8 @@ const MAX_CODES = 4096;
  * @param {number} minCodeSize  the byte in front of them, 2..8
  * @param {number} pixelCount  width * height: how many indices to expect
  * @returns {{indices: Uint8Array, pixels: number, codes: number, clears: number,
- *            complete: boolean, truncated: boolean, corrupt: string|null}}
+ *            complete: boolean, truncated: boolean,
+ *            corrupt: {key: string, values: object}|null}}
  */
 export function lzwDecode(data, minCodeSize, pixelCount) {
   if (minCodeSize < 2 || minCodeSize > 8) {
@@ -105,7 +106,7 @@ export function lzwDecode(data, minCodeSize, pixelCount) {
     // dictionary yet for anything else to refer back to.
     if (previous < 0) {
       if (code >= clearCode) {
-        corrupt = `code ${code} came first, before the dictionary held anything`;
+        corrupt = { key: 'decode.codefirst', values: { code: code.toLocaleString() } };
         break;
       }
       if (out < pixelCount) indices[out] = suffix[code];
@@ -121,7 +122,10 @@ export function lzwDecode(data, minCodeSize, pixelCount) {
     let walk = code;
     let top = 0;
     if (code > next) {
-      corrupt = `code ${code} refers to dictionary entry ${code}, and only ${next} exist`;
+      corrupt = {
+        key: 'decode.codemissing',
+        values: { code: code.toLocaleString(), entries: next.toLocaleString() },
+      };
       break;
     }
     if (code === next) {

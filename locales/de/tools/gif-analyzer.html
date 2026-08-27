@@ -160,6 +160,162 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.notrailer">Die Datei endet ohne Abschlussbyte und ist damit unvollständig &mdash; ein Download,
+      der zu früh abbrach, oder eine abgeschnittene Datei.</span>
+    <span data-phrase="parse.unknownblock">Byte {at} ist 0x{marker}, und damit der Anfang keines Blocks, den dieses Format
+      kennt. Alles danach wurde übergangen.</span>
+    <span data-phrase="parse.twocontrols">Zwei Steuerblöcke hintereinander, bei {first} und {second}. Der erste beschreibt
+      kein Bild und tut nichts.</span>
+    <span data-phrase="parse.midblock">Die Datei endet mitten in einem Block, der bei {at} beginnt. {detail}.</span>
+    <span data-phrase="decode.codefirst">Code {code} kam zuerst, bevor das Wörterbuch irgendetwas enthielt. Ein Betrachter
+      zeichnet, was er kann, und lässt den Rest des Rechtecks leer.</span>
+    <span data-phrase="decode.codemissing">Code {code} verweist auf Wörterbucheintrag {code}, und es gibt nur {entries}. Ein
+      Betrachter zeichnet, was er kann, und lässt den Rest des Rechtecks leer.</span>
+    <span data-phrase="find.noframes.title">In dieser Datei sind keine Einzelbilder.</span>
+    <span data-phrase="find.noframes.body">Der Kopf ließ sich lesen, aber es folgte kein Bildblock. Was das auch ist, kein
+      Betrachter wird daraus etwas zeichnen.</span>
+    <span data-phrase="find.unclean.title">Die Datei endet nicht sauber.</span>
+    <span data-phrase="find.trailing.title">{bytes} stehen hinter dem Ende der Datei.</span>
+    <span data-phrase="find.trailing.body">Jeder Decoder hält beim Abschlussbyte an, also werden diese nie gelesen und nie
+      gezeichnet. Meist ist es eine zweite Datei, die an die erste gehängt wurde, oder ein
+      Programm, das über sich hinaus schrieb. Die Datei am Abschlussbyte zu kappen kostet
+      nichts.</span>
+    <span data-phrase="find.clamped.title.one">Ein Einzelbild möchte kürzer als 0,02 Sekunden stehen bleiben, und kein Browser
+      macht das mit.</span>
+    <span data-phrase="find.clamped.title.many">{count} Einzelbilder möchten kürzer als 0,02 Sekunden stehen bleiben, und kein
+      Browser macht das mit.</span>
+    <span data-phrase="find.clamped.body">Jeder Browser seit Netscape rundet eine Verzögerung unter zwei Hundertstelsekunden
+      auf zehn auf &mdash; eine Regel von 1996, für die rotierenden Globen jener Zeit
+      geschrieben und nie wieder entfernt. Also sagt diese Animation, sie laufe {nominal},
+      und läuft tatsächlich {real}, etwa {factor}-mal langsamer. Mit 0,02 statt 0,01
+      bekommt sie das Tempo, um das sie bittet.</span>
+    <span data-phrase="find.zerodelay.title">Jedes Einzelbild hat die Verzögerung null.</span>
+    <span data-phrase="find.zerodelay.body">Die Datei gibt überhaupt keine Zeiten vor, also liegt das Tempo ganz beim Betrachter
+      &mdash; meist zehn Bilder je Sekunde, aber garantiert ist das nicht. Zwei Browser
+      können das unterschiedlich schnell abspielen und beide recht haben.</span>
+    <span data-phrase="find.uneven.title">Die Einzelbilder sind ungleich getaktet: {delays} verschiedene Verzögerungen, von
+      {shortest} bis {longest}.</span>
+    <span data-phrase="find.uneven.body">Ein länger stehendes Schlussbild ist Absicht und üblich. Verstreute Verzögerungen
+      mitten drin kommen meist von einem Umwandler, der Bilder aus einem Video wegließ und
+      die Nachbarn streckte, um die Lücke zu decken.</span>
+    <span data-phrase="find.noloop.title">Es gibt keinen Schleifenblock, also läuft das einmal und hört auf.</span>
+    <span data-phrase="find.noloop.body">Schleifen sind nicht Teil der GIF-Spezifikation. Es ist ein Block, den Netscape 1995
+      erfand und den alle trotzdem umsetzten; eine Datei ohne ihn zeigt jeder Browser
+      genau einmal. War hier eine Schleife gemeint, hat das schreibende Programm den Block
+      weggelassen.</span>
+    <span data-phrase="find.loopcount.title.one">Das läuft einmal und hört dann auf.</span>
+    <span data-phrase="find.loopcount.title.many">Das läuft {count}-mal und hört dann auf.</span>
+    <span data-phrase="find.loopcount.body">Der Schleifenblock nennt eine Anzahl statt der üblichen Null, die für immer
+      bedeutet. Manche älteren Betrachter übergehen die Anzahl und wiederholen trotzdem
+      endlos.</span>
+    <span data-phrase="find.allfull.title">Jedes Einzelbild zeichnet die ganze Leinwand neu.</span>
+    <span data-phrase="find.allfull.body">Ein GIF darf ein Einzelbild als nur das Rechteck speichern, das sich seit dem
+      letzten geändert hat &mdash; darum kann die Aufnahme eines weitgehend stillstehenden
+      Fensters klein sein. Hier tut das keines: jedes Bild ist die volle Leinwand
+      {width}&times;{height}. Für Bilder aus unverwandten Vorlagen ist das richtig; für
+      alles Gefilmte oder Aufgezeichnete, wo sich der größte Teil zwischen zwei Bildern
+      nicht bewegt, ist es verschenkt.</span>
+    <span data-phrase="find.somefull.title.one">Ein Einzelbild von {total} zeichnet die ganze Leinwand neu; die übrigen speichern nur
+      den veränderten Teil.</span>
+    <span data-phrase="find.somefull.title.many">{count} Einzelbilder von {total} zeichnen die ganze Leinwand neu; die übrigen
+      speichern nur den veränderten Teil.</span>
+    <span data-phrase="find.somefull.body">So sieht ein optimiertes GIF aus. Die vollflächigen sind meist das erste Bild und
+      jede Stelle, an der sich das Bild vollständig änderte.</span>
+    <span data-phrase="find.nonefull.title">Kein Einzelbild zeichnet die ganze Leinwand neu.</span>
+    <span data-phrase="find.nonefull.body">Jedes Bild nach dem ersten speichert nur das veränderte Rechteck. So ist das Format
+      gemeint, und darum ist diese Datei so klein, wie sie ist.</span>
+    <span data-phrase="find.outside.title.one">Ein Einzelbild ragt über die Leinwand hinaus.</span>
+    <span data-phrase="find.outside.title.many">{count} Einzelbilder ragen über die Leinwand hinaus.</span>
+    <span data-phrase="find.outside.body.one">Die Leinwand ist {width}&times;{height}, und ein Bild beansprucht ein Rechteck, das
+      über den Rand hinausläuft. Decoder sind sich uneins, was mit dem Überstand geschehen
+      soll: die einen schneiden ihn ab, die anderen verweigern die Datei.</span>
+    <span data-phrase="find.outside.body.many">Die Leinwand ist {width}&times;{height}, und einige Bilder beanspruchen ein Rechteck,
+      das über den Rand hinausläuft. Decoder sind sich uneins, was mit dem Überstand
+      geschehen soll: die einen schneiden ihn ab, die anderen verweigern die Datei.</span>
+    <span data-phrase="find.localpal.title.one">Ein Einzelbild bringt eine eigene Farbtabelle mit, die {bytes} kostet &mdash;
+      {share} der Datei.</span>
+    <span data-phrase="find.localpal.title.many">{count} Einzelbilder bringen eine eigene Farbtabelle mit, die {bytes} kostet &mdash;
+      {share} der Datei.</span>
+    <span data-phrase="find.localpal.body">Eine eigene Palette erlaubt einem Bild Farben, die die gemeinsame Tabelle nicht hat,
+      und kostet drei Bytes je Eintrag, jedes Mal wenn sie geschrieben wird. Wo die Bilder
+      dieselbe Szene zeigen, ist eine Tabelle für alle kleiner und ruhiger anzusehen: eine
+      Palette, die zwischen den Bildern springt, ist genau das, was GIF-Flimmern ist.</span>
+    <span data-phrase="find.noglobal.title">Es gibt keine globale Farbtabelle.</span>
+    <span data-phrase="find.noglobal.body">Daran ist nichts falsch &mdash; jedes Bild bringt hier seine eigene mit &mdash; aber
+      es heißt, dass ein Betrachter nichts hat, womit er die Leinwand füllen könnte, bevor
+      das erste Bild eintrifft.</span>
+    <span data-phrase="find.waste.title">{entries} Einträge der Farbtabellen werden nie benutzt, das sind {bytes}.</span>
+    <span data-phrase="find.waste.body">Die Tabellen dieser Datei nennen {declared} Farben, und die Pixel verweisen auf
+      {referenced} davon. Eine Farbtabelle ist immer eine Zweierpotenz lang, was auch
+      darin steht, also bekommt ein Bild mit neun Farben trotzdem sechzehn; etwas
+      Aufrunden ist unvermeidlich. Deutlich mehr heißt, die Paletten wurden für ein
+      anderes Bild gebaut als das, das am Ende darin steht.</span>
+    <span data-phrase="find.colors.title.one">Die ganze Animation zeichnet mit einer Farbe.</span>
+    <span data-phrase="find.colors.title.many">Die ganze Animation zeichnet mit {count} Farben.</span>
+    <span data-phrase="find.colors.body.flat">Das ist flache Grafik, und dafür wurde GIF gemacht. So eine Datei komprimiert gut
+      und rastert schlecht; sieht sie gesprenkelt aus, ist das Rastern das, was man
+      abschalten sollte.</span>
+    <span data-phrase="find.colors.body.photo">Ein Foto, oder etwas, das daraus entstanden ist. GIF gibt einem Bild höchstens 256
+      Farben, also wird alles mit einem Verlauf darin angenähert &mdash; daher kommen das
+      Rastern und das Rauschen, das eine Datei groß macht.</span>
+    <span data-phrase="find.comment.title">In dieser Datei steht ein Kommentarblock von {bytes}.</span>
+    <span data-phrase="find.comment.body">Kommentare zeigt kein Betrachter an, und jede Kopie der Datei trägt sie mit. Meist
+      ist es der Name des schreibenden Programms und gelegentlich etwas, das die Autorin
+      nicht veröffentlicht hätte.</span>
+    <span data-phrase="find.xmp.title">Ein XMP-Metadatenpaket belegt {bytes} &mdash; {share} der Datei.</span>
+    <span data-phrase="find.xmp.body">XMP ist der XML-Block, den ein Bildbearbeitungsprogramm schreibt, um festzuhalten,
+      was es getan hat; er kann die Bearbeitungsgeschichte, die Software und manchmal die
+      Autorin enthalten. Kein Betrachter zeichnet davon irgendetwas. Ihn zu entfernen
+      kostet das Bild nichts.</span>
+    <span data-phrase="find.icc.title">Ein ICC-Farbprofil belegt {bytes}.</span>
+    <span data-phrase="find.icc.body">Das Profil sagt, was die Zahlen in der Palette als Farben bedeuten. Fast nichts
+      liest so eines aus einem GIF, also ist es meist Gewicht für nichts &mdash; es
+      wegzulassen kann die Farben aber in den Betrachtern verschieben, die es lesen.</span>
+    <span data-phrase="find.plaintext.title">In dieser Datei steht eine Klartext-Erweiterung.</span>
+    <span data-phrase="find.plaintext.body">Ein Block, der den Betrachter bittet, Text in einem Raster von Zellen über das Bild
+      zu zeichnen. Er stand 1989 in der Spezifikation, wurde nie von irgendetwas
+      umgesetzt, und jeder Decoder überspringt ihn. Was auch darin steht, es wird nicht
+      erscheinen.</span>
+    <span data-phrase="find.appblock.title">Es gibt einen Anwendungsblock namens &bdquo;{name}&ldquo;, von {bytes}.</span>
+    <span data-phrase="find.appblock.body">Anwendungsblöcke sind der Weg, auf dem alles außerhalb der Spezifikation in ein GIF
+      kommt. Betrachter überspringen die, die sie nicht kennen, also ist dieser Gewicht,
+      sofern ihn nicht etwas Bestimmtes liest.</span>
+    <span data-phrase="find.interlaced.title.one">Ein Einzelbild ist verschränkt gespeichert.</span>
+    <span data-phrase="find.interlaced.title.many">{count} Einzelbilder sind verschränkt gespeichert.</span>
+    <span data-phrase="find.interlaced.body">Die Zeilen liegen in vier Durchgängen, damit ein über eine langsame Leitung
+      eintreffendes Bild früh eine grobe Fassung seiner selbst zeigte. 1993 ergab das
+      Sinn, es komprimiert etwas schlechter als Zeilen der Reihe nach, und kein Betrachter
+      hat heute etwas davon.</span>
+    <span data-phrase="find.version.title">Diese Datei sagt, sie sei GIF{version} statt GIF89a.</span>
+    <span data-phrase="find.version.body">GIF87a kam zuerst und hat keine Zeitblöcke, keine Transparenz und keinen
+      Schleifenblock. Eine Datei, die 87a behauptet und trotzdem davon etwas mitführt, ist
+      häufig &mdash; Decoder prüfen das nicht &mdash; aber es ist ein Zeichen, dass der
+      Kopf kopiert und nicht geschrieben wurde.</span>
+    <span data-phrase="find.bgindex.title">Die Hintergrundfarbe ist Index {index}, und die globale Tabelle hat nur {entries}
+      Einträge.</span>
+    <span data-phrase="find.bgindex.body">Abstürzen wird nichts &mdash; Betrachter nehmen stattdessen transparent &mdash; aber
+      es heißt, dass das Feld nie gesetzt wurde oder für eine Palette gesetzt wurde, die
+      nicht mehr die in der Datei ist.</span>
+    <span data-phrase="find.aspect.title">Das Pixel-Seitenverhältnis steht auf {ratio}.</span>
+    <span data-phrase="find.aspect.body">Ein Feld für Bildschirme, die keine quadratischen Pixel hatten. Jeder heutige
+      Betrachter übergeht es und zeichnet das Bild in seiner gespeicherten Größe; eine
+      Datei, die sich darauf verlässt, sieht für ihre Urheberin verzerrt und für alle
+      anderen normal aus.</span>
+    <span data-phrase="find.clears.title">Der Kompressor setzte sein Wörterbuch {count}-mal zurück.</span>
+    <span data-phrase="find.clears.body">LZW baut sein Wörterbuch im Gehen auf und fasst 4.096 Einträge; ist es voll, fängt
+      der Encoder von vorn an. Einmal je Einzelbild ist normal &mdash; so beginnt ein
+      Bild. Mehr heißt, das Bild war abwechslungsreich genug, das Wörterbuch mittendrin zu
+      erschöpfen, und genau das tun ein Foto oder starkes Rastern &mdash; darum sind
+      solche Dateien groß.</span>
+    <span data-phrase="find.identical.title.one">Ein Einzelbild ist mit dem vorherigen identisch.</span>
+    <span data-phrase="find.identical.title.many">{count} Einzelbilder sind mit dem jeweils vorherigen identisch.</span>
+    <span data-phrase="find.identical.body">Sie kosten ihre volle komprimierte Größe und ändern auf dem Schirm nichts. Ihre
+      Verzögerung stattdessen zum vorherigen Bild zu addieren sähe genau gleich aus und
+      wäre kleiner.</span>
+    <span data-phrase="find.broken.title.one">Ein Einzelbild lässt sich nicht vollständig decodieren.</span>
+    <span data-phrase="find.broken.title.many">{count} Einzelbilder lassen sich nicht vollständig decodieren.</span>
+    <span data-phrase="find.broken.body.short">Die komprimierten Daten enden, bevor das Bild voll ist. Ein Betrachter zeichnet, was
+      er kann, und lässt den Rest des Rechtecks leer.</span>
     <span data-phrase="net.clean">Ihr GIF ist nirgendwohin gegangen. {total}
       Dateien geladen. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
