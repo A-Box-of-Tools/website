@@ -146,6 +146,14 @@
   gap: 0.35rem 0.9rem;
 }
 
+/* Under a named preset the grid is hidden and the summary is the only thing
+   left in the fieldset, so the rule that separates the two would be drawn
+   across nothing. */
+.size-grid[hidden] + .field-summary {
+  padding-top: 0;
+  border-top: none;
+}
+
 .size-choice {
   display: flex;
   align-items: baseline;
