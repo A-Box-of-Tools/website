@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/scansionare-documenti/:';
-const CACHE_NAME=CACHE_PREFIX+'3b86ec1f5b';
+const CACHE_NAME=CACHE_PREFIX+'917c5e51df';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/edit-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'4e378a7381';
+const CACHE_NAME=CACHE_PREFIX+'e6e30973f3';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/hapus-data-exif/:';
-const CACHE_NAME=CACHE_PREFIX+'d9ca396b6d';
+const CACHE_NAME=CACHE_PREFIX+'c433968b98';
 const ASSETS=[
 './',
 'index.html',

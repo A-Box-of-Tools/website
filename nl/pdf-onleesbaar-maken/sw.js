@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/pdf-onleesbaar-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'a653a36ca1';
+const CACHE_NAME=CACHE_PREFIX+'4b709d0ae8';
 const ASSETS=[
 './',
 'index.html',

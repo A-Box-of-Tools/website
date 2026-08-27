@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/image-to-ico/:';
-const CACHE_NAME=CACHE_PREFIX+'aacd2f62d2';
+const CACHE_NAME=CACHE_PREFIX+'d66f041f14';
 const ASSETS=[
 './',
 'index.html',
