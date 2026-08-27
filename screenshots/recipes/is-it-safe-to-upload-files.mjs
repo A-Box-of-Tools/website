@@ -15,6 +15,12 @@ export const shots = [
     run: async (k) => {
       k.give(await k.photo(2000, 1500));
       await k.wait('#resize-card');
+      // The panel ships folded down to its one claim, and the half worth
+      // photographing - the count the page made about itself - is inside the
+      // fold. Opened here rather than left shut, because a picture of a
+      // summary line is a picture of a promise without its evidence.
+      const fold = document.querySelector('.pledge-fold');
+      if (fold) fold.open = true;
       // Long enough for the live check to have finished counting.
       await k.settle(2500);
     },
