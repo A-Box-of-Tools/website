@@ -19,20 +19,13 @@ source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
 
-# The version of the site, and the one number a pull request has to think
-# about. buildlib/version.py holds the rule and .github/workflows/version.yml
-# enforces it on every pull request:
-#
-#   a new tool            -> the middle number, and the last one back to zero
-#   anything else a
-#   visitor could notice  -> the last number
-#   tests, CI, docs       -> nothing
-#
-# It starts at 1.0.0 rather than at a number worked backwards from the
-# thirty-six tools already here, because a version is a promise about what
-# happens next and inventing a history for it would be neither true nor
-# useful.
-version = "1.0.2"
+# The version is deliberately NOT here. It is a git tag, worked out by the
+# deploy from what the change touched - see buildlib/version.py and "The
+# version" in CLAUDE.md. It lived on this line until it was noticed that
+# nothing read it: no template renders it, no page shows it, and the only code
+# that opened it was the presubmit checking that somebody had moved it. A
+# counter that every branch has to edit and nothing consumes is a merge
+# conflict with no upside, and with several pull requests open it was one.
 
 # The one guide that is linked to from inside a sentence rather than from a
 # list. The hub's three guarantees end by pointing at it, so it cannot be moved
