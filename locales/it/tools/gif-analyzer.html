@@ -160,6 +160,162 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.notrailer">Il file finisce senza il byte di chiusura, quindi è incompleto &mdash; un download
+      interrotto, o un file troncato.</span>
+    <span data-phrase="parse.unknownblock">Il byte {at} vale 0x{marker}, che non apre nessun blocco previsto da questo formato.
+      Tutto quello che veniva dopo è stato ignorato.</span>
+    <span data-phrase="parse.twocontrols">Due blocchi di controllo grafico di fila, a {first} e {second}. Il primo non
+      descrive alcuna immagine e non fa nulla.</span>
+    <span data-phrase="parse.midblock">Il file finisce a metà di un blocco che comincia a {at}. {detail}.</span>
+    <span data-phrase="decode.codefirst">Il codice {code} è arrivato per primo, prima che il dizionario contenesse qualcosa.
+      Un visualizzatore disegnerà quello che può e lascerà vuoto il resto del rettangolo.</span>
+    <span data-phrase="decode.codemissing">Il codice {code} rimanda alla voce {code} del dizionario, e ne esistono solo
+      {entries}. Un visualizzatore disegnerà quello che può e lascerà vuoto il resto del
+      rettangolo.</span>
+    <span data-phrase="find.noframes.title">In questo file non ci sono fotogrammi.</span>
+    <span data-phrase="find.noframes.body">L&rsquo;intestazione si è letta, ma non seguiva alcun blocco immagine. Qualunque
+      cosa sia, nessun visualizzatore ne disegnerà niente.</span>
+    <span data-phrase="find.unclean.title">Il file non finisce in modo pulito.</span>
+    <span data-phrase="find.trailing.title">{bytes} stanno dopo la fine del file.</span>
+    <span data-phrase="find.trailing.body">Ogni decodificatore si ferma al byte di chiusura, quindi questi non vengono mai
+      letti né disegnati. Di solito sono un secondo file attaccato al primo, o un
+      programma che ha scritto oltre sé stesso. Tagliare il file al byte di chiusura non
+      perde nulla.</span>
+    <span data-phrase="find.clamped.title.one">Un fotogramma chiede di restare meno di 0,02 secondi, e nessun browser lo farà.</span>
+    <span data-phrase="find.clamped.title.many">{count} fotogrammi chiedono di restare meno di 0,02 secondi, e nessun browser lo
+      farà.</span>
+    <span data-phrase="find.clamped.body">Ogni browser da Netscape in poi arrotonda a dieci un ritardo sotto i due centesimi
+      di secondo &mdash; una regola scritta nel 1996 per i mappamondi rotanti
+      dell&rsquo;epoca e mai tolta. Così questa animazione dice di durare {nominal} e in
+      realtà dura {real}, circa {factor} volte più lenta. Scrivere 0,02 invece di 0,01 le
+      dà la velocità che sta chiedendo.</span>
+    <span data-phrase="find.zerodelay.title">Ogni fotogramma ha ritardo zero.</span>
+    <span data-phrase="find.zerodelay.body">Il file non dà alcun tempo, quindi a che velocità va dipende tutto dal
+      visualizzatore &mdash; di solito dieci fotogrammi al secondo, ma niente lo
+      garantisce. Due browser possono riprodurlo a due velocità diverse e avere ragione
+      entrambi.</span>
+    <span data-phrase="find.uneven.title">I fotogrammi non hanno un tempo regolare: {delays} ritardi diversi, da {shortest} a
+      {longest}.</span>
+    <span data-phrase="find.uneven.body">Un ultimo fotogramma tenuto più a lungo è voluto e comune. Ritardi sparsi nel mezzo
+      di solito vengono da un convertitore che ha lasciato cadere fotogrammi di un video e
+      allungato i vicini per coprire il buco.</span>
+    <span data-phrase="find.noloop.title">Non c&rsquo;è un blocco di ripetizione, quindi questo parte una volta e si ferma.</span>
+    <span data-phrase="find.noloop.body">La ripetizione non fa parte della specifica GIF. È un blocco che Netscape ha
+      inventato nel 1995 e che tutti hanno comunque implementato; un file che non ce
+      l&rsquo;ha è un file che ogni browser mostra esattamente una volta. Se doveva
+      ripetersi, chi lo ha scritto ha lasciato fuori il blocco.</span>
+    <span data-phrase="find.loopcount.title.one">Questo parte una volta e poi si ferma.</span>
+    <span data-phrase="find.loopcount.title.many">Questo parte {count} volte e poi si ferma.</span>
+    <span data-phrase="find.loopcount.body">Il blocco di ripetizione indica un numero invece del solito zero, che vuol dire per
+      sempre. Certi visualizzatori più vecchi ignorano il numero e ripetono lo stesso.</span>
+    <span data-phrase="find.allfull.title">Ogni fotogramma ridisegna tutta la tela.</span>
+    <span data-phrase="find.allfull.body">Una GIF può salvare di un fotogramma solo il rettangolo cambiato rispetto al
+      precedente: per questo la registrazione di una finestra quasi ferma può essere
+      piccola. Qui non lo fa nessuno: ogni fotogramma è tutta la tela,
+      {width}&times;{height}. Va bene per immagini che non hanno niente a che vedere fra
+      loro, ed è spazio regalato per qualsiasi cosa filmata o registrata, dove gran parte
+      dell&rsquo;immagine non si muove.</span>
+    <span data-phrase="find.somefull.title.one">Un fotogramma su {total} ridisegna tutta la tela; gli altri salvano solo la parte
+      cambiata.</span>
+    <span data-phrase="find.somefull.title.many">{count} fotogrammi su {total} ridisegnano tutta la tela; gli altri salvano solo la
+      parte cambiata.</span>
+    <span data-phrase="find.somefull.body">Ecco come è fatta una GIF ottimizzata. Quelli a tela intera di solito sono il primo
+      fotogramma e ogni punto in cui l&rsquo;immagine è cambiata del tutto.</span>
+    <span data-phrase="find.nonefull.title">Nessun fotogramma ridisegna tutta la tela.</span>
+    <span data-phrase="find.nonefull.body">Ogni fotogramma dopo il primo salva solo il rettangolo cambiato, che è il formato
+      usato come si deve ed è il motivo per cui questo file è piccolo com&rsquo;è.</span>
+    <span data-phrase="find.outside.title.one">Un fotogramma esce dalla tela.</span>
+    <span data-phrase="find.outside.title.many">{count} fotogrammi escono dalla tela.</span>
+    <span data-phrase="find.outside.body.one">La tela è {width}&times;{height} e un fotogramma rivendica un rettangolo che sborda
+      dal bordo. I decodificatori non sono d&rsquo;accordo su cosa farne: alcuni lo
+      tagliano, altri rifiutano il file.</span>
+    <span data-phrase="find.outside.body.many">La tela è {width}&times;{height} e alcuni fotogrammi rivendicano un rettangolo che
+      sborda dal bordo. I decodificatori non sono d&rsquo;accordo su cosa farne: alcuni lo
+      tagliano, altri rifiutano il file.</span>
+    <span data-phrase="find.localpal.title.one">Un fotogramma porta una tavolozza tutta sua, che costa {bytes} &mdash; il {share}
+      del file.</span>
+    <span data-phrase="find.localpal.title.many">{count} fotogrammi portano una tavolozza tutta loro, che costa {bytes} &mdash; il
+      {share} del file.</span>
+    <span data-phrase="find.localpal.body">Una tavolozza propria permette a un fotogramma di usare colori che quella condivisa
+      non ha, e costa tre byte per voce ogni volta che viene scritta. Dove i fotogrammi
+      sono della stessa scena, una sola tavolozza per tutti è insieme più piccola e più
+      stabile da guardare: una tavolozza che sobbalza da un fotogramma all&rsquo;altro è
+      esattamente ciò che è lo sfarfallio delle GIF.</span>
+    <span data-phrase="find.noglobal.title">Non c&rsquo;è una tavolozza globale.</span>
+    <span data-phrase="find.noglobal.body">Non c&rsquo;è niente di male &mdash; qui ogni fotogramma porta la sua &mdash; ma
+      vuol dire che un visualizzatore non ha con cosa dipingere la tela prima che arrivi
+      il primo fotogramma.</span>
+    <span data-phrase="find.waste.title">{entries} voci delle tavolozze non vengono mai usate, e sono {bytes}.</span>
+    <span data-phrase="find.waste.body">Le tavolozze di questo file dichiarano {declared} colori e i pixel ne usano
+      {referenced}. Una tavolozza è sempre lunga una potenza di due, qualunque cosa ci sia
+      dentro, quindi un fotogramma che usa nove colori ne riceve comunque sedici: un
+      po&rsquo; di arrotondamento è inevitabile. Molto di più vuol dire che le tavolozze
+      sono state costruite per un&rsquo;immagine diversa da quella finita dentro.</span>
+    <span data-phrase="find.colors.title.one">Tutta l&rsquo;animazione si disegna con un solo colore.</span>
+    <span data-phrase="find.colors.title.many">Tutta l&rsquo;animazione si disegna con {count} colori.</span>
+    <span data-phrase="find.colors.body.flat">Questo è disegno piatto, ed è ciò per cui la GIF è stata pensata. Un file così si
+      comprime bene e si retina male, quindi se appare punteggiato è la retinatura la cosa
+      da spegnere.</span>
+    <span data-phrase="find.colors.body.photo">Una fotografia, o qualcosa che ne viene. La GIF dà a un fotogramma al massimo 256
+      colori, quindi tutto ciò che ha una sfumatura viene approssimato &mdash; ed è da lì
+      che arrivano la retinatura e il rumore che rendono grande un file.</span>
+    <span data-phrase="find.comment.title">In questo file c&rsquo;è un blocco di commento di {bytes}.</span>
+    <span data-phrase="find.comment.body">I commenti non li mostra nessun visualizzatore e se li porta dietro ogni copia del
+      file. Di solito sono il nome di chi lo ha scritto, e ogni tanto qualcosa che
+      l&rsquo;autore non avrebbe scelto di pubblicare.</span>
+    <span data-phrase="find.xmp.title">Un pacchetto di metadati XMP occupa {bytes} &mdash; il {share} del file.</span>
+    <span data-phrase="find.xmp.body">XMP è il blocco XML che un editor di immagini scrive per registrare quello che ha
+      fatto, e può portare la storia delle modifiche, il software e a volte
+      l&rsquo;autore. Nessun visualizzatore ne disegna niente. Toglierlo non costa nulla
+      all&rsquo;immagine.</span>
+    <span data-phrase="find.icc.title">Un profilo colore ICC occupa {bytes}.</span>
+    <span data-phrase="find.icc.body">Il profilo dice cosa significano come colori i numeri della tavolozza. Quasi nulla
+      ne legge uno da una GIF, quindi di solito è peso per niente &mdash; ma toglierlo può
+      spostare i colori nei visualizzatori che lo leggono.</span>
+    <span data-phrase="find.plaintext.title">In questo file c&rsquo;è un&rsquo;estensione di testo semplice.</span>
+    <span data-phrase="find.plaintext.body">Un blocco che chiede al visualizzatore di disegnare del testo sopra
+      l&rsquo;immagine, in una griglia di celle. Era nella specifica del 1989, non è mai
+      stato implementato da niente, e ogni decodificatore lo salta. Qualunque cosa dica,
+      non comparirà.</span>
+    <span data-phrase="find.appblock.title">C&rsquo;è un blocco applicativo chiamato &laquo;{name}&raquo;, di {bytes}.</span>
+    <span data-phrase="find.appblock.body">I blocchi applicativi sono il modo in cui tutto ciò che sta fuori dalla specifica
+      entra in una GIF. I visualizzatori saltano quelli che non riconoscono, quindi questo
+      è peso a meno che qualcosa di preciso lo stia leggendo.</span>
+    <span data-phrase="find.interlaced.title.one">Un fotogramma è interlacciato.</span>
+    <span data-phrase="find.interlaced.title.many">{count} fotogrammi sono interlacciati.</span>
+    <span data-phrase="find.interlaced.body">Le righe sono salvate in quattro passate perché un&rsquo;immagine in arrivo su una
+      linea lenta mostrasse presto una versione grossolana di sé. Aveva senso nel 1993, si
+      comprime un po&rsquo; peggio che salvare le righe in ordine, e oggi nessun
+      visualizzatore ne trae vantaggio.</span>
+    <span data-phrase="find.version.title">Questo file dice di essere GIF{version} e non GIF89a.</span>
+    <span data-phrase="find.version.body">GIF87a è venuta prima e non ha blocchi di tempo, né trasparenza, né blocco di
+      ripetizione. Un file che si dichiara 87a portandosi dietro una di queste cose è
+      comune &mdash; i decodificatori non controllano &mdash; ma è segno che
+      l&rsquo;intestazione è stata copiata invece che scritta.</span>
+    <span data-phrase="find.bgindex.title">Il colore di sfondo è l&rsquo;indice {index}, e la tavolozza globale ha solo
+      {entries} voci.</span>
+    <span data-phrase="find.bgindex.body">Non andrà in crash nulla &mdash; i visualizzatori usano il trasparente al suo posto
+      &mdash; ma vuol dire che il campo non è mai stato impostato, o è stato impostato per
+      una tavolozza che non è più quella nel file.</span>
+    <span data-phrase="find.aspect.title">Il rapporto d&rsquo;aspetto del pixel è impostato su {ratio}.</span>
+    <span data-phrase="find.aspect.body">Un campo per gli schermi che non avevano pixel quadrati. Ogni visualizzatore moderno
+      lo ignora e disegna il fotogramma alla misura salvata, quindi un file che ci conta
+      apparirà stirato a chi lo ha fatto e normale a tutti gli altri.</span>
+    <span data-phrase="find.clears.title">Il compressore ha azzerato il suo dizionario {count} volte.</span>
+    <span data-phrase="find.clears.body">LZW costruisce un dizionario mentre procede e ci stanno 4096 voci; quando si
+      riempie, il codificatore ricomincia. Una volta per fotogramma è normale &mdash; è
+      così che un fotogramma comincia. Più di così vuol dire che l&rsquo;immagine era
+      abbastanza varia da esaurire il dizionario a metà strada, che è quello che fanno una
+      fotografia o una retinatura pesante, ed è il motivo per cui quei file sono grandi.</span>
+    <span data-phrase="find.identical.title.one">Un fotogramma è identico a quello prima.</span>
+    <span data-phrase="find.identical.title.many">{count} fotogrammi sono identici a quello prima.</span>
+    <span data-phrase="find.identical.body">Costano tutta la loro dimensione compressa e non cambiano niente sullo schermo.
+      Sommare il loro ritardo al fotogramma precedente apparirebbe esattamente uguale e
+      peserebbe meno.</span>
+    <span data-phrase="find.broken.title.one">Un fotogramma non si decodifica del tutto.</span>
+    <span data-phrase="find.broken.title.many">{count} fotogrammi non si decodificano del tutto.</span>
+    <span data-phrase="find.broken.body.short">I dati compressi finiscono prima che il fotogramma sia pieno. Un visualizzatore
+      disegnerà quello che può e lascerà vuoto il resto del rettangolo.</span>
     <span data-phrase="net.clean">La tua GIF non è andata da nessuna parte.
       {total} file caricati. {platform}</span>
     <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo

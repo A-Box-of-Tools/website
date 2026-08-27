@@ -166,6 +166,152 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.notrailer">Dosya kapanış baytı olmadan bitiyor, yani eksik &mdash; erken kesilmiş bir indirme
+      ya da yarıda kalmış bir dosya.</span>
+    <span data-phrase="parse.unknownblock">{at} numaralı bayt 0x{marker}, ve bu biçimdeki hiçbir bloğun başı değil. Ondan
+      sonrası göz ardı edildi.</span>
+    <span data-phrase="parse.twocontrols">Arka arkaya iki grafik denetim bloğu, {first} ve {second} konumunda. İlki hiçbir
+      görüntüyü anlatmıyor ve hiçbir şey yapmıyor.</span>
+    <span data-phrase="parse.midblock">Dosya, {at} konumunda başlayan bir bloğun ortasında bitiyor. {detail}.</span>
+    <span data-phrase="decode.codefirst">{code} kodu, sözlükte henüz hiçbir şey yokken ilk sırada geldi. Bir görüntüleyici
+      yapabildiğini çizer, dikdörtgenin kalanını boş bırakır.</span>
+    <span data-phrase="decode.codemissing">{code} kodu sözlükteki {code} numaralı girdiyi gösteriyor, oysa yalnız {entries}
+      girdi var. Bir görüntüleyici yapabildiğini çizer, dikdörtgenin kalanını boş bırakır.</span>
+    <span data-phrase="find.noframes.title">Bu dosyada hiç kare yok.</span>
+    <span data-phrase="find.noframes.body">Başlık okunabildi, ama ardından bir görüntü bloğu gelmedi. Bu her ne ise, hiçbir
+      görüntüleyici ondan bir şey çizmeyecek.</span>
+    <span data-phrase="find.unclean.title">Dosya temiz bitmiyor.</span>
+    <span data-phrase="find.trailing.title">Dosyanın bitiminden sonra {bytes} duruyor.</span>
+    <span data-phrase="find.trailing.body">Her çözücü kapanış baytında durur, yani bunlar hiç okunmaz ve hiç çizilmez.
+      Genellikle ilkine eklenmiş ikinci bir dosyadır ya da kendi sınırını aşarak yazmış
+      bir programdır. Dosyayı kapanış baytından kesmek hiçbir şey kaybettirmez.</span>
+    <span data-phrase="find.clamped.title.one">Bir kare 0,02 saniyeden kısa durmak istiyor, ve bunu hiçbir tarayıcı yapmaz.</span>
+    <span data-phrase="find.clamped.title.many">{count} kare 0,02 saniyeden kısa durmak istiyor, ve bunu hiçbir tarayıcı yapmaz.</span>
+    <span data-phrase="find.clamped.body">Netscape&rsquo;ten bu yana her tarayıcı, saniyenin iki yüzde birinden kısa bir
+      gecikmeyi ona yuvarlar &mdash; 1996&rsquo;da o zamanın dönen dünya küreleri için
+      yazılmış ve hiç kaldırılmamış bir kural. Yani bu canlandırma {nominal} sürdüğünü
+      söylüyor, gerçekte {real} sürüyor, aşağı yukarı {factor} kat daha yavaş. 0,01 yerine
+      0,02 yazmak ona istediği hızı verir.</span>
+    <span data-phrase="find.zerodelay.title">Her karenin gecikmesi sıfır.</span>
+    <span data-phrase="find.zerodelay.body">Dosya hiçbir süre bildirmiyor, dolayısıyla hangi hızda oynayacağı tümüyle
+      görüntüleyiciye kalmış &mdash; genellikle saniyede on kare, ama bunu güvence altına
+      alan bir şey yok. İki tarayıcı bunu iki farklı hızda oynatabilir ve ikisi de haklı
+      olur.</span>
+    <span data-phrase="find.uneven.title">Karelerin zamanlaması düzenli değil: {shortest} ile {longest} arasında {delays}
+      farklı gecikme.</span>
+    <span data-phrase="find.uneven.body">Sonda uzun tutulan bir kare bilinçlidir ve yaygındır. Ortalara serpilmiş gecikmeler
+      ise genellikle bir videodan kare düşüren ve boşluğu kapatmak için komşularını uzatan
+      bir dönüştürücüden gelir.</span>
+    <span data-phrase="find.noloop.title">Döngü bloğu yok, yani bu bir kez oynayıp duruyor.</span>
+    <span data-phrase="find.noloop.body">Döngü, GIF belirtiminin parçası değildir. Netscape&rsquo;in 1995&rsquo;te icat
+      ettiği ve herkesin yine de uyguladığı bir bloktur; onsuz bir dosya, her tarayıcının
+      tam olarak bir kez gösterdiği dosyadır. Burada döngü amaçlanmışsa, bunu yazan
+      program bloğu koymayı unutmuş.</span>
+    <span data-phrase="find.loopcount.title.one">Bu bir kez oynayıp duruyor.</span>
+    <span data-phrase="find.loopcount.title.many">Bu {count} kez oynayıp duruyor.</span>
+    <span data-phrase="find.loopcount.body">Döngü bloğu, her zamanki sıfır yerine &mdash; ki sıfır sonsuz demek &mdash; bir sayı
+      belirtiyor. Bazı eski görüntüleyiciler sayıyı göz ardı edip yine de sonsuz döner.</span>
+    <span data-phrase="find.allfull.title">Her kare tuvalin tamamını yeniden çiziyor.</span>
+    <span data-phrase="find.allfull.body">Bir GIF, kareden yalnızca bir öncekine göre değişen dikdörtgeni saklayabilir;
+      neredeyse durağan bir pencerenin ekran kaydının küçük olabilmesinin nedeni budur.
+      Burada bunu yapan yok: her kare tuvalin tamamı, {width}&times;{height}. Birbiriyle
+      ilgisiz resimlerden yapılmış kareler için doğrudur; çekilmiş ya da kaydedilmiş,
+      görüntünün büyük bölümünün kımıldamadığı her şey içinse boşa harcanmış yerdir.</span>
+    <span data-phrase="find.somefull.title.one">{total} kareden biri tuvalin tamamını yeniden çiziyor; kalanlar yalnızca değişen
+      kısmı saklıyor.</span>
+    <span data-phrase="find.somefull.title.many">{total} kareden {count} tanesi tuvalin tamamını yeniden çiziyor; kalanlar yalnızca
+      değişen kısmı saklıyor.</span>
+    <span data-phrase="find.somefull.body">İyi eniyilenmiş bir GIF böyle görünür. Tam tuval olanlar genellikle ilk karedir ve
+      görüntünün baştan sona değiştiği her noktadır.</span>
+    <span data-phrase="find.nonefull.title">Hiçbir kare tuvalin tamamını yeniden çizmiyor.</span>
+    <span data-phrase="find.nonefull.body">İlkinden sonraki her kare yalnızca değişen dikdörtgeni saklıyor; biçim böyle
+      kullanılır ve bu dosyanın bu kadar küçük olmasının nedeni de budur.</span>
+    <span data-phrase="find.outside.title.one">Bir kare tuvalin dışına taşıyor.</span>
+    <span data-phrase="find.outside.title.many">{count} kare tuvalin dışına taşıyor.</span>
+    <span data-phrase="find.outside.body.one">Tuval {width}&times;{height} ve bir kare, kenardan taşan bir dikdörtgen talep
+      ediyor. Çözücüler taşan kısımla ne yapılacağı konusunda anlaşamaz: kimi kırpar, kimi
+      dosyayı geri çevirir.</span>
+    <span data-phrase="find.outside.body.many">Tuval {width}&times;{height} ve bazı kareler kenardan taşan bir dikdörtgen talep
+      ediyor. Çözücüler taşan kısımla ne yapılacağı konusunda anlaşamaz: kimi kırpar, kimi
+      dosyayı geri çevirir.</span>
+    <span data-phrase="find.localpal.title.one">Bir kare kendi renk tablosunu taşıyor; bu {bytes} tutuyor &mdash; dosyanın {share}
+      kadarı.</span>
+    <span data-phrase="find.localpal.title.many">{count} kare kendi renk tablosunu taşıyor; bu {bytes} tutuyor &mdash; dosyanın
+      {share} kadarı.</span>
+    <span data-phrase="find.localpal.body">Kendine ait bir palet, kareye ortak tabloda bulunmayan renkleri kullanma imkânı
+      verir ve yazıldığı her seferde girdi başına üç bayta mal olur. Kareler aynı sahneye
+      aitse, hepsi için tek bir tablo hem daha küçüktür hem de izlerken daha durgundur:
+      kareler arasında sıçrayan bir palet, GIF titremesi dediğimiz şeyin ta kendisidir.</span>
+    <span data-phrase="find.noglobal.title">Genel renk tablosu yok.</span>
+    <span data-phrase="find.noglobal.body">Bunda yanlış bir şey yok &mdash; burada her kare kendi tablosunu getiriyor &mdash;
+      ama ilk kare gelmeden önce görüntüleyicinin tuvali boyayacak hiçbir şeyi olmadığı
+      anlamına gelir.</span>
+    <span data-phrase="find.waste.title">Renk tablolarındaki {entries} girdi hiç kullanılmıyor; bu {bytes} ediyor.</span>
+    <span data-phrase="find.waste.body">Bu dosyadaki tablolar {declared} renk bildiriyor, pikseller ise bunların
+      {referenced} tanesine başvuruyor. Bir renk tablosu, içinde ne olursa olsun ikinin
+      kuvveti uzunluğundadır; dokuz renk kullanan bir kare yine de on altı girdi alır,
+      yani bir miktar yukarı yuvarlama kaçınılmazdır. Bundan çok fazlası, paletlerin
+      karede sonunda yer alandan başka bir görüntü için kurulduğu anlamına gelir.</span>
+    <span data-phrase="find.colors.title.one">Tüm canlandırma tek renkle çiziliyor.</span>
+    <span data-phrase="find.colors.title.many">Tüm canlandırma {count} renkle çiziliyor.</span>
+    <span data-phrase="find.colors.body.flat">Bu düz bir çizim, ve GIF tam bunun için tasarlandı. Böyle bir dosya iyi sıkışır,
+      taramayı ise kötü kaldırır; benekli görünüyorsa kapatılması gereken şey taramadır.</span>
+    <span data-phrase="find.colors.body.photo">Bir fotoğraf ya da fotoğraftan üretilmiş bir şey. GIF bir kareye en çok 256 renk
+      verir, dolayısıyla içinde geçiş olan her şey yaklaşık olarak veriliyor &mdash;
+      tarama da, dosyayı büyüten gürültü de buradan gelir.</span>
+    <span data-phrase="find.comment.title">Bu dosyada {bytes} büyüklüğünde bir yorum bloğu var.</span>
+    <span data-phrase="find.comment.body">Yorumları hiçbir görüntüleyici göstermez ve dosyanın her kopyası onları taşır.
+      Genellikle dosyayı yazan programın adıdır, arada bir de yazarının yayımlamayı
+      seçmeyeceği bir şeydir.</span>
+    <span data-phrase="find.xmp.title">Bir XMP üstveri paketi {bytes} yer kaplıyor &mdash; dosyanın {share} kadarı.</span>
+    <span data-phrase="find.xmp.body">XMP, bir görüntü düzenleyicinin yaptıklarını kaydetmek için yazdığı XML bloğudur;
+      düzenleme geçmişini, yazılımı ve bazen yazarı taşıyabilir. Hiçbir görüntüleyici
+      bundan bir şey çizmez. Kaldırmak görüntüye hiçbir şeye mal olmaz.</span>
+    <span data-phrase="find.icc.title">Bir ICC renk profili {bytes} yer kaplıyor.</span>
+    <span data-phrase="find.icc.body">Profil, paletteki sayıların renk olarak ne anlama geldiğini söyler. Bir GIF&rsquo;in
+      içinden bunu okuyan neredeyse hiçbir şey yoktur, yani çoğunlukla boşuna ağırlıktır
+      &mdash; ama kaldırmak, okuyan görüntüleyicilerde renkleri kaydırabilir.</span>
+    <span data-phrase="find.plaintext.title">Bu dosyada düz metin uzantısı var.</span>
+    <span data-phrase="find.plaintext.body">Görüntüleyiciden, resmin üzerine hücrelerden oluşan bir ızgarada metin çizmesini
+      isteyen bir blok. 1989 belirtiminde vardı, hiçbir şey tarafından uygulanmadı ve her
+      çözücü onu atlar. İçinde ne yazarsa yazsın görünmeyecek.</span>
+    <span data-phrase="find.appblock.title">&ldquo;{name}&rdquo; adında, {bytes} büyüklüğünde bir uygulama bloğu var.</span>
+    <span data-phrase="find.appblock.body">Uygulama blokları, belirtimin dışında kalan her şeyin bir GIF&rsquo;e girme yoludur.
+      Görüntüleyiciler tanımadıklarını atlar, yani belirli bir şey bunu okumuyorsa bu blok
+      yalnızca ağırlıktır.</span>
+    <span data-phrase="find.interlaced.title.one">Bir kare taramalı saklanmış.</span>
+    <span data-phrase="find.interlaced.title.many">{count} kare taramalı saklanmış.</span>
+    <span data-phrase="find.interlaced.body">Satırlar dört geçişte saklanır; böylece yavaş bir hat üzerinden gelen bir görüntü,
+      kendisinin kaba bir sürümünü erkenden gösterirdi. 1993&rsquo;te anlamlıydı,
+      satırları sırayla saklamaktan biraz daha kötü sıkışır, ve bugün hiçbir görüntüleyici
+      bundan kazançlı çıkmaz.</span>
+    <span data-phrase="find.version.title">Bu dosya GIF89a değil, GIF{version} olduğunu söylüyor.</span>
+    <span data-phrase="find.version.body">GIF87a önce geldi; zaman blokları, saydamlık ve döngü bloğu yoktur. Bunlardan
+      herhangi birini taşırken 87a olduğunu bildiren bir dosya yaygındır &mdash; çözücüler
+      denetlemez &mdash; ama bu, başlığın yazılmak yerine kopyalandığının işaretidir.</span>
+    <span data-phrase="find.bgindex.title">Arka plan rengi {index} numaralı girdi, oysa genel tabloda yalnızca {entries} girdi
+      var.</span>
+    <span data-phrase="find.bgindex.body">Hiçbir şey çökmez &mdash; görüntüleyiciler onun yerine saydamı kullanır &mdash; ama
+      bu, alanın hiç doldurulmadığı ya da artık dosyadaki olmayan bir palet için
+      doldurulduğu anlamına gelir.</span>
+    <span data-phrase="find.aspect.title">Piksel en boy oranı {ratio} olarak ayarlanmış.</span>
+    <span data-phrase="find.aspect.body">Kare piksele sahip olmayan ekranlar için bir alan. Bugünkü her görüntüleyici bunu
+      göz ardı eder ve kareyi saklandığı boyutta çizer; buna güvenen bir dosya, yapan
+      kişiye gerilmiş, herkese normal görünür.</span>
+    <span data-phrase="find.clears.title">Sıkıştırıcı sözlüğünü {count} kez sıfırladı.</span>
+    <span data-phrase="find.clears.body">LZW ilerledikçe bir sözlük kurar ve 4.096 girdi alır; dolduğunda kodlayıcı baştan
+      başlar. Kare başına bir kez normaldir &mdash; bir kare böyle başlar. Fazlası,
+      görüntünün sözlüğü yarı yolda tüketecek kadar çeşitli olduğu anlamına gelir; bir
+      fotoğraf ya da ağır tarama bunu yapar, ve o dosyaların büyük olmasının nedeni budur.</span>
+    <span data-phrase="find.identical.title.one">Bir kare bir öncekiyle birebir aynı.</span>
+    <span data-phrase="find.identical.title.many">{count} kare bir öncekiyle birebir aynı.</span>
+    <span data-phrase="find.identical.body">Sıkıştırılmış boyutlarının tamamına mal oluyorlar ve ekranda hiçbir şeyi
+      değiştirmiyorlar. Gecikmelerini bunun yerine önceki kareye eklemek tıpatıp aynı
+      görünür ve daha küçük olurdu.</span>
+    <span data-phrase="find.broken.title.one">Bir kare tam olarak çözülemiyor.</span>
+    <span data-phrase="find.broken.title.many">{count} kare tam olarak çözülemiyor.</span>
+    <span data-phrase="find.broken.body.short">Sıkıştırılmış veri, kare dolmadan bitiyor. Bir görüntüleyici yapabildiğini çizer,
+      dikdörtgenin kalanını boş bırakır.</span>
     <span data-phrase="net.clean">GIF'iniz hiçbir yere gitmedi. {total} dosya
       yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

@@ -160,6 +160,154 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.notrailer">O arquivo termina sem o byte de encerramento, então está incompleto &mdash; um
+      download que parou cedo, ou um arquivo cortado.</span>
+    <span data-phrase="parse.unknownblock">O byte {at} vale 0x{marker}, que não começa nenhum bloco que este formato tenha.
+      Tudo depois dele foi ignorado.</span>
+    <span data-phrase="parse.twocontrols">Dois blocos de controle gráfico em sequência, em {first} e {second}. O primeiro não
+      descreve imagem nenhuma e não faz nada.</span>
+    <span data-phrase="parse.midblock">O arquivo termina no meio de um bloco que começa em {at}. {detail}.</span>
+    <span data-phrase="decode.codefirst">O código {code} veio primeiro, antes de o dicionário ter qualquer coisa. Um
+      visualizador desenha o que consegue e deixa o resto do retângulo em branco.</span>
+    <span data-phrase="decode.codemissing">O código {code} aponta para a entrada {code} do dicionário, e só existem {entries}.
+      Um visualizador desenha o que consegue e deixa o resto do retângulo em branco.</span>
+    <span data-phrase="find.noframes.title">Não há quadros neste arquivo.</span>
+    <span data-phrase="find.noframes.body">O cabeçalho foi lido, mas não veio nenhum bloco de imagem depois. Seja o que for,
+      nenhum visualizador vai desenhar nada daqui.</span>
+    <span data-phrase="find.unclean.title">O arquivo não termina de forma limpa.</span>
+    <span data-phrase="find.trailing.title">{bytes} ficam depois do fim do arquivo.</span>
+    <span data-phrase="find.trailing.body">Todo decodificador para no byte de encerramento, então esses nunca são lidos nem
+      desenhados. Costumam ser um segundo arquivo colado no primeiro, ou um programa que
+      escreveu além de si mesmo. Cortar o arquivo no byte de encerramento não perde nada.</span>
+    <span data-phrase="find.clamped.title.one">Um quadro pede para ficar menos de 0,02 segundo, e nenhum navegador vai fazer isso.</span>
+    <span data-phrase="find.clamped.title.many">{count} quadros pedem para ficar menos de 0,02 segundo, e nenhum navegador vai fazer
+      isso.</span>
+    <span data-phrase="find.clamped.body">Todo navegador desde o Netscape arredonda para dez qualquer atraso abaixo de dois
+      centésimos de segundo &mdash; uma regra escrita em 1996 para os globos girando da
+      época e nunca removida. Então esta animação diz durar {nominal} e na verdade dura
+      {real}, cerca de {factor} vezes mais devagar. Escrever 0,02 em vez de 0,01 dá a ela
+      a velocidade que está pedindo.</span>
+    <span data-phrase="find.zerodelay.title">Todo quadro tem atraso zero.</span>
+    <span data-phrase="find.zerodelay.body">O arquivo não dá tempo nenhum, então a velocidade fica inteiramente com o
+      visualizador &mdash; normalmente dez quadros por segundo, mas nada garante. Dois
+      navegadores podem tocar isto em duas velocidades diferentes e os dois estarem
+      certos.</span>
+    <span data-phrase="find.uneven.title">Os quadros não têm ritmo parelho: {delays} atrasos diferentes, de {shortest} a
+      {longest}.</span>
+    <span data-phrase="find.uneven.body">Um último quadro segurado por mais tempo é proposital e comum. Atrasos espalhados
+      pelo meio costumam vir de um conversor que descartou quadros de um vídeo e esticou
+      os vizinhos para cobrir o buraco.</span>
+    <span data-phrase="find.noloop.title">Não há bloco de repetição, então isto toca uma vez e para.</span>
+    <span data-phrase="find.noloop.body">Repetir não faz parte da especificação do GIF. É um bloco que a Netscape inventou em
+      1995 e que todo mundo implementou assim mesmo; um arquivo sem ele é um arquivo que
+      todo navegador mostra exatamente uma vez. Se a ideia era repetir, quem escreveu
+      deixou o bloco de fora.</span>
+    <span data-phrase="find.loopcount.title.one">Isto toca uma vez e então para.</span>
+    <span data-phrase="find.loopcount.title.many">Isto toca {count} vezes e então para.</span>
+    <span data-phrase="find.loopcount.body">O bloco de repetição nomeia uma contagem em vez do zero de sempre, que quer dizer
+      para sempre. Alguns visualizadores antigos ignoram a contagem e repetem assim mesmo.</span>
+    <span data-phrase="find.allfull.title">Todo quadro redesenha a tela inteira.</span>
+    <span data-phrase="find.allfull.body">Um GIF pode guardar de um quadro só o retângulo que mudou desde o anterior, e é por
+      isso que a gravação de uma janela quase parada pode ser pequena. Aqui nenhum faz
+      isso: cada quadro é a tela inteira, {width}&times;{height}. Isso está certo para
+      imagens sem relação entre si, e é espaço jogado fora em qualquer coisa filmada ou
+      gravada, onde a maior parte da imagem não se mexe.</span>
+    <span data-phrase="find.somefull.title.one">Um quadro de {total} redesenha a tela inteira; o resto guarda só a parte que mudou.</span>
+    <span data-phrase="find.somefull.title.many">{count} quadros de {total} redesenham a tela inteira; o resto guarda só a parte que
+      mudou.</span>
+    <span data-phrase="find.somefull.body">É assim que um GIF otimizado se parece. Os de tela inteira costumam ser o primeiro
+      quadro e cada ponto em que a imagem mudou por completo.</span>
+    <span data-phrase="find.nonefull.title">Nenhum quadro redesenha a tela inteira.</span>
+    <span data-phrase="find.nonefull.body">Cada quadro depois do primeiro guarda só o retângulo que mudou, que é o formato
+      usado direito e a razão de este arquivo ser tão pequeno quanto é.</span>
+    <span data-phrase="find.outside.title.one">Um quadro passa da tela.</span>
+    <span data-phrase="find.outside.title.many">{count} quadros passam da tela.</span>
+    <span data-phrase="find.outside.body.one">A tela é {width}&times;{height} e um quadro reivindica um retângulo que sai da
+      borda. Os decodificadores discordam sobre o que fazer com a sobra: uns cortam,
+      outros recusam o arquivo.</span>
+    <span data-phrase="find.outside.body.many">A tela é {width}&times;{height} e alguns quadros reivindicam um retângulo que sai da
+      borda. Os decodificadores discordam sobre o que fazer com a sobra: uns cortam,
+      outros recusam o arquivo.</span>
+    <span data-phrase="find.localpal.title.one">Um quadro carrega uma tabela de cores própria, que custa {bytes} &mdash; {share} do
+      arquivo.</span>
+    <span data-phrase="find.localpal.title.many">{count} quadros carregam uma tabela de cores própria, que custa {bytes} &mdash;
+      {share} do arquivo.</span>
+    <span data-phrase="find.localpal.body">Uma paleta própria deixa um quadro usar cores que a tabela compartilhada não tem, e
+      custa três bytes por entrada toda vez que é escrita. Onde os quadros são da mesma
+      cena, uma tabela para todos é ao mesmo tempo menor e mais estável de assistir: uma
+      paleta que sacode de um quadro para o outro é exatamente o que é a tremeliqueira do
+      GIF.</span>
+    <span data-phrase="find.noglobal.title">Não há tabela de cores global.</span>
+    <span data-phrase="find.noglobal.body">Não há nada de errado nisso &mdash; aqui cada quadro traz a sua &mdash; mas quer
+      dizer que um visualizador não tem com o que pintar a tela antes de o primeiro quadro
+      chegar.</span>
+    <span data-phrase="find.waste.title">{entries} entradas das tabelas de cores nunca são usadas, o que dá {bytes}.</span>
+    <span data-phrase="find.waste.body">As tabelas deste arquivo declaram {declared} cores e os pixels usam {referenced}
+      delas. Uma tabela de cores tem sempre uma potência de dois entradas, seja lá o que
+      houver nela, então um quadro que usa nove cores ganha dezesseis mesmo assim; algum
+      arredondamento é inevitável. Muito mais que isso quer dizer que as paletas foram
+      feitas para outra imagem, não a que acabou dentro.</span>
+    <span data-phrase="find.colors.title.one">A animação inteira desenha com uma cor só.</span>
+    <span data-phrase="find.colors.title.many">A animação inteira desenha com {count} cores.</span>
+    <span data-phrase="find.colors.body.flat">Isso é arte chapada, e é para isso que o GIF foi feito. Um arquivo assim comprime
+      bem e pontilha mal, então se está parecendo salpicado o pontilhado é o que se deve
+      desligar.</span>
+    <span data-phrase="find.colors.body.photo">Uma fotografia, ou algo saído de uma. O GIF dá a um quadro no máximo 256 cores,
+      então qualquer coisa com um degradê está sendo aproximada &mdash; e é daí que vêm o
+      pontilhado e o ruído que deixam um arquivo grande.</span>
+    <span data-phrase="find.comment.title">Há um bloco de comentário de {bytes} neste arquivo.</span>
+    <span data-phrase="find.comment.body">Comentários não são mostrados por visualizador nenhum e vão junto em toda cópia do
+      arquivo. Costumam ser o nome do que o escreveu, e vez ou outra algo que o autor não
+      teria escolhido publicar.</span>
+    <span data-phrase="find.xmp.title">Um pacote de metadados XMP ocupa {bytes} &mdash; {share} do arquivo.</span>
+    <span data-phrase="find.xmp.body">XMP é o bloco XML que um editor de imagens escreve para registrar o que fez, e pode
+      carregar o histórico de edições, o programa e às vezes o autor. Nenhum visualizador
+      desenha nada disso. Tirar não custa nada à imagem.</span>
+    <span data-phrase="find.icc.title">Um perfil de cor ICC ocupa {bytes}.</span>
+    <span data-phrase="find.icc.body">O perfil diz o que os números da paleta significam como cores. Quase nada lê um
+      desses de dentro de um GIF, então costuma ser peso à toa &mdash; mas tirar pode
+      deslocar as cores nos visualizadores que leem.</span>
+    <span data-phrase="find.plaintext.title">Há uma extensão de texto simples neste arquivo.</span>
+    <span data-phrase="find.plaintext.body">Um bloco que pede ao visualizador para desenhar texto por cima da imagem, numa grade
+      de células. Estava na especificação de 1989, nunca foi implementado por nada, e todo
+      decodificador pula. O que quer que diga, não vai aparecer.</span>
+    <span data-phrase="find.appblock.title">Há um bloco de aplicativo chamado &ldquo;{name}&rdquo;, de {bytes}.</span>
+    <span data-phrase="find.appblock.body">Blocos de aplicativo são o jeito pelo qual tudo que está fora da especificação entra
+      num GIF. Visualizadores pulam os que não reconhecem, então este é peso a menos que
+      algo específico esteja lendo.</span>
+    <span data-phrase="find.interlaced.title.one">Um quadro é entrelaçado.</span>
+    <span data-phrase="find.interlaced.title.many">{count} quadros são entrelaçados.</span>
+    <span data-phrase="find.interlaced.body">As linhas ficam guardadas em quatro passadas para que uma imagem chegando por uma
+      linha lenta mostrasse cedo uma versão grosseira de si mesma. Fazia sentido em 1993,
+      comprime um pouco pior que guardar as linhas em ordem, e hoje nenhum visualizador
+      ganha com isso.</span>
+    <span data-phrase="find.version.title">Este arquivo diz ser GIF{version} e não GIF89a.</span>
+    <span data-phrase="find.version.body">O GIF87a veio primeiro e não tem blocos de tempo, nem transparência, nem bloco de
+      repetição. Um arquivo que se declara 87a carregando qualquer uma dessas coisas é
+      comum &mdash; decodificadores não conferem &mdash; mas é sinal de que o cabeçalho
+      foi copiado em vez de escrito.</span>
+    <span data-phrase="find.bgindex.title">A cor de fundo é o índice {index}, e a tabela global só tem {entries} entradas.</span>
+    <span data-phrase="find.bgindex.body">Nada vai quebrar &mdash; visualizadores usam transparente no lugar &mdash; mas quer
+      dizer que o campo nunca foi preenchido, ou foi preenchido para uma paleta que já não
+      é a do arquivo.</span>
+    <span data-phrase="find.aspect.title">A proporção de pixel está definida como {ratio}.</span>
+    <span data-phrase="find.aspect.body">Um campo para telas que não tinham pixels quadrados. Todo visualizador moderno
+      ignora e desenha o quadro no tamanho guardado, então um arquivo que conta com isso
+      vai parecer esticado para quem o fez e normal para todo mundo.</span>
+    <span data-phrase="find.clears.title">O compressor zerou o dicionário {count} vezes.</span>
+    <span data-phrase="find.clears.body">O LZW monta um dicionário conforme anda e cabem 4.096 entradas; quando enche, o
+      codificador recomeça. Uma vez por quadro é normal &mdash; é assim que um quadro
+      começa. Mais que isso quer dizer que a imagem era variada o bastante para esgotar o
+      dicionário no meio do caminho, que é o que uma fotografia ou um pontilhado pesado
+      fazem, e é por isso que esses arquivos são grandes.</span>
+    <span data-phrase="find.identical.title.one">Um quadro é idêntico ao anterior.</span>
+    <span data-phrase="find.identical.title.many">{count} quadros são idênticos ao anterior.</span>
+    <span data-phrase="find.identical.body">Eles custam todo o seu tamanho comprimido e não mudam nada na tela. Somar o atraso
+      deles ao quadro anterior ficaria exatamente igual e seria menor.</span>
+    <span data-phrase="find.broken.title.one">Um quadro não decodifica por completo.</span>
+    <span data-phrase="find.broken.title.many">{count} quadros não decodificam por completo.</span>
+    <span data-phrase="find.broken.body.short">Os dados comprimidos acabam antes de o quadro encher. Um visualizador desenha o que
+      consegue e deixa o resto do retângulo em branco.</span>
     <span data-phrase="net.clean">O seu GIF não foi a lugar nenhum. {total}
       arquivos carregados. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta
