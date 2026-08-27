@@ -357,16 +357,6 @@
 {% endfor %}    </ol>
   </details>
 
-  <h2 id="faq-h">{{ ui.tool.questions_heading }}</h2>
-  <div class="faq-list">
-{% for entry in tool.faq %}    <details>
-      <summary>{{ entry.q }}</summary>
-      <p>
-{{ entry.a }}
-      </p>
-    </details>
-{% endfor %}  </div>
-
   <!--
     The guide for this tool, if one has been written. The steps above say which
     button to press; the guide is for the reader who wants to know what the
@@ -378,6 +368,13 @@
     Which guide belongs to which tool is one line - `tool` in that guide's
     page.toml - and the build turns it into both halves of the link, this one
     and the one back. A tool with no guide yet renders nothing here.
+
+    It sits here, directly under the steps, rather than at the foot of the
+    questions where it used to. The questions are a list of things that might
+    be wrong; the guide is the one thing on this page for a reader who is not
+    stuck and wants to understand the setting anyway, and putting it behind ten
+    collapsed questions asked them to scroll past every possible problem to
+    find it.
   -->
 {% if guide %}  <h2 id="guide-h">{{ ui.tool.guide_heading }}</h2>
   <p class="tool-guide">
@@ -393,11 +390,17 @@
   usually wants the neighbouring one, and until this block existed the only
   route to it was the hub.
 
-  It is its own section rather than the tail of the questions, because a
-  reader who has finished with the tool scrolls past the FAQ, and a bare
-  heading inside it read as one more thing the FAQ had to say. The whole tile
-  is the link, not the name inside it: this is the one place on the page where
-  the tagline is there to be clicked rather than read.
+  It is its own section rather than the tail of the questions, because a bare
+  heading inside the FAQ read as one more thing the FAQ had to say. The whole
+  tile is the link, not the name inside it: this is the one place on the page
+  where the tagline is there to be clicked rather than read.
+
+  It now comes before the questions rather than after them. The trade is real
+  and worth naming: a reader who arrived with a problem meets a row of other
+  tools before the answer to it. What it buys is that the two things on this
+  page which lead somewhere useful - the guide and the neighbouring tools - are
+  both reachable without scrolling a list of ten questions that are collapsed
+  and, for most readers, not the reason they came.
 
   Which tools these are is worked out in related_tools() in build.py from the
   hub's own category order, so there is no second list of "related" tools to
@@ -421,6 +424,31 @@
 {% endfor %}  </ul>
 </section>
 {% endif %}
+<!--
+  The questions, last of the written part.
+
+  They are the longest thing on the page and the least of it: ten collapsed
+  summaries, most of which a given reader will never open, answering the
+  problems somebody might arrive with rather than the job everybody arrived
+  for. Above them now sit the steps, the guide and the neighbouring tools -
+  three short blocks that are worth reading straight through - and a reader who
+  does have one of these questions still finds it by the heading, which is what
+  a heading is for.
+
+  Still the same [[faq]] entries that render as FAQPage structured data in the
+  head, so the two agree by construction wherever this block sits.
+-->
+<section class="faq" aria-labelledby="faq-h">
+  <h2 id="faq-h">{{ ui.tool.questions_heading }}</h2>
+  <div class="faq-list">
+{% for entry in tool.faq %}    <details>
+      <summary>{{ entry.q }}</summary>
+      <p>
+{{ entry.a }}
+      </p>
+    </details>
+{% endfor %}  </div>
+</section>
 
 {% include "partials/footer.html" %}
 
