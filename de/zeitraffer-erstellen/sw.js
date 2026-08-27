@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/zeitraffer-erstellen/:';
-const CACHE_NAME=CACHE_PREFIX+'7a09f1c22f';
+const CACHE_NAME=CACHE_PREFIX+'80582eb4ff';
 const ASSETS=[
 './',
 'index.html',

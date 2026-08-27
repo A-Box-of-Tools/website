@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/svg-in-png-umwandeln/:';
-const CACHE_NAME=CACHE_PREFIX+'686458f255';
+const CACHE_NAME=CACHE_PREFIX+'11d64281d8';
 const ASSETS=[
 './',
 'index.html',

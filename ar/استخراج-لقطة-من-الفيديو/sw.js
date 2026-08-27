@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/استخراج-لقطة-من-الفيديو/:';
-const CACHE_NAME=CACHE_PREFIX+'c9a44e7282';
+const CACHE_NAME=CACHE_PREFIX+'8b1a2ad5e6';
 const ASSETS=[
 './',
 'index.html',

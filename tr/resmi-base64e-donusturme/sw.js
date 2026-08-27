@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resmi-base64e-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'bc9607108e';
+const CACHE_NAME=CACHE_PREFIX+'671b2ccfeb';
 const ASSETS=[
 './',
 'index.html',

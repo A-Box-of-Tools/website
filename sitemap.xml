@@ -487,9 +487,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/about/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/contact/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -500,7 +506,7 @@
   </url>
   <url>
     <loc>https://abox.tools/terms/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -979,6 +985,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ar/عن-الموقع/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/اتصل-بنا/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ar/الخصوصية/</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>yearly</changefreq>
@@ -986,7 +1004,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ar/شروط-الاستخدام/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -1465,9 +1483,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/de/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/de/ueber-diese-seite/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/kontakt/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -1478,7 +1502,7 @@
   </url>
   <url>
     <loc>https://abox.tools/de/nutzungsbedingungen/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -1957,9 +1981,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/es/hoja-de-ruta/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/es/sobre-este-sitio/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/contacto/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -1970,7 +2000,7 @@
   </url>
   <url>
     <loc>https://abox.tools/es/terminos/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -2449,9 +2479,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/fr/feuille-de-route/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/fr/a-propos/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/contact/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -2462,7 +2498,7 @@
   </url>
   <url>
     <loc>https://abox.tools/fr/conditions-d-utilisation/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -2941,9 +2977,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/hi/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/hi/about/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/contact/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -2954,7 +2996,7 @@
   </url>
   <url>
     <loc>https://abox.tools/hi/terms/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -3433,6 +3475,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/id/tentang/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/kontak/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/id/privasi/</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>yearly</changefreq>
@@ -3440,7 +3494,7 @@
   </url>
   <url>
     <loc>https://abox.tools/id/ketentuan-penggunaan/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -3919,9 +3973,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/it/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/it/chi-siamo/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/contatti/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -3932,7 +3992,7 @@
   </url>
   <url>
     <loc>https://abox.tools/it/termini/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -4411,9 +4471,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ja/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/ja/about/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/contact/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -4424,7 +4490,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ja/terms/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -4903,9 +4969,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ko/로드맵/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/ko/소개/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/문의/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -4916,7 +4988,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ko/이용약관/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -5395,9 +5467,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/nl/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/nl/over-deze-site/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/contact/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -5408,7 +5486,7 @@
   </url>
   <url>
     <loc>https://abox.tools/nl/voorwaarden/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -5887,9 +5965,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/pt/roteiro/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/pt/sobre/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/contato/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -5900,7 +5984,7 @@
   </url>
   <url>
     <loc>https://abox.tools/pt/termos/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -6379,6 +6463,18 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/tr/hakkinda/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/iletisim/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/tr/gizlilik/</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>yearly</changefreq>
@@ -6386,7 +6482,7 @@
   </url>
   <url>
     <loc>https://abox.tools/tr/kullanim-kosullari/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -6865,9 +6961,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/zh/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/zh/about/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/contact/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -6878,7 +6980,7 @@
   </url>
   <url>
     <loc>https://abox.tools/zh/terms/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -7357,9 +7459,15 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://abox.tools/zh-TW/roadmap/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://abox.tools/zh-TW/about/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/contact/</loc>
+    <lastmod>2026-08-27</lastmod>
+    <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
@@ -7370,7 +7478,7 @@
   </url>
   <url>
     <loc>https://abox.tools/zh-TW/terms/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-27</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
