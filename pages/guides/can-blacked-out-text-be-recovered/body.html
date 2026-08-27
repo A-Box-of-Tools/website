@@ -1,0 +1,152 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Uncomfortably often, yes. Not by forensics &mdash; by selecting the
+      blacked-out area and pressing copy. Most of the tools people reach for
+      when something needs hiding draw a rectangle <em>over</em> the content
+      and save it <em>beside</em> the content, and everything underneath
+      rides along in the file, patiently, until somebody looks.
+    </p>
+    <p>
+      This is not a rare mistake made by careless people. It has published
+      names from court filings, unredacted numbers from government reports,
+      and &mdash; in one mass release of case documents in December 2025
+      &mdash; blacked-out names that were readable within hours. The people
+      who made those mistakes had lawyers and process. What they did not have
+      is the distinction this page is about: the difference between covering
+      something and removing it.
+    </p>
+  </section>
+
+  <section>
+    <h2>The rectangle that is an object</h2>
+    <p>
+      In a PDF reader, a word processor, a slide deck or a layered image
+      editor, a drawn black box is not paint. It is an <em>object</em> &mdash;
+      a shape with a position, a size and a colour, stored in the file as its
+      own thing, in front of text that is still entirely present. The
+      document does not say &ldquo;this word is gone&rdquo;; it says
+      &ldquo;this word is here, and a rectangle is in front of it&rdquo;.
+    </p>
+    <p>
+      Everything follows from that. Select the area and copy, and the
+      clipboard receives the text, because copying reads the text layer and
+      ignores the decoration in front of it. Open the file in an editor and
+      the rectangle can simply be moved aside. Export it to another format
+      and the layers may be flattened in a different order. The box looks
+      identical to a real redaction on screen, which is exactly why the
+      mistake survives review: the eye checks the page, and the page looks
+      right.
+    </p>
+    <p>
+      PDFs add a quieter variant. A PDF may declare that a run of glyphs
+      &ldquo;spells&rdquo; something other than what is drawn &mdash; an
+      accessibility feature called <code>/ActualText</code> &mdash; and
+      copying reads the declaration rather than the ink. A document can
+      therefore leak a word that is not even visibly on the page.
+    </p>
+  </section>
+
+  <section>
+    <h2>The blur that is arithmetic</h2>
+    <p>
+      Pixelation feels safer than it is. A mosaic is a grid of averages, and
+      an average is a <em>measurement</em> of what was underneath &mdash;
+      small and lossy, but a measurement all the same. For text in a known
+      font at a predictable size, that has been enough to read it back: take
+      every plausible string, render each one, pixelate it the same way, and
+      keep the candidate whose mosaic matches. Nothing about that requires a
+      laboratory; it is a loop and a comparison.
+    </p>
+    <p>
+      Blur is worse in principle. A blur is a convolution &mdash; each output
+      pixel a weighted average of its neighbours &mdash; and convolutions can
+      be run backwards well enough, often enough, that deconvolution is a
+      standard tool in photography rather than an exotic attack. Both
+      effects also share a failure that has nothing to do with mathematics:
+      they advertise that something is hidden and roughly how long it is,
+      which for a six-character password is already a hint.
+    </p>
+    <p>
+      A flat fill has none of these properties. One colour, edge to edge,
+      carries no measurement of anything. That is why it is the default in
+      the <a href="../../redact-image/">Image Redactor</a> here, why that
+      tool's pixelate and blur options say on their own labels what they do
+      not promise, and why its strength control reports a number rather than
+      an adjective.
+    </p>
+  </section>
+
+  <section>
+    <h2>The copies a file keeps of its own past</h2>
+    <p>
+      The third family of failures has nothing to do with the covering at
+      all. Files remember, in ways nothing on screen shows:
+    </p>
+    <ul>
+      <li>
+        <strong>A photo's metadata often includes a thumbnail</strong> of the
+        image as it was before editing. Crop your address out of a picture,
+        and the EXIF block may still hold a miniature of the uncropped
+        original. The <a href="../../exif-editor/">EXIF Viewer &amp;
+        Remover</a> shows that block and takes it out; there is
+        <a href="../remove-exif-and-gps-data/">a guide to it</a>.
+      </li>
+      <li>
+        <strong>Some editors save in place without truncating.</strong> A
+        famous 2023 pair of bugs &mdash; in a phone's screenshot markup tool
+        and a desktop snipping tool &mdash; left the bytes of the original
+        image in the file after cropping, so the &ldquo;cropped away&rdquo;
+        part could be reconstructed from the leftovers.
+      </li>
+      <li>
+        <strong>PDFs can carry their own history.</strong> A PDF edited with
+        incremental saves appends changes to the end of the file and leaves
+        the earlier version intact inside it, deletions included.
+      </li>
+    </ul>
+    <p>
+      The common thread: what a viewer displays and what a file contains are
+      different questions, and redaction that has only been checked by
+      looking has only answered the first one.
+    </p>
+  </section>
+
+  <section>
+    <h2>What removal actually takes</h2>
+    <p>
+      A real redaction changes the data, not the view, and it can be checked
+      the same way it can fail: by asking the file, not the screen.
+    </p>
+    <p>
+      For a picture, that means the pixels under the box stop existing before
+      any file is written. The <a href="../../redact-image/">Image
+      Redactor</a> does exactly that &mdash; the covered values are
+      overwritten in memory and only then handed to the encoder, so the
+      output contains black pixels where the content used to be, not black
+      ink in front of it. The step-by-step version is in
+      <a href="../redact-an-image/">the image redaction guide</a>.
+    </p>
+    <p>
+      For a PDF, it means the glyphs are deleted from the instructions that
+      draw the page, along with the hidden carriers &mdash;
+      <code>/ActualText</code> declarations, bookmarks, comments, form
+      fields. The <a href="../../redact-pdf/">PDF Redactor</a> does that, and
+      then does the thing that matters most: it reopens its own output and
+      searches it for the removed words, and <strong>if anything survived,
+      there is no download</strong>. The walkthrough is in
+      <a href="../redact-a-pdf/">the PDF redaction guide</a>.
+    </p>
+    <p>
+      And whichever tool you use, anywhere, the acceptance test is yours to
+      run: select over the redacted area and copy; search the file for the
+      removed word; open it in a different viewer. If the content was
+      removed, nothing can find it &mdash; and if a tool is doing this in
+      your browser without your file leaving the machine, that claim, too,
+      is one you can check rather than trust:
+      <a href="../is-it-safe-to-upload-files/">the guide on uploading</a>
+      shows how. Redaction is the one job where the file is sensitive by
+      definition, which makes it the last job that should transit somebody
+      else's server.
+    </p>
+  </section>

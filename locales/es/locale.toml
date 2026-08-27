@@ -153,6 +153,7 @@ complete = true
 "guides/make-a-height-comparison-chart" = "guias/hacer-un-grafico-de-alturas"
 "guides/is-it-safe-to-scan-a-qr-code" = "guias/es-seguro-escanear-un-codigo-qr"
 "guides/is-it-safe-to-upload-a-photo-of-your-id" = "guias/es-seguro-subir-una-foto-de-tu-documento"
+"guides/can-blacked-out-text-be-recovered" = "guias/se-puede-recuperar-el-texto-censurado"
 
 #
 # ---------------------------------------------------------------------------

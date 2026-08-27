@@ -1,0 +1,25 @@
+#
+# Guide: can blacked-out text be recovered? - Simplified Chinese.
+#
+# Overrides for pages/guides/can-blacked-out-text-be-recovered/page.toml.
+# Prose in the .html beside this file. Written in Chinese rather than
+# translated out of the English; the house style is at the top of
+# locales/zh/locale.toml.
+#
+
+nav = "涂黑的字能恢复吗？"
+
+title = "涂黑的文字能被恢复出来吗？"
+description = "常常能。因为多数黑框只是画在文字上面，并没有取而代之。这一页讲涂黑失手的三条路子，文件替自己的过去留着的那些副本，以及“删除”本来应该是什么意思。"
+
+heading = "涂黑的文字能被恢复出来吗？"
+lede = """
+    频繁得让人不安：能。而且用的不是实验室，是选中文字再按复制。多数黑色\
+    方块只是画在字的<em>上面</em>，存在字的旁边，字就在底下一路同行。这一\
+    页是这类事故的清单，也是“删除”本来应该是什么意思的说明。"""
+
+updated = "2026年8月26日"
+
+og_title = "涂黑的文字能被恢复出来吗？"
+og_description = "常常选中再复制就够了。为什么画上去的方块不算涂黑，为什么马赛克能被读回来，把一样东西从文件里真正去掉要做到什么。"
+og_image_alt = "abox.tools - 不走服务器的工具"

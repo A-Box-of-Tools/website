@@ -1,0 +1,18 @@
+#
+# Guide : peut-on récupérer un texte caviardé ? - French.
+#
+
+nav = "Un texte caviardé se récupère-t-il ?"
+title = "Peut-on récupérer un texte caviardé ?"
+description = "Souvent, oui - parce que la plupart des rectangles noirs sont dessinés par-dessus le texte au lieu de prendre sa place. Les trois façons dont le caviardage échoue, les copies qu'un fichier garde de son propre passé, et ce que retirer veut vraiment dire."
+heading = "Peut-on récupérer un texte caviardé ?"
+lede = """
+    Désagréablement souvent, oui &mdash; avec l'outil de sélection de
+    texte, pas avec un laboratoire. La plupart des rectangles noirs sont
+    dessinés <em>par-dessus</em> les mots et enregistrés à côté d'eux, et
+    les mots voyagent dessous. Cette page est le catalogue des façons dont
+    cela arrive, et de ce que retirer doit vouloir dire à la place."""
+updated = "26 août 2026"
+og_title = "Peut-on récupérer un texte caviardé ?"
+og_description = "Souvent, sélectionner-copier suffit. Pourquoi un rectangle dessiné n'est pas un caviardage, pourquoi une mosaïque peut se relire, et ce qu'il faut vraiment pour retirer quelque chose d'un fichier."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"
