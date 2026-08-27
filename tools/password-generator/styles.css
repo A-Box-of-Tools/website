@@ -169,7 +169,7 @@
 */
 .strength[data-rating="very-weak"] .verdict,
 .strength[data-rating="weak"] .verdict { color: var(--danger); }
-.strength[data-rating="fair"] .verdict { color: #b07d2b; }
+.strength[data-rating="fair"] .verdict { color: var(--warn); }
 .strength[data-rating="strong"] .verdict,
 .strength[data-rating="very-strong"] .verdict { color: var(--ok); }
 

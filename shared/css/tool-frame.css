@@ -16,6 +16,11 @@
   --accent-deep: #1d4f83;
   --accent-pale: #d7e7f7;
   --danger: #b02b2b;
+  /* Amber, for something that needs attention without having failed. It is a
+     token for the reason the other two are: three tools had each grown their
+     own, every one of them picked against the dark ground, and every one of
+     them under the contrast floor on the light one. */
+  --warn: #8a5300;
   --ok: #1a6a43;
   --radius: 10px;
   --shadow: 0 1px 2px rgb(16 24 40 / 6%), 0 4px 12px rgb(16 24 40 / 4%);
@@ -34,6 +39,7 @@
     --accent-deep: #3772ab;
     --accent-pale: #cfe3f8;
     --danger: #e07777;
+    --warn: #c9923a;
     --ok: #6cc79b;
     --shadow: 0 1px 2px rgb(0 0 0 / 30%), 0 4px 12px rgb(0 0 0 / 20%);
   }

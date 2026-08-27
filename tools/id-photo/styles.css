@@ -463,10 +463,10 @@
 .check-good .check-mark { color: var(--ok); }
 
 .check-warn {
-  border-color: color-mix(in srgb, #c98a00 40%, var(--border));
-  background: color-mix(in srgb, #c98a00 8%, var(--surface));
+  border-color: color-mix(in srgb, var(--warn) 40%, var(--border));
+  background: color-mix(in srgb, var(--warn) 8%, var(--surface));
 }
-.check-warn .check-mark { color: #c98a00; }
+.check-warn .check-mark { color: var(--warn); }
 
 .check-bad {
   border-color: color-mix(in srgb, var(--danger) 38%, var(--border));

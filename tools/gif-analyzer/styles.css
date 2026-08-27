@@ -113,12 +113,12 @@
 }
 
 .finding.bad { border-inline-start-color: var(--danger); }
-.finding.warn { border-inline-start-color: #c08a2b; }
+.finding.warn { border-inline-start-color: var(--warn); }
 .finding.note { border-inline-start-color: var(--accent); }
 
 .finding-mark { flex: none; font-size: 0.9rem; line-height: 1.5; }
 .finding.bad .finding-mark { color: var(--danger); }
-.finding.warn .finding-mark { color: #c08a2b; }
+.finding.warn .finding-mark { color: var(--warn); }
 .finding.note .finding-mark { color: var(--accent); }
 
 .finding strong { display: block; margin-bottom: 0.2rem; }
