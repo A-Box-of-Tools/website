@@ -25,6 +25,7 @@ const el = {
   shapeNote: $('shape-note'),
   presetList: $('preset-list'),
   presetNote: $('preset-note'),
+  sizeSet: $('size-set'),
   sizeGrid: $('size-grid'),
   sizeSummary: $('size-summary'),
   fitSelect: $('fit-select'),
@@ -374,7 +375,13 @@ function renderSizes() {
   //
   // Switching to custom keeps whatever the preset had ticked, so the grid
   // opens on the set you were already getting rather than on nothing.
-  el.sizeGrid.hidden = presetId !== 'custom';
+  // The whole fieldset, not just the grid inside it. Hiding only the grid left
+  // a titled box - "The sizes that go in the .ico" - holding one sentence and
+  // no control, which reads as something that failed to load. What the sentence
+  // said is on the page twice over anyway: the chosen preset prints its sizes
+  // on its own tile, and how they are stored is the closing line of "How it is
+  // drawn" directly below.
+  el.sizeSet.hidden = presetId !== 'custom';
 
   for (const label of el.sizeGrid.querySelectorAll('.size-choice')) {
     const px = Number(label.dataset.px);
