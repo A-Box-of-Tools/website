@@ -1,0 +1,15 @@
+#
+# 联系 - Simplified Chinese. Overrides for pages/contact/page.toml.
+#
+
+nav = "联系"
+title = "联系 abox.tools | 报缺陷、提问、建议一个工具"
+description = "怎么找到做 abox.tools 的那个人：一个邮箱地址，一个公开的问题追踪页，各自适合什么，以及你写完之后会发生什么。"
+heading = "联系"
+lede = """
+    读信的是一个人，而且每封都读。下面写的是这两条路各自适合什么、一份缺陷报告\
+    要写上什么才真能被找出来，以及你发出去之后会发生什么。"""
+updated = "2026年8月27日"
+og_title = "联系 abox.tools"
+og_description = "邮件，或者公开的问题追踪页，各自适合什么，以及你写完之后会发生什么。"
+og_image_alt = "abox.tools - 不走服务器的工具"

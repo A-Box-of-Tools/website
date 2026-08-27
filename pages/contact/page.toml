@@ -1,0 +1,36 @@
+#
+# The Contact page. Prose lives next door in body.html; this file is the frame
+# around it.
+#
+# The footer has carried a mailto: for as long as there has been a footer, and
+# an address in a footer is not a way of getting in touch - it says where to
+# write and nothing about what is worth writing about, what happens next, or
+# how long it takes. This page says all three, which is the difference between
+# a contact link and a contact page.
+#
+# Its slug is named in config/site.toml as publisher.contact_slug, because the
+# Organization node in the structured data has to point at this page and a slug
+# spelled out in the middle of buildlib/site.py is one that gets left behind
+# when the page is renamed.
+#
+
+slug = "contact"
+kind = "site"
+schema_type = "ContactPage"
+nav = "Contact"
+
+title = "Contact abox.tools &mdash; Report a Bug, Ask, or Suggest a Tool"
+description = "How to reach the person who builds abox.tools: one email address, one public issue tracker, what each is best for, and what actually happens when you write."
+
+heading = "Contact"
+lede = """
+    One person reads this, and reads all of it. Below is what each of the two
+    ways in is best for, what to include so a bug can actually be found, and
+    what happens after you send it."""
+
+updated = "27 August 2026"
+lastmod = "2026-08-27"
+
+og_title = "Contact abox.tools"
+og_description = "Email or a public issue tracker, what each is best for, and what happens after you write."
+og_image_alt = "abox.tools - tools that never touch a server"

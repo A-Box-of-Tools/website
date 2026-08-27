@@ -1,0 +1,15 @@
+#
+# 聯絡 - Traditional Chinese. Overrides for pages/contact/page.toml.
+#
+
+nav = "聯絡"
+title = "聯絡 abox.tools | 報缺陷、提問、建議一個工具"
+description = "怎麼找到做 abox.tools 的那個人：一個信箱地址，一個公開的問題追蹤頁，各自適合什麼，以及你寫完之後會發生什麼。"
+heading = "聯絡"
+lede = """
+    讀信的是一個人，而且每封都讀。下面寫的是這兩條路各自適合什麼、一份缺陷報告\
+    要寫上什麼才真能被找出來，以及你發出去之後會發生什麼。"""
+updated = "2026年8月27日"
+og_title = "聯絡 abox.tools"
+og_description = "郵件，或者公開的問題追蹤頁，各自適合什麼，以及你寫完之後會發生什麼。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

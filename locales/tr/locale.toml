@@ -95,6 +95,8 @@ complete = true
 "roadmap" = "yol-haritasi"
 "privacy" = "gizlilik"
 "terms" = "kullanim-kosullari"
+"about" = "hakkinda"
+"contact" = "iletisim"
 
 # The guides. Each one keeps the "rehberler/" prefix written out, the same
 # way the German list keeps "ratgeber/" on every line - the parent slug above

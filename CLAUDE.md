@@ -154,6 +154,16 @@ the whole site and spends the host's standing with the protocol. Bump the dates
 that moved. See "Telling the search engines a page changed" in
 [docs/deploying.md](docs/deploying.md).
 
+**The roadmap is kept out of search, in two files that must agree.**
+`templates/roadmap.html` carries `noindex, follow` and `buildlib/catalogue.py`
+leaves the page out of `sitemap.xml`. It is the only page on the site treated
+that way, and the reason is what the page is: a list of tools that do not exist
+yet, which is worth saying to a reader and is, to a search engine, the "under
+construction" page every set of quality guidelines names by that name. Fifteen
+translations of it in an index is fifteen chances to be judged on the half of
+the site that has not been built. Change one half of this and change the other,
+or the site asks to be indexed and refuses in the same breath.
+
 **Some modules are deliberately copied, and must stay in step.** The MP4
 reader is in five tools and the writer in two, because the rule above blocks
 sharing them. `tests/python/test_duplicates.py` declares which copies must

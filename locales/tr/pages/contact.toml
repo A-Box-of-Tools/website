@@ -1,0 +1,22 @@
+#
+# İletişim - Turkish.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "İletişim"
+
+title = "abox.tools İletişim &mdash; hata bildirin, soru sorun, araç önerin"
+description = "abox.tools&rsquo;u yapan kişiye nasıl ulaşılır: tek bir e-posta adresi, herkese açık bir hata takip sistemi, hangisinin ne için daha uygun olduğu ve yazdıktan sonra ne olduğu."
+
+heading = "İletişim"
+lede = """
+    Bunları tek bir kişi okur, hem de hepsini. Aşağıda iki yolun her birinin ne
+    için daha uygun olduğu, bir hatanın gerçekten bulunabilmesi için neleri
+    yazmanız gerektiği ve gönderdikten sonra ne olduğu anlatılıyor."""
+
+updated = "27 Ağustos 2026"
+
+og_title = "abox.tools iletişim"
+og_description = "E-posta ya da herkese açık bir hata takip sistemi, hangisinin ne için uygun olduğu ve yazdıktan sonra ne olduğu."
+og_image_alt = "abox.tools - hiçbir sunucuya dokunmayan araçlar"

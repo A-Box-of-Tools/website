@@ -12,7 +12,7 @@ heading = "使用條款"
 lede = """
     這裡沒有帳號要開，也沒有協議要籤，所以條款很短。它講的是你可以對本站抱有\
     什麼期待，以及本站沒有承諾什麼。"""
-updated = "2026年8月19日"
+updated = "2026年8月27日"
 og_title = "使用條款 | abox.tools"
 og_description = "免費，按現狀提供，不用註冊，不作擔保。你的檔案完全是你自己的。"
 og_image_alt = "abox.tools - 不走伺服器的工具"

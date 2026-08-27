@@ -92,6 +92,8 @@ complete = true
 "roadmap" = "peta-jalan"
 "privacy" = "privasi"
 "terms" = "ketentuan-penggunaan"
+"about" = "tentang"
+"contact" = "kontak"
 
 # The guides. Each one keeps the "panduan/" prefix written out, the same way
 # the German list keeps "ratgeber/" on every line - the parent slug above is

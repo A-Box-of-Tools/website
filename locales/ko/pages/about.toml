@@ -1,0 +1,23 @@
+#
+# 소개 - Korean.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "소개"
+
+title = "abox.tools 소개 &mdash; 누가, 왜 이 도구들을 만드는가"
+description = "독립적으로 운영되고 스스로 비용을 감당하는 프로젝트입니다. 브라우저 안에서만 동작하는 서른여섯 개의 도구, 그렇게 만든 이유, 사이트의 운영비를 대는 방법, 그리고 여기 적힌 모든 주장을 직접 확인하는 방법을 정리했습니다."
+
+heading = "abox.tools 소개"
+lede = """
+    캐나다 온타리오에 사는 한 사람이, 계속 필요했지만 계속 믿기 어려웠던 도구들을
+    직접 만들고 있습니다. 여기 있는 모든 것은 여러분의 기기에서 돌아가고, 코드는
+    공개되어 있으며, 이 페이지에는 그 두 가지의 이유가 적혀 있습니다."""
+
+updated = "2026년 8월 27일"
+
+og_title = "abox.tools를 만드는 사람, 그리고 모든 것이 브라우저에서 도는 이유"
+og_description = "독립적으로 운영되고 스스로 비용을 감당하는 프로젝트입니다. 도구가 아무것도 올리지 않는 이유, 운영비를 대는 방법, 그리고 그 둘을 확인하는 방법."
+og_image_alt = "abox.tools - 서버를 거치지 않는 도구들"

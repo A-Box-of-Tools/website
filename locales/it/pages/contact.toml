@@ -1,0 +1,23 @@
+#
+# Contatti - Italian.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "Contatti"
+
+title = "Contattare abox.tools &mdash; segnalare un difetto, chiedere, proporre uno strumento"
+description = "Come raggiungere la persona che costruisce abox.tools: un indirizzo e-mail, un tracker pubblico delle segnalazioni, a che cosa serve meglio ciascuno dei due, e che cosa succede dopo aver scritto."
+
+heading = "Contatti"
+lede = """
+    Legge tutto una persona sola, e lo legge per intero. Qui sotto c&rsquo;è a
+    che cosa serve meglio ciascuna delle due vie, che cosa mettere in una
+    segnalazione perché il difetto si possa davvero trovare, e che cosa succede
+    dopo l&rsquo;invio."""
+
+updated = "27 agosto 2026"
+
+og_title = "Contattare abox.tools"
+og_description = "E-mail o tracker pubblico delle segnalazioni, a che cosa serve meglio ciascuno, e che cosa succede dopo aver scritto."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

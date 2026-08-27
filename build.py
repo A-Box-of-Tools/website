@@ -467,6 +467,10 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
 
     groups = guide_groups(site, [page for page in prose if page['kind'] == 'guide'])
     ordered_prose = [guide for group in groups for guide in group['guides']]
+    # About and Contact between the guides and the legal pages, which is where
+    # they sit in the footer and in the sitemap too. They are not written to be
+    # searched for the way a guide is, and they are not the small print either.
+    ordered_prose += [page for page in prose if page['kind'] == 'site']
     ordered_prose += [page for page in prose if page['kind'] == 'legal']
 
     # tools/README.md, from the English list and only once. It is a file in the
@@ -589,12 +593,21 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     root['home'] = i18n.locale_url(locale, '', site)
     root['guides_url'] = i18n.locale_url(locale, site['guides']['slug'], site)
     root['roadmap_url'] = i18n.locale_url(locale, site['roadmap']['slug'], site)
+    # And this language's Contact page, which the Organization node names as
+    # the place to reach a person. Same reason as the three above: pointing a
+    # Japanese reader at an English contact page is the kind of small wrongness
+    # that the whole per-locale arrangement exists to avoid. The slug comes
+    # from config/site.toml rather than being written here, so the page can be
+    # renamed in one place - the same rule `safety_guide` follows.
+    root['contact_url'] = i18n.locale_url(
+        locale, site['publisher']['contact_slug'], site)
 
     ltools = [i18n.localize_tool(tool, locale, site) for tool in tools]
     lprose = [i18n.localize_page(page, locale, site) for page in prose]
     by_slug = {tool['slug']: tool for tool in ltools}
 
     guides = [page for page in lprose if page['kind'] == 'guide']
+    about = [page for page in lprose if page['kind'] == 'site']
     legal = [page for page in lprose if page['kind'] == 'legal']
 
     # The guides, grouped and in the order config/site.toml puts them in, and
@@ -633,7 +646,8 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     # The slugs in it are localized, because a footer is a set of addresses.
     footer = {
         'tools': [{'name': tool['name'], 'slug': tool['out_slug']} for tool in ordered],
-        'pages': [{'nav': page['nav'], 'slug': page['out_slug']} for page in legal],
+        'pages': [{'nav': page['nav'], 'slug': page['out_slug']}
+                  for page in about + legal],
     }
 
     links = locale_links(locale, site, lprose)
@@ -1320,7 +1334,7 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
         'page': page,
         'tool': by_slug.get(page['tool'], {}),
         'crumbs': crumbs,
-        'main_class': 'prose' if page['kind'] == 'guide' else 'legal',
+        'main_class': 'legal' if page['kind'] == 'legal' else 'prose',
         'footer': footer,
         'css_href': f'{up}site.css?v={css_v}',
         'jsonld': sitelib.page_jsonld(root, page),
@@ -1546,7 +1560,7 @@ def build_404(out, templates, locale, locales, site, tools, pages, css_v, lang_v
     footer = {
         'tools': [{'name': tool['name'], 'slug': tool['slug']} for tool in tools],
         'pages': [{'nav': page['nav'], 'slug': page['slug']}
-                  for page in pages if page['kind'] == 'legal'],
+                  for page in pages if page['kind'] in ('site', 'legal')],
     }
 
     context = frame(locale, locales, site, '', '/', links, lang_v, {

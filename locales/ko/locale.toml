@@ -122,6 +122,8 @@ complete = true
 "roadmap" = "로드맵"
 "privacy" = "개인정보처리방침"
 "terms" = "이용약관"
+"about" = "소개"
+"contact" = "문의"
 
 # The guides. Each one is the question its readers ask, in the words they ask it
 # in, rather than a translation of the English title.

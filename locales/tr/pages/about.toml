@@ -1,0 +1,24 @@
+#
+# Hakkında - Turkish.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "Hakkında"
+
+title = "abox.tools Hakkında &mdash; bu araçları kim yapıyor, neden böyle"
+description = "Bağımsız ve kendi kendini finanse eden bir proje: tamamen tarayıcıda çalışan otuz altı araç, bu şekilde yapılmalarının nedeni, sitenin masrafını neyin karşıladığı ve buradaki her iddianın kendi başınıza nasıl doğrulanacağı."
+
+heading = "abox.tools hakkında"
+lede = """
+    Ontario&rsquo;da tek bir kişi, sürekli ihtiyaç duyduğu ve sürekli
+    güvenemediği araçları kendisi yazıyor. Buradaki her şey sizin kendi
+    cihazınızda çalışır, kaynak kodu herkese açıktır, ve bu sayfa ikisinin de
+    gerekçesini anlatır."""
+
+updated = "27 Ağustos 2026"
+
+og_title = "abox.tools&rsquo;u kim yapıyor ve neden her şey tarayıcıda çalışıyor"
+og_description = "Bağımsız, kendi kendini finanse eden bir proje. Araçların neden hiçbir şey yüklemediği, sitenin masrafını neyin karşıladığı ve ikisinin nasıl doğrulanacağı."
+og_image_alt = "abox.tools - hiçbir sunucuya dokunmayan araçlar"

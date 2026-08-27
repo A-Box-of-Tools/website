@@ -8,17 +8,19 @@
   config/site.toml, and pages/{{ page.slug }}/{page.toml,body.html}.
   Edit those and run `python build.py`.
 
-  A "page" here is a prose page that is not a tool and not the hub: a legal page
-  or a guide. It gets the site frame, the same Content-Security-Policy as
+  A "page" here is a prose page that is not a tool and not the hub: a legal
+  page, a guide, or one of the two that say who publishes this - About and
+  Contact. It gets the site frame, the same Content-Security-Policy as
   everywhere else, and the same footer, and nothing else - no service worker,
   because there is nothing to keep working offline, and no blob: in img-src,
   because it never makes one.
 
-  The two differ in three places below, all of them driven by values build.py
+  They differ in three places below, all of them driven by values build.py
   passes in rather than by a test written here: a guide gets a visible
   breadcrumb, Article structured data, and - when it is about one particular
-  tool - a link to that tool under the heading. A legal page gets none of the
-  three, and the blocks simply do not appear.
+  tool - a link to that tool under the heading. About and Contact get
+  AboutPage or ContactPage structured data and neither of the other two. A
+  legal page gets none of the three, and the blocks simply do not appear.
 -->
 <!--
   This page carries advertising, and ad code cannot run under default-src
@@ -126,10 +128,13 @@
 </header>
 
 <!--
-  `prose` on a guide and `legal` on a legal page. The two rule sets are the same
-  narrow column - they are written as one selector list in shared/site.css - and
-  the class is still worth getting right, because a stylesheet that calls a
-  guide a legal page is a stylesheet nobody can search.
+  `legal` on a legal page and `prose` on everything else here - a guide, About,
+  Contact. The two rule sets are the same narrow column - they are written as
+  one selector list in shared/site.css - and the class is still worth getting
+  right, because a stylesheet that calls a guide a legal page is a stylesheet
+  nobody can search. `prose` rather than a third name because that is what the
+  class means: a page of prose read from the top, which About and Contact are
+  and a privacy policy, scanned for the one clause somebody came for, is not.
 -->
 <main id="main" class="{{ main_class }}">
 {{ body }}

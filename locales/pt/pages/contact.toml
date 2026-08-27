@@ -1,0 +1,22 @@
+#
+# Contato - Portuguese (Brazil).
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "Contato"
+
+title = "Contato do abox.tools &mdash; relatar um problema, perguntar ou sugerir uma ferramenta"
+description = "Como chegar à pessoa que constrói o abox.tools: um endereço de e-mail, um rastreador público de problemas, para que cada um serve melhor, e o que acontece depois que você escreve."
+
+heading = "Contato"
+lede = """
+    Quem lê isto é uma pessoa só, e lê tudo. Abaixo está para que serve melhor
+    cada um dos dois caminhos, o que incluir para que um problema realmente
+    possa ser encontrado, e o que acontece depois do envio."""
+
+updated = "27 de agosto de 2026"
+
+og_title = "Contato do abox.tools"
+og_description = "E-mail ou um rastreador público de problemas, para que cada um serve melhor, e o que acontece depois que você escreve."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

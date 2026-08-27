@@ -116,6 +116,8 @@ complete = true
 "roadmap" = "خارطة-الطريق"
 "privacy" = "الخصوصية"
 "terms" = "شروط-الاستخدام"
+"about" = "عن-الموقع"
+"contact" = "اتصل-بنا"
 
 # The guides. Each one keeps the "أدلة/" prefix written out, the same way the
 # German list keeps "ratgeber/" on every line - the parent slug above is not

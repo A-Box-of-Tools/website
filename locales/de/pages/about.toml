@@ -1,0 +1,25 @@
+#
+# Über diese Seite - German.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, and so does the machine-readable `lastmod`
+# that goes in the sitemap.
+#
+
+nav = "Über diese Seite"
+
+title = "Über abox.tools &mdash; wer diese Tools baut, und warum"
+description = "Ein unabhängiges, selbst finanziertes Projekt: 36 Werkzeuge, die vollständig im Browser laufen, der Grund für diese Bauweise, wie sich die Seite trägt, und wie Sie jede Aussage darauf selbst nachprüfen."
+
+heading = "Über abox.tools"
+lede = """
+    Eine Person in Ontario, die genau die Werkzeuge baut, die sie ständig
+    brauchte und denen sie nicht traute. Alles hier läuft auf Ihrem eigenen
+    Gerät, der Quelltext ist öffentlich, und auf dieser Seite stehen die Gründe
+    für beides."""
+
+updated = "27. August 2026"
+
+og_title = "Wer abox.tools baut, und warum alles im Browser läuft"
+og_description = "Ein unabhängiges, selbst finanziertes Projekt. Warum die Werkzeuge nichts hochladen, wie sich die Seite trägt, und wie Sie beides prüfen."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server berühren"

@@ -1,0 +1,24 @@
+#
+# Sobre este sitio - Spanish.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "Sobre este sitio"
+
+title = "Sobre abox.tools &mdash; quién hace estas herramientas y por qué"
+description = "Un proyecto independiente y autofinanciado: treinta y seis herramientas que funcionan enteras en el navegador, el motivo de que estén hechas así, cómo se paga el sitio y cómo comprobar por tu cuenta cada afirmación que hay en él."
+
+heading = "Sobre abox.tools"
+lede = """
+    Una sola persona, en Ontario, construyendo las herramientas que necesitaba
+    una y otra vez y en las que no terminaba de confiar. Todo lo de aquí
+    funciona en tu propio dispositivo, el código es público, y esta página
+    explica el porqué de ambas cosas."""
+
+updated = "27 de agosto de 2026"
+
+og_title = "Quién hace abox.tools y por qué todo funciona en el navegador"
+og_description = "Un proyecto independiente y autofinanciado. Por qué las herramientas no suben nada, cómo se paga el sitio y cómo comprobar las dos cosas."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

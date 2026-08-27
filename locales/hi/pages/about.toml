@@ -1,0 +1,27 @@
+#
+# हमारे बारे में - Hindi.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+# The slug is not translated: this locale has no [slugs] table, for the reason
+# locales/hi/locale.toml gives.
+#
+
+nav = "साइट के बारे में"
+
+title = "abox.tools के बारे में &mdash; ये टूल कौन बनाता है, और क्यों"
+description = "एक स्वतंत्र, अपने खर्चे पर चलने वाला प्रोजेक्ट: छत्तीस टूल जो पूरी तरह आपके ब्राउज़र में चलते हैं, इन्हें ऐसा बनाने की वजह, साइट का खर्च कहाँ से निकलता है, और यहाँ लिखी हर बात खुद कैसे जाँची जाए।"
+
+heading = "abox.tools के बारे में"
+lede = """
+    कनाडा के ओंटारियो में बैठा एक अकेला आदमी वही टूल बना रहा है जिनकी उसे बार-बार
+    ज़रूरत पड़ती थी और जिन पर वह बार-बार भरोसा नहीं कर पाता था। यहाँ का सब कुछ आपके
+    अपने डिवाइस पर चलता है, कोड सबके लिए खुला है, और इस पेज पर दोनों की वजहें लिखी
+    हैं।"""
+
+updated = "27 अगस्त 2026"
+
+og_title = "abox.tools कौन बनाता है, और सब कुछ ब्राउज़र में ही क्यों चलता है"
+og_description = "एक स्वतंत्र, अपने खर्चे पर चलने वाला प्रोजेक्ट। टूल कुछ भी अपलोड क्यों नहीं करते, साइट का खर्च कहाँ से आता है, और दोनों बातें कैसे जाँची जाएँ।"
+og_image_alt = "abox.tools - ऐसे टूल जो किसी सर्वर को छूते ही नहीं"

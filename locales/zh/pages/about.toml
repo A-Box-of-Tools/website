@@ -1,0 +1,21 @@
+#
+# 关于本站 - Simplified Chinese. Overrides for pages/about/page.toml.
+#
+# Written in Chinese rather than translated out of the English; the house style
+# is at the top of locales/zh/locale.toml. The reader is 你 here too.
+#
+# The slug is not translated: this locale has no [slugs] table, for the reason
+# locales/zh/locale.toml gives.
+#
+
+nav = "关于本站"
+title = "关于 abox.tools | 这些工具是谁做的，为什么这么做"
+description = "一个独立、自负盈亏的项目：三十六个完全在浏览器里跑的工具，为什么要这么做，站点的开销从哪来，以及这里写的每一句话你怎么自己去核实。"
+heading = "关于 abox.tools"
+lede = """
+    加拿大安大略省的一个人，把自己一直需要、又一直不太敢信的工具自己写了出来。\
+    这里的一切都跑在你自己的设备上，代码是公开的。这一页写的就是这两件事的理由。"""
+updated = "2026年8月27日"
+og_title = "abox.tools 是谁做的，为什么一切都在浏览器里跑"
+og_description = "一个独立、自负盈亏的项目。工具为什么什么都不上传，开销从哪来，以及这两件事怎么核实。"
+og_image_alt = "abox.tools - 不走服务器的工具"

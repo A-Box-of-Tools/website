@@ -1,0 +1,35 @@
+#
+# The About page. Prose lives next door in body.html; this file is the frame
+# around it.
+#
+# It exists because the site did not have one, and a site with thirty-six tools
+# and forty guides on it that never says who made any of them reads as nobody's
+# work. Every claim on every tool page - nothing is uploaded, there is no
+# server, you can check for yourself - is a claim somebody is making, and a
+# reader is entitled to know who and why before deciding whether to believe it.
+#
+# `kind = "site"` rather than "legal": this is read on purpose rather than
+# consulted when something has gone wrong, and it carries AboutPage structured
+# data pointing at the same Organization node the hub publishes.
+#
+
+slug = "about"
+kind = "site"
+schema_type = "AboutPage"
+nav = "About"
+
+title = "About abox.tools &mdash; Who Makes These Tools, and Why"
+description = "An independent, self-funded project: thirty-six tools that run entirely in your browser, the reason they are built that way, how the site pays for itself, and how to check every claim on it for yourself."
+
+heading = "About abox.tools"
+lede = """
+    One person, in Ontario, building the tools they kept needing and kept not
+    trusting. Everything here runs on your own machine, the code is public, and
+    this page is where the reasons behind both are written down."""
+
+updated = "27 August 2026"
+lastmod = "2026-08-27"
+
+og_title = "Who makes abox.tools, and why they run in your browser"
+og_description = "An independent, self-funded project. Why the tools never upload anything, how the site pays for itself, and how to check both."
+og_image_alt = "abox.tools - tools that never touch a server"

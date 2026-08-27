@@ -1,0 +1,214 @@
+  <section>
+    <h2>What this is</h2>
+    <p>
+      abox.tools is a collection of small utilities that do one job each &mdash;
+      resize a photo, trim a video, merge two PDFs, read what is actually inside
+      a QR code. There are thirty-six of them at the time of writing, and a
+      <a href="../guides/">library of guides</a> explaining the jobs they are
+      for.
+    </p>
+    <p>
+      The unusual part is not what they do. It is where they do it. Every one of
+      them runs entirely inside your web browser, on your own hardware, using
+      the decoders and encoders your browser already ships with. Nothing you
+      open is transmitted anywhere. There is no server behind these pages to
+      transmit it to: the whole site is static files, and the tools are plain
+      JavaScript modules served alongside them.
+    </p>
+    <p>
+      That is the product. Everything else on this page is about why it is worth
+      building that way, and who is doing it.
+    </p>
+  </section>
+
+  <section>
+    <h2>Who makes it</h2>
+    <p>
+      One person, working alone, in Ontario, Canada. This is not a company.
+      There is no team, no investor, no parent organisation, and no plan to be
+      acquired by one. Correspondence goes to
+      <a href="mailto:hi@abox.tools">hi@abox.tools</a> and reaches the person
+      who wrote the code; the <a href="../contact/">Contact page</a> sets out
+      what that is and is not good for.
+    </p>
+    <p>
+      The site is deliberately published without a personal byline. It is a
+      small project rather than a personal brand, and the thing that ought to be
+      trusted here is not a name attached to a page &mdash; it is
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">the
+      code</a>, which anyone can read, and the behaviour of the pages
+      themselves, which anyone can check in about thirty seconds with DevTools
+      open. Those two are verifiable. A byline is not.
+    </p>
+  </section>
+
+  <section>
+    <h2>Why it is built this way</h2>
+    <p>
+      The ordinary way to build these tools is to upload the file, do the work
+      on a server, and send the result back. It is easier, it works on any
+      device, and it is what almost every &ldquo;free online converter&rdquo;
+      does.
+    </p>
+    <p>
+      It also means handing a stranger your file. That is a small thing for a
+      meme and a serious thing for a passport scan, a medical image, a contract
+      with a signature on it, or a photograph with your home address in its
+      metadata. Once the file is on someone else&rsquo;s machine, what happens
+      to it is a matter of their policy and their competence, and you have no
+      way to audit either. The privacy policy of a site like that is a promise.
+      It is not a constraint.
+    </p>
+    <p>
+      Browsers got good enough to make the promise unnecessary. They can decode
+      and encode JPEG, PNG and WebP; they can demux and decode video; they can
+      hash a file, read a QR code, and write a PDF. If the work can happen on
+      your own machine, then &ldquo;will they keep my file?&rdquo; stops being a
+      question about anybody&rsquo;s intentions and becomes a question about
+      what the code can physically do &mdash; which you can answer for yourself.
+    </p>
+    <p>
+      That is the whole argument, and there is a guide that makes it properly:
+      <a href="../guides/is-it-safe-to-upload-files/">is it safe to upload files
+      to a website?</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>How to check, rather than trust</h2>
+    <p>
+      Every claim above is meant to be tested. Four ways, in ascending order of
+      effort:
+    </p>
+    <ul>
+      <li>
+        <strong>Unplug the internet.</strong> Load any tool page, disconnect,
+        and use it anyway. It keeps working, because there was never a network
+        step in it. A tool that sent your file away to be processed would stop.
+      </li>
+      <li>
+        <strong>Watch the network.</strong> Open DevTools, go to the Network
+        tab, and process a file. Not one request carries your file, a thumbnail
+        of it, its name, or a byte of its contents. What you will see is the
+        page, its scripts, the advertising and the visit counter.
+      </li>
+      <li>
+        <strong>Read the policy the page enforces on itself.</strong> Every page
+        carries a <code>Content-Security-Policy</code> naming every address it
+        is allowed to contact, and not one of them belongs to this site. Even a
+        mistake in the code could not send a file somewhere, because the browser
+        would refuse the connection.
+      </li>
+      <li>
+        <strong>Read the code.</strong> It is
+        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">all
+        public</a>, with no build step and no bundler: what is in the repository
+        is byte for byte what your browser runs. Each tool has a README
+        explaining how it works, and each tool page names the particular files
+        worth reading first.
+      </li>
+    </ul>
+    <p>
+      There is exactly one deliberate exception to &ldquo;no network&rdquo;, and
+      it is stated on its own page at length: <a href="../share-text/">Share
+      Text</a> moves text between two of your own devices, which cannot be done
+      without one. It opens a single connection to a relay that stores nothing
+      and is only ever told that two browsers would like to be introduced.
+    </p>
+  </section>
+
+  <section>
+    <h2>How the tools are built and checked</h2>
+    <p>
+      A tool ships when it works on real files, not when it works on the file it
+      was written against. In practice that means each one is driven by hand in
+      a browser on awkward inputs &mdash; the video with no keyframe where you
+      want to cut, the HEIC from a phone that writes a slightly wrong container,
+      the PDF with a subset font in it &mdash; because those are what people
+      actually have, and they are what a test written by the same person who
+      wrote the bug will not find.
+    </p>
+    <p>
+      Underneath that there is an automated suite covering both halves: the
+      generator that builds the site, and the modules the browser runs. It runs
+      on every change, and nothing is published past a failure. Where the same
+      piece of work appears in more than one tool &mdash; several of them read
+      MP4 files &mdash; a test asserts that the copies still agree, so a fix to
+      one cannot quietly leave the others wrong.
+    </p>
+    <p>
+      The guides are written the same way. Their screenshots are captured from
+      the built site by a script rather than drawn or mocked up, so a picture in
+      a guide is a picture of the page as it actually is today.
+    </p>
+  </section>
+
+  <section>
+    <h2>How this is paid for</h2>
+    <p>
+      Advertising, and donations from people who find the tools useful. That is
+      the entire business model, and it is worth being precise about what it
+      does and does not involve.
+    </p>
+    <p>
+      <strong>There is nothing to buy.</strong> No account, no sign-up, no free
+      tier with a paid one above it, no watermark to remove, no file-size cap,
+      no daily limit, and no feature held back. What is on the site is the whole
+      thing.
+    </p>
+    <p>
+      <strong>Your files are not part of the deal.</strong> The advertising is
+      Google&rsquo;s and the visit counting is Google Analytics, and neither is
+      given anything about what you open, what you make, what it was called, or
+      how big it was &mdash; because neither script is ever handed it, and the
+      page&rsquo;s security policy would refuse to send it if either tried.
+      Exactly what those two do collect, and how to switch each off, is set out
+      on the <a href="../privacy/">Privacy page</a>. Every tool keeps working
+      with both of them blocked.
+    </p>
+    <p>
+      <strong>The tools are not written for the advertising.</strong> No tool
+      here exists because a keyword was worth money, and none has been made
+      slower, more fiddly, or more page-hungry to sell more impressions. What
+      gets built next is argued out in the open, in
+      <a href="https://github.com/A-Box-of-Tools/website/blob/main/ROADMAP.md" target="_blank" rel="noopener noreferrer">ROADMAP.md</a>,
+      a paragraph per idea &mdash; including the reasons several
+      obvious-looking ones have been turned down.
+    </p>
+  </section>
+
+  <section>
+    <h2>Languages</h2>
+    <p>
+      The site is published in fifteen languages. Each is a real translation
+      rather than a machine pass left where it landed: the tool names, the
+      explanations, the guides and the addresses themselves are all translated,
+      and a page is listed in a language only once that language has actually
+      been written. A language still being worked on stays readable but is kept
+      out of the sitemap and the language switcher, so nobody is invited to a
+      page that is half in English.
+    </p>
+    <p>
+      Correspondence is answered in English, which is the one honest thing to
+      say about a project this size.
+    </p>
+  </section>
+
+  <section>
+    <h2>What this site will not do</h2>
+    <ul>
+      <li>Ask you to create an account, or for your email address.</li>
+      <li>Upload, store, inspect or retain a file you open with it.</li>
+      <li>Put a watermark on a result, or hold a feature back for a paid tier.</li>
+      <li>Add a network step to a tool that does not need one.</li>
+      <li>
+        Claim something on a tool page that the code in the repository does not
+        do.
+      </li>
+    </ul>
+    <p>
+      If you find any of those happening, that is a bug and a broken promise at
+      the same time, and it is worth telling me about. The
+      <a href="../contact/">Contact page</a> is the fastest way.
+    </p>
+  </section>

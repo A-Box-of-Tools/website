@@ -10,7 +10,7 @@ lede = """
     Açılacak bir hesap ve imzalanacak bir sözleşme yok; bu yüzden koşullar kısa.
     Bu siteden ne bekleyebileceğinizi ve nelerin sözünü vermediğini
     anlatıyorlar."""
-updated = "19 Ağustos 2026"
+updated = "27 Ağustos 2026"
 og_title = "Kullanım Koşulları &mdash; abox.tools"
 og_description = "Ücretsiz, olduğu gibi, hesap yok, garanti yok. Dosyalarınız tamamen sizin kalır."
 og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

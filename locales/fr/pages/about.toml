@@ -1,0 +1,24 @@
+#
+# À propos - French.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "À propos"
+
+title = "À propos d&rsquo;abox.tools &mdash; qui fabrique ces outils, et pourquoi"
+description = "Un projet indépendant et autofinancé : trente-six outils qui tournent entièrement dans le navigateur, la raison de ce choix, comment le site se finance, et comment vérifier soi-même chacune de ses affirmations."
+
+heading = "À propos d&rsquo;abox.tools"
+lede = """
+    Une personne seule, en Ontario, qui fabrique les outils dont elle avait sans
+    cesse besoin et auxquels elle ne se fiait pas. Tout ici tourne sur votre
+    propre appareil, le code est public, et cette page réunit les raisons de
+    l&rsquo;un et de l&rsquo;autre."""
+
+updated = "27 août 2026"
+
+og_title = "Qui fabrique abox.tools, et pourquoi tout tourne dans le navigateur"
+og_description = "Un projet indépendant et autofinancé. Pourquoi les outils n&rsquo;envoient rien, comment le site se finance, et comment vérifier les deux."
+og_image_alt = "abox.tools - des outils qui ne touchent aucun serveur"

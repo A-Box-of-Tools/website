@@ -45,6 +45,24 @@ analytics_id = "G-SCBN29XZ31"
 # alone deliberately - see the note at the top of build.py.
 #
 
+#
+# Who publishes this, in the form a machine reads it. The About and Contact
+# pages say the same things in prose, at length, in fifteen languages; this is
+# the half that goes into the Organization node on the hub, and it is
+# deliberately only the facts that are identical in every language. An address
+# and an email are; a description of what the site is for is not, and would
+# arrive in English on fourteen pages out of fifteen, so there is not one here.
+#
+# `contact_slug` is written down for the same reason `safety_guide` above is:
+# the structured data has to name that page's address, and a slug spelled out
+# in the middle of buildlib/site.py is a slug that gets left behind when the
+# page is renamed. Each locale translates it through its own [slugs] table.
+#
+[publisher]
+region = "Ontario"
+country = "CA"
+contact_slug = "contact"
+
 [bmc]
 # Buy Me a Coffee. The build writes their snippet out unchanged; these are the
 # data- attributes it is configured with.

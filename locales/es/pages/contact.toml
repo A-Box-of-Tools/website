@@ -1,0 +1,22 @@
+#
+# Contacto - Spanish.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "Contacto"
+
+title = "Contacto con abox.tools &mdash; avisar de un fallo, preguntar o proponer una herramienta"
+description = "Cómo llegar a la persona que construye abox.tools: una dirección de correo, un gestor de incidencias público, para qué sirve mejor cada uno y qué pasa después de escribir."
+
+heading = "Contacto"
+lede = """
+    Esto lo lee una persona, y lo lee todo. Abajo está para qué sirve mejor
+    cada una de las dos vías, qué conviene incluir para que un fallo pueda
+    encontrarse de verdad, y qué ocurre después de enviarlo."""
+
+updated = "27 de agosto de 2026"
+
+og_title = "Contacto con abox.tools"
+og_description = "Correo o un gestor de incidencias público, para qué sirve mejor cada uno y qué pasa después de escribir."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

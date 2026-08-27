@@ -27,6 +27,24 @@
 <title>{{ site.roadmap.title }}</title>
 <meta name="description" content="{{ site.roadmap.description }}">
 
+<!--
+  The one page on this site kept out of search, and the reason is what the page
+  is: a list of tools that do not exist yet. To a reader who wants to know
+  where this is going that is worth saying out loud, which is why the page is
+  still here and still linked from every footer. To a search engine it is a
+  page about nothing anybody can use - "under construction", by the name every
+  set of quality guidelines gives it - and fifteen translations of it is
+  fifteen chances to be judged on the half of the site that has not been built.
+
+  `follow` and not `noindex, nofollow`: the links out of here go to tools that
+  do exist, and there is no reason to cut them.
+
+  The other half of this decision is in buildlib/catalogue.py, which leaves the
+  page out of sitemap.xml. Change one and change both, or the site will be
+  asking to be indexed and refusing at the same time.
+-->
+<meta name="robots" content="noindex, follow">
+
 <link rel="canonical" href="{{ canonical }}">
 {% include "partials/alternates.html" %}
 {% include "partials/feed.html" %}

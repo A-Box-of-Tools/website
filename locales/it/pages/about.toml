@@ -1,0 +1,24 @@
+#
+# Chi siamo - Italian.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "Chi siamo"
+
+title = "Chi c&rsquo;è dietro abox.tools &mdash; chi fa questi strumenti, e perché"
+description = "Un progetto indipendente e autofinanziato: trentasei strumenti che funzionano interamente nel browser, il motivo per cui sono fatti così, come si mantiene il sito e come verificare da soli ogni affermazione che contiene."
+
+heading = "Chi c&rsquo;è dietro abox.tools"
+lede = """
+    Una persona sola, in Ontario, che costruisce gli strumenti di cui aveva
+    continuamente bisogno e di cui continuava a non fidarsi. Tutto quello che
+    c&rsquo;è qui gira sul dispositivo di chi lo usa, il codice è pubblico, e in
+    questa pagina ci sono le ragioni di entrambe le cose."""
+
+updated = "27 agosto 2026"
+
+og_title = "Chi fa abox.tools, e perché tutto gira nel browser"
+og_description = "Un progetto indipendente e autofinanziato. Perché gli strumenti non caricano nulla, come si mantiene il sito, e come verificare entrambe le cose."
+og_image_alt = "abox.tools - strumenti che non toccano nessun server"

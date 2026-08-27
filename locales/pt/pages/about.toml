@@ -1,0 +1,24 @@
+#
+# Sobre - Portuguese (Brazil).
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "Sobre"
+
+title = "Sobre o abox.tools &mdash; quem faz estas ferramentas, e por quê"
+description = "Um projeto independente e autofinanciado: trinta e seis ferramentas que rodam inteiramente no navegador, o motivo de serem feitas assim, como o site se paga, e como conferir por conta própria cada afirmação que ele faz."
+
+heading = "Sobre o abox.tools"
+lede = """
+    Uma pessoa só, em Ontário, construindo as ferramentas de que vivia
+    precisando e nas quais não confiava. Tudo aqui roda no seu próprio
+    computador, o código é público, e esta página reúne os motivos das duas
+    coisas."""
+
+updated = "27 de agosto de 2026"
+
+og_title = "Quem faz o abox.tools, e por que tudo roda no navegador"
+og_description = "Um projeto independente e autofinanciado. Por que as ferramentas não enviam nada, como o site se paga, e como conferir as duas coisas."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"
