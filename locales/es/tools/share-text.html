@@ -1,0 +1,183 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> Escríbelo, o adjúntalo</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="Los lectores lo ven formateado, renderizado en vivo mientras escribes">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">Adjuntar archivos</button>
+          <button type="button" id="save" class="ghost" data-download>Guardar como archivo</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="El texto que se va a compartir"
+                    placeholder="Escribe o pega el texto que quieras compartir&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="Archivos que adjuntar">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        Los archivos viajan por el mismo canal directo que el texto, hasta
+        200&nbsp;MB cada uno. Los lectores ven la lista y descargan cada
+        archivo solo si lo piden.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> Ponle nombre al enlace</h2>
+      <div class="field">
+        <label for="code">Nombre del enlace</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="Sugerir otro nombre">&#8635;</button>
+        </div>
+        <p class="field-note">
+          El nombre es la dirección y el único secreto: lo bastante corto
+          para decirlo de un lado a otro de una sala, y para algo privado
+          merece uno inadivinable.
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          Privado &mdash; cada lector debe pedir entrar, y tú lo dejas pasar
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          De un solo uso &mdash; no guardar el borrador en este dispositivo
+        </label>
+        <p class="field-note">
+          El borrador queda solo en este navegador, así que seguirá aquí la
+          próxima vez &mdash; salvo que lo marques de un solo uso, y
+          entonces no queda en ninguna parte.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> Compártelo</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">Empezar a compartir</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="El enlace para compartir">
+        <button type="button" id="copylink" class="ghost">Copiar enlace</button>
+        <button type="button" id="stop" class="ghost">Dejar de compartir</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>Nada se guarda en ninguna parte</h2>
+      <p>
+        El texto y los archivos viajan cifrados, directos de esta pestaña a
+        la de cada lector. El único servidor implicado presenta a los dos
+        navegadores y nunca ve lo que intercambian. Cerrar esta pestaña
+        termina la compartición y vacía también las páginas abiertas de los
+        lectores &mdash; aunque lo que alguien ya copió o descargó es suyo.
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>Alguien está compartiendo contigo</h2>
+      <p id="view-status" role="status" aria-live="polite">Buscando a quien comparte&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          Leerlo conecta tu navegador directamente con el de quien comparte
+          &mdash; esa es justo la gracia: aquí nada toca un servidor. Como
+          cualquier conexión directa, deja que cada lado vea la dirección de
+          red (IP) del otro. No se descarga nada, y nada tuyo se comparte,
+          hasta que decidas conectar.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">Conectar y recibir lo compartido</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          Dile a quien comparte algo que reconozca &mdash; un nombre, una
+          pista &mdash; y podrá dejarte entrar. Tu mensaje va directo a su
+          navegador.
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="Un mensaje que quien comparte reconozca"
+                 placeholder="Soy yo, Alice">
+          <button type="button" id="send-knock" class="primary">Pedir leer</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">Comprobar este enlace otra vez</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="Se actualiza mientras quien comparte escribe">En vivo</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">Formateado</button>
+            <button type="button" id="mode-src">Original</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="Copia el texto sin formato">Copiar</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">Compartiendo. Esperando a que alguien abra el enlace &mdash; deja esta pestaña abierta.</span>
+    <span data-phrase="share.reader-count.one">1 lector conectado</span>
+    <span data-phrase="share.reader-count.many">{n} lectores conectados</span>
+    <span data-phrase="share.knock-count.one">1 persona espera a que la dejes entrar</span>
+    <span data-phrase="share.knock-count.many">{n} personas esperan a que las dejes entrar</span>
+    <span data-phrase="share.closing-note">Cerrar esta pestaña termina la compartición.</span>
+    <span data-phrase="share.no-message">(sin mensaje)</span>
+    <span data-phrase="share.admit">Dejarle leer</span>
+    <span data-phrase="share.deny">Rechazar</span>
+    <span data-phrase="share.remove-file">Quitar</span>
+    <span data-phrase="share.setting-up">Preparando&hellip;</span>
+    <span data-phrase="share.name-first">Ponle primero un nombre al enlace, o pulsa el botón de sugerencia.</span>
+    <span data-phrase="share.name-taken">Con «{name}» ya está compartiendo otra persona &mdash; elige otro nombre.</span>
+    <span data-phrase="share.lost-rendezvous">Se perdió el servidor de presentación; reintentando. Los lectores conectados no se ven afectados.</span>
+    <span data-phrase="share.stopped">Detenido. Ya no se comparte nada.</span>
+    <span data-phrase="share.file-too-big">«{name}» supera el límite de 200 MB.</span>
+
+    <span data-phrase="copy.done">Copiado</span>
+    <span data-phrase="copy.link">Copiar enlace</span>
+    <span data-phrase="copy.text">Copiar</span>
+
+    <span data-phrase="view.someone">Alguien está compartiendo en esta dirección.</span>
+    <span data-phrase="view.connecting">Conectando directamente&hellip;</span>
+    <span data-phrase="view.private">Quien comparte lo puso en privado.</span>
+    <span data-phrase="view.asked">Pedido. Esperando a que te deje entrar&hellip;</span>
+    <span data-phrase="view.denied">Quien comparte no te dejó entrar.</span>
+    <span data-phrase="view.empty">Conectado. Quien comparte aún no ha escrito nada &mdash; esta página se irá llenando mientras escribe.</span>
+    <span data-phrase="view.ended">Quien compartía ha terminado, y esta copia se fue con ello.</span>
+    <span data-phrase="view.gone-early">Quien compartía se fue antes de que llegara nada. Se fue con ello.</span>
+    <span data-phrase="view.nobody">Nadie comparte en esta dirección. Puede que quien compartía cerrara su pestaña &mdash; en ese caso, se fue con ella.</span>
+    <span data-phrase="view.full">Esta compartición ya tiene su máximo de lectores.</span>
+    <span data-phrase="view.no-connect">No se pudo llegar directamente a quien comparte. Puede que una de las dos redes no permita conexiones entre pares.</span>
+    <span data-phrase="view.error">Algo falló al conectar. Recarga la página y prueba otra vez.</span>
+    <span data-phrase="view.download">Descargar</span>
+    <span data-phrase="view.file-gone">Ya no se comparte</span>
+  </div>
+</main>

@@ -113,6 +113,7 @@ complete = true
 # Nicht "zeitraffer-video": gesucht wird die Handlung, nicht das Ergebnis.
 "timelapse-video" = "zeitraffer-erstellen"
 "hash-checksum" = "pruefsumme-berechnen"
+"share-text" = "text-teilen"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -141,6 +142,7 @@ complete = true
 "guides/make-a-qr-code" = "ratgeber/qr-code-selbst-erstellen"
 "guides/turn-a-video-into-a-gif" = "ratgeber/aus-einem-video-ein-gif-machen"
 "guides/format-json-without-uploading-it" = "ratgeber/json-formatieren"
+"guides/share-text-between-devices" = "ratgeber/text-zwischen-geraeten-teilen"
 "guides/grab-a-frame-from-a-video" = "ratgeber/standbild-aus-video-speichern"
 "guides/make-a-gif-from-images" = "ratgeber/aus-bildern-ein-gif-machen"
 "guides/make-a-passport-photo" = "ratgeber/passbild-selbst-machen"

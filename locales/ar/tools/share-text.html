@@ -1,0 +1,179 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> اكتبه، أو أرفقها</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="يراه القراء منسّقاً، مُصيَّراً حياً أثناء كتابتك">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">إرفاق ملفات</button>
+          <button type="button" id="save" class="ghost" data-download>حفظ كملف</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="النص المراد مشاركته"
+                    placeholder="اكتب أو ألصق النص المراد مشاركته&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="الملفات المراد إرفاقها">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        تنتقل الملفات عبر القناة المباشرة نفسها التي ينتقل بها النص، حتى
+        200&nbsp;MB للملف. يرى القراء القائمة ولا يُنزَّل ملف إلا إذا
+        طلبوه.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> سمِّ الرابط</h2>
+      <div class="field">
+        <label for="code">اسم الرابط</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="اقتراح اسم آخر">&#8635;</button>
+        </div>
+        <p class="field-note">
+          الاسم هو العنوان وهو السر الوحيد: قصير بما يكفي ليُنادى به عبر
+          الغرفة، وللخاص يستحق اسماً لا يخمّنه أحد.
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          خاص &mdash; على كل قارئ أن يطلب، وأنت من يُدخله
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          لمرة واحدة &mdash; لا تحفظ المسودة على هذا الجهاز
+        </label>
+        <p class="field-note">
+          تبقى المسودة في هذا المتصفح وحده، فتجدها في المرة القادمة &mdash;
+          إلا إن وسمتها بأنها لمرة واحدة، فلا تبقى في أي مكان.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> شاركه</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">ابدأ المشاركة</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="رابط المشاركة">
+        <button type="button" id="copylink" class="ghost">نسخ الرابط</button>
+        <button type="button" id="stop" class="ghost">إيقاف المشاركة</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>لا يُخزَّن شيء في أي مكان</h2>
+      <p>
+        ينتقل النص والملفات مشفّرة من هذا التبويب إلى تبويب كل قارئ مباشرة.
+        الخادم الوحيد المعنيّ يعرّف المتصفحين أحدهما بالآخر ولا يرى أبداً
+        ما يتبادلانه. إغلاق هذا التبويب ينهي المشاركة ويفرغ صفحات القراء
+        المفتوحة أيضاً &mdash; على أن ما نسخه أحدهم أو نزّله من قبل فهو
+        له.
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>أحدهم يشارك معك</h2>
+      <p id="view-status" role="status" aria-live="polite">جارٍ البحث عن المشارك&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          قراءته تصل متصفحك بمتصفح المشارك مباشرة &mdash; وهذا هو المقصود
+          بالضبط: لا شيء هنا يلمس خادماً. وكأي اتصال مباشر، يجعل كل طرف يرى
+          عنوان الشبكة (IP) الخاص بالآخر. لا يُجلب شيء، ولا يُشارَك عنك
+          شيء، حتى تختار أنت الاتصال.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">اتصل واستلم المشاركة</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          قل للمشارك شيئاً يعرفه &mdash; اسماً، إشارة &mdash; ليستطيع
+          إدخالك. رسالتك تذهب إلى متصفحه مباشرة.
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="رسالة يعرفها المشارك"
+                 placeholder="أنا أليس">
+          <button type="button" id="send-knock" class="primary">اطلب القراءة</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">افحص هذا الرابط مجدداً</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="يتحدّث أثناء كتابة المشارك">مباشر</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">منسّق</button>
+            <button type="button" id="mode-src">الأصل</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="ينسخ النص الخام">نسخ</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">المشاركة جارية. في انتظار أن يفتح أحدهم الرابط &mdash; أبقِ هذا التبويب مفتوحاً.</span>
+    <span data-phrase="share.reader-count.one">قارئ واحد متصل</span>
+    <span data-phrase="share.reader-count.many">{n} قراء متصلون</span>
+    <span data-phrase="share.knock-count.one">شخص واحد ينتظر أن تُدخله</span>
+    <span data-phrase="share.knock-count.many">{n} أشخاص ينتظرون أن تُدخلهم</span>
+    <span data-phrase="share.closing-note">إغلاق هذا التبويب ينهي المشاركة.</span>
+    <span data-phrase="share.no-message">(لا رسالة)</span>
+    <span data-phrase="share.admit">دعه يقرأ</span>
+    <span data-phrase="share.deny">اصرفه</span>
+    <span data-phrase="share.remove-file">إزالة</span>
+    <span data-phrase="share.setting-up">جارٍ الإعداد&hellip;</span>
+    <span data-phrase="share.name-first">سمِّ الرابط أولاً، أو اضغط زر الاقتراح.</span>
+    <span data-phrase="share.name-taken">&laquo;{name}&raquo; يشارك به غيرك الآن &mdash; اختر اسماً آخر.</span>
+    <span data-phrase="share.lost-rendezvous">انقطع الاتصال بالوسيط؛ تجري إعادة المحاولة. القراء المتصلون لا يتأثرون.</span>
+    <span data-phrase="share.stopped">توقّف. لم يعد يُشارَك شيء.</span>
+    <span data-phrase="share.file-too-big">&laquo;{name}&raquo; يتجاوز حد 200 MB.</span>
+
+    <span data-phrase="copy.done">نُسخ</span>
+    <span data-phrase="copy.link">نسخ الرابط</span>
+    <span data-phrase="copy.text">نسخ</span>
+
+    <span data-phrase="view.someone">أحدهم يشارك على هذا العنوان.</span>
+    <span data-phrase="view.connecting">جارٍ الاتصال المباشر&hellip;</span>
+    <span data-phrase="view.private">جعلها المشارك خاصة.</span>
+    <span data-phrase="view.asked">طُلب. في انتظار أن يُدخلك المشارك&hellip;</span>
+    <span data-phrase="view.denied">لم يُدخلك المشارك.</span>
+    <span data-phrase="view.empty">اتصلت. لم يكتب المشارك شيئاً بعد &mdash; ستمتلئ هذه الصفحة وهو يكتب.</span>
+    <span data-phrase="view.ended">أنهى المشارك المشاركة، وذهبت معها هذه النسخة.</span>
+    <span data-phrase="view.gone-early">غادر المشارك قبل أن يصل شيء. ذهب كل شيء معه.</span>
+    <span data-phrase="view.nobody">لا أحد يشارك على هذا العنوان. ربما أغلق المشارك تبويبه &mdash; وعندها تكون المشاركة قد ذهبت معه.</span>
+    <span data-phrase="view.full">بلغت هذه المشاركة حدّها الأقصى من القراء.</span>
+    <span data-phrase="view.no-connect">تعذّر بلوغ المشارك مباشرة. قد تكون إحدى الشبكتين لا تسمح باتصال الند للند.</span>
+    <span data-phrase="view.error">حدث خطأ أثناء الاتصال. أعد تحميل الصفحة وحاول مجدداً.</span>
+    <span data-phrase="view.download">تنزيل</span>
+    <span data-phrase="view.file-gone">لم يعد مشتركاً</span>
+  </div>
+</main>

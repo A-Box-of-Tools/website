@@ -1,0 +1,183 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> Schrijf het, of voeg ze bij</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="Lezers zien het opgemaakt, live gerenderd terwijl je typt">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">Bestanden bijvoegen</button>
+          <button type="button" id="save" class="ghost" data-download>Opslaan als bestand</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="De te delen tekst"
+                    placeholder="Typ of plak de tekst die je wilt delen&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="Bij te voegen bestanden">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        Bestanden reizen over hetzelfde rechtstreekse kanaal als de tekst,
+        tot 200&nbsp;MB per stuk. Lezers zien de lijst en halen een bestand
+        alleen op als ze erom vragen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> Geef de link een naam</h2>
+      <div class="field">
+        <label for="code">Linknaam</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="Een andere naam voorstellen">&#8635;</button>
+        </div>
+        <p class="field-note">
+          De naam is het adres en het enige geheim: kort genoeg om door een
+          kamer te roepen, en voor iets privés een onraadbare waard.
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          Privé &mdash; elke lezer moet aankloppen, en jij laat binnen
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          Eenmalig &mdash; het concept niet op dit apparaat bewaren
+        </label>
+        <p class="field-note">
+          Het concept staat alleen in deze browser, dus het is er de
+          volgende keer nog &mdash; tenzij je het eenmalig markeert, dan
+          staat het nergens.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> Deel het</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">Beginnen met delen</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="De deellink">
+        <button type="button" id="copylink" class="ghost">Link kopiëren</button>
+        <button type="button" id="stop" class="ghost">Stoppen met delen</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>Niets wordt ergens opgeslagen</h2>
+      <p>
+        Tekst en bestanden reizen versleuteld, rechtstreeks van dit tabblad
+        naar dat van elke lezer. De ene betrokken server stelt de twee
+        browsers aan elkaar voor en ziet nooit wat ze uitwisselen. Dit
+        tabblad sluiten beëindigt het delen en maakt ook de open pagina's
+        van lezers leeg &mdash; al blijft wat iemand al kopieerde of
+        downloadde van hem.
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>Iemand deelt iets met je</h2>
+      <p id="view-status" role="status" aria-live="polite">Op zoek naar de deler&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          Het lezen verbindt jouw browser rechtstreeks met die van de deler
+          &mdash; dat is precies de bedoeling: hier raakt niets een server.
+          Zoals elke rechtstreekse verbinding laat het elke kant het
+          netwerkadres (IP) van de ander zien. Er wordt niets opgehaald, en
+          niets over jou gedeeld, totdat jij kiest om te verbinden.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">Verbinden en het gedeelde ophalen</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          Zeg de deler iets wat hij herkent &mdash; een naam, een hint
+          &mdash; en hij kan je binnenlaten. Je bericht gaat rechtstreeks
+          naar zijn browser.
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="Een bericht dat de deler herkent"
+                 placeholder="Ik ben het, Alice">
+          <button type="button" id="send-knock" class="primary">Vragen om te lezen</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">Deze link opnieuw controleren</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="Wordt bijgewerkt terwijl de deler typt">Live</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">Opgemaakt</button>
+            <button type="button" id="mode-src">Brontekst</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="Kopieert de kale tekst">Kopiëren</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">Aan het delen. Wachten tot iemand de link opent &mdash; laat dit tabblad open.</span>
+    <span data-phrase="share.reader-count.one">1 lezer verbonden</span>
+    <span data-phrase="share.reader-count.many">{n} lezers verbonden</span>
+    <span data-phrase="share.knock-count.one">1 persoon wacht tot je hem binnenlaat</span>
+    <span data-phrase="share.knock-count.many">{n} mensen wachten tot je ze binnenlaat</span>
+    <span data-phrase="share.closing-note">Dit tabblad sluiten beëindigt het delen.</span>
+    <span data-phrase="share.no-message">(geen bericht)</span>
+    <span data-phrase="share.admit">Laten lezen</span>
+    <span data-phrase="share.deny">Wegsturen</span>
+    <span data-phrase="share.remove-file">Verwijderen</span>
+    <span data-phrase="share.setting-up">Bezig met opzetten&hellip;</span>
+    <span data-phrase="share.name-first">Geef de link eerst een naam, of druk op de suggestieknop.</span>
+    <span data-phrase="share.name-taken">Onder &ldquo;{name}&rdquo; deelt op dit moment iemand anders &mdash; kies een andere naam.</span>
+    <span data-phrase="share.lost-rendezvous">Verbinding met de tussenpersoon verloren; opnieuw proberen. Verbonden lezers merken er niets van.</span>
+    <span data-phrase="share.stopped">Gestopt. Er wordt niets meer gedeeld.</span>
+    <span data-phrase="share.file-too-big">&ldquo;{name}&rdquo; is groter dan de limiet van 200 MB.</span>
+
+    <span data-phrase="copy.done">Gekopieerd</span>
+    <span data-phrase="copy.link">Link kopiëren</span>
+    <span data-phrase="copy.text">Kopiëren</span>
+
+    <span data-phrase="view.someone">Iemand deelt iets op dit adres.</span>
+    <span data-phrase="view.connecting">Rechtstreeks verbinden&hellip;</span>
+    <span data-phrase="view.private">De deler heeft dit privé gemaakt.</span>
+    <span data-phrase="view.asked">Gevraagd. Wachten tot de deler je binnenlaat&hellip;</span>
+    <span data-phrase="view.denied">De deler heeft je niet binnengelaten.</span>
+    <span data-phrase="view.empty">Verbonden. De deler heeft nog niets geschreven &mdash; deze pagina vult zich terwijl hij typt.</span>
+    <span data-phrase="view.ended">De deler heeft het delen beëindigd, en deze kopie ging mee.</span>
+    <span data-phrase="view.gone-early">De deler vertrok voordat er iets aankwam. Het is met hem mee verdwenen.</span>
+    <span data-phrase="view.nobody">Niemand deelt iets op dit adres. Misschien heeft de deler zijn tabblad gesloten &mdash; dan is het delen daarmee verdwenen.</span>
+    <span data-phrase="view.full">Dit delen zit al aan zijn maximum aantal lezers.</span>
+    <span data-phrase="view.no-connect">De deler was rechtstreeks niet te bereiken. Mogelijk staat een van beide netwerken geen peer-to-peer-verbinding toe.</span>
+    <span data-phrase="view.error">Er ging iets mis bij het verbinden. Herlaad de pagina en probeer opnieuw.</span>
+    <span data-phrase="view.download">Downloaden</span>
+    <span data-phrase="view.file-gone">Wordt niet meer gedeeld</span>
+  </div>
+</main>

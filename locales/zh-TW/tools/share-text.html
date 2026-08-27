@@ -1,0 +1,158 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code.
+       Chinese paragraphs and phrases stay on one line each: a wrap inside
+       a sentence becomes a visible space. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> 寫下來，或附上檔案</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="讀者看到的是排好版的樣子，隨鍵入即時轉譯">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">附上檔案</button>
+          <button type="button" id="save" class="ghost" data-download>存為檔案</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="要分享的文字"
+                    placeholder="輸入或貼上要分享的文字&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="要附上的檔案">
+      <div id="attachlist"></div>
+      <p class="field-note">檔案走和文字同一條直連通道，每個最大200&nbsp;MB。讀者看到清單，只有開口要，檔案才會傳給他。</p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> 給連結取名</h2>
+      <div class="field">
+        <label for="code">連結名稱</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="換個建議名稱">&#8635;</button>
+        </div>
+        <p class="field-note">名稱就是位址，也是唯一的秘密：短到能隔著房間喊出來；私密的東西，配個沒人猜得中的名稱。</p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          私密 &mdash; 每位讀者先申請，由你放行
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          一次性 &mdash; 草稿不留在這台裝置上
+        </label>
+        <p class="field-note">草稿只留在這個瀏覽器裡，下次打開還在&mdash;&mdash;勾選一次性就哪裡都不留。</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> 分享出去</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">開始分享</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="分享連結">
+        <button type="button" id="copylink" class="ghost">複製連結</button>
+        <button type="button" id="stop" class="ghost">停止分享</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>哪裡都不存任何東西</h2>
+      <p>文字和檔案加密後從這個分頁直達每位讀者的分頁。唯一牽涉的伺服器只負責引介兩個瀏覽器，永遠看不到它們交換了什麼。關掉這個分頁，分享結束，讀者開著的頁面也隨之清空&mdash;&mdash;不過別人已經複製或下載的東西歸他。</p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>有人正與你分享</h2>
+      <p id="view-status" role="status" aria-live="polite">正在尋找分享的人&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>要讀它，你的瀏覽器會和分享方的瀏覽器直接相連&mdash;&mdash;這正是關鍵：這裡沒有任何東西碰伺服器。和一切直連一樣，雙方會看到彼此的網路（IP）位址。在你選擇連線之前，什麼都不會取得，關於你的任何資訊也不會外流。</p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">連線並接收分享</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>告訴分享的人一句他認得出的話&mdash;&mdash;名字、暗號都行&mdash;&mdash;他就能放你進來。你的話直接送到他的瀏覽器。</p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="一句分享的人認得出的話"
+                 placeholder="是我，Alice">
+          <button type="button" id="send-knock" class="primary">申請閱讀</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">再查一次這個連結</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="隨著分享的人鍵入而更新">即時</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">排版</button>
+            <button type="button" id="mode-src">原文</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="複製未排版的原文">複製</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js.
+       One line per phrase - phrase() collapses a wrap into a space. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">分享中。等著有人打開連結&mdash;&mdash;別關這個分頁。</span>
+    <span data-phrase="share.reader-count.one">1位讀者已連線</span>
+    <span data-phrase="share.reader-count.many">{n}位讀者已連線</span>
+    <span data-phrase="share.knock-count.one">1人等你放行</span>
+    <span data-phrase="share.knock-count.many">{n}人等你放行</span>
+    <span data-phrase="share.closing-note">關掉這個分頁，分享即止。</span>
+    <span data-phrase="share.no-message">（沒有留言）</span>
+    <span data-phrase="share.admit">讓他讀</span>
+    <span data-phrase="share.deny">請回</span>
+    <span data-phrase="share.remove-file">移除</span>
+    <span data-phrase="share.setting-up">正在準備&hellip;</span>
+    <span data-phrase="share.name-first">先給連結取個名稱，或按一下建議按鈕。</span>
+    <span data-phrase="share.name-taken">「{name}」這個名稱正有別人在用&mdash;&mdash;換一個吧。</span>
+    <span data-phrase="share.lost-rendezvous">與引介伺服器失聯；正在重試。已連線的讀者不受影響。</span>
+    <span data-phrase="share.stopped">已停止。什麼都不再分享了。</span>
+    <span data-phrase="share.file-too-big">「{name}」超出了200 MB的上限。</span>
+
+    <span data-phrase="copy.done">已複製</span>
+    <span data-phrase="copy.link">複製連結</span>
+    <span data-phrase="copy.text">複製</span>
+
+    <span data-phrase="view.someone">這個位址上有人正在分享。</span>
+    <span data-phrase="view.connecting">正在直連&hellip;</span>
+    <span data-phrase="view.private">分享的人把它設成了私密。</span>
+    <span data-phrase="view.asked">已申請。等對方放行&hellip;</span>
+    <span data-phrase="view.denied">分享的人沒有放你進來。</span>
+    <span data-phrase="view.empty">已連線。分享的人還什麼都沒寫&mdash;&mdash;他一動筆，這個頁面就會跟著填起來。</span>
+    <span data-phrase="view.ended">分享的人結束了分享，這份副本也隨之消失。</span>
+    <span data-phrase="view.gone-early">東西還沒送到，分享的人就離開了。一切都隨他而去。</span>
+    <span data-phrase="view.nobody">這個位址上沒人在分享。可能分享的人關掉了分頁&mdash;&mdash;那樣的話，分享也隨之消失了。</span>
+    <span data-phrase="view.full">這次分享的讀者名額已滿。</span>
+    <span data-phrase="view.no-connect">無法直連到分享的人。可能兩邊網路裡有一方不允許點對點連線。</span>
+    <span data-phrase="view.error">連線時出了點問題。重新整理頁面再試一次。</span>
+    <span data-phrase="view.download">下載</span>
+    <span data-phrase="view.file-gone">已不再分享</span>
+  </div>
+</main>

@@ -1,0 +1,371 @@
+#
+# Berbagi teks dan berkas - Indonesian.
+#
+# Overrides for tools/share-text/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+
+name = "Berbagi teks dan berkas"
+heading = "Berbagi teks &amp; berkas <span class=\"h1-kw\">&mdash; langsung dari browser Anda ke browser mereka, tanpa unggah</span>"
+tagline = "Bagikan ini hidup di tab yang terbuka. Pembaca menerimanya terenkripsi, langsung dari browser Anda, dan menutup tab mengakhirinya - tidak ada server yang menyimpan apa pun."
+
+title = "Berbagi teks dan berkas antar perangkat &mdash; langsung, terenkripsi, tanpa penyimpanan"
+description = "Kirim teks atau berkas dari satu browser ke browser lain lewat koneksi langsung yang terenkripsi. Nama tautan yang bisa diucapkan, pembaruan langsung saat mengetik, persetujuan per pembaca - dan tidak pernah ada apa pun di server mana pun. Gratis, tanpa daftar."
+og_title = "Berbagi yang berakhir begitu Anda menutup tab"
+og_description = "Teks dan berkas berjalan terenkripsi, langsung dari browser Anda ke browser pembaca. Server hanya memperkenalkan keduanya dan tidak pernah melihat isinya. Tanpa penyimpanan, tanpa riwayat, tanpa akun - tutup tabnya dan semuanya hilang, di mana-mana."
+og_image_alt = "Berbagi teks dan berkas - dari browser ke browser, tanpa penyimpanan"
+
+pledge = """
+    Apa yang Anda bagikan di sini berjalan dari browser Anda ke browser
+    setiap pembaca lewat kanal WebRTC yang terenkripsi ujung ke ujung, dan
+    tidak ke mana-mana lagi. Satu-satunya server yang terlibat &mdash;
+    disebut di <code>Content-Security-Policy</code> halaman ini, kodenya di
+    repositori &mdash; memperkenalkan kedua browser lalu menyingkir: ia
+    tidak menyimpan apa pun, dan isi tidak pernah melewatinya. Tidak ada
+    riwayat, tidak ada akun. Tutup tab ini dan berbaginya berakhir di
+    mana-mana sekaligus, termasuk di halaman pembaca yang masih terbuka."""
+
+live_hint = """
+      Buka DevTools dan perhatikan tab Network sambil Anda berbagi. Anda
+      akan melihat satu WebSocket ke perantara yang membawa beberapa
+      kilobyte negosiasi &mdash; dan sebanyak apa pun Anda mengetik atau
+      melampirkan, tidak satu pun permintaan membawa isinya."""
+
+read_first = """
+, <code>src/main.js</code> untuk kedua
+      belah pertukaran &mdash; tab pembagi dan tab pembaca adalah berkas
+      yang sama &mdash; dan <code>src/markdown.js</code> untuk perender yang
+      bekerja pada teks dari ujung kabel yang lain, dan karena itu meng-escape
+      semuanya sebelum mengeluarkan apa pun. Kode lengkap servernya adalah
+      <code>workers/rendezvous/worker.js</code>, di repositori yang sama:
+      satu ruang per nama tautan, tidak memegang apa pun selain koneksi yang
+      terbuka."""
+
+howto_heading = "Cara berbagi teks dan berkas tanpa mengunggahnya ke mana pun"
+
+card = """
+            Teks dan berkas, dari browser ke browser lewat koneksi langsung
+            terenkripsi. Tidak disimpan di mana pun; berbaginya berakhir
+            saat Anda menutup tab."""
+
+[words]
+plural = "teks dan berkas yang dibagikan"
+choose = "nama tautan"
+analytics_extra = """, dan tidak satu pun
+  yang dibagikan alat ini - bukan teksnya, bukan berkasnya, bukan nama atau
+  ukurannya, bukan pula siapa yang membaca"""
+
+[[facts]]
+mark = "&#10007;"
+text = "Tidak ada yang disimpan"
+
+[[facts]]
+mark = "&#10007;"
+text = "Tanpa akun"
+
+[[facts]]
+mark = "&#10003;"
+text = "Terenkripsi ujung ke ujung"
+
+[[facts]]
+mark = "&#10003;"
+text = "Berakhir bersama tab Anda"
+
+[[facts]]
+mark = "&#10003;"
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Isi pergi ke pembaca Anda, dan tidak ke mana-mana lagi."
+body = """
+ Teks dan berkas berjalan
+      lewat kanal data WebRTC: koneksi langsung, terenkripsi DTLS, antara
+      browser Anda dan browser setiap pembaca. Di jalur itu tidak ada
+      server. Di jaringan yang sama, byte-nya bahkan tidak keluar gedung:
+      dua laptop di Wi-Fi yang sama menukarnya secara lokal."""
+
+[[privacy]]
+title = "Apa itu perantara, dan semua yang dilihatnya."
+body = """
+ Koneksi langsung butuh
+      perkenalan, maka halaman ini &mdash; satu-satunya di situs ini &mdash;
+      membuka satu WebSocket ke server milik kami. Server itu mempertemukan
+      orang yang mengetik sebuah nama tautan dengan orang yang berbagi di
+      bawah nama itu, meneruskan beberapa kilobyte negosiasi, dan tidak
+      menahan apa pun: tidak pernah menulis penyimpanan, dan sebuah ruang
+      berhenti ada begitu si pembagi terputus. Yang bisa dilihatnya: bahwa
+      sebuah nama sedang dipakai, kapan tiap orang datang dan pergi, dan
+      alamat IP mereka. Yang tidak bisa dilihatnya: teksnya, berkasnya,
+      siapa yang diizinkan masuk, atau apa yang ditulis siapa pun &mdash;
+      bahkan ketukan pada berbagi privat berjalan lewat kanal langsung yang
+      terenkripsi. Kode lengkapnya ada di repositori, di samping kode alat
+      ini."""
+
+[[privacy]]
+title = "Tidak ada yang disimpan: menutup tab adalah penghapusannya."
+body = """
+ Berbagi hanya ada selama
+      tab Anda terbuka. Tutup, maka pembaca baru tidak menemukan apa-apa,
+      dan yang sedang membaca melihat salinannya lenyap &mdash; meski yang
+      sudah disalin atau diunduh seseorang adalah miliknya, seperti apa pun
+      yang Anda serahkan langsung. Draf yang Anda ketik tinggal di
+      penyimpanan browser Anda sendiri agar masih ada lain kali, dan hanya
+      di sana; ditandai sekali pakai, ia tidak tinggal di mana pun."""
+
+[[privacy]]
+title = "Nama tautan adalah satu-satunya rahasia, dan mode privat gemboknya."
+body = """
+ Siapa pun yang tahu
+      atau menebak sebuah nama bisa membuka berbagi di baliknya. Itulah
+      mengapa sarannya tiga kata acak, mengapa apa pun yang sensitif layak
+      diberi nama yang tak tertebak &mdash; atau sakelar privat, yang
+      menyala secara bawaan: setiap pembaca yang datang harus
+      memperkenalkan diri, lewat kanal langsung, dan tidak ada yang dikirim
+      sampai Anda mengizinkannya masuk."""
+
+[[privacy]]
+title = "Koneksi langsung memperlihatkan alamat masing-masing pihak."
+body = """
+ Itulah arti
+      peer-to-peer, dan pembaca mengetahuinya sebelum terjadi: membuka
+      tautan berbagi hanya bertanya kepada perantara apakah ada yang
+      berbagi; lalu halaman berkata terang-terangan bahwa terhubung akan
+      memperlihatkan alamat IP masing-masing pihak, dan menunggu satu klik.
+      Sampai klik itu, si pembagi bahkan belum tahu pembaca itu ada."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diterimanya."
+body = """
+ Skrip iklan dan
+      pengukuran datang dari Google, tombol donasi dari Buy Me a Coffee.
+      Tidak satu pun menerima apa-apa tentang yang dibagikan halaman ini:
+      bukan teksnya, bukan berkasnya, bukan nama atau ukurannya, bukan nama
+      tautannya, bukan pula siapa yang terhubung. Setiap baris yang
+      menyentuh isi disajikan dari origin ini dan ada di repositori."""
+
+[[howto]]
+title = "Tulis teksnya, atau lampirkan berkasnya."
+body = """
+ Editor adalah berbaginya: apa
+      pun isinya saat seorang pembaca terhubung, itulah yang ia terima, dan
+      perubahan setelahnya sampai ke pembaca yang terhubung secara
+      langsung, sambil Anda mengetik. Berkas berjalan lewat kanal yang
+      sama, hingga 200&nbsp;MB per berkas; pembaca melihat daftarnya dan
+      hanya mengunduh yang mereka minta, jadi tak ada bandwidth terbuang
+      untuk berkas yang tak diinginkan."""
+
+[[howto]]
+title = "Nyalakan Markdown bila teksnya layak diformat."
+body = """
+ Satu sakelar saja. Judul,
+      cetak tebal, daftar, kode, dan tautan dirender langsung di samping
+      editor sambil Anda mengetik, dan pembaca menerima tampilan terformat
+      secara bawaan, dengan pengalih untuk kembali ke sumber. Perendernya
+      ikut dengan halaman ini dan meng-escape semuanya: teks yang dibagikan
+      tidak bisa menjadi skrip di mesin pembaca, siapa pun penulisnya."""
+
+[[howto]]
+title = "Beri nama tautannya, atau pakai sarannya."
+body = """
+ Nama adalah alamatnya:
+      <code>brave-otter-42</code> bisa diteriakkan melintasi ruangan,
+      dibacakan lewat telepon, atau disalin dari papan tulis. Ia juga
+      satu-satunya rahasia: untuk sesuatu yang privat, pilih nama yang tak
+      seorang pun akan menebaknya, atau andalkan sakelar privat. Nama yang
+      sedang dipakai orang lain untuk berbagi akan ditolak, dan nama Anda
+      bebas lagi begitu Anda berhenti."""
+
+[[howto]]
+title = "Tentukan siapa yang boleh masuk."
+body = """
+ Privat adalah bawaannya: setiap
+      pembaca diminta memperkenalkan diri &mdash; nama, petunjuk, apa pun
+      yang Anda kenali &mdash; dan Anda melihat pesannya dengan tombol untuk
+      mengizinkannya membaca atau menolaknya. Perkenalan berjalan lewat
+      kanal langsung, jadi perantara pun tidak tahu siapa yang mengetuk.
+      Hapus centangnya untuk berbagi terbuka yang bisa dibaca siapa pun
+      yang tahu namanya."""
+
+[[howto]]
+title = "Mulai berbagi, dan biarkan tabnya terbuka."
+body = """
+ Tab adalah servernya:
+      berbagi bisa dijangkau selama tab terbuka dan terjaga, dan tidak
+      sedetik pun lebih lama. Laptop yang ditutup juga mengakhirinya. Salin
+      tautannya, atau sebutkan saja namanya &mdash; pembaca bisa
+      mengetikkannya sebagai <code>#nama</code> di ujung alamat halaman
+      ini."""
+
+[[howto]]
+title = "Di sisi lain: setujui dulu, lalu ketuk."
+body = """
+ Yang membuka tautan diberi
+      tahu bahwa ada yang berbagi, diperingatkan bahwa koneksi langsung
+      memperlihatkan alamat jaringan masing-masing pihak, dan hanya
+      terhubung bila memutuskan sendiri. Pada berbagi privat ia
+      memperkenalkan diri dan menunggu Anda. Yang ia terima diperbarui
+      langsung sambil Anda menyunting, dan lenyap saat Anda menutup tab."""
+
+[[faq]]
+q = "Adakah yang diunggah, ke mana pun?"
+a = """
+        Tidak. Teks dan berkas pergi dari browser Anda ke browser setiap
+        pembaca lewat kanal WebRTC terenkripsi, langsung. Satu-satunya
+        server yang terlibat membawa perkenalan &mdash; beberapa kilobyte
+        negosiasi koneksi &mdash; dan tidak pernah isinya. Di sana tidak ada
+        yang bisa bocor, disita, atau hilang: ia tidak memegang satu byte
+        pun milik Anda, dan sebuah ruang berhenti ada begitu Anda terputus."""
+
+[[faq]]
+q = "Lalu mengapa alat ini bicara dengan server, justru di situs ini?"
+a = """
+        Karena dua browser tidak bisa saling menemukan sendiri: sesuatu
+        harus mempertemukan orang yang mengetik <code>brave-otter-42</code>
+        dengan orang yang berbagi di bawah nama itu, dan membawa tawaran
+        koneksi di antara keduanya. Sesuatu itu adalah perantara,
+        satu-satunya ketergantungan jaringan halaman ini, disebut di
+        <code>Content-Security-Policy</code>-nya dan diterbitkan di
+        repositori yang sama dengan halamannya. Ia server terkecil yang
+        sanggup melakukan tugas itu: tidak menyimpan apa pun, tidak membaca
+        apa pun, dan menyingkir begitu kedua browser memegang kanal
+        langsung."""
+
+[[faq]]
+q = "Apa persisnya yang bisa dilihat server itu?"
+a = """
+        Bahwa sebuah nama tautan sedang dipakai, kapan pembagi dan pembaca
+        terhubung dan pergi, alamat IP mereka, dan penyiapan koneksi
+        terenkripsi yang mereka pertukarkan. Bukan teksnya, bukan
+        berkasnya, bukan nama atau ukurannya, bukan siapa yang diterima di
+        berbagi privat, dan bukan apa yang ditulis seseorang saat
+        memperkenalkan diri &mdash; semuanya berjalan lewat kanal langsung
+        yang terenkripsi ujung ke ujung dan tidak melewati server."""
+
+[[faq]]
+q = "Apa yang terjadi saat saya menutup tab?"
+a = """
+        Berbagi berakhir di mana-mana sekaligus. Tautan berhenti bekerja
+        dalam satu-dua detik, dan pembaca yang halamannya masih terbuka
+        melihat salinannya lenyap, dengan catatan bahwa berbaginya sudah
+        berakhir. Ini bukan permintaan penghapusan ke sebuah server: tidak
+        ada salinan server yang harus dihapus. Tab itu satu-satunya tempat
+        berbagi itu ada, dan menutupnya adalah seluruh bersih-bersihnya."""
+
+[[faq]]
+q = "Bisakah pembaca menyimpan yang saya bagikan?"
+a = """
+        Selama berbaginya terbuka, bisa: berbagi memang begitu. Pembaca
+        bisa menyalin teks atau mengunduh berkas, dan yang ia ambil adalah
+        miliknya, persis seolah Anda menyerahkannya lewat cara lain mana
+        pun. Yang dijamin oleh mengakhiri adalah masa depan: tak ada orang
+        baru yang bisa mendapatkannya, dan halaman yang terbuka berhenti
+        menampilkannya. Tidak ada alat yang bisa menarik kembali yang sudah
+        sampai, dan halaman ini tidak berpura-pura sebaliknya."""
+
+[[faq]]
+q = "Apa itu mode privat?"
+a = """
+        Bawaannya. Setiap pembaca yang datang diberi tahu bahwa berbaginya
+        privat dan diminta memperkenalkan diri; Anda melihat pesannya
+        &mdash; &ldquo;ini aku, Alice yang di rapat&rdquo; &mdash; dengan
+        tombol untuk mengizinkannya membaca atau menolaknya, dan tidak ada
+        yang dikirim sampai Anda memutuskan. Perkenalan berjalan lewat
+        kanal langsung yang sudah terenkripsi, jadi server tidak pernah
+        tahu siapa yang mengetuk atau apa keputusan Anda. Dihapus
+        centangnya sebelum berbagi, jadilah berbagi terbuka."""
+
+[[faq]]
+q = "Mengapa pembaca akan melihat alamat IP saya?"
+a = """
+        Karena koneksinya benar-benar langsung, dan koneksi langsung
+        berjalan antara dua alamat: tiap ujung mau tak mau mengetahui
+        alamat ujung lainnya, seperti pada panggilan telepon. Pembaca
+        diperingatkan sebelum koneksi apa pun ada dan hanya terhubung bila
+        memutuskan sendiri; sampai saat itu Anda bahkan tidak tahu ia
+        membuka tautannya. Bila pertukaran itu tidak cocok untuk suatu
+        berbagi, alternatifnya adalah layanan yang meneruskan lewat server
+        &mdash; dengan pertukaran sebaliknya."""
+
+[[faq]]
+q = "Seberapa besar berkasnya boleh, dan seberapa cepat?"
+a = """
+        Hingga 200&nbsp;MB per berkas, jenis apa pun, dan secepat koneksi
+        yang lebih lambat dari keduanya: tidak ada server di tengah yang
+        memperlambat atau menjatah. Dua mesin di Wi-Fi yang sama mentransfer
+        pada kecepatan jaringan lokal, dan byte-nya tidak keluar gedung.
+        Pembaca mengunduh tiap berkas sesuai permintaan, jadi melampirkan
+        sesuatu yang besar tidak berbiaya apa-apa sampai seseorang
+        benar-benar memintanya."""
+
+[[faq]]
+q = "Apakah bekerja offline?"
+a = """
+        Jujur saja: separuhnya. Editornya iya &mdash; halaman termuat, draf
+        Anda ada, Markdown dirender, dan menulis serta menyimpan berjalan
+        tanpa jaringan sama sekali. Berbaginya tidak, dan memang tidak
+        mungkin: menjangkau browser orang lain adalah perbuatan jaringan,
+        dan perkenalannya membutuhkan perantara. Inilah satu-satunya alat
+        di situs ini yang tugasnya mustahil offline, dan menyiratkan
+        sebaliknya tidaklah jujur."""
+
+[[faq]]
+q = "Bagaimana kalau kami tidak bisa terhubung?"
+a = """
+        Sebagian besar pasangan browser saling menjangkau langsung begitu
+        diperkenalkan; sebagian kecil tidak, biasanya saat kedua sisi
+        berada di balik jenis jaringan kantor atau seluler yang paling
+        ketat. Halaman ini tidak diam-diam beralih ke server penerus
+        &mdash; itu akan mengubah diam-diam apa alat ini sebenarnya &mdash;:
+        setelah dua puluh detik ia berkata terus terang bahwa koneksi
+        langsung tidak terjadi. Mencoba dari jaringan lain biasanya
+        menyelesaikannya."""
+
+[[faq]]
+q = "Amankah merender Markdown, bila siapa pun bisa membagikan apa pun?"
+a = """
+        Pertanyaan itu adalah alasan perendernya delapan puluh baris di
+        kode halaman ini dan bukan sebuah pustaka. Setiap karakter
+        di-escape sebelum tag apa pun dikeluarkan, hanya sekumpulan tetap
+        tag yang tak berbahaya yang bisa terbentuk, dan tautan hanya
+        menerima <code>http</code>, <code>https</code>, dan
+        <code>mailto</code>: tautan <code>javascript:</code> tinggal
+        sebagai teks mati. Teks yang dibagikan tidak bisa menjadi skrip di
+        mesin Anda, siapa pun penulisnya, dan delapan puluh baris itu bisa
+        Anda baca."""
+
+[[faq]]
+q = "Bisakah dua orang berbagi dengan nama yang sama?"
+a = """
+        Tidak bersamaan. Satu berbagi hidup per nama, ditegakkan di
+        perantara: yang datang kedua ditolak dan diminta memilih nama lain.
+        Begitu sebuah berbagi berakhir, namanya bebas lagi &mdash; yang juga
+        berarti tautan yang disimpan hanya sesegar berbagi di baliknya:
+        nama yang sama, minggu depan, bisa jadi milik orang lain.
+        Perlakukan tautan sebagai milik sebuah momen, bukan milik
+        seseorang."""
+
+[[faq]]
+q = "Gratiskah, dan perlukah akun?"
+a = """
+        Gratis, tanpa akun, tanpa pendaftaran, dan tanpa batas yang layak
+        disebut: enam belas pembaca serentak per berbagi. Situs ini memuat
+        iklan, itulah yang membiayainya; iklan tidak menerima apa pun
+        tentang yang dibagikan halaman ini, dan perantara muat dengan
+        lapang di paket gratis justru karena tidak menyimpan apa-apa dan
+        nyaris tidak berbuat apa-apa."""
+
+[schema]
+description = "Bagikan teks dan berkas dari satu browser ke browser lain lewat koneksi WebRTC langsung yang terenkripsi ujung ke ujung. Nama tautan yang bisa diucapkan, pembaruan langsung saat mengetik, Markdown, dan persetujuan per pembaca. Tidak ada server yang menyimpan apa pun; berbagi berakhir saat pembagi menutup tab."
+features = [
+  "Teks dan berkas pergi dari browser ke browser, terenkripsi ujung ke ujung, tak pernah lewat server",
+  "Berbagi hidup di tab yang terbuka: menutupnya mengakhiri berbagi dan mengosongkan halaman pembaca",
+  "Nama tautan yang bisa diucapkan - brave-otter-42 -, bisa diubah, satu berbagi hidup per nama",
+  "Privat secara bawaan: tiap pembaca memperkenalkan diri, dan pembagi menerima atau menolak",
+  "Pembaca menyetujui sebelum koneksi ada, diberi tahu terang-terangan bahwa IP jadi terlihat",
+  "Pembaruan langsung: perubahan sampai ke pembaca yang terhubung sambil diketik",
+  "Markdown, bisa dinyalakan di kedua sisi, dirender perender bawaan yang meng-escape lebih dulu",
+  "Berkas hingga 200 MB per berkas, diunduh sesuai permintaan, dengan kemajuan per berkas",
+  "Draf tinggal hanya di browser pembagi - atau tidak di mana pun, bila sekali pakai",
+  "Seluruh komponen server adalah perantara tanpa penyimpanan, diterbitkan di repositori",
+]

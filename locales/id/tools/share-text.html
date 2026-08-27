@@ -1,0 +1,185 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> Tulis, atau lampirkan</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="Pembaca melihatnya terformat, dirender langsung saat Anda mengetik">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">Lampirkan berkas</button>
+          <button type="button" id="save" class="ghost" data-download>Simpan sebagai berkas</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="Teks yang akan dibagikan"
+                    placeholder="Ketik atau tempel teks yang mau dibagikan&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="Berkas yang akan dilampirkan">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        Berkas berjalan lewat kanal langsung yang sama dengan teks, hingga
+        200&nbsp;MB per berkas. Pembaca melihat daftarnya dan hanya
+        mengunduh berkas bila memintanya.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> Beri nama tautannya</h2>
+      <div class="field">
+        <label for="code">Nama tautan</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="Sarankan nama lain">&#8635;</button>
+        </div>
+        <p class="field-note">
+          Nama adalah alamat sekaligus satu-satunya rahasia: cukup pendek
+          untuk diucapkan melintasi ruangan, dan untuk yang privat layak
+          diberi nama yang tak tertebak.
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          Privat &mdash; tiap pembaca harus meminta, dan Anda yang mengizinkan
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          Sekali pakai &mdash; jangan simpan draf di perangkat ini
+        </label>
+        <p class="field-note">
+          Draf hanya tinggal di browser ini, jadi masih ada lain kali
+          &mdash; kecuali Anda menandainya sekali pakai, maka ia tidak
+          tinggal di mana pun.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> Bagikan</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">Mulai berbagi</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="Tautan berbagi">
+        <button type="button" id="copylink" class="ghost">Salin tautan</button>
+        <button type="button" id="stop" class="ghost">Berhenti berbagi</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>Tidak ada yang disimpan di mana pun</h2>
+      <p>
+        Teks dan berkas berjalan terenkripsi, langsung dari tab ini ke tab
+        setiap pembaca. Satu-satunya server yang terlibat memperkenalkan
+        kedua browser dan tidak pernah melihat yang mereka pertukarkan.
+        Menutup tab ini mengakhiri berbagi dan juga mengosongkan halaman
+        pembaca yang terbuka &mdash; meski yang sudah disalin atau diunduh
+        seseorang adalah miliknya.
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>Seseorang sedang berbagi dengan Anda</h2>
+      <p id="view-status" role="status" aria-live="polite">Mencari pembaginya&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          Membacanya menghubungkan browser Anda langsung ke browser si
+          pembagi &mdash; itulah intinya: di sini tidak ada yang menyentuh
+          server. Seperti setiap koneksi langsung, ia membuat tiap pihak
+          melihat alamat jaringan (IP) pihak lainnya. Tidak ada yang
+          diambil, dan tidak ada tentang Anda yang dibagikan, sampai Anda
+          memilih untuk terhubung.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">Hubungkan dan ambil bagikannya</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          Katakan pada pembaginya sesuatu yang ia kenali &mdash; nama,
+          petunjuk &mdash; agar ia bisa mengizinkan Anda masuk. Pesan Anda
+          langsung menuju browsernya.
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="Pesan yang dikenali si pembagi"
+                 placeholder="Ini aku, Alice">
+          <button type="button" id="send-knock" class="primary">Minta izin membaca</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">Periksa tautan ini lagi</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="Diperbarui saat pembagi mengetik">Langsung</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">Terformat</button>
+            <button type="button" id="mode-src">Sumber</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="Menyalin teks mentah">Salin</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">Sedang berbagi. Menunggu seseorang membuka tautan &mdash; biarkan tab ini terbuka.</span>
+    <span data-phrase="share.reader-count.one">1 pembaca terhubung</span>
+    <span data-phrase="share.reader-count.many">{n} pembaca terhubung</span>
+    <span data-phrase="share.knock-count.one">1 orang menunggu Anda izinkan masuk</span>
+    <span data-phrase="share.knock-count.many">{n} orang menunggu Anda izinkan masuk</span>
+    <span data-phrase="share.closing-note">Menutup tab ini mengakhiri berbagi.</span>
+    <span data-phrase="share.no-message">(tanpa pesan)</span>
+    <span data-phrase="share.admit">Izinkan membaca</span>
+    <span data-phrase="share.deny">Tolak</span>
+    <span data-phrase="share.remove-file">Hapus</span>
+    <span data-phrase="share.setting-up">Menyiapkan&hellip;</span>
+    <span data-phrase="share.name-first">Beri nama tautannya dulu, atau tekan tombol saran.</span>
+    <span data-phrase="share.name-taken">&ldquo;{name}&rdquo; sedang dipakai orang lain untuk berbagi &mdash; pilih nama lain.</span>
+    <span data-phrase="share.lost-rendezvous">Koneksi ke perantara terputus; mencoba lagi. Pembaca yang terhubung tidak terpengaruh.</span>
+    <span data-phrase="share.stopped">Berhenti. Tidak ada lagi yang dibagikan.</span>
+    <span data-phrase="share.file-too-big">&ldquo;{name}&rdquo; melebihi batas 200 MB.</span>
+
+    <span data-phrase="copy.done">Tersalin</span>
+    <span data-phrase="copy.link">Salin tautan</span>
+    <span data-phrase="copy.text">Salin</span>
+
+    <span data-phrase="view.someone">Seseorang sedang berbagi di alamat ini.</span>
+    <span data-phrase="view.connecting">Menghubungkan langsung&hellip;</span>
+    <span data-phrase="view.private">Pembagi mengaturnya privat.</span>
+    <span data-phrase="view.asked">Sudah diminta. Menunggu pembagi mengizinkan Anda&hellip;</span>
+    <span data-phrase="view.denied">Pembagi tidak mengizinkan Anda masuk.</span>
+    <span data-phrase="view.empty">Terhubung. Pembagi belum menulis apa-apa &mdash; halaman ini akan terisi sambil ia mengetik.</span>
+    <span data-phrase="view.ended">Pembagi mengakhiri berbaginya, dan salinan ini ikut pergi.</span>
+    <span data-phrase="view.gone-early">Pembagi pergi sebelum ada yang sampai. Semuanya ikut pergi.</span>
+    <span data-phrase="view.nobody">Tidak ada yang berbagi di alamat ini. Mungkin pembaginya menutup tab &mdash; bila begitu, bagikannya ikut lenyap.</span>
+    <span data-phrase="view.full">Berbagi ini sudah mencapai jumlah pembaca maksimum.</span>
+    <span data-phrase="view.no-connect">Tidak bisa menjangkau pembagi secara langsung. Mungkin salah satu jaringan tidak mengizinkan koneksi peer-to-peer.</span>
+    <span data-phrase="view.error">Ada yang salah saat menghubungkan. Muat ulang halaman dan coba lagi.</span>
+    <span data-phrase="view.download">Unduh</span>
+    <span data-phrase="view.file-gone">Tidak dibagikan lagi</span>
+  </div>
+</main>

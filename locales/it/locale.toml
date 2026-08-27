@@ -72,6 +72,7 @@ complete = true
 # Il prestito, non "ripresa accelerata": timelapse e' quello che si scrive.
 "timelapse-video" = "creare-timelapse"
 "hash-checksum" = "verificare-checksum"
+"share-text" = "condividere-testo"
 # Il DICOM resta DICOM: e la sigla che sta scritta sul CD che consegna
 # l’ospedale, e nessuno la cerca tradotta.
 "dicom-viewer" = "visualizzatore-dicom"
@@ -105,6 +106,7 @@ complete = true
 "guides/make-a-qr-code" = "guide/creare-un-qr-code"
 "guides/turn-a-video-into-a-gif" = "guide/trasformare-un-video-in-gif"
 "guides/format-json-without-uploading-it" = "guide/formattare-json"
+"guides/share-text-between-devices" = "guide/condividere-testo-tra-dispositivi"
 "guides/grab-a-frame-from-a-video" = "guide/estrarre-un-fotogramma-da-un-video"
 "guides/make-a-gif-from-images" = "guide/creare-una-gif-da-immagini"
 "guides/make-a-passport-photo" = "guide/fare-una-foto-tessera"

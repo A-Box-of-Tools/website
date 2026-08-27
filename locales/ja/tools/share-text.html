@@ -1,0 +1,158 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code.
+       Japanese paragraphs and phrases stay on one line each: a wrap inside
+       a sentence becomes a visible space. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> 書くか、添付する</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="読む側には整形されて見え、入力と同時にライブ表示されます">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">ファイルを添付</button>
+          <button type="button" id="save" class="ghost" data-download>ファイルとして保存</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="共有するテキスト"
+                    placeholder="共有するテキストを入力するか貼り付けてください&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="添付するファイル">
+      <div id="attachlist"></div>
+      <p class="field-note">ファイルはテキストと同じ直接チャネルを通ります。1つ200&nbsp;MBまで。読む側は一覧を見て、求めたときにだけファイルを受け取ります。</p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> リンクに名前を付ける</h2>
+      <div class="field">
+        <label for="code">リンク名</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="別の名前を提案">&#8635;</button>
+        </div>
+        <p class="field-note">名前がそのまま住所で、唯一の秘密でもあります。部屋の向こうへ声で伝えられる短さで、内輪のものには推測できない名前を。</p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          非公開 &mdash; 読む側はそれぞれ求め、あなたが入れる
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          使い切り &mdash; 下書きをこの端末に残さない
+        </label>
+        <p class="field-note">下書きはこのブラウザにだけ残るので、次に来たときもここにあります。使い切りに印を付ければ、どこにも残りません。</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> 共有する</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">共有を始める</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="共有リンク">
+        <button type="button" id="copylink" class="ghost">リンクをコピー</button>
+        <button type="button" id="stop" class="ghost">共有をやめる</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>どこにも何も保存されません</h2>
+      <p>テキストとファイルは暗号化されたまま、このタブから読む側それぞれのタブへ直接届きます。関わる唯一のサーバーは2つのブラウザを引き合わせるだけで、やり取りの中身を見ることはありません。このタブを閉じれば共有は終わり、読む側の開いたページも空になります。ただし、誰かがすでにコピーやダウンロードしたものはその人のものです。</p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>誰かがあなたと共有しています</h2>
+      <p id="view-status" role="status" aria-live="polite">共有している人を探しています&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>読むには、あなたのブラウザが共有する側のブラウザと直接つながります。それこそが要点で、ここでは何もサーバーに触れません。あらゆる直接接続と同じく、互いのネットワーク（IP）アドレスが見えるようになります。あなたが接続を選ぶまで、何も取得されず、あなたについて何も共有されません。</p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">接続して共有を受け取る</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>共有している人が分かるものを伝えてください。名前でも、ヒントでも。そうすれば入れてもらえます。メッセージは相手のブラウザへ直接届きます。</p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="共有している人に分かるメッセージ"
+                 placeholder="私だよ、アリス">
+          <button type="button" id="send-knock" class="primary">読む許可を求める</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">このリンクをもう一度確認</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="共有する側が入力するそばから変わります">ライブ</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">整形</button>
+            <button type="button" id="mode-src">原文</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="生のテキストをコピーします">コピー</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js.
+       One line per phrase - phrase() collapses a wrap into a space. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">共有中です。誰かがリンクを開くのを待っています。このタブを開けたままにしてください。</span>
+    <span data-phrase="share.reader-count.one">1人が読んでいます</span>
+    <span data-phrase="share.reader-count.many">{n}人が読んでいます</span>
+    <span data-phrase="share.knock-count.one">1人が入室の許可を待っています</span>
+    <span data-phrase="share.knock-count.many">{n}人が入室の許可を待っています</span>
+    <span data-phrase="share.closing-note">このタブを閉じると共有は終わります。</span>
+    <span data-phrase="share.no-message">（メッセージなし）</span>
+    <span data-phrase="share.admit">読ませる</span>
+    <span data-phrase="share.deny">断る</span>
+    <span data-phrase="share.remove-file">削除</span>
+    <span data-phrase="share.setting-up">準備しています&hellip;</span>
+    <span data-phrase="share.name-first">先にリンクへ名前を付けるか、提案ボタンを押してください。</span>
+    <span data-phrase="share.name-taken">「{name}」ではいま別の人が共有しています。別の名前を選んでください。</span>
+    <span data-phrase="share.lost-rendezvous">仲介役との接続が切れました。再試行しています。接続中の読む側には影響ありません。</span>
+    <span data-phrase="share.stopped">停止しました。もう何も共有されていません。</span>
+    <span data-phrase="share.file-too-big">「{name}」は200 MBの上限を超えています。</span>
+
+    <span data-phrase="copy.done">コピーしました</span>
+    <span data-phrase="copy.link">リンクをコピー</span>
+    <span data-phrase="copy.text">コピー</span>
+
+    <span data-phrase="view.someone">このアドレスで誰かが共有しています。</span>
+    <span data-phrase="view.connecting">直接接続しています&hellip;</span>
+    <span data-phrase="view.private">共有している人はこれを非公開にしています。</span>
+    <span data-phrase="view.asked">求めました。入れてもらえるのを待っています&hellip;</span>
+    <span data-phrase="view.denied">共有している人はあなたを入れませんでした。</span>
+    <span data-phrase="view.empty">接続しました。共有している人はまだ何も書いていません。入力されるそばからこのページが埋まっていきます。</span>
+    <span data-phrase="view.ended">共有している人が共有を終え、この写しも一緒に消えました。</span>
+    <span data-phrase="view.gone-early">何かが届く前に、共有している人が去りました。すべて一緒に消えました。</span>
+    <span data-phrase="view.nobody">このアドレスでは誰も共有していません。共有していたタブが閉じられたのかもしれません。その場合、共有も一緒に消えています。</span>
+    <span data-phrase="view.full">この共有はすでに読む側の上限に達しています。</span>
+    <span data-phrase="view.no-connect">共有している人へ直接届きませんでした。どちらかのネットワークがピアツーピア接続を許していない可能性があります。</span>
+    <span data-phrase="view.error">接続中に問題が起きました。ページを再読み込みして、もう一度試してください。</span>
+    <span data-phrase="view.download">ダウンロード</span>
+    <span data-phrase="view.file-gone">もう共有されていません</span>
+  </div>
+</main>

@@ -1,0 +1,22 @@
+#
+# Rehber: cihazlar arasında metin ve dosya paylaşımı - Turkish.
+#
+
+nav = "Cihazlar arası paylaşım"
+title = "Cihazlar arasında metin ve dosya paylaşımı &mdash; yüklemeden"
+description = "Metni veya dosyaları doğrudan ve şifreli bir bağlantıyla bir tarayıcıdan diğerine taşıyın - kendinize e-posta atmadan, sohbet geçmişi bırakmadan, hesap açmadan ve hiçbir sunucu kopya tutmadan."
+
+heading = "Metin ve dosyaları yüklemeden cihazlar arasında nasıl paylaşırsınız"
+lede = """
+    Bir notu ya da dosyayı başka bir makineye taşımanın alışıldık yolları
+    hep arkada bir kopya bırakır: gönderilenler klasöründe, bir sohbet
+    geçmişinde ya da bir paylaşım sitesinin sunucusunda, güvenmek zorunda
+    olduğunuz bir silme düğmesinin ardında. Hiçbir yerde hiçbir şey
+    bırakmayan bir yol var, çünkü hiçbir şey asla saklanmıyor - ve odanın
+    öbür ucuna söylenebilecek bir adı olan tek yol da bu."""
+
+updated = "26 Ağustos 2026"
+
+og_title = "Cihazlar arası paylaşım, sunucu kopya tutmadan"
+og_description = "Metin ve dosyalar, doğrudan ve şifreli bir bağlantıyla tarayıcıdan tarayıcıya - söylenebilir bir bağlantı adı, hiçbir yerde saklanan bir şey yok ve sekmeyle biten bir paylaşım."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

@@ -1,0 +1,22 @@
+#
+# Panduan: berbagi teks dan berkas antar perangkat - Indonesian.
+#
+
+nav = "Berbagi antar perangkat"
+title = "Berbagi teks dan berkas antar perangkat &mdash; tanpa mengunggah"
+description = "Memindahkan teks atau berkas dari satu browser ke browser lain lewat koneksi langsung yang terenkripsi - tanpa mengirim email ke diri sendiri, tanpa riwayat chat, tanpa akun, dan tanpa server yang menyimpan salinan."
+
+heading = "Cara berbagi teks dan berkas antar perangkat tanpa mengunggahnya"
+lede = """
+    Cara-cara biasa memindahkan catatan atau berkas ke mesin lain selalu
+    meninggalkan salinan: di folder terkirim, di riwayat chat, atau di
+    server situs berbagi, di balik tombol hapus yang terpaksa Anda percayai.
+    Ada satu cara yang tidak meninggalkan apa pun di mana pun, karena tidak
+    ada yang pernah disimpan - dan itu juga satu-satunya cara dengan nama
+    yang bisa diucapkan melintasi ruangan."""
+
+updated = "26 Agustus 2026"
+
+og_title = "Berbagi antar perangkat, tanpa server yang menyimpan salinan"
+og_description = "Teks dan berkas dari browser ke browser lewat koneksi langsung yang terenkripsi - nama tautan yang bisa diucapkan, tidak ada yang disimpan di mana pun, dan berbagi yang berakhir bersama tabnya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"
