@@ -124,10 +124,19 @@ def satisfies(before, after, need):
     return True  # 'patch': any increase at all is at least a patch
 
 
+def dotted(numbers):
+    """The three numbers back as they are written: 1.0.0.
+
+    A function rather than the lambda this used to be inside `explain`,
+    because the deploy reads the version to name a tag with it and a second
+    way of spelling the same three numbers is a second thing that can disagree
+    with config/site.toml.
+    """
+    return '.'.join(str(part) for part in numbers)
+
+
 def explain(need, before, after, tools):
     """The sentence the presubmit prints when the rule is not met."""
-    dotted = lambda v: '.'.join(str(part) for part in v)
-
     if need == 'minor':
         want = (before[0], before[1] + 1, 0)
         return (

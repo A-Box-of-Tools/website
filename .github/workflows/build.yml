@@ -270,6 +270,45 @@ jobs:
           git -C .publish commit -m "Build ${SHA:0:7}: ${subject}"
           git -C .publish push origin dist
 
+      # The version in config/site.toml, as a tag on the commit that carries it.
+      #
+      # version.yml decides when the number has to move, per pull request, and
+      # until now nothing recorded where it moved TO. The history had a version
+      # and no way to ask which commit shipped it, which is the half of a
+      # version that makes it worth having: `git show 1.2.0` should answer.
+      #
+      # Idempotent, because most merges do not move it. A change to the tests,
+      # to CI or to the documentation is REQUIRED by the rule to leave the
+      # version alone, so the ordinary run finds the tag already there and that
+      # is a no-op rather than a failure.
+      #
+      # It reads the number through buildlib/version.py rather than with a
+      # regular expression of its own. The rule's own comment makes the point:
+      # a decision that only exists inside a workflow can only be tested by
+      # opening pull requests against it.
+      #
+      # After the publish and not before: a tag is a claim that this version is
+      # live, and a tag pushed ahead of a deploy that then failed would be a
+      # claim about something that never happened.
+      - name: Tag the version, if this commit moved it
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+
+          version=$(python -c "import pathlib, sys; sys.path.insert(0, '.'); from buildlib import version; print(version.dotted(version.read(pathlib.Path('config/site.toml').read_text(encoding='utf-8'))))")
+
+          if git rev-parse -q --verify "refs/tags/$version" >/dev/null; then
+            echo "Version $version is already tagged; nothing to do."
+            exit 0
+          fi
+
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag -a "$version" -m "abox.tools $version"
+          git push origin "refs/tags/$version"
+
+          echo "Tagged $version" >> "$GITHUB_STEP_SUMMARY"
+
       # Bing, Yandex, Seznam, Naver and Yep accept being told that a page
       # changed, and fetch it within hours instead of whenever a crawler next
       # comes round. Google takes no part in this and is still reached through
