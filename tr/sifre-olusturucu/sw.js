@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/sifre-olusturucu/:';
-const CACHE_NAME=CACHE_PREFIX+'6e0cb77fd7';
+const CACHE_NAME=CACHE_PREFIX+'fc43a365ba';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=fd1dba9529',
+'styles.css?v=7d18a6513b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/generate.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/modificare-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'8abaa4f7d2';
+const CACHE_NAME=CACHE_PREFIX+'bd95f3a899';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5a8cfe7fa1',
+'styles.css?v=e9d464205d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

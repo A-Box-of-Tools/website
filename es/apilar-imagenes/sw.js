@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/apilar-imagenes/:';
-const CACHE_NAME=CACHE_PREFIX+'b65a94cfe4';
+const CACHE_NAME=CACHE_PREFIX+'b074cc9f21';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=81250fa6de',
+'styles.css?v=ac2a66a5c6',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

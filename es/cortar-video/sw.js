@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/cortar-video/:';
-const CACHE_NAME=CACHE_PREFIX+'fece151d6a';
+const CACHE_NAME=CACHE_PREFIX+'95ec238c67';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=ba1b49fd6a',
+'styles.css?v=9dae02cb78',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

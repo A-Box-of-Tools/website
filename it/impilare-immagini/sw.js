@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/impilare-immagini/:';
-const CACHE_NAME=CACHE_PREFIX+'a111f4b896';
+const CACHE_NAME=CACHE_PREFIX+'878fc13cae';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=81250fa6de',
+'styles.css?v=ac2a66a5c6',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

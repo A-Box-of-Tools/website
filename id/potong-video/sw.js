@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/potong-video/:';
-const CACHE_NAME=CACHE_PREFIX+'9d45df4365';
+const CACHE_NAME=CACHE_PREFIX+'b857b22d0b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=ba1b49fd6a',
+'styles.css?v=9dae02cb78',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bild-schwaerzen/:';
-const CACHE_NAME=CACHE_PREFIX+'907e0835b4';
+const CACHE_NAME=CACHE_PREFIX+'f1f5f1929c';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4298b9c435',
+'styles.css?v=adddabc2f8',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
