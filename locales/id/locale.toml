@@ -85,6 +85,7 @@ complete = true
 "password-generator" = "pembuat-kata-sandi"
 "timelapse-video" = "buat-video-time-lapse"
 "hash-checksum" = "hitung-checksum"
+"share-text" = "berbagi-teks"
 
 # The indexes and the legal pages.
 "guides" = "panduan"
@@ -112,6 +113,7 @@ complete = true
 "guides/make-a-qr-code" = "panduan/buat-kode-qr"
 "guides/turn-a-video-into-a-gif" = "panduan/video-ke-gif"
 "guides/format-json-without-uploading-it" = "panduan/format-json-tanpa-mengunggah"
+"guides/share-text-between-devices" = "panduan/berbagi-teks-antar-perangkat"
 "guides/grab-a-frame-from-a-video" = "panduan/ambil-bingkai-dari-video"
 "guides/make-a-gif-from-images" = "panduan/buat-gif-dari-gambar"
 "guides/make-a-passport-photo" = "panduan/membuat-pas-foto"

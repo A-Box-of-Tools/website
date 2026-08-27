@@ -106,6 +106,7 @@ complete = true
 # 사전에 있는 '저속 촬영'이 아니라 실제로 검색창에 치는 '타임랩스'.
 "timelapse-video" = "타임랩스-만들기"
 "hash-checksum" = "체크섬-확인"
+"share-text" = "텍스트-공유"
 # DICOM은 DICOM으로 둡니다. 병원이 건네는 CD에 그렇게 적혀 있고, 번역된 말로
 # 찾는 사람은 없습니다.
 "dicom-viewer" = "dicom-뷰어"
@@ -131,6 +132,7 @@ complete = true
 "guides/crop-a-video" = "가이드/동영상-화면-자르기"
 "guides/embed-an-image-in-css" = "가이드/css-이미지-넣기"
 "guides/format-json-without-uploading-it" = "가이드/json-정렬하기"
+"guides/share-text-between-devices" = "가이드/기기-간-텍스트-공유"
 "guides/is-it-safe-to-upload-files" = "가이드/파일-업로드-안전한가"
 "guides/make-a-favicon" = "가이드/파비콘-만드는-법"
 "guides/make-a-gif-from-images" = "가이드/사진으로-gif-만들기"

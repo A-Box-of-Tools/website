@@ -84,6 +84,7 @@ complete = true
 # El prestamo, no "camara rapida": timelapse es lo que se escribe al buscar.
 "timelapse-video" = "crear-timelapse"
 "hash-checksum" = "calcular-checksum"
+"share-text" = "compartir-texto"
 
 "guides" = "guias"
 "roadmap" = "hoja-de-ruta"
@@ -107,6 +108,7 @@ complete = true
 "guides/make-a-qr-code" = "guias/como-hacer-un-codigo-qr"
 "guides/turn-a-video-into-a-gif" = "guias/convertir-un-video-en-gif"
 "guides/format-json-without-uploading-it" = "guias/formatear-json"
+"guides/share-text-between-devices" = "guias/compartir-texto-entre-dispositivos"
 "guides/grab-a-frame-from-a-video" = "guias/capturar-un-fotograma-de-un-video"
 "guides/make-a-gif-from-images" = "guias/hacer-un-gif-con-imagenes"
 "guides/make-a-passport-photo" = "guias/hacer-una-foto-de-carnet"

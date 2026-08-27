@@ -1,0 +1,139 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Abra <a href="../../compartilhar-texto/">Compartilhar texto e
+      arquivos</a> na máquina que tem a coisa, escreva ou anexe, e aperte
+      <em>Começar a compartilhar</em>. A página dá ao compartilhamento um
+      nome como <code>brave-otter-42</code>; no outro dispositivo, abra a
+      mesma página e acrescente <code>#brave-otter-42</code> ao fim do
+      endereço &mdash; ou apenas siga o link copiado. O outro dispositivo
+      pergunta antes de conectar, você deixa entrar, e o texto ou o arquivo
+      atravessa criptografado, direto de um navegador ao outro. Feche a aba
+      que compartilha e acabou, em todo lugar.
+    </p>
+    <p>
+      Em nenhum momento houve upload de coisa alguma. Não é uma política: é
+      o formato da coisa. O resto desta página explica por que isso importa,
+      e quais são os limites honestos.
+    </p>
+  </section>
+
+  <section>
+    <h2>Onde os caminhos comuns deixam cópia</h2>
+    <p>
+      Mande uma nota por e-mail para você mesmo e ela agora existe numa
+      pasta de enviados e numa caixa de entrada, ambas sincronizadas, ambas
+      com backup, ambas pesquisáveis daqui a anos. Cole uma senha num app de
+      mensagens e ela fica no histórico daquela conversa &mdash; e no backup
+      em nuvem do app &mdash; enquanto a conversa existir. Use um pastebin
+      ou um site de hospedar arquivos e o conteúdo fica no servidor deles,
+      atrás de uma configuração de validade e um botão de excluir dos quais
+      você só consegue verificar a cor. Cada um desses caminhos é um serviço
+      de armazenamento com o compartilhar como função.
+    </p>
+    <p>
+      Às vezes é exatamente o que você quer: uma cópia que espera até a
+      outra pessoa estar pronta. Mas a maioria dos compartilhamentos
+      rápidos é o contrário: o outro dispositivo está ali do lado, o
+      conteúdo é momentâneo, e cada cópia guardada é puro passivo. A senha
+      do Wi-Fi para uma visita, um endereço lido por telefone, uma mensagem
+      de erro que precisa de um segundo par de olhos, um trecho de
+      configuração a caminho da máquina a que pertence. Nada disso quer um
+      arquivo morto.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que &ldquo;direto&rdquo; significa de verdade</h2>
+    <p>
+      A ferramenta usa WebRTC, a mesma maquinaria das chamadas de vídeo no
+      navegador: dois navegadores abrem um canal criptografado entre si e
+      mandam os dados por ele, sem servidor no caminho. Na mesma rede, os
+      bytes viajam só pela rede local: dois notebooks no mesmo Wi-Fi passam
+      o arquivo pela sala, não pela internet.
+    </p>
+    <p>
+      Um asterisco honesto, que também está na página da ferramenta: dois
+      navegadores não conseguem se encontrar sozinhos. Um servidor pequeno
+      &mdash; o intermediário &mdash; junta quem digitou o nome com quem
+      compartilha sob ele, e leva alguns kilobytes de estabelecimento de
+      conexão entre os dois. Não guarda nada, e o conteúdo nunca passa por
+      ele; o código completo está publicado ao lado do da ferramenta. É a
+      apresentação, não a conversa &mdash; e é o único servidor com que
+      qualquer coisa fala neste site, razão pela qual a página da
+      ferramenta detalha exatamente o que ele pode e o que não pode ver.
+    </p>
+    <p>
+      Direto também significa mútuo: cada navegador fica sabendo o endereço
+      de rede do outro, como numa ligação. O lado que lê sabe disso antes de
+      existir qualquer conexão, e só se conecta se decidir.
+    </p>
+  </section>
+
+  <section>
+    <h2>O nome é o endereço, e o único segredo</h2>
+    <p>
+      Um link de compartilhamento se distingue de qualquer outro numa coisa
+      prática: ele sobrevive a ser falado. <code>brave-otter-42</code> dá
+      para gritar de um lado a outro da sala, ler por telefone ou copiar de
+      um quadro, e digitar do outro lado sem ninguém perder os polegares. É
+      exatamente para isso que os nomes têm essa cara.
+    </p>
+    <p>
+      E corta dos dois lados: qualquer um que conheça ou adivinhe um nome
+      vivo pode abrir o que está por trás. Para o delicado, dê ao
+      compartilhamento um nome que ninguém adivinharia, ou apoie-se no
+      padrão: os compartilhamentos são <em>privados</em> a menos que você
+      desmarque, o que significa que cada leitor que chega precisa se
+      apresentar e você decide, mensagem por mensagem, quem entra. A
+      apresentação viaja pelo canal direto criptografado, então nem o
+      intermediário sabe quem bateu.
+    </p>
+  </section>
+
+  <section>
+    <h2>O que fechar a aba encerra de verdade</h2>
+    <p>
+      O compartilhamento vive na aba que compartilha e em nenhum outro
+      lugar, então fechar essa aba é a exclusão &mdash; não um pedido de
+      exclusão. O link morre em um ou dois segundos, e os leitores que ainda
+      estiverem olhando veem a página deles esvaziar. Não há cópia em
+      servidor com ciclo de vida próprio, nem lixeira, nem retenção de
+      trinta dias. O rascunho que você digitou fica no seu próprio navegador
+      para a próxima vez, e até isso se desliga com a opção de descartável.
+    </p>
+    <p>
+      O que não se encerra é a posse. Um leitor que copiou o texto ou baixou
+      o arquivo enquanto o compartilhamento estava aberto, tem: exatamente
+      como se você tivesse entregado por qualquer outro meio. Nenhuma
+      ferramenta consegue des-enviar, e uma que afirmasse isso estaria
+      mentindo para você sobre o computador de outra pessoa. Encerrar
+      governa o futuro &mdash; ninguém novo, nada mais &mdash;, e essa é a
+      parte que um serviço com cópia guardada não pode dar.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quando esta é a ferramenta errada</h2>
+    <p>
+      As duas pontas precisam estar presentes: isto é uma entrega em mãos,
+      não uma caixa de correio. Se a outra pessoa está dormindo, use algo
+      que guarde &mdash; sabendo disso. A aba que compartilha precisa ficar
+      aberta e acordada, o que na prática significa que um desktop ou
+      notebook compartilha; celulares suspendem abas em segundo plano em
+      segundos, embora leiam um compartilhamento perfeitamente. Não tem como
+      funcionar offline, caso único neste site, porque alcançar outra
+      máquina é um ato de rede &mdash; a metade do editor, porém, funciona
+      sem conexão nenhuma. E uma pequena minoria de pares de rede &mdash;
+      tipicamente as duas pontas atrás de redes corporativas ou de celular
+      rígidas &mdash; não consegue se unir diretamente; a ferramenta diz
+      isso com clareza depois de vinte segundos, em vez de desviar seu
+      conteúdo em silêncio por um retransmissor.
+    </p>
+    <p>
+      Para todo o resto &mdash; a nota, a senha, o arquivo de configuração,
+      o vídeo de 100&nbsp;MB a um pulo de Wi-Fi &mdash; a versão direta é
+      mais rápida, mais simples, e deixa o mundo exatamente como o
+      encontrou.
+    </p>
+  </section>

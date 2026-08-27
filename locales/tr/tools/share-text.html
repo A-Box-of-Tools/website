@@ -1,0 +1,184 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> Yazın, ya da ekleyin</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="Okuyucular biçimli görür; siz yazarken canlı işlenir">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">Dosya ekle</button>
+          <button type="button" id="save" class="ghost" data-download>Dosya olarak kaydet</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="Paylaşılacak metin"
+                    placeholder="Paylaşılacak metni yazın ya da yapıştırın&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="Eklenecek dosyalar">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        Dosyalar metinle aynı doğrudan kanaldan gider, her biri
+        200&nbsp;MB'a kadar. Okuyucular listeyi görür ve bir dosyayı ancak
+        isterlerse indirir.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> Bağlantıya ad verin</h2>
+      <div class="field">
+        <label for="code">Bağlantı adı</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="Başka bir ad öner">&#8635;</button>
+        </div>
+        <p class="field-note">
+          Ad hem adres hem de tek sırdır: bir odanın öbür ucuna
+          söylenebilecek kadar kısa; özel bir şey içinse tahmin edilemez
+          bir ada değer.
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          Özel &mdash; her okuyucu izin istemeli, içeri siz alırsınız
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          Tek seferlik &mdash; taslağı bu cihazda saklama
+        </label>
+        <p class="field-note">
+          Taslak yalnızca bu tarayıcıda durur, yani bir dahaki sefere yine
+          burada olur &mdash; tek seferlik işaretlerseniz hiçbir yerde
+          durmaz.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> Paylaşın</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">Paylaşmaya başla</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="Paylaşım bağlantısı">
+        <button type="button" id="copylink" class="ghost">Bağlantıyı kopyala</button>
+        <button type="button" id="stop" class="ghost">Paylaşmayı durdur</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>Hiçbir şey hiçbir yerde saklanmaz</h2>
+      <p>
+        Metin ve dosyalar şifreli olarak, doğrudan bu sekmeden her
+        okuyucunun sekmesine gider. İşin içindeki tek sunucu iki tarayıcıyı
+        tanıştırır ve alışverişlerini asla görmez. Bu sekmeyi kapatmak
+        paylaşımı bitirir ve okuyucuların açık sayfalarını da boşaltır
+        &mdash; gerçi birinin çoktan kopyaladığı ya da indirdiği şey
+        onundur.
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>Biri sizinle bir şey paylaşıyor</h2>
+      <p id="view-status" role="status" aria-live="polite">Paylaşan aranıyor&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          Okumak, tarayıcınızı doğrudan paylaşanın tarayıcısına bağlar
+          &mdash; mesele de tam olarak bu: burada hiçbir şey bir sunucuya
+          dokunmaz. Her doğrudan bağlantı gibi, iki tarafın birbirinin ağ
+          (IP) adresini görmesine yol açar. Siz bağlanmayı seçene dek hiçbir
+          şey alınmaz ve sizinle ilgili hiçbir şey paylaşılmaz.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">Bağlan ve paylaşımı al</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          Paylaşana tanıyacağı bir şey söyleyin &mdash; bir ad, bir ipucu
+          &mdash; sizi içeri alabilsin. Mesajınız doğrudan onun tarayıcısına
+          gider.
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="Paylaşanın tanıyacağı bir mesaj"
+                 placeholder="Benim, Alice">
+          <button type="button" id="send-knock" class="primary">Okumak için izin iste</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">Bu bağlantıyı yeniden dene</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="Paylaşan yazdıkça güncellenir">Canlı</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">Biçimli</button>
+            <button type="button" id="mode-src">Kaynak</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="Ham metni kopyalar">Kopyala</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">Paylaşılıyor. Birinin bağlantıyı açması bekleniyor &mdash; bu sekmeyi açık tutun.</span>
+    <span data-phrase="share.reader-count.one">1 okuyucu bağlı</span>
+    <span data-phrase="share.reader-count.many">{n} okuyucu bağlı</span>
+    <span data-phrase="share.knock-count.one">1 kişi içeri almanızı bekliyor</span>
+    <span data-phrase="share.knock-count.many">{n} kişi içeri almanızı bekliyor</span>
+    <span data-phrase="share.closing-note">Bu sekmeyi kapatmak paylaşımı bitirir.</span>
+    <span data-phrase="share.no-message">(mesaj yok)</span>
+    <span data-phrase="share.admit">Okumasına izin ver</span>
+    <span data-phrase="share.deny">Geri çevir</span>
+    <span data-phrase="share.remove-file">Kaldır</span>
+    <span data-phrase="share.setting-up">Hazırlanıyor&hellip;</span>
+    <span data-phrase="share.name-first">Önce bağlantıya bir ad verin, ya da öneri düğmesine basın.</span>
+    <span data-phrase="share.name-taken">&ldquo;{name}&rdquo; adıyla şu anda başka biri paylaşıyor &mdash; başka bir ad seçin.</span>
+    <span data-phrase="share.lost-rendezvous">Aracıyla bağlantı koptu; yeniden deneniyor. Bağlı okuyucular etkilenmez.</span>
+    <span data-phrase="share.stopped">Durduruldu. Artık hiçbir şey paylaşılmıyor.</span>
+    <span data-phrase="share.file-too-big">&ldquo;{name}&rdquo; 200 MB sınırını aşıyor.</span>
+
+    <span data-phrase="copy.done">Kopyalandı</span>
+    <span data-phrase="copy.link">Bağlantıyı kopyala</span>
+    <span data-phrase="copy.text">Kopyala</span>
+
+    <span data-phrase="view.someone">Bu adreste biri bir şey paylaşıyor.</span>
+    <span data-phrase="view.connecting">Doğrudan bağlanılıyor&hellip;</span>
+    <span data-phrase="view.private">Paylaşan bunu özel yapmış.</span>
+    <span data-phrase="view.asked">İstendi. Paylaşanın sizi içeri alması bekleniyor&hellip;</span>
+    <span data-phrase="view.denied">Paylaşan sizi içeri almadı.</span>
+    <span data-phrase="view.empty">Bağlandı. Paylaşan henüz bir şey yazmadı &mdash; o yazdıkça bu sayfa dolacak.</span>
+    <span data-phrase="view.ended">Paylaşan paylaşımı bitirdi ve bu kopya da onunla gitti.</span>
+    <span data-phrase="view.gone-early">Paylaşan, bir şey ulaşamadan ayrıldı. Her şey onunla gitti.</span>
+    <span data-phrase="view.nobody">Bu adreste kimse bir şey paylaşmıyor. Paylaşan sekmesini kapatmış olabilir &mdash; öyleyse paylaşım da onunla gitti.</span>
+    <span data-phrase="view.full">Bu paylaşım okuyucu sınırına çoktan ulaştı.</span>
+    <span data-phrase="view.no-connect">Paylaşana doğrudan ulaşılamadı. İki ağdan biri eşler arası bağlantıya izin vermiyor olabilir.</span>
+    <span data-phrase="view.error">Bağlanırken bir şeyler ters gitti. Sayfayı yenileyip yeniden deneyin.</span>
+    <span data-phrase="view.download">İndir</span>
+    <span data-phrase="view.file-gone">Artık paylaşılmıyor</span>
+  </div>
+</main>

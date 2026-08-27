@@ -1,0 +1,375 @@
+#
+# Text & Dateien teilen - German.
+#
+# Overrides for tools/share-text/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+
+name = "Text &amp; Dateien teilen"
+heading = "Text &amp; Dateien teilen <span class=\"h1-kw\">&mdash; direkt von Ihrem Browser in ihren, ohne Upload</span>"
+tagline = "Die Freigabe lebt in diesem offenen Tab. Leser holen sie verschlüsselt direkt aus Ihrem Browser, und mit dem Schließen des Tabs endet sie - auf keinem Server ist irgendetwas gespeichert."
+
+title = "Text &amp; Dateien zwischen Geräten teilen &mdash; direkt, verschlüsselt, nichts gespeichert"
+description = "Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen schicken. Ein aussprechbarer Link-Name, Live-Aktualisierung beim Tippen, Freigabe pro Leser - und niemals etwas auf einem Server. Kostenlos, ohne Anmeldung."
+og_title = "Eine Freigabe, die endet, sobald Sie den Tab schließen"
+og_description = "Text und Dateien wandern verschlüsselt direkt von Ihrem Browser in den des Lesers. Der Server stellt die beiden nur einander vor und sieht den Inhalt nie. Kein Speicher, kein Verlauf, kein Konto - Tab zu, und alles ist weg, überall."
+og_image_alt = "Text & Dateien teilen - direkt von Browser zu Browser, nichts gespeichert"
+
+pledge = """
+    Was Sie hier teilen, wandert über einen Ende-zu-Ende-verschlüsselten
+    WebRTC-Kanal von Ihrem Browser in den jedes Lesers, und nirgendwohin
+    sonst. Der eine beteiligte Server &mdash; in der
+    <code>Content-Security-Policy</code> dieser Seite benannt, Quelltext im
+    Repository &mdash; stellt die beiden Browser einander vor und tritt dann
+    beiseite: Er speichert nichts, und der Inhalt läuft nie durch ihn
+    hindurch. Es gibt keinen Verlauf und kein Konto. Schließen Sie diesen
+    Tab, endet die Freigabe überall zugleich, auch auf den offenen Seiten
+    der Leser."""
+
+live_hint = """
+      Öffnen Sie die DevTools und sehen Sie beim Teilen im Tab
+      &bdquo;Netzwerk&ldquo; zu. Sie sehen einen WebSocket zum Vermittler mit
+      ein paar Kilobyte Verbindungsaufbau &mdash; und wie viel Sie auch
+      tippen oder anhängen: keine einzige Anfrage, die etwas davon trägt."""
+
+read_first = """
+, <code>src/main.js</code> für beide
+      Hälften des Austauschs &mdash; der Tab des Teilenden und der des Lesers
+      sind dieselbe Datei &mdash; und <code>src/markdown.js</code> für den
+      Renderer, der auf Text von der anderen Seite der Leitung läuft und
+      deshalb alles maskiert, bevor er irgendetwas ausgibt. Der vollständige
+      Quelltext des Servers ist <code>workers/rendezvous/worker.js</code> im
+      selben Repository: ein Raum pro Link-Name, der nichts hält als die
+      offenen Verbindungen."""
+
+howto_heading = "So teilen Sie Text und Dateien, ohne sie irgendwohin hochzuladen"
+
+card = """
+            Text und Dateien, von Browser zu Browser über eine verschlüsselte
+            Direktverbindung. Nirgendwo gespeichert; die Freigabe endet, wenn
+            Sie den Tab schließen."""
+
+[words]
+plural = "geteilte Texte und Dateien"
+choose = "einen Link-Namen"
+analytics_extra = """, und nichts von dem,
+  was dieses Werkzeug teilt - weder den Text noch die Dateien, ihre Namen
+  oder Größen, noch wer mitgelesen hat"""
+
+[[facts]]
+mark = "&#10007;"
+text = "Nichts gespeichert"
+
+[[facts]]
+mark = "&#10007;"
+text = "Kein Konto"
+
+[[facts]]
+mark = "&#10003;"
+text = "Ende-zu-Ende-verschlüsselt"
+
+[[facts]]
+mark = "&#10003;"
+text = "Endet mit Ihrem Tab"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open Source"
+
+[[privacy]]
+title = "Der Inhalt geht zu Ihrem Leser, und nirgendwohin sonst."
+body = """
+ Text und Dateien reisen
+      über einen WebRTC-Datenkanal: eine direkte, DTLS-verschlüsselte
+      Verbindung zwischen Ihrem Browser und dem jedes Lesers. In diesem Weg
+      steht kein Server. Im selben Netz verlassen die Bytes nicht einmal das
+      Gebäude &mdash; zwei Laptops im selben WLAN tauschen sie lokal aus."""
+
+[[privacy]]
+title = "Was der Vermittler ist, und alles, was er sieht."
+body = """
+ Eine Direktverbindung braucht
+      eine Vorstellung, deshalb öffnet diese Seite &mdash; als einzige dieser
+      Website &mdash; einen WebSocket zu einem eigenen Server. Er bringt die
+      Person, die einen Link-Namen eingetippt hat, mit der zusammen, die
+      darunter teilt, reicht ein paar Kilobyte Verbindungsaushandlung weiter
+      und hält nichts fest: Es wird nie ein Speicher beschrieben, und ein
+      Raum hört auf zu existieren, sobald der Teilende die Verbindung trennt.
+      Er kann sehen, dass ein Name in Benutzung ist, wann jemand kommt und
+      geht, und die IP-Adressen. Er kann nicht sehen: den Text, die Dateien,
+      wer eingelassen wurde oder was jemand geschrieben hat &mdash; selbst
+      das Anklopfen bei einer privaten Freigabe reist über den
+      verschlüsselten Direktkanal. Sein vollständiger Quelltext liegt im
+      Repository neben dem dieses Werkzeugs."""
+
+[[privacy]]
+title = "Nichts ist gespeichert - das Schließen des Tabs ist die Löschung."
+body = """
+ Die Freigabe existiert nur,
+      solange Ihr Tab offen ist. Schließen Sie ihn, finden neue Leser nichts
+      mehr, und wer gerade liest, sieht seine Kopie verschwinden &mdash;
+      wobei das, was jemand vorher kopiert oder heruntergeladen hat, ihm
+      gehört, wie bei allem, das Sie jemandem in die Hand gegeben haben. Der
+      Entwurf, den Sie tippen, liegt im Speicher Ihres eigenen Browsers,
+      damit er beim nächsten Mal noch da ist, und nur dort; als einmalig
+      markiert liegt er nirgendwo."""
+
+[[privacy]]
+title = "Der Link-Name ist das einzige Geheimnis, und der Privat-Schalter das Schloss."
+body = """
+ Wer einen Namen kennt oder
+      errät, kann die Freigabe dahinter öffnen. Deshalb sind die Vorschläge
+      drei zufällige Wörter, deshalb verdient alles Heikle einen
+      unerratbaren Namen &mdash; oder den Privat-Schalter, der standardmäßig
+      an ist: Jeder ankommende Leser muss sich vorstellen, über den
+      Direktkanal, und nichts wird gesendet, bevor Sie ihn einlassen."""
+
+[[privacy]]
+title = "Eine Direktverbindung zeigt jeder Seite die Adresse der anderen."
+body = """
+ Das ist es, was
+      Peer-to-Peer bedeutet, und der Leser erfährt es, bevor es passiert:
+      Das Öffnen eines Freigabe-Links fragt nur beim Vermittler nach, ob
+      jemand teilt; dann sagt die Seite klar, dass eine Direktverbindung
+      beiden Seiten die IP-Adresse der jeweils anderen zeigt, und wartet auf
+      einen Klick. Bis zu diesem Klick hat der Teilende nicht einmal
+      erfahren, dass der Leser existiert."""
+
+[[privacy]]
+title = "Was Google lädt, und was es nicht bekommt."
+body = """
+ Die Werbe- und Messskripte
+      kommen von Google, der Spenden-Button von Buy Me a Coffee. Keines
+      davon bekommt irgendetwas über das, was diese Seite teilt &mdash;
+      weder den Text noch die Dateien, ihre Namen oder Größen, den
+      Link-Namen oder wer sich verbunden hat. Jede Zeile, die den Inhalt
+      berührt, wird von dieser Adresse ausgeliefert und steht im
+      Repository."""
+
+[[howto]]
+title = "Schreiben Sie den Text, oder hängen Sie die Dateien an."
+body = """
+ Der Editor ist die Freigabe:
+      Was darin steht, wenn ein Leser sich verbindet, ist das, was er
+      bekommt, und alles danach erreicht verbundene Leser live, während Sie
+      tippen. Dateien reisen über denselben Kanal, bis 200&nbsp;MB pro
+      Stück; Leser sehen die Liste und holen nur, was sie anfordern &mdash;
+      niemandes Bandbreite wird für eine Datei verbraucht, die er nicht
+      wollte."""
+
+[[howto]]
+title = "Schalten Sie Markdown ein, wenn der Text Formatierung verdient."
+body = """
+ Ein Schalter.
+      Überschriften, Fettdruck, Listen, Code und Links erscheinen beim
+      Tippen live gerendert neben dem Editor, und Leser bekommen
+      standardmäßig die formatierte Ansicht, mit einem Umschalter zurück zum
+      Quelltext. Der Renderer wird mit dieser Seite ausgeliefert und
+      maskiert alles: Geteilter Text kann auf dem Rechner eines Lesers nicht
+      zu Skript werden, egal wer ihn geschrieben hat."""
+
+[[howto]]
+title = "Benennen Sie den Link, oder behalten Sie den Vorschlag."
+body = """
+ Der Name ist die Adresse:
+      <code>brave-otter-42</code> lässt sich durch einen Raum rufen, am
+      Telefon vorlesen oder von einer Tafel abtippen. Er ist auch das
+      einzige Geheimnis &mdash; wählen Sie für alles Private entweder einen
+      Namen, den niemand erraten würde, oder verlassen Sie sich auf den
+      Privat-Schalter. Ein Name, unter dem gerade jemand anderes teilt,
+      wird abgelehnt, und Ihrer wird frei, sobald Sie aufhören."""
+
+[[howto]]
+title = "Entscheiden Sie, wer hineinkommt."
+body = """
+ Privat ist die Voreinstellung:
+      Jeder Leser wird gebeten, sich vorzustellen &mdash; ein Name, ein
+      Hinweis, irgendetwas, das Sie wiedererkennen &mdash;, und Sie sehen die
+      Nachricht mit einem Knopf, ihn lesen zu lassen oder abzuweisen. Die
+      Vorstellung reist über den Direktkanal, nicht einmal der Vermittler
+      erfährt also, wer gefragt hat. Abgehakt wird daraus eine offene
+      Freigabe, die jeder mit dem Namen lesen kann."""
+
+[[howto]]
+title = "Starten Sie die Freigabe, und lassen Sie den Tab offen."
+body = """
+ Der Tab ist der Server: Die
+      Freigabe ist erreichbar, solange er offen und wach ist, und keinen
+      Moment länger. Auch ein zugeklappter Laptop beendet sie. Kopieren Sie
+      den Link, oder sagen Sie einfach den Namen &mdash; ein Leser kann ihn
+      als <code>#name</code> ans Ende der Adresse dieser Seite tippen."""
+
+[[howto]]
+title = "Auf der anderen Seite: erst zustimmen, dann anklopfen."
+body = """
+ Wer den Link öffnet, erfährt,
+      dass jemand teilt, wird gewarnt, dass eine Direktverbindung beiden
+      Seiten die Netzadresse der anderen zeigt, und verbindet sich nur durch
+      eigene Entscheidung. Bei einer privaten Freigabe stellt er sich vor
+      und wartet auf Sie. Was er bekommt, aktualisiert sich live, während
+      Sie schreiben, und verschwindet, wenn Sie den Tab schließen."""
+
+[[faq]]
+q = "Wird irgendetwas hochgeladen, irgendwohin?"
+a = """
+        Nein. Text und Dateien wandern über einen verschlüsselten
+        WebRTC-Kanal direkt von Ihrem Browser in den jedes Lesers. Der eine
+        beteiligte Server trägt die Vorstellung &mdash; ein paar Kilobyte
+        Verbindungsaushandlung &mdash; und nie den Inhalt. Auf ihm gibt es
+        nichts zu erbeuten, anzufordern oder zu verlieren: Er hält kein Byte
+        von Ihnen, und ein Raum hört auf zu existieren, sobald Sie die
+        Verbindung trennen."""
+
+[[faq]]
+q = "Warum spricht dieses Werkzeug überhaupt mit einem Server, ausgerechnet auf dieser Website?"
+a = """
+        Weil zwei Browser einander nicht allein finden können: Irgendetwas
+        muss die Person, die <code>brave-otter-42</code> eingetippt hat, mit
+        der zusammenbringen, die darunter teilt, und das Verbindungsangebot
+        zwischen ihnen übertragen. Dieses Etwas ist der Vermittler, die eine
+        Netzabhängigkeit dieser Seite, benannt in ihrer
+        <code>Content-Security-Policy</code> und veröffentlicht im selben
+        Repository wie die Seite selbst. Er ist der kleinste Server, der die
+        Aufgabe erfüllen könnte &mdash; er speichert nichts, liest nichts
+        und tritt beiseite, sobald die beiden Browser einen direkten Kanal
+        haben."""
+
+[[faq]]
+q = "Was genau kann dieser Server sehen?"
+a = """
+        Dass ein Link-Name in Benutzung ist, wann ein Teilender und Leser
+        sich verbinden und gehen, ihre IP-Adressen und den Aufbau der
+        verschlüsselten Verbindung, den sie austauschen. Nicht den Text,
+        nicht die Dateien, nicht deren Namen oder Größen, nicht, wer bei
+        einer privaten Freigabe eingelassen wurde, und nicht, was jemand in
+        einer Vorstellung geschrieben hat &mdash; all das reist über den
+        Ende-zu-Ende-verschlüsselten Direktkanal, der nicht durch den Server
+        läuft."""
+
+[[faq]]
+q = "Was passiert, wenn ich den Tab schließe?"
+a = """
+        Die Freigabe endet überall zugleich. Der Link hört binnen ein, zwei
+        Sekunden auf zu funktionieren, und Leser, die die Seite noch offen
+        haben, sehen ihre Kopie verschwinden, mit dem Hinweis, dass die
+        Freigabe beendet wurde. Das ist keine Löschanfrage an einen Server
+        &mdash; es gibt keine Serverkopie zu löschen. Der Tab war der
+        einzige Ort, an dem die Freigabe existierte, und ihn zu schließen
+        ist das ganze Aufräumen."""
+
+[[faq]]
+q = "Kann ein Leser behalten, was ich geteilt habe?"
+a = """
+        Solange die Freigabe offen ist, ja &mdash; das ist es, was Teilen
+        heißt. Ein Leser kann den Text kopieren oder eine Datei
+        herunterladen, und was er genommen hat, gehört ihm, genau als
+        hätten Sie es ihm auf jedem anderen Weg gegeben. Was das Beenden
+        garantiert, ist die Zukunft: Niemand Neues kommt heran, und offene
+        Seiten zeigen es nicht mehr. Kein Werkzeug kann zurückholen, was
+        schon angekommen ist, und diese Seite behauptet es auch nicht."""
+
+[[faq]]
+q = "Was ist der Privat-Modus?"
+a = """
+        Die Voreinstellung. Jeder ankommende Leser erfährt, dass die
+        Freigabe privat ist, und wird gebeten, sich vorzustellen; Sie sehen
+        die Nachricht &mdash; &bdquo;hier ist Alice aus dem Standup&ldquo;
+        &mdash; mit Knöpfen, ihn lesen zu lassen oder abzuweisen, und nichts
+        wird gesendet, bevor Sie entscheiden. Die Vorstellung reist über den
+        ohnehin verschlüsselten Direktkanal, der Server erfährt also nie,
+        wer gefragt hat oder was Sie entschieden haben. Vor dem Teilen
+        abgehakt, wird daraus eine offene Freigabe."""
+
+[[faq]]
+q = "Warum sieht der Leser meine IP-Adresse?"
+a = """
+        Weil die Verbindung wirklich direkt ist, und eine Direktverbindung
+        zwischen zwei Adressen besteht &mdash; jedes Ende erfährt
+        notwendigerweise das andere, wie bei einem Telefonat. Der Leser wird
+        gewarnt, bevor irgendeine Verbindung existiert, und verbindet sich
+        nur durch eigene Entscheidung; bis dahin haben Sie nicht einmal
+        erfahren, dass er den Link geöffnet hat. Wenn dieser Tausch für eine
+        bestimmte Freigabe falsch ist, ist ein Dienst, der über einen Server
+        weiterleitet, die Alternative &mdash; mit dem umgekehrten Tausch."""
+
+[[faq]]
+q = "Wie groß dürfen die Dateien sein, und wie schnell ist es?"
+a = """
+        Bis 200&nbsp;MB pro Datei, jeder Typ, und so schnell wie die
+        langsamere der beiden Verbindungen &mdash; kein Server in der Mitte
+        bremst oder deckelt. Zwei Rechner im selben WLAN übertragen mit
+        lokaler Geschwindigkeit, und die Bytes verlassen das Gebäude nicht.
+        Leser holen jede Datei auf Anforderung; etwas Großes anzuhängen
+        kostet also nichts, bis jemand wirklich danach fragt."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ehrlich gesagt: zur Hälfte. Der Editor ja &mdash; die Seite lädt,
+        Ihr Entwurf ist da, Markdown rendert, Schreiben und Speichern gehen
+        ganz ohne Netz. Das Teilen nicht, und das kann es nicht: Den Browser
+        eines anderen Menschen zu erreichen ist ein Netzvorgang, und die
+        Vorstellung braucht den Vermittler. Dies ist das eine Werkzeug
+        dieser Website, dessen Aufgabe offline unmöglich ist, und etwas
+        anderes anzudeuten wäre unehrlich."""
+
+[[faq]]
+q = "Was, wenn wir keine Verbindung bekommen?"
+a = """
+        Die meisten Browserpaare erreichen einander direkt, sobald sie
+        vorgestellt sind; eine Minderheit nicht, typischerweise wenn beide
+        Seiten hinter der strengsten Sorte Mobilfunk- oder Firmennetz
+        sitzen. Diese Seite weicht nicht heimlich auf einen weiterleitenden
+        Server aus &mdash; das würde stillschweigend ändern, was dieses
+        Werkzeug ist &mdash;, sondern sagt nach zwanzig Sekunden klar, dass
+        keine Direktverbindung zustande kam. Ein Versuch aus einem anderen
+        Netz löst es meistens."""
+
+[[faq]]
+q = "Ist das Markdown-Rendern sicher, wenn jeder alles teilen kann?"
+a = """
+        Diese Frage ist der Grund, warum der Renderer achtzig Zeilen im
+        Quelltext dieser Seite ist und keine Bibliothek. Jedes Zeichen wird
+        maskiert, bevor irgendein Tag ausgegeben wird, nur ein fester Satz
+        harmloser Tags kann entstehen, und Links akzeptieren nur
+        <code>http</code>, <code>https</code> und <code>mailto</code>
+        &mdash; ein <code>javascript:</code>-Link bleibt lebloser Text.
+        Geteilter Text kann auf Ihrem Rechner nicht zu Skript werden, egal
+        wer ihn geschrieben hat, und die achtzig Zeilen können Sie lesen."""
+
+[[faq]]
+q = "Können zwei Leute unter demselben Namen teilen?"
+a = """
+        Nicht gleichzeitig. Eine lebende Freigabe pro Name, durchgesetzt
+        beim Vermittler: Wer als Zweiter kommt, wird abgelehnt und um einen
+        anderen Namen gebeten. Sobald eine Freigabe endet, ist ihr Name
+        wieder frei &mdash; was auch heißt, dass ein aufgehobener Link nur
+        so frisch ist wie die Freigabe dahinter: Derselbe Name kann nächste
+        Woche jemand anderem gehören. Behandeln Sie einen Link als etwas,
+        das zu einem Moment gehört, nicht zu einer Person."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Kostenlos, kein Konto, keine Anmeldung, und keine Grenze, die der
+        Rede wert wäre &mdash; sechzehn gleichzeitige Leser pro Freigabe.
+        Die Website trägt Werbung, die sie bezahlt; die Anzeigen bekommen
+        nichts über das, was diese Seite teilt, und der Vermittler läuft
+        bequem in einem kostenlosen Tarif, gerade weil er nichts speichert
+        und fast nichts tut."""
+
+[schema]
+description = "Text und Dateien über eine direkte, Ende-zu-Ende-verschlüsselte WebRTC-Verbindung von einem Browser in einen anderen teilen. Aussprechbare Link-Namen, Live-Aktualisierung beim Tippen, Markdown-Rendern und Freigabe pro Leser. Auf keinem Server wird etwas gespeichert; die Freigabe endet, wenn der Teilende den Tab schließt."
+features = [
+  "Text und Dateien reisen von Browser zu Browser, Ende-zu-Ende-verschlüsselt, nie durch einen Server",
+  "Die Freigabe lebt im offenen Tab: ihn zu schließen beendet sie und leert die Seiten der Leser",
+  "Aussprechbare Link-Namen - brave-otter-42 -, änderbar, eine lebende Freigabe pro Name",
+  "Standardmäßig privat: jeder Leser stellt sich vor, und der Teilende lässt ein oder weist ab",
+  "Leser stimmen zu, bevor eine Verbindung existiert, klar gewarnt, dass IPs sichtbar werden",
+  "Live-Aktualisierung: Änderungen erreichen verbundene Leser, während der Teilende tippt",
+  "Markdown, auf beiden Seiten umschaltbar, gerendert von einem maskierenden eingebauten Renderer",
+  "Dateien bis 200 MB pro Stück, auf Anforderung geholt, mit Fortschritt pro Datei",
+  "Der Entwurf bleibt nur im Browser des Teilenden - oder nirgends, als einmalig markiert",
+  "Die gesamte Server-Komponente ist ein speicherloser Vermittler, veröffentlicht im Repository",
+]

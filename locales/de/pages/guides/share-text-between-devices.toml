@@ -1,0 +1,22 @@
+#
+# Ratgeber: Text und Dateien zwischen Geräten teilen - German.
+#
+
+nav = "Zwischen Geräten teilen"
+title = "Text und Dateien zwischen Geräten teilen &mdash; ohne Upload"
+description = "Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen bringen - ohne Mail an sich selbst, ohne Chatverlauf, ohne Konto, und ohne dass ein Server eine Kopie behält."
+
+heading = "So teilen Sie Text und Dateien zwischen Geräten, ohne sie hochzuladen"
+lede = """
+    Die üblichen Wege, eine Notiz oder Datei auf einen anderen Rechner zu
+    bringen, hinterlassen alle eine Kopie: im Gesendet-Ordner, im
+    Chatverlauf oder auf dem Server einer Sharing-Seite, hinter einem
+    Löschknopf, dem man vertrauen muss. Es gibt einen Weg, der nirgendwo
+    etwas hinterlässt, weil nie etwas gespeichert wird - und es ist zugleich
+    der einzige mit einem Namen, den man durch einen Raum rufen kann."""
+
+updated = "26. August 2026"
+
+og_title = "Zwischen Geräten teilen, ohne dass ein Server eine Kopie behält"
+og_description = "Text und Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen - ein aussprechbarer Link-Name, nirgendwo etwas gespeichert, und eine Freigabe, die mit dem Tab endet."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

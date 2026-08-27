@@ -1,0 +1,373 @@
+#
+# Partager du texte et des fichiers - French.
+#
+# Overrides for tools/share-text/tool.toml. Only words: the slug lives in
+# [slugs] in locale.toml, and the category, the icon and the CSP stay where
+# they are.
+#
+
+name = "Partager du texte et des fichiers"
+heading = "Partager texte &amp; fichiers <span class=\"h1-kw\">&mdash; de votre navigateur au leur, sans rien téléverser</span>"
+tagline = "Le partage vit dans cet onglet ouvert. Les lecteurs le reçoivent chiffré, directement depuis votre navigateur, et fermer l'onglet y met fin - aucun serveur ne conserve quoi que ce soit."
+
+title = "Partager du texte et des fichiers entre appareils &mdash; direct, chiffré, rien de stocké"
+description = "Envoyez du texte ou des fichiers d'un navigateur à un autre par une connexion directe et chiffrée. Un nom de lien prononçable, mise à jour en direct pendant la frappe, approbation lecteur par lecteur - et jamais rien sur aucun serveur. Gratuit, sans inscription."
+og_title = "Un partage qui s'arrête dès que vous fermez l'onglet"
+og_description = "Le texte et les fichiers voyagent chiffrés, directement de votre navigateur à celui du lecteur. Le serveur ne fait que les présenter et ne voit jamais le contenu. Pas de stockage, pas d'historique, pas de compte - fermez l'onglet et tout disparaît, partout."
+og_image_alt = "Partager du texte et des fichiers - de navigateur à navigateur, rien de stocké"
+
+pledge = """
+    Ce que vous partagez ici voyage de votre navigateur à celui de chaque
+    lecteur par un canal WebRTC chiffré de bout en bout, et nulle part
+    ailleurs. Le seul serveur impliqué &mdash; nommé dans la
+    <code>Content-Security-Policy</code> de cette page, code dans le dépôt
+    &mdash; présente les deux navigateurs l'un à l'autre puis s'écarte : il
+    ne stocke rien, et le contenu ne transite jamais par lui. Il n'y a ni
+    historique ni compte. Fermez cet onglet et le partage s'arrête partout à
+    la fois, y compris sur les pages ouvertes des lecteurs."""
+
+live_hint = """
+      Ouvrez les outils de développement et surveillez l'onglet
+      &laquo;&nbsp;Réseau&nbsp;&raquo; pendant que vous partagez. Vous
+      verrez un WebSocket vers l'entremetteur portant quelques kilooctets de
+      négociation &mdash; et quoi que vous tapiez ou joigniez, pas une seule
+      requête n'en transporte quoi que ce soit."""
+
+read_first = """
+, <code>src/main.js</code> pour les deux
+      moitiés de l'échange &mdash; l'onglet de qui partage et celui du
+      lecteur sont le même fichier &mdash; et <code>src/markdown.js</code>
+      pour le moteur de rendu qui traite du texte venu de l'autre bout du
+      fil, et qui échappe donc tout avant d'émettre quoi que ce soit. Le
+      code complet du serveur est <code>workers/rendezvous/worker.js</code>,
+      dans le même dépôt : une salle par nom de lien, qui ne tient rien
+      d'autre que les connexions ouvertes."""
+
+howto_heading = "Comment partager du texte et des fichiers sans les téléverser nulle part"
+
+card = """
+            Texte et fichiers, de navigateur à navigateur par une connexion
+            directe chiffrée. Rien de stocké nulle part ; le partage
+            s'arrête quand vous fermez l'onglet."""
+
+[words]
+plural = "textes et fichiers partagés"
+choose = "un nom de lien"
+analytics_extra = """, et rien de ce
+  que cet outil partage - ni le texte, ni les fichiers, ni leurs noms ou
+  leurs tailles, ni qui a lu"""
+
+[[facts]]
+mark = "&#10007;"
+text = "Rien de stocké"
+
+[[facts]]
+mark = "&#10007;"
+text = "Pas de compte"
+
+[[facts]]
+mark = "&#10003;"
+text = "Chiffré de bout en bout"
+
+[[facts]]
+mark = "&#10003;"
+text = "S'arrête avec votre onglet"
+
+[[facts]]
+mark = "&#10003;"
+text = "Code ouvert"
+
+[[privacy]]
+title = "Le contenu va à votre lecteur, et nulle part ailleurs."
+body = """
+ Le texte et les fichiers
+      voyagent par un canal de données WebRTC : une connexion directe,
+      chiffrée en DTLS, entre votre navigateur et celui de chaque lecteur.
+      Aucun serveur ne se trouve sur ce chemin. Sur le même réseau, les
+      octets ne quittent même pas le bâtiment &mdash; deux portables sur le
+      même Wi-Fi se les passent en local."""
+
+[[privacy]]
+title = "Ce qu'est l'entremetteur, et tout ce qu'il voit."
+body = """
+ Une connexion directe
+      demande une présentation ; cette page &mdash; seule sur ce site &mdash;
+      ouvre donc un WebSocket vers un serveur à nous. Il réunit la personne
+      qui a tapé un nom de lien et celle qui partage sous ce nom, relaie
+      quelques kilooctets de négociation, et ne retient rien : aucun
+      stockage n'est jamais écrit, et une salle cesse d'exister dès que qui
+      partage se déconnecte. Il peut voir qu'un nom est en usage, quand
+      chacun arrive et repart, et les adresses IP. Il ne peut pas voir le
+      texte, les fichiers, qui a été admis ni ce que quiconque a écrit
+      &mdash; même le toc-toc d'un partage privé voyage par le canal direct
+      chiffré. Son code complet est dans le dépôt, à côté de celui de cet
+      outil."""
+
+[[privacy]]
+title = "Rien n'est stocké : fermer l'onglet, c'est l'effacement."
+body = """
+ Le partage n'existe que
+      tant que votre onglet est ouvert. Fermez-le : les nouveaux lecteurs ne
+      trouvent plus rien, et ceux qui lisaient voient leur copie
+      disparaître &mdash; ce que quelqu'un avait copié ou téléchargé avant
+      reste à lui, comme tout ce que vous lui auriez remis en main propre.
+      Le brouillon que vous tapez reste dans le stockage de votre propre
+      navigateur, pour être encore là la prochaine fois, et seulement là ;
+      marqué éphémère, il n'est nulle part."""
+
+[[privacy]]
+title = "Le nom du lien est le seul secret, et le mode privé, le verrou."
+body = """
+ Quiconque connaît ou
+      devine un nom peut ouvrir le partage derrière. C'est pourquoi les
+      suggestions sont trois mots au hasard, pourquoi tout ce qui est
+      sensible mérite un nom indevinable &mdash; ou l'interrupteur privé,
+      activé par défaut : chaque lecteur qui arrive doit se présenter, par
+      le canal direct, et rien n'est envoyé avant que vous ne l'admettiez."""
+
+[[privacy]]
+title = "Une connexion directe montre à chaque bout l'adresse de l'autre."
+body = """
+ C'est cela, le pair à
+      pair, et le lecteur le sait avant que cela n'arrive : ouvrir un lien
+      de partage ne fait que demander à l'entremetteur si quelqu'un partage ;
+      la page dit ensuite clairement que se connecter révèle à chaque bout
+      l'adresse IP de l'autre, et attend un clic. Jusqu'à ce clic, qui
+      partage ne sait même pas que le lecteur existe."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'il ne reçoit pas."
+body = """
+ Les scripts de publicité
+      et de mesure viennent de Google, le bouton de don de Buy Me a Coffee.
+      Aucun d'eux ne reçoit quoi que ce soit sur ce que cette page partage
+      &mdash; ni le texte, ni les fichiers, ni leurs noms ou tailles, ni le
+      nom du lien, ni qui s'est connecté. Chaque ligne qui touche au contenu
+      est servie depuis cette origine et figure dans le dépôt."""
+
+[[howto]]
+title = "Écrivez le texte, ou joignez les fichiers."
+body = """
+ L'éditeur est le partage : ce
+      qu'il contient quand un lecteur se connecte est ce qu'il reçoit, et
+      toute modification atteint ensuite les lecteurs connectés en direct,
+      pendant que vous tapez. Les fichiers voyagent par le même canal,
+      jusqu'à 200&nbsp;Mo pièce ; les lecteurs voient la liste et ne
+      récupèrent que ce qu'ils demandent &mdash; personne ne dépense de
+      bande passante pour un fichier dont il ne voulait pas."""
+
+[[howto]]
+title = "Activez Markdown si le texte mérite une mise en forme."
+body = """
+ Un seul
+      interrupteur. Titres, gras, listes, code et liens se rendent en direct
+      à côté de l'éditeur pendant la frappe, et les lecteurs reçoivent la
+      vue mise en forme par défaut, avec un bouton pour revenir à la
+      source. Le moteur de rendu est livré avec cette page et échappe
+      tout : un texte partagé ne peut pas devenir un script sur la machine
+      d'un lecteur, quel qu'en soit l'auteur."""
+
+[[howto]]
+title = "Nommez le lien, ou gardez la suggestion."
+body = """
+ Le nom est l'adresse :
+      <code>brave-otter-42</code> se lance à travers une pièce, se lit au
+      téléphone, se recopie d'un tableau. C'est aussi le seul secret :
+      pour tout ce qui est privé, choisissez un nom que personne ne
+      devinerait, ou fiez-vous à l'interrupteur privé. Un nom sous lequel
+      quelqu'un d'autre partage déjà est refusé, et le vôtre redevient libre
+      dès que vous arrêtez."""
+
+[[howto]]
+title = "Décidez qui entre."
+body = """
+ Privé est le réglage par défaut :
+      chaque lecteur est invité à se présenter &mdash; un nom, un indice,
+      n'importe quoi que vous reconnaîtriez &mdash; et vous voyez le message
+      avec un bouton pour le laisser lire ou l'éconduire. La présentation
+      voyage par le canal direct, si bien que même l'entremetteur ignore qui
+      a frappé. Décochez pour un partage ouvert, lisible par quiconque a le
+      nom."""
+
+[[howto]]
+title = "Lancez le partage, et laissez l'onglet ouvert."
+body = """
+ L'onglet est le serveur :
+      le partage est joignable tant qu'il est ouvert et éveillé, et pas un
+      instant de plus. Un portable qu'on referme y met fin aussi. Copiez le
+      lien, ou dites simplement le nom &mdash; un lecteur peut le taper en
+      <code>#nom</code> au bout de l'adresse de cette page."""
+
+[[howto]]
+title = "De l'autre côté : consentir, puis frapper."
+body = """
+ Qui ouvre le lien apprend
+      que quelqu'un partage, est prévenu qu'une connexion directe montre à
+      chaque bout l'adresse réseau de l'autre, et ne se connecte que par
+      choix. Sur un partage privé, il se présente et vous attend. Ce qu'il
+      reçoit se met à jour en direct pendant que vous écrivez, et disparaît
+      quand vous fermez l'onglet."""
+
+[[faq]]
+q = "Quelque chose est-il téléversé, quelque part ?"
+a = """
+        Non. Le texte et les fichiers vont de votre navigateur à celui de
+        chaque lecteur par un canal WebRTC chiffré, directement. Le seul
+        serveur impliqué porte la présentation &mdash; quelques kilooctets
+        de négociation de connexion &mdash; et jamais le contenu. Il n'y a
+        rien chez lui à voler, réquisitionner ou perdre : il ne détient pas
+        un octet de vous, et une salle cesse d'exister dès que vous vous
+        déconnectez."""
+
+[[faq]]
+q = "Alors pourquoi cet outil parle-t-il à un serveur, sur ce site précisément ?"
+a = """
+        Parce que deux navigateurs ne peuvent pas se trouver seuls : il faut
+        que quelque chose réunisse la personne qui a tapé
+        <code>brave-otter-42</code> et celle qui partage sous ce nom, et
+        transporte l'offre de connexion entre elles. Ce quelque chose est
+        l'entremetteur, l'unique dépendance réseau de cette page, nommé dans
+        sa <code>Content-Security-Policy</code> et publié dans le même dépôt
+        que la page. C'est le plus petit serveur capable de faire ce
+        travail : il ne stocke rien, ne lit rien, et s'écarte dès que les
+        deux navigateurs tiennent un canal direct."""
+
+[[faq]]
+q = "Que peut voir ce serveur, exactement ?"
+a = """
+        Qu'un nom de lien est en usage, quand qui partage et les lecteurs se
+        connectent et repartent, leurs adresses IP, et l'établissement de
+        connexion chiffrée qu'ils échangent. Pas le texte, pas les fichiers,
+        pas leurs noms ni leurs tailles, pas qui a été admis à un partage
+        privé, et pas ce que quiconque a écrit en se présentant &mdash; tout
+        cela voyage par le canal direct, chiffré de bout en bout, qui ne
+        passe pas par le serveur."""
+
+[[faq]]
+q = "Que se passe-t-il quand je ferme l'onglet ?"
+a = """
+        Le partage s'arrête partout à la fois. Le lien cesse de fonctionner
+        en une seconde ou deux, et les lecteurs qui ont encore la page
+        ouverte voient leur copie disparaître, avec un mot disant que le
+        partage est terminé. Ce n'est pas une demande d'effacement adressée
+        à un serveur &mdash; il n'y a pas de copie serveur à effacer.
+        L'onglet était le seul endroit où le partage existait, et le fermer
+        est tout le ménage qu'il y a à faire."""
+
+[[faq]]
+q = "Un lecteur peut-il garder ce que j'ai partagé ?"
+a = """
+        Tant que le partage est ouvert, oui &mdash; c'est cela, partager. Un
+        lecteur peut copier le texte ou télécharger un fichier, et ce qu'il
+        a pris est à lui, exactement comme si vous le lui aviez remis par
+        n'importe quel autre moyen. Ce que garantit l'arrêt, c'est
+        l'avenir : personne de nouveau n'y accède, et les pages ouvertes
+        cessent de l'afficher. Aucun outil ne peut rappeler ce qui est déjà
+        arrivé, et cette page ne prétend pas le contraire."""
+
+[[faq]]
+q = "Qu'est-ce que le mode privé ?"
+a = """
+        Le réglage par défaut. Chaque lecteur qui arrive apprend que le
+        partage est privé et est invité à se présenter ; vous voyez le
+        message &mdash; &laquo;&nbsp;c'est Alice, du stand-up&nbsp;&raquo;
+        &mdash; avec des boutons pour le laisser lire ou l'éconduire, et
+        rien n'est envoyé avant votre décision. La présentation voyage par
+        le canal direct déjà chiffré, si bien que le serveur ne sait jamais
+        qui a frappé ni ce que vous avez décidé. Décoché avant le partage,
+        cela donne un partage ouvert."""
+
+[[faq]]
+q = "Pourquoi le lecteur verra-t-il mon adresse IP ?"
+a = """
+        Parce que la connexion est réellement directe, et qu'une connexion
+        directe relie deux adresses : chaque bout apprend nécessairement
+        celle de l'autre, comme lors d'un appel téléphonique. Le lecteur est
+        prévenu avant qu'aucune connexion n'existe et ne se connecte que par
+        choix ; jusque-là, vous ne savez même pas qu'il a ouvert le lien. Si
+        cet échange ne convient pas à un partage donné, un service qui
+        relaie par un serveur est l'alternative &mdash; avec l'échange
+        inverse."""
+
+[[faq]]
+q = "Quelle taille pour les fichiers, et quelle vitesse ?"
+a = """
+        Jusqu'à 200&nbsp;Mo par fichier, de tout type, et aussi vite que la
+        plus lente des deux connexions &mdash; aucun serveur au milieu pour
+        freiner ou compter. Deux machines sur le même Wi-Fi transfèrent à la
+        vitesse du réseau local, et les octets ne quittent pas le bâtiment.
+        Les lecteurs récupèrent chaque fichier à la demande : joindre
+        quelque chose de gros ne coûte rien tant que personne ne le demande
+        vraiment."""
+
+[[faq]]
+q = "Cela fonctionne-t-il hors ligne ?"
+a = """
+        À moitié, honnêtement : l'éditeur, oui &mdash; la page se charge,
+        votre brouillon est là, le Markdown se rend, écrire et enregistrer
+        se passent de tout réseau. Partager, non, et c'est impossible :
+        atteindre le navigateur de quelqu'un d'autre est un acte réseau, et
+        la présentation exige l'entremetteur. C'est le seul outil de ce site
+        dont la tâche est impossible hors ligne, et laisser entendre autre
+        chose serait malhonnête."""
+
+[[faq]]
+q = "Et si nous n'arrivons pas à nous connecter ?"
+a = """
+        La plupart des paires de navigateurs s'atteignent directement une
+        fois présentées ; une minorité non, typiquement quand les deux bouts
+        sont derrière la sorte la plus stricte de réseau mobile ou
+        d'entreprise. Cette page ne se rabat pas en douce sur un serveur
+        relais &mdash; cela changerait en silence ce qu'est cet outil
+        &mdash; : au bout de vingt secondes, elle dit clairement qu'aucune
+        connexion directe n'a abouti. Essayer depuis un autre réseau règle
+        la chose la plupart du temps."""
+
+[[faq]]
+q = "Le rendu Markdown est-il sûr, si n'importe qui peut partager n'importe quoi ?"
+a = """
+        Cette question est la raison pour laquelle le moteur de rendu tient
+        en quatre-vingts lignes dans le code de cette page plutôt que dans
+        une bibliothèque. Chaque caractère est échappé avant qu'aucune
+        balise ne soit émise, seul un jeu fixe de balises inoffensives peut
+        être produit, et les liens n'acceptent que <code>http</code>,
+        <code>https</code> et <code>mailto</code> &mdash; un lien
+        <code>javascript:</code> reste du texte inerte. Un texte partagé ne
+        peut pas devenir un script sur votre machine, quel qu'en soit
+        l'auteur, et les quatre-vingts lignes se lisent."""
+
+[[faq]]
+q = "Deux personnes peuvent-elles partager sous le même nom ?"
+a = """
+        Pas en même temps. Un partage vivant par nom, imposé chez
+        l'entremetteur : qui arrive en second est refusé et invité à choisir
+        un autre nom. Dès qu'un partage s'arrête, son nom redevient libre
+        &mdash; ce qui veut aussi dire qu'un lien conservé ne vaut que ce
+        que vaut le partage derrière : le même nom, la semaine prochaine,
+        peut appartenir à quelqu'un d'autre. Traitez un lien comme
+        appartenant à un moment, pas à une personne."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte ?"
+a = """
+        Gratuit, sans compte, sans inscription, et sans limite digne d'être
+        mentionnée &mdash; seize lecteurs simultanés par partage. Le site
+        porte de la publicité, qui le finance ; les annonces ne reçoivent
+        rien de ce que cette page partage, et l'entremetteur tient largement
+        dans une offre gratuite, précisément parce qu'il ne stocke rien et
+        ne fait presque rien."""
+
+[schema]
+description = "Partagez du texte et des fichiers d'un navigateur à un autre par une connexion WebRTC directe et chiffrée de bout en bout. Noms de lien prononçables, mise à jour en direct pendant la frappe, Markdown et approbation lecteur par lecteur. Aucun serveur ne stocke rien ; le partage s'arrête quand qui partage ferme l'onglet."
+features = [
+  "Le texte et les fichiers vont de navigateur à navigateur, chiffrés de bout en bout, jamais par un serveur",
+  "Le partage vit dans l'onglet ouvert : le fermer y met fin et vide les pages des lecteurs",
+  "Des noms de lien prononçables - brave-otter-42 -, modifiables, un partage vivant par nom",
+  "Privé par défaut : chaque lecteur se présente, et qui partage admet ou refuse",
+  "Les lecteurs consentent avant toute connexion, prévenus que les IP deviennent visibles",
+  "Mise à jour en direct : les modifications atteignent les lecteurs connectés pendant la frappe",
+  "Markdown, commutable des deux côtés, rendu par un moteur intégré qui échappe d'abord",
+  "Des fichiers jusqu'à 200 Mo pièce, récupérés à la demande, avec progression par fichier",
+  "Le brouillon ne reste que dans le navigateur de qui partage - ou nulle part, marqué éphémère",
+  "Tout le composant serveur est un entremetteur sans stockage, publié dans le dépôt",
+]

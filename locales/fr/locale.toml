@@ -94,6 +94,7 @@ complete = true
 # hors de l'adresse, portés par le titre de la page.
 "qr-barcode-reader" = "lecteur-de-qr-code"
 "hash-checksum" = "verifier-une-somme-de-controle"
+"share-text" = "partager-du-texte"
 
 "guides" = "guides"
 "roadmap" = "feuille-de-route"
@@ -122,6 +123,7 @@ complete = true
 "guides/embed-an-image-in-css" = "guides/integrer-une-image-dans-le-css"
 "guides/make-a-qr-code" = "guides/creer-un-qr-code"
 "guides/format-json-without-uploading-it" = "guides/formater-du-json"
+"guides/share-text-between-devices" = "guides/partager-du-texte-entre-appareils"
 "guides/grab-a-frame-from-a-video" = "guides/extraire-une-image-d-une-video"
 "guides/make-a-gif-from-images" = "guides/creer-un-gif-a-partir-d-images"
 "guides/make-a-passport-photo" = "guides/faire-une-photo-d-identite"

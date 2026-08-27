@@ -1,0 +1,147 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez <a href="../../partager-du-texte/">Partager du texte et des
+      fichiers</a> sur la machine qui détient la chose, écrivez ou joignez,
+      et appuyez sur <em>Commencer le partage</em>. La page donne au partage
+      un nom comme <code>brave-otter-42</code> ; sur l'autre appareil,
+      ouvrez la même page et ajoutez <code>#brave-otter-42</code> au bout de
+      l'adresse &mdash; ou suivez simplement le lien copié. L'autre appareil
+      demande avant de se connecter, vous l'admettez, et le texte ou le
+      fichier traverse chiffré, directement d'un navigateur à l'autre.
+      Fermez l'onglet qui partage, et c'est terminé, partout.
+    </p>
+    <p>
+      À aucun moment rien n'a été téléversé. Ce n'est pas une politique,
+      c'est la forme de la chose. Le reste de cette page explique pourquoi
+      cela compte, et où sont ses limites honnêtes.
+    </p>
+  </section>
+
+  <section>
+    <h2>Là où les chemins habituels laissent une copie</h2>
+    <p>
+      Envoyez-vous une note par courriel : elle existe désormais dans un
+      dossier d'envoyés et une boîte de réception, tous deux synchronisés,
+      tous deux sauvegardés, tous deux cherchables dans des années. Collez
+      un mot de passe dans une messagerie : il reste dans l'historique de
+      cette conversation &mdash; et dans la sauvegarde en nuage de
+      l'application &mdash; aussi longtemps que la conversation existe.
+      Prenez un pastebin ou un site de dépôt de fichiers : le contenu repose
+      sur leur serveur, derrière un réglage d'expiration et un bouton de
+      suppression dont vous ne pouvez vérifier que la couleur. Chacun de ces
+      chemins est un service de stockage qui porte le partage en
+      fonctionnalité.
+    </p>
+    <p>
+      Parfois c'est exactement ce qu'il faut &mdash; une copie qui attend
+      que l'autre soit prêt. Mais la plupart des partages rapides sont le
+      contraire : l'autre appareil est juste là, le contenu est momentané,
+      et chaque copie stockée n'est que du passif. Le mot de passe du Wi-Fi
+      pour un invité, une adresse lue au téléphone, un message d'erreur qui
+      demande une seconde paire d'yeux, un bout de configuration en route
+      vers la machine à laquelle il appartient. Rien de tout cela ne veut
+      d'archive.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que &laquo;&nbsp;direct&nbsp;&raquo; veut vraiment dire</h2>
+    <p>
+      L'outil utilise WebRTC, la même machinerie que les appels vidéo du
+      navigateur : deux navigateurs ouvrent un canal chiffré entre eux et y
+      font passer les données, sans serveur sur le chemin. Sur le même
+      réseau, les octets ne voyagent que par le réseau local &mdash; deux
+      portables sur le même Wi-Fi se passent le fichier à travers la pièce,
+      pas à travers Internet.
+    </p>
+    <p>
+      Un astérisque honnête, écrit aussi sur la page de l'outil : deux
+      navigateurs ne peuvent pas se trouver seuls. Un petit serveur &mdash;
+      l'entremetteur &mdash; réunit la personne qui a tapé le nom et celle
+      qui partage sous ce nom, et transporte quelques kilooctets
+      d'établissement de connexion entre elles. Il ne stocke rien, et le
+      contenu ne transite jamais par lui ; son code complet est publié à
+      côté de celui de l'outil. C'est la présentation, pas la conversation
+      &mdash; et c'est le seul serveur auquel quoi que ce soit parle sur ce
+      site, raison pour laquelle la page de l'outil détaille exactement ce
+      qu'il peut voir et ce qu'il ne peut pas.
+    </p>
+    <p>
+      Direct veut aussi dire mutuel : chaque navigateur apprend l'adresse
+      réseau de l'autre, comme lors d'un appel. Le côté qui lit le sait
+      avant qu'aucune connexion n'existe, et ne se connecte que par choix.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le nom est l'adresse, et le seul secret</h2>
+    <p>
+      Un lien de partage se distingue de tous les autres sur un point
+      pratique : il survit à être dit à voix haute.
+      <code>brave-otter-42</code> se lance à travers une pièce, se lit au
+      téléphone, se recopie d'un tableau, et se retape à l'autre bout sans
+      que les pouces de personne ne rendent l'âme. C'est exactement pour
+      cela que les noms ont cette allure.
+    </p>
+    <p>
+      Et cela coupe dans les deux sens : quiconque connaît ou devine un nom
+      vivant peut ouvrir le partage derrière. Pour le sensible, donnez au
+      partage un nom que personne ne devinerait, ou appuyez-vous sur le
+      réglage par défaut &mdash; les partages sont <em>privés</em> tant que
+      vous ne décochez pas la case : chaque lecteur qui arrive doit se
+      présenter, et vous décidez, message par message, qui entre. La
+      présentation voyage par le canal direct chiffré : même l'entremetteur
+      ignore qui a frappé.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que fermer l'onglet arrête vraiment</h2>
+    <p>
+      Le partage vit dans l'onglet qui partage et nulle part ailleurs :
+      fermer cet onglet est l'effacement &mdash; pas une demande
+      d'effacement. Le lien meurt en une seconde ou deux, et les lecteurs
+      encore en train de regarder voient leur page se vider. Il n'y a pas de
+      copie serveur avec son propre cycle de vie, pas de corbeille, pas de
+      rétention de trente jours. Le brouillon que vous avez tapé reste dans
+      votre propre navigateur pour la prochaine fois, et même cela se
+      désactive avec le réglage éphémère.
+    </p>
+    <p>
+      Ce que cela n'arrête pas, c'est la possession. Un lecteur qui a copié
+      le texte ou téléchargé le fichier pendant que le partage était ouvert
+      l'a, exactement comme si vous le lui aviez remis par n'importe quel
+      autre moyen. Aucun outil ne peut rappeler un envoi, et un outil qui le
+      prétendrait vous mentirait sur l'ordinateur de quelqu'un d'autre.
+      Arrêter gouverne l'avenir &mdash; personne de nouveau, rien de plus
+      &mdash; et c'est la part qu'un service à copie stockée ne peut pas
+      vous donner.
+    </p>
+  </section>
+
+  <section>
+    <h2>Quand ce n'est pas le bon outil</h2>
+    <p>
+      Les deux bouts doivent être présents : c'est une remise en main
+      propre, pas une boîte aux lettres. Si l'autre personne dort, utilisez
+      quelque chose qui stocke &mdash; en le sachant. L'onglet qui partage
+      doit rester ouvert et éveillé, ce qui en pratique veut dire qu'un
+      ordinateur de bureau ou un portable partage ; les téléphones
+      suspendent les onglets d'arrière-plan en quelques secondes, mais
+      lisent un partage parfaitement. Cela ne peut pas fonctionner hors
+      ligne, seul outil du site dans ce cas, parce qu'atteindre une autre
+      machine est un acte réseau &mdash; la moitié éditeur, elle, marche
+      sans aucune connexion. Et une petite minorité de paires de réseaux
+      &mdash; typiquement les deux bouts derrière des réseaux d'entreprise
+      ou mobiles stricts &mdash; ne peut pas se joindre directement du
+      tout ; l'outil le dit clairement au bout de vingt secondes, plutôt que
+      d'aiguiller votre contenu en douce par un relais.
+    </p>
+    <p>
+      Pour tout le reste &mdash; la note, le mot de passe, le fichier de
+      configuration, la vidéo de 100&nbsp;Mo à un saut de Wi-Fi &mdash; la
+      version directe est plus rapide, plus simple, et laisse le monde
+      exactement comme elle l'a trouvé.
+    </p>
+  </section>

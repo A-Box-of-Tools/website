@@ -87,6 +87,7 @@ complete = true
 "password-generator" = "sifre-olusturucu"
 "timelapse-video" = "time-lapse-video-olusturma"
 "hash-checksum" = "saglama-toplami-hesaplama"
+"share-text" = "metin-paylasma"
 "stack-images" = "goruntu-istifleme"
 
 # The indexes and the legal pages.
@@ -115,6 +116,7 @@ complete = true
 "guides/make-a-qr-code" = "rehberler/qr-kod-olusturma"
 "guides/turn-a-video-into-a-gif" = "rehberler/videoyu-gife-donusturme"
 "guides/format-json-without-uploading-it" = "rehberler/json-yuklemeden-bicimlendirme"
+"guides/share-text-between-devices" = "rehberler/cihazlar-arasi-metin-paylasma"
 "guides/grab-a-frame-from-a-video" = "rehberler/videodan-kare-yakalama"
 "guides/make-a-gif-from-images" = "rehberler/resimlerden-gif-olusturma"
 "guides/make-a-passport-photo" = "rehberler/vesikalik-fotograf-cekme"

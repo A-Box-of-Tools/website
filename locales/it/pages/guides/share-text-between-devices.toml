@@ -1,0 +1,23 @@
+#
+# Guida: condividere testo e file tra dispositivi - Italian.
+#
+
+nav = "Condividere tra dispositivi"
+title = "Condividere testo e file tra dispositivi &mdash; senza caricarli"
+description = "Portare testo o file da un browser all'altro su una connessione diretta e cifrata: senza mandarsi email, senza cronologia di chat, senza account, e senza che nessun server tenga una copia."
+
+heading = "Come condividere testo e file tra dispositivi senza caricarli"
+lede = """
+    I modi soliti di portare una nota o un file su un'altra macchina
+    lasciano tutti una copia dietro di sé: nella posta inviata, in una
+    cronologia di chat, o sul server di un sito di condivisione, dietro un
+    bottone di eliminazione a cui bisogna credere sulla parola. C'è un modo
+    che non lascia niente da nessuna parte, perché niente viene mai salvato
+    - ed è anche l'unico con un nome che si può gridare da un capo all'altro
+    di una stanza."""
+
+updated = "26 agosto 2026"
+
+og_title = "Condividere tra dispositivi, senza che un server tenga copia"
+og_description = "Testo e file da un browser all'altro su una connessione diretta e cifrata: un nome di link pronunciabile, niente salvato da nessuna parte, e una condivisione che finisce con la scheda."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"

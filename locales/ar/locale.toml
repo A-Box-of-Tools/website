@@ -108,6 +108,7 @@ complete = true
 "password-generator" = "مولد-كلمات-المرور"
 "timelapse-video" = "إنشاء-فيديو-تايم-لابس"
 "hash-checksum" = "حساب-قيمة-التجزئة"
+"share-text" = "مشاركة-النص"
 "stack-images" = "تكديس-الصور"
 
 # The indexes and the legal pages.
@@ -136,6 +137,7 @@ complete = true
 "guides/make-a-qr-code" = "أدلة/إنشاء-رمز-qr"
 "guides/turn-a-video-into-a-gif" = "أدلة/تحويل-الفيديو-إلى-gif"
 "guides/format-json-without-uploading-it" = "أدلة/تنسيق-json-دون-رفعه"
+"guides/share-text-between-devices" = "أدلة/مشاركة-النص-بين-الأجهزة"
 "guides/grab-a-frame-from-a-video" = "أدلة/استخراج-لقطة-من-فيديو"
 "guides/make-a-gif-from-images" = "أدلة/إنشاء-gif-من-الصور"
 "guides/make-a-passport-photo" = "أدلة/عمل-صورة-شخصية-بيومترية"

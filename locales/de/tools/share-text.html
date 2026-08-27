@@ -1,0 +1,185 @@
+<main id="main">
+  <!-- The sharer's half. Hidden by main.js when the address carries a code. -->
+  <section id="share">
+    <section class="card">
+      <h2><span class="step">1</span> Schreiben Sie ihn, oder hängen Sie sie an</h2>
+      <div class="panel" id="editor">
+        <div class="toolbar">
+          <label title="Leser sehen ihn formatiert, live gerendert beim Tippen">
+            <input type="checkbox" id="markdown"> Markdown
+          </label>
+          <span class="spacer"></span>
+          <button type="button" id="attach" class="ghost">Dateien anhängen</button>
+          <button type="button" id="save" class="ghost" data-download>Als Datei speichern</button>
+        </div>
+        <div id="editbody">
+          <textarea id="text" maxlength="50000" aria-label="Der zu teilende Text"
+                    placeholder="Text zum Teilen tippen oder einfügen&hellip;"></textarea>
+          <div id="live" class="md" aria-hidden="true" hidden></div>
+        </div>
+      </div>
+      <input id="fileinput" type="file" multiple hidden aria-label="Anzuhängende Dateien">
+      <div id="attachlist"></div>
+      <p class="field-note">
+        Dateien reisen über denselben Direktkanal wie der Text, bis
+        200&nbsp;MB pro Stück. Leser sehen die Liste und holen jede Datei
+        nur, wenn sie danach fragen.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> Benennen Sie den Link</h2>
+      <div class="field">
+        <label for="code">Link-Name</label>
+        <div class="namerow">
+          <input id="code" maxlength="64" autocomplete="off" spellcheck="false">
+          <button type="button" id="suggest" class="ghost" aria-label="Anderen Namen vorschlagen">&#8635;</button>
+        </div>
+        <p class="field-note">
+          Der Name ist die Adresse und das einzige Geheimnis: kurz genug,
+          um ihn durch einen Raum zu rufen, und für alles Private einen
+          unerratbaren wert.
+        </p>
+      </div>
+      <div class="field checks">
+        <label class="check" for="private">
+          <input type="checkbox" id="private" checked>
+          Privat &mdash; jeder Leser muss anfragen, und Sie lassen ihn ein
+        </label>
+        <label class="check" for="oneoff">
+          <input type="checkbox" id="oneoff">
+          Einmalig &mdash; den Entwurf nicht auf diesem Gerät behalten
+        </label>
+        <p class="field-note">
+          Der Entwurf liegt nur in diesem Browser und ist deshalb beim
+          nächsten Mal noch da &mdash; außer Sie markieren ihn als einmalig,
+          dann liegt er nirgendwo.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">3</span> Teilen Sie ihn</h2>
+      <div class="result-actions">
+        <button type="button" id="publish" class="primary">Freigabe starten</button>
+      </div>
+      <div class="namerow" id="linkrow" hidden>
+        <input id="link" readonly aria-label="Der Freigabe-Link">
+        <button type="button" id="copylink" class="ghost">Link kopieren</button>
+        <button type="button" id="stop" class="ghost">Freigabe beenden</button>
+      </div>
+      <p id="status" role="status" aria-live="polite"></p>
+      <div id="requests"></div>
+    </section>
+
+    <section class="card note-card">
+      <h2>Nichts wird irgendwo gespeichert</h2>
+      <p>
+        Text und Dateien wandern verschlüsselt direkt aus diesem Tab in den
+        jedes Lesers. Der eine beteiligte Server stellt die beiden Browser
+        einander vor und sieht nie, was sie austauschen. Das Schließen dieses
+        Tabs beendet die Freigabe und leert auch die offenen Seiten der Leser
+        &mdash; wobei das, was jemand schon kopiert oder heruntergeladen hat,
+        ihm gehört.
+      </p>
+    </section>
+  </section>
+
+  <!-- The reader's half, shown when the address carries a link name. -->
+  <section id="view" hidden>
+    <section class="card">
+      <h2>Jemand teilt etwas mit Ihnen</h2>
+      <p id="view-status" role="status" aria-live="polite">Suche den Teilenden&hellip;</p>
+
+      <div id="consent" hidden>
+        <p>
+          Es zu lesen verbindet Ihren Browser direkt mit dem des Teilenden
+          &mdash; genau das ist der Punkt: Nichts hier berührt einen Server.
+          Wie jede Direktverbindung zeigt sie beiden Seiten die Netzadresse
+          (IP) der jeweils anderen. Nichts wird geholt, und nichts über Sie
+          wird preisgegeben, bevor Sie sich nicht selbst zum Verbinden
+          entscheiden.
+        </p>
+        <div class="result-actions">
+          <button type="button" id="connect" class="primary">Verbinden und Freigabe holen</button>
+        </div>
+      </div>
+
+      <div id="knockrow" hidden>
+        <p>
+          Sagen Sie dem Teilenden etwas, das er wiedererkennt &mdash; einen
+          Namen, einen Hinweis &mdash;, und er kann Sie einlassen. Ihre
+          Nachricht geht direkt an seinen Browser.
+        </p>
+        <div class="namerow">
+          <input id="knock" maxlength="200" aria-label="Eine Nachricht, die der Teilende wiedererkennt"
+                 placeholder="Ich bin&rsquo;s, Alice">
+          <button type="button" id="send-knock" class="primary">Um Zugang bitten</button>
+        </div>
+      </div>
+
+      <div class="result-actions" id="retryrow" hidden>
+        <button type="button" id="retry" class="ghost">Diesen Link erneut prüfen</button>
+      </div>
+
+      <div id="panel" class="panel" hidden>
+        <div class="toolbar">
+          <span id="live-dot" aria-hidden="true"></span>
+          <span title="Aktualisiert sich, während der Teilende tippt">Live</span>
+          <span class="spacer"></span>
+          <div class="seg">
+            <button type="button" id="mode-fmt">Formatiert</button>
+            <button type="button" id="mode-src">Quelltext</button>
+          </div>
+          <button type="button" id="copytext" class="ghost" title="Kopiert den Rohtext">Kopieren</button>
+        </div>
+        <pre id="received" hidden></pre>
+        <div id="rendered" class="md" hidden></div>
+      </div>
+      <div id="filelist"></div>
+    </section>
+  </section>
+
+  <!-- The sentences main.js puts on the page; see shared/js/phrases.js. -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="units.b">B</span>
+    <span data-phrase="units.kb">KB</span>
+    <span data-phrase="units.mb">MB</span>
+
+    <span data-phrase="share.waiting">Freigabe läuft. Warte, bis jemand den Link öffnet &mdash; lassen Sie diesen Tab offen.</span>
+    <span data-phrase="share.reader-count.one">1 Leser verbunden</span>
+    <span data-phrase="share.reader-count.many">{n} Leser verbunden</span>
+    <span data-phrase="share.knock-count.one">1 Person wartet darauf, dass Sie sie einlassen</span>
+    <span data-phrase="share.knock-count.many">{n} Personen warten darauf, dass Sie sie einlassen</span>
+    <span data-phrase="share.closing-note">Das Schließen dieses Tabs beendet die Freigabe.</span>
+    <span data-phrase="share.no-message">(keine Nachricht)</span>
+    <span data-phrase="share.admit">Lesen lassen</span>
+    <span data-phrase="share.deny">Abweisen</span>
+    <span data-phrase="share.remove-file">Entfernen</span>
+    <span data-phrase="share.setting-up">Wird eingerichtet&hellip;</span>
+    <span data-phrase="share.name-first">Geben Sie dem Link erst einen Namen, oder drücken Sie den Vorschlags-Knopf.</span>
+    <span data-phrase="share.name-taken">Unter &bdquo;{name}&ldquo; teilt gerade jemand anderes &mdash; wählen Sie einen anderen Namen.</span>
+    <span data-phrase="share.lost-rendezvous">Verbindung zum Vermittler verloren; neuer Versuch. Verbundene Leser sind nicht betroffen.</span>
+    <span data-phrase="share.stopped">Beendet. Es wird nichts mehr geteilt.</span>
+    <span data-phrase="share.file-too-big">&bdquo;{name}&ldquo; liegt über der Grenze von 200 MB.</span>
+
+    <span data-phrase="copy.done">Kopiert</span>
+    <span data-phrase="copy.link">Link kopieren</span>
+    <span data-phrase="copy.text">Kopieren</span>
+
+    <span data-phrase="view.someone">Unter dieser Adresse teilt jemand etwas.</span>
+    <span data-phrase="view.connecting">Verbinde direkt&hellip;</span>
+    <span data-phrase="view.private">Der Teilende hat dies auf privat gestellt.</span>
+    <span data-phrase="view.asked">Angefragt. Warte, bis der Teilende Sie einlässt&hellip;</span>
+    <span data-phrase="view.denied">Der Teilende hat Sie nicht eingelassen.</span>
+    <span data-phrase="view.empty">Verbunden. Der Teilende hat noch nichts geschrieben &mdash; diese Seite füllt sich, während er tippt.</span>
+    <span data-phrase="view.ended">Der Teilende hat die Freigabe beendet, und diese Kopie ging mit ihr.</span>
+    <span data-phrase="view.gone-early">Der Teilende ist gegangen, bevor die Freigabe ankam. Sie ist mit ihm verschwunden.</span>
+    <span data-phrase="view.nobody">Unter dieser Adresse teilt niemand etwas. Vielleicht hat der Teilende seinen Tab geschlossen &mdash; dann ist die Freigabe mit ihm verschwunden.</span>
+    <span data-phrase="view.full">Diese Freigabe hat bereits ihre Höchstzahl an Lesern.</span>
+    <span data-phrase="view.no-connect">Der Teilende war direkt nicht zu erreichen. Eines der beiden Netze lässt womöglich keine Peer-to-Peer-Verbindung zu.</span>
+    <span data-phrase="view.error">Beim Verbinden ist etwas schiefgegangen. Laden Sie die Seite neu und versuchen Sie es wieder.</span>
+    <span data-phrase="view.download">Herunterladen</span>
+    <span data-phrase="view.file-gone">Wird nicht mehr geteilt</span>
+  </div>
+</main>
