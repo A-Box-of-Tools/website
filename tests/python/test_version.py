@@ -1,12 +1,12 @@
 """
 The version rule, and the cases it is easy to get wrong.
 
-A presubmit that is itself wrong is worse than no presubmit: it either blocks
-work that was fine or waves through the thing it was written to catch, and in
-both cases the next person's instinct is to stop believing it. So the rule is
-a handful of pure functions and this file exercises them directly, rather than
-leaving the only test of the logic to be whether a pull request happened to go
-red.
+The deploy decides the version now, and a deploy that decided it wrongly would
+put a number on a release nobody chose - or, worse, quietly stop moving it at
+all, which looks exactly like a repository where nothing has shipped. So the
+rule is a handful of pure functions and this file exercises them directly,
+rather than leaving the only test of the logic to be whether a deploy happened
+to produce a sensible tag.
 """
 
 import sys
@@ -19,23 +19,45 @@ sys.path.insert(0, str(ROOT))
 from buildlib import version
 
 
-class ReadingTheVersion(unittest.TestCase):
-    def test_reads_three_numbers(self):
-        self.assertEqual(version.read('version = "1.4.9"\n'), (1, 4, 9))
+class ReadingATag(unittest.TestCase):
+    def test_a_version_tag_is_three_numbers(self):
+        self.assertEqual(version.parse('1.4.9'), (1, 4, 9))
+        self.assertEqual(version.parse(' 2.0.1 '), (2, 0, 1))
 
-    def test_finds_it_among_other_settings(self):
-        toml = 'name = "abox"\n# a comment\nversion = "2.0.1"\nother = 3\n'
-        self.assertEqual(version.read(toml), (2, 0, 1))
+    def test_anything_else_is_not_a_version(self):
+        # This repository really does carry `split-safety-e80668985`, and a
+        # deploy that counted on from it would have nowhere to go.
+        for tag in ('split-safety-e80668985', 'v1.0.0', '1.2', '1.2.3.4', ''):
+            with self.subTest(tag=tag):
+                self.assertIsNone(version.parse(tag))
 
-    def test_refuses_a_file_without_one(self):
-        # Quietly assuming a version would pass every pull request that
-        # deleted it, which is the one change most worth catching.
-        with self.assertRaises(ValueError):
-            version.read('name = "abox"\n')
 
-    def test_refuses_a_version_that_is_not_three_numbers(self):
-        with self.assertRaises(ValueError):
-            version.read('version = "1.2"\n')
+class TheLatestTag(unittest.TestCase):
+    def test_it_is_the_highest_and_not_the_last(self):
+        # Tags are unordered, and one pushed by hand to correct a mistake is
+        # exactly the case that must not be undone by the next deploy.
+        self.assertEqual(
+            version.latest(['1.0.9', '1.2.0', '1.0.10', 'nightly']), (1, 2, 0))
+
+    def test_numbers_compare_as_numbers(self):
+        self.assertEqual(version.latest(['1.0.9', '1.0.10']), (1, 0, 10))
+
+    def test_no_version_tags_at_all(self):
+        self.assertIsNone(version.latest(['split-safety-e80668985', 'dist']))
+        self.assertIsNone(version.latest([]))
+
+
+class MovingTheVersion(unittest.TestCase):
+    def test_a_patch_moves_the_last_number(self):
+        self.assertEqual(version.bump((1, 2, 3), 'patch'), (1, 2, 4))
+
+    def test_a_minor_moves_the_middle_and_zeroes_the_last(self):
+        self.assertEqual(version.bump((1, 2, 3), 'minor'), (1, 3, 0))
+
+    def test_none_leaves_it_exactly_where_it_was(self):
+        # The caller compares the two to learn there is nothing to tag, so
+        # this has to be equal and not merely close.
+        self.assertEqual(version.bump((1, 2, 3), 'none'), (1, 2, 3))
 
 
 class WhatAVisitorCanSee(unittest.TestCase):
@@ -110,69 +132,48 @@ class WhatIsRequired(unittest.TestCase):
             'minor')
 
 
-class WhetherTheMoveIsEnough(unittest.TestCase):
-    def test_a_patch_satisfies_a_patch(self):
-        self.assertTrue(version.satisfies((1, 0, 0), (1, 0, 1), 'patch'))
-
-    def test_standing_still_does_not(self):
-        self.assertFalse(version.satisfies((1, 0, 0), (1, 0, 0), 'patch'))
-
-    def test_going_backwards_does_not(self):
-        self.assertFalse(version.satisfies((1, 0, 1), (1, 0, 0), 'patch'))
-
-    def test_a_minor_is_more_than_enough_for_a_patch(self):
-        self.assertTrue(version.satisfies((1, 0, 0), (1, 1, 0), 'patch'))
-
-    def test_a_minor_satisfies_a_minor(self):
-        self.assertTrue(version.satisfies((1, 0, 4), (1, 1, 0), 'minor'))
-
-    def test_a_patch_does_not_satisfy_a_new_tool(self):
-        self.assertFalse(version.satisfies((1, 0, 0), (1, 0, 1), 'minor'))
-
-    def test_a_minor_that_keeps_the_old_patch_count_does_not(self):
-        # 1.1.5 is a minor bump that carried a patch number belonging to the
-        # version before it, which makes the last digit mean nothing.
-        self.assertFalse(version.satisfies((1, 0, 5), (1, 1, 5), 'minor'))
-
-    def test_a_major_satisfies_a_new_tool_when_it_resets(self):
-        self.assertTrue(version.satisfies((1, 4, 2), (2, 0, 0), 'minor'))
-
-    def test_a_major_that_does_not_reset_does_not(self):
-        self.assertFalse(version.satisfies((1, 4, 2), (2, 1, 0), 'minor'))
-
-    def test_nothing_required_allows_standing_still(self):
-        self.assertTrue(version.satisfies((1, 0, 0), (1, 0, 0), 'none'))
-
-    def test_nothing_required_still_forbids_going_backwards(self):
-        self.assertFalse(version.satisfies((1, 0, 1), (1, 0, 0), 'none'))
-
-
 class TheMessage(unittest.TestCase):
-    def test_a_new_tool_is_told_the_number_to_use(self):
-        said = version.explain('minor', (1, 3, 7), (1, 3, 8), ['sprite-sheet'])
-        self.assertIn('sprite-sheet', said)
-        self.assertIn('1.4.0', said)
-        self.assertIn('1.3.8', said)
+    """What the tag and the release page say. A tag whose message is only its
+    own number tells a reader nothing they did not already have."""
 
-    def test_a_visible_change_is_told_the_number_to_use(self):
-        said = version.explain('patch', (1, 3, 7), (1, 3, 7), [])
+    def test_a_new_tool_is_named(self):
+        said = version.explain((1, 3, 7), (1, 4, 0), 'minor', ['sprite-sheet'])
+        self.assertIn('sprite-sheet', said)
+        self.assertIn('1.3.7', said)
+        self.assertIn('1.4.0', said)
+
+    def test_a_visible_change_says_so(self):
+        said = version.explain((1, 3, 7), (1, 3, 8), 'patch', [])
         self.assertIn('1.3.8', said)
+        self.assertIn('notice', said)
+
+    def test_standing_still_says_why_it_stood(self):
+        said = version.explain((1, 3, 7), (1, 3, 7), 'none', [])
+        self.assertIn('1.3.7', said)
+        self.assertIn('page', said)
 
 
 class WritingTheVersionBack(unittest.TestCase):
-    """`dotted` is the other half of `read`, and the deploy names a tag with
-    it. A tag that spelled the version differently from config/site.toml would
-    be a tag pointing at a version nobody can look up."""
+    """`dotted` names the tag, so it decides the spelling `parse` has to read
+    back. A tag written one way and looked up another would be a version
+    nobody can find."""
 
     def test_three_numbers_come_back_as_they_are_written(self):
         self.assertEqual(version.dotted((1, 0, 0)), '1.0.0')
         self.assertEqual(version.dotted((0, 12, 30)), '0.12.30')
 
-    def test_it_round_trips_with_read(self):
-        for text in ('1.0.0', '2.11.5'):
-            with self.subTest(version=text):
-                self.assertEqual(
-                    version.dotted(version.read(f'version = "{text}"')), text)
+    def test_it_round_trips_with_parse(self):
+        for numbers in ((1, 0, 0), (2, 11, 5), (1, 0, 10)):
+            with self.subTest(version=numbers):
+                self.assertEqual(version.parse(version.dotted(numbers)), numbers)
+
+    def test_what_bump_produces_is_always_a_readable_tag(self):
+        # The deploy tags whatever bump returns, so anything it can produce
+        # has to survive being read back on the next deploy.
+        for need in ('patch', 'minor', 'none'):
+            with self.subTest(need=need):
+                nxt = version.bump((1, 9, 9), need)
+                self.assertEqual(version.parse(version.dotted(nxt)), nxt)
 
 
 if __name__ == '__main__':

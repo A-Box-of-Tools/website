@@ -1,5 +1,5 @@
 """
-The version of the site, and the rule a pull request has to satisfy.
+The version of the site: what moves it, and by how much.
 
 THE RULE
 
@@ -7,9 +7,38 @@ THE RULE
     anything else a visitor can notice  the last number
     tests, CI, documentation            nothing
 
-One step per pull request, not per commit: a branch with six commits in it is
-one change as far as anybody reading the site is concerned, and asking each
-commit to move the number would only mean six numbers nobody chose.
+WHERE THE NUMBER LIVES
+
+In git tags, and nowhere else. It used to be a line in config/site.toml that
+every pull request had to move, checked by a presubmit - and that arrangement
+had two faults which turned out to be one fault.
+
+Nothing read it. No template rendered it, no page showed it; the only code
+that opened that line was the check confirming somebody had moved it. It was a
+counter kept for its own sake.
+
+And because it was a single line that every visible change had to edit, two
+open pull requests could not both be right. The second to merge had to rebase
+and pick a new number, so a queue of five had to be merged in an order, in
+lockstep, each one invalidating the rest. That is the shape of every
+monotonic counter stored in a file that concurrent branches write.
+
+Both go away when the deploy works it out. `next_version` in
+scripts/next_version.py asks git what changed since the last version tag,
+`required` below turns that into 'none', 'patch' or 'minor', and `bump`
+applies it. A pull request carries no version at all, so there is nothing to
+conflict over and no order to merge in.
+
+A person who decides the site has reached 2.0.0 pushes that tag by hand. The
+deploy reads the latest tag as its starting point, so a tag placed deliberately
+is simply where counting continues from - the override needs no code and cannot
+drift from the thing it overrides.
+
+One step per deploy, not per commit, and the diff is measured from the last
+tag rather than from the previous commit. So a push that lands several merges
+at once, or a deploy that was skipped because the output was identical, still
+moves the number exactly once and never loses a change that happened in
+between.
 
 WHY THE ANSWER COMES FROM A LIST OF PATHS
 
@@ -52,20 +81,51 @@ INVISIBLE_FILES = (
 #: A tool announces itself by its configuration file and nothing else.
 NEW_TOOL = re.compile(r'^tools/([^/]+)/tool\.toml$')
 
-VERSION = re.compile(r'^\s*version\s*=\s*"(\d+)\.(\d+)\.(\d+)"\s*$', re.M)
+#: A version tag, and nothing else that might be tagged. The deploy searches
+#: the tags with this, so a tag like `split-safety-e806689` - which is in this
+#: repository - is not mistaken for a version to count on from.
+TAG = re.compile(r'^(\d+)\.(\d+)\.(\d+)$')
+
+#: Where counting starts when there is no version tag yet. 1.0.0 rather than a
+#: number worked backwards from the thirty-six tools already here, because a
+#: version is a promise about what happens next and inventing a history for it
+#: would be neither true nor useful.
+FIRST = (1, 0, 0)
 
 
-def read(toml_text):
-    """The version in a config/site.toml, as three numbers.
+def parse(tag):
+    """A version tag as three numbers, or None if it is not one.
 
-    Raises rather than guessing: a missing or malformed version is a thing to
-    fix, and a check that quietly assumed 0.0.0 would pass every pull request
-    that deleted it.
+    None rather than an exception: this is asked of every tag in the
+    repository, and most of them being something else is normal.
     """
-    found = VERSION.search(toml_text or '')
-    if not found:
-        raise ValueError('config/site.toml has no version = "x.y.z"')
-    return tuple(int(part) for part in found.groups())
+    found = TAG.match((tag or '').strip())
+    return tuple(int(part) for part in found.groups()) if found else None
+
+
+def latest(tags):
+    """The highest version among `tags`, or None if there is not one yet.
+
+    Highest rather than most recent. Tags are not ordered by their names and a
+    deploy that read the newest-looking one would count on from whichever tag
+    happened to be pushed last - including one pushed by hand to correct a
+    mistake, which is exactly the case that must not be undone.
+    """
+    versions = [v for v in (parse(tag) for tag in tags) if v]
+    return max(versions) if versions else None
+
+
+def bump(current, need):
+    """The version after `need` is applied to `current`.
+
+    Returns `current` unchanged for 'none', so the caller can compare and
+    learn that there is nothing to tag without a second rule about it.
+    """
+    if need == 'none':
+        return current
+    if need == 'minor':
+        return (current[0], current[1] + 1, 0)
+    return (current[0], current[1], current[2] + 1)
 
 
 def visible(path):
@@ -99,56 +159,27 @@ def required(changed_paths, added_paths):
     return 'none'
 
 
-def satisfies(before, after, need):
-    """Whether the move from one version to another meets what is required.
-
-    A bigger step than asked for always passes. Somebody who decides a change
-    deserves a minor, or that the site has reached 2.0.0, is making a
-    judgement this rule has no business overruling - it is a floor, not a
-    timetable.
-    """
-    if need == 'none':
-        return after >= before
-
-    if after <= before:
-        return False
-
-    if need == 'minor':
-        # A new tool moves the middle number and puts the last back to zero,
-        # or moves the major. "1.1.5 -> 1.2.5" would be a minor bump that quietly
-        # kept a patch count belonging to the version before it.
-        if after[0] > before[0]:
-            return after[1] == 0 and after[2] == 0
-        return after[1] > before[1] and after[2] == 0
-
-    return True  # 'patch': any increase at all is at least a patch
-
-
 def dotted(numbers):
     """The three numbers back as they are written: 1.0.0.
 
-    A function rather than the lambda this used to be inside `explain`,
-    because the deploy reads the version to name a tag with it and a second
-    way of spelling the same three numbers is a second thing that can disagree
-    with config/site.toml.
+    The name a tag is given, so it is the one place the spelling is decided
+    and `parse` above reads back exactly what this writes.
     """
     return '.'.join(str(part) for part in numbers)
 
 
-def explain(need, before, after, tools):
-    """The sentence the presubmit prints when the rule is not met."""
-    if need == 'minor':
-        want = (before[0], before[1] + 1, 0)
-        return (
-            f'This pull request adds a tool ({", ".join(tools)}), so '
-            f'config/site.toml\'s version has to move its middle number and put '
-            f'the last one back to zero: {dotted(before)} -> {dotted(want)}. '
-            f'It is {dotted(after)}.'
-        )
+def explain(before, after, need, tools):
+    """Why the version moved, for the tag's own message and the run's summary.
 
-    want = (before[0], before[1], before[2] + 1)
-    return (
-        'This pull request changes something a visitor could notice, so '
-        f'config/site.toml\'s version has to move its last number: '
-        f'{dotted(before)} -> {dotted(want)}. It is {dotted(after)}.'
-    )
+    A tag whose message is only its own number says nothing a reader did not
+    already have. This says which of the three rules fired, and names the
+    tools when it was a new one - the answer to "why is this 1.3.0 and not
+    1.2.8" being the thing somebody actually wants from a release page.
+    """
+    if need == 'minor':
+        return (f'{dotted(before)} -> {dotted(after)}: a new tool '
+                f'({", ".join(tools)}).')
+    if need == 'patch':
+        return (f'{dotted(before)} -> {dotted(after)}: a change a visitor '
+                f'could notice.')
+    return (f'{dotted(before)} stands: nothing here reaches a page.')

@@ -290,13 +290,31 @@ jobs:
       # After the publish and not before: a tag is a claim that this version is
       # live, and a tag pushed ahead of a deploy that then failed would be a
       # claim about something that never happened.
-      - name: Tag the version, if this commit moved it
+      - name: Tag the version, if this deploy moved it
         if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
 
-          version=$(python -c "import pathlib, sys; sys.path.insert(0, '.'); from buildlib import version; print(version.dotted(version.read(pathlib.Path('config/site.toml').read_text(encoding='utf-8'))))")
+          # Two lines, or nothing at all: the version to tag and why it moved.
+          # Nothing is the ordinary answer - the rule requires a change to the
+          # tests, to CI or to the documentation to leave the version alone -
+          # so an empty answer ends the step successfully.
+          python scripts/next_version.py > "$RUNNER_TEMP/next"
+          if [ ! -s "$RUNNER_TEMP/next" ]; then
+            echo 'The version stands; nothing here reaches a page.'
+            exit 0
+          fi
 
+          version=$(sed -n '1p' "$RUNNER_TEMP/next")
+          reason=$(sed -n '2p' "$RUNNER_TEMP/next")
+
+          # Belt and braces against a re-run of the same deploy: next_version
+          # measures from the highest tag, so it cannot propose one that
+          # exists - but a step that pushes a ref should say what it does when
+          # it is asked twice rather than fail the workflow after the site is
+          # already live.
           if git rev-parse -q --verify "refs/tags/$version" >/dev/null; then
             echo "Version $version is already tagged; nothing to do."
             exit 0
@@ -304,10 +322,20 @@ jobs:
 
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git tag -a "$version" -m "abox.tools $version"
+          git tag -a "$version" -m "$reason"
           git push origin "refs/tags/$version"
 
-          echo "Tagged $version" >> "$GITHUB_STEP_SUMMARY"
+          # The release is the tag with a page: it is what shows in the
+          # repository sidebar and what a person lands on from a changelog.
+          # Its note is the same sentence as the tag's, plus the merge that
+          # caused it, so the two can never say different things.
+          printf '%s\n\n%s\n' "$reason" "$(git log -1 --pretty=%s)" \
+            > "$RUNNER_TEMP/notes.md"
+          gh release create "$version" --title "$version" \
+            --notes-file "$RUNNER_TEMP/notes.md"
+
+          echo "### Version" >> "$GITHUB_STEP_SUMMARY"
+          echo "$reason" >> "$GITHUB_STEP_SUMMARY"
 
       # Bing, Yandex, Seznam, Naver and Yep accept being told that a page
       # changed, and fetch it within hours instead of whenever a crawler next

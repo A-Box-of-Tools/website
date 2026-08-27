@@ -191,29 +191,54 @@ strings are still positional. That distinction is the whole reason
 
 ## The version
 
-`config/site.toml` carries one, and every pull request has to answer for it.
+**Nothing you write carries a version.** It is a git tag, and the deploy works
+it out. There is no number in the tree to move and nothing for a pull request
+to get wrong.
 
-| what the change does | what the version does |
+| what the change does | what the deploy tags |
 |---|---|
 | adds a tool | the middle number, and the last one back to zero — `1.4.7` → `1.5.0` |
 | anything else a visitor could notice | the last number — `1.4.7` → `1.4.8` |
-| tests, CI, docs, the worker | nothing |
+| tests, CI, docs, the worker | nothing at all |
 
-One step per pull request, not per commit: a branch of six commits is one
-change to whoever reads the site.
+It used to be a line in `config/site.toml`, and that had two faults which were
+really one. Nothing read it — no template rendered it and no page showed it,
+so the only code that opened it was the presubmit checking somebody had moved
+it. And being a single line that every visible change had to edit, two open
+pull requests could not both be right: the second to merge had to rebase and
+pick a new number, so a queue of five had to be merged in a fixed order, each
+merge invalidating the rest. That is the shape of any counter kept in a file
+and written by concurrent branches.
 
-"A visitor could notice" is decided from the paths a change touches, and the
-list of what they cannot see is short and lives in `buildlib/version.py` —
+"A visitor could notice" is still decided from the paths a change touches, and
+the list of what they cannot see is short and lives in `buildlib/version.py` —
 tests, `.github`, `docs`, `.claude`, `workers`, and the handful of root
 markdown files. Everything else counts, `build.py` included: a change there
 reaches the site through every page it renders, and `open_links_elsewhere`,
 which changed every link on every tool page, lived nowhere else. A refactor
-that genuinely alters nothing still asks for a digit, which is the cheaper of
-the two mistakes.
+that genuinely alters nothing still gets a digit, which is the cheaper of the
+two mistakes.
 
-The rule is enforced by `.github/workflows/version.yml` on every pull request,
-and is itself unit tested in `tests/python/test_version.py` — a presubmit that
-is wrong is worse than none, because the next person stops believing it.
+The span measured is **the last version tag to what is being deployed**, not
+the previous commit — so a push landing several merges at once, or a deploy
+skipped because the output was byte-identical, still moves the number once and
+never loses what happened in between.
+
+To see what the next deploy will tag, from any checkout:
+
+```bash
+python scripts/next_version.py
+```
+
+It prints the version and the reason, or nothing when the version stands.
+`.github/workflows/build.yml` runs it after publishing and creates the tag and
+a GitHub release; the arithmetic is unit tested in
+`tests/python/test_version.py`.
+
+**To ship a major**, push the tag by hand — `git tag -a 2.0.0 -m "…" && git
+push origin 2.0.0`. The deploy counts on from the highest version tag it can
+find, so a tag placed deliberately is simply where counting continues. The
+override needs no code and cannot drift from the thing it overrides.
 
 It starts at `1.0.0` rather than a number worked backwards from the tools
 already here: a version is a promise about what happens next, and inventing a
