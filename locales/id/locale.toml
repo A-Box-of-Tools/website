@@ -159,6 +159,7 @@ complete = true
 "guides/is-base64-encryption" = "panduan/apakah-base64-enkripsi"
 "guides/what-a-pdf-remembers" = "panduan/apa-yang-diingat-sebuah-pdf"
 "guides/does-converting-a-photo-remove-its-metadata" = "panduan/apakah-konversi-foto-menghapus-metadata"
+"guides/how-can-a-web-page-work-offline" = "panduan/bagaimana-halaman-web-bekerja-offline"
 
 #
 # ---------------------------------------------------------------------------

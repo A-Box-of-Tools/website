@@ -1,0 +1,18 @@
+#
+# Guia: como uma página web funciona offline? - Brazilian Portuguese.
+#
+
+nav = "Páginas sem internet?"
+title = "Como uma página web consegue funcionar offline?"
+description = "Uma página que continua funcionando com o Wi-Fi desligado não é mágica - é um service worker e um cache, maquinário padrão do navegador. Como funciona, por que o offline é a prova de privacidade mais forte que uma ferramenta pode oferecer, e o que ele não prova."
+heading = "Como uma página web consegue funcionar sem o Wi-Fi?"
+lede = """
+    Porque o navegador guardou uma cópia completa, e um programinha que
+    viaja com a página serve essa cópia sempre que a rede não pode. O
+    maquinário é padrão e vale entender, porque uma ferramenta que
+    trabalha desconectada está mostrando algo que nenhuma política de
+    privacidade consegue mostrar."""
+updated = "26 de agosto de 2026"
+og_title = "Como uma página web consegue funcionar sem o Wi-Fi?"
+og_description = "Um service worker e um cache - maquinário padrão do navegador. Como páginas offline funcionam, por que é a prova de privacidade mais forte, e o que não prova."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

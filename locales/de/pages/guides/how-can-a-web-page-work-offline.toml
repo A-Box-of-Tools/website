@@ -1,0 +1,19 @@
+#
+# Ratgeber: Wie kann eine Webseite offline funktionieren? - German.
+#
+
+nav = "Webseiten ohne Netz?"
+title = "Wie kann eine Webseite offline funktionieren?"
+description = "Eine Seite, die mit abgeschaltetem WLAN weiterarbeitet, ist keine Zauberei - sie ist ein Service Worker und ein Cache, normale Browser-Maschinerie. Wie das funktioniert, warum offline der stärkste Privatheitsbeweis ist, den ein Werkzeug bieten kann, und was es nicht beweist."
+heading = "Wie kann eine Webseite ohne WLAN funktionieren?"
+lede = """
+    Weil der Browser eine vollständige Kopie behalten hat und ein kleines
+    Programm, das mit der Seite ausgeliefert wird, diese Kopie serviert,
+    wann immer das Netz es nicht kann. Die Maschinerie ist Standard und
+    lohnt das Verstehen, denn ein Werkzeug, das getrennt vom Netz
+    arbeitet, zeigt Ihnen etwas, das keine Datenschutzerklärung zeigen
+    kann."""
+updated = "26. August 2026"
+og_title = "Wie kann eine Webseite ohne WLAN funktionieren?"
+og_description = "Ein Service Worker und ein Cache - normale Browser-Maschinerie. Wie Offline-Seiten funktionieren, warum offline der stärkste Privatheitsbeweis ist, und was es nicht beweist."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

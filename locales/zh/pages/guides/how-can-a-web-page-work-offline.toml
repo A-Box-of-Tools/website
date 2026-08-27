@@ -1,0 +1,25 @@
+#
+# Guide: how can a web page work offline? - Simplified Chinese.
+#
+# Overrides for pages/guides/how-can-a-web-page-work-offline/page.toml.
+# Prose in the .html beside this file. Written in Chinese rather than
+# translated out of the English; the house style is at the top of
+# locales/zh/locale.toml.
+#
+
+nav = "网页怎么能离线运行？"
+
+title = "网页断了网怎么还能用？"
+description = "关了 Wi-Fi 还照常干活的页面不是魔法，是一个 service worker 加一份缓存，浏览器的标准机件。它怎么运转，离线为什么是一个工具能拿出的最硬的隐私凭证，以及它证明不了什么。"
+
+heading = "网页断了网怎么还能用？"
+lede = """
+    因为浏览器留了一份完整的副本，还有一个随页面一起送达的小程序，网络\
+    帮不上忙的时候就端出这份副本。这套机件是标准件，值得弄明白：一个断\
+    着网还照常干活的工具，给你看的是任何隐私政策都给不了的东西。"""
+
+updated = "2026年8月26日"
+
+og_title = "网页断了网怎么还能用？"
+og_description = "一个 service worker 加一份缓存，浏览器的标准机件。离线页面怎么运转，为什么这是最硬的隐私凭证，它又证明不了什么。"
+og_image_alt = "abox.tools - 不走服务器的工具"

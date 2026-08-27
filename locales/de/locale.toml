@@ -183,6 +183,7 @@ complete = true
 "guides/is-base64-encryption" = "ratgeber/ist-base64-eine-verschluesselung"
 "guides/what-a-pdf-remembers" = "ratgeber/was-ein-pdf-sich-merkt"
 "guides/does-converting-a-photo-remove-its-metadata" = "ratgeber/entfernt-das-umwandeln-die-metadaten-eines-fotos"
+"guides/how-can-a-web-page-work-offline" = "ratgeber/wie-kann-eine-webseite-offline-funktionieren"
 
 #
 # ---------------------------------------------------------------------------

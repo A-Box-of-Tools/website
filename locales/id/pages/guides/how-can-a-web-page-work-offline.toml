@@ -1,0 +1,18 @@
+#
+# Panduan: bagaimana halaman web bisa bekerja offline? - Indonesian.
+#
+
+nav = "Halaman tanpa jaringan?"
+title = "Bagaimana Halaman Web Bisa Bekerja Offline?"
+description = "Halaman yang tetap bekerja dengan Wi-Fi mati bukan sulap - itu service worker dan cache, mesin standar peramban. Cara kerjanya, mengapa offline adalah bukti privasi terkuat yang bisa ditawarkan sebuah alat, dan apa yang tidak dibuktikannya."
+heading = "Bagaimana halaman web bisa bekerja tanpa Wi-Fi?"
+lede = """
+    Karena peramban menyimpan salinan lengkapnya, dan sebuah program kecil
+    yang ikut terkirim bersama halaman menyajikan salinan itu setiap kali
+    jaringan tidak bisa. Mesinnya standar dan layak dipahami, karena alat
+    yang bekerja dalam keadaan terputus sedang memperlihatkan sesuatu yang
+    tidak bisa diperlihatkan kebijakan privasi mana pun."""
+updated = "26 Agustus 2026"
+og_title = "Bagaimana halaman web bisa bekerja tanpa Wi-Fi?"
+og_description = "Service worker dan cache - mesin standar peramban. Cara halaman offline bekerja, mengapa itu bukti privasi terkuat, dan apa yang tidak dibuktikannya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

@@ -157,6 +157,7 @@ complete = true
 "guides/is-base64-encryption" = "rehberler/base64-sifreleme-mi"
 "guides/what-a-pdf-remembers" = "rehberler/bir-pdf-neleri-hatirlar"
 "guides/does-converting-a-photo-remove-its-metadata" = "rehberler/fotograf-donusturmek-ust-veriyi-siler-mi"
+"guides/how-can-a-web-page-work-offline" = "rehberler/bir-web-sayfasi-cevrimdisi-nasil-calisir"
 
 #
 # ---------------------------------------------------------------------------

@@ -150,6 +150,7 @@ complete = true
 "guides/is-base64-encryption" = "gidsen/is-base64-versleuteling"
 "guides/what-a-pdf-remembers" = "gidsen/wat-een-pdf-onthoudt"
 "guides/does-converting-a-photo-remove-its-metadata" = "gidsen/verwijdert-converteren-de-metadata-van-een-foto"
+"guides/how-can-a-web-page-work-offline" = "gidsen/hoe-kan-een-webpagina-offline-werken"
 
 #
 # ---------------------------------------------------------------------------

@@ -1,0 +1,112 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      Bir web sayfası normalde bağlantısıyla yaşar ve ölür; çünkü her
+      ziyaret onu yeniden getirir. Ama bir sayfa yanında küçük bir program
+      taşıyabilir: <em>service worker</em>. Tarayıcı onu sayfanın yanına
+      kurar ve sayfanın ağ trafiğinin başına geçirir. İlk ziyarette bu
+      worker, sayfayı oluşturan her şeyin &mdash; işaretleme, stiller,
+      betikler &mdash; eksiksiz bir kopyasını makinenizdeki bir önbelleğe
+      koyar. O andan sonra istekler o kopyadan cevaplanır. Wi-Fi öldüğünde
+      hiçbir şey değişmez; çünkü zaten bir şey getirilmiyordu.
+    </p>
+    <p>
+      Bunların hiçbirinde sihir de özel izin de yok: yaklaşık on yıldır
+      her büyük tarayıcıda gelen standart tarayıcı makinesidir. Alışılmadık
+      olan, bir sitenin ona bu site kadar yaslanması &mdash; çünkü bütün
+      vaadi dosyalarınızın asla gitmemesi olan bir site için çevrimdışı
+      bir konfor değildir. Kanıttır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Fişi çekince sağ kalmak neyi gösterir</h2>
+    <p>
+      Yükleme rehberinin en güçlü denetimi
+      <a href="../dosya-yuklemek-guvenli-mi/">fişi çekmektir</a>: aracı
+      yükle, bağlantıyı kes, kullan. Bunun neden işe yaradığını tam
+      söylemekte yarar var. Dosyanızı bir sunucuda dönüştüren araç, işini
+      yaptığı anda ağa muhtaçtır &mdash; teli kesin, iş durur. Devam eden
+      araçsa işin sizin makinenizde olduğunu iddia etmemiş, göstermiştir;
+      ve ağa erişemeyen bir sayfa, kodu ne isterse istesin, dosyanızı
+      hiçbir yere gönderemez.
+    </p>
+    <p>
+      Bunu hiçbir gizlilik politikası sunamaz. Politika niyetleri anlatır
+      ve değişebilir; uçak modunda işini gören sayfa fiziktir. Bu yüzden
+      bu sitedeki her araç çevrimdışı çalışır ve o anda çevrimdışı olup
+      olmadığınızı söyleyen canlı bir gösterge taşır &mdash; bağlantıyı
+      kapatırken değişmesini izleyebilesiniz ve var olan en güçlü denetimi
+      on saniyede koşturabilesiniz diye.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kopya nasıl dürüst kalır</h2>
+    <p>
+      Sonsuza-dek-saklandının hediye mi tuzak mı olduğunu iki soru
+      belirler ve makine ikisini de cevaplar:
+    </p>
+    <ul>
+      <li>
+        <strong>Kopya eskir mi?</strong> Worker, bağlantı varken daha yeni
+        bir sürüme bakar ve onu bütün hâlinde takas eder. Sürümler bütün
+        gider; çünkü kopya her an tutarlı olmak zorundadır &mdash; yarısı
+        eski yarısı yeni, asla sunulmaması gereken tek durumdur.
+      </li>
+      <li>
+        <strong>Tam olarak ne kopyalandı?</strong> Sayfanın ihtiyacı olan
+        her şey ve başka hiçbir şey &mdash; ve buradaki her araç kendi
+        kopyasını kendi gözünde tutar. Bir aracın önbelleği o aracı
+        içerir; birini kurmak sessizce onunu kurmaz. Kopya ayrıca
+        incelenebilir: tarayıcınızın geliştirici araçları önbellekteki her
+        dosyayı listeler ve o liste, sayfanın gözler önünde getirdiği
+        listenin aynısıdır.
+      </li>
+    </ul>
+    <p>
+      Sonuç, ziyaret etmekle kurulmuş bir uygulama gibi davranan bir
+      sayfadır &mdash; ki bu düpedüz tekliftedir de: tarayıcının adres
+      çubuğu buradaki herhangi bir aracı uygulama olarak kurar; aracın
+      kendi simgesiyle, doğrudan araca açılarak, sayfada düğme olmadan ve
+      isteyen bir betik olmadan. Aynı makine, kısayol kılığında.
+    </p>
+  </section>
+
+  <section>
+    <h2>Çevrimdışının kanıtlamadıkları</h2>
+    <p>
+      Denetim güçlüdür, sihirli değil; sınırları da gücü kadar açık
+      söylenmeyi hak eder:
+    </p>
+    <ul>
+      <li>
+        <strong>Anı kanıtlar, geleceği değil.</strong> Çevrimdışı yapılan
+        iş makinenizde kaldı, nokta. Bir sayfa ilkece veriyi tutup
+        bağlantı dönünce gönderebilir &mdash; en keskin dosyalar için,
+        yeniden bağlanmadan önce sekmeyi kapatın ya da öbür yönü de
+        denetleyin: bağlantı geri gelirken Ağ sekmesini izleyin.
+      </li>
+      <li>
+        <strong>Bu sayfayı kanıtlar, siteyi değil.</strong> Her sayfa
+        kendi adına cevap verir. Buradaki ağı kullanan tek sayfa bunu
+        kendi sayfasında söyler: bütün işi bir şeyi iki cihaz arasında
+        taşımak olan <a href="../../metin-paylasma/">metin paylaşma
+        aracı</a>; tek bağlantısının neyi taşıdığını da tam olarak
+        anlatır.
+      </li>
+      <li>
+        <strong>Sizi gizlemez.</strong> Sayfayı yüklemek, web'deki her
+        sayfa yüklemesi gibi, adresinizi siteye çoktan söyledi. Çevrimdışı
+        dosyalarınızın nereye gittiğiyle ilgilidir, anonimlikle değil.
+      </li>
+    </ul>
+    <p>
+      Bu sınırlar, yükleme rehberinin tek değil dört denetim öğretmesinin
+      sebebidir &mdash; Ağ sekmesi, sayfa kaynağındaki güvenlik
+      politikası ve okunabilir kod, fişi çekmenin kapatamadığını kapatır.
+      Ama ilk süzgeç olarak hiçbiri daha hızlı değildir: bir araç ağ
+      yokken işini yapamıyorsa, işin nerede olduğunu öğrendiniz demektir
+      ve daha fazla okumaya gerek kalmaz.
+    </p>
+  </section>

@@ -178,6 +178,7 @@ complete = true
 "guides/is-base64-encryption" = "أدلة/هل-base64-تشفير"
 "guides/what-a-pdf-remembers" = "أدلة/ما-الذي-يتذكره-ملف-pdf"
 "guides/does-converting-a-photo-remove-its-metadata" = "أدلة/هل-التحويل-يزيل-بيانات-الصورة"
+"guides/how-can-a-web-page-work-offline" = "أدلة/كيف-تعمل-صفحة-ويب-دون-إنترنت"
 
 #
 # ---------------------------------------------------------------------------
