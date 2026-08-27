@@ -563,6 +563,7 @@ note = "What handing a file to a website actually does, and how to tell whether 
 order = [
   "is-it-safe-to-upload-files",
   "is-it-safe-to-scan-a-qr-code",
+  "is-it-safe-to-upload-a-photo-of-your-id",
 ]
 
 #

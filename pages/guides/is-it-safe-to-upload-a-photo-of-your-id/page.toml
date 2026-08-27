@@ -1,0 +1,35 @@
+#
+# Guide: is it safe to upload a photo of your ID?
+#
+# The sharpest case of the question the first guide in this group answers in
+# general. People meet it at the worst possible moment: a web form has refused
+# their passport scan for being the wrong size or too many kilobytes, and the
+# first search result is a converter that wants the document uploaded. Every
+# tool this page points at exists so that step never has to happen.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-it-safe-to-upload-a-photo-of-your-id"
+kind = "guide"
+nav = "Is it safe to upload a photo of your ID?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Is It Safe to Upload a Photo of Your ID?"
+description = "An identity document is the one file where &ldquo;probably fine&rdquo; is not good enough. What an ID leak actually costs, why the risky moment is the resize before the application, and how to do all of it without the document leaving your machine."
+
+heading = "Is it safe to upload a photo of your ID?"
+lede = """
+    Upload it to the government form it is meant for &mdash; that is what the
+    document is for. The risk lives one step earlier: the converter or
+    compressor you visit because the form said &ldquo;under 300&nbsp;KB,
+    JPEG&rdquo;, and that step is the one that never needs to happen."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Is it safe to upload a photo of your ID?"
+og_description = "The risky step is not the application form. It is the resize and compress detour just before it - and that detour never needs your document to leave your machine."
+og_image_alt = "abox.tools - tools that never touch a server"
