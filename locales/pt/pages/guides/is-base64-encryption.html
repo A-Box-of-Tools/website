@@ -1,0 +1,138 @@
+  <section>
+    <h2>A resposta curta</h2>
+    <p>
+      Não. Base64 é uma <em>codificação</em>: um jeito de escrever
+      qualquer dado usando só sessenta e quatro caracteres inofensivos,
+      para que ele sobreviva à passagem por sistemas feitos para texto
+      puro. Não tem chave, não tem segredo e não tem propriedade de
+      segurança de espécie alguma. Decodificar exige reconhecê-lo, e nada
+      mais &mdash; uma pessoa gasta um olhar, um computador um
+      milissegundo.
+    </p>
+    <p>
+      Mesmo assim a pergunta vale, porque a confusão é universal e às
+      vezes cara. Uma sequência base64 <em>parece</em> embaralhada &mdash;
+      <code>cGFzc3dvcmQ=</code> não diz nada ao olho &mdash; e o que
+      parece embaralhado vai parar na gaveta do &ldquo;seguro&rdquo;.
+      Produtos de verdade já saíram com senhas &ldquo;protegidas&rdquo;
+      assim. A cura é uma distinção aprendida uma vez:
+      <strong>codificação é para máquinas, criptografia é para segredos,
+      hash é para impressões digitais.</strong> Três trabalhos, três
+      ferramentas, e só uma protege alguma coisa.
+    </p>
+  </section>
+
+  <section>
+    <h2>Codificação: reversível por qualquer um</h2>
+    <p>
+      Uma codificação muda como os dados são <em>escritos</em>, nunca o
+      que eles dizem. Anexos de e-mail, imagens embutidas em folhas de
+      estilo, tokens em endereços &mdash; em todos esses lugares, bytes
+      arbitrários precisam atravessar canais que só carregam texto com
+      confiança, e base64 é o figurino padrão: entram três bytes, saem
+      quatro caracteres feitos de letras, algarismos e dois sinais, com
+      <code>=</code> completando o final. Esse <code>=</code> é a marca
+      registrada, e uma vez conhecida você vê base64 em toda parte.
+    </p>
+    <p>
+      A propriedade que define tudo: a receita é pública e roda igual de
+      trás para frente. Não há nada a saber, então não há nada a não
+      saber. O percent-encoding das URLs (<code>%20</code> para um
+      espaço), as entidades HTML (<code>&amp;amp;</code>), o hexadecimal e
+      os escapes de barra invertida são a mesma ideia com outra roupa, e o
+      <a href="../../codificar-base64/">codificador e decodificador
+      base64</a> daqui fala todos eles, nos dois sentidos, na sua própria
+      máquina. Decodificar uma sequência que você achou é exatamente tão
+      legítimo quanto lê-la, porque codificação nunca foi cadeado.
+    </p>
+  </section>
+
+  <section>
+    <h2>Criptografia: reversível para quem tem a chave</h2>
+    <p>
+      A criptografia é a que protege conteúdo de verdade. Ela transforma
+      os dados com uma <em>chave</em>, e a matemática é arranjada para que
+      desfazer a transformação sem a chave não seja apenas difícil, e sim
+      computacionalmente fora de alcance &mdash; enquanto com a chave é
+      instantâneo. O segredo mora inteiro na chave, não no método: os
+      algoritmos são publicados, padronizados, e mais fortes por isso
+      mesmo.
+    </p>
+    <p>
+      É aqui que a confusão visual morde, porque bytes criptografados são
+      rotineiramente codificados em base64 para poder viajar &mdash;
+      embaralhados por uma chave, depois fantasiados para o transporte.
+      Duas camadas, dois trabalhos. O JSON Web Token é o caso clássico:
+      três pedaços de base64 unidos por pontos, dos quais os dois
+      primeiros se <em>decodificam</em> em JSON legível para qualquer um
+      que tente. Gente cola token em decodificador web público todo dia,
+      tendo suposto que o conjunto vinha lacrado; a descrição honesta é
+      que um JWT é um cartão-postal com assinatura à prova de
+      falsificação, não um envelope.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hash: reversível para ninguém</h2>
+    <p>
+      Um hash roda numa direção só. Passe qualquer quantidade de dados
+      pelo SHA-256 e sai um número de tamanho fixo &mdash; o mesmo número
+      toda vez para os mesmos dados, um número completamente diferente
+      para dados que diferem em um bit, e nenhum caminho de volta do
+      número para os dados, para ninguém, com chave ou sem. Não é figurino
+      nem cadeado; é uma <em>impressão digital</em>.
+    </p>
+    <p>
+      É isso que faz dele a ferramenta certa para os dois trabalhos que
+      lhe pertencem. Conferir que um arquivo baixado é exatamente o que o
+      editor publicou &mdash; comparar impressões, que é o que a
+      ferramenta de <a href="../../verificar-checksum/">verificar
+      checksum</a> faz na sua máquina, com
+      <a href="../verificar-o-checksum-de-um-download/">guia próprio</a>.
+      E guardar senhas: um serviço bem cuidado guarda só o hash da sua, de
+      modo que nem o banco de dados roubado dele contém a senha. Quando um
+      site consegue mandar por e-mail a senha que você esqueceu, ele te
+      contou que nunca a hasheou &mdash; e quando uma config
+      &ldquo;protege&rdquo; a sua como <code>cGFzc3dvcmQ=</code>, ela te
+      contou que só a codificou.
+    </p>
+  </section>
+
+  <section>
+    <h2>Distinguindo os três na prática</h2>
+    <p>
+      Um atalho que funciona para a sequência na sua frente:
+    </p>
+    <ul>
+      <li>
+        <strong>Decodifica em algo legível?</strong> Era codificação.
+        Letras, algarismos, talvez <code>+</code> e <code>/</code>, muitas
+        vezes <code>=</code> no final &mdash; passe por um decodificador e
+        veja.
+      </li>
+      <li>
+        <strong>Decodifica em ruído binário?</strong> Então o base64 era
+        só o figurino, e o que está por baixo é criptografado, comprimido,
+        ou nunca foi texto &mdash; a codificação não diz nada em nenhum
+        dos casos.
+      </li>
+      <li>
+        <strong>Comprimento fixo, caracteres hexadecimais, nunca
+        decodifica?</strong> 64 caracteres hexadecimais é a silhueta do
+        SHA-256; 32 é a do MD5. Hash não decodifica; só bate ou deixa de
+        bater.
+      </li>
+    </ul>
+    <p>
+      E a moral operacional de cada um: nunca confie segredo a
+      codificação; nunca construa criptografia própria quando a sua
+      plataforma já traz; nunca guarde senha como outra coisa que não um
+      hash. A sequência que você decodifica para conferir pode ser, ela
+      mesma, a parte sensível &mdash; um token em depuração geralmente é
+      &mdash;, e é por isso que o
+      <a href="../../codificar-base64/">decodificador daqui</a> roda onde
+      o segredo já está, na sua máquina, e por isso
+      <a href="../e-seguro-colar-texto-em-ferramenta-online/">o que colar
+      numa ferramenta web realmente faz</a> tem página própria.
+    </p>
+  </section>

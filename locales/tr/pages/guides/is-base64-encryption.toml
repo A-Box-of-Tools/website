@@ -1,0 +1,17 @@
+#
+# Rehber: base64 şifreleme mi? - Turkish.
+#
+
+nav = "Base64 şifreleme mi?"
+title = "Base64 Şifreleme mi?"
+description = "Hayır - ve fark uygulamada önemli. Kodlama, şifreleme ve özet üç ayrı derdi çözer: ilkini herkes geri çevirir, ikincisini anahtarın sahibi, üçüncüsünü hiç kimse. Hangisi hangisi, ve bakışta nasıl tanınır."
+heading = "Base64 şifreleme mi?"
+lede = """
+    Hayır. Base64 kılık değiştirmektir, kilit değil: onu tanıyan herkes
+    milisaniyeler içinde, hiçbir anahtar olmadan geri çevirir. Ama soru
+    gerçek bir cevabı hak ediyor; çünkü kodlama, şifreleme ve özet ekranda
+    birbirine benzer ve vaat ettikleri bundan daha farklı olamazdı."""
+updated = "26 Ağustos 2026"
+og_title = "Base64 şifreleme mi?"
+og_description = "Hayır - herkes geri çevirebilir, anahtarsız. Kodlama, şifreleme ve özet ekranda birbirine benzer ve tamamen farklı üç şey vaat eder. Hangisi hangisi."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

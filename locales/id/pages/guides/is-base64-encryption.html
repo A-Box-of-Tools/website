@@ -1,0 +1,140 @@
+  <section>
+    <h2>Jawaban singkatnya</h2>
+    <p>
+      Bukan. Base64 adalah <em>encoding</em>: cara menuliskan data apa pun
+      hanya dengan enam puluh empat karakter yang aman, supaya data itu
+      selamat melewati sistem-sistem yang dibangun untuk teks polos. Ia
+      tidak punya kunci, tidak punya rahasia, dan tidak punya sifat
+      keamanan jenis apa pun. Mendekodekannya hanya butuh mengenalinya,
+      tidak lebih &mdash; sekali lirik bagi manusia, satu milidetik bagi
+      komputer.
+    </p>
+    <p>
+      Pertanyaannya tetap layak diajukan, karena kekeliruannya universal
+      dan kadang mahal. Untaian base64 <em>terlihat</em> teracak &mdash;
+      <code>cGFzc3dvcmQ=</code> tidak berkata apa-apa pada mata &mdash;
+      dan yang terlihat teracak dimasukkan ke laci &ldquo;aman&rdquo;.
+      Produk sungguhan pernah dirilis dengan kata sandi yang
+      &ldquo;dilindungi&rdquo; begini. Obatnya satu pembedaan yang
+      dipelajari sekali: <strong>encoding untuk mesin, enkripsi untuk
+      rahasia, hash untuk sidik jari.</strong> Tiga pekerjaan, tiga alat,
+      dan hanya satu yang melindungi apa pun.
+    </p>
+  </section>
+
+  <section>
+    <h2>Encoding: bisa dibalik siapa saja</h2>
+    <p>
+      Encoding mengubah cara data <em>ditulis</em>, tidak pernah mengubah
+      isinya. Lampiran email, gambar yang dibenamkan di lembar gaya, token
+      di alamat &mdash; di mana-mana byte sembarang harus melewati kanal
+      yang hanya andal membawa teks, dan base64 adalah kostum bakunya:
+      tiga byte masuk, empat karakter keluar, tersusun dari huruf, angka,
+      dan dua tanda baca, dengan <code>=</code> mengganjal di ujung. Tanda
+      <code>=</code> itulah cirinya, dan sekali Anda tahu, base64 terlihat
+      di mana-mana.
+    </p>
+    <p>
+      Sifat yang menentukan segalanya: resepnya publik dan berjalan sama
+      persis ke arah sebaliknya. Tidak ada yang perlu diketahui, jadi
+      tidak ada yang bisa tidak diketahui. Percent-encoding di URL
+      (<code>%20</code> untuk spasi), entitas HTML
+      (<code>&amp;amp;</code>), heksadesimal, dan escape garis miring
+      terbalik adalah gagasan yang sama berganti baju, dan
+      <a href="../../encode-base64/">pengode dan pendekode base64</a> di
+      sini bicara semuanya, dua arah, di mesin Anda sendiri. Mendekodekan
+      untaian yang Anda temukan sama sahnya dengan membacanya, karena
+      encoding memang tidak pernah menjadi gembok.
+    </p>
+  </section>
+
+  <section>
+    <h2>Enkripsi: bisa dibalik oleh pemegang kunci</h2>
+    <p>
+      Enkripsilah yang sungguh melindungi isi. Ia mengubah data dengan
+      sebuah <em>kunci</em>, dan matematikanya diatur supaya membalik
+      perubahan itu tanpa kunci bukan sekadar sulit melainkan di luar
+      jangkauan komputasi &mdash; sementara dengan kunci, seketika.
+      Rahasianya tinggal seluruhnya di kunci, bukan di metode:
+      algoritmanya diterbitkan, dibakukan, dan justru karena itu kuat.
+    </p>
+    <p>
+      Di sinilah kekeliruan visual menggigit, karena byte terenkripsi
+      lazim di-base64-kan supaya bisa bepergian &mdash; diacak oleh kunci,
+      lalu diberi kostum untuk perjalanan. Dua lapisan, dua pekerjaan.
+      JSON Web Token adalah contoh bukunya: tiga potong base64 disambung
+      titik, dan dua potong pertamanya <em>terdekodekan</em> menjadi JSON
+      terbaca bagi siapa pun yang mencoba. Tiap hari orang menempelkan
+      token ke pendekode web publik karena mengira seluruhnya tersegel;
+      gambaran jujurnya, JWT adalah kartu pos dengan tanda tangan
+      antipemalsuan, bukan amplop.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hash: tidak bisa dibalik siapa pun</h2>
+    <p>
+      Hash berjalan satu arah saja. Lewatkan data sebanyak apa pun melalui
+      SHA-256 dan keluarlah bilangan berukuran tetap &mdash; bilangan yang
+      sama setiap kali untuk data yang sama, bilangan yang sama sekali
+      lain untuk data yang berbeda satu bit, dan tidak ada jalan pulang
+      dari bilangan ke datanya, bagi siapa pun, berkunci ataupun tidak. Ia
+      bukan kostum dan bukan gembok; ia <em>sidik jari</em>.
+    </p>
+    <p>
+      Itulah yang menjadikannya alat yang tepat untuk dua pekerjaan
+      miliknya. Memastikan berkas unduhan persis berkas yang diterbitkan
+      penerbitnya &mdash; bandingkan sidik jarinya, yang dikerjakan alat
+      <a href="../../hitung-checksum/">penghitung checksum</a> di mesin
+      Anda, lengkap dengan
+      <a href="../memverifikasi-checksum-file/">panduannya</a>. Dan
+      menyimpan kata sandi: layanan yang dikelola baik hanya menyimpan
+      hash milik Anda, sehingga basis datanya yang dicuri pun tidak
+      berisi kata sandinya. Ketika sebuah situs bisa mengirimkan lewat
+      email kata sandi yang Anda lupa, ia baru saja memberi tahu bahwa ia
+      tidak pernah meng-hash-nya &mdash; dan ketika sebuah config
+      &ldquo;mengamankan&rdquo; kata sandinya sebagai
+      <code>cGFzc3dvcmQ=</code>, ia memberi tahu bahwa ia hanya pernah
+      meng-encode-nya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Membedakan ketiganya di lapangan</h2>
+    <p>
+      Jalan pintas yang berhasil untuk untaian di depan Anda:
+    </p>
+    <ul>
+      <li>
+        <strong>Terdekodekan jadi sesuatu yang terbaca?</strong> Itu tadi
+        encoding. Huruf, angka, mungkin <code>+</code> dan <code>/</code>,
+        sering <code>=</code> di ujung &mdash; lewatkan ke pendekode dan
+        lihat.
+      </li>
+      <li>
+        <strong>Terdekodekan jadi derau biner?</strong> Berarti base64
+        hanyalah kostumnya, dan yang di baliknya terenkripsi, terkompresi,
+        atau memang tidak pernah berupa teks &mdash; encoding tidak
+        memberi tahu apa-apa dalam kedua hal itu.
+      </li>
+      <li>
+        <strong>Panjang tetap, karakter heksadesimal, tidak pernah
+        terdekodekan?</strong> 64 karakter heksadesimal adalah siluet
+        SHA-256; 32 siluet MD5. Hash tidak didekodekan; ia hanya cocok
+        atau gagal cocok.
+      </li>
+    </ul>
+    <p>
+      Dan pesan praktis masing-masing: jangan pernah menyandarkan
+      kerahasiaan pada encoding; jangan pernah membangun enkripsi sendiri
+      kalau platform Anda sudah membawanya; jangan pernah menyimpan kata
+      sandi selain sebagai hash. Sementara itu, untaian yang Anda
+      dekodekan untuk memeriksa bisa jadi justru bagian yang sensitif
+      &mdash; token yang sedang di-debug biasanya begitu &mdash; dan
+      itulah sebabnya <a href="../../encode-base64/">pendekode di sini</a>
+      berjalan di tempat rahasia itu sudah berada, di mesin Anda, dan
+      sebabnya <a href="../apakah-aman-menempel-teks-ke-alat-online/">apa
+      yang sebenarnya terjadi saat menempel ke alat web</a> punya
+      halamannya sendiri.
+    </p>
+  </section>

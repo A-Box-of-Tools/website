@@ -1,0 +1,18 @@
+#
+# Guía: ¿es base64 un cifrado? - Spanish.
+#
+
+nav = "¿Base64 es un cifrado?"
+title = "¿Base64 es un cifrado?"
+description = "No, y la diferencia importa en la práctica. Codificar, cifrar y hashear resuelven tres problemas distintos: lo primero lo deshace cualquiera, lo segundo quien tiene la clave, lo tercero nadie. Cuál es cuál, y cómo reconocerlos a simple vista."
+heading = "¿Base64 es un cifrado?"
+lede = """
+    No. Base64 es un cambio de vestuario, no un candado: cualquiera que lo
+    reconozca lo deshace en milisegundos, sin clave alguna. Pero la
+    pregunta merece respuesta de verdad, porque codificación, cifrado y
+    hash se parecen en pantalla y no podrían prometer cosas más
+    distintas."""
+updated = "26 de agosto de 2026"
+og_title = "¿Base64 es un cifrado?"
+og_description = "No: cualquiera puede deshacerlo, sin clave. Codificación, cifrado y hash se parecen en pantalla y prometen tres cosas completamente distintas. Cuál es cuál."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"
