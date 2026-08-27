@@ -1,0 +1,18 @@
+#
+# Rehber: yapay zeka ajanı bu araçları kullanabilir mi? - Turkish.
+#
+
+nav = "Yapay zeka ajanı bu araçları kullanabilir mi?"
+title = "Yapay Zeka Ajanı Bu Araçları Kullanabilir mi?"
+description = "Evet - bunlar hesapsız, her denetimi etiketli sıradan web sayfaları ve bir ajan onları her şeyi sürdüğü gibi sürer. Önemli olan ajanın tarayıcısının nerede çalıştığı: dosyanızın kendi makinenizde kalıp kalmayacağına o karar verir."
+heading = "Yapay zeka ajanı bu araçları kullanabilir mi?"
+lede = """
+    Evet. Bunlar sıradan web sayfaları: hesap yok, captcha yok ve her
+    denetim etiketli; bir ajan onları başka her şeyi sürdüğü gibi sürer.
+    Bir sayfayı hak eden soru bunun arkasındaki: bir dosya işini ajana
+    devrettiğinizde dosya nereye gider? Cevap, bütünüyle ajanın
+    tarayıcısının nerede çalıştığına bağlıdır."""
+updated = "27 Ağustos 2026"
+og_title = "Yapay zeka ajanı bu araçları kullanabilir mi?"
+og_description = "Etiketli denetimleriyle, hesapsız, sıradan web sayfaları: yani evet. Önemli olan ajanın tarayıcısının nerede çalıştığı - dosyanızın kendi makinenizde kalıp kalmayacağına o karar verir."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

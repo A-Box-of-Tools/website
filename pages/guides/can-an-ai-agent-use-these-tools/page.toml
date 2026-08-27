@@ -1,0 +1,40 @@
+#
+# Guide: can an AI agent use these tools?
+#
+# The first guide written for a visitor who may not be the one pressing the
+# buttons. Agents are starting to do file chores for people, and the question
+# that matters is not whether they can drive a web page - they can - but
+# where the browser they drive is running, because that decides whether the
+# site's promise survives the delegation. A local agent driving these pages
+# keeps the file on the machine; a cloud agent received the file before any
+# tool was opened. The guide also owns up to what the site does for such a
+# reader on purpose: labelled controls, no accounts, public source, and
+# /llms.txt as the one-fetch map.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/can-an-ai-agent-use-these-tools"
+kind = "guide"
+nav = "Can an AI agent use these tools?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Can an AI Agent Use These Tools?"
+description = "Yes - they are ordinary web pages with no accounts and labelled controls, and an agent can drive them like anything else. What matters is where the agent's browser runs, because that decides whether your file still stays on your machine."
+
+heading = "Can an AI agent use these tools?"
+lede = """
+    Yes. They are ordinary web pages, with no accounts, no captchas and
+    every control labelled, and an agent drives them the way it drives
+    anything else. The question worth a page is the one behind it: when
+    you hand a file chore to an agent, where does the file go? The answer
+    turns entirely on where the agent's browser is running."""
+
+updated = "27 August 2026"
+published = "2026-08-27"
+lastmod = "2026-08-27"
+
+og_title = "Can an AI agent use these tools?"
+og_description = "They are ordinary web pages with labelled controls and no accounts, so yes. The question that matters is where the agent's browser runs - that decides whether your file still stays on your machine."
+og_image_alt = "abox.tools - tools that never touch a server"

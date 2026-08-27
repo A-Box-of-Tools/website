@@ -1,0 +1,25 @@
+#
+# Guide: can an AI agent use these tools? - Simplified Chinese.
+#
+# Overrides for pages/guides/can-an-ai-agent-use-these-tools/page.toml. Prose
+# in the .html beside this file. Written in Chinese rather than translated out
+# of the English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "AI 智能体能用这些工具吗？"
+
+title = "AI 智能体能用这些工具吗？"
+description = "能。这些都是普通网页，不用注册，每个控件都写着名字，智能体开得动。真正要紧的是智能体的浏览器跑在哪儿，因为你的文件留不留在你机器上，就由它决定。"
+
+heading = "AI 智能体能用这些工具吗？"
+lede = """
+    能。这些都是普通网页，没有账号，没有验证码，每个控件都写着名字，\
+    智能体开它们和开别的页面没有两样。值得写一页的是背后那个问题：\
+    你把一件文件上的活交给智能体，文件去了哪里？答案完全取决于\
+    智能体的浏览器跑在哪儿。"""
+
+updated = "2026年8月27日"
+
+og_title = "AI 智能体能用这些工具吗？"
+og_description = "普通网页，控件带名字，不用注册，所以能。真正要紧的是智能体的浏览器跑在哪儿，你的文件留不留在你机器上，就由它决定。"
+og_image_alt = "abox.tools - 不走服务器的工具"
