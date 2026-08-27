@@ -90,6 +90,8 @@ complete = true
 "roadmap" = "hoja-de-ruta"
 "privacy" = "privacidad"
 "terms" = "terminos"
+"about" = "sobre-este-sitio"
+"contact" = "contacto"
 
 "guides/compress-an-image-to-a-target-size" = "guias/comprimir-una-imagen-a-un-tamano-exacto"
 "guides/resize-an-image" = "guias/redimensionar-una-imagen"

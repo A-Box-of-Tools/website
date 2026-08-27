@@ -94,6 +94,8 @@ complete = true
 "roadmap" = "roteiro"
 "privacy" = "privacidade"
 "terms" = "termos"
+"about" = "sobre"
+"contact" = "contato"
 
 "guides/compress-an-image-to-a-target-size" = "guias/comprimir-uma-imagem-para-um-tamanho-exato"
 "guides/resize-an-image" = "guias/redimensionar-uma-imagem"

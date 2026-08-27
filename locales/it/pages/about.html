@@ -1,0 +1,234 @@
+  <section>
+    <h2>Che cos&rsquo;è</h2>
+    <p>
+      abox.tools è una raccolta di piccoli strumenti che fanno una cosa
+      ciascuno: ridimensionare una foto, tagliare un video, unire due PDF,
+      leggere che cosa contiene davvero un codice QR. Al momento sono trentasei,
+      e accanto a loro c&rsquo;è una <a href="../guide/">raccolta di guide</a>
+      sui lavori per cui servono.
+    </p>
+    <p>
+      La cosa insolita non è quello che fanno, ma dove lo fanno. Ognuno di essi
+      gira interamente dentro il browser, sull&rsquo;hardware di chi lo usa, con
+      i decoder e i codificatori che il browser porta già con sé. Niente di
+      quello che si apre viene trasmesso da nessuna parte. Dietro queste pagine
+      non c&rsquo;è nemmeno un server a cui potrebbe arrivare: il sito è tutto
+      file statici, e gli strumenti sono semplici moduli JavaScript serviti
+      accanto a loro.
+    </p>
+    <p>
+      Questo è il prodotto. Tutto il resto di questa pagina spiega perché vale
+      la pena costruirlo così, e chi lo sta facendo.
+    </p>
+  </section>
+
+  <section>
+    <h2>Chi lo fa</h2>
+    <p>
+      Una persona sola, in Ontario, in Canada. Non è un&rsquo;azienda. Non
+      c&rsquo;è un team, non ci sono investitori, non c&rsquo;è una società
+      madre e non c&rsquo;è alcun piano di essere acquisiti da una. La posta
+      arriva a <a href="mailto:hi@abox.tools">hi@abox.tools</a> e la legge chi
+      ha scritto il codice; nella <a href="../contatti/">pagina dei
+      contatti</a> è spiegato a che cosa serve quell&rsquo;indirizzo e a che
+      cosa no.
+    </p>
+    <p>
+      Il sito viene pubblicato di proposito senza una firma personale. È un
+      progetto piccolo, non un marchio personale, e quello che merita fiducia
+      qui non è un nome in fondo a una pagina, ma
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">il
+      codice</a>, che chiunque può leggere, e il comportamento delle pagine
+      stesse, che chiunque può controllare in una trentina di secondi con gli
+      strumenti per sviluppatori aperti. Quelle due cose si verificano. Una
+      firma no.
+    </p>
+  </section>
+
+  <section>
+    <h2>Perché è costruito così</h2>
+    <p>
+      Il modo consueto di costruire questi strumenti è caricare il file, fare il
+      lavoro su un server e restituire il risultato. È più facile, funziona su
+      qualsiasi dispositivo, ed è quello che fa quasi ogni
+      &laquo;convertitore online gratuito&raquo;.
+    </p>
+    <p>
+      Vuol dire però anche consegnare il proprio file a uno sconosciuto. Per un
+      meme è irrilevante. Per la scansione di un passaporto, per
+      un&rsquo;immagine medica, per un contratto firmato o per una foto che
+      porta l&rsquo;indirizzo di casa nei metadati non lo è affatto. Una volta
+      che il file sta sulla macchina di un altro, quello che gli succede dipende
+      dalle sue regole e dalla sua competenza, e non c&rsquo;è modo di
+      verificare né le une né l&rsquo;altra. L&rsquo;informativa sulla privacy
+      di un sito del genere è una promessa, non un vincolo.
+    </p>
+    <p>
+      I browser sono diventati abbastanza bravi da rendere quella promessa
+      inutile. Sanno leggere e scrivere JPEG, PNG e WebP; sanno aprire e
+      decodificare video; sanno calcolare l&rsquo;hash di un file, leggere un
+      codice QR e scrivere un PDF. Se il lavoro può avvenire sulla propria
+      macchina, allora &laquo;si terranno il mio file?&raquo; smette di essere
+      una domanda sulle intenzioni di qualcuno e diventa una domanda su che cosa
+      il codice possa fare materialmente. E a quella si può rispondere da soli.
+    </p>
+    <p>
+      È tutto qui l&rsquo;argomento, e c&rsquo;è una guida che lo sviluppa come
+      si deve: <a href="../guide/e-sicuro-caricare-i-propri-file/">è sicuro
+      caricare i propri file su un sito?</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Verificare, invece di fidarsi</h2>
+    <p>
+      Tutto quello che c&rsquo;è scritto sopra è fatto per essere messo alla
+      prova. Quattro modi, in ordine crescente di fatica:
+    </p>
+    <ul>
+      <li>
+        <strong>Staccare la rete.</strong> Si carica la pagina di uno strumento
+        qualsiasi, ci si disconnette e la si usa lo stesso. Continua a
+        funzionare, perché dentro non c&rsquo;è mai stato un passaggio di rete.
+        Uno strumento che mandasse il file altrove per elaborarlo si
+        fermerebbe.
+      </li>
+      <li>
+        <strong>Guardare la rete.</strong> Si aprono gli strumenti per
+        sviluppatori, si va sulla scheda Rete e si elabora un file. Non una sola
+        richiesta porta con sé il file, una sua miniatura, il suo nome o un byte
+        del suo contenuto. Quello che si vede è la pagina, i suoi script, la
+        pubblicità e il contatore delle visite.
+      </li>
+      <li>
+        <strong>Leggere la regola che la pagina impone a sé stessa.</strong>
+        Ogni pagina porta una <code>Content-Security-Policy</code> che elenca
+        tutti gli indirizzi che le è concesso contattare, e nessuno di quelli
+        appartiene a questo sito. Nemmeno un errore nel codice potrebbe mandare
+        un file da qualche parte, perché il browser rifiuterebbe la connessione.
+      </li>
+      <li>
+        <strong>Leggere il codice.</strong> È
+        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">tutto
+        pubblico</a>, senza passaggi di compilazione e senza bundler: quello che
+        sta nel repository è byte per byte quello che il browser esegue. Ogni
+        strumento ha un README che spiega come funziona, e ogni pagina indica i
+        file che conviene leggere per primi.
+      </li>
+    </ul>
+    <p>
+      C&rsquo;è esattamente una eccezione voluta al &laquo;niente rete&raquo;,
+      ed è spiegata per esteso nella sua pagina:
+      <a href="../condividere-testo/">Condividi testo</a> sposta del testo fra
+      due dispositivi della stessa persona, e senza rete non si può fare. Apre
+      una sola connessione verso un tramite che non conserva niente e a cui
+      viene detto soltanto che due browser vorrebbero essere presentati.
+    </p>
+  </section>
+
+  <section>
+    <h2>Come vengono costruiti e controllati gli strumenti</h2>
+    <p>
+      Uno strumento esce quando funziona su file veri, non quando funziona sul
+      file contro cui è stato scritto. In pratica vuol dire usarlo a mano in un
+      browser su casi scomodi: il video senza fotogramma chiave proprio dove si
+      vuole tagliare, l&rsquo;HEIC di un telefono che scrive il contenitore in
+      modo leggermente sbagliato, il PDF con un font incorporato solo in parte.
+      È quello che la gente ha davvero, ed è proprio quello che un test scritto
+      dalla stessa persona che ha scritto il difetto non troverà.
+    </p>
+    <p>
+      Sotto c&rsquo;è una suite di test automatici che copre entrambe le metà:
+      il generatore che costruisce il sito e i moduli che il browser esegue.
+      Gira a ogni modifica, e niente viene pubblicato dopo un fallimento. Dove lo
+      stesso lavoro compare in più strumenti, e diversi di essi leggono file
+      MP4, un test verifica che le copie continuino a coincidere, così che una
+      correzione fatta a una non lasci le altre sbagliate in silenzio.
+    </p>
+    <p>
+      Le guide seguono la stessa regola. Le loro schermate le cattura uno script
+      dal sito già costruito, invece di disegnarle o simularle: un&rsquo;immagine
+      in una guida è quindi un&rsquo;immagine della pagina com&rsquo;è
+      realmente oggi.
+    </p>
+  </section>
+
+  <section>
+    <h2>Come si paga tutto questo</h2>
+    <p>
+      Con la pubblicità e con le donazioni di chi trova utili gli strumenti. È
+      tutto qui il modello, e vale la pena essere precisi su che cosa comporta e
+      che cosa no.
+    </p>
+    <p>
+      <strong>Non c&rsquo;è niente da comprare.</strong> Nessun account, nessuna
+      registrazione, nessun piano gratuito con uno a pagamento sopra, nessuna
+      filigrana da togliere, nessun limite di dimensione, nessun limite
+      giornaliero e nessuna funzione tenuta da parte. Quello che c&rsquo;è sul
+      sito è tutto.
+    </p>
+    <p>
+      <strong>I file di chi legge non fanno parte dell&rsquo;accordo.</strong>
+      La pubblicità è di Google e il conteggio delle visite è Google Analytics,
+      e a nessuno dei due viene detto che cosa si apre, che cosa si produce, come
+      si chiamava o quanto pesava: nessuno dei due script lo riceve mai, e la
+      politica di sicurezza della pagina rifiuterebbe l&rsquo;invio se uno dei
+      due ci provasse. Che cosa raccolgono davvero quei due, e come disattivare
+      ciascuno, sta nella <a href="../privacy/">pagina sulla privacy</a>. Tutti
+      gli strumenti continuano a funzionare con entrambi bloccati.
+    </p>
+    <p>
+      <strong>Gli strumenti non vengono scritti per la pubblicità.</strong>
+      Nessuno strumento qui esiste perché una parola chiave valeva soldi, e
+      nessuno è stato reso più lento, più macchinoso o più diviso in pagine per
+      vendere più impressioni. Che cosa si costruisce dopo si discute alla luce
+      del sole, in
+      <a href="https://github.com/A-Box-of-Tools/website/blob/main/ROADMAP.md" target="_blank" rel="noopener noreferrer">ROADMAP.md</a>,
+      un paragrafo per idea, comprese le ragioni per cui diverse proposte
+      apparentemente ovvie sono state respinte.
+    </p>
+  </section>
+
+  <section>
+    <h2>Le lingue</h2>
+    <p>
+      Il sito è pubblicato in quindici lingue. Ognuna è una traduzione vera e non
+      una passata automatica lasciata dov&rsquo;è caduta: i nomi degli
+      strumenti, le spiegazioni, le guide e gli indirizzi stessi sono tradotti, e
+      una pagina viene elencata in una lingua solo quando quella lingua è stata
+      davvero scritta. Una lingua a cui si sta ancora lavorando resta leggibile
+      ma viene tenuta fuori dalla sitemap e dal selettore delle lingue, così
+      nessuno viene invitato su una pagina mezza in inglese.
+    </p>
+    <p>
+      Alla posta si risponde in inglese, che è l&rsquo;unica cosa onesta da dire
+      di un progetto di queste dimensioni.
+    </p>
+  </section>
+
+  <section>
+    <h2>Che cosa questo sito non farà</h2>
+    <ul>
+      <li>Chiedere di creare un account, o chiedere un indirizzo e-mail.</li>
+      <li>
+        Caricare, conservare, ispezionare o trattenere un file aperto qui
+        dentro.
+      </li>
+      <li>
+        Mettere una filigrana su un risultato, o tenere una funzione da parte
+        per un piano a pagamento.
+      </li>
+      <li>
+        Aggiungere un passaggio di rete a uno strumento che non ne ha bisogno.
+      </li>
+      <li>
+        Affermare sulla pagina di uno strumento qualcosa che il codice nel
+        repository non fa.
+      </li>
+    </ul>
+    <p>
+      Se una di queste cose dovesse succedere, è insieme un difetto e una
+      promessa rotta, e vale la pena segnalarlo. La
+      <a href="../contatti/">pagina dei contatti</a> è la via più rapida.
+    </p>
+  </section>

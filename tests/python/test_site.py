@@ -31,6 +31,11 @@ SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en',
         'home': 'https://example.test/',
         'guides_url': 'https://example.test/guides/',
         'roadmap_url': 'https://example.test/roadmap/',
+        'contact_url': 'https://example.test/contact/',
+        'contact_email': 'hi@example.test',
+        'source_url': 'https://example.test/source',
+        'publisher': {'region': 'Ontario', 'country': 'CA',
+                      'contact_slug': 'contact'},
         'guides': {'slug': 'guides', 'heading': 'Guides',
                    'description': 'every guide'},
         'manifest': {'display': 'standalone', 'theme_color': '#fff',
@@ -326,6 +331,32 @@ class StructuredData(unittest.TestCase):
                 'url': 'https://example.test/privacy/', 'lastmod': '2026-01-01'}
         self.assertEqual(sitelib.page_jsonld(SITE, page), '')
 
+    def test_a_site_page_is_about_the_publisher(self):
+        """About and Contact point at the Organization node the hub publishes,
+        rather than restating who is behind the site in four places that can
+        then disagree. No BreadcrumbList: the trail would be the hub and then
+        this page, and the header's site mark already offers that journey."""
+        page = {'kind': 'site', 'schema_type': 'AboutPage', 'heading': 'About',
+                'description': 'd', 'nav': 'About',
+                'url': 'https://example.test/about/', 'lastmod': '2026-01-01'}
+        graph = json.loads(sitelib.page_jsonld(SITE, page))['@graph']
+        self.assertEqual([node['@type'] for node in graph], ['AboutPage'])
+        self.assertEqual(graph[0]['about'],
+                         {'@id': 'https://example.test/#publisher'})
+
+    def test_the_publisher_says_how_to_reach_a_person(self):
+        """The Organization node used to be a name, a URL and a logo, which
+        says who drew the icon and nothing about who is answerable for any of
+        it."""
+        site = dict(SITE, hub={'schema_description': 'd', 'schema_about': ['x']})
+        graph = json.loads(sitelib.hub_jsonld(site, []))['@graph']
+        org = next(node for node in graph if node['@type'] == 'Organization')
+        self.assertEqual(org['email'], 'hi@example.test')
+        self.assertEqual(org['address']['addressRegion'], 'Ontario')
+        self.assertEqual(org['contactPoint']['url'],
+                         'https://example.test/contact/')
+        self.assertEqual(org['sameAs'], ['https://example.test/source'])
+
     def test_the_hub_lists_the_tools_in_order(self):
         tools = [{'name': 'A', 'url': 'https://example.test/a/'},
                  {'name': 'B', 'url': 'https://example.test/b/'}]
@@ -400,6 +431,35 @@ class LoadPage(TempTree):
             sitelib.load_page(self.page_at('privacy', body), SITE,
                               self.root / 'pages')
         self.assertIn('essay', str(caught.exception))
+
+    def test_a_site_page_loads_with_its_schema_type(self):
+        body = (PAGE_TOML.replace('slug = "privacy"', 'slug = "about"')
+                + 'kind = "site"\nschema_type = "AboutPage"\n')
+        page = sitelib.load_page(self.page_at('about', body), SITE,
+                                 self.root / 'pages')
+        self.assertEqual(page['kind'], 'site')
+        self.assertEqual(page['schema_type'], 'AboutPage')
+
+    def test_a_site_page_must_declare_a_schema_type(self):
+        # Not derived from the slug: the slug is translated in every locale, so
+        # deriving it would work in English and quietly stop working in the
+        # other fourteen languages.
+        body = (PAGE_TOML.replace('slug = "privacy"', 'slug = "about"')
+                + 'kind = "site"\n')
+        with self.assertRaises(sitelib.ConfigError) as caught:
+            sitelib.load_page(self.page_at('about', body), SITE,
+                              self.root / 'pages')
+        self.assertIn('schema_type', str(caught.exception))
+
+    def test_an_unknown_schema_type_is_refused(self):
+        # A typo that silently produced no structured data at all would defeat
+        # the whole point of the kind.
+        body = (PAGE_TOML.replace('slug = "privacy"', 'slug = "about"')
+                + 'kind = "site"\nschema_type = "WebPage"\n')
+        with self.assertRaises(sitelib.ConfigError) as caught:
+            sitelib.load_page(self.page_at('about', body), SITE,
+                              self.root / 'pages')
+        self.assertIn('WebPage', str(caught.exception))
 
     def test_a_guide_must_say_when_it_was_published(self):
         # Defaulting to lastmod would quietly claim a correction was the

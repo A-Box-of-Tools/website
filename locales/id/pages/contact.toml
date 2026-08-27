@@ -1,0 +1,23 @@
+#
+# Kontak - Indonesian.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "Kontak"
+
+title = "Kontak abox.tools &mdash; laporkan bug, bertanya, atau usulkan alat"
+description = "Cara menghubungi orang yang membangun abox.tools: satu alamat surel, satu pelacak isu publik, masing-masing paling cocok untuk apa, dan apa yang terjadi setelah Anda menulis."
+
+heading = "Kontak"
+lede = """
+    Yang membaca ini satu orang, dan ia membaca semuanya. Di bawah dijelaskan
+    masing-masing dari dua jalur itu paling cocok untuk apa, apa yang perlu
+    disertakan supaya sebuah bug benar-benar bisa ditemukan, dan apa yang
+    terjadi setelah Anda mengirimnya."""
+
+updated = "27 Agustus 2026"
+
+og_title = "Kontak abox.tools"
+og_description = "Surel atau pelacak isu publik, masing-masing paling cocok untuk apa, dan apa yang terjadi setelah Anda menulis."
+og_image_alt = "abox.tools - alat yang tidak menyentuh server mana pun"

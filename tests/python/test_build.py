@@ -265,9 +265,18 @@ class BuildTheSite(unittest.TestCase):
         planned = buildmod.sitelib.load_toml(ROOT / 'config' / 'planned.toml')
         buildmod.i18n.survey(cls.locales, tools, prose, planned, site)
 
+        # No roadmap. It is built, linked from every footer and readable, and
+        # it is deliberately the one page kept out of the index - see
+        # test_the_roadmap_is_kept_out_of_the_sitemap below, and the comments
+        # the two halves of that decision carry in templates/roadmap.html and
+        # buildlib/catalogue.py.
         slugs = ([''] + [tool['slug'] for tool in tools]
                  + [page['slug'] for page in prose]
-                 + [site['guides']['slug'], site['roadmap']['slug']])
+                 + [site['guides']['slug']])
+        cls.roadmap_pages = {
+            buildmod.i18n.locale_path(locale, site['roadmap']['slug']).strip('/')
+            for locale in cls.locales
+        }
         cls.advertised = {
             buildmod.i18n.locale_path(locale, slug).strip('/')
             for locale in cls.locales for slug in slugs
@@ -281,9 +290,10 @@ class BuildTheSite(unittest.TestCase):
     def unpublished(self, name):
         """Whether a written page is one the site does not advertise.
 
-        Two reasons a page is not advertised, and both end up here: its language
-        has not finished the frame, or its language has finished the frame and
-        not this page.
+        Three reasons a page is not advertised, and all of them end up here:
+        its language has not finished the frame, its language has finished the
+        frame and not this page, or it is the roadmap, which is the one page
+        that is finished, linked and deliberately not indexed.
         """
         if any(name.startswith(f'{lang}/') for lang in self.unfinished):
             return True
@@ -918,6 +928,30 @@ class BuildTheSite(unittest.TestCase):
             slug = name[:-len('index.html')]
             with self.subTest(page=slug or '/'):
                 self.assertIn(f'{site["domain"]}{slug}', sitemap)
+
+    def test_the_roadmap_is_kept_out_of_the_sitemap(self):
+        """The one page on this site that is built, linked and not indexed.
+
+        It is a list of tools that do not exist yet. That is worth saying to a
+        reader who wants to know where this is going, and it is, to a search
+        engine, a page about nothing anybody can use - the "under construction"
+        page every set of quality guidelines names by that name. Fifteen
+        translations of it in an index is fifteen chances to be judged on the
+        half of the site that has not been built.
+
+        The page keeps its footer link and its address. The other half of the
+        decision is `noindex, follow` in templates/roadmap.html, and the two
+        have to agree or the site asks to be indexed and refuses in the same
+        breath - which is why this checks both.
+        """
+        sitemap = (self.out / 'sitemap.xml').read_text(encoding='utf-8')
+        site = buildmod.sitelib.load_toml(ROOT / 'config' / 'site.toml')
+        self.assertTrue(self.roadmap_pages, 'no roadmap page to check')
+        for slug in sorted(self.roadmap_pages):
+            with self.subTest(page=slug):
+                self.assertNotIn(f'<loc>{site["domain"]}{slug}/</loc>', sitemap)
+                page = (self.out / slug / 'index.html').read_text(encoding='utf-8')
+                self.assertIn('name="robots" content="noindex, follow"', page)
 
     def test_an_unfinished_language_is_not_in_the_sitemap(self):
         """The point of `complete = false`.

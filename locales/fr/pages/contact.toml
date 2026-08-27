@@ -1,0 +1,23 @@
+#
+# Contact - French.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "Contact"
+
+title = "Contacter abox.tools &mdash; signaler un bogue, poser une question, proposer un outil"
+description = "Comment joindre la personne qui fabrique abox.tools : une adresse e-mail, un gestionnaire de tickets public, à quoi chacun sert le mieux, et ce qui se passe après votre message."
+
+heading = "Contact"
+lede = """
+    Une seule personne lit tout cela, et le lit en entier. Vous trouverez
+    ci-dessous à quoi sert le mieux chacune des deux voies, quoi mettre dans un
+    signalement pour qu&rsquo;un bogue puisse vraiment être retrouvé, et ce qui
+    se passe une fois le message parti."""
+
+updated = "27 août 2026"
+
+og_title = "Contacter abox.tools"
+og_description = "E-mail ou gestionnaire de tickets public, à quoi chacun sert le mieux, et ce qui se passe après votre message."
+og_image_alt = "abox.tools - des outils qui ne touchent aucun serveur"

@@ -75,12 +75,25 @@ def build_sitemap(out, templates, site, locales, tools, prose):
                      'changefreq': 'monthly', 'priority': '0.6'}
                     for page in prose
                     if page['kind'] == 'guide' and ready(page['slug'])]
-        # The roadmap: a real page, but not one anybody searches for. Below the
-        # guides, above the legal pages.
-        if ready(site['roadmap']['slug']):
-            entries.append({'url': url(site['roadmap']['slug']),
-                            'lastmod': site['roadmap']['lastmod'],
-                            'changefreq': 'monthly', 'priority': '0.5'})
+        # About and Contact: below the guides, because nobody arrives at a site
+        # like this one by searching for its About page, and above the legal
+        # pages, because these two are read on purpose and the small print is
+        # read when something has gone wrong.
+        entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
+                     'changefreq': 'yearly', 'priority': '0.5'}
+                    for page in prose
+                    if page['kind'] == 'site' and ready(page['slug'])]
+        # The roadmap is deliberately absent, and it is the one page on this
+        # site that is. It is a list of tools that do not exist yet, which is
+        # useful to a reader who wants to know where this is going and is, to a
+        # search engine, a page about nothing you can use - the "under
+        # construction" page every set of quality guidelines names by that
+        # name. Fifteen translations of it in an index is fifteen ways to be
+        # judged on the half of the site that has not been built. It keeps its
+        # footer link, its address and its readers; it carries `noindex, follow`
+        # in templates/roadmap.html, and this is the other half of that
+        # decision. Change one and change both.
+        #
         # The legal pages last, and low: they matter for trust, not for search.
         entries += [{'url': url(page['slug']), 'lastmod': page['lastmod'],
                      'changefreq': 'yearly', 'priority': '0.3'}
@@ -249,7 +262,10 @@ def build_llms(out, templates, site, locales, tools, prose):
          'url': f'{site["domain"]}sitemap.xml',
          'description': text(site['llms']['sitemap_note'])},
     ]
-    # The legal pages last, for the same reason the sitemap puts them last.
+    # About and Contact, then the legal pages last, in the order the sitemap
+    # puts them in. Something reading one file to decide whether any of this is
+    # worth mentioning should be able to find out who is behind it.
+    optional += [entry(page) for page in prose if page['kind'] == 'site']
     optional += [entry(page) for page in prose if page['kind'] == 'legal']
 
     write(out / 'llms.txt', templates.render('llms.txt', {

@@ -1,0 +1,236 @@
+  <section>
+    <h2>Apa ini</h2>
+    <p>
+      abox.tools adalah kumpulan alat kecil yang masing-masing mengerjakan satu
+      hal: mengubah ukuran foto, memotong video, menggabungkan dua PDF, membaca
+      apa yang sebenarnya ada di dalam sebuah kode QR. Saat ini ada tiga puluh
+      enam, ditambah satu <a href="../panduan/">kumpulan panduan</a> tentang
+      pekerjaan yang alat-alat itu tangani.
+    </p>
+    <p>
+      Yang tidak biasa bukan apa yang mereka kerjakan, melainkan di mana mereka
+      mengerjakannya. Semuanya berjalan sepenuhnya di dalam peramban Anda, di
+      perangkat keras Anda sendiri, memakai dekoder dan enkoder yang memang
+      sudah dibawa peramban itu. Tidak ada satu pun berkas yang Anda buka
+      dikirim ke mana-mana. Di balik halaman-halaman ini juga tidak ada server
+      yang bisa menerimanya: seluruh situs ini berupa berkas statis, dan
+      alat-alatnya adalah modul JavaScript biasa yang disajikan di sebelahnya.
+    </p>
+    <p>
+      Itulah produknya. Sisa halaman ini menjelaskan mengapa membangunnya
+      seperti itu sepadan, dan siapa yang melakukannya.
+    </p>
+  </section>
+
+  <section>
+    <h2>Siapa yang membuatnya</h2>
+    <p>
+      Satu orang, bekerja sendirian, di Ontario, Kanada. Ini bukan perusahaan.
+      Tidak ada tim, tidak ada investor, tidak ada induk usaha, dan tidak ada
+      rencana untuk diakuisisi siapa pun. Surat masuk ke
+      <a href="mailto:hi@abox.tools">hi@abox.tools</a> dan sampai ke orang yang
+      menulis kodenya; <a href="../kontak/">halaman kontak</a> menjelaskan untuk
+      apa alamat itu cocok dan untuk apa tidak.
+    </p>
+    <p>
+      Situs ini sengaja diterbitkan tanpa nama penulis pribadi. Ini proyek kecil,
+      bukan merek pribadi, dan yang pantas dipercaya di sini bukanlah sebuah nama
+      di bawah halaman, melainkan
+      <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">kodenya</a>,
+      yang bisa dibaca siapa saja, dan perilaku halamannya sendiri, yang bisa
+      diperiksa siapa saja dalam kira-kira tiga puluh detik dengan alat
+      pengembang terbuka. Dua hal itu bisa diverifikasi. Sebuah nama tidak.
+    </p>
+  </section>
+
+  <section>
+    <h2>Mengapa dibangun seperti ini</h2>
+    <p>
+      Cara biasa membangun alat semacam ini adalah mengunggah berkasnya,
+      mengerjakan pekerjaannya di server, lalu mengirim hasilnya kembali. Cara
+      itu lebih mudah, jalan di perangkat apa pun, dan itulah yang dilakukan
+      hampir semua &ldquo;konverter online gratis&rdquo;.
+    </p>
+    <p>
+      Cara itu juga berarti menyerahkan berkas Anda kepada orang asing. Untuk
+      sebuah meme, itu tidak penting. Untuk pindaian paspor, citra medis, kontrak
+      yang sudah ditandatangani, atau foto yang membawa alamat rumah Anda di
+      metadatanya, itu sangat penting. Begitu berkas berada di perangkat orang
+      lain, apa yang terjadi padanya bergantung pada kebijakan dan kecermatan
+      mereka, dan Anda tidak punya cara untuk mengaudit keduanya. Kebijakan
+      privasi situs seperti itu adalah janji, bukan batasan teknis.
+    </p>
+    <p>
+      Peramban kini sudah cukup baik sehingga janji itu tidak lagi diperlukan.
+      Peramban bisa membaca dan menulis JPEG, PNG, dan WebP; bisa membongkar dan
+      mendekode video; bisa menghitung hash sebuah berkas, membaca kode QR, dan
+      menulis PDF. Kalau pekerjaannya bisa terjadi di perangkat Anda sendiri,
+      maka &ldquo;apakah berkas saya akan mereka simpan?&rdquo; berhenti menjadi
+      pertanyaan tentang niat siapa pun dan berubah menjadi pertanyaan tentang
+      apa yang secara fisik bisa dilakukan kodenya. Dan yang itu bisa Anda jawab
+      sendiri.
+    </p>
+    <p>
+      Itulah seluruh argumennya, dan ada panduan yang membahasnya dengan
+      semestinya: <a href="../panduan/apakah-aman-mengunggah-file/">apakah aman
+      mengunggah file ke sebuah situs web?</a>
+    </p>
+  </section>
+
+  <section>
+    <h2>Memeriksa, bukan mempercayai</h2>
+    <p>
+      Setiap pernyataan di atas memang dibuat untuk diuji. Empat cara, dari yang
+      paling ringan:
+    </p>
+    <ul>
+      <li>
+        <strong>Cabut sambungan internet.</strong> Muat halaman alat mana pun,
+        putuskan sambungan, lalu tetap pakai. Alatnya terus berjalan, karena di
+        dalamnya memang tidak pernah ada langkah jaringan. Alat yang mengirim
+        berkas Anda ke luar untuk diproses akan berhenti di situ.
+      </li>
+      <li>
+        <strong>Perhatikan jaringannya.</strong> Buka alat pengembang, masuk ke
+        tab Network, lalu proses sebuah berkas. Tidak ada satu pun permintaan
+        yang membawa berkas Anda, gambar kecilnya, namanya, atau satu bita pun
+        isinya. Yang terlihat adalah halamannya, skripnya, iklannya, dan
+        penghitung kunjungan.
+      </li>
+      <li>
+        <strong>Baca aturan yang halaman ini terapkan pada dirinya
+        sendiri.</strong> Setiap halaman membawa
+        <code>Content-Security-Policy</code> yang menyebut setiap alamat yang
+        boleh ia hubungi, dan tidak satu pun milik situs ini. Bahkan kesalahan
+        di dalam kode pun tidak akan bisa mengirim berkas ke mana-mana, karena
+        peramban akan menolak sambungannya.
+      </li>
+      <li>
+        <strong>Baca kodenya.</strong> Kodenya
+        <a href="https://github.com/A-Box-of-Tools/website" target="_blank" rel="noopener noreferrer">terbuka
+        seluruhnya</a>, tanpa langkah build dan tanpa bundler: apa yang ada di
+        repositori adalah bita per bita apa yang dijalankan peramban Anda.
+        Setiap alat punya README yang menjelaskan cara kerjanya, dan setiap
+        halaman alat menyebut berkas mana yang paling layak dibaca lebih dulu.
+      </li>
+    </ul>
+    <p>
+      Ada tepat satu pengecualian yang disengaja dari &ldquo;tanpa
+      jaringan&rdquo;, dan pengecualian itu dijelaskan panjang lebar di
+      halamannya sendiri: <a href="../berbagi-teks/">Berbagi Teks</a>
+      memindahkan teks antara dua perangkat milik Anda sendiri, dan itu memang
+      tidak bisa dilakukan tanpa jaringan. Alat itu membuka satu sambungan ke
+      perantara yang tidak menyimpan apa pun dan yang hanya diberi tahu bahwa
+      ada dua peramban yang ingin dipertemukan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bagaimana alat-alat ini dibuat dan diperiksa</h2>
+    <p>
+      Sebuah alat dirilis ketika ia bekerja pada berkas yang nyata, bukan ketika
+      ia bekerja pada berkas yang dipakai saat menulisnya. Dalam praktiknya itu
+      berarti mencobanya sendiri di peramban dengan masukan yang merepotkan:
+      video tanpa keyframe tepat di tempat Anda ingin memotong, HEIC dari ponsel
+      yang menulis kontainernya sedikit keliru, PDF dengan font yang tertanam
+      sebagian. Itulah yang benar-benar ada di perangkat orang, dan itu pula yang
+      tidak akan ditemukan oleh pengujian yang ditulis orang yang sama dengan
+      penulis kesalahannya.
+    </p>
+    <p>
+      Di bawahnya ada rangkaian pengujian otomatis yang mencakup dua sisi:
+      pembangkit yang menyusun situsnya, dan modul yang dijalankan peramban.
+      Rangkaian itu berjalan pada setiap perubahan, dan tidak ada yang
+      diterbitkan setelah sebuah kegagalan. Ketika pekerjaan yang sama muncul di
+      lebih dari satu alat, dan beberapa di antaranya membaca berkas MP4, sebuah
+      pengujian memastikan salinan-salinannya masih sepakat, sehingga perbaikan
+      pada satu alat tidak diam-diam meninggalkan yang lain dalam keadaan salah.
+    </p>
+    <p>
+      Panduan ditulis dengan ukuran yang sama. Tangkapan layarnya diambil dari
+      situs yang sudah dibangun oleh sebuah skrip, bukan digambar atau
+      diperagakan, jadi gambar di sebuah panduan adalah gambar halaman itu
+      sebagaimana adanya hari ini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bagaimana ini dibiayai</h2>
+    <p>
+      Dari iklan, dan dari donasi orang-orang yang merasa alat-alat ini berguna.
+      Itulah seluruh model bisnisnya, dan ada baiknya dijelaskan dengan tepat apa
+      yang tercakup dan apa yang tidak.
+    </p>
+    <p>
+      <strong>Tidak ada yang perlu dibeli.</strong> Tidak ada akun, tidak ada
+      pendaftaran, tidak ada versi gratis dengan versi berbayar di atasnya,
+      tidak ada tanda air yang harus ditebus, tidak ada batas ukuran berkas,
+      tidak ada batas harian, dan tidak ada fitur yang ditahan. Apa yang ada di
+      situs ini itulah seluruhnya.
+    </p>
+    <p>
+      <strong>Berkas Anda bukan bagian dari kesepakatan itu.</strong> Iklannya
+      milik Google dan penghitungan kunjungannya memakai Google Analytics, dan
+      tidak satu pun dari keduanya diberi tahu apa yang Anda buka, apa yang Anda
+      hasilkan, apa namanya, atau berapa besarnya, karena tidak satu pun skrip
+      itu pernah menerimanya, dan kebijakan keamanan halaman ini akan menolak
+      pengirimannya seandainya salah satu mencoba. Apa yang sebenarnya keduanya
+      kumpulkan, dan cara mematikannya masing-masing, dijelaskan di
+      <a href="../privasi/">halaman privasi</a>. Setiap alat tetap bekerja
+      meskipun keduanya diblokir.
+    </p>
+    <p>
+      <strong>Alat-alat ini tidak ditulis demi iklan.</strong> Tidak ada satu
+      alat pun di sini yang ada karena sebuah kata kunci bernilai uang, dan tidak
+      satu pun dibuat lebih lambat, lebih berbelit, atau lebih banyak halaman
+      demi menjual lebih banyak tayangan. Apa yang dibangun berikutnya
+      diperdebatkan secara terbuka, di
+      <a href="https://github.com/A-Box-of-Tools/website/blob/main/ROADMAP.md" target="_blank" rel="noopener noreferrer">ROADMAP.md</a>,
+      satu paragraf per gagasan, termasuk alasan beberapa usulan yang tampak
+      jelas justru ditolak.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bahasa</h2>
+    <p>
+      Situs ini terbit dalam lima belas bahasa. Masing-masing adalah terjemahan
+      sungguhan, bukan keluaran mesin yang dibiarkan begitu saja: nama alat,
+      penjelasan, panduan, dan alamatnya sendiri semuanya diterjemahkan, dan
+      sebuah halaman baru dicantumkan dalam satu bahasa setelah bahasa itu
+      benar-benar ditulis. Bahasa yang masih dikerjakan tetap bisa dibaca tetapi
+      dijauhkan dari peta situs dan pemilih bahasa, supaya tidak ada yang
+      diundang ke halaman yang separuhnya masih berbahasa Inggris.
+    </p>
+    <p>
+      Surat dibalas dalam bahasa Inggris, dan itu satu-satunya hal jujur yang
+      bisa dikatakan tentang proyek sekecil ini.
+    </p>
+  </section>
+
+  <section>
+    <h2>Yang tidak akan dilakukan situs ini</h2>
+    <ul>
+      <li>Meminta Anda membuat akun, atau meminta alamat surel Anda.</li>
+      <li>
+        Mengunggah, menyimpan, memeriksa, atau menahan berkas yang Anda buka di
+        sini.
+      </li>
+      <li>
+        Menaruh tanda air pada hasil, atau menahan sebuah fitur untuk versi
+        berbayar.
+      </li>
+      <li>
+        Menambahkan langkah jaringan pada alat yang tidak memerlukannya.
+      </li>
+      <li>
+        Menyatakan sesuatu di halaman alat yang tidak dilakukan oleh kode di
+        repositori.
+      </li>
+    </ul>
+    <p>
+      Kalau Anda menemukan salah satu dari itu terjadi, itu sekaligus sebuah
+      kesalahan dan sebuah janji yang dilanggar, dan layak dilaporkan.
+      <a href="../kontak/">Halaman kontak</a> adalah jalan tercepat.
+    </p>
+  </section>

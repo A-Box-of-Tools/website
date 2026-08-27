@@ -64,7 +64,7 @@ finding the part you need does not mean scrolling through the parts you don't:
 |---|---|
 | [Layout](docs/layout.md) | the source tree, installing a page as an app, and what the build does to the output |
 | [Adding a tool](docs/adding-a-tool.md) | the checklist, the parts a tool can share, a vendored engine, and adding from a web address |
-| [The prose pages](docs/prose-pages.md) | `pages/`, the legal pages, and what Privacy does and does not claim |
+| [The prose pages](docs/prose-pages.md) | `pages/`, the legal pages, About and Contact, and what Privacy does and does not claim |
 | [The guides](docs/guides.md) | the longer answer behind each tool, why tool pages link to each other, and the feedback panel |
 | [Languages](docs/languages.md) | what a locale is and is not, half-translated pages, and adding a language |
 | [Deploying](docs/deploying.md) | GitHub Pages behind Cloudflare, cache lifetimes, the 404 page, and `/llms.txt` |

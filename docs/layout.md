@@ -65,6 +65,8 @@ pages/
     page.toml            title, description, dates - the frame, not the prose
     body.html            the <main> of the page
   terms/                 the same two things
+  about/                 the same two things, plus a schema_type: who publishes
+  contact/               the same again: how to reach them
   guides/<slug>/         the same two things, plus a group and usually a tool
 workers/
   rendezvous/            the one server: the introduction /share-text/ needs.

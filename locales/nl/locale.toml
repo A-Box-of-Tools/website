@@ -99,6 +99,8 @@ complete = true
 "roadmap" = "roadmap"
 "privacy" = "privacy"
 "terms" = "voorwaarden"
+"about" = "over-deze-site"
+"contact" = "contact"
 
 "guides/compress-an-image-to-a-target-size" = "gidsen/afbeelding-naar-exact-formaat-comprimeren"
 "guides/resize-an-image" = "gidsen/formaat-van-een-afbeelding-wijzigen"

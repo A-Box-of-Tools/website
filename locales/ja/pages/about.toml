@@ -1,0 +1,26 @@
+#
+# このサイトについて - Japanese.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+# The slug is not translated, for the reason set out at the top of
+# locales/ja/locale.toml: this locale has no [slugs] table at all.
+#
+
+nav = "このサイトについて"
+
+title = "abox.toolsについて｜誰が、なぜこれらの道具を作っているのか"
+description = "独立した、自前で費用をまかなうプロジェクトです。ブラウザの中だけで動く36の道具、そう作られている理由、サイトの費用の出どころ、そしてここに書かれた主張をご自身で確かめる方法をまとめています。"
+
+heading = "abox.toolsについて"
+lede = """
+    カナダのオンタリオ州に住むひとりの人間が、自分が繰り返し必要とし、そのたびに信用\
+    しきれなかった道具を作っています。ここにあるものはすべてお使いの端末の中で動き、\
+    コードは公開されています。このページは、その両方の理由を書き留めた場所です。"""
+
+updated = "2026年8月27日"
+
+og_title = "abox.toolsを作っているのは誰か、なぜすべてがブラウザで動くのか"
+og_description = "独立した、自前で費用をまかなうプロジェクトです。道具が何もアップロードしない理由、費用の出どころ、そしてその両方を確かめる方法。"
+og_image_alt = "abox.tools - サーバーに触れない道具箱"

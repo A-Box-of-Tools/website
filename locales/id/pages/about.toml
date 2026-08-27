@@ -1,0 +1,24 @@
+#
+# Tentang - Indonesian.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "Tentang"
+
+title = "Tentang abox.tools &mdash; siapa yang membuat alat-alat ini, dan mengapa"
+description = "Proyek independen yang dibiayai sendiri: tiga puluh enam alat yang berjalan sepenuhnya di peramban Anda, alasan alat-alat itu dibuat seperti itu, bagaimana situs ini membiayai dirinya, dan cara memeriksa sendiri setiap pernyataan di dalamnya."
+
+heading = "Tentang abox.tools"
+lede = """
+    Satu orang, di Ontario, membangun alat-alat yang terus-menerus ia butuhkan
+    dan terus-menerus tidak ia percayai. Semua di sini berjalan di perangkat
+    Anda sendiri, kodenya terbuka, dan halaman ini berisi alasan di balik
+    keduanya."""
+
+updated = "27 Agustus 2026"
+
+og_title = "Siapa yang membuat abox.tools, dan mengapa semuanya berjalan di peramban"
+og_description = "Proyek independen yang dibiayai sendiri. Mengapa alat-alatnya tidak mengunggah apa pun, bagaimana situs ini membiayai dirinya, dan cara memeriksa keduanya."
+og_image_alt = "abox.tools - alat yang tidak menyentuh server mana pun"

@@ -122,6 +122,11 @@ complete = true
 "roadmap" = "roadmap"
 "privacy" = "datenschutz"
 "terms" = "nutzungsbedingungen"
+# Kein "impressum": das ist eine Pflichtangabe nach deutschem Recht, und
+# diese Seite wird nicht aus Deutschland betrieben. "Ueber diese Seite"
+# beschreibt, was dort steht, ohne etwas Rechtliches zu behaupten.
+"about" = "ueber-diese-seite"
+"contact" = "kontakt"
 
 # The guides. Each one is the question its readers ask, in the words they ask it
 # in, rather than a translation of the English title.

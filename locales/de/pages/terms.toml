@@ -10,7 +10,7 @@ lede = """
     Sie müssen kein Konto eröffnen und nichts unterschreiben, also fallen diese
     Bedingungen kurz aus. Sie beschreiben, was Sie von dieser Seite erwarten
     dürfen und was sie nicht verspricht."""
-updated = "19. August 2026"
+updated = "27. August 2026"
 og_title = "Nutzungsbedingungen &mdash; abox.tools"
 og_description = "Kostenlos, wie sie ist, ohne Konto, ohne Gewährleistung. Ihre Dateien bleiben ganz die Ihren."
 og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

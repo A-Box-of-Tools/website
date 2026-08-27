@@ -1,0 +1,22 @@
+#
+# Contact - Dutch.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "Contact"
+
+title = "Contact met abox.tools &mdash; een fout melden, iets vragen, een tool voorstellen"
+description = "Hoe je de persoon bereikt die abox.tools bouwt: één e-mailadres, één openbare issuetracker, waar elk van beide het best voor is, en wat er gebeurt nadat je schrijft."
+
+heading = "Contact"
+lede = """
+    Eén persoon leest dit, en leest het allemaal. Hieronder staat waar elk van
+    de twee wegen het best voor is, wat er in een melding hoort zodat een fout
+    ook echt te vinden is, en wat er gebeurt nadat je hem verstuurt."""
+
+updated = "27 augustus 2026"
+
+og_title = "Contact met abox.tools"
+og_description = "E-mail of een openbare issuetracker, waar elk van beide het best voor is, en wat er gebeurt nadat je schrijft."
+og_image_alt = "abox.tools - tools die geen server aanraken"

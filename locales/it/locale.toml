@@ -86,6 +86,10 @@ complete = true
 "roadmap" = "roadmap"
 "privacy" = "privacy"
 "terms" = "termini"
+# "Chi siamo" e la formula che si cerca e che ogni sito italiano usa,
+# anche quando dietro c'e una persona sola: la pagina lo dice in chiaro.
+"about" = "chi-siamo"
+"contact" = "contatti"
 
 # Le guide. Ognuna è la domanda che fa chi la cerca, nelle parole in cui la fa,
 # e non la traduzione del titolo inglese.

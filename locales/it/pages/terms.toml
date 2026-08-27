@@ -10,7 +10,7 @@ lede = """
     Non c'è un account da aprire e non c'è un accordo da firmare, quindi sono
     corti. Descrivono cosa ti puoi aspettare da questo sito, e cosa questo sito
     non promette."""
-updated = "19 agosto 2026"
+updated = "27 agosto 2026"
 og_title = "Termini d'uso &mdash; abox.tools"
 og_description = "Gratuito, così com'è, senza account, senza garanzia. I tuoi file restano interamente tuoi."
 og_image_alt = "abox.tools - strumenti che non passano da nessun server"

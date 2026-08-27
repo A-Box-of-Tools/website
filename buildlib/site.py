@@ -186,7 +186,34 @@ def page_jsonld(site, page):
     schema for it would be describing the page as something it is not. The
     template asks for this unconditionally and writes nothing when it is empty,
     which keeps the "is this page an Article?" decision here rather than in
-    markup."""
+    markup.
+
+    An About or a Contact page is the third case, and it is neither: it is not
+    an article somebody wrote and it is not boilerplate nobody reads. It is a
+    page whose whole subject is the publisher, which is what AboutPage and
+    ContactPage exist to say. Both point `about` at the Organization node the
+    hub publishes, so the identity is declared once and referred to from
+    everywhere rather than restated in four places that can disagree.
+
+    No BreadcrumbList, for the reason the roadmap has not got one either: the
+    trail would be the hub and then this page, and the site mark at the top of
+    the header already offers that journey. Markup describes what a visitor can
+    see, and there is nothing here to see."""
+    if page['kind'] == 'site':
+        return dumps_ld([
+            {
+                '@type': page['schema_type'],
+                'url': page['url'],
+                'name': to_text(page['heading']),
+                'description': to_text(page['description']),
+                'inLanguage': site['lang'],
+                'isPartOf': {'@id': site['home'] + '#website'},
+                'about': {'@id': site['domain'] + '#publisher'},
+                'mainEntityOfPage': {'@type': 'WebPage', '@id': page['url']},
+                'dateModified': page['lastmod'],
+            },
+        ])
+
     if page['kind'] != 'guide':
         return ''
 
@@ -285,17 +312,54 @@ def hub_jsonld(site, tools):
             'inLanguage': site['lang'],
             'publisher': {'@id': site['domain'] + '#publisher'},
         },
+        # The publisher, and everything about it that is a fact rather than a
+        # sentence. It used to be a name, a URL and a logo, which says who drew
+        # the icon and nothing about who is answerable for the site - and "who
+        # is answerable" is the question every reader of this markup is
+        # actually asking. The fields below are the ones the About and Contact
+        # pages answer in prose, in the form a machine can read.
+        #
+        # Nothing here is translated, deliberately. An address, an email and a
+        # repository are the same in fifteen languages; a description would not
+        # be, and would arrive in English on the other fourteen pages, so there
+        # is not one. The prose pages carry that, in the language they are
+        # written in.
         {
             '@type': 'Organization',
             '@id': site['domain'] + '#publisher',
             'name': site['name'],
             'url': site['domain'],
+            'email': site['contact_email'],
             'logo': {
                 '@type': 'ImageObject',
                 'url': site['domain'] + 'icon-180.png',
                 'width': 180,
                 'height': 180,
             },
+            # Where the site is operated from, at the granularity the Terms
+            # page commits to and no finer. There is no street address to give:
+            # this is one person's project, not premises.
+            'address': {
+                '@type': 'PostalAddress',
+                'addressRegion': site['publisher']['region'],
+                'addressCountry': site['publisher']['country'],
+            },
+            # The way to reach a human. `availableLanguage` is English and
+            # only English, even though the site is published in fifteen: the
+            # field means the language a reply comes back in, and claiming
+            # fourteen more would be a promise nobody here can keep. The URL is
+            # this language's Contact page, because that is the page a reader
+            # of this markup should be sent to.
+            'contactPoint': {
+                '@type': 'ContactPoint',
+                'contactType': 'customer support',
+                'email': site['contact_email'],
+                'url': site['contact_url'],
+                'availableLanguage': 'en',
+            },
+            # The repository. `sameAs` is for the same entity somewhere else,
+            # which is exactly what it is: the site is that repository, built.
+            'sameAs': [site['source_url']],
         },
         {
             '@type': 'CollectionPage',
@@ -413,13 +477,19 @@ def load_tool(path, site):
     return tool
 
 
-PAGE_KINDS = ('legal', 'guide')
+PAGE_KINDS = ('legal', 'guide', 'site')
+
+# The structured-data types a `site` page may declare. Not an open field: the
+# whole point of the kind is that a reader and a crawler are told the same
+# thing about who is behind this site and how to reach them, and a typo that
+# silently produced no schema at all would defeat that quietly.
+SITE_SCHEMA_TYPES = ('AboutPage', 'ContactPage')
 
 
 def load_page(path, site, root):
     """Read one pages/<slug>/page.toml.
 
-    A page is a prose page that is neither a tool nor the hub. There are two
+    A page is a prose page that is neither a tool nor the hub. There are three
     kinds and they differ only in where they are meant to be read:
 
       legal - privacy and terms. They matter for trust, not for search, which
@@ -427,6 +497,14 @@ def load_page(path, site, root):
       guide - written to be found. Same frame, same policy, but it carries
               Article structured data and sits above the legal pages in the
               sitemap and the footer.
+      site  - about and contact: the pages that say who publishes this and how
+              to reach them. They sit between the two, and for a reason that
+              is not filing. A site that never says who is behind it reads as
+              nobody's, which is what a reviewer - human or otherwise - is
+              looking for when they decide whether any of the rest is worth
+              believing. They carry AboutPage or ContactPage structured data
+              so the same answer is machine-readable, and they are linked from
+              every footer beside the legal pages.
 
     Either way it needs far less than a tool does: no words, no FAQ, no service
     worker, and no CSP of its own, because it does nothing the site policy does
@@ -450,6 +528,17 @@ def load_page(path, site, root):
     if page['kind'] not in PAGE_KINDS:
         raise ConfigError(
             f'{path}: kind is {page["kind"]!r}, expected one of {", ".join(PAGE_KINDS)}')
+
+    # Which of the two a `site` page is. Named in the file rather than guessed
+    # from the slug, because the slug is translated in every locale and the
+    # schema type is not - deriving one from the other would have worked in
+    # English and quietly stopped working in the other fourteen languages.
+    if page['kind'] == 'site':
+        declared = page.get('schema_type')
+        if declared not in SITE_SCHEMA_TYPES:
+            raise ConfigError(
+                f'{path}: a site page needs `schema_type`, one of '
+                f'{", ".join(SITE_SCHEMA_TYPES)}, and this one says {declared!r}')
 
     # A guide is an Article, and an Article has a date it was published as well
     # as a date it last changed. Required rather than defaulted to `lastmod`,

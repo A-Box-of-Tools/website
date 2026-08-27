@@ -1,0 +1,23 @@
+#
+# Over deze site - Dutch.
+#
+# Overrides for pages/about/page.toml. Only words: the slug, the kind and the
+# schema type stay where they are, as does the machine-readable `lastmod`.
+#
+
+nav = "Over deze site"
+
+title = "Over abox.tools &mdash; wie deze tools maakt, en waarom"
+description = "Een onafhankelijk project zonder geldschieters: zesendertig tools die volledig in je browser draaien, waarom ze zo gebouwd zijn, hoe de site zichzelf betaalt, en hoe je elke bewering erop zelf kunt nakijken."
+
+heading = "Over abox.tools"
+lede = """
+    Eén persoon, in Ontario, die de tools bouwt die hij steeds nodig had en
+    steeds niet vertrouwde. Alles hier draait op je eigen apparaat, de code is
+    openbaar, en op deze pagina staan de redenen achter allebei."""
+
+updated = "27 augustus 2026"
+
+og_title = "Wie abox.tools maakt, en waarom alles in je browser draait"
+og_description = "Een onafhankelijk project zonder geldschieters. Waarom de tools niets uploaden, hoe de site zichzelf betaalt, en hoe je allebei kunt nakijken."
+og_image_alt = "abox.tools - tools die geen server aanraken"

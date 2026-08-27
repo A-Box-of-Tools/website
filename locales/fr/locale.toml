@@ -100,6 +100,8 @@ complete = true
 "roadmap" = "feuille-de-route"
 "privacy" = "confidentialite"
 "terms" = "conditions-d-utilisation"
+"about" = "a-propos"
+"contact" = "contact"
 
 "guides/compress-an-image-to-a-target-size" = "guides/compresser-une-image-a-une-taille-precise"
 "guides/resize-an-image" = "guides/redimensionner-une-image"

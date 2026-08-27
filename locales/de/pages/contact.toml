@@ -1,0 +1,22 @@
+#
+# Kontakt - German.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "Kontakt"
+
+title = "Kontakt zu abox.tools &mdash; Fehler melden, fragen, Werkzeug vorschlagen"
+description = "Wie Sie die Person erreichen, die abox.tools baut: eine E-Mail-Adresse, ein öffentlicher Issue-Tracker, wofür sich beides eignet, und was nach Ihrer Nachricht passiert."
+
+heading = "Kontakt"
+lede = """
+    Eine Person liest das, und zwar alles davon. Unten steht, wofür sich jeder
+    der beiden Wege eignet, was in eine Fehlermeldung gehört, damit sich der
+    Fehler auch finden lässt, und was nach dem Absenden passiert."""
+
+updated = "27. August 2026"
+
+og_title = "Kontakt zu abox.tools"
+og_description = "E-Mail oder ein öffentlicher Issue-Tracker, wofür sich beides eignet, und was nach Ihrer Nachricht passiert."
+og_image_alt = "abox.tools - Werkzeuge, die keinen Server berühren"

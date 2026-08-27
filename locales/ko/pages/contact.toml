@@ -1,0 +1,22 @@
+#
+# 문의 - Korean.
+#
+# Overrides for pages/contact/page.toml. Only words.
+#
+
+nav = "문의"
+
+title = "abox.tools 문의 &mdash; 버그 제보, 질문, 도구 제안"
+description = "abox.tools를 만드는 사람에게 닿는 방법입니다. 이메일 주소 하나와 공개 이슈 트래커 하나, 각각 어떤 용도에 알맞은지, 그리고 보낸 뒤에 무슨 일이 일어나는지 정리했습니다."
+
+heading = "문의"
+lede = """
+    한 사람이 읽고, 전부 읽습니다. 아래에는 두 가지 경로가 각각 어떤 용도에
+    알맞은지, 버그를 실제로 찾아낼 수 있으려면 무엇을 적어야 하는지, 그리고 보낸
+    뒤에 무슨 일이 일어나는지 적어 두었습니다."""
+
+updated = "2026년 8월 27일"
+
+og_title = "abox.tools 문의"
+og_description = "이메일 또는 공개 이슈 트래커, 각각 어떤 용도에 알맞은지, 그리고 보낸 뒤에 무슨 일이 일어나는지."
+og_image_alt = "abox.tools - 서버를 거치지 않는 도구들"
