@@ -76,6 +76,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">打包成 ZIP 下载全部帧</button>
       <button type="button" id="download-selected" class="ghost" hidden>下载勾选的帧</button>
+      <button type="button" id="download-sheet" class="ghost">下载为一张精灵图</button>
       <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 
@@ -111,6 +112,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">正在绘制精灵图&hellip;</span>
+    <span data-phrase="sheet.toobig">这张图会是 {width} &times; {height} 像素，任何浏览器都画不出来。可以改成每两帧留一帧，或者把各帧存成 ZIP。</span>
+    <span data-phrase="sheet.stored">精灵图要求每个格子大小一致，所以它用的是这一帧显示出来的样子，而不是这一帧单独存下的那些像素。</span>
     <span data-phrase="net.clean">你的 GIF 没有去任何地方。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何文件。</span>

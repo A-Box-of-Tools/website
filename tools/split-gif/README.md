@@ -199,6 +199,38 @@ the way out but still drawn on the way through: frame 40 depends on frames 1–3
 whether or not you wanted them. In the stored view they do not, so those frames
 are never touched at all.
 
+## The sprite sheet, and why it is one button rather than a mode
+
+Nothing but a GIF player can play a GIF. Every other thing that wants to show
+one - a game engine, a shader, a CSS `steps()` animation - wants the frames in
+a grid instead, plus the two numbers saying how to cut it. That is the whole
+feature: the same forward walk the ZIP export makes, painting each frame into
+its cell rather than encoding it on its own, so a sheet costs one working
+canvas plus the sheet and not four hundred frames at once.
+
+It is a second button and not a third option under "Each PNG holds", because it
+does not change what a frame *is* - it changes how many files come out. The
+frame settings still apply: keep every fifth frame and the sheet has a fifth as
+many cells; fill the transparency and every cell is filled.
+
+Three decisions worth recording:
+
+- **Always the composited view.** A sheet's cells have to share a size and a
+  grid, and a stored frame is a patch of its own size at its own offset. Laid
+  out in a grid those are unrelated rectangles that nothing could cut back up.
+  The page says so when the setting is on rather than ignoring it quietly.
+- **Nothing is scaled**, which is the tool's rule everywhere but matters most
+  here: resampling a sheet lays a hairline of the neighbouring cell down every
+  edge, and pixel art is what most of these GIFs are.
+- **The grid is in the filename** - `walk-sheet-6x8.png` - because the image
+  cannot carry it. Forty-eight cells in a 1536x512 sheet could be 6x8 or 12x4
+  and both look plausible; whatever reads the sheet has to be told, and a
+  filename is the one place the answer survives being emailed to somebody.
+
+`src/sheet.js` is the arithmetic on its own, so the cases with edges - a prime
+number of frames, one frame, a column count larger than the frame count - are
+testable without a canvas.
+
 ## Limitations
 
 - **No editing.** This takes a GIF apart; it does not put one back together.
@@ -213,6 +245,11 @@ are never touched at all.
 - **The plain-text extension is skipped.** It is a block of text the renderer of
   1990 was meant to draw in a grid of cells. Nothing has honoured it in thirty
   years, and drawing it would mean shipping a bitmap font.
+- **A sheet has a ceiling.** Past 16384 pixels on a side no browser will
+  allocate the canvas, and the tool refuses with the size it would have been.
+  Past 4096 a phone may hand back a blank sheet instead of an error, so that
+  one is said rather than enforced. Keeping every second frame is usually the
+  cheaper answer than a narrower grid.
 - **Frames are not deduplicated.** A GIF that stores the same picture twice comes
   out as two identical PNGs, because it is two frames.
 

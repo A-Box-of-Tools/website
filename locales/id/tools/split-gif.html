@@ -84,6 +84,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Unduh setiap bingkai sebagai ZIP</button>
       <button type="button" id="download-selected" class="ghost" hidden>Unduh bingkai yang dipilih</button>
+      <button type="button" id="download-sheet" class="ghost">Unduh sebagai satu lembar sprite</button>
       <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
     </div>
 
@@ -119,6 +120,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Menggambar lembar&hellip;</span>
+    <span data-phrase="sheet.toobig">Lembar itu akan berukuran {width} kali {height} piksel, dan tidak ada peramban yang menggambarnya. Simpan satu bingkai dari setiap dua, atau simpan bingkai sebagai ZIP.</span>
+    <span data-phrase="sheet.stored">Sebuah lembar memerlukan setiap sel berukuran sama, jadi ia memakai bingkai sebagaimana tampak, bukan hanya piksel yang disimpan bingkai itu.</span>
     <span data-phrase="net.clean">GIF Anda tidak pergi ke mana pun. {total} file
       dimuat. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

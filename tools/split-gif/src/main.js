@@ -6,9 +6,10 @@ import { decodeGif, GifFormatError, playedDelay, totalDuration } from './gif.js'
 import { GifCanvas, flatten, parseColour, patchPixels } from './compose.js';
 import {
   disposalLabel, encodePng, formatBytes, formatSeconds,
-  frameName, thumbnail, timingList, zipName,
+  baseName, frameName, thumbnail, timingList, zipName,
 } from './frames.js';
 import { makeZip } from './shared/zip.js';
+import { cellAt, sheetName, sheetPlan } from './sheet.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -35,6 +36,7 @@ const el = {
   timing: $('timing'),
   downloadAll: $('download-all'),
   downloadSelected: $('download-selected'),
+  downloadSheet: $('download-sheet'),
   cancel: $('cancel'),
   progressWrap: $('progress-wrap'),
   progressBar: $('progress-bar'),
@@ -366,6 +368,106 @@ async function downloadOne(row) {
  * runs forward through the animation exactly once, so a long GIF costs memory
  * for one canvas plus the PNGs themselves.
  */
+/**
+ * Every kept frame on one sheet, in a grid.
+ *
+ * The same forward walk the ZIP export makes, painting each frame into its cell
+ * instead of encoding it on its own, so the cost is one working canvas plus the
+ * sheet rather than every frame at once - which is the whole reason `GifCanvas`
+ * exists and the one rule a sheet could easily have broken.
+ *
+ * Always the composited view. A sheet's cells have to be the same size and sit
+ * on the same grid, and a stored frame is a patch of its own size at its own
+ * offset; laying those out would produce a grid of unrelated rectangles that no
+ * sprite-sheet reader could cut back up. The page says so when it applies
+ * rather than silently ignoring the setting.
+ *
+ * `putImageData` rather than `drawImage`, because it writes the pixels through
+ * untouched: no smoothing, no compositing, no alpha applied twice. Cells do not
+ * overlap, so nothing is lost by skipping the blend - and a resampled sheet
+ * would put a hairline of the next cell down every edge, which is exactly what
+ * ruins pixel art.
+ */
+async function downloadSheet() {
+  if (working) return;
+
+  const options = settings();
+  const wanted = rows.filter((row) => row.checked);
+  const kept = wanted.length ? wanted : rows;
+  if (!kept.length) return;
+
+  const plan = sheetPlan(kept.length, gif.width, gif.height, 0);
+  if (plan.tooBig) {
+    showError(phrase('sheet.toobig', { width: plan.width, height: plan.height }));
+    return;
+  }
+
+  working = true;
+  cancelled = false;
+  clearError();
+  el.cancel.hidden = false;
+  el.downloadAll.disabled = true;
+  el.downloadSelected.disabled = true;
+  el.downloadSheet.disabled = true;
+
+  try {
+    const sheet = document.createElement('canvas');
+    sheet.width = plan.width;
+    sheet.height = plan.height;
+    const context = sheet.getContext('2d');
+
+    const picked = new Set(kept.map((row) => row.index));
+    const canvas = new GifCanvas(gif);
+    let done = 0;
+
+    for (const row of rows) {
+      if (cancelled) break;
+
+      // Every frame is drawn even when only every fifth is kept: frame 40 is
+      // frames 1 to 39 underneath it whether or not anybody asked for them.
+      const step = canvas.next();
+      if (!picked.has(row.index)) continue;
+
+      const pixels = step.pixels.slice();
+      if (options.colour) flatten(pixels, options.colour);
+
+      const { x, y } = cellAt(done, plan, gif.width, gif.height);
+      context.putImageData(new ImageData(pixels, gif.width, gif.height), x, y);
+
+      done += 1;
+      // The stored setting cannot apply to a sheet, and saying so while the
+      // sheet is drawing is the one moment somebody is looking at this line.
+      progress(done, kept.length,
+        options.stored ? phrase('sheet.stored') : phrase('sheet.drawing'));
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+
+    if (cancelled) {
+      hideProgress();
+      return;
+    }
+
+    const blob = await new Promise((resolve, reject) => {
+      sheet.toBlob((made) => {
+        if (made) resolve(made);
+        else reject(new Error('This browser would not write a PNG.'));
+      }, 'image/png');
+    });
+    save(blob, sheetName(baseName(file.name), plan));
+    hideProgress();
+  } catch (error) {
+    hideProgress();
+    showError(`That sheet could not be written: ${error.message}`);
+  } finally {
+    working = false;
+    el.cancel.hidden = true;
+    el.downloadAll.disabled = false;
+    el.downloadSelected.disabled = false;
+    el.downloadSheet.disabled = false;
+  }
+}
+
+
 async function downloadZip(wanted) {
   if (working || !wanted.length) return;
 
@@ -544,6 +646,7 @@ el.clear.addEventListener('click', () => { reset(); clearError(); });
 
 el.downloadAll.addEventListener('click', () => downloadZip(rows));
 el.downloadSelected.addEventListener('click', () => downloadZip(rows.filter((row) => row.checked)));
+el.downloadSheet.addEventListener('click', () => downloadSheet());
 el.cancel.addEventListener('click', () => { cancelled = true; });
 
 window.addEventListener('beforeunload', (event) => {

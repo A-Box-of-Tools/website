@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Télécharger toutes les images en ZIP</button>
       <button type="button" id="download-selected" class="ghost" hidden>Télécharger les images cochées</button>
+      <button type="button" id="download-sheet" class="ghost">T&eacute;l&eacute;charger en une planche de sprites</button>
       <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
     </div>
 
@@ -113,6 +114,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Dessin de la planche&hellip;</span>
+    <span data-phrase="sheet.toobig">Cette planche ferait {width} sur {height} pixels, ce qu'aucun navigateur ne dessine. Gardez plut&ocirc;t une image sur deux, ou enregistrez les images dans un ZIP.</span>
+    <span data-phrase="sheet.stored">Une planche exige des cases de m&ecirc;me taille : elle utilise donc l'image telle qu'elle appara&icirc;t, et non les seuls pixels que cette image stocke.</span>
     <span data-phrase="net.clean">votre GIF n'est allé nulle part. {total}
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

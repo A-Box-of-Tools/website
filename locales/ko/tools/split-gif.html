@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">모든 프레임 ZIP으로 내려받기</button>
       <button type="button" id="download-selected" class="ghost" hidden>고른 프레임 내려받기</button>
+      <button type="button" id="download-sheet" class="ghost">하나의 스프라이트 시트로 내려받기</button>
       <button type="button" id="cancel" class="ghost" hidden>취소</button>
     </div>
 
@@ -113,6 +114,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">시트를 그리는 중&hellip;</span>
+    <span data-phrase="sheet.toobig">이 시트는 {width} × {height}픽셀이 되어 어떤 브라우저도 그리지 못합니다. 두 프레임 중 하나만 남기거나, 프레임을 ZIP으로 저장하세요.</span>
+    <span data-phrase="sheet.stored">시트는 모든 칸의 크기가 같아야 하므로, 그 프레임이 저장한 픽셀만이 아니라 보이는 그대로의 프레임을 사용합니다.</span>
     <span data-phrase="net.clean">GIF는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
       {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.

@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Alle Einzelbilder als ZIP herunterladen</button>
       <button type="button" id="download-selected" class="ghost" hidden>Die ausgewählten Einzelbilder herunterladen</button>
+      <button type="button" id="download-sheet" class="ghost">Als ein Spritesheet herunterladen</button>
       <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
     </div>
 
@@ -113,6 +114,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Das Blatt wird gezeichnet&hellip;</span>
+    <span data-phrase="sheet.toobig">Dieses Blatt w&auml;re {width} mal {height} Pixel gro&szlig;, und das zeichnet kein Browser. Behalten Sie stattdessen jedes zweite Einzelbild, oder speichern Sie die Einzelbilder als ZIP.</span>
+    <span data-phrase="sheet.stored">Ein Blatt braucht in jeder Zelle dieselbe Gr&ouml;&szlig;e und nimmt deshalb das Einzelbild, wie es erscheint, statt nur der Pixel, die ein Einzelbild speichert.</span>
     <span data-phrase="net.clean">Ihr GIF ist nirgendwohin gegangen. {total}
       Dateien geladen. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

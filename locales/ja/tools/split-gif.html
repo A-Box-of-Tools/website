@@ -76,6 +76,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">全コマをZIPでダウンロード</button>
       <button type="button" id="download-selected" class="ghost" hidden>選んだコマをダウンロード</button>
+      <button type="button" id="download-sheet" class="ghost">1枚のスプライトシートとしてダウンロード</button>
       <button type="button" id="cancel" class="ghost" hidden>中止</button>
     </div>
 
@@ -111,6 +112,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">シートを描いています&hellip;</span>
+    <span data-phrase="sheet.toobig">そのシートは{width}×{height}ピクセルになり、どのブラウザーも描画できません。2コマに1枚だけ残すか、コマをZIPで保存してください。</span>
+    <span data-phrase="sheet.stored">シートはすべてのセルが同じ大きさである必要があるため、そのコマが保存している画素だけではなく、表示されるままのコマを使います。</span>
     <span data-phrase="net.clean">GIFはどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>

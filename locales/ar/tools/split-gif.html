@@ -77,6 +77,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">نزِّل كل إطار في ملف ZIP</button>
       <button type="button" id="download-selected" class="ghost" hidden>نزِّل الإطارات المحدَّدة</button>
+      <button type="button" id="download-sheet" class="ghost">تنزيل كورقة سبرايت واحدة</button>
       <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
     </div>
 
@@ -112,6 +113,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">يجري رسم الورقة&hellip;</span>
+    <span data-phrase="sheet.toobig">ستكون الورقة {width} &times; {height} بكسل، ولا يرسم أي متصفح هذا الحجم. احتفظ بإطار من كل إطارين، أو احفظ الإطارات في ملف ZIP.</span>
+    <span data-phrase="sheet.stored">تحتاج الورقة إلى خلايا متساوية الحجم، لذا تستخدم الإطار كما يظهر لا البكسلات التي يخزّنها ذلك الإطار وحدها.</span>
     <span data-phrase="net.clean">صورة GIF الخاصة بك لم تذهب إلى أي مكان.
       {total} ملفاً حُمِّلت. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

@@ -78,6 +78,7 @@
     <div class="export-row">
       <button type="button" id="download-all" class="primary">Descargar todos los fotogramas en un ZIP</button>
       <button type="button" id="download-selected" class="ghost" hidden>Descargar los fotogramas marcados</button>
+      <button type="button" id="download-sheet" class="ghost">Descargar como una hoja de sprites</button>
       <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
     </div>
 
@@ -113,6 +114,9 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="sheet.drawing">Dibujando la hoja&hellip;</span>
+    <span data-phrase="sheet.toobig">Esa hoja medir&iacute;a {width} por {height} p&iacute;xeles, y ning&uacute;n navegador la dibuja. Conserva un fotograma de cada dos, o guarda los fotogramas en un ZIP.</span>
+    <span data-phrase="sheet.stored">Una hoja necesita que todas las celdas midan lo mismo, as&iacute; que usa el fotograma tal como se ve y no s&oacute;lo los p&iacute;xeles que ese fotograma guarda.</span>
     <span data-phrase="net.clean">tu GIF no ha ido a ninguna parte. {total}
       archivos cargados. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
