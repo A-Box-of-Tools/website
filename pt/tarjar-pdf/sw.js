@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/tarjar-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'fc2a6048d8';
+const CACHE_NAME=CACHE_PREFIX+'863ab8e092';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=d5d8ff24e9',
+'styles.css?v=443b642ef1',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

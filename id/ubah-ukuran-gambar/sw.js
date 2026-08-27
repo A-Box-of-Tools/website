@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/ubah-ukuran-gambar/:';
-const CACHE_NAME=CACHE_PREFIX+'510fc86411';
+const CACHE_NAME=CACHE_PREFIX+'47ce78221b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=bbe81d9136',
+'styles.css?v=d548e2ab50',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

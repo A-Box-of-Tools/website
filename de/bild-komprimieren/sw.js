@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bild-komprimieren/:';
-const CACHE_NAME=CACHE_PREFIX+'847c110584';
+const CACHE_NAME=CACHE_PREFIX+'a53316a215';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=67a7341686',
+'styles.css?v=611cbe0e92',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

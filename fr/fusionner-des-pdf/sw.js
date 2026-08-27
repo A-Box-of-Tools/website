@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/fusionner-des-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'ac14dfae46';
+const CACHE_NAME=CACHE_PREFIX+'3e2a98ab81';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=b11d535d01',
+'styles.css?v=13d29f8293',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
