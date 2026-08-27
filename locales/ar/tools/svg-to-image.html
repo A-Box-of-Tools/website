@@ -185,7 +185,7 @@
     <p id="preview-empty" class="field-summary">أضِف ملف SVG فيظهر هنا.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>حوِّل إلى بكسلات</button>
+      <button type="button" id="run" class="primary big" disabled>أنشئ الصور</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -210,6 +210,26 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">أنشئ الصورة</span>
+    <span data-phrase="run.many">أنشئ الصور {count}</span>
+    <span data-phrase="chosen.one">ملف واحد مختار</span>
+    <span data-phrase="chosen.many">{count} ملفات مختارة</span>
+    <span data-phrase="drawing.one">يجري رسم صورة&hellip;</span>
+    <span data-phrase="drawing.many">يجري رسم {count} صورة&hellip;</span>
+    <span data-phrase="drawing.each">يجري رسم {name}&hellip;</span>
+    <span data-phrase="progress.done">تم.</span>
+    <span data-phrase="written.one">{name}، {size}، {bytes}.</span>
+    <span data-phrase="written.many">كُتبت {count} صورة من {drawings} رسمة، {bytes} في المجموع.</span>
+    <span data-phrase="source.attributes">{size} &mdash; المقاس الذي يطلبه الملف</span>
+    <span data-phrase="source.mixed">{size} &mdash; ضلع من الملف والآخر من viewBox الخاصة به</span>
+    <span data-phrase="source.viewbox">{size} &mdash; لا مقاس بالبكسل، مأخوذ من viewBox</span>
+    <span data-phrase="source.default">{size} مفترض &mdash; هذا الملف لا يذكر مقاساً ولا viewBox</span>
+    <span data-phrase="row.preview">اعرض هذا في المعاينة</span>
+    <span data-phrase="row.remove">أخرج {name} من القائمة</span>
+    <span data-phrase="result.from">من {name}، التي ترسم نفسها بمقاس {size} &mdash; {times} ذلك.</span>
+    <span data-phrase="result.from.density">من {name}، التي ترسم نفسها بمقاس {size} &mdash; {times} ذلك، و@{density}x للملف فوقه.</span>
+    <span data-phrase="result.download">نزِّل</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; هذا المتصفح لا يستطيع كتابته</span>
     <span data-phrase="net.clean">ملفاتك لم تذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

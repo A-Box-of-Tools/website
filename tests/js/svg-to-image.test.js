@@ -27,7 +27,7 @@ import {
   planSize, times,
 } from '../../tools/svg-to-image/src/sizing.js';
 import {
-  countOf, describeSource, dimensions, outName, stemOf, uniqueNames,
+  dimensions, outName, sourceKey, stemOf, uniqueNames,
 } from '../../tools/svg-to-image/src/files.js';
 
 /** The shape most of these are about: a 24-unit icon, the size a UI kit ships. */
@@ -487,14 +487,17 @@ test('uniqueNames: the clash is judged the way a file system judges it', () => {
   assert.deepEqual(uniqueNames(['Icon.png', 'icon.png']), ['Icon.png', 'icon-2.png']);
 });
 
-test('describeSource: a size that was assumed does not read like one that was found', () => {
-  assert.match(describeSource({ width: 24, height: 24, source: 'attributes' }), /the file asks for/);
-  assert.match(describeSource({ width: 24, height: 24, source: 'viewbox' }), /viewBox/);
-  assert.match(describeSource({ width: 300, height: 150, source: 'default' }), /assumed/);
+test('sourceKey: a size that was assumed is named apart from one that was found', () => {
+  // The sentences themselves live in body.html, in fifteen languages. What a
+  // leaf module owes the page is which of them applies, and that a size nobody
+  // declared never gets named as one that was read.
+  assert.equal(sourceKey({ width: 24, height: 24, source: 'attributes' }), 'source.attributes');
+  assert.equal(sourceKey({ width: 24, height: 24, source: 'mixed' }), 'source.mixed');
+  assert.equal(sourceKey({ width: 24, height: 24, source: 'viewbox' }), 'source.viewbox');
+  assert.equal(sourceKey({ width: 300, height: 150, source: 'default' }), 'source.default');
+  assert.equal(sourceKey({ width: 300, height: 150, source: undefined }), 'source.default');
 });
 
-test('dimensions and countOf: said the same way wherever they appear', () => {
+test('dimensions: said the same way wherever it appears', () => {
   assert.equal(dimensions(16, 9), '16 × 9');
-  assert.equal(countOf(1), '1 file');
-  assert.equal(countOf(4), '4 files');
 });

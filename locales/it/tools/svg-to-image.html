@@ -191,7 +191,7 @@
     <p id="preview-empty" class="field-summary">Aggiungi un SVG e compare qui.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Rasterizza</button>
+      <button type="button" id="run" class="primary big" disabled>Crea le immagini</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -216,6 +216,26 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Crea l&rsquo;immagine</span>
+    <span data-phrase="run.many">Crea le {count} immagini</span>
+    <span data-phrase="chosen.one">Un file scelto</span>
+    <span data-phrase="chosen.many">{count} file scelti</span>
+    <span data-phrase="drawing.one">Sto disegnando un&rsquo;immagine&hellip;</span>
+    <span data-phrase="drawing.many">Sto disegnando {count} immagini&hellip;</span>
+    <span data-phrase="drawing.each">Sto disegnando {name}&hellip;</span>
+    <span data-phrase="progress.done">Fatto.</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} immagini scritte da {drawings} disegni, {bytes} in tutto.</span>
+    <span data-phrase="source.attributes">{size} &mdash; la misura che chiede il file</span>
+    <span data-phrase="source.mixed">{size} &mdash; un lato dal file, l&rsquo;altro dalla sua viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; nessuna misura in pixel, presa dalla viewBox</span>
+    <span data-phrase="source.default">{size} supposta &mdash; questo file non dichiara né misura né viewBox</span>
+    <span data-phrase="row.preview">Mostra questo nell&rsquo;anteprima</span>
+    <span data-phrase="row.remove">Togli {name} dalla lista</span>
+    <span data-phrase="result.from">Da {name}, che si disegna a {size} &mdash; {times} quella.</span>
+    <span data-phrase="result.from.density">Da {name}, che si disegna a {size} &mdash; {times} quella, e il @{density}x del file qui sopra.</span>
+    <span data-phrase="result.download">Scarica</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; questo browser non sa scriverlo</span>
     <span data-phrase="net.clean">I tuoi file non sono andati da nessuna parte.
       {total} file caricati, tutti quanti di questo sito. {platform}</span>
     <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo

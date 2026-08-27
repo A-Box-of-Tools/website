@@ -190,7 +190,7 @@
     <p id="preview-empty" class="field-summary">Añade un SVG y aparece aquí.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Rasterizar</button>
+      <button type="button" id="run" class="primary big" disabled>Crear las imágenes</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -215,6 +215,26 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Crear la imagen</span>
+    <span data-phrase="run.many">Crear las {count} imágenes</span>
+    <span data-phrase="chosen.one">Un archivo elegido</span>
+    <span data-phrase="chosen.many">{count} archivos elegidos</span>
+    <span data-phrase="drawing.one">Dibujando una imagen&hellip;</span>
+    <span data-phrase="drawing.many">Dibujando {count} imágenes&hellip;</span>
+    <span data-phrase="drawing.each">Dibujando {name}&hellip;</span>
+    <span data-phrase="progress.done">Listo.</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} imágenes escritas a partir de {drawings} dibujos, {bytes} en total.</span>
+    <span data-phrase="source.attributes">{size} &mdash; el tamaño que pide el archivo</span>
+    <span data-phrase="source.mixed">{size} &mdash; un lado del archivo, el otro de su viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; sin tamaño en píxeles, tomado del viewBox</span>
+    <span data-phrase="source.default">{size} supuesto &mdash; este archivo no declara tamaño ni viewBox</span>
+    <span data-phrase="row.preview">Mostrar este en la vista previa</span>
+    <span data-phrase="row.remove">Quitar {name} de la lista</span>
+    <span data-phrase="result.from">De {name}, que se dibuja a {size} &mdash; {times} eso.</span>
+    <span data-phrase="result.from.density">De {name}, que se dibuja a {size} &mdash; {times} eso, y el @{density}x del archivo de arriba.</span>
+    <span data-phrase="result.download">Descargar</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; este navegador no sabe escribirlo</span>
     <span data-phrase="net.clean">tus archivos no han ido a ninguna parte.
       {total} archivos cargados, todos ellos de esta misma página. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta

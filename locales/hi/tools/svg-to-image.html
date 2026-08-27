@@ -190,7 +190,7 @@
     <p id="preview-empty" class="field-summary">कोई SVG जोड़िए और वह यहाँ आ जाएगी।</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>रैस्टराइज़ कीजिए</button>
+      <button type="button" id="run" class="primary big" disabled>तस्वीरें बनाइए</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -215,6 +215,26 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">तस्वीर बनाइए</span>
+    <span data-phrase="run.many">{count} तस्वीरें बनाइए</span>
+    <span data-phrase="chosen.one">एक फ़ाइल चुनी गई</span>
+    <span data-phrase="chosen.many">{count} फ़ाइलें चुनी गईं</span>
+    <span data-phrase="drawing.one">एक तस्वीर बनाई जा रही है&hellip;</span>
+    <span data-phrase="drawing.many">{count} तस्वीरें बनाई जा रही हैं&hellip;</span>
+    <span data-phrase="drawing.each">{name} बनाई जा रही है&hellip;</span>
+    <span data-phrase="progress.done">हो गया।</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}।</span>
+    <span data-phrase="written.many">{drawings} चित्रों से {count} तस्वीरें लिखी गईं, कुल {bytes}।</span>
+    <span data-phrase="source.attributes">{size} &mdash; वह आकार जो फ़ाइल माँगती है</span>
+    <span data-phrase="source.mixed">{size} &mdash; एक भुजा फ़ाइल से, दूसरी उसके viewBox से</span>
+    <span data-phrase="source.viewbox">{size} &mdash; पिक्सेल आकार नहीं, viewBox से लिया गया</span>
+    <span data-phrase="source.default">{size} मान लिया &mdash; यह फ़ाइल न आकार बताती है न viewBox</span>
+    <span data-phrase="row.preview">इसे झलक में दिखाइए</span>
+    <span data-phrase="row.remove">{name} को सूची से हटाइए</span>
+    <span data-phrase="result.from">{name} से, जो ख़ुद को {size} पर बनाती है &mdash; उसका {times}।</span>
+    <span data-phrase="result.from.density">{name} से, जो ख़ुद को {size} पर बनाती है &mdash; उसका {times}, और ऊपर वाली फ़ाइल का @{density}x।</span>
+    <span data-phrase="result.download">डाउनलोड</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; यह ब्राउज़र इसे लिख नहीं सकता</span>
     <span data-phrase="net.clean">आपकी फ़ाइलें कहीं नहीं गईं। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

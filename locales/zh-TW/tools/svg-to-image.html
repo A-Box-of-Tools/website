@@ -181,7 +181,7 @@
     <p id="preview-empty" class="field-summary">加一個 SVG，它就出現在這裡。</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>開始轉換</button>
+      <button type="button" id="run" class="primary big" disabled>產生圖片</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -206,6 +206,26 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">產生圖片</span>
+    <span data-phrase="run.many">產生 {count} 張圖片</span>
+    <span data-phrase="chosen.one">已選 1 個檔案</span>
+    <span data-phrase="chosen.many">已選 {count} 個檔案</span>
+    <span data-phrase="drawing.one">正在繪製 1 張圖片&hellip;</span>
+    <span data-phrase="drawing.many">正在繪製 {count} 張圖片&hellip;</span>
+    <span data-phrase="drawing.each">正在繪製 {name}&hellip;</span>
+    <span data-phrase="progress.done">完成。</span>
+    <span data-phrase="written.one">{name}，{size}，{bytes}。</span>
+    <span data-phrase="written.many">從 {drawings} 張圖形寫出 {count} 張圖片，共 {bytes}。</span>
+    <span data-phrase="source.attributes">{size} &mdash; 檔案自己要求的尺寸</span>
+    <span data-phrase="source.mixed">{size} &mdash; 一邊來自檔案，另一邊來自它的 viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; 沒有畫素尺寸，取自 viewBox</span>
+    <span data-phrase="source.default">{size}（推定）&mdash; 這個檔案既沒寫尺寸也沒寫 viewBox</span>
+    <span data-phrase="row.preview">在預覽裡顯示這一個</span>
+    <span data-phrase="row.remove">把 {name} 移出列表</span>
+    <span data-phrase="result.from">來自 {name}，它把自己畫成 {size} &mdash; 是它的 {times}。</span>
+    <span data-phrase="result.from.density">來自 {name}，它把自己畫成 {size} &mdash; 是它的 {times}，也是上面那個檔案的 @{density}x。</span>
+    <span data-phrase="result.download">下載</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; 這個瀏覽器寫不了</span>
     <span data-phrase="net.clean">你的檔案沒有去任何地方。載入了 {total} 個檔案，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到檔案，或檔案裡的一個位元組。</span>

@@ -187,7 +187,7 @@
     <p id="preview-empty" class="field-summary">Add an SVG and it appears here.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Rasterize</button>
+      <button type="button" id="run" class="primary big" disabled>Make the image</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -212,6 +212,32 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Make the image</span>
+    <span data-phrase="run.many">Make the {count} images</span>
+    <span data-phrase="chosen.one">One file chosen</span>
+    <span data-phrase="chosen.many">{count} files chosen</span>
+    <span data-phrase="source.attributes">{size} &mdash; the size the file asks for</span>
+    <span data-phrase="source.mixed">{size} &mdash; one side from the file, the other from
+      its viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; no pixel size, taken from the
+      viewBox</span>
+    <span data-phrase="source.default">{size} assumed &mdash; this file declares no size and
+      no viewBox</span>
+    <span data-phrase="drawing.one">Drawing one image&hellip;</span>
+    <span data-phrase="drawing.many">Drawing {count} images&hellip;</span>
+    <span data-phrase="drawing.each">Drawing {name}&hellip;</span>
+    <span data-phrase="progress.done">Done.</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} images written from {drawings} drawings,
+      {bytes} in total.</span>
+    <span data-phrase="row.preview">Show this one in the preview</span>
+    <span data-phrase="row.remove">Take {name} off the list</span>
+    <span data-phrase="result.from">From {name}, which draws itself at {size} &mdash; {times}
+      that.</span>
+    <span data-phrase="result.from.density">From {name}, which draws itself at {size} &mdash;
+      {times} that, and the @{density}x of the file above it.</span>
+    <span data-phrase="result.download">Download</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; this browser cannot write it</span>
     <span data-phrase="net.clean">your files have gone nowhere. {total} files
       loaded, all of them this page's own. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

@@ -1,8 +1,13 @@
 /** Names, sizes and counts, as words a person would use. */
 
-/** File sizes. Nothing here is measured against a limit, so ordinary rounding. */
+/** File sizes. Nothing here is measured against a limit, so ordinary rounding.
+ *
+ * B rather than the word, for the same reason KB and MB are symbols: the word
+ * is English - octets in French, バイト in Japanese - and this module cannot
+ * reach the markup a translation would live in. The symbol is the same in
+ * every language the site is written in. */
 export function bytes(n) {
-  if (n < 1024) return `${n} bytes`;
+  if (n < 1024) return `${n} B`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
   return `${(n / (1024 * 1024)).toFixed(2)} MB`;
 }
@@ -11,7 +16,7 @@ export function bytes(n) {
 export const dimensions = (width, height) => `${width} × ${height}`;
 
 /** "1 file" / "4 files", said the same way everywhere on the page. */
-export const countOf = (n) => `${n} file${n === 1 ? '' : 's'}`;
+
 
 /**
  * The name with its extension taken off, or "image" if nothing is left.
@@ -72,21 +77,24 @@ export function uniqueNames(names) {
 }
 
 /**
- * What the file itself said about its size, in a phrase the page can put under
- * a row. `source` comes from svg.js and is the part worth being honest about:
- * a picture whose size was assumed rather than read is one the visitor may
- * want to override.
+ * Which sentence explains where the size came from, named rather than written.
+ * `source` comes from svg.js and is the part worth being honest about: a
+ * picture whose size was assumed rather than read is one the visitor may want
+ * to override.
+ *
+ * A key rather than the sentence itself, because this module is a leaf the
+ * tests load straight off the disk and so cannot reach the markup the words
+ * live in. main.js resolves it. See shared/js/phrases.js.
  */
-export function describeSource(intrinsic) {
-  const size = dimensions(intrinsic.width, intrinsic.height);
+export function sourceKey(intrinsic) {
   switch (intrinsic.source) {
     case 'attributes':
-      return `${size} — the size the file asks for`;
+      return 'source.attributes';
     case 'mixed':
-      return `${size} — one side from the file, the other from its viewBox`;
+      return 'source.mixed';
     case 'viewbox':
-      return `${size} — no pixel size, taken from the viewBox`;
+      return 'source.viewbox';
     default:
-      return `${size} assumed — this file declares no size and no viewBox`;
+      return 'source.default';
   }
 }

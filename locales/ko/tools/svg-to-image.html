@@ -185,7 +185,7 @@
     <p id="preview-empty" class="field-summary">SVG를 넣으면 여기 나타납니다.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>래스터화</button>
+      <button type="button" id="run" class="primary big" disabled>이미지 만들기</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -210,6 +210,26 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">이미지 만들기</span>
+    <span data-phrase="run.many">이미지 {count}개 만들기</span>
+    <span data-phrase="chosen.one">파일 한 개 선택됨</span>
+    <span data-phrase="chosen.many">파일 {count}개 선택됨</span>
+    <span data-phrase="drawing.one">이미지 한 개를 그리는 중&hellip;</span>
+    <span data-phrase="drawing.many">이미지 {count}개를 그리는 중&hellip;</span>
+    <span data-phrase="drawing.each">{name} 그리는 중&hellip;</span>
+    <span data-phrase="progress.done">완료.</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">그림 {drawings}개에서 이미지 {count}개를 썼습니다. 모두 {bytes}.</span>
+    <span data-phrase="source.attributes">{size} &mdash; 파일이 요구하는 크기</span>
+    <span data-phrase="source.mixed">{size} &mdash; 한 변은 파일에서, 다른 한 변은 viewBox에서</span>
+    <span data-phrase="source.viewbox">{size} &mdash; 픽셀 크기가 없어 viewBox에서 가져옴</span>
+    <span data-phrase="source.default">{size}로 가정 &mdash; 이 파일은 크기도 viewBox도 밝히지 않습니다</span>
+    <span data-phrase="row.preview">이것을 미리보기에 표시</span>
+    <span data-phrase="row.remove">목록에서 {name} 빼기</span>
+    <span data-phrase="result.from">{size}로 자신을 그리는 {name}에서 &mdash; 그것의 {times}.</span>
+    <span data-phrase="result.from.density">{size}로 자신을 그리는 {name}에서 &mdash; 그것의 {times}, 그리고 위 파일의 @{density}x.</span>
+    <span data-phrase="result.download">내려받기</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; 이 브라우저는 쓰지 못합니다</span>
     <span data-phrase="net.clean">파일은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이 사이트의
       것입니다. {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다. 살펴볼

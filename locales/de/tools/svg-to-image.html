@@ -191,7 +191,7 @@
     <p id="preview-empty" class="field-summary">Ein SVG hinzufügen, dann erscheint es hier.</p>
 
     <div class="run-row">
-      <button type="button" id="run" class="primary big" disabled>Rastern</button>
+      <button type="button" id="run" class="primary big" disabled>Die Bilder erstellen</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -216,6 +216,26 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="run.one">Das Bild erstellen</span>
+    <span data-phrase="run.many">Die {count} Bilder erstellen</span>
+    <span data-phrase="chosen.one">Eine Datei gewählt</span>
+    <span data-phrase="chosen.many">{count} Dateien gewählt</span>
+    <span data-phrase="drawing.one">Ein Bild wird gezeichnet&hellip;</span>
+    <span data-phrase="drawing.many">{count} Bilder werden gezeichnet&hellip;</span>
+    <span data-phrase="drawing.each">{name} wird gezeichnet&hellip;</span>
+    <span data-phrase="progress.done">Fertig.</span>
+    <span data-phrase="written.one">{name}, {size}, {bytes}.</span>
+    <span data-phrase="written.many">{count} Bilder aus {drawings} Zeichnungen geschrieben, {bytes} insgesamt.</span>
+    <span data-phrase="source.attributes">{size} &mdash; die Größe, die die Datei verlangt</span>
+    <span data-phrase="source.mixed">{size} &mdash; eine Seite aus der Datei, die andere aus ihrer viewBox</span>
+    <span data-phrase="source.viewbox">{size} &mdash; keine Pixelgröße, aus der viewBox genommen</span>
+    <span data-phrase="source.default">{size} angenommen &mdash; diese Datei nennt weder Größe noch viewBox</span>
+    <span data-phrase="row.preview">Diese hier in der Vorschau zeigen</span>
+    <span data-phrase="row.remove">{name} von der Liste nehmen</span>
+    <span data-phrase="result.from">Aus {name}, die sich selbst mit {size} zeichnet &mdash; {times} davon.</span>
+    <span data-phrase="result.from.density">Aus {name}, die sich selbst mit {size} zeichnet &mdash; {times} davon, und das @{density}x der Datei darüber.</span>
+    <span data-phrase="result.download">Herunterladen</span>
+    <span data-phrase="format.webp.missing">WebP &mdash; dieser Browser kann es nicht schreiben</span>
     <span data-phrase="net.clean">Ihre Dateien sind nirgendwohin gegangen.
       {total} Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
