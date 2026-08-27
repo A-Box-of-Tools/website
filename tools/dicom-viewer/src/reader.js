@@ -17,10 +17,16 @@
  * throwing the file away over its last element.
  */
 
-/** A read that ran off the end. Carries where, so the page can say. */
+/** A read that ran off the end. Carries where, so the page can say.
+ *
+ * The message is the KEY of a sentence rather than the sentence: this
+ * module is copied into fifteen languages and cannot reach the markup the
+ * words live in. The numbers ride along on `values`, and main.js resolves
+ * the pair. See refusal.js. */
 export class Truncated extends Error {
   constructor(at, wanted, available) {
-    super(`the file ends at ${available} bytes; ${wanted} more were needed at ${at}`);
+    super('read.pastend');
+    this.values = { at, wanted, available };
     this.name = 'Truncated';
     this.at = at;
     this.wanted = wanted;

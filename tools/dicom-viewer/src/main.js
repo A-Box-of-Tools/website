@@ -168,7 +168,10 @@ async function openFiles(files) {
       try {
         instances.push(await scan(files[at]));
       } catch (error) {
-        refused.push(`${files[at].name}: ${error.message}`);
+        // The decoders throw the key of a sentence; phrase() hands back
+        // anything it does not know unchanged, so a real message from the
+        // platform still arrives intact.
+        refused.push(`${files[at].name}: ${phrase(error.message, error.values)}`);
       }
     }
   } finally {
@@ -464,7 +467,9 @@ async function draw(file, index, fresh) {
   try {
     frame = await frameOf(file, index);
   } catch (error) {
-    return fail(phrase('pixels.failed', { reason: error.message }));
+    return fail(phrase('pixels.failed', {
+      reason: phrase(error.message, error.values),
+    }));
   }
 
   shown = frame;
@@ -987,7 +992,9 @@ function renderFacts(file) {
   el.factFile.title = exact(file.size);
   el.factRange.textContent = NOTHING;
 
-  const notes = file.warnings.slice();
+  // dicom.js names each note and carries its numbers; the sentences live in
+  // body.html, in fifteen languages.
+  const notes = file.warnings.map((note) => phrase(note.key, note.values));
   if (file.syntax.pixels === 'jpeg') notes.push(phrase('pixels.jpeg'));
   el.notes.replaceChildren();
   for (const note of notes) {
@@ -1184,14 +1191,14 @@ el.saveFrame.addEventListener('click', () => {
 
 el.downloadHeader.addEventListener('click', () => {
   if (!open) return;
-  save(new Blob([report(open, open.decoder)], { type: 'text/plain' }),
+  save(new Blob([report(open, open.decoder, phrase)], { type: 'text/plain' }),
     `${open.name.replace(/\.dcm$/i, '')}-header.txt`);
 });
 
 el.copyHeader.addEventListener('click', async () => {
   if (!open) return;
   try {
-    await navigator.clipboard.writeText(report(open, open.decoder));
+    await navigator.clipboard.writeText(report(open, open.decoder, phrase));
     el.copyStatus.textContent = phrase('copied');
   } catch {
     el.copyStatus.textContent = phrase('copy.failed');

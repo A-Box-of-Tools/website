@@ -181,6 +181,61 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">tidak ada penanda DICM di bita ke-128, dan bita-bita pertamanya pun bukan elemen
+      DICOM</span>
+    <span data-phrase="jpeg.nosoi">fragmen ini tidak dimulai dengan penanda JPEG SOI</span>
+    <span data-phrase="jpeg.scanfirst">sebuah pemindaian JPEG datang sebelum kepala bingkainya</span>
+    <span data-phrase="jpeg.dct">fragmen ini JPEG berbasis DCT, bukan yang nirsusut</span>
+    <span data-phrase="jpeg.noframe">fragmen ini tidak membawa kepala bingkai JPEG</span>
+    <span data-phrase="jpeg.nosize">sebuah bingkai JPEG tanpa ukuran</span>
+    <span data-phrase="jpeg.subsampled">bingkai ini mencuplik-turun komponennya, dan JPEG nirsusut di sini tidak
+      mendukungnya</span>
+    <span data-phrase="jpeg.precision">sebuah bingkai JPEG {bits} bita-bit, di luar rentang 2 sampai 16 yang diizinkan
+      format ini</span>
+    <span data-phrase="jpeg.notable">pemindaian ini menyebut tabel Huffman yang tak pernah didefinisikan file ini</span>
+    <span data-phrase="jpeg.longcode">sebuah kode Huffman lebih panjang dari enam belas bit yang diizinkan format ini</span>
+    <span data-phrase="rle.short">kepala segmen RLE panjangnya 64 bita dan fragmen ini lebih pendek</span>
+    <span data-phrase="rle.segments">sebuah bingkai RLE menyatakan {count} segmen, sedangkan format mengizinkan 1 sampai
+      15</span>
+    <span data-phrase="rle.wrongcount">citra ini butuh {wanted} segmen RLE dan bingkainya punya {count}</span>
+    <span data-phrase="rle.outside">segmen RLE {segment} menunjuk ke luar fragmen</span>
+    <span data-phrase="pixels.nosize">file ini tidak menyatakan ukuran citra</span>
+    <span data-phrase="pixels.nofragments">file ini tidak punya fragmen data piksel</span>
+    <span data-phrase="pixels.nodecoder">{syntax} adalah kompresi yang tak bisa diurai halaman ini</span>
+    <span data-phrase="pixels.pastend">citra {frame} berada di luar ujung data piksel</span>
+    <span data-phrase="pixels.noframefragment">tak ada fragmen data piksel yang memuat citra {frame}</span>
+    <span data-phrase="pixels.oddbits">{bits} bit per cuplikan, yang bukan 1, 8, 16, atau 32</span>
+    <span data-phrase="pixels.nooffsets">file ini punya {fragments} fragmen data piksel untuk {frames} citra dan tanpa tabel
+      ofset yang menyebut mana milik mana</span>
+    <span data-phrase="read.pastend">file berakhir pada {available} bita; di {at} masih dibutuhkan {wanted} lagi</span>
+    <span data-phrase="note.baredataset">File ini tidak punya penanda DICM, jadi dibaca sebagai kumpulan data telanjang dalam
+      {syntax}. Itu disimpulkan dari elemen pertamanya, bukan dinyatakan.</span>
+    <span data-phrase="note.nosyntax">Grup meta file tidak menyebut sintaksis transfer apa pun, jadi kumpulan datanya
+      dibaca sebagai Implicit VR Little Endian, sebagaimana yang diminta standar untuk
+      diandaikan.</span>
+    <span data-phrase="note.unknownsyntax">Sintaksis transfer {uid} bukan yang dikenali perkakas ini. Kepala di bawah dibaca
+      sebagai Explicit VR Little Endian, yang dipakai setiap sintaksis terdaftar sejak
+      1995; pikselnya tidak bisa diurai.</span>
+    <span data-phrase="note.truncated">File berakhir di tengah elemen pada bita {at}; semua yang sebelumnya terbaca.</span>
+    <span data-phrase="stop.undefinedlength">Elemen {tag} menyatakan panjang tak terdefinisi, yang hanya boleh dilakukan sebuah
+      urutan. Tak ada yang setelahnya bisa dibaca.</span>
+    <span data-phrase="stop.toolong">Elemen pada bita {at} menyebut nilainya {length} bita, sedangkan di file hanya
+      tersisa {left}.</span>
+    <span data-phrase="report.title">Kepala DICOM &mdash; {name}</span>
+    <span data-phrase="report.filesize">Ukuran file</span>
+    <span data-phrase="report.bytes">{count} bita</span>
+    <span data-phrase="report.syntax">Sintaksis transfer</span>
+    <span data-phrase="report.object">Objek</span>
+    <span data-phrase="report.image">Citra</span>
+    <span data-phrase="report.bits">{bits} bit</span>
+    <span data-phrase="report.greyscale">skala abu-abu</span>
+    <span data-phrase="report.samples">{count} cuplikan</span>
+    <span data-phrase="report.frames">Citra</span>
+    <span data-phrase="report.spacing">Jarak piksel</span>
+    <span data-phrase="report.notes">Catatan tentang pembacaan file ini</span>
+    <span data-phrase="report.meta">Informasi meta file</span>
+    <span data-phrase="report.dataset">Kumpulan data</span>
+    <span data-phrase="report.origin">Dibaca di peramban pada {origin}, yang tidak mengunggah apa pun.</span>
     <span data-phrase="mode.window">Seret melintasi gambarnya untuk melebarkan atau menyempitkan jendelanya, dan ke atas atau ke bawah untuk menggeser pusatnya. Kedua angkanya ada di bawah, dan mengetik ke dalamnya melakukan hal yang sama.</span>
     <span data-phrase="mode.pan">Seret untuk memindahkan gambarnya di dalam bingkainya. Roda gulir memperbesar, dan &ldquo;Paskan&rdquo; mengembalikannya.</span>
     <span data-phrase="mode.measure">Seret sebuah garis melintasi gambarnya untuk mengukurnya. Kalau file-nya mengatakan seberapa jauh jarak antar pikselnya, jawabannya dalam milimeter; kalau tidak, jawabannya dalam piksel dan ia mengatakannya.</span>

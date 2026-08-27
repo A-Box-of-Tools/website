@@ -180,6 +180,57 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">128. baytta DICM imi yok, ve ilk baytlar da bir DICOM ögesi değil</span>
+    <span data-phrase="jpeg.nosoi">bu parça bir JPEG SOI imiyle başlamıyor</span>
+    <span data-phrase="jpeg.scanfirst">bir JPEG taraması kendi çerçeve başlığından önce geldi</span>
+    <span data-phrase="jpeg.dct">bu parça DCT tabanlı bir JPEG, kayıpsız olan değil</span>
+    <span data-phrase="jpeg.noframe">bu parça hiçbir JPEG çerçeve başlığı taşımıyor</span>
+    <span data-phrase="jpeg.nosize">boyutu olmayan bir JPEG çerçevesi</span>
+    <span data-phrase="jpeg.subsampled">bu çerçeve bileşenlerini alt örnekliyor; buradaki kayıpsız JPEG bunu desteklemiyor</span>
+    <span data-phrase="jpeg.precision">{bits} bitlik bir JPEG çerçevesi &mdash; biçimin izin verdiği 2 ile 16 aralığının
+      dışında</span>
+    <span data-phrase="jpeg.notable">bu tarama, dosyanın hiç tanımlamadığı bir Huffman tablosunu anıyor</span>
+    <span data-phrase="jpeg.longcode">biçimin izin verdiği on altı bitten uzun bir Huffman kodu</span>
+    <span data-phrase="rle.short">RLE parça başlığı 64 bayttır, bu parça ise daha kısa</span>
+    <span data-phrase="rle.segments">bir RLE çerçevesi {count} parça bildiriyor; biçim 1 ile 15 arasına izin veriyor</span>
+    <span data-phrase="rle.wrongcount">bu görüntü {wanted} RLE parçası istiyor, çerçevede ise {count} var</span>
+    <span data-phrase="rle.outside">RLE parçası {segment} parçanın dışını gösteriyor</span>
+    <span data-phrase="pixels.nosize">bu dosya hiçbir görüntü boyutu bildirmiyor</span>
+    <span data-phrase="pixels.nofragments">bu dosyada piksel verisi parçası yok</span>
+    <span data-phrase="pixels.nodecoder">{syntax}, bu sayfanın çözemediği bir sıkıştırma</span>
+    <span data-phrase="pixels.pastend">{frame}. görüntü piksel verisinin sonundan öteye düşüyor</span>
+    <span data-phrase="pixels.noframefragment">hiçbir piksel verisi parçası {frame}. görüntüyü tutmuyor</span>
+    <span data-phrase="pixels.oddbits">örnek başına {bits} bit &mdash; bu 1, 8, 16 ya da 32 değil</span>
+    <span data-phrase="pixels.nooffsets">bu dosyada {frames} görüntü için {fragments} piksel verisi parçası var ve hangisinin
+      hangisine ait olduğunu söyleyecek bir konum tablosu yok</span>
+    <span data-phrase="read.pastend">dosya {available} baytta bitiyor; {at} konumunda {wanted} bayt daha gerekiyordu</span>
+    <span data-phrase="note.baredataset">Bu dosyada DICM imi yok, bu yüzden {syntax} ile çıplak bir veri kümesi olarak
+      okundu. Bu, bildirilmiş değil, ilk ögesinden çıkarıldı.</span>
+    <span data-phrase="note.nosyntax">Dosya meta grubu hiçbir aktarım sözdizimi anmıyor, bu yüzden veri kümesi Implicit VR
+      Little Endian olarak okundu &mdash; standardın varsayılmasını söylediği budur.</span>
+    <span data-phrase="note.unknownsyntax">{uid} aktarım sözdizimi bu aracın tanıdıklarından değil. Aşağıdaki başlık,
+      1995&rsquo;ten bu yana kayıtlı her sözdiziminin kullandığı Explicit VR Little Endian
+      olarak okundu; pikseller çözülemedi.</span>
+    <span data-phrase="note.truncated">Dosya, {at} baytındaki ögenin ortasında bitiyor; ondan öncesi okundu.</span>
+    <span data-phrase="stop.undefinedlength">{tag} ögesi tanımsız bir uzunluk bildiriyor; bunu yalnızca bir dizi yapabilir. Ondan
+      sonrası okunamadı.</span>
+    <span data-phrase="stop.toolong">{at} baytındaki öge değerinin {length} bayt olduğunu söylüyor, oysa dosyada yalnızca
+      {left} bayt kaldı.</span>
+    <span data-phrase="report.title">DICOM başlığı &mdash; {name}</span>
+    <span data-phrase="report.filesize">Dosya boyutu</span>
+    <span data-phrase="report.bytes">{count} bayt</span>
+    <span data-phrase="report.syntax">Aktarım sözdizimi</span>
+    <span data-phrase="report.object">Nesne</span>
+    <span data-phrase="report.image">Görüntü</span>
+    <span data-phrase="report.bits">{bits} bit</span>
+    <span data-phrase="report.greyscale">gri tonlama</span>
+    <span data-phrase="report.samples">{count} örnek</span>
+    <span data-phrase="report.frames">Görüntüler</span>
+    <span data-phrase="report.spacing">Piksel aralığı</span>
+    <span data-phrase="report.notes">Bu dosyanın okunmasına dair notlar</span>
+    <span data-phrase="report.meta">Dosya meta bilgileri</span>
+    <span data-phrase="report.dataset">Veri kümesi</span>
+    <span data-phrase="report.origin">{origin} adresinde, hiçbir şey yüklemeyen bir tarayıcıda okundu.</span>
     <span data-phrase="mode.window">Pencereyi genişletmek ya da daraltmak için resim üzerinde yatay, merkezini kaydırmak için dikey sürükleyin. İki sayı da aşağıda ve içlerine yazmak da aynı şeyi yapar.</span>
     <span data-phrase="mode.pan">Resmi kendi çerçevesi içinde taşımak için sürükleyin. Fare tekerleği yakınlaştırır, &laquo;Sığdır&raquo; ise geri koyar.</span>
     <span data-phrase="mode.measure">Ölçmek için resmin üzerine bir çizgi sürükleyin. Dosya piksellerinin birbirine ne kadar uzak olduğunu söylüyorsa cevap milimetre cinsindendir; söylemiyorsa cevap piksel cinsindendir ve bunu söyler.</span>

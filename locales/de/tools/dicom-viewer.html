@@ -181,6 +181,59 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">bei Byte 128 steht keine DICM-Kennung, und die ersten Bytes sind auch kein
+      DICOM-Element</span>
+    <span data-phrase="jpeg.nosoi">dieses Fragment beginnt nicht mit einer JPEG-SOI-Marke</span>
+    <span data-phrase="jpeg.scanfirst">ein JPEG-Scan kam vor seinem Rahmenkopf</span>
+    <span data-phrase="jpeg.dct">dieses Fragment ist ein DCT-JPEG, kein verlustfreies</span>
+    <span data-phrase="jpeg.noframe">dieses Fragment trägt keinen JPEG-Rahmenkopf</span>
+    <span data-phrase="jpeg.nosize">ein JPEG-Rahmen ohne Größe</span>
+    <span data-phrase="jpeg.subsampled">dieser Rahmen unterabtastet seine Komponenten, was verlustfreies JPEG hier nicht
+      unterstützt</span>
+    <span data-phrase="jpeg.precision">ein JPEG-Rahmen mit {bits} Bit, was außerhalb der 2 bis 16 liegt, die das Format
+      erlaubt</span>
+    <span data-phrase="jpeg.notable">dieser Scan nennt eine Huffman-Tabelle, die die Datei nie definiert hat</span>
+    <span data-phrase="jpeg.longcode">ein Huffman-Code, länger als die sechzehn Bit, die das Format erlaubt</span>
+    <span data-phrase="rle.short">der RLE-Segmentkopf ist 64 Bytes lang und dieses Fragment ist kürzer</span>
+    <span data-phrase="rle.segments">ein RLE-Rahmen nennt {count} Segmente, und das Format erlaubt 1 bis 15</span>
+    <span data-phrase="rle.wrongcount">dieses Bild braucht {wanted} RLE-Segmente und der Rahmen hat {count}</span>
+    <span data-phrase="rle.outside">RLE-Segment {segment} zeigt aus dem Fragment hinaus</span>
+    <span data-phrase="pixels.nosize">diese Datei nennt keine Bildgröße</span>
+    <span data-phrase="pixels.nofragments">diese Datei hat keine Pixeldaten-Fragmente</span>
+    <span data-phrase="pixels.nodecoder">{syntax} ist eine Kompression, die diese Seite nicht decodieren kann</span>
+    <span data-phrase="pixels.pastend">Bild {frame} liegt hinter dem Ende der Pixeldaten</span>
+    <span data-phrase="pixels.noframefragment">kein Pixeldaten-Fragment enthält Bild {frame}</span>
+    <span data-phrase="pixels.oddbits">{bits} Bit je Abtastwert, was nicht 1, 8, 16 oder 32 ist</span>
+    <span data-phrase="pixels.nooffsets">diese Datei hat {fragments} Pixeldaten-Fragmente für {frames} Bilder und keine
+      Offset-Tabelle, die sagt, welche zu welchem gehören</span>
+    <span data-phrase="read.pastend">die Datei endet bei {available} Bytes; bei {at} wurden {wanted} weitere gebraucht</span>
+    <span data-phrase="note.baredataset">Diese Datei hat keine DICM-Kennung, also wurde sie als blanker Datensatz in {syntax}
+      gelesen. Das wurde aus ihrem ersten Element erschlossen und nicht erklärt.</span>
+    <span data-phrase="note.nosyntax">Die File-Meta-Gruppe nennt keine Transfersyntax, also wurde der Datensatz als
+      Implicit VR Little Endian gelesen, was der Standard anzunehmen vorschreibt.</span>
+    <span data-phrase="note.unknownsyntax">Die Transfersyntax {uid} ist keine, die dieses Werkzeug kennt. Der Kopf unten wurde
+      als Explicit VR Little Endian gelesen, was jede seit 1995 registrierte Syntax
+      verwendet; die Pixel ließen sich nicht decodieren.</span>
+    <span data-phrase="note.truncated">Die Datei endet mitten im Element bei Byte {at}; alles davor wurde gelesen.</span>
+    <span data-phrase="stop.undefinedlength">Das Element {tag} nennt eine undefinierte Länge, was nur eine Sequenz darf. Nichts
+      danach ließ sich lesen.</span>
+    <span data-phrase="stop.toolong">Das Element bei Byte {at} sagt, sein Wert sei {length} Bytes lang, und in der Datei
+      sind nur noch {left} übrig.</span>
+    <span data-phrase="report.title">DICOM-Kopf &mdash; {name}</span>
+    <span data-phrase="report.filesize">Dateigröße</span>
+    <span data-phrase="report.bytes">{count} Bytes</span>
+    <span data-phrase="report.syntax">Transfersyntax</span>
+    <span data-phrase="report.object">Objekt</span>
+    <span data-phrase="report.image">Bild</span>
+    <span data-phrase="report.bits">{bits} Bit</span>
+    <span data-phrase="report.greyscale">Graustufen</span>
+    <span data-phrase="report.samples">{count} Abtastwerte</span>
+    <span data-phrase="report.frames">Bilder</span>
+    <span data-phrase="report.spacing">Pixelabstand</span>
+    <span data-phrase="report.notes">Anmerkungen zum Lesen dieser Datei</span>
+    <span data-phrase="report.meta">File-Meta-Informationen</span>
+    <span data-phrase="report.dataset">Datensatz</span>
+    <span data-phrase="report.origin">In einem Browser auf {origin} gelesen, wo nichts hochgeladen wird.</span>
     <span data-phrase="mode.window">Ziehen Sie quer über das Bild, um das Fenster zu weiten oder zu verengen, und nach oben oder unten, um sein Zentrum zu verschieben. Beide Zahlen stehen darunter, und sie einzutippen bewirkt dasselbe.</span>
     <span data-phrase="mode.pan">Ziehen Sie, um das Bild in seinem Rahmen zu verschieben. Das Mausrad zoomt, und &bdquo;Einpassen&ldquo; setzt alles zurück.</span>
     <span data-phrase="mode.measure">Ziehen Sie eine Linie über das Bild, um zu messen. Wo die Datei sagt, wie weit ihre Pixel auseinanderliegen, steht das Ergebnis in Millimetern; wo nicht, steht es in Pixeln und sagt das auch.</span>

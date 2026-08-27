@@ -181,6 +181,58 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">no hay marca DICM en el byte 128, y los primeros bytes tampoco son un elemento DICOM</span>
+    <span data-phrase="jpeg.nosoi">este fragmento no empieza por una marca JPEG SOI</span>
+    <span data-phrase="jpeg.scanfirst">llegó un barrido JPEG antes que su cabecera de trama</span>
+    <span data-phrase="jpeg.dct">este fragmento es un JPEG con DCT, no uno sin pérdida</span>
+    <span data-phrase="jpeg.noframe">este fragmento no lleva cabecera de trama JPEG</span>
+    <span data-phrase="jpeg.nosize">una trama JPEG sin tamaño</span>
+    <span data-phrase="jpeg.subsampled">esta trama submuestrea sus componentes, cosa que el JPEG sin pérdida no admite aquí</span>
+    <span data-phrase="jpeg.precision">una trama JPEG de {bits} bits, fuera de los 2 a 16 que permite el formato</span>
+    <span data-phrase="jpeg.notable">este barrido nombra una tabla de Huffman que el archivo nunca definió</span>
+    <span data-phrase="jpeg.longcode">un código de Huffman más largo que los dieciséis bits que permite el formato</span>
+    <span data-phrase="rle.short">la cabecera de segmentos RLE ocupa 64 bytes y este fragmento es más corto</span>
+    <span data-phrase="rle.segments">una trama RLE declara {count} segmentos, y el formato permite de 1 a 15</span>
+    <span data-phrase="rle.wrongcount">esta imagen necesita {wanted} segmentos RLE y la trama tiene {count}</span>
+    <span data-phrase="rle.outside">el segmento RLE {segment} apunta fuera del fragmento</span>
+    <span data-phrase="pixels.nosize">este archivo no declara tamaño de imagen</span>
+    <span data-phrase="pixels.nofragments">este archivo no tiene fragmentos de datos de píxeles</span>
+    <span data-phrase="pixels.nodecoder">{syntax} es una compresión que esta página no sabe descomprimir</span>
+    <span data-phrase="pixels.pastend">la imagen {frame} queda más allá del final de los datos de píxeles</span>
+    <span data-phrase="pixels.noframefragment">ningún fragmento de datos de píxeles contiene la imagen {frame}</span>
+    <span data-phrase="pixels.oddbits">{bits} bits por muestra, que no es 1, 8, 16 ni 32</span>
+    <span data-phrase="pixels.nooffsets">este archivo tiene {fragments} fragmentos de datos de píxeles para {frames} imágenes
+      y ninguna tabla de desplazamientos que diga cuáles van con cuáles</span>
+    <span data-phrase="read.pastend">el archivo termina en {available} bytes; hacían falta {wanted} más en {at}</span>
+    <span data-phrase="note.baredataset">Este archivo no tiene marca DICM, así que se leyó como un conjunto de datos desnudo
+      en {syntax}. Eso se dedujo de su primer elemento, no venía declarado.</span>
+    <span data-phrase="note.nosyntax">El grupo meta del archivo no nombra ninguna sintaxis de transferencia, así que el
+      conjunto de datos se leyó como Implicit VR Little Endian, que es lo que la norma
+      manda suponer.</span>
+    <span data-phrase="note.unknownsyntax">La sintaxis de transferencia {uid} no es de las que esta herramienta reconoce. La
+      cabecera de abajo se leyó como Explicit VR Little Endian, que usa toda sintaxis
+      registrada desde 1995; los píxeles no se pudieron descomprimir.</span>
+    <span data-phrase="note.truncated">El archivo termina a medias del elemento que hay en el byte {at}; todo lo anterior
+      se leyó.</span>
+    <span data-phrase="stop.undefinedlength">El elemento {tag} declara una longitud indefinida, cosa que solo puede hacer una
+      secuencia. Nada de lo que venía después se pudo leer.</span>
+    <span data-phrase="stop.toolong">El elemento del byte {at} dice que su valor ocupa {length} bytes, y en el archivo
+      solo quedan {left}.</span>
+    <span data-phrase="report.title">Cabecera DICOM &mdash; {name}</span>
+    <span data-phrase="report.filesize">Tamaño del archivo</span>
+    <span data-phrase="report.bytes">{count} bytes</span>
+    <span data-phrase="report.syntax">Sintaxis de transferencia</span>
+    <span data-phrase="report.object">Objeto</span>
+    <span data-phrase="report.image">Imagen</span>
+    <span data-phrase="report.bits">{bits} bits</span>
+    <span data-phrase="report.greyscale">escala de grises</span>
+    <span data-phrase="report.samples">{count} muestras</span>
+    <span data-phrase="report.frames">Imágenes</span>
+    <span data-phrase="report.spacing">Separación de píxeles</span>
+    <span data-phrase="report.notes">Notas sobre la lectura de este archivo</span>
+    <span data-phrase="report.meta">Metainformación del archivo</span>
+    <span data-phrase="report.dataset">Conjunto de datos</span>
+    <span data-phrase="report.origin">Leído en un navegador en {origin}, que no sube nada.</span>
     <span data-phrase="mode.window">Arrastra por la imagen para ensanchar o estrechar la ventana, y hacia arriba o abajo para mover su centro. Los dos números están debajo, y escribirlos hace lo mismo.</span>
     <span data-phrase="mode.pan">Arrastra para mover la imagen dentro de su marco. La rueda hace zoom, y &laquo;Ajustar&raquo; lo devuelve todo a su sitio.</span>
     <span data-phrase="mode.measure">Arrastra una línea sobre la imagen para medirla. Donde el archivo dice a qué distancia están sus píxeles, la respuesta va en milímetros; donde no lo dice, va en píxeles y lo advierte.</span>

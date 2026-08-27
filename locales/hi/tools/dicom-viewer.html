@@ -180,6 +180,57 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">128वें बाइट पर DICM चिह्न नहीं है, और शुरुआती बाइट भी कोई DICOM तत्व नहीं हैं</span>
+    <span data-phrase="jpeg.nosoi">यह टुकड़ा JPEG के SOI चिह्न से शुरू नहीं होता</span>
+    <span data-phrase="jpeg.scanfirst">JPEG का स्कैन अपने फ़्रेम शीर्ष से पहले ही आ गया</span>
+    <span data-phrase="jpeg.dct">यह टुकड़ा DCT आधारित JPEG है, बिना हानि वाला नहीं</span>
+    <span data-phrase="jpeg.noframe">इस टुकड़े में कोई JPEG फ़्रेम शीर्ष नहीं है</span>
+    <span data-phrase="jpeg.nosize">बिना आकार वाला एक JPEG फ़्रेम</span>
+    <span data-phrase="jpeg.subsampled">यह फ़्रेम अपने घटकों का उप-नमूनन करता है, जिसे यहाँ का बिना-हानि JPEG नहीं सँभालता</span>
+    <span data-phrase="jpeg.precision">{bits} बिट का एक JPEG फ़्रेम, जो प्रारूप की अनुमत 2 से 16 की सीमा से बाहर है</span>
+    <span data-phrase="jpeg.notable">यह स्कैन ऐसी हफ़मैन तालिका का नाम लेता है जिसे फ़ाइल ने कभी परिभाषित ही नहीं किया</span>
+    <span data-phrase="jpeg.longcode">प्रारूप की अनुमत सोलह बिट से लंबा एक हफ़मैन कोड</span>
+    <span data-phrase="rle.short">RLE खंड-शीर्ष 64 बाइट का होता है और यह टुकड़ा उससे छोटा है</span>
+    <span data-phrase="rle.segments">एक RLE फ़्रेम {count} खंड घोषित करता है, जबकि प्रारूप 1 से 15 की अनुमति देता है</span>
+    <span data-phrase="rle.wrongcount">इस तस्वीर को {wanted} RLE खंड चाहिए और फ़्रेम में {count} हैं</span>
+    <span data-phrase="rle.outside">RLE खंड {segment} टुकड़े के बाहर इशारा करता है</span>
+    <span data-phrase="pixels.nosize">यह फ़ाइल कोई तस्वीर-आकार घोषित नहीं करती</span>
+    <span data-phrase="pixels.nofragments">इस फ़ाइल में पिक्सेल डेटा के टुकड़े नहीं हैं</span>
+    <span data-phrase="pixels.nodecoder">{syntax} एक ऐसा संपीड़न है जिसे यह पन्ना खोल नहीं सकता</span>
+    <span data-phrase="pixels.pastend">फ़्रेम {frame} पिक्सेल डेटा के अंत से आगे पड़ता है</span>
+    <span data-phrase="pixels.noframefragment">कोई भी पिक्सेल डेटा टुकड़ा फ़्रेम {frame} को नहीं रखता</span>
+    <span data-phrase="pixels.oddbits">हर नमूने पर {bits} बिट, जो न 1 है, न 8, न 16, न 32</span>
+    <span data-phrase="pixels.nooffsets">इस फ़ाइल में {frames} फ़्रेमों के लिए {fragments} पिक्सेल डेटा टुकड़े हैं और यह
+      बताने वाली कोई ऑफ़सेट तालिका नहीं कि कौन-सा किसका है</span>
+    <span data-phrase="read.pastend">फ़ाइल {available} बाइट पर ख़त्म हो जाती है; {at} पर {wanted} और चाहिए थे</span>
+    <span data-phrase="note.baredataset">इस फ़ाइल में DICM चिह्न नहीं है, इसलिए इसे {syntax} में एक नंगे डेटा-समुच्चय की तरह
+      पढ़ा गया। यह घोषित नहीं था, इसके पहले तत्व से निकाला गया है।</span>
+    <span data-phrase="note.nosyntax">फ़ाइल मेटा समूह कोई ट्रांसफ़र सिंटैक्स नहीं बताता, इसलिए डेटा-समुच्चय को Implicit VR
+      Little Endian मानकर पढ़ा गया &mdash; मानक यही मान लेने को कहता है।</span>
+    <span data-phrase="note.unknownsyntax">ट्रांसफ़र सिंटैक्स {uid} उनमें से नहीं जिन्हें यह औज़ार पहचानता है। नीचे का शीर्ष
+      Explicit VR Little Endian मानकर पढ़ा गया, जिसे 1995 के बाद पंजीकृत हर सिंटैक्स
+      इस्तेमाल करता है; पिक्सेल नहीं खोले जा सके।</span>
+    <span data-phrase="note.truncated">फ़ाइल {at} बाइट वाले तत्व के बीचोंबीच ख़त्म हो जाती है; उससे पहले का सब पढ़ लिया
+      गया।</span>
+    <span data-phrase="stop.undefinedlength">तत्व {tag} अपरिभाषित लंबाई घोषित करता है, जो केवल कोई अनुक्रम कर सकता है। उसके बाद
+      कुछ भी नहीं पढ़ा जा सका।</span>
+    <span data-phrase="stop.toolong">{at} बाइट वाला तत्व कहता है कि उसका मान {length} बाइट का है, जबकि फ़ाइल में केवल
+      {left} बचे हैं।</span>
+    <span data-phrase="report.title">DICOM शीर्ष &mdash; {name}</span>
+    <span data-phrase="report.filesize">फ़ाइल का आकार</span>
+    <span data-phrase="report.bytes">{count} बाइट</span>
+    <span data-phrase="report.syntax">ट्रांसफ़र सिंटैक्स</span>
+    <span data-phrase="report.object">वस्तु</span>
+    <span data-phrase="report.image">तस्वीर</span>
+    <span data-phrase="report.bits">{bits} बिट</span>
+    <span data-phrase="report.greyscale">धूसर श्रेणी</span>
+    <span data-phrase="report.samples">{count} नमूने</span>
+    <span data-phrase="report.frames">फ़्रेम</span>
+    <span data-phrase="report.spacing">पिक्सेल अंतराल</span>
+    <span data-phrase="report.notes">इस फ़ाइल को पढ़ने पर टिप्पणियाँ</span>
+    <span data-phrase="report.meta">फ़ाइल मेटा जानकारी</span>
+    <span data-phrase="report.dataset">डेटा-समुच्चय</span>
+    <span data-phrase="report.origin">{origin} पर ब्राउज़र में पढ़ा गया, जो कुछ भी अपलोड नहीं करता।</span>
     <span data-phrase="mode.window">तस्वीर पर आड़ा खींचिए तो विंडो चौड़ी या सँकरी होती है, और ऊपर-नीचे खींचिए तो उसका केंद्र सरकता है। दोनों संख्याएँ नीचे दी हैं, और उन्हें टाइप करने से भी यही होता है।</span>
     <span data-phrase="mode.pan">तस्वीर को उसके फ़्रेम के भीतर सरकाने के लिए खींचिए। माउस का पहिया ज़ूम करता है, और &lsquo;फ़िट करें&rsquo; सब कुछ वापस कर देता है।</span>
     <span data-phrase="mode.measure">नापने के लिए तस्वीर पर एक रेखा खींचिए। जहाँ फ़ाइल बताती है कि उसके पिक्सल कितनी दूर हैं, वहाँ नतीजा मिलीमीटर में आता है। जहाँ नहीं बताती, वहाँ पिक्सल में आता है और यह कह भी दिया जाता है।</span>

@@ -280,6 +280,13 @@ test('the UIDs and the private elements are counted rather than listed', () => {
 
 /* ---------------------------------------------------------------- the report */
 
+/* The report asks its caller for every label, because report.js cannot reach
+   the markup they live in. Here that caller echoes the key and its values, so
+   an assertion checks which sentence was asked for rather than how the English
+   happens to be worded. */
+const label = (key, values = {}) => (
+  Object.keys(values).length ? `${key}(${Object.values(values).join(',')})` : key);
+
 test('the report holds every element, nesting included', () => {
   const dataset = datasetOf(
     element('00080060', 'CS', 'CT'),
@@ -300,7 +307,7 @@ test('the report holds every element, nesting included', () => {
     meta: dataset,
     dataset,
     origin: 'https://abox.tools/dicom-viewer/',
-  }, latin1);
+  }, latin1, label);
 
   assert.match(text, /IM1\.dcm/);
   assert.match(text, /Explicit VR Little Endian/);
@@ -308,7 +315,7 @@ test('the report holds every element, nesting included', () => {
   // already has a text dump of the header can diff the two.
   assert.match(text, /\(0010,0010\) PN Patient’s Name\s+JANE DOE/);
   assert.match(text, /\(0028,0030\) DS Pixel Spacing\s+0\.5 \\ 0\.5/);
-  assert.match(text, /uploads nothing/);
+  assert.match(text, /report\.origin/);
 });
 
 test('the report says what it could not read', () => {
@@ -319,13 +326,13 @@ test('the report says what it could not read', () => {
     syntax: transferSyntax('1.2.840.10008.1.2.4.90'),
     sopClass: null,
     image: null,
-    warnings: ['The file ends part-way through the element at byte 900.'],
+    warnings: [{ key: 'note.truncated', values: { at: 900 } }],
     meta: dataset,
     dataset,
     origin: 'https://abox.tools/dicom-viewer/',
-  }, latin1);
+  }, latin1, label);
 
-  assert.match(text, /Notes on reading this file/);
-  assert.match(text, /ends part-way through/);
+  assert.match(text, /report\.notes/);
+  assert.match(text, /note\.truncated\(900\)/);
   assert.match(text, /JPEG 2000/);
 });

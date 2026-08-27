@@ -32,6 +32,7 @@
 import { decodeRLE } from './rle.js';
 import { decodeJPEGLossless } from './jpeg-lossless.js';
 import { number, numbers, text } from './values.js';
+import { refuse } from './refusal.js';
 
 /** What is needed to turn this file's Pixel Data into pictures. */
 export function imageInfo(dataset, decoder) {
@@ -182,7 +183,7 @@ function readPalette(dataset, decoder) {
  */
 export function decodeFrame(bytes, pixel, info, syntax, index) {
   const { rows, columns, samplesPerPixel } = info;
-  if (!rows || !columns) throw new Error('this file declares no image size');
+  if (!rows || !columns) throw refuse('pixels.nosize');
 
   const count = rows * columns;
 
@@ -205,7 +206,7 @@ export function decodeFrame(bytes, pixel, info, syntax, index) {
   }
 
   if (syntax.pixels !== 'native') {
-    throw new Error(`${syntax.name} is a compression this page cannot decode`);
+    throw refuse('pixels.nodecoder', { syntax: syntax.name });
   }
 
   const frameBytes = nativeFrame(bytes, pixel, info, count, index);
@@ -225,7 +226,7 @@ function nativeFrame(bytes, pixel, info, count, index) {
 
   const start = pixel.offset + perFrame * index;
   const end = Math.min(start + perFrame, pixel.offset + pixel.length, bytes.length);
-  if (start >= end) throw new Error(`frame ${index + 1} is past the end of the pixel data`);
+  if (start >= end) throw refuse('pixels.pastend', { frame: index + 1 });
 
   const frame = bytes.subarray(start, end);
   if (frame.length < perFrame) {
@@ -250,7 +251,7 @@ function nativeFrame(bytes, pixel, info, count, index) {
  */
 export function frameFragment(bytes, pixel, frames, index) {
   const list = pixel.fragments ?? [];
-  if (list.length === 0) throw new Error('this file has no pixel data fragments');
+  if (list.length === 0) throw refuse('pixels.nofragments');
 
   let wanted = list;
 
@@ -267,11 +268,12 @@ export function frameFragment(bytes, pixel, frames, index) {
     wanted = list.filter((part) => part.offset - 8 - base >= from
       && part.offset - 8 - base < to);
   } else {
-    throw new Error(`this file has ${list.length} pixel data fragments for ${frames
-    } frames and no offset table to say which belong to which`);
+    throw refuse('pixels.nooffsets', {
+      fragments: list.length, frames,
+    });
   }
 
-  if (wanted.length === 0) throw new Error(`no pixel data fragment holds frame ${index + 1}`);
+  if (wanted.length === 0) throw refuse('pixels.noframefragment', { frame: index + 1 });
   if (wanted.length === 1) {
     return bytes.subarray(wanted[0].offset, wanted[0].offset + wanted[0].length);
   }
@@ -327,7 +329,7 @@ function fromBytes(bytes, info, count, little) {
       raw[at] = at * 4 + 4 <= bytes.length ? view.getUint32(at * 4, little) : 0;
     }
   } else {
-    throw new Error(`${bitsAllocated} bits per sample, which is not 1, 8, 16 or 32`);
+    throw refuse('pixels.oddbits', { bits: bitsAllocated });
   }
 
   for (let at = 0; at < total; at += 1) {

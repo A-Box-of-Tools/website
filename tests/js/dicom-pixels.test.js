@@ -262,7 +262,10 @@ test('a long run of one value survives the replicate coding', () => {
 
 test('an RLE frame with too few segments for the image is refused by name', () => {
   const compressed = encodeRLE(new Uint8Array(4), 4, 1, 1);
-  assert.throws(() => decodeRLE(compressed, 4, 1, 2), /needs 2 RLE segments/);
+  // The key and its numbers rather than the sentence: the sentences live in
+  // body.html now, in fifteen languages.
+  assert.throws(() => decodeRLE(compressed, 4, 1, 2), (error) => (
+    error.message === 'rle.wrongcount' && error.values.wanted === 2));
 });
 
 /* ---------------------------------------------------------- JPEG lossless */
@@ -319,7 +322,8 @@ test('a baseline JPEG inside a lossless transfer syntax is named rather than man
   // 0xFFC0 is SOF0: a DCT frame. It happens when a converter transcodes the
   // pixels and forgets to change (0002,0010).
   const baseline = Uint8Array.from([0xff, 0xd8, 0xff, 0xc0, 0, 11, 8, 0, 4, 0, 4, 1, 1, 0x11, 0]);
-  assert.throws(() => decodeJPEGLossless(baseline), /DCT-based JPEG, not a lossless one/);
+  assert.throws(() => decodeJPEGLossless(baseline), (error) => (
+    error.message === 'jpeg.dct'));
 });
 
 /* ------------------------------------------------------- window and level */

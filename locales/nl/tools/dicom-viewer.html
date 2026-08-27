@@ -181,6 +181,59 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">er staat geen DICM-markering op byte 128, en de eerste bytes zijn ook geen
+      DICOM-element</span>
+    <span data-phrase="jpeg.nosoi">dit fragment begint niet met een JPEG-SOI-markering</span>
+    <span data-phrase="jpeg.scanfirst">een JPEG-scan kwam vóór zijn framekop</span>
+    <span data-phrase="jpeg.dct">dit fragment is een JPEG met DCT, geen verliesvrije</span>
+    <span data-phrase="jpeg.noframe">dit fragment draagt geen JPEG-framekop</span>
+    <span data-phrase="jpeg.nosize">een JPEG-frame zonder maat</span>
+    <span data-phrase="jpeg.subsampled">dit frame subsamplet zijn componenten, wat verliesvrije JPEG hier niet ondersteunt</span>
+    <span data-phrase="jpeg.precision">een JPEG-frame van {bits} bits, buiten de 2 tot 16 die het formaat toestaat</span>
+    <span data-phrase="jpeg.notable">deze scan noemt een Huffman-tabel die het bestand nooit heeft gedefinieerd</span>
+    <span data-phrase="jpeg.longcode">een Huffman-code langer dan de zestien bits die het formaat toestaat</span>
+    <span data-phrase="rle.short">de RLE-segmentkop is 64 bytes en dit fragment is korter</span>
+    <span data-phrase="rle.segments">een RLE-frame noemt {count} segmenten, en het formaat staat er 1 tot 15 toe</span>
+    <span data-phrase="rle.wrongcount">dit beeld heeft {wanted} RLE-segmenten nodig en het frame heeft er {count}</span>
+    <span data-phrase="rle.outside">RLE-segment {segment} wijst buiten het fragment</span>
+    <span data-phrase="pixels.nosize">dit bestand noemt geen beeldmaat</span>
+    <span data-phrase="pixels.nofragments">dit bestand heeft geen fragmenten met pixelgegevens</span>
+    <span data-phrase="pixels.nodecoder">{syntax} is een compressie die deze pagina niet kan decoderen</span>
+    <span data-phrase="pixels.pastend">beeld {frame} ligt voorbij het einde van de pixelgegevens</span>
+    <span data-phrase="pixels.noframefragment">geen enkel fragment met pixelgegevens bevat beeld {frame}</span>
+    <span data-phrase="pixels.oddbits">{bits} bits per monster, wat geen 1, 8, 16 of 32 is</span>
+    <span data-phrase="pixels.nooffsets">dit bestand heeft {fragments} fragmenten met pixelgegevens voor {frames} beelden en
+      geen offsettabel die zegt welke bij welke horen</span>
+    <span data-phrase="read.pastend">het bestand eindigt op {available} bytes; op {at} waren er {wanted} meer nodig</span>
+    <span data-phrase="note.baredataset">Dit bestand heeft geen DICM-markering, dus is het gelezen als een kale
+      gegevensverzameling in {syntax}. Dat is afgeleid uit het eerste element en niet
+      opgegeven.</span>
+    <span data-phrase="note.nosyntax">De metagroep van het bestand noemt geen transfersyntaxis, dus is de
+      gegevensverzameling gelezen als Implicit VR Little Endian, wat de norm voorschrijft
+      aan te nemen.</span>
+    <span data-phrase="note.unknownsyntax">Transfersyntaxis {uid} is er geen die dit gereedschap kent. De kop hieronder is
+      gelezen als Explicit VR Little Endian, wat elke sinds 1995 geregistreerde syntaxis
+      gebruikt; de pixels konden niet gedecodeerd worden.</span>
+    <span data-phrase="note.truncated">Het bestand eindigt halverwege het element op byte {at}; alles daarvóór is gelezen.</span>
+    <span data-phrase="stop.undefinedlength">Het element {tag} noemt een ongedefinieerde lengte, wat alleen een reeks mag. Niets
+      erna kon gelezen worden.</span>
+    <span data-phrase="stop.toolong">Het element op byte {at} zegt dat zijn waarde {length} bytes is, en er zijn er nog
+      maar {left} over in het bestand.</span>
+    <span data-phrase="report.title">DICOM-kop &mdash; {name}</span>
+    <span data-phrase="report.filesize">Bestandsgrootte</span>
+    <span data-phrase="report.bytes">{count} bytes</span>
+    <span data-phrase="report.syntax">Transfersyntaxis</span>
+    <span data-phrase="report.object">Object</span>
+    <span data-phrase="report.image">Beeld</span>
+    <span data-phrase="report.bits">{bits} bits</span>
+    <span data-phrase="report.greyscale">grijswaarden</span>
+    <span data-phrase="report.samples">{count} monsters</span>
+    <span data-phrase="report.frames">Beelden</span>
+    <span data-phrase="report.spacing">Pixelafstand</span>
+    <span data-phrase="report.notes">Aantekeningen bij het lezen van dit bestand</span>
+    <span data-phrase="report.meta">Meta-informatie van het bestand</span>
+    <span data-phrase="report.dataset">Gegevensverzameling</span>
+    <span data-phrase="report.origin">Gelezen in een browser op {origin}, die niets uploadt.</span>
     <span data-phrase="mode.window">Sleep dwars over het beeld om het venster wijder of smaller te maken, en omhoog of omlaag om het midden te verschuiven. Beide getallen staan eronder, en ze intypen doet hetzelfde.</span>
     <span data-phrase="mode.pan">Sleep om het beeld binnen zijn kader te verschuiven. Het muiswiel zoomt, en &bdquo;Passend maken&rdquo; zet alles terug.</span>
     <span data-phrase="mode.measure">Sleep een lijn over het beeld om te meten. Waar het bestand zegt hoe ver zijn pixels uit elkaar liggen, staat het antwoord in millimeters; waar niet, staat het in pixels en zegt het dat er ook bij.</span>

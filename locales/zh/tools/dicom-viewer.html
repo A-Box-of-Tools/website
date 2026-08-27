@@ -176,6 +176,49 @@
     wins over the frame's one.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="open.notdicom">第 128 个字节处没有 DICM 标记，开头的字节也不是一个 DICOM 元素</span>
+    <span data-phrase="jpeg.nosoi">这个片段不是以 JPEG 的 SOI 标记开头的</span>
+    <span data-phrase="jpeg.scanfirst">JPEG 的扫描段出现在它的帧头之前</span>
+    <span data-phrase="jpeg.dct">这个片段是基于 DCT 的 JPEG，不是无损的那种</span>
+    <span data-phrase="jpeg.noframe">这个片段没有带 JPEG 帧头</span>
+    <span data-phrase="jpeg.nosize">一个没有尺寸的 JPEG 帧</span>
+    <span data-phrase="jpeg.subsampled">这一帧对它的分量做了下采样，而这里的无损 JPEG 不支持</span>
+    <span data-phrase="jpeg.precision">一个 {bits} 位的 JPEG 帧，超出了格式允许的 2 到 16</span>
+    <span data-phrase="jpeg.notable">这个扫描段指名了一张文件从未定义过的霍夫曼表</span>
+    <span data-phrase="jpeg.longcode">一个比格式允许的十六位更长的霍夫曼码</span>
+    <span data-phrase="rle.short">RLE 的段头是 64 个字节，而这个片段比它还短</span>
+    <span data-phrase="rle.segments">一个 RLE 帧声明了 {count} 个段，而格式只允许 1 到 15 个</span>
+    <span data-phrase="rle.wrongcount">这幅图需要 {wanted} 个 RLE 段，而这一帧只有 {count} 个</span>
+    <span data-phrase="rle.outside">RLE 的第 {segment} 段指到了片段之外</span>
+    <span data-phrase="pixels.nosize">这个文件没有声明图像尺寸</span>
+    <span data-phrase="pixels.nofragments">这个文件没有像素数据片段</span>
+    <span data-phrase="pixels.nodecoder">{syntax} 是这个页面解不开的压缩</span>
+    <span data-phrase="pixels.pastend">第 {frame} 帧落在了像素数据的末尾之外</span>
+    <span data-phrase="pixels.noframefragment">没有哪个像素数据片段装着第 {frame} 帧</span>
+    <span data-phrase="pixels.oddbits">每个采样 {bits} 位，既不是 1，也不是 8、16 或 32</span>
+    <span data-phrase="pixels.nooffsets">这个文件为 {frames} 帧准备了 {fragments} 个像素数据片段，却没有偏移表来说明哪个属于哪一帧</span>
+    <span data-phrase="read.pastend">文件在 {available} 个字节处结束；在 {at} 处还需要 {wanted} 个</span>
+    <span data-phrase="note.baredataset">这个文件没有 DICM 标记，所以是按 {syntax} 当作一个裸数据集来读的。这是从它的第一个元素推断出来的，并不是文件自己声明的。</span>
+    <span data-phrase="note.nosyntax">文件元信息组没有指名传输语法，所以数据集是按 Implicit VR Little Endian 读的 —— 标准要求在这种情况下这样假定。</span>
+    <span data-phrase="note.unknownsyntax">传输语法 {uid} 不是这个工具认识的。下面的文件头是按 Explicit VR Little Endian 读的，1995 年以来注册的每一种语法都用它；像素则没能解开。</span>
+    <span data-phrase="note.truncated">文件在第 {at} 个字节的那个元素中间就结束了；它之前的内容都已读出。</span>
+    <span data-phrase="stop.undefinedlength">元素 {tag} 声明了未定义长度，而这只有序列才可以。它之后的内容都读不出来了。</span>
+    <span data-phrase="stop.toolong">第 {at} 个字节处的元素说自己的值有 {length} 个字节，而文件里只剩下 {left} 个。</span>
+    <span data-phrase="report.title">DICOM 文件头 &mdash; {name}</span>
+    <span data-phrase="report.filesize">文件大小</span>
+    <span data-phrase="report.bytes">{count} 个字节</span>
+    <span data-phrase="report.syntax">传输语法</span>
+    <span data-phrase="report.object">对象</span>
+    <span data-phrase="report.image">图像</span>
+    <span data-phrase="report.bits">{bits} 位</span>
+    <span data-phrase="report.greyscale">灰度</span>
+    <span data-phrase="report.samples">{count} 个采样</span>
+    <span data-phrase="report.frames">帧数</span>
+    <span data-phrase="report.spacing">像素间距</span>
+    <span data-phrase="report.notes">关于读取这个文件的说明</span>
+    <span data-phrase="report.meta">文件元信息</span>
+    <span data-phrase="report.dataset">数据集</span>
+    <span data-phrase="report.origin">在 {origin} 用浏览器读取，未上传任何内容。</span>
     <span data-phrase="mode.window">在图上横着拖，窗就变宽或者变窄；上下拖，窗心就移动。两个数字都在下面，直接输入效果一样。</span><span data-phrase="mode.pan">拖动可以让图在框里移动。滚轮缩放，「适应窗口」把一切复位。</span><span data-phrase="mode.measure">在图上拉一条线就能测量。文件写了像素间距的，结果是毫米；没写的，结果是像素，而且会明说。</span>
 
     <span data-phrase="probe.value">第 {column} 列第 {row} 行是 {value}</span>
