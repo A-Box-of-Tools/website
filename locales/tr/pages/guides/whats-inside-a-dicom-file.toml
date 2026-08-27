@@ -1,0 +1,18 @@
+#
+# Rehber: bir DICOM dosyasının içinde ne var? - Turkish.
+#
+
+nav = "DICOM dosyasında ne var?"
+title = "Bir DICOM Dosyasının İçinde Ne Var?"
+description = "Tıbbi bir tarama, içinde resim olan bir hasta dosyasıdır: ad, doğum tarihi, hastane numaraları, kurum ve arşive dönen anahtarlar. Başlığın taşıdıkları, adı silmenin neden anonimleştirme olmadığı ve yüklemeden bakmanın yolu."
+heading = "Bir DICOM dosyasının içinde ne var?"
+lede = """
+    Taramadan fazlası. DICOM dosyası içinde resim olan bir tıbbi
+    kayıttır: adınız, doğum tarihiniz ve hastane numaranız piksellerle
+    aynı dosyada yolculuk eder &mdash; ve bu, tam da elinize bir CD
+    tutuşturulup bir görüntüleyici aramaya çıktığınız anda en çok önem
+    kazanır."""
+updated = "26 Ağustos 2026"
+og_title = "Bir DICOM dosyasının içinde ne var?"
+og_description = "İçinde resim olan bir hasta dosyası: ad, doğum tarihi, hastane numaraları ve arşive dönen anahtarlar. Başlığın taşıdıkları, ve yüklemeden bakmanın yolu."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

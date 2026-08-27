@@ -1,0 +1,150 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Een DICOM-bestand &mdash; de <code>.dcm</code> op de cd die een
+      ziekenhuis je meegeeft &mdash; is geen beeldformaat zoals JPEG. Het
+      is een dossierformaat met een beeld erin. Voordat de pixels
+      beginnen, draagt het bestand een header van honderden labels, en
+      daaronder, routineus: de volledige naam van de patiënt,
+      geboortedatum, geslacht en ziekenhuisnummer; datum, tijd en
+      omschrijving van het onderzoek; de verwijzend arts; de instelling en
+      het apparaat, tot het serienummer aan toe; en een set unieke
+      identificatoren die als sleutels terug het archief in werken dat ze
+      voortbracht.
+    </p>
+    <p>
+      Niets daarvan is te zien wanneer het beeld op het scherm staat, en
+      precies zo raakt het vergeten. De scan is het dossier. Behandel het
+      bestand als het document dat het is, niet als het plaatje dat het
+      bevat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom juist dit bestand zo achteloos geüpload wordt</h2>
+    <p>
+      De val in de praktijk: na een onderzoek krijgt iemand een schijfje
+      of een download mee, probeert het te openen, en niets op de machine
+      wil &mdash; DICOM is geen formaat dat gewone software spreekt. Dus
+      zoekt hij &ldquo;dcm bestand openen online&rdquo;, en het meeste wat
+      hij vindt is een uploadvak. Even later staat een compleet,
+      geïdentificeerd medisch dossier &mdash; naam, geboortedatum,
+      ziekenhuisnummers, onderzoeksomschrijvingen met de smaak van een
+      diagnose en al &mdash; op de server van wie die dag toevallig goed
+      scoorde.
+    </p>
+    <p>
+      Let op de vorm: het is opnieuw het probleem van het
+      identiteitsbewijs &mdash; een gevoelig bestand, een moment wrijving,
+      een zoekmachine &mdash; maar met een bestand dat in de tweede graad
+      gevoelig is. Een paspoort lekt wie je bent; een scan lekt wie je
+      bent <em>en wat er werd onderzocht</em>. Het algemene betoog over
+      uploaden heeft <a href="../is-bestanden-uploaden-veilig/">een eigen
+      pagina</a>; dit is het bestand waarvoor dat betoog geen enkele
+      kruiding nodig heeft.
+    </p>
+    <p>
+      Het bestand lokaal openen is de hele remedie, en daarvoor is de
+      <a href="../../dicom-viewer/">DICOM-viewer</a> hier: de scan, een
+      echte venster/niveau-regeling, een map teruggestapeld tot zijn
+      serie, metingen in millimeters, elk headerlabel leesbaar &mdash; en
+      niets verlaat je machine. Het stappenplan staat in
+      <a href="../een-dicom-bestand-openen/">de gids om er een te
+      openen</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>&ldquo;Ik heb de naam verwijderd&rdquo; is geen
+    de-identificatie</h2>
+    <p>
+      De volgende fout is fijner en beter bedoeld: een scan delen &mdash;
+      met een second-opiniondienst, een onderzoeker, een forum &mdash; na
+      het wissen van het voor de hand liggende label. De standaard zelf is
+      bot over hoe weinig dat is. DICOM's eigen de-identificatieprofiel
+      somt de labels op die behandeld moeten zijn voordat een dataset
+      ge-de-identificeerd mag heten, en het loopt tot in de
+      <em>honderden</em> posten, omdat identiteit op meer plekken woont
+      dan het naamveld:
+    </p>
+    <ul>
+      <li>
+        <strong>Directe identificatoren voorbij de naam</strong> &mdash;
+        geboortedatum, patiëntnummer, dossiernummer, de namen van arts en
+        instelling.
+      </li>
+      <li>
+        <strong>Sleutels</strong> &mdash; de unieke identificatoren die in
+        elk bestand gestempeld staan: ze zeggen niet wie je bent, maar wel
+        exact <em>welk dossier je bent</em>, voor elk systeem dat het
+        origineel ooit zag.
+      </li>
+      <li>
+        <strong>Quasi-identificatoren</strong> &mdash; datum en tijd van
+        het onderzoek, model en serienummer van het apparaat,
+        lichaamsdeel, leeftijd van de patiënt: elk vaag, samen smal.
+      </li>
+      <li>
+        <strong>De pixels zelf</strong> &mdash; echografie en sommige
+        andere modaliteiten branden de naam van de patiënt recht in het
+        beeld, waar geen labelbewerking bijkan. (Voor een geëxporteerd
+        beeld is dat werk voor
+        <a href="../../afbeelding-onleesbaar-maken/">weglakken op
+        pixelniveau</a>, niet voor een metadatatool.)
+      </li>
+    </ul>
+    <p>
+      Daarom heeft de viewer hier een paneel dat exact opsomt wat er in
+      jouw bestand de patiënt identificeert, en hoe direct &mdash; gebouwd
+      uit de lijst van de standaard zelf. En daarom kan de viewer alleen
+      <em>lezen</em>: hij bevat geen code die een DICOM-bestand schrijft,
+      want &ldquo;geanonimiseerd&rdquo; is een belofte met een veel hogere
+      lat dan een viewer haalt &mdash; en een gereedschap dat haar half
+      hield, zou erger zijn dan een dat haar nooit doet.
+    </p>
+  </section>
+
+  <section>
+    <h2>Een scan behandelen als het dossier dat hij is</h2>
+    <p>
+      De gewoontes vallen vanzelf uit al het bovenstaande:
+    </p>
+    <ul>
+      <li>
+        <strong>Bekijk hem lokaal.</strong> Een viewer die werkt met de
+        wifi uit &mdash; deze doet dat &mdash; heeft bewezen waar het werk
+        gebeurt. De meegeleverde viewer op het schijfje, als die op jouw
+        machine draait, is ook prima.
+      </li>
+      <li>
+        <strong>Deel via medische kanalen wanneer de inhoud het punt
+        is.</strong> Een onderzoek naar een ander ziekenhuis sturen is een
+        opgelost probleem met aanspreekbare infrastructuur erachter; een
+        persoonlijke e-mail met een <code>.zip</code> vol
+        <code>.dcm</code>-bestanden is een kopie van je dossier in
+        mailservers, voor onbepaalde tijd.
+      </li>
+      <li>
+        <strong>Moet je een bestand delen, weet dan eerst wat erin
+        zit.</strong> Lees de header en het identiteitspaneel, zodat wat
+        je doorgeeft een besluit is in plaats van een verrassing &mdash;
+        en beschouw &ldquo;netjes ge-de-identificeerd&rdquo; als een
+        dienst die je beeldcentrum je op verzoek verschuldigd is, niet als
+        een vinkje dat je improviseert.
+      </li>
+      <li>
+        <strong>Bedenk dat het schijfje de boodschap overleeft.</strong>
+        De kopie in de downloadmap en de cd in de la zijn óók complete
+        dossiers, net als de ID-scan die niemand zich herinnert gewist te
+        hebben.
+      </li>
+    </ul>
+    <p>
+      Niets hiervan zegt dat je nooit een scan mag delen &mdash; second
+      opinions zijn waar de kopieën voor bestaan. Het zegt: het bestand is
+      een document over jou, dus de twee vragen waar deze hele groep
+      gidsen telkens bij uitkomt, zijn ook hier de juiste &mdash; aan wie
+      wordt het overhandigd, en moest die overhandiging überhaupt
+      gebeuren.
+    </p>
+  </section>

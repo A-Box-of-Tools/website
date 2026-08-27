@@ -1,0 +1,24 @@
+#
+# Guide: what's inside a DICOM file? - Simplified Chinese.
+#
+# Overrides for pages/guides/whats-inside-a-dicom-file/page.toml. Prose in
+# the .html beside this file. Written in Chinese rather than translated out
+# of the English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "DICOM 文件里都有什么？"
+
+title = "DICOM 文件里都装着什么？"
+description = "一次医学扫描，就是一份夹着图像的病历：姓名、出生日期、住院号、机构，还有能一路回到影像库的钥匙。文件头装了什么，为什么删掉名字不算去标识，以及怎么不上传就看个明白。"
+
+heading = "DICOM 文件里都装着什么？"
+lede = """
+    装的不只是扫描。DICOM 文件是一份夹着图像的病历：你的姓名、出生日期和\
+    住院号，和像素坐在同一个文件里。这件事最要紧的时刻，恰恰是有人把一张\
+    光盘塞进你手里、你出门去找看图软件的那一刻。"""
+
+updated = "2026年8月26日"
+
+og_title = "DICOM 文件里都装着什么？"
+og_description = "一份夹着图像的病历：姓名、出生日期、住院号，还有回到影像库的钥匙。文件头装了什么，怎么不上传就看个明白。"
+og_image_alt = "abox.tools - 不走服务器的工具"
