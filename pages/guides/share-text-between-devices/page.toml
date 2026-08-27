@@ -28,9 +28,9 @@ lede = """
     it that leaves nothing anywhere, because nothing is ever stored - and it
     is also the only way that works with a name you can say across a room."""
 
-updated = "26 August 2026"
+updated = "27 August 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-08-27"
 
 og_title = "Sharing between devices, without a server keeping a copy"
 og_description = "Text and files from one browser to another over a direct encrypted connection - a speakable link name, nothing stored anywhere, and a share that ends when the tab closes."

@@ -74,4 +74,17 @@
 
     <pre id="output" class="output" tabindex="0"></pre>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">你的文字沒有去任何地方。載入了 {total} 個檔案。{platform}</span>
+    <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。{platform}</span>
+    <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到其中的一個字。</span>
+    <span data-phrase="net.platform.many">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到其中的一個字。</span>
+  </div>
 </main>

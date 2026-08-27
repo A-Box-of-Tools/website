@@ -164,4 +164,23 @@
       </details>
     </div>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">dokumen Anda tidak pergi ke mana pun. {total}
+      file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
+    <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak
+      pernah dilakukan alat ini. Anggap itu layak diselidiki. {platform}</span>
+    <span data-phrase="net.platform.one">Skrip iklan, pengukuran, dan tombol
+      donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi
+      sebuah dokumen atau satu byte darinya.</span>
+    <span data-phrase="net.platform.many">Skrip iklan, pengukuran, dan tombol
+      donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi
+      sebuah dokumen atau satu byte darinya.</span>
+  </div>
 </main>

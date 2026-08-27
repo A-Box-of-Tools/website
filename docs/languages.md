@@ -115,6 +115,45 @@ The switcher itself is in two places and is plain links in both: a `<details>`
 control in the header of every page, and the row at the foot of the footer.
 Both work with the script blocked.
 
+## Switching language without losing the work
+
+A language switch is a navigation to a different document — that is what makes
+each language its own address, its own canonical and its own translated slug —
+and a navigation empties the tool you were in the middle of using. Choosing
+German after picking a photo and settling on a quality used to mean picking the
+photo again.
+
+`shared/lang-keep.js` carries the work across. On a tool page, and only there,
+it watches the two doors work arrives through and hands what it finds back on
+the other side:
+
+- **the files**, seen at the `change` event on `#file-input` and at a drop on
+  the dropzone around it, given back through the same file input
+  `shared/handoff.js` delivers through — a `DataTransfer` and a synthetic
+  `change`, which is indistinguishable from a file the visitor chose;
+- **the settings the visitor moved** — every `input`, `textarea` and `select`
+  inside `<main>` whose value differs from the one in the markup. The ids are
+  structural and identical in every language, which is what makes them nameable
+  on the far side; the values are compared against the markup's own, so a page
+  nobody has touched carries nothing and the switcher stays the plain link it
+  was built as.
+
+The record is parked in IndexedDB — the only storage a `File` survives —
+addressed by the `data-tool` slug, which is the English slug in every language
+and therefore the one thing the two sides of a switch agree on. It is consumed
+once, refused if it is more than two minutes old or if the language on it
+matches the page reading it (that is a reload, not a switch), and swept if a
+switch is ever abandoned. Nothing in it touches the network, so no tool's CSP
+has to widen for it.
+
+Two things it deliberately does not do. A control the tool *fills in from the
+file* — a width read off an image, a duration read off a clip — is filled in
+from the file again rather than from the record, because there is no generic
+way to tell that apart from a setting somebody chose and re-deriving it cannot
+go stale. And a file a tool has since dropped from a list of its own comes back
+with the rest: the doors above see files arriving, and nothing announces a
+removal.
+
 ## Adding a language
 
 1. Make `locales/<lang>/locale.toml` with `lang`, `name` (in English, for the

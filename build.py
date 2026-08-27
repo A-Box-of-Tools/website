@@ -178,6 +178,16 @@ def build(out, clean=False, minify_output=True, jobs=None):
         (SHARED / 'handoff.js').read_text(encoding='utf-8'), 'shared/handoff.js')
     handoff_v = sitelib.text_hash(handoff_js)
 
+    # What a language switch carries across with it - the chosen files and the
+    # settings the visitor moved. Served and hashed like the three above, and
+    # for the same reason: it lives at the root, every tool page in every
+    # language asks for the same copy, and a version in the URL is what gets a
+    # change past a service worker that was told to cache whatever it is asked
+    # for.
+    keep_js = emit.js_text(
+        (SHARED / 'lang-keep.js').read_text(encoding='utf-8'), 'shared/lang-keep.js')
+    keep_v = sitelib.text_hash(keep_js)
+
 
     # The eight lines that register the front page's service worker. Written
     # here rather than into each language because there is nothing in it that
@@ -283,15 +293,16 @@ def build(out, clean=False, minify_output=True, jobs=None):
         for locale in locales:
             done, links = build_locale(out, templates, locale, locales, site,
                                        tools, prose, planned, css_v, lang_v,
-                                       feedback_v, offline_v, site_css, emit)
+                                       feedback_v, handoff_v, keep_v,
+                                       offline_v, site_css, emit)
             written += done
             page_links.update(links)
     else:
         with ProcessPoolExecutor(max_workers=jobs) as pool:
             pending = [
                 pool.submit(build_locale, out, templates, locale, locales, site,
-                            tools, prose, planned, css_v, lang_v, feedback_v, handoff_v,
-                            offline_v, site_css, emit)
+                            tools, prose, planned, css_v, lang_v, feedback_v,
+                            handoff_v, keep_v, offline_v, site_css, emit)
                 for locale in locales
             ]
             for future in pending:
@@ -394,6 +405,7 @@ def build(out, clean=False, minify_output=True, jobs=None):
     write(out / 'offline.js', offline_js)
     write(out / 'feedback.js', feedback_js)
     write(out / 'handoff.js', handoff_js)
+    write(out / 'lang-keep.js', keep_js)
 
     # Last, because a link is only checkable once everything it could point at
     # has been written. The pages the parent wrote itself - the 404 - joined
@@ -422,7 +434,8 @@ def build(out, clean=False, minify_output=True, jobs=None):
 
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
-                 css_v, lang_v, feedback_v, handoff_v, offline_v, site_css, emit):
+                 css_v, lang_v, feedback_v, handoff_v, keep_v, offline_v,
+                 site_css, emit):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
 
@@ -501,7 +514,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written = []
     for tool in ltools:
         build_tool(dest_root, templates, locale, locales, site, tool, footer,
-                   links, lang_v, feedback_v, handoff_v,
+                   links, lang_v, feedback_v, handoff_v, keep_v,
                    guide_of.get(tool['slug'], {}),
                    related_of.get(tool['slug'], []),
                    [by_slug[s] for s in tool.get('handoff', [])], emit)
@@ -620,6 +633,49 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
     }
     context.update(extra or {})
     return context
+
+
+# The islands of a tool page whose links keep replacing it: the language
+# switchers, whose links ARE this page in another tongue and would only be
+# duplicated by a second tab; and the carry-on row, whose click is taken over
+# by shared/handoff.js to walk the result into the next tool.
+KEEPS_ITS_TAB = re.compile(
+    r'<details class="lang-pick".*?</details>'
+    r'|<nav class="lang-switch".*?</nav>'
+    r'|<div class="lang-auto".*?</div>'
+    r'|<nav class="handoff".*?</nav>', re.S)
+
+LEAVING_ANCHOR = re.compile(r'<a\s[^>]*>')
+
+
+def open_links_elsewhere(html):
+    """Make every link away from a tool page open in a new tab.
+
+    A tool page holds work in progress - a file loaded, marks placed, a result
+    computed - and any link that replaces the page throws that work away. So
+    on this one kind of page, leaving happens elsewhere. Done to the rendered
+    page rather than written into the markup, because the links live in
+    fifteen languages of prose - tool.toml answers, translated overrides, the
+    shared footer - and an attribute kept by hand across all of them is a rule
+    nobody could keep. The exemptions and their reasons sit on KEEPS_ITS_TAB;
+    beyond those, an anchor is left alone when it has no href to leave by,
+    already says target, stays on the page (#), starts a download, or opens a
+    mail client rather than a page.
+    """
+    def fix(match):
+        tag = match.group(0)
+        if ('href=' not in tag or 'target=' in tag or 'href="#' in tag
+                or 'href="mailto:' in tag or re.search(r'\sdownload[\s>=]', tag)):
+            return tag
+        return tag[:-1] + ' target="_blank" rel="noopener">'
+
+    out, last = [], 0
+    for kept in KEEPS_ITS_TAB.finditer(html):
+        out.append(LEAVING_ANCHOR.sub(fix, html[last:kept.start()]))
+        out.append(kept.group(0))
+        last = kept.end()
+    out.append(LEAVING_ANCHOR.sub(fix, html[last:]))
+    return ''.join(out)
 
 
 # ---------------------------------------------------------------------------
@@ -788,7 +844,8 @@ def build_guides(out, templates, locale, locales, site, groups, guides, footer,
 
 
 def build_tool(out, templates, locale, locales, site, tool, footer, links,
-               lang_v, feedback_v, handoff_v, guide, related, handoff, emit):
+               lang_v, feedback_v, handoff_v, keep_v, guide, related, handoff,
+               emit):
     root = locale['site']
     dest = out / tool['out_slug']
     dest.mkdir(parents=True, exist_ok=True)
@@ -869,7 +926,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'network permission the importer needs, but body.html never includes '
             '{% include "partials/url-import.html" %}. Add it, or drop [picker.urls].')
 
-    page = emit.html(dest / 'index.html', templates.render(
+    page = emit.html(dest / 'index.html', open_links_elsewhere(templates.render(
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
             'guide': guide,
@@ -890,9 +947,13 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             # through the picker. See shared/handoff.js.
             'handoff': handoff,
             'handoff_href': f'/handoff.js?v={handoff_v}',
+            # The work already on the page when somebody changes the language.
+            # Every tool page, in every language, because either side of a
+            # switch can be the one doing the carrying. See shared/lang-keep.js.
+            'keep_href': f'/lang-keep.js?v={keep_v}',
             'jsonld': sitelib.tool_jsonld(root, tool),
             'body': body,
-        })))
+        }))))
 
     css = write(dest / 'styles.css', css)
 
@@ -1764,10 +1825,11 @@ def copy_shared(out):
         # shared/css feeds the stylesheets the build assembles, and shared/js is
         # copied into each tool's src/shared/ by build_tool - minified, cached by
         # that tool's service worker. Copying either here would publish a second,
-        # raw copy at the site root that nothing references; site.css, lang.js
-        # and feedback.js are written separately, minified, by the caller -
+        # raw copy at the site root that nothing references; site.css and the
+        # frame scripts are written separately, minified, by the caller -
         # copying the source over one of them here would undo that.
-        if path.name in ('css', 'js', 'site.css', 'lang.js', 'feedback.js'):
+        if path.name in ('css', 'js', 'site.css', 'lang.js', 'feedback.js',
+                         'handoff.js', 'lang-keep.js'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)

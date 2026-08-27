@@ -700,14 +700,17 @@ function monitorNetwork() {
       .filter((entry) => !entry.name.startsWith('blob:') && !entry.name.startsWith('data:')).length;
 
     const clean = external.size === 0;
-    const platformNote = platform.size === 0
-      ? ''
-      : ` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} `
-        + `host${platform.size === 1 ? '' : 's'}; not one of them was given a file.`;
+    // One phrase per number rather than a pluralising helper: a language
+    // whose plural is not a suffix has to be able to translate the two
+    // separately.
+    const platformNote = platform.size
+      ? phrase(platform.size === 1 ? 'net.platform.one' : 'net.platform.many',
+               { hosts: platform.size })
+      : '';
 
     el.networkCount.textContent = clean
-      ? `your video has gone nowhere. ${total} files loaded.${platformNote}`
-      : `something contacted ${[...external].join(', ')}, which this tool never does.${platformNote}`;
+      ? phrase('net.clean', { total, platform: platformNote })
+      : phrase('net.dirty', { hosts: [...external].join(', '), platform: platformNote });
 
     el.networkCount.className = clean ? 'good' : 'warn';
     el.networkDot.className = `live-dot ${clean ? 'good' : 'warn'}`;

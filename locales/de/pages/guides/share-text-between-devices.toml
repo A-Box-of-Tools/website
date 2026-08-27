@@ -15,7 +15,7 @@ lede = """
     etwas hinterlässt, weil nie etwas gespeichert wird - und es ist zugleich
     der einzige mit einem Namen, den man durch einen Raum rufen kann."""
 
-updated = "26. August 2026"
+updated = "27. August 2026"
 
 og_title = "Zwischen Geräten teilen, ohne dass ein Server eine Kopie behält"
 og_description = "Text und Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen - ein aussprechbarer Link-Name, nirgendwo etwas gespeichert, und eine Freigabe, die mit dem Tab endet."

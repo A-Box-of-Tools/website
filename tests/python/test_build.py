@@ -638,6 +638,35 @@ class BuildTheSite(unittest.TestCase):
         version = page.split('styles.css?v=')[1].split('"')[0].split("'")[0]
         self.assertIn(f'styles.css?v={version}', worker)
 
+    def test_a_tool_pages_links_leave_in_a_new_tab_except_the_switcher(self):
+        """Every link away from a tool page opens elsewhere - see frame().
+
+        A tool page holds work in progress, so a footer or related-tool link
+        that replaced the page would throw a loaded file away. The exemptions
+        are each exempt for a stated reason: the language switchers, whose
+        links are this same page in another tongue; in-page anchors, which do
+        not leave; result links, which carry the download attribute; the
+        carry-on row, which is hidden until its script takes over the click;
+        and the mailto link, which opens a mail client rather than a tab.
+        Checked in the built pages so a link added anywhere - a template, a
+        tool's own body - cannot quietly go back to replacing the page.
+        """
+        exempt = re.compile(
+            r'<details class="lang-pick".*?</details>'
+            r'|<nav class="lang-switch".*?</nav>'
+            r'|<div class="lang-auto".*?</div>'
+            r'|<nav class="handoff".*?</nav>', re.S)
+        anchors = re.compile(r'<a\s[^>]*>')
+        for name in self.tool_pages():
+            text = exempt.sub('', (self.out / name).read_text(encoding='utf-8'))
+            for tag in anchors.findall(text):
+                if 'href=' not in tag or 'href="#' in tag:
+                    continue
+                if 'href="mailto:' in tag or re.search(r'\sdownload[\s>=]', tag):
+                    continue
+                with self.subTest(page=name, tag=tag):
+                    self.assertIn('target="_blank"', tag)
+
     def test_a_tool_page_asks_its_question(self):
         """The panel, and the one script that can act on it.
 
@@ -768,6 +797,38 @@ class BuildTheSite(unittest.TestCase):
                         self.assertIn(f'data-slug="{target}"', page)
                         folder = by_slug[target].split('/')[-1]
                         self.assertIn(f'href="../{folder}/"', page)
+
+    def test_a_tool_page_carries_its_work_across_a_language_switch(self):
+        """shared/lang-keep.js, on every tool page and nowhere else.
+
+        Three claims, and each of them is a way the feature silently does
+        nothing. The script has to be on the page at a versioned URL, or a
+        service worker keeps the copy it cached before this existed. It has to
+        be ABOVE src/main.js, because it listens on the file input and the
+        picker's own listener - added when that module runs - clears the input
+        as its first act, so a script registered afterwards would find nothing
+        to carry. And it belongs on tool pages only: a guide has no work to
+        keep, and putting it there would be a database opened for nothing.
+        """
+        version = buildmod.sitelib.text_hash(
+            (self.out / 'lang-keep.js').read_text(encoding='utf-8'))
+        asked = f'<script src="/lang-keep.js?v={version}" defer></script>'
+
+        pages = self.tool_pages()
+        self.assertTrue(pages)
+        for name in pages:
+            text = (self.out / name).read_text(encoding='utf-8')
+            with self.subTest(page=name):
+                self.assertIn(asked, text)
+                self.assertLess(text.index(asked), text.index('src="src/main.js"'),
+                                'it has to be listening before the picker is')
+
+        for name in self.written:
+            if not name.endswith('.html') or name in pages:
+                continue
+            with self.subTest(page=name):
+                self.assertNotIn('lang-keep.js',
+                                 (self.out / name).read_text(encoding='utf-8'))
 
     def test_every_page_asks_for_the_language_script_by_a_versioned_url(self):
         """One URL, root-absolute, the same on every page in every language.

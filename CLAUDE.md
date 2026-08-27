@@ -37,6 +37,29 @@ node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 Both suites need nothing installed. Node 21+ needs the glob **quoted**; on 20
 and earlier a directory argument works and a glob does not.
 
+**Do not run either suite locally.** They are listed above because they are
+part of the repository, not because they are part of the loop. CI runs both on
+every push and every pull request and the build job needs them, so nothing
+reaches `dist` past a failure — running them here buys an answer that is
+already on its way, and the Python suite takes the better part of half an hour
+on Windows because most of its cases build the whole site first. Build, then
+open the page; that is the part CI cannot do for you and the part that finds
+what the suites do not.
+
+This is a rule about the **tests**, not about the build: `python build.py` is
+still how you check your own work, and a change is still not done until the
+page has done its job in front of you. And when CI does report a failure,
+reproduce that one case rather than the suite it lives in:
+
+```bash
+python -m unittest tests.python.test_build -v -k <name>
+```
+
+```bash
+node --test --test-name-pattern="<name>" "tests/js/*.test.js"
+```
+
+
 `--clean` matters. Building several branches into one output directory leaves
 pages from all of them, and `check_links` then reports dozens of broken links
 that do not exist on the branch under test. It looks exactly like "main is
@@ -158,3 +181,28 @@ Prose in this repository — commit messages, comments, `tool.toml` — explains
 **why**, in full sentences, and assumes the reader can see the code. Match it.
 Comments that restate the line below them do not belong; the ones here earn
 their space by recording a decision or a trap.
+
+**A pull request that changes what a visitor sees carries before and after
+pictures.** Layout, a control, a colour, a sentence on screen, a translated
+string: the diff for any of those is unreadable as evidence, and a reviewer
+should not have to build and serve the site to find out whether the change
+looks right. Two screenshots in the description settle it. They also catch what
+prose cannot — a phrase that reads correctly in the source and arrives with a
+space in the middle of a Japanese sentence is only ever visible in a rendered
+page.
+
+Photograph the **built** site, never a mock-up: build, serve `dist/` or
+`_plain/`, and capture the real page. `node screenshots/capture.mjs` is the
+guides' harness and is recipe-driven, so it is not the tool for this; drive a
+browser directly. Take the "before" shot *first* — once the change is applied
+there is nothing left to photograph, short of a second build of the base
+commit.
+
+GitHub has no public API for the images a PR body embeds: the
+`user-attachments/assets/…` URLs come from the web uploader's own session
+endpoint, and neither `gh` nor `gh api` can reach it. So an agent opening a PR
+writes the Before/After section with the filenames as visible placeholders and
+hands the files to whoever is at the keyboard to drop in. Do not commit
+screenshots to get a raw URL — see the `git add -A` trap above for what stray
+files cost here. A change with nothing visible in it says so in one line
+instead of shipping empty placeholders.

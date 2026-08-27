@@ -15,7 +15,7 @@ lede = """
     ada yang pernah disimpan - dan itu juga satu-satunya cara dengan nama
     yang bisa diucapkan melintasi ruangan."""
 
-updated = "26 Agustus 2026"
+updated = "27 Agustus 2026"
 
 og_title = "Berbagi antar perangkat, tanpa server yang menyimpan salinan"
 og_description = "Teks dan berkas dari browser ke browser lewat koneksi langsung yang terenkripsi - nama tautan yang bisa diucapkan, tidak ada yang disimpan di mana pun, dan berbagi yang berakhir bersama tabnya."

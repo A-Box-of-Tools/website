@@ -163,4 +163,21 @@
       </div>
     </div>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">이미지는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
+      {platform}</span>
+    <span data-phrase="net.dirty">{hosts}에서 이미지를 가져왔습니다. 당신이 직접 붙여 넣은 주소입니다.
+      {platform}</span>
+    <span data-phrase="net.platform.one">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 파일을 받지 않았습니다.</span>
+    <span data-phrase="net.platform.many">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 파일을 받지 않았습니다.</span>
+  </div>
 </main>

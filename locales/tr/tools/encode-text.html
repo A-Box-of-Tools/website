@@ -74,4 +74,23 @@
 
     <pre id="output" class="output" tabindex="0"></pre>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">metniniz hiçbir yere gitmedi. {total} dosya
+      yüklendi. {platform}</span>
+    <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç
+      bunu asla yapmaz. {platform}</span>
+    <span data-phrase="net.platform.one">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {hosts} sunucudan yüklendi; hiçbirine ondan tek bir
+      karakter verilmedi.</span>
+    <span data-phrase="net.platform.many">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {hosts} sunucudan yüklendi; hiçbirine ondan tek bir
+      karakter verilmedi.</span>
+  </div>
 </main>

@@ -234,15 +234,14 @@
   stating before the first file is asked for, not in a panel you have to go
   looking for.
 
-  Only the claim, though. The paragraph, the fact chips and the live check's
-  words used to sit open under it and together they pushed the tool itself
-  below the fold, so everything but the one sentence now folds into a native
+  Only the claim, though. The paragraph, the fact chips and the live check
+  used to sit open under it and together they pushed the tool itself below
+  the fold, so everything but the one sentence now folds into a native
   <details> - chosen over a scripted panel because it needs nothing from
   main.js (the live-check code is copied into every tool) and the folded text
-  stays in the page for a crawler to read. The two live dots live in the
-  summary line, so the measured proof stays on screen even folded; the words
-  behind them are one click away. The dots keep bare class="live-dot" because
-  every tool's main.js assigns className outright, wiping anything else.
+  stays in the page for a crawler to read. The live dots fold away with their
+  rows: parked in the summary they were two unlabelled circles, meaning
+  nothing until the fold was opened anyway.
 -->
 <section class="pledge">
   <details class="pledge-fold">
@@ -251,11 +250,7 @@
       <span class="pledge-title">
 {{ ui.tool.pledge_line }}
       </span>
-      <span class="pledge-glance" aria-hidden="true">
-        <span id="network-dot" class="live-dot"></span>
-        <span id="offline-dot" class="live-dot"></span>
-        <span class="pledge-caret"></span>
-      </span>
+      <span class="pledge-caret" aria-hidden="true"></span>
     </summary>
 
     <p class="pledge-sub">
@@ -270,10 +265,12 @@
          claim above into something a sceptical visitor can check. -->
     <div class="pledge-live">
       <p class="live-row">
-        <strong>{{ ui.tool.live_check }}</strong> <span id="network-count">{{ ui.tool.checking }}</span>
+        <span id="network-dot" class="live-dot" aria-hidden="true"></span>
+        <span><strong>{{ ui.tool.live_check }}</strong> <span id="network-count">{{ ui.tool.checking }}</span></span>
       </p>
       <p class="live-row">
-        <strong>{{ ui.tool.offline }}</strong> <span id="offline-status">{{ ui.tool.checking }}</span>
+        <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
+        <span><strong>{{ ui.tool.offline }}</strong> <span id="offline-status">{{ ui.tool.checking }}</span></span>
       </p>
       <p class="live-hint">
 {{ tool.live_hint }}
@@ -309,6 +306,19 @@
 {% endif %}<!-- On every tool page, not only the senders: the receiving half reads
      the parked file and feeds it through the file input. -->
 <script src="{{ handoff_href }}" defer></script>
+
+<!--
+  What a language switch carries with it: the files this page was given and the
+  settings the visitor moved, parked while the page changes and handed back on
+  the other side. Every tool page in every language, because either side of a
+  switch can be the one doing the carrying.
+
+  `defer` rather than a module, and deliberately above src/main.js: it listens
+  on the file input, and it has to be listening BEFORE the picker does - the
+  first thing the picker does with a chosen file is clear the input, which
+  would leave nothing to carry. See shared/lang-keep.js.
+-->
+<script src="{{ keep_href }}" defer></script>
 
 <!--
   ============================================================================
