@@ -270,12 +270,14 @@ jobs:
           git -C .publish commit -m "Build ${SHA:0:7}: ${subject}"
           git -C .publish push origin dist
 
-      # The version in config/site.toml, as a tag on the commit that carries it.
+      # The version, as a tag on the commit that shipped it.
       #
-      # version.yml decides when the number has to move, per pull request, and
-      # until now nothing recorded where it moved TO. The history had a version
-      # and no way to ask which commit shipped it, which is the half of a
-      # version that makes it worth having: `git show 1.2.0` should answer.
+      # The tag is where the version lives: there is no number in a file to
+      # keep in step with it, and no pull request has to remember to move one.
+      # scripts/next_version.py works out what this deploy earned by asking
+      # git what has changed since the last tag, and the answer is recorded
+      # here so that `git show 1.2.0` can say which commit shipped it - which
+      # is the half of a version that makes it worth having.
       #
       # Idempotent, because most merges do not move it. A change to the tests,
       # to CI or to the documentation is REQUIRED by the rule to leave the
