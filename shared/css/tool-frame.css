@@ -368,12 +368,108 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   box-shadow: var(--shadow);
 }
 
-.card > h2 {
+/* A step's heading, whether it stands on its own or is the summary of the fold
+   its explanation went into. buildlib/cards.py moves it inside a <summary>
+   wherever a card opens with a `card-lede`, so a rule that only knew the first
+   shape would leave half the tools with an unstyled heading. */
+.card > h2,
+.card-note > summary > h2 {
   margin: 0 0 1rem;
   font-size: 1.05rem;
   display: flex;
   align-items: center;
   gap: 0.6rem;
+}
+
+/* ------------------------------------------------------ the step's own note
+
+   The paragraph a card used to open with, folded behind the heading it
+   belongs to. Closed, a card is its controls; open, it is what it always was.
+   buildlib/cards.py says why this is done by the build rather than written
+   into each of five hundred bodies. */
+
+.card-note { margin: 0 0 1rem; }
+
+.card-note > summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  /* Both spellings: the standard one, and the one Safari still needs. */
+  list-style: none;
+}
+
+.card-note > summary::-webkit-details-marker { display: none; }
+
+.card-note > summary > h2 { margin: 0; }
+
+/*
+  The mark that says there is more here, drawn rather than typed.
+
+  It is two background shapes inside a circle instead of the letter i, and that
+  is the whole reason it is written this way: generated content counts towards
+  the accessible name of the summary in most engines, so `content: "i"` gets
+  every one of these headings announced as "Say how big it may be i". The
+  summary is already named by the heading inside it, and the mark is decoration
+  on top of that, so it is drawn where a screen reader cannot reach it.
+*/
+.card-note > summary::after {
+  content: "";
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  color: var(--text-dim);
+  background:
+    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
+      50% 22% / 2.5px 2.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat;
+  transition: color 0.15s;
+}
+
+.card-note > summary:hover::after,
+.card-note > summary:focus-visible::after { color: var(--accent); }
+
+/* Open, the mark stops being an invitation and becomes a state: it is the
+   accent colour, so a reader scanning a page of cards can see which ones they
+   have already opened without reading them again. */
+.card-note[open] > summary::after { color: var(--accent); }
+
+.card-note[open] > summary > h2 { margin-bottom: 0.7rem; }
+
+/* A setting's own small print, once it is in the fold rather than under the
+   control. The name of the setting comes with it - a note that says "only used
+   once quality alone would have to drop" is about nothing at all without the
+   checkbox it belongs to - so it leads with the same <strong> the label kept. */
+.card-note .fold-note {
+  margin: 0 0 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.card-note .fold-note strong { color: var(--text); }
+
+/* Inside the fold these are paragraphs of their own, not the trailing half of
+   a label, so the inline default they carry under a checkbox is undone. */
+.card-note .check-note {
+  display: inline;
+  font-size: inherit;
+}
+
+.card-note > .field-summary,
+.card-note > .field-note {
+  margin: 0 0 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+
+.card-note > :last-child { margin-bottom: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card-note > summary::after { transition: none; }
 }
 
 .step {
@@ -582,7 +678,52 @@ button, .as-button {
 
 .faq h2 + .faq-list,
 .faq-list + h2,
+.how-to-fold + h2,
 .how-to + h2 { margin-top: 1.6rem; }
+
+/* The steps, folded. They repeat what the cards above already said, so they
+   open closed and the questions - which nothing above answers - are the first
+   thing in this section a reader meets. templates/tool.html says the rest. */
+.how-to-fold > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.how-to-fold > summary::-webkit-details-marker { display: none; }
+
+.how-to-fold > summary > h2 {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* The same caret the pledge fold uses, for the same reason: a heading that can
+   be opened should not look exactly like one that cannot. */
+.how-to-fold > summary > h2::after {
+  content: "";
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid var(--text-dim);
+  border-bottom: 2px solid var(--text-dim);
+  transform: rotate(45deg) translate(-0.1rem, -0.1rem);
+  transition: transform 0.15s;
+}
+
+.how-to-fold[open] > summary > h2::after {
+  transform: rotate(225deg) translate(-0.05rem, -0.05rem);
+}
+
+.how-to-fold > summary:hover > h2,
+.how-to-fold > summary:focus-visible > h2 { color: var(--accent); }
+
+.how-to-fold > summary:hover > h2::after,
+.how-to-fold > summary:focus-visible > h2::after { border-color: var(--accent); }
+
+.how-to-fold[open] > summary > h2 { margin-bottom: 0.9rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .how-to-fold > summary > h2::after { transition: none; }
+}
 
 .how-to {
   margin: 0;

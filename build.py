@@ -70,6 +70,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from buildlib import cards
 from buildlib import cssmin
 from buildlib import i18n
 from buildlib import imports
@@ -915,6 +916,12 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
         f'{tool["slug"]}/body.html [{locale["lang"]}]',
         {'site': root, 'tool': tool, 'ui': ui, 'base': '../',
          'links': links}).rstrip('\n')
+
+    # The explanation each step opens with, folded behind that step's heading.
+    # Done here rather than in five hundred bodies, one per tool per language,
+    # which would all be saying the same thing about the same paragraph. See
+    # buildlib/cards.py.
+    body = cards.fold_ledes(body)
 
     # Setting [picker.urls] ships the module, the stylesheet and the widened
     # img-src. If the panel itself were then left off the page, the tool would
