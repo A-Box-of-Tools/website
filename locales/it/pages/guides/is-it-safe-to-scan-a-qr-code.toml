@@ -10,7 +10,7 @@ lede = """
     La scansione in sé lo è. Un QR code è un pezzo di testo, e puntarci la
     fotocamera non fa altro che leggere quel testo. Tutto ciò che può andare
     storto succede un tocco dopo, quando qualcosa apre ciò che è stato letto
-    &mdash; e quel tocco potete trattenerlo."""
+    &mdash; e quel tocco puoi trattenerlo."""
 updated = "26 agosto 2026"
 og_title = "È sicuro scansionare un QR code?"
 og_description = "La scansione legge, non apre. Che cosa contiene davvero un QR code, come funziona la truffa del codice incollato sopra e come vedere dove porta un link prima di andarci."
