@@ -517,6 +517,7 @@ order = [
   "can-blacked-out-text-be-recovered",
   "is-it-safe-to-paste-into-an-online-tool",
   "is-it-safe-to-use-an-online-password-generator",
+  "is-base64-encryption",
 ]
 
 #

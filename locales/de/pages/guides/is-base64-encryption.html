@@ -1,0 +1,140 @@
+  <section>
+    <h2>Die kurze Antwort</h2>
+    <p>
+      Nein. Base64 ist eine <em>Kodierung</em>: eine Art, beliebige Daten
+      mit nur vierundsechzig unverfänglichen Zeichen aufzuschreiben, damit
+      sie den Transport durch Systeme überstehen, die für schlichten Text
+      gebaut sind. Sie hat keinen Schlüssel, kein Geheimnis und keinerlei
+      Sicherheitseigenschaft. Zum Dekodieren muss man sie erkennen, sonst
+      nichts &mdash; ein Mensch braucht dafür einen Blick, ein Rechner
+      eine Millisekunde.
+    </p>
+    <p>
+      Die Frage lohnt sich trotzdem, denn die Verwechslung ist universell
+      und gelegentlich teuer. Eine Base64-Zeichenkette <em>sieht</em>
+      verwürfelt aus &mdash; <code>cGFzc3dvcmQ=</code> verrät dem Auge
+      nichts &mdash;, und was verwürfelt aussieht, wird unter
+      &bdquo;sicher&ldquo; abgelegt. Echte Produkte sind mit derart
+      &bdquo;geschützten&ldquo; Passwörtern ausgeliefert worden. Die Kur
+      ist eine einmal gelernte Unterscheidung: <strong>Kodierung ist für
+      Maschinen, Verschlüsselung für Geheimnisse, Hashing für
+      Fingerabdrücke.</strong> Drei Aufgaben, drei Werkzeuge, und nur
+      eines davon schützt irgendetwas.
+    </p>
+  </section>
+
+  <section>
+    <h2>Kodierung: für jeden umkehrbar</h2>
+    <p>
+      Eine Kodierung ändert, wie Daten <em>geschrieben</em> werden, nie,
+      was sie besagen. E-Mail-Anhänge, in Stylesheets eingebettete Bilder,
+      Tokens in Adressen &mdash; überall müssen beliebige Bytes durch
+      Kanäle, die nur Text zuverlässig tragen, und Base64 ist das
+      Standardkostüm: drei Bytes hinein, vier Zeichen heraus, aus
+      Buchstaben, Ziffern und zwei Satzzeichen, mit <code>=</code> als
+      Auffüllung am Ende. Dieses <code>=</code> ist das Erkennungszeichen,
+      und wer es einmal kennt, sieht Base64 überall.
+    </p>
+    <p>
+      Die entscheidende Eigenschaft: Das Rezept ist öffentlich und läuft
+      rückwärts genauso. Es gibt nichts zu wissen, also gibt es nichts
+      nicht zu wissen. Prozent-Kodierung in Adressen (<code>%20</code> für
+      ein Leerzeichen), HTML-Entitäten (<code>&amp;amp;</code>),
+      Hex-Darstellungen und Backslash-Escapes sind dieselbe Idee in
+      anderem Gewand, und der <a href="../../base64-kodieren/">
+      Base64-Kodierer und -Dekodierer</a> hier spricht sie alle, in beide
+      Richtungen, auf Ihrer eigenen Maschine. Eine gefundene Zeichenkette
+      zu dekodieren ist exakt so legitim wie sie zu lesen, denn eine
+      Kodierung war nie ein Schloss.
+    </p>
+  </section>
+
+  <section>
+    <h2>Verschlüsselung: umkehrbar für den Schlüsselinhaber</h2>
+    <p>
+      Verschlüsselung ist die, die Inhalte tatsächlich schützt. Sie
+      transformiert Daten mit einem <em>Schlüssel</em>, und die Mathematik
+      ist so eingerichtet, dass die Umkehr ohne Schlüssel nicht bloß
+      schwierig, sondern rechnerisch außer Reichweite ist &mdash; mit
+      Schlüssel dagegen sofort gelingt. Das Geheimnis wohnt ganz im
+      Schlüssel, nicht in der Methode: Die Verfahren sind veröffentlicht,
+      genormt und gerade deshalb stark.
+    </p>
+    <p>
+      Hier beißt die optische Verwechslung, denn verschlüsselte Bytes
+      werden routinemäßig Base64-kodiert, damit sie reisen können &mdash;
+      erst vom Schlüssel verwürfelt, dann für den Transport kostümiert.
+      Zwei Schichten, zwei Aufgaben. Das JSON-Web-Token ist der
+      Klassiker: drei Base64-Stücke, durch Punkte verbunden, von denen
+      sich die ersten beiden für jeden, der es versucht, in lesbares JSON
+      <em>dekodieren</em>. Täglich fügen Menschen Tokens in öffentliche
+      Web-Dekodierer ein, im Glauben, das Ganze sei versiegelt; die
+      ehrliche Beschreibung ist, dass ein JWT eine Postkarte mit
+      fälschungssicherer Unterschrift ist, kein Umschlag.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hashing: für niemanden umkehrbar</h2>
+    <p>
+      Ein Hash läuft nur in eine Richtung. Beliebig viele Daten durch
+      SHA-256 geschickt ergeben eine Zahl fester Größe &mdash; dieselbe
+      Zahl jedes Mal für dieselben Daten, eine völlig andere für Daten,
+      die sich um ein Bit unterscheiden, und kein Weg zurück von der Zahl
+      zu den Daten, für niemanden, Schlüssel hin oder her. Das ist kein
+      Kostüm und kein Schloss; es ist ein <em>Fingerabdruck</em>.
+    </p>
+    <p>
+      Genau das macht ihn zum richtigen Werkzeug für die zwei Aufgaben,
+      die ihm gehören. Prüfen, dass eine heruntergeladene Datei exakt die
+      des Herausgebers ist &mdash; Fingerabdrücke vergleichen, was das
+      Werkzeug <a href="../../pruefsumme-berechnen/">Prüfsumme
+      berechnen</a> auf Ihrer Maschine tut, mit
+      <a href="../pruefsumme-vergleichen/">eigenem Ratgeber</a>. Und
+      Passwörter aufbewahren: Ein gut geführter Dienst behält nur den Hash
+      Ihres Passworts, sodass selbst seine gestohlene Datenbank das
+      Passwort nicht enthält. Kann eine Seite Ihnen Ihr vergessenes
+      Passwort mailen, hat sie Ihnen mitgeteilt, dass sie es nie gehasht
+      hat &mdash; und &bdquo;sichert&ldquo; eine Konfiguration eines als
+      <code>cGFzc3dvcmQ=</code>, hat sie mitgeteilt, dass sie es nur je
+      kodiert hat.
+    </p>
+  </section>
+
+  <section>
+    <h2>Sie in freier Wildbahn auseinanderhalten</h2>
+    <p>
+      Eine brauchbare Abkürzung für die Zeichenkette vor Ihnen:
+    </p>
+    <ul>
+      <li>
+        <strong>Dekodiert zu etwas Lesbarem?</strong> Es war Kodierung.
+        Buchstaben, Ziffern, vielleicht <code>+</code> und <code>/</code>,
+        oft <code>=</code> am Ende &mdash; durch einen Dekodierer schicken
+        und nachsehen.
+      </li>
+      <li>
+        <strong>Dekodiert zu binärem Rauschen?</strong> Dann war das
+        Base64 nur das Kostüm, und darunter ist etwas Verschlüsseltes,
+        Komprimiertes oder nie Textgewesenes &mdash; die Kodierung sagt so
+        oder so nichts darüber.
+      </li>
+      <li>
+        <strong>Feste Länge, Hex-Zeichen, dekodiert nie?</strong> 64
+        Hex-Zeichen sind die Gestalt von SHA-256, 32 die von MD5. Hashes
+        dekodieren nicht; sie stimmen nur überein oder eben nicht.
+      </li>
+    </ul>
+    <p>
+      Und die praktische Moral zu jedem: Verlassen Sie sich für
+      Geheimhaltung nie auf Kodierung; bauen Sie Verschlüsselung nie
+      selbst, wenn Ihre Plattform sie mitliefert; speichern Sie ein
+      Passwort nie anders als gehasht. Die Zeichenkette, die Sie zum
+      Prüfen dekodieren, kann derweil selbst der heikle Teil sein &mdash;
+      bei einem Token im Debugging ist sie es meist &mdash;, weshalb der
+      <a href="../../base64-kodieren/">Dekodierer hier</a> dort läuft, wo
+      das Geheimnis ohnehin ist, auf Ihrer Maschine, und weshalb
+      <a href="../ist-das-einfuegen-in-online-tools-sicher/">das Einfügen
+      in Web-Werkzeuge</a> eine eigene Seite hat.
+    </p>
+  </section>

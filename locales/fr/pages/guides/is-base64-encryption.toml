@@ -1,0 +1,18 @@
+#
+# Guide : base64 est-il un chiffrement ? - French.
+#
+
+nav = "Base64, un chiffrement ?"
+title = "Base64 est-il un chiffrement ?"
+description = "Non - et la différence compte en pratique. Encodage, chiffrement et hachage résolvent trois problèmes différents : l'un se défait par n'importe qui, l'autre par le détenteur de la clé, le dernier par personne. Lequel est lequel, et comment les reconnaître à vue."
+heading = "Base64 est-il un chiffrement ?"
+lede = """
+    Non. Base64 est un changement de costume, pas une serrure&nbsp;:
+    quiconque le reconnaît le défait en quelques millisecondes, sans
+    aucune clé. Mais la question mérite une vraie réponse, parce
+    qu'encodage, chiffrement et hachage se ressemblent à l'écran et ne
+    pourraient pas promettre des choses plus différentes."""
+updated = "26 août 2026"
+og_title = "Base64 est-il un chiffrement ?"
+og_description = "Non - n'importe qui peut le défaire, sans clé. Encodage, chiffrement et hachage se ressemblent à l'écran et promettent trois choses complètement différentes. Lequel est lequel."
+og_image_alt = "abox.tools - des outils qui ne passent jamais par un serveur"

@@ -172,6 +172,7 @@ complete = true
 "guides/can-blacked-out-text-be-recovered" = "가이드/가린-텍스트-복구되나"
 "guides/is-it-safe-to-paste-into-an-online-tool" = "가이드/온라인-도구에-붙여넣기-안전한가"
 "guides/is-it-safe-to-use-an-online-password-generator" = "가이드/온라인-비밀번호-생성기-안전한가"
+"guides/is-base64-encryption" = "가이드/base64는-암호화인가"
 
 #
 # ---------------------------------------------------------------------------

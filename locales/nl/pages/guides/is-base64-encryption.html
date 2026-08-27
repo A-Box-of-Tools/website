@@ -1,0 +1,138 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Nee. Base64 is een <em>codering</em>: een manier om willekeurige
+      gegevens op te schrijven met slechts vierenzestig veilige tekens,
+      zodat ze de reis overleven door systemen die voor kale tekst gebouwd
+      zijn. Het heeft geen sleutel, geen geheim en geen enkele
+      veiligheidseigenschap. Decoderen vereist herkennen, meer niet
+      &mdash; een mens kost dat één blik, een computer één milliseconde.
+    </p>
+    <p>
+      Toch is de vraag het waard, want de verwarring is universeel en soms
+      duur. Een base64-reeks <em>ziet er</em> door elkaar gehusseld uit
+      &mdash; <code>cGFzc3dvcmQ=</code> zegt het oog niets &mdash; en wat
+      er gehusseld uitziet, belandt in het laatje &ldquo;veilig&rdquo;.
+      Echte producten zijn verscheept met wachtwoorden die zo
+      &ldquo;beschermd&rdquo; waren. De remedie is één onderscheid, één
+      keer geleerd: <strong>coderen is voor machines, versleutelen is voor
+      geheimen, hashen is voor vingerafdrukken.</strong> Drie klussen,
+      drie gereedschappen, en maar één ervan beschermt iets.
+    </p>
+  </section>
+
+  <section>
+    <h2>Codering: door iedereen terug te draaien</h2>
+    <p>
+      Een codering verandert hoe gegevens <em>geschreven</em> worden,
+      nooit wat ze zeggen. E-mailbijlagen, afbeeldingen in stylesheets,
+      tokens in adressen &mdash; overal moeten willekeurige bytes door
+      kanalen die alleen tekst betrouwbaar dragen, en base64 is het
+      standaardkostuum: drie bytes erin, vier tekens eruit, gemaakt van
+      letters, cijfers en twee leestekens, met <code>=</code> als opvulsel
+      aan het einde. Die <code>=</code> is het herkenningsteken, en wie
+      hem eenmaal kent, ziet base64 overal.
+    </p>
+    <p>
+      De eigenschap die alles bepaalt: het recept is openbaar en draait
+      achterstevoren precies zo. Er valt niets te weten, dus er valt niets
+      niet te weten. Procentcodering in adressen (<code>%20</code> voor
+      een spatie), HTML-entiteiten (<code>&amp;amp;</code>), hexadecimaal
+      en backslash-escapes zijn hetzelfde idee in andere kleren, en de
+      <a href="../../base64-coderen/">base64-codeerder en -decodeerder</a>
+      hier spreekt ze allemaal, in beide richtingen, op je eigen machine.
+      Een gevonden reeks decoderen is exact zo legitiem als haar lezen,
+      want een codering was nooit een slot.
+    </p>
+  </section>
+
+  <section>
+    <h2>Versleuteling: terug te draaien door de sleutelhouder</h2>
+    <p>
+      Versleuteling is degene die inhoud werkelijk beschermt. Ze
+      transformeert gegevens met een <em>sleutel</em>, en de wiskunde is
+      zo ingericht dat terugrekenen zonder sleutel niet gewoon moeilijk is
+      maar rekenkundig buiten bereik &mdash; terwijl het mét sleutel
+      onmiddellijk lukt. Het geheim woont volledig in de sleutel, niet in
+      de methode: de algoritmen zijn gepubliceerd, gestandaardiseerd, en
+      juist daardoor sterk.
+    </p>
+    <p>
+      Hier bijt de visuele verwarring, want versleutelde bytes worden
+      routineus base64-gecodeerd om te kunnen reizen &mdash; eerst door
+      een sleutel gehusseld, dan gekostumeerd voor het vervoer. Twee
+      lagen, twee klussen. Het JSON Web Token is het schoolvoorbeeld: drie
+      stukken base64, verbonden door punten, waarvan de eerste twee voor
+      iedereen die het probeert naar leesbare JSON <em>decoderen</em>.
+      Mensen plakken dagelijks tokens in openbare webdecodeerders, in de
+      veronderstelling dat het geheel verzegeld was; de eerlijke
+      beschrijving is dat een JWT een briefkaart met fraudebestendige
+      handtekening is, geen envelop.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hashing: door niemand terug te draaien</h2>
+    <p>
+      Een hash loopt maar één kant op. Stuur eender hoeveel gegevens door
+      SHA-256 en er komt een getal van vaste grootte uit &mdash; hetzelfde
+      getal elke keer voor dezelfde gegevens, een compleet ander getal
+      voor gegevens die één bit verschillen, en geen weg terug van het
+      getal naar de gegevens, voor niemand, sleutel of geen sleutel. Het
+      is geen kostuum en geen slot; het is een <em>vingerafdruk</em>.
+    </p>
+    <p>
+      Dat maakt het tot het juiste gereedschap voor de twee klussen die
+      het toebehoren. Controleren dat een gedownload bestand exact het
+      bestand van de uitgever is &mdash; vingerafdrukken vergelijken, wat
+      het gereedschap <a href="../../checksum-controleren/">checksum
+      controleren</a> op je machine doet, met
+      <a href="../de-checksum-van-een-download-controleren/">een eigen
+      gids</a>. En wachtwoorden bewaren: een goed gerunde dienst bewaart
+      alleen de hash van het jouwe, zodat zelfs zijn gestolen database het
+      wachtwoord niet bevat. Wanneer een site je je vergeten wachtwoord
+      kan mailen, heeft ze je verteld dat ze het nooit gehasht heeft
+      &mdash; en wanneer een config het hare &ldquo;beveiligt&rdquo; als
+      <code>cGFzc3dvcmQ=</code>, heeft ze je verteld dat ze het alleen
+      maar codeerde.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ze uit elkaar houden in het wild</h2>
+    <p>
+      Een werkende vuistregel voor de reeks voor je neus:
+    </p>
+    <ul>
+      <li>
+        <strong>Decodeert hij naar iets leesbaars?</strong> Dan was het
+        codering. Letters, cijfers, misschien <code>+</code> en
+        <code>/</code>, vaak <code>=</code> aan het eind &mdash; haal hem
+        door een decodeerder en kijk.
+      </li>
+      <li>
+        <strong>Decodeert hij naar binaire ruis?</strong> Dan was de
+        base64 alleen het kostuum, en is wat eronder zit versleuteld,
+        gecomprimeerd, of nooit tekst geweest &mdash; de codering zegt je
+        in beide gevallen niets.
+      </li>
+      <li>
+        <strong>Vaste lengte, hexadecimale tekens, decodeert
+        nooit?</strong> 64 hexadecimale tekens is het silhouet van
+        SHA-256; 32 dat van MD5. Hashes decoderen niet; ze komen alleen
+        overeen, of niet.
+      </li>
+    </ul>
+    <p>
+      En de praktische moraal bij elk: vertrouw geheimhouding nooit toe
+      aan een codering; bouw nooit zelf versleuteling wanneer je platform
+      haar meelevert; bewaar een wachtwoord nooit anders dan gehasht. De
+      reeks die je decodeert om te kijken, kan intussen zelf het gevoelige
+      deel zijn &mdash; een token dat gedebugd wordt is dat meestal
+      &mdash; en daarom draait de
+      <a href="../../base64-coderen/">decodeerder hier</a> waar het geheim
+      al is, op je eigen machine, en daarom heeft
+      <a href="../is-plakken-in-een-online-tool-veilig/">wat plakken in
+      een webtool werkelijk doet</a> een eigen pagina.
+    </p>
+  </section>
