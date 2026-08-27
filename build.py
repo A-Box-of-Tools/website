@@ -622,6 +622,49 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
     return context
 
 
+# The islands of a tool page whose links keep replacing it: the language
+# switchers, whose links ARE this page in another tongue and would only be
+# duplicated by a second tab; and the carry-on row, whose click is taken over
+# by shared/handoff.js to walk the result into the next tool.
+KEEPS_ITS_TAB = re.compile(
+    r'<details class="lang-pick".*?</details>'
+    r'|<nav class="lang-switch".*?</nav>'
+    r'|<div class="lang-auto".*?</div>'
+    r'|<nav class="handoff".*?</nav>', re.S)
+
+LEAVING_ANCHOR = re.compile(r'<a\s[^>]*>')
+
+
+def open_links_elsewhere(html):
+    """Make every link away from a tool page open in a new tab.
+
+    A tool page holds work in progress - a file loaded, marks placed, a result
+    computed - and any link that replaces the page throws that work away. So
+    on this one kind of page, leaving happens elsewhere. Done to the rendered
+    page rather than written into the markup, because the links live in
+    fifteen languages of prose - tool.toml answers, translated overrides, the
+    shared footer - and an attribute kept by hand across all of them is a rule
+    nobody could keep. The exemptions and their reasons sit on KEEPS_ITS_TAB;
+    beyond those, an anchor is left alone when it has no href to leave by,
+    already says target, stays on the page (#), starts a download, or opens a
+    mail client rather than a page.
+    """
+    def fix(match):
+        tag = match.group(0)
+        if ('href=' not in tag or 'target=' in tag or 'href="#' in tag
+                or 'href="mailto:' in tag or re.search(r'\sdownload[\s>=]', tag)):
+            return tag
+        return tag[:-1] + ' target="_blank" rel="noopener">'
+
+    out, last = [], 0
+    for kept in KEEPS_ITS_TAB.finditer(html):
+        out.append(LEAVING_ANCHOR.sub(fix, html[last:kept.start()]))
+        out.append(kept.group(0))
+        last = kept.end()
+    out.append(LEAVING_ANCHOR.sub(fix, html[last:]))
+    return ''.join(out)
+
+
 # ---------------------------------------------------------------------------
 # The guides, and how they are tied to the tools
 
@@ -869,7 +912,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'network permission the importer needs, but body.html never includes '
             '{% include "partials/url-import.html" %}. Add it, or drop [picker.urls].')
 
-    page = emit.html(dest / 'index.html', templates.render(
+    page = emit.html(dest / 'index.html', open_links_elsewhere(templates.render(
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
             'guide': guide,
@@ -892,7 +935,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'handoff_href': f'/handoff.js?v={handoff_v}',
             'jsonld': sitelib.tool_jsonld(root, tool),
             'body': body,
-        })))
+        }))))
 
     css = write(dest / 'styles.css', css)
 
