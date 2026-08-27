@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/separar-gif-em-quadros/:';
-const CACHE_NAME=CACHE_PREFIX+'bfbde90fb0';
+const CACHE_NAME=CACHE_PREFIX+'b6de613044';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=b7d336b9a6',
+'styles.css?v=231de7650d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

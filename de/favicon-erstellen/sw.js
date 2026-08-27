@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/favicon-erstellen/:';
-const CACHE_NAME=CACHE_PREFIX+'37c09aee2f';
+const CACHE_NAME=CACHE_PREFIX+'e08c473c3f';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=153a4cefb8',
+'styles.css?v=90b9806774',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
