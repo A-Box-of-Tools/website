@@ -29,6 +29,20 @@ category = "text-codes-and-passwords"
 roadmap_group = "beyond"
 lastmod = "2026-08-26"
 
+# No AdSense on this page, alone on the site.
+#
+# The link name lives in the URL fragment because browsers do not send
+# fragments to servers - that is the whole reason it is written there. The
+# AdSense script does not honour that: it reads location.href and posts all of
+# it, fragment included, to googleads.g.doubleclick.net, where it lands in a
+# log beside the reader's IP address. For an open share the link name is the
+# entire capability to read it, so that one request gives away exactly what
+# this tool promises to keep.
+#
+# Omission rather than ordering: the ad script is async and this tool's module
+# is deferred, so clearing the fragment first is a race the page cannot win.
+ads = false
+
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Share Text &amp; Files Between Devices &mdash; Direct, Encrypted, Nothing Stored"

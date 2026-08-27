@@ -1,9 +1,24 @@
 <!--
   AdSense. Async so it cannot delay the app; crossorigin="anonymous" is
   Google's own snippet, unchanged.
+
+  Left out where a page sets `ads = false` in its tool.toml, which today means
+  /share-text/ alone. The reason is specific rather than squeamish: this
+  script reads location.href and sends the whole of it, fragment included, to
+  googleads.g.doubleclick.net. Every other page on this site keeps nothing in
+  its fragment, so that is merely a URL. On the share tool the fragment is the
+  link name - the entire capability to read the share - and posting it to an
+  ad server beside the reader's IP address hands away the thing the tool
+  exists to protect.
+
+  It has to be omission rather than ordering. This script is async and the
+  tool's own module is deferred, so clearing the fragment before the ad reads
+  it is a race the page cannot reliably win.
 -->
+{% if ads %}
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ site.adsense_client }}"
         crossorigin="anonymous"></script>
+{% endif %}
 
 <!-- Google tag (gtag.js). The configuration half lives in analytics.js. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.analytics_id }}"></script>

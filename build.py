@@ -593,6 +593,10 @@ def frame(locale, locales, site, slug, base, links, lang_v, extra=None):
         },
         'base': base,
         'links': links,
+        # Whether this page carries the AdSense script. True everywhere unless
+        # a tool.toml turns it off; see templates/partials/head-scripts.html
+        # for the one page that does and why.
+        'ads': True,
         'canonical': i18n.locale_url(locale, slug, site),
         'alternates': i18n.alternates(locales, slug, site),
         'languages': i18n.switcher(locales, locale, slug, site),
@@ -862,6 +866,10 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
     page = emit.html(dest / 'index.html', templates.render(
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
+            # A tool may decline the ad script. Only share-text does, because
+            # AdSense posts the URL fragment - which is that tool's link name
+            # - to an ad server. See its tool.toml.
+            'ads': tool.get('ads', True),
             'guide': guide,
             'related': related,
             'ui': ui,
