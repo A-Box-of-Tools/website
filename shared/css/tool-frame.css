@@ -1184,3 +1184,15 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
   opacity: 0.55;
   cursor: progress;
 }
+
+/* The same moment on the language switcher: the work already on this page is
+   being parked for the page in the other language, which shared/lang-keep.js
+   is about to open. Longer than the handoff's when the tool is holding a
+   video, and a switcher that looked inert for a second would be clicked
+   again. */
+.lang-pick a[aria-busy="true"],
+.lang-switch a[aria-busy="true"],
+.lang-auto a[aria-busy="true"] {
+  opacity: 0.55;
+  cursor: progress;
+}
