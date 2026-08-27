@@ -167,8 +167,6 @@ bar.setSource(duration);
 el.scaleEnd.textContent=formatTime(duration);
 setSection(0,Math.min(duration,DEFAULT_SECTION||duration));
 chooseDefaultWidth();
-el.sectionCard.hidden=false;
-el.exportCard.hidden=false;
 el.exportBtn.disabled=false;
 updateSummary();
 }catch(error){
@@ -223,8 +221,6 @@ duration=0;
 }
 function resetView(){
 el.source.hidden=true;
-el.sectionCard.hidden=true;
-el.exportCard.hidden=true;
 el.pathNote.hidden=true;
 releaseFile();
 }

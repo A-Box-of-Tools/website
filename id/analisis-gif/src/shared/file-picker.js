@@ -5,7 +5,11 @@ const titleEl=dropzone.querySelector('.dropzone-title');
 const idle=idleTitle??titleEl?.textContent??'';
 const hand=(files)=>{
 const picked=Array.from(files??[]);
-if(picked.length)onFiles(picked);
+if(!picked.length)return;
+for(const card of document.querySelectorAll('main .card[inert]')){
+card.removeAttribute('inert');
+}
+onFiles(picked);
 };
 input.addEventListener('change',()=>{
 const picked=Array.from(input.files);

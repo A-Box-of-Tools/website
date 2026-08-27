@@ -163,7 +163,6 @@ frames=Math.max(1,Math.floor(duration*fps));
 }
 showPreview(played.ok);
 describeSource(played);
-el.exportCard.hidden=false;
 el.exportBtn.disabled=false;
 updateAudioNote();
 updateSummary();
@@ -229,7 +228,6 @@ el.exportBtn.disabled=true;
 el.source.hidden=true;
 el.previewWrap.hidden=true;
 el.stageNote.hidden=true;
-el.exportCard.hidden=true;
 el.pathNote.hidden=true;
 releaseFile();
 }

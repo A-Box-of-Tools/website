@@ -128,8 +128,6 @@ image:null,
 meta:null,
 }));
 el.frames.replaceChildren(...rows.map(makeRow));
-el.settingsCard.hidden=false;
-el.framesCard.hidden=false;
 applyEvery();
 }
 function makeRow(row){
@@ -430,8 +428,6 @@ file=null;
 el.frames.replaceChildren();
 el.source.hidden=true;
 el.notice.hidden=true;
-el.settingsCard.hidden=true;
-el.framesCard.hidden=true;
 hideProgress();
 }
 function updateModeNote(){

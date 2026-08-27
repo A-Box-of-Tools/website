@@ -80,9 +80,6 @@ el.fileFacts.textContent=`${humanBytes(raw.length)} · `
 +`${count(inventory.pages, 'page')}`;
 el.fileRow.hidden=false;
 renderInventory(inventory);
-el.inventoryCard.hidden=false;
-el.settingsCard.hidden=false;
-el.runCard.hidden=false;
 renderSettings();
 if(doc.repaired){
 note('This file\'s cross-reference table did not match its contents, so it was '
@@ -112,9 +109,6 @@ return`This PDF could not be read: ${error?.message ?? error}`;
 function reset(){
 loaded=null;
 el.fileRow.hidden=true;
-el.inventoryCard.hidden=true;
-el.settingsCard.hidden=true;
-el.runCard.hidden=true;
 el.result.hidden=true;
 el.progress.hidden=true;
 el.loadError.hidden=true;

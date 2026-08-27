@@ -91,7 +91,6 @@ return null;
 function show(){
 var anchor=result();
 if(!anchor){
-if(!nav.hidden)nav.hidden=true;
 return;
 }
 var host=seat(anchor);
@@ -101,6 +100,7 @@ if(host.lastElementChild!==nav)host.appendChild(nav);
 anchor.insertAdjacentElement('afterend',nav);
 }
 if(nav.hidden)nav.hidden=false;
+if(nav.hasAttribute('inert'))nav.removeAttribute('inert');
 }
 var watch=new MutationObserver(show);
 watch.observe(document.body,{

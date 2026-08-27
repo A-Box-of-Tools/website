@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/타임랩스-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'eb7c975b95';
+const CACHE_NAME=CACHE_PREFIX+'ab7bf83aaa';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=33ef3eaac0',
+'styles.css?v=2fda9ab3e7',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

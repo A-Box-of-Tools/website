@@ -65,6 +65,7 @@ qualityValue:$('quality-value'),
 background:$('background'),
 planSummary:$('plan-summary'),
 run:$('run'),
+cancel:$('cancel'),
 progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
@@ -90,6 +91,7 @@ offlineDot:$('offline-dot'),
 let items=[];
 let nextId=1;
 let busy=false;
+let stopping=false;
 let referenceId=null;
 let results=[];
 let resultUrls=[];
@@ -567,14 +569,18 @@ return choice==='keep'?keepFormat(sourceType,writable):choice;
 el.run.addEventListener('click',async()=>{
 if(!items.length||busy)return;
 busy=true;
+stopping=false;
 clearResults();
 clearLoadError();
 render();
 el.progress.hidden=false;
+el.cancel.hidden=false;
 const collected=[];
 const failures=[];
+let stopped=false;
 try{
 for(const[index,item]of items.entries()){
+if(stopping){stopped=true;break;}
 showProgress(index,items.length,item.file.name);
 try{
 collected.push(await processOne(item));
@@ -585,13 +591,21 @@ await new Promise((resolve)=>setTimeout(resolve,0));
 }
 }finally{
 busy=false;
-el.progress.hidden=true;
+stopping=false;
+el.cancel.hidden=true;
+el.progress.hidden=!stopped;
 render();
+}
+if(stopped){
+el.progressLabel.textContent=collected.length
+?phrase('progress.stopped',{done:collected.length,total:items.length})
+:phrase('progress.stopped.none');
 }
 if(failures.length)showLoadError(failures.join('\n'));
 results=collected;
 showResults();
 });
+el.cancel.addEventListener('click',()=>{stopping=true;});
 function showProgress(index,total,name){
 el.progressBar.style.width=`${Math.round((index / total) * 100)}%`;
 el.progressLabel.textContent=`${index + 1} of ${total}: ${name}`;

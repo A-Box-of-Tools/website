@@ -31,6 +31,7 @@ formatSelect:$('format-select'),
 allowResize:$('allow-resize'),
 formatNote:$('format-note'),
 compressAll:$('compress-all'),
+cancel:$('cancel'),
 progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
@@ -48,6 +49,7 @@ offlineDot:$('offline-dot'),
 let items=[];
 let nextId=1;
 let busy=false;
+let stopping=false;
 let results=[];
 let resultUrls=[];
 let writable=new Set([JPEG,PNG]);
@@ -252,33 +254,47 @@ el.compressAll.addEventListener('click',async()=>{
 const target=targetBytes(el.targetValue.value,el.targetUnit.value);
 if(!target||!items.length||busy)return;
 busy=true;
+stopping=false;
 clearResults();
 clearLoadError();
 render();
 el.progress.hidden=false;
+el.cancel.hidden=false;
 const collected=[];
 const failures=[];
+let stopped=false;
 try{
 for(const[index,item]of items.entries()){
+if(stopping){stopped=true;break;}
 showProgress(index,items.length,item.file.name,'step.reading');
 try{
 collected.push(await compressOne(item,target,(step,values)=>{
+if(stopping)throw new DOMException('Cancelled','AbortError');
 showProgress(index,items.length,item.file.name,step,values);
 }));
 }catch(error){
+if(error?.name==='AbortError'){stopped=true;break;}
 failures.push(`${item.file.name}: ${phrase(error.message, error.values)}`);
 }
 await new Promise((resolve)=>setTimeout(resolve,0));
 }
 }finally{
 busy=false;
-el.progress.hidden=true;
+stopping=false;
+el.cancel.hidden=true;
+el.progress.hidden=!stopped;
 render();
+}
+if(stopped){
+el.progressLabel.textContent=collected.length
+?phrase('progress.stopped',{done:collected.length,total:items.length})
+:phrase('progress.stopped.none');
 }
 if(failures.length)showLoadError(failures.join('\n'));
 results=collected;
 showResults();
 });
+el.cancel.addEventListener('click',()=>{stopping=true;});
 function showProgress(index,total,name,step,values){
 const done=index/total;
 el.progressBar.style.width=`${Math.round(done * 100)}%`;

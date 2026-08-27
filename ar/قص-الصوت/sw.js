@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/قص-الصوت/:';
-const CACHE_NAME=CACHE_PREFIX+'9d1d35036b';
+const CACHE_NAME=CACHE_PREFIX+'5fdba94ebe';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=e9972ba7d2',
+'styles.css?v=e1dec18111',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

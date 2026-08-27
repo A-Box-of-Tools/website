@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/frame-uit-video-halen/:';
-const CACHE_NAME=CACHE_PREFIX+'414e53383f';
+const CACHE_NAME=CACHE_PREFIX+'3d3d61ea22';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=db87d4efdd',
+'styles.css?v=2b0c6e430b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

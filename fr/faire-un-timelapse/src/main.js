@@ -202,8 +202,6 @@ return;
 await showPreview(canPlay);
 describeSource();
 fitSizeOptions();
-el.speedCard.hidden=false;
-el.exportCard.hidden=false;
 el.exportBtn.disabled=false;
 setSpeed(defaultSpeed(),null);
 }catch(error){
@@ -284,8 +282,6 @@ function resetView(){
 el.source.hidden=true;
 el.previewWrap.hidden=true;
 el.previewNote.hidden=true;
-el.speedCard.hidden=true;
-el.exportCard.hidden=true;
 el.pathNote.hidden=true;
 releaseFile();
 }

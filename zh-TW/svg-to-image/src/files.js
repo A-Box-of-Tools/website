@@ -1,11 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 export function bytes(n){
-if(n<1024)return`${n} bytes`;
+if(n<1024)return`${n} B`;
 if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
 return`${(n / (1024 * 1024)).toFixed(2)} MB`;
 }
 export const dimensions=(width,height)=>`${width} × ${height}`;
-export const countOf=(n)=>`${n} file${n === 1 ? '' : 's'}`;
 export function stemOf(name){
 return String(name??'').replace(/\.[^.]+$/,'').trim()||'image';
 }
@@ -27,16 +26,15 @@ const ext=dot>0?name.slice(dot):'';
 return`${stem}-${count + 1}${ext}`;
 });
 }
-export function describeSource(intrinsic){
-const size=dimensions(intrinsic.width,intrinsic.height);
+export function sourceKey(intrinsic){
 switch(intrinsic.source){
 case'attributes':
-return`${size} — the size the file asks for`;
+return'source.attributes';
 case'mixed':
-return`${size} — one side from the file, the other from its viewBox`;
+return'source.mixed';
 case'viewbox':
-return`${size} — no pixel size, taken from the viewBox`;
+return'source.viewbox';
 default:
-return`${size} assumed — this file declares no size and no viewBox`;
+return'source.default';
 }
 }

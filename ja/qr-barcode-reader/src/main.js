@@ -191,7 +191,6 @@ shown.unshift(`${found.symbology}:${found.text}`);
 shown.length=Math.min(shown.length,MOST_KEPT);
 el.results.prepend(render(found));
 while(el.results.children.length>MOST_KEPT)el.results.lastElementChild.remove();
-el.resultsCard.hidden=false;
 return true;
 }
 function fail(key){

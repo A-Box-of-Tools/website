@@ -162,8 +162,6 @@ layOutStage();
 describeSource();
 updateFormatNote();
 setUpTransport();
-el.findCard.hidden=false;
-el.grabCard.hidden=false;
 await goTo(0);
 }catch(error){
 console.error(error);
@@ -222,8 +220,6 @@ shownFrame=-1;
 }
 function resetView(){
 el.source.hidden=true;
-el.findCard.hidden=true;
-el.grabCard.hidden=true;
 el.pathNote.hidden=true;
 releaseFile();
 }
@@ -427,7 +423,6 @@ renderShots();
 return shot;
 }
 function renderShots(){
-el.shotsCard.hidden=shots.length===0;
 el.shotsCount.textContent=shots.length===1
 ?'1 still, held in this page only'
 :`${shots.length} stills, held in this page only`;

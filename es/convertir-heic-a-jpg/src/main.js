@@ -25,6 +25,7 @@ qualityValue:$('quality-value'),
 formatNote:$('format-note'),
 keepExif:$('keep-exif'),
 convertAll:$('convert-all'),
+cancel:$('cancel'),
 engineStatus:$('engine-status'),
 progress:$('progress'),
 progressBar:$('progress-bar'),
@@ -44,6 +45,7 @@ const HEAD_BYTES=256*1024;
 let items=[];
 let nextId=1;
 let busy=false;
+let stopping=false;
 let results=[];
 let resultUrls=[];
 let writable=new Set([JPEG,PNG]);
@@ -200,24 +202,30 @@ clearResults();
 el.convertAll.addEventListener('click',async()=>{
 if(!items.length||busy)return;
 busy=true;
+stopping=false;
 clearResults();
 clearLoadError();
 render();
 el.progress.hidden=false;
+el.cancel.hidden=false;
 const collected=[];
 const failures=[];
+let stopped=false;
 try{
 showProgress(0,items.length,'','waiting for the decoder');
 await engine();
 for(const[index,item]of items.entries()){
+if(stopping){stopped=true;break;}
 showProgress(index,items.length,item.file.name,'reading');
 try{
 for(const result of await convertOne(item,(note)=>{
+if(stopping)throw new DOMException('Cancelled','AbortError');
 showProgress(index,items.length,item.file.name,note);
 })){
 collected.push(result);
 }
 }catch(error){
+if(error?.name==='AbortError'){stopped=true;break;}
 failures.push(`${item.file.name}: ${error.message}`);
 }
 await new Promise((resolve)=>setTimeout(resolve,0));
@@ -226,13 +234,21 @@ await new Promise((resolve)=>setTimeout(resolve,0));
 failures.push(error.message);
 }finally{
 busy=false;
-el.progress.hidden=true;
+stopping=false;
+el.cancel.hidden=true;
+el.progress.hidden=!stopped;
 render();
+}
+if(stopped){
+el.progressLabel.textContent=collected.length
+?phrase('progress.stopped',{done:collected.length,total:items.length})
+:phrase('progress.stopped.none');
 }
 if(failures.length)showLoadError(failures.join('\n'));
 results=collected;
 showResults();
 });
+el.cancel.addEventListener('click',()=>{stopping=true;});
 function showProgress(index,total,name,note){
 el.progressBar.style.width=`${Math.round((index / total) * 100)}%`;
 el.progressLabel.textContent=name

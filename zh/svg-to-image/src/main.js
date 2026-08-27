@@ -10,7 +10,7 @@ import{
 FORMATS,JPEG,PNG,WEBP,draw,encodableTypes,loadAt,rasterize,
 }from'./render.js';
 import{
-bytes as humanBytes,countOf,describeSource,dimensions,outName,uniqueNames,
+bytes as humanBytes,dimensions,outName,sourceKey,uniqueNames,
 }from'./files.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{makeZip}from'./shared/zip.js';
@@ -169,7 +169,9 @@ renderFields();
 renderList();
 renderNotes();
 el.run.disabled=busy||items.length===0||!everythingFits();
-el.run.textContent=items.length>1?`Rasterize ${countOf(items.length)}`:'Rasterize';
+el.run.textContent=items.length>1
+?phrase('run.many',{count:items.length.toLocaleString()})
+:phrase('run.one');
 }
 function renderFields(){
 for(const[mode,panel]of Object.entries(FIELDS))panel.hidden=mode!==el.sizeMode.value;
@@ -184,7 +186,9 @@ control.disabled=busy;
 function renderList(){
 el.fileList.replaceChildren();
 el.listToolbar.hidden=items.length===0;
-el.countLabel.textContent=`${countOf(items.length)} chosen`;
+el.countLabel.textContent=items.length===1
+?phrase('chosen.one')
+:phrase('chosen.many',{count:items.length.toLocaleString()});
 el.clearAll.disabled=busy;
 for(const item of items){
 const row=document.createElement('li');
@@ -203,7 +207,10 @@ name.className='file-name';
 name.textContent=item.file.name;
 const sub=document.createElement('p');
 sub.className='file-sub';
-sub.textContent=`${describeSource(item.intrinsic)} · ${humanBytes(item.file.size)}`;
+sub.textContent=`${phrase(sourceKey(item.intrinsic), {
+      size: dimensions(item.intrinsic.width, item.intrinsic.height),
+    })} · ${humanBytes(item.file.size)}`
+;
 const out=document.createElement('p');
 out.className='file-out';
 const plan=planFor(item);
@@ -217,7 +224,7 @@ wrap.append(thumb,main);
 wrap.tabIndex=0;
 wrap.setAttribute('role','button');
 wrap.setAttribute('aria-pressed',String(item.id===activeId));
-wrap.title='Show this one in the preview';
+wrap.title=phrase('row.preview');
 wrap.addEventListener('click',()=>setActive(item.id));
 wrap.addEventListener('keydown',(event)=>{
 if(event.key==='Enter'||event.key===' '){
@@ -229,8 +236,9 @@ const remove=document.createElement('button');
 remove.type='button';
 remove.className='row-remove';
 remove.textContent='×';
-remove.title=`Take ${item.file.name} off the list`;
-remove.setAttribute('aria-label',`Take ${item.file.name} off the list`);
+const off=phrase('row.remove',{name:item.file.name});
+remove.title=off;
+remove.setAttribute('aria-label',off);
 remove.disabled=busy;
 remove.addEventListener('click',()=>removeItem(item.id));
 row.append(wrap,remove);
@@ -363,16 +371,18 @@ const{ext}=FORMATS[set.mime];
 const jobs=items.flatMap((item)=>set.densities.map((density)=>({item,density})));
 const names=uniqueNames(jobs.map((job)=>outName(job.item.file.name,ext,job.density)));
 el.progress.hidden=false;
-setProgress(0,`Drawing ${countOf(jobs.length)}…`);
+setProgress(0,jobs.length===1
+?phrase('drawing.one')
+:phrase('drawing.many',{count:jobs.length.toLocaleString()}));
 const made=[];
 for(const[index,job]of jobs.entries()){
-setProgress(index/jobs.length,`Drawing ${names[index]}…`);
+setProgress(index/jobs.length,phrase('drawing.each',{name:names[index]}));
 await new Promise((resolve)=>setTimeout(resolve,0));
 const plan=atDensity(planSize(job.item.intrinsic,set),job.density);
 const blob=await rasterize(job.item.text,plan,set);
 made.push({...job,plan,blob,name:names[index]});
 }
-setProgress(1,'Done.');
+setProgress(1,phrase('progress.done'));
 busy=false;
 results=made;
 renderResults();
@@ -390,9 +400,16 @@ if(!results.length)return;
 const total=results.reduce((n,one)=>n+one.blob.size,0);
 const sources=new Set(results.map((one)=>one.item.id)).size;
 el.resultsSummary.textContent=results.length===1
-?`${results[0].name}, ${dimensions(results[0].plan.width, results[0].plan.height)}, ${humanBytes(total)}.`
-:`${countOf(results.length)} written from ${countOf(sources).replace('file', 'drawing')}, `
-+`${humanBytes(total)} in total.`;
+?phrase('written.one',{
+name:results[0].name,
+size:dimensions(results[0].plan.width,results[0].plan.height),
+bytes:humanBytes(total),
+})
+:phrase('written.many',{
+count:results.length.toLocaleString(),
+drawings:sources.toLocaleString(),
+bytes:humanBytes(total),
+});
 for(const one of results)el.resultList.append(resultRow(one));
 el.downloadZip.hidden=results.length<2;
 el.downloadZip.onclick=()=>zipAll();
@@ -410,16 +427,21 @@ headline.className='result-headline';
 headline.textContent=`${dimensions(one.plan.width, one.plan.height)}, ${humanBytes(one.blob.size)}`;
 const detail=document.createElement('p');
 detail.className='result-detail';
-detail.textContent=`From ${one.item.file.name}, which draws itself at `
-+`${dimensions(one.item.intrinsic.width, one.item.intrinsic.height)} - `
-+`${times(one.plan.width / one.item.intrinsic.width)} that`
-+(one.density>1?`, and the @${one.density}x of the file above it.`:'.');
+detail.textContent=phrase(
+one.density>1?'result.from.density':'result.from',
+{
+name:one.item.file.name,
+size:dimensions(one.item.intrinsic.width,one.item.intrinsic.height),
+times:times(one.plan.width/one.item.intrinsic.width),
+density:one.density,
+},
+);
 textBlock.append(name,headline,detail);
 const actions=document.createElement('div');
 actions.className='result-actions';
 const download=document.createElement('a');
 download.className='primary as-button';
-download.textContent='Download';
+download.textContent=phrase('result.download');
 download.href=urlFor(one.blob);
 download.download=one.name;
 actions.append(download);
@@ -558,7 +580,7 @@ if(writable.has(WEBP))return;
 const option=el.format.querySelector(`option[value="${WEBP}"]`);
 if(option){
 option.disabled=true;
-option.textContent='WebP - this browser cannot write it';
+option.textContent=phrase('format.webp.missing');
 }
 if(el.format.value===WEBP)el.format.value=PNG;
 render();
