@@ -235,6 +235,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>Redimensionner les images</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annuler</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -288,6 +289,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Arrêté après {done} sur {total}. Ce qui est terminé est ci-dessous.</span>
+    <span data-phrase="progress.stopped.none">Arrêté avant que le premier soit terminé.</span>
     <span data-phrase="net.clean">vos images ne sont allées nulle part. {total}
       fichiers chargés, tous appartenant à cette page. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

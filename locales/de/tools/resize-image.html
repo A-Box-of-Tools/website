@@ -237,6 +237,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>Die Bilder skalieren</button>
+      <button type="button" id="cancel" class="ghost" hidden>Abbrechen</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -290,6 +291,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Nach {done} von {total} abgebrochen. Was fertig wurde, steht unten.</span>
+    <span data-phrase="progress.stopped.none">Abgebrochen, bevor das erste fertig war.</span>
     <span data-phrase="net.clean">Ihre Bilder sind nirgendwohin gegangen.
       {total} Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

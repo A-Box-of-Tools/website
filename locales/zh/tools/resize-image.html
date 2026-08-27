@@ -222,6 +222,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>开始处理</button>
+      <button type="button" id="cancel" class="ghost" hidden>取消</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -275,6 +276,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">在 {total} 个中的第 {done} 个之后停止。已完成的在下面。</span>
+    <span data-phrase="progress.stopped.none">在第一个完成之前就停止了。</span>
     <span data-phrase="net.clean">你的图片没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到图片，或图片里的一个字节。</span>

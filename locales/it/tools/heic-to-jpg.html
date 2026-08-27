@@ -85,6 +85,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>Converti</button>
+      <button type="button" id="cancel" class="ghost" hidden>Annulla</button>
     </div>
 
     <!--
@@ -119,6 +120,8 @@
     vedi shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Fermato dopo {done} di {total}. Quello che è stato finito è qui sotto.</span>
+    <span data-phrase="progress.stopped.none">Fermato prima che il primo fosse finito.</span>
     <span data-phrase="offline.ready">pronto &mdash; anche il decodificatore è
       in copia locale, quindi questo funziona con la rete staccata.</span>
 

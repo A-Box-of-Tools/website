@@ -92,6 +92,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>Dönüştür</button>
+      <button type="button" id="cancel" class="ghost" hidden>Vazgeç</button>
     </div>
 
     <!--
@@ -125,6 +126,8 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">{total} işten {done} tanesinden sonra durduruldu. Bitenler aşağıda.</span>
+    <span data-phrase="progress.stopped.none">İlki bitmeden durduruldu.</span>
     <span data-phrase="offline.ready">hazır &mdash; çözücü de önbelleğe alındı,
       yani bu, ağ bağlantısı kesikken de çalışır.</span>
 

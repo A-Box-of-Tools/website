@@ -93,6 +93,7 @@
 
     <div class="run-row">
       <button type="button" id="compress-all" class="primary big" disabled>目標サイズまで圧縮</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -152,6 +153,8 @@
     <span data-phrase="format.resize.off">画像は元の寸法を保つので、厳しい目標サイズは画質だけで払うことになります。</span>
     <span data-phrase="format.webp.unavailable">WebP &mdash; このブラウザーは対応していません</span>
 
+    <span data-phrase="progress.stopped.none">最初の1件が終わる前に中止しました。</span>
+    <span data-phrase="progress.stopped">{total}件のうち{done}件で中止しました。できた分は下にあります。</span>
     <span data-phrase="progress.at">{total}件中{at}件目：{name} &mdash; {step}</span>
     <span data-phrase="step.reading">読み込み中</span>
     <span data-phrase="step.decoding">デコード中</span>

@@ -100,6 +100,7 @@
 
     <div class="run-row">
       <button type="button" id="compress-all" class="primary big" disabled>Compress to the target</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancel</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -177,6 +178,8 @@
       The progress line, and the steps the search reports into it. Those arrive
       from compress.js as keys; the sentences they name are here.
     -->
+    <span data-phrase="progress.stopped.none">Stopped before the first one was finished.</span>
+    <span data-phrase="progress.stopped">Stopped after {done} of {total}. What was finished is below.</span>
     <span data-phrase="progress.at">{at} of {total}: {name} - {step}</span>
     <span data-phrase="step.reading">reading</span>
     <span data-phrase="step.decoding">decoding</span>

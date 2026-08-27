@@ -84,6 +84,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>Converter</button>
+      <button type="button" id="cancel" class="ghost" hidden>Cancelar</button>
     </div>
 
     <!--
@@ -117,6 +118,8 @@
     Uma chave definida aqui ganha da da moldura; veja shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Parado depois de {done} de {total}. O que ficou pronto está abaixo.</span>
+    <span data-phrase="progress.stopped.none">Parado antes de o primeiro ficar pronto.</span>
     <span data-phrase="offline.ready">pronto &mdash; o decodificador também
       fica em cache, então isto funciona com a rede desconectada.</span>
 

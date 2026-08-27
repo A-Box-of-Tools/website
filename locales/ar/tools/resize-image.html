@@ -229,6 +229,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>غيّر حجم الصور</button>
+      <button type="button" id="cancel" class="ghost" hidden>ألغِ</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -282,6 +283,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">أُوقف بعد {done} من {total}. ما اكتمل موجود بالأسفل.</span>
+    <span data-phrase="progress.stopped.none">أُوقف قبل أن يكتمل الأول.</span>
     <span data-phrase="net.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

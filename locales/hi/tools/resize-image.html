@@ -235,6 +235,7 @@
 
     <div class="run-row">
       <button type="button" id="run" class="primary big" disabled>तस्वीरों का आकार बदलिए</button>
+      <button type="button" id="cancel" class="ghost" hidden>रद्द कीजिए</button>
     </div>
 
     <div id="progress" class="progress" hidden>
@@ -288,6 +289,8 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">{total} में से {done} के बाद रोक दिया गया। जो पूरा हुआ वह नीचे है।</span>
+    <span data-phrase="progress.stopped.none">पहला पूरा होने से पहले ही रोक दिया गया।</span>
     <span data-phrase="net.clean">आपकी तस्वीरें कहीं नहीं गईं। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

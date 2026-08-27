@@ -73,6 +73,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>変換</button>
+      <button type="button" id="cancel" class="ghost" hidden>中止</button>
     </div>
 
     <!--
@@ -107,6 +108,8 @@
   -->
   <div id="phrases" hidden aria-hidden="true">
     <!-- 折り返さない。行頭の字下げが空白になって文の中に入ってしまう。 -->
+    <span data-phrase="progress.stopped">{total}件のうち{done}件で中止しました。できた分は下にあります。</span>
+    <span data-phrase="progress.stopped.none">最初の1件が終わる前に中止しました。</span>
     <span data-phrase="offline.ready">準備できました。デコーダーも一緒に保存されているので、ネットワークを抜いても動きます。</span>
 
     <span data-phrase="net.clean">写真はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。デコーダーもその中に入っています。{platform}</span>

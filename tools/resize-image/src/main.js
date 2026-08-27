@@ -72,6 +72,7 @@ const el = {
   planSummary: $('plan-summary'),
 
   run: $('run'),
+  cancel: $('cancel'),
   progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
@@ -113,6 +114,7 @@ const el = {
 let items = [];
 let nextId = 1;
 let busy = false;
+let stopping = false;
 
 /** Which image the crop box is currently drawn on. Only the preview: every
  *  image carries its own box, so this decides what you are looking at and
@@ -842,16 +844,22 @@ el.run.addEventListener('click', async () => {
   if (!items.length || busy) return;
 
   busy = true;
+  stopping = false;
   clearResults();
   clearLoadError();
   render();
   el.progress.hidden = false;
+  el.cancel.hidden = false;
 
   const collected = [];
   const failures = [];
+  let stopped = false;
 
   try {
     for (const [index, item] of items.entries()) {
+      // Between pictures rather than inside one: a single resize is one draw
+      // and one encode, so the wait for the turn to end is not a wait.
+      if (stopping) { stopped = true; break; }
       showProgress(index, items.length, item.file.name);
       try {
         collected.push(await processOne(item));
@@ -864,14 +872,27 @@ el.run.addEventListener('click', async () => {
     }
   } finally {
     busy = false;
-    el.progress.hidden = true;
+    stopping = false;
+    el.cancel.hidden = true;
+    // Left up after a stop, so pressing Cancel and watching the bar vanish
+    // does not read as nothing having happened.
+    el.progress.hidden = !stopped;
     render();
   }
 
+  if (stopped) {
+    el.progressLabel.textContent = collected.length
+      ? phrase('progress.stopped', { done: collected.length, total: items.length })
+      : phrase('progress.stopped.none');
+  }
   if (failures.length) showLoadError(failures.join('\n'));
+  // What finished is kept: one file per picture means a run stopped halfway
+  // still leaves half of them done.
   results = collected;
   showResults();
 });
+
+el.cancel.addEventListener('click', () => { stopping = true; });
 
 function showProgress(index, total, name) {
   el.progressBar.style.width = `${Math.round((index / total) * 100)}%`;

@@ -94,6 +94,7 @@
 
     <div class="run-row">
       <button type="button" id="convert-all" class="primary big" disabled>Ubah</button>
+      <button type="button" id="cancel" class="ghost" hidden>Batalkan</button>
     </div>
 
     <!--
@@ -127,6 +128,8 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="progress.stopped">Dihentikan setelah {done} dari {total}. Yang sudah selesai ada di bawah.</span>
+    <span data-phrase="progress.stopped.none">Dihentikan sebelum yang pertama selesai.</span>
     <span data-phrase="offline.ready">siap &mdash; dekodernya ikut disinggahkan,
       jadi ini bekerja dengan jaringan tercabut.</span>
 
