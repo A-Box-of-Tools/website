@@ -30,7 +30,7 @@ roadmap_group = "beyond"
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker"]
-lastmod = "2026-08-23"
+lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------
 

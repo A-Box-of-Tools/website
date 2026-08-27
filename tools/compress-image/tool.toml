@@ -29,7 +29,7 @@ css_parts = ["file-list"]
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
 js_parts = ["file-picker", "zip", "crc32"]
-lastmod = "2026-08-19"
+lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------
 

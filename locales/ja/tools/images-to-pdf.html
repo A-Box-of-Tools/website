@@ -220,4 +220,17 @@
       </div>
     </div>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">画像はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>
+  </div>
 </main>

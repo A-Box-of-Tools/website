@@ -178,4 +178,23 @@
       </p>
     </div>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">Le tue immagini non sono andate da nessuna
+      parte. {total} file caricati, tutti quanti di questo sito. {platform}</span>
+    <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo
+      strumento non lo fa mai. Vale la pena andare a vedere. {platform}</span>
+    <span data-phrase="net.platform.one">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivata un'immagine o un suo byte.</span>
+    <span data-phrase="net.platform.many">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivata un'immagine o un suo byte.</span>
+  </div>
 </main>

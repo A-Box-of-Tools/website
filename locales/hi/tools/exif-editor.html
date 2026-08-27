@@ -147,4 +147,23 @@
       <p id="edit-error" class="error" role="alert" hidden></p>
     </div>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">आपकी फ़ोटो कहीं नहीं गईं। {total} फ़ाइलें लोड
+      हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
+    <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल
+      ऐसा कभी नहीं करता। यह देखने लायक बात है। {platform}</span>
+    <span data-phrase="net.platform.one">विज्ञापन, माप और दान वाले बटन के लिए
+      साइट की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को न कोई फ़ाइल
+      मिली, न कोई टैग।</span>
+    <span data-phrase="net.platform.many">विज्ञापन, माप और दान वाले बटन के लिए
+      साइट की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को न कोई फ़ाइल
+      मिली, न कोई टैग।</span>
+  </div>
 </main>

@@ -296,4 +296,23 @@
       the text file if you asked for one.
     </p>
   </section>
+
+  <!--
+    The sentences the live network check puts on the pledge's live row,
+    held in the markup rather than src/ because src/ is copied byte for
+    byte into every language. shared/js/phrases.js reads them back;
+    a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="net.clean">what this page made has gone nowhere. {total}
+      files loaded. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a character of it.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a character of it.</span>
+  </div>
 </main>
