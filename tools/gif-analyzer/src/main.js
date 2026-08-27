@@ -335,10 +335,13 @@ function renderFindings(list) {
     mark.title = LEVEL_NAME[finding.level];
 
     const body = document.createElement('div');
-    // Both halves are written in findings.js and are the only strings on this
-    // page rendered as markup. The one value in them that comes out of the file
-    // is escaped there; everything else below sets textContent.
-    body.innerHTML = `<strong>${finding.title}</strong> ${finding.body}`;
+    // findings.js names both halves and this resolves them; they are the only
+    // strings on this page rendered as markup. The one value in them that comes
+    // out of the file is escaped where it is put in; everything else below
+    // sets textContent.
+    const title = phrase(finding.title, finding.values);
+    const said = phrase(finding.body, finding.values);
+    body.innerHTML = `<strong>${title}</strong> ${said}`;
 
     item.append(mark, body);
     el.findings.append(item);

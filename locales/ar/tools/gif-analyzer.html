@@ -158,6 +158,126 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.notrailer">ينتهي الملف دون بايت الختام، فهو ناقص &mdash; تنزيل توقّف مبكراً، أو ملف قُطع.</span>
+    <span data-phrase="parse.unknownblock">البايت {at} قيمته 0x{marker}، وهي لا تبدأ أي كتلة يعرفها هذا النسق. وقد أُهمل كل ما
+      بعدها.</span>
+    <span data-phrase="parse.twocontrols">كتلتا تحكّم رسومي متتاليتان، عند {first} و{second}. الأولى لا تصف صورة ولا تفعل
+      شيئاً.</span>
+    <span data-phrase="parse.midblock">ينتهي الملف في وسط كتلة تبدأ عند {at}. {detail}.</span>
+    <span data-phrase="decode.codefirst">جاء الرمز {code} أولاً، قبل أن يحمل القاموس شيئاً. سيرسم العارض ما يستطيع ويترك بقية
+      المستطيل فارغة.</span>
+    <span data-phrase="decode.codemissing">يشير الرمز {code} إلى المدخلة {code} في القاموس، ولا يوجد إلا {entries}. سيرسم
+      العارض ما يستطيع ويترك بقية المستطيل فارغة.</span>
+    <span data-phrase="find.noframes.title">لا إطارات في هذا الملف.</span>
+    <span data-phrase="find.noframes.body">قُرئت الترويسة، لكن لم تتبعها أي كتلة صورة. مهما يكن هذا، فلن يرسم منه أي عارض
+      شيئاً.</span>
+    <span data-phrase="find.unclean.title">الملف لا ينتهي نهاية نظيفة.</span>
+    <span data-phrase="find.trailing.title">{bytes} تقع بعد نهاية الملف.</span>
+    <span data-phrase="find.trailing.body">كل مفكّك يقف عند بايت الختام، فهذه لا تُقرأ ولا تُرسم أبداً. غالباً ما تكون ملفاً
+      ثانياً أُلحق بالأول، أو برنامجاً كتب أبعد من نفسه. وقطع الملف عند بايت الختام لا
+      يضيّع شيئاً.</span>
+    <span data-phrase="find.clamped.title.one">إطار واحد يطلب أن يبقى أقل من 0.02 ثانية، ولن يفعل ذلك أي متصفح.</span>
+    <span data-phrase="find.clamped.title.many">{count} إطارات تطلب أن تبقى أقل من 0.02 ثانية، ولن يفعل ذلك أي متصفح.</span>
+    <span data-phrase="find.clamped.body">كل متصفح منذ Netscape يقرّب أي تأخير دون جزأين من مئة من الثانية إلى عشرة &mdash;
+      قاعدة كُتبت سنة 1996 لأكرة العالم الدوّارة في ذلك الزمن ولم تُرفع قط. فهذه الحركة
+      تقول إنها تدوم {nominal} وتدوم فعلاً {real}، أي أبطأ بنحو {factor} مرة. وكتابة 0.02
+      بدل 0.01 تمنحها السرعة التي تطلبها.</span>
+    <span data-phrase="find.zerodelay.title">كل إطار تأخيره صفر.</span>
+    <span data-phrase="find.zerodelay.body">لا يعطي الملف أي توقيت، فسرعة العرض متروكة كلياً للعارض &mdash; عشرة إطارات في
+      الثانية عادةً، لكن لا شيء يضمن ذلك. ويمكن لمتصفحين أن يعرضا هذا بسرعتين مختلفتين
+      ويكون كلاهما محقاً.</span>
+    <span data-phrase="find.uneven.title">الإطارات غير متساوية التوقيت: {delays} تأخيرات مختلفة، من {shortest} إلى {longest}.</span>
+    <span data-phrase="find.uneven.body">إطار أخير يبقى أطول أمرٌ مقصود وشائع. أما تأخيرات متناثرة في الوسط فتأتي عادةً من
+      محوّل أسقط إطارات من فيديو ومطّ ما جاورها ليسدّ الفجوة.</span>
+    <span data-phrase="find.noloop.title">لا توجد كتلة تكرار، فهذا يُعرض مرة واحدة ثم يقف.</span>
+    <span data-phrase="find.noloop.body">التكرار ليس جزءاً من مواصفة GIF. هو كتلة ابتكرها Netscape سنة 1995 ونفّذها الجميع
+      على أي حال، والملف الخالي منها ملف يعرضه كل متصفح مرة واحدة بالضبط. فإن كان التكرار
+      مقصوداً هنا، فقد أغفل الكتلةَ ما كتبه.</span>
+    <span data-phrase="find.loopcount.title.one">يُعرض هذا مرة واحدة ثم يقف.</span>
+    <span data-phrase="find.loopcount.title.many">يُعرض هذا {count} مرات ثم يقف.</span>
+    <span data-phrase="find.loopcount.body">تذكر كتلة التكرار عدداً بدل الصفر المعتاد الذي يعني إلى الأبد. وبعض العارضات القديمة
+      تتجاهل العدد وتكرّر بلا نهاية.</span>
+    <span data-phrase="find.allfull.title">كل إطار يعيد رسم اللوحة كاملة.</span>
+    <span data-phrase="find.allfull.body">يجوز لملف GIF أن يخزّن الإطار على أنه المستطيل الذي تغيّر عن سابقه فقط، ولهذا قد
+      يكون تسجيل نافذة شبه ساكنة صغيراً. لا شيء هنا يفعل ذلك: كل إطار هو اللوحة كاملةً،
+      {width}&times;{height}. وهذا صحيح لإطارات من صور لا رابط بينها، وهو مالٌ متروك على
+      الطاولة لكل ما صُوّر أو سُجّل، حيث لا يتحرك معظم الصورة بين إطار وآخر.</span>
+    <span data-phrase="find.somefull.title.one">إطار واحد من {total} يعيد رسم اللوحة كاملة؛ والبقية تخزّن الجزء المتغيّر وحده.</span>
+    <span data-phrase="find.somefull.title.many">{count} إطارات من {total} تعيد رسم اللوحة كاملة؛ والبقية تخزّن الجزء المتغيّر وحده.</span>
+    <span data-phrase="find.somefull.body">هكذا يبدو ملف GIF محسَّن. وما يشغل اللوحة كاملةً هو عادةً الإطار الأول وكل موضع
+      تغيّرت فيه الصورة تماماً.</span>
+    <span data-phrase="find.nonefull.title">لا إطار يعيد رسم اللوحة كاملة.</span>
+    <span data-phrase="find.nonefull.body">كل إطار بعد الأول يخزّن المستطيل المتغيّر وحده، وهذا هو النسق مستعملاً كما ينبغي،
+      وهو سبب صغر هذا الملف.</span>
+    <span data-phrase="find.outside.title.one">إطار واحد يتجاوز حدود اللوحة.</span>
+    <span data-phrase="find.outside.title.many">{count} إطارات تتجاوز حدود اللوحة.</span>
+    <span data-phrase="find.outside.body.one">اللوحة {width}&times;{height}، وإطار يطالب بمستطيل يخرج عن حافتها. والمفكِّكات
+      مختلفة فيما تفعله بالزائد: بعضها يقصّه وبعضها يرفض الملف.</span>
+    <span data-phrase="find.outside.body.many">اللوحة {width}&times;{height}، وبعض الإطارات تطالب بمستطيل يخرج عن حافتها.
+      والمفكِّكات مختلفة فيما تفعله بالزائد: بعضها يقصّه وبعضها يرفض الملف.</span>
+    <span data-phrase="find.localpal.title.one">إطار واحد يحمل جدول ألوان خاصاً به، يكلّف {bytes} &mdash; {share} من الملف.</span>
+    <span data-phrase="find.localpal.title.many">{count} إطارات تحمل جدول ألوان خاصاً بها، يكلّف {bytes} &mdash; {share} من الملف.</span>
+    <span data-phrase="find.localpal.body">اللوح الخاص يتيح للإطار ألواناً لا يملكها الجدول المشترك، ويكلّف ثلاثة بايتات لكل
+      مدخلة في كل مرة يُكتب فيها. وحين تكون الإطارات من المشهد نفسه، فجدول واحد لها جميعاً
+      أصغر وأهدأ للعين: فاللوح الذي يتأرجح بين إطار وآخر هو بالضبط ما نسميه ارتعاش GIF.</span>
+    <span data-phrase="find.noglobal.title">لا يوجد جدول ألوان عام.</span>
+    <span data-phrase="find.noglobal.body">لا عيب في ذلك &mdash; فكل إطار هنا يجلب جدوله &mdash; لكنه يعني أن العارض لا يملك ما
+      يطلي به اللوحة قبل وصول الإطار الأول.</span>
+    <span data-phrase="find.waste.title">{entries} مدخلة في جداول الألوان لا تُستعمل أبداً، وهي {bytes}.</span>
+    <span data-phrase="find.waste.body">تعلن جداول هذا الملف {declared} لوناً، وتشير البكسلات إلى {referenced} منها. وطول
+      جدول الألوان قوةٌ للعدد اثنين مهما يكن فيه، فالإطار الذي يستعمل تسعة ألوان ينال ستة
+      عشر على أي حال؛ وشيء من التقريب لا مفرّ منه. أما أكثر من ذلك بكثير فيعني أن الألواح
+      بُنيت لصورة غير التي انتهى بها الأمر داخل الإطار.</span>
+    <span data-phrase="find.colors.title.one">ترسم الحركة كلها بلون واحد.</span>
+    <span data-phrase="find.colors.title.many">ترسم الحركة كلها بـ{count} لوناً.</span>
+    <span data-phrase="find.colors.body.flat">هذا رسم مسطّح، وهو ما صُمّم GIF له. ملف كهذا ينضغط جيداً ويتبعثر رديئاً، فإن بدا
+      منقّطاً فالتبعثر هو ما ينبغي إطفاؤه.</span>
+    <span data-phrase="find.colors.body.photo">صورة فوتوغرافية، أو شيء مأخوذ منها. يمنح GIF الإطار 256 لوناً على الأكثر، فكل ما فيه
+      تدرّج يجري تقريبه &mdash; ومن هناك يأتي التبعثر، والضجيج الذي يضخّم الملف.</span>
+    <span data-phrase="find.comment.title">في هذا الملف كتلة تعليق حجمها {bytes}.</span>
+    <span data-phrase="find.comment.body">لا يعرض التعليقات أي عارض، وتحملها كل نسخة من الملف. وهي عادةً اسم ما كتب الملف،
+      وأحياناً شيء ما كان صاحبه ليختار نشره.</span>
+    <span data-phrase="find.xmp.title">حزمة بيانات وصفية XMP تشغل {bytes} &mdash; {share} من الملف.</span>
+    <span data-phrase="find.xmp.body">XMP هي كتلة XML يكتبها محرّر الصور ليسجّل ما فعله، وقد تحمل تاريخ التعديلات
+      والبرنامج وأحياناً المؤلف. ولا يرسم منها أي عارض شيئاً. وإزالتها لا تكلّف الصورة
+      شيئاً.</span>
+    <span data-phrase="find.icc.title">ملف تعريف ألوان ICC يشغل {bytes}.</span>
+    <span data-phrase="find.icc.body">يقول ملف التعريف ماذا تعني أرقام اللوح كألوان. ولا يكاد شيء يقرأ واحداً من داخل GIF،
+      فهو غالباً وزن بلا مقابل &mdash; غير أن حذفه قد يزيح الألوان في العارضات التي تقرؤه.</span>
+    <span data-phrase="find.plaintext.title">في هذا الملف امتداد نص صِرف.</span>
+    <span data-phrase="find.plaintext.body">كتلة تطلب من العارض أن يرسم نصاً فوق الصورة في شبكة من الخلايا. كانت في مواصفة 1989،
+      ولم ينفّذها شيء قط، وكل مفكّك يتخطاها. ومهما تقل، فلن يظهر منها شيء.</span>
+    <span data-phrase="find.appblock.title">توجد كتلة تطبيق باسم &rdquo;{name}&ldquo;، حجمها {bytes}.</span>
+    <span data-phrase="find.appblock.body">كتل التطبيقات هي الطريق الذي يدخل منه إلى GIF كل ما هو خارج المواصفة. والعارضات
+      تتخطى ما لا تعرفه منها، فهذه وزن ما لم يكن شيء بعينه يقرؤها.</span>
+    <span data-phrase="find.interlaced.title.one">إطار واحد مخزَّن بالتشابك.</span>
+    <span data-phrase="find.interlaced.title.many">{count} إطارات مخزَّنة بالتشابك.</span>
+    <span data-phrase="find.interlaced.body">تُخزَّن الصفوف في أربع مرّات كي تُظهر الصورةُ القادمة عبر خط بطيء نسخةً خشنة من
+      نفسها باكراً. كان لذلك معنى سنة 1993، وهو ينضغط أسوأ قليلاً من تخزين الصفوف
+      بالترتيب، ولا يفيد أي عارض اليوم.</span>
+    <span data-phrase="find.version.title">يقول هذا الملف إنه GIF{version} لا GIF89a.</span>
+    <span data-phrase="find.version.body">جاء GIF87a أولاً، ولا كتل توقيت فيه ولا شفافية ولا كتلة تكرار. والملف الذي يدّعي 87a
+      وهو يحمل شيئاً من ذلك شائع &mdash; فالمفكِّكات لا تتحقق &mdash; لكنه دليل على أن
+      الترويسة نُسخت لا كُتبت.</span>
+    <span data-phrase="find.bgindex.title">لون الخلفية هو الفهرس {index}، والجدول العام لا يحوي إلا {entries} مدخلة.</span>
+    <span data-phrase="find.bgindex.body">لن ينهار شيء &mdash; فالعارضات تستعمل الشفاف بدلاً منه &mdash; لكن هذا يعني أن الحقل
+      لم يُضبط قط، أو ضُبط للوح لم يعد هو اللوح الذي في الملف.</span>
+    <span data-phrase="find.aspect.title">نسبة أبعاد البكسل مضبوطة على {ratio}.</span>
+    <span data-phrase="find.aspect.body">حقل للشاشات التي لم تكن بكسلاتها مربّعة. وكل عارض حديث يتجاهله ويرسم الإطار بمقاسه
+      المخزَّن، فالملف المعتمِد عليه يبدو ممطوطاً لمن صنعه وطبيعياً لكل من سواه.</span>
+    <span data-phrase="find.clears.title">أعاد الضاغط تصفير قاموسه {count} مرة.</span>
+    <span data-phrase="find.clears.body">يبني LZW قاموساً وهو ماضٍ، ويسع 4096 مدخلة؛ فإذا امتلأ بدأ المرمِّز من جديد. ومرة
+      واحدة لكل إطار أمر طبيعي &mdash; فهكذا يبدأ الإطار. أما أكثر من ذلك فيعني أن الصورة
+      كانت من التنوّع بحيث استنفدت القاموس في منتصف الطريق، وهذا ما تفعله الصورة
+      الفوتوغرافية أو التبعثر الثقيل، ولهذا تكون تلك الملفات كبيرة.</span>
+    <span data-phrase="find.identical.title.one">إطار واحد مطابق للإطار الذي قبله.</span>
+    <span data-phrase="find.identical.title.many">{count} إطارات مطابقة للإطار الذي قبلها.</span>
+    <span data-phrase="find.identical.body">تكلّف حجمها المضغوط كاملاً ولا تغيّر شيئاً على الشاشة. وإضافة تأخيرها إلى الإطار
+      السابق بدلاً من ذلك سيبدو مطابقاً تماماً ويكون أصغر.</span>
+    <span data-phrase="find.broken.title.one">إطار واحد لا يُفكَّك بالكامل.</span>
+    <span data-phrase="find.broken.title.many">{count} إطارات لا تُفكَّك بالكامل.</span>
+    <span data-phrase="find.broken.body.short">تنتهي البيانات المضغوطة قبل أن يمتلئ الإطار. سيرسم العارض ما يستطيع ويترك بقية
+      المستطيل فارغة.</span>
     <span data-phrase="net.clean">صورة GIF الخاصة بك لم تذهب إلى أي مكان.
       {total} ملفاً حُمِّلت. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

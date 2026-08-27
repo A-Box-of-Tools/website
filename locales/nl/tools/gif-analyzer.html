@@ -160,6 +160,159 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.notrailer">Het bestand eindigt zonder afsluitbyte en is dus onvolledig &mdash; een download die
+      te vroeg stopte, of een afgekapt bestand.</span>
+    <span data-phrase="parse.unknownblock">Byte {at} is 0x{marker}, en dat begint geen enkel blok dat dit formaat kent. Alles
+      erna is genegeerd.</span>
+    <span data-phrase="parse.twocontrols">Twee grafische controleblokken achter elkaar, op {first} en {second}. Het eerste
+      beschrijft geen beeld en doet niets.</span>
+    <span data-phrase="parse.midblock">Het bestand eindigt midden in een blok dat op {at} begint. {detail}.</span>
+    <span data-phrase="decode.codefirst">Code {code} kwam als eerste, voordat het woordenboek iets bevatte. Een weergever
+      tekent wat hij kan en laat de rest van de rechthoek leeg.</span>
+    <span data-phrase="decode.codemissing">Code {code} verwijst naar woordenboekingang {code}, en er zijn er maar {entries}.
+      Een weergever tekent wat hij kan en laat de rest van de rechthoek leeg.</span>
+    <span data-phrase="find.noframes.title">Er zitten geen frames in dit bestand.</span>
+    <span data-phrase="find.noframes.body">De kop liet zich lezen, maar er volgde geen beeldblok. Wat dit ook is, geen enkele
+      weergever tekent er iets uit.</span>
+    <span data-phrase="find.unclean.title">Het bestand eindigt niet netjes.</span>
+    <span data-phrase="find.trailing.title">{bytes} staan achter het einde van het bestand.</span>
+    <span data-phrase="find.trailing.body">Elke decoder stopt bij de afsluitbyte, dus deze worden nooit gelezen en nooit
+      getekend. Meestal is het een tweede bestand dat achter het eerste is geplakt, of een
+      programma dat voorbij zichzelf schreef. Het bestand bij de afsluitbyte afkappen
+      verliest niets.</span>
+    <span data-phrase="find.clamped.title.one">Eén frame vraagt om korter dan 0,02 seconde te blijven staan, en geen enkele browser
+      doet dat.</span>
+    <span data-phrase="find.clamped.title.many">{count} frames vragen om korter dan 0,02 seconde te blijven staan, en geen enkele
+      browser doet dat.</span>
+    <span data-phrase="find.clamped.body">Elke browser sinds Netscape rondt een vertraging onder twee honderdsten van een
+      seconde af naar tien &mdash; een regel uit 1996, geschreven voor de draaiende
+      wereldbollen van toen en nooit verwijderd. Deze animatie zegt dus {nominal} te duren
+      en duurt in werkelijkheid {real}, ongeveer {factor} keer zo traag. 0,02 schrijven in
+      plaats van 0,01 geeft haar de snelheid waar ze om vraagt.</span>
+    <span data-phrase="find.zerodelay.title">Elk frame heeft vertraging nul.</span>
+    <span data-phrase="find.zerodelay.body">Het bestand geeft helemaal geen tijden op, dus hoe snel dit loopt hangt volledig van
+      de weergever af &mdash; meestal tien frames per seconde, maar niets garandeert het.
+      Twee browsers kunnen dit op twee snelheden afspelen en allebei gelijk hebben.</span>
+    <span data-phrase="find.uneven.title">De frames lopen niet gelijkmatig: {delays} verschillende vertragingen, van
+      {shortest} tot {longest}.</span>
+    <span data-phrase="find.uneven.body">Een laatste frame dat blijft staan is bedoeld en gewoon. Vertragingen die door het
+      midden heen verspreid liggen komen meestal van een omzetter die frames uit een video
+      liet vallen en de buren oprekte om het gat te dekken.</span>
+    <span data-phrase="find.noloop.title">Er is geen herhaalblok, dus dit speelt één keer en houdt op.</span>
+    <span data-phrase="find.noloop.body">Herhalen hoort niet bij de GIF-specificatie. Het is een blok dat Netscape in 1995
+      verzon en dat iedereen toch inbouwde; een bestand zonder dat blok is een bestand dat
+      elke browser precies één keer laat zien. Als dit moest herhalen, heeft wat het
+      schreef het blok weggelaten.</span>
+    <span data-phrase="find.loopcount.title.one">Dit speelt één keer en houdt dan op.</span>
+    <span data-phrase="find.loopcount.title.many">Dit speelt {count} keer en houdt dan op.</span>
+    <span data-phrase="find.loopcount.body">Het herhaalblok noemt een aantal in plaats van de gebruikelijke nul, die voor altijd
+      betekent. Sommige oudere weergevers negeren het aantal en herhalen toch.</span>
+    <span data-phrase="find.allfull.title">Elk frame tekent het hele canvas opnieuw.</span>
+    <span data-phrase="find.allfull.body">Een GIF mag van een frame alleen de rechthoek bewaren die sinds het vorige
+      veranderde &mdash; daarom kan een opname van een vrijwel stil venster klein zijn.
+      Hier doet geen enkel frame dat: elk frame is het hele canvas,
+      {width}&times;{height}. Voor beelden die niets met elkaar te maken hebben klopt dat,
+      en voor alles wat gefilmd of opgenomen is, waar het grootste deel van het beeld niet
+      beweegt, is het weggegooide ruimte.</span>
+    <span data-phrase="find.somefull.title.one">Eén frame van {total} tekent het hele canvas opnieuw; de rest bewaart alleen het
+      veranderde deel.</span>
+    <span data-phrase="find.somefull.title.many">{count} frames van {total} tekenen het hele canvas opnieuw; de rest bewaart alleen
+      het veranderde deel.</span>
+    <span data-phrase="find.somefull.body">Zo ziet een geoptimaliseerde GIF eruit. De volledige zijn meestal het eerste frame
+      en elk punt waar het beeld helemaal veranderde.</span>
+    <span data-phrase="find.nonefull.title">Geen enkel frame tekent het hele canvas opnieuw.</span>
+    <span data-phrase="find.nonefull.body">Elk frame na het eerste bewaart alleen de rechthoek die veranderde. Zo hoort het
+      formaat gebruikt te worden, en daarom is dit bestand zo klein als het is.</span>
+    <span data-phrase="find.outside.title.one">Eén frame steekt buiten het canvas uit.</span>
+    <span data-phrase="find.outside.title.many">{count} frames steken buiten het canvas uit.</span>
+    <span data-phrase="find.outside.body.one">Het canvas is {width}&times;{height} en een frame claimt een rechthoek die over de
+      rand loopt. Decoders zijn het oneens over wat er met dat overhangende deel moet
+      gebeuren: de een knipt het weg, de ander weigert het bestand.</span>
+    <span data-phrase="find.outside.body.many">Het canvas is {width}&times;{height} en sommige frames claimen een rechthoek die
+      over de rand loopt. Decoders zijn het oneens over wat er met dat overhangende deel
+      moet gebeuren: de een knipt het weg, de ander weigert het bestand.</span>
+    <span data-phrase="find.localpal.title.one">Eén frame draagt een eigen kleurtabel mee, die {bytes} kost &mdash; {share} van het
+      bestand.</span>
+    <span data-phrase="find.localpal.title.many">{count} frames dragen een eigen kleurtabel mee, die {bytes} kost &mdash; {share} van
+      het bestand.</span>
+    <span data-phrase="find.localpal.body">Een eigen palet laat een frame kleuren gebruiken die de gedeelde tabel niet heeft,
+      en kost drie bytes per ingang telkens als het geschreven wordt. Waar de frames
+      dezelfde scène tonen is één tabel voor allemaal zowel kleiner als rustiger om naar
+      te kijken: een palet dat tussen frames heen en weer schiet is precies wat
+      GIF-flikkering is.</span>
+    <span data-phrase="find.noglobal.title">Er is geen globale kleurtabel.</span>
+    <span data-phrase="find.noglobal.body">Daar is niets mis mee &mdash; elk frame brengt hier zijn eigen mee &mdash; maar het
+      betekent wel dat een weergever niets heeft om het canvas mee te vullen voordat het
+      eerste frame binnenkomt.</span>
+    <span data-phrase="find.waste.title">{entries} ingangen van de kleurtabellen worden nooit gebruikt, en dat is {bytes}.</span>
+    <span data-phrase="find.waste.body">De tabellen in dit bestand noemen {declared} kleuren en de pixels verwijzen naar
+      {referenced} daarvan. Een kleurtabel is altijd een macht van twee lang, wat er ook
+      in staat, dus een frame met negen kleuren krijgt er toch zestien; enig afronden is
+      onvermijdelijk. Veel meer dan dat betekent dat de paletten voor een ander beeld zijn
+      gebouwd dan het beeld dat er uiteindelijk in kwam.</span>
+    <span data-phrase="find.colors.title.one">De hele animatie tekent met één kleur.</span>
+    <span data-phrase="find.colors.title.many">De hele animatie tekent met {count} kleuren.</span>
+    <span data-phrase="find.colors.body.flat">Dat is vlak tekenwerk, en daar is GIF voor gemaakt. Zo&rsquo;n bestand comprimeert
+      goed en dithert slecht, dus als het spikkelig oogt is het ditheren wat je moet
+      uitzetten.</span>
+    <span data-phrase="find.colors.body.photo">Een foto, of iets dat daaruit voortkomt. GIF geeft een frame hoogstens 256 kleuren,
+      dus alles met een verloop erin wordt benaderd &mdash; en daar komen het ditheren en
+      de ruis vandaan die een bestand groot maken.</span>
+    <span data-phrase="find.comment.title">Er zit een commentaarblok van {bytes} in dit bestand.</span>
+    <span data-phrase="find.comment.body">Commentaar wordt door geen enkele weergever getoond en gaat met elke kopie van het
+      bestand mee. Meestal is het de naam van wat het schreef, en af en toe iets dat de
+      maker niet gepubliceerd zou willen hebben.</span>
+    <span data-phrase="find.xmp.title">Een XMP-metadatapakket neemt {bytes} in beslag &mdash; {share} van het bestand.</span>
+    <span data-phrase="find.xmp.body">XMP is het XML-blok dat een fotobewerker schrijft om vast te leggen wat hij deed, en
+      het kan de bewerkingsgeschiedenis, de software en soms de maker bevatten. Geen
+      enkele weergever tekent er iets van. Het weghalen kost het beeld niets.</span>
+    <span data-phrase="find.icc.title">Een ICC-kleurprofiel neemt {bytes} in beslag.</span>
+    <span data-phrase="find.icc.body">Het profiel zegt wat de getallen in het palet als kleuren betekenen. Bijna niets
+      leest er een uit een GIF, dus meestal is het gewicht voor niets &mdash; maar het
+      weglaten kan de kleuren verschuiven in de weergevers die het wel lezen.</span>
+    <span data-phrase="find.plaintext.title">Er zit een platte-tekstuitbreiding in dit bestand.</span>
+    <span data-phrase="find.plaintext.body">Een blok dat de weergever vraagt tekst over het beeld te tekenen, in een raster van
+      cellen. Het stond in de specificatie van 1989, het is nooit door iets ingebouwd, en
+      elke decoder slaat het over. Wat er ook in staat, het verschijnt niet.</span>
+    <span data-phrase="find.appblock.title">Er is een toepassingsblok met de naam &bdquo;{name}&rdquo;, van {bytes}.</span>
+    <span data-phrase="find.appblock.body">Toepassingsblokken zijn de manier waarop alles buiten de specificatie in een GIF
+      terechtkomt. Weergevers slaan de blokken over die ze niet kennen, dus dit is gewicht
+      tenzij iets specifieks het leest.</span>
+    <span data-phrase="find.interlaced.title.one">Eén frame is interlaced opgeslagen.</span>
+    <span data-phrase="find.interlaced.title.many">{count} frames zijn interlaced opgeslagen.</span>
+    <span data-phrase="find.interlaced.body">De rijen staan in vier doorgangen, zodat een beeld dat over een trage lijn
+      binnenkwam vroeg een grove versie van zichzelf liet zien. In 1993 sloeg dat ergens
+      op, het comprimeert iets slechter dan rijen op volgorde, en geen enkele weergever
+      heeft er nu nog baat bij.</span>
+    <span data-phrase="find.version.title">Dit bestand zegt GIF{version} te zijn in plaats van GIF89a.</span>
+    <span data-phrase="find.version.body">GIF87a kwam eerst en heeft geen tijdblokken, geen transparantie en geen herhaalblok.
+      Een bestand dat 87a claimt en toch een van die dingen meedraagt is gewoon &mdash;
+      decoders controleren het niet &mdash; maar het is een teken dat de kop gekopieerd is
+      in plaats van geschreven.</span>
+    <span data-phrase="find.bgindex.title">De achtergrondkleur is index {index}, en de globale tabel heeft maar {entries}
+      ingangen.</span>
+    <span data-phrase="find.bgindex.body">Er crasht niets &mdash; weergevers nemen dan transparant &mdash; maar het betekent
+      dat het veld nooit is ingevuld, of is ingevuld voor een palet dat niet meer het
+      palet in het bestand is.</span>
+    <span data-phrase="find.aspect.title">De pixelverhouding staat op {ratio}.</span>
+    <span data-phrase="find.aspect.body">Een veld voor schermen die geen vierkante pixels hadden. Elke moderne weergever
+      negeert het en tekent het frame op de opgeslagen maat, dus een bestand dat erop
+      leunt oogt uitgerekt voor wie het maakte en normaal voor alle anderen.</span>
+    <span data-phrase="find.clears.title">De compressor zette zijn woordenboek {count} keer terug.</span>
+    <span data-phrase="find.clears.body">LZW bouwt gaandeweg een woordenboek op en er passen 4.096 ingangen in; als het vol
+      is, begint de encoder opnieuw. Eén keer per frame is normaal &mdash; zo begint een
+      frame. Meer dan dat betekent dat het beeld gevarieerd genoeg was om het woordenboek
+      halverwege uit te putten, en dat is wat een foto of stevig ditheren doet &mdash;
+      daarom zijn die bestanden groot.</span>
+    <span data-phrase="find.identical.title.one">Eén frame is identiek aan het frame ervoor.</span>
+    <span data-phrase="find.identical.title.many">{count} frames zijn identiek aan het frame ervoor.</span>
+    <span data-phrase="find.identical.body">Ze kosten hun volle gecomprimeerde grootte en veranderen niets op het scherm. Hun
+      vertraging bij het vorige frame optellen zou er precies hetzelfde uitzien en kleiner
+      zijn.</span>
+    <span data-phrase="find.broken.title.one">Eén frame decodeert niet volledig.</span>
+    <span data-phrase="find.broken.title.many">{count} frames decoderen niet volledig.</span>
+    <span data-phrase="find.broken.body.short">De gecomprimeerde gegevens houden op voordat het frame vol is. Een weergever tekent
+      wat hij kan en laat de rest van de rechthoek leeg.</span>
     <span data-phrase="net.clean">Je GIF is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

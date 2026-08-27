@@ -197,8 +197,12 @@ test('a comment block is read back as its text', () => {
   assert.equal(comment.text, 'made in 1998');
   assert.equal(comment.dataBytes, 12);
 
-  const found = findings(gif).find((entry) => /comment block/.test(entry.title));
+  // The key rather than the sentence: the sentences live in body.html now,
+  // in fifteen languages, and what this module owes the page is which one
+  // applies and the numbers that go in it.
+  const found = findings(gif).find((entry) => entry.title === 'find.comment.title');
   assert.notEqual(found, undefined);
+  assert.equal(found.values.bytes, '12 B');
 });
 
 test('local palettes are counted once each and the global one only once', () => {
@@ -294,7 +298,8 @@ test('a code referring to an entry that does not exist is refused, not guessed',
   // exist yet. This stream asks for 7 straight after one colour.
   const out = lzwDecode(pack(3, [4, 0, 7]), 2, 64);
   assert.notEqual(out.corrupt, null);
-  assert.match(out.corrupt, /only 6 exist/);
+  assert.equal(out.corrupt.key, 'decode.codemissing');
+  assert.equal(out.corrupt.values.entries, '6');
   assert.equal(out.complete, false);
 });
 
@@ -456,13 +461,13 @@ test('the clamped-delay finding fires on the delays that cause it', () => {
   writer.addFrame({ indices: flat(2, 2, 1), delay: 1 });
   const gif = parseGif(writer.finalize());
 
-  const titles = findings(gif).map((finding) => finding.title).join(' ');
-  assert.match(titles, /less than 0\.02 seconds/);
+  const titles = findings(gif).map((finding) => finding.title);
+  assert.ok(titles.some((key) => key.startsWith('find.clamped.title')));
 });
 
 test('a file with no loop block is told it will only play once', () => {
   const gif = parseGif(simple({ loop: null, frames: 3 }));
-  const found = findings(gif).find((finding) => /loop block/.test(finding.title));
+  const found = findings(gif).find((finding) => finding.title === 'find.noloop.title');
   assert.notEqual(found, undefined);
   assert.equal(found.level, 'warn');
 });
@@ -523,7 +528,12 @@ test('a byte where a block marker should be stops the walk and says where', () =
   const broken = parseGif(bytes);
   assert.equal(broken.frames.length, 1);
   assert.equal(broken.truncated, true);
-  assert.match(broken.problems[0], new RegExp(`Byte ${at} is 0x5a`));
+  // The parser names its complaint and carries the numbers; findings.js
+  // hands both to phrase(). Asserting the pair is stricter than asserting a
+  // sentence was, because a typo in either now fails.
+  assert.equal(broken.problems[0].key, 'parse.unknownblock');
+  assert.equal(broken.problems[0].values.at, String(at));
+  assert.equal(broken.problems[0].values.marker, '5a');
 });
 
 test('a truncated file still produces a budget, with the gap named', () => {

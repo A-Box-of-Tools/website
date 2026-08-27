@@ -160,6 +160,172 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.notrailer">Le fichier se termine sans octet de fin, il est donc incomplet &mdash; un
+      téléchargement interrompu, ou un fichier tronqué.</span>
+    <span data-phrase="parse.unknownblock">L&rsquo;octet {at} vaut 0x{marker}, qui ne commence aucun bloc que ce format
+      connaisse. Tout ce qui suit a été ignoré.</span>
+    <span data-phrase="parse.twocontrols">Deux blocs de contrôle graphique à la suite, en {first} et {second}. Le premier ne
+      décrit aucune image et ne fait rien.</span>
+    <span data-phrase="parse.midblock">Le fichier se termine au milieu d&rsquo;un bloc qui commence en {at}. {detail}.</span>
+    <span data-phrase="decode.codefirst">Le code {code} est arrivé en premier, avant que le dictionnaire ne contienne quoi
+      que ce soit. Un lecteur dessinera ce qu&rsquo;il peut et laissera le reste du
+      rectangle vide.</span>
+    <span data-phrase="decode.codemissing">Le code {code} renvoie à l&rsquo;entrée {code} du dictionnaire, et il n&rsquo;en
+      existe que {entries}. Un lecteur dessinera ce qu&rsquo;il peut et laissera le reste
+      du rectangle vide.</span>
+    <span data-phrase="find.noframes.title">Il n&rsquo;y a aucune image dans ce fichier.</span>
+    <span data-phrase="find.noframes.body">L&rsquo;en-tête a été lu, mais aucun bloc image ne suivait. Quoi que ce soit, aucun
+      lecteur n&rsquo;en dessinera quoi que ce soit.</span>
+    <span data-phrase="find.unclean.title">Le fichier ne se termine pas proprement.</span>
+    <span data-phrase="find.trailing.title">{bytes} se trouvent après la fin du fichier.</span>
+    <span data-phrase="find.trailing.body">Tout décodeur s&rsquo;arrête à l&rsquo;octet de fin&nbsp;: ces octets-là ne sont
+      donc jamais lus ni dessinés. C&rsquo;est d&rsquo;ordinaire un second fichier accolé
+      au premier, ou un logiciel qui a écrit au-delà de lui-même. Couper le fichier à
+      l&rsquo;octet de fin ne perd rien.</span>
+    <span data-phrase="find.clamped.title.one">Une image demande à être tenue moins de 0,02 seconde, et aucun navigateur ne le
+      fera.</span>
+    <span data-phrase="find.clamped.title.many">{count} images demandent à être tenues moins de 0,02 seconde, et aucun navigateur ne
+      le fera.</span>
+    <span data-phrase="find.clamped.body">Tout navigateur depuis Netscape arrondit à dix un délai inférieur à deux centièmes
+      de seconde &mdash; une règle écrite en 1996 pour les globes tournants de
+      l&rsquo;époque et jamais retirée. Cette animation annonce donc {nominal} et dure en
+      réalité {real}, environ {factor} fois plus lentement. Écrire 0,02 au lieu de 0,01
+      lui donne la vitesse qu&rsquo;elle demande.</span>
+    <span data-phrase="find.zerodelay.title">Chaque image a un délai de zéro.</span>
+    <span data-phrase="find.zerodelay.body">Le fichier ne donne aucune indication de durée&nbsp;: la vitesse dépend entièrement
+      du lecteur &mdash; d&rsquo;ordinaire dix images par seconde, mais rien ne le
+      garantit. Deux navigateurs peuvent lire ceci à deux vitesses différentes et avoir
+      raison tous les deux.</span>
+    <span data-phrase="find.uneven.title">Les images ne sont pas également cadencées&nbsp;: {delays} délais différents, de
+      {shortest} à {longest}.</span>
+    <span data-phrase="find.uneven.body">Une dernière image tenue plus longtemps est voulue et fréquente. Des délais
+      éparpillés au milieu viennent d&rsquo;ordinaire d&rsquo;un convertisseur qui a
+      laissé tomber des images d&rsquo;une vidéo et étiré les voisines pour combler le
+      trou.</span>
+    <span data-phrase="find.noloop.title">Il n&rsquo;y a pas de bloc de boucle&nbsp;: ceci se lit une fois puis
+      s&rsquo;arrête.</span>
+    <span data-phrase="find.noloop.body">La boucle ne fait pas partie de la spécification GIF. C&rsquo;est un bloc inventé
+      par Netscape en 1995 que tout le monde a implémenté quand même, et un fichier qui en
+      est dépourvu est un fichier que tout navigateur montre exactement une fois. Si une
+      boucle était voulue, le logiciel qui a écrit ceci a omis le bloc.</span>
+    <span data-phrase="find.loopcount.title.one">Ceci se lit une fois puis s&rsquo;arrête.</span>
+    <span data-phrase="find.loopcount.title.many">Ceci se lit {count} fois puis s&rsquo;arrête.</span>
+    <span data-phrase="find.loopcount.body">Le bloc de boucle indique un nombre plutôt que le zéro habituel, qui veut dire
+      indéfiniment. Certains lecteurs anciens ignorent le nombre et bouclent quand même.</span>
+    <span data-phrase="find.allfull.title">Chaque image redessine toute la toile.</span>
+    <span data-phrase="find.allfull.body">Un GIF peut ne stocker d&rsquo;une image que le rectangle qui a changé depuis la
+      précédente&nbsp;: c&rsquo;est pourquoi la capture d&rsquo;une fenêtre presque
+      immobile peut être petite. Rien ici ne le fait&nbsp;: chaque image occupe toute la
+      toile, {width}&times;{height}. C&rsquo;est correct pour des images sans rapport
+      entre elles, et c&rsquo;est de la place perdue pour tout ce qui est filmé ou
+      enregistré, où l&rsquo;essentiel de l&rsquo;image ne bouge pas.</span>
+    <span data-phrase="find.somefull.title.one">Une image sur {total} redessine toute la toile&nbsp;; les autres ne stockent que la
+      partie qui a changé.</span>
+    <span data-phrase="find.somefull.title.many">{count} images sur {total} redessinent toute la toile&nbsp;; les autres ne stockent
+      que la partie qui a changé.</span>
+    <span data-phrase="find.somefull.body">C&rsquo;est à cela que ressemble un GIF optimisé. Celles qui occupent toute la toile
+      sont d&rsquo;ordinaire la première et chaque point où l&rsquo;image a entièrement
+      changé.</span>
+    <span data-phrase="find.nonefull.title">Aucune image ne redessine toute la toile.</span>
+    <span data-phrase="find.nonefull.body">Chaque image après la première ne stocke que le rectangle qui a changé, ce qui est
+      le format bien employé et la raison pour laquelle ce fichier est aussi petit
+      qu&rsquo;il l&rsquo;est.</span>
+    <span data-phrase="find.outside.title.one">Une image déborde de la toile.</span>
+    <span data-phrase="find.outside.title.many">{count} images débordent de la toile.</span>
+    <span data-phrase="find.outside.body.one">La toile fait {width}&times;{height} et une image revendique un rectangle qui sort
+      du bord. Les décodeurs ne s&rsquo;accordent pas sur ce qu&rsquo;il faut en
+      faire&nbsp;: certains le rognent, d&rsquo;autres refusent le fichier.</span>
+    <span data-phrase="find.outside.body.many">La toile fait {width}&times;{height} et certaines images revendiquent un rectangle
+      qui sort du bord. Les décodeurs ne s&rsquo;accordent pas sur ce qu&rsquo;il faut en
+      faire&nbsp;: certains le rognent, d&rsquo;autres refusent le fichier.</span>
+    <span data-phrase="find.localpal.title.one">Une image porte sa propre table de couleurs, qui coûte {bytes} &mdash; {share} du
+      fichier.</span>
+    <span data-phrase="find.localpal.title.many">{count} images portent leur propre table de couleurs, qui coûte {bytes} &mdash;
+      {share} du fichier.</span>
+    <span data-phrase="find.localpal.body">Une palette à soi permet à une image d&rsquo;employer des couleurs que la table
+      partagée n&rsquo;a pas, et coûte trois octets par entrée chaque fois qu&rsquo;elle
+      est écrite. Quand les images montrent la même scène, une seule table pour toutes est
+      à la fois plus petite et plus stable à regarder&nbsp;: une palette qui saute
+      d&rsquo;une image à l&rsquo;autre, c&rsquo;est exactement cela, le scintillement des
+      GIF.</span>
+    <span data-phrase="find.noglobal.title">Il n&rsquo;y a pas de table de couleurs globale.</span>
+    <span data-phrase="find.noglobal.body">Rien de mal à cela &mdash; chaque image apporte la sienne ici &mdash; mais cela veut
+      dire qu&rsquo;un lecteur n&rsquo;a rien pour peindre la toile avant l&rsquo;arrivée
+      de la première image.</span>
+    <span data-phrase="find.waste.title">{entries} entrées des tables de couleurs ne servent jamais, soit {bytes}.</span>
+    <span data-phrase="find.waste.body">Les tables de ce fichier déclarent {declared} couleurs et les pixels en utilisent
+      {referenced}. Une table de couleurs compte toujours une puissance de deux entrées,
+      quoi qu&rsquo;elle contienne&nbsp;: une image à neuf couleurs en obtient donc seize,
+      et un peu d&rsquo;arrondi est inévitable. Beaucoup plus veut dire que les palettes
+      ont été bâties pour une autre image que celle qui a fini dedans.</span>
+    <span data-phrase="find.colors.title.one">Toute l&rsquo;animation se dessine avec une seule couleur.</span>
+    <span data-phrase="find.colors.title.many">Toute l&rsquo;animation se dessine avec {count} couleurs.</span>
+    <span data-phrase="find.colors.body.flat">C&rsquo;est du dessin à plat, et c&rsquo;est ce pour quoi le GIF a été conçu. Un
+      fichier pareil se compresse bien et se tramé mal &mdash; s&rsquo;il paraît moucheté,
+      c&rsquo;est le tramage qu&rsquo;il faut désactiver.</span>
+    <span data-phrase="find.colors.body.photo">Une photographie, ou quelque chose qui en vient. Le GIF donne au plus 256 couleurs à
+      une image&nbsp;: tout ce qui contient un dégradé est donc approché &mdash;
+      d&rsquo;où le tramage, et le bruit qui rend un fichier lourd.</span>
+    <span data-phrase="find.comment.title">Il y a un bloc de commentaire de {bytes} dans ce fichier.</span>
+    <span data-phrase="find.comment.body">Les commentaires ne sont affichés par aucun lecteur et sont emportés par chaque
+      copie du fichier. C&rsquo;est d&rsquo;ordinaire le nom du logiciel qui l&rsquo;a
+      écrit, et parfois quelque chose que son auteur n&rsquo;aurait pas choisi de publier.</span>
+    <span data-phrase="find.xmp.title">Un paquet de métadonnées XMP occupe {bytes} &mdash; {share} du fichier.</span>
+    <span data-phrase="find.xmp.body">XMP est le bloc XML qu&rsquo;un logiciel de retouche écrit pour consigner ce
+      qu&rsquo;il a fait&nbsp;; il peut porter l&rsquo;historique des modifications, le
+      logiciel, et parfois l&rsquo;auteur. Aucun lecteur n&rsquo;en dessine quoi que ce
+      soit. Le retirer ne coûte rien à l&rsquo;image.</span>
+    <span data-phrase="find.icc.title">Un profil colorimétrique ICC occupe {bytes}.</span>
+    <span data-phrase="find.icc.body">Le profil dit ce que les nombres de la palette veulent dire comme couleurs. Presque
+      rien ne va le lire dans un GIF&nbsp;: c&rsquo;est donc d&rsquo;ordinaire du poids
+      pour rien &mdash; mais le supprimer peut décaler les couleurs chez les lecteurs qui
+      le lisent.</span>
+    <span data-phrase="find.plaintext.title">Il y a une extension de texte brut dans ce fichier.</span>
+    <span data-phrase="find.plaintext.body">Un bloc qui demande au lecteur de dessiner du texte par-dessus l&rsquo;image, dans
+      une grille de cellules. Il figurait dans la spécification de 1989, il n&rsquo;a
+      jamais été implémenté par quoi que ce soit, et tout décodeur le saute. Ce
+      qu&rsquo;il dit n&rsquo;apparaîtra pas.</span>
+    <span data-phrase="find.appblock.title">Il y a un bloc applicatif nommé «&nbsp;{name}&nbsp;», de {bytes}.</span>
+    <span data-phrase="find.appblock.body">Les blocs applicatifs sont la porte par laquelle tout ce qui est hors spécification
+      entre dans un GIF. Les lecteurs sautent ceux qu&rsquo;ils ne connaissent pas&nbsp;:
+      celui-ci est donc du poids, à moins que quelque chose de précis ne le lise.</span>
+    <span data-phrase="find.interlaced.title.one">Une image est entrelacée.</span>
+    <span data-phrase="find.interlaced.title.many">{count} images sont entrelacées.</span>
+    <span data-phrase="find.interlaced.body">Les lignes sont stockées en quatre passes pour qu&rsquo;une image arrivant par une
+      ligne lente montre tôt une version grossière d&rsquo;elle-même. Cela avait du sens
+      en 1993, cela se compresse un peu moins bien que des lignes dans l&rsquo;ordre, et
+      plus aucun lecteur n&rsquo;y gagne.</span>
+    <span data-phrase="find.version.title">Ce fichier se déclare GIF{version} et non GIF89a.</span>
+    <span data-phrase="find.version.body">GIF87a est venu en premier et n&rsquo;a ni blocs de durée, ni transparence, ni bloc
+      de boucle. Un fichier qui se dit 87a tout en portant l&rsquo;un de ces éléments est
+      fréquent &mdash; les décodeurs ne vérifient pas &mdash; mais c&rsquo;est signe que
+      l&rsquo;en-tête a été copié plutôt qu&rsquo;écrit.</span>
+    <span data-phrase="find.bgindex.title">La couleur de fond est l&rsquo;indice {index}, et la table globale ne compte que
+      {entries} entrées.</span>
+    <span data-phrase="find.bgindex.body">Rien ne plantera &mdash; les lecteurs prennent le transparent à la place &mdash;
+      mais cela veut dire que le champ n&rsquo;a jamais été renseigné, ou l&rsquo;a été
+      pour une palette qui n&rsquo;est plus celle du fichier.</span>
+    <span data-phrase="find.aspect.title">Le rapport de forme des pixels est réglé sur {ratio}.</span>
+    <span data-phrase="find.aspect.body">Un champ pour les écrans dont les pixels n&rsquo;étaient pas carrés. Tout lecteur
+      moderne l&rsquo;ignore et dessine l&rsquo;image à sa taille stockée&nbsp;: un
+      fichier qui s&rsquo;y fie paraîtra étiré à qui l&rsquo;a fait et normal à tous les
+      autres.</span>
+    <span data-phrase="find.clears.title">Le compresseur a réinitialisé son dictionnaire {count} fois.</span>
+    <span data-phrase="find.clears.body">LZW construit son dictionnaire au fil de l&rsquo;eau et peut tenir 4 096
+      entrées&nbsp;; quand il est plein, l&rsquo;encodeur repart de zéro. Une fois par
+      image est normal &mdash; c&rsquo;est ainsi qu&rsquo;une image commence. Davantage
+      veut dire que l&rsquo;image était assez variée pour épuiser le dictionnaire en cours
+      de route, ce que font une photographie ou un tramage appuyé &mdash; et c&rsquo;est
+      pourquoi ces fichiers sont lourds.</span>
+    <span data-phrase="find.identical.title.one">Une image est identique à la précédente.</span>
+    <span data-phrase="find.identical.title.many">{count} images sont identiques à celle qui les précède.</span>
+    <span data-phrase="find.identical.body">Elles coûtent toute leur taille compressée et ne changent rien à l&rsquo;écran.
+      Ajouter leur délai à l&rsquo;image précédente donnerait exactement le même rendu, en
+      plus petit.</span>
+    <span data-phrase="find.broken.title.one">Une image ne se décode pas entièrement.</span>
+    <span data-phrase="find.broken.title.many">{count} images ne se décodent pas entièrement.</span>
+    <span data-phrase="find.broken.body.short">Les données compressées s&rsquo;arrêtent avant que l&rsquo;image soit pleine. Un
+      lecteur dessinera ce qu&rsquo;il peut et laissera le reste du rectangle vide.</span>
     <span data-phrase="net.clean">votre GIF n'est allé nulle part. {total}
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
