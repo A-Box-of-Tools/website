@@ -32,6 +32,195 @@
     <uri>https://abox.tools/hi/</uri>
   </author>
   <entry>
+    <title type="html">Base64 एनकोडर-डिकोडर</title>
+    <id>https://abox.tools/hi/encode-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/encode-text/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF व्यूअर और रिमूवर</title>
+    <id>https://abox.tools/hi/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/exif-editor/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">फ़ोटो में छिपा EXIF और GPS डेटा देखिए, उसे बदलिए, या एक ही क्लिक में पूरा हटा दीजिए। सब आपके ब्राउज़र में होता है। कुछ अपलोड नहीं होता, और फ़ोटो कभी दोबारा एनकोड नहीं होती।</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF एनालाइज़र</title>
+    <id>https://abox.tools/hi/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-analyzer/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">GIF को अपने ब्राउज़र में खोलकर देखिए: हर फ़्रेम की देरी और डिस्पोज़ल, कलर टेबल, लूप की गिनती, और फ़ाइल का साइज़ कहाँ गया इसका बाइट-दर-बाइट ब्योरा। कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF फ़्रेम स्प्लिटर</title>
+    <id>https://abox.tools/hi/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/split-gif/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">किसी एनिमेटेड GIF को उसके फ़्रेम में बाँटिए और हर फ़्रेम को PNG में सहेजिए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। ट्रांसपेरेंसी और टाइमिंग बनी रहती है। कुछ अपलोड नहीं होता और ऑफ़लाइन भी चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF मेकर</title>
+    <id>https://abox.tools/hi/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-maker/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPG, PNG या WebP तस्वीरों से चलती हुई GIF बनाइए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। क्रम, रफ़्तार और आकार आप तय कीजिए। कुछ अपलोड नहीं होता, और यह ऑफ़लाइन भी चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC से JPG</title>
+    <id>https://abox.tools/hi/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/heic-to-jpg/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">iPhone की HEIC फ़ोटो को अपने ब्राउज़र में ही JPG बना लीजिए। डिकोडर आपकी अपनी मशीन पर चलता है। कुछ अपलोड नहीं होता, कोई खाता नहीं, ऑफ़लाइन भी चलता है, और तारीख तथा कैमरे का ब्योरा साथ आ सकता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">ID फ़ोटो मेकर</title>
+    <id>https://abox.tools/hi/id-photo/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/id-photo/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">अपने देश के प्रकाशित नियम के मुताबिक पासपोर्ट या वीज़ा फ़ोटो बनाइए। ठीक mm और DPI, सिर की ऊँचाई और आँखों की रेखा दिखाता लाइव ओवरले, बैकग्राउंड की जाँच, छपाई लायक 4x6 शीट, और पोर्टल की KB सीमा तक कंप्रेस की हुई फ़ाइल। कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON फ़ॉर्मैटर</title>
+    <id>https://abox.tools/hi/format-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/format-json/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF कंप्रेसर</title>
+    <id>https://abox.tools/hi/compress-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PDF को बिना अपलोड किए छोटा कीजिए। फ़ाइल को आपका अपना ब्राउज़र पढ़ता है, दोबारा कंप्रेस करता है और दोबारा लिखता है। और कुछ भी छूने से पहले टूल आपको दिखा देता है कि साइज़ असल में बैठा कहाँ है।</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF मर्जर और स्प्लिटर</title>
+    <id>https://abox.tools/hi/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/merge-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">कई PDF को एक कीजिए, एक को कई में बाँटिए, और पेजों को खींचकर मनचाहे क्रम में लगाइए, सब कुछ आपके अपने ब्राउज़र के भीतर। कुछ अपलोड नहीं होता, खाता नहीं चाहिए, और तैयार फ़ाइल आपको देने से पहले दोबारा खोलकर उसके पेज गिने जाते हैं।</summary>
+  </entry>
+  <entry>
+    <title type="html">QR और बारकोड जनरेटर</title>
+    <id>https://abox.tools/hi/qr-barcode/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/qr-barcode/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">किसी लिंक, Wi-Fi नेटवर्क या कॉन्टैक्ट कार्ड के लिए QR कोड बनाइए, या EAN-13, UPC-A, Code 128 और Code 39 बारकोड। SVG या PNG में डाउनलोड कीजिए। यह सब आपके ब्राउज़र में होता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG से तस्वीर</title>
+    <id>https://abox.tools/hi/svg-to-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/svg-to-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">SVG को किसी भी साइज़ की PNG, JPEG या WebP में बदलिए, अपने ब्राउज़र में ही। चौड़ाई बताइए, कोई गुणक, या कोई डिब्बा, और साथ में @2x तथा @3x नकलें भी पाइए। पारदर्शिता बची रहती है, और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज कंप्रेसर</title>
+    <id>https://abox.tools/hi/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPEG, PNG या WebP को ठीक तय साइज़ तक कंप्रेस कीजिए - 100 KB, 2 MB, कुछ भी। पूरा काम आपके ब्राउज़र में होता है। न कुछ अपलोड, न कोई खाता, और ऑफ़लाइन भी चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज ब्लैकआउट टूल</title>
+    <id>https://abox.tools/hi/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/redact-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">फ़ोटो या स्क्रीनशॉट में नाम, पता या खाता नंबर ढककर इमेज दोबारा सेव कीजिए। ढके हुए पिक्सेल किसी आयत के नीचे बचे नहीं रहते, फ़ाइल से चले जाते हैं। पूरा काम आपके ब्राउज़र में होता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज रिसाइज़र</title>
+    <id>https://abox.tools/hi/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/resize-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPEG, PNG और WebP तस्वीरों का आकार बदलिए, उन्हें क्रॉप कीजिए और फ़ॉर्मैट बदलिए, अपने ब्राउज़र में ही। ठीक तय पिक्सल, प्रतिशत, या लंबा किनारा - एक तस्वीर हो या पूरा फ़ोल्डर। कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज स्टैकर</title>
+    <id>https://abox.tools/hi/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/stack-images/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">एक बर्स्ट में ली गई तस्वीरों को एक में जोड़िए। औसत लेकर नॉइज़ खत्म कीजिए, माध्यिका से दृश्य में से लोगों को हटाइए, तारों की लकीरों के लिए हल्का कीजिए, या किसी मैक्रो शॉट की फ़ोकस स्टैकिंग कीजिए। CR2, NEF, ARW, DNG, RAF और CR3 को कैमरे की अपनी झलक निकालकर पढ़ता है। सब कुछ आपके ब्राउज़र में ही चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">ऑडियो एडिटर</title>
+    <id>https://abox.tools/hi/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/edit-audio/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">किसी ट्रैक को उलटी दिशा में चलाइए, उसे तेज़ या धीमा कीजिए, और धीमी रिकॉर्डिंग को ऊँचा कीजिए। वीडियो में से आवाज़ भी निकाल देता है। सब आपके ब्राउज़र में चलता है और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">ऑडियो ट्रिमर</title>
+    <id>https://abox.tools/hi/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-audio/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">रिकॉर्डिंग चलाइए और जो-जो हिस्सा रखने लायक हो, उस पर वहीं निशान लगाते जाइए, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। सैंपल तक सटीक कट, जोड़ पर कोई खटका नहीं, और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">टाइमलैप्स मेकर</title>
+    <id>https://abox.tools/hi/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/timelapse-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">किसी लंबे वीडियो को टाइमलैप्स में बदलिए - 10x, 60x, या जो रफ़्तार आप टाइप करें। सब आपके ब्राउज़र में चलता है। कुछ अपलोड नहीं होता, कोई वॉटरमार्क नहीं, और ऑफ़लाइन भी काम करता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">टेक्स्ट और फ़ाइलें साझा करें</title>
+    <id>https://abox.tools/hi/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/share-text/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से भेजिए। बोलकर बताने लायक लिंक-नाम, टाइप करते-करते लाइव अपडेट, हर पाठक के लिए अनुमति - और किसी सर्वर पर कभी कुछ नहीं। मुफ़्त, बिना साइन-अप।</summary>
+  </entry>
+  <entry>
+    <title type="html">टेक्स्ट डिफ़</title>
+    <id>https://abox.tools/hi/compare-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-text/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क़ देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
+    <title type="html">डॉक्यूमेंट स्कैनर</title>
+    <id>https://abox.tools/hi/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/document-scanner/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">फ़ोन से लिए गए कागज़ के फ़ोटो को सीधी और एक जैसी रोशनी वाली PDF में बदलिए। कोने खुद ढूँढ़ लिए जाते हैं, तिरछापन हटा दिया जाता है, और छाया भाग देकर निकाल दी जाती है। सब कुछ आपके ब्राउज़र में ही चलता है और कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">तस्वीर से ICO</title>
+    <id>https://abox.tools/hi/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/image-to-ico/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PNG, JPEG या SVG को अपने ब्राउज़र में ही असली कई-साइज़ वाली .ico या macOS की .icns में बदलिए। favicon, Windows ऐप आइकन, Mac ऐप आइकन, और साथ में वे Apple तथा Android फ़ाइलें जो किसी साइट को चाहिए। कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">तस्वीर से data URI</title>
+    <id>https://abox.tools/hi/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/image-to-data-uri/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PNG, JPEG, SVG या WebP को ऐसे data URI में बदलिए जिसे आप CSS या HTML में चिपका सकें। SVG को base64 के बजाय percent-encode किया जाता है, इसलिए वे पढ़ने लायक और छोटी रहती हैं। सब आपके ब्राउज़र में चलता है और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">तस्वीरों से PDF</title>
+    <id>https://abox.tools/hi/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/images-to-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPG, PNG या WebP तस्वीरों को एक ही PDF में जोड़िए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। फ़ोटो बिना दोबारा एनकोड हुए भीतर जाती हैं, और कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">तस्वीरों से वीडियो</title>
+    <id>https://abox.tools/hi/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/images-to-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPG, PNG या WebP तस्वीरों को MP4 स्लाइडशो वीडियो में बदलिए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। कुछ अपलोड नहीं होता, कोई साइन-अप नहीं, और यह ऑफ़लाइन भी चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">पासवर्ड और पासफ़्रेज़ जनरेटर</title>
+    <id>https://abox.tools/hi/password-generator/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/password-generator/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">एक मज़बूत रैंडम पासवर्ड बनाइए, या पेज के साथ आने वाली 7,776 शब्दों की सूची से डाइसवेयर पासफ़्रेज़ बनाइए। ब्राउज़र के अपने क्रिप्टोग्राफ़िक जनरेटर से निकलता है, कहीं नहीं जाता और कहीं सेव नहीं होता। मुफ़्त, बिना साइन-अप।</summary>
+  </entry>
+  <entry>
     <title type="html">बिना अपलोड किए डिवाइसों के बीच टेक्स्ट और फ़ाइलें कैसे साझा करें</title>
     <id>https://abox.tools/hi/guides/share-text-between-devices/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/share-text-between-devices/"/>
@@ -39,206 +228,17 @@
     <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से पहुँचाइए - खुद को ईमेल किए बिना, चैट-इतिहास छोड़े बिना, खाते के बिना, और बिना किसी सर्वर के प्रति रखे।</summary>
   </entry>
   <entry>
-    <title type="html">Base64 एनकोडर-डिकोडर</title>
-    <id>https://abox.tools/hi/encode-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/encode-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+    <title type="html">वीडियो कटर</title>
+    <id>https://abox.tools/hi/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">वीडियो देखिए और चलते-चलते हर उस हिस्से पर निशान लगाइए जो रखने लायक है, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। आपके ब्राउज़र में चलता है: कुछ अपलोड नहीं होता, कुछ दोबारा एनकोड नहीं होता, ऑफ़लाइन भी चलता है।</summary>
   </entry>
   <entry>
-    <title type="html">DICOM फ़ाइल कैसे खोलें, और उसमें क्या होता है</title>
-    <id>https://abox.tools/hi/guides/open-a-dicom-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/open-a-dicom-file/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">अस्पताल की डिस्क में क्या होता है, फ़ाइलों पर एक्सटेंशन क्यों नहीं होता, .dcm स्कैन ब्राउज़र में कैसे खोलें, विंडो और लेवल असल में क्या करता है, और स्कैन तस्वीर के अलावा मरीज़ के बारे में क्या-क्या लिए चलता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF के भीतर असल में क्या है</title>
-    <id>https://abox.tools/hi/guides/whats-inside-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/whats-inside-a-gif/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">फ़्रेम, देरी, निपटाने के तरीके और रंगों की तालिकाएँ समझाई गईं, ब्राउज़र सबसे तेज़ देरी क्यों नहीं मानते, और किसी GIF का आकार असल में कहाँ चला गया यह कैसे पता करें।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF को फ़्रेम-दर-फ़्रेम कैसे संपादित करें</title>
-    <id>https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/edit-a-gif-frame-by-frame/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">GIF को उसके फ़्रेमों में खोलें, जो हटाना हो हटाएँ या क्रम बदलें, और समय-सारणी बचाए हुए फिर जोड़ दें। आने-जाने में क्या बचता है, पैलेट की क़ीमत क्या है, और GIF के भारी होने की वजह कैसे देखें।</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF को फ़्रेमों में कैसे बाँटें</title>
-    <id>https://abox.tools/hi/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">चलती GIF का हर फ़्रेम PNG में निकालिए: कुछ फ़्रेम तस्वीर का सिर्फ़ एक छोटा टुकड़ा क्यों होते हैं, पारदर्शिता का क्या होता है, और समय कैसे सँभालें ताकि सब वापस जोड़ा जा सके।</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON को किसी को सौंपे बिना कैसे सजाएँ</title>
-    <id>https://abox.tools/hi/guides/format-json-without-uploading-it/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/format-json-without-uploading-it/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">JSON को अपने ही ब्राउज़र में कैसे सजाएँ, जाँचें और निचोड़ें - फ़ॉर्मैटर को आपकी फ़ाइल के बारे में क्या कभी नहीं बदलना चाहिए, त्रुटि का संदेश कैसे पढ़ें, और आप जिस साइट में उसे चिपकाते हैं वह क्यों मायने रखती है।</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON फ़ॉर्मैटर</title>
-    <id>https://abox.tools/hi/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/format-json/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF के पन्ने कैसे जोड़ें, अलग करें और क्रम बदलें</title>
-    <id>https://abox.tools/hi/guides/merge-and-split-pdf-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/merge-and-split-pdf-files/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">कई PDF को एक करना, एक को कई में काटना और पन्नों को इधर-उधर करना: फेरबदल के बाद क्या बचता है, कौन-सी चीज़ें कोई भी टूल साथ नहीं ले जा सकता, और यह सब बिना अपने दस्तावेज़ कहीं भेजे क्यों हो जाता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF को छोटा कैसे करें, और कुछ PDF सिकुड़ती क्यों नहीं</title>
-    <id>https://abox.tools/hi/guides/make-a-pdf-smaller/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-pdf-smaller/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">PDF का साइज़ असल में बैठा कहाँ होता है, स्कैन 80% क्यों सिकुड़ जाता है और अनुबंध टस से मस नहीं होता, यहाँ DPI का मतलब क्या है, और कोई कंप्रेसर आपके दस्तावेज़ के साथ क्या कभी नहीं करना चाहिए।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF से टेक्स्ट इस तरह कैसे मिटाएँ कि वह वाकई चला जाए</title>
-    <id>https://abox.tools/hi/guides/redact-a-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/redact-a-pdf/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">PDF रीडर में बनाया गया काला डिब्बा आम तौर पर शब्दों को अपने नीचे छोड़ देता है, और कॉपी-पेस्ट से वे तुरंत वापस मिल जाते हैं। असली मिटाना क्या हटाता है, शब्द पन्ने के बाहर किन चार जगहों पर छिपते हैं, और भेजने से पहले फ़ाइल कैसे जाँचें।</summary>
-  </entry>
-  <entry>
-    <title type="html">QR कोड कैसे बनाएँ और कैसे साबित करें कि वह पढ़ा जाता है</title>
-    <id>https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">कोड बनाइए, फिर उसी साइट के रीडर से जाँचिए: हू-ब-हू सामग्री, असली लिंक, छपाई के आकार में और एक तस्वीर से, छपाई से पहले। सब ब्राउज़र में, कुछ भी अपलोड नहीं।</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG को सही साइज़ की PNG में कैसे बदलें</title>
-    <id>https://abox.tools/hi/guides/convert-an-svg-to-png/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/convert-an-svg-to-png/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">वेक्टर का अपना कोई पिक्सल साइज़ होता ही नहीं, इसलिए वह संख्या आपको चुननी है। स्क्रीन, ऐप आइकन और प्रिंटर के लिए वह संख्या कहाँ से आती है, और जब कोई ड्रॉइंग पिक्सल बन जाती है तो क्या बदल जाता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">आपके फ़ोन ने जो फ़ोटो सहेजी, और वह फ़ॉर्मैट जिसे कुछ भी नहीं खोलता</title>
-    <id>https://abox.tools/hi/guides/convert-heic-to-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/convert-heic-to-jpg/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">iPhone फ़ोटो को HEIC में सहेजता है, और आधा इंटरनेट उसे खोल ही नहीं पाता। यह फ़ॉर्मैट क्या है, सिर्फ़ Safari ही इसे क्यों डिकोड करता है, बदलने में तस्वीर की क्या कीमत लगती है, और यह सब बिना फ़ोटो किसी को दिए कैसे किया जाए।</summary>
-  </entry>
-  <entry>
-    <title type="html">इमेज को ऐसे कैसे छिपाएँ कि ढका हुआ हिस्सा सचमुच चला जाए</title>
-    <id>https://abox.tools/hi/guides/redact-an-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/redact-an-image/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">ज़्यादातर प्रोग्राम जो काले डिब्बे बनाते हैं वे इमेज के ऊपर पड़े रहते हैं और हटाए जा सकते हैं। असल में छिपाने और सिर्फ़ ढक देने में फ़र्क क्या है, पिक्सेलेट किए अक्षर वापस क्यों पढ़े जा सकते हैं, और भेजने से पहले फ़ाइल कैसे जाँचें।</summary>
-  </entry>
-  <entry>
-    <title type="html">ऐसा QR कोड कैसे बनाएँ जो किसी और के फ़ोन पर भी स्कैन हो</title>
-    <id>https://abox.tools/hi/guides/make-a-qr-code/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-qr-code/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">एरर-करेक्शन का कौन-सा स्तर चुनें, QR कोड के चारों ओर की सफ़ेद हाशिया-पट्टी कोड का ही हिस्सा क्यों है, उसे कितना बड़ा छापें, और मुफ़्त जनरेटर का 'डायनैमिक' कोड आपसे आगे चलकर क्या वसूलता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">ऐसा favicon कैसे बनाएँ जो सोलह पिक्सल पर भी पढ़ा जाए</title>
-    <id>https://abox.tools/hi/guides/make-a-favicon/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-favicon/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">favicon.ico को असल में कौन-कौन से साइज़ चाहिए, iPhone, Android और Mac कौन-सी अतिरिक्त फ़ाइलें माँगते हैं, और पोस्टर पर जँचने वाला लोगो सोलह पिक्सल पर गायब क्यों हो जाता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">ऐसी पासपोर्ट फ़ोटो कैसे खींचें जो लौटाई न जाए</title>
-    <id>https://abox.tools/hi/guides/make-a-passport-photo/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-passport-photo/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">पासपोर्ट फ़ोटो असल में किन बातों पर नापी जाती है - सिर की ऊँचाई, आँखों की रेखा, बैकग्राउंड - कौन-सा देश कौन-से आँकड़े माँगता है, और ऑनलाइन फ़ॉर्म जो पिक्सल तथा KB सीमाएँ लागू करता है उन तक कैसे पहुँचें।</summary>
-  </entry>
-  <entry>
-    <title type="html">कई तस्वीरों को एक ही PDF में कैसे जोड़ें</title>
-    <id>https://abox.tools/hi/guides/combine-images-into-a-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/combine-images-into-a-pdf/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">फ़ोटो या स्कैन से एक अकेली PDF बनाइए: पन्ने का आकार, क्रम और घुमाव, JPEG को भीतर जाते वक्त क्वालिटी क्यों नहीं गँवानी पड़ती, और आप जिसे भेज रहे हैं उसे PDF आपके बारे में क्या बता देती है।</summary>
-  </entry>
-  <entry>
-    <title type="html">कई पन्ने एक छोटे PDF में कैसे स्कैन करें</title>
-    <id>https://abox.tools/hi/guides/scan-multiple-pages-into-one-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/scan-multiple-pages-into-one-pdf/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">हर पन्ने की फ़ोटो लीजिए, एक PDF पाइए, पहले से मौजूद दस्तावेज़ों से जोड़िए, और तब तक छोटा कीजिए जब तक भेजा न जा सके। तीन ब्राउज़र-टूल एक के बाद एक, और काग़ज़ात कभी फ़ोन से बाहर नहीं जाते।</summary>
-  </entry>
-  <entry>
-    <title type="html">किसी तस्वीर को ठीक तय फ़ाइल साइज़ तक कैसे कंप्रेस करें</title>
-    <id>https://abox.tools/hi/guides/compress-an-image-to-a-target-size/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/compress-an-image-to-a-target-size/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">अपलोड फ़ॉर्म 500 KB माँग रहा है और आपकी फ़ोटो 4 MB की है। साइज़ की सीमा असल में क्या कीमत लेती है, पहले कौन-सी सेटिंग हिलानी है, और PNG वैसे क्यों नहीं सिकुड़ता जैसे JPEG सिकुड़ता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">किसी वीडियो को दूसरे आकार में कैसे क्रॉप करें</title>
-    <id>https://abox.tools/hi/guides/crop-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/crop-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">किसी क्लिप को वर्ग, 9:16 पोर्ट्रेट, या ठीक तय पिक्सल के डिब्बे तक काटिए। कौन-सा प्लैटफ़ॉर्म कौन-सा अनुपात चाहता है, क्रॉप करने पर दोबारा एनकोड क्यों करना ही पड़ता है जबकि काटने पर नहीं, और उसकी कीमत क्या है।</summary>
-  </entry>
-  <entry>
-    <title type="html">क्या ऑनलाइन कन्वर्टर पर फ़ाइलें अपलोड करना सुरक्षित है?</title>
-    <id>https://abox.tools/hi/guides/is-it-safe-to-upload-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/is-it-safe-to-upload-files/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">ज़्यादातर ऑनलाइन कन्वर्टर आपकी फ़ाइल किसी सर्वर पर भेजते हैं। इसका मतलब क्या है, वहाँ उसके साथ होता क्या है, और वे चार जाँचें जो बता देती हैं कि किसी टूल को इसकी ज़रूरत है भी या नहीं।</summary>
-  </entry>
-  <entry>
-    <title type="html">क्वालिटी गँवाए बिना ऑडियो कैसे काटें</title>
-    <id>https://abox.tools/hi/guides/trim-an-audio-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/trim-an-audio-file/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">ऑडियो की कट असल में कहाँ गिरती है, वह ठीक-ठीक क्यों गिर सकती है जबकि वीडियो की नहीं, जोड़ पर कभी-कभी 'टक' क्यों सुनाई देता है, और पाँच मिलीसेकंड का फ़ेड दरअसल कर क्या रहा है।</summary>
-  </entry>
-  <entry>
-    <title type="html">चेकसम से डाउनलोड कैसे जाँचें</title>
-    <id>https://abox.tools/hi/guides/verify-a-file-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/verify-a-file-checksum/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">विंडोज़, मैक और लिनक्स पर या ब्राउज़र में MD5 या SHA-256 चेकसम मिलाने का तरीका, मिल जाने से सचमुच क्या साबित होता है, और वह गलती जिससे पूरी कसरत बेकार हो जाती है।</summary>
-  </entry>
-  <entry>
-    <title type="html">टेक्स्ट और फ़ाइलें साझा करें</title>
-    <id>https://abox.tools/hi/share-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/share-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से भेजिए। बोलकर बताने लायक लिंक-नाम, टाइप करते-करते लाइव अपडेट, हर पाठक के लिए अनुमति - और किसी सर्वर पर कभी कुछ नहीं। मुफ़्त, बिना साइन-अप।</summary>
-  </entry>
-  <entry>
-    <title type="html">टेक्स्ट डिफ़</title>
-    <id>https://abox.tools/hi/compare-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क़ देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
-  </entry>
-  <entry>
-    <title type="html">ठीक उसी फ़्रेम से वीडियो थंबनेल कैसे बनाएँ</title>
-    <id>https://abox.tools/hi/guides/make-a-video-thumbnail/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-video-thumbnail/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">फ़्रेम-दर-फ़्रेम सही पल तक पहुँचें, बिना क्षति सहेजें, प्लैटफ़ॉर्म के आकार में ढालें और उसकी बाइट-सीमा के ठीक नीचे उतारें। ब्राउज़र के तीन औज़ार कतार में, और फ़ुटेज आपकी मशीन कभी नहीं छोड़ती।</summary>
-  </entry>
-  <entry>
-    <title type="html">तस्वीर का आकार बिना बिगाड़े कैसे बदलें</title>
-    <id>https://abox.tools/hi/guides/resize-an-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/resize-an-image/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">पिक्सल की माप बदलने पर तस्वीर के साथ होता क्या है: छोटा करना सुरक्षित और बड़ा करना क्यों नहीं, जब डिब्बा गलत आकार का हो तो क्या करें, और क्रॉप करना कब बेहतर है।</summary>
-  </entry>
-  <entry>
-    <title type="html">तस्वीर को अपनी CSS के भीतर कब रखें, और कब नहीं</title>
-    <id>https://abox.tools/hi/guides/embed-an-image-in-css/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/embed-an-image-in-css/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">data URI की कीमत क्या है, base64 एक-तिहाई क्यों जोड़ देता है और gzip उसे वापस क्यों नहीं करता, SVG को base64 क्यों नहीं करना चाहिए, और वह कोटेशन की गलती जो भीतर रखी SVG को चुपचाप तोड़ देती है।</summary>
+    <title type="html">वीडियो क्रॉपर</title>
+    <id>https://abox.tools/hi/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/crop-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">MP4, MOV या WebM को किसी भी आकार में क्रॉप कीजिए - वर्ग, 9:16, या ठीक तय पिक्सल का डिब्बा। सब आपके ब्राउज़र में चलता है। कुछ अपलोड नहीं होता, आवाज़ बची रहती है, और ऑफ़लाइन भी काम करता है।</summary>
   </entry>
 </feed>

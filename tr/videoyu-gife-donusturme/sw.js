@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/videoyu-gife-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'6e006985b9';
+const CACHE_NAME=CACHE_PREFIX+'6b09409e83';
 const ASSETS=[
 './',
 'index.html',

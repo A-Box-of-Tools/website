@@ -632,12 +632,13 @@ else unexplained.add(url.hostname);
 const total=performance.getEntriesByType('resource')
 .filter((e)=>!e.name.startsWith('blob:')&&!e.name.startsWith('data:')).length;
 const clean=unexplained.size===0;
-const platformNote=platform.size===0
-?''
-:` The page's own ad, measurement and donate-button scripts loaded from ${platform.size} host${platform.size === 1 ? '' : 's'}; not one of them was given a photograph or a byte of one.`;
+const platformNote=platform.size
+?phrase(platform.size===1?'net.platform.one':'net.platform.many',
+{hosts:platform.size})
+:'';
 el.networkCount.textContent=clean
-?`your photographs have gone nowhere. ${total} files loaded, all of them this page's own.${platformNote}`
-:`something contacted ${[...unexplained].join(', ')}, which this tool never does. Treat that as worth investigating.${platformNote}`;
+?phrase('net.clean',{total,platform:platformNote})
+:phrase('net.dirty',{hosts:[...unexplained].join(', '),platform:platformNote});
 el.networkCount.className=clean?'good':'warn';
 el.networkDot.className=`live-dot ${clean ? 'good' : 'warn'}`;
 };

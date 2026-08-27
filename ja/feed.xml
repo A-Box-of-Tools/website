@@ -32,6 +32,83 @@
     <uri>https://abox.tools/ja/</uri>
   </author>
   <entry>
+    <title type="html">Base64エンコーダー・デコーダー</title>
+    <id>https://abox.tools/ja/encode-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/encode-text/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIFビューアー・削除ツール</title>
+    <id>https://abox.tools/ja/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/exif-editor/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">写真に隠れているEXIFやGPSの情報を見て、編集し、ワンクリックですべて削除できます。処理はブラウザの中だけ。アップロードはなく、写真そのものをエンコードし直すこともありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF作成</title>
+    <id>https://abox.tools/ja/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-maker/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebPの画像からアニメーションGIFを作ります。無料で、処理はすべてブラウザの中。順番も速さも大きさも自分で決められます。アップロードは一切なく、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF分解</title>
+    <id>https://abox.tools/ja/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/split-gif/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">アニメーションGIFをコマに分解し、1枚ずつPNGとして保存します。無料で、処理はすべてブラウザの中。透過も表示時間もそのまま残ります。アップロードは一切なく、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF解析</title>
+    <id>https://abox.tools/ja/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-analyzer/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">GIFをブラウザの中で分解します。各コマの表示時間と破棄方法、カラーテーブル、繰り返し回数、そしてファイルサイズがどこへ消えたかの1バイト単位の内訳まで。アップロードは一切ありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC→JPG変換ツール</title>
+    <id>https://abox.tools/ja/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/heic-to-jpg/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">iPhoneのHEIC写真をブラウザの中でJPGに変換します。デコーダーが動くのは手元の端末です。アップロードなし、登録なし、オフラインでも動作。撮影日時やカメラ情報も引き継げます。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSONフォーマッター</title>
+    <id>https://abox.tools/ja/format-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/format-json/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF圧縮ツール</title>
+    <id>https://abox.tools/ja/compress-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compress-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PDFをアップロードせずに小さくします。読み込みも再圧縮も書き直しも、お使いのブラウザが行います。手をつける前に、そのPDFの容量が実際どこにあるのかを見せます。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF結合・分割</title>
+    <id>https://abox.tools/ja/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/merge-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PDFをまとめる、1つを複数に分ける、ページをドラッグして好きな順にする。すべてお使いのブラウザの中で行われます。アップロードもアカウントも不要で、仕上がったファイルは渡す前にもう一度開いてページ数を数え直します。</summary>
+  </entry>
+  <entry>
+    <title type="html">QRコード・バーコード作成ツール</title>
+    <id>https://abox.tools/ja/qr-barcode/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/qr-barcode/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">リンク、Wi-Fi、連絡先カードのQRコードや、EAN-13・UPC-A・Code 128・Code 39のバーコードを作れます。SVGでもPNGでもダウンロードできます。すべてブラウザの中で完結します。</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG→画像変換ツール</title>
+    <id>https://abox.tools/ja/svg-to-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/svg-to-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">SVGを好きなサイズのPNG・JPEG・WebPにブラウザの中で変換します。幅、倍率、枠のいずれかを指定でき、@2xと@3xも一緒に作れます。透過はそのまま、アップロードはありません。</summary>
+  </entry>
+  <entry>
     <title type="html">アップロードせずに端末間でテキストとファイルを共有する方法</title>
     <id>https://abox.tools/ja/guides/share-text-between-devices/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/share-text-between-devices/"/>
@@ -39,206 +116,129 @@
     <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ。自分宛てのメールも、チャット履歴も、アカウントも要らず、どのサーバーにも写しは残りません。</summary>
   </entry>
   <entry>
-    <title type="html">16ピクセルでも読めるファビコンの作り方</title>
-    <id>https://abox.tools/ja/guides/make-a-favicon/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-favicon/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">favicon.icoに実際に必要なサイズ、iPhone・Android・Macが求める追加ファイル、そしてポスターでは通用するロゴが16ピクセルでは消えてしまう理由。</summary>
-  </entry>
-  <entry>
-    <title type="html">2つのJSONファイルを比較する方法</title>
-    <id>https://abox.tools/ja/guides/compare-two-json-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/compare-two-json-files/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">両方のファイルを同じように整形し、キーを並べ替えてから比較する。生のJSON差分がほとんどノイズである理由、ブラウザで両側を正規形にする方法、そしてパッチまで生き残るもの。</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64エンコーダー・デコーダー</title>
-    <id>https://abox.tools/ja/encode-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/encode-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">DICOMファイルの開き方と、その中身</title>
-    <id>https://abox.tools/ja/guides/open-a-dicom-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/open-a-dicom-file/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">病院のディスクに何が入っているのか、ファイルになぜ拡張子がないのか、.dcmの検査画像をブラウザでどう開くのか、ウィンドウと中心値は実際に何をしているのか、そして検査画像が画像のほかに患者について何を抱えているのか。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIFの中には本当は何があるのか</title>
-    <id>https://abox.tools/ja/guides/whats-inside-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/whats-inside-a-gif/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">コマ、待ち時間、後始末の方法、色表の説明。ブラウザがいちばん短い待ち時間を受け付けない理由と、GIFの容量がどこへ消えたのかを突き止める方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIFをコマに分解する方法</title>
-    <id>https://abox.tools/ja/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">アニメーションGIFの全コマをPNGで取り出します。なぜ一部のコマが絵の小さな断片でしかないのか、透明はどうなるのか、そして組み立て直せるように間隔を残しておく方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIFをコマ単位で編集する方法</title>
-    <id>https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">GIFをコマに分解し、抜いたり並べ替えたりして、タイミングを保ったまま組み直します。往復で何が生き残るか、パレットの代償はいくらか、GIFが重い理由をどう見るか。</summary>
-  </entry>
-  <entry>
-    <title type="html">JSONを誰にも渡さずに整形する方法</title>
-    <id>https://abox.tools/ja/guides/format-json-without-uploading-it/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/format-json-without-uploading-it/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">自分のブラウザの中でJSONを整え、確かめ、詰める方法。整形ツールがファイルについて決して変えてはいけないもの、エラーの読み方、そして貼り付ける先が問題になる理由。</summary>
-  </entry>
-  <entry>
-    <title type="html">JSONフォーマッター</title>
-    <id>https://abox.tools/ja/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/format-json/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDFのページを結合・分割・並べ替えする方法</title>
-    <id>https://abox.tools/ja/guides/merge-and-split-pdf-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/merge-and-split-pdf-files/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">複数のPDFをまとめ、1つを何本かに切り分け、ページを動かします。並べ替えて何が残り、どの道具にも運べないものは何か、そしてなぜ書類をどこかへ送らずに済むのか。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDFを小さくする方法と、小さくならないものがある理由</title>
-    <id>https://abox.tools/ja/guides/make-a-pdf-smaller/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-pdf-smaller/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">PDFの容量が実際どこにあるのか、スキャンが80%縮んで契約書がほとんど動かない理由、ここでいうDPIとは何か、そして圧縮ツールが書類に決してすべきでないこと。</summary>
-  </entry>
-  <entry>
-    <title type="html">QRコードを作り、読めることを証明する方法</title>
-    <id>https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">コードを生成したら、同じサイトのリーダーで検証します。正確な中身と本当のリンクを、印刷サイズで、写真から、大量印刷の前に。すべてブラウザーで、何もアップロードせずに。</summary>
-  </entry>
-  <entry>
-    <title type="html">SVGを適切な大きさのPNGに変換する方法</title>
-    <id>https://abox.tools/ja/guides/convert-an-svg-to-png/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-an-svg-to-png/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">ベクターには固有のピクセルサイズがないので、数値はこちらで決めます。画面、アプリのアイコン、印刷機のそれぞれでその数値がどこから来るのか、そして図がピクセルになるとき何が変わるのか。</summary>
-  </entry>
-  <entry>
-    <title type="html">オンライン変換サイトにファイルをアップロードしても安全ですか？</title>
-    <id>https://abox.tools/ja/guides/is-it-safe-to-upload-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/is-it-safe-to-upload-files/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">オンライン変換サイトの多くは、ファイルをサーバーへ送ります。それが何を意味するのか、送られた先で何が起きるのか、そしてその道具が本当に送る必要があるのかを見分ける4つの確認方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">スマホが保存した写真と、何も開けてくれない形式</title>
-    <id>https://abox.tools/ja/guides/convert-heic-to-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/convert-heic-to-jpg/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">iPhoneは写真をHEICで保存し、インターネットの半分はそれを開けません。この形式が何であるか、Safariだけがデコードできる理由、変換が画像に何を強いるのか、そして誰にもアップロードせずにそれを行う方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">スマホで書類をスキャンする方法</title>
-    <id>https://abox.tools/ja/guides/scan-a-document-with-your-phone/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/scan-a-document-with-your-phone/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">ページを撮った写真と、そのページのスキャンを分けているもの。傾きと、むらのある明るさと、ファイルの大きさです。写真の撮り方、そのあと何を直すのか、そしてなぜそのどれにもサーバーが要らないのか。</summary>
-  </entry>
-  <entry>
-    <title type="html">スマホ写真をウェブ用に準備する方法</title>
-    <id>https://abox.tools/ja/guides/get-photos-ready-for-the-web/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/get-photos-ready-for-the-web/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">HEICをJPEGに、GPSを剥がし、ページに合わせてリサイズし、予算まで圧縮する。連鎖の全部がブラウザの中で、原本は端末を一度も離れない。</summary>
-  </entry>
-  <entry>
-    <title type="html">チェックサムでダウンロードを確認する手順</title>
-    <id>https://abox.tools/ja/guides/verify-a-file-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/verify-a-file-checksum/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">MD5 や SHA-256 のチェックサムを Windows・macOS・Linux やブラウザーで照合する手順、一致が実際に証明していること、そしてこの作業を無意味にしてしまう間違いについて。</summary>
+    <title type="html">タイムラプス作成ツール</title>
+    <id>https://abox.tools/ja/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/timelapse-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">長い動画をタイムラプスに変換します。10倍、60倍、入力した任意の倍率まで。処理はブラウザの中だけ。アップロードなし、透かしなし、オフラインでも動きます。</summary>
   </entry>
   <entry>
     <title type="html">テキストとファイルの共有</title>
     <id>https://abox.tools/ja/share-text/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/share-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
+    <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ送れます。声に出して伝えられるリンク名、入力と同時のライブ更新、読む人ごとの承認。そしてどのサーバーにも何も残りません。無料、登録不要。</summary>
   </entry>
   <entry>
     <title type="html">テキスト差分</title>
     <id>https://abox.tools/ja/compare-text/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/compare-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
+    <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
   </entry>
   <entry>
-    <title type="html">ノイズを減らす、あるいは人を消すために写真をスタックする方法</title>
-    <id>https://abox.tools/ja/guides/stack-photos-to-reduce-noise/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/stack-photos-to-reduce-noise/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">スタックは連写した複数のフレームを1枚にまとめます。どの手法を使うかは、何を失いたいかによります。ノイズか、通行人か、マクロの浅い被写界深度か。それぞれの仕組みと費用、そしてRAWファイルがどこに収まるのか。</summary>
+    <title type="html">ハッシュとチェックサム</title>
+    <id>https://abox.tools/ja/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/hash-checksum/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">どんなファイルでも MD5・SHA-1・SHA-256・SHA-384・SHA-512 を計算し、ダウンロードページに書かれたチェックサムと照合します。ファイルはブラウザーの中で読み、どんなサイズでもアップロードしません。</summary>
   </entry>
   <entry>
-    <title type="html">ブーメラン動画の作り方</title>
-    <id>https://abox.tools/ja/guides/make-a-boomerang-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-boomerang-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">瞬間を切り出し、コピーを逆再生にし、2つをつないでループさせる。3つの道具を順に、すべてブラウザの中で。そして全作業を1分に収める順番。</summary>
+    <title type="html">パスワード・パスフレーズ生成</title>
+    <id>https://abox.tools/ja/password-generator/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/password-generator/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">強いランダムなパスワードを作る、あるいは同梱の7,776語のリストからdicewareのパスフレーズを作る。ブラウザ自身の暗号用乱数から引き、どこにも送らず、保存もしません。無料・登録不要。</summary>
   </entry>
   <entry>
-    <title type="html">他人のスマホでもきちんと読み取れるQRコードの作り方</title>
-    <id>https://abox.tools/ja/guides/make-a-qr-code/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-qr-code/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">どの誤り訂正レベルを選ぶか、QRコードの周りの白い余白がコードの一部である理由、どれくらいの大きさで印刷すべきか、そして無料生成サイトの「ダイナミック」なコードが後で何を要求してくるか。</summary>
+    <title type="html">動画→GIF変換ツール</title>
+    <id>https://abox.tools/ja/video-to-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/video-to-gif/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMの一部をアニメーションGIFにします。範囲、幅、フレームレートを選べば、フレームの読み込みもGIFの書き出しもブラウザの中で終わります。アップロードはありません。</summary>
   </entry>
   <entry>
-    <title type="html">写真が撮った人について語っていることと、その外し方</title>
-    <id>https://abox.tools/ja/guides/remove-exif-and-gps-data/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/remove-exif-and-gps-data/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">スマホで撮った写真は、たいてい撮影した正確な場所、秒単位の時刻、カメラのシリアル番号を抱えています。そこに何が入っていて、誰が読めるのか、そして画像に触れずにそれを外す方法。</summary>
+    <title type="html">動画のコマ切り出し</title>
+    <id>https://abox.tools/ja/grab-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/grab-frame/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMのどのコマでも、原寸のPNGまたはJPEGで保存できます。1コマずつ送ることも、数秒おきに1枚ずつ取り出すこともできます。処理はブラウザの中だけで、アップロードはありません。</summary>
   </entry>
   <entry>
-    <title type="html">動画の1コマを画像として保存する方法</title>
-    <id>https://abox.tools/ja/guides/grab-a-frame-from-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/grab-a-frame-from-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">動画から本来の解像度で静止画を取り出します。一時停止した画面のスクリーンショットが同じ絵ではない理由、どの形式で保存するか、そして狙ったコマにぴたりと止める方法。</summary>
+    <title type="html">動画の逆再生</title>
+    <id>https://abox.tools/ja/reverse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/reverse-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMを逆再生にします。音も一緒に逆向きになります。処理はブラウザの中だけで、アップロードも透かしもなく、オフラインでも動きます。</summary>
   </entry>
   <entry>
-    <title type="html">動画の一部からGIFを作る方法</title>
-    <id>https://abox.tools/ja/guides/make-a-gif-from-part-of-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-gif-from-part-of-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">大事な数秒だけを先に切り出し、そこだけを変換する。GIF変換器のタイムラインで足りる場合、先に動画カッターで切るべき場合、そしてGIFの1秒がなぜあれほど高くつくのか。</summary>
+    <title type="html">動画カットツール</title>
+    <id>https://abox.tools/ja/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">動画を見ながら残す価値のある場所すべてに印を付け、その部分だけを1つのファイルとして保存します。処理はブラウザの中だけ。アップロードなし、再エンコードなし、オフラインでも動きます。</summary>
   </entry>
   <entry>
-    <title type="html">動画をGIFにする方法</title>
-    <id>https://abox.tools/ja/guides/turn-a-video-into-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/turn-a-video-into-a-gif/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">どの範囲、どの幅、どのフレームレートを選ぶか、動画から作ったGIFがその動画の10倍になる理由、そしてそもそもGIFを使うべきときはいつか。</summary>
+    <title type="html">動画トリミングツール</title>
+    <id>https://abox.tools/ja/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/crop-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMを正方形、9:16、ピクセル指定など好きな形に切り抜きます。処理はブラウザの中だけ。アップロードなし、音声はそのまま、オフラインでも動きます。</summary>
   </entry>
   <entry>
-    <title type="html">動画をエンコードし直さずにカットする方法</title>
-    <id>https://abox.tools/ja/guides/trim-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/trim-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">映像を切るのに、画質を1バイトも失う必要はありません。印を付けた位置より前から始まってしまうことがある理由、そこにキーフレームがどう関わるのか、そしていつエンコードし直しを受け入れるべきか。</summary>
+    <title type="html">書類スキャナー</title>
+    <id>https://abox.tools/ja/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/document-scanner/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">スマホで撮った紙の写真を、まっすぐで明るさのそろったPDFにします。四隅は自動で見つけ、傾きを戻し、影は割って取り除きます。すべてブラウザの中で動き、何もアップロードしません。</summary>
   </entry>
   <entry>
-    <title type="html">動画を別の形に切り抜く方法</title>
-    <id>https://abox.tools/ja/guides/crop-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/crop-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">映像を正方形、9:16の縦長、あるいはピクセル指定の枠に切り落とす方法。どの比率をどのプラットフォームが求めるのか、カットでは不要なのに切り抜きではエンコードし直しが避けられない理由、そしてその代償。</summary>
+    <title type="html">画像→ICO変換ツール</title>
+    <id>https://abox.tools/ja/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/image-to-ico/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PNG・JPEG・SVGを、複数サイズを収めた本物の.icoやmacOSの.icnsにブラウザの中で変換します。ファビコン、Windowsのアプリアイコン、Macのアプリアイコン、さらにサイトに必要なAppleとAndroid向けのファイルまで。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→PDF変換ツール</title>
+    <id>https://abox.tools/ja/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebPの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。写真はエンコードし直さずに入り、何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→データURI変換ツール</title>
+    <id>https://abox.tools/ja/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/image-to-data-uri/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PNG・JPEG・SVG・WebPを、CSSやHTMLに貼れるデータURIに変換します。SVGはbase64ではなくパーセントエンコードするので、短いまま、読める形で残ります。処理はブラウザの中だけ。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→動画変換ツール</title>
+    <id>https://abox.tools/ja/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebPの画像をMP4のスライドショー動画にします。無料で、処理はすべてブラウザの中。アップロードなし、登録なし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像スタック</title>
+    <id>https://abox.tools/ja/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/stack-images/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">連写した写真を1枚にまとめます。平均でノイズを消し、中央値で場面から人を消し、比較明で星の軌跡にし、あるいはマクロ撮影を深度合成します。CR2・NEF・ARW・DNG・RAF・CR3は、カメラ自身のプレビューを取り出して読みます。すべてブラウザの中で動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像リサイズツール</title>
+    <id>https://abox.tools/ja/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/resize-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPEG・PNG・WebPの画像を、ブラウザの中でリサイズ・切り抜き・形式変換します。ピクセル指定、パーセント指定、長辺指定に対応。1枚でもフォルダごとでも。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像圧縮ツール</title>
+    <id>https://abox.tools/ja/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compress-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JPEG・PNG・WebPを100KBや2MBなど、狙ったサイズちょうどに圧縮します。処理はすべてブラウザの中。アップロードなし、登録なし、オフラインでも動きます。</summary>
   </entry>
 </feed>

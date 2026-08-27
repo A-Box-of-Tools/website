@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/video-kirpma/:';
-const CACHE_NAME=CACHE_PREFIX+'d71ff7d967';
+const CACHE_NAME=CACHE_PREFIX+'0576bbc93e';
 const ASSETS=[
 './',
 'index.html',

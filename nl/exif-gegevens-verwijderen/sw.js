@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/exif-gegevens-verwijderen/:';
-const CACHE_NAME=CACHE_PREFIX+'1ca38ad5bd';
+const CACHE_NAME=CACHE_PREFIX+'1fe9f6957a';
 const ASSETS=[
 './',
 'index.html',

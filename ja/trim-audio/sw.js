@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ja/trim-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'5105aa919b';
+const CACHE_NAME=CACHE_PREFIX+'139fbab7e9';
 const ASSETS=[
 './',
 'index.html',

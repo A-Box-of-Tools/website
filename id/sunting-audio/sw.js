@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/sunting-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'ccd425a7f2';
+const CACHE_NAME=CACHE_PREFIX+'9b76505645';
 const ASSETS=[
 './',
 'index.html',

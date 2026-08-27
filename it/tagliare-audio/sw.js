@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/tagliare-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'15b917a2fe';
+const CACHE_NAME=CACHE_PREFIX+'8d59c83e03';
 const ASSETS=[
 './',
 'index.html',

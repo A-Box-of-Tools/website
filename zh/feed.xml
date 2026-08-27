@@ -32,6 +32,146 @@
     <uri>https://abox.tools/zh/</uri>
   </author>
   <entry>
+    <title type="html">Base64 编码解码</title>
+    <id>https://abox.tools/zh/encode-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/encode-text/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">EXIF 查看与清除</title>
+    <id>https://abox.tools/zh/exif-editor/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/exif-editor/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">看清一张照片里藏着的 EXIF 和 GPS 信息，改它，或者一键清光。在浏览器里跑，什么都不上传，画面也从不重新编码。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 分析</title>
+    <id>https://abox.tools/zh/gif-analyzer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-analyzer/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 GIF 拆开看：每一帧的延时和处置方式、颜色表、循环次数，以及体积去了哪里的逐字节明细。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 制作</title>
+    <id>https://abox.tools/zh/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-maker/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 图片做成 GIF 动图，免费，全程在浏览器里完成。顺序、快慢和尺寸都由你定。什么都不上传，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF 拆帧</title>
+    <id>https://abox.tools/zh/split-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/split-gif/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把动图 GIF 拆成一帧一帧，每帧单独存成 PNG，免费，全程在浏览器里完成。透明和时长都保留下来。什么都不上传，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">HEIC 转 JPG</title>
+    <id>https://abox.tools/zh/heic-to-jpg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/heic-to-jpg/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 iPhone 的 HEIC 照片转成 JPG。解码器跑在你自己的机器上，不上传，不注册，断网也能用，拍摄日期和相机信息可以一起带过去。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON 格式化</title>
+    <id>https://abox.tools/zh/format-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/format-json/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 压缩</title>
+    <id>https://abox.tools/zh/compress-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">不上传也能给 PDF 瘦身。读取、重新压缩、重新写出，全由你自己的浏览器完成，而且动手之前先告诉你这份文件的体积到底压在哪儿。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 合并与拆分</title>
+    <id>https://abox.tools/zh/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/merge-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把多个 PDF 合到一起，把一个拆成好几个，把页面拖成你要的顺序，全都在你自己的浏览器里完成。什么都不上传，不用注册，成品文件在交给你之前还会被重新打开、重新数一遍页数。</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG 转图片</title>
+    <id>https://abox.tools/zh/svg-to-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/svg-to-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 SVG 转成 PNG、JPEG 或 WebP，尺寸随你定。给宽度、给倍数，或者给一个框，还能顺手出 @2x 和 @3x。透明保住，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">二维码与条形码生成</title>
+    <id>https://abox.tools/zh/qr-barcode/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">生成链接、Wi-Fi 或者名片二维码，也生成 EAN-13、UPC-A、Code 128 和 Code 39 条形码。可下载 SVG 或 PNG。全部在你的浏览器里完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">哈希与校验和</title>
+    <id>https://abox.tools/zh/hash-checksum/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/hash-checksum/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">计算任意文件的 MD5、SHA-1、SHA-256、SHA-384 或 SHA-512，并和下载页面上公布的校验和对照。文件在浏览器里读取，多大都不会上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片压缩</title>
+    <id>https://abox.tools/zh/compress-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 JPEG、PNG 或 WebP 压到你要的大小，100 KB、2 MB 都行。全程在浏览器里跑，不上传，不注册，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片堆栈</title>
+    <id>https://abox.tools/zh/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/stack-images/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把一串连拍的照片合成一张：取平均值消噪点，取中位数把人从画面里去掉，取最亮做星轨，或者给微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠读出相机自己的预览图来打开。全部在你的浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片涂黑与打码</title>
+    <id>https://abox.tools/zh/redact-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把照片或截图里的姓名、地址、账号遮住再存一份，被遮的像素是从文件里没了，不是压在一个矩形下面。全程在浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片缩放</title>
+    <id>https://abox.tools/zh/resize-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/resize-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在浏览器里给 JPEG、PNG 和 WebP 改尺寸、裁切、转格式。精确到像素、按百分比，或者定长边，一张也行，一整个文件夹也行。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 Data URI</title>
+    <id>https://abox.tools/zh/image-to-data-uri/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-data-uri/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 PNG、JPEG、SVG 或 WebP 变成能粘进 CSS 和 HTML 的 data URI。SVG 走百分号编码而不是 base64，所以还看得懂，也更短。在浏览器里跑，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 ICO</title>
+    <id>https://abox.tools/zh/image-to-ico/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-ico/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在浏览器里把 PNG、JPEG 或 SVG 做成一个真正多尺寸的 .ico，或者一个 macOS 的 .icns。网站图标、Windows 应用图标、Mac 应用图标，加上网站需要的苹果和安卓那几个文件。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 PDF</title>
+    <id>https://abox.tools/zh/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转视频</title>
+    <id>https://abox.tools/zh/images-to-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 做成 MP4 幻灯片视频，免费，全程在你的浏览器里跑。什么都不上传，不用注册，断网也能用。</summary>
+  </entry>
+  <entry>
     <title type="html">如何不上传就在设备间分享文本与文件</title>
     <id>https://abox.tools/zh/guides/share-text-between-devices/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/share-text-between-devices/"/>
@@ -39,206 +179,66 @@
     <summary type="html">把文本或文件经直连加密通道从一个浏览器送到另一个——不用给自己发邮件，不留聊天记录，不需要账号，也没有哪台服务器留着副本。</summary>
   </entry>
   <entry>
-    <title type="html">Base64 编码解码</title>
-    <id>https://abox.tools/zh/encode-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/encode-text/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
+    <title type="html">密码与密码短语生成器</title>
+    <id>https://abox.tools/zh/password-generator/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/password-generator/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">生成一个强随机密码，或者用页面自带的 7776 个词的词表生成一条 diceware 密码短语。由浏览器自身的加密随机数生成，不发往任何地方，也不保存。免费，不用注册。</summary>
   </entry>
   <entry>
-    <title type="html">JSON 格式化</title>
-    <id>https://abox.tools/zh/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/format-json/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
+    <title type="html">延时视频</title>
+    <id>https://abox.tools/zh/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/timelapse-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把长视频做成延时摄影，10 倍、60 倍，或者你自己填的倍数。在浏览器里跑，不上传，没有水印，断网也能用。</summary>
   </entry>
   <entry>
-    <title type="html">一个 GIF 里到底装着什么</title>
-    <id>https://abox.tools/zh/guides/whats-inside-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/whats-inside-a-gif/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">帧、延时、处置方式和调色板都讲清楚：浏览器为什么不认最短的延时，以及怎么查出一个 GIF 的体积究竟花在了哪里。</summary>
+    <title type="html">文本与文件分享</title>
+    <id>https://abox.tools/zh/share-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/share-text/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把文本或文件经由直连加密通道从一个浏览器送到另一个。链接名说得出口，边打字边实时同步，逐个批准读者——任何服务器上永远不存任何东西。免费，无需注册。</summary>
   </entry>
   <entry>
-    <title type="html">一张照片把你交代了多少，以及怎么把它删掉</title>
-    <id>https://abox.tools/zh/guides/remove-exif-and-gps-data/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/remove-exif-and-gps-data/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">手机拍的照片通常带着精确的拍摄地点、精确到秒的时间，还有相机的序列号。里面到底有什么，谁读得到，以及怎么在不动画面的前提下把它们清掉。</summary>
+    <title type="html">文本比对</title>
+    <id>https://abox.tools/zh/compare-text/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compare-text/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">比对两段文本，逐行、逐词看清每一处差异，并排或单列显示。比对在你的浏览器里跑，什么都不上传——尚未发布的代码从不离开你的机器。</summary>
   </entry>
   <entry>
-    <title type="html">什么时候该把图片塞进 CSS，什么时候不该</title>
-    <id>https://abox.tools/zh/guides/embed-an-image-in-css/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/embed-an-image-in-css/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">data URI 的代价在哪儿，base64 为什么多出三分之一而 gzip 又还不回来，SVG 为什么绝不该用 base64，以及那个只坑内联 SVG、还一声不吭的引号问题。</summary>
+    <title type="html">文档扫描</title>
+    <id>https://abox.tools/zh/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/document-scanner/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把手机拍的纸张照片变成一份摆正、亮度均匀的 PDF。四个角替你找好，透视给你掰正，阴影除掉。全部在你的浏览器里跑，什么都不上传。</summary>
   </entry>
   <entry>
-    <title type="html">图片怎么涂黑，才能让被遮住的那块真的没了</title>
-    <id>https://abox.tools/zh/guides/redact-an-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/redact-an-image/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">大多数软件画出来的黑色方块只是压在图片上面，随手就能挪开。真正的涂黑和只是遮住差在哪里，打过码的文字为什么能被读回来，以及发出去之前怎么检查一个文件。</summary>
+    <title type="html">视频倒放</title>
+    <id>https://abox.tools/zh/reverse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/reverse-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 反过来放，声音也一并倒过来。全在浏览器里跑：什么都不上传，没有水印，断网照样能用。</summary>
   </entry>
   <entry>
-    <title type="html">怎么不把 JSON 交给任何人也能格式化</title>
-    <id>https://abox.tools/zh/guides/format-json-without-uploading-it/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/format-json-without-uploading-it/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">在自己的浏览器里排版、检查和压缩 JSON：一个格式化工具绝不该改动你文件的哪些地方、错误信息该怎么读，以及你把东西粘进哪个框里为什么要紧。</summary>
+    <title type="html">视频剪切</title>
+    <id>https://abox.tools/zh/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">一边看一边把值得留的段落标出来，然后把这些段落存成一个文件。在浏览器里跑，不上传，不重新编码，断网也能用。</summary>
   </entry>
   <entry>
-    <title type="html">怎么从正好那一帧做视频封面图</title>
-    <id>https://abox.tools/zh/guides/make-a-video-thumbnail/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-video-thumbnail/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">逐帧走到正确的瞬间，无损保存，裁成平台的形状，压到字节上限的正下方。三个浏览器工具接力，素材从不离开你的电脑。</summary>
+    <title type="html">视频截帧</title>
+    <id>https://abox.tools/zh/grab-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/grab-frame/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 的任意一帧存成原尺寸 PNG 或 JPEG。可以一帧一帧地挪，也可以每隔几秒截一张。全在浏览器里跑，什么都不上传。</summary>
   </entry>
   <entry>
-    <title type="html">怎么做一个二维码，并证明它扫得出来</title>
-    <id>https://abox.tools/zh/guides/make-a-qr-code-and-prove-it-scans/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-qr-code-and-prove-it-scans/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">生成二维码，再用同一个网站的识别器验证：一字不差的内容、真正的链接，按印刷尺寸、用一张照片，在批量印刷之前。全在浏览器里，什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么做一个到了别人手机上还扫得出来的二维码</title>
-    <id>https://abox.tools/zh/guides/make-a-qr-code/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-qr-code/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">纠错等级该选哪个，二维码周围那圈白为什么是码的一部分，印多大合适，还有免费生成器的“动态码”日后要你付出什么。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么做一个到十六像素还看得清的网站图标</title>
-    <id>https://abox.tools/zh/guides/make-a-favicon/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-favicon/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">favicon.ico 里到底该装哪几个尺寸，iPhone、安卓和 Mac 另外要哪些文件，以及为什么一个在海报上好好的 logo，到了十六像素就没了。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么剪视频而不重新编码</title>
-    <id>https://abox.tools/zh/guides/trim-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/trim-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">剪一段片子可以一个字节的画质都不掉。为什么下刀的位置有时候比你标的早，关键帧跟这有什么关系，以及什么时候该认下那次重新编码。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么剪音频而不掉音质</title>
-    <id>https://abox.tools/zh/guides/trim-an-audio-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/trim-an-audio-file/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">一刀落在哪儿、为什么音频能剪得准而视频不能、为什么接缝有时会「咔」一声，以及那五毫秒的淡入淡出到底在做什么。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么合并、拆分和重排 PDF 页面</title>
-    <id>https://abox.tools/zh/guides/merge-and-split-pdf-files/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/merge-and-split-pdf-files/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">把几个 PDF 合到一起、把一个切成好几个、把页面挪来挪去：重排之后什么留得下、什么是任何工具都带不过去的，以及为什么这些事都不必把你的文件传到别处。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么在发出去之前整理好语音备忘录</title>
-    <id>https://abox.tools/zh/guides/clean-up-a-voice-memo/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/clean-up-a-voice-memo/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">剪掉空白和口误重来的开头，再把音量提到满格线的正下方。两个浏览器工具接力，按保住音质的顺序来，录音从不离开你的电脑。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么堆栈照片来压噪点，或者把人去掉</title>
-    <id>https://abox.tools/zh/guides/stack-photos-to-reduce-noise/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/stack-photos-to-reduce-noise/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">堆栈把一串连拍合成一张。用哪种手法，取决于你想失去什么：噪点、路人，还是微距那浅得可怜的景深。每种手法怎么运作、代价是什么，以及 RAW 文件在这里是什么位置。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么打开一个 DICOM 文件，以及里面有什么</title>
-    <id>https://abox.tools/zh/guides/open-a-dicom-file/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/open-a-dicom-file/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">医院给的光盘里都有什么，文件为什么没有后缀，怎么在浏览器里打开一份 .dcm 影像，窗宽窗位到底在做什么，以及一份影像除了图像之外还带着关于病人的哪些东西。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把 GIF 拆成一帧一帧</title>
-    <id>https://abox.tools/zh/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">把动图 GIF 的每一帧存成 PNG：为什么有些帧只是画面里的一小块、透明会怎么样，以及怎么把时间留住，好把它再拼回去。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把 PDF 涂黑，让文字真的消失</title>
-    <id>https://abox.tools/zh/guides/redact-a-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/redact-a-pdf/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">在 PDF 阅读器里画的黑块，通常把词原封不动地留在了下面，复制粘贴就能拿回去。真正的涂黑拿掉的是什么，词在页面之外藏身的四个地方，以及发出去之前怎么检查一个文件。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把 SVG 转成合适尺寸的 PNG</title>
-    <id>https://abox.tools/zh/guides/convert-an-svg-to-png/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/convert-an-svg-to-png/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">矢量图自己没有像素尺寸，所以这个数字由你定。屏幕、应用图标和印刷各自的数字从哪儿来，以及一张图纸变成像素那一刻会发生什么变化。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把一个文件夹的图片做成视频</title>
-    <id>https://abox.tools/zh/guides/turn-images-into-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/turn-images-into-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">用照片做一段 MP4 幻灯片：帧率和停留时间各管什么，比例不对的照片怎么办，以及成品为什么没有配乐。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把图片压到指定的文件大小</title>
-    <id>https://abox.tools/zh/guides/compress-an-image-to-a-target-size/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/compress-an-image-to-a-target-size/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">上传框要 500 KB，你的照片有 4 MB。一个大小限制到底要你付出什么，先动哪个设置，以及 PNG 为什么不像 JPEG 那样能压。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把多张图片合成一个 PDF</title>
-    <id>https://abox.tools/zh/guides/combine-images-into-a-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/combine-images-into-a-pdf/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">把照片或者扫描件做成一个 PDF：页面大小、顺序和旋转，JPEG 为什么进去时可以一点不掉画质，以及这份 PDF 会向收件人交代些什么。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把视频倒过来放</title>
-    <id>https://abox.tools/zh/guides/reverse-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/reverse-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">把片子反着放：倒放对画面和声音都做了什么，为什么它绕不开重新编码，为什么比剪辑慢，以及动手之前该先做哪一步。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把视频做成 GIF</title>
-    <id>https://abox.tools/zh/guides/turn-a-video-into-a-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/turn-a-video-into-a-gif/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">该挑哪一段、多宽、每秒几帧，视频做成 GIF 为什么会大出十倍，以及什么时候压根不该用 GIF。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把视频画面裁成另一个形状</title>
-    <id>https://abox.tools/zh/guides/crop-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/crop-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">把片子裁成方图、9:16 竖屏，或者精确到像素的一个框。各家平台要哪个比例，为什么剪时长不用重编而裁画面非重编不可，以及这一下的代价。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把视频里的一帧存成图片</title>
-    <id>https://abox.tools/zh/guides/grab-a-frame-from-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/grab-a-frame-from-a-video/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">按原分辨率从片子里取一张静帧：为什么暂停后的截屏不是同一张图、该存成什么格式，以及怎么正好停在你想要的那一帧。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么把长视频变成延时摄影</title>
-    <id>https://abox.tools/zh/guides/turn-a-long-video-into-a-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/turn-a-long-video-into-a-timelapse/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">一小时的素材浓缩成看得下去的一分钟：怎么选速度，为什么直接说成片多长比做除法更好，以及什么时候成品该做成 GIF。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么拍一张不会被退回来的证件照</title>
-    <id>https://abox.tools/zh/guides/make-a-passport-photo/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-passport-photo/"/>
-    <updated>2026-08-26T00:00:00Z</updated>
-    <summary type="html">证件照真正被量的是什么——头部高度、眼睛的位置、背景——哪个国家要哪些数字，以及怎么满足网上表格卡的像素和 KB 限制。</summary>
+    <title type="html">视频裁剪</title>
+    <id>https://abox.tools/zh/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/crop-video/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 裁成任意形状，方图、9:16 竖屏，或者精确到像素的一个框。在浏览器里跑，不上传，声音留着，断网也能用。</summary>
   </entry>
 </feed>

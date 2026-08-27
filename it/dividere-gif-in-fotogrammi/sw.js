@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/dividere-gif-in-fotogrammi/:';
-const CACHE_NAME=CACHE_PREFIX+'5e6c950717';
+const CACHE_NAME=CACHE_PREFIX+'75e2178ebc';
 const ASSETS=[
 './',
 'index.html',
