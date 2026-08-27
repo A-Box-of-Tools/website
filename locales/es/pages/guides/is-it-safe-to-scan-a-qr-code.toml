@@ -1,0 +1,17 @@
+#
+# Guía: ¿es seguro escanear un código QR? - Spanish.
+#
+
+nav = "¿Es seguro escanear un código QR?"
+title = "¿Es seguro escanear un código QR?"
+description = "Escanear es leer, no abrir: el peligro empieza un toque después. Qué contiene realmente un código QR, cómo funciona la estafa de la pegatina y las tres maneras en que una dirección miente."
+heading = "¿Es seguro escanear un código QR?"
+lede = """
+    El escaneo en sí, sí. Un código QR es un trozo de texto, y apuntarle con
+    la cámara no hace más que leer ese texto. Todo lo que puede salir mal
+    ocurre un toque después, cuando algo abre lo leído &mdash; y ese toque
+    está en su mano no darlo."""
+updated = "26 de agosto de 2026"
+og_title = "¿Es seguro escanear un código QR?"
+og_description = "Escanear lee, no abre. Qué contiene realmente un código QR, cómo funciona la estafa del código pegado encima y cómo ver adónde lleva un enlace antes de ir."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

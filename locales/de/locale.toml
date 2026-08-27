@@ -190,6 +190,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "ratgeber/qr-code-erstellen-und-scan-beweisen"
 "guides/clean-up-a-voice-memo" = "ratgeber/sprachmemo-aufraeumen"
 "guides/make-a-height-comparison-chart" = "ratgeber/groessenvergleich-diagramm-erstellen"
+"guides/is-it-safe-to-scan-a-qr-code" = "ratgeber/ist-das-scannen-von-qr-codes-sicher"
 
 #
 # ---------------------------------------------------------------------------

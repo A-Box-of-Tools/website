@@ -1,0 +1,17 @@
+#
+# Panduan: apakah aman memindai kode QR? - Indonesian.
+#
+
+nav = "Apakah aman memindai kode QR?"
+title = "Apakah Aman Memindai Kode QR?"
+description = "Memindai berarti membaca, bukan membuka - bahayanya dimulai satu ketukan kemudian. Apa isi kode QR sebenarnya, cara kerja penipuan stiker, dan tiga cara sebuah alamat berbohong."
+heading = "Apakah aman memindai kode QR?"
+lede = """
+    Pemindaiannya sendiri aman. Kode QR adalah sepotong teks, dan mengarahkan
+    kamera ke sana tidak melakukan apa pun selain membaca teks itu. Semua
+    yang bisa berjalan salah terjadi satu ketukan kemudian, saat sesuatu
+    membuka apa yang terbaca &mdash; dan ketukan itu bisa Anda tahan."""
+updated = "26 Agustus 2026"
+og_title = "Apakah aman memindai kode QR?"
+og_description = "Memindai itu membaca, bukan membuka. Apa isi kode QR sebenarnya, cara kerja penipuan kode tempelan, dan cara melihat ke mana sebuah tautan pergi sebelum Anda ke sana."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

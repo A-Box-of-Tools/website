@@ -154,6 +154,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "gidsen/qr-code-maken-en-bewijzen-dat-hij-scant"
 "guides/clean-up-a-voice-memo" = "gidsen/spraakmemo-opschonen"
 "guides/make-a-height-comparison-chart" = "gidsen/een-lengtegrafiek-maken"
+"guides/is-it-safe-to-scan-a-qr-code" = "gidsen/is-een-qr-code-scannen-veilig"
 
 #
 # ---------------------------------------------------------------------------
