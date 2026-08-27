@@ -93,4 +93,34 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">فارغ</span>
+    <span data-phrase="count.lines.one">سطر واحد</span>
+    <span data-phrase="count.lines.many">{count} سطر</span>
+    <span data-phrase="count.characters.one">حرف واحد</span>
+    <span data-phrase="count.characters.many">{count} حرف</span>
+    <span data-phrase="count.summary">{lines}، {characters}، {size}</span>
+
+    <span data-phrase="read.failed">تعذّرت قراءة هذا الملف: {detail}</span>
+
+    <span data-phrase="result.waiting">الصق شيئاً في الصندوقين كليهما.</span>
+    <span data-phrase="result.identical">الاثنان متطابقان، بايتاً ببايت.</span>
+    <span data-phrase="result.ignored">متطابقان، متى تُجوهلت الفروق التي طلبت تجاهلها.</span>
+    <span data-phrase="result.counts">أُضيف {added}، وحُذف {removed}</span>
+    <span data-phrase="result.summary">{changes} &mdash; {percent}% من الأسطر موجودة في الاثنين. {note}</span>
+    <span data-phrase="result.newline">أحدهما ينتهي بسطر جديد والآخر لا ينتهي به.</span>
+    <span data-phrase="result.failed">لم يخرج شيء.</span>
+
+    <span data-phrase="skip.one">سطر واحد دون تغيير</span>
+    <span data-phrase="skip.many">{count} سطر دون تغيير</span>
+    <span data-phrase="skip.rest">لا يُرسم الباقي &mdash; استخدم &laquo;نزِّل&raquo; للحصول على الرقعة كاملة.</span>
+
+    <span data-phrase="copy.done">نُسخ</span>
+    <span data-phrase="copy.select">حُدِّد &mdash; اضغط Ctrl+C</span>
+  </div>
 </main>

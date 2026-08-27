@@ -93,4 +93,34 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">空</span>
+    <span data-phrase="count.lines.one">{count} 行</span>
+    <span data-phrase="count.lines.many">{count} 行</span>
+    <span data-phrase="count.characters.one">{count} 个字符</span>
+    <span data-phrase="count.characters.many">{count} 个字符</span>
+    <span data-phrase="count.summary">{lines}，{characters}，{size}</span>
+
+    <span data-phrase="read.failed">这个文件读不了：{detail}</span>
+
+    <span data-phrase="result.waiting">两个框里都贴点东西进去。</span>
+    <span data-phrase="result.identical">这两份逐字节完全一样。</span>
+    <span data-phrase="result.ignored">把你要求忽略的差别忽略掉，两份就是一样的。</span>
+    <span data-phrase="result.counts">加了 {added} 行，删了 {removed} 行</span>
+    <span data-phrase="result.summary">{changes} &mdash; 有 {percent}% 的行两边都有。{note}</span>
+    <span data-phrase="result.newline">一份以换行结尾，另一份没有。</span>
+    <span data-phrase="result.failed">什么都没出来。</span>
+
+    <span data-phrase="skip.one">{count} 行没有变化</span>
+    <span data-phrase="skip.many">{count} 行没有变化</span>
+    <span data-phrase="skip.rest">剩下的不再画出来，整份补丁请用「下载」拿。</span>
+
+    <span data-phrase="copy.done">已复制</span>
+    <span data-phrase="copy.select">已选中 &mdash; 请按 Ctrl+C</span>
+  </div>
 </main>

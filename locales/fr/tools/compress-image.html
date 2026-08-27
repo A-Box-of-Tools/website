@@ -118,4 +118,100 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} octets</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">{count} image, {size} en tout</span>
+    <span data-phrase="list.count.many">{count} images, {size} en tout</span>
+    <span data-phrase="row.under">Déjà sous la taille visée &mdash; celle-ci sera laissée exactement telle quelle.</span>
+    <span data-phrase="row.remove">Retirer {name} de la liste</span>
+    <span data-phrase="load.unreadable">{name} : pas une image que cet outil sache lire.</span>
+    <span data-phrase="load.undecodable">{name} : ce navigateur n&rsquo;a pas su la décoder.</span>
+
+    <span data-phrase="target.none">Indiquez une taille à viser.</span>
+    <span data-phrase="target.empty">Chaque image sera ramenée sous {size}.</span>
+    <span data-phrase="target.single.over">Cette image dépasse {size}, elle sera donc compressée jusqu&rsquo;à ne plus la dépasser.</span>
+    <span data-phrase="target.single.under">Cette image est déjà sous {size}, elle passera donc sans être touchée.</span>
+    <span data-phrase="target.over.one">{over} image sur {total} dépasse {size}</span>
+    <span data-phrase="target.over.many">{over} images sur {total} dépassent {size}</span>
+    <span data-phrase="target.rest.one">l&rsquo;autre passera sans être touchée</span>
+    <span data-phrase="target.rest.many">les {count} autres passeront sans être touchées</span>
+    <span data-phrase="target.summary">{over}.</span>
+    <span data-phrase="target.summary.rest">{over}, et {rest}.</span>
+
+    <span data-phrase="format.note">{format} {sizing}</span>
+    <span data-phrase="format.auto">Le format est conservé, sauf si la taille visée est assez serrée pour que le garder coûte de la vraie qualité : c&rsquo;est alors du WebP, et la ligne le dit.</span>
+    <span data-phrase="format.keep">Chaque image garde le format dans lequel elle est arrivée.</span>
+    <span data-phrase="format.jpeg">Tout est écrit en JPEG. La transparence devient du blanc, parce que le JPEG n&rsquo;a pas de couche alpha.</span>
+    <span data-phrase="format.webp">Tout est écrit en WebP : plus petit que le JPEG à qualité égale, et la transparence est gardée.</span>
+    <span data-phrase="format.png">Tout est écrit en PNG. Le PNG n&rsquo;a pas de curseur de qualité : le seul moyen d&rsquo;atteindre une taille visée est de réduire l&rsquo;image.</span>
+    <span data-phrase="format.resize.on">Si la qualité seule ne suffit pas à atteindre la taille visée, l&rsquo;image est réduite plutôt qu&rsquo;écrasée.</span>
+    <span data-phrase="format.resize.off">L&rsquo;image garde toutes ses dimensions : une taille serrée doit donc se payer sur la seule qualité.</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; non pris en charge par ce navigateur</span>
+
+    <span data-phrase="progress.at">{at} sur {total} : {name} &mdash; {step}</span>
+    <span data-phrase="step.reading">lecture</span>
+    <span data-phrase="step.decoding">décodage</span>
+    <span data-phrase="step.full">on regarde ce que ça coûte à pleine qualité</span>
+    <span data-phrase="step.scale">on cherche la plus grande taille qui rentre</span>
+    <span data-phrase="step.quality">on parcourt le curseur de qualité</span>
+    <span data-phrase="step.belowFloor">on descend sous le plancher de qualité, puisque la réduction est désactivée</span>
+    <span data-phrase="step.resolution">on échange de la résolution contre de la qualité</span>
+    <span data-phrase="step.budget">on dépense ce qui reste du budget</span>
+    <span data-phrase="step.trying">on essaie plutôt en {format}</span>
+    <span data-phrase="error.attempts">abandon après trop de tentatives.</span>
+    <span data-phrase="error.encode">ce navigateur a refusé d&rsquo;encoder en {format}.</span>
+    <span data-phrase="error.decode">ce navigateur n&rsquo;a pas su décoder l&rsquo;image.</span>
+
+    <span data-phrase="results.all">{before} ramenés à {after} &mdash; {change}, et chaque image est sous la taille visée.</span>
+    <span data-phrase="results.missed.one">{before} ramenés à {after}. {count} image n&rsquo;a pas pu atteindre la taille visée &mdash; voir la ligne ci-dessous.</span>
+    <span data-phrase="results.missed.many">{before} ramenés à {after}. {count} images n&rsquo;ont pas pu atteindre la taille visée &mdash; voir les lignes ci-dessous.</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; déjà sous la taille visée, rien n&rsquo;a donc été touché.</span>
+    <span data-phrase="row.match">Mesuré face à l&rsquo;original : {match} (SSIM {ssim}, PSNR {psnr}).</span>
+    <span data-phrase="row.missed">C&rsquo;est le plus petit que cette image pouvait devenir avec les réglages ci-dessus, et elle dépasse encore la taille visée. Autorisez la réduction, ou demandez une taille plus grande.</span>
+    <span data-phrase="row.download">Télécharger</span>
+    <span data-phrase="row.compare">Comparer</span>
+    <span data-phrase="row.hide">Masquer</span>
+
+    <span data-phrase="change.smaller">{percent}&nbsp;% plus petit</span>
+    <span data-phrase="change.larger">{percent}&nbsp;% plus gros</span>
+    <span data-phrase="change.same">à peu près la même taille</span>
+
+    <span data-phrase="match.identical">{percent}&nbsp;% &mdash; impossible à distinguer</span>
+    <span data-phrase="match.invisible">{percent}&nbsp;% &mdash; aucune différence visible</span>
+    <span data-phrase="match.close">{percent}&nbsp;% &mdash; très proche</span>
+    <span data-phrase="match.softened">{percent}&nbsp;% &mdash; légèrement adouci</span>
+    <span data-phrase="match.visible">{percent}&nbsp;% &mdash; compression visible</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">identiques</span>
+
+    <span data-phrase="detail.untouched">La compresser aurait coûté de la qualité pour atteindre une taille qu&rsquo;elle avait déjà : elle est donc passée octet pour octet, métadonnées comprises.</span>
+    <span data-phrase="detail.line">{format}, {size}, {encodes}.</span>
+    <span data-phrase="detail.line.quality">{format}, qualité {quality}, {size}, {encodes}.</span>
+    <span data-phrase="detail.format">Écrite en {format}</span>
+    <span data-phrase="detail.format.changed">Écrite en {format}, qui a mieux tenu l&rsquo;image à cette taille que le format d&rsquo;origine</span>
+    <span data-phrase="detail.resized">réduite de {from} à {to}</span>
+    <span data-phrase="detail.full">taille entière, {size}</span>
+    <span data-phrase="detail.encodes.one">trouvée en {count} encodage</span>
+    <span data-phrase="detail.encodes.many">trouvée en {count} encodages</span>
+
+    <span data-phrase="compare.original">Original</span>
+    <span data-phrase="compare.compressed">Compressée</span>
+    <span data-phrase="compare.alt">{label} : {name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">Les deux sont montrées à la même largeur, et c&rsquo;est bien ainsi que la différence se juge. Pour le regard rapproché, ouvrez les deux fichiers en taille réelle.</span>
+  </div>
 </main>

@@ -114,4 +114,100 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} 位元組</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">{count} 張圖，一共 {size}</span>
+    <span data-phrase="list.count.many">{count} 張圖，一共 {size}</span>
+    <span data-phrase="row.under">已經在目標大小以下 &mdash; 這一張原樣留著，不動它。</span>
+    <span data-phrase="row.remove">把 {name} 從清單裡去掉</span>
+    <span data-phrase="load.unreadable">{name}：不是這個工具讀得了的圖片。</span>
+    <span data-phrase="load.undecodable">{name}：這個瀏覽器解不開它。</span>
+
+    <span data-phrase="target.none">填一個想要達到的大小。</span>
+    <span data-phrase="target.empty">每張圖都會壓到 {size} 以下。</span>
+    <span data-phrase="target.single.over">這張圖超過 {size}，所以會一直壓到不超過為止。</span>
+    <span data-phrase="target.single.under">這張圖已經在 {size} 以下，所以原樣放過去，不碰它。</span>
+    <span data-phrase="target.over.one">{total} 張裡有 {over} 張超過 {size}</span>
+    <span data-phrase="target.over.many">{total} 張裡有 {over} 張超過 {size}</span>
+    <span data-phrase="target.rest.one">另一張原樣放過去，不碰它</span>
+    <span data-phrase="target.rest.many">另外 {count} 張原樣放過去，不碰它們</span>
+    <span data-phrase="target.summary">{over}。</span>
+    <span data-phrase="target.summary.rest">{over}，{rest}。</span>
+
+    <span data-phrase="format.note">{format}{sizing}</span>
+    <span data-phrase="format.auto">格式保持不變，除非目標大小緊到保持它就要拿真的畫質來換 &mdash; 那時改用 WebP，那一行也會說明。</span>
+    <span data-phrase="format.keep">每張圖都保持它進來時的格式。</span>
+    <span data-phrase="format.jpeg">全部寫成 JPEG。JPEG 沒有透明通道，所以透明的地方會變成白色。</span>
+    <span data-phrase="format.webp">全部寫成 WebP：同樣畫質下比 JPEG 小，而且透明保得住。</span>
+    <span data-phrase="format.png">全部寫成 PNG。PNG 沒有畫質旋鈕，所以要達到目標大小，只能把圖縮小。</span>
+    <span data-phrase="format.resize.on">如果光靠畫質到不了目標大小，就把圖縮小，而不是把它壓爛。</span>
+    <span data-phrase="format.resize.off">圖保持原來的尺寸，所以緊的目標只能從畫質裡出。</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; 這個瀏覽器不支援</span>
+
+    <span data-phrase="progress.at">第 {at} 張，共 {total} 張：{name} &mdash; {step}</span>
+    <span data-phrase="step.reading">正在讀取</span>
+    <span data-phrase="step.decoding">正在解碼</span>
+    <span data-phrase="step.full">先看看滿畫質要多大</span>
+    <span data-phrase="step.scale">在找放得下的最大尺寸</span>
+    <span data-phrase="step.quality">在畫質旋鈕上找</span>
+    <span data-phrase="step.belowFloor">縮小是關著的，所以往畫質下限以下走</span>
+    <span data-phrase="step.resolution">拿解析度換畫質</span>
+    <span data-phrase="step.budget">把預算裡剩下的花掉</span>
+    <span data-phrase="step.trying">改用 {format} 試試</span>
+    <span data-phrase="error.attempts">試的次數太多，放棄了。</span>
+    <span data-phrase="error.encode">這個瀏覽器不肯寫成 {format}。</span>
+    <span data-phrase="error.decode">這個瀏覽器解不開這張圖。</span>
+
+    <span data-phrase="results.all">從 {before} 降到 {after} &mdash; {change}，每張圖都在目標大小以下。</span>
+    <span data-phrase="results.missed.one">從 {before} 降到 {after}。有 {count} 張沒能到目標大小 &mdash; 看下面那一行。</span>
+    <span data-phrase="results.missed.many">從 {before} 降到 {after}。有 {count} 張沒能到目標大小 &mdash; 看下面幾行。</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; 本來就在目標大小以下，所以什麼都沒動。</span>
+    <span data-phrase="row.match">和原圖比著量：{match}（SSIM {ssim}，PSNR {psnr}）。</span>
+    <span data-phrase="row.missed">按上面的設定，這張圖最小只能到這裡，仍然超過目標大小。要麼允許縮小，要麼把目標放大一點。</span>
+    <span data-phrase="row.download">下載</span>
+    <span data-phrase="row.compare">對比</span>
+    <span data-phrase="row.hide">收起</span>
+
+    <span data-phrase="change.smaller">小了 {percent}%</span>
+    <span data-phrase="change.larger">大了 {percent}%</span>
+    <span data-phrase="change.same">大小差不多</span>
+
+    <span data-phrase="match.identical">{percent}% &mdash; 分不出來</span>
+    <span data-phrase="match.invisible">{percent}% &mdash; 看不出差別</span>
+    <span data-phrase="match.close">{percent}% &mdash; 很接近</span>
+    <span data-phrase="match.softened">{percent}% &mdash; 稍微軟了一點</span>
+    <span data-phrase="match.visible">{percent}% &mdash; 看得出壓過</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">完全一樣</span>
+
+    <span data-phrase="detail.untouched">為了達到它本來就有的大小去壓，只會白白折損畫質，所以逐位元組原樣放行，連中繼資料一起。</span>
+    <span data-phrase="detail.line">{format}，{size}，{encodes}。</span>
+    <span data-phrase="detail.line.quality">{format}，畫質 {quality}，{size}，{encodes}。</span>
+    <span data-phrase="detail.format">寫成了 {format}</span>
+    <span data-phrase="detail.format.changed">寫成了 {format}，在這個大小上它比原來的格式更能把畫面撐住</span>
+    <span data-phrase="detail.resized">從 {from} 縮到 {to}</span>
+    <span data-phrase="detail.full">原尺寸 {size}</span>
+    <span data-phrase="detail.encodes.one">編碼 {count} 次找到</span>
+    <span data-phrase="detail.encodes.many">編碼 {count} 次找到</span>
+
+    <span data-phrase="compare.original">原圖</span>
+    <span data-phrase="compare.compressed">壓好的</span>
+    <span data-phrase="compare.alt">{label}：{name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">兩張都按同樣的寬度顯示，差別本來就是這麼看的。要細看，就把兩個檔案按原尺寸打開。</span>
+  </div>
 </main>

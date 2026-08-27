@@ -117,4 +117,100 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bytes</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">{count} afbeelding, {size} in totaal</span>
+    <span data-phrase="list.count.many">{count} afbeeldingen, {size} in totaal</span>
+    <span data-phrase="row.under">Al onder de doelgrootte &mdash; deze blijft precies zoals hij is.</span>
+    <span data-phrase="row.remove">{name} van de lijst halen</span>
+    <span data-phrase="load.unreadable">{name}: geen afbeelding die dit gereedschap kan lezen.</span>
+    <span data-phrase="load.undecodable">{name}: deze browser kon hem niet decoderen.</span>
+
+    <span data-phrase="target.none">Vul een grootte in om op te mikken.</span>
+    <span data-phrase="target.empty">Elke afbeelding wordt onder {size} gebracht.</span>
+    <span data-phrase="target.single.over">Deze afbeelding zit boven {size} en wordt dus gecomprimeerd tot dat niet meer zo is.</span>
+    <span data-phrase="target.single.under">Deze afbeelding zit al onder {size} en gaat er dus onaangeroerd doorheen.</span>
+    <span data-phrase="target.over.one">{over} van de {total} afbeeldingen zit boven {size}</span>
+    <span data-phrase="target.over.many">{over} van de {total} afbeeldingen zitten boven {size}</span>
+    <span data-phrase="target.rest.one">de andere gaat er onaangeroerd doorheen</span>
+    <span data-phrase="target.rest.many">de andere {count} gaan er onaangeroerd doorheen</span>
+    <span data-phrase="target.summary">{over}.</span>
+    <span data-phrase="target.summary.rest">{over}, en {rest}.</span>
+
+    <span data-phrase="format.note">{format} {sizing}</span>
+    <span data-phrase="format.auto">Het formaat blijft, tenzij het doel zo krap is dat het houden ervan echte kwaliteit kost &mdash; dan wordt het WebP, en de regel zegt dat er ook bij.</span>
+    <span data-phrase="format.keep">Elke afbeelding houdt het formaat waarin hij binnenkwam.</span>
+    <span data-phrase="format.jpeg">Alles wordt als JPEG geschreven. Transparantie wordt wit, want JPEG heeft geen alfakanaal.</span>
+    <span data-phrase="format.webp">Alles wordt als WebP geschreven: kleiner dan JPEG bij dezelfde kwaliteit, en transparantie blijft.</span>
+    <span data-phrase="format.png">Alles wordt als PNG geschreven. PNG heeft geen kwaliteitsknop, dus de enige weg naar een doel loopt via kleinere afmetingen.</span>
+    <span data-phrase="format.resize.on">Haalt kwaliteit alleen het doel niet, dan wordt de afbeelding kleiner gemaakt in plaats van platgedrukt.</span>
+    <span data-phrase="format.resize.off">De afbeelding houdt zijn volle afmetingen, dus een krap doel moet helemaal uit de kwaliteit betaald worden.</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; niet ondersteund door deze browser</span>
+
+    <span data-phrase="progress.at">{at} van {total}: {name} &mdash; {step}</span>
+    <span data-phrase="step.reading">lezen</span>
+    <span data-phrase="step.decoding">decoderen</span>
+    <span data-phrase="step.full">kijken wat het kost op volle kwaliteit</span>
+    <span data-phrase="step.scale">de grootste maat zoeken die past</span>
+    <span data-phrase="step.quality">de kwaliteitsknop aflopen</span>
+    <span data-phrase="step.belowFloor">onder de kwaliteitsbodem duiken, want verkleinen staat uit</span>
+    <span data-phrase="step.resolution">resolutie inruilen voor kwaliteit</span>
+    <span data-phrase="step.budget">uitgeven wat er van het budget over is</span>
+    <span data-phrase="step.trying">het in plaats daarvan met {format} proberen</span>
+    <span data-phrase="error.attempts">na te veel pogingen opgegeven.</span>
+    <span data-phrase="error.encode">deze browser wilde geen {format} schrijven.</span>
+    <span data-phrase="error.decode">deze browser kon de afbeelding niet decoderen.</span>
+
+    <span data-phrase="results.all">{before} terug naar {after} &mdash; {change}, en elke afbeelding zit onder het doel.</span>
+    <span data-phrase="results.missed.one">{before} terug naar {after}. {count} afbeelding haalde het doel niet &mdash; zie de regel hieronder.</span>
+    <span data-phrase="results.missed.many">{before} terug naar {after}. {count} afbeeldingen haalden het doel niet &mdash; zie de regels hieronder.</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; zat al onder het doel, dus er is niets aangeraakt.</span>
+    <span data-phrase="row.match">Gemeten tegen het origineel: {match} (SSIM {ssim}, PSNR {psnr}).</span>
+    <span data-phrase="row.missed">Kleiner kon deze afbeelding met de instellingen hierboven niet worden, en hij zit nog steeds boven het doel. Sta verkleinen toe, of vraag een groter doel.</span>
+    <span data-phrase="row.download">Downloaden</span>
+    <span data-phrase="row.compare">Vergelijken</span>
+    <span data-phrase="row.hide">Verbergen</span>
+
+    <span data-phrase="change.smaller">{percent}% kleiner</span>
+    <span data-phrase="change.larger">{percent}% groter</span>
+    <span data-phrase="change.same">ongeveer even groot</span>
+
+    <span data-phrase="match.identical">{percent}% &mdash; niet te onderscheiden</span>
+    <span data-phrase="match.invisible">{percent}% &mdash; geen zichtbaar verschil</span>
+    <span data-phrase="match.close">{percent}% &mdash; heel dichtbij</span>
+    <span data-phrase="match.softened">{percent}% &mdash; iets zachter</span>
+    <span data-phrase="match.visible">{percent}% &mdash; zichtbaar gecomprimeerd</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">identiek</span>
+
+    <span data-phrase="detail.untouched">Comprimeren had kwaliteit gekost om een grootte te halen die hij al had, dus ging hij byte voor byte door, metadata en al.</span>
+    <span data-phrase="detail.line">{format}, {size}, {encodes}.</span>
+    <span data-phrase="detail.line.quality">{format}, kwaliteit {quality}, {size}, {encodes}.</span>
+    <span data-phrase="detail.format">Geschreven als {format}</span>
+    <span data-phrase="detail.format.changed">Geschreven als {format}, dat de afbeelding op deze grootte beter bij elkaar hield dan het oorspronkelijke formaat</span>
+    <span data-phrase="detail.resized">verkleind van {from} naar {to}</span>
+    <span data-phrase="detail.full">op volle grootte, {size}</span>
+    <span data-phrase="detail.encodes.one">gevonden in {count} codeerslag</span>
+    <span data-phrase="detail.encodes.many">gevonden in {count} codeerslagen</span>
+
+    <span data-phrase="compare.original">Origineel</span>
+    <span data-phrase="compare.compressed">Gecomprimeerd</span>
+    <span data-phrase="compare.alt">{label}: {name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">Ze staan allebei op dezelfde breedte, en zo wordt het verschil ook echt beoordeeld. Voor de close-up open je de twee bestanden op ware grootte.</span>
+  </div>
 </main>

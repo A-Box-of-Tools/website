@@ -109,4 +109,100 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} バイト</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">画像{count}枚、合計 {size}</span>
+    <span data-phrase="list.count.many">画像{count}枚、合計 {size}</span>
+    <span data-phrase="row.under">すでに目標サイズより小さいので、この1枚はそのままにします。</span>
+    <span data-phrase="row.remove">{name} を一覧から外す</span>
+    <span data-phrase="load.unreadable">{name}：このツールが読める画像ではありません。</span>
+    <span data-phrase="load.undecodable">{name}：このブラウザーではデコードできませんでした。</span>
+
+    <span data-phrase="target.none">目指すサイズを入力してください。</span>
+    <span data-phrase="target.empty">どの画像も {size} 未満にします。</span>
+    <span data-phrase="target.single.over">この画像は {size} を超えているので、超えなくなるまで圧縮します。</span>
+    <span data-phrase="target.single.under">この画像はすでに {size} 未満なので、手を触れずにそのまま通します。</span>
+    <span data-phrase="target.over.one">{total}枚のうち{over}枚が {size} を超えています</span>
+    <span data-phrase="target.over.many">{total}枚のうち{over}枚が {size} を超えています</span>
+    <span data-phrase="target.rest.one">もう1枚は手を触れずにそのまま通します</span>
+    <span data-phrase="target.rest.many">残りの{count}枚は手を触れずにそのまま通します</span>
+    <span data-phrase="target.summary">{over}。</span>
+    <span data-phrase="target.summary.rest">{over}、そして{rest}。</span>
+
+    <span data-phrase="format.note">{format}{sizing}</span>
+    <span data-phrase="format.auto">形式はそのまま保ちます。ただし目標サイズが厳しく、保つことが実際の画質を削る場合はWebPを使い、その行にそう書きます。</span>
+    <span data-phrase="format.keep">どの画像も、届いたときの形式のままにします。</span>
+    <span data-phrase="format.jpeg">すべてJPEGで書き出します。JPEGにはアルファチャンネルがないので、透明な部分は白になります。</span>
+    <span data-phrase="format.webp">すべてWebPで書き出します。同じ画質ならJPEGより小さく、透明も保てます。</span>
+    <span data-phrase="format.png">すべてPNGで書き出します。PNGには画質のつまみがないので、目標サイズに届く道は画像を小さくすることだけです。</span>
+    <span data-phrase="format.resize.on">画質だけで目標サイズに届かないときは、つぶすのではなく画像を小さくします。</span>
+    <span data-phrase="format.resize.off">画像は元の寸法を保つので、厳しい目標サイズは画質だけで払うことになります。</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; このブラウザーは対応していません</span>
+
+    <span data-phrase="progress.at">{total}件中{at}件目：{name} &mdash; {step}</span>
+    <span data-phrase="step.reading">読み込み中</span>
+    <span data-phrase="step.decoding">デコード中</span>
+    <span data-phrase="step.full">最高画質でどれくらいになるか確認中</span>
+    <span data-phrase="step.scale">収まる最大の寸法を探索中</span>
+    <span data-phrase="step.quality">画質のつまみを探索中</span>
+    <span data-phrase="step.belowFloor">縮小が切ってあるので、画質の下限より下へ</span>
+    <span data-phrase="step.resolution">解像度を画質と引き換えに</span>
+    <span data-phrase="step.budget">予算の残りを使い切り中</span>
+    <span data-phrase="step.trying">代わりに{format}で試行中</span>
+    <span data-phrase="error.attempts">試行回数が多すぎたため中止しました。</span>
+    <span data-phrase="error.encode">このブラウザーは{format}で書き出しませんでした。</span>
+    <span data-phrase="error.decode">このブラウザーは画像をデコードできませんでした。</span>
+
+    <span data-phrase="results.all">{before} から {after} へ &mdash; {change}。どの画像も目標サイズ未満です。</span>
+    <span data-phrase="results.missed.one">{before} から {after} へ。{count}枚が目標サイズに届きませんでした &mdash; 下の行をご覧ください。</span>
+    <span data-phrase="results.missed.many">{before} から {after} へ。{count}枚が目標サイズに届きませんでした &mdash; 下の行をご覧ください。</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; すでに目標サイズ未満だったので、何も触っていません。</span>
+    <span data-phrase="row.match">元の画像と比べて測定：{match}（SSIM {ssim}、PSNR {psnr}）。</span>
+    <span data-phrase="row.missed">上の設定でこの画像を小さくできるのはここまでで、まだ目標サイズを超えています。縮小を許可するか、もっと大きな目標サイズを指定してください。</span>
+    <span data-phrase="row.download">ダウンロード</span>
+    <span data-phrase="row.compare">見比べる</span>
+    <span data-phrase="row.hide">閉じる</span>
+
+    <span data-phrase="change.smaller">{percent}%小さく</span>
+    <span data-phrase="change.larger">{percent}%大きく</span>
+    <span data-phrase="change.same">ほぼ同じサイズ</span>
+
+    <span data-phrase="match.identical">{percent}% &mdash; 見分けがつきません</span>
+    <span data-phrase="match.invisible">{percent}% &mdash; 目に見える違いはありません</span>
+    <span data-phrase="match.close">{percent}% &mdash; かなり近い</span>
+    <span data-phrase="match.softened">{percent}% &mdash; わずかに甘くなっています</span>
+    <span data-phrase="match.visible">{percent}% &mdash; 圧縮が目に見えます</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">同一</span>
+
+    <span data-phrase="detail.untouched">すでに持っていたサイズに届くために圧縮すれば画質を削るだけなので、メタデータごとバイト単位でそのまま通しました。</span>
+    <span data-phrase="detail.line">{format}、{size}、{encodes}。</span>
+    <span data-phrase="detail.line.quality">{format}、画質 {quality}、{size}、{encodes}。</span>
+    <span data-phrase="detail.format">{format}で書き出し</span>
+    <span data-phrase="detail.format.changed">{format}で書き出し。このサイズでは元の形式より画像をよく保てました</span>
+    <span data-phrase="detail.resized">{from} から {to} に縮小</span>
+    <span data-phrase="detail.full">原寸のまま {size}</span>
+    <span data-phrase="detail.encodes.one">{count}回のエンコードで到達</span>
+    <span data-phrase="detail.encodes.many">{count}回のエンコードで到達</span>
+
+    <span data-phrase="compare.original">元の画像</span>
+    <span data-phrase="compare.compressed">圧縮後</span>
+    <span data-phrase="compare.alt">{label}：{name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">どちらも同じ幅で表示しています。違いは実際そうやって判断するものです。細かく見るときは2つのファイルを原寸で開いてください。</span>
+  </div>
 </main>

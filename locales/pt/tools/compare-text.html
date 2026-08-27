@@ -93,4 +93,34 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">vazio</span>
+    <span data-phrase="count.lines.one">{count} linha</span>
+    <span data-phrase="count.lines.many">{count} linhas</span>
+    <span data-phrase="count.characters.one">{count} caractere</span>
+    <span data-phrase="count.characters.many">{count} caracteres</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">Esse arquivo não pôde ser lido: {detail}</span>
+
+    <span data-phrase="result.waiting">Cole alguma coisa nas duas caixas.</span>
+    <span data-phrase="result.identical">Os dois são idênticos, byte a byte.</span>
+    <span data-phrase="result.ignored">Iguais, depois de ignoradas as diferenças que você pediu para ignorar.</span>
+    <span data-phrase="result.counts">{added} acrescentadas, {removed} retiradas</span>
+    <span data-phrase="result.summary">{changes} &mdash; {percent}% das linhas estão nos dois. {note}</span>
+    <span data-phrase="result.newline">Um termina com quebra de linha e o outro não.</span>
+    <span data-phrase="result.failed">Não saiu nada.</span>
+
+    <span data-phrase="skip.one">{count} linha sem mudança</span>
+    <span data-phrase="skip.many">{count} linhas sem mudança</span>
+    <span data-phrase="skip.rest">O resto não é desenhado &mdash; use &ldquo;Baixar&rdquo; para ter o patch inteiro.</span>
+
+    <span data-phrase="copy.done">Copiado</span>
+    <span data-phrase="copy.select">Selecionado &mdash; aperte Ctrl+C</span>
+  </div>
 </main>

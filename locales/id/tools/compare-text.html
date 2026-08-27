@@ -93,4 +93,34 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">kosong</span>
+    <span data-phrase="count.lines.one">{count} baris</span>
+    <span data-phrase="count.lines.many">{count} baris</span>
+    <span data-phrase="count.characters.one">{count} karakter</span>
+    <span data-phrase="count.characters.many">{count} karakter</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">File itu tidak bisa dibaca: {detail}</span>
+
+    <span data-phrase="result.waiting">Tempelkan sesuatu di kedua kotaknya.</span>
+    <span data-phrase="result.identical">Keduanya identik, bita demi bita.</span>
+    <span data-phrase="result.ignored">Sama saja, setelah perbedaan yang Anda minta diabaikan memang diabaikan.</span>
+    <span data-phrase="result.counts">{added} ditambah, {removed} dihapus</span>
+    <span data-phrase="result.summary">{changes} &mdash; {percent}% barisnya ada di keduanya. {note}</span>
+    <span data-phrase="result.newline">Yang satu diakhiri baris baru, yang lain tidak.</span>
+    <span data-phrase="result.failed">Tidak ada yang keluar.</span>
+
+    <span data-phrase="skip.one">{count} baris tidak berubah</span>
+    <span data-phrase="skip.many">{count} baris tidak berubah</span>
+    <span data-phrase="skip.rest">Sisanya tidak digambar &mdash; pakai &ldquo;Unduh&rdquo; untuk mendapat seluruh tambalannya.</span>
+
+    <span data-phrase="copy.done">Tersalin</span>
+    <span data-phrase="copy.select">Terpilih &mdash; tekan Ctrl+C</span>
+  </div>
 </main>

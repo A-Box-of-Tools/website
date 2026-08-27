@@ -124,4 +124,100 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bayt</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">{count} görsel, toplam {size}</span>
+    <span data-phrase="list.count.many">{count} görsel, toplam {size}</span>
+    <span data-phrase="row.under">Zaten hedefin altında &mdash; bu, olduğu gibi bırakılacak.</span>
+    <span data-phrase="row.remove">{name} dosyasını listeden çıkar</span>
+    <span data-phrase="load.unreadable">{name}: bu aracın okuyabileceği bir görsel değil.</span>
+    <span data-phrase="load.undecodable">{name}: bu tarayıcı çözemedi.</span>
+
+    <span data-phrase="target.none">Hedeflenecek bir boyut yazın.</span>
+    <span data-phrase="target.empty">Her görsel {size} altına indirilecek.</span>
+    <span data-phrase="target.single.over">Bu görsel {size} üzerinde, yani altına inene kadar sıkıştırılacak.</span>
+    <span data-phrase="target.single.under">Bu görsel zaten {size} altında, yani dokunulmadan geçirilecek.</span>
+    <span data-phrase="target.over.one">{total} görselden {over} tanesi {size} üzerinde</span>
+    <span data-phrase="target.over.many">{total} görselden {over} tanesi {size} üzerinde</span>
+    <span data-phrase="target.rest.one">öbürü dokunulmadan geçirilecek</span>
+    <span data-phrase="target.rest.many">öbür {count} tanesi dokunulmadan geçirilecek</span>
+    <span data-phrase="target.summary">{over}.</span>
+    <span data-phrase="target.summary.rest">{over}, {rest}.</span>
+
+    <span data-phrase="format.note">{format} {sizing}</span>
+    <span data-phrase="format.auto">Biçim korunur; ancak hedef, korumanın gerçek kaliteye mal olacağı kadar dar olursa WebP kullanılır ve satır bunu söyler.</span>
+    <span data-phrase="format.keep">Her görsel geldiği biçimi korur.</span>
+    <span data-phrase="format.jpeg">Her şey JPEG olarak yazılır. JPEG&rsquo;in alfa kanalı olmadığı için saydamlık beyaza döner.</span>
+    <span data-phrase="format.webp">Her şey WebP olarak yazılır: aynı kalitede JPEG&rsquo;den küçük, üstelik saydamlığı korur.</span>
+    <span data-phrase="format.png">Her şey PNG olarak yazılır. PNG&rsquo;nin kalite düğmesi yoktur, bu yüzden hedefe varmanın tek yolu görseli küçültmektir.</span>
+    <span data-phrase="format.resize.on">Kalite tek başına hedefe yetmezse görsel ezilmek yerine küçültülür.</span>
+    <span data-phrase="format.resize.off">Görsel bütün ölçülerini korur, yani dar bir hedefin bedeli yalnızca kaliteden ödenir.</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; bu tarayıcı desteklemiyor</span>
+
+    <span data-phrase="progress.at">{total} içinden {at}: {name} &mdash; {step}</span>
+    <span data-phrase="step.reading">okunuyor</span>
+    <span data-phrase="step.decoding">çözülüyor</span>
+    <span data-phrase="step.full">tam kalitede neye mal olduğuna bakılıyor</span>
+    <span data-phrase="step.scale">sığan en büyük boyut aranıyor</span>
+    <span data-phrase="step.quality">kalite düğmesi taranıyor</span>
+    <span data-phrase="step.belowFloor">küçültme kapalı olduğu için kalite tabanının altına iniliyor</span>
+    <span data-phrase="step.resolution">çözünürlük kaliteyle takas ediliyor</span>
+    <span data-phrase="step.budget">bütçeden kalan harcanıyor</span>
+    <span data-phrase="step.trying">bunun yerine {format} deneniyor</span>
+    <span data-phrase="error.attempts">çok fazla denemeden sonra vazgeçildi.</span>
+    <span data-phrase="error.encode">bu tarayıcı {format} olarak kodlamadı.</span>
+    <span data-phrase="error.decode">bu tarayıcı görseli çözemedi.</span>
+
+    <span data-phrase="results.all">{before} boyutundan {after} boyutuna &mdash; {change}, ve her görsel hedefin altında.</span>
+    <span data-phrase="results.missed.one">{before} boyutundan {after} boyutuna. {count} görsel hedefe ulaşamadı &mdash; aşağıdaki satıra bakın.</span>
+    <span data-phrase="results.missed.many">{before} boyutundan {after} boyutuna. {count} görsel hedefe ulaşamadı &mdash; aşağıdaki satırlara bakın.</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; zaten hedefin altındaydı, hiçbir şeye dokunulmadı.</span>
+    <span data-phrase="row.match">Aslına karşı ölçüldü: {match} (SSIM {ssim}, PSNR {psnr}).</span>
+    <span data-phrase="row.missed">Yukarıdaki ayarlarla bu görsel ancak bu kadar küçülebildi ve hâlâ hedefin üzerinde. Küçültmeye izin verin ya da daha büyük bir hedef isteyin.</span>
+    <span data-phrase="row.download">İndir</span>
+    <span data-phrase="row.compare">Karşılaştır</span>
+    <span data-phrase="row.hide">Gizle</span>
+
+    <span data-phrase="change.smaller">%{percent} daha küçük</span>
+    <span data-phrase="change.larger">%{percent} daha büyük</span>
+    <span data-phrase="change.same">aşağı yukarı aynı boyut</span>
+
+    <span data-phrase="match.identical">%{percent} &mdash; ayırt edilemiyor</span>
+    <span data-phrase="match.invisible">%{percent} &mdash; gözle görülür fark yok</span>
+    <span data-phrase="match.close">%{percent} &mdash; çok yakın</span>
+    <span data-phrase="match.softened">%{percent} &mdash; hafifçe yumuşamış</span>
+    <span data-phrase="match.visible">%{percent} &mdash; sıkıştırma göze çarpıyor</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">aynı</span>
+
+    <span data-phrase="detail.untouched">Sıkıştırmak, zaten sahip olduğu bir boyuta varmak için kaliteden yemek olurdu; bu yüzden bayt bayt, meta verisiyle birlikte olduğu gibi geçirildi.</span>
+    <span data-phrase="detail.line">{format}, {size}, {encodes}.</span>
+    <span data-phrase="detail.line.quality">{format}, kalite {quality}, {size}, {encodes}.</span>
+    <span data-phrase="detail.format">{format} olarak yazıldı</span>
+    <span data-phrase="detail.format.changed">{format} olarak yazıldı; bu boyutta görseli özgün biçiminden daha iyi bir arada tuttu</span>
+    <span data-phrase="detail.resized">{from} boyutundan {to} boyutuna küçültüldü</span>
+    <span data-phrase="detail.full">tam boy, {size}</span>
+    <span data-phrase="detail.encodes.one">{count} kodlamada bulundu</span>
+    <span data-phrase="detail.encodes.many">{count} kodlamada bulundu</span>
+
+    <span data-phrase="compare.original">Aslı</span>
+    <span data-phrase="compare.compressed">Sıkıştırılmış</span>
+    <span data-phrase="compare.alt">{label}: {name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">İkisi de aynı genişlikte gösteriliyor, fark zaten böyle değerlendirilir. Yakından bakmak için iki dosyayı da tam boyutunda açın.</span>
+  </div>
 </main>

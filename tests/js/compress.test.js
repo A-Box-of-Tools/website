@@ -6,6 +6,12 @@
  * shown as "512 KB" beside a 512 KB target reads as a miss when it was a hit.
  * That rounding rule is a test.
  *
+ * They hand back the key of a phrase and the blanks to fill it with rather
+ * than a sentence, because this file imports them off the disk and a module a
+ * test can import cannot import `./shared/phrases.js` - so the words live in
+ * the tool's body.html and main.js resolves them. What is tested here is the
+ * decision each one makes: which wording, and what number goes in it.
+ *
  * The format choices are the other half. Keeping the format is the default
  * because a .jpg that leaves as a .webp is a support question for whoever it
  * gets sent to, and there is exactly one case where "auto" changes the
@@ -28,27 +34,27 @@ import { parseImageUrl } from '../../shared/js/url-import.js';
 /* ================================================================= sizes */
 
 test('bytes: under a kilobyte is counted exactly', () => {
-  assert.equal(bytes(0), '0 bytes');
-  assert.equal(bytes(1), '1 bytes');
-  assert.equal(bytes(1023), '1023 bytes');
+  assert.deepEqual(bytes(0), { key: 'size.bytes', values: { amount: 0 } });
+  assert.deepEqual(bytes(1), { key: 'size.bytes', values: { amount: 1 } });
+  assert.deepEqual(bytes(1023), { key: 'size.bytes', values: { amount: 1023 } });
 });
 
 test('bytes: kilobytes carry a decimal until ten of them', () => {
-  assert.equal(bytes(1024), '1.0 KB');
-  assert.equal(bytes(10239), '10.0 KB');
-  assert.equal(bytes(10240), '10 KB');
-  assert.equal(bytes(512 * 1024), '512 KB');
+  assert.deepEqual(bytes(1024), { key: 'size.kb', values: { amount: '1.0' } });
+  assert.deepEqual(bytes(10239), { key: 'size.kb', values: { amount: '10.0' } });
+  assert.deepEqual(bytes(10240), { key: 'size.kb', values: { amount: '10' } });
+  assert.deepEqual(bytes(512 * 1024), { key: 'size.kb', values: { amount: '512' } });
 });
 
 test('bytes: megabytes carry two decimals', () => {
-  assert.equal(bytes(1024 * 1024), '1.00 MB');
-  assert.equal(bytes(1536 * 1024), '1.50 MB');
+  assert.deepEqual(bytes(1024 * 1024), { key: 'size.mb', values: { amount: '1.00' } });
+  assert.deepEqual(bytes(1536 * 1024), { key: 'size.mb', values: { amount: '1.50' } });
 });
 
 test('bytes: a near miss is never rounded up past its target', () => {
   // 511.6 KB shown as "512 KB" beside a 512 KB target reads as a miss.
-  assert.equal(bytes(511 * 1024 + 600), '512 KB');
-  assert.equal(bytes(1024 * 1024 - 1), '1024 KB');
+  assert.deepEqual(bytes(511 * 1024 + 600), { key: 'size.kb', values: { amount: '512' } });
+  assert.deepEqual(bytes(1024 * 1024 - 1), { key: 'size.kb', values: { amount: '1024' } });
 });
 
 test('targetBytes: a number and a unit', () => {
@@ -112,37 +118,37 @@ test('outName: an unknown type falls back to jpg', () => {
 /* =============================================================== wording */
 
 test('change: smaller, larger, or about the same', () => {
-  assert.equal(change(1000, 270), '73% smaller');
-  assert.equal(change(1000, 1030), '3% larger');
-  assert.equal(change(1000, 1000), 'about the same size');
-  assert.equal(change(1000, 998), 'about the same size');
+  assert.deepEqual(change(1000, 270), { key: 'change.smaller', values: { percent: 73 } });
+  assert.deepEqual(change(1000, 1030), { key: 'change.larger', values: { percent: 3 } });
+  assert.deepEqual(change(1000, 1000), { key: 'change.same' });
+  assert.deepEqual(change(1000, 998), { key: 'change.same' });
 });
 
 test('change: nothing to say about a file that was empty', () => {
-  assert.equal(change(0, 100), '');
+  assert.equal(change(0, 100), null);
 });
 
 test('matchText: the number, and wording that stops it being over-read', () => {
   // 0.97 is a good result, not "97% of the picture survived".
-  assert.equal(matchText(1), '100.0% - indistinguishable');
-  assert.equal(matchText(0.995), '99.5% - indistinguishable');
-  assert.equal(matchText(0.99), '99.0% - no visible difference');
-  assert.equal(matchText(0.97), '97.0% - very close');
-  assert.equal(matchText(0.93), '93.0% - slight softening');
-  assert.equal(matchText(0.8), '80.0% - visibly compressed');
+  assert.deepEqual(matchText(1), { key: 'match.identical', values: { percent: '100.0' } });
+  assert.deepEqual(matchText(0.995), { key: 'match.identical', values: { percent: '99.5' } });
+  assert.deepEqual(matchText(0.99), { key: 'match.invisible', values: { percent: '99.0' } });
+  assert.deepEqual(matchText(0.97), { key: 'match.close', values: { percent: '97.0' } });
+  assert.deepEqual(matchText(0.93), { key: 'match.softened', values: { percent: '93.0' } });
+  assert.deepEqual(matchText(0.8), { key: 'match.visible', values: { percent: '80.0' } });
 });
 
 test('matchText: the boundaries land on the wording above them', () => {
-  assert.match(matchText(0.985), /no visible difference/);
-  assert.match(matchText(0.96), /very close/);
-  assert.match(matchText(0.92), /slight softening/);
-  assert.match(matchText(0.9199), /visibly compressed/);
+  assert.equal(matchText(0.985).key, 'match.invisible');
+  assert.equal(matchText(0.96).key, 'match.close');
+  assert.equal(matchText(0.92).key, 'match.softened');
+  assert.equal(matchText(0.9199).key, 'match.visible');
 });
 
 test('psnrText: identical pictures have no finite ratio to report', () => {
-  assert.equal(psnrText(Infinity), 'identical');
-  assert.equal(psnrText(NaN), 'identical');
-  assert.equal(psnrText(42.35), '42.4 dB');
+  assert.deepEqual(psnrText(Infinity), { key: 'psnr.identical' });
+  assert.deepEqual(psnrText(NaN), { key: 'psnr.identical' });
+  assert.deepEqual(psnrText(42.35), { key: 'psnr.db', values: { db: '42.4' } });
 });
 
 /* ================================================================ formats */

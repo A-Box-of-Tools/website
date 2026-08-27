@@ -124,4 +124,100 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bita</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">{count} gambar, {size} seluruhnya</span>
+    <span data-phrase="list.count.many">{count} gambar, {size} seluruhnya</span>
+    <span data-phrase="row.under">Sudah di bawah target &mdash; yang ini dibiarkan persis seperti apa adanya.</span>
+    <span data-phrase="row.remove">Keluarkan {name} dari daftar</span>
+    <span data-phrase="load.unreadable">{name}: bukan gambar yang bisa dibaca alat ini.</span>
+    <span data-phrase="load.undecodable">{name}: peramban ini tidak bisa mendekodenya.</span>
+
+    <span data-phrase="target.none">Isi ukuran yang mau dituju.</span>
+    <span data-phrase="target.empty">Setiap gambar akan dibawa ke bawah {size}.</span>
+    <span data-phrase="target.single.over">Gambar ini di atas {size}, jadi akan dikompres sampai tidak lagi begitu.</span>
+    <span data-phrase="target.single.under">Gambar ini sudah di bawah {size}, jadi diteruskan tanpa disentuh.</span>
+    <span data-phrase="target.over.one">{over} dari {total} gambar ada di atas {size}</span>
+    <span data-phrase="target.over.many">{over} dari {total} gambar ada di atas {size}</span>
+    <span data-phrase="target.rest.one">satu lagi diteruskan tanpa disentuh</span>
+    <span data-phrase="target.rest.many">{count} sisanya diteruskan tanpa disentuh</span>
+    <span data-phrase="target.summary">{over}.</span>
+    <span data-phrase="target.summary.rest">{over}, dan {rest}.</span>
+
+    <span data-phrase="format.note">{format} {sizing}</span>
+    <span data-phrase="format.auto">Formatnya dipertahankan, kecuali targetnya begitu ketat sampai mempertahankannya memakan kualitas sungguhan &mdash; barulah dipakai WebP, dan barisnya menyebutkan itu.</span>
+    <span data-phrase="format.keep">Setiap gambar mempertahankan format saat ia datang.</span>
+    <span data-phrase="format.jpeg">Semuanya ditulis sebagai JPEG. Transparansi menjadi putih, karena JPEG tidak punya kanal alfa.</span>
+    <span data-phrase="format.webp">Semuanya ditulis sebagai WebP: lebih kecil daripada JPEG pada kualitas yang sama, dan transparansinya terjaga.</span>
+    <span data-phrase="format.png">Semuanya ditulis sebagai PNG. PNG tidak punya tombol kualitas, jadi satu-satunya jalan ke target adalah mengecilkan gambarnya.</span>
+    <span data-phrase="format.resize.on">Kalau kualitas saja tidak sampai ke target, gambarnya dikecilkan, bukan dihancurkan.</span>
+    <span data-phrase="format.resize.off">Gambarnya mempertahankan seluruh ukurannya, jadi target yang ketat harus dibayar dari kualitas saja.</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; tidak didukung peramban ini</span>
+
+    <span data-phrase="progress.at">{at} dari {total}: {name} &mdash; {step}</span>
+    <span data-phrase="step.reading">membaca</span>
+    <span data-phrase="step.decoding">mendekode</span>
+    <span data-phrase="step.full">melihat berapa biayanya pada kualitas penuh</span>
+    <span data-phrase="step.scale">mencari ukuran terbesar yang muat</span>
+    <span data-phrase="step.quality">menyusuri tombol kualitas</span>
+    <span data-phrase="step.belowFloor">turun di bawah lantai kualitas, karena pengecilan dimatikan</span>
+    <span data-phrase="step.resolution">menukar resolusi dengan kualitas</span>
+    <span data-phrase="step.budget">membelanjakan sisa anggarannya</span>
+    <span data-phrase="step.trying">mencoba {format} sebagai gantinya</span>
+    <span data-phrase="error.attempts">menyerah setelah terlalu banyak percobaan.</span>
+    <span data-phrase="error.encode">peramban ini tidak mau mengodekan {format}.</span>
+    <span data-phrase="error.decode">peramban ini tidak bisa mendekode gambarnya.</span>
+
+    <span data-phrase="results.all">{before} turun ke {after} &mdash; {change}, dan setiap gambar ada di bawah target.</span>
+    <span data-phrase="results.missed.one">{before} turun ke {after}. {count} gambar tidak sampai ke target &mdash; lihat barisnya di bawah.</span>
+    <span data-phrase="results.missed.many">{before} turun ke {after}. {count} gambar tidak sampai ke target &mdash; lihat baris-barisnya di bawah.</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; sudah di bawah target, jadi tidak ada yang disentuh.</span>
+    <span data-phrase="row.match">Diukur terhadap aslinya: {match} (SSIM {ssim}, PSNR {psnr}).</span>
+    <span data-phrase="row.missed">Sekecil inilah gambar ini bisa dibuat dengan pengaturan di atas, dan ia masih di atas target. Izinkan pengecilan, atau minta target yang lebih besar.</span>
+    <span data-phrase="row.download">Unduh</span>
+    <span data-phrase="row.compare">Bandingkan</span>
+    <span data-phrase="row.hide">Sembunyikan</span>
+
+    <span data-phrase="change.smaller">{percent}% lebih kecil</span>
+    <span data-phrase="change.larger">{percent}% lebih besar</span>
+    <span data-phrase="change.same">kira-kira sama besarnya</span>
+
+    <span data-phrase="match.identical">{percent}% &mdash; tak terbedakan</span>
+    <span data-phrase="match.invisible">{percent}% &mdash; tidak ada beda yang terlihat</span>
+    <span data-phrase="match.close">{percent}% &mdash; sangat dekat</span>
+    <span data-phrase="match.softened">{percent}% &mdash; sedikit melunak</span>
+    <span data-phrase="match.visible">{percent}% &mdash; kompresinya terlihat</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">identik</span>
+
+    <span data-phrase="detail.untouched">Mengompresnya akan memakan kualitas demi ukuran yang sudah dimilikinya, jadi ia diteruskan bita demi bita, berikut metadatanya.</span>
+    <span data-phrase="detail.line">{format}, {size}, {encodes}.</span>
+    <span data-phrase="detail.line.quality">{format}, kualitas {quality}, {size}, {encodes}.</span>
+    <span data-phrase="detail.format">Ditulis sebagai {format}</span>
+    <span data-phrase="detail.format.changed">Ditulis sebagai {format}, yang pada ukuran ini menahan gambarnya lebih baik daripada format aslinya</span>
+    <span data-phrase="detail.resized">dikecilkan dari {from} ke {to}</span>
+    <span data-phrase="detail.full">ukuran penuh pada {size}</span>
+    <span data-phrase="detail.encodes.one">ketemu dalam {count} kali pengodean</span>
+    <span data-phrase="detail.encodes.many">ketemu dalam {count} kali pengodean</span>
+
+    <span data-phrase="compare.original">Asli</span>
+    <span data-phrase="compare.compressed">Terkompresi</span>
+    <span data-phrase="compare.alt">{label}: {name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">Keduanya ditampilkan dalam lebar yang sama, dan begitulah bedanya benar-benar dinilai. Untuk melihat dari dekat, buka kedua berkasnya pada ukuran penuh.</span>
+  </div>
 </main>

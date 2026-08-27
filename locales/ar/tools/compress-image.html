@@ -115,4 +115,100 @@
       <ul id="result-list" class="result-list"></ul>
     </div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+
+    Two of the modules under src/ are imported by the tests straight off the
+    disk, which is why they cannot import phrases.js themselves: files.js and
+    compress.js hand main.js the key of a phrase and the blanks to fill it
+    with, and main.js, which can reach this block, resolves it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} بايت</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+
+    <span data-phrase="list.count.one">صورة واحدة، {size} في المجموع</span>
+    <span data-phrase="list.count.many">{count} صورة، {size} في المجموع</span>
+    <span data-phrase="row.under">دون الحجم المطلوب أصلاً &mdash; هذه ستُترك كما هي تماماً.</span>
+    <span data-phrase="row.remove">أخرِج {name} من القائمة</span>
+    <span data-phrase="load.unreadable">{name}: ليست صورة تقدر هذه الأداة على قراءتها.</span>
+    <span data-phrase="load.undecodable">{name}: لم يستطع هذا المتصفح فكّ ترميزها.</span>
+
+    <span data-phrase="target.none">اكتب حجماً تقصده.</span>
+    <span data-phrase="target.empty">كل صورة ستُنزَل إلى ما دون {size}.</span>
+    <span data-phrase="target.single.over">هذه الصورة فوق {size}، فستُضغط حتى لا تعود كذلك.</span>
+    <span data-phrase="target.single.under">هذه الصورة دون {size} أصلاً، فستمرّ دون أن تُمسّ.</span>
+    <span data-phrase="target.over.one">{over} من {total} صورة فوق {size}</span>
+    <span data-phrase="target.over.many">{over} من {total} صورة فوق {size}</span>
+    <span data-phrase="target.rest.one">والأخرى ستمرّ دون أن تُمسّ</span>
+    <span data-phrase="target.rest.many">والبقية، وعددها {count}، ستمرّ دون أن تُمسّ</span>
+    <span data-phrase="target.summary">{over}.</span>
+    <span data-phrase="target.summary.rest">{over}، {rest}.</span>
+
+    <span data-phrase="format.note">{format} {sizing}</span>
+    <span data-phrase="format.auto">تبقى الصيغة كما هي، إلا أن يكون الحجم المطلوب ضيقاً إلى حدّ يكلّف فيه إبقاؤها جودةً حقيقية &mdash; فيُستعمل عندئذ WebP، ويقول السطر ذلك.</span>
+    <span data-phrase="format.keep">كل صورة تبقى على الصيغة التي وصلت بها.</span>
+    <span data-phrase="format.jpeg">كل شيء يُكتب بصيغة JPEG. والشفافية تصير بيضاء، لأن JPEG لا قناة ألفا فيه.</span>
+    <span data-phrase="format.webp">كل شيء يُكتب بصيغة WebP: أصغر من JPEG عند الجودة نفسها، ويحفظ الشفافية.</span>
+    <span data-phrase="format.png">كل شيء يُكتب بصيغة PNG. وPNG لا مقبض جودة فيه، فالطريق الوحيد إلى الحجم المطلوب هو تصغير الصورة.</span>
+    <span data-phrase="format.resize.on">إن لم تكفِ الجودة وحدها لبلوغ الحجم المطلوب، صُغِّرت الصورة بدل أن تُسحق.</span>
+    <span data-phrase="format.resize.off">تحتفظ الصورة بأبعادها كاملة، فحجم مطلوب ضيّق لا بد أن يُدفع من الجودة وحدها.</span>
+    <span data-phrase="format.webp.unavailable">WebP &mdash; هذا المتصفح لا يدعمه</span>
+
+    <span data-phrase="progress.at">{at} من {total}: {name} &mdash; {step}</span>
+    <span data-phrase="step.reading">تُقرأ</span>
+    <span data-phrase="step.decoding">يُفكّ ترميزها</span>
+    <span data-phrase="step.full">يُنظر كم تكلّف عند الجودة الكاملة</span>
+    <span data-phrase="step.scale">يُبحث عن أكبر مقاس يتّسع</span>
+    <span data-phrase="step.quality">يُمشّط مقبض الجودة</span>
+    <span data-phrase="step.belowFloor">يُنزَل تحت أرضية الجودة، لأن التصغير مُطفأ</span>
+    <span data-phrase="step.resolution">تُقايَض الدقة بالجودة</span>
+    <span data-phrase="step.budget">يُنفَق ما بقي من الميزانية</span>
+    <span data-phrase="step.trying">تُجرَّب {format} بدلاً منها</span>
+    <span data-phrase="error.attempts">استُسلم بعد محاولات أكثر من اللازم.</span>
+    <span data-phrase="error.encode">هذا المتصفح لم يقبل الترميز بصيغة {format}.</span>
+    <span data-phrase="error.decode">هذا المتصفح لم يستطع فكّ ترميز الصورة.</span>
+
+    <span data-phrase="results.all">من {before} إلى {after} &mdash; {change}، وكل صورة دون الحجم المطلوب.</span>
+    <span data-phrase="results.missed.one">من {before} إلى {after}. {count} صورة لم تبلغ الحجم المطلوب &mdash; انظر السطر أدناه.</span>
+    <span data-phrase="results.missed.many">من {before} إلى {after}. {count} صور لم تبلغ الحجم المطلوب &mdash; انظر الأسطر أدناه.</span>
+    <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="row.headline.untouched">{size} &mdash; كانت دون الحجم المطلوب أصلاً، فلم يُمَسّ منها شيء.</span>
+    <span data-phrase="row.match">قيست في مقابل الأصل: {match} (SSIM {ssim}، PSNR {psnr}).</span>
+    <span data-phrase="row.missed">هذا أصغر ما أمكن أن تصير إليه هذه الصورة بالإعدادات أعلاه، وهي ما تزال فوق الحجم المطلوب. اسمح بالتصغير، أو اطلب حجماً أكبر.</span>
+    <span data-phrase="row.download">نزِّل</span>
+    <span data-phrase="row.compare">قارِن</span>
+    <span data-phrase="row.hide">أخفِ</span>
+
+    <span data-phrase="change.smaller">أصغر بنسبة {percent}%</span>
+    <span data-phrase="change.larger">أكبر بنسبة {percent}%</span>
+    <span data-phrase="change.same">بالحجم نفسه تقريباً</span>
+
+    <span data-phrase="match.identical">{percent}% &mdash; لا يُفرَّق بينهما</span>
+    <span data-phrase="match.invisible">{percent}% &mdash; لا فرق يُرى</span>
+    <span data-phrase="match.close">{percent}% &mdash; قريبة جداً</span>
+    <span data-phrase="match.softened">{percent}% &mdash; ليّنت قليلاً</span>
+    <span data-phrase="match.visible">{percent}% &mdash; الضغط ظاهر</span>
+    <span data-phrase="psnr.db">{db} dB</span>
+    <span data-phrase="psnr.identical">متطابقتان</span>
+
+    <span data-phrase="detail.untouched">ضغطها كان سيكلّف جودةً لبلوغ حجم كانت تملكه أصلاً، فمرّت بايتاً ببايت، ببياناتها الوصفية وكل شيء.</span>
+    <span data-phrase="detail.line">{format}، {size}، {encodes}.</span>
+    <span data-phrase="detail.line.quality">{format}، جودة {quality}، {size}، {encodes}.</span>
+    <span data-phrase="detail.format">كُتبت بصيغة {format}</span>
+    <span data-phrase="detail.format.changed">كُتبت بصيغة {format}، التي تماسكت بها الصورة عند هذا الحجم خيراً مما تماسكت بصيغتها الأصلية</span>
+    <span data-phrase="detail.resized">صُغِّرت من {from} إلى {to}</span>
+    <span data-phrase="detail.full">بالحجم الكامل عند {size}</span>
+    <span data-phrase="detail.encodes.one">وُجدت في محاولة ترميز واحدة</span>
+    <span data-phrase="detail.encodes.many">وُجدت في {count} محاولة ترميز</span>
+
+    <span data-phrase="compare.original">الأصل</span>
+    <span data-phrase="compare.compressed">بعد الضغط</span>
+    <span data-phrase="compare.alt">{label}: {name}</span>
+    <span data-phrase="compare.note">{size} &middot; {dimensions}</span>
+    <span data-phrase="compare.hint">كلتاهما معروضة بالعرض نفسه، وهكذا يُحكم على الفرق فعلاً. وللنظر عن قرب، افتح الملفين بحجمهما الكامل.</span>
+  </div>
 </main>

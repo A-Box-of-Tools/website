@@ -93,4 +93,34 @@
 
     <div id="diff-view" class="diff"></div>
   </section>
+  <!--
+    The tool's own sentences, kept out of the JavaScript so that a translator
+    can reach them. shared/js/phrases.js reads them back, and a key defined here
+    wins over the frame's one.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.empty">vuoto</span>
+    <span data-phrase="count.lines.one">{count} riga</span>
+    <span data-phrase="count.lines.many">{count} righe</span>
+    <span data-phrase="count.characters.one">{count} carattere</span>
+    <span data-phrase="count.characters.many">{count} caratteri</span>
+    <span data-phrase="count.summary">{lines}, {characters}, {size}</span>
+
+    <span data-phrase="read.failed">Quel file non si è potuto leggere: {detail}</span>
+
+    <span data-phrase="result.waiting">Incolla qualcosa in entrambi i riquadri.</span>
+    <span data-phrase="result.identical">I due sono identici, byte per byte.</span>
+    <span data-phrase="result.ignored">Uguali, una volta ignorate le differenze che hai chiesto di ignorare.</span>
+    <span data-phrase="result.counts">{added} aggiunte, {removed} tolte</span>
+    <span data-phrase="result.summary">{changes} &mdash; il {percent}% delle righe sta in entrambi. {note}</span>
+    <span data-phrase="result.newline">Uno finisce con un a capo e l&rsquo;altro no.</span>
+    <span data-phrase="result.failed">Non ne è uscito niente.</span>
+
+    <span data-phrase="skip.one">{count} riga invariata</span>
+    <span data-phrase="skip.many">{count} righe invariate</span>
+    <span data-phrase="skip.rest">Il resto non viene disegnato &mdash; usa &laquo;Scarica&raquo; per avere la patch intera.</span>
+
+    <span data-phrase="copy.done">Copiato</span>
+    <span data-phrase="copy.select">Selezionato &mdash; premi Ctrl+C</span>
+  </div>
 </main>

@@ -73,10 +73,26 @@ lock.
 | Formatting before comparing | [`format-json`](../format-json/) is one tab away, and doing it silently here would mean the diff shown is not the diff of what was pasted |
 | Applying the patch | `git apply` and `patch` exist, know about context drift, and have flags for when it does not apply cleanly |
 
+## Where the words are
+
+Not in `src/`. Every sentence the page says about a comparison &mdash; the count
+under each box, the line over the diff, the two words the Copy button cycles
+through &mdash; is a `data-phrase` span in the `#phrases` block at the foot of
+`body.html`, read back with `phrase()` from `shared/js/phrases.js`. `src/` is
+copied byte for byte into every language, so a sentence written there is English
+on fourteen of the tool's fifteen addresses; `body.html` is translated once per
+language, so a sentence held there is not.
+
+Two things follow from that and are worth knowing before adding a sentence.
+Plurals are two keys, never one with an `s` appended, because the plural of a
+noun is not a suffix in every language. And a note that is sometimes absent goes
+in as a blank the caller fills with `''` rather than being concatenated on,
+because the space that would join the two sentences is not a space in Japanese.
+
 ## The files
 
 ```
-body.html            the two boxes, the options, the diff view
+body.html            the two boxes, the options, the diff view, the phrases
 styles.css           the two-pane layout and the diff grid
 src/main.js          the wiring: two inputs, options, drawing the comparison
 src/diff.js          Myers, the word diff, and the unified output
