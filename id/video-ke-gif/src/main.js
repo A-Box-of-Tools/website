@@ -125,7 +125,7 @@ if(exporting)return;
 clearError();
 releaseFile();
 file=picked;
-picker.busy('Reading the file...');
+picker.busy(phrase('step.reading'));
 try{
 objectUrl=URL.createObjectURL(picked);
 const played=await openInPlayer(el.preview,objectUrl);
@@ -173,7 +173,7 @@ el.exportBtn.disabled=false;
 updateSummary();
 }catch(error){
 console.error(error);
-showError(error?.message||'That file could not be opened.');
+showError(error?.message?phrase(error.message):phrase('open.notopened'));
 resetView();
 }finally{
 picker.done();
@@ -185,23 +185,28 @@ el.stage.style.maxWidth=`calc(52vh * ${source.width / source.height})`;
 el.preview.hidden=!playable;
 el.stageNote.hidden=playable;
 if(!playable){
-el.stageNote.textContent='This browser will not play this file, so there is no preview. '
-+'The frames are still read and converted - mark the section by its times below.';
+el.stageNote.textContent=phrase('preview.none');
 }
 }
 function describeSource(){
 el.source.hidden=false;
 el.srcName.textContent=file.name;
 el.srcSize.textContent=formatBytes(file.size);
-el.srcFrame.textContent=`${source.width} x ${source.height}`;
-el.srcLength.textContent=duration?formatTime(duration):'unknown';
+el.srcFrame.textContent=phrase('size.plain',
+{width:source.width,height:source.height});
+el.srcLength.textContent=duration?formatTime(duration):phrase('len.unknown');
 if(media){
-const turned=media.video.rotation?`, turned ${media.video.rotation} degrees`:'';
-el.srcCodec.textContent=`${media.video.codec} (${media.video.entryType})${turned}`;
+el.srcCodec.textContent=media.video.rotation
+?phrase('src.codec.turned',{
+codec:media.video.codec,
+entry:media.video.entryType,
+degrees:media.video.rotation,
+})
+:phrase('src.codec',{codec:media.video.codec,entry:media.video.entryType});
 }else{
-el.srcCodec.textContent="read by the browser's own player";
+el.srcCodec.textContent=phrase('src.byplayer');
 }
-el.srcPath.textContent=canRead?'WebCodecs, frame by frame':'the player, one seek per frame';
+el.srcPath.textContent=phrase(canRead?'path.codecs':'path.player');
 el.pathNote.hidden=canRead;
 if(!canRead){
 el.pathNote.textContent=phrase('path.seek',{
@@ -319,23 +324,29 @@ function updateSummary(){
 if(!source.width)return;
 const{size,times}=plan();
 const span=Math.max(0,section.end-section.start);
-el.sumSection.textContent=`${formatTime(section.start)} to ${formatTime(section.end)}`
-+` (${span.toFixed(2)}s)`;
-el.sumSize.textContent=`${size.width} x ${size.height}`
-+` (from ${source.width} x ${source.height})`;
+el.sumSection.textContent=phrase('sum.section',{
+from:formatTime(section.start),
+to:formatTime(section.end),
+span:span.toFixed(2),
+});
+el.sumSize.textContent=phrase('size.from',{
+width:size.width,
+height:size.height,
+fromWidth:source.width,
+fromHeight:source.height,
+});
 el.sumFrames.textContent=`${times.length.toLocaleString()}`;
 const{low,high}=estimateBytes({frames:times.length,...size});
-el.sumBytes.textContent=`${formatBytes(low)} to ${formatBytes(high)}`;
+el.sumBytes.textContent=phrase('sum.bytes',
+{low:formatBytes(low),high:formatBytes(high)});
 el.widthNote.hidden=size.width<=source.width;
-el.widthNote.textContent=`That is wider than the video itself (${source.width} px), `
-+'which cannot add detail that was never there - only bytes.';
+el.widthNote.textContent=phrase('note.wider',{px:source.width});
 const memory=workingBytes({frames:times.length,...size});
 el.memoryNote.hidden=memory<(300<<20);
-el.memoryNote.textContent=`Every frame is held in memory while the palette is chosen, `
-+`which for these settings is about ${formatBytes(memory)}. `
-+(memory>MEMORY_LIMIT
-?'That is more than this tool will attempt - shorten the section, or drop the width or the frame rate.'
-:'A shorter section, a smaller width or a lower frame rate all bring it down.');
+el.memoryNote.textContent=phrase('join.sentences',{
+a:phrase('note.memory',{size:formatBytes(memory)}),
+b:phrase(memory>MEMORY_LIMIT?'note.memory.toobig':'note.memory.ok'),
+});
 el.exportBtn.disabled=exporting||memory>MEMORY_LIMIT||span<=0;
 }
 function showError(message){
@@ -351,29 +362,31 @@ const share=phase==='reading'?0.65:0.35;
 const base=phase==='reading'?0:0.65;
 const fraction=total>0?base+share*Math.min(1,done/total):base;
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
-el.progressLabel.textContent=phase==='reading'
-?`Reading frame ${done.toLocaleString()} of ${total.toLocaleString()}`
-:`Writing frame ${done.toLocaleString()} of ${total.toLocaleString()}`;
+el.progressLabel.textContent=phrase(
+phase==='reading'?'step.readframe':'step.writeframe',
+{done:done.toLocaleString(),total:total.toLocaleString()},
+);
 }
 function outputFilename(){
 const base=(file?.name??'video').replace(/\.[^.]+$/,'');
 return`${base}.gif`;
 }
 function formatBytes(bytes){
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
-if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
-return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
+if(bytes<1024*1024*1024){
+return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
+}
+return phrase('size.gb',{n:(bytes/1024/1024/1024).toFixed(2)});
 }
 async function runExport(){
 if(exporting||!file)return;
 const{size,fps,times}=plan();
 if(!times.length){
-showError('That section is too short to take a frame from.');
+showError(phrase('export.tooshort'));
 return;
 }
 if(workingBytes({frames:times.length,...size})>MEMORY_LIMIT){
-showError('That would need more memory than this tool will ask a browser for. '
-+'Shorten the section, or drop the width or the frame rate.');
+showError(phrase('export.toobig'));
 return;
 }
 clearError();
@@ -416,21 +429,24 @@ lastResultUrl=URL.createObjectURL(result.blob);
 el.resultImage.src=lastResultUrl;
 el.download.href=lastResultUrl;
 el.download.download=outputFilename();
+const written=phrase(result.written===1?'n.frame.one':'n.frame.many',
+{n:result.written});
 el.resultInfo.textContent=[
-`${size.width} x ${size.height}`,
-`${result.written} frame${result.written === 1 ? '' : 's'}`
-+(result.dropped?` (${result.dropped} identical, dropped)`:''),
-`${fps} fps`,
-`${result.colors} colours`,
+phrase('size.plain',{width:size.width,height:size.height}),
+result.dropped
+?phrase('out.dropped',{frames:written,n:result.dropped})
+:written,
+phrase('out.fps',{n:fps}),
+phrase('out.colours',{n:result.colors}),
 formatBytes(result.blob.size),
-].join(' · ');
+].reduce((a,b)=>phrase('join.dot',{a,b}));
 el.result.hidden=false;
 el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message||'Something went wrong while making the GIF.');
+showError(error?.message?phrase(error.message):phrase('export.failed'));
 console.error(error);
 }
 }finally{
