@@ -72,7 +72,7 @@ export function encodePng(pixels, width, height) {
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
       if (blob) resolve(blob);
-      else reject(new Error('This browser would not write a PNG.'));
+      else reject(new Error('png.nowrite'));
     }, 'image/png');
   });
 }
@@ -105,7 +105,7 @@ export function thumbnail(pixels, width, height) {
   return new Promise((resolve, reject) => {
     small.toBlob((blob) => {
       if (blob) resolve({ url: URL.createObjectURL(blob), width: small.width, height: small.height });
-      else reject(new Error('This browser would not draw the previews.'));
+      else reject(new Error('png.nopreview'));
     }, 'image/png');
   });
 }
@@ -119,16 +119,23 @@ export function thumbnail(pixels, width, height) {
  * a folder of PNGs is impossible. Two columns, tab separated, with a header
  * that says what the units are.
  *
+ * The `#` marks and the tabs are written here rather than inside a phrase.
+ * phrase() collapses whitespace, so a tab-separated header row cannot be one
+ * string - each column is named on its own and this file joins them.
+ *
  * @param {object[]} rows  the frames being written, in order
+ * @param {(key: string, values?: object) => string} t  the caller's phrase()
  */
-export function timingList(sourceName, gif, rows) {
+export function timingList(sourceName, gif, rows, t) {
   const lines = [
-    `# Frames of ${baseName(sourceName)}`,
-    `# ${gif.width}x${gif.height}, ${gif.frames.length} frames in the original`,
-    `# Delays are as the file stores them. A browser plays anything under 0.02s`,
-    `# at 0.1s, which is the "played" column.`,
+    `# ${t('timing.title', { name: baseName(sourceName) })}`,
+    `# ${t(gif.frames.length === 1 ? 'timing.size.one' : 'timing.size.many', {
+      width: gif.width, height: gif.height, frames: gif.frames.length,
+    })}`,
+    `# ${t('timing.delays')}`,
     '',
-    'file\tstored (s)\tplayed (s)\tx\ty\twidth\theight\tdisposal',
+    ['col.file', 'col.stored', 'col.played', 'col.x', 'col.y',
+      'col.width', 'col.height', 'col.disposal'].map((key) => t(key)).join('\t'),
   ];
 
   for (const row of rows) {
@@ -148,22 +155,24 @@ export function timingList(sourceName, gif, rows) {
 }
 
 /** A byte count in the units a person reads. */
-export function formatBytes(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(bytes < 10240 ? 1 : 0)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+export function formatBytes(bytes, t) {
+  if (bytes < 1024) return t('size.b', { n: bytes });
+  if (bytes < 1024 * 1024) {
+    return t('size.kb', { n: (bytes / 1024).toFixed(bytes < 10240 ? 1 : 0) });
+  }
+  return t('size.mb', { n: (bytes / (1024 * 1024)).toFixed(1) });
 }
 
 /** Seconds, written short: 0.08s, 1.2s, 12s. */
-export function formatSeconds(seconds) {
-  if (seconds < 1) return `${seconds.toFixed(2)}s`;
-  if (seconds < 10) return `${seconds.toFixed(1)}s`;
-  return `${Math.round(seconds)}s`;
+export function formatSeconds(seconds, t) {
+  if (seconds < 1) return t('unit.seconds', { n: seconds.toFixed(2) });
+  if (seconds < 10) return t('unit.seconds', { n: seconds.toFixed(1) });
+  return t('unit.seconds', { n: Math.round(seconds) });
 }
 
 /** The four disposal methods, in words. */
-export function disposalLabel(disposal) {
-  if (disposal === 2) return 'clears its area after';
-  if (disposal === 3) return 'restores what was under it';
-  return 'stays on screen';
+export function disposalLabel(disposal, t) {
+  if (disposal === 2) return t('disposal.clears');
+  if (disposal === 3) return t('disposal.restores');
+  return t('disposal.stays');
 }

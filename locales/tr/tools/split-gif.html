@@ -120,6 +120,66 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">GIF okunuyor&hellip;</span>
+    <span data-phrase="read.failed">Bu dosya okunamadı: {why}</span>
+    <span data-phrase="gif.tooshort">Bu dosya GIF olamayacak kadar kısa.</span>
+    <span data-phrase="gif.notagif">Bu bir GIF değil. Dosya GIF87a ya da GIF89a ile başlamıyor.</span>
+    <span data-phrase="gif.enormous">Bu GIF devasa: ilk {n} kare, bu sayfanın bir seferde tutmayı göze aldığı belleği
+      doldurdu, gerisi okunmadan kaldı.</span>
+    <span data-phrase="gif.midframe">Bu GIF bir karenin ortasında bitiyor, dolayısıyla sonuncusu eksik olabilir.</span>
+    <span data-phrase="gif.damaged">Bu GIF bozuk: ilk kare tamamlanmadan bitiyor.</span>
+    <span data-phrase="gif.noframes">O GIF, bu okuyucunun açabildiği hiçbir kare içermiyor.</span>
+    <span data-phrase="note.partial.one">1 kare dosyanın kendi içinde yarıda kesiliyor; eksik pikseller saydam çıkıyor.</span>
+    <span data-phrase="note.partial.many">{n} kare dosyanın kendi içinde yarıda kesiliyor; eksik pikseller saydam çıkıyor.</span>
+    <span data-phrase="note.local">Karelerin {n} tanesi kendi renk tablosunu taşıyor; bu GIF&rsquo;in boyutundan
+      beklenenden büyük olmasının nedeni budur.</span>
+    <span data-phrase="note.comment">Dosya bir açıklama taşıyor: &laquo;{comment}&raquo;</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="loop.once">bir kez oynar (döngü bloğu yok)</span>
+    <span data-phrase="loop.forever">sonsuza dek</span>
+    <span data-phrase="loop.times.one">1 kez daha</span>
+    <span data-phrase="loop.times.many">{n} kez daha</span>
+    <span data-phrase="frame.number">Kare {n}</span>
+    <span data-phrase="step.drawing">Kareler çiziliyor&hellip;</span>
+    <span data-phrase="meta.clamped">{played} (dosyada {stored} sn)</span>
+    <span data-phrase="meta.whole">{delay} &mdash; {width} x {height}</span>
+    <span data-phrase="meta.patch">{delay} &mdash; {x}, {y} konumunda {width} x {height} &mdash; {disposal}</span>
+    <span data-phrase="disposal.stays">ekranda kalır</span>
+    <span data-phrase="disposal.clears">sonrasında kendi alanını temizler</span>
+    <span data-phrase="disposal.restores">altındakini geri getirir</span>
+    <span data-phrase="frames.count.one">1 kare, {picked} seçili</span>
+    <span data-phrase="frames.count.many">{n} kare, {picked} seçili</span>
+    <span data-phrase="mode.stored">Dosyanın içinde ne varsa: her karenin yeniden çizdiği yama, kendi boyutunda. Bir GIF
+      böyle küçük kalır, ve animasyonun görüntüsü bu değildir.</span>
+    <span data-phrase="mode.whole">Her PNG, animasyonun o anının göründüğü haliyle resmin tamamıdır. Neredeyse herkesin
+      istediği budur.</span>
+    <span data-phrase="every.one">kare</span>
+    <span data-phrase="every.two">ikinci kare</span>
+    <span data-phrase="every.three">üçüncü kare</span>
+    <span data-phrase="every.many">{n}. kare</span>
+    <span data-phrase="step.writing">{total} kareden {done}. yazılıyor&hellip;</span>
+    <span data-phrase="png.nowrite">Bu tarayıcı PNG yazmak istemedi.</span>
+    <span data-phrase="png.nopreview">Bu tarayıcı önizlemeleri çizmek istemedi.</span>
+    <span data-phrase="save.frame.failed">O kare yazılamadı: {why}</span>
+    <span data-phrase="save.sheet.failed">O tabaka yazılamadı: {why}</span>
+    <span data-phrase="save.frames.failed">Kareler yazılamadı: {why}</span>
+    <span data-phrase="timing.title">{name} dosyasının kareleri</span>
+    <span data-phrase="timing.size.one">Orijinalde {width}x{height}, 1 kare</span>
+    <span data-phrase="timing.size.many">Orijinalde {width}x{height}, {frames} kare</span>
+    <span data-phrase="timing.delays">Gecikmeler dosyanın sakladığı gibidir. Tarayıcı 0,02 sn altındaki her şeyi 0,1 sn
+      oynatır; oynatılan sütunu budur.</span>
+    <span data-phrase="col.file">dosya</span>
+    <span data-phrase="col.stored">saklanan (sn)</span>
+    <span data-phrase="col.played">oynatılan (sn)</span>
+    <span data-phrase="col.x">x</span>
+    <span data-phrase="col.y">y</span>
+    <span data-phrase="col.width">genişlik</span>
+    <span data-phrase="col.height">yükseklik</span>
+    <span data-phrase="col.disposal">sonrası</span>
+    <span data-phrase="unit.seconds">{n} sn</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="sheet.drawing">Sayfa &ccedil;iziliyor&hellip;</span>
     <span data-phrase="sheet.toobig">Bu sayfa {width} &times; {height} piksel olurdu; hi&ccedil;bir taray&#305;c&#305; bunu &ccedil;izmez. Bunun yerine iki kareden birini tutun ya da kareleri ZIP olarak kaydedin.</span>
     <span data-phrase="sheet.stored">Bir sayfada b&uuml;t&uuml;n h&uuml;creler ayn&#305; boyutta olmal&#305;d&#305;r; bu y&uuml;zden karenin saklad&#305;&#287;&#305; piksellerle de&#287;il, g&ouml;r&uuml;nd&uuml;&#287;&uuml; h&acirc;liyle kullan&#305;l&#305;r.</span>

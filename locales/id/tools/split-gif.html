@@ -120,6 +120,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Membaca GIF-nya&hellip;</span>
+    <span data-phrase="read.failed">Berkas itu tidak bisa dibaca: {why}</span>
+    <span data-phrase="gif.tooshort">Berkas itu terlalu pendek untuk menjadi GIF.</span>
+    <span data-phrase="gif.notagif">Itu bukan GIF. Berkasnya tidak diawali GIF87a maupun GIF89a.</span>
+    <span data-phrase="gif.enormous">GIF ini besar sekali: {n} bingkai pertama sudah memenuhi memori yang bersedia
+      ditahan halaman ini sekaligus, jadi sisanya tidak terbaca.</span>
+    <span data-phrase="gif.midframe">GIF ini berakhir di tengah sebuah bingkai, jadi bingkai terakhirnya mungkin tidak
+      utuh.</span>
+    <span data-phrase="gif.damaged">GIF ini rusak: ia berakhir sebelum bingkai pertamanya utuh.</span>
+    <span data-phrase="gif.noframes">GIF itu tidak memuat bingkai yang bisa dibuka pembaca ini.</span>
+    <span data-phrase="note.partial.one">1 bingkai berhenti di tengah pada berkasnya sendiri; piksel yang hilang keluar
+      sebagai tembus pandang.</span>
+    <span data-phrase="note.partial.many">{n} bingkai berhenti di tengah pada berkasnya sendiri; piksel yang hilang keluar
+      sebagai tembus pandang.</span>
+    <span data-phrase="note.local">{n} bingkai membawa tabel warnanya sendiri, dan itulah sebabnya GIF ini lebih besar
+      daripada yang disiratkan ukurannya.</span>
+    <span data-phrase="note.comment">Berkas ini membawa komentar: &ldquo;{comment}&rdquo;</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="loop.once">main sekali (tanpa blok pengulangan)</span>
+    <span data-phrase="loop.forever">terus-menerus</span>
+    <span data-phrase="loop.times.one">1 kali lagi</span>
+    <span data-phrase="loop.times.many">{n} kali lagi</span>
+    <span data-phrase="frame.number">Bingkai {n}</span>
+    <span data-phrase="step.drawing">Menggambar bingkainya&hellip;</span>
+    <span data-phrase="meta.clamped">{played} (tersimpan sebagai {stored} dtk)</span>
+    <span data-phrase="meta.whole">{delay} &mdash; {width} x {height}</span>
+    <span data-phrase="meta.patch">{delay} &mdash; {width} x {height} di {x}, {y} &mdash; {disposal}</span>
+    <span data-phrase="disposal.stays">tetap di layar</span>
+    <span data-phrase="disposal.clears">membersihkan areanya setelah itu</span>
+    <span data-phrase="disposal.restores">mengembalikan yang ada di bawahnya</span>
+    <span data-phrase="frames.count.one">1 bingkai, {picked} terpilih</span>
+    <span data-phrase="frames.count.many">{n} bingkai, {picked} terpilih</span>
+    <span data-phrase="mode.stored">Yang dimuat berkasnya: tambalan yang digambar ulang tiap bingkai, pada ukurannya
+      sendiri. Begitulah GIF tetap kecil, dan begitu pula bukan rupa animasinya.</span>
+    <span data-phrase="mode.whole">Setiap PNG adalah gambar utuh, persis seperti rupa saat itu dalam animasinya. Ini
+      yang diinginkan hampir semua orang.</span>
+    <span data-phrase="every.one">bingkai</span>
+    <span data-phrase="every.two">bingkai kedua</span>
+    <span data-phrase="every.three">bingkai ketiga</span>
+    <span data-phrase="every.many">bingkai ke-{n}</span>
+    <span data-phrase="step.writing">Menulis bingkai {done} dari {total}&hellip;</span>
+    <span data-phrase="png.nowrite">Browser ini tidak mau menulis PNG.</span>
+    <span data-phrase="png.nopreview">Browser ini tidak mau menggambar pratinjaunya.</span>
+    <span data-phrase="save.frame.failed">Bingkai itu tidak bisa ditulis: {why}</span>
+    <span data-phrase="save.sheet.failed">Lembar itu tidak bisa ditulis: {why}</span>
+    <span data-phrase="save.frames.failed">Bingkai-bingkainya tidak bisa ditulis: {why}</span>
+    <span data-phrase="timing.title">Bingkai dari {name}</span>
+    <span data-phrase="timing.size.one">{width}x{height}, 1 bingkai pada aslinya</span>
+    <span data-phrase="timing.size.many">{width}x{height}, {frames} bingkai pada aslinya</span>
+    <span data-phrase="timing.delays">Jedanya sebagaimana disimpan berkasnya. Browser memainkan apa pun di bawah 0,02 dtk
+      sebagai 0,1 dtk, dan itulah kolom dimainkan.</span>
+    <span data-phrase="col.file">berkas</span>
+    <span data-phrase="col.stored">tersimpan (dtk)</span>
+    <span data-phrase="col.played">dimainkan (dtk)</span>
+    <span data-phrase="col.x">x</span>
+    <span data-phrase="col.y">y</span>
+    <span data-phrase="col.width">lebar</span>
+    <span data-phrase="col.height">tinggi</span>
+    <span data-phrase="col.disposal">pelepasan</span>
+    <span data-phrase="unit.seconds">{n} dtk</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="sheet.drawing">Menggambar lembar&hellip;</span>
     <span data-phrase="sheet.toobig">Lembar itu akan berukuran {width} kali {height} piksel, dan tidak ada peramban yang menggambarnya. Simpan satu bingkai dari setiap dua, atau simpan bingkai sebagai ZIP.</span>
     <span data-phrase="sheet.stored">Sebuah lembar memerlukan setiap sel berukuran sama, jadi ia memakai bingkai sebagaimana tampak, bukan hanya piksel yang disimpan bingkai itu.</span>

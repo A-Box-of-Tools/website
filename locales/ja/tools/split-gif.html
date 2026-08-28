@@ -54,7 +54,7 @@
         <label for="every">残すコマ</label>
         <div class="inline-pair">
           <input type="number" id="every" min="1" max="100" step="1" value="1">
-          <span id="every-note">コマに1枚</span>
+          <span id="every-note">フレーム</span>
         </div>
         <p class="field-note">
           全部ではなく2コマに1枚、5コマに1枚だけ取り出します。一覧表を作るときや、長い録画のときに。
@@ -112,6 +112,61 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">GIFを読み込んでいます&hellip;</span>
+    <span data-phrase="read.failed">そのファイルは読み込めませんでした: {why}</span>
+    <span data-phrase="gif.tooshort">そのファイルはGIFにしては短すぎます。</span>
+    <span data-phrase="gif.notagif">それはGIFではありません。ファイルがGIF87aでもGIF89aでも始まっていません。</span>
+    <span data-phrase="gif.enormous">このGIFは巨大です。最初の{n}フレームでこのページが一度に抱える気のあるメモリが埋まったため、残りは読まずに終わりました。</span>
+    <span data-phrase="gif.midframe">このGIFはフレームの途中で終わっているので、最後の1枚は不完全かもしれません。</span>
+    <span data-phrase="gif.damaged">このGIFは壊れています。最初のフレームが揃う前に終わっています。</span>
+    <span data-phrase="gif.noframes">そのGIFには、この読み取り機で開けたフレームがありませんでした。</span>
+    <span data-phrase="note.partial.one">1フレームがファイルの中で途切れています。欠けた画素は透明になります。</span>
+    <span data-phrase="note.partial.many">{n}フレームがファイルの中で途切れています。欠けた画素は透明になります。</span>
+    <span data-phrase="note.local">{n}フレームが独自のカラーテーブルを持っており、このGIFが見た目の寸法より大きいのはそのためです。</span>
+    <span data-phrase="note.comment">ファイルにコメントが入っています:「{comment}」</span>
+    <span data-phrase="join.sentences">{a}{b}</span>
+    <span data-phrase="loop.once">1回だけ再生（ループブロックなし）</span>
+    <span data-phrase="loop.forever">無限</span>
+    <span data-phrase="loop.times.one">あと1回</span>
+    <span data-phrase="loop.times.many">あと{n}回</span>
+    <span data-phrase="frame.number">フレーム{n}</span>
+    <span data-phrase="step.drawing">フレームを描いています&hellip;</span>
+    <span data-phrase="meta.clamped">{played}（ファイル上は{stored}秒）</span>
+    <span data-phrase="meta.whole">{delay} &mdash; {width} x {height}</span>
+    <span data-phrase="meta.patch">{delay} &mdash; {x}, {y}に{width} x {height} &mdash; {disposal}</span>
+    <span data-phrase="disposal.stays">画面に残す</span>
+    <span data-phrase="disposal.clears">あとで自分の領域を消す</span>
+    <span data-phrase="disposal.restores">下にあったものを戻す</span>
+    <span data-phrase="frames.count.one">1フレーム、うち{picked}件を選択</span>
+    <span data-phrase="frames.count.many">{n}フレーム、うち{picked}件を選択</span>
+    <span data-phrase="mode.stored">ファイルが持っているもの。各フレームが描き直す差分を、その差分自身の大きさで出します。GIFが小さく収まるのはこの仕組みのおかげで、これはアニメーションの見た目ではありません。</span>
+    <span data-phrase="mode.whole">どのPNGも画面全体で、アニメーションのその瞬間に見えるとおりです。ほとんどの人が欲しいのはこちらです。</span>
+    <span data-phrase="every.one">フレーム</span>
+    <span data-phrase="every.two">2フレームに1枚</span>
+    <span data-phrase="every.three">3フレームに1枚</span>
+    <span data-phrase="every.many">{n}フレームに1枚</span>
+    <span data-phrase="step.writing">{total}件中{done}件目のフレームを書き出しています&hellip;</span>
+    <span data-phrase="png.nowrite">このブラウザーはPNGを書いてくれませんでした。</span>
+    <span data-phrase="png.nopreview">このブラウザーはプレビューを描いてくれませんでした。</span>
+    <span data-phrase="save.frame.failed">そのフレームは書き出せませんでした: {why}</span>
+    <span data-phrase="save.sheet.failed">そのシートは書き出せませんでした: {why}</span>
+    <span data-phrase="save.frames.failed">フレームを書き出せませんでした: {why}</span>
+    <span data-phrase="timing.title">{name}のフレーム</span>
+    <span data-phrase="timing.size.one">元は{width}x{height}、1フレーム</span>
+    <span data-phrase="timing.size.many">元は{width}x{height}、{frames}フレーム</span>
+    <span data-phrase="timing.delays">表示時間はファイルが記録しているとおりです。ブラウザーは0.02秒未満をすべて0.1秒で再生し、それが「再生」の列です。</span>
+    <span data-phrase="col.file">ファイル</span>
+    <span data-phrase="col.stored">記録（秒）</span>
+    <span data-phrase="col.played">再生（秒）</span>
+    <span data-phrase="col.x">x</span>
+    <span data-phrase="col.y">y</span>
+    <span data-phrase="col.width">幅</span>
+    <span data-phrase="col.height">高さ</span>
+    <span data-phrase="col.disposal">後処理</span>
+    <span data-phrase="unit.seconds">{n}秒</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="sheet.drawing">シートを描いています&hellip;</span>
     <span data-phrase="sheet.toobig">そのシートは{width}×{height}ピクセルになり、どのブラウザーも描画できません。2コマに1枚だけ残すか、コマをZIPで保存してください。</span>
     <span data-phrase="sheet.stored">シートはすべてのセルが同じ大きさである必要があるため、そのコマが保存している画素だけではなく、表示されるままのコマを使います。</span>

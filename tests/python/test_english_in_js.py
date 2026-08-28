@@ -90,7 +90,9 @@ BASELINE = {
     'resize-image': 5,
     'reverse-video': 34,
     'share-text': 1,
-    'split-gif': 36,
+    # A filename template, one line of a template literal, and three markers the
+    # reader throws internally and never shows.
+    'split-gif': 5,
     'stack-images': 7,
     'svg-to-image': 27,
     'timelapse-video': 34,

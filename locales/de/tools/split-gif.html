@@ -114,6 +114,68 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Das GIF wird gelesen&hellip;</span>
+    <span data-phrase="read.failed">Diese Datei konnte nicht gelesen werden: {why}</span>
+    <span data-phrase="gif.tooshort">Diese Datei ist zu kurz, um ein GIF zu sein.</span>
+    <span data-phrase="gif.notagif">Das ist kein GIF. Die Datei beginnt nicht mit GIF87a oder GIF89a.</span>
+    <span data-phrase="gif.enormous">Dieses GIF ist riesig: die ersten {n} Bilder haben den Speicher gefüllt, den diese
+      Seite auf einmal halten will, der Rest blieb ungelesen.</span>
+    <span data-phrase="gif.midframe">Dieses GIF endet mitten in einem Bild, das letzte kann also unvollständig sein.</span>
+    <span data-phrase="gif.damaged">Dieses GIF ist beschädigt: es endet, bevor das erste Bild vollständig ist.</span>
+    <span data-phrase="gif.noframes">Dieses GIF enthält keine Bilder, die dieser Leser öffnen konnte.</span>
+    <span data-phrase="note.partial.one">1 Bild bricht schon in der Datei selbst ab; die fehlenden Pixel kommen transparent
+      heraus.</span>
+    <span data-phrase="note.partial.many">{n} Bilder brechen schon in der Datei selbst ab; die fehlenden Pixel kommen
+      transparent heraus.</span>
+    <span data-phrase="note.local">{n} der Bilder tragen eine eigene Farbtabelle, weshalb dieses GIF größer ist, als
+      seine Maße vermuten lassen.</span>
+    <span data-phrase="note.comment">Die Datei trägt einen Kommentar: &bdquo;{comment}&ldquo;</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="loop.once">spielt einmal (kein Schleifenblock)</span>
+    <span data-phrase="loop.forever">endlos</span>
+    <span data-phrase="loop.times.one">noch 1 Mal</span>
+    <span data-phrase="loop.times.many">noch {n} Mal</span>
+    <span data-phrase="frame.number">Bild {n}</span>
+    <span data-phrase="step.drawing">Die Bilder werden gezeichnet&hellip;</span>
+    <span data-phrase="meta.clamped">{played} (gespeichert als {stored}s)</span>
+    <span data-phrase="meta.whole">{delay} &mdash; {width} x {height}</span>
+    <span data-phrase="meta.patch">{delay} &mdash; {width} x {height} bei {x}, {y} &mdash; {disposal}</span>
+    <span data-phrase="disposal.stays">bleibt stehen</span>
+    <span data-phrase="disposal.clears">räumt seinen Bereich danach</span>
+    <span data-phrase="disposal.restores">stellt wieder her, was darunter war</span>
+    <span data-phrase="frames.count.one">1 Bild, {picked} ausgewählt</span>
+    <span data-phrase="frames.count.many">{n} Bilder, {picked} ausgewählt</span>
+    <span data-phrase="mode.stored">Was die Datei enthält: den Flicken, den jedes Bild neu zeichnet, in seiner eigenen
+      Größe. So bleibt ein GIF klein, und so sieht die Animation nicht aus.</span>
+    <span data-phrase="mode.whole">Jedes PNG ist das ganze Bild, genau so wie dieser Moment der Animation aussieht. Das
+      ist es, was fast alle wollen.</span>
+    <span data-phrase="every.one">Einzelbild</span>
+    <span data-phrase="every.two">zweite Einzelbild</span>
+    <span data-phrase="every.three">dritte Einzelbild</span>
+    <span data-phrase="every.many">{n}. Einzelbild</span>
+    <span data-phrase="step.writing">Bild {done} von {total} wird geschrieben&hellip;</span>
+    <span data-phrase="png.nowrite">Dieser Browser wollte kein PNG schreiben.</span>
+    <span data-phrase="png.nopreview">Dieser Browser wollte die Vorschauen nicht zeichnen.</span>
+    <span data-phrase="save.frame.failed">Dieses Bild konnte nicht geschrieben werden: {why}</span>
+    <span data-phrase="save.sheet.failed">Dieser Bogen konnte nicht geschrieben werden: {why}</span>
+    <span data-phrase="save.frames.failed">Die Bilder konnten nicht geschrieben werden: {why}</span>
+    <span data-phrase="timing.title">Bilder von {name}</span>
+    <span data-phrase="timing.size.one">{width}x{height}, 1 Bild im Original</span>
+    <span data-phrase="timing.size.many">{width}x{height}, {frames} Bilder im Original</span>
+    <span data-phrase="timing.delays">Die Verzögerungen sind die, die die Datei speichert. Ein Browser spielt alles unter
+      0,02 s mit 0,1 s, und das ist die Spalte gespielt.</span>
+    <span data-phrase="col.file">Datei</span>
+    <span data-phrase="col.stored">gespeichert (s)</span>
+    <span data-phrase="col.played">gespielt (s)</span>
+    <span data-phrase="col.x">x</span>
+    <span data-phrase="col.y">y</span>
+    <span data-phrase="col.width">Breite</span>
+    <span data-phrase="col.height">Höhe</span>
+    <span data-phrase="col.disposal">Nachbehandlung</span>
+    <span data-phrase="unit.seconds">{n}s</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="sheet.drawing">Das Blatt wird gezeichnet&hellip;</span>
     <span data-phrase="sheet.toobig">Dieses Blatt w&auml;re {width} mal {height} Pixel gro&szlig;, und das zeichnet kein Browser. Behalten Sie stattdessen jedes zweite Einzelbild, oder speichern Sie die Einzelbilder als ZIP.</span>
     <span data-phrase="sheet.stored">Ein Blatt braucht in jeder Zelle dieselbe Gr&ouml;&szlig;e und nimmt deshalb das Einzelbild, wie es erscheint, statt nur der Pixel, die ein Einzelbild speichert.</span>
