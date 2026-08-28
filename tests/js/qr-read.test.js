@@ -23,6 +23,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { makeQr } from '../../tools/qr-barcode/src/qr.js';
+
+// The generator next door asks its caller for the words. These tests only read
+// the bars back, so they hand it a resolver that echoes the key.
+const say = (key) => key;
 import { remainder } from '../../tools/qr-barcode/src/gf256.js';
 import { LEVELS, sizeOf } from '../../tools/qr-barcode/src/qr-tables.js';
 
@@ -100,7 +104,7 @@ test('modules: every mode and every level survives a round trip', () => {
 
   for (const text of strings) {
     for (const level of LEVELS) {
-      const qr = makeQr(text, { level });
+      const qr = makeQr(text, { level }, say);
       const read = decodeMatrix(qr.size, qr.modules);
       assert.equal(read.text, text, `${level}: ${text.slice(0, 20)}`);
       assert.equal(read.level, level);
@@ -117,7 +121,7 @@ test('modules: every version, and every mask, reads back', () => {
     // including version 1, where a longer fixture would not fit and the
     // encoder would quietly pick version 2.
     const text = `v${version}`;
-    const qr = makeQr(text, { level: 'Q', minVersion: version });
+    const qr = makeQr(text, { level: 'Q', minVersion: version }, say);
     assert.equal(qr.version, version, `the fixture is meant to be version ${version}`);
 
     const read = decodeMatrix(qr.size, qr.modules);
@@ -127,7 +131,7 @@ test('modules: every version, and every mask, reads back', () => {
   }
 
   for (let mask = 0; mask < 8; mask += 1) {
-    const qr = makeQr(LINK, { level: 'M', mask });
+    const qr = makeQr(LINK, { level: 'M', mask }, say);
     const read = decodeMatrix(qr.size, qr.modules);
     assert.equal(read.mask, mask);
     assert.equal(read.text, LINK);
@@ -135,7 +139,7 @@ test('modules: every version, and every mask, reads back', () => {
 });
 
 test('modules: damage inside the symbol is repaired, and counted', () => {
-  const qr = makeQr(LINK, { level: 'H' });
+  const qr = makeQr(LINK, { level: 'H' }, say);
   const damaged = qr.modules.slice();
 
   // A block seven modules square, well inside the data area, which is about
@@ -154,7 +158,7 @@ test('modules: damage inside the symbol is repaired, and counted', () => {
 });
 
 test('modules: a symbol that is mostly noise is refused, not guessed at', () => {
-  const qr = makeQr(LINK, { level: 'L' });
+  const qr = makeQr(LINK, { level: 'L' }, say);
   const ruined = qr.modules.slice();
   for (let i = 0; i < ruined.length; i += 3) ruined[i] ^= 1;
 
@@ -169,7 +173,7 @@ test('modules: a size no QR symbol has is refused', () => {
 test('modules: the format information is read from either copy', () => {
   // Both copies say the same thing so that one of them can be destroyed. The
   // first is wiped here, which is what a torn top-left corner does.
-  const qr = makeQr(LINK, { level: 'Q' });
+  const qr = makeQr(LINK, { level: 'Q' }, say);
   const torn = qr.modules.slice();
   for (let i = 0; i <= 8; i += 1) {
     torn[i * qr.size + 8] = 0;
@@ -190,7 +194,7 @@ test('pictures: a flat symbol at several sizes and margins', () => {
   for (const level of LEVELS) {
     for (const scale of [2, 3, 5, 8]) {
       for (const quiet of [4, 1]) {
-        const found = read(renderQr(makeQr(LINK, { level }), scale, quiet));
+        const found = read(renderQr(makeQr(LINK, { level }, say), scale, quiet));
         assert.ok(found, `${level} at ${scale}px, margin ${quiet}`);
         assert.equal(found.text, LINK);
         assert.equal(found.kind, 'qr');
@@ -200,7 +204,7 @@ test('pictures: a flat symbol at several sizes and margins', () => {
 });
 
 test('pictures: turned to any angle', () => {
-  const qr = makeQr(LINK, { level: 'M' });
+  const qr = makeQr(LINK, { level: 'M' }, say);
   for (const degrees of [0, 2, 5, 10, 15, 22, 30, 37, 45, 47, 60, 75, 90, 137, 180, 200, 271, 330]) {
     const found = read(rotate(renderQr(qr, 6), degrees));
     assert.ok(found, `turned ${degrees} degrees`);
@@ -209,7 +213,7 @@ test('pictures: turned to any angle', () => {
 });
 
 test('pictures: photographed at an angle, which needs the alignment pattern', () => {
-  const flat = renderQr(makeQr(LINK, { level: 'M' }), 8);
+  const flat = renderQr(makeQr(LINK, { level: 'M' }, say), 8);
   const side = flat.width;
 
   const mild = warp(flat, [
@@ -226,13 +230,13 @@ test('pictures: photographed at an angle, which needs the alignment pattern', ()
 });
 
 test('pictures: printed light on dark', () => {
-  const found = read(inverted(renderQr(makeQr(LINK, { level: 'M' }), 6)));
+  const found = read(inverted(renderQr(makeQr(LINK, { level: 'M' }, say), 6)));
   assert.equal(found?.text, LINK);
   assert.equal(found.how, 'inverted');
 });
 
 test('pictures: grainy, unevenly lit, and both at once', () => {
-  const flat = renderQr(makeQr(LINK, { level: 'M' }), 8);
+  const flat = renderQr(makeQr(LINK, { level: 'M' }, say), 8);
 
   assert.equal(read(noisy(flat, 120))?.text, LINK, 'grain');
   assert.equal(read(shaded(flat))?.text, LINK, 'lit from one side');
@@ -240,14 +244,14 @@ test('pictures: grainy, unevenly lit, and both at once', () => {
 });
 
 test('pictures: small, and off to one side of a big frame', () => {
-  const flat = renderQr(makeQr(LINK, { level: 'M' }), 8);
+  const flat = renderQr(makeQr(LINK, { level: 'M' }, say), 8);
   const found = read(placed(flat, 700, 500, 420, 40));
   assert.equal(found?.text, LINK);
 });
 
 test('pictures: a large version, flat and turned', () => {
   const text = 'x'.repeat(900);
-  const qr = makeQr(text, { level: 'M' });
+  const qr = makeQr(text, { level: 'M' }, say);
   assert.ok(qr.version >= 20, 'the fixture is meant to be a big symbol');
 
   assert.equal(read(renderQr(qr, 4))?.text, text, 'flat');
@@ -263,7 +267,7 @@ test('pictures: a picture with no code in it finds nothing', () => {
 });
 
 test('pictures: what it reports about how it read it', () => {
-  const qr = makeQr('WIFI:T:WPA;S:The Cafe;P:hunter2;;', { level: 'Q' });
+  const qr = makeQr('WIFI:T:WPA;S:The Cafe;P:hunter2;;', { level: 'Q' }, say);
   const found = read(renderQr(qr, 6));
 
   assert.equal(found.kind, 'qr');

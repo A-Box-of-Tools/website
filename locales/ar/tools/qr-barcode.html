@@ -187,6 +187,105 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">أي نص: حروف وأرقام وعلامات ترقيم. الاختيار المعتاد حين يكون الرقم من تحديدك.</span>
+    <span data-phrase="bar.code128.needs">أي نص يمكنك كتابته على لوحة المفاتيح</span>
+    <span data-phrase="bar.ean13.holds">12 أو 13 رقماً. الباركود على منتجات التجزئة خارج أمريكا الشمالية.</span>
+    <span data-phrase="bar.ean13.needs">12 رقماً، أو 13 مع رقم التحقق في آخره</span>
+    <span data-phrase="bar.upca.holds">11 أو 12 رقماً. باركود التجزئة المستعمل في الولايات المتحدة وكندا.</span>
+    <span data-phrase="bar.upca.needs">11 رقماً، أو 12 مع رقم التحقق في آخره</span>
+    <span data-phrase="bar.ean8.holds">7 أو 8 أرقام. الرمز القصير، للعبوات الأصغر من أن تحمل EAN-13.</span>
+    <span data-phrase="bar.ean8.needs">7 أرقام، أو 8 مع رقم التحقق في آخره</span>
+    <span data-phrase="bar.itf14.holds">13 أو 14 رقماً. الرمز على كرتونة شحن مملوءة بمنتجات التجزئة.</span>
+    <span data-phrase="bar.itf14.needs">13 رقماً، أو 14 مع رقم التحقق في آخره</span>
+    <span data-phrase="bar.itf.holds">عدد زوجي من الأرقام. مُحكم، وشائع في المستودعات.</span>
+    <span data-phrase="bar.itf.needs">أرقام، وبعدد زوجي &mdash; وإضافة صفر في المقدمة هي الحل المعتاد</span>
+    <span data-phrase="bar.code39.holds">حروف كبيرة وأرقام ومسافة و - . $ / + %. قديم، يقرؤه كل شيء.</span>
+    <span data-phrase="bar.code39.needs">حروف كبيرة وأرقام ومسافة و - . $ / + %</span>
+    <span data-phrase="bar.nosuch">لا باركود بهذا الاسم: {id}</span>
+    <span data-phrase="bar.empty">{name} يحتاج إلى ما يحمله.</span>
+    <span data-phrase="bar.wants">{name} يحتاج إلى {needs}.</span>
+    <span data-phrase="bar.code39.cannot">Code 39 لا يحمل {char}. لا يحمل غير A-Z و0-9 والمسافة و - . $ / + %. أما رمز QR
+      فيحمل كل ما تستطيع كتابته.</span>
+    <span data-phrase="bar.notascii">Code 128 لا يحمل غير ASCII، و{char} ليس منه. رمز QR يحمله.</span>
+    <span data-phrase="bar.checkdigit">هذا ليس {name} صالحاً: الرقم الأخير ينبغي أن يكون {expected} لا {actual}. اتركه
+      ويُحسب لك.</span>
+    <span data-phrase="bar.added">رقم التحقق {digit} حُسب وأُضيف.</span>
+    <span data-phrase="bar.modulo43">أُضيف محرف تحقق مقياس 43.</span>
+    <span data-phrase="bar.raised">رُفعت الحروف الصغيرة إلى كبيرة.</span>
+    <span data-phrase="bar.andraised">{note} رُفعت الحروف الصغيرة إلى كبيرة.</span>
+    <span data-phrase="qr.toolong">أطول من أن يسعه رمز QR عند المستوى {level}: {count} {unit}، وأكبر رمز يسع {most}</span>
+    <span data-phrase="unit.bytes">بايت</span>
+    <span data-phrase="unit.characters">محرفاً</span>
+    <span data-phrase="render.nosvg">هذا المتصفح لم يرسم SVG</span>
+    <span data-phrase="render.nopng">هذا المتصفح لم يكتب PNG</span>
+    <span data-phrase="kind.text.name">نص أو رابط</span>
+    <span data-phrase="kind.text.note">أي شيء. وعنوان الويب هو ما تعرض كاميرا الهاتف فتحه.</span>
+    <span data-phrase="kind.wifi.name">شبكة واي فاي</span>
+    <span data-phrase="kind.wifi.note">مسحه يعرض الانضمام إلى الشبكة. أندرويد يقرأ هذا أصلاً، وكاميرا آيفون كذلك منذ iOS
+      11.</span>
+    <span data-phrase="kind.contact.name">بطاقة جهة اتصال</span>
+    <span data-phrase="kind.contact.note">بطاقة vCard، وهي ما يعرض الهاتف حفظه في دفتر عناوينه.</span>
+    <span data-phrase="kind.email.name">بريد إلكتروني</span>
+    <span data-phrase="kind.email.note">يفتح رسالة جديدة بالعنوان، وبالموضوع والنص إن ملأتهما.</span>
+    <span data-phrase="kind.sms.name">رسالة نصية</span>
+    <span data-phrase="kind.sms.note">يفتح رسالة جديدة إلى ذلك الرقم، ونصها جاهز للإرسال.</span>
+    <span data-phrase="kind.phone.name">رقم هاتف</span>
+    <span data-phrase="kind.phone.note">يعرض الاتصال بالرقم.</span>
+    <span data-phrase="kind.location.name">موضع على الخريطة</span>
+    <span data-phrase="kind.location.note">يفتح الإحداثيات في تطبيق الخرائط الذي يستعمله الهاتف.</span>
+    <span data-phrase="field.text">نص أو عنوان ويب</span>
+    <span data-phrase="field.ssid">اسم الشبكة (SSID)</span>
+    <span data-phrase="field.password">كلمة المرور</span>
+    <span data-phrase="field.security">الحماية</span>
+    <span data-phrase="field.hidden">الشبكة مخفية</span>
+    <span data-phrase="field.open">مفتوحة &mdash; بلا كلمة مرور</span>
+    <span data-phrase="field.first">الاسم الأول</span>
+    <span data-phrase="field.last">اسم العائلة</span>
+    <span data-phrase="field.org">المؤسسة</span>
+    <span data-phrase="field.title">المسمى الوظيفي</span>
+    <span data-phrase="field.phone">الهاتف</span>
+    <span data-phrase="field.email">البريد الإلكتروني</span>
+    <span data-phrase="field.url">الموقع</span>
+    <span data-phrase="field.address">العنوان</span>
+    <span data-phrase="field.to">إلى</span>
+    <span data-phrase="field.subject">الموضوع</span>
+    <span data-phrase="field.body">الرسالة</span>
+    <span data-phrase="field.number">رقم الهاتف</span>
+    <span data-phrase="field.message">الرسالة</span>
+    <span data-phrase="field.latitude">خط العرض</span>
+    <span data-phrase="field.longitude">خط الطول</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">مقهى الحي</span>
+    <span data-phrase="field.optional">{label} (اختياري)</span>
+    <span data-phrase="field.thetext">النص</span>
+    <span data-phrase="field.thenumber">الرقم</span>
+    <span data-phrase="payload.nosuch">لا نوع بهذا الاسم: {kind}</span>
+    <span data-phrase="payload.anydetail">بيان واحد على الأقل</span>
+    <span data-phrase="payload.something">شيء يوضع فيه</span>
+    <span data-phrase="payload.fillin">املأ: {list}.</span>
+    <span data-phrase="join.list">{a}، {b}</span>
+    <span data-phrase="note.symbology.qr">رمز QR يحمل أي نص، وكل كاميرا هاتف صُنعت في السنوات العشر الأخيرة تقرؤه بلا تطبيق.</span>
+    <span data-phrase="size.exact">{pixels} بكسل في المربع، بواقع {scale} لكل وحدة.</span>
+    <span data-phrase="size.rounded">{pixels} بكسل في المربع بدل {asked}، لأن {across} وحدة عرضاً لا تنقسم بالتساوي إلا
+      عند {scale} بكسل لكل وحدة. وSVG لا حدّ له من هذا &mdash; يُطبع بأي مقاس.</span>
+    <span data-phrase="size.barcode.one">{width} في {height} بكسل، بواقع بكسل واحد لأضيق شريط.</span>
+    <span data-phrase="size.barcode.many">{width} في {height} بكسل، بواقع {scale} بكسل لأضيق شريط.</span>
+    <span data-phrase="facts.qr">الإصدار {version}: {size} وحدة في المربع، نمط {mode}، المستوى {level} &mdash; نحو
+      {recovery}% منه يمكن أن يُتلف ويبقى مقروءاً. القناع {mask}. يستعمل {bits} من
+      {capacity} بت يحملها هذا الإصدار ({used}%)، أي ما يتسع عند هذا الإصدار وهذا المستوى
+      لـ {most} {unit} إجمالاً.</span>
+    <span data-phrase="facts.barcode">{name}، يحمل {text}. {modules} وحدة عرضاً، منها {left} للمنطقة الهادئة يساراً
+      و{right} يميناً &mdash; بياض يحتاجه الماسح، فهو جزء من الصورة لا شيء يُقتطع.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">محرف واحد.</span>
+    <span data-phrase="string.many">{n} محرفاً.</span>
+    <span data-phrase="string.bytes">{characters} محرفاً، {bytes} بايت &mdash; بعضها ليس ASCII، ورمز QR يعدّ ما يخزنه
+      بالبايت.</span>
+    <span data-phrase="save.done">حُفظ. لم يُرسل شيء إلى أي مكان لصنعه.</span>
+    <span data-phrase="save.failed">{detail}. وسيُنزَّل SVG على أي حال.</span>
+    <span data-phrase="save.copied">نُسخ. الصقه حيث تحتاجه.</span>
+    <span data-phrase="save.noclipboard">هذا المتصفح لم يسمح للصفحة بالكتابة في الحافظة. نزّله بدل ذلك.</span>
     <span data-phrase="net.clean">ما كتبته لم يذهب إلى أي مكان. {total} ملفاً
       حُمِّلت. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

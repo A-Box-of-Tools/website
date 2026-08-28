@@ -21,6 +21,14 @@ import assert from 'node:assert/strict';
 import { PATTERNS, values } from '../../tools/qr-barcode/src/code128.js';
 import { gs1Check, makeBarcode, SYMBOLOGIES } from '../../tools/qr-barcode/src/barcode.js';
 
+/**
+ * The stand-in for phrase(). What the tool says lives in body.html, in fifteen
+ * languages; what a test can hold it to is the key it asked for and the numbers
+ * it put in the blanks, so this writes both out where a match can see them.
+ */
+const say = (key, values = {}) => [key, ...Object.entries(values)
+  .map(([name, value]) => `${name}=${value}`)].join(' ');
+
 /* ------------------------------------------------------------- Code 128 */
 
 test('code128: every pattern is eleven modules with an even number dark', () => {
@@ -99,15 +107,15 @@ test('code128: text comes back out of the bars', () => {
   ];
 
   for (const text of strings) {
-    const code = makeBarcode(text, { symbology: 'code128' });
+    const code = makeBarcode(text, { symbology: 'code128' }, say);
     assert.equal(readCode128(code.modules), text, text);
     assert.equal(code.text, text);
   }
 });
 
 test('code128: what it will not hold', () => {
-  assert.throws(() => makeBarcode('café', { symbology: 'code128' }), RangeError);
-  assert.throws(() => makeBarcode('', { symbology: 'code128' }), RangeError);
+  assert.throws(() => makeBarcode('café', { symbology: 'code128' }, say), RangeError);
+  assert.throws(() => makeBarcode('', { symbology: 'code128' }, say), RangeError);
 });
 
 /* --------------------------------------------------------------- Code 39 */
@@ -134,7 +142,7 @@ test('code39: the generated table matches the transcribed one', () => {
   };
 
   for (const [character, pattern] of Object.entries(known)) {
-    const code = makeBarcode(character === ' ' ? ' ' : character, { symbology: 'code39' });
+    const code = makeBarcode(character === ' ' ? ' ' : character, { symbology: 'code39' }, say);
     // The second character of the symbol is the one asked for; the first and
     // last are the * that starts and ends every Code 39 code.
     assert.equal(readCode39(code.modules)[1], character, `${character}: reads back`);
@@ -147,7 +155,7 @@ test('code39: every character has three wide elements, arranged one of two ways'
   const seen = new Set();
 
   for (const character of alphabet) {
-    const pattern = patternOf(makeBarcode(character, { symbology: 'code39' }).modules, 1);
+    const pattern = patternOf(makeBarcode(character, { symbology: 'code39' }, say).modules, 1);
     assert.equal(pattern.length, 9, character);
     assert.equal([...pattern].filter((element) => element === 'w').length, 3, character);
 
@@ -163,27 +171,28 @@ test('code39: every character has three wide elements, arranged one of two ways'
 
 test('code39: text comes back out of the bars', () => {
   for (const text of ['ABOX TOOLS', 'A', '12345', 'PART-4471', '$1.00', 'A B C']) {
-    const code = makeBarcode(text, { symbology: 'code39' });
+    const code = makeBarcode(text, { symbology: 'code39' }, say);
     assert.equal(readCode39(code.modules), `*${text}*`, text);
   }
 });
 
 test('code39: lower case is raised, and the raising is said out loud', () => {
-  const code = makeBarcode('abox tools', { symbology: 'code39' });
+  const code = makeBarcode('abox tools', { symbology: 'code39' }, say);
   assert.equal(code.text, 'ABOX TOOLS');
-  assert.match(code.note, /capitals/);
+  assert.equal(code.note, 'bar.raised');
   assert.equal(readCode39(code.modules), '*ABOX TOOLS*');
 });
 
 test('code39: the optional check character', () => {
   // "ABOX" is 10 + 11 + 24 + 33 = 78, and 78 modulo 43 is 35, which is Z.
-  const code = makeBarcode('ABOX', { symbology: 'code39', code39Check: true });
+  const code = makeBarcode('ABOX', { symbology: 'code39', code39Check: true }, say);
   assert.equal(readCode39(code.modules), '*ABOXZ*');
+  assert.equal(code.note, 'bar.modulo43');
 });
 
 test('code39: what it will not hold', () => {
-  assert.throws(() => makeBarcode('lower*case', { symbology: 'code39' }), RangeError);
-  assert.throws(() => makeBarcode('a,b', { symbology: 'code39' }), RangeError);
+  assert.throws(() => makeBarcode('lower*case', { symbology: 'code39' }, say), RangeError);
+  assert.throws(() => makeBarcode('a,b', { symbology: 'code39' }, say), RangeError);
 });
 
 /* ---------------------------------------------------------- EAN and UPC */
@@ -198,7 +207,7 @@ test('ean: the left-hand patterns match the published element widths', () => {
   for (let digit = 0; digit < 10; digit += 1) {
     // A number whose left group is six copies of this digit, so the patterns
     // can be read straight off the modules.
-    const code = makeBarcode(`0${String(digit).repeat(6)}00000`, { symbology: 'ean13' });
+    const code = makeBarcode(`0${String(digit).repeat(6)}00000`, { symbology: 'ean13' }, say);
     const start = 11 + 3;
     const group = [...code.modules.slice(start, start + 7)].join('');
     const runs = group.match(/0+|1+/g).map((run) => run.length).join('');
@@ -209,28 +218,28 @@ test('ean: the left-hand patterns match the published element widths', () => {
 test('ean13: the check digit, worked out and verified', () => {
   // 5901234123457 is the example every reference uses.
   assert.equal(gs1Check('590123412345'), 7);
-  assert.equal(makeBarcode('590123412345', { symbology: 'ean13' }).text, '5901234123457');
-  assert.equal(makeBarcode('5901234123457', { symbology: 'ean13' }).text, '5901234123457');
-  assert.throws(() => makeBarcode('5901234123450', { symbology: 'ean13' }), RangeError);
+  assert.equal(makeBarcode('590123412345', { symbology: 'ean13' }, say).text, '5901234123457');
+  assert.equal(makeBarcode('5901234123457', { symbology: 'ean13' }, say).text, '5901234123457');
+  assert.throws(() => makeBarcode('5901234123450', { symbology: 'ean13' }, say), RangeError);
 });
 
 test('upca: the check digit, worked out and verified', () => {
   assert.equal(gs1Check('03600029145'), 2);
-  assert.equal(makeBarcode('03600029145', { symbology: 'upca' }).text, '036000291452');
-  assert.throws(() => makeBarcode('036000291453', { symbology: 'upca' }), RangeError);
+  assert.equal(makeBarcode('03600029145', { symbology: 'upca' }, say).text, '036000291452');
+  assert.throws(() => makeBarcode('036000291453', { symbology: 'upca' }, say), RangeError);
 });
 
 test('ean13: the number comes back out of the bars', () => {
   for (const number of ['5901234123457', '4006381333931', '9780306406157',
                         '0000000000000', '9999999999994']) {
-    const code = makeBarcode(number, { symbology: 'ean13' });
+    const code = makeBarcode(number, { symbology: 'ean13' }, say);
     assert.equal(readEan(code.modules, 11, 13), number, number);
   }
 });
 
 test('upca: a UPC-A is an EAN-13 with a zero in front', () => {
-  const upc = makeBarcode('036000291452', { symbology: 'upca' });
-  const ean = makeBarcode('0036000291452', { symbology: 'ean13' });
+  const upc = makeBarcode('036000291452', { symbology: 'upca' }, say);
+  const ean = makeBarcode('0036000291452', { symbology: 'ean13' }, say);
   // Same bars, different quiet zones and different printing.
   const bars = (code, left, right) => [...code.modules.slice(left, code.modules.length - right)]
     .join('');
@@ -239,34 +248,34 @@ test('upca: a UPC-A is an EAN-13 with a zero in front', () => {
 });
 
 test('ean8: the short one', () => {
-  const code = makeBarcode('9638507', { symbology: 'ean8' });
+  const code = makeBarcode('9638507', { symbology: 'ean8' }, say);
   assert.equal(code.text, '96385074');
   assert.equal(readEan(code.modules, 7, 8), '96385074');
 });
 
 test('retail codes: the wrong number of digits is refused', () => {
-  assert.throws(() => makeBarcode('12345', { symbology: 'ean13' }), RangeError);
-  assert.throws(() => makeBarcode('12345678901234', { symbology: 'ean13' }), RangeError);
-  assert.throws(() => makeBarcode('12345678901a', { symbology: 'ean13' }), RangeError);
-  assert.throws(() => makeBarcode('123456', { symbology: 'ean8' }), RangeError);
+  assert.throws(() => makeBarcode('12345', { symbology: 'ean13' }, say), RangeError);
+  assert.throws(() => makeBarcode('12345678901234', { symbology: 'ean13' }, say), RangeError);
+  assert.throws(() => makeBarcode('12345678901a', { symbology: 'ean13' }, say), RangeError);
+  assert.throws(() => makeBarcode('123456', { symbology: 'ean8' }, say), RangeError);
 });
 
 /* -------------------------------------------------------------------- ITF */
 
 test('itf: pairs of digits, one in the bars and one in the spaces', () => {
   for (const digits of ['1234', '00000000', '9876543210', '55']) {
-    const code = makeBarcode(digits, { symbology: 'itf' });
+    const code = makeBarcode(digits, { symbology: 'itf' }, say);
     assert.equal(readItf(code.modules), digits, digits);
   }
 });
 
 test('itf: an odd number of digits is refused rather than padded', () => {
-  assert.throws(() => makeBarcode('12345', { symbology: 'itf' }), RangeError);
-  assert.throws(() => makeBarcode('12a4', { symbology: 'itf' }), RangeError);
+  assert.throws(() => makeBarcode('12345', { symbology: 'itf' }, say), RangeError);
+  assert.throws(() => makeBarcode('12a4', { symbology: 'itf' }, say), RangeError);
 });
 
 test('itf14: fourteen digits, the last of them the check', () => {
-  const code = makeBarcode('1540014128876', { symbology: 'itf14' });
+  const code = makeBarcode('1540014128876', { symbology: 'itf14' }, say);
   assert.equal(code.text.length, 14);
   assert.equal(code.text.slice(0, 13), '1540014128876');
   assert.equal(Number(code.text[13]), gs1Check('1540014128876'));
@@ -287,7 +296,7 @@ test('every symbology in the menu makes something', () => {
   };
 
   for (const symbology of SYMBOLOGIES) {
-    const code = makeBarcode(sample[symbology.id], { symbology: symbology.id });
+    const code = makeBarcode(sample[symbology.id], { symbology: symbology.id }, say);
     assert.equal(code.symbology, symbology.id);
     assert.equal(code.name, symbology.name);
     assert.ok(code.modules.length > 20, symbology.id);
@@ -313,7 +322,7 @@ test('every symbology in the menu makes something', () => {
 });
 
 test('an unknown symbology is an error, not a blank picture', () => {
-  assert.throws(() => makeBarcode('123', { symbology: 'aztec' }), RangeError);
+  assert.throws(() => makeBarcode('123', { symbology: 'aztec' }, say), RangeError);
 });
 
 /* ---------------------------------------------------------------- readers */

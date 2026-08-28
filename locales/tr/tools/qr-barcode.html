@@ -199,6 +199,110 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">Her türlü metin: harfler, rakamlar ve noktalama. Numaraya kendiniz karar
+      veriyorsanız olağan seçim.</span>
+    <span data-phrase="bar.code128.needs">klavyede yazabileceğiniz her türlü metin</span>
+    <span data-phrase="bar.ean13.holds">12 ya da 13 rakam. Kuzey Amerika dışında perakende ürünlerin üzerindeki barkod.</span>
+    <span data-phrase="bar.ean13.needs">12 rakam ya da kontrol hanesi sonunda olan 13 rakam</span>
+    <span data-phrase="bar.upca.holds">11 ya da 12 rakam. ABD ve Kanada&rsquo;da kullanılan perakende barkodu.</span>
+    <span data-phrase="bar.upca.needs">11 rakam ya da kontrol hanesi sonunda olan 12 rakam</span>
+    <span data-phrase="bar.ean8.holds">7 ya da 8 rakam. EAN-13 için fazla küçük paketlere yönelik kısa perakende kodu.</span>
+    <span data-phrase="bar.ean8.needs">7 rakam ya da kontrol hanesi sonunda olan 8 rakam</span>
+    <span data-phrase="bar.itf14.holds">13 ya da 14 rakam. Perakende ürün dolu bir sevkiyat kolisinin üzerindeki kod.</span>
+    <span data-phrase="bar.itf14.needs">13 rakam ya da kontrol hanesi sonunda olan 14 rakam</span>
+    <span data-phrase="bar.itf.holds">Çift sayıda rakam. Derli toplu ve depoculukta yaygın.</span>
+    <span data-phrase="bar.itf.needs">rakam, üstelik çift sayıda &mdash; başa sıfır koymak alışılmış çözümdür</span>
+    <span data-phrase="bar.code39.holds">Büyük harfler, rakamlar, boşluk ve - . $ / + %. Eski, her şey tarafından okunur.</span>
+    <span data-phrase="bar.code39.needs">büyük harfler, rakamlar, boşluk ve - . $ / + %</span>
+    <span data-phrase="bar.nosuch">böyle bir barkod yok: {id}</span>
+    <span data-phrase="bar.empty">{name} için içine koyacak bir şey gerekir.</span>
+    <span data-phrase="bar.wants">{name} için {needs} gerekir.</span>
+    <span data-phrase="bar.code39.cannot">Code 39, {char} karakterini taşıyamaz. Yalnızca A-Z, 0-9, boşluk ve - . $ / + %
+      taşır. QR kod ise yazabildiğiniz her şeyi taşır.</span>
+    <span data-phrase="bar.notascii">Code 128 yalnızca ASCII taşır, {char} ise ASCII değil. Bir QR kod onu taşır.</span>
+    <span data-phrase="bar.checkdigit">Bu geçerli bir {name} değil: son rakam {actual} değil {expected} olmalı. Onu hiç
+      yazmayın, sizin için hesaplanır.</span>
+    <span data-phrase="bar.added">Kontrol hanesi {digit} hesaplanıp eklendi.</span>
+    <span data-phrase="bar.modulo43">Modulo-43 kontrol karakteri eklendi.</span>
+    <span data-phrase="bar.raised">Küçük harfler büyük harfe çevrildi.</span>
+    <span data-phrase="bar.andraised">{note} Küçük harfler büyük harfe çevrildi.</span>
+    <span data-phrase="qr.toolong">{level} düzeyinde bir QR kod için fazla uzun: {count} {unit}, en büyük simge ise
+      {most} alıyor</span>
+    <span data-phrase="unit.bytes">bayt</span>
+    <span data-phrase="unit.characters">karakter</span>
+    <span data-phrase="render.nosvg">bu tarayıcı SVG&rsquo;yi çizmek istemedi</span>
+    <span data-phrase="render.nopng">bu tarayıcı PNG yazmak istemedi</span>
+    <span data-phrase="kind.text.name">Metin ya da bağlantı</span>
+    <span data-phrase="kind.text.note">Ne olursa. Telefon kamerasının açmayı önereceği şey bir web adresidir.</span>
+    <span data-phrase="kind.wifi.name">Wi-Fi ağı</span>
+    <span data-phrase="kind.wifi.note">Taratınca ağa katılmayı önerir. Android bunu kendiliğinden okur; iPhone kamerası da
+      iOS 11&rsquo;den beri.</span>
+    <span data-phrase="kind.contact.name">Kişi kartı</span>
+    <span data-phrase="kind.contact.note">Telefonun rehberine kaydetmeyi önerdiği şey olan bir vCard.</span>
+    <span data-phrase="kind.email.name">E-posta</span>
+    <span data-phrase="kind.email.note">Adresle birlikte yeni bir ileti açar; doldurursanız konu ve gövdeyle birlikte.</span>
+    <span data-phrase="kind.sms.name">Kısa mesaj</span>
+    <span data-phrase="kind.sms.note">O numaraya, metni göndermeye hazır biçimde yeni bir ileti açar.</span>
+    <span data-phrase="kind.phone.name">Telefon numarası</span>
+    <span data-phrase="kind.phone.note">Numarayı aramayı önerir.</span>
+    <span data-phrase="kind.location.name">Haritada bir yer</span>
+    <span data-phrase="kind.location.note">Koordinatları telefonun kullandığı harita uygulamasında açar.</span>
+    <span data-phrase="field.text">Metin ya da web adresi</span>
+    <span data-phrase="field.ssid">Ağ adı (SSID)</span>
+    <span data-phrase="field.password">Parola</span>
+    <span data-phrase="field.security">Güvenlik</span>
+    <span data-phrase="field.hidden">Ağ gizli</span>
+    <span data-phrase="field.open">Açık &mdash; parolasız</span>
+    <span data-phrase="field.first">Ad</span>
+    <span data-phrase="field.last">Soyad</span>
+    <span data-phrase="field.org">Kurum</span>
+    <span data-phrase="field.title">Unvan</span>
+    <span data-phrase="field.phone">Telefon</span>
+    <span data-phrase="field.email">E-posta</span>
+    <span data-phrase="field.url">Web sitesi</span>
+    <span data-phrase="field.address">Adres</span>
+    <span data-phrase="field.to">Kime</span>
+    <span data-phrase="field.subject">Konu</span>
+    <span data-phrase="field.body">İleti</span>
+    <span data-phrase="field.number">Telefon numarası</span>
+    <span data-phrase="field.message">İleti</span>
+    <span data-phrase="field.latitude">Enlem</span>
+    <span data-phrase="field.longitude">Boylam</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">Köşedeki Kahveci</span>
+    <span data-phrase="field.optional">{label} (isteğe bağlı)</span>
+    <span data-phrase="field.thetext">Metin</span>
+    <span data-phrase="field.thenumber">Numara</span>
+    <span data-phrase="payload.nosuch">böyle bir tür yok: {kind}</span>
+    <span data-phrase="payload.anydetail">En az bir bilgi</span>
+    <span data-phrase="payload.something">İçine koyacak bir şey</span>
+    <span data-phrase="payload.fillin">Doldurun: {list}.</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">Bir QR kod her türlü metni taşır ve son on yılın her telefon kamerası onu
+      uygulamasız okur.</span>
+    <span data-phrase="size.exact">Modül başına {scale} pikselle, {pixels} piksel kare.</span>
+    <span data-phrase="size.rounded">{asked} yerine {pixels} piksel kare, çünkü enine {across} modül ancak modül başına
+      {scale} pikselde tam bölünüyor. SVG&rsquo;nin böyle bir sınırı yok &mdash; her
+      boyutta basılır.</span>
+    <span data-phrase="size.barcode.one">En dar çubuk 1 piksel olmak üzere {width} x {height} piksel.</span>
+    <span data-phrase="size.barcode.many">En dar çubuk {scale} piksel olmak üzere {width} x {height} piksel.</span>
+    <span data-phrase="facts.qr">Sürüm {version}: {size} modül kare, {mode} kipi, düzey {level} &mdash; yaklaşık
+      %{recovery} kadarı yok edilse de okunur. Maske {mask}. Bu sürümün taşıdığı
+      {capacity} bitin {bits} biti kullanılıyor (%{used}); bu sürüm ve bu düzeyde toplam
+      {most} {unit} yer var demektir.</span>
+    <span data-phrase="facts.barcode">{name}, içinde {text} var. Enine {modules} modül; bunların {left} tanesi soldaki,
+      {right} tanesi sağdaki sessiz bölge &mdash; tarayıcının ihtiyaç duyduğu beyaz
+      boşluk, yani kırpılacak bir şey değil, resmin parçası.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1 karakter.</span>
+    <span data-phrase="string.many">{n} karakter.</span>
+    <span data-phrase="string.bytes">{characters} karakter, {bytes} bayt &mdash; bir kısmı ASCII değil ve QR kod
+      sakladığını bayt olarak sayar.</span>
+    <span data-phrase="save.done">Kaydedildi. Bunu yapmak için hiçbir yere bir şey gönderilmedi.</span>
+    <span data-phrase="save.failed">{detail}. SVG yine de inecek.</span>
+    <span data-phrase="save.copied">Kopyalandı. Gereken yere yapıştırın.</span>
+    <span data-phrase="save.noclipboard">Bu tarayıcı sayfanın panoya yazmasına izin vermedi. Bunun yerine indirin.</span>
     <span data-phrase="net.clean">yazdığınız şey hiçbir yere gitmedi. {total}
       dosya yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

@@ -286,8 +286,8 @@ export function penalty(symbol) {
  *            capacityBits: number}}
  *   `modules` is one byte per module, row by row: 1 dark, 0 light.
  */
-export function makeQr(text, options = {}) {
-  const encoded = encodeText(text, options);
+export function makeQr(text, options = {}, t) {
+  const encoded = encodeText(text, options, t);
   const symbol = new QrSymbol(encoded.version);
 
   drawFunctionPatterns(symbol);

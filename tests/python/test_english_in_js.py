@@ -79,7 +79,8 @@ BASELINE = {
     'images-to-video': 26,
     'merge-pdf': 60,
     'password-generator': 8,
-    'qr-barcode': 44,
+    # The two left are a symbology's own name and a line of SVG markup.
+    'qr-barcode': 2,
     'qr-barcode-reader': 13,
     'redact-image': 17,
     'redact-pdf': 28,

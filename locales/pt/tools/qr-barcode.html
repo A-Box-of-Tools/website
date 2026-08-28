@@ -191,6 +191,112 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">Qualquer texto: letras, dígitos e pontuação. A escolha habitual quando o número é
+      você que decide.</span>
+    <span data-phrase="bar.code128.needs">qualquer texto que você consiga digitar no teclado</span>
+    <span data-phrase="bar.ean13.holds">12 ou 13 dígitos. O código de barras de um produto de loja fora da América do Norte.</span>
+    <span data-phrase="bar.ean13.needs">12 dígitos, ou 13 com o dígito verificador já no fim</span>
+    <span data-phrase="bar.upca.holds">11 ou 12 dígitos. O código de barras de loja usado nos Estados Unidos e no Canadá.</span>
+    <span data-phrase="bar.upca.needs">11 dígitos, ou 12 com o dígito verificador já no fim</span>
+    <span data-phrase="bar.ean8.holds">7 ou 8 dígitos. O código curto, para embalagens pequenas demais para um EAN-13.</span>
+    <span data-phrase="bar.ean8.needs">7 dígitos, ou 8 com o dígito verificador já no fim</span>
+    <span data-phrase="bar.itf14.holds">13 ou 14 dígitos. O código na caixa de transporte de produtos de loja.</span>
+    <span data-phrase="bar.itf14.needs">13 dígitos, ou 14 com o dígito verificador já no fim</span>
+    <span data-phrase="bar.itf.holds">Um número par de dígitos. Compacto, e comum em armazéns.</span>
+    <span data-phrase="bar.itf.needs">dígitos, e em número par &mdash; um zero à frente é o jeito de sempre</span>
+    <span data-phrase="bar.code39.holds">Maiúsculas, dígitos, um espaço e - . $ / + %. Antigo, lido por tudo.</span>
+    <span data-phrase="bar.code39.needs">maiúsculas, dígitos, um espaço, e - . $ / + %</span>
+    <span data-phrase="bar.nosuch">não existe esse código de barras: {id}</span>
+    <span data-phrase="bar.empty">{name} precisa de algo para guardar.</span>
+    <span data-phrase="bar.wants">{name} precisa de {needs}.</span>
+    <span data-phrase="bar.code39.cannot">Code 39 não pode guardar {char}. Ele guarda só A-Z, 0-9, um espaço, e - . $ / + %.
+      Um código QR guarda qualquer coisa que você digitar.</span>
+    <span data-phrase="bar.notascii">Code 128 guarda só ASCII, e {char} não é. Um código QR vai guardar.</span>
+    <span data-phrase="bar.checkdigit">Esse não é um {name} válido: o último dígito deveria ser {expected}, não {actual}.
+      Deixe-o de fora e ele será calculado para você.</span>
+    <span data-phrase="bar.added">Dígito verificador {digit} calculado e acrescentado.</span>
+    <span data-phrase="bar.modulo43">Caractere verificador módulo 43 acrescentado.</span>
+    <span data-phrase="bar.raised">As minúsculas viraram maiúsculas.</span>
+    <span data-phrase="bar.andraised">{note} As minúsculas viraram maiúsculas.</span>
+    <span data-phrase="qr.toolong">longo demais para um código QR no nível {level}: {count} {unit}, e o maior símbolo
+      guarda {most}</span>
+    <span data-phrase="unit.bytes">bytes</span>
+    <span data-phrase="unit.characters">caracteres</span>
+    <span data-phrase="render.nosvg">este navegador não quis desenhar o SVG</span>
+    <span data-phrase="render.nopng">este navegador não quis escrever um PNG</span>
+    <span data-phrase="kind.text.name">Texto ou link</span>
+    <span data-phrase="kind.text.note">Qualquer coisa. Um endereço da web é o que a câmera do celular vai oferecer para
+      abrir.</span>
+    <span data-phrase="kind.wifi.name">Rede Wi-Fi</span>
+    <span data-phrase="kind.wifi.note">Ao escanear, é oferecido entrar na rede. O Android lê isso nativamente; a câmera do
+      iPhone também, do iOS 11 em diante.</span>
+    <span data-phrase="kind.contact.name">Cartão de contato</span>
+    <span data-phrase="kind.contact.note">Um vCard, que é o que o celular oferece para salvar na agenda.</span>
+    <span data-phrase="kind.email.name">E-mail</span>
+    <span data-phrase="kind.email.note">Abre uma mensagem nova com o endereço, e com o assunto e o corpo se você preencher.</span>
+    <span data-phrase="kind.sms.name">Mensagem de texto</span>
+    <span data-phrase="kind.sms.note">Abre uma mensagem nova para esse número, com o texto pronto para enviar.</span>
+    <span data-phrase="kind.phone.name">Número de telefone</span>
+    <span data-phrase="kind.phone.note">Oferece ligar para o número.</span>
+    <span data-phrase="kind.location.name">Um lugar no mapa</span>
+    <span data-phrase="kind.location.note">Abre as coordenadas no aplicativo de mapas que o celular usar.</span>
+    <span data-phrase="field.text">Texto ou endereço da web</span>
+    <span data-phrase="field.ssid">Nome da rede (SSID)</span>
+    <span data-phrase="field.password">Senha</span>
+    <span data-phrase="field.security">Segurança</span>
+    <span data-phrase="field.hidden">A rede está oculta</span>
+    <span data-phrase="field.open">Aberta &mdash; sem senha</span>
+    <span data-phrase="field.first">Nome</span>
+    <span data-phrase="field.last">Sobrenome</span>
+    <span data-phrase="field.org">Organização</span>
+    <span data-phrase="field.title">Cargo</span>
+    <span data-phrase="field.phone">Telefone</span>
+    <span data-phrase="field.email">E-mail</span>
+    <span data-phrase="field.url">Site</span>
+    <span data-phrase="field.address">Endereço</span>
+    <span data-phrase="field.to">Para</span>
+    <span data-phrase="field.subject">Assunto</span>
+    <span data-phrase="field.body">Mensagem</span>
+    <span data-phrase="field.number">Número de telefone</span>
+    <span data-phrase="field.message">Mensagem</span>
+    <span data-phrase="field.latitude">Latitude</span>
+    <span data-phrase="field.longitude">Longitude</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">A Cafeteria</span>
+    <span data-phrase="field.optional">{label} (opcional)</span>
+    <span data-phrase="field.thetext">O texto</span>
+    <span data-phrase="field.thenumber">O número</span>
+    <span data-phrase="payload.nosuch">não existe esse tipo: {kind}</span>
+    <span data-phrase="payload.anydetail">Pelo menos um dado</span>
+    <span data-phrase="payload.something">Algo para pôr dentro</span>
+    <span data-phrase="payload.fillin">Preencha: {list}.</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">Um código QR guarda qualquer texto, e a câmera de qualquer celular dos últimos dez
+      anos lê um sem aplicativo.</span>
+    <span data-phrase="size.exact">{pixels} pixels de lado, a {scale} por módulo.</span>
+    <span data-phrase="size.rounded">{pixels} pixels de lado em vez de {asked}, porque {across} módulos de largura só dão
+      certo a {scale} pixels cada. O SVG não tem esse limite &mdash; ele imprime em
+      qualquer tamanho.</span>
+    <span data-phrase="size.barcode.one">{width} por {height} pixels, a 1 pixel na barra mais estreita.</span>
+    <span data-phrase="size.barcode.many">{width} por {height} pixels, a {scale} pixels na barra mais estreita.</span>
+    <span data-phrase="facts.qr">Versão {version}: {size} módulos de lado, modo {mode}, nível {level} &mdash; cerca
+      de {recovery}% dele pode ser destruído e ainda assim ele é lido. Máscara {mask}. Usa
+      {bits} dos {capacity} bits que esta versão guarda ({used}%), o que nesta versão e
+      neste nível dá espaço para {most} {unit} no total.</span>
+    <span data-phrase="facts.barcode">{name}, guardando {text}. {modules} módulos de largura, {left} deles a zona de
+      silêncio da esquerda e {right} a da direita &mdash; branco de que o leitor precisa,
+      portanto parte da imagem e não algo para recortar fora.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1 caractere.</span>
+    <span data-phrase="string.many">{n} caracteres.</span>
+    <span data-phrase="string.bytes">{characters} caracteres, {bytes} bytes &mdash; alguns deles não são ASCII, e um
+      código QR conta em bytes o que guarda.</span>
+    <span data-phrase="save.done">Salvo. Nada foi enviado a lugar nenhum para fazer isso.</span>
+    <span data-phrase="save.failed">{detail}. O SVG ainda vai baixar.</span>
+    <span data-phrase="save.copied">Copiado. Cole onde você precisar.</span>
+    <span data-phrase="save.noclipboard">Este navegador não deixou a página escrever na área de transferência. Baixe em vez
+      disso.</span>
     <span data-phrase="net.clean">O que você digitou não foi a lugar nenhum.
       {total} arquivos carregados. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

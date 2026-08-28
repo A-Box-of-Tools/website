@@ -192,6 +192,115 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">Beliebiger Text: Buchstaben, Ziffern und Satzzeichen. Die übliche Wahl, wenn Sie die
+      Nummer selbst festlegen.</span>
+    <span data-phrase="bar.code128.needs">beliebigen Text, den Sie auf einer Tastatur eingeben können</span>
+    <span data-phrase="bar.ean13.holds">12 oder 13 Ziffern. Der Barcode auf Handelsware außerhalb Nordamerikas.</span>
+    <span data-phrase="bar.ean13.needs">12 Ziffern oder 13 mit der Prüfziffer bereits am Ende</span>
+    <span data-phrase="bar.upca.holds">11 oder 12 Ziffern. Der Handels-Barcode der USA und Kanadas.</span>
+    <span data-phrase="bar.upca.needs">11 Ziffern oder 12 mit der Prüfziffer bereits am Ende</span>
+    <span data-phrase="bar.ean8.holds">7 oder 8 Ziffern. Der kurze Handelscode, für Packungen, die für einen EAN-13 zu
+      klein sind.</span>
+    <span data-phrase="bar.ean8.needs">7 Ziffern oder 8 mit der Prüfziffer bereits am Ende</span>
+    <span data-phrase="bar.itf14.holds">13 oder 14 Ziffern. Der Code auf einem Versandkarton voller Handelsware.</span>
+    <span data-phrase="bar.itf14.needs">13 Ziffern oder 14 mit der Prüfziffer bereits am Ende</span>
+    <span data-phrase="bar.itf.holds">Eine gerade Anzahl Ziffern. Kompakt und in der Lagerhaltung verbreitet.</span>
+    <span data-phrase="bar.itf.needs">Ziffern, und zwar eine gerade Anzahl &mdash; eine führende Null ist der übliche
+      Ausweg</span>
+    <span data-phrase="bar.code39.holds">Großbuchstaben, Ziffern, ein Leerzeichen und - . $ / + %. Alt, von allem lesbar.</span>
+    <span data-phrase="bar.code39.needs">Großbuchstaben, Ziffern, ein Leerzeichen und - . $ / + %</span>
+    <span data-phrase="bar.nosuch">kein solcher Barcode: {id}</span>
+    <span data-phrase="bar.empty">{name} braucht einen Inhalt.</span>
+    <span data-phrase="bar.wants">{name} braucht {needs}.</span>
+    <span data-phrase="bar.code39.cannot">Code 39 kann {char} nicht aufnehmen. Er nimmt nur A-Z, 0-9, ein Leerzeichen und - .
+      $ / + % auf. Ein QR-Code nimmt alles auf, was Sie tippen können.</span>
+    <span data-phrase="bar.notascii">Code 128 nimmt nur ASCII auf, und {char} gehört nicht dazu. Ein QR-Code nimmt es
+      auf.</span>
+    <span data-phrase="bar.checkdigit">Das ist kein gültiger {name}: die letzte Ziffer müsste {expected} sein, nicht
+      {actual}. Lassen Sie sie weg, dann wird sie für Sie berechnet.</span>
+    <span data-phrase="bar.added">Prüfziffer {digit} berechnet und angehängt.</span>
+    <span data-phrase="bar.modulo43">Modulo-43-Prüfzeichen angehängt.</span>
+    <span data-phrase="bar.raised">Kleinbuchstaben wurden zu Großbuchstaben.</span>
+    <span data-phrase="bar.andraised">{note} Kleinbuchstaben wurden zu Großbuchstaben.</span>
+    <span data-phrase="qr.toolong">zu lang für einen QR-Code auf Stufe {level}: {count} {unit}, und das größte Symbol
+      fasst {most}</span>
+    <span data-phrase="unit.bytes">Bytes</span>
+    <span data-phrase="unit.characters">Zeichen</span>
+    <span data-phrase="render.nosvg">dieser Browser wollte das SVG nicht zeichnen</span>
+    <span data-phrase="render.nopng">dieser Browser wollte kein PNG schreiben</span>
+    <span data-phrase="kind.text.name">Text oder Link</span>
+    <span data-phrase="kind.text.note">Irgendetwas. Eine Webadresse ist das, was eine Handykamera zum Öffnen anbietet.</span>
+    <span data-phrase="kind.wifi.name">WLAN-Netzwerk</span>
+    <span data-phrase="kind.wifi.note">Beim Scannen wird angeboten, dem Netzwerk beizutreten. Android liest das von Haus
+      aus; die iPhone-Kamera seit iOS 11.</span>
+    <span data-phrase="kind.contact.name">Kontaktkarte</span>
+    <span data-phrase="kind.contact.note">Eine vCard, die ein Handy zum Speichern im Adressbuch anbietet.</span>
+    <span data-phrase="kind.email.name">E-Mail</span>
+    <span data-phrase="kind.email.note">Öffnet eine neue Nachricht mit der Adresse, und mit Betreff und Text, wenn Sie sie
+      ausfüllen.</span>
+    <span data-phrase="kind.sms.name">SMS</span>
+    <span data-phrase="kind.sms.note">Öffnet eine neue Nachricht an diese Nummer, mit fertigem Text zum Senden.</span>
+    <span data-phrase="kind.phone.name">Telefonnummer</span>
+    <span data-phrase="kind.phone.note">Bietet an, die Nummer anzurufen.</span>
+    <span data-phrase="kind.location.name">Ein Ort auf der Karte</span>
+    <span data-phrase="kind.location.note">Öffnet die Koordinaten in der Kartenanwendung, die das Handy verwendet.</span>
+    <span data-phrase="field.text">Text oder Webadresse</span>
+    <span data-phrase="field.ssid">Netzwerkname (SSID)</span>
+    <span data-phrase="field.password">Passwort</span>
+    <span data-phrase="field.security">Sicherheit</span>
+    <span data-phrase="field.hidden">Das Netzwerk ist versteckt</span>
+    <span data-phrase="field.open">Offen &mdash; kein Passwort</span>
+    <span data-phrase="field.first">Vorname</span>
+    <span data-phrase="field.last">Nachname</span>
+    <span data-phrase="field.org">Organisation</span>
+    <span data-phrase="field.title">Berufsbezeichnung</span>
+    <span data-phrase="field.phone">Telefon</span>
+    <span data-phrase="field.email">E-Mail</span>
+    <span data-phrase="field.url">Website</span>
+    <span data-phrase="field.address">Adresse</span>
+    <span data-phrase="field.to">An</span>
+    <span data-phrase="field.subject">Betreff</span>
+    <span data-phrase="field.body">Nachricht</span>
+    <span data-phrase="field.number">Telefonnummer</span>
+    <span data-phrase="field.message">Nachricht</span>
+    <span data-phrase="field.latitude">Breitengrad</span>
+    <span data-phrase="field.longitude">Längengrad</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">Café am Markt</span>
+    <span data-phrase="field.optional">{label} (optional)</span>
+    <span data-phrase="field.thetext">Der Text</span>
+    <span data-phrase="field.thenumber">Die Nummer</span>
+    <span data-phrase="payload.nosuch">keine solche Art: {kind}</span>
+    <span data-phrase="payload.anydetail">Mindestens eine Angabe</span>
+    <span data-phrase="payload.something">Etwas, das hineinsoll</span>
+    <span data-phrase="payload.fillin">Auszufüllen: {list}.</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">Ein QR-Code fasst beliebigen Text, und jede Handykamera der letzten zehn Jahre liest
+      ihn ohne App.</span>
+    <span data-phrase="size.exact">{pixels} Pixel im Quadrat, bei {scale} pro Modul.</span>
+    <span data-phrase="size.rounded">{pixels} Pixel im Quadrat statt {asked}, weil {across} Module in der Breite nur bei
+      {scale} Pixeln je Modul glatt aufgehen. Das SVG hat diese Grenze nicht &mdash; es
+      druckt in jeder Größe.</span>
+    <span data-phrase="size.barcode.one">{width} mal {height} Pixel, bei 1 Pixel für den schmalsten Strich.</span>
+    <span data-phrase="size.barcode.many">{width} mal {height} Pixel, bei {scale} Pixeln für den schmalsten Strich.</span>
+    <span data-phrase="facts.qr">Version {version}: {size} Module im Quadrat, Modus {mode}, Stufe {level} &mdash;
+      etwa {recovery}% davon dürfen zerstört sein und er ist noch lesbar. Maske {mask}.
+      Genutzt werden {bits} der {capacity} Bits dieser Version ({used}%), was bei dieser
+      Version und Stufe Platz für insgesamt {most} {unit} bedeutet.</span>
+    <span data-phrase="facts.barcode">{name}, enthält {text}. {modules} Module breit, davon {left} die Ruhezone links und
+      {right} die rechts &mdash; Weißraum, den der Scanner braucht, also Teil des Bildes
+      und nicht etwas zum Wegschneiden.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1 Zeichen.</span>
+    <span data-phrase="string.many">{n} Zeichen.</span>
+    <span data-phrase="string.bytes">{characters} Zeichen, {bytes} Bytes &mdash; einige davon sind kein ASCII, und ein
+      QR-Code zählt in Bytes, was er speichert.</span>
+    <span data-phrase="save.done">Gespeichert. Dafür wurde nichts irgendwohin geschickt.</span>
+    <span data-phrase="save.failed">{detail}. Das SVG lädt trotzdem herunter.</span>
+    <span data-phrase="save.copied">Kopiert. Fügen Sie es ein, wo Sie es brauchen.</span>
+    <span data-phrase="save.noclipboard">Dieser Browser hat der Seite nicht erlaubt, in die Zwischenablage zu schreiben.
+      Laden Sie es stattdessen herunter.</span>
     <span data-phrase="net.clean">Was Sie getippt haben, ist nirgendwohin
       gegangen. {total} Dateien geladen. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut
