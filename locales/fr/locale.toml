@@ -414,6 +414,7 @@ related_heading = "Aussi dans la boîte"
 handoff_lead = "Poursuivre avec le résultat dans&nbsp;:"
 privacy_heading = "Comment cette promesse se vérifie"
 
+card_waiting = "S'ouvre dès que vous choisissez un fichier ci-dessus."
 # Tournée à l'actif : le participe passé s'accorderait avec
 # {{ tool.words.plural }}, qui est tantôt masculin ("documents") tantôt féminin
 # ("images"), et aucune forme écrite ici ne pourrait convenir aux deux.

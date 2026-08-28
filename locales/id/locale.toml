@@ -422,6 +422,7 @@ related_heading = "Juga ada di dalam kotak"
 handoff_lead = "Bawa hasilnya langsung ke:"
 privacy_heading = "Cara memverifikasi klaim privasi ini"
 
+card_waiting = "Terbuka begitu Anda memilih berkas di atas."
 pledge_line = """
     {{ tool.words.plural }} Anda <strong>tidak pernah diunggah</strong>.
     Tidak ada server."""

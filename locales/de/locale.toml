@@ -450,6 +450,7 @@ related_heading = "Auch im Werkzeugkasten"
 handoff_lead = "Das Ergebnis direkt weiterreichen an:"
 privacy_heading = "So lässt sich das Datenschutzversprechen nachprüfen"
 
+card_waiting = "Öffnet sich, sobald Sie oben eine Datei auswählen."
 # Das Substantiv steht mitten im Satz, und das Verb am Ende - genau der Grund,
 # warum dieser Satz als Ganzes übersetzt wird und nicht in zwei Hälften.
 pledge_line = """

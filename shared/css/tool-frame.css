@@ -432,6 +432,14 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
    the attribute had gone. Instant is also the honest reading - the step
    becomes usable the moment the file lands, and a fade would say it was still
    thinking. */
+/* What the dimmed card is waiting for, in the place a lede would be. It is
+   removed the moment the card wakes, so it never sits beside live controls. */
+.card-waiting {
+  margin: 0.15rem 0 0;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
 .card[inert] {
   opacity: 0.55;
   pointer-events: none;

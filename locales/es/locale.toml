@@ -396,6 +396,7 @@ related_heading = "También en la caja"
 handoff_lead = "Lleva el resultado directamente a:"
 privacy_heading = "Cómo se comprueba la promesa de privacidad"
 
+card_waiting = "Se abre en cuanto eliges un archivo arriba."
 pledge_line = """
     Tus {{ tool.words.plural }} <strong>nunca se suben</strong>. No hay ningún servidor."""
 

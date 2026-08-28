@@ -391,6 +391,7 @@ related_heading = "Anche nella cassetta"
 handoff_lead = "Porta il risultato dritto in:"
 privacy_heading = "Come si verifica quello che promette"
 
+card_waiting = "Si apre appena scegli un file qui sopra."
 # Il nome che sta in mezzo cambia genere da uno strumento all'altro - le
 # immagini, i documenti, i video - e un participio concordato sarebbe
 # sbagliato su metà del sito. Il "si" impersonale con il plurale nudo li regge

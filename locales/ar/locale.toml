@@ -427,6 +427,7 @@ related_heading = "أيضا في الصندوق"
 handoff_lead = "احمل الناتج مباشرة إلى:"
 privacy_heading = "كيف يمكن التحقق من وعد الخصوصية"
 
+card_waiting = "يُفتح هذا بمجرّد أن تختار ملفاً في الأعلى."
 pledge_line = """
     {{ tool.words.plural }} لا تُرفع <strong>أبدا</strong>. لا يوجد خادم."""
 

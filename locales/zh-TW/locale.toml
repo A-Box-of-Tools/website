@@ -268,6 +268,7 @@ related_heading = "工具箱裡還有"
 handoff_lead = "把結果直接帶到："
 privacy_heading = "這條隱私承諾怎麼核實"
 
+card_waiting = "在上方選擇檔案後就會開啟。"
 pledge_line = """
     你的{{ tool.words.plural }}<strong>不會上傳</strong>。這裡根本沒有伺服器。"""
 

@@ -391,6 +391,7 @@ related_heading = "Também na caixa"
 handoff_lead = "Leve o resultado direto para:"
 privacy_heading = "Como dá para conferir a promessa de privacidade"
 
+card_waiting = "Abre assim que você escolher um arquivo acima."
 # O inglês escreve "Your {{ plural }} are never uploaded", e o particípio
 # concorda em gênero: "enviadas" para imagens e fotos, "enviados" para vídeos
 # e documentos. Como o substantivo vem de cada ferramenta, nenhuma das duas
