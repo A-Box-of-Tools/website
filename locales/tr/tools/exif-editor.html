@@ -161,6 +161,101 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · bunun yaklaşık {metadata} kadarı üst veri</span>
+    <span data-phrase="row.remove">{name} dosyasını listeden çıkar</span>
+    <span data-phrase="inspect.metadata">bunun yaklaşık {size} kadarı üst veri</span>
+    <span data-phrase="inspect.nometadata">üst veri bulunamadı</span>
+    <span data-phrase="badge.unreadable">Okunamıyor</span>
+    <span data-phrase="badge.clean">Hiçbir şey yok</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF okunamıyor</span>
+    <span data-phrase="badge.exifempty">EXIF boş</span>
+    <span data-phrase="badge.thumbnail">Küçük resim</span>
+    <span data-phrase="badge.comment">Yorum</span>
+    <span data-phrase="badge.text">Metin {count}</span>
+    <span data-phrase="badge.unknown">Bilinmeyen bloklar</span>
+    <span data-phrase="keep.nothing">Yön etiketi ve renk profili dahil, kesinlikle her şey gidiyor. Dosya bundan sonra
+      hiçbir türden üst veri taşımayacak.</span>
+    <span data-phrase="keep.orientation">Geri kalan her şey gidiyor: EXIF, GPS, üretici notu, XMP, IPTC, yorumlar, gömülü
+      küçük resim ve bu aracın tanıyamadığı her blok. Korunan: yön etiketi.</span>
+    <span data-phrase="keep.icc">Geri kalan her şey gidiyor: EXIF, GPS, üretici notu, XMP, IPTC, yorumlar, gömülü
+      küçük resim ve bu aracın tanıyamadığı her blok. Korunan: renk profili.</span>
+    <span data-phrase="keep.both">Geri kalan her şey gidiyor: EXIF, GPS, üretici notu, XMP, IPTC, yorumlar, gömülü
+      küçük resim ve bu aracın tanıyamadığı her blok. Korunanlar: yön etiketi ve renk
+      profili.</span>
+    <span data-phrase="block.none">Bu dosyada hiç üst veri bloğu yok.</span>
+    <span data-phrase="block.remove">Kaldır</span>
+    <span data-phrase="block.kept">Korundu</span>
+    <span data-phrase="block.cannotkeep">Korunamaz</span>
+    <span data-phrase="block.exifbad.title">Okunamayan bir EXIF bloğu</span>
+    <span data-phrase="block.exifbad.detail">{size}, ve bu araç onu okuyamadı: {reason} Kaydetmek, EXIF bloğunu aşağıda
+      sıralananlardan yeniden yazar; dolayısıyla okunamayan bir blok aktarılamaz &mdash;
+      hangi düğmeye basarsanız basın gider.</span>
+    <span data-phrase="block.exif.title">EXIF etiketleri</span>
+    <span data-phrase="block.exif.one">Kamera, görüntü ve konum dizinlerinde tek bir etiket.</span>
+    <span data-phrase="block.exif.many">Kamera, görüntü ve konum dizinlerine dağılmış {count} etiket.</span>
+    <span data-phrase="block.exif.remove">Bütün etiketleri kaldır</span>
+    <span data-phrase="block.gps.title">GPS konumu</span>
+    <span data-phrase="block.gps.remove">Konumu kaldır</span>
+    <span data-phrase="block.thumbnail.title">Gömülü küçük resim</span>
+    <span data-phrase="block.thumbnail.detail">Resmin küçük bir ikinci kopyası; sonradan yapılan bir kırpmadan önceye ait olabilir.</span>
+    <span data-phrase="block.thumbnail.remove">Küçük resmi kaldır</span>
+    <span data-phrase="block.xmp.title">XMP paketi</span>
+    <span data-phrase="block.xmp.detail">{size} XML: genelde yine kamera bilgisi, üstüne düzenleme geçmişi.</span>
+    <span data-phrase="block.iptc.title">IPTC bloğu</span>
+    <span data-phrase="block.iptc.detail">{size} altyazı, imza ve kaynak alanı.</span>
+    <span data-phrase="block.text.title">Metin blokları</span>
+    <span data-phrase="block.text.one">Bir anahtar/değer çifti: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} anahtar/değer çifti: {keywords}.</span>
+    <span data-phrase="block.comments.title">Yorumlar</span>
+    <span data-phrase="block.comments.one">Resmin yanında saklanan bir yorum.</span>
+    <span data-phrase="block.comments.many">Resmin yanında saklanan {count} yorum.</span>
+    <span data-phrase="block.extras.title">Bu aracın okuyamadığı bloklar</span>
+    <span data-phrase="block.extras.detail">{blocks}. Okunamasalar da kaldırılabilirler.</span>
+    <span data-phrase="block.icc.title">Renk profili</span>
+    <span data-phrase="block.icc.detail">{size}. Sizin hakkınızda hiçbir şey söylemez; kaldırmak renkleri kaydırabilir.</span>
+    <span data-phrase="block.icc.named">&ldquo;{name}&rdquo; adlı {size}. Sizin hakkınızda hiçbir şey söylemez; kaldırmak
+      renkleri kaydırabilir.</span>
+    <span data-phrase="editor.note">Bir değeri değiştirin, kaydettiğinizde geri yazılır. Düzenleyicisi olmayan etiketler
+      de kaldırılabilir &mdash; bir değeri silmek için onu anlamak hiç gerekmez.</span>
+    <span data-phrase="editor.notags">Bu fotoğrafta EXIF etiketi yok.</span>
+    <span data-phrase="editor.textnote">PNG, EXIF etiketleri yerine bunları saklar. Herhangi birini düzenlemek takımın
+      tamamını yeniden yazar.</span>
+    <span data-phrase="editor.frozen">Bu dosyada açılamayan, sıkıştırılmış bir metin bloğu var. Takımı düzenlemek onu
+      düşürürdü; bu yüzden burada salt okunur &mdash; blok olarak yine de kaldırılabilir.</span>
+    <span data-phrase="editor.pairs.one">1 çift</span>
+    <span data-phrase="editor.pairs.many">{count} çift</span>
+    <span data-phrase="editor.unreadable">sıkıştırılmış, ve açılmadı</span>
+    <span data-phrase="editor.valuefor">{keyword} değeri</span>
+    <span data-phrase="editor.removechunk">{keyword} metin bloğunu kaldır</span>
+    <span data-phrase="edit.blank">{tag} boş bırakılamaz. Etiketin tümden gitmesini istiyorsanız yanındaki Kaldır
+      düğmesini kullanın.</span>
+    <span data-phrase="edit.wanttext">&ldquo;{value}&rdquo;, bu etiketin taşıyabileceği bir değer değil. {tag} metin
+      bekliyor.</span>
+    <span data-phrase="edit.wantnumber">&ldquo;{value}&rdquo;, bu etiketin taşıyabileceği bir değer değil. {tag} sayı
+      bekliyor.</span>
+    <span data-phrase="edit.badvalue">&ldquo;{value}&rdquo;, o etiketin taşıyabileceği bir değer değil.</span>
+    <span data-phrase="value.empty">(boş)</span>
+    <span data-phrase="value.raw">{bytes} baytlık veri</span>
+    <span data-phrase="value.more">{shown} ve {more} tane daha</span>
+    <span data-phrase="value.unknown">Tanınmayan değer ({value})</span>
+    <span data-phrase="hint.description">Resmi anlatan bir cümle</span>
+    <span data-phrase="hint.artist">Kimin çektiği</span>
+    <span data-phrase="hint.copyright">örn. (c) 2026 Adınız</span>
+    <span data-phrase="hint.software">Dosyayı neyin ürettiği</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">örn. Canon</span>
+    <span data-phrase="hint.model">örn. EOS R6</span>
+    <span data-phrase="hint.orientation">1 düz duruş; 6 ise 90 derece döndürülmüş</span>
+    <span data-phrase="hint.comment">Serbest metin</span>
+    <span data-phrase="hint.iso">örn. 400</span>
+    <span data-phrase="strip.nothing">Kaldıracak bir şey yok &mdash; bu dosyada üst veri yoktu.</span>
+    <span data-phrase="strip.none">Kaldırılması gereken bir şey yoktu.</span>
+    <span data-phrase="strip.done.one">1 fotoğraf temizlendi. Bu makineden hiçbir şey çıkmadı.</span>
+    <span data-phrase="strip.done.many">{count} fotoğraf temizlendi. Bu makineden hiçbir şey çıkmadı.</span>
+    <span data-phrase="result.saved">{before} boyutundan {after} boyutuna &mdash; {saved} üst veri gitti. Fotoğrafın
+      kendisi olduğu gibi kaldı.</span>
+    <span data-phrase="save.reverted">Dosya, okunduğu hâline döndü.</span>
     <span data-phrase="find.clean.title">Bu dosyada sizi ele veren bir şey yok</span>
     <span data-phrase="find.clean.cleared">Ele veren ne varsa kaldırıldı. Bunu dosyaya yazmak için fotoğrafı kaydedin.</span>
     <span data-phrase="find.clean.never">Konum yok, zaman damgası yok, kamera yok, isim yok. Ya hiç olmadı ya da bir şey

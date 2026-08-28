@@ -156,6 +156,105 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · davon etwa {metadata} Metadaten</span>
+    <span data-phrase="row.remove">{name} von der Liste nehmen</span>
+    <span data-phrase="inspect.metadata">davon etwa {size} Metadaten</span>
+    <span data-phrase="inspect.nometadata">keine Metadaten gefunden</span>
+    <span data-phrase="badge.unreadable">Nicht lesbar</span>
+    <span data-phrase="badge.clean">Nichts gefunden</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF unlesbar</span>
+    <span data-phrase="badge.exifempty">EXIF leer</span>
+    <span data-phrase="badge.thumbnail">Vorschaubild</span>
+    <span data-phrase="badge.comment">Kommentar</span>
+    <span data-phrase="badge.text">Text {count}</span>
+    <span data-phrase="badge.unknown">Unbekannte Blöcke</span>
+    <span data-phrase="keep.nothing">Es geht wirklich alles, auch das Orientierungs-Tag und das Farbprofil. Die Datei
+      trägt danach keinerlei Metadaten mehr.</span>
+    <span data-phrase="keep.orientation">Alles andere geht: EXIF, GPS, die Herstellernotiz, XMP, IPTC, Kommentare, das
+      eingebettete Vorschaubild und jeder Block, den dieses Werkzeug nicht bestimmen
+      konnte. Behalten: das Orientierungs-Tag.</span>
+    <span data-phrase="keep.icc">Alles andere geht: EXIF, GPS, die Herstellernotiz, XMP, IPTC, Kommentare, das
+      eingebettete Vorschaubild und jeder Block, den dieses Werkzeug nicht bestimmen
+      konnte. Behalten: das Farbprofil.</span>
+    <span data-phrase="keep.both">Alles andere geht: EXIF, GPS, die Herstellernotiz, XMP, IPTC, Kommentare, das
+      eingebettete Vorschaubild und jeder Block, den dieses Werkzeug nicht bestimmen
+      konnte. Behalten: das Orientierungs-Tag und das Farbprofil.</span>
+    <span data-phrase="block.none">In dieser Datei sind überhaupt keine Metadaten-Blöcke.</span>
+    <span data-phrase="block.remove">Entfernen</span>
+    <span data-phrase="block.kept">Behalten</span>
+    <span data-phrase="block.cannotkeep">Lässt sich nicht behalten</span>
+    <span data-phrase="block.exifbad.title">Ein EXIF-Block, der sich nicht lesen ließ</span>
+    <span data-phrase="block.exifbad.detail">{size}, und dieses Werkzeug konnte ihn nicht lesen: {reason} Beim Speichern wird der
+      EXIF-Block aus dem neu geschrieben, was unten steht, ein unlesbarer lässt sich also
+      nicht mitnehmen &mdash; er geht, welchen Knopf Sie auch drücken.</span>
+    <span data-phrase="block.exif.title">EXIF-Tags</span>
+    <span data-phrase="block.exif.one">Ein Tag, in den Verzeichnissen für Kamera, Bild und Ort.</span>
+    <span data-phrase="block.exif.many">{count} Tags in den Verzeichnissen für Kamera, Bild und Ort.</span>
+    <span data-phrase="block.exif.remove">Alle Tags entfernen</span>
+    <span data-phrase="block.gps.title">GPS-Standort</span>
+    <span data-phrase="block.gps.remove">Den Standort entfernen</span>
+    <span data-phrase="block.thumbnail.title">Eingebettetes Vorschaubild</span>
+    <span data-phrase="block.thumbnail.detail">Eine kleine zweite Kopie des Bildes, die älter sein kann als ein späterer Beschnitt.</span>
+    <span data-phrase="block.thumbnail.remove">Das Vorschaubild entfernen</span>
+    <span data-phrase="block.xmp.title">XMP-Paket</span>
+    <span data-phrase="block.xmp.detail">{size} XML: meist noch einmal die Kamera, dazu die Bearbeitungsgeschichte.</span>
+    <span data-phrase="block.iptc.title">IPTC-Block</span>
+    <span data-phrase="block.iptc.detail">{size} an Bildunterschrift-, Bildnachweis- und Quellenfeldern.</span>
+    <span data-phrase="block.text.title">Text-Chunks</span>
+    <span data-phrase="block.text.one">Ein Schlüssel/Wert-Paar: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} Schlüssel/Wert-Paare: {keywords}.</span>
+    <span data-phrase="block.comments.title">Kommentare</span>
+    <span data-phrase="block.comments.one">Ein Kommentar, neben dem Bild gespeichert.</span>
+    <span data-phrase="block.comments.many">{count} Kommentare, neben dem Bild gespeichert.</span>
+    <span data-phrase="block.extras.title">Blöcke, die dieses Werkzeug nicht lesen kann</span>
+    <span data-phrase="block.extras.detail">{blocks}. Entfernbar, ohne lesbar zu sein.</span>
+    <span data-phrase="block.icc.title">Farbprofil</span>
+    <span data-phrase="block.icc.detail">{size}. Sagt nichts über Sie; es zu entfernen kann die Farben verschieben.</span>
+    <span data-phrase="block.icc.named">{size} mit dem Namen &bdquo;{name}&ldquo;. Sagt nichts über Sie; es zu entfernen
+      kann die Farben verschieben.</span>
+    <span data-phrase="editor.note">Ändern Sie einen Wert, und er wird beim Speichern zurückgeschrieben. Tags ohne
+      Editor lassen sich trotzdem entfernen &mdash; um einen Wert zu löschen, muss man ihn
+      nie verstehen.</span>
+    <span data-phrase="editor.notags">In diesem Foto sind keine EXIF-Tags.</span>
+    <span data-phrase="editor.textnote">PNG speichert diese statt EXIF-Tags. Eines davon zu ändern schreibt den ganzen Satz
+      neu.</span>
+    <span data-phrase="editor.frozen">Diese Datei hat einen komprimierten Text-Chunk, der sich nicht entpacken ließ. Den
+      Satz zu ändern würde ihn verwerfen, deshalb ist er hier nur zum Lesen &mdash; als
+      Block lässt er sich trotzdem entfernen.</span>
+    <span data-phrase="editor.pairs.one">1 Paar</span>
+    <span data-phrase="editor.pairs.many">{count} Paare</span>
+    <span data-phrase="editor.unreadable">komprimiert, und es ließ sich nicht entpacken</span>
+    <span data-phrase="editor.valuefor">Wert für {keyword}</span>
+    <span data-phrase="editor.removechunk">Den Text-Chunk {keyword} entfernen</span>
+    <span data-phrase="edit.blank">{tag} darf nicht leer bleiben. Nehmen Sie den Entfernen-Knopf daneben, wenn das Tag
+      ganz weg soll.</span>
+    <span data-phrase="edit.wanttext">&bdquo;{value}&ldquo; ist kein Wert, den dieses Tag halten kann. {tag} erwartet
+      Text.</span>
+    <span data-phrase="edit.wantnumber">&bdquo;{value}&ldquo; ist kein Wert, den dieses Tag halten kann. {tag} erwartet eine
+      Zahl.</span>
+    <span data-phrase="edit.badvalue">&bdquo;{value}&ldquo; ist kein Wert, den dieses Tag halten kann.</span>
+    <span data-phrase="value.empty">(leer)</span>
+    <span data-phrase="value.raw">{bytes} Bytes an Daten</span>
+    <span data-phrase="value.more">{shown} und {more} weitere</span>
+    <span data-phrase="value.unknown">Unbekannter Wert ({value})</span>
+    <span data-phrase="hint.description">Ein Satz, der das Bild beschreibt</span>
+    <span data-phrase="hint.artist">Wer es aufgenommen hat</span>
+    <span data-phrase="hint.copyright">z. B. (c) 2026 Ihr Name</span>
+    <span data-phrase="hint.software">Was die Datei erzeugt hat</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">z. B. Canon</span>
+    <span data-phrase="hint.model">z. B. EOS R6</span>
+    <span data-phrase="hint.orientation">1 ist richtig herum; 6 ist um 90 Grad gedreht</span>
+    <span data-phrase="hint.comment">Freier Text</span>
+    <span data-phrase="hint.iso">z. B. 400</span>
+    <span data-phrase="strip.nothing">Nichts zu entfernen &mdash; in dieser Datei waren keine Metadaten.</span>
+    <span data-phrase="strip.none">Es musste nichts entfernt werden.</span>
+    <span data-phrase="strip.done.one">1 Foto gesäubert. Nichts hat diesen Rechner verlassen.</span>
+    <span data-phrase="strip.done.many">{count} Fotos gesäubert. Nichts hat diesen Rechner verlassen.</span>
+    <span data-phrase="result.saved">{before} auf {after} &mdash; {saved} an Metadaten sind weg. Das Bild selbst ist
+      unverändert.</span>
+    <span data-phrase="save.reverted">Zurück auf die Datei, wie sie gelesen wurde.</span>
     <span data-phrase="find.clean.title">Diese Datei verrät nichts</span>
     <span data-phrase="find.clean.cleared">Alles, was etwas verriet, ist entfernt. Speichern Sie das Foto, um es
       hinauszuschreiben.</span>

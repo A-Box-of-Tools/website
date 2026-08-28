@@ -155,6 +155,103 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · waarvan ongeveer {metadata} metadata</span>
+    <span data-phrase="row.remove">{name} van de lijst halen</span>
+    <span data-phrase="inspect.metadata">waarvan ongeveer {size} metadata</span>
+    <span data-phrase="inspect.nometadata">geen metadata gevonden</span>
+    <span data-phrase="badge.unreadable">Niet te lezen</span>
+    <span data-phrase="badge.clean">Niets gevonden</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF onleesbaar</span>
+    <span data-phrase="badge.exifempty">EXIF leeg</span>
+    <span data-phrase="badge.thumbnail">Miniatuur</span>
+    <span data-phrase="badge.comment">Opmerking</span>
+    <span data-phrase="badge.text">Tekst {count}</span>
+    <span data-phrase="badge.unknown">Onbekende blokken</span>
+    <span data-phrase="keep.nothing">Werkelijk alles gaat eruit, ook de oriëntatietag en het kleurprofiel. Het bestand
+      draagt daarna geen enkele metadata meer.</span>
+    <span data-phrase="keep.orientation">Al het andere gaat eruit: EXIF, GPS, de fabrikantnotitie, XMP, IPTC, opmerkingen, de
+      ingesloten miniatuur en elk blok dat deze tool niet kon thuisbrengen. Behouden: de
+      oriëntatietag.</span>
+    <span data-phrase="keep.icc">Al het andere gaat eruit: EXIF, GPS, de fabrikantnotitie, XMP, IPTC, opmerkingen, de
+      ingesloten miniatuur en elk blok dat deze tool niet kon thuisbrengen. Behouden: het
+      kleurprofiel.</span>
+    <span data-phrase="keep.both">Al het andere gaat eruit: EXIF, GPS, de fabrikantnotitie, XMP, IPTC, opmerkingen, de
+      ingesloten miniatuur en elk blok dat deze tool niet kon thuisbrengen. Behouden: de
+      oriëntatietag en het kleurprofiel.</span>
+    <span data-phrase="block.none">In dit bestand zitten helemaal geen metadatablokken.</span>
+    <span data-phrase="block.remove">Verwijderen</span>
+    <span data-phrase="block.kept">Behouden</span>
+    <span data-phrase="block.cannotkeep">Kan niet blijven</span>
+    <span data-phrase="block.exifbad.title">Een EXIF-blok dat zich niet liet lezen</span>
+    <span data-phrase="block.exifbad.detail">{size}, en deze tool kon het niet lezen: {reason} Opslaan herschrijft het EXIF-blok
+      uit wat hieronder staat, dus een onleesbaar blok kan niet mee &mdash; het gaat
+      eruit, welke knop je ook indrukt.</span>
+    <span data-phrase="block.exif.title">EXIF-tags</span>
+    <span data-phrase="block.exif.one">Eén tag, in de mappen voor camera, afbeelding en locatie.</span>
+    <span data-phrase="block.exif.many">{count} tags verdeeld over de mappen voor camera, afbeelding en locatie.</span>
+    <span data-phrase="block.exif.remove">Alle tags verwijderen</span>
+    <span data-phrase="block.gps.title">GPS-locatie</span>
+    <span data-phrase="block.gps.remove">De locatie verwijderen</span>
+    <span data-phrase="block.thumbnail.title">Ingesloten miniatuur</span>
+    <span data-phrase="block.thumbnail.detail">Een kleine tweede kopie van het plaatje, die ouder kan zijn dan een latere uitsnede.</span>
+    <span data-phrase="block.thumbnail.remove">De miniatuur verwijderen</span>
+    <span data-phrase="block.xmp.title">XMP-pakket</span>
+    <span data-phrase="block.xmp.detail">{size} XML: meestal opnieuw de camera, plus de bewerkingsgeschiedenis.</span>
+    <span data-phrase="block.iptc.title">IPTC-blok</span>
+    <span data-phrase="block.iptc.detail">{size} aan onderschrift-, naamsvermeldings- en bronvelden.</span>
+    <span data-phrase="block.text.title">Tekstchunks</span>
+    <span data-phrase="block.text.one">Eén sleutel/waarde-paar: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} sleutel/waarde-paren: {keywords}.</span>
+    <span data-phrase="block.comments.title">Opmerkingen</span>
+    <span data-phrase="block.comments.one">Eén opmerking, naast het plaatje bewaard.</span>
+    <span data-phrase="block.comments.many">{count} opmerkingen, naast het plaatje bewaard.</span>
+    <span data-phrase="block.extras.title">Blokken die deze tool niet kan lezen</span>
+    <span data-phrase="block.extras.detail">{blocks}. Te verwijderen zonder leesbaar te zijn.</span>
+    <span data-phrase="block.icc.title">Kleurprofiel</span>
+    <span data-phrase="block.icc.detail">{size}. Zegt niets over jou; het weghalen kan de kleuren verschuiven.</span>
+    <span data-phrase="block.icc.named">{size} met de naam &lsquo;{name}&rsquo;. Zegt niets over jou; het weghalen kan de
+      kleuren verschuiven.</span>
+    <span data-phrase="editor.note">Verander een waarde en die wordt bij het opslaan teruggeschreven. Tags zonder editor
+      kun je alsnog verwijderen &mdash; een waarde wissen hoeft die waarde nooit te
+      begrijpen.</span>
+    <span data-phrase="editor.notags">Er zitten geen EXIF-tags in deze foto.</span>
+    <span data-phrase="editor.textnote">PNG bewaart deze in plaats van EXIF-tags. Er één bewerken herschrijft de hele set.</span>
+    <span data-phrase="editor.frozen">Dit bestand heeft een gecomprimeerde tekstchunk die zich niet liet uitpakken. De set
+      bewerken zou hem laten vallen, dus hier is hij alleen-lezen &mdash; als blok kun je
+      hem nog steeds verwijderen.</span>
+    <span data-phrase="editor.pairs.one">1 paar</span>
+    <span data-phrase="editor.pairs.many">{count} paren</span>
+    <span data-phrase="editor.unreadable">gecomprimeerd, en het liet zich niet uitpakken</span>
+    <span data-phrase="editor.valuefor">Waarde voor {keyword}</span>
+    <span data-phrase="editor.removechunk">De tekstchunk {keyword} verwijderen</span>
+    <span data-phrase="edit.blank">{tag} mag niet leeg blijven. Gebruik de knop Verwijderen ernaast als je wilt dat de
+      tag helemaal weg is.</span>
+    <span data-phrase="edit.wanttext">&lsquo;{value}&rsquo; is geen waarde die deze tag kan dragen. {tag} verwacht tekst.</span>
+    <span data-phrase="edit.wantnumber">&lsquo;{value}&rsquo; is geen waarde die deze tag kan dragen. {tag} verwacht een
+      getal.</span>
+    <span data-phrase="edit.badvalue">&lsquo;{value}&rsquo; is geen waarde die die tag kan dragen.</span>
+    <span data-phrase="value.empty">(leeg)</span>
+    <span data-phrase="value.raw">{bytes} bytes aan gegevens</span>
+    <span data-phrase="value.more">{shown}, en nog {more}</span>
+    <span data-phrase="value.unknown">Onbekende waarde ({value})</span>
+    <span data-phrase="hint.description">Een zin die het plaatje beschrijft</span>
+    <span data-phrase="hint.artist">Wie hem gemaakt heeft</span>
+    <span data-phrase="hint.copyright">bijv. (c) 2026 Jouw Naam</span>
+    <span data-phrase="hint.software">Wat het bestand gemaakt heeft</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">bijv. Canon</span>
+    <span data-phrase="hint.model">bijv. EOS R6</span>
+    <span data-phrase="hint.orientation">1 is rechtop; 6 is 90 graden gedraaid</span>
+    <span data-phrase="hint.comment">Vrije tekst</span>
+    <span data-phrase="hint.iso">bijv. 400</span>
+    <span data-phrase="strip.nothing">Niets te verwijderen &mdash; in dit bestand zat geen metadata.</span>
+    <span data-phrase="strip.none">Er hoefde niets weg.</span>
+    <span data-phrase="strip.done.one">1 foto schoongemaakt. Er is niets van deze machine af geweest.</span>
+    <span data-phrase="strip.done.many">{count} foto&rsquo;s schoongemaakt. Er is niets van deze machine af geweest.</span>
+    <span data-phrase="result.saved">Van {before} naar {after} &mdash; {saved} aan metadata weg. Het plaatje zelf is
+      onveranderd.</span>
+    <span data-phrase="save.reverted">Terug naar het bestand zoals het gelezen is.</span>
     <span data-phrase="find.clean.title">Er zit niets in dit bestand dat iets verraadt</span>
     <span data-phrase="find.clean.cleared">Alles wat dat wel deed is eruit. Sla de foto op om het weg te schrijven.</span>
     <span data-phrase="find.clean.never">Geen locatie, geen tijdstempels, geen camera, geen namen. Of ze zaten er nooit in,

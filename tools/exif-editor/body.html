@@ -152,6 +152,98 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · about {metadata} of metadata</span>
+    <span data-phrase="row.remove">Take {name} off the list</span>
+    <span data-phrase="inspect.metadata">about {size} of it metadata</span>
+    <span data-phrase="inspect.nometadata">no metadata found</span>
+    <span data-phrase="badge.unreadable">Cannot read</span>
+    <span data-phrase="badge.clean">Nothing found</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF unreadable</span>
+    <span data-phrase="badge.exifempty">EXIF empty</span>
+    <span data-phrase="badge.thumbnail">Thumbnail</span>
+    <span data-phrase="badge.comment">Comment</span>
+    <span data-phrase="badge.text">Text {count}</span>
+    <span data-phrase="badge.unknown">Unknown blocks</span>
+    <span data-phrase="keep.nothing">Absolutely everything goes, including the orientation tag and the colour profile.
+      The file will carry no metadata of any kind.</span>
+    <span data-phrase="keep.orientation">Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded
+      thumbnail, and any block this tool could not identify. Kept: the orientation tag.</span>
+    <span data-phrase="keep.icc">Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded
+      thumbnail, and any block this tool could not identify. Kept: the colour profile.</span>
+    <span data-phrase="keep.both">Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded
+      thumbnail, and any block this tool could not identify. Kept: the orientation tag and
+      the colour profile.</span>
+    <span data-phrase="block.none">This file has no metadata blocks in it at all.</span>
+    <span data-phrase="block.remove">Remove</span>
+    <span data-phrase="block.kept">Kept</span>
+    <span data-phrase="block.cannotkeep">Cannot be kept</span>
+    <span data-phrase="block.exifbad.title">An EXIF block that would not parse</span>
+    <span data-phrase="block.exifbad.detail">{size}, and this tool could not read it: {reason} Saving rewrites the EXIF block
+      from what is listed below, so an unreadable one cannot be carried across &mdash; it
+      goes whichever button you press.</span>
+    <span data-phrase="block.exif.title">EXIF tags</span>
+    <span data-phrase="block.exif.one">One tag, in the camera, image and location directories.</span>
+    <span data-phrase="block.exif.many">{count} tags across the camera, image and location directories.</span>
+    <span data-phrase="block.exif.remove">Remove every tag</span>
+    <span data-phrase="block.gps.title">GPS location</span>
+    <span data-phrase="block.gps.remove">Remove the location</span>
+    <span data-phrase="block.thumbnail.title">Embedded thumbnail</span>
+    <span data-phrase="block.thumbnail.detail">A small second copy of the picture, which may predate any cropping.</span>
+    <span data-phrase="block.thumbnail.remove">Remove the thumbnail</span>
+    <span data-phrase="block.xmp.title">XMP packet</span>
+    <span data-phrase="block.xmp.detail">{size} of XML: usually the camera again, plus the edit history.</span>
+    <span data-phrase="block.iptc.title">IPTC block</span>
+    <span data-phrase="block.iptc.detail">{size} of caption, byline and credit fields.</span>
+    <span data-phrase="block.text.title">Text chunks</span>
+    <span data-phrase="block.text.one">One key/value pair: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} key/value pairs: {keywords}.</span>
+    <span data-phrase="block.comments.title">Comments</span>
+    <span data-phrase="block.comments.one">One comment stored beside the picture.</span>
+    <span data-phrase="block.comments.many">{count} comments stored beside the picture.</span>
+    <span data-phrase="block.extras.title">Blocks this tool cannot read</span>
+    <span data-phrase="block.extras.detail">{blocks}. Removable without being readable.</span>
+    <span data-phrase="block.icc.title">Colour profile</span>
+    <span data-phrase="block.icc.detail">{size}. Says nothing about you; removing it can shift the colours.</span>
+    <span data-phrase="block.icc.named">{size} named &ldquo;{name}&rdquo;. Says nothing about you; removing it can shift the
+      colours.</span>
+    <span data-phrase="editor.note">Change a value and it is written back when you save. Tags with no editor can still
+      be removed &mdash; deleting a value never needs to understand it.</span>
+    <span data-phrase="editor.notags">There are no EXIF tags in this photo.</span>
+    <span data-phrase="editor.textnote">PNG stores these instead of EXIF tags. Editing any of them rewrites the set.</span>
+    <span data-phrase="editor.frozen">This file has a compressed text chunk that would not unpack. Editing the set would
+      drop it, so the set is read-only here &mdash; it can still be removed as a block.</span>
+    <span data-phrase="editor.pairs.one">1 pair</span>
+    <span data-phrase="editor.pairs.many">{count} pairs</span>
+    <span data-phrase="editor.unreadable">compressed, and it would not unpack</span>
+    <span data-phrase="editor.valuefor">Value for {keyword}</span>
+    <span data-phrase="editor.removechunk">Remove the {keyword} text chunk</span>
+    <span data-phrase="edit.blank">{tag} cannot be left blank. Use the Remove button beside it if you want the tag gone
+      altogether.</span>
+    <span data-phrase="edit.wanttext">&ldquo;{value}&rdquo; is not a value this tag can hold. {tag} expects text.</span>
+    <span data-phrase="edit.wantnumber">&ldquo;{value}&rdquo; is not a value this tag can hold. {tag} expects a number.</span>
+    <span data-phrase="edit.badvalue">&ldquo;{value}&rdquo; is not a value that tag can hold.</span>
+    <span data-phrase="value.empty">(empty)</span>
+    <span data-phrase="value.raw">{bytes} bytes of data</span>
+    <span data-phrase="value.more">{shown}, and {more} more</span>
+    <span data-phrase="value.unknown">Unrecognised value ({value})</span>
+    <span data-phrase="hint.description">A sentence describing the picture</span>
+    <span data-phrase="hint.artist">Who took it</span>
+    <span data-phrase="hint.copyright">e.g. (c) 2026 Your Name</span>
+    <span data-phrase="hint.software">What produced the file</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">e.g. Canon</span>
+    <span data-phrase="hint.model">e.g. EOS R6</span>
+    <span data-phrase="hint.orientation">1 is the right way up; 6 is rotated 90 degrees</span>
+    <span data-phrase="hint.comment">Free text</span>
+    <span data-phrase="hint.iso">e.g. 400</span>
+    <span data-phrase="strip.nothing">Nothing to remove &mdash; this file had no metadata in it.</span>
+    <span data-phrase="strip.none">Nothing needed removing.</span>
+    <span data-phrase="strip.done.one">1 photo cleaned. Nothing left this machine.</span>
+    <span data-phrase="strip.done.many">{count} photos cleaned. Nothing left this machine.</span>
+    <span data-phrase="result.saved">{before} to {after} &mdash; {saved} of metadata gone. The picture itself is
+      unchanged.</span>
+    <span data-phrase="save.reverted">Back to the file as it was read.</span>
     <span data-phrase="find.clean.title">Nothing in this file gives anything away</span>
     <span data-phrase="find.clean.cleared">Everything that did has been removed. Save the photo to write it out.</span>
     <span data-phrase="find.clean.never">No location, no timestamps, no camera, no names. Either it never had any, or

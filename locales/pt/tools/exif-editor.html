@@ -155,6 +155,102 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · uns {metadata} disso de metadados</span>
+    <span data-phrase="row.remove">Tirar {name} da lista</span>
+    <span data-phrase="inspect.metadata">uns {size} disso de metadados</span>
+    <span data-phrase="inspect.nometadata">nenhum metadado encontrado</span>
+    <span data-phrase="badge.unreadable">Não dá para ler</span>
+    <span data-phrase="badge.clean">Nada encontrado</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF ilegível</span>
+    <span data-phrase="badge.exifempty">EXIF vazio</span>
+    <span data-phrase="badge.thumbnail">Miniatura</span>
+    <span data-phrase="badge.comment">Comentário</span>
+    <span data-phrase="badge.text">Texto {count}</span>
+    <span data-phrase="badge.unknown">Blocos desconhecidos</span>
+    <span data-phrase="keep.nothing">Vai absolutamente tudo, inclusive a etiqueta de orientação e o perfil de cor. O
+      arquivo não vai carregar metadado nenhum.</span>
+    <span data-phrase="keep.orientation">Todo o resto vai: EXIF, GPS, a nota do fabricante, XMP, IPTC, comentários, a
+      miniatura embutida e qualquer bloco que esta ferramenta não soube identificar.
+      Mantido: a etiqueta de orientação.</span>
+    <span data-phrase="keep.icc">Todo o resto vai: EXIF, GPS, a nota do fabricante, XMP, IPTC, comentários, a
+      miniatura embutida e qualquer bloco que esta ferramenta não soube identificar.
+      Mantido: o perfil de cor.</span>
+    <span data-phrase="keep.both">Todo o resto vai: EXIF, GPS, a nota do fabricante, XMP, IPTC, comentários, a
+      miniatura embutida e qualquer bloco que esta ferramenta não soube identificar.
+      Mantidos: a etiqueta de orientação e o perfil de cor.</span>
+    <span data-phrase="block.none">Este arquivo não tem bloco de metadado nenhum.</span>
+    <span data-phrase="block.remove">Tirar</span>
+    <span data-phrase="block.kept">Mantido</span>
+    <span data-phrase="block.cannotkeep">Não dá para manter</span>
+    <span data-phrase="block.exifbad.title">Um bloco EXIF que não deu para ler</span>
+    <span data-phrase="block.exifbad.detail">{size}, e esta ferramenta não conseguiu ler: {reason} Salvar reescreve o bloco EXIF
+      a partir do que está listado abaixo, então um ilegível não tem como ir junto &mdash;
+      ele sai seja qual for o botão que você apertar.</span>
+    <span data-phrase="block.exif.title">Etiquetas EXIF</span>
+    <span data-phrase="block.exif.one">Uma etiqueta, nos diretórios de câmera, imagem e lugar.</span>
+    <span data-phrase="block.exif.many">{count} etiquetas espalhadas pelos diretórios de câmera, imagem e lugar.</span>
+    <span data-phrase="block.exif.remove">Tirar todas as etiquetas</span>
+    <span data-phrase="block.gps.title">Localização GPS</span>
+    <span data-phrase="block.gps.remove">Tirar a localização</span>
+    <span data-phrase="block.thumbnail.title">Miniatura embutida</span>
+    <span data-phrase="block.thumbnail.detail">Uma segunda cópia pequena da imagem, que pode ser anterior a qualquer corte.</span>
+    <span data-phrase="block.thumbnail.remove">Tirar a miniatura</span>
+    <span data-phrase="block.xmp.title">Pacote XMP</span>
+    <span data-phrase="block.xmp.detail">{size} de XML: em geral a câmera de novo, mais o histórico de edição.</span>
+    <span data-phrase="block.iptc.title">Bloco IPTC</span>
+    <span data-phrase="block.iptc.detail">{size} de campos de legenda, crédito e assinatura.</span>
+    <span data-phrase="block.text.title">Chunks de texto</span>
+    <span data-phrase="block.text.one">Um par chave/valor: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} pares chave/valor: {keywords}.</span>
+    <span data-phrase="block.comments.title">Comentários</span>
+    <span data-phrase="block.comments.one">Um comentário guardado ao lado da imagem.</span>
+    <span data-phrase="block.comments.many">{count} comentários guardados ao lado da imagem.</span>
+    <span data-phrase="block.extras.title">Blocos que esta ferramenta não sabe ler</span>
+    <span data-phrase="block.extras.detail">{blocks}. Dá para tirar sem conseguir ler.</span>
+    <span data-phrase="block.icc.title">Perfil de cor</span>
+    <span data-phrase="block.icc.detail">{size}. Não diz nada sobre você; tirar pode deslocar as cores.</span>
+    <span data-phrase="block.icc.named">{size} chamado &ldquo;{name}&rdquo;. Não diz nada sobre você; tirar pode deslocar as
+      cores.</span>
+    <span data-phrase="editor.note">Mude um valor e ele é escrito de volta quando você salvar. Etiquetas sem editor dá
+      para tirar do mesmo jeito &mdash; apagar um valor nunca precisa entendê-lo.</span>
+    <span data-phrase="editor.notags">Não há etiquetas EXIF nesta foto.</span>
+    <span data-phrase="editor.textnote">O PNG guarda estes no lugar das etiquetas EXIF. Editar qualquer um reescreve o
+      conjunto.</span>
+    <span data-phrase="editor.frozen">Este arquivo tem um chunk de texto comprimido que não abriu. Editar o conjunto
+      derrubaria ele, então aqui é só leitura &mdash; como bloco ainda dá para tirar.</span>
+    <span data-phrase="editor.pairs.one">1 par</span>
+    <span data-phrase="editor.pairs.many">{count} pares</span>
+    <span data-phrase="editor.unreadable">comprimido, e não abriu</span>
+    <span data-phrase="editor.valuefor">Valor de {keyword}</span>
+    <span data-phrase="editor.removechunk">Tirar o chunk de texto {keyword}</span>
+    <span data-phrase="edit.blank">{tag} não pode ficar em branco. Use o botão Tirar ao lado se o que você quer é que a
+      etiqueta suma de vez.</span>
+    <span data-phrase="edit.wanttext">&ldquo;{value}&rdquo; não é um valor que esta etiqueta aguente. {tag} espera texto.</span>
+    <span data-phrase="edit.wantnumber">&ldquo;{value}&rdquo; não é um valor que esta etiqueta aguente. {tag} espera um
+      número.</span>
+    <span data-phrase="edit.badvalue">&ldquo;{value}&rdquo; não é um valor que essa etiqueta aguente.</span>
+    <span data-phrase="value.empty">(vazio)</span>
+    <span data-phrase="value.raw">{bytes} bytes de dados</span>
+    <span data-phrase="value.more">{shown}, e mais {more}</span>
+    <span data-phrase="value.unknown">Valor não reconhecido ({value})</span>
+    <span data-phrase="hint.description">Uma frase que descreva a imagem</span>
+    <span data-phrase="hint.artist">Quem tirou</span>
+    <span data-phrase="hint.copyright">ex.: (c) 2026 Seu Nome</span>
+    <span data-phrase="hint.software">O que produziu o arquivo</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">ex.: Canon</span>
+    <span data-phrase="hint.model">ex.: EOS R6</span>
+    <span data-phrase="hint.orientation">1 é de pé; 6 é girado 90 graus</span>
+    <span data-phrase="hint.comment">Texto livre</span>
+    <span data-phrase="hint.iso">ex.: 400</span>
+    <span data-phrase="strip.nothing">Nada para tirar &mdash; este arquivo não tinha metadado nenhum.</span>
+    <span data-phrase="strip.none">Não precisou tirar nada.</span>
+    <span data-phrase="strip.done.one">1 foto limpa. Nada saiu desta máquina.</span>
+    <span data-phrase="strip.done.many">{count} fotos limpas. Nada saiu desta máquina.</span>
+    <span data-phrase="result.saved">De {before} para {after} &mdash; foram {saved} de metadados. A imagem em si está
+      intacta.</span>
+    <span data-phrase="save.reverted">De volta ao arquivo como ele foi lido.</span>
     <span data-phrase="find.clean.title">Não tem nada neste arquivo que entregue você</span>
     <span data-phrase="find.clean.cleared">Tudo o que entregava já foi removido. Salve a foto para escrever isso no arquivo.</span>
     <span data-phrase="find.clean.never">Sem lugar, sem datas, sem câmera, sem nomes. Ou nunca teve, ou alguma coisa já
