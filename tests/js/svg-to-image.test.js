@@ -237,7 +237,7 @@ test('sizedSvg: an ampersand in an attribute is not turned into broken XML', () 
 });
 
 test('sizedSvg: a file with no root element is refused rather than mangled', () => {
-  assert.throws(() => sizedSvg('<html></html>', 10, 10), /no <svg> element/);
+  assert.throws(() => sizedSvg('<html></html>', 10, 10), { message: 'read.nosvg' });
 });
 
 /* =========================================================== decodeSvgText */
@@ -406,11 +406,13 @@ test('atDensity: an odd 1x does not drift when it is doubled', () => {
 
 /* ============================================================= checkLimits */
 
+// The verdict names a sentence rather than writing one: sizing.js is copied
+// into fifteen languages, and only the page can read a phrase.
 test('checkLimits: an ordinary size passes without a word', () => {
   const verdict = checkLimits({ width: 1024, height: 1024 });
   assert.equal(verdict.ok, true);
   assert.equal(verdict.warn, false);
-  assert.equal(verdict.reason, '');
+  assert.equal(verdict.key, '');
 });
 
 test('checkLimits: past what Safari on a phone will do, it warns and still runs', () => {
@@ -418,39 +420,49 @@ test('checkLimits: past what Safari on a phone will do, it warns and still runs'
   const verdict = checkLimits({ width: side, height: side });
   assert.equal(verdict.ok, true);
   assert.equal(verdict.warn, true);
-  assert.match(verdict.reason, /iPhone|iPad/);
+  assert.equal(verdict.key, 'limit.safari');
+  assert.equal(verdict.values.ceiling, Math.round(WARN_PIXELS / 1e6));
 });
 
 test('checkLimits: past the side a canvas has, it refuses', () => {
   const verdict = checkLimits({ width: MAX_SIDE + 1, height: 10 });
   assert.equal(verdict.ok, false);
-  assert.match(verdict.reason, /blank/);
+  assert.equal(verdict.key, 'limit.side');
+  assert.equal(verdict.values.max, MAX_SIDE);
 });
 
 test('checkLimits: past what a browser will hold, it refuses', () => {
   const verdict = checkLimits({ width: 16000, height: 16000 });
   assert.equal(verdict.ok, false);
-  assert.match(verdict.reason, /megapixels/);
+  assert.equal(verdict.key, 'limit.pixels');
+  // The count is a phrase of its own, because "megapixels" is a word.
+  assert.equal(verdict.values.size.key, 'unit.megapixels');
+  assert.equal(verdict.values.size.values.n, 256);
 });
 
 /* ================================================================ describe */
 
+// A stand-in for `phrase()`: the numbers are what the tests are about, and
+// spelling the key out beside them shows which sentence carried them.
+const say = (key, values = {}) => `${key}(${Object.entries(values)
+  .map(([name, value]) => `${name}=${value}`).join(',')})`;
+
 test('describePlan: the sentence carries the numbers the run will use', () => {
   const intrinsic = { width: 24, height: 24, ratio: 1 };
   const plan = planSize(intrinsic, { mode: MODES.scale, scale: 4 });
-  const said = describePlan(plan, intrinsic, [1, 2]);
-  assert.match(said, /24 × 24/);
-  assert.match(said, /96 × 96/);
-  assert.match(said, /192 × 192/, 'the @2x size is not in the sentence');
+  const said = describePlan(plan, intrinsic, [1, 2], say);
+  assert.match(said, /fromWidth=24,fromHeight=24/);
+  assert.match(said, /width=96,height=96/);
+  assert.match(said, /width=192,height=192/, 'the @2x size is not in the sentence');
 });
 
 test('describePlan: padding and stretching are said out loud', () => {
   const intrinsic = { width: 800, height: 450, ratio: 800 / 450 };
   const padded = planSize(intrinsic, { mode: MODES.box, width: 600, height: 600, fit: FITS.pad });
-  assert.match(describePlan(padded, intrinsic, [1]), /centred/);
+  assert.match(describePlan(padded, intrinsic, [1], say), /plan\.padded/);
 
   const stretched = planSize(intrinsic, { mode: MODES.box, width: 600, height: 600, fit: FITS.stretch });
-  assert.match(describePlan(stretched, intrinsic, [1]), /distorted/);
+  assert.match(describePlan(stretched, intrinsic, [1], say), /plan\.stretched/);
 });
 
 test('times: a whole multiple has no decimals on it', () => {

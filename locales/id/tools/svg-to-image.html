@@ -222,6 +222,70 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: alat ini hanya membaca berkas SVG. PNG atau
+      JPEG sudah berupa piksel; untuk itu ada Pengubah Ukuran Gambar.</span>
+    <span data-phrase="read.nosvg.named">{name}: tidak ada elemen &lt;svg&gt; di berkas
+      ini.</span>
+    <span data-phrase="read.nosvg">Tidak ada elemen &lt;svg&gt; di berkas ini.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">Browser ini tidak bisa menggambar SVG-nya. Mungkin
+      XML-nya tidak sah.</span>
+    <span data-phrase="encode.refused">Browser ini tidak mau menulis {format} pada
+      ukuran itu.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; terlalu besar: {why}</span>
+    <span data-phrase="plan.none">Tambahkan sebuah SVG, lalu di sini akan tertulis akan
+      keluar seberapa besar.</span>
+    <span data-phrase="plan.from">Berkasnya menggambar dirinya pada {fromWidth} &times;
+      {fromHeight}; ini keluar pada {width} &times; {height}, yaitu {times} dari itu.</span>
+    <span data-phrase="plan.stretched">Bentuknya ditarik untuk memenuhi kotaknya, jadi
+      gambarnya jadi melenceng.</span>
+    <span data-phrase="plan.padded">Ia di tengah kotak, dengan latarnya kelihatan di
+      kedua sisi.</span>
+    <span data-phrase="plan.density">{width} &times; {height} pada @{d}x</span>
+    <span data-phrase="plan.plus">Ditambah {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height} melewati batas {max} piksel
+      yang dipunyai sebuah kanvas per sisi. Tidak ada yang kembali selain gambar kosong.</span>
+    <span data-phrase="limit.pixels">{size} lebih dari yang sanggup ditampung browser
+      &mdash; itu {mb} MB kanvas sebelum apa pun dikodekan. Perlu ukuran yang lebih
+      kecil.</span>
+    <span data-phrase="limit.safari">{size} di atas langit-langit {ceiling} megapiksel
+      yang dipunyai Safari di iPhone atau iPad. Di komputer akan jalan; di ponsel bisa
+      kembali kosong.</span>
+    <span data-phrase="unit.megapixels">{n} megapiksel</span>
+    <span data-phrase="format.png">Tanpa kehilangan mutu, dan satu-satunya dari
+      ketiganya yang dibaca semua perangkat lunak. Warna rata dan tepi tegas &mdash;
+      yang merupakan sebagian besar isi sebuah gambar &mdash; termampatkan dengan baik
+      di dalamnya, jadi logo yang dirasterkan biasanya tetap lebih kecil sebagai PNG
+      daripada sebagai JPEG.</span>
+    <span data-phrase="format.jpeg">Tanpa transparansi, dan kehilangan mutunya paling
+      kelihatan justru pada gambar semacam ini: cincin bintik di sekeliling tiap tepi
+      tegas. Setimpal untuk gambar yang sebagian besar berupa gradasi mirip foto, dan
+      jarang selain itu.</span>
+    <span data-phrase="format.webp">Transparansi seperti PNG, dan berkasnya lebih kecil
+      daripada kedua yang lain pada mutu yang sama. Dibaca semua browser masa kini;
+      perangkat lunak lama dan sebagian percetakan masih tidak bisa membukanya.</span>
+    <span data-phrase="format.webp.cannot">Browser ini tidak bisa menulis WebP, jadi
+      yang keluar akan berupa PNG. Pilih salah satu dari dua yang lain.</span>
+    <span data-phrase="bg.none">Bagian gambar yang tembus pandang tetap tembus pandang.</span>
+    <span data-phrase="bg.behind">Dicat di belakang seluruh gambar, jadi tidak ada yang
+      tembus pandang di berkasnya.</span>
+    <span data-phrase="bg.needed">{format} tidak punya transparansi, jadi warna ini
+      dicat di belakang gambarnya. Tanpa itu, semua yang tadinya tembus pandang akan
+      keluar hitam.</span>
+    <span data-phrase="preview.actual">Ditampilkan pada ukuran yang akan jadi.</span>
+    <span data-phrase="preview.scaled">Ditampilkan pada {times} dari berkas {size},
+      digambar ulang dari vektornya dan bukan dikecilkan &mdash; jadi begitulah rupanya
+      pada ukuran itu.</span>
+    <span data-phrase="preview.checkerboard">Pola papan catur itu tempat berkasnya nanti
+      tembus pandang.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} dan {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">Buat gambarnya</span>
     <span data-phrase="run.many">Buat {count} gambarnya</span>
     <span data-phrase="chosen.one">Satu berkas dipilih</span>

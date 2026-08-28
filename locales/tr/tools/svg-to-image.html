@@ -219,6 +219,64 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: bu araç yalnızca SVG dosyalarını okur. PNG
+      ya da JPEG zaten pikseldir; onlar için Görsel Boyutlandırıcı var.</span>
+    <span data-phrase="read.nosvg.named">{name}: bu dosyada &lt;svg&gt; ögesi yok.</span>
+    <span data-phrase="read.nosvg">Bu dosyada &lt;svg&gt; ögesi yok.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">Bu tarayıcı SVG&rsquo;yi çizemedi. Geçerli bir XML
+      olmayabilir.</span>
+    <span data-phrase="encode.refused">Bu tarayıcı o boyutta {format} yazmak istemedi.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; fazla büyük: {why}</span>
+    <span data-phrase="plan.none">Bir SVG ekleyin, burada hangi boyutta çıkacağı yazsın.</span>
+    <span data-phrase="plan.from">Dosya kendini {fromWidth} &times; {fromHeight}
+      çiziyor; bu {width} &times; {height} olarak çıkıyor, yani onun {times} katı.</span>
+    <span data-phrase="plan.stretched">Biçim kutuyu dolduracak şekilde geriliyor,
+      dolayısıyla çizim bozuluyor.</span>
+    <span data-phrase="plan.padded">Kutunun ortasında duruyor, iki yanından arka plan
+      görünüyor.</span>
+    <span data-phrase="plan.density">@{d}x&rsquo;te {width} &times; {height}</span>
+    <span data-phrase="plan.plus">Ayrıca {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height}, bir tuvalin bir kenarda
+      sahip olduğu {max} piksel sınırını aşıyor. Boş bir görüntüden başka bir şey
+      dönmezdi.</span>
+    <span data-phrase="limit.pixels">{size}, bir tarayıcının tutabileceğinden fazla
+      &mdash; daha hiçbir şey kodlanmadan {mb} MB tuval eder. Daha küçük bir boyut
+      gerekiyor.</span>
+    <span data-phrase="limit.safari">{size}, Safari&rsquo;nin bir iPhone ya da
+      iPad&rsquo;de sahip olduğu {ceiling} megapiksel tavanının üstünde. Masaüstünde
+      çalışır; telefonda boş dönebilir.</span>
+    <span data-phrase="unit.megapixels">{n} megapiksel</span>
+    <span data-phrase="format.png">Kayıpsız ve üçünün içinde her yazılımın okuduğu tek
+      biçim. Düz renkler ve keskin kenarlar &mdash; bir çizim çoğunlukla bunlardan
+      oluşur &mdash; onda iyi sıkışır, bu yüzden rasterlenmiş bir logo zaten genellikle
+      PNG olarak JPEG&rsquo;ten küçüktür.</span>
+    <span data-phrase="format.jpeg">Saydamlık yok ve kaybı tam da bu tür resimlerde en
+      kötü görünen türden: her keskin kenarın çevresinde bir benek halkası. Çoğunlukla
+      fotoğraf gibi geçişlerden oluşan bir çizim için değer, başka türlü nadiren.</span>
+    <span data-phrase="format.webp">PNG gibi saydamlık ve aynı kalitede diğer ikisinden
+      küçük bir dosya. Güncel her tarayıcı okur; eski yazılımlar ve bazı matbaalar hâlâ
+      açmıyor.</span>
+    <span data-phrase="format.webp.cannot">Bu tarayıcı WebP yazamıyor, dolayısıyla PNG
+      çıkardı. Diğer ikisinden birini seçin.</span>
+    <span data-phrase="bg.none">Çizimin saydam yerleri saydam kalır.</span>
+    <span data-phrase="bg.behind">Resmin tamamının arkasına boyanır, dolayısıyla dosyada
+      saydam hiçbir şey kalmaz.</span>
+    <span data-phrase="bg.needed">{format} saydamlık tanımaz, bu yüzden bu renk çizimin
+      arkasına boyanır. Olmasa saydam olan her şey siyah çıkardı.</span>
+    <span data-phrase="preview.actual">Çıkacağı boyutta gösteriliyor.</span>
+    <span data-phrase="preview.scaled">{size} boyutundaki dosyanın {times} kadarı olarak
+      gösteriliyor; küçültülmedi, vektörden yeniden çizildi &mdash; yani o boyut böyle
+      görünüyor.</span>
+    <span data-phrase="preview.checkerboard">Damalı desen, dosyanın saydam olacağı yer.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} ve {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">Görseli oluştur</span>
     <span data-phrase="run.many">{count} görseli oluştur</span>
     <span data-phrase="chosen.one">Bir dosya seçildi</span>

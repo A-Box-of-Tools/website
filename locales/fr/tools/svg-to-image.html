@@ -217,6 +217,74 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}&nbsp;: cet outil ne lit que les fichiers SVG.
+      Un PNG ou un JPEG est déjà fait de pixels&nbsp;; c&rsquo;est le Redimensionneur
+      d&rsquo;images qu&rsquo;il faut pour ceux-là.</span>
+    <span data-phrase="read.nosvg.named">{name}&nbsp;: il n&rsquo;y a pas
+      d&rsquo;élément &lt;svg&gt; dans ce fichier.</span>
+    <span data-phrase="read.nosvg">Il n&rsquo;y a pas d&rsquo;élément &lt;svg&gt; dans
+      ce fichier.</span>
+    <span data-phrase="file.failed">{name}&nbsp;: {why}</span>
+    <span data-phrase="draw.failed">Ce navigateur n&rsquo;a pas pu dessiner le SVG. Ce
+      n&rsquo;est peut-être pas du XML valide.</span>
+    <span data-phrase="encode.refused">Ce navigateur a refusé d&rsquo;écrire du {format}
+      à cette taille.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; trop grand&nbsp;: {why}</span>
+    <span data-phrase="plan.none">Ajoutez un SVG et cette ligne dira à quelle taille il
+      sortira.</span>
+    <span data-phrase="plan.from">Le fichier se dessine à {fromWidth} &times;
+      {fromHeight}&nbsp;; cela sort en {width} &times; {height}, soit {times} cela.</span>
+    <span data-phrase="plan.stretched">La forme est étirée pour remplir le cadre, le
+      dessin est donc déformé.</span>
+    <span data-phrase="plan.padded">Il est centré dans le cadre, avec le fond qui
+      dépasse de part et d&rsquo;autre.</span>
+    <span data-phrase="plan.density">{width} &times; {height} en @{d}x</span>
+    <span data-phrase="plan.plus">Plus {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height} dépasse la limite de {max}
+      pixels qu&rsquo;un canvas a par côté. Il n&rsquo;en reviendrait qu&rsquo;une image
+      vide.</span>
+    <span data-phrase="limit.pixels">{size}, c&rsquo;est plus qu&rsquo;un navigateur ne
+      peut tenir &mdash; cela fait {mb} Mo de canvas avant même le moindre encodage. Il
+      faut une taille plus petite.</span>
+    <span data-phrase="limit.safari">{size} dépasse le plafond de {ceiling} mégapixels
+      que Safari a sur un iPhone ou un iPad. Cela marchera sur un ordinateur&nbsp;; sur
+      un téléphone, l&rsquo;image peut revenir vide.</span>
+    <span data-phrase="unit.megapixels">{n} mégapixels</span>
+    <span data-phrase="format.png">Sans perte, et le seul des trois que tous les
+      logiciels lisent. Les aplats et les bords nets &mdash; c&rsquo;est-à-dire
+      l&rsquo;essentiel d&rsquo;un dessin &mdash; s&rsquo;y compressent bien, un logo
+      rastérisé est donc de toute façon plus petit en PNG qu&rsquo;en JPEG.</span>
+    <span data-phrase="format.jpeg">Pas de transparence, et une perte qui se voit le
+      plus sur exactement ce genre d&rsquo;image&nbsp;: une couronne de moucheture
+      autour de chaque bord net. Cela vaut le coup pour un dessin fait surtout de
+      dégradés photographiques, rarement autrement.</span>
+    <span data-phrase="format.webp">La transparence d&rsquo;un PNG, et un fichier plus
+      petit que les deux autres à qualité égale. Lu par tous les navigateurs
+      actuels&nbsp;; les logiciels anciens et certains imprimeurs n&rsquo;en ouvrent
+      toujours pas.</span>
+    <span data-phrase="format.webp.cannot">Ce navigateur ne sait pas écrire de WebP, il
+      sortirait donc un PNG. Choisissez l&rsquo;un des deux autres.</span>
+    <span data-phrase="bg.none">Les parties transparentes du dessin restent
+      transparentes.</span>
+    <span data-phrase="bg.behind">Peint derrière toute l&rsquo;image&nbsp;: rien
+      n&rsquo;est transparent dans le fichier.</span>
+    <span data-phrase="bg.needed">Le {format} n&rsquo;a pas de transparence, cette
+      couleur est donc peinte derrière le dessin. Sans elle, tout ce qui était
+      transparent sortirait noir.</span>
+    <span data-phrase="preview.actual">Montré à la taille qu&rsquo;il aura.</span>
+    <span data-phrase="preview.scaled">Montré à {times} du fichier de {size}, redessiné
+      depuis le vecteur plutôt que réduit &mdash; c&rsquo;est donc bien ce que donne
+      cette taille.</span>
+    <span data-phrase="preview.checkerboard">Le damier, c&rsquo;est là où le fichier
+      sera transparent.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} et {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
     <span data-phrase="run.one">Créer l&rsquo;image</span>
     <span data-phrase="run.many">Créer les {count} images</span>
     <span data-phrase="chosen.one">Un fichier choisi</span>

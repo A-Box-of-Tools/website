@@ -215,6 +215,67 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: esta herramienta solo lee archivos SVG. Un
+      PNG o un JPEG ya son píxeles; para esos está el Redimensionador de imágenes.</span>
+    <span data-phrase="read.nosvg.named">{name}: en este archivo no hay ningún elemento
+      &lt;svg&gt;.</span>
+    <span data-phrase="read.nosvg">En este archivo no hay ningún elemento &lt;svg&gt;.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">Este navegador no ha podido dibujar el SVG. Puede
+      que no sea XML válido.</span>
+    <span data-phrase="encode.refused">Este navegador no ha querido escribir {format} a
+      ese tamaño.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; demasiado grande: {why}</span>
+    <span data-phrase="plan.none">Añade un SVG y aquí pondrá a qué tamaño va a salir.</span>
+    <span data-phrase="plan.from">El archivo se dibuja a {fromWidth} &times;
+      {fromHeight}; esto sale a {width} &times; {height}, que es {times} eso.</span>
+    <span data-phrase="plan.stretched">La forma se estira para llenar la caja, así que
+      el dibujo sale deformado.</span>
+    <span data-phrase="plan.padded">Va centrado en la caja, con el fondo asomando a los
+      lados.</span>
+    <span data-phrase="plan.density">{width} &times; {height} a @{d}x</span>
+    <span data-phrase="plan.plus">Más {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height} pasa del límite de {max}
+      píxeles que tiene un lienzo por lado. No volvería más que una imagen en blanco.</span>
+    <span data-phrase="limit.pixels">{size} es más de lo que un navegador aguanta: son
+      {mb} MB de lienzo antes de codificar nada. Hace falta un tamaño más pequeño.</span>
+    <span data-phrase="limit.safari">{size} pasa del techo de {ceiling} megapíxeles que
+      tiene Safari en un iPhone o un iPad. En un ordenador irá; en un teléfono puede
+      volver en blanco.</span>
+    <span data-phrase="unit.megapixels">{n} megapíxeles</span>
+    <span data-phrase="format.png">Sin pérdida, y el único de los tres que lee cualquier
+      programa. Los colores planos y los bordes duros &mdash; que es de lo que está
+      hecho casi todo dibujo &mdash; comprimen bien en él, así que un logotipo
+      rasterizado suele ser más pequeño en PNG que en JPEG de todas formas.</span>
+    <span data-phrase="format.jpeg">Sin transparencia, y con la pérdida que peor se ve
+      justo en esta clase de imagen: un anillo de moteado alrededor de cada borde duro.
+      Merece la pena para un dibujo hecho sobre todo de degradados fotográficos, y pocas
+      veces más.</span>
+    <span data-phrase="format.webp">Transparencia como un PNG, y un archivo más pequeño
+      que los otros dos a la misma calidad. Lo lee cualquier navegador actual; los
+      programas antiguos y algunas imprentas siguen sin abrirlo.</span>
+    <span data-phrase="format.webp.cannot">Este navegador no sabe escribir WebP, así que
+      saldría un PNG. Elige uno de los otros dos.</span>
+    <span data-phrase="bg.none">Las partes transparentes del dibujo se quedan
+      transparentes.</span>
+    <span data-phrase="bg.behind">Pintado detrás de toda la imagen, así que en el
+      archivo no hay nada transparente.</span>
+    <span data-phrase="bg.needed">El {format} no tiene transparencia, así que este color
+      se pinta detrás del dibujo. Sin él, todo lo que era transparente saldría negro.</span>
+    <span data-phrase="preview.actual">Mostrado al tamaño que va a tener.</span>
+    <span data-phrase="preview.scaled">Mostrado a {times} del archivo de {size},
+      redibujado desde el vector en vez de encogido, así que esto es lo que se ve a ese
+      tamaño.</span>
+    <span data-phrase="preview.checkerboard">El damero es donde el archivo va a ser
+      transparente.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} y {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">Crear la imagen</span>
     <span data-phrase="run.many">Crear las {count} imágenes</span>
     <span data-phrase="chosen.one">Un archivo elegido</span>

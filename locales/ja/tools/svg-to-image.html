@@ -199,6 +199,41 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}：この道具はSVGファイルしか読みません。PNGやJPEGはすでにピクセルなので、それらには画像リサイズツールがあります。</span>
+    <span data-phrase="read.nosvg.named">{name}：このファイルには&lt;svg&gt;要素がありません。</span>
+    <span data-phrase="read.nosvg">このファイルには&lt;svg&gt;要素がありません。</span>
+    <span data-phrase="file.failed">{name}：{why}</span>
+    <span data-phrase="draw.failed">このブラウザーはSVGを描画できませんでした。正しいXMLではないのかもしれません。</span>
+    <span data-phrase="encode.refused">このブラウザーはそのサイズで{format}を書き出しませんでした。</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; 大きすぎます：{why}</span>
+    <span data-phrase="plan.none">SVGを追加すると、どのサイズで出るかがここに出ます。</span>
+    <span data-phrase="plan.from">このファイルは{fromWidth} &times; {fromHeight}で自分を描きます。出てくるのは{width} &times; {height}で、その{times}にあたります。</span>
+    <span data-phrase="plan.stretched">枠を埋めるように形が引き伸ばされるので、絵はゆがみます。</span>
+    <span data-phrase="plan.padded">枠の中央に置かれ、その両側に背景が見えます。</span>
+    <span data-phrase="plan.density">@{d}xで{width} &times; {height}</span>
+    <span data-phrase="plan.plus">ほかに{list}。</span>
+    <span data-phrase="limit.side">{width} &times; {height}は、キャンバスの1辺の上限{max}ピクセルを超えています。返ってくるのは空の画像だけです。</span>
+    <span data-phrase="limit.pixels">{size}はブラウザーが抱えられる量を超えています。何もエンコードしないうちからキャンバスだけで{mb} MBです。もっと小さいサイズにしてください。</span>
+    <span data-phrase="limit.safari">{size}は、iPhoneやiPadのSafariにある{ceiling}メガピクセルの上限を超えています。デスクトップなら動きますが、スマートフォンでは空で返ることがあります。</span>
+    <span data-phrase="unit.megapixels">{n}メガピクセル</span>
+    <span data-phrase="format.png">劣化がなく、3つのうちどのソフトでも読めるのはこれだけです。べた塗りと硬い輪郭&mdash;図はたいていそれでできています&mdash;はよく縮むので、ラスター化したロゴはどのみちJPEGよりPNGのほうが小さくなるのがふつうです。</span>
+    <span data-phrase="format.jpeg">透明を扱えず、しかも劣化がこの種の絵でいちばん目立ちます。硬い輪郭のまわりに点のにじみが出ます。写真のような階調が主体の図には向きますが、それ以外ではまれです。</span>
+    <span data-phrase="format.webp">PNGと同じ透明が使えて、同じ画質なら他の2つより小さくなります。今のブラウザーはどれも読めますが、古いソフトや一部の印刷所では今も開けません。</span>
+    <span data-phrase="format.webp.cannot">このブラウザーはWebPを書き出せないため、代わりにPNGが出ます。ほかの2つから選んでください。</span>
+    <span data-phrase="bg.none">図の透明な部分は透明のままです。</span>
+    <span data-phrase="bg.behind">絵全体の後ろに敷かれるので、ファイルの中に透明な部分は残りません。</span>
+    <span data-phrase="bg.needed">{format}に透明はないので、この色が図の後ろに敷かれます。これがないと、透明だった部分はすべて黒くなります。</span>
+    <span data-phrase="preview.actual">出てくるサイズのまま表示しています。</span>
+    <span data-phrase="preview.scaled">{size}のファイルの{times}で表示しています。縮小ではなくベクターから描き直しているので、そのサイズでの見え方そのものです。</span>
+    <span data-phrase="preview.checkerboard">市松模様のところが、ファイルで透明になる部分です。</span>
+    <span data-phrase="join.sentences">{a}{b}</span>
+    <span data-phrase="join.and">{a}と{b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}、{b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">画像を作る</span>
     <span data-phrase="run.many">{count}枚の画像を作る</span>
     <span data-phrase="chosen.one">ファイル1個を選択中</span>
