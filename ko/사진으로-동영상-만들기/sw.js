@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/사진으로-동영상-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'9438ca44a8';
+const CACHE_NAME=CACHE_PREFIX+'2bb2c8eab0';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4664f605d9',
+'styles.css?v=f45e3ffac4',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

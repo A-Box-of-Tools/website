@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/gif-in-einzelbilder-zerlegen/:';
-const CACHE_NAME=CACHE_PREFIX+'58366c0491';
+const CACHE_NAME=CACHE_PREFIX+'ede2e03c7d';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a6d099c67b',
+'styles.css?v=6b187b2dc4',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

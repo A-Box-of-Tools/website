@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/ses-duzenleme/:';
-const CACHE_NAME=CACHE_PREFIX+'99f0c86e15';
+const CACHE_NAME=CACHE_PREFIX+'d5df091253';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=199bec0997',
+'styles.css?v=4239dca3bc',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

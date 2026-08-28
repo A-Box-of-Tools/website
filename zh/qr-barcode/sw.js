@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/qr-barcode/:';
-const CACHE_NAME=CACHE_PREFIX+'d0b0e8166d';
+const CACHE_NAME=CACHE_PREFIX+'a9806cee99';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=8f9d2ad74f',
+'styles.css?v=6b1353ab61',
 'manifest.json',
 'src/shared/phrases.js',
 'src/barcode.js',

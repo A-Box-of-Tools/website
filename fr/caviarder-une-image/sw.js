@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/caviarder-une-image/:';
-const CACHE_NAME=CACHE_PREFIX+'ea89286a92';
+const CACHE_NAME=CACHE_PREFIX+'2d55afee4b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=608c23c43a',
+'styles.css?v=d31d053b5e',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

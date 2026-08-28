@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/afbeelding-onleesbaar-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'23416e7596';
+const CACHE_NAME=CACHE_PREFIX+'0988cebb64';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=608c23c43a',
+'styles.css?v=d31d053b5e',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
