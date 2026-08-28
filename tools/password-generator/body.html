@@ -9,11 +9,15 @@
       the answer to "which is stronger" visible on both sides of it.
       `role="tablist"` and the arrow keys are wired in main.js.
     -->
-    <div class="tabs" role="tablist" aria-label="What to make">
-      <button type="button" role="tab" id="tab-password" class="tab" data-mode="password"
-              aria-selected="true" aria-controls="options-password">Password</button>
-      <button type="button" role="tab" id="tab-passphrase" class="tab" data-mode="passphrase"
-              aria-selected="false" tabindex="-1" aria-controls="options-passphrase">Passphrase</button>
+    <div class="segmented" role="radiogroup" aria-label="What to make">
+      <label class="segment">
+        <input type="radio" name="mode" value="password" checked>
+        <span>Password</span>
+      </label>
+      <label class="segment">
+        <input type="radio" name="mode" value="passphrase">
+        <span>Passphrase</span>
+      </label>
     </div>
 
     <p class="card-lede" id="mode-note">
@@ -30,7 +34,7 @@
   <section class="card">
     <h2><span class="step">2</span> Set it up</h2>
 
-    <div class="settings" id="options-password" role="tabpanel" aria-labelledby="tab-password">
+    <div class="settings" id="options-password">
       <div class="field">
         <label for="length">Length</label>
         <div class="slider-row">
@@ -102,7 +106,7 @@
       </div>
     </div>
 
-    <div class="settings" id="options-passphrase" role="tabpanel" aria-labelledby="tab-passphrase" hidden>
+    <div class="settings" id="options-passphrase" hidden>
       <div class="field">
         <label for="words">Words</label>
         <div class="slider-row">

@@ -10,7 +10,7 @@ import { wordlist } from './wordlist.js';
 const $ = (id) => document.getElementById(id);
 
 const el = {
-  tabs: Array.from(document.querySelectorAll('.tab')),
+  modes: Array.from(document.querySelectorAll('input[name="mode"]')),
   panels: {
     password: $('options-password'),
     passphrase: $('options-passphrase'),
@@ -104,27 +104,19 @@ let mode = 'password';
 
 function setMode(next) {
   mode = next;
-  for (const tab of el.tabs) {
-    const on = tab.dataset.mode === next;
-    tab.setAttribute('aria-selected', String(on));
-    tab.tabIndex = on ? 0 : -1;
-  }
+  for (const radio of el.modes) radio.checked = radio.value === next;
   for (const [name, panel] of Object.entries(el.panels)) panel.hidden = name !== next;
   make();
 }
 
-for (const tab of el.tabs) {
-  tab.addEventListener('click', () => setMode(tab.dataset.mode));
-  // The arrow keys move between tabs, which is what a tab strip is expected to
-  // do and what a row of buttons does not do on its own.
-  tab.addEventListener('keydown', (event) => {
-    const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
-    if (!step) return;
-    event.preventDefault();
-    const index = el.tabs.indexOf(tab);
-    const next = el.tabs[(index + step + el.tabs.length) % el.tabs.length];
-    next.focus();
-    setMode(next.dataset.mode);
+// Radios rather than a tab strip. The choice is between two kinds of secret,
+// not between two views of one thing, and a radio group says that: the arrow
+// keys move within it and the roving tabindex a tablist needs is the browser's
+// job rather than ours. It also means the two words are labels, which is what
+// they always were.
+for (const radio of el.modes) {
+  radio.addEventListener('change', () => {
+    if (radio.checked) setMode(radio.value);
   });
 }
 
