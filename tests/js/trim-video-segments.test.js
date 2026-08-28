@@ -191,9 +191,10 @@ test('lines that are not a pair of times are counted, not fatal', () => {
 });
 
 test('a file with nothing usable in it is an error, not an empty list', () => {
-  assert.throws(() => readTimestamps('seconds,x\n'), /No segments/);
-  assert.throws(() => readTimestamps(''), /No segments/);
-  assert.throws(() => readTimestamps('this is not a timestamps file'), /No segments/);
+  const unreadable = /^Error: marks\.unreadable$/;
+  assert.throws(() => readTimestamps('seconds,x\n'), unreadable);
+  assert.throws(() => readTimestamps(''), unreadable);
+  assert.throws(() => readTimestamps('this is not a timestamps file'), unreadable);
 });
 
 test('carriage returns from a file written on Windows do not break it', () => {

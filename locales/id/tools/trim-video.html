@@ -237,6 +237,147 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">klip {n}</span>
+    <span data-phrase="join.nothing">tidak ada yang bisa disambung.</span>
+    <span data-phrase="join.unread">{name} bukan MP4 yang bisa dipahami pembaca ini, jadi bingkainya tidak bisa disalin.</span>
+    <span data-phrase="join.size">{name} berukuran {size} dan klip pertama {first}.</span>
+    <span data-phrase="join.rotated">{name} disimpan terputar {degrees} derajat dan klip pertama terputar {first}.</span>
+    <span data-phrase="join.rotated.none">{name} disimpan terputar {degrees} derajat dan klip pertama tidak terputar.</span>
+    <span data-phrase="join.codec">{name} berkodek {codec} dan klip pertama {first}.</span>
+    <span data-phrase="join.settings">{name} berkodek sama dengan klip pertama tapi dikodekan dengan setelan berbeda, jadi
+      satu deskripsi tidak bisa mencakup keduanya.</span>
+    <span data-phrase="join.unreadable">salah satu klipnya tidak terbaca.</span>
+    <span data-phrase="join.silent">{name} tidak bersuara sementara yang lain bersuara, jadi salinannya akan hening di
+      tengah jalan.</span>
+    <span data-phrase="join.sound">{name} bersuara {channels} kanal pada {rate} Hz dan klip pertama {firstchannels}
+      kanal pada {firstrate} Hz.</span>
+    <span data-phrase="join.soundentry">{name} suaranya dikodekan berbeda dari klip pertama.</span>
+    <span data-phrase="audio.toobig">Kesalahan internal: deskripsi suaranya lebih besar daripada yang diperkirakan.</span>
+    <span data-phrase="audio.noencode">Suaranya sudah didekode tapi dari pengodenya tidak ada yang kembali.</span>
+    <span data-phrase="nothing.selected">Tidak ada yang dipilih untuk disimpan.</span>
+    <span data-phrase="encode.toobig">Peramban ini tidak akan mengodekan H.264 pada {size}. Pilih bingkai yang lebih
+      kecil, atau pakai &laquo;Simpan setiap bita&raquo;, yang sama sekali tidak
+      mengodekan apa pun.</span>
+    <span data-phrase="decode.none">Tidak ada bingkai yang bisa didekode dari yang Anda pilih.</span>
+    <span data-phrase="decode.noframe">Tidak ada bingkai yang bisa didekode dari berkas ini.</span>
+    <span data-phrase="encode.noconfig">Pengodenya tidak pernah melaporkan konfigurasi pendekode.</span>
+    <span data-phrase="record.noplay">Peramban ini tidak bisa memutar berkasnya untuk dipotong.</span>
+    <span data-phrase="record.slow">Berkasnya terlalu lama untuk dibuka.</span>
+    <span data-phrase="record.noseek">Peramban tidak bisa melompat ke awal bagian itu.</span>
+    <span data-phrase="record.nosupport">Peramban ini tidak bisa mengodekan ulang maupun merekam video.</span>
+    <span data-phrase="marks.unreadable">Tidak ada segmen yang bisa dibaca dari berkas itu. Tiap baris setelah baris pertama
+      semestinya berisi awal dan akhir, dipisahkan koma.</span>
+    <span data-phrase="warn.hidden">Tabnya tersembunyi saat merekam, jadi ada bingkai yang mungkin hilang. Jalankan lagi
+      dengan tab ini di depan supaya hasilnya bersih.</span>
+    <span data-phrase="warn.nosound">Suaranya tidak bisa ditangkap di peramban ini, jadi hasilnya tidak punya jalur
+      audio.</span>
+    <span data-phrase="warn.noaac">Klip-klip ini mendeskripsikan suaranya dengan cara berbeda, jadi mestinya dikodekan
+      ulang supaya bisa disambung &mdash; dan peramban ini tidak mengodekan AAC. Videonya
+      disambung tanpa suara. Chrome dan Edge bisa.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}m {s}d</span>
+    <span data-phrase="dur.seconds">{s}d</span>
+    <span data-phrase="clip.mark">Tandai video ini</span>
+    <span data-phrase="clip.segments.one">1 segmen</span>
+    <span data-phrase="clip.segments.many">{n} segmen</span>
+    <span data-phrase="clip.notmarked">belum ditandai</span>
+    <span data-phrase="clip.sound">bersuara</span>
+    <span data-phrase="clip.nosound">tanpa suara</span>
+    <span data-phrase="clip.recorded">direkam untuk dipotong</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} dari {total}</span>
+    <span data-phrase="stage.noplay">Peramban ini tidak akan memutar video ini, jadi bingkai di bawah didekode satu per
+      satu untuk menunjukkan letak tandanya. Pemotongannya sendiri tidak terpengaruh.</span>
+    <span data-phrase="stage.noframe">Peramban ini tidak akan memutar video ini dan satu bingkai pun tidak bisa didekode
+      darinya ({detail}). Tanda di bawah tetap bekerja pada durasinya.</span>
+    <span data-phrase="mark.noopen">Belum ada yang terbuka. Tekan I di tempat bagiannya mulai, lalu O di tempat
+      bagiannya berakhir.</span>
+    <span data-phrase="mark.before">Itu akan mengakhiri segmennya di {at}, yang lebih awal daripada awalnya di {start}.
+      Geser dulu kepala pemutar melewati awalnya.</span>
+    <span data-phrase="mark.nospace">Video di sini tidak cukup lagi untuk menambah segmen. Geser kepala pemutar mundur.</span>
+    <span data-phrase="mark.clearall">Hapus semua {n} segmen milik {name}?</span>
+    <span data-phrase="segments.none">belum ada &mdash; seluruh video</span>
+    <span data-phrase="segments.some">{done} dari {total}</span>
+    <span data-phrase="seg.play">Putar segmen ini</span>
+    <span data-phrase="seg.up">Naikkan</span>
+    <span data-phrase="seg.down">Turunkan</span>
+    <span data-phrase="seg.remove">Hapus</span>
+    <span data-phrase="marks.nothing">Belum ada yang ditandai untuk disimpan.</span>
+    <span data-phrase="marks.pastend">Setiap segmen di {name} mulai setelah video ini habis. Kemungkinan ditandai pada
+      video yang lain.</span>
+    <span data-phrase="marks.dropped.one">1 segmen di {name} mulai melewati ujung video ini, jadi ia ditinggalkan.</span>
+    <span data-phrase="marks.dropped.many">{n} segmen di {name} mulai melewati ujung video ini, jadi semuanya ditinggalkan.</span>
+    <span data-phrase="marks.skipped.one">1 baris tidak terbaca sebagai segmen.</span>
+    <span data-phrase="marks.skipped.many">{n} baris tidak terbaca sebagai segmen.</span>
+    <span data-phrase="marks.loaded">{n} dimuat.</span>
+    <span data-phrase="marks.failed">{name} tidak terbaca: {reason}</span>
+    <span data-phrase="join.note">Video-video ini tidak bisa disambung tanpa dikodekan ulang: {reason} Satu jalur
+      membawa satu deskripsi tentang isinya, jadi video yang tidak sepakat harus ditulis
+      ulang supaya berbagi satu deskripsi.</span>
+    <span data-phrase="method.copy.one">Bingkainya dipindahkan ke berkas baru persis seperti apa adanya, jadi tidak ada yang
+      didekode dan tidak ada yang dikodekan. Cepat, dan tidak mungkin mengorbankan
+      kualitas. Tiap bagian mulai di bingkai kunci terdekat sebelum tanda Anda.</span>
+    <span data-phrase="method.copy.many">Tiap bagian yang ditandai dipindahkan ke berkas baru persis seperti apa adanya, satu
+      demi satu. Tidak ada yang didekode dan tidak ada yang dikodekan, jadi tidak ada
+      bagian dari ini yang mengorbankan kualitas.</span>
+    <span data-phrase="method.exact.one">Tiap bagian mulai tepat di bingkai yang Anda tandai, dengan mendekode dari bingkai
+      kunci di depannya dan mengodekan gambarnya lagi. Suaranya tetap disalin, bukan
+      dikodekan ulang.</span>
+    <span data-phrase="method.exact.many">Tiap video didekode dan ditulis ulang jadi satu aliran, sehingga video yang tidak
+      sepakat soal ukuran atau kodek pun tetap bisa disambung. Suaranya disalin di tempat
+      mereka sepakat dan dikodekan ulang di tempat mereka tidak sepakat.</span>
+    <span data-phrase="method.record">Memutar bagian yang ditandai sampai habis dan merekamnya, jadi lamanya sama dengan
+      durasi bagian itu dan semuanya dikodekan ulang. Biarkan tab ini di depan selama
+      berjalan.</span>
+    <span data-phrase="audio.none">Tidak ada jalur audio di sini, jadi tidak ada yang bisa disimpan.</span>
+    <span data-phrase="audio.record">Ditangkap dari pemutaran dan dikodekan ulang, karena cuma itu yang bisa dilakukan
+      sebuah rekaman.</span>
+    <span data-phrase="audio.encode">Video-video ini mendeskripsikan suaranya dengan cara berbeda, jadi suaranya didekode
+      dan dikodekan sekali untuk seluruh hasilnya. Itu satu-satunya keadaan di alat ini di
+      mana suara tidak dibawa lewat tanpa disentuh.</span>
+    <span data-phrase="audio.copy">Disalin dari berkasnya sampel demi sampel, tanpa pernah didekode, jadi tidak
+      kehilangan apa pun.</span>
+    <span data-phrase="sum.nothing.cut">tidak ada &mdash; tandanya menutupi seluruh video</span>
+    <span data-phrase="sum.nothing.keep">belum ada yang ditandai</span>
+    <span data-phrase="sum.parts.one">1 bagian</span>
+    <span data-phrase="sum.parts.many">{n} bagian</span>
+    <span data-phrase="sum.parts.cut">{parts}, setelah yang ditandai hilang</span>
+    <span data-phrase="sum.parts.videos">{parts} dari {n} video</span>
+    <span data-phrase="sum.start.keyframe">persis di tempat Anda menandai (jatuh di bingkai kunci)</span>
+    <span data-phrase="sum.start.editmark">persis di tempat Anda menandai, lewat tanda penyuntingan</span>
+    <span data-phrase="sum.start.exact">persis di tempat Anda menandai</span>
+    <span data-phrase="cut.note">Bingkai kunci terdekat sebelum tanda pertama Anda ada {seconds}d lebih awal, dan
+      bingkai di antaranya harus tetap ada di berkas &mdash; tanpa bingkai itu, apa pun
+      setelahnya tidak bisa didekode. Bingkai-bingkai itu ditandai supaya tidak diputar,
+      dan setiap pemutar arus utama menghormatinya. Pemutar yang mengabaikan tanda
+      penyuntingan akan menampilkan {seconds}d itu di depan. Pilih &laquo;Potong tepat di
+      sini&raquo; kalau itu lebih penting daripada menjaga bita aslinya.</span>
+    <span data-phrase="sum.size">sekitar {size}</span>
+    <span data-phrase="sum.picture.copy">disalin, bingkai demi bingkai</span>
+    <span data-phrase="sum.picture.exact">dikodekan ulang jadi H.264, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">dikodekan ulang jadi H.264, {size} ({n} dipaskan dengan bilah)</span>
+    <span data-phrase="sum.picture.record">direkam sambil diputar</span>
+    <span data-phrase="sum.sound.none">tidak ada di video ini</span>
+    <span data-phrase="sum.sound.left">ditinggalkan</span>
+    <span data-phrase="sum.sound.record">dikodekan ulang dari pemutaran</span>
+    <span data-phrase="sum.sound.encode">didekode dan dikodekan ulang sekali</span>
+    <span data-phrase="sum.sound.copy">disalin, sampel demi sampel</span>
+    <span data-phrase="export.one">Potong videonya</span>
+    <span data-phrase="export.many">Potong dan sambung {n} bagian</span>
+    <span data-phrase="progress.preparing">Bersiap…</span>
+    <span data-phrase="progress.finishing">Menulis berkasnya…</span>
+    <span data-phrase="progress.sound">Mengodekan suara &mdash; {done} dari {total}</span>
+    <span data-phrase="progress.copying">Menyalin sampel {done} dari {total} ({percent}%)</span>
+    <span data-phrase="progress.realtime">Merekam secara langsung &mdash; {done} dari {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">Bingkai {done} dari {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">Tandanya menutupi seluruh video, jadi memotongnya keluar tidak akan menyisakan apa
+      pun.</span>
+    <span data-phrase="export.nothing.keep">Tidak ada yang ditandai untuk disimpan. Tekan I dan O selagi diputar.</span>
+    <span data-phrase="result.parts">{n} bagian</span>
+    <span data-phrase="result.notreencoded">tanpa dikodekan ulang</span>
+    <span data-phrase="error.generic">Ada yang tidak beres.</span>
     <span data-phrase="read.midframe">File-nya berhenti di tengah sebuah bingkai.</span>
     <span data-phrase="read.avcshort">Rekaman konfigurasi H.264 terlalu pendek.</span>
     <span data-phrase="read.hevcshort">Rekaman konfigurasi HEVC terlalu pendek.</span>

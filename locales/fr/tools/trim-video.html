@@ -230,6 +230,150 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">clip {n}</span>
+    <span data-phrase="join.nothing">il n'y a rien à assembler.</span>
+    <span data-phrase="join.unread">{name} n'est pas un MP4 que ce lecteur comprenne, donc ses images ne peuvent pas
+      être copiées.</span>
+    <span data-phrase="join.size">{name} fait {size} et le premier clip fait {first}.</span>
+    <span data-phrase="join.rotated">{name} est enregistré tourné de {degrees} degrés et le premier clip est tourné de
+      {first}.</span>
+    <span data-phrase="join.rotated.none">{name} est enregistré tourné de {degrees} degrés et le premier clip n'est pas
+      tourné.</span>
+    <span data-phrase="join.codec">{name} est en {codec} et le premier clip est en {first}.</span>
+    <span data-phrase="join.settings">{name} est dans le même codec que le premier clip mais a été encodé avec des
+      réglages différents, donc une seule description ne peut pas couvrir les deux.</span>
+    <span data-phrase="join.unreadable">un des clips n'a pas pu être lu.</span>
+    <span data-phrase="join.silent">{name} est muet et les autres non, donc une copie deviendrait silencieuse en cours
+      de route.</span>
+    <span data-phrase="join.sound">{name} a un son à {channels} canaux en {rate} Hz et le premier clip en a un à
+      {firstchannels} canaux en {firstrate} Hz.</span>
+    <span data-phrase="join.soundentry">{name} a un son encodé autrement que celui du premier clip.</span>
+    <span data-phrase="audio.toobig">Erreur interne : la description du son est plus grande que prévu.</span>
+    <span data-phrase="audio.noencode">Le son a été décodé mais rien n'est revenu de l'encodeur.</span>
+    <span data-phrase="nothing.selected">Il n'y a rien de sélectionné à garder.</span>
+    <span data-phrase="encode.toobig">Ce navigateur n'encodera pas du H.264 en {size}. Choisissez un cadre plus petit, ou
+      prenez &laquo; Garder chaque octet &raquo;, qui n'encode rien du tout.</span>
+    <span data-phrase="decode.none">Aucune image n'a pu être décodée de ce que vous avez choisi.</span>
+    <span data-phrase="decode.noframe">Aucune image n'a pu être décodée de ce fichier.</span>
+    <span data-phrase="encode.noconfig">L'encodeur n'a jamais signalé de configuration de décodeur.</span>
+    <span data-phrase="record.noplay">Ce navigateur n'a pas pu lire le fichier pour le découper.</span>
+    <span data-phrase="record.slow">Le fichier a mis trop de temps à ouvrir.</span>
+    <span data-phrase="record.noseek">Le navigateur n'a pas pu se placer au début de la section.</span>
+    <span data-phrase="record.nosupport">Ce navigateur ne sait ni réencoder ni enregistrer de vidéo.</span>
+    <span data-phrase="marks.unreadable">Aucun passage n'a pu être lu dans ce fichier. Chaque ligne après la première doit
+      être un début et une fin, séparés par une virgule.</span>
+    <span data-phrase="warn.hidden">L'onglet était en arrière-plan pendant l'enregistrement, donc des images peuvent
+      manquer. Relancez-le avec cet onglet devant pour un résultat propre.</span>
+    <span data-phrase="warn.nosound">Le son n'a pas pu être capté dans ce navigateur, donc le résultat n'a pas de piste
+      audio.</span>
+    <span data-phrase="warn.noaac">Ces clips décrivent leur son différemment, il aurait donc fallu le réencoder pour
+      les assembler &mdash; et ce navigateur n'encode pas l'AAC. La vidéo a été assemblée
+      sans son. Chrome et Edge le font.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="size.gb">{n} Go</span>
+    <span data-phrase="dur.minutes">{m}m {s}s</span>
+    <span data-phrase="dur.seconds">{s}s</span>
+    <span data-phrase="clip.mark">Marquer cette vidéo</span>
+    <span data-phrase="clip.segments.one">1 passage</span>
+    <span data-phrase="clip.segments.many">{n} passages</span>
+    <span data-phrase="clip.notmarked">non marquée</span>
+    <span data-phrase="clip.sound">avec son</span>
+    <span data-phrase="clip.nosound">sans son</span>
+    <span data-phrase="clip.recorded">enregistrée pour être coupée</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} sur {total}</span>
+    <span data-phrase="stage.noplay">Ce navigateur ne lira pas cette vidéo, donc les images ci-dessous sont décodées une
+      par une pour vous montrer où sont les marques. La coupe elle-même ne change pas.</span>
+    <span data-phrase="stage.noframe">Ce navigateur ne lira pas cette vidéo et aucune image n'a pu en être décodée non
+      plus ({detail}). Les marques ci-dessous fonctionnent quand même sur sa durée.</span>
+    <span data-phrase="mark.noopen">Rien n'est encore ouvert. Appuyez sur I là où le passage doit commencer, puis sur O
+      là où il finit.</span>
+    <span data-phrase="mark.before">Cela ferait finir le passage à {at}, ce qui est avant son début à {start}. Déplacez
+      la tête de lecture après le début.</span>
+    <span data-phrase="mark.nospace">Il ne reste pas assez de vidéo ici pour ajouter un passage. Reculez la tête de
+      lecture.</span>
+    <span data-phrase="mark.clearall">Effacer les {n} passages de {name} ?</span>
+    <span data-phrase="segments.none">aucun pour le moment &mdash; la vidéo entière</span>
+    <span data-phrase="segments.some">{done} sur {total}</span>
+    <span data-phrase="seg.play">Lire ce passage</span>
+    <span data-phrase="seg.up">Monter</span>
+    <span data-phrase="seg.down">Descendre</span>
+    <span data-phrase="seg.remove">Retirer</span>
+    <span data-phrase="marks.nothing">Il n'y a encore rien de marqué à enregistrer.</span>
+    <span data-phrase="marks.pastend">Tous les passages de {name} commencent après la fin de cette vidéo. Ils ont sans
+      doute été marqués sur une autre.</span>
+    <span data-phrase="marks.dropped.one">1 passage de {name} commence après la fin de cette vidéo, il a donc été laissé de
+      côté.</span>
+    <span data-phrase="marks.dropped.many">{n} passages de {name} commencent après la fin de cette vidéo, ils ont donc été
+      laissés de côté.</span>
+    <span data-phrase="marks.skipped.one">1 ligne n'a pas pu être lue comme un passage.</span>
+    <span data-phrase="marks.skipped.many">{n} lignes n'ont pas pu être lues comme des passages.</span>
+    <span data-phrase="marks.loaded">{n} chargés.</span>
+    <span data-phrase="marks.failed">{name} n'a pas pu être lu : {reason}</span>
+    <span data-phrase="join.note">Ces vidéos ne peuvent pas être assemblées sans réencodage : {reason} Une piste porte
+      une seule description de ce qu'elle contient, donc des vidéos qui ne s'accordent pas
+      doivent être réécrites pour en partager une.</span>
+    <span data-phrase="method.copy.one">Les images sont déplacées dans le nouveau fichier exactement telles quelles, donc
+      rien n'est décodé et rien n'est encodé. Rapide, et cela ne peut pas coûter de
+      qualité. Chaque passage commence à l'image clé la plus proche avant votre marque.</span>
+    <span data-phrase="method.copy.many">Chaque passage marqué est déplacé dans le nouveau fichier exactement tel quel, les
+      uns après les autres. Rien n'est décodé et rien n'est encodé, donc aucune partie de
+      tout cela ne coûte de qualité.</span>
+    <span data-phrase="method.exact.one">Chaque passage commence sur l'image que vous avez marquée, en décodant depuis
+      l'image clé qui la précède et en réencodant l'image. Le son est toujours copié
+      plutôt que réencodé.</span>
+    <span data-phrase="method.exact.many">Chaque vidéo est décodée et réécrite dans un seul flux, ce qui permet d'assembler
+      des vidéos qui ne s'accordent pas sur la taille ou le codec. Le son est copié là où
+      elles s'accordent et réencodé là où elles ne s'accordent pas.</span>
+    <span data-phrase="method.record">Joue le passage marqué en entier et l'enregistre, donc cela prend le temps que dure
+      ce passage et tout est réencodé. Gardez cet onglet devant pendant que cela tourne.</span>
+    <span data-phrase="audio.none">Il n'y a pas de piste audio ici, donc il n'y a rien à garder.</span>
+    <span data-phrase="audio.record">Capté depuis la lecture et réencodé, parce que c'est tout ce qu'un enregistrement
+      peut faire.</span>
+    <span data-phrase="audio.encode">Ces vidéos décrivent leur son différemment, il est donc décodé et encodé une fois
+      pour tout le résultat. C'est le seul cas dans cet outil où le son n'est pas repris
+      tel quel.</span>
+    <span data-phrase="audio.copy">Copié du fichier échantillon par échantillon, sans jamais être décodé, donc il ne
+      perd rien.</span>
+    <span data-phrase="sum.nothing.cut">rien &mdash; les marques couvrent toute la vidéo</span>
+    <span data-phrase="sum.nothing.keep">rien de marqué</span>
+    <span data-phrase="sum.parts.one">1 passage</span>
+    <span data-phrase="sum.parts.many">{n} passages</span>
+    <span data-phrase="sum.parts.cut">{parts}, une fois les marqués partis</span>
+    <span data-phrase="sum.parts.videos">{parts} venant de {n} vidéos</span>
+    <span data-phrase="sum.start.keyframe">exactement où vous avez marqué (c'est sur une image clé)</span>
+    <span data-phrase="sum.start.editmark">exactement où vous avez marqué, via une marque de montage</span>
+    <span data-phrase="sum.start.exact">exactement où vous avez marqué</span>
+    <span data-phrase="cut.note">L'image clé la plus proche avant votre première marque est {seconds}s plus tôt, et
+      les images entre les deux doivent rester dans le fichier &mdash; rien de ce qui suit
+      ne peut être décodé sans elles. Elles sont marquées comme à ne pas lire, ce que tout
+      lecteur courant respecte. Un lecteur qui ignore les marques de montage montrera ces
+      {seconds}s au début. Choisissez &laquo; Couper exactement ici &raquo; si cela compte
+      plus que de garder les octets d'origine.</span>
+    <span data-phrase="sum.size">environ {size}</span>
+    <span data-phrase="sum.picture.copy">copiée, image par image</span>
+    <span data-phrase="sum.picture.exact">réencodée en H.264, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">réencodée en H.264, {size} ({n} ajustées avec des bandes)</span>
+    <span data-phrase="sum.picture.record">enregistrée pendant la lecture</span>
+    <span data-phrase="sum.sound.none">aucun dans cette vidéo</span>
+    <span data-phrase="sum.sound.left">laissé de côté</span>
+    <span data-phrase="sum.sound.record">réencodé depuis la lecture</span>
+    <span data-phrase="sum.sound.encode">décodé et réencodé une fois</span>
+    <span data-phrase="sum.sound.copy">copié, échantillon par échantillon</span>
+    <span data-phrase="export.one">Couper la vidéo</span>
+    <span data-phrase="export.many">Couper et assembler {n} passages</span>
+    <span data-phrase="progress.preparing">Préparation…</span>
+    <span data-phrase="progress.finishing">Écriture du fichier…</span>
+    <span data-phrase="progress.sound">Encodage du son &mdash; {done} sur {total}</span>
+    <span data-phrase="progress.copying">Copie de l'échantillon {done} sur {total} ({percent}%)</span>
+    <span data-phrase="progress.realtime">Enregistrement en temps réel &mdash; {done} sur {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">Image {done} sur {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">Les marques couvrent toute la vidéo, les découper ne laisserait donc rien.</span>
+    <span data-phrase="export.nothing.keep">Il n'y a rien de marqué à garder. Appuyez sur I et O pendant la lecture.</span>
+    <span data-phrase="result.parts">{n} passages</span>
+    <span data-phrase="result.notreencoded">pas réencodée</span>
+    <span data-phrase="error.generic">Quelque chose s'est mal passé.</span>
     <span data-phrase="read.midframe">Le fichier se termine au milieu d&rsquo;une image.</span>
     <span data-phrase="read.avcshort">L&rsquo;enregistrement de configuration H.264 est trop court.</span>
     <span data-phrase="read.hevcshort">L&rsquo;enregistrement de configuration HEVC est trop court.</span>

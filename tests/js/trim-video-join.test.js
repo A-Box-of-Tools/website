@@ -172,9 +172,22 @@ function readStsz(box) {
 
 /* ------------------------------------------------------------ videoJoinable */
 
+/**
+ * A stand-in for `phrase`, so a test can say which reason was chosen.
+ *
+ * The real one reads the markup; clips.js is handed whichever it is given.
+ * This one writes the key and its blanks, which is what these tests are
+ * about - the sentence itself is body.html's, in fifteen languages.
+ */
+const say = (key, values = {}) => {
+  const filled = Object.entries(values).map(([k, v]) => `${k}=${v}`).join(' ');
+  return filled ? `${key} ${filled}` : key;
+};
+
 test('two clips from the same encoder can share a track', () => {
   const entry = videoEntry();
-  const result = videoJoinable([clipFixture({ id: 1, entry }), clipFixture({ id: 2, entry })]);
+  const result = videoJoinable(
+    [clipFixture({ id: 1, entry }), clipFixture({ id: 2, entry })], say);
   assert.equal(result.ok, true);
   assert.equal(result.reason, null);
 });
@@ -185,8 +198,9 @@ test('a clip of a different size is refused, and the reason says both sizes', ()
   b.media.video.displayWidth = 1280;
   b.media.video.displayHeight = 720;
 
-  const result = videoJoinable([a, b]);
+  const result = videoJoinable([a, b], say);
   assert.equal(result.ok, false);
+  assert.match(result.reason, /^join\.size /);
   assert.match(result.reason, /1280x720/);
   assert.match(result.reason, /640x480/);
 });
@@ -196,9 +210,10 @@ test('a clip turned a different way is refused', () => {
   const b = clipFixture({ id: 2 });
   b.media.video.rotation = 90;
 
-  const result = videoJoinable([a, b]);
+  const result = videoJoinable([a, b], say);
   assert.equal(result.ok, false);
-  assert.match(result.reason, /turned 90/);
+  assert.match(result.reason, /^join\.rotated(\.none)? /);
+  assert.match(result.reason, /degrees=90/);
 });
 
 test('a clip in another codec is refused', () => {
@@ -206,8 +221,9 @@ test('a clip in another codec is refused', () => {
   const b = clipFixture({ id: 2 });
   b.media.video.codec = 'hvc1.1.6.L93.B0';
 
-  const result = videoJoinable([a, b]);
+  const result = videoJoinable([a, b], say);
   assert.equal(result.ok, false);
+  assert.match(result.reason, /^join\.codec /);
   assert.match(result.reason, /hvc1/);
 });
 
@@ -215,9 +231,9 @@ test('the same codec with different settings is still refused', () => {
   const a = clipFixture({ id: 1, entry: videoEntry(0x11) });
   const b = clipFixture({ id: 2, entry: videoEntry(0x99) });
 
-  const result = videoJoinable([a, b]);
+  const result = videoJoinable([a, b], say);
   assert.equal(result.ok, false);
-  assert.match(result.reason, /different/);
+  assert.match(result.reason, /^join\.settings /);
 });
 
 test('a sample entry differing by one byte is a different description', () => {
@@ -226,26 +242,28 @@ test('a sample entry differing by one byte is a different description', () => {
   b.media.video.sampleEntry = videoEntry();
   b.media.video.sampleEntry[20] ^= 0x01;
 
-  assert.equal(videoJoinable([a, b]).ok, false);
+  assert.equal(videoJoinable([a, b], say).ok, false);
 });
 
 test('a clip that could not be read is named', () => {
   const a = clipFixture({ id: 1 });
   const b = { name: 'holiday.mkv', media: null };
 
-  const result = videoJoinable([a, b]);
+  const result = videoJoinable([a, b], say);
   assert.equal(result.ok, false);
+  assert.match(result.reason, /^join\.unread /);
   assert.match(result.reason, /holiday\.mkv/);
 });
 
 test('nothing to join is not joinable', () => {
-  assert.equal(videoJoinable([]).ok, false);
+  assert.equal(videoJoinable([], say).ok, false);
 });
 
 /* ------------------------------------------------------------ audioJoinable */
 
 test('clips with no sound at all are joinable, and say there is none', () => {
-  const result = audioJoinable([clipFixture({ id: 1 }), clipFixture({ id: 2 })]);
+  const result = audioJoinable(
+    [clipFixture({ id: 1 }), clipFixture({ id: 2 })], say);
   assert.equal(result.ok, true);
   assert.equal(result.present, false);
 });
@@ -255,7 +273,7 @@ test('matching sound is joinable', () => {
   const sound = { rate: 48000, entry };
   const result = audioJoinable([
     clipFixture({ id: 1, sound }), clipFixture({ id: 2, sound }),
-  ]);
+  ], say);
   assert.equal(result.ok, true);
   assert.equal(result.present, true);
 });
@@ -265,20 +283,21 @@ test('one silent clip among sounding ones is refused', () => {
   const result = audioJoinable([
     clipFixture({ id: 1, sound }),
     clipFixture({ id: 2, name: 'silent.mp4' }),
-  ]);
+  ], say);
   assert.equal(result.ok, false);
+  assert.match(result.reason, /^join\.silent /);
   assert.match(result.reason, /silent\.mp4/);
-  assert.match(result.reason, /quiet/);
 });
 
 test('different sample rates are refused, and both are named', () => {
   const result = audioJoinable([
     clipFixture({ id: 1, sound: { rate: 48000 } }),
     clipFixture({ id: 2, sound: { rate: 44100 } }),
-  ]);
+  ], say);
   assert.equal(result.ok, false);
-  assert.match(result.reason, /44100 Hz/);
-  assert.match(result.reason, /48000 Hz/);
+  assert.match(result.reason, /^join\.sound /);
+  assert.match(result.reason, /rate=44100/);
+  assert.match(result.reason, /firstrate=48000/);
 });
 
 test('different channel counts are refused', () => {
@@ -286,9 +305,9 @@ test('different channel counts are refused', () => {
   const result = audioJoinable([
     clipFixture({ id: 1, sound: { rate: 48000, entry, channels: 2 } }),
     clipFixture({ id: 2, sound: { rate: 48000, entry, channels: 1 } }),
-  ]);
+  ], say);
   assert.equal(result.ok, false);
-  assert.match(result.reason, /1-channel/);
+  assert.match(result.reason, /channels=1 /);
 });
 
 /* -------------------------------------------------------------- joinability */
@@ -298,8 +317,8 @@ test('joinability ignores a sound mismatch when the sound is being dropped', () 
     clipFixture({ id: 1, sound: { rate: 48000 } }),
     clipFixture({ id: 2, sound: { rate: 44100 } }),
   ];
-  assert.equal(joinability(clips, { keepAudio: true }).copy, false);
-  assert.equal(joinability(clips, { keepAudio: false }).copy, true);
+  assert.equal(joinability(clips, { keepAudio: true, t: say }).copy, false);
+  assert.equal(joinability(clips, { keepAudio: false, t: say }).copy, true);
 });
 
 test('joinability says the sound would have to be encoded when clips disagree', () => {
@@ -307,7 +326,7 @@ test('joinability says the sound would have to be encoded when clips disagree', 
     clipFixture({ id: 1, sound: { rate: 48000 } }),
     clipFixture({ id: 2, sound: { rate: 44100 } }),
   ];
-  assert.equal(joinability(clips, { keepAudio: true }).sound, 'encode');
+  assert.equal(joinability(clips, { keepAudio: true, t: say }).sound, 'encode');
 });
 
 test('joinability says the sound can be copied when they agree', () => {
@@ -323,7 +342,7 @@ test('a video mismatch is reported even when the sound matches', () => {
   const clips = [clipFixture({ id: 1, sound }), clipFixture({ id: 2, sound })];
   clips[1].media.video.displayWidth = 1920;
 
-  const result = joinability(clips, { keepAudio: true });
+  const result = joinability(clips, { keepAudio: true, t: say });
   assert.equal(result.copy, false);
   assert.match(result.reason, /1920/);
 });
@@ -501,7 +520,7 @@ test('a clip with nothing selected is left out of the join', async () => {
 test('joining nothing is an error, not an empty file', async () => {
   await assert.rejects(
     () => joinByCopy({ clips: [{ ...clipFixture({ id: 1 }), ranges: [] }], keepAudio: false }),
-    /nothing selected/,
+    /^Error: nothing\.selected$/,
   );
 });
 
