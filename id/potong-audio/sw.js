@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/potong-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'1e820ce865';
+const CACHE_NAME=CACHE_PREFIX+'0ce5c6e5d2';
 const ASSETS=[
 './',
 'index.html',

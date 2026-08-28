@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/metin-paylasma/:';
-const CACHE_NAME=CACHE_PREFIX+'fb2bbd72bc';
+const CACHE_NAME=CACHE_PREFIX+'6aae5ea5ec';
 const ASSETS=[
 './',
 'index.html',

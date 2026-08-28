@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/extrair-quadro-de-video/:';
-const CACHE_NAME=CACHE_PREFIX+'1fc44c15bd';
+const CACHE_NAME=CACHE_PREFIX+'8b5553ece9';
 const ASSETS=[
 './',
 'index.html',
