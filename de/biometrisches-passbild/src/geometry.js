@@ -11,7 +11,7 @@ const digital=spec.digital;
 const width=digital?.width?.exact??digital?.width?.min;
 const height=digital?.height?.exact??digital?.height?.min;
 if(width&&height)return width/height;
-throw new Error('a specification with neither a print size nor a pixel size cannot be cropped to.');
+throw new Error('frame.nosize');
 }
 export function printPixels(spec,dpi){
 if(!spec.print)return null;

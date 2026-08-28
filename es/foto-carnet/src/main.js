@@ -101,8 +101,10 @@ let reading=null;
 let lastMetrics=null;
 let backgroundTimer=0;
 let resultUrls=[];
-const cropper=new Cropper(el.stage,{onChange:onCropChange});
+const bytesText=(bytes)=>sizeText(bytes,phrase);
+const cropper=new Cropper(el.stage,{onChange:onCropChange,t:phrase});
 const marks=new Marks(el.stage,{
+t:phrase,
 onChange:(_,why)=>{
 if(why==='drag'&&markMode==='auto'){
 markMode='manual';
@@ -124,11 +126,11 @@ return withCustom(spec,values);
 function buildSpecSelect(){
 for(const group of specsByCountry()){
 const optgroup=document.createElement('optgroup');
-optgroup.label=group.country;
+optgroup.label=phrase(group.country);
 for(const spec of group.specs){
 const option=document.createElement('option');
 option.value=spec.id;
-option.textContent=spec.document;
+option.textContent=phrase(spec.document);
 optgroup.append(option);
 }
 el.specSelect.append(optgroup);
@@ -139,7 +141,7 @@ function buildPaperSelect(){
 for(const paper of PAPERS){
 const option=document.createElement('option');
 option.value=paper.id;
-option.textContent=paper.label;
+option.textContent=phrase(paper.label);
 el.paper.append(option);
 }
 }
@@ -148,7 +150,7 @@ function renderSpec(){
 const spec=currentSpec();
 const background=backgroundOf(spec,phrase);
 const heightMm=spec.print?.heightMm??null;
-const facts=[[phrase('facts.print'),printLabel(spec)]];
+const facts=[[phrase('facts.print'),printLabel(spec,phrase)]];
 if(spec.kind!=='signature'){
 facts.push(
 [phrase('facts.head'),guidance(bandText(spec.head,heightMm,phrase),spec.head.advisory)],
@@ -159,11 +161,14 @@ facts.push([phrase('facts.background'),background.label]);
 if(spec.digital){
 const bytes=portalBytes(spec);
 const size=Number.isFinite(bytes.max)
-?(bytes.min?`${sizeText(bytes.min)} to ${sizeText(bytes.max)}`:`up to ${sizeText(bytes.max)}`)
-:(bytes.min?`${sizeText(bytes.min)} and up`:'no file-size rule stated');
-facts.push([spec.digital.label,`${pixelLabel(spec)}, JPEG, ${size}`]);
+?(bytes.min
+?phrase('bytes.band',{min:bytesText(bytes.min),max:bytesText(bytes.max)})
+:phrase('bytes.upto',{max:bytesText(bytes.max)}))
+:(bytes.min?phrase('bytes.from',{min:bytesText(bytes.min)}):phrase('bytes.none'));
+facts.push([phrase(spec.digital.label),
+phrase('facts.upload.value',{pixels:pixelLabel(spec,phrase),size})]);
 }else{
-facts.push(['Upload rule','none published - this one is a print']);
+facts.push([phrase('facts.upload'),phrase('facts.upload.print')]);
 }
 el.specFacts.replaceChildren(...facts.flatMap(([term,value])=>{
 const dt=document.createElement('dt');
@@ -174,13 +179,16 @@ return[dt,dd];
 }));
 el.specNotes.replaceChildren(...spec.notes.map((note)=>{
 const li=document.createElement('li');
-li.textContent=note;
+li.textContent=phrase(note);
 return li;
 }));
 el.specSource.textContent=spec.source.checked
-?`Transcribed from ${spec.source.authority} - ${spec.source.document}. Checked ${spec.source.checked}. `
-+'Rules change; the figures above are what to check against the form in front of you.'
-:'Your own figures. Nothing here is checked against anything.';
+?phrase('source.line',{
+authority:phrase(spec.source.authority),
+document:phrase(spec.source.document),
+checked:spec.source.checked,
+})
+:phrase('source.own');
 el.customPanel.hidden=spec.id!=='custom';
 const signature=spec.kind==='signature';
 el.markHint.hidden=signature;
@@ -194,19 +202,15 @@ else if(photo){
 if(marks.placed)marks.show();
 else placeMarks();
 }
-el.backgroundLede.textContent=signature
-?'A signature is checked differently: that the paper is light, that there is ink '
-+'on it, and that the crop has not taken in a ruled line or the edge of the page.'
-:'Read from a band across the top of the crop and down each side, above the '
-+'shoulders - the parts of the frame that ought to be nothing but background. '
-+'Measured in CIE Lab rather than in RGB, because two greys forty RGB units '
-+'apart are indistinguishable and forty units of blue is a different colour.';
+el.backgroundLede.textContent=phrase(signature?'lede.signature':'lede.portrait');
 el.dpiField.hidden=!spec.print;
 el.paperField.hidden=!spec.print;
 el.dpiNote.textContent=spec.print
-?`${spec.print.dpi} dpi is this rule's floor. At ${el.printDpi.value} dpi the file `
-+`comes out ${describePrint(spec)}, and the JPEG carries that resolution in its `
-+'header, so a print shop prints it at the right size rather than guessing.'
+?phrase('dpi.note',{
+floor:spec.print.dpi,
+chosen:el.printDpi.value,
+size:describePrint(spec),
+})
 :'';
 if(photo){
 cropper.setAspect(frameAspect(spec));
@@ -218,7 +222,7 @@ renderPaperNote();
 }
 function describePrint(spec){
 const pixels=printPixels(spec,Number(el.printDpi.value));
-return pixels?`${pixels.width} x ${pixels.height} pixels`:'';
+return pixels?phrase('print.pixels',{width:pixels.width,height:pixels.height}):'';
 }
 function renderPaperNote(){
 const spec=currentSpec();
@@ -227,8 +231,7 @@ el.paperNote.textContent='';
 return;
 }
 const plan=sheetPlan(spec);
-el.paperNote.textContent=`${describeSheet(plan)}, with cut marks in the gaps and `
-+'nothing printed over a photograph.';
+el.paperNote.textContent=phrase('paper.note',{sheet:describeSheet(plan,phrase)});
 }
 function sheetPlan(spec){
 return bestSheet({
@@ -249,7 +252,7 @@ if(!file||busy)return;
 clearLoadError();
 picker.busy(readingLabel(1));
 try{
-if(!looksLikeImage(file))throw new Error('that is not an image this browser can open.');
+if(!looksLikeImage(file))throw new Error('load.notimage');
 const decoded=await decode(file);
 dropPhoto();
 photo={
@@ -262,7 +265,8 @@ height:decoded.height,
 el.preview.src=photo.url;
 el.stage.style.aspectRatio=`${photo.width} / ${photo.height}`;
 el.stage.style.maxWidth=`calc(62vh * ${photo.width / photo.height})`;
-el.loadedName.textContent=`${file.name} - ${photo.width} x ${photo.height} pixels`;
+el.loadedName.textContent=phrase('load.named',
+{name:file.name,width:photo.width,height:photo.height});
 el.loaded.hidden=false;
 el.frameEmpty.hidden=true;
 el.frameControls.hidden=false;
@@ -275,7 +279,7 @@ fitToRule();
 }
 refreshFrame();
 }catch(error){
-showLoadError(`${file.name}: ${error.message}`);
+showLoadError(phrase('load.failed',{name:file.name,why:phrase(error.message)}));
 }finally{
 picker.done();
 }
@@ -352,10 +356,10 @@ const short=fitted.short;
 const missing=Object.entries(short).filter(([,value])=>value>2);
 el.shortNote.hidden=missing.length===0;
 if(missing.length){
-const parts=missing.map(([side,value])=>`${value} px at the ${side}`);
-el.shortNote.textContent=`The rule wanted more picture than there is: ${parts.join(', ')}. `
-+'The box has been kept inside the photograph instead, which is why the figures '
-+'below may not all be green. A photo taken a step further back is the fix.';
+const list=missing
+.map(([side,value])=>phrase('short.side',{value,side:phrase(`side.${side}`)}))
+.reduce((a,b)=>phrase('join.list',{a,b}));
+el.shortNote.textContent=phrase('short.note',{list});
 }
 }
 function onCropChange(){
@@ -516,17 +520,20 @@ const dpi=Number(el.printDpi.value)||spec.print?.dpi||300;
 let printCanvas=null;
 if(spec.print){
 const size=printPixels(spec,dpi);
-showProgress(0.15,`writing the ${trim(spec.print.widthMm)} x ${trim(spec.print.heightMm)} mm print`);
+showProgress(0.15,phrase('step.print',
+{width:trim(spec.print.widthMm),height:trim(spec.print.heightMm)}));
 printCanvas=drawCrop(photo.bitmap,rect,size);
 const{blob}=await encodePrint(printCanvas,{dpi});
 made.push({
 blob,
 name:outName(stem,spec,'print'),
-title:`The print - ${trim(spec.print.widthMm)} x ${trim(spec.print.heightMm)} mm`,
-detail:`${size.width} x ${size.height} pixels, ${sizeText(blob.size)}, tagged ${dpi} dpi `
-+'in the file itself so a print shop reproduces it at the right size.',
+title:phrase('out.print',
+{width:trim(spec.print.widthMm),height:trim(spec.print.heightMm)}),
+detail:phrase('out.print.detail',{
+width:size.width,height:size.height,size:bytesText(blob.size),dpi,
+}),
 });
-showProgress(0.5,'laying out the sheet');
+showProgress(0.5,phrase('step.sheet'));
 const plan=sheetPlan(spec);
 if(plan.count>0){
 const sheetCanvas=drawSheet(plan,printCanvas);
@@ -535,34 +542,35 @@ free(sheetCanvas);
 made.push({
 blob:sheet.blob,
 name:outName(stem,spec,'sheet',{paper:paperById(el.paper.value).id}),
-title:`The sheet - ${paperById(el.paper.value).label}`,
-detail:`${describeSheet(plan)}, ${sizeText(sheet.blob.size)}, tagged ${dpi} dpi. `
-+'Print it at 100 per cent - "fit to page" is what makes a sheet come out '
-+'the wrong size.',
+title:phrase('out.sheet',{paper:phrase(paperById(el.paper.value).label)}),
+detail:phrase('out.sheet.detail',{
+sheet:describeSheet(plan,phrase),size:bytesText(sheet.blob.size),dpi,
+}),
 });
 }
 }
 if(spec.digital){
 const size=portalPixels(spec);
-showProgress(0.75,`squeezing to ${spec.digital.label.toLowerCase()}`);
+showProgress(0.75,phrase('step.upload',{label:phrase(spec.digital.label)}));
 const canvas=drawCrop(photo.bitmap,rect,size);
 const band=portalBytes(spec);
-const result=await encodeToBand(canvas,band);
+const result=await encodeToBand(canvas,band,phrase);
 free(canvas);
 made.push({
 blob:new Blob([result.bytes],{type:'image/jpeg'}),
 name:outName(stem,spec,'upload',size),
-title:`The upload - ${size.width} x ${size.height}`,
-detail:`${sizeText(result.bytes.length)} after ${result.encodes} `
-+`${result.encodes === 1 ? 'encode' : 'encodes'}. ${result.how}`,
+title:phrase('out.upload',{width:size.width,height:size.height}),
+detail:phrase(result.encodes===1?'out.upload.detail.one':'out.upload.detail.many',{
+size:bytesText(result.bytes.length),n:result.encodes,how:result.how,
+}),
 warn:!result.fitted,
 });
 }
 if(printCanvas)free(printCanvas);
-showProgress(1,'done');
+showProgress(1,phrase('step.done'));
 renderResults(made);
 }catch(error){
-showLoadError(`Something went wrong making the files: ${error.message}`);
+showLoadError(phrase('make.failed',{why:phrase(error.message)}));
 }finally{
 busy=false;
 el.make.disabled=false;

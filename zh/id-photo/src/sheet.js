@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{mmToPx}from'./geometry.js';
 export const PAPERS=[
-{id:'4x6',label:'4 x 6 inch print (10 x 15 cm)',widthMm:152.4,heightMm:101.6},
-{id:'5x7',label:'5 x 7 inch print (13 x 18 cm)',widthMm:177.8,heightMm:127},
-{id:'a4',label:'A4 sheet (210 x 297 mm)',widthMm:297,heightMm:210},
-{id:'letter',label:'US Letter (8.5 x 11 inch)',widthMm:279.4,heightMm:215.9},
+{id:'4x6',label:'paper.4x6',widthMm:152.4,heightMm:101.6},
+{id:'5x7',label:'paper.5x7',widthMm:177.8,heightMm:127},
+{id:'a4',label:'paper.a4',widthMm:297,heightMm:210},
+{id:'letter',label:'paper.letter',widthMm:279.4,heightMm:215.9},
 ];
 export const paperById=(id)=>PAPERS.find((paper)=>paper.id===id)??PAPERS[0];
 const DEFAULT_MARGIN_MM=3;
@@ -119,8 +119,8 @@ const upright=planSheet({...options,rotate:false});
 const turned=planSheet({...options,rotate:true});
 return turned.count>upright.count?turned:upright;
 }
-export function describeSheet(plan){
-if(!plan.count)return'this photo does not fit on this paper at all.';
-const copies=plan.count===1?'1 copy':`${plan.count} copies`;
-return`${copies}, ${plan.columns} across and ${plan.rows} down`;
+export function describeSheet(plan,t){
+if(!plan.count)return t('sheet.none');
+return t(plan.count===1?'sheet.one':'sheet.many',
+{n:plan.count,columns:plan.columns,rows:plan.rows});
 }

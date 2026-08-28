@@ -17,17 +17,14 @@ export class Cropper{
 #drag=null;
 #guides=null;
 #parts={};
-constructor(stage,{onChange}={}){
+constructor(stage,{onChange,t}={}){
 this.#stage=stage;
 this.#onChange=onChange;
 this.#box=document.createElement('div');
 this.#box.className='crop-box';
 this.#box.tabIndex=0;
 this.#box.setAttribute('role','application');
-this.#box.setAttribute('aria-label',
-'Crop area. The arrow keys move it, Alt and the arrow keys resize it, '
-+'and holding Shift makes each step ten pixels. The shape is fixed by the '
-+'specification and cannot be changed.');
+this.#box.setAttribute('aria-label',t('crop.aria'));
 this.#label=document.createElement('span');
 this.#label.className='crop-size';
 this.#box.append(this.#label);

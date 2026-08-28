@@ -14,7 +14,7 @@ try{
 const img=await new Promise((resolve,reject)=>{
 const element=new Image();
 element.onload=()=>resolve(element);
-element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.onerror=()=>reject(new Error('encode.nodecode'));
 element.src=url;
 });
 return{bitmap:img,width:img.naturalWidth,height:img.naturalHeight};
@@ -58,18 +58,18 @@ canvas.height=0;
 }
 export async function toBytes(canvas,quality){
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,JPEG,quality));
-if(!blob)throw new Error('this browser would not write a JPEG.');
+if(!blob)throw new Error('encode.nojpeg');
 return new Uint8Array(await blob.arrayBuffer());
 }
 const CEILING=0.95;
 const FLOOR=0.25;
 const MAX_ENCODES=10;
-export async function encodeToBand(canvas,band){
+export async function encodeToBand(canvas,band,t){
 const max=band.max??Infinity;
 const min=band.min??0;
 let encodes=0;
 const attempt=async(quality)=>{
-if(encodes>=MAX_ENCODES)throw new Error('gave up after too many attempts.');
+if(encodes>=MAX_ENCODES)throw new Error('encode.gaveup');
 encodes+=1;
 return{bytes:await toBytes(canvas,quality),quality};
 };
@@ -77,9 +77,8 @@ let best=await attempt(CEILING);
 if(best.bytes.length>max){
 const bottom=await attempt(FLOOR);
 if(bottom.bytes.length>max){
-return finish(bottom,false,`Even at the lowest quality worth using, this comes out at `
-+`${Math.round(bottom.bytes.length / 1024)} KB, which is over the limit. `
-+`The picture has more detail in it than the form allows for.`);
+return finish(bottom,false,t('how.toobig',
+{size:sizeText(bottom.bytes.length,t)}));
 }
 let low=FLOOR;
 let high=CEILING;
@@ -100,27 +99,30 @@ const top=await attempt(1);
 if(top.bytes.length<=max&&top.bytes.length>best.bytes.length)best=top;
 }
 if(best.bytes.length>=min){
-return finish(best,true,`Written at quality ${Math.round(best.quality * 100)}, `
-+`which is ${sizeText(best.bytes.length)} - inside the band the form accepts.`);
+return finish(best,true,t('how.fitted',{
+quality:Math.round(best.quality*100),
+size:sizeText(best.bytes.length,t),
+}));
 }
 const padded=padTo(best.bytes,min);
 return finish(
 {bytes:padded,quality:best.quality},
 padded.length>=min,
-`The picture encodes to ${sizeText(best.bytes.length)} at the very top of the quality `
-+`dial, which is still under the ${sizeText(min)} floor the form insists on. `
-+`${sizeText(padded.length - best.bytes.length)} of JPEG comment was added to reach it; `
-+`the picture itself is untouched.`,
+t('how.padded',{
+size:sizeText(best.bytes.length,t),
+floor:sizeText(min,t),
+added:sizeText(padded.length-best.bytes.length,t),
+}),
 padded.length-best.bytes.length,
 );
 function finish(result,fitted,how,padding=0){
 return{bytes:result.bytes,quality:result.quality,encodes,padded:padding,fitted,how};
 }
 }
-export function sizeText(bytes){
-if(bytes<1024)return`${bytes} bytes`;
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
-return`${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+export function sizeText(bytes,t){
+if(bytes<1024)return t('size.bytes',{n:bytes});
+if(bytes<1024*1024)return t('size.kb',{n:(bytes/1024).toFixed(1)});
+return t('size.mb',{n:(bytes/(1024*1024)).toFixed(2)});
 }
 export async function encodePrint(canvas,{dpi,quality=0.94}){
 const bytes=setDensity(await toBytes(canvas,quality),dpi);

@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 export const MARK_KEYS=[
-{key:'crown',label:'Crown',hint:'the very top of the head, hair included'},
-{key:'chin',label:'Chin',hint:'the bottom of the chin'},
-{key:'leftEye',label:'Left eye',hint:'the pupil, on the left as you look at it'},
-{key:'rightEye',label:'Right eye',hint:'the other pupil'},
+{key:'crown',label:'mark.crown',hint:'mark.crown.hint'},
+{key:'chin',label:'mark.chin',hint:'mark.chin.hint'},
+{key:'leftEye',label:'mark.lefteye',hint:'mark.lefteye.hint'},
+{key:'rightEye',label:'mark.righteye',hint:'mark.righteye.hint'},
 ];
 const OPENING={
 crown:{x:0.5,y:0.14},
@@ -17,16 +17,18 @@ export class Marks{
 #dots=new Map();
 #source={width:0,height:0};
 #points=null;
-constructor(stage,{onChange}={}){
+constructor(stage,{onChange,t}={}){
 this.#stage=stage;
 this.#onChange=onChange;
-for(const{key,label,hint}of MARK_KEYS){
+for(const entry of MARK_KEYS){
+const{key}=entry;
+const label=t(entry.label);
 const dot=document.createElement('button');
 dot.type='button';
 dot.className=`face-mark mark-${key}`;
 dot.dataset.key=key;
 dot.hidden=true;
-dot.setAttribute('aria-label',`${label}: ${hint}. The arrow keys move it; hold Shift for ten pixels at a time.`);
+dot.setAttribute('aria-label',t('mark.aria',{label,hint:t(entry.hint)}));
 const caption=document.createElement('span');
 caption.className='face-mark-label';
 caption.textContent=label;
