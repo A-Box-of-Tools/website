@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pas-foto-biometrik/:';
-const CACHE_NAME=CACHE_PREFIX+'e48c53b10b';
+const CACHE_NAME=CACHE_PREFIX+'a5da6e334f';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5459fff4f1',
+'styles.css?v=d332ada63c',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

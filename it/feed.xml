@@ -26,11 +26,95 @@
   <id>https://abox.tools/it/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/it/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/it/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/it/</uri>
   </author>
+  <entry>
+    <title type="html">Creatore di GIF</title>
+    <id>https://abox.tools/it/creare-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/creare-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Trasforma immagini JPG, PNG o WebP in una GIF animata, gratis e interamente nel browser. L'ordine, la velocità e la dimensione li decidi tu. Non viene caricato niente e funziona anche offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Creatore di timelapse</title>
+    <id>https://abox.tools/it/creare-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/creare-timelapse/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Trasforma un video lungo in un timelapse: 10x, 60x o la velocità che scrivi tu. Gira nel browser, non carica niente, non mette filigrane e funziona anche offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Da video a GIF</title>
+    <id>https://abox.tools/it/video-in-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/video-in-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Trasforma un pezzo di un MP4, un MOV o un WebM in una GIF animata. Scegli il pezzo, la larghezza e la frequenza dei fotogrammi: i fotogrammi li legge e la GIF la scrive il tuo browser. Niente caricamenti.</summary>
+  </entry>
+  <entry>
+    <title type="html">Editor audio</title>
+    <id>https://abox.tools/it/modificare-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/modificare-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser, senza caricare niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Immagini in PDF</title>
+    <id>https://abox.tools/it/immagini-in-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/immagini-in-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Unisci immagini JPG, PNG o WebP in un unico PDF, gratis e interamente dentro il tuo browser. Le foto entrano senza essere ricodificate, e non viene caricato niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Impilatore di immagini</title>
+    <id>https://abox.tools/it/impilare-immagini/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/impilare-immagini/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Unisci una raffica di fotografie in una sola: fanne la media per uccidere il rumore, prendi la mediana per togliere le persone da una scena, schiarisci per le scie stellari, oppure fai il focus stacking di una macro. Legge CR2, NEF, ARW, DNG, RAF e CR3 tirando fuori l'anteprima della fotocamera. Funziona interamente nel tuo browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Invertitore di video</title>
+    <id>https://abox.tools/it/invertire-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/invertire-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Riproduci un MP4, MOV o WebM al contrario, con anche l'audio invertito. Gira nel browser: non viene caricato niente, non c'è filigrana e funziona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ritagliatore di video</title>
+    <id>https://abox.tools/it/ritagliare-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/ritagliare-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Ritaglia un MP4, un MOV o un WebM in qualunque forma: quadrata, 9:16 o un riquadro di pixel esatto. Gira nel browser, non carica niente, tiene l'audio e funziona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Scanner per documenti</title>
+    <id>https://abox.tools/it/scansionare-documenti/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/scansionare-documenti/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Trasforma la foto di una pagina scattata col telefono in un PDF raddrizzato e illuminato in modo uniforme. Gli angoli te li trova lui, la prospettiva viene annullata, l'ombra viene divisa via. Funziona interamente nel tuo browser: non viene caricato niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Tagliavideo</title>
+    <id>https://abox.tools/it/tagliare-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Guarda un video e segna ogni pezzo che vale la pena tenere mentre scorre, poi salva quei pezzi come un file solo. Gira nel browser, non carica niente, non ricodifica niente e funziona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Taglierino audio</title>
+    <id>https://abox.tools/it/tagliare-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Riproduci una registrazione e segna al volo ogni pezzo che vale la pena tenere, poi salva quei pezzi in un unico file. Tagli esatti al campione, nessun clic ai punti di giunzione, niente caricamenti.</summary>
+  </entry>
+  <entry>
+    <title type="html">Unire e dividere PDF</title>
+    <id>https://abox.tools/it/unire-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/unire-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Metti insieme PDF, dividine uno in più file e trascina le pagine nell'ordine che vuoi, tutto dentro il tuo browser. Non viene caricato niente, non serve un account, e il file finito viene riaperto e ricontato prima di essere offerto.</summary>
+  </entry>
   <entry>
     <title type="html">Analizzatore di GIF</title>
     <id>https://abox.tools/it/analizzare-gif/</id>
@@ -156,89 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/comprimere-pdf/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Riduci il peso di un PDF senza caricarlo. Il file lo legge, lo ricomprime e lo riscrive il tuo browser, e prima di toccare qualunque cosa lo strumento ti mostra dove sta davvero il peso.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compressore di immagini</title>
-    <id>https://abox.tools/it/comprimere-immagine/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/comprimere-immagine/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Comprimi un JPEG, un PNG o un WebP a una dimensione esatta: 100 KB, 2 MB, quello che ti serve. Gira tutto nel browser, senza caricare niente, senza account e anche offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Condividere testo e file</title>
-    <id>https://abox.tools/it/condividere-testo/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/condividere-testo/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Manda testo o file da un browser all'altro su una connessione diretta e cifrata. Un nome di link pronunciabile, aggiornamento in tempo reale mentre scrivi, approvazione lettore per lettore - e mai niente su nessun server. Gratis, senza registrazione.</summary>
-  </entry>
-  <entry>
-    <title type="html">Confronto testi</title>
-    <id>https://abox.tools/it/confrontare-testi/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/confrontare-testi/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Confronta due testi e guarda ogni differenza, riga per riga e parola per parola, fianco a fianco o in una colonna. Il confronto gira nel tuo browser e non viene caricato niente: il codice non ancora pubblicato non lascia mai il tuo dispositivo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Creatore di GIF</title>
-    <id>https://abox.tools/it/creare-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/creare-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Trasforma immagini JPG, PNG o WebP in una GIF animata, gratis e interamente nel browser. L'ordine, la velocità e la dimensione li decidi tu. Non viene caricato niente e funziona anche offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Creatore di foto tessera</title>
-    <id>https://abox.tools/it/foto-tessera/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/foto-tessera/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Fai una foto per passaporto o visto secondo la norma pubblicata del tuo paese: millimetri e DPI esatti, una guida dal vivo per l'altezza della testa e la linea degli occhi, il controllo dello sfondo, un foglio 10x15 pronto da stampare e un file schiacciato dentro il limite in KB del portale. Non viene caricato niente.</summary>
-  </entry>
-  <entry>
-    <title type="html">Creatore di timelapse</title>
-    <id>https://abox.tools/it/creare-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/creare-timelapse/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Trasforma un video lungo in un timelapse: 10x, 60x o la velocità che scrivi tu. Gira nel browser, non carica niente, non mette filigrane e funziona anche offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Da HEIC a JPG</title>
-    <id>https://abox.tools/it/heic-in-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/heic-in-jpg/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Converti in JPG le foto HEIC dell'iPhone, nel browser. Il decodificatore gira sul tuo dispositivo: niente caricamenti, nessun account, funziona offline, e la data e i dati della fotocamera possono venire dietro.</summary>
-  </entry>
-  <entry>
-    <title type="html">Da SVG a immagine</title>
-    <id>https://abox.tools/it/svg-in-png/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/svg-in-png/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Converti un SVG in PNG, JPEG o WebP a qualunque dimensione, dentro il tuo browser. Di' la larghezza, un moltiplicatore o un riquadro, e ti arrivano anche le copie @2x e @3x. Trasparenza conservata, niente caricamenti.</summary>
-  </entry>
-  <entry>
-    <title type="html">Da immagine a ICO</title>
-    <id>https://abox.tools/it/creare-favicon/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/creare-favicon/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Converti un PNG, un JPEG o un SVG in un vero .ico multidimensione o in un .icns per macOS, nel browser. Favicon, icona per app Windows, icona per app Mac, più i file Apple e Android che servono a un sito. Non viene caricato niente.</summary>
-  </entry>
-  <entry>
-    <title type="html">Da video a GIF</title>
-    <id>https://abox.tools/it/video-in-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/video-in-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Trasforma un pezzo di un MP4, un MOV o un WebM in una GIF animata. Scegli il pezzo, la larghezza e la frequenza dei fotogrammi: i fotogrammi li legge e la GIF la scrive il tuo browser. Niente caricamenti.</summary>
-  </entry>
-  <entry>
-    <title type="html">Divisore di GIF</title>
-    <id>https://abox.tools/it/dividere-gif-in-fotogrammi/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/dividere-gif-in-fotogrammi/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Dividi una GIF animata nei suoi fotogrammi e salva ognuno come PNG, gratis e interamente nel browser. Trasparenza e tempi restano intatti. Non viene caricato niente e funziona anche offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Editor audio</title>
-    <id>https://abox.tools/it/modificare-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/modificare-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser, senza caricare niente.</summary>
   </entry>
 </feed>

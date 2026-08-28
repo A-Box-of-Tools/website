@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحويل-الصورة-إلى-base64/:';
-const CACHE_NAME=CACHE_PREFIX+'9603a9e7d4';
+const CACHE_NAME=CACHE_PREFIX+'80455a63d9';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=6c0f636bc6',
+'styles.css?v=d36f18f90d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

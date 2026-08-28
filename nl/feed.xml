@@ -26,11 +26,95 @@
   <id>https://abox.tools/nl/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/nl/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/nl/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/nl/</uri>
   </author>
+  <entry>
+    <title type="html">Afbeeldingen naar pdf</title>
+    <id>https://abox.tools/nl/afbeeldingen-naar-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-naar-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Voeg jpg-, png- of WebP-afbeeldingen samen tot één pdf, gratis en volledig in je browser. Foto's gaan erin zonder opnieuw gecodeerd te worden, en er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Afbeeldingen stacken</title>
+    <id>https://abox.tools/nl/afbeeldingen-stacken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-stacken/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Voeg een reeks foto's samen tot &amp;eacute;&amp;eacute;n: middel ze om ruis te doden, neem de mediaan om mensen uit een sc&amp;egrave;ne te halen, licht op voor sterrensporen, of focus-stack een macro-opname. Leest CR2, NEF, ARW, DNG, RAF en CR3 door het eigen voorbeeld van de camera eruit te halen. Draait helemaal in je browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audiobewerker</title>
+    <id>https://abox.tools/nl/audio-bewerken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-bewerken/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Speel een opname achterstevoren af, maak hem sneller of langzamer en zet een zachte opname harder. Haalt ook het geluid uit een video. Draait in je browser en uploadt niets.</summary>
+  </entry>
+  <entry>
+    <title type="html">Audioknipper</title>
+    <id>https://abox.tools/nl/audio-knippen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-knippen/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Documentscanner</title>
+    <id>https://abox.tools/nl/documenten-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/documenten-scannen/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Maak van een telefoonfoto van een pagina een rechtgetrokken, gelijkmatig belichte PDF. De hoeken worden voor je gevonden, het perspectief wordt teruggedraaid, de schaduw wordt eruit gedeeld. Draait helemaal in je browser: er wordt niets ge&amp;uuml;pload.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF-maker</title>
+    <id>https://abox.tools/nl/gif-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-maken/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Maak van JPG-, PNG- of WebP-afbeeldingen een geanimeerde GIF, gratis en helemaal in je browser. Je bepaalt de volgorde, de snelheid en het formaat. Er wordt niets geüpload en het werkt offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pdf samenvoegen &amp; splitsen</title>
+    <id>https://abox.tools/nl/pdf-samenvoegen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-samenvoegen/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Voeg pdf's samen, splits er een in meerdere en sleep pagina's in de volgorde die je wilt, allemaal binnen je eigen browser. Er wordt niets geüpload, er komt geen account aan te pas, en het klaargemaakte bestand wordt opnieuw geopend en nageteld voordat het je aangeboden wordt.</summary>
+  </entry>
+  <entry>
+    <title type="html">Timelapsemaker</title>
+    <id>https://abox.tools/nl/timelapse-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/timelapse-maken/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Maak van een lange video een timelapse: 10x, 60x of elke snelheid die je intypt. Draait in je browser, uploadt niets, zet er geen watermerk op en werkt offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video naar gif</title>
+    <id>https://abox.tools/nl/video-naar-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-naar-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Maak van een stuk mp4, mov of WebM een bewegende gif. Kies het stuk, de breedte en de beeldsnelheid, en je browser leest de frames en schrijft de gif. Er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video-omkeerder</title>
+    <id>https://abox.tools/nl/video-achteruit-afspelen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-achteruit-afspelen/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Speel een MP4, MOV of WebM achterstevoren af, met het geluid ook omgekeerd. Draait in je browser: er wordt niets geüpload, er komt geen watermerk aan te pas en het werkt offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Videobijsnijder</title>
+    <id>https://abox.tools/nl/video-bijsnijden/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-bijsnijden/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Snijd een mp4, mov of WebM bij naar elke vorm: vierkant, 9:16 of een exact pixelkader. Draait in je browser, uploadt niets, houdt het geluid en werkt offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Videoknipper</title>
+    <id>https://abox.tools/nl/video-knippen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-knippen/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Bekijk een video, markeer tijdens het afspelen elk stuk dat het bewaren waard is en sla die stukken op als één bestand. Draait in je browser, uploadt niets, codeert niets opnieuw en werkt offline.</summary>
+  </entry>
   <entry>
     <title type="html">Afbeelding naar ICO</title>
     <id>https://abox.tools/nl/favicon-maken/</id>
@@ -53,25 +137,11 @@
     <summary type="html">Dek een naam, een adres of een rekeningnummer in een foto of screenshot af en sla de afbeelding opnieuw op, zodat de verborgen pixels echt uit het bestand zijn en niet onder een rechthoek blijven liggen. Alles gebeurt in de browser.</summary>
   </entry>
   <entry>
-    <title type="html">Afbeeldingen naar pdf</title>
-    <id>https://abox.tools/nl/afbeeldingen-naar-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-naar-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Voeg jpg-, png- of WebP-afbeeldingen samen tot één pdf, gratis en volledig in je browser. Foto's gaan erin zonder opnieuw gecodeerd te worden, en er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
     <title type="html">Afbeeldingen naar video</title>
     <id>https://abox.tools/nl/afbeeldingen-naar-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-naar-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Maak van jpg-, png- of WebP-afbeeldingen een mp4-diavoorstelling, gratis en volledig in je browser. Er wordt niets geüpload, je hoeft je niet aan te melden, en het werkt offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Afbeeldingen stacken</title>
-    <id>https://abox.tools/nl/afbeeldingen-stacken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-stacken/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Voeg een reeks foto's samen tot &amp;eacute;&amp;eacute;n: middel ze om ruis te doden, neem de mediaan om mensen uit een sc&amp;egrave;ne te halen, licht op voor sterrensporen, of focus-stack een macro-opname. Leest CR2, NEF, ARW, DNG, RAF en CR3 door het eigen voorbeeld van de camera eruit te halen. Draait helemaal in je browser.</summary>
   </entry>
   <entry>
     <title type="html">Afbeeldingscompressor</title>
@@ -88,20 +158,6 @@
     <summary type="html">Schaal, snijd bij en zet JPEG-, PNG- en WebP-afbeeldingen om in je browser. Exacte pixels, een percentage of een lange zijde - één afbeelding of een hele map. Er wordt niets geüpload.</summary>
   </entry>
   <entry>
-    <title type="html">Audiobewerker</title>
-    <id>https://abox.tools/nl/audio-bewerken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-bewerken/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Speel een opname achterstevoren af, maak hem sneller of langzamer en zet een zachte opname harder. Haalt ook het geluid uit een video. Draait in je browser en uploadt niets.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audioknipper</title>
-    <id>https://abox.tools/nl/audio-knippen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-knippen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload.</summary>
-  </entry>
-  <entry>
     <title type="html">Base64-codeerder &amp; -decodeerder</title>
     <id>https://abox.tools/nl/base64-coderen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/base64-coderen/"/>
@@ -114,13 +170,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/dicom-viewer/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Open CT-, MRI-, r&amp;ouml;ntgen- en echoscans in je browser. Venster en niveau, een hele serie doorbladeren, meten in millimeters, elke DICOM-tag lezen en precies zien wat er in het bestand de pati&amp;euml;nt aanwijst. Er wordt niets ge&amp;uuml;pload.</summary>
-  </entry>
-  <entry>
-    <title type="html">Documentscanner</title>
-    <id>https://abox.tools/nl/documenten-scannen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/documenten-scannen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Maak van een telefoonfoto van een pagina een rechtgetrokken, gelijkmatig belichte PDF. De hoeken worden voor je gevonden, het perspectief wordt teruggedraaid, de schaduw wordt eruit gedeeld. Draait helemaal in je browser: er wordt niets ge&amp;uuml;pload.</summary>
   </entry>
   <entry>
     <title type="html">EXIF-lezer &amp; -wisser</title>
@@ -149,13 +198,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-analyseren/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Haal een GIF uit elkaar in je browser: elk frame met zijn vertraging en opruimregel, de kleurtabellen, het aantal herhalingen en een byte-voor-byte overzicht van waar de bestandsgrootte heen ging. Er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF-maker</title>
-    <id>https://abox.tools/nl/gif-maken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-maken/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Maak van JPG-, PNG- of WebP-afbeeldingen een geanimeerde GIF, gratis en helemaal in je browser. Je bepaalt de volgorde, de snelheid en het formaat. Er wordt niets geüpload en het werkt offline.</summary>
   </entry>
   <entry>
     <title type="html">GIF-splitser</title>
@@ -198,47 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-onleesbaar-maken/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Haal woorden uit een PDF in plaats van er een zwarte rechthoek overheen te tekenen. De letters worden gewist uit de tekeninstructies van de pagina zelf, het klare bestand wordt opnieuw geopend en doorzocht om te bewijzen dat ze weg zijn, en er wordt niets ge&amp;uuml;pload.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pasfotomaker</title>
-    <id>https://abox.tools/nl/pasfoto-maken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pasfoto-maken/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Maak een paspoort- of visumfoto volgens de gepubliceerde regel van je land: exacte millimeters en dpi, een meelopende hulplijn voor hoofdhoogte en ooglijn, een achtergrondcontrole, een printklaar vel van 10x15 en een bestand dat binnen de KB-grens van het portaal past. Er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pdf samenvoegen &amp; splitsen</title>
-    <id>https://abox.tools/nl/pdf-samenvoegen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-samenvoegen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Voeg pdf's samen, splits er een in meerdere en sleep pagina's in de volgorde die je wilt, allemaal binnen je eigen browser. Er wordt niets geüpload, er komt geen account aan te pas, en het klaargemaakte bestand wordt opnieuw geopend en nageteld voordat het je aangeboden wordt.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pdf-compressor</title>
-    <id>https://abox.tools/nl/pdf-verkleinen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-verkleinen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Maak een pdf kleiner zonder hem te uploaden. Je eigen browser leest het bestand, comprimeert het opnieuw en schrijft het weg, en je ziet eerst waar de grootte werkelijk zit.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR- &amp; barcodegenerator</title>
-    <id>https://abox.tools/nl/qr-code-maken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/qr-code-maken/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Maak een qr-code voor een link, een wifinetwerk of een visitekaartje, of een EAN-13-, UPC-A-, Code 128- of Code 39-barcode. Download als svg of png. Het gebeurt allemaal in je browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Qr- &amp; barcodescanner</title>
-    <id>https://abox.tools/nl/qr-code-scannen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/qr-code-scannen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Lees een qr-code vanaf een foto, een schermafbeelding of je camera, en zie precies waar de link heen gaat voordat je hem opent. Ook EAN, UPC, Code 128, Code 39 en ITF. Er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG naar afbeelding</title>
-    <id>https://abox.tools/nl/svg-naar-png/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/svg-naar-png/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Zet een svg om naar png, jpeg of WebP op elk formaat, in je browser. Noem de breedte, een factor of een kader; krijg er @2x- en @3x-kopieën bij. Transparantie blijft, er wordt niets geüpload.</summary>
   </entry>
 </feed>

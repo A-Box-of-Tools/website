@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/video-kesme/:';
-const CACHE_NAME=CACHE_PREFIX+'0e7d653dbb';
+const CACHE_NAME=CACHE_PREFIX+'0bac1d1a67';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=c1bc0801de',
+'styles.css?v=5995d4a241',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

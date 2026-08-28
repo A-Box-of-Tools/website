@@ -26,11 +26,95 @@
   <id>https://abox.tools/ja/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ja/</uri>
   </author>
+  <entry>
+    <title type="html">GIF作成</title>
+    <id>https://abox.tools/ja/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-maker/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebPの画像からアニメーションGIFを作ります。無料で、処理はすべてブラウザの中。順番も速さも大きさも自分で決められます。アップロードは一切なく、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF結合・分割</title>
+    <id>https://abox.tools/ja/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/merge-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">PDFをまとめる、1つを複数に分ける、ページをドラッグして好きな順にする。すべてお使いのブラウザの中で行われます。アップロードもアカウントも不要で、仕上がったファイルは渡す前にもう一度開いてページ数を数え直します。</summary>
+  </entry>
+  <entry>
+    <title type="html">タイムラプス作成ツール</title>
+    <id>https://abox.tools/ja/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/timelapse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">長い動画をタイムラプスに変換します。10倍、60倍、入力した任意の倍率まで。処理はブラウザの中だけ。アップロードなし、透かしなし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画→GIF変換ツール</title>
+    <id>https://abox.tools/ja/video-to-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/video-to-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMの一部をアニメーションGIFにします。範囲、幅、フレームレートを選べば、フレームの読み込みもGIFの書き出しもブラウザの中で終わります。アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画の逆再生</title>
+    <id>https://abox.tools/ja/reverse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/reverse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMを逆再生にします。音も一緒に逆向きになります。処理はブラウザの中だけで、アップロードも透かしもなく、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画カットツール</title>
+    <id>https://abox.tools/ja/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">動画を見ながら残す価値のある場所すべてに印を付け、その部分だけを1つのファイルとして保存します。処理はブラウザの中だけ。アップロードなし、再エンコードなし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画トリミングツール</title>
+    <id>https://abox.tools/ja/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/crop-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMを正方形、9:16、ピクセル指定など好きな形に切り抜きます。処理はブラウザの中だけ。アップロードなし、音声はそのまま、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">書類スキャナー</title>
+    <id>https://abox.tools/ja/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/document-scanner/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">スマホで撮った紙の写真を、まっすぐで明るさのそろったPDFにします。四隅は自動で見つけ、傾きを戻し、影は割って取り除きます。すべてブラウザの中で動き、何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像→PDF変換ツール</title>
+    <id>https://abox.tools/ja/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebPの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。写真はエンコードし直さずに入り、何もアップロードしません。</summary>
+  </entry>
+  <entry>
+    <title type="html">画像スタック</title>
+    <id>https://abox.tools/ja/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/stack-images/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">連写した写真を1枚にまとめます。平均でノイズを消し、中央値で場面から人を消し、比較明で星の軌跡にし、あるいはマクロ撮影を深度合成します。CR2・NEF・ARW・DNG・RAF・CR3は、カメラ自身のプレビューを取り出して読みます。すべてブラウザの中で動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">音声の切り出し</title>
+    <id>https://abox.tools/ja/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">録音を再生しながら、残したい部分に次々と印を付け、その部分を1つのファイルとして保存します。サンプル単位で正確に切れ、つなぎ目でプチッと鳴らず、アップロードもありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">音声編集ツール</title>
+    <id>https://abox.tools/ja/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/edit-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">音声を逆から再生し、速くしたり遅くしたりし、小さな録音を大きくします。動画から音声だけ取り出すこともできます。処理はブラウザの中だけ。アップロードはありません。</summary>
+  </entry>
   <entry>
     <title type="html">2つのJSONファイルを比較する方法</title>
     <id>https://abox.tools/ja/guides/compare-two-json-files/</id>
@@ -72,13 +156,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">GIFをコマに分解し、抜いたり並べ替えたりして、タイミングを保ったまま組み直します。往復で何が生き残るか、パレットの代償はいくらか、GIFが重い理由をどう見るか。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF作成</title>
-    <id>https://abox.tools/ja/gif-maker/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-maker/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPG・PNG・WebPの画像からアニメーションGIFを作ります。無料で、処理はすべてブラウザの中。順番も速さも大きさも自分で決められます。アップロードは一切なく、オフラインでも動きます。</summary>
   </entry>
   <entry>
     <title type="html">GIF分解</title>
@@ -130,13 +207,6 @@
     <summary type="html">PDFをアップロードせずに小さくします。読み込みも再圧縮も書き直しも、お使いのブラウザが行います。手をつける前に、そのPDFの容量が実際どこにあるのかを見せます。</summary>
   </entry>
   <entry>
-    <title type="html">PDF結合・分割</title>
-    <id>https://abox.tools/ja/merge-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/merge-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">PDFをまとめる、1つを複数に分ける、ページをドラッグして好きな順にする。すべてお使いのブラウザの中で行われます。アップロードもアカウントも不要で、仕上がったファイルは渡す前にもう一度開いてページ数を数え直します。</summary>
-  </entry>
-  <entry>
     <title type="html">QRコードを作り、読めることを証明する方法</title>
     <id>https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-qr-code-and-prove-it-scans/"/>
@@ -170,75 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/share-text-between-devices/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ。自分宛てのメールも、チャット履歴も、アカウントも要らず、どのサーバーにも写しは残りません。</summary>
-  </entry>
-  <entry>
-    <title type="html">スマホ写真をウェブ用に準備する方法</title>
-    <id>https://abox.tools/ja/guides/get-photos-ready-for-the-web/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/get-photos-ready-for-the-web/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">HEICをJPEGに、GPSを剥がし、ページに合わせてリサイズし、予算まで圧縮する。連鎖の全部がブラウザの中で、原本は端末を一度も離れない。</summary>
-  </entry>
-  <entry>
-    <title type="html">タイムラプス作成ツール</title>
-    <id>https://abox.tools/ja/timelapse-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/timelapse-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">長い動画をタイムラプスに変換します。10倍、60倍、入力した任意の倍率まで。処理はブラウザの中だけ。アップロードなし、透かしなし、オフラインでも動きます。</summary>
-  </entry>
-  <entry>
-    <title type="html">チェックサムでダウンロードを確認する手順</title>
-    <id>https://abox.tools/ja/guides/verify-a-file-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/verify-a-file-checksum/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">MD5 や SHA-256 のチェックサムを Windows・macOS・Linux やブラウザーで照合する手順、一致が実際に証明していること、そしてこの作業を無意味にしてしまう間違いについて。</summary>
-  </entry>
-  <entry>
-    <title type="html">テキストとファイルの共有</title>
-    <id>https://abox.tools/ja/share-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/share-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ送れます。声に出して伝えられるリンク名、入力と同時のライブ更新、読む人ごとの承認。そしてどのサーバーにも何も残りません。無料、登録不要。</summary>
-  </entry>
-  <entry>
-    <title type="html">テキスト差分</title>
-    <id>https://abox.tools/ja/compare-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compare-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">ハッシュとチェックサム</title>
-    <id>https://abox.tools/ja/hash-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/hash-checksum/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">どんなファイルでも MD5・SHA-1・SHA-256・SHA-384・SHA-512 を計算し、ダウンロードページに書かれたチェックサムと照合します。ファイルはブラウザーの中で読み、どんなサイズでもアップロードしません。</summary>
-  </entry>
-  <entry>
-    <title type="html">パスワード・パスフレーズ生成</title>
-    <id>https://abox.tools/ja/password-generator/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/password-generator/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">強いランダムなパスワードを作る、あるいは同梱の7,776語のリストからdicewareのパスフレーズを作る。ブラウザ自身の暗号用乱数から引き、どこにも送らず、保存もしません。無料・登録不要。</summary>
-  </entry>
-  <entry>
-    <title type="html">ブーメラン動画の作り方</title>
-    <id>https://abox.tools/ja/guides/make-a-boomerang-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-boomerang-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">瞬間を切り出し、コピーを逆再生にし、2つをつないでループさせる。3つの道具を順に、すべてブラウザの中で。そして全作業を1分に収める順番。</summary>
-  </entry>
-  <entry>
-    <title type="html">動画→GIF変換ツール</title>
-    <id>https://abox.tools/ja/video-to-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/video-to-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">MP4・MOV・WebMの一部をアニメーションGIFにします。範囲、幅、フレームレートを選べば、フレームの読み込みもGIFの書き出しもブラウザの中で終わります。アップロードはありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">動画のコマ切り出し</title>
-    <id>https://abox.tools/ja/grab-frame/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/grab-frame/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">MP4・MOV・WebMのどのコマでも、原寸のPNGまたはJPEGで保存できます。1コマずつ送ることも、数秒おきに1枚ずつ取り出すこともできます。処理はブラウザの中だけで、アップロードはありません。</summary>
   </entry>
 </feed>

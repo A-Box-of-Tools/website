@@ -26,11 +26,95 @@
   <id>https://abox.tools/hi/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/hi/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/hi/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/hi/</uri>
   </author>
+  <entry>
+    <title type="html">GIF मेकर</title>
+    <id>https://abox.tools/hi/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-maker/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">JPG, PNG या WebP तस्वीरों से चलती हुई GIF बनाइए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। क्रम, रफ़्तार और आकार आप तय कीजिए। कुछ अपलोड नहीं होता, और यह ऑफ़लाइन भी चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF मर्जर और स्प्लिटर</title>
+    <id>https://abox.tools/hi/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/merge-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">कई PDF को एक कीजिए, एक को कई में बाँटिए, और पेजों को खींचकर मनचाहे क्रम में लगाइए, सब कुछ आपके अपने ब्राउज़र के भीतर। कुछ अपलोड नहीं होता, खाता नहीं चाहिए, और तैयार फ़ाइल आपको देने से पहले दोबारा खोलकर उसके पेज गिने जाते हैं।</summary>
+  </entry>
+  <entry>
+    <title type="html">इमेज स्टैकर</title>
+    <id>https://abox.tools/hi/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/stack-images/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">एक बर्स्ट में ली गई तस्वीरों को एक में जोड़िए। औसत लेकर नॉइज़ खत्म कीजिए, माध्यिका से दृश्य में से लोगों को हटाइए, तारों की लकीरों के लिए हल्का कीजिए, या किसी मैक्रो शॉट की फ़ोकस स्टैकिंग कीजिए। CR2, NEF, ARW, DNG, RAF और CR3 को कैमरे की अपनी झलक निकालकर पढ़ता है। सब कुछ आपके ब्राउज़र में ही चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">ऑडियो एडिटर</title>
+    <id>https://abox.tools/hi/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/edit-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">किसी ट्रैक को उलटी दिशा में चलाइए, उसे तेज़ या धीमा कीजिए, और धीमी रिकॉर्डिंग को ऊँचा कीजिए। वीडियो में से आवाज़ भी निकाल देता है। सब आपके ब्राउज़र में चलता है और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">ऑडियो ट्रिमर</title>
+    <id>https://abox.tools/hi/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">रिकॉर्डिंग चलाइए और जो-जो हिस्सा रखने लायक हो, उस पर वहीं निशान लगाते जाइए, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। सैंपल तक सटीक कट, जोड़ पर कोई खटका नहीं, और कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">टाइमलैप्स मेकर</title>
+    <id>https://abox.tools/hi/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/timelapse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">किसी लंबे वीडियो को टाइमलैप्स में बदलिए - 10x, 60x, या जो रफ़्तार आप टाइप करें। सब आपके ब्राउज़र में चलता है। कुछ अपलोड नहीं होता, कोई वॉटरमार्क नहीं, और ऑफ़लाइन भी काम करता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">डॉक्यूमेंट स्कैनर</title>
+    <id>https://abox.tools/hi/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/document-scanner/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">फ़ोन से लिए गए कागज़ के फ़ोटो को सीधी और एक जैसी रोशनी वाली PDF में बदलिए। कोने खुद ढूँढ़ लिए जाते हैं, तिरछापन हटा दिया जाता है, और छाया भाग देकर निकाल दी जाती है। सब कुछ आपके ब्राउज़र में ही चलता है और कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">तस्वीरों से PDF</title>
+    <id>https://abox.tools/hi/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/images-to-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">JPG, PNG या WebP तस्वीरों को एक ही PDF में जोड़िए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। फ़ोटो बिना दोबारा एनकोड हुए भीतर जाती हैं, और कुछ भी अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
+    <title type="html">वीडियो कटर</title>
+    <id>https://abox.tools/hi/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">वीडियो देखिए और चलते-चलते हर उस हिस्से पर निशान लगाइए जो रखने लायक है, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। आपके ब्राउज़र में चलता है: कुछ अपलोड नहीं होता, कुछ दोबारा एनकोड नहीं होता, ऑफ़लाइन भी चलता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">वीडियो क्रॉपर</title>
+    <id>https://abox.tools/hi/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/crop-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">MP4, MOV या WebM को किसी भी आकार में क्रॉप कीजिए - वर्ग, 9:16, या ठीक तय पिक्सल का डिब्बा। सब आपके ब्राउज़र में चलता है। कुछ अपलोड नहीं होता, आवाज़ बची रहती है, और ऑफ़लाइन भी काम करता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">वीडियो रिवर्सर</title>
+    <id>https://abox.tools/hi/reverse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/reverse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">MP4, MOV या WebM को उलटी दिशा में चलाइए, आवाज़ भी उलटी होकर। सब आपके ब्राउज़र में चलता है। कुछ अपलोड नहीं होता, कोई वॉटरमार्क नहीं, और यह ऑफ़लाइन भी काम करता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">वीडियो से GIF</title>
+    <id>https://abox.tools/hi/video-to-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/video-to-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">MP4, MOV या WebM के किसी हिस्से को चलती हुई GIF बना दीजिए। हिस्सा, चौड़ाई और फ़्रेम दर चुनिए; फ़्रेम आपके ब्राउज़र में पढ़े जाते हैं और GIF भी वहीं लिखी जाती है। कुछ अपलोड नहीं होता।</summary>
+  </entry>
   <entry>
     <title type="html">Base64 एनकोडर-डिकोडर</title>
     <id>https://abox.tools/hi/encode-text/</id>
@@ -81,13 +165,6 @@
     <summary type="html">किसी एनिमेटेड GIF को उसके फ़्रेम में बाँटिए और हर फ़्रेम को PNG में सहेजिए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। ट्रांसपेरेंसी और टाइमिंग बनी रहती है। कुछ अपलोड नहीं होता और ऑफ़लाइन भी चलता है।</summary>
   </entry>
   <entry>
-    <title type="html">GIF मेकर</title>
-    <id>https://abox.tools/hi/gif-maker/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/gif-maker/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPG, PNG या WebP तस्वीरों से चलती हुई GIF बनाइए, मुफ़्त और पूरी तरह अपने ब्राउज़र में। क्रम, रफ़्तार और आकार आप तय कीजिए। कुछ अपलोड नहीं होता, और यह ऑफ़लाइन भी चलता है।</summary>
-  </entry>
-  <entry>
     <title type="html">HEIC से JPG</title>
     <id>https://abox.tools/hi/heic-to-jpg/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/heic-to-jpg/"/>
@@ -121,13 +198,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-pdf/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">PDF को बिना अपलोड किए छोटा कीजिए। फ़ाइल को आपका अपना ब्राउज़र पढ़ता है, दोबारा कंप्रेस करता है और दोबारा लिखता है। और कुछ भी छूने से पहले टूल आपको दिखा देता है कि साइज़ असल में बैठा कहाँ है।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF मर्जर और स्प्लिटर</title>
-    <id>https://abox.tools/hi/merge-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/merge-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">कई PDF को एक कीजिए, एक को कई में बाँटिए, और पेजों को खींचकर मनचाहे क्रम में लगाइए, सब कुछ आपके अपने ब्राउज़र के भीतर। कुछ अपलोड नहीं होता, खाता नहीं चाहिए, और तैयार फ़ाइल आपको देने से पहले दोबारा खोलकर उसके पेज गिने जाते हैं।</summary>
   </entry>
   <entry>
     <title type="html">PDF से मिटाइए</title>
@@ -170,75 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-image/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JPEG, PNG या WebP को ठीक तय साइज़ तक कंप्रेस कीजिए - 100 KB, 2 MB, कुछ भी। पूरा काम आपके ब्राउज़र में होता है। न कुछ अपलोड, न कोई खाता, और ऑफ़लाइन भी चलता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">इमेज ब्लैकआउट टूल</title>
-    <id>https://abox.tools/hi/redact-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/redact-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">फ़ोटो या स्क्रीनशॉट में नाम, पता या खाता नंबर ढककर इमेज दोबारा सेव कीजिए। ढके हुए पिक्सेल किसी आयत के नीचे बचे नहीं रहते, फ़ाइल से चले जाते हैं। पूरा काम आपके ब्राउज़र में होता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">इमेज रिसाइज़र</title>
-    <id>https://abox.tools/hi/resize-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/resize-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPEG, PNG और WebP तस्वीरों का आकार बदलिए, उन्हें क्रॉप कीजिए और फ़ॉर्मैट बदलिए, अपने ब्राउज़र में ही। ठीक तय पिक्सल, प्रतिशत, या लंबा किनारा - एक तस्वीर हो या पूरा फ़ोल्डर। कुछ भी अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">इमेज स्टैकर</title>
-    <id>https://abox.tools/hi/stack-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/stack-images/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">एक बर्स्ट में ली गई तस्वीरों को एक में जोड़िए। औसत लेकर नॉइज़ खत्म कीजिए, माध्यिका से दृश्य में से लोगों को हटाइए, तारों की लकीरों के लिए हल्का कीजिए, या किसी मैक्रो शॉट की फ़ोकस स्टैकिंग कीजिए। CR2, NEF, ARW, DNG, RAF और CR3 को कैमरे की अपनी झलक निकालकर पढ़ता है। सब कुछ आपके ब्राउज़र में ही चलता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">ऑडियो एडिटर</title>
-    <id>https://abox.tools/hi/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/edit-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">किसी ट्रैक को उलटी दिशा में चलाइए, उसे तेज़ या धीमा कीजिए, और धीमी रिकॉर्डिंग को ऊँचा कीजिए। वीडियो में से आवाज़ भी निकाल देता है। सब आपके ब्राउज़र में चलता है और कुछ अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">ऑडियो ट्रिमर</title>
-    <id>https://abox.tools/hi/trim-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/trim-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">रिकॉर्डिंग चलाइए और जो-जो हिस्सा रखने लायक हो, उस पर वहीं निशान लगाते जाइए, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। सैंपल तक सटीक कट, जोड़ पर कोई खटका नहीं, और कुछ अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">कई पन्ने एक छोटे PDF में कैसे स्कैन करें</title>
-    <id>https://abox.tools/hi/guides/scan-multiple-pages-into-one-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/scan-multiple-pages-into-one-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">हर पन्ने की फ़ोटो लीजिए, एक PDF पाइए, पहले से मौजूद दस्तावेज़ों से जोड़िए, और तब तक छोटा कीजिए जब तक भेजा न जा सके। तीन ब्राउज़र-टूल एक के बाद एक, और काग़ज़ात कभी फ़ोन से बाहर नहीं जाते।</summary>
-  </entry>
-  <entry>
-    <title type="html">चेकसम से डाउनलोड कैसे जाँचें</title>
-    <id>https://abox.tools/hi/guides/verify-a-file-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/verify-a-file-checksum/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">विंडोज़, मैक और लिनक्स पर या ब्राउज़र में MD5 या SHA-256 चेकसम मिलाने का तरीका, मिल जाने से सचमुच क्या साबित होता है, और वह गलती जिससे पूरी कसरत बेकार हो जाती है।</summary>
-  </entry>
-  <entry>
-    <title type="html">टाइमलैप्स मेकर</title>
-    <id>https://abox.tools/hi/timelapse-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/timelapse-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">किसी लंबे वीडियो को टाइमलैप्स में बदलिए - 10x, 60x, या जो रफ़्तार आप टाइप करें। सब आपके ब्राउज़र में चलता है। कुछ अपलोड नहीं होता, कोई वॉटरमार्क नहीं, और ऑफ़लाइन भी काम करता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">टेक्स्ट और फ़ाइलें साझा करें</title>
-    <id>https://abox.tools/hi/share-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/share-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">टेक्स्ट या फ़ाइलें एक ब्राउज़र से दूसरे तक सीधे, एन्क्रिप्टेड कनेक्शन से भेजिए। बोलकर बताने लायक लिंक-नाम, टाइप करते-करते लाइव अपडेट, हर पाठक के लिए अनुमति - और किसी सर्वर पर कभी कुछ नहीं। मुफ़्त, बिना साइन-अप।</summary>
-  </entry>
-  <entry>
-    <title type="html">टेक्स्ट डिफ़</title>
-    <id>https://abox.tools/hi/compare-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क़ देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
   </entry>
 </feed>

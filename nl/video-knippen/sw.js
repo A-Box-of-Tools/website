@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/video-knippen/:';
-const CACHE_NAME=CACHE_PREFIX+'07d653c0c8';
+const CACHE_NAME=CACHE_PREFIX+'0625702ba0';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=c1bc0801de',
+'styles.css?v=5995d4a241',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

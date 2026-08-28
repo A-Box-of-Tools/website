@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/gerador-de-senha/:';
-const CACHE_NAME=CACHE_PREFIX+'917f38ec9d';
+const CACHE_NAME=CACHE_PREFIX+'04c1b09880';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5bbe59635c',
+'styles.css?v=2ad1bb45a9',
 'manifest.json',
 'src/shared/phrases.js',
 'src/generate.js',

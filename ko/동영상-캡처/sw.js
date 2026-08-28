@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/동영상-캡처/:';
-const CACHE_NAME=CACHE_PREFIX+'ec28fc36b3';
+const CACHE_NAME=CACHE_PREFIX+'64b36a2ce7';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=1d8d5bc953',
+'styles.css?v=5759a61653',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

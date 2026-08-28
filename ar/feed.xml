@@ -26,11 +26,95 @@
   <id>https://abox.tools/ar/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ar/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ar/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ar/</uri>
   </author>
+  <entry>
+    <title type="html">اقتصاص الفيديو</title>
+    <id>https://abox.tools/ar/اقتصاص-الفيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/اقتصاص-الفيديو/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">اقتصص ملف MP4 أو MOV أو WebM إلى أي نسبة - مربّعة، أو 9:16، أو إطار بكسل محدّد. يعمل داخل متصفحك: لا يُرفع شيء، ويبقى الصوت، ويعمل دون اتصال.</summary>
+  </entry>
+  <entry>
+    <title type="html">الصور إلى PDF</title>
+    <id>https://abox.tools/ar/تحويل-الصور-إلى-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الصور-إلى-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">اجمع صور JPG أو PNG أو WebP في ملف PDF واحد، مجاناً وداخل متصفحك بالكامل. تدخل الصور الفوتوغرافية دون إعادة ترميز، ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">الفيديو إلى GIF</title>
+    <id>https://abox.tools/ar/تحويل-الفيديو-إلى-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الفيديو-إلى-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">حوِّل جزءاً من ملف MP4 أو MOV أو WebM إلى صورة GIF متحرّكة. اختر المقطع والعرض ومعدّل الإطارات؛ وتُقرأ الإطارات ويُكتَب ملف GIF داخل متصفحك. ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">الماسح الضوئي للمستندات</title>
+    <id>https://abox.tools/ar/الماسح-الضوئي-للمستندات/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/الماسح-الضوئي-للمستندات/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">حوِّل صورةً بهاتف لصفحة إلى ملف PDF معدَّل ومتساوي الإضاءة. تُوجَد الأركان لك، ويُلغى أثر المنظور، ويُقسَم الظلّ خارجاً. يعمل بالكامل داخل متصفحك: ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">تكديس الصور</title>
+    <id>https://abox.tools/ar/تكديس-الصور/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تكديس-الصور/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">ادمج سلسلة لقطات في صورة واحدة: خذ متوسطها لتقتل الضجيج، أو خذ الوسيط لتزيل الناس من المشهد، أو أضئ لمسارات النجوم، أو كدّس بؤرة لقطة ماكرو. يقرأ CR2 وNEF وARW وDNG وRAF وCR3 باستخراج المعاينة التي كتبتها الكاميرا نفسها. يعمل كله داخل متصفحك.</summary>
+  </entry>
+  <entry>
+    <title type="html">دامج PDF ومقسّمه</title>
+    <id>https://abox.tools/ar/دمج-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/دمج-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">اجمع ملفات PDF، وقسّم واحداً إلى عدة، واسحب الصفحات إلى الترتيب الذي تريده &amp;mdash; كل ذلك داخل متصفحك أنت. لا يُرفع شيء، ولا حساب، والملف المنتهي يُفتَح من جديد وتُعدّ صفحاته قبل أن يُعرَض عليك.</summary>
+  </entry>
+  <entry>
+    <title type="html">صانع GIF</title>
+    <id>https://abox.tools/ar/إنشاء-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/إنشاء-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">حوِّل صور JPG أو PNG أو WebP إلى صورة GIF متحرّكة، مجاناً وداخل متصفحك بالكامل. اضبط الترتيب والسرعة والمقاس. ولا يُرفع شيء، ويعمل دون اتصال.</summary>
+  </entry>
+  <entry>
+    <title type="html">صانع التايم لابس</title>
+    <id>https://abox.tools/ar/إنشاء-فيديو-تايم-لابس/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/إنشاء-فيديو-تايم-لابس/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">حوِّل فيديو طويلاً إلى تايم لابس: 10× أو 60× أو أي سرعة تكتبها. يعمل داخل متصفحك، فلا يُرفع شيء، ولا علامة مائية، ويعمل دون اتصال.</summary>
+  </entry>
+  <entry>
+    <title type="html">عكس الفيديو</title>
+    <id>https://abox.tools/ar/تشغيل-الفيديو-عكسيا/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تشغيل-الفيديو-عكسيا/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">شغّل ملف MP4 أو MOV أو WebM بالمقلوب، والصوت معكوس كذلك. يعمل داخل متصفحك: لا يُرفع شيء، ولا علامة مائية، ويعمل دون اتصال.</summary>
+  </entry>
+  <entry>
+    <title type="html">محرّر الصوت</title>
+    <id>https://abox.tools/ar/تحرير-الصوت/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">مقصّ الصوت</title>
+    <id>https://abox.tools/ar/قص-الصوت/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/قص-الصوت/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">شغّل تسجيلاً وعلّم على كل جزء يستحق البقاء وهو يمرّ، ثم احفظ تلك الأجزاء ملفاً واحداً. قَصٌّ دقيق إلى العيّنة، وبلا طقطقة عند الوصلات، ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">مقصّ الفيديو</title>
+    <id>https://abox.tools/ar/تقصير-الفيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تقصير-الفيديو/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">شاهد فيديو وعلّم على كل جزء يستحق البقاء وهو يعمل، ثم احفظ تلك الأجزاء ملفاً واحداً. يعمل داخل متصفحك: لا يُرفع شيء، ولا يُعاد ترميز شيء، ويعمل دون اتصال.</summary>
+  </entry>
   <entry>
     <title type="html">HEIC إلى JPG</title>
     <id>https://abox.tools/ar/تحويل-heic-إلى-jpg/</id>
@@ -46,25 +130,11 @@
     <summary type="html">حوِّل ملف SVG إلى PNG أو JPEG أو WebP بأي حجم، داخل متصفحك. حدّد العرض، أو مضاعفاً، أو إطاراً؛ واحصل على نسختَي ‎@2x‎ و‎@3x‎ كذلك. تبقى الشفافية، ولا يُرفع شيء.</summary>
   </entry>
   <entry>
-    <title type="html">اقتصاص الفيديو</title>
-    <id>https://abox.tools/ar/اقتصاص-الفيديو/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/اقتصاص-الفيديو/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">اقتصص ملف MP4 أو MOV أو WebM إلى أي نسبة - مربّعة، أو 9:16، أو إطار بكسل محدّد. يعمل داخل متصفحك: لا يُرفع شيء، ويبقى الصوت، ويعمل دون اتصال.</summary>
-  </entry>
-  <entry>
     <title type="html">البصمة والمجموع التحقّقي</title>
     <id>https://abox.tools/ar/حساب-قيمة-التجزئة/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/حساب-قيمة-التجزئة/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">احسب MD5 أو SHA-1 أو SHA-256 أو SHA-384 أو SHA-512 لأي ملف وقارنه بالمجموع التحقّقي الذي نشرته صفحة التنزيل. يُقرأ الملف في متصفحك ولا يُرفَع أبداً، بأي حجم كان.</summary>
-  </entry>
-  <entry>
-    <title type="html">الصور إلى PDF</title>
-    <id>https://abox.tools/ar/تحويل-الصور-إلى-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الصور-إلى-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">اجمع صور JPG أو PNG أو WebP في ملف PDF واحد، مجاناً وداخل متصفحك بالكامل. تدخل الصور الفوتوغرافية دون إعادة ترميز، ولا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">الصور إلى فيديو</title>
@@ -88,20 +158,6 @@
     <summary type="html">حوِّل ملف PNG أو JPEG أو SVG إلى ملف ‎.ico‎ حقيقي متعدّد الأحجام أو ملف ‎.icns‎ لـ macOS داخل متصفحك. فافيكون، وأيقونة تطبيق Windows، وأيقونة تطبيق Mac، ومعها ملفات Apple وAndroid التي يحتاجها الموقع. ولا يُرفع شيء.</summary>
   </entry>
   <entry>
-    <title type="html">الفيديو إلى GIF</title>
-    <id>https://abox.tools/ar/تحويل-الفيديو-إلى-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الفيديو-إلى-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">حوِّل جزءاً من ملف MP4 أو MOV أو WebM إلى صورة GIF متحرّكة. اختر المقطع والعرض ومعدّل الإطارات؛ وتُقرأ الإطارات ويُكتَب ملف GIF داخل متصفحك. ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">الماسح الضوئي للمستندات</title>
-    <id>https://abox.tools/ar/الماسح-الضوئي-للمستندات/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/الماسح-الضوئي-للمستندات/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">حوِّل صورةً بهاتف لصفحة إلى ملف PDF معدَّل ومتساوي الإضاءة. تُوجَد الأركان لك، ويُلغى أثر المنظور، ويُقسَم الظلّ خارجاً. يعمل بالكامل داخل متصفحك: ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
     <title type="html">تغيير حجم الصور</title>
     <id>https://abox.tools/ar/تغيير-حجم-الصورة/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تغيير-حجم-الصورة/"/>
@@ -114,34 +170,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تقسيم-gif-إلى-إطارات/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">قسِّم صورة GIF متحرّكة إلى إطاراتها واحفظ كل واحد ملفَّ PNG، مجاناً وداخل متصفحك بالكامل. تبقى الشفافية ويبقى التوقيت. ولا يُرفع شيء، ويعمل دون اتصال.</summary>
-  </entry>
-  <entry>
-    <title type="html">تكديس الصور</title>
-    <id>https://abox.tools/ar/تكديس-الصور/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تكديس-الصور/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">ادمج سلسلة لقطات في صورة واحدة: خذ متوسطها لتقتل الضجيج، أو خذ الوسيط لتزيل الناس من المشهد، أو أضئ لمسارات النجوم، أو كدّس بؤرة لقطة ماكرو. يقرأ CR2 وNEF وARW وDNG وRAF وCR3 باستخراج المعاينة التي كتبتها الكاميرا نفسها. يعمل كله داخل متصفحك.</summary>
-  </entry>
-  <entry>
-    <title type="html">دامج PDF ومقسّمه</title>
-    <id>https://abox.tools/ar/دمج-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/دمج-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">اجمع ملفات PDF، وقسّم واحداً إلى عدة، واسحب الصفحات إلى الترتيب الذي تريده &amp;mdash; كل ذلك داخل متصفحك أنت. لا يُرفع شيء، ولا حساب، والملف المنتهي يُفتَح من جديد وتُعدّ صفحاته قبل أن يُعرَض عليك.</summary>
-  </entry>
-  <entry>
-    <title type="html">صانع GIF</title>
-    <id>https://abox.tools/ar/إنشاء-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/إنشاء-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">حوِّل صور JPG أو PNG أو WebP إلى صورة GIF متحرّكة، مجاناً وداخل متصفحك بالكامل. اضبط الترتيب والسرعة والمقاس. ولا يُرفع شيء، ويعمل دون اتصال.</summary>
-  </entry>
-  <entry>
-    <title type="html">صانع التايم لابس</title>
-    <id>https://abox.tools/ar/إنشاء-فيديو-تايم-لابس/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/إنشاء-فيديو-تايم-لابس/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">حوِّل فيديو طويلاً إلى تايم لابس: 10× أو 60× أو أي سرعة تكتبها. يعمل داخل متصفحك، فلا يُرفع شيء، ولا علامة مائية، ويعمل دون اتصال.</summary>
   </entry>
   <entry>
     <title type="html">صانع الصور الشخصية</title>
@@ -193,13 +221,6 @@
     <summary type="html">انظر بيانات EXIF وGPS المخبوءة في صورة، وحرِّرها، أو انزع الكل بنقرة واحدة. داخل متصفحك: لا يُرفع شيء، ولا يُعاد ترميز الصورة أبداً.</summary>
   </entry>
   <entry>
-    <title type="html">عكس الفيديو</title>
-    <id>https://abox.tools/ar/تشغيل-الفيديو-عكسيا/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تشغيل-الفيديو-عكسيا/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">شغّل ملف MP4 أو MOV أو WebM بالمقلوب، والصوت معكوس كذلك. يعمل داخل متصفحك: لا يُرفع شيء، ولا علامة مائية، ويعمل دون اتصال.</summary>
-  </entry>
-  <entry>
     <title type="html">قارئ رموز QR والباركود</title>
     <id>https://abox.tools/ar/مسح-رمز-qr/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/مسح-رمز-qr/"/>
@@ -219,26 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحرير-gif-اطارا-اطارا/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">فكّك صورة GIF إلى إطاراتها، واحذف أو أعد الترتيب، ثم أعد بناءها والتوقيت محفوظ. ما الذي ينجو من الرحلة ذهابًا وإيابًا، وما ثمن اللوحة اللونية، وكيف ترى سبب ثقل GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تحوّل فيديو طويلًا إلى تصوير متسارع</title>
-    <id>https://abox.tools/ar/أدلة/تحويل-فيديو-طويل-الى-تايم-لابس/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-فيديو-طويل-الى-تايم-لابس/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">ساعة من التصوير في دقيقة تُشاهَد: كيف تختار السرعة، ولماذا تحديد المدة النهائية أفضل من الحساب، ومتى ينبغي أن يصير الناتج صورة GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تشارك النص والملفات بين الأجهزة دون رفعها</title>
-    <id>https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">انقل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر - دون أن تراسل نفسك بالبريد، ودون سجلّ محادثة، ودون حساب، ودون أن يحتفظ أي خادم بنسخة.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تصنع GIF متحرّكة من صور</title>
-    <id>https://abox.tools/ar/أدلة/إنشاء-gif-من-الصور/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/إنشاء-gif-من-الصور/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">حوِّل طقماً من الصور إلى ملف GIF متحرّك واحد: بأي سرعة يستطيع ملف GIF أن يعمل حقاً، وماذا يغيّر إعدادُ لوحة الألوان، والأشياءُ الثلاثة التي تصغّر الملف فعلاً.</summary>
   </entry>
 </feed>

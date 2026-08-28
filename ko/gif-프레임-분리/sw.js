@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/gif-프레임-분리/:';
-const CACHE_NAME=CACHE_PREFIX+'ac0a112987';
+const CACHE_NAME=CACHE_PREFIX+'e0a4d86c8b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=6585b70d55',
+'styles.css?v=a4c8d41660',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

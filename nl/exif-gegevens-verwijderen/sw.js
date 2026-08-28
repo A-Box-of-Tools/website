@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/exif-gegevens-verwijderen/:';
-const CACHE_NAME=CACHE_PREFIX+'2a8a1042de';
+const CACHE_NAME=CACHE_PREFIX+'1a7646f510';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4cf8dc0e0e',
+'styles.css?v=ac642326d6',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

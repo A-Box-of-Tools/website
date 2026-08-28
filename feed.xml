@@ -26,7 +26,7 @@
   <id>https://abox.tools/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/</uri>
@@ -35,15 +35,85 @@
     <title type="html">Audio Editor</title>
     <id>https://abox.tools/edit-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/edit-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
+    <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Play a track backwards, speed it up or slow it down, and make a quiet recording louder. Takes the sound out of a video too. Runs in your browser: nothing uploaded.</summary>
   </entry>
   <entry>
     <title type="html">Audio Trimmer</title>
     <id>https://abox.tools/trim-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/trim-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
+    <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Play a recording and mark every part worth keeping as it goes past, then save those parts as one file. Sample-exact cuts, no clicks at the joins, nothing uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">Document Scanner</title>
+    <id>https://abox.tools/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Maker</title>
+    <id>https://abox.tools/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/gif-maker/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Turn JPG, PNG or WebP images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Image Stacker</title>
+    <id>https://abox.tools/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Combine a burst of photographs into one: average them to kill noise, take the median to remove people from a scene, lighten for star trails, or focus stack a macro shot. Reads CR2, NEF, ARW, DNG, RAF and CR3 by pulling out the camera's own preview. Runs entirely in your browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Images to PDF</title>
+    <id>https://abox.tools/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/images-to-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Combine JPG, PNG or WebP images into one PDF, free and entirely in your browser. Photos go in without being re-encoded, and nothing is uploaded.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF Merger &amp; Splitter</title>
+    <id>https://abox.tools/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/merge-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Combine PDFs, split one into several, and drag pages into the order you want &amp;mdash; all inside your own browser. Nothing is uploaded, there is no account, and the finished file is opened again and counted before it is offered to you.</summary>
+  </entry>
+  <entry>
+    <title type="html">Time-Lapse Maker</title>
+    <id>https://abox.tools/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/timelapse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Turn a long video into a time-lapse: 10x, 60x or any speed you type. Runs in your browser, so nothing is uploaded, there is no watermark, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Cropper</title>
+    <id>https://abox.tools/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/crop-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Crop an MP4, MOV or WebM to any shape - square, 9:16, or an exact pixel box. Runs in your browser: nothing uploaded, the sound is kept, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Cutter</title>
+    <id>https://abox.tools/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/trim-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Watch a video and mark every part worth keeping as it plays, then save those parts as one file. Runs in your browser: nothing uploaded, nothing re-encoded, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Reverser</title>
+    <id>https://abox.tools/reverse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/reverse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Play an MP4, MOV or WebM backwards, with the sound reversed too. Runs in your browser: nothing is uploaded, there is no watermark, and it works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video to GIF</title>
+    <id>https://abox.tools/video-to-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/video-to-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Turn part of an MP4, MOV or WebM into an animated GIF. Choose the section, the width and the frame rate; the frames are read and the GIF is written in your browser. Nothing uploaded.</summary>
   </entry>
   <entry>
     <title type="html">Base64 Encoder &amp; Decoder</title>
@@ -60,13 +130,6 @@
     <summary type="html">Open CT, MR, X-ray and ultrasound scans in your browser. Window and level, scroll a whole series, measure in millimetres, read every DICOM tag, and see exactly what in the file identifies the patient. Nothing is uploaded.</summary>
   </entry>
   <entry>
-    <title type="html">Document Scanner</title>
-    <id>https://abox.tools/document-scanner/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/document-scanner/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Turn a phone photo of a page into a straightened, evenly lit PDF. The corners are found for you, the perspective is undone, the shadow is divided out. Runs entirely in your browser: nothing is uploaded.</summary>
-  </entry>
-  <entry>
     <title type="html">EXIF Viewer &amp; Remover</title>
     <id>https://abox.tools/exif-editor/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/exif-editor/"/>
@@ -79,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Maker</title>
-    <id>https://abox.tools/gif-maker/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/gif-maker/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Turn JPG, PNG or WebP images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline.</summary>
   </entry>
   <entry>
     <title type="html">GIF Splitter</title>
@@ -184,61 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-gif-from-images/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Turn a set of pictures into one animated GIF: how fast a GIF can really play, what the palette setting changes, and the three things that actually make the file smaller.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to scan multiple pages into one small PDF</title>
-    <id>https://abox.tools/guides/scan-multiple-pages-into-one-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/scan-multiple-pages-into-one-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Photograph every page, get one PDF, combine it with documents you already have, and shrink it until it sends. Three browser tools in a row, and the paperwork never leaves your phone.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to share text and files between devices without uploading them</title>
-    <id>https://abox.tools/guides/share-text-between-devices/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/share-text-between-devices/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to split a GIF into frames</title>
-    <id>https://abox.tools/guides/split-a-gif-into-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/split-a-gif-into-frames/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Get every frame of an animated GIF as a PNG: why some frames are only a small patch of the picture, what happens to the transparency, and how to keep the timing so you can put it back together.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to turn a long video into a timelapse</title>
-    <id>https://abox.tools/guides/turn-a-long-video-into-a-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/turn-a-long-video-into-a-timelapse/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">An hour of footage into a watchable minute: how to choose the speed, why saying the finished length beats doing arithmetic, and when the result should become a GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">ID Photo Maker</title>
-    <id>https://abox.tools/id-photo/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id-photo/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Make a passport or visa photo to your country's published rule: exact mm and DPI, a live head-height and eye-line overlay, a background check, a printable 4x6 sheet, and a file squeezed to the portal's KB limit. Nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">Image Compressor</title>
-    <id>https://abox.tools/compress-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/compress-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Compress a JPEG, PNG or WebP to an exact size - 100 KB, 2 MB, anything. Runs entirely in your browser: nothing uploaded, no account, works offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Image Redactor</title>
-    <id>https://abox.tools/redact-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/redact-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Cover a name, an address or an account number in a photo or screenshot and re-encode the picture, so the hidden pixels are gone from the file rather than sitting under a rectangle. Runs entirely in your browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Image Resizer</title>
-    <id>https://abox.tools/resize-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/resize-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Resize, crop and convert JPEG, PNG and WebP images in your browser. Exact pixels, a percentage, or a long edge - one image or a whole folder. Nothing is uploaded.</summary>
   </entry>
 </feed>

@@ -26,11 +26,95 @@
   <id>https://abox.tools/fr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/fr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/fr/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/fr/</uri>
   </author>
+  <entry>
+    <title type="html">Coupeur de vidéos</title>
+    <id>https://abox.tools/fr/couper-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-une-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur&amp;nbsp;: rien n'est envoyé et rien n'est réencodé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Créateur de GIF</title>
+    <id>https://abox.tools/fr/creer-un-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/creer-un-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transformez des images JPG, PNG ou WebP en GIF animé, gratuitement et entièrement dans le navigateur. Vous fixez l'ordre, la vitesse et la taille. Rien n'est envoyé, et cela marche hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Créateur de timelapse</title>
+    <id>https://abox.tools/fr/faire-un-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/faire-un-timelapse/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transformez une longue vidéo en timelapse&amp;nbsp;: 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Découpeur audio</title>
+    <id>https://abox.tools/fr/couper-un-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-un-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Empileur d'images</title>
+    <id>https://abox.tools/fr/empiler-des-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/empiler-des-images/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Combinez une rafale de photographies en une seule&amp;nbsp;: moyennez-les pour tuer le bruit, prenez la médiane pour retirer les gens d'une scène, éclaircissez pour des filés d'étoiles, ou empilez la mise au point d'une macro. Lit CR2, NEF, ARW, DNG, RAF et CR3 en extrayant l'aperçu de l'appareil lui-même. Tout se passe dans votre navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Fusion et division de PDF</title>
+    <id>https://abox.tools/fr/fusionner-des-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/fusionner-des-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Réunissez des PDF, divisez-en un en plusieurs et faites glisser les pages dans l'ordre voulu, le tout dans votre propre navigateur. Rien n'est envoyé, il n'y a pas de compte, et le fichier fini est rouvert et recompté avant de vous être proposé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Images en PDF</title>
+    <id>https://abox.tools/fr/images-en-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/images-en-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Réunissez des images JPG, PNG ou WebP dans un seul PDF, gratuitement et entièrement dans votre navigateur. Les photos entrent sans être réencodées, et rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Inverseur de vidéo</title>
+    <id>https://abox.tools/fr/inverser-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/inverser-une-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Lisez un MP4, MOV ou WebM à l'envers, avec le son inversé lui aussi. Tout se passe dans le navigateur&amp;nbsp;: rien n'est envoyé, il n'y a pas de filigrane, et cela marche hors ligne.</summary>
+  </entry>
+  <entry>
+    <title type="html">Recadreur de vidéos</title>
+    <id>https://abox.tools/fr/recadrer-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/recadrer-une-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Recadrez un MP4, un MOV ou un WebM dans la forme que vous voulez&amp;nbsp;: carré, 9:16, ou un cadre en pixels exact. Tout se passe dans votre navigateur, le son est gardé et rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Scanner de documents</title>
+    <id>https://abox.tools/fr/scanner-un-document/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/scanner-un-document/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transformez la photo d'une page prise au téléphone en un PDF redressé et éclairé uniformément. Les coins sont trouvés pour vous, la perspective est défaite, l'ombre est divisée. Tout se passe dans votre navigateur&amp;nbsp;: rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Vidéo en GIF</title>
+    <id>https://abox.tools/fr/video-en-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/video-en-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transformez un passage d'un MP4, d'un MOV ou d'un WebM en GIF animé. Choisissez le passage, la largeur et la cadence&amp;nbsp;; les images sont lues et le GIF est écrit dans votre navigateur. Rien n'est envoyé.</summary>
+  </entry>
+  <entry>
+    <title type="html">Éditeur audio</title>
+    <id>https://abox.tools/fr/modifier-un-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/modifier-un-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Passez une piste à l'envers, accélérez-la ou ralentissez-la, et relevez un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur, sans le moindre envoi.</summary>
+  </entry>
   <entry>
     <title type="html">Analyseur de GIF</title>
     <id>https://abox.tools/fr/analyser-un-gif/</id>
@@ -156,89 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/verifier-la-somme-de-controle-d-un-telechargement/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Comment comparer une somme MD5 ou SHA-256 sous Windows, macOS et Linux ou dans le navigateur, ce qu'une correspondance prouve vraiment, et l'erreur qui vide l'exercice de son sens.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comparateur de textes</title>
-    <id>https://abox.tools/fr/comparer-des-textes/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-textes/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Comparez deux textes et voyez chaque différence, ligne à ligne et mot à mot, côte à côte ou en une colonne. La comparaison tourne dans votre navigateur, rien n'est envoyé - du code non publié ne quitte donc jamais votre machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compresseur d'images</title>
-    <id>https://abox.tools/fr/compresser-une-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/compresser-une-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Compressez un JPEG, un PNG ou un WebP à une taille exacte&amp;nbsp;: 100 KB, 2 MB, ce que vous voulez. Tout se passe dans votre navigateur, sans envoi, sans compte et même hors ligne.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compresseur de PDF</title>
-    <id>https://abox.tools/fr/compresser-un-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/compresser-un-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Alléger un PDF sans l'envoyer. Votre navigateur lit, recompresse et réécrit le fichier lui-même, après vous avoir montré où se trouve vraiment son poids.</summary>
-  </entry>
-  <entry>
-    <title type="html">Coupeur de vidéos</title>
-    <id>https://abox.tools/fr/couper-une-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-une-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Regardez une vidéo et marquez chaque passage à garder pendant qu'elle joue, puis enregistrez ces passages en un seul fichier. Tout se passe dans votre navigateur&amp;nbsp;: rien n'est envoyé et rien n'est réencodé.</summary>
-  </entry>
-  <entry>
-    <title type="html">Créateur de GIF</title>
-    <id>https://abox.tools/fr/creer-un-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/creer-un-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Transformez des images JPG, PNG ou WebP en GIF animé, gratuitement et entièrement dans le navigateur. Vous fixez l'ordre, la vitesse et la taille. Rien n'est envoyé, et cela marche hors ligne.</summary>
-  </entry>
-  <entry>
-    <title type="html">Créateur de timelapse</title>
-    <id>https://abox.tools/fr/faire-un-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/faire-un-timelapse/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Transformez une longue vidéo en timelapse&amp;nbsp;: 10x, 60x ou la vitesse que vous tapez. Tout se passe dans votre navigateur, sans envoi, sans filigrane, et même hors ligne.</summary>
-  </entry>
-  <entry>
-    <title type="html">Découpeur audio</title>
-    <id>https://abox.tools/fr/couper-un-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-un-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
-  </entry>
-  <entry>
-    <title type="html">Découpeur de GIF</title>
-    <id>https://abox.tools/fr/decouper-un-gif-en-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/decouper-un-gif-en-images/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Découpez un GIF animé en ses images et enregistrez chacune en PNG, gratuitement et entièrement dans le navigateur. La transparence et les durées sont conservées. Rien n'est envoyé, et cela marche hors ligne.</summary>
-  </entry>
-  <entry>
-    <title type="html">Empileur d'images</title>
-    <id>https://abox.tools/fr/empiler-des-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/empiler-des-images/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Combinez une rafale de photographies en une seule&amp;nbsp;: moyennez-les pour tuer le bruit, prenez la médiane pour retirer les gens d'une scène, éclaircissez pour des filés d'étoiles, ou empilez la mise au point d'une macro. Lit CR2, NEF, ARW, DNG, RAF et CR3 en extrayant l'aperçu de l'appareil lui-même. Tout se passe dans votre navigateur.</summary>
-  </entry>
-  <entry>
-    <title type="html">Encodeur &amp;amp; décodeur Base64</title>
-    <id>https://abox.tools/fr/encoder-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/encoder-base64/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Extracteur d'image</title>
-    <id>https://abox.tools/fr/extraire-une-image-d-une-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/extraire-une-image-d-une-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Enregistrez n'importe quelle image d'un MP4, MOV ou WebM en PNG ou JPEG pleine taille. Avancez image par image, ou prenez-en une toutes les quelques secondes. Tout se passe dans le navigateur, rien n'est envoyé.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formateur JSON</title>
-    <id>https://abox.tools/fr/formater-du-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-json/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Formatez et compactez du JSON, du XML, du HTML, du CSS et du YAML, et convertissez du JSON en YAML ou en XML et inversement. Les analyseurs tournent dans votre navigateur, rien n'est envoyé - un jeton ou un fichier de configuration ne quitte donc jamais votre machine.</summary>
   </entry>
 </feed>

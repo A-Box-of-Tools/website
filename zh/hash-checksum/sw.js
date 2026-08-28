@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/hash-checksum/:';
-const CACHE_NAME=CACHE_PREFIX+'7541ad9d67';
+const CACHE_NAME=CACHE_PREFIX+'85166b28cd';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=61ab7f91ce',
+'styles.css?v=3e8d52f5f7',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

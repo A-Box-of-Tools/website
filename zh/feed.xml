@@ -26,11 +26,95 @@
   <id>https://abox.tools/zh/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/zh/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/zh/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/zh/</uri>
   </author>
+  <entry>
+    <title type="html">GIF 制作</title>
+    <id>https://abox.tools/zh/gif-maker/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-maker/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 图片做成 GIF 动图，免费，全程在浏览器里完成。顺序、快慢和尺寸都由你定。什么都不上传，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF 合并与拆分</title>
+    <id>https://abox.tools/zh/merge-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/merge-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把多个 PDF 合到一起，把一个拆成好几个，把页面拖成你要的顺序，全都在你自己的浏览器里完成。什么都不上传，不用注册，成品文件在交给你之前还会被重新打开、重新数一遍页数。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片堆栈</title>
+    <id>https://abox.tools/zh/stack-images/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/stack-images/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把一串连拍的照片合成一张：取平均值消噪点，取中位数把人从画面里去掉，取最亮做星轨，或者给微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠读出相机自己的预览图来打开。全部在你的浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">图片转 PDF</title>
+    <id>https://abox.tools/zh/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">延时视频</title>
+    <id>https://abox.tools/zh/timelapse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/timelapse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把长视频做成延时摄影，10 倍、60 倍，或者你自己填的倍数。在浏览器里跑，不上传，没有水印，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">文档扫描</title>
+    <id>https://abox.tools/zh/document-scanner/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/document-scanner/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把手机拍的纸张照片变成一份摆正、亮度均匀的 PDF。四个角替你找好，透视给你掰正，阴影除掉。全部在你的浏览器里跑，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">视频倒放</title>
+    <id>https://abox.tools/zh/reverse-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/reverse-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 反过来放，声音也一并倒过来。全在浏览器里跑：什么都不上传，没有水印，断网照样能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">视频剪切</title>
+    <id>https://abox.tools/zh/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">一边看一边把值得留的段落标出来，然后把这些段落存成一个文件。在浏览器里跑，不上传，不重新编码，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">视频裁剪</title>
+    <id>https://abox.tools/zh/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/crop-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 裁成任意形状，方图、9:16 竖屏，或者精确到像素的一个框。在浏览器里跑，不上传，声音留着，断网也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">视频转 GIF</title>
+    <id>https://abox.tools/zh/video-to-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/video-to-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 里的一段做成 GIF 动图。段落、宽度和帧率你来定，读帧和写 GIF 都在你的浏览器里完成。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">音频剪辑</title>
+    <id>https://abox.tools/zh/trim-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">一边播放录音，一边把值得留下的段落随手标出来，然后把这些段落存成一个文件。切点精确到采样，接缝不咔哒，什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">音频编辑</title>
+    <id>https://abox.tools/zh/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/edit-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把一段声音倒着放、放快或放慢，把录轻了的录音提上来。视频里的声音也能抽出来。在浏览器里跑，什么都不上传。</summary>
+  </entry>
   <entry>
     <title type="html">Base64 编码解码</title>
     <id>https://abox.tools/zh/encode-text/</id>
@@ -60,13 +144,6 @@
     <summary type="html">在浏览器里把 GIF 拆开看：每一帧的延时和处置方式、颜色表、循环次数，以及体积去了哪里的逐字节明细。什么都不上传。</summary>
   </entry>
   <entry>
-    <title type="html">GIF 制作</title>
-    <id>https://abox.tools/zh/gif-maker/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/gif-maker/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 JPG、PNG 或 WebP 图片做成 GIF 动图，免费，全程在浏览器里完成。顺序、快慢和尺寸都由你定。什么都不上传，断网也能用。</summary>
-  </entry>
-  <entry>
     <title type="html">GIF 拆帧</title>
     <id>https://abox.tools/zh/split-gif/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/split-gif/"/>
@@ -93,13 +170,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-pdf/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">不上传也能给 PDF 瘦身。读取、重新压缩、重新写出，全由你自己的浏览器完成，而且动手之前先告诉你这份文件的体积到底压在哪儿。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 合并与拆分</title>
-    <id>https://abox.tools/zh/merge-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/merge-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把多个 PDF 合到一起，把一个拆成好几个，把页面拖成你要的顺序，全都在你自己的浏览器里完成。什么都不上传，不用注册，成品文件在交给你之前还会被重新打开、重新数一遍页数。</summary>
   </entry>
   <entry>
     <title type="html">PDF 涂黑</title>
@@ -151,13 +221,6 @@
     <summary type="html">把 JPEG、PNG 或 WebP 压到你要的大小，100 KB、2 MB 都行。全程在浏览器里跑，不上传，不注册，断网也能用。</summary>
   </entry>
   <entry>
-    <title type="html">图片堆栈</title>
-    <id>https://abox.tools/zh/stack-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/stack-images/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把一串连拍的照片合成一张：取平均值消噪点，取中位数把人从画面里去掉，取最亮做星轨，或者给微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠读出相机自己的预览图来打开。全部在你的浏览器里跑。</summary>
-  </entry>
-  <entry>
     <title type="html">图片涂黑与打码</title>
     <id>https://abox.tools/zh/redact-image/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-image/"/>
@@ -177,68 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-data-uri/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">把 PNG、JPEG、SVG 或 WebP 变成能粘进 CSS 和 HTML 的 data URI。SVG 走百分号编码而不是 base64，所以还看得懂，也更短。在浏览器里跑，什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片转 ICO</title>
-    <id>https://abox.tools/zh/image-to-ico/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-ico/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在浏览器里把 PNG、JPEG 或 SVG 做成一个真正多尺寸的 .ico，或者一个 macOS 的 .icns。网站图标、Windows 应用图标、Mac 应用图标，加上网站需要的苹果和安卓那几个文件。什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片转 PDF</title>
-    <id>https://abox.tools/zh/images-to-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片转视频</title>
-    <id>https://abox.tools/zh/images-to-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 JPG、PNG 或 WebP 做成 MP4 幻灯片视频，免费，全程在你的浏览器里跑。什么都不上传，不用注册，断网也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">如何不上传就在设备间分享文本与文件</title>
-    <id>https://abox.tools/zh/guides/share-text-between-devices/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/share-text-between-devices/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把文本或文件经直连加密通道从一个浏览器送到另一个——不用给自己发邮件，不留聊天记录，不需要账号，也没有哪台服务器留着副本。</summary>
-  </entry>
-  <entry>
-    <title type="html">密码与密码短语生成器</title>
-    <id>https://abox.tools/zh/password-generator/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/password-generator/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">生成一个强随机密码，或者用页面自带的 7776 个词的词表生成一条 diceware 密码短语。由浏览器自身的加密随机数生成，不发往任何地方，也不保存。免费，不用注册。</summary>
-  </entry>
-  <entry>
-    <title type="html">延时视频</title>
-    <id>https://abox.tools/zh/timelapse-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/timelapse-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把长视频做成延时摄影，10 倍、60 倍，或者你自己填的倍数。在浏览器里跑，不上传，没有水印，断网也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么不把 JSON 交给任何人也能格式化</title>
-    <id>https://abox.tools/zh/guides/format-json-without-uploading-it/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/format-json-without-uploading-it/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在自己的浏览器里排版、检查和压缩 JSON：一个格式化工具绝不该改动你文件的哪些地方、错误信息该怎么读，以及你把东西粘进哪个框里为什么要紧。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么从正好那一帧做视频封面图</title>
-    <id>https://abox.tools/zh/guides/make-a-video-thumbnail/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-video-thumbnail/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">逐帧走到正确的瞬间，无损保存，裁成平台的形状，压到字节上限的正下方。三个浏览器工具接力，素材从不离开你的电脑。</summary>
-  </entry>
-  <entry>
-    <title type="html">怎么做一个二维码，并证明它扫得出来</title>
-    <id>https://abox.tools/zh/guides/make-a-qr-code-and-prove-it-scans/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-qr-code-and-prove-it-scans/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">生成二维码，再用同一个网站的识别器验证：一字不差的内容、真正的链接，按印刷尺寸、用一张照片，在批量印刷之前。全在浏览器里，什么都不上传。</summary>
   </entry>
 </feed>

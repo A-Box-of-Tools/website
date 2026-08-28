@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/gif-maker/:';
-const CACHE_NAME=CACHE_PREFIX+'9b3411e5b2';
+const CACHE_NAME=CACHE_PREFIX+'46c8a3620d';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=c220ea8d4a',
+'styles.css?v=2391324d7a',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

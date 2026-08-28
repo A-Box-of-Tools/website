@@ -26,11 +26,95 @@
   <id>https://abox.tools/id/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/id/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/id/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/id/</uri>
   </author>
+  <entry>
+    <title type="html">Gambar ke PDF</title>
+    <id>https://abox.tools/id/gambar-ke-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/gambar-ke-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Gabungkan gambar JPG, PNG, atau WebP menjadi satu PDF, gratis dan sepenuhnya di peramban Anda. Foto masuk tanpa dikodekan ulang, dan tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pemangkas Video</title>
+    <id>https://abox.tools/id/pangkas-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/pangkas-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Pangkas MP4, MOV, atau WebM ke bentuk apa pun - persegi, 9:16, atau kotak piksel yang persis. Berjalan di peramban Anda: tidak ada yang diunggah, suaranya tetap ada, jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pembalik Video</title>
+    <id>https://abox.tools/id/putar-video-terbalik/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/putar-video-terbalik/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Putar MP4, MOV, atau WebM secara terbalik, dengan suaranya ikut dibalik. Berjalan di peramban Anda: tidak ada yang diunggah, tidak ada tanda air, dan jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pembuat GIF</title>
+    <id>https://abox.tools/id/buat-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/buat-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Ubah gambar JPG, PNG, atau WebP menjadi GIF bergerak, gratis dan sepenuhnya di peramban Anda. Atur urutan, kecepatan, dan ukurannya. Tidak ada yang diunggah, dan jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pembuat Time-Lapse</title>
+    <id>https://abox.tools/id/buat-video-time-lapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/buat-video-time-lapse/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Ubah video panjang menjadi time-lapse: 10x, 60x, atau kecepatan berapa pun yang Anda ketik. Berjalan di peramban Anda, jadi tidak ada yang diunggah, tidak ada tanda air, dan jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pemindai Dokumen</title>
+    <id>https://abox.tools/id/pemindai-dokumen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/pemindai-dokumen/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Ubah foto ponsel sebuah halaman menjadi PDF yang lurus dan tercahayai rata. Sudutnya dicarikan untuk Anda, perspektifnya diluruskan, bayangannya dibagi keluar. Berjalan sepenuhnya di peramban Anda: tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pemotong Audio</title>
+    <id>https://abox.tools/id/potong-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Putar sebuah rekaman dan tandai setiap bagian yang layak disimpan sambil berjalan, lalu simpan bagian-bagian itu sebagai satu file. Potongan persis pada sampel, tanpa bunyi klik di sambungannya, tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pemotong Video</title>
+    <id>https://abox.tools/id/potong-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Tonton sebuah video dan tandai setiap bagian yang layak disimpan sambil diputar, lalu simpan bagian-bagian itu sebagai satu file. Berjalan di peramban Anda: tidak ada yang diunggah, tidak ada yang dikodekan ulang, jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Penggabung dan Pemisah PDF</title>
+    <id>https://abox.tools/id/gabung-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/gabung-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Gabungkan PDF, pisahkan satu menjadi beberapa, dan seret halaman ke urutan yang Anda mau &amp;mdash; semuanya di dalam peramban Anda sendiri. Tidak ada yang diunggah, tidak ada akun, dan file yang sudah jadi dibuka lagi dan dihitung sebelum ditawarkan kepada Anda.</summary>
+  </entry>
+  <entry>
+    <title type="html">Penumpuk Gambar</title>
+    <id>https://abox.tools/id/tumpuk-gambar/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/tumpuk-gambar/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Gabungkan sebuah burst foto menjadi satu: rata-ratakan untuk membunuh derau, ambil mediannya untuk membuang orang dari sebuah pemandangan, terangkan untuk jejak bintang, atau tumpuk fokus sebuah bidikan makro. Membaca CR2, NEF, ARW, DNG, RAF, dan CR3 dengan menarik keluar pratinjau milik kameranya sendiri. Berjalan sepenuhnya di peramban Anda.</summary>
+  </entry>
+  <entry>
+    <title type="html">Penyunting Audio</title>
+    <id>https://abox.tools/id/sunting-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/sunting-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Putar sebuah trek secara terbalik, percepat atau perlambat, dan buat rekaman yang pelan menjadi lebih keras. Bisa juga mengeluarkan suara dari sebuah video. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video ke GIF</title>
+    <id>https://abox.tools/id/video-ke-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/video-ke-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Ubah sebagian MP4, MOV, atau WebM menjadi GIF bergerak. Pilih bagiannya, lebarnya, dan laju bingkainya; bingkainya dibaca dan GIF-nya ditulis di peramban Anda. Tidak ada yang diunggah.</summary>
+  </entry>
   <entry>
     <title type="html">Berbagi teks dan berkas</title>
     <id>https://abox.tools/id/berbagi-teks/</id>
@@ -156,89 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/buat-favicon/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Ubah PNG, JPEG, atau SVG menjadi .ico multi-ukuran yang sungguhan atau .icns macOS di peramban Anda. Favicon, ikon aplikasi Windows, ikon aplikasi Mac, plus file Apple dan Android yang dibutuhkan sebuah situs. Tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Gambar ke PDF</title>
-    <id>https://abox.tools/id/gambar-ke-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/gambar-ke-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Gabungkan gambar JPG, PNG, atau WebP menjadi satu PDF, gratis dan sepenuhnya di peramban Anda. Foto masuk tanpa dikodekan ulang, dan tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Gambar ke Video</title>
-    <id>https://abox.tools/id/gambar-ke-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/gambar-ke-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ubah gambar JPG, PNG, atau WebP menjadi video slide MP4, gratis dan sepenuhnya di peramban Anda. Tidak ada yang diunggah, tanpa pendaftaran, dan jalan tanpa internet.</summary>
-  </entry>
-  <entry>
-    <title type="html">HEIC ke JPG</title>
-    <id>https://abox.tools/id/heic-ke-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/heic-ke-jpg/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ubah foto HEIC dari iPhone menjadi JPG di peramban Anda. Dekodernya berjalan di mesin Anda sendiri: tidak ada yang diunggah, tanpa akun, jalan tanpa internet, dan tanggal serta detail kameranya bisa ikut serta.</summary>
-  </entry>
-  <entry>
-    <title type="html">Hash dan Checksum</title>
-    <id>https://abox.tools/id/hitung-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/hitung-checksum/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Hitung MD5, SHA-1, SHA-256, SHA-384, atau SHA-512 file apa pun dan bandingkan dengan checksum yang diterbitkan halaman unduhan. File dibaca di peramban Anda dan tidak pernah diunggah, pada ukuran berapa pun.</summary>
-  </entry>
-  <entry>
-    <title type="html">Kapan menaruh gambar di dalam CSS Anda, dan kapan tidak</title>
-    <id>https://abox.tools/id/panduan/menyisipkan-gambar-di-css/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/menyisipkan-gambar-di-css/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Berapa harga sebuah data URI, kenapa base64 menambah sepertiga dan gzip tidak mengembalikannya, kenapa sebuah SVG tidak boleh berupa base64, dan kekeliruan tanda kutip yang diam-diam merusak SVG yang disisipkan.</summary>
-  </entry>
-  <entry>
-    <title type="html">Kompresor Gambar</title>
-    <id>https://abox.tools/id/kompres-gambar/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/kompres-gambar/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Kompres JPEG, PNG, atau WebP ke ukuran persis: 100 KB, 2 MB, berapa pun. Berjalan di peramban Anda, tidak ada yang diunggah, dan tetap jalan tanpa internet.</summary>
-  </entry>
-  <entry>
-    <title type="html">Kompresor PDF</title>
-    <id>https://abox.tools/id/kompres-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/kompres-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Perkecil ukuran PDF tanpa mengunggahnya. File dibaca, dikompres ulang, dan ditulis kembali oleh peramban Anda sendiri, dan alat ini menunjukkan di mana ukurannya sebenarnya berada sebelum menyentuh apa pun.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pemangkas Video</title>
-    <id>https://abox.tools/id/pangkas-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pangkas-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Pangkas MP4, MOV, atau WebM ke bentuk apa pun - persegi, 9:16, atau kotak piksel yang persis. Berjalan di peramban Anda: tidak ada yang diunggah, suaranya tetap ada, jalan tanpa internet.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pembaca QR &amp; Barcode</title>
-    <id>https://abox.tools/id/pindai-kode-qr/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pindai-kode-qr/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Baca kode QR dari sebuah foto, tangkapan layar, atau kamera Anda, dan lihat persis ke mana tautannya pergi sebelum Anda membukanya. Barcode EAN, UPC, Code 128, Code 39, dan ITF juga. Tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pembalik Video</title>
-    <id>https://abox.tools/id/putar-video-terbalik/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/putar-video-terbalik/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Putar MP4, MOV, atau WebM secara terbalik, dengan suaranya ikut dibalik. Berjalan di peramban Anda: tidak ada yang diunggah, tidak ada tanda air, dan jalan tanpa internet.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pembanding Teks</title>
-    <id>https://abox.tools/id/bandingkan-teks/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/bandingkan-teks/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bandingkan dua teks dan lihat setiap perbedaannya, baris demi baris dan kata demi kata, berdampingan atau dalam satu kolom. Pembandingannya berjalan di peramban Anda dan tidak ada yang diunggah - kode yang belum dirilis tidak pernah meninggalkan mesin Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pembuat GIF</title>
-    <id>https://abox.tools/id/buat-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/buat-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ubah gambar JPG, PNG, atau WebP menjadi GIF bergerak, gratis dan sepenuhnya di peramban Anda. Atur urutan, kecepatan, dan ukurannya. Tidak ada yang diunggah, dan jalan tanpa internet.</summary>
   </entry>
 </feed>

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bilder-in-video-umwandeln/:';
-const CACHE_NAME=CACHE_PREFIX+'eb29f4071b';
+const CACHE_NAME=CACHE_PREFIX+'964d48d202';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=b1c1cb9a8e',
+'styles.css?v=b982472334',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

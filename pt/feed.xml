@@ -26,24 +26,101 @@
   <id>https://abox.tools/pt/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/pt/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/pt/"/>
-  <updated>2026-08-27T00:00:00Z</updated>
+  <updated>2026-08-28T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/pt/</uri>
   </author>
+  <entry>
+    <title type="html">Aparador de vídeo</title>
+    <id>https://abox.tools/pt/aparar-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/aparar-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cortador de vídeo</title>
+    <id>https://abox.tools/pt/cortar-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Corte um MP4, MOV ou WebM para qualquer formato: quadrado, 9:16, ou uma caixa exata em pixels. Roda no navegador, não envia nada, mantém o som e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cortador de áudio</title>
+    <id>https://abox.tools/pt/cortar-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Toque uma gravação e marque cada trecho que vale a pena enquanto ele passa, depois salve esses trechos num arquivo só. Cortes exatos na amostra, sem estalo nas emendas, nada enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Criador de GIF</title>
+    <id>https://abox.tools/pt/criar-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/criar-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transforme imagens JPG, PNG ou WebP em um GIF animado, de graça e inteiramente no navegador. A ordem, a velocidade e o tamanho são você que decide. Nada é enviado, e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Criador de timelapse</title>
+    <id>https://abox.tools/pt/fazer-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/fazer-timelapse/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transforme um vídeo longo em timelapse: 10x, 60x ou a velocidade que você digitar. Roda no navegador, não envia nada, não põe marca d'água e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Digitalizador de documentos</title>
+    <id>https://abox.tools/pt/digitalizar-documentos/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/digitalizar-documentos/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transforme a foto de uma página feita no celular num PDF endireitado e com luz uniforme. Os cantos são encontrados para você, a perspectiva é desfeita, a sombra é dividida para fora. Roda inteiramente no seu navegador: nada é enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Editor de áudio</title>
+    <id>https://abox.tools/pt/editar-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/editar-audio/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Toque uma faixa de trás para a frente, acelere ou desacelere, e deixe uma gravação baixa mais alta. Também tira o som de dentro de um vídeo. Roda no navegador e não envia nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Empilhador de imagens</title>
+    <id>https://abox.tools/pt/empilhar-imagens/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/empilhar-imagens/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Junte uma sequência de fotografias numa só: tire a média para matar o ruído, use a mediana para tirar as pessoas de uma cena, clareie para rastros de estrelas, ou faça focus stacking de uma macro. Lê CR2, NEF, ARW, DNG, RAF e CR3 puxando a prévia da própria câmera. Roda inteiramente no seu navegador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Imagens para PDF</title>
+    <id>https://abox.tools/pt/imagens-para-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagens-para-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Junte imagens JPG, PNG ou WebP num só PDF, de graça e inteiramente no seu navegador. As fotos entram sem serem recodificadas, e nada é enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Inversor de vídeo</title>
+    <id>https://abox.tools/pt/inverter-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/inverter-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Toque um MP4, MOV ou WebM de trás para frente, com o som invertido também. Roda no navegador: nada é enviado, não tem marca d'água e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Juntar e dividir PDF</title>
+    <id>https://abox.tools/pt/juntar-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/juntar-pdf/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Junte PDFs, divida um em vários e arraste as páginas para a ordem que você quiser, tudo dentro do seu próprio navegador. Nada é enviado, não tem conta, e o arquivo pronto é aberto de novo e conferido antes de ser oferecido a você.</summary>
+  </entry>
+  <entry>
+    <title type="html">Vídeo para GIF</title>
+    <id>https://abox.tools/pt/video-para-gif/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/video-para-gif/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Transforme um trecho de um MP4, MOV ou WebM num GIF animado. Escolha o trecho, a largura e a taxa de quadros; os quadros são lidos e o GIF é escrito no seu navegador. Nada é enviado.</summary>
+  </entry>
   <entry>
     <title type="html">Analisador de GIF</title>
     <id>https://abox.tools/pt/analisar-gif/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/analisar-gif/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Desmonte um GIF no navegador: cada quadro com o tempo e o descarte dele, as tabelas de cor, as repetições e um detalhamento byte a byte de para onde foi o tamanho do arquivo. Nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Aparador de vídeo</title>
-    <id>https://abox.tools/pt/aparar-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/aparar-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline.</summary>
   </entry>
   <entry>
     <title type="html">Censor de imagens</title>
@@ -163,82 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/transformar-video-longo-em-timelapse/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Uma hora de filmagem num minuto que dá para assistir: como escolher a velocidade, por que dizer a duração final ganha de fazer conta, e quando o resultado deve virar um GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comparador de textos</title>
-    <id>https://abox.tools/pt/comparar-textos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/comparar-textos/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Compare dois textos e veja cada diferença, linha a linha e palavra por palavra, lado a lado ou numa coluna só. A comparação roda no seu navegador e nada é enviado: código ainda não lançado nunca sai do seu computador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compartilhar texto e arquivos</title>
-    <id>https://abox.tools/pt/compartilhar-texto/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/compartilhar-texto/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Envie texto ou arquivos de um navegador para outro por uma conexão direta e criptografada. Um nome de link que dá para falar em voz alta, atualização ao vivo enquanto digita, aprovação por leitor - e nada guardado em servidor nenhum, nunca. Grátis, sem cadastro.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compressor de PDF</title>
-    <id>https://abox.tools/pt/comprimir-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/comprimir-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Deixe um PDF menor sem enviá-lo. Quem lê, recomprime e reescreve o arquivo é o seu próprio navegador, e a ferramenta mostra onde o tamanho dele realmente está antes de mexer em qualquer coisa.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compressor de imagens</title>
-    <id>https://abox.tools/pt/comprimir-imagem/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/comprimir-imagem/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Comprima um JPEG, PNG ou WebP para um tamanho exato: 100 KB, 2 MB, o que for. Roda inteiro no navegador, não envia nada, não pede conta e funciona offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cortador de vídeo</title>
-    <id>https://abox.tools/pt/cortar-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Corte um MP4, MOV ou WebM para qualquer formato: quadrado, 9:16, ou uma caixa exata em pixels. Roda no navegador, não envia nada, mantém o som e funciona offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cortador de áudio</title>
-    <id>https://abox.tools/pt/cortar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Toque uma gravação e marque cada trecho que vale a pena enquanto ele passa, depois salve esses trechos num arquivo só. Cortes exatos na amostra, sem estalo nas emendas, nada enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Criador de GIF</title>
-    <id>https://abox.tools/pt/criar-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/criar-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Transforme imagens JPG, PNG ou WebP em um GIF animado, de graça e inteiramente no navegador. A ordem, a velocidade e o tamanho são você que decide. Nada é enviado, e funciona offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Criador de foto de documento</title>
-    <id>https://abox.tools/pt/foto-3x4/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/foto-3x4/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Faça uma foto de passaporte ou visto conforme a regra publicada do seu país: milímetros e DPI exatos, uma marcação ao vivo de altura da cabeça e linha dos olhos, checagem do fundo, uma folha 10x15 pronta para imprimir e um arquivo espremido dentro do limite em KB do portal. Nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Criador de timelapse</title>
-    <id>https://abox.tools/pt/fazer-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/fazer-timelapse/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Transforme um vídeo longo em timelapse: 10x, 60x ou a velocidade que você digitar. Roda no navegador, não envia nada, não põe marca d'água e funciona offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Digitalizador de documentos</title>
-    <id>https://abox.tools/pt/digitalizar-documentos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/digitalizar-documentos/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Transforme a foto de uma página feita no celular num PDF endireitado e com luz uniforme. Os cantos são encontrados para você, a perspectiva é desfeita, a sombra é dividida para fora. Roda inteiramente no seu navegador: nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Editor de áudio</title>
-    <id>https://abox.tools/pt/editar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/editar-audio/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Toque uma faixa de trás para a frente, acelere ou desacelere, e deixe uma gravação baixa mais alta. Também tira o som de dentro de um vídeo. Roda no navegador e não envia nada.</summary>
   </entry>
 </feed>
