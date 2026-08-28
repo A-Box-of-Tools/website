@@ -81,6 +81,7 @@ await draw();
 }catch(error){
 if(error instanceof GifFormatError)showError(phrase(error.message,error.values));
 else showError(phrase('read.failed',{why:phrase(error.message)}));
+picker.waiting();
 }finally{
 picker.done();
 }

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/صورة-شخصية-بيومترية/:';
-const CACHE_NAME=CACHE_PREFIX+'5363290522';
+const CACHE_NAME=CACHE_PREFIX+'f097d38d95';
 const ASSETS=[
 './',
 'index.html',

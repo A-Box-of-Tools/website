@@ -7,6 +7,7 @@ const hand=(files)=>{
 const picked=Array.from(files??[]);
 if(!picked.length)return;
 for(const card of document.querySelectorAll('main .card[inert]')){
+card.dataset.waited='yes';
 card.removeAttribute('inert');
 }
 onFiles(picked);
@@ -39,6 +40,11 @@ if(titleEl&&text)titleEl.textContent=text;
 done(){
 dropzone.classList.remove('busy');
 if(titleEl)titleEl.textContent=idle;
+},
+waiting(){
+for(const card of document.querySelectorAll('main .card')){
+if(card.dataset.waited==='yes')card.setAttribute('inert','');
+}
 },
 };
 }

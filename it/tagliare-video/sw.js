@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/tagliare-video/:';
-const CACHE_NAME=CACHE_PREFIX+'4accc22249';
+const CACHE_NAME=CACHE_PREFIX+'d2ae9f664d';
 const ASSETS=[
 './',
 'index.html',
