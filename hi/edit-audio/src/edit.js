@@ -7,11 +7,11 @@ const report=(done,label)=>onProgress?.(Math.min(1,Math.max(0,done)),label);
 let channels=source.channels.map((samples)=>Float32Array.from(samples));
 signal?.throwIfAborted();
 if(settings.reverse){
-report(0.02,'Reversing…');
+report(0.02,'step.reversing');
 reverse(channels);
 }
 if(settings.speed!==1){
-const label=settings.keepPitch?'Stretching, keeping the pitch…':'Resampling…';
+const label=settings.keepPitch?'step.stretching':'step.resampling';
 report(0.05,label);
 const onStep=(done)=>report(0.05+done*0.88,label);
 channels=settings.keepPitch
@@ -19,13 +19,13 @@ channels=settings.keepPitch
 :await resample(channels,settings.speed,{onProgress:onStep,signal});
 }
 signal?.throwIfAborted();
-report(0.95,'Setting the level…');
+report(0.95,'step.level');
 const before=peak(channels);
 const gain=settings.volume.mode==='normalize'
 ?normalizeGain(before,settings.volume.db)
 :dbToGain(settings.volume.db);
 const after=gain===1?{peak:before,clipped:countOver(channels)}:applyGain(channels,gain);
-report(1,'Writing the file…');
+report(1,'step.writing');
 return{channels,peak:after.peak,clipped:after.clipped,gain};
 }
 function countOver(channels){

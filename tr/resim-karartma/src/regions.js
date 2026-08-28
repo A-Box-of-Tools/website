@@ -2,9 +2,9 @@
 export const MIN_SIZE=6;
 export const STYLES=['fill','pixelate','blur'];
 export const STRENGTHS={
-light:{id:'light',label:'Light',blocks:14,blur:22},
-medium:{id:'medium',label:'Medium',blocks:9,blur:14},
-heavy:{id:'heavy',label:'Heavy',blocks:5,blur:7},
+light:{id:'light',label:'strength.light',blocks:14,blur:22},
+medium:{id:'medium',label:'strength.medium',blocks:9,blur:14},
+heavy:{id:'heavy',label:'strength.heavy',blocks:5,blur:7},
 };
 export const strengthOf=(id)=>STRENGTHS[id]??STRENGTHS.medium;
 const clamp=(value,low,high)=>Math.max(low,Math.min(value,high));

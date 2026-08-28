@@ -77,7 +77,7 @@ async function loadFile(picked){
 if(exporting)return;
 clearError();
 clearResult();
-picker.busy('Reading the sound...');
+picker.busy(phrase('step.reading'));
 try{
 const decoded=await decodeAudio(picked);
 file=picked;
@@ -99,19 +99,19 @@ function showSource(){
 el.srcName.textContent=file.name;
 el.srcSize.textContent=formatBytes(file.size);
 el.srcLength.textContent=formatDuration(source.duration);
-el.srcFormat.textContent=`${channelWord(source.channels.length)}, `
-+`${(source.sampleRate / 1000).toFixed(1)} kHz`;
+el.srcFormat.textContent=phrase('src.format',{
+channels:channelWord(source.channels.length),
+khz:(source.sampleRate/1000).toFixed(1),
+});
 el.srcPeak.textContent=formatPeak(sourcePeak);
-el.srcRate.textContent=source.guessedRate
-?`${source.sampleRate} Hz (assumed)`
-:`${source.sampleRate} Hz (from the file)`;
+el.srcRate.textContent=phrase(
+source.guessedRate?'src.rate.assumed':'src.rate.file',
+{rate:source.sampleRate},
+);
 el.source.hidden=false;
 el.pathNote.hidden=!source.guessedRate;
 if(source.guessedRate){
-el.pathNote.textContent='This format does not say what rate it was recorded '
-+'at in a header this tool reads, so it was decoded at 48 kHz. If the '
-+'recording was made at some other rate, the browser resampled it on the '
-+'way in - which is the one thing here that is not exact.';
+el.pathNote.textContent=phrase('src.guessednote');
 }
 if(previewUrl)URL.revokeObjectURL(previewUrl);
 previewUrl=URL.createObjectURL(file);
@@ -184,42 +184,37 @@ el.volumeNote.textContent=volumeNote(chosen,gain,after);
 const clips=after>1.0001;
 el.clipNote.hidden=!clips;
 if(clips){
-el.clipNote.textContent=`At this setting the loudest moment lands `
-+`${gainToDb(after).toFixed(1)} dB above full scale. `
-+(bits===32
-?'A 32-bit float WAV will hold those samples, so nothing is lost in the '
-+'file itself - but anything playing it has to bring the level back '
-+'down, and most things will flatten it at the ceiling instead. Turn '
-+'it down, or choose "as loud as it will go".'
-:'A 16-bit WAV cannot hold that, so those samples would be flattened at '
-+'the ceiling, which is what distortion sounds like. Turn it down, '
-+'choose "as loud as it will go", or write 32-bit float, which keeps '
-+'them.');
+el.clipNote.textContent=phrase('join.sentences',{
+a:phrase('clip.over',{db:gainToDb(after).toFixed(1)}),
+b:phrase(bits===32?'clip.float':'clip.int'),
+});
 }
 }
 function speedNote(chosen){
-if(chosen.speed===1)return'Left alone at 1x.';
-const direction=chosen.speed>1?'faster':'slower';
-return chosen.keepPitch
-?`${formatSpeed(chosen.speed)} ${direction}, with the pitch held where it is. `
-+'The recording is cut into overlapping windows and laid back down closer '
-+'together or further apart, which is done here rather than sent anywhere.'
-:`${formatSpeed(chosen.speed)} ${direction}, and everything moves with it: `
-+`${Math.abs(12 * Math.log2(chosen.speed)).toFixed(1)} semitones `
-+`${chosen.speed > 1 ? 'up' : 'down'}, the way playing a tape at the wrong `
-+'speed does.';
+if(chosen.speed===1)return phrase('speed.none');
+const faster=chosen.speed>1;
+if(chosen.keepPitch){
+return phrase(faster?'speed.pitch.faster':'speed.pitch.slower',
+{speed:formatSpeed(chosen.speed)});
+}
+return phrase(faster?'speed.moves.faster':'speed.moves.slower',{
+speed:formatSpeed(chosen.speed),
+semitones:Math.abs(12*Math.log2(chosen.speed)).toFixed(1),
+});
 }
 function volumeNote(chosen,gain,after){
 if(chosen.volume.mode==='normalize'){
 const change=gainToDb(gain);
-if(Math.abs(change)<0.05)return'Already exactly where this setting would put it.';
-return`${change > 0 ? 'Raised' : 'Lowered'} by ${Math.abs(change).toFixed(1)} dB, `
-+`which puts the loudest moment in the recording just under full scale.`;
+if(Math.abs(change)<0.05)return phrase('volume.already');
+return phrase(change>0?'volume.raised':'volume.lowered',
+{db:Math.abs(change).toFixed(1)});
 }
-if(chosen.volume.db===0)return'Left exactly as it is.';
-return`${chosen.volume.db > 0 ? 'Up' : 'Down'} `
-+`${Math.abs(chosen.volume.db).toFixed(1)} dB, which multiplies every sample `
-+`by ${gain.toFixed(3)} and takes the loudest moment to ${formatPeak(after)}.`;
+if(chosen.volume.db===0)return phrase('volume.unchanged');
+return phrase(chosen.volume.db>0?'volume.up':'volume.down',{
+db:Math.abs(chosen.volume.db).toFixed(1),
+gain:gain.toFixed(3),
+peak:formatPeak(after),
+});
 }
 async function runExport(){
 if(!source||exporting)return;
@@ -230,7 +225,7 @@ abortController=new AbortController();
 el.exportBtn.disabled=true;
 el.cancelBtn.hidden=false;
 el.progress.hidden=false;
-progress(0,'Starting...');
+progress(0,'step.starting');
 const chosen=settings();
 const bits=Number(el.depth.value);
 try{
@@ -249,13 +244,16 @@ el.result.hidden=false;
 lastEdited=edited.channels;
 drawWaveform(el.outWave,lastEdited);
 el.resultInfo.textContent=[
-`WAV, ${bits === 32 ? '32-bit float' : '16-bit'}`,
+phrase(bits===32?'out.wav.float':'out.wav.int'),
 formatDuration(seconds),
 formatBytes(blob.size),
-`peak ${formatPeak(edited.peak)}`,
-edited.clipped?`${edited.clipped.toLocaleString()} samples over full scale`:null,
-`${((performance.now() - started) / 1000).toFixed(1)}s`,
-].filter(Boolean).join(' · ');
+phrase('out.peak',{peak:formatPeak(edited.peak)}),
+edited.clipped
+?phrase(edited.clipped===1?'out.clipped.one':'out.clipped.many',
+{n:edited.clipped.toLocaleString()})
+:null,
+phrase('out.took',{n:((performance.now()-started)/1000).toFixed(1)}),
+].filter(Boolean).reduce((a,b)=>phrase('join.dot',{a,b}));
 el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
@@ -283,7 +281,7 @@ return`${base}-${parts.join('-')}.wav`;
 }
 function progress(done,label){
 el.progressBar.style.width=`${Math.round(done * 100)}%`;
-if(label)el.progressLabel.textContent=label;
+if(label)el.progressLabel.textContent=phrase(label);
 }
 el.exportBtn.addEventListener('click',runExport);
 el.cancelBtn.addEventListener('click',()=>abortController?.abort());
@@ -312,31 +310,38 @@ resultUrl=null;
 lastEdited=null;
 }
 const clamp=(value,low,high)=>Math.min(high,Math.max(low,value));
-const channelWord=(count)=>(
-count===1?'mono':count===2?'stereo':`${count} channels`);
+const channelWord=(count)=>phrase(
+count===1?'channels.mono':count===2?'channels.stereo':'channels.many',
+{n:count},
+);
 function formatSpeed(value){
 const shown=value>=10?value.toFixed(1):value.toFixed(2);
-return`${shown.replace(/\.?0+$/, '')}x`;
+return phrase('speed.times',{n:shown.replace(/\.?0+$/,'')});
 }
 const formatDb=(db)=>`${db > 0 ? '+' : ''}${db.toFixed(1)} dB`;
 function formatPeak(value){
-if(!(value>0))return'silence';
-return`${gainToDb(value).toFixed(1)} dBFS`;
+if(!(value>0))return phrase('peak.silence');
+return phrase('peak.dbfs',{n:gainToDb(value).toFixed(1)});
 }
+const EMPTY='\u2013';
 function formatDuration(seconds){
-if(!Number.isFinite(seconds))return'-';
+if(!Number.isFinite(seconds))return EMPTY;
 const whole=Math.floor(seconds);
 const hours=Math.floor(whole/3600);
 const minutes=Math.floor((whole%3600)/60);
 const rest=seconds-hours*3600-minutes*60;
 const shown=rest.toFixed(1).padStart(4,'0');
-return hours?`${hours}:${String(minutes).padStart(2, '0')}:${shown}`:`${minutes}:${shown}`;
+return hours
+?`${hours}:${String(minutes).padStart(2, '0')}:${shown}`
+:`${minutes}:${shown}`;
 }
 function formatBytes(bytes){
-if(bytes<1024)return`${bytes} B`;
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
-if(bytes<1024*1024*1024)return`${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-return`${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+if(bytes<1024)return phrase('size.b',{n:bytes});
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(1)});
+if(bytes<1024*1024*1024){
+return phrase('size.mb',{n:(bytes/(1024*1024)).toFixed(1)});
+}
+return phrase('size.gb',{n:(bytes/(1024*1024*1024)).toFixed(2)});
 }
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;
