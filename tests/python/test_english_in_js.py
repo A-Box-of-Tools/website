@@ -60,7 +60,7 @@ BASELINE = {
     'compare-text': 3,
     'compress-image': 2,
     'compress-pdf': 66,
-    'crop-video': 55,
+    'crop-video': 31,
     'dicom-viewer': 15,
     'document-scanner': 13,
     'edit-audio': 25,
@@ -69,7 +69,7 @@ BASELINE = {
     'format-json': 61,
     'gif-analyzer': 71,
     'gif-maker': 22,
-    'grab-frame': 47,
+    'grab-frame': 22,
     'hash-checksum': 10,
     'heic-to-jpg': 35,
     'id-photo': 106,
@@ -89,10 +89,10 @@ BASELINE = {
     'split-gif': 36,
     'stack-images': 7,
     'svg-to-image': 27,
-    'timelapse-video': 57,
+    'timelapse-video': 34,
     'trim-audio': 41,
     'trim-video': 75,
-    'video-to-gif': 47,
+    'video-to-gif': 23,
 }
 
 # Modules that hold somebody else's vocabulary rather than this site's prose.

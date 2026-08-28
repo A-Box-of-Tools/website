@@ -159,6 +159,40 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
+    <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
+    <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>
+    <span data-phrase="read.av1short">El registro de configuración AV1 es demasiado corto.</span>
+    <span data-phrase="read.compactsizes">Los tamaños de las muestras están en una tabla compacta que este lector no
+      decodifica.</span>
+    <span data-phrase="read.sampletables">Las tablas de muestras están incompletas.</span>
+    <span data-phrase="read.chunktable">La tabla de chunks está vacía.</span>
+    <span data-phrase="read.nosamples">La pista no contiene ninguna muestra.</span>
+    <span data-phrase="read.nostbl">A la pista de vídeo le faltan sus tablas de muestras.</span>
+    <span data-phrase="read.nostsd">La pista de vídeo no tiene descripción de muestra.</span>
+    <span data-phrase="read.emptystsd">La descripción de muestra del vídeo está vacía.</span>
+    <span data-phrase="read.encrypted">La pista de vídeo está cifrada.</span>
+    <span data-phrase="read.unknowncodec">El vídeo está guardado como &laquo;{type}&raquo;, y este lector no lo conoce.</span>
+    <span data-phrase="read.noconfig">La pista &laquo;{type}&raquo; no lleva ninguna configuración de decodificador.</span>
+    <span data-phrase="read.notmp4">Esto no es un archivo MP4 ni MOV.</span>
+    <span data-phrase="read.nomoov">El archivo no tiene cabecera de película.</span>
+    <span data-phrase="read.novideo">El archivo no tiene ninguna pista de vídeo que este lector pueda usar.</span>
+    <span data-phrase="read.notimescale">La pista de vídeo no tiene escala de tiempo.</span>
+    <span data-phrase="read.nofragments">Los fragmentos de este archivo no contienen ningún fotograma de su pista de vídeo.</span>
+    <span data-phrase="read.unreadable">El archivo no se pudo leer como MP4.</span>
+    <span data-phrase="read.notplayed">Este formato no es de los que reproduce este navegador.</span>
+    <span data-phrase="read.layout">La disposición de este archivo no es de las que entiende el lector de aquí.</span>
+    <span data-phrase="read.nodecoder">Este navegador no decodifica {codec} directamente.</span>
+    <span data-phrase="read.nowebcodecs">Este navegador no tiene WebCodecs, así que los fotogramas no se pueden decodificar
+      uno a uno.</span>
+    <span data-phrase="open.failed">Este navegador no puede abrir este archivo. {reason}</span>
+    <span data-phrase="open.nodecode">Este navegador abrió el archivo pero no puede decodificar el vídeo que lleva dentro.
+      Suele ser Dolby Vision, o HEVC en una máquina sin soporte por hardware: el
+      contenedor se lee perfectamente y la imagen no llega nunca. Conviértelo antes a un
+      MP4 normal (H.264) y esta herramienta lo leerá directamente.</span>
+    <span data-phrase="path.seek">{reason} Por eso este se lee llevando el reproductor del navegador a cada instante:
+      eso funciona con todos los formatos que el navegador reproduce, y es un poco más
+      lento.</span>
     <span data-phrase="net.clean">tu vídeo no ha ido a ninguna parte. {total}
       archivos cargados. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta

@@ -175,6 +175,33 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">文件断在一帧的中间。</span>
+    <span data-phrase="read.avcshort">H.264 的配置记录太短。</span>
+    <span data-phrase="read.hevcshort">HEVC 的配置记录太短。</span>
+    <span data-phrase="read.av1short">AV1 的配置记录太短。</span>
+    <span data-phrase="read.compactsizes">样本大小放在一张压缩表里，这个读取器不解这种表。</span>
+    <span data-phrase="read.sampletables">样本表不完整。</span>
+    <span data-phrase="read.chunktable">数据块表是空的。</span>
+    <span data-phrase="read.nosamples">这条轨道里一个样本都没有。</span>
+    <span data-phrase="read.nostbl">视频轨道缺了它的样本表。</span>
+    <span data-phrase="read.nostsd">视频轨道没有样本描述。</span>
+    <span data-phrase="read.emptystsd">视频的样本描述是空的。</span>
+    <span data-phrase="read.encrypted">视频轨道是加密的。</span>
+    <span data-phrase="read.unknowncodec">这段视频存成了「{type}」，这个读取器不认识它。</span>
+    <span data-phrase="read.noconfig">「{type}」这条轨道没带解码器配置。</span>
+    <span data-phrase="read.notmp4">这不是 MP4，也不是 MOV。</span>
+    <span data-phrase="read.nomoov">这个文件没有影片头。</span>
+    <span data-phrase="read.novideo">这个文件里没有这个读取器用得上的视频轨道。</span>
+    <span data-phrase="read.notimescale">视频轨道没有时间刻度。</span>
+    <span data-phrase="read.nofragments">这个文件里的分片，一帧视频轨道的画面都没有。</span>
+    <span data-phrase="read.unreadable">这个文件按 MP4 读不出来。</span>
+    <span data-phrase="read.notplayed">这种格式不是这个浏览器能播的。</span>
+    <span data-phrase="read.layout">这个文件的排布，这里的读取器看不懂。</span>
+    <span data-phrase="read.nodecoder">这个浏览器不直接解码 {codec}。</span>
+    <span data-phrase="read.nowebcodecs">这个浏览器没有 WebCodecs，画面没法一帧一帧解码。</span>
+    <span data-phrase="read.turned">这个文件是转着存的，这里的读取器和浏览器的播放器对这个旋转的看法不一致。</span>
+    <span data-phrase="open.failed">这个浏览器打不开这个文件。{reason}</span>
+    <span data-phrase="path.seek">{reason}所以这些帧是把播放器一个时刻一个时刻地跳过去收的。这样慢一些，而且每次跳落在哪一帧由浏览器决定，动作快的地方偶尔会差出一帧。</span>
     <span data-phrase="net.clean">你的视频没有去任何地方。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何文件。</span>

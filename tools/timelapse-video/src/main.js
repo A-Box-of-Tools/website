@@ -13,6 +13,16 @@ import {
   outputSize, chooseBitrate, estimateBytes, decodeRuns, decodeCost,
 } from './plan.js';
 
+/**
+ * A reader refusal, in the reader's language. The demuxer is copied byte for
+ * byte into fifteen languages, so what it hands back is a phrase key and its
+ * values; `absent` is the sentence for the file that was never given to it at
+ * all - the browser's own player took it instead.
+ */
+function why(fallback, absent) {
+  return phrase(fallback?.key ?? absent, fallback?.values);
+}
+
 const $ = (id) => document.getElementById(id);
 
 const el = {
@@ -211,18 +221,18 @@ async function loadFile(picked) {
     } catch (error) {
       media = null;
       fallbackReason = error instanceof UnsupportedFile
-        ? error.reason
-        : (error.message || 'the file could not be read as an MP4.');
+        ? { key: error.reason, values: error.values }
+        : { key: error.message || 'read.unreadable' };
     }
 
     let readable = false;
     if (media && hasWebCodecs()) {
       readable = await canDecode(decoderConfig(media.video));
       if (!readable) {
-        fallbackReason = `this browser will not decode ${media.video.codec} directly.`;
+        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
       }
     } else if (media && !hasWebCodecs()) {
-      fallbackReason = 'this browser has no WebCodecs, so frames cannot be decoded one by one.';
+      fallbackReason = { key: 'read.nowebcodecs' };
     }
 
     canReadDirectly = readable;
@@ -248,13 +258,8 @@ async function loadFile(picked) {
       // then could not decode a frame of it" send you to different answers,
       // and the second one is the case that used to fail an hour in.
       showError(opensButCannotDecode
-        ? 'This browser opened the file but cannot decode the video in it. '
-          + 'That is usually Dolby Vision, or HEVC on a machine with no '
-          + 'hardware support for it - the container reads fine and the '
-          + 'picture never arrives. Convert it to an ordinary MP4 (H.264) '
-          + 'first, and this will read it directly.'
-        : `This browser cannot open this file: ${fallbackReason
-          ?? 'the format is not one it plays.'}`);
+        ? phrase('open.nodecode')
+        : phrase('open.failed', { reason: why(fallbackReason, 'read.notplayed') }));
       resetView();
       return;
     }
@@ -345,9 +350,9 @@ function describeSource() {
 
   el.pathNote.hidden = canReadDirectly;
   if (!canReadDirectly) {
-    el.pathNote.textContent = 'This one is read by seeking the browser\'s own player to each '
-      + `instant, because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
-      + 'That works on every format the browser plays, and is a little slower.';
+    el.pathNote.textContent = phrase('path.seek', {
+      reason: why(fallbackReason, 'read.layout'),
+    });
   }
 }
 
