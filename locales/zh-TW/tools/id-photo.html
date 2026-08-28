@@ -197,6 +197,62 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">列印尺寸</span>
+    <span data-phrase="facts.head">頭部，下巴到頭頂</span>
+    <span data-phrase="facts.eye">眼睛高度，從底部量</span>
+    <span data-phrase="facts.background">背景</span>
+    <span data-phrase="band.range">{min} 到 {max}</span>
+    <span data-phrase="band.mm">{range}（{min}–{max} mm）</span>
+    <span data-phrase="band.guidance">{band}（參考）</span>
+    <span data-phrase="measured.mm">{percent}（{mm} mm）</span>
+    <span data-phrase="verdict.head.ok">頭高是 {measured}。規矩要的是 {wanted}。</span>
+    <span data-phrase="verdict.head.low">頭高是 {measured}，偏小了。規矩要的是 {wanted}。把框縮小一點。</span>
+    <span data-phrase="verdict.head.high">頭高是 {measured}，偏大了。規矩要的是 {wanted}。把框放大一點。</span>
+    <span data-phrase="verdict.eye.ok">眼睛高度是 {measured}。規矩要的是 {wanted}。</span>
+    <span data-phrase="verdict.eye.low">眼睛高度是 {measured}，在畫面裡偏低。規矩要的是 {wanted}。把框往下挪。</span>
+    <span data-phrase="verdict.eye.high">眼睛高度是 {measured}，在畫面裡偏高。規矩要的是 {wanted}。把框往上挪。</span>
+    <span data-phrase="tilt.level">兩眼是平的。</span>
+    <span data-phrase="tilt.ok.left">頭往左偏了 {degrees} 度，還在稽核的人不會注意到的那幾度以內。</span>
+    <span data-phrase="tilt.ok.right">頭往右偏了 {degrees} 度，還在稽核的人不會注意到的那幾度以內。</span>
+    <span data-phrase="tilt.bad.left">頭往左偏了 {degrees} 度，這個是看得出來的。把相機端平重拍，或者先把照片擺正。</span>
+    <span data-phrase="tilt.bad.right">頭往右偏了 {degrees} 度，這個是看得出來的。把相機端平重拍，或者先把照片擺正。</span>
+    <span data-phrase="centre.ok">臉在畫面正中間。</span>
+    <span data-phrase="centre.left">臉偏在中線左邊，差了畫面寬度的 {size}。把框往反方向拖，或者再按一次「適配」。</span>
+    <span data-phrase="centre.right">臉偏在中線右邊，差了畫面寬度的 {size}。把框往反方向拖，或者再按一次「適配」。</span>
+    <span data-phrase="resample.enough">裁下來的是 {have} 畫素，要輸出的是 {need}，所以不用憑空造畫素。</span>
+    <span data-phrase="resample.slight">裁下來的只有 {have} 畫素，要輸出的是 {need}。會稍微放大一點，代價只是損失一點銳度，別的沒有。</span>
+    <span data-phrase="resample.severe">裁下來的只有 {have} 畫素，要輸出的是 {need}。差得太多了：結果會發糊，列印出來像截圖。只有走近一點重拍，或者用更高的解析度拍，才治得了。</span>
+    <span data-phrase="ready.geometry">幾何尺寸還不合規矩。檔案照樣能存下來——這裡沒有哪一處會不給你你自己的照片——只是上面那些數字才是表單要量的。</span>
+    <span data-phrase="ready.background">幾何尺寸合規矩了，背景不合。照片被退回來，更常見的原因是背景。</span>
+    <span data-phrase="ready.good">幾何尺寸合規矩，背景也過得去。</span>
+    <span data-phrase="bg.white.label">純白</span>
+    <span data-phrase="bg.white.inline">純白</span>
+    <span data-phrase="bg.white.note">白牆拍出來是淺灰的。人家要的是一塊乾淨、光照均勻、沒有影子的背景，不是一種塗料的顏色。</span>
+    <span data-phrase="bg.off-white.label">白或米白</span>
+    <span data-phrase="bg.off-white.inline">白或米白</span>
+    <span data-phrase="bg.off-white.note">兩種都收，實際上就是隻要素淨又淺就行：沒有花紋，沒有傢俱，頭後面沒有影子。</span>
+    <span data-phrase="bg.light-grey.label">純淺灰</span>
+    <span data-phrase="bg.light-grey.inline">純淺灰</span>
+    <span data-phrase="bg.light-grey.note">淺灰是國際民航組織偏好的顏色，因為它既把淺色的臉和背景分開，也把深色頭髮和背景分開。純白兩樣都做不到。</span>
+    <span data-phrase="bg.cream.label">淺灰或奶油色</span>
+    <span data-phrase="bg.cream.inline">淺灰或奶油色</span>
+    <span data-phrase="bg.cream.note">這是英國的說法。奶油色看起來像偏暖的米白；規矩要的是背景素淨均勻，不是非得哪一個色號。</span>
+    <span data-phrase="bg.colour.bad">背景量出來是 {hex}，離 {wanted} 差得很遠。</span>
+    <span data-phrase="bg.colour.warn">背景量出來是 {hex}——離 {wanted} 挺近，但還不是。</span>
+    <span data-phrase="bg.colour.good">背景量出來是 {hex}，能算作 {wanted}。</span>
+    <span data-phrase="bg.uniform.bad">它不是一塊乾淨的單色——你身後有影子、花紋或者別的東西。</span>
+    <span data-phrase="bg.uniform.warn">有點不勻。往前站半米離牆遠一些，通常就全解決了。</span>
+    <span data-phrase="bg.uniform.good">光照均勻，頭後面沒有影子。</span>
+    <span data-phrase="bg.sides.bad">背景一邊比另一邊暗不少，看起來像是側面來的光。</span>
+    <span data-phrase="bg.sides.warn">一邊比另一邊稍微暗一點。</span>
+    <span data-phrase="bg.note">{colour} 這個工具不會替你換背景：把人從照片裡裁出來要用分割模型，而差的模型專挑那些照片本來就最常被退回的人，把頭髮啃掉一塊。往前站半米離牆遠一些，比任何濾鏡都管用。</span>
+    <span data-phrase="bg.signature.note">這裡不會動你的簽名。只是量一量、報給你看，裁剪框你自己挪。</span>
+    <span data-phrase="sig.ink.bad">裁下來的這塊裡幾乎沒有墨。要麼框沒框住簽名，要麼筆太淡，拍不出來。</span>
+    <span data-phrase="sig.ink.warn">深色畫素太多了——看看裁剪是不是把一條橫線或者紙邊也框進去了。</span>
+    <span data-phrase="sig.ink.good">墨覆蓋了這塊的 {coverage}%，看起來像是一個簽名。</span>
+    <span data-phrase="sig.paper.bad">紙拍出來是灰的，不是白的。給紙多點光，或者別拍照，直接掃描。</span>
+    <span data-phrase="sig.paper.warn">紙有點發暗。多數表單要簽名後面是一張乾淨的白紙。</span>
+    <span data-phrase="sig.paper.good">紙乾淨又白。</span>
     <span data-phrase="marks.measured">四個點都是從照片上量出來的：頭頂取自你頭部的輪廓，瞳孔取自它們的暗，下巴取自下頜收進脖子的地方。還是看一眼，哪個落偏了就拖回來：裁切框取自它們最後停在哪裡。</span><span data-phrase="marks.rough">放好了，但不是每一處都量得出來。套用裁切框之前，請把四個點都看一遍。</span><span data-phrase="marks.none">這張照片上什麼也量不出來。四個點改為停在起始位置上&mdash;&mdash;請把它們拖到頭頂、下巴和左右瞳孔上。</span><span data-phrase="marks.manual">這四個點歸你，什麼都不會去動它們。請把每一個拖到頭頂、下巴和瞳孔上。</span><span data-phrase="marks.edited">你動過一個點，所以四個點現在都歸你了。選「替我找」會重新量一遍這張照片。</span>
 
     <span data-phrase="marks.why.background">你背後那面牆不夠乾淨，襯不出一個頭的輪廓。</span><span data-phrase="marks.why.top">頭從照片上方出了框，沒有頭頂可找。</span><span data-phrase="marks.why.eyes">眼睛認不出來，於是兩隻都放在這麼大的頭通常長眼睛的位置。</span><span data-phrase="marks.why.chin">下巴來自頭的一般比例，而不是這個頭的輪廓。</span>

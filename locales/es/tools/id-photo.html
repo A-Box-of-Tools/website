@@ -213,6 +213,92 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">Tamaño de impresión</span>
+    <span data-phrase="facts.head">Cabeza, de la barbilla a la coronilla</span>
+    <span data-phrase="facts.eye">Línea de los ojos, desde abajo</span>
+    <span data-phrase="facts.background">Fondo</span>
+    <span data-phrase="band.range">de {min} a {max}</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (orientativo)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">La altura de la cabeza es {measured}. La norma pide {wanted}.</span>
+    <span data-phrase="verdict.head.low">La altura de la cabeza es {measured}, que es demasiado pequeña. La norma pide
+      {wanted}. Haz el recuadro más pequeño.</span>
+    <span data-phrase="verdict.head.high">La altura de la cabeza es {measured}, que es demasiado grande. La norma pide
+      {wanted}. Haz el recuadro más grande.</span>
+    <span data-phrase="verdict.eye.ok">La línea de los ojos está a {measured}. La norma pide {wanted}.</span>
+    <span data-phrase="verdict.eye.low">La línea de los ojos está a {measured}, demasiado baja en el encuadre. La norma pide
+      {wanted}. Baja el recuadro.</span>
+    <span data-phrase="verdict.eye.high">La línea de los ojos está a {measured}, demasiado alta en el encuadre. La norma pide
+      {wanted}. Sube el recuadro.</span>
+    <span data-phrase="tilt.level">La línea de los ojos está nivelada.</span>
+    <span data-phrase="tilt.ok.left">La cabeza se inclina {degrees} grados a la izquierda, que está dentro del par de
+      grados que un examinador no va a notar.</span>
+    <span data-phrase="tilt.ok.right">La cabeza se inclina {degrees} grados a la derecha, que está dentro del par de
+      grados que un examinador no va a notar.</span>
+    <span data-phrase="tilt.bad.left">La cabeza se inclina {degrees} grados a la izquierda, y eso se nota. Repite la foto
+      con la cámara nivelada, o endereza antes la imagen.</span>
+    <span data-phrase="tilt.bad.right">La cabeza se inclina {degrees} grados a la derecha, y eso se nota. Repite la foto
+      con la cámara nivelada, o endereza antes la imagen.</span>
+    <span data-phrase="centre.ok">La cara está centrada en el encuadre.</span>
+    <span data-phrase="centre.left">La cara queda {size} del ancho del encuadre a la izquierda del centro. Arrastra el
+      recuadro al otro lado, o vuelve a pulsar «Ajustar».</span>
+    <span data-phrase="centre.right">La cara queda {size} del ancho del encuadre a la derecha del centro. Arrastra el
+      recuadro al otro lado, o vuelve a pulsar «Ajustar».</span>
+    <span data-phrase="resample.enough">El recorte es de {have} píxeles y la salida de {need}, así que no hay que inventarse
+      nada.</span>
+    <span data-phrase="resample.slight">El recorte es de solo {have} píxeles y la salida de {need}. Se ampliará un poco, lo
+      que cuesta algo de nitidez y nada más.</span>
+    <span data-phrase="resample.severe">El recorte es de solo {have} píxeles y la salida de {need}. Se queda muy corto: el
+      resultado se verá blando, y en papel parecerá una captura de pantalla. Solo lo
+      arregla una foto hecha más de cerca, o a más resolución.</span>
+    <span data-phrase="ready.geometry">El encuadre todavía no cumple la norma. Puedes guardar los archivos igual &mdash;
+      aquí nadie te niega tu propia fotografía &mdash;, pero las cifras de arriba son lo
+      que el formulario va a medir.</span>
+    <span data-phrase="ready.background">El encuadre cumple la norma. El fondo no, y ese es el motivo más común por el que
+      devuelven una foto.</span>
+    <span data-phrase="ready.good">El encuadre cumple la norma y el fondo se lee como aceptable.</span>
+    <span data-phrase="bg.white.label">Blanco liso</span>
+    <span data-phrase="bg.white.inline">blanco liso</span>
+    <span data-phrase="bg.white.note">Una pared blanca sale gris claro en la foto. Lo que se pide es un fondo liso,
+      iluminado por igual y sin sombras, no un color de pintura.</span>
+    <span data-phrase="bg.off-white.label">Blanco o blanco roto</span>
+    <span data-phrase="bg.off-white.inline">blanco o blanco roto</span>
+    <span data-phrase="bg.off-white.note">Se aceptan los dos, lo que en la práctica quiere decir cualquier cosa lisa y clara:
+      sin dibujo, sin muebles y sin sombra detrás de la cabeza.</span>
+    <span data-phrase="bg.light-grey.label">Gris claro liso</span>
+    <span data-phrase="bg.light-grey.inline">gris claro liso</span>
+    <span data-phrase="bg.light-grey.note">El gris claro es lo que prefiere la OACI porque separa del fondo una cara clara, y
+      también el pelo oscuro. El blanco puro no hace ninguna de las dos cosas.</span>
+    <span data-phrase="bg.cream.label">Gris claro o crema</span>
+    <span data-phrase="bg.cream.inline">gris claro o crema</span>
+    <span data-phrase="bg.cream.note">Así lo redacta el Reino Unido. El crema se lee como un blanco roto cálido; lo que
+      persigue la norma es que el fondo sea liso y uniforme, no que sea un tono concreto.</span>
+    <span data-phrase="bg.colour.bad">El fondo mide {hex}, que queda muy lejos de {wanted}.</span>
+    <span data-phrase="bg.colour.warn">El fondo mide {hex} &mdash; cerca de {wanted}, pero no del todo.</span>
+    <span data-phrase="bg.colour.good">El fondo mide {hex}, que pasa como {wanted}.</span>
+    <span data-phrase="bg.uniform.bad">No es un solo color liso &mdash; hay una sombra, un dibujo o un objeto detrás de ti.</span>
+    <span data-phrase="bg.uniform.warn">Un poco desigual. Ponerte medio metro más lejos de la pared suele ser todo el
+      arreglo.</span>
+    <span data-phrase="bg.uniform.good">Iluminado por igual, sin sombra detrás de la cabeza.</span>
+    <span data-phrase="bg.sides.bad">Un lado del fondo está bastante más oscuro que el otro, lo que se lee como luz
+      lateral.</span>
+    <span data-phrase="bg.sides.warn">Un lado está un poco más oscuro que el otro.</span>
+    <span data-phrase="bg.note">{colour} Esta herramienta no va a sustituir un fondo: recortar a una persona de una
+      foto necesita un modelo de segmentación, y uno malo se come el pelo justo de las
+      personas a las que ya les rechazan más las fotos. Ponerte medio metro más lejos de
+      la pared arregla más casos que cualquier filtro.</span>
+    <span data-phrase="bg.signature.note">Aquí no se toca tu firma. Se mide y se describe, y el recorte es tuyo.</span>
+    <span data-phrase="sig.ink.bad">Casi no hay tinta en el recorte. O el recuadro está fuera de la firma, o el
+      bolígrafo era demasiado claro para salir en la foto.</span>
+    <span data-phrase="sig.ink.warn">Muchísimos píxeles oscuros &mdash; comprueba que el recorte no haya cogido una raya
+      del papel o el borde de la hoja.</span>
+    <span data-phrase="sig.ink.good">La tinta cubre el {coverage}% del recorte, que se lee como una firma.</span>
+    <span data-phrase="sig.paper.bad">El papel está saliendo gris en vez de blanco. Más luz sobre la hoja, o un escaneo en
+      vez de una foto.</span>
+    <span data-phrase="sig.paper.warn">El papel queda un poco apagado. Casi todos los formularios quieren una hoja blanca y
+      limpia detrás de la firma.</span>
+    <span data-phrase="sig.paper.good">El papel está limpio y blanco.</span>
     <span data-phrase="marks.measured">Los cuatro se midieron sobre la foto: la coronilla por el
       contorno de tu cabeza, las pupilas por lo oscuras que son, la barbilla por donde
       la mandíbula se mete en el cuello. Compruébalos igualmente y arrastra el que haya

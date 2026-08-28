@@ -221,6 +221,87 @@
     JavaScript, and a semicolon is not the mark half these languages join with.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">Baskı boyutu</span>
+    <span data-phrase="facts.head">Baş, çeneden tepeye</span>
+    <span data-phrase="facts.eye">Göz hizası, alttan</span>
+    <span data-phrase="facts.background">Arka plan</span>
+    <span data-phrase="band.range">{min} ile {max} arası</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (tavsiye)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">Baş yüksekliği {measured}. Kural {wanted} istiyor.</span>
+    <span data-phrase="verdict.head.low">Baş yüksekliği {measured}, yani fazla küçük. Kural {wanted} istiyor. Kutuyu
+      küçültün.</span>
+    <span data-phrase="verdict.head.high">Baş yüksekliği {measured}, yani fazla büyük. Kural {wanted} istiyor. Kutuyu büyütün.</span>
+    <span data-phrase="verdict.eye.ok">Göz hizası {measured}. Kural {wanted} istiyor.</span>
+    <span data-phrase="verdict.eye.low">Göz hizası {measured}, yani karede fazla aşağıda. Kural {wanted} istiyor. Kutuyu
+      aşağı kaydırın.</span>
+    <span data-phrase="verdict.eye.high">Göz hizası {measured}, yani karede fazla yukarıda. Kural {wanted} istiyor. Kutuyu
+      yukarı kaydırın.</span>
+    <span data-phrase="tilt.level">Göz hizası düz.</span>
+    <span data-phrase="tilt.ok.left">Baş {degrees} derece sola yatık; bu, bir memurun fark etmeyeceği birkaç derecenin
+      içinde kalıyor.</span>
+    <span data-phrase="tilt.ok.right">Baş {degrees} derece sağa yatık; bu, bir memurun fark etmeyeceği birkaç derecenin
+      içinde kalıyor.</span>
+    <span data-phrase="tilt.bad.left">Baş {degrees} derece sola yatık ve bu fark edilir. Fotoğrafı kamerayı düz tutarak
+      yeniden çekin ya da önce görüntüyü düzeltin.</span>
+    <span data-phrase="tilt.bad.right">Baş {degrees} derece sağa yatık ve bu fark edilir. Fotoğrafı kamerayı düz tutarak
+      yeniden çekin ya da önce görüntüyü düzeltin.</span>
+    <span data-phrase="centre.ok">Yüz karenin ortasında.</span>
+    <span data-phrase="centre.left">Yüz, karenin genişliğinin {size} kadarı ortanın solunda. Kutuyu öbür yana çekin ya
+      da yeniden &ldquo;Oturt&rdquo;a basın.</span>
+    <span data-phrase="centre.right">Yüz, karenin genişliğinin {size} kadarı ortanın sağında. Kutuyu öbür yana çekin ya
+      da yeniden &ldquo;Oturt&rdquo;a basın.</span>
+    <span data-phrase="resample.enough">Kırpma {have} piksel, çıktı ise {need}; yani uydurulacak bir şey yok.</span>
+    <span data-phrase="resample.slight">Kırpma yalnızca {have} piksel, çıktı ise {need}. Biraz büyütülecek; bu da azıcık
+      keskinliğe mal olur, başka bir şeye değil.</span>
+    <span data-phrase="resample.severe">Kırpma yalnızca {have} piksel, çıktı ise {need}. Bu çok yetersiz: sonuç yumuşak
+      çıkar, kâğıtta ise ekran görüntüsü gibi durur. Tek çözüm, daha yakından ya da daha
+      yüksek çözünürlükte çekilmiş bir fotoğraf.</span>
+    <span data-phrase="ready.geometry">Ölçüler kuralı henüz tutturmuyor. Dosyaları yine de kaydedebilirsiniz &mdash; burada
+      kimse size kendi fotoğrafınızı vermemezlik etmez &mdash; ama formun ölçeceği şey
+      yukarıdaki rakamlardır.</span>
+    <span data-phrase="ready.background">Ölçüler kuralı tutturuyor. Arka plan tutturmuyor ve bir fotoğrafın geri gelmesinin
+      daha sık görülen sebebi budur.</span>
+    <span data-phrase="ready.good">Ölçüler kuralı tutturuyor, arka plan da kabul edilebilir görünüyor.</span>
+    <span data-phrase="bg.white.label">Düz beyaz</span>
+    <span data-phrase="bg.white.inline">düz beyaz</span>
+    <span data-phrase="bg.white.note">Beyaz bir duvar fotoğrafta açık gri çıkar. İstenen şey düz, her yeri eşit
+      aydınlatılmış, gölgesiz bir arka plandır; bir boya rengi değil.</span>
+    <span data-phrase="bg.off-white.label">Beyaz ya da kırık beyaz</span>
+    <span data-phrase="bg.off-white.inline">beyaz ya da kırık beyaz</span>
+    <span data-phrase="bg.off-white.note">İkisi de kabul edilir; bu da pratikte düz ve açık olan her şey demek: desen yok,
+      mobilya yok, başın arkasında gölge yok.</span>
+    <span data-phrase="bg.light-grey.label">Düz açık gri</span>
+    <span data-phrase="bg.light-grey.inline">düz açık gri</span>
+    <span data-phrase="bg.light-grey.note">Açık gri, ICAO&rsquo;nun tercihidir; çünkü açık tenli bir yüzü arka plandan ayırır,
+      koyu saçı da öyle. Saf beyaz ikisini de yapmaz.</span>
+    <span data-phrase="bg.cream.label">Açık gri ya da krem</span>
+    <span data-phrase="bg.cream.inline">açık gri ya da krem</span>
+    <span data-phrase="bg.cream.note">Birleşik Krallık&rsquo;ın kullandığı ifade. Krem, sıcak bir kırık beyaz gibi okunur;
+      kuralın derdi arka planın düz ve tekdüze olması, belli bir ton olması değil.</span>
+    <span data-phrase="bg.colour.bad">Arka plan {hex} ölçülüyor ve bu, {wanted} olmaktan çok uzak.</span>
+    <span data-phrase="bg.colour.warn">Arka plan {hex} ölçülüyor &mdash; {wanted} rengine yakın ama tam o değil.</span>
+    <span data-phrase="bg.colour.good">Arka plan {hex} ölçülüyor ve {wanted} olarak geçer.</span>
+    <span data-phrase="bg.uniform.bad">Tek bir düz renk değil &mdash; arkanızda bir gölge, bir desen ya da bir nesne var.</span>
+    <span data-phrase="bg.uniform.warn">Hafifçe dalgalı. Duvardan yarım metre daha uzakta durmak çoğu zaman çözümün
+      tamamıdır.</span>
+    <span data-phrase="bg.uniform.good">Her yeri eşit aydınlatılmış, başın arkasında gölge yok.</span>
+    <span data-phrase="bg.sides.bad">Arka planın bir yanı öbüründen epeyce koyu; bu da yandan ışık gibi okunuyor.</span>
+    <span data-phrase="bg.sides.warn">Bir yan öbüründen biraz daha koyu.</span>
+    <span data-phrase="bg.note">{colour} Bu araç arka planı değiştirmez: bir insanı fotoğraftan kesip çıkarmak bir
+      bölütleme modeli ister ve kötüsü, fotoğrafları zaten en çok reddedilen kişilerin
+      saçını yer. Duvardan yarım metre daha uzakta durmak, bunların herhangi bir filtreden
+      daha fazlasını çözer.</span>
+    <span data-phrase="bg.signature.note">Burada imzanıza dokunulmuyor. Ölçülüp size bildiriliyor, kırpma da sizin elinizde.</span>
+    <span data-phrase="sig.ink.bad">Kırpmada neredeyse hiç mürekkep yok. Ya kutu imzanın dışında kalmış ya da kalem
+      fotoğrafa çıkamayacak kadar açıkmış.</span>
+    <span data-phrase="sig.ink.warn">Çok fazla koyu piksel &mdash; kırpmanın çizgili bir satırı ya da sayfanın kenarını
+      almadığından emin olun.</span>
+    <span data-phrase="sig.ink.good">Mürekkep kırpmanın %{coverage} kadarını kaplıyor; bu da imza gibi okunuyor.</span>
+    <span data-phrase="sig.paper.bad">Kâğıt beyaz yerine gri çıkıyor. Sayfaya daha çok ışık, ya da fotoğraf yerine tarama.</span>
+    <span data-phrase="sig.paper.warn">Kâğıt biraz sönük. Çoğu form, imzanın arkasında temiz ve beyaz bir sayfa ister.</span>
+    <span data-phrase="sig.paper.good">Kâğıt temiz ve beyaz.</span>
     <span data-phrase="marks.measured">Dördü de fotoğraftan ölçüldü &mdash; tepe
       kafanızın dış hattından, bebekler kendi koyuluklarından, çene ise çene
       hattının boyuna karıştığı yerden. Yine de denetleyin ve yanlış düşenleri

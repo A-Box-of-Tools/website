@@ -215,6 +215,96 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">Druckgröße</span>
+    <span data-phrase="facts.head">Kopf, Kinn bis Scheitel</span>
+    <span data-phrase="facts.eye">Augenlinie, von unten</span>
+    <span data-phrase="facts.background">Hintergrund</span>
+    <span data-phrase="band.range">{min} bis {max}</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (Empfehlung)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">Die Kopfhöhe beträgt {measured}. Die Vorschrift verlangt {wanted}.</span>
+    <span data-phrase="verdict.head.low">Die Kopfhöhe beträgt {measured} und ist damit zu klein. Die Vorschrift verlangt
+      {wanted}. Machen Sie den Rahmen kleiner.</span>
+    <span data-phrase="verdict.head.high">Die Kopfhöhe beträgt {measured} und ist damit zu groß. Die Vorschrift verlangt
+      {wanted}. Machen Sie den Rahmen größer.</span>
+    <span data-phrase="verdict.eye.ok">Die Augenlinie liegt bei {measured}. Die Vorschrift verlangt {wanted}.</span>
+    <span data-phrase="verdict.eye.low">Die Augenlinie liegt bei {measured} und damit zu tief im Bild. Die Vorschrift
+      verlangt {wanted}. Schieben Sie den Rahmen nach unten.</span>
+    <span data-phrase="verdict.eye.high">Die Augenlinie liegt bei {measured} und damit zu hoch im Bild. Die Vorschrift
+      verlangt {wanted}. Schieben Sie den Rahmen nach oben.</span>
+    <span data-phrase="tilt.level">Die Augenlinie ist waagerecht.</span>
+    <span data-phrase="tilt.ok.left">Der Kopf neigt sich um {degrees} Grad nach links, und das liegt in den paar Grad,
+      die einem Prüfer nicht auffallen.</span>
+    <span data-phrase="tilt.ok.right">Der Kopf neigt sich um {degrees} Grad nach rechts, und das liegt in den paar Grad,
+      die einem Prüfer nicht auffallen.</span>
+    <span data-phrase="tilt.bad.left">Der Kopf neigt sich um {degrees} Grad nach links, und das fällt auf. Nehmen Sie das
+      Foto mit gerader Kamera neu auf, oder richten Sie das Bild vorher gerade.</span>
+    <span data-phrase="tilt.bad.right">Der Kopf neigt sich um {degrees} Grad nach rechts, und das fällt auf. Nehmen Sie das
+      Foto mit gerader Kamera neu auf, oder richten Sie das Bild vorher gerade.</span>
+    <span data-phrase="centre.ok">Das Gesicht sitzt mittig im Bild.</span>
+    <span data-phrase="centre.left">Das Gesicht sitzt {size} der Bildbreite links der Mitte. Ziehen Sie den Rahmen in
+      die andere Richtung, oder drücken Sie noch einmal &bdquo;Einpassen&ldquo;.</span>
+    <span data-phrase="centre.right">Das Gesicht sitzt {size} der Bildbreite rechts der Mitte. Ziehen Sie den Rahmen in
+      die andere Richtung, oder drücken Sie noch einmal &bdquo;Einpassen&ldquo;.</span>
+    <span data-phrase="resample.enough">Der Ausschnitt ist {have} Pixel groß und die Ausgabe {need}, es muss also nichts
+      erfunden werden.</span>
+    <span data-phrase="resample.slight">Der Ausschnitt ist nur {have} Pixel groß und die Ausgabe {need}. Er wird leicht
+      vergrößert, was ein wenig Schärfe kostet und sonst nichts.</span>
+    <span data-phrase="resample.severe">Der Ausschnitt ist nur {have} Pixel groß und die Ausgabe {need}. Das ist weit
+      daneben: das Ergebnis wird weich, und auf Papier sieht es aus wie ein
+      Bildschirmfoto. Nur ein Foto aus geringerer Entfernung oder mit höherer Auflösung
+      hilft.</span>
+    <span data-phrase="ready.geometry">Die Maße erfüllen die Vorschrift noch nicht. Sie können die Dateien trotzdem
+      speichern &mdash; hier verweigert Ihnen niemand Ihr eigenes Foto &mdash;, aber die
+      Zahlen oben sind das, woran das Formular messen wird.</span>
+    <span data-phrase="ready.background">Die Maße erfüllen die Vorschrift. Der Hintergrund nicht, und das ist der häufigere
+      Grund, aus dem ein Foto zurückkommt.</span>
+    <span data-phrase="ready.good">Die Maße erfüllen die Vorschrift, und der Hintergrund geht durch.</span>
+    <span data-phrase="bg.white.label">Reines Weiß</span>
+    <span data-phrase="bg.white.inline">reines Weiß</span>
+    <span data-phrase="bg.white.note">Eine weiße Wand fotografiert sich hellgrau. Verlangt wird ein schlichter,
+      gleichmäßig ausgeleuchteter, schattenfreier Hintergrund, keine Wandfarbe.</span>
+    <span data-phrase="bg.off-white.label">Weiß oder gebrochenes Weiß</span>
+    <span data-phrase="bg.off-white.inline">Weiß oder gebrochenes Weiß</span>
+    <span data-phrase="bg.off-white.note">Beides wird akzeptiert, was in der Praxis alles Schlichte und Helle meint: kein
+      Muster, keine Möbel und kein Schatten hinter dem Kopf.</span>
+    <span data-phrase="bg.light-grey.label">Schlichtes Hellgrau</span>
+    <span data-phrase="bg.light-grey.inline">schlichtes Hellgrau</span>
+    <span data-phrase="bg.light-grey.note">Hellgrau ist die Vorgabe der ICAO, weil es ein helles Gesicht vom Hintergrund trennt
+      und dunkles Haar ebenso. Reines Weiß tut beides nicht.</span>
+    <span data-phrase="bg.cream.label">Hellgrau oder Creme</span>
+    <span data-phrase="bg.cream.inline">Hellgrau oder Creme</span>
+    <span data-phrase="bg.cream.note">So formuliert es das Vereinigte Königreich. Creme wirkt wie ein warmes gebrochenes
+      Weiß; der Sinn der Vorschrift ist, dass der Hintergrund schlicht und gleichmäßig
+      ist, nicht dass er einen bestimmten Ton hat.</span>
+    <span data-phrase="bg.colour.bad">Der Hintergrund misst sich als {hex}, und das ist weit von {wanted} entfernt.</span>
+    <span data-phrase="bg.colour.warn">Der Hintergrund misst sich als {hex} &mdash; nah an {wanted}, aber nicht ganz.</span>
+    <span data-phrase="bg.colour.good">Der Hintergrund misst sich als {hex} und geht als {wanted} durch.</span>
+    <span data-phrase="bg.uniform.bad">Er ist nicht eine einzige Fläche &mdash; da ist ein Schatten, ein Muster oder ein
+      Gegenstand hinter Ihnen.</span>
+    <span data-phrase="bg.uniform.warn">Leicht ungleichmäßig. Einen halben Meter weiter weg von der Wand zu stehen ist meist
+      die ganze Lösung.</span>
+    <span data-phrase="bg.uniform.good">Gleichmäßig ausgeleuchtet, ohne Schatten hinter dem Kopf.</span>
+    <span data-phrase="bg.sides.bad">Die eine Seite des Hintergrunds ist deutlich dunkler als die andere, was wie
+      Seitenlicht aussieht.</span>
+    <span data-phrase="bg.sides.warn">Die eine Seite ist ein wenig dunkler als die andere.</span>
+    <span data-phrase="bg.note">{colour} Dieses Werkzeug ersetzt keinen Hintergrund: einen Menschen aus einem Foto
+      freizustellen braucht ein Segmentierungsmodell, und ein schlechtes frisst genau den
+      Leuten die Haare weg, deren Fotos ohnehin am häufigsten abgelehnt werden. Einen
+      halben Meter weiter weg von der Wand zu stehen behebt mehr davon als jeder Filter.</span>
+    <span data-phrase="bg.signature.note">Hier wird an Ihrer Unterschrift nichts verändert. Sie wird gemessen und beschrieben,
+      und der Ausschnitt gehört Ihnen.</span>
+    <span data-phrase="sig.ink.bad">Fast keine Tinte im Ausschnitt. Entweder liegt der Rahmen neben der Unterschrift,
+      oder der Stift war zu hell zum Fotografieren.</span>
+    <span data-phrase="sig.ink.warn">Sehr viele dunkle Pixel &mdash; prüfen Sie, ob der Ausschnitt eine Linie oder den
+      Rand des Blattes erwischt hat.</span>
+    <span data-phrase="sig.ink.good">Tinte bedeckt {coverage}% des Ausschnitts, und das liest sich wie eine Unterschrift.</span>
+    <span data-phrase="sig.paper.bad">Das Papier kommt grau statt weiß heraus. Mehr Licht auf das Blatt, oder ein Scan
+      statt eines Fotos.</span>
+    <span data-phrase="sig.paper.warn">Das Papier ist ein wenig stumpf. Die meisten Formulare wollen eine saubere weiße
+      Seite hinter der Unterschrift.</span>
+    <span data-phrase="sig.paper.good">Das Papier ist sauber und weiß.</span>
     <span data-phrase="marks.measured">Alle vier wurden am Foto gemessen &mdash; der Scheitel an
       der Kontur Ihres Kopfes, die Pupillen an ihrer Dunkelheit, das Kinn dort, wo der
       Kiefer in den Hals übergeht. Prüfen Sie sie trotzdem und ziehen Sie zurecht, was

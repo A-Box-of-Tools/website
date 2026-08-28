@@ -72,7 +72,7 @@ BASELINE = {
     'grab-frame': 22,
     'hash-checksum': 10,
     'heic-to-jpg': 35,
-    'id-photo': 106,
+    'id-photo': 71,
     'image-to-data-uri': 20,
     'image-to-ico': 71,
     'images-to-pdf': 26,

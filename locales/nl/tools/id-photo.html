@@ -214,6 +214,95 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">Afdrukformaat</span>
+    <span data-phrase="facts.head">Hoofd, kin tot kruin</span>
+    <span data-phrase="facts.eye">Ooglijn, vanaf onderen</span>
+    <span data-phrase="facts.background">Achtergrond</span>
+    <span data-phrase="band.range">{min} tot {max}</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (richtlijn)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">De hoofdhoogte is {measured}. De regel vraagt {wanted}.</span>
+    <span data-phrase="verdict.head.low">De hoofdhoogte is {measured}, en dat is te klein. De regel vraagt {wanted}. Maak het
+      kader kleiner.</span>
+    <span data-phrase="verdict.head.high">De hoofdhoogte is {measured}, en dat is te groot. De regel vraagt {wanted}. Maak het
+      kader groter.</span>
+    <span data-phrase="verdict.eye.ok">De ooglijn zit op {measured}. De regel vraagt {wanted}.</span>
+    <span data-phrase="verdict.eye.low">De ooglijn zit op {measured}, en dat is te laag in het beeld. De regel vraagt
+      {wanted}. Schuif het kader omlaag.</span>
+    <span data-phrase="verdict.eye.high">De ooglijn zit op {measured}, en dat is te hoog in het beeld. De regel vraagt
+      {wanted}. Schuif het kader omhoog.</span>
+    <span data-phrase="tilt.level">De ooglijn ligt waterpas.</span>
+    <span data-phrase="tilt.ok.left">Het hoofd helt {degrees} graden naar links, en dat blijft binnen de paar graden die
+      een beoordelaar niet opmerkt.</span>
+    <span data-phrase="tilt.ok.right">Het hoofd helt {degrees} graden naar rechts, en dat blijft binnen de paar graden die
+      een beoordelaar niet opmerkt.</span>
+    <span data-phrase="tilt.bad.left">Het hoofd helt {degrees} graden naar links, en dat valt op. Maak de foto opnieuw met
+      de camera recht, of zet het beeld eerst recht.</span>
+    <span data-phrase="tilt.bad.right">Het hoofd helt {degrees} graden naar rechts, en dat valt op. Maak de foto opnieuw
+      met de camera recht, of zet het beeld eerst recht.</span>
+    <span data-phrase="centre.ok">Het gezicht staat midden in beeld.</span>
+    <span data-phrase="centre.left">Het gezicht zit {size} van de breedte links van het midden. Trek het kader de andere
+      kant op, of druk nog eens op &lsquo;Passend maken&rsquo;.</span>
+    <span data-phrase="centre.right">Het gezicht zit {size} van de breedte rechts van het midden. Trek het kader de
+      andere kant op, of druk nog eens op &lsquo;Passend maken&rsquo;.</span>
+    <span data-phrase="resample.enough">De uitsnede is {have} pixels en de uitvoer {need}, dus er hoeft niets verzonnen te
+      worden.</span>
+    <span data-phrase="resample.slight">De uitsnede is maar {have} pixels en de uitvoer {need}. Hij wordt licht vergroot,
+      wat een beetje scherpte kost en verder niets.</span>
+    <span data-phrase="resample.severe">De uitsnede is maar {have} pixels en de uitvoer {need}. Dat scheelt een heel eind:
+      het resultaat wordt zacht, en op papier ziet het eruit als een schermafdruk. Alleen
+      een foto van dichterbij, of met een hogere resolutie, helpt.</span>
+    <span data-phrase="ready.geometry">De maatvoering haalt de regel nog niet. Je kunt de bestanden toch opslaan &mdash;
+      niets hier weigert je je eigen foto &mdash; maar de cijfers hierboven zijn waar het
+      formulier op meet.</span>
+    <span data-phrase="ready.background">De maatvoering haalt de regel. De achtergrond niet, en dat is de meest voorkomende
+      reden dat een foto terugkomt.</span>
+    <span data-phrase="ready.good">De maatvoering haalt de regel en de achtergrond komt door.</span>
+    <span data-phrase="bg.white.label">Effen wit</span>
+    <span data-phrase="bg.white.inline">effen wit</span>
+    <span data-phrase="bg.white.note">Een witte muur fotografeert lichtgrijs. Wat gevraagd wordt is een effen, gelijkmatig
+      belichte achtergrond zonder schaduw, geen verfkleur.</span>
+    <span data-phrase="bg.off-white.label">Wit of gebroken wit</span>
+    <span data-phrase="bg.off-white.inline">wit of gebroken wit</span>
+    <span data-phrase="bg.off-white.note">Allebei goed, wat in de praktijk alles betekent wat effen en licht is: geen patroon,
+      geen meubels en geen schaduw achter het hoofd.</span>
+    <span data-phrase="bg.light-grey.label">Effen lichtgrijs</span>
+    <span data-phrase="bg.light-grey.inline">effen lichtgrijs</span>
+    <span data-phrase="bg.light-grey.note">Lichtgrijs heeft de voorkeur van de ICAO omdat het een licht gezicht van de
+      achtergrond scheidt, en donker haar ook. Zuiver wit doet geen van beide.</span>
+    <span data-phrase="bg.cream.label">Lichtgrijs of crème</span>
+    <span data-phrase="bg.cream.inline">lichtgrijs of crème</span>
+    <span data-phrase="bg.cream.note">Zo verwoordt het Verenigd Koninkrijk het. Crème leest als een warm gebroken wit; het
+      gaat de regel erom dat de achtergrond effen en gelijkmatig is, niet dat hij één
+      bepaalde tint heeft.</span>
+    <span data-phrase="bg.colour.bad">De achtergrond meet {hex}, en dat is ver van {wanted}.</span>
+    <span data-phrase="bg.colour.warn">De achtergrond meet {hex} &mdash; dicht bij {wanted}, maar net niet.</span>
+    <span data-phrase="bg.colour.good">De achtergrond meet {hex}, en dat gaat door voor {wanted}.</span>
+    <span data-phrase="bg.uniform.bad">Het is niet één effen kleur &mdash; er zit een schaduw, een patroon of een voorwerp
+      achter je.</span>
+    <span data-phrase="bg.uniform.warn">Licht ongelijk. Een halve meter verder van de muur gaan staan is meestal de hele
+      oplossing.</span>
+    <span data-phrase="bg.uniform.good">Gelijkmatig belicht, zonder schaduw achter het hoofd.</span>
+    <span data-phrase="bg.sides.bad">De ene kant van de achtergrond is een stuk donkerder dan de andere, wat leest als
+      zijlicht.</span>
+    <span data-phrase="bg.sides.warn">De ene kant is iets donkerder dan de andere.</span>
+    <span data-phrase="bg.note">{colour} Deze tool vervangt geen achtergrond: iemand uit een foto knippen vraagt een
+      segmentatiemodel, en een slecht model vreet het haar op van precies die mensen wier
+      foto&rsquo;s toch al het vaakst worden afgekeurd. Een halve meter verder van de muur
+      gaan staan lost er meer op dan welk filter ook.</span>
+    <span data-phrase="bg.signature.note">Hier verandert niets aan je handtekening. Ze wordt gemeten en beschreven, en de
+      uitsnede is van jou.</span>
+    <span data-phrase="sig.ink.bad">Bijna geen inkt in de uitsnede. Of het kader staat naast de handtekening, of de pen
+      was te licht om te fotograferen.</span>
+    <span data-phrase="sig.ink.warn">Heel veel donkere pixels &mdash; kijk of de uitsnede geen lijntje of de rand van het
+      blad heeft meegenomen.</span>
+    <span data-phrase="sig.ink.good">Inkt bedekt {coverage}% van de uitsnede, en dat leest als een handtekening.</span>
+    <span data-phrase="sig.paper.bad">Het papier komt grijs uit in plaats van wit. Meer licht op het blad, of een scan in
+      plaats van een foto.</span>
+    <span data-phrase="sig.paper.warn">Het papier is wat dof. De meeste formulieren willen een schoon wit blad achter de
+      handtekening.</span>
+    <span data-phrase="sig.paper.good">Het papier is schoon en wit.</span>
     <span data-phrase="marks.measured">Alle vier zijn op de foto gemeten: de kruin aan de omtrek
       van je hoofd, de pupillen aan hoe donker ze zijn, de kin waar de kaak in de nek
       overgaat. Controleer ze toch, en sleep wat verkeerd is geland: de uitsnede wordt

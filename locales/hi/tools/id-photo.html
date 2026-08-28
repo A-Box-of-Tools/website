@@ -215,6 +215,91 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">छपाई का आकार</span>
+    <span data-phrase="facts.head">सिर, ठोड़ी से चोटी तक</span>
+    <span data-phrase="facts.eye">आँखों की रेखा, नीचे से</span>
+    <span data-phrase="facts.background">पृष्ठभूमि</span>
+    <span data-phrase="band.range">{min} से {max}</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} मिमी)</span>
+    <span data-phrase="band.guidance">{band} (मार्गदर्शन)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} मिमी)</span>
+    <span data-phrase="verdict.head.ok">सिर की ऊँचाई {measured} है। नियम {wanted} माँगता है।</span>
+    <span data-phrase="verdict.head.low">सिर की ऊँचाई {measured} है, जो बहुत कम है। नियम {wanted} माँगता है। बॉक्स को छोटा
+      कीजिए।</span>
+    <span data-phrase="verdict.head.high">सिर की ऊँचाई {measured} है, जो बहुत ज़्यादा है। नियम {wanted} माँगता है। बॉक्स को
+      बड़ा कीजिए।</span>
+    <span data-phrase="verdict.eye.ok">आँखों की रेखा {measured} पर है। नियम {wanted} माँगता है।</span>
+    <span data-phrase="verdict.eye.low">आँखों की रेखा {measured} पर है, यानी फ़्रेम में बहुत नीचे। नियम {wanted} माँगता है।
+      बॉक्स को नीचे सरकाइए।</span>
+    <span data-phrase="verdict.eye.high">आँखों की रेखा {measured} पर है, यानी फ़्रेम में बहुत ऊपर। नियम {wanted} माँगता है।
+      बॉक्स को ऊपर सरकाइए।</span>
+    <span data-phrase="tilt.level">आँखों की रेखा सीधी है।</span>
+    <span data-phrase="tilt.ok.left">सिर {degrees} डिग्री बाईं ओर झुका है, और यह उन दो-एक डिग्री के भीतर है जिन्हें कोई
+      जाँचने वाला पकड़ता नहीं।</span>
+    <span data-phrase="tilt.ok.right">सिर {degrees} डिग्री दाईं ओर झुका है, और यह उन दो-एक डिग्री के भीतर है जिन्हें कोई
+      जाँचने वाला पकड़ता नहीं।</span>
+    <span data-phrase="tilt.bad.left">सिर {degrees} डिग्री बाईं ओर झुका है, और यह दिख जाता है। कैमरा सीधा रखकर दोबारा
+      खींचिए, या पहले तस्वीर को सीधा कर लीजिए।</span>
+    <span data-phrase="tilt.bad.right">सिर {degrees} डिग्री दाईं ओर झुका है, और यह दिख जाता है। कैमरा सीधा रखकर दोबारा
+      खींचिए, या पहले तस्वीर को सीधा कर लीजिए।</span>
+    <span data-phrase="centre.ok">चेहरा फ़्रेम के बीचोंबीच है।</span>
+    <span data-phrase="centre.left">चेहरा फ़्रेम की चौड़ाई का {size} बीच से बाईं ओर बैठा है। बॉक्स को दूसरी ओर खींचिए,
+      या &ldquo;फ़िट&rdquo; दोबारा दबाइए।</span>
+    <span data-phrase="centre.right">चेहरा फ़्रेम की चौड़ाई का {size} बीच से दाईं ओर बैठा है। बॉक्स को दूसरी ओर खींचिए,
+      या &ldquo;फ़िट&rdquo; दोबारा दबाइए।</span>
+    <span data-phrase="resample.enough">कटा हुआ हिस्सा {have} पिक्सल का है और निकलेगा {need} का, इसलिए कुछ गढ़ना नहीं
+      पड़ेगा।</span>
+    <span data-phrase="resample.slight">कटा हुआ हिस्सा सिर्फ़ {have} पिक्सल का है और निकलेगा {need} का। इसे थोड़ा बड़ा किया
+      जाएगा, जिसमें ज़रा-सी सफ़ाई जाती है और कुछ नहीं।</span>
+    <span data-phrase="resample.severe">कटा हुआ हिस्सा सिर्फ़ {have} पिक्सल का है और निकलेगा {need} का। यह बहुत कम है: नतीजा
+      धुँधला लगेगा, और काग़ज़ पर स्क्रीनशॉट जैसा दिखेगा। इसका एक ही इलाज है, पास से या
+      ज़्यादा रेज़ोल्यूशन पर खींची गई तस्वीर।</span>
+    <span data-phrase="ready.geometry">नाप-जोख अभी नियम पर नहीं उतरती। फ़ाइलें फिर भी सहेजी जा सकती हैं &mdash; यहाँ कोई
+      आपकी अपनी तस्वीर देने से इनकार नहीं करता &mdash; पर फ़ॉर्म जो नापेगा वह ऊपर के यही
+      आँकड़े हैं।</span>
+    <span data-phrase="ready.background">नाप-जोख नियम पर उतरती है। पृष्ठभूमि नहीं, और तस्वीर लौटने की ज़्यादा आम वजह यही होती
+      है।</span>
+    <span data-phrase="ready.good">नाप-जोख नियम पर उतरती है और पृष्ठभूमि भी ठीक पढ़ी जा रही है।</span>
+    <span data-phrase="bg.white.label">सादा सफ़ेद</span>
+    <span data-phrase="bg.white.inline">सादा सफ़ेद</span>
+    <span data-phrase="bg.white.note">सफ़ेद दीवार तस्वीर में हल्की भूरी आती है। माँगा यह जाता है कि पृष्ठभूमि सादी हो,
+      रोशनी बराबर हो और परछाईं न हो &mdash; कोई ख़ास रंग का पेंट नहीं।</span>
+    <span data-phrase="bg.off-white.label">सफ़ेद या हल्का मटमैला सफ़ेद</span>
+    <span data-phrase="bg.off-white.inline">सफ़ेद या हल्का मटमैला सफ़ेद</span>
+    <span data-phrase="bg.off-white.note">दोनों चल जाते हैं, यानी असल में कुछ भी सादा और हल्का: न कोई छपाई, न फ़र्नीचर, न सिर
+      के पीछे परछाईं।</span>
+    <span data-phrase="bg.light-grey.label">सादा हल्का भूरा</span>
+    <span data-phrase="bg.light-grey.inline">सादा हल्का भूरा</span>
+    <span data-phrase="bg.light-grey.note">हल्का भूरा ICAO की पसंद है, क्योंकि यह गोरे चेहरे को पृष्ठभूमि से अलग करता है और
+      गहरे बालों को भी। शुद्ध सफ़ेद दोनों में से कुछ नहीं करता।</span>
+    <span data-phrase="bg.cream.label">हल्का भूरा या क्रीम</span>
+    <span data-phrase="bg.cream.inline">हल्का भूरा या क्रीम</span>
+    <span data-phrase="bg.cream.note">यह शब्द ब्रिटेन इस्तेमाल करता है। क्रीम गरम मटमैले सफ़ेद जैसा पढ़ा जाता है; नियम का
+      मतलब यह है कि पृष्ठभूमि सादी और एकसार हो, न कि कोई एक ख़ास रंगत।</span>
+    <span data-phrase="bg.colour.bad">पृष्ठभूमि {hex} नापी गई है, जो {wanted} से बहुत दूर है।</span>
+    <span data-phrase="bg.colour.warn">पृष्ठभूमि {hex} नापी गई है &mdash; {wanted} के पास, पर बिलकुल वही नहीं।</span>
+    <span data-phrase="bg.colour.good">पृष्ठभूमि {hex} नापी गई है, जो {wanted} के तौर पर चल जाती है।</span>
+    <span data-phrase="bg.uniform.bad">यह एक ही सपाट रंग नहीं है &mdash; आपके पीछे कोई परछाईं, कोई छपाई या कोई चीज़ है।</span>
+    <span data-phrase="bg.uniform.warn">थोड़ी असमान है। दीवार से आधा मीटर और दूर खड़े हो जाना अक्सर पूरा इलाज है।</span>
+    <span data-phrase="bg.uniform.good">रोशनी बराबर है, सिर के पीछे कोई परछाईं नहीं।</span>
+    <span data-phrase="bg.sides.bad">पृष्ठभूमि की एक तरफ़ दूसरी से कहीं ज़्यादा गहरी है, जो बगल से आती रोशनी जैसी पढ़ी
+      जाती है।</span>
+    <span data-phrase="bg.sides.warn">एक तरफ़ दूसरी से ज़रा गहरी है।</span>
+    <span data-phrase="bg.note">{colour} यह औज़ार पृष्ठभूमि बदलेगा नहीं: तस्वीर में से किसी इंसान को काटकर निकालने
+      के लिए सेगमेंटेशन मॉडल चाहिए, और ख़राब मॉडल ठीक उन्हीं लोगों के बाल चर जाता है जिनकी
+      तस्वीरें पहले से सबसे ज़्यादा लौटाई जाती हैं। दीवार से आधा मीटर और दूर खड़े होना
+      किसी भी फ़िल्टर से ज़्यादा मामले सुलझा देता है।</span>
+    <span data-phrase="bg.signature.note">यहाँ आपके दस्तख़त में कोई फेरबदल नहीं होता। उन्हें नापा जाता है और आपको बता दिया
+      जाता है, और कटाई का दायरा आपके ही हाथ में है।</span>
+    <span data-phrase="sig.ink.bad">कटे हुए हिस्से में स्याही है ही नहीं। या तो बॉक्स दस्तख़त से हटकर है, या फिर क़लम
+      इतनी हल्की थी कि तस्वीर में आई नहीं।</span>
+    <span data-phrase="sig.ink.warn">गहरे पिक्सल बहुत ज़्यादा हैं &mdash; देख लीजिए कि कटाई में काग़ज़ की कोई लकीर या
+      पन्ने का किनारा तो नहीं आ गया।</span>
+    <span data-phrase="sig.ink.good">स्याही कटे हुए हिस्से का {coverage}% ढके हुए है, जो दस्तख़त जैसा पढ़ा जाता है।</span>
+    <span data-phrase="sig.paper.bad">काग़ज़ सफ़ेद के बजाय भूरा आ रहा है। पन्ने पर और रोशनी डालिए, या तस्वीर के बजाय स्कैन
+      कीजिए।</span>
+    <span data-phrase="sig.paper.warn">काग़ज़ थोड़ा फीका है। ज़्यादातर फ़ॉर्म दस्तख़त के पीछे साफ़ सफ़ेद पन्ना चाहते हैं।</span>
+    <span data-phrase="sig.paper.good">काग़ज़ साफ़ और सफ़ेद है।</span>
     <span data-phrase="marks.measured">चारों फ़ोटो पर नापकर रखे गए हैं &mdash; शिखर आपके सिर की
       बाहरी रेखा से, पुतलियाँ उनके गहरेपन से, और ठुड्डी वहाँ से जहाँ जबड़ा गर्दन में
       उतरता है। फिर भी इन्हें देख लीजिए और जो गलत जगह गिरा हो उसे खींच दीजिए: क्रॉप

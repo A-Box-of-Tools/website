@@ -202,7 +202,11 @@ const SIDE_LIMIT = 5;
  * is the light being on one side of you.
  *
  * @param {Reading|null} reading
- * @param {{hex: string, tolerance: number, label: string}} required
+ * A finding carries a phrase key and the values its sentence needs rather than
+ * the sentence: this module is copied byte for byte into fifteen languages, so
+ * the words live in the tool's body.html and main.js resolves them.
+ *
+ * @param {{hex: string, tolerance: number, label: string, inline: string}} required
  */
 export function checkBackground(reading, required) {
   if (!reading) {
@@ -218,19 +222,22 @@ export function checkBackground(reading, required) {
     findings.push({
       key: 'colour',
       status: 'bad',
-      text: `The background reads ${reading.hex}, which is a long way from ${required.label.toLowerCase()}.`,
+      phrase: 'bg.colour.bad',
+      values: { hex: reading.hex, wanted: required.inline },
     });
   } else if (distance > required.tolerance) {
     findings.push({
       key: 'colour',
       status: 'warn',
-      text: `The background reads ${reading.hex} - close to ${required.label.toLowerCase()}, but not quite it.`,
+      phrase: 'bg.colour.warn',
+      values: { hex: reading.hex, wanted: required.inline },
     });
   } else {
     findings.push({
       key: 'colour',
       status: 'good',
-      text: `The background reads ${reading.hex}, which passes as ${required.label.toLowerCase()}.`,
+      phrase: 'bg.colour.good',
+      values: { hex: reading.hex, wanted: required.inline },
     });
   }
 
@@ -238,19 +245,19 @@ export function checkBackground(reading, required) {
     findings.push({
       key: 'uniform',
       status: 'bad',
-      text: 'It is not one flat colour - there is a shadow, a pattern or an object behind you.',
+      phrase: 'bg.uniform.bad',
     });
   } else if (reading.spread > SPREAD_LIMIT) {
     findings.push({
       key: 'uniform',
       status: 'warn',
-      text: 'Slightly uneven. Standing a foot further from the wall is usually the whole fix.',
+      phrase: 'bg.uniform.warn',
     });
   } else {
     findings.push({
       key: 'uniform',
       status: 'good',
-      text: 'Evenly lit, with no shadow behind the head.',
+      phrase: 'bg.uniform.good',
     });
   }
 
@@ -258,13 +265,13 @@ export function checkBackground(reading, required) {
     findings.push({
       key: 'sides',
       status: 'bad',
-      text: 'One side of the background is much darker than the other, which reads as side lighting.',
+      phrase: 'bg.sides.bad',
     });
   } else if (reading.lightRange > SIDE_LIMIT) {
     findings.push({
       key: 'sides',
       status: 'warn',
-      text: 'One side is a little darker than the other.',
+      phrase: 'bg.sides.warn',
     });
   }
 
@@ -330,19 +337,20 @@ export function checkSignature(reading) {
     findings.push({
       key: 'ink',
       status: 'bad',
-      text: 'Almost no ink in the crop. Either the box is off the signature, or the pen was too light to photograph.',
+      phrase: 'sig.ink.bad',
     });
   } else if (reading.coverage > 0.35) {
     findings.push({
       key: 'ink',
       status: 'warn',
-      text: 'A great deal of dark pixels - check the crop has not taken in a ruled line or the edge of the page.',
+      phrase: 'sig.ink.warn',
     });
   } else {
     findings.push({
       key: 'ink',
       status: 'good',
-      text: `Ink covers ${(reading.coverage * 100).toFixed(1)}% of the crop, which reads as a signature.`,
+      phrase: 'sig.ink.good',
+      values: { coverage: (reading.coverage * 100).toFixed(1) },
     });
   }
 
@@ -350,16 +358,16 @@ export function checkSignature(reading) {
     findings.push({
       key: 'paper',
       status: 'bad',
-      text: 'The paper is coming out grey rather than white. More light on the page, or a scan rather than a photo.',
+      phrase: 'sig.paper.bad',
     });
   } else if (reading.paperLightness < 88) {
     findings.push({
       key: 'paper',
       status: 'warn',
-      text: 'The paper is a little dull. Most forms want a clean white page behind the signature.',
+      phrase: 'sig.paper.warn',
     });
   } else {
-    findings.push({ key: 'paper', status: 'good', text: 'The paper is clean and white.' });
+    findings.push({ key: 'paper', status: 'good', phrase: 'sig.paper.good' });
   }
 
   const status = findings.some((one) => one.status === 'bad')
