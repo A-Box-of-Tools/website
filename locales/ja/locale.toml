@@ -223,6 +223,7 @@ blurb = """
         サーバーに触れない道具。ファイルは手元の端末に置いたままです。\
         アップロードするものも、作るアカウントもありません。"""
 base = "このサイトの主張はどれも、信じてもらうためではなく、確かめてもらうために書いてあります。"
+licence = """文章は<a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>、コードは<a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>です。出典を示せば自由に使えます。"""
 
 #
 # ---------------------------------------------------------------------------

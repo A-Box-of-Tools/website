@@ -205,6 +205,7 @@ blurb = """
         不走伺服器的工具。檔案留在你自己的機器上，沒有東西要傳，也不用註冊\
         帳號。"""
 base = "本站說的每一句話，都是寫來給你核對的，不是寫來讓你信的。"
+licence = """本站文字採用<a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>，程式碼採用<a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>。歡迎取用，註明出處即可。"""
 
 #
 # ---------------------------------------------------------------------------

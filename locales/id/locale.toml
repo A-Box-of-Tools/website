@@ -347,6 +347,12 @@ blurb = """
         perangkat Anda &mdash; tidak ada yang perlu diunggah, tidak perlu
         membuat akun."""
 base = "Setiap klaim di situs ini dimaksudkan untuk diperiksa, bukan dipercaya begitu saja."
+licence = """
+    Teks di sini berlisensi
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>,
+    kodenya
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.
+    Silakan pakai ulang, cukup cantumkan sumbernya."""
 
 #
 # ---------------------------------------------------------------------------

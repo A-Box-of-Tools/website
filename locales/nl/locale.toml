@@ -328,6 +328,12 @@ blurb = """
         je eigen apparaat, want er valt niets te uploaden en je hoeft geen
         account te maken."""
 base = "Elke bewering op deze site is bedoeld om na te trekken, niet om te geloven."
+licence = """
+    De teksten staan onder
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>,
+    de code onder
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.
+    Hergebruik het gerust, met bronvermelding."""
 
 #
 # ---------------------------------------------------------------------------
