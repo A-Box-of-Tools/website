@@ -38,7 +38,7 @@ const el = {
   downloadSelected: $('download-selected'),
   downloadSheet: $('download-sheet'),
   cancel: $('cancel'),
-  progressWrap: $('progress-wrap'),
+  progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
   framesCard: $('frames-card'),
@@ -558,13 +558,13 @@ function save(blob, name) {
 /* -------------------------------------------------------------- the frame */
 
 function progress(done, total, label) {
-  el.progressWrap.hidden = false;
+  el.progress.hidden = false;
   el.progressBar.style.width = `${total ? (done / total) * 100 : 0}%`;
   el.progressLabel.textContent = label;
 }
 
 function hideProgress() {
-  el.progressWrap.hidden = true;
+  el.progress.hidden = true;
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = '';
 }

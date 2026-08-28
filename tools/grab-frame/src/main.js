@@ -43,7 +43,7 @@ const el = {
   grab: $('grab'),
   grabSeries: $('grab-series'),
   cancel: $('cancel'),
-  progressWrap: $('progress-wrap'),
+  progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
   error: $('error'),
@@ -630,7 +630,7 @@ el.clear.addEventListener('click', clearShots);
 el.downloadAll.addEventListener('click', async () => {
   if (!shots.length || working) return;
   setWorking(true);
-  el.progressWrap.hidden = false;
+  el.progress.hidden = false;
   setProgress({ done: 0, total: shots.length, label: 'Packing...' });
 
   try {
@@ -654,7 +654,7 @@ el.downloadAll.addEventListener('click', async () => {
     showError(error?.message || 'That archive could not be built.');
   } finally {
     setWorking(false);
-    el.progressWrap.hidden = true;
+    el.progress.hidden = true;
   }
 });
 
@@ -736,7 +736,7 @@ el.grabSeries.addEventListener('click', async () => {
   setWorking(true);
   abortController = new AbortController();
   el.cancel.hidden = false;
-  el.progressWrap.hidden = false;
+  el.progress.hidden = false;
 
   const options = encodeOptions();
   const { signal } = abortController;
@@ -797,7 +797,7 @@ el.grabSeries.addEventListener('click', async () => {
   } finally {
     abortController = null;
     el.cancel.hidden = true;
-    el.progressWrap.hidden = true;
+    el.progress.hidden = true;
     setWorking(false);
   }
 });

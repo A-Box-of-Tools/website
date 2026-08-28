@@ -49,7 +49,7 @@ const el = {
   sumLoop: $('sum-loop'),
   exportBtn: $('export'),
   cancelBtn: $('cancel'),
-  progressWrap: $('progress-wrap'),
+  progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
   error: $('error'),
@@ -587,7 +587,7 @@ async function runExport() {
 
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
-  el.progressWrap.hidden = false;
+  el.progress.hidden = false;
   el.result.hidden = true;
   setProgress({ phase: 'palette', done: 0, total: 1 });
 
@@ -610,10 +610,10 @@ async function runExport() {
     el.resultInfo.textContent =
       `GIF · ${settings.width}×${settings.height} · ${frames} frames · ${formatBytes(blob.size)}`;
     el.result.hidden = false;
-    el.progressWrap.hidden = true;
+    el.progress.hidden = true;
     el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
-    el.progressWrap.hidden = true;
+    el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
       showError(error?.message || 'Something went wrong while making the GIF.');
       console.error(error);

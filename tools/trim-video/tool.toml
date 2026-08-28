@@ -21,6 +21,10 @@ category = "video-and-animation"
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "video"
 
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works.
+css_parts = ["progress"]
+
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.

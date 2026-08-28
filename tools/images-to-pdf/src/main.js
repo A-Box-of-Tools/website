@@ -58,7 +58,7 @@ const el = {
 
   exportBtn: $('export'),
   cancelBtn: $('cancel'),
-  progressWrap: $('progress-wrap'),
+  progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
   error: $('error'),
@@ -632,7 +632,7 @@ async function runExport() {
   clearResult();
   el.exportBtn.disabled = true;
   el.cancelBtn.hidden = false;
-  el.progressWrap.hidden = false;
+  el.progress.hidden = false;
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = 'Starting...';
 
@@ -673,7 +673,7 @@ async function runExport() {
     el.exportBtn.disabled = !items.length;
     // Left on screen after a cancel, so that pressing the button and then
     // changing your mind does not look like nothing happened.
-    el.progressWrap.hidden = !cancelled;
+    el.progress.hidden = !cancelled;
   }
 }
 

@@ -20,6 +20,10 @@ category = "images"
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "images"
 
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works.
+css_parts = ["progress"]
+
 # Shared modules this tool asks for. Only the drop zone: the list underneath it
 # is this tool's own, because a row in it carries what was found inside a RAW
 # file rather than what the operating system said about the file.

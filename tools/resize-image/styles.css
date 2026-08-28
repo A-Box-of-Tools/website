@@ -454,27 +454,6 @@ button.file-main-wrap:focus-visible {
 
 .run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 
-.progress { margin-top: 1rem; }
-
-.progress-track {
-  height: 6px;
-  border-radius: 99px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-
-/* Width is set from script as each image finishes. There is no animation on
-   purpose: a bar that slides while an encode is running suggests progress the
-   tool cannot actually measure part-way through. */
-.progress-bar { height: 100%; width: 0; background: var(--accent); }
-
-.progress-label {
-  margin: 0.5rem 0 0;
-  font-size: 0.85rem;
-  color: var(--text-dim);
-}
-
 /* ----------------------------------------------------------------- results */
 
 .results { margin-top: 1.4rem; }

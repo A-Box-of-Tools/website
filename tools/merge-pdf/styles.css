@@ -331,22 +331,6 @@
 
 .run-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
 
-.progress { margin-top: 1rem; }
-
-.progress-track {
-  height: 6px;
-  border-radius: 99px;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  overflow: hidden;
-}
-
-/* Width is set from script as each file is finished. No animation: a bar that
-   slides while a document is written suggests progress nothing measured. */
-.progress-bar { height: 100%; width: 0; background: var(--accent); }
-
-.progress-label { margin: 0.45rem 0 0; font-size: 0.85rem; color: var(--text-dim); }
-
 /* ----------------------------------------------------------------- results */
 
 .result { margin-top: 1.2rem; }

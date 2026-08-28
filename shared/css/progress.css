@@ -1,0 +1,67 @@
+/*
+  The bar a tool draws while it is working: a track, the fill inside it, and a
+  line of text underneath saying what is happening.
+
+  Twenty-three tools drew one of these and every one of them wrote these four
+  rules out by hand. Worse, they had drifted into two spellings of the same
+  three elements - ten tools called the groove `.progress-track` inside a
+  `.progress`, and thirteen called it `.progress` inside a `.progress-wrap` -
+  so the same class name meant the component in one half of the site and the
+  groove it contains in the other. That is the kind of thing that is only ever
+  found by reading two stylesheets side by side, which nobody does. One
+  spelling, in one file, ends it: `.progress` is the component, `.progress-track`
+  is the groove, `.progress-bar` is the fill.
+
+  A tool that needs more can still say so - its own styles.css is appended
+  after this, so it wins. images-to-pdf does exactly that, to keep a long file
+  name on one line.
+*/
+
+.progress { margin-top: 1rem; }
+
+.progress-track {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* `display: block` because the fill is a <span> in one tool and a <div> in the
+   rest, and an inline box ignores height. */
+.progress-bar {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+}
+
+/*
+  Sliding the fill between two widths is opt-in, and that is the whole reason
+  this class exists rather than a transition on every bar.
+
+  A tool that encodes a video knows how far through it is at every frame, so
+  the fill really is moving continuously and animating it says something true.
+  A tool that compresses eight images knows only that it has finished the
+  third: its bar jumps, and a slide between the jumps would suggest progress it
+  cannot measure part-way through. The batch tools argued that in a comment
+  before this file existed, and they were right, so the default here is the
+  honest one and the continuous tools ask for the other.
+*/
+.progress-bar.is-smooth { transition: width 0.15s linear; }
+
+/* The thirteen tools that animate this had no such guard when each of them
+   owned the rule. */
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar.is-smooth { transition: none; }
+}
+
+.progress-label {
+  margin: 0.45rem 0 0;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  /* These lines are nearly always a count - "3 of 12", "frame 640 of 1,000" -
+     and a proportional 1 is narrower than a 4, so the number jittered as it
+     climbed. */
+  font-variant-numeric: tabular-nums;
+}
