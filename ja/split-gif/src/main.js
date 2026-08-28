@@ -68,7 +68,7 @@ if(picked)loadFile(picked);
 async function loadFile(picked){
 if(working)return;
 clearError();
-picker.busy('Reading the GIF...');
+picker.busy(phrase('read.reading'));
 try{
 const bytes=new Uint8Array(await picked.arrayBuffer());
 const decoded=decodeGif(bytes);
@@ -79,8 +79,8 @@ describe();
 build();
 await draw();
 }catch(error){
-if(error instanceof GifFormatError)showError(error.message);
-else showError(`That file could not be read: ${error.message}`);
+if(error instanceof GifFormatError)showError(phrase(error.message,error.values));
+else showError(phrase('read.failed',{why:phrase(error.message)}));
 }finally{
 picker.done();
 }
@@ -89,30 +89,29 @@ function describe(){
 const partial=gif.frames.filter((frame)=>frame.partial).length;
 const local=gif.frames.filter((frame)=>frame.hasLocalPalette).length;
 el.srcName.textContent=file.name;
-el.srcSize.textContent=formatBytes(file.size);
+el.srcSize.textContent=formatBytes(file.size,phrase);
 el.srcPicture.textContent=`${gif.width} x ${gif.height}`;
 el.srcFrames.textContent=String(gif.frames.length);
-el.srcDuration.textContent=formatSeconds(totalDuration(gif.frames));
+el.srcDuration.textContent=formatSeconds(totalDuration(gif.frames),phrase);
 el.srcLoop.textContent=loopLabel(gif.loopCount);
 el.source.hidden=false;
 const notes=[];
-if(gif.truncated)notes.push(gif.truncated);
+if(gif.truncated)notes.push(phrase(gif.truncated.key,gif.truncated.values));
 if(partial){
-notes.push(`${partial} frame${partial === 1 ? '' : 's'} stop short in the file itself; `
-+'the missing pixels come out transparent.');
+notes.push(phrase(partial===1?'note.partial.one':'note.partial.many',
+{n:partial}));
 }
-if(local){
-notes.push(`${local} of the frames carry a colour table of their own, which is why `
-+'this GIF is larger than its size suggests.');
-}
-if(gif.comment)notes.push(`The file carries a comment: "${gif.comment.slice(0, 120)}"`);
-el.notice.textContent=notes.join(' ');
+if(local)notes.push(phrase('note.local',{n:local}));
+if(gif.comment)notes.push(phrase('note.comment',{comment:gif.comment.slice(0,120)}));
+el.notice.textContent=notes.length
+?notes.reduce((a,b)=>phrase('join.sentences',{a,b}))
+:'';
 el.notice.hidden=notes.length===0;
 }
 function loopLabel(loop){
-if(loop===null)return'plays once (no loop block)';
-if(loop===0)return'forever';
-return`${loop} more time${loop === 1 ? '' : 's'}`;
+if(loop===null)return phrase('loop.once');
+if(loop===0)return phrase('loop.forever');
+return phrase(loop===1?'loop.times.one':'loop.times.many',{n:loop});
 }
 function build(){
 const total=gif.frames.length;
@@ -143,9 +142,9 @@ row.checked=box.checked;
 item.classList.toggle('unpicked',!box.checked);
 countFrames();
 });
-label.append(box,document.createTextNode(`Frame ${row.index + 1}`));
+label.append(box,document.createTextNode(phrase('frame.number',{n:row.index+1})));
 const image=document.createElement('img');
-image.alt=`Frame ${row.index + 1}`;
+image.alt=phrase('frame.number',{n:row.index+1});
 image.loading='lazy';
 const meta=document.createElement('p');
 meta.className='frame-meta';
@@ -176,7 +175,7 @@ async function draw(){
 const mine=(pass+=1);
 const{stored,colour}=settings();
 const canvas=stored?null:new GifCanvas(gif);
-progress(0,rows.length,'Drawing the frames...');
+progress(0,rows.length,phrase('step.drawing'));
 for(const row of rows){
 if(mine!==pass)return;
 const{frame}=row;
@@ -203,7 +202,7 @@ if(row.thumbUrl)URL.revokeObjectURL(row.thumbUrl);
 row.thumbUrl=thumb.url;
 row.image.src=thumb.url;
 row.meta.textContent=describeFrame(row,stored);
-progress(row.index+1,rows.length,'Drawing the frames...');
+progress(row.index+1,rows.length,phrase('step.drawing'));
 await new Promise((resolve)=>setTimeout(resolve,0));
 }
 if(mine===pass){
@@ -213,16 +212,27 @@ countFrames();
 }
 function describeFrame(row,stored){
 const{frame}=row;
-const delay=`${formatSeconds(row.played)}`;
-const clamped=frame.delay<2?` (stored as ${(frame.delay / 100).toFixed(2)}s)`:'';
-if(!stored)return`${delay}${clamped} - ${gif.width} x ${gif.height}`;
-return`${delay}${clamped} - ${frame.width} x ${frame.height} at ${frame.x}, ${frame.y}`
-+` - ${disposalLabel(frame.disposal)}`;
+const delay=frame.delay<2
+?phrase('meta.clamped',{
+played:formatSeconds(row.played,phrase),stored:(frame.delay/100).toFixed(2),
+})
+:formatSeconds(row.played,phrase);
+if(!stored){
+return phrase('meta.whole',{delay,width:gif.width,height:gif.height});
+}
+return phrase('meta.patch',{
+delay,
+width:frame.width,
+height:frame.height,
+x:frame.x,
+y:frame.y,
+disposal:disposalLabel(frame.disposal,phrase),
+});
 }
 function countFrames(){
 const picked=rows.filter((row)=>row.checked).length;
-el.framesCount.textContent=`${rows.length} frame${rows.length === 1 ? '' : 's'}`
-+`, ${picked} selected`;
+el.framesCount.textContent=phrase(rows.length===1?'frames.count.one':'frames.count.many',
+{n:rows.length,picked});
 el.downloadSelected.hidden=picked===rows.length||picked===0;
 el.downloadAll.disabled=rows.length===0;
 }
@@ -265,7 +275,7 @@ const options=settings();
 const{pixels,width,height}=pixelsFor(row.index,options);
 save(await encodePng(pixels,width,height),row.name);
 }catch(error){
-showError(`That frame could not be written: ${error.message}`);
+showError(phrase('save.frame.failed',{why:phrase(error.message)}));
 }
 }
 async function downloadSheet(){
@@ -314,14 +324,14 @@ return;
 const blob=await new Promise((resolve,reject)=>{
 sheet.toBlob((made)=>{
 if(made)resolve(made);
-else reject(new Error('This browser would not write a PNG.'));
+else reject(new Error('png.nowrite'));
 },'image/png');
 });
 save(blob,sheetName(baseName(file.name),plan));
 hideProgress();
 }catch(error){
 hideProgress();
-showError(`That sheet could not be written: ${error.message}`);
+showError(phrase('save.sheet.failed',{why:phrase(error.message)}));
 }finally{
 working=false;
 el.cancel.hidden=true;
@@ -365,7 +375,8 @@ const blob=await encodePng(pixels,width,height);
 files.push({name:row.name,data:new Uint8Array(await blob.arrayBuffer())});
 written.push(row);
 done+=1;
-progress(done,wanted.length,`Writing frame ${done} of ${wanted.length}...`);
+progress(done,wanted.length,
+phrase('step.writing',{done,total:wanted.length}));
 await new Promise((resolve)=>setTimeout(resolve,0));
 }
 if(cancelled){
@@ -375,13 +386,13 @@ return;
 if(options.timing){
 files.push({
 name:'frames.txt',
-data:new TextEncoder().encode(timingList(file.name,gif,written)),
+data:new TextEncoder().encode(timingList(file.name,gif,written,phrase)),
 });
 }
 save(makeZip(files),zipName(file.name));
 hideProgress();
 }catch(error){
-showError(`The frames could not be written: ${error.message}`);
+showError(phrase('save.frames.failed',{why:phrase(error.message)}));
 hideProgress();
 }finally{
 working=false;
@@ -431,20 +442,14 @@ el.notice.hidden=true;
 hideProgress();
 }
 function updateModeNote(){
-el.modeNote.textContent=el.mode.value==='stored'
-?'What the file holds: the patch each frame redraws, at its own size. '
-+'This is how a GIF stays small, and it is not what the animation looks like.'
-:'Every PNG is the whole picture, exactly as that moment of the animation '
-+'looks. This is what almost everybody wants.';
+el.modeNote.textContent=phrase(el.mode.value==='stored'?'mode.stored':'mode.whole');
 }
 function updateEveryNote(){
 const{every}=settings();
-el.everyNote.textContent=every===1?'frame':`${ordinal(every)} frame`;
-}
-function ordinal(value){
-if(value===2)return'second';
-if(value===3)return'third';
-return`${value}th`;
+const key=every===1?'every.one'
+:every===2?'every.two'
+:every===3?'every.three':'every.many';
+el.everyNote.textContent=phrase(key,{n:every});
 }
 el.mode.addEventListener('change',()=>{
 updateModeNote();

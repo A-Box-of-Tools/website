@@ -1,8 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 export class GifFormatError extends Error{
-constructor(message){
-super(message);
+constructor(key,values={}){
+super(key);
 this.name='GifFormatError';
+this.values=values;
 }
 }
 class Truncated extends Error{}
@@ -16,12 +17,10 @@ const EXT_APPLICATION=0xff;
 const latin1=new TextDecoder('latin1');
 const INTERLACE_PASSES=[[0,8],[4,8],[2,4],[1,2]];
 export function decodeGif(bytes,{maxPixels=512e6}={}){
-if(bytes.length<13)throw new GifFormatError('That file is too short to be a GIF.');
+if(bytes.length<13)throw new GifFormatError('gif.tooshort');
 const signature=latin1.decode(bytes.subarray(0,6));
 if(signature!=='GIF87a'&&signature!=='GIF89a'){
-throw new GifFormatError(
-'That is not a GIF. The file does not start with GIF87a or GIF89a.',
-);
+throw new GifFormatError('gif.notagif');
 }
 const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
 const packed=bytes[10];
@@ -75,9 +74,7 @@ gif.frames.push(frame);
 control=null;
 decoded+=frame.width*frame.height;
 if(decoded>maxPixels){
-gif.truncated=`This GIF is enormous: the first ${gif.frames.length} frames `
-+'filled the memory this page is willing to hold at once, so the rest '
-+'were left unread.';
+gif.truncated={key:'gif.enormous',values:{n:gif.frames.length}};
 break;
 }
 continue;
@@ -90,14 +87,11 @@ throw new Truncated(`unknown block 0x${marker.toString(16)}`);
 }
 }catch(error){
 if(!(error instanceof Truncated))throw error;
-gif.truncated=gif.frames.length
-?'This GIF ends in the middle of a frame, so the last one may be incomplete.'
-:'This GIF is damaged: it ends before the first frame is complete.';
+gif.truncated={key:gif.frames.length?'gif.midframe':'gif.damaged',values:{}};
 }
 if(!gif.frames.length){
-throw new GifFormatError(
-gif.truncated??'That GIF holds no frames this reader could open.',
-);
+const why=gif.truncated??{key:'gif.noframes',values:{}};
+throw new GifFormatError(why.key,why.values);
 }
 if(!gif.width||!gif.height){
 for(const frame of gif.frames){
