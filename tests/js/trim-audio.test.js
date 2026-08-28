@@ -33,6 +33,13 @@ import {
 import { formatTime, parseTime } from '../../tools/trim-audio/src/timeline.js';
 import { summarise } from '../../tools/trim-audio/src/waveform.js';
 
+/**
+ * The stand-in for phrase(). What the tool says lives in body.html now, in
+ * fifteen languages; a test can hold it to the key it asked for and the
+ * numbers it put in the blanks.
+ */
+const say = (key, values = {}) => [key, ...Object.values(values)].join(' ');
+
 /* ------------------------------------------------------------- fixtures */
 
 /** A ramp, so every sample is identifiable by its value alone: sample n is n. */
@@ -192,7 +199,7 @@ test('trimming nothing returns every sample, unmultiplied', async () => {
     sampleRate: 1000, totalFrames: 500, fadeSeconds: 0.05,
   });
 
-  const cut = await trim(source, sections);
+  const cut = await trim(source, sections, { t: say });
   assert.equal(cut.frames, 500);
   assert.deepEqual(Array.from(cut.channels[0]), Array.from(source.channels[0]));
   assert.deepEqual(Array.from(cut.channels[1]), Array.from(source.channels[1]));
@@ -205,7 +212,8 @@ test('trim and cutChannels agree, and trim reports progress', async () => {
     { sampleRate: 1000, totalFrames: 1000, fadeSeconds: 0.003 });
 
   const seen = [];
-  const cut = await trim(source, sections, { onProgress: (done) => seen.push(done) });
+  const cut = await trim(source, sections,
+    { t: say, onProgress: (done) => seen.push(done) });
 
   assert.deepEqual(Array.from(cut.channels[0]),
     Array.from(cutChannels(source.channels, sections)[0]));
@@ -215,7 +223,8 @@ test('trim and cutChannels agree, and trim reports progress', async () => {
 
 test('trimming with nothing marked is an error rather than an empty file', async () => {
   const source = { channels: [ramp(10)], sampleRate: 1000, frames: 10 };
-  await assert.rejects(() => trim(source, []), /nothing marked/i);
+  // The sentence lives in body.html now; the key is what this can hold it to.
+  await assert.rejects(() => trim(source, [], { t: say }), /^Error: trim\.nothing$/);
 });
 
 test('trim stops when the signal is aborted', async () => {
@@ -226,6 +235,7 @@ test('trim stops when the signal is aborted', async () => {
 
   const controller = new AbortController();
   const running = trim(source, sections, {
+    t: say,
     signal: controller.signal,
     onProgress: () => controller.abort(),
   });
@@ -261,6 +271,7 @@ test('the loop hands the page back between sections, not just the microtask queu
   setTimeout(() => { timerFired = true; }, 0);
 
   await trim(source, sections, {
+    t: say,
     budgetMs: 0,
     onProgress: () => { if (timerFired) firedDuringLoop = true; },
   });
@@ -436,8 +447,9 @@ test('a line that cannot be read is counted, not fatal', () => {
 });
 
 test('a file with nothing readable in it says so', () => {
-  assert.throws(() => readTimestamps('seconds,talk\nnothing\nhere\n'), /No segments/);
-  assert.throws(() => readTimestamps(''), /No segments/);
+  assert.throws(() => readTimestamps('seconds,talk\nnothing\nhere\n'),
+    /^Error: marks\.unreadable$/);
+  assert.throws(() => readTimestamps(''), /^Error: marks\.unreadable$/);
 });
 
 /* ---------------------------------------------------------- the waveform */

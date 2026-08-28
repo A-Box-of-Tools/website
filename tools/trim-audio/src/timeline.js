@@ -84,6 +84,7 @@ export class Timeline {
   #onSeek;
   #onSelect;
   #onAdjust;
+  #t;
 
   #duration = 0;
   #summary = null;
@@ -97,11 +98,14 @@ export class Timeline {
    * @param {HTMLElement} root
    * @param {{onSeek: Function, onSelect: Function, onAdjust: Function}} options
    */
-  constructor(root, { onSeek, onSelect, onAdjust } = {}) {
+  constructor(root, { onSeek, onSelect, onAdjust, t } = {}) {
     this.#root = root;
     this.#onSeek = onSeek;
     this.#onSelect = onSelect;
     this.#onAdjust = onAdjust;
+    // The caller's phrase(): a band's tooltip is a sentence, and this file
+    // is copied byte for byte into fifteen languages.
+    this.#t = t;
 
     root.innerHTML = '';
     root.classList.add('timeline');
@@ -220,7 +224,9 @@ export class Timeline {
       band.dataset.id = String(segment.id);
       band.style.left = `${from}%`;
       band.style.width = `${Math.max(0.4, to - from)}%`;
-      band.title = `Part ${index + 1}: ${formatTime(segment.start)} to ${formatTime(segment.end)}`;
+      band.title = this.#t('tl.band', {
+        n: index + 1, from: formatTime(segment.start), to: formatTime(segment.end),
+      });
 
       const number = document.createElement('span');
       number.className = 'tl-band-number';

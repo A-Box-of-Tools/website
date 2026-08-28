@@ -204,6 +204,100 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Reading the sound&hellip;</span>
+    <span data-phrase="read.failed">That file could not be read: {why}</span>
+    <span data-phrase="audio.empty">That file is empty.</span>
+    <span data-phrase="audio.nodecode">This browser could not read any sound out of that file. Either the format is one it
+      does not decode, or the file has no audio track in it at all. MP3, WAV, FLAC, M4A,
+      MP4, MOV, WebM and Ogg all work; AVI, WMA and most MKVs do not.</span>
+    <span data-phrase="audio.nosound">There is no sound in that file &mdash; it decoded to nothing.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (from the file)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (assumed)</span>
+    <span data-phrase="src.guessednote">This format does not say what rate it was recorded at in a header this tool reads,
+      so it was decoded at 48 kHz. If the recording was made at some other rate, the
+      browser resampled it on the way in &mdash; which is the one thing here that is not
+      exact.</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} channels</span>
+    <span data-phrase="mark.noopen">Nothing is open yet. Press I where the part should start, then O where it ends.</span>
+    <span data-phrase="mark.beforestart">That would end the part at {at}, which is before it starts at {start}. Move the
+      playhead past the start first.</span>
+    <span data-phrase="mark.noroom">There is not enough recording left here to add a part. Move the playhead back.</span>
+    <span data-phrase="mark.clearone">Clear the one part of {name}?</span>
+    <span data-phrase="mark.clearall">Clear all {n} parts of {name}?</span>
+    <span data-phrase="tl.band">Part {n}: {from} to {to}</span>
+    <span data-phrase="parts.none">none yet &mdash; the whole recording</span>
+    <span data-phrase="parts.count">{finished} of {total}</span>
+    <span data-phrase="btn.play">Play this part</span>
+    <span data-phrase="btn.up">Move up</span>
+    <span data-phrase="btn.down">Move down</span>
+    <span data-phrase="btn.remove">Remove</span>
+    <span data-phrase="marks.nothing">There is nothing marked to save yet.</span>
+    <span data-phrase="marks.unreadable">No segments could be read from that file. Each line after the first should be a
+      start and an end, separated by a comma.</span>
+    <span data-phrase="marks.allpast">Every part in {name} starts after this recording ends. It was probably marked
+      against a different one.</span>
+    <span data-phrase="marks.dropped.one">1 part in {name} starts past the end of this recording, so it was left out.</span>
+    <span data-phrase="marks.dropped.many">{n} parts in {name} start past the end of this recording, so they were left out.</span>
+    <span data-phrase="marks.skipped.one">1 line could not be read as a part.</span>
+    <span data-phrase="marks.skipped.many">{n} lines could not be read as a part.</span>
+    <span data-phrase="marks.loaded">{n} loaded.</span>
+    <span data-phrase="marks.failed">{name} could not be read: {why}</span>
+    <span data-phrase="n.part.one">{n} part</span>
+    <span data-phrase="n.part.many">{n} parts</span>
+    <span data-phrase="n.join.one">{n} join</span>
+    <span data-phrase="n.join.many">{n} joins</span>
+    <span data-phrase="n.edge.one">{n} edge</span>
+    <span data-phrase="n.edge.many">{n} edges</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">nothing &mdash; the marks cover the whole recording</span>
+    <span data-phrase="sum.nothing">nothing marked</span>
+    <span data-phrase="sum.zero">0s</span>
+    <span data-phrase="sum.parts.cut">{parts}, once the marked ones are gone</span>
+    <span data-phrase="sum.start">exactly where you marked, at sample {sample}</span>
+    <span data-phrase="sum.onepart">none &mdash; one part, untouched</span>
+    <span data-phrase="sum.onepart.faded">none &mdash; one part, faded at its cut edges</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} faded</span>
+    <span data-phrase="sum.joins.nofades">{joins}, no fades</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16-bit</span>
+    <span data-phrase="depth.float">32-bit float</span>
+    <span data-phrase="sum.untouched">Nothing is marked, so nothing is being cut: this will write out every sample the
+      decoder produced, in order, with no fade anywhere. It is a format change and nothing
+      else.</span>
+    <span data-phrase="fade.none">Every part is cut on the exact sample you marked, with nothing multiplied by
+      anything. If a cut lands mid-word you may hear a click at the join, which is the
+      waveform jumping rather than anything going wrong.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; about {samples} samples &mdash; ramped up at the start of a part and
+      down at its end, so a join cannot click. Only edges that are actually cuts get one:
+      an edge at the very start or end of the recording is left alone.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; about {samples} samples &mdash; ramped up at the start of a part and
+      down at its end, so a join cannot click. Only edges that are actually cuts get one:
+      an edge at the very start or end of the recording is left alone, which leaves 1 edge
+      faded here.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; about {samples} samples &mdash; ramped up at the start of a part and
+      down at its end, so a join cannot click. Only edges that are actually cuts get one:
+      an edge at the very start or end of the recording is left alone, which leaves {n}
+      edges faded here.</span>
+    <span data-phrase="export.nothing">There is nothing to keep. Mark a part, or switch back to &ldquo;Keep them&rdquo;.</span>
+    <span data-phrase="step.starting">Starting&hellip;</span>
+    <span data-phrase="trim.copying">Copying part {done} of {total}&hellip;</span>
+    <span data-phrase="step.writing">Writing the file&hellip;</span>
+    <span data-phrase="trim.nothing">There is nothing marked to keep.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds}s</span>
+    <span data-phrase="export.failed">Something went wrong while trimming the audio.</span>
+    <span data-phrase="wav.nochannels">a WAV needs at least one channel</span>
+    <span data-phrase="wav.uneven">the channels are different lengths</span>
+    <span data-phrase="wav.toobig">That would make a WAV larger than 4 GB, which the format cannot describe. Try 16-bit
+      rather than 32-bit float, or a shorter section.</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">your audio has gone nowhere. {total} files
       loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

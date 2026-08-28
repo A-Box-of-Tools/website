@@ -35,7 +35,7 @@ export class UnreadableFile extends Error {
  */
 export async function decodeAudio(file) {
   const bytes = new Uint8Array(await file.arrayBuffer());
-  if (!bytes.length) throw new UnreadableFile('That file is empty.');
+  if (!bytes.length) throw new UnreadableFile('audio.empty');
 
   const declared = sniffSampleRate(bytes);
   const rate = declared ?? FALLBACK_RATE;
@@ -51,12 +51,9 @@ export async function decodeAudio(file) {
     // of the bytes and the sniffing above is done before this line, not after.
     audio = await context.decodeAudioData(bytes.slice().buffer);
   } catch (error) {
-    throw new UnreadableFile(
-      'This browser could not read any sound out of that file. Either the '
-      + 'format is one it does not decode, or the file has no audio track in '
-      + 'it at all. MP3, WAV, FLAC, M4A, MP4, MOV, WebM and Ogg all work; AVI, '
-      + 'WMA and most MKVs do not.',
-      { cause: error });
+    // A key rather than a sentence: this file is copied byte for byte into
+    // fifteen languages, and main.js is where the words live.
+    throw new UnreadableFile('audio.nodecode', { cause: error });
   }
 
   const channels = [];
@@ -64,7 +61,7 @@ export async function decodeAudio(file) {
     channels.push(audio.getChannelData(i));
   }
   if (!channels.length || !channels[0].length) {
-    throw new UnreadableFile('There is no sound in that file - it decoded to nothing.');
+    throw new UnreadableFile('audio.nosound');
   }
 
   return {

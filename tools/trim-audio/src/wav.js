@@ -31,10 +31,10 @@ const IEEE_FLOAT = 3;
  * @returns {Blob} the file, ready to be handed to a download link
  */
 export function writeWav(channels, sampleRate, { bits = 16 } = {}) {
-  if (!channels.length) throw new Error('a WAV needs at least one channel');
+  if (!channels.length) throw new Error('wav.nochannels');
   const frames = channels[0].length;
   for (const channel of channels) {
-    if (channel.length !== frames) throw new Error('channels differ in length');
+    if (channel.length !== frames) throw new Error('wav.uneven');
   }
 
   const float = bits === 32;
@@ -45,9 +45,7 @@ export function writeWav(channels, sampleRate, { bits = 16 } = {}) {
   // players disagree about what to do with one that claims to. Refusing is
   // better than writing a file that opens as noise somewhere else.
   if (dataBytes > 0xfffffff0) {
-    throw new Error(
-      'That would make a WAV larger than 4 GB, which the format cannot describe. '
-      + 'Try 16-bit rather than 32-bit float, or a shorter section.');
+    throw new Error('wav.toobig');
   }
 
   const header = writeHeader({

@@ -63,7 +63,7 @@ BASELINE = {
     'crop-video': 31,
     'dicom-viewer': 15,
     'document-scanner': 13,
-    'edit-audio': 25,
+    'edit-audio': 18,
     'encode-text': 23,
     'exif-editor': 30,
     'format-json': 61,
@@ -91,7 +91,9 @@ BASELINE = {
     'stack-images': 7,
     'svg-to-image': 27,
     'timelapse-video': 34,
-    'trim-audio': 41,
+    # A filename template, a clock format, two CSS percentages and three class
+    # names the timeline builds.
+    'trim-audio': 7,
     'trim-video': 9,
     'video-to-gif': 23,
 }

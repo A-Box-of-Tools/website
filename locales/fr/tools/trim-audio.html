@@ -206,6 +206,111 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Lecture du son&hellip;</span>
+    <span data-phrase="read.failed">Ce fichier n&rsquo;a pas pu être lu&nbsp;: {why}</span>
+    <span data-phrase="audio.empty">Ce fichier est vide.</span>
+    <span data-phrase="audio.nodecode">Ce navigateur n&rsquo;a pas su tirer de son de ce fichier. Soit le format est un de
+      ceux qu&rsquo;il ne décode pas, soit le fichier n&rsquo;a pas de piste audio du
+      tout. MP3, WAV, FLAC, M4A, MP4, MOV, WebM et Ogg fonctionnent tous&nbsp;; AVI, WMA
+      et la plupart des MKV non.</span>
+    <span data-phrase="audio.nosound">Il n&rsquo;y a pas de son dans ce fichier &mdash; il a décodé en rien du tout.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (d&rsquo;après le fichier)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (supposé)</span>
+    <span data-phrase="src.guessednote">Ce format n&rsquo;indique pas dans un en-tête que cet outil lit à quelle fréquence
+      l&rsquo;enregistrement a été fait, il a donc été décodé à 48 kHz. Si
+      l&rsquo;enregistrement a été fait à une autre fréquence, le navigateur l&rsquo;a
+      rééchantillonné en entrée &mdash; c&rsquo;est la seule chose ici qui ne soit pas
+      exacte.</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stéréo</span>
+    <span data-phrase="channels.many">{n} canaux</span>
+    <span data-phrase="mark.noopen">Rien n&rsquo;est encore ouvert. Appuyez sur I là où la partie doit commencer, puis
+      sur O là où elle finit.</span>
+    <span data-phrase="mark.beforestart">Cela ferait finir la partie à {at}, c&rsquo;est-à-dire avant qu&rsquo;elle ne
+      commence à {start}. Amenez d&rsquo;abord la tête de lecture après le début.</span>
+    <span data-phrase="mark.noroom">Il ne reste pas assez d&rsquo;enregistrement ici pour ajouter une partie. Reculez la
+      tête de lecture.</span>
+    <span data-phrase="mark.clearone">Effacer l&rsquo;unique partie de {name}&nbsp;?</span>
+    <span data-phrase="mark.clearall">Effacer les {n} parties de {name}&nbsp;?</span>
+    <span data-phrase="tl.band">Partie {n}&nbsp;: de {from} à {to}</span>
+    <span data-phrase="parts.none">aucune pour l&rsquo;instant &mdash; tout l&rsquo;enregistrement</span>
+    <span data-phrase="parts.count">{finished} sur {total}</span>
+    <span data-phrase="btn.play">Lire cette partie</span>
+    <span data-phrase="btn.up">Monter</span>
+    <span data-phrase="btn.down">Descendre</span>
+    <span data-phrase="btn.remove">Supprimer</span>
+    <span data-phrase="marks.nothing">Il n&rsquo;y a encore rien de marqué à enregistrer.</span>
+    <span data-phrase="marks.unreadable">Aucun segment n&rsquo;a pu être lu dans ce fichier. Chaque ligne après la première
+      devrait être un début et une fin, séparés par une virgule.</span>
+    <span data-phrase="marks.allpast">Toutes les parties de {name} commencent après la fin de cet enregistrement. Elles
+      ont sans doute été marquées sur un autre.</span>
+    <span data-phrase="marks.dropped.one">1 partie de {name} commence au-delà de la fin de cet enregistrement, elle a donc été
+      laissée de côté.</span>
+    <span data-phrase="marks.dropped.many">{n} parties de {name} commencent au-delà de la fin de cet enregistrement, elles ont
+      donc été laissées de côté.</span>
+    <span data-phrase="marks.skipped.one">1 ligne n&rsquo;a pas pu être lue comme une partie.</span>
+    <span data-phrase="marks.skipped.many">{n} lignes n&rsquo;ont pas pu être lues comme des parties.</span>
+    <span data-phrase="marks.loaded">{n} chargées.</span>
+    <span data-phrase="marks.failed">{name} n&rsquo;a pas pu être lu&nbsp;: {why}</span>
+    <span data-phrase="n.part.one">{n} partie</span>
+    <span data-phrase="n.part.many">{n} parties</span>
+    <span data-phrase="n.join.one">{n} raccord</span>
+    <span data-phrase="n.join.many">{n} raccords</span>
+    <span data-phrase="n.edge.one">{n} bord</span>
+    <span data-phrase="n.edge.many">{n} bords</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">rien &mdash; les marques couvrent tout l&rsquo;enregistrement</span>
+    <span data-phrase="sum.nothing">rien de marqué</span>
+    <span data-phrase="sum.zero">0 s</span>
+    <span data-phrase="sum.parts.cut">{parts}, une fois les marquées enlevées</span>
+    <span data-phrase="sum.start">exactement là où vous avez marqué, à l&rsquo;échantillon {sample}</span>
+    <span data-phrase="sum.onepart">aucun &mdash; une seule partie, intacte</span>
+    <span data-phrase="sum.onepart.faded">aucun &mdash; une seule partie, fondue à ses bords de coupe</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} en fondu</span>
+    <span data-phrase="sum.joins.nofades">{joins}, sans fondu</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16 bits</span>
+    <span data-phrase="depth.float">32 bits flottants</span>
+    <span data-phrase="sum.untouched">Rien n&rsquo;est marqué, donc rien n&rsquo;est coupé&nbsp;: ceci va écrire chaque
+      échantillon produit par le décodeur, dans l&rsquo;ordre, sans le moindre fondu.
+      C&rsquo;est un changement de format et rien d&rsquo;autre.</span>
+    <span data-phrase="fade.none">Chaque partie est coupée exactement sur l&rsquo;échantillon que vous avez marqué,
+      sans rien multiplier par rien. Si une coupe tombe au milieu d&rsquo;un mot, vous
+      entendrez peut-être un clic au raccord&nbsp;: c&rsquo;est la forme d&rsquo;onde qui
+      saute, pas une erreur.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; environ {samples} échantillons &mdash; en montée au début
+      d&rsquo;une partie et en descente à sa fin, pour qu&rsquo;un raccord ne puisse pas
+      claquer. Seuls les bords qui sont vraiment des coupes en reçoivent un&nbsp;: un bord
+      tout au début ou tout à la fin de l&rsquo;enregistrement est laissé tel quel.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; environ {samples} échantillons &mdash; en montée au début
+      d&rsquo;une partie et en descente à sa fin, pour qu&rsquo;un raccord ne puisse pas
+      claquer. Seuls les bords qui sont vraiment des coupes en reçoivent un&nbsp;: un bord
+      tout au début ou tout à la fin de l&rsquo;enregistrement est laissé tel quel, ce qui
+      laisse 1 bord en fondu ici.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; environ {samples} échantillons &mdash; en montée au début
+      d&rsquo;une partie et en descente à sa fin, pour qu&rsquo;un raccord ne puisse pas
+      claquer. Seuls les bords qui sont vraiment des coupes en reçoivent un&nbsp;: un bord
+      tout au début ou tout à la fin de l&rsquo;enregistrement est laissé tel quel, ce qui
+      laisse {n} bords en fondu ici.</span>
+    <span data-phrase="export.nothing">Il n&rsquo;y a rien à garder. Marquez une partie, ou revenez à «&nbsp;Les
+      garder&nbsp;».</span>
+    <span data-phrase="step.starting">Démarrage&hellip;</span>
+    <span data-phrase="trim.copying">Copie de la partie {done} sur {total}&hellip;</span>
+    <span data-phrase="step.writing">Écriture du fichier&hellip;</span>
+    <span data-phrase="trim.nothing">Il n&rsquo;y a rien de marqué à garder.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds} s</span>
+    <span data-phrase="export.failed">Quelque chose a mal tourné pendant la coupe de l&rsquo;audio.</span>
+    <span data-phrase="wav.nochannels">un WAV a besoin d&rsquo;au moins un canal</span>
+    <span data-phrase="wav.uneven">les canaux n&rsquo;ont pas la même longueur</span>
+    <span data-phrase="wav.toobig">Cela ferait un WAV de plus de 4 Go, ce que le format ne sait pas décrire. Essayez du
+      16 bits plutôt que du 32 bits flottant, ou une section plus courte.</span>
+    <span data-phrase="size.b">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="size.gb">{n} Go</span>
     <span data-phrase="net.clean">votre audio n'est allé nulle part. {total}
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

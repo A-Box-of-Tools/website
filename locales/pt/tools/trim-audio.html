@@ -204,6 +204,103 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Lendo o som&hellip;</span>
+    <span data-phrase="read.failed">Esse arquivo não pôde ser lido: {why}</span>
+    <span data-phrase="audio.empty">Esse arquivo está vazio.</span>
+    <span data-phrase="audio.nodecode">Este navegador não conseguiu tirar som nenhum desse arquivo. Ou o formato é um que
+      ele não decodifica, ou o arquivo não tem faixa de áudio nenhuma. MP3, WAV, FLAC,
+      M4A, MP4, MOV, WebM e Ogg funcionam todos; AVI, WMA e a maioria dos MKV não.</span>
+    <span data-phrase="audio.nosound">Não há som nesse arquivo &mdash; ele decodificou para nada.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (do arquivo)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (presumido)</span>
+    <span data-phrase="src.guessednote">Este formato não diz, em nenhum cabeçalho que esta ferramenta leia, em que taxa foi
+      gravado, então ele foi decodificado a 48 kHz. Se a gravação foi feita em outra taxa,
+      o navegador reamostrou na entrada &mdash; que é a única coisa aqui que não é exata.</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">estéreo</span>
+    <span data-phrase="channels.many">{n} canais</span>
+    <span data-phrase="mark.noopen">Ainda não há nada aberto. Aperte I onde a parte deve começar, e depois O onde ela
+      termina.</span>
+    <span data-phrase="mark.beforestart">Isso terminaria a parte em {at}, que é antes de ela começar em {start}. Leve o
+      cursor para além do começo primeiro.</span>
+    <span data-phrase="mark.noroom">Não sobra gravação suficiente aqui para acrescentar uma parte. Volte o cursor um
+      pouco.</span>
+    <span data-phrase="mark.clearone">Apagar a única parte de {name}?</span>
+    <span data-phrase="mark.clearall">Apagar todas as {n} partes de {name}?</span>
+    <span data-phrase="tl.band">Parte {n}: de {from} a {to}</span>
+    <span data-phrase="parts.none">nenhuma ainda &mdash; a gravação inteira</span>
+    <span data-phrase="parts.count">{finished} de {total}</span>
+    <span data-phrase="btn.play">Tocar esta parte</span>
+    <span data-phrase="btn.up">Subir</span>
+    <span data-phrase="btn.down">Descer</span>
+    <span data-phrase="btn.remove">Remover</span>
+    <span data-phrase="marks.nothing">Ainda não há nada marcado para salvar.</span>
+    <span data-phrase="marks.unreadable">Não foi possível ler segmento nenhum desse arquivo. Cada linha depois da primeira
+      deveria ser um começo e um fim, separados por vírgula.</span>
+    <span data-phrase="marks.allpast">Toda parte em {name} começa depois de esta gravação terminar. Provavelmente foram
+      marcadas em outra.</span>
+    <span data-phrase="marks.dropped.one">1 parte em {name} começa além do fim desta gravação, então ela ficou de fora.</span>
+    <span data-phrase="marks.dropped.many">{n} partes em {name} começam além do fim desta gravação, então elas ficaram de fora.</span>
+    <span data-phrase="marks.skipped.one">1 linha não pôde ser lida como parte.</span>
+    <span data-phrase="marks.skipped.many">{n} linhas não puderam ser lidas como partes.</span>
+    <span data-phrase="marks.loaded">{n} carregadas.</span>
+    <span data-phrase="marks.failed">{name} não pôde ser lido: {why}</span>
+    <span data-phrase="n.part.one">{n} parte</span>
+    <span data-phrase="n.part.many">{n} partes</span>
+    <span data-phrase="n.join.one">{n} emenda</span>
+    <span data-phrase="n.join.many">{n} emendas</span>
+    <span data-phrase="n.edge.one">{n} borda</span>
+    <span data-phrase="n.edge.many">{n} bordas</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">nada &mdash; as marcas cobrem a gravação inteira</span>
+    <span data-phrase="sum.nothing">nada marcado</span>
+    <span data-phrase="sum.zero">0 s</span>
+    <span data-phrase="sum.parts.cut">{parts}, depois que as marcadas saírem</span>
+    <span data-phrase="sum.start">exatamente onde você marcou, na amostra {sample}</span>
+    <span data-phrase="sum.onepart">nenhuma &mdash; uma parte só, intacta</span>
+    <span data-phrase="sum.onepart.faded">nenhuma &mdash; uma parte só, com fade nas bordas de corte</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} com fade</span>
+    <span data-phrase="sum.joins.nofades">{joins}, sem fades</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16 bits</span>
+    <span data-phrase="depth.float">32 bits em ponto flutuante</span>
+    <span data-phrase="sum.untouched">Não há nada marcado, então não se corta nada: isto vai escrever cada amostra que o
+      decodificador produziu, na ordem, sem fade nenhum. É uma troca de formato e nada
+      mais.</span>
+    <span data-phrase="fade.none">Cada parte é cortada na amostra exata que você marcou, sem multiplicar nada por
+      nada. Se um corte cair no meio de uma palavra você talvez ouça um clique na emenda,
+      que é a onda dando um pulo e não algo dando errado.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; cerca de {samples} amostras &mdash; subindo no começo de uma parte e
+      descendo no fim dela, para que uma emenda não possa estalar. Só recebem isso as
+      bordas que são cortes de verdade: uma borda bem no começo ou no fim da gravação fica
+      como está.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; cerca de {samples} amostras &mdash; subindo no começo de uma parte e
+      descendo no fim dela, para que uma emenda não possa estalar. Só recebem isso as
+      bordas que são cortes de verdade: uma borda bem no começo ou no fim da gravação fica
+      como está, o que deixa 1 borda com fade aqui.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; cerca de {samples} amostras &mdash; subindo no começo de uma parte e
+      descendo no fim dela, para que uma emenda não possa estalar. Só recebem isso as
+      bordas que são cortes de verdade: uma borda bem no começo ou no fim da gravação fica
+      como está, o que deixa {n} bordas com fade aqui.</span>
+    <span data-phrase="export.nothing">Não há nada para ficar. Marque uma parte, ou volte para &ldquo;Ficar com
+      elas&rdquo;.</span>
+    <span data-phrase="step.starting">Começando&hellip;</span>
+    <span data-phrase="trim.copying">Copiando a parte {done} de {total}&hellip;</span>
+    <span data-phrase="step.writing">Escrevendo o arquivo&hellip;</span>
+    <span data-phrase="trim.nothing">Não há nada marcado para ficar.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds} s</span>
+    <span data-phrase="export.failed">Algo deu errado ao cortar o áudio.</span>
+    <span data-phrase="wav.nochannels">um WAV precisa de pelo menos um canal</span>
+    <span data-phrase="wav.uneven">os canais têm comprimentos diferentes</span>
+    <span data-phrase="wav.toobig">Isso daria um WAV com mais de 4 GB, que o formato não consegue descrever. Tente 16
+      bits em vez de 32 em ponto flutuante, ou um trecho mais curto.</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">O seu áudio não foi a lugar nenhum. {total}
       arquivos carregados. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

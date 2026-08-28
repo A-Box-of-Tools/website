@@ -114,9 +114,11 @@ async function loadFile(picked) {
     showSource();
     updateSummary();
   } catch (error) {
-    if (error instanceof UnreadableFile) showError(error.message);
+    // decode.js throws a key; a browser that failed for its own reasons
+    // throws a sentence, and phrase() hands back what it does not know.
+    if (error instanceof UnreadableFile) showError(phrase(error.message));
     else {
-      showError(`That file could not be read: ${error?.message ?? error}`);
+      showError(phrase('read.failed', { why: phrase(error?.message ?? String(error)) }));
       console.error(error);
     }
   } finally {
@@ -350,7 +352,7 @@ async function runExport() {
   } catch (error) {
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
-      showError(error?.message || 'Something went wrong while editing the audio.');
+      showError(error?.message ? phrase(error.message) : phrase('edit.failed'));
       console.error(error);
     }
   } finally {
