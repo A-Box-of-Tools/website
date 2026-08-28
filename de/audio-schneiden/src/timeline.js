@@ -36,6 +36,7 @@ export class Timeline{
 #onSeek;
 #onSelect;
 #onAdjust;
+#t;
 #duration=0;
 #summary=null;
 #segments=[];
@@ -43,11 +44,12 @@ export class Timeline{
 #pending=null;
 #playAt=0;
 #enabled=true;
-constructor(root,{onSeek,onSelect,onAdjust}={}){
+constructor(root,{onSeek,onSelect,onAdjust,t}={}){
 this.#root=root;
 this.#onSeek=onSeek;
 this.#onSelect=onSelect;
 this.#onAdjust=onAdjust;
+this.#t=t;
 root.innerHTML='';
 root.classList.add('timeline');
 this.#track=document.createElement('div');
@@ -121,7 +123,9 @@ band.className=`tl-band${segment.id === this.#selectedId ? ' selected' : ''}`;
 band.dataset.id=String(segment.id);
 band.style.left=`${from}%`;
 band.style.width=`${Math.max(0.4, to - from)}%`;
-band.title=`Part ${index + 1}: ${formatTime(segment.start)} to ${formatTime(segment.end)}`;
+band.title=this.#t('tl.band',{
+n:index+1,from:formatTime(segment.start),to:formatTime(segment.end),
+});
 const number=document.createElement('span');
 number.className='tl-band-number';
 number.textContent=String(index+1);

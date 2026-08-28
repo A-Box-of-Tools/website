@@ -65,9 +65,10 @@ at+=section.frames;
 }
 return out;
 }
-export async function trim(source,sections,{onProgress,signal,budgetMs=BUDGET_MS}={}){
+export async function trim(source,sections,
+{onProgress,signal,budgetMs=BUDGET_MS,t}={}){
 const frames=sectionFrames(sections);
-if(!frames)throw new Error('There is nothing marked to keep.');
+if(!frames)throw new Error('trim.nothing');
 const out=source.channels.map(()=>new Float32Array(frames));
 let at=0;
 let done=0;
@@ -77,7 +78,7 @@ signal?.throwIfAborted();
 copySection(source.channels,out,at,section);
 at+=section.frames;
 done+=1;
-onProgress?.(at/frames,`Copying part ${done} of ${sections.length}…`);
+onProgress?.(at/frames,t('trim.copying',{done,total:sections.length}));
 if(performance.now()-since>=budgetMs){
 await handBack();
 since=performance.now();

@@ -86,9 +86,9 @@ sourcePeak=peak(decoded.channels);
 showSource();
 updateSummary();
 }catch(error){
-if(error instanceof UnreadableFile)showError(error.message);
+if(error instanceof UnreadableFile)showError(phrase(error.message));
 else{
-showError(`That file could not be read: ${error?.message ?? error}`);
+showError(phrase('read.failed',{why:phrase(error?.message??String(error))}));
 console.error(error);
 }
 }finally{
@@ -261,7 +261,7 @@ el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message||'Something went wrong while editing the audio.');
+showError(error?.message?phrase(error.message):phrase('edit.failed'));
 console.error(error);
 }
 }finally{

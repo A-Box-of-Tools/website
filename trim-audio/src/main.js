@@ -91,6 +91,7 @@ let lastOut=null;
 let playAt=0;
 let watchUntil=null;
 const timeline=new Timeline(el.timeline,{
+t:phrase,
 onSeek:(at)=>seekTo(at),
 onSelect:(id)=>{selectedSegment=id;renderSegments();},
 onAdjust:(id,times)=>adjustSegment(id,times),
@@ -107,7 +108,7 @@ async function loadFile(picked){
 if(exporting)return;
 clearError();
 clearResult();
-picker.busy('Reading the sound...');
+picker.busy(phrase('read.reading'));
 try{
 const decoded=await decodeAudio(picked);
 file=picked;
@@ -123,9 +124,9 @@ timeline.setSource({duration:decoded.duration,summary});
 timeline.setEnabled(true);
 renderSegments();
 }catch(error){
-if(error instanceof UnreadableFile)showError(error.message);
+if(error instanceof UnreadableFile)showError(phrase(error.message));
 else{
-showError(`That file could not be read: ${error?.message ?? error}`);
+showError(phrase('read.failed',{why:phrase(error?.message??String(error))}));
 console.error(error);
 }
 }finally{
@@ -136,11 +137,12 @@ function showSource(){
 el.srcName.textContent=file.name;
 el.srcSize.textContent=formatBytes(file.size);
 el.srcLength.textContent=formatDuration(source.duration);
-el.srcFormat.textContent=`${channelWord(source.channels.length)}, `
-+`${(source.sampleRate / 1000).toFixed(1)} kHz`;
-el.srcRate.textContent=source.guessedRate
-?`${source.sampleRate} Hz (assumed)`
-:`${source.sampleRate} Hz (from the file)`;
+el.srcFormat.textContent=phrase('src.format',{
+channels:channelWord(source.channels.length),
+khz:(source.sampleRate/1000).toFixed(1),
+});
+el.srcRate.textContent=phrase(source.guessedRate?'src.rate.assumed':'src.rate.file',
+{rate:source.sampleRate});
 el.source.hidden=false;
 el.editing.hidden=false;
 el.editing.textContent=file.name;
@@ -148,10 +150,7 @@ el.tlTotal.textContent=formatTime(source.duration);
 el.tlNow.textContent=formatTime(0);
 el.pathNote.hidden=!source.guessedRate;
 if(source.guessedRate){
-el.pathNote.textContent='This format does not say what rate it was recorded '
-+'at in a header this tool reads, so it was decoded at 48 kHz. If the '
-+'recording was made at some other rate, the browser resampled it on the '
-+'way in - which is the one thing here that is not exact.';
+el.pathNote.textContent=phrase('src.guessednote');
 }
 if(previewUrl)URL.revokeObjectURL(previewUrl);
 previewUrl=URL.createObjectURL(file);
@@ -232,13 +231,13 @@ function markOut(){
 if(!source)return;
 const last=segments[segments.length-1];
 if(!last){
-showError('Nothing is open yet. Press I where the part should start, then O where it ends.');
+showError(phrase('mark.noopen'));
 return;
 }
 const at=timeline.snap(currentTime());
 if(at<=last.start){
-showError(`That would end the part at ${formatTime(at)}, which is before it starts `
-+`at ${formatTime(last.start)}. Move the playhead past the start first.`);
+showError(phrase('mark.beforestart',
+{at:formatTime(at),start:formatTime(last.start)}));
 return;
 }
 last.end=at;
@@ -260,7 +259,7 @@ if(!source)return;
 const start=timeline.snap(currentTime());
 const end=Math.min(source.duration,start+Math.min(5,source.duration-start));
 if(end-start<0.05){
-showError('There is not enough recording left here to add a part. Move the playhead back.');
+showError(phrase('mark.noroom'));
 return;
 }
 segments.push({id:nextId++,start,end});
@@ -269,7 +268,8 @@ renderSegments();
 });
 el.resetSegments.addEventListener('click',()=>{
 if(!segments.length)return;
-if(!window.confirm(`Clear all ${segments.length} parts of ${file.name}?`))return;
+if(!window.confirm(phrase(segments.length===1?'mark.clearone':'mark.clearall',
+{n:segments.length,name:file.name})))return;
 segments=[];
 selectedSegment=null;
 renderSegments();
@@ -287,8 +287,8 @@ el.segmentTable.hidden=segments.length===0;
 el.segmentsEmpty.hidden=segments.length>0;
 el.segmentRows.innerHTML='';
 el.segmentCount.textContent=segments.length===0
-?'none yet — the whole recording'
-:`${finished.length} of ${segments.length}`;
+?phrase('parts.none')
+:phrase('parts.count',{finished:finished.length,total:segments.length});
 el.totalKept.textContent=formatTime(
 mode==='keep'&&finished.length?totalCaptured(segments):totalSeconds(ranges()));
 segments.forEach((segment,index)=>{
@@ -359,10 +359,11 @@ function actionsCell(segment,index){
 const cell=document.createElement('td');
 cell.className='segment-buttons';
 cell.append(
-iconButton('▶','Play this part',()=>playSegment(segment),segment.end===null),
-iconButton('↑','Move up',()=>moveSegment(index,-1),index===0),
-iconButton('↓','Move down',()=>moveSegment(index,1),index===segments.length-1),
-iconButton('✕','Remove',()=>removeSegment(index),false,'danger'),
+iconButton('▶',phrase('btn.play'),()=>playSegment(segment),segment.end===null),
+iconButton('↑',phrase('btn.up'),()=>moveSegment(index,-1),index===0),
+iconButton('↓',phrase('btn.down'),()=>moveSegment(index,1),
+index===segments.length-1),
+iconButton('✕',phrase('btn.remove'),()=>removeSegment(index),false,'danger'),
 );
 return cell;
 }
@@ -407,7 +408,7 @@ renderSegments();
 el.exportMarks.addEventListener('click',()=>{
 if(!source)return;
 if(!segmentRanges(segments).length){
-showError('There is nothing marked to save yet.');
+showError(phrase('marks.nothing'));
 return;
 }
 const text=writeTimestamps(segments,{
@@ -431,8 +432,7 @@ try{
 const parsed=readTimestamps(await marks.text());
 const kept=parsed.segments.filter((segment)=>segment.start<source.duration);
 if(!kept.length){
-showError(`Every part in ${marks.name} starts after this recording ends. `
-+'It was probably marked against a different one.');
+showError(phrase('marks.allpast',{name:marks.name}));
 return;
 }
 segments=kept.map((segment)=>({
@@ -447,20 +447,20 @@ clearError();
 if(dropped||parsed.skipped){
 const says=[];
 if(dropped){
-says.push(`${dropped} part${dropped === 1 ? '' : 's'} in ${marks.name} `
-+`${dropped === 1 ? 'starts' : 'start'} past the end of this recording, so `
-+`${dropped === 1 ? 'it was' : 'they were'} left out.`);
+says.push(phrase(dropped===1?'marks.dropped.one':'marks.dropped.many',
+{n:dropped,name:marks.name}));
 }
 if(parsed.skipped){
-says.push(`${parsed.skipped} line${parsed.skipped === 1 ? '' : 's'} could not be `
-+'read as a part.');
+says.push(phrase(parsed.skipped===1?'marks.skipped.one':'marks.skipped.many',
+{n:parsed.skipped}));
 }
-says.push(`${kept.length} loaded.`);
-showError(says.join(' '));
+says.push(phrase('marks.loaded',{n:kept.length}));
+showError(says.reduce((a,b)=>phrase('join.sentences',{a,b})));
 }
 renderSegments();
 }catch(error){
-showError(`${marks.name} could not be read: ${error.message}`);
+showError(phrase('marks.failed',
+{name:marks.name,why:phrase(error.message)}));
 }
 });
 function typing(target){
@@ -522,10 +522,8 @@ const bits=Number(el.depth.value);
 const fadeSeconds=Number(el.fade.value);
 if(!planned.length){
 el.exportBtn.disabled=true;
-el.sumParts.textContent=mode==='cut'
-?'nothing — the marks cover the whole recording'
-:'nothing marked';
-el.sumLength.textContent='0s';
+el.sumParts.textContent=phrase(mode==='cut'?'sum.nothing.cut':'sum.nothing');
+el.sumLength.textContent=phrase('sum.zero');
 el.sumStart.textContent='—';
 el.sumJoins.textContent='—';
 el.sumSound.textContent='—';
@@ -537,43 +535,49 @@ return;
 el.exportBtn.disabled=false;
 const frames=sectionFrames(planned);
 const count=planned.length;
+const parts=phrase(count===1?'n.part.one':'n.part.many',{n:count});
 el.sumParts.textContent=mode==='cut'
-?`${count} part${count === 1 ? '' : 's'}, once the marked ones are gone`
-:`${count} part${count === 1 ? '' : 's'}`;
+?phrase('sum.parts.cut',{parts})
+:parts;
 el.sumLength.textContent=formatDuration(frames/source.sampleRate);
-el.sumStart.textContent=`exactly where you marked, at sample ${planned[0].from.toLocaleString()}`;
+el.sumStart.textContent=phrase('sum.start',
+{sample:planned[0].from.toLocaleString()});
 const joins=count-1;
 const faded=planned.reduce(
 (total,section)=>total+(section.fadeIn?1:0)+(section.fadeOut?1:0),0);
-el.sumJoins.textContent=joins===0
-?(faded?'none — one part, faded at its cut edges':'none — one part, untouched')
-:`${joins} join${joins === 1 ? '' : 's'}`
-+(faded?`, ${faded} edge${faded === 1 ? '' : 's'} faded`:', no fades');
-el.sumSound.textContent=`${channelWord(source.channels.length)}, `
-+`${(source.sampleRate / 1000).toFixed(1)} kHz, `
-+`${bits === 32 ? '32-bit float' : '16-bit'}`;
+if(joins===0){
+el.sumJoins.textContent=phrase(faded?'sum.onepart.faded':'sum.onepart');
+}else{
+const said=phrase(joins===1?'n.join.one':'n.join.many',{n:joins});
+el.sumJoins.textContent=faded
+?phrase('sum.joins.faded',{
+joins:said,
+edges:phrase(faded===1?'n.edge.one':'n.edge.many',{n:faded}),
+})
+:phrase('sum.joins.nofades',{joins:said});
+}
+el.sumSound.textContent=phrase('sum.sound',{
+channels:channelWord(source.channels.length),
+khz:(source.sampleRate/1000).toFixed(1),
+depth:phrase(bits===32?'depth.float':'depth.16'),
+});
 el.sumSize.textContent=formatBytes(wavSize(frames,source.channels.length,bits));
 el.fadeNote.textContent=fadeNote(fadeSeconds,faded);
 const untouched=isUntouched(planned,source.frames);
 el.cutNote.hidden=!untouched;
 if(untouched){
-el.cutNote.textContent='Nothing is marked, so nothing is being cut: this will write '
-+'out every sample the decoder produced, in order, with no fade anywhere. It is a '
-+'format change and nothing else.';
+el.cutNote.textContent=phrase('sum.untouched');
 }
 }
 function fadeNote(fadeSeconds,edges){
-if(!fadeSeconds){
-return'Every part is cut on the exact sample you marked, with nothing multiplied '
-+'by anything. If a cut lands mid-word you may hear a click at the join, which is '
-+'the waveform jumping rather than anything going wrong.';
-}
-const ms=Math.round(fadeSeconds*1000);
-const samples=Math.round(fadeSeconds*(source?.sampleRate??48000));
-return`${ms} ms — about ${samples.toLocaleString()} samples — ramped up at the start of `
-+'a part and down at its end, so a join cannot click. Only edges that are actually '
-+`cuts get one: an edge at the very start or end of the recording is left alone`
-+(edges?`, which leaves ${edges} edge${edges === 1 ? '' : 's'} faded here.`:'.');
+if(!fadeSeconds)return phrase('fade.none');
+const values={
+ms:Math.round(fadeSeconds*1000),
+samples:Math.round(fadeSeconds*(source?.sampleRate??48000)).toLocaleString(),
+};
+if(!edges)return phrase('fade.some',values);
+return phrase(edges===1?'fade.some.oneedge':'fade.some.edges',
+{...values,n:edges});
 }
 async function runExport(){
 if(!source||exporting)return;
@@ -581,7 +585,7 @@ clearError();
 clearResult();
 const planned=sections();
 if(!planned.length){
-showError('There is nothing to keep. Mark a part, or switch back to "Keep them".');
+showError(phrase('export.nothing'));
 return;
 }
 exporting=true;
@@ -589,15 +593,16 @@ abortController=new AbortController();
 el.exportBtn.disabled=true;
 el.cancelBtn.hidden=false;
 el.progress.hidden=false;
-progress(0,'Starting...');
+progress(0,phrase('step.starting'));
 const bits=Number(el.depth.value);
 try{
 const started=performance.now();
 const cut=await trim(source,planned,{
 signal:abortController.signal,
+t:phrase,
 onProgress:(done,label)=>progress(done,label),
 });
-progress(1,'Writing the file...');
+progress(1,phrase('step.writing'));
 const blob=writeWav(cut.channels,source.sampleRate,{bits});
 const seconds=cut.frames/source.sampleRate;
 resultUrl=URL.createObjectURL(blob);
@@ -608,18 +613,18 @@ el.result.hidden=false;
 lastOut=summarise(cut.channels);
 drawWaveform(el.outWave,lastOut);
 el.resultInfo.textContent=[
-`WAV, ${bits === 32 ? '32-bit float' : '16-bit'}`,
+phrase('result.wav',{depth:phrase(bits===32?'depth.float':'depth.16')}),
 formatDuration(seconds),
 formatBytes(blob.size),
-`${planned.length} part${planned.length === 1 ? '' : 's'}`,
-`${((performance.now() - started) / 1000).toFixed(1)}s`,
-].join(' · ');
+phrase(planned.length===1?'n.part.one':'n.part.many',{n:planned.length}),
+phrase('result.took',{seconds:((performance.now()-started)/1000).toFixed(1)}),
+].reduce((a,b)=>phrase('join.dot',{a,b}));
 el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message||'Something went wrong while trimming the audio.');
+showError(error?.message?phrase(error.message):phrase('export.failed'));
 console.error(error);
 }
 }finally{
@@ -663,13 +668,16 @@ if(resultUrl)URL.revokeObjectURL(resultUrl);
 resultUrl=null;
 lastOut=null;
 }
-const channelWord=(count)=>(
-count===1?'mono':count===2?'stereo':`${count} channels`);
+const channelWord=(count)=>(count<=2
+?phrase(count===1?'channels.mono':'channels.stereo')
+:phrase('channels.many',{n:count}));
 function formatBytes(bytes){
-if(bytes<1024)return`${bytes} B`;
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
-if(bytes<1024*1024*1024)return`${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-return`${(bytes / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+if(bytes<1024)return phrase('size.b',{n:bytes});
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(1)});
+if(bytes<1024*1024*1024){
+return phrase('size.mb',{n:(bytes/(1024*1024)).toFixed(1)});
+}
+return phrase('size.gb',{n:(bytes/(1024*1024*1024)).toFixed(2)});
 }
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;
