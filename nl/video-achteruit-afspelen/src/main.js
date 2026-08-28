@@ -105,7 +105,7 @@ releaseFile();
 loading=true;
 file=picked;
 el.exportBtn.disabled=true;
-picker.busy('Reading the file...');
+picker.busy(phrase('step.reading'));
 try{
 objectUrl=URL.createObjectURL(picked);
 const played=await openInPlayer(el.preview,objectUrl);
@@ -142,8 +142,7 @@ resetView();
 return;
 }
 if(!hasEncoder()){
-showError('This browser has no video encoder, so nothing here can write the reversed '
-+'clip. A recent Chrome, Edge or Safari will.');
+showError(phrase('nocodec.file'));
 resetView();
 return;
 }
@@ -156,7 +155,7 @@ fps=averageFps(media.video);
 fpsMeasured=true;
 frames=media.video.samples.length;
 }else{
-picker.busy('Measuring the frame rate...');
+picker.busy(phrase('step.measuring'));
 const measured=await measureFps(worker);
 fps=measured.fps;
 fpsMeasured=measured.measured;
@@ -169,7 +168,8 @@ updateAudioNote();
 updateSummary();
 }catch(error){
 console.error(error);
-showError(error?.message?phrase(error.message):'That file could not be opened.');
+showError(error?.message
+?phrase(error.message,error.values):phrase('open.notopened'));
 resetView();
 }finally{
 loading=false;
@@ -180,26 +180,34 @@ function showPreview(playable){
 el.previewWrap.hidden=!playable;
 el.stageNote.hidden=playable;
 if(!playable){
-el.stageNote.textContent='This browser will not play this file, so there is no preview. '
-+'Reversing it does not go through the player, so it will still work.';
+el.stageNote.textContent=phrase('preview.none');
 }
 }
 function describeSource(played){
 el.source.hidden=false;
 el.srcName.textContent=file.name;
 el.srcSize.textContent=formatBytes(file.size);
-el.srcFrame.textContent=`${source.width} x ${source.height}`;
-el.srcLength.textContent=duration?formatDuration(duration):'unknown';
+el.srcFrame.textContent=phrase('size.plain',
+{width:source.width,height:source.height});
+el.srcLength.textContent=duration?formatDuration(duration):phrase('src.unknown');
 if(media){
-const turned=media.video.rotation?`, turned ${media.video.rotation} degrees`:'';
-el.srcCodec.textContent=`${media.video.codec} (${media.video.entryType})${turned}`;
+el.srcCodec.textContent=media.video.rotation
+?phrase('src.codec.turned',{
+codec:media.video.codec,
+entry:media.video.entryType,
+degrees:media.video.rotation,
+})
+:phrase('src.codec',{codec:media.video.codec,entry:media.video.entryType});
 el.srcAudio.textContent=media.audio
-?`${media.audio.entryType}, ${media.audio.channels} channel`
-+`${media.audio.channels === 1 ? '' : 's'}, ${Math.round(media.audio.sampleRate)} Hz`
-:'none';
+?phrase(media.audio.channels===1?'src.audio.one':'src.audio.many',{
+entry:media.audio.entryType,
+n:media.audio.channels,
+rate:Math.round(media.audio.sampleRate),
+})
+:phrase('src.audio.none');
 }else{
-el.srcCodec.textContent=played.ok?"read by the browser's own player":'unknown';
-el.srcAudio.textContent='whatever the player finds';
+el.srcCodec.textContent=phrase(played.ok?'src.byplayer':'src.unknown');
+el.srcAudio.textContent=phrase('src.audio.whatever');
 }
 el.pathNote.hidden=canReverseExactly;
 if(!canReverseExactly){
@@ -232,13 +240,11 @@ releaseFile();
 function updateAudioNote(){
 const off=!el.keepAudio.checked;
 if(off){
-el.audioNote.textContent='The reversed clip will have no sound at all.';
+el.audioNote.textContent=phrase('sound.off');
 return;
 }
-el.audioNote.textContent=canReverseExactly&&media?.audio
-?'Decoded, turned round sample by sample, and encoded again as AAC. That second '
-+'encode is unavoidable: packets played in the other order are not a reversal.'
-:'Read by the browser, turned round sample by sample, and encoded again as AAC.';
+el.audioNote.textContent=phrase(canReverseExactly&&media?.audio
+?'sound.exact':'sound.player');
 }
 function outputFrame(){
 return{
@@ -250,17 +256,21 @@ function updateSummary(){
 if(!source.width)return;
 const frame=outputFrame();
 el.sumSize.textContent=frame.width===source.width&&frame.height===source.height
-?`${frame.width} x ${frame.height}`
-:`${frame.width} x ${frame.height} (from ${source.width} x ${source.height}; `
-+'H.264 has no way to store an odd-sided frame)';
-el.sumLength.textContent=duration?formatDuration(duration):'unknown';
+?phrase('size.plain',{width:frame.width,height:frame.height})
+:phrase('size.evened',{
+width:frame.width,
+height:frame.height,
+fromWidth:source.width,
+fromHeight:source.height,
+});
+el.sumLength.textContent=duration?formatDuration(duration):phrase('src.unknown');
 el.sumFrames.textContent=canReverseExactly
-?`${frames.toLocaleString()} in ${gopRanges(media.video.samples).length.toLocaleString()} `
-+'groups'
-:`about ${frames.toLocaleString()}, at ${fps} a second`;
-el.sumPath.textContent=canReverseExactly
-?'Decoded group by group from the end, into MP4'
-:'Stepped backwards through the player, into MP4';
+?phrase('frames.groups',{
+n:frames.toLocaleString(),
+groups:gopRanges(media.video.samples).length.toLocaleString(),
+})
+:phrase('frames.about',{n:frames.toLocaleString(),fps});
+el.sumPath.textContent=phrase(canReverseExactly?'path.exact':'path.player');
 }
 el.quality.addEventListener('change',updateSummary);
 el.keepAudio.addEventListener('change',updateAudioNote);
@@ -275,17 +285,20 @@ el.error.textContent='';
 function setProgress({phase,done,total}){
 const fraction=total>0?Math.min(1,done/total):0;
 if(phase==='preparing'){
-el.progressLabel.textContent='Preparing...';
+el.progressLabel.textContent=phrase('step.preparing');
 }else if(phase==='sound-reading'){
-el.progressLabel.textContent='Reading the sound...';
+el.progressLabel.textContent=phrase('step.soundreading');
 }else if(phase==='sound-writing'){
-el.progressLabel.textContent='Reversing the sound...';
+el.progressLabel.textContent=phrase('step.soundwriting');
 }else if(phase==='finishing'){
-el.progressLabel.textContent='Finishing up...';
+el.progressLabel.textContent=phrase('step.finishing');
 }else{
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
-el.progressLabel.textContent=`Reversing frame ${done.toLocaleString()} `
-+`of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase('step.frame',{
+done:done.toLocaleString(),
+total:total.toLocaleString(),
+percent:Math.round(fraction*100),
+});
 return;
 }
 if(phase==='preparing')el.progressBar.style.width='0%';
@@ -295,16 +308,18 @@ const base=(file?.name??'video').replace(/\.[^.]+$/,'');
 return`${base}-reversed.${extension}`;
 }
 function formatBytes(bytes){
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
-if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
-return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
+if(bytes<1024*1024*1024){
+return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
+}
+return phrase('size.gb',{n:(bytes/1024/1024/1024).toFixed(2)});
 }
 function formatDuration(seconds){
 const whole=Math.max(0,Math.round(seconds));
 const minutes=Math.floor(whole/60);
 return minutes
-?`${minutes}m ${String(whole % 60).padStart(2, '0')}s`
-:`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+?phrase('time.minutes',{minutes,seconds:String(whole%60).padStart(2,'0')})
+:phrase('time.seconds',{n:seconds<10?seconds.toFixed(1):whole});
 }
 async function runExport(){
 if(exporting||loading||!file)return;
@@ -329,7 +344,7 @@ onProgress:setProgress,signal:abortController.signal,
 file,video:worker,duration,fps,quality,keepAudio,
 onProgress:setProgress,signal:abortController.signal,
 });
-if(result.warning)showError(result.warning);
+if(result.warning)showError(phrase(result.warning));
 if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
 lastResultUrl=URL.createObjectURL(result.blob);
 el.resultVideo.src=lastResultUrl;
@@ -338,18 +353,20 @@ el.download.download=outputFilename(result.extension);
 const frame=outputFrame();
 el.resultInfo.textContent=[
 result.extension.toUpperCase(),
-`${frame.width} x ${frame.height}`,
-`${result.frames.toLocaleString()} frames`,
+phrase('size.plain',{width:frame.width,height:frame.height}),
+phrase(result.frames===1?'n.frame.one':'n.frame.many',
+{n:result.frames.toLocaleString()}),
 formatBytes(result.blob.size),
 result.codec,
-].join(' · ');
+].reduce((a,b)=>phrase('join.dot',{a,b}));
 el.result.hidden=false;
 el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message?phrase(error.message):'Something went wrong while reversing.');
+showError(error?.message
+?phrase(error.message,error.values):phrase('export.failed'));
 console.error(error);
 }
 }finally{
@@ -437,8 +454,7 @@ window.addEventListener('unhandledrejection',(event)=>{
 showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
 });
 if(!hasEncoder()){
-showError('This browser has no video encoder (WebCodecs), so it cannot write a reversed '
-+'video. Chrome, Edge and Safari 16.4 or newer can; so can Firefox 133 and newer.');
+showError(phrase('nocodec.page'));
 }
 monitorNetwork();
 registerServiceWorker();

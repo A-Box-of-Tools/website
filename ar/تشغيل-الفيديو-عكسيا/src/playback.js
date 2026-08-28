@@ -9,6 +9,7 @@ const MIN_BITRATE=200_000;
 const MAX_BITRATE=60_000_000;
 const KEYFRAME_SECONDS=2;
 const QUEUE_LIMIT=8;
+const said=(key,values={})=>Object.assign(new Error(key),{values});
 const SEEK_TIMEOUT=10_000;
 const ASSUMED_FPS=30;
 class AbortedError extends Error{
@@ -46,9 +47,8 @@ if(fail)reject(fail);
 else resolve();
 };
 const ok=()=>done(null);
-const bad=()=>done(new Error('The browser stopped being able to read this clip.'));
-const timer=setTimeout(
-()=>done(new Error('The browser took too long to seek in this clip.')),SEEK_TIMEOUT);
+const bad=()=>done(new Error('play.unreadable'));
+const timer=setTimeout(()=>done(new Error('play.slowseek')),SEEK_TIMEOUT);
 video.addEventListener('seeked',ok,{once:true});
 video.addEventListener('error',bad,{once:true});
 video.currentTime=seconds;
@@ -118,8 +118,7 @@ const codec=await pickH264Codec({
 width:frame.width,height:frame.height,framerate:Math.round(fps),bitrate,
 });
 if(!codec){
-throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
-+'A smaller clip will work; this one will not.');
+throw said('encode.noh264',{width:frame.width,height:frame.height});
 }
 onProgress?.({phase:'preparing',done:0,total});
 const canvas=document.createElement('canvas');
@@ -200,8 +199,8 @@ onProgress?.({phase:'reversing',done:k+1,total});
 onProgress?.({phase:'finishing',done:total,total});
 await encoder.flush();
 if(failure)throw failure;
-if(!encoded.length)throw new Error('No frames could be read out of this file.');
-if(!avcC)throw new Error('The encoder never reported a decoder configuration.');
+if(!encoded.length)throw new Error('play.noframes');
+if(!avcC)throw new Error('encode.noconfig');
 }finally{
 if(encoder.state!=='closed')encoder.close();
 }

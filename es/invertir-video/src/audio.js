@@ -100,7 +100,7 @@ return concat([header,body]);
 function descriptor(tag,...payload){
 const body=concat(payload);
 if(body.byteLength>0x7f){
-throw new Error('Internal error: the audio description is larger than expected.');
+throw new Error('audio.descriptor');
 }
 return concat([bytes(tag,body.byteLength),body]);
 }
@@ -217,7 +217,7 @@ const audio=await context.decodeAudioData(bytes);
 const channels=[];
 for(let c=0;c<audio.numberOfChannels;c++)channels.push(audio.getChannelData(c));
 if(!channels.length||!channels[0].length){
-throw new Error('No sound came back from this file.');
+throw new Error('audio.nosound');
 }
 return{channels,sampleRate:audio.sampleRate};
 }
@@ -279,7 +279,7 @@ if((offset/ENCODE_STEP)%200===0)onProgress?.({done:offset,total:length});
 await encoder.flush();
 if(failure)throw failure;
 if(!encoded.length||!asc){
-throw new Error('The sound was decoded but nothing came back from the encoder.');
+throw new Error('audio.noencode');
 }
 }finally{
 if(encoder.state!=='closed')encoder.close();
@@ -312,9 +312,7 @@ decoded=await decodeTrack({file,track:audio,config,signal});
 if(file.size>maxDecodeBytes){
 return{
 track:null,
-note:'The sound in this file is not AAC, so reversing it would mean handing the '
-+'whole file to the browser for reading - and this file is too large for that. '
-+'The video has been reversed without sound.',
+note:'audio.toolarge',
 };
 }
 onProgress?.({phase:'sound-reading',done:0,total:1});
@@ -323,8 +321,7 @@ decoded=await decodeWholeFile(file,sampleRate);
 }catch{
 return{
 track:null,
-note:'No sound could be read out of this file, so the reversed video has none. '
-+'Either it has no audio track, or this browser will not decode the one it has.',
+note:'audio.unreadable',
 };
 }
 }
@@ -337,9 +334,7 @@ numberOfChannels:Math.min(2,decoded.channels.length),
 })){
 return{
 track:null,
-note:'Reversing the sound means encoding it again, and this browser will not encode '
-+'AAC. The video has been reversed without sound; Chrome, Edge and Safari will do '
-+'it with.',
+note:'audio.noaac',
 };
 }
 reverseChannels(decoded.channels);

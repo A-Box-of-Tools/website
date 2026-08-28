@@ -13,6 +13,7 @@ const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};
 const MIN_BITRATE=200_000;
 const MAX_BITRATE=60_000_000;
 const QUEUE_LIMIT=8;
+const said=(key,values={})=>Object.assign(new Error(key),{values});
 const STALL_TIMEOUT_MS=30_000;
 const KEYFRAME_SECONDS=2;
 const GROUP_CACHE_BYTES=64<<20;
@@ -89,10 +90,8 @@ answer(false);
 function withStallTimeout(promise,which){
 let timer=null;
 const stalled=new Promise((resolve,reject)=>{
-timer=setTimeout(()=>reject(new Error(
-`The video ${which} stopped responding partway through, without reporting a reason. `
-+'A shorter clip, a lower quality setting, or a different browser is worth trying.')),
-STALL_TIMEOUT_MS);
+timer=setTimeout(
+()=>reject(new Error(`stall.${which}`)),STALL_TIMEOUT_MS);
 });
 return Promise.race([promise,stalled]).finally(()=>clearTimeout(timer));
 }
@@ -105,9 +104,7 @@ if(size<bestSeen){
 bestSeen=size;
 progressAt=Date.now();
 }else if(Date.now()-progressAt>STALL_TIMEOUT_MS){
-throw new Error('The video decoder or encoder stopped responding partway through, without '
-+'reporting a reason. A shorter clip, a lower quality setting, or a different browser '
-+'is worth trying.');
+throw new Error('stall.both');
 }
 await new Promise((resolve)=>{
 let settled=false;
@@ -163,8 +160,7 @@ const codec=await pickH264Codec({
 width:frame.width,height:frame.height,framerate:Math.round(fps),bitrate,
 });
 if(!codec){
-throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
-+'A smaller clip will work; this one will not.');
+throw said('encode.noh264',{width:frame.width,height:frame.height});
 }
 onProgress?.({phase:'preparing',done:0,total:video.samples.length});
 const times=reversedTimes(video);
@@ -355,8 +351,8 @@ onProgress?.({phase:'reversing',done:drawn,total});
 onProgress?.({phase:'finishing',done:drawn,total});
 await withStallTimeout(encoder.flush(),'encoder');
 if(failure)throw failure;
-if(!encoded.length)throw new Error('No frames could be decoded from this file.');
-if(!avcC)throw new Error('The encoder never reported a decoder configuration.');
+if(!encoded.length)throw new Error('reverse.noframes');
+if(!avcC)throw new Error('encode.noconfig');
 }finally{
 await Promise.allSettled(copies);
 for(const slot of kept)discard(slot);
