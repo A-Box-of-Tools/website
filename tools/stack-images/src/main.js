@@ -141,10 +141,30 @@ function stopWork() {
 
 /* ------------------------------------------------------------------- files */
 
+/**
+ * Set when the browser cannot do the drawing this tool is made of. Checked
+ * before a file is looked at, not only before the run button is pressed.
+ */
+let unsupported = false;
+
 const picker = wireFilePicker({
   input: el.fileInput,
   dropzone: el.dropzone,
-  onFiles(chosen) { addFiles(chosen); },
+  onFiles(chosen) {
+    // Without OffscreenCanvas every frame fails to survey, and the survey
+    // says so in the only words it has: "that could not be opened as a
+    // picture and was left out". Which is a lie about the picture. It
+    // replaced the accurate message this page put up on load, so a visitor
+    // whose browser is too old was told their file was broken instead.
+    //
+    // So the files are not looked at at all. The message that was already
+    // right stays on the page.
+    if (unsupported) {
+      showUnsupported();
+      return;
+    }
+    addFiles(chosen);
+  },
 });
 
 let batch = 0;
@@ -685,12 +705,18 @@ window.addEventListener('unhandledrejection', (event) => {
   showError(phrase('error.broke', { detail: event.reason?.message ?? event.reason }));
 });
 
+/** The one thing this tool cannot work around, said the same way every time. */
+function showUnsupported() {
+  showError('This browser has no OffscreenCanvas, which this tool does all of its '
+    + 'drawing on. Chrome, Edge, Firefox 105 or Safari 16.4 and newer have it.');
+}
+
 if (typeof OffscreenCanvas !== 'function') {
   // There is no fallback for this one. Every surface in the pipeline is an
   // OffscreenCanvas, because the work happens off the main thread and a
   // document canvas cannot go there.
-  showError('This browser has no OffscreenCanvas, which this tool does all of its '
-    + 'drawing on. Chrome, Edge, Firefox 105 or Safari 16.4 and newer have it.');
+  unsupported = true;
+  showUnsupported();
   el.run.disabled = true;
 }
 
