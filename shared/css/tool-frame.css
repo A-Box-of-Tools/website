@@ -465,15 +465,16 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   on top of that, so it is drawn where a screen reader cannot reach it.
 */
 /*
-  Every fold that opens an EXPLANATION OF SOMETHING ON THE PAGE wears this one
-  mark: a step's small print, the list of steps at the foot of the page, and
-  each question. They were three different marks - a circled i, a caret and the
-  browser's own triangle - which is three answers to the same question about
-  what a click will do.
+  The mark on a fold that explains a step: the small print under one of them,
+  and the list of steps at the foot of the page. Both are the same promise -
+  open this and it will tell you more about the thing you are looking at - and
+  they were two different marks, a circled i and a caret, until they were not.
 
-  The pledge above the tool keeps its caret, and is the one deliberate
-  exception: what it opens is the evidence for the page's central claim rather
-  than an explanation of a control. See .pledge-caret above.
+  Two folds nearby keep their own marker on purpose. The pledge has a caret
+  because what it opens is the evidence for the page's central claim rather
+  than an explanation of a control. The questions keep the browser's own
+  triangle: an accordion of ten items is its own convention, and a column of
+  ten identical i marks would read as ten warnings rather than ten questions.
 
   What is deliberately NOT here: a fold that opens CONTROLS or DATA. The URL
   panel, the language switcher, gif-analyzer's per-frame tables and id-photo's
@@ -481,8 +482,7 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   that explains, and an i on those would be a promise the fold does not keep.
 */
 .card-note > summary::after,
-.how-to-fold > summary > h2::after,
-.faq-list > details > summary::after {
+.how-to-fold > summary > h2::after {
   content: "";
   flex: none;
   width: 1.05rem;
@@ -500,9 +500,7 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 .card-note > summary:hover::after,
 .card-note > summary:focus-visible::after,
 .how-to-fold > summary:hover > h2::after,
-.how-to-fold > summary:focus-visible > h2::after,
-.faq-list > details > summary:hover::after,
-.faq-list > details > summary:focus-visible::after { color: var(--accent); }
+.how-to-fold > summary:focus-visible > h2::after { color: var(--accent); }
 
 /*
   Open, the mark stops being an invitation and becomes a state - and says so by
@@ -516,8 +514,7 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   of it, in the one colour that is legible on the accent in both themes.
 */
 .card-note[open] > summary::after,
-.how-to-fold[open] > summary > h2::after,
-.faq-list > details[open] > summary::after {
+.how-to-fold[open] > summary > h2::after {
   color: var(--accent-text);
   border-color: var(--accent);
   background:
@@ -830,13 +827,9 @@ button, .as-button {
   cursor: pointer;
   font-weight: 600;
   font-size: 0.93rem;
-  list-style: none;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  list-style-position: outside;
 }
 
-.faq-list summary::-webkit-details-marker { display: none; }
 .faq-list summary:hover { color: var(--accent); }
 
 .faq-list details[open] summary { margin-bottom: 0.5rem; }
