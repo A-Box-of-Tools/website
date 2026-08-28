@@ -134,6 +134,34 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">ファイルが1コマの途中で終わっています。</span>
+    <span data-phrase="read.avcshort">H.264の設定レコードが短すぎます。</span>
+    <span data-phrase="read.hevcshort">HEVCの設定レコードが短すぎます。</span>
+    <span data-phrase="read.av1short">AV1の設定レコードが短すぎます。</span>
+    <span data-phrase="read.compactsizes">サンプルの大きさが、このリーダーの解さない圧縮テーブルに入っています。</span>
+    <span data-phrase="read.sampletables">サンプルテーブルが欠けています。</span>
+    <span data-phrase="read.chunktable">チャンクテーブルが空です。</span>
+    <span data-phrase="read.nosamples">そのトラックにサンプルが1つもありません。</span>
+    <span data-phrase="read.nostbl">映像トラックにサンプルテーブルがありません。</span>
+    <span data-phrase="read.nostsd">映像トラックにサンプル記述がありません。</span>
+    <span data-phrase="read.emptystsd">映像のサンプル記述が空です。</span>
+    <span data-phrase="read.encrypted">映像トラックが暗号化されています。</span>
+    <span data-phrase="read.unknowncodec">映像は「{type}」として保存されていますが、このリーダーはそれを知りません。</span>
+    <span data-phrase="read.noconfig">「{type}」トラックはデコーダー設定を持っていません。</span>
+    <span data-phrase="read.notmp4">これはMP4でもMOVでもありません。</span>
+    <span data-phrase="read.nomoov">ファイルにムービーヘッダーがありません。</span>
+    <span data-phrase="read.novideo">このファイルには、このリーダーが使える映像トラックがありません。</span>
+    <span data-phrase="read.notimescale">映像トラックにタイムスケールがありません。</span>
+    <span data-phrase="read.nofragments">このファイルのフラグメントには、映像トラックのコマが1つも入っていません。</span>
+    <span data-phrase="read.unreadable">このファイルはMP4として読めませんでした。</span>
+    <span data-phrase="read.notplayed">この形式は、このブラウザーが再生できるものではありません。</span>
+    <span data-phrase="read.layout">このファイルの構造は、ここのリーダーが解するものではありません。</span>
+    <span data-phrase="read.nodecoder">このブラウザーは{codec}を直接デコードしません。</span>
+    <span data-phrase="read.nowebcodecs">このブラウザーにはWebCodecsがないので、コマを1つずつデコードできません。</span>
+    <span data-phrase="read.turned">このファイルは回転した状態で保存されていて、ここのリーダーとブラウザーのプレーヤーとで回転の解釈が食い違っています。</span>
+    <span data-phrase="open.failed">このブラウザーはこのファイルを開けません。{reason}</span>
+    <span data-phrase="path.player">{reason}そのためこのファイルは、1コマずつではなくブラウザー自身のプレーヤーで読みます。写真は動画の実寸のまま保存されますが、どのコマに当たるかを決めるのはプレーヤーで、1歩は正確に1コマではなくおよそ1コマ分進みます。</span>
+    <span data-phrase="path.nopreview">このブラウザーはこのファイルを再生しないので、押して再生するものはありません。ただしデコードはできて、静止画はそこから作られます。スライダーと矢印キーで動画の中を移動してください。</span>
     <span data-phrase="net.clean">動画はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>

@@ -157,6 +157,36 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">ينتهي الملف في منتصف إطار.</span>
+    <span data-phrase="read.avcshort">سجل إعداد H.264 أقصر مما ينبغي.</span>
+    <span data-phrase="read.hevcshort">سجل إعداد HEVC أقصر مما ينبغي.</span>
+    <span data-phrase="read.av1short">سجل إعداد AV1 أقصر مما ينبغي.</span>
+    <span data-phrase="read.compactsizes">أحجام العيّنات في جدول مضغوط لا يفكّه هذا القارئ.</span>
+    <span data-phrase="read.sampletables">جداول العيّنات ناقصة.</span>
+    <span data-phrase="read.chunktable">جدول الكتل فارغ.</span>
+    <span data-phrase="read.nosamples">لا عيّنات في هذا المسار.</span>
+    <span data-phrase="read.nostbl">ينقص مسارَ الفيديو جداولُ عيّناته.</span>
+    <span data-phrase="read.nostsd">لا وصف للعيّنات في مسار الفيديو.</span>
+    <span data-phrase="read.emptystsd">وصف عيّنات الفيديو فارغ.</span>
+    <span data-phrase="read.encrypted">مسار الفيديو مشفَّر.</span>
+    <span data-phrase="read.unknowncodec">الفيديو مخزَّن بصيغة &laquo;{type}&raquo;، وهي صيغة لا يعرفها هذا القارئ.</span>
+    <span data-phrase="read.noconfig">مسار &laquo;{type}&raquo; لا يحمل معه أي إعداد لفاكّ الترميز.</span>
+    <span data-phrase="read.notmp4">هذا ليس ملف MP4 ولا MOV.</span>
+    <span data-phrase="read.nomoov">لا ترويسة فيلم في هذا الملف.</span>
+    <span data-phrase="read.novideo">لا مسار فيديو في هذا الملف يستطيع هذا القارئ استعماله.</span>
+    <span data-phrase="read.notimescale">لا مقياس زمني لمسار الفيديو.</span>
+    <span data-phrase="read.nofragments">شظايا هذا الملف لا تحمل أي إطار لمسار الفيديو الذي فيه.</span>
+    <span data-phrase="read.unreadable">لم يمكن قراءة الملف بوصفه MP4.</span>
+    <span data-phrase="read.notplayed">هذه الصيغة ليست مما يشغّله هذا المتصفّح.</span>
+    <span data-phrase="read.layout">بنية هذا الملف ليست مما يفهمه القارئ هنا.</span>
+    <span data-phrase="read.nodecoder">لا يفكّ هذا المتصفّح ترميز {codec} مباشرةً.</span>
+    <span data-phrase="read.nowebcodecs">لا WebCodecs في هذا المتصفّح، فلا سبيل إلى فكّ ترميز الإطارات إطاراً إطاراً.</span>
+    <span data-phrase="open.failed">لا يستطيع هذا المتصفّح فتح هذا الملف. {reason}</span>
+    <span data-phrase="open.nodecode">فتح هذا المتصفّح الملف لكنه لا يستطيع فكّ ترميز الفيديو الذي فيه. وهذا في الغالب
+      Dolby Vision، أو HEVC على جهاز لا دعم عتادياً فيه له: تُقرأ الحاوية قراءةً سليمة ولا
+      تصل الصورة أبداً. حوّله أولاً إلى MP4 عادي (H.264)، عندها تقرأه هذه الأداة مباشرةً.</span>
+    <span data-phrase="path.seek">{reason} ولذلك يُقرأ هذا بنقل مشغّل المتصفّح إلى كل لحظة: وهذا يصلح مع كل صيغة
+      يشغّلها المتصفّح، وهو أبطأ قليلاً.</span>
     <span data-phrase="net.clean">مقطعك لم يذهب إلى أي مكان. {total} ملفاً
       حُمِّلت. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

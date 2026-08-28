@@ -157,6 +157,35 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">파일이 프레임 한가운데에서 끝났습니다.</span>
+    <span data-phrase="read.avcshort">H.264 설정 레코드가 너무 짧습니다.</span>
+    <span data-phrase="read.hevcshort">HEVC 설정 레코드가 너무 짧습니다.</span>
+    <span data-phrase="read.av1short">AV1 설정 레코드가 너무 짧습니다.</span>
+    <span data-phrase="read.compactsizes">샘플 크기가 이 리더는 풀지 않는 압축 표에 들어 있습니다.</span>
+    <span data-phrase="read.sampletables">샘플 테이블이 온전하지 않습니다.</span>
+    <span data-phrase="read.chunktable">청크 테이블이 비어 있습니다.</span>
+    <span data-phrase="read.nosamples">그 트랙에는 샘플이 하나도 없습니다.</span>
+    <span data-phrase="read.nostbl">비디오 트랙에 샘플 테이블이 없습니다.</span>
+    <span data-phrase="read.nostsd">비디오 트랙에 샘플 설명이 없습니다.</span>
+    <span data-phrase="read.emptystsd">비디오의 샘플 설명이 비어 있습니다.</span>
+    <span data-phrase="read.encrypted">비디오 트랙이 암호화되어 있습니다.</span>
+    <span data-phrase="read.unknowncodec">이 영상은 &ldquo;{type}&rdquo; 형식으로 저장되어 있는데, 이 리더가 모르는 형식입니다.</span>
+    <span data-phrase="read.noconfig">&ldquo;{type}&rdquo; 트랙은 디코더 설정을 함께 담고 있지 않습니다.</span>
+    <span data-phrase="read.notmp4">MP4도 MOV도 아닙니다.</span>
+    <span data-phrase="read.nomoov">파일에 무비 헤더가 없습니다.</span>
+    <span data-phrase="read.novideo">이 파일에는 이 리더가 쓸 수 있는 비디오 트랙이 없습니다.</span>
+    <span data-phrase="read.notimescale">비디오 트랙에 타임스케일이 없습니다.</span>
+    <span data-phrase="read.nofragments">이 파일의 프래그먼트에는 비디오 트랙의 프레임이 하나도 없습니다.</span>
+    <span data-phrase="read.unreadable">이 파일은 MP4로 읽히지 않았습니다.</span>
+    <span data-phrase="read.notplayed">이 형식은 이 브라우저가 재생하는 형식이 아닙니다.</span>
+    <span data-phrase="read.layout">이 파일의 구성은 여기 리더가 이해하는 구성이 아닙니다.</span>
+    <span data-phrase="read.nodecoder">이 브라우저는 {codec}을 직접 디코딩하지 않습니다.</span>
+    <span data-phrase="read.nowebcodecs">이 브라우저에는 WebCodecs가 없어서 프레임을 하나씩 디코딩할 수 없습니다.</span>
+    <span data-phrase="open.failed">이 브라우저는 이 파일을 열지 못합니다. {reason}</span>
+    <span data-phrase="open.nodecode">이 브라우저가 파일은 열었지만 안에 든 영상을 디코딩하지 못합니다. 보통 Dolby Vision이거나, 하드웨어 지원이 없는 기기에서의 HEVC입니다.
+      컨테이너는 멀쩡히 읽히는데 화면이 끝내 오지 않는 것이죠. 먼저 보통 MP4(H.264)로 바꾸면 이 도구가 곧바로 읽습니다.</span>
+    <span data-phrase="path.seek">{reason} 그래서 이 파일은 브라우저 자신의 재생기를 매 순간으로 옮겨 가며 읽습니다. 브라우저가 재생하는 모든 형식에서 통하고, 조금 더
+      느립니다.</span>
     <span data-phrase="net.clean">동영상은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
       {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.

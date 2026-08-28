@@ -8,6 +8,16 @@ import { cropByRecording } from './record.js';
 import { Cropper } from './cropper.js';
 import { hasWebCodecs, hasMediaRecorder, canDecode } from './support.js';
 
+/**
+ * A reader refusal, in the reader's language. The demuxer is copied byte for
+ * byte into fifteen languages, so what it hands back is a phrase key and its
+ * values; `absent` is the sentence for the file that was never given to it at
+ * all - the browser's own player took it instead.
+ */
+function why(fallback, absent) {
+  return phrase(fallback?.key ?? absent, fallback?.values);
+}
+
 const $ = (id) => document.getElementById(id);
 
 const el = {
@@ -147,18 +157,18 @@ async function loadFile(picked) {
     } catch (error) {
       media = null;
       fallbackReason = error instanceof UnsupportedFile
-        ? error.reason
-        : (error.message || 'the file could not be read as an MP4.');
+        ? { key: error.reason, values: error.values }
+        : { key: error.message || 'read.unreadable' };
     }
 
     let decodable = false;
     if (media && hasWebCodecs()) {
       decodable = await canDecode(decoderConfig(media.video));
       if (!decodable) {
-        fallbackReason = `this browser will not decode ${media.video.codec} directly.`;
+        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
       }
     } else if (media && !hasWebCodecs()) {
-      fallbackReason = 'this browser has no WebCodecs, so frames cannot be decoded one by one.';
+      fallbackReason = { key: 'read.nowebcodecs' };
     }
 
     // If the demuxer and the player disagree about the shape of the picture,
@@ -168,7 +178,7 @@ async function loadFile(picked) {
     if (decodable && played.ok
       && (played.width !== media.video.displayWidth || played.height !== media.video.displayHeight)) {
       decodable = false;
-      fallbackReason = 'this file is stored turned in a way the reader and the player disagree on.';
+      fallbackReason = { key: 'read.turned' };
     }
 
     canCropExactly = decodable;
@@ -176,8 +186,8 @@ async function loadFile(picked) {
 
     if (!canCropExactly && !canRecord) {
       showError(played.ok
-        ? 'This browser cannot record video, so it cannot crop this file.'
-        : `This browser cannot open this file: ${fallbackReason ?? 'the format is not one it plays.'}`);
+        ? phrase('open.norecord')
+        : phrase('open.failed', { reason: why(fallbackReason, 'read.notplayed') }));
       resetView();
       return;
     }
@@ -265,9 +275,9 @@ function describeSource(played) {
 
   el.pathNote.hidden = canCropExactly;
   if (!canCropExactly) {
-    el.pathNote.textContent = `This one is cropped by playing it and recording the result, `
-      + `because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
-      + 'That takes as long as the video is long, and the sound is re-encoded rather than copied.';
+    el.pathNote.textContent = phrase('path.record', {
+      reason: why(fallbackReason, 'read.layout'),
+    });
   }
 }
 

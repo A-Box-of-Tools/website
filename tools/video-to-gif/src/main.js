@@ -9,6 +9,16 @@ import { RangeBar, formatTime, parseTime } from './range.js';
 import { frameTimes, frameDelays, outputSize, workingBytes, estimateBytes, MAX_FPS } from './plan.js';
 import { hasWebCodecs, canDecode } from './support.js';
 
+/**
+ * A reader refusal, in the reader's language. The demuxer is copied byte for
+ * byte into fifteen languages, so what it hands back is a phrase key and its
+ * values; `absent` is the sentence for the file that was never given to it at
+ * all - the browser's own player took it instead.
+ */
+function why(fallback, absent) {
+  return phrase(fallback?.key ?? absent, fallback?.values);
+}
+
 const $ = (id) => document.getElementById(id);
 
 const el = {
@@ -175,18 +185,18 @@ async function loadFile(picked) {
     } catch (error) {
       media = null;
       fallbackReason = error instanceof UnsupportedFile
-        ? error.reason
-        : (error.message || 'the file could not be read as an MP4.');
+        ? { key: error.reason, values: error.values }
+        : { key: error.message || 'read.unreadable' };
     }
 
     let decodable = false;
     if (media && hasWebCodecs()) {
       decodable = await canDecode(decoderConfig(media.video));
       if (!decodable) {
-        fallbackReason = `this browser will not decode ${media.video.codec} directly.`;
+        fallbackReason = { key: 'read.nodecoder', values: { codec: media.video.codec } };
       }
     } else if (media && !hasWebCodecs()) {
-      fallbackReason = 'this browser has no WebCodecs, so frames cannot be decoded one by one.';
+      fallbackReason = { key: 'read.nowebcodecs' };
     }
 
     // If the reader and the player disagree about the shape of the picture, one
@@ -196,15 +206,14 @@ async function loadFile(picked) {
     if (decodable && played.ok
       && (played.width !== media.video.displayWidth || played.height !== media.video.displayHeight)) {
       decodable = false;
-      fallbackReason = 'this file is stored turned in a way the reader and the player disagree on.';
+      fallbackReason = { key: 'read.turned' };
     }
 
     canRead = decodable;
     canPlay = played.ok;
 
     if (!canRead && !canPlay) {
-      showError('This browser cannot open this file: '
-        + `${fallbackReason ?? 'the format is not one it plays.'}`);
+      showError(phrase('open.failed', { reason: why(fallbackReason, 'read.notplayed') }));
       resetView();
       return;
     }
@@ -271,10 +280,9 @@ function describeSource() {
 
   el.pathNote.hidden = canRead;
   if (!canRead) {
-    el.pathNote.textContent = 'The frames for this one are collected by seeking the player to '
-      + `each instant, because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
-      + 'That is slower, and the browser decides which frame each seek lands on, so a fast '
-      + 'section can come out a frame out here and there.';
+    el.pathNote.textContent = phrase('path.seek', {
+      reason: why(fallbackReason, 'read.layout'),
+    });
   }
 }
 

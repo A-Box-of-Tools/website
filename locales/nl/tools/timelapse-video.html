@@ -159,6 +159,39 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">Het bestand houdt midden in een frame op.</span>
+    <span data-phrase="read.avcshort">Het H.264-configuratierecord is te kort.</span>
+    <span data-phrase="read.hevcshort">Het HEVC-configuratierecord is te kort.</span>
+    <span data-phrase="read.av1short">Het AV1-configuratierecord is te kort.</span>
+    <span data-phrase="read.compactsizes">De samplegroottes staan in een compacte tabel die deze lezer niet decodeert.</span>
+    <span data-phrase="read.sampletables">De sampletabellen zijn onvolledig.</span>
+    <span data-phrase="read.chunktable">De chunk-tabel is leeg.</span>
+    <span data-phrase="read.nosamples">Het spoor bevat geen samples.</span>
+    <span data-phrase="read.nostbl">Het videospoor mist zijn sampletabellen.</span>
+    <span data-phrase="read.nostsd">Het videospoor heeft geen samplebeschrijving.</span>
+    <span data-phrase="read.emptystsd">De samplebeschrijving van de video is leeg.</span>
+    <span data-phrase="read.encrypted">Het videospoor is versleuteld.</span>
+    <span data-phrase="read.unknowncodec">De video is opgeslagen als &lsquo;{type}&rsquo;, en dat kent deze lezer niet.</span>
+    <span data-phrase="read.noconfig">Het spoor &lsquo;{type}&rsquo; draagt geen decoderconfiguratie bij zich.</span>
+    <span data-phrase="read.notmp4">Dit is geen MP4- of MOV-bestand.</span>
+    <span data-phrase="read.nomoov">Het bestand heeft geen filmheader.</span>
+    <span data-phrase="read.novideo">Het bestand heeft geen videospoor waar deze lezer iets mee kan.</span>
+    <span data-phrase="read.notimescale">Het videospoor heeft geen tijdschaal.</span>
+    <span data-phrase="read.nofragments">De fragmenten in dit bestand bevatten geen frames voor het videospoor ervan.</span>
+    <span data-phrase="read.unreadable">Het bestand kon niet als MP4 gelezen worden.</span>
+    <span data-phrase="read.notplayed">Dit formaat speelt deze browser niet af.</span>
+    <span data-phrase="read.layout">De indeling van dit bestand is er geen die de lezer hier begrijpt.</span>
+    <span data-phrase="read.nodecoder">Deze browser decodeert {codec} niet rechtstreeks.</span>
+    <span data-phrase="read.nowebcodecs">Deze browser heeft geen WebCodecs, dus de frames kunnen niet één voor één
+      gedecodeerd worden.</span>
+    <span data-phrase="open.failed">Deze browser kan dit bestand niet openen. {reason}</span>
+    <span data-phrase="open.nodecode">Deze browser heeft het bestand geopend maar kan de video erin niet decoderen. Dat is
+      meestal Dolby Vision, of HEVC op een machine zonder hardware-ondersteuning ervoor:
+      de container leest prima en het beeld komt nooit aan. Zet het eerst om naar een
+      gewone MP4 (H.264), dan leest dit gereedschap het rechtstreeks.</span>
+    <span data-phrase="path.seek">{reason} Daarom wordt deze gelezen door de eigen speler van de browser naar elk
+      moment te laten springen: dat werkt bij elk formaat dat de browser afspeelt, en is
+      een beetje langzamer.</span>
     <span data-phrase="net.clean">Je video is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
