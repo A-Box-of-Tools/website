@@ -70,7 +70,8 @@ BASELINE = {
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
     'gif-maker': 22,
-    'grab-frame': 22,
+    # A filename template.
+    'grab-frame': 1,
     'hash-checksum': 10,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
