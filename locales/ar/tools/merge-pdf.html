@@ -161,6 +161,96 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">صفحة واحدة</span>
+    <span data-phrase="count.page.many">{n} صفحات</span>
+    <span data-phrase="count.file.one">ملف واحد</span>
+    <span data-phrase="count.file.many">{n} ملفات</span>
+    <span data-phrase="count.link.one">رابط واحد</span>
+    <span data-phrase="count.link.many">{n} روابط</span>
+    <span data-phrase="count.field.one">حقل نموذج واحد</span>
+    <span data-phrase="count.field.many">{n} حقول نماذج</span>
+    <span data-phrase="count.document.one">مستند واحد</span>
+    <span data-phrase="count.document.many">{n} مستندات</span>
+    <span data-phrase="count.pdf.one">ملف PDF واحد</span>
+    <span data-phrase="count.pdf.many">{n} ملفات PDF</span>
+    <span data-phrase="size.bytes">{n} بايت</span>
+    <span data-phrase="size.kb">{n} ك.بايت</span>
+    <span data-phrase="size.mb">{n} م.بايت</span>
+    <span data-phrase="load.notpdf">{name}: ليس ملف PDF، فليس فيه صفحات تُنقل.</span>
+    <span data-phrase="load.nopages">{name}: فُتح، لكن لم تُوجد فيه أي صفحة.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} كان جدول مراجعه المتقاطعة لا يطابق محتواه، فقُرئ بالبحث عن الكائنات واحداً
+      واحداً. وهذا إصلاح، وقد نجح، لكن راجع النتيجة قبل أن ترسلها إلى أي مكان.</span>
+    <span data-phrase="read.locked">ملف PDF هذا مشفَّر. ونزع كلمة المرور عن مستند عمل غير نقل صفحاته، وهذه الأداة لن
+      تفعله من وراء ظهرك.</span>
+    <span data-phrase="read.cancelled">أُلغي.</span>
+    <span data-phrase="read.unreadable">لم يمكن قراءته ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · منها {used} ما زالت في الترتيب</span>
+    <span data-phrase="source.remove">أزِل {name} وكل صفحاته</span>
+    <span data-phrase="page.drag">اسحب لنقل الصفحة {n}</span>
+    <span data-phrase="page.turned">أدارتها هذه الأداة</span>
+    <span data-phrase="page.remove">أزِل الصفحة {n}</span>
+    <span data-phrase="page.from">{name}، الصفحة {n}</span>
+    <span data-phrase="page.anticlockwise">أدِر الصفحة {n} عكس عقارب الساعة</span>
+    <span data-phrase="page.clockwise">أدِر الصفحة {n} مع عقارب الساعة</span>
+    <span data-phrase="page.earlier">قدِّم الصفحة {n}</span>
+    <span data-phrase="page.later">أخِّر الصفحة {n}</span>
+    <span data-phrase="range.none">لا شيء</span>
+    <span data-phrase="range.pair">{from}، {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">هذا ليس رقم صفحة ولا مدى صفحات: {list}. {total} اكتبها هكذا: 1-3، 8، -12.</span>
+    <span data-phrase="range.bad.many">هذه ليست أرقام صفحات ولا مديات صفحات: {list}. {total} اكتبها هكذا: 1-3، 8، -12.</span>
+    <span data-phrase="range.total.one">ثمة صفحة واحدة.</span>
+    <span data-phrase="range.total.many">ثمة {n} صفحات.</span>
+    <span data-phrase="range.empty">سمِّ بعض الصفحات أولاً &mdash; 1-3، 8، -12 وهكذا.</span>
+    <span data-phrase="plan.from">{pages} من {files}</span>
+    <span data-phrase="plan.one">في ملف PDF واحد</span>
+    <span data-phrase="plan.many">في {files}، تُسلَّم في ملف zip واحد ليكون الحفظ مرة واحدة لا {n}</span>
+    <span data-phrase="plan.nosplit">&mdash; لكن ليس في ذلك المربع ما يسمّي صفحة ضمن المدى، فسيخرج ملفاً واحداً</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">ابنِ المستند</span>
+    <span data-phrase="run.many">ابنِ {n} مستندات</span>
+    <span data-phrase="list.count">{pages} في الترتيب</span>
+    <span data-phrase="list.empty">لم تبق أي صفحة. أضِف ملفاً، أو اضغط «أعِدها كما جاءت».</span>
+    <span data-phrase="progress.copying">نسخ الصفحات</span>
+    <span data-phrase="progress.writing">كتابة {what}</span>
+    <span data-phrase="progress.checking">فحص ما كُتب</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">أُلغي. لم يتغيّر شيء؛ والصفحات أعلاه ما زالت تماماً كما تركتها.</span>
+    <span data-phrase="run.failed">لم ينجح هذا: {detail}</span>
+    <span data-phrase="result.one">مستند واحد، {size}</span>
+    <span data-phrase="result.many">{documents}، {size} في المجموع</span>
+    <span data-phrase="result.sub">{pages} من {files}.</span>
+    <span data-phrase="result.checked">مفحوص: أعادت هذه الصفحة فتح كل ملف وعدَّت صفحاته.</span>
+    <span data-phrase="result.unchecked">هذه المحاولة لم تُطابق &mdash; {problem}. احتفظ بأصولك.</span>
+    <span data-phrase="result.zip">نزِّل الـ{n} كلها في ملف zip</span>
+    <span data-phrase="result.download">نزِّل</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">الملف النهائي يفتح بـ{found} حيث كانت المطلوبة واحدة</span>
+    <span data-phrase="check.wrong.many">الملف النهائي يفتح بـ{found} حيث كان المطلوب {expected}</span>
+    <span data-phrase="check.ok">أُعيد فتحه هنا وعُدَّت {pages}</span>
+    <span data-phrase="check.noopen">الملف النهائي لم يُفتح ثانيةً ({detail})</span>
+    <span data-phrase="facts.links">عبرت {links}، وأُعيدت كتابة ما يشير منها إلى داخل المستند كي يتبع صفحته إلى حيث
+      صارت.</span>
+    <span data-phrase="facts.fields">عبرت {fields}، مملوءة كما كانت.</span>
+    <span data-phrase="facts.dropped">لم يُنقل، لأنه يصف ترتيباً لم يعد قائماً: شجرة ترتيب القراءة الموسومة، وتسميات
+      الصفحات («iii، iv، 1، 2»)، والمرفقات المضمَّنة، وأي JavaScript على مستوى المستند.
+      ولا سطر المنتِج، ولا تاريخ الإنشاء، ولا اسم للأداة التي صنعته.</span>
+    <span data-phrase="notes.brokenlinks">كانت {links} تشير إلى صفحة ليست في هذا الملف، فتُركت في مواضعها بلا شيء خلفها، بدل
+      أن ترسل القارئ إلى موضع خاطئ.</span>
+    <span data-phrase="notes.actions.one">إجراء واحد لم يكن «اذهب إلى صفحة» ولا «افتح عنوان ويب» &mdash; شغّل هذا
+      الـJavaScript، افتح هذا الملف، أرسل هذا النموذج &mdash; لم يُنسخ.</span>
+    <span data-phrase="notes.actions.many">{n} إجراءات لم تكن «اذهب إلى صفحة» ولا «افتح عنوان ويب» &mdash; شغّل هذا
+      الـJavaScript، افتح هذا الملف، أرسل هذا النموذج &mdash; لم تُنسخ.</span>
+    <span data-phrase="notes.samename.one">حقل نموذج واحد يحمل الاسم نفسه في أكثر من واحد من هذه الملفات ({names}). والقارئ
+      يعامل الحقول التي تتشارك اسماً كحقل واحد، فملء أحدها يملأ الآخر.</span>
+    <span data-phrase="notes.samename.many">{n} حقول نماذج تحمل الاسم نفسه في أكثر من واحد من هذه الملفات ({names}). والقارئ
+      يعامل الحقول التي تتشارك اسماً كحقل واحد، فملء أحدها يملأ الآخر.</span>
+    <span data-phrase="notes.name">«{name}»</span>
+    <span data-phrase="notes.more">{list}، …</span>
+    <span data-phrase="assemble.empty">المستند الذي لا صفحات فيه ليس مستنداً</span>
     <span data-phrase="read.nocatalogue">لا فهرس مستند في هذا الملف، فليس ثمة ما يُعاد كتابته. فإما أنه ليس PDF وإما أنه تلف
       تلفاً يتجاوز ما يمكن إصلاحه هنا.</span>
     <span data-phrase="read.noheader">هذا لا يبدأ بداية PDF: لا ترويسة ‎%PDF-‎ فيه.</span>

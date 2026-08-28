@@ -161,6 +161,106 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 página</span>
+    <span data-phrase="count.page.many">{n} páginas</span>
+    <span data-phrase="count.file.one">1 archivo</span>
+    <span data-phrase="count.file.many">{n} archivos</span>
+    <span data-phrase="count.link.one">1 enlace</span>
+    <span data-phrase="count.link.many">{n} enlaces</span>
+    <span data-phrase="count.field.one">1 campo de formulario</span>
+    <span data-phrase="count.field.many">{n} campos de formulario</span>
+    <span data-phrase="count.document.one">1 documento</span>
+    <span data-phrase="count.document.many">{n} documentos</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDF</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: no es un PDF, así que no hay páginas dentro que mover.</span>
+    <span data-phrase="load.nopages">{name}: se abrió, pero no se encontró ninguna página dentro.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} tenía una tabla de referencias cruzadas que no coincidía con su contenido,
+      así que se leyó buscando los objetos uno a uno. Eso es una reparación, y funcionó,
+      pero revisa el resultado antes de mandarlo a ningún sitio.</span>
+    <span data-phrase="read.locked">este PDF está cifrado. Quitarle la contraseña a un documento es un trabajo distinto
+      de mover sus páginas, y esta herramienta no lo hará a tus espaldas.</span>
+    <span data-phrase="read.cancelled">cancelado.</span>
+    <span data-phrase="read.unreadable">no se pudo leer ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · {used} de ellas siguen en el orden</span>
+    <span data-phrase="source.remove">Quitar {name} y todas sus páginas</span>
+    <span data-phrase="page.drag">Arrastrar para mover la página {n}</span>
+    <span data-phrase="page.turned">Girada por esta herramienta</span>
+    <span data-phrase="page.remove">Quitar la página {n}</span>
+    <span data-phrase="page.from">{name}, página {n}</span>
+    <span data-phrase="page.anticlockwise">Girar la página {n} a la izquierda</span>
+    <span data-phrase="page.clockwise">Girar la página {n} a la derecha</span>
+    <span data-phrase="page.earlier">Adelantar la página {n}</span>
+    <span data-phrase="page.later">Atrasar la página {n}</span>
+    <span data-phrase="range.none">ninguna</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">Esto no es un número de página ni un rango de páginas: {list}. {total} Escríbelas
+      como 1-3, 8, 12-.</span>
+    <span data-phrase="range.bad.many">Estos no son números de página ni rangos de páginas: {list}. {total} Escríbelas como
+      1-3, 8, 12-.</span>
+    <span data-phrase="range.total.one">Hay 1 página.</span>
+    <span data-phrase="range.total.many">Hay {n} páginas.</span>
+    <span data-phrase="range.empty">Nombra primero algunas páginas &mdash; 1-3, 8, 12- y así.</span>
+    <span data-phrase="plan.from">{pages} de {files}</span>
+    <span data-phrase="plan.one">como un solo PDF</span>
+    <span data-phrase="plan.many">como {files}, entregados en un solo ZIP para que sea un guardado en vez de {n}</span>
+    <span data-phrase="plan.nosplit">&mdash; pero nada de lo que hay en esa casilla nombra una página del rango, así que
+      saldría como un solo archivo</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">Crear el documento</span>
+    <span data-phrase="run.many">Crear {n} documentos</span>
+    <span data-phrase="list.count">{pages} en el orden</span>
+    <span data-phrase="list.empty">No quedan páginas. Añade un archivo, o pulsa &laquo;Volver a como estaban&raquo;.</span>
+    <span data-phrase="progress.copying">Copiando páginas</span>
+    <span data-phrase="progress.writing">Escribiendo {what}</span>
+    <span data-phrase="progress.checking">Comprobando lo que se ha escrito</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">Cancelado. No se cambió nada; las páginas de arriba siguen exactamente como las
+      dejaste.</span>
+    <span data-phrase="run.failed">Eso no funcionó: {detail}</span>
+    <span data-phrase="result.one">Un documento, {size}</span>
+    <span data-phrase="result.many">{documents}, {size} entre todos</span>
+    <span data-phrase="result.sub">{pages} de {files}.</span>
+    <span data-phrase="result.checked">Comprobado: esta página volvió a abrir cada archivo y contó sus páginas.</span>
+    <span data-phrase="result.unchecked">Esta pasada no cuadra &mdash; {problem}. Quédate con tus originales.</span>
+    <span data-phrase="result.zip">Descargar los {n} en un ZIP</span>
+    <span data-phrase="result.download">Descargar</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">el archivo terminado abre con {found} donde se pedía 1</span>
+    <span data-phrase="check.wrong.many">el archivo terminado abre con {found} donde se pedían {expected}</span>
+    <span data-phrase="check.ok">abierto otra vez aquí y contadas {pages}</span>
+    <span data-phrase="check.noopen">el archivo terminado no se pudo volver a abrir ({detail})</span>
+    <span data-phrase="facts.links">{links} pasaron, y los que apuntan dentro del documento se reescribieron para seguir
+      a su página hasta donde está ahora.</span>
+    <span data-phrase="facts.fields">{fields} pasaron, rellenados tal como estaban.</span>
+    <span data-phrase="facts.dropped">No se lleva, porque describe un orden que ya no existe: el árbol del orden de
+      lectura etiquetado, las etiquetas de página (&laquo;iii, iv, 1, 2&raquo;), los
+      adjuntos incrustados y cualquier JavaScript a nivel de documento. Tampoco ninguna
+      línea de productor, fecha de creación ni nombre de la herramienta que lo hizo.</span>
+    <span data-phrase="notes.brokenlinks">{links} apuntaban a una página que no está en este archivo, así que se dejaron donde
+      estaban y sin nada detrás, en vez de mandar al lector a otro sitio.</span>
+    <span data-phrase="notes.actions.one">1 acción que no era ni &laquo;ir a una página&raquo; ni &laquo;abrir una dirección
+      web&raquo; &mdash; ejecutar este JavaScript, abrir este archivo, enviar este
+      formulario &mdash; no se copió.</span>
+    <span data-phrase="notes.actions.many">{n} acciones que no eran ni &laquo;ir a una página&raquo; ni &laquo;abrir una
+      dirección web&raquo; &mdash; ejecutar este JavaScript, abrir este archivo, enviar
+      este formulario &mdash; no se copiaron.</span>
+    <span data-phrase="notes.samename.one">1 campo de formulario tiene el mismo nombre en más de uno de estos archivos
+      ({names}). Un lector trata los campos que comparten nombre como uno solo, así que
+      rellenar uno rellenará el otro.</span>
+    <span data-phrase="notes.samename.many">{n} campos de formulario tienen el mismo nombre en más de uno de estos archivos
+      ({names}). Un lector trata los campos que comparten nombre como uno solo, así que
+      rellenar uno rellenará el otro.</span>
+    <span data-phrase="notes.name">&laquo;{name}&raquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">un documento sin ninguna página dentro no es un documento</span>
     <span data-phrase="read.nocatalogue">Este archivo no tiene catálogo de documento, así que no hay nada que reescribir. O
       no es un PDF, o está dañado más allá de lo que aquí se puede reparar.</span>
     <span data-phrase="read.noheader">Esto no empieza como un PDF: no hay cabecera %PDF-.</span>

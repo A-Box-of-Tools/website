@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { readSource } from './assemble.js';
-import { bytes as humanBytes, count, shortName } from './format.js';
+import { bytes, count as countOf, shortName } from './format.js';
 import { sizeLabel } from './pages.js';
 import { describeRanges, parseRanges } from './plan.js';
 import { produce } from './produce.js';
@@ -10,6 +10,11 @@ import { EncryptedPdfError, NotAPdfError, PdfDocument } from './reader.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 
 const $ = (id) => document.getElementById(id);
+
+// format.js cannot reach the DOM, so the words come to it. Bound once here
+// rather than passed at every call site.
+const humanBytes = (n) => bytes(n, phrase);
+const count = (n, noun) => countOf(n, noun, phrase);
 
 const el = {
   dropzone: $('dropzone'),
@@ -110,7 +115,7 @@ async function addFiles(files) {
   for (const file of files) {
     try {
       if (!looksLikePdf(file)) {
-        refused.push(`${file.name}: not a PDF, so there are no pages in it to move.`);
+        refused.push(phrase('load.notpdf', { name: file.name }));
         continue;
       }
 
@@ -119,7 +124,7 @@ async function addFiles(files) {
       const source = readSource(doc, file.name);
 
       if (!source.pages.length) {
-        refused.push(`${file.name}: opened, but no pages could be found in it.`);
+        refused.push(phrase('load.nopages', { name: file.name }));
         continue;
       }
 
@@ -129,12 +134,10 @@ async function addFiles(files) {
       }
 
       if (doc.repaired) {
-        notes.push(`${file.name} had a cross-reference table that did not match its `
-          + 'contents, so it was read by scanning for objects instead. That is a repair, '
-          + 'and it worked, but check the result before you send it anywhere.');
+        notes.push(phrase('load.repaired', { name: file.name }));
       }
     } catch (error) {
-      refused.push(`${file.name}: ${messageFor(error)}`);
+      refused.push(phrase('load.failed', { name: file.name, reason: messageFor(error) }));
     }
   }
 
@@ -156,13 +159,10 @@ function looksLikePdf(file) {
  * tool that uses it. Two of them are worth saying differently here.
  */
 function messageFor(error) {
-  if (error instanceof EncryptedPdfError) {
-    return 'this PDF is encrypted. Taking a password off a document is a different job '
-      + 'from moving its pages around, and this tool will not do it behind your back.';
-  }
+  if (error instanceof EncryptedPdfError) return phrase('read.locked');
   if (error instanceof NotAPdfError) return phrase(error.message);
-  if (error?.name === 'AbortError') return 'cancelled.';
-  return `could not be read (${error?.message ?? error}).`;
+  if (error?.name === 'AbortError') return phrase('read.cancelled');
+  return phrase('read.unreadable', { detail: error?.message ?? error });
 }
 
 function showLoadError(text) {
@@ -195,8 +195,9 @@ function renderSources() {
     facts.className = 'source-facts';
     const used = entries.filter((entry) => entry.source === item.source).length;
     const total = item.source.pages.length;
-    facts.textContent = `${humanBytes(item.size)} · ${count(total, 'page')}`
-      + (used === total ? '' : ` · ${used} of them still in the running order`);
+    facts.textContent = phrase(
+      used === total ? 'source.facts' : 'source.facts.some',
+      { size: humanBytes(item.size), pages: count(total, 'page'), used });
 
     main.append(name, facts);
 
@@ -204,7 +205,7 @@ function renderSources() {
     remove.type = 'button';
     remove.className = 'ghost danger';
     remove.textContent = 'Remove';
-    remove.setAttribute('aria-label', `Remove ${item.name} and all of its pages`);
+    remove.setAttribute('aria-label', phrase('source.remove', { name: item.name }));
     remove.addEventListener('click', () => {
       if (running) return;
       sources = sources.filter((other) => other !== item);
@@ -250,8 +251,8 @@ function buildPageNode(entry, index) {
   handle.className = 'drag-handle';
   handle.draggable = true;
   handle.textContent = '⋮⋮';
-  handle.title = `Drag to move page ${index + 1}`;
-  handle.setAttribute('aria-label', `Drag to move page ${index + 1}`);
+  handle.title = phrase('page.drag', { n: index + 1 });
+  handle.setAttribute('aria-label', handle.title);
 
   const shapeWrap = document.createElement('div');
   shapeWrap.className = 'shape-wrap';
@@ -274,7 +275,7 @@ function buildPageNode(entry, index) {
     const turn = document.createElement('span');
     turn.className = 'turn-badge';
     turn.textContent = `${((entry.rotate % 360) + 360) % 360}°`;
-    turn.title = 'Turned by this tool';
+    turn.title = phrase('page.turned');
     shape.append(turn);
   }
 
@@ -284,8 +285,8 @@ function buildPageNode(entry, index) {
   remove.type = 'button';
   remove.className = 'remove-btn';
   remove.textContent = '×';
-  remove.title = `Remove page ${index + 1}`;
-  remove.setAttribute('aria-label', `Remove page ${index + 1}`);
+  remove.title = phrase('page.remove', { n: index + 1 });
+  remove.setAttribute('aria-label', remove.title);
   remove.addEventListener('click', () => {
     if (running) return;
     entries.splice(index, 1);
@@ -300,7 +301,8 @@ function buildPageNode(entry, index) {
     const from = document.createElement('p');
     from.className = 'page-from';
     from.textContent = shortName(entry.source.label);
-    from.title = `${entry.source.label}, page ${entry.index + 1}`;
+    from.title = phrase('page.from',
+      { name: entry.source.label, n: entry.index + 1 });
     meta.append(from);
   }
 
@@ -312,18 +314,19 @@ function buildPageNode(entry, index) {
   const controls = document.createElement('div');
   controls.className = 'page-controls';
   controls.append(
-    tileButton('↺', `Turn page ${index + 1} anticlockwise`, false, () => {
+    tileButton('↺', phrase('page.anticlockwise', { n: index + 1 }), false, () => {
       turn(entry, -90);
     }),
-    tileButton('↻', `Turn page ${index + 1} clockwise`, false, () => {
+    tileButton('↻', phrase('page.clockwise', { n: index + 1 }), false, () => {
       turn(entry, 90);
     }),
-    tileButton('‹', `Move page ${index + 1} earlier`, index === 0, () => {
+    tileButton('‹', phrase('page.earlier', { n: index + 1 }), index === 0, () => {
       move(index, index - 1);
     }),
-    tileButton('›', `Move page ${index + 1} later`, index === entries.length - 1, () => {
-      move(index, index + 1);
-    }),
+    tileButton('›', phrase('page.later', { n: index + 1 }),
+      index === entries.length - 1, () => {
+        move(index, index + 1);
+      }),
   );
   meta.append(controls);
 
@@ -487,13 +490,13 @@ el.rangeTurn.addEventListener('click', () => applyRange('turn'));
 function applyRange(what) {
   if (running) return;
 
-  const { pages, error } = parseRanges(el.range.value, entries.length);
+  const { pages, error } = parseRanges(el.range.value, entries.length, phrase);
   el.rangeError.hidden = !error;
   el.rangeError.textContent = error;
   if (error) return;
 
   if (!pages.length) {
-    el.rangeError.textContent = 'Name some pages first - 1-3, 8, 12- and so on.';
+    el.rangeError.textContent = phrase('range.empty');
     el.rangeError.hidden = false;
     return;
   }
@@ -534,7 +537,7 @@ function splitMode() {
 function currentSplit() {
   const mode = splitMode();
   const at = mode === 'at'
-    ? parseRanges(el.splitAt.value, entries.length).pages
+    ? parseRanges(el.splitAt.value, entries.length, phrase).pages
     : [];
   return { mode, size: Number(el.splitSize.value) || 1, at };
 }
@@ -545,20 +548,26 @@ function renderPlan() {
   const from = new Set(entries.map((entry) => entry.source)).size;
 
   const parts = [
-    `${count(entries.length, 'page')} from ${count(from, 'file')}`,
+    phrase('plan.from', {
+      pages: count(entries.length, 'page'),
+      files: count(from, 'file'),
+    }),
     files === 1
-      ? 'as one PDF'
-      : `as ${count(files, 'PDF')}, handed over in one ZIP so it is one save rather `
-        + `than ${files}`,
+      ? phrase('plan.one')
+      : phrase('plan.many', { files: count(files, 'pdf'), n: files }),
   ];
 
   if (split.mode === 'at' && !split.at.length && el.splitAt.value.trim()) {
-    parts.push('- but nothing in that box names a page in range, so it would come out '
-      + 'as one file');
+    parts.push(phrase('plan.nosplit'));
   }
 
-  el.outputSummary.textContent = `${parts.join(' ')}.`;
-  el.run.textContent = files === 1 ? 'Build the document' : `Build ${files} documents`;
+  // The clauses are run together by a phrase too: a space between two of
+  // them is English punctuation and is not how every language does it.
+  el.outputSummary.textContent = phrase('plan.line',
+    { parts: parts.reduce((a, b) => phrase('plan.join', { a, b })) });
+  el.run.textContent = files === 1
+    ? phrase('run.one')
+    : phrase('run.many', { n: files });
 }
 
 /** How many files the current plan produces, without building any of them. */
@@ -581,8 +590,8 @@ function render() {
   const has = entries.length > 0;
 
   el.countLabel.textContent = has
-    ? `${count(entries.length, 'page')} in the running order`
-    : 'No pages left. Add a file, or press "Back to how they came".';
+    ? phrase('list.count', { pages: count(entries.length, 'page') })
+    : phrase('list.empty');
 
   el.byFilePreset.hidden = new Set(entries.map((entry) => entry.source)).size < 2;
   if (el.byFilePreset.hidden && splitMode() === 'file') {
@@ -607,7 +616,7 @@ async function run() {
   el.result.hidden = true;
   el.runError.hidden = true;
   el.progress.hidden = false;
-  setProgress(0, 1, 'Copying pages');
+  setProgress(0, 1, phrase('progress.copying'));
   releaseDownloads();
 
   let cancelled = false;
@@ -620,17 +629,19 @@ async function run() {
       bookmarks: el.keepBookmarks.checked,
     }, {
       signal: running.signal,
-      onProgress: (done, total, what) => setProgress(done, total,
-        what ? `Writing ${what}` : 'Checking what was written'),
+      t: phrase,
+      onProgress: (done, total, what) => setProgress(done, total, what
+        ? phrase('progress.writing', { what })
+        : phrase('progress.checking')),
     });
     showResult(result);
   } catch (error) {
     if (error?.name === 'AbortError') {
       cancelled = true;
-      el.progressLabel.textContent = 'Cancelled. Nothing was changed; the pages above '
-        + 'are still exactly as you left them.';
+      el.progressLabel.textContent = phrase('run.cancelled');
     } else {
-      el.runError.textContent = `That did not work: ${error?.message ?? error}`;
+      el.runError.textContent = phrase('run.failed',
+        { detail: phrase(error?.message ?? String(error)) });
       el.runError.hidden = false;
     }
   } finally {
@@ -651,7 +662,7 @@ function setProgress(done, total, stage) {
   if (Number.isFinite(done) && total) {
     el.progressBar.style.width = `${Math.round((done / Math.max(1, total)) * 100)}%`;
   }
-  el.progressLabel.textContent = `${stageText}...`;
+  el.progressLabel.textContent = phrase('progress.at', { stage: stageText });
 }
 
 /* ----------------------------------------------------------------- results */
@@ -661,14 +672,19 @@ function showResult(result) {
   const pages = result.files.reduce((sum, file) => sum + file.pages, 0);
 
   el.resultSize.textContent = result.files.length === 1
-    ? `One document, ${humanBytes(total)}`
-    : `${count(result.files.length, 'document')}, ${humanBytes(total)} altogether`;
-  el.resultSub.textContent = `${count(pages, 'page')} from `
-    + `${count(sources.length, 'file')}.`;
+    ? phrase('result.one', { size: humanBytes(total) })
+    : phrase('result.many', {
+      documents: count(result.files.length, 'document'),
+      size: humanBytes(total),
+    });
+  el.resultSub.textContent = phrase('result.sub', {
+    pages: count(pages, 'page'),
+    files: count(sources.length, 'file'),
+  });
 
   el.checkLine.textContent = result.ok
-    ? 'Checked: every file was opened again by this page and its pages counted.'
-    : `This run did not check out - ${result.problem}. Keep your originals.`;
+    ? phrase('result.checked')
+    : phrase('result.unchecked', { problem: result.problem });
   el.checkLine.className = `check-line ${result.ok ? 'good' : 'bad'}`;
 
   renderFacts(result);
@@ -678,8 +694,8 @@ function showResult(result) {
   el.download.href = keepUrl(handed.blob);
   el.download.download = handed.name;
   el.download.textContent = result.archive
-    ? `Download all ${result.files.length} as a ZIP`
-    : 'Download';
+    ? phrase('result.zip', { n: result.files.length })
+    : phrase('result.download');
   // A file this tool has just said it does not trust should not be one click
   // away from being sent to somebody.
   el.download.hidden = !result.ok;
@@ -693,17 +709,13 @@ function renderFacts(result) {
   const links = result.files.reduce((sum, file) => sum + file.links, 0);
 
   if (links) {
-    facts.push(`${count(links, 'link')} came across, with the ones that point inside `
-      + 'the document rewritten to follow their page to where it now is.');
+    facts.push(phrase('facts.links', { links: count(links, 'link') }));
   }
   if (fields) {
-    facts.push(`${count(fields, 'form field')} came across, filled in as they were.`);
+    facts.push(phrase('facts.fields', { fields: count(fields, 'field') }));
   }
 
-  facts.push('Not carried across, because it describes an order that no longer exists: '
-    + 'the tagged-reading-order tree, page labels ("iii, iv, 1, 2"), embedded '
-    + 'attachments, and any document-level JavaScript. Nor is any producer line, '
-    + 'creation date, or name for the tool that made it.');
+  facts.push(phrase('facts.dropped'));
 
   el.resultFacts.replaceChildren(...facts.map((text) => {
     const row = document.createElement('li');
@@ -730,11 +742,14 @@ function renderFiles(result) {
 
     const facts = document.createElement('span');
     facts.className = 'out-facts';
-    facts.textContent = `${count(file.pages, 'page')} · ${humanBytes(file.size)}`;
+    facts.textContent = phrase('result.facts', {
+      pages: count(file.pages, 'page'),
+      size: humanBytes(file.size),
+    });
 
     const link = document.createElement('a');
     link.className = 'ghost';
-    link.textContent = 'Download';
+    link.textContent = phrase('result.download');
     link.download = file.name;
     link.href = keepUrl(blobFor(file));
     link.hidden = !file.check.ok;

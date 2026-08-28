@@ -25,7 +25,7 @@
  * @returns {{pages: number[], error: string}} pages is sorted, deduplicated,
  *   and 1-based; error is empty when the whole string was understood.
  */
-export function parseRanges(text, total) {
+export function parseRanges(text, total, t) {
   const trimmed = String(text ?? '').trim();
   if (!trimmed) return { pages: [], error: '' };
 
@@ -79,18 +79,25 @@ export function parseRanges(text, total) {
   const pages = [...wanted].sort((a, b) => a - b);
   if (!bad.length) return { pages, error: '' };
 
+  // Two whole sentences. The English one chose a demonstrative, a verb and
+  // a noun with three separate ternaries, which is a sentence built out of
+  // English grammar rather than one a translator can be handed.
   return {
     pages,
-    error: `${bad.length === 1 ? 'This is not' : 'These are not'} a page number or a `
-      + `range of them: ${bad.join(', ')}. There ${total === 1 ? 'is' : 'are'} `
-      + `${total} page${total === 1 ? '' : 's'}; write them as 1-3, 8, 12-.`,
+    error: t(bad.length === 1 ? 'range.bad.one' : 'range.bad.many', {
+      list: bad.join(', '),
+      // A second number, and a second sentence: how many pages there are has
+      // nothing to do with how many things could not be read, and English
+      // makes a different word agree with each.
+      total: t(total === 1 ? 'range.total.one' : 'range.total.many', { n: total }),
+    }),
   };
 }
 
 /** "1-3, 8, 12-14", the way a person would write the set back. The inverse of
  *  the parser above, and used to show what a click just selected. */
-export function describeRanges(pages) {
-  if (!pages.length) return 'none';
+export function describeRanges(pages, t) {
+  if (!pages.length) return t('range.none');
 
   const runs = [];
   let start = pages[0];
@@ -109,8 +116,8 @@ export function describeRanges(pages) {
 
   return runs.map(([from, to]) => {
     if (from === to) return String(from);
-    if (to === from + 1) return `${from}, ${to}`;
-    return `${from}-${to}`;
+    if (to === from + 1) return t('range.pair', { from, to });
+    return t('range.run', { from, to });
   }).join(', ');
 }
 
