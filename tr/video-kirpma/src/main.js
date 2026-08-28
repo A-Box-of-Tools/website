@@ -25,7 +25,15 @@ cropCard:$('crop-card'),
 stage:$('stage'),
 preview:$('preview'),
 still:$('still'),
+stageBusy:$('stage-busy'),
 stageNote:$('stage-note'),
+transport:$('transport'),
+stepBack:$('step-back'),
+play:$('play'),
+stepOn:$('step-on'),
+scrub:$('scrub'),
+atTime:$('at-time'),
+atLength:$('at-length'),
 aspectRow:document.querySelector('.aspect-row'),
 swapAspect:$('swap-aspect'),
 cropX:$('crop-x'),
@@ -71,6 +79,13 @@ let duration=0;
 let fps=30;
 let canCropExactly=false;
 let canRecord=false;
+let playable=false;
+let playing=false;
+let position=0;
+let wantedTime=-1;
+let shownTime=-1;
+let decoding=false;
+let loadId=0;
 let exporting=false;
 let abortController=null;
 let lastResultUrl=null;
@@ -109,6 +124,7 @@ async function loadFile(picked){
 if(exporting)return;
 clearError();
 releaseFile();
+loadId+=1;
 file=picked;
 picker.busy('Reading the file...');
 try{
@@ -151,7 +167,10 @@ source=canCropExactly
 :{width:played.width,height:played.height};
 duration=played.duration||(media?media.duration:0);
 fps=media?averageFps(media.video):30;
-await showPreview(played.ok);
+playable=played.ok;
+showPreview();
+setUpTransport();
+goTo(0);
 describeSource(played);
 cropper.setSource(source.width,source.height);
 setAspect('free',el.aspectRow.querySelector('[data-aspect="free"]'));
@@ -166,30 +185,16 @@ resetView();
 picker.done();
 }
 }
-async function showPreview(playable){
+function showPreview(){
 el.stage.style.aspectRatio=`${source.width} / ${source.height}`;
 el.stage.style.maxWidth=`calc(62vh * ${source.width / source.height})`;
-if(playable){
-el.preview.hidden=false;
-el.still.hidden=true;
-el.stageNote.hidden=true;
-return;
-}
-el.preview.hidden=true;
-el.stageNote.hidden=false;
+el.preview.hidden=!playable;
+el.still.hidden=playable;
+el.stageNote.hidden=playable;
+if(!playable){
 el.stageNote.textContent='This browser will not play this file, so the frame below was '
-+'decoded to show you what you are cropping. The crop itself is unaffected.';
-try{
-const canvas=await grabFrame({file,media,atSeconds:0});
-const ctx=el.still.getContext('2d');
-el.still.width=canvas.width;
-el.still.height=canvas.height;
-ctx.drawImage(canvas,0,0);
-el.still.hidden=false;
-}catch(error){
-el.still.hidden=true;
-el.stageNote.textContent='This browser will not play this file and no frame could be '
-+`decoded from it either (${error.message}). The crop box below still works on its size.`;
++'decoded to show you what you are cropping, and moving the slider decodes '
++'another. The crop itself is unaffected.';
 }
 }
 function describeSource(played){
@@ -217,6 +222,11 @@ reason:why(fallbackReason,'read.layout'),
 }
 }
 function releaseFile(){
+playing=false;
+playable=false;
+position=0;
+wantedTime=-1;
+shownTime=-1;
 if(objectUrl){
 el.preview.removeAttribute('src');
 el.preview.load();
@@ -229,8 +239,95 @@ file=null;
 function resetView(){
 el.source.hidden=true;
 el.pathNote.hidden=true;
+el.transport.hidden=true;
 releaseFile();
 }
+const playTitle=el.play.title;
+function setUpTransport(){
+el.transport.hidden=false;
+el.scrub.min='0';
+el.scrub.max=String(Math.max(1,Math.round(duration*1000)));
+el.scrub.step=String(Math.max(1,Math.round(1000/(fps||30))));
+el.scrub.value='0';
+el.scrub.disabled=!duration;
+el.play.disabled=!playable;
+el.play.title=playable?playTitle:phrase('play.cannot');
+el.atLength.textContent=duration?`/ ${clockTime(duration)}`:'';
+}
+function goTo(seconds){
+position=Math.max(0,Math.min(seconds,duration||seconds));
+el.scrub.value=String(Math.round(position*1000));
+el.atTime.textContent=clockTime(position);
+if(playable)el.preview.currentTime=position;
+else drawStill(position);
+}
+function step(frames){
+pause();
+goTo(position+frames/(fps||30));
+}
+function play(){
+if(!playable||playing)return;
+playing=true;
+el.play.textContent='⏸';
+el.play.setAttribute('aria-label',phrase('play.pause'));
+el.preview.play().catch(()=>pause());
+follow();
+}
+function pause(){
+if(!playing)return;
+playing=false;
+el.play.textContent='▶';
+el.play.setAttribute('aria-label',phrase('play.play'));
+el.preview.pause();
+goTo(el.preview.currentTime);
+}
+function follow(){
+if(!playing)return;
+position=el.preview.currentTime;
+el.scrub.value=String(Math.round(position*1000));
+el.atTime.textContent=clockTime(position);
+requestAnimationFrame(follow);
+}
+async function drawStill(seconds){
+wantedTime=seconds;
+if(decoding)return;
+const mine=loadId;
+decoding=true;
+try{
+while(wantedTime!==shownTime&&media&&loadId===mine){
+const target=wantedTime;
+const slow=setTimeout(()=>{el.stageBusy.hidden=false;},120);
+try{
+const canvas=await grabFrame({file,media,atSeconds:target});
+if(wantedTime!==target||loadId!==mine)continue;
+el.still.width=canvas.width;
+el.still.height=canvas.height;
+el.still.getContext('2d').drawImage(canvas,0,0);
+el.still.hidden=false;
+shownTime=target;
+}finally{
+clearTimeout(slow);
+el.stageBusy.hidden=true;
+}
+}
+}catch(error){
+if(loadId!==mine)return;
+el.still.hidden=true;
+el.stageNote.textContent='This browser will not play this file and no frame could be '
++`decoded from it either (${error.message}). The crop box below still works on its size.`;
+}finally{
+decoding=false;
+}
+}
+el.play.addEventListener('click',()=>(playing?pause():play()));
+el.stepBack.addEventListener('click',()=>step(-1));
+el.stepOn.addEventListener('click',()=>step(1));
+el.scrub.addEventListener('input',()=>{
+pause();
+goTo(Number(el.scrub.value)/1000);
+});
+el.preview.addEventListener('pause',()=>pause());
+el.preview.addEventListener('ended',()=>pause());
 let aspect=null;
 function onCropChanged(rect){
 el.cropX.value=String(rect.x);
@@ -354,6 +451,12 @@ if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
 if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
 return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
 }
+function clockTime(seconds){
+const whole=Math.max(0,seconds);
+const minutes=Math.floor(whole/60);
+const rest=whole-minutes*60;
+return`${minutes}:${rest.toFixed(3).padStart(6, '0')}`;
+}
 function formatDuration(seconds){
 const whole=Math.max(0,Math.round(seconds));
 const minutes=Math.floor(whole/60);
@@ -376,7 +479,8 @@ el.cancelBtn.hidden=false;
 el.progress.hidden=false;
 el.result.hidden=true;
 cropper.setEnabled(false);
-el.preview.pause();
+pause();
+setTransportEnabled(false);
 setProgress({phase:'preparing',done:0,total:1});
 const quality=el.quality.value;
 const keepAudio=el.keepAudio.checked;
@@ -417,6 +521,16 @@ abortController=null;
 el.cancelBtn.hidden=true;
 el.exportBtn.disabled=false;
 cropper.setEnabled(true);
+setTransportEnabled(true);
+}
+}
+function setTransportEnabled(enabled){
+for(const control of[el.play,el.stepBack,el.stepOn,el.scrub]){
+control.disabled=!enabled;
+}
+if(enabled){
+el.play.disabled=!playable;
+el.scrub.disabled=!duration;
 }
 }
 el.exportBtn.addEventListener('click',runExport);

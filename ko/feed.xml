@@ -74,6 +74,13 @@
     <summary type="html">MP4, MOV, WebM의 일부를 움직이는 GIF로 만듭니다. 구간과 너비, 프레임 레이트를 고르면 프레임을 읽고 GIF를 쓰는 일이 브라우저 안에서 일어납니다. 업로드는 없습니다.</summary>
   </entry>
   <entry>
+    <title type="html">동영상을 다른 화면 비율로 자르는 방법</title>
+    <id>https://abox.tools/ko/가이드/동영상-화면-자르기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/동영상-화면-자르기/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">영상을 정사각형이나 9:16 세로, 또는 정확한 픽셀 상자로 잘라내기. 플랫폼마다 어떤 비율을 원하는지, 구간 자르기와 달리 화면 자르기는 왜 다시 인코딩해야 하는지, 그리고 그 대가가 무엇인지.</summary>
+  </entry>
+  <entry>
     <title type="html">문서 스캐너</title>
     <id>https://abox.tools/ko/문서-스캔/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/문서-스캔/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/긴-영상을-타임랩스로/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">한 시간짜리 촬영본을 볼 만한 1분으로: 속도를 고르는 법, 계산 대신 최종 길이를 말하는 편이 나은 이유, 그리고 결과물이 GIF가 되어야 하는 경우.</summary>
-  </entry>
-  <entry>
-    <title type="html">누구에게도 넘기지 않고 JSON을 정렬하는 방법</title>
-    <id>https://abox.tools/ko/가이드/json-정렬하기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/json-정렬하기/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">브라우저 안에서 JSON을 펼치고 확인하고 눌러 담는 방법. 포매터가 남의 파일에서 절대 바꾸면 안 되는 것, 오류 메시지를 읽는 법, 그리고 그걸 붙여 넣는 사이트가 왜 중요한지.</summary>
   </entry>
 </feed>

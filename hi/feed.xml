@@ -67,6 +67,13 @@
     <summary type="html">रिकॉर्डिंग चलाइए और जो-जो हिस्सा रखने लायक हो, उस पर वहीं निशान लगाते जाइए, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। सैंपल तक सटीक कट, जोड़ पर कोई खटका नहीं, और कुछ अपलोड नहीं होता।</summary>
   </entry>
   <entry>
+    <title type="html">किसी वीडियो को दूसरे आकार में कैसे क्रॉप करें</title>
+    <id>https://abox.tools/hi/guides/crop-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/crop-a-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">किसी क्लिप को वर्ग, 9:16 पोर्ट्रेट, या ठीक तय पिक्सल के डिब्बे तक काटिए। कौन-सा प्लैटफ़ॉर्म कौन-सा अनुपात चाहता है, क्रॉप करने पर दोबारा एनकोड क्यों करना ही पड़ता है जबकि काटने पर नहीं, और उसकी कीमत क्या है।</summary>
+  </entry>
+  <entry>
     <title type="html">टाइमलैप्स मेकर</title>
     <id>https://abox.tools/hi/timelapse-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/timelapse-video/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/svg-to-image/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">SVG को किसी भी साइज़ की PNG, JPEG या WebP में बदलिए, अपने ब्राउज़र में ही। चौड़ाई बताइए, कोई गुणक, या कोई डिब्बा, और साथ में @2x तथा @3x नकलें भी पाइए। पारदर्शिता बची रहती है, और कुछ अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">इमेज कंप्रेसर</title>
-    <id>https://abox.tools/hi/compress-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPEG, PNG या WebP को ठीक तय साइज़ तक कंप्रेस कीजिए - 100 KB, 2 MB, कुछ भी। पूरा काम आपके ब्राउज़र में होता है। न कुछ अपलोड, न कोई खाता, और ऑफ़लाइन भी चलता है।</summary>
   </entry>
 </feed>

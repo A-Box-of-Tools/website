@@ -95,6 +95,13 @@
     <summary type="html">شغّل ملف MP4 أو MOV أو WebM بالمقلوب، والصوت معكوس كذلك. يعمل داخل متصفحك: لا يُرفع شيء، ولا علامة مائية، ويعمل دون اتصال.</summary>
   </entry>
   <entry>
+    <title type="html">كيف تقتصّ فيديو إلى نسبة أخرى</title>
+    <id>https://abox.tools/ar/أدلة/اقتصاص-الفيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/اقتصاص-الفيديو/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">اختصر مقطعاً إلى مربّع أو إلى 9:16 طولي أو إلى إطار بكسل محدّد. أي نسبة تريدها كل منصة، ولماذا على الاقتصاص أن يعيد الترميز بينما لا يفعل التقصير، وماذا يكلّف ذلك.</summary>
+  </entry>
+  <entry>
     <title type="html">محرّر الصوت</title>
     <id>https://abox.tools/ar/تحرير-الصوت/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تجهيز-الصور-للنشر/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">من HEIC إلى JPEG، وGPS محذوف، ومقاس مضبوط للصفحة، وضغط على ميزانية: السلسلة كلها في المتصفح، والأصول لا تغادر جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">كيف تحرّر صورة GIF إطارًا إطارًا</title>
-    <id>https://abox.tools/ar/أدلة/تحرير-gif-اطارا-اطارا/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحرير-gif-اطارا-اطارا/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">فكّك صورة GIF إلى إطاراتها، واحذف أو أعد الترتيب، ثم أعد بناءها والتوقيت محفوظ. ما الذي ينجو من الرحلة ذهابًا وإيابًا، وما ثمن اللوحة اللونية، وكيف ترى سبب ثقل GIF.</summary>
   </entry>
 </feed>

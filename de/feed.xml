@@ -81,6 +81,13 @@
     <summary type="html">PDFs zusammenfügen, eines in mehrere teilen und Seiten in die gewünschte Reihenfolge ziehen, alles im eigenen Browser. Es wird nichts hochgeladen, ein Konto brauchen Sie nicht, und die fertige Datei wird noch einmal geöffnet und nachgezählt, bevor sie Ihnen angeboten wird.</summary>
   </entry>
   <entry>
+    <title type="html">So schneiden Sie ein Video auf ein anderes Format zu</title>
+    <id>https://abox.tools/de/ratgeber/video-bildausschnitt-aendern/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/video-bildausschnitt-aendern/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Einen Clip auf ein Quadrat, auf 9:16 hochkant oder auf ein exaktes Pixelfenster bringen. Welches Seitenverhältnis welche Plattform verlangt, warum Zuschneiden neu kodieren muss und Kürzen nicht, und was das kostet.</summary>
+  </entry>
+  <entry>
     <title type="html">Video zu GIF</title>
     <id>https://abox.tools/de/video-in-gif-umwandeln/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/video-in-gif-umwandeln/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JSON, XML, HTML, CSS und YAML formatieren und minimieren und JSON in YAML oder XML umwandeln und zurück. Die Parser laufen in Ihrem Browser, hochgeladen wird nichts - ein Token oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF-Kompressor</title>
-    <id>https://abox.tools/de/pdf-verkleinern/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-verkleinern/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ein PDF verkleinern, ohne es hochzuladen. Ihr eigener Browser liest die Datei, komprimiert sie neu und schreibt sie neu, und vorher zeigt Ihnen das Werkzeug, wo die Größe tatsächlich steckt.</summary>
   </entry>
 </feed>

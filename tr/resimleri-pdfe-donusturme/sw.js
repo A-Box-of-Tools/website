@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resimleri-pdfe-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'adf8ff794b';
+const CACHE_NAME=CACHE_PREFIX+'5e9aa04db0';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=be600b90b7',
+'styles.css?v=c5232450bf',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

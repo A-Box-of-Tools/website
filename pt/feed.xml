@@ -39,6 +39,13 @@
     <summary type="html">Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline.</summary>
   </entry>
   <entry>
+    <title type="html">Como cortar um vídeo para outro formato de tela</title>
+    <id>https://abox.tools/pt/guias/cortar-um-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/cortar-um-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Reduza um clipe a um quadrado, a um retrato 9:16 ou a uma caixa exata em pixels. Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa.</summary>
+  </entry>
+  <entry>
     <title type="html">Cortador de vídeo</title>
     <id>https://abox.tools/pt/cortar-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-video/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/separar-um-gif-em-quadros/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Tire cada quadro de um GIF animado em PNG: por que alguns quadros são só um pedacinho da imagem, o que acontece com a transparência, e como guardar os tempos para montar tudo de novo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como transformar um vídeo longo em timelapse</title>
-    <id>https://abox.tools/pt/guias/transformar-video-longo-em-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/transformar-video-longo-em-timelapse/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Uma hora de filmagem num minuto que dá para assistir: como escolher a velocidade, por que dizer a duração final ganha de fazer conta, e quando o resultado deve virar um GIF.</summary>
   </entry>
 </feed>

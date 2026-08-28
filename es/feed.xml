@@ -67,6 +67,13 @@
     <summary type="html">Convierte un vídeo largo en un timelapse: 10x, 60x o la velocidad que escribas. Todo en el navegador, sin subir nada, sin marca de agua y también sin conexión.</summary>
   </entry>
   <entry>
+    <title type="html">Cómo recortar un vídeo a otra forma</title>
+    <id>https://abox.tools/es/guias/recortar-un-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/recortar-un-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Deja un clip en un cuadrado, en un vertical 9:16 o en una caja de píxeles exacta. Qué proporción quiere cada plataforma, por qué recortar tiene que recodificar y cortar no, y lo que eso cuesta.</summary>
+  </entry>
+  <entry>
     <title type="html">Editor de audio</title>
     <id>https://abox.tools/es/editar-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/editar-audio/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/crear-una-miniatura-de-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Avanza fotograma a fotograma hasta el instante preciso, guárdalo sin pérdida, dale el formato de la plataforma y clava su límite de bytes. Tres herramientas del navegador seguidas, y el metraje nunca sale de tu equipo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cómo editar un GIF fotograma a fotograma</title>
-    <id>https://abox.tools/es/guias/editar-un-gif-fotograma-a-fotograma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/editar-un-gif-fotograma-a-fotograma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Desarma un GIF en sus fotogramas, quita o reordena los que haga falta, y reconstrúyelo conservando los tiempos. Qué sobrevive al viaje de ida y vuelta, qué cuesta la paleta, y cómo ver por qué un GIF pesa.</summary>
   </entry>
 </feed>

@@ -60,6 +60,13 @@
     <summary type="html">Turn JPG, PNG or WebP images into an animated GIF, free and entirely in your browser. Set the order, the speed and the size. Nothing is uploaded, and it works offline.</summary>
   </entry>
   <entry>
+    <title type="html">How to crop a video to a different shape</title>
+    <id>https://abox.tools/guides/crop-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/guides/crop-a-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Cut a clip down to a square, a 9:16 portrait, or an exact pixel box. Which ratio each platform wants, why cropping has to re-encode when trimming does not, and what that costs.</summary>
+  </entry>
+  <entry>
     <title type="html">Image Stacker</title>
     <id>https://abox.tools/stack-images/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-video-thumbnail/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Step to the precise frame, save it losslessly, size it for the platform, and hit the byte limit. Three browser tools in a row, and the footage never leaves your machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to make an animated GIF from images</title>
-    <id>https://abox.tools/guides/make-a-gif-from-images/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-gif-from-images/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Turn a set of pictures into one animated GIF: how fast a GIF can really play, what the palette setting changes, and the three things that actually make the file smaller.</summary>
   </entry>
 </feed>

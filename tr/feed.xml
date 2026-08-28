@@ -39,6 +39,13 @@
     <summary type="html">Bir sayfanın telefon fotoğrafını düzeltilmiş, eşit aydınlatılmış bir PDF'e çevirin. Köşeler sizin için bulunur, perspektif geri alınır, gölge bölünüp atılır. Tamamen tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
   </entry>
   <entry>
+    <title type="html">Bir video başka bir şekle nasıl kırpılır</title>
+    <id>https://abox.tools/tr/rehberler/video-kirpma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/video-kirpma/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Bir klibi kareye, 9:16 dikeye ya da tam bir piksel kutusuna indirin. Hangi platformun hangi oranı istediği, kesme gerektirmezken kırpmanın neden yeniden kodlamak zorunda olduğu ve bunun bedeli.</summary>
+  </entry>
+  <entry>
     <title type="html">GIF Yapıcı</title>
     <id>https://abox.tools/tr/gif-olusturma/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/gif-olusturma/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/resimleri-videoya-donusturme/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JPG, PNG veya WebP görselleri MP4 slayt gösterisi videosuna çevirin; ücretsiz ve tamamen tarayıcınızda. Hiçbir şey yüklenmez, kayıt gerekmez ve çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görsellerden nasıl hareketli GIF yapılır</title>
-    <id>https://abox.tools/tr/rehberler/resimlerden-gif-olusturma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resimlerden-gif-olusturma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir resim setini tek bir hareketli GIF'e çevirin: bir GIF gerçekte ne kadar hızlı oynayabilir, palet ayarı neyi değiştirir ve dosyayı gerçekten küçülten üç şey.</summary>
   </entry>
 </feed>

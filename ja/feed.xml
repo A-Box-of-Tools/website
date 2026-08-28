@@ -67,6 +67,13 @@
     <summary type="html">MP4・MOV・WebMを逆再生にします。音も一緒に逆向きになります。処理はブラウザの中だけで、アップロードも透かしもなく、オフラインでも動きます。</summary>
   </entry>
   <entry>
+    <title type="html">動画を別の形に切り抜く方法</title>
+    <id>https://abox.tools/ja/guides/crop-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/crop-a-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">映像を正方形、9:16の縦長、あるいはピクセル指定の枠に切り落とす方法。どの比率をどのプラットフォームが求めるのか、カットでは不要なのに切り抜きではエンコードし直しが避けられない理由、そしてその代償。</summary>
+  </entry>
+  <entry>
     <title type="html">動画カットツール</title>
     <id>https://abox.tools/ja/trim-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-video/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/svg-to-image/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">SVGを好きなサイズのPNG・JPEG・WebPにブラウザの中で変換します。幅、倍率、枠のいずれかを指定でき、@2xと@3xも一緒に作れます。透過はそのまま、アップロードはありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">アップロードせずに端末間でテキストとファイルを共有する方法</title>
-    <id>https://abox.tools/ja/guides/share-text-between-devices/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/share-text-between-devices/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">テキストやファイルを、直接の暗号化された接続でブラウザからブラウザへ。自分宛てのメールも、チャット履歴も、アカウントも要らず、どのサーバーにも写しは残りません。</summary>
   </entry>
 </feed>

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/json-formatteren/:';
-const CACHE_NAME=CACHE_PREFIX+'892248a9e0';
+const CACHE_NAME=CACHE_PREFIX+'98fdb5b75a';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=dad14d49d9',
+'styles.css?v=48e697b371',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

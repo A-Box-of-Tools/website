@@ -74,6 +74,13 @@
     <summary type="html">Maak van JPG-, PNG- of WebP-afbeeldingen een geanimeerde GIF, gratis en helemaal in je browser. Je bepaalt de volgorde, de snelheid en het formaat. Er wordt niets geüpload en het werkt offline.</summary>
   </entry>
   <entry>
+    <title type="html">Hoe je een video naar een andere vorm bijsnijdt</title>
+    <id>https://abox.tools/nl/gidsen/een-video-bijsnijden/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-video-bijsnijden/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Snijd een filmpje terug naar een vierkant, een staande 9:16, of een exact pixelkader. Welke verhouding elk platform wil, waarom bijsnijden wel moet hercoderen en inkorten niet, en wat dat kost.</summary>
+  </entry>
+  <entry>
     <title type="html">Pdf samenvoegen &amp; splitsen</title>
     <id>https://abox.tools/nl/pdf-samenvoegen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-samenvoegen/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/json-formatteren/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF onleesbaar maken</title>
-    <id>https://abox.tools/nl/pdf-onleesbaar-maken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/pdf-onleesbaar-maken/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Haal woorden uit een PDF in plaats van er een zwarte rechthoek overheen te tekenen. De letters worden gewist uit de tekeninstructies van de pagina zelf, het klare bestand wordt opnieuw geopend en doorzocht om te bewijzen dat ze weg zijn, en er wordt niets ge&amp;uuml;pload.</summary>
   </entry>
 </feed>

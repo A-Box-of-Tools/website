@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pembuat-kata-sandi/:';
-const CACHE_NAME=CACHE_PREFIX+'b147177d52';
+const CACHE_NAME=CACHE_PREFIX+'16d73af30e';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=721ec67a78',
+'styles.css?v=be8a5a28d6',
 'manifest.json',
 'src/shared/phrases.js',
 'src/generate.js',

@@ -95,6 +95,13 @@
     <summary type="html">把 MP4、MOV 或 WebM 裡的一段做成 GIF 動圖。段落、寬度和幀率你來定，讀幀和寫 GIF 都在你的瀏覽器裡完成。什麼都不上傳。</summary>
   </entry>
   <entry>
+    <title type="html">怎麼把影片畫面裁成另一個形狀</title>
+    <id>https://abox.tools/zh-TW/guides/crop-a-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/crop-a-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">把片子裁成方圖、9:16 直式，或者精確到畫素的一個框。各家平臺要哪個比例，為什麼剪時長不用重編而裁畫面非重編不可，以及這一下的代價。</summary>
+  </entry>
+  <entry>
     <title type="html">文件掃描</title>
     <id>https://abox.tools/zh-TW/document-scanner/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/document-scanner/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/image-to-data-uri/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">把 PNG、JPEG、SVG 或 WebP 變成能貼進 CSS 和 HTML 的 data URI。SVG 走百分號編碼而不是 base64，所以還看得懂，也更短。在瀏覽器裡跑，什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">圖片轉 ICO</title>
-    <id>https://abox.tools/zh-TW/image-to-ico/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/image-to-ico/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在瀏覽器裡把 PNG、JPEG 或 SVG 做成一個真正多尺寸的 .ico，或者一個 macOS 的 .icns。網站圖示、Windows 應用圖示、Mac 應用圖示，加上網站需要的蘋果和安卓那幾個檔案。什麼都不上傳。</summary>
   </entry>
 </feed>

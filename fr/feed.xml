@@ -32,6 +32,13 @@
     <uri>https://abox.tools/fr/</uri>
   </author>
   <entry>
+    <title type="html">Comment recadrer une vidéo dans une autre forme</title>
+    <id>https://abox.tools/fr/guides/recadrer-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/recadrer-une-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Ramener un clip à un carré, à un format 9:16 vertical, ou à un cadre en pixels exact. Quelle proportion réclame chaque plateforme, pourquoi recadrer doit réencoder quand couper ne le fait pas, et ce que cela coûte.</summary>
+  </entry>
+  <entry>
     <title type="html">Coupeur de vidéos</title>
     <id>https://abox.tools/fr/couper-une-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-une-video/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/transformer-une-longue-video-en-timelapse/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Une heure d'images en une minute regardable : comment choisir la vitesse, pourquoi donner la durée finale vaut mieux que faire l'arithmétique, et quand le résultat doit devenir un GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment vérifier un téléchargement avec sa somme de contrôle</title>
-    <id>https://abox.tools/fr/guides/verifier-la-somme-de-controle-d-un-telechargement/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/verifier-la-somme-de-controle-d-un-telechargement/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Comment comparer une somme MD5 ou SHA-256 sous Windows, macOS et Linux ou dans le navigateur, ce qu'une correspondance prouve vraiment, et l'erreur qui vide l'exercice de son sens.</summary>
   </entry>
 </feed>

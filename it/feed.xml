@@ -32,6 +32,13 @@
     <uri>https://abox.tools/it/</uri>
   </author>
   <entry>
+    <title type="html">Come ritagliare un video in una forma diversa</title>
+    <id>https://abox.tools/it/guide/ritagliare-un-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/ritagliare-un-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Riduci una clip a un quadrato, a un verticale 9:16 o a un riquadro di pixel esatto. Quale proporzione vuole ogni piattaforma, perché ritagliare deve ricodificare mentre tagliare no, e quanto costa.</summary>
+  </entry>
+  <entry>
     <title type="html">Creatore di GIF</title>
     <id>https://abox.tools/it/creare-gif/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/creare-gif/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/trasformare-un-video-lungo-in-timelapse/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Un'ora di girato in un minuto guardabile: come scegliere la velocità, perché dire la durata finale batte fare i conti, e quando il risultato deve diventare una GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Compressore di PDF</title>
-    <id>https://abox.tools/it/comprimere-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/comprimere-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Riduci il peso di un PDF senza caricarlo. Il file lo legge, lo ricomprime e lo riscrive il tuo browser, e prima di toccare qualunque cosa lo strumento ti mostra dove sta davvero il peso.</summary>
   </entry>
 </feed>

@@ -32,6 +32,13 @@
     <uri>https://abox.tools/id/</uri>
   </author>
   <entry>
+    <title type="html">Cara memangkas video ke bentuk lain</title>
+    <id>https://abox.tools/id/panduan/pangkas-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/pangkas-video/"/>
+    <updated>2026-08-28T00:00:00Z</updated>
+    <summary type="html">Pangkas sebuah klip menjadi persegi, potret 9:16, atau kotak piksel yang tepat. Rasio mana yang diminta tiap lapak, kenapa pemangkasan harus mengodekan ulang padahal pemotongan tidak, dan berapa harganya.</summary>
+  </entry>
+  <entry>
     <title type="html">Gambar ke PDF</title>
     <id>https://abox.tools/id/gambar-ke-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/gambar-ke-pdf/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/gambar-ke-base64/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Ubah PNG, JPEG, SVG, atau WebP menjadi data URI yang bisa Anda tempelkan ke CSS atau HTML. SVG dikodekan dengan persen alih-alih base64, jadi ia tetap terbaca dan lebih pendek. Berjalan di peramban Anda; tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Gambar ke ICO</title>
-    <id>https://abox.tools/id/buat-favicon/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/buat-favicon/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ubah PNG, JPEG, atau SVG menjadi .ico multi-ukuran yang sungguhan atau .icns macOS di peramban Anda. Favicon, ikon aplikasi Windows, ikon aplikasi Mac, plus file Apple dan Android yang dibutuhkan sebuah situs. Tidak ada yang diunggah.</summary>
   </entry>
 </feed>

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/favicon-olusturma/:';
-const CACHE_NAME=CACHE_PREFIX+'7b9e5eaa82';
+const CACHE_NAME=CACHE_PREFIX+'5a3a91c6cc';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5253b16064',
+'styles.css?v=c9b16c1819',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
