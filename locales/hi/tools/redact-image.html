@@ -180,6 +180,56 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">यह ब्राउज़र तस्वीर को डीकोड नहीं कर सका।</span>
+    <span data-phrase="read.failed">यह फ़ाइल खोली नहीं जा सकी: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{x}, {y} पर {width} x {height}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; पिक्सेलेटेड, {size} px के ब्लॉक
+      ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; धुँधला, {radius} px त्रिज्या</span>
+    <span data-phrase="region.filled">{where} &mdash; काला किया हुआ</span>
+    <span data-phrase="region.aria">क्षेत्र {n}: {what}। तीर कुंजियाँ इसे खिसकाती हैं,
+      Alt के साथ तीर कुंजियाँ आकार बदलती हैं, और Delete इसे हटाता है।</span>
+    <span data-phrase="region.choice">क्षेत्र {n} क्या करता है</span>
+    <span data-phrase="choice.fill">काला कीजिए</span>
+    <span data-phrase="choice.pixelate">पिक्सेलेट कीजिए</span>
+    <span data-phrase="choice.blur">धुँधला कीजिए</span>
+    <span data-phrase="style.fill.one">{n} काला किया</span>
+    <span data-phrase="style.fill.many">{n} काले किए</span>
+    <span data-phrase="style.pixelate.one">{n} पिक्सेलेटेड</span>
+    <span data-phrase="style.pixelate.many">{n} पिक्सेलेटेड</span>
+    <span data-phrase="style.blur.one">{n} धुँधला</span>
+    <span data-phrase="style.blur.many">{n} धुँधले</span>
+    <span data-phrase="count.one">{n} क्षेत्र: {parts}।</span>
+    <span data-phrase="count.many">{n} क्षेत्र: {parts}।</span>
+    <span data-phrase="strength.light">हल्का</span>
+    <span data-phrase="strength.medium">मध्यम</span>
+    <span data-phrase="strength.heavy">तेज़</span>
+    <span data-phrase="strength.note">{label} &mdash; एक बॉक्स की छोटी भुजा पर क़रीब
+      {blocks} ब्लॉक, और उसी का 1/{blur} धुँधलेपन की त्रिज्या।</span>
+    <span data-phrase="risk.mosaic">यहाँ का सबसे बारीक मोज़ेक {across} x {down} ब्लॉक का
+      है, हर ब्लॉक {size} px। यानी नीचे जो था उसके {averages} औसत, जो फ़ाइल में ही रह
+      जाते हैं।</span>
+    <span data-phrase="risk.blur.one">धुँधलेपन की त्रिज्या {radius} px है। धुँधलापन भी
+      एक औसत ही है, और साफ़ लिखावट पर पड़ा हल्का धुँधलापन ठीक वही मामला है जिसे उलटकर
+      पढ़ा जा चुका है।</span>
+    <span data-phrase="risk.blur.many">सबसे छोटे धुँधलेपन की त्रिज्या {radius} px है।
+      धुँधलापन भी एक औसत ही है, और साफ़ लिखावट पर पड़ा हल्का धुँधलापन ठीक वही मामला है
+      जिसे उलटकर पढ़ा जा चुका है।</span>
+    <span data-phrase="risk.advice">जो भी टेक्स्ट की तरह पढ़ा जा सके, उसे काला कर दीजिए।</span>
+    <span data-phrase="write.noencode">ब्राउज़र इसे एनकोड नहीं कर सका।</span>
+    <span data-phrase="write.failed">फ़ाइल लिखते समय कुछ गड़बड़ हो गई: {why}</span>
+    <span data-phrase="result.alt">काली की हुई तस्वीर, {width} गुणा {height} पिक्सेल</span>
+    <span data-phrase="result.file">{name} &mdash; {size}, {width} x {height}</span>
+    <span data-phrase="result.nothing">कोई क्षेत्र चिह्नित नहीं किया गया, इसलिए यह वही
+      तस्वीर है, दोबारा एनकोड की हुई।</span>
+    <span data-phrase="result.clean">काले किए पिक्सेल से लिखी गई, इसलिए इसमें न EXIF है,
+      न GPS, न कोई अंदर रखा थंबनेल, और न ही कोई परत जिसमें मूल तस्वीर हो।</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">आपकी तस्वीरें कहीं नहीं गईं। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

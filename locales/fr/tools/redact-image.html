@@ -188,6 +188,58 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">ce navigateur n&rsquo;a pas pu décoder
+      l&rsquo;image.</span>
+    <span data-phrase="read.failed">Ce fichier n&rsquo;a pas pu être ouvert&nbsp;: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height} en {x}, {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; pixelisé, blocs de {size} px
+      ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; flouté, rayon de {radius} px</span>
+    <span data-phrase="region.filled">{where} &mdash; caviardé</span>
+    <span data-phrase="region.aria">Zone {n}&nbsp;: {what}. Les flèches la déplacent,
+      Alt et les flèches la redimensionnent, et Suppr la retire.</span>
+    <span data-phrase="region.choice">Ce que fait la zone {n}</span>
+    <span data-phrase="choice.fill">Caviarder</span>
+    <span data-phrase="choice.pixelate">Pixeliser</span>
+    <span data-phrase="choice.blur">Flouter</span>
+    <span data-phrase="style.fill.one">{n} caviardée</span>
+    <span data-phrase="style.fill.many">{n} caviardées</span>
+    <span data-phrase="style.pixelate.one">{n} pixelisée</span>
+    <span data-phrase="style.pixelate.many">{n} pixelisées</span>
+    <span data-phrase="style.blur.one">{n} floutée</span>
+    <span data-phrase="style.blur.many">{n} floutées</span>
+    <span data-phrase="count.one">{n} zone&nbsp;: {parts}.</span>
+    <span data-phrase="count.many">{n} zones&nbsp;: {parts}.</span>
+    <span data-phrase="strength.light">Léger</span>
+    <span data-phrase="strength.medium">Moyen</span>
+    <span data-phrase="strength.heavy">Fort</span>
+    <span data-phrase="strength.note">{label} &mdash; environ {blocks} blocs sur le côté
+      le plus court d&rsquo;une zone, et un rayon de flou de 1/{blur} de celui-ci.</span>
+    <span data-phrase="risk.mosaic">La mosaïque la plus fine ici fait {across} x {down}
+      blocs de {size} px. Cela fait {averages} moyennes de ce qu&rsquo;il y avait
+      dessous, laissées dans le fichier.</span>
+    <span data-phrase="risk.blur.one">Le flou a un rayon de {radius} px. Un flou est une
+      moyenne lui aussi, et un petit flou sur du texte net est précisément le cas qui a
+      déjà été remonté à l&rsquo;envers.</span>
+    <span data-phrase="risk.blur.many">Le plus petit flou a un rayon de {radius} px. Un
+      flou est une moyenne lui aussi, et un petit flou sur du texte net est précisément
+      le cas qui a déjà été remonté à l&rsquo;envers.</span>
+    <span data-phrase="risk.advice">Caviardez tout ce qui se lit comme du texte.</span>
+    <span data-phrase="write.noencode">le navigateur n&rsquo;a pas pu l&rsquo;encoder.</span>
+    <span data-phrase="write.failed">Quelque chose a mal tourné à l&rsquo;écriture du
+      fichier&nbsp;: {why}</span>
+    <span data-phrase="result.alt">L&rsquo;image caviardée, {width} sur {height} pixels</span>
+    <span data-phrase="result.file">{name} &mdash; {size}, {width} x {height}</span>
+    <span data-phrase="result.nothing">Aucune zone n&rsquo;a été marquée, c&rsquo;est
+      donc la même image réencodée.</span>
+    <span data-phrase="result.clean">Écrite à partir des pixels caviardés&nbsp;: elle ne
+      porte ni EXIF, ni GPS, ni vignette intégrée, ni calque contenant l&rsquo;original.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
     <span data-phrase="net.clean">vos images ne sont allées nulle part. {total}
       fichiers chargés, tous appartenant à cette page. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

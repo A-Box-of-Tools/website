@@ -22,9 +22,9 @@ export function stemOf(name) {
  * that is the question this tool is answering.
  */
 export const STYLE_LABELS = {
-  fill: 'blacked out',
-  pixelate: 'pixelated',
-  blur: 'blurred',
+  fill: 'style.fill',
+  pixelate: 'style.pixelate',
+  blur: 'style.blur',
 };
 
 export const FORMATS = {
@@ -67,35 +67,42 @@ export function outName(stem, format) {
 }
 
 /** Bytes, as the page writes them. */
-export function sizeText(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+export function sizeText(bytes, t) {
+  if (bytes < 1024) return t('size.b', { n: bytes });
+  if (bytes < 1024 * 1024) return t('size.kb', { n: (bytes / 1024).toFixed(1) });
+  return t('size.mb', { n: (bytes / (1024 * 1024)).toFixed(2) });
 }
 
 /** One row of the list: where the box is, and what it does to what is under it. */
-export function describeRegion(region, strength) {
-  const where = `${region.width} x ${region.height} at ${region.x}, ${region.y}`;
+export function describeRegion(region, strength, t) {
+  const where = t('region.where', {
+    width: region.width, height: region.height, x: region.x, y: region.y,
+  });
   if (region.style === 'pixelate') {
     const blocks = blockCount(region, strength);
-    return `${where} - pixelated, ${blocks.size} px blocks (${blocks.across} x ${blocks.down})`;
+    return t('region.pixelated', {
+      where, size: blocks.size, across: blocks.across, down: blocks.down,
+    });
   }
   if (region.style === 'blur') {
-    return `${where} - blurred, ${blurRadius(region, strength)} px radius`;
+    return t('region.blurred', { where, radius: blurRadius(region, strength) });
   }
-  return `${where} - blacked out`;
+  return t('region.filled', { where });
 }
 
 /** "3 areas: 2 blacked out, 1 pixelated". Empty until there is something to say. */
-export function countSummary(regions) {
+export function countSummary(regions, t) {
   if (regions.length === 0) return '';
   const counts = { fill: 0, pixelate: 0, blur: 0 };
   for (const region of regions) counts[region.style] = (counts[region.style] ?? 0) + 1;
+  // The comma between two of these is a phrase as well: not every language
+  // separates a list with one.
   const parts = Object.entries(counts)
     .filter(([, n]) => n > 0)
-    .map(([style, n]) => `${n} ${STYLE_LABELS[style]}`);
-  const noun = regions.length === 1 ? 'area' : 'areas';
-  return `${regions.length} ${noun}: ${parts.join(', ')}.`;
+    .map(([style, n]) => t(`${STYLE_LABELS[style]}.${n === 1 ? 'one' : 'many'}`, { n }))
+    .reduce((a, b) => t('join.comma', { a, b }));
+  return t(regions.length === 1 ? 'count.one' : 'count.many',
+    { n: regions.length, parts });
 }
 
 /**
@@ -110,7 +117,7 @@ export function countSummary(regions) {
  * Returns null when every box is a black fill, which is the case this page is
  * trying to talk people into.
  */
-export function riskNote(regions, strength) {
+export function riskNote(regions, strength, t) {
   const soft = regions.filter((region) => region.style !== 'fill');
   if (soft.length === 0) return null;
 
@@ -123,28 +130,30 @@ export function riskNote(regions, strength) {
       .map((region) => blockCount(region, strength))
       .reduce((worst, blocks) => (blocks.across * blocks.down > worst.across * worst.down
         ? blocks : worst));
-    parts.push(
-      `The finest mosaic here is ${finest.across} x ${finest.down} blocks of ${finest.size} px. `
-      + `That is ${finest.across * finest.down} averages of what was underneath, left in the file.`,
-    );
+    parts.push(t('risk.mosaic', {
+      across: finest.across,
+      down: finest.down,
+      size: finest.size,
+      averages: finest.across * finest.down,
+    }));
   }
 
   if (blurs.length > 0) {
     const radii = blurs.map((region) => blurRadius(region, strength));
-    parts.push(
-      `${blurs.length === 1 ? 'The blur' : 'The smallest blur'} has a radius of `
-      + `${Math.min(...radii)} px. A blur is an average too, and a small one over sharp `
-      + 'text is the case that has been worked backwards.',
-    );
+    parts.push(t(blurs.length === 1 ? 'risk.blur.one' : 'risk.blur.many',
+      { radius: Math.min(...radii) }));
   }
 
-  parts.push('Black out anything that reads as text.');
-  return parts.join(' ');
+  parts.push(t('risk.advice'));
+  // The space between two sentences is a phrase too: ja and zh do not put
+  // one after a full stop.
+  return parts.reduce((a, b) => t('join.sentences', { a, b }));
 }
 
 /** "Medium - 9 blocks across the shorter side of each box." */
-export function strengthNote(strength) {
+export function strengthNote(strength, t) {
   const chosen = strengthOf(strength);
-  return `${chosen.label} - about ${chosen.blocks} blocks across the shorter side of a box, `
-    + `and a blur radius of a ${chosen.blur}th of it.`;
+  return t('strength.note', {
+    label: t(chosen.label), blocks: chosen.blocks, blur: chosen.blur,
+  });
 }

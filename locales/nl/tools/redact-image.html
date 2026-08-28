@@ -187,6 +187,59 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">deze browser kon de afbeelding niet decoderen.</span>
+    <span data-phrase="read.failed">Dit bestand kon niet geopend worden: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height} op {x}, {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; gepixeld, blokken van {size} px
+      ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; vervaagd, straal van {radius} px</span>
+    <span data-phrase="region.filled">{where} &mdash; zwart gemaakt</span>
+    <span data-phrase="region.aria">Gebied {n}: {what}. De pijltoetsen verplaatsen het,
+      Alt met de pijltoetsen verandert de grootte, en Delete haalt het weg.</span>
+    <span data-phrase="region.choice">Wat gebied {n} doet</span>
+    <span data-phrase="choice.fill">Zwart maken</span>
+    <span data-phrase="choice.pixelate">Pixelen</span>
+    <span data-phrase="choice.blur">Vervagen</span>
+    <span data-phrase="style.fill.one">{n} zwart gemaakt</span>
+    <span data-phrase="style.fill.many">{n} zwart gemaakt</span>
+    <span data-phrase="style.pixelate.one">{n} gepixeld</span>
+    <span data-phrase="style.pixelate.many">{n} gepixeld</span>
+    <span data-phrase="style.blur.one">{n} vervaagd</span>
+    <span data-phrase="style.blur.many">{n} vervaagd</span>
+    <span data-phrase="count.one">{n} gebied: {parts}.</span>
+    <span data-phrase="count.many">{n} gebieden: {parts}.</span>
+    <span data-phrase="strength.light">Licht</span>
+    <span data-phrase="strength.medium">Middel</span>
+    <span data-phrase="strength.heavy">Zwaar</span>
+    <span data-phrase="strength.note">{label} &mdash; ongeveer {blocks} blokken over de
+      kortste zijde van een gebied, en een vervagingsstraal van 1/{blur} daarvan.</span>
+    <span data-phrase="risk.mosaic">Het fijnste mozaïek hier is {across} x {down}
+      blokken van {size} px. Dat zijn {averages} gemiddelden van wat eronder lag, en die
+      blijven in het bestand staan.</span>
+    <span data-phrase="risk.blur.one">De vervaging heeft een straal van {radius} px. Een
+      vervaging is ook een gemiddelde, en een kleine over scherpe tekst is precies het
+      geval dat al is teruggerekend.</span>
+    <span data-phrase="risk.blur.many">De kleinste vervaging heeft een straal van
+      {radius} px. Een vervaging is ook een gemiddelde, en een kleine over scherpe tekst
+      is precies het geval dat al is teruggerekend.</span>
+    <span data-phrase="risk.advice">Maak alles wat als tekst te lezen is zwart.</span>
+    <span data-phrase="write.noencode">de browser kon het niet coderen.</span>
+    <span data-phrase="write.failed">Er ging iets mis bij het schrijven van het bestand:
+      {why}</span>
+    <span data-phrase="result.alt">De zwart gemaakte afbeelding, {width} bij {height}
+      pixels</span>
+    <span data-phrase="result.file">{name} &mdash; {size}, {width} x {height}</span>
+    <span data-phrase="result.nothing">Er zijn geen gebieden gemarkeerd, dus dit is
+      dezelfde afbeelding opnieuw gecodeerd.</span>
+    <span data-phrase="result.clean">Geschreven uit de zwart gemaakte pixels, dus er zit
+      geen EXIF in, geen GPS, geen ingesloten miniatuur en geen laag met het origineel
+      erin.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">Je afbeeldingen zijn nergens heen gegaan.
       {total} bestanden geladen, allemaal van deze site zelf. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
