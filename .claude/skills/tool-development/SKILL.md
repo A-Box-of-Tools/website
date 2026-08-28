@@ -317,3 +317,37 @@ session endpoint, and neither `gh` nor `gh api` can reach it. So write the
 Before/After section with the filenames as visible placeholders and give the
 files to whoever is at the keyboard. Do not commit screenshots to get a raw URL;
 see the `git add -A` trap above for what stray files cost here.
+
+**And say in the body how to put them in.** The person who lands the pictures is
+not necessarily the person who read the session, and a bare "(images to be
+dropped in)" tells them nothing about where or how. Put the steps under the
+table, in the description itself:
+
+```markdown
+| Before | After |
+|---|---|
+| `something-before.png` | `something-after.png` |
+
+The two filenames are placeholders. GitHub's image uploader lives in the web
+editor's own session — neither `gh` nor `gh api` can reach it — so the pictures
+have to be dropped in by hand. Both files were handed over in the session that
+opened this PR.
+
+**How to put them in:**
+
+1. On this page, open the **⋯** menu at the top right of the description and
+   choose **Edit**.
+2. Click into the `Before` cell of the table above and drag
+   `something-before.png` onto it. (The paperclip in the toolbar, or a plain
+   <kbd>Ctrl</kbd>+<kbd>V</kbd> of the image, does the same thing.)
+3. GitHub uploads it and leaves
+   `![something-before.png](https://github.com/user-attachments/assets/…)` in
+   the cell. That markdown **is** the image — delete the
+   `` `something-before.png` `` placeholder sitting next to it.
+4. Repeat in the `After` cell with `something-after.png`, then press **Save**.
+5. Delete this instruction block once both images are showing.
+```
+
+The last step matters: the instructions are scaffolding for one action, and a
+merged PR that still explains how to upload the pictures it is already showing
+reads as an unfinished one.
