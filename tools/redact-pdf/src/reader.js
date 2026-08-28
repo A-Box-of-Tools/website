@@ -79,18 +79,13 @@ export class PdfDocument {
     }
 
     if (doc.trailer.get('Encrypt')) {
-      throw new EncryptedPdfError(
-        'This PDF is encrypted. Even when the password is blank, removing that '
-        + 'protection is a different job from making the file smaller, and this '
-        + 'tool will not do it behind your back.');
+      throw new EncryptedPdfError('read.encrypted');
     }
 
     doc.loadAll();
 
     if (!doc.catalog) {
-      throw new NotAPdfError(
-        'This file has no document catalogue, so there is nothing to rewrite. '
-        + 'It is either not a PDF or damaged past what can be repaired here.');
+      throw new NotAPdfError('read.nocatalogue');
     }
 
     return doc;
@@ -101,7 +96,7 @@ export class PdfDocument {
     // part - and readers are told to look for it in the first kilobyte.
     const at = indexOfAscii(this.bytes.subarray(0, 1024), '%PDF-');
     if (at < 0) {
-      throw new NotAPdfError('This does not start like a PDF: there is no %PDF- header.');
+      throw new NotAPdfError('read.noheader');
     }
     const found = ascii(this.bytes, at + 5, at + 8);
     if (/^\d\.\d$/.test(found)) this.version = found;

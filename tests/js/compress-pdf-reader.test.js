@@ -81,7 +81,10 @@ test('something that is not a PDF is told so', async () => {
 });
 
 test('the refusal names what was missing', async () => {
-  await assert.rejects(() => PdfDocument.open(ascii('nope')), /no %PDF- header/);
+  // The sentence lives in body.html, in fifteen languages; what the reader
+  // throws is the key that picks it.
+  await assert.rejects(() => PdfDocument.open(ascii('nope')),
+    (error) => error.message === 'read.noheader');
 });
 
 test('an encrypted PDF is turned away rather than quietly decrypted', async () => {
@@ -100,7 +103,7 @@ test('the encryption refusal explains itself', async () => {
     text(bytes).replace('/Root 1 0 R >>', '/Root 1 0 R /Encrypt 4 0 R >>'),
   );
   await assert.rejects(() => PdfDocument.open(withEncrypt),
-    /will not do it behind your back/);
+    (error) => error.message === 'read.encrypted');
 });
 
 test('a PDF header with no catalogue behind it is refused', async () => {

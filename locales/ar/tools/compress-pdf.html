@@ -162,6 +162,97 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} بايت</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">صفحة واحدة</span>
+    <span data-phrase="count.pages.many">{n} صفحة</span>
+    <span data-phrase="count.images.one">صورة واحدة</span>
+    <span data-phrase="count.images.many">{n} صورة</span>
+    <span data-phrase="count.entries.one">مدخل واحد</span>
+    <span data-phrase="count.entries.many">{n} مدخلاً</span>
+    <span data-phrase="change.same">بالحجم نفسه تقريباً</span>
+    <span data-phrase="change.smaller">أصغر بنسبة {percent}%</span>
+    <span data-phrase="change.larger">أكبر بنسبة {percent}%</span>
+    <span data-phrase="settings.fullsize">يُعاد ترميز الصور بجودة JPEG قدرها {quality} وتبقى بحجمها الكامل.</span>
+    <span data-phrase="settings.downsampled">تُخفَّض الصور إلى {dpi} بكسل في البوصة على الأكثر من المساحة التي تُرسَم فيها، ثم
+      تُرمَّز بجودة JPEG قدرها {quality}.</span>
+    <span data-phrase="group.images">الصور</span>
+    <span data-phrase="group.fonts">الخطوط المضمَّنة</span>
+    <span data-phrase="group.content">محتوى الصفحات</span>
+    <span data-phrase="group.metadata">البيانات الوصفية والخاصة</span>
+    <span data-phrase="group.other">تدفقات أخرى</span>
+    <span data-phrase="group.structure">البنية والزوائد</span>
+    <span data-phrase="group.orphans">ما نُسخ عليه ولا يُشار إليه</span>
+    <span data-phrase="verdict.most">{percent}% من هذا الملف صور، وهي ما يقبل الضغط. توقّع توفيراً كبيراً.</span>
+    <span data-phrase="verdict.some">نحو {percent}% من هذا الملف صور. إعادة ترميزها ستنفع؛ وبقية الملف هي التي تحدّ من
+      مقدار ما يصغر.</span>
+    <span data-phrase="verdict.few">{percent}% فقط من هذا الملف صور، فليس أمام ضاغط الصور كثير عمل. وأكثر التوفير سيأتي
+      من إعادة رصّ المستند وإسقاط ما لم يعد يُشار إليه.</span>
+    <span data-phrase="verdict.none">لا صور في هذا الملف. فهو نص ورسم متجهي وخطوط، وكلها مضغوطة أصلاً، فتوقّع رقماً من
+      خانة واحدة في أحسن الأحوال.</span>
+    <span data-phrase="inv.size">{size} على {pages}.</span>
+    <span data-phrase="inv.images">{images} مضمَّنة.</span>
+    <span data-phrase="inv.orphans">لم يعد شيء يشير إلى {size} منه &mdash; خلّفها تحرير سابق &mdash; ولن تُنسَخ ببساطة.</span>
+    <span data-phrase="inv.fonts">الخطوط المضمَّنة نصيب كبير من هذا الملف. وتُبقى كاملة: فتقليم الخط هو الطريق الذي
+      ينتهي بالمستند إلى حروف ناقصة حين يفتحه شخص آخر.</span>
+    <span data-phrase="read.notpdf">هذا ليس PDF. هذه الأداة لا تعمل إلا على ملفات PDF.</span>
+    <span data-phrase="read.encrypted">هذا الملف مشفَّر. وحتى حين تكون كلمة السر فارغة، فإن رفع تلك الحماية شغلٌ آخر غير
+      تصغير الملف، وهذه الأداة لن تفعله من وراء ظهرك.</span>
+    <span data-phrase="read.nocatalogue">لا فهرس مستند في هذا الملف، فليس ثمة ما يُعاد كتابته. فإما أنه ليس PDF وإما أنه تلف
+      تلفاً يتجاوز ما يمكن إصلاحه هنا.</span>
+    <span data-phrase="read.noheader">هذا لا يبدأ بداية PDF: لا ترويسة ‎%PDF-‎ فيه.</span>
+    <span data-phrase="read.failed">تعذّرت قراءة هذا الملف: {detail}</span>
+    <span data-phrase="note.repaired">جدول الإحالات المتقاطعة في هذا الملف لم يطابق محتواه، فقُرئ بالبحث عن الكائنات
+      واحداً واحداً. وهذا إصلاح، وقد نجح، لكن تحقّق من الناتج قبل أن ترسله إلى أي مكان.</span>
+    <span data-phrase="note.incremental">حُرِّر هذا المستند وأُعيد حفظه مرة على الأقل، فهو يحمل نسخاً أقدم من كائنات لم يعد
+      شيء يشير إليها. وتلك تبقى خارج إعادة الكتابة.</span>
+    <span data-phrase="stage.reading">قراءة المستند</span>
+    <span data-phrase="stage.measuring">قياس الحجم الذي تُرسَم به كل صورة</span>
+    <span data-phrase="stage.images">إعادة ضغط الصور</span>
+    <span data-phrase="stage.metadata">إخراج ما يحفظه الملف عن مصدره</span>
+    <span data-phrase="stage.writing">كتابة المستند</span>
+    <span data-phrase="stage.checking">إعادة قراءته للتحقق</span>
+    <span data-phrase="run.cancelled">أُلغي.</span>
+    <span data-phrase="run.cancelledfull">أُلغي. لم يتغيّر شيء؛ اضغط «اضغط الملف» لتبدأ من جديد.</span>
+    <span data-phrase="check.passed">تحقّقنا: {found}</span>
+    <span data-phrase="check.failed">هذه الجولة لم تُطابق &mdash; {found}. احتفظ بأصلك.</span>
+    <span data-phrase="check.ok.one">فُتح ثانيةً من الذاكرة: صفحة واحدة، كما في الأصل.</span>
+    <span data-phrase="check.ok.many">فُتح ثانيةً من الذاكرة: {pages} صفحة، كما في الأصل.</span>
+    <span data-phrase="check.pages">عاد الملف المعاد كتابته بـ{pages} صفحة بدل {expected}</span>
+    <span data-phrase="check.unclean">لم يُقرأ الملف المعاد كتابته قراءةً نظيفة</span>
+    <span data-phrase="check.reopen">لم يُفتح الملف المعاد كتابته من جديد ({detail})</span>
+    <span data-phrase="result.saved">{change}، ووُفِّر {size}.</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; ليس أصغر مما بدأ عليه</span>
+    <span data-phrase="result.alreadysmall">كل ما في هذا الملف كان أصلاً في حدود ما يصغر إليه. والأصل هو الملف الأولى بالاحتفاظ.</span>
+    <span data-phrase="facts.noimages">لا صور في هذا المستند، فلم يُعَد ترميز شيء. والتوفير جاء من إعادة رصّه وإسقاط ما لم
+      يكن يُشار إليه.</span>
+    <span data-phrase="facts.reencoded">أُعيد ترميز {touched} من {total} صورة.</span>
+    <span data-phrase="facts.reencoded.shrunk">أُعيد ترميز {touched} من {total} صورة، {shrunk} منها ببكسلات أقل.</span>
+    <span data-phrase="facts.kept">{images} تُركت كما هي: {reason}.</span>
+    <span data-phrase="facts.metadata">أُزيلت {entries} من البيانات الوصفية للتطبيقات.</span>
+    <span data-phrase="facts.incremental">النسخ الأقدم المنسوخ عليها من تحريرات سابقة لم تُنقَل.</span>
+    <span data-phrase="facts.repaired">كان جدول الإحالات المتقاطعة في الأصل مكسوراً وتعيّن بناؤه من جديد بالبحث. تحقّق من
+      هذا الملف قبل أن تمرّره.</span>
+    <span data-phrase="row.kept">أُبقيت: {why}</span>
+    <span data-phrase="row.recompressed">أُعيد ضغطها إلى {size}</span>
+    <span data-phrase="row.recompressed.dpi">أُعيد ضغطها إلى {size} ({dpi})</span>
+    <span data-phrase="row.downsampled">صُغِّرت إلى {size}</span>
+    <span data-phrase="row.downsampled.dpi">صُغِّرت إلى {size} ({dpi})</span>
+    <span data-phrase="row.was">كانت {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; لا متصفّح يفكّ ترميزه</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; لا متصفّح يفكّ ترميزه، وهو مرصوص رصّاً محكماً أصلاً</span>
+    <span data-phrase="kept.ccitt">مرمَّزة بترميز الفاكس (CCITT) &mdash; وهي أصلاً في حدود ما تصغر إليه الصور ذات
+      اللونين</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; وإعادة ترميزها تخاطر بإزاحة ألوان الطباعة</span>
+    <span data-phrase="kept.mask">قناع استنسل &mdash; بتٌّ واحد لكل بكسل أصلاً</span>
+    <span data-phrase="kept.tiny">صغيرة أصلاً إلى حدّ لا تكلّف فيه إعادة الترميز إلا الجودة</span>
+    <span data-phrase="kept.colorspace">فضاء لوني غير مألوف لن تخمّنه هذه الأداة</span>
+    <span data-phrase="kept.unreadable">لم تُفَكّ بيانات الصورة</span>
+    <span data-phrase="kept.unused">غير مرسومة في أي صفحة</span>
+    <span data-phrase="kept.nodecode">لم يستطع هذا المتصفّح فكّ ترميز الصورة</span>
+    <span data-phrase="kept.noencoder">لم يشأ هذا المتصفّح إعادة ترميزها</span>
+    <span data-phrase="kept.alreadysmall">أصغر أصلاً من كل ما يمكن أن يُصنع منها هنا</span>
     <span data-phrase="net.clean">مستندك لم يذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

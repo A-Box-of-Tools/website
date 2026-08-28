@@ -165,6 +165,104 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} बाइट</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n} पन्ना</span>
+    <span data-phrase="count.pages.many">{n} पन्ने</span>
+    <span data-phrase="count.images.one">{n} तस्वीर</span>
+    <span data-phrase="count.images.many">{n} तस्वीरें</span>
+    <span data-phrase="count.entries.one">{n} प्रविष्टि</span>
+    <span data-phrase="count.entries.many">{n} प्रविष्टियाँ</span>
+    <span data-phrase="change.same">क़रीब-क़रीब उतना ही बड़ा</span>
+    <span data-phrase="change.smaller">{percent}% छोटा</span>
+    <span data-phrase="change.larger">{percent}% बड़ा</span>
+    <span data-phrase="settings.fullsize">तस्वीरें JPEG क्वालिटी {quality} पर दोबारा एन्कोड होती हैं और अपने पूरे आकार में
+      रहती हैं।</span>
+    <span data-phrase="settings.downsampled">तस्वीरें जिस जगह पर बनाई जाती हैं, उसके प्रति इंच ज़्यादा से ज़्यादा {dpi} पिक्सल तक
+      घटाई जाती हैं, और फिर JPEG क्वालिटी {quality} पर एन्कोड होती हैं।</span>
+    <span data-phrase="group.images">तस्वीरें</span>
+    <span data-phrase="group.fonts">भीतर रखे फ़ॉन्ट</span>
+    <span data-phrase="group.content">पन्नों की सामग्री</span>
+    <span data-phrase="group.metadata">मेटाडेटा और निजी डेटा</span>
+    <span data-phrase="group.other">बाक़ी स्ट्रीम</span>
+    <span data-phrase="group.structure">ढाँचा और ऊपरी बोझ</span>
+    <span data-phrase="group.orphans">पुराना पड़ा और बिना हवाले का</span>
+    <span data-phrase="verdict.most">इस फ़ाइल का {percent}% तस्वीरें हैं, और दबता भी वही है। बड़ी बचत की उम्मीद रखिए।</span>
+    <span data-phrase="verdict.some">इस फ़ाइल का क़रीब {percent}% तस्वीरें हैं। उन्हें दोबारा एन्कोड करने से मदद मिलेगी;
+      बाक़ी फ़ाइल तय करती है कि यह कितना छोटा हो सकता है।</span>
+    <span data-phrase="verdict.few">इस फ़ाइल का सिर्फ़ {percent}% तस्वीरें हैं, इसलिए तस्वीर दबाने वाले के लिए ज़्यादा
+      काम नहीं है। बचत का बड़ा हिस्सा दस्तावेज़ को दोबारा बाँधने और जिसका अब कोई हवाला
+      नहीं, उसे छोड़ देने से आएगा।</span>
+    <span data-phrase="verdict.none">इस फ़ाइल में कोई तस्वीर नहीं है। यह लिखाई, वेक्टर चित्र और फ़ॉन्ट है, और ये सब पहले
+      से दबे हुए हैं &mdash; इसलिए ज़्यादा से ज़्यादा एक अंक की बचत मानकर चलिए।</span>
+    <span data-phrase="inv.size">{pages} में कुल {size}।</span>
+    <span data-phrase="inv.images">{images} भीतर रखी हुई।</span>
+    <span data-phrase="inv.orphans">इसमें से {size} का अब कोई हवाला नहीं देता &mdash; पिछले किसी संपादन से छूटा हुआ
+      &mdash; और वह बस आगे नहीं ले जाया जाएगा।</span>
+    <span data-phrase="inv.fonts">भीतर रखे फ़ॉन्ट इस फ़ाइल का बड़ा हिस्सा हैं। उन्हें पूरा रखा जाता है: फ़ॉन्ट को
+      काट-छाँटकर रखना ही वह तरीक़ा है जिससे दस्तावेज़ किसी और के खोलने पर अक्षर खो बैठता
+      है।</span>
+    <span data-phrase="read.notpdf">वह PDF नहीं है। यह औज़ार सिर्फ़ PDF फ़ाइलों पर चलता है।</span>
+    <span data-phrase="read.encrypted">यह PDF एन्क्रिप्टेड है। पासवर्ड ख़ाली हो तब भी उस सुरक्षा को हटाना, फ़ाइल को छोटा
+      करने से अलग काम है, और यह औज़ार वह आपकी पीठ पीछे नहीं करेगा।</span>
+    <span data-phrase="read.nocatalogue">इस फ़ाइल में दस्तावेज़ की सूची ही नहीं है, इसलिए दोबारा लिखने को कुछ है ही नहीं। या
+      तो यह PDF नहीं है, या इतनी ख़राब है जितना यहाँ ठीक नहीं हो सकता।</span>
+    <span data-phrase="read.noheader">इसकी शुरुआत PDF जैसी नहीं है: %PDF- हेडर नहीं है।</span>
+    <span data-phrase="read.failed">यह PDF पढ़ी नहीं जा सकी: {detail}</span>
+    <span data-phrase="note.repaired">इस फ़ाइल की क्रॉस-रेफ़रेंस तालिका उसकी सामग्री से मेल नहीं खा रही थी, इसलिए इसे
+      ऑब्जेक्ट ढूँढ़-ढूँढ़कर पढ़ा गया। यह एक मरम्मत है, और चल गई, पर नतीजा कहीं भेजने से
+      पहले जाँच लीजिए।</span>
+    <span data-phrase="note.incremental">यह दस्तावेज़ कम से कम एक बार संपादित होकर दोबारा सहेजा गया है, इसलिए यह ऑब्जेक्ट की
+      पुरानी नक़लें ढो रहा है जिनकी ओर अब कुछ भी इशारा नहीं करता। वे दोबारा लिखते समय छूट
+      जाती हैं।</span>
+    <span data-phrase="stage.reading">दस्तावेज़ पढ़ा जा रहा है</span>
+    <span data-phrase="stage.measuring">नापा जा रहा है कि हर तस्वीर कितनी बड़ी बनती है</span>
+    <span data-phrase="stage.images">तस्वीरें दोबारा दबाई जा रही हैं</span>
+    <span data-phrase="stage.metadata">फ़ाइल को अपने आने की जो याद है, वह निकाली जा रही है</span>
+    <span data-phrase="stage.writing">दस्तावेज़ लिखा जा रहा है</span>
+    <span data-phrase="stage.checking">जाँच के लिए वापस पढ़ा जा रहा है</span>
+    <span data-phrase="run.cancelled">रद्द कर दिया।</span>
+    <span data-phrase="run.cancelledfull">रद्द कर दिया। कुछ नहीं बदला; दोबारा शुरू करने के लिए दबाइए दबाएँ।</span>
+    <span data-phrase="check.passed">जाँचा: {found}</span>
+    <span data-phrase="check.failed">यह दौर सही नहीं उतरा &mdash; {found}। अपनी असल फ़ाइल रखिए।</span>
+    <span data-phrase="check.ok.one">मेमोरी से दोबारा खुल गई: 1 पन्ना, असल जैसा ही।</span>
+    <span data-phrase="check.ok.many">मेमोरी से दोबारा खुल गई: {pages} पन्ने, असल जैसे ही।</span>
+    <span data-phrase="check.pages">दोबारा लिखी गई फ़ाइल {expected} के बजाय {pages} पन्नों के साथ लौटी</span>
+    <span data-phrase="check.unclean">दोबारा लिखी गई फ़ाइल साफ़-साफ़ वापस नहीं पढ़ी गई</span>
+    <span data-phrase="check.reopen">दोबारा लिखी गई फ़ाइल फिर से खुली ही नहीं ({detail})</span>
+    <span data-phrase="result.saved">{change}, {size} की बचत।</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; शुरुआत से छोटी नहीं</span>
+    <span data-phrase="result.alreadysmall">इस फ़ाइल में सब कुछ पहले से क़रीब उतना ही छोटा था जितना हो सकता है। रखने लायक़ बेहतर
+      फ़ाइल असल वाली ही है।</span>
+    <span data-phrase="facts.noimages">इस दस्तावेज़ में कोई तस्वीर नहीं, इसलिए कुछ भी दोबारा एन्कोड नहीं हुआ। बचत इसे
+      दोबारा बाँधने और जिसका कोई हवाला नहीं था उसे छोड़ने से आई है।</span>
+    <span data-phrase="facts.reencoded">{total} में से {touched} तस्वीरें दोबारा एन्कोड हुईं।</span>
+    <span data-phrase="facts.reencoded.shrunk">{total} में से {touched} तस्वीरें दोबारा एन्कोड हुईं, जिनमें से {shrunk} कम पिक्सल
+      के साथ।</span>
+    <span data-phrase="facts.kept">{images} को हाथ नहीं लगाया: {reason}।</span>
+    <span data-phrase="facts.metadata">ऐप्लिकेशन के मेटाडेटा की {entries} हटाई गईं।</span>
+    <span data-phrase="facts.incremental">पिछले संपादनों से बची पुरानी, बदल दी गई ऑब्जेक्ट नक़लें आगे नहीं ले जाई गईं।</span>
+    <span data-phrase="facts.repaired">असल फ़ाइल की क्रॉस-रेफ़रेंस तालिका टूटी हुई थी और उसे ढूँढ़-ढूँढ़कर दोबारा बनाना
+      पड़ा। इस फ़ाइल को आगे बढ़ाने से पहले जाँच लीजिए।</span>
+    <span data-phrase="row.kept">रखी गई: {why}</span>
+    <span data-phrase="row.recompressed">{size} पर दोबारा दबाई गई</span>
+    <span data-phrase="row.recompressed.dpi">{size} पर दोबारा दबाई गई ({dpi})</span>
+    <span data-phrase="row.downsampled">{size} पर घटाई गई</span>
+    <span data-phrase="row.downsampled.dpi">{size} पर घटाई गई ({dpi})</span>
+    <span data-phrase="row.was">पहले {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; कोई ब्राउज़र इसे डिकोड नहीं कर सकता</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; कोई ब्राउज़र इसे डिकोड नहीं कर सकता, और यह पहले से कसकर बँधा है</span>
+    <span data-phrase="kept.ccitt">फ़ैक्स कोड (CCITT) &mdash; दो रंग वाली तस्वीर जितनी छोटी होती है, क़रीब उतनी ही है</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; दोबारा एन्कोड करने पर छपाई के रंग खिसकने का ख़तरा है</span>
+    <span data-phrase="kept.mask">एक स्टेंसिल मास्क &mdash; पहले से प्रति पिक्सल एक बिट</span>
+    <span data-phrase="kept.tiny">पहले से इतनी छोटी कि दोबारा एन्कोड करने से सिर्फ़ गुणवत्ता जाएगी</span>
+    <span data-phrase="kept.colorspace">एक अनोखी रंग-परिधि, जिस पर यह औज़ार अंदाज़ा नहीं लगाएगा</span>
+    <span data-phrase="kept.unreadable">तस्वीर का डेटा डिकोड ही नहीं हुआ</span>
+    <span data-phrase="kept.unused">किसी भी पन्ने पर नहीं बनाई जाती</span>
+    <span data-phrase="kept.nodecode">यह ब्राउज़र तस्वीर डिकोड नहीं कर पाया</span>
+    <span data-phrase="kept.noencoder">इस ब्राउज़र ने इसे दोबारा एन्कोड नहीं किया</span>
+    <span data-phrase="kept.alreadysmall">यहाँ जो कुछ बन सकता था, उससे पहले ही छोटी है</span>
     <span data-phrase="net.clean">आपका दस्तावेज़ कहीं नहीं गया। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

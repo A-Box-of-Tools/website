@@ -163,6 +163,89 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount}바이트</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n}쪽</span>
+    <span data-phrase="count.pages.many">{n}쪽</span>
+    <span data-phrase="count.images.one">이미지 {n}개</span>
+    <span data-phrase="count.images.many">이미지 {n}개</span>
+    <span data-phrase="count.entries.one">항목 {n}개</span>
+    <span data-phrase="count.entries.many">항목 {n}개</span>
+    <span data-phrase="change.same">크기가 거의 그대로</span>
+    <span data-phrase="change.smaller">{percent}% 작아짐</span>
+    <span data-phrase="change.larger">{percent}% 커짐</span>
+    <span data-phrase="settings.fullsize">이미지는 JPEG 품질 {quality}로 다시 인코딩되고 원래 크기를 그대로 유지합니다.</span>
+    <span data-phrase="settings.downsampled">이미지는 그려지는 자리 기준으로 인치당 최대 {dpi}픽셀까지 줄인 뒤 JPEG 품질 {quality}로 인코딩됩니다.</span>
+    <span data-phrase="group.images">이미지</span>
+    <span data-phrase="group.fonts">내장 글꼴</span>
+    <span data-phrase="group.content">페이지 내용</span>
+    <span data-phrase="group.metadata">메타데이터 및 비공개 데이터</span>
+    <span data-phrase="group.other">기타 스트림</span>
+    <span data-phrase="group.structure">구조와 부대 정보</span>
+    <span data-phrase="group.orphans">대체되고 참조되지 않는 것</span>
+    <span data-phrase="verdict.most">이 파일의 {percent}%가 이미지이고, 압축이 되는 것이 바로 그것입니다. 크게 줄어들 것으로 보입니다.</span>
+    <span data-phrase="verdict.some">이 파일의 약 {percent}%가 이미지입니다. 다시 인코딩하면 도움이 됩니다. 나머지 부분이 얼마나 작아질 수 있는지의 바닥을 정합니다.</span>
+    <span data-phrase="verdict.few">이 파일의 {percent}%만 이미지라서 이미지 압축기가 할 일이 많지 않습니다. 줄어드는 양은 대부분 문서를 다시 포장하고 더 이상 참조되지 않는
+      것을 빼는 데서 나옵니다.</span>
+    <span data-phrase="verdict.none">이 파일에는 이미지가 없습니다. 텍스트와 벡터 그림과 글꼴뿐이고 모두 이미 압축되어 있어서, 잘해야 한 자릿수 정도로 보시면 됩니다.</span>
+    <span data-phrase="inv.size">{pages}에 걸쳐 {size}.</span>
+    <span data-phrase="inv.images">{images} 내장.</span>
+    <span data-phrase="inv.orphans">그중 {size}는 이제 아무것도 가리키지 않습니다. 이전 편집에서 남은 것이고, 그냥 옮겨 담지 않습니다.</span>
+    <span data-phrase="inv.fonts">내장 글꼴이 이 파일에서 큰 몫을 차지합니다. 글꼴은 통째로 남깁니다. 글꼴을 쓰는 글자만 남기고 잘라 내면, 다른 사람이 열었을 때 글자가 빠지는
+      문서가 됩니다.</span>
+    <span data-phrase="read.notpdf">그건 PDF가 아닙니다. 이 도구는 PDF 파일에만 씁니다.</span>
+    <span data-phrase="read.encrypted">이 PDF는 암호화되어 있습니다. 암호가 비어 있더라도 그 보호를 걷어 내는 일은 파일을 작게 만드는 일과 다른 일이고, 이 도구는 그것을 몰래 하지
+      않습니다.</span>
+    <span data-phrase="read.nocatalogue">이 파일에는 문서 카탈로그가 없어서 다시 쓸 것이 없습니다. PDF가 아니거나, 여기서 고칠 수 있는 정도를 넘어 손상된 것입니다.</span>
+    <span data-phrase="read.noheader">PDF처럼 시작하지 않습니다. %PDF- 헤더가 없습니다.</span>
+    <span data-phrase="read.failed">이 PDF를 읽지 못했습니다: {detail}</span>
+    <span data-phrase="note.repaired">이 파일의 상호 참조 표가 내용과 맞지 않아서, 객체를 하나씩 훑어 읽었습니다. 이것은 복구이고 잘 되었지만, 어딘가로 보내기 전에 결과를 확인해
+      보세요.</span>
+    <span data-phrase="note.incremental">이 문서는 적어도 한 번 편집되고 다시 저장되어서, 이제 아무것도 가리키지 않는 예전 객체 사본을 안고 있습니다. 그것들은 다시 쓸 때 빠집니다.</span>
+    <span data-phrase="stage.reading">문서를 읽는 중</span>
+    <span data-phrase="stage.measuring">이미지가 얼마나 크게 그려지는지 재는 중</span>
+    <span data-phrase="stage.images">이미지를 다시 압축하는 중</span>
+    <span data-phrase="stage.metadata">파일이 기억하는 출처 정보를 걷어 내는 중</span>
+    <span data-phrase="stage.writing">문서를 쓰는 중</span>
+    <span data-phrase="stage.checking">확인하려고 다시 읽는 중</span>
+    <span data-phrase="run.cancelled">취소했습니다.</span>
+    <span data-phrase="run.cancelledfull">취소했습니다. 바뀐 것은 없습니다. 다시 시작하려면 압축을 누르세요.</span>
+    <span data-phrase="check.passed">확인: {found}</span>
+    <span data-phrase="check.failed">이번 작업은 검증을 통과하지 못했습니다. {found}. 원본을 그대로 두세요.</span>
+    <span data-phrase="check.ok.one">메모리에서 다시 열었습니다. 1쪽으로, 원본과 같습니다.</span>
+    <span data-phrase="check.ok.many">메모리에서 다시 열었습니다. {pages}쪽으로, 원본과 같습니다.</span>
+    <span data-phrase="check.pages">다시 쓴 파일이 {expected}쪽이 아니라 {pages}쪽으로 나왔습니다</span>
+    <span data-phrase="check.unclean">다시 쓴 파일이 깨끗하게 읽히지 않았습니다</span>
+    <span data-phrase="check.reopen">다시 쓴 파일이 다시 열리지 않았습니다 ({detail})</span>
+    <span data-phrase="result.saved">{change}, {size} 절약.</span>
+    <span data-phrase="result.nosmaller">{size} — 시작할 때보다 작지 않습니다</span>
+    <span data-phrase="result.alreadysmall">이 파일의 모든 것이 이미 더 줄일 여지가 거의 없었습니다. 원본이 보관하기에 더 나은 파일입니다.</span>
+    <span data-phrase="facts.noimages">이 문서에는 이미지가 없어서 다시 인코딩한 것이 없습니다. 줄어든 양은 문서를 다시 포장하고 아무도 참조하지 않던 것을 뺀 데서 나왔습니다.</span>
+    <span data-phrase="facts.reencoded">이미지 {total}개 중 {touched}개를 다시 인코딩했습니다.</span>
+    <span data-phrase="facts.reencoded.shrunk">이미지 {total}개 중 {touched}개를 다시 인코딩했고, 그중 {shrunk}개는 픽셀 수도 줄였습니다.</span>
+    <span data-phrase="facts.kept">{images}는 그대로 두었습니다: {reason}.</span>
+    <span data-phrase="facts.metadata">응용 프로그램 메타데이터 {entries}를 지웠습니다.</span>
+    <span data-phrase="facts.incremental">이전 편집에서 남은 오래되고 대체된 객체 사본은 옮겨 담지 않았습니다.</span>
+    <span data-phrase="facts.repaired">원본의 상호 참조 표가 깨져 있어서 훑어 가며 다시 만들어야 했습니다. 이 파일을 넘기기 전에 확인해 보세요.</span>
+    <span data-phrase="row.kept">그대로 둠: {why}</span>
+    <span data-phrase="row.recompressed">{size}로 다시 압축</span>
+    <span data-phrase="row.recompressed.dpi">{size}로 다시 압축 ({dpi})</span>
+    <span data-phrase="row.downsampled">{size}로 축소</span>
+    <span data-phrase="row.downsampled.dpi">{size}로 축소 ({dpi})</span>
+    <span data-phrase="row.was">이전 {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 — 어떤 브라우저도 디코딩하지 못합니다</span>
+    <span data-phrase="kept.jbig2">JBIG2 — 어떤 브라우저도 디코딩하지 못하고, 이미 촘촘하게 눌려 있습니다</span>
+    <span data-phrase="kept.ccitt">팩스 방식(CCITT) — 흑백 이미지가 작아질 수 있는 한계에 이미 와 있습니다</span>
+    <span data-phrase="kept.cmyk">CMYK — 다시 인코딩하면 인쇄 색이 틀어질 위험이 있습니다</span>
+    <span data-phrase="kept.mask">스텐실 마스크 — 이미 픽셀당 1비트입니다</span>
+    <span data-phrase="kept.tiny">이미 작아서 다시 인코딩하면 화질만 깎입니다</span>
+    <span data-phrase="kept.colorspace">이 도구가 넘겨짚지 않을 낯선 색 공간입니다</span>
+    <span data-phrase="kept.unreadable">이미지 데이터가 디코딩되지 않았습니다</span>
+    <span data-phrase="kept.unused">어느 쪽에도 그려지지 않습니다</span>
+    <span data-phrase="kept.nodecode">이 브라우저가 이미지를 디코딩하지 못했습니다</span>
+    <span data-phrase="kept.noencoder">이 브라우저가 다시 인코딩해 주지 않았습니다</span>
+    <span data-phrase="kept.alreadysmall">여기서 만들어 낼 수 있는 어떤 것보다 이미 작습니다</span>
     <span data-phrase="net.clean">문서는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이 사이트의
       것입니다. {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다. 살펴볼

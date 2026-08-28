@@ -25,13 +25,13 @@ import { reachable } from './writer.js';
 
 /** The groups, in the order the page lists them. */
 const GROUPS = [
-  { id: 'images', label: 'Images' },
-  { id: 'fonts', label: 'Embedded fonts' },
-  { id: 'content', label: 'Page content' },
-  { id: 'metadata', label: 'Metadata & private data' },
-  { id: 'other', label: 'Other streams' },
-  { id: 'structure', label: 'Structure & overhead' },
-  { id: 'orphans', label: 'Superseded & unreferenced' },
+  { id: 'images', label: 'group.images' },
+  { id: 'fonts', label: 'group.fonts' },
+  { id: 'content', label: 'group.content' },
+  { id: 'metadata', label: 'group.metadata' },
+  { id: 'other', label: 'group.other' },
+  { id: 'structure', label: 'group.structure' },
+  { id: 'orphans', label: 'group.orphans' },
 ];
 
 /**
@@ -212,31 +212,12 @@ function refsIn(value) {
 export function verdict(inventory) {
   const share = inventory.total ? inventory.images / inventory.total : 0;
 
-  if (share > 0.7) {
-    return {
-      tone: 'good',
-      text: `${Math.round(share * 100)}% of this file is images, which is what `
-        + 'compresses. Expect a large saving.',
-    };
-  }
-  if (share > 0.3) {
-    return {
-      tone: 'ok',
-      text: `About ${Math.round(share * 100)}% of this file is images. Recompressing `
-        + 'them will help; the rest of the file sets the floor on how small it can get.',
-    };
-  }
+  const percent = Math.round(share * 100);
+
+  if (share > 0.7) return { tone: 'good', text: { key: 'verdict.most', values: { percent } } };
+  if (share > 0.3) return { tone: 'ok', text: { key: 'verdict.some', values: { percent } } };
   if (inventory.images > 0) {
-    return {
-      tone: 'thin',
-      text: `Only ${Math.round(share * 100)}% of this file is images, so there is not `
-        + 'much for an image compressor to work on. Most of the saving here will come '
-        + 'from repacking the document and dropping what is no longer referenced.',
-    };
+    return { tone: 'thin', text: { key: 'verdict.few', values: { percent } } };
   }
-  return {
-    tone: 'thin',
-    text: 'There are no images in this file. It is text, vector drawing and fonts, '
-      + 'all of which are already compressed, so expect single digits at best.',
-  };
+  return { tone: 'thin', text: { key: 'verdict.none' } };
 }

@@ -166,6 +166,108 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} Bytes</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n} Seite</span>
+    <span data-phrase="count.pages.many">{n} Seiten</span>
+    <span data-phrase="count.images.one">{n} Bild</span>
+    <span data-phrase="count.images.many">{n} Bilder</span>
+    <span data-phrase="count.entries.one">{n} Eintrag</span>
+    <span data-phrase="count.entries.many">{n} Einträge</span>
+    <span data-phrase="change.same">etwa gleich groß</span>
+    <span data-phrase="change.smaller">{percent}% kleiner</span>
+    <span data-phrase="change.larger">{percent}% größer</span>
+    <span data-phrase="settings.fullsize">Bilder werden mit JPEG-Qualität {quality} neu kodiert und behalten ihre volle Größe.</span>
+    <span data-phrase="settings.downsampled">Bilder werden auf höchstens {dpi} Pixel pro Zoll der Fläche verkleinert, auf der sie
+      gezeichnet werden, und dann mit JPEG-Qualität {quality} kodiert.</span>
+    <span data-phrase="group.images">Bilder</span>
+    <span data-phrase="group.fonts">Eingebettete Schriften</span>
+    <span data-phrase="group.content">Seiteninhalt</span>
+    <span data-phrase="group.metadata">Metadaten &amp; private Daten</span>
+    <span data-phrase="group.other">Andere Ströme</span>
+    <span data-phrase="group.structure">Struktur &amp; Verwaltung</span>
+    <span data-phrase="group.orphans">Überholt &amp; unreferenziert</span>
+    <span data-phrase="verdict.most">{percent}% dieser Datei sind Bilder, und Bilder sind das, was sich komprimieren
+      lässt. Rechnen Sie mit einer großen Ersparnis.</span>
+    <span data-phrase="verdict.some">Etwa {percent}% dieser Datei sind Bilder. Sie neu zu kodieren hilft; der Rest der
+      Datei setzt die Untergrenze dafür, wie klein sie werden kann.</span>
+    <span data-phrase="verdict.few">Nur {percent}% dieser Datei sind Bilder, für einen Bildkomprimierer gibt es hier
+      also wenig zu tun. Das meiste der Ersparnis kommt daher, das Dokument neu zu packen
+      und wegzulassen, worauf nichts mehr verweist.</span>
+    <span data-phrase="verdict.none">In dieser Datei sind keine Bilder. Sie besteht aus Text, Vektorzeichnungen und
+      Schriften, und die sind alle schon komprimiert &mdash; rechnen Sie bestenfalls mit
+      einstelligen Prozenten.</span>
+    <span data-phrase="inv.size">{size} auf {pages}.</span>
+    <span data-phrase="inv.images">{images} eingebettet.</span>
+    <span data-phrase="inv.orphans">Auf {size} davon verweist nichts mehr &mdash; von einer früheren Bearbeitung liegen
+      geblieben &mdash;, und sie werden schlicht nicht mitkopiert.</span>
+    <span data-phrase="inv.fonts">Die eingebetteten Schriften machen einen großen Teil dieser Datei aus. Sie bleiben
+      vollständig: eine Schrift zu beschneiden ist der Weg, auf dem einem Dokument Zeichen
+      fehlen, wenn jemand anderes es öffnet.</span>
+    <span data-phrase="read.notpdf">Das ist kein PDF. Dieses Werkzeug arbeitet nur mit PDF-Dateien.</span>
+    <span data-phrase="read.encrypted">Dieses PDF ist verschlüsselt. Auch wenn das Passwort leer ist, ist es eine andere
+      Aufgabe, diesen Schutz zu entfernen, als die Datei kleiner zu machen, und dieses
+      Werkzeug tut das nicht hinter Ihrem Rücken.</span>
+    <span data-phrase="read.nocatalogue">Diese Datei hat keinen Dokumentkatalog, es gibt also nichts neu zu schreiben.
+      Entweder ist sie kein PDF oder sie ist über das hinaus beschädigt, was sich hier
+      reparieren lässt.</span>
+    <span data-phrase="read.noheader">Das fängt nicht wie ein PDF an: es gibt keinen %PDF--Kopf.</span>
+    <span data-phrase="read.failed">Dieses PDF ließ sich nicht lesen: {detail}</span>
+    <span data-phrase="note.repaired">Die Querverweistabelle dieser Datei passte nicht zu ihrem Inhalt, sie wurde also
+      gelesen, indem nach Objekten gesucht wurde. Das ist eine Reparatur, und sie hat
+      funktioniert &mdash; prüfen Sie das Ergebnis, bevor Sie es irgendwohin schicken.</span>
+    <span data-phrase="note.incremental">Dieses Dokument wurde mindestens einmal bearbeitet und neu gespeichert und trägt
+      deshalb ältere Kopien von Objekten mit sich, auf die nichts mehr zeigt. Die bleiben
+      beim Neuschreiben weg.</span>
+    <span data-phrase="stage.reading">Das Dokument wird gelesen</span>
+    <span data-phrase="stage.measuring">Es wird gemessen, wie groß jedes Bild gezeichnet wird</span>
+    <span data-phrase="stage.images">Die Bilder werden neu komprimiert</span>
+    <span data-phrase="stage.metadata">Was die Datei über ihre Herkunft weiß, wird herausgenommen</span>
+    <span data-phrase="stage.writing">Das Dokument wird geschrieben</span>
+    <span data-phrase="stage.checking">Es wird zur Kontrolle wieder eingelesen</span>
+    <span data-phrase="run.cancelled">Abgebrochen.</span>
+    <span data-phrase="run.cancelledfull">Abgebrochen. Es wurde nichts verändert; drücken Sie Komprimieren, um neu zu
+      beginnen.</span>
+    <span data-phrase="check.passed">Geprüft: {found}</span>
+    <span data-phrase="check.failed">Dieser Durchgang ging nicht auf &mdash; {found}. Behalten Sie Ihr Original.</span>
+    <span data-phrase="check.ok.one">aus dem Speicher wieder geöffnet: 1 Seite, genau wie im Original.</span>
+    <span data-phrase="check.ok.many">aus dem Speicher wieder geöffnet: {pages} Seiten, genau wie im Original.</span>
+    <span data-phrase="check.pages">die neu geschriebene Datei kam mit {pages} Seiten zurück statt mit {expected}</span>
+    <span data-phrase="check.unclean">die neu geschriebene Datei ließ sich nicht sauber wieder einlesen</span>
+    <span data-phrase="check.reopen">die neu geschriebene Datei ließ sich nicht wieder öffnen ({detail})</span>
+    <span data-phrase="result.saved">{change}, {size} gespart.</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; nicht kleiner als am Anfang</span>
+    <span data-phrase="result.alreadysmall">Alles in dieser Datei war schon ungefähr so klein, wie es geht. Das Original ist die
+      bessere Datei zum Behalten.</span>
+    <span data-phrase="facts.noimages">Keine Bilder in diesem Dokument, es wurde also nichts neu kodiert. Die Ersparnis
+      kommt daher, es neu zu packen und wegzulassen, worauf nichts verwiesen hat.</span>
+    <span data-phrase="facts.reencoded">{touched} von {total} Bildern neu kodiert.</span>
+    <span data-phrase="facts.reencoded.shrunk">{touched} von {total} Bildern neu kodiert, {shrunk} davon mit weniger Pixeln.</span>
+    <span data-phrase="facts.kept">{images} unangetastet: {reason}.</span>
+    <span data-phrase="facts.metadata">{entries} an Anwendungs-Metadaten entfernt.</span>
+    <span data-phrase="facts.incremental">Ältere, überholte Kopien von Objekten aus früheren Bearbeitungen wurden nicht
+      mitkopiert.</span>
+    <span data-phrase="facts.repaired">Die Querverweistabelle des Originals war kaputt und musste durch Suchen neu
+      aufgebaut werden. Prüfen Sie diese Datei, bevor Sie sie weitergeben.</span>
+    <span data-phrase="row.kept">Behalten: {why}</span>
+    <span data-phrase="row.recompressed">Neu komprimiert auf {size}</span>
+    <span data-phrase="row.recompressed.dpi">Neu komprimiert auf {size} ({dpi})</span>
+    <span data-phrase="row.downsampled">Verkleinert auf {size}</span>
+    <span data-phrase="row.downsampled.dpi">Verkleinert auf {size} ({dpi})</span>
+    <span data-phrase="row.was">vorher {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; kein Browser kann das dekodieren</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; kein Browser kann das dekodieren, und es ist ohnehin schon eng gepackt</span>
+    <span data-phrase="kept.ccitt">faxkodiert (CCITT) &mdash; schon ungefähr so klein, wie Schwarzweiß wird</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; neu zu kodieren riskiert verschobene Druckfarben</span>
+    <span data-phrase="kept.mask">eine Schablonenmaske &mdash; ohnehin schon ein Bit pro Pixel</span>
+    <span data-phrase="kept.tiny">schon so klein, dass ein neues Kodieren nur Qualität kosten würde</span>
+    <span data-phrase="kept.colorspace">ein ungewöhnlicher Farbraum, bei dem dieses Werkzeug nicht raten will</span>
+    <span data-phrase="kept.unreadable">die Bilddaten ließen sich nicht dekodieren</span>
+    <span data-phrase="kept.unused">auf keiner Seite gezeichnet</span>
+    <span data-phrase="kept.nodecode">dieser Browser konnte das Bild nicht dekodieren</span>
+    <span data-phrase="kept.noencoder">dieser Browser wollte es nicht neu kodieren</span>
+    <span data-phrase="kept.alreadysmall">schon kleiner als alles, was hier daraus zu machen wäre</span>
     <span data-phrase="net.clean">Ihr Dokument ist nirgendwohin gegangen.
       {total} Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

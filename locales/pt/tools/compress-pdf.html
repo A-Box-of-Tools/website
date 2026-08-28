@@ -166,6 +166,105 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bytes</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n} página</span>
+    <span data-phrase="count.pages.many">{n} páginas</span>
+    <span data-phrase="count.images.one">{n} imagem</span>
+    <span data-phrase="count.images.many">{n} imagens</span>
+    <span data-phrase="count.entries.one">{n} entrada</span>
+    <span data-phrase="count.entries.many">{n} entradas</span>
+    <span data-phrase="change.same">mais ou menos do mesmo tamanho</span>
+    <span data-phrase="change.smaller">{percent}% menor</span>
+    <span data-phrase="change.larger">{percent}% maior</span>
+    <span data-phrase="settings.fullsize">As imagens são recodificadas na qualidade JPEG {quality} e ficam no tamanho inteiro.</span>
+    <span data-phrase="settings.downsampled">As imagens são reduzidas a no máximo {dpi} pixels por polegada do espaço em que são
+      desenhadas, e depois codificadas na qualidade JPEG {quality}.</span>
+    <span data-phrase="group.images">Imagens</span>
+    <span data-phrase="group.fonts">Fontes embutidas</span>
+    <span data-phrase="group.content">Conteúdo das páginas</span>
+    <span data-phrase="group.metadata">Metadados e dados privados</span>
+    <span data-phrase="group.other">Outros fluxos</span>
+    <span data-phrase="group.structure">Estrutura e sobrecarga</span>
+    <span data-phrase="group.orphans">Substituído e sem referência</span>
+    <span data-phrase="verdict.most">{percent}% deste arquivo são imagens, que é o que comprime. Espere uma economia
+      grande.</span>
+    <span data-phrase="verdict.some">Cerca de {percent}% deste arquivo são imagens. Recodificar elas vai ajudar; o resto
+      do arquivo é que define o piso de quão pequeno ele fica.</span>
+    <span data-phrase="verdict.few">Só {percent}% deste arquivo são imagens, então sobra pouco para um compressor de
+      imagem fazer. Quase toda a economia vem de reempacotar o documento e deixar de fora
+      o que já não é referenciado.</span>
+    <span data-phrase="verdict.none">Não há imagens neste arquivo. É texto, desenho vetorial e fontes, e tudo isso já vem
+      comprimido &mdash; espere um dígito só, na melhor das hipóteses.</span>
+    <span data-phrase="inv.size">{size} espalhados por {pages}.</span>
+    <span data-phrase="inv.images">{images} embutidas.</span>
+    <span data-phrase="inv.orphans">Nada mais aponta para {size} disso &mdash; ficaram para trás numa edição anterior
+      &mdash; e simplesmente não vão ser copiados.</span>
+    <span data-phrase="inv.fonts">As fontes embutidas são uma fatia grande deste arquivo. Elas são mantidas inteiras:
+      cortar uma fonte só para os caracteres usados é como um documento acaba com letra
+      faltando quando outra pessoa abre.</span>
+    <span data-phrase="read.notpdf">Isso não é um PDF. Esta ferramenta só trabalha com arquivos PDF.</span>
+    <span data-phrase="read.encrypted">Este PDF está criptografado. Mesmo com a senha em branco, tirar essa proteção é
+      outro trabalho, diferente de deixar o arquivo menor, e esta ferramenta não vai fazer
+      isso pelas suas costas.</span>
+    <span data-phrase="read.nocatalogue">Este arquivo não tem catálogo de documento, então não há nada para reescrever. Ou
+      não é um PDF, ou está danificado além do que dá para consertar aqui.</span>
+    <span data-phrase="read.noheader">Isto não começa como um PDF: não tem cabeçalho %PDF-.</span>
+    <span data-phrase="read.failed">Este PDF não pôde ser lido: {detail}</span>
+    <span data-phrase="note.repaired">A tabela de referências cruzadas deste arquivo não batia com o conteúdo dele, então
+      ele foi lido procurando os objetos um a um. Isso é um conserto, e deu certo, mas
+      confira o resultado antes de mandar para qualquer lugar.</span>
+    <span data-phrase="note.incremental">Este documento foi editado e salvo de novo pelo menos uma vez, então está carregando
+      cópias antigas de objetos que ninguém mais aponta. Essas ficam de fora da reescrita.</span>
+    <span data-phrase="stage.reading">Lendo o documento</span>
+    <span data-phrase="stage.measuring">Medindo de que tamanho cada imagem é desenhada</span>
+    <span data-phrase="stage.images">Recomprimindo as imagens</span>
+    <span data-phrase="stage.metadata">Tirando o que o arquivo lembra de onde veio</span>
+    <span data-phrase="stage.writing">Escrevendo o documento</span>
+    <span data-phrase="stage.checking">Lendo de volta para conferir</span>
+    <span data-phrase="run.cancelled">Cancelado.</span>
+    <span data-phrase="run.cancelledfull">Cancelado. Nada foi mudado; aperte Comprimir para começar de novo.</span>
+    <span data-phrase="check.passed">Conferido: {found}</span>
+    <span data-phrase="check.failed">Esta passada não bateu &mdash; {found}. Fique com o seu original.</span>
+    <span data-phrase="check.ok.one">aberto de novo da memória: 1 página, a mesma do original.</span>
+    <span data-phrase="check.ok.many">aberto de novo da memória: {pages} páginas, as mesmas do original.</span>
+    <span data-phrase="check.pages">o arquivo reescrito voltou com {pages} páginas em vez de {expected}</span>
+    <span data-phrase="check.unclean">o arquivo reescrito não leu de volta direito</span>
+    <span data-phrase="check.reopen">o arquivo reescrito não quis abrir de novo ({detail})</span>
+    <span data-phrase="result.saved">{change}, {size} economizados.</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; nada menor do que começou</span>
+    <span data-phrase="result.alreadysmall">Tudo neste arquivo já estava mais ou menos tão pequeno quanto dá. O original é o
+      arquivo melhor de guardar.</span>
+    <span data-phrase="facts.noimages">Nenhuma imagem neste documento, então nada foi recodificado. A economia vem de
+      reempacotar e deixar de fora o que ninguém referenciava.</span>
+    <span data-phrase="facts.reencoded">{touched} de {total} imagens recodificadas.</span>
+    <span data-phrase="facts.reencoded.shrunk">{touched} de {total} imagens recodificadas, {shrunk} delas com menos pixels.</span>
+    <span data-phrase="facts.kept">{images} deixadas em paz: {reason}.</span>
+    <span data-phrase="facts.metadata">{entries} de metadados de aplicativo removidas.</span>
+    <span data-phrase="facts.incremental">As cópias antigas e substituídas de objetos de edições anteriores não foram
+      copiadas.</span>
+    <span data-phrase="facts.repaired">A tabela de referências cruzadas do original estava quebrada e teve de ser refeita
+      vasculhando o arquivo. Confira este arquivo antes de passar adiante.</span>
+    <span data-phrase="row.kept">Mantida: {why}</span>
+    <span data-phrase="row.recompressed">Recomprimida para {size}</span>
+    <span data-phrase="row.recompressed.dpi">Recomprimida para {size} ({dpi})</span>
+    <span data-phrase="row.downsampled">Reduzida para {size}</span>
+    <span data-phrase="row.downsampled.dpi">Reduzida para {size} ({dpi})</span>
+    <span data-phrase="row.was">era {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; nenhum navegador sabe decodificar</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; nenhum navegador sabe decodificar, e já vem bem apertado</span>
+    <span data-phrase="kept.ccitt">codificada como fax (CCITT) &mdash; já quase tão pequena quanto o preto e branco
+      chega</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; recodificar arrisca deslocar as cores de impressão</span>
+    <span data-phrase="kept.mask">uma máscara de estêncil &mdash; já é um bit por pixel</span>
+    <span data-phrase="kept.tiny">já é pequena a ponto de recodificar só custar qualidade</span>
+    <span data-phrase="kept.colorspace">um espaço de cor incomum que esta ferramenta não vai adivinhar</span>
+    <span data-phrase="kept.unreadable">os dados da imagem não quiseram decodificar</span>
+    <span data-phrase="kept.unused">não é desenhada em nenhuma página</span>
+    <span data-phrase="kept.nodecode">este navegador não conseguiu decodificar a imagem</span>
+    <span data-phrase="kept.noencoder">este navegador não quis recodificar</span>
+    <span data-phrase="kept.alreadysmall">já menor do que qualquer coisa que desse para fazer dela aqui</span>
     <span data-phrase="net.clean">O seu documento não foi a lugar nenhum.
       {total} arquivos carregados, todos do próprio site. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

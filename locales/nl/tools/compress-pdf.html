@@ -166,6 +166,109 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bytes</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n} pagina</span>
+    <span data-phrase="count.pages.many">{n} pagina&rsquo;s</span>
+    <span data-phrase="count.images.one">{n} afbeelding</span>
+    <span data-phrase="count.images.many">{n} afbeeldingen</span>
+    <span data-phrase="count.entries.one">{n} vermelding</span>
+    <span data-phrase="count.entries.many">{n} vermeldingen</span>
+    <span data-phrase="change.same">ongeveer even groot</span>
+    <span data-phrase="change.smaller">{percent}% kleiner</span>
+    <span data-phrase="change.larger">{percent}% groter</span>
+    <span data-phrase="settings.fullsize">Afbeeldingen worden opnieuw gecodeerd op JPEG-kwaliteit {quality} en houden hun
+      volle formaat.</span>
+    <span data-phrase="settings.downsampled">Afbeeldingen worden teruggebracht tot hoogstens {dpi} pixels per inch van de ruimte
+      waarin ze getekend worden, en dan gecodeerd op JPEG-kwaliteit {quality}.</span>
+    <span data-phrase="group.images">Afbeeldingen</span>
+    <span data-phrase="group.fonts">Ingesloten lettertypen</span>
+    <span data-phrase="group.content">Pagina-inhoud</span>
+    <span data-phrase="group.metadata">Metadata &amp; privégegevens</span>
+    <span data-phrase="group.other">Andere streams</span>
+    <span data-phrase="group.structure">Structuur &amp; overhead</span>
+    <span data-phrase="group.orphans">Vervangen &amp; zonder verwijzing</span>
+    <span data-phrase="verdict.most">{percent}% van dit bestand is afbeelding, en dat is wat comprimeert. Reken op een
+      flinke besparing.</span>
+    <span data-phrase="verdict.some">Ongeveer {percent}% van dit bestand is afbeelding. Die opnieuw coderen helpt; de
+      rest van het bestand bepaalt hoe klein het hoogstens wordt.</span>
+    <span data-phrase="verdict.few">Maar {percent}% van dit bestand is afbeelding, dus er valt weinig te halen voor een
+      beeldcompressor. Het meeste komt van het opnieuw inpakken van het document en het
+      weglaten van waar niets meer naar verwijst.</span>
+    <span data-phrase="verdict.none">Er zitten geen afbeeldingen in dit bestand. Het is tekst, vectortekening en
+      lettertypen, en die zijn allemaal al gecomprimeerd &mdash; reken op één cijfer,
+      hooguit.</span>
+    <span data-phrase="inv.size">{size} verdeeld over {pages}.</span>
+    <span data-phrase="inv.images">{images} ingesloten.</span>
+    <span data-phrase="inv.orphans">Naar {size} daarvan verwijst niets meer &mdash; blijven liggen bij een eerdere
+      bewerking &mdash; en die worden domweg niet meegekopieerd.</span>
+    <span data-phrase="inv.fonts">De ingesloten lettertypen zijn een groot deel van dit bestand. Ze blijven heel: een
+      lettertype uitdunnen is hoe een document tekens gaat missen zodra iemand anders het
+      opent.</span>
+    <span data-phrase="read.notpdf">Dat is geen PDF. Deze tool werkt alleen met PDF-bestanden.</span>
+    <span data-phrase="read.encrypted">Deze PDF is versleuteld. Ook als het wachtwoord leeg is, is die beveiliging weghalen
+      een ander karwei dan het bestand kleiner maken, en deze tool doet dat niet achter je
+      rug om.</span>
+    <span data-phrase="read.nocatalogue">Dit bestand heeft geen documentcatalogus, dus er valt niets te herschrijven. Het is
+      óf geen PDF, óf verder beschadigd dan hier te repareren valt.</span>
+    <span data-phrase="read.noheader">Dit begint niet als een PDF: er is geen %PDF--kop.</span>
+    <span data-phrase="read.failed">Deze PDF kon niet gelezen worden: {detail}</span>
+    <span data-phrase="note.repaired">De kruisverwijzingstabel van dit bestand klopte niet met de inhoud, dus is het
+      gelezen door naar objecten te zoeken. Dat is een reparatie, en ze is gelukt, maar
+      controleer het resultaat voordat je het ergens heen stuurt.</span>
+    <span data-phrase="note.incremental">Dit document is minstens één keer bewerkt en opnieuw opgeslagen, en sleept dus
+      oudere kopieën van objecten mee waar niets meer naar wijst. Die blijven buiten de
+      herschrijving.</span>
+    <span data-phrase="stage.reading">Het document wordt gelezen</span>
+    <span data-phrase="stage.measuring">Er wordt gemeten hoe groot elke afbeelding getekend wordt</span>
+    <span data-phrase="stage.images">De afbeeldingen worden opnieuw gecomprimeerd</span>
+    <span data-phrase="stage.metadata">Wat het bestand onthoudt over waar het vandaan komt gaat eruit</span>
+    <span data-phrase="stage.writing">Het document wordt geschreven</span>
+    <span data-phrase="stage.checking">Het wordt teruggelezen ter controle</span>
+    <span data-phrase="run.cancelled">Geannuleerd.</span>
+    <span data-phrase="run.cancelledfull">Geannuleerd. Er is niets veranderd; druk op Comprimeren om opnieuw te beginnen.</span>
+    <span data-phrase="check.passed">Gecontroleerd: {found}</span>
+    <span data-phrase="check.failed">Deze ronde klopte niet &mdash; {found}. Hou je origineel.</span>
+    <span data-phrase="check.ok.one">opnieuw geopend uit het geheugen: 1 pagina, net als het origineel.</span>
+    <span data-phrase="check.ok.many">opnieuw geopend uit het geheugen: {pages} pagina&rsquo;s, net als het origineel.</span>
+    <span data-phrase="check.pages">het herschreven bestand kwam terug met {pages} pagina&rsquo;s in plaats van
+      {expected}</span>
+    <span data-phrase="check.unclean">het herschreven bestand las niet schoon terug</span>
+    <span data-phrase="check.reopen">het herschreven bestand wilde niet opnieuw open ({detail})</span>
+    <span data-phrase="result.saved">{change}, {size} bespaard.</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; niet kleiner dan waar het begon</span>
+    <span data-phrase="result.alreadysmall">Alles in dit bestand was al ongeveer zo klein als het gaat. Het origineel is het
+      betere bestand om te houden.</span>
+    <span data-phrase="facts.noimages">Geen afbeeldingen in dit document, dus er is niets opnieuw gecodeerd. De besparing
+      komt van het opnieuw inpakken en het weglaten van waar niets naar verwees.</span>
+    <span data-phrase="facts.reencoded">{touched} van {total} afbeeldingen opnieuw gecodeerd.</span>
+    <span data-phrase="facts.reencoded.shrunk">{touched} van {total} afbeeldingen opnieuw gecodeerd, {shrunk} daarvan met minder
+      pixels.</span>
+    <span data-phrase="facts.kept">{images} met rust gelaten: {reason}.</span>
+    <span data-phrase="facts.metadata">{entries} aan toepassingsmetadata verwijderd.</span>
+    <span data-phrase="facts.incremental">Oudere, vervangen kopieën van objecten uit eerdere bewerkingen zijn niet
+      meegekopieerd.</span>
+    <span data-phrase="facts.repaired">De kruisverwijzingstabel van het origineel was stuk en moest al zoekend opnieuw
+      worden opgebouwd. Controleer dit bestand voordat je het doorstuurt.</span>
+    <span data-phrase="row.kept">Behouden: {why}</span>
+    <span data-phrase="row.recompressed">Opnieuw gecomprimeerd naar {size}</span>
+    <span data-phrase="row.recompressed.dpi">Opnieuw gecomprimeerd naar {size} ({dpi})</span>
+    <span data-phrase="row.downsampled">Verkleind naar {size}</span>
+    <span data-phrase="row.downsampled.dpi">Verkleind naar {size} ({dpi})</span>
+    <span data-phrase="row.was">was {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; geen enkele browser kan dat decoderen</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; geen enkele browser kan dat decoderen, en het zit al strak gepakt</span>
+    <span data-phrase="kept.ccitt">faxgecodeerd (CCITT) &mdash; al ongeveer zo klein als zwart-wit wordt</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; opnieuw coderen riskeert verschoven drukkleuren</span>
+    <span data-phrase="kept.mask">een stencilmasker &mdash; al één bit per pixel</span>
+    <span data-phrase="kept.tiny">al zo klein dat opnieuw coderen alleen kwaliteit kost</span>
+    <span data-phrase="kept.colorspace">een ongebruikelijke kleurruimte waar deze tool niet naar gaat gissen</span>
+    <span data-phrase="kept.unreadable">de beeldgegevens lieten zich niet decoderen</span>
+    <span data-phrase="kept.unused">op geen enkele pagina getekend</span>
+    <span data-phrase="kept.nodecode">deze browser kon de afbeelding niet decoderen</span>
+    <span data-phrase="kept.noencoder">deze browser wilde hem niet opnieuw coderen</span>
+    <span data-phrase="kept.alreadysmall">al kleiner dan wat hier ook maar van te maken viel</span>
     <span data-phrase="net.clean">Je document is nergens heen gegaan. {total}
       bestanden geladen, allemaal van deze site zelf. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

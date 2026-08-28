@@ -171,6 +171,103 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bayt</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n} sayfa</span>
+    <span data-phrase="count.pages.many">{n} sayfa</span>
+    <span data-phrase="count.images.one">{n} görüntü</span>
+    <span data-phrase="count.images.many">{n} görüntü</span>
+    <span data-phrase="count.entries.one">{n} girdi</span>
+    <span data-phrase="count.entries.many">{n} girdi</span>
+    <span data-phrase="change.same">aşağı yukarı aynı boyut</span>
+    <span data-phrase="change.smaller">%{percent} daha küçük</span>
+    <span data-phrase="change.larger">%{percent} daha büyük</span>
+    <span data-phrase="settings.fullsize">Görüntüler JPEG kalite {quality} ile yeniden kodlanıyor ve tam boyutunda kalıyor.</span>
+    <span data-phrase="settings.downsampled">Görüntüler, çizildikleri alanın inç başına en çok {dpi} pikseline indiriliyor, sonra
+      JPEG kalite {quality} ile kodlanıyor.</span>
+    <span data-phrase="group.images">Görüntüler</span>
+    <span data-phrase="group.fonts">Gömülü yazı tipleri</span>
+    <span data-phrase="group.content">Sayfa içeriği</span>
+    <span data-phrase="group.metadata">Üst veri ve özel veri</span>
+    <span data-phrase="group.other">Diğer akışlar</span>
+    <span data-phrase="group.structure">Yapı ve ek yük</span>
+    <span data-phrase="group.orphans">Eskimiş ve başvurulmayan</span>
+    <span data-phrase="verdict.most">Bu dosyanın %{percent} kadarı görüntü, sıkışan da zaten o. Büyük bir kazanç
+      bekleyin.</span>
+    <span data-phrase="verdict.some">Bu dosyanın yaklaşık %{percent} kadarı görüntü. Onları yeniden kodlamak işe yarar;
+      dosyanın geri kalanı da ne kadar küçülebileceğinin tabanını belirler.</span>
+    <span data-phrase="verdict.few">Bu dosyanın yalnızca %{percent} kadarı görüntü, yani bir görüntü sıkıştırıcısına
+      fazla iş düşmüyor. Kazancın çoğu belgeyi yeniden paketlemekten ve artık
+      başvurulmayanı dışarıda bırakmaktan gelecek.</span>
+    <span data-phrase="verdict.none">Bu dosyada hiç görüntü yok. Metin, vektör çizim ve yazı tipi &mdash; hepsi zaten
+      sıkıştırılmış, dolayısıyla en iyi ihtimalle tek haneli bir kazanç bekleyin.</span>
+    <span data-phrase="inv.size">{pages} içinde {size}.</span>
+    <span data-phrase="inv.images">{images} gömülü.</span>
+    <span data-phrase="inv.orphans">Bunun {size} kadarına artık hiçbir şey başvurmuyor &mdash; daha önceki bir
+      düzenlemeden kalmış &mdash; ve öylece kopyalanmayacak.</span>
+    <span data-phrase="inv.fonts">Gömülü yazı tipleri bu dosyanın büyük bir bölümü. Bütün olarak korunuyorlar: bir
+      yazı tipini kırpmak, bir belgenin başkası açtığında karakter eksiğiyle çıkmasının
+      yoludur.</span>
+    <span data-phrase="read.notpdf">Bu bir PDF değil. Bu araç yalnızca PDF dosyalarıyla çalışır.</span>
+    <span data-phrase="read.encrypted">Bu PDF şifreli. Parola boş olsa bile o korumayı kaldırmak, dosyayı küçültmekten
+      başka bir iştir ve bu araç bunu arkanızdan yapmaz.</span>
+    <span data-phrase="read.nocatalogue">Bu dosyanın belge kataloğu yok, dolayısıyla yeniden yazılacak bir şey de yok. Ya PDF
+      değil ya da burada onarılabilecek olanın ötesinde bozulmuş.</span>
+    <span data-phrase="read.noheader">Bu bir PDF gibi başlamıyor: %PDF- başlığı yok.</span>
+    <span data-phrase="read.failed">Bu PDF okunamadı: {detail}</span>
+    <span data-phrase="note.repaired">Bu dosyanın çapraz başvuru tablosu içeriğiyle uyuşmuyordu, bu yüzden nesneler
+      taranarak okundu. Bu bir onarımdır ve işe yaradı, ama sonucu bir yere göndermeden
+      önce kontrol edin.</span>
+    <span data-phrase="note.incremental">Bu belge en az bir kez düzenlenip yeniden kaydedilmiş, dolayısıyla artık hiçbir
+      şeyin göstermediği eski nesne kopyalarını taşıyor. Onlar yeniden yazmanın dışında
+      kalıyor.</span>
+    <span data-phrase="stage.reading">Belge okunuyor</span>
+    <span data-phrase="stage.measuring">Her görüntünün ne kadar büyük çizildiği ölçülüyor</span>
+    <span data-phrase="stage.images">Görüntüler yeniden sıkıştırılıyor</span>
+    <span data-phrase="stage.metadata">Dosyanın nereden geldiğine dair hatırladıkları çıkarılıyor</span>
+    <span data-phrase="stage.writing">Belge yazılıyor</span>
+    <span data-phrase="stage.checking">Kontrol için geri okunuyor</span>
+    <span data-phrase="run.cancelled">İptal edildi.</span>
+    <span data-phrase="run.cancelledfull">İptal edildi. Hiçbir şey değişmedi; yeniden başlamak için Sıkıştır&rsquo;a basın.</span>
+    <span data-phrase="check.passed">Kontrol edildi: {found}</span>
+    <span data-phrase="check.failed">Bu tur tutmadı &mdash; {found}. Aslını saklayın.</span>
+    <span data-phrase="check.ok.one">bellekten yeniden açıldı: 1 sayfa, aslıyla aynı.</span>
+    <span data-phrase="check.ok.many">bellekten yeniden açıldı: {pages} sayfa, aslıyla aynı.</span>
+    <span data-phrase="check.pages">yeniden yazılan dosya {expected} yerine {pages} sayfayla geri geldi</span>
+    <span data-phrase="check.unclean">yeniden yazılan dosya temiz okunmadı</span>
+    <span data-phrase="check.reopen">yeniden yazılan dosya bir daha açılmadı ({detail})</span>
+    <span data-phrase="result.saved">{change}, {size} kazanıldı.</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; başladığından küçük değil</span>
+    <span data-phrase="result.alreadysmall">Bu dosyadaki her şey zaten olabildiğince küçüktü. Saklamaya değecek olan aslı.</span>
+    <span data-phrase="facts.noimages">Bu belgede görüntü yok, dolayısıyla hiçbir şey yeniden kodlanmadı. Kazanç, belgeyi
+      yeniden paketlemekten ve hiçbir şeyin başvurmadığını dışarıda bırakmaktan geliyor.</span>
+    <span data-phrase="facts.reencoded">{total} görüntüden {touched} tanesi yeniden kodlandı.</span>
+    <span data-phrase="facts.reencoded.shrunk">{total} görüntüden {touched} tanesi yeniden kodlandı, {shrunk} tanesi daha az
+      pikselle.</span>
+    <span data-phrase="facts.kept">{images} elle değilmedi: {reason}.</span>
+    <span data-phrase="facts.metadata">{entries} uygulama üst verisi kaldırıldı.</span>
+    <span data-phrase="facts.incremental">Daha önceki düzenlemelerden kalan eski, geçersiz nesne kopyaları kopyalanmadı.</span>
+    <span data-phrase="facts.repaired">Aslının çapraz başvuru tablosu bozuktu ve taranarak yeniden kurulmak zorunda kaldı.
+      Bu dosyayı başkasına vermeden önce kontrol edin.</span>
+    <span data-phrase="row.kept">Korundu: {why}</span>
+    <span data-phrase="row.recompressed">{size} boyutuna yeniden sıkıştırıldı</span>
+    <span data-phrase="row.recompressed.dpi">{size} boyutuna yeniden sıkıştırıldı ({dpi})</span>
+    <span data-phrase="row.downsampled">{size} boyutuna küçültüldü</span>
+    <span data-phrase="row.downsampled.dpi">{size} boyutuna küçültüldü ({dpi})</span>
+    <span data-phrase="row.was">önceden {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; hiçbir tarayıcı çözemiyor</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; hiçbir tarayıcı çözemiyor, üstelik zaten sıkı paketlenmiş</span>
+    <span data-phrase="kept.ccitt">faks kodlu (CCITT) &mdash; iki renkli görüntünün inebileceği kadar küçük zaten</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; yeniden kodlamak baskı renklerini kaydırma riski taşıyor</span>
+    <span data-phrase="kept.mask">bir şablon maskesi &mdash; zaten piksel başına tek bit</span>
+    <span data-phrase="kept.tiny">yeniden kodlamanın yalnızca kaliteye mal olacağı kadar küçük zaten</span>
+    <span data-phrase="kept.colorspace">bu aracın tahmine kalkışmayacağı alışılmadık bir renk uzayı</span>
+    <span data-phrase="kept.unreadable">görüntü verisi çözülmedi</span>
+    <span data-phrase="kept.unused">hiçbir sayfada çizilmiyor</span>
+    <span data-phrase="kept.nodecode">bu tarayıcı görüntüyü çözemedi</span>
+    <span data-phrase="kept.noencoder">bu tarayıcı onu yeniden kodlamadı</span>
+    <span data-phrase="kept.alreadysmall">buradan çıkabilecek her şeyden zaten küçük</span>
     <span data-phrase="net.clean">belgeniz hiçbir yere gitmedi. {total} dosya
       yüklendi, hepsi bu sayfanın kendi dosyaları. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

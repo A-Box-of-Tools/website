@@ -163,6 +163,102 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bytes</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n} page</span>
+    <span data-phrase="count.pages.many">{n} pages</span>
+    <span data-phrase="count.images.one">{n} image</span>
+    <span data-phrase="count.images.many">{n} images</span>
+    <span data-phrase="count.entries.one">{n} entry</span>
+    <span data-phrase="count.entries.many">{n} entries</span>
+    <span data-phrase="change.same">about the same size</span>
+    <span data-phrase="change.smaller">{percent}% smaller</span>
+    <span data-phrase="change.larger">{percent}% larger</span>
+    <span data-phrase="settings.fullsize">Pictures are re-encoded at JPEG quality {quality} and kept at their full size.</span>
+    <span data-phrase="settings.downsampled">Pictures are reduced to at most {dpi} pixels per inch of the space they are drawn
+      in, then encoded at JPEG quality {quality}.</span>
+    <span data-phrase="group.images">Images</span>
+    <span data-phrase="group.fonts">Embedded fonts</span>
+    <span data-phrase="group.content">Page content</span>
+    <span data-phrase="group.metadata">Metadata &amp; private data</span>
+    <span data-phrase="group.other">Other streams</span>
+    <span data-phrase="group.structure">Structure &amp; overhead</span>
+    <span data-phrase="group.orphans">Superseded &amp; unreferenced</span>
+    <span data-phrase="verdict.most">{percent}% of this file is images, which is what compresses. Expect a large saving.</span>
+    <span data-phrase="verdict.some">About {percent}% of this file is images. Recompressing them will help; the rest of
+      the file sets the floor on how small it can get.</span>
+    <span data-phrase="verdict.few">Only {percent}% of this file is images, so there is not much for an image compressor
+      to work on. Most of the saving here will come from repacking the document and
+      dropping what is no longer referenced.</span>
+    <span data-phrase="verdict.none">There are no images in this file. It is text, vector drawing and fonts, all of which
+      are already compressed, so expect single digits at best.</span>
+    <span data-phrase="inv.size">{size} across {pages}.</span>
+    <span data-phrase="inv.images">{images} embedded.</span>
+    <span data-phrase="inv.orphans">{size} of it is no longer referenced by anything &mdash; left behind by an earlier
+      edit &mdash; and will simply not be copied over.</span>
+    <span data-phrase="inv.fonts">The embedded fonts are a large share of this file. They are kept whole: subsetting a
+      font is how a document ends up missing characters when somebody else opens it.</span>
+    <span data-phrase="read.notpdf">That is not a PDF. This tool only works on PDF files.</span>
+    <span data-phrase="read.encrypted">This PDF is encrypted. Even when the password is blank, removing that protection is
+      a different job from making the file smaller, and this tool will not do it behind
+      your back.</span>
+    <span data-phrase="read.nocatalogue">This file has no document catalogue, so there is nothing to rewrite. It is either
+      not a PDF or damaged past what can be repaired here.</span>
+    <span data-phrase="read.noheader">This does not start like a PDF: there is no %PDF- header.</span>
+    <span data-phrase="read.failed">This PDF could not be read: {detail}</span>
+    <span data-phrase="note.repaired">This file&rsquo;s cross-reference table did not match its contents, so it was read
+      by scanning for objects instead. That is a repair, and it worked, but check the
+      result before you send it anywhere.</span>
+    <span data-phrase="note.incremental">This document has been edited and re-saved at least once, so it is carrying older
+      copies of objects that nothing points at any more. Those are left out of the
+      rewrite.</span>
+    <span data-phrase="stage.reading">Reading the document</span>
+    <span data-phrase="stage.measuring">Measuring how big each picture is drawn</span>
+    <span data-phrase="stage.images">Recompressing the pictures</span>
+    <span data-phrase="stage.metadata">Taking out what the file remembers about where it came from</span>
+    <span data-phrase="stage.writing">Writing the document</span>
+    <span data-phrase="stage.checking">Reading it back to check</span>
+    <span data-phrase="run.cancelled">Cancelled.</span>
+    <span data-phrase="run.cancelledfull">Cancelled. Nothing was changed; press Compress to start again.</span>
+    <span data-phrase="check.passed">Checked: {found}</span>
+    <span data-phrase="check.failed">This run did not check out &mdash; {found}. Keep your original.</span>
+    <span data-phrase="check.ok.one">opened again from memory: 1 page, the same as the original.</span>
+    <span data-phrase="check.ok.many">opened again from memory: {pages} pages, the same as the original.</span>
+    <span data-phrase="check.pages">the rewritten file came back with {pages} pages instead of {expected}</span>
+    <span data-phrase="check.unclean">the rewritten file did not read back cleanly</span>
+    <span data-phrase="check.reopen">the rewritten file would not reopen ({detail})</span>
+    <span data-phrase="result.saved">{change}, {size} saved.</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; no smaller than it started</span>
+    <span data-phrase="result.alreadysmall">Everything in this file was already about as small as it goes. The original is the
+      better file to keep.</span>
+    <span data-phrase="facts.noimages">No images in this document, so nothing was re-encoded. The saving is from repacking
+      it and leaving out what nothing referred to.</span>
+    <span data-phrase="facts.reencoded">{touched} of {total} images re-encoded.</span>
+    <span data-phrase="facts.reencoded.shrunk">{touched} of {total} images re-encoded, {shrunk} of them with fewer pixels.</span>
+    <span data-phrase="facts.kept">{images} left alone: {reason}.</span>
+    <span data-phrase="facts.metadata">{entries} of application metadata removed.</span>
+    <span data-phrase="facts.incremental">Older, superseded copies of objects from earlier edits were not copied over.</span>
+    <span data-phrase="facts.repaired">The original&rsquo;s cross-reference table was broken and had to be rebuilt by
+      scanning. Check this file before sending it on.</span>
+    <span data-phrase="row.kept">Kept: {why}</span>
+    <span data-phrase="row.recompressed">Recompressed to {size}</span>
+    <span data-phrase="row.recompressed.dpi">Recompressed to {size} ({dpi})</span>
+    <span data-phrase="row.downsampled">Downsampled to {size}</span>
+    <span data-phrase="row.downsampled.dpi">Downsampled to {size} ({dpi})</span>
+    <span data-phrase="row.was">was {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; no browser can decode it</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; no browser can decode it, and it is already tightly packed</span>
+    <span data-phrase="kept.ccitt">fax-coded (CCITT) &mdash; already about as small as bilevel gets</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; re-encoding risks shifting print colours</span>
+    <span data-phrase="kept.mask">a stencil mask &mdash; one bit per pixel already</span>
+    <span data-phrase="kept.tiny">already small enough that re-encoding would only cost quality</span>
+    <span data-phrase="kept.colorspace">an unusual colour space this tool will not guess at</span>
+    <span data-phrase="kept.unreadable">the image data would not decode</span>
+    <span data-phrase="kept.unused">never drawn on any page</span>
+    <span data-phrase="kept.nodecode">this browser could not decode the image</span>
+    <span data-phrase="kept.noencoder">this browser would not re-encode it</span>
+    <span data-phrase="kept.alreadysmall">already smaller than anything this could make of it</span>
     <span data-phrase="net.clean">your document has gone nowhere. {total} files
       loaded, all of them this page's own. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool
