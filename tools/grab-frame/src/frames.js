@@ -335,7 +335,7 @@ export class FrameReader {
       if (this.failure) throw this.failure;
 
       const frame = this.cache.get(target);
-      if (!frame) throw new Error('That frame could not be decoded from this file.');
+      if (!frame) throw new Error('decode.noframe');
       return frame;
     } catch (error) {
       // A decoder that threw is not trustworthy afterwards, so the next request
