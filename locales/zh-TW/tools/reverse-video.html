@@ -91,6 +91,40 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">檔案斷在一幀的中間。</span>
+    <span data-phrase="read.avcshort">H.264 的配置記錄太短。</span>
+    <span data-phrase="read.hevcshort">HEVC 的配置記錄太短。</span>
+    <span data-phrase="read.av1short">AV1 的配置記錄太短。</span>
+    <span data-phrase="read.compactsizes">樣本大小放在一張壓縮表裡，這個讀取器不解這種表。</span>
+    <span data-phrase="read.sampletables">樣本表不完整。</span>
+    <span data-phrase="read.chunktable">資料塊表是空的。</span>
+    <span data-phrase="read.nosamples">這條軌道裡一個樣本都沒有。</span>
+    <span data-phrase="read.nostbl">影片軌道缺了它的樣本表。</span>
+    <span data-phrase="read.nostsd">影片軌道沒有樣本描述。</span>
+    <span data-phrase="read.emptystsd">影片的樣本描述是空的。</span>
+    <span data-phrase="read.encrypted">影片軌道是加密的。</span>
+    <span data-phrase="read.unknowncodec">這段影片存成了「{type}」，這個讀取器不認識它。</span>
+    <span data-phrase="read.noconfig">「{type}」這條軌道沒帶解碼器配置。</span>
+    <span data-phrase="read.notmp4">這不是 MP4，也不是 MOV。</span>
+    <span data-phrase="read.nomoov">這個檔案沒有影片頭。</span>
+    <span data-phrase="read.novideo">這個檔案裡沒有這個讀取器用得上的影片軌道。</span>
+    <span data-phrase="read.notimescale">影片軌道沒有時間刻度。</span>
+    <span data-phrase="read.nofragments">這個檔案裡的分片，一幀影片軌道的畫面都沒有。</span>
+    <span data-phrase="read.unreadable">這個檔案按 MP4 讀不出來。</span>
+    <span data-phrase="read.notplayed">這種格式不是這個瀏覽器能播的。</span>
+    <span data-phrase="read.layout">這個檔案的排布，這裡的讀取器看不懂。</span>
+    <span data-phrase="read.nodecoder">這個瀏覽器不直接解碼 {codec}。</span>
+    <span data-phrase="read.nowebcodecs">這個瀏覽器沒有 WebCodecs，畫面沒法一幀一幀解碼。</span>
+    <span data-phrase="read.turned">這個檔案是轉著存的，這裡的讀取器和瀏覽器的播放器對這個旋轉的看法不一致。</span>
+    <span data-phrase="write.noaudioentry">音訊軌道沒有樣本條目。</span>
+    <span data-phrase="write.novideoentry">影片軌道沒有樣本條目。</span>
+    <span data-phrase="write.moovunstable">內部錯誤：兩遍之間 moov 的大小沒有穩定下來。</span>
+    <span data-phrase="write.noframes">你選的東西裡一幀都沒有。</span>
+    <span data-phrase="write.toobig">倒過來的影片會超過這裡寫檔案時能定址的 4 GB 上限。選一段短一點的。</span>
+    <span data-phrase="open.failed">這個瀏覽器打不開這個檔案。{reason}</span>
+    <span data-phrase="path.record">{reason}所以這個只能讓瀏覽器自己的播放器一步一步往回退著倒放，比直接讀檔案慢。{rate}</span>
+    <span data-phrase="path.fps.measured">這段按每秒 {fps} 幀取樣，這個數是從它的一秒裡量出來的。</span>
+    <span data-phrase="path.fps.assumed">這段按每秒 {fps} 幀取樣，這個數是估的，因為這個瀏覽器不報幀率。</span>
     <span data-phrase="net.clean">你的影片沒有去任何地方。載入了 {total} 個檔案。{platform}</span>
     <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到任何檔案。</span>

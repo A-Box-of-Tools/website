@@ -39,12 +39,21 @@
  * description of what is in it.
  */
 
-/** Thrown when the file is well-formed but out of this demuxer's scope. */
+/**
+ * Thrown when the file is well-formed but out of this demuxer's scope.
+ *
+ * `reason` is a phrase key, not a sentence: this module is copied byte for
+ * byte into fifteen languages, so the sentence lives in the tool's body.html
+ * and main.js resolves the key against it. `values` carries what a sentence
+ * cannot know in advance - the four characters naming a codec this reader has
+ * never heard of.
+ */
 export class UnsupportedFile extends Error {
-  constructor(reason) {
+  constructor(reason, values) {
     super(reason);
     this.name = 'UnsupportedFile';
     this.reason = reason;
+    this.values = values;
   }
 }
 
@@ -140,7 +149,7 @@ export class FileWindow {
     }
     const at = offset - this.start;
     if (at + length > this.bytes.length) {
-      throw new UnsupportedFile('the file ends in the middle of a frame.');
+      throw new UnsupportedFile('read.midframe');
     }
     return this.bytes.subarray(at, at + length);
   }
@@ -181,7 +190,7 @@ const hex = (n) => n.toString(16).padStart(2, '0');
 
 /** avcC -> "avc1.640028", the string VideoDecoder wants. */
 function avcCodec(prefix, config) {
-  if (config.length < 4) throw new UnsupportedFile('the H.264 configuration record is too short.');
+  if (config.length < 4) throw new UnsupportedFile('read.avcshort');
   return `${prefix}.${hex(config[1])}${hex(config[2])}${hex(config[3])}`;
 }
 
@@ -194,7 +203,7 @@ function avcCodec(prefix, config) {
  * at least fails loudly rather than decoding something else.
  */
 function hevcCodec(prefix, config) {
-  if (config.length < 13) throw new UnsupportedFile('the HEVC configuration record is too short.');
+  if (config.length < 13) throw new UnsupportedFile('read.hevcshort');
 
   const space = ['', 'A', 'B', 'C'][(config[1] >> 6) & 0x3];
   const tier = ((config[1] >> 5) & 0x1) ? 'H' : 'L';
@@ -219,7 +228,7 @@ function hevcCodec(prefix, config) {
 
 /** av1C -> "av01.0.08M.08". */
 function av1Codec(config) {
-  if (config.length < 3) throw new UnsupportedFile('the AV1 configuration record is too short.');
+  if (config.length < 3) throw new UnsupportedFile('read.av1short');
   const profile = (config[1] >> 5) & 0x7;
   const level = config[1] & 0x1f;
   const tier = ((config[2] >> 7) & 0x1) ? 'H' : 'M';
@@ -260,10 +269,10 @@ function readSamples(view, stbl) {
   const stss = findBox(view, stbl.body, stbl.end, 'stss');
 
   if (!stsz && findBox(view, stbl.body, stbl.end, 'stz2')) {
-    throw new UnsupportedFile('sample sizes are in a compact table this reader does not decode.');
+    throw new UnsupportedFile('read.compactsizes');
   }
   if (!stts || !stsc || !stsz || !stco) {
-    throw new UnsupportedFile('the sample tables are incomplete.');
+    throw new UnsupportedFile('read.sampletables');
   }
 
   // Sizes. A non-zero uniform size means every sample is that size and there is
@@ -340,7 +349,7 @@ function readSamples(view, stbl) {
       perChunk: view.getUint32(runsHead.at + 8 + r * 12),
     });
   }
-  if (!runs.length) throw new UnsupportedFile('the chunk table is empty.');
+  if (!runs.length) throw new UnsupportedFile('read.chunktable');
 
   const samples = [];
   let index = 0;
@@ -364,7 +373,7 @@ function readSamples(view, stbl) {
     }
   }
 
-  if (!samples.length) throw new UnsupportedFile('the track holds no samples.');
+  if (!samples.length) throw new UnsupportedFile('read.nosamples');
   return samples;
 }
 
@@ -519,7 +528,7 @@ const VIDEO_ENTRIES = new Set(['avc1', 'avc3', 'hvc1', 'hev1', 'av01', 'vp09']);
 function readVideoTrack(view, trak, timescale, duration, fragmented) {
   const tkhd = findBox(view, trak.body, trak.end, 'tkhd');
   const stbl = findPath(view, trak, 'mdia', 'minf', 'stbl');
-  if (!tkhd || !stbl) throw new UnsupportedFile('the video track is missing its sample tables.');
+  if (!tkhd || !stbl) throw new UnsupportedFile('read.nostbl');
 
   const head = fullBox(view, tkhd);
   const trackId = view.getUint32(head.at + (head.version === 1 ? 16 : 8));
@@ -541,16 +550,15 @@ function readVideoTrack(view, trak, timescale, duration, fragmented) {
   const trackHeight = view.getUint32(tkhd.end - 4);
 
   const stsd = findBox(view, stbl.body, stbl.end, 'stsd');
-  if (!stsd) throw new UnsupportedFile('the video track has no sample description.');
+  if (!stsd) throw new UnsupportedFile('read.nostsd');
   const [entry] = [...boxes(view, fullBox(view, stsd).at + 4, stsd.end)];
-  if (!entry) throw new UnsupportedFile('the video sample description is empty.');
+  if (!entry) throw new UnsupportedFile('read.emptystsd');
 
   if (entry.type === 'encv' || findBox(view, entry.body + 78, entry.end, 'sinf')) {
-    throw new UnsupportedFile('the video track is encrypted.');
+    throw new UnsupportedFile('read.encrypted');
   }
   if (!VIDEO_ENTRIES.has(entry.type)) {
-    throw new UnsupportedFile(
-      `the video is stored as "${entry.type}", which this reader does not know.`);
+    throw new UnsupportedFile('read.unknowncodec', { type: entry.type });
   }
 
   const codedWidth = view.getUint16(entry.body + 24);
@@ -587,7 +595,7 @@ function readVideoTrack(view, trak, timescale, duration, fragmented) {
     }
     if (codec) break;
   }
-  if (!codec) throw new UnsupportedFile(`the "${entry.type}" track carries no decoder configuration.`);
+  if (!codec) throw new UnsupportedFile('read.noconfig', { type: entry.type });
 
   const samples = fragmented ? [] : readSamples(view, stbl);
   const turned = rotation === 90 || rotation === 270;
@@ -652,11 +660,11 @@ function readAudioTrack(view, trak, timescale, duration, fragmented) {
 export async function demux(file) {
   const top = await topLevel(file);
   if (!top.some((box) => box.type === 'ftyp' || box.type === 'moov')) {
-    throw new UnsupportedFile('this is not an MP4 or MOV file.');
+    throw new UnsupportedFile('read.notmp4');
   }
 
   const outer = top.find((box) => box.type === 'moov');
-  if (!outer) throw new UnsupportedFile('the file has no movie header.');
+  if (!outer) throw new UnsupportedFile('read.nomoov');
 
   const bytes = new Uint8Array(await file.slice(outer.start, outer.end).arrayBuffer());
   const view = new DataView(bytes.buffer);
@@ -693,8 +701,8 @@ export async function demux(file) {
     }
   }
 
-  if (!video) throw new UnsupportedFile('the file has no video track this reader can use.');
-  if (!video.timescale) throw new UnsupportedFile('the video track has no timescale.');
+  if (!video) throw new UnsupportedFile('read.novideo');
+  if (!video.timescale) throw new UnsupportedFile('read.notimescale');
 
   if (fragmented) {
     const wanted = new Map([[video.trackId, video.samples]]);
@@ -702,7 +710,7 @@ export async function demux(file) {
 
     const clocks = await readFragments(file, top, fragmentDefaults(view, moov), wanted);
     if (!video.samples.length) {
-      throw new UnsupportedFile('the fragments in this file hold no frames for its video track.');
+      throw new UnsupportedFile('read.nofragments');
     }
 
     // A fragmented file usually declares a duration of zero in the header,

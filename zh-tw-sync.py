@@ -338,6 +338,12 @@ TAIWAN_REGISTER_RE = [
     # 活 as "the work": the compounds are in TAIWAN_REGISTER, this is the
     # catch-all 的活 with a guard for 活動/活頁 and friends.
     (re.compile(r'的活(?![動頁力潑口水])'), '的工作'),
+    # 里 is the locative 裡 in every one of its occurrences here, and s2twp
+    # converts most of them - but not the ones it mis-segments, which left
+    # 軌道里 and 東西里 standing two lines from a correctly converted 檔案裡.
+    # A distance or a township 里 would be wrecked by this, so main() checks
+    # that locales/zh/ has none before the rule can run.
+    (re.compile(r'里'), '裡'),
     # 摳字眼 wraps across a line in its TOML value.
     (re.compile(r'摳\\?\n\s*字眼'), '咬文嚼字'),
     # Spacing where a replacement above put Latin against Han: the corpus
@@ -427,6 +433,12 @@ def main():
         sys.exit('locales/zh/ now uses 干 in a sense the catch-all rule in '
                  f'TAIWAN_REGISTER would wreck: {set(legit)}. Give it its own '
                  'rule above that one before running this again.')
+
+    miles = re.findall(r'公里|英里|海里|里程', corpus)
+    if miles:
+        sys.exit('locales/zh/ now uses 里 in a sense that is not the locative '
+                 f'裡: {set(miles)}. The rule in TAIWAN_REGISTER_RE converts '
+                 'every 里; give this one an exception before running again.')
 
     changed, written = [], 0
     for src in sorted(SRC.rglob('*')):

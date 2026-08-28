@@ -17,6 +17,16 @@ import {
 import { keyframeTimes, keyframeBefore, invertRanges, totalSeconds } from './ranges.js';
 import { hasWebCodecs, hasMediaRecorder, canDecode } from './support.js';
 
+/**
+ * A reader refusal, in the reader's language. The demuxer and the writer are
+ * copied byte for byte into fifteen languages, so what they hand back is a
+ * phrase key and its values; `absent` is the sentence for the file that was
+ * never given to them at all - the browser's own player took it instead.
+ */
+function why(fallback, absent) {
+  return phrase(fallback?.key ?? absent, fallback?.values);
+}
+
 const $ = (id) => document.getElementById(id);
 
 const el = {
@@ -196,8 +206,8 @@ async function addClip(file) {
       media = await demux(file);
     } catch (error) {
       fallbackReason = error instanceof UnsupportedFile
-        ? error.reason
-        : (error.message || 'the file could not be read as an MP4.');
+        ? { key: error.reason, values: error.values }
+        : { key: error.message || 'read.unreadable' };
     }
 
     // Copying needs nothing but the reader: no decoder, no encoder, no
@@ -209,8 +219,8 @@ async function addClip(file) {
 
     if (!media && !canRecord) {
       showError(played.ok
-        ? `${file.name} cannot be recorded by this browser, so it cannot be cut.`
-        : `${file.name} could not be opened: ${fallbackReason ?? 'the format is not one this browser plays.'}`);
+        ? phrase('open.norecord', { name: file.name })
+        : phrase('open.failed', { name: file.name, reason: why(fallbackReason, 'read.notplayed') }));
       URL.revokeObjectURL(objectUrl);
       return false;
     }
@@ -247,7 +257,10 @@ async function addClip(file) {
     return true;
   } catch (error) {
     console.error(error);
-    showError(`${file.name} could not be opened: ${error?.message ?? error}`);
+    showError(phrase('open.failed', {
+      name: file.name,
+      reason: error?.message ? phrase(error.message) : String(error),
+    }));
     URL.revokeObjectURL(objectUrl);
     return false;
   }
@@ -436,10 +449,10 @@ function selectClip(index) {
 
   el.pathNote.hidden = Boolean(entry.media);
   if (!entry.media) {
-    el.pathNote.textContent = `${entry.name} is cut by playing it and recording the result, `
-      + `because ${entry.fallbackReason ?? 'its layout is not one the reader here understands.'} `
-      + 'That takes as long as the result is long, everything is re-encoded rather than copied, '
-      + 'and it can only keep one segment.';
+    el.pathNote.textContent = phrase('path.record', {
+      name: entry.name,
+      reason: why(entry.fallbackReason, 'read.layout'),
+    });
   }
 
   renderSegments();
@@ -1248,7 +1261,7 @@ async function runExport() {
   } catch (error) {
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
-      showError(error?.message || 'Something went wrong.');
+      showError(error?.message ? phrase(error.message) : 'Something went wrong.');
       console.error(error);
     }
   } finally {

@@ -84,14 +84,14 @@ BASELINE = {
     'redact-image': 17,
     'redact-pdf': 31,
     'resize-image': 53,
-    'reverse-video': 63,
+    'reverse-video': 34,
     'share-text': 1,
     'split-gif': 36,
     'stack-images': 7,
     'svg-to-image': 27,
     'timelapse-video': 57,
     'trim-audio': 41,
-    'trim-video': 101,
+    'trim-video': 75,
     'video-to-gif': 47,
 }
 
