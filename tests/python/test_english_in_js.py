@@ -67,7 +67,8 @@ BASELINE = {
     'encode-text': 23,
     'exif-editor': 63,
     'format-json': 61,
-    'gif-analyzer': 44,
+    # Two key templates, a CSS pixel value and two lines of table layout.
+    'gif-analyzer': 5,
     'gif-maker': 22,
     'grab-frame': 22,
     'hash-checksum': 10,

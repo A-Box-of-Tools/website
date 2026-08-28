@@ -160,6 +160,106 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">{name} wird gelesen&hellip;</span>
+    <span data-phrase="read.notagif">{name} ist kein GIF: {why}. Dieses Werkzeug liest das GIF-Format selbst, es hat also
+      über andere Dateien nichts zu sagen.</span>
+    <span data-phrase="read.failed">{name} konnte nicht gelesen werden: {why}</span>
+    <span data-phrase="read.truncated">die Datei endet bei {available} Bytes, und bei {at} wurden {wanted} weitere
+      gebraucht</span>
+    <span data-phrase="gif.notagif">diese Datei beginnt mit {what}, nicht mit &bdquo;GIF&ldquo;</span>
+    <span data-phrase="kind.jpeg">einem JPEG</span>
+    <span data-phrase="kind.png">einem PNG</span>
+    <span data-phrase="kind.riff">einer RIFF-Datei &mdash; einem WebP oder einem WAV</span>
+    <span data-phrase="kind.pdf">einem PDF</span>
+    <span data-phrase="kind.zip">einer ZIP-Datei</span>
+    <span data-phrase="kind.bytes">den Bytes {bytes}</span>
+    <span data-phrase="decode.codesize">die Codegröße ist {size}, und das Format erlaubt 2 bis 8</span>
+    <span data-phrase="n.frame.one">{n} Bild</span>
+    <span data-phrase="n.frame.many">{n} Bilder</span>
+    <span data-phrase="n.colour.one">{n} Farbe</span>
+    <span data-phrase="n.colour.many">{n} Farben</span>
+    <span data-phrase="n.entry.one">{n} Eintrag</span>
+    <span data-phrase="n.entry.many">{n} Einträge</span>
+    <span data-phrase="n.localtable.one">{n} Tabelle je Einzelbild</span>
+    <span data-phrase="n.localtable.many">{n} Tabellen je Einzelbild</span>
+    <span data-phrase="n.time.one">{n} Mal</span>
+    <span data-phrase="n.time.many">{n} Mal</span>
+    <span data-phrase="size.exactbytes">{n} Bytes</span>
+    <span data-phrase="clock.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="unit.seconds">{n} s</span>
+    <span data-phrase="plays.rate">{time} ({fps} fps)</span>
+    <span data-phrase="clamped.note">{n} Bilder verlangen weniger als 0,02 s, und jeder Browser hält sie stattdessen 0,10
+      s lang.</span>
+    <span data-phrase="loops.none">einmal &mdash; kein Schleifenblock</span>
+    <span data-phrase="loops.forever">endlos</span>
+    <span data-phrase="loops.times">{n} Mal</span>
+    <span data-phrase="level.bad">Problem</span>
+    <span data-phrase="level.warn">Wissenswert</span>
+    <span data-phrase="level.note">Hinweis</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} davon sind hier gezeichnet; der Rest ist zu groß, um ihn alle auf
+      einmal im Speicher zu halten, und wird allein aus den Kopfdaten berichtet.</span>
+    <span data-phrase="frames.none">{frames}, keines davon deckt die ganze Fläche ab.</span>
+    <span data-phrase="frames.all">{frames}, alle decken die ganze Fläche ab.</span>
+    <span data-phrase="frames.some">{frames}, {n} davon decken die ganze Fläche ab.</span>
+    <span data-phrase="frames.more">Die übrigen {frames} anzeigen</span>
+    <span data-phrase="shot.stored">Was Bild {n} für sich allein speichert</span>
+    <span data-phrase="shot.composited">Die Fläche nach Bild {n}</span>
+    <span data-phrase="frame.number">Bild {n}</span>
+    <span data-phrase="frame.notdrawn">nicht gezeichnet</span>
+    <span data-phrase="frame.delay">Verzögerung</span>
+    <span data-phrase="frame.clamped">{delay} &rarr; 0,10 s</span>
+    <span data-phrase="frame.rectangle">Rechteck</span>
+    <span data-phrase="frame.rect">{width} &times; {height} bei {left}, {top}</span>
+    <span data-phrase="frame.palette">Palette</span>
+    <span data-phrase="palette.own">{n} eigene</span>
+    <span data-phrase="palette.global">die globale</span>
+    <span data-phrase="palette.none">überhaupt keine</span>
+    <span data-phrase="frame.transparent">Transparent</span>
+    <span data-phrase="frame.transparent.index">Index {n}</span>
+    <span data-phrase="frame.transparent.no">nein</span>
+    <span data-phrase="frame.size">Größe</span>
+    <span data-phrase="frame.sizevalue">{size} &mdash; {share}</span>
+    <span data-phrase="frame.interlaced">Verschränkt</span>
+    <span data-phrase="frame.yes">ja</span>
+    <span data-phrase="frame.compressed">Komprimiert</span>
+    <span data-phrase="frame.ratio">{ratio}&times;</span>
+    <span data-phrase="frame.trouble">Störung</span>
+    <span data-phrase="frame.endsearly">die Daten enden zu früh</span>
+    <span data-phrase="colours.lede">Die Tabellen in dieser Datei deklarieren zusammen {declared}, die Pixel verweisen
+      auf {referenced} davon, und {different} davon unterscheiden sich voneinander.</span>
+    <span data-phrase="palette.globalnote">{entries}, {size}, geteilt von {frames}. Blasse Einträge sind solche, auf die kein
+      Pixel je verweist.</span>
+    <span data-phrase="palette.locals">{tables} ({size} insgesamt)</span>
+    <span data-phrase="palette.frameheading">Bild {n} &mdash; {colours}</span>
+    <span data-phrase="palette.capped">Die ersten 24 von {n} werden gezeigt. Der Rest steht im herunterladbaren Bericht.</span>
+    <span data-phrase="block.comment">Ein Kommentar. Kein Betrachter zeigt ihn an, und jede Kopie der Datei trägt ihn mit.</span>
+    <span data-phrase="block.loop.forever">Der Schleifenblock, der endloses Abspielen verlangt. Er gehört nicht zur
+      GIF-Spezifikation: Netscape hat ihn 1995 erfunden, und alles hat ihn trotzdem
+      umgesetzt.</span>
+    <span data-phrase="block.loop.times">Der Schleifenblock, der {times} Abspielen verlangt.</span>
+    <span data-phrase="block.xmp">Ein XMP-Paket: das XML, das ein Bildbearbeitungsprogramm schreibt, um festzuhalten,
+      was es getan hat. Gezeichnet wird davon nichts.</span>
+    <span data-phrase="block.icc">Ein ICC-Farbprofil, das angibt, was die Zahlen der Palette als Farben bedeuten. Fast
+      nichts liest so eines aus einem GIF aus.</span>
+    <span data-phrase="block.plaintext">Ein Klartextblock, der den Betrachter bittet, Text über das Bild zu zeichnen. Er
+      stand in der Spezifikation von 1989 und wurde nie von irgendetwas umgesetzt.</span>
+    <span data-phrase="block.application">Ein Anwendungsblock. Betrachter überspringen die, die sie nicht kennen.</span>
+    <span data-phrase="report.runsfor">Läuft</span>
+    <span data-phrase="report.aswritten">{time} laut Datei</span>
+    <span data-phrase="report.actually">Spielt wirklich</span>
+    <span data-phrase="report.clamped">{time} - {n} Bild(er) unter 0,02 s werden von jedem Browser auf 0,10 s angehoben</span>
+    <span data-phrase="report.rate">Rate</span>
+    <span data-phrase="report.persecond">{fps} Bilder pro Sekunde</span>
+    <span data-phrase="report.loops">Schleifen</span>
+    <span data-phrase="report.noloop">kein Schleifenblock - spielt einmal</span>
+    <span data-phrase="report.globalpal">Globale Palette</span>
+    <span data-phrase="report.colours">{n} Farben</span>
+    <span data-phrase="report.nopalette">keine</span>
+    <span data-phrase="report.drawn">Gezeichnete Farben</span>
+    <span data-phrase="report.background">Hintergrundindex</span>
+    <span data-phrase="copy.done">Kopiert. Es ist reiner Text, und er ist nur in Ihre Zwischenablage gegangen.</span>
+    <span data-phrase="copy.refused">Dieser Browser hat der Seite nicht erlaubt, in die Zwischenablage zu schreiben.
+      Verwenden Sie stattdessen &bdquo;Herunterladen&ldquo;.</span>
     <span data-phrase="budget.header.label">Kopf und Bildschirmbeschreibung</span>
     <span data-phrase="budget.header.note">Die Signatur, die Leinwandgröße und die Schalter. Dreizehn Bytes, in jedem GIF, das
       je gemacht wurde.</span>

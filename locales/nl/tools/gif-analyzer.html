@@ -160,6 +160,106 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">{name} wordt gelezen&hellip;</span>
+    <span data-phrase="read.notagif">{name} is geen GIF: {why}. Dit gereedschap leest het GIF-formaat zelf, dus het heeft
+      niets te zeggen over andere bestanden.</span>
+    <span data-phrase="read.failed">{name} kon niet gelezen worden: {why}</span>
+    <span data-phrase="read.truncated">het bestand eindigt bij {available} bytes en er waren er bij {at} nog {wanted} nodig</span>
+    <span data-phrase="gif.notagif">dit bestand begint met {what}, niet met &bdquo;GIF&rdquo;</span>
+    <span data-phrase="kind.jpeg">een JPEG</span>
+    <span data-phrase="kind.png">een PNG</span>
+    <span data-phrase="kind.riff">een RIFF-bestand &mdash; een WebP of een WAV</span>
+    <span data-phrase="kind.pdf">een PDF</span>
+    <span data-phrase="kind.zip">een zipbestand</span>
+    <span data-phrase="kind.bytes">de bytes {bytes}</span>
+    <span data-phrase="decode.codesize">de codegrootte is {size}, en het formaat staat 2 tot 8 toe</span>
+    <span data-phrase="n.frame.one">{n} beeld</span>
+    <span data-phrase="n.frame.many">{n} beelden</span>
+    <span data-phrase="n.colour.one">{n} kleur</span>
+    <span data-phrase="n.colour.many">{n} kleuren</span>
+    <span data-phrase="n.entry.one">{n} ingang</span>
+    <span data-phrase="n.entry.many">{n} ingangen</span>
+    <span data-phrase="n.localtable.one">{n} tabel per beeld</span>
+    <span data-phrase="n.localtable.many">{n} tabellen per beeld</span>
+    <span data-phrase="n.time.one">{n} keer</span>
+    <span data-phrase="n.time.many">{n} keer</span>
+    <span data-phrase="size.exactbytes">{n} bytes</span>
+    <span data-phrase="clock.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="unit.seconds">{n} s</span>
+    <span data-phrase="plays.rate">{time} ({fps} fps)</span>
+    <span data-phrase="clamped.note">{n} beelden vragen minder dan 0,02 s, en elke browser houdt ze in plaats daarvan
+      0,10 s vast.</span>
+    <span data-phrase="loops.none">één keer &mdash; geen herhaalblok</span>
+    <span data-phrase="loops.forever">eindeloos</span>
+    <span data-phrase="loops.times">{n} keer</span>
+    <span data-phrase="level.bad">Probleem</span>
+    <span data-phrase="level.warn">Goed om te weten</span>
+    <span data-phrase="level.note">Opmerking</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} ervan zijn hier getekend; de rest is te groot om in één keer in
+      het geheugen te houden en wordt alleen uit de koppen beschreven.</span>
+    <span data-phrase="frames.none">{frames}, waarvan er geen enkele het hele doek bedekt.</span>
+    <span data-phrase="frames.all">{frames}, die allemaal het hele doek bedekken.</span>
+    <span data-phrase="frames.some">{frames}, waarvan er {n} het hele doek bedekken.</span>
+    <span data-phrase="frames.more">Toon de andere {frames}</span>
+    <span data-phrase="shot.stored">Wat beeld {n} op zichzelf bevat</span>
+    <span data-phrase="shot.composited">Het doek na beeld {n}</span>
+    <span data-phrase="frame.number">Beeld {n}</span>
+    <span data-phrase="frame.notdrawn">niet getekend</span>
+    <span data-phrase="frame.delay">Vertraging</span>
+    <span data-phrase="frame.clamped">{delay} &rarr; 0,10 s</span>
+    <span data-phrase="frame.rectangle">Rechthoek</span>
+    <span data-phrase="frame.rect">{width} &times; {height} op {left}, {top}</span>
+    <span data-phrase="frame.palette">Palet</span>
+    <span data-phrase="palette.own">{n} van zichzelf</span>
+    <span data-phrase="palette.global">het globale</span>
+    <span data-phrase="palette.none">helemaal geen</span>
+    <span data-phrase="frame.transparent">Transparant</span>
+    <span data-phrase="frame.transparent.index">index {n}</span>
+    <span data-phrase="frame.transparent.no">nee</span>
+    <span data-phrase="frame.size">Grootte</span>
+    <span data-phrase="frame.sizevalue">{size} &mdash; {share}</span>
+    <span data-phrase="frame.interlaced">Interlaced</span>
+    <span data-phrase="frame.yes">ja</span>
+    <span data-phrase="frame.compressed">Gecomprimeerd</span>
+    <span data-phrase="frame.ratio">{ratio}&times;</span>
+    <span data-phrase="frame.trouble">Probleem</span>
+    <span data-phrase="frame.endsearly">de gegevens houden te vroeg op</span>
+    <span data-phrase="colours.lede">De tabellen in dit bestand verklaren samen {declared}, de pixels verwijzen naar
+      {referenced} daarvan, en {different} daarvan verschillen van elkaar.</span>
+    <span data-phrase="palette.globalnote">{entries}, {size}, gedeeld door {frames}. Vervaagde ingangen zijn er waar geen
+      enkele pixel ooit naar verwijst.</span>
+    <span data-phrase="palette.locals">{tables} ({size} in totaal)</span>
+    <span data-phrase="palette.frameheading">Beeld {n} &mdash; {colours}</span>
+    <span data-phrase="palette.capped">De eerste 24 van {n} worden getoond. De rest staat in het downloadbare rapport.</span>
+    <span data-phrase="block.comment">Een opmerking. Geen enkele weergever toont hem, en elke kopie van het bestand draagt
+      hem mee.</span>
+    <span data-phrase="block.loop.forever">Het herhaalblok, dat zegt eindeloos af te spelen. Het hoort niet bij de
+      GIF-specificatie: Netscape verzon het in 1995 en alles heeft het toch
+      geïmplementeerd.</span>
+    <span data-phrase="block.loop.times">Het herhaalblok, dat zegt {times} af te spelen.</span>
+    <span data-phrase="block.xmp">Een XMP-pakket: de XML die een beeldbewerker schrijft om vast te leggen wat hij
+      gedaan heeft. Niets tekent het.</span>
+    <span data-phrase="block.icc">Een ICC-kleurprofiel, dat zegt wat de getallen van het palet als kleuren betekenen.
+      Vrijwel niets leest er een uit een GIF.</span>
+    <span data-phrase="block.plaintext">Een blok platte tekst, dat de weergever vraagt tekst over het plaatje te tekenen.
+      Het stond in de specificatie van 1989 en is nooit door iets geïmplementeerd.</span>
+    <span data-phrase="block.application">Een toepassingsblok. Weergevers slaan de blokken over die ze niet herkennen.</span>
+    <span data-phrase="report.runsfor">Duurt</span>
+    <span data-phrase="report.aswritten">{time} zoals geschreven</span>
+    <span data-phrase="report.actually">Speelt werkelijk</span>
+    <span data-phrase="report.clamped">{time} - {n} beeld(en) onder 0,02 s worden door elke browser op 0,10 s gezet</span>
+    <span data-phrase="report.rate">Snelheid</span>
+    <span data-phrase="report.persecond">{fps} beelden per seconde</span>
+    <span data-phrase="report.loops">Herhalingen</span>
+    <span data-phrase="report.noloop">geen herhaalblok - speelt een keer</span>
+    <span data-phrase="report.globalpal">Globaal palet</span>
+    <span data-phrase="report.colours">{n} kleuren</span>
+    <span data-phrase="report.nopalette">geen</span>
+    <span data-phrase="report.drawn">Getekende kleuren</span>
+    <span data-phrase="report.background">Achtergrondindex</span>
+    <span data-phrase="copy.done">Gekopieerd. Het is platte tekst, en het is alleen naar je klembord gegaan.</span>
+    <span data-phrase="copy.refused">Deze browser liet de pagina niet naar het klembord schrijven. Gebruik
+      &bdquo;Downloaden&rdquo; in plaats daarvan.</span>
     <span data-phrase="budget.header.label">Kop en schermbeschrijving</span>
     <span data-phrase="budget.header.note">De handtekening, het canvasformaat en de vlaggen. Dertien bytes, in elke GIF die
       ooit gemaakt is.</span>

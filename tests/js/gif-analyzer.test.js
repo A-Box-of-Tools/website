@@ -490,8 +490,11 @@ test('a well-formed looping animation raises nothing alarming', () => {
 
 test('something that is not a GIF is refused as that, not as a broken GIF', () => {
   const png = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  // Which file it looks like is a phrase key and a blank now; the sentence
+  // it becomes lives in body.html, in fifteen languages.
   assert.throws(() => parseGif(png), (error) => (
-    error instanceof NotAGif && /a PNG/.test(error.message)
+    error instanceof NotAGif && error.message === 'gif.notagif'
+      && error.values.what.key === 'kind.png'
   ));
 
   // Too short to hold a signature at all: still the wrong file, not a truncated

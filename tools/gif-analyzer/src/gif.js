@@ -58,7 +58,7 @@ export function parseGif(bytes) {
   // Checked before the reader is even made, so that a file too short to hold a
   // signature is reported as the wrong file rather than as a truncated GIF.
   if (bytes.length < 6 || text(bytes.subarray(0, 3)) !== 'GIF') {
-    throw new NotAGif(`this file starts with ${describe(bytes)}, not "GIF"`);
+    throw new NotAGif('gif.notagif', { what: describe(bytes) });
   }
 
   const reader = new ByteReader(bytes);
@@ -107,28 +107,37 @@ export function parseGif(bytes) {
   return gif;
 }
 
-/** Thrown when the file is not a GIF at all, which is a different mistake. */
+/**
+ * Thrown when the file is not a GIF at all, which is a different mistake.
+ *
+ * The message is a phrase key and `values` are its blanks; main.js resolves
+ * them. This file is copied byte for byte into fifteen languages.
+ */
 export class NotAGif extends Error {
-  constructor(message) {
-    super(message);
+  constructor(key, values = {}) {
+    super(key);
     this.name = 'NotAGif';
+    this.values = values;
   }
 }
 
-/** What a file that is not a GIF appears to be, for the error message. */
+/**
+ * What a file that is not a GIF appears to be, as a phrase key and its
+ * blanks. The caller nests it inside the refusal.
+ */
 function describe(bytes) {
   const magic = [
-    [[0xff, 0xd8, 0xff], 'a JPEG'],
-    [[0x89, 0x50, 0x4e, 0x47], 'a PNG'],
-    [[0x52, 0x49, 0x46, 0x46], 'a RIFF file - a WebP or a WAV'],
-    [[0x25, 0x50, 0x44, 0x46], 'a PDF'],
-    [[0x50, 0x4b, 0x03, 0x04], 'a zip file'],
+    [[0xff, 0xd8, 0xff], 'kind.jpeg'],
+    [[0x89, 0x50, 0x4e, 0x47], 'kind.png'],
+    [[0x52, 0x49, 0x46, 0x46], 'kind.riff'],
+    [[0x25, 0x50, 0x44, 0x46], 'kind.pdf'],
+    [[0x50, 0x4b, 0x03, 0x04], 'kind.zip'],
   ];
-  for (const [prefix, name] of magic) {
-    if (prefix.every((byte, i) => bytes[i] === byte)) return name;
+  for (const [prefix, key] of magic) {
+    if (prefix.every((byte, i) => bytes[i] === byte)) return { key, values: {} };
   }
   const head = Array.from(bytes.subarray(0, 3), (b) => b.toString(16).padStart(2, '0'));
-  return `the bytes ${head.join(' ')}`;
+  return { key: 'kind.bytes', values: { bytes: head.join(' ') } };
 }
 
 /** A colour table: `count` entries of three bytes, red green blue. */
@@ -205,7 +214,19 @@ function walk(reader, gif) {
     } catch (error) {
       if (!(error instanceof Truncated)) throw error;
       gif.truncated = true;
-      stop('parse.midblock', { at: start.toLocaleString(), detail: error.message });
+      // The detail is a phrase of its own, so it travels as a key and its
+      // blanks rather than as a sentence - see `fill` in main.js.
+      stop('parse.midblock', {
+        at: start.toLocaleString(),
+        detail: {
+          key: error.message,
+          values: {
+            available: error.available.toLocaleString(),
+            wanted: error.wanted.toLocaleString(),
+            at: error.at.toLocaleString(),
+          },
+        },
+      });
       return;
     }
   }

@@ -160,6 +160,103 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Reading {name}&hellip;</span>
+    <span data-phrase="read.notagif">{name} is not a GIF: {why}. This tool reads the GIF format itself, so it has nothing
+      to say about other files.</span>
+    <span data-phrase="read.failed">{name} could not be read: {why}</span>
+    <span data-phrase="read.truncated">the file ends at {available} bytes and {wanted} more were needed at {at}</span>
+    <span data-phrase="gif.notagif">this file starts with {what}, not &ldquo;GIF&rdquo;</span>
+    <span data-phrase="kind.jpeg">a JPEG</span>
+    <span data-phrase="kind.png">a PNG</span>
+    <span data-phrase="kind.riff">a RIFF file &mdash; a WebP or a WAV</span>
+    <span data-phrase="kind.pdf">a PDF</span>
+    <span data-phrase="kind.zip">a zip file</span>
+    <span data-phrase="kind.bytes">the bytes {bytes}</span>
+    <span data-phrase="decode.codesize">the code size is {size}, and the format allows 2 to 8</span>
+    <span data-phrase="n.frame.one">{n} frame</span>
+    <span data-phrase="n.frame.many">{n} frames</span>
+    <span data-phrase="n.colour.one">{n} colour</span>
+    <span data-phrase="n.colour.many">{n} colours</span>
+    <span data-phrase="n.entry.one">{n} entry</span>
+    <span data-phrase="n.entry.many">{n} entries</span>
+    <span data-phrase="n.localtable.one">{n} per-frame table</span>
+    <span data-phrase="n.localtable.many">{n} per-frame tables</span>
+    <span data-phrase="n.time.one">{n} time</span>
+    <span data-phrase="n.time.many">{n} times</span>
+    <span data-phrase="size.exactbytes">{n} bytes</span>
+    <span data-phrase="clock.minutes">{minutes}m {seconds}s</span>
+    <span data-phrase="unit.seconds">{n}s</span>
+    <span data-phrase="plays.rate">{time} ({fps} fps)</span>
+    <span data-phrase="clamped.note">{n} frames ask for less than 0.02s and every browser holds them for 0.10s instead.</span>
+    <span data-phrase="loops.none">once &mdash; no loop block</span>
+    <span data-phrase="loops.forever">forever</span>
+    <span data-phrase="loops.times">{n} times</span>
+    <span data-phrase="level.bad">Problem</span>
+    <span data-phrase="level.warn">Worth knowing</span>
+    <span data-phrase="level.note">Note</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} of them are drawn here; the rest are too large to hold in memory
+      all at once and are reported from their headers alone.</span>
+    <span data-phrase="frames.none">{frames}, none of them covering the whole canvas.</span>
+    <span data-phrase="frames.all">{frames}, all of them covering the whole canvas.</span>
+    <span data-phrase="frames.some">{frames}, {n} of them covering the whole canvas.</span>
+    <span data-phrase="frames.more">Show the other {frames}</span>
+    <span data-phrase="shot.stored">What frame {n} stores, on its own</span>
+    <span data-phrase="shot.composited">The canvas after frame {n}</span>
+    <span data-phrase="frame.number">Frame {n}</span>
+    <span data-phrase="frame.notdrawn">not drawn</span>
+    <span data-phrase="frame.delay">Delay</span>
+    <span data-phrase="frame.clamped">{delay} &rarr; 0.10s</span>
+    <span data-phrase="frame.rectangle">Rectangle</span>
+    <span data-phrase="frame.rect">{width} &times; {height} at {left}, {top}</span>
+    <span data-phrase="frame.palette">Palette</span>
+    <span data-phrase="palette.own">{n} of its own</span>
+    <span data-phrase="palette.global">the global one</span>
+    <span data-phrase="palette.none">none at all</span>
+    <span data-phrase="frame.transparent">Transparent</span>
+    <span data-phrase="frame.transparent.index">index {n}</span>
+    <span data-phrase="frame.transparent.no">no</span>
+    <span data-phrase="frame.size">Size</span>
+    <span data-phrase="frame.sizevalue">{size} &mdash; {share}</span>
+    <span data-phrase="frame.interlaced">Interlaced</span>
+    <span data-phrase="frame.yes">yes</span>
+    <span data-phrase="frame.compressed">Compressed</span>
+    <span data-phrase="frame.ratio">{ratio}&times;</span>
+    <span data-phrase="frame.trouble">Trouble</span>
+    <span data-phrase="frame.endsearly">the data ends early</span>
+    <span data-phrase="colours.lede">The tables in this file declare {declared} between them, the pixels refer to
+      {referenced} of those, and {different} of those are different from each other.</span>
+    <span data-phrase="palette.globalnote">{entries}, {size}, shared by {frames}. Faded entries are ones no pixel ever refers
+      to.</span>
+    <span data-phrase="palette.locals">{tables} ({size} in total)</span>
+    <span data-phrase="palette.frameheading">Frame {n} &mdash; {colours}</span>
+    <span data-phrase="palette.capped">The first 24 of {n} are shown. The rest are in the downloadable report.</span>
+    <span data-phrase="block.comment">A comment. No viewer shows it, and every copy of the file carries it.</span>
+    <span data-phrase="block.loop.forever">The loop block, saying to play forever. It is not part of the GIF specification:
+      Netscape invented it in 1995 and everything implemented it anyway.</span>
+    <span data-phrase="block.loop.times">The loop block, saying to play {times}.</span>
+    <span data-phrase="block.xmp">An XMP packet: the XML an image editor writes to record what it did. Nothing draws
+      it.</span>
+    <span data-phrase="block.icc">An ICC colour profile, saying what the palette&rsquo;s numbers mean as colours.
+      Almost nothing reads one out of a GIF.</span>
+    <span data-phrase="block.plaintext">A plain-text block, which asks the viewer to draw text over the picture. It was in
+      the 1989 specification and was never implemented by anything.</span>
+    <span data-phrase="block.application">An application block. Viewers skip the ones they do not recognise.</span>
+    <span data-phrase="report.runsfor">Runs for</span>
+    <span data-phrase="report.aswritten">{time} as written</span>
+    <span data-phrase="report.actually">Actually plays</span>
+    <span data-phrase="report.clamped">{time} - {n} frame(s) below 0.02s are clamped to 0.10s by every browser</span>
+    <span data-phrase="report.rate">Rate</span>
+    <span data-phrase="report.persecond">{fps} frames a second</span>
+    <span data-phrase="report.loops">Loops</span>
+    <span data-phrase="report.noloop">no loop block - plays once</span>
+    <span data-phrase="report.globalpal">Global palette</span>
+    <span data-phrase="report.colours">{n} colours</span>
+    <span data-phrase="report.nopalette">none</span>
+    <span data-phrase="report.drawn">Colours drawn</span>
+    <span data-phrase="report.background">Background index</span>
+    <span data-phrase="copy.done">Copied. It is plain text, and it went to your clipboard only.</span>
+    <span data-phrase="copy.refused">This browser would not let the page write to the clipboard. Use &ldquo;Download
+      it&rdquo; instead.</span>
     <span data-phrase="budget.header.label">Header and screen descriptor</span>
     <span data-phrase="budget.header.note">The signature, the canvas size, and the flags. Thirteen bytes, in every GIF ever
       made.</span>

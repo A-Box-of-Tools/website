@@ -14,7 +14,7 @@ export function fileSize(count) {
   return `${(count / 1048576).toFixed(count < 10485760 ? 2 : 1)} MB`;
 }
 
-export const exact = (count) => `${count.toLocaleString()} bytes`;
+export const exact = (count, t) => t('size.exactbytes', { n: count.toLocaleString() });
 
 /**
  * Hundredths of a second, which is the only unit GIF has.
@@ -25,19 +25,19 @@ export const exact = (count) => `${count.toLocaleString()} bytes`;
  * second in files where somebody wanted a still image that technically
  * animates.
  */
-export function delay(centiseconds) {
-  if (centiseconds === 0) return '0s';
+export function delay(centiseconds, t) {
+  if (centiseconds === 0) return t('unit.seconds', { n: '0' });
   const value = centiseconds / 100;
-  return value >= 10 ? `${value.toFixed(1)}s` : `${value.toFixed(2)}s`;
+  return t('unit.seconds', { n: value.toFixed(value >= 10 ? 1 : 2) });
 }
 
 /** A duration in hundredths, as minutes and seconds where that reads better. */
-export function clock(centiseconds) {
+export function clock(centiseconds, t) {
   const total = centiseconds / 100;
-  if (total < 60) return `${total.toFixed(total < 10 ? 2 : 1)}s`;
+  if (total < 60) return t('unit.seconds', { n: total.toFixed(total < 10 ? 2 : 1) });
   const minutes = Math.floor(total / 60);
   const seconds = total - minutes * 60;
-  return `${minutes}m ${seconds.toFixed(1)}s`;
+  return t('clock.minutes', { minutes, seconds: seconds.toFixed(1) });
 }
 
 /** Frames a second, from a total duration. Blank where there is nothing to divide. */
@@ -62,5 +62,13 @@ export function hex(colors, index) {
   return `#${pair(colors[at])}${pair(colors[at + 1])}${pair(colors[at + 2])}`.toUpperCase();
 }
 
-/** `1 frame` / `2 frames`, without a second call to work out which. */
-export const plural = (value, one, many) => `${count(value)} ${value === 1 ? one : many}`;
+/**
+ * `1 frame` / `2 frames`, as two whole sentences rather than a suffix.
+ *
+ * The caller names a pair of phrases and this picks between them, which is
+ * the same shape findings.js uses. A language whose plural is not an `s` on
+ * the end has to be able to write the two out separately, and one that has
+ * no plural at all writes the same words twice and loses nothing.
+ */
+export const plural = (value, key, t) => t(`${key}.${value === 1 ? 'one' : 'many'}`,
+  { n: count(value) });

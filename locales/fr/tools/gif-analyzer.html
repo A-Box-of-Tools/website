@@ -160,6 +160,111 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Lecture de {name}&hellip;</span>
+    <span data-phrase="read.notagif">{name} n&rsquo;est pas un GIF&nbsp;: {why}. Cet outil lit le format GIF lui-même, il
+      n&rsquo;a donc rien à dire sur les autres fichiers.</span>
+    <span data-phrase="read.failed">{name} n&rsquo;a pas pu être lu&nbsp;: {why}</span>
+    <span data-phrase="read.truncated">le fichier se termine à {available} octets et il en fallait {wanted} de plus à {at}</span>
+    <span data-phrase="gif.notagif">ce fichier commence par {what}, pas par «&nbsp;GIF&nbsp;»</span>
+    <span data-phrase="kind.jpeg">un JPEG</span>
+    <span data-phrase="kind.png">un PNG</span>
+    <span data-phrase="kind.riff">un fichier RIFF &mdash; un WebP ou un WAV</span>
+    <span data-phrase="kind.pdf">un PDF</span>
+    <span data-phrase="kind.zip">un fichier zip</span>
+    <span data-phrase="kind.bytes">les octets {bytes}</span>
+    <span data-phrase="decode.codesize">la taille de code est {size}, et le format autorise 2 à 8</span>
+    <span data-phrase="n.frame.one">{n} image</span>
+    <span data-phrase="n.frame.many">{n} images</span>
+    <span data-phrase="n.colour.one">{n} couleur</span>
+    <span data-phrase="n.colour.many">{n} couleurs</span>
+    <span data-phrase="n.entry.one">{n} entrée</span>
+    <span data-phrase="n.entry.many">{n} entrées</span>
+    <span data-phrase="n.localtable.one">{n} table par image</span>
+    <span data-phrase="n.localtable.many">{n} tables par image</span>
+    <span data-phrase="n.time.one">{n} fois</span>
+    <span data-phrase="n.time.many">{n} fois</span>
+    <span data-phrase="size.exactbytes">{n} octets</span>
+    <span data-phrase="clock.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="unit.seconds">{n} s</span>
+    <span data-phrase="plays.rate">{time} ({fps} i/s)</span>
+    <span data-phrase="clamped.note">{n} images demandent moins de 0,02 s, et tous les navigateurs les tiennent 0,10 s à
+      la place.</span>
+    <span data-phrase="loops.none">une fois &mdash; pas de bloc de boucle</span>
+    <span data-phrase="loops.forever">indéfiniment</span>
+    <span data-phrase="loops.times">{n} fois</span>
+    <span data-phrase="level.bad">Problème</span>
+    <span data-phrase="level.warn">Bon à savoir</span>
+    <span data-phrase="level.note">Remarque</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} d&rsquo;entre elles sont dessinées ici&nbsp;; le reste est trop
+      grand pour tenir en mémoire d&rsquo;un coup et est décrit à partir de ses seuls
+      en-têtes.</span>
+    <span data-phrase="frames.none">{frames}, dont aucune ne couvre toute la surface.</span>
+    <span data-phrase="frames.all">{frames}, toutes couvrant toute la surface.</span>
+    <span data-phrase="frames.some">{frames}, dont {n} couvrent toute la surface.</span>
+    <span data-phrase="frames.more">Afficher les {frames} restantes</span>
+    <span data-phrase="shot.stored">Ce que l&rsquo;image {n} contient à elle seule</span>
+    <span data-phrase="shot.composited">La surface après l&rsquo;image {n}</span>
+    <span data-phrase="frame.number">Image {n}</span>
+    <span data-phrase="frame.notdrawn">non dessinée</span>
+    <span data-phrase="frame.delay">Délai</span>
+    <span data-phrase="frame.clamped">{delay} &rarr; 0,10 s</span>
+    <span data-phrase="frame.rectangle">Rectangle</span>
+    <span data-phrase="frame.rect">{width} &times; {height} à {left}, {top}</span>
+    <span data-phrase="frame.palette">Palette</span>
+    <span data-phrase="palette.own">{n} qui lui sont propres</span>
+    <span data-phrase="palette.global">la globale</span>
+    <span data-phrase="palette.none">aucune du tout</span>
+    <span data-phrase="frame.transparent">Transparence</span>
+    <span data-phrase="frame.transparent.index">index {n}</span>
+    <span data-phrase="frame.transparent.no">non</span>
+    <span data-phrase="frame.size">Taille</span>
+    <span data-phrase="frame.sizevalue">{size} &mdash; {share}</span>
+    <span data-phrase="frame.interlaced">Entrelacée</span>
+    <span data-phrase="frame.yes">oui</span>
+    <span data-phrase="frame.compressed">Compression</span>
+    <span data-phrase="frame.ratio">{ratio}&times;</span>
+    <span data-phrase="frame.trouble">Problème</span>
+    <span data-phrase="frame.endsearly">les données se terminent trop tôt</span>
+    <span data-phrase="colours.lede">Les tables de ce fichier déclarent {declared} en tout, les pixels en référencent
+      {referenced}, et {different} d&rsquo;entre elles sont différentes les unes des
+      autres.</span>
+    <span data-phrase="palette.globalnote">{entries}, {size}, partagée par {frames}. Les entrées estompées sont celles
+      qu&rsquo;aucun pixel ne référence jamais.</span>
+    <span data-phrase="palette.locals">{tables} ({size} au total)</span>
+    <span data-phrase="palette.frameheading">Image {n} &mdash; {colours}</span>
+    <span data-phrase="palette.capped">Les 24 premières sur {n} sont affichées. Le reste est dans le rapport
+      téléchargeable.</span>
+    <span data-phrase="block.comment">Un commentaire. Aucun visualiseur ne l&rsquo;affiche, et chaque copie du fichier le
+      transporte.</span>
+    <span data-phrase="block.loop.forever">Le bloc de boucle, qui demande de jouer indéfiniment. Il ne fait pas partie de la
+      spécification GIF&nbsp;: Netscape l&rsquo;a inventé en 1995 et tout le monde
+      l&rsquo;a implémenté quand même.</span>
+    <span data-phrase="block.loop.times">Le bloc de boucle, qui demande de jouer {times}.</span>
+    <span data-phrase="block.xmp">Un paquet XMP&nbsp;: le XML qu&rsquo;un éditeur d&rsquo;images écrit pour consigner
+      ce qu&rsquo;il a fait. Rien ne le dessine.</span>
+    <span data-phrase="block.icc">Un profil de couleurs ICC, qui dit ce que les nombres de la palette valent comme
+      couleurs. Presque rien n&rsquo;en lit un dans un GIF.</span>
+    <span data-phrase="block.plaintext">Un bloc de texte brut, qui demande au visualiseur de dessiner du texte par-dessus
+      l&rsquo;image. Il était dans la spécification de 1989 et n&rsquo;a jamais été
+      implémenté par quoi que ce soit.</span>
+    <span data-phrase="block.application">Un bloc applicatif. Les visualiseurs sautent ceux qu&rsquo;ils ne reconnaissent pas.</span>
+    <span data-phrase="report.runsfor">Durée</span>
+    <span data-phrase="report.aswritten">{time} tel qu&rsquo;écrit</span>
+    <span data-phrase="report.actually">Joue en fait</span>
+    <span data-phrase="report.clamped">{time} - {n} image(s) sous 0,02 s sont relevées à 0,10 s par tous les navigateurs</span>
+    <span data-phrase="report.rate">Cadence</span>
+    <span data-phrase="report.persecond">{fps} images par seconde</span>
+    <span data-phrase="report.loops">Boucles</span>
+    <span data-phrase="report.noloop">pas de bloc de boucle - joue une fois</span>
+    <span data-phrase="report.globalpal">Palette globale</span>
+    <span data-phrase="report.colours">{n} couleurs</span>
+    <span data-phrase="report.nopalette">aucune</span>
+    <span data-phrase="report.drawn">Couleurs dessinées</span>
+    <span data-phrase="report.background">Index de fond</span>
+    <span data-phrase="copy.done">Copié. C&rsquo;est du texte brut, et il n&rsquo;est allé que dans votre
+      presse-papiers.</span>
+    <span data-phrase="copy.refused">Ce navigateur n&rsquo;a pas laissé la page écrire dans le presse-papiers. Utilisez
+      «&nbsp;Télécharger&nbsp;» à la place.</span>
     <span data-phrase="budget.header.label">En-tête et description d&rsquo;écran</span>
     <span data-phrase="budget.header.note">La signature, la taille de la toile et les drapeaux. Treize octets, dans tous les
       GIF jamais faits.</span>
