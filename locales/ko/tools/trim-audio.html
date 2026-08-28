@@ -202,6 +202,87 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">소리를 읽는 중&hellip;</span>
+    <span data-phrase="read.failed">그 파일은 읽지 못했습니다: {why}</span>
+    <span data-phrase="audio.empty">그 파일은 비어 있습니다.</span>
+    <span data-phrase="audio.nodecode">이 브라우저가 그 파일에서 소리를 하나도 꺼내지 못했습니다. 디코딩하지 못하는 형식이거나, 파일에 오디오 트랙이 아예 없거나입니다. MP3, WAV,
+      FLAC, M4A, MP4, MOV, WebM, Ogg는 모두 되고 AVI, WMA, 대부분의 MKV는 안 됩니다.</span>
+    <span data-phrase="audio.nosound">그 파일에는 소리가 없습니다 &mdash; 디코딩해도 아무것도 나오지 않았습니다.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (파일에 적힌 값)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (가정한 값)</span>
+    <span data-phrase="src.guessednote">이 형식은 이 도구가 읽는 어떤 머리말에도 어떤 주파수로 녹음했는지 적어 두지 않아서 48 kHz로 디코딩했습니다. 녹음이 다른 주파수로 되었다면
+      브라우저가 읽어 들이면서 다시 표본화했고 &mdash; 여기서 정확하지 않은 것은 그 하나뿐입니다.</span>
+    <span data-phrase="channels.mono">모노</span>
+    <span data-phrase="channels.stereo">스테레오</span>
+    <span data-phrase="channels.many">{n}채널</span>
+    <span data-phrase="mark.noopen">아직 열린 것이 없습니다. 부분이 시작할 자리에서 I를, 끝날 자리에서 O를 누르세요.</span>
+    <span data-phrase="mark.beforestart">그러면 부분이 {at}에서 끝나는데, 시작인 {start}보다 앞입니다. 재생 위치를 시작보다 뒤로 먼저 옮기세요.</span>
+    <span data-phrase="mark.noroom">여기에는 부분을 더할 만큼 녹음이 남아 있지 않습니다. 재생 위치를 뒤로 물리세요.</span>
+    <span data-phrase="mark.clearone">{name}의 하나뿐인 부분을 지울까요?</span>
+    <span data-phrase="mark.clearall">{name}의 부분 {n}개를 모두 지울까요?</span>
+    <span data-phrase="tl.band">부분 {n}: {from} ~ {to}</span>
+    <span data-phrase="parts.none">아직 없음 &mdash; 녹음 전체</span>
+    <span data-phrase="parts.count">{total}개 중 {finished}개</span>
+    <span data-phrase="btn.play">이 부분 재생</span>
+    <span data-phrase="btn.up">위로</span>
+    <span data-phrase="btn.down">아래로</span>
+    <span data-phrase="btn.remove">삭제</span>
+    <span data-phrase="marks.nothing">저장할 표시가 아직 없습니다.</span>
+    <span data-phrase="marks.unreadable">그 파일에서 구간을 하나도 읽지 못했습니다. 첫 줄 다음의 각 줄은 쉼표로 나눈 시작과 끝이어야 합니다.</span>
+    <span data-phrase="marks.allpast">{name}의 모든 부분이 이 녹음이 끝난 뒤에 시작합니다. 다른 녹음에 표시한 것일 가능성이 큽니다.</span>
+    <span data-phrase="marks.dropped.one">{name}의 부분 1개가 이 녹음의 끝을 지나 시작해서 빼 두었습니다.</span>
+    <span data-phrase="marks.dropped.many">{name}의 부분 {n}개가 이 녹음의 끝을 지나 시작해서 빼 두었습니다.</span>
+    <span data-phrase="marks.skipped.one">1줄은 부분으로 읽지 못했습니다.</span>
+    <span data-phrase="marks.skipped.many">{n}줄은 부분으로 읽지 못했습니다.</span>
+    <span data-phrase="marks.loaded">{n}개를 불러왔습니다.</span>
+    <span data-phrase="marks.failed">{name}을(를) 읽지 못했습니다: {why}</span>
+    <span data-phrase="n.part.one">{n}개 부분</span>
+    <span data-phrase="n.part.many">{n}개 부분</span>
+    <span data-phrase="n.join.one">이음매 {n}곳</span>
+    <span data-phrase="n.join.many">이음매 {n}곳</span>
+    <span data-phrase="n.edge.one">가장자리 {n}곳</span>
+    <span data-phrase="n.edge.many">가장자리 {n}곳</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">없음 &mdash; 표시가 녹음 전체를 덮습니다</span>
+    <span data-phrase="sum.nothing">표시된 것 없음</span>
+    <span data-phrase="sum.zero">0초</span>
+    <span data-phrase="sum.parts.cut">표시한 것이 빠지고 나면 {parts}</span>
+    <span data-phrase="sum.start">표시하신 바로 그 자리, 표본 {sample}부터</span>
+    <span data-phrase="sum.onepart">없음 &mdash; 한 부분뿐, 손대지 않음</span>
+    <span data-phrase="sum.onepart.faded">없음 &mdash; 한 부분뿐, 잘린 가장자리에 페이드</span>
+    <span data-phrase="sum.joins.faded">{joins}, 그중 {edges}에 페이드</span>
+    <span data-phrase="sum.joins.nofades">{joins}, 페이드 없음</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16비트</span>
+    <span data-phrase="depth.float">32비트 부동소수점</span>
+    <span data-phrase="sum.untouched">표시된 것이 없으니 잘리는 것도 없습니다. 디코더가 만들어 낸 표본을 순서대로 전부, 어디에도 페이드 없이 씁니다. 형식만 바뀌고 그 외에는 아무것도
+      아닙니다.</span>
+    <span data-phrase="fade.none">모든 부분이 표시하신 바로 그 표본에서 잘리고, 무엇에도 무엇을 곱하지 않습니다. 자른 자리가 낱말 한가운데면 이음매에서 딸깍 소리가 들릴 수 있는데,
+      파형이 튀는 소리이지 잘못된 것이 아닙니다.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; 표본 약 {samples}개 &mdash; 부분의 처음에서 올리고 끝에서 내려서 이음매가 딸깍거릴 수 없게 합니다. 실제로
+      잘린 가장자리만 받습니다. 녹음의 맨 처음이나 맨 끝 가장자리는 그대로 둡니다.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; 표본 약 {samples}개 &mdash; 부분의 처음에서 올리고 끝에서 내려서 이음매가 딸깍거릴 수 없게 합니다. 실제로
+      잘린 가장자리만 받습니다. 녹음의 맨 처음이나 맨 끝 가장자리는 그대로 두므로, 여기서는 가장자리 1곳에 페이드가 들어갑니다.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; 표본 약 {samples}개 &mdash; 부분의 처음에서 올리고 끝에서 내려서 이음매가 딸깍거릴 수 없게 합니다. 실제로
+      잘린 가장자리만 받습니다. 녹음의 맨 처음이나 맨 끝 가장자리는 그대로 두므로, 여기서는 가장자리 {n}곳에 페이드가 들어갑니다.</span>
+    <span data-phrase="export.nothing">남길 것이 없습니다. 부분을 표시하시거나 &ldquo;남기기&rdquo;로 되돌리세요.</span>
+    <span data-phrase="step.starting">시작하는 중&hellip;</span>
+    <span data-phrase="trim.copying">{total}개 중 {done}번째 부분을 복사하는 중&hellip;</span>
+    <span data-phrase="step.writing">파일을 쓰는 중&hellip;</span>
+    <span data-phrase="trim.nothing">남기라고 표시된 것이 없습니다.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds}초</span>
+    <span data-phrase="export.failed">소리를 자르는 중에 문제가 생겼습니다.</span>
+    <span data-phrase="wav.nochannels">WAV에는 채널이 적어도 하나 필요합니다</span>
+    <span data-phrase="wav.uneven">채널마다 길이가 다릅니다</span>
+    <span data-phrase="wav.toobig">그러면 4 GB가 넘는 WAV가 되는데, 형식이 그만한 크기를 적어 두지 못합니다. 32비트 부동소수점 대신 16비트를 쓰거나 더 짧은 구간으로 해
+      보세요.</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">오디오는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
       {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.

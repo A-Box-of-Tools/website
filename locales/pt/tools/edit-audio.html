@@ -175,6 +175,17 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="audio.empty">Esse arquivo está vazio.</span>
+    <span data-phrase="audio.nodecode">Este navegador não conseguiu tirar som nenhum desse arquivo. Ou o formato é um que
+      ele não decodifica, ou o arquivo não tem faixa de áudio nenhuma. MP3, WAV, FLAC,
+      M4A, MP4, MOV, WebM e Ogg funcionam todos; AVI, WMA e a maioria dos MKV não.</span>
+    <span data-phrase="audio.nosound">Não há som nesse arquivo &mdash; ele decodificou para nada.</span>
+    <span data-phrase="read.failed">Esse arquivo não pôde ser lido: {why}</span>
+    <span data-phrase="wav.nochannels">um WAV precisa de pelo menos um canal</span>
+    <span data-phrase="wav.uneven">os canais têm comprimentos diferentes</span>
+    <span data-phrase="wav.toobig">Isso daria um WAV com mais de 4 GB, que o formato não consegue descrever. Tente 16
+      bits em vez de 32 em ponto flutuante, ou um trecho mais curto.</span>
+    <span data-phrase="edit.failed">Algo deu errado ao editar o áudio.</span>
     <span data-phrase="net.clean">O seu áudio não foi a lugar nenhum. {total}
       arquivos carregados. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

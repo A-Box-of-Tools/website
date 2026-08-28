@@ -207,6 +207,107 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Der Ton wird gelesen&hellip;</span>
+    <span data-phrase="read.failed">Diese Datei konnte nicht gelesen werden: {why}</span>
+    <span data-phrase="audio.empty">Diese Datei ist leer.</span>
+    <span data-phrase="audio.nodecode">Dieser Browser konnte aus dieser Datei keinen Ton lesen. Entweder ist das Format
+      eines, das er nicht dekodiert, oder die Datei hat überhaupt keine Tonspur. MP3, WAV,
+      FLAC, M4A, MP4, MOV, WebM und Ogg gehen alle; AVI, WMA und die meisten MKVs nicht.</span>
+    <span data-phrase="audio.nosound">In dieser Datei ist kein Ton &mdash; sie hat zu nichts dekodiert.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (aus der Datei)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (angenommen)</span>
+    <span data-phrase="src.guessednote">Dieses Format sagt in keinem Header, den dieses Werkzeug liest, mit welcher Rate
+      aufgenommen wurde, also wurde mit 48 kHz dekodiert. Wurde die Aufnahme mit einer
+      anderen Rate gemacht, hat der Browser sie beim Einlesen umgerechnet &mdash; das ist
+      das Einzige hier, was nicht exakt ist.</span>
+    <span data-phrase="channels.mono">Mono</span>
+    <span data-phrase="channels.stereo">Stereo</span>
+    <span data-phrase="channels.many">{n} Kanäle</span>
+    <span data-phrase="mark.noopen">Es ist noch nichts offen. Drücken Sie I, wo der Teil beginnen soll, und dann O, wo
+      er endet.</span>
+    <span data-phrase="mark.beforestart">Damit endete der Teil bei {at}, also vor seinem Beginn bei {start}. Setzen Sie den
+      Abspielkopf zuerst hinter den Beginn.</span>
+    <span data-phrase="mark.noroom">Hier ist nicht genug Aufnahme übrig, um einen Teil hinzuzufügen. Setzen Sie den
+      Abspielkopf zurück.</span>
+    <span data-phrase="mark.clearone">Den einen Teil von {name} löschen?</span>
+    <span data-phrase="mark.clearall">Alle {n} Teile von {name} löschen?</span>
+    <span data-phrase="tl.band">Teil {n}: {from} bis {to}</span>
+    <span data-phrase="parts.none">noch keine &mdash; die ganze Aufnahme</span>
+    <span data-phrase="parts.count">{finished} von {total}</span>
+    <span data-phrase="btn.play">Diesen Teil abspielen</span>
+    <span data-phrase="btn.up">Nach oben</span>
+    <span data-phrase="btn.down">Nach unten</span>
+    <span data-phrase="btn.remove">Entfernen</span>
+    <span data-phrase="marks.nothing">Es ist noch nichts markiert, das gespeichert werden könnte.</span>
+    <span data-phrase="marks.unreadable">Aus dieser Datei ließen sich keine Abschnitte lesen. Jede Zeile nach der ersten
+      sollte ein Anfang und ein Ende sein, durch ein Komma getrennt.</span>
+    <span data-phrase="marks.allpast">Jeder Teil in {name} beginnt nach dem Ende dieser Aufnahme. Wahrscheinlich wurde er
+      gegen eine andere markiert.</span>
+    <span data-phrase="marks.dropped.one">1 Teil in {name} beginnt hinter dem Ende dieser Aufnahme und wurde deshalb
+      weggelassen.</span>
+    <span data-phrase="marks.dropped.many">{n} Teile in {name} beginnen hinter dem Ende dieser Aufnahme und wurden deshalb
+      weggelassen.</span>
+    <span data-phrase="marks.skipped.one">1 Zeile ließ sich nicht als Teil lesen.</span>
+    <span data-phrase="marks.skipped.many">{n} Zeilen ließen sich nicht als Teil lesen.</span>
+    <span data-phrase="marks.loaded">{n} geladen.</span>
+    <span data-phrase="marks.failed">{name} konnte nicht gelesen werden: {why}</span>
+    <span data-phrase="n.part.one">{n} Teil</span>
+    <span data-phrase="n.part.many">{n} Teile</span>
+    <span data-phrase="n.join.one">{n} Übergang</span>
+    <span data-phrase="n.join.many">{n} Übergänge</span>
+    <span data-phrase="n.edge.one">{n} Kante</span>
+    <span data-phrase="n.edge.many">{n} Kanten</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">nichts &mdash; die Markierungen decken die ganze Aufnahme ab</span>
+    <span data-phrase="sum.nothing">nichts markiert</span>
+    <span data-phrase="sum.zero">0 s</span>
+    <span data-phrase="sum.parts.cut">{parts}, sobald die markierten weg sind</span>
+    <span data-phrase="sum.start">genau dort, wo Sie markiert haben, bei Sample {sample}</span>
+    <span data-phrase="sum.onepart">keine &mdash; ein Teil, unangetastet</span>
+    <span data-phrase="sum.onepart.faded">keine &mdash; ein Teil, an seinen Schnittkanten ausgeblendet</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} ausgeblendet</span>
+    <span data-phrase="sum.joins.nofades">{joins}, keine Blenden</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16 Bit</span>
+    <span data-phrase="depth.float">32 Bit Gleitkomma</span>
+    <span data-phrase="sum.untouched">Es ist nichts markiert, also wird nichts geschnitten: hier wird jedes Sample
+      geschrieben, das der Dekoder erzeugt hat, in der Reihenfolge, ohne jede Blende. Es
+      ist ein Formatwechsel und sonst nichts.</span>
+    <span data-phrase="fade.none">Jeder Teil wird genau an dem Sample geschnitten, das Sie markiert haben, und nichts
+      wird mit irgendetwas multipliziert. Landet ein Schnitt mitten im Wort, hören Sie am
+      Übergang vielleicht ein Knacken &mdash; das ist die springende Wellenform, nicht ein
+      Fehler.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; etwa {samples} Samples &mdash; am Anfang eines Teils hochgefahren
+      und an seinem Ende herunter, damit ein Übergang nicht knacken kann. Nur Kanten, die
+      wirklich Schnitte sind, bekommen eine: eine Kante ganz am Anfang oder Ende der
+      Aufnahme bleibt unangetastet.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; etwa {samples} Samples &mdash; am Anfang eines Teils hochgefahren
+      und an seinem Ende herunter, damit ein Übergang nicht knacken kann. Nur Kanten, die
+      wirklich Schnitte sind, bekommen eine: eine Kante ganz am Anfang oder Ende der
+      Aufnahme bleibt unangetastet, womit hier 1 Kante ausgeblendet wird.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; etwa {samples} Samples &mdash; am Anfang eines Teils hochgefahren
+      und an seinem Ende herunter, damit ein Übergang nicht knacken kann. Nur Kanten, die
+      wirklich Schnitte sind, bekommen eine: eine Kante ganz am Anfang oder Ende der
+      Aufnahme bleibt unangetastet, womit hier {n} Kanten ausgeblendet werden.</span>
+    <span data-phrase="export.nothing">Es ist nichts zu behalten. Markieren Sie einen Teil, oder schalten Sie zurück auf
+      &bdquo;Behalten&ldquo;.</span>
+    <span data-phrase="step.starting">Wird gestartet&hellip;</span>
+    <span data-phrase="trim.copying">Teil {done} von {total} wird kopiert&hellip;</span>
+    <span data-phrase="step.writing">Die Datei wird geschrieben&hellip;</span>
+    <span data-phrase="trim.nothing">Es ist nichts markiert, das behalten werden könnte.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds} s</span>
+    <span data-phrase="export.failed">Beim Schneiden des Tons ist etwas schiefgegangen.</span>
+    <span data-phrase="wav.nochannels">ein WAV braucht mindestens einen Kanal</span>
+    <span data-phrase="wav.uneven">die Kanäle sind unterschiedlich lang</span>
+    <span data-phrase="wav.toobig">Das ergäbe ein WAV über 4 GB, was das Format nicht beschreiben kann. Versuchen Sie
+      16 Bit statt 32 Bit Gleitkomma, oder einen kürzeren Abschnitt.</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">Ihre Aufnahme ist nirgendwohin gegangen.
       {total} Dateien geladen. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

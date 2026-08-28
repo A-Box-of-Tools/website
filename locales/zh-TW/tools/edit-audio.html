@@ -175,6 +175,14 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="audio.empty">那個檔案是空的。</span>
+    <span data-phrase="audio.nodecode">這個瀏覽器從那個檔案裡取不出任何聲音。要麼格式是它解不了的，要麼檔案裡根本沒有音訊軌。MP3、WAV、FLAC、M4A、MP4、MOV、WebM 和 Ogg 都行；AVI、WMA 以及大多數 MKV 不行。</span>
+    <span data-phrase="audio.nosound">那個檔案裡沒有聲音 &mdash; 解出來什麼都沒有。</span>
+    <span data-phrase="read.failed">那個檔案讀不了：{why}</span>
+    <span data-phrase="wav.nochannels">WAV 至少要有一個聲道</span>
+    <span data-phrase="wav.uneven">各聲道長度不一樣</span>
+    <span data-phrase="wav.toobig">這會做出一個超過 4 GB 的 WAV，而這個格式描述不了那麼大。試試 16 位而不是 32 位浮點，或者選一段更短的。</span>
+    <span data-phrase="edit.failed">編輯音訊時出了問題。</span>
     <span data-phrase="net.clean">你的音訊沒有去任何地方。載入了 {total} 個檔案。{platform}</span>
     <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到任何檔案。</span>

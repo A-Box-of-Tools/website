@@ -203,6 +203,94 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">جارٍ قراءة الصوت&hellip;</span>
+    <span data-phrase="read.failed">تعذّرت قراءة ذلك الملف: {why}</span>
+    <span data-phrase="audio.empty">ذلك الملف فارغ.</span>
+    <span data-phrase="audio.nodecode">لم يستخرج هذا المتصفح أي صوت من ذلك الملف. فإما أن الصيغة مما لا يفك ترميزه، وإما أن
+      الملف لا يحوي مسار صوت أصلاً. صيغ MP3 وWAV وFLAC وM4A وMP4 وMOV وWebM وOgg تعمل
+      كلها؛ أما AVI وWMA ومعظم ملفات MKV فلا.</span>
+    <span data-phrase="audio.nosound">لا صوت في ذلك الملف &mdash; فك ترميزه إلى لا شيء.</span>
+    <span data-phrase="src.format">{channels}، {khz} كيلوهرتز</span>
+    <span data-phrase="src.rate.file">{rate} هرتز (من الملف)</span>
+    <span data-phrase="src.rate.assumed">{rate} هرتز (مفترضة)</span>
+    <span data-phrase="src.guessednote">هذه الصيغة لا تذكر في أي ترويسة تقرؤها هذه الأداة معدل التسجيل، فجرى فك ترميزه عند
+      48 كيلوهرتز. وإن كان التسجيل بمعدل آخر فقد أعاد المتصفح أخذ عيناته عند الإدخال
+      &mdash; وهو الشيء الوحيد هنا غير المضبوط تماماً.</span>
+    <span data-phrase="channels.mono">أحادي</span>
+    <span data-phrase="channels.stereo">ستيريو</span>
+    <span data-phrase="channels.many">{n} قنوات</span>
+    <span data-phrase="mark.noopen">لا شيء مفتوح بعد. اضغط I حيث ينبغي أن يبدأ الجزء، ثم O حيث ينتهي.</span>
+    <span data-phrase="mark.beforestart">هذا سينهي الجزء عند {at}، أي قبل أن يبدأ عند {start}. حرّك رأس التشغيل إلى ما بعد
+      البداية أولاً.</span>
+    <span data-phrase="mark.noroom">لم يبق هنا من التسجيل ما يكفي لإضافة جزء. أرجع رأس التشغيل إلى الوراء.</span>
+    <span data-phrase="mark.clearone">أتُمحى الجزء الوحيد من {name}؟</span>
+    <span data-phrase="mark.clearall">أتُمحى كل الأجزاء الـ{n} من {name}؟</span>
+    <span data-phrase="tl.band">الجزء {n}: من {from} إلى {to}</span>
+    <span data-phrase="parts.none">لا شيء بعد &mdash; التسجيل كله</span>
+    <span data-phrase="parts.count">{finished} من {total}</span>
+    <span data-phrase="btn.play">شغّل هذا الجزء</span>
+    <span data-phrase="btn.up">حرّك لأعلى</span>
+    <span data-phrase="btn.down">حرّك لأسفل</span>
+    <span data-phrase="btn.remove">احذف</span>
+    <span data-phrase="marks.nothing">لا شيء معلَّم بعد كي يُحفظ.</span>
+    <span data-phrase="marks.unreadable">لم يُقرأ أي مقطع من ذلك الملف. كل سطر بعد الأول ينبغي أن يكون بداية ونهاية، تفصلهما
+      فاصلة.</span>
+    <span data-phrase="marks.allpast">كل جزء في {name} يبدأ بعد نهاية هذا التسجيل. الأرجح أنه عُلّم على تسجيل آخر.</span>
+    <span data-phrase="marks.dropped.one">جزء واحد في {name} يبدأ بعد نهاية هذا التسجيل، فتُرك.</span>
+    <span data-phrase="marks.dropped.many">{n} أجزاء في {name} تبدأ بعد نهاية هذا التسجيل، فتُركت.</span>
+    <span data-phrase="marks.skipped.one">سطر واحد لم يُقرأ كجزء.</span>
+    <span data-phrase="marks.skipped.many">{n} أسطر لم تُقرأ كأجزاء.</span>
+    <span data-phrase="marks.loaded">حُمّل {n}.</span>
+    <span data-phrase="marks.failed">تعذّرت قراءة {name}: {why}</span>
+    <span data-phrase="n.part.one">جزء واحد</span>
+    <span data-phrase="n.part.many">{n} أجزاء</span>
+    <span data-phrase="n.join.one">وصلة واحدة</span>
+    <span data-phrase="n.join.many">{n} وصلات</span>
+    <span data-phrase="n.edge.one">حافة واحدة</span>
+    <span data-phrase="n.edge.many">{n} حواف</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">لا شيء &mdash; العلامات تغطي التسجيل كله</span>
+    <span data-phrase="sum.nothing">لا شيء معلَّم</span>
+    <span data-phrase="sum.zero">0 ث</span>
+    <span data-phrase="sum.parts.cut">{parts}، بعد ذهاب المعلَّمة</span>
+    <span data-phrase="sum.start">تماماً حيث علّمت، عند العيّنة {sample}</span>
+    <span data-phrase="sum.onepart">لا شيء &mdash; جزء واحد، لم يُمس</span>
+    <span data-phrase="sum.onepart.faded">لا شيء &mdash; جزء واحد، متلاشٍ عند حافتي القص</span>
+    <span data-phrase="sum.joins.faded">{joins}، و{edges} متلاشية</span>
+    <span data-phrase="sum.joins.nofades">{joins}، بلا تلاشٍ</span>
+    <span data-phrase="sum.sound">{channels}، {khz} كيلوهرتز، {depth}</span>
+    <span data-phrase="depth.16">16 بت</span>
+    <span data-phrase="depth.float">32 بت عائمة</span>
+    <span data-phrase="sum.untouched">لا شيء معلَّم، فلا شيء يُقص: سيُكتب كل عيّنة أنتجها فاكّ الترميز، بالترتيب، بلا
+      تلاشٍ في أي موضع. إنه تغيير صيغة لا غير.</span>
+    <span data-phrase="fade.none">كل جزء يُقص عند العيّنة التي علّمتها بالضبط، دون ضرب أي شيء في أي شيء. وإن وقع القص
+      في وسط كلمة فقد تسمع نقرة عند الوصلة، وهي قفزة في شكل الموجة لا خطأ حدث.</span>
+    <span data-phrase="fade.some">{ms} م.ث &mdash; نحو {samples} عيّنة &mdash; تصعد في بداية الجزء وتهبط في نهايته،
+      فلا تستطيع الوصلة أن تنقر. ولا تنالها إلا الحواف التي هي قص فعلاً: أما حافة في أول
+      التسجيل أو آخره فتُترك كما هي.</span>
+    <span data-phrase="fade.some.oneedge">{ms} م.ث &mdash; نحو {samples} عيّنة &mdash; تصعد في بداية الجزء وتهبط في نهايته،
+      فلا تستطيع الوصلة أن تنقر. ولا تنالها إلا الحواف التي هي قص فعلاً: أما حافة في أول
+      التسجيل أو آخره فتُترك كما هي، وبذلك تبقى هنا حافة واحدة متلاشية.</span>
+    <span data-phrase="fade.some.edges">{ms} م.ث &mdash; نحو {samples} عيّنة &mdash; تصعد في بداية الجزء وتهبط في نهايته،
+      فلا تستطيع الوصلة أن تنقر. ولا تنالها إلا الحواف التي هي قص فعلاً: أما حافة في أول
+      التسجيل أو آخره فتُترك كما هي، وبذلك تبقى هنا {n} حواف متلاشية.</span>
+    <span data-phrase="export.nothing">لا شيء يُبقى. علّم جزءاً، أو ارجع إلى &laquo;أبقِها&raquo;.</span>
+    <span data-phrase="step.starting">يبدأ&hellip;</span>
+    <span data-phrase="trim.copying">نسخ الجزء {done} من {total}&hellip;</span>
+    <span data-phrase="step.writing">كتابة الملف&hellip;</span>
+    <span data-phrase="trim.nothing">لا شيء معلَّم كي يُبقى.</span>
+    <span data-phrase="result.wav">WAV، {depth}</span>
+    <span data-phrase="result.took">{seconds} ث</span>
+    <span data-phrase="export.failed">حدث خطأ أثناء قص الصوت.</span>
+    <span data-phrase="wav.nochannels">ملف WAV يحتاج إلى قناة واحدة على الأقل</span>
+    <span data-phrase="wav.uneven">أطوال القنوات مختلفة</span>
+    <span data-phrase="wav.toobig">هذا يجعل ملف WAV أكبر من 4 غيغابايت، وهو ما لا تستطيع الصيغة وصفه. جرّب 16 بت بدل 32
+      بت عائمة، أو مقطعاً أقصر.</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
+    <span data-phrase="size.gb">{n} غيغابايت</span>
     <span data-phrase="net.clean">تسجيلك لم يذهب إلى أي مكان. {total} ملفاً
       حُمِّلت. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

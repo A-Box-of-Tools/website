@@ -181,6 +181,18 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="audio.empty">Berkas itu kosong.</span>
+    <span data-phrase="audio.nodecode">Browser ini tidak berhasil mengambil suara apa pun dari berkas itu. Entah formatnya
+      tidak bisa diawakode olehnya, entah berkasnya memang tidak punya jalur audio sama
+      sekali. MP3, WAV, FLAC, M4A, MP4, MOV, WebM, dan Ogg semuanya jalan; AVI, WMA, dan
+      kebanyakan MKV tidak.</span>
+    <span data-phrase="audio.nosound">Tidak ada suara di berkas itu &mdash; hasil awakodenya kosong.</span>
+    <span data-phrase="read.failed">Berkas itu tidak bisa dibaca: {why}</span>
+    <span data-phrase="wav.nochannels">WAV perlu setidaknya satu kanal</span>
+    <span data-phrase="wav.uneven">panjang kanalnya berbeda-beda</span>
+    <span data-phrase="wav.toobig">Itu akan menghasilkan WAV lebih dari 4 GB, dan formatnya tidak bisa menyatakannya.
+      Coba 16 bit alih-alih 32 bit titik-mengambang, atau potongan yang lebih pendek.</span>
+    <span data-phrase="edit.failed">Ada yang salah saat menyunting audionya.</span>
     <span data-phrase="net.clean">audio Anda tidak pergi ke mana pun. {total}
       file dimuat. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

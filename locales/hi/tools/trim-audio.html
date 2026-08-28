@@ -204,6 +204,102 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">आवाज़ पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="read.failed">वह फ़ाइल पढ़ी नहीं जा सकी: {why}</span>
+    <span data-phrase="audio.empty">वह फ़ाइल ख़ाली है।</span>
+    <span data-phrase="audio.nodecode">इस ब्राउज़र को उस फ़ाइल से कोई आवाज़ नहीं मिली। या तो यह ऐसा प्रारूप है जिसे यह
+      डिकोड नहीं करता, या फ़ाइल में ऑडियो ट्रैक है ही नहीं। MP3, WAV, FLAC, M4A, MP4, MOV,
+      WebM और Ogg सब चलते हैं; AVI, WMA और ज़्यादातर MKV नहीं।</span>
+    <span data-phrase="audio.nosound">उस फ़ाइल में आवाज़ नहीं है &mdash; डिकोड करने पर कुछ भी नहीं निकला।</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (फ़ाइल से)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (मान लिया गया)</span>
+    <span data-phrase="src.guessednote">यह प्रारूप किसी ऐसे हेडर में नहीं बताता जिसे यह टूल पढ़ता हो कि रिकॉर्डिंग किस दर पर
+      हुई थी, इसलिए इसे 48 kHz पर डिकोड किया गया। अगर रिकॉर्डिंग किसी और दर पर हुई थी तो
+      ब्राउज़र ने पढ़ते समय उसका दोबारा नमूना ले लिया &mdash; और यहाँ सिर्फ़ यही एक चीज़
+      है जो बिलकुल सटीक नहीं है।</span>
+    <span data-phrase="channels.mono">मोनो</span>
+    <span data-phrase="channels.stereo">स्टीरियो</span>
+    <span data-phrase="channels.many">{n} चैनल</span>
+    <span data-phrase="mark.noopen">अभी कुछ खुला नहीं है। जहाँ हिस्सा शुरू होना चाहिए वहाँ I दबाइए, फिर जहाँ ख़त्म हो
+      वहाँ O।</span>
+    <span data-phrase="mark.beforestart">इससे हिस्सा {at} पर ख़त्म होता, जो उसके {start} पर शुरू होने से भी पहले है। पहले
+      प्लेहेड को शुरुआत के आगे ले जाइए।</span>
+    <span data-phrase="mark.noroom">यहाँ इतनी रिकॉर्डिंग बची ही नहीं कि एक हिस्सा जोड़ा जा सके। प्लेहेड पीछे कीजिए।</span>
+    <span data-phrase="mark.clearone">{name} का इकलौता हिस्सा मिटा दें?</span>
+    <span data-phrase="mark.clearall">{name} के सारे {n} हिस्से मिटा दें?</span>
+    <span data-phrase="tl.band">हिस्सा {n}: {from} से {to} तक</span>
+    <span data-phrase="parts.none">अभी कोई नहीं &mdash; पूरी रिकॉर्डिंग</span>
+    <span data-phrase="parts.count">{total} में से {finished}</span>
+    <span data-phrase="btn.play">यह हिस्सा चलाइए</span>
+    <span data-phrase="btn.up">ऊपर ले जाइए</span>
+    <span data-phrase="btn.down">नीचे ले जाइए</span>
+    <span data-phrase="btn.remove">हटाइए</span>
+    <span data-phrase="marks.nothing">सहेजने के लिए अभी कुछ चिह्नित नहीं है।</span>
+    <span data-phrase="marks.unreadable">उस फ़ाइल से कोई खंड नहीं पढ़ा जा सका। पहली के बाद की हर पंक्ति में एक शुरुआत और एक
+      अंत होना चाहिए, अल्पविराम से अलग।</span>
+    <span data-phrase="marks.allpast">{name} का हर हिस्सा इस रिकॉर्डिंग के ख़त्म होने के बाद शुरू होता है। शायद वे किसी और
+      रिकॉर्डिंग पर चिह्नित किए गए थे।</span>
+    <span data-phrase="marks.dropped.one">{name} का 1 हिस्सा इस रिकॉर्डिंग के अंत के बाद शुरू होता है, इसलिए उसे छोड़ दिया
+      गया।</span>
+    <span data-phrase="marks.dropped.many">{name} के {n} हिस्से इस रिकॉर्डिंग के अंत के बाद शुरू होते हैं, इसलिए उन्हें छोड़
+      दिया गया।</span>
+    <span data-phrase="marks.skipped.one">1 पंक्ति हिस्से के तौर पर नहीं पढ़ी जा सकी।</span>
+    <span data-phrase="marks.skipped.many">{n} पंक्तियाँ हिस्से के तौर पर नहीं पढ़ी जा सकीं।</span>
+    <span data-phrase="marks.loaded">{n} लोड हुए।</span>
+    <span data-phrase="marks.failed">{name} पढ़ी नहीं जा सकी: {why}</span>
+    <span data-phrase="n.part.one">{n} हिस्सा</span>
+    <span data-phrase="n.part.many">{n} हिस्से</span>
+    <span data-phrase="n.join.one">{n} जोड़</span>
+    <span data-phrase="n.join.many">{n} जोड़</span>
+    <span data-phrase="n.edge.one">{n} किनारा</span>
+    <span data-phrase="n.edge.many">{n} किनारे</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">कुछ नहीं &mdash; निशान पूरी रिकॉर्डिंग को ढक लेते हैं</span>
+    <span data-phrase="sum.nothing">कुछ चिह्नित नहीं</span>
+    <span data-phrase="sum.zero">0 से</span>
+    <span data-phrase="sum.parts.cut">चिह्नित हिस्से हट जाने पर {parts}</span>
+    <span data-phrase="sum.start">ठीक वहीं जहाँ आपने निशान लगाया, नमूना {sample} पर</span>
+    <span data-phrase="sum.onepart">कोई नहीं &mdash; एक ही हिस्सा, अछूता</span>
+    <span data-phrase="sum.onepart.faded">कोई नहीं &mdash; एक ही हिस्सा, कटे किनारों पर फ़ेड के साथ</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} फ़ेड किए गए</span>
+    <span data-phrase="sum.joins.nofades">{joins}, कोई फ़ेड नहीं</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16-बिट</span>
+    <span data-phrase="depth.float">32-बिट फ़्लोट</span>
+    <span data-phrase="sum.untouched">कुछ चिह्नित नहीं है, इसलिए कुछ काटा भी नहीं जा रहा: डिकोडर ने जितने नमूने बनाए, सब
+      क्रम से लिख दिए जाएँगे, कहीं कोई फ़ेड नहीं। यह बस प्रारूप का बदलाव है और कुछ नहीं।</span>
+    <span data-phrase="fade.none">हर हिस्सा ठीक उसी नमूने पर कटता है जो आपने चिह्नित किया, किसी चीज़ को किसी से गुणा
+      किए बिना। अगर कट किसी शब्द के बीच पड़े तो जोड़ पर शायद एक क्लिक सुनाई दे &mdash; वह
+      तरंग का उछलना है, कोई गड़बड़ नहीं।</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; क़रीब {samples} नमूने &mdash; हिस्से की शुरुआत में ऊपर और उसके अंत
+      में नीचे, ताकि जोड़ क्लिक न कर सके। यह सिर्फ़ उन्हीं किनारों को मिलता है जो सचमुच कट
+      हैं: रिकॉर्डिंग के बिलकुल शुरू या अंत वाले किनारे को छुआ नहीं जाता।</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; क़रीब {samples} नमूने &mdash; हिस्से की शुरुआत में ऊपर और उसके अंत
+      में नीचे, ताकि जोड़ क्लिक न कर सके। यह सिर्फ़ उन्हीं किनारों को मिलता है जो सचमुच कट
+      हैं: रिकॉर्डिंग के बिलकुल शुरू या अंत वाले किनारे को छुआ नहीं जाता, जिससे यहाँ 1
+      किनारा फ़ेड होता है।</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; क़रीब {samples} नमूने &mdash; हिस्से की शुरुआत में ऊपर और उसके अंत
+      में नीचे, ताकि जोड़ क्लिक न कर सके। यह सिर्फ़ उन्हीं किनारों को मिलता है जो सचमुच कट
+      हैं: रिकॉर्डिंग के बिलकुल शुरू या अंत वाले किनारे को छुआ नहीं जाता, जिससे यहाँ {n}
+      किनारे फ़ेड होते हैं।</span>
+    <span data-phrase="export.nothing">रखने को कुछ नहीं है। कोई हिस्सा चिह्नित कीजिए, या वापस «इन्हें रखिए» पर लौटिए।</span>
+    <span data-phrase="step.starting">शुरू हो रहा है&hellip;</span>
+    <span data-phrase="trim.copying">{total} में से {done} हिस्सा कॉपी हो रहा है&hellip;</span>
+    <span data-phrase="step.writing">फ़ाइल लिखी जा रही है&hellip;</span>
+    <span data-phrase="trim.nothing">रखने के लिए कुछ चिह्नित नहीं है।</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds} से</span>
+    <span data-phrase="export.failed">ऑडियो काटते समय कुछ गड़बड़ हो गई।</span>
+    <span data-phrase="wav.nochannels">WAV को कम से कम एक चैनल चाहिए</span>
+    <span data-phrase="wav.uneven">चैनलों की लंबाई अलग-अलग है</span>
+    <span data-phrase="wav.toobig">इससे WAV 4 GB से बड़ा बन जाएगा, और प्रारूप इतना बड़ा बता ही नहीं सकता। 32-बिट फ़्लोट
+      की जगह 16-बिट आज़माइए, या छोटा हिस्सा लीजिए।</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">आपका ऑडियो कहीं नहीं गया। {total} फ़ाइलें लोड
       हुईं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

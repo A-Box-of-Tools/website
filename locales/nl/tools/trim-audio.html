@@ -205,6 +205,107 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Het geluid wordt gelezen&hellip;</span>
+    <span data-phrase="read.failed">Dat bestand kon niet gelezen worden: {why}</span>
+    <span data-phrase="audio.empty">Dat bestand is leeg.</span>
+    <span data-phrase="audio.nodecode">Deze browser kreeg geen geluid uit dat bestand. Of het formaat is er een dat hij
+      niet decodeert, of het bestand heeft helemaal geen audiospoor. MP3, WAV, FLAC, M4A,
+      MP4, MOV, WebM en Ogg werken allemaal; AVI, WMA en de meeste MKV&rsquo;s niet.</span>
+    <span data-phrase="audio.nosound">Er zit geen geluid in dat bestand &mdash; het decodeerde naar niets.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (uit het bestand)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (aangenomen)</span>
+    <span data-phrase="src.guessednote">Dit formaat zegt in geen enkele kop die dit gereedschap leest bij welke frequentie
+      er is opgenomen, dus is er op 48 kHz gedecodeerd. Is de opname op een andere
+      frequentie gemaakt, dan heeft de browser hem bij het inlezen omgerekend &mdash; het
+      enige hier dat niet exact is.</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} kanalen</span>
+    <span data-phrase="mark.noopen">Er staat nog niets open. Druk op I waar het deel moet beginnen, en dan op O waar het
+      eindigt.</span>
+    <span data-phrase="mark.beforestart">Daarmee zou het deel eindigen op {at}, en dat is vóór het begint op {start}. Zet de
+      afspeelkop eerst voorbij het begin.</span>
+    <span data-phrase="mark.noroom">Er is hier niet genoeg opname over om een deel toe te voegen. Zet de afspeelkop
+      terug.</span>
+    <span data-phrase="mark.clearone">Het ene deel van {name} wissen?</span>
+    <span data-phrase="mark.clearall">Alle {n} delen van {name} wissen?</span>
+    <span data-phrase="tl.band">Deel {n}: {from} tot {to}</span>
+    <span data-phrase="parts.none">nog geen &mdash; de hele opname</span>
+    <span data-phrase="parts.count">{finished} van {total}</span>
+    <span data-phrase="btn.play">Dit deel afspelen</span>
+    <span data-phrase="btn.up">Omhoog</span>
+    <span data-phrase="btn.down">Omlaag</span>
+    <span data-phrase="btn.remove">Verwijderen</span>
+    <span data-phrase="marks.nothing">Er is nog niets gemarkeerd om te bewaren.</span>
+    <span data-phrase="marks.unreadable">Uit dat bestand viel geen enkel segment te lezen. Elke regel na de eerste zou een
+      begin en een eind moeten zijn, gescheiden door een komma.</span>
+    <span data-phrase="marks.allpast">Elk deel in {name} begint nadat deze opname afgelopen is. Ze zijn waarschijnlijk op
+      een andere gemarkeerd.</span>
+    <span data-phrase="marks.dropped.one">1 deel in {name} begint voorbij het eind van deze opname en is dus weggelaten.</span>
+    <span data-phrase="marks.dropped.many">{n} delen in {name} beginnen voorbij het eind van deze opname en zijn dus
+      weggelaten.</span>
+    <span data-phrase="marks.skipped.one">1 regel viel niet als deel te lezen.</span>
+    <span data-phrase="marks.skipped.many">{n} regels vielen niet als deel te lezen.</span>
+    <span data-phrase="marks.loaded">{n} geladen.</span>
+    <span data-phrase="marks.failed">{name} kon niet gelezen worden: {why}</span>
+    <span data-phrase="n.part.one">{n} deel</span>
+    <span data-phrase="n.part.many">{n} delen</span>
+    <span data-phrase="n.join.one">{n} las</span>
+    <span data-phrase="n.join.many">{n} lassen</span>
+    <span data-phrase="n.edge.one">{n} rand</span>
+    <span data-phrase="n.edge.many">{n} randen</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">niets &mdash; de markeringen beslaan de hele opname</span>
+    <span data-phrase="sum.nothing">niets gemarkeerd</span>
+    <span data-phrase="sum.zero">0 s</span>
+    <span data-phrase="sum.parts.cut">{parts}, zodra de gemarkeerde weg zijn</span>
+    <span data-phrase="sum.start">precies waar je gemarkeerd hebt, bij sample {sample}</span>
+    <span data-phrase="sum.onepart">geen &mdash; één deel, onaangeroerd</span>
+    <span data-phrase="sum.onepart.faded">geen &mdash; één deel, uitgefade aan zijn snijranden</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} gefade</span>
+    <span data-phrase="sum.joins.nofades">{joins}, geen fades</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16-bit</span>
+    <span data-phrase="depth.float">32-bit drijvende komma</span>
+    <span data-phrase="sum.untouched">Er is niets gemarkeerd, dus er wordt niets weggeknipt: dit schrijft elke sample die
+      de decoder maakte, op volgorde, zonder enige fade. Het is een formaatwissel en
+      verder niets.</span>
+    <span data-phrase="fade.none">Elk deel wordt geknipt op precies de sample die je markeerde, zonder dat er iets met
+      iets vermenigvuldigd wordt. Valt een knip midden in een woord, dan hoor je bij de
+      las misschien een klik &mdash; dat is de golfvorm die springt, niet iets dat
+      misgaat.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; ongeveer {samples} samples &mdash; omhoog aan het begin van een deel
+      en omlaag aan het eind, zodat een las niet kan klikken. Alleen randen die echt
+      knippen zijn krijgen er een: een rand helemaal aan het begin of eind van de opname
+      blijft met rust.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; ongeveer {samples} samples &mdash; omhoog aan het begin van een deel
+      en omlaag aan het eind, zodat een las niet kan klikken. Alleen randen die echt
+      knippen zijn krijgen er een: een rand helemaal aan het begin of eind van de opname
+      blijft met rust, waardoor hier 1 rand gefade is.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; ongeveer {samples} samples &mdash; omhoog aan het begin van een deel
+      en omlaag aan het eind, zodat een las niet kan klikken. Alleen randen die echt
+      knippen zijn krijgen er een: een rand helemaal aan het begin of eind van de opname
+      blijft met rust, waardoor hier {n} randen gefade zijn.</span>
+    <span data-phrase="export.nothing">Er is niets te bewaren. Markeer een deel, of zet het terug op &bdquo;Deze
+      houden&rdquo;.</span>
+    <span data-phrase="step.starting">Bezig met starten&hellip;</span>
+    <span data-phrase="trim.copying">Deel {done} van {total} wordt gekopieerd&hellip;</span>
+    <span data-phrase="step.writing">Het bestand wordt geschreven&hellip;</span>
+    <span data-phrase="trim.nothing">Er is niets gemarkeerd om te bewaren.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds} s</span>
+    <span data-phrase="export.failed">Er ging iets mis bij het knippen van de audio.</span>
+    <span data-phrase="wav.nochannels">een WAV heeft minstens één kanaal nodig</span>
+    <span data-phrase="wav.uneven">de kanalen zijn verschillend lang</span>
+    <span data-phrase="wav.toobig">Dat zou een WAV van meer dan 4 GB opleveren, en dat kan het formaat niet
+      beschrijven. Probeer 16-bit in plaats van 32-bit drijvende komma, of een korter
+      stuk.</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">Je audio is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

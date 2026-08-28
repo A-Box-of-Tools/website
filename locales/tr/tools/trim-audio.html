@@ -211,6 +211,103 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Ses okunuyor&hellip;</span>
+    <span data-phrase="read.failed">Bu dosya okunamadı: {why}</span>
+    <span data-phrase="audio.empty">Bu dosya boş.</span>
+    <span data-phrase="audio.nodecode">Bu tarayıcı o dosyadan hiç ses çıkaramadı. Ya biçim onun çözemediği bir biçim, ya da
+      dosyada hiç ses parçası yok. MP3, WAV, FLAC, M4A, MP4, MOV, WebM ve Ogg hepsi
+      çalışır; AVI, WMA ve MKV dosyalarının çoğu çalışmaz.</span>
+    <span data-phrase="audio.nosound">O dosyada ses yok &mdash; çözümlemesi hiçbir şey vermedi.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (dosyadan)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (varsayılan)</span>
+    <span data-phrase="src.guessednote">Bu biçim, bu aracın okuduğu hiçbir başlıkta hangi hızda kaydedildiğini söylemiyor,
+      bu yüzden 48 kHz&rsquo;de çözümlendi. Kayıt başka bir hızda yapıldıysa tarayıcı onu
+      içeri alırken yeniden örnekledi &mdash; burada tam olmayan tek şey budur.</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} kanal</span>
+    <span data-phrase="mark.noopen">Henüz açık bir şey yok. Parçanın başlaması gereken yerde I&rsquo;ye, bittiği yerde
+      O&rsquo;ya basın.</span>
+    <span data-phrase="mark.beforestart">Bu, parçayı {at} konumunda bitirirdi; oysa parça {start} konumunda başlıyor. Önce
+      oynatma başını başlangıcın ötesine götürün.</span>
+    <span data-phrase="mark.noroom">Burada parça eklemeye yetecek kayıt kalmadı. Oynatma başını geri alın.</span>
+    <span data-phrase="mark.clearone">{name} dosyasının tek parçası silinsin mi?</span>
+    <span data-phrase="mark.clearall">{name} dosyasının {n} parçasının hepsi silinsin mi?</span>
+    <span data-phrase="tl.band">Parça {n}: {from} &ndash; {to}</span>
+    <span data-phrase="parts.none">henüz yok &mdash; kaydın tamamı</span>
+    <span data-phrase="parts.count">{total} parçanın {finished} tanesi</span>
+    <span data-phrase="btn.play">Bu parçayı çal</span>
+    <span data-phrase="btn.up">Yukarı taşı</span>
+    <span data-phrase="btn.down">Aşağı taşı</span>
+    <span data-phrase="btn.remove">Kaldır</span>
+    <span data-phrase="marks.nothing">Kaydedilecek işaretlenmiş bir şey henüz yok.</span>
+    <span data-phrase="marks.unreadable">O dosyadan hiçbir bölüm okunamadı. İlkinden sonraki her satır bir başlangıç ve bir
+      bitişten, virgülle ayrılmış olarak oluşmalı.</span>
+    <span data-phrase="marks.allpast">{name} içindeki her parça bu kayıt bittikten sonra başlıyor. Muhtemelen başka bir
+      kayıt üzerinde işaretlenmiş.</span>
+    <span data-phrase="marks.dropped.one">{name} içindeki 1 parça bu kaydın sonunun ötesinde başlıyor, bu yüzden dışarıda
+      bırakıldı.</span>
+    <span data-phrase="marks.dropped.many">{name} içindeki {n} parça bu kaydın sonunun ötesinde başlıyor, bu yüzden dışarıda
+      bırakıldı.</span>
+    <span data-phrase="marks.skipped.one">1 satır parça olarak okunamadı.</span>
+    <span data-phrase="marks.skipped.many">{n} satır parça olarak okunamadı.</span>
+    <span data-phrase="marks.loaded">{n} tanesi yüklendi.</span>
+    <span data-phrase="marks.failed">{name} okunamadı: {why}</span>
+    <span data-phrase="n.part.one">{n} parça</span>
+    <span data-phrase="n.part.many">{n} parça</span>
+    <span data-phrase="n.join.one">{n} birleşim</span>
+    <span data-phrase="n.join.many">{n} birleşim</span>
+    <span data-phrase="n.edge.one">{n} kenar</span>
+    <span data-phrase="n.edge.many">{n} kenar</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">hiçbiri &mdash; işaretler kaydın tamamını kaplıyor</span>
+    <span data-phrase="sum.nothing">işaretlenmiş bir şey yok</span>
+    <span data-phrase="sum.zero">0 sn</span>
+    <span data-phrase="sum.parts.cut">işaretlenenler gidince {parts}</span>
+    <span data-phrase="sum.start">tam işaretlediğiniz yerde, {sample}. örnekte</span>
+    <span data-phrase="sum.onepart">yok &mdash; tek parça, dokunulmamış</span>
+    <span data-phrase="sum.onepart.faded">yok &mdash; tek parça, kesim kenarlarında yumuşatılmış</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} yumuşatılmış</span>
+    <span data-phrase="sum.joins.nofades">{joins}, yumuşatma yok</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16 bit</span>
+    <span data-phrase="depth.float">32 bit kayan nokta</span>
+    <span data-phrase="sum.untouched">Hiçbir şey işaretlenmemiş, dolayısıyla hiçbir şey kesilmiyor: bu, çözücünün ürettiği
+      her örneği sırayla, hiçbir yerde yumuşatma olmadan yazacak. Bu yalnızca bir biçim
+      değişikliğidir.</span>
+    <span data-phrase="fade.none">Her parça tam işaretlediğiniz örnekte kesilir, hiçbir şey hiçbir şeyle çarpılmaz.
+      Kesim bir kelimenin ortasına denk gelirse birleşim yerinde bir tık duyabilirsiniz;
+      bu, dalga biçiminin sıçramasıdır, bir aksaklık değil.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; yaklaşık {samples} örnek &mdash; bir parçanın başında yukarı,
+      sonunda aşağı çekilir, böylece birleşim tıklayamaz. Yalnızca gerçekten kesim olan
+      kenarlar bunu alır: kaydın en başındaki ya da en sonundaki bir kenara dokunulmaz.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; yaklaşık {samples} örnek &mdash; bir parçanın başında yukarı,
+      sonunda aşağı çekilir, böylece birleşim tıklayamaz. Yalnızca gerçekten kesim olan
+      kenarlar bunu alır: kaydın en başındaki ya da en sonundaki bir kenara dokunulmaz;
+      burada 1 kenar yumuşatılmış olur.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; yaklaşık {samples} örnek &mdash; bir parçanın başında yukarı,
+      sonunda aşağı çekilir, böylece birleşim tıklayamaz. Yalnızca gerçekten kesim olan
+      kenarlar bunu alır: kaydın en başındaki ya da en sonundaki bir kenara dokunulmaz;
+      burada {n} kenar yumuşatılmış olur.</span>
+    <span data-phrase="export.nothing">Tutulacak bir şey yok. Bir parça işaretleyin ya da &laquo;Onları tut&raquo;a geri
+      dönün.</span>
+    <span data-phrase="step.starting">Başlıyor&hellip;</span>
+    <span data-phrase="trim.copying">{total} parçadan {done}. kopyalanıyor&hellip;</span>
+    <span data-phrase="step.writing">Dosya yazılıyor&hellip;</span>
+    <span data-phrase="trim.nothing">Tutulacak işaretlenmiş bir şey yok.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds} sn</span>
+    <span data-phrase="export.failed">Ses kırpılırken bir şeyler ters gitti.</span>
+    <span data-phrase="wav.nochannels">bir WAV en az bir kanal ister</span>
+    <span data-phrase="wav.uneven">kanalların uzunlukları farklı</span>
+    <span data-phrase="wav.toobig">Bu, 4 GB&rsquo;den büyük bir WAV yapardı ve biçim bunu tarif edemez. 32 bit kayan
+      nokta yerine 16 biti ya da daha kısa bir bölümü deneyin.</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">ses kaydınız hiçbir yere gitmedi. {total}
       dosya yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

@@ -123,8 +123,10 @@ test('32-bit float carries the extra header fields the format asks for', async (
 });
 
 test('channels of different lengths are refused', () => {
-  assert.throws(() => writeWav([ramp(4), ramp(5)], 44100), /differ in length/);
-  assert.throws(() => writeWav([], 44100), /at least one channel/);
+  // The sentences live in body.html now, in fifteen languages; the keys are
+  // what these can be held to.
+  assert.throws(() => writeWav([ramp(4), ramp(5)], 44100), /^Error: wav\.uneven$/);
+  assert.throws(() => writeWav([], 44100), /^Error: wav\.nochannels$/);
 });
 
 test('a file too large for the format to describe is refused', () => {
@@ -132,7 +134,7 @@ test('a file too large for the format to describe is refused', () => {
   // refusal happens before a byte is written. A RIFF size field is 32 bits, so
   // a WAV simply cannot say how long a five-gigabyte one is.
   const huge = [{ length: 2 ** 31 }, { length: 2 ** 31 }];
-  assert.throws(() => writeWav(huge, 44100), /larger than 4 GB/);
+  assert.throws(() => writeWav(huge, 44100), /^Error: wav\.toobig$/);
 });
 
 test('wavSize agrees with the file that gets written', async () => {

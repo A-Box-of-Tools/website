@@ -230,12 +230,16 @@ export function cutChannels(channels, sections) {
  * @param {{channels: Float32Array[], sampleRate: number, frames: number}} source
  * @param {ReturnType<typeof planSections>} sections
  * @param {{onProgress?: (done: number, label: string) => void,
- *          signal?: AbortSignal, budgetMs?: number}} options
+ *          signal?: AbortSignal, budgetMs?: number,
+ *          t?: (key: string, values?: object) => string}} options  `t` is the
+ *          caller's phrase(); the label it builds is a sentence and this file
+ *          is copied byte for byte into fifteen languages.
  * @returns {Promise<{channels: Float32Array[], frames: number}>}
  */
-export async function trim(source, sections, { onProgress, signal, budgetMs = BUDGET_MS } = {}) {
+export async function trim(source, sections,
+  { onProgress, signal, budgetMs = BUDGET_MS, t } = {}) {
   const frames = sectionFrames(sections);
-  if (!frames) throw new Error('There is nothing marked to keep.');
+  if (!frames) throw new Error('trim.nothing');
 
   const out = source.channels.map(() => new Float32Array(frames));
   let at = 0;
@@ -247,7 +251,7 @@ export async function trim(source, sections, { onProgress, signal, budgetMs = BU
     copySection(source.channels, out, at, section);
     at += section.frames;
     done += 1;
-    onProgress?.(at / frames, `Copying part ${done} of ${sections.length}…`);
+    onProgress?.(at / frames, t('trim.copying', { done, total: sections.length }));
 
     if (performance.now() - since >= budgetMs) {
       await handBack();

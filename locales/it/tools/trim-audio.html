@@ -204,6 +204,106 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Lettura del suono&hellip;</span>
+    <span data-phrase="read.failed">Quel file non si è potuto leggere: {why}</span>
+    <span data-phrase="audio.empty">Quel file è vuoto.</span>
+    <span data-phrase="audio.nodecode">Questo browser non è riuscito a tirare fuori alcun suono da quel file. O il formato
+      è uno che non decodifica, o il file non ha proprio una traccia audio. MP3, WAV,
+      FLAC, M4A, MP4, MOV, WebM e Ogg funzionano tutti; AVI, WMA e la maggior parte degli
+      MKV no.</span>
+    <span data-phrase="audio.nosound">In quel file non c&rsquo;è suono &mdash; ha decodificato a niente.</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (dal file)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (supposti)</span>
+    <span data-phrase="src.guessednote">Questo formato non dice in nessuna intestazione che questo strumento legga a che
+      frequenza è stato registrato, quindi è stato decodificato a 48 kHz. Se la
+      registrazione è stata fatta a un&rsquo;altra frequenza, il browser l&rsquo;ha
+      ricampionata in ingresso &mdash; ed è l&rsquo;unica cosa qui che non sia esatta.</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} canali</span>
+    <span data-phrase="mark.noopen">Non c&rsquo;è ancora niente di aperto. Premi I dove la parte deve iniziare, poi O
+      dove finisce.</span>
+    <span data-phrase="mark.beforestart">Così la parte finirebbe a {at}, cioè prima di iniziare a {start}. Porta prima la
+      testina oltre l&rsquo;inizio.</span>
+    <span data-phrase="mark.noroom">Qui non resta abbastanza registrazione per aggiungere una parte. Porta indietro la
+      testina.</span>
+    <span data-phrase="mark.clearone">Cancellare l&rsquo;unica parte di {name}?</span>
+    <span data-phrase="mark.clearall">Cancellare tutte le {n} parti di {name}?</span>
+    <span data-phrase="tl.band">Parte {n}: da {from} a {to}</span>
+    <span data-phrase="parts.none">nessuna per ora &mdash; tutta la registrazione</span>
+    <span data-phrase="parts.count">{finished} di {total}</span>
+    <span data-phrase="btn.play">Riproduci questa parte</span>
+    <span data-phrase="btn.up">Sposta su</span>
+    <span data-phrase="btn.down">Sposta giù</span>
+    <span data-phrase="btn.remove">Rimuovi</span>
+    <span data-phrase="marks.nothing">Non c&rsquo;è ancora niente di segnato da salvare.</span>
+    <span data-phrase="marks.unreadable">Da quel file non si è potuto leggere alcun segmento. Ogni riga dopo la prima
+      dovrebbe essere un inizio e una fine, separati da una virgola.</span>
+    <span data-phrase="marks.allpast">Ogni parte in {name} inizia dopo la fine di questa registrazione. Probabilmente sono
+      state segnate su un&rsquo;altra.</span>
+    <span data-phrase="marks.dropped.one">1 parte in {name} inizia oltre la fine di questa registrazione, quindi è stata
+      lasciata fuori.</span>
+    <span data-phrase="marks.dropped.many">{n} parti in {name} iniziano oltre la fine di questa registrazione, quindi sono
+      state lasciate fuori.</span>
+    <span data-phrase="marks.skipped.one">1 riga non si è potuta leggere come parte.</span>
+    <span data-phrase="marks.skipped.many">{n} righe non si sono potute leggere come parti.</span>
+    <span data-phrase="marks.loaded">{n} caricate.</span>
+    <span data-phrase="marks.failed">{name} non si è potuto leggere: {why}</span>
+    <span data-phrase="n.part.one">{n} parte</span>
+    <span data-phrase="n.part.many">{n} parti</span>
+    <span data-phrase="n.join.one">{n} giunzione</span>
+    <span data-phrase="n.join.many">{n} giunzioni</span>
+    <span data-phrase="n.edge.one">{n} bordo</span>
+    <span data-phrase="n.edge.many">{n} bordi</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="sum.nothing.cut">niente &mdash; i segni coprono tutta la registrazione</span>
+    <span data-phrase="sum.nothing">niente di segnato</span>
+    <span data-phrase="sum.zero">0 s</span>
+    <span data-phrase="sum.parts.cut">{parts}, una volta tolte quelle segnate</span>
+    <span data-phrase="sum.start">esattamente dove hai segnato, al campione {sample}</span>
+    <span data-phrase="sum.onepart">nessuna &mdash; una parte sola, intatta</span>
+    <span data-phrase="sum.onepart.faded">nessuna &mdash; una parte sola, sfumata ai bordi di taglio</span>
+    <span data-phrase="sum.joins.faded">{joins}, {edges} sfumati</span>
+    <span data-phrase="sum.joins.nofades">{joins}, nessuna sfumatura</span>
+    <span data-phrase="sum.sound">{channels}, {khz} kHz, {depth}</span>
+    <span data-phrase="depth.16">16 bit</span>
+    <span data-phrase="depth.float">32 bit in virgola mobile</span>
+    <span data-phrase="sum.untouched">Non è segnato niente, quindi non si taglia niente: questo scriverà ogni campione
+      prodotto dal decodificatore, in ordine, senza alcuna sfumatura. È un cambio di
+      formato e nient&rsquo;altro.</span>
+    <span data-phrase="fade.none">Ogni parte è tagliata sul campione esatto che hai segnato, senza moltiplicare niente
+      per niente. Se un taglio cade a metà parola potresti sentire un clic alla giunzione,
+      che è la forma d&rsquo;onda che salta e non qualcosa che è andato storto.</span>
+    <span data-phrase="fade.some">{ms} ms &mdash; circa {samples} campioni &mdash; in salita all&rsquo;inizio di una
+      parte e in discesa alla sua fine, così una giunzione non può fare clic. La ricevono
+      solo i bordi che sono davvero tagli: un bordo proprio all&rsquo;inizio o alla fine
+      della registrazione viene lasciato stare.</span>
+    <span data-phrase="fade.some.oneedge">{ms} ms &mdash; circa {samples} campioni &mdash; in salita all&rsquo;inizio di una
+      parte e in discesa alla sua fine, così una giunzione non può fare clic. La ricevono
+      solo i bordi che sono davvero tagli: un bordo proprio all&rsquo;inizio o alla fine
+      della registrazione viene lasciato stare, il che lascia qui 1 bordo sfumato.</span>
+    <span data-phrase="fade.some.edges">{ms} ms &mdash; circa {samples} campioni &mdash; in salita all&rsquo;inizio di una
+      parte e in discesa alla sua fine, così una giunzione non può fare clic. La ricevono
+      solo i bordi che sono davvero tagli: un bordo proprio all&rsquo;inizio o alla fine
+      della registrazione viene lasciato stare, il che lascia qui {n} bordi sfumati.</span>
+    <span data-phrase="export.nothing">Non c&rsquo;è niente da tenere. Segna una parte, o torna a &laquo;Tienile&raquo;.</span>
+    <span data-phrase="step.starting">Avvio&hellip;</span>
+    <span data-phrase="trim.copying">Copia della parte {done} di {total}&hellip;</span>
+    <span data-phrase="step.writing">Scrittura del file&hellip;</span>
+    <span data-phrase="trim.nothing">Non c&rsquo;è niente di segnato da tenere.</span>
+    <span data-phrase="result.wav">WAV, {depth}</span>
+    <span data-phrase="result.took">{seconds} s</span>
+    <span data-phrase="export.failed">Qualcosa è andato storto mentre si tagliava l&rsquo;audio.</span>
+    <span data-phrase="wav.nochannels">un WAV ha bisogno di almeno un canale</span>
+    <span data-phrase="wav.uneven">i canali hanno lunghezze diverse</span>
+    <span data-phrase="wav.toobig">Verrebbe fuori un WAV di più di 4 GB, che il formato non sa descrivere. Prova a 16
+      bit invece che a 32 in virgola mobile, o con una sezione più corta.</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="net.clean">Il tuo audio non è andato da nessuna parte.
       {total} file caricati. {platform}</span>
     <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo

@@ -180,6 +180,17 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="audio.empty">Bu dosya boş.</span>
+    <span data-phrase="audio.nodecode">Bu tarayıcı o dosyadan hiç ses çıkaramadı. Ya biçim onun çözemediği bir biçim, ya da
+      dosyada hiç ses parçası yok. MP3, WAV, FLAC, M4A, MP4, MOV, WebM ve Ogg hepsi
+      çalışır; AVI, WMA ve MKV dosyalarının çoğu çalışmaz.</span>
+    <span data-phrase="audio.nosound">O dosyada ses yok &mdash; çözümlemesi hiçbir şey vermedi.</span>
+    <span data-phrase="read.failed">Bu dosya okunamadı: {why}</span>
+    <span data-phrase="wav.nochannels">bir WAV en az bir kanal ister</span>
+    <span data-phrase="wav.uneven">kanalların uzunlukları farklı</span>
+    <span data-phrase="wav.toobig">Bu, 4 GB&rsquo;den büyük bir WAV yapardı ve biçim bunu tarif edemez. 32 bit kayan
+      nokta yerine 16 biti ya da daha kısa bir bölümü deneyin.</span>
+    <span data-phrase="edit.failed">Ses düzenlenirken bir şeyler ters gitti.</span>
     <span data-phrase="net.clean">ses kaydınız hiçbir yere gitmedi. {total}
       dosya yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

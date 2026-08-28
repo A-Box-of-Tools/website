@@ -168,6 +168,14 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="audio.empty">そのファイルは空です。</span>
+    <span data-phrase="audio.nodecode">このブラウザーはそのファイルから音を取り出せませんでした。デコードできない形式か、そもそも音声トラックが入っていないかのどちらかです。MP3、WAV、FLAC、M4A、MP4、MOV、WebM、Oggはいずれも読めます。AVI、WMA、そしてほとんどのMKVは読めません。</span>
+    <span data-phrase="audio.nosound">そのファイルに音は入っていません。デコードしても何も出てきませんでした。</span>
+    <span data-phrase="read.failed">そのファイルは読み込めませんでした: {why}</span>
+    <span data-phrase="wav.nochannels">WAVには少なくとも1チャンネル必要です</span>
+    <span data-phrase="wav.uneven">チャンネルの長さが揃っていません</span>
+    <span data-phrase="wav.toobig">それでは4 GBを超えるWAVになり、この形式では表現できません。32ビット浮動小数点ではなく16ビットにするか、もっと短い範囲にしてください。</span>
+    <span data-phrase="edit.failed">音を編集している途中で問題が起きました。</span>
     <span data-phrase="net.clean">音声はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルは渡っていません。</span>

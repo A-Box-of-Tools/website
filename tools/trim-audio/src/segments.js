@@ -178,8 +178,7 @@ export function readTimestamps(text) {
   }
 
   if (!segments.length) {
-    throw new Error('No segments could be read from that file. Each line after the '
-      + 'first should be a start and an end, separated by a comma.');
+    throw new Error('marks.unreadable');
   }
 
   return { format, name, segments, skipped };
