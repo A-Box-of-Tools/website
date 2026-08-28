@@ -72,7 +72,8 @@ BASELINE = {
     'gif-maker': 22,
     'grab-frame': 22,
     'hash-checksum': 10,
-    'heic-to-jpg': 35,
+    # A CSS class name and the two halves of one internal state name.
+    'heic-to-jpg': 3,
     # A filename template, a dimension pair, a CSS percentage, a phrase key, the
     # note written into a padded JPEG, and the eight published citations.
     'id-photo': 13,

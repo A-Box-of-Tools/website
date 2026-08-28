@@ -126,6 +126,81 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">bu bir AVIF, HEIC değil. Güncel her tarayıcı zaten açıyor, dolayısıyla burada ona
+      yapılacak bir şey yok.</span>
+    <span data-phrase="refuse.jpeg">bu zaten bir JPEG.</span>
+    <span data-phrase="refuse.png">bu bir PNG, ki o da zaten her yerde açılıyor.</span>
+    <span data-phrase="refuse.other">bu bir HEIC değil. {name} her neyse, ilk baytları bir HEIF kabı değil ve ad da bir
+      kanıt sayılmaz.</span>
+    <span data-phrase="list.count.one">{n} fotoğraf, toplam {size}</span>
+    <span data-phrase="list.count.many">{n} fotoğraf, toplam {size}</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">{name} dosyasını listeden çıkar</span>
+    <span data-phrase="meta.none">bu dosyada fotoğraf bilgisi yok</span>
+    <span data-phrase="meta.gps">GPS koordinatları</span>
+    <span data-phrase="meta.nothing">fotoğraf bilgisi var, ama kimliğe dair bir şey yok</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG, telefondan istenseydi onun yazacağı biçimdir. Her program, her site ve her
+      yazıcı açar.</span>
+    <span data-phrase="format.png">PNG hiçbir şeyi atmaz ve böyle kaydedilen bir fotoğraf genellikle JPEG&rsquo;in beş
+      ila on katı olur. Ekran görüntüsü ya da şema için doğru, tatil fotoğrafı için yanlış
+      seçimdir.</span>
+    <span data-phrase="format.webp">WebP aynı kalitede JPEG&rsquo;ten küçüktür ve 2020&rsquo;den bu yana çıkan her
+      tarayıcıda açılır &mdash; ama her masaüstü programında değil; birine göndermeden
+      önce kontrol edilecek şey de budur.</span>
+    <span data-phrase="exif.dropped">Tarih, kamera ve konum dışarıda kalır.</span>
+    <span data-phrase="exif.kept">Tarih, kamera ve konum kopyalanır; döndürme etiketi düzeltilir, çünkü resmin kendisi
+      zaten doğru yöne çevrilmiştir.</span>
+    <span data-phrase="exif.cannot">Fotoğraf bilgileri gelemez: onları koyacak standart bir yeri olan ve kanvasın
+      yazabildiği tek biçim JPEG&rsquo;tir, dolayısıyla bir {format} dosyası yalnızca
+      resimle çıkar.</span>
+    <span data-phrase="format.file">dosya</span>
+    <span data-phrase="format.new">yeni biçim</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; bu tarayıcı desteklemiyor</span>
+    <span data-phrase="step.waiting">çözücü bekleniyor</span>
+    <span data-phrase="step.reading">okunuyor</span>
+    <span data-phrase="step.decoding">çözülüyor</span>
+    <span data-phrase="step.writing.picture">{total} resimden {index}. yazılıyor</span>
+    <span data-phrase="step.writing.file">{format} yazılıyor</span>
+    <span data-phrase="progress.line">{total} içinden {index}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">çözücü yüklenmedi. Bu siteden sunuluyor, yani ya engellenmiş bir istek ya da kötü
+      geçmiş bir ilk ziyaret söz konusu &mdash; sayfayı yeniden yüklemek genelde çözer.</span>
+    <span data-phrase="heif.nostart">çözücü yüklendi ama başlamadı.</span>
+    <span data-phrase="heif.noread">çözücü bu dosyayı okuyamadı ({detail}).</span>
+    <span data-phrase="heif.nopicture">bu dosyada çözücünün bulabildiği bir resim yok.</span>
+    <span data-phrase="heif.nosize">bu dosyadaki resmin çözücünün kullanabileceği bir boyutu yok.</span>
+    <span data-phrase="heif.nodraw">çözücü dosyayı okudu ama çizemedi.</span>
+    <span data-phrase="codec.nowrite">bu tarayıcı {format} yazmak istemedi.</span>
+    <span data-phrase="n.heic.one">{n} HEIC dosyası</span>
+    <span data-phrase="n.heic.many">{n} HEIC dosyası</span>
+    <span data-phrase="n.picture.one">{n} {format} resmi</span>
+    <span data-phrase="n.picture.many">{n} {format} resmi</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
+    <span data-phrase="result.alt">Dönüştürülen resim: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">İndir</span>
+    <span data-phrase="out.format">{size} boyutunda {format}</span>
+    <span data-phrase="out.quality">kalite {n}</span>
+    <span data-phrase="out.part">dosyadaki {total} resimden {n}.</span>
+    <span data-phrase="out.exif.kept">fotoğraf bilgileri korundu</span>
+    <span data-phrase="out.exif.keptgps">fotoğraf bilgileri korundu, GPS koordinatları dâhil</span>
+    <span data-phrase="out.exif.none">fotoğraf bilgisi yazılmadı</span>
+    <span data-phrase="out.exif.toolarge">fotoğraf bilgileri bir JPEG kesimi için fazla büyüktü ve dışarıda bırakıldı</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">aşağı yukarı aynı boyut</span>
+    <span data-phrase="size.smaller">%{n} daha küçük</span>
+    <span data-phrase="size.larger">%{n} daha büyük</span>
+    <span data-phrase="size.bytes">{n} bayt</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">HEIC çözücüsü, ilk kullandığınızda bu siteden yüklenir: yaklaşık 1,4 MB, bir kez,
+      sonra önbellekte kalır.</span>
+    <span data-phrase="engine.loading">HEIC çözücüsü bu siteden yükleniyor: yaklaşık 1,4 MB, bir kereye mahsus.</span>
+    <span data-phrase="engine.ready">Çözücü hazır &mdash; bu siteden sunuldu ve önbelleğe alındı; bir dahaki sefere de,
+      ağ fişten çekiliyken de burada olacak.</span>
+    <span data-phrase="engine.failed">Çözücü başlayamadı: {why}</span>
     <span data-phrase="progress.stopped">{total} işten {done} tanesinden sonra durduruldu. Bitenler aşağıda.</span>
     <span data-phrase="progress.stopped.none">İlki bitmeden durduruldu.</span>
     <span data-phrase="offline.ready">hazır &mdash; çözücü de önbelleğe alındı,

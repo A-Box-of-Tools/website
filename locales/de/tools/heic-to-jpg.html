@@ -121,6 +121,82 @@
     shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">das ist ein AVIF, kein HEIC. Jeder aktuelle Browser öffnet eines bereits, hier ist
+      also nichts damit zu tun.</span>
+    <span data-phrase="refuse.jpeg">das ist bereits ein JPEG.</span>
+    <span data-phrase="refuse.png">das ist ein PNG, das ohnehin überall aufgeht.</span>
+    <span data-phrase="refuse.other">das ist kein HEIC. Was {name} auch sein mag, die ersten Bytes davon sind kein
+      HEIF-Container, und der Name ist auch kein Beleg.</span>
+    <span data-phrase="list.count.one">{n} Foto, insgesamt {size}</span>
+    <span data-phrase="list.count.many">{n} Fotos, insgesamt {size}</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">{name} von der Liste nehmen</span>
+    <span data-phrase="meta.none">keine Fotodaten in dieser Datei</span>
+    <span data-phrase="meta.gps">GPS-Koordinaten</span>
+    <span data-phrase="meta.nothing">Fotodaten, aber nichts Identifizierendes</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG ist das, was das Handy geschrieben hätte, wenn man es darum gebeten hätte.
+      Jedes Programm, jede Website und jeder Drucker öffnet eines.</span>
+    <span data-phrase="format.png">PNG wirft nichts weg, und ein als PNG gespeichertes Foto ist meist fünf bis zehn Mal
+      so groß wie das JPEG. Für einen Screenshot oder eine Zeichnung ist es richtig, für
+      einen Urlaub falsch.</span>
+    <span data-phrase="format.webp">WebP ist bei gleicher Qualität kleiner als JPEG und wird von jedem seit 2020
+      erschienenen Browser geöffnet &mdash; aber nicht von jedem Desktop-Programm, und
+      genau das ist zu prüfen, bevor man jemandem eines schickt.</span>
+    <span data-phrase="exif.dropped">Datum, Kamera und Ort bleiben weg.</span>
+    <span data-phrase="exif.kept">Datum, Kamera und Ort werden übernommen, mit korrigiertem Drehungs-Tag, weil das
+      Bild selbst schon richtig herum gedreht wurde.</span>
+    <span data-phrase="exif.cannot">Die Fotodaten können nicht mit: nur JPEG hat einen genormten Platz dafür, den das
+      Canvas beschreiben kann, also kommt eine {format}-Datei mit dem Bild und sonst
+      nichts heraus.</span>
+    <span data-phrase="format.file">Datei</span>
+    <span data-phrase="format.new">das neue Format</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; von diesem Browser nicht unterstützt</span>
+    <span data-phrase="step.waiting">warte auf den Dekoder</span>
+    <span data-phrase="step.reading">lese</span>
+    <span data-phrase="step.decoding">dekodiere</span>
+    <span data-phrase="step.writing.picture">schreibe Bild {index} von {total}</span>
+    <span data-phrase="step.writing.file">schreibe das {format}</span>
+    <span data-phrase="progress.line">{index} von {total}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">der Dekoder wurde nicht geladen. Er wird von dieser Seite ausgeliefert, das ist also
+      entweder eine blockierte Anfrage oder ein misslungener erster Besuch &mdash; ein
+      Neuladen hilft meistens.</span>
+    <span data-phrase="heif.nostart">der Dekoder wurde geladen, startete aber nicht.</span>
+    <span data-phrase="heif.noread">der Dekoder konnte diese Datei nicht lesen ({detail}).</span>
+    <span data-phrase="heif.nopicture">in dieser Datei ist kein Bild, das der Dekoder finden konnte.</span>
+    <span data-phrase="heif.nosize">das Bild in dieser Datei hat keine Größe, die der Dekoder verwenden konnte.</span>
+    <span data-phrase="heif.nodraw">der Dekoder hat die Datei gelesen, konnte sie aber nicht zeichnen.</span>
+    <span data-phrase="codec.nowrite">dieser Browser wollte kein {format} schreiben.</span>
+    <span data-phrase="n.heic.one">{n} HEIC-Datei</span>
+    <span data-phrase="n.heic.many">{n} HEIC-Dateien</span>
+    <span data-phrase="n.picture.one">{n} {format}-Bild</span>
+    <span data-phrase="n.picture.many">{n} {format}-Bilder</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
+    <span data-phrase="result.alt">Das umgewandelte Bild: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">Herunterladen</span>
+    <span data-phrase="out.format">{format} mit {size}</span>
+    <span data-phrase="out.quality">Qualität {n}</span>
+    <span data-phrase="out.part">Bild {n} von {total} in der Datei</span>
+    <span data-phrase="out.exif.kept">Fotodaten übernommen</span>
+    <span data-phrase="out.exif.keptgps">Fotodaten übernommen, GPS-Koordinaten eingeschlossen</span>
+    <span data-phrase="out.exif.none">keine Fotodaten geschrieben</span>
+    <span data-phrase="out.exif.toolarge">die Fotodaten waren für ein JPEG-Segment zu groß und blieben weg</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">etwa gleich groß</span>
+    <span data-phrase="size.smaller">{n}% kleiner</span>
+    <span data-phrase="size.larger">{n}% größer</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">Der HEIC-Dekoder wird beim ersten Gebrauch von dieser Seite geladen: etwa 1,4 MB,
+      einmal, danach im Cache.</span>
+    <span data-phrase="engine.loading">Der HEIC-Dekoder wird von dieser Seite geladen: etwa 1,4 MB, einmalig.</span>
+    <span data-phrase="engine.ready">Dekoder bereit &mdash; von dieser Seite ausgeliefert und zwischengespeichert, also
+      beim nächsten Mal und auch ohne Netz da.</span>
+    <span data-phrase="engine.failed">Der Dekoder konnte nicht starten: {why}</span>
     <span data-phrase="progress.stopped">Nach {done} von {total} abgebrochen. Was fertig wurde, steht unten.</span>
     <span data-phrase="progress.stopped.none">Abgebrochen, bevor das erste fertig war.</span>
     <span data-phrase="offline.ready">bereit &mdash; der Decoder ist mit

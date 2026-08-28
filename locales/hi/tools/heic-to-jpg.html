@@ -119,6 +119,80 @@
     कुंजी पर भारी पड़ती है - shared/js/phrases.js देखिए।
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">यह AVIF है, HEIC नहीं। आजकल का हर ब्राउज़र इसे पहले ही खोल लेता है, इसलिए यहाँ इसके
+      साथ कुछ करने को है ही नहीं।</span>
+    <span data-phrase="refuse.jpeg">यह पहले से JPEG है।</span>
+    <span data-phrase="refuse.png">यह PNG है, जो पहले से ही हर जगह खुल जाता है।</span>
+    <span data-phrase="refuse.other">यह HEIC नहीं है। {name} जो भी हो, उसके पहले बाइट HEIF कंटेनर नहीं हैं, और नाम भी कोई
+      सबूत नहीं है।</span>
+    <span data-phrase="list.count.one">{n} फ़ोटो, कुल {size}</span>
+    <span data-phrase="list.count.many">{n} फ़ोटो, कुल {size}</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">{name} को सूची से हटाइए</span>
+    <span data-phrase="meta.none">इस फ़ाइल में फ़ोटो का कोई विवरण नहीं</span>
+    <span data-phrase="meta.gps">GPS निर्देशांक</span>
+    <span data-phrase="meta.nothing">फ़ोटो का विवरण है, पर पहचान बताने वाला कुछ नहीं</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG वही है जो फ़ोन ने लिखा होता, अगर उससे कहा गया होता। इसे हर प्रोग्राम, हर
+      वेबसाइट और हर प्रिंटर खोल लेता है।</span>
+    <span data-phrase="format.png">PNG कुछ भी नहीं फेंकता, और इसमें सहेजी गई फ़ोटो आम तौर पर JPEG से पाँच से दस गुना
+      बड़ी होती है। स्क्रीनशॉट या आरेख के लिए यह सही चुनाव है और छुट्टियों की तस्वीरों के
+      लिए ग़लत।</span>
+    <span data-phrase="format.webp">WebP उसी गुणवत्ता पर JPEG से छोटा होता है और 2020 के बाद आया हर ब्राउज़र इसे खोल
+      लेता है &mdash; पर हर डेस्कटॉप प्रोग्राम नहीं, और किसी को भेजने से पहले यही जाँचने
+      की बात है।</span>
+    <span data-phrase="exif.dropped">तारीख़, कैमरा और स्थान छोड़ दिए जाते हैं।</span>
+    <span data-phrase="exif.kept">तारीख़, कैमरा और स्थान साथ चले जाते हैं, घुमाव वाले टैग को सुधारकर, क्योंकि तस्वीर
+      ख़ुद पहले ही सीधी कर दी गई है।</span>
+    <span data-phrase="exif.cannot">फ़ोटो का विवरण साथ नहीं आ सकता: उसे रखने की मानक जगह सिर्फ़ JPEG में है जिसे कैनवस
+      लिख सकता है, इसलिए {format} फ़ाइल सिर्फ़ तस्वीर लेकर निकलती है और कुछ नहीं।</span>
+    <span data-phrase="format.file">फ़ाइल</span>
+    <span data-phrase="format.new">नया प्रारूप</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; इस ब्राउज़र में समर्थित नहीं</span>
+    <span data-phrase="step.waiting">डिकोडर का इंतज़ार</span>
+    <span data-phrase="step.reading">पढ़ा जा रहा है</span>
+    <span data-phrase="step.decoding">डिकोड हो रहा है</span>
+    <span data-phrase="step.writing.picture">{total} में से {index} तस्वीर लिखी जा रही है</span>
+    <span data-phrase="step.writing.file">{format} लिखा जा रहा है</span>
+    <span data-phrase="progress.line">{total} में से {index}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">डिकोडर लोड नहीं हुआ। वह इसी साइट से आता है, इसलिए या तो अनुरोध रोका गया है या पहली
+      बार का लोड बिगड़ा है &mdash; पेज दोबारा लोड करने से आम तौर पर ठीक हो जाता है।</span>
+    <span data-phrase="heif.nostart">डिकोडर लोड तो हुआ पर चला नहीं।</span>
+    <span data-phrase="heif.noread">डिकोडर इस फ़ाइल को पढ़ नहीं सका ({detail})।</span>
+    <span data-phrase="heif.nopicture">इस फ़ाइल में ऐसी कोई तस्वीर नहीं है जिसे डिकोडर ढूँढ़ सका हो।</span>
+    <span data-phrase="heif.nosize">इस फ़ाइल की तस्वीर का ऐसा कोई आकार नहीं है जिसे डिकोडर इस्तेमाल कर पाता।</span>
+    <span data-phrase="heif.nodraw">डिकोडर ने फ़ाइल पढ़ ली पर उसे बना नहीं सका।</span>
+    <span data-phrase="codec.nowrite">इस ब्राउज़र ने {format} लिखने से मना कर दिया।</span>
+    <span data-phrase="n.heic.one">{n} HEIC फ़ाइल</span>
+    <span data-phrase="n.heic.many">{n} HEIC फ़ाइलें</span>
+    <span data-phrase="n.picture.one">{n} {format} तस्वीर</span>
+    <span data-phrase="n.picture.many">{n} {format} तस्वीरें</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}। {before} &rarr; {after}, {change}।</span>
+    <span data-phrase="result.alt">बदली हुई तस्वीर: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">डाउनलोड</span>
+    <span data-phrase="out.format">{size} पर {format}</span>
+    <span data-phrase="out.quality">गुणवत्ता {n}</span>
+    <span data-phrase="out.part">फ़ाइल में {total} में से {n} तस्वीर</span>
+    <span data-phrase="out.exif.kept">फ़ोटो का विवरण रखा गया</span>
+    <span data-phrase="out.exif.keptgps">फ़ोटो का विवरण रखा गया, GPS निर्देशांक भी</span>
+    <span data-phrase="out.exif.none">फ़ोटो का कोई विवरण नहीं लिखा गया</span>
+    <span data-phrase="out.exif.toolarge">फ़ोटो का विवरण JPEG खंड के लिए बहुत बड़ा था और छोड़ दिया गया</span>
+    <span data-phrase="out.line">{list}।</span>
+    <span data-phrase="size.same">क़रीब उतना ही बड़ा</span>
+    <span data-phrase="size.smaller">{n}% छोटा</span>
+    <span data-phrase="size.larger">{n}% बड़ा</span>
+    <span data-phrase="size.bytes">{n} बाइट</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">HEIC डिकोडर पहली बार इस्तेमाल पर इसी साइट से लोड होता है: क़रीब 1.4 MB, एक बार, फिर
+      कैश में।</span>
+    <span data-phrase="engine.loading">HEIC डिकोडर इसी साइट से लोड हो रहा है: क़रीब 1.4 MB, एक ही बार।</span>
+    <span data-phrase="engine.ready">डिकोडर तैयार &mdash; इसी साइट से आया और कैश में है, इसलिए अगली बार भी यहीं रहेगा,
+      नेटवर्क बंद होने पर भी।</span>
+    <span data-phrase="engine.failed">डिकोडर चालू नहीं हो सका: {why}</span>
     <span data-phrase="progress.stopped">{total} में से {done} के बाद रोक दिया गया। जो पूरा हुआ वह नीचे है।</span>
     <span data-phrase="progress.stopped.none">पहला पूरा होने से पहले ही रोक दिया गया।</span>
     <span data-phrase="offline.ready">तैयार &mdash; डिकोडर भी कैश में है, इसलिए

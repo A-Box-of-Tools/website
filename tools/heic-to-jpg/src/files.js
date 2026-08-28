@@ -4,10 +4,10 @@ import { FORMATS } from './codecs.js';
 
 /** KB and MB here mean 1024 and 1024*1024, which is what a file manager shows
  *  on every platform except macOS, and what people mean by "about 3 MB". */
-export function bytes(n) {
-  if (n < 1024) return `${n} bytes`;
-  if (n < 1024 * 1024) return `${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
-  return `${(n / (1024 * 1024)).toFixed(2)} MB`;
+export function bytes(n, t) {
+  if (n < 1024) return t('size.bytes', { n });
+  if (n < 1024 * 1024) return t('size.kb', { n: (n / 1024).toFixed(n < 10240 ? 1 : 0) });
+  return t('size.mb', { n: (n / (1024 * 1024)).toFixed(2) });
 }
 
 /** "4032 × 3024", with a real multiplication sign. */
@@ -73,11 +73,13 @@ export function uniqueNames(names) {
 }
 
 /** "40% smaller", or "3% larger" when a conversion went the other way. */
-export function change(before, after) {
+export function change(before, after, t) {
   if (before === 0) return '';
   const delta = Math.round(((before - after) / before) * 100);
-  if (delta === 0) return 'about the same size';
-  return delta > 0 ? `${delta}% smaller` : `${-delta}% larger`;
+  if (delta === 0) return t('size.same');
+  // The per-cent sign goes inside the sentence: Turkish writes it in front
+  // of the number.
+  return t(delta > 0 ? 'size.smaller' : 'size.larger', { n: Math.abs(delta) });
 }
 
 /**
@@ -87,12 +89,17 @@ export function change(before, after) {
  * first thing said, because it is the only part somebody might act on.
  *
  * @param {{present: boolean, camera: string, taken: string, gps: boolean}} exif
+ * @param {(key: string, values?: object) => string} t  the caller's phrase()
  */
-export function metadataText(exif) {
-  if (!exif.present) return 'no photo details in this file';
+export function metadataText(exif, t) {
+  if (!exif.present) return t('meta.none');
   const parts = [];
-  if (exif.gps) parts.push('GPS coordinates');
+  if (exif.gps) parts.push(t('meta.gps'));
   if (exif.taken) parts.push(exif.taken);
   if (exif.camera) parts.push(exif.camera);
-  return parts.length ? parts.join(' · ') : 'photo details, but nothing identifying';
+  // The separator is a phrase as well: a middle dot with spaces round it is
+  // an English habit, and this file is copied into fifteen languages.
+  return parts.length
+    ? parts.reduce((a, b) => t('join.dot', { a, b }))
+    : t('meta.nothing');
 }

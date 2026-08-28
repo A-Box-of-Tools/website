@@ -118,6 +118,80 @@
     Uma chave definida aqui ganha da da moldura; veja shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">isto é um AVIF, não um HEIC. Todo navegador atual já abre um, então não há nada a
+      fazer com ele aqui.</span>
+    <span data-phrase="refuse.jpeg">isto já é um JPEG.</span>
+    <span data-phrase="refuse.png">isto é um PNG, que já abre em todo lugar.</span>
+    <span data-phrase="refuse.other">isto não é um HEIC. Seja lá o que {name} for, os primeiros bytes dele não são um
+      contêiner HEIF, e o nome também não prova nada.</span>
+    <span data-phrase="list.count.one">{n} foto, {size} no total</span>
+    <span data-phrase="list.count.many">{n} fotos, {size} no total</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">Tirar {name} da lista</span>
+    <span data-phrase="meta.none">sem dados da foto neste arquivo</span>
+    <span data-phrase="meta.gps">coordenadas GPS</span>
+    <span data-phrase="meta.nothing">dados da foto, mas nada que identifique</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG é o que o celular teria escrito se tivessem pedido. Todo programa, todo site e
+      toda impressora abrem um.</span>
+    <span data-phrase="format.png">PNG não joga nada fora, e uma foto salva assim costuma ficar de cinco a dez vezes o
+      tamanho do JPEG. É a escolha certa para uma captura de tela ou um diagrama e a
+      errada para umas férias.</span>
+    <span data-phrase="format.webp">WebP é menor que JPEG na mesma qualidade e abre em todo navegador lançado desde 2020
+      &mdash; mas não em todo programa de desktop, e é isso que vale conferir antes de
+      mandar um para alguém.</span>
+    <span data-phrase="exif.dropped">A data, a câmera e o local ficam de fora.</span>
+    <span data-phrase="exif.kept">A data, a câmera e o local são copiados, com a etiqueta de rotação corrigida porque
+      a imagem em si já foi virada para o lado certo.</span>
+    <span data-phrase="exif.cannot">Os dados da foto não podem vir junto: só o JPEG tem um lugar padrão para eles que o
+      canvas saiba escrever, então um arquivo {format} sai com a imagem e nada mais.</span>
+    <span data-phrase="format.file">arquivo</span>
+    <span data-phrase="format.new">o formato novo</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; sem suporte neste navegador</span>
+    <span data-phrase="step.waiting">esperando o decodificador</span>
+    <span data-phrase="step.reading">lendo</span>
+    <span data-phrase="step.decoding">decodificando</span>
+    <span data-phrase="step.writing.picture">escrevendo a imagem {index} de {total}</span>
+    <span data-phrase="step.writing.file">escrevendo o {format}</span>
+    <span data-phrase="progress.line">{index} de {total}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">o decodificador não carregou. Ele vem deste site, então ou é uma requisição
+      bloqueada ou uma primeira visita que deu errado &mdash; recarregar costuma resolver.</span>
+    <span data-phrase="heif.nostart">o decodificador carregou mas não iniciou.</span>
+    <span data-phrase="heif.noread">o decodificador não conseguiu ler este arquivo ({detail}).</span>
+    <span data-phrase="heif.nopicture">não há neste arquivo nenhuma imagem que o decodificador tenha conseguido achar.</span>
+    <span data-phrase="heif.nosize">a imagem deste arquivo não tem um tamanho que o decodificador pudesse usar.</span>
+    <span data-phrase="heif.nodraw">o decodificador leu o arquivo mas não conseguiu desenhá-lo.</span>
+    <span data-phrase="codec.nowrite">este navegador não quis escrever {format}.</span>
+    <span data-phrase="n.heic.one">{n} arquivo HEIC</span>
+    <span data-phrase="n.heic.many">{n} arquivos HEIC</span>
+    <span data-phrase="n.picture.one">{n} imagem {format}</span>
+    <span data-phrase="n.picture.many">{n} imagens {format}</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
+    <span data-phrase="result.alt">A imagem convertida: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">Baixar</span>
+    <span data-phrase="out.format">{format} em {size}</span>
+    <span data-phrase="out.quality">qualidade {n}</span>
+    <span data-phrase="out.part">imagem {n} de {total} no arquivo</span>
+    <span data-phrase="out.exif.kept">dados da foto mantidos</span>
+    <span data-phrase="out.exif.keptgps">dados da foto mantidos, coordenadas GPS incluídas</span>
+    <span data-phrase="out.exif.none">nenhum dado da foto escrito</span>
+    <span data-phrase="out.exif.toolarge">os dados da foto eram grandes demais para um segmento JPEG e ficaram de fora</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">mais ou menos o mesmo tamanho</span>
+    <span data-phrase="size.smaller">{n}% menor</span>
+    <span data-phrase="size.larger">{n}% maior</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">O decodificador HEIC é baixado deste site na primeira vez que você usa: cerca de 1,4
+      MB, uma vez, e depois fica em cache.</span>
+    <span data-phrase="engine.loading">Baixando o decodificador HEIC deste site: cerca de 1,4 MB, uma vez só.</span>
+    <span data-phrase="engine.ready">Decodificador pronto &mdash; vindo deste site e guardado em cache, então está aqui
+      da próxima vez e também com a rede desligada.</span>
+    <span data-phrase="engine.failed">O decodificador não conseguiu iniciar: {why}</span>
     <span data-phrase="progress.stopped">Parado depois de {done} de {total}. O que ficou pronto está abaixo.</span>
     <span data-phrase="progress.stopped.none">Parado antes de o primeiro ficar pronto.</span>
     <span data-phrase="offline.ready">pronto &mdash; o decodificador também

@@ -117,6 +117,71 @@
     이긴다 - shared/js/phrases.js 참고.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">이것은 HEIC가 아니라 AVIF입니다. 요즘 브라우저는 모두 이미 열 수 있으니 여기서 해 줄 일이 없습니다.</span>
+    <span data-phrase="refuse.jpeg">이것은 이미 JPEG입니다.</span>
+    <span data-phrase="refuse.png">이것은 PNG이고, 이미 어디서나 열립니다.</span>
+    <span data-phrase="refuse.other">이것은 HEIC가 아닙니다. {name}이(가) 무엇이든 그 앞부분 바이트는 HEIF 컨테이너가 아니고, 이름도 증거가 되지 않습니다.</span>
+    <span data-phrase="list.count.one">사진 {n}장, 모두 {size}</span>
+    <span data-phrase="list.count.many">사진 {n}장, 모두 {size}</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">{name}을(를) 목록에서 빼기</span>
+    <span data-phrase="meta.none">이 파일에는 사진 정보가 없습니다</span>
+    <span data-phrase="meta.gps">GPS 좌표</span>
+    <span data-phrase="meta.nothing">사진 정보는 있지만 신원을 알 만한 것은 없습니다</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG는 부탁했더라면 휴대폰이 썼을 형식입니다. 어떤 프로그램도, 어떤 웹사이트도, 어떤 프린터도 엽니다.</span>
+    <span data-phrase="format.png">PNG는 아무것도 버리지 않고, 사진을 이것으로 저장하면 보통 JPEG의 다섯 배에서 열 배가 됩니다. 화면 갈무리나 도표에는 맞고 휴가 사진에는 맞지
+      않는 선택입니다.</span>
+    <span data-phrase="format.webp">WebP는 같은 품질에서 JPEG보다 작고 2020년 이후에 나온 브라우저라면 모두 엽니다 &mdash; 다만 데스크톱 프로그램이 모두 그런 것은
+      아니어서, 누군가에게 보내기 전에 확인할 것이 바로 그 점입니다.</span>
+    <span data-phrase="exif.dropped">날짜와 카메라와 위치는 빠집니다.</span>
+    <span data-phrase="exif.kept">날짜와 카메라와 위치가 그대로 옮겨 가고, 회전 태그는 바로잡힙니다. 사진 자체가 이미 바른 방향으로 돌려졌기 때문입니다.</span>
+    <span data-phrase="exif.cannot">사진 정보는 함께 갈 수 없습니다. 캔버스가 쓸 수 있는 표준 자리를 가진 것은 JPEG뿐이라서, {format} 파일은 사진만 담고 나옵니다.</span>
+    <span data-phrase="format.file">파일</span>
+    <span data-phrase="format.new">새 형식</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; 이 브라우저는 지원하지 않습니다</span>
+    <span data-phrase="step.waiting">디코더를 기다리는 중</span>
+    <span data-phrase="step.reading">읽는 중</span>
+    <span data-phrase="step.decoding">디코딩 중</span>
+    <span data-phrase="step.writing.picture">{total}장 중 {index}번째 사진을 쓰는 중</span>
+    <span data-phrase="step.writing.file">{format}을(를) 쓰는 중</span>
+    <span data-phrase="progress.line">{total}개 중 {index}번째: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">디코더가 불러와지지 않았습니다. 이 사이트에서 내려 주는 것이므로 요청이 막혔거나 첫 방문이 잘못된 것입니다 &mdash; 새로 고치면 대개
+      해결됩니다.</span>
+    <span data-phrase="heif.nostart">디코더는 불러와졌지만 시작하지 않았습니다.</span>
+    <span data-phrase="heif.noread">디코더가 이 파일을 읽지 못했습니다({detail}).</span>
+    <span data-phrase="heif.nopicture">이 파일에는 디코더가 찾을 수 있는 사진이 없습니다.</span>
+    <span data-phrase="heif.nosize">이 파일의 사진에는 디코더가 쓸 수 있는 크기가 없습니다.</span>
+    <span data-phrase="heif.nodraw">디코더가 파일은 읽었지만 그리지는 못했습니다.</span>
+    <span data-phrase="codec.nowrite">이 브라우저가 {format}을(를) 써 주지 않았습니다.</span>
+    <span data-phrase="n.heic.one">HEIC 파일 {n}개</span>
+    <span data-phrase="n.heic.many">HEIC 파일 {n}개</span>
+    <span data-phrase="n.picture.one">{format} 사진 {n}장</span>
+    <span data-phrase="n.picture.many">{format} 사진 {n}장</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
+    <span data-phrase="result.alt">변환된 사진: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">내려받기</span>
+    <span data-phrase="out.format">{size} 크기의 {format}</span>
+    <span data-phrase="out.quality">품질 {n}</span>
+    <span data-phrase="out.part">파일 안의 {total}장 중 {n}번째 사진</span>
+    <span data-phrase="out.exif.kept">사진 정보 유지</span>
+    <span data-phrase="out.exif.keptgps">사진 정보 유지, GPS 좌표 포함</span>
+    <span data-phrase="out.exif.none">사진 정보를 쓰지 않음</span>
+    <span data-phrase="out.exif.toolarge">사진 정보가 JPEG 구획에 넣기에 너무 커서 빠졌습니다</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">거의 같은 크기</span>
+    <span data-phrase="size.smaller">{n}% 작아짐</span>
+    <span data-phrase="size.larger">{n}% 커짐</span>
+    <span data-phrase="size.bytes">{n}바이트</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">HEIC 디코더는 처음 쓸 때 이 사이트에서 내려옵니다. 약 1.4 MB, 한 번뿐이고 그다음부터는 캐시에 남습니다.</span>
+    <span data-phrase="engine.loading">HEIC 디코더를 이 사이트에서 내려받는 중: 약 1.4 MB, 한 번뿐입니다.</span>
+    <span data-phrase="engine.ready">디코더 준비 완료 &mdash; 이 사이트에서 내려온 뒤 캐시에 남아 다음에도, 네트워크를 뽑아 두어도 여기 있습니다.</span>
+    <span data-phrase="engine.failed">디코더를 시작하지 못했습니다: {why}</span>
     <span data-phrase="progress.stopped">{total}개 중 {done}개까지 하고 멈췄습니다. 끝난 것은 아래에 있습니다.</span>
     <span data-phrase="progress.stopped.none">첫 번째가 끝나기 전에 멈췄습니다.</span>
     <span data-phrase="offline.ready">준비됨 &mdash; 디코더까지 함께 저장되므로
