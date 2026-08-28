@@ -258,3 +258,62 @@ renders but `main.js` never runs. Behaviour that only a browser exercises —
 decoding, canvases, the service worker, `phrase()` lookups — is not covered by
 either test suite, so a code change to a tool is not done until the page has
 done its job once in front of you.
+
+## Photograph it, when a visitor could see the change
+
+A pull request that changes anything on screen carries before and after
+pictures — CLAUDE.md says so under "Conventions" and does not say how. This is
+how. `screenshots/capture.mjs` is not it: that is the guides' harness, it is
+recipe-driven, and it writes into a guide's `screens/` folder. For an arbitrary
+built page use the script beside this file:
+
+```bash
+node .claude/skills/tool-development/shoot.mjs <url> <out.png> [selector] [w] [h]
+```
+
+**Take the "before" shot first.** Once the change is applied there is nothing
+left to photograph short of building the base commit again. Build, serve, shoot,
+then start editing.
+
+The order that works:
+
+1. `python build.py --only <slug> --quiet` — seconds, and the page is byte for
+   byte the one a full build writes;
+2. serve it, and **check the port is yours**. `python -m http.server 8123 -d
+   dist` and then `curl` the page. On Windows the obvious ports are often held
+   by the kernel HTTP stack: 8080 answers as PID 4 (`System`), a browser
+   pointed at it loads *something*, and a screenshot of somebody else's site is
+   not obviously wrong in the image;
+3. shoot the "before", make the change, rebuild, shoot the "after";
+4. compare the reported pixel heights. A change that adds a line and two shots
+   of identical height means the second one is stale, which is the failure the
+   script's fresh profile and random port exist to prevent — a leftover headless
+   Edge on a fixed port answers with the page it already had.
+
+The script closes the browser over the protocol and then `taskkill /T`s what is
+left, on the way out of both the success and the failure path. That is not
+belt-and-braces: `child.kill()` alone fells the trunk Node can see and leaves
+the renderers, the GPU process and the browser itself running, which is worth a
+gigabyte apiece and nineteen live browsers after a morning of shooting.
+
+**Shoot the languages most likely to break, not just English.** A frame change
+lands on all fifteen, and the failures are language-specific: `ja`, `zh` and
+`zh-TW` show a wrapped string as a visible hole mid-sentence, and `ar` is the
+only check on bidi putting a Latin fragment in the right place. `ko` and `hi`
+are worth one look each. Shoot the narrow layout too — `... 390 844` — because
+a sentence carrying two links breaks there first.
+
+**A translated page is not at the English slug.** `/ja/compress-image/` exists;
+`/ar/compress-image/` does not, because `[slugs]` renames it. Read the slug out
+of the locale rather than guessing:
+
+```bash
+python -c "import tomllib;print(tomllib.load(open('locales/ar/locale.toml','rb'))['slugs']['compress-image'])"
+```
+
+**Then hand the files over.** GitHub has no public API for the images a PR body
+embeds — the `user-attachments/assets/…` URLs come from the web uploader's own
+session endpoint, and neither `gh` nor `gh api` can reach it. So write the
+Before/After section with the filenames as visible placeholders and give the
+files to whoever is at the keyboard. Do not commit screenshots to get a raw URL;
+see the `git add -A` trap above for what stray files cost here.
