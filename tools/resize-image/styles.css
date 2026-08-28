@@ -447,7 +447,6 @@ button.file-main-wrap:focus-visible {
 
 .field input[type="range"] {
   width: 100%;
-  accent-color: var(--accent);
   cursor: pointer;
 }
 
