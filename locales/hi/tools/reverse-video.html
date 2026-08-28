@@ -94,6 +94,71 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">फ़ाइल पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="step.measuring">फ़्रेम दर नापी जा रही है&hellip;</span>
+    <span data-phrase="open.notopened">वह फ़ाइल खोली नहीं जा सकी।</span>
+    <span data-phrase="preview.none">यह ब्राउज़र इस फ़ाइल को चलाता नहीं, इसलिए पूर्वावलोकन नहीं है। उलटने का काम प्लेयर
+      से होकर नहीं जाता, इसलिए वह फिर भी हो जाएगा।</span>
+    <span data-phrase="nocodec.page">इस ब्राउज़र में वीडियो एनकोडर (WebCodecs) नहीं है, इसलिए यह उलटा वीडियो नहीं लिख
+      सकता। Chrome, Edge और Safari 16.4 या उससे नया कर सकते हैं; Firefox 133 और उससे नया
+      भी।</span>
+    <span data-phrase="nocodec.file">इस ब्राउज़र में वीडियो एनकोडर नहीं है, इसलिए यहाँ कुछ भी उलटा क्लिप नहीं लिख सकता।
+      हाल का Chrome, Edge या Safari लिख देगा।</span>
+    <span data-phrase="src.unknown">पता नहीं</span>
+    <span data-phrase="src.byplayer">ब्राउज़र के अपने प्लेयर से पढ़ा गया</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} डिग्री घुमाया हुआ</span>
+    <span data-phrase="src.audio.one">{entry}, {n} चैनल, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} चैनल, {rate} Hz</span>
+    <span data-phrase="src.audio.none">कोई नहीं</span>
+    <span data-phrase="src.audio.whatever">प्लेयर को जो मिले</span>
+    <span data-phrase="sound.off">उलटे क्लिप में आवाज़ बिलकुल नहीं होगी।</span>
+    <span data-phrase="sound.exact">डिकोड करके, नमूना-दर-नमूना उलटकर, फिर से AAC में एनकोड किया गया। वह दूसरी एनकोडिंग
+      टाली नहीं जा सकती: उलटे क्रम में बजे पैकेट उलटाव नहीं होते।</span>
+    <span data-phrase="sound.player">ब्राउज़र ने पढ़ा, नमूना-दर-नमूना उलटा गया, और फिर से AAC में एनकोड किया गया।</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} ({fromWidth} x {fromHeight} से; H.264 के पास विषम भुजा वाला
+      फ़्रेम रखने का कोई तरीक़ा नहीं है)</span>
+    <span data-phrase="frames.groups">{groups} समूहों में {n}</span>
+    <span data-phrase="frames.about">क़रीब {n}, {fps} प्रति सेकंड की दर से</span>
+    <span data-phrase="path.exact">अंत से शुरू करके समूह-दर-समूह डिकोड करके, MP4 में</span>
+    <span data-phrase="path.player">प्लेयर में उलटा क़दम-दर-क़दम चलकर, MP4 में</span>
+    <span data-phrase="step.preparing">तैयारी हो रही है&hellip;</span>
+    <span data-phrase="step.soundreading">आवाज़ पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="step.soundwriting">आवाज़ उलटी जा रही है&hellip;</span>
+    <span data-phrase="step.finishing">पूरा किया जा रहा है&hellip;</span>
+    <span data-phrase="step.frame">{total} में से {done} फ़्रेम उलटा जा रहा है ({percent}%)</span>
+    <span data-phrase="audio.descriptor">आंतरिक त्रुटि: ऑडियो का विवरण उम्मीद से बड़ा है।</span>
+    <span data-phrase="audio.nosound">इस फ़ाइल से कोई आवाज़ वापस नहीं आई।</span>
+    <span data-phrase="audio.noencode">आवाज़ डिकोड हो गई पर एनकोडर से कुछ वापस नहीं आया।</span>
+    <span data-phrase="audio.toolarge">इस फ़ाइल की आवाज़ AAC नहीं है, इसलिए उसे उलटने का मतलब होता पूरी फ़ाइल ब्राउज़र को
+      पढ़ने के लिए सौंपना &mdash; और यह फ़ाइल उसके लिए बहुत बड़ी है। वीडियो बिना आवाज़ के
+      उलटा गया है।</span>
+    <span data-phrase="audio.unreadable">इस फ़ाइल से कोई आवाज़ नहीं पढ़ी जा सकी, इसलिए उलटे वीडियो में आवाज़ नहीं है। या तो
+      इसमें ऑडियो ट्रैक है ही नहीं, या यह ब्राउज़र जो है उसे डिकोड नहीं करता।</span>
+    <span data-phrase="audio.noaac">आवाज़ उलटने का मतलब है उसे फिर से एनकोड करना, और यह ब्राउज़र AAC एनकोड नहीं करता।
+      वीडियो बिना आवाज़ के उलटा गया है; Chrome, Edge और Safari आवाज़ के साथ कर देते हैं।</span>
+    <span data-phrase="play.unreadable">ब्राउज़र इस क्लिप को पढ़ना बंद कर बैठा।</span>
+    <span data-phrase="play.slowseek">ब्राउज़र को इस क्लिप में जगह बदलने में बहुत देर लगी।</span>
+    <span data-phrase="play.noframes">इस फ़ाइल से कोई फ़्रेम नहीं पढ़ा जा सका।</span>
+    <span data-phrase="reverse.noframes">इस फ़ाइल से कोई फ़्रेम डिकोड नहीं हो सका।</span>
+    <span data-phrase="encode.noh264">यह ब्राउज़र {width}x{height} पर H.264 एनकोड नहीं करता। छोटा क्लिप चल जाएगा; यह नहीं।</span>
+    <span data-phrase="encode.noconfig">एनकोडर ने कभी डिकोडर का कॉन्फ़िगरेशन नहीं बताया।</span>
+    <span data-phrase="stall.decoder">वीडियो डिकोडर बीच रास्ते में जवाब देना बंद कर गया, बिना कोई वजह बताए। छोटा क्लिप, कम
+      गुणवत्ता, या दूसरा ब्राउज़र आज़माने लायक़ है।</span>
+    <span data-phrase="stall.encoder">वीडियो एनकोडर बीच रास्ते में जवाब देना बंद कर गया, बिना कोई वजह बताए। छोटा क्लिप, कम
+      गुणवत्ता, या दूसरा ब्राउज़र आज़माने लायक़ है।</span>
+    <span data-phrase="stall.both">वीडियो डिकोडर या एनकोडर बीच रास्ते में जवाब देना बंद कर गया, बिना कोई वजह बताए। छोटा
+      क्लिप, कम गुणवत्ता, या दूसरा ब्राउज़र आज़माने लायक़ है।</span>
+    <span data-phrase="export.failed">उलटते समय कुछ गड़बड़ हो गई।</span>
+    <span data-phrase="n.frame.one">{n} फ़्रेम</span>
+    <span data-phrase="n.frame.many">{n} फ़्रेम</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} मि {seconds} से</span>
+    <span data-phrase="time.seconds">{n} से</span>
     <span data-phrase="read.midframe">फ़ाइल एक फ़्रेम के बीचोंबीच ख़त्म हो जाती है।</span>
     <span data-phrase="read.avcshort">H.264 का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>
     <span data-phrase="read.hevcshort">HEVC का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>

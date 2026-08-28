@@ -94,6 +94,75 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Lettura del file&hellip;</span>
+    <span data-phrase="step.measuring">Misura della cadenza&hellip;</span>
+    <span data-phrase="open.notopened">Quel file non si è potuto aprire.</span>
+    <span data-phrase="preview.none">Questo browser non riproduce questo file, quindi non c&rsquo;è anteprima. Invertirlo
+      non passa dal lettore, perciò funzionerà lo stesso.</span>
+    <span data-phrase="nocodec.page">Questo browser non ha un codificatore video (WebCodecs), quindi non può scrivere un
+      video invertito. Chrome, Edge e Safari 16.4 o più recenti possono; anche Firefox 133
+      e più recenti.</span>
+    <span data-phrase="nocodec.file">Questo browser non ha un codificatore video, quindi qui niente può scrivere il clip
+      invertito. Un Chrome, Edge o Safari recente sì.</span>
+    <span data-phrase="src.unknown">sconosciuta</span>
+    <span data-phrase="src.byplayer">letto dal lettore del browser</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), ruotato di {degrees} gradi</span>
+    <span data-phrase="src.audio.one">{entry}, {n} canale, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} canali, {rate} Hz</span>
+    <span data-phrase="src.audio.none">nessuno</span>
+    <span data-phrase="src.audio.whatever">quello che trova il lettore</span>
+    <span data-phrase="sound.off">Il clip invertito non avrà alcun suono.</span>
+    <span data-phrase="sound.exact">Decodificato, girato campione per campione e ricodificato in AAC. Quella seconda
+      codifica è inevitabile: dei pacchetti riprodotti nell&rsquo;ordine opposto non sono
+      un&rsquo;inversione.</span>
+    <span data-phrase="sound.player">Letto dal browser, girato campione per campione e ricodificato in AAC.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (da {fromWidth} x {fromHeight}; H.264 non sa memorizzare un
+      fotogramma con un lato dispari)</span>
+    <span data-phrase="frames.groups">{n} in {groups} gruppi</span>
+    <span data-phrase="frames.about">circa {n}, a {fps} al secondo</span>
+    <span data-phrase="path.exact">Decodificato gruppo per gruppo dalla fine, in MP4</span>
+    <span data-phrase="path.player">Percorso a ritroso nel lettore, in MP4</span>
+    <span data-phrase="step.preparing">Preparazione&hellip;</span>
+    <span data-phrase="step.soundreading">Lettura del suono&hellip;</span>
+    <span data-phrase="step.soundwriting">Inversione del suono&hellip;</span>
+    <span data-phrase="step.finishing">Conclusione&hellip;</span>
+    <span data-phrase="step.frame">Inversione del fotogramma {done} di {total} ({percent}%)</span>
+    <span data-phrase="audio.descriptor">Errore interno: la descrizione audio è più grande del previsto.</span>
+    <span data-phrase="audio.nosound">Da questo file non è tornato alcun suono.</span>
+    <span data-phrase="audio.noencode">Il suono è stato decodificato ma dal codificatore non è tornato niente.</span>
+    <span data-phrase="audio.toolarge">Il suono di questo file non è AAC, quindi invertirlo vorrebbe dire passare
+      l&rsquo;intero file al browser perché lo legga &mdash; e questo file è troppo grande
+      per questo. Il video è stato invertito senza suono.</span>
+    <span data-phrase="audio.unreadable">Da questo file non si è potuto leggere alcun suono, quindi il video invertito non ne
+      ha. O non ha una traccia audio, o questo browser non decodifica quella che
+      c&rsquo;è.</span>
+    <span data-phrase="audio.noaac">Invertire il suono vuol dire ricodificarlo, e questo browser non codifica AAC. Il
+      video è stato invertito senza suono; Chrome, Edge e Safari lo fanno con.</span>
+    <span data-phrase="play.unreadable">Il browser non è più riuscito a leggere questo clip.</span>
+    <span data-phrase="play.slowseek">Il browser ci ha messo troppo a spostarsi in questo clip.</span>
+    <span data-phrase="play.noframes">Da questo file non si è potuto leggere alcun fotogramma.</span>
+    <span data-phrase="reverse.noframes">Da questo file non si è potuto decodificare alcun fotogramma.</span>
+    <span data-phrase="encode.noh264">Questo browser non codifica H.264 a {width}x{height}. Un clip più piccolo
+      funzionerà; questo no.</span>
+    <span data-phrase="encode.noconfig">Il codificatore non ha mai riportato una configurazione di decodifica.</span>
+    <span data-phrase="stall.decoder">Il decodificatore video ha smesso di rispondere a metà strada, senza dire perché.
+      Vale la pena provare un clip più corto, una qualità più bassa o un altro browser.</span>
+    <span data-phrase="stall.encoder">Il codificatore video ha smesso di rispondere a metà strada, senza dire perché. Vale
+      la pena provare un clip più corto, una qualità più bassa o un altro browser.</span>
+    <span data-phrase="stall.both">Il decodificatore o il codificatore video ha smesso di rispondere a metà strada,
+      senza dire perché. Vale la pena provare un clip più corto, una qualità più bassa o
+      un altro browser.</span>
+    <span data-phrase="export.failed">Qualcosa è andato storto durante l&rsquo;inversione.</span>
+    <span data-phrase="n.frame.one">{n} fotogramma</span>
+    <span data-phrase="n.frame.many">{n} fotogrammi</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Il file finisce a metà di un fotogramma.</span>
     <span data-phrase="read.avcshort">Il record di configurazione H.264 è troppo corto.</span>
     <span data-phrase="read.hevcshort">Il record di configurazione HEVC è troppo corto.</span>

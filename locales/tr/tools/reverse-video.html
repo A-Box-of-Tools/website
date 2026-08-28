@@ -100,6 +100,74 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Dosya okunuyor&hellip;</span>
+    <span data-phrase="step.measuring">Kare hızı ölçülüyor&hellip;</span>
+    <span data-phrase="open.notopened">Bu dosya açılamadı.</span>
+    <span data-phrase="preview.none">Bu tarayıcı bu dosyayı oynatmıyor, dolayısıyla önizleme yok. Ters çevirme
+      oynatıcıdan geçmiyor, o yüzden yine de çalışacak.</span>
+    <span data-phrase="nocodec.page">Bu tarayıcıda video kodlayıcı (WebCodecs) yok, bu yüzden ters çevrilmiş bir video
+      yazamaz. Chrome, Edge ve 16.4 ya da daha yeni Safari yazabilir; Firefox 133 ve
+      sonrası da.</span>
+    <span data-phrase="nocodec.file">Bu tarayıcıda video kodlayıcı yok, dolayısıyla burada hiçbir şey ters çevrilmiş
+      klibi yazamaz. Güncel bir Chrome, Edge ya da Safari yazar.</span>
+    <span data-phrase="src.unknown">bilinmiyor</span>
+    <span data-phrase="src.byplayer">tarayıcının kendi oynatıcısıyla okundu</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} derece döndürülmüş</span>
+    <span data-phrase="src.audio.one">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.none">yok</span>
+    <span data-phrase="src.audio.whatever">oynatıcı ne bulursa</span>
+    <span data-phrase="sound.off">Ters çevrilmiş klipte hiç ses olmayacak.</span>
+    <span data-phrase="sound.exact">Çözüldü, örnek örnek ters çevrildi ve yeniden AAC olarak kodlandı. Bu ikinci kodlama
+      kaçınılmazdır: paketleri ters sırayla oynatmak bir ters çevirme değildir.</span>
+    <span data-phrase="sound.player">Tarayıcı tarafından okundu, örnek örnek ters çevrildi ve yeniden AAC olarak
+      kodlandı.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} ({fromWidth} x {fromHeight} boyutundan; H.264 tek sayılı kenarı
+      olan bir kareyi saklayamaz)</span>
+    <span data-phrase="frames.groups">{groups} grupta {n}</span>
+    <span data-phrase="frames.about">yaklaşık {n}, saniyede {fps}</span>
+    <span data-phrase="path.exact">Sondan başlayarak grup grup çözüldü, MP4&rsquo;e</span>
+    <span data-phrase="path.player">Oynatıcıda geri geri adımlandı, MP4&rsquo;e</span>
+    <span data-phrase="step.preparing">Hazırlanıyor&hellip;</span>
+    <span data-phrase="step.soundreading">Ses okunuyor&hellip;</span>
+    <span data-phrase="step.soundwriting">Ses ters çevriliyor&hellip;</span>
+    <span data-phrase="step.finishing">Tamamlanıyor&hellip;</span>
+    <span data-phrase="step.frame">{total} kareden {done}. ters çevriliyor (%{percent})</span>
+    <span data-phrase="audio.descriptor">İç hata: ses tanımı beklenenden büyük.</span>
+    <span data-phrase="audio.nosound">Bu dosyadan hiç ses gelmedi.</span>
+    <span data-phrase="audio.noencode">Ses çözüldü ama kodlayıcıdan hiçbir şey gelmedi.</span>
+    <span data-phrase="audio.toolarge">Bu dosyadaki ses AAC değil, dolayısıyla onu ters çevirmek dosyanın tamamını okuması
+      için tarayıcıya vermek demek olurdu &mdash; ve bu dosya bunun için fazla büyük.
+      Video sessiz olarak ters çevrildi.</span>
+    <span data-phrase="audio.unreadable">Bu dosyadan ses okunamadı, bu yüzden ters çevrilmiş videoda ses yok. Ya ses parçası
+      yok ya da bu tarayıcı var olanı çözmüyor.</span>
+    <span data-phrase="audio.noaac">Sesi ters çevirmek onu yeniden kodlamak demektir ve bu tarayıcı AAC kodlamıyor.
+      Video sessiz olarak ters çevrildi; Chrome, Edge ve Safari sesiyle birlikte yapar.</span>
+    <span data-phrase="play.unreadable">Tarayıcı bu klibi okuyamaz hâle geldi.</span>
+    <span data-phrase="play.slowseek">Tarayıcı bu klipte konum değiştirmekte çok gecikti.</span>
+    <span data-phrase="play.noframes">Bu dosyadan hiç kare okunamadı.</span>
+    <span data-phrase="reverse.noframes">Bu dosyadan hiç kare çözülemedi.</span>
+    <span data-phrase="encode.noh264">Bu tarayıcı {width}x{height} boyutunda H.264 kodlamıyor. Daha küçük bir klip olur;
+      bu olmaz.</span>
+    <span data-phrase="encode.noconfig">Kodlayıcı hiçbir zaman bir çözücü yapılandırması bildirmedi.</span>
+    <span data-phrase="stall.decoder">Video çözücüsü yolun ortasında, sebep bildirmeden yanıt vermeyi bıraktı. Daha kısa
+      bir klip, daha düşük bir kalite ayarı ya da başka bir tarayıcı denemeye değer.</span>
+    <span data-phrase="stall.encoder">Video kodlayıcısı yolun ortasında, sebep bildirmeden yanıt vermeyi bıraktı. Daha
+      kısa bir klip, daha düşük bir kalite ayarı ya da başka bir tarayıcı denemeye değer.</span>
+    <span data-phrase="stall.both">Video çözücüsü ya da kodlayıcısı yolun ortasında, sebep bildirmeden yanıt vermeyi
+      bıraktı. Daha kısa bir klip, daha düşük bir kalite ayarı ya da başka bir tarayıcı
+      denemeye değer.</span>
+    <span data-phrase="export.failed">Ters çevirirken bir şeyler ters gitti.</span>
+    <span data-phrase="n.frame.one">{n} kare</span>
+    <span data-phrase="n.frame.many">{n} kare</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} dk {seconds} sn</span>
+    <span data-phrase="time.seconds">{n} sn</span>
     <span data-phrase="read.midframe">Dosya bir karenin ortasında bitiyor.</span>
     <span data-phrase="read.avcshort">H.264 yapılandırma kaydı fazla kısa.</span>
     <span data-phrase="read.hevcshort">HEVC yapılandırma kaydı fazla kısa.</span>

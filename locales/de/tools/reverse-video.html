@@ -94,6 +94,76 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Die Datei wird gelesen&hellip;</span>
+    <span data-phrase="step.measuring">Die Bildrate wird gemessen&hellip;</span>
+    <span data-phrase="open.notopened">Diese Datei konnte nicht geöffnet werden.</span>
+    <span data-phrase="preview.none">Dieser Browser spielt diese Datei nicht ab, es gibt also keine Vorschau. Das
+      Umkehren läuft nicht über den Player, es funktioniert also trotzdem.</span>
+    <span data-phrase="nocodec.page">Dieser Browser hat keinen Video-Encoder (WebCodecs) und kann daher kein umgekehrtes
+      Video schreiben. Chrome, Edge und Safari 16.4 oder neuer können es; Firefox 133 und
+      neuer auch.</span>
+    <span data-phrase="nocodec.file">Dieser Browser hat keinen Video-Encoder, hier kann also nichts den umgekehrten Clip
+      schreiben. Ein aktuelles Chrome, Edge oder Safari schon.</span>
+    <span data-phrase="src.unknown">unbekannt</span>
+    <span data-phrase="src.byplayer">vom Player des Browsers gelesen</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), um {degrees} Grad gedreht</span>
+    <span data-phrase="src.audio.one">{entry}, {n} Kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} Kanäle, {rate} Hz</span>
+    <span data-phrase="src.audio.none">keiner</span>
+    <span data-phrase="src.audio.whatever">was der Player findet</span>
+    <span data-phrase="sound.off">Der umgekehrte Clip hat überhaupt keinen Ton.</span>
+    <span data-phrase="sound.exact">Dekodiert, Sample für Sample umgedreht und wieder als AAC kodiert. Dieses zweite
+      Kodieren ist unvermeidlich: Pakete in umgekehrter Reihenfolge abgespielt sind keine
+      Umkehrung.</span>
+    <span data-phrase="sound.player">Vom Browser gelesen, Sample für Sample umgedreht und wieder als AAC kodiert.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (aus {fromWidth} x {fromHeight}; H.264 kann ein Bild mit
+      ungerader Kantenlänge nicht speichern)</span>
+    <span data-phrase="frames.groups">{n} in {groups} Gruppen</span>
+    <span data-phrase="frames.about">etwa {n}, bei {fps} pro Sekunde</span>
+    <span data-phrase="path.exact">Gruppe für Gruppe vom Ende her dekodiert, in MP4</span>
+    <span data-phrase="path.player">Rückwärts durch den Player geschritten, in MP4</span>
+    <span data-phrase="step.preparing">Wird vorbereitet&hellip;</span>
+    <span data-phrase="step.soundreading">Der Ton wird gelesen&hellip;</span>
+    <span data-phrase="step.soundwriting">Der Ton wird umgekehrt&hellip;</span>
+    <span data-phrase="step.finishing">Wird abgeschlossen&hellip;</span>
+    <span data-phrase="step.frame">Bild {done} von {total} wird umgekehrt ({percent}%)</span>
+    <span data-phrase="audio.descriptor">Interner Fehler: die Tonbeschreibung ist größer als erwartet.</span>
+    <span data-phrase="audio.nosound">Aus dieser Datei kam kein Ton zurück.</span>
+    <span data-phrase="audio.noencode">Der Ton wurde dekodiert, aber vom Encoder kam nichts zurück.</span>
+    <span data-phrase="audio.toolarge">Der Ton in dieser Datei ist kein AAC, das Umkehren würde also bedeuten, dem Browser
+      die ganze Datei zum Lesen zu geben &mdash; und dafür ist sie zu groß. Das Video
+      wurde ohne Ton umgekehrt.</span>
+    <span data-phrase="audio.unreadable">Aus dieser Datei ließ sich kein Ton lesen, das umgekehrte Video hat also keinen.
+      Entweder hat sie keine Tonspur, oder dieser Browser dekodiert die vorhandene nicht.</span>
+    <span data-phrase="audio.noaac">Den Ton umzukehren heißt, ihn erneut zu kodieren, und dieser Browser kodiert kein
+      AAC. Das Video wurde ohne Ton umgekehrt; Chrome, Edge und Safari schaffen es mit.</span>
+    <span data-phrase="play.unreadable">Der Browser konnte diesen Clip nicht mehr lesen.</span>
+    <span data-phrase="play.slowseek">Der Browser brauchte zu lange, um in diesem Clip zu springen.</span>
+    <span data-phrase="play.noframes">Aus dieser Datei ließen sich keine Bilder lesen.</span>
+    <span data-phrase="reverse.noframes">Aus dieser Datei ließen sich keine Bilder dekodieren.</span>
+    <span data-phrase="encode.noh264">Dieser Browser kodiert kein H.264 bei {width}x{height}. Ein kleinerer Clip geht;
+      dieser nicht.</span>
+    <span data-phrase="encode.noconfig">Der Encoder hat nie eine Decoder-Konfiguration gemeldet.</span>
+    <span data-phrase="stall.decoder">Der Video-Dekoder hat mittendrin aufgehört zu antworten, ohne einen Grund zu nennen.
+      Ein kürzerer Clip, eine niedrigere Qualität oder ein anderer Browser ist einen
+      Versuch wert.</span>
+    <span data-phrase="stall.encoder">Der Video-Encoder hat mittendrin aufgehört zu antworten, ohne einen Grund zu nennen.
+      Ein kürzerer Clip, eine niedrigere Qualität oder ein anderer Browser ist einen
+      Versuch wert.</span>
+    <span data-phrase="stall.both">Der Video-Dekoder oder -Encoder hat mittendrin aufgehört zu antworten, ohne einen
+      Grund zu nennen. Ein kürzerer Clip, eine niedrigere Qualität oder ein anderer
+      Browser ist einen Versuch wert.</span>
+    <span data-phrase="export.failed">Beim Umkehren ist etwas schiefgegangen.</span>
+    <span data-phrase="n.frame.one">{n} Bild</span>
+    <span data-phrase="n.frame.many">{n} Bilder</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>

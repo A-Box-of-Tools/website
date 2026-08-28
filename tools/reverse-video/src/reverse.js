@@ -69,6 +69,9 @@ const QUEUE_LIMIT = 8;
  * outcome to be worth a backstop, and thirty seconds is far longer than a queue
  * of eight frames takes anywhere that is really working, software 4K included.
  */
+/** An error whose message is a phrase key; the caller resolves it. */
+const said = (key, values = {}) => Object.assign(new Error(key), { values });
+
 const STALL_TIMEOUT_MS = 30_000;
 
 /** Seconds between keyframes in the output, so seeking stays usable. */
@@ -201,10 +204,11 @@ async function framesAreOpaque(video, file) {
 function withStallTimeout(promise, which) {
   let timer = null;
   const stalled = new Promise((resolve, reject) => {
-    timer = setTimeout(() => reject(new Error(
-      `The video ${which} stopped responding partway through, without reporting a reason. `
-      + 'A shorter clip, a lower quality setting, or a different browser is worth trying.')),
-    STALL_TIMEOUT_MS);
+    // A whole sentence per case rather than the word `decoder` or `encoder`
+    // dropped into one: which of the two it is changes the article, the
+    // gender and the word order in some of the languages this page is in.
+    timer = setTimeout(
+      () => reject(new Error(`stall.${which}`)), STALL_TIMEOUT_MS);
   });
   return Promise.race([promise, stalled]).finally(() => clearTimeout(timer));
 }
@@ -220,9 +224,7 @@ async function settle(decoder, encoder) {
       bestSeen = size;
       progressAt = Date.now();
     } else if (Date.now() - progressAt > STALL_TIMEOUT_MS) {
-      throw new Error('The video decoder or encoder stopped responding partway through, without '
-        + 'reporting a reason. A shorter clip, a lower quality setting, or a different browser '
-        + 'is worth trying.');
+      throw new Error('stall.both');
     }
 
     await new Promise((resolve) => {
@@ -309,8 +311,7 @@ export async function reverseExact({
     width: frame.width, height: frame.height, framerate: Math.round(fps), bitrate,
   });
   if (!codec) {
-    throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
-      + 'A smaller clip will work; this one will not.');
+    throw said('encode.noh264', { width: frame.width, height: frame.height });
   }
 
   onProgress?.({ phase: 'preparing', done: 0, total: video.samples.length });
@@ -611,8 +612,8 @@ export async function reverseExact({
     onProgress?.({ phase: 'finishing', done: drawn, total });
     await withStallTimeout(encoder.flush(), 'encoder');
     if (failure) throw failure;
-    if (!encoded.length) throw new Error('No frames could be decoded from this file.');
-    if (!avcC) throw new Error('The encoder never reported a decoder configuration.');
+    if (!encoded.length) throw new Error('reverse.noframes');
+    if (!avcC) throw new Error('encode.noconfig');
   } finally {
     // The frames themselves were handed back as they arrived, so what is left
     // to drop here is the copies. Any still running own a frame apiece and

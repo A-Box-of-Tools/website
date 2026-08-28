@@ -93,6 +93,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">جارٍ قراءة الملف&hellip;</span>
+    <span data-phrase="step.measuring">جارٍ قياس معدل الإطارات&hellip;</span>
+    <span data-phrase="open.notopened">تعذّر فتح ذلك الملف.</span>
+    <span data-phrase="preview.none">هذا المتصفح لا يشغّل هذا الملف، فلا معاينة إذاً. والعكس لا يمر بالمشغّل، فسيعمل على
+      أي حال.</span>
+    <span data-phrase="nocodec.page">لا مرمّز فيديو (WebCodecs) في هذا المتصفح، فلا يستطيع كتابة فيديو معكوس. كروم وإدج
+      وسفاري 16.4 فما فوق تستطيع؛ وكذلك فايرفوكس 133 فما فوق.</span>
+    <span data-phrase="nocodec.file">لا مرمّز فيديو في هذا المتصفح، فلا شيء هنا يستطيع كتابة المقطع المعكوس. كروم أو إدج
+      أو سفاري حديث يستطيع.</span>
+    <span data-phrase="src.unknown">غير معروفة</span>
+    <span data-phrase="src.byplayer">قرأه مشغّل المتصفح نفسه</span>
+    <span data-phrase="src.codec">{codec} ‏({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ‏({entry})، مُدار {degrees} درجة</span>
+    <span data-phrase="src.audio.one">{entry}، قناة {n}، {rate} هرتز</span>
+    <span data-phrase="src.audio.many">{entry}، {n} قنوات، {rate} هرتز</span>
+    <span data-phrase="src.audio.none">لا شيء</span>
+    <span data-phrase="src.audio.whatever">ما يجده المشغّل</span>
+    <span data-phrase="sound.off">المقطع المعكوس لن يكون فيه صوت إطلاقاً.</span>
+    <span data-phrase="sound.exact">فُكّ ترميزه، وقُلب عيّنةً عيّنة، ورُمّز من جديد بصيغة AAC. وذلك الترميز الثاني لا
+      مفر منه: حزم تُشغَّل بالترتيب المعكوس ليست عكساً.</span>
+    <span data-phrase="sound.player">قرأه المتصفح، وقُلب عيّنةً عيّنة، ورُمّز من جديد بصيغة AAC.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (من {fromWidth} x {fromHeight}؛ لا سبيل لدى H.264 لتخزين إطار
+      ضلعه فردي)</span>
+    <span data-phrase="frames.groups">{n} في {groups} مجموعات</span>
+    <span data-phrase="frames.about">نحو {n}، بمعدل {fps} في الثانية</span>
+    <span data-phrase="path.exact">فُكّ ترميزه مجموعةً مجموعة من النهاية، إلى MP4</span>
+    <span data-phrase="path.player">خُطي إلى الوراء عبر المشغّل، إلى MP4</span>
+    <span data-phrase="step.preparing">التحضير&hellip;</span>
+    <span data-phrase="step.soundreading">قراءة الصوت&hellip;</span>
+    <span data-phrase="step.soundwriting">عكس الصوت&hellip;</span>
+    <span data-phrase="step.finishing">الإنهاء&hellip;</span>
+    <span data-phrase="step.frame">عكس الإطار {done} من {total} ({percent}%)</span>
+    <span data-phrase="audio.descriptor">خطأ داخلي: وصف الصوت أكبر من المتوقع.</span>
+    <span data-phrase="audio.nosound">لم يعد أي صوت من هذا الملف.</span>
+    <span data-phrase="audio.noencode">فُكّ ترميز الصوت لكن لم يعد شيء من المرمّز.</span>
+    <span data-phrase="audio.toolarge">الصوت في هذا الملف ليس AAC، فعكسه يعني تسليم الملف كله إلى المتصفح ليقرأه &mdash;
+      وهذا الملف أكبر من أن يُسلَّم هكذا. عُكس الفيديو بلا صوت.</span>
+    <span data-phrase="audio.unreadable">لم يُقرأ أي صوت من هذا الملف، فالفيديو المعكوس بلا صوت. فإما أنه بلا مسار صوت، وإما
+      أن هذا المتصفح لا يفك ترميز الموجود.</span>
+    <span data-phrase="audio.noaac">عكس الصوت يعني ترميزه من جديد، وهذا المتصفح لا يرمّز AAC. عُكس الفيديو بلا صوت؛
+      وكروم وإدج وسفاري تفعلها بالصوت.</span>
+    <span data-phrase="play.unreadable">لم يعد المتصفح قادراً على قراءة هذا المقطع.</span>
+    <span data-phrase="play.slowseek">استغرق المتصفح وقتاً أطول من اللازم للانتقال داخل هذا المقطع.</span>
+    <span data-phrase="play.noframes">لم تُقرأ أي إطارات من هذا الملف.</span>
+    <span data-phrase="reverse.noframes">لم يُفكّ ترميز أي إطار من هذا الملف.</span>
+    <span data-phrase="encode.noh264">هذا المتصفح لا يرمّز H.264 بمقاس {width}x{height}. مقطع أصغر سينجح؛ أما هذا فلا.</span>
+    <span data-phrase="encode.noconfig">لم يبلّغ المرمّز قط عن إعداد لفاكّ الترميز.</span>
+    <span data-phrase="stall.decoder">توقف فاكّ ترميز الفيديو عن الاستجابة في منتصف الطريق، دون ذكر سبب. يستحق مقطع أقصر
+      أو إعداد جودة أدنى أو متصفح آخر التجربة.</span>
+    <span data-phrase="stall.encoder">توقف مرمّز الفيديو عن الاستجابة في منتصف الطريق، دون ذكر سبب. يستحق مقطع أقصر أو
+      إعداد جودة أدنى أو متصفح آخر التجربة.</span>
+    <span data-phrase="stall.both">توقف فاكّ ترميز الفيديو أو مرمّزه عن الاستجابة في منتصف الطريق، دون ذكر سبب. يستحق
+      مقطع أقصر أو إعداد جودة أدنى أو متصفح آخر التجربة.</span>
+    <span data-phrase="export.failed">حدث خطأ أثناء العكس.</span>
+    <span data-phrase="n.frame.one">إطار واحد</span>
+    <span data-phrase="n.frame.many">{n} إطاراً</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
+    <span data-phrase="size.gb">{n} غيغابايت</span>
+    <span data-phrase="time.minutes">{minutes} د {seconds} ث</span>
+    <span data-phrase="time.seconds">{n} ث</span>
     <span data-phrase="read.midframe">ينتهي الملف في منتصف إطار.</span>
     <span data-phrase="read.avcshort">سجل إعداد H.264 أقصر مما ينبغي.</span>
     <span data-phrase="read.hevcshort">سجل إعداد HEVC أقصر مما ينبغي.</span>
