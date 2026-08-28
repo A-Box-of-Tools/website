@@ -143,18 +143,19 @@ option.textContent=paper.label;
 el.paper.append(option);
 }
 }
+const guidance=(text,advisory)=>(advisory?phrase('band.guidance',{band:text}):text);
 function renderSpec(){
 const spec=currentSpec();
-const background=backgroundOf(spec);
+const background=backgroundOf(spec,phrase);
 const heightMm=spec.print?.heightMm??null;
-const facts=[['Print size',printLabel(spec)]];
+const facts=[[phrase('facts.print'),printLabel(spec)]];
 if(spec.kind!=='signature'){
 facts.push(
-['Head, chin to crown',bandText(spec.head,heightMm)+(spec.head.advisory?' (guidance)':'')],
-['Eye line, from the bottom',bandText(spec.eye,heightMm)+(spec.eye.advisory?' (guidance)':'')],
+[phrase('facts.head'),guidance(bandText(spec.head,heightMm,phrase),spec.head.advisory)],
+[phrase('facts.eye'),guidance(bandText(spec.eye,heightMm,phrase),spec.eye.advisory)],
 );
 }
-facts.push(['Background',background.label]);
+facts.push([phrase('facts.background'),background.label]);
 if(spec.digital){
 const bytes=portalBytes(spec);
 const size=Number.isFinite(bytes.max)
@@ -390,10 +391,10 @@ pass:{head:metrics.head.status==='ok',eye:metrics.eye.status==='ok'},
 });
 const heightMm=spec.print?.heightMm??null;
 const rows=[
-[metrics.head,verdictText(metrics.head,'Head height',heightMm)],
-[metrics.eye,verdictText(metrics.eye,'Eye line',heightMm)],
-[metrics.centre,centreText(metrics.centre)],
-[metrics.tilt,tiltText(metrics.tilt)],
+[metrics.head,verdictText(metrics.head,'head',heightMm,phrase)],
+[metrics.eye,verdictText(metrics.eye,'eye',heightMm,phrase)],
+[metrics.centre,centreText(metrics.centre,phrase)],
+[metrics.tilt,tiltText(metrics.tilt,phrase)],
 ];
 el.geometryChecks.replaceChildren(...rows.map(([check,text])=>checkRow(
 statusClass(check.status,check.advisory),text,
@@ -421,12 +422,13 @@ el.resampleNote.textContent='';
 return;
 }
 const largest=outputs.reduce((a,b)=>(a.height>=b.height?a:b));
-el.resampleNote.textContent=resamplingText(resampling(rect,largest));
+el.resampleNote.textContent=resamplingText(resampling(rect,largest),phrase);
 }
 function renderReady(){
 el.readyLine.textContent=readyText(
 lastMetrics?passes(lastMetrics):true,
 reading?.status??'unknown',
+phrase,
 );
 }
 el.fitBox.addEventListener('click',fitToRule);
@@ -457,7 +459,7 @@ reading=checkSignature(readSignature(pixels));
 reading.found=null;
 }else{
 const read=readBackground(pixels);
-reading=checkBackground(read,backgroundOf(spec));
+reading=checkBackground(read,backgroundOf(spec,phrase));
 reading.found=read;
 }
 renderBackground();
@@ -465,7 +467,7 @@ renderReady();
 }
 function renderBackground(){
 const spec=currentSpec();
-const wanted=backgroundOf(spec);
+const wanted=backgroundOf(spec,phrase);
 if(!reading){
 el.swatches.hidden=true;
 el.backgroundChecks.replaceChildren();
@@ -480,15 +482,11 @@ el.swatchWanted.style.background=wanted.hex;
 el.swatchWantedText.textContent=`${wanted.label} (${wanted.hex})`;
 }
 el.backgroundChecks.replaceChildren(...reading.findings.map(
-(finding)=>checkRow(finding.status,finding.text),
+(finding)=>checkRow(finding.status,phrase(finding.phrase,finding.values)),
 ));
 el.backgroundNote.textContent=spec.kind==='signature'
-?'Nothing here changes your signature. It is measured and reported, and the crop '
-+'is yours to move.'
-:`${wanted.note} This tool will not replace a background: cutting a person out of a `
-+'photograph needs a segmentation model, and a bad one eats the hair of exactly '
-+'the people whose photographs already get rejected most often. Standing a foot '
-+'further from the wall fixes more of these than any filter would.';
+?phrase('bg.signature.note')
+:phrase('bg.note',{colour:wanted.note});
 }
 el.make.addEventListener('click',run);
 el.printDpi.addEventListener('change',()=>{renderSpec();});
