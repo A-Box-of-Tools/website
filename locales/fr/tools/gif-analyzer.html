@@ -160,6 +160,74 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="budget.header.label">En-tête et description d&rsquo;écran</span>
+    <span data-phrase="budget.header.note">La signature, la taille de la toile et les drapeaux. Treize octets, dans tous les
+      GIF jamais faits.</span>
+    <span data-phrase="budget.global.label">Table de couleurs globale</span>
+    <span data-phrase="budget.global.note">{colours} couleurs à trois octets chacune, partagées par toute image qui
+      n&rsquo;apporte pas la sienne.</span>
+    <span data-phrase="budget.global.none">Ce fichier n&rsquo;en a pas&nbsp;: chaque image porte sa propre palette.</span>
+    <span data-phrase="budget.local.label">Tables de couleurs par image</span>
+    <span data-phrase="budget.local.note">Une palette à elle pour une image qui avait besoin d&rsquo;autres couleurs. Trois
+      octets par couleur, à chaque fois.</span>
+    <span data-phrase="budget.control.label">Blocs de cadence</span>
+    <span data-phrase="budget.control.note">Huit octets par image&nbsp;: le délai, la méthode d&rsquo;effacement et quelle
+      couleur est transparente.</span>
+    <span data-phrase="budget.descriptor.label">Descripteurs d&rsquo;image</span>
+    <span data-phrase="budget.descriptor.note">Onze octets par image&nbsp;: où le rectangle se pose, quelle taille il fait, et la
+      taille de code de départ du compresseur.</span>
+    <span data-phrase="budget.pixels.label">Pixels compressés</span>
+    <span data-phrase="budget.pixels.note">L&rsquo;image elle-même, compressée en LZW. Dans un GIF en bonne santé, c&rsquo;est
+      presque tout le fichier.</span>
+    <span data-phrase="budget.framing.label">Découpage en blocs</span>
+    <span data-phrase="budget.framing.note">Un octet de longueur pour chaque tranche de 255 octets, plus un zéro pour finir
+      chaque série. Inévitable, et bon à voir.</span>
+    <span data-phrase="budget.metadata.label">Commentaires et métadonnées</span>
+    <span data-phrase="budget.metadata.note">Blocs de bouclage, commentaires, profils de couleur, et tout XMP qu&rsquo;un
+      logiciel a laissé derrière lui.</span>
+    <span data-phrase="budget.trailer.label">Marque de fin</span>
+    <span data-phrase="budget.trailer.note">Un octet qui dit que le fichier est terminé.</span>
+    <span data-phrase="budget.after.label">Octets après la fin</span>
+    <span data-phrase="budget.after.note">Des données posées après la marque de fin. Aucun décodeur ne les lit, et c&rsquo;est
+      du poids pur.</span>
+    <span data-phrase="budget.unaccounted.label">Non comptabilisé</span>
+    <span data-phrase="budget.unaccounted.note">Des octets dans des blocs où ce lecteur s&rsquo;est arrêté. Un fichier qui finit en
+      plein bloc en laisse.</span>
+    <span data-phrase="budget.twice.label">Compté deux fois</span>
+    <span data-phrase="budget.twice.note">Les blocs se chevauchent, ce qui veut dire que ce fichier se contredit sur
+      l&rsquo;endroit où ils commencent.</span>
+    <span data-phrase="disposal.unspecified">Non précisé</span>
+    <span data-phrase="disposal.keep">La laisser en place</span>
+    <span data-phrase="disposal.background">Revenir au fond</span>
+    <span data-phrase="disposal.restore">Restaurer ce qu&rsquo;il y avait dessous</span>
+    <span data-phrase="disposal.reserved">Réservé ({n})</span>
+    <span data-phrase="frame.disposal">Effacement</span>
+    <span data-phrase="report.title">Analyse GIF &mdash; {name}</span>
+    <span data-phrase="report.provenance">Lu entièrement dans un navigateur par abox.tools/gif-analyzer/. Le fichier n&rsquo;a
+      pas été envoyé.</span>
+    <span data-phrase="report.file">Le fichier</span>
+    <span data-phrase="report.version">Version</span>
+    <span data-phrase="report.canvas">Toile</span>
+    <span data-phrase="report.pixels">{width} x {height} pixels</span>
+    <span data-phrase="report.size">Taille</span>
+    <span data-phrase="report.bothsizes">{rounded} ({exact})</span>
+    <span data-phrase="report.frames">Images</span>
+    <span data-phrase="report.budget">Où sont passés les octets</span>
+    <span data-phrase="report.total">Total</span>
+    <span data-phrase="report.findings">Ce qui ressort</span>
+    <span data-phrase="report.frametable">Les images</span>
+    <span data-phrase="report.text">Texte porté par le fichier</span>
+    <span data-phrase="report.palette">La palette globale</span>
+    <span data-phrase="report.localpalette">{colours} propres</span>
+    <span data-phrase="report.globalpalette">globale</span>
+    <span data-phrase="report.fullcanvas">toile entière</span>
+    <span data-phrase="column.index">n°</span>
+    <span data-phrase="column.at">à</span>
+    <span data-phrase="column.size">taille</span>
+    <span data-phrase="column.delay">délai</span>
+    <span data-phrase="column.disposal">effacement</span>
+    <span data-phrase="column.palette">palette</span>
+    <span data-phrase="column.bytes">octets</span>
     <span data-phrase="parse.notrailer">Le fichier se termine sans octet de fin, il est donc incomplet &mdash; un
       téléchargement interrompu, ou un fichier tronqué.</span>
     <span data-phrase="parse.unknownblock">L&rsquo;octet {at} vaut 0x{marker}, qui ne commence aucun bloc que ce format

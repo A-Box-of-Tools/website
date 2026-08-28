@@ -21,9 +21,10 @@ const RULE = '-'.repeat(64);
 /**
  * @param {object} gif  as returned by parseGif
  * @param {object} view  what main.js worked out: `{name, budget, findings, colors, waste}`
+ * @param {(key: string, values?: object) => string} t  a phrase, by key
  * @returns {string}
  */
-export function report(gif, view) {
+export function report(gif, view, t) {
   const lines = [];
   const say = (text = '') => lines.push(text);
   const heading = (text) => {
@@ -32,17 +33,17 @@ export function report(gif, view) {
     say(RULE);
   };
 
-  say(`GIF analysis - ${view.name}`);
+  say(t('report.title', { name: view.name }));
   say(RULE);
-  say('Read entirely in a browser by abox.tools/gif-analyzer/. The file was not uploaded.');
+  say(t('report.provenance'));
 
-  heading('The file');
+  heading(t('report.file'));
   const timing = duration(gif.frames);
   const table = [
-    ['Version', `GIF${gif.version}`],
-    ['Canvas', `${gif.width} x ${gif.height} pixels`],
-    ['Size', `${fileSize(gif.size)} (${exact(gif.size)})`],
-    ['Frames', count(gif.frames.length)],
+    [t('report.version'), `GIF${gif.version}`],
+    [t('report.canvas'), t('report.pixels', { width: gif.width, height: gif.height })],
+    [t('report.size'), t('report.bothsizes', { rounded: fileSize(gif.size), exact: exact(gif.size) })],
+    [t('report.frames'), count(gif.frames.length)],
     ['Runs for', `${clock(timing.nominal)} as written`],
   ];
   if (timing.clamped > 0) {
@@ -59,39 +60,44 @@ export function report(gif, view) {
   table.push(['Background index', String(gif.backgroundIndex)]);
   for (const [label, value] of table) say(`${label.padEnd(18)}${value}`);
 
-  heading('Where the bytes went');
-  const width = Math.max(...view.budget.rows.map((row) => row.label.length));
+  heading(t('report.budget'));
+  const total = t('report.total');
+  const labels = new Map(view.budget.rows.map((row) => [row.key, t(row.label)]));
+  const width = Math.max(total.length, ...labels.values().map((label) => label.length));
   for (const row of view.budget.rows) {
     if (row.bytes === 0 && row.key !== 'pixels') continue;
-    say(`${row.label.padEnd(width + 2)}${String(row.bytes).padStart(10)}  `
+    say(`${labels.get(row.key).padEnd(width + 2)}${String(row.bytes).padStart(10)}  `
       + `${percent(row.share).padStart(6)}  ${bar(row.share)}`);
   }
-  say(`${'Total'.padEnd(width + 2)}${String(gif.size).padStart(10)}`);
+  say(`${total.padEnd(width + 2)}${String(gif.size).padStart(10)}`);
 
   if (view.findings.length > 0) {
-    heading('What stands out');
+    heading(t('report.findings'));
     for (const finding of view.findings) {
-      say(`[${finding.level}] ${plain(finding.title)}`);
-      say(wrap(plain(finding.body), 4));
+      say(`[${finding.level}] ${plain(t(finding.title, finding.values))}`);
+      say(wrap(plain(t(finding.body, finding.values)), 4));
       say();
     }
     lines.pop();
   }
 
   if (gif.frames.length > 0) {
-    heading('The frames');
+    heading(t('report.frametable'));
     // The header and the rows are laid out from the same list of widths, so
     // they cannot drift apart - which is the failure a hand-spaced header has
     // every time a column changes.
+    // The width is the wider of the published column and its own heading, so
+    // a longer word in another language widens the column rather than
+    // overflowing it.
     const columns = [
-      ['#', 4, 'right'],
-      ['at', 9, 'right'],
-      ['size', 9, 'right'],
-      ['delay', 6, 'right'],
-      ['disposal', 28, 'left'],
-      ['palette', 8, 'left'],
-      ['bytes', 7, 'right'],
-    ];
+      [t('column.index'), 4, 'right'],
+      [t('column.at'), 9, 'right'],
+      [t('column.size'), 9, 'right'],
+      [t('column.delay'), 6, 'right'],
+      [t('column.disposal'), 28, 'left'],
+      [t('column.palette'), 8, 'left'],
+      [t('column.bytes'), 7, 'right'],
+    ].map(([label, wide, align]) => [label, Math.max(wide, label.length), align]);
     const line = (values) => values
       .map((value, at) => (columns[at][2] === 'right'
         ? String(value).padStart(columns[at][1])
@@ -106,16 +112,18 @@ export function report(gif, view) {
         `${frame.left},${frame.top}`,
         `${frame.width}x${frame.height}`,
         delay(frame.delay),
-        DISPOSALS[frame.disposal] ?? `Reserved (${frame.disposal})`,
-        frame.palette ? `${frame.palette.count} local` : 'global',
+        t(DISPOSALS[frame.disposal] ?? 'disposal.reserved', { n: frame.disposal }),
+        frame.palette
+          ? t('report.localpalette', { colours: frame.palette.count })
+          : t('report.globalpalette'),
         frame.bytes,
-      ])}${isFullCanvas(gif, frame) ? '  full canvas' : ''}`);
+      ])}${isFullCanvas(gif, frame) ? `  ${t('report.fullcanvas')}` : ''}`);
     }
   }
 
   const notes = gif.extensions.filter((extension) => extension.text);
   if (notes.length > 0) {
-    heading('Text carried in the file');
+    heading(t('report.text'));
     for (const extension of notes) {
       say(`${extension.name} (${fileSize(extension.bytes)}):`);
       say(wrap(extension.text.replace(/\s+/g, ' ').trim().slice(0, 2000), 4));
@@ -125,7 +133,7 @@ export function report(gif, view) {
   }
 
   if (gif.globalPalette) {
-    heading('The global palette');
+    heading(t('report.palette'));
     const swatches = [];
     for (let index = 0; index < gif.globalPalette.count; index += 1) {
       swatches.push(hex(gif.globalPalette.colors, index));

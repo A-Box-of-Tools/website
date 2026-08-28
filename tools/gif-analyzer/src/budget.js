@@ -44,85 +44,42 @@ export function budget(gif) {
   let metadata = 0;
   for (const extension of gif.extensions) metadata += extension.bytes;
 
+  // A row names a phrase rather than carrying a sentence: this module is
+  // copied byte for byte into fifteen languages, so the words live in the
+  // tool's body.html and whoever shows a row resolves them.
   const rows = [
-    {
-      key: 'header',
-      label: 'Header and screen descriptor',
-      bytes: HEADER_BYTES,
-      note: 'The signature, the canvas size, and the flags. Thirteen bytes, in every GIF ever made.',
-    },
+    { key: 'header', bytes: HEADER_BYTES },
     {
       key: 'global',
-      label: 'Global colour table',
       bytes: gif.globalPalette ? gif.globalPalette.bytes : 0,
-      note: gif.globalPalette
-        ? `${gif.globalPalette.count} colours at three bytes each, shared by every frame that does not bring its own.`
-        : 'This file has none: every frame carries its own palette.',
+      note: gif.globalPalette ? 'budget.global.note' : 'budget.global.none',
+      values: gif.globalPalette ? { colours: gif.globalPalette.count } : undefined,
     },
-    {
-      key: 'local',
-      label: 'Per-frame colour tables',
-      bytes: localTables,
-      note: 'A palette of its own for a frame that needed different colours. Three bytes a colour, every time.',
-    },
-    {
-      key: 'control',
-      label: 'Frame timing blocks',
-      bytes: controls,
-      note: 'Eight bytes per frame: the delay, the disposal method, and which colour is transparent.',
-    },
-    {
-      key: 'descriptor',
-      label: 'Frame descriptors',
-      bytes: descriptors,
-      note: 'Eleven bytes per frame: where the rectangle sits, how big it is, and the compressor’s starting code size.',
-    },
-    {
-      key: 'pixels',
-      label: 'Compressed pixels',
-      bytes: pixels,
-      note: 'The picture itself, LZW-compressed. On a healthy GIF this is nearly all of the file.',
-    },
-    {
-      key: 'framing',
-      label: 'Block framing',
-      bytes: framing,
-      note: 'One length byte for every 255 bytes of data, plus a zero to end each run. Unavoidable, and worth seeing.',
-    },
-    {
-      key: 'metadata',
-      label: 'Comments and metadata',
-      bytes: metadata,
-      note: 'Loop blocks, comments, colour profiles, and any XMP an editor left behind.',
-    },
-    {
-      key: 'trailer',
-      label: 'Trailer',
-      bytes: gif.trailerAt >= 0 ? 1 : 0,
-      note: 'One byte saying the file is over.',
-    },
-    {
-      key: 'after',
-      label: 'Bytes after the end',
-      bytes: gif.trailingBytes,
-      note: 'Data sitting past the trailer. No decoder reads it, and it is pure weight.',
-    },
+    { key: 'local', bytes: localTables },
+    { key: 'control', bytes: controls },
+    { key: 'descriptor', bytes: descriptors },
+    { key: 'pixels', bytes: pixels },
+    { key: 'framing', bytes: framing },
+    { key: 'metadata', bytes: metadata },
+    { key: 'trailer', bytes: gif.trailerAt >= 0 ? 1 : 0 },
+    { key: 'after', bytes: gif.trailingBytes },
   ];
 
   const accounted = rows.reduce((sum, row) => sum + row.bytes, 0);
   const missing = gif.size - accounted;
   if (missing !== 0) {
     rows.push({
-      key: 'unaccounted',
-      label: missing > 0 ? 'Not accounted for' : 'Counted twice',
+      key: missing > 0 ? 'unaccounted' : 'twice',
       bytes: Math.abs(missing),
-      note: missing > 0
-        ? 'Bytes inside blocks this reader stopped at. A file that ends mid-block leaves some.'
-        : 'The blocks overlap, which means this file disagrees with itself about where they start.',
     });
   }
 
-  for (const row of rows) row.share = gif.size > 0 ? row.bytes / gif.size : 0;
+  // Every row's words come from its key; the two that vary say so themselves.
+  for (const row of rows) {
+    row.share = gif.size > 0 ? row.bytes / gif.size : 0;
+    row.label = `budget.${row.key}.label`;
+    row.note ??= `budget.${row.key}.note`;
+  }
 
   return { total: gif.size, accounted, rows };
 }

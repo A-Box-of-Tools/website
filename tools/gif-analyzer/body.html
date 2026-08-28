@@ -160,6 +160,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="budget.header.label">Header and screen descriptor</span>
+    <span data-phrase="budget.header.note">The signature, the canvas size, and the flags. Thirteen bytes, in every GIF ever
+      made.</span>
+    <span data-phrase="budget.global.label">Global colour table</span>
+    <span data-phrase="budget.global.note">{colours} colours at three bytes each, shared by every frame that does not bring its
+      own.</span>
+    <span data-phrase="budget.global.none">This file has none: every frame carries its own palette.</span>
+    <span data-phrase="budget.local.label">Per-frame colour tables</span>
+    <span data-phrase="budget.local.note">A palette of its own for a frame that needed different colours. Three bytes a
+      colour, every time.</span>
+    <span data-phrase="budget.control.label">Frame timing blocks</span>
+    <span data-phrase="budget.control.note">Eight bytes per frame: the delay, the disposal method, and which colour is
+      transparent.</span>
+    <span data-phrase="budget.descriptor.label">Frame descriptors</span>
+    <span data-phrase="budget.descriptor.note">Eleven bytes per frame: where the rectangle sits, how big it is, and the
+      compressor&rsquo;s starting code size.</span>
+    <span data-phrase="budget.pixels.label">Compressed pixels</span>
+    <span data-phrase="budget.pixels.note">The picture itself, LZW-compressed. On a healthy GIF this is nearly all of the file.</span>
+    <span data-phrase="budget.framing.label">Block framing</span>
+    <span data-phrase="budget.framing.note">One length byte for every 255 bytes of data, plus a zero to end each run.
+      Unavoidable, and worth seeing.</span>
+    <span data-phrase="budget.metadata.label">Comments and metadata</span>
+    <span data-phrase="budget.metadata.note">Loop blocks, comments, colour profiles, and any XMP an editor left behind.</span>
+    <span data-phrase="budget.trailer.label">Trailer</span>
+    <span data-phrase="budget.trailer.note">One byte saying the file is over.</span>
+    <span data-phrase="budget.after.label">Bytes after the end</span>
+    <span data-phrase="budget.after.note">Data sitting past the trailer. No decoder reads it, and it is pure weight.</span>
+    <span data-phrase="budget.unaccounted.label">Not accounted for</span>
+    <span data-phrase="budget.unaccounted.note">Bytes inside blocks this reader stopped at. A file that ends mid-block leaves some.</span>
+    <span data-phrase="budget.twice.label">Counted twice</span>
+    <span data-phrase="budget.twice.note">The blocks overlap, which means this file disagrees with itself about where they
+      start.</span>
+    <span data-phrase="disposal.unspecified">Unspecified</span>
+    <span data-phrase="disposal.keep">Leave it in place</span>
+    <span data-phrase="disposal.background">Clear back to the background</span>
+    <span data-phrase="disposal.restore">Restore what was underneath</span>
+    <span data-phrase="disposal.reserved">Reserved ({n})</span>
+    <span data-phrase="frame.disposal">Disposal</span>
+    <span data-phrase="report.title">GIF analysis &mdash; {name}</span>
+    <span data-phrase="report.provenance">Read entirely in a browser by abox.tools/gif-analyzer/. The file was not uploaded.</span>
+    <span data-phrase="report.file">The file</span>
+    <span data-phrase="report.version">Version</span>
+    <span data-phrase="report.canvas">Canvas</span>
+    <span data-phrase="report.pixels">{width} x {height} pixels</span>
+    <span data-phrase="report.size">Size</span>
+    <span data-phrase="report.bothsizes">{rounded} ({exact})</span>
+    <span data-phrase="report.frames">Frames</span>
+    <span data-phrase="report.budget">Where the bytes went</span>
+    <span data-phrase="report.total">Total</span>
+    <span data-phrase="report.findings">What stands out</span>
+    <span data-phrase="report.frametable">The frames</span>
+    <span data-phrase="report.text">Text carried in the file</span>
+    <span data-phrase="report.palette">The global palette</span>
+    <span data-phrase="report.localpalette">{colours} local</span>
+    <span data-phrase="report.globalpalette">global</span>
+    <span data-phrase="report.fullcanvas">full canvas</span>
+    <span data-phrase="column.index">#</span>
+    <span data-phrase="column.at">at</span>
+    <span data-phrase="column.size">size</span>
+    <span data-phrase="column.delay">delay</span>
+    <span data-phrase="column.disposal">disposal</span>
+    <span data-phrase="column.palette">palette</span>
+    <span data-phrase="column.bytes">bytes</span>
     <span data-phrase="parse.notrailer">The file ends without a trailer byte, so it is incomplete &mdash; a download that stopped early, or a file cut short.</span>
     <span data-phrase="parse.unknownblock">Byte {at} is 0x{marker}, which is not the start of any block this format has. Everything after it was ignored.</span>
     <span data-phrase="parse.twocontrols">Two graphic control blocks in a row, at {first} and {second}. The first one describes no image and does nothing.</span>

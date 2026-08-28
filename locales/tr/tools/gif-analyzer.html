@@ -166,6 +166,71 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="budget.header.label">Başlık ve ekran tanımı</span>
+    <span data-phrase="budget.header.note">İmza, tuval boyutu ve bayraklar. On üç bayt; yapılmış her GIF&rsquo;te var.</span>
+    <span data-phrase="budget.global.label">Genel renk tablosu</span>
+    <span data-phrase="budget.global.note">Her biri üç bayt olan {colours} renk; kendi tablosunu getirmeyen her karenin ortak
+      kullandığı.</span>
+    <span data-phrase="budget.global.none">Bu dosyada yok: her kare kendi paletini taşıyor.</span>
+    <span data-phrase="budget.local.label">Kare başına renk tabloları</span>
+    <span data-phrase="budget.local.note">Başka renklere ihtiyaç duyan bir kare için ona ait bir palet. Her seferinde renk
+      başına üç bayt.</span>
+    <span data-phrase="budget.control.label">Kare zamanlama blokları</span>
+    <span data-phrase="budget.control.note">Kare başına sekiz bayt: bekleme süresi, temizleme yöntemi ve hangi rengin saydam
+      olduğu.</span>
+    <span data-phrase="budget.descriptor.label">Kare tanımları</span>
+    <span data-phrase="budget.descriptor.note">Kare başına on bir bayt: dikdörtgenin nerede durduğu, ne kadar büyük olduğu ve
+      sıkıştırıcının başlangıç kod boyutu.</span>
+    <span data-phrase="budget.pixels.label">Sıkıştırılmış pikseller</span>
+    <span data-phrase="budget.pixels.note">Resmin kendisi, LZW ile sıkıştırılmış. Sağlıklı bir GIF&rsquo;te bu, dosyanın
+      neredeyse tamamıdır.</span>
+    <span data-phrase="budget.framing.label">Blok çerçeveleme</span>
+    <span data-phrase="budget.framing.note">Her 255 baytlık veri için bir uzunluk baytı, artı her diziyi bitiren bir sıfır.
+      Kaçınılmaz, ve görülmeye değer.</span>
+    <span data-phrase="budget.metadata.label">Yorumlar ve üst veri</span>
+    <span data-phrase="budget.metadata.note">Döngü blokları, yorumlar, renk profilleri ve bir programın geride bıraktığı her
+      türlü XMP.</span>
+    <span data-phrase="budget.trailer.label">Sonlandırıcı</span>
+    <span data-phrase="budget.trailer.note">Dosyanın bittiğini söyleyen tek bir bayt.</span>
+    <span data-phrase="budget.after.label">Sondan sonraki baytlar</span>
+    <span data-phrase="budget.after.note">Sonlandırıcının ötesinde duran veri. Hiçbir çözücü onu okumaz, ve o salt yüktür.</span>
+    <span data-phrase="budget.unaccounted.label">Hesaba katılmayan</span>
+    <span data-phrase="budget.unaccounted.note">Bu okuyucunun durduğu blokların içindeki baytlar. Blok ortasında biten bir dosya
+      böyle baytlar bırakır.</span>
+    <span data-phrase="budget.twice.label">İki kez sayılan</span>
+    <span data-phrase="budget.twice.note">Bloklar üst üste biniyor; yani bu dosya, blokların nerede başladığı konusunda
+      kendisiyle çelişiyor.</span>
+    <span data-phrase="disposal.unspecified">Belirtilmemiş</span>
+    <span data-phrase="disposal.keep">Olduğu yerde bırak</span>
+    <span data-phrase="disposal.background">Arka plana dön</span>
+    <span data-phrase="disposal.restore">Altında ne varsa geri getir</span>
+    <span data-phrase="disposal.reserved">Ayrılmış ({n})</span>
+    <span data-phrase="frame.disposal">Temizleme</span>
+    <span data-phrase="report.title">GIF çözümlemesi &mdash; {name}</span>
+    <span data-phrase="report.provenance">Tümüyle tarayıcıda, abox.tools/gif-analyzer/ tarafından okundu. Dosya yüklenmedi.</span>
+    <span data-phrase="report.file">Dosya</span>
+    <span data-phrase="report.version">Sürüm</span>
+    <span data-phrase="report.canvas">Tuval</span>
+    <span data-phrase="report.pixels">{width} x {height} piksel</span>
+    <span data-phrase="report.size">Boyut</span>
+    <span data-phrase="report.bothsizes">{rounded} ({exact})</span>
+    <span data-phrase="report.frames">Kareler</span>
+    <span data-phrase="report.budget">Baytlar nereye gitti</span>
+    <span data-phrase="report.total">Toplam</span>
+    <span data-phrase="report.findings">Göze çarpanlar</span>
+    <span data-phrase="report.frametable">Kareler</span>
+    <span data-phrase="report.text">Dosyanın taşıdığı metin</span>
+    <span data-phrase="report.palette">Genel palet</span>
+    <span data-phrase="report.localpalette">{colours} kendine ait</span>
+    <span data-phrase="report.globalpalette">genel</span>
+    <span data-phrase="report.fullcanvas">tam tuval</span>
+    <span data-phrase="column.index">no</span>
+    <span data-phrase="column.at">konum</span>
+    <span data-phrase="column.size">boyut</span>
+    <span data-phrase="column.delay">süre</span>
+    <span data-phrase="column.disposal">temizleme</span>
+    <span data-phrase="column.palette">palet</span>
+    <span data-phrase="column.bytes">bayt</span>
     <span data-phrase="parse.notrailer">Dosya kapanış baytı olmadan bitiyor, yani eksik &mdash; erken kesilmiş bir indirme
       ya da yarıda kalmış bir dosya.</span>
     <span data-phrase="parse.unknownblock">{at} numaralı bayt 0x{marker}, ve bu biçimdeki hiçbir bloğun başı değil. Ondan

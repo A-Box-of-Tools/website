@@ -166,6 +166,73 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="budget.header.label">Header dan deskriptor layar</span>
+    <span data-phrase="budget.header.note">Tanda tangannya, ukuran kanvasnya, dan benderanya. Tiga belas bita, ada di setiap
+      GIF yang pernah dibuat.</span>
+    <span data-phrase="budget.global.label">Tabel warna global</span>
+    <span data-phrase="budget.global.note">{colours} warna, tiga bita masing-masing, dipakai bersama oleh setiap bingkai yang
+      tidak membawa tabelnya sendiri.</span>
+    <span data-phrase="budget.global.none">File ini tidak punya: tiap bingkai membawa paletnya sendiri.</span>
+    <span data-phrase="budget.local.label">Tabel warna per bingkai</span>
+    <span data-phrase="budget.local.note">Palet sendiri untuk bingkai yang butuh warna lain. Tiga bita per warna, tiap kali.</span>
+    <span data-phrase="budget.control.label">Blok pengatur waktu</span>
+    <span data-phrase="budget.control.note">Delapan bita per bingkai: jedanya, cara membersihkannya, dan warna mana yang tembus
+      pandang.</span>
+    <span data-phrase="budget.descriptor.label">Deskriptor bingkai</span>
+    <span data-phrase="budget.descriptor.note">Sebelas bita per bingkai: di mana persegi itu duduk, sebesar apa ia, dan ukuran kode
+      awal si pemampat.</span>
+    <span data-phrase="budget.pixels.label">Piksel termampat</span>
+    <span data-phrase="budget.pixels.note">Gambarnya sendiri, dimampatkan dengan LZW. Pada GIF yang sehat, ini hampir seluruh
+      file.</span>
+    <span data-phrase="budget.framing.label">Pembingkaian blok</span>
+    <span data-phrase="budget.framing.note">Satu bita panjang untuk tiap 255 bita data, ditambah satu nol untuk menutup tiap
+      rentetan. Tak terhindarkan, dan layak dilihat.</span>
+    <span data-phrase="budget.metadata.label">Komentar dan metadata</span>
+    <span data-phrase="budget.metadata.note">Blok pengulangan, komentar, profil warna, dan XMP apa pun yang ditinggalkan sebuah
+      penyunting.</span>
+    <span data-phrase="budget.trailer.label">Penutup</span>
+    <span data-phrase="budget.trailer.note">Satu bita yang mengatakan file-nya sudah selesai.</span>
+    <span data-phrase="budget.after.label">Bita setelah akhir</span>
+    <span data-phrase="budget.after.note">Data yang duduk melewati penutup. Tidak ada dekoder yang membacanya, dan itu beban
+      murni.</span>
+    <span data-phrase="budget.unaccounted.label">Tidak terhitung</span>
+    <span data-phrase="budget.unaccounted.note">Bita di dalam blok tempat pembaca ini berhenti. File yang berakhir di tengah blok
+      meninggalkan sebagian.</span>
+    <span data-phrase="budget.twice.label">Terhitung dua kali</span>
+    <span data-phrase="budget.twice.note">Bloknya tumpang tindih, artinya file ini berselisih dengan dirinya sendiri soal di
+      mana blok itu mulai.</span>
+    <span data-phrase="disposal.unspecified">Tidak disebutkan</span>
+    <span data-phrase="disposal.keep">Biarkan di tempatnya</span>
+    <span data-phrase="disposal.background">Kembalikan ke latar</span>
+    <span data-phrase="disposal.restore">Pulihkan yang ada di bawahnya</span>
+    <span data-phrase="disposal.reserved">Dicadangkan ({n})</span>
+    <span data-phrase="frame.disposal">Pembersihan</span>
+    <span data-phrase="report.title">Analisis GIF &mdash; {name}</span>
+    <span data-phrase="report.provenance">Dibaca seluruhnya di peramban oleh abox.tools/gif-analyzer/. File-nya tidak
+      diunggah.</span>
+    <span data-phrase="report.file">File</span>
+    <span data-phrase="report.version">Versi</span>
+    <span data-phrase="report.canvas">Kanvas</span>
+    <span data-phrase="report.pixels">{width} x {height} piksel</span>
+    <span data-phrase="report.size">Ukuran</span>
+    <span data-phrase="report.bothsizes">{rounded} ({exact})</span>
+    <span data-phrase="report.frames">Bingkai</span>
+    <span data-phrase="report.budget">Ke mana bitanya pergi</span>
+    <span data-phrase="report.total">Total</span>
+    <span data-phrase="report.findings">Yang menonjol</span>
+    <span data-phrase="report.frametable">Bingkainya</span>
+    <span data-phrase="report.text">Teks yang dibawa file ini</span>
+    <span data-phrase="report.palette">Palet global</span>
+    <span data-phrase="report.localpalette">{colours} sendiri</span>
+    <span data-phrase="report.globalpalette">global</span>
+    <span data-phrase="report.fullcanvas">satu kanvas penuh</span>
+    <span data-phrase="column.index">no</span>
+    <span data-phrase="column.at">di</span>
+    <span data-phrase="column.size">ukuran</span>
+    <span data-phrase="column.delay">jeda</span>
+    <span data-phrase="column.disposal">pembersihan</span>
+    <span data-phrase="column.palette">palet</span>
+    <span data-phrase="column.bytes">bita</span>
     <span data-phrase="parse.notrailer">File berakhir tanpa bita penutup, jadi ia tidak lengkap &mdash; unduhan yang
       berhenti terlalu cepat, atau file yang terpotong.</span>
     <span data-phrase="parse.unknownblock">Bita {at} bernilai 0x{marker}, yang bukan awal blok mana pun yang dikenal format
