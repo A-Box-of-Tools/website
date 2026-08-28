@@ -33,6 +33,7 @@ shared/
   css/
     tool-frame.css       the stylesheet every tool page starts from
     file-list.css        an optional part, for tools that show a list of files
+    progress.css         an optional part, for tools that draw a progress bar
   site.css               the stylesheet for the hub and the legal pages
   logo.svg               the site mark; also the favicon, and inlined in the pages
   icon-180.png           the same mark as a PNG, for iOS home screens
