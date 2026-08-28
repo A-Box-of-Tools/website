@@ -42,10 +42,10 @@ const HEADER_BYTES = 13;
 
 /** What to leave behind when a frame's time is up. Indexed by the field value. */
 export const DISPOSALS = [
-  'Unspecified',
-  'Leave it in place',
-  'Clear back to the background',
-  'Restore what was underneath',
+  'disposal.unspecified',
+  'disposal.keep',
+  'disposal.background',
+  'disposal.restore',
 ];
 
 /**

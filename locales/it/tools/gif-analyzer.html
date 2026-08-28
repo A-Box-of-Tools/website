@@ -160,6 +160,73 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="budget.header.label">Intestazione e descrittore dello schermo</span>
+    <span data-phrase="budget.header.note">La firma, la dimensione della tela e i flag. Tredici byte, in ogni GIF mai fatto.</span>
+    <span data-phrase="budget.global.label">Tavolozza globale</span>
+    <span data-phrase="budget.global.note">{colours} colori da tre byte ciascuno, condivisi da ogni fotogramma che non porta la
+      propria.</span>
+    <span data-phrase="budget.global.none">Questo file non ce l&rsquo;ha: ogni fotogramma porta la sua tavolozza.</span>
+    <span data-phrase="budget.local.label">Tavolozze per fotogramma</span>
+    <span data-phrase="budget.local.note">Una tavolozza tutta sua per un fotogramma che aveva bisogno di altri colori. Tre
+      byte a colore, ogni volta.</span>
+    <span data-phrase="budget.control.label">Blocchi di temporizzazione</span>
+    <span data-phrase="budget.control.note">Otto byte per fotogramma: la pausa, il metodo di pulizia e quale colore è
+      trasparente.</span>
+    <span data-phrase="budget.descriptor.label">Descrittori di fotogramma</span>
+    <span data-phrase="budget.descriptor.note">Undici byte per fotogramma: dove sta il rettangolo, quanto è grande, e la dimensione
+      di codice da cui parte il compressore.</span>
+    <span data-phrase="budget.pixels.label">Pixel compressi</span>
+    <span data-phrase="budget.pixels.note">L&rsquo;immagine vera e propria, compressa in LZW. In un GIF sano è quasi tutto il
+      file.</span>
+    <span data-phrase="budget.framing.label">Incorniciatura dei blocchi</span>
+    <span data-phrase="budget.framing.note">Un byte di lunghezza ogni 255 byte di dati, più uno zero per chiudere ogni serie.
+      Inevitabile, e vale la pena vederlo.</span>
+    <span data-phrase="budget.metadata.label">Commenti e metadati</span>
+    <span data-phrase="budget.metadata.note">Blocchi di ripetizione, commenti, profili colore e qualunque XMP un programma si sia
+      lasciato dietro.</span>
+    <span data-phrase="budget.trailer.label">Chiusura</span>
+    <span data-phrase="budget.trailer.note">Un byte che dice che il file è finito.</span>
+    <span data-phrase="budget.after.label">Byte dopo la fine</span>
+    <span data-phrase="budget.after.note">Dati che stanno oltre la chiusura. Nessun decodificatore li legge, e sono peso e
+      basta.</span>
+    <span data-phrase="budget.unaccounted.label">Non conteggiati</span>
+    <span data-phrase="budget.unaccounted.note">Byte dentro blocchi dove questo lettore si è fermato. Un file che finisce a metà
+      blocco ne lascia.</span>
+    <span data-phrase="budget.twice.label">Contati due volte</span>
+    <span data-phrase="budget.twice.note">I blocchi si sovrappongono, il che vuol dire che questo file si contraddice su dove
+      cominciano.</span>
+    <span data-phrase="disposal.unspecified">Non specificato</span>
+    <span data-phrase="disposal.keep">Lasciarlo dov&rsquo;è</span>
+    <span data-phrase="disposal.background">Tornare allo sfondo</span>
+    <span data-phrase="disposal.restore">Ripristinare quello che c&rsquo;era sotto</span>
+    <span data-phrase="disposal.reserved">Riservato ({n})</span>
+    <span data-phrase="frame.disposal">Pulizia</span>
+    <span data-phrase="report.title">Analisi GIF &mdash; {name}</span>
+    <span data-phrase="report.provenance">Letto interamente in un browser da abox.tools/gif-analyzer/. Il file non è stato
+      caricato.</span>
+    <span data-phrase="report.file">Il file</span>
+    <span data-phrase="report.version">Versione</span>
+    <span data-phrase="report.canvas">Tela</span>
+    <span data-phrase="report.pixels">{width} x {height} pixel</span>
+    <span data-phrase="report.size">Dimensione</span>
+    <span data-phrase="report.bothsizes">{rounded} ({exact})</span>
+    <span data-phrase="report.frames">Fotogrammi</span>
+    <span data-phrase="report.budget">Dove sono finiti i byte</span>
+    <span data-phrase="report.total">Totale</span>
+    <span data-phrase="report.findings">Quello che salta all&rsquo;occhio</span>
+    <span data-phrase="report.frametable">I fotogrammi</span>
+    <span data-phrase="report.text">Testo che il file si porta dietro</span>
+    <span data-phrase="report.palette">La tavolozza globale</span>
+    <span data-phrase="report.localpalette">{colours} propri</span>
+    <span data-phrase="report.globalpalette">globale</span>
+    <span data-phrase="report.fullcanvas">tela intera</span>
+    <span data-phrase="column.index">n.</span>
+    <span data-phrase="column.at">a</span>
+    <span data-phrase="column.size">dim.</span>
+    <span data-phrase="column.delay">pausa</span>
+    <span data-phrase="column.disposal">pulizia</span>
+    <span data-phrase="column.palette">tavolozza</span>
+    <span data-phrase="column.bytes">byte</span>
     <span data-phrase="parse.notrailer">Il file finisce senza il byte di chiusura, quindi è incompleto &mdash; un download
       interrotto, o un file troncato.</span>
     <span data-phrase="parse.unknownblock">Il byte {at} vale 0x{marker}, che non apre nessun blocco previsto da questo formato.

@@ -160,6 +160,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="budget.header.label">हेडर और स्क्रीन विवरण</span>
+    <span data-phrase="budget.header.note">हस्ताक्षर, कैनवास का आकार और झंडे। तेरह बाइट, जो अब तक बने हर GIF में हैं।</span>
+    <span data-phrase="budget.global.label">वैश्विक रंग तालिका</span>
+    <span data-phrase="budget.global.note">तीन-तीन बाइट के {colours} रंग, जिन्हें हर वह फ़्रेम साझा करता है जो अपनी तालिका साथ
+      नहीं लाता।</span>
+    <span data-phrase="budget.global.none">इस फ़ाइल में यह है ही नहीं: हर फ़्रेम अपनी पैलेट ख़ुद ढोता है।</span>
+    <span data-phrase="budget.local.label">फ़्रेम-दर-फ़्रेम रंग तालिकाएँ</span>
+    <span data-phrase="budget.local.note">ऐसे फ़्रेम की अपनी पैलेट जिसे दूसरे रंग चाहिए थे। हर बार, हर रंग के तीन बाइट।</span>
+    <span data-phrase="budget.control.label">फ़्रेम के समय-ब्लॉक</span>
+    <span data-phrase="budget.control.note">हर फ़्रेम के आठ बाइट: कितनी देर रुकेगा, समेटने का तरीक़ा, और कौन-सा रंग पारदर्शी है।</span>
+    <span data-phrase="budget.descriptor.label">फ़्रेम विवरण</span>
+    <span data-phrase="budget.descriptor.note">हर फ़्रेम के ग्यारह बाइट: आयत कहाँ बैठा है, कितना बड़ा है, और कंप्रेसर किस कोड आकार
+      से शुरू करता है।</span>
+    <span data-phrase="budget.pixels.label">दबाए हुए पिक्सल</span>
+    <span data-phrase="budget.pixels.note">तस्वीर ख़ुद, LZW से दबाई हुई। ठीक-ठाक GIF में यही क़रीब-क़रीब पूरी फ़ाइल होती है।</span>
+    <span data-phrase="budget.framing.label">ब्लॉक की चौखट</span>
+    <span data-phrase="budget.framing.note">हर 255 बाइट डेटा पर एक लंबाई-बाइट, और हर लड़ी को ख़त्म करने के लिए एक शून्य। इससे
+      बचा नहीं जा सकता, और यह देखने लायक़ है।</span>
+    <span data-phrase="budget.metadata.label">टिप्पणियाँ और मेटाडेटा</span>
+    <span data-phrase="budget.metadata.note">लूप ब्लॉक, टिप्पणियाँ, रंग प्रोफ़ाइल, और कोई भी XMP जो किसी संपादक ने पीछे छोड़ दिया
+      हो।</span>
+    <span data-phrase="budget.trailer.label">समापन</span>
+    <span data-phrase="budget.trailer.note">एक बाइट, जो कहता है कि फ़ाइल ख़त्म।</span>
+    <span data-phrase="budget.after.label">अंत के बाद के बाइट</span>
+    <span data-phrase="budget.after.note">समापन के आगे पड़ा डेटा। कोई डिकोडर इसे पढ़ता नहीं, और यह बस बोझ है।</span>
+    <span data-phrase="budget.unaccounted.label">हिसाब में न आया</span>
+    <span data-phrase="budget.unaccounted.note">उन ब्लॉकों के भीतर के बाइट जहाँ यह रीडर रुक गया। बीच ब्लॉक में ख़त्म होने वाली फ़ाइल
+      कुछ ऐसे बाइट छोड़ जाती है।</span>
+    <span data-phrase="budget.twice.label">दो बार गिना गया</span>
+    <span data-phrase="budget.twice.note">ब्लॉक एक-दूसरे पर चढ़े हुए हैं, यानी यह फ़ाइल ख़ुद ही तय नहीं कर पा रही कि वे शुरू
+      कहाँ होते हैं।</span>
+    <span data-phrase="disposal.unspecified">तय नहीं</span>
+    <span data-phrase="disposal.keep">जहाँ है वहीं रहने दो</span>
+    <span data-phrase="disposal.background">पृष्ठभूमि पर लौटा दो</span>
+    <span data-phrase="disposal.restore">नीचे जो था वह लौटा दो</span>
+    <span data-phrase="disposal.reserved">आरक्षित ({n})</span>
+    <span data-phrase="frame.disposal">समेटना</span>
+    <span data-phrase="report.title">GIF विश्लेषण &mdash; {name}</span>
+    <span data-phrase="report.provenance">abox.tools/gif-analyzer/ ने इसे पूरी तरह ब्राउज़र के भीतर पढ़ा। फ़ाइल कहीं अपलोड
+      नहीं हुई।</span>
+    <span data-phrase="report.file">फ़ाइल</span>
+    <span data-phrase="report.version">संस्करण</span>
+    <span data-phrase="report.canvas">कैनवास</span>
+    <span data-phrase="report.pixels">{width} x {height} पिक्सल</span>
+    <span data-phrase="report.size">आकार</span>
+    <span data-phrase="report.bothsizes">{rounded} ({exact})</span>
+    <span data-phrase="report.frames">फ़्रेम</span>
+    <span data-phrase="report.budget">बाइट कहाँ गए</span>
+    <span data-phrase="report.total">कुल</span>
+    <span data-phrase="report.findings">जो नज़र में आता है</span>
+    <span data-phrase="report.frametable">फ़्रेम</span>
+    <span data-phrase="report.text">फ़ाइल में साथ चलता पाठ</span>
+    <span data-phrase="report.palette">वैश्विक पैलेट</span>
+    <span data-phrase="report.localpalette">अपने {colours}</span>
+    <span data-phrase="report.globalpalette">साझा</span>
+    <span data-phrase="report.fullcanvas">पूरा कैनवास</span>
+    <span data-phrase="column.index">क्रम</span>
+    <span data-phrase="column.at">कहाँ</span>
+    <span data-phrase="column.size">आकार</span>
+    <span data-phrase="column.delay">ठहराव</span>
+    <span data-phrase="column.disposal">समेटना</span>
+    <span data-phrase="column.palette">पैलेट</span>
+    <span data-phrase="column.bytes">बाइट</span>
     <span data-phrase="parse.notrailer">फ़ाइल अंत-बाइट के बिना ही ख़त्म हो जाती है, यानी अधूरी है &mdash; कोई डाउनलोड जो
       जल्दी रुक गया, या कटी हुई फ़ाइल।</span>
     <span data-phrase="parse.unknownblock">बाइट {at} का मान 0x{marker} है, और इस प्रारूप का कोई भी ब्लॉक ऐसे शुरू नहीं होता।
