@@ -103,7 +103,7 @@
 
 .shape:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-.shape input { flex: none; margin-top: 0.15rem; accent-color: var(--accent); }
+.shape input { flex: none; margin-top: 0.15rem; }
 
 .shape-body { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
 .shape-body strong { font-size: 0.93rem; }
@@ -133,7 +133,7 @@
 }
 
 .check { display: flex; gap: 0.6rem; align-items: flex-start; cursor: pointer; }
-.check input { flex: none; margin-top: 0.2rem; accent-color: var(--accent); }
+.check input { flex: none; margin-top: 0.2rem; }
 .check > span { display: flex; flex-direction: column; gap: 0.25rem; }
 .check strong { font-size: 0.92rem; }
 .check-note { font-size: 0.82rem; line-height: 1.55; color: var(--text-dim); max-width: 62ch; }
