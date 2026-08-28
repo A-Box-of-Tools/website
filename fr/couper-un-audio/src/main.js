@@ -60,7 +60,7 @@ sumSize:$('sum-size'),
 cutNote:$('cut-note'),
 exportBtn:$('export'),
 cancelBtn:$('cancel'),
-progressWrap:$('progress-wrap'),
+progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
 error:$('error'),
@@ -588,7 +588,7 @@ exporting=true;
 abortController=new AbortController();
 el.exportBtn.disabled=true;
 el.cancelBtn.hidden=false;
-el.progressWrap.hidden=false;
+el.progress.hidden=false;
 progress(0,'Starting...');
 const bits=Number(el.depth.value);
 try{
@@ -614,10 +614,10 @@ formatBytes(blob.size),
 `${planned.length} part${planned.length === 1 ? '' : 's'}`,
 `${((performance.now() - started) / 1000).toFixed(1)}s`,
 ].join(' · ');
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 if(error?.name!=='AbortError'){
 showError(error?.message||'Something went wrong while trimming the audio.');
 console.error(error);

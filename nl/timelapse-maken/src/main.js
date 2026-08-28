@@ -46,7 +46,7 @@ sumBytes:$('sum-bytes'),
 planNote:$('plan-note'),
 exportBtn:$('export'),
 cancelBtn:$('cancel'),
-progressWrap:$('progress-wrap'),
+progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
 error:$('error'),
@@ -430,7 +430,7 @@ working=true;
 abortController=new AbortController();
 el.exportBtn.disabled=true;
 el.cancelBtn.hidden=false;
-el.progressWrap.hidden=false;
+el.progress.hidden=false;
 el.result.hidden=true;
 el.preview.pause();
 setProgress({phase:'preparing',done:0,total:1});
@@ -477,10 +477,10 @@ formatDuration(result.frames/plan.fps),
 formatBytes(result.blob.size),
 ].join(' · ');
 el.result.hidden=false;
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 if(error?.name!=='AbortError'){
 showError(error?.message||'Something went wrong while making the time-lapse.');
 console.error(error);

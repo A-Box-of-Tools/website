@@ -44,7 +44,7 @@ sumLength:$('sum-length'),
 sumPath:$('sum-path'),
 exportBtn:$('export'),
 cancelBtn:$('cancel'),
-progressWrap:$('progress-wrap'),
+progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
 error:$('error'),
@@ -370,7 +370,7 @@ exporting=true;
 abortController=new AbortController();
 el.exportBtn.disabled=true;
 el.cancelBtn.hidden=false;
-el.progressWrap.hidden=false;
+el.progress.hidden=false;
 el.result.hidden=true;
 cropper.setEnabled(false);
 el.preview.pause();
@@ -400,10 +400,10 @@ formatBytes(result.blob.size),
 result.codec,
 ].join(' · ');
 el.result.hidden=false;
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 if(error?.name!=='AbortError'){
 showError(error?.message||'Something went wrong while cropping.');
 console.error(error);

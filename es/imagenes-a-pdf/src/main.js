@@ -50,7 +50,7 @@ sumInput:$('sum-input'),
 sumCopied:$('sum-copied'),
 exportBtn:$('export'),
 cancelBtn:$('cancel'),
-progressWrap:$('progress-wrap'),
+progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
 error:$('error'),
@@ -463,7 +463,7 @@ clearError();
 clearResult();
 el.exportBtn.disabled=true;
 el.cancelBtn.hidden=false;
-el.progressWrap.hidden=false;
+el.progress.hidden=false;
 el.progressBar.style.width='0%';
 el.progressLabel.textContent='Starting...';
 const queue=items.map((item)=>({...item}));
@@ -495,7 +495,7 @@ exporting=false;
 abortController=null;
 el.cancelBtn.hidden=true;
 el.exportBtn.disabled=!items.length;
-el.progressWrap.hidden=!cancelled;
+el.progress.hidden=!cancelled;
 }
 }
 el.exportBtn.addEventListener('click',runExport);

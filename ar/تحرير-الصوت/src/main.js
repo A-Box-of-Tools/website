@@ -38,7 +38,7 @@ exportCard:$('export-card'),
 depth:$('depth'),
 exportBtn:$('export'),
 cancelBtn:$('cancel'),
-progressWrap:$('progress-wrap'),
+progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
 error:$('error'),
@@ -229,7 +229,7 @@ exporting=true;
 abortController=new AbortController();
 el.exportBtn.disabled=true;
 el.cancelBtn.hidden=false;
-el.progressWrap.hidden=false;
+el.progress.hidden=false;
 progress(0,'Starting...');
 const chosen=settings();
 const bits=Number(el.depth.value);
@@ -256,10 +256,10 @@ formatBytes(blob.size),
 edited.clipped?`${edited.clipped.toLocaleString()} samples over full scale`:null,
 `${((performance.now() - started) / 1000).toFixed(1)}s`,
 ].filter(Boolean).join(' · ');
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 if(error?.name!=='AbortError'){
 showError(error?.message||'Something went wrong while editing the audio.');
 console.error(error);

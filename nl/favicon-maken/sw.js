@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/favicon-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'c05bd37c87';
+const CACHE_NAME=CACHE_PREFIX+'6f932ce12b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=266f619649',
+'styles.css?v=1e1d46c5af',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -40,7 +40,7 @@ every:$('every'),
 grab:$('grab'),
 grabSeries:$('grab-series'),
 cancel:$('cancel'),
-progressWrap:$('progress-wrap'),
+progress:$('progress'),
 progressBar:$('progress-bar'),
 progressLabel:$('progress-label'),
 error:$('error'),
@@ -474,7 +474,7 @@ el.clear.addEventListener('click',clearShots);
 el.downloadAll.addEventListener('click',async()=>{
 if(!shots.length||working)return;
 setWorking(true);
-el.progressWrap.hidden=false;
+el.progress.hidden=false;
 setProgress({done:0,total:shots.length,label:'Packing...'});
 try{
 const used=new Set();
@@ -495,7 +495,7 @@ saveBlob(makeZip(files),`${base}-stills.zip`);
 showError(error?.message||'That archive could not be built.');
 }finally{
 setWorking(false);
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 }
 });
 function saveBlob(blob,name){
@@ -562,7 +562,7 @@ clearError();
 setWorking(true);
 abortController=new AbortController();
 el.cancel.hidden=false;
-el.progressWrap.hidden=false;
+el.progress.hidden=false;
 const options=encodeOptions();
 const{signal}=abortController;
 try{
@@ -615,7 +615,7 @@ console.error(error);
 }finally{
 abortController=null;
 el.cancel.hidden=true;
-el.progressWrap.hidden=true;
+el.progress.hidden=true;
 setWorking(false);
 }
 });
