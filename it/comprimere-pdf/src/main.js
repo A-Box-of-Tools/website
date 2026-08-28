@@ -114,7 +114,16 @@ el.progress.hidden=true;
 el.loadError.hidden=true;
 el.loadNote.hidden=true;
 el.runError.hidden=true;
+emptyInventory();
 releaseDownload();
+}
+function emptyInventory(){
+el.verdict.textContent='';
+el.verdict.className='verdict';
+el.breakdownBar.replaceChildren();
+el.breakdownBar.hidden=true;
+el.breakdownList.replaceChildren();
+el.inventoryNotes.textContent='';
 }
 function showLoadError(text){
 el.loadError.textContent=text;
@@ -133,6 +142,7 @@ const said=verdict(inventory);
 el.verdict.textContent=said.text;
 el.verdict.className=`verdict ${said.tone}`;
 el.breakdownBar.replaceChildren();
+el.breakdownBar.hidden=false;
 el.breakdownList.replaceChildren();
 for(const group of inventory.groups){
 const slice=document.createElement('span');
