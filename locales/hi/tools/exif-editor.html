@@ -155,6 +155,99 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · इसमें से क़रीब {metadata} मेटाडेटा</span>
+    <span data-phrase="row.remove">{name} को सूची से हटाइए</span>
+    <span data-phrase="inspect.metadata">इसमें से क़रीब {size} मेटाडेटा</span>
+    <span data-phrase="inspect.nometadata">कोई मेटाडेटा नहीं मिला</span>
+    <span data-phrase="badge.unreadable">पढ़ी नहीं जा सकी</span>
+    <span data-phrase="badge.clean">कुछ नहीं मिला</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF पढ़ा नहीं गया</span>
+    <span data-phrase="badge.exifempty">EXIF ख़ाली</span>
+    <span data-phrase="badge.thumbnail">थंबनेल</span>
+    <span data-phrase="badge.comment">टिप्पणी</span>
+    <span data-phrase="badge.text">पाठ {count}</span>
+    <span data-phrase="badge.unknown">अनजान ब्लॉक</span>
+    <span data-phrase="keep.nothing">सचमुच सब कुछ जाएगा, ओरिएंटेशन टैग और कलर प्रोफ़ाइल भी। इसके बाद फ़ाइल किसी भी क़िस्म
+      का मेटाडेटा नहीं ढोएगी।</span>
+    <span data-phrase="keep.orientation">बाक़ी सब जाएगा: EXIF, GPS, मेकर नोट, XMP, IPTC, टिप्पणियाँ, भीतर रखा थंबनेल, और हर
+      वह ब्लॉक जिसे यह औज़ार पहचान नहीं सका। रखा जाएगा: ओरिएंटेशन टैग।</span>
+    <span data-phrase="keep.icc">बाक़ी सब जाएगा: EXIF, GPS, मेकर नोट, XMP, IPTC, टिप्पणियाँ, भीतर रखा थंबनेल, और हर
+      वह ब्लॉक जिसे यह औज़ार पहचान नहीं सका। रखा जाएगा: कलर प्रोफ़ाइल।</span>
+    <span data-phrase="keep.both">बाक़ी सब जाएगा: EXIF, GPS, मेकर नोट, XMP, IPTC, टिप्पणियाँ, भीतर रखा थंबनेल, और हर
+      वह ब्लॉक जिसे यह औज़ार पहचान नहीं सका। रखे जाएँगे: ओरिएंटेशन टैग और कलर प्रोफ़ाइल।</span>
+    <span data-phrase="block.none">इस फ़ाइल में मेटाडेटा का एक भी ब्लॉक नहीं है।</span>
+    <span data-phrase="block.remove">हटाइए</span>
+    <span data-phrase="block.kept">रखा गया</span>
+    <span data-phrase="block.cannotkeep">रखा नहीं जा सकता</span>
+    <span data-phrase="block.exifbad.title">एक EXIF ब्लॉक जो पढ़ा नहीं गया</span>
+    <span data-phrase="block.exifbad.detail">{size}, और यह औज़ार इसे पढ़ नहीं सका: {reason} सहेजने पर EXIF ब्लॉक नीचे दी गई
+      चीज़ों से दोबारा लिखा जाता है, इसलिए जो पढ़ा न जा सके उसे साथ नहीं ले जाया जा सकता
+      &mdash; आप कोई भी बटन दबाएँ, वह जाएगा ही।</span>
+    <span data-phrase="block.exif.title">EXIF टैग</span>
+    <span data-phrase="block.exif.one">कैमरा, तस्वीर और जगह की डायरेक्ट्रियों में मिलाकर एक टैग।</span>
+    <span data-phrase="block.exif.many">कैमरा, तस्वीर और जगह की डायरेक्ट्रियों में फैले {count} टैग।</span>
+    <span data-phrase="block.exif.remove">सारे टैग हटाइए</span>
+    <span data-phrase="block.gps.title">GPS जगह</span>
+    <span data-phrase="block.gps.remove">जगह हटाइए</span>
+    <span data-phrase="block.thumbnail.title">भीतर रखा थंबनेल</span>
+    <span data-phrase="block.thumbnail.detail">तस्वीर की एक छोटी दूसरी नक़ल, जो बाद की किसी कटाई से पहले की हो सकती है।</span>
+    <span data-phrase="block.thumbnail.remove">थंबनेल हटाइए</span>
+    <span data-phrase="block.xmp.title">XMP पैकेट</span>
+    <span data-phrase="block.xmp.detail">{size} का XML: आम तौर पर कैमरा फिर से, और साथ में संपादन का इतिहास।</span>
+    <span data-phrase="block.iptc.title">IPTC ब्लॉक</span>
+    <span data-phrase="block.iptc.detail">{size} के कैप्शन, श्रेय और स्रोत वाले ख़ाने।</span>
+    <span data-phrase="block.text.title">टेक्स्ट चंक</span>
+    <span data-phrase="block.text.one">एक कुंजी/मान जोड़ा: {keywords}।</span>
+    <span data-phrase="block.text.many">{count} कुंजी/मान जोड़े: {keywords}।</span>
+    <span data-phrase="block.comments.title">टिप्पणियाँ</span>
+    <span data-phrase="block.comments.one">तस्वीर के साथ रखी एक टिप्पणी।</span>
+    <span data-phrase="block.comments.many">तस्वीर के साथ रखी {count} टिप्पणियाँ।</span>
+    <span data-phrase="block.extras.title">वे ब्लॉक जिन्हें यह औज़ार नहीं पढ़ सकता</span>
+    <span data-phrase="block.extras.detail">{blocks}। पढ़े बिना भी हटाए जा सकते हैं।</span>
+    <span data-phrase="block.icc.title">कलर प्रोफ़ाइल</span>
+    <span data-phrase="block.icc.detail">{size}। यह आपके बारे में कुछ नहीं कहती; हटाने पर रंग खिसक सकते हैं।</span>
+    <span data-phrase="block.icc.named">&ldquo;{name}&rdquo; नाम की {size}। यह आपके बारे में कुछ नहीं कहती; हटाने पर रंग
+      खिसक सकते हैं।</span>
+    <span data-phrase="editor.note">कोई मान बदलिए और सहेजते समय वह वापस लिख दिया जाएगा। जिन टैग के लिए संपादक नहीं है
+      उन्हें भी हटाया जा सकता है &mdash; किसी मान को मिटाने के लिए उसे समझना कभी ज़रूरी
+      नहीं होता।</span>
+    <span data-phrase="editor.notags">इस फ़ोटो में कोई EXIF टैग नहीं है।</span>
+    <span data-phrase="editor.textnote">PNG इन्हें EXIF टैग की जगह रखता है। इनमें से किसी एक को बदलने पर पूरा सेट दोबारा
+      लिखा जाता है।</span>
+    <span data-phrase="editor.frozen">इस फ़ाइल में एक दबा हुआ टेक्स्ट चंक है जो खुला ही नहीं। सेट को बदलने पर वह छूट
+      जाएगा, इसलिए यहाँ वह सिर्फ़ पढ़ने के लिए है &mdash; ब्लॉक के तौर पर उसे फिर भी हटाया
+      जा सकता है।</span>
+    <span data-phrase="editor.pairs.one">1 जोड़ा</span>
+    <span data-phrase="editor.pairs.many">{count} जोड़े</span>
+    <span data-phrase="editor.unreadable">दबा हुआ, और खुला नहीं</span>
+    <span data-phrase="editor.valuefor">{keyword} का मान</span>
+    <span data-phrase="editor.removechunk">{keyword} टेक्स्ट चंक हटाइए</span>
+    <span data-phrase="edit.blank">{tag} ख़ाली नहीं छोड़ा जा सकता। अगर आप चाहते हैं कि टैग ही चला जाए तो बग़ल का हटाइए
+      बटन इस्तेमाल कीजिए।</span>
+    <span data-phrase="edit.wanttext">&ldquo;{value}&rdquo; ऐसा मान नहीं जो यह टैग रख सके। {tag} पाठ चाहता है।</span>
+    <span data-phrase="edit.wantnumber">&ldquo;{value}&rdquo; ऐसा मान नहीं जो यह टैग रख सके। {tag} संख्या चाहता है।</span>
+    <span data-phrase="edit.badvalue">&ldquo;{value}&rdquo; ऐसा मान नहीं जो वह टैग रख सके।</span>
+    <span data-phrase="value.empty">(ख़ाली)</span>
+    <span data-phrase="value.raw">{bytes} बाइट का डेटा</span>
+    <span data-phrase="value.more">{shown}, और {more} और</span>
+    <span data-phrase="value.unknown">अनजाना मान ({value})</span>
+    <span data-phrase="hint.description">तस्वीर को बताने वाला एक वाक्य</span>
+    <span data-phrase="hint.artist">किसने खींची</span>
+    <span data-phrase="hint.copyright">जैसे (c) 2026 आपका नाम</span>
+    <span data-phrase="hint.software">फ़ाइल किसने बनाई</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">जैसे Canon</span>
+    <span data-phrase="hint.model">जैसे EOS R6</span>
+    <span data-phrase="hint.orientation">1 यानी सीधी; 6 यानी 90 डिग्री घुमी हुई</span>
+    <span data-phrase="hint.comment">जो मन आए लिखिए</span>
+    <span data-phrase="hint.iso">जैसे 400</span>
+    <span data-phrase="strip.nothing">हटाने को कुछ नहीं &mdash; इस फ़ाइल में मेटाडेटा था ही नहीं।</span>
+    <span data-phrase="strip.none">हटाने की ज़रूरत किसी चीज़ की नहीं पड़ी।</span>
+    <span data-phrase="strip.done.one">1 फ़ोटो साफ़ हुई। इस मशीन से कुछ भी बाहर नहीं गया।</span>
+    <span data-phrase="strip.done.many">{count} फ़ोटो साफ़ हुईं। इस मशीन से कुछ भी बाहर नहीं गया।</span>
+    <span data-phrase="result.saved">{before} से {after} &mdash; {saved} मेटाडेटा चला गया। तस्वीर ख़ुद जस की तस है।</span>
+    <span data-phrase="save.reverted">फ़ाइल वापस वैसी, जैसी पढ़ी गई थी।</span>
     <span data-phrase="find.clean.title">इस फ़ाइल में ऐसा कुछ नहीं जो आपको ज़ाहिर करे</span>
     <span data-phrase="find.clean.cleared">जो कुछ ज़ाहिर करता था, वह सब हटा दिया गया है। इसे फ़ाइल में लिखने के लिए फ़ोटो
       सहेजिए।</span>

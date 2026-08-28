@@ -296,11 +296,11 @@ test('metadataSize: the blocks are added up', () => {
 });
 
 test('badges: an unreadable file says only that', () => {
-  assert.deepEqual(badges({ ok: false }), [{ label: 'Cannot read', level: 'high' }]);
+  assert.deepEqual(badges({ ok: false }), [{ label: 'badge.unreadable', level: 'high' }]);
 });
 
 test('badges: a clean file says so rather than saying nothing', () => {
-  assert.deepEqual(badges(itemWith()), [{ label: 'Nothing found', level: 'clean' }]);
+  assert.deepEqual(badges(itemWith()), [{ label: 'badge.clean', level: 'clean' }]);
 });
 
 test('badges: GPS outranks everything else', () => {
@@ -308,18 +308,21 @@ test('badges: GPS outranks everything else', () => {
     meta: { exif: ascii('x'), xmp: 'x', icc: new Uint8Array(1) },
     groups: { gps: [{ tag: 1 }], ifd0: [{ tag: 2 }] },
   });
-  const labels = badges(item).map((b) => b.label);
+  const found = badges(item);
+  const labels = found.map((b) => b.label);
+  // GPS, XMP and ICC are the format's own initials and read the same in every
+  // language, so they are not phrases; the EXIF badge counts tags and is.
   assert.equal(labels[0], 'GPS');
-  assert.ok(labels.includes('EXIF 2'));
   assert.ok(labels.includes('XMP'));
   assert.ok(labels.includes('ICC'));
+  assert.deepEqual(found.find((b) => b.label === 'badge.exif').values, { count: 2 });
 });
 
 test('badges: an empty EXIF block is distinguished from an unreadable one', () => {
   assert.ok(badges(itemWith({ meta: { exif: ascii('x') } }))
-    .some((b) => b.label === 'EXIF empty'));
+    .some((b) => b.label === 'badge.exifempty'));
   assert.ok(badges(itemWith({ exifUnreadable: true, meta: { exif: ascii('x') } }))
-    .some((b) => b.label === 'EXIF unreadable'));
+    .some((b) => b.label === 'badge.exifbad'));
 });
 
 test('hasMetadata: a block that parsed to nothing is still bytes to remove', () => {
@@ -359,5 +362,5 @@ test('a real edit survives the whole door: read, edit, write, read again', async
 test('text chunks in a PNG reach the report', async () => {
   const item = await readBytes(makePng([textChunk('Author', 'Jane')]));
   assert.equal(hasMetadata(item), true);
-  assert.ok(badges(item).some((b) => b.label === 'Text 1'));
+  assert.ok(badges(item).some((b) => b.label === 'badge.text' && b.values.count === 1));
 });

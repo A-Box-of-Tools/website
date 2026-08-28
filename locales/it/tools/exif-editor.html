@@ -155,6 +155,104 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · di cui circa {metadata} di metadati</span>
+    <span data-phrase="row.remove">Togli {name} dalla lista</span>
+    <span data-phrase="inspect.metadata">di cui circa {size} di metadati</span>
+    <span data-phrase="inspect.nometadata">nessun metadato trovato</span>
+    <span data-phrase="badge.unreadable">Illeggibile</span>
+    <span data-phrase="badge.clean">Non c&rsquo;è niente</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF illeggibile</span>
+    <span data-phrase="badge.exifempty">EXIF vuoto</span>
+    <span data-phrase="badge.thumbnail">Miniatura</span>
+    <span data-phrase="badge.comment">Commento</span>
+    <span data-phrase="badge.text">Testo {count}</span>
+    <span data-phrase="badge.unknown">Blocchi sconosciuti</span>
+    <span data-phrase="keep.nothing">Va via assolutamente tutto, compreso il tag di orientamento e il profilo colore. Il
+      file non porterà più metadati di nessun tipo.</span>
+    <span data-phrase="keep.orientation">Va via tutto il resto: EXIF, GPS, la nota del produttore, XMP, IPTC, i commenti, la
+      miniatura incorporata e ogni blocco che questo strumento non ha saputo identificare.
+      Tenuto: il tag di orientamento.</span>
+    <span data-phrase="keep.icc">Va via tutto il resto: EXIF, GPS, la nota del produttore, XMP, IPTC, i commenti, la
+      miniatura incorporata e ogni blocco che questo strumento non ha saputo identificare.
+      Tenuto: il profilo colore.</span>
+    <span data-phrase="keep.both">Va via tutto il resto: EXIF, GPS, la nota del produttore, XMP, IPTC, i commenti, la
+      miniatura incorporata e ogni blocco che questo strumento non ha saputo identificare.
+      Tenuti: il tag di orientamento e il profilo colore.</span>
+    <span data-phrase="block.none">In questo file non c&rsquo;è proprio nessun blocco di metadati.</span>
+    <span data-phrase="block.remove">Togli</span>
+    <span data-phrase="block.kept">Tenuto</span>
+    <span data-phrase="block.cannotkeep">Non si può tenere</span>
+    <span data-phrase="block.exifbad.title">Un blocco EXIF che non si è riusciti a leggere</span>
+    <span data-phrase="block.exifbad.detail">{size}, e questo strumento non è riuscito a leggerlo: {reason} Il salvataggio
+      riscrive il blocco EXIF a partire da quello elencato qui sotto, quindi uno
+      illeggibile non si può portare dietro &mdash; se ne va qualunque pulsante tu prema.</span>
+    <span data-phrase="block.exif.title">Tag EXIF</span>
+    <span data-phrase="block.exif.one">Un tag, nelle directory della macchina, dell&rsquo;immagine e del luogo.</span>
+    <span data-phrase="block.exif.many">{count} tag sparsi nelle directory della macchina, dell&rsquo;immagine e del luogo.</span>
+    <span data-phrase="block.exif.remove">Togli tutti i tag</span>
+    <span data-phrase="block.gps.title">Posizione GPS</span>
+    <span data-phrase="block.gps.remove">Togli la posizione</span>
+    <span data-phrase="block.thumbnail.title">Miniatura incorporata</span>
+    <span data-phrase="block.thumbnail.detail">Una seconda copia piccola dell&rsquo;immagine, che può essere anteriore a un
+      ritaglio.</span>
+    <span data-phrase="block.thumbnail.remove">Togli la miniatura</span>
+    <span data-phrase="block.xmp.title">Pacchetto XMP</span>
+    <span data-phrase="block.xmp.detail">{size} di XML: di solito ancora la macchina, più la storia delle modifiche.</span>
+    <span data-phrase="block.iptc.title">Blocco IPTC</span>
+    <span data-phrase="block.iptc.detail">{size} di campi didascalia, firma e credito.</span>
+    <span data-phrase="block.text.title">Chunk di testo</span>
+    <span data-phrase="block.text.one">Una coppia chiave/valore: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} coppie chiave/valore: {keywords}.</span>
+    <span data-phrase="block.comments.title">Commenti</span>
+    <span data-phrase="block.comments.one">Un commento tenuto accanto all&rsquo;immagine.</span>
+    <span data-phrase="block.comments.many">{count} commenti tenuti accanto all&rsquo;immagine.</span>
+    <span data-phrase="block.extras.title">Blocchi che questo strumento non sa leggere</span>
+    <span data-phrase="block.extras.detail">{blocks}. Si possono togliere senza saperli leggere.</span>
+    <span data-phrase="block.icc.title">Profilo colore</span>
+    <span data-phrase="block.icc.detail">{size}. Non dice niente di te; toglierlo può spostare i colori.</span>
+    <span data-phrase="block.icc.named">{size} chiamato &laquo;{name}&raquo;. Non dice niente di te; toglierlo può spostare
+      i colori.</span>
+    <span data-phrase="editor.note">Cambia un valore e viene riscritto quando salvi. I tag senza editor si possono
+      togliere lo stesso &mdash; per cancellare un valore non serve mai capirlo.</span>
+    <span data-phrase="editor.notags">In questa foto non ci sono tag EXIF.</span>
+    <span data-phrase="editor.textnote">Il PNG tiene questi al posto dei tag EXIF. Modificarne uno riscrive tutto il gruppo.</span>
+    <span data-phrase="editor.frozen">Questo file ha un chunk di testo compresso che non si è aperto. Modificare il gruppo
+      lo butterebbe via, quindi qui è di sola lettura &mdash; come blocco si può comunque
+      togliere.</span>
+    <span data-phrase="editor.pairs.one">1 coppia</span>
+    <span data-phrase="editor.pairs.many">{count} coppie</span>
+    <span data-phrase="editor.unreadable">compresso, e non si è aperto</span>
+    <span data-phrase="editor.valuefor">Valore per {keyword}</span>
+    <span data-phrase="editor.removechunk">Togli il chunk di testo {keyword}</span>
+    <span data-phrase="edit.blank">{tag} non può restare vuoto. Usa il pulsante Togli qui accanto se vuoi che il tag
+      sparisca del tutto.</span>
+    <span data-phrase="edit.wanttext">&laquo;{value}&raquo; non è un valore che questo tag possa contenere. {tag} vuole
+      del testo.</span>
+    <span data-phrase="edit.wantnumber">&laquo;{value}&raquo; non è un valore che questo tag possa contenere. {tag} vuole un
+      numero.</span>
+    <span data-phrase="edit.badvalue">&laquo;{value}&raquo; non è un valore che quel tag possa contenere.</span>
+    <span data-phrase="value.empty">(vuoto)</span>
+    <span data-phrase="value.raw">{bytes} byte di dati</span>
+    <span data-phrase="value.more">{shown}, e altri {more}</span>
+    <span data-phrase="value.unknown">Valore non riconosciuto ({value})</span>
+    <span data-phrase="hint.description">Una frase che descrive l&rsquo;immagine</span>
+    <span data-phrase="hint.artist">Chi l&rsquo;ha scattata</span>
+    <span data-phrase="hint.copyright">p. es. (c) 2026 Il Tuo Nome</span>
+    <span data-phrase="hint.software">Che cosa ha prodotto il file</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">p. es. Canon</span>
+    <span data-phrase="hint.model">p. es. EOS R6</span>
+    <span data-phrase="hint.orientation">1 è dritto; 6 è ruotato di 90 gradi</span>
+    <span data-phrase="hint.comment">Testo libero</span>
+    <span data-phrase="hint.iso">p. es. 400</span>
+    <span data-phrase="strip.nothing">Niente da togliere &mdash; in questo file non c&rsquo;erano metadati.</span>
+    <span data-phrase="strip.none">Non c&rsquo;era niente da togliere.</span>
+    <span data-phrase="strip.done.one">1 foto ripulita. Non è uscito niente da questa macchina.</span>
+    <span data-phrase="strip.done.many">{count} foto ripulite. Non è uscito niente da questa macchina.</span>
+    <span data-phrase="result.saved">Da {before} a {after} &mdash; via {saved} di metadati. L&rsquo;immagine in sé è
+      rimasta com&rsquo;era.</span>
+    <span data-phrase="save.reverted">Torniamo al file com&rsquo;è stato letto.</span>
     <span data-phrase="find.clean.title">In questo file non c&rsquo;è niente che ti tradisca</span>
     <span data-phrase="find.clean.cleared">Tutto quello che lo faceva è stato tolto. Salva la foto per scriverla fuori.</span>
     <span data-phrase="find.clean.never">Nessun luogo, nessuna data, nessuna macchina, nessun nome. O non ce ne sono mai

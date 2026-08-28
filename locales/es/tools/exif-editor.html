@@ -155,6 +155,100 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · unos {metadata} de ello metadatos</span>
+    <span data-phrase="row.remove">Quitar {name} de la lista</span>
+    <span data-phrase="inspect.metadata">unos {size} de ello metadatos</span>
+    <span data-phrase="inspect.nometadata">no se han encontrado metadatos</span>
+    <span data-phrase="badge.unreadable">No se puede leer</span>
+    <span data-phrase="badge.clean">No hay nada</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF ilegible</span>
+    <span data-phrase="badge.exifempty">EXIF vacío</span>
+    <span data-phrase="badge.thumbnail">Miniatura</span>
+    <span data-phrase="badge.comment">Comentario</span>
+    <span data-phrase="badge.text">Texto {count}</span>
+    <span data-phrase="badge.unknown">Bloques desconocidos</span>
+    <span data-phrase="keep.nothing">Se va absolutamente todo, incluida la etiqueta de orientación y el perfil de color.
+      El archivo no llevará ningún metadato de ninguna clase.</span>
+    <span data-phrase="keep.orientation">Se va todo lo demás: EXIF, GPS, la nota del fabricante, XMP, IPTC, comentarios, la
+      miniatura incrustada y cualquier bloque que esta herramienta no haya sabido
+      identificar. Se conserva: la etiqueta de orientación.</span>
+    <span data-phrase="keep.icc">Se va todo lo demás: EXIF, GPS, la nota del fabricante, XMP, IPTC, comentarios, la
+      miniatura incrustada y cualquier bloque que esta herramienta no haya sabido
+      identificar. Se conserva: el perfil de color.</span>
+    <span data-phrase="keep.both">Se va todo lo demás: EXIF, GPS, la nota del fabricante, XMP, IPTC, comentarios, la
+      miniatura incrustada y cualquier bloque que esta herramienta no haya sabido
+      identificar. Se conservan: la etiqueta de orientación y el perfil de color.</span>
+    <span data-phrase="block.none">En este archivo no hay ningún bloque de metadatos.</span>
+    <span data-phrase="block.remove">Quitar</span>
+    <span data-phrase="block.kept">Se conserva</span>
+    <span data-phrase="block.cannotkeep">No se puede conservar</span>
+    <span data-phrase="block.exifbad.title">Un bloque EXIF que no se ha podido leer</span>
+    <span data-phrase="block.exifbad.detail">{size}, y esta herramienta no ha podido leerlo: {reason} Al guardar se reescribe el
+      bloque EXIF a partir de lo que aparece abajo, así que uno ilegible no se puede
+      llevar &mdash; se va pulses el botón que pulses.</span>
+    <span data-phrase="block.exif.title">Etiquetas EXIF</span>
+    <span data-phrase="block.exif.one">Una etiqueta, en los directorios de cámara, imagen y ubicación.</span>
+    <span data-phrase="block.exif.many">{count} etiquetas repartidas por los directorios de cámara, imagen y ubicación.</span>
+    <span data-phrase="block.exif.remove">Quitar todas las etiquetas</span>
+    <span data-phrase="block.gps.title">Ubicación GPS</span>
+    <span data-phrase="block.gps.remove">Quitar la ubicación</span>
+    <span data-phrase="block.thumbnail.title">Miniatura incrustada</span>
+    <span data-phrase="block.thumbnail.detail">Una segunda copia pequeña de la imagen, que puede ser anterior a cualquier recorte.</span>
+    <span data-phrase="block.thumbnail.remove">Quitar la miniatura</span>
+    <span data-phrase="block.xmp.title">Paquete XMP</span>
+    <span data-phrase="block.xmp.detail">{size} de XML: por lo general la cámara otra vez, más el historial de edición.</span>
+    <span data-phrase="block.iptc.title">Bloque IPTC</span>
+    <span data-phrase="block.iptc.detail">{size} de campos de pie de foto, firma y crédito.</span>
+    <span data-phrase="block.text.title">Chunks de texto</span>
+    <span data-phrase="block.text.one">Un par clave/valor: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} pares clave/valor: {keywords}.</span>
+    <span data-phrase="block.comments.title">Comentarios</span>
+    <span data-phrase="block.comments.one">Un comentario guardado junto a la imagen.</span>
+    <span data-phrase="block.comments.many">{count} comentarios guardados junto a la imagen.</span>
+    <span data-phrase="block.extras.title">Bloques que esta herramienta no sabe leer</span>
+    <span data-phrase="block.extras.detail">{blocks}. Se pueden quitar sin poder leerlos.</span>
+    <span data-phrase="block.icc.title">Perfil de color</span>
+    <span data-phrase="block.icc.detail">{size}. No dice nada de ti; quitarlo puede desplazar los colores.</span>
+    <span data-phrase="block.icc.named">{size} llamado «{name}». No dice nada de ti; quitarlo puede desplazar los colores.</span>
+    <span data-phrase="editor.note">Cambia un valor y se escribe de vuelta al guardar. Las etiquetas sin editor se
+      pueden quitar igualmente &mdash; para borrar un valor nunca hace falta entenderlo.</span>
+    <span data-phrase="editor.notags">En esta foto no hay etiquetas EXIF.</span>
+    <span data-phrase="editor.textnote">PNG guarda esto en lugar de etiquetas EXIF. Editar cualquiera reescribe el conjunto.</span>
+    <span data-phrase="editor.frozen">Este archivo tiene un chunk de texto comprimido que no se ha podido descomprimir.
+      Editar el conjunto lo dejaría fuera, así que aquí es solo de lectura &mdash; como
+      bloque sí se puede quitar.</span>
+    <span data-phrase="editor.pairs.one">1 par</span>
+    <span data-phrase="editor.pairs.many">{count} pares</span>
+    <span data-phrase="editor.unreadable">comprimido, y no se ha podido descomprimir</span>
+    <span data-phrase="editor.valuefor">Valor de {keyword}</span>
+    <span data-phrase="editor.removechunk">Quitar el chunk de texto {keyword}</span>
+    <span data-phrase="edit.blank">{tag} no puede quedarse en blanco. Usa el botón Quitar de al lado si lo que quieres
+      es que la etiqueta desaparezca del todo.</span>
+    <span data-phrase="edit.wanttext">«{value}» no es un valor que esta etiqueta pueda llevar. {tag} espera texto.</span>
+    <span data-phrase="edit.wantnumber">«{value}» no es un valor que esta etiqueta pueda llevar. {tag} espera un número.</span>
+    <span data-phrase="edit.badvalue">«{value}» no es un valor que esa etiqueta pueda llevar.</span>
+    <span data-phrase="value.empty">(vacío)</span>
+    <span data-phrase="value.raw">{bytes} bytes de datos</span>
+    <span data-phrase="value.more">{shown}, y {more} más</span>
+    <span data-phrase="value.unknown">Valor no reconocido ({value})</span>
+    <span data-phrase="hint.description">Una frase que describa la imagen</span>
+    <span data-phrase="hint.artist">Quién la hizo</span>
+    <span data-phrase="hint.copyright">p. ej. (c) 2026 Tu Nombre</span>
+    <span data-phrase="hint.software">Qué produjo el archivo</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">p. ej. Canon</span>
+    <span data-phrase="hint.model">p. ej. EOS R6</span>
+    <span data-phrase="hint.orientation">1 es del derecho; 6 está girado 90 grados</span>
+    <span data-phrase="hint.comment">Texto libre</span>
+    <span data-phrase="hint.iso">p. ej. 400</span>
+    <span data-phrase="strip.nothing">No hay nada que quitar: este archivo no llevaba metadatos.</span>
+    <span data-phrase="strip.none">No hacía falta quitar nada.</span>
+    <span data-phrase="strip.done.one">1 foto limpiada. Nada ha salido de esta máquina.</span>
+    <span data-phrase="strip.done.many">{count} fotos limpiadas. Nada ha salido de esta máquina.</span>
+    <span data-phrase="result.saved">De {before} a {after}: se han ido {saved} de metadatos. La imagen en sí no ha
+      cambiado.</span>
+    <span data-phrase="save.reverted">De vuelta al archivo tal como se leyó.</span>
     <span data-phrase="find.clean.title">En este archivo no hay nada que te delate</span>
     <span data-phrase="find.clean.cleared">Todo lo que lo hacía ya se ha quitado. Guarda la foto para escribirla.</span>
     <span data-phrase="find.clean.never">Ni ubicación, ni fechas, ni cámara, ni nombres. O nunca los tuvo, o algo se los

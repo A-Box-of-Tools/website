@@ -24,13 +24,13 @@ export function formatValue(group, entry) {
   const { value } = entry;
 
   if (value === null || value === undefined) {
-    return `${entry.raw.length} bytes of data`;
+    return { key: 'value.raw', values: { bytes: entry.raw.length } };
   }
 
-  if (typeof value === 'string') return value.length ? value : '(empty)';
+  if (typeof value === 'string') return value.length ? value : { key: 'value.empty' };
 
   if (spec.values && typeof value === 'number') {
-    return spec.values[value] ?? `Unrecognised value (${value})`;
+    return spec.values[value] ?? { key: 'value.unknown', values: { value } };
   }
 
   if (spec.format) {
@@ -47,7 +47,8 @@ export function formatValue(group, entry) {
 
   if (Array.isArray(value)) {
     const shown = value.slice(0, MAX_LIST).map(short).join(', ');
-    return value.length > MAX_LIST ? `${shown}, and ${value.length - MAX_LIST} more` : shown;
+    if (value.length <= MAX_LIST) return shown;
+    return { key: 'value.more', values: { shown, more: value.length - MAX_LIST } };
   }
 
   return spec.unit ? `${short(value)} ${spec.unit}` : short(value);
@@ -309,27 +310,36 @@ export function metadataSize(item) {
   return total;
 }
 
-/** The short labels shown on a file's row in the list. */
+/**
+ * The short labels shown on a file's row in the list.
+ *
+ * A badge names a phrase; main.js resolves it. Four of them are the format's
+ * own initials - GPS, XMP, IPTC, ICC - and those are the same in every
+ * language, so they stay as they are rather than becoming keys that would only
+ * ever hold themselves.
+ */
 export function badges(item) {
   const out = [];
-  if (!item.ok) return [{ label: 'Cannot read', level: 'high' }];
+  if (!item.ok) return [{ label: 'badge.unreadable', level: 'high' }];
 
   const groups = item.exif?.ok ? item.exif.groups : null;
   const tags = countTags(item);
 
   if (groups?.gps?.length) out.push({ label: 'GPS', level: 'high' });
-  if (item.exifUnreadable) out.push({ label: 'EXIF unreadable', level: 'high' });
-  else if (tags) out.push({ label: `EXIF ${tags}`, level: 'medium' });
-  else if (item.meta.exif) out.push({ label: 'EXIF empty', level: 'low' });
-  if (item.exif?.thumbnail?.length) out.push({ label: 'Thumbnail', level: 'medium' });
+  if (item.exifUnreadable) out.push({ label: 'badge.exifbad', level: 'high' });
+  else if (tags) out.push({ label: 'badge.exif', values: { count: tags }, level: 'medium' });
+  else if (item.meta.exif) out.push({ label: 'badge.exifempty', level: 'low' });
+  if (item.exif?.thumbnail?.length) out.push({ label: 'badge.thumbnail', level: 'medium' });
   if (item.meta.xmp) out.push({ label: 'XMP', level: 'medium' });
   if (item.meta.iptc) out.push({ label: 'IPTC', level: 'high' });
-  if (item.meta.comments.length) out.push({ label: 'Comment', level: 'medium' });
-  if (item.meta.text.length) out.push({ label: `Text ${item.meta.text.length}`, level: 'medium' });
+  if (item.meta.comments.length) out.push({ label: 'badge.comment', level: 'medium' });
+  if (item.meta.text.length) {
+    out.push({ label: 'badge.text', values: { count: item.meta.text.length }, level: 'medium' });
+  }
   if (item.meta.icc) out.push({ label: 'ICC', level: 'low' });
-  if (item.meta.extras.length) out.push({ label: 'Unknown blocks', level: 'low' });
+  if (item.meta.extras.length) out.push({ label: 'badge.unknown', level: 'low' });
 
-  if (!out.length) out.push({ label: 'Nothing found', level: 'clean' });
+  if (!out.length) out.push({ label: 'badge.clean', level: 'clean' });
   return out;
 }
 

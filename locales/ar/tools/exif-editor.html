@@ -152,6 +152,96 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · منها نحو {metadata} بيانات وصفية</span>
+    <span data-phrase="row.remove">أزِل {name} من القائمة</span>
+    <span data-phrase="inspect.metadata">منها نحو {size} بيانات وصفية</span>
+    <span data-phrase="inspect.nometadata">لم تُوجد بيانات وصفية</span>
+    <span data-phrase="badge.unreadable">لا يُقرأ</span>
+    <span data-phrase="badge.clean">لا شيء</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF لا يُقرأ</span>
+    <span data-phrase="badge.exifempty">EXIF فارغ</span>
+    <span data-phrase="badge.thumbnail">مصغَّرة</span>
+    <span data-phrase="badge.comment">تعليق</span>
+    <span data-phrase="badge.text">نص {count}</span>
+    <span data-phrase="badge.unknown">كتل مجهولة</span>
+    <span data-phrase="keep.nothing">يذهب كل شيء بلا استثناء، بما في ذلك وسم الاتجاه وملفّ الألوان. ولن يحمل الملف بعدها
+      بيانات وصفية من أي نوع.</span>
+    <span data-phrase="keep.orientation">ويذهب كل ما عداه: EXIF، وGPS، وملاحظة الصانع، وXMP، وIPTC، والتعليقات، والمصغَّرة
+      المضمَّنة، وكل كتلة لم تستطع هذه الأداة تمييزها. المُبقى عليه: وسم الاتجاه.</span>
+    <span data-phrase="keep.icc">ويذهب كل ما عداه: EXIF، وGPS، وملاحظة الصانع، وXMP، وIPTC، والتعليقات، والمصغَّرة
+      المضمَّنة، وكل كتلة لم تستطع هذه الأداة تمييزها. المُبقى عليه: ملفّ الألوان.</span>
+    <span data-phrase="keep.both">ويذهب كل ما عداه: EXIF، وGPS، وملاحظة الصانع، وXMP، وIPTC، والتعليقات، والمصغَّرة
+      المضمَّنة، وكل كتلة لم تستطع هذه الأداة تمييزها. المُبقى عليه: وسم الاتجاه وملفّ
+      الألوان.</span>
+    <span data-phrase="block.none">لا كتل بيانات وصفية في هذا الملف البتة.</span>
+    <span data-phrase="block.remove">أزِل</span>
+    <span data-phrase="block.kept">مُبقى عليه</span>
+    <span data-phrase="block.cannotkeep">لا يمكن الإبقاء عليه</span>
+    <span data-phrase="block.exifbad.title">كتلة EXIF لم يمكن قراءتها</span>
+    <span data-phrase="block.exifbad.detail">{size}، ولم تستطع هذه الأداة قراءتها: {reason} والحفظ يعيد كتابة كتلة EXIF مما هو
+      مسرود أدناه، فلا سبيل إلى حمل كتلة لا تُقرأ &mdash; إنها تذهب أياً كان الزر الذي
+      تضغطه.</span>
+    <span data-phrase="block.exif.title">أوسام EXIF</span>
+    <span data-phrase="block.exif.one">وسم واحد، في فهارس الكاميرا والصورة والموقع.</span>
+    <span data-phrase="block.exif.many">{count} وسماً موزعة على فهارس الكاميرا والصورة والموقع.</span>
+    <span data-phrase="block.exif.remove">أزِل كل الأوسام</span>
+    <span data-phrase="block.gps.title">موقع GPS</span>
+    <span data-phrase="block.gps.remove">أزِل الموقع</span>
+    <span data-phrase="block.thumbnail.title">مصغَّرة مضمَّنة</span>
+    <span data-phrase="block.thumbnail.detail">نسخة ثانية صغيرة من الصورة، وقد تسبق أي قصّ لاحق.</span>
+    <span data-phrase="block.thumbnail.remove">أزِل المصغَّرة</span>
+    <span data-phrase="block.xmp.title">حزمة XMP</span>
+    <span data-phrase="block.xmp.detail">{size} من XML: تكرّر عادةً الكاميرا مرة أخرى، ومعها تاريخ التحرير.</span>
+    <span data-phrase="block.iptc.title">كتلة IPTC</span>
+    <span data-phrase="block.iptc.detail">{size} من حقول التعليق والتوقيع ونسبة الصورة.</span>
+    <span data-phrase="block.text.title">كتل النص</span>
+    <span data-phrase="block.text.one">زوج مفتاح/قيمة واحد: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} من أزواج المفتاح/القيمة: {keywords}.</span>
+    <span data-phrase="block.comments.title">التعليقات</span>
+    <span data-phrase="block.comments.one">تعليق واحد مخزَّن إلى جانب الصورة.</span>
+    <span data-phrase="block.comments.many">{count} تعليقاً مخزَّنة إلى جانب الصورة.</span>
+    <span data-phrase="block.extras.title">كتل لا تستطيع هذه الأداة قراءتها</span>
+    <span data-phrase="block.extras.detail">{blocks}. تُزال دون أن تُقرأ.</span>
+    <span data-phrase="block.icc.title">ملفّ الألوان</span>
+    <span data-phrase="block.icc.detail">{size}. لا يقول عنك شيئاً؛ وإزالته قد تزيح الألوان.</span>
+    <span data-phrase="block.icc.named">{size} باسم «{name}». لا يقول عنك شيئاً؛ وإزالته قد تزيح الألوان.</span>
+    <span data-phrase="editor.note">غيّر قيمة، وتُكتَب مرة أخرى حين تحفظ. والأوسام التي لا محرّر لها يمكن إزالتها على كل
+      حال &mdash; فحذف قيمة لا يحتاج قط إلى فهمها.</span>
+    <span data-phrase="editor.notags">لا أوسام EXIF في هذه الصورة.</span>
+    <span data-phrase="editor.textnote">يخزّن PNG هذه بدل أوسام EXIF. وتحرير أي منها يعيد كتابة المجموعة كلها.</span>
+    <span data-phrase="editor.frozen">في هذا الملف كتلة نص مضغوطة لم تُفَك. وتحرير المجموعة سيسقطها، ولذلك هي هنا للقراءة
+      فقط &mdash; ويمكن مع ذلك إزالتها ككتلة.</span>
+    <span data-phrase="editor.pairs.one">زوج واحد</span>
+    <span data-phrase="editor.pairs.many">{count} زوجاً</span>
+    <span data-phrase="editor.unreadable">مضغوطة، ولم تُفَك</span>
+    <span data-phrase="editor.valuefor">قيمة {keyword}</span>
+    <span data-phrase="editor.removechunk">أزِل كتلة النص {keyword}</span>
+    <span data-phrase="edit.blank">لا يجوز ترك {tag} فارغاً. استعمل زر «أزِل» المجاور إن كنت تريد الوسم كله أن يذهب.</span>
+    <span data-phrase="edit.wanttext">«{value}» ليست قيمة يحملها هذا الوسم. فـ{tag} يتوقّع نصاً.</span>
+    <span data-phrase="edit.wantnumber">«{value}» ليست قيمة يحملها هذا الوسم. فـ{tag} يتوقّع عدداً.</span>
+    <span data-phrase="edit.badvalue">«{value}» ليست قيمة يحملها ذلك الوسم.</span>
+    <span data-phrase="value.empty">(فارغ)</span>
+    <span data-phrase="value.raw">{bytes} بايت من البيانات</span>
+    <span data-phrase="value.more">{shown}، و{more} غيرها</span>
+    <span data-phrase="value.unknown">قيمة غير معروفة ({value})</span>
+    <span data-phrase="hint.description">جملة تصف الصورة</span>
+    <span data-phrase="hint.artist">من التقطها</span>
+    <span data-phrase="hint.copyright">مثلاً (c) 2026 اسمك</span>
+    <span data-phrase="hint.software">ما الذي أنتج الملف</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">مثلاً Canon</span>
+    <span data-phrase="hint.model">مثلاً EOS R6</span>
+    <span data-phrase="hint.orientation">1 قائمة الجهة؛ و6 مُدارة 90 درجة</span>
+    <span data-phrase="hint.comment">نص حر</span>
+    <span data-phrase="hint.iso">مثلاً 400</span>
+    <span data-phrase="strip.nothing">لا شيء يُزال &mdash; لم تكن في هذا الملف بيانات وصفية.</span>
+    <span data-phrase="strip.none">لم يكن ثمة ما يُزال.</span>
+    <span data-phrase="strip.done.one">نُظّفت صورة واحدة. ولم يغادر شيء هذا الجهاز.</span>
+    <span data-phrase="strip.done.many">نُظّفت {count} صورة. ولم يغادر شيء هذا الجهاز.</span>
+    <span data-phrase="result.saved">من {before} إلى {after} &mdash; ذهب {saved} من البيانات الوصفية. أما الصورة نفسها
+      فلم تتغيّر.</span>
+    <span data-phrase="save.reverted">عدنا إلى الملف كما قُرئ.</span>
     <span data-phrase="find.clean.title">لا شيء في هذا الملف يفشي عنك شيئاً</span>
     <span data-phrase="find.clean.cleared">أُزيل كل ما كان يفشي. احفظ الصورة لتُكتَب على هذا الحال.</span>
     <span data-phrase="find.clean.never">لا مكان، ولا أختام زمنية، ولا كاميرا، ولا أسماء. فإما أنها لم تحمل ذلك قط، وإما أن

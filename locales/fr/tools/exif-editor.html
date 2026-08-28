@@ -155,6 +155,107 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · dont environ {metadata} de métadonnées</span>
+    <span data-phrase="row.remove">Retirer {name} de la liste</span>
+    <span data-phrase="inspect.metadata">dont environ {size} de métadonnées</span>
+    <span data-phrase="inspect.nometadata">aucune métadonnée trouvée</span>
+    <span data-phrase="badge.unreadable">Illisible</span>
+    <span data-phrase="badge.clean">Rien trouvé</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF illisible</span>
+    <span data-phrase="badge.exifempty">EXIF vide</span>
+    <span data-phrase="badge.thumbnail">Vignette</span>
+    <span data-phrase="badge.comment">Commentaire</span>
+    <span data-phrase="badge.text">Texte {count}</span>
+    <span data-phrase="badge.unknown">Blocs inconnus</span>
+    <span data-phrase="keep.nothing">Absolument tout part, y compris l&rsquo;étiquette d&rsquo;orientation et le profil
+      colorimétrique. Le fichier ne portera plus aucune métadonnée.</span>
+    <span data-phrase="keep.orientation">Tout le reste part&nbsp;: EXIF, GPS, la note du fabricant, XMP, IPTC, les
+      commentaires, la vignette incorporée et tout bloc que cet outil n&rsquo;a pas su
+      identifier. Gardé&nbsp;: l&rsquo;étiquette d&rsquo;orientation.</span>
+    <span data-phrase="keep.icc">Tout le reste part&nbsp;: EXIF, GPS, la note du fabricant, XMP, IPTC, les
+      commentaires, la vignette incorporée et tout bloc que cet outil n&rsquo;a pas su
+      identifier. Gardé&nbsp;: le profil colorimétrique.</span>
+    <span data-phrase="keep.both">Tout le reste part&nbsp;: EXIF, GPS, la note du fabricant, XMP, IPTC, les
+      commentaires, la vignette incorporée et tout bloc que cet outil n&rsquo;a pas su
+      identifier. Gardés&nbsp;: l&rsquo;étiquette d&rsquo;orientation et le profil
+      colorimétrique.</span>
+    <span data-phrase="block.none">Il n&rsquo;y a aucun bloc de métadonnées dans ce fichier.</span>
+    <span data-phrase="block.remove">Retirer</span>
+    <span data-phrase="block.kept">Gardé</span>
+    <span data-phrase="block.cannotkeep">Impossible à garder</span>
+    <span data-phrase="block.exifbad.title">Un bloc EXIF qui n&rsquo;a pas pu être lu</span>
+    <span data-phrase="block.exifbad.detail">{size}, et cet outil n&rsquo;a pas su le lire&nbsp;: {reason} L&rsquo;enregistrement
+      réécrit le bloc EXIF à partir de ce qui est listé plus bas, un bloc illisible ne
+      peut donc pas être repris &mdash; il part quel que soit le bouton que vous pressez.</span>
+    <span data-phrase="block.exif.title">Étiquettes EXIF</span>
+    <span data-phrase="block.exif.one">Une étiquette, dans les répertoires appareil, image et lieu.</span>
+    <span data-phrase="block.exif.many">{count} étiquettes réparties dans les répertoires appareil, image et lieu.</span>
+    <span data-phrase="block.exif.remove">Retirer toutes les étiquettes</span>
+    <span data-phrase="block.gps.title">Position GPS</span>
+    <span data-phrase="block.gps.remove">Retirer la position</span>
+    <span data-phrase="block.thumbnail.title">Vignette incorporée</span>
+    <span data-phrase="block.thumbnail.detail">Une petite deuxième copie de l&rsquo;image, qui peut être antérieure à un recadrage.</span>
+    <span data-phrase="block.thumbnail.remove">Retirer la vignette</span>
+    <span data-phrase="block.xmp.title">Paquet XMP</span>
+    <span data-phrase="block.xmp.detail">{size} de XML&nbsp;: en général l&rsquo;appareil à nouveau, plus l&rsquo;historique
+      des retouches.</span>
+    <span data-phrase="block.iptc.title">Bloc IPTC</span>
+    <span data-phrase="block.iptc.detail">{size} de champs légende, signature et crédit.</span>
+    <span data-phrase="block.text.title">Chunks de texte</span>
+    <span data-phrase="block.text.one">Une paire clé/valeur&nbsp;: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} paires clé/valeur&nbsp;: {keywords}.</span>
+    <span data-phrase="block.comments.title">Commentaires</span>
+    <span data-phrase="block.comments.one">Un commentaire rangé à côté de l&rsquo;image.</span>
+    <span data-phrase="block.comments.many">{count} commentaires rangés à côté de l&rsquo;image.</span>
+    <span data-phrase="block.extras.title">Des blocs que cet outil ne sait pas lire</span>
+    <span data-phrase="block.extras.detail">{blocks}. Retirables sans être lisibles.</span>
+    <span data-phrase="block.icc.title">Profil colorimétrique</span>
+    <span data-phrase="block.icc.detail">{size}. Il ne dit rien sur vous&nbsp;; le retirer peut décaler les couleurs.</span>
+    <span data-phrase="block.icc.named">{size} nommé &laquo;&nbsp;{name}&nbsp;&raquo;. Il ne dit rien sur vous&nbsp;; le
+      retirer peut décaler les couleurs.</span>
+    <span data-phrase="editor.note">Changez une valeur et elle est réécrite au moment d&rsquo;enregistrer. Les
+      étiquettes sans éditeur peuvent tout de même être retirées &mdash; supprimer une
+      valeur n&rsquo;a jamais besoin de la comprendre.</span>
+    <span data-phrase="editor.notags">Il n&rsquo;y a aucune étiquette EXIF dans cette photo.</span>
+    <span data-phrase="editor.textnote">PNG range ceci à la place des étiquettes EXIF. En modifier une réécrit tout le jeu.</span>
+    <span data-phrase="editor.frozen">Ce fichier a un chunk de texte compressé qui n&rsquo;a pas voulu se décompresser.
+      Modifier le jeu le ferait disparaître, il est donc en lecture seule ici &mdash; il
+      reste retirable en tant que bloc.</span>
+    <span data-phrase="editor.pairs.one">1 paire</span>
+    <span data-phrase="editor.pairs.many">{count} paires</span>
+    <span data-phrase="editor.unreadable">compressé, et il n&rsquo;a pas voulu se décompresser</span>
+    <span data-phrase="editor.valuefor">Valeur pour {keyword}</span>
+    <span data-phrase="editor.removechunk">Retirer le chunk de texte {keyword}</span>
+    <span data-phrase="edit.blank">{tag} ne peut pas rester vide. Servez-vous du bouton Retirer à côté si vous voulez
+      que l&rsquo;étiquette disparaisse tout à fait.</span>
+    <span data-phrase="edit.wanttext">&laquo;&nbsp;{value}&nbsp;&raquo; n&rsquo;est pas une valeur que cette étiquette
+      peut porter. {tag} attend du texte.</span>
+    <span data-phrase="edit.wantnumber">&laquo;&nbsp;{value}&nbsp;&raquo; n&rsquo;est pas une valeur que cette étiquette
+      peut porter. {tag} attend un nombre.</span>
+    <span data-phrase="edit.badvalue">&laquo;&nbsp;{value}&nbsp;&raquo; n&rsquo;est pas une valeur que cette étiquette
+      peut porter.</span>
+    <span data-phrase="value.empty">(vide)</span>
+    <span data-phrase="value.raw">{bytes} octets de données</span>
+    <span data-phrase="value.more">{shown}, et {more} de plus</span>
+    <span data-phrase="value.unknown">Valeur non reconnue ({value})</span>
+    <span data-phrase="hint.description">Une phrase décrivant l&rsquo;image</span>
+    <span data-phrase="hint.artist">Qui l&rsquo;a prise</span>
+    <span data-phrase="hint.copyright">p. ex. (c) 2026 Votre Nom</span>
+    <span data-phrase="hint.software">Ce qui a produit le fichier</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">p. ex. Canon</span>
+    <span data-phrase="hint.model">p. ex. EOS R6</span>
+    <span data-phrase="hint.orientation">1 est à l&rsquo;endroit&nbsp;; 6 est tourné de 90 degrés</span>
+    <span data-phrase="hint.comment">Texte libre</span>
+    <span data-phrase="hint.iso">p. ex. 400</span>
+    <span data-phrase="strip.nothing">Rien à retirer &mdash; ce fichier ne portait aucune métadonnée.</span>
+    <span data-phrase="strip.none">Rien n&rsquo;avait besoin d&rsquo;être retiré.</span>
+    <span data-phrase="strip.done.one">1 photo nettoyée. Rien n&rsquo;a quitté cette machine.</span>
+    <span data-phrase="strip.done.many">{count} photos nettoyées. Rien n&rsquo;a quitté cette machine.</span>
+    <span data-phrase="result.saved">De {before} à {after} &mdash; {saved} de métadonnées en moins. L&rsquo;image
+      elle-même est inchangée.</span>
+    <span data-phrase="save.reverted">Retour au fichier tel qu&rsquo;il a été lu.</span>
     <span data-phrase="find.clean.title">Rien dans ce fichier ne vous trahit</span>
     <span data-phrase="find.clean.cleared">Tout ce qui le faisait a été retiré. Enregistrez la photo pour l&rsquo;écrire.</span>
     <span data-phrase="find.clean.never">Pas de lieu, pas d&rsquo;horodatage, pas d&rsquo;appareil, pas de noms. Ou bien il

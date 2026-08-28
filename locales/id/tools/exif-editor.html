@@ -161,6 +161,105 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="row.file">{kind} · {size} · sekitar {metadata} di antaranya metadata</span>
+    <span data-phrase="row.remove">Keluarkan {name} dari daftar</span>
+    <span data-phrase="inspect.metadata">sekitar {size} di antaranya metadata</span>
+    <span data-phrase="inspect.nometadata">tidak ada metadata yang ditemukan</span>
+    <span data-phrase="badge.unreadable">Tidak terbaca</span>
+    <span data-phrase="badge.clean">Tidak ada apa-apa</span>
+    <span data-phrase="badge.exif">EXIF {count}</span>
+    <span data-phrase="badge.exifbad">EXIF tak terbaca</span>
+    <span data-phrase="badge.exifempty">EXIF kosong</span>
+    <span data-phrase="badge.thumbnail">Gambar mini</span>
+    <span data-phrase="badge.comment">Komentar</span>
+    <span data-phrase="badge.text">Teks {count}</span>
+    <span data-phrase="badge.unknown">Blok tak dikenal</span>
+    <span data-phrase="keep.nothing">Semuanya benar-benar dibuang, termasuk tag orientasi dan profil warna. File-nya
+      tidak akan membawa metadata jenis apa pun.</span>
+    <span data-phrase="keep.orientation">Semua yang lain dibuang: EXIF, GPS, catatan pabrikan, XMP, IPTC, komentar, gambar
+      mini yang tertanam, dan setiap blok yang tidak bisa dikenali alat ini. Disimpan: tag
+      orientasi.</span>
+    <span data-phrase="keep.icc">Semua yang lain dibuang: EXIF, GPS, catatan pabrikan, XMP, IPTC, komentar, gambar
+      mini yang tertanam, dan setiap blok yang tidak bisa dikenali alat ini. Disimpan:
+      profil warna.</span>
+    <span data-phrase="keep.both">Semua yang lain dibuang: EXIF, GPS, catatan pabrikan, XMP, IPTC, komentar, gambar
+      mini yang tertanam, dan setiap blok yang tidak bisa dikenali alat ini. Disimpan: tag
+      orientasi dan profil warna.</span>
+    <span data-phrase="block.none">Di file ini sama sekali tidak ada blok metadata.</span>
+    <span data-phrase="block.remove">Buang</span>
+    <span data-phrase="block.kept">Disimpan</span>
+    <span data-phrase="block.cannotkeep">Tidak bisa disimpan</span>
+    <span data-phrase="block.exifbad.title">Blok EXIF yang tidak bisa dibaca</span>
+    <span data-phrase="block.exifbad.detail">{size}, dan alat ini tidak bisa membacanya: {reason} Menyimpan akan menulis ulang
+      blok EXIF dari apa yang terdaftar di bawah, jadi yang tak terbaca tidak bisa ikut
+      &mdash; ia pergi, tombol mana pun yang Anda tekan.</span>
+    <span data-phrase="block.exif.title">Tag EXIF</span>
+    <span data-phrase="block.exif.one">Satu tag, di direktori kamera, gambar dan lokasi.</span>
+    <span data-phrase="block.exif.many">{count} tag tersebar di direktori kamera, gambar dan lokasi.</span>
+    <span data-phrase="block.exif.remove">Buang semua tag</span>
+    <span data-phrase="block.gps.title">Lokasi GPS</span>
+    <span data-phrase="block.gps.remove">Buang lokasinya</span>
+    <span data-phrase="block.thumbnail.title">Gambar mini tertanam</span>
+    <span data-phrase="block.thumbnail.detail">Salinan kedua yang kecil dari gambarnya, yang bisa jadi lebih tua daripada
+      pemotongan mana pun.</span>
+    <span data-phrase="block.thumbnail.remove">Buang gambar mininya</span>
+    <span data-phrase="block.xmp.title">Paket XMP</span>
+    <span data-phrase="block.xmp.detail">{size} XML: biasanya kameranya lagi, ditambah riwayat penyuntingan.</span>
+    <span data-phrase="block.iptc.title">Blok IPTC</span>
+    <span data-phrase="block.iptc.detail">{size} kolom teks foto, nama pemotret dan kredit.</span>
+    <span data-phrase="block.text.title">Chunk teks</span>
+    <span data-phrase="block.text.one">Satu pasangan kunci/nilai: {keywords}.</span>
+    <span data-phrase="block.text.many">{count} pasangan kunci/nilai: {keywords}.</span>
+    <span data-phrase="block.comments.title">Komentar</span>
+    <span data-phrase="block.comments.one">Satu komentar yang disimpan di samping gambarnya.</span>
+    <span data-phrase="block.comments.many">{count} komentar yang disimpan di samping gambarnya.</span>
+    <span data-phrase="block.extras.title">Blok yang tidak bisa dibaca alat ini</span>
+    <span data-phrase="block.extras.detail">{blocks}. Bisa dibuang tanpa bisa dibaca.</span>
+    <span data-phrase="block.icc.title">Profil warna</span>
+    <span data-phrase="block.icc.detail">{size}. Ia tidak mengatakan apa pun tentang Anda; membuangnya bisa menggeser
+      warnanya.</span>
+    <span data-phrase="block.icc.named">{size} bernama &ldquo;{name}&rdquo;. Ia tidak mengatakan apa pun tentang Anda;
+      membuangnya bisa menggeser warnanya.</span>
+    <span data-phrase="editor.note">Ubah sebuah nilai dan ia ditulis kembali saat Anda menyimpan. Tag tanpa penyunting
+      tetap bisa dibuang &mdash; menghapus sebuah nilai tidak pernah perlu memahaminya.</span>
+    <span data-phrase="editor.notags">Tidak ada tag EXIF di foto ini.</span>
+    <span data-phrase="editor.textnote">PNG menyimpan ini alih-alih tag EXIF. Menyunting salah satunya menulis ulang seluruh
+      himpunannya.</span>
+    <span data-phrase="editor.frozen">File ini punya chunk teks terkompresi yang tidak mau dibuka. Menyunting himpunannya
+      akan menjatuhkannya, jadi di sini ia hanya bisa dibaca &mdash; sebagai blok ia masih
+      bisa dibuang.</span>
+    <span data-phrase="editor.pairs.one">1 pasang</span>
+    <span data-phrase="editor.pairs.many">{count} pasang</span>
+    <span data-phrase="editor.unreadable">terkompresi, dan tidak mau dibuka</span>
+    <span data-phrase="editor.valuefor">Nilai untuk {keyword}</span>
+    <span data-phrase="editor.removechunk">Buang chunk teks {keyword}</span>
+    <span data-phrase="edit.blank">{tag} tidak boleh dibiarkan kosong. Pakai tombol Buang di sebelahnya kalau yang Anda
+      mau adalah tag itu hilang sekalian.</span>
+    <span data-phrase="edit.wanttext">&ldquo;{value}&rdquo; bukan nilai yang bisa dibawa tag ini. {tag} mengharapkan teks.</span>
+    <span data-phrase="edit.wantnumber">&ldquo;{value}&rdquo; bukan nilai yang bisa dibawa tag ini. {tag} mengharapkan
+      angka.</span>
+    <span data-phrase="edit.badvalue">&ldquo;{value}&rdquo; bukan nilai yang bisa dibawa tag itu.</span>
+    <span data-phrase="value.empty">(kosong)</span>
+    <span data-phrase="value.raw">data {bytes} bita</span>
+    <span data-phrase="value.more">{shown}, dan {more} lagi</span>
+    <span data-phrase="value.unknown">Nilai tak dikenal ({value})</span>
+    <span data-phrase="hint.description">Satu kalimat yang menggambarkan gambarnya</span>
+    <span data-phrase="hint.artist">Siapa yang memotretnya</span>
+    <span data-phrase="hint.copyright">mis. (c) 2026 Nama Anda</span>
+    <span data-phrase="hint.software">Apa yang menghasilkan file-nya</span>
+    <span data-phrase="hint.datetime">2026:08:19 14:30:00</span>
+    <span data-phrase="hint.make">mis. Canon</span>
+    <span data-phrase="hint.model">mis. EOS R6</span>
+    <span data-phrase="hint.orientation">1 berarti tegak; 6 berarti diputar 90 derajat</span>
+    <span data-phrase="hint.comment">Teks bebas</span>
+    <span data-phrase="hint.iso">mis. 400</span>
+    <span data-phrase="strip.nothing">Tidak ada yang perlu dibuang &mdash; file ini memang tidak punya metadata.</span>
+    <span data-phrase="strip.none">Tidak ada yang perlu dibuang.</span>
+    <span data-phrase="strip.done.one">1 foto dibersihkan. Tidak ada yang keluar dari mesin ini.</span>
+    <span data-phrase="strip.done.many">{count} foto dibersihkan. Tidak ada yang keluar dari mesin ini.</span>
+    <span data-phrase="result.saved">Dari {before} jadi {after} &mdash; {saved} metadata hilang. Gambarnya sendiri tidak
+      berubah.</span>
+    <span data-phrase="save.reverted">Kembali ke file seperti waktu dibaca.</span>
     <span data-phrase="find.clean.title">Tidak ada apa pun di file ini yang membocorkan Anda</span>
     <span data-phrase="find.clean.cleared">Semua yang tadinya membocorkan sudah dibuang. Simpan fotonya untuk menuliskannya.</span>
     <span data-phrase="find.clean.never">Tidak ada lokasi, tidak ada waktu, tidak ada kamera, tidak ada nama. Entah memang
