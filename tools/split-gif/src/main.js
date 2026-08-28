@@ -108,6 +108,11 @@ async function loadFile(picked) {
     // reasons throws a sentence, and phrase() hands back what it does not know.
     if (error instanceof GifFormatError) showError(phrase(error.message, error.values));
     else showError(phrase('read.failed', { why: phrase(error.message) }));
+    // Nothing was read, so the frames card has nothing to act on. Without
+    // this it stays live and empty - Select all, Select none and Start again
+    // all offering to work on no frames, under a line saying the file was not
+    // a GIF at all.
+    picker.waiting();
   } finally {
     picker.done();
   }

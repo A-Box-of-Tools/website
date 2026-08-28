@@ -56,6 +56,9 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
     // has to remember to do it. `inert` is used for nothing else on these
     // pages; see .card[inert] in tool-frame.css.
     for (const card of document.querySelectorAll('main .card[inert]')) {
+      // Remembered, so a tool that turns the file away can put the card back
+      // the way it found it. See waiting() below.
+      card.dataset.waited = 'yes';
       card.removeAttribute('inert');
     }
     onFiles(picked);
@@ -101,6 +104,25 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
     done() {
       dropzone.classList.remove('busy');
       if (titleEl) titleEl.textContent = idle;
+    },
+    /**
+     * Put the last step back to waiting.
+     *
+     * `inert` comes off the moment files are handed over, which is right for
+     * a file the tool can read and wrong for one it cannot: a refused file
+     * left split-gif's frames card live and empty, its Select all and Start
+     * again buttons offering to act on nothing, under a line saying the file
+     * was not a GIF at all.
+     *
+     * Called by a tool from the place it already knows the answer - its own
+     * failure path - because that is the only place the answer exists. The
+     * hand-over cannot wait for it: onFiles is fire and forget, and several
+     * tools read their files asynchronously.
+     */
+    waiting() {
+      for (const card of document.querySelectorAll('main .card')) {
+        if (card.dataset.waited === 'yes') card.setAttribute('inert', '');
+      }
     },
   };
 }
