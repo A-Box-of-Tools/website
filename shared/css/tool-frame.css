@@ -888,13 +888,18 @@ button, .as-button {
   border-radius: var(--radius);
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.15s, transform 0.15s;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
+/* No shadow at rest, deliberately - see the note above about this panel being
+   recessed rather than competing with the tool. One appears only under the
+   pointer, which is the moment the tile stops being part of the band and
+   becomes the thing about to be clicked. */
 .tool-related a:hover,
 .tool-related a:focus-visible {
   border-color: var(--accent);
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
