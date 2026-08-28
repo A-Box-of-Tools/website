@@ -365,6 +365,9 @@ guarantees_note = """
     zet vier controles op een rij die je zelf kunt uitvoeren, hier en op elke
     andere site."""
 
+hub_filter_label = "Zoek een tool"
+hub_filter_none = "Geen tool komt overeen."
+
 hub_guides_note = """
     Weet je niet welke instelling je moet verzetten, of wat die je kost?
     <a href="{{ base }}{{ links.guides }}/">Bij elke tool hoort een

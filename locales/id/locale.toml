@@ -386,6 +386,9 @@ guarantees_note = """
     memberikan empat pemeriksaan yang bisa Anda jalankan sendiri, di situs
     ini atau situs mana pun."""
 
+hub_filter_label = "Cari alat"
+hub_filter_none = "Tidak ada alat yang cocok."
+
 hub_guides_note = """
     Tidak yakin pengaturan mana yang harus digeser, atau apa biayanya?
     <a href="{{ base }}{{ links.guides }}/">Ada panduan untuk setiap

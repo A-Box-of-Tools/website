@@ -376,6 +376,9 @@ guarantees_note = """
     kendi başınıza çalıştırabileceğiniz dört kontrol sunar, bu sitede de
     başka herhangi bir sitede de."""
 
+hub_filter_label = "Araç ara"
+hub_filter_none = "Eşleşen araç yok."
+
 hub_guides_note = """
     Hangi ayarı hareket ettireceğinizden veya bedelinin ne olduğundan emin
     değil misiniz?

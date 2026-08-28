@@ -261,6 +261,9 @@ guarantees_note = """
       怎么判断一个工具是不是真需要你的文件</a>\
     里有四项你自己动手就能做的检查，用在本站管用，用在别家也一样。"""
 
+hub_filter_label = "查找工具"
+hub_filter_none = "没有匹配的工具。"
+
 hub_guides_note = """
     不知道该动哪个设置，也不清楚代价？\
     <a href="{{ base }}{{ links.guides }}/">每个工具都配了一篇指南</a>。"""
