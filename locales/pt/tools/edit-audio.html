@@ -175,6 +175,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Lendo o som&hellip;</span>
+    <span data-phrase="step.starting">Começando&hellip;</span>
+    <span data-phrase="step.reversing">Invertendo&hellip;</span>
+    <span data-phrase="step.stretching">Esticando, mantendo o tom&hellip;</span>
+    <span data-phrase="step.resampling">Reamostrando&hellip;</span>
+    <span data-phrase="step.level">Ajustando o nível&hellip;</span>
+    <span data-phrase="step.writing">Escrevendo o arquivo&hellip;</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">estéreo</span>
+    <span data-phrase="channels.many">{n} canais</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (do arquivo)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (presumido)</span>
+    <span data-phrase="src.guessednote">Este formato não diz, em nenhum cabeçalho que
+      esta ferramenta leia, em que taxa foi gravado, então ele foi decodificado a 48
+      kHz. Se a gravação foi feita em outra taxa, o navegador reamostrou na entrada
+      &mdash; que é a única coisa aqui que não é exata.</span>
+    <span data-phrase="peak.silence">silêncio</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">Deixado como está, a 1x.</span>
+    <span data-phrase="speed.pitch.faster">{speed} mais rápido, com o tom onde está. A
+      gravação é cortada em janelas que se sobrepõem e reposta mais junta, e isso é
+      feito aqui, não mandado a lugar nenhum.</span>
+    <span data-phrase="speed.pitch.slower">{speed} mais devagar, com o tom onde está. A
+      gravação é cortada em janelas que se sobrepõem e reposta mais espaçada, e isso é
+      feito aqui, não mandado a lugar nenhum.</span>
+    <span data-phrase="speed.moves.faster">{speed} mais rápido, e tudo vai junto:
+      {semitones} semitons para cima, do jeito que uma fita passando rápido demais faz.</span>
+    <span data-phrase="speed.moves.slower">{speed} mais devagar, e tudo vai junto:
+      {semitones} semitons para baixo, do jeito que uma fita passando devagar demais
+      faz.</span>
+    <span data-phrase="volume.already">Já está exatamente onde este ajuste o colocaria.</span>
+    <span data-phrase="volume.raised">Subido {db} dB, o que põe o momento mais alto da
+      gravação logo abaixo da escala cheia.</span>
+    <span data-phrase="volume.lowered">Baixado {db} dB, o que põe o momento mais alto da
+      gravação logo abaixo da escala cheia.</span>
+    <span data-phrase="volume.unchanged">Deixado exatamente como está.</span>
+    <span data-phrase="volume.up">{db} dB para cima, o que multiplica cada amostra por
+      {gain} e leva o momento mais alto a {peak}.</span>
+    <span data-phrase="volume.down">{db} dB para baixo, o que multiplica cada amostra
+      por {gain} e leva o momento mais alto a {peak}.</span>
+    <span data-phrase="clip.over">Com este ajuste o momento mais alto fica {db} dB acima
+      da escala cheia.</span>
+    <span data-phrase="clip.float">Um WAV de 32 bits em ponto flutuante segura essas
+      amostras, então no arquivo em si não se perde nada &mdash; mas qualquer coisa que
+      toque isso tem que baixar o nível, e a maioria vai achatar no teto em vez disso.
+      Abaixe, ou escolha &ldquo;o mais alto possível&rdquo;.</span>
+    <span data-phrase="clip.int">Um WAV de 16 bits não segura isso, então essas amostras
+      seriam achatadas no teto, que é como distorção soa. Abaixe, escolha &ldquo;o mais
+      alto possível&rdquo;, ou grave 32 bits em ponto flutuante, que as mantém.</span>
+    <span data-phrase="out.wav.float">WAV, 32 bits ponto flutuante</span>
+    <span data-phrase="out.wav.int">WAV, 16 bits</span>
+    <span data-phrase="out.peak">pico {peak}</span>
+    <span data-phrase="out.clipped.one">{n} amostra acima da escala cheia</span>
+    <span data-phrase="out.clipped.many">{n} amostras acima da escala cheia</span>
+    <span data-phrase="out.took">{n} s</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">Esse arquivo está vazio.</span>
     <span data-phrase="audio.nodecode">Este navegador não conseguiu tirar som nenhum desse arquivo. Ou o formato é um que
       ele não decodifica, ou o arquivo não tem faixa de áudio nenhuma. MP3, WAV, FLAC,

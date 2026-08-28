@@ -174,6 +174,68 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">جارٍ قراءة الصوت&hellip;</span>
+    <span data-phrase="step.starting">يبدأ&hellip;</span>
+    <span data-phrase="step.reversing">جارٍ العكس&hellip;</span>
+    <span data-phrase="step.stretching">جارٍ التمديد مع حفظ الطبقة&hellip;</span>
+    <span data-phrase="step.resampling">جارٍ إعادة العيّنة&hellip;</span>
+    <span data-phrase="step.level">جارٍ ضبط المستوى&hellip;</span>
+    <span data-phrase="step.writing">كتابة الملف&hellip;</span>
+    <span data-phrase="channels.mono">أحادي</span>
+    <span data-phrase="channels.stereo">ستيريو</span>
+    <span data-phrase="channels.many">{n} قنوات</span>
+    <span data-phrase="src.format">{channels}، {khz} كيلوهرتز</span>
+    <span data-phrase="src.rate.file">{rate} هرتز (من الملف)</span>
+    <span data-phrase="src.rate.assumed">{rate} هرتز (مفترضة)</span>
+    <span data-phrase="src.guessednote">هذه الصيغة لا تذكر في أي ترويسة تقرؤها هذه
+      الأداة معدل التسجيل، فجرى فك ترميزه عند 48 كيلوهرتز. وإن كان التسجيل بمعدل آخر فقد
+      أعاد المتصفح أخذ عيناته عند الإدخال &mdash; وهو الشيء الوحيد هنا غير المضبوط
+      تماماً.</span>
+    <span data-phrase="peak.silence">صمت</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">تُرك كما هو، عند 1x.</span>
+    <span data-phrase="speed.pitch.faster">أسرع بمقدار {speed}، والطبقة تبقى كما هي.
+      يُقطَّع التسجيل إلى نوافذ متداخلة ثم يُعاد رصفها أقرب بعضها إلى بعض، وذلك يجري هنا
+      لا في مكان آخر.</span>
+    <span data-phrase="speed.pitch.slower">أبطأ بمقدار {speed}، والطبقة تبقى كما هي.
+      يُقطَّع التسجيل إلى نوافذ متداخلة ثم يُعاد رصفها أبعد بعضها عن بعض، وذلك يجري هنا
+      لا في مكان آخر.</span>
+    <span data-phrase="speed.moves.faster">أسرع بمقدار {speed}، وكل شيء يتحرك معه:
+      {semitones} نصف نغمة إلى أعلى، كشريط يدور أسرع مما ينبغي.</span>
+    <span data-phrase="speed.moves.slower">أبطأ بمقدار {speed}، وكل شيء يتحرك معه:
+      {semitones} نصف نغمة إلى أسفل، كشريط يدور أبطأ مما ينبغي.</span>
+    <span data-phrase="volume.already">هو أصلاً في الموضع الذي سيضعه فيه هذا الإعداد
+      بالضبط.</span>
+    <span data-phrase="volume.raised">رُفع {db} ديسيبل، فصار أعلى لحظة في التسجيل تحت
+      المقياس الكامل بقليل.</span>
+    <span data-phrase="volume.lowered">خُفض {db} ديسيبل، فصار أعلى لحظة في التسجيل تحت
+      المقياس الكامل بقليل.</span>
+    <span data-phrase="volume.unchanged">تُرك كما هو تماماً.</span>
+    <span data-phrase="volume.up">أعلى بـ{db} ديسيبل، ما يضرب كل عيّنة في {gain} ويرفع
+      أعلى لحظة إلى {peak}.</span>
+    <span data-phrase="volume.down">أخفض بـ{db} ديسيبل، ما يضرب كل عيّنة في {gain} ويصل
+      بأعلى لحظة إلى {peak}.</span>
+    <span data-phrase="clip.over">عند هذا الإعداد تقع أعلى لحظة فوق المقياس الكامل
+      بـ{db} ديسيبل.</span>
+    <span data-phrase="clip.float">ملف WAV بصيغة 32 بت عائمة يحتمل تلك العيّنات، فلا
+      يضيع شيء في الملف نفسه &mdash; لكن أي شيء يشغّله سيضطر إلى خفض المستوى، وأكثر
+      البرامج تقصّه عند السقف بدل ذلك. اخفض الصوت، أو اختر &laquo;بأعلى ما يمكن&raquo;.</span>
+    <span data-phrase="clip.int">ملف WAV بصيغة 16 بت لا يحتمل ذلك، فستُقصّ تلك العيّنات
+      عند السقف، وهذا هو صوت التشويه. اخفض الصوت، أو اختر &laquo;بأعلى ما يمكن&raquo;،
+      أو اكتب 32 بت عائمة التي تحفظها.</span>
+    <span data-phrase="out.wav.float">WAV، 32 بت عائمة</span>
+    <span data-phrase="out.wav.int">WAV، 16 بت</span>
+    <span data-phrase="out.peak">الذروة {peak}</span>
+    <span data-phrase="out.clipped.one">عيّنة واحدة فوق المقياس الكامل</span>
+    <span data-phrase="out.clipped.many">{n} عيّنة فوق المقياس الكامل</span>
+    <span data-phrase="out.took">{n} ث</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
+    <span data-phrase="size.gb">{n} غيغابايت</span>
     <span data-phrase="audio.empty">ذلك الملف فارغ.</span>
     <span data-phrase="audio.nodecode">لم يستخرج هذا المتصفح أي صوت من ذلك الملف. فإما أن الصيغة مما لا يفك ترميزه، وإما أن
       الملف لا يحوي مسار صوت أصلاً. صيغ MP3 وWAV وFLAC وM4A وMP4 وMOV وWebM وOgg تعمل

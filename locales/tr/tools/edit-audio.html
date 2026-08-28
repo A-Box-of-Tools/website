@@ -180,6 +180,70 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Ses okunuyor&hellip;</span>
+    <span data-phrase="step.starting">Başlıyor&hellip;</span>
+    <span data-phrase="step.reversing">Ters çevriliyor&hellip;</span>
+    <span data-phrase="step.stretching">Perde korunarak uzatılıyor&hellip;</span>
+    <span data-phrase="step.resampling">Yeniden örnekleniyor&hellip;</span>
+    <span data-phrase="step.level">Düzey ayarlanıyor&hellip;</span>
+    <span data-phrase="step.writing">Dosya yazılıyor&hellip;</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} kanal</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (dosyadan)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (varsayılan)</span>
+    <span data-phrase="src.guessednote">Bu biçim, bu aracın okuduğu hiçbir başlıkta
+      hangi hızda kaydedildiğini söylemiyor, bu yüzden 48 kHz&rsquo;de çözümlendi. Kayıt
+      başka bir hızda yapıldıysa tarayıcı onu içeri alırken yeniden örnekledi &mdash;
+      burada tam olmayan tek şey budur.</span>
+    <span data-phrase="peak.silence">sessizlik</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">1x&rsquo;te, olduğu gibi bırakıldı.</span>
+    <span data-phrase="speed.pitch.faster">{speed} daha hızlı, perde olduğu yerde
+      kalıyor. Kayıt üst üste binen pencerelere bölünüp daha sıkışık biçimde geri
+      seriliyor; bu da burada yapılıyor, hiçbir yere gönderilmiyor.</span>
+    <span data-phrase="speed.pitch.slower">{speed} daha yavaş, perde olduğu yerde
+      kalıyor. Kayıt üst üste binen pencerelere bölünüp daha aralıklı biçimde geri
+      seriliyor; bu da burada yapılıyor, hiçbir yere gönderilmiyor.</span>
+    <span data-phrase="speed.moves.faster">{speed} daha hızlı ve her şey onunla birlikte
+      kayıyor: {semitones} yarım ses yukarı, bir bandı fazla hızlı çalmak gibi.</span>
+    <span data-phrase="speed.moves.slower">{speed} daha yavaş ve her şey onunla birlikte
+      kayıyor: {semitones} yarım ses aşağı, bir bandı fazla yavaş çalmak gibi.</span>
+    <span data-phrase="volume.already">Bu ayarın koyacağı yerde zaten tam olarak
+      duruyor.</span>
+    <span data-phrase="volume.raised">{db} dB yükseltildi; böylece kaydın en yüksek anı
+      tam ölçeğin hemen altına düşüyor.</span>
+    <span data-phrase="volume.lowered">{db} dB alçaltıldı; böylece kaydın en yüksek anı
+      tam ölçeğin hemen altına düşüyor.</span>
+    <span data-phrase="volume.unchanged">Tam olduğu gibi bırakıldı.</span>
+    <span data-phrase="volume.up">{db} dB yukarı; bu her örneği {gain} ile çarpıyor ve
+      en yüksek anı {peak} düzeyine taşıyor.</span>
+    <span data-phrase="volume.down">{db} dB aşağı; bu her örneği {gain} ile çarpıyor ve
+      en yüksek anı {peak} düzeyine taşıyor.</span>
+    <span data-phrase="clip.over">Bu ayarda en yüksek an tam ölçeğin {db} dB üstüne
+      çıkıyor.</span>
+    <span data-phrase="clip.float">32 bit kayan noktalı bir WAV o örnekleri tutar,
+      dolayısıyla dosyanın kendisinde bir şey yitmez &mdash; ama onu çalan her şey
+      düzeyi geri indirmek zorunda kalır ve çoğu bunun yerine tavanda kırpar. Sesi kısın
+      ya da &ldquo;olabildiğince yüksek&rdquo;i seçin.</span>
+    <span data-phrase="clip.int">16 bit bir WAV bunu tutamaz, o yüzden o örnekler
+      tavanda kırpılırdı ve bozulmanın sesi tam olarak budur. Sesi kısın,
+      &ldquo;olabildiğince yüksek&rdquo;i seçin ya da onları koruyan 32 bit kayan
+      noktalı olarak yazın.</span>
+    <span data-phrase="out.wav.float">WAV, 32 bit kayan noktalı</span>
+    <span data-phrase="out.wav.int">WAV, 16 bit</span>
+    <span data-phrase="out.peak">tepe {peak}</span>
+    <span data-phrase="out.clipped.one">tam ölçeğin üstünde {n} örnek</span>
+    <span data-phrase="out.clipped.many">tam ölçeğin üstünde {n} örnek</span>
+    <span data-phrase="out.took">{n} sn</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">Bu dosya boş.</span>
     <span data-phrase="audio.nodecode">Bu tarayıcı o dosyadan hiç ses çıkaramadı. Ya biçim onun çözemediği bir biçim, ya da
       dosyada hiç ses parçası yok. MP3, WAV, FLAC, M4A, MP4, MOV, WebM ve Ogg hepsi

@@ -176,6 +176,68 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">ध्वनि पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="step.starting">शुरू हो रहा है&hellip;</span>
+    <span data-phrase="step.reversing">उलटा जा रहा है&hellip;</span>
+    <span data-phrase="step.stretching">खींचा जा रहा है, सुर वहीं रखते हुए&hellip;</span>
+    <span data-phrase="step.resampling">फिर से सैंपल लिया जा रहा है&hellip;</span>
+    <span data-phrase="step.level">स्तर सेट किया जा रहा है&hellip;</span>
+    <span data-phrase="step.writing">फ़ाइल लिखी जा रही है&hellip;</span>
+    <span data-phrase="channels.mono">मोनो</span>
+    <span data-phrase="channels.stereo">स्टीरियो</span>
+    <span data-phrase="channels.many">{n} चैनल</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (फ़ाइल से)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (मान लिया गया)</span>
+    <span data-phrase="src.guessednote">यह प्रारूप किसी ऐसे हेडर में नहीं बताता जिसे यह
+      टूल पढ़ता हो कि रिकॉर्डिंग किस दर पर हुई थी, इसलिए इसे 48 kHz पर डिकोड किया गया।
+      अगर रिकॉर्डिंग किसी और दर पर हुई थी तो ब्राउज़र ने पढ़ते समय उसका दोबारा नमूना ले
+      लिया &mdash; और यहाँ सिर्फ़ यही एक चीज़ है जो बिलकुल सटीक नहीं है।</span>
+    <span data-phrase="peak.silence">सन्नाटा</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">1x पर, जैसा है वैसा ही।</span>
+    <span data-phrase="speed.pitch.faster">{speed} तेज़, सुर जहाँ है वहीं रहते हुए।
+      रिकॉर्डिंग को आपस में ढकती खिड़कियों में काटकर पास-पास दोबारा बिछाया जाता है, और
+      यह यहीं होता है, कहीं भेजा नहीं जाता।</span>
+    <span data-phrase="speed.pitch.slower">{speed} धीमा, सुर जहाँ है वहीं रहते हुए।
+      रिकॉर्डिंग को आपस में ढकती खिड़कियों में काटकर दूर-दूर दोबारा बिछाया जाता है, और
+      यह यहीं होता है, कहीं भेजा नहीं जाता।</span>
+    <span data-phrase="speed.moves.faster">{speed} तेज़, और सब कुछ उसके साथ चलता है:
+      {semitones} सुर ऊपर, वैसे ही जैसे टेप ग़लत रफ़्तार पर चलने से होता है।</span>
+    <span data-phrase="speed.moves.slower">{speed} धीमा, और सब कुछ उसके साथ चलता है:
+      {semitones} सुर नीचे, वैसे ही जैसे टेप ग़लत रफ़्तार पर चलने से होता है।</span>
+    <span data-phrase="volume.already">यह पहले से ठीक वहीं है जहाँ यह सेटिंग इसे रखती।</span>
+    <span data-phrase="volume.raised">{db} dB बढ़ाया गया, जिससे रिकॉर्डिंग का सबसे तेज़
+      पल पूरे पैमाने से ठीक नीचे आ जाता है।</span>
+    <span data-phrase="volume.lowered">{db} dB घटाया गया, जिससे रिकॉर्डिंग का सबसे तेज़
+      पल पूरे पैमाने से ठीक नीचे आ जाता है।</span>
+    <span data-phrase="volume.unchanged">ठीक जैसा है वैसा ही छोड़ा गया।</span>
+    <span data-phrase="volume.up">{db} dB ऊपर, जो हर सैंपल को {gain} से गुणा करता है और
+      सबसे तेज़ पल को {peak} तक ले जाता है।</span>
+    <span data-phrase="volume.down">{db} dB नीचे, जो हर सैंपल को {gain} से गुणा करता है
+      और सबसे तेज़ पल को {peak} तक ले जाता है।</span>
+    <span data-phrase="clip.over">इस सेटिंग पर सबसे तेज़ पल पूरे पैमाने से {db} dB ऊपर
+      चला जाता है।</span>
+    <span data-phrase="clip.float">32-बिट फ़्लोट WAV उन सैंपलों को सँभाल लेता है, इसलिए
+      फ़ाइल में कुछ नहीं खोता &mdash; पर जो भी उसे चलाएगा उसे स्तर वापस नीचे लाना
+      पड़ेगा, और ज़्यादातर चीज़ें उसे छत पर चपटा कर देंगी। आवाज़ घटाइए, या &ldquo;जितनी
+      तेज़ हो सके&rdquo; चुनिए।</span>
+    <span data-phrase="clip.int">16-बिट WAV वह सँभाल नहीं सकता, इसलिए वे सैंपल छत पर चपट
+      जाएँगे, और विकृति की आवाज़ यही है। आवाज़ घटाइए, &ldquo;जितनी तेज़ हो सके&rdquo;
+      चुनिए, या 32-बिट फ़्लोट लिखिए, जो उन्हें रखता है।</span>
+    <span data-phrase="out.wav.float">WAV, 32-बिट फ़्लोट</span>
+    <span data-phrase="out.wav.int">WAV, 16-बिट</span>
+    <span data-phrase="out.peak">शिखर {peak}</span>
+    <span data-phrase="out.clipped.one">पूरे पैमाने से ऊपर {n} सैंपल</span>
+    <span data-phrase="out.clipped.many">पूरे पैमाने से ऊपर {n} सैंपल</span>
+    <span data-phrase="out.took">{n} से</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">वह फ़ाइल ख़ाली है।</span>
     <span data-phrase="audio.nodecode">इस ब्राउज़र को उस फ़ाइल से कोई आवाज़ नहीं मिली। या तो यह ऐसा प्रारूप है जिसे यह
       डिकोड नहीं करता, या फ़ाइल में ऑडियो ट्रैक है ही नहीं। MP3, WAV, FLAC, M4A, MP4, MOV,

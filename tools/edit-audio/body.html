@@ -175,6 +175,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Reading the sound&hellip;</span>
+    <span data-phrase="step.starting">Starting&hellip;</span>
+    <span data-phrase="step.reversing">Reversing&hellip;</span>
+    <span data-phrase="step.stretching">Stretching, keeping the pitch&hellip;</span>
+    <span data-phrase="step.resampling">Resampling&hellip;</span>
+    <span data-phrase="step.level">Setting the level&hellip;</span>
+    <span data-phrase="step.writing">Writing the file&hellip;</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} channels</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (from the file)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (assumed)</span>
+    <span data-phrase="src.guessednote">This format does not say what rate it was
+      recorded at in a header this tool reads, so it was decoded at 48 kHz. If the
+      recording was made at some other rate, the browser resampled it on the way in
+      &mdash; which is the one thing here that is not exact.</span>
+    <span data-phrase="peak.silence">silence</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">Left alone at 1x.</span>
+    <span data-phrase="speed.pitch.faster">{speed} faster, with the pitch held where it
+      is. The recording is cut into overlapping windows and laid back down closer
+      together, which is done here rather than sent anywhere.</span>
+    <span data-phrase="speed.pitch.slower">{speed} slower, with the pitch held where it
+      is. The recording is cut into overlapping windows and laid back down further
+      apart, which is done here rather than sent anywhere.</span>
+    <span data-phrase="speed.moves.faster">{speed} faster, and everything moves with it:
+      {semitones} semitones up, the way playing a tape at the wrong speed does.</span>
+    <span data-phrase="speed.moves.slower">{speed} slower, and everything moves with it:
+      {semitones} semitones down, the way playing a tape at the wrong speed does.</span>
+    <span data-phrase="volume.already">Already exactly where this setting would put it.</span>
+    <span data-phrase="volume.raised">Raised by {db} dB, which puts the loudest moment
+      in the recording just under full scale.</span>
+    <span data-phrase="volume.lowered">Lowered by {db} dB, which puts the loudest moment
+      in the recording just under full scale.</span>
+    <span data-phrase="volume.unchanged">Left exactly as it is.</span>
+    <span data-phrase="volume.up">Up {db} dB, which multiplies every sample by {gain}
+      and takes the loudest moment to {peak}.</span>
+    <span data-phrase="volume.down">Down {db} dB, which multiplies every sample by
+      {gain} and takes the loudest moment to {peak}.</span>
+    <span data-phrase="clip.over">At this setting the loudest moment lands {db} dB above
+      full scale.</span>
+    <span data-phrase="clip.float">A 32-bit float WAV will hold those samples, so
+      nothing is lost in the file itself &mdash; but anything playing it has to bring
+      the level back down, and most things will flatten it at the ceiling instead. Turn
+      it down, or choose &ldquo;as loud as it will go&rdquo;.</span>
+    <span data-phrase="clip.int">A 16-bit WAV cannot hold that, so those samples would
+      be flattened at the ceiling, which is what distortion sounds like. Turn it down,
+      choose &ldquo;as loud as it will go&rdquo;, or write 32-bit float, which keeps
+      them.</span>
+    <span data-phrase="out.wav.float">WAV, 32-bit float</span>
+    <span data-phrase="out.wav.int">WAV, 16-bit</span>
+    <span data-phrase="out.peak">peak {peak}</span>
+    <span data-phrase="out.clipped.one">{n} sample over full scale</span>
+    <span data-phrase="out.clipped.many">{n} samples over full scale</span>
+    <span data-phrase="out.took">{n}s</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">That file is empty.</span>
     <span data-phrase="audio.nodecode">This browser could not read any sound out of that file. Either the format is one it
       does not decode, or the file has no audio track in it at all. MP3, WAV, FLAC, M4A,
