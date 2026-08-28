@@ -160,6 +160,104 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">{name} पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="read.notagif">{name} GIF नहीं है: {why}। यह टूल ख़ुद GIF प्रारूप पढ़ता है, इसलिए दूसरी फ़ाइलों के
+      बारे में इसके पास कहने को कुछ नहीं है।</span>
+    <span data-phrase="read.failed">{name} पढ़ी नहीं जा सकी: {why}</span>
+    <span data-phrase="read.truncated">फ़ाइल {available} बाइट पर ख़त्म हो जाती है, और {at} पर {wanted} बाइट और चाहिए थे</span>
+    <span data-phrase="gif.notagif">यह फ़ाइल «GIF» से नहीं, {what} से शुरू होती है</span>
+    <span data-phrase="kind.jpeg">एक JPEG</span>
+    <span data-phrase="kind.png">एक PNG</span>
+    <span data-phrase="kind.riff">एक RIFF फ़ाइल &mdash; कोई WebP या WAV</span>
+    <span data-phrase="kind.pdf">एक PDF</span>
+    <span data-phrase="kind.zip">एक ज़िप फ़ाइल</span>
+    <span data-phrase="kind.bytes">{bytes} बाइट</span>
+    <span data-phrase="decode.codesize">कोड आकार {size} है, जबकि प्रारूप 2 से 8 तक की छूट देता है</span>
+    <span data-phrase="n.frame.one">{n} फ़्रेम</span>
+    <span data-phrase="n.frame.many">{n} फ़्रेम</span>
+    <span data-phrase="n.colour.one">{n} रंग</span>
+    <span data-phrase="n.colour.many">{n} रंग</span>
+    <span data-phrase="n.entry.one">{n} प्रविष्टि</span>
+    <span data-phrase="n.entry.many">{n} प्रविष्टियाँ</span>
+    <span data-phrase="n.localtable.one">प्रति-फ़्रेम {n} तालिका</span>
+    <span data-phrase="n.localtable.many">प्रति-फ़्रेम {n} तालिकाएँ</span>
+    <span data-phrase="n.time.one">{n} बार</span>
+    <span data-phrase="n.time.many">{n} बार</span>
+    <span data-phrase="size.exactbytes">{n} बाइट</span>
+    <span data-phrase="clock.minutes">{minutes} मि {seconds} से</span>
+    <span data-phrase="unit.seconds">{n}से</span>
+    <span data-phrase="plays.rate">{time} ({fps} fps)</span>
+    <span data-phrase="clamped.note">{n} फ़्रेम 0.02से से कम माँगते हैं, और हर ब्राउज़र उन्हें उसकी जगह 0.10से रोके रखता
+      है।</span>
+    <span data-phrase="loops.none">एक बार &mdash; कोई लूप ब्लॉक नहीं</span>
+    <span data-phrase="loops.forever">हमेशा</span>
+    <span data-phrase="loops.times">{n} बार</span>
+    <span data-phrase="level.bad">समस्या</span>
+    <span data-phrase="level.warn">जान लेना ठीक है</span>
+    <span data-phrase="level.note">टिप्पणी</span>
+    <span data-phrase="frames.partial">{frames}। इनमें से {drawn} यहाँ बनाए गए हैं; बाक़ी इतने बड़े हैं कि सबको एक साथ
+      स्मृति में नहीं रखा जा सकता, इसलिए उनके बारे में सिर्फ़ हेडर से बताया गया है।</span>
+    <span data-phrase="frames.none">{frames}, इनमें से कोई भी पूरे कैनवस को नहीं ढकता।</span>
+    <span data-phrase="frames.all">{frames}, सभी पूरे कैनवस को ढकते हैं।</span>
+    <span data-phrase="frames.some">{frames}, इनमें से {n} पूरे कैनवस को ढकते हैं।</span>
+    <span data-phrase="frames.more">बाक़ी {frames} दिखाइए</span>
+    <span data-phrase="shot.stored">फ़्रेम {n} अपने आप में क्या रखता है</span>
+    <span data-phrase="shot.composited">फ़्रेम {n} के बाद का कैनवस</span>
+    <span data-phrase="frame.number">फ़्रेम {n}</span>
+    <span data-phrase="frame.notdrawn">नहीं बनाया गया</span>
+    <span data-phrase="frame.delay">देरी</span>
+    <span data-phrase="frame.clamped">{delay} &rarr; 0.10से</span>
+    <span data-phrase="frame.rectangle">आयत</span>
+    <span data-phrase="frame.rect">{left}, {top} पर {width} &times; {height}</span>
+    <span data-phrase="frame.palette">पैलेट</span>
+    <span data-phrase="palette.own">{n} अपने ख़ुद के</span>
+    <span data-phrase="palette.global">वैश्विक वाला</span>
+    <span data-phrase="palette.none">बिलकुल कोई नहीं</span>
+    <span data-phrase="frame.transparent">पारदर्शी</span>
+    <span data-phrase="frame.transparent.index">सूचकांक {n}</span>
+    <span data-phrase="frame.transparent.no">नहीं</span>
+    <span data-phrase="frame.size">आकार</span>
+    <span data-phrase="frame.sizevalue">{size} &mdash; {share}</span>
+    <span data-phrase="frame.interlaced">इंटरलेस्ड</span>
+    <span data-phrase="frame.yes">हाँ</span>
+    <span data-phrase="frame.compressed">संपीड़न</span>
+    <span data-phrase="frame.ratio">{ratio}&times;</span>
+    <span data-phrase="frame.trouble">गड़बड़</span>
+    <span data-phrase="frame.endsearly">डेटा वक़्त से पहले ख़त्म हो जाता है</span>
+    <span data-phrase="colours.lede">इस फ़ाइल की तालिकाएँ मिलकर {declared} घोषित करती हैं, पिक्सेल उनमें से {referenced}
+      का ज़िक्र करते हैं, और उनमें से {different} एक-दूसरे से अलग हैं।</span>
+    <span data-phrase="palette.globalnote">{entries}, {size}, {frames} में साझा। फीकी प्रविष्टियाँ वे हैं जिनका ज़िक्र कोई
+      पिक्सेल कभी नहीं करता।</span>
+    <span data-phrase="palette.locals">{tables} (कुल {size})</span>
+    <span data-phrase="palette.frameheading">फ़्रेम {n} &mdash; {colours}</span>
+    <span data-phrase="palette.capped">{n} में से पहली 24 दिखाई गई हैं। बाक़ी डाउनलोड होने वाली रिपोर्ट में हैं।</span>
+    <span data-phrase="block.comment">एक टिप्पणी। कोई व्यूअर इसे नहीं दिखाता, और फ़ाइल की हर प्रति इसे साथ ढोती है।</span>
+    <span data-phrase="block.loop.forever">लूप ब्लॉक, जो हमेशा चलाने को कहता है। यह GIF विशिष्टि का हिस्सा नहीं है: नेटस्केप ने
+      इसे 1995 में गढ़ा और फिर भी सबने इसे लागू कर लिया।</span>
+    <span data-phrase="block.loop.times">लूप ब्लॉक, जो {times} चलाने को कहता है।</span>
+    <span data-phrase="block.xmp">एक XMP पैकेट: वह XML जो कोई इमेज एडिटर यह दर्ज करने को लिखता है कि उसने क्या किया।
+      इसे कुछ भी नहीं बनाता।</span>
+    <span data-phrase="block.icc">एक ICC रंग प्रोफ़ाइल, जो बताती है कि पैलेट की संख्याएँ रंग के तौर पर क्या हैं। GIF
+      में से इसे शायद ही कुछ पढ़ता हो।</span>
+    <span data-phrase="block.plaintext">एक प्लेन-टेक्स्ट ब्लॉक, जो व्यूअर से तस्वीर के ऊपर टेक्स्ट बनाने को कहता है। यह 1989
+      की विशिष्टि में था और इसे कभी किसी ने लागू नहीं किया।</span>
+    <span data-phrase="block.application">एक एप्लिकेशन ब्लॉक। व्यूअर जिन्हें नहीं पहचानते उन्हें छोड़ देते हैं।</span>
+    <span data-phrase="report.runsfor">चलती है</span>
+    <span data-phrase="report.aswritten">लिखे अनुसार {time}</span>
+    <span data-phrase="report.actually">असल में चलती है</span>
+    <span data-phrase="report.clamped">{time} - 0.02से से कम के {n} फ़्रेम हर ब्राउज़र 0.10से कर देता है</span>
+    <span data-phrase="report.rate">दर</span>
+    <span data-phrase="report.persecond">{fps} फ़्रेम प्रति सेकंड</span>
+    <span data-phrase="report.loops">लूप</span>
+    <span data-phrase="report.noloop">कोई लूप ब्लॉक नहीं - एक बार चलती है</span>
+    <span data-phrase="report.globalpal">वैश्विक पैलेट</span>
+    <span data-phrase="report.colours">{n} रंग</span>
+    <span data-phrase="report.nopalette">कोई नहीं</span>
+    <span data-phrase="report.drawn">बनाए गए रंग</span>
+    <span data-phrase="report.background">पृष्ठभूमि सूचकांक</span>
+    <span data-phrase="copy.done">कॉपी हो गया। यह सादा टेक्स्ट है, और सिर्फ़ आपके क्लिपबोर्ड तक गया है।</span>
+    <span data-phrase="copy.refused">इस ब्राउज़र ने पेज को क्लिपबोर्ड में लिखने नहीं दिया। इसके बजाय «डाउनलोड करें» का
+      इस्तेमाल कीजिए।</span>
     <span data-phrase="budget.header.label">हेडर और स्क्रीन विवरण</span>
     <span data-phrase="budget.header.note">हस्ताक्षर, कैनवास का आकार और झंडे। तेरह बाइट, जो अब तक बने हर GIF में हैं।</span>
     <span data-phrase="budget.global.label">वैश्विक रंग तालिका</span>

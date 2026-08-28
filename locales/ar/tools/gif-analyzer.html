@@ -158,6 +158,101 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">جارٍ قراءة {name}&hellip;</span>
+    <span data-phrase="read.notagif">{name} ليس GIF: {why}. هذه الأداة تقرأ صيغة GIF نفسها، فليس لديها ما تقوله عن
+      الملفات الأخرى.</span>
+    <span data-phrase="read.failed">تعذّرت قراءة {name}: {why}</span>
+    <span data-phrase="read.truncated">الملف ينتهي عند {available} بايت، وكان يلزم {wanted} بايت أخرى عند {at}</span>
+    <span data-phrase="gif.notagif">هذا الملف يبدأ بـ{what}، لا بـ&laquo;GIF&raquo;</span>
+    <span data-phrase="kind.jpeg">صورة JPEG</span>
+    <span data-phrase="kind.png">صورة PNG</span>
+    <span data-phrase="kind.riff">ملف RIFF &mdash; صورة WebP أو صوت WAV</span>
+    <span data-phrase="kind.pdf">ملف PDF</span>
+    <span data-phrase="kind.zip">ملف zip</span>
+    <span data-phrase="kind.bytes">البايتات {bytes}</span>
+    <span data-phrase="decode.codesize">حجم الرمز {size}، والصيغة تسمح بما بين 2 و8</span>
+    <span data-phrase="n.frame.one">إطار واحد</span>
+    <span data-phrase="n.frame.many">{n} إطاراً</span>
+    <span data-phrase="n.colour.one">لون واحد</span>
+    <span data-phrase="n.colour.many">{n} لوناً</span>
+    <span data-phrase="n.entry.one">مدخل واحد</span>
+    <span data-phrase="n.entry.many">{n} مدخلاً</span>
+    <span data-phrase="n.localtable.one">جدول واحد لكل إطار</span>
+    <span data-phrase="n.localtable.many">{n} جدولاً لكل إطار</span>
+    <span data-phrase="n.time.one">مرة واحدة</span>
+    <span data-phrase="n.time.many">{n} مرة</span>
+    <span data-phrase="size.exactbytes">{n} بايت</span>
+    <span data-phrase="clock.minutes">{minutes} د {seconds} ث</span>
+    <span data-phrase="unit.seconds">{n} ث</span>
+    <span data-phrase="plays.rate">{time} ({fps} إطار/ث)</span>
+    <span data-phrase="clamped.note">{n} إطاراً تطلب أقل من 0.02 ث، وكل متصفح يبقيها 0.10 ث بدل ذلك.</span>
+    <span data-phrase="loops.none">مرة واحدة &mdash; لا كتلة تكرار</span>
+    <span data-phrase="loops.forever">إلى ما لا نهاية</span>
+    <span data-phrase="loops.times">{n} مرة</span>
+    <span data-phrase="level.bad">مشكلة</span>
+    <span data-phrase="level.warn">يُستحسن معرفته</span>
+    <span data-phrase="level.note">ملاحظة</span>
+    <span data-phrase="frames.partial">{frames}. {drawn} منها مرسومة هنا؛ والبقية أكبر من أن تُحفظ في الذاكرة دفعةً واحدة،
+      فتُوصف من ترويساتها وحدها.</span>
+    <span data-phrase="frames.none">{frames}، ولا واحد منها يغطي اللوحة كاملة.</span>
+    <span data-phrase="frames.all">{frames}، وكلها تغطي اللوحة كاملة.</span>
+    <span data-phrase="frames.some">{frames}، منها {n} تغطي اللوحة كاملة.</span>
+    <span data-phrase="frames.more">اعرض بقية {frames}</span>
+    <span data-phrase="shot.stored">ما يخزّنه الإطار {n} وحده</span>
+    <span data-phrase="shot.composited">اللوحة بعد الإطار {n}</span>
+    <span data-phrase="frame.number">الإطار {n}</span>
+    <span data-phrase="frame.notdrawn">غير مرسوم</span>
+    <span data-phrase="frame.delay">التأخير</span>
+    <span data-phrase="frame.clamped">{delay} &rarr; 0.10 ث</span>
+    <span data-phrase="frame.rectangle">المستطيل</span>
+    <span data-phrase="frame.rect">{width} &times; {height} عند {left}، {top}</span>
+    <span data-phrase="frame.palette">اللوحة اللونية</span>
+    <span data-phrase="palette.own">{n} خاصة به</span>
+    <span data-phrase="palette.global">العامة</span>
+    <span data-phrase="palette.none">لا شيء إطلاقاً</span>
+    <span data-phrase="frame.transparent">الشفافية</span>
+    <span data-phrase="frame.transparent.index">الفهرس {n}</span>
+    <span data-phrase="frame.transparent.no">لا</span>
+    <span data-phrase="frame.size">الحجم</span>
+    <span data-phrase="frame.sizevalue">{size} &mdash; {share}</span>
+    <span data-phrase="frame.interlaced">متشابك</span>
+    <span data-phrase="frame.yes">نعم</span>
+    <span data-phrase="frame.compressed">الضغط</span>
+    <span data-phrase="frame.ratio">{ratio}&times;</span>
+    <span data-phrase="frame.trouble">خلل</span>
+    <span data-phrase="frame.endsearly">البيانات تنتهي مبكراً</span>
+    <span data-phrase="colours.lede">جداول هذا الملف تعلن {declared} مجتمعةً، والبكسلات تشير إلى {referenced} منها،
+      و{different} منها مختلفة بعضها عن بعض.</span>
+    <span data-phrase="palette.globalnote">{entries}، {size}، تتشاركها {frames}. المداخل الباهتة هي التي لا يشير إليها أي بكسل
+      قط.</span>
+    <span data-phrase="palette.locals">{tables} ({size} إجمالاً)</span>
+    <span data-phrase="palette.frameheading">الإطار {n} &mdash; {colours}</span>
+    <span data-phrase="palette.capped">تُعرض أول 24 من {n}. والباقي في التقرير القابل للتنزيل.</span>
+    <span data-phrase="block.comment">تعليق. لا يعرضه أي عارض، وكل نسخة من الملف تحمله.</span>
+    <span data-phrase="block.loop.forever">كتلة التكرار، تقول بالتشغيل إلى ما لا نهاية. وهي ليست جزءاً من مواصفة GIF: اخترعتها
+      نتسكيب سنة 1995 ونفّذها الجميع على أي حال.</span>
+    <span data-phrase="block.loop.times">كتلة التكرار، تقول بالتشغيل {times}.</span>
+    <span data-phrase="block.xmp">حزمة XMP: وهي XML يكتبه محرر الصور ليسجل ما فعله. ولا شيء يرسمه.</span>
+    <span data-phrase="block.icc">ملف تعريف ألوان ICC، يقول ما تعنيه أرقام اللوحة اللونية كألوان. ولا يكاد شيء يقرأ
+      واحداً من داخل GIF.</span>
+    <span data-phrase="block.plaintext">كتلة نص عادي، تطلب من العارض رسم نص فوق الصورة. كانت في مواصفة 1989 ولم ينفّذها شيء
+      قط.</span>
+    <span data-phrase="block.application">كتلة تطبيق. والعارضات تتخطى ما لا تعرفه منها.</span>
+    <span data-phrase="report.runsfor">يدوم</span>
+    <span data-phrase="report.aswritten">{time} كما هو مكتوب</span>
+    <span data-phrase="report.actually">يعرض فعلاً</span>
+    <span data-phrase="report.clamped">{time} - {n} إطاراً دون 0.02 ث يرفعها كل متصفح إلى 0.10 ث</span>
+    <span data-phrase="report.rate">المعدل</span>
+    <span data-phrase="report.persecond">{fps} إطاراً في الثانية</span>
+    <span data-phrase="report.loops">التكرار</span>
+    <span data-phrase="report.noloop">لا كتلة تكرار - يعرض مرة</span>
+    <span data-phrase="report.globalpal">اللوحة العامة</span>
+    <span data-phrase="report.colours">{n} لوناً</span>
+    <span data-phrase="report.nopalette">لا شيء</span>
+    <span data-phrase="report.drawn">ألوان مرسومة</span>
+    <span data-phrase="report.background">فهرس الخلفية</span>
+    <span data-phrase="copy.done">نُسخ. وهو نص عادي، ولم يذهب إلا إلى حافظتك.</span>
+    <span data-phrase="copy.refused">هذا المتصفح لم يسمح للصفحة بالكتابة في الحافظة. استعمل &laquo;نزّله&raquo; بدل ذلك.</span>
     <span data-phrase="budget.header.label">الترويسة ووصف الشاشة</span>
     <span data-phrase="budget.header.note">التوقيع، ومقاس اللوحة، والرايات. ثلاثة عشر بايتاً، في كل GIF صُنع قط.</span>
     <span data-phrase="budget.global.label">جدول الألوان العام</span>

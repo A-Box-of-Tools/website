@@ -13,10 +13,15 @@
  * Everything is little-endian, because everything in a GIF is.
  */
 
-/** A read that ran off the end of the file. Carries where, so the page can say. */
+/**
+ * A read that ran off the end of the file. Carries where, so the page can say.
+ *
+ * The message is a phrase key; the three numbers are its blanks, and they are
+ * on the error already for callers that want them on their own.
+ */
 export class Truncated extends Error {
   constructor(at, wanted, available) {
-    super(`the file ends at ${available} bytes; ${wanted} more were needed at ${at}`);
+    super('read.truncated');
     this.name = 'Truncated';
     this.at = at;
     this.wanted = wanted;

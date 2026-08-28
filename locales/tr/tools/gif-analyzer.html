@@ -166,6 +166,105 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">{name} okunuyor&hellip;</span>
+    <span data-phrase="read.notagif">{name} bir GIF değil: {why}. Bu araç GIF biçiminin kendisini okur, dolayısıyla başka
+      dosyalar hakkında söyleyecek bir şeyi yoktur.</span>
+    <span data-phrase="read.failed">{name} okunamadı: {why}</span>
+    <span data-phrase="read.truncated">dosya {available} baytta bitiyor, {at} konumunda ise {wanted} bayt daha gerekiyordu</span>
+    <span data-phrase="gif.notagif">bu dosya &laquo;GIF&raquo; ile değil, {what} ile başlıyor</span>
+    <span data-phrase="kind.jpeg">bir JPEG</span>
+    <span data-phrase="kind.png">bir PNG</span>
+    <span data-phrase="kind.riff">bir RIFF dosyası &mdash; bir WebP ya da bir WAV</span>
+    <span data-phrase="kind.pdf">bir PDF</span>
+    <span data-phrase="kind.zip">bir zip dosyası</span>
+    <span data-phrase="kind.bytes">{bytes} baytları</span>
+    <span data-phrase="decode.codesize">kod boyutu {size}, oysa biçim 2 ile 8 arasına izin veriyor</span>
+    <span data-phrase="n.frame.one">{n} kare</span>
+    <span data-phrase="n.frame.many">{n} kare</span>
+    <span data-phrase="n.colour.one">{n} renk</span>
+    <span data-phrase="n.colour.many">{n} renk</span>
+    <span data-phrase="n.entry.one">{n} girdi</span>
+    <span data-phrase="n.entry.many">{n} girdi</span>
+    <span data-phrase="n.localtable.one">kare başına {n} tablo</span>
+    <span data-phrase="n.localtable.many">kare başına {n} tablo</span>
+    <span data-phrase="n.time.one">{n} kez</span>
+    <span data-phrase="n.time.many">{n} kez</span>
+    <span data-phrase="size.exactbytes">{n} bayt</span>
+    <span data-phrase="clock.minutes">{minutes} dk {seconds} sn</span>
+    <span data-phrase="unit.seconds">{n} sn</span>
+    <span data-phrase="plays.rate">{time} ({fps} fps)</span>
+    <span data-phrase="clamped.note">{n} kare 0,02 sn&rsquo;den kısa süre istiyor, her tarayıcı ise bunları 0,10 sn
+      tutuyor.</span>
+    <span data-phrase="loops.none">bir kez &mdash; döngü bloğu yok</span>
+    <span data-phrase="loops.forever">sonsuza dek</span>
+    <span data-phrase="loops.times">{n} kez</span>
+    <span data-phrase="level.bad">Sorun</span>
+    <span data-phrase="level.warn">Bilmekte fayda var</span>
+    <span data-phrase="level.note">Not</span>
+    <span data-phrase="frames.partial">{frames}. Bunların {drawn} tanesi burada çiziliyor; geri kalanı hepsini birden
+      bellekte tutmak için fazla büyük, o yüzden yalnızca başlıklarından anlatılıyor.</span>
+    <span data-phrase="frames.none">{frames}; hiçbiri tuvalin tamamını kaplamıyor.</span>
+    <span data-phrase="frames.all">{frames}; hepsi tuvalin tamamını kaplıyor.</span>
+    <span data-phrase="frames.some">{frames}; bunların {n} tanesi tuvalin tamamını kaplıyor.</span>
+    <span data-phrase="frames.more">Kalan {frames} gösterilsin</span>
+    <span data-phrase="shot.stored">{n}. karenin tek başına tuttuğu şey</span>
+    <span data-phrase="shot.composited">{n}. kareden sonraki tuval</span>
+    <span data-phrase="frame.number">Kare {n}</span>
+    <span data-phrase="frame.notdrawn">çizilmedi</span>
+    <span data-phrase="frame.delay">Gecikme</span>
+    <span data-phrase="frame.clamped">{delay} &rarr; 0,10 sn</span>
+    <span data-phrase="frame.rectangle">Dikdörtgen</span>
+    <span data-phrase="frame.rect">{left}, {top} konumunda {width} &times; {height}</span>
+    <span data-phrase="frame.palette">Palet</span>
+    <span data-phrase="palette.own">{n} kendine ait</span>
+    <span data-phrase="palette.global">genel olan</span>
+    <span data-phrase="palette.none">hiç yok</span>
+    <span data-phrase="frame.transparent">Saydam</span>
+    <span data-phrase="frame.transparent.index">{n}. dizin</span>
+    <span data-phrase="frame.transparent.no">hayır</span>
+    <span data-phrase="frame.size">Boyut</span>
+    <span data-phrase="frame.sizevalue">{size} &mdash; {share}</span>
+    <span data-phrase="frame.interlaced">Geçmeli</span>
+    <span data-phrase="frame.yes">evet</span>
+    <span data-phrase="frame.compressed">Sıkıştırma</span>
+    <span data-phrase="frame.ratio">{ratio}&times;</span>
+    <span data-phrase="frame.trouble">Sıkıntı</span>
+    <span data-phrase="frame.endsearly">veri erken bitiyor</span>
+    <span data-phrase="colours.lede">Bu dosyadaki tablolar toplamda {declared} bildiriyor, pikseller bunların
+      {referenced} tanesine gönderme yapıyor ve bunların {different} tanesi birbirinden
+      farklı.</span>
+    <span data-phrase="palette.globalnote">{entries}, {size}, {frames} tarafından paylaşılıyor. Soluk girdiler, hiçbir pikselin
+      göndermede bulunmadığı girdilerdir.</span>
+    <span data-phrase="palette.locals">{tables} (toplam {size})</span>
+    <span data-phrase="palette.frameheading">Kare {n} &mdash; {colours}</span>
+    <span data-phrase="palette.capped">{n} tanesinden ilk 24&rsquo;ü gösteriliyor. Gerisi indirilebilir raporda.</span>
+    <span data-phrase="block.comment">Bir açıklama. Hiçbir görüntüleyici göstermez, dosyanın her kopyası onu taşır.</span>
+    <span data-phrase="block.loop.forever">Döngü bloğu; sonsuza dek oynatmayı söyler. GIF belirtiminin parçası değildir:
+      Netscape 1995&rsquo;te uydurdu, gene de her şey uyguladı.</span>
+    <span data-phrase="block.loop.times">Döngü bloğu; {times} oynatmayı söyler.</span>
+    <span data-phrase="block.xmp">Bir XMP paketi: bir görüntü düzenleyicinin ne yaptığını kaydetmek için yazdığı XML.
+      Hiçbir şey onu çizmez.</span>
+    <span data-phrase="block.icc">Bir ICC renk profili; paletin sayılarının renk olarak ne demek olduğunu söyler. Bunu
+      bir GIF içinden okuyan neredeyse hiçbir şey yoktur.</span>
+    <span data-phrase="block.plaintext">Bir düz metin bloğu; görüntüleyiciden resmin üzerine metin çizmesini ister. 1989
+      belirtiminde vardı ve hiçbir şey tarafından hiç uygulanmadı.</span>
+    <span data-phrase="block.application">Bir uygulama bloğu. Görüntüleyiciler tanımadıklarını atlar.</span>
+    <span data-phrase="report.runsfor">Süresi</span>
+    <span data-phrase="report.aswritten">yazıldığı gibi {time}</span>
+    <span data-phrase="report.actually">Gerçekte oynayan</span>
+    <span data-phrase="report.clamped">{time} - 0,02 sn altındaki {n} kare her tarayıcıda 0,10 sn ye çekilir</span>
+    <span data-phrase="report.rate">Hız</span>
+    <span data-phrase="report.persecond">saniyede {fps} kare</span>
+    <span data-phrase="report.loops">Döngüler</span>
+    <span data-phrase="report.noloop">döngü bloğu yok - bir kez oynar</span>
+    <span data-phrase="report.globalpal">Genel palet</span>
+    <span data-phrase="report.colours">{n} renk</span>
+    <span data-phrase="report.nopalette">yok</span>
+    <span data-phrase="report.drawn">Çizilen renkler</span>
+    <span data-phrase="report.background">Arka plan dizini</span>
+    <span data-phrase="copy.done">Kopyalandı. Düz metindir ve yalnızca panonuza gitti.</span>
+    <span data-phrase="copy.refused">Bu tarayıcı sayfanın panoya yazmasına izin vermedi. Bunun yerine
+      &laquo;İndir&raquo;i kullanın.</span>
     <span data-phrase="budget.header.label">Başlık ve ekran tanımı</span>
     <span data-phrase="budget.header.note">İmza, tuval boyutu ve bayraklar. On üç bayt; yapılmış her GIF&rsquo;te var.</span>
     <span data-phrase="budget.global.label">Genel renk tablosu</span>
