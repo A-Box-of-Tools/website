@@ -184,6 +184,58 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">este navegador no ha podido descodificar la
+      imagen.</span>
+    <span data-phrase="read.failed">Este archivo no se ha podido abrir: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height} en {x}, {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; pixelada, bloques de {size} px
+      ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; desenfocada, radio de {radius} px</span>
+    <span data-phrase="region.filled">{where} &mdash; tapada en negro</span>
+    <span data-phrase="region.aria">Área {n}: {what}. Las flechas la mueven, Alt y las
+      flechas la redimensionan, y Supr la quita.</span>
+    <span data-phrase="region.choice">Qué hace el área {n}</span>
+    <span data-phrase="choice.fill">Tapar en negro</span>
+    <span data-phrase="choice.pixelate">Pixelar</span>
+    <span data-phrase="choice.blur">Desenfocar</span>
+    <span data-phrase="style.fill.one">{n} tapada en negro</span>
+    <span data-phrase="style.fill.many">{n} tapadas en negro</span>
+    <span data-phrase="style.pixelate.one">{n} pixelada</span>
+    <span data-phrase="style.pixelate.many">{n} pixeladas</span>
+    <span data-phrase="style.blur.one">{n} desenfocada</span>
+    <span data-phrase="style.blur.many">{n} desenfocadas</span>
+    <span data-phrase="count.one">{n} área: {parts}.</span>
+    <span data-phrase="count.many">{n} áreas: {parts}.</span>
+    <span data-phrase="strength.light">Suave</span>
+    <span data-phrase="strength.medium">Medio</span>
+    <span data-phrase="strength.heavy">Fuerte</span>
+    <span data-phrase="strength.note">{label}: unos {blocks} bloques a lo largo del lado
+      más corto de un área, y un radio de desenfoque de 1/{blur} de ese lado.</span>
+    <span data-phrase="risk.mosaic">El mosaico más fino que hay aquí es de {across} x
+      {down} bloques de {size} px. Eso son {averages} promedios de lo que había debajo,
+      y se quedan en el archivo.</span>
+    <span data-phrase="risk.blur.one">El desenfoque tiene un radio de {radius} px. Un
+      desenfoque también es un promedio, y uno pequeño sobre texto nítido es justo el
+      caso que ya se ha deshecho.</span>
+    <span data-phrase="risk.blur.many">El desenfoque más pequeño tiene un radio de
+      {radius} px. Un desenfoque también es un promedio, y uno pequeño sobre texto
+      nítido es justo el caso que ya se ha deshecho.</span>
+    <span data-phrase="risk.advice">Tapa en negro todo lo que se lea como texto.</span>
+    <span data-phrase="write.noencode">el navegador no ha podido codificarlo.</span>
+    <span data-phrase="write.failed">Algo ha salido mal al escribir el archivo: {why}</span>
+    <span data-phrase="result.alt">La imagen tapada, {width} por {height} píxeles</span>
+    <span data-phrase="result.file">{name} &mdash; {size}, {width} x {height}</span>
+    <span data-phrase="result.nothing">No se marcó ningún área, así que esta es la misma
+      imagen vuelta a codificar.</span>
+    <span data-phrase="result.clean">Escrita a partir de los píxeles tapados, así que no
+      lleva EXIF, ni GPS, ni miniatura incrustada, ni ninguna capa con el original
+      dentro.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">tus imágenes no han ido a ninguna parte.
       {total} archivos cargados, todos ellos de esta misma página. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta

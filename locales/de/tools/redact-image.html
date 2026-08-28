@@ -190,6 +190,58 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">dieser Browser konnte das Bild nicht dekodieren.</span>
+    <span data-phrase="read.failed">Diese Datei konnte nicht geöffnet werden: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height} bei {x}, {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; verpixelt, {size} px große
+      Blöcke ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; unscharf, {radius} px Radius</span>
+    <span data-phrase="region.filled">{where} &mdash; geschwärzt</span>
+    <span data-phrase="region.aria">Bereich {n}: {what}. Die Pfeiltasten verschieben
+      ihn, Alt und die Pfeiltasten ändern seine Größe, und Entf entfernt ihn.</span>
+    <span data-phrase="region.choice">Was Bereich {n} macht</span>
+    <span data-phrase="choice.fill">Schwärzen</span>
+    <span data-phrase="choice.pixelate">Verpixeln</span>
+    <span data-phrase="choice.blur">Weichzeichnen</span>
+    <span data-phrase="style.fill.one">{n} geschwärzt</span>
+    <span data-phrase="style.fill.many">{n} geschwärzt</span>
+    <span data-phrase="style.pixelate.one">{n} verpixelt</span>
+    <span data-phrase="style.pixelate.many">{n} verpixelt</span>
+    <span data-phrase="style.blur.one">{n} unscharf</span>
+    <span data-phrase="style.blur.many">{n} unscharf</span>
+    <span data-phrase="count.one">{n} Bereich: {parts}.</span>
+    <span data-phrase="count.many">{n} Bereiche: {parts}.</span>
+    <span data-phrase="strength.light">Leicht</span>
+    <span data-phrase="strength.medium">Mittel</span>
+    <span data-phrase="strength.heavy">Stark</span>
+    <span data-phrase="strength.note">{label} &mdash; etwa {blocks} Blöcke über die
+      kürzere Seite eines Kastens, und ein Weichzeichnungsradius von 1/{blur} davon.</span>
+    <span data-phrase="risk.mosaic">Das feinste Mosaik hier ist {across} x {down} Blöcke
+      zu je {size} px. Das sind {averages} Mittelwerte dessen, was darunter lag, und sie
+      bleiben in der Datei.</span>
+    <span data-phrase="risk.blur.one">Die Unschärfe hat einen Radius von {radius} px.
+      Auch eine Unschärfe ist ein Mittelwert, und eine kleine über scharfem Text ist
+      genau der Fall, der schon rückgängig gemacht worden ist.</span>
+    <span data-phrase="risk.blur.many">Die kleinste Unschärfe hat einen Radius von
+      {radius} px. Auch eine Unschärfe ist ein Mittelwert, und eine kleine über scharfem
+      Text ist genau der Fall, der schon rückgängig gemacht worden ist.</span>
+    <span data-phrase="risk.advice">Schwärzen Sie alles, was sich als Text lesen lässt.</span>
+    <span data-phrase="write.noencode">der Browser konnte es nicht kodieren.</span>
+    <span data-phrase="write.failed">Beim Schreiben der Datei ist etwas schiefgegangen:
+      {why}</span>
+    <span data-phrase="result.alt">Das geschwärzte Bild, {width} mal {height} Pixel</span>
+    <span data-phrase="result.file">{name} &mdash; {size}, {width} x {height}</span>
+    <span data-phrase="result.nothing">Es wurden keine Bereiche markiert, das ist also
+      dasselbe Bild, neu kodiert.</span>
+    <span data-phrase="result.clean">Aus den geschwärzten Pixeln geschrieben, es trägt
+      also kein EXIF, kein GPS, kein eingebettetes Vorschaubild und keine Ebene mit dem
+      Original darin.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">Ihre Bilder sind nirgendwohin gegangen.
       {total} Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

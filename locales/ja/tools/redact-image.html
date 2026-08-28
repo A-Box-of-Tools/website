@@ -158,6 +158,45 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">このブラウザーは画像をデコードできませんでした。</span>
+    <span data-phrase="read.failed">このファイルは開けませんでした：{why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{x}, {y}に{width} x {height}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; モザイク、{size} pxのブロック（{across} x {down}）</span>
+    <span data-phrase="region.blurred">{where} &mdash; ぼかし、半径{radius} px</span>
+    <span data-phrase="region.filled">{where} &mdash; 黒塗り</span>
+    <span data-phrase="region.aria">領域{n}：{what}。矢印キーで移動、Altと矢印キーでサイズ変更、Deleteで削除します。</span>
+    <span data-phrase="region.choice">領域{n}の処理</span>
+    <span data-phrase="choice.fill">黒塗り</span>
+    <span data-phrase="choice.pixelate">モザイク</span>
+    <span data-phrase="choice.blur">ぼかし</span>
+    <span data-phrase="style.fill.one">黒塗り{n}件</span>
+    <span data-phrase="style.fill.many">黒塗り{n}件</span>
+    <span data-phrase="style.pixelate.one">モザイク{n}件</span>
+    <span data-phrase="style.pixelate.many">モザイク{n}件</span>
+    <span data-phrase="style.blur.one">ぼかし{n}件</span>
+    <span data-phrase="style.blur.many">ぼかし{n}件</span>
+    <span data-phrase="count.one">領域{n}件：{parts}。</span>
+    <span data-phrase="count.many">領域{n}件：{parts}。</span>
+    <span data-phrase="strength.light">弱</span>
+    <span data-phrase="strength.medium">中</span>
+    <span data-phrase="strength.heavy">強</span>
+    <span data-phrase="strength.note">{label} &mdash; 枠の短いほうの辺におよそ{blocks}ブロック、ぼかしの半径はその1/{blur}です。</span>
+    <span data-phrase="risk.mosaic">ここでいちばん細かいモザイクは{size} pxのブロックが{across} x {down}です。下にあったものの平均値が{averages}個、ファイルに残るということです。</span>
+    <span data-phrase="risk.blur.one">ぼかしの半径は{radius} pxです。ぼかしも平均であり、くっきりした文字に薄くかけたぼかしこそ、すでに逆算されてきた事例です。</span>
+    <span data-phrase="risk.blur.many">いちばん小さいぼかしの半径は{radius} pxです。ぼかしも平均であり、くっきりした文字に薄くかけたぼかしこそ、すでに逆算されてきた事例です。</span>
+    <span data-phrase="risk.advice">文字として読めるものはすべて黒く塗ってください。</span>
+    <span data-phrase="write.noencode">ブラウザーがエンコードできませんでした。</span>
+    <span data-phrase="write.failed">ファイルを書き出す途中で問題が起きました：{why}</span>
+    <span data-phrase="result.alt">黒塗りした画像、{width}×{height}ピクセル</span>
+    <span data-phrase="result.file">{name} &mdash; {size}、{width} x {height}</span>
+    <span data-phrase="result.nothing">領域が1つも指定されていないので、これは同じ画像を再エンコードしただけのものです。</span>
+    <span data-phrase="result.clean">黒塗りした画素から書き出しているので、EXIFもGPSも埋め込みサムネイルも、元の画像が入ったレイヤーもありません。</span>
+    <span data-phrase="join.sentences">{a}{b}</span>
+    <span data-phrase="join.comma">{a}、{b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">画像はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>

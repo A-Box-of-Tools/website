@@ -184,6 +184,56 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">this browser could not decode the picture.</span>
+    <span data-phrase="read.failed">That file could not be opened: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height} at {x}, {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; pixelated, {size} px blocks
+      ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; blurred, {radius} px radius</span>
+    <span data-phrase="region.filled">{where} &mdash; blacked out</span>
+    <span data-phrase="region.aria">Area {n}: {what}. The arrow keys move it, Alt and
+      the arrow keys resize it, and Delete removes it.</span>
+    <span data-phrase="region.choice">What area {n} does</span>
+    <span data-phrase="choice.fill">Black out</span>
+    <span data-phrase="choice.pixelate">Pixelate</span>
+    <span data-phrase="choice.blur">Blur</span>
+    <span data-phrase="style.fill.one">{n} blacked out</span>
+    <span data-phrase="style.fill.many">{n} blacked out</span>
+    <span data-phrase="style.pixelate.one">{n} pixelated</span>
+    <span data-phrase="style.pixelate.many">{n} pixelated</span>
+    <span data-phrase="style.blur.one">{n} blurred</span>
+    <span data-phrase="style.blur.many">{n} blurred</span>
+    <span data-phrase="count.one">{n} area: {parts}.</span>
+    <span data-phrase="count.many">{n} areas: {parts}.</span>
+    <span data-phrase="strength.light">Light</span>
+    <span data-phrase="strength.medium">Medium</span>
+    <span data-phrase="strength.heavy">Heavy</span>
+    <span data-phrase="strength.note">{label} &mdash; about {blocks} blocks across the
+      shorter side of a box, and a blur radius of 1/{blur} of it.</span>
+    <span data-phrase="risk.mosaic">The finest mosaic here is {across} x {down} blocks
+      of {size} px. That is {averages} averages of what was underneath, left in the
+      file.</span>
+    <span data-phrase="risk.blur.one">The blur has a radius of {radius} px. A blur is an
+      average too, and a small one over sharp text is the case that has been worked
+      backwards.</span>
+    <span data-phrase="risk.blur.many">The smallest blur has a radius of {radius} px. A
+      blur is an average too, and a small one over sharp text is the case that has been
+      worked backwards.</span>
+    <span data-phrase="risk.advice">Black out anything that reads as text.</span>
+    <span data-phrase="write.noencode">the browser could not encode it.</span>
+    <span data-phrase="write.failed">Something went wrong writing the file: {why}</span>
+    <span data-phrase="result.alt">The redacted picture, {width} by {height} pixels</span>
+    <span data-phrase="result.file">{name} &mdash; {size}, {width} x {height}</span>
+    <span data-phrase="result.nothing">No areas were marked, so this is the same picture
+      re-encoded.</span>
+    <span data-phrase="result.clean">Written from the redacted pixels, so it carries no
+      EXIF, no GPS, no embedded thumbnail and no layer with the original in it.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">your images have gone nowhere. {total} files
       loaded, all of them this page's own. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

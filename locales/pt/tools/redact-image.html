@@ -183,6 +183,57 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">este navegador não conseguiu decodificar a imagem.</span>
+    <span data-phrase="read.failed">Este arquivo não pôde ser aberto: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height} em {x}, {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; pixelada, blocos de {size} px
+      ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; borrada, raio de {radius} px</span>
+    <span data-phrase="region.filled">{where} &mdash; tapada de preto</span>
+    <span data-phrase="region.aria">Área {n}: {what}. As setas movem, Alt com as setas
+      redimensiona, e Del remove.</span>
+    <span data-phrase="region.choice">O que a área {n} faz</span>
+    <span data-phrase="choice.fill">Tapar de preto</span>
+    <span data-phrase="choice.pixelate">Pixelar</span>
+    <span data-phrase="choice.blur">Borrar</span>
+    <span data-phrase="style.fill.one">{n} tapada de preto</span>
+    <span data-phrase="style.fill.many">{n} tapadas de preto</span>
+    <span data-phrase="style.pixelate.one">{n} pixelada</span>
+    <span data-phrase="style.pixelate.many">{n} pixeladas</span>
+    <span data-phrase="style.blur.one">{n} borrada</span>
+    <span data-phrase="style.blur.many">{n} borradas</span>
+    <span data-phrase="count.one">{n} área: {parts}.</span>
+    <span data-phrase="count.many">{n} áreas: {parts}.</span>
+    <span data-phrase="strength.light">Leve</span>
+    <span data-phrase="strength.medium">Médio</span>
+    <span data-phrase="strength.heavy">Forte</span>
+    <span data-phrase="strength.note">{label} &mdash; cerca de {blocks} blocos ao longo
+      do lado mais curto de uma área, e um raio de borrão de 1/{blur} desse lado.</span>
+    <span data-phrase="risk.mosaic">O mosaico mais fino aqui é de {across} x {down}
+      blocos de {size} px. Isso dá {averages} médias do que estava por baixo, deixadas
+      no arquivo.</span>
+    <span data-phrase="risk.blur.one">O borrão tem um raio de {radius} px. Um borrão
+      também é uma média, e um pequeno sobre texto nítido é justamente o caso que já foi
+      desfeito.</span>
+    <span data-phrase="risk.blur.many">O menor borrão tem um raio de {radius} px. Um
+      borrão também é uma média, e um pequeno sobre texto nítido é justamente o caso que
+      já foi desfeito.</span>
+    <span data-phrase="risk.advice">Tape de preto tudo que se leia como texto.</span>
+    <span data-phrase="write.noencode">o navegador não conseguiu codificar.</span>
+    <span data-phrase="write.failed">Algo deu errado ao escrever o arquivo: {why}</span>
+    <span data-phrase="result.alt">A imagem tapada, {width} por {height} pixels</span>
+    <span data-phrase="result.file">{name} &mdash; {size}, {width} x {height}</span>
+    <span data-phrase="result.nothing">Nenhuma área foi marcada, então esta é a mesma
+      imagem recodificada.</span>
+    <span data-phrase="result.clean">Escrita a partir dos pixels tapados, então não
+      carrega EXIF, nem GPS, nem miniatura embutida, nem camada nenhuma com o original
+      dentro.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">As suas imagens não foram a lugar nenhum.
       {total} arquivos carregados, todos do próprio site. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

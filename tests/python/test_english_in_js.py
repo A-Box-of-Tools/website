@@ -90,7 +90,8 @@ BASELINE = {
     # The two left are a symbology's own name and a line of SVG markup.
     'qr-barcode': 2,
     'qr-barcode-reader': 13,
-    'redact-image': 17,
+    # A key template, and a CSS class name the stage builds.
+    'redact-image': 2,
     'redact-pdf': 15,
     'resize-image': 5,
     # The key template that picks between two whole sentences.
