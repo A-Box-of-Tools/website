@@ -21,6 +21,11 @@ heading = "Base64&nbsp;Encoder&nbsp;&amp;&nbsp;Decoder <span class=\"h1-kw\">&md
 tagline = "Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server."
 icon = "&#128291;"          # the mark beside the page heading
 favicon = "&#128291;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "binary"
 category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.

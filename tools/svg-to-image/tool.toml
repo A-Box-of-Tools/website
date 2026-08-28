@@ -15,6 +15,11 @@ heading = "SVG&nbsp;to&nbsp;Image <span class=\"h1-kw\">&mdash; rasterize a vect
 tagline = "Name the size. A vector has none of its own to lose."
 icon = "&#128444;&#65039;"  # the mark beside the page heading
 favicon = "&#128444;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "shapes"
 category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.

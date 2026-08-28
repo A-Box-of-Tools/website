@@ -25,6 +25,11 @@ heading = "Share text &amp; files <span class=\"h1-kw\">&mdash; straight from yo
 tagline = "The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server."
 icon = "&#128279;"           # the mark beside the page heading
 favicon = "&#128279;"        # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "send"
 category = "text-codes-and-passwords"
 roadmap_group = "beyond"
 lastmod = "2026-08-27"
