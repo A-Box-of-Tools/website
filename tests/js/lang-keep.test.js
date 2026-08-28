@@ -141,6 +141,13 @@ function el(selectors = [], attrs = {}) {
     attrs,
     parentNode: null,
     fired: [],
+    // Every element has one, and the source now writes to it: deliver() marks
+    // the file input for the length of its dispatch so a tool can tell a file
+    // coming back from a file arriving. A stub without it made that line throw
+    // and the dispatch never happened, which is a fault in the stub rather
+    // than in the page - and exactly the kind this file exists to catch, since
+    // a real input would have carried it without comment.
+    dataset: {},
     getAttribute: (name) => (name in attrs ? attrs[name] : null),
     setAttribute: (name, value) => { attrs[name] = value; },
     closest(query) {
@@ -614,6 +621,41 @@ test('the far side of a switch hands the work back', async () => {
   assert.deepEqual(page.input.fired, ['change'], 'as if it had been chosen');
   assert.equal(width.value, '640');
   assert.deepEqual(width.fired, ['input', 'change'], 'and the tool is told, or it would ignore it');
+});
+
+test('a file coming back says so, for exactly as long as it takes to say it', async () => {
+  // A tool that places a file by looking at what is already on the page needs
+  // to know the difference between a file arriving and a file coming back.
+  // compare-text puts a single dropped file into whichever box is empty, which
+  // is right for a drop and wrong for a restore: it reads the file
+  // asynchronously, the settings land while it is still reading, and by the
+  // time it looks the box the file came out of is full again - so it files the
+  // text as a second document and calls the two identical.
+  //
+  // The mark is readable for the length of the dispatch and gone afterwards.
+  // Both halves matter: a handler takes its copy synchronously before its
+  // first await, and a mark left behind would make every later drop look like
+  // a restore.
+  const page = run({
+    lang: 'de',
+    ready: 'complete',
+    parked: {
+      lang: 'en', time: Date.now(), files: [file('holiday.jpg')], values: [],
+    },
+  });
+
+  let saidDuring = null;
+  const dispatch = page.input.dispatchEvent;
+  page.input.dispatchEvent = (event) => {
+    if (event.type === 'change') saidDuring = page.input.dataset.langRestore;
+    return dispatch(event);
+  };
+
+  await page.settle();
+
+  assert.equal(saidDuring, '1', 'the tool was not told the file was coming back');
+  assert.equal(page.input.dataset.langRestore, undefined,
+    'the mark was left on the input, so the next real drop would look like a restore');
 });
 
 test('it waits for load, so the tool is listening before it is told anything', async () => {

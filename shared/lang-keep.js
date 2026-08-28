@@ -341,7 +341,21 @@
     for (var i = 0; i < files.length; i += 1) carrier.items.add(files[i]);
     input.files = carrier.files;
     restoring = true;
+    /* Said on the input as well as kept here, because the tool has to be able
+       to see it. A tool that places a file by looking at what is already on
+       the page - compare-text puts a single file into whichever box is empty,
+       which is the only thing a drop could sensibly mean - gets that judgement
+       wrong during a restore: it reads the file asynchronously, the settings
+       below land while it is still reading, and by the time it looks the box
+       it came out of is full again. It then files the text as a second
+       document and reports the two as identical.
+
+       The flag is readable for exactly as long as this dispatch runs, which is
+       long enough: a handler starts synchronously and can take a copy before
+       its first await. */
+    input.dataset.langRestore = '1';
     input.dispatchEvent(new Event('change', { bubbles: true }));
+    delete input.dataset.langRestore;
     restoring = false;
   }
 
