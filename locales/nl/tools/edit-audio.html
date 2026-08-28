@@ -176,6 +176,70 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Het geluid wordt gelezen&hellip;</span>
+    <span data-phrase="step.starting">Bezig met starten&hellip;</span>
+    <span data-phrase="step.reversing">Omkeren&hellip;</span>
+    <span data-phrase="step.stretching">Uitrekken, toonhoogte blijft&hellip;</span>
+    <span data-phrase="step.resampling">Opnieuw bemonsteren&hellip;</span>
+    <span data-phrase="step.level">Het niveau wordt gezet&hellip;</span>
+    <span data-phrase="step.writing">Het bestand wordt geschreven&hellip;</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} kanalen</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (uit het bestand)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (aangenomen)</span>
+    <span data-phrase="src.guessednote">Dit formaat zegt in geen enkele kop die dit
+      gereedschap leest bij welke frequentie er is opgenomen, dus is er op 48 kHz
+      gedecodeerd. Is de opname op een andere frequentie gemaakt, dan heeft de browser
+      hem bij het inlezen omgerekend &mdash; het enige hier dat niet exact is.</span>
+    <span data-phrase="peak.silence">stilte</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">Blijft op 1x, ongewijzigd.</span>
+    <span data-phrase="speed.pitch.faster">{speed} sneller, met de toonhoogte waar hij
+      is. De opname wordt in overlappende vensters geknipt en dichter bij elkaar
+      teruggelegd, en dat gebeurt hier en niet ergens anders.</span>
+    <span data-phrase="speed.pitch.slower">{speed} langzamer, met de toonhoogte waar hij
+      is. De opname wordt in overlappende vensters geknipt en verder uit elkaar
+      teruggelegd, en dat gebeurt hier en niet ergens anders.</span>
+    <span data-phrase="speed.moves.faster">{speed} sneller, en alles gaat mee:
+      {semitones} halve tonen omhoog, zoals een band die te snel loopt.</span>
+    <span data-phrase="speed.moves.slower">{speed} langzamer, en alles gaat mee:
+      {semitones} halve tonen omlaag, zoals een band die te langzaam loopt.</span>
+    <span data-phrase="volume.already">Ligt al precies waar deze instelling het zou
+      leggen.</span>
+    <span data-phrase="volume.raised">Met {db} dB omhoog gebracht, waarmee het luidste
+      moment van de opname net onder volle schaal ligt.</span>
+    <span data-phrase="volume.lowered">Met {db} dB omlaag gebracht, waarmee het luidste
+      moment van de opname net onder volle schaal ligt.</span>
+    <span data-phrase="volume.unchanged">Blijft precies zoals het is.</span>
+    <span data-phrase="volume.up">{db} dB omhoog, wat elke sample met {gain}
+      vermenigvuldigt en het luidste moment op {peak} brengt.</span>
+    <span data-phrase="volume.down">{db} dB omlaag, wat elke sample met {gain}
+      vermenigvuldigt en het luidste moment op {peak} brengt.</span>
+    <span data-phrase="clip.over">Bij deze instelling komt het luidste moment {db} dB
+      boven volle schaal uit.</span>
+    <span data-phrase="clip.float">Een 32-bits float-WAV houdt die samples vast, dus in
+      het bestand zelf gaat er niets verloren &mdash; maar alles wat het afspeelt moet
+      het niveau weer omlaag halen, en de meeste dingen kappen het in plaats daarvan bij
+      het plafond af. Draai het omlaag, of kies &bdquo;zo hard als het kan&rdquo;.</span>
+    <span data-phrase="clip.int">Een 16-bits WAV kan dat niet vasthouden, dus die
+      samples zouden bij het plafond afgekapt worden, en zo klinkt vervorming. Draai het
+      omlaag, kies &bdquo;zo hard als het kan&rdquo;, of schrijf 32-bits float, dat ze
+      houdt.</span>
+    <span data-phrase="out.wav.float">WAV, 32-bits float</span>
+    <span data-phrase="out.wav.int">WAV, 16-bits</span>
+    <span data-phrase="out.peak">piek {peak}</span>
+    <span data-phrase="out.clipped.one">{n} sample boven volle schaal</span>
+    <span data-phrase="out.clipped.many">{n} samples boven volle schaal</span>
+    <span data-phrase="out.took">{n} s</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">Dat bestand is leeg.</span>
     <span data-phrase="audio.nodecode">Deze browser kreeg geen geluid uit dat bestand. Of het formaat is er een dat hij
       niet decodeert, of het bestand heeft helemaal geen audiospoor. MP3, WAV, FLAC, M4A,

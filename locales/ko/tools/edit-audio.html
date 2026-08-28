@@ -174,6 +174,58 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">소리를 읽는 중&hellip;</span>
+    <span data-phrase="step.starting">시작하는 중&hellip;</span>
+    <span data-phrase="step.reversing">뒤집는 중&hellip;</span>
+    <span data-phrase="step.stretching">음높이를 지키며 늘이는 중&hellip;</span>
+    <span data-phrase="step.resampling">다시 표본화하는 중&hellip;</span>
+    <span data-phrase="step.level">레벨을 맞추는 중&hellip;</span>
+    <span data-phrase="step.writing">파일을 쓰는 중&hellip;</span>
+    <span data-phrase="channels.mono">모노</span>
+    <span data-phrase="channels.stereo">스테레오</span>
+    <span data-phrase="channels.many">{n}채널</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (파일에 적힌 값)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (가정한 값)</span>
+    <span data-phrase="src.guessednote">이 형식은 이 도구가 읽는 어떤 머리말에도 어떤 주파수로 녹음했는지 적어 두지 않아서
+      48 kHz로 디코딩했습니다. 녹음이 다른 주파수로 되었다면 브라우저가 읽어 들이면서 다시 표본화했고 &mdash; 여기서 정확하지 않은 것은 그
+      하나뿐입니다.</span>
+    <span data-phrase="peak.silence">무음</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">1x 그대로 둡니다.</span>
+    <span data-phrase="speed.pitch.faster">{speed} 빠르게, 음높이는 그대로. 녹음을 겹치는 창으로 잘라 더 촘촘히
+      다시 놓으며, 이 일은 여기서 하고 어디로도 보내지 않습니다.</span>
+    <span data-phrase="speed.pitch.slower">{speed} 느리게, 음높이는 그대로. 녹음을 겹치는 창으로 잘라 더 넓게 다시
+      놓으며, 이 일은 여기서 하고 어디로도 보내지 않습니다.</span>
+    <span data-phrase="speed.moves.faster">{speed} 빠르게, 그리고 모두 함께 움직입니다. 반음
+      {semitones}만큼 올라가며, 테이프를 빨리 돌릴 때와 같습니다.</span>
+    <span data-phrase="speed.moves.slower">{speed} 느리게, 그리고 모두 함께 움직입니다. 반음
+      {semitones}만큼 내려가며, 테이프를 느리게 돌릴 때와 같습니다.</span>
+    <span data-phrase="volume.already">이미 이 설정이 놓을 자리에 정확히 있습니다.</span>
+    <span data-phrase="volume.raised">{db} dB 올렸습니다. 녹음에서 가장 큰 순간이 최대 눈금 바로 아래에 놓입니다.</span>
+    <span data-phrase="volume.lowered">{db} dB 내렸습니다. 녹음에서 가장 큰 순간이 최대 눈금 바로 아래에 놓입니다.</span>
+    <span data-phrase="volume.unchanged">있는 그대로 둡니다.</span>
+    <span data-phrase="volume.up">{db} dB 올림. 표본마다 {gain}을 곱하고 가장 큰 순간을 {peak}으로 올립니다.</span>
+    <span data-phrase="volume.down">{db} dB 내림. 표본마다 {gain}을 곱하고 가장 큰 순간을 {peak}으로 내립니다.</span>
+    <span data-phrase="clip.over">이 설정에서는 가장 큰 순간이 최대 눈금보다 {db} dB 위로 올라갑니다.</span>
+    <span data-phrase="clip.float">32비트 부동소수점 WAV는 그 표본을 담을 수 있어서 파일 자체에서는 잃는 것이 없습니다.
+      다만 재생하는 쪽이 레벨을 도로 내려야 하고, 대부분은 대신 천장에서 눌러 버립니다. 소리를 줄이거나 &ldquo;최대한 크게&rdquo;를
+      고르세요.</span>
+    <span data-phrase="clip.int">16비트 WAV는 그것을 담지 못해서 그 표본들이 천장에서 눌리고, 그게 바로 왜곡 소리입니다.
+      소리를 줄이거나 &ldquo;최대한 크게&rdquo;를 고르거나, 그것을 지켜 주는 32비트 부동소수점으로 쓰세요.</span>
+    <span data-phrase="out.wav.float">WAV, 32비트 부동소수점</span>
+    <span data-phrase="out.wav.int">WAV, 16비트</span>
+    <span data-phrase="out.peak">피크 {peak}</span>
+    <span data-phrase="out.clipped.one">최대 눈금을 넘은 표본 {n}개</span>
+    <span data-phrase="out.clipped.many">최대 눈금을 넘은 표본 {n}개</span>
+    <span data-phrase="out.took">{n}초</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">그 파일은 비어 있습니다.</span>
     <span data-phrase="audio.nodecode">이 브라우저가 그 파일에서 소리를 하나도 꺼내지 못했습니다. 디코딩하지 못하는 형식이거나, 파일에 오디오 트랙이 아예 없거나입니다. MP3, WAV,
       FLAC, M4A, MP4, MOV, WebM, Ogg는 모두 되고 AVI, WMA, 대부분의 MKV는 안 됩니다.</span>

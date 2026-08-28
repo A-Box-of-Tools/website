@@ -63,7 +63,9 @@ BASELINE = {
     'crop-video': 0,
     'dicom-viewer': 15,
     'document-scanner': 13,
-    'edit-audio': 18,
+    # A clock format, and one invariant check in each of the two speed
+    # modules - main.js clamps the speed, so neither can be reached.
+    'edit-audio': 3,
     'encode-text': 0,
     'exif-editor': 30,
     'format-json': 3,
