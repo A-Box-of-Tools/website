@@ -19,7 +19,7 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
   const { width, height, fps, fit, background, quality } = settings;
 
   const mimeType = pickWebmMimeType();
-  if (!mimeType) throw new Error('This browser supports neither WebCodecs nor canvas recording.');
+  if (!mimeType) throw new Error('record.nothing');
 
   const bitsPerPixel = { low: 0.03, medium: 0.07, high: 0.15 }[quality] ?? 0.07;
   const videoBitsPerSecond = Math.min(50_000_000, Math.round(width * height * fps * bitsPerPixel));
@@ -109,10 +109,7 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
 
         const now = performance.now();
         if (now > deadline) {
-          settle(reject, new Error(
-            'Recording stalled — this browser pauses canvas capture in background tabs. '
-            + 'Keep this tab visible while the video is being created.',
-          ));
+          settle(reject, new Error('record.stalled'));
           return;
         }
 
@@ -163,10 +160,8 @@ export async function recordToWebm({ items, settings, onProgress, signal }) {
       blob: new Blob(parts, { type: mimeType }),
       extension,
       codec: mimeType,
-      warning: wentHidden
-        ? 'The tab was hidden during recording, so some frames may be missing. '
-          + 'Re-run the export with this tab visible for a clean result.'
-        : null,
+      // A phrase key, not a sentence: the caller reads it out.
+      warning: wentHidden ? 'record.hidden' : null,
     };
   } catch (error) {
     if (recorder.state !== 'inactive') recorder.stop();
