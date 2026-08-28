@@ -304,6 +304,10 @@ read_first_lead = """
       最值得先讀的幾個檔案：<code>config/site.toml</code> 裡是
       Content-Security-Policy"""
 
+dlp_note = """
+      <strong>如果公司的安全軟體警告說有上傳。</strong>
+      它盯著瀏覽器裡選擇檔案的那一刻，而且無法知道頁面是否打算把它發出去&mdash;&mdash;所以在選擇時就發出警告。這裡什麼都不會發出去：開啟瀏覽器的開發者工具，切到網路，然後選一個檔案。沒有任何請求帶著它，除了這個頁面自己的本地預覽之外，根本沒有任何請求。同樣的檢查，你們的 IT 同事半分鐘就能做完。"""
+
 [ui.feedback]
 prompt = "這次管用嗎？"
 

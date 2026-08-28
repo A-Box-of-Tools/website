@@ -325,6 +325,10 @@ read_first_lead = """
       最值得先读的几个文件：<code>config/site.toml</code> 里是
       Content-Security-Policy"""
 
+dlp_note = """
+      <strong>如果公司的安全软件警告说有上传。</strong>
+      它盯着浏览器里选择文件的那一刻，而且无法知道页面是否打算把它发出去&mdash;&mdash;所以在选择时就发出警告。这里什么都不会发出去：打开浏览器的开发者工具，切到网络，然后选一个文件。没有任何请求带着它，除了这个页面自己的本地预览之外，根本没有任何请求。同样的检查，你们的 IT 同事半分钟就能做完。"""
+
 [ui.feedback]
 prompt = "这次管用吗？"
 

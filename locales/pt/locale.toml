@@ -431,6 +431,16 @@ read_first_lead = """
       Os primeiros arquivos que valem a leitura são <code>config/site.toml</code>
       para a Content-Security-Policy"""
 
+dlp_note = """
+      <strong>Se o software de segurança da sua empresa avisar sobre um
+      envio.</strong> Ele observa o momento em que um arquivo é escolhido no
+      navegador, e não tem como saber se a página pretende enviá-lo &mdash;
+      então avisa na escolha. Daqui não sai nada: abra as ferramentas de
+      desenvolvedor, vá para Rede e escolha um arquivo. Não há nenhuma
+      requisição que o leve, nem requisição alguma além da pré-visualização
+      local da página. É a mesma verificação que o seu time de TI faz em meio
+      minuto."""
+
 [ui.feedback]
 # Os rótulos dos polegares são para o leitor de tela e a dica de ferramenta; os
 # ícones já se explicam sozinhos.

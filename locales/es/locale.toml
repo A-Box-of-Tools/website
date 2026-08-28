@@ -431,6 +431,16 @@ read_first_lead = """
       Los archivos por los que conviene empezar son <code>config/site.toml</code>,
       donde está la Content-Security-Policy"""
 
+dlp_note = """
+      <strong>Si el software de seguridad de tu empresa avisa de una
+      subida.</strong> Vigila el momento en que se elige un archivo en el
+      navegador, y no puede saber si la página piensa enviarlo &mdash; así que
+      avisa al elegirlo. Aquí no se envía nada: abre las herramientas de
+      desarrollo, ve a Red y elige un archivo. No hay ninguna petición que lo
+      lleve, ni ninguna petición salvo la vista previa local de la página. Es
+      la misma comprobación que cualquiera de tu equipo de TI puede hacer en
+      medio minuto."""
+
 [ui.feedback]
 # Las etiquetas de los pulgares son para el lector de pantalla y el tooltip: los
 # iconos ya se entienden solos.

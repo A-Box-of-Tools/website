@@ -460,6 +460,16 @@ read_first_lead = """
       File yang layak dibaca lebih dulu adalah
       <code>config/site.toml</code> untuk Content-Security-Policy"""
 
+dlp_note = """
+      <strong>Jika perangkat lunak keamanan kantor Anda memperingatkan soal
+      unggahan.</strong> Ia mengawasi saat sebuah berkas dipilih di peramban,
+      dan tidak bisa tahu apakah halaman ini berniat mengirimnya &mdash; jadi
+      ia memperingatkan saat pemilihan. Tidak ada yang dikirim dari sini: buka
+      alat pengembang peramban, pindah ke Network, lalu pilih sebuah berkas.
+      Tidak ada permintaan yang membawanya, dan tidak ada permintaan sama
+      sekali selain pratinjau lokal halaman ini. Pemeriksaan yang sama bisa
+      dilakukan tim TI Anda dalam setengah menit."""
+
 [ui.feedback]
 prompt = "Apakah ini berhasil?"
 up = "Ya"
