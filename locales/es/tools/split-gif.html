@@ -114,6 +114,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">Leyendo el GIF&hellip;</span>
+    <span data-phrase="read.failed">Ese archivo no se ha podido leer: {why}</span>
+    <span data-phrase="gif.tooshort">Ese archivo es demasiado corto para ser un GIF.</span>
+    <span data-phrase="gif.notagif">Eso no es un GIF. El archivo no empieza por GIF87a ni por GIF89a.</span>
+    <span data-phrase="gif.enormous">Este GIF es enorme: los primeros {n} fotogramas han llenado la memoria que esta
+      página está dispuesta a tener de golpe, así que el resto se ha quedado sin leer.</span>
+    <span data-phrase="gif.midframe">Este GIF acaba a mitad de un fotograma, así que el último puede estar incompleto.</span>
+    <span data-phrase="gif.damaged">Este GIF está dañado: acaba antes de que el primer fotograma esté completo.</span>
+    <span data-phrase="gif.noframes">Ese GIF no tiene ningún fotograma que este lector haya podido abrir.</span>
+    <span data-phrase="note.partial.one">1 fotograma se queda a medias en el propio archivo; los píxeles que faltan salen
+      transparentes.</span>
+    <span data-phrase="note.partial.many">{n} fotogramas se quedan a medias en el propio archivo; los píxeles que faltan salen
+      transparentes.</span>
+    <span data-phrase="note.local">{n} de los fotogramas llevan su propia tabla de colores, y por eso este GIF es más
+      grande de lo que su tamaño hace pensar.</span>
+    <span data-phrase="note.comment">El archivo lleva un comentario: «{comment}»</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="loop.once">se reproduce una vez (sin bloque de bucle)</span>
+    <span data-phrase="loop.forever">sin parar</span>
+    <span data-phrase="loop.times.one">1 vez más</span>
+    <span data-phrase="loop.times.many">{n} veces más</span>
+    <span data-phrase="frame.number">Fotograma {n}</span>
+    <span data-phrase="step.drawing">Dibujando los fotogramas&hellip;</span>
+    <span data-phrase="meta.clamped">{played} (guardado como {stored} s)</span>
+    <span data-phrase="meta.whole">{delay} &mdash; {width} x {height}</span>
+    <span data-phrase="meta.patch">{delay} &mdash; {width} x {height} en {x}, {y} &mdash; {disposal}</span>
+    <span data-phrase="disposal.stays">se queda en pantalla</span>
+    <span data-phrase="disposal.clears">borra su zona después</span>
+    <span data-phrase="disposal.restores">restaura lo que había debajo</span>
+    <span data-phrase="frames.count.one">1 fotograma, {picked} seleccionado</span>
+    <span data-phrase="frames.count.many">{n} fotogramas, {picked} seleccionados</span>
+    <span data-phrase="mode.stored">Lo que guarda el archivo: el parche que cada fotograma vuelve a dibujar, a su propio
+      tamaño. Así es como un GIF se mantiene pequeño, y no es a lo que se parece la
+      animación.</span>
+    <span data-phrase="mode.whole">Cada PNG es la imagen entera, exactamente como se ve ese momento de la animación.
+      Esto es lo que quiere casi todo el mundo.</span>
+    <span data-phrase="every.one">fotograma</span>
+    <span data-phrase="every.two">segundo fotograma</span>
+    <span data-phrase="every.three">tercer fotograma</span>
+    <span data-phrase="every.many">fotograma {n}.º</span>
+    <span data-phrase="step.writing">Escribiendo el fotograma {done} de {total}&hellip;</span>
+    <span data-phrase="png.nowrite">Este navegador no ha querido escribir un PNG.</span>
+    <span data-phrase="png.nopreview">Este navegador no ha querido dibujar las vistas previas.</span>
+    <span data-phrase="save.frame.failed">Ese fotograma no se ha podido escribir: {why}</span>
+    <span data-phrase="save.sheet.failed">Esa lámina no se ha podido escribir: {why}</span>
+    <span data-phrase="save.frames.failed">Los fotogramas no se han podido escribir: {why}</span>
+    <span data-phrase="timing.title">Fotogramas de {name}</span>
+    <span data-phrase="timing.size.one">{width}x{height}, 1 fotograma en el original</span>
+    <span data-phrase="timing.size.many">{width}x{height}, {frames} fotogramas en el original</span>
+    <span data-phrase="timing.delays">Los retardos son los que guarda el archivo. Un navegador reproduce cualquier cosa
+      por debajo de 0,02 s a 0,1 s, que es la columna reproducido.</span>
+    <span data-phrase="col.file">archivo</span>
+    <span data-phrase="col.stored">guardado (s)</span>
+    <span data-phrase="col.played">reproducido (s)</span>
+    <span data-phrase="col.x">x</span>
+    <span data-phrase="col.y">y</span>
+    <span data-phrase="col.width">ancho</span>
+    <span data-phrase="col.height">alto</span>
+    <span data-phrase="col.disposal">disposición</span>
+    <span data-phrase="unit.seconds">{n} s</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="sheet.drawing">Dibujando la hoja&hellip;</span>
     <span data-phrase="sheet.toobig">Esa hoja medir&iacute;a {width} por {height} p&iacute;xeles, y ning&uacute;n navegador la dibuja. Conserva un fotograma de cada dos, o guarda los fotogramas en un ZIP.</span>
     <span data-phrase="sheet.stored">Una hoja necesita que todas las celdas midan lo mismo, as&iacute; que usa el fotograma tal como se ve y no s&oacute;lo los p&iacute;xeles que ese fotograma guarda.</span>

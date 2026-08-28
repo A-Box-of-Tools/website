@@ -54,7 +54,7 @@
         <label for="every">Houd elk</label>
         <div class="inline-pair">
           <input type="number" id="every" min="1" max="100" step="1" value="1">
-          <span id="every-note">frame</span>
+          <span id="every-note">beeld</span>
         </div>
         <p class="field-note">
           Pak elk tweede of elk vijfde frame in plaats van allemaal, voor een
@@ -114,6 +114,68 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">De GIF wordt gelezen&hellip;</span>
+    <span data-phrase="read.failed">Dat bestand kon niet gelezen worden: {why}</span>
+    <span data-phrase="gif.tooshort">Dat bestand is te kort om een GIF te zijn.</span>
+    <span data-phrase="gif.notagif">Dat is geen GIF. Het bestand begint niet met GIF87a of GIF89a.</span>
+    <span data-phrase="gif.enormous">Deze GIF is enorm: de eerste {n} beelden vulden het geheugen dat deze pagina in één
+      keer wil vasthouden, dus de rest is ongelezen gebleven.</span>
+    <span data-phrase="gif.midframe">Deze GIF eindigt midden in een beeld, dus het laatste kan onvolledig zijn.</span>
+    <span data-phrase="gif.damaged">Deze GIF is beschadigd: hij eindigt voordat het eerste beeld af is.</span>
+    <span data-phrase="gif.noframes">Die GIF bevat geen beelden die deze lezer kon openen.</span>
+    <span data-phrase="note.partial.one">1 beeld houdt in het bestand zelf al op; de ontbrekende pixels komen er transparant
+      uit.</span>
+    <span data-phrase="note.partial.many">{n} beelden houden in het bestand zelf al op; de ontbrekende pixels komen er
+      transparant uit.</span>
+    <span data-phrase="note.local">{n} van de beelden dragen een eigen kleurtabel, en daarom is deze GIF groter dan
+      zijn afmetingen doen vermoeden.</span>
+    <span data-phrase="note.comment">Het bestand draagt een opmerking: &bdquo;{comment}&rdquo;</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="loop.once">speelt één keer (geen herhaalblok)</span>
+    <span data-phrase="loop.forever">eindeloos</span>
+    <span data-phrase="loop.times.one">nog 1 keer</span>
+    <span data-phrase="loop.times.many">nog {n} keer</span>
+    <span data-phrase="frame.number">Beeld {n}</span>
+    <span data-phrase="step.drawing">De beelden worden getekend&hellip;</span>
+    <span data-phrase="meta.clamped">{played} (opgeslagen als {stored} s)</span>
+    <span data-phrase="meta.whole">{delay} &mdash; {width} x {height}</span>
+    <span data-phrase="meta.patch">{delay} &mdash; {width} x {height} op {x}, {y} &mdash; {disposal}</span>
+    <span data-phrase="disposal.stays">blijft staan</span>
+    <span data-phrase="disposal.clears">wist zijn gebied daarna</span>
+    <span data-phrase="disposal.restores">zet terug wat eronder zat</span>
+    <span data-phrase="frames.count.one">1 beeld, {picked} geselecteerd</span>
+    <span data-phrase="frames.count.many">{n} beelden, {picked} geselecteerd</span>
+    <span data-phrase="mode.stored">Wat het bestand bevat: de lap die elk beeld opnieuw tekent, op zijn eigen formaat.
+      Zo blijft een GIF klein, en zo ziet de animatie er niet uit.</span>
+    <span data-phrase="mode.whole">Elke PNG is het hele plaatje, precies zoals dat moment van de animatie eruitziet.
+      Dit is wat vrijwel iedereen wil.</span>
+    <span data-phrase="every.one">beeld</span>
+    <span data-phrase="every.two">tweede beeld</span>
+    <span data-phrase="every.three">derde beeld</span>
+    <span data-phrase="every.many">{n}e beeld</span>
+    <span data-phrase="step.writing">Beeld {done} van {total} wordt geschreven&hellip;</span>
+    <span data-phrase="png.nowrite">Deze browser wilde geen PNG schrijven.</span>
+    <span data-phrase="png.nopreview">Deze browser wilde de voorbeelden niet tekenen.</span>
+    <span data-phrase="save.frame.failed">Dat beeld kon niet geschreven worden: {why}</span>
+    <span data-phrase="save.sheet.failed">Dat vel kon niet geschreven worden: {why}</span>
+    <span data-phrase="save.frames.failed">De beelden konden niet geschreven worden: {why}</span>
+    <span data-phrase="timing.title">Beelden van {name}</span>
+    <span data-phrase="timing.size.one">{width}x{height}, 1 beeld in het origineel</span>
+    <span data-phrase="timing.size.many">{width}x{height}, {frames} beelden in het origineel</span>
+    <span data-phrase="timing.delays">De vertragingen zijn die welke het bestand opslaat. Een browser speelt alles onder
+      0,02 s op 0,1 s, en dat is de kolom gespeeld.</span>
+    <span data-phrase="col.file">bestand</span>
+    <span data-phrase="col.stored">opgeslagen (s)</span>
+    <span data-phrase="col.played">gespeeld (s)</span>
+    <span data-phrase="col.x">x</span>
+    <span data-phrase="col.y">y</span>
+    <span data-phrase="col.width">breedte</span>
+    <span data-phrase="col.height">hoogte</span>
+    <span data-phrase="col.disposal">afhandeling</span>
+    <span data-phrase="unit.seconds">{n} s</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="sheet.drawing">Het blad wordt getekend&hellip;</span>
     <span data-phrase="sheet.toobig">Dat blad zou {width} bij {height} pixels worden, en dat tekent geen enkele browser. Houd elk tweede beeld over, of sla de beelden op als ZIP.</span>
     <span data-phrase="sheet.stored">Een blad heeft cellen van gelijke grootte nodig en gebruikt daarom het beeld zoals het eruitziet, niet alleen de pixels die dat beeld opslaat.</span>

@@ -113,6 +113,66 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.reading">جارٍ قراءة صورة GIF&hellip;</span>
+    <span data-phrase="read.failed">تعذّرت قراءة ذلك الملف: {why}</span>
+    <span data-phrase="gif.tooshort">ذلك الملف أقصر من أن يكون GIF.</span>
+    <span data-phrase="gif.notagif">ذلك ليس GIF. الملف لا يبدأ بـ GIF87a ولا بـ GIF89a.</span>
+    <span data-phrase="gif.enormous">صورة GIF هذه ضخمة: أول {n} إطاراً ملأت الذاكرة التي ترضى هذه الصفحة بحملها دفعةً
+      واحدة، فبقي الباقي دون قراءة.</span>
+    <span data-phrase="gif.midframe">تنتهي صورة GIF هذه في منتصف إطار، فقد يكون الإطار الأخير ناقصاً.</span>
+    <span data-phrase="gif.damaged">صورة GIF هذه تالفة: تنتهي قبل اكتمال الإطار الأول.</span>
+    <span data-phrase="gif.noframes">لا تحوي صورة GIF تلك إطاراً استطاع هذا القارئ فتحه.</span>
+    <span data-phrase="note.partial.one">إطار واحد ينقطع في الملف نفسه؛ والبكسلات الناقصة تخرج شفافة.</span>
+    <span data-phrase="note.partial.many">{n} إطاراً تنقطع في الملف نفسه؛ والبكسلات الناقصة تخرج شفافة.</span>
+    <span data-phrase="note.local">{n} من الإطارات تحمل لوحة ألوان خاصة بها، ولهذا كانت صورة GIF هذه أكبر مما يوحي به
+      حجمها.</span>
+    <span data-phrase="note.comment">الملف يحمل تعليقاً: &laquo;{comment}&raquo;</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="loop.once">تُعرض مرة واحدة (لا كتلة تكرار)</span>
+    <span data-phrase="loop.forever">إلى ما لا نهاية</span>
+    <span data-phrase="loop.times.one">مرة واحدة أخرى</span>
+    <span data-phrase="loop.times.many">{n} مرات أخرى</span>
+    <span data-phrase="frame.number">الإطار {n}</span>
+    <span data-phrase="step.drawing">رسم الإطارات&hellip;</span>
+    <span data-phrase="meta.clamped">{played} (مخزّن {stored} ث)</span>
+    <span data-phrase="meta.whole">{delay} &mdash; {width} x {height}</span>
+    <span data-phrase="meta.patch">{delay} &mdash; {width} x {height} عند {x}، {y} &mdash; {disposal}</span>
+    <span data-phrase="disposal.stays">يبقى على الشاشة</span>
+    <span data-phrase="disposal.clears">يمسح منطقته بعدها</span>
+    <span data-phrase="disposal.restores">يعيد ما كان تحته</span>
+    <span data-phrase="frames.count.one">إطار واحد، {picked} محدد</span>
+    <span data-phrase="frames.count.many">{n} إطاراً، {picked} محدد</span>
+    <span data-phrase="mode.stored">ما يحويه الملف: الرقعة التي يعيد كل إطار رسمها، بحجمها هي. هكذا تبقى صورة GIF صغيرة،
+      وليس هكذا تبدو الحركة.</span>
+    <span data-phrase="mode.whole">كل PNG هو الصورة كاملة، تماماً كما تبدو تلك اللحظة من الحركة. وهذا ما يريده الجميع
+      تقريباً.</span>
+    <span data-phrase="every.one">إطار</span>
+    <span data-phrase="every.two">كل إطار ثانٍ</span>
+    <span data-phrase="every.three">كل إطار ثالث</span>
+    <span data-phrase="every.many">كل إطار {n}</span>
+    <span data-phrase="step.writing">كتابة الإطار {done} من {total}&hellip;</span>
+    <span data-phrase="png.nowrite">هذا المتصفح لم يكتب ملف PNG.</span>
+    <span data-phrase="png.nopreview">هذا المتصفح لم يرسم المعاينات.</span>
+    <span data-phrase="save.frame.failed">تعذّرت كتابة ذلك الإطار: {why}</span>
+    <span data-phrase="save.sheet.failed">تعذّرت كتابة تلك الورقة: {why}</span>
+    <span data-phrase="save.frames.failed">تعذّرت كتابة الإطارات: {why}</span>
+    <span data-phrase="timing.title">إطارات {name}</span>
+    <span data-phrase="timing.size.one">{width}x{height}، إطار واحد في الأصل</span>
+    <span data-phrase="timing.size.many">{width}x{height}، {frames} إطاراً في الأصل</span>
+    <span data-phrase="timing.delays">المُهل كما يخزّنها الملف. والمتصفح يعرض كل ما دون 0.02 ث عند 0.1 ث، وهو عمود
+      المعروض.</span>
+    <span data-phrase="col.file">الملف</span>
+    <span data-phrase="col.stored">المخزن (ث)</span>
+    <span data-phrase="col.played">المعروض (ث)</span>
+    <span data-phrase="col.x">س</span>
+    <span data-phrase="col.y">ص</span>
+    <span data-phrase="col.width">العرض</span>
+    <span data-phrase="col.height">الارتفاع</span>
+    <span data-phrase="col.disposal">التصرف</span>
+    <span data-phrase="unit.seconds">{n} ث</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
     <span data-phrase="sheet.drawing">يجري رسم الورقة&hellip;</span>
     <span data-phrase="sheet.toobig">ستكون الورقة {width} &times; {height} بكسل، ولا يرسم أي متصفح هذا الحجم. احتفظ بإطار من كل إطارين، أو احفظ الإطارات في ملف ZIP.</span>
     <span data-phrase="sheet.stored">تحتاج الورقة إلى خلايا متساوية الحجم، لذا تستخدم الإطار كما يظهر لا البكسلات التي يخزّنها ذلك الإطار وحدها.</span>

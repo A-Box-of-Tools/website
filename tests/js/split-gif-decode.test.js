@@ -35,6 +35,15 @@ import { GifWriter } from '../../tools/video-to-gif/src/gif.js';
 import { lzwEncode } from '../../tools/gif-maker/src/lzw.js';
 import { blobBytes } from './helpers.js';
 
+/**
+ * The stand-in for phrase(). The words live in body.html now, in fifteen
+ * languages; a test can hold these to the key and the numbers in the blanks.
+ * The `{n}` in the size and duration phrases is filled so the arithmetic these
+ * assertions are actually about still shows through.
+ */
+const say = (key, values = {}) => (
+  'n' in values ? `${key} ${values.n}` : [key, ...Object.values(values)].join(' '));
+
 /* ------------------------------------------------------------------- LZW */
 
 test('what the maker compresses, this decompresses, byte for byte', () => {
@@ -511,21 +520,24 @@ test('the timing list carries what a PNG cannot', () => {
     { name: 'a-02.png', played: 0.5, frame: { delay: 50, x: 1, y: 2, width: 2, height: 1, disposal: 2 } },
   ];
 
-  const text = timingList('a.gif', gif, rows);
+  const text = timingList('a.gif', gif, rows, say);
   const lines = text.trim().split('\n');
   const last = lines[lines.length - 1].split('\t');
 
-  assert.ok(text.startsWith('# Frames of a'));
+  // The header words are phrases; the numbers under them are what this is about.
+  assert.ok(text.startsWith('# timing.title a'));
   assert.deepEqual(last, ['a-02.png', '0.50', '0.50', '1', '2', '2', '1', '2']);
   assert.ok(lines.some((line) => line.startsWith('a-01.png\t0.01\t0.10')),
     'the stored delay and the played delay are both written down');
 });
 
 test('sizes and durations are written the way a person reads them', () => {
-  assert.equal(formatBytes(900), '900 B');
-  assert.equal(formatBytes(2048), '2.0 KB');
-  assert.equal(formatBytes(3 * 1024 * 1024), '3.0 MB');
-  assert.equal(formatSeconds(0.08), '0.08s');
-  assert.equal(formatSeconds(2.25), '2.3s');
-  assert.equal(formatSeconds(61.4), '61s');
+  // Which unit and how many decimals, which is what these choose between;
+  // the words beside the number are body.html's, in fifteen languages.
+  assert.equal(formatBytes(900, say), 'size.b 900');
+  assert.equal(formatBytes(2048, say), 'size.kb 2.0');
+  assert.equal(formatBytes(3 * 1024 * 1024, say), 'size.mb 3.0');
+  assert.equal(formatSeconds(0.08, say), 'unit.seconds 0.08');
+  assert.equal(formatSeconds(2.25, say), 'unit.seconds 2.3');
+  assert.equal(formatSeconds(61.4, say), 'unit.seconds 61');
 });
