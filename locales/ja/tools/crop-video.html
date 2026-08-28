@@ -28,7 +28,7 @@
     <h2><span class="step">2</span> 切り抜く範囲を決める</h2>
 
     <p class="stage-hint">
-      枠の内側をドラッグすれば移動、四隅をドラッグすれば大きさが変わります。枠を選んだ状態なら、矢印キーで1ピクセルずつ動かせます。<kbd>Alt</kbd>&nbsp;+&nbsp;矢印で大きさが変わり、<kbd>Shift</kbd>を押しながらなら1回10ピクセルです。
+      動画を再生するか、下のスライダーを動かして、枠を合わせるコマを選べます。枠の内側をドラッグすれば移動、四隅をドラッグすれば大きさが変わります。枠を選んだ状態なら、矢印キーで1ピクセルずつ動かせます。<kbd>Alt</kbd>&nbsp;+&nbsp;矢印で大きさが変わり、<kbd>Shift</kbd>を押しながらなら1回10ピクセルです。
     </p>
 
     <!-- The crop box itself is added here by src/cropper.js. The stage is given
@@ -36,9 +36,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="プレビュー"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>展開中&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="動画の中を移動する">
+        <button type="button" id="step-back" class="ghost" title="前のコマ"
+          aria-label="前のコマ">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="再生・一時停止"
+          aria-label="再生">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="次のコマ"
+          aria-label="次のコマ">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="動画内の位置">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -173,6 +202,9 @@
     <span data-phrase="read.turned">このファイルは回転した状態で保存されていて、ここのリーダーとブラウザーのプレーヤーとで回転の解釈が食い違っています。</span>
     <span data-phrase="open.failed">このブラウザーはこのファイルを開けません。{reason}</span>
     <span data-phrase="open.norecord">このブラウザーは動画を録画できないので、このファイルを切り抜けません。</span>
+    <span data-phrase="play.play">再生</span>
+    <span data-phrase="play.pause">一時停止</span>
+    <span data-phrase="play.cannot">このブラウザーはこのファイルを再生しないので、代わりにコマを1つずつデコードします。</span>
     <span data-phrase="path.record">{reason}そのためこれは、再生しながら録画する形で切り抜きます。動画の長さと同じだけ時間がかかり、音はコピーではなく再エンコードされます。</span>
     <span data-phrase="net.clean">動画はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>

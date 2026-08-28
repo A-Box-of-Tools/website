@@ -131,7 +131,8 @@ body = """
       Taşımak için içine, yeniden boyutlandırmak için herhangi bir köşesine
       sürükleyin. Önce bir şekle kilitleyin &mdash; kare bir gönderi için 1:1,
       telefon için 9:16, geniş kadraj için 16:9 &mdash; ya da altındaki dört
-      alana tam piksel kutusunu yazın."""
+      alana tam piksel kutusunu yazın.
+      Kutuyu hizalayacağınız kareyi seçmek için klibi oynatın ya da altındaki kaydırıcıyı sürükleyin."""
 
 [[howto]]
 title = "Ne kadar kalite harcayacağınızı seçin."

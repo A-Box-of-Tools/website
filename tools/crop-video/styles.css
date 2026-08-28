@@ -87,6 +87,60 @@
   background: #000;
 }
 
+/* --------------------------------------------------------- moving through */
+
+/* Said over the picture rather than beside it, because what it explains is why
+   the picture has not changed yet. */
+.stage-busy {
+  position: absolute;
+  inset-inline-start: 0.6rem;
+  bottom: 0.6rem;
+  margin: 0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  background: rgb(0 0 0 / 55%);
+  color: #fff;
+  font-size: 0.78rem;
+  pointer-events: none;
+}
+
+/* The transport sits under the stage and never over it: the picture belongs to
+   the crop box, down to its bottom handles, which is exactly where a player's
+   own control bar would land. */
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.transport-buttons { display: flex; gap: 0.3rem; flex: none; }
+
+.transport-buttons button {
+  min-width: 2.6rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.transport input[type="range"] {
+  flex: 1 1 12rem;
+  min-width: 8rem;
+}
+
+.readout {
+  margin: 0;
+  flex: none;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.readout-dim {
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-inline-start: 0.25rem;
+}
+
 /* ------------------------------------------------------------ the crop box */
 
 /* Everything outside the box is dimmed by one enormous shadow rather than four

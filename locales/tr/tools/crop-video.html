@@ -34,6 +34,7 @@
     <h2><span class="step">2</span> Kırpmayı ayarlayın</h2>
 
     <p class="stage-hint">
+      Kutuyu hizalayacağınız kareyi seçmek için klibi oynatın ya da altındaki kaydırıcıyı sürükleyin.
       Taşımak için kutunun içine, yeniden boyutlandırmak için herhangi bir
       köşesine sürükleyin. Kutu odaktayken ok tuşları onu birer piksel
       kaydırır, <kbd>Alt</kbd>&nbsp;+&nbsp;oklar yeniden boyutlandırır,
@@ -45,9 +46,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Önizleme"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Çözülüyor&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Klip boyunca ilerle">
+        <button type="button" id="step-back" class="ghost" title="Önceki kare"
+          aria-label="Önceki kare">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Oynat veya duraklat"
+          aria-label="Oynat">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Sonraki kare"
+          aria-label="Sonraki kare">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Klipteki konum">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -185,6 +215,9 @@
       bu dönme konusunda anlaşamıyor.</span>
     <span data-phrase="open.failed">Bu tarayıcı bu dosyayı açamıyor. {reason}</span>
     <span data-phrase="open.norecord">Bu tarayıcı video kaydedemiyor, dolayısıyla bu dosyayı kırpamıyor da.</span>
+    <span data-phrase="play.play">Oynat</span>
+    <span data-phrase="play.pause">Duraklat</span>
+    <span data-phrase="play.cannot">Bu tarayıcı bu dosyayı oynatmıyor, dolayısıyla kareler teker teker çözülüyor.</span>
     <span data-phrase="path.record">{reason} Bu yüzden bu dosya, oynatılıp kaydedilerek kırpılıyor: bu, videonun süresi
       kadar zaman alır ve ses kopyalanmak yerine yeniden kodlanır.</span>
     <span data-phrase="net.clean">videonuz hiçbir yere gitmedi. {total} dosya

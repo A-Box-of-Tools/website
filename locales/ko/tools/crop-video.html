@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> 자를 영역 정하기</h2>
 
     <p class="stage-hint">
+      클립을 재생하거나 아래 슬라이더를 끌어서 상자를 맞출 프레임을 고르세요.
       상자 안쪽을 끌면 옮겨지고, 모서리를 끌면 크기가 바뀝니다. 상자에 초점이
       있을 때 방향키는 1픽셀씩 밀고,
       <kbd>Alt</kbd>&nbsp;+&nbsp;방향키는 크기를 바꾸며,
@@ -39,9 +40,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="미리보기"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>디코딩 중&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="영상 안에서 이동">
+        <button type="button" id="step-back" class="ghost" title="이전 프레임"
+          aria-label="이전 프레임">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="재생 또는 일시정지"
+          aria-label="재생">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="다음 프레임"
+          aria-label="다음 프레임">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="영상 안에서의 위치">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -178,6 +208,9 @@
     <span data-phrase="read.turned">이 파일은 돌아간 채로 저장되어 있고, 여기 리더와 브라우저의 재생기가 그 회전을 두고 서로 다르게 봅니다.</span>
     <span data-phrase="open.failed">이 브라우저는 이 파일을 열지 못합니다. {reason}</span>
     <span data-phrase="open.norecord">이 브라우저는 영상을 녹화하지 못해서, 이 파일을 잘라내지도 못합니다.</span>
+    <span data-phrase="play.play">재생</span>
+    <span data-phrase="play.pause">일시정지</span>
+    <span data-phrase="play.cannot">이 브라우저는 이 파일을 재생하지 못해서, 대신 프레임을 하나씩 디코딩합니다.</span>
     <span data-phrase="path.record">{reason} 그래서 이 파일은 재생하면서 그 결과를 녹화하는 방식으로 잘라냅니다. 영상 길이만큼 시간이 걸리고, 소리는 복사가 아니라 다시
       인코딩됩니다.</span>
     <span data-phrase="net.clean">동영상은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.

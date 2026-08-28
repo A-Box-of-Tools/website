@@ -35,7 +35,15 @@ const el = {
   stage: $('stage'),
   preview: $('preview'),
   still: $('still'),
+  stageBusy: $('stage-busy'),
   stageNote: $('stage-note'),
+  transport: $('transport'),
+  stepBack: $('step-back'),
+  play: $('play'),
+  stepOn: $('step-on'),
+  scrub: $('scrub'),
+  atTime: $('at-time'),
+  atLength: $('at-length'),
   aspectRow: document.querySelector('.aspect-row'),
   swapAspect: $('swap-aspect'),
   cropX: $('crop-x'),
@@ -85,6 +93,17 @@ let duration = 0;
 let fps = 30;
 let canCropExactly = false;
 let canRecord = false;
+/** Whether the picture on the stage is the player's, or a decoded still. */
+let playable = false;
+let playing = false;
+/** Where in the clip the stage is showing, in seconds. */
+let position = 0;
+/** The moment the still path has been asked for, and the one it has drawn. */
+let wantedTime = -1;
+let shownTime = -1;
+let decoding = false;
+/** Bumped by every load, so a decode still in flight knows it is stale. */
+let loadId = 0;
 let exporting = false;
 let abortController = null;
 let lastResultUrl = null;
@@ -143,6 +162,7 @@ async function loadFile(picked) {
 
   clearError();
   releaseFile();
+  loadId += 1;
 
   file = picked;
   picker.busy('Reading the file...');
@@ -197,8 +217,11 @@ async function loadFile(picked) {
       : { width: played.width, height: played.height };
     duration = played.duration || (media ? media.duration : 0);
     fps = media ? averageFps(media.video) : 30;
+    playable = played.ok;
 
-    await showPreview(played.ok);
+    showPreview();
+    setUpTransport();
+    goTo(0);
     describeSource(played);
 
     cropper.setSource(source.width, source.height);
@@ -217,40 +240,25 @@ async function loadFile(picked) {
 }
 
 /**
- * The preview is the played file where the browser will play it, and a frame
+ * The preview is the played file where the browser will play it, and frames
  * decoded by WebCodecs where it will not - which is how an iPhone HEVC clip
  * still gets a picture to line the crop box up against in a browser that has no
  * licence to play one.
  */
-async function showPreview(playable) {
+function showPreview() {
   el.stage.style.aspectRatio = `${source.width} / ${source.height}`;
   // Height is capped through the width, so the stage keeps the video's exact
   // shape - see the note on .stage in styles.css.
   el.stage.style.maxWidth = `calc(62vh * ${source.width / source.height})`;
 
-  if (playable) {
-    el.preview.hidden = false;
-    el.still.hidden = true;
-    el.stageNote.hidden = true;
-    return;
-  }
+  el.preview.hidden = !playable;
+  el.still.hidden = playable;
+  el.stageNote.hidden = playable;
 
-  el.preview.hidden = true;
-  el.stageNote.hidden = false;
-  el.stageNote.textContent = 'This browser will not play this file, so the frame below was '
-    + 'decoded to show you what you are cropping. The crop itself is unaffected.';
-
-  try {
-    const canvas = await grabFrame({ file, media, atSeconds: 0 });
-    const ctx = el.still.getContext('2d');
-    el.still.width = canvas.width;
-    el.still.height = canvas.height;
-    ctx.drawImage(canvas, 0, 0);
-    el.still.hidden = false;
-  } catch (error) {
-    el.still.hidden = true;
-    el.stageNote.textContent = 'This browser will not play this file and no frame could be '
-      + `decoded from it either (${error.message}). The crop box below still works on its size.`;
+  if (!playable) {
+    el.stageNote.textContent = 'This browser will not play this file, so the frame below was '
+      + 'decoded to show you what you are cropping, and moving the slider decodes '
+      + 'another. The crop itself is unaffected.';
   }
 }
 
@@ -282,6 +290,11 @@ function describeSource(played) {
 }
 
 function releaseFile() {
+  playing = false;
+  playable = false;
+  position = 0;
+  wantedTime = -1;
+  shownTime = -1;
   if (objectUrl) {
     el.preview.removeAttribute('src');
     el.preview.load();
@@ -295,8 +308,144 @@ function releaseFile() {
 function resetView() {
   el.source.hidden = true;
   el.pathNote.hidden = true;
+  el.transport.hidden = true;
   releaseFile();
 }
+
+/* ------------------------------------------------- moving through the clip */
+
+/*
+ * The stage shows one moment of the clip, and this row is how that moment is
+ * chosen. It replaces the player's own controls, which used to sit inside the
+ * picture, over the bottom edge of the very rectangle being dragged.
+ *
+ * Both preview paths answer the same three calls. Where the browser plays the
+ * file, moving is a seek; where it does not, it is another frame decoded by
+ * WebCodecs, which is slower and so collapses repeated requests rather than
+ * queueing them.
+ */
+
+/** The button's resting title, kept so an unplayable file can borrow it back. */
+const playTitle = el.play.title;
+
+function setUpTransport() {
+  el.transport.hidden = false;
+  el.scrub.min = '0';
+  // Counted in milliseconds and stepped by one frame, so the arrow keys on the
+  // slider move through the clip exactly as the buttons beside it do. A clip
+  // whose frame rate wanders gets the average, which is close enough for
+  // lining a box up and is not what the encoder is told.
+  el.scrub.max = String(Math.max(1, Math.round(duration * 1000)));
+  el.scrub.step = String(Math.max(1, Math.round(1000 / (fps || 30))));
+  el.scrub.value = '0';
+  el.scrub.disabled = !duration;
+  el.play.disabled = !playable;
+  el.play.title = playable ? playTitle : phrase('play.cannot');
+  el.atLength.textContent = duration ? `/ ${clockTime(duration)}` : '';
+}
+
+/** Show the clip at `seconds`, wherever the picture is coming from. */
+function goTo(seconds) {
+  position = Math.max(0, Math.min(seconds, duration || seconds));
+  el.scrub.value = String(Math.round(position * 1000));
+  el.atTime.textContent = clockTime(position);
+  if (playable) el.preview.currentTime = position;
+  else drawStill(position);
+}
+
+/** One frame on or back, at the clip's average rate. */
+function step(frames) {
+  pause();
+  goTo(position + frames / (fps || 30));
+}
+
+function play() {
+  if (!playable || playing) return;
+  playing = true;
+  el.play.textContent = '⏸';
+  el.play.setAttribute('aria-label', phrase('play.pause'));
+  el.preview.play().catch(() => pause());
+  follow();
+}
+
+function pause() {
+  if (!playing) return;
+  playing = false;
+  el.play.textContent = '▶';
+  el.play.setAttribute('aria-label', phrase('play.play'));
+  el.preview.pause();
+  // Snap to where it actually stopped, so the numbers agree with the picture.
+  goTo(el.preview.currentTime);
+}
+
+/** Keep the slider and the clock in step while it plays. */
+function follow() {
+  if (!playing) return;
+  position = el.preview.currentTime;
+  el.scrub.value = String(Math.round(position * 1000));
+  el.atTime.textContent = clockTime(position);
+  requestAnimationFrame(follow);
+}
+
+/**
+ * Draw the frame at `seconds` onto the stage canvas.
+ *
+ * Requests collapse rather than queue: dragging the slider asks for a hundred
+ * frames and the only one worth having is the last. Decoding starts at the
+ * keyframe before the moment asked for, so how long it takes depends on the
+ * file rather than on how far the slider moved - hence the note over the
+ * picture once it has been more than a moment.
+ */
+async function drawStill(seconds) {
+  wantedTime = seconds;
+  if (decoding) return;
+
+  const mine = loadId;
+  decoding = true;
+  try {
+    while (wantedTime !== shownTime && media && loadId === mine) {
+      const target = wantedTime;
+      const slow = setTimeout(() => { el.stageBusy.hidden = false; }, 120);
+      try {
+        const canvas = await grabFrame({ file, media, atSeconds: target });
+        // Something newer came in, or another file did; that one wins.
+        if (wantedTime !== target || loadId !== mine) continue;
+        el.still.width = canvas.width;
+        el.still.height = canvas.height;
+        el.still.getContext('2d').drawImage(canvas, 0, 0);
+        el.still.hidden = false;
+        shownTime = target;
+      } finally {
+        clearTimeout(slow);
+        el.stageBusy.hidden = true;
+      }
+    }
+  } catch (error) {
+    if (loadId !== mine) return;
+    el.still.hidden = true;
+    el.stageNote.textContent = 'This browser will not play this file and no frame could be '
+      + `decoded from it either (${error.message}). The crop box below still works on its size.`;
+  } finally {
+    decoding = false;
+  }
+}
+
+el.play.addEventListener('click', () => (playing ? pause() : play()));
+el.stepBack.addEventListener('click', () => step(-1));
+el.stepOn.addEventListener('click', () => step(1));
+
+el.scrub.addEventListener('input', () => {
+  pause();
+  goTo(Number(el.scrub.value) / 1000);
+});
+
+// A player stops for reasons of its own as well as ours: the clip ends, the
+// browser stops video in a background tab to save power, a headset button gets
+// pressed. Following the element rather than only our own button is what keeps
+// the label, the slider and the clock honest when that happens. pause() clears
+// `playing` before it touches the element, so this cannot loop.
+el.preview.addEventListener('pause', () => pause());
+el.preview.addEventListener('ended', () => pause());
 
 /* --------------------------------------------------------------- the crop */
 
@@ -461,6 +610,14 @@ function formatBytes(bytes) {
   return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
 }
 
+/** A moment in the clip, written the way a person reads it. */
+function clockTime(seconds) {
+  const whole = Math.max(0, seconds);
+  const minutes = Math.floor(whole / 60);
+  const rest = whole - minutes * 60;
+  return `${minutes}:${rest.toFixed(3).padStart(6, '0')}`;
+}
+
 function formatDuration(seconds) {
   const whole = Math.max(0, Math.round(seconds));
   const minutes = Math.floor(whole / 60);
@@ -487,7 +644,8 @@ async function runExport() {
   el.progress.hidden = false;
   el.result.hidden = true;
   cropper.setEnabled(false);
-  el.preview.pause();
+  pause();
+  setTransportEnabled(false);
   setProgress({ phase: 'preparing', done: 0, total: 1 });
 
   const quality = el.quality.value;
@@ -533,6 +691,18 @@ async function runExport() {
     el.cancelBtn.hidden = true;
     el.exportBtn.disabled = false;
     cropper.setEnabled(true);
+    setTransportEnabled(true);
+  }
+}
+
+/** The transport is left alone while a crop runs, along with the box itself. */
+function setTransportEnabled(enabled) {
+  for (const control of [el.play, el.stepBack, el.stepOn, el.scrub]) {
+    control.disabled = !enabled;
+  }
+  if (enabled) {
+    el.play.disabled = !playable;
+    el.scrub.disabled = !duration;
   }
 }
 

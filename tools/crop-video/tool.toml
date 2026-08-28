@@ -192,7 +192,8 @@ body = """
  Drag
       inside it to move it and any corner to resize. Lock it to a shape first
       &mdash; 1:1 for a square post, 9:16 for a phone, 16:9 for a wide frame
-      &mdash; or type an exact pixel box into the four fields underneath."""
+      &mdash; or type an exact pixel box into the four fields underneath.
+      Play the clip, or drag the slider under it, to pick the frame you line the box up against."""
 
 [[howto]]
 title = "Choose how much quality to spend."

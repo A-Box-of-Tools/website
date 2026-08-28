@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> Stel de bijsnijding in</h2>
 
     <p class="stage-hint">
+      Speel de clip af, of sleep de schuif eronder, om het frame te kiezen waarop je het kader uitlijnt.
       Sleep binnen het kader om het te verplaatsen, of aan een hoek om het formaat
       te wijzigen. Staat het kader scherp, dan verschuif je het met de pijltjes een
       pixel tegelijk, wijzig je het formaat met <kbd>Alt</kbd>&nbsp;+&nbsp;pijltjes,
@@ -39,9 +40,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Voorbeeld"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Bezig met decoderen&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Door de clip bewegen">
+        <button type="button" id="step-back" class="ghost" title="Vorig frame"
+          aria-label="Vorig frame">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Afspelen of pauzeren"
+          aria-label="Afspelen">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Volgend frame"
+          aria-label="Volgend frame">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Positie in de clip">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -180,6 +210,9 @@
       zijn het over die draaiing niet eens.</span>
     <span data-phrase="open.failed">Deze browser kan dit bestand niet openen. {reason}</span>
     <span data-phrase="open.norecord">Deze browser kan geen video opnemen, en kan dit bestand dus ook niet bijsnijden.</span>
+    <span data-phrase="play.play">Afspelen</span>
+    <span data-phrase="play.pause">Pauzeren</span>
+    <span data-phrase="play.cannot">Deze browser speelt dit bestand niet af, dus worden de frames één voor één gedecodeerd.</span>
     <span data-phrase="path.record">{reason} Daarom wordt deze bijgesneden door hem af te spelen en op te nemen: dat
       duurt zo lang als de video duurt, en het geluid wordt opnieuw gecodeerd in plaats
       van gekopieerd.</span>

@@ -141,7 +141,8 @@ body = """
       al suo interno per spostarlo, e un angolo qualsiasi per ridimensionarlo.
       Se preferisci, bloccalo prima su una forma, 1:1 per un post quadrato, 9:16
       per un telefono, 16:9 per un'inquadratura larga, oppure scrivi un riquadro
-      di pixel esatto nei quattro campi qui sotto."""
+      di pixel esatto nei quattro campi qui sotto.
+      Riproduci il clip, o trascina il cursore qui sotto, per scegliere il fotogramma su cui allinei il riquadro."""
 
 [[howto]]
 title = "Scegli quanta qualità spendere."

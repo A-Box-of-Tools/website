@@ -149,6 +149,33 @@ between a playing video and a decoded still without the rectangle moving.
 with no licence for one — the preview is a frame decoded by WebCodecs and drawn
 on a canvas instead, and the page says so. The crop is unaffected either way.
 
+## Choosing the frame to line it up against
+
+A crop is decided against one moment of the clip, and the first frame is rarely
+that moment: the subject walks into shot, the camera settles, the title card
+ends. So under the picture there is a transport — a frame back, play and pause,
+a frame on, and a slider through the clip — and whatever it lands on is what
+the box is drawn over.
+
+The player's **own controls are gone**, and that is the point rather than a side
+effect. A native control bar sits inside the picture, across the bottom of the
+very rectangle being dragged: it covers the box's lower handles, takes clicks
+meant for the box, and offers a fullscreen button that pulls the video out of
+the stage the box is positioned against. Playback belongs under the picture, not
+over it.
+
+The slider is counted in milliseconds and **stepped by one frame**, so the arrow
+keys move it exactly as the buttons beside it do. The step is the clip's average
+frame rate, not its frame table — close enough to line a box up with, and not
+what the encoder is told; the crop itself is still applied to every frame the
+file holds.
+
+On the decoded-still path the same three controls do the same three things, only
+each move decodes a fresh frame rather than seeking a player. Requests collapse
+instead of queueing — a drag asks for a hundred frames and only the last one is
+worth having — and a decode that takes more than a moment says so over the
+picture, because what needs explaining is why the picture has not changed yet.
+
 ## What it spends on the picture
 
 The picture has to be encoded again: a cropped frame is a different picture, and

@@ -28,8 +28,9 @@
     <h2><span class="step">2</span> Set the crop</h2>
 
     <p class="stage-hint">
-      Drag inside the box to move it, or any corner to resize. With the box
-      focused, the arrow keys nudge it a pixel at a time,
+      Play the clip, or drag the slider under it, to pick the frame you line the
+      box up against. Drag inside the box to move it, or any corner to resize.
+      With the box focused, the arrow keys nudge it a pixel at a time,
       <kbd>Alt</kbd>&nbsp;+&nbsp;arrows resize it, and holding
       <kbd>Shift</kbd> makes each step ten.
     </p>
@@ -39,9 +40,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Preview"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Decoding&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Move through the clip">
+        <button type="button" id="step-back" class="ghost" title="Previous frame"
+          aria-label="Previous frame">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Play or pause"
+          aria-label="Play">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Next frame"
+          aria-label="Next frame">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Position in the clip">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -178,6 +208,9 @@
     <span data-phrase="read.turned">This file is stored turned in a way the reader and the player disagree on.</span>
     <span data-phrase="open.failed">This browser cannot open this file. {reason}</span>
     <span data-phrase="open.norecord">This browser cannot record video, so it cannot crop this file.</span>
+    <span data-phrase="play.play">Play</span>
+    <span data-phrase="play.pause">Pause</span>
+    <span data-phrase="play.cannot">This browser will not play this file, so the frames are decoded one at a time instead.</span>
     <span data-phrase="path.record">{reason} So this one is cropped by playing it and recording the result, which takes
       as long as the video is long and re-encodes the sound rather than copying it.</span>
     <span data-phrase="net.clean">your video has gone nowhere. {total} files

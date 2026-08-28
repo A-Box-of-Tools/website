@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> क्रॉप तय कीजिए</h2>
 
     <p class="stage-hint">
+      जिस फ़्रेम पर डिब्बे को टिकाना है उसे चुनने के लिए क्लिप चलाइए, या नीचे का स्लाइडर खींचिए।
       डिब्बे को हिलाने के लिए उसके भीतर से खींचिए, या आकार बदलने के लिए किसी भी
       कोने से। डिब्बा चुना हुआ हो तो तीर वाली कुंजियाँ उसे एक-एक पिक्सल खिसकाती
       हैं, <kbd>Alt</kbd>&nbsp;+&nbsp;तीर उसका आकार बदलते हैं, और
@@ -39,9 +40,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="पूर्वावलोकन"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>डिकोड हो रहा है&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="क्लिप में घूमिए">
+        <button type="button" id="step-back" class="ghost" title="पिछला फ़्रेम"
+          aria-label="पिछला फ़्रेम">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="चलाइए या रोकिए"
+          aria-label="चलाइए">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="अगला फ़्रेम"
+          aria-label="अगला फ़्रेम">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="क्लिप में जगह">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -179,6 +209,9 @@
       नहीं हैं।</span>
     <span data-phrase="open.failed">यह ब्राउज़र इस फ़ाइल को नहीं खोल सकता। {reason}</span>
     <span data-phrase="open.norecord">यह ब्राउज़र वीडियो रिकॉर्ड नहीं कर सकता, इसलिए इस फ़ाइल को काट-छाँट भी नहीं सकता।</span>
+    <span data-phrase="play.play">चलाइए</span>
+    <span data-phrase="play.pause">रोकिए</span>
+    <span data-phrase="play.cannot">यह ब्राउज़र इस फ़ाइल को नहीं चलाता, इसलिए फ़्रेम एक-एक करके डिकोड किए जाते हैं।</span>
     <span data-phrase="path.record">{reason} इसीलिए इसे चलाकर और रिकॉर्ड करके काटा-छाँटा जाता है: इसमें उतना ही समय लगता
       है जितना वीडियो लंबा है, और आवाज़ नक़ल होने के बजाय दोबारा एन्कोड होती है।</span>
     <span data-phrase="net.clean">आपका वीडियो कहीं नहीं गया। {total} फ़ाइलें लोड

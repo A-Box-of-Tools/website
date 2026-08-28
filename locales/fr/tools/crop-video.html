@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> Poser le recadrage</h2>
 
     <p class="stage-hint">
+      Lisez le clip, ou faites glisser le curseur en dessous, pour choisir l&rsquo;image sur laquelle vous alignez le cadre.
       Faites glisser depuis l'intérieur du cadre pour le déplacer, ou par un coin
       pour le redimensionner. Le cadre étant sélectionné, les flèches le
       déplacent d'un pixel à la fois,
@@ -40,9 +41,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Aperçu"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Décodage&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Parcourir le clip">
+        <button type="button" id="step-back" class="ghost" title="Image précédente"
+          aria-label="Image précédente">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Lire ou mettre en pause"
+          aria-label="Lire">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Image suivante"
+          aria-label="Image suivante">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Position dans le clip">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -184,6 +214,9 @@
     <span data-phrase="open.failed">Ce navigateur ne peut pas ouvrir ce fichier. {reason}</span>
     <span data-phrase="open.norecord">Ce navigateur ne sait pas enregistrer de vidéo, il ne peut donc pas rogner ce
       fichier.</span>
+    <span data-phrase="play.play">Lire</span>
+    <span data-phrase="play.pause">Mettre en pause</span>
+    <span data-phrase="play.cannot">Ce navigateur ne lit pas ce fichier, les images sont donc décodées une par une.</span>
     <span data-phrase="path.record">{reason} Celle-ci est donc rognée en la lisant et en enregistrant ce qui sort&nbsp;:
       cela prend le temps que dure la vidéo, et le son est réencodé plutôt que copié.</span>
     <span data-phrase="net.clean">votre vidéo n'est allée nulle part. {total}

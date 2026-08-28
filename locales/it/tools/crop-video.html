@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> Imposta il ritaglio</h2>
 
     <p class="stage-hint">
+      Riproduci il clip, o trascina il cursore qui sotto, per scegliere il fotogramma su cui allinei il riquadro.
       Trascina dentro il riquadro per spostarlo, o un angolo qualsiasi per
       ridimensionarlo. Con il riquadro selezionato, le frecce lo spostano di un
       pixel alla volta, <kbd>Alt</kbd>&nbsp;+&nbsp;frecce lo ridimensionano, e
@@ -39,9 +40,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Anteprima"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Decodifica in corso&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Muoversi dentro il video">
+        <button type="button" id="step-back" class="ghost" title="Fotogramma precedente"
+          aria-label="Fotogramma precedente">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Riproduci o metti in pausa"
+          aria-label="Riproduci">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Fotogramma successivo"
+          aria-label="Fotogramma successivo">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Posizione nel video">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -182,6 +212,9 @@
       non vanno d&rsquo;accordo sulla rotazione.</span>
     <span data-phrase="open.failed">Questo browser non riesce ad aprire questo file. {reason}</span>
     <span data-phrase="open.norecord">Questo browser non riesce a registrare video, quindi non può ritagliare questo file.</span>
+    <span data-phrase="play.play">Riproduci</span>
+    <span data-phrase="play.pause">Metti in pausa</span>
+    <span data-phrase="play.cannot">Questo browser non riproduce questo file, quindi i fotogrammi vengono decodificati uno alla volta.</span>
     <span data-phrase="path.record">{reason} Perciò questo viene ritagliato facendolo scorrere e registrando quello che
       esce: ci vuole tanto quanto dura il video, e l&rsquo;audio viene ricodificato invece
       che copiato.</span>

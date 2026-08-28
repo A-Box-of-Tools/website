@@ -135,7 +135,8 @@ body = """
       binnen het kader om het te verplaatsen en aan een hoek om het formaat te
       wijzigen. Zet het eerst vast op een vorm, bijvoorbeeld 1:1 voor een vierkante
       post, 9:16 voor een telefoon of 16:9 voor een breed beeld. Of tik een exact
-      pixelkader in de vier velden eronder."""
+      pixelkader in de vier velden eronder.
+      Speel de clip af, of sleep de schuif eronder, om het frame te kiezen waarop je het kader uitlijnt."""
 
 [[howto]]
 title = "Kies hoeveel kwaliteit eraan opgaat."
