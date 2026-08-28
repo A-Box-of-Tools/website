@@ -103,10 +103,17 @@ function stopWork(){
 cancelled=true;
 if(worker)worker.postMessage({type:'cancel'});
 }
+let unsupported=false;
 const picker=wireFilePicker({
 input:el.fileInput,
 dropzone:el.dropzone,
-onFiles(chosen){addFiles(chosen);},
+onFiles(chosen){
+if(unsupported){
+showUnsupported();
+return;
+}
+addFiles(chosen);
+},
 });
 let batch=0;
 const pending=new Map();
@@ -527,9 +534,13 @@ showError(phrase('error.broke',{detail:event.message}));
 window.addEventListener('unhandledrejection',(event)=>{
 showError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
 });
-if(typeof OffscreenCanvas!=='function'){
+function showUnsupported(){
 showError('This browser has no OffscreenCanvas, which this tool does all of its '
 +'drawing on. Chrome, Edge, Firefox 105 or Safari 16.4 and newer have it.');
+}
+if(typeof OffscreenCanvas!=='function'){
+unsupported=true;
+showUnsupported();
 el.run.disabled=true;
 }
 render();
