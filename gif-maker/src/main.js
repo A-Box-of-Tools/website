@@ -80,7 +80,12 @@ try{
 const{items:loaded,skipped}=await loadImages(files,defaultDelay());
 items=items.concat(loaded);
 if(skipped.length){
-showError(`Skipped ${skipped.length} file(s) that could not be read as images: ${skipped.slice(0, 3).join(', ')}${skipped.length > 3 ? '…' : ''}`);
+const names=skipped.slice(0,3)
+.reduce((a,b)=>phrase('join.comma',{a,b}));
+showError(phrase(skipped.length===1?'read.skipped.one':'read.skipped.many',{
+n:skipped.length,
+names:skipped.length>3?phrase('list.more',{names}):names,
+}));
 }else{
 clearError();
 }
@@ -112,8 +117,9 @@ handle.type='button';
 handle.className='drag-handle';
 handle.draggable=true;
 handle.textContent='⋮⋮';
-handle.title=`Drag to reorder ${item.name}`;
-handle.setAttribute('aria-label',`Drag to reorder ${item.name}`);
+const dragLabel=phrase('tile.drag',{name:item.name});
+handle.title=dragLabel;
+handle.setAttribute('aria-label',dragLabel);
 const thumbWrap=document.createElement('div');
 thumbWrap.className='thumb-wrap';
 thumbWrap.draggable=true;
@@ -153,7 +159,7 @@ amount.min=String(MIN_DELAY);
 amount.max=String(MAX_DELAY);
 amount.step='0.05';
 amount.value=String(item.delay);
-amount.setAttribute('aria-label',`Seconds to hold ${item.name}`);
+amount.setAttribute('aria-label',phrase('tile.delay',{name:item.name}));
 amount.addEventListener('change',()=>{
 item.delay=clampDelay(amount.value);
 amount.value=String(item.delay);
@@ -241,7 +247,8 @@ const any=items.length>0;
 el.listToolbar.hidden=!any;
 el.reorderHint.hidden=items.length<2;
 el.bulk.hidden=!any;
-el.countLabel.textContent=`${items.length} frame${items.length === 1 ? '' : 's'}`;
+el.countLabel.textContent=phrase(items.length===1?'n.frame.one':'n.frame.many',
+{n:items.length});
 el.exportBtn.disabled=!any||exporting;
 syncSettingControls();
 updateSummary();
@@ -323,32 +330,36 @@ const settings=currentSettings();
 el.backgroundField.style.visibility=
 el.fit.value==='contain'&&!settings.transparent?'visible':'hidden';
 if(el.size.value==='custom'){
-el.sizeNote.textContent=`Output ${settings.width} × ${settings.height}, up to ${MAX_SIDE} px a side.`;
+el.sizeNote.textContent=phrase('size.custom',
+{width:settings.width,height:settings.height,max:MAX_SIDE});
 }else if(items.length){
-el.sizeNote.textContent=`Each frame is ${settings.width} × ${settings.height}.`;
+el.sizeNote.textContent=phrase('size.each',
+{width:settings.width,height:settings.height});
 }else{
-el.sizeNote.textContent='The shape comes from your images.';
+el.sizeNote.textContent=phrase('size.fromimages');
 }
-el.paletteNote.textContent=settings.sharedPalette
-?'Steadier colour between frames, and a smaller file. Takes a second pass.'
-:'Sharpest colour. Can shift between frames of the same scene.';
+el.paletteNote.textContent=phrase(settings.sharedPalette
+?'note.shared':'note.sharp');
 el.transparentNote.textContent=settings.transparent
-?'A GIF pixel is either fully transparent or not at all, so soft edges get a hard one.'
+?phrase('note.transparent')
 :'';
 el.previewFrame.classList.toggle('checkered',settings.transparent);
 }
+const EMPTY='\u2014';
 function formatDuration(seconds){
 const whole=Math.round(seconds);
 const mins=Math.floor(whole/60);
 const secs=whole%60;
-return mins?`${mins}m ${String(secs).padStart(2, '0')}s`:`${seconds.toFixed(2)}s`;
+return mins
+?phrase('time.minutes',{minutes:mins,seconds:String(secs).padStart(2,'0')})
+:phrase('time.seconds',{n:seconds.toFixed(2)});
 }
 function updateSummary(){
 if(!items.length){
-el.sumFrames.textContent='—';
-el.sumDuration.textContent='—';
-el.sumSize.textContent='—';
-el.sumLoop.textContent='—';
+el.sumFrames.textContent=EMPTY;
+el.sumDuration.textContent=EMPTY;
+el.sumSize.textContent=EMPTY;
+el.sumLoop.textContent=EMPTY;
 el.bulkNote.textContent='';
 return;
 }
@@ -356,13 +367,17 @@ const settings=currentSettings();
 const total=items.reduce((sum,item)=>sum+item.delay,0);
 el.sumFrames.textContent=String(items.length);
 el.sumDuration.textContent=formatDuration(total);
-el.sumSize.textContent=`${settings.width} × ${settings.height}`;
+el.sumSize.textContent=phrase('size.plain',
+{width:settings.width,height:settings.height});
 el.sumLoop.textContent=settings.loopMode==='forever'
-?'Forever'
-:(settings.loopMode==='once'?'Once':`${settings.loop} times`);
+?phrase('loop.forever')
+:(settings.loopMode==='once'
+?phrase('loop.once')
+:phrase(settings.loop===1?'loop.times.one':'loop.times.many',
+{n:settings.loop}));
 const each=total/items.length;
-el.bulkNote.textContent=
-`${formatDuration(total)} in all, about ${(1 / each).toFixed(1)} frames a second`;
+el.bulkNote.textContent=phrase('bulk.note',
+{total:formatDuration(total),fps:(1/each).toFixed(1)});
 }
 async function updatePreview(){
 const token=++previewToken;
@@ -421,9 +436,14 @@ el.error.textContent='';
 function setProgress({phase,done,total}){
 const fraction=total>0?Math.min(1,done/total):0;
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
-const what=phase==='palette'?'Choosing colours':'Writing frame';
-el.progressLabel.textContent=
-`${what} — ${done.toLocaleString()} of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase(
+phase==='palette'?'step.palette':'step.frames',
+{
+done:done.toLocaleString(),
+total:total.toLocaleString(),
+percent:Math.round(fraction*100),
+},
+);
 }
 function outputFilename(){
 const now=new Date();
@@ -435,8 +455,8 @@ String(now.getDate()).padStart(2,'0'),
 return`animation-${stamp}.gif`;
 }
 function formatBytes(bytes){
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
-return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
+return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
 }
 async function runExport(){
 if(exporting||!items.length)return;
@@ -461,15 +481,19 @@ lastResultUrl=URL.createObjectURL(blob);
 el.resultImage.src=lastResultUrl;
 el.download.href=lastResultUrl;
 el.download.download=outputFilename();
-el.resultInfo.textContent=
-`GIF · ${settings.width}×${settings.height} · ${frames} frames · ${formatBytes(blob.size)}`;
+el.resultInfo.textContent=[
+'GIF',
+phrase('size.plain',{width:settings.width,height:settings.height}),
+phrase(frames===1?'n.frame.one':'n.frame.many',{n:frames}),
+formatBytes(blob.size),
+].reduce((a,b)=>phrase('join.dot',{a,b}));
 el.result.hidden=false;
 el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message||'Something went wrong while making the GIF.');
+showError(error?.message?phrase(error.message):phrase('export.failed'));
 console.error(error);
 }
 }finally{
