@@ -171,17 +171,19 @@ test('mp4: a decoder configuration given as a view is copied out of it', () => {
   assert.deepEqual(muxer.avcC, AVCC);
 });
 
+// The writer is copied into two tools and shipped in fifteen languages, so it
+// refuses with a phrase key and the page turns that into a sentence.
 test('mp4: refusals rather than a broken file', () => {
   assert.throws(() => new Mp4Muxer({ width: 16, height: 16 }).setDecoderConfig(null),
-    /no decoder configuration/);
+    { message: 'mp4.noconfig' });
 
   const noFrames = new Mp4Muxer({ width: 16, height: 16 });
   noFrames.setDecoderConfig(AVCC.buffer.slice(0));
-  assert.throws(() => noFrames.finalize(), /No frames were encoded/);
+  assert.throws(() => noFrames.finalize(), { message: 'mp4.noframes' });
 
   const noConfig = new Mp4Muxer({ width: 16, height: 16 });
   noConfig.addSample(ascii('x'), true, 1 / 30);
-  assert.throws(() => noConfig.finalize(), /never reported a decoder configuration/);
+  assert.throws(() => noConfig.finalize(), { message: 'mp4.noconfig' });
 });
 
 test('mp4: a duration of zero still advances the clock by one tick', () => {

@@ -209,7 +209,7 @@ async function loadFile(picked) {
   releaseFile();
 
   file = picked;
-  picker.busy('Reading the file...');
+  picker.busy(phrase('step.reading'));
 
   try {
     objectUrl = URL.createObjectURL(picked);
@@ -245,7 +245,7 @@ async function loadFile(picked) {
     if (canReadDirectly) {
       canPlay = played.ok;
     } else if (played.ok) {
-      picker.busy('Checking this browser can decode it...');
+      picker.busy(phrase('step.checking'));
       canPlay = await firstFrameLands(el.preview,
         Math.min(1, (played.duration || 2) / 2));
       opensButCannotDecode = !canPlay;
@@ -264,8 +264,7 @@ async function loadFile(picked) {
       return;
     }
     if (!hasEncoder()) {
-      showError('This browser cannot encode video, so it cannot write a time-lapse. '
-        + 'A recent Chrome, Edge, Safari or Firefox will.');
+      showError(phrase('nocodec.file'));
       resetView();
       return;
     }
@@ -277,8 +276,7 @@ async function loadFile(picked) {
     sourceFps = canReadDirectly ? averageFps(media.video) : 0;
 
     if (!(duration > 0)) {
-      showError('This file does not say how long it is, so there is nothing to '
-        + 'work a speed out from.');
+      showError(phrase('open.nolength'));
       resetView();
       return;
     }
@@ -291,7 +289,10 @@ async function loadFile(picked) {
     setSpeed(defaultSpeed(), null);
   } catch (error) {
     console.error(error);
-    showError(error?.message || 'That file could not be opened.');
+    // The leaf modules throw keys; a browser that failed for its own reasons
+    // throws a sentence, and phrase() hands back what it does not recognise.
+    showError(error?.message
+      ? phrase(error.message, fill(error.values)) : phrase('open.notopened'));
     resetView();
   } finally {
     picker.done();
@@ -315,8 +316,7 @@ async function showPreview(playable) {
 
   el.preview.hidden = true;
   el.previewNote.hidden = false;
-  el.previewNote.textContent = 'This browser will not play this file, so the frame below '
-    + 'was decoded to show you what you picked. The time-lapse itself is unaffected.';
+  el.previewNote.textContent = phrase('preview.still');
 
   try {
     const canvas = await previewFrame({ file, media, atSeconds: 0 });
@@ -326,8 +326,8 @@ async function showPreview(playable) {
     el.still.hidden = false;
   } catch (error) {
     el.still.hidden = true;
-    el.previewNote.textContent = 'This browser will not play this file and no frame could '
-      + `be decoded from it either (${error.message}).`;
+    el.previewNote.textContent = phrase('preview.none',
+      { why: phrase(error.message, fill(error.values)) });
   }
 }
 
@@ -335,17 +335,23 @@ function describeSource() {
   el.source.hidden = false;
   el.srcName.textContent = file.name;
   el.srcSize.textContent = formatBytes(file.size);
-  el.srcFrame.textContent = `${source.width} x ${source.height}`;
+  el.srcFrame.textContent = phrase('size.plain',
+    { width: source.width, height: source.height });
   el.srcLength.textContent = formatDuration(duration);
   el.srcFps.textContent = sourceFps
-    ? `${sourceFps.toFixed(sourceFps < 10 ? 1 : 0)} fps`
-    : "whatever the player reports";
+    ? phrase('src.fps', { n: sourceFps.toFixed(sourceFps < 10 ? 1 : 0) })
+    : phrase('src.fps.player');
 
   if (media) {
-    const turned = media.video.rotation ? `, turned ${media.video.rotation} degrees` : '';
-    el.srcCodec.textContent = `${media.video.codec} (${media.video.entryType})${turned}`;
+    el.srcCodec.textContent = media.video.rotation
+      ? phrase('src.codec.turned', {
+        codec: media.video.codec,
+        entry: media.video.entryType,
+        degrees: media.video.rotation,
+      })
+      : phrase('src.codec', { codec: media.video.codec, entry: media.video.entryType });
   } else {
-    el.srcCodec.textContent = "read by the browser's own player";
+    el.srcCodec.textContent = phrase('src.byplayer');
   }
 
   el.pathNote.hidden = canReadDirectly;
@@ -477,39 +483,50 @@ function updateSummary() {
   const plan = currentPlan();
   const enough = plan.times.length >= MIN_FRAMES;
 
-  el.intervalNote.textContent = `One frame every ${formatInterval(plan.interval)} of the `
-    + `original, played back at ${plan.fps} frames a second.`;
+  el.intervalNote.textContent = phrase('plan.interval',
+    { every: formatInterval(plan.interval), fps: plan.fps });
 
-  el.sumFrames.textContent = `${plan.times.length.toLocaleString()} frames`;
+  el.sumFrames.textContent = phrase(plan.times.length === 1 ? 'n.frame.one' : 'n.frame.many',
+    { n: plan.times.length.toLocaleString() });
   el.sumInterval.textContent = formatInterval(plan.interval);
   el.sumLength.textContent = formatDuration(plan.times.length / plan.fps);
-  el.sumSize.textContent = `${plan.frame.width} x ${plan.frame.height}`
-    + (plan.frame.width === source.width ? ' (unchanged)' : ` (from ${source.width} x ${source.height})`);
-  el.sumBytes.textContent = `about ${formatBytes(plan.bytes)}`;
+  el.sumSize.textContent = plan.frame.width === source.width
+    ? phrase('size.unchanged', { width: plan.frame.width, height: plan.frame.height })
+    : phrase('size.from', {
+      width: plan.frame.width,
+      height: plan.frame.height,
+      fromWidth: source.width,
+      fromHeight: source.height,
+    });
+  el.sumBytes.textContent = phrase('plan.about', { size: formatBytes(plan.bytes) });
 
   if (canReadDirectly) {
     const runs = decodeRuns({
       samples: media.video.samples, timescale: media.video.timescale, times: plan.times,
     });
     const cost = decodeCost(runs, media.video.samples.length);
-    el.sumRead.textContent = `${cost.read.toLocaleString()} of the `
-      + `${cost.total.toLocaleString()} frames in the file`;
+    el.sumRead.textContent = phrase('plan.read', {
+      read: cost.read.toLocaleString(), total: cost.total.toLocaleString(),
+    });
   } else {
-    el.sumRead.textContent = `${plan.times.length.toLocaleString()} seeks through the player`;
+    el.sumRead.textContent = phrase(plan.times.length === 1 ? 'plan.seeks.one' : 'plan.seeks.many',
+      { n: plan.times.length.toLocaleString() });
   }
 
   const notes = [];
   if (!enough) {
-    notes.push(`At this speed there are ${plan.times.length} frames left, which is a `
-      + 'photograph rather than a clip. Slow it down, or ask for a longer finished length.');
+    notes.push(phrase(plan.times.length === 1 ? 'plan.toofew.one' : 'plan.toofew.many',
+      { n: plan.times.length }));
   }
   if (repeatsFrames({ speed: plan.speed, fps: plan.fps, sourceFps })) {
-    notes.push('The instants are closer together than this file has frames, so some of '
-      + 'them come out twice. Nothing is wrong with that, but a lower frame rate '
-      + 'would make the same clip out of fewer frames.');
+    notes.push(phrase('plan.repeats'));
   }
   el.planNote.hidden = notes.length === 0;
-  el.planNote.textContent = notes.join(' ');
+  // The separator is a phrase too: ja and zh do not put a space after a full
+  // stop, and one hard-coded here is one every language gets.
+  el.planNote.textContent = notes.length
+    ? notes.reduce((a, b) => phrase('join.sentences', { a, b }))
+    : '';
 
   el.exportBtn.disabled = working || !enough;
 }
@@ -526,17 +543,34 @@ function clearError() {
   el.error.textContent = '';
 }
 
+/**
+ * An error's blanks, with any that are themselves a phrase resolved.
+ *
+ * playback.js quotes what the player said inside its own sentence. Both are
+ * phrases, and a key dropped into a blank would reach the page as the key.
+ */
+function fill(values = {}) {
+  return Object.fromEntries(Object.entries(values)
+    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
+}
+
+/** An error whose message is a phrase key; showError resolves it. */
+const said = (key, values = {}) => Object.assign(new Error(key), { values });
+
 function setProgress({ phase, done, total }) {
   const fraction = total > 0 ? Math.min(1, done / total) : 0;
   el.progressBar.style.width = `${(fraction * 100).toFixed(1)}%`;
 
   if (phase === 'preparing') {
-    el.progressLabel.textContent = 'Preparing...';
+    el.progressLabel.textContent = phrase('step.preparing');
   } else if (phase === 'finishing') {
-    el.progressLabel.textContent = 'Finishing up...';
+    el.progressLabel.textContent = phrase('step.finishing');
   } else {
-    el.progressLabel.textContent = `Frame ${done.toLocaleString()} of `
-      + `${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+    el.progressLabel.textContent = phrase('step.frame', {
+      done: done.toLocaleString(),
+      total: total.toLocaleString(),
+      percent: Math.round(fraction * 100),
+    });
   }
 }
 
@@ -546,25 +580,35 @@ function outputFilename() {
 }
 
 function formatBytes(bytes) {
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
+  if (bytes < 1024 * 1024 * 1024) {
+    return phrase('size.mb', { n: (bytes / 1024 / 1024).toFixed(1) });
+  }
+  return phrase('size.gb', { n: (bytes / 1024 / 1024 / 1024).toFixed(2) });
 }
 
 function formatDuration(seconds) {
   const whole = Math.max(0, Math.round(seconds));
   const hours = Math.floor(whole / 3600);
   const minutes = Math.floor((whole % 3600) / 60);
-  if (hours) return `${hours}h ${String(minutes).padStart(2, '0')}m`;
-  if (minutes) return `${minutes}m ${String(whole % 60).padStart(2, '0')}s`;
-  return `${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+  if (hours) {
+    return phrase('time.hours', { hours, minutes: String(minutes).padStart(2, '0') });
+  }
+  if (minutes) {
+    return phrase('time.minutes',
+      { minutes, seconds: String(whole % 60).padStart(2, '0') });
+  }
+  return phrase('time.seconds', { n: seconds < 10 ? seconds.toFixed(1) : whole });
 }
 
 /** The interval, in the unit that makes it readable rather than always in seconds. */
 function formatInterval(seconds) {
-  if (seconds < 1) return `${Math.round(seconds * 1000)} ms`;
-  if (seconds < 60) return `${seconds < 10 ? seconds.toFixed(2) : seconds.toFixed(1)} s`;
-  return `${(seconds / 60).toFixed(1)} min`;
+  if (seconds < 1) return phrase('unit.ms', { n: Math.round(seconds * 1000) });
+  if (seconds < 60) {
+    return phrase('unit.s',
+      { n: seconds < 10 ? seconds.toFixed(2) : seconds.toFixed(1) });
+  }
+  return phrase('unit.min', { n: (seconds / 60).toFixed(1) });
 }
 
 async function runExport() {
@@ -594,8 +638,8 @@ async function runExport() {
       bitrate: plan.bitrate,
     });
     if (!codec) {
-      throw new Error('This browser will not encode H.264 at '
-        + `${plan.frame.width}x${plan.frame.height}. Choose a smaller size.`);
+      throw said('encode.noh264',
+        { width: plan.frame.width, height: plan.frame.height });
     }
 
     writer = new TimelapseWriter({
@@ -626,18 +670,20 @@ async function runExport() {
     el.download.href = lastResultUrl;
     el.download.download = outputFilename();
     el.resultInfo.textContent = [
-      `${plan.frame.width} x ${plan.frame.height}`,
-      `${result.frames.toLocaleString()} frames`,
+      phrase('size.plain', { width: plan.frame.width, height: plan.frame.height }),
+      phrase(result.frames === 1 ? 'n.frame.one' : 'n.frame.many',
+        { n: result.frames.toLocaleString() }),
       formatDuration(result.frames / plan.fps),
       formatBytes(result.blob.size),
-    ].join(' · ');
+    ].reduce((a, b) => phrase('join.dot', { a, b }));
     el.result.hidden = false;
     el.progress.hidden = true;
     el.result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
-      showError(error?.message || 'Something went wrong while making the time-lapse.');
+      showError(error?.message
+        ? phrase(error.message, fill(error.values)) : phrase('export.failed'));
       console.error(error);
     }
   } finally {
@@ -768,8 +814,7 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 if (!hasEncoder()) {
-  showError('This browser cannot encode video, so it has nothing to write a time-lapse '
-    + 'with. Chrome, Edge, Safari 16.4 or Firefox 133 and newer can.');
+  showError(phrase('nocodec.page'));
 }
 
 monitorNetwork();

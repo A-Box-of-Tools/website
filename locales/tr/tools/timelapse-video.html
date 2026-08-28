@@ -166,6 +166,83 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Dosya okunuyor&hellip;</span>
+    <span data-phrase="step.checking">Bu tarayıcının onu çözebildiği kontrol
+      ediliyor&hellip;</span>
+    <span data-phrase="nocodec.file">Bu tarayıcı video kodlayamıyor, dolayısıyla
+      time-lapse yazamaz. Yeni bir Chrome, Edge, Safari ya da Firefox yazar.</span>
+    <span data-phrase="nocodec.page">Bu tarayıcı video kodlayamıyor, dolayısıyla
+      time-lapse yazacak bir şeyi yok. Chrome, Edge, Safari 16.4 ya da Firefox 133 ve
+      sonrası yapabilir.</span>
+    <span data-phrase="open.nolength">Bu dosya ne kadar sürdüğünü söylemiyor,
+      dolayısıyla hız çıkarılacak bir şey yok.</span>
+    <span data-phrase="open.notopened">Bu dosya açılamadı.</span>
+    <span data-phrase="preview.still">Bu tarayıcı bu dosyayı oynatmıyor, bu yüzden
+      aşağıdaki kare neyin seçildiğini göstermek için çözüldü. Time-lapse&rsquo;in
+      kendisi bundan etkilenmiyor.</span>
+    <span data-phrase="preview.none">Bu tarayıcı bu dosyayı oynatmıyor, kare kare de
+      okunamadı. {why}</span>
+    <span data-phrase="decode.noframes">Dosyanın içinde hiç kare yok.</span>
+    <span data-phrase="decode.nodraw">Çözücüden hiç kare gelmedi.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} fps</span>
+    <span data-phrase="src.fps.player">oynatıcı ne bildirirse</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} derece döndürülmüş</span>
+    <span data-phrase="src.byplayer">tarayıcının kendi oynatıcısıyla okundu</span>
+    <span data-phrase="plan.interval">Aslından her {every} bir kare, saniyede {fps} kare
+      hızında oynatılıyor.</span>
+    <span data-phrase="n.frame.one">{n} kare</span>
+    <span data-phrase="n.frame.many">{n} kare</span>
+    <span data-phrase="size.unchanged">{width} x {height} (değişmedi)</span>
+    <span data-phrase="size.from">{width} x {height} ({fromWidth} x {fromHeight}
+      boyutundan)</span>
+    <span data-phrase="plan.about">yaklaşık {size}</span>
+    <span data-phrase="plan.read">dosyadaki {total} karenin {read} tanesi</span>
+    <span data-phrase="plan.seeks.one">oynatıcı üzerinden {n} atlama</span>
+    <span data-phrase="plan.seeks.many">oynatıcı üzerinden {n} atlama</span>
+    <span data-phrase="plan.toofew.one">Bu hızda geriye tek bir kare kalıyor, bu da klip
+      değil fotoğraf olur. Daha yavaş bir hız ya da daha uzun bir bitiş süresi bunu
+      düzeltir.</span>
+    <span data-phrase="plan.toofew.many">Bu hızda geriye {n} kare kalıyor, bu da klip
+      değil fotoğraf olur. Daha yavaş bir hız ya da daha uzun bir bitiş süresi bunu
+      düzeltir.</span>
+    <span data-phrase="plan.repeats">Anlar, bu dosyadaki karelerden daha sık aralıklı,
+      bu yüzden bazıları iki kez çıkıyor. Bunda bir yanlışlık yok, ama daha düşük bir
+      kare hızı aynı klibi daha az kareyle yapardı.</span>
+    <span data-phrase="step.preparing">Hazırlanıyor&hellip;</span>
+    <span data-phrase="step.finishing">Tamamlanıyor&hellip;</span>
+    <span data-phrase="step.frame">{total} kareden {done}. kare (%{percent})</span>
+    <span data-phrase="encode.noh264">Bu tarayıcı {width}x{height} boyutunda H.264
+      kodlamıyor. Daha küçük bir boyut olur.</span>
+    <span data-phrase="encode.nothing">Bu dosyadan hiçbir şey çözülemedi.</span>
+    <span data-phrase="play.died">Oynatıcı {total} karenin {done} tanesinden sonra
+      durdu. {why} Klibi önce sıradan bir MP4&rsquo;e (H.264) çevirmek güvenilir
+      çözümdür.</span>
+    <span data-phrase="media.aborted">Okuma yarıda kesildi.</span>
+    <span data-phrase="media.notread">Dosya diskten okunamadı.</span>
+    <span data-phrase="media.nodecode">Tarayıcı içindeki videoyu çözemedi.</span>
+    <span data-phrase="media.unsupported">Tarayıcı bu biçimi ya da bu kodeği
+      desteklemiyor.</span>
+    <span data-phrase="media.stopped">Tarayıcı onu okuyamaz hâle geldi.</span>
+    <span data-phrase="export.failed">Time-lapse yapılırken bir şeyler ters gitti.</span>
+    <span data-phrase="mp4.noconfig">Kodlayıcı hiçbir çözücü yapılandırması vermedi.</span>
+    <span data-phrase="mp4.noframes">Hiç kare kodlanmadı.</span>
+    <span data-phrase="mp4.toobig">Video 4 GB sınırını aşıyor. Kaliteyi, çözünürlüğü ya
+      da süreyi düşürmek bunu çözer.</span>
+    <span data-phrase="mp4.unstable">İç hata: MP4 dizininin boyutu iki geçiş arasında
+      sabit kalmadı.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.hours">{hours} sa {minutes} dk</span>
+    <span data-phrase="time.minutes">{minutes} dk {seconds} sn</span>
+    <span data-phrase="time.seconds">{n} sn</span>
+    <span data-phrase="unit.ms">{n} ms</span>
+    <span data-phrase="unit.s">{n} sn</span>
+    <span data-phrase="unit.min">{n} dk</span>
     <span data-phrase="read.midframe">Dosya bir karenin ortasında bitiyor.</span>
     <span data-phrase="read.avcshort">H.264 yapılandırma kaydı fazla kısa.</span>
     <span data-phrase="read.hevcshort">HEVC yapılandırma kaydı fazla kısa.</span>

@@ -159,6 +159,86 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Die Datei wird gelesen&hellip;</span>
+    <span data-phrase="step.checking">Es wird geprüft, ob dieser Browser sie dekodieren
+      kann&hellip;</span>
+    <span data-phrase="nocodec.file">Dieser Browser kann kein Video kodieren und daher
+      keinen Zeitraffer schreiben. Ein aktuelles Chrome, Edge, Safari oder Firefox
+      schon.</span>
+    <span data-phrase="nocodec.page">Dieser Browser kann kein Video kodieren, hier ist
+      also nichts da, womit sich ein Zeitraffer schreiben ließe. Chrome, Edge, Safari
+      16.4 oder Firefox 133 und neuer können es.</span>
+    <span data-phrase="open.nolength">Diese Datei sagt nicht, wie lang sie ist, es gibt
+      also nichts, woraus sich ein Tempo errechnen ließe.</span>
+    <span data-phrase="open.notopened">Diese Datei konnte nicht geöffnet werden.</span>
+    <span data-phrase="preview.still">Dieser Browser spielt diese Datei nicht ab, das
+      Bild unten wurde also dekodiert, um zu zeigen, was ausgewählt wurde. Auf den
+      Zeitraffer selbst hat das keinen Einfluss.</span>
+    <span data-phrase="preview.none">Dieser Browser spielt diese Datei nicht ab, und
+      Bild für Bild lesen ließ sie sich auch nicht. {why}</span>
+    <span data-phrase="decode.noframes">Die Datei enthält keine Bilder.</span>
+    <span data-phrase="decode.nodraw">Vom Dekoder kam kein Bild zurück.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} fps</span>
+    <span data-phrase="src.fps.player">was der Player meldet</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), um {degrees} Grad gedreht</span>
+    <span data-phrase="src.byplayer">vom Player des Browsers gelesen</span>
+    <span data-phrase="plan.interval">Ein Bild alle {every} des Originals, abgespielt
+      mit {fps} Bildern pro Sekunde.</span>
+    <span data-phrase="n.frame.one">{n} Bild</span>
+    <span data-phrase="n.frame.many">{n} Bilder</span>
+    <span data-phrase="size.unchanged">{width} x {height} (unverändert)</span>
+    <span data-phrase="size.from">{width} x {height} (aus {fromWidth} x {fromHeight})</span>
+    <span data-phrase="plan.about">etwa {size}</span>
+    <span data-phrase="plan.read">{read} der {total} Bilder in der Datei</span>
+    <span data-phrase="plan.seeks.one">{n} Sprung durch den Player</span>
+    <span data-phrase="plan.seeks.many">{n} Sprünge durch den Player</span>
+    <span data-phrase="plan.toofew.one">Bei diesem Tempo bleibt ein einziges Bild übrig,
+      und das ist ein Foto und kein Clip. Ein langsameres Tempo oder eine längere
+      Endlänge hilft.</span>
+    <span data-phrase="plan.toofew.many">Bei diesem Tempo bleiben {n} Bilder übrig, und
+      das ist ein Foto und kein Clip. Ein langsameres Tempo oder eine längere Endlänge
+      hilft.</span>
+    <span data-phrase="plan.repeats">Die Zeitpunkte liegen enger beieinander, als diese
+      Datei Bilder hat, manche kommen also doppelt vor. Das ist nicht schlimm, aber eine
+      niedrigere Bildrate ergäbe denselben Clip aus weniger Bildern.</span>
+    <span data-phrase="step.preparing">Wird vorbereitet&hellip;</span>
+    <span data-phrase="step.finishing">Wird abgeschlossen&hellip;</span>
+    <span data-phrase="step.frame">Bild {done} von {total} ({percent}%)</span>
+    <span data-phrase="encode.noh264">Dieser Browser kodiert kein H.264 bei
+      {width}x{height}. Eine kleinere Größe geht.</span>
+    <span data-phrase="encode.nothing">Aus dieser Datei ließ sich nichts dekodieren.</span>
+    <span data-phrase="play.died">Der Player hat nach {done} von {total} Bildern
+      aufgehört. {why} Den Clip zuerst in ein gewöhnliches MP4 (H.264) umzuwandeln,
+      hilft zuverlässig.</span>
+    <span data-phrase="media.aborted">Das Lesen wurde abgebrochen.</span>
+    <span data-phrase="media.notread">Die Datei ließ sich nicht von der Platte lesen.</span>
+    <span data-phrase="media.nodecode">Der Browser konnte das Video darin nicht
+      dekodieren.</span>
+    <span data-phrase="media.unsupported">Der Browser unterstützt dieses Format oder
+      diesen Codec nicht.</span>
+    <span data-phrase="media.stopped">Der Browser konnte sie nicht mehr lesen.</span>
+    <span data-phrase="export.failed">Beim Erstellen des Zeitraffers ist etwas
+      schiefgegangen.</span>
+    <span data-phrase="mp4.noconfig">Der Encoder hat keine Decoder-Konfiguration
+      geliefert.</span>
+    <span data-phrase="mp4.noframes">Es wurden keine Bilder kodiert.</span>
+    <span data-phrase="mp4.toobig">Das Video liegt über der 4-GB-Grenze. Weniger
+      Qualität, weniger Auflösung oder weniger Länge hilft.</span>
+    <span data-phrase="mp4.unstable">Interner Fehler: die Größe des MP4-Index war
+      zwischen zwei Durchgängen nicht stabil.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.hours">{hours} h {minutes} min</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="unit.ms">{n} ms</span>
+    <span data-phrase="unit.s">{n} s</span>
+    <span data-phrase="unit.min">{n} min</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>

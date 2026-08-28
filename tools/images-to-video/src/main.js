@@ -745,7 +745,10 @@ async function runExport() {
   } catch (error) {
     el.progress.hidden = true;
     if (error?.name !== 'AbortError') {
-      showError(error?.message || 'Something went wrong while creating the video.');
+      // mp4.js is shared with timelapse-video and throws phrase keys; a browser
+      // that failed for its own reasons throws a sentence, and phrase() hands
+      // back what it does not recognise.
+      showError(error?.message ? phrase(error.message) : phrase('export.failed'));
       console.error(error);
     }
   } finally {

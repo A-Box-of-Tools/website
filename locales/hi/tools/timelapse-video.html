@@ -158,6 +158,78 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">फ़ाइल पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="step.checking">जाँचा जा रहा है कि यह ब्राउज़र इसे डीकोड कर सकता
+      है&hellip;</span>
+    <span data-phrase="nocodec.file">यह ब्राउज़र वीडियो एनकोड नहीं कर सकता, इसलिए
+      टाइमलैप्स नहीं लिख सकता। कोई नया Chrome, Edge, Safari या Firefox लिख देगा।</span>
+    <span data-phrase="nocodec.page">यह ब्राउज़र वीडियो एनकोड नहीं कर सकता, इसलिए इसके
+      पास टाइमलैप्स लिखने को कुछ है ही नहीं। Chrome, Edge, Safari 16.4 या Firefox 133 और
+      उससे नया कर सकते हैं।</span>
+    <span data-phrase="open.nolength">यह फ़ाइल यह नहीं बताती कि वह कितनी लंबी है, इसलिए
+      रफ़्तार निकालने के लिए कुछ है ही नहीं।</span>
+    <span data-phrase="open.notopened">वह फ़ाइल खोली नहीं जा सकी।</span>
+    <span data-phrase="preview.still">यह ब्राउज़र इस फ़ाइल को चलाता नहीं, इसलिए नीचे का
+      फ़्रेम यह दिखाने के लिए डीकोड किया गया कि क्या चुना गया है। टाइमलैप्स पर इसका कोई
+      असर नहीं।</span>
+    <span data-phrase="preview.none">यह ब्राउज़र इस फ़ाइल को चलाता नहीं, और इसे
+      फ़्रेम-दर-फ़्रेम पढ़ा भी नहीं जा सका। {why}</span>
+    <span data-phrase="decode.noframes">इस फ़ाइल में कोई फ़्रेम है ही नहीं।</span>
+    <span data-phrase="decode.nodraw">डीकोडर से कोई फ़्रेम वापस नहीं आया।</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} fps</span>
+    <span data-phrase="src.fps.player">प्लेयर जो बताए</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} डिग्री घुमाया हुआ</span>
+    <span data-phrase="src.byplayer">ब्राउज़र के अपने प्लेयर से पढ़ा गया</span>
+    <span data-phrase="plan.interval">मूल के हर {every} पर एक फ़्रेम, {fps} फ़्रेम प्रति
+      सेकंड पर चलाया हुआ।</span>
+    <span data-phrase="n.frame.one">{n} फ़्रेम</span>
+    <span data-phrase="n.frame.many">{n} फ़्रेम</span>
+    <span data-phrase="size.unchanged">{width} x {height} (अपरिवर्तित)</span>
+    <span data-phrase="size.from">{width} x {height} ({fromWidth} x {fromHeight} से)</span>
+    <span data-phrase="plan.about">लगभग {size}</span>
+    <span data-phrase="plan.read">फ़ाइल के {total} फ़्रेमों में से {read}</span>
+    <span data-phrase="plan.seeks.one">प्लेयर के ज़रिए {n} छलाँग</span>
+    <span data-phrase="plan.seeks.many">प्लेयर के ज़रिए {n} छलाँगें</span>
+    <span data-phrase="plan.toofew.one">इस रफ़्तार पर सिर्फ़ एक फ़्रेम बचता है, और वह
+      क्लिप नहीं, तस्वीर है। धीमी रफ़्तार या लंबी अंतिम लंबाई इसे सुधार देगी।</span>
+    <span data-phrase="plan.toofew.many">इस रफ़्तार पर {n} फ़्रेम बचते हैं, और वह क्लिप
+      नहीं, तस्वीर है। धीमी रफ़्तार या लंबी अंतिम लंबाई इसे सुधार देगी।</span>
+    <span data-phrase="plan.repeats">ये क्षण इस फ़ाइल के फ़्रेमों से भी पास-पास हैं,
+      इसलिए कुछ फ़्रेम दो बार आते हैं। इसमें कोई खराबी नहीं, पर कम फ़्रेम दर वही क्लिप
+      कम फ़्रेमों से बना देती।</span>
+    <span data-phrase="step.preparing">तैयारी हो रही है&hellip;</span>
+    <span data-phrase="step.finishing">पूरा किया जा रहा है&hellip;</span>
+    <span data-phrase="step.frame">{total} में से {done} फ़्रेम ({percent}%)</span>
+    <span data-phrase="encode.noh264">यह ब्राउज़र {width}x{height} पर H.264 एनकोड नहीं
+      करता। छोटा आकार चल जाएगा।</span>
+    <span data-phrase="encode.nothing">इस फ़ाइल से कुछ भी डीकोड नहीं हो सका।</span>
+    <span data-phrase="play.died">प्लेयर {total} में से {done} फ़्रेम के बाद रुक गया।
+      {why} क्लिप को पहले सादे MP4 (H.264) में बदल लेना पक्का उपाय है।</span>
+    <span data-phrase="media.aborted">पढ़ना बीच में रोक दिया गया।</span>
+    <span data-phrase="media.notread">फ़ाइल डिस्क से पढ़ी नहीं जा सकी।</span>
+    <span data-phrase="media.nodecode">ब्राउज़र उसमें का वीडियो डीकोड नहीं कर सका।</span>
+    <span data-phrase="media.unsupported">ब्राउज़र यह फ़ॉर्मैट या यह कोडेक नहीं समझता।</span>
+    <span data-phrase="media.stopped">ब्राउज़र उसे पढ़ना बंद कर बैठा।</span>
+    <span data-phrase="export.failed">टाइमलैप्स बनाते समय कुछ गड़बड़ हो गई।</span>
+    <span data-phrase="mp4.noconfig">एनकोडर ने कोई डीकोडर कॉन्फ़िगरेशन दी ही नहीं।</span>
+    <span data-phrase="mp4.noframes">कोई फ़्रेम एनकोड नहीं हुआ।</span>
+    <span data-phrase="mp4.toobig">वीडियो 4 GB की सीमा से बाहर है। गुणवत्ता, रिज़ॉल्यूशन
+      या लंबाई घटाने से बात बन जाएगी।</span>
+    <span data-phrase="mp4.unstable">आंतरिक त्रुटि: MP4 इंडेक्स का आकार दो चक्करों के
+      बीच स्थिर नहीं रहा।</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.hours">{hours} घं {minutes} मि</span>
+    <span data-phrase="time.minutes">{minutes} मि {seconds} से</span>
+    <span data-phrase="time.seconds">{n} से</span>
+    <span data-phrase="unit.ms">{n} मि.से</span>
+    <span data-phrase="unit.s">{n} से</span>
+    <span data-phrase="unit.min">{n} मि</span>
     <span data-phrase="read.midframe">फ़ाइल एक फ़्रेम के बीचोंबीच ख़त्म हो जाती है।</span>
     <span data-phrase="read.avcshort">H.264 का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>
     <span data-phrase="read.hevcshort">HEVC का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>
