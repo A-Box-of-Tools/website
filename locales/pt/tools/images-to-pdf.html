@@ -235,6 +235,65 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: não é uma imagem que esta ferramenta saiba
+      ler.</span>
+    <span data-phrase="read.nodecode">{name}: este navegador não conseguiu
+      decodificá-la.</span>
+    <span data-phrase="drag.move">Arraste para mover {name}</span>
+    <span data-phrase="note.fit">Cada página é exatamente a sua imagem, então nada é
+      cortado nem ganha tarjas.</span>
+    <span data-phrase="note.page">As imagens são postas numa página deste tamanho.</span>
+    <span data-phrase="note.mode.keep">As fotos JPEG entram byte a byte, sem decodificar
+      e sem perder qualidade. Os outros formatos são recodificados, ou guardados sem
+      perda se forem transparentes.</span>
+    <span data-phrase="note.mode.jpeg">Tudo é decodificado e codificado de novo. O
+      arquivo menor, e o único ajuste que custa qualidade numa imagem que já era JPEG.</span>
+    <span data-phrase="note.mode.lossless">Cada imagem é guardada exata, comprimida com
+      deflate. O arquivo maior de longe, e a resposta certa para digitalizações de
+      texto, desenho de linha e capturas de tela.</span>
+    <span data-phrase="note.full">Resolução cheia. Uma pasta de fotos de celular faz um
+      PDF grande.</span>
+    <span data-phrase="note.shrink">Tudo o que for maior é reduzido, o que quer dizer
+      recodificado em vez de copiado.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">Página {n} de {total}</span>
+    <span data-phrase="n.image.one">{n} imagem</span>
+    <span data-phrase="n.image.many">{n} imagens</span>
+    <span data-phrase="n.page.one">{n} página</span>
+    <span data-phrase="n.page.many">{n} páginas</span>
+    <span data-phrase="sum.copied">{kept} de {total}</span>
+    <span data-phrase="page.fit">acompanha cada imagem</span>
+    <span data-phrase="page.mm">{width} &times; {height} mm</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">retrato</span>
+    <span data-phrase="page.landscape">paisagem</span>
+    <span data-phrase="page.mixed">misturado</span>
+    <span data-phrase="page.auto">conforme cada imagem</span>
+    <span data-phrase="step.starting">Começando&hellip;</span>
+    <span data-phrase="step.page">Página {n} de {total} &mdash; {name}</span>
+    <span data-phrase="step.writing">Escrevendo o documento&hellip;</span>
+    <span data-phrase="step.cancelled">Cancelado.</span>
+    <span data-phrase="result.one">{n} página, {size}.</span>
+    <span data-phrase="result.many">{n} páginas, {size}.</span>
+    <span data-phrase="result.copied.one">{copied} de {total} entrou exatamente como
+      estava.</span>
+    <span data-phrase="result.copied.many">{copied} de {total} entraram exatamente como
+      estavam.</span>
+    <span data-phrase="result.copied.none">Todas as imagens foram codificadas de novo
+      para o documento.</span>
+    <span data-phrase="build.noimages">Primeiro é preciso escolher pelo menos uma
+      imagem.</span>
+    <span data-phrase="encode.nojpeg">Este navegador não conseguiu codificar a imagem
+      como JPEG.</span>
+    <span data-phrase="encode.nodeflate">Este navegador não tem CompressionStream, que é
+      do que o ajuste sem perda precisa. Qualquer um dos ajustes JPEG serve no lugar.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">As suas imagens não foram a lugar nenhum.
       {total} arquivos carregados, todos do próprio site. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

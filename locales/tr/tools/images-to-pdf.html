@@ -240,6 +240,59 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: bu aracın okuyabileceği bir görsel değil.</span>
+    <span data-phrase="read.nodecode">{name}: bu tarayıcı onu çözemedi.</span>
+    <span data-phrase="drag.move">{name} ögesini taşımak için sürükleyin</span>
+    <span data-phrase="note.fit">Her sayfa tam olarak kendi görselidir, dolayısıyla
+      hiçbir şey kırpılmaz, kenarlara bant konmaz.</span>
+    <span data-phrase="note.page">Görseller bu boyutta bir sayfaya yerleştirilir.</span>
+    <span data-phrase="note.mode.keep">JPEG fotoğraflar bayt bayt girer, çözülmeden ve
+      kalite yitirmeden. Diğer biçimler yeniden kodlanır, saydamsalar kayıpsız tutulur.</span>
+    <span data-phrase="note.mode.jpeg">Her şey çözülüp yeniden kodlanır. En küçük dosya
+      ve zaten JPEG olan bir görselde kaliteye mal olan tek ayar.</span>
+    <span data-phrase="note.mode.lossless">Her görsel olduğu gibi, deflate ile
+      sıkıştırılarak saklanır. Farkla en büyük dosya ve metin taramaları, çizgi
+      çizimleri ve ekran görüntüleri için doğru yanıt.</span>
+    <span data-phrase="note.full">Tam çözünürlük. Bir klasör dolusu telefon fotoğrafı
+      büyük bir PDF yapar.</span>
+    <span data-phrase="note.shrink">Bundan büyük olan her şey küçültülür, yani
+      kopyalanmak yerine yeniden kodlanır.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">{total} sayfadan {n}.</span>
+    <span data-phrase="n.image.one">{n} görsel</span>
+    <span data-phrase="n.image.many">{n} görsel</span>
+    <span data-phrase="n.page.one">{n} sayfa</span>
+    <span data-phrase="n.page.many">{n} sayfa</span>
+    <span data-phrase="sum.copied">{total} içinde {kept}</span>
+    <span data-phrase="page.fit">her görsele uyar</span>
+    <span data-phrase="page.mm">{width} &times; {height} mm</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">dikey</span>
+    <span data-phrase="page.landscape">yatay</span>
+    <span data-phrase="page.mixed">karışık</span>
+    <span data-phrase="page.auto">her görsele göre</span>
+    <span data-phrase="step.starting">Başlıyor&hellip;</span>
+    <span data-phrase="step.page">{total} sayfadan {n}. &mdash; {name}</span>
+    <span data-phrase="step.writing">Belge yazılıyor&hellip;</span>
+    <span data-phrase="step.cancelled">İptal edildi.</span>
+    <span data-phrase="result.one">{n} sayfa, {size}.</span>
+    <span data-phrase="result.many">{n} sayfa, {size}.</span>
+    <span data-phrase="result.copied.one">{total} içinden {copied} tanesi olduğu gibi
+      girdi.</span>
+    <span data-phrase="result.copied.many">{total} içinden {copied} tanesi oldukları
+      gibi girdi.</span>
+    <span data-phrase="result.copied.none">Her görsel belge için yeniden kodlandı.</span>
+    <span data-phrase="build.noimages">Önce en az bir görsel seçilmeli.</span>
+    <span data-phrase="encode.nojpeg">Bu tarayıcı görseli JPEG olarak kodlayamadı.</span>
+    <span data-phrase="encode.nodeflate">Bu tarayıcıda kayıpsız ayarın ihtiyaç duyduğu
+      CompressionStream yok. Onun yerine JPEG ayarlarından biri olur.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">görselleriniz hiçbir yere gitmedi. {total}
       dosya yüklendi, hepsi bu sayfanın kendi dosyaları. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

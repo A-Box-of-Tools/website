@@ -235,6 +235,65 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: no es una imagen que esta herramienta sepa
+      leer.</span>
+    <span data-phrase="read.nodecode">{name}: este navegador no ha podido
+      descodificarla.</span>
+    <span data-phrase="drag.move">Arrastrar para mover {name}</span>
+    <span data-phrase="note.fit">Cada página es exactamente su imagen, así que no se
+      recorta ni se le ponen bandas.</span>
+    <span data-phrase="note.page">Las imágenes se colocan en una página de este tamaño.</span>
+    <span data-phrase="note.mode.keep">Las fotos JPEG entran byte a byte, sin
+      descodificar y sin perder calidad. Los demás formatos se vuelven a codificar, o se
+      guardan sin pérdida si son transparentes.</span>
+    <span data-phrase="note.mode.jpeg">Todo se descodifica y se vuelve a codificar. El
+      archivo más pequeño, y el único ajuste que cuesta calidad en una imagen que ya era
+      un JPEG.</span>
+    <span data-phrase="note.mode.lossless">Cada imagen se guarda exacta, comprimida con
+      deflate. El archivo más grande con diferencia, y la respuesta correcta para
+      escaneos de texto, dibujo de línea y capturas de pantalla.</span>
+    <span data-phrase="note.full">Resolución completa. Una carpeta de fotos de móvil
+      hace un PDF grande.</span>
+    <span data-phrase="note.shrink">Todo lo mayor se reduce, lo que quiere decir que se
+      vuelve a codificar en vez de copiarse.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">Página {n} de {total}</span>
+    <span data-phrase="n.image.one">{n} imagen</span>
+    <span data-phrase="n.image.many">{n} imágenes</span>
+    <span data-phrase="n.page.one">{n} página</span>
+    <span data-phrase="n.page.many">{n} páginas</span>
+    <span data-phrase="sum.copied">{kept} de {total}</span>
+    <span data-phrase="page.fit">se ajusta a cada imagen</span>
+    <span data-phrase="page.mm">{width} &times; {height} mm</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">vertical</span>
+    <span data-phrase="page.landscape">horizontal</span>
+    <span data-phrase="page.mixed">mezclado</span>
+    <span data-phrase="page.auto">según cada imagen</span>
+    <span data-phrase="step.starting">Empezando&hellip;</span>
+    <span data-phrase="step.page">Página {n} de {total} &mdash; {name}</span>
+    <span data-phrase="step.writing">Escribiendo el documento&hellip;</span>
+    <span data-phrase="step.cancelled">Cancelado.</span>
+    <span data-phrase="result.one">{n} página, {size}.</span>
+    <span data-phrase="result.many">{n} páginas, {size}.</span>
+    <span data-phrase="result.copied.one">{copied} de {total} ha entrado tal cual
+      estaba.</span>
+    <span data-phrase="result.copied.many">{copied} de {total} han entrado tal cual
+      estaban.</span>
+    <span data-phrase="result.copied.none">Todas las imágenes se han vuelto a codificar
+      para el documento.</span>
+    <span data-phrase="build.noimages">Primero hay que elegir al menos una imagen.</span>
+    <span data-phrase="encode.nojpeg">Este navegador no ha podido codificar la imagen
+      como JPEG.</span>
+    <span data-phrase="encode.nodeflate">Este navegador no tiene CompressionStream, que
+      es lo que necesita el ajuste sin pérdida. Sirve cualquiera de los ajustes JPEG.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">tus imágenes no han ido a ninguna parte.
       {total} archivos cargados, todos ellos de esta misma página. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta

@@ -235,6 +235,66 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}&nbsp;: pas une image que cet outil sait
+      lire.</span>
+    <span data-phrase="read.nodecode">{name}&nbsp;: ce navigateur n&rsquo;a pas pu la
+      décoder.</span>
+    <span data-phrase="drag.move">Faire glisser pour déplacer {name}</span>
+    <span data-phrase="note.fit">Chaque page est exactement son image&nbsp;: rien
+      n&rsquo;est rogné ni encadré de bandes.</span>
+    <span data-phrase="note.page">Les images sont posées sur une page de cette taille.</span>
+    <span data-phrase="note.mode.keep">Les photos JPEG entrent octet par octet, sans
+      décodage et sans perte de qualité. Les autres formats sont réencodés, ou gardés
+      sans perte s&rsquo;ils sont transparents.</span>
+    <span data-phrase="note.mode.jpeg">Tout est décodé puis réencodé. Le fichier le plus
+      petit, et le seul réglage qui coûte de la qualité sur une image qui était déjà un
+      JPEG.</span>
+    <span data-phrase="note.mode.lossless">Chaque image est stockée exactement,
+      compressée en deflate. Le fichier le plus gros et de loin, et la bonne réponse
+      pour des scans de texte, du dessin au trait et des captures d&rsquo;écran.</span>
+    <span data-phrase="note.full">Pleine résolution. Un dossier de photos de téléphone
+      fait un gros PDF.</span>
+    <span data-phrase="note.shrink">Tout ce qui dépasse est réduit, c&rsquo;est-à-dire
+      réencodé plutôt que recopié.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">Page {n} sur {total}</span>
+    <span data-phrase="n.image.one">{n} image</span>
+    <span data-phrase="n.image.many">{n} images</span>
+    <span data-phrase="n.page.one">{n} page</span>
+    <span data-phrase="n.page.many">{n} pages</span>
+    <span data-phrase="sum.copied">{kept} sur {total}</span>
+    <span data-phrase="page.fit">s&rsquo;adapte à chaque image</span>
+    <span data-phrase="page.mm">{width} &times; {height} mm</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">portrait</span>
+    <span data-phrase="page.landscape">paysage</span>
+    <span data-phrase="page.mixed">mélangé</span>
+    <span data-phrase="page.auto">selon chaque image</span>
+    <span data-phrase="step.starting">Démarrage&hellip;</span>
+    <span data-phrase="step.page">Page {n} sur {total} &mdash; {name}</span>
+    <span data-phrase="step.writing">Écriture du document&hellip;</span>
+    <span data-phrase="step.cancelled">Annulé.</span>
+    <span data-phrase="result.one">{n} page, {size}.</span>
+    <span data-phrase="result.many">{n} pages, {size}.</span>
+    <span data-phrase="result.copied.one">{copied} sur {total} y est entrée telle
+      quelle.</span>
+    <span data-phrase="result.copied.many">{copied} sur {total} y sont entrées telles
+      quelles.</span>
+    <span data-phrase="result.copied.none">Chaque image a été réencodée pour le
+      document.</span>
+    <span data-phrase="build.noimages">Il faut d&rsquo;abord choisir au moins une image.</span>
+    <span data-phrase="encode.nojpeg">Ce navigateur n&rsquo;a pas pu encoder
+      l&rsquo;image en JPEG.</span>
+    <span data-phrase="encode.nodeflate">Ce navigateur n&rsquo;a pas de
+      CompressionStream, dont le réglage sans perte a besoin. Un des réglages JPEG
+      marchera à la place.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
     <span data-phrase="net.clean">vos images ne sont allées nulle part. {total}
       fichiers chargés, tous appartenant à cette page. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

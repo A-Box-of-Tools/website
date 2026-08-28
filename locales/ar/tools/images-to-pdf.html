@@ -233,6 +233,56 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: ليست صورة تستطيع هذه الأداة قراءتها.</span>
+    <span data-phrase="read.nodecode">{name}: لم يستطع هذا المتصفح فكّ ترميزها.</span>
+    <span data-phrase="drag.move">اسحب لتحريك {name}</span>
+    <span data-phrase="note.fit">كل صفحة هي صورتها بالضبط، فلا يُقتطع منها شيء ولا تُضاف
+      إليها أشرطة.</span>
+    <span data-phrase="note.page">تُوضع الصور على صفحة بهذا المقاس.</span>
+    <span data-phrase="note.mode.keep">تدخل صور JPEG بايتاً بايتاً، بلا فكّ ترميز وبلا
+      فقد في الجودة. أما الصيغ الأخرى فيُعاد ترميزها، أو تُحفظ بلا فقد إن كانت شفافة.</span>
+    <span data-phrase="note.mode.jpeg">يُفكّ ترميز كل شيء ثم يُعاد ترميزه. أصغر ملف، وهو
+      الإعداد الوحيد الذي يكلّف جودةً في صورة كانت أصلاً JPEG.</span>
+    <span data-phrase="note.mode.lossless">تُحفظ كل صورة كما هي بالضبط، مضغوطة
+      بـdeflate. أكبر ملف بفارق واضح، وهو الجواب الصحيح لمسوحات النصوص والرسم الخطي
+      ولقطات الشاشة.</span>
+    <span data-phrase="note.full">الدقة الكاملة. مجلد من صور الهاتف يصنع ملف PDF كبيراً.</span>
+    <span data-phrase="note.shrink">كل ما هو أكبر من ذلك يُصغَّر، أي يُعاد ترميزه بدل أن
+      يُنسخ.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">الصفحة {n} من {total}</span>
+    <span data-phrase="n.image.one">صورة واحدة</span>
+    <span data-phrase="n.image.many">{n} صورة</span>
+    <span data-phrase="n.page.one">صفحة واحدة</span>
+    <span data-phrase="n.page.many">{n} صفحة</span>
+    <span data-phrase="sum.copied">{kept} من {total}</span>
+    <span data-phrase="page.fit">يتبع كل صورة</span>
+    <span data-phrase="page.mm">{width} &times; {height} مم</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">طولي</span>
+    <span data-phrase="page.landscape">عرضي</span>
+    <span data-phrase="page.mixed">مختلط</span>
+    <span data-phrase="page.auto">بحسب كل صورة</span>
+    <span data-phrase="step.starting">البدء&hellip;</span>
+    <span data-phrase="step.page">الصفحة {n} من {total} &mdash; {name}</span>
+    <span data-phrase="step.writing">كتابة المستند&hellip;</span>
+    <span data-phrase="step.cancelled">أُلغي.</span>
+    <span data-phrase="result.one">صفحة واحدة، {size}.</span>
+    <span data-phrase="result.many">{n} صفحة، {size}.</span>
+    <span data-phrase="result.copied.one">دخلت {copied} من {total} كما هي تماماً.</span>
+    <span data-phrase="result.copied.many">دخلت {copied} من {total} كما هي تماماً.</span>
+    <span data-phrase="result.copied.none">أُعيد ترميز كل صورة من أجل المستند.</span>
+    <span data-phrase="build.noimages">اختر صورة واحدة على الأقل أولاً.</span>
+    <span data-phrase="encode.nojpeg">لم يستطع هذا المتصفح ترميز الصورة بصيغة JPEG.</span>
+    <span data-phrase="encode.nodeflate">لا يوجد CompressionStream في هذا المتصفح، وهو
+      ما يحتاجه الإعداد بلا فقد. يصلح بدلاً منه أحد إعدادات JPEG.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}، {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
     <span data-phrase="net.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

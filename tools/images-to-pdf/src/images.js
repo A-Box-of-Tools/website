@@ -28,7 +28,9 @@ let nextId = 1;
 
 /**
  * @param {FileList|File[]} files
- * @returns {Promise<{items: object[], skipped: string[]}>}
+ * @returns {Promise<{items: object[], skipped: {key: string, values: object}[]}>}
+ *   `skipped` names a sentence and its blanks; only the page can read a
+ *   phrase, and this module ships in fifteen languages.
  */
 export async function loadImages(files) {
   const items = [];
@@ -36,7 +38,7 @@ export async function loadImages(files) {
 
   for (const file of Array.from(files)) {
     if (!looksLikeImage(file)) {
-      skipped.push(`${file.name}: not an image this tool can read.`);
+      skipped.push({ key: 'read.notimage', values: { name: file.name } });
       continue;
     }
 
@@ -46,7 +48,7 @@ export async function loadImages(files) {
       // and the preview never has to think about rotation twice.
       bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
     } catch {
-      skipped.push(`${file.name}: this browser could not decode it.`);
+      skipped.push({ key: 'read.nodecode', values: { name: file.name } });
       continue;
     }
 

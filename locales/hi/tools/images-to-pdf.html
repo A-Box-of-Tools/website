@@ -235,6 +235,61 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: ऐसी तस्वीर नहीं जिसे यह औज़ार पढ़ सके।</span>
+    <span data-phrase="read.nodecode">{name}: यह ब्राउज़र इसे डीकोड नहीं कर सका।</span>
+    <span data-phrase="drag.move">{name} को खिसकाने के लिए खींचिए</span>
+    <span data-phrase="note.fit">हर पन्ना ठीक अपनी तस्वीर है, इसलिए न कुछ कटता है और न
+      किनारों पर पट्टियाँ आती हैं।</span>
+    <span data-phrase="note.page">तस्वीरें इसी आकार के पन्ने पर रखी जाती हैं।</span>
+    <span data-phrase="note.mode.keep">JPEG तस्वीरें बाइट-दर-बाइट अंदर जाती हैं, बिना
+      डीकोड किए और बिना गुणवत्ता खोए। बाक़ी फ़ॉर्मैट दोबारा एनकोड होते हैं, या पारदर्शी
+      होने पर बिना नुक़सान रखे जाते हैं।</span>
+    <span data-phrase="note.mode.jpeg">सब कुछ डीकोड होकर दोबारा एनकोड होता है। सबसे छोटी
+      फ़ाइल, और अकेली ऐसी सेटिंग जो पहले से JPEG रही तस्वीर की गुणवत्ता घटाती है।</span>
+    <span data-phrase="note.mode.lossless">हर तस्वीर हूबहू रखी जाती है, deflate से
+      दबाकर। कहीं ज़्यादा बड़ी फ़ाइल, और लिखे हुए के स्कैन, रेखाचित्र और स्क्रीनशॉट के
+      लिए सही जवाब।</span>
+    <span data-phrase="note.full">पूरा रिज़ॉल्यूशन। फ़ोन की तस्वीरों का एक फ़ोल्डर बड़ा
+      PDF बनाता है।</span>
+    <span data-phrase="note.shrink">इससे बड़ा जो भी हो वह छोटा किया जाता है, यानी नक़ल
+      होने के बजाय दोबारा एनकोड होता है।</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">{total} में से पन्ना {n}</span>
+    <span data-phrase="n.image.one">{n} तस्वीर</span>
+    <span data-phrase="n.image.many">{n} तस्वीरें</span>
+    <span data-phrase="n.page.one">{n} पन्ना</span>
+    <span data-phrase="n.page.many">{n} पन्ने</span>
+    <span data-phrase="sum.copied">{total} में से {kept}</span>
+    <span data-phrase="page.fit">हर तस्वीर के हिसाब से</span>
+    <span data-phrase="page.mm">{width} &times; {height} मिमी</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">खड़ा</span>
+    <span data-phrase="page.landscape">आड़ा</span>
+    <span data-phrase="page.mixed">मिला-जुला</span>
+    <span data-phrase="page.auto">हर तस्वीर के अनुसार</span>
+    <span data-phrase="step.starting">शुरू हो रहा है&hellip;</span>
+    <span data-phrase="step.page">{total} में से पन्ना {n} &mdash; {name}</span>
+    <span data-phrase="step.writing">दस्तावेज़ लिखा जा रहा है&hellip;</span>
+    <span data-phrase="step.cancelled">रद्द किया गया।</span>
+    <span data-phrase="result.one">{n} पन्ना, {size}।</span>
+    <span data-phrase="result.many">{n} पन्ने, {size}।</span>
+    <span data-phrase="result.copied.one">{total} में से {copied} ज्यों का त्यों अंदर
+      गया।</span>
+    <span data-phrase="result.copied.many">{total} में से {copied} ज्यों के त्यों अंदर
+      गए।</span>
+    <span data-phrase="result.copied.none">हर तस्वीर दस्तावेज़ के लिए दोबारा एनकोड की
+      गई।</span>
+    <span data-phrase="build.noimages">पहले कम से कम एक तस्वीर चुनिए।</span>
+    <span data-phrase="encode.nojpeg">यह ब्राउज़र तस्वीर को JPEG में एनकोड नहीं कर सका।</span>
+    <span data-phrase="encode.nodeflate">इस ब्राउज़र में CompressionStream नहीं है, जो
+      बिना नुक़सान वाली सेटिंग को चाहिए। उसकी जगह JPEG वाली कोई सेटिंग चल जाएगी।</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">आपकी तस्वीरें कहीं नहीं गईं। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

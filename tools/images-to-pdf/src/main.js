@@ -105,8 +105,11 @@ async function addFiles(files) {
   try {
     const { items: added, skipped } = await loadImages(files);
     items.push(...added);
-    if (skipped.length) showLoadError(skipped.join('\n'));
-    else clearLoadError();
+    // Each skip is a key and its blanks; the line break between two of them is
+    // not a sentence, so it stays here.
+    if (skipped.length) {
+      showLoadError(skipped.map(({ key, values }) => phrase(key, values)).join('\n'));
+    } else clearLoadError();
   } finally {
     picker.done();
   }
@@ -147,8 +150,9 @@ function buildItemNode(item, index) {
   handle.className = 'drag-handle';
   handle.draggable = true;
   handle.textContent = '⋮⋮';
-  handle.title = `Drag to move ${item.name}`;
-  handle.setAttribute('aria-label', `Drag to move ${item.name}`);
+  const dragLabel = phrase('drag.move', { name: item.name });
+  handle.title = dragLabel;
+  handle.setAttribute('aria-label', dragLabel);
 
   const thumbWrap = document.createElement('div');
   thumbWrap.className = 'thumb-wrap';
@@ -189,12 +193,18 @@ function buildItemNode(item, index) {
   const name = document.createElement('p');
   name.className = 'image-name';
   name.textContent = item.name;
-  name.title = `${item.name} — ${seen.width} × ${seen.height}`;
+  name.title = phrase('join.dash', {
+    a: item.name,
+    b: phrase('size.plain', { width: seen.width, height: seen.height }),
+  });
   meta.append(name);
 
   const dims = document.createElement('p');
   dims.className = 'image-dims';
-  dims.textContent = `${seen.width} × ${seen.height} · ${formatBytes(item.file.size)}`;
+  dims.textContent = phrase('join.dot', {
+    a: phrase('size.plain', { width: seen.width, height: seen.height }),
+    b: formatBytes(item.file.size),
+  });
   meta.append(dims);
 
   const controls = document.createElement('div');
@@ -387,22 +397,10 @@ function syncSettingVisibility() {
   el.fitField.hidden = fitPage;
   el.qualityField.hidden = el.mode.value === 'lossless';
 
-  el.sizeNote.textContent = fitPage
-    ? 'Every page is exactly its picture, so nothing is cropped or letterboxed.'
-    : 'Pictures are placed on a page of this size.';
-
-  el.modeNote.textContent = {
-    keep: 'JPEG photos go in byte for byte, with no decoding and no quality lost. '
-      + 'Other formats are re-encoded, or kept lossless if they are see-through.',
-    jpeg: 'Everything is decoded and encoded again. Smallest file, and the only '
-      + 'setting that costs quality on a picture that was already a JPEG.',
-    lossless: 'Every picture is stored exactly, deflated. Largest file by some way, '
-      + 'and the right answer for scans of text, line art and screenshots.',
-  }[el.mode.value];
-
-  el.shrinkNote.textContent = el.maxSide.value === '0'
-    ? 'Full resolution. A folder of phone photos makes a large PDF.'
-    : 'Anything larger is scaled down, which means it is re-encoded rather than copied.';
+  el.sizeNote.textContent = phrase(fitPage ? 'note.fit' : 'note.page');
+  el.modeNote.textContent = phrase(`note.mode.${el.mode.value}`);
+  el.shrinkNote.textContent = phrase(el.maxSide.value === '0'
+    ? 'note.full' : 'note.shrink');
 }
 
 const settingInputs = [
@@ -453,7 +451,8 @@ function drawPreview() {
   el.preview.classList.toggle('empty', !any);
   el.previewEmpty.hidden = any;
   el.previewNav.hidden = items.length < 2;
-  el.previewLabel.textContent = `Page ${previewAt + 1} of ${items.length}`;
+  el.previewLabel.textContent = phrase('preview.page',
+    { n: previewAt + 1, total: items.length });
   el.previewPrev.disabled = previewAt === 0;
   el.previewNext.disabled = previewAt >= items.length - 1;
   if (!any) return;
@@ -512,11 +511,15 @@ function render() {
 }
 
 /** Everything except the tiles: the counts, the preview, and what is enabled. */
+/** The dash a summary row shows when there is nothing to summarise. */
+const EMPTY = '\u2014';
+
 function refresh() {
   const any = items.length > 0;
   el.listToolbar.hidden = !any;
   el.reorderHint.hidden = items.length < 2;
-  el.countLabel.textContent = `${items.length} image${items.length === 1 ? '' : 's'}`;
+  el.countLabel.textContent = phrase(items.length === 1 ? 'n.image.one' : 'n.image.many',
+    { n: items.length });
   el.exportBtn.disabled = !any || exporting;
 
   syncSettingVisibility();
@@ -528,16 +531,17 @@ function updateSummary() {
   const settings = currentSettings();
 
   el.sumPages.textContent = items.length
-    ? `${items.length} page${items.length === 1 ? '' : 's'}`
-    : '—';
+    ? phrase(items.length === 1 ? 'n.page.one' : 'n.page.many', { n: items.length })
+    : EMPTY;
 
   el.sumSize.textContent = describePageSize(settings);
 
   const bytes = items.reduce((total, item) => total + item.file.size, 0);
-  el.sumInput.textContent = items.length ? formatBytes(bytes) : '—';
+  el.sumInput.textContent = items.length ? formatBytes(bytes) : EMPTY;
 
   const kept = items.filter((item) => likelyCopied(item, settings)).length;
-  el.sumCopied.textContent = items.length ? `${kept} of ${items.length}` : '—';
+  el.sumCopied.textContent = items.length
+    ? phrase('sum.copied', { kept, total: items.length }) : EMPTY;
 }
 
 /**
@@ -554,23 +558,31 @@ function likelyCopied(item, settings) {
 }
 
 function describePageSize(settings) {
-  if (!items.length) return '—';
-  if (settings.pageSize === 'fit') return 'matches each image';
+  if (!items.length) return EMPTY;
+  if (settings.pageSize === 'fit') return phrase('page.fit');
 
   const named = PAGE_SIZES[settings.pageSize];
   const label = named
-    ? `${trim(named[0])} × ${trim(named[1])} mm`
-    : `${trim(settings.customWidth)} × ${trim(settings.customHeight)} ${settings.customUnit}`;
+    ? phrase('page.mm', { width: trim(named[0]), height: trim(named[1]) })
+    : phrase('page.custom', {
+      width: trim(settings.customWidth),
+      height: trim(settings.customHeight),
+      unit: settings.customUnit,
+    });
 
+  // The word for the way up is a phrase, not `settings.orientation` written
+  // out: the value is an option name, and an option name is not a sentence.
+  let way = `page.${settings.orientation}`;
   if (settings.orientation === 'auto') {
     const upright = items.filter((item) => {
       const seen = seenSize(item);
       return seen.height >= seen.width;
     }).length;
-    if (upright && upright < items.length) return `${label}, mixed`;
-    return `${label}, ${upright ? 'portrait' : 'landscape'}`;
+    way = upright && upright < items.length
+      ? 'page.mixed'
+      : (upright ? 'page.portrait' : 'page.landscape');
   }
-  return `${label}, ${settings.orientation}`;
+  return phrase('join.comma', { a: label, b: phrase(way) });
 }
 
 function trim(value) {
@@ -578,9 +590,9 @@ function trim(value) {
 }
 
 function formatBytes(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  if (bytes < 1024) return phrase('size.b', { n: bytes });
+  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
+  return phrase('size.mb', { n: (bytes / (1024 * 1024)).toFixed(1) });
 }
 
 /* ------------------------------------------------------------------ export */
@@ -634,7 +646,7 @@ async function runExport() {
   el.cancelBtn.hidden = false;
   el.progress.hidden = false;
   el.progressBar.style.width = '0%';
-  el.progressLabel.textContent = 'Starting...';
+  el.progressLabel.textContent = phrase('step.starting');
 
   // The document is built from a copy of the queue, the way the Images to
   // Video tool hands its encoder one: buildDocument yields to the page between
@@ -648,24 +660,27 @@ async function runExport() {
       onProgress: ({ done, total, name }) => {
         el.progressBar.style.width = `${Math.round((done / total) * 100)}%`;
         el.progressLabel.textContent = done < total
-          ? `Page ${done + 1} of ${total} ${name}`
-          : 'Writing the document...';
+          ? phrase('step.page', { n: done + 1, total, name })
+          : phrase('step.writing');
       },
     });
 
     resultUrl = URL.createObjectURL(blob);
     el.download.href = resultUrl;
     el.download.download = outputName();
-    el.resultInfo.textContent = `${pages} page${pages === 1 ? '' : 's'}, `
-      + `${formatBytes(blob.size)}. `
-      + (copied
-        ? `${copied} of ${pages} put in exactly as ${copied === 1 ? 'it was' : 'they were'}.`
-        : 'Every picture was encoded again for the document.');
+    el.resultInfo.textContent = phrase('join.sentences', {
+      a: phrase(pages === 1 ? 'result.one' : 'result.many',
+        { n: pages, size: formatBytes(blob.size) }),
+      b: phrase(copied ? (copied === 1 ? 'result.copied.one' : 'result.copied.many')
+        : 'result.copied.none', { copied, total: pages }),
+    });
     el.result.hidden = false;
   } catch (error) {
     cancelled = error?.name === 'AbortError';
-    if (cancelled) el.progressLabel.textContent = 'Cancelled.';
-    else showError(error?.message ?? String(error));
+    if (cancelled) el.progressLabel.textContent = phrase('step.cancelled');
+    // The leaf modules throw keys; a browser that failed for its own reasons
+    // throws a sentence, and phrase() hands back what it does not recognise.
+    else showError(phrase(error?.message ?? String(error)));
   } finally {
     exporting = false;
     abortController = null;

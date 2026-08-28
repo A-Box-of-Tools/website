@@ -25,7 +25,7 @@ const PRODUCER = 'abox.tools images to PDF';
  * @returns {Promise<{blob: Blob, pages: number, copied: number}>}
  */
 export async function buildDocument(items, settings, { onProgress, signal } = {}) {
-  if (!items.length) throw new Error('Choose at least one image first.');
+  if (!items.length) throw new Error('build.noimages');
 
   const pdf = new PdfWriter();
   const catalog = pdf.reserve();
