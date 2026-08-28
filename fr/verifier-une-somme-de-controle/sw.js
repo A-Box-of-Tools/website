@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/verifier-une-somme-de-controle/:';
-const CACHE_NAME=CACHE_PREFIX+'98c2b0c6e8';
+const CACHE_NAME=CACHE_PREFIX+'289f87f755';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=599874a3b5',
+'styles.css?v=14e55c7c2a',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pangkas-video/:';
-const CACHE_NAME=CACHE_PREFIX+'9ebe033da8';
+const CACHE_NAME=CACHE_PREFIX+'714deb3719';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=14bfcbd8cc',
+'styles.css?v=3860f14f86',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
