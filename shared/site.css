@@ -212,17 +212,33 @@ code {
   box-shadow: var(--shadow);
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.15s, transform 0.15s;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 
-.tool-card:hover {
+/* The card lifts two pixels and its edge turns accent, and until now the
+   shadow underneath did neither - it stayed the same flat neutral it has at
+   rest, so the card read as having slid sideways rather than risen toward the
+   reader. The accent layer is added to `--shadow` rather than replacing it,
+   which keeps the honest grey the card casts on the page in both themes and
+   adds the colour of the thing being pointed at underneath it.
+
+   `:focus-visible` gets the same treatment as `:hover`. It always should
+   have: a keyboard reader moving through thirty-seven of these was given a
+   focus ring and none of the movement a mouse reader gets, and the ring alone
+   is easy to lose in a grid. The sibling component on a tool page,
+   `.tool-related a`, already did both. */
+.tool-card:hover,
+.tool-card:focus-visible {
   border-color: var(--accent);
   transform: translateY(-2px);
+  box-shadow: var(--shadow),
+              0 10px 24px -6px color-mix(in srgb, var(--accent) 38%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {
   .tool-card { transition: none; }
-  .tool-card:hover { transform: none; }
+  .tool-card:hover,
+  .tool-card:focus-visible { transform: none; }
 }
 
 .tool-icon { font-size: 1.6rem; line-height: 1; }
@@ -417,12 +433,27 @@ code {
   box-shadow: var(--shadow);
   color: inherit;
   text-decoration: none;
-  transition: border-color 0.12s ease, transform 0.12s ease;
+  transition: border-color 0.12s ease, transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-.guide-card:hover {
+/* The same lift as a tool card, at the smaller amount a full-width row wants,
+   and for the same reasons - including the focus state, which a list read
+   top to bottom needs more than the grid does. */
+.guide-card:hover,
+.guide-card:focus-visible {
   border-color: var(--accent);
   transform: translateY(-1px);
+  box-shadow: var(--shadow),
+              0 8px 20px -8px color-mix(in srgb, var(--accent) 32%, transparent);
+}
+
+/* This one had no guard at all while .tool-card above has had one all along,
+   so a reader who had asked for less movement got it from the hub's grid and
+   not from the list of guides. */
+@media (prefers-reduced-motion: reduce) {
+  .guide-card { transition: none; }
+  .guide-card:hover,
+  .guide-card:focus-visible { transform: none; }
 }
 
 .guide-name { font-weight: 600; font-size: 1rem; color: var(--accent); }
