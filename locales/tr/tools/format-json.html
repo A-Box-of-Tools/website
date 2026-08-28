@@ -137,6 +137,99 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (satır {line}, sütun {column})</span>
+    <span data-phrase="char.end">metnin sonu</span>
+    <span data-phrase="char.newline">bir satır sonu</span>
+    <span data-phrase="char.tab">bir sekme</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="json.trailing">Beklenmedik: değerin sonundan sonra {found}</span>
+    <span data-phrase="json.early">Metin çok erken bitiyor</span>
+    <span data-phrase="json.keystring">Anahtarın çift tırnaklı bir dizge olması gerekir, oysa bu {found}</span>
+    <span data-phrase="json.colon">Anahtardan sonra iki nokta beklendi, {found} bulundu</span>
+    <span data-phrase="json.unexpected">Beklenmedik: {found}</span>
+    <span data-phrase="json.commabrace">Virgül ya da kapanan süslü parantez beklendi, {found} bulundu</span>
+    <span data-phrase="json.commabracket">Virgül ya da kapanan köşeli parantez beklendi, {found} bulundu</span>
+    <span data-phrase="json.object">Bu nesne hiç kapatılmıyor</span>
+    <span data-phrase="json.array">Bu dizi hiç kapatılmıyor</span>
+    <span data-phrase="json.string">Bu dizge hiç kapatılmıyor</span>
+    <span data-phrase="json.hex">\u işaretini dört onaltılık basamak izlemeli</span>
+    <span data-phrase="json.escape">\{next} JSON'un bildiği bir kaçış dizisi değil</span>
+    <span data-phrase="json.control">Dizgenin içinde çıplak bir denetim karakteri var &mdash; onu bir kaçış dizisi olarak
+      yazın</span>
+    <span data-phrase="json.number">Bu, JSON'un izin verdiği bir sayı değil</span>
+    <span data-phrase="css.comment">Bu açıklama hiç kapatılmıyor</span>
+    <span data-phrase="css.brace">Açık bir blok olmadan kapanan süslü parantez</span>
+    <span data-phrase="css.block">Bu blok hiç kapatılmıyor</span>
+    <span data-phrase="css.string">Bu dizge hiç kapatılmıyor</span>
+    <span data-phrase="css.bracket">Bu parantez hiç kapatılmıyor</span>
+    <span data-phrase="css.declaration">&laquo;{statement}&raquo; bir bildirim değil &mdash; içinde iki nokta yok</span>
+    <span data-phrase="xml.comment">Bu açıklama hiç kapatılmıyor</span>
+    <span data-phrase="xml.cdata">Bu CDATA bölümü hiç kapatılmıyor</span>
+    <span data-phrase="xml.declaration">Bu bildirim hiç kapatılmıyor</span>
+    <span data-phrase="xml.closing">Bu kapanış etiketi hiç bitirilmiyor</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; hiç kapatılmıyor</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; hiç açılmamış bir etiketi kapatıyor</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt;, &lt;{open}&gt; hâlâ açıkken bir ögeyi kapatıyor</span>
+    <span data-phrase="xml.inside">Beklenmedik: &lt;{name}&gt; içinde &laquo;{ch}&raquo;</span>
+    <span data-phrase="xml.tagname">Bir etiket adı harfle başlamalı</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; hiç bitirilmiyor</span>
+    <span data-phrase="xml.attrvalue">&laquo;{name}&raquo; özniteliğinin değeri yok, XML buna izin vermez</span>
+    <span data-phrase="xml.attrstring">Bu öznitelik değeri hiç kapatılmıyor</span>
+    <span data-phrase="xml.attrquote">XML'de öznitelik değeri tırnak içinde olmalı</span>
+    <span data-phrase="yaml.dedent">Bu satır, içinde bulunduğu bloktan daha az girintili</span>
+    <span data-phrase="yaml.documents">Bu dosyada birden çok belge var. Onları teker teker dönüştürün.</span>
+    <span data-phrase="yaml.indent">Bu satır, üstündeki anahtardan daha çok girintili</span>
+    <span data-phrase="yaml.keyvalue">Burada &laquo;key: value&raquo; bekleniyordu</span>
+    <span data-phrase="yaml.aliases">Takma adlar (*name) desteklenmiyor &mdash; JSON'un &laquo;aynı düğüm iki kez&raquo;
+      demenin bir yolu yok</span>
+    <span data-phrase="yaml.tags">Etiketler (!name) desteklenmiyor &mdash; türün tahmin edilmesi gerekirdi</span>
+    <span data-phrase="yaml.complexkey">Burada &laquo;?&raquo; anahtarı desteklenmiyor</span>
+    <span data-phrase="yaml.blockscalar">&laquo;{header}&raquo; bunun okuduğu bir blok skaleri değil</span>
+    <span data-phrase="yaml.afterquote">Kapanan tırnaktan sonra metin var</span>
+    <span data-phrase="yaml.anchors">Çapalar (&amp;name) desteklenmiyor &mdash; JSON'un &laquo;aynı düğüm iki kez&raquo;
+      demenin bir yolu yok</span>
+    <span data-phrase="yaml.hex">\{next} işaretinden sonra {width} onaltılık basamak gerekir</span>
+    <span data-phrase="yaml.escape">\{next} bunun okuduğu bir kaçış dizisi değil</span>
+    <span data-phrase="yaml.quoted">Tırnak içindeki bu dizge hiç kapatılmıyor</span>
+    <span data-phrase="yaml.afterflow">Akış koleksiyonunun sonundan sonra metin var</span>
+    <span data-phrase="yaml.flowearly">Akış koleksiyonu çok erken bitiyor</span>
+    <span data-phrase="yaml.flowseq">Bu akış dizisinde virgül ya da kapanan köşeli parantez beklendi</span>
+    <span data-phrase="yaml.flowkey">Bu akış eşlemesinde anahtardan sonra iki nokta beklendi</span>
+    <span data-phrase="yaml.flowmap">Bu akış eşlemesinde virgül ya da kapanan süslü parantez beklendi</span>
+    <span data-phrase="convert.json-yaml.name">JSON'dan YAML'a</span>
+    <span data-phrase="convert.yaml-json.name">YAML'dan JSON'a</span>
+    <span data-phrase="convert.json-xml.name">JSON'dan XML'e</span>
+    <span data-phrase="convert.xml-json.name">XML'den JSON'a</span>
+    <span data-phrase="convert.json-yaml">Hiçbir şey kaybolmaz: her JSON belgesi zaten bir YAML belgesidir. Dizgeler yalnızca
+      tırnaksız bırakıldığında anlamları değişecek yerlerde tırnağa alınır.</span>
+    <span data-phrase="convert.yaml-json">Açıklamalar kaybolur, çünkü JSON'un onları koyacak yeri yok. Çapalar, takma adlar ve
+      etiketler tahmin edilmek yerine dönüşümü durdurur.</span>
+    <span data-phrase="convert.json-xml">Bir dizi, yinelenen bir ögeye dönüşür; geri okunabilen tek biçim budur. Boş bir
+      nesne de boş bir dizge de boş bir öge olarak çıkar.</span>
+    <span data-phrase="convert.xml-json">Öznitelikler adında @ olan üyelere dönüşür, bir ögenin kendi metni yer paylaşması
+      gerektiğinde #text olur ve her değer dizge kalır &mdash; XML hangisinin sayı
+      olduğunu hiç söylemedi.</span>
+    <span data-phrase="format.unknown">{language} bunun biçimlendirdiği bir dil değil.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">Dosya okunuyor…</span>
+    <span data-phrase="read.failed">O dosya okunamadı: {reason}</span>
+    <span data-phrase="out.nothing">Henüz bir şey yok.</span>
+    <span data-phrase="out.empty">Hiçbir şey çıkmadı.</span>
+    <span data-phrase="style.noyaml">YAML'ın yazmaya değer sıkıştırılmış bir biçimi yok: kısası akış stilidir ve o da
+      okunmaz.</span>
+    <span data-phrase="detect.unknown">Bu JSON, XML, HTML, CSS ya da YAML'a benzemiyor. Bunlardan biriyse dili menüden
+      seçin.</span>
+    <span data-phrase="detect.read">{name} olarak okundu.</span>
+    <span data-phrase="note.squeezed">{name}, düz sıkıştırıldı</span>
+    <span data-phrase="note.laid">{name}, düzenlendi</span>
+    <span data-phrase="note.smaller">{what} &mdash; {before} boyutundan {after} boyutuna, %{percent} daha az</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} satır, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} satır, {size}</span>
+    <span data-phrase="copy.copy">Kopyala</span>
+    <span data-phrase="copy.copied">Kopyalandı</span>
+    <span data-phrase="copy.selected">Seçildi &mdash; Ctrl+C tuşlarına basın</span>
     <span data-phrase="net.clean">metniniz hiçbir yere gitmedi. {total} dosya
       yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

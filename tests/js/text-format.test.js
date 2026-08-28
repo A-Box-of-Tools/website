@@ -88,7 +88,12 @@ test('JSON: the error carries a line and a column', () => {
   } catch (error) {
     assert.equal(error.line, 3);
     assert.equal(error.column, 8);
-    assert.match(error.message, /line 3, column 8/);
+    // The message is the phrase key now. Where it stopped is these two
+    // numbers, and the sentence that puts them around the reason lives in
+    // body.html: "(line 3, column 8)" is English word order like any other.
+    assert.equal(error.message, 'json.unexpected');
+    assert.equal(error.reason, 'json.unexpected');
+    assert.deepEqual(error.values, { found: { key: 'char.is', values: { ch: 'n' } } });
   }
 });
 
@@ -237,9 +242,10 @@ test('YAML: a sequence of mappings, in both indentations', () => {
 });
 
 test('YAML: what it refuses to guess at', () => {
-  assert.throws(() => parseYaml('a: &anchor 1\nb: *anchor\n'), /Anchors/);
-  assert.throws(() => parseYaml('a: !!binary aGk=\n'), /Tags/);
-  assert.throws(() => parseYaml('---\na: 1\n---\nb: 2\n'), /More than one document/);
+  assert.throws(() => parseYaml('a: &anchor 1\nb: *anchor\n'), /^ParseError: yaml\.anchors$/);
+  assert.throws(() => parseYaml('a: !!binary aGk=\n'), /^ParseError: yaml\.tags$/);
+  assert.throws(() => parseYaml('---\na: 1\n---\nb: 2\n'),
+    /^ParseError: yaml\.documents$/);
 });
 
 test('YAML: a colon inside a value is not a key', () => {
@@ -266,7 +272,9 @@ test('formatText is the one door the page uses', () => {
   assert.equal(formatText('{"a":1}', { language: 'json', minify: true }), '{"a":1}\n');
   assert.equal(formatText('a{color:red}', { language: 'css', minify: true }), 'a{color:red}\n');
   assert.equal(formatText('<a><b/></a>', { language: 'xml' }), '<a>\n  <b/>\n</a>\n');
-  assert.throws(() => formatText('x', { language: 'klingon' }), /not a language/);
+  assert.throws(() => formatText('x', { language: 'klingon' }),
+    (error) => error.message === 'format.unknown'
+      && error.values.language === 'klingon');
 });
 
 test('formatting is idempotent - running it twice changes nothing', () => {

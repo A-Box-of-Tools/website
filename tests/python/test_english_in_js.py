@@ -66,7 +66,7 @@ BASELINE = {
     'edit-audio': 25,
     'encode-text': 23,
     'exif-editor': 30,
-    'format-json': 61,
+    'format-json': 3,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
     'gif-maker': 22,

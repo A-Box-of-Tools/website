@@ -137,6 +137,98 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (baris {line}, kolom {column})</span>
+    <span data-phrase="char.end">akhir teksnya</span>
+    <span data-phrase="char.newline">sebuah ganti baris</span>
+    <span data-phrase="char.tab">sebuah tab</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="json.trailing">Tak terduga: {found} setelah akhir nilainya</span>
+    <span data-phrase="json.early">Teksnya berakhir terlalu cepat</span>
+    <span data-phrase="json.keystring">Kunci harus berupa string dalam tanda kutip ganda, dan ini {found}</span>
+    <span data-phrase="json.colon">Diharapkan titik dua setelah kuncinya, yang ada {found}</span>
+    <span data-phrase="json.unexpected">Tak terduga: {found}</span>
+    <span data-phrase="json.commabrace">Diharapkan koma atau kurung kurawal penutup, yang ada {found}</span>
+    <span data-phrase="json.commabracket">Diharapkan koma atau kurung siku penutup, yang ada {found}</span>
+    <span data-phrase="json.object">Objek ini tidak pernah ditutup</span>
+    <span data-phrase="json.array">Larik ini tidak pernah ditutup</span>
+    <span data-phrase="json.string">String ini tidak pernah ditutup</span>
+    <span data-phrase="json.hex">Setelah \u harus ada empat digit heksadesimal</span>
+    <span data-phrase="json.escape">\{next} bukan escape yang dikenal JSON</span>
+    <span data-phrase="json.control">Ada karakter kendali mentah di dalam string &mdash; tulis sebagai escape</span>
+    <span data-phrase="json.number">Ini bukan angka yang diizinkan JSON</span>
+    <span data-phrase="css.comment">Komentar ini tidak pernah ditutup</span>
+    <span data-phrase="css.brace">Ada kurung kurawal penutup tanpa blok yang terbuka</span>
+    <span data-phrase="css.block">Blok ini tidak pernah ditutup</span>
+    <span data-phrase="css.string">String ini tidak pernah ditutup</span>
+    <span data-phrase="css.bracket">Kurung ini tidak pernah ditutup</span>
+    <span data-phrase="css.declaration">&laquo;{statement}&raquo; bukan deklarasi &mdash; tidak ada titik duanya</span>
+    <span data-phrase="xml.comment">Komentar ini tidak pernah ditutup</span>
+    <span data-phrase="xml.cdata">Bagian CDATA ini tidak pernah ditutup</span>
+    <span data-phrase="xml.declaration">Deklarasi ini tidak pernah ditutup</span>
+    <span data-phrase="xml.closing">Tag penutup ini tidak pernah diselesaikan</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; tidak pernah ditutup</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; menutup tag yang tidak pernah dibuka</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt; menutup elemen sementara &lt;{open}&gt; masih terbuka</span>
+    <span data-phrase="xml.inside">Tak terduga: &laquo;{ch}&raquo; di dalam &lt;{name}&gt;</span>
+    <span data-phrase="xml.tagname">Nama tag harus diawali huruf</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; tidak pernah diselesaikan</span>
+    <span data-phrase="xml.attrvalue">Atribut &laquo;{name}&raquo; tidak punya nilai, dan XML tidak mengizinkan itu</span>
+    <span data-phrase="xml.attrstring">Nilai atribut ini tidak pernah ditutup</span>
+    <span data-phrase="xml.attrquote">Di XML nilai atribut harus diapit tanda kutip</span>
+    <span data-phrase="yaml.dedent">Baris ini menjorok lebih sedikit daripada blok tempatnya berada</span>
+    <span data-phrase="yaml.documents">Ada lebih dari satu dokumen di berkas ini. Konversikan satu per satu.</span>
+    <span data-phrase="yaml.indent">Baris ini menjorok lebih jauh daripada kunci di atasnya</span>
+    <span data-phrase="yaml.keyvalue">Di sini diharapkan &laquo;key: value&raquo;</span>
+    <span data-phrase="yaml.aliases">Alias (*name) tidak didukung &mdash; JSON tidak punya cara untuk mengatakan
+      &laquo;simpul yang sama dua kali&raquo;</span>
+    <span data-phrase="yaml.tags">Tag (!name) tidak didukung &mdash; tipenya harus ditebak</span>
+    <span data-phrase="yaml.complexkey">Kunci &laquo;?&raquo; tidak didukung di sini</span>
+    <span data-phrase="yaml.blockscalar">&laquo;{header}&raquo; bukan skalar blok yang bisa dibaca ini</span>
+    <span data-phrase="yaml.afterquote">Ada teks setelah tanda kutip penutup</span>
+    <span data-phrase="yaml.anchors">Jangkar (&amp;name) tidak didukung &mdash; JSON tidak punya cara untuk mengatakan
+      &laquo;simpul yang sama dua kali&raquo;</span>
+    <span data-phrase="yaml.hex">Setelah \{next} perlu ada {width} digit heksadesimal</span>
+    <span data-phrase="yaml.escape">\{next} bukan escape yang bisa dibaca ini</span>
+    <span data-phrase="yaml.quoted">String berkutip ini tidak pernah ditutup</span>
+    <span data-phrase="yaml.afterflow">Ada teks setelah akhir koleksi flow</span>
+    <span data-phrase="yaml.flowearly">Koleksi flow-nya berakhir terlalu cepat</span>
+    <span data-phrase="yaml.flowseq">Diharapkan koma atau kurung siku penutup di urutan flow ini</span>
+    <span data-phrase="yaml.flowkey">Diharapkan titik dua setelah kunci di pemetaan flow ini</span>
+    <span data-phrase="yaml.flowmap">Diharapkan koma atau kurung kurawal penutup di pemetaan flow ini</span>
+    <span data-phrase="convert.json-yaml.name">JSON ke YAML</span>
+    <span data-phrase="convert.yaml-json.name">YAML ke JSON</span>
+    <span data-phrase="convert.json-xml.name">JSON ke XML</span>
+    <span data-phrase="convert.xml-json.name">XML ke JSON</span>
+    <span data-phrase="convert.json-yaml">Tidak ada yang hilang: tiap dokumen JSON sudah jadi dokumen YAML. String hanya
+      diberi kutip di tempat membiarkannya polos akan mengubah maknanya.</span>
+    <span data-phrase="convert.yaml-json">Komentarnya hilang, karena JSON tidak punya tempat untuk menaruhnya. Jangkar, alias
+      dan tag menghentikan konversi alih-alih ditebak.</span>
+    <span data-phrase="convert.json-xml">Larik jadi elemen yang berulang, satu-satunya bentuk yang terbaca balik. Objek
+      kosong dan string kosong dua-duanya keluar sebagai elemen kosong.</span>
+    <span data-phrase="convert.xml-json">Atribut jadi anggota yang namanya berawalan @, teks milik elemen itu sendiri jadi
+      #text kalau harus berbagi tempat, dan tiap nilainya tetap string &mdash; XML tidak
+      pernah bilang mana yang angka.</span>
+    <span data-phrase="format.unknown">{language} bukan bahasa yang bisa dirapikan alat ini.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">Membaca berkasnya…</span>
+    <span data-phrase="read.failed">Berkas itu tidak terbaca: {reason}</span>
+    <span data-phrase="out.nothing">Belum ada apa-apa.</span>
+    <span data-phrase="out.empty">Tidak ada yang keluar.</span>
+    <span data-phrase="style.noyaml">YAML tidak punya bentuk mampat yang layak ditulis: yang pendek itu gaya flow, dan
+      itu tidak terbaca.</span>
+    <span data-phrase="detect.unknown">Ini tidak kelihatan seperti JSON, XML, HTML, CSS atau YAML. Pilih bahasanya dari
+      menu kalau memang salah satunya.</span>
+    <span data-phrase="detect.read">Dibaca sebagai {name}.</span>
+    <span data-phrase="note.squeezed">{name}, dimampatkan</span>
+    <span data-phrase="note.laid">{name}, dirapikan</span>
+    <span data-phrase="note.smaller">{what} &mdash; dari {before} jadi {after}, berkurang {percent}%</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} baris, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} baris, {size}</span>
+    <span data-phrase="copy.copy">Salin</span>
+    <span data-phrase="copy.copied">Tersalin</span>
+    <span data-phrase="copy.selected">Terpilih &mdash; tekan Ctrl+C</span>
     <span data-phrase="net.clean">teks Anda tidak pergi ke mana pun. {total}
       file dimuat. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

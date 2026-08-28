@@ -55,7 +55,7 @@ let downloadUrl = null;
 // Filled from the list the module exports, so a conversion that exists is on
 // the menu and one that does not cannot be.
 for (const conversion of CONVERSIONS) {
-  el.conversion.append(new Option(conversion.name, conversion.id));
+  el.conversion.append(new Option(phrase(conversion.name), conversion.id));
 }
 
 /* ---------------------------------------------------------------- the tabs */
@@ -96,14 +96,14 @@ const picker = wireFilePicker({
 });
 
 async function loadFiles(files) {
-  picker.busy('Reading the file...');
+  picker.busy(phrase('read.reading'));
   try {
     // Read as text, here, by the browser. There is no other step: the string
     // goes into the box below and never anywhere else.
     el.input.value = await files[0].text();
     run();
   } catch (error) {
-    showError(`That file could not be read: ${error?.message ?? error}`);
+    showError(phrase('read.failed', { reason: say(error) }));
   } finally {
     picker.done();
   }
@@ -166,7 +166,7 @@ function run() {
 
   const text = el.input.value;
   if (text.trim() === '') {
-    el.resultNote.textContent = 'Nothing yet.';
+    el.resultNote.textContent = phrase('out.nothing');
     return;
   }
 
@@ -177,7 +177,7 @@ function run() {
     // A parse error is the expected outcome of pasting something broken, and
     // is reported as information rather than as a failure. Anything else is a
     // bug here and goes to the console as well.
-    showError(error?.message ?? String(error));
+    showError(say(error));
     if (error?.name !== 'ParseError') console.error(error);
   }
 }
@@ -186,11 +186,9 @@ function updateOptionVisibility() {
   const language = chosenLanguage();
   el.sortKeys.closest('.field').hidden = !(language && languageById(language).sorts);
   el.style.disabled = !!language && !languageById(language).minifies;
-  el.styleNote.textContent = el.style.disabled
-    ? 'YAML has no squeezed form worth writing: the short one is flow style, which is unreadable.'
-    : '';
+  el.styleNote.textContent = el.style.disabled ? phrase('style.noyaml') : '';
   el.rootField.hidden = el.conversion.value !== 'json-xml';
-  el.conversionNote.textContent = conversionById(el.conversion.value).note;
+  el.conversionNote.textContent = phrase(conversionById(el.conversion.value).note);
 }
 
 /** What the language menu says, or what the text looks like when it says auto. */
@@ -203,12 +201,12 @@ function runFormat(text) {
   const language = chosenLanguage();
   if (!language) {
     el.detected.textContent = '';
-    showError('This does not look like JSON, XML, HTML, CSS or YAML. '
-      + 'Pick the language from the menu if it is one of them.');
+    showError(phrase('detect.unknown'));
     return;
   }
   el.detected.textContent = el.language.value === 'auto'
-    ? `Read as ${languageById(language).name}.` : '';
+    ? phrase('detect.read', { name: languageById(language).name })
+    : '';
 
   const minify = el.style.value === 'minify' && languageById(language).minifies;
   const out = formatText(text, {
@@ -220,13 +218,26 @@ function runFormat(text) {
 
   const before = byteLength(text);
   const after = byteLength(out);
-  const change = minify && before > 0
-    ? ` - ${humanBytes(before)} down to ${humanBytes(after)}, `
-      + `${Math.round((1 - after / before) * 100)}% off`
-    : '';
-  show(out, `${languageById(language).name}, ${minify ? 'squeezed flat' : 'laid out'}`
-    + `${change || ` - ${out.split('\n').length - 1} lines, ${humanBytes(after)}`}`,
-    `formatted.${language}`);
+
+  // Two sentences nested rather than one built by adding clauses: what
+  // was read, and then what came of it. Which mark joins them is the
+  // phrase's business.
+  const what = phrase(minify ? 'note.squeezed' : 'note.laid',
+    { name: languageById(language).name });
+  const note = minify && before > 0
+    ? phrase('note.smaller', {
+      what,
+      before: humanBytes(before),
+      after: humanBytes(after),
+      percent: Math.round((1 - after / before) * 100),
+    })
+    : phrase('note.lines', {
+      what,
+      lines: out.split('\n').length - 1,
+      size: humanBytes(after),
+    });
+
+  show(out, note, `formatted.${language}`);
 }
 
 function runConvert(text) {
@@ -237,8 +248,11 @@ function runConvert(text) {
     sortKeys: el.sortKeys.checked,
     root: el.rootName.value.trim(),
   });
-  show(out, `${conversion.name} - ${out.split('\n').length - 1} lines, ${humanBytes(byteLength(out))}`,
-    `converted.${conversion.output}`);
+  show(out, phrase('note.converted', {
+    name: phrase(conversion.name),
+    lines: out.split('\n').length - 1,
+    size: humanBytes(byteLength(out)),
+  }), `converted.${conversion.output}`);
 }
 
 /* -------------------------------------------------------------- the result */
@@ -270,7 +284,7 @@ el.copy.addEventListener('click', async () => {
   if (!result) return;
   try {
     await navigator.clipboard.writeText(result.text);
-    el.copy.textContent = 'Copied';
+    el.copy.textContent = phrase('copy.copied');
   } catch {
     // Clipboard access can be refused outright, and there is nothing to fix.
     // Selecting the block is a route that always works.
@@ -279,9 +293,9 @@ el.copy.addEventListener('click', async () => {
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
-    el.copy.textContent = 'Selected - press Ctrl+C';
+    el.copy.textContent = phrase('copy.selected');
   }
-  setTimeout(() => { el.copy.textContent = 'Copy'; }, 2500);
+  setTimeout(() => { el.copy.textContent = phrase('copy.copy'); }, 2500);
 });
 
 function clearResult() {
@@ -293,10 +307,36 @@ function clearResult() {
   downloadUrl = null;
 }
 
+/**
+ * Whatever went wrong, as a sentence.
+ *
+ * A ParseError carries a phrase key, the blanks that fill it, and the line and
+ * column it stopped at; those two numbers are a sentence of their own and are
+ * put around the reason here rather than inside every parser. A blank can be a
+ * {key, values} pair in its own right - `describe()` hands one back for the
+ * character it found - so one level of nesting is resolved on the way in.
+ *
+ * Anything else is the platform talking, and phrase() hands back what it
+ * cannot find, so it still reads as itself.
+ */
+function say(error) {
+  const fill = (values = {}) => Object.fromEntries(Object.entries(values)
+    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
+
+  if (error?.name === 'ParseError') {
+    return phrase('parse.at', {
+      reason: phrase(error.reason, fill(error.values)),
+      line: error.line,
+      column: error.column,
+    });
+  }
+  return error?.message ? phrase(error.message, fill(error.values)) : String(error);
+}
+
 function showError(message) {
   el.error.textContent = message;
   el.error.hidden = false;
-  el.resultNote.textContent = 'Nothing came out.';
+  el.resultNote.textContent = phrase('out.empty');
 }
 
 function clearError() {
@@ -309,9 +349,9 @@ function clearError() {
 const indentString = () => (el.indent.value === 'tab' ? '\t' : ' '.repeat(Number(el.indent.value)));
 
 function humanBytes(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  if (bytes < 1024) return phrase('size.bytes', { n: bytes });
+  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(1) });
+  return phrase('size.mb', { n: (bytes / (1024 * 1024)).toFixed(2) });
 }
 
 /* ------------------------------------------------- privacy panel + offline */

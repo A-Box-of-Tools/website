@@ -138,6 +138,98 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (पंक्ति {line}, कॉलम {column})</span>
+    <span data-phrase="char.end">पाठ का अंत</span>
+    <span data-phrase="char.newline">एक पंक्ति-विराम</span>
+    <span data-phrase="char.tab">एक टैब</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="json.trailing">अनपेक्षित: मान के अंत के बाद {found}</span>
+    <span data-phrase="json.early">पाठ समय से पहले ख़त्म हो गया</span>
+    <span data-phrase="json.keystring">कुंजी को दोहरे उद्धरण चिह्नों वाली स्ट्रिंग होना चाहिए, और यह {found} है</span>
+    <span data-phrase="json.colon">कुंजी के बाद कोलन की उम्मीद थी, मिला {found}</span>
+    <span data-phrase="json.unexpected">अनपेक्षित: {found}</span>
+    <span data-phrase="json.commabrace">अल्पविराम या बंद करने वाला मझला कोष्ठक चाहिए था, मिला {found}</span>
+    <span data-phrase="json.commabracket">अल्पविराम या बंद करने वाला वर्ग कोष्ठक चाहिए था, मिला {found}</span>
+    <span data-phrase="json.object">यह ऑब्जेक्ट कभी बंद ही नहीं होता</span>
+    <span data-phrase="json.array">यह ऐरे कभी बंद ही नहीं होता</span>
+    <span data-phrase="json.string">यह स्ट्रिंग कभी बंद ही नहीं होती</span>
+    <span data-phrase="json.hex">\u के बाद चार हेक्साडेसिमल अंक आने चाहिए</span>
+    <span data-phrase="json.escape">\{next} ऐसा एस्केप नहीं जिसे JSON जानता हो</span>
+    <span data-phrase="json.control">स्ट्रिंग के भीतर एक कच्चा कंट्रोल कैरेक्टर &mdash; उसे एस्केप की तरह लिखिए</span>
+    <span data-phrase="json.number">यह ऐसी संख्या नहीं जिसकी JSON इजाज़त देता हो</span>
+    <span data-phrase="css.comment">यह टिप्पणी कभी बंद ही नहीं होती</span>
+    <span data-phrase="css.brace">कोई ब्लॉक खुला नहीं और बंद करने वाला मझला कोष्ठक है</span>
+    <span data-phrase="css.block">यह ब्लॉक कभी बंद ही नहीं होता</span>
+    <span data-phrase="css.string">यह स्ट्रिंग कभी बंद ही नहीं होती</span>
+    <span data-phrase="css.bracket">यह कोष्ठक कभी बंद ही नहीं होता</span>
+    <span data-phrase="css.declaration">&laquo;{statement}&raquo; कोई घोषणा नहीं &mdash; इसमें कोलन है ही नहीं</span>
+    <span data-phrase="xml.comment">यह टिप्पणी कभी बंद ही नहीं होती</span>
+    <span data-phrase="xml.cdata">यह CDATA खंड कभी बंद ही नहीं होता</span>
+    <span data-phrase="xml.declaration">यह घोषणा कभी बंद ही नहीं होती</span>
+    <span data-phrase="xml.closing">यह बंद करने वाला टैग कभी पूरा ही नहीं होता</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; कभी बंद ही नहीं होता</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; ऐसा टैग बंद करता है जो कभी खुला ही नहीं था</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt; एक तत्व बंद करता है जबकि &lt;{open}&gt; अब भी खुला है</span>
+    <span data-phrase="xml.inside">अनपेक्षित: &lt;{name}&gt; के भीतर &laquo;{ch}&raquo;</span>
+    <span data-phrase="xml.tagname">टैग का नाम किसी अक्षर से शुरू होना चाहिए</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; कभी पूरा ही नहीं होता</span>
+    <span data-phrase="xml.attrvalue">&laquo;{name}&raquo; विशेषता का कोई मान नहीं, और XML इसकी इजाज़त नहीं देता</span>
+    <span data-phrase="xml.attrstring">इस विशेषता का मान कभी बंद ही नहीं होता</span>
+    <span data-phrase="xml.attrquote">XML में विशेषता का मान उद्धरण चिह्नों में होना चाहिए</span>
+    <span data-phrase="yaml.dedent">यह पंक्ति उस ब्लॉक से कम हाशिये पर है जिसमें वह है</span>
+    <span data-phrase="yaml.documents">इस फ़ाइल में एक से ज़्यादा दस्तावेज़ हैं। उन्हें एक-एक करके बदलिए।</span>
+    <span data-phrase="yaml.indent">यह पंक्ति ऊपर वाली कुंजी से ज़्यादा हाशिये पर है</span>
+    <span data-phrase="yaml.keyvalue">यहाँ &laquo;key: value&raquo; की उम्मीद थी</span>
+    <span data-phrase="yaml.aliases">उपनाम (*name) समर्थित नहीं &mdash; JSON के पास &laquo;वही नोड दो बार&raquo; कहने का
+      कोई तरीक़ा ही नहीं</span>
+    <span data-phrase="yaml.tags">टैग (!name) समर्थित नहीं &mdash; प्रकार का अंदाज़ा लगाना पड़ता</span>
+    <span data-phrase="yaml.complexkey">यहाँ &laquo;?&raquo; कुंजी समर्थित नहीं</span>
+    <span data-phrase="yaml.blockscalar">&laquo;{header}&raquo; ऐसा ब्लॉक स्केलर नहीं जिसे यह पढ़ता हो</span>
+    <span data-phrase="yaml.afterquote">बंद करने वाले उद्धरण चिह्न के बाद और पाठ है</span>
+    <span data-phrase="yaml.anchors">एंकर (&amp;name) समर्थित नहीं &mdash; JSON के पास &laquo;वही नोड दो बार&raquo; कहने
+      का कोई तरीक़ा ही नहीं</span>
+    <span data-phrase="yaml.hex">\{next} के बाद {width} हेक्साडेसिमल अंक चाहिए</span>
+    <span data-phrase="yaml.escape">\{next} ऐसा एस्केप नहीं जिसे यह पढ़ता हो</span>
+    <span data-phrase="yaml.quoted">उद्धरण चिह्नों वाली यह स्ट्रिंग कभी बंद ही नहीं होती</span>
+    <span data-phrase="yaml.afterflow">फ़्लो संग्रह के अंत के बाद और पाठ है</span>
+    <span data-phrase="yaml.flowearly">फ़्लो संग्रह समय से पहले ख़त्म हो जाता है</span>
+    <span data-phrase="yaml.flowseq">इस फ़्लो अनुक्रम में अल्पविराम या बंद करने वाला वर्ग कोष्ठक चाहिए था</span>
+    <span data-phrase="yaml.flowkey">इस फ़्लो मैपिंग में कुंजी के बाद कोलन चाहिए था</span>
+    <span data-phrase="yaml.flowmap">इस फ़्लो मैपिंग में अल्पविराम या बंद करने वाला मझला कोष्ठक चाहिए था</span>
+    <span data-phrase="convert.json-yaml.name">JSON से YAML</span>
+    <span data-phrase="convert.yaml-json.name">YAML से JSON</span>
+    <span data-phrase="convert.json-xml.name">JSON से XML</span>
+    <span data-phrase="convert.xml-json.name">XML से JSON</span>
+    <span data-phrase="convert.json-yaml">कुछ नहीं खोता: हर JSON दस्तावेज़ पहले से ही एक YAML दस्तावेज़ है। स्ट्रिंग सिर्फ़
+      वहीं उद्धरण चिह्नों में रखी जाती है जहाँ उन्हें खुला छोड़ने से उनका मतलब बदल जाता।</span>
+    <span data-phrase="convert.yaml-json">टिप्पणियाँ खो जाती हैं, क्योंकि JSON के पास उन्हें रखने की जगह ही नहीं। एंकर, उपनाम
+      और टैग अंदाज़े से भरे जाने के बजाय बदलाव को ही रोक देते हैं।</span>
+    <span data-phrase="convert.json-xml">ऐरे एक दोहराया हुआ तत्व बन जाता है, और वापस पढ़ा जाने वाला यही एक रूप है। ख़ाली
+      ऑब्जेक्ट और ख़ाली स्ट्रिंग, दोनों ख़ाली तत्व बनकर निकलते हैं।</span>
+    <span data-phrase="convert.xml-json">विशेषताएँ @ वाले नाम के सदस्य बन जाती हैं, तत्व का अपना पाठ वहाँ #text बन जाता है
+      जहाँ उसे जगह बाँटनी पड़े, और हर मान स्ट्रिंग ही रहता है &mdash; XML ने कभी कहा ही
+      नहीं कि कौन-से संख्याएँ थीं।</span>
+    <span data-phrase="format.unknown">{language} ऐसी भाषा नहीं जिसे यह सजाता हो।</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">फ़ाइल पढ़ी जा रही है…</span>
+    <span data-phrase="read.failed">वह फ़ाइल पढ़ी नहीं जा सकी: {reason}</span>
+    <span data-phrase="out.nothing">अभी कुछ नहीं।</span>
+    <span data-phrase="out.empty">कुछ निकला ही नहीं।</span>
+    <span data-phrase="style.noyaml">YAML का ऐसा दबा हुआ रूप है ही नहीं जिसे लिखना सार्थक हो: छोटा रूप फ़्लो शैली है, और
+      वह पढ़ी ही नहीं जाती।</span>
+    <span data-phrase="detect.unknown">यह न JSON लगता है, न XML, न HTML, न CSS, न YAML। अगर यह इनमें से कोई है तो मेन्यू से
+      भाषा चुन लीजिए।</span>
+    <span data-phrase="detect.read">{name} की तरह पढ़ा गया।</span>
+    <span data-phrase="note.squeezed">{name}, दबाकर सपाट किया</span>
+    <span data-phrase="note.laid">{name}, सजाकर रखा</span>
+    <span data-phrase="note.smaller">{what} &mdash; {before} से घटकर {after}, {percent}% कम</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} पंक्तियाँ, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} पंक्तियाँ, {size}</span>
+    <span data-phrase="copy.copy">कॉपी</span>
+    <span data-phrase="copy.copied">कॉपी हो गया</span>
+    <span data-phrase="copy.selected">चुन लिया &mdash; Ctrl+C दबाइए</span>
     <span data-phrase="net.clean">आपका टेक्स्ट कहीं नहीं गया। {total} फ़ाइलें
       लोड हुईं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

@@ -137,6 +137,100 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (ligne {line}, colonne {column})</span>
+    <span data-phrase="char.end">la fin du texte</span>
+    <span data-phrase="char.newline">un saut de ligne</span>
+    <span data-phrase="char.tab">une tabulation</span>
+    <span data-phrase="char.is">&laquo; {ch} &raquo;</span>
+    <span data-phrase="json.trailing">Inattendu : {found} après la fin de la valeur</span>
+    <span data-phrase="json.early">Le texte se termine trop tôt</span>
+    <span data-phrase="json.keystring">Une clé doit être une chaîne entre guillemets doubles, et ceci est {found}</span>
+    <span data-phrase="json.colon">Deux-points attendus après la clé, trouvé {found}</span>
+    <span data-phrase="json.unexpected">Inattendu : {found}</span>
+    <span data-phrase="json.commabrace">Virgule ou accolade fermante attendue, trouvé {found}</span>
+    <span data-phrase="json.commabracket">Virgule ou crochet fermant attendu, trouvé {found}</span>
+    <span data-phrase="json.object">Cet objet n'est jamais fermé</span>
+    <span data-phrase="json.array">Ce tableau n'est jamais fermé</span>
+    <span data-phrase="json.string">Cette chaîne n'est jamais fermée</span>
+    <span data-phrase="json.hex">\u doit être suivi de quatre chiffres hexadécimaux</span>
+    <span data-phrase="json.escape">\{next} n'est pas une séquence d'échappement que JSON connaisse</span>
+    <span data-phrase="json.control">Un caractère de contrôle brut dans une chaîne &mdash; écrivez-le comme une séquence
+      d'échappement</span>
+    <span data-phrase="json.number">Ce n'est pas un nombre que JSON autorise</span>
+    <span data-phrase="css.comment">Ce commentaire n'est jamais fermé</span>
+    <span data-phrase="css.brace">Une accolade fermante sans bloc ouvert</span>
+    <span data-phrase="css.block">Ce bloc n'est jamais fermé</span>
+    <span data-phrase="css.string">Cette chaîne n'est jamais fermée</span>
+    <span data-phrase="css.bracket">Cette parenthèse n'est jamais fermée</span>
+    <span data-phrase="css.declaration">&laquo; {statement} &raquo; n'est pas une déclaration &mdash; il n'y a pas de
+      deux-points dedans</span>
+    <span data-phrase="xml.comment">Ce commentaire n'est jamais fermé</span>
+    <span data-phrase="xml.cdata">Cette section CDATA n'est jamais fermée</span>
+    <span data-phrase="xml.declaration">Cette déclaration n'est jamais fermée</span>
+    <span data-phrase="xml.closing">Cette balise fermante n'est jamais terminée</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; n'est jamais fermée</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; ferme une balise qui n'a jamais été ouverte</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt; ferme un élément alors que &lt;{open}&gt; est encore ouvert</span>
+    <span data-phrase="xml.inside">Inattendu : &laquo; {ch} &raquo; dans &lt;{name}&gt;</span>
+    <span data-phrase="xml.tagname">Un nom de balise doit commencer par une lettre</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; n'est jamais terminée</span>
+    <span data-phrase="xml.attrvalue">L'attribut &laquo; {name} &raquo; n'a pas de valeur, ce que XML n'autorise pas</span>
+    <span data-phrase="xml.attrstring">Cette valeur d'attribut n'est jamais fermée</span>
+    <span data-phrase="xml.attrquote">Une valeur d'attribut doit être entre guillemets en XML</span>
+    <span data-phrase="yaml.dedent">Cette ligne est moins indentée que le bloc où elle est</span>
+    <span data-phrase="yaml.documents">Plus d'un document dans ce fichier. Convertissez-les un par un.</span>
+    <span data-phrase="yaml.indent">Cette ligne est plus indentée que la clé au-dessus</span>
+    <span data-phrase="yaml.keyvalue">&laquo; key: value &raquo; attendu ici</span>
+    <span data-phrase="yaml.aliases">Les alias (*name) ne sont pas pris en charge &mdash; JSON n'a aucun moyen de dire
+      &laquo; le même nœud deux fois &raquo;</span>
+    <span data-phrase="yaml.tags">Les tags (!name) ne sont pas pris en charge &mdash; le type devrait être deviné</span>
+    <span data-phrase="yaml.complexkey">Une clé &laquo; ? &raquo; n'est pas prise en charge ici</span>
+    <span data-phrase="yaml.blockscalar">&laquo; {header} &raquo; n'est pas un scalaire de bloc que ceci lise</span>
+    <span data-phrase="yaml.afterquote">Il y a du texte après le guillemet fermant</span>
+    <span data-phrase="yaml.anchors">Les ancres (&amp;name) ne sont pas prises en charge &mdash; JSON n'a aucun moyen de
+      dire &laquo; le même nœud deux fois &raquo;</span>
+    <span data-phrase="yaml.hex">\{next} demande {width} chiffres hexadécimaux après lui</span>
+    <span data-phrase="yaml.escape">\{next} n'est pas une séquence d'échappement que ceci lise</span>
+    <span data-phrase="yaml.quoted">Cette chaîne entre guillemets n'est jamais fermée</span>
+    <span data-phrase="yaml.afterflow">Il y a du texte après la fin de la collection en flow</span>
+    <span data-phrase="yaml.flowearly">La collection en flow se termine trop tôt</span>
+    <span data-phrase="yaml.flowseq">Virgule ou crochet fermant attendu dans cette séquence en flow</span>
+    <span data-phrase="yaml.flowkey">Deux-points attendus après une clé dans ce mapping en flow</span>
+    <span data-phrase="yaml.flowmap">Virgule ou accolade fermante attendue dans ce mapping en flow</span>
+    <span data-phrase="convert.json-yaml.name">JSON vers YAML</span>
+    <span data-phrase="convert.yaml-json.name">YAML vers JSON</span>
+    <span data-phrase="convert.json-xml.name">JSON vers XML</span>
+    <span data-phrase="convert.xml-json.name">XML vers JSON</span>
+    <span data-phrase="convert.json-yaml">Rien ne se perd : tout document JSON est déjà un document YAML. Les chaînes ne sont
+      mises entre guillemets que là où les laisser nues changerait ce qu'elles disent.</span>
+    <span data-phrase="convert.yaml-json">Les commentaires se perdent, parce que JSON n'a nulle part où en mettre un. Les
+      ancres, les alias et les tags arrêtent la conversion plutôt que d'être devinés.</span>
+    <span data-phrase="convert.json-xml">Un tableau devient un élément répété, ce qui est la seule forme qui se relise. Un
+      objet vide et une chaîne vide sortent tous deux comme un élément vide.</span>
+    <span data-phrase="convert.xml-json">Les attributs deviennent des membres nommés avec un @, le texte propre d'un élément
+      devient #text là où il doit partager la place, et toute valeur reste une chaîne
+      &mdash; XML n'a jamais dit lesquelles étaient des nombres.</span>
+    <span data-phrase="format.unknown">{language} n'est pas un langage que ceci formate.</span>
+    <span data-phrase="size.bytes">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="read.reading">Lecture du fichier…</span>
+    <span data-phrase="read.failed">Ce fichier n'a pas pu être lu : {reason}</span>
+    <span data-phrase="out.nothing">Rien pour le moment.</span>
+    <span data-phrase="out.empty">Rien n'est sorti.</span>
+    <span data-phrase="style.noyaml">YAML n'a pas de forme compactée qui vaille la peine d'être écrite : la courte est le
+      style flow, qui est illisible.</span>
+    <span data-phrase="detect.unknown">Cela ne ressemble ni à du JSON, ni à du XML, ni à du HTML, ni à du CSS, ni à du
+      YAML. Choisissez le langage dans le menu si c'en est un.</span>
+    <span data-phrase="detect.read">Lu comme du {name}.</span>
+    <span data-phrase="note.squeezed">{name}, compacté à plat</span>
+    <span data-phrase="note.laid">{name}, mis en forme</span>
+    <span data-phrase="note.smaller">{what} &mdash; de {before} à {after}, {percent}% en moins</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} lignes, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} lignes, {size}</span>
+    <span data-phrase="copy.copy">Copier</span>
+    <span data-phrase="copy.copied">Copié</span>
+    <span data-phrase="copy.selected">Sélectionné &mdash; appuyez sur Ctrl+C</span>
     <span data-phrase="net.clean">votre texte n'est allé nulle part. {total}
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

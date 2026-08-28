@@ -59,7 +59,7 @@ function readBlock(state, top) {
 
     if (ch === '/' && text[state.at + 1] === '*') {
       const end = text.indexOf('*/', state.at + 2);
-      if (end < 0) throw new ParseError('This comment is never closed', state.at, text);
+      if (end < 0) throw new ParseError('css.comment', state.at, text);
       // A comment between declarations is a node of its own; one in the middle
       // of a selector or a value is part of it and stays where it was written.
       if (buffer.trim() === '') {
@@ -97,7 +97,7 @@ function readBlock(state, top) {
     }
 
     if (ch === '}') {
-      if (top) throw new ParseError('A closing brace with no block open', state.at, text);
+      if (top) throw new ParseError('css.brace', state.at, text);
       state.at += 1;
       flushStatement(state.at);
       return nodes;
@@ -115,7 +115,7 @@ function readBlock(state, top) {
     state.at += 1;
   }
 
-  if (!top) throw new ParseError('This block is never closed', text.length, text);
+  if (!top) throw new ParseError('css.block', text.length, text);
   flushStatement(state.at);
   return nodes;
 }
@@ -134,7 +134,7 @@ function readString(state) {
     }
     state.at += 1;
   }
-  throw new ParseError('This string is never closed', start, text);
+  throw new ParseError('css.string', start, text);
 }
 
 function readBrackets(state) {
@@ -153,7 +153,7 @@ function readBrackets(state) {
     }
     state.at += 1;
   }
-  throw new ParseError('This bracket is never closed', start, text);
+  throw new ParseError('css.bracket', start, text);
 }
 
 /**
@@ -174,9 +174,7 @@ function splitDeclaration(statement, start, text, end) {
     }
     state.at += 1;
   }
-  throw new ParseError(
-    `"${statement}" is not a declaration - there is no colon in it`,
-    Math.min(start, Math.max(0, end - 1)), text);
+  throw new ParseError('css.declaration', Math.min(start, Math.max(0, end - 1)), text, { statement });
 }
 
 /* ------------------------------------------------------------------- write */

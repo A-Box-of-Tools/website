@@ -136,6 +136,96 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (السطر {line}، العمود {column})</span>
+    <span data-phrase="char.end">نهاية النص</span>
+    <span data-phrase="char.newline">فاصل سطر</span>
+    <span data-phrase="char.tab">مسافة جدولة</span>
+    <span data-phrase="char.is">«{ch}»</span>
+    <span data-phrase="json.trailing">غير متوقع: {found} بعد نهاية القيمة</span>
+    <span data-phrase="json.early">انتهى النص قبل أوانه</span>
+    <span data-phrase="json.keystring">المفتاح لا بد أن يكون نصاً بين علامتي اقتباس مزدوجتين، وهذا {found}</span>
+    <span data-phrase="json.colon">كانت النقطتان متوقعتين بعد المفتاح، ووُجد {found}</span>
+    <span data-phrase="json.unexpected">غير متوقع: {found}</span>
+    <span data-phrase="json.commabrace">كانت الفاصلة أو القوس المعقوف المُغلِق متوقعاً، ووُجد {found}</span>
+    <span data-phrase="json.commabracket">كانت الفاصلة أو القوس المربع المُغلِق متوقعاً، ووُجد {found}</span>
+    <span data-phrase="json.object">هذا الكائن لا يُغلَق أبداً</span>
+    <span data-phrase="json.array">هذه المصفوفة لا تُغلَق أبداً</span>
+    <span data-phrase="json.string">هذا النص لا يُغلَق أبداً</span>
+    <span data-phrase="json.hex">لا بد أن تتبع \u أربعة أرقام ست عشرية</span>
+    <span data-phrase="json.escape">\{next} ليست هروباً يعرفه JSON</span>
+    <span data-phrase="json.control">محرف تحكّم خام داخل نص &mdash; اكتبه على هيئة هروب</span>
+    <span data-phrase="json.number">هذا ليس عدداً يسمح به JSON</span>
+    <span data-phrase="css.comment">هذا التعليق لا يُغلَق أبداً</span>
+    <span data-phrase="css.brace">قوس معقوف مُغلِق دون كتلة مفتوحة</span>
+    <span data-phrase="css.block">هذه الكتلة لا تُغلَق أبداً</span>
+    <span data-phrase="css.string">هذا النص لا يُغلَق أبداً</span>
+    <span data-phrase="css.bracket">هذا القوس لا يُغلَق أبداً</span>
+    <span data-phrase="css.declaration">«{statement}» ليست تصريحاً &mdash; لا نقطتين فيها</span>
+    <span data-phrase="xml.comment">هذا التعليق لا يُغلَق أبداً</span>
+    <span data-phrase="xml.cdata">قسم CDATA هذا لا يُغلَق أبداً</span>
+    <span data-phrase="xml.declaration">هذا التصريح لا يُغلَق أبداً</span>
+    <span data-phrase="xml.closing">وسم الإغلاق هذا لا يُنهى أبداً</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; لا يُغلَق أبداً</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; يغلق وسماً لم يُفتح قط</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt; يغلق عنصراً بينما &lt;{open}&gt; ما زال مفتوحاً</span>
+    <span data-phrase="xml.inside">غير متوقع: «{ch}» داخل &lt;{name}&gt;</span>
+    <span data-phrase="xml.tagname">اسم الوسم لا بد أن يبدأ بحرف</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; لا يُنهى أبداً</span>
+    <span data-phrase="xml.attrvalue">السمة «{name}» بلا قيمة، وXML لا يسمح بذلك</span>
+    <span data-phrase="xml.attrstring">قيمة هذه السمة لا تُغلَق أبداً</span>
+    <span data-phrase="xml.attrquote">قيمة السمة في XML لا بد أن تكون بين علامتي اقتباس</span>
+    <span data-phrase="yaml.dedent">هذا السطر مُزاح أقل من الكتلة التي هو فيها</span>
+    <span data-phrase="yaml.documents">في هذا الملف أكثر من مستند واحد. حوّلها واحداً واحداً.</span>
+    <span data-phrase="yaml.indent">هذا السطر مُزاح أكثر من المفتاح الذي فوقه</span>
+    <span data-phrase="yaml.keyvalue">كان المتوقع هنا «key: value»</span>
+    <span data-phrase="yaml.aliases">الأسماء البديلة (*name) غير مدعومة &mdash; وليس لدى JSON طريقة ليقول «العقدة نفسها
+      مرتين»</span>
+    <span data-phrase="yaml.tags">الوسوم (!name) غير مدعومة &mdash; إذ كان لا بد من تخمين النوع</span>
+    <span data-phrase="yaml.complexkey">المفتاح «؟» غير مدعوم هنا</span>
+    <span data-phrase="yaml.blockscalar">«{header}» ليست قيمة كتلة يقرؤها هذا</span>
+    <span data-phrase="yaml.afterquote">ثمة نص بعد علامة الاقتباس المُغلِقة</span>
+    <span data-phrase="yaml.anchors">المراسي (&amp;name) غير مدعومة &mdash; وليس لدى JSON طريقة ليقول «العقدة نفسها
+      مرتين»</span>
+    <span data-phrase="yaml.hex">\{next} تحتاج إلى {width} من الأرقام الست عشرية بعدها</span>
+    <span data-phrase="yaml.escape">\{next} ليست هروباً يقرؤه هذا</span>
+    <span data-phrase="yaml.quoted">هذا النص المقتبس لا يُغلَق أبداً</span>
+    <span data-phrase="yaml.afterflow">ثمة نص بعد نهاية مجموعة التدفق</span>
+    <span data-phrase="yaml.flowearly">مجموعة التدفق تنتهي قبل أوانها</span>
+    <span data-phrase="yaml.flowseq">كانت الفاصلة أو القوس المربع المُغلِق متوقعاً في متتالية التدفق هذه</span>
+    <span data-phrase="yaml.flowkey">كانت النقطتان متوقعتين بعد مفتاح في خريطة التدفق هذه</span>
+    <span data-phrase="yaml.flowmap">كانت الفاصلة أو القوس المعقوف المُغلِق متوقعاً في خريطة التدفق هذه</span>
+    <span data-phrase="convert.json-yaml.name">من JSON إلى YAML</span>
+    <span data-phrase="convert.yaml-json.name">من YAML إلى JSON</span>
+    <span data-phrase="convert.json-xml.name">من JSON إلى XML</span>
+    <span data-phrase="convert.xml-json.name">من XML إلى JSON</span>
+    <span data-phrase="convert.json-yaml">لا يضيع شيء: فكل مستند JSON هو أصلاً مستند YAML. ولا تُوضع النصوص بين علامتي اقتباس
+      إلا حيث يغيّر تركها عاريةً ما تقوله.</span>
+    <span data-phrase="convert.yaml-json">تضيع التعليقات، لأن JSON ليس فيه مكان لواحد. أما المراسي والأسماء البديلة والوسوم
+      فتوقف التحويل بدل أن تُخمَّن.</span>
+    <span data-phrase="convert.json-xml">تصير المصفوفة عنصراً مكرراً، وهو الشكل الوحيد الذي يُقرأ رجوعاً. ويخرج الكائن الفارغ
+      والنص الفارغ كلاهما عنصراً فارغاً.</span>
+    <span data-phrase="convert.xml-json">تصير السمات أعضاءً مسمّاة بـ@، ويصير نصّ العنصر نفسه ‎#text‎ حيث يضطر إلى المشاركة،
+      وتبقى كل قيمة نصاً &mdash; فـXML لم يقل قط أيها كان عدداً.</span>
+    <span data-phrase="format.unknown">{language} ليست لغة تنسّقها هذه الأداة.</span>
+    <span data-phrase="size.bytes">{n} بايت</span>
+    <span data-phrase="size.kb">{n} ك.بايت</span>
+    <span data-phrase="size.mb">{n} م.بايت</span>
+    <span data-phrase="read.reading">جارٍ قراءة الملف…</span>
+    <span data-phrase="read.failed">لم يمكن قراءة ذلك الملف: {reason}</span>
+    <span data-phrase="out.nothing">لا شيء بعد.</span>
+    <span data-phrase="out.empty">لم يخرج شيء.</span>
+    <span data-phrase="style.noyaml">ليس لـYAML صورة مضغوطة تستحق الكتابة: فالقصيرة هي نمط التدفق، وهو غير مقروء.</span>
+    <span data-phrase="detect.unknown">هذا لا يبدو JSON ولا XML ولا HTML ولا CSS ولا YAML. اختر اللغة من القائمة إن كان
+      واحداً منها.</span>
+    <span data-phrase="detect.read">قُرئ على أنه {name}.</span>
+    <span data-phrase="note.squeezed">{name}، مضغوط</span>
+    <span data-phrase="note.laid">{name}، منسَّق</span>
+    <span data-phrase="note.smaller">{what} &mdash; من {before} إلى {after}، أقل بنسبة {percent}%</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} سطراً، {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} سطراً، {size}</span>
+    <span data-phrase="copy.copy">انسخ</span>
+    <span data-phrase="copy.copied">نُسِخ</span>
+    <span data-phrase="copy.selected">حُدِّد &mdash; اضغط Ctrl+C</span>
     <span data-phrase="net.clean">نصّك لم يذهب إلى أي مكان. {total} ملفاً
       حُمِّلت. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

@@ -200,34 +200,40 @@ function unescapeXml(text) {
 
 /**
  * The conversions the page offers. One list again, so the menu and the work
- * cannot disagree, and each one carries the sentence that says what it costs.
+ * cannot disagree, and each one carries the key of the sentence that says
+ * what it costs.
+ *
+ * The key rather than the sentence: this file is copied byte for byte into
+ * every language, and `note` is read out on the page. `name` stays as it is,
+ * `name` is a key as well: it is what the menu says, and "to" is an
+ * English word.
  */
 export const CONVERSIONS = [
   {
     id: 'json-yaml',
-    name: 'JSON to YAML',
-    note: 'Nothing is lost: every JSON document is already a YAML document. Strings are only quoted where leaving them bare would change what they say.',
+    name: 'convert.json-yaml.name',
+    note: 'convert.json-yaml',
     run: (text, options) => jsonToYaml(text, { indent: options.spaces }),
     output: 'yaml',
   },
   {
     id: 'yaml-json',
-    name: 'YAML to JSON',
-    note: 'Comments are lost, because JSON has nowhere to put one. Anchors, aliases and tags stop the conversion rather than being guessed at.',
+    name: 'convert.yaml-json.name',
+    note: 'convert.yaml-json',
     run: (text, options) => yamlToJson(text, { indent: options.indent, sortKeys: options.sortKeys }),
     output: 'json',
   },
   {
     id: 'json-xml',
-    name: 'JSON to XML',
-    note: 'An array becomes a repeated element, which is the only shape that reads back. An empty object and an empty string both come out as an empty element.',
+    name: 'convert.json-xml.name',
+    note: 'convert.json-xml',
     run: (text, options) => jsonToXml(text, { indent: options.indent, root: options.root || 'root' }),
     output: 'xml',
   },
   {
     id: 'xml-json',
-    name: 'XML to JSON',
-    note: 'Attributes become members named with an @, an element\'s own text becomes #text where it has to share, and every value stays a string - XML never said which were numbers.',
+    name: 'convert.xml-json.name',
+    note: 'convert.xml-json',
     run: (text, options) => xmlToJson(text, { indent: options.indent }),
     output: 'json',
   },
