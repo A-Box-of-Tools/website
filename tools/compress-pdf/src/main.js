@@ -150,7 +150,32 @@ function reset() {
   el.loadError.hidden = true;
   el.loadNote.hidden = true;
   el.runError.hidden = true;
+  emptyInventory();
   releaseDownload();
+}
+
+/**
+ * The inventory with no file behind it.
+ *
+ * This card is shown before a file is chosen now, so it has an empty state
+ * for the first time and needs one on the way out as well: clearing the file
+ * used to hide the card and the numbers went with it. Left alone, the last
+ * document's page counts and byte shares sat there under a picker that had
+ * been emptied, which is a strange thing to show anybody and a stranger one
+ * on a tool whose promise is that the file goes no further than the page.
+ *
+ * The bar is hidden rather than left empty. It is a role="img" named by the
+ * list beside it, so with the list empty it is a picture with no description
+ * - which is what a screen reader is told, and what an accessibility scan
+ * reports.
+ */
+function emptyInventory() {
+  el.verdict.textContent = '';
+  el.verdict.className = 'verdict';
+  el.breakdownBar.replaceChildren();
+  el.breakdownBar.hidden = true;
+  el.breakdownList.replaceChildren();
+  el.inventoryNotes.textContent = '';
 }
 
 function showLoadError(text) {
@@ -183,6 +208,7 @@ function renderInventory(inventory) {
   el.verdict.className = `verdict ${said.tone}`;
 
   el.breakdownBar.replaceChildren();
+  el.breakdownBar.hidden = false;
   el.breakdownList.replaceChildren();
 
   for (const group of inventory.groups) {
