@@ -159,6 +159,86 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Lettura del file&hellip;</span>
+    <span data-phrase="step.checking">Verifica che questo browser sappia
+      decodificarlo&hellip;</span>
+    <span data-phrase="nocodec.file">Questo browser non sa codificare video, quindi non
+      può scrivere un timelapse. Un Chrome, Edge, Safari o Firefox recente sì.</span>
+    <span data-phrase="nocodec.page">Questo browser non sa codificare video, quindi non
+      ha niente con cui scrivere un timelapse. Chrome, Edge, Safari 16.4 o Firefox 133 e
+      più recenti possono.</span>
+    <span data-phrase="open.nolength">Questo file non dice quanto dura, quindi non
+      c&rsquo;è niente da cui ricavare una velocità.</span>
+    <span data-phrase="open.notopened">Quel file non si è potuto aprire.</span>
+    <span data-phrase="preview.still">Questo browser non riproduce questo file, perciò
+      il fotogramma qui sotto è stato decodificato per mostrare che cosa è stato scelto.
+      Il timelapse in sé non ne risente.</span>
+    <span data-phrase="preview.none">Questo browser non riproduce questo file, e nemmeno
+      si è potuto leggerlo un fotogramma per volta. {why}</span>
+    <span data-phrase="decode.noframes">Il file non contiene fotogrammi.</span>
+    <span data-phrase="decode.nodraw">Dal decodificatore non è tornato alcun fotogramma.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} fps</span>
+    <span data-phrase="src.fps.player">quello che dichiara il lettore</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), ruotato di {degrees} gradi</span>
+    <span data-phrase="src.byplayer">letto dal lettore del browser</span>
+    <span data-phrase="plan.interval">Un fotogramma ogni {every} dell&rsquo;originale,
+      riprodotto a {fps} fotogrammi al secondo.</span>
+    <span data-phrase="n.frame.one">{n} fotogramma</span>
+    <span data-phrase="n.frame.many">{n} fotogrammi</span>
+    <span data-phrase="size.unchanged">{width} x {height} (invariato)</span>
+    <span data-phrase="size.from">{width} x {height} (da {fromWidth} x {fromHeight})</span>
+    <span data-phrase="plan.about">circa {size}</span>
+    <span data-phrase="plan.read">{read} dei {total} fotogrammi del file</span>
+    <span data-phrase="plan.seeks.one">{n} salto nel lettore</span>
+    <span data-phrase="plan.seeks.many">{n} salti nel lettore</span>
+    <span data-phrase="plan.toofew.one">A questa velocità resta un solo fotogramma, che
+      è una foto e non un clip. Una velocità più bassa o una durata finale più lunga
+      risolve.</span>
+    <span data-phrase="plan.toofew.many">A questa velocità restano {n} fotogrammi, che è
+      una foto e non un clip. Una velocità più bassa o una durata finale più lunga
+      risolve.</span>
+    <span data-phrase="plan.repeats">Gli istanti sono più vicini fra loro di quanti
+      fotogrammi abbia questo file, quindi alcuni escono due volte. Non c&rsquo;è niente
+      di male, ma una cadenza più bassa farebbe lo stesso clip con meno fotogrammi.</span>
+    <span data-phrase="step.preparing">Preparazione&hellip;</span>
+    <span data-phrase="step.finishing">Conclusione&hellip;</span>
+    <span data-phrase="step.frame">Fotogramma {done} di {total} ({percent}%)</span>
+    <span data-phrase="encode.noh264">Questo browser non codifica H.264 a
+      {width}x{height}. Una dimensione più piccola funziona.</span>
+    <span data-phrase="encode.nothing">Da questo file non si è potuto decodificare
+      niente.</span>
+    <span data-phrase="play.died">Il lettore si è fermato dopo {done} fotogrammi su
+      {total}. {why} Convertire prima il clip in un MP4 comune (H.264) è la soluzione
+      affidabile.</span>
+    <span data-phrase="media.aborted">La lettura è stata interrotta.</span>
+    <span data-phrase="media.notread">Il file non si è potuto leggere dal disco.</span>
+    <span data-phrase="media.nodecode">Il browser non è riuscito a decodificare il video
+      che contiene.</span>
+    <span data-phrase="media.unsupported">Il browser non supporta questo formato o
+      questo codec.</span>
+    <span data-phrase="media.stopped">Il browser non è più riuscito a leggerlo.</span>
+    <span data-phrase="export.failed">Qualcosa è andato storto mentre si creava il
+      timelapse.</span>
+    <span data-phrase="mp4.noconfig">Il codificatore non ha fornito alcuna
+      configurazione di decodifica.</span>
+    <span data-phrase="mp4.noframes">Non è stato codificato alcun fotogramma.</span>
+    <span data-phrase="mp4.toobig">Il video supera il limite di 4 GB. Abbassare la
+      qualità, la risoluzione o la durata risolve.</span>
+    <span data-phrase="mp4.unstable">Errore interno: la dimensione dell&rsquo;indice MP4
+      non è rimasta stabile fra una passata e l&rsquo;altra.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.hours">{hours} h {minutes} min</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="unit.ms">{n} ms</span>
+    <span data-phrase="unit.s">{n} s</span>
+    <span data-phrase="unit.min">{n} min</span>
     <span data-phrase="read.midframe">Il file finisce a metà di un fotogramma.</span>
     <span data-phrase="read.avcshort">Il record di configurazione H.264 è troppo corto.</span>
     <span data-phrase="read.hevcshort">Il record di configurazione HEVC è troppo corto.</span>

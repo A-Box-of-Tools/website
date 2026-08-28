@@ -157,6 +157,79 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Reading the file&hellip;</span>
+    <span data-phrase="step.checking">Checking this browser can decode it&hellip;</span>
+    <span data-phrase="nocodec.file">This browser cannot encode video, so it cannot
+      write a time-lapse. A recent Chrome, Edge, Safari or Firefox will.</span>
+    <span data-phrase="nocodec.page">This browser cannot encode video, so it has nothing
+      to write a time-lapse with. Chrome, Edge, Safari 16.4 or Firefox 133 and newer
+      can.</span>
+    <span data-phrase="open.nolength">This file does not say how long it is, so there is
+      nothing to work a speed out from.</span>
+    <span data-phrase="open.notopened">That file could not be opened.</span>
+    <span data-phrase="preview.still">This browser will not play this file, so the frame
+      below was decoded to show you what you picked. The time-lapse itself is
+      unaffected.</span>
+    <span data-phrase="preview.none">This browser will not play this file, and it could
+      not be read a frame at a time either. {why}</span>
+    <span data-phrase="decode.noframes">The file has no frames in it.</span>
+    <span data-phrase="decode.nodraw">No frame came back from the decoder.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} fps</span>
+    <span data-phrase="src.fps.player">whatever the player reports</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), turned {degrees} degrees</span>
+    <span data-phrase="src.byplayer">read by the browser&rsquo;s own player</span>
+    <span data-phrase="plan.interval">One frame every {every} of the original, played
+      back at {fps} frames a second.</span>
+    <span data-phrase="n.frame.one">{n} frame</span>
+    <span data-phrase="n.frame.many">{n} frames</span>
+    <span data-phrase="size.unchanged">{width} x {height} (unchanged)</span>
+    <span data-phrase="size.from">{width} x {height} (from {fromWidth} x {fromHeight})</span>
+    <span data-phrase="plan.about">about {size}</span>
+    <span data-phrase="plan.read">{read} of the {total} frames in the file</span>
+    <span data-phrase="plan.seeks.one">{n} seek through the player</span>
+    <span data-phrase="plan.seeks.many">{n} seeks through the player</span>
+    <span data-phrase="plan.toofew.one">At this speed one frame is left, which is a
+      photograph rather than a clip. Slow it down, or ask for a longer finished length.</span>
+    <span data-phrase="plan.toofew.many">At this speed there are {n} frames left, which
+      is a photograph rather than a clip. Slow it down, or ask for a longer finished
+      length.</span>
+    <span data-phrase="plan.repeats">The instants are closer together than this file has
+      frames, so some of them come out twice. Nothing is wrong with that, but a lower
+      frame rate would make the same clip out of fewer frames.</span>
+    <span data-phrase="step.preparing">Preparing&hellip;</span>
+    <span data-phrase="step.finishing">Finishing up&hellip;</span>
+    <span data-phrase="step.frame">Frame {done} of {total} ({percent}%)</span>
+    <span data-phrase="encode.noh264">This browser will not encode H.264 at
+      {width}x{height}. Choose a smaller size.</span>
+    <span data-phrase="encode.nothing">Nothing could be decoded from this file.</span>
+    <span data-phrase="play.died">The player stopped after {done} of {total} frames.
+      {why} Converting the clip to an ordinary MP4 (H.264) first is the reliable fix.</span>
+    <span data-phrase="media.aborted">The read was aborted.</span>
+    <span data-phrase="media.notread">The file could not be read off the disk.</span>
+    <span data-phrase="media.nodecode">The browser could not decode the video in it.</span>
+    <span data-phrase="media.unsupported">The browser does not support this format or
+      codec.</span>
+    <span data-phrase="media.stopped">The browser stopped being able to read it.</span>
+    <span data-phrase="export.failed">Something went wrong while making the time-lapse.</span>
+    <span data-phrase="mp4.noconfig">The encoder produced no decoder configuration.</span>
+    <span data-phrase="mp4.noframes">No frames were encoded.</span>
+    <span data-phrase="mp4.toobig">The video is over the 4 GB limit. Lower the quality,
+      the resolution, or the length.</span>
+    <span data-phrase="mp4.unstable">Internal error: the size of the MP4 index was not
+      stable between passes.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.hours">{hours}h {minutes}m</span>
+    <span data-phrase="time.minutes">{minutes}m {seconds}s</span>
+    <span data-phrase="time.seconds">{n}s</span>
+    <span data-phrase="unit.ms">{n} ms</span>
+    <span data-phrase="unit.s">{n} s</span>
+    <span data-phrase="unit.min">{n} min</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>

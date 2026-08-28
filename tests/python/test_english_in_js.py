@@ -80,7 +80,7 @@ BASELINE = {
     'image-to-data-uri': 20,
     'image-to-ico': 6,
     'images-to-pdf': 26,
-    'images-to-video': 26,
+    'images-to-video': 21,
     'merge-pdf': 5,
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
@@ -97,7 +97,7 @@ BASELINE = {
     'split-gif': 5,
     'stack-images': 7,
     'svg-to-image': 27,
-    'timelapse-video': 34,
+    'timelapse-video': 0,
     # A filename template, a clock format, two CSS percentages and three class
     # names the timeline builds.
     'trim-audio': 7,

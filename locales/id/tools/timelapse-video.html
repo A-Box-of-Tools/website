@@ -167,6 +167,83 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Membaca berkasnya&hellip;</span>
+    <span data-phrase="step.checking">Memeriksa apakah browser ini bisa
+      mengawakodenya&hellip;</span>
+    <span data-phrase="nocodec.file">Browser ini tidak bisa mengodekan video, jadi ia
+      tidak bisa menulis time-lapse. Chrome, Edge, Safari, atau Firefox yang baru bisa.</span>
+    <span data-phrase="nocodec.page">Browser ini tidak bisa mengodekan video, jadi tidak
+      ada yang bisa dipakai menulis time-lapse. Chrome, Edge, Safari 16.4, atau Firefox
+      133 ke atas bisa.</span>
+    <span data-phrase="open.nolength">Berkas ini tidak menyebut berapa lama durasinya,
+      jadi tidak ada dasar untuk menghitung kecepatan.</span>
+    <span data-phrase="open.notopened">Berkas itu tidak bisa dibuka.</span>
+    <span data-phrase="preview.still">Browser ini tidak memainkan berkas ini, jadi
+      bingkai di bawah diawakode untuk menunjukkan apa yang dipilih. Time-lapse-nya
+      sendiri tidak terpengaruh.</span>
+    <span data-phrase="preview.none">Browser ini tidak memainkan berkas ini, dan
+      membacanya bingkai demi bingkai juga tidak bisa. {why}</span>
+    <span data-phrase="decode.noframes">Berkas ini tidak berisi bingkai sama sekali.</span>
+    <span data-phrase="decode.nodraw">Tidak ada bingkai yang kembali dari
+      pengawakodenya.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} fps</span>
+    <span data-phrase="src.fps.player">apa pun yang dilaporkan pemutar</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), diputar {degrees} derajat</span>
+    <span data-phrase="src.byplayer">dibaca pemutar bawaan browser</span>
+    <span data-phrase="plan.interval">Satu bingkai tiap {every} aslinya, diputar pada
+      {fps} bingkai per detik.</span>
+    <span data-phrase="n.frame.one">{n} bingkai</span>
+    <span data-phrase="n.frame.many">{n} bingkai</span>
+    <span data-phrase="size.unchanged">{width} x {height} (tidak berubah)</span>
+    <span data-phrase="size.from">{width} x {height} (dari {fromWidth} x {fromHeight})</span>
+    <span data-phrase="plan.about">sekitar {size}</span>
+    <span data-phrase="plan.read">{read} dari {total} bingkai di berkas ini</span>
+    <span data-phrase="plan.seeks.one">{n} lompatan lewat pemutar</span>
+    <span data-phrase="plan.seeks.many">{n} lompatan lewat pemutar</span>
+    <span data-phrase="plan.toofew.one">Pada kecepatan ini hanya tersisa satu bingkai,
+      dan itu foto, bukan klip. Kecepatan yang lebih rendah atau durasi akhir yang lebih
+      panjang akan menolong.</span>
+    <span data-phrase="plan.toofew.many">Pada kecepatan ini tersisa {n} bingkai, dan itu
+      foto, bukan klip. Kecepatan yang lebih rendah atau durasi akhir yang lebih panjang
+      akan menolong.</span>
+    <span data-phrase="plan.repeats">Jarak antarsaatnya lebih rapat daripada bingkai
+      yang dipunyai berkas ini, jadi sebagian keluar dua kali. Itu tidak salah, tetapi
+      laju bingkai yang lebih rendah akan membuat klip yang sama dari lebih sedikit
+      bingkai.</span>
+    <span data-phrase="step.preparing">Bersiap&hellip;</span>
+    <span data-phrase="step.finishing">Merampungkan&hellip;</span>
+    <span data-phrase="step.frame">Bingkai {done} dari {total} ({percent}%)</span>
+    <span data-phrase="encode.noh264">Browser ini tidak mengodekan H.264 pada
+      {width}x{height}. Ukuran yang lebih kecil bisa.</span>
+    <span data-phrase="encode.nothing">Tidak ada yang bisa diawakode dari berkas ini.</span>
+    <span data-phrase="play.died">Pemutarnya berhenti setelah {done} dari {total}
+      bingkai. {why} Mengubah klipnya dulu menjadi MP4 biasa (H.264) adalah jalan yang
+      paling bisa diandalkan.</span>
+    <span data-phrase="media.aborted">Pembacaannya dibatalkan.</span>
+    <span data-phrase="media.notread">Berkasnya tidak bisa dibaca dari diska.</span>
+    <span data-phrase="media.nodecode">Browser tidak bisa mengawakode video di dalamnya.</span>
+    <span data-phrase="media.unsupported">Browser tidak mendukung format atau kodek ini.</span>
+    <span data-phrase="media.stopped">Browser berhenti bisa membacanya.</span>
+    <span data-phrase="export.failed">Ada yang salah saat membuat time-lapse-nya.</span>
+    <span data-phrase="mp4.noconfig">Pengodenya tidak memberi konfigurasi pengawakode.</span>
+    <span data-phrase="mp4.noframes">Tidak ada bingkai yang dikodekan.</span>
+    <span data-phrase="mp4.toobig">Videonya melewati batas 4 GB. Menurunkan mutu,
+      resolusi, atau durasinya akan menolong.</span>
+    <span data-phrase="mp4.unstable">Galat internal: ukuran indeks MP4-nya tidak tetap
+      antara satu lintasan dan lintasan berikutnya.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.hours">{hours} jam {minutes} mnt</span>
+    <span data-phrase="time.minutes">{minutes} mnt {seconds} dtk</span>
+    <span data-phrase="time.seconds">{n} dtk</span>
+    <span data-phrase="unit.ms">{n} md</span>
+    <span data-phrase="unit.s">{n} dtk</span>
+    <span data-phrase="unit.min">{n} mnt</span>
     <span data-phrase="read.midframe">File-nya berhenti di tengah sebuah bingkai.</span>
     <span data-phrase="read.avcshort">Rekaman konfigurasi H.264 terlalu pendek.</span>
     <span data-phrase="read.hevcshort">Rekaman konfigurasi HEVC terlalu pendek.</span>

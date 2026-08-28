@@ -159,6 +159,81 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Het bestand wordt gelezen&hellip;</span>
+    <span data-phrase="step.checking">Er wordt gekeken of deze browser het kan
+      decoderen&hellip;</span>
+    <span data-phrase="nocodec.file">Deze browser kan geen video coderen en dus geen
+      timelapse schrijven. Een recente Chrome, Edge, Safari of Firefox wel.</span>
+    <span data-phrase="nocodec.page">Deze browser kan geen video coderen, dus er is hier
+      niets om een timelapse mee te schrijven. Chrome, Edge, Safari 16.4 of Firefox 133
+      en nieuwer kunnen het.</span>
+    <span data-phrase="open.nolength">Dit bestand zegt niet hoe lang het is, dus er valt
+      geen snelheid uit af te leiden.</span>
+    <span data-phrase="open.notopened">Dat bestand kon niet geopend worden.</span>
+    <span data-phrase="preview.still">Deze browser speelt dit bestand niet af, dus het
+      beeld hieronder is gedecodeerd om te laten zien wat er gekozen is. Op de timelapse
+      zelf heeft dat geen invloed.</span>
+    <span data-phrase="preview.none">Deze browser speelt dit bestand niet af, en beeld
+      voor beeld lezen lukte ook niet. {why}</span>
+    <span data-phrase="decode.noframes">Het bestand bevat geen beelden.</span>
+    <span data-phrase="decode.nodraw">Er kwam geen beeld terug van de decoder.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} fps</span>
+    <span data-phrase="src.fps.player">wat de speler meldt</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} graden gedraaid</span>
+    <span data-phrase="src.byplayer">gelezen door de eigen speler van de browser</span>
+    <span data-phrase="plan.interval">Eén beeld per {every} van het origineel,
+      afgespeeld op {fps} beelden per seconde.</span>
+    <span data-phrase="n.frame.one">{n} beeld</span>
+    <span data-phrase="n.frame.many">{n} beelden</span>
+    <span data-phrase="size.unchanged">{width} x {height} (ongewijzigd)</span>
+    <span data-phrase="size.from">{width} x {height} (uit {fromWidth} x {fromHeight})</span>
+    <span data-phrase="plan.about">ongeveer {size}</span>
+    <span data-phrase="plan.read">{read} van de {total} beelden in het bestand</span>
+    <span data-phrase="plan.seeks.one">{n} sprong door de speler</span>
+    <span data-phrase="plan.seeks.many">{n} sprongen door de speler</span>
+    <span data-phrase="plan.toofew.one">Bij deze snelheid blijft er één beeld over, en
+      dat is een foto en geen clip. Een lagere snelheid of een langere eindlengte helpt.</span>
+    <span data-phrase="plan.toofew.many">Bij deze snelheid blijven er {n} beelden over,
+      en dat is een foto en geen clip. Een lagere snelheid of een langere eindlengte
+      helpt.</span>
+    <span data-phrase="plan.repeats">De momenten liggen dichter bij elkaar dan dit
+      bestand beelden heeft, dus sommige komen er twee keer uit. Daar is niets mis mee,
+      maar een lagere beeldsnelheid maakt dezelfde clip uit minder beelden.</span>
+    <span data-phrase="step.preparing">Voorbereiden&hellip;</span>
+    <span data-phrase="step.finishing">Afronden&hellip;</span>
+    <span data-phrase="step.frame">Beeld {done} van {total} ({percent}%)</span>
+    <span data-phrase="encode.noh264">Deze browser codeert geen H.264 op
+      {width}x{height}. Een kleiner formaat werkt wel.</span>
+    <span data-phrase="encode.nothing">Uit dit bestand viel niets te decoderen.</span>
+    <span data-phrase="play.died">De speler stopte na {done} van de {total} beelden.
+      {why} De clip eerst naar een gewone MP4 (H.264) omzetten is de betrouwbare
+      oplossing.</span>
+    <span data-phrase="media.aborted">Het lezen is afgebroken.</span>
+    <span data-phrase="media.notread">Het bestand kon niet van de schijf gelezen worden.</span>
+    <span data-phrase="media.nodecode">De browser kon de video erin niet decoderen.</span>
+    <span data-phrase="media.unsupported">De browser ondersteunt dit formaat of deze
+      codec niet.</span>
+    <span data-phrase="media.stopped">De browser kon het niet meer lezen.</span>
+    <span data-phrase="export.failed">Er ging iets mis bij het maken van de timelapse.</span>
+    <span data-phrase="mp4.noconfig">De encoder leverde geen decoderconfiguratie.</span>
+    <span data-phrase="mp4.noframes">Er zijn geen beelden gecodeerd.</span>
+    <span data-phrase="mp4.toobig">De video gaat over de grens van 4 GB heen. Een lagere
+      kwaliteit, een lagere resolutie of een kortere lengte helpt.</span>
+    <span data-phrase="mp4.unstable">Interne fout: de grootte van de MP4-index was
+      tussen twee doorgangen niet stabiel.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.hours">{hours} u {minutes} min</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
+    <span data-phrase="unit.ms">{n} ms</span>
+    <span data-phrase="unit.s">{n} s</span>
+    <span data-phrase="unit.min">{n} min</span>
     <span data-phrase="read.midframe">Het bestand houdt midden in een frame op.</span>
     <span data-phrase="read.avcshort">Het H.264-configuratierecord is te kort.</span>
     <span data-phrase="read.hevcshort">Het HEVC-configuratierecord is te kort.</span>

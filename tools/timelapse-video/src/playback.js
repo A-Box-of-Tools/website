@@ -27,12 +27,20 @@ class AbortedError extends Error {
   }
 }
 
-/** What the four MediaError codes mean, in words somebody can act on. */
+/** An error whose message is a phrase key; the caller resolves it. */
+const said = (key, values = {}) => Object.assign(new Error(key), { values });
+
+/**
+ * What the four MediaError codes mean, in words somebody can act on.
+ *
+ * Phrase keys rather than words: this file is copied byte for byte into
+ * fifteen languages, and the caller resolves what it picks.
+ */
 const MEDIA_ERRORS = {
-  1: 'the read was aborted',
-  2: 'the file could not be read off the disk',
-  3: 'the browser could not decode the video in it',
-  4: 'the browser does not support this format or codec',
+  1: 'media.aborted',
+  2: 'media.notread',
+  3: 'media.nodecode',
+  4: 'media.unsupported',
 };
 
 /**
@@ -41,9 +49,13 @@ const MEDIA_ERRORS = {
  * the way through", and the two have different answers.
  */
 function playerDied(video, done, total) {
-  const why = MEDIA_ERRORS[video.error?.code] ?? 'the browser stopped being able to read it';
-  return new Error(`The player stopped after ${done} of ${total} frames: ${why}. `
-    + 'Converting the clip to an ordinary MP4 (H.264) first is the reliable fix.');
+  // The reason is a phrase inside a phrase; main.js resolves the inner one
+  // on the way in - see `fill` there.
+  return said('play.died', {
+    done,
+    total,
+    why: { key: MEDIA_ERRORS[video.error?.code] ?? 'media.stopped', values: {} },
+  });
 }
 
 /**
@@ -141,7 +153,7 @@ function seek(video, seconds) {
       settled = true;
       clearTimeout(timer);
       video.removeEventListener('seeked', onSeeked);
-      const failure = new Error('the player errored during a seek');
+      const failure = new Error('play.seekfailed');
       failure.name = 'PlayerError';
       reject(failure);
     };

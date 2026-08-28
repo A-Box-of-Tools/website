@@ -157,6 +157,74 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">جارٍ قراءة الملف&hellip;</span>
+    <span data-phrase="step.checking">جارٍ التأكد من أن هذا المتصفح يستطيع فكّ
+      ترميزه&hellip;</span>
+    <span data-phrase="nocodec.file">هذا المتصفح لا يرمّز الفيديو، فلا يستطيع كتابة تايم
+      لابس. متصفح كروم أو إدج أو سفاري أو فايرفوكس حديث يستطيع.</span>
+    <span data-phrase="nocodec.page">هذا المتصفح لا يرمّز الفيديو، فلا شيء لديه ليكتب به
+      تايم لابس. كروم وإدج وسفاري 16.4 أو فايرفوكس 133 فما فوق تستطيع.</span>
+    <span data-phrase="open.nolength">هذا الملف لا يذكر مدته، فلا شيء تُحسب منه السرعة.</span>
+    <span data-phrase="open.notopened">تعذّر فتح ذلك الملف.</span>
+    <span data-phrase="preview.still">هذا المتصفح لا يشغّل هذا الملف، فقد فُكّ ترميز
+      الإطار أدناه ليُظهر ما اختير. أما التايم لابس نفسه فلا يتأثر.</span>
+    <span data-phrase="preview.none">هذا المتصفح لا يشغّل هذا الملف، ولم تنجح قراءته
+      إطاراً إطاراً كذلك. {why}</span>
+    <span data-phrase="decode.noframes">لا إطارات في هذا الملف.</span>
+    <span data-phrase="decode.nodraw">لم يُرجِع فاكّ الترميز أي إطار.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.fps">{n} إطار/ثانية</span>
+    <span data-phrase="src.fps.player">ما يذكره المشغّل</span>
+    <span data-phrase="src.codec">{codec} ‏({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ‏({entry})، مُدار {degrees} درجة</span>
+    <span data-phrase="src.byplayer">قرأه مشغّل المتصفح نفسه</span>
+    <span data-phrase="plan.interval">إطار واحد كل {every} من الأصل، يُعرض بمعدل {fps}
+      إطاراً في الثانية.</span>
+    <span data-phrase="n.frame.one">إطار واحد</span>
+    <span data-phrase="n.frame.many">{n} إطاراً</span>
+    <span data-phrase="size.unchanged">{width} x {height} (دون تغيير)</span>
+    <span data-phrase="size.from">{width} x {height} (من {fromWidth} x {fromHeight})</span>
+    <span data-phrase="plan.about">نحو {size}</span>
+    <span data-phrase="plan.read">{read} من أصل {total} إطاراً في الملف</span>
+    <span data-phrase="plan.seeks.one">قفزة واحدة عبر المشغّل</span>
+    <span data-phrase="plan.seeks.many">{n} قفزة عبر المشغّل</span>
+    <span data-phrase="plan.toofew.one">بهذه السرعة يبقى إطار واحد، وهذه صورة لا مقطع.
+      سرعة أبطأ أو مدة نهائية أطول تحل الأمر.</span>
+    <span data-phrase="plan.toofew.many">بهذه السرعة تبقى {n} إطارات، وهذه صورة لا مقطع.
+      سرعة أبطأ أو مدة نهائية أطول تحل الأمر.</span>
+    <span data-phrase="plan.repeats">اللحظات أقرب بعضها إلى بعض من عدد إطارات هذا الملف،
+      فيخرج بعضها مرتين. لا عيب في ذلك، لكن معدل إطارات أقل يصنع المقطع نفسه من إطارات
+      أقل.</span>
+    <span data-phrase="step.preparing">التحضير&hellip;</span>
+    <span data-phrase="step.finishing">الإنهاء&hellip;</span>
+    <span data-phrase="step.frame">الإطار {done} من {total} ({percent}%)</span>
+    <span data-phrase="encode.noh264">هذا المتصفح لا يرمّز H.264 بمقاس {width}x{height}.
+      مقاس أصغر ينجح.</span>
+    <span data-phrase="encode.nothing">لم يُفَكّ ترميز أي شيء من هذا الملف.</span>
+    <span data-phrase="play.died">توقّف المشغّل بعد {done} إطاراً من أصل {total}. {why}
+      وتحويل المقطع أولاً إلى MP4 عادي (H.264) هو الحل الموثوق.</span>
+    <span data-phrase="media.aborted">أُلغيت القراءة.</span>
+    <span data-phrase="media.notread">تعذّرت قراءة الملف من القرص.</span>
+    <span data-phrase="media.nodecode">لم يستطع المتصفح فكّ ترميز الفيديو الذي فيه.</span>
+    <span data-phrase="media.unsupported">المتصفح لا يدعم هذه الصيغة ولا هذا المرمّز.</span>
+    <span data-phrase="media.stopped">لم يعد المتصفح قادراً على قراءته.</span>
+    <span data-phrase="export.failed">حدث خطأ أثناء صنع التايم لابس.</span>
+    <span data-phrase="mp4.noconfig">لم يعطِ المرمّز أي إعدادات لفاكّ الترميز.</span>
+    <span data-phrase="mp4.noframes">لم يُرمَّز أي إطار.</span>
+    <span data-phrase="mp4.toobig">الفيديو يتجاوز حد 4 غيغابايت. خفض الجودة أو الدقة أو
+      المدة يحل الأمر.</span>
+    <span data-phrase="mp4.unstable">خطأ داخلي: لم يستقر حجم فهرس MP4 بين مرورين.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
+    <span data-phrase="size.gb">{n} غيغابايت</span>
+    <span data-phrase="time.hours">{hours} س {minutes} د</span>
+    <span data-phrase="time.minutes">{minutes} د {seconds} ث</span>
+    <span data-phrase="time.seconds">{n} ث</span>
+    <span data-phrase="unit.ms">{n} م.ث</span>
+    <span data-phrase="unit.s">{n} ث</span>
+    <span data-phrase="unit.min">{n} د</span>
     <span data-phrase="read.midframe">ينتهي الملف في منتصف إطار.</span>
     <span data-phrase="read.avcshort">سجل إعداد H.264 أقصر مما ينبغي.</span>
     <span data-phrase="read.hevcshort">سجل إعداد HEVC أقصر مما ينبغي.</span>
