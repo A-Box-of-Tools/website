@@ -1302,12 +1302,37 @@ footer a:hover { text-decoration: underline; }
   margin-inline-end: 0.15em;
 }
 
-.logo-lid { stroke: var(--accent); }
-.logo-tool { fill: var(--accent-deep); }
-.logo-tool-alt { fill: var(--accent); }
-.logo-box { fill: var(--accent-deep); }
-.logo-band { fill: var(--accent); }
-.logo-latch { fill: var(--accent-pale); }
+/* The box is the mark's own yellow, not the site accent: it is a gift box,
+   and the accent is carried by the app tile leading out of it instead. */
+.logo-box { fill: #b07d10; }
+.logo-band { fill: #f0b429; }
+.logo-latch { fill: #e8618f; }
+/* The mark's own four hues, and the glyph that sits on them. Hard-coded rather
+   than tokenised on purpose: they belong to the logo and nothing else on the
+   site may reach for them. Same values as shared/logo.svg, which bakes them in
+   because it is also the favicon and no stylesheet reaches it there. */
+.logo-app-a { fill: #2b6cb0; }
+.logo-app-b { fill: #8b5cc7; }
+.logo-app-c { fill: #2f9e63; }
+.logo-app-d { fill: #d94a4a; }
+.logo-glyph { fill: #ffffff; }
+/* The music tile is Lucide's `music`, which is a stroked icon; everything else
+   in the mark is filled. See THIRD-PARTY-NOTICES.md. */
+.logo-stroke { stroke: #ffffff; }
+
+@media (prefers-color-scheme: dark) {
+  .logo-box { fill: #c4922a; }
+  .logo-band { fill: #f5c655; }
+  .logo-latch { fill: #ef7fa8; }
+  .logo-app-a { fill: #5b9bd8; }
+  .logo-app-b { fill: #b18ae4; }
+  .logo-app-c { fill: #5cc48c; }
+  .logo-app-d { fill: #ef8080; }
+  /* Dark on the lighter tiles: white on a pastel is under the contrast floor
+     the rest of the site is held to. */
+  .logo-glyph { fill: #16202b; }
+  .logo-stroke { stroke: #16202b; }
+}
 
 /* --------------------------------------------------------------- feedback */
 
