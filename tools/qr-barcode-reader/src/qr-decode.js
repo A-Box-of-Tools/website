@@ -58,6 +58,19 @@ const ECI_CHARSETS = {
 };
 
 /** A failure this page can explain, as opposed to a bug in it. */
+/**
+ * A symbol that was found and could not be read.
+ *
+ * The sentences below are diagnostics, not something a reader is shown:
+ * detect.js catches this and answers with a null, so the page says only
+ * that it found nothing. That is why they are English in a file copied
+ * into fifteen languages - moving them into the markup would translate
+ * text nobody reads.
+ *
+ * If any of them should ever reach the page - "too blurred, try a sharper
+ * picture" is a good deal more use than "nothing found" - it becomes a
+ * phrase key first, the way every other tool's leaf modules do it.
+ */
 export class UnreadableError extends Error {}
 
 /* ------------------------------------------------------- the two BCH fields */
