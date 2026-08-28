@@ -65,7 +65,7 @@ BASELINE = {
     'document-scanner': 13,
     'edit-audio': 25,
     'encode-text': 23,
-    'exif-editor': 78,
+    'exif-editor': 63,
     'format-json': 61,
     'gif-analyzer': 71,
     'gif-maker': 22,

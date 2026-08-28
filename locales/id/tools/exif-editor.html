@@ -161,6 +161,67 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">Tidak ada apa pun di file ini yang membocorkan Anda</span>
+    <span data-phrase="find.clean.cleared">Semua yang tadinya membocorkan sudah dibuang. Simpan fotonya untuk menuliskannya.</span>
+    <span data-phrase="find.clean.never">Tidak ada lokasi, tidak ada waktu, tidak ada kamera, tidak ada nama. Entah memang
+      tidak pernah ada, entah sudah ada yang membersihkannya.</span>
+    <span data-phrase="find.exifempty.title">Blok EXIF yang isinya kosong</span>
+    <span data-phrase="find.exifempty.detail">{size} EXIF yang terbaca bersih dan tidak memuat satu tag pun. Tidak berbahaya, dan
+      dibuang bersama yang lain.</span>
+    <span data-phrase="find.exifbad.title">Blok EXIF yang tidak bisa dibaca siapa pun</span>
+    <span data-phrase="find.exifbad.detail">Ada EXIF di sini dan ia tidak bisa dibaca: {reason} Semua yang di bawah adalah
+      bagian file yang masih terbaca, jadi anggap blok yang satu ini sebagai barang tak
+      dikenal &mdash; dan itu alasan untuk membuangnya, bukan untuk membiarkannya.</span>
+    <span data-phrase="find.gps.title">Di mana foto ini diambil</span>
+    <span data-phrase="find.gps.detail">{position}. Itu cukup persis untuk menyebut sebuah gedung, dan ia ikut jalan bersama
+      file-nya ke mana pun Anda mengunggahnya.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. Itu cukup persis untuk menyebut sebuah gedung, dan ia ikut
+      jalan bersama file-nya ke mana pun Anda mengunggahnya.</span>
+    <span data-phrase="find.gpspart.title">Tag lokasi, tanpa posisi yang utuh</span>
+    <span data-phrase="find.gpspart.one">Ada satu tag GPS di sini tapi tanpa lintang dan bujur yang bisa dipakai. Arah gerak,
+      ketinggian dan jam GPS masih bisa ada di antaranya.</span>
+    <span data-phrase="find.gpspart.many">Ada {count} tag GPS di sini tapi tanpa lintang dan bujur yang bisa dipakai. Arah
+      gerak, ketinggian dan jam GPS masih bisa ada di antaranya.</span>
+    <span data-phrase="find.taken.title">Kapan foto ini diambil</span>
+    <span data-phrase="find.taken.detail">{when}, sampai ke detiknya. Digabung dengan lokasi, itu menaruh seseorang di suatu
+      tempat pada saat tertentu.</span>
+    <span data-phrase="find.device.title">Alat yang menghasilkannya</span>
+    <span data-phrase="find.device.detail">{device}. Sendirian ia tidak berbahaya; ia jadi penanda begitu semua foto yang Anda
+      unggah membawa yang sama.</span>
+    <span data-phrase="find.identity.title">Sesuatu yang menyebut nama Anda atau perkakas Anda</span>
+    <span data-phrase="find.identity.detail">{found}. Sebuah nomor seri mengikat semua foto dari bodi itu jadi satu, siapa pun
+      yang mengunggahnya dan di mana pun.</span>
+    <span data-phrase="find.id.cameraserial">Nomor seri kamera</span>
+    <span data-phrase="find.id.lensserial">Nomor seri lensa</span>
+    <span data-phrase="find.id.owner">Pemilik kamera</span>
+    <span data-phrase="find.id.uniqueid">ID unik gambar</span>
+    <span data-phrase="find.id.artist">Pemotret</span>
+    <span data-phrase="find.id.author">Penulis</span>
+    <span data-phrase="find.id.copyright">Hak cipta</span>
+    <span data-phrase="find.software.title">Apa yang menyuntingnya</span>
+    <span data-phrase="find.software.detail">{software}. Ini sering kali versi firmware ponselnya, dan itu hal yang lebih sempit
+      untuk diumumkan daripada modelnya saja.</span>
+    <span data-phrase="find.makernote.title">Catatan pabrikan</span>
+    <span data-phrase="find.makernote.detail">{size} data pribadi milik pabrikannya sendiri. Tidak ada dokumentasinya, isinya
+      beda-beda menurut model, dan di situlah nomor seri, titik fokus dan hitungan
+      jepretan suka bersembunyi.</span>
+    <span data-phrase="find.thumbnail.title">Salinan kedua dari gambarnya</span>
+    <span data-phrase="find.thumbnail.detail">{size} berisi pratinjau JPEG kecil. Kalau fotonya dipotong setelah kameranya menulis
+      file itu, sebagian penyunting membiarkan gambar mininya tetap menampilkan bingkai
+      yang belum dipotong.</span>
+    <span data-phrase="find.xmp.title">Paket XMP</span>
+    <span data-phrase="find.xmp.detail">{size} XML. Biasanya ia mengulang kamera dan waktunya, lalu menambahkan riwayat
+      penyuntingan: program mana, versi berapa, dan setiap kali file itu disimpan.</span>
+    <span data-phrase="find.iptc.title">Blok IPTC</span>
+    <span data-phrase="find.iptc.detail">{size} berisi kolom-kolom yang diisi meja foto: nama pemotret, teks foto, kota,
+      kredit. Kalau ini datang dari bank gambar atau ruang redaksi, besar kemungkinan ada
+      nama orang di dalamnya.</span>
+    <span data-phrase="find.comment.title">Sebuah komentar</span>
+    <span data-phrase="find.comment.detail">&ldquo;{comment}&rdquo;</span>
+    <span data-phrase="find.text.title">Teks: {keyword}</span>
+    <span data-phrase="find.unknown.title">Blok yang tidak bisa dibaca alat ini</span>
+    <span data-phrase="find.unknown.detail">{blocks}. Tidak terbaca bukan berarti kosong, jadi yang ini pun ikut dibuang bersama
+      yang lain.</span>
     <span data-phrase="read.notjpeg">Ini tidak dimulai seperti sebuah JPEG.</span>
     <span data-phrase="read.jpeglost">Struktur segmennya hilang &mdash; berkasnya tampak rusak.</span>
     <span data-phrase="read.jpegoverrun">Sebuah segmen mengaku punya panjang yang melewati ujung file.</span>

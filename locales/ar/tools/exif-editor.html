@@ -152,6 +152,60 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">لا شيء في هذا الملف يفشي عنك شيئاً</span>
+    <span data-phrase="find.clean.cleared">أُزيل كل ما كان يفشي. احفظ الصورة لتُكتَب على هذا الحال.</span>
+    <span data-phrase="find.clean.never">لا مكان، ولا أختام زمنية، ولا كاميرا، ولا أسماء. فإما أنها لم تحمل ذلك قط، وإما أن
+      شيئاً أزاله من قبل.</span>
+    <span data-phrase="find.exifempty.title">كتلة EXIF لا شيء فيها</span>
+    <span data-phrase="find.exifempty.detail">{size} من EXIF تُقرأ قراءةً سليمة ولا تحمل أي وسم. غير ضارّة، وتُزال مع كل شيء آخر.</span>
+    <span data-phrase="find.exifbad.title">كتلة EXIF لا يستطيع أحد قراءتها</span>
+    <span data-phrase="find.exifbad.detail">هنا EXIF ولم يمكن قراءتها: {reason} وكل ما تحت هو ما أمكن قراءته من بقية الملف،
+      فعُدَّ هذه الكتلة مجهولاً &mdash; وذلك سبب لإزالتها لا لإبقائها.</span>
+    <span data-phrase="find.gps.title">أين التُقطت الصورة</span>
+    <span data-phrase="find.gps.detail">{position}. وهذه دقّة تكفي لتسمية مبنى بعينه، وهي تسافر مع الملف إلى كل مكان تنشره
+      فيه.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. وهذه دقّة تكفي لتسمية مبنى بعينه، وهي تسافر مع الملف إلى كل
+      مكان تنشره فيه.</span>
+    <span data-phrase="find.gpspart.title">أوسام موقع، دون موضع كامل</span>
+    <span data-phrase="find.gpspart.one">هنا وسم GPS واحد لكن دون خط عرض وخط طول صالحين. ومع ذلك قد يكون بينها اتجاه السير
+      والارتفاع وساعة GPS.</span>
+    <span data-phrase="find.gpspart.many">هنا {count} من أوسام GPS لكن دون خط عرض وخط طول صالحين. ومع ذلك قد يكون بينها اتجاه
+      السير والارتفاع وساعة GPS.</span>
+    <span data-phrase="find.taken.title">متى التُقطت</span>
+    <span data-phrase="find.taken.detail">{when}، إلى الثانية. ومع موضعٍ يضع هذا شخصاً في مكان بعينه في لحظة بعينها.</span>
+    <span data-phrase="find.device.title">الجهاز الذي جاءت منه</span>
+    <span data-phrase="find.device.detail">{device}. غير ضارّ وحده؛ ويصير علامةً تدلّ عليك حين تحمل كل صورة تنشرها العلامةَ
+      نفسها.</span>
+    <span data-phrase="find.identity.title">شيء يسمّيك أو يسمّي عدّتك</span>
+    <span data-phrase="find.identity.detail">{found}. الرقم التسلسلي يربط كل صورة خرجت من ذلك الجسم بعضها ببعض، مهما يكن ناشرها
+      ومهما يكن المكان.</span>
+    <span data-phrase="find.id.cameraserial">الرقم التسلسلي للكاميرا</span>
+    <span data-phrase="find.id.lensserial">الرقم التسلسلي للعدسة</span>
+    <span data-phrase="find.id.owner">مالك الكاميرا</span>
+    <span data-phrase="find.id.uniqueid">المعرّف الفريد للصورة</span>
+    <span data-phrase="find.id.artist">المصوِّر</span>
+    <span data-phrase="find.id.author">المؤلف</span>
+    <span data-phrase="find.id.copyright">حقوق النشر</span>
+    <span data-phrase="find.software.title">ما الذي حرّرها</span>
+    <span data-phrase="find.software.detail">{software}. وهذا في الغالب إصدار البرنامج الثابت للهاتف، وهو أضيق مما يُنشَر من
+      الطراز وحده.</span>
+    <span data-phrase="find.makernote.title">ملاحظة الصانع</span>
+    <span data-phrase="find.makernote.detail">{size} من بيانات الصانع الخاصة به. غير موثَّقة، وتختلف من طراز إلى طراز، وفيها تميل
+      الأرقام التسلسلية ونقاط التبئير وعدّادات الغالق إلى الاختباء.</span>
+    <span data-phrase="find.thumbnail.title">نسخة ثانية من الصورة</span>
+    <span data-phrase="find.thumbnail.detail">{size} تحمل معاينة JPEG صغيرة. فإن قُصّت الصورة بعد أن كتبتها الكاميرا، تركت بعض
+      البرامج المصغَّرة تعرض الإطار قبل القصّ.</span>
+    <span data-phrase="find.xmp.title">حزمة XMP</span>
+    <span data-phrase="find.xmp.detail">{size} من XML. تكرّر عادةً الكاميرا والأختام الزمنية، وتضيف تاريخ التحرير: أي
+      برنامج، وأي إصدار، وكل مرة حُفظ فيها الملف.</span>
+    <span data-phrase="find.iptc.title">كتلة IPTC</span>
+    <span data-phrase="find.iptc.detail">{size} من الحقول التي يملؤها قسم الصور: التوقيع والتعليق والمدينة ونسبة الصورة. فإن
+      كانت هذه من بنك صور أو غرفة أخبار، فالأرجح أن فيها اسم أحدهم.</span>
+    <span data-phrase="find.comment.title">تعليق</span>
+    <span data-phrase="find.comment.detail">&laquo;{comment}&raquo;</span>
+    <span data-phrase="find.text.title">نص: {keyword}</span>
+    <span data-phrase="find.unknown.title">كتل لا تستطيع هذه الأداة قراءتها</span>
+    <span data-phrase="find.unknown.detail">{blocks}. وتعذّر القراءة ليس كالفراغ، فهذه أيضاً تُزال مع كل شيء آخر.</span>
     <span data-phrase="read.notjpeg">هذا لا يبدأ بداية ملف JPEG.</span>
     <span data-phrase="read.jpeglost">ضاع بناء المقاطع &mdash; ويبدو الملف تالفاً.</span>
     <span data-phrase="read.jpegoverrun">مقطعٌ يدّعي طولاً يتجاوز نهاية الملف.</span>

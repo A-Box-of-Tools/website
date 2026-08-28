@@ -105,9 +105,13 @@ const asText = (v) => (typeof v === 'string' && v.trim() ? v.trim() : null);
  * the full table further down the page, where nobody has been promised that
  * everything listed is important.
  *
+ * `t` resolves a phrase key against the page, which is where the sentences
+ * live: this module is copied byte for byte into fifteen languages. It is the
+ * same resolver report() takes, and for the same reason.
+ *
  * @returns {{level: 'high'|'medium'|'low', title: string, detail: string}[]}
  */
-export function buildFindings(item) {
+export function buildFindings(item, t) {
   const out = [];
   const groups = item.exif?.ok ? item.exif.groups : null;
   const meta = item.meta;
@@ -115,16 +119,16 @@ export function buildFindings(item) {
   if (!item.exifUnreadable && meta.exif && !countTags(item)) {
     out.push({
       level: 'low',
-      title: 'An EXIF block with nothing in it',
-      detail: `${bytes(meta.exif.length)} of EXIF that parses cleanly and holds no tags. Harmless, and removed along with everything else.`,
+      title: t('find.exifempty.title'),
+      detail: t('find.exifempty.detail', { size: bytes(meta.exif.length) }),
     });
   }
 
   if (item.exifUnreadable) {
     out.push({
       level: 'high',
-      title: 'An EXIF block nobody can read',
-      detail: `There is EXIF here and it would not parse: ${item.exifError} Everything below is what could be read of the rest of the file, so treat this one as an unknown quantity - which is a reason to remove it, not to leave it.`,
+      title: t('find.exifbad.title'),
+      detail: t('find.exifbad.detail', { reason: t(item.exifError) }),
     });
   }
 
@@ -132,14 +136,17 @@ export function buildFindings(item) {
   if (position) {
     out.push({
       level: 'high',
-      title: 'Where the photo was taken',
-      detail: `${position.text}${position.altitude ? `, ${position.altitude}` : ''}. That is precise enough to name a building, and it travels with the file into anything you post it to.`,
+      title: t('find.gps.title'),
+      detail: position.altitude
+        ? t('find.gps.detailalt', { position: position.text, altitude: position.altitude })
+        : t('find.gps.detail', { position: position.text }),
     });
   } else if (groups?.gps?.length) {
     out.push({
       level: 'high',
-      title: 'Location tags, without a full position',
-      detail: `${groups.gps.length} GPS tag${groups.gps.length === 1 ? '' : 's'} are here but no usable latitude and longitude. Direction of travel, altitude and the GPS clock can still be among them.`,
+      title: t('find.gpspart.title'),
+      detail: t(groups.gps.length === 1 ? 'find.gpspart.one' : 'find.gpspart.many',
+                { count: groups.gps.length }),
     });
   }
 
@@ -147,8 +154,8 @@ export function buildFindings(item) {
   if (taken) {
     out.push({
       level: 'medium',
-      title: 'When it was taken',
-      detail: `${taken}, to the second. Combined with a location this places a person somewhere at a particular moment.`,
+      title: t('find.taken.title'),
+      detail: t('find.taken.detail', { when: taken }),
     });
   }
 
@@ -162,28 +169,30 @@ export function buildFindings(item) {
       : (model ?? make);
     out.push({
       level: 'medium',
-      title: 'The device it came from',
-      detail: `${device}. Harmless on its own; it becomes an identifier when every photo you post carries the same one.`,
+      title: t('find.device.title'),
+      detail: t('find.device.detail', { device }),
     });
   }
 
   const identifiers = [
-    [groups?.exif, 0xa431, 'Camera serial number'],
-    [groups?.exif, 0xa435, 'Lens serial number'],
-    [groups?.exif, 0xa430, 'Camera owner'],
-    [groups?.exif, 0xa420, 'Image unique ID'],
-    [groups?.ifd0, 0x013b, 'Artist'],
-    [groups?.ifd0, 0x9c9d, 'Author'],
-    [groups?.ifd0, 0x8298, 'Copyright'],
+    [groups?.exif, 0xa431, 'find.id.cameraserial'],
+    [groups?.exif, 0xa435, 'find.id.lensserial'],
+    [groups?.exif, 0xa430, 'find.id.owner'],
+    [groups?.exif, 0xa420, 'find.id.uniqueid'],
+    [groups?.ifd0, 0x013b, 'find.id.artist'],
+    [groups?.ifd0, 0x9c9d, 'find.id.author'],
+    [groups?.ifd0, 0x8298, 'find.id.copyright'],
   ]
-    .map(([group, tag, label]) => ({ label, value: asText(tagValue(group, tag)) }))
+    .map(([group, tag, key]) => ({ label: t(key), value: asText(tagValue(group, tag)) }))
     .filter((x) => x.value);
 
   if (identifiers.length) {
     out.push({
       level: 'high',
-      title: 'Something that names you or your kit',
-      detail: `${identifiers.map((x) => `${x.label}: ${x.value}`).join('. ')}. A serial number ties every photo from that body together, whoever posted them and wherever.`,
+      title: t('find.identity.title'),
+      detail: t('find.identity.detail', {
+        found: identifiers.map((x) => `${x.label}: ${x.value}`).join('. '),
+      }),
     });
   }
 
@@ -191,8 +200,8 @@ export function buildFindings(item) {
   if (software) {
     out.push({
       level: 'medium',
-      title: 'What edited it',
-      detail: `${software}. This is often the phone's firmware version, which is a narrower thing to publish than the model alone.`,
+      title: t('find.software.title'),
+      detail: t('find.software.detail', { software }),
     });
   }
 
@@ -200,38 +209,42 @@ export function buildFindings(item) {
   if (makerNote) {
     out.push({
       level: 'high',
-      title: 'The maker note',
-      detail: `${bytes(makerNote.raw.length)} of the manufacturer's own private data. It is undocumented, it varies by model, and it is where serial numbers, focus points and shutter counts tend to hide.`,
+      title: t('find.makernote.title'),
+      detail: t('find.makernote.detail', { size: bytes(makerNote.raw.length) }),
     });
   }
 
   if (item.exif?.thumbnail?.length) {
     out.push({
       level: 'medium',
-      title: 'A second copy of the picture',
-      detail: `${bytes(item.exif.thumbnail.length)} holding a small JPEG preview. If the photo was cropped after the camera wrote it, some editors leave the thumbnail showing the uncropped frame.`,
+      title: t('find.thumbnail.title'),
+      detail: t('find.thumbnail.detail', { size: bytes(item.exif.thumbnail.length) }),
     });
   }
 
   if (meta.xmp) {
     out.push({
       level: 'medium',
-      title: 'An XMP packet',
-      detail: `${bytes(meta.xmp.length)} of XML. It usually repeats the camera and the timestamps, and adds the edit history: which program, which version, and every time the file was saved.`,
+      title: t('find.xmp.title'),
+      detail: t('find.xmp.detail', { size: bytes(meta.xmp.length) }),
     });
   }
 
   if (meta.iptc) {
     out.push({
       level: 'high',
-      title: 'An IPTC block',
-      detail: `${bytes(meta.iptc.length)} of the fields a photo desk fills in - byline, caption, city, credit. If this came from a stock library or a newsroom, someone's name is likely in it.`,
+      title: t('find.iptc.title'),
+      detail: t('find.iptc.detail', { size: bytes(meta.iptc.length) }),
     });
   }
 
   for (const comment of meta.comments) {
     if (comment.trim()) {
-      out.push({ level: 'medium', title: 'A comment', detail: `"${comment.trim().slice(0, 300)}"` });
+      out.push({
+        level: 'medium',
+        title: t('find.comment.title'),
+        detail: t('find.comment.detail', { comment: comment.trim().slice(0, 300) }),
+      });
     }
   }
 
@@ -239,7 +252,7 @@ export function buildFindings(item) {
     if (text.value?.trim()) {
       out.push({
         level: /author|artist|creat|copyright|owner|comment|source|url/i.test(text.keyword) ? 'high' : 'low',
-        title: `Text: ${text.keyword}`,
+        title: t('find.text.title', { keyword: text.keyword }),
         detail: text.value.trim().slice(0, 300),
       });
     }
@@ -248,17 +261,25 @@ export function buildFindings(item) {
   if (meta.extras.length) {
     out.push({
       level: 'low',
-      title: 'Blocks this tool cannot read',
-      detail: `${meta.extras.map((x) => `${x.label} (${bytes(x.size)})`).join(', ')}. Unreadable is not the same as empty, so these are removed along with everything else.`,
+      title: t('find.unknown.title'),
+      detail: t('find.unknown.detail', {
+        blocks: meta.extras.map((x) => `${x.label} (${bytes(x.size)})`).join(', '),
+      }),
     });
   }
 
   return out;
 }
 
-/** Sizes, in the units a person would say them in. */
+/**
+ * Sizes, in the units a person would say them in.
+ *
+ * The unit is the symbol rather than the word, because every one of these ends
+ * up inside a sentence that is translated around it - a German finding reading
+ * "512 B von EXIF" is right, and "512 bytes von EXIF" is half English.
+ */
 export function bytes(n) {
-  if (n < 1024) return `${n} bytes`;
+  if (n < 1024) return `${n} B`;
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
   return `${(n / (1024 * 1024)).toFixed(1)} MB`;
 }

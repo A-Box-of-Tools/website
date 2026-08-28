@@ -155,6 +155,66 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">En este archivo no hay nada que te delate</span>
+    <span data-phrase="find.clean.cleared">Todo lo que lo hacía ya se ha quitado. Guarda la foto para escribirla.</span>
+    <span data-phrase="find.clean.never">Ni ubicación, ni fechas, ni cámara, ni nombres. O nunca los tuvo, o algo se los
+      quitó antes.</span>
+    <span data-phrase="find.exifempty.title">Un bloque EXIF sin nada dentro</span>
+    <span data-phrase="find.exifempty.detail">{size} de EXIF que se lee limpio y no contiene ninguna etiqueta. Inofensivo, y se
+      quita junto con todo lo demás.</span>
+    <span data-phrase="find.exifbad.title">Un bloque EXIF que no puede leer nadie</span>
+    <span data-phrase="find.exifbad.detail">Aquí hay EXIF y no se ha podido leer: {reason} Todo lo de abajo es lo que se ha
+      podido leer del resto del archivo, así que trata este bloque como una incógnita, y
+      eso es una razón para quitarlo, no para dejarlo.</span>
+    <span data-phrase="find.gps.title">Dónde se hizo la foto</span>
+    <span data-phrase="find.gps.detail">{position}. Eso es lo bastante preciso como para nombrar un edificio, y viaja con el
+      archivo a cualquier sitio donde lo publiques.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. Eso es lo bastante preciso como para nombrar un edificio, y
+      viaja con el archivo a cualquier sitio donde lo publiques.</span>
+    <span data-phrase="find.gpspart.title">Etiquetas de ubicación, sin una posición completa</span>
+    <span data-phrase="find.gpspart.one">Hay una etiqueta GPS, pero sin latitud y longitud utilizables. El rumbo, la altitud
+      y el reloj GPS todavía pueden estar entre ellas.</span>
+    <span data-phrase="find.gpspart.many">Hay {count} etiquetas GPS, pero sin latitud y longitud utilizables. El rumbo, la
+      altitud y el reloj GPS todavía pueden estar entre ellas.</span>
+    <span data-phrase="find.taken.title">Cuándo se hizo</span>
+    <span data-phrase="find.taken.detail">{when}, al segundo. Junto con una ubicación, eso sitúa a una persona en un lugar en
+      un momento concreto.</span>
+    <span data-phrase="find.device.title">El aparato del que salió</span>
+    <span data-phrase="find.device.detail">{device}. Por sí solo es inofensivo; se convierte en un identificador cuando todas
+      las fotos que publicas llevan el mismo.</span>
+    <span data-phrase="find.identity.title">Algo que te nombra a ti o a tu equipo</span>
+    <span data-phrase="find.identity.detail">{found}. Un número de serie ata entre sí todas las fotos de ese cuerpo, las publique
+      quien las publique y donde sea.</span>
+    <span data-phrase="find.id.cameraserial">Número de serie de la cámara</span>
+    <span data-phrase="find.id.lensserial">Número de serie del objetivo</span>
+    <span data-phrase="find.id.owner">Propietario de la cámara</span>
+    <span data-phrase="find.id.uniqueid">Identificador único de la imagen</span>
+    <span data-phrase="find.id.artist">Autor de la toma</span>
+    <span data-phrase="find.id.author">Autor</span>
+    <span data-phrase="find.id.copyright">Derechos de autor</span>
+    <span data-phrase="find.software.title">Qué la editó</span>
+    <span data-phrase="find.software.detail">{software}. Muchas veces es la versión del firmware del móvil, que es algo más
+      concreto de publicar que el modelo a secas.</span>
+    <span data-phrase="find.makernote.title">La nota del fabricante</span>
+    <span data-phrase="find.makernote.detail">{size} de datos privados del propio fabricante. No está documentada, cambia según el
+      modelo, y ahí es donde suelen esconderse números de serie, puntos de enfoque y
+      disparos acumulados.</span>
+    <span data-phrase="find.thumbnail.title">Una segunda copia de la imagen</span>
+    <span data-phrase="find.thumbnail.detail">{size} con una miniatura JPEG. Si la foto se recortó después de que la cámara la
+      escribiera, algunos editores dejan la miniatura mostrando el encuadre sin recortar.</span>
+    <span data-phrase="find.xmp.title">Un paquete XMP</span>
+    <span data-phrase="find.xmp.detail">{size} de XML. Suele repetir la cámara y las fechas, y añade el historial de
+      edición: qué programa, qué versión y cada vez que se guardó el archivo.</span>
+    <span data-phrase="find.iptc.title">Un bloque IPTC</span>
+    <span data-phrase="find.iptc.detail">{size} de los campos que rellena una redacción gráfica: firma, pie de foto, ciudad,
+      crédito. Si esto viene de un banco de imágenes o de un periódico, es probable que
+      dentro haya el nombre de alguien.</span>
+    <span data-phrase="find.comment.title">Un comentario</span>
+    <span data-phrase="find.comment.detail">&laquo;{comment}&raquo;</span>
+    <span data-phrase="find.text.title">Texto: {keyword}</span>
+    <span data-phrase="find.unknown.title">Bloques que esta herramienta no sabe leer</span>
+    <span data-phrase="find.unknown.detail">{blocks}. Ilegible no es lo mismo que vacío, así que estos también se quitan junto
+      con todo lo demás.</span>
     <span data-phrase="read.notjpeg">Esto no empieza como un JPEG.</span>
     <span data-phrase="read.jpeglost">Se perdió la estructura de segmentos: el archivo parece dañado.</span>
     <span data-phrase="read.jpegoverrun">Un segmento declara una longitud que se sale del final del archivo.</span>

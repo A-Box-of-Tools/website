@@ -154,6 +154,50 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">이 파일에는 흘릴 것이 없습니다</span>
+    <span data-phrase="find.clean.cleared">흘리던 것은 모두 지웠습니다. 사진을 저장하면 그대로 파일에 씁니다.</span>
+    <span data-phrase="find.clean.never">위치도, 시각도, 카메라도, 이름도 없습니다. 처음부터 없었거나, 이미 무언가가 지웠습니다.</span>
+    <span data-phrase="find.exifempty.title">안에 아무것도 없는 EXIF 블록</span>
+    <span data-phrase="find.exifempty.detail">EXIF {size}. 깨끗하게 읽히지만 태그가 하나도 없습니다. 해롭지 않고, 나머지와 함께 지워집니다.</span>
+    <span data-phrase="find.exifbad.title">아무도 읽지 못하는 EXIF 블록</span>
+    <span data-phrase="find.exifbad.detail">여기 EXIF가 있는데 읽히지 않았습니다. {reason} 아래에 있는 것은 파일의 나머지에서 읽어낸 것입니다. 그러니 이 블록은 정체를 모르는 것으로
+      치세요. 그것이 남길 이유가 아니라 지울 이유입니다.</span>
+    <span data-phrase="find.gps.title">사진을 찍은 곳</span>
+    <span data-phrase="find.gps.detail">{position}. 건물 하나를 짚을 만큼 정확하고, 어디에 올리든 파일을 따라 함께 갑니다.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. 건물 하나를 짚을 만큼 정확하고, 어디에 올리든 파일을 따라 함께 갑니다.</span>
+    <span data-phrase="find.gpspart.title">위치 태그는 있지만 좌표는 온전하지 않음</span>
+    <span data-phrase="find.gpspart.one">GPS 태그가 하나 있지만 쓸 만한 위도와 경도가 없습니다. 이동 방향, 고도, GPS 시계는 그래도 그 안에 있을 수 있습니다.</span>
+    <span data-phrase="find.gpspart.many">GPS 태그가 {count}개 있지만 쓸 만한 위도와 경도가 없습니다. 이동 방향, 고도, GPS 시계는 그래도 그 안에 있을 수 있습니다.</span>
+    <span data-phrase="find.taken.title">찍은 때</span>
+    <span data-phrase="find.taken.detail">{when}, 초 단위까지. 위치와 합쳐지면 어떤 사람이 어느 순간 어디에 있었는지가 됩니다.</span>
+    <span data-phrase="find.device.title">어느 기기에서 나왔는지</span>
+    <span data-phrase="find.device.detail">{device}. 그 자체로는 해롭지 않지만, 올리는 사진마다 같은 것이 붙어 있으면 식별자가 됩니다.</span>
+    <span data-phrase="find.identity.title">당신이나 당신 장비를 가리키는 것</span>
+    <span data-phrase="find.identity.detail">{found}. 일련번호는 그 바디에서 나온 모든 사진을 하나로 묶습니다. 누가 올렸든, 어디에 올렸든 마찬가지입니다.</span>
+    <span data-phrase="find.id.cameraserial">카메라 일련번호</span>
+    <span data-phrase="find.id.lensserial">렌즈 일련번호</span>
+    <span data-phrase="find.id.owner">카메라 소유자</span>
+    <span data-phrase="find.id.uniqueid">이미지 고유 ID</span>
+    <span data-phrase="find.id.artist">촬영자</span>
+    <span data-phrase="find.id.author">작성자</span>
+    <span data-phrase="find.id.copyright">저작권</span>
+    <span data-phrase="find.software.title">무엇으로 편집했는지</span>
+    <span data-phrase="find.software.detail">{software}. 흔히 휴대폰의 펌웨어 버전이고, 그것은 기종만 밝히는 것보다 더 좁혀진 정보입니다.</span>
+    <span data-phrase="find.makernote.title">제조사 노트</span>
+    <span data-phrase="find.makernote.detail">제조사가 제 마음대로 쓴 비공개 데이터 {size}. 문서로 공개된 적이 없고 기종마다 다르며, 일련번호와 초점 위치와 셔터 횟수가 숨어 있기 좋은
+      곳입니다.</span>
+    <span data-phrase="find.thumbnail.title">사진의 두 번째 사본</span>
+    <span data-phrase="find.thumbnail.detail">작은 JPEG 미리보기가 담긴 {size}. 카메라가 파일을 쓴 뒤에 사진을 잘랐다면, 일부 편집기는 썸네일에 자르기 전 화면을 그대로 남겨 둡니다.</span>
+    <span data-phrase="find.xmp.title">XMP 패킷</span>
+    <span data-phrase="find.xmp.detail">XML {size}. 보통 카메라와 시각을 다시 적고, 거기에 편집 이력을 더합니다. 어떤 프로그램, 어떤 버전, 그리고 파일을 저장한 모든 순간까지.</span>
+    <span data-phrase="find.iptc.title">IPTC 블록</span>
+    <span data-phrase="find.iptc.detail">사진 데스크가 채우는 항목 {size}. 크레딧, 설명, 도시, 출처 같은 것들입니다. 스톡 사진 회사나 편집국에서 온 파일이라면 누군가의 이름이 들어
+      있을 가능성이 큽니다.</span>
+    <span data-phrase="find.comment.title">주석</span>
+    <span data-phrase="find.comment.detail">&ldquo;{comment}&rdquo;</span>
+    <span data-phrase="find.text.title">텍스트: {keyword}</span>
+    <span data-phrase="find.unknown.title">이 도구가 읽지 못하는 블록</span>
+    <span data-phrase="find.unknown.detail">{blocks}. 읽지 못한다는 것과 비어 있다는 것은 다릅니다. 그래서 이 블록도 나머지와 함께 지워집니다.</span>
     <span data-phrase="read.notjpeg">이 파일은 JPEG처럼 시작하지 않습니다.</span>
     <span data-phrase="read.jpeglost">세그먼트 구조가 어긋났습니다. 파일이 손상된 것 같습니다.</span>
     <span data-phrase="read.jpegoverrun">어떤 세그먼트가 파일 끝을 넘어가는 길이를 적어 두었습니다.</span>
