@@ -169,7 +169,7 @@
     <id>https://abox.tools/zh-TW/guides/share-text-between-devices/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/share-text-between-devices/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把文字或檔案經直連加密通道從一個瀏覽器送到另一個——不用給自己發郵件，不留聊天記錄，不需要帳號，也沒有哪臺伺服器留著副本。</summary>
+    <summary type="html">把文字或檔案經直連加密通道從一個瀏覽器送到另一個——不用寄信給自己，不留聊天紀錄，不需要帳號，也沒有哪台伺服器留著副本。</summary>
   </entry>
   <entry>
     <title type="html">密碼與密碼短語產生器</title>
@@ -239,6 +239,6 @@
     <id>https://abox.tools/zh-TW/share-text/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/share-text/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把文字或檔案經由直連加密通道從一個瀏覽器送到另一個。連結名說得出口，邊打字邊即時同步，逐個批准讀者——任何伺服器上永遠不存任何東西。免費，無需註冊。</summary>
+    <summary type="html">把文字或檔案經由直連加密通道從一個瀏覽器送到另一個。連結名稱說得出口，邊打字邊即時同步，逐一核准讀者——任何伺服器上永遠不存任何東西。免費，無須註冊。</summary>
   </entry>
 </feed>
