@@ -99,7 +99,7 @@
   align-items: center;
   gap: 0.8rem;
 }
-.slider-row input[type="range"] { flex: 1; accent-color: var(--accent); }
+.slider-row input[type="range"] { flex: 1; }
 
 .slider-row output {
   min-width: 2.6rem;

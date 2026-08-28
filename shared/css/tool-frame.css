@@ -64,6 +64,18 @@ body {
   background: var(--bg);
   color: var(--text);
   font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* The tick in a checkbox, the dot in a radio, the filled half of a slider.
+     `accent-color` inherits, so one declaration here reaches every native
+     control on every tool page, including the ones a tool adds tomorrow -
+     and the browser still draws the control, still picks a mark that
+     contrasts with whatever this resolves to, and still keeps the platform's
+     own shape and focus behaviour. That is the whole reason to set this
+     rather than rebuild the controls out of divs.
+
+     Seven tools each set this on their own controls, which left the other
+     twenty-four drawing the operating system's default blue next to a page
+     using this site's. It is one property and it belongs to the frame. */
+  accent-color: var(--accent);
 }
 
 h1, h2 { line-height: 1.25; }
