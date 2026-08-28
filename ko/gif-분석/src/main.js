@@ -244,7 +244,7 @@ if(row.bytes===0&&row.key!=='pixels')continue;
 const slice=document.createElement('span');
 slice.className=`slice slice-${row.key}`;
 slice.style.width=`${row.share * 100}%`;
-slice.title=`${row.label}: ${fileSize(row.bytes)}`;
+slice.title=`${phrase(row.label)}: ${fileSize(row.bytes)}`;
 el.budgetBar.append(slice);
 const line=document.createElement('tr');
 const head=document.createElement('th');
@@ -252,10 +252,10 @@ head.scope='row';
 const swatch=document.createElement('span');
 swatch.className=`key key-${row.key}`;
 const label=document.createElement('span');
-label.textContent=row.label;
+label.textContent=phrase(row.label);
 const note=document.createElement('span');
 note.className='budget-note';
-note.textContent=row.note;
+note.textContent=phrase(row.note,row.values);
 head.append(swatch,label,note);
 const size=document.createElement('td');
 size.className='num';
@@ -310,7 +310,8 @@ heading.textContent=`Frame ${frame.index + 1}`;
 const rows=[
 ['Delay',delay(frame.delay)+(frame.delay<2?' → 0.10s':'')],
 ['Rectangle',`${frame.width} × ${frame.height} at ${frame.left}, ${frame.top}`],
-['Disposal',DISPOSALS[frame.disposal]??`Reserved (${frame.disposal})`],
+[phrase('frame.disposal'),
+phrase(DISPOSALS[frame.disposal]??'disposal.reserved',{n:frame.disposal})],
 ['Palette',frame.palette
 ?`${count(frame.palette.count)} of its own`
 :gif.globalPalette?'the global one':'none at all'],
@@ -453,7 +454,7 @@ return'An application block. Viewers skip the ones they do not recognise.';
 }
 el.downloadReport.addEventListener('click',()=>{
 if(!current)return;
-const text=report(current.gif,current.view);
+const text=report(current.gif,current.view,phrase);
 const blob=new Blob([text],{type:'text/plain'});
 const url=URL.createObjectURL(blob);
 const link=document.createElement('a');
@@ -464,7 +465,7 @@ setTimeout(()=>URL.revokeObjectURL(url),10_000);
 });
 el.copyReport.addEventListener('click',async()=>{
 if(!current)return;
-const text=report(current.gif,current.view);
+const text=report(current.gif,current.view,phrase);
 try{
 await navigator.clipboard.writeText(text);
 el.copyStatus.textContent='Copied. It is plain text, and it went to your clipboard only.';

@@ -9,10 +9,10 @@ const PLAIN_TEXT=0x01;
 const APPLICATION=0xff;
 const HEADER_BYTES=13;
 export const DISPOSALS=[
-'Unspecified',
-'Leave it in place',
-'Clear back to the background',
-'Restore what was underneath',
+'disposal.unspecified',
+'disposal.keep',
+'disposal.background',
+'disposal.restore',
 ];
 export function parseGif(bytes){
 if(bytes.length<6||text(bytes.subarray(0,3))!=='GIF'){
