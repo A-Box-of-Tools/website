@@ -235,6 +235,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="tile.remove">{name} entfernen</span>
+    <span data-phrase="tile.left">{name} nach links drehen</span>
+    <span data-phrase="tile.right">{name} nach rechts drehen</span>
+    <span data-phrase="tile.earlier">{name} nach vorn schieben</span>
+    <span data-phrase="tile.later">{name} nach hinten schieben</span>
+    <span data-phrase="read.notimage">{name}: kein Bild, das dieses Werkzeug lesen kann.</span>
+    <span data-phrase="read.nodecode">{name}: dieser Browser konnte es nicht dekodieren.</span>
+    <span data-phrase="drag.move">{name} durch Ziehen verschieben</span>
+    <span data-phrase="note.fit">Jede Seite ist genau ihr Bild, es wird also nichts
+      beschnitten und nichts mit Balken gefüllt.</span>
+    <span data-phrase="note.page">Die Bilder werden auf eine Seite dieser Größe gesetzt.</span>
+    <span data-phrase="note.mode.keep">JPEG-Fotos kommen Byte für Byte hinein, ohne
+      Dekodieren und ohne Qualitätsverlust. Andere Formate werden neu kodiert oder
+      verlustfrei behalten, wenn sie durchsichtig sind.</span>
+    <span data-phrase="note.mode.jpeg">Alles wird dekodiert und neu kodiert. Kleinste
+      Datei, und die einzige Einstellung, die bei einem Bild, das schon ein JPEG war,
+      Qualität kostet.</span>
+    <span data-phrase="note.mode.lossless">Jedes Bild wird exakt gespeichert,
+      deflate-komprimiert. Mit Abstand die größte Datei, und die richtige Antwort für
+      Scans von Text, Strichzeichnungen und Bildschirmfotos.</span>
+    <span data-phrase="note.full">Volle Auflösung. Ein Ordner voller Handyfotos ergibt
+      ein großes PDF.</span>
+    <span data-phrase="note.shrink">Alles Größere wird herunterskaliert, das heißt neu
+      kodiert statt kopiert.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">Seite {n} von {total}</span>
+    <span data-phrase="n.image.one">{n} Bild</span>
+    <span data-phrase="n.image.many">{n} Bilder</span>
+    <span data-phrase="n.page.one">{n} Seite</span>
+    <span data-phrase="n.page.many">{n} Seiten</span>
+    <span data-phrase="sum.copied">{kept} von {total}</span>
+    <span data-phrase="page.fit">passt sich jedem Bild an</span>
+    <span data-phrase="page.mm">{width} &times; {height} mm</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">Hochformat</span>
+    <span data-phrase="page.landscape">Querformat</span>
+    <span data-phrase="page.mixed">gemischt</span>
+    <span data-phrase="page.auto">je nach Bild</span>
+    <span data-phrase="step.starting">Wird gestartet&hellip;</span>
+    <span data-phrase="step.page">Seite {n} von {total} &mdash; {name}</span>
+    <span data-phrase="step.writing">Das Dokument wird geschrieben&hellip;</span>
+    <span data-phrase="step.cancelled">Abgebrochen.</span>
+    <span data-phrase="result.one">{n} Seite, {size}.</span>
+    <span data-phrase="result.many">{n} Seiten, {size}.</span>
+    <span data-phrase="result.copied.one">{copied} von {total} kam genau so hinein, wie
+      es war.</span>
+    <span data-phrase="result.copied.many">{copied} von {total} kamen genau so hinein,
+      wie sie waren.</span>
+    <span data-phrase="result.copied.none">Jedes Bild wurde für das Dokument neu
+      kodiert.</span>
+    <span data-phrase="build.noimages">Zuerst muss mindestens ein Bild gewählt sein.</span>
+    <span data-phrase="encode.nojpeg">Dieser Browser konnte das Bild nicht als JPEG
+      kodieren.</span>
+    <span data-phrase="encode.nodeflate">Dieser Browser hat kein CompressionStream, das
+      die verlustfreie Einstellung braucht. Eine der JPEG-Einstellungen geht
+      stattdessen.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">Ihre Bilder sind nirgendwohin gegangen.
       {total} Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

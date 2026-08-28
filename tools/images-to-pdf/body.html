@@ -234,6 +234,67 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="tile.remove">Remove {name}</span>
+    <span data-phrase="tile.left">Rotate {name} anticlockwise</span>
+    <span data-phrase="tile.right">Rotate {name} clockwise</span>
+    <span data-phrase="tile.earlier">Move {name} earlier</span>
+    <span data-phrase="tile.later">Move {name} later</span>
+    <span data-phrase="read.notimage">{name}: not an image this tool can read.</span>
+    <span data-phrase="read.nodecode">{name}: this browser could not decode it.</span>
+    <span data-phrase="drag.move">Drag to move {name}</span>
+    <span data-phrase="note.fit">Every page is exactly its picture, so nothing is
+      cropped or letterboxed.</span>
+    <span data-phrase="note.page">Pictures are placed on a page of this size.</span>
+    <span data-phrase="note.mode.keep">JPEG photos go in byte for byte, with no decoding
+      and no quality lost. Other formats are re-encoded, or kept lossless if they are
+      see-through.</span>
+    <span data-phrase="note.mode.jpeg">Everything is decoded and encoded again. Smallest
+      file, and the only setting that costs quality on a picture that was already a
+      JPEG.</span>
+    <span data-phrase="note.mode.lossless">Every picture is stored exactly, deflated.
+      Largest file by some way, and the right answer for scans of text, line art and
+      screenshots.</span>
+    <span data-phrase="note.full">Full resolution. A folder of phone photos makes a
+      large PDF.</span>
+    <span data-phrase="note.shrink">Anything larger is scaled down, which means it is
+      re-encoded rather than copied.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="preview.page">Page {n} of {total}</span>
+    <span data-phrase="n.image.one">{n} image</span>
+    <span data-phrase="n.image.many">{n} images</span>
+    <span data-phrase="n.page.one">{n} page</span>
+    <span data-phrase="n.page.many">{n} pages</span>
+    <span data-phrase="sum.copied">{kept} of {total}</span>
+    <span data-phrase="page.fit">matches each image</span>
+    <span data-phrase="page.mm">{width} &times; {height} mm</span>
+    <span data-phrase="page.custom">{width} &times; {height} {unit}</span>
+    <span data-phrase="page.portrait">portrait</span>
+    <span data-phrase="page.landscape">landscape</span>
+    <span data-phrase="page.mixed">mixed</span>
+    <span data-phrase="page.auto">each image&rsquo;s own way up</span>
+    <span data-phrase="step.starting">Starting&hellip;</span>
+    <span data-phrase="step.page">Page {n} of {total} &mdash; {name}</span>
+    <span data-phrase="step.writing">Writing the document&hellip;</span>
+    <span data-phrase="step.cancelled">Cancelled.</span>
+    <span data-phrase="result.one">{n} page, {size}.</span>
+    <span data-phrase="result.many">{n} pages, {size}.</span>
+    <span data-phrase="result.copied.one">{copied} of {total} put in exactly as it was.</span>
+    <span data-phrase="result.copied.many">{copied} of {total} put in exactly as they
+      were.</span>
+    <span data-phrase="result.copied.none">Every picture was encoded again for the
+      document.</span>
+    <span data-phrase="build.noimages">Choose at least one image first.</span>
+    <span data-phrase="encode.nojpeg">This browser could not encode the picture as a
+      JPEG.</span>
+    <span data-phrase="encode.nodeflate">This browser has no CompressionStream, which
+      the lossless setting needs. Choose one of the JPEG settings instead.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">your images have gone nowhere. {total} files
       loaded, all of them this page's own. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

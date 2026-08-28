@@ -79,7 +79,9 @@ BASELINE = {
     'id-photo': 13,
     'image-to-data-uri': 20,
     'image-to-ico': 6,
-    'images-to-pdf': 26,
+    # The /Producer string written into the PDF, five lines of PDF syntax, a
+    # CSS pixel value, a key template and the output filename.
+    'images-to-pdf': 9,
     'images-to-video': 21,
     'merge-pdf': 5,
     'password-generator': 8,
