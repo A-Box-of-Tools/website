@@ -77,8 +77,10 @@ BASELINE = {
     'hash-checksum': 10,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
-    # A filename template, a dimension pair, a CSS percentage, a phrase key, the
-    # note written into a padded JPEG, and the eight published citations.
+    # All thirteen are accounted for and none of them moves: a filename
+    # template, a dimension pair, a CSS percentage, a phrase key, the note
+    # written into a padded JPEG, and the eight published citations, which
+    # stay as published so that somebody can search for them.
     'id-photo': 13,
     # A CSS class name and one line of the CSS rule the tool writes out.
     'image-to-data-uri': 2,
@@ -92,6 +94,11 @@ BASELINE = {
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
     'qr-barcode': 2,
+    # None of these thirteen reaches a reader. Six are qr-decode.js's
+    # diagnostics, which detect.js catches and turns into a null; two are
+    # camera.js's and main.js's markers, which are likewise swallowed by
+    # their callers; two are a symbology's published name; and three are a
+    # digit pair, a CSS selector and a key template.
     'qr-barcode-reader': 13,
     # A key template, and a CSS class name the stage builds.
     'redact-image': 2,
