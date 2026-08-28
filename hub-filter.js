@@ -6,7 +6,9 @@ var input=document.getElementById('tool-filter-input');
 var empty=document.getElementById('tool-filter-none');
 if(!box||!input||!empty)return;
 function fold(text){
-return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+return text.toLowerCase().normalize('NFD')
+.replace(/[\u0300-\u036f]/g,'')
+.replace(/[-\u2010-\u2015\u2212]/g,'');
 }
 var groups=[];
 var items=[];
