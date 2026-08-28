@@ -435,6 +435,16 @@ read_first_lead = """
       De bestanden die je als eerste wilt lezen zijn <code>config/site.toml</code>
       voor de Content-Security-Policy"""
 
+dlp_note = """
+      <strong>Als de beveiligingssoftware van je werkgever voor een upload
+      waarschuwt.</strong> Die let op het moment dat er in een browser een
+      bestand wordt gekozen, en kan niet weten of de pagina het wil versturen
+      &mdash; dus waarschuwt hij bij het kiezen. Hier wordt niets verstuurd:
+      open de ontwikkelaarstools, ga naar Netwerk en kies een bestand. Er is
+      geen verzoek dat het meeneemt, en helemaal geen verzoek behalve de lokale
+      voorbeeldweergave van de pagina. Diezelfde controle doet je IT-afdeling
+      in een halve minuut."""
+
 [ui.feedback]
 # De labels bij de duimen zijn voor de schermlezer en de tooltip; de icoontjes
 # spreken voor zich.

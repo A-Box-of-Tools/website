@@ -449,6 +449,15 @@ read_first_lead = """
       Önce okunmaya değer dosyalar, Content-Security-Policy için
       <code>config/site.toml</code>"""
 
+dlp_note = """
+      <strong>İş yerinizin güvenlik yazılımı bir yükleme uyarısı
+      verirse.</strong> Tarayıcıda bir dosyanın seçildiği anı izler ve sayfanın
+      onu göndermeye niyetli olup olmadığını bilemez &mdash; bu yüzden seçim
+      anında uyarır. Buradan hiçbir şey gönderilmez: tarayıcınızın geliştirici
+      araçlarını açın, Ağ sekmesine geçin ve bir dosya seçin. Onu taşıyan bir
+      istek yoktur; sayfanın kendi yerel önizlemesi dışında hiçbir istek
+      yoktur. Aynı denetimi BT ekibiniz yarım dakikada yapabilir."""
+
 [ui.feedback]
 prompt = "İşe yaradı mı?"
 up = "Evet"

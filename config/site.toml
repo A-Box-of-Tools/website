@@ -736,6 +736,23 @@ read_first_lead = """
       The files worth reading first are <code>config/site.toml</code> for the
       Content-Security-Policy"""
 
+# For the reader on a work laptop whose security software has just shouted at
+# them. It is the commonest way somebody is told this site uploaded their file,
+# and the tool cannot answer it from inside the page - the alert comes from
+# software on their machine, not from anything served here.
+#
+# Written to be shown to whoever raised it: it says what the monitor saw, why
+# it is not what it looks like, and how to check in the one place both sides
+# can look at together.
+dlp_note = """
+      <strong>If your employer's security software warns about an upload.</strong>
+      It is watching the moment a file is chosen in a browser, and it cannot
+      know whether the page intends to send it &mdash; so it warns on the
+      choosing. Nothing is sent here: open your browser's developer tools,
+      switch to Network, and choose a file. There is no request carrying it,
+      and no request at all beyond the page's own local preview. That is the
+      same check anyone in your IT team can run in half a minute."""
+
 #
 # The one question this site asks, on the tool page, after a download. Its own
 # table rather than more of [ui.tool] because it is the only part of the frame

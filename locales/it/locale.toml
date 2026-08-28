@@ -433,6 +433,16 @@ read_first_lead = """
       I file da leggere per primi sono <code>config/site.toml</code> per la
       Content-Security-Policy"""
 
+dlp_note = """
+      <strong>Se il software di sicurezza della tua azienda segnala un
+      caricamento.</strong> Osserva il momento in cui un file viene scelto nel
+      browser, e non può sapere se la pagina intende inviarlo &mdash; quindi
+      avvisa alla scelta. Qui non viene inviato nulla: apri gli strumenti per
+      sviluppatori, vai su Rete e scegli un file. Non c'è nessuna richiesta che
+      lo trasporti, e nessuna richiesta a parte l'anteprima locale della
+      pagina. È la stessa verifica che il tuo reparto IT può fare in mezzo
+      minuto."""
+
 [ui.feedback]
 # Le etichette dei pollici servono allo screen reader e al tooltip: le icone si
 # capiscono da sole.
