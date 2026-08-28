@@ -15,6 +15,11 @@ heading = "Image&nbsp;Compressor <span class=\"h1-kw\">&mdash; compress to an ex
 tagline = "Name the size. It works out the rest."
 icon = "&#128476;&#65039;"          # the mark beside the page heading
 favicon = "&#128476;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "image-down"
 category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.

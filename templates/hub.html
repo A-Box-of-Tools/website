@@ -231,7 +231,8 @@
     <ul class="tool-grid">
 {% for tool in category.tools %}      <li>
         <a class="tool-card" href="{{ tool.out_slug }}/">
-          <span class="tool-icon" aria-hidden="true">{{ tool.icon }}</span>
+          <svg class="tool-icon" viewBox="0 0 24 24" aria-hidden="true"
+               focusable="false">{{ tool.glyph_svg }}</svg>
           <!-- `name` is the tool's plain-text name, the one that also goes into
                the structured data above, so it is escaped on the way in here. -->
           <span class="tool-name">{{ tool.name | e }}</span>

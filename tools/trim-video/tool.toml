@@ -15,6 +15,11 @@ heading = "Video&nbsp;Cutter <span class=\"h1-kw\">&mdash; cut a video online</s
 tagline = "Mark the parts worth keeping as it plays. Get them back as one video."
 icon = "&#127902;&#65039;"        # the mark beside the page heading
 favicon = "&#127902;"     # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "scissors"
 category = "video-and-animation"
 
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.

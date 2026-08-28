@@ -28,6 +28,11 @@ heading = "DICOM&nbsp;Viewer <span class=\"h1-kw\">&mdash; open a .dcm scan in y
 tagline = "CT, MR, X-ray and ultrasound, with the window, the header and the measurements."
 icon = "&#129659;"         # the mark beside the page heading
 favicon = "&#129659;"      # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+glyph = "scan"
 category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 # It sits at the top of that group as a link, above the names still to be built.

@@ -321,7 +321,27 @@ code {
   .tool-card:focus-visible { transform: none; }
 }
 
-.tool-icon { font-size: 1.6rem; line-height: 1; }
+/* The mark on a card. It is a Lucide drawing inlined by the build, not an
+   emoji, and the difference that matters is this rule: a drawing takes the
+   stroke and the colour the page gives it, so thirty-six of them in a grid are
+   one set. The emoji they replaced were four vendors' artwork - Segoe's flat
+   fills beside Apple's glossy ones beside whatever Android had redrawn that
+   year - and no rule here could reach them.
+
+   `--accent`, so the grid reads as this site's rather than as a row of
+   pictures, and the same token the card's border and hover shadow already use.
+
+   The 2px stroke is Lucide's own, drawn for a 24 unit box; this is 25.6px, so
+   it arrives at very nearly the weight it was designed at. */
+.tool-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .tool-name { font-weight: 600; font-size: 1.02rem; }
 .tool-desc { font-size: 0.88rem; color: var(--text-dim); line-height: 1.5; }
 

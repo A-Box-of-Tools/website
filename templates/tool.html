@@ -199,7 +199,8 @@
 
 <header class="topbar">
   <div class="brand">
-    <span class="brand-mark" aria-hidden="true">{{ tool.icon }}</span>
+    <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true"
+         focusable="false">{{ tool.glyph_svg }}</svg>
     <div>
       <h1>{{ tool.heading }}</h1>
       <p class="tagline">{{ tool.tagline }}</p>
@@ -415,7 +416,8 @@
 {% for other in related %}    <li>
       <a href="{{ base }}{{ other.out_slug }}/">
         <span class="tool-related-head">
-          <span class="tool-related-icon" aria-hidden="true">{{ other.icon }}</span>
+          <svg class="tool-related-icon" viewBox="0 0 24 24" aria-hidden="true"
+                focusable="false">{{ other.glyph_svg }}</svg>
           <span class="tool-related-name">{{ other.name | e }}</span>
         </span>
         <span class="tool-related-note">{{ other.tagline }}</span>

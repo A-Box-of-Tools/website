@@ -98,6 +98,7 @@ from buildlib import cards
 from buildlib import catalogue
 from buildlib import cssmin
 from buildlib import i18n
+from buildlib import icons as iconlib
 from buildlib import imports
 from buildlib import minify
 from buildlib import screens
@@ -273,6 +274,17 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
              for path in sorted(TOOLS.glob('*/tool.toml'))]
     if not tools:
         raise sitelib.ConfigError(f'no tools found under {TOOLS}')
+
+    # The drawn mark each tool wears, read off shared/icons once and hung on the
+    # tool itself. It travels with the tool from here - onto its own page, onto
+    # its card on the hub, onto the neighbour tiles at the foot of every other
+    # tool, and into the 404 - so there is no second place that has to be told
+    # which icon this tool uses. `glyph` names the file; `glyph_svg` is the
+    # geometry inside it, and the <svg> around that is written by whichever
+    # template is placing it, at whatever size that page wants.
+    glyphs = iconlib.load_all(ROOT, [tool['glyph'] for tool in tools])
+    for tool in tools:
+        tool['glyph_svg'] = glyphs[tool['glyph']]
 
     # A tool may declare `handoff` targets - the tools its finished result can
     # be carried straight into (see shared/handoff.js). Checked here the way
@@ -1751,8 +1763,13 @@ def copy_shared(out):
         # raw copy at the site root that nothing references; site.css and the
         # frame scripts are written separately, minified, by the caller -
         # copying the source over one of them here would undo that.
-        if path.name in ('css', 'js', 'site.css', 'lang.js', 'feedback.js',
-                         'handoff.js', 'lang-keep.js'):
+        # `icons` is the same kind of input: shared/icons holds upstream Lucide
+        # for buildlib/icons.py to inline into the pages, and nothing fetches an
+        # .svg from there - publishing the folder would be thirty-six files at
+        # the site root that no page links to.
+        if path.name in ('css', 'js', 'icons', 'site.css', 'lang.js',
+                         'feedback.js', 'handoff.js', 'lang-keep.js',
+                         'hub-filter.js'):
             continue
         if path.is_dir():
             shutil.copytree(path, out / path.name, dirs_exist_ok=True)

@@ -166,7 +166,26 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 
 .brand { display: flex; align-items: center; gap: 0.85rem; }
-.brand-mark { font-size: 2rem; line-height: 1; }
+
+/* The tool's mark, beside its heading. A Lucide drawing inlined by the build,
+   in `--accent` like the one on its card on the hub, so arriving from there is
+   arriving at the same object.
+
+   Lucide draws at a 2px stroke in a 24 unit box. This is 32px, where a
+   straight 2 would scale to about 2.7 and read heavier than the same icon does
+   everywhere else on the site; 1.8 lands it back at roughly the weight it was
+   drawn at. The 1.6rem marks on the hub need no such correction - they are
+   within a pixel of Lucide's own size. */
+.brand-mark {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 .brand h1 { margin: 0; font-size: 1.4rem; letter-spacing: -0.01em; }
 
 /* The keyword half of the heading. The <h1> has to contain the phrase people
@@ -1009,10 +1028,22 @@ button, .as-button {
 .tool-related a:hover .tool-related-name,
 .tool-related a:focus-visible .tool-related-name { text-decoration: underline; }
 
-/* The emoji carries no meaning the name does not already carry - it is
-   aria-hidden in the markup - so it must not set the line's baseline or a row
-   whose neighbour has a taller glyph sits a pixel lower than the rest. */
-.tool-related-icon { font-size: 1rem; line-height: 1; }
+/* The mark carries no meaning the name does not already carry - it is
+   aria-hidden in the markup - so it must not set the line's baseline. That was
+   written when these were emoji and a taller glyph dropped its whole row by a
+   pixel; a drawing is a fixed box and cannot, but the row is still a flex line
+   with a baseline in it, so the mark stays out of the way explicitly. */
+.tool-related-icon {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  align-self: center;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
 
 .tool-related-note {
   font-size: 0.88rem;

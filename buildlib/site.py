@@ -16,7 +16,7 @@ import tomllib
 import urllib.parse
 
 REQUIRED_TOOL_KEYS = (
-    'slug', 'name', 'heading', 'tagline', 'icon', 'favicon', 'category',
+    'slug', 'name', 'heading', 'tagline', 'icon', 'favicon', 'glyph', 'category',
     'lastmod', 'title', 'description', 'og_title', 'og_description',
     'og_image_alt', 'pledge', 'live_hint', 'read_first', 'howto_heading',
     'card', 'words', 'facts', 'privacy', 'howto', 'faq', 'schema',
