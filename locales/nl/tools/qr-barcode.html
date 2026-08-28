@@ -190,6 +190,113 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">Elke tekst: letters, cijfers en leestekens. De gebruikelijke keuze als jij het
+      nummer bepaalt.</span>
+    <span data-phrase="bar.code128.needs">elke tekst die je op een toetsenbord kunt typen</span>
+    <span data-phrase="bar.ean13.holds">12 of 13 cijfers. De streepjescode op een winkelproduct buiten Noord-Amerika.</span>
+    <span data-phrase="bar.ean13.needs">12 cijfers, of 13 met het controlecijfer er al achter</span>
+    <span data-phrase="bar.upca.holds">11 of 12 cijfers. De winkelstreepjescode in de Verenigde Staten en Canada.</span>
+    <span data-phrase="bar.upca.needs">11 cijfers, of 12 met het controlecijfer er al achter</span>
+    <span data-phrase="bar.ean8.holds">7 of 8 cijfers. De korte winkelcode, voor verpakkingen die te klein zijn voor een
+      EAN-13.</span>
+    <span data-phrase="bar.ean8.needs">7 cijfers, of 8 met het controlecijfer er al achter</span>
+    <span data-phrase="bar.itf14.holds">13 of 14 cijfers. De code op een verzenddoos vol winkelproducten.</span>
+    <span data-phrase="bar.itf14.needs">13 cijfers, of 14 met het controlecijfer er al achter</span>
+    <span data-phrase="bar.itf.holds">Een even aantal cijfers. Compact, en gewoon in magazijnen.</span>
+    <span data-phrase="bar.itf.needs">cijfers, en een even aantal &mdash; een nul ervoor is de gebruikelijke oplossing</span>
+    <span data-phrase="bar.code39.holds">Hoofdletters, cijfers, een spatie en - . $ / + %. Oud, door alles gelezen.</span>
+    <span data-phrase="bar.code39.needs">hoofdletters, cijfers, een spatie, en - . $ / + %</span>
+    <span data-phrase="bar.nosuch">zo&rsquo;n streepjescode bestaat niet: {id}</span>
+    <span data-phrase="bar.empty">{name} heeft iets nodig om te bevatten.</span>
+    <span data-phrase="bar.wants">{name} heeft {needs} nodig.</span>
+    <span data-phrase="bar.code39.cannot">Code 39 kan {char} niet bevatten. Hij bevat alleen A-Z, 0-9, een spatie, en - . $ /
+      + %. Een QR-code bevat alles wat je kunt typen.</span>
+    <span data-phrase="bar.notascii">Code 128 bevat alleen ASCII, en {char} is dat niet. Een QR-code bevat het wel.</span>
+    <span data-phrase="bar.checkdigit">Dat is geen geldige {name}: het laatste cijfer zou {expected} moeten zijn, niet
+      {actual}. Laat het weg en het wordt voor je uitgerekend.</span>
+    <span data-phrase="bar.added">Controlecijfer {digit} uitgerekend en toegevoegd.</span>
+    <span data-phrase="bar.modulo43">Modulo-43-controleteken toegevoegd.</span>
+    <span data-phrase="bar.raised">Kleine letters zijn hoofdletters geworden.</span>
+    <span data-phrase="bar.andraised">{note} Kleine letters zijn hoofdletters geworden.</span>
+    <span data-phrase="qr.toolong">te lang voor een QR-code op niveau {level}: {count} {unit}, en het grootste symbool
+      bevat er {most}</span>
+    <span data-phrase="unit.bytes">bytes</span>
+    <span data-phrase="unit.characters">tekens</span>
+    <span data-phrase="render.nosvg">deze browser wilde de SVG niet tekenen</span>
+    <span data-phrase="render.nopng">deze browser wilde geen PNG schrijven</span>
+    <span data-phrase="kind.text.name">Tekst of link</span>
+    <span data-phrase="kind.text.note">Van alles. Een webadres is wat een telefooncamera zal aanbieden te openen.</span>
+    <span data-phrase="kind.wifi.name">Wifi-netwerk</span>
+    <span data-phrase="kind.wifi.note">Scannen biedt aan om aan het netwerk deel te nemen. Android leest dit standaard; de
+      iPhone-camera vanaf iOS 11.</span>
+    <span data-phrase="kind.contact.name">Contactkaart</span>
+    <span data-phrase="kind.contact.note">Een vCard, die een telefoon aanbiedt in zijn adresboek te bewaren.</span>
+    <span data-phrase="kind.email.name">E-mail</span>
+    <span data-phrase="kind.email.note">Opent een nieuw bericht met het adres, en met het onderwerp en de tekst als je die
+      invult.</span>
+    <span data-phrase="kind.sms.name">Tekstbericht</span>
+    <span data-phrase="kind.sms.note">Opent een nieuw bericht aan dat nummer, met de tekst klaar om te versturen.</span>
+    <span data-phrase="kind.phone.name">Telefoonnummer</span>
+    <span data-phrase="kind.phone.note">Biedt aan het nummer te bellen.</span>
+    <span data-phrase="kind.location.name">Een plek op de kaart</span>
+    <span data-phrase="kind.location.note">Opent de coördinaten in de kaartentoepassing die de telefoon gebruikt.</span>
+    <span data-phrase="field.text">Tekst of webadres</span>
+    <span data-phrase="field.ssid">Netwerknaam (SSID)</span>
+    <span data-phrase="field.password">Wachtwoord</span>
+    <span data-phrase="field.security">Beveiliging</span>
+    <span data-phrase="field.hidden">Het netwerk is verborgen</span>
+    <span data-phrase="field.open">Open &mdash; geen wachtwoord</span>
+    <span data-phrase="field.first">Voornaam</span>
+    <span data-phrase="field.last">Achternaam</span>
+    <span data-phrase="field.org">Organisatie</span>
+    <span data-phrase="field.title">Functie</span>
+    <span data-phrase="field.phone">Telefoon</span>
+    <span data-phrase="field.email">E-mail</span>
+    <span data-phrase="field.url">Website</span>
+    <span data-phrase="field.address">Adres</span>
+    <span data-phrase="field.to">Aan</span>
+    <span data-phrase="field.subject">Onderwerp</span>
+    <span data-phrase="field.body">Bericht</span>
+    <span data-phrase="field.number">Telefoonnummer</span>
+    <span data-phrase="field.message">Bericht</span>
+    <span data-phrase="field.latitude">Breedtegraad</span>
+    <span data-phrase="field.longitude">Lengtegraad</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">Het Koffiehuis</span>
+    <span data-phrase="field.optional">{label} (optioneel)</span>
+    <span data-phrase="field.thetext">De tekst</span>
+    <span data-phrase="field.thenumber">Het nummer</span>
+    <span data-phrase="payload.nosuch">zo&rsquo;n soort bestaat niet: {kind}</span>
+    <span data-phrase="payload.anydetail">Minstens één gegeven</span>
+    <span data-phrase="payload.something">Iets om erin te zetten</span>
+    <span data-phrase="payload.fillin">In te vullen: {list}.</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">Een QR-code bevat elke tekst, en elke telefooncamera van de afgelopen tien jaar
+      leest er een zonder app.</span>
+    <span data-phrase="size.exact">{pixels} pixels in het vierkant, op {scale} per module.</span>
+    <span data-phrase="size.rounded">{pixels} pixels in het vierkant in plaats van {asked}, omdat {across} modules breed
+      alleen op {scale} pixels per stuk precies uitkomt. De SVG heeft die grens niet
+      &mdash; die drukt op elk formaat af.</span>
+    <span data-phrase="size.barcode.one">{width} bij {height} pixels, op 1 pixel voor de smalste streep.</span>
+    <span data-phrase="size.barcode.many">{width} bij {height} pixels, op {scale} pixels voor de smalste streep.</span>
+    <span data-phrase="facts.qr">Versie {version}: {size} modules in het vierkant, modus {mode}, niveau {level}
+      &mdash; ongeveer {recovery}% ervan mag vernield zijn en hij wordt nog gelezen.
+      Masker {mask}. Gebruikt {bits} van de {capacity} bits die deze versie bevat
+      ({used}%), wat op deze versie en dit niveau ruimte is voor {most} {unit} in totaal.</span>
+    <span data-phrase="facts.barcode">{name}, met {text} erin. {modules} modules breed, waarvan {left} de stille zone
+      links en {right} die rechts &mdash; wit dat de scanner nodig heeft, dus deel van het
+      plaatje en niet iets om weg te snijden.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1 teken.</span>
+    <span data-phrase="string.many">{n} tekens.</span>
+    <span data-phrase="string.bytes">{characters} tekens, {bytes} bytes &mdash; sommige zijn geen ASCII, en een QR-code
+      telt in bytes wat hij opslaat.</span>
+    <span data-phrase="save.done">Opgeslagen. Er is niets ergens heen gestuurd om het te maken.</span>
+    <span data-phrase="save.failed">{detail}. De SVG wordt alsnog gedownload.</span>
+    <span data-phrase="save.copied">Gekopieerd. Plak het waar je het nodig hebt.</span>
+    <span data-phrase="save.noclipboard">Deze browser liet de pagina niet naar het klembord schrijven. Download het in plaats
+      daarvan.</span>
     <span data-phrase="net.clean">Wat je typte, is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

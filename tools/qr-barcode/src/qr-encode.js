@@ -209,17 +209,19 @@ export function interleave(codewords, version, level) {
  * @returns {{codewords: Uint8Array, version: number, level: string, mode: string,
  *            bits: number, capacityBits: number, remainderBits: number}}
  */
-export function encodeText(text, options = {}) {
+export function encodeText(text, options = {}, t) {
   const level = options.level ?? 'M';
   const mode = options.mode ?? chooseMode(text);
   const version = fitVersion(text, mode, level, options.minVersion ?? 1,
                              options.maxVersion ?? 40);
 
   if (version === 0) {
-    throw new RangeError(
-      `too long for a QR code at level ${level}: ${unitCount(text, mode)} `
-      + `${mode === 'byte' ? 'bytes' : 'characters'}, and the largest symbol holds `
-      + `${capacityFor(mode, options.maxVersion ?? 40, level)}`);
+    throw new RangeError(t('qr.toolong', {
+      level,
+      count: unitCount(text, mode),
+      unit: t(mode === 'byte' ? 'unit.bytes' : 'unit.characters'),
+      most: capacityFor(mode, options.maxVersion ?? 40, level),
+    }));
   }
 
   const capacity = dataCapacity(version, level);

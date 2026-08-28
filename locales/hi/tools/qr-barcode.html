@@ -190,6 +190,110 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">कोई भी टेक्स्ट: अक्षर, अंक और विराम-चिह्न। जब नंबर आपको ही तय करना हो तो यही आम
+      चुनाव है।</span>
+    <span data-phrase="bar.code128.needs">कोई भी टेक्स्ट जो आप कीबोर्ड पर टाइप कर सकें</span>
+    <span data-phrase="bar.ean13.holds">12 या 13 अंक। उत्तरी अमेरिका के बाहर बिकने वाले सामान पर लगा बारकोड।</span>
+    <span data-phrase="bar.ean13.needs">12 अंक, या 13 जिनके आख़िर में चेक अंक पहले से हो</span>
+    <span data-phrase="bar.upca.holds">11 या 12 अंक। अमेरिका और कनाडा में इस्तेमाल होने वाला दुकानी बारकोड।</span>
+    <span data-phrase="bar.upca.needs">11 अंक, या 12 जिनके आख़िर में चेक अंक पहले से हो</span>
+    <span data-phrase="bar.ean8.holds">7 या 8 अंक। छोटा कोड, उन पैकेटों के लिए जो EAN-13 के लिए बहुत छोटे हैं।</span>
+    <span data-phrase="bar.ean8.needs">7 अंक, या 8 जिनके आख़िर में चेक अंक पहले से हो</span>
+    <span data-phrase="bar.itf14.holds">13 या 14 अंक। दुकानी सामान से भरे शिपिंग कार्टन पर लगा कोड।</span>
+    <span data-phrase="bar.itf14.needs">13 अंक, या 14 जिनके आख़िर में चेक अंक पहले से हो</span>
+    <span data-phrase="bar.itf.holds">अंकों की सम संख्या। छोटा, और गोदामों में आम।</span>
+    <span data-phrase="bar.itf.needs">अंक, और वे सम संख्या में &mdash; आगे एक शून्य लगाना इसका आम इलाज है</span>
+    <span data-phrase="bar.code39.holds">बड़े अक्षर, अंक, एक स्पेस और - . $ / + %। पुराना, हर चीज़ से पढ़ा जाता है।</span>
+    <span data-phrase="bar.code39.needs">बड़े अक्षर, अंक, एक स्पेस, और - . $ / + %</span>
+    <span data-phrase="bar.nosuch">ऐसा कोई बारकोड नहीं: {id}</span>
+    <span data-phrase="bar.empty">{name} में रखने को कुछ चाहिए।</span>
+    <span data-phrase="bar.wants">{name} को {needs} चाहिए।</span>
+    <span data-phrase="bar.code39.cannot">Code 39 में {char} नहीं रखा जा सकता। इसमें सिर्फ़ A-Z, 0-9, एक स्पेस, और - . $ / + %
+      आते हैं। QR कोड में वह सब आ जाता है जो आप टाइप कर सकें।</span>
+    <span data-phrase="bar.notascii">Code 128 में सिर्फ़ ASCII आता है, और {char} ASCII नहीं है। QR कोड में यह आ जाएगा।</span>
+    <span data-phrase="bar.checkdigit">यह मान्य {name} नहीं है: आख़िरी अंक {actual} नहीं, {expected} होना चाहिए। उसे छोड़
+      दीजिए, वह आपके लिए निकाल लिया जाएगा।</span>
+    <span data-phrase="bar.added">चेक अंक {digit} निकालकर जोड़ दिया गया।</span>
+    <span data-phrase="bar.modulo43">मॉड्यूलो-43 चेक वर्ण जोड़ दिया गया।</span>
+    <span data-phrase="bar.raised">छोटे अक्षर बड़े कर दिए गए।</span>
+    <span data-phrase="bar.andraised">{note} छोटे अक्षर बड़े कर दिए गए।</span>
+    <span data-phrase="qr.toolong">स्तर {level} पर QR कोड के लिए बहुत लंबा: {count} {unit}, और सबसे बड़े सिंबल में
+      {most} आते हैं</span>
+    <span data-phrase="unit.bytes">बाइट</span>
+    <span data-phrase="unit.characters">वर्ण</span>
+    <span data-phrase="render.nosvg">इस ब्राउज़र ने SVG बनाने से मना कर दिया</span>
+    <span data-phrase="render.nopng">इस ब्राउज़र ने PNG लिखने से मना कर दिया</span>
+    <span data-phrase="kind.text.name">टेक्स्ट या लिंक</span>
+    <span data-phrase="kind.text.note">कुछ भी। फ़ोन का कैमरा जिसे खोलने की पेशकश करेगा, वह वेब पता ही है।</span>
+    <span data-phrase="kind.wifi.name">वाई-फ़ाई नेटवर्क</span>
+    <span data-phrase="kind.wifi.note">स्कैन करने पर नेटवर्क से जुड़ने की पेशकश आती है। एंड्रॉइड इसे अपने आप पढ़ लेता है;
+      iOS 11 से आईफ़ोन का कैमरा भी।</span>
+    <span data-phrase="kind.contact.name">संपर्क कार्ड</span>
+    <span data-phrase="kind.contact.note">एक vCard, जिसे फ़ोन अपनी पता-पुस्तिका में सहेजने की पेशकश करता है।</span>
+    <span data-phrase="kind.email.name">ईमेल</span>
+    <span data-phrase="kind.email.note">पते के साथ नया संदेश खोलता है, और भर दें तो विषय और मूल पाठ के साथ भी।</span>
+    <span data-phrase="kind.sms.name">टेक्स्ट संदेश</span>
+    <span data-phrase="kind.sms.note">उस नंबर पर नया संदेश खोलता है, टेक्स्ट भेजने को तैयार।</span>
+    <span data-phrase="kind.phone.name">फ़ोन नंबर</span>
+    <span data-phrase="kind.phone.note">नंबर पर कॉल करने की पेशकश करता है।</span>
+    <span data-phrase="kind.location.name">नक़्शे पर एक जगह</span>
+    <span data-phrase="kind.location.note">फ़ोन जो भी नक़्शा ऐप इस्तेमाल करता हो, निर्देशांक उसी में खोलता है।</span>
+    <span data-phrase="field.text">टेक्स्ट या वेब पता</span>
+    <span data-phrase="field.ssid">नेटवर्क का नाम (SSID)</span>
+    <span data-phrase="field.password">पासवर्ड</span>
+    <span data-phrase="field.security">सुरक्षा</span>
+    <span data-phrase="field.hidden">नेटवर्क छिपा हुआ है</span>
+    <span data-phrase="field.open">खुला &mdash; कोई पासवर्ड नहीं</span>
+    <span data-phrase="field.first">पहला नाम</span>
+    <span data-phrase="field.last">कुलनाम</span>
+    <span data-phrase="field.org">संस्था</span>
+    <span data-phrase="field.title">पदनाम</span>
+    <span data-phrase="field.phone">फ़ोन</span>
+    <span data-phrase="field.email">ईमेल</span>
+    <span data-phrase="field.url">वेबसाइट</span>
+    <span data-phrase="field.address">पता</span>
+    <span data-phrase="field.to">किसे</span>
+    <span data-phrase="field.subject">विषय</span>
+    <span data-phrase="field.body">संदेश</span>
+    <span data-phrase="field.number">फ़ोन नंबर</span>
+    <span data-phrase="field.message">संदेश</span>
+    <span data-phrase="field.latitude">अक्षांश</span>
+    <span data-phrase="field.longitude">देशांतर</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">नुक्कड़ का कैफ़े</span>
+    <span data-phrase="field.optional">{label} (वैकल्पिक)</span>
+    <span data-phrase="field.thetext">टेक्स्ट</span>
+    <span data-phrase="field.thenumber">नंबर</span>
+    <span data-phrase="payload.nosuch">ऐसा कोई प्रकार नहीं: {kind}</span>
+    <span data-phrase="payload.anydetail">कम से कम एक जानकारी</span>
+    <span data-phrase="payload.something">इसमें रखने को कुछ</span>
+    <span data-phrase="payload.fillin">भरिए: {list}।</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">QR कोड में कोई भी टेक्स्ट आ जाता है, और पिछले दस साल का हर फ़ोन कैमरा उसे बिना ऐप के
+      पढ़ लेता है।</span>
+    <span data-phrase="size.exact">{pixels} पिक्सेल वर्गाकार, हर मॉड्यूल {scale} पिक्सेल का।</span>
+    <span data-phrase="size.rounded">{asked} की जगह {pixels} पिक्सेल वर्गाकार, क्योंकि चौड़ाई में {across} मॉड्यूल हर
+      मॉड्यूल {scale} पिक्सेल पर ही पूरे बँटते हैं। SVG पर यह बंदिश नहीं है &mdash; वह
+      किसी भी आकार में छपता है।</span>
+    <span data-phrase="size.barcode.one">{width} गुणा {height} पिक्सेल, सबसे पतली पट्टी 1 पिक्सेल की।</span>
+    <span data-phrase="size.barcode.many">{width} गुणा {height} पिक्सेल, सबसे पतली पट्टी {scale} पिक्सेल की।</span>
+    <span data-phrase="facts.qr">संस्करण {version}: {size} मॉड्यूल वर्गाकार, {mode} मोड, स्तर {level} &mdash; इसका
+      करीब {recovery}% नष्ट हो जाए तब भी पढ़ा जाता है। मास्क {mask}। इस संस्करण के
+      {capacity} बिट में से {bits} इस्तेमाल हो रहे हैं ({used}%), जो इस संस्करण और स्तर पर
+      कुल {most} {unit} की जगह है।</span>
+    <span data-phrase="facts.barcode">{name}, जिसमें {text} है। चौड़ाई में {modules} मॉड्यूल, जिनमें {left} बाईं ओर का
+      शांत क्षेत्र और {right} दाईं ओर का &mdash; यह सफ़ेद जगह स्कैनर को चाहिए, इसलिए यह
+      तस्वीर का हिस्सा है, काटने की चीज़ नहीं।</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1 वर्ण।</span>
+    <span data-phrase="string.many">{n} वर्ण।</span>
+    <span data-phrase="string.bytes">{characters} वर्ण, {bytes} बाइट &mdash; इनमें से कुछ ASCII नहीं हैं, और QR कोड जो
+      सहेजता है उसे बाइट में गिनता है।</span>
+    <span data-phrase="save.done">सहेज लिया। इसे बनाने के लिए कुछ भी कहीं नहीं भेजा गया।</span>
+    <span data-phrase="save.failed">{detail}। SVG फिर भी डाउनलोड होगा।</span>
+    <span data-phrase="save.copied">कॉपी हो गया। जहाँ चाहिए वहाँ चिपका दीजिए।</span>
+    <span data-phrase="save.noclipboard">इस ब्राउज़र ने पेज को क्लिपबोर्ड में लिखने नहीं दिया। इसके बजाय डाउनलोड कर लीजिए।</span>
     <span data-phrase="net.clean">आपने जो टाइप किया वह कहीं नहीं गया। {total}
       फ़ाइलें लोड हुईं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

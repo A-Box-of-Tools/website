@@ -241,15 +241,14 @@ function interleaved(digits) {
 }
 
 /** Code 39, with a narrow space between every character and a * at each end. */
-function code39(text, addCheck) {
+function code39(text, addCheck, t) {
   const QUIET_39 = 10;
   const characters = [...text];
 
   for (const character of characters) {
     if (!CODE39.has(character) || character === '*') {
-      throw new RangeError(
-        `Code 39 cannot hold ${JSON.stringify(character)}. It holds A-Z, 0-9, `
-        + 'a space, and - . $ / + % only. Code 128 holds anything you can type.');
+      throw new RangeError(t('bar.code39.cannot',
+        { char: JSON.stringify(character) }));
     }
   }
 
@@ -283,55 +282,60 @@ function code39(text, addCheck) {
  * `holds` is the sentence shown under the menu, and `check` says what the tool
  * does about the check digit - which for the retail codes is the thing people
  * most often get wrong, because the number on the box already has one.
+ *
+ * `holds` and `needs` are phrase keys, not sentences. The first is read out
+ * beside the menu and the second goes inside a refusal, and this file is
+ * copied byte for byte into every language - see shared/js/phrases.js. The
+ * names are the symbologies' own and stay as they are printed.
  */
 export const SYMBOLOGIES = [
   {
     id: 'code128',
     name: 'Code 128',
-    holds: 'Any text: letters, digits and punctuation. The usual choice when the number is yours to decide.',
-    needs: 'any text you can type on a keyboard',
+    holds: 'bar.code128.holds',
+    needs: 'bar.code128.needs',
     pattern: null,
   },
   {
     id: 'ean13',
     name: 'EAN-13',
-    holds: '12 or 13 digits. The barcode on a retail product outside North America.',
-    needs: '12 digits, or 13 with the check digit already on the end',
+    holds: 'bar.ean13.holds',
+    needs: 'bar.ean13.needs',
     pattern: /^[0-9]{12,13}$/,
   },
   {
     id: 'upca',
     name: 'UPC-A',
-    holds: '11 or 12 digits. The retail barcode used in the United States and Canada.',
-    needs: '11 digits, or 12 with the check digit already on the end',
+    holds: 'bar.upca.holds',
+    needs: 'bar.upca.needs',
     pattern: /^[0-9]{11,12}$/,
   },
   {
     id: 'ean8',
     name: 'EAN-8',
-    holds: '7 or 8 digits. The short retail code, for packages too small for an EAN-13.',
-    needs: '7 digits, or 8 with the check digit already on the end',
+    holds: 'bar.ean8.holds',
+    needs: 'bar.ean8.needs',
     pattern: /^[0-9]{7,8}$/,
   },
   {
     id: 'itf14',
     name: 'ITF-14',
-    holds: '13 or 14 digits. The code on a shipping carton of retail items.',
-    needs: '13 digits, or 14 with the check digit already on the end',
+    holds: 'bar.itf14.holds',
+    needs: 'bar.itf14.needs',
     pattern: /^[0-9]{13,14}$/,
   },
   {
     id: 'itf',
     name: 'Interleaved 2 of 5',
-    holds: 'An even number of digits. Compact, and common in warehousing.',
-    needs: 'digits, and an even number of them - a leading zero is the usual fix',
+    holds: 'bar.itf.holds',
+    needs: 'bar.itf.needs',
     pattern: /^([0-9]{2})+$/,
   },
   {
     id: 'code39',
     name: 'Code 39',
-    holds: 'Capitals, digits, a space and - . $ / + %. Old, readable by everything.',
-    needs: 'capitals, digits, a space, and - . $ / + %',
+    holds: 'bar.code39.holds',
+    needs: 'bar.code39.needs',
     pattern: /^[0-9A-Z\-. $/+%]+$/,
   },
 ];
@@ -342,13 +346,12 @@ export const SYMBOLOGIES = [
  * something to quietly correct: a mistyped digit that gets fixed for you is a
  * label that scans as the wrong product.
  */
-function withCheck(digits, length, name) {
+function withCheck(digits, length, name, t) {
   if (digits.length === length) {
     const expected = gs1Check(digits.slice(0, length - 1));
     if (Number(digits[length - 1]) !== expected) {
-      throw new RangeError(
-        `That is not a valid ${name}: the last digit should be ${expected}, not `
-        + `${digits[length - 1]}. Leave it off and it will be worked out for you.`);
+      throw new RangeError(t('bar.checkdigit',
+        { name, expected, actual: digits[length - 1] }));
     }
     return { digits, added: false };
   }
@@ -365,15 +368,16 @@ function withCheck(digits, length, name) {
  *            text: string, note: string}}
  *   `modules` is one byte per module across, quiet zones included: 1 dark.
  */
-export function makeBarcode(text, options) {
+export function makeBarcode(text, options, t) {
   const symbology = SYMBOLOGIES.find((entry) => entry.id === options.symbology);
-  if (!symbology) throw new RangeError(`no such barcode: ${options.symbology}`);
+  if (!symbology) throw new RangeError(t('bar.nosuch', { id: options.symbology }));
 
   const value = symbology.id === 'code39' ? text.toUpperCase() : text;
 
-  if (!value) throw new RangeError(`A ${symbology.name} needs something to hold.`);
+  if (!value) throw new RangeError(t('bar.empty', { name: symbology.name }));
   if (symbology.pattern && !symbology.pattern.test(value)) {
-    throw new RangeError(`A ${symbology.name} needs ${symbology.needs}.`);
+    throw new RangeError(t('bar.wants',
+      { name: symbology.name, needs: t(symbology.needs) }));
   }
 
   let note = '';
@@ -382,24 +386,26 @@ export function makeBarcode(text, options) {
 
   if (symbology.id === 'ean13' || symbology.id === 'upca' || symbology.id === 'ean8') {
     const length = { ean13: 13, upca: 12, ean8: 8 }[symbology.id];
-    const checked = withCheck(value, length, symbology.name);
+    const checked = withCheck(value, length, symbology.name, t);
     printed = checked.digits;
-    if (checked.added) note = `Check digit ${printed.slice(-1)} worked out and added.`;
+    if (checked.added) note = t('bar.added', { digit: printed.slice(-1) });
     drawn = retail(printed, symbology.id);
   } else if (symbology.id === 'itf14') {
-    const checked = withCheck(value, 14, 'ITF-14');
+    const checked = withCheck(value, 14, 'ITF-14', t);
     printed = checked.digits;
-    if (checked.added) note = `Check digit ${printed.slice(-1)} worked out and added.`;
+    if (checked.added) note = t('bar.added', { digit: printed.slice(-1) });
     drawn = interleaved(printed);
   } else if (symbology.id === 'itf') {
     drawn = interleaved(value);
   } else if (symbology.id === 'code39') {
-    drawn = code39(value, options.code39Check === true);
-    if (options.code39Check) note = 'Modulo-43 check character added.';
-    if (value !== text) note = `${note} Lower case was raised to capitals.`.trim();
+    drawn = code39(value, options.code39Check === true, t);
+    if (options.code39Check) note = t('bar.modulo43');
+    if (value !== text) {
+      note = note ? t('bar.andraised', { note }) : t('bar.raised');
+    }
   } else {
     drawn = {
-      modules: code128Modules(value),
+      modules: code128Modules(value, t),
       guards: null,
       labels: null,
       quiet: { left: CODE128_QUIET, right: CODE128_QUIET },

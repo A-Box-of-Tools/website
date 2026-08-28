@@ -63,13 +63,12 @@ const inB = (code) => code >= 32 && code <= 127;
  * testing - they are what a reader recovers, and reading them back is how the
  * tests check the switching without a scanner.
  */
-export function values(text) {
+export function values(text, t) {
   const codes = [...text].map((character) => character.codePointAt(0));
   const bad = codes.findIndex((code) => code > 127);
   if (bad !== -1) {
-    throw new RangeError(
-      `Code 128 holds ASCII only, and ${JSON.stringify([...text][bad])} is not. `
-      + 'A QR code will hold it.');
+    throw new RangeError(t('bar.notascii',
+      { char: JSON.stringify([...text][bad]) }));
   }
 
   const digits = (from) => {
@@ -185,11 +184,11 @@ function startSet(codes, leading) {
  * side of it is a symbol a scanner cannot find the edge of, so leaving them off
  * would be shipping a barcode that only works on a screenshot.
  */
-export function modules(text) {
+export function modules(text, t) {
   const parts = [];
   for (let i = 0; i < QUIET; i += 1) parts.push(0);
 
-  for (const symbol of values(text)) {
+  for (const symbol of values(text, t)) {
     let dark = 1;
     for (const width of PATTERNS[symbol]) {
       for (let i = 0; i < Number(width); i += 1) parts.push(dark);

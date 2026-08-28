@@ -27,6 +27,13 @@ import {
 } from '../../tools/qr-barcode/src/qr-encode.js';
 import { makeQr } from '../../tools/qr-barcode/src/qr.js';
 
+/**
+ * The stand-in for phrase(). The encoder's refusal is a key and its blanks now;
+ * the sentence it becomes lives in body.html, in fifteen languages.
+ */
+const say = (key, values = {}) => [key, ...Object.entries(values)
+  .map(([name, value]) => `${name}=${value}`)].join(' ');
+
 /* ------------------------------------------------------- the field itself */
 
 test('gf256: the field wraps at the primitive polynomial', () => {
@@ -148,7 +155,7 @@ test('tables: every block split accounts for every codeword', () => {
 test('encode: the worked example from the specification', () => {
   // ISO/IEC 18004 encodes "01234567" at version 1, level M, and prints both
   // halves of the result. Sixteen data codewords and ten of error correction.
-  const result = encodeText('01234567', { level: 'M' });
+  const result = encodeText('01234567', { level: 'M' }, say);
   assert.equal(result.version, 1);
   assert.equal(result.mode, 'numeric');
   assert.deepEqual([...result.codewords], [
@@ -178,15 +185,15 @@ test('encode: the smallest version that holds the text', () => {
 });
 
 test('encode: text that does not fit is refused, not truncated', () => {
-  assert.throws(() => encodeText('a'.repeat(2954), { level: 'L' }), RangeError);
-  assert.throws(() => encodeText('a'.repeat(200), { level: 'L', maxVersion: 5 }),
+  assert.throws(() => encodeText('a'.repeat(2954), { level: 'L' }, say), RangeError);
+  assert.throws(() => encodeText('a'.repeat(200), { level: 'L', maxVersion: 5 }, say),
                 RangeError);
 });
 
 /* -------------------------------------------------------------- the symbol */
 
 test('symbol: the finder patterns and the dark module are where they belong', () => {
-  const qr = makeQr('https://abox.tools/', { level: 'M' });
+  const qr = makeQr('https://abox.tools/', { level: 'M' }, say);
   const at = (row, col) => qr.modules[row * qr.size + col];
 
   for (const [top, left] of [[0, 0], [0, qr.size - 7], [qr.size - 7, 0]]) {
@@ -209,11 +216,11 @@ test('symbol: the finder patterns and the dark module are where they belong', ()
 });
 
 test('symbol: the mask is chosen, and forcing one is honoured', () => {
-  const chosen = makeQr('https://abox.tools/', { level: 'M' });
+  const chosen = makeQr('https://abox.tools/', { level: 'M' }, say);
   assert.ok(chosen.mask >= 0 && chosen.mask <= 7);
 
   for (let mask = 0; mask < 8; mask += 1) {
-    const forced = makeQr('https://abox.tools/', { level: 'M', mask });
+    const forced = makeQr('https://abox.tools/', { level: 'M', mask }, say);
     assert.equal(forced.mask, mask);
     assert.equal(read(forced), 'https://abox.tools/');
   }
@@ -235,7 +242,7 @@ test('symbol: every level and every mode survives a round trip', () => {
 
   for (const text of strings) {
     for (const level of LEVELS) {
-      const qr = makeQr(text, { level });
+      const qr = makeQr(text, { level }, say);
       assert.equal(read(qr), text, `${level}: ${text.slice(0, 20)}`);
       assert.equal(qr.size, sizeOf(qr.version));
       assert.equal(qr.modules.length, qr.size * qr.size);
@@ -244,14 +251,14 @@ test('symbol: every level and every mode survives a round trip', () => {
 });
 
 test('symbol: a bigger version than needed still reads', () => {
-  const qr = makeQr('abox.tools', { level: 'H', minVersion: 12 });
+  const qr = makeQr('abox.tools', { level: 'H', minVersion: 12 }, say);
   assert.equal(qr.version, 12);
   assert.equal(read(qr), 'abox.tools');
 });
 
 test('symbol: versions 7 and up carry readable version information', () => {
   for (const version of [7, 14, 27, 40]) {
-    const qr = makeQr('x', { level: 'L', minVersion: version });
+    const qr = makeQr('x', { level: 'L', minVersion: version }, say);
     assert.equal(qr.version, version);
     assert.equal(readVersionBits(qr), version);
     assert.equal(read(qr), 'x');
@@ -483,7 +490,7 @@ test('reader: it can tell a broken symbol from a good one', () => {
   // is no padding for a flipped module to hide in, and the module flipped is
   // the first data one - the bottom right corner, where the header goes.
   const text = 'ABCDEFGHIJKLMNOPQRSTUVWXY';
-  const qr = makeQr(text, { level: 'L', mask: 0 });
+  const qr = makeQr(text, { level: 'L', mask: 0 }, say);
   assert.equal(qr.version, 1);
 
   const copy = { ...qr, modules: Uint8Array.from(qr.modules) };

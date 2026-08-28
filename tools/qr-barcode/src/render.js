@@ -144,7 +144,7 @@ export async function svgToPng(svg, multiple = 1) {
     image.height = height;
     await new Promise((resolve, reject) => {
       image.onload = resolve;
-      image.onerror = () => reject(new Error('this browser would not draw the SVG'));
+      image.onerror = () => reject(new Error('render.nosvg'));
       image.src = url;
     });
 
@@ -158,7 +158,7 @@ export async function svgToPng(svg, multiple = 1) {
     return await new Promise((resolve, reject) => {
       canvas.toBlob((blob) => {
         if (blob) resolve(blob);
-        else reject(new Error('this browser would not write a PNG'));
+        else reject(new Error('render.nopng'));
       }, 'image/png');
     });
   } finally {

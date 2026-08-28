@@ -30,8 +30,12 @@ function bitsOf(image) {
   return { bits, width: image.width, height: image.height };
 }
 
+// The generator next door asks its caller for the words. These tests only read
+// the bars back, so they hand it a resolver that echoes the key.
+const say = (key) => key;
+
 const draw = (symbology, text, scale = 3, tall = 60) => (
-  renderBars(makeBarcode(text, { symbology }).modules, scale, tall));
+  renderBars(makeBarcode(text, { symbology }, say).modules, scale, tall));
 
 /* --------------------------------------------------------------- the round trip */
 

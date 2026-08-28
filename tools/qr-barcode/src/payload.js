@@ -17,16 +17,23 @@
 /**
  * The formats, in the order the menu offers them. Each field becomes one input
  * on the page; `optional` fields may be left blank and are left out entirely.
+ *
+ * `name`, `note`, `label` and the select options are phrase keys rather than
+ * sentences, and main.js resolves them: this file is copied byte for byte into
+ * every language, so a sentence written here would be English in ten of them.
+ * The placeholders go through the same resolver, which returns anything it does
+ * not know unchanged - so an address, a number or a famous name stays as it is
+ * written and only the one that is prose has a key.
  */
 export const KINDS = [
   {
     id: 'text',
-    name: 'Text or a link',
-    note: 'Anything at all. A web address is what a phone camera will offer to open.',
+    name: 'kind.text.name',
+    note: 'kind.text.note',
     fields: [
       {
         id: 'text',
-        label: 'Text or web address',
+        label: 'field.text',
         type: 'textarea',
         placeholder: 'https://abox.tools/',
       },
@@ -34,70 +41,74 @@ export const KINDS = [
   },
   {
     id: 'wifi',
-    name: 'Wi-Fi network',
-    note: 'Scanning it offers to join the network. Android reads this natively; '
-      + 'so does the iPhone camera from iOS 11 onwards.',
+    name: 'kind.wifi.name',
+    note: 'kind.wifi.note',
     fields: [
-      { id: 'ssid', label: 'Network name (SSID)', type: 'text', placeholder: 'The Coffee Shop' },
-      { id: 'password', label: 'Password', type: 'text', placeholder: '', optional: true },
+      {
+        id: 'ssid', label: 'field.ssid', type: 'text', placeholder: 'field.ssid.example',
+      },
+      { id: 'password', label: 'field.password', type: 'text', placeholder: '', optional: true },
       {
         id: 'security',
-        label: 'Security',
+        label: 'field.security',
         type: 'select',
-        options: [['WPA', 'WPA / WPA2 / WPA3'], ['WEP', 'WEP'], ['nopass', 'Open - no password']],
+        options: [['WPA', 'field.wpa'], ['WEP', 'field.wep'], ['nopass', 'field.open']],
       },
-      { id: 'hidden', label: 'The network is hidden', type: 'checkbox', optional: true },
+      { id: 'hidden', label: 'field.hidden', type: 'checkbox', optional: true },
     ],
   },
   {
     id: 'contact',
-    name: 'Contact card',
-    note: 'A vCard, which is what a phone offers to save into its address book.',
+    name: 'kind.contact.name',
+    note: 'kind.contact.note',
     fields: [
-      { id: 'first', label: 'First name', type: 'text', placeholder: 'Ada', optional: true },
-      { id: 'last', label: 'Last name', type: 'text', placeholder: 'Lovelace', optional: true },
-      { id: 'org', label: 'Organisation', type: 'text', placeholder: '', optional: true },
-      { id: 'title', label: 'Job title', type: 'text', placeholder: '', optional: true },
-      { id: 'phone', label: 'Phone', type: 'tel', placeholder: '+44 20 7946 0000', optional: true },
-      { id: 'email', label: 'Email', type: 'email', placeholder: '', optional: true },
-      { id: 'url', label: 'Website', type: 'text', placeholder: '', optional: true },
-      { id: 'address', label: 'Address', type: 'text', placeholder: '', optional: true },
+      { id: 'first', label: 'field.first', type: 'text', placeholder: 'Ada', optional: true },
+      { id: 'last', label: 'field.last', type: 'text', placeholder: 'Lovelace', optional: true },
+      { id: 'org', label: 'field.org', type: 'text', placeholder: '', optional: true },
+      { id: 'title', label: 'field.title', type: 'text', placeholder: '', optional: true },
+      {
+        id: 'phone', label: 'field.phone', type: 'tel', placeholder: '+44 20 7946 0000',
+        optional: true,
+      },
+      { id: 'email', label: 'field.email', type: 'email', placeholder: '', optional: true },
+      { id: 'url', label: 'field.url', type: 'text', placeholder: '', optional: true },
+      { id: 'address', label: 'field.address', type: 'text', placeholder: '', optional: true },
     ],
   },
   {
     id: 'email',
-    name: 'Email',
-    note: 'Opens a new message with the address, and the subject and body if you fill them in.',
+    name: 'kind.email.name',
+    note: 'kind.email.note',
     fields: [
-      { id: 'to', label: 'To', type: 'email', placeholder: 'hi@abox.tools' },
-      { id: 'subject', label: 'Subject', type: 'text', placeholder: '', optional: true },
-      { id: 'body', label: 'Message', type: 'textarea', placeholder: '', optional: true },
+      { id: 'to', label: 'field.to', type: 'email', placeholder: 'hi@abox.tools' },
+      { id: 'subject', label: 'field.subject', type: 'text', placeholder: '', optional: true },
+      { id: 'body', label: 'field.body', type: 'textarea', placeholder: '', optional: true },
     ],
   },
   {
     id: 'sms',
-    name: 'Text message',
-    note: 'Opens a new message to that number, with the text ready to send.',
+    name: 'kind.sms.name',
+    note: 'kind.sms.note',
     fields: [
-      { id: 'number', label: 'Phone number', type: 'tel', placeholder: '+15551234567' },
-      { id: 'message', label: 'Message', type: 'textarea', placeholder: '', optional: true },
+      { id: 'number', label: 'field.number', type: 'tel', placeholder: '+15551234567' },
+      { id: 'message', label: 'field.message', type: 'textarea', placeholder: '', optional: true },
     ],
   },
   {
     id: 'phone',
-    name: 'Phone number',
-    note: 'Offers to call the number.',
+    name: 'kind.phone.name',
+    note: 'kind.phone.note',
     fields: [
-      { id: 'number', label: 'Phone number', type: 'tel', placeholder: '+15551234567' },
+      { id: 'number', label: 'field.number', type: 'tel', placeholder: '+15551234567' },
     ],
   },
   {
     id: 'location',
-    name: 'A place on the map',
-    note: 'Opens the coordinates in whichever map application the phone uses.',
+    name: 'kind.location.name',
+    note: 'kind.location.note',
     fields: [
-      { id: 'latitude', label: 'Latitude', type: 'text', placeholder: '51.5007' },
-      { id: 'longitude', label: 'Longitude', type: 'text', placeholder: '-0.1246' },
+      { id: 'latitude', label: 'field.latitude', type: 'text', placeholder: '51.5007' },
+      { id: 'longitude', label: 'field.longitude', type: 'text', placeholder: '-0.1246' },
     ],
   },
 ];
@@ -120,9 +131,10 @@ function vcardEscape(value) {
  *
  * @param {string} kind one of the ids in KINDS
  * @param {Record<string, string|boolean>} values one entry per field
+ * @param {(key: string, values?: object) => string} t the caller's phrase()
  * @returns {string} the string the code will hold
  */
-export function compose(kind, values) {
+export function compose(kind, values, t) {
   const value = (id) => String(values[id] ?? '').trim();
 
   if (kind === 'text') return String(values.text ?? '');
@@ -175,12 +187,14 @@ export function compose(kind, values) {
 
   if (kind === 'location') return `geo:${value('latitude')},${value('longitude')}`;
 
-  throw new RangeError(`no such kind: ${kind}`);
+  throw new RangeError(t('payload.nosuch', { kind }));
 }
 
 /**
  * Whether there is enough here to make a code from, and what is missing if not.
  * The optional fields are genuinely optional; the rest are not.
+ *
+ * The names come back as phrase keys, for the caller to resolve and read out.
  */
 export function missing(kind, values) {
   const definition = KINDS.find((entry) => entry.id === kind);
@@ -191,7 +205,7 @@ export function missing(kind, values) {
   if (kind === 'contact') {
     const anything = definition.fields
       .some((field) => String(values[field.id] ?? '').trim());
-    return anything ? [] : ['At least one detail'];
+    return anything ? [] : ['payload.anydetail'];
   }
 
   return definition.fields

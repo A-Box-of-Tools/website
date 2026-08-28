@@ -189,6 +189,102 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">아무 텍스트나: 글자, 숫자, 문장부호. 번호를 직접 정할 때 흔히 고르는 것입니다.</span>
+    <span data-phrase="bar.code128.needs">키보드로 칠 수 있는 아무 텍스트</span>
+    <span data-phrase="bar.ean13.holds">숫자 12자리 또는 13자리. 북미 밖에서 파는 상품에 붙는 바코드입니다.</span>
+    <span data-phrase="bar.ean13.needs">숫자 12자리, 또는 검사 숫자까지 붙은 13자리</span>
+    <span data-phrase="bar.upca.holds">숫자 11자리 또는 12자리. 미국과 캐나다에서 쓰는 소매용 바코드입니다.</span>
+    <span data-phrase="bar.upca.needs">숫자 11자리, 또는 검사 숫자까지 붙은 12자리</span>
+    <span data-phrase="bar.ean8.holds">숫자 7자리 또는 8자리. EAN-13을 넣기엔 너무 작은 포장을 위한 짧은 코드입니다.</span>
+    <span data-phrase="bar.ean8.needs">숫자 7자리, 또는 검사 숫자까지 붙은 8자리</span>
+    <span data-phrase="bar.itf14.holds">숫자 13자리 또는 14자리. 상품을 담은 배송 상자에 붙는 코드입니다.</span>
+    <span data-phrase="bar.itf14.needs">숫자 13자리, 또는 검사 숫자까지 붙은 14자리</span>
+    <span data-phrase="bar.itf.holds">짝수 자리의 숫자. 작고, 창고에서 흔히 씁니다.</span>
+    <span data-phrase="bar.itf.needs">숫자, 그것도 짝수 자리로 &mdash; 앞에 0을 하나 붙이는 것이 보통의 해결책입니다</span>
+    <span data-phrase="bar.code39.holds">대문자, 숫자, 공백, 그리고 - . $ / + %. 오래되었고 무엇으로든 읽힙니다.</span>
+    <span data-phrase="bar.code39.needs">대문자, 숫자, 공백, 그리고 - . $ / + %</span>
+    <span data-phrase="bar.nosuch">그런 바코드는 없습니다: {id}</span>
+    <span data-phrase="bar.empty">{name}에는 담을 것이 있어야 합니다.</span>
+    <span data-phrase="bar.wants">{name}에 필요한 것은 {needs}입니다.</span>
+    <span data-phrase="bar.code39.cannot">Code 39는 담지 못하는 글자가 있습니다: {char}. 담는 것은 A-Z, 0-9, 공백, 그리고 - . $ / + % 뿐입니다. QR 코드는 칠
+      수 있는 것이면 무엇이든 담습니다.</span>
+    <span data-phrase="bar.notascii">Code 128은 ASCII만 담는데, ASCII가 아닌 글자가 있습니다: {char}. QR 코드라면 담습니다.</span>
+    <span data-phrase="bar.checkdigit">유효한 {name} 값이 아닙니다. 마지막 숫자로 와야 할 것은 {expected}, 적힌 것은 {actual}입니다. 아예 빼시면 대신 계산해
+      드립니다.</span>
+    <span data-phrase="bar.added">검사 숫자를 계산해 붙였습니다: {digit}.</span>
+    <span data-phrase="bar.modulo43">모듈로 43 검사 문자를 붙였습니다.</span>
+    <span data-phrase="bar.raised">소문자는 대문자로 올렸습니다.</span>
+    <span data-phrase="bar.andraised">{note} 소문자는 대문자로 올렸습니다.</span>
+    <span data-phrase="qr.toolong">레벨 {level} QR 코드에 넣기에는 너무 깁니다. {count} {unit}인데, 가장 큰 심벌이 담는 것은 {most}입니다</span>
+    <span data-phrase="unit.bytes">바이트</span>
+    <span data-phrase="unit.characters">글자</span>
+    <span data-phrase="render.nosvg">이 브라우저가 SVG를 그려 주지 않았습니다</span>
+    <span data-phrase="render.nopng">이 브라우저가 PNG를 써 주지 않았습니다</span>
+    <span data-phrase="kind.text.name">텍스트 또는 링크</span>
+    <span data-phrase="kind.text.note">무엇이든 좋습니다. 휴대폰 카메라가 열겠느냐고 묻는 것은 웹 주소입니다.</span>
+    <span data-phrase="kind.wifi.name">Wi-Fi 네트워크</span>
+    <span data-phrase="kind.wifi.note">스캔하면 네트워크에 접속할지 묻습니다. 안드로이드는 기본으로 읽고, 아이폰 카메라도 iOS 11부터 읽습니다.</span>
+    <span data-phrase="kind.contact.name">연락처 카드</span>
+    <span data-phrase="kind.contact.note">vCard입니다. 휴대폰이 주소록에 저장할지 묻는 형식입니다.</span>
+    <span data-phrase="kind.email.name">이메일</span>
+    <span data-phrase="kind.email.note">주소가 채워진 새 메시지를 엽니다. 제목과 본문을 적어 두면 그것도 함께 들어갑니다.</span>
+    <span data-phrase="kind.sms.name">문자 메시지</span>
+    <span data-phrase="kind.sms.note">그 번호로 보낼 새 메시지를, 본문까지 채운 채로 엽니다.</span>
+    <span data-phrase="kind.phone.name">전화번호</span>
+    <span data-phrase="kind.phone.note">그 번호로 전화를 걸지 묻습니다.</span>
+    <span data-phrase="kind.location.name">지도 위의 한 곳</span>
+    <span data-phrase="kind.location.note">휴대폰이 쓰는 지도 앱에서 좌표를 엽니다.</span>
+    <span data-phrase="field.text">텍스트 또는 웹 주소</span>
+    <span data-phrase="field.ssid">네트워크 이름 (SSID)</span>
+    <span data-phrase="field.password">비밀번호</span>
+    <span data-phrase="field.security">보안</span>
+    <span data-phrase="field.hidden">숨겨진 네트워크입니다</span>
+    <span data-phrase="field.open">개방 &mdash; 비밀번호 없음</span>
+    <span data-phrase="field.first">이름</span>
+    <span data-phrase="field.last">성</span>
+    <span data-phrase="field.org">소속</span>
+    <span data-phrase="field.title">직함</span>
+    <span data-phrase="field.phone">전화</span>
+    <span data-phrase="field.email">이메일</span>
+    <span data-phrase="field.url">웹사이트</span>
+    <span data-phrase="field.address">주소</span>
+    <span data-phrase="field.to">받는 사람</span>
+    <span data-phrase="field.subject">제목</span>
+    <span data-phrase="field.body">내용</span>
+    <span data-phrase="field.number">전화번호</span>
+    <span data-phrase="field.message">내용</span>
+    <span data-phrase="field.latitude">위도</span>
+    <span data-phrase="field.longitude">경도</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">길모퉁이 카페</span>
+    <span data-phrase="field.optional">{label} (선택)</span>
+    <span data-phrase="field.thetext">텍스트</span>
+    <span data-phrase="field.thenumber">번호</span>
+    <span data-phrase="payload.nosuch">그런 종류는 없습니다: {kind}</span>
+    <span data-phrase="payload.anydetail">적어도 한 가지</span>
+    <span data-phrase="payload.something">안에 넣을 것</span>
+    <span data-phrase="payload.fillin">채워 주세요: {list}.</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">QR 코드는 어떤 텍스트든 담고, 지난 십 년 사이의 휴대폰 카메라라면 앱 없이 읽습니다.</span>
+    <span data-phrase="size.exact">한 변 {pixels}픽셀, 모듈 하나에 {scale}픽셀입니다.</span>
+    <span data-phrase="size.rounded">요청한 {asked} 대신 한 변 {pixels}픽셀입니다. 가로 {across}모듈은 모듈당 {scale}픽셀에서만 딱 나누어떨어지기 때문입니다.
+      SVG에는 그런 제약이 없습니다 &mdash; 어떤 크기로든 인쇄됩니다.</span>
+    <span data-phrase="size.barcode.one">{width} × {height}픽셀, 가장 좁은 바가 1픽셀입니다.</span>
+    <span data-phrase="size.barcode.many">{width} × {height}픽셀, 가장 좁은 바가 {scale}픽셀입니다.</span>
+    <span data-phrase="facts.qr">버전 {version}: 한 변 {size}모듈, {mode} 모드, 레벨 {level} &mdash; 약 {recovery}%가 망가져도 읽힙니다.
+      마스크 {mask}. 이 버전이 담는 {capacity}비트 가운데 {bits}비트({used}%)를 쓰고 있으며, 이 버전과 레벨에서는 모두
+      {most} {unit}가 들어갈 자리입니다.</span>
+    <span data-phrase="facts.barcode">{name}, 담은 것은 {text}입니다. 가로 {modules}모듈이고 그중 왼쪽 여백이 {left}, 오른쪽이 {right} &mdash;
+      스캐너에 필요한 흰 여백이므로 잘라낼 것이 아니라 그림의 일부입니다.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1글자.</span>
+    <span data-phrase="string.many">{n}글자.</span>
+    <span data-phrase="string.bytes">{characters}글자, {bytes}바이트 &mdash; ASCII가 아닌 글자가 섞여 있고, QR 코드는 담는 것을 바이트로 셉니다.</span>
+    <span data-phrase="save.done">저장했습니다. 만드는 데 아무것도 어디로도 보내지 않았습니다.</span>
+    <span data-phrase="save.failed">{detail}. SVG는 그래도 내려받습니다.</span>
+    <span data-phrase="save.copied">복사했습니다. 필요한 곳에 붙여 넣으세요.</span>
+    <span data-phrase="save.noclipboard">이 브라우저가 페이지의 클립보드 쓰기를 허용하지 않았습니다. 대신 내려받으세요.</span>
     <span data-phrase="net.clean">입력한 내용은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
       {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.

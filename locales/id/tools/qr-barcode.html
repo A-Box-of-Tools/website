@@ -199,6 +199,111 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">Teks apa pun: huruf, angka, dan tanda baca. Pilihan biasa ketika nomornya Anda
+      sendiri yang menentukan.</span>
+    <span data-phrase="bar.code128.needs">teks apa pun yang bisa Anda ketik di papan ketik</span>
+    <span data-phrase="bar.ean13.holds">12 atau 13 angka. Barcode pada produk ritel di luar Amerika Utara.</span>
+    <span data-phrase="bar.ean13.needs">12 angka, atau 13 dengan angka pemeriksa sudah di ujungnya</span>
+    <span data-phrase="bar.upca.holds">11 atau 12 angka. Barcode ritel yang dipakai di Amerika Serikat dan Kanada.</span>
+    <span data-phrase="bar.upca.needs">11 angka, atau 12 dengan angka pemeriksa sudah di ujungnya</span>
+    <span data-phrase="bar.ean8.holds">7 atau 8 angka. Kode ritel pendek, untuk kemasan yang terlalu kecil untuk EAN-13.</span>
+    <span data-phrase="bar.ean8.needs">7 angka, atau 8 dengan angka pemeriksa sudah di ujungnya</span>
+    <span data-phrase="bar.itf14.holds">13 atau 14 angka. Kode pada kardus pengiriman berisi produk ritel.</span>
+    <span data-phrase="bar.itf14.needs">13 angka, atau 14 dengan angka pemeriksa sudah di ujungnya</span>
+    <span data-phrase="bar.itf.holds">Angka dalam jumlah genap. Ringkas, dan umum di pergudangan.</span>
+    <span data-phrase="bar.itf.needs">angka, dan jumlahnya genap &mdash; menambahkan nol di depan adalah cara yang biasa</span>
+    <span data-phrase="bar.code39.holds">Huruf kapital, angka, spasi, dan - . $ / + %. Tua, terbaca oleh apa saja.</span>
+    <span data-phrase="bar.code39.needs">huruf kapital, angka, spasi, dan - . $ / + %</span>
+    <span data-phrase="bar.nosuch">tidak ada barcode seperti itu: {id}</span>
+    <span data-phrase="bar.empty">{name} perlu sesuatu untuk dimuat.</span>
+    <span data-phrase="bar.wants">{name} perlu {needs}.</span>
+    <span data-phrase="bar.code39.cannot">Code 39 tidak bisa memuat {char}. Ia hanya memuat A-Z, 0-9, spasi, dan - . $ / + %.
+      Kode QR memuat apa saja yang bisa Anda ketik.</span>
+    <span data-phrase="bar.notascii">Code 128 hanya memuat ASCII, dan {char} bukan ASCII. Kode QR bisa memuatnya.</span>
+    <span data-phrase="bar.checkdigit">Ini bukan {name} yang sah: angka terakhirnya seharusnya {expected}, bukan {actual}.
+      Biarkan kosong dan angkanya akan dihitungkan untuk Anda.</span>
+    <span data-phrase="bar.added">Angka pemeriksa {digit} dihitung dan ditambahkan.</span>
+    <span data-phrase="bar.modulo43">Karakter pemeriksa modulo 43 ditambahkan.</span>
+    <span data-phrase="bar.raised">Huruf kecil dinaikkan menjadi kapital.</span>
+    <span data-phrase="bar.andraised">{note} Huruf kecil dinaikkan menjadi kapital.</span>
+    <span data-phrase="qr.toolong">terlalu panjang untuk kode QR pada tingkat {level}: {count} {unit}, sedangkan simbol
+      terbesar memuat {most}</span>
+    <span data-phrase="unit.bytes">byte</span>
+    <span data-phrase="unit.characters">karakter</span>
+    <span data-phrase="render.nosvg">browser ini tidak mau menggambar SVG-nya</span>
+    <span data-phrase="render.nopng">browser ini tidak mau menulis PNG</span>
+    <span data-phrase="kind.text.name">Teks atau tautan</span>
+    <span data-phrase="kind.text.note">Apa saja. Alamat web adalah yang akan ditawarkan kamera ponsel untuk dibuka.</span>
+    <span data-phrase="kind.wifi.name">Jaringan Wi-Fi</span>
+    <span data-phrase="kind.wifi.note">Memindainya menawarkan untuk bergabung ke jaringan. Android membacanya secara
+      bawaan; kamera iPhone juga, sejak iOS 11.</span>
+    <span data-phrase="kind.contact.name">Kartu kontak</span>
+    <span data-phrase="kind.contact.note">Sebuah vCard, yang ditawarkan ponsel untuk disimpan ke buku alamatnya.</span>
+    <span data-phrase="kind.email.name">Email</span>
+    <span data-phrase="kind.email.note">Membuka pesan baru dengan alamatnya, beserta subjek dan isi kalau Anda mengisinya.</span>
+    <span data-phrase="kind.sms.name">Pesan teks</span>
+    <span data-phrase="kind.sms.note">Membuka pesan baru ke nomor itu, dengan teks yang siap dikirim.</span>
+    <span data-phrase="kind.phone.name">Nomor telepon</span>
+    <span data-phrase="kind.phone.note">Menawarkan untuk menelepon nomor itu.</span>
+    <span data-phrase="kind.location.name">Sebuah tempat di peta</span>
+    <span data-phrase="kind.location.note">Membuka koordinatnya di aplikasi peta apa pun yang dipakai ponsel.</span>
+    <span data-phrase="field.text">Teks atau alamat web</span>
+    <span data-phrase="field.ssid">Nama jaringan (SSID)</span>
+    <span data-phrase="field.password">Kata sandi</span>
+    <span data-phrase="field.security">Keamanan</span>
+    <span data-phrase="field.hidden">Jaringan ini tersembunyi</span>
+    <span data-phrase="field.open">Terbuka &mdash; tanpa kata sandi</span>
+    <span data-phrase="field.first">Nama depan</span>
+    <span data-phrase="field.last">Nama belakang</span>
+    <span data-phrase="field.org">Organisasi</span>
+    <span data-phrase="field.title">Jabatan</span>
+    <span data-phrase="field.phone">Telepon</span>
+    <span data-phrase="field.email">Email</span>
+    <span data-phrase="field.url">Situs web</span>
+    <span data-phrase="field.address">Alamat</span>
+    <span data-phrase="field.to">Kepada</span>
+    <span data-phrase="field.subject">Subjek</span>
+    <span data-phrase="field.body">Pesan</span>
+    <span data-phrase="field.number">Nomor telepon</span>
+    <span data-phrase="field.message">Pesan</span>
+    <span data-phrase="field.latitude">Lintang</span>
+    <span data-phrase="field.longitude">Bujur</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">Kedai Kopi</span>
+    <span data-phrase="field.optional">{label} (opsional)</span>
+    <span data-phrase="field.thetext">Teksnya</span>
+    <span data-phrase="field.thenumber">Nomornya</span>
+    <span data-phrase="payload.nosuch">tidak ada jenis seperti itu: {kind}</span>
+    <span data-phrase="payload.anydetail">Setidaknya satu keterangan</span>
+    <span data-phrase="payload.something">Sesuatu untuk dimasukkan</span>
+    <span data-phrase="payload.fillin">Isi dulu: {list}.</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">Kode QR memuat teks apa pun, dan kamera ponsel mana pun buatan sepuluh tahun
+      terakhir membacanya tanpa aplikasi.</span>
+    <span data-phrase="size.exact">{pixels} piksel persegi, dengan {scale} piksel per modul.</span>
+    <span data-phrase="size.rounded">{pixels} piksel persegi, bukan {asked}, karena {across} modul melintang hanya habis
+      dibagi rata pada {scale} piksel per modul. SVG tidak punya batas itu &mdash; ia
+      dicetak pada ukuran berapa pun.</span>
+    <span data-phrase="size.barcode.one">{width} kali {height} piksel, dengan 1 piksel untuk batang tersempit.</span>
+    <span data-phrase="size.barcode.many">{width} kali {height} piksel, dengan {scale} piksel untuk batang tersempit.</span>
+    <span data-phrase="facts.qr">Versi {version}: {size} modul persegi, mode {mode}, tingkat {level} &mdash; sekitar
+      {recovery}% darinya boleh rusak dan masih terbaca. Masker {mask}. Memakai {bits}
+      dari {capacity} bit yang dimuat versi ini ({used}%), yang pada versi dan tingkat ini
+      berarti ruang untuk {most} {unit} seluruhnya.</span>
+    <span data-phrase="facts.barcode">{name}, memuat {text}. {modules} modul melintang, {left} di antaranya zona sunyi di
+      kiri dan {right} di kanan &mdash; ruang putih yang dibutuhkan pemindai, jadi bagian
+      dari gambarnya dan bukan sesuatu untuk dipotong.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1 karakter.</span>
+    <span data-phrase="string.many">{n} karakter.</span>
+    <span data-phrase="string.bytes">{characters} karakter, {bytes} byte &mdash; sebagiannya bukan ASCII, dan kode QR
+      menghitung apa yang disimpannya dalam byte.</span>
+    <span data-phrase="save.done">Tersimpan. Tidak ada yang dikirim ke mana pun untuk membuatnya.</span>
+    <span data-phrase="save.failed">{detail}. SVG-nya tetap akan terunduh.</span>
+    <span data-phrase="save.copied">Tersalin. Tempelkan di mana pun Anda perlukan.</span>
+    <span data-phrase="save.noclipboard">Browser ini tidak mengizinkan halaman menulis ke papan klip. Unduh saja sebagai
+      gantinya.</span>
     <span data-phrase="net.clean">apa yang Anda ketik tidak pergi ke mana pun.
       {total} file dimuat. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

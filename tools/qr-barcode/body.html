@@ -190,6 +190,110 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="bar.code128.holds">Any text: letters, digits and punctuation. The usual choice when the number is yours
+      to decide.</span>
+    <span data-phrase="bar.code128.needs">any text you can type on a keyboard</span>
+    <span data-phrase="bar.ean13.holds">12 or 13 digits. The barcode on a retail product outside North America.</span>
+    <span data-phrase="bar.ean13.needs">12 digits, or 13 with the check digit already on the end</span>
+    <span data-phrase="bar.upca.holds">11 or 12 digits. The retail barcode used in the United States and Canada.</span>
+    <span data-phrase="bar.upca.needs">11 digits, or 12 with the check digit already on the end</span>
+    <span data-phrase="bar.ean8.holds">7 or 8 digits. The short retail code, for packages too small for an EAN-13.</span>
+    <span data-phrase="bar.ean8.needs">7 digits, or 8 with the check digit already on the end</span>
+    <span data-phrase="bar.itf14.holds">13 or 14 digits. The code on a shipping carton of retail items.</span>
+    <span data-phrase="bar.itf14.needs">13 digits, or 14 with the check digit already on the end</span>
+    <span data-phrase="bar.itf.holds">An even number of digits. Compact, and common in warehousing.</span>
+    <span data-phrase="bar.itf.needs">digits, and an even number of them &mdash; a leading zero is the usual fix</span>
+    <span data-phrase="bar.code39.holds">Capitals, digits, a space and - . $ / + %. Old, readable by everything.</span>
+    <span data-phrase="bar.code39.needs">capitals, digits, a space, and - . $ / + %</span>
+    <span data-phrase="bar.nosuch">no such barcode: {id}</span>
+    <span data-phrase="bar.empty">{name} needs something to hold.</span>
+    <span data-phrase="bar.wants">{name} needs {needs}.</span>
+    <span data-phrase="bar.code39.cannot">Code 39 cannot hold {char}. It holds A-Z, 0-9, a space, and - . $ / + % only. Code
+      128 holds anything you can type.</span>
+    <span data-phrase="bar.notascii">Code 128 holds ASCII only, and {char} is not. A QR code will hold it.</span>
+    <span data-phrase="bar.checkdigit">That is not a valid {name}: the last digit should be {expected}, not {actual}. Leave
+      it off and it will be worked out for you.</span>
+    <span data-phrase="bar.added">Check digit {digit} worked out and added.</span>
+    <span data-phrase="bar.modulo43">Modulo-43 check character added.</span>
+    <span data-phrase="bar.raised">Lower case was raised to capitals.</span>
+    <span data-phrase="bar.andraised">{note} Lower case was raised to capitals.</span>
+    <span data-phrase="qr.toolong">too long for a QR code at level {level}: {count} {unit}, and the largest symbol
+      holds {most}</span>
+    <span data-phrase="unit.bytes">bytes</span>
+    <span data-phrase="unit.characters">characters</span>
+    <span data-phrase="render.nosvg">this browser would not draw the SVG</span>
+    <span data-phrase="render.nopng">this browser would not write a PNG</span>
+    <span data-phrase="kind.text.name">Text or a link</span>
+    <span data-phrase="kind.text.note">Anything at all. A web address is what a phone camera will offer to open.</span>
+    <span data-phrase="kind.wifi.name">Wi-Fi network</span>
+    <span data-phrase="kind.wifi.note">Scanning it offers to join the network. Android reads this natively; so does the
+      iPhone camera from iOS 11 onwards.</span>
+    <span data-phrase="kind.contact.name">Contact card</span>
+    <span data-phrase="kind.contact.note">A vCard, which is what a phone offers to save into its address book.</span>
+    <span data-phrase="kind.email.name">Email</span>
+    <span data-phrase="kind.email.note">Opens a new message with the address, and the subject and body if you fill them in.</span>
+    <span data-phrase="kind.sms.name">Text message</span>
+    <span data-phrase="kind.sms.note">Opens a new message to that number, with the text ready to send.</span>
+    <span data-phrase="kind.phone.name">Phone number</span>
+    <span data-phrase="kind.phone.note">Offers to call the number.</span>
+    <span data-phrase="kind.location.name">A place on the map</span>
+    <span data-phrase="kind.location.note">Opens the coordinates in whichever map application the phone uses.</span>
+    <span data-phrase="field.text">Text or web address</span>
+    <span data-phrase="field.ssid">Network name (SSID)</span>
+    <span data-phrase="field.password">Password</span>
+    <span data-phrase="field.security">Security</span>
+    <span data-phrase="field.hidden">The network is hidden</span>
+    <span data-phrase="field.open">Open &mdash; no password</span>
+    <span data-phrase="field.first">First name</span>
+    <span data-phrase="field.last">Last name</span>
+    <span data-phrase="field.org">Organisation</span>
+    <span data-phrase="field.title">Job title</span>
+    <span data-phrase="field.phone">Phone</span>
+    <span data-phrase="field.email">Email</span>
+    <span data-phrase="field.url">Website</span>
+    <span data-phrase="field.address">Address</span>
+    <span data-phrase="field.to">To</span>
+    <span data-phrase="field.subject">Subject</span>
+    <span data-phrase="field.body">Message</span>
+    <span data-phrase="field.number">Phone number</span>
+    <span data-phrase="field.message">Message</span>
+    <span data-phrase="field.latitude">Latitude</span>
+    <span data-phrase="field.longitude">Longitude</span>
+    <span data-phrase="field.wpa">WPA / WPA2 / WPA3</span>
+    <span data-phrase="field.wep">WEP</span>
+    <span data-phrase="field.ssid.example">The Coffee Shop</span>
+    <span data-phrase="field.optional">{label} (optional)</span>
+    <span data-phrase="field.thetext">The text</span>
+    <span data-phrase="field.thenumber">The number</span>
+    <span data-phrase="payload.nosuch">no such kind: {kind}</span>
+    <span data-phrase="payload.anydetail">At least one detail</span>
+    <span data-phrase="payload.something">Something to put in it</span>
+    <span data-phrase="payload.fillin">Fill in: {list}.</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="note.symbology.qr">A QR code holds any text at all, and every phone camera made in the last ten years
+      reads one without an app.</span>
+    <span data-phrase="size.exact">{pixels} pixels square, at {scale} per module.</span>
+    <span data-phrase="size.rounded">{pixels} pixels square rather than {asked}, because {across} modules across only
+      divides evenly at {scale} pixels each. The SVG has no such limit &mdash; it prints
+      at any size.</span>
+    <span data-phrase="size.barcode.one">{width} by {height} pixels, at 1 pixel for the narrowest bar.</span>
+    <span data-phrase="size.barcode.many">{width} by {height} pixels, at {scale} pixels for the narrowest bar.</span>
+    <span data-phrase="facts.qr">Version {version}: {size} modules square, {mode} mode, level {level} &mdash; about
+      {recovery}% of it can be destroyed and still read. Mask {mask}. Using {bits} of the
+      {capacity} bits this version holds ({used}%), which at this version and level is
+      room for {most} {unit} in all.</span>
+    <span data-phrase="facts.barcode">{name}, holding {text}. {modules} modules across, {left} of them the quiet zone on
+      the left and {right} on the right &mdash; white space the scanner needs, so it is
+      part of the picture rather than something to crop off.</span>
+    <span data-phrase="facts.andnote">{facts} {note}</span>
+    <span data-phrase="string.one">1 character.</span>
+    <span data-phrase="string.many">{n} characters.</span>
+    <span data-phrase="string.bytes">{characters} characters, {bytes} bytes &mdash; some of them are not ASCII, and a QR
+      code counts what it stores in bytes.</span>
+    <span data-phrase="save.done">Saved. Nothing was sent anywhere to make it.</span>
+    <span data-phrase="save.failed">{detail}. The SVG will still download.</span>
+    <span data-phrase="save.copied">Copied. Paste it wherever you need it.</span>
+    <span data-phrase="save.noclipboard">This browser would not let the page write to the clipboard. Download it instead.</span>
     <span data-phrase="net.clean">what you typed has gone nowhere. {total} files
       loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool
