@@ -30,7 +30,7 @@ const CHUNK_ORDER = ['VP8X', 'ICCP', 'ANIM', 'ANMF', 'ALPH', 'VP8 ', 'VP8L', 'EX
 export function read(bytes) {
   if (bytes.length < 16 || latin1.decode(bytes.subarray(0, 4)) !== 'RIFF'
       || latin1.decode(bytes.subarray(8, 12)) !== 'WEBP') {
-    return { ok: false, kind: 'webp', error: 'This does not start like a WebP.' };
+    return { ok: false, kind: 'webp', error: 'read.notwebp' };
   }
 
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
@@ -41,13 +41,13 @@ export function read(bytes) {
     const fourcc = latin1.decode(bytes.subarray(at, at + 4));
     const size = view.getUint32(at + 4, true);
     if (at + 8 + size > bytes.length) {
-      return { ok: false, kind: 'webp', error: 'A chunk claims a size that runs off the end of the file.' };
+      return { ok: false, kind: 'webp', error: 'read.webpoverrun' };
     }
     chunks.push({ fourcc, data: bytes.slice(at + 8, at + 8 + size) });
     at += 8 + size + (size % 2); // chunks are padded to an even length
   }
 
-  if (!chunks.length) return { ok: false, kind: 'webp', error: 'The file has no chunks in it.' };
+  if (!chunks.length) return { ok: false, kind: 'webp', error: 'read.webpnochunks' };
   return { ok: true, kind: 'webp', chunks };
 }
 
@@ -145,7 +145,7 @@ export function apply(doc, plan) {
 
   if (needsExtended && !vp8x) {
     if (!doc.canvas?.width || !doc.canvas?.height) {
-      throw new Error('This WebP has no extended header, and its size could not be read, so metadata cannot be added to it.');
+      throw new Error('write.webpnosize');
     }
     vp8x = makeVp8x(doc.canvas.width, doc.canvas.height);
   }

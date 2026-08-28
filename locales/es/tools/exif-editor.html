@@ -155,6 +155,44 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">Esto no empieza como un JPEG.</span>
+    <span data-phrase="read.jpeglost">Se perdió la estructura de segmentos: el archivo parece dañado.</span>
+    <span data-phrase="read.jpegoverrun">Un segmento declara una longitud que se sale del final del archivo.</span>
+    <span data-phrase="read.jpegnoscan">El archivo terminó antes de que empezaran los datos de imagen.</span>
+    <span data-phrase="read.notpng">Esto no empieza como un PNG.</span>
+    <span data-phrase="read.pngoverrun">Un chunk declara una longitud que se sale del final del archivo.</span>
+    <span data-phrase="read.pngnoheader">Falta el chunk de cabecera.</span>
+    <span data-phrase="read.notwebp">Esto no empieza como un WebP.</span>
+    <span data-phrase="read.webpoverrun">Un chunk declara un tamaño que se sale del final del archivo.</span>
+    <span data-phrase="read.webpnochunks">El archivo no tiene ningún chunk dentro.</span>
+    <span data-phrase="read.exifshort">El bloque es demasiado corto para ser EXIF.</span>
+    <span data-phrase="read.exifnobom">No hay marca de orden de bytes: esto no es un bloque TIFF.</span>
+    <span data-phrase="read.exifmagic">El número mágico TIFF es incorrecto.</span>
+    <span data-phrase="read.exifoffset">El desplazamiento del primer directorio apunta fuera del bloque.</span>
+    <span data-phrase="refuse.heic">HEIC es un formato de cajas anidadas, y reescribir uno con seguridad necesita un
+      analizador distinto de los tres que hay aquí. Conviértelo antes a JPEG: la
+      herramienta HEIC a JPG de este sitio lo hace, y de paso puede dejar fuera los
+      metadatos.</span>
+    <span data-phrase="refuse.avif">AVIF usa el mismo formato de cajas que HEIC, y vale lo mismo: reescribir uno
+      necesita un analizador que esta herramienta todavía no tiene.</span>
+    <span data-phrase="refuse.gif">El GIF tiene bloques de comentario y de aplicación en lugar de EXIF, y casi nunca
+      lleva nada personal. Aquí no se trata.</span>
+    <span data-phrase="refuse.tiff">Un TIFF pelado es todo metadatos y todo imagen a la vez, con los píxeles
+      direccionados por los mismos desplazamientos que esta herramienta tendría que mover.
+      Editar uno es otro oficio que editar una foto.</span>
+    <span data-phrase="refuse.unknown">Esto no parece un JPEG, un PNG ni un WebP.</span>
+    <span data-phrase="refuse.unwritable">Este formato no se puede escribir.</span>
+    <span data-phrase="segment.jfif.label">Cabecera JFIF</span>
+    <span data-phrase="segment.jfif.detail">El bloque de cinco bytes que dice que un JPEG es un JPEG, más la resolución de
+      impresión. Se conserva: no dice nada de ti, y algunos programas antiguos no abren un
+      archivo sin él.</span>
+    <span data-phrase="segment.adobe.label">Marcador de color de Adobe</span>
+    <span data-phrase="segment.adobe.detail">Anota qué transformación de color usó el codificador. Se conserva, porque quitarlo
+      pone algunos archivos del revés en cuanto al color.</span>
+    <span data-phrase="write.segmentfull">Ese bloque de metadatos ocupa {size} bytes y un segmento JPEG admite {limit}. Quita
+      la miniatura o la nota del fabricante y vuelve a intentarlo.</span>
+    <span data-phrase="write.webpnosize">Este WebP no tiene cabecera extendida, y su tamaño no se pudo leer, así que no se le
+      pueden añadir metadatos.</span>
     <span data-phrase="net.clean">tus fotos no han ido a ninguna parte. {total}
       archivos cargados, todos ellos de esta misma página. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta

@@ -147,6 +147,32 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">这个开头不像 JPEG。</span>
+    <span data-phrase="read.jpeglost">分段的结构断了，文件看着是坏的。</span>
+    <span data-phrase="read.jpegoverrun">有一段声称的长度已经越过了文件末尾。</span>
+    <span data-phrase="read.jpegnoscan">图像数据还没开始，文件就到头了。</span>
+    <span data-phrase="read.notpng">这个开头不像 PNG。</span>
+    <span data-phrase="read.pngoverrun">有个数据块声称的长度已经越过了文件末尾。</span>
+    <span data-phrase="read.pngnoheader">缺少头部数据块。</span>
+    <span data-phrase="read.notwebp">这个开头不像 WebP。</span>
+    <span data-phrase="read.webpoverrun">有个数据块声称的大小已经越过了文件末尾。</span>
+    <span data-phrase="read.webpnochunks">这个文件里一个数据块都没有。</span>
+    <span data-phrase="read.exifshort">这块太短了，不可能是 EXIF。</span>
+    <span data-phrase="read.exifnobom">没有字节序标记，这不是 TIFF 块。</span>
+    <span data-phrase="read.exifmagic">TIFF 的魔数不对。</span>
+    <span data-phrase="read.exifoffset">第一个目录的偏移指到了块外面。</span>
+    <span data-phrase="refuse.heic">HEIC 是一层套一层的盒子格式，要安全地重写一个，得用一个跟这里这三个都不一样的解析器。先转成 JPEG 吧，本站的 HEIC 转 JPG 就干这个，顺手还能把元数据留下不带走。</span>
+    <span data-phrase="refuse.avif">AVIF 用的是跟 HEIC 一样的盒子格式，情况也一样：要重写一个，得有这个工具还没有的解析器。</span>
+    <span data-phrase="refuse.gif">GIF 里没有 EXIF，只有注释块和应用块，而且几乎从不夹带私人信息。这儿不处理它。</span>
+    <span data-phrase="refuse.tiff">裸的 TIFF 通篇是元数据，同时通篇是图像，像素正是靠这个工具本该挪动的那些偏移找到的。改这种文件跟改一张照片是两门手艺。</span>
+    <span data-phrase="refuse.unknown">这看着既不像 JPEG，也不像 PNG 或 WebP。</span>
+    <span data-phrase="refuse.unwritable">这种格式写不了。</span>
+    <span data-phrase="segment.jfif.label">JFIF 头</span>
+    <span data-phrase="segment.jfif.detail">就是那五个字节，说明这个 JPEG 是 JPEG，外加打印分辨率。留着：它跟你这个人没关系，而且有些老程序碰上没有它的文件就打不开。</span>
+    <span data-phrase="segment.adobe.label">Adobe 色彩标记</span>
+    <span data-phrase="segment.adobe.detail">记录编码器用的是哪种色彩变换。留着，因为拿掉它，有些文件的颜色会整个反过来。</span>
+    <span data-phrase="write.segmentfull">这块元数据有 {size} 字节，而一个 JPEG 段只装得下 {limit} 字节。删掉缩略图或者厂商备注再试一次。</span>
+    <span data-phrase="write.webpnosize">这个 WebP 没有扩展头，大小也读不出来，所以没法往里加元数据。</span>
     <span data-phrase="net.clean">你的照片没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到文件，也没拿到任何一条标签。</span>

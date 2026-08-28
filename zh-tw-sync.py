@@ -162,6 +162,14 @@ TAIWAN_REGISTER = [
     ('乾的活', '做的事'),
     ('那張錶', '那張表'),
     ('影象', '影像'),
+    # 扩展 always becomes 擴充套件, the thing you install in a browser. That is
+    # right in the two places that mean one - the Windows store codec and the
+    # browser add-on in password-generator - and wrong in the three that mean a
+    # structure inside a file: a WebP extended header, and the plain text and
+    # application blocks in a GIF. Those are a 擴充標頭 and 擴充區塊.
+    ('擴充套件頭', '擴充標頭'),
+    ('純文字擴充套件', '純文字擴充區塊'),
+    ('應用擴充套件', '應用程式擴充區塊'),
 
     # 兆 for a megabyte is the reading that CANNOT stay: in Taiwan 兆 is
     # 10^12, so 一兆位元組 literally claims a terabyte. Spelled out as MB,

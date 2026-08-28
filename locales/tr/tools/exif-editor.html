@@ -161,6 +161,44 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">Bu, bir JPEG gibi başlamıyor.</span>
+    <span data-phrase="read.jpeglost">Segment yapısı kayboldu &mdash; dosya bozuk görünüyor.</span>
+    <span data-phrase="read.jpegoverrun">Bir segment, dosyanın sonunu aşan bir uzunluk bildiriyor.</span>
+    <span data-phrase="read.jpegnoscan">Görüntü verisi başlamadan dosya bitti.</span>
+    <span data-phrase="read.notpng">Bu, bir PNG gibi başlamıyor.</span>
+    <span data-phrase="read.pngoverrun">Bir chunk, dosyanın sonunu aşan bir uzunluk bildiriyor.</span>
+    <span data-phrase="read.pngnoheader">Başlık chunkı eksik.</span>
+    <span data-phrase="read.notwebp">Bu, bir WebP gibi başlamıyor.</span>
+    <span data-phrase="read.webpoverrun">Bir chunk, dosyanın sonunu aşan bir boyut bildiriyor.</span>
+    <span data-phrase="read.webpnochunks">Dosyanın içinde hiç chunk yok.</span>
+    <span data-phrase="read.exifshort">Blok, EXIF olamayacak kadar kısa.</span>
+    <span data-phrase="read.exifnobom">Bayt sırası işareti yok &mdash; bu bir TIFF bloğu değil.</span>
+    <span data-phrase="read.exifmagic">TIFF sihirli sayısı yanlış.</span>
+    <span data-phrase="read.exifoffset">İlk dizinin konumu bloğun dışını gösteriyor.</span>
+    <span data-phrase="refuse.heic">HEIC, iç içe kutulardan kurulu bir biçim; birini güvenle yeniden yazmak buradaki üç
+      okuyucudan başka bir çözümleyici ister. Önce JPEG&rsquo;e çevirin &mdash; bu
+      sitedeki HEIC&rsquo;ten JPG&rsquo;ye aracı bunu yapar ve yol üstünde üst veriyi
+      geride bırakabilir.</span>
+    <span data-phrase="refuse.avif">AVIF, HEIC&rsquo;in kutu biçimini kullanır ve aynısı geçerlidir: birini yeniden
+      yazmak, bu aracın henüz sahip olmadığı bir çözümleyici ister.</span>
+    <span data-phrase="refuse.gif">GIF&rsquo;te EXIF yerine yorum ve uygulama blokları vardır ve neredeyse hiçbir zaman
+      kişisel bir şey taşımaz. Burada ele alınmıyor.</span>
+    <span data-phrase="refuse.tiff">Çıplak bir TIFF hem baştan sona üst veri hem baştan sona görüntüdür; pikseller, bu
+      aracın kaydırması gereken konumların ta kendisiyle adreslenir. Böyle bir dosyayı
+      düzenlemek, bir fotoğrafı düzenlemekten başka bir zanaattır.</span>
+    <span data-phrase="refuse.unknown">Bu, ne JPEG&rsquo;e ne PNG&rsquo;ye ne de WebP&rsquo;ye benziyor.</span>
+    <span data-phrase="refuse.unwritable">Bu biçim yazılamıyor.</span>
+    <span data-phrase="segment.jfif.label">JFIF başlığı</span>
+    <span data-phrase="segment.jfif.detail">Bir JPEG&rsquo;in JPEG olduğunu söyleyen beş baytlık blok, bir de baskı çözünürlüğü.
+      Korunuyor: sizin hakkınızda hiçbir şey söylemez ve bazı eski programlar o olmadan
+      dosyayı açmaz.</span>
+    <span data-phrase="segment.adobe.label">Adobe renk işareti</span>
+    <span data-phrase="segment.adobe.detail">Kodlayıcının hangi renk dönüşümünü kullandığını not eder. Korunuyor, çünkü onu
+      çıkarmak bazı dosyaların renklerini tersine çevirir.</span>
+    <span data-phrase="write.segmentfull">O üst veri bloğu {size} bayt, bir JPEG segmenti ise {limit} bayt alır. Küçük resmi
+      ya da üretici notunu çıkarıp yeniden deneyin.</span>
+    <span data-phrase="write.webpnosize">Bu WebP&rsquo;de genişletilmiş başlık yok ve boyutu okunamadı; dolayısıyla ona üst
+      veri eklenemez.</span>
     <span data-phrase="net.clean">fotoğraflarınız hiçbir yere gitmedi. {total}
       dosya yüklendi, hepsi bu sayfanın kendi dosyaları. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

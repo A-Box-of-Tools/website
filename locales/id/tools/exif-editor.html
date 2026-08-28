@@ -161,6 +161,43 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">Ini tidak dimulai seperti sebuah JPEG.</span>
+    <span data-phrase="read.jpeglost">Struktur segmennya hilang &mdash; berkasnya tampak rusak.</span>
+    <span data-phrase="read.jpegoverrun">Sebuah segmen mengaku punya panjang yang melewati ujung file.</span>
+    <span data-phrase="read.jpegnoscan">File-nya habis sebelum data gambarnya mulai.</span>
+    <span data-phrase="read.notpng">Ini tidak dimulai seperti sebuah PNG.</span>
+    <span data-phrase="read.pngoverrun">Sebuah chunk mengaku punya panjang yang melewati ujung file.</span>
+    <span data-phrase="read.pngnoheader">Chunk headernya tidak ada.</span>
+    <span data-phrase="read.notwebp">Ini tidak dimulai seperti sebuah WebP.</span>
+    <span data-phrase="read.webpoverrun">Sebuah chunk mengaku punya ukuran yang melewati ujung file.</span>
+    <span data-phrase="read.webpnochunks">Tidak ada chunk sama sekali di dalam file itu.</span>
+    <span data-phrase="read.exifshort">Bloknya terlalu pendek untuk berupa EXIF.</span>
+    <span data-phrase="read.exifnobom">Tidak ada penanda urutan bita &mdash; ini bukan blok TIFF.</span>
+    <span data-phrase="read.exifmagic">Angka ajaib TIFF-nya salah.</span>
+    <span data-phrase="read.exifoffset">Offset direktori pertamanya menunjuk ke luar blok.</span>
+    <span data-phrase="refuse.heic">HEIC adalah format kotak bersarang, dan menulis ulang satu dengan aman butuh
+      pengurai yang lain dari ketiga yang ada di sini. Ubah dulu ke JPEG &mdash; alat HEIC
+      ke JPG di situs ini melakukannya, dan sekalian bisa meninggalkan metadatanya.</span>
+    <span data-phrase="refuse.avif">AVIF memakai format kotak yang sama dengan HEIC, dan berlaku hal yang sama: menulis
+      ulang satu butuh pengurai yang belum dipunyai alat ini.</span>
+    <span data-phrase="refuse.gif">GIF punya blok komentar dan blok aplikasi, bukan EXIF, dan hampir tidak pernah
+      membawa apa pun yang pribadi. Di sini ia tidak ditangani.</span>
+    <span data-phrase="refuse.tiff">TIFF telanjang itu seluruhnya metadata sekaligus seluruhnya gambar, dengan pikselnya
+      dialamatkan oleh offset yang justru harus digeser alat ini. Menyuntingnya adalah
+      kerajinan yang lain dari menyunting sebuah foto.</span>
+    <span data-phrase="refuse.unknown">Ini tidak tampak seperti JPEG, PNG, maupun WebP.</span>
+    <span data-phrase="refuse.unwritable">Format ini tidak bisa ditulis.</span>
+    <span data-phrase="segment.jfif.label">Header JFIF</span>
+    <span data-phrase="segment.jfif.detail">Blok lima bita yang mengatakan bahwa sebuah JPEG adalah JPEG, plus resolusi
+      cetaknya. Disimpan: ia tidak mengatakan apa pun tentang Anda, dan sebagian program
+      lama tidak mau membuka file yang tidak punya blok itu.</span>
+    <span data-phrase="segment.adobe.label">Penanda warna Adobe</span>
+    <span data-phrase="segment.adobe.detail">Mencatat transformasi warna mana yang dipakai enkodernya. Disimpan, karena
+      membuangnya membalik warna sebagian file.</span>
+    <span data-phrase="write.segmentfull">Blok metadata itu {size} bita dan satu segmen JPEG memuat {limit}. Buang gambar
+      mininya atau catatan pabrikannya, lalu coba lagi.</span>
+    <span data-phrase="write.webpnosize">WebP ini tidak punya header diperluas, dan ukurannya tidak bisa dibaca, jadi
+      metadata tidak bisa ditambahkan padanya.</span>
     <span data-phrase="net.clean">foto Anda tidak pergi ke mana pun. {total}
       file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

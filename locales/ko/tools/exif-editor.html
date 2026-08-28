@@ -154,6 +154,35 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">이 파일은 JPEG처럼 시작하지 않습니다.</span>
+    <span data-phrase="read.jpeglost">세그먼트 구조가 어긋났습니다. 파일이 손상된 것 같습니다.</span>
+    <span data-phrase="read.jpegoverrun">어떤 세그먼트가 파일 끝을 넘어가는 길이를 적어 두었습니다.</span>
+    <span data-phrase="read.jpegnoscan">이미지 데이터가 시작되기 전에 파일이 끝났습니다.</span>
+    <span data-phrase="read.notpng">이 파일은 PNG처럼 시작하지 않습니다.</span>
+    <span data-phrase="read.pngoverrun">어떤 청크가 파일 끝을 넘어가는 길이를 적어 두었습니다.</span>
+    <span data-phrase="read.pngnoheader">헤더 청크가 없습니다.</span>
+    <span data-phrase="read.notwebp">이 파일은 WebP처럼 시작하지 않습니다.</span>
+    <span data-phrase="read.webpoverrun">어떤 청크가 파일 끝을 넘어가는 크기를 적어 두었습니다.</span>
+    <span data-phrase="read.webpnochunks">파일 안에 청크가 하나도 없습니다.</span>
+    <span data-phrase="read.exifshort">이 블록은 EXIF라고 하기에는 너무 짧습니다.</span>
+    <span data-phrase="read.exifnobom">바이트 순서 표시가 없습니다. TIFF 블록이 아닙니다.</span>
+    <span data-phrase="read.exifmagic">TIFF 매직 넘버가 맞지 않습니다.</span>
+    <span data-phrase="read.exifoffset">첫 디렉터리의 오프셋이 블록 바깥을 가리킵니다.</span>
+    <span data-phrase="refuse.heic">HEIC는 상자가 겹겹이 들어앉은 형식이라, 안전하게 다시 쓰려면 여기 있는 세 가지와는 다른 파서가 필요합니다. 먼저 JPEG로 바꿔 주세요. 이
+      사이트의 HEIC를 JPG로 도구가 그 일을 하고, 가는 김에 메타데이터를 떼어 놓을 수도 있습니다.</span>
+    <span data-phrase="refuse.avif">AVIF도 HEIC와 같은 상자 형식을 씁니다. 그래서 사정도 같습니다. 다시 쓰려면 이 도구에 아직 없는 파서가 필요합니다.</span>
+    <span data-phrase="refuse.gif">GIF에는 EXIF 대신 주석 블록과 응용 프로그램 블록이 있고, 개인적인 것을 담는 일은 거의 없습니다. 여기서는 다루지 않습니다.</span>
+    <span data-phrase="refuse.tiff">맨 TIFF는 전부가 메타데이터이면서 동시에 전부가 이미지입니다. 픽셀이 바로 이 도구가 옮겨야 할 오프셋으로 가리켜집니다. 그런 파일을 고치는 일은
+      사진을 고치는 일과는 다른 기술입니다.</span>
+    <span data-phrase="refuse.unknown">JPEG도 PNG도 WebP도 아닌 것 같습니다.</span>
+    <span data-phrase="refuse.unwritable">이 형식은 쓸 수 없습니다.</span>
+    <span data-phrase="segment.jfif.label">JFIF 헤더</span>
+    <span data-phrase="segment.jfif.detail">JPEG가 JPEG임을 밝히는 5바이트짜리 블록과 인쇄 해상도입니다. 남깁니다. 찍은 사람에 대해서는 아무것도 말하지 않고, 오래된 프로그램 중에는
+      이것이 없는 파일을 열지 못하는 것도 있습니다.</span>
+    <span data-phrase="segment.adobe.label">Adobe 색 표시</span>
+    <span data-phrase="segment.adobe.detail">인코더가 어떤 색 변환을 썼는지 적어 둡니다. 남깁니다. 이것을 떼어 내면 어떤 파일은 색이 뒤집히기 때문입니다.</span>
+    <span data-phrase="write.segmentfull">그 메타데이터 블록은 {size}바이트인데 JPEG 세그먼트에는 {limit}바이트만 들어갑니다. 썸네일이나 제조사 노트를 지우고 다시 해 보세요.</span>
+    <span data-phrase="write.webpnosize">이 WebP에는 확장 헤더가 없고 크기도 읽을 수 없어서, 메타데이터를 넣을 수 없습니다.</span>
     <span data-phrase="net.clean">사진은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이 사이트의
       것입니다. {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다. 살펴볼

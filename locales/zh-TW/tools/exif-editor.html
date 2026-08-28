@@ -147,6 +147,32 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">這個開頭不像 JPEG。</span>
+    <span data-phrase="read.jpeglost">分段的結構斷了，檔案看起來是壞的。</span>
+    <span data-phrase="read.jpegoverrun">有一段聲稱的長度已經越過了檔案末尾。</span>
+    <span data-phrase="read.jpegnoscan">影像資料還沒開始，檔案就到頭了。</span>
+    <span data-phrase="read.notpng">這個開頭不像 PNG。</span>
+    <span data-phrase="read.pngoverrun">有個資料塊聲稱的長度已經越過了檔案末尾。</span>
+    <span data-phrase="read.pngnoheader">缺少頭部資料塊。</span>
+    <span data-phrase="read.notwebp">這個開頭不像 WebP。</span>
+    <span data-phrase="read.webpoverrun">有個資料塊聲稱的大小已經越過了檔案末尾。</span>
+    <span data-phrase="read.webpnochunks">這個檔案裡一個資料塊都沒有。</span>
+    <span data-phrase="read.exifshort">這塊太短了，不可能是 EXIF。</span>
+    <span data-phrase="read.exifnobom">沒有位元組序標記，這不是 TIFF 塊。</span>
+    <span data-phrase="read.exifmagic">TIFF 的魔數不對。</span>
+    <span data-phrase="read.exifoffset">第一個目錄的偏移指到了塊外面。</span>
+    <span data-phrase="refuse.heic">HEIC 是一層套一層的盒子格式，要安全地重寫一個，得用一個跟這裡這三個都不一樣的解析器。先轉成 JPEG 吧，本站的 HEIC 轉 JPG 就做這個，順手還能把後設資料留下不帶走。</span>
+    <span data-phrase="refuse.avif">AVIF 用的是跟 HEIC 一樣的盒子格式，情況也一樣：要重寫一個，得有這個工具還沒有的解析器。</span>
+    <span data-phrase="refuse.gif">GIF 裡沒有 EXIF，只有註釋塊和應用塊，而且幾乎從不夾帶私人資訊。這裡不處理它。</span>
+    <span data-phrase="refuse.tiff">裸的 TIFF 通篇是後設資料，同時通篇是影像，畫素正是靠這個工具本該挪動的那些偏移找到的。改這種檔案跟改一張照片是兩門手藝。</span>
+    <span data-phrase="refuse.unknown">這看著既不像 JPEG，也不像 PNG 或 WebP。</span>
+    <span data-phrase="refuse.unwritable">這種格式寫不了。</span>
+    <span data-phrase="segment.jfif.label">JFIF 頭</span>
+    <span data-phrase="segment.jfif.detail">就是那五個位元組，說明這個 JPEG 是 JPEG，外加列印解析度。留著：它跟你這個人沒關係，而且有些老程式碰上沒有它的檔案就打不開。</span>
+    <span data-phrase="segment.adobe.label">Adobe 色彩標記</span>
+    <span data-phrase="segment.adobe.detail">記錄編碼器用的是哪種色彩變換。留著，因為拿掉它，有些檔案的顏色會整個反過來。</span>
+    <span data-phrase="write.segmentfull">這塊後設資料有 {size} 位元組，而一個 JPEG 段只裝得下 {limit} 位元組。刪掉縮圖或者廠商備註再試一次。</span>
+    <span data-phrase="write.webpnosize">這個 WebP 沒有擴充標頭，大小也讀不出來，所以沒法往裡加後設資料。</span>
     <span data-phrase="net.clean">你的照片沒有去任何地方。載入了 {total} 個檔案，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到檔案，也沒拿到任何一條標籤。</span>

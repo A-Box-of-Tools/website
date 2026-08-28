@@ -156,6 +156,45 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">Das fängt nicht an wie ein JPEG.</span>
+    <span data-phrase="read.jpeglost">Die Segmentstruktur ist verloren &mdash; die Datei sieht beschädigt aus.</span>
+    <span data-phrase="read.jpegoverrun">Ein Segment nennt eine Länge, die über das Dateiende hinausläuft.</span>
+    <span data-phrase="read.jpegnoscan">Die Datei endete, bevor die Bilddaten anfingen.</span>
+    <span data-phrase="read.notpng">Das fängt nicht an wie ein PNG.</span>
+    <span data-phrase="read.pngoverrun">Ein Chunk nennt eine Länge, die über das Dateiende hinausläuft.</span>
+    <span data-phrase="read.pngnoheader">Der Header-Chunk fehlt.</span>
+    <span data-phrase="read.notwebp">Das fängt nicht an wie ein WebP.</span>
+    <span data-phrase="read.webpoverrun">Ein Chunk nennt eine Größe, die über das Dateiende hinausläuft.</span>
+    <span data-phrase="read.webpnochunks">In der Datei sind keine Chunks.</span>
+    <span data-phrase="read.exifshort">Der Block ist zu kurz, um EXIF zu sein.</span>
+    <span data-phrase="read.exifnobom">Keine Byte-Reihenfolge-Marke &mdash; das ist kein TIFF-Block.</span>
+    <span data-phrase="read.exifmagic">Die TIFF-Magiczahl stimmt nicht.</span>
+    <span data-phrase="read.exifoffset">Der erste Verzeichnis-Offset zeigt aus dem Block hinaus.</span>
+    <span data-phrase="refuse.heic">HEIC ist ein Box-Format aus verschachtelten Atomen, und eines davon sicher neu zu
+      schreiben braucht einen anderen Parser als die drei hier. Wandeln Sie es zuerst in
+      JPEG um &mdash; das HEIC-zu-JPG-Werkzeug auf dieser Seite tut das und kann die
+      Metadaten dabei weglassen.</span>
+    <span data-phrase="refuse.avif">AVIF benutzt dasselbe Box-Format wie HEIC, und dasselbe gilt: eines neu zu schreiben
+      braucht einen Parser, den dieses Werkzeug noch nicht hat.</span>
+    <span data-phrase="refuse.gif">GIF hat Kommentar- und Anwendungsblöcke statt EXIF und trägt fast nie etwas
+      Persönliches. Es wird hier nicht behandelt.</span>
+    <span data-phrase="refuse.tiff">Ein blankes TIFF ist Metadaten und Bild in einem, und die Pixel hängen an denselben
+      Offsets, die dieses Werkzeug verschieben müsste. Eines zu bearbeiten ist eine andere
+      Aufgabe als ein Foto zu bearbeiten.</span>
+    <span data-phrase="refuse.unknown">Das sieht nicht aus wie ein JPEG, PNG oder WebP.</span>
+    <span data-phrase="refuse.unwritable">Dieses Format kann nicht geschrieben werden.</span>
+    <span data-phrase="segment.jfif.label">JFIF-Header</span>
+    <span data-phrase="segment.jfif.detail">Der Fünf-Byte-Block, der sagt, dass ein JPEG ein JPEG ist, plus die Druckauflösung.
+      Bleibt: er sagt nichts über Sie, und manche ältere Software öffnet eine Datei ohne
+      ihn nicht.</span>
+    <span data-phrase="segment.adobe.label">Adobe-Farbmarke</span>
+    <span data-phrase="segment.adobe.detail">Hält fest, welche Farbtransformation der Encoder benutzt hat. Bleibt, weil ihr
+      Entfernen manche Dateien farblich auf links dreht.</span>
+    <span data-phrase="write.segmentfull">Dieser Metadatenblock ist {size} Bytes groß, und ein JPEG-Segment fasst {limit}.
+      Nehmen Sie das Vorschaubild oder die Herstellernotiz heraus und versuchen Sie es
+      noch einmal.</span>
+    <span data-phrase="write.webpnosize">Dieses WebP hat keinen erweiterten Header, und seine Größe ließ sich nicht lesen,
+      also können ihm keine Metadaten hinzugefügt werden.</span>
     <span data-phrase="net.clean">Ihre Fotos sind nirgendwohin gegangen. {total}
       Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

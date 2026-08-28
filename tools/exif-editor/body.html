@@ -152,6 +152,32 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">This does not start like a JPEG.</span>
+    <span data-phrase="read.jpeglost">Lost the segment structure &mdash; the file looks damaged.</span>
+    <span data-phrase="read.jpegoverrun">A segment claims a length that runs off the end of the file.</span>
+    <span data-phrase="read.jpegnoscan">The file ended before the image data started.</span>
+    <span data-phrase="read.notpng">This does not start like a PNG.</span>
+    <span data-phrase="read.pngoverrun">A chunk claims a length that runs off the end of the file.</span>
+    <span data-phrase="read.pngnoheader">The header chunk is missing.</span>
+    <span data-phrase="read.notwebp">This does not start like a WebP.</span>
+    <span data-phrase="read.webpoverrun">A chunk claims a size that runs off the end of the file.</span>
+    <span data-phrase="read.webpnochunks">The file has no chunks in it.</span>
+    <span data-phrase="read.exifshort">The block is too short to be EXIF.</span>
+    <span data-phrase="read.exifnobom">No byte-order mark &mdash; this is not a TIFF block.</span>
+    <span data-phrase="read.exifmagic">The TIFF magic number is wrong.</span>
+    <span data-phrase="read.exifoffset">The first directory offset points outside the block.</span>
+    <span data-phrase="refuse.heic">HEIC is a box format built out of nested atoms, and rewriting one safely needs a different parser from the three here. Convert it to JPEG first &mdash; the HEIC to JPG tool on this site does that, and can leave the metadata out on the way.</span>
+    <span data-phrase="refuse.avif">AVIF uses the same box format as HEIC, and the same applies: rewriting one needs a parser this tool does not have yet.</span>
+    <span data-phrase="refuse.gif">GIF has comment and application blocks rather than EXIF, and almost never carries anything personal. It is not handled here.</span>
+    <span data-phrase="refuse.tiff">A bare TIFF is all metadata and all image at once, with the pixels addressed by the same offsets this tool would have to move. Editing one is a different job from editing a photo.</span>
+    <span data-phrase="refuse.unknown">This does not look like a JPEG, PNG or WebP.</span>
+    <span data-phrase="refuse.unwritable">This format cannot be written.</span>
+    <span data-phrase="segment.jfif.label">JFIF header</span>
+    <span data-phrase="segment.jfif.detail">The five-byte block that says a JPEG is a JPEG, plus the print resolution. Kept: it says nothing about you, and some older software will not open a file without it.</span>
+    <span data-phrase="segment.adobe.label">Adobe colour marker</span>
+    <span data-phrase="segment.adobe.detail">Records which colour transform the encoder used. Kept, because removing it turns some files inside out colour-wise.</span>
+    <span data-phrase="write.segmentfull">That metadata block is {size} bytes and a JPEG segment holds {limit}. Remove the thumbnail or the maker note and try again.</span>
+    <span data-phrase="write.webpnosize">This WebP has no extended header, and its size could not be read, so metadata cannot be added to it.</span>
     <span data-phrase="net.clean">your photos have gone nowhere. {total} files
       loaded, all of them this page's own. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

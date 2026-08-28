@@ -81,7 +81,7 @@ test('a short value read from inside its own entry', () => {
 test('a block that is too short', () => {
   const parsed = parseExif(new Uint8Array(4));
   assert.equal(parsed.ok, false);
-  assert.match(parsed.error, /too short/);
+  assert.equal(parsed.error, 'read.exifshort');
 });
 
 test('nothing at all', () => {
@@ -93,13 +93,13 @@ test('no byte-order mark', () => {
   const bytes = TIFF_LE.slice();
   bytes[0] = 0x58;
   bytes[1] = 0x58;
-  assert.match(parseExif(bytes).error, /byte-order mark/);
+  assert.equal(parseExif(bytes).error, 'read.exifnobom');
 });
 
 test('the wrong magic number', () => {
   const bytes = TIFF_LE.slice();
   bytes[2] = 43;
-  assert.match(parseExif(bytes).error, /magic number/);
+  assert.equal(parseExif(bytes).error, 'read.exifmagic');
 });
 
 test('a first directory offset pointing outside the block', () => {
@@ -109,7 +109,7 @@ test('a first directory offset pointing outside the block', () => {
   assert.equal(parsed.ok, false);
   // "unreadable" and "no tags" are different claims, and the caller needs the
   // first one.
-  assert.match(parsed.error, /points outside/);
+  assert.equal(parsed.error, 'read.exifoffset');
 });
 
 test('an entry whose count runs off the end is skipped, not read', () => {

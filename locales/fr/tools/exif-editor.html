@@ -155,6 +155,45 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">Cela ne commence pas comme un JPEG.</span>
+    <span data-phrase="read.jpeglost">La structure des segments est perdue &mdash; le fichier semble abîmé.</span>
+    <span data-phrase="read.jpegoverrun">Un segment annonce une longueur qui dépasse la fin du fichier.</span>
+    <span data-phrase="read.jpegnoscan">Le fichier s&rsquo;est terminé avant le début des données d&rsquo;image.</span>
+    <span data-phrase="read.notpng">Cela ne commence pas comme un PNG.</span>
+    <span data-phrase="read.pngoverrun">Un chunk annonce une longueur qui dépasse la fin du fichier.</span>
+    <span data-phrase="read.pngnoheader">Le chunk d&rsquo;en-tête manque.</span>
+    <span data-phrase="read.notwebp">Cela ne commence pas comme un WebP.</span>
+    <span data-phrase="read.webpoverrun">Un chunk annonce une taille qui dépasse la fin du fichier.</span>
+    <span data-phrase="read.webpnochunks">Le fichier ne contient aucun chunk.</span>
+    <span data-phrase="read.exifshort">Le bloc est trop court pour être de l&rsquo;EXIF.</span>
+    <span data-phrase="read.exifnobom">Pas de marque d&rsquo;ordre des octets &mdash; ce n&rsquo;est pas un bloc TIFF.</span>
+    <span data-phrase="read.exifmagic">Le nombre magique TIFF est incorrect.</span>
+    <span data-phrase="read.exifoffset">Le décalage du premier répertoire pointe hors du bloc.</span>
+    <span data-phrase="refuse.heic">HEIC est un format à boîtes imbriquées, et en réécrire un proprement demande un
+      analyseur différent des trois qui sont ici. Convertissez-le d&rsquo;abord en JPEG
+      &mdash; l&rsquo;outil HEIC vers JPG de ce site le fait, et peut laisser les
+      métadonnées de côté au passage.</span>
+    <span data-phrase="refuse.avif">AVIF emploie le même format à boîtes que HEIC, et il en va de même&nbsp;: en
+      réécrire un demande un analyseur que cet outil n&rsquo;a pas encore.</span>
+    <span data-phrase="refuse.gif">Le GIF a des blocs de commentaire et d&rsquo;application plutôt que de l&rsquo;EXIF,
+      et ne porte presque jamais quoi que ce soit de personnel. Il n&rsquo;est pas traité
+      ici.</span>
+    <span data-phrase="refuse.tiff">Un TIFF nu est à la fois tout en métadonnées et tout en image, avec les pixels
+      adressés par les décalages mêmes que cet outil devrait déplacer. En modifier un est
+      un autre métier que modifier une photo.</span>
+    <span data-phrase="refuse.unknown">Cela ne ressemble ni à un JPEG, ni à un PNG, ni à un WebP.</span>
+    <span data-phrase="refuse.unwritable">Ce format ne peut pas être écrit.</span>
+    <span data-phrase="segment.jfif.label">En-tête JFIF</span>
+    <span data-phrase="segment.jfif.detail">Le bloc de cinq octets qui dit qu&rsquo;un JPEG est un JPEG, plus la résolution
+      d&rsquo;impression. Conservé&nbsp;: il ne dit rien sur vous, et certains logiciels
+      anciens n&rsquo;ouvrent pas un fichier qui en est dépourvu.</span>
+    <span data-phrase="segment.adobe.label">Marqueur couleur Adobe</span>
+    <span data-phrase="segment.adobe.detail">Consigne la transformation colorimétrique employée par l&rsquo;encodeur. Conservé,
+      parce que le retirer retourne certains fichiers du point de vue des couleurs.</span>
+    <span data-phrase="write.segmentfull">Ce bloc de métadonnées fait {size} octets et un segment JPEG en contient {limit}.
+      Retirez la vignette ou la note du fabricant, puis réessayez.</span>
+    <span data-phrase="write.webpnosize">Ce WebP n&rsquo;a pas d&rsquo;en-tête étendu, et sa taille n&rsquo;a pas pu être
+      lue&nbsp;: on ne peut donc pas y ajouter de métadonnées.</span>
     <span data-phrase="net.clean">vos photos ne sont allées nulle part. {total}
       fichiers chargés, tous appartenant à cette page. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
