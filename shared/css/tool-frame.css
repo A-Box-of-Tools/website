@@ -651,6 +651,25 @@ button, .as-button {
   font-size: 0.92rem;
 }
 
+/*
+  The button that starts the work, and the only control on a tool page that
+  needs to feel like one.
+
+  It used to do exactly one thing: brighten under the pointer. That is the
+  half of the interaction a mouse gets and a finger never does - a touch does
+  not hover, it arrives already pressed - so on a phone the button that runs
+  the tool acknowledged nothing between the tap and however many seconds of
+  work came after it. The `:active` state below is the half that was missing,
+  and it is the one that matters on the devices most of this site is read on.
+
+  The shadow is mixed from `--accent` rather than the neutral `--shadow` every
+  card uses. That is deliberate and is the whole visual idea: a card is a piece
+  of paper lying on the page, and this is not a card - it is the one thing on
+  the page that is going to do something, so it is lit by its own colour. The
+  resting shadow is kept small; the lift on hover and the collapse on press are
+  what carry the gesture, so the button travels toward the pointer and then
+  back under it.
+*/
 .primary {
   background: var(--accent);
   color: var(--accent-text);
@@ -658,9 +677,36 @@ button, .as-button {
   border-color: var(--accent);
   text-decoration: none;
   display: inline-block;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--accent) 25%, transparent);
+  transition: box-shadow 0.15s ease, transform 0.1s ease, filter 0.15s ease;
 }
-.primary:hover:not(:disabled) { filter: brightness(1.08); }
-.primary:disabled { opacity: 0.45; cursor: default; }
+
+.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px color-mix(in srgb, var(--accent) 28%, transparent),
+              0 8px 18px -6px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* Under the finger or the held mouse button: back down onto the page, and a
+   shade darker rather than brighter, because a surface being pushed catches
+   less light rather than more. */
+.primary:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+  filter: brightness(0.97);
+  box-shadow: 0 1px 1px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Nothing to press, so nothing is lit. */
+.primary:disabled { opacity: 0.45; cursor: default; box-shadow: none; }
+
+/* The lift and the press are movement and carry no meaning the colour change
+   does not already carry, so they are the first thing to go. */
+@media (prefers-reduced-motion: reduce) {
+  .primary { transition: none; }
+  .primary:hover:not(:disabled),
+  .primary:active:not(:disabled) { transform: none; }
+}
 
 .ghost {
   background: var(--surface);
