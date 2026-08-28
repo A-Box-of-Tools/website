@@ -181,36 +181,52 @@ to the frame or the stylesheet rewrites them without moving a word anybody
 reads. Submitting URLs that did not change is how a host stops being trusted
 with the protocol, which would cost the site the one lever it has here.
 
-What does track real change is already in the repository. `lastmod` in
-`sitemap.xml` is one date per page, written by hand in `tool.toml` and
-`config/site.toml`, and moved only when the wording on that page moves — see
-the comment in [`templates/sitemap.xml`](../templates/sitemap.xml). So
-[`indexnow.py`](../indexnow.py) compares the sitemap about to be deployed
-against the one already deployed, and submits the entries that are new or whose
-date moved:
+What tracks real change is the page's own content. Every template wraps what a
+page actually says in a single `<main>`; the crumbs, the header, the language
+switcher and the footer all sit outside it. So
+[`indexnow.py`](../indexnow.py) hashes the bytes inside `<main>` for every page
+the sitemap lists, and submits the ones whose hash is new or has moved:
 
 | What changed | What is submitted |
 |---|---|
-| A tool's wording, with its `lastmod` bumped | that tool, in all fifteen languages |
-| A new tool | its pages, and the hubs, if their dates moved |
-| The footer, the CSS, the build | nothing |
+| A sentence on a tool page | that tool, in the languages the sentence changed in |
+| A new tool | its pages, and the hubs that now list it |
+| The footer, the CSS, an icon, the build | nothing |
 
-Because the list comes from the sitemap rather than from the output directory,
-it inherits every rule the sitemap already applies: an untranslated page is not
-in it, a locale still being translated is not in it, and the redirect stub left
-behind by a renamed tool is not in it either.
+Because the *set* of pages still comes from the sitemap rather than from the
+output directory, it inherits every rule the sitemap already applies: an
+untranslated page is not in it, a locale still being translated is not in it,
+the roadmap is not in it, and the redirect stub left behind by a renamed tool
+is not in it either.
 
-The [Build workflow](../.github/workflows/build.yml) saves the deployed
-`sitemap.xml` before it replaces the `dist` tree, and submits after the push —
-announcing a URL a minute before it exists gets it fetched, found stale, and
-believed. The step cannot fail the build: by the time it runs the deploy has
-happened, and a refused submission does not undo it. It writes what it sent to
-the run summary instead.
+This used to read `lastmod` instead — one date per page, written by hand and
+moved when the wording moved. The idea was right and the signal was not,
+because a date has no room for a second change on the day it already names. On
+27 August thirty-seven deploys went out; sixteen of them changed words a
+visitor reads and submitted nothing, because every page they touched already
+said `2026-08-27`. Nobody had forgotten anything — there was no value left to
+bump it to, and the failure was invisible, because a deploy that announces
+nothing looks exactly like a deploy with nothing to announce. `lastmod` is
+still in the sitemap doing its own job for Google. Nothing reads it to decide
+what to submit, and there is now no field an author has to remember.
+
+The [Build workflow](../.github/workflows/build.yml) fingerprints the deployed
+tree before it replaces it — that is the last moment the old pages exist — and
+submits after the push, because announcing a URL a minute before it exists gets
+it fetched, found stale, and believed. The step cannot fail the build: by the
+time it runs the deploy has happened, and a refused submission does not undo
+it. It writes what it sent to the run summary instead.
 
 To see what a deploy would submit, without submitting it:
 
 ```bash
-python indexnow.py --old deployed-sitemap.xml --new _site/sitemap.xml
+python indexnow.py --tree _site --old-hashes deployed-hashes.json
+```
+
+and to take the fingerprints that file holds, from a tree before it is replaced:
+
+```bash
+python indexnow.py --tree dist --write-hashes deployed-hashes.json
 ```
 
 ### The key file

@@ -23,6 +23,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import build as buildmod
+import indexnow
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -323,6 +324,26 @@ class BuildTheSite(unittest.TestCase):
         found = [f'{locale["prefix"]}index.html' for locale in self.locales]
         self.assertTrue(all(name in self.written for name in found))
         return found
+
+    def test_indexnow_can_fingerprint_every_page_it_would_announce(self):
+        """indexnow.py compares the bytes inside <main> to decide which pages a
+        deploy announces. A page in the sitemap with no <main> would raise on
+        every deploy, and one with two would compare whichever the regex
+        reached first - both silent, and neither visible in the rendered page.
+        So the real build is handed to the real reader here.
+
+        The set is the sitemap's, not everything written: a redirect stub is a
+        bare meta-refresh with no frame and no <main>, and it is deliberately
+        noindex and out of the sitemap, so it is not a page anybody announces.
+        """
+        urls = indexnow.read_sitemap(self.out / 'sitemap.xml')
+        # Raises on a page with no <main>, and on a URL the tree does not
+        # hold. Both are the failures worth catching here; that two pages
+        # could share a digest is not one of them, because a locale falling
+        # back to English is entitled to serve the same words twice.
+        digests = indexnow.hashes(self.out, self.out / 'sitemap.xml')
+        self.assertEqual(sorted(digests), sorted(urls))
+        self.assertTrue(digests)
 
     def test_it_reports_what_it_wrote(self):
         self.assertIn('index.html', self.written)

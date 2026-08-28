@@ -6,7 +6,11 @@ selection rule, because getting it wrong is invisible: submitting too few
 means the protocol quietly does nothing for the site, and submitting every
 page on every deploy means the host stops being trusted and the protocol
 quietly does nothing for the site. Neither shows up anywhere but in a Bing
-Webmaster Tools chart weeks later.
+Webmaster Tools chart weeks later. The rule used to read `lastmod` and it
+failed the first way, silently, for sixteen deploys in one day: a date cannot
+express a second change to a page on the day it already names. So what is
+compared now is the bytes inside <main>, and what is tested is that the frame
+around it cannot leak in.
 
 The second is that the key in the script and the key file served at the site
 root have to be the same string. A mismatch is not an error either: the
@@ -72,39 +76,133 @@ class ReadingASitemap(unittest.TestCase):
 class ChoosingWhatToSubmit(unittest.TestCase):
 
     def test_a_new_page_is_submitted(self):
-        old = {'https://abox.tools/': '2026-08-01'}
-        new = {'https://abox.tools/': '2026-08-01',
-               'https://abox.tools/split-pdf/': '2026-08-26'}
+        old = {'https://abox.tools/': 'aaaa'}
+        new = {'https://abox.tools/': 'aaaa',
+               'https://abox.tools/split-pdf/': 'bbbb'}
         self.assertEqual(indexnow.changed(old, new),
                          ['https://abox.tools/split-pdf/'])
 
-    def test_a_moved_lastmod_is_submitted(self):
-        old = {'https://abox.tools/crop-video/': '2026-07-02'}
-        new = {'https://abox.tools/crop-video/': '2026-08-26'}
+    def test_a_moved_digest_is_submitted(self):
+        old = {'https://abox.tools/crop-video/': 'aaaa'}
+        new = {'https://abox.tools/crop-video/': 'bbbb'}
         self.assertEqual(indexnow.changed(old, new),
                          ['https://abox.tools/crop-video/'])
 
-    def test_a_frame_change_submits_nothing(self):
-        """The case this whole design exists for. Changing the footer or the
-        stylesheet rewrites the bytes of every page on the site and moves no
-        lastmod, because lastmod is written by hand and says when the wording
-        changed. A byte diff of dist would submit six hundred URLs here."""
-        pages = {'https://abox.tools/': '2026-08-01',
-                 'https://abox.tools/crop-video/': '2026-07-02',
-                 'https://abox.tools/de/': '2026-08-01'}
+    def test_an_unchanged_site_submits_nothing(self):
+        pages = {'https://abox.tools/': 'aaaa',
+                 'https://abox.tools/crop-video/': 'bbbb',
+                 'https://abox.tools/de/': 'cccc'}
         self.assertEqual(indexnow.changed(pages, dict(pages)), [])
 
     def test_a_page_that_left_the_sitemap_is_not_submitted(self):
         """A retired tool becomes a redirect stub, so its address goes on
         answering 200 and there is nothing to tell anyone about."""
-        old = {'https://abox.tools/text-tools/': '2026-07-02'}
+        old = {'https://abox.tools/text-tools/': 'aaaa'}
         self.assertEqual(indexnow.changed(old, {}), [])
 
     def test_the_submitted_order_follows_the_new_sitemap(self):
         old = {}
-        new = {'https://abox.tools/': '2026-08-26',
-               'https://abox.tools/split-pdf/': '2026-08-26'}
+        new = {'https://abox.tools/': 'aaaa',
+               'https://abox.tools/split-pdf/': 'bbbb'}
         self.assertEqual(indexnow.changed(old, new), list(new))
+
+
+PAGE = ('<!doctype html><html lang="en"><head><title>{title}</title></head>'
+        '<body><nav class="crumbs">{crumbs}</nav>'
+        '<header class="topbar">{header}</header>'
+        '<main id="main">{main}</main>'
+        '<footer>{footer}</footer></body></html>')
+
+
+def page(main='the tool', crumbs='Home', header='abox.tools',
+         footer='every tool', title='A tool'):
+    return PAGE.format(main=main, crumbs=crumbs, header=header,
+                       footer=footer, title=title)
+
+
+class ComparingWhatThePageSays(unittest.TestCase):
+    """The signal itself: <main> and nothing around it."""
+
+    def digest(self, html):
+        path = pathlib.Path(
+            self.enterContext(tempfile.TemporaryDirectory())) / 'index.html'
+        path.write_bytes(html.encode('utf-8'))
+        return indexnow.content_of(path)
+
+    def test_the_frame_around_it_is_not_compared(self):
+        """The case this whole design exists for, and the one a byte diff gets
+        wrong. The footer names every tool, the header carries the language
+        switcher, the crumbs carry the section - shipping a tool or moving a
+        colour rewrites all three on all twelve hundred pages. #221 changed one
+        CSS property and rewrote 468 of them while moving nobody's words."""
+        self.assertEqual(
+            self.digest(page(crumbs='Home', header='a', footer='b',
+                             title='A tool')),
+            self.digest(page(crumbs='Home / Tools', header='z', footer='y',
+                             title='A different title')))
+
+    def test_a_word_inside_it_is_compared(self):
+        self.assertNotEqual(self.digest(page(main='已不再分享')),
+                            self.digest(page(main='已不再共享')))
+
+    def test_a_comment_that_mentions_main_does_not_start_the_match(self):
+        """templates/tool.html explains itself in a comment containing the
+        characters "<main>". A reader that did not strip comments first starts
+        its match there and swallows the header, the crumbs and the pledge
+        banner - so every frame change would submit every page, which is the
+        one thing this must never do. Minified pages carry no comments, so
+        production would have looked fine until somebody built with
+        --no-minify."""
+        commented = PAGE.replace(
+            '<body>',
+            '<body><!-- the skip link lands on the <main> below -->')
+        plain = self.digest(page(header='a'))
+        with_comment = self.digest(
+            commented.format(main='the tool', crumbs='Home', header='a',
+                             footer='every tool', title='A tool'))
+        self.assertEqual(plain, with_comment)
+
+    def test_a_page_with_no_main_is_refused_rather_than_guessed_at(self):
+        """Falling back to the whole file would quietly restore the byte diff
+        for that one page: submitted on every unrelated deploy, forever, with
+        nothing to say so."""
+        with self.assertRaises(ValueError):
+            self.digest('<!doctype html><html><body><p>no main</p></body>'
+                        '</html>')
+
+    def test_the_opening_tag_may_carry_attributes(self):
+        """The build emits <main id="main"> for the skip link to land on."""
+        self.assertIn(b'the tool', self.digest(page()))
+
+
+class FindingAPageInTheTree(unittest.TestCase):
+
+    def test_a_slug_becomes_its_directory_index(self):
+        self.assertEqual(
+            indexnow.page_path('_site', 'https://abox.tools/crop-video/'),
+            pathlib.Path('_site', 'crop-video', 'index.html'))
+
+    def test_the_root_is_the_top_index(self):
+        self.assertEqual(indexnow.page_path('_site', 'https://abox.tools/'),
+                         pathlib.Path('_site', 'index.html'))
+
+    def test_a_translated_slug_is_not_decoded_on_the_way_in(self):
+        """The sitemap carries these as the characters themselves and the build
+        writes directories under exactly those names, so nothing is unquoted
+        here. The percent-encoding happens later, in as_uri, and to a copy."""
+        self.assertEqual(
+            indexnow.page_path('_site', 'https://abox.tools/ar/ضغط-الصور/'),
+            pathlib.Path('_site', 'ar', 'ضغط-الصور', 'index.html'))
+
+    def test_a_sitemap_url_the_tree_does_not_hold_is_refused(self):
+        """A build that disagrees with its own sitemap. Skipping the page would
+        mean never announcing it again, and never saying why."""
+        tmp = pathlib.Path(self.enterContext(tempfile.TemporaryDirectory()))
+        (tmp / 'sitemap.xml').write_bytes(
+            sitemap(
+                ('https://abox.tools/gone/', '2026-08-01')).encode('utf-8'))
+        with self.assertRaises(ValueError):
+            indexnow.hashes(tmp, tmp / 'sitemap.xml')
 
 
 class TheHostInTheSubmission(unittest.TestCase):

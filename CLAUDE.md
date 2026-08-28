@@ -145,14 +145,29 @@ of them but one. Put it in the markup - `#phrases` in the tool's `body.html`, or
 it asks. A module too deep to reach the DOM returns a *key* and lets the caller
 resolve it. See "The strings in the JavaScript" in [README.md](README.md).
 
-**`lastmod` now decides who hears about a change.** It used to be a hint in
-`sitemap.xml`; since `indexnow.py` joined the deploy it is also the signal that
-tells Bing which pages to refetch. Change the wording on a page and leave its
-`lastmod` alone and the deploy announces nothing — the change is live and no
-crawler is told. The reverse is worse: bumping every date to be safe submits
-the whole site and spends the host's standing with the protocol. Bump the dates
-that moved. See "Telling the search engines a page changed" in
-[docs/deploying.md](docs/deploying.md).
+**Nothing you write decides who hears about a change.** `indexnow.py` runs
+after the deploy and tells Bing, Yandex, Seznam, Naver and Yep which pages to
+refetch, and it works the answer out by comparing the bytes inside `<main>` on
+the tree about to ship against the tree already deployed. The frame is outside
+`<main>`, so shipping a tool or moving a colour announces nothing however many
+pages it rewrites, and changing a sentence announces exactly the pages that
+sentence is on. There is no field to remember and no way to get it wrong.
+
+It used to be `lastmod`, hand-written per page, and that is why the rule here
+used to say "bump the dates that moved". A date cannot express a second change
+to a page on the day it already names, so on 27 August — thirty-seven deploys —
+sixteen changed words a visitor reads and announced nothing at all. The signal
+was unfollowable and it failed silently, which is the worst way for a signal to
+fail. `lastmod` is still in `sitemap.xml` doing its own job for Google; nothing
+reads it to decide what to submit. See "Telling the search engines a page
+changed" in [docs/deploying.md](docs/deploying.md).
+
+**Every page in the sitemap must have exactly one `<main>`.** That is what the
+paragraph above compares, so a page with none would raise on every deploy and a
+page with two would compare half of itself. `tests/python/test_build.py` hands
+the real build to the real reader rather than trusting it. Redirect stubs have
+no `<main>` and that is fine — they are `noindex` and out of the sitemap, so
+nothing announces them.
 
 **The roadmap is kept out of search, in two files that must agree.**
 `templates/roadmap.html` carries `noindex, follow` and `buildlib/catalogue.py`
