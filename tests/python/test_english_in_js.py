@@ -102,7 +102,8 @@ BASELINE = {
     # names the timeline builds.
     'trim-audio': 7,
     'trim-video': 9,
-    'video-to-gif': 23,
+    # A CSS class name the range bar builds and two CSS percentages.
+    'video-to-gif': 3,
 }
 
 # Modules that hold somebody else's vocabulary rather than this site's prose.

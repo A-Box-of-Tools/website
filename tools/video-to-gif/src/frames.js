@@ -207,7 +207,7 @@ export async function framesByDecoding({
     if (failure) throw failure;
 
     sampler.finish();
-    if (!sampler.frames.length) throw new Error('No frames could be decoded from this file.');
+    if (!sampler.frames.length) throw new Error('read.noframes');
     return sampler.frames;
   } finally {
     if (decoder.state !== 'closed') decoder.close();
@@ -305,7 +305,7 @@ function seek(video, seconds) {
       settled = true;
       clearTimeout(timer);
       video.removeEventListener('seeked', onSeeked);
-      reject(new Error('The browser stopped being able to play this file partway through.'));
+      reject(new Error('play.stopped'));
     };
 
     const timer = setTimeout(finish, SEEK_TIMEOUT);

@@ -175,6 +175,40 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">正在讀取檔案&hellip;</span>
+    <span data-phrase="open.notopened">那個檔案打不開。</span>
+    <span data-phrase="preview.none">這個瀏覽器不播這個檔案，所以沒有預覽。幀照樣能讀出來並轉換&mdash;在下面按時間標出這一段就行。</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="len.unknown">未知</span>
+    <span data-phrase="src.codec">{codec}（{entry}）</span>
+    <span data-phrase="src.codec.turned">{codec}（{entry}），旋轉了 {degrees} 度</span>
+    <span data-phrase="src.byplayer">由瀏覽器內建的播放器讀取</span>
+    <span data-phrase="path.codecs">WebCodecs，逐幀</span>
+    <span data-phrase="path.player">播放器，每幀跳轉一次</span>
+    <span data-phrase="sum.section">{from} 到 {to}（{span} 秒）</span>
+    <span data-phrase="size.from">{width} x {height}（由 {fromWidth} x {fromHeight} 而來）</span>
+    <span data-phrase="sum.bytes">{low} 到 {high}</span>
+    <span data-phrase="note.wider">這比影片本身（{px} px）還寬，而這並不能補出本來就沒有的細節&mdash;只會多出位元組。</span>
+    <span data-phrase="note.memory">挑調色盤的時候每一幀都留在記憶體裡，按現在的設定大約 {size}。</span>
+    <span data-phrase="note.memory.toobig">這超過了這個工具願意嘗試的量&mdash;把這一段截短，或者把寬度或幀率調低。</span>
+    <span data-phrase="note.memory.ok">把這一段截短、把寬度調小或者把幀率調低，都能降下來。</span>
+    <span data-phrase="step.readframe">正在讀第 {done} 幀，共 {total} 幀</span>
+    <span data-phrase="step.writeframe">正在寫第 {done} 幀，共 {total} 幀</span>
+    <span data-phrase="n.frame.one">{n} 幀</span>
+    <span data-phrase="n.frame.many">{n} 幀</span>
+    <span data-phrase="out.dropped">{frames}（其中 {n} 幀相同，已丟棄）</span>
+    <span data-phrase="out.fps">{n} fps</span>
+    <span data-phrase="out.colours">{n} 種顏色</span>
+    <span data-phrase="export.tooshort">這一段太短了，一幀也取不出來。</span>
+    <span data-phrase="export.toobig">那需要的記憶體比這個工具願意向瀏覽器要的還多。把這一段截短，或者把寬度或幀率調低。</span>
+    <span data-phrase="export.failed">做 GIF 的時候出了問題。</span>
+    <span data-phrase="read.noframes">這個檔案裡一幀也解不出來。</span>
+    <span data-phrase="play.stopped">瀏覽器中途就播不了這個檔案了。</span>
+    <span data-phrase="join.sentences">{a}{b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="read.midframe">檔案斷在一幀的中間。</span>
     <span data-phrase="read.avcshort">H.264 的配置記錄太短。</span>
     <span data-phrase="read.hevcshort">HEVC 的配置記錄太短。</span>
