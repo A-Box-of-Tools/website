@@ -14,10 +14,10 @@ const row=(label,value)=>say(`${pad(label, width)}${value}`);
 say(t('report.title',{name:file.name}));
 say('='.repeat(Math.min(72,16+file.name.length)));
 say();
-row(size,`${fileSize(file.size)} (${t('report.bytes', {
-    count: file.size.toLocaleString(),
-  })})`
-);
+row(size,t('report.size',{
+size:fileSize(file.size),
+bytes:t('report.bytes',{count:file.size.toLocaleString()}),
+}));
 row(syntax,file.syntax.name);
 row('',file.syntax.uid);
 if(file.sopClass)row(object,file.sopClass);
@@ -30,7 +30,9 @@ row(image,`${columns} × ${rows}, ${t('report.bits', { bits: bitsStored })}, ${
 );
 if(count>1)row(frames,count);
 if(file.image.spacing){
-row(spacing,`${file.image.spacing.row} × ${file.image.spacing.column} mm`);
+row(spacing,t('report.spacing.value',{
+row:file.image.spacing.row,column:file.image.spacing.column,
+}));
 }
 }
 if(file.warnings.length){
@@ -44,26 +46,26 @@ const meta=t('report.meta');
 say();
 say(meta);
 say('-'.repeat(meta.length));
-dump(file.meta,decoder,say);
+dump(file.meta,decoder,say,t);
 const dataset=t('report.dataset');
 say();
 say(dataset);
 say('-'.repeat(dataset.length));
-dump(file.dataset,decoder,say);
+dump(file.dataset,decoder,say,t);
 say();
 say(t('report.origin',{origin:file.origin}));
 return lines.join('\n');
 }
-function dump(dataset,decoder,say){
+function dump(dataset,decoder,say,t){
 if(!dataset||dataset.elements.length===0){
-say('  (none)');
+say(`  ${t('report.none')}`);
 return;
 }
 for(const{element,depth}of walk(dataset)){
 const indent='  '.repeat(depth+1);
 const known=describe(element.tag);
-const name=known.name??(known.private?'(private)':'(unknown)');
-const{shown}=display(element,decoder);
+const name=known.name??t(known.private?'tag.private':'tag.unknown');
+const{shown}=display(element,decoder,t);
 say(`${indent}${formatTag(element.tag)} ${element.vr} ${pad(name, 44 - depth * 2)} ${shown}`);
 }
 }

@@ -248,7 +248,7 @@ renderRun();
 });
 const number=document.createElement('span');
 number.className='match-page';
-number.textContent=`p. ${page.number}`;
+number.textContent=phrase('page.short',{n:page.number});
 const line=document.createElement('span');
 line.className='match-line';
 const{before,after}=contextOf(page,hit.from,hit.to);
@@ -494,7 +494,9 @@ el.checkLine.className='check-line good';
 el.checkTerms.hidden=terms===0;
 el.checkTerms.replaceChildren(...check.terms.map((term)=>{
 const item=document.createElement('li');
-item.textContent=`“${term.text}” — ${term.was} → ${term.now}`;
+item.textContent=phrase('term.change',{
+text:term.text,was:term.was,now:term.now,
+});
 return item;
 }));
 el.resultFacts.replaceChildren(...facts(result.report,boxes).map((text)=>{
@@ -513,7 +515,11 @@ lines.push(boxes
 ?phrase('fact.boxes',{count:plural(boxes,'box','boxes')})
 :phrase('fact.noboxes'));
 if(report.strings.changed){
-lines.push(phrase('fact.elsewhere',{where:report.strings.where.join(', ')}));
+lines.push(phrase('fact.elsewhere',{
+where:report.strings.where
+.map((key)=>phrase(key))
+.reduce((a,b)=>phrase('join.comma',{a,b})),
+}));
 }
 lines.push(phrase('fact.metadata'));
 if(report.attachments||report.actions){

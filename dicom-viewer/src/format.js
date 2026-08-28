@@ -12,9 +12,9 @@ if(size>=100)return`${value.toFixed(0)} mm`;
 if(size>=10)return`${value.toFixed(1)} mm`;
 return`${value.toFixed(2)} mm`;
 }
-export function quantity(value,unit){
+export function quantity(value,unit,t){
 const shown=Number.isInteger(value)?String(value)
 :Math.abs(value)>=100?value.toFixed(1):value.toFixed(3).replace(/0+$/,'').replace(/\.$/,'');
-return unit?`${shown} ${unit}`:shown;
+return unit?t('unit.value',{n:shown,unit}):shown;
 }
 export const windowLabel=(center,width)=>`C ${Math.round(center)} / W ${Math.round(width)}`;

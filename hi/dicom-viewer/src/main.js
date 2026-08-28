@@ -115,7 +115,10 @@ await pause();
 try{
 instances.push(await scan(files[at]));
 }catch(error){
-refused.push(`${files[at].name}: ${phrase(error.message, error.values)}`);
+refused.push(phrase('file.failed',{
+name:files[at].name,
+why:phrase(error.message,error.values),
+}));
 }
 }
 }finally{
@@ -211,9 +214,11 @@ if(series.modality)parts.push(series.modality);
 if(series.description)parts.push(series.description);
 if(parts.length===0)parts.push(series.instances[0].name);
 const held=series.instances.length;
-return`${parts.join(' · ')} (${
-    phrase(held === 1 ? 'series.files.one' : 'series.files', { count: count(held) })})`
-;
+return phrase('series.label',{
+what:parts.reduce((a,b)=>phrase('join.dot',{a,b})),
+files:phrase(held===1?'series.files.one':'series.files',
+{count:count(held)}),
+});
 }
 el.seriesPick.addEventListener('change',()=>chooseSeries(Number(el.seriesPick.value)));
 async function chooseSeries(index){
@@ -582,7 +587,7 @@ return;
 const stored=shown.values[row*shown.width+column];
 const{value,unit}=measured(stored,open.image);
 el.overlayBR.textContent=phrase('probe.value',{
-value:quantity(value,unit),column,row,
+value:quantity(value,unit,phrase),column,row,
 });
 }
 function measure(from,to){
@@ -686,8 +691,11 @@ const info=file.image;
 el.factSop.textContent=file.sopClass??NOTHING;
 el.factModality.textContent=text(file.dataset,'00080060',file.decoder)||NOTHING;
 el.factSize.textContent=info
-?`${info.columns} × ${info.rows}${info.frames > 1
-      ? `, ${phrase('facts.frames', { count: count(info.frames) })}` : ''}`
+?phrase(info.frames>1?'facts.size.frames':'facts.size',{
+width:info.columns,
+height:info.rows,
+frames:phrase('facts.frames',{count:count(info.frames)}),
+})
 :phrase('facts.nopixels');
 el.factStored.textContent=info
 ?phrase(info.samplesPerPixel===1?'facts.stored.one':'facts.stored',{
@@ -723,11 +731,12 @@ const high=measured(shown.max,open.image);
 el.factRange.textContent=shown.samples===3
 ?phrase('facts.colour')
 :phrase('facts.range',{
-low:quantity(low.value,low.unit),high:quantity(high.value,high.unit),
+low:quantity(low.value,low.unit,phrase),
+high:quantity(high.value,high.unit,phrase),
 });
 }
 function renderIdentity(file){
-const show=(element)=>display(element,file.decoder);
+const show=(element)=>display(element,file.decoder,phrase);
 const fromMeta=identifiers(walk(file.meta),show);
 const fromBody=identifiers(walk(file.dataset),show);
 const found=fromMeta.found.concat(fromBody.found);
