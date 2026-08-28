@@ -1,17 +1,36 @@
-/** Names, sizes and counts, as words a person would use. */
+/**
+ * Names, sizes and counts, as words a person would use.
+ *
+ * Everything here that says something takes `t`, the caller's `phrase`. The
+ * words cannot live in this file: src/ is copied byte for byte into every
+ * language. See shared/js/phrases.js.
+ */
 
 /** File sizes. Nothing here is measured against a limit, so ordinary rounding. */
-export function bytes(n) {
-  if (n < 1024) return `${n} bytes`;
-  if (n < 1024 * 1024) return `${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
-  return `${(n / (1024 * 1024)).toFixed(2)} MB`;
+export function bytes(n, t) {
+  if (n < 1024) return t('size.bytes', { n });
+  if (n < 1024 * 1024) return t('size.kb', { n: (n / 1024).toFixed(n < 10240 ? 1 : 0) });
+  return t('size.mb', { n: (n / (1024 * 1024)).toFixed(2) });
 }
 
 /** "16 × 16", with a real multiplication sign. */
 export const dimensions = (width, height) => `${width} × ${height}`;
 
-/** "1 image" / "4 images", said the same way everywhere on the page. */
-export const countOf = (n) => `${n} image${n === 1 ? '' : 's'}`;
+/**
+ * "1 image" / "4 images" / "3 sizes" / "10 slots".
+ *
+ * The noun is a parameter rather than a word this file appends an s to. It
+ * used to be `countOf(n).replace('image', 'size')` at the call sites that
+ * wanted a different one, which is a sentence being edited with a search and
+ * replace over English - and there is no English here to search.
+ *
+ * An .icns is counted in slots rather than sizes because ten of them hold
+ * seven pictures: Apple names some sizes twice, once as themselves and once as
+ * the Retina version of the size below. Calling that "10 sizes" would be
+ * describing a file that does not exist.
+ */
+export const countOf = (n, noun, t) =>
+  t(`count.${noun}.${n === 1 ? 'one' : 'many'}`, { n });
 
 /**
  * What the finished icon should be called.
@@ -62,22 +81,28 @@ export const folderFor = (name) => stemOf(name).replace(/[\\/:*?"<>|]+/g, '-');
  * One sentence saying what is about to happen, built from the same settings the
  * renderer is handed - so it cannot describe something other than what runs.
  */
-export function describe(sizes, storage, fit, transparent) {
-  if (!sizes.length) return 'Tick at least one size.';
+export function describe(sizes, storage, fit, transparent, t) {
+  if (!sizes.length) return t('pick.none');
 
-  const kinds = {
-    auto: 'stored the pre-Vista way up to 64 pixels and as PNG above that',
-    png: 'every size stored as PNG',
-    bmp: 'every size stored the pre-Vista way',
-  };
-  const fits = {
-    pad: transparent
-      ? 'padded to a square, with the padding left transparent'
-      : 'padded to a square on the background colour',
-    crop: 'cropped to the square in the middle',
-    stretch: 'stretched to a square',
-  };
+  const fitKey = fit === 'pad'
+    ? `fit.pad.${transparent ? 'transparent' : 'colour'}`
+    : `fit.${fit}`;
 
-  return `${sizes.length} size${sizes.length === 1 ? '' : 's'} - ${sizes.join(', ')} `
-    + `- ${kinds[storage]}. A picture that is not already square is ${fits[fit]}.`;
+  return t('describe.line', {
+    count: countOf(sizes.length, 'size', t),
+    list: listOf(sizes, t),
+    kind: t(`store.${storage}`),
+    fit: t(fitKey),
+  });
+}
+
+/**
+ * "16, 32, 48", joined the way the reader's language joins a list.
+ *
+ * A comma and a space is English punctuation. Japanese uses 、 and no space,
+ * and Arabic uses ، - so the separator is a phrase like everything else, and
+ * a list of three is built by joining twice.
+ */
+export function listOf(parts, t, key = 'join.list') {
+  return parts.reduce((a, b) => t(key, { a, b }));
 }

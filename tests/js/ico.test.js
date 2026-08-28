@@ -60,6 +60,31 @@ function pixelGrid(width, height, at) {
 
 /* ------------------------------------------------------------- the header */
 
+/**
+ * A stand-in for `phrase`, so a test can say which sentence was chosen.
+ *
+ * The real one reads the markup. This one writes the key and its blanks, which
+ * is what these tests are about: which sentence was picked and what went into
+ * it. What it reads like in English is body.html's business.
+ *
+ * The three join phrases are the exception, and are resolved for real. A list
+ * is built by joining twice, so leaving them as keys would turn "16, 32, 48"
+ * into a nest no assertion could be written against.
+ */
+const JOINS = {
+  'join.list': '{a}, {b}',
+  'join.and': '{a} and {b}',
+  'join.andalso': '{a}, and {b}',
+};
+
+const say = (key, values = {}) => {
+  if (key in JOINS) {
+    return JOINS[key].replace(/\{(\w+)\}/g, (whole, name) => values[name] ?? whole);
+  }
+  const filled = Object.entries(values).map(([k, v]) => `${k}=${v}`).join(' ');
+  return filled ? `${key} ${filled}` : key;
+};
+
 test('the header says what an icon file says', () => {
   const ico = writeIco([{ width: 16, height: 16, kind: 'png', data: fakePng() }]);
   const v = view(ico);
@@ -118,13 +143,13 @@ test('256 is written as zero, because the field is one byte wide', () => {
 });
 
 test('an icon with nothing in it, and a size the format cannot hold, are refused', () => {
-  assert.throws(() => writeIco([]), /at least one image/);
+  assert.throws(() => writeIco([]), /^Error: ico\.empty$/);
   assert.throws(
     () => writeIco([{ width: 512, height: 512, kind: 'png', data: fakePng() }]),
-    /256 is the largest/);
+    (error) => error.message === 'ico.toobig' && error.values.size === '512x512');
   assert.throws(
     () => writeIco([{ width: 0, height: 16, kind: 'png', data: fakePng() }]),
-    /zero pixels/);
+    /^Error: ico\.zero$/);
 });
 
 /* ---------------------------------------------------------------- the DIB */
@@ -152,7 +177,7 @@ test('the size of a DIB entry is arithmetic, and sizes.js agrees with the writer
 test('a pixel buffer that does not match the size it claims is refused', () => {
   assert.throws(
     () => dibEntry({ width: 4, height: 4, data: new Uint8Array(4 * 3 * 4) }),
-    /does not match/);
+    /^Error: ico\.pixels$/);
 });
 
 test('the rows go in bottom-up, and the channels go in as BGRA', () => {
@@ -225,14 +250,15 @@ test('the directory reader tells the two kinds of entry apart', () => {
 });
 
 test('the reader refuses a file that is not one, rather than inventing entries', () => {
-  assert.throws(() => readIcoDirectory(new Uint8Array(3)), /too short/);
+  assert.throws(() => readIcoDirectory(new Uint8Array(3)), /^Error: ico\.short$/);
 
   const cursor = writeIco([{ width: 16, height: 16, kind: 'png', data: fakePng() }]);
   cursor[2] = 2;  // type 2 is a cursor, which this tool does not write
-  assert.throws(() => readIcoDirectory(cursor), /type field/);
+  assert.throws(() => readIcoDirectory(cursor), /^Error: ico\.type$/);
 
   const truncated = writeIco([{ width: 16, height: 16, kind: 'png', data: fakePng() }]);
-  assert.throws(() => readIcoDirectory(truncated.slice(0, 20)), /past the end/);
+  assert.throws(() => readIcoDirectory(truncated.slice(0, 20)),
+    /^Error: ico\.(directory|entry)$/);
 });
 
 /* ------------------------------------------------------ the standards table */
@@ -260,8 +286,14 @@ test('every preset asks only for sizes the tool offers, and that the format hold
 });
 
 test('every size on the list says what asks for it', () => {
+  // The reason is a phrase key now, so what this can still check is that
+  // every size declares one and that no two sizes share it. Whether the
+  // phrase behind it exists is test_phrases.py's job, in every language.
+  const seen = new Set();
   for (const { px, why } of SIZES) {
-    assert.ok(why && why.length > 8, `${px} has no reason beside it`);
+    assert.equal(why, `why.${px}`, `${px} has no reason beside it`);
+    assert.ok(!seen.has(why), `${px} shares its reason with another size`);
+    seen.add(why);
   }
 });
 
@@ -282,13 +314,42 @@ test('a website icon is called favicon.ico and nothing else', () => {
 /* -------------------------------------------------------------- the pack */
 
 test('the README lists the .ico only when one was made', () => {
-  const withIco = readme('favicon.ico', [16, 32, 48], true);
-  assert.ok(withIco.includes('favicon.ico  -  the classic favicon'));
-  assert.ok(!withIco.includes('the .ico output was switched off'));
+  const withIco = readme('favicon.ico', [16, 32, 48], true, say);
+  assert.ok(withIco.includes('favicon.ico  -  readme.ico sizes=16, 32, 48'));
+  assert.ok(!withIco.includes('readme.noico'));
 
-  const without = readme('favicon.ico', [], false);
-  assert.ok(!without.includes('the classic favicon'), 'it must not name a file that is not there');
-  assert.ok(without.includes('the .ico output was switched off'));
+  const without = readme('favicon.ico', [], false, say);
+  assert.ok(!without.includes('readme.ico'), 'it must not name a file that is not there');
+  assert.ok(without.includes('readme.noico'));
+
+  // Every file in the pack is listed, and each says what it is for.
+  for (const image of PACK_IMAGES) {
+    assert.ok(withIco.includes(`${image.name}  -  ${image.why}`), image.name);
+  }
+});
+
+test('the README wraps at the spaces, however long the translation is', () => {
+  // The paragraphs used to be typed with their line breaks in them, which
+  // only works while the words are English and never change.
+  const long = (key) => (key.startsWith('readme.') && key !== 'readme.title'
+    ? `${key} `.repeat(30).trim()
+    : say(key));
+  for (const line of readme('favicon.ico', [16], true, long).split('\n')) {
+    assert.ok(line.length <= 78 || !line.includes(' '), line);
+  }
+});
+
+test('the README underline is as long as the title it underlines', () => {
+  const ruleFor = (title) => readme('favicon.ico', [16], true,
+    (key) => (key === 'readme.title' ? title : say(key))).split('\n')[1];
+
+  assert.equal(ruleFor('Ein Satz Website-Symbole'), '='.repeat(24));
+
+  // A CJK character is two columns wide in the fixed-width font a .txt is read
+  // in, so counting characters would put thirteen equals signs under a title
+  // that is twenty-six columns wide.
+  assert.equal(ruleFor('ウェブサイトのアイコン一式'), '='.repeat(26));
+  assert.equal(ruleFor('웹사이트 아이콘'), '='.repeat(15));
 });
 
 test('the manifest is JSON, and points at files the pack actually contains', () => {
@@ -316,7 +377,7 @@ test('the pack sizes match the names they are given', () => {
 });
 
 test('the head snippet does not link favicon.ico, which browsers ask for anyway', () => {
-  const html = headSnippet();
+  const html = headSnippet(say);
   assert.ok(html.includes('apple-touch-icon.png'));
   assert.ok(html.includes('site.webmanifest'));
   assert.ok(!/<link[^>]*favicon\.ico/.test(html),

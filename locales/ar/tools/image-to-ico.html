@@ -186,6 +186,155 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: ليست صورة تقدر هذه الأداة على قراءتها.</span>
+    <span data-phrase="load.undecodable">{name}: لم يستطع هذا المتصفح فكّ ترميزها.</span>
+    <span data-phrase="decode.failed">لم يستطع هذا المتصفح فكّ ترميز الصورة.</span>
+    <span data-phrase="png.refused">رفض هذا المتصفح كتابة ملف PNG.</span>
+    <span data-phrase="ico.empty">الأيقونة تحتاج إلى صورة واحدة فيها على الأقل.</span>
+    <span data-phrase="ico.zero">لا يمكن أن يكون عرض صورة الأيقونة صفر بكسل.</span>
+    <span data-phrase="ico.toobig">{size} لا يسعه ملف ‎.ico‎: الصيغة تخزّن كل ضلع في بايت واحد، فأكبر ما يكون 256.</span>
+    <span data-phrase="ico.pixels">مخزن البكسلات لا يطابق الحجم الذي يدّعيه.</span>
+    <span data-phrase="ico.short">ليس ملف ‎.ico‎: أقصر من أن يحمل ترويسة.</span>
+    <span data-phrase="ico.type">ليس ملف ‎.ico‎: حقل النوع ليس 1.</span>
+    <span data-phrase="ico.directory">الفهرس يتجاوز نهاية الملف.</span>
+    <span data-phrase="ico.entry">مدخلة تشير إلى ما بعد نهاية الملف.</span>
+    <span data-phrase="icns.empty">الأيقونة تحتاج إلى صورة واحدة فيها على الأقل.</span>
+    <span data-phrase="icns.type">&ldquo;{type}&rdquo; ليس نوع icns من أربعة أحرف.</span>
+    <span data-phrase="icns.short">ليس ملف ‎.icns‎: أقصر من أن يحمل ترويسة.</span>
+    <span data-phrase="icns.magic">ليس ملف ‎.icns‎: التوقيع ليس &ldquo;icns&rdquo;.</span>
+    <span data-phrase="icns.length">الترويسة تقول {claimed} بايت والملف {actual}.</span>
+    <span data-phrase="icns.element">عنصر يتجاوز نهاية الملف.</span>
+    <span data-phrase="icns.elementlength">العنصر {type} يعلن طولاً لا يسعه الملف.</span>
+    <span data-phrase="size.bytes">{n} بايت</span>
+    <span data-phrase="size.kb">{n} ك.بايت</span>
+    <span data-phrase="size.mb">{n} م.بايت</span>
+    <span data-phrase="count.image.one">صورة واحدة</span>
+    <span data-phrase="count.image.many">{n} صورة</span>
+    <span data-phrase="count.size.one">حجم واحد</span>
+    <span data-phrase="count.size.many">{n} أحجام</span>
+    <span data-phrase="count.slot.one">خانة واحدة</span>
+    <span data-phrase="count.slot.many">{n} خانات</span>
+    <span data-phrase="join.list">{a}، {b}</span>
+    <span data-phrase="join.and">{a} و{b}</span>
+    <span data-phrase="join.andalso">{a} و{b}</span>
+    <span data-phrase="row.square">{size} · {bytes} · مربّعة</span>
+    <span data-phrase="row.notsquare">{size} · {bytes} · غير مربّعة</span>
+    <span data-phrase="row.show">اعرض هذه في المعاينة</span>
+    <span data-phrase="row.remove">أزِل {name} من القائمة</span>
+    <span data-phrase="why.16">لسان المتصفح، وشريط العنوان، والأيقونة الصغيرة في مستكشف الملفات</span>
+    <span data-phrase="why.20">عروض القوائم في ويندوز عند 125%</span>
+    <span data-phrase="why.24">شريط مهام ويندوز عند 150%</span>
+    <span data-phrase="why.32">سطح المكتب، وشريط المهام، وشريط المفضلة في المتصفح</span>
+    <span data-phrase="why.40">سطح المكتب عند 125%</span>
+    <span data-phrase="why.48">الأيقونات المتوسطة في المستكشف، والحجم الذي تقرأ به جوجل الفافيكون</span>
+    <span data-phrase="why.64">المستكشف عند 200%، ومبدّل Alt-Tab</span>
+    <span data-phrase="why.96">الأيقونات الكبيرة في المستكشف</span>
+    <span data-phrase="why.128">الحجم الضخم القديم، وما زالت المثبِّتات تقرؤه</span>
+    <span data-phrase="why.256">الأيقونات الكبيرة جداً في المستكشف وقائمة ابدأ؛ وهو أكبر ما يحمله ملف ‎.ico‎</span>
+    <span data-phrase="preset.website.label">فافيكون موقع</span>
+    <span data-phrase="preset.website.note">ملف favicon.ico الكلاسيكي الذي يوضع في جذر الموقع. الأحجام الثلاثة هي العرف كله: 16
+      للسان، و32 للمفضلة ولاختصار ويندوز، و48 لأنه الحجم الذي تقرأ به جوجل أيقونة الموقع.</span>
+    <span data-phrase="preset.app.label">أيقونة تطبيق ويندوز</span>
+    <span data-phrase="preset.app.note">ما يطلبه ملف ‎.exe‎ أو اختصار، وما يحتويه ملف app.ico الخاص بفيجوال ستوديو نفسه:
+      أحجام الصدفة الثلاثة إضافة إلى 256 الذي تسحب منه قائمة ابدأ وعرض الأيقونات الكبيرة
+      جداً في المستكشف.</span>
+    <span data-phrase="preset.app-hidpi.label">تطبيق ويندوز، بكل مقاييس العرض</span>
+    <span data-phrase="preset.app-hidpi.note">الأيقونة نفسها مع الأحجام الوسطى التي يطلبها ويندوز عند مقاييس العرض 125% و150%
+      و200%. ملف أكبر، وهي النسخة الوحيدة التي لا يُعاد أخذ عيّناتها بصمت على حاسوب محمول
+      عالي الكثافة.</span>
+    <span data-phrase="preset.legacy.label">أقصى توافق ممكن</span>
+    <span data-phrase="preset.legacy.note">ثلاثة أحجام، كلها مخزّنة بطريقة ما قبل فيستا، للمثبِّتات والأجهزة المدمجة وأدوات
+      الصدفة القديمة التي تقرأ ملف ‎.ico‎ بنفسها ولا تعرف ما الذي يفعله ملف PNG داخله.</span>
+    <span data-phrase="preset.custom.label">اختر الأحجام بنفسك</span>
+    <span data-phrase="preset.custom.note">كل حجم تقدر هذه الصيغة على حمله. ونادراً ما يكون تعليمها جميعاً هو الجواب الصحيح: كل
+      واحد منها صورة كاملة، ولا شيء يقرأ حجماً لم يطلبه أحد.</span>
+    <span data-phrase="preset.pixels">{list} بكسل</span>
+    <span data-phrase="preset.yours">ما تعلّمه أنت أدناه</span>
+    <span data-phrase="output.nothing">لا شيء مُعلَّم، فليس ثمة ما يُصنع.</span>
+    <span data-phrase="output.nosizes">لا حجم مُعلَّم، فلن يكون في ملف ‎.ico‎ شيء. علّم حجماً، أو مُخرَجاً آخر.</span>
+    <span data-phrase="output.line">لكل صورة: {parts}.</span>
+    <span data-phrase="output.line.icns">لكل صورة: {parts}. ويُرسم ملف ‎.icns‎ حتى 1024 بكسل، فهو الكبير؛ وذلك ما يطلبه
+      الماك.</span>
+    <span data-phrase="output.ico">ملف ‎.ico‎ واحد يحمل {count}</span>
+    <span data-phrase="output.icns">ملف ‎.icns‎ واحد يحمل خانات أبل الـ{n} كلها</span>
+    <span data-phrase="output.pack">{n} من ملفات PNG وملفات النص الثلاثة التي يحتاجها موقع</span>
+    <span data-phrase="sizes.none">لا شيء مُعلَّم، فلن يكون في الملف شيء.</span>
+    <span data-phrase="pick.none">علّم حجماً واحداً على الأقل.</span>
+    <span data-phrase="describe.line">{count} &mdash; {list} &mdash; {kind}. والصورة التي ليست مربّعة أصلاً {fit}.</span>
+    <span data-phrase="store.auto">تُخزَّن بطريقة ما قبل فيستا حتى 64 بكسل، وبصيغة PNG فوق ذلك</span>
+    <span data-phrase="store.png">كل حجم يُخزَّن بصيغة PNG</span>
+    <span data-phrase="store.bmp">كل حجم يُخزَّن بطريقة ما قبل فيستا</span>
+    <span data-phrase="fit.pad.transparent">تُحشى إلى مربّع، مع ترك الحشو شفافاً</span>
+    <span data-phrase="fit.pad.colour">تُحشى إلى مربّع بلون الخلفية</span>
+    <span data-phrase="fit.crop">يُقصّ منها المربّع الأوسط</span>
+    <span data-phrase="fit.stretch">تُمَطّ إلى مربّع</span>
+    <span data-phrase="storage.dib">{n} بلا ضغط، وهو ما يبلغ {size} بالضبط</span>
+    <span data-phrase="storage.png">{n} بصيغة PNG، وحجمها يعتمد على الصورة</span>
+    <span data-phrase="storage.line">{parts}. {tail}</span>
+    <span data-phrase="storage.tail.bmp">لا شيء في الملف مضغوط، فيفتح في أي شيء، بما في ذلك برامج أقدم من ويندوز فيستا.</span>
+    <span data-phrase="storage.tail.png">كل مدخلة ملف PNG، وهو أصغر ما يبلغه ملف ‎.ico‎، وغير مقروء لويندوز XP ولبضعة
+      مثبِّتات.</span>
+    <span data-phrase="storage.tail.auto">تُخزَّن الأحجام الصغيرة بالطريقة القديمة حتى يقدر كل شيء على قراءتها، والكبيرة بصيغة
+      PNG لأن التوفير هناك.</span>
+    <span data-phrase="shape.crop">{name} حجمها {size}، وهي ليست مربّعة، والأيقونة مربّعة دائماً. يؤخذ المربّع الأوسط؛
+      وتُقصّ الأطراف.</span>
+    <span data-phrase="shape.stretch">{name} حجمها {size}، وهي ليست مربّعة، والأيقونة مربّعة دائماً. تُمَطّ، فتبدو مضغوطة
+      في كل حجم.</span>
+    <span data-phrase="shape.pad">{name} حجمها {size}، وهي ليست مربّعة، والأيقونة مربّعة دائماً. تُحشى، فتبقى الصورة
+      كلها ويبقى فراغ فوقها وتحتها.</span>
+    <span data-phrase="shape.small.one">حجمها {size} فقط، فـ{list} أكبر من الصورة. ذلك الحجم يُكبَّر بدل أن يُرسم، وتكبير
+      صورة لا يعيد تفصيلاً لم يكن فيها قط.</span>
+    <span data-phrase="shape.small.many">حجمها {size} فقط، فـ{list} أكبر من الصورة. تلك الأحجام تُكبَّر بدل أن تُرسم، وتكبير
+      صورة لا يعيد تفصيلاً لم يكن فيها قط.</span>
+    <span data-phrase="shape.both">{shape} {small}</span>
+    <span data-phrase="preview.note">{name}، مرسومة بكل حجم سيدخل الملف. وكل مربّع أعلاه بحجمه الحقيقي على هذه الشاشة،
+      على رقعة شطرنج حتى تظهر الشفافية شفافيةً. فإن كان مربّع 16 بكسل لطخة رمادية، فما
+      تحتاجه الأيقونة رسم أبسط لا إعداد آخر.</span>
+    <span data-phrase="preview.large">{note} و{list} بكسل تُكتب أيضاً، وتُركت من هنا لأن مربّعاً بذلك الحجم لا يسعه العرض
+      &mdash; ولا هو الذي يخطئ يوماً.</span>
+    <span data-phrase="progress.all">يُرسم {count}…</span>
+    <span data-phrase="progress.one">تُرسم {name}…</span>
+    <span data-phrase="progress.done">تمّ.</span>
+    <span data-phrase="results.single">{name} يحمل {slots} وحجمه {size}.</span>
+    <span data-phrase="results.multi">{names}، و{size} بينهما.</span>
+    <span data-phrase="results.batch">حُوِّلت {count} إلى {n} من ملفات الأيقونات، {size} في المجموع.</span>
+    <span data-phrase="results.andpack">{summary} وبقية طقم الموقع في ملف zip إلى جانبه.</span>
+    <span data-phrase="result.head">{slots}، {size}</span>
+    <span data-phrase="result.from">من {name}، {size}.</span>
+    <span data-phrase="result.icns">{detail} أسقطه في حزمة تطبيق ماك، أو اجعله أيقونة مجلد من خلال &laquo;عرض
+      المعلومات&raquo;.</span>
+    <span data-phrase="result.plus">{detail} ومعه {n} من الملفات الأخرى لبقية طقم الأيقونات.</span>
+    <span data-phrase="result.chip">{label} · {detail} · {size}</span>
+    <span data-phrase="entry.uncompressed">بلا ضغط</span>
+    <span data-phrase="result.download">نزِّل ملف ‎.{kind}‎</span>
+    <span data-phrase="copy.copy">انسخ</span>
+    <span data-phrase="copy.copied">نُسِخ</span>
+    <span data-phrase="copy.selected">حُدِّد &mdash; اضغط Ctrl+C</span>
+    <span data-phrase="head.comment">الأيقونات. يوضع favicon.ico في جذر الموقع؛ والمتصفحات تطلب ذلك العنوان دون أن يُقال
+      لها، فلا يحتاج إلى &lt;link&gt; خاص به.</span>
+    <span data-phrase="manifest.name">اسم موقعك</span>
+    <span data-phrase="pack.favicon16">اللسان، للمتصفحات التي تفضّل PNG على ملف ‎.ico‎</span>
+    <span data-phrase="pack.favicon32">شريط المفضلة واختصار ويندوز المثبَّت</span>
+    <span data-phrase="pack.apple">شاشة iOS الرئيسية. تُرسم معتمة: iOS يحوّل الشفافية إلى سواد</span>
+    <span data-phrase="pack.android192">شاشة أندرويد الرئيسية، ودعوة التثبيت</span>
+    <span data-phrase="pack.android512">شاشة البدء التي يعرضها تطبيق الويب وهو ينطلق</span>
+    <span data-phrase="pack.maskable">الأيقونة نفسها داخل المنطقة الآمنة التي يقصّ إليها مشغّل متكيّف</span>
+    <span data-phrase="pack.mstile">مربّع مثبَّت في قائمة ابدأ في ويندوز</span>
+    <span data-phrase="readme.title">طقم أيقونات موقع</span>
+    <span data-phrase="readme.made">صُنع داخل المتصفح على abox.tools/image-to-ico/ &mdash; لم يُرفع شيء لصنعه، ولم يُرسل
+      شيء عن هذه الملفات إلى أي مكان.</span>
+    <span data-phrase="readme.upload">ارفع كل ملف عدا هذا الملف وhead.html إلى جذر موقعك، حتى تجيب على ‎/favicon.ico‎
+      و‎/apple-touch-icon.png‎ وهكذا. والمسارات في site.webmanifest وbrowserconfig.xml
+      وhead.html تفترض ذلك كلها. فإن ذهبت إلى مجلد فرعي بدل ذلك، فعدّل تلك الملفات الثلاثة
+      لتطابقه.</span>
+    <span data-phrase="readme.ico">الفافيكون الكلاسيكي، ويحمل نسخ {sizes} بكسل</span>
+    <span data-phrase="readme.manifest">يقرؤه أندرويد وكل دعوة للإضافة إلى الشاشة الرئيسية</span>
+    <span data-phrase="readme.browserconfig">يقرؤه مربّع مثبَّت في قائمة ابدأ في ويندوز</span>
+    <span data-phrase="readme.head">الوسوم التي تُلصق في &lt;head&gt; عندك؛ وليس ملفاً يُرفع</span>
+    <span data-phrase="readme.setname">اضبط الاسم في site.webmanifest على اسم موقعك قبل رفعه، واللونين فيه على ما يناسب
+      الأيقونة.</span>
+    <span data-phrase="readme.noico">ملاحظة: لا يوجد favicon.ico هنا، لأن مُخرَج ‎.ico‎ كان مطفأً. والموقع يريد واحداً
+      فعلاً &mdash; فهو العنوان الذي تطلبه المتصفحات من تلقاء نفسها.</span>
     <span data-phrase="net.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

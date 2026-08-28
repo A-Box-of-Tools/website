@@ -26,8 +26,17 @@
  * @see https://www.w3.org/TR/appmanifest/
  */
 
+import { listOf } from './files.js';
+
+/** How wide a line of generated plain text is allowed to get. */
+const WIDTH = 78;
+
 /**
  * The PNGs in the pack, in the order they are drawn.
+ *
+ * `why` is a phrase key, not a sentence: it is shown on the page and written
+ * into the README in the zip, and this file is copied byte for byte into every
+ * language. See sizes.js, which holds its reasons the same way.
  *
  * @type {{name: string, px: number, opaque?: boolean, inset?: number, why: string}[]}
  */
@@ -35,40 +44,40 @@ export const PACK_IMAGES = [
   {
     name: 'favicon-16x16.png',
     px: 16,
-    why: 'the tab, for browsers that prefer a PNG to the .ico',
+    why: 'pack.favicon16',
   },
   {
     name: 'favicon-32x32.png',
     px: 32,
-    why: 'the bookmark bar and a pinned Windows shortcut',
+    why: 'pack.favicon32',
   },
   {
     name: 'apple-touch-icon.png',
     px: 180,
     opaque: true,
-    why: 'iOS home screen. Drawn opaque: iOS turns transparency into black',
+    why: 'pack.apple',
   },
   {
     name: 'android-chrome-192x192.png',
     px: 192,
-    why: 'Android home screen, and the install prompt',
+    why: 'pack.android192',
   },
   {
     name: 'android-chrome-512x512.png',
     px: 512,
-    why: 'the splash screen a web app shows while it starts',
+    why: 'pack.android512',
   },
   {
     name: 'android-chrome-maskable-512x512.png',
     px: 512,
     opaque: true,
     inset: 0.1,
-    why: 'the same icon inside the safe area an adaptive launcher crops to',
+    why: 'pack.maskable',
   },
   {
     name: 'mstile-150x150.png',
     px: 150,
-    why: 'a tile pinned to the Windows Start menu',
+    why: 'pack.mstile',
   },
 ];
 
@@ -78,7 +87,8 @@ export const PACK_IMAGES = [
  * Deliberately minimal. `name` and `short_name` are the site's, not this
  * tool's, and are left as placeholders rather than guessed at from a filename -
  * a manifest that quietly names somebody's app "logo-final-v2" is worse than
- * one that says where to type the name.
+ * one that says where to type the name. The placeholder is a phrase, because
+ * it is an instruction to the reader and the reader may not read English.
  *
  * @param {{name: string, background: string, theme: string}} site
  * @returns {string}
@@ -131,9 +141,13 @@ export function browserConfig(tile) {
  * site ends up serving the file twice. It is listed in the comment instead, so
  * that whoever pastes this knows the file still has to be uploaded.
  */
-export function headSnippet() {
-  return `<!-- Icons. favicon.ico goes at the site root; browsers ask for it by
-     that address without being told, so it needs no <link> of its own. -->
+export function headSnippet(t) {
+  // The comment is wrapped here rather than typed with its breaks in it: it is
+  // a sentence now, and a translated sentence is not the length this one was.
+  // Continuation lines sit under the text, the way a comment reads.
+  const comment = wrap(t('head.comment'), WIDTH - 5).split('\n').join('\n     ');
+
+  return `<!-- ${comment} -->
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -150,32 +164,75 @@ export function headSnippet() {
  * unused. This is generated from the same table the images are drawn from, so
  * it cannot describe a file the pack does not contain.
  */
-export function readme(icoName, sizes, hasIco) {
-  const lines = PACK_IMAGES.map((image) => `  ${image.name}  -  ${image.why}`);
+export function readme(icoName, sizes, hasIco, t) {
+  // A hanging indent, because a reason is a sentence and a translated one is
+  // not the length the English was. The continuation lines sit under the
+  // description rather than under the filename, so the column still reads as a
+  // column.
+  const line = (name, why) => {
+    const head = `  ${name}  -  `;
+    const indent = ' '.repeat(head.length);
+    return head + wrap(why, WIDTH - head.length).split('\n').join(`\n${indent}`);
+  };
+  const lines = PACK_IMAGES.map((image) => line(image.name, t(image.why)));
   const ico = hasIco
-    ? `  ${icoName}  -  the classic favicon, holding ${sizes.join(', ')} pixel versions\n`
+    ? `${line(icoName, t('readme.ico', { sizes: listOf(sizes, t) }))}\n`
     : '';
 
-  return `Website icon set
-================
+  const title = t('readme.title');
 
-Made in the browser at abox.tools/image-to-ico/ - nothing was uploaded to
-make it, and nothing about these files was sent anywhere.
+  return `${title}
+${'='.repeat(columns(title))}
 
-Upload every file except this one and head.html to the root of your site, so
-that they answer at /favicon.ico, /apple-touch-icon.png and so on. The paths in
-site.webmanifest, browserconfig.xml and head.html all assume that. If they go
-in a subfolder instead, edit those three files to match.
+${wrap(t('readme.made'))}
+
+${wrap(t('readme.upload'))}
 
 ${ico}${lines.join('\n')}
-  site.webmanifest  -  read by Android and by any install-to-home-screen prompt
-  browserconfig.xml  -  read by a tile pinned to the Windows Start menu
-  head.html  -  the markup to paste into your <head>; not a file to upload
+${line('site.webmanifest', t('readme.manifest'))}
+${line('browserconfig.xml', t('readme.browserconfig'))}
+${line('head.html', t('readme.head'))}
 
-Set the name in site.webmanifest to your site's name before you upload it, and
-the two colours in it to whatever suits the icon.
+${wrap(t('readme.setname'))}
 ${hasIco ? '' : `
-Note: no favicon.ico is in here, because the .ico output was switched off. A
-site really does want one - it is the address browsers ask for by themselves.
+${wrap(t('readme.noico'))}
 `}`;
+}
+
+/**
+ * How wide a string is in a fixed-width font, which is not how long it is.
+ *
+ * A CJK character occupies two columns. Counting them as one puts thirteen
+ * equals signs under a title that is twenty-six columns wide, which is a
+ * ragged line in exactly the file that is meant to look tidy. The ranges are
+ * the East Asian Wide and Fullwidth blocks, which is enough for the eleven
+ * languages this site ships and does not need a table.
+ */
+function columns(text) {
+  return [...text].reduce((n, ch) => n + (/[ᄀ-ᅟ⺀-〾ぁ-㏿㐀-䶿一-鿿ꀀ-꓏가-힣豈-﫿︰-﹯＀-｠￠-￦]/.test(ch) ? 2 : 1), 0);
+}
+
+/**
+ * Break a sentence into lines a plain-text file can hold.
+ *
+ * The paragraphs used to be typed with the line breaks already in them, which
+ * only works while the words are English and never change. A translation is a
+ * different length, so the breaking is done here, at the spaces - and a
+ * language that does not put spaces between its words simply comes back as one
+ * long line, which a text editor wraps, rather than as one broken in the wrong
+ * places.
+ */
+function wrap(text, width = WIDTH) {
+  const lines = [];
+  let line = '';
+  for (const word of text.split(' ')) {
+    if (line && line.length + 1 + word.length > width) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = line ? `${line} ${word}` : word;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.join('\n');
 }
