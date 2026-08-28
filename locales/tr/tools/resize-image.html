@@ -292,6 +292,126 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: bu aracın okuyabileceği bir görsel değil.</span>
+    <span data-phrase="load.undecodable">{name}: bu tarayıcı onu çözemedi.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">bu tarayıcı {format} yazmayı kabul etmedi.</span>
+    <span data-phrase="decode.failed">bu tarayıcı resmi çözemedi.</span>
+    <span data-phrase="size.bytes">{n} bayt</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.one">1 görsel</span>
+    <span data-phrase="count.many">{n} görsel</span>
+    <span data-phrase="change.same">aşağı yukarı aynı boyutta</span>
+    <span data-phrase="change.smaller">%{percent} daha küçük</span>
+    <span data-phrase="change.larger">%{percent} daha büyük</span>
+    <span data-phrase="list.count">{count}, toplam {size}</span>
+    <span data-phrase="row.shown">kırpma önizlemesindeki {name}</span>
+    <span data-phrase="row.draw">Kırpma kutusunu {name} üzerine çiz</span>
+    <span data-phrase="row.badge">Önizlemede</span>
+    <span data-phrase="row.remove">{name} dosyasını listeden çıkar</span>
+    <span data-phrase="row.untouched">Hiçbir şey değişmiyor, yani bu olduğu gibi geçiyor.</span>
+    <span data-phrase="row.becomes">{size} oluyor</span>
+    <span data-phrase="run.one">Görselin boyutunu değiştir</span>
+    <span data-phrase="run.many">Görsellerin boyutunu değiştir</span>
+    <span data-phrase="preview.alt">{name} önizlemesi</span>
+    <span data-phrase="crop.box">Kırpma alanı. Ok tuşları onu taşır, Alt ve ok tuşları boyutunu değiştirir, Shift
+      basılıyken her adım on piksel olur.</span>
+    <span data-phrase="stage.name">{name} üzerine çiziliyor.</span>
+    <span data-phrase="stage.note">Her görsel kendi kutusunu tutar. {note}</span>
+    <span data-phrase="others.one.cropped">{name} kendi kutusuna sahip.</span>
+    <span data-phrase="others.one.whole">{name} hâlâ resmin tamamında &mdash; onu da kırpmak için yukarıdaki listeden seçin.</span>
+    <span data-phrase="others.none">Diğer {count} hâlâ resmin tamamında &mdash; birini kırpmak için yukarıdaki listeden
+      seçin.</span>
+    <span data-phrase="others.all.two">Diğer ikisinin de kendi kutusu var.</span>
+    <span data-phrase="others.all.many">Diğer {n} görselin hepsinin kendi kutusu var.</span>
+    <span data-phrase="others.some.one">Diğer {total} görselden 1 tanesinin kendi kutusu var; geri kalanı hâlâ resmin
+      tamamında.</span>
+    <span data-phrase="others.some.many">Diğer {total} görselden {n} tanesinin kendi kutusu var; geri kalanı hâlâ resmin
+      tamamında.</span>
+    <span data-phrase="apply.same.one">Listedeki bütün görseller tam olarak bu boyutta, yani diğeri tam olarak bu kutuyu
+      alır.</span>
+    <span data-phrase="apply.same.many">Listedeki bütün görseller tam olarak bu boyutta, yani hepsi tam olarak bu kutuyu
+      alır.</span>
+    <span data-phrase="apply.free">Her birinde aynı göreli alan &mdash; kendi genişliğinin ve yüksekliğinin aynı
+      kesirleri &mdash;, çünkü hepsi aynı boyutta değil.</span>
+    <span data-phrase="apply.source">Her birinin aynı göreli alanına sığan, resmin kendi oranındaki en büyük kutu;
+      böylece hepsi aynı boyutta olmasa da her sonuç kilitlediğiniz oranda çıkar.</span>
+    <span data-phrase="apply.ratio">Her birinin aynı göreli alanına sığan en büyük {ratio} kutu; böylece hepsi aynı
+      boyutta olmasa da her sonuç kilitlediğiniz oranda çıkar.</span>
+    <span data-phrase="format.keep">JPEG, JPEG kalır; PNG, PNG kalır. Bu tarayıcının yazamadığı her şey &mdash; GIF, BMP
+      &mdash; saydamlığı ve düz rengi koruyan PNG olarak çıkar.</span>
+    <span data-phrase="format.jpeg">Küçük ve her yerde açılır, saydamlığı yoktur: içinden görünen her yer arka plan
+      rengiyle doldurulur.</span>
+    <span data-phrase="format.png">Kayıpsız ve saydam, ve bir fotoğrafta diğer ikisinden çok daha büyük.</span>
+    <span data-phrase="format.webp">Aynı kalitede JPEG'den küçük, saydamlığı korur ve bugünün bütün tarayıcıları açar.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; bu tarayıcı desteklemiyor</span>
+    <span data-phrase="plan.crop">{crop} olarak kırpılıyor</span>
+    <span data-phrase="plan.resize">{size} boyutuna getiriliyor</span>
+    <span data-phrase="plan.keep">{size} olarak bırakılıyor</span>
+    <span data-phrase="plan.cropresize">{crop} olarak kırpılıp sonra {size} boyutuna getiriliyor</span>
+    <span data-phrase="plan.padded">{what}, istediğiniz çerçeveye tam oturacak şekilde dolduruluyor</span>
+    <span data-phrase="plan.written">{what}, {format} olarak yazılıyor</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Bir görsel ekleyin, burada tam olarak neye dönüşeceği yazacak.</span>
+    <span data-phrase="summary.untouched">Hiçbir şey değişmiyor: {name} {size} ve girdiği gibi, bayt bayt geri geliyor.</span>
+    <span data-phrase="summary.plain">{name} {size}. Çıkışı {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} {size}. Çıkışı {out} &mdash; resim {scale}, o çerçevenin geri kalanını
+      dolduran bir arka planın üstünde.</span>
+    <span data-phrase="summary.cropped">{name} {size}. Kutu bunun {crop} kadarını tutuyor. Çıkışı {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} {size}. Kutu bunun {crop} kadarını tutuyor. Çıkışı {out} &mdash; resim
+      {scale}, o çerçevenin geri kalanını dolduran bir arka planın üstünde.</span>
+    <span data-phrase="scale.of.crop">kutunun tuttuğunun %{percent} kadarı</span>
+    <span data-phrase="scale.of.original">özgününün %{percent} kadarı</span>
+    <span data-phrase="scale.up.crop">kutunun tuttuğunun %{percent} kadarına büyütülmüş</span>
+    <span data-phrase="scale.up.original">özgününün %{percent} kadarına büyütülmüş</span>
+    <span data-phrase="summary.nothing">Hiçbir şey kırpılmıyor, hiçbir şeyin boyutu değişmiyor ve biçim aynı kalıyor, yani
+      yeniden kodlanacak bir şey yok: her dosya bayt bayt, EXIF etiketleriyle birlikte
+      geri veriliyor, çünkü hiçbiri hiç açılmıyor.</span>
+    <span data-phrase="summary.plan.one">Görsel {plan} &mdash; ve EXIF ile GPS etiketleri bunu atlatamıyor, çünkü bir canvas
+      piksel tutar, başka bir şey değil.</span>
+    <span data-phrase="summary.plan.many">{name} {plan} &mdash; ve EXIF ile GPS etiketleri bunu atlatamıyor, çünkü bir canvas
+      piksel tutar, başka bir şey değil. {rest}</span>
+    <span data-phrase="rest.two">Diğer görsel de aynı boyut ve biçim ayarlarını alır, kendi kırpmasıyla.</span>
+    <span data-phrase="rest.many">Diğer {count} de aynı boyut ve biçim ayarlarını alır, her biri kendi kırpmasıyla.</span>
+    <span data-phrase="progress.at">{total} içinden {index}: {name}</span>
+    <span data-phrase="results.nothing">Hiçbir şey istenmedi, dolayısıyla hiçbir şey yapılmadı: her dosya girdiği gibi geri
+      geldi.</span>
+    <span data-phrase="results.totals">{before} girdi, {after} çıktı &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} girdi, {after} çıktı &mdash; {change}. {count} hiç değişmesi gerekmediği
+      için doğrudan geçti.</span>
+    <span data-phrase="results.totals.many">{before} girdi, {after} çıktı &mdash; {change}. {count} hiç değişmesi gerekmediği
+      için doğrudan geçti.</span>
+    <span data-phrase="result.open">{name} dosyasına tam boyutta bak</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; değişmedi</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Bayt bayt, üstverisiyle birlikte geçti: bu dosyada değişen hiçbir şey yoktu.</span>
+    <span data-phrase="result.view">Bak</span>
+    <span data-phrase="result.download">İndir</span>
+    <span data-phrase="viewer.alt.original">Özgün hâli: {name}</span>
+    <span data-phrase="viewer.alt.result">Sonuç: {name}</span>
+    <span data-phrase="viewer.caption.original">Özgün {name}, {size} boyutunda. İkisi de bu pencerenin yer verdiği boyutta
+      gösteriliyor; onları karşılaştırmanın tek adil yolu bu.</span>
+    <span data-phrase="viewer.showresult">Sonucu göster</span>
+    <span data-phrase="viewer.showoriginal">Özgün hâlini göster</span>
+    <span data-phrase="fact.savedas">Kaydedilen ad</span>
+    <span data-phrase="fact.format">Biçim</span>
+    <span data-phrase="fact.before">Önce</span>
+    <span data-phrase="fact.after">Sonra</span>
+    <span data-phrase="fact.filesize">Dosya boyutu</span>
+    <span data-phrase="fact.cropped">Kırpma</span>
+    <span data-phrase="fact.scale">Ölçek</span>
+    <span data-phrase="fact.padding">Doldurma</span>
+    <span data-phrase="fact.quality">Kalite</span>
+    <span data-phrase="fact.metadata">Üstveri</span>
+    <span data-phrase="fact.after.same">aynı dosya, bayt bayt</span>
+    <span data-phrase="fact.metadata.kept">duruyor &mdash; bu dosya hiç açılmadı</span>
+    <span data-phrase="fact.metadata.gone">aktarılmadı &mdash; bir canvas piksel tutar, başka bir şey değil</span>
+    <span data-phrase="fact.crop.yes">{size}, soldan {x} ve yukarıdan {y} noktasından</span>
+    <span data-phrase="fact.crop.no">yok &mdash; resmin tamamı geçti</span>
+    <span data-phrase="fact.scale.crop">kırpmanın %{percent} kadarı</span>
+    <span data-phrase="fact.scale.original">özgününün %{percent} kadarı</span>
+    <span data-phrase="fact.padding.yes">var &mdash; resim arka plan renginin üstünde duruyor</span>
     <span data-phrase="progress.stopped">{total} işten {done} tanesinden sonra durduruldu. Bitenler aşağıda.</span>
     <span data-phrase="progress.stopped.none">İlki bitmeden durduruldu.</span>
     <span data-phrase="net.clean">görselleriniz hiçbir yere gitmedi. {total}

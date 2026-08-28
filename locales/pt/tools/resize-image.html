@@ -287,6 +287,131 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: não é uma imagem que esta ferramenta saiba ler.</span>
+    <span data-phrase="load.undecodable">{name}: este navegador não conseguiu decodificá-la.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">este navegador não quis escrever {format}.</span>
+    <span data-phrase="decode.failed">este navegador não conseguiu decodificar a imagem.</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.one">1 imagem</span>
+    <span data-phrase="count.many">{n} imagens</span>
+    <span data-phrase="change.same">mais ou menos do mesmo tamanho</span>
+    <span data-phrase="change.smaller">{percent}% menor</span>
+    <span data-phrase="change.larger">{percent}% maior</span>
+    <span data-phrase="list.count">{count}, {size} no total</span>
+    <span data-phrase="row.shown">{name} é a que está na prévia do corte</span>
+    <span data-phrase="row.draw">Desenhar a caixa de corte em {name}</span>
+    <span data-phrase="row.badge">Na prévia</span>
+    <span data-phrase="row.remove">Tirar {name} da lista</span>
+    <span data-phrase="row.untouched">Nada está sendo mudado, então esta passa exatamente como está.</span>
+    <span data-phrase="row.becomes">fica {size}</span>
+    <span data-phrase="run.one">Redimensionar a imagem</span>
+    <span data-phrase="run.many">Redimensionar as imagens</span>
+    <span data-phrase="preview.alt">Prévia de {name}</span>
+    <span data-phrase="crop.box">Área de corte. As setas movem, Alt e as setas redimensionam, e segurando Shift cada
+      passo são dez pixels.</span>
+    <span data-phrase="stage.name">Desenhando em {name}.</span>
+    <span data-phrase="stage.note">Cada imagem guarda a sua própria caixa. {note}</span>
+    <span data-phrase="others.one.cropped">{name} tem uma caixa própria.</span>
+    <span data-phrase="others.one.whole">{name} ainda está na imagem inteira &mdash; escolha ela na lista acima para cortar
+      essa também.</span>
+    <span data-phrase="others.none">As outras {count} ainda estão na imagem inteira &mdash; escolha uma na lista acima
+      para cortá-la.</span>
+    <span data-phrase="others.all.two">As duas outras têm uma caixa própria.</span>
+    <span data-phrase="others.all.many">Todas as {n} outras têm uma caixa própria.</span>
+    <span data-phrase="others.some.one">1 das outras {total} tem caixa própria; o resto ainda está na imagem inteira.</span>
+    <span data-phrase="others.some.many">{n} das outras {total} têm caixa própria; o resto ainda está na imagem inteira.</span>
+    <span data-phrase="apply.same.one">Todas as imagens da lista têm exatamente este tamanho, então a outra recebe
+      exatamente esta caixa.</span>
+    <span data-phrase="apply.same.many">Todas as imagens da lista têm exatamente este tamanho, então todas recebem
+      exatamente esta caixa.</span>
+    <span data-phrase="apply.free">A mesma área relativa em cada uma &mdash; as mesmas frações da própria largura e
+      altura &mdash;, porque elas não têm todas o mesmo tamanho.</span>
+    <span data-phrase="apply.source">A maior caixa no formato da própria imagem que caiba na mesma área relativa de cada
+      uma, para que todo resultado saia no formato que foi fixado mesmo que elas não
+      tenham todas o mesmo tamanho.</span>
+    <span data-phrase="apply.ratio">A maior caixa {ratio} que caiba na mesma área relativa de cada uma, para que todo
+      resultado saia no formato que foi fixado mesmo que elas não tenham todas o mesmo
+      tamanho.</span>
+    <span data-phrase="format.keep">Um JPEG continua JPEG, um PNG continua PNG. O que este navegador não souber escrever
+      &mdash; um GIF, um BMP &mdash; sai como PNG, que guarda a transparência e as cores
+      chapadas.</span>
+    <span data-phrase="format.jpeg">Pequeno e universal, e sem transparência: tudo que é transparente é preenchido com a
+      cor de fundo.</span>
+    <span data-phrase="format.png">Sem perdas e com transparência, e bem maior que os outros dois numa fotografia.</span>
+    <span data-phrase="format.webp">Menor que o JPEG na mesma qualidade, guarda a transparência, e todo navegador atual
+      abre.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; sem suporte neste navegador</span>
+    <span data-phrase="plan.crop">cortada para {crop}</span>
+    <span data-phrase="plan.resize">redimensionada para {size}</span>
+    <span data-phrase="plan.keep">mantida em {size}</span>
+    <span data-phrase="plan.cropresize">cortada para {crop} e depois redimensionada para {size}</span>
+    <span data-phrase="plan.padded">{what}, preenchida até a moldura exata que foi pedida</span>
+    <span data-phrase="plan.written">{what}, escrita como {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Adicione uma imagem e aqui vai dizer exatamente no que ela se transforma.</span>
+    <span data-phrase="summary.untouched">Nada está sendo mudado: {name} tem {size} e volta exatamente como entrou, byte por
+      byte.</span>
+    <span data-phrase="summary.plain">{name} tem {size}. Sai {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} tem {size}. Sai {out} &mdash; a imagem a {scale}, sobre um fundo que preenche
+      o resto dessa moldura.</span>
+    <span data-phrase="summary.cropped">{name} tem {size}. A caixa fica com {crop}. Sai {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} tem {size}. A caixa fica com {crop}. Sai {out} &mdash; a imagem a {scale},
+      sobre um fundo que preenche o resto dessa moldura.</span>
+    <span data-phrase="scale.of.crop">{percent}% do que a caixa fica</span>
+    <span data-phrase="scale.of.original">{percent}% do original</span>
+    <span data-phrase="scale.up.crop">ampliada para {percent}% do que a caixa fica</span>
+    <span data-phrase="scale.up.original">ampliada para {percent}% do original</span>
+    <span data-phrase="summary.nothing">Nada é cortado, nada é redimensionado e o formato não muda, então não há nada para
+      recodificar: cada arquivo é devolvido byte por byte, com tags EXIF e tudo, porque
+      nenhum deles chega a ser aberto.</span>
+    <span data-phrase="summary.plan.one">A imagem é {plan} &mdash; e as tags EXIF e GPS não sobrevivem, porque um canvas
+      guarda pixels e mais nada.</span>
+    <span data-phrase="summary.plan.many">{name} é {plan} &mdash; e as tags EXIF e GPS não sobrevivem, porque um canvas guarda
+      pixels e mais nada. {rest}</span>
+    <span data-phrase="rest.two">A outra imagem recebe os mesmos ajustes de tamanho e formato, com o seu próprio
+      corte.</span>
+    <span data-phrase="rest.many">As outras {count} recebem os mesmos ajustes de tamanho e formato, cada uma com o seu
+      próprio corte.</span>
+    <span data-phrase="progress.at">{index} de {total}: {name}</span>
+    <span data-phrase="results.nothing">Nada foi pedido, então nada foi feito: cada arquivo voltou exatamente como entrou.</span>
+    <span data-phrase="results.totals">{before} entrando, {after} saindo &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} entrando, {after} saindo &mdash; {change}. {count} não precisava de mudança
+      e passou direto.</span>
+    <span data-phrase="results.totals.many">{before} entrando, {after} saindo &mdash; {change}. {count} não precisavam de
+      mudança e passaram direto.</span>
+    <span data-phrase="result.open">Ver {name} em tamanho cheio</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; sem mudança</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Passou byte por byte, com metadados e tudo: nada neste arquivo estava sendo mudado.</span>
+    <span data-phrase="result.view">Ver</span>
+    <span data-phrase="result.download">Baixar</span>
+    <span data-phrase="viewer.alt.original">O original: {name}</span>
+    <span data-phrase="viewer.alt.result">O resultado: {name}</span>
+    <span data-phrase="viewer.caption.original">O original {name}, a {size}. As duas são mostradas no tamanho que esta janela tem,
+      que é a única forma justa de compará-las.</span>
+    <span data-phrase="viewer.showresult">Mostrar o resultado</span>
+    <span data-phrase="viewer.showoriginal">Mostrar o original</span>
+    <span data-phrase="fact.savedas">Salva como</span>
+    <span data-phrase="fact.format">Formato</span>
+    <span data-phrase="fact.before">Antes</span>
+    <span data-phrase="fact.after">Depois</span>
+    <span data-phrase="fact.filesize">Tamanho do arquivo</span>
+    <span data-phrase="fact.cropped">Cortada</span>
+    <span data-phrase="fact.scale">Escala</span>
+    <span data-phrase="fact.padding">Preenchimento</span>
+    <span data-phrase="fact.quality">Qualidade</span>
+    <span data-phrase="fact.metadata">Metadados</span>
+    <span data-phrase="fact.after.same">o mesmo arquivo, byte por byte</span>
+    <span data-phrase="fact.metadata.kept">mantidos &mdash; este arquivo nunca foi aberto</span>
+    <span data-phrase="fact.metadata.gone">não vieram junto &mdash; um canvas guarda pixels e mais nada</span>
+    <span data-phrase="fact.crop.yes">{size}, a partir de {x} na horizontal e {y} na vertical</span>
+    <span data-phrase="fact.crop.no">não &mdash; passou a imagem inteira</span>
+    <span data-phrase="fact.scale.crop">{percent}% do corte</span>
+    <span data-phrase="fact.scale.original">{percent}% do original</span>
+    <span data-phrase="fact.padding.yes">sim &mdash; a imagem fica sobre a cor de fundo</span>
     <span data-phrase="progress.stopped">Parado depois de {done} de {total}. O que ficou pronto está abaixo.</span>
     <span data-phrase="progress.stopped.none">Parado antes de o primeiro ficar pronto.</span>
     <span data-phrase="net.clean">As suas imagens não foram a lugar nenhum.

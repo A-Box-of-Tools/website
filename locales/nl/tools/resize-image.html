@@ -288,6 +288,135 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: geen afbeelding die dit gereedschap kan lezen.</span>
+    <span data-phrase="load.undecodable">{name}: deze browser kon hem niet decoderen.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">deze browser wilde geen {format} schrijven.</span>
+    <span data-phrase="decode.failed">deze browser kon het plaatje niet decoderen.</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.one">1 afbeelding</span>
+    <span data-phrase="count.many">{n} afbeeldingen</span>
+    <span data-phrase="change.same">ongeveer even groot</span>
+    <span data-phrase="change.smaller">{percent}% kleiner</span>
+    <span data-phrase="change.larger">{percent}% groter</span>
+    <span data-phrase="list.count">{count}, {size} in totaal</span>
+    <span data-phrase="row.shown">{name} is degene in het uitsnedevoorbeeld</span>
+    <span data-phrase="row.draw">Het kader op {name} tekenen</span>
+    <span data-phrase="row.badge">In het voorbeeld</span>
+    <span data-phrase="row.remove">{name} van de lijst halen</span>
+    <span data-phrase="row.untouched">Er wordt niets veranderd, dus deze gaat er precies zo doorheen als hij is.</span>
+    <span data-phrase="row.becomes">wordt {size}</span>
+    <span data-phrase="run.one">De afbeelding verkleinen</span>
+    <span data-phrase="run.many">De afbeeldingen verkleinen</span>
+    <span data-phrase="preview.alt">Voorbeeld van {name}</span>
+    <span data-phrase="crop.box">Uitsnedegebied. De pijltjestoetsen verplaatsen het, Alt en de pijltjestoetsen
+      wijzigen het formaat, en met Shift ingedrukt is elke stap tien pixels.</span>
+    <span data-phrase="stage.name">Getekend op {name}.</span>
+    <span data-phrase="stage.note">Elke afbeelding houdt zijn eigen kader. {note}</span>
+    <span data-phrase="others.one.cropped">{name} heeft een eigen kader.</span>
+    <span data-phrase="others.one.whole">{name} staat nog op het hele plaatje &mdash; kies hem in de lijst hierboven om die
+      ook uit te snijden.</span>
+    <span data-phrase="others.none">De andere {count} staan nog op het hele plaatje &mdash; kies er een in de lijst
+      hierboven om die uit te snijden.</span>
+    <span data-phrase="others.all.two">Allebei de andere hebben een eigen kader.</span>
+    <span data-phrase="others.all.many">Alle {n} andere hebben een eigen kader.</span>
+    <span data-phrase="others.some.one">1 van de andere {total} heeft een eigen kader; de rest staat nog op het hele
+      plaatje.</span>
+    <span data-phrase="others.some.many">{n} van de andere {total} hebben een eigen kader; de rest staat nog op het hele
+      plaatje.</span>
+    <span data-phrase="apply.same.one">Alle afbeeldingen op de lijst zijn precies dit formaat, dus de andere krijgt precies
+      dit kader.</span>
+    <span data-phrase="apply.same.many">Alle afbeeldingen op de lijst zijn precies dit formaat, dus ze krijgen allemaal
+      precies dit kader.</span>
+    <span data-phrase="apply.free">Op elk hetzelfde relatieve gebied &mdash; dezelfde breuken van de eigen breedte en
+      hoogte &mdash;, omdat ze niet allemaal even groot zijn.</span>
+    <span data-phrase="apply.source">Het grootste kader in de vorm van het plaatje zelf dat in hetzelfde relatieve gebied
+      van elk past, zodat elk resultaat de vorm krijgt die je hebt vastgezet ook al zijn
+      ze niet allemaal even groot.</span>
+    <span data-phrase="apply.ratio">Het grootste {ratio}-kader dat in hetzelfde relatieve gebied van elk past, zodat elk
+      resultaat de vorm krijgt die je hebt vastgezet ook al zijn ze niet allemaal even
+      groot.</span>
+    <span data-phrase="format.keep">Een JPEG blijft een JPEG, een PNG blijft een PNG. Wat deze browser niet kan
+      schrijven &mdash; een GIF, een BMP &mdash; komt eruit als PNG, dat transparantie en
+      vlakke kleur behoudt.</span>
+    <span data-phrase="format.jpeg">Klein en overal leesbaar, en zonder transparantie: alles wat doorschijnend is wordt
+      met de achtergrondkleur gevuld.</span>
+    <span data-phrase="format.png">Verliesvrij en transparant, en op een foto veel groter dan de andere twee.</span>
+    <span data-phrase="format.webp">Kleiner dan JPEG bij dezelfde kwaliteit, houdt transparantie, en elke huidige
+      browser opent het.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; niet ondersteund door deze browser</span>
+    <span data-phrase="plan.crop">uitgesneden tot {crop}</span>
+    <span data-phrase="plan.resize">geschaald naar {size}</span>
+    <span data-phrase="plan.keep">gelaten op {size}</span>
+    <span data-phrase="plan.cropresize">uitgesneden tot {crop} en daarna geschaald naar {size}</span>
+    <span data-phrase="plan.padded">{what}, opgevuld tot precies het kader dat je vroeg</span>
+    <span data-phrase="plan.written">{what}, geschreven als {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Voeg een afbeelding toe en hier staat precies wat er van wordt.</span>
+    <span data-phrase="summary.untouched">Er wordt niets veranderd: {name} is {size} en komt precies zo terug als hij erin
+      ging, byte voor byte.</span>
+    <span data-phrase="summary.plain">{name} is {size}. Eruit komt {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} is {size}. Eruit komt {out} &mdash; het plaatje op {scale}, op een
+      achtergrond die de rest van dat kader vult.</span>
+    <span data-phrase="summary.cropped">{name} is {size}. Het kader houdt daar {crop} van over. Eruit komt {out} &mdash;
+      {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} is {size}. Het kader houdt daar {crop} van over. Eruit komt {out} &mdash; het
+      plaatje op {scale}, op een achtergrond die de rest van dat kader vult.</span>
+    <span data-phrase="scale.of.crop">{percent}% van wat het kader overhoudt</span>
+    <span data-phrase="scale.of.original">{percent}% van het origineel</span>
+    <span data-phrase="scale.up.crop">vergroot tot {percent}% van wat het kader overhoudt</span>
+    <span data-phrase="scale.up.original">vergroot tot {percent}% van het origineel</span>
+    <span data-phrase="summary.nothing">Er wordt niets uitgesneden, niets geschaald en het formaat blijft, dus er valt niets
+      opnieuw te coderen: elk bestand komt byte voor byte terug, EXIF-tags en al, omdat er
+      niet één van wordt opengemaakt.</span>
+    <span data-phrase="summary.plan.one">De afbeelding wordt {plan} &mdash; en de EXIF- en GPS-tags overleven dat niet, want
+      een canvas bevat pixels en verder niets.</span>
+    <span data-phrase="summary.plan.many">{name} wordt {plan} &mdash; en de EXIF- en GPS-tags overleven dat niet, want een
+      canvas bevat pixels en verder niets. {rest}</span>
+    <span data-phrase="rest.two">De andere afbeelding krijgt dezelfde formaat- en bestandsinstellingen, met zijn
+      eigen uitsnede.</span>
+    <span data-phrase="rest.many">De andere {count} krijgen dezelfde formaat- en bestandsinstellingen, elk met zijn
+      eigen uitsnede.</span>
+    <span data-phrase="progress.at">{index} van {total}: {name}</span>
+    <span data-phrase="results.nothing">Er was niets gevraagd, dus er is niets gedaan: elk bestand kwam precies zo terug als
+      het erin ging.</span>
+    <span data-phrase="results.totals">{before} erin, {after} eruit &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} erin, {after} eruit &mdash; {change}. {count} had geen wijziging nodig en
+      is er zo doorheen gegaan.</span>
+    <span data-phrase="results.totals.many">{before} erin, {after} eruit &mdash; {change}. {count} hadden geen wijziging nodig
+      en zijn er zo doorheen gegaan.</span>
+    <span data-phrase="result.open">{name} op ware grootte bekijken</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; ongewijzigd</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Byte voor byte doorgegeven, metadata en al: aan dit bestand werd niets veranderd.</span>
+    <span data-phrase="result.view">Bekijken</span>
+    <span data-phrase="result.download">Downloaden</span>
+    <span data-phrase="viewer.alt.original">Het origineel: {name}</span>
+    <span data-phrase="viewer.alt.result">Het resultaat: {name}</span>
+    <span data-phrase="viewer.caption.original">Het origineel {name}, op {size}. Ze worden allebei getoond op het formaat waar dit
+      venster ruimte voor heeft, wat de enige eerlijke manier is om ze te vergelijken.</span>
+    <span data-phrase="viewer.showresult">Het resultaat tonen</span>
+    <span data-phrase="viewer.showoriginal">Het origineel tonen</span>
+    <span data-phrase="fact.savedas">Opgeslagen als</span>
+    <span data-phrase="fact.format">Formaat</span>
+    <span data-phrase="fact.before">Voor</span>
+    <span data-phrase="fact.after">Na</span>
+    <span data-phrase="fact.filesize">Bestandsgrootte</span>
+    <span data-phrase="fact.cropped">Uitgesneden</span>
+    <span data-phrase="fact.scale">Schaal</span>
+    <span data-phrase="fact.padding">Opvulling</span>
+    <span data-phrase="fact.quality">Kwaliteit</span>
+    <span data-phrase="fact.metadata">Metadata</span>
+    <span data-phrase="fact.after.same">hetzelfde bestand, byte voor byte</span>
+    <span data-phrase="fact.metadata.kept">behouden &mdash; dit bestand is nooit opengemaakt</span>
+    <span data-phrase="fact.metadata.gone">niet meegenomen &mdash; een canvas bevat pixels en verder niets</span>
+    <span data-phrase="fact.crop.yes">{size}, vanaf {x} van links en {y} van boven</span>
+    <span data-phrase="fact.crop.no">nee &mdash; het hele plaatje ging erdoorheen</span>
+    <span data-phrase="fact.scale.crop">{percent}% van de uitsnede</span>
+    <span data-phrase="fact.scale.original">{percent}% van het origineel</span>
+    <span data-phrase="fact.padding.yes">ja &mdash; het plaatje ligt op de achtergrondkleur</span>
     <span data-phrase="progress.stopped">Gestopt na {done} van {total}. Wat af is, staat hieronder.</span>
     <span data-phrase="progress.stopped.none">Gestopt voordat de eerste af was.</span>
     <span data-phrase="net.clean">Je afbeeldingen zijn nergens heen gegaan.

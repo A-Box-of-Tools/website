@@ -67,6 +67,20 @@ export async function encodableTypes() {
 }
 
 /**
+ * A refusal this file wrote, rather than one the platform threw.
+ *
+ * The message is a phrase key and `values` fills its blanks; main.js turns the
+ * pair into a sentence. Nothing is lost when a platform error comes up the
+ * same path instead: phrase() hands back a key it does not know, so a browser
+ * saying "out of memory" still says that.
+ */
+function refusal(key, values) {
+  const error = new Error(key);
+  error.values = values;
+  return error;
+}
+
+/**
  * Draw a plan and hand back the encoded bytes.
  *
  * One `drawImage` does the whole job: the source rectangle is the crop, the
@@ -107,7 +121,7 @@ export async function render(source, plan, { mime, quality, background = '#fffff
   );
 
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, mime, quality));
-  if (!blob) throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime}.`);
+  if (!blob) throw refusal('write.refused', { format: FORMATS[mime]?.label ?? mime });
 
   // Free the backing store now rather than when the collector gets round to
   // it. A batch runs one of these per image; on large photographs the
@@ -144,7 +158,7 @@ export async function decode(file) {
     const img = await new Promise((resolve, reject) => {
       const element = new Image();
       element.onload = () => resolve(element);
-      element.onerror = () => reject(new Error('this browser could not decode the picture.'));
+      element.onerror = () => reject(refusal('decode.failed'));
       element.src = url;
     });
     return { bitmap: img, width: img.naturalWidth, height: img.naturalHeight };
