@@ -172,6 +172,106 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="size.bytes">{amount} bita</span>
+    <span data-phrase="size.kb">{amount} KB</span>
+    <span data-phrase="size.mb">{amount} MB</span>
+    <span data-phrase="count.pages.one">{n} halaman</span>
+    <span data-phrase="count.pages.many">{n} halaman</span>
+    <span data-phrase="count.images.one">{n} gambar</span>
+    <span data-phrase="count.images.many">{n} gambar</span>
+    <span data-phrase="count.entries.one">{n} entri</span>
+    <span data-phrase="count.entries.many">{n} entri</span>
+    <span data-phrase="change.same">kira-kira sama besarnya</span>
+    <span data-phrase="change.smaller">{percent}% lebih kecil</span>
+    <span data-phrase="change.larger">{percent}% lebih besar</span>
+    <span data-phrase="settings.fullsize">Gambar dikodekan ulang pada kualitas JPEG {quality} dan tetap pada ukuran penuhnya.</span>
+    <span data-phrase="settings.downsampled">Gambar diturunkan sampai paling banyak {dpi} piksel per inci dari ruang tempat ia
+      digambar, lalu dikodekan pada kualitas JPEG {quality}.</span>
+    <span data-phrase="group.images">Gambar</span>
+    <span data-phrase="group.fonts">Fon tertanam</span>
+    <span data-phrase="group.content">Isi halaman</span>
+    <span data-phrase="group.metadata">Metadata &amp; data pribadi</span>
+    <span data-phrase="group.other">Aliran lain</span>
+    <span data-phrase="group.structure">Struktur &amp; kelengkapan</span>
+    <span data-phrase="group.orphans">Usang &amp; tak diacu</span>
+    <span data-phrase="verdict.most">{percent}% file ini adalah gambar, dan itulah yang bisa dimampatkan. Harapkan
+      penghematan yang besar.</span>
+    <span data-phrase="verdict.some">Sekitar {percent}% file ini adalah gambar. Mengodekannya ulang akan membantu; sisa
+      file itulah yang menentukan sampai sekecil apa ia bisa jadi.</span>
+    <span data-phrase="verdict.few">Cuma {percent}% file ini yang berupa gambar, jadi tidak banyak yang bisa dikerjakan
+      pemampat gambar. Sebagian besar penghematannya datang dari mengemas ulang dokumennya
+      dan membuang yang sudah tidak diacu lagi.</span>
+    <span data-phrase="verdict.none">Tidak ada gambar di file ini. Isinya teks, gambar vektor dan fon, dan semuanya sudah
+      dimampatkan &mdash; harapkan satu digit saja, itu pun kalau beruntung.</span>
+    <span data-phrase="inv.size">{size} di {pages}.</span>
+    <span data-phrase="inv.images">{images} tertanam.</span>
+    <span data-phrase="inv.orphans">Sebanyak {size} dari itu sudah tidak diacu apa pun &mdash; tertinggal dari
+      penyuntingan sebelumnya &mdash; dan tidak akan ikut disalin.</span>
+    <span data-phrase="inv.fonts">Fon tertanam adalah bagian besar dari file ini. Fon itu disimpan utuh: memangkas fon
+      adalah cara sebuah dokumen berakhir kehilangan huruf begitu orang lain membukanya.</span>
+    <span data-phrase="read.notpdf">Itu bukan PDF. Alat ini cuma bekerja pada file PDF.</span>
+    <span data-phrase="read.encrypted">PDF ini terenkripsi. Sekalipun kata sandinya kosong, membuka proteksi itu adalah
+      pekerjaan lain dari mengecilkan file, dan alat ini tidak akan melakukannya di
+      belakang Anda.</span>
+    <span data-phrase="read.nocatalogue">File ini tidak punya katalog dokumen, jadi tidak ada yang bisa ditulis ulang. Entah
+      ia bukan PDF, entah rusaknya sudah lewat dari yang bisa diperbaiki di sini.</span>
+    <span data-phrase="read.noheader">Ini tidak dimulai seperti PDF: tidak ada header %PDF-.</span>
+    <span data-phrase="read.failed">PDF ini tidak bisa dibaca: {detail}</span>
+    <span data-phrase="note.repaired">Tabel rujukan silang file ini tidak cocok dengan isinya, jadi ia dibaca dengan
+      menyisir objeknya satu per satu. Itu perbaikan, dan berhasil, tapi periksa hasilnya
+      sebelum Anda mengirimnya ke mana pun.</span>
+    <span data-phrase="note.incremental">Dokumen ini pernah disunting dan disimpan ulang setidaknya sekali, jadi ia membawa
+      salinan objek yang lebih lama yang sudah tidak ditunjuk apa pun. Yang itu tidak ikut
+      ditulis ulang.</span>
+    <span data-phrase="stage.reading">Membaca dokumennya</span>
+    <span data-phrase="stage.measuring">Mengukur seberapa besar tiap gambar digambar</span>
+    <span data-phrase="stage.images">Memampatkan ulang gambarnya</span>
+    <span data-phrase="stage.metadata">Mengeluarkan apa yang file ini ingat soal asalnya</span>
+    <span data-phrase="stage.writing">Menulis dokumennya</span>
+    <span data-phrase="stage.checking">Membacanya kembali untuk diperiksa</span>
+    <span data-phrase="run.cancelled">Dibatalkan.</span>
+    <span data-phrase="run.cancelledfull">Dibatalkan. Tidak ada yang diubah; tekan Mampatkan untuk memulai lagi.</span>
+    <span data-phrase="check.passed">Diperiksa: {found}</span>
+    <span data-phrase="check.failed">Putaran ini tidak lolos &mdash; {found}. Simpan yang aslinya.</span>
+    <span data-phrase="check.ok.one">dibuka lagi dari memori: 1 halaman, sama dengan aslinya.</span>
+    <span data-phrase="check.ok.many">dibuka lagi dari memori: {pages} halaman, sama dengan aslinya.</span>
+    <span data-phrase="check.pages">file hasil tulis ulang kembali dengan {pages} halaman, bukan {expected}</span>
+    <span data-phrase="check.unclean">file hasil tulis ulang tidak terbaca bersih</span>
+    <span data-phrase="check.reopen">file hasil tulis ulang tidak mau dibuka lagi ({detail})</span>
+    <span data-phrase="result.saved">{change}, hemat {size}.</span>
+    <span data-phrase="result.nosmaller">{size} &mdash; tidak lebih kecil dari sebelumnya</span>
+    <span data-phrase="result.alreadysmall">Semua di file ini sudah kira-kira sekecil yang bisa. Yang aslinya adalah file yang
+      lebih baik disimpan.</span>
+    <span data-phrase="facts.noimages">Tidak ada gambar di dokumen ini, jadi tidak ada yang dikodekan ulang. Penghematannya
+      datang dari mengemas ulang dan membuang yang tidak diacu siapa pun.</span>
+    <span data-phrase="facts.reencoded">{touched} dari {total} gambar dikodekan ulang.</span>
+    <span data-phrase="facts.reencoded.shrunk">{touched} dari {total} gambar dikodekan ulang, {shrunk} di antaranya dengan piksel
+      lebih sedikit.</span>
+    <span data-phrase="facts.kept">{images} dibiarkan: {reason}.</span>
+    <span data-phrase="facts.metadata">{entries} metadata aplikasi dibuang.</span>
+    <span data-phrase="facts.incremental">Salinan objek yang lebih lama dan usang dari penyuntingan sebelumnya tidak ikut
+      disalin.</span>
+    <span data-phrase="facts.repaired">Tabel rujukan silang aslinya rusak dan harus dibangun ulang dengan menyisir. Periksa
+      file ini sebelum meneruskannya.</span>
+    <span data-phrase="row.kept">Disimpan: {why}</span>
+    <span data-phrase="row.recompressed">Dimampatkan ulang jadi {size}</span>
+    <span data-phrase="row.recompressed.dpi">Dimampatkan ulang jadi {size} ({dpi})</span>
+    <span data-phrase="row.downsampled">Diturunkan jadi {size}</span>
+    <span data-phrase="row.downsampled.dpi">Diturunkan jadi {size} ({dpi})</span>
+    <span data-phrase="row.was">tadinya {dpi}</span>
+    <span data-phrase="kept.jpx">JPEG 2000 &mdash; tidak ada peramban yang bisa mendekodenya</span>
+    <span data-phrase="kept.jbig2">JBIG2 &mdash; tidak ada peramban yang bisa mendekodenya, dan ia memang sudah padat</span>
+    <span data-phrase="kept.ccitt">berkode faks (CCITT) &mdash; sudah kira-kira sekecil yang bisa dicapai gambar dua
+      warna</span>
+    <span data-phrase="kept.cmyk">CMYK &mdash; mengodekan ulang berisiko menggeser warna cetaknya</span>
+    <span data-phrase="kept.mask">sebuah masker stensil &mdash; sudah satu bit per piksel</span>
+    <span data-phrase="kept.tiny">sudah cukup kecil sehingga mengodekan ulang cuma memakan kualitas</span>
+    <span data-phrase="kept.colorspace">ruang warna tidak lazim yang tidak akan ditebak alat ini</span>
+    <span data-phrase="kept.unreadable">data gambarnya tidak mau didekode</span>
+    <span data-phrase="kept.unused">tidak digambar di halaman mana pun</span>
+    <span data-phrase="kept.nodecode">peramban ini tidak bisa mendekode gambarnya</span>
+    <span data-phrase="kept.noencoder">peramban ini tidak mau mengodekannya ulang</span>
+    <span data-phrase="kept.alreadysmall">sudah lebih kecil daripada apa pun yang bisa dibuat darinya di sini</span>
     <span data-phrase="net.clean">dokumen Anda tidak pergi ke mana pun. {total}
       file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

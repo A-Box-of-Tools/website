@@ -15,6 +15,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 
 import { PdfDocument } from '../../tools/compress-pdf/src/reader.js';
 import { reachable, stripMetadata, writeDocument } from '../../tools/compress-pdf/src/writer.js';
@@ -222,7 +223,7 @@ test('a stripped document round-trips with its metadata gone', async () => {
 test('verdict: a file that is mostly images promises a large saving', () => {
   const found = verdict({ images: 900, total: 1000 });
   assert.equal(found.tone, 'good');
-  assert.match(found.text, /90% of this file is images/);
+  assert.deepEqual(found.text, { key: 'verdict.most', values: { percent: 90 } });
 });
 
 test('verdict: a middling file says where the floor comes from', () => {
@@ -233,11 +234,11 @@ test('verdict: a text document is told so in the same breath', () => {
   // Somebody whose contract cannot be made smaller should be told why.
   const thin = verdict({ images: 100, total: 1000 });
   assert.equal(thin.tone, 'thin');
-  assert.match(thin.text, /not much for an image compressor/);
+  assert.deepEqual(thin.text, { key: 'verdict.few', values: { percent: 10 } });
 
   const none = verdict({ images: 0, total: 1000 });
   assert.equal(none.tone, 'thin');
-  assert.match(none.text, /no images in this file/);
+  assert.deepEqual(none.text, { key: 'verdict.none' });
 });
 
 test('verdict: an empty file does not divide by zero', () => {
@@ -263,25 +264,26 @@ test('effectiveDpi: an image that is never drawn answers zero', () => {
 /* ================================================================ wording */
 
 test('bytes: the units a person would use', () => {
-  assert.equal(sizeText(0), '0 bytes');
-  assert.equal(sizeText(999), '999 bytes');
-  assert.equal(sizeText(1024), '1.0 KB');
-  assert.equal(sizeText(10240), '10 KB');
-  assert.equal(sizeText(1024 * 1024), '1.00 MB');
-  assert.equal(sizeText(5.5 * 1024 * 1024), '5.50 MB');
+  assert.deepEqual(sizeText(0), { key: 'size.bytes', values: { amount: 0 } });
+  assert.deepEqual(sizeText(999), { key: 'size.bytes', values: { amount: 999 } });
+  assert.deepEqual(sizeText(1024), { key: 'size.kb', values: { amount: '1.0' } });
+  assert.deepEqual(sizeText(10240), { key: 'size.kb', values: { amount: '10' } });
+  assert.deepEqual(sizeText(1024 * 1024), { key: 'size.mb', values: { amount: '1.00' } });
+  assert.deepEqual(sizeText(5.5 * 1024 * 1024), { key: 'size.mb', values: { amount: '5.50' } });
 });
 
 test('bytes: nonsense in, zero out', () => {
-  assert.equal(sizeText(-1), '0 bytes');
-  assert.equal(sizeText(NaN), '0 bytes');
-  assert.equal(sizeText(Infinity), '0 bytes');
+  const zero = { key: 'size.bytes', values: { amount: 0 } };
+  assert.deepEqual(sizeText(-1), zero);
+  assert.deepEqual(sizeText(NaN), zero);
+  assert.deepEqual(sizeText(Infinity), zero);
 });
 
 test('change: the honest answer when a run went the wrong way', () => {
-  assert.equal(change(1000, 320), '68% smaller');
-  assert.equal(change(1000, 1050), '5% larger');
-  assert.equal(change(1000, 1000), 'about the same size');
-  assert.equal(change(0, 100), '');
+  assert.deepEqual(change(1000, 320), { key: 'change.smaller', values: { percent: 68 } });
+  assert.deepEqual(change(1000, 1050), { key: 'change.larger', values: { percent: 5 } });
+  assert.deepEqual(change(1000, 1000), { key: 'change.same' });
+  assert.equal(change(0, 100), null);
 });
 
 test('share: never rounded up to 100 unless it really is all of it', () => {
@@ -315,12 +317,12 @@ test('outName: only the trailing extension goes', () => {
   assert.equal(outName('v1.pdf.pdf'), 'v1.pdf-compressed.pdf');
 });
 
-test('count: one image, fourteen images', () => {
-  assert.equal(count(1, 'image'), '1 image');
-  assert.equal(count(14, 'image'), '14 images');
-  assert.equal(count(0, 'image'), '0 images');
-  assert.equal(count(1, 'entry', 'entries'), '1 entry');
-  assert.equal(count(3, 'entry', 'entries'), '3 entries');
+test('count: one image, fourteen images - two phrases, not an appended s', () => {
+  assert.deepEqual(count(1, 'images'), { key: 'count.images.one', values: { n: 1 } });
+  assert.deepEqual(count(14, 'images'), { key: 'count.images.many', values: { n: 14 } });
+  assert.deepEqual(count(0, 'images'), { key: 'count.images.many', values: { n: 0 } });
+  assert.deepEqual(count(1, 'entries'), { key: 'count.entries.one', values: { n: 1 } });
+  assert.deepEqual(count(3, 'entries'), { key: 'count.entries.many', values: { n: 3 } });
 });
 
 /* =============================================================== presets */
@@ -334,17 +336,20 @@ test('the presets are ordered the way the trade uses them', () => {
   assert.equal(PRESETS.gentle.dpi, 0, 'gentle does not resize at all');
 });
 
-test('every preset has a label to show', () => {
-  for (const [key, preset] of Object.entries(PRESETS)) {
-    assert.equal(typeof preset.label, 'string', key);
-    assert.ok(preset.label.length > 0, key);
+test('every preset is offered on the page, and named there rather than here', () => {
+  // The labels used to live here too, in English, while body.html carried its
+  // own in fifteen languages. One of those copies had to go, and a copy nobody
+  // read is the one that goes.
+  const body = readFileSync(new URL('../../tools/compress-pdf/body.html', import.meta.url), 'utf8');
+  for (const key of Object.keys(PRESETS)) {
+    assert.ok(body.includes(`value="${key}"`), `${key} has no radio on the page`);
+    assert.equal(PRESETS[key].label, undefined, `${key} carries a second copy of its name`);
   }
 });
 
 test('describeSettings says what the controls add up to', () => {
-  assert.match(describeSettings({ dpi: 150, quality: 0.7 }),
-    /at most 150 pixels per inch.*JPEG quality 70/s);
-  assert.match(describeSettings({ dpi: 0, quality: 0.9 }),
-    /kept at their full size/);
-  assert.match(describeSettings({ dpi: 0, quality: 0.9 }), /JPEG quality 90/);
+  assert.deepEqual(describeSettings({ dpi: 150, quality: 0.7 }),
+    { key: 'settings.downsampled', values: { quality: 70, dpi: 150 } });
+  assert.deepEqual(describeSettings({ dpi: 0, quality: 0.9 }),
+    { key: 'settings.fullsize', values: { quality: 90 } });
 });

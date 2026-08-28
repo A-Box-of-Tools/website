@@ -49,10 +49,10 @@ import { stripMetadata, writeDocument } from './writer.js';
  * where the artefacts start showing on text and flat areas.
  */
 export const PRESETS = {
-  smallest: { dpi: 96, quality: 0.55, label: 'Smallest' },
-  screen: { dpi: 130, quality: 0.68, label: 'Good on screen' },
-  print: { dpi: 220, quality: 0.82, label: 'Still good on paper' },
-  gentle: { dpi: 0, quality: 0.9, label: 'Barely touch the pictures' },
+  smallest: { dpi: 96, quality: 0.55 },
+  screen: { dpi: 130, quality: 0.68 },
+  print: { dpi: 220, quality: 0.82 },
+  gentle: { dpi: 0, quality: 0.9 },
 };
 
 /** Never shrink an image below this on its long side; past here it is a smudge
@@ -81,15 +81,15 @@ export async function compressDocument(bytes, settings, hooks = {}) {
   const { onStage, onProgress, signal } = hooks;
   const before = bytes.length;
 
-  onStage?.('Reading the document');
+  onStage?.('stage.reading');
   const doc = await PdfDocument.open(bytes);
   const inventory = takeInventory(doc);
 
-  onStage?.('Measuring how big each picture is drawn');
+  onStage?.('stage.measuring');
   const placements = await measurePlacements(doc);
   stop(signal);
 
-  onStage?.('Recompressing the pictures');
+  onStage?.('stage.images');
   const images = findImages(doc);
   const reports = [];
 
@@ -108,17 +108,17 @@ export async function compressDocument(bytes, settings, hooks = {}) {
 
   let metadataRemoved = 0;
   if (settings.stripMeta) {
-    onStage?.('Taking out what the file remembers about where it came from');
+    onStage?.('stage.metadata');
     metadataRemoved = stripMetadata(doc);
   }
 
-  onStage?.('Writing the document');
+  onStage?.('stage.writing');
   const blob = await writeDocument(doc, {
     signal,
     onProgress: (done, total) => onProgress?.(done, total),
   });
 
-  onStage?.('Reading it back to check');
+  onStage?.('stage.checking');
   const check = await verify(blob, inventory.pages);
 
   return {
@@ -198,14 +198,14 @@ async function handleImage(doc, entry, placement, settings) {
     });
 
     if (!made) {
-      report.note = 'this browser would not re-encode it';
+      report.note = 'kept.noencoder';
       return report;
     }
 
     // The whole rule, in one line: a re-encode that did not win is discarded
     // and the original bytes stay in the document.
     if (made.bytes.length >= entry.bytes) {
-      report.note = 'already smaller than anything this could make of it';
+      report.note = 'kept.alreadysmall';
       return report;
     }
 
@@ -239,27 +239,24 @@ async function verify(blob, expectedPages) {
     if (pages !== expectedPages) {
       return {
         ok: false,
-        text: `the rewritten file came back with ${pages} page${pages === 1 ? '' : 's'} `
-          + `instead of ${expectedPages}`,
+        text: { key: 'check.pages', values: { pages, expected: expectedPages } },
       };
     }
     if (reopened.repaired) {
-      return { ok: false, text: 'the rewritten file did not read back cleanly' };
+      return { ok: false, text: { key: 'check.unclean' } };
     }
     return {
       ok: true,
-      text: `opened again from memory: ${pages} page${pages === 1 ? '' : 's'}, `
-        + 'the same as the original.',
+      text: { key: pages === 1 ? 'check.ok.one' : 'check.ok.many', values: { pages } },
     };
   } catch (error) {
-    return { ok: false, text: `the rewritten file would not reopen (${error.message})` };
+    return { ok: false, text: { key: 'check.reopen', values: { detail: error.message } } };
   }
 }
 
 /** What the settings add up to, as a sentence for under the controls. */
 export function describeSettings(settings) {
-  const quality = `JPEG quality ${Math.round(settings.quality * 100)}`;
-  if (!settings.dpi) return `Pictures are re-encoded at ${quality} and kept at their full size.`;
-  return `Pictures are reduced to at most ${settings.dpi} pixels per inch of the space `
-    + `they are drawn in, then encoded at ${quality}.`;
+  const quality = Math.round(settings.quality * 100);
+  if (!settings.dpi) return { key: 'settings.fullsize', values: { quality } };
+  return { key: 'settings.downsampled', values: { quality, dpi: settings.dpi } };
 }
