@@ -9,32 +9,56 @@ postings and livestreams, and a tool page submitted there is discarded - so
 Google is still reached the slow way, through the sitemap, and nothing here
 changes that.
 
-The only real question is which URLs to send, and this repository already
-answers it. A byte diff of the deployed tree is the obvious idea and it is
-wrong: the footer lists every tool, so shipping one rewrites all six hundred
-pages, and a change to the frame rewrites them without moving a word anybody
-reads. What does track real change is `lastmod` in sitemap.xml - one date per
-page, written by hand, moved only when that page's wording moves, for the
-reasons set out in templates/sitemap.xml. So this compares the sitemap about
-to be deployed against the one already deployed, and sends the entries that
-are new or whose date moved. A frame change sends nothing, which is correct.
+The only real question is which URLs to send. A byte diff of the deployed tree
+is the obvious idea and it is wrong: the footer lists every tool and the frame
+wraps every page, so a change to either rewrites all twelve hundred without
+moving a word anybody reads - #221 changed one CSS property and rewrote 468.
+
+This used to answer that with `lastmod` from sitemap.xml: one date per page,
+written by hand, moved only when that page's wording moved. The reasoning was
+sound and the signal was not, because a date cannot express two changes on one
+day. On 27 August thirty-seven deploys went out; sixteen of them changed words
+a visitor reads and announced nothing, because the page's `lastmod` already
+said 2026-08-27 and there was no value left to bump it to. That is not an
+author forgetting - the rule was unfollowable, and it failed silently, which
+is the worst way for a signal to fail.
+
+So the comparison is now of the thing itself: the bytes inside <main>, which is
+where a page's own content lives and where the frame does not reach. The nav,
+the header, the footer and the language switcher are all outside it, so the
+whole class of false positives that made a byte diff useless is excluded by
+construction rather than by discipline. `lastmod` stays exactly as it was and
+goes on doing its own job in the sitemap; nothing here reads it any more.
+
+The set of URLs still comes from the sitemap, because that is what already
+knows which pages are indexable - the roadmap is deliberately absent, and a
+language that has not translated a page does not list it.
 
 Sending more than that is not free. Pushing URLs that did not change is how a
 host stops being trusted with the protocol, and that trust is the only lever
 the site has here.
 
-Two sitemaps in, the list of URLs out:
+Two runs, because the deployed tree stops existing the moment it is replaced.
+Before the publish, take its fingerprints:
 
-    python indexnow.py --old deployed/sitemap.xml --new _site/sitemap.xml
+    python indexnow.py --tree .publish --sitemap .publish/sitemap.xml \
+        --write-hashes deployed-hashes.json
 
-Add --submit to actually send them. The key is deliberately not a secret: it
-is served at the site root, because being able to fetch it there is how the
-protocol proves the sender owns the host.
+After it, compare the new tree against them:
+
+    python indexnow.py --tree _site --sitemap _site/sitemap.xml \
+        --old-hashes deployed-hashes.json --submit
+
+Add --submit to actually send them; without it the list is only printed. The
+key is deliberately not a secret: it is served at the site root, because being
+able to fetch it there is how the protocol proves the sender owns the host.
 """
 
 import argparse
+import hashlib
 import json
 import pathlib
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -80,8 +104,70 @@ def read_sitemap(path):
     return pages
 
 
+# A comment, and the page's own content within what is left.
+#
+# Stripping the comments first is not tidiness. templates/tool.html explains
+# itself in a comment that contains the characters "<main>", and on an
+# unminified build a reader that did not strip it would start its match there -
+# swallowing the header, the crumbs and the pledge banner into what it calls
+# the page's content, which is the entire class of false positive this exists
+# to avoid. The deployed pages are minified and carry no comments at all, so
+# the bug would never have shown up in production; it would have shown up as a
+# deploy that submitted twelve hundred URLs the first time somebody turned
+# minifying off. Excluding comments is also right on its own terms: nobody
+# reads them, so a change to one is not a change worth announcing.
+COMMENT = re.compile(rb'<!--.*?-->', re.S)
+MAIN = re.compile(rb'<main[\s/>].*?</main>', re.S)
+
+
+def content_of(path):
+    """The bytes inside <main>, or an error naming the page that has none.
+
+    Refusing rather than falling back to the whole file is deliberate. A
+    fallback would quietly restore the byte diff this script exists to avoid -
+    one page hashing its frame is one page submitted on every unrelated deploy
+    forever, and nothing would ever say so.
+    """
+    html = COMMENT.sub(b'', pathlib.Path(path).read_bytes())
+    found = MAIN.search(html)
+    if not found:
+        raise ValueError(f'{path} has no <main> to compare')
+    return found.group(0)
+
+
+def page_path(tree, url):
+    """Where a sitemap loc lands in a built tree.
+
+    The sitemap carries translated slugs as the characters themselves, and the
+    build writes directories under exactly those names, so the path needs no
+    decoding - only the percent-encoding in as_uri() below happens, and it
+    happens later and to a copy.
+    """
+    path = urlsplit(url).path.strip('/')
+    if not path:
+        return pathlib.Path(tree, 'index.html')
+    return pathlib.Path(tree, path, 'index.html')
+
+
+def hashes(tree, sitemap):
+    """{url: digest of its <main>} for every page the sitemap lists.
+
+    A URL the sitemap names and the tree does not hold is a build that
+    disagrees with itself, so it is raised rather than skipped: silently
+    dropping the page would mean never announcing it again.
+    """
+    out = {}
+    for url in read_sitemap(sitemap):
+        path = page_path(tree, url)
+        if not path.is_file():
+            raise ValueError(
+                f'{url} is in the sitemap but {path} is not there')
+        out[url] = hashlib.sha256(content_of(path)).hexdigest()
+    return out
+
+
 def changed(old, new):
-    """The URLs worth submitting: the new ones, and the ones whose date moved.
+    """The URLs worth submitting: new pages, and ones whose <main> moved.
 
     A URL that has left the sitemap is not returned. IndexNow does accept a
     removed page - it gets fetched, found to be gone, and dropped - but a tool
@@ -90,8 +176,8 @@ def changed(old, new):
     do not resolve is also a quick way to spend the host's standing with the
     protocol.
     """
-    return [url for url, lastmod in new.items()
-            if url not in old or old[url] != lastmod]
+    return [url for url, digest in new.items()
+            if url not in old or old[url] != digest]
 
 
 def host_of(urls):
@@ -166,25 +252,42 @@ def main(argv=None):
             stream.reconfigure(encoding='utf-8')
 
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument('--new', required=True,
-                        help='the sitemap about to be deployed')
-    parser.add_argument('--old',
-                        help='the sitemap already deployed; leaving it out, '
-                             'or naming a file that is not there, means there '
-                             'is no baseline and nothing is sent')
+    parser.add_argument('--tree', required=True,
+                        help='the built site the sitemap describes')
+    parser.add_argument('--sitemap',
+                        help='its sitemap; defaults to sitemap.xml inside '
+                             '--tree')
+    parser.add_argument('--old-hashes',
+                        help='fingerprints of the tree already deployed, from '
+                             'an earlier --write-hashes; leaving it out, or '
+                             'naming a file that is not there, means there is '
+                             'no baseline and nothing is sent')
+    parser.add_argument('--write-hashes',
+                        help="write this tree's fingerprints here and stop. "
+                             'Run before the deploy replaces the tree, which '
+                             'is the last moment it can be measured')
     parser.add_argument('--all', action='store_true',
-                        help='every URL in --new, whatever --old says; for a '
-                             'deliberate resubmission, not for a deploy')
+                        help='every URL in the sitemap, whatever the baseline '
+                             'says; for a deliberate resubmission, not for a '
+                             'deploy')
     parser.add_argument('--submit', action='store_true',
                         help='send them. Without it the list is only printed')
     parser.add_argument('--out', help='also write the list to this file')
     args = parser.parse_args(argv)
 
-    new = read_sitemap(args.new)
+    sitemap = args.sitemap or str(pathlib.Path(args.tree, 'sitemap.xml'))
+    new = hashes(args.tree, sitemap)
+
+    if args.write_hashes:
+        pathlib.Path(args.write_hashes).write_bytes(
+            json.dumps(new, ensure_ascii=False, indent=1).encode('utf-8'))
+        return 0
+
     if args.all:
         urls = list(new)
-    elif args.old and pathlib.Path(args.old).exists():
-        urls = changed(read_sitemap(args.old), new)
+    elif args.old_hashes and pathlib.Path(args.old_hashes).exists():
+        old = json.loads(pathlib.Path(args.old_hashes).read_bytes())
+        urls = changed(old, new)
     else:
         # No baseline: the first run after this was added, or a dist branch
         # being created from scratch. Submitting the whole site is precisely
@@ -192,7 +295,7 @@ def main(argv=None):
         # nothing the sitemap does not already tell them - so send nothing and
         # let the next deploy have something to compare against. --all is
         # there for when somebody really does mean the whole site.
-        print('no previous sitemap to compare against; nothing to submit',
+        print('no fingerprints to compare against; nothing to submit',
               file=sys.stderr)
         urls = []
 

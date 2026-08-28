@@ -262,12 +262,14 @@ jobs:
             git -C .publish checkout --orphan dist
           fi
 
-          # The sitemap as it is deployed right now, saved before the line
-          # below deletes it. It is the baseline the IndexNow step diffs
-          # against to work out which pages actually changed, and this is the
-          # last moment it exists.
+          # A fingerprint of every deployed page's <main>, taken before
+          # the line below deletes the tree. It is the baseline the
+          # IndexNow step diffs against to work out which pages actually
+          # changed, and this is the last moment the deployed tree exists
+          # to be measured.
           if [ -f .publish/sitemap.xml ]; then
-            cp .publish/sitemap.xml "$RUNNER_TEMP/deployed-sitemap.xml"
+            python indexnow.py --tree .publish \
+              --write-hashes "$RUNNER_TEMP/deployed-hashes.json"
           fi
 
           # Replace the tree wholesale rather than copying over it: a page that
@@ -400,8 +402,8 @@ jobs:
 
           status=0
           python indexnow.py \
-            --old "$RUNNER_TEMP/deployed-sitemap.xml" \
-            --new _site/sitemap.xml \
+            --tree _site \
+            --old-hashes "$RUNNER_TEMP/deployed-hashes.json" \
             --out "$RUNNER_TEMP/submitted.txt" \
             --submit || status=$?
 
