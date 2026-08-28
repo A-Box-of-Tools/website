@@ -364,19 +364,17 @@ el.inspectSelect.addEventListener('change', () => {
 
 function renderFindings(item) {
   el.findingsList.replaceChildren();
-  const findings = buildFindings(item);
+  const findings = buildFindings(item, phrase);
 
   if (!findings.length) {
     const li = document.createElement('li');
     li.className = 'finding finding-clean';
     const title = document.createElement('p');
     title.className = 'finding-title';
-    title.textContent = 'Nothing in this file gives anything away';
+    title.textContent = phrase('find.clean.title');
     const detail = document.createElement('p');
     detail.className = 'finding-detail';
-    detail.textContent = item.dirty
-      ? 'Everything that did has been removed. Save the photo to write it out.'
-      : 'No location, no timestamps, no camera, no names. Either it never had any, or something has already stripped it.';
+    detail.textContent = phrase(item.dirty ? 'find.clean.cleared' : 'find.clean.never');
     li.append(title, detail);
     el.findingsList.appendChild(li);
     return;

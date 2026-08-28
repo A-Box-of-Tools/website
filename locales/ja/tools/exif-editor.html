@@ -143,6 +143,47 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">このファイルから漏れるものはありません</span>
+    <span data-phrase="find.clean.cleared">漏れていたものはすべて取り除きました。写真を保存すれば、その形で書き出します。</span>
+    <span data-phrase="find.clean.never">場所も、日時も、カメラも、名前もありません。もともとなかったか、何かがすでに取り除いたかのどちらかです。</span>
+    <span data-phrase="find.exifempty.title">中身のないEXIFブロック</span>
+    <span data-phrase="find.exifempty.detail">EXIFが{size}。きれいに読めますが、タグは1つも入っていません。害はなく、ほかのものと一緒に取り除かれます。</span>
+    <span data-phrase="find.exifbad.title">誰にも読めないEXIFブロック</span>
+    <span data-phrase="find.exifbad.detail">ここにEXIFがあり、読めませんでした。{reason} 以下はファイルの残りから読み取れた分です。ですからこのブロックは中身の分からないものとして扱ってください。それは残す理由ではなく、取り除く理由です。</span>
+    <span data-phrase="find.gps.title">写真が撮られた場所</span>
+    <span data-phrase="find.gps.detail">{position}。建物を名指しできるほどの精度で、どこに上げてもファイルについて回ります。</span>
+    <span data-phrase="find.gps.detailalt">{position}、{altitude}。建物を名指しできるほどの精度で、どこに上げてもファイルについて回ります。</span>
+    <span data-phrase="find.gpspart.title">位置のタグはあるが、座標がそろっていない</span>
+    <span data-phrase="find.gpspart.one">GPSタグが1つありますが、使える緯度と経度はありません。それでも進行方向や高度、GPSの時刻はこの中にありえます。</span>
+    <span data-phrase="find.gpspart.many">GPSタグが{count}個ありますが、使える緯度と経度はありません。それでも進行方向や高度、GPSの時刻はこの中にありえます。</span>
+    <span data-phrase="find.taken.title">いつ撮られたか</span>
+    <span data-phrase="find.taken.detail">{when}、秒まで。場所と合わされば、ある人がある瞬間にどこにいたかになります。</span>
+    <span data-phrase="find.device.title">どの機械から出てきたか</span>
+    <span data-phrase="find.device.detail">{device}。それだけなら害はありませんが、上げる写真がどれも同じものを抱えていると、身元を示す印になります。</span>
+    <span data-phrase="find.identity.title">あなたや機材を名指しするもの</span>
+    <span data-phrase="find.identity.detail">{found}。シリアル番号は、その個体から出た写真をすべて結びつけます。誰が上げたものでも、どこに上げたものでも同じです。</span>
+    <span data-phrase="find.id.cameraserial">カメラのシリアル番号</span>
+    <span data-phrase="find.id.lensserial">レンズのシリアル番号</span>
+    <span data-phrase="find.id.owner">カメラの所有者</span>
+    <span data-phrase="find.id.uniqueid">画像固有ID</span>
+    <span data-phrase="find.id.artist">撮影者</span>
+    <span data-phrase="find.id.author">作成者</span>
+    <span data-phrase="find.id.copyright">著作権表示</span>
+    <span data-phrase="find.software.title">何が手を加えたか</span>
+    <span data-phrase="find.software.detail">{software}。多くはスマホのファームウェアの版で、機種だけを公表するよりも絞り込まれた情報です。</span>
+    <span data-phrase="find.makernote.title">メーカーノート</span>
+    <span data-phrase="find.makernote.detail">メーカー独自の非公開データが{size}。仕様は公開されておらず、機種によって中身が違い、シリアル番号やピント位置、シャッター回数が潜んでいがちなところです。</span>
+    <span data-phrase="find.thumbnail.title">写真のもう1枚のコピー</span>
+    <span data-phrase="find.thumbnail.detail">小さなJPEGのプレビューが入った{size}。カメラが書き出したあとに写真を切り抜いた場合、ソフトによってはサムネイルが切り抜く前の画のままになります。</span>
+    <span data-phrase="find.xmp.title">XMPパケット</span>
+    <span data-phrase="find.xmp.detail">XMLが{size}。たいていはカメラと日時を繰り返し、そこに編集の履歴を足します。どのソフトか、どの版か、そしてファイルを保存したすべての回です。</span>
+    <span data-phrase="find.iptc.title">IPTCブロック</span>
+    <span data-phrase="find.iptc.detail">写真部が埋める項目が{size}。クレジット、説明文、都市、提供元です。ストックフォトや報道の現場から来たものなら、誰かの名前が入っている見込みが高いです。</span>
+    <span data-phrase="find.comment.title">コメント</span>
+    <span data-phrase="find.comment.detail">「{comment}」</span>
+    <span data-phrase="find.text.title">テキスト：{keyword}</span>
+    <span data-phrase="find.unknown.title">この道具に読めないブロック</span>
+    <span data-phrase="find.unknown.detail">{blocks}。読めないことと空であることは違うので、これらもほかのものと一緒に取り除かれます。</span>
     <span data-phrase="read.notjpeg">これはJPEGの始まり方をしていません。</span>
     <span data-phrase="read.jpeglost">セグメントの並びが途切れました。ファイルが壊れているようです。</span>
     <span data-phrase="read.jpegoverrun">あるセグメントが、ファイルの終わりを越える長さを名乗っています。</span>

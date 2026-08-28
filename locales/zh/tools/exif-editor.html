@@ -147,6 +147,47 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">这个文件里没有能交代出去的东西</span>
+    <span data-phrase="find.clean.cleared">会交代出去的都已经清掉了。保存照片，就把这个样子写进文件。</span>
+    <span data-phrase="find.clean.never">没有位置，没有时间，没有相机，没有名字。要么本来就没有，要么已经被什么清干净了。</span>
+    <span data-phrase="find.exifempty.title">一块什么都没有的 EXIF</span>
+    <span data-phrase="find.exifempty.detail">{size} 的 EXIF，读得干干净净，一个标签都没有。没什么害处，跟别的一起清掉。</span>
+    <span data-phrase="find.exifbad.title">一块谁也读不了的 EXIF</span>
+    <span data-phrase="find.exifbad.detail">这儿有 EXIF，而且读不出来：{reason} 下面这些是文件其余部分能读出来的，所以这一块就当成来路不明的东西看待——这是该删掉它的理由，不是留着它的理由。</span>
+    <span data-phrase="find.gps.title">照片是在哪儿拍的</span>
+    <span data-phrase="find.gps.detail">{position}。这个精度足够指到一栋楼，而且你发到哪儿，它就跟着文件到哪儿。</span>
+    <span data-phrase="find.gps.detailalt">{position}，{altitude}。这个精度足够指到一栋楼，而且你发到哪儿，它就跟着文件到哪儿。</span>
+    <span data-phrase="find.gpspart.title">有位置标签，但凑不出完整坐标</span>
+    <span data-phrase="find.gpspart.one">这儿有 1 个 GPS 标签，但没有能用的经纬度。行进方向、海拔和 GPS 时钟仍然可能在里面。</span>
+    <span data-phrase="find.gpspart.many">这儿有 {count} 个 GPS 标签，但没有能用的经纬度。行进方向、海拔和 GPS 时钟仍然可能在里面。</span>
+    <span data-phrase="find.taken.title">什么时候拍的</span>
+    <span data-phrase="find.taken.detail">{when}，精确到秒。跟位置凑到一起，就是某个人在某一刻出现在某个地方。</span>
+    <span data-phrase="find.device.title">从哪台机器出来的</span>
+    <span data-phrase="find.device.detail">{device}。单看没什么，可你发出去的每张照片都带着同一个，它就成了认人的记号。</span>
+    <span data-phrase="find.identity.title">能点出你或者你器材的东西</span>
+    <span data-phrase="find.identity.detail">{found}。一个序列号能把那台机身拍的所有照片串到一块儿，不管是谁发的，也不管发到哪儿。</span>
+    <span data-phrase="find.id.cameraserial">相机序列号</span>
+    <span data-phrase="find.id.lensserial">镜头序列号</span>
+    <span data-phrase="find.id.owner">相机所有者</span>
+    <span data-phrase="find.id.uniqueid">图像唯一 ID</span>
+    <span data-phrase="find.id.artist">拍摄者</span>
+    <span data-phrase="find.id.author">作者</span>
+    <span data-phrase="find.id.copyright">版权</span>
+    <span data-phrase="find.software.title">是什么改过它</span>
+    <span data-phrase="find.software.detail">{software}。这多半是手机的固件版本，公开出去比只说个型号还要窄。</span>
+    <span data-phrase="find.makernote.title">厂商备注</span>
+    <span data-phrase="find.makernote.detail">{size} 厂商自己的私有数据。没有公开文档，各型号都不一样，序列号、对焦点和快门数最爱藏在这儿。</span>
+    <span data-phrase="find.thumbnail.title">画面的第二份副本</span>
+    <span data-phrase="find.thumbnail.detail">{size}，里面是一张小的 JPEG 预览图。要是相机写完之后照片又被裁过，有些编辑软件会让缩略图还显示没裁之前的画面。</span>
+    <span data-phrase="find.xmp.title">一个 XMP 包</span>
+    <span data-phrase="find.xmp.detail">{size} 的 XML。通常把相机和时间又说了一遍，还加上编辑历史：用的哪个软件、哪个版本，以及每一次保存。</span>
+    <span data-phrase="find.iptc.title">一块 IPTC</span>
+    <span data-phrase="find.iptc.detail">{size}，都是图片编辑部要填的字段：署名、图说、城市、来源。要是这张图出自图库或者新闻编辑室，里头多半有个人的名字。</span>
+    <span data-phrase="find.comment.title">一条注释</span>
+    <span data-phrase="find.comment.detail">「{comment}」</span>
+    <span data-phrase="find.text.title">文本：{keyword}</span>
+    <span data-phrase="find.unknown.title">这个工具读不了的块</span>
+    <span data-phrase="find.unknown.detail">{blocks}。读不了不等于是空的，所以这些也跟别的一起清掉。</span>
     <span data-phrase="read.notjpeg">这个开头不像 JPEG。</span>
     <span data-phrase="read.jpeglost">分段的结构断了，文件看着是坏的。</span>
     <span data-phrase="read.jpegoverrun">有一段声称的长度已经越过了文件末尾。</span>

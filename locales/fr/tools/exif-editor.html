@@ -155,6 +155,67 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">Rien dans ce fichier ne vous trahit</span>
+    <span data-phrase="find.clean.cleared">Tout ce qui le faisait a été retiré. Enregistrez la photo pour l&rsquo;écrire.</span>
+    <span data-phrase="find.clean.never">Pas de lieu, pas d&rsquo;horodatage, pas d&rsquo;appareil, pas de noms. Ou bien il
+      n&rsquo;y en a jamais eu, ou bien quelque chose les a déjà enlevés.</span>
+    <span data-phrase="find.exifempty.title">Un bloc EXIF sans rien dedans</span>
+    <span data-phrase="find.exifempty.detail">{size} d&rsquo;EXIF qui se lit proprement et ne contient aucune étiquette.
+      Inoffensif, et retiré avec tout le reste.</span>
+    <span data-phrase="find.exifbad.title">Un bloc EXIF que personne ne peut lire</span>
+    <span data-phrase="find.exifbad.detail">Il y a de l&rsquo;EXIF ici et il n&rsquo;a pas pu être lu&nbsp;: {reason} Tout ce
+      qui suit est ce qui a pu être lu du reste du fichier&nbsp;; tenez donc ce bloc-ci
+      pour une inconnue &mdash; ce qui est une raison de le retirer, pas de le garder.</span>
+    <span data-phrase="find.gps.title">Où la photo a été prise</span>
+    <span data-phrase="find.gps.detail">{position}. C&rsquo;est assez précis pour nommer un bâtiment, et cela voyage avec le
+      fichier partout où vous le publiez.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. C&rsquo;est assez précis pour nommer un bâtiment, et cela
+      voyage avec le fichier partout où vous le publiez.</span>
+    <span data-phrase="find.gpspart.title">Des étiquettes de lieu, sans position complète</span>
+    <span data-phrase="find.gpspart.one">Une étiquette GPS est là, mais sans latitude ni longitude exploitables. Le cap,
+      l&rsquo;altitude et l&rsquo;horloge GPS peuvent tout de même s&rsquo;y trouver.</span>
+    <span data-phrase="find.gpspart.many">{count} étiquettes GPS sont là, mais sans latitude ni longitude exploitables. Le
+      cap, l&rsquo;altitude et l&rsquo;horloge GPS peuvent tout de même s&rsquo;y trouver.</span>
+    <span data-phrase="find.taken.title">Quand elle a été prise</span>
+    <span data-phrase="find.taken.detail">{when}, à la seconde près. Avec un lieu, cela place quelqu&rsquo;un quelque part à
+      un moment précis.</span>
+    <span data-phrase="find.device.title">L&rsquo;appareil d&rsquo;où elle vient</span>
+    <span data-phrase="find.device.detail">{device}. Anodin en soi&nbsp;; cela devient un identifiant quand chaque photo que
+      vous publiez porte le même.</span>
+    <span data-phrase="find.identity.title">Quelque chose qui vous nomme, vous ou votre matériel</span>
+    <span data-phrase="find.identity.detail">{found}. Un numéro de série relie entre elles toutes les photos sorties de ce
+      boîtier, qui que ce soit qui les ait publiées et où que ce soit.</span>
+    <span data-phrase="find.id.cameraserial">Numéro de série du boîtier</span>
+    <span data-phrase="find.id.lensserial">Numéro de série de l&rsquo;objectif</span>
+    <span data-phrase="find.id.owner">Propriétaire de l&rsquo;appareil</span>
+    <span data-phrase="find.id.uniqueid">Identifiant unique de l&rsquo;image</span>
+    <span data-phrase="find.id.artist">Auteur de la prise de vue</span>
+    <span data-phrase="find.id.author">Auteur</span>
+    <span data-phrase="find.id.copyright">Droits d&rsquo;auteur</span>
+    <span data-phrase="find.software.title">Ce qui l&rsquo;a modifiée</span>
+    <span data-phrase="find.software.detail">{software}. C&rsquo;est souvent la version du micrologiciel du téléphone, ce qui est
+      plus étroit à publier que le modèle seul.</span>
+    <span data-phrase="find.makernote.title">La note du fabricant</span>
+    <span data-phrase="find.makernote.detail">{size} de données privées propres au fabricant. Elle n&rsquo;est pas documentée,
+      elle change d&rsquo;un modèle à l&rsquo;autre, et c&rsquo;est là que se cachent
+      volontiers numéros de série, points de mise au point et compteurs de déclenchements.</span>
+    <span data-phrase="find.thumbnail.title">Une deuxième copie de l&rsquo;image</span>
+    <span data-phrase="find.thumbnail.detail">{size} contenant un petit aperçu JPEG. Si la photo a été recadrée après la prise de
+      vue, certains logiciels laissent la vignette montrer le cadrage d&rsquo;origine.</span>
+    <span data-phrase="find.xmp.title">Un paquet XMP</span>
+    <span data-phrase="find.xmp.detail">{size} de XML. Il répète en général l&rsquo;appareil et les horodatages, et y ajoute
+      l&rsquo;historique des retouches&nbsp;: quel logiciel, quelle version, et chaque
+      enregistrement du fichier.</span>
+    <span data-phrase="find.iptc.title">Un bloc IPTC</span>
+    <span data-phrase="find.iptc.detail">{size} des champs que remplit un service photo &mdash; signature, légende, ville,
+      crédit. Si cela vient d&rsquo;une banque d&rsquo;images ou d&rsquo;une rédaction, il
+      y a probablement le nom de quelqu&rsquo;un dedans.</span>
+    <span data-phrase="find.comment.title">Un commentaire</span>
+    <span data-phrase="find.comment.detail">&laquo;&nbsp;{comment}&nbsp;&raquo;</span>
+    <span data-phrase="find.text.title">Texte&nbsp;: {keyword}</span>
+    <span data-phrase="find.unknown.title">Des blocs que cet outil ne sait pas lire</span>
+    <span data-phrase="find.unknown.detail">{blocks}. Illisible n&rsquo;est pas la même chose que vide&nbsp;: ceux-là sont
+      retirés avec tout le reste.</span>
     <span data-phrase="read.notjpeg">Cela ne commence pas comme un JPEG.</span>
     <span data-phrase="read.jpeglost">La structure des segments est perdue &mdash; le fichier semble abîmé.</span>
     <span data-phrase="read.jpegoverrun">Un segment annonce une longueur qui dépasse la fin du fichier.</span>

@@ -164,8 +164,8 @@ test('outputType: the extension and type each format is saved as', () => {
 /* ================================================================ report */
 
 test('bytes: sizes in the units a person would say them in', () => {
-  assert.equal(sizeText(0), '0 bytes');
-  assert.equal(sizeText(1023), '1023 bytes');
+  assert.equal(sizeText(0), '0 B');
+  assert.equal(sizeText(1023), '1023 B');
   assert.equal(sizeText(1024), '1.0 KB');
   assert.equal(sizeText(10240), '10 KB');
   assert.equal(sizeText(1024 * 1024), '1.0 MB');
@@ -226,6 +226,11 @@ function itemWith({ groups = {}, meta = {}, ...rest } = {}) {
   };
 }
 
+// buildFindings takes a resolver. This one answers with the key, which is what
+// phrase() does when the page has no such phrase - so a finding's title in
+// these tests is the key that names it.
+const key = (name) => name;
+
 test('findings: a location is the headline finding', () => {
   const item = itemWith({
     meta: { exif: ascii('block') },
@@ -236,31 +241,31 @@ test('findings: a location is the headline finding', () => {
       ],
     },
   });
-  const found = buildFindings(item);
+  const found = buildFindings(item, key);
   assert.equal(found[0].level, 'high');
-  assert.match(found[0].title, /Where the photo was taken/);
+  assert.equal(found[0].title, 'find.gps.title');
 });
 
 test('findings: EXIF that will not parse is a reason to remove it', () => {
   const item = itemWith({
     exifUnreadable: true,
-    exifError: 'The TIFF magic number is wrong.',
+    exifError: 'read.exifmagic',
     meta: { exif: ascii('block') },
   });
-  const found = buildFindings(item);
-  assert.ok(found.some((f) => f.level === 'high' && /nobody can read/.test(f.title)));
+  const found = buildFindings(item, key);
+  assert.ok(found.some((f) => f.level === 'high' && f.title === 'find.exifbad.title'));
 });
 
 test('findings: an EXIF block that parses to nothing is only worth a note', () => {
   const item = itemWith({ meta: { exif: ascii('block') } });
-  const found = buildFindings(item);
+  const found = buildFindings(item, key);
   assert.equal(found.length, 1);
   assert.equal(found[0].level, 'low');
-  assert.match(found[0].title, /nothing in it/);
+  assert.equal(found[0].title, 'find.exifempty.title');
 });
 
 test('findings: a clean file has none', () => {
-  assert.deepEqual(buildFindings(itemWith()), []);
+  assert.deepEqual(buildFindings(itemWith(), key), []);
 });
 
 test('countTags: across every directory', () => {

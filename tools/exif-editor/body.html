@@ -152,6 +152,65 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">Nothing in this file gives anything away</span>
+    <span data-phrase="find.clean.cleared">Everything that did has been removed. Save the photo to write it out.</span>
+    <span data-phrase="find.clean.never">No location, no timestamps, no camera, no names. Either it never had any, or
+      something has already stripped it.</span>
+    <span data-phrase="find.exifempty.title">An EXIF block with nothing in it</span>
+    <span data-phrase="find.exifempty.detail">{size} of EXIF that parses cleanly and holds no tags. Harmless, and removed along
+      with everything else.</span>
+    <span data-phrase="find.exifbad.title">An EXIF block nobody can read</span>
+    <span data-phrase="find.exifbad.detail">There is EXIF here and it would not parse: {reason} Everything below is what could
+      be read of the rest of the file, so treat this one as an unknown quantity &mdash;
+      which is a reason to remove it, not to leave it.</span>
+    <span data-phrase="find.gps.title">Where the photo was taken</span>
+    <span data-phrase="find.gps.detail">{position}. That is precise enough to name a building, and it travels with the file
+      into anything you post it to.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. That is precise enough to name a building, and it travels
+      with the file into anything you post it to.</span>
+    <span data-phrase="find.gpspart.title">Location tags, without a full position</span>
+    <span data-phrase="find.gpspart.one">One GPS tag is here but no usable latitude and longitude. Direction of travel,
+      altitude and the GPS clock can still be among them.</span>
+    <span data-phrase="find.gpspart.many">{count} GPS tags are here but no usable latitude and longitude. Direction of travel,
+      altitude and the GPS clock can still be among them.</span>
+    <span data-phrase="find.taken.title">When it was taken</span>
+    <span data-phrase="find.taken.detail">{when}, to the second. Combined with a location this places a person somewhere at a
+      particular moment.</span>
+    <span data-phrase="find.device.title">The device it came from</span>
+    <span data-phrase="find.device.detail">{device}. Harmless on its own; it becomes an identifier when every photo you post
+      carries the same one.</span>
+    <span data-phrase="find.identity.title">Something that names you or your kit</span>
+    <span data-phrase="find.identity.detail">{found}. A serial number ties every photo from that body together, whoever posted
+      them and wherever.</span>
+    <span data-phrase="find.id.cameraserial">Camera serial number</span>
+    <span data-phrase="find.id.lensserial">Lens serial number</span>
+    <span data-phrase="find.id.owner">Camera owner</span>
+    <span data-phrase="find.id.uniqueid">Image unique ID</span>
+    <span data-phrase="find.id.artist">Artist</span>
+    <span data-phrase="find.id.author">Author</span>
+    <span data-phrase="find.id.copyright">Copyright</span>
+    <span data-phrase="find.software.title">What edited it</span>
+    <span data-phrase="find.software.detail">{software}. This is often the phone&rsquo;s firmware version, which is a narrower
+      thing to publish than the model alone.</span>
+    <span data-phrase="find.makernote.title">The maker note</span>
+    <span data-phrase="find.makernote.detail">{size} of the manufacturer&rsquo;s own private data. It is undocumented, it varies
+      by model, and it is where serial numbers, focus points and shutter counts tend to
+      hide.</span>
+    <span data-phrase="find.thumbnail.title">A second copy of the picture</span>
+    <span data-phrase="find.thumbnail.detail">{size} holding a small JPEG preview. If the photo was cropped after the camera wrote
+      it, some editors leave the thumbnail showing the uncropped frame.</span>
+    <span data-phrase="find.xmp.title">An XMP packet</span>
+    <span data-phrase="find.xmp.detail">{size} of XML. It usually repeats the camera and the timestamps, and adds the edit
+      history: which program, which version, and every time the file was saved.</span>
+    <span data-phrase="find.iptc.title">An IPTC block</span>
+    <span data-phrase="find.iptc.detail">{size} of the fields a photo desk fills in &mdash; byline, caption, city, credit. If
+      this came from a stock library or a newsroom, someone&rsquo;s name is likely in it.</span>
+    <span data-phrase="find.comment.title">A comment</span>
+    <span data-phrase="find.comment.detail">&ldquo;{comment}&rdquo;</span>
+    <span data-phrase="find.text.title">Text: {keyword}</span>
+    <span data-phrase="find.unknown.title">Blocks this tool cannot read</span>
+    <span data-phrase="find.unknown.detail">{blocks}. Unreadable is not the same as empty, so these are removed along with
+      everything else.</span>
     <span data-phrase="read.notjpeg">This does not start like a JPEG.</span>
     <span data-phrase="read.jpeglost">Lost the segment structure &mdash; the file looks damaged.</span>
     <span data-phrase="read.jpegoverrun">A segment claims a length that runs off the end of the file.</span>

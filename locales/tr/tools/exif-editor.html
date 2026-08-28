@@ -161,6 +161,66 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">Bu dosyada sizi ele veren bir şey yok</span>
+    <span data-phrase="find.clean.cleared">Ele veren ne varsa kaldırıldı. Bunu dosyaya yazmak için fotoğrafı kaydedin.</span>
+    <span data-phrase="find.clean.never">Konum yok, zaman damgası yok, kamera yok, isim yok. Ya hiç olmadı ya da bir şey
+      bunları çoktan silmiş.</span>
+    <span data-phrase="find.exifempty.title">İçinde hiçbir şey olmayan bir EXIF bloğu</span>
+    <span data-phrase="find.exifempty.detail">{size} EXIF; temiz okunuyor ve içinde tek bir etiket yok. Zararsız, ve diğer her
+      şeyle birlikte kaldırılıyor.</span>
+    <span data-phrase="find.exifbad.title">Kimsenin okuyamadığı bir EXIF bloğu</span>
+    <span data-phrase="find.exifbad.detail">Burada EXIF var ve okunamadı: {reason} Aşağıdaki her şey, dosyanın geri kalanından
+      okunabilen kısım; dolayısıyla bu bloğu bilinmeyen bir büyüklük sayın &mdash; ki bu,
+      onu bırakmak için değil kaldırmak için bir sebeptir.</span>
+    <span data-phrase="find.gps.title">Fotoğrafın nerede çekildiği</span>
+    <span data-phrase="find.gps.detail">{position}. Bu, bir binayı adıyla söyleyecek kadar kesin ve dosyayı nereye
+      yüklerseniz oraya birlikte gidiyor.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. Bu, bir binayı adıyla söyleyecek kadar kesin ve dosyayı
+      nereye yüklerseniz oraya birlikte gidiyor.</span>
+    <span data-phrase="find.gpspart.title">Konum etiketleri, ama tam bir konum yok</span>
+    <span data-phrase="find.gpspart.one">Burada bir GPS etiketi var ama kullanılabilir bir enlem ve boylam yok. Gidiş yönü,
+      yükseklik ve GPS saati yine de bunların arasında olabilir.</span>
+    <span data-phrase="find.gpspart.many">Burada {count} GPS etiketi var ama kullanılabilir bir enlem ve boylam yok. Gidiş
+      yönü, yükseklik ve GPS saati yine de bunların arasında olabilir.</span>
+    <span data-phrase="find.taken.title">Ne zaman çekildiği</span>
+    <span data-phrase="find.taken.detail">{when}, saniyesine kadar. Bir konumla birlikte bu, bir kişiyi belirli bir anda
+      belirli bir yere koyar.</span>
+    <span data-phrase="find.device.title">Hangi cihazdan geldiği</span>
+    <span data-phrase="find.device.detail">{device}. Tek başına zararsız; paylaştığınız her fotoğraf aynısını taşıdığında bir
+      kimlik işaretine dönüşür.</span>
+    <span data-phrase="find.identity.title">Sizi ya da ekipmanınızı adıyla söyleyen bir şey</span>
+    <span data-phrase="find.identity.detail">{found}. Bir seri numarası, o gövdeden çıkan her fotoğrafı birbirine bağlar &mdash;
+      kim paylaşmış olursa olsun, nerede olursa olsun.</span>
+    <span data-phrase="find.id.cameraserial">Fotoğraf makinesinin seri numarası</span>
+    <span data-phrase="find.id.lensserial">Objektifin seri numarası</span>
+    <span data-phrase="find.id.owner">Makinenin sahibi</span>
+    <span data-phrase="find.id.uniqueid">Görüntünün benzersiz kimliği</span>
+    <span data-phrase="find.id.artist">Çeken kişi</span>
+    <span data-phrase="find.id.author">Yazar</span>
+    <span data-phrase="find.id.copyright">Telif hakkı</span>
+    <span data-phrase="find.software.title">Onu neyin düzenlediği</span>
+    <span data-phrase="find.software.detail">{software}. Bu çoğu zaman telefonun ürün yazılımı sürümüdür ve yayımlanması, modelin
+      tek başına yayımlanmasından daha dar bir bilgidir.</span>
+    <span data-phrase="find.makernote.title">Üretici notu</span>
+    <span data-phrase="find.makernote.detail">{size} üreticinin kendi özel verisi. Belgelenmemiştir, modelden modele değişir ve
+      seri numaralarının, odak noktalarının ve deklanşör sayaçlarının saklanmayı sevdiği
+      yer burasıdır.</span>
+    <span data-phrase="find.thumbnail.title">Resmin ikinci bir kopyası</span>
+    <span data-phrase="find.thumbnail.detail">{size}, içinde küçük bir JPEG önizleme. Fotoğraf, makine dosyayı yazdıktan sonra
+      kırpıldıysa bazı programlar küçük resimde hâlâ kırpılmamış kareyi gösterir.</span>
+    <span data-phrase="find.xmp.title">Bir XMP paketi</span>
+    <span data-phrase="find.xmp.detail">{size} XML. Çoğunlukla makineyi ve zaman damgalarını tekrarlar, üstüne de düzenleme
+      geçmişini ekler: hangi program, hangi sürüm ve dosyanın kaydedildiği her an.</span>
+    <span data-phrase="find.iptc.title">Bir IPTC bloğu</span>
+    <span data-phrase="find.iptc.detail">{size}, bir fotoğraf servisinin doldurduğu alanlar &mdash; imza, altyazı, şehir,
+      kaynak. Bu bir görsel bankasından ya da bir haber merkezinden geldiyse içinde büyük
+      ihtimalle birinin adı vardır.</span>
+    <span data-phrase="find.comment.title">Bir yorum</span>
+    <span data-phrase="find.comment.detail">&ldquo;{comment}&rdquo;</span>
+    <span data-phrase="find.text.title">Metin: {keyword}</span>
+    <span data-phrase="find.unknown.title">Bu aracın okuyamadığı bloklar</span>
+    <span data-phrase="find.unknown.detail">{blocks}. Okunamaz olmak boş olmakla aynı şey değil; bunlar da diğer her şeyle
+      birlikte kaldırılıyor.</span>
     <span data-phrase="read.notjpeg">Bu, bir JPEG gibi başlamıyor.</span>
     <span data-phrase="read.jpeglost">Segment yapısı kayboldu &mdash; dosya bozuk görünüyor.</span>
     <span data-phrase="read.jpegoverrun">Bir segment, dosyanın sonunu aşan bir uzunluk bildiriyor.</span>

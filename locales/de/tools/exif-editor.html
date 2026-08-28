@@ -156,6 +156,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="find.clean.title">Diese Datei verrät nichts</span>
+    <span data-phrase="find.clean.cleared">Alles, was etwas verriet, ist entfernt. Speichern Sie das Foto, um es
+      hinauszuschreiben.</span>
+    <span data-phrase="find.clean.never">Kein Ort, keine Zeitstempel, keine Kamera, keine Namen. Entweder gab es das nie,
+      oder etwas hat es schon entfernt.</span>
+    <span data-phrase="find.exifempty.title">Ein EXIF-Block ohne Inhalt</span>
+    <span data-phrase="find.exifempty.detail">{size} EXIF, das sauber liest und keine Tags enthält. Harmlos, und wird mit allem
+      anderen zusammen entfernt.</span>
+    <span data-phrase="find.exifbad.title">Ein EXIF-Block, den niemand lesen kann</span>
+    <span data-phrase="find.exifbad.detail">Hier ist EXIF, und es ließ sich nicht lesen: {reason} Alles Folgende ist das, was
+      vom Rest der Datei zu lesen war &mdash; nehmen Sie diesen Block also als unbekannte
+      Größe, und das ist ein Grund, ihn zu entfernen, nicht ihn zu behalten.</span>
+    <span data-phrase="find.gps.title">Wo das Foto aufgenommen wurde</span>
+    <span data-phrase="find.gps.detail">{position}. Das ist genau genug, um ein Gebäude zu benennen, und es reist mit der
+      Datei überall dorthin, wo Sie sie hochladen.</span>
+    <span data-phrase="find.gps.detailalt">{position}, {altitude}. Das ist genau genug, um ein Gebäude zu benennen, und es
+      reist mit der Datei überall dorthin, wo Sie sie hochladen.</span>
+    <span data-phrase="find.gpspart.title">Orts-Tags, ohne vollständige Position</span>
+    <span data-phrase="find.gpspart.one">Ein GPS-Tag ist hier, aber kein brauchbarer Längen- und Breitengrad. Fahrtrichtung,
+      Höhe und die GPS-Uhr können trotzdem darunter sein.</span>
+    <span data-phrase="find.gpspart.many">{count} GPS-Tags sind hier, aber kein brauchbarer Längen- und Breitengrad.
+      Fahrtrichtung, Höhe und die GPS-Uhr können trotzdem darunter sein.</span>
+    <span data-phrase="find.taken.title">Wann es aufgenommen wurde</span>
+    <span data-phrase="find.taken.detail">{when}, auf die Sekunde genau. Zusammen mit einem Ort setzt das eine Person zu einem
+      bestimmten Zeitpunkt an einen bestimmten Platz.</span>
+    <span data-phrase="find.device.title">Das Gerät, aus dem es kam</span>
+    <span data-phrase="find.device.detail">{device}. Für sich genommen harmlos; zum Erkennungsmerkmal wird es, wenn jedes Foto,
+      das Sie veröffentlichen, dasselbe trägt.</span>
+    <span data-phrase="find.identity.title">Etwas, das Sie oder Ihre Ausrüstung benennt</span>
+    <span data-phrase="find.identity.detail">{found}. Eine Seriennummer verbindet jedes Foto aus diesem Gehäuse miteinander, wer
+      immer es hochgeladen hat und wo immer.</span>
+    <span data-phrase="find.id.cameraserial">Seriennummer der Kamera</span>
+    <span data-phrase="find.id.lensserial">Seriennummer des Objektivs</span>
+    <span data-phrase="find.id.owner">Besitzer der Kamera</span>
+    <span data-phrase="find.id.uniqueid">Eindeutige Bild-ID</span>
+    <span data-phrase="find.id.artist">Urheber</span>
+    <span data-phrase="find.id.author">Autor</span>
+    <span data-phrase="find.id.copyright">Copyright</span>
+    <span data-phrase="find.software.title">Was es bearbeitet hat</span>
+    <span data-phrase="find.software.detail">{software}. Das ist oft die Firmware-Version des Telefons, und die ist enger gefasst
+      als das Modell allein.</span>
+    <span data-phrase="find.makernote.title">Die Herstellernotiz</span>
+    <span data-phrase="find.makernote.detail">{size} eigener, privater Daten des Herstellers. Sie ist nicht dokumentiert, sie
+      unterscheidet sich je nach Modell, und dort verstecken sich gern Seriennummern,
+      Fokuspunkte und Auslösezählungen.</span>
+    <span data-phrase="find.thumbnail.title">Eine zweite Kopie des Bildes</span>
+    <span data-phrase="find.thumbnail.detail">{size} mit einer kleinen JPEG-Vorschau. Wurde das Foto nach der Aufnahme
+      beschnitten, zeigen manche Programme im Vorschaubild weiterhin den unbeschnittenen
+      Ausschnitt.</span>
+    <span data-phrase="find.xmp.title">Ein XMP-Paket</span>
+    <span data-phrase="find.xmp.detail">{size} XML. Es wiederholt meist die Kamera und die Zeitstempel und fügt die
+      Bearbeitungsgeschichte hinzu: welches Programm, welche Version, und jedes Mal, wenn
+      die Datei gespeichert wurde.</span>
+    <span data-phrase="find.iptc.title">Ein IPTC-Block</span>
+    <span data-phrase="find.iptc.detail">{size} der Felder, die eine Bildredaktion ausfüllt &mdash; Bildnachweis,
+      Bildunterschrift, Ort, Quelle. Kam das aus einer Bildagentur oder einer Redaktion,
+      steht darin wahrscheinlich ein Name.</span>
+    <span data-phrase="find.comment.title">Ein Kommentar</span>
+    <span data-phrase="find.comment.detail">&bdquo;{comment}&ldquo;</span>
+    <span data-phrase="find.text.title">Text: {keyword}</span>
+    <span data-phrase="find.unknown.title">Blöcke, die dieses Werkzeug nicht lesen kann</span>
+    <span data-phrase="find.unknown.detail">{blocks}. Unlesbar ist nicht dasselbe wie leer, also werden auch diese mit allem
+      anderen zusammen entfernt.</span>
     <span data-phrase="read.notjpeg">Das fängt nicht an wie ein JPEG.</span>
     <span data-phrase="read.jpeglost">Die Segmentstruktur ist verloren &mdash; die Datei sieht beschädigt aus.</span>
     <span data-phrase="read.jpegoverrun">Ein Segment nennt eine Länge, die über das Dateiende hinausläuft.</span>
