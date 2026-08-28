@@ -48,9 +48,17 @@
   if (!box || !input || !empty) return;
 
   /* Diacritics off both sides, so "compresion" finds "Compresión" and a German
-     reader is not stopped by an umlaut they did not type. */
+     reader is not stopped by an umlaut they did not type.
+
+     Hyphens go the same way, for the same reason. The time-lapse tool is
+     called "Time-Lapse Maker" and nobody types it that way - they type
+     timelapse, which is what its own address says - and until this line that
+     search found nothing at all. A reader should not have to guess where a
+     name keeps its punctuation any more than where it keeps its accents. */
   function fold(text) {
-    return text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return text.toLowerCase().normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[-\u2010-\u2015\u2212]/g, '');
   }
 
   /* Every card, with the text it can be found by worked out once. Reading this
