@@ -80,9 +80,11 @@ test('the elements are written in the order given, with no padding between them'
 });
 
 test('an empty icon, and a type that is not four letters, are refused', () => {
-  assert.throws(() => writeIcns([]), /at least one image/);
-  assert.throws(() => writeIcns([{ type: 'ic7', data: filler(4, 0) }]), /four-letter/);
-  assert.throws(() => writeIcns([{ type: 'icon7', data: filler(4, 0) }]), /four-letter/);
+  assert.throws(() => writeIcns([]), /^Error: icns\.empty$/);
+  assert.throws(() => writeIcns([{ type: 'ic7', data: filler(4, 0) }]),
+    (error) => error.message === 'icns.type' && error.values.type === 'ic7');
+  assert.throws(() => writeIcns([{ type: 'icon7', data: filler(4, 0) }]),
+    /^Error: icns\.type$/);
 });
 
 /* ----------------------------------------------------- reading it back out */
@@ -99,20 +101,21 @@ test('a written file walks back to the elements that went into it', () => {
 });
 
 test('the reader refuses a file that is not one, rather than inventing elements', () => {
-  assert.throws(() => readIcnsElements(new Uint8Array(4)), /too short/);
+  assert.throws(() => readIcnsElements(new Uint8Array(4)), /^Error: icns\.short$/);
 
   const notIcns = writeIcns([{ type: 'ic07', data: filler(8, 0) }]);
   notIcns[0] = 0x69 + 1;
-  assert.throws(() => readIcnsElements(notIcns), /magic/);
+  assert.throws(() => readIcnsElements(notIcns), /^Error: icns\.magic$/);
 
   // A length that disagrees with the file is the failure this format is most
   // prone to, because every writer has to compute it rather than fill it in.
   const short = writeIcns([{ type: 'ic07', data: filler(8, 0) }]);
-  assert.throws(() => readIcnsElements(short.slice(0, short.length - 1)), /claims/);
+  assert.throws(() => readIcnsElements(short.slice(0, short.length - 1)),
+    /^Error: icns\.length$/);
 
   const lying = writeIcns([{ type: 'ic07', data: filler(8, 0) }]);
   view(lying).setUint32(HEADER + 4, 0xffff, false);
-  assert.throws(() => readIcnsElements(lying), /length the file cannot hold/);
+  assert.throws(() => readIcnsElements(lying), /^Error: icns\.elementlength$/);
 });
 
 /* -------------------------------------------------------- Apple's ten slots */

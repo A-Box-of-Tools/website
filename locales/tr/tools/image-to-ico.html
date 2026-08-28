@@ -197,6 +197,161 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: bu aracın okuyabileceği bir görsel değil.</span>
+    <span data-phrase="load.undecodable">{name}: bu tarayıcı onu çözemedi.</span>
+    <span data-phrase="decode.failed">bu tarayıcı resmi çözemedi.</span>
+    <span data-phrase="png.refused">bu tarayıcı PNG yazmayı kabul etmedi.</span>
+    <span data-phrase="ico.empty">bir simgenin içinde en az bir görsel olmalı.</span>
+    <span data-phrase="ico.zero">bir simge görseli sıfır piksel genişliğinde olamaz.</span>
+    <span data-phrase="ico.toobig">{size} bir .ico içine sığmaz: biçim her kenarı tek bayta yazar, yani en büyüğü 256.</span>
+    <span data-phrase="ico.pixels">piksel tamponu, iddia ettiği boyutla uyuşmuyor.</span>
+    <span data-phrase="ico.short">.ico değil: bir başlığı taşıyacak kadar uzun değil.</span>
+    <span data-phrase="ico.type">.ico değil: tip alanı 1 değil.</span>
+    <span data-phrase="ico.directory">dizin, dosyanın sonunu aşıyor.</span>
+    <span data-phrase="ico.entry">bir girdi, dosyanın sonundan ötesini gösteriyor.</span>
+    <span data-phrase="icns.empty">bir simgenin içinde en az bir görsel olmalı.</span>
+    <span data-phrase="icns.type">&ldquo;{type}&rdquo; dört harfli bir icns tipi değil.</span>
+    <span data-phrase="icns.short">.icns değil: bir başlığı taşıyacak kadar uzun değil.</span>
+    <span data-phrase="icns.magic">.icns değil: imza &ldquo;icns&rdquo; değil.</span>
+    <span data-phrase="icns.length">başlık {claimed} bayt diyor, dosya ise {actual}.</span>
+    <span data-phrase="icns.element">bir öge, dosyanın sonunu aşıyor.</span>
+    <span data-phrase="icns.elementlength">{type} ögesi, dosyanın taşıyamayacağı bir uzunluk bildiriyor.</span>
+    <span data-phrase="size.bytes">{n} bayt</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.image.one">1 görsel</span>
+    <span data-phrase="count.image.many">{n} görsel</span>
+    <span data-phrase="count.size.one">1 boyut</span>
+    <span data-phrase="count.size.many">{n} boyut</span>
+    <span data-phrase="count.slot.one">1 yuva</span>
+    <span data-phrase="count.slot.many">{n} yuva</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="join.and">{a} ve {b}</span>
+    <span data-phrase="join.andalso">{a} ve {b}</span>
+    <span data-phrase="row.square">{size} · {bytes} · kare</span>
+    <span data-phrase="row.notsquare">{size} · {bytes} · kare değil</span>
+    <span data-phrase="row.show">Bunu önizlemede göster</span>
+    <span data-phrase="row.remove">{name} dosyasını listeden çıkar</span>
+    <span data-phrase="why.16">tarayıcı sekmesi, adres çubuğu ve Dosya Gezgini'ndeki küçük simge</span>
+    <span data-phrase="why.20">%125'te Windows liste görünümleri</span>
+    <span data-phrase="why.24">%150'de Windows görev çubuğu</span>
+    <span data-phrase="why.32">masaüstü, görev çubuğu ve tarayıcının yer imleri çubuğu</span>
+    <span data-phrase="why.40">%125'te masaüstü</span>
+    <span data-phrase="why.48">Dosya Gezgini'nin orta boy simgeleri ve Google'ın bir faviconu okuduğu boyut</span>
+    <span data-phrase="why.64">%200'de Dosya Gezgini ve Alt-Tab değiştiricisi</span>
+    <span data-phrase="why.96">Dosya Gezgini'nin büyük simgeleri</span>
+    <span data-phrase="why.128">kurulum programlarının hâlâ okuduğu eski jumbo boyut</span>
+    <span data-phrase="why.256">Dosya Gezgini'nin çok büyük simgeleri ve Başlat menüsü; bir .ico içindeki en büyüğü</span>
+    <span data-phrase="preset.website.label">Web sitesi faviconu</span>
+    <span data-phrase="preset.website.note">Bir sitenin köküne konan klasik favicon.ico. Üç boyut bütün geleneği oluşturur:
+      sekme için 16, bir yer imi ve Windows kısayolu için 32, 48 de Google'ın bir site
+      simgesini o boyutta okuduğu için.</span>
+    <span data-phrase="preset.app.label">Windows uygulama simgesi</span>
+    <span data-phrase="preset.app.note">Bir .exe ya da bir kısayolun istediği, ve Visual Studio'nun kendi app.ico dosyasında
+      olan: üç kabuk boyutu ve Başlat menüsüyle Dosya Gezgini'nin çok büyük görünümünün
+      beslendiği 256.</span>
+    <span data-phrase="preset.app-hidpi.label">Windows uygulaması, her ölçek</span>
+    <span data-phrase="preset.app-hidpi.note">Aynı simge, Windows'un %125, %150 ve %200 ekran ölçeklemesinde istediği ara
+      boyutlarla birlikte. Daha büyük dosya, ve yüksek yoğunluklu bir dizüstünde sessizce
+      yeniden örneklenmeyen tek sürüm.</span>
+    <span data-phrase="preset.legacy.label">En geniş uyumluluk</span>
+    <span data-phrase="preset.legacy.note">Üç boyut, hepsi Vista öncesi yöntemle saklanmış; kurulum programları, gömülü
+      cihazlar ve bir .ico dosyasını kendi okuyup içindeki PNG'nin ne olduğunu bilmeyen
+      eski kabuk araçları için.</span>
+    <span data-phrase="preset.custom.label">Boyutları kendiniz seçin</span>
+    <span data-phrase="preset.custom.note">Bu biçimin taşıyabildiği her boyut. Hepsini işaretlemek nadiren doğru yanıttır: her
+      biri ayrı bir resimdir, ve kimsenin istemediği bir boyutu hiçbir şey okumaz.</span>
+    <span data-phrase="preset.pixels">{list} px</span>
+    <span data-phrase="preset.yours">aşağıda işaretledikleriniz</span>
+    <span data-phrase="output.nothing">Hiçbir şey işaretli değil, yani yapılacak bir şey yok.</span>
+    <span data-phrase="output.nosizes">Hiçbir boyut işaretli değil, yani .ico içinde hiçbir şey olmazdı. Bir boyut
+      işaretleyin, ya da başka bir çıktı.</span>
+    <span data-phrase="output.line">Resim başına: {parts}.</span>
+    <span data-phrase="output.line.icns">Resim başına: {parts}. .icns 1024 piksele kadar çizilir, yani büyük olan odur; bir
+      Mac'in istediği de budur.</span>
+    <span data-phrase="output.ico">{count} taşıyan bir .ico</span>
+    <span data-phrase="output.icns">Apple'ın {n} yuvasının hepsini taşıyan bir .icns</span>
+    <span data-phrase="output.pack">bir sitenin ihtiyaç duyduğu {n} PNG ve üç metin dosyası</span>
+    <span data-phrase="sizes.none">Hiçbir şey işaretli değil, yani dosyada hiçbir şey olmazdı.</span>
+    <span data-phrase="pick.none">En az bir boyut işaretleyin.</span>
+    <span data-phrase="describe.line">{count} &mdash; {list} &mdash; {kind}. Zaten kare olmayan bir resim {fit}.</span>
+    <span data-phrase="store.auto">64 piksele kadar Vista öncesi yöntemle, üstünde PNG olarak saklanır</span>
+    <span data-phrase="store.png">her boyut PNG olarak saklanır</span>
+    <span data-phrase="store.bmp">her boyut Vista öncesi yöntemle saklanır</span>
+    <span data-phrase="fit.pad.transparent">kareye tamamlanır, tamamlanan yer saydam bırakılır</span>
+    <span data-phrase="fit.pad.colour">arka plan renginde kareye tamamlanır</span>
+    <span data-phrase="fit.crop">ortadaki kareye kırpılır</span>
+    <span data-phrase="fit.stretch">kareye esnetilir</span>
+    <span data-phrase="storage.dib">{n} tanesi sıkıştırmasız, ki bu tam {size} eder</span>
+    <span data-phrase="storage.png">{n} tanesi PNG, boyutu resme bağlı</span>
+    <span data-phrase="storage.line">{parts}. {tail}</span>
+    <span data-phrase="storage.tail.bmp">Dosyadaki hiçbir şey sıkıştırılmamış, dolayısıyla Windows Vista'dan eski yazılımlar
+      dahil her şeyde açılır.</span>
+    <span data-phrase="storage.tail.png">Her girdi bir PNG, ki bu bir .ico'nun ulaşabileceği en küçük hâldir ve Windows XP
+      ile birkaç kurulum programı için okunmazdır.</span>
+    <span data-phrase="storage.tail.auto">Küçük boyutlar her şeyin okuyabilmesi için eski yöntemle, büyükler ise PNG olarak
+      saklanır, çünkü kazanç oradadır.</span>
+    <span data-phrase="shape.crop">{name} {size}, yani kare değil, oysa bir simge hep karedir. Ortadaki kare alınıyor;
+      uçlar kesiliyor.</span>
+    <span data-phrase="shape.stretch">{name} {size}, yani kare değil, oysa bir simge hep karedir. Esnetiliyor, dolayısıyla
+      her boyutta ezilmiş görünecek.</span>
+    <span data-phrase="shape.pad">{name} {size}, yani kare değil, oysa bir simge hep karedir. Tamamlanıyor,
+      dolayısıyla resmin tamamı korunuyor ve altında üstünde boşluk kalıyor.</span>
+    <span data-phrase="shape.small.one">Yalnızca {size}, dolayısıyla {list} resimden büyük. O boyut çizilmek yerine
+      büyütülüyor, ve bir resmi büyütmek, içinde hiç olmamış bir ayrıntıyı geri getiremez.</span>
+    <span data-phrase="shape.small.many">Yalnızca {size}, dolayısıyla {list} resimden büyük. O boyutlar çizilmek yerine
+      büyütülüyor, ve bir resmi büyütmek, içinde hiç olmamış bir ayrıntıyı geri getiremez.</span>
+    <span data-phrase="shape.both">{shape} {small}</span>
+    <span data-phrase="preview.note">{name}, dosyaya girecek her boyutta çizilmiş hâliyle. Yukarıdaki her kare bu
+      ekrandaki gerçek boyutundadır ve saydamlığın saydamlık olarak görünmesi için bir
+      dama zemin üzerindedir. 16px olan gri bir lekeyse, simgenin ihtiyacı başka bir ayar
+      değil, daha yalın bir çizimdir.</span>
+    <span data-phrase="preview.large">{note} {list} piksel de yazılıyor; buraya konmadılar, çünkü o boyutta bir kare
+      ekrana sığmaz &mdash; zaten ters giden hiçbir zaman o olmaz.</span>
+    <span data-phrase="progress.all">{count} çiziliyor…</span>
+    <span data-phrase="progress.one">{name} çiziliyor…</span>
+    <span data-phrase="progress.done">Bitti.</span>
+    <span data-phrase="results.single">{name} {slots} taşıyor ve {size}.</span>
+    <span data-phrase="results.multi">{names}, ikisi birlikte {size}.</span>
+    <span data-phrase="results.batch">{count} {n} simge dosyasına dönüştürüldü, toplam {size}.</span>
+    <span data-phrase="results.andpack">{summary} Site setinin geri kalanı yanındaki zip içinde.</span>
+    <span data-phrase="result.head">{slots}, {size}</span>
+    <span data-phrase="result.from">{name} dosyasından, {size}.</span>
+    <span data-phrase="result.icns">{detail} Bir Mac uygulama paketinin içine bırakın, ya da Bilgi Al ile klasör simgesi
+      olarak ayarlayın.</span>
+    <span data-phrase="result.plus">{detail} Ayrıca simge setinin geri kalanı için {n} dosya daha.</span>
+    <span data-phrase="result.chip">{label} · {detail} · {size}</span>
+    <span data-phrase="entry.uncompressed">sıkıştırmasız</span>
+    <span data-phrase="result.download">.{kind} dosyasını indir</span>
+    <span data-phrase="copy.copy">Kopyala</span>
+    <span data-phrase="copy.copied">Kopyalandı</span>
+    <span data-phrase="copy.selected">Seçildi &mdash; Ctrl+C tuşlarına basın</span>
+    <span data-phrase="head.comment">Simgeler. favicon.ico site köküne konur; tarayıcılar bu adresi söylenmeden ister,
+      dolayısıyla kendi &lt;link&gt; etiketine ihtiyacı yoktur.</span>
+    <span data-phrase="manifest.name">Sitenizin adı</span>
+    <span data-phrase="pack.favicon16">.ico yerine PNG tercih eden tarayıcılar için sekme</span>
+    <span data-phrase="pack.favicon32">yer imleri çubuğu ve sabitlenmiş bir Windows kısayolu</span>
+    <span data-phrase="pack.apple">iOS ana ekranı. Saydamsız çizilir: iOS saydamlığı siyaha çevirir</span>
+    <span data-phrase="pack.android192">Android ana ekranı ve kurulum daveti</span>
+    <span data-phrase="pack.android512">bir web uygulamasının açılırken gösterdiği açılış ekranı</span>
+    <span data-phrase="pack.maskable">uyarlanır bir başlatıcının kırptığı güvenli alanın içindeki aynı simge</span>
+    <span data-phrase="pack.mstile">Windows Başlat menüsüne sabitlenmiş bir kutucuk</span>
+    <span data-phrase="readme.title">Web sitesi simge seti</span>
+    <span data-phrase="readme.made">abox.tools/image-to-ico/ adresinde tarayıcının içinde yapıldı &mdash; yapmak için
+      hiçbir şey yüklenmedi ve bu dosyalarla ilgili hiçbir şey hiçbir yere gönderilmedi.</span>
+    <span data-phrase="readme.upload">Bu dosya ve head.html dışındaki her dosyayı sitenizin köküne yükleyin, ki
+      /favicon.ico, /apple-touch-icon.png ve benzeri adreslerde yanıt versinler.
+      site.webmanifest, browserconfig.xml ve head.html içindeki yolların hepsi bunu
+      varsayar. Bunun yerine bir alt klasöre koyacaksanız, o üç dosyayı buna göre
+      düzenleyin.</span>
+    <span data-phrase="readme.ico">klasik favicon; {sizes} piksellik sürümleri taşıyor</span>
+    <span data-phrase="readme.manifest">Android'in ve ana ekrana ekleme davetlerinin okuduğu dosya</span>
+    <span data-phrase="readme.browserconfig">Windows Başlat menüsüne sabitlenmiş bir kutucuğun okuduğu dosya</span>
+    <span data-phrase="readme.head">&lt;head&gt; içine yapıştırılacak işaretleme; yüklenecek bir dosya değil</span>
+    <span data-phrase="readme.setname">Yüklemeden önce site.webmanifest içindeki adı sitenizin adıyla, içindeki iki rengi
+      de simgeye yakışanla değiştirin.</span>
+    <span data-phrase="readme.noico">Not: burada favicon.ico yok, çünkü .ico çıktısı kapalıydı. Bir sitenin gerçekten bir
+      taneye ihtiyacı vardır &mdash; tarayıcıların kendiliğinden istediği adres odur.</span>
     <span data-phrase="net.clean">görselleriniz hiçbir yere gitmedi. {total}
       dosya yüklendi, hepsi bu sayfanın kendi dosyaları. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

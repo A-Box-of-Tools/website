@@ -43,6 +43,19 @@ export const NOMINAL_VECTOR = 1024;
 const isVector = (file) => file.type === 'image/svg+xml' || /\.svg$/i.test(file.name ?? '');
 
 /**
+ * A refusal this file wrote, rather than one the platform threw.
+ *
+ * The message is a phrase key and `values` fills its blanks; main.js turns the
+ * pair into a sentence. A platform error coming up the same path still reads
+ * as itself, because phrase() hands back a key it cannot find.
+ */
+function refusal(key, values) {
+  const error = new Error(key);
+  error.values = values;
+  return error;
+}
+
+/**
  * Decode a file into something a canvas can draw.
  *
  * `createImageBitmap` is the direct route and what every current browser takes.
@@ -81,7 +94,7 @@ export async function decode(file) {
     img = await new Promise((resolve, reject) => {
       const element = new Image();
       element.onload = () => resolve(element);
-      element.onerror = () => reject(new Error('this browser could not decode the picture.'));
+      element.onerror = () => reject(refusal('decode.failed'));
       element.src = url;
     });
   } catch (error) {
@@ -281,6 +294,6 @@ export function pixels(canvas) {
  */
 export async function png(canvas) {
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
-  if (!blob) throw new Error('this browser would not write a PNG.');
+  if (!blob) throw refusal('png.refused');
   return new Uint8Array(await blob.arrayBuffer());
 }

@@ -190,6 +190,161 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: यह ऐसी तस्वीर नहीं जिसे यह औज़ार पढ़ सके।</span>
+    <span data-phrase="load.undecodable">{name}: यह ब्राउज़र इसे खोल नहीं सका।</span>
+    <span data-phrase="decode.failed">यह ब्राउज़र तस्वीर को खोल नहीं सका।</span>
+    <span data-phrase="png.refused">इस ब्राउज़र ने PNG लिखने से मना कर दिया।</span>
+    <span data-phrase="ico.empty">आइकन में कम से कम एक तस्वीर तो चाहिए।</span>
+    <span data-phrase="ico.zero">आइकन की तस्वीर शून्य पिक्सल चौड़ी नहीं हो सकती।</span>
+    <span data-phrase="ico.toobig">{size} किसी .ico में नहीं समाता: यह फ़ॉर्मैट हर किनारे को एक बाइट में रखता है, इसलिए
+      256 ही सबसे बड़ा है।</span>
+    <span data-phrase="ico.pixels">पिक्सल बफ़र उस साइज़ से मेल नहीं खाता जो वह बताता है।</span>
+    <span data-phrase="ico.short">यह .ico नहीं: हेडर रखने भर को भी छोटा है।</span>
+    <span data-phrase="ico.type">यह .ico नहीं: टाइप फ़ील्ड 1 नहीं है।</span>
+    <span data-phrase="ico.directory">डायरेक्ट्री फ़ाइल के अंत से आगे निकल जाती है।</span>
+    <span data-phrase="ico.entry">एक एंट्री फ़ाइल के अंत से आगे की ओर इशारा करती है।</span>
+    <span data-phrase="icns.empty">आइकन में कम से कम एक तस्वीर तो चाहिए।</span>
+    <span data-phrase="icns.type">&ldquo;{type}&rdquo; चार अक्षरों वाला icns टाइप नहीं है।</span>
+    <span data-phrase="icns.short">यह .icns नहीं: हेडर रखने भर को भी छोटा है।</span>
+    <span data-phrase="icns.magic">यह .icns नहीं: हस्ताक्षर &ldquo;icns&rdquo; नहीं है।</span>
+    <span data-phrase="icns.length">हेडर {claimed} बाइट बताता है और फ़ाइल {actual} की है।</span>
+    <span data-phrase="icns.element">एक एलिमेंट फ़ाइल के अंत से आगे निकल जाता है।</span>
+    <span data-phrase="icns.elementlength">{type} एलिमेंट ऐसी लंबाई बताता है जो इस फ़ाइल में समा ही नहीं सकती।</span>
+    <span data-phrase="size.bytes">{n} बाइट</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.image.one">1 तस्वीर</span>
+    <span data-phrase="count.image.many">{n} तस्वीरें</span>
+    <span data-phrase="count.size.one">1 साइज़</span>
+    <span data-phrase="count.size.many">{n} साइज़</span>
+    <span data-phrase="count.slot.one">1 ख़ाना</span>
+    <span data-phrase="count.slot.many">{n} ख़ाने</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="join.and">{a} और {b}</span>
+    <span data-phrase="join.andalso">{a} और {b}</span>
+    <span data-phrase="row.square">{size} · {bytes} · वर्गाकार</span>
+    <span data-phrase="row.notsquare">{size} · {bytes} · वर्गाकार नहीं</span>
+    <span data-phrase="row.show">इसे झलक में दिखाइए</span>
+    <span data-phrase="row.remove">{name} को सूची से हटाइए</span>
+    <span data-phrase="why.16">ब्राउज़र का टैब, पता-पट्टी, और Explorer में दिखने वाला छोटा आइकन</span>
+    <span data-phrase="why.20">125% पर Windows की सूची वाली दिखावटें</span>
+    <span data-phrase="why.24">150% पर Windows की टास्कबार</span>
+    <span data-phrase="why.32">डेस्कटॉप, टास्कबार, और ब्राउज़र की बुकमार्क पट्टी</span>
+    <span data-phrase="why.40">125% पर डेस्कटॉप</span>
+    <span data-phrase="why.48">Explorer के मँझोले आइकन, और वह साइज़ जिस पर Google फ़ेविकॉन पढ़ता है</span>
+    <span data-phrase="why.64">200% पर Explorer, और Alt-Tab वाला स्विचर</span>
+    <span data-phrase="why.96">Explorer के बड़े आइकन</span>
+    <span data-phrase="why.128">पुराना जंबो साइज़, जिसे इंस्टॉलर आज भी पढ़ते हैं</span>
+    <span data-phrase="why.256">Explorer के बहुत बड़े आइकन और स्टार्ट मेन्यू; किसी .ico में जो सबसे बड़ा समा सकता है</span>
+    <span data-phrase="preset.website.label">वेबसाइट का फ़ेविकॉन</span>
+    <span data-phrase="preset.website.note">वही पुराना favicon.ico जो साइट की जड़ में रखा जाता है। तीन साइज़ ही पूरी परंपरा है:
+      टैब के लिए 16, बुकमार्क और Windows शॉर्टकट के लिए 32, और 48 इसलिए कि Google साइट का
+      आइकन उसी साइज़ पर पढ़ता है।</span>
+    <span data-phrase="preset.app.label">Windows ऐप्लिकेशन का आइकन</span>
+    <span data-phrase="preset.app.note">जो किसी .exe या शॉर्टकट को चाहिए, और जो ख़ुद Visual Studio की app.ico में होता है:
+      शेल के तीन साइज़ और साथ में वह 256 जिससे स्टार्ट मेन्यू और Explorer की बहुत-बड़ी
+      दिखावट खींचती हैं।</span>
+    <span data-phrase="preset.app-hidpi.label">Windows ऐप्लिकेशन, हर स्केल पर</span>
+    <span data-phrase="preset.app-hidpi.note">वही आइकन, उन बीच के साइज़ों के साथ जो Windows 125%, 150% और 200% डिस्प्ले स्केलिंग
+      पर माँगता है। फ़ाइल बड़ी होगी, और हाई-डीपीआई लैपटॉप पर यही अकेली ऐसी फ़ाइल है जिसे
+      चुपचाप दोबारा नहीं नापा जाता।</span>
+    <span data-phrase="preset.legacy.label">ज़्यादा से ज़्यादा अनुकूलता</span>
+    <span data-phrase="preset.legacy.note">तीन साइज़, और हर एक Vista से पहले वाले तरीक़े से सहेजा हुआ &mdash; इंस्टॉलरों,
+      एम्बेडेड उपकरणों और उन पुराने शेल औज़ारों के लिए जो .ico ख़ुद पढ़ते हैं और नहीं
+      जानते कि उसके भीतर PNG क्या कर रहा है।</span>
+    <span data-phrase="preset.custom.label">साइज़ ख़ुद चुनिए</span>
+    <span data-phrase="preset.custom.note">हर वह साइज़ जो यह फ़ॉर्मैट रख सकता है। सबको चुन लेना शायद ही कभी सही जवाब होता है:
+      हर एक पूरी तस्वीर है, और जो साइज़ किसी ने माँगा ही नहीं उसे कोई पढ़ता भी नहीं।</span>
+    <span data-phrase="preset.pixels">{list} px</span>
+    <span data-phrase="preset.yours">जो आप नीचे चुनें</span>
+    <span data-phrase="output.nothing">कुछ चुना ही नहीं गया, इसलिए बनाने को कुछ है ही नहीं।</span>
+    <span data-phrase="output.nosizes">कोई साइज़ नहीं चुना गया, इसलिए .ico में कुछ होगा ही नहीं। कोई साइज़ चुनिए, या कोई और
+      आउटपुट।</span>
+    <span data-phrase="output.line">हर तस्वीर पर: {parts}।</span>
+    <span data-phrase="output.line.icns">हर तस्वीर पर: {parts}। .icns 1024 पिक्सल तक खींची जाती है, इसलिए वही बड़ी वाली है;
+      Mac यही माँगता है।</span>
+    <span data-phrase="output.ico">{count} रखने वाली एक .ico</span>
+    <span data-phrase="output.icns">Apple के सारे {n} ख़ाने रखने वाली एक .icns</span>
+    <span data-phrase="output.pack">{n} PNG और वे तीन टेक्स्ट फ़ाइलें जो किसी साइट को चाहिए</span>
+    <span data-phrase="sizes.none">कुछ चुना ही नहीं गया, इसलिए फ़ाइल में कुछ होगा ही नहीं।</span>
+    <span data-phrase="pick.none">कम से कम एक साइज़ चुनिए।</span>
+    <span data-phrase="describe.line">{count} &mdash; {list} &mdash; {kind}। और जो तस्वीर पहले से वर्गाकार न हो उसे {fit}।</span>
+    <span data-phrase="store.auto">64 पिक्सल तक Vista से पहले वाले तरीक़े से और उससे ऊपर PNG के रूप में सहेजा जाता है</span>
+    <span data-phrase="store.png">हर साइज़ PNG के रूप में सहेजा जाता है</span>
+    <span data-phrase="store.bmp">हर साइज़ Vista से पहले वाले तरीक़े से सहेजा जाता है</span>
+    <span data-phrase="fit.pad.transparent">वर्ग तक भर दिया जाता है, और भरा हुआ हिस्सा पारदर्शी छोड़ा जाता है</span>
+    <span data-phrase="fit.pad.colour">पृष्ठभूमि के रंग से वर्ग तक भर दिया जाता है</span>
+    <span data-phrase="fit.crop">बीच के वर्ग तक क्रॉप कर दिया जाता है</span>
+    <span data-phrase="fit.stretch">खींचकर वर्ग बना दिया जाता है</span>
+    <span data-phrase="storage.dib">{n} बिना दबाए, जो ठीक {size} बनते हैं</span>
+    <span data-phrase="storage.png">{n} PNG के रूप में, जिनका साइज़ तस्वीर पर निर्भर करता है</span>
+    <span data-phrase="storage.line">{parts}। {tail}</span>
+    <span data-phrase="storage.tail.bmp">फ़ाइल में कुछ भी दबाया नहीं गया, इसलिए यह हर चीज़ में खुलेगी &mdash; Windows Vista
+      से पुराने सॉफ़्टवेयर में भी।</span>
+    <span data-phrase="storage.tail.png">हर एंट्री PNG है, जो किसी .ico का सबसे छोटा रूप है और Windows XP तथा कुछ इंस्टॉलरों
+      के लिए अपठनीय है।</span>
+    <span data-phrase="storage.tail.auto">छोटे साइज़ पुराने तरीक़े से सहेजे जाते हैं ताकि उन्हें कोई भी पढ़ सके, और बड़े PNG
+      के रूप में, क्योंकि बचत वहीं है।</span>
+    <span data-phrase="shape.crop">{name} {size} की है, यानी वर्गाकार नहीं, और आइकन हमेशा वर्गाकार होता है। बीच का वर्ग
+      लिया जा रहा है; किनारे कट रहे हैं।</span>
+    <span data-phrase="shape.stretch">{name} {size} की है, यानी वर्गाकार नहीं, और आइकन हमेशा वर्गाकार होता है। इसे खींचा
+      जा रहा है, इसलिए हर साइज़ पर दबी हुई लगेगी।</span>
+    <span data-phrase="shape.pad">{name} {size} की है, यानी वर्गाकार नहीं, और आइकन हमेशा वर्गाकार होता है। इसे भरा जा
+      रहा है, इसलिए पूरी तस्वीर बची रहती है और ऊपर-नीचे जगह छूटती है।</span>
+    <span data-phrase="shape.small.one">यह सिर्फ़ {size} की है, इसलिए {list} तस्वीर से बड़ा है। वह साइज़ खींचा नहीं, फुलाया
+      जाता है, और तस्वीर फुलाने से वह ब्योरा वापस नहीं आता जो उसमें था ही नहीं।</span>
+    <span data-phrase="shape.small.many">यह सिर्फ़ {size} की है, इसलिए {list} तस्वीर से बड़े हैं। वे साइज़ खींचे नहीं, फुलाए
+      जाते हैं, और तस्वीर फुलाने से वह ब्योरा वापस नहीं आता जो उसमें था ही नहीं।</span>
+    <span data-phrase="shape.both">{shape} {small}</span>
+    <span data-phrase="preview.note">{name}, हर उस साइज़ पर खींची हुई जो फ़ाइल में जा रहा है। ऊपर का हर वर्ग इस स्क्रीन
+      पर अपने असली साइज़ में है, और शतरंज जैसी बिसात पर, ताकि पारदर्शिता पारदर्शिता ही
+      दिखे। अगर 16px वाला एक धूसर धब्बा लग रहा है, तो आइकन को कोई और सेटिंग नहीं, सरल
+      चित्र चाहिए।</span>
+    <span data-phrase="preview.large">{note} {list} पिक्सल भी लिखे जाते हैं, और यहाँ इसलिए छोड़ दिए गए कि उतना बड़ा वर्ग
+      स्क्रीन पर समाएगा ही नहीं &mdash; और गड़बड़ कभी वही नहीं होता।</span>
+    <span data-phrase="progress.all">{count} खींची जा रही हैं…</span>
+    <span data-phrase="progress.one">{name} खींची जा रही है…</span>
+    <span data-phrase="progress.done">हो गया।</span>
+    <span data-phrase="results.single">{name} में {slots} हैं और यह {size} की है।</span>
+    <span data-phrase="results.multi">{names}, दोनों मिलाकर {size}।</span>
+    <span data-phrase="results.batch">{count} से {n} आइकन फ़ाइलें बनीं, कुल {size}।</span>
+    <span data-phrase="results.andpack">{summary} वेबसाइट वाले सेट का बाक़ी हिस्सा बग़ल की ZIP में है।</span>
+    <span data-phrase="result.head">{slots}, {size}</span>
+    <span data-phrase="result.from">{name} से, {size}।</span>
+    <span data-phrase="result.icns">{detail} इसे किसी Mac ऐप्लिकेशन बंडल में डालिए, या Get Info से फ़ोल्डर का आइकन बना
+      दीजिए।</span>
+    <span data-phrase="result.plus">{detail} साथ में आइकन सेट के बाक़ी हिस्से के लिए {n} और फ़ाइलें।</span>
+    <span data-phrase="result.chip">{label} · {detail} · {size}</span>
+    <span data-phrase="entry.uncompressed">बिना दबाया</span>
+    <span data-phrase="result.download">.{kind} डाउनलोड कीजिए</span>
+    <span data-phrase="copy.copy">कॉपी</span>
+    <span data-phrase="copy.copied">कॉपी हो गया</span>
+    <span data-phrase="copy.selected">चुन लिया &mdash; Ctrl+C दबाइए</span>
+    <span data-phrase="head.comment">आइकन। favicon.ico साइट की जड़ में जाता है; ब्राउज़र उस पते को बिना बताए ही माँगते
+      हैं, इसलिए उसे अपने &lt;link&gt; की ज़रूरत नहीं।</span>
+    <span data-phrase="manifest.name">आपकी साइट का नाम</span>
+    <span data-phrase="pack.favicon16">टैब, उन ब्राउज़रों के लिए जो .ico से ज़्यादा PNG पसंद करते हैं</span>
+    <span data-phrase="pack.favicon32">बुकमार्क पट्टी और पिन किया हुआ Windows शॉर्टकट</span>
+    <span data-phrase="pack.apple">iOS की होम स्क्रीन। अपारदर्शी खींचा जाता है: iOS पारदर्शिता को काला कर देता है</span>
+    <span data-phrase="pack.android192">Android की होम स्क्रीन, और इंस्टॉल का न्योता</span>
+    <span data-phrase="pack.android512">वह स्प्लैश स्क्रीन जो कोई वेब ऐप शुरू होते समय दिखाता है</span>
+    <span data-phrase="pack.maskable">वही आइकन, उस सुरक्षित इलाक़े के भीतर जिस तक कोई अनुकूली लॉन्चर काटता है</span>
+    <span data-phrase="pack.mstile">Windows स्टार्ट मेन्यू में पिन किया हुआ टाइल</span>
+    <span data-phrase="readme.title">वेबसाइट का आइकन सेट</span>
+    <span data-phrase="readme.made">abox.tools/image-to-ico/ पर ब्राउज़र के भीतर ही बनाया गया &mdash; इसे बनाने के लिए
+      कुछ अपलोड नहीं हुआ, और इन फ़ाइलों के बारे में कुछ भी कहीं नहीं भेजा गया।</span>
+    <span data-phrase="readme.upload">इस फ़ाइल और head.html को छोड़कर बाक़ी हर फ़ाइल अपनी साइट की जड़ में अपलोड कीजिए,
+      ताकि वे /favicon.ico, /apple-touch-icon.png वग़ैरह पर जवाब दें। site.webmanifest,
+      browserconfig.xml और head.html के रास्ते यही मानकर चलते हैं। अगर वे किसी सबफ़ोल्डर
+      में जा रही हों तो उन तीनों फ़ाइलों को उसी हिसाब से बदल दीजिए।</span>
+    <span data-phrase="readme.ico">वही पुराना फ़ेविकॉन, जिसमें {sizes} पिक्सल वाले रूप हैं</span>
+    <span data-phrase="readme.manifest">इसे Android पढ़ता है, और होम स्क्रीन पर जोड़ने का हर न्योता भी</span>
+    <span data-phrase="readme.browserconfig">इसे Windows स्टार्ट मेन्यू में पिन किया हुआ टाइल पढ़ता है</span>
+    <span data-phrase="readme.head">वह मार्कअप जो आपके &lt;head&gt; में चिपकाना है; अपलोड करने वाली फ़ाइल नहीं</span>
+    <span data-phrase="readme.setname">अपलोड करने से पहले site.webmanifest में नाम अपनी साइट का कर दीजिए, और उसमें रखे
+      दोनों रंग वही जो आइकन पर जँचें।</span>
+    <span data-phrase="readme.noico">ध्यान दीजिए: यहाँ कोई favicon.ico नहीं है, क्योंकि .ico वाला आउटपुट बंद था। साइट को
+      सचमुच एक चाहिए &mdash; यही वह पता है जो ब्राउज़र ख़ुद माँगते हैं।</span>
     <span data-phrase="net.clean">आपकी तस्वीरें कहीं नहीं गईं। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

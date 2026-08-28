@@ -191,6 +191,167 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: geen afbeelding die dit gereedschap kan lezen.</span>
+    <span data-phrase="load.undecodable">{name}: deze browser kon hem niet decoderen.</span>
+    <span data-phrase="decode.failed">deze browser kon het plaatje niet decoderen.</span>
+    <span data-phrase="png.refused">deze browser wilde geen PNG schrijven.</span>
+    <span data-phrase="ico.empty">een icoon heeft minstens één afbeelding nodig.</span>
+    <span data-phrase="ico.zero">een icoonafbeelding kan niet nul pixels breed zijn.</span>
+    <span data-phrase="ico.toobig">{size} past niet in een .ico: het formaat bewaart elke zijde in één byte, dus 256 is
+      het grootste dat er is.</span>
+    <span data-phrase="ico.pixels">de pixelbuffer komt niet overeen met het formaat dat hij zegt te hebben.</span>
+    <span data-phrase="ico.short">geen .ico: te kort voor een header.</span>
+    <span data-phrase="ico.type">geen .ico: het typeveld is geen 1.</span>
+    <span data-phrase="ico.directory">de directory loopt voorbij het einde van het bestand.</span>
+    <span data-phrase="ico.entry">een item wijst voorbij het einde van het bestand.</span>
+    <span data-phrase="icns.empty">een icoon heeft minstens één afbeelding nodig.</span>
+    <span data-phrase="icns.type">&ldquo;{type}&rdquo; is geen icns-type van vier letters.</span>
+    <span data-phrase="icns.short">geen .icns: te kort voor een header.</span>
+    <span data-phrase="icns.magic">geen .icns: de handtekening is niet &ldquo;icns&rdquo;.</span>
+    <span data-phrase="icns.length">de header zegt {claimed} bytes en het bestand is {actual}.</span>
+    <span data-phrase="icns.element">een element loopt voorbij het einde van het bestand.</span>
+    <span data-phrase="icns.elementlength">het element {type} noemt een lengte die het bestand niet kan bevatten.</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.image.one">1 afbeelding</span>
+    <span data-phrase="count.image.many">{n} afbeeldingen</span>
+    <span data-phrase="count.size.one">1 formaat</span>
+    <span data-phrase="count.size.many">{n} formaten</span>
+    <span data-phrase="count.slot.one">1 plek</span>
+    <span data-phrase="count.slot.many">{n} plekken</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="join.and">{a} en {b}</span>
+    <span data-phrase="join.andalso">{a} en {b}</span>
+    <span data-phrase="row.square">{size} · {bytes} · vierkant</span>
+    <span data-phrase="row.notsquare">{size} · {bytes} · niet vierkant</span>
+    <span data-phrase="row.show">Deze in het voorbeeld tonen</span>
+    <span data-phrase="row.remove">{name} van de lijst halen</span>
+    <span data-phrase="why.16">het browsertabblad, de adresbalk en het kleine icoon in Verkenner</span>
+    <span data-phrase="why.20">de lijstweergaven van Windows op 125%</span>
+    <span data-phrase="why.24">de taakbalk van Windows op 150%</span>
+    <span data-phrase="why.32">het bureaublad, de taakbalk en de favorietenbalk van de browser</span>
+    <span data-phrase="why.40">het bureaublad op 125%</span>
+    <span data-phrase="why.48">de middelgrote iconen van Verkenner, en het formaat waarop Google een favicon leest</span>
+    <span data-phrase="why.64">Verkenner op 200%, en de Alt-Tab-wisselaar</span>
+    <span data-phrase="why.96">de grote iconen van Verkenner</span>
+    <span data-phrase="why.128">het oude jumboformaat, dat installatieprogramma's nog lezen</span>
+    <span data-phrase="why.256">de extra grote iconen van Verkenner en het startmenu; het grootste dat een .ico
+      bevat</span>
+    <span data-phrase="preset.website.label">Favicon van een website</span>
+    <span data-phrase="preset.website.note">De klassieke favicon.ico die in de hoofdmap van een site hoort. Drie formaten is de
+      hele conventie: 16 voor het tabblad, 32 voor een favoriet en een
+      Windows-snelkoppeling, 48 omdat Google het icoon van een site op dat formaat leest.</span>
+    <span data-phrase="preset.app.label">Windows-programmaicoon</span>
+    <span data-phrase="preset.app.note">Wat een .exe of een snelkoppeling wil, en wat de eigen app.ico van Visual Studio
+      bevat: de drie shellformaten plus de 256 waaruit het startmenu en de extra grote
+      weergave van Verkenner putten.</span>
+    <span data-phrase="preset.app-hidpi.label">Windows-programma, elke schaal</span>
+    <span data-phrase="preset.app-hidpi.note">Hetzelfde icoon met de tussenformaten die Windows vraagt bij 125%, 150% en 200%
+      beeldschermschaling. Groter bestand, en de enige versie die op een hoge-dpi-laptop
+      niet stilletjes herschaald wordt.</span>
+    <span data-phrase="preset.legacy.label">Maximale compatibiliteit</span>
+    <span data-phrase="preset.legacy.note">Drie formaten, elk opgeslagen op de manier van voor Vista, voor
+      installatieprogramma's, ingebouwde apparaten en oud shellgereedschap dat een .ico
+      zelf leest en niet weet wat een PNG daarin is.</span>
+    <span data-phrase="preset.custom.label">Zelf de formaten kiezen</span>
+    <span data-phrase="preset.custom.note">Elk formaat dat dit bestandsformaat kan bevatten. Ze allemaal aanvinken is zelden
+      het juiste antwoord: elk is een hele afbeelding, en niets leest een formaat waar
+      niemand om gevraagd heeft.</span>
+    <span data-phrase="preset.pixels">{list} px</span>
+    <span data-phrase="preset.yours">welke je hieronder aanvinkt</span>
+    <span data-phrase="output.nothing">Er is niets aangevinkt, dus er valt niets te maken.</span>
+    <span data-phrase="output.nosizes">Er is geen formaat aangevinkt, dus er zou niets in de .ico zitten. Vink een formaat
+      aan, of een andere uitvoer.</span>
+    <span data-phrase="output.line">Per afbeelding: {parts}.</span>
+    <span data-phrase="output.line.icns">Per afbeelding: {parts}. De .icns wordt tot 1024 pixels getekend, dus dat is de
+      grote; dat is wat een Mac vraagt.</span>
+    <span data-phrase="output.ico">één .ico met {count}</span>
+    <span data-phrase="output.icns">één .icns met alle {n} plekken van Apple</span>
+    <span data-phrase="output.pack">{n} PNG's en de drie tekstbestanden die een site nodig heeft</span>
+    <span data-phrase="sizes.none">Er is niets aangevinkt, dus er zou niets in het bestand zitten.</span>
+    <span data-phrase="pick.none">Vink minstens één formaat aan.</span>
+    <span data-phrase="describe.line">{count} &mdash; {list} &mdash; {kind}. Een afbeelding die nog niet vierkant is,
+      wordt {fit}.</span>
+    <span data-phrase="store.auto">tot 64 pixels opgeslagen op de manier van voor Vista en daarboven als PNG</span>
+    <span data-phrase="store.png">elk formaat opgeslagen als PNG</span>
+    <span data-phrase="store.bmp">elk formaat opgeslagen op de manier van voor Vista</span>
+    <span data-phrase="fit.pad.transparent">opgevuld tot een vierkant, waarbij de opvulling transparant blijft</span>
+    <span data-phrase="fit.pad.colour">opgevuld tot een vierkant op de achtergrondkleur</span>
+    <span data-phrase="fit.crop">bijgesneden tot het vierkant in het midden</span>
+    <span data-phrase="fit.stretch">uitgerekt tot een vierkant</span>
+    <span data-phrase="storage.dib">{n} ongecomprimeerd, wat precies {size} wordt</span>
+    <span data-phrase="storage.png">{n} als PNG, waarvan de grootte van het plaatje afhangt</span>
+    <span data-phrase="storage.line">{parts}. {tail}</span>
+    <span data-phrase="storage.tail.bmp">Niets in het bestand is gecomprimeerd, dus het opent in alles, ook in software die
+      ouder is dan Windows Vista.</span>
+    <span data-phrase="storage.tail.png">Elk item is een PNG, wat het kleinste is dat een .ico wordt, en onleesbaar voor
+      Windows XP en voor een paar installatieprogramma's.</span>
+    <span data-phrase="storage.tail.auto">De kleine formaten worden op de oude manier opgeslagen zodat alles ze kan lezen, en
+      de grote als PNG omdat daar de winst zit.</span>
+    <span data-phrase="shape.crop">{name} is {size}, dus niet vierkant, en een icoon is dat altijd. Het vierkant in het
+      midden wordt genomen; de uiteinden gaan eraf.</span>
+    <span data-phrase="shape.stretch">{name} is {size}, dus niet vierkant, en een icoon is dat altijd. Het wordt
+      uitgerekt, dus het ziet er op elk formaat platgedrukt uit.</span>
+    <span data-phrase="shape.pad">{name} is {size}, dus niet vierkant, en een icoon is dat altijd. Het wordt opgevuld,
+      dus het hele plaatje blijft en er is ruimte boven en onder.</span>
+    <span data-phrase="shape.small.one">Het is maar {size}, dus {list} is groter dan het plaatje. Dat formaat wordt
+      opgeblazen in plaats van getekend, en een plaatje opblazen kan geen detail
+      terughalen dat er nooit in zat.</span>
+    <span data-phrase="shape.small.many">Het is maar {size}, dus {list} zijn groter dan het plaatje. Die formaten worden
+      opgeblazen in plaats van getekend, en een plaatje opblazen kan geen detail
+      terughalen dat er nooit in zat.</span>
+    <span data-phrase="shape.both">{shape} {small}</span>
+    <span data-phrase="preview.note">{name}, getekend op elk formaat dat in het bestand gaat. Elk vierkant hierboven
+      heeft zijn echte formaat op dit scherm, op een dambord zodat transparantie als
+      transparantie te zien is. Als die van 16px een grijze veeg is, heeft het icoon een
+      eenvoudiger tekening nodig en geen andere instelling.</span>
+    <span data-phrase="preview.large">{note} {list} pixels worden ook geschreven, en zijn hier weggelaten omdat een
+      vierkant van dat formaat niet op het scherm past &mdash; en het is nooit die die
+      misgaat.</span>
+    <span data-phrase="progress.all">{count} aan het tekenen…</span>
+    <span data-phrase="progress.one">{name} aan het tekenen…</span>
+    <span data-phrase="progress.done">Klaar.</span>
+    <span data-phrase="results.single">{name} bevat {slots} en is {size}.</span>
+    <span data-phrase="results.multi">{names}, samen {size}.</span>
+    <span data-phrase="results.batch">{count} omgezet in {n} icoonbestanden, {size} in totaal.</span>
+    <span data-phrase="results.andpack">{summary} De rest van de set voor de website zit in de zip ernaast.</span>
+    <span data-phrase="result.head">{slots}, {size}</span>
+    <span data-phrase="result.from">Uit {name}, {size}.</span>
+    <span data-phrase="result.icns">{detail} Zet hem in een Mac-programmabundel, of stel hem in als mapicoon via Toon
+      info.</span>
+    <span data-phrase="result.plus">{detail} Plus {n} bestanden voor de rest van de icoonset.</span>
+    <span data-phrase="result.chip">{label} · {detail} · {size}</span>
+    <span data-phrase="entry.uncompressed">ongecomprimeerd</span>
+    <span data-phrase="result.download">De .{kind} downloaden</span>
+    <span data-phrase="copy.copy">Kopiëren</span>
+    <span data-phrase="copy.copied">Gekopieerd</span>
+    <span data-phrase="copy.selected">Geselecteerd &mdash; druk op Ctrl+C</span>
+    <span data-phrase="head.comment">Iconen. favicon.ico hoort in de hoofdmap van de site; browsers vragen ongevraagd om
+      dat adres, dus het heeft geen eigen &lt;link&gt; nodig.</span>
+    <span data-phrase="manifest.name">De naam van je site</span>
+    <span data-phrase="pack.favicon16">het tabblad, voor browsers die een PNG boven de .ico verkiezen</span>
+    <span data-phrase="pack.favicon32">de favorietenbalk en een vastgezette Windows-snelkoppeling</span>
+    <span data-phrase="pack.apple">het iOS-beginscherm. Ondoorzichtig getekend: iOS maakt van transparantie zwart</span>
+    <span data-phrase="pack.android192">het Android-beginscherm, en de installatievraag</span>
+    <span data-phrase="pack.android512">het opstartscherm dat een webapp toont terwijl hij start</span>
+    <span data-phrase="pack.maskable">hetzelfde icoon binnen het veilige gebied waar een adaptieve launcher naar bijsnijdt</span>
+    <span data-phrase="pack.mstile">een tegel vastgezet in het Windows-startmenu</span>
+    <span data-phrase="readme.title">Icoonset voor een website</span>
+    <span data-phrase="readme.made">Gemaakt in de browser op abox.tools/image-to-ico/ &mdash; er is niets geüpload om
+      hem te maken, en er is niets over deze bestanden ergens naartoe gestuurd.</span>
+    <span data-phrase="readme.upload">Zet elk bestand behalve dit en head.html in de hoofdmap van je site, zodat ze
+      antwoorden op /favicon.ico, /apple-touch-icon.png enzovoort. De paden in
+      site.webmanifest, browserconfig.xml en head.html gaan daar allemaal van uit. Gaan ze
+      in plaats daarvan in een submap, pas die drie bestanden dan aan.</span>
+    <span data-phrase="readme.ico">de klassieke favicon, met de versies van {sizes} pixels</span>
+    <span data-phrase="readme.manifest">wordt gelezen door Android en door elke vraag om aan het beginscherm toe te voegen</span>
+    <span data-phrase="readme.browserconfig">wordt gelezen door een tegel die in het Windows-startmenu is vastgezet</span>
+    <span data-phrase="readme.head">de opmaak om in je &lt;head&gt; te plakken; geen bestand om te uploaden</span>
+    <span data-phrase="readme.setname">Zet de naam in site.webmanifest op de naam van je site voordat je hem uploadt, en de
+      twee kleuren erin op wat bij het icoon past.</span>
+    <span data-phrase="readme.noico">Let op: er zit geen favicon.ico in, omdat de .ico-uitvoer uit stond. Een site wil er
+      echt een &mdash; het is het adres waar browsers uit zichzelf om vragen.</span>
     <span data-phrase="net.clean">Je afbeeldingen zijn nergens heen gegaan.
       {total} bestanden geladen, allemaal van deze site zelf. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

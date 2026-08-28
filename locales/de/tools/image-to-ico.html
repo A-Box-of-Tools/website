@@ -194,6 +194,169 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: kein Bild, das dieses Werkzeug lesen kann.</span>
+    <span data-phrase="load.undecodable">{name}: dieser Browser konnte es nicht dekodieren.</span>
+    <span data-phrase="decode.failed">dieser Browser konnte das Bild nicht dekodieren.</span>
+    <span data-phrase="png.refused">dieser Browser wollte kein PNG schreiben.</span>
+    <span data-phrase="ico.empty">ein Symbol braucht mindestens ein Bild darin.</span>
+    <span data-phrase="ico.zero">ein Symbolbild kann nicht null Pixel breit sein.</span>
+    <span data-phrase="ico.toobig">{size} passt nicht in eine .ico: das Format speichert jede Seite in einem Byte, also
+      ist 256 das Größte, was es gibt.</span>
+    <span data-phrase="ico.pixels">der Pixelpuffer passt nicht zu der Größe, die er angibt.</span>
+    <span data-phrase="ico.short">keine .ico: zu kurz für einen Header.</span>
+    <span data-phrase="ico.type">keine .ico: das Typfeld ist nicht 1.</span>
+    <span data-phrase="ico.directory">das Verzeichnis reicht über das Dateiende hinaus.</span>
+    <span data-phrase="ico.entry">ein Eintrag zeigt über das Dateiende hinaus.</span>
+    <span data-phrase="icns.empty">ein Symbol braucht mindestens ein Bild darin.</span>
+    <span data-phrase="icns.type">&ldquo;{type}&rdquo; ist kein vierbuchstabiger icns-Typ.</span>
+    <span data-phrase="icns.short">keine .icns: zu kurz für einen Header.</span>
+    <span data-phrase="icns.magic">keine .icns: die Signatur ist nicht &ldquo;icns&rdquo;.</span>
+    <span data-phrase="icns.length">der Header gibt {claimed} Bytes an, und die Datei hat {actual}.</span>
+    <span data-phrase="icns.element">ein Element reicht über das Dateiende hinaus.</span>
+    <span data-phrase="icns.elementlength">das Element {type} gibt eine Länge an, die die Datei nicht fassen kann.</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.image.one">1 Bild</span>
+    <span data-phrase="count.image.many">{n} Bilder</span>
+    <span data-phrase="count.size.one">1 Größe</span>
+    <span data-phrase="count.size.many">{n} Größen</span>
+    <span data-phrase="count.slot.one">1 Platz</span>
+    <span data-phrase="count.slot.many">{n} Plätze</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="join.and">{a} und {b}</span>
+    <span data-phrase="join.andalso">{a} und {b}</span>
+    <span data-phrase="row.square">{size} · {bytes} · quadratisch</span>
+    <span data-phrase="row.notsquare">{size} · {bytes} · nicht quadratisch</span>
+    <span data-phrase="row.show">Dieses in der Vorschau zeigen</span>
+    <span data-phrase="row.remove">{name} von der Liste nehmen</span>
+    <span data-phrase="why.16">Browser-Tab, Adressleiste und das kleine Symbol im Explorer</span>
+    <span data-phrase="why.20">Windows-Listenansichten bei 125%</span>
+    <span data-phrase="why.24">die Windows-Taskleiste bei 150%</span>
+    <span data-phrase="why.32">der Desktop, die Taskleiste und die Lesezeichenleiste im Browser</span>
+    <span data-phrase="why.40">der Desktop bei 125%</span>
+    <span data-phrase="why.48">die mittelgroßen Symbole im Explorer, und die Größe, in der Google ein Favicon liest</span>
+    <span data-phrase="why.64">der Explorer bei 200% und der Alt-Tab-Umschalter</span>
+    <span data-phrase="why.96">die großen Symbole im Explorer</span>
+    <span data-phrase="why.128">die alte Jumbogröße, die Installer noch lesen</span>
+    <span data-phrase="why.256">die extragroßen Symbole im Explorer und das Startmenü; das Größte, was eine .ico
+      fasst</span>
+    <span data-phrase="preset.website.label">Website-Favicon</span>
+    <span data-phrase="preset.website.note">Die klassische favicon.ico, die an die Wurzel einer Website gehört. Drei Größen sind
+      die ganze Konvention: 16 für den Tab, 32 für ein Lesezeichen und eine
+      Windows-Verknüpfung, 48 weil Google ein Website-Symbol in dieser Größe liest.</span>
+    <span data-phrase="preset.app.label">Windows-Anwendungssymbol</span>
+    <span data-phrase="preset.app.note">Was eine .exe oder eine Verknüpfung will, und was Visual Studios eigene app.ico
+      enthält: die drei Shell-Größen plus die 256, aus der das Startmenü und die
+      extragroße Ansicht des Explorers zeichnen.</span>
+    <span data-phrase="preset.app-hidpi.label">Windows-Anwendung, jede Skalierung</span>
+    <span data-phrase="preset.app-hidpi.note">Dasselbe Symbol mit den Zwischengrößen, die Windows bei 125%, 150% und 200%
+      Anzeigeskalierung verlangt. Größere Datei, und die einzige Fassung, die auf einem
+      High-DPI-Laptop nicht still umgerechnet wird.</span>
+    <span data-phrase="preset.legacy.label">Größtmögliche Kompatibilität</span>
+    <span data-phrase="preset.legacy.note">Drei Größen, jede davon auf die Art vor Vista gespeichert, für Installer,
+      eingebettete Geräte und alte Shell-Werkzeuge, die eine .ico selbst lesen und nicht
+      wissen, was ein PNG darin ist.</span>
+    <span data-phrase="preset.custom.label">Die Größen selbst wählen</span>
+    <span data-phrase="preset.custom.note">Jede Größe, die dieses Format fassen kann. Alle anzuhaken ist selten die richtige
+      Antwort: jede ist ein ganzes Bild, und nichts liest eine Größe, nach der niemand
+      gefragt hat.</span>
+    <span data-phrase="preset.pixels">{list} px</span>
+    <span data-phrase="preset.yours">was Sie unten anhaken</span>
+    <span data-phrase="output.nothing">Nichts ist angehakt, also gibt es nichts zu erzeugen.</span>
+    <span data-phrase="output.nosizes">Keine Größe ist angehakt, also wäre nichts in der .ico. Haken Sie eine Größe an,
+      oder eine andere Ausgabe.</span>
+    <span data-phrase="output.line">Pro Bild: {parts}.</span>
+    <span data-phrase="output.line.icns">Pro Bild: {parts}. Die .icns wird bis 1024 Pixel gezeichnet, also ist sie die große;
+      das ist es, was ein Mac verlangt.</span>
+    <span data-phrase="output.ico">eine .ico mit {count}</span>
+    <span data-phrase="output.icns">eine .icns mit allen {n} Plätzen von Apple</span>
+    <span data-phrase="output.pack">{n} PNGs und die drei Textdateien, die eine Website braucht</span>
+    <span data-phrase="sizes.none">Nichts ist angehakt, also wäre nichts in der Datei.</span>
+    <span data-phrase="pick.none">Haken Sie mindestens eine Größe an.</span>
+    <span data-phrase="describe.line">{count} &mdash; {list} &mdash; {kind}. Ein Bild, das nicht schon quadratisch ist,
+      wird {fit}.</span>
+    <span data-phrase="store.auto">bis 64 Pixel auf die Art vor Vista gespeichert und darüber als PNG</span>
+    <span data-phrase="store.png">jede Größe als PNG gespeichert</span>
+    <span data-phrase="store.bmp">jede Größe auf die Art vor Vista gespeichert</span>
+    <span data-phrase="fit.pad.transparent">auf ein Quadrat aufgefüllt, wobei die Auffüllung transparent bleibt</span>
+    <span data-phrase="fit.pad.colour">auf ein Quadrat in der Hintergrundfarbe aufgefüllt</span>
+    <span data-phrase="fit.crop">auf das Quadrat in der Mitte zugeschnitten</span>
+    <span data-phrase="fit.stretch">auf ein Quadrat gedehnt</span>
+    <span data-phrase="storage.dib">{n} unkomprimiert, was genau {size} ergibt</span>
+    <span data-phrase="storage.png">{n} als PNG, deren Größe vom Bild abhängt</span>
+    <span data-phrase="storage.line">{parts}. {tail}</span>
+    <span data-phrase="storage.tail.bmp">Nichts in der Datei ist komprimiert, sie öffnet sich also in allem, auch in
+      Software, die älter ist als Windows Vista.</span>
+    <span data-phrase="storage.tail.png">Jeder Eintrag ist ein PNG, was das Kleinste ist, was eine .ico wird, und für Windows
+      XP und ein paar Installer unlesbar.</span>
+    <span data-phrase="storage.tail.auto">Die kleinen Größen werden auf die alte Art gespeichert, damit alles sie lesen kann,
+      und die großen als PNG, weil dort die Ersparnis liegt.</span>
+    <span data-phrase="shape.crop">{name} ist {size}, also nicht quadratisch, und ein Symbol ist es immer. Genommen
+      wird das Quadrat in der Mitte; die Enden fallen weg.</span>
+    <span data-phrase="shape.stretch">{name} ist {size}, also nicht quadratisch, und ein Symbol ist es immer. Es wird
+      gedehnt und sieht daher in jeder Größe gestaucht aus.</span>
+    <span data-phrase="shape.pad">{name} ist {size}, also nicht quadratisch, und ein Symbol ist es immer. Es wird
+      aufgefüllt, das ganze Bild bleibt also erhalten und darüber und darunter ist Platz.</span>
+    <span data-phrase="shape.small.one">Es ist nur {size}, {list} ist also größer als das Bild. Diese Größe wird aufgeblasen
+      statt gezeichnet, und ein Bild aufzublasen kann keine Details zurückholen, die nie
+      darin waren.</span>
+    <span data-phrase="shape.small.many">Es ist nur {size}, {list} sind also größer als das Bild. Diese Größen werden
+      aufgeblasen statt gezeichnet, und ein Bild aufzublasen kann keine Details
+      zurückholen, die nie darin waren.</span>
+    <span data-phrase="shape.both">{shape} {small}</span>
+    <span data-phrase="preview.note">{name}, gezeichnet in jeder Größe, die in die Datei geht. Jedes Quadrat oben hat
+      seine echte Größe auf diesem Bildschirm, auf einem Schachbrett, damit Transparenz
+      als Transparenz zu sehen ist. Wenn das mit 16px ein grauer Fleck ist, braucht das
+      Symbol eine einfachere Zeichnung und nicht eine andere Einstellung.</span>
+    <span data-phrase="preview.large">{note} {list} Pixel werden auch geschrieben und hier weggelassen, weil ein Quadrat
+      dieser Größe nicht auf den Bildschirm passt &mdash; und weil es nie das ist, das
+      schiefgeht.</span>
+    <span data-phrase="progress.all">{count} werden gezeichnet…</span>
+    <span data-phrase="progress.one">{name} wird gezeichnet…</span>
+    <span data-phrase="progress.done">Fertig.</span>
+    <span data-phrase="results.single">{name} enthält {slots} und ist {size}.</span>
+    <span data-phrase="results.multi">{names}, {size} zusammen.</span>
+    <span data-phrase="results.batch">{count} in {n} Symboldateien umgewandelt, {size} insgesamt.</span>
+    <span data-phrase="results.andpack">{summary} Der Rest des Website-Satzes liegt im ZIP daneben.</span>
+    <span data-phrase="result.head">{slots}, {size}</span>
+    <span data-phrase="result.from">Aus {name}, {size}.</span>
+    <span data-phrase="result.icns">{detail} Legen Sie sie in ein Mac-Programmpaket, oder setzen Sie sie über
+      &bdquo;Informationen&ldquo; als Ordnersymbol.</span>
+    <span data-phrase="result.plus">{detail} Dazu {n} weitere Dateien für den Rest des Symbolsatzes.</span>
+    <span data-phrase="result.chip">{label} · {detail} · {size}</span>
+    <span data-phrase="entry.uncompressed">unkomprimiert</span>
+    <span data-phrase="result.download">Die .{kind} herunterladen</span>
+    <span data-phrase="copy.copy">Kopieren</span>
+    <span data-phrase="copy.copied">Kopiert</span>
+    <span data-phrase="copy.selected">Ausgewählt &mdash; Strg+C drücken</span>
+    <span data-phrase="head.comment">Symbole. favicon.ico gehört an die Wurzel der Website; Browser fragen ungefragt nach
+      dieser Adresse, sie braucht also kein eigenes &lt;link&gt;.</span>
+    <span data-phrase="manifest.name">Name Ihrer Website</span>
+    <span data-phrase="pack.favicon16">der Tab, für Browser, die ein PNG der .ico vorziehen</span>
+    <span data-phrase="pack.favicon32">die Lesezeichenleiste und eine angeheftete Windows-Verknüpfung</span>
+    <span data-phrase="pack.apple">iOS-Startbildschirm. Deckend gezeichnet: iOS macht aus Transparenz Schwarz</span>
+    <span data-phrase="pack.android192">der Android-Startbildschirm und die Installationsaufforderung</span>
+    <span data-phrase="pack.android512">der Startbildschirm, den eine Web-App beim Starten zeigt</span>
+    <span data-phrase="pack.maskable">dasselbe Symbol innerhalb des sicheren Bereichs, auf den ein adaptiver Launcher
+      zuschneidet</span>
+    <span data-phrase="pack.mstile">eine im Windows-Startmenü angeheftete Kachel</span>
+    <span data-phrase="readme.title">Website-Symbolsatz</span>
+    <span data-phrase="readme.made">Im Browser erzeugt auf abox.tools/image-to-ico/ &mdash; zum Erzeugen wurde nichts
+      hochgeladen, und nichts über diese Dateien wurde irgendwohin gesendet.</span>
+    <span data-phrase="readme.upload">Laden Sie jede Datei außer dieser und head.html an die Wurzel Ihrer Website, damit
+      sie unter /favicon.ico, /apple-touch-icon.png und so weiter antworten. Die Pfade in
+      site.webmanifest, browserconfig.xml und head.html gehen alle davon aus. Kommen sie
+      stattdessen in einen Unterordner, passen Sie diese drei Dateien an.</span>
+    <span data-phrase="readme.ico">das klassische Favicon, mit den Fassungen zu {sizes} Pixeln</span>
+    <span data-phrase="readme.manifest">gelesen von Android und von jeder Aufforderung, zum Startbildschirm hinzuzufügen</span>
+    <span data-phrase="readme.browserconfig">gelesen von einer im Windows-Startmenü angehefteten Kachel</span>
+    <span data-phrase="readme.head">die Markup-Zeilen, die in Ihr &lt;head&gt; gehören; keine Datei zum Hochladen</span>
+    <span data-phrase="readme.setname">Setzen Sie den Namen in site.webmanifest vor dem Hochladen auf den Namen Ihrer
+      Website, und die beiden Farben darin auf das, was zum Symbol passt.</span>
+    <span data-phrase="readme.noico">Hinweis: hier ist keine favicon.ico, weil die .ico-Ausgabe abgeschaltet war. Eine
+      Website will wirklich eine haben &mdash; es ist die Adresse, nach der Browser von
+      selbst fragen.</span>
     <span data-phrase="net.clean">Ihre Bilder sind nirgendwohin gegangen.
       {total} Dateien geladen, allesamt eigene dieser Seite. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

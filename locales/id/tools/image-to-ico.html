@@ -198,6 +198,166 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: bukan gambar yang bisa dibaca alat ini.</span>
+    <span data-phrase="load.undecodable">{name}: peramban ini tidak bisa mendekodenya.</span>
+    <span data-phrase="decode.failed">peramban ini tidak bisa mendekode gambarnya.</span>
+    <span data-phrase="png.refused">peramban ini menolak menulis PNG.</span>
+    <span data-phrase="ico.empty">sebuah ikon butuh setidaknya satu gambar di dalamnya.</span>
+    <span data-phrase="ico.zero">gambar ikon tidak bisa selebar nol piksel.</span>
+    <span data-phrase="ico.toobig">{size} tidak muat di .ico: formatnya menyimpan tiap sisi dalam satu bita, jadi 256
+      adalah yang terbesar.</span>
+    <span data-phrase="ico.pixels">penyangga pikselnya tidak cocok dengan ukuran yang disebutkannya.</span>
+    <span data-phrase="ico.short">bukan .ico: terlalu pendek untuk memuat tajuk.</span>
+    <span data-phrase="ico.type">bukan .ico: ruas tipenya bukan 1.</span>
+    <span data-phrase="ico.directory">direktorinya melewati ujung berkas.</span>
+    <span data-phrase="ico.entry">sebuah entri menunjuk ke luar ujung berkas.</span>
+    <span data-phrase="icns.empty">sebuah ikon butuh setidaknya satu gambar di dalamnya.</span>
+    <span data-phrase="icns.type">&ldquo;{type}&rdquo; bukan tipe icns empat huruf.</span>
+    <span data-phrase="icns.short">bukan .icns: terlalu pendek untuk memuat tajuk.</span>
+    <span data-phrase="icns.magic">bukan .icns: tanda tangannya bukan &ldquo;icns&rdquo;.</span>
+    <span data-phrase="icns.length">tajuknya menyebut {claimed} bita dan berkasnya {actual}.</span>
+    <span data-phrase="icns.element">sebuah elemen melewati ujung berkas.</span>
+    <span data-phrase="icns.elementlength">elemen {type} menyebut panjang yang tidak muat di berkas ini.</span>
+    <span data-phrase="size.bytes">{n} bita</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.image.one">1 gambar</span>
+    <span data-phrase="count.image.many">{n} gambar</span>
+    <span data-phrase="count.size.one">1 ukuran</span>
+    <span data-phrase="count.size.many">{n} ukuran</span>
+    <span data-phrase="count.slot.one">1 slot</span>
+    <span data-phrase="count.slot.many">{n} slot</span>
+    <span data-phrase="join.list">{a}, {b}</span>
+    <span data-phrase="join.and">{a} dan {b}</span>
+    <span data-phrase="join.andalso">{a} dan {b}</span>
+    <span data-phrase="row.square">{size} · {bytes} · persegi</span>
+    <span data-phrase="row.notsquare">{size} · {bytes} · tidak persegi</span>
+    <span data-phrase="row.show">Tampilkan yang ini di pratinjau</span>
+    <span data-phrase="row.remove">Keluarkan {name} dari daftar</span>
+    <span data-phrase="why.16">tab peramban, bilah alamat, dan ikon kecil di Explorer</span>
+    <span data-phrase="why.20">tampilan daftar Windows pada 125%</span>
+    <span data-phrase="why.24">bilah tugas Windows pada 150%</span>
+    <span data-phrase="why.32">desktop, bilah tugas, dan bilah markah peramban</span>
+    <span data-phrase="why.40">desktop pada 125%</span>
+    <span data-phrase="why.48">ikon sedang di Explorer, dan ukuran saat Google membaca favicon</span>
+    <span data-phrase="why.64">Explorer pada 200%, dan pengalih Alt-Tab</span>
+    <span data-phrase="why.96">ikon besar di Explorer</span>
+    <span data-phrase="why.128">ukuran jumbo lama, masih dibaca pemasang</span>
+    <span data-phrase="why.256">ikon ekstra besar di Explorer dan menu Start; yang terbesar yang muat di .ico</span>
+    <span data-phrase="preset.website.label">Favicon situs web</span>
+    <span data-phrase="preset.website.note">favicon.ico klasik yang diletakkan di akar sebuah situs. Tiga ukuran itulah seluruh
+      konvensinya: 16 untuk tab, 32 untuk markah dan pintasan Windows, 48 karena itu
+      ukuran saat Google membaca ikon sebuah situs.</span>
+    <span data-phrase="preset.app.label">Ikon aplikasi Windows</span>
+    <span data-phrase="preset.app.note">Yang diminta sebuah .exe atau pintasan, dan yang ada di dalam app.ico milik Visual
+      Studio sendiri: tiga ukuran shell ditambah 256 yang dipakai menu Start dan tampilan
+      ikon ekstra besar Explorer.</span>
+    <span data-phrase="preset.app-hidpi.label">Aplikasi Windows, semua skala</span>
+    <span data-phrase="preset.app-hidpi.note">Ikon yang sama dengan ukuran-ukuran antara yang diminta Windows pada penskalaan
+      layar 125%, 150% dan 200%. Berkasnya lebih besar, dan ini satu-satunya versi yang
+      tidak diam-diam disampel ulang di laptop ber-DPI tinggi.</span>
+    <span data-phrase="preset.legacy.label">Kompatibilitas maksimum</span>
+    <span data-phrase="preset.legacy.note">Tiga ukuran, semuanya disimpan dengan cara sebelum Vista, untuk pemasang, perangkat
+      tertanam dan perkakas shell lama yang membaca .ico sendiri dan tidak tahu apa itu
+      PNG di dalamnya.</span>
+    <span data-phrase="preset.custom.label">Pilih sendiri ukurannya</span>
+    <span data-phrase="preset.custom.note">Setiap ukuran yang bisa dimuat format ini. Mencentang semuanya jarang jadi jawaban
+      yang benar: tiap ukuran itu satu gambar utuh, dan tidak ada yang membaca ukuran yang
+      tidak diminta siapa-siapa.</span>
+    <span data-phrase="preset.pixels">{list} px</span>
+    <span data-phrase="preset.yours">yang Anda centang di bawah</span>
+    <span data-phrase="output.nothing">Tidak ada yang dicentang, jadi tidak ada yang dibuat.</span>
+    <span data-phrase="output.nosizes">Tidak ada ukuran yang dicentang, jadi .ico-nya akan kosong. Centang sebuah ukuran,
+      atau keluaran yang lain.</span>
+    <span data-phrase="output.line">Per gambar: {parts}.</span>
+    <span data-phrase="output.line.icns">Per gambar: {parts}. .icns digambar sampai 1024 piksel, jadi itu yang besar; itulah
+      yang diminta Mac.</span>
+    <span data-phrase="output.ico">satu .ico berisi {count}</span>
+    <span data-phrase="output.icns">satu .icns berisi seluruh {n} slot Apple</span>
+    <span data-phrase="output.pack">{n} PNG dan tiga berkas teks yang dibutuhkan sebuah situs</span>
+    <span data-phrase="sizes.none">Tidak ada yang dicentang, jadi berkasnya akan kosong.</span>
+    <span data-phrase="pick.none">Centang setidaknya satu ukuran.</span>
+    <span data-phrase="describe.line">{count} &mdash; {list} &mdash; {kind}. Gambar yang belum persegi akan {fit}.</span>
+    <span data-phrase="store.auto">disimpan dengan cara sebelum Vista sampai 64 piksel dan sebagai PNG di atasnya</span>
+    <span data-phrase="store.png">setiap ukuran disimpan sebagai PNG</span>
+    <span data-phrase="store.bmp">setiap ukuran disimpan dengan cara sebelum Vista</span>
+    <span data-phrase="fit.pad.transparent">diisi sampai persegi, dengan isiannya dibiarkan transparan</span>
+    <span data-phrase="fit.pad.colour">diisi sampai persegi dengan warna latar</span>
+    <span data-phrase="fit.crop">dipangkas ke persegi di bagian tengah</span>
+    <span data-phrase="fit.stretch">diregangkan sampai persegi</span>
+    <span data-phrase="storage.dib">{n} tanpa kompresi, yang jadinya tepat {size}</span>
+    <span data-phrase="storage.png">{n} sebagai PNG, yang ukurannya bergantung pada gambarnya</span>
+    <span data-phrase="storage.line">{parts}. {tail}</span>
+    <span data-phrase="storage.tail.bmp">Tidak ada isi berkas yang dikompresi, jadi ia terbuka di apa saja, termasuk
+      perangkat lunak yang lebih tua daripada Windows Vista.</span>
+    <span data-phrase="storage.tail.png">Tiap entrinya PNG, yang paling kecil yang bisa dicapai sebuah .ico, dan tidak
+      terbaca oleh Windows XP serta beberapa pemasang.</span>
+    <span data-phrase="storage.tail.auto">Ukuran-ukuran kecil disimpan dengan cara lama supaya apa pun bisa membacanya, dan
+      yang besar sebagai PNG karena di situlah penghematannya.</span>
+    <span data-phrase="shape.crop">{name} berukuran {size}, yang tidak persegi, sedangkan ikon selalu persegi. Yang
+      diambil adalah persegi di bagian tengah; ujung-ujungnya terpotong.</span>
+    <span data-phrase="shape.stretch">{name} berukuran {size}, yang tidak persegi, sedangkan ikon selalu persegi.
+      Gambarnya diregangkan, jadi akan tampak gepeng di setiap ukuran.</span>
+    <span data-phrase="shape.pad">{name} berukuran {size}, yang tidak persegi, sedangkan ikon selalu persegi.
+      Gambarnya diisi, jadi seluruh gambar tetap ada dan ada ruang di atas dan di
+      bawahnya.</span>
+    <span data-phrase="shape.small.one">Ukurannya cuma {size}, jadi {list} lebih besar daripada gambarnya. Ukuran itu
+      diperbesar, bukan digambar, dan memperbesar gambar tidak bisa mengembalikan detail
+      yang memang tidak pernah ada di dalamnya.</span>
+    <span data-phrase="shape.small.many">Ukurannya cuma {size}, jadi {list} lebih besar daripada gambarnya. Ukuran-ukuran itu
+      diperbesar, bukan digambar, dan memperbesar gambar tidak bisa mengembalikan detail
+      yang memang tidak pernah ada di dalamnya.</span>
+    <span data-phrase="shape.both">{shape} {small}</span>
+    <span data-phrase="preview.note">{name}, digambar pada tiap ukuran yang akan masuk ke berkas. Tiap persegi di atas
+      adalah ukuran aslinya di layar ini, di atas papan catur supaya transparansi terlihat
+      sebagai transparansi. Kalau yang 16px cuma noda kelabu, yang dibutuhkan ikonnya
+      adalah gambar yang lebih sederhana, bukan setelan yang lain.</span>
+    <span data-phrase="preview.large">{note} {list} piksel juga ditulis, dan tidak ditampilkan di sini karena persegi
+      sebesar itu tidak muat di layar &mdash; lagi pula bukan itu yang pernah bermasalah.</span>
+    <span data-phrase="progress.all">Menggambar {count}…</span>
+    <span data-phrase="progress.one">Menggambar {name}…</span>
+    <span data-phrase="progress.done">Selesai.</span>
+    <span data-phrase="results.single">{name} berisi {slots} dan besarnya {size}.</span>
+    <span data-phrase="results.multi">{names}, {size} berdua.</span>
+    <span data-phrase="results.batch">{count} diubah jadi {n} berkas ikon, {size} seluruhnya.</span>
+    <span data-phrase="results.andpack">{summary} Sisa set untuk situsnya ada di zip di sebelahnya.</span>
+    <span data-phrase="result.head">{slots}, {size}</span>
+    <span data-phrase="result.from">Dari {name}, {size}.</span>
+    <span data-phrase="result.icns">{detail} Taruh di dalam bundel aplikasi Mac, atau pasang sebagai ikon folder lewat
+      Get Info.</span>
+    <span data-phrase="result.plus">{detail} Ditambah {n} berkas lagi untuk sisa set ikonnya.</span>
+    <span data-phrase="result.chip">{label} · {detail} · {size}</span>
+    <span data-phrase="entry.uncompressed">tanpa kompresi</span>
+    <span data-phrase="result.download">Unduh .{kind}-nya</span>
+    <span data-phrase="copy.copy">Salin</span>
+    <span data-phrase="copy.copied">Tersalin</span>
+    <span data-phrase="copy.selected">Terpilih &mdash; tekan Ctrl+C</span>
+    <span data-phrase="head.comment">Ikon. favicon.ico diletakkan di akar situs; peramban meminta alamat itu tanpa diberi
+      tahu, jadi ia tidak butuh &lt;link&gt; sendiri.</span>
+    <span data-phrase="manifest.name">Nama situs Anda</span>
+    <span data-phrase="pack.favicon16">tab, untuk peramban yang lebih suka PNG daripada .ico</span>
+    <span data-phrase="pack.favicon32">bilah markah dan pintasan Windows yang disematkan</span>
+    <span data-phrase="pack.apple">layar utama iOS. Digambar buram: iOS mengubah transparansi jadi hitam</span>
+    <span data-phrase="pack.android192">layar utama Android, dan ajakan memasang</span>
+    <span data-phrase="pack.android512">layar pembuka yang ditampilkan aplikasi web saat mulai jalan</span>
+    <span data-phrase="pack.maskable">ikon yang sama di dalam area aman yang dipangkas peluncur adaptif</span>
+    <span data-phrase="pack.mstile">ubin yang disematkan di menu Start Windows</span>
+    <span data-phrase="readme.title">Set ikon untuk situs web</span>
+    <span data-phrase="readme.made">Dibuat di dalam peramban di abox.tools/image-to-ico/ &mdash; tidak ada yang diunggah
+      untuk membuatnya, dan tidak ada apa pun tentang berkas-berkas ini yang dikirim ke
+      mana pun.</span>
+    <span data-phrase="readme.upload">Unggah semua berkas kecuali yang ini dan head.html ke akar situs Anda, supaya mereka
+      menjawab di /favicon.ico, /apple-touch-icon.png dan seterusnya. Jalur di
+      site.webmanifest, browserconfig.xml dan head.html semuanya mengandaikan itu. Kalau
+      berkasnya masuk ke subfolder, sunting ketiga berkas itu supaya cocok.</span>
+    <span data-phrase="readme.ico">favicon klasik, berisi versi {sizes} piksel</span>
+    <span data-phrase="readme.manifest">dibaca Android dan oleh setiap ajakan menambahkan ke layar utama</span>
+    <span data-phrase="readme.browserconfig">dibaca oleh ubin yang disematkan di menu Start Windows</span>
+    <span data-phrase="readme.head">markah untuk ditempel ke &lt;head&gt; Anda; bukan berkas untuk diunggah</span>
+    <span data-phrase="readme.setname">Isi nama di site.webmanifest dengan nama situs Anda sebelum diunggah, dan dua warna
+      di dalamnya dengan yang cocok untuk ikonnya.</span>
+    <span data-phrase="readme.noico">Catatan: tidak ada favicon.ico di sini, karena keluaran .ico dimatikan. Sebuah situs
+      sungguh memerlukannya &mdash; itu alamat yang diminta peramban dengan sendirinya.</span>
     <span data-phrase="net.clean">gambar Anda tidak pergi ke mana pun. {total}
       file dimuat, semuanya milik halaman ini sendiri. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

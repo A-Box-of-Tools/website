@@ -7,12 +7,20 @@ import { PRESETS, SIZES, WHY, presetById, storageFor, dibBytes } from './sizes.j
 import { decode, release, square, pixels, png, FIT, NOMINAL_VECTOR } from './render.js';
 import { PACK_IMAGES, manifest, browserConfig, headSnippet, readme } from './pack.js';
 import {
-  bytes as humanBytes, dimensions, countOf, iconName, folderFor, describe,
+  bytes, dimensions, countOf as count, iconName, folderFor,
+  describe as describeSizes, listOf as joinList,
 } from './files.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
+
+// files.js and pack.js cannot reach the DOM, so the words come to them. Bound
+// once here rather than passed at every call site.
+const humanBytes = (n) => bytes(n, phrase);
+const countOf = (n, noun) => count(n, noun, phrase);
+const describe = (sizes, storage, fit, transparent) =>
+  describeSizes(sizes, storage, fit, transparent, phrase);
 
 const el = {
   dropzone: $('dropzone'),
@@ -114,7 +122,7 @@ async function addFiles(files) {
   try {
     for (const file of files) {
       if (!looksLikeImage(file)) {
-        failures.push(`${file.name}: not an image this tool can read.`);
+        failures.push(phrase('load.notimage', { name: file.name }));
         continue;
       }
 
@@ -122,7 +130,7 @@ async function addFiles(files) {
       const size = await probe(file, thumbUrl);
       if (!size) {
         URL.revokeObjectURL(thumbUrl);
-        failures.push(`${file.name}: this browser could not decode it.`);
+        failures.push(phrase('load.undecodable', { name: file.name }));
         continue;
       }
 
@@ -231,13 +239,13 @@ function buildPresets() {
     text.className = 'preset-choice-text';
 
     const strong = document.createElement('strong');
-    strong.textContent = preset.label;
+    strong.textContent = phrase(preset.label);
 
     const sizes = document.createElement('span');
     sizes.className = 'preset-sizes';
     sizes.textContent = preset.id === 'custom'
-      ? 'whichever you tick below'
-      : `${preset.sizes.join(', ')} px`;
+      ? phrase('preset.yours')
+      : phrase('preset.pixels', { list: joinList(preset.sizes, phrase) });
 
     text.append(strong, sizes);
     label.append(input, text);
@@ -286,7 +294,7 @@ function buildSizes() {
 
     const why = document.createElement('span');
     why.className = 'size-why';
-    why.textContent = WHY.get(px) ?? '';
+    why.textContent = phrase(WHY.get(px) ?? '');
 
     label.append(input, strong, why);
     el.sizeGrid.append(label);
@@ -331,8 +339,9 @@ function renderList() {
 
     const sub = document.createElement('p');
     sub.className = 'file-sub';
-    sub.textContent = `${dimensions(item.width, item.height)} · ${humanBytes(item.file.size)}`
-      + (item.width === item.height ? ' · square' : ' · not square');
+    sub.textContent = phrase(
+      item.width === item.height ? 'row.square' : 'row.notsquare',
+      { size: dimensions(item.width, item.height), bytes: humanBytes(item.file.size) });
 
     main.append(name, sub);
     wrap.append(thumb, main);
@@ -342,7 +351,7 @@ function renderList() {
     wrap.tabIndex = 0;
     wrap.setAttribute('role', 'button');
     wrap.setAttribute('aria-pressed', String(item.id === activeId));
-    wrap.title = 'Show this one in the preview';
+    wrap.title = phrase('row.show');
     wrap.addEventListener('click', () => setActive(item.id));
     wrap.addEventListener('keydown', (event) => {
       if (event.key === 'Enter' || event.key === ' ') {
@@ -355,8 +364,8 @@ function renderList() {
     remove.type = 'button';
     remove.className = 'row-remove';
     remove.textContent = '×';
-    remove.title = `Take ${item.file.name} off the list`;
-    remove.setAttribute('aria-label', `Take ${item.file.name} off the list`);
+    remove.title = phrase('row.remove', { name: item.file.name });
+    remove.setAttribute('aria-label', remove.title);
     remove.disabled = busy;
     remove.addEventListener('click', () => removeItem(item.id));
 
@@ -393,7 +402,7 @@ function renderSizes() {
 
 function renderNotes() {
   const preset = presetById(presetId);
-  el.presetNote.textContent = preset.note;
+  el.presetNote.textContent = phrase(preset.note);
 
   const want = wanted();
   for (const box of [el.wantIco, el.wantIcns, el.wantPack]) box.disabled = busy;
@@ -415,7 +424,7 @@ function renderNotes() {
   const sizes = sizeList();
   el.sizeSummary.textContent = sizes.length
     ? describe(sizes, el.storageSelect.value, el.fitSelect.value, isTransparent())
-    : 'Nothing is ticked, so there would be nothing in the file.';
+    : phrase('sizes.none');
   el.sizeSummary.classList.toggle('warn', sizes.length === 0 && el.wantIco.checked);
 
   el.storageNote.textContent = icoOff ? '' : storageSentence(sizes);
@@ -429,21 +438,16 @@ function renderNotes() {
 /** What this run is about to produce, named as files rather than as options. */
 function outputSentence(want) {
   if (!want.any) {
-    return el.wantIco.checked
-      ? 'No sizes are ticked, so there would be nothing in the .ico. Tick a size, or another output.'
-      : 'Nothing is ticked, so there is nothing to make.';
+    return phrase(el.wantIco.checked ? 'output.nosizes' : 'output.nothing');
   }
 
   const parts = [];
-  if (want.ico) parts.push(`one .ico holding ${countOf(sizeList().length).replace('image', 'size')}`);
-  if (want.icns) parts.push(`one .icns holding all ${ICNS_TYPES.length} of Apple's slots`);
-  if (want.pack) parts.push(`${PACK_IMAGES.length} PNGs and the three text files a website needs`);
+  if (want.ico) parts.push(phrase('output.ico', { count: countOf(sizeList().length, 'size') }));
+  if (want.icns) parts.push(phrase('output.icns', { n: ICNS_TYPES.length }));
+  if (want.pack) parts.push(phrase('output.pack', { n: PACK_IMAGES.length }));
 
-  const tail = want.icns
-    ? ' The .icns is drawn up to 1024 pixels, so it is the large one; that is what a Mac asks for.'
-    : '';
-
-  return `Per picture: ${parts.join(', ')}.${tail}`;
+  return phrase(want.icns ? 'output.line.icns' : 'output.line',
+    { parts: joinList(parts, phrase) });
 }
 
 /** What the storage choice costs, in the only figures that can be known up front. */
@@ -456,19 +460,16 @@ function storageSentence(sizes) {
   const parts = [];
   if (dib.length) {
     const total = dib.reduce((n, px) => n + dibBytes(px), 0);
-    parts.push(`${dib.length} uncompressed, which comes to exactly ${humanBytes(total)}`);
+    parts.push(phrase('storage.dib', { n: dib.length, size: humanBytes(total) }));
   }
   if (asPng.length) {
-    parts.push(`${asPng.length} as PNG, whose size depends on the picture`);
+    parts.push(phrase('storage.png', { n: asPng.length }));
   }
 
-  const tail = storage === 'bmp'
-    ? ' Nothing in the file is compressed, so it will open in anything, including software older than Windows Vista.'
-    : storage === 'png'
-      ? ' Every entry is a PNG, which is the smallest an .ico gets and is unreadable to Windows XP and to a few installers.'
-      : ' The small sizes are stored the old way so that anything can read them, and the large ones as PNG because that is where the saving is.';
-
-  return `${parts.join(', and ')}.${tail}`;
+  return phrase('storage.line', {
+    parts: joinList(parts, phrase, 'join.andalso'),
+    tail: phrase(`storage.tail.${storage}`),
+  });
 }
 
 /** What is worth saying about the picture that was chosen. */
@@ -476,28 +477,23 @@ function shapeSentence() {
   const item = activeItem();
   if (!item) return '';
 
-  const said = [];
-  if (item.width !== item.height) {
-    const fit = el.fitSelect.value;
-    said.push(
-      `${item.file.name} is ${dimensions(item.width, item.height)}, which is not square, `
-      + `and an icon always is. ${fit === FIT.crop
-        ? 'The square in the middle is being taken; the ends are cut off.'
-        : fit === FIT.stretch
-          ? 'It is being stretched, so it will look squashed at every size.'
-          : 'It is being padded out, so the whole picture is kept and there is space above and below it.'}`);
-  }
+  const size = dimensions(item.width, item.height);
+
+  // Each of these is a whole sentence rather than a clause with a verb
+  // spliced into it: "16px is larger" against "16px and 32px are larger"
+  // is one sentence in English and often two elsewhere.
+  const shape = item.width !== item.height
+    ? phrase(`shape.${el.fitSelect.value}`, { name: item.file.name, size })
+    : '';
 
   const small = tooSmall();
-  if (small.length) {
-    said.push(
-      `It is only ${dimensions(item.width, item.height)}, so ${small.join(', ')} `
-      + `${small.length === 1 ? 'is' : 'are'} larger than the picture. Those sizes are `
-      + `blown up rather than drawn, and blowing a picture up cannot put back detail `
-      + `that was never in it.`);
-  }
+  const blown = small.length
+    ? phrase(small.length === 1 ? 'shape.small.one' : 'shape.small.many',
+      { size, list: joinList(small, phrase) })
+    : '';
 
-  return said.join(' ');
+  if (shape && blown) return phrase('shape.both', { shape, small: blown });
+  return shape || blown;
 }
 
 /** Chosen sizes that are bigger than the source. */
@@ -620,17 +616,12 @@ async function drawPreview() {
   // The .icns goes up to 1024, which is four times the width of this panel and
   // tells you nothing anyway - the problem sizes are all at the other end.
   const large = drawn.filter((px) => px > PREVIEW_CEILING);
-  const largeNote = large.length
-    ? ` ${large.join(' and ')} pixels are written too, and left off here because a `
-      + `square that size would not fit on the screen - nor is it the one that ever goes wrong.`
-    : '';
+  const note = phrase('preview.note', { name: item.file.name });
 
   el.previewStrip.replaceChildren(...cells);
-  el.previewNote.textContent =
-    `${item.file.name}, drawn at each size that is going into the file. `
-    + `Every square above is its real size on this screen, on a checkerboard so that `
-    + `transparency shows as transparency. If the 16px one is a grey smudge, the icon `
-    + `needs a simpler drawing rather than a different setting.${largeNote}`;
+  el.previewNote.textContent = large.length
+    ? phrase('preview.large', { note, list: joinList(large, phrase, 'join.and') })
+    : note;
   el.preview.hidden = false;
 }
 
@@ -643,7 +634,7 @@ async function decodedFor(item) {
     activeFor = item.id;
     return activeDecoded;
   } catch {
-    showLoadError(`${item.file.name}: this browser could not decode it.`);
+    showLoadError(phrase('load.undecodable', { name: item.file.name }));
     return null;
   }
 }
@@ -667,12 +658,12 @@ async function makeAll() {
   render();
 
   el.progress.hidden = false;
-  setProgress(0, `Drawing ${countOf(items.length)}…`);
+  setProgress(0, phrase('progress.all', { count: countOf(items.length, 'image') }));
 
   const made = [];
 
   for (const [index, item] of items.entries()) {
-    setProgress(index / items.length, `Drawing ${item.file.name}…`);
+    setProgress(index / items.length, phrase('progress.one', { name: item.file.name }));
     // Yield so the progress line above is painted before the work starts.
     await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -687,7 +678,7 @@ async function makeAll() {
     }
   }
 
-  setProgress(1, 'Done.');
+  setProgress(1, phrase('progress.done'));
   busy = false;
   results = made;
   renderResults();
@@ -746,7 +737,7 @@ async function makeOne(item, decoded, want) {
       // disagreed, this is where it would show.
       entries: readIcoDirectory(ico).map((entry) => ({
         label: `${entry.width}px`,
-        detail: entry.kind === 'png' ? 'PNG' : 'uncompressed',
+        detail: entry.kind === 'png' ? 'PNG' : phrase('entry.uncompressed'),
         bytes: entry.bytes,
       })),
     });
@@ -798,10 +789,10 @@ async function makeOne(item, decoded, want) {
 
     const tile = options.background ?? '#ffffff';
     files.push(
-      { name: 'site.webmanifest', data: text(manifest({ name: 'Your site name', background: tile, theme: tile })) },
+      { name: 'site.webmanifest', data: text(manifest({ name: phrase('manifest.name'), background: tile, theme: tile })) },
       { name: 'browserconfig.xml', data: text(browserConfig(tile)) },
-      { name: 'head.html', data: text(headSnippet()) },
-      { name: 'README.txt', data: text(readme(iconName(item.file.name, 'ico', true), sizes, want.ico)) },
+      { name: 'head.html', data: text(headSnippet(phrase)) },
+      { name: 'README.txt', data: text(readme(iconName(item.file.name, 'ico', true), sizes, want.ico, phrase)) },
     );
   }
 
@@ -845,22 +836,29 @@ function renderResults() {
   el.downloadZip.onclick = () => save(makeZip(everything), 'icons.zip');
 
   el.snippet.hidden = !packed;
-  if (packed) el.snippetText.textContent = headSnippet();
+  if (packed) el.snippetText.textContent = headSnippet(phrase);
 }
 
 /** The line above the rows, said in files rather than in settings. */
 function summarise(rows, total, packed) {
-  const extra = packed ? ' The rest of the website set is in the zip beside it.' : '';
+  const said = results.length === 1
+    ? summariseOne(rows, total)
+    : phrase('results.batch', {
+      count: countOf(results.length, 'image'),
+      n: rows.length,
+      size: humanBytes(total),
+    });
 
-  if (results.length === 1) {
-    const named = rows.map((row) => row.name).join(' and ');
-    return rows.length === 1
-      ? `${named} holds ${slotsIn(rows[0])} and is ${humanBytes(total)}.${extra}`
-      : `${named}, ${humanBytes(total)} between them.${extra}`;
-  }
+  return packed ? phrase('results.andpack', { summary: said }) : said;
+}
 
-  return `${countOf(results.length)} converted into ${rows.length} icon files, `
-    + `${humanBytes(total)} in total.${extra}`;
+/** The one-picture case: one file named, or two named together. */
+function summariseOne(rows, total) {
+  const names = joinList(rows.map((row) => row.name), phrase, 'join.and');
+  return rows.length === 1
+    ? phrase('results.single',
+      { name: names, slots: slotsIn(rows[0]), size: humanBytes(total) })
+    : phrase('results.multi', { names, size: humanBytes(total) });
 }
 
 /**
@@ -872,7 +870,7 @@ function summarise(rows, total, packed) {
  * describing a file that does not exist.
  */
 const slotsIn = (row) =>
-  countOf(row.entries.length).replace('image', row.kind === 'icns' ? 'slot' : 'size');
+  countOf(row.entries.length, row.kind === 'icns' ? 'slot' : 'size');
 
 function resultRow(row) {
   const item = row.result.item;
@@ -888,23 +886,29 @@ function resultRow(row) {
 
   const headline = document.createElement('p');
   headline.className = 'result-headline';
-  headline.textContent = `${slotsIn(row)}, ${humanBytes(row.data.length)}`;
+  headline.textContent = phrase('result.head',
+    { slots: slotsIn(row), size: humanBytes(row.data.length) });
 
   const detail = document.createElement('p');
   detail.className = 'result-detail';
-  detail.textContent = `From ${item.file.name}, ${dimensions(item.width, item.height)}.`
-    + (row.kind === 'icns'
-      ? ' Drop it into a Mac application bundle, or set it as a folder icon with Get Info.'
-      : '')
-    + (row.result.packed && row.kind === 'ico'
-      ? ` Plus ${row.result.files.length - row.result.outputs.length} more files for the rest of the icon set.`
-      : '');
+  let said = phrase('result.from',
+    { name: item.file.name, size: dimensions(item.width, item.height) });
+  if (row.kind === 'icns') said = phrase('result.icns', { detail: said });
+  if (row.result.packed && row.kind === 'ico') {
+    said = phrase('result.plus',
+      { detail: said, n: row.result.files.length - row.result.outputs.length });
+  }
+  detail.textContent = said;
 
   const list = document.createElement('ul');
   list.className = 'result-entries';
   for (const entry of row.entries) {
     const chip = document.createElement('li');
-    chip.textContent = `${entry.label} · ${entry.detail} · ${humanBytes(entry.bytes)}`;
+    chip.textContent = phrase('result.chip', {
+      label: entry.label,
+      detail: entry.detail,
+      size: humanBytes(entry.bytes),
+    });
     list.append(chip);
   }
 
@@ -915,7 +919,7 @@ function resultRow(row) {
 
   const download = document.createElement('a');
   download.className = 'primary';
-  download.textContent = `Download the .${row.kind}`;
+  download.textContent = phrase('result.download', { kind: row.kind });
   download.href = urlFor(new Blob([row.data], {
     type: row.kind === 'icns' ? 'image/icns' : 'image/x-icon',
   }));
@@ -960,8 +964,8 @@ function clearResults() {
 
 el.copySnippet.addEventListener('click', async () => {
   try {
-    await navigator.clipboard.writeText(headSnippet());
-    el.copySnippet.textContent = 'Copied';
+    await navigator.clipboard.writeText(headSnippet(phrase));
+    el.copySnippet.textContent = phrase('copy.copied');
   } catch {
     // Clipboard access can be refused outright, and there is nothing to fix.
     // Selecting the block is a route that always works.
@@ -970,9 +974,9 @@ el.copySnippet.addEventListener('click', async () => {
     const selection = window.getSelection();
     selection.removeAllRanges();
     selection.addRange(range);
-    el.copySnippet.textContent = 'Selected - press Ctrl+C';
+    el.copySnippet.textContent = phrase('copy.selected');
   }
-  setTimeout(() => { el.copySnippet.textContent = 'Copy'; }, 2500);
+  setTimeout(() => { el.copySnippet.textContent = phrase('copy.copy'); }, 2500);
 });
 
 /* ------------------------------------------------------------- the controls */

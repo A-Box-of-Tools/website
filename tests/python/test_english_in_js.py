@@ -74,7 +74,7 @@ BASELINE = {
     'heic-to-jpg': 35,
     'id-photo': 71,
     'image-to-data-uri': 20,
-    'image-to-ico': 71,
+    'image-to-ico': 6,
     'images-to-pdf': 26,
     'images-to-video': 26,
     'merge-pdf': 60,
