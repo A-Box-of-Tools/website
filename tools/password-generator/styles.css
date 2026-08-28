@@ -10,6 +10,15 @@
   border-bottom: 1px solid var(--border);
 }
 
+/* The underline separates the tabs from what they switch. With this card's
+   explanation folded away the strip is the last thing in the box, and the line
+   is then drawn across nothing with the card's own padding under it - which
+   reads as a panel that failed to load rather than as a finished card. */
+.card > .tabs:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
 .tab {
   background: none;
   border: 1px solid transparent;
