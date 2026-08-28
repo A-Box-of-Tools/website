@@ -26,61 +26,80 @@ import { PdfString } from '../../tools/merge-pdf/src/objects.js';
 
 /* ============================================================ parseRanges */
 
+/**
+ * A stand-in for `phrase`, so a test can say which sentence was chosen.
+ *
+ * The real one reads the markup; these modules take whichever they are given.
+ * This one writes the key and its blanks, which is what these tests are about -
+ * the English is body.html's, in fifteen languages.
+ */
+const say = (key, values = {}) => {
+  const filled = Object.entries(values).map(([k, v]) => `${k}=${v}`).join(' ');
+  return filled ? `${key} ${filled}` : key;
+};
+
 test('a list of numbers and ranges', () => {
-  const { pages, error } = parseRanges('1-3, 8, 12-14', 20);
+  const { pages, error } = parseRanges('1-3, 8, 12-14', 20, say);
   assert.equal(error, '');
   assert.deepEqual(pages, [1, 2, 3, 8, 12, 13, 14]);
 });
 
 test('either end of a range may be missing', () => {
-  assert.deepEqual(parseRanges('-3', 10).pages, [1, 2, 3]);
-  assert.deepEqual(parseRanges('8-', 10).pages, [8, 9, 10]);
+  assert.deepEqual(parseRanges('-3', 10, say).pages, [1, 2, 3]);
+  assert.deepEqual(parseRanges('8-', 10, say).pages, [8, 9, 10]);
 });
 
 test('a backwards range is read as the range it names', () => {
-  assert.deepEqual(parseRanges('7-5', 10).pages, [5, 6, 7]);
+  assert.deepEqual(parseRanges('7-5', 10, say).pages, [5, 6, 7]);
 });
 
 test('overlapping pieces are one set, in order', () => {
-  assert.deepEqual(parseRanges('5, 1-3, 2', 10).pages, [1, 2, 3, 5]);
+  assert.deepEqual(parseRanges('5, 1-3, 2', 10, say).pages, [1, 2, 3, 5]);
 });
 
 test('odd, even, all and last', () => {
-  assert.deepEqual(parseRanges('odd', 7).pages, [1, 3, 5, 7]);
-  assert.deepEqual(parseRanges('even', 7).pages, [2, 4, 6]);
-  assert.deepEqual(parseRanges('all', 3).pages, [1, 2, 3]);
-  assert.deepEqual(parseRanges('last', 9).pages, [9]);
+  assert.deepEqual(parseRanges('odd', 7, say).pages, [1, 3, 5, 7]);
+  assert.deepEqual(parseRanges('even', 7, say).pages, [2, 4, 6]);
+  assert.deepEqual(parseRanges('all', 3, say).pages, [1, 2, 3]);
+  assert.deepEqual(parseRanges('last', 9, say).pages, [9]);
 });
 
 test('nothing typed is not an error, and selects nothing', () => {
-  const { pages, error } = parseRanges('   ', 10);
+  const { pages, error } = parseRanges('   ', 10, say);
   assert.deepEqual(pages, []);
   assert.equal(error, '');
 });
 
 test('a page past the end is reported rather than clamped', () => {
-  const { pages, error } = parseRanges('2, 40', 10);
+  const { pages, error } = parseRanges('2, 40', 10, say);
   assert.deepEqual(pages, [2]);
-  assert.match(error, /40/);
+  // The range error names the whole list and how many pages there are;
+  // both go into the sentence as blanks rather than being spliced.
+  assert.match(error, /^range\.bad\.one /);
+  assert.match(error, /total=range\.total\.many n=10/);
 });
 
 test('what could not be read is named in the error', () => {
-  const { error } = parseRanges('1-3, chapter two', 10);
-  assert.match(error, /chapter two/);
+  const { error } = parseRanges('1-3, chapter two', 10, say);
+  assert.match(error, /^range\.bad\.one /);
+  assert.match(error, /list=chapter two/);
 });
 
 /* ========================================================= describeRanges */
 
 test('a set is written back the way a person would write it', () => {
-  assert.equal(describeRanges([1, 2, 3, 8, 12, 13, 14]), '1-3, 8, 12-14');
-  assert.equal(describeRanges([4]), '4');
-  assert.equal(describeRanges([]), 'none');
+  assert.equal(describeRanges([1, 2, 3, 8, 12, 13, 14], say),
+    'range.run from=1 to=3, 8, range.run from=12 to=14');
+  assert.equal(describeRanges([4], say), '4');
+  assert.equal(describeRanges([], say), 'range.none');
 });
 
 test('two in a row are listed rather than hyphenated', () => {
   // "3-4" is more characters than "3, 4" is clearer, and a two-page run reads
   // as a pair rather than a range.
-  assert.equal(describeRanges([3, 4, 9]), '3, 4, 9');
+  // A run of two is listed rather than hyphenated, and the phrase that
+  // joins the pair is the language's, not this file's.
+  assert.equal(describeRanges([3, 4, 9], say), 'range.pair from=3 to=4, 9');
 });
 
 /* =============================================================== splitInto */
@@ -222,10 +241,10 @@ test('a plain title comes back as itself too', () => {
 /* ============================================================== the words */
 
 test('sizes and counts', () => {
-  assert.equal(sizeText(0), '0 bytes');
-  assert.equal(sizeText(2048), '2.0 KB');
-  assert.equal(count(1, 'page'), '1 page');
-  assert.equal(count(4, 'page'), '4 pages');
+  assert.equal(sizeText(0, say), 'size.bytes n=0');
+  assert.equal(sizeText(2048, say), 'size.kb n=2.0');
+  assert.equal(count(1, 'page', say), 'count.page.one n=1');
+  assert.equal(count(4, 'page', say), 'count.page.many n=4');
 });
 
 test('a long file name keeps its end, where the useful part is', () => {

@@ -85,6 +85,18 @@ const pick = (source, index, rotate = 0) => ({ source, index, rotate });
 
 /* ============================================================== readPages */
 
+/**
+ * A stand-in for `phrase`, so a test can say which sentence was chosen.
+ *
+ * The real one reads the markup; these modules take whichever they are given.
+ * This one writes the key and its blanks, which is what these tests are about -
+ * the English is body.html's, in fifteen languages.
+ */
+const say = (key, values = {}) => {
+  const filled = Object.entries(values).map(([k, v]) => `${k}=${v}`).join(' ');
+  return filled ? `${key} ${filled}` : key;
+};
+
 test('every page is found, in reading order', async () => {
   const source = await fixture();
   assert.equal(source.pages.length, 4);
@@ -122,7 +134,7 @@ test('a page listed twice in one tree is walked once', async () => {
 
 test('pages come out in the order they were asked for', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 2), pick(source, 0)]);
+  const { build } = assemble([pick(source, 2), pick(source, 0)], { t: say });
   const pages = outputPages(build);
 
   assert.equal(pages.length, 2);
@@ -132,7 +144,7 @@ test('pages come out in the order they were asked for', async () => {
 
 test('what a page inherited is written onto the copy', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 0)]);
+  const { build } = assemble([pick(source, 0)], { t: say });
   const [page] = outputPages(build);
 
   // Neither of these is on the source page: both live on the tree node above
@@ -146,7 +158,7 @@ test('what a page inherited is written onto the copy', async () => {
 
 test('the new page belongs to the new tree', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 0)]);
+  const { build } = assemble([pick(source, 0)], { t: say });
   const catalog = build.resolve(build.trailer.get('Root'));
   const tree = build.resolve(catalog.get('Pages'));
   const [page] = outputPages(build);
@@ -158,7 +170,7 @@ test('the new page belongs to the new tree', async () => {
 
 test('turning a page adds to the rotation it already had', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 3, 90), pick(source, 0, -90)]);
+  const { build } = assemble([pick(source, 3, 90), pick(source, 0, -90)], { t: say });
   const [turned, back] = outputPages(build);
 
   assert.equal(build.resolve(turned.get('Rotate')), 180); // 90 in the file, 90 more
@@ -167,7 +179,7 @@ test('turning a page adds to the rotation it already had', async () => {
 
 test('one page does not bring the other three with it', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 0)]);
+  const { build } = assemble([pick(source, 0)], { t: say });
 
   const streams = [...build.objects.values()].filter((v) => v instanceof PdfStream);
   assert.equal(streams.length, 1, 'only the one page\'s content stream was copied');
@@ -179,7 +191,7 @@ test('one page does not bring the other three with it', async () => {
 
 test('a font shared by two pages is copied once', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 0), pick(source, 1)]);
+  const { build } = assemble([pick(source, 0), pick(source, 1)], { t: say });
 
   const fonts = [...build.objects.values()]
     .filter((value) => value instanceof Map && isName(value.get('Type'), 'Font'));
@@ -188,7 +200,7 @@ test('a font shared by two pages is copied once', async () => {
 
 test('the same page twice is two pages sharing everything under them', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 0), pick(source, 0)]);
+  const { build } = assemble([pick(source, 0), pick(source, 0)], { t: say });
   const pages = outputPages(build);
 
   assert.equal(pages.length, 2);
@@ -211,7 +223,7 @@ test('a link follows its page to where it now is', async () => {
   const source = await fixture();
   // Page one carries the link; page three is what it points at, and it lands
   // second here rather than third.
-  const { build, links } = assemble([pick(source, 0), pick(source, 2)]);
+  const { build, links } = assemble([pick(source, 0), pick(source, 2)], { t: say });
   const pages = outputPages(build);
 
   assert.equal(links, 1);
@@ -226,19 +238,20 @@ test('a link follows its page to where it now is', async () => {
 test('a link to a page that did not come along keeps its place and loses its action', async () => {
   const source = await fixture();
   // Page two's link points at page four, which is not in this output.
-  const { build, notes } = assemble([pick(source, 1)]);
+  const { build, notes } = assemble([pick(source, 1)], { t: say });
   const [page] = outputPages(build);
   const link = build.resolve(build.resolve(page.get('Annots'))[0]);
 
   assert.ok(link instanceof Map, 'the annotation is still there');
   assert.equal(link.get('A'), undefined);
   assert.equal(link.get('Dest'), undefined);
-  assert.ok(notes.some((note) => /point/.test(note)), notes.join(' / '));
+  assert.ok(notes.some((note) => note.startsWith('notes.brokenlinks')),
+    notes.join(' / '));
 });
 
 test('an annotation points back at the page it is on', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 0)]);
+  const { build } = assemble([pick(source, 0)], { t: say });
   const [page] = outputPages(build);
   const link = build.resolve(build.resolve(page.get('Annots'))[0]);
   assert.equal(build.resolve(link.get('P')), page);
@@ -252,21 +265,22 @@ test('an action that is not going to a page is not copied', async () => {
     '<< /Type /Annot /Subtype /Link /A << /S /JavaScript /JS (app.alert\\(1\\)) >> >>',
     '<< /Type /Annot /Subtype /Link /A << /S /URI /URI (https://example.org/) >> >>',
   ]));
-  const { build, notes } = assemble([pick(readSource(doc, 'js.pdf'), 0)]);
+  const { build, notes } = assemble([pick(readSource(doc, 'js.pdf'), 0)], { t: say });
   const [page] = outputPages(build);
   const [script, web] = build.resolve(page.get('Annots')).map((ref) => build.resolve(ref));
 
   assert.equal(script.get('A'), undefined, 'the JavaScript action is gone');
   assert.ok(isName(build.resolve(build.resolve(web.get('A')).get('S')), 'URI'),
     'the web link is kept');
-  assert.ok(notes.some((note) => /JavaScript/.test(note)), notes.join(' / '));
+  assert.ok(notes.some((note) => note.startsWith('notes.actions.')),
+    notes.join(' / '));
 });
 
 /* ============================================================= bookmarks */
 
 test('bookmarks whose pages survived are kept, and follow them', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 2), pick(source, 0)]);
+  const { build } = assemble([pick(source, 2), pick(source, 0)], { t: say });
   const catalog = build.resolve(build.trailer.get('Root'));
   const outlines = build.resolve(catalog.get('Outlines'));
 
@@ -282,7 +296,7 @@ test('bookmarks whose pages survived are kept, and follow them', async () => {
 test('a bookmark whose page is gone but whose chapter is not stays as a heading', async () => {
   const source = await fixture();
   // Page four survives; page three, which "Two" points at, does not.
-  const { build } = assemble([pick(source, 3)]);
+  const { build } = assemble([pick(source, 3)], { t: say });
   const catalog = build.resolve(build.trailer.get('Root'));
   const titles = walkOutline(build, build.resolve(catalog.get('Outlines')));
 
@@ -293,14 +307,14 @@ test('a bookmark whose page is gone but whose chapter is not stays as a heading'
 
 test('no bookmark has a page left, so there is no outline at all', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 1)]); // page two is in no bookmark
+  const { build } = assemble([pick(source, 1)], { t: say }); // page two is in no bookmark
   const catalog = build.resolve(build.trailer.get('Root'));
   assert.equal(catalog.get('Outlines'), undefined);
 });
 
 test('bookmarks can be turned off', async () => {
   const source = await fixture();
-  const { build } = assemble([pick(source, 0)], { bookmarks: false });
+  const { build } = assemble([pick(source, 0)], { bookmarks: false, t: say });
   const catalog = build.resolve(build.trailer.get('Root'));
   assert.equal(catalog.get('Outlines'), undefined);
 });
@@ -308,7 +322,7 @@ test('bookmarks can be turned off', async () => {
 test('merging two files puts each one under a heading of its own', async () => {
   const one = await fixture('first.pdf');
   const two = await fixture('second.pdf');
-  const { build } = assemble([pick(one, 0), pick(two, 0)]);
+  const { build } = assemble([pick(one, 0), pick(two, 0)], { t: say });
   const catalog = build.resolve(build.trailer.get('Root'));
   const titles = walkOutline(build, build.resolve(catalog.get('Outlines')));
 
@@ -373,7 +387,7 @@ test('a form field is carried across and listed in the catalogue', async () => {
     '<< /Type /Annot /Subtype /Widget /Rect [0 0 50 20] /Parent 5 0 R >>',
     '<< /FT /Tx /T (name) /V (Ada) /Kids [4 0 R] >>',
   ]));
-  const { build, fields } = assemble([pick(readSource(doc, 'form.pdf'), 0)]);
+  const { build, fields } = assemble([pick(readSource(doc, 'form.pdf'), 0)], { t: say });
   const catalog = build.resolve(build.trailer.get('Root'));
   const form = build.resolve(catalog.get('AcroForm'));
 
@@ -392,7 +406,7 @@ test('a merged document opens again with the pages it was given', async () => {
   const two = await fixture('two.pdf');
   const entries = [pick(one, 0), pick(two, 3), pick(one, 2)];
 
-  const { build } = assemble(entries);
+  const { build } = assemble(entries, { t: say });
   const blob = await writeDocument(build);
   const reopened = await PdfDocument.open(new Uint8Array(await blob.arrayBuffer()));
 
@@ -410,7 +424,7 @@ test('produce writes one file per part, and checks each one', async () => {
     stem: 'long.pdf',
     suffix: 'edited',
     bookmarks: true,
-  });
+  }, { t: say });
 
   assert.equal(result.ok, true, result.problem);
   assert.equal(result.files.length, 2);
@@ -428,7 +442,7 @@ test('one part is one file and no archive', async () => {
   const source = await fixture();
   const result = await produce([pick(source, 0)], {
     split: { mode: 'single' }, stem: 'four.pdf', suffix: 'edited', bookmarks: true,
-  });
+  }, { t: say });
 
   assert.equal(result.files.length, 1);
   assert.equal(result.archive, null);
@@ -436,5 +450,5 @@ test('one part is one file and no archive', async () => {
 });
 
 test('a document with no pages is refused rather than written', async () => {
-  assert.throws(() => assemble([]), /no pages/);
+  assert.throws(() => assemble([], { t: say }), /^Error: assemble\.empty$/);
 });

@@ -171,6 +171,108 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 sayfa</span>
+    <span data-phrase="count.page.many">{n} sayfa</span>
+    <span data-phrase="count.file.one">1 dosya</span>
+    <span data-phrase="count.file.many">{n} dosya</span>
+    <span data-phrase="count.link.one">1 bağlantı</span>
+    <span data-phrase="count.link.many">{n} bağlantı</span>
+    <span data-phrase="count.field.one">1 form alanı</span>
+    <span data-phrase="count.field.many">{n} form alanı</span>
+    <span data-phrase="count.document.one">1 belge</span>
+    <span data-phrase="count.document.many">{n} belge</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDF</span>
+    <span data-phrase="size.bytes">{n} bayt</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: PDF değil, dolayısıyla içinde taşınacak sayfa yok.</span>
+    <span data-phrase="load.nopages">{name}: açıldı, ama içinde hiç sayfa bulunamadı.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} dosyasının çapraz başvuru tablosu içeriğiyle uyuşmuyordu, bu yüzden nesneler
+      tek tek taranarak okundu. Bu bir onarımdır ve işe yaradı, ama sonucu bir yere
+      göndermeden önce kontrol edin.</span>
+    <span data-phrase="read.locked">bu PDF şifreli. Bir belgeden parola kaldırmak, sayfalarını yerinden oynatmaktan
+      başka bir iştir ve bu araç onu arkanızdan yapmaz.</span>
+    <span data-phrase="read.cancelled">iptal edildi.</span>
+    <span data-phrase="read.unreadable">okunamadı ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · bunlardan {used} tanesi hâlâ sırada</span>
+    <span data-phrase="source.remove">{name} dosyasını ve bütün sayfalarını çıkar</span>
+    <span data-phrase="page.drag">{n}. sayfayı taşımak için sürükleyin</span>
+    <span data-phrase="page.turned">Bu araç tarafından döndürüldü</span>
+    <span data-phrase="page.remove">{n}. sayfayı çıkar</span>
+    <span data-phrase="page.from">{name}, sayfa {n}</span>
+    <span data-phrase="page.anticlockwise">{n}. sayfayı saat yönünün tersine döndür</span>
+    <span data-phrase="page.clockwise">{n}. sayfayı saat yönünde döndür</span>
+    <span data-phrase="page.earlier">{n}. sayfayı öne al</span>
+    <span data-phrase="page.later">{n}. sayfayı geriye al</span>
+    <span data-phrase="range.none">hiçbiri</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">Bu bir sayfa numarası ya da sayfa aralığı değil: {list}. {total} Şöyle yazın: 1-3,
+      8, 12-.</span>
+    <span data-phrase="range.bad.many">Bunlar sayfa numarası ya da sayfa aralığı değil: {list}. {total} Şöyle yazın: 1-3,
+      8, 12-.</span>
+    <span data-phrase="range.total.one">1 sayfa var.</span>
+    <span data-phrase="range.total.many">{n} sayfa var.</span>
+    <span data-phrase="range.empty">Önce birkaç sayfa söyleyin &mdash; 1-3, 8, 12- gibi.</span>
+    <span data-phrase="plan.from">{files} içinden {pages}</span>
+    <span data-phrase="plan.one">tek bir PDF olarak</span>
+    <span data-phrase="plan.many">{files} olarak, tek bir ZIP içinde verilir; böylece {n} kez yerine bir kez
+      kaydedilir</span>
+    <span data-phrase="plan.nosplit">&mdash; ama o kutudaki hiçbir şey aralık içindeki bir sayfayı göstermiyor,
+      dolayısıyla tek bir dosya olarak çıkardı</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">Belgeyi oluştur</span>
+    <span data-phrase="run.many">{n} belge oluştur</span>
+    <span data-phrase="list.count">sırada {pages}</span>
+    <span data-phrase="list.empty">Hiç sayfa kalmadı. Bir dosya ekleyin ya da &laquo;Geldikleri hâle döndür&raquo;
+      düğmesine basın.</span>
+    <span data-phrase="progress.copying">Sayfalar kopyalanıyor</span>
+    <span data-phrase="progress.writing">{what} yazılıyor</span>
+    <span data-phrase="progress.checking">Yazılanlar denetleniyor</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">İptal edildi. Hiçbir şey değişmedi; yukarıdaki sayfalar hâlâ bıraktığınız gibi
+      duruyor.</span>
+    <span data-phrase="run.failed">Bu işe yaramadı: {detail}</span>
+    <span data-phrase="result.one">Tek belge, {size}</span>
+    <span data-phrase="result.many">{documents}, toplam {size}</span>
+    <span data-phrase="result.sub">{files} içinden {pages}.</span>
+    <span data-phrase="result.checked">Denetlendi: her dosya bu sayfa tarafından yeniden açıldı ve sayfaları sayıldı.</span>
+    <span data-phrase="result.unchecked">Bu çalışma denetimden geçmedi &mdash; {problem}. Özgün dosyalarınızı saklayın.</span>
+    <span data-phrase="result.zip">{n} tanesini birden ZIP olarak indir</span>
+    <span data-phrase="result.download">İndir</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">biten dosya {found} ile açılıyor, oysa 1 istenmişti</span>
+    <span data-phrase="check.wrong.many">biten dosya {found} ile açılıyor, oysa {expected} istenmişti</span>
+    <span data-phrase="check.ok">burada yeniden açıldı ve {pages} sayıldı</span>
+    <span data-phrase="check.noopen">biten dosya bir daha açılmadı ({detail})</span>
+    <span data-phrase="facts.links">{links} birlikte geldi; belgenin içine işaret edenler, sayfalarını şimdi bulunduğu
+      yere kadar izlesin diye yeniden yazıldı.</span>
+    <span data-phrase="facts.fields">{fields} birlikte geldi, doldurulmuş hâlleriyle.</span>
+    <span data-phrase="facts.dropped">Aktarılmadı, çünkü artık var olmayan bir sırayı anlatıyor: etiketlenmiş okuma sırası
+      ağacı, sayfa etiketleri (&laquo;iii, iv, 1, 2&raquo;), gömülü ekler ve belge
+      düzeyindeki her JavaScript. Üretici satırı, oluşturma tarihi ya da onu yapan aracın
+      adı da öyle.</span>
+    <span data-phrase="notes.brokenlinks">{links}, bu dosyada olmayan bir sayfayı gösteriyordu; okuru yanlış bir yere
+      göndermektense arkalarında hiçbir şey olmadan yerlerinde bırakıldılar.</span>
+    <span data-phrase="notes.actions.one">&laquo;bir sayfaya git&raquo; de &laquo;bir web adresi aç&raquo; da olmayan 1 eylem
+      &mdash; bu JavaScript'i çalıştır, bu dosyayı aç, bu formu gönder &mdash;
+      kopyalanmadı.</span>
+    <span data-phrase="notes.actions.many">&laquo;bir sayfaya git&raquo; de &laquo;bir web adresi aç&raquo; da olmayan {n}
+      eylem &mdash; bu JavaScript'i çalıştır, bu dosyayı aç, bu formu gönder &mdash;
+      kopyalanmadı.</span>
+    <span data-phrase="notes.samename.one">1 form alanı, bu dosyaların birden fazlasında aynı adı taşıyor ({names}). Bir
+      okuyucu aynı adı paylaşan alanları tek alan sayar, dolayısıyla birini doldurmak
+      diğerini de doldurur.</span>
+    <span data-phrase="notes.samename.many">{n} form alanı, bu dosyaların birden fazlasında aynı adı taşıyor ({names}). Bir
+      okuyucu aynı adı paylaşan alanları tek alan sayar, dolayısıyla birini doldurmak
+      diğerini de doldurur.</span>
+    <span data-phrase="notes.name">&laquo;{name}&raquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">içinde hiç sayfa olmayan bir belge, belge değildir</span>
     <span data-phrase="read.nocatalogue">Bu dosyanın belge kataloğu yok, dolayısıyla yeniden yazılacak bir şey de yok. Ya PDF
       değil ya da burada onarılabilecek olanın ötesinde bozulmuş.</span>
     <span data-phrase="read.noheader">Bu bir PDF gibi başlamıyor: %PDF- başlığı yok.</span>

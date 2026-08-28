@@ -159,6 +159,93 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1쪽</span>
+    <span data-phrase="count.page.many">{n}쪽</span>
+    <span data-phrase="count.file.one">파일 1개</span>
+    <span data-phrase="count.file.many">파일 {n}개</span>
+    <span data-phrase="count.link.one">링크 1개</span>
+    <span data-phrase="count.link.many">링크 {n}개</span>
+    <span data-phrase="count.field.one">양식 칸 1개</span>
+    <span data-phrase="count.field.many">양식 칸 {n}개</span>
+    <span data-phrase="count.document.one">문서 1개</span>
+    <span data-phrase="count.document.many">문서 {n}개</span>
+    <span data-phrase="count.pdf.one">PDF 1개</span>
+    <span data-phrase="count.pdf.many">PDF {n}개</span>
+    <span data-phrase="size.bytes">{n}바이트</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: PDF가 아니어서 안에 옮길 쪽이 없습니다.</span>
+    <span data-phrase="load.nopages">{name}: 열리기는 했지만 안에서 쪽을 하나도 찾지 못했습니다.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name}은 상호 참조 표가 그 내용과 맞지 않아서, 객체를 하나씩 훑어 읽었습니다. 그것은 수리이고 잘 되기는 했지만, 어디로 보내기 전에 결과를
+      확인하세요.</span>
+    <span data-phrase="read.locked">이 PDF는 암호화되어 있습니다. 문서에서 암호를 벗기는 것은 쪽을 옮기는 것과는 다른 일이고, 이 도구는 그것을 몰래 하지 않습니다.</span>
+    <span data-phrase="read.cancelled">취소했습니다.</span>
+    <span data-phrase="read.unreadable">읽지 못했습니다({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · 그중 {used}이 아직 순서에 남아 있음</span>
+    <span data-phrase="source.remove">{name}과 그 모든 쪽을 빼기</span>
+    <span data-phrase="page.drag">{n}번째 쪽을 옮기려면 끌기</span>
+    <span data-phrase="page.turned">이 도구가 돌렸습니다</span>
+    <span data-phrase="page.remove">{n}번째 쪽 빼기</span>
+    <span data-phrase="page.from">{name}, {n}쪽</span>
+    <span data-phrase="page.anticlockwise">{n}번째 쪽을 시계 반대 방향으로 돌리기</span>
+    <span data-phrase="page.clockwise">{n}번째 쪽을 시계 방향으로 돌리기</span>
+    <span data-phrase="page.earlier">{n}번째 쪽을 앞으로</span>
+    <span data-phrase="page.later">{n}번째 쪽을 뒤로</span>
+    <span data-phrase="range.none">없음</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">이것은 쪽 번호도 쪽 범위도 아닙니다: {list}. {total} 1-3, 8, 12- 처럼 써 주세요.</span>
+    <span data-phrase="range.bad.many">이것들은 쪽 번호도 쪽 범위도 아닙니다: {list}. {total} 1-3, 8, 12- 처럼 써 주세요.</span>
+    <span data-phrase="range.total.one">쪽은 1개입니다.</span>
+    <span data-phrase="range.total.many">쪽은 {n}개입니다.</span>
+    <span data-phrase="range.empty">먼저 쪽을 몇 개 적어 주세요 &mdash; 1-3, 8, 12- 같이.</span>
+    <span data-phrase="plan.from">{files}에서 {pages}</span>
+    <span data-phrase="plan.one">PDF 하나로</span>
+    <span data-phrase="plan.many">{files}로, 한 ZIP에 담아 드리므로 {n}번이 아니라 한 번만 저장하면 됩니다</span>
+    <span data-phrase="plan.nosplit">&mdash; 그런데 그 칸에 범위 안의 쪽을 가리키는 것이 없어서 파일 하나로 나옵니다</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">문서 만들기</span>
+    <span data-phrase="run.many">문서 {n}개 만들기</span>
+    <span data-phrase="list.count">순서에 {pages}</span>
+    <span data-phrase="list.empty">남은 쪽이 없습니다. 파일을 더하거나 &laquo;처음 상태로&raquo;를 누르세요.</span>
+    <span data-phrase="progress.copying">쪽을 복사하는 중</span>
+    <span data-phrase="progress.writing">{what} 쓰는 중</span>
+    <span data-phrase="progress.checking">쓰인 것을 확인하는 중</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">취소했습니다. 아무것도 바뀌지 않았고, 위의 쪽들은 두고 가신 그대로입니다.</span>
+    <span data-phrase="run.failed">이건 잘 안 됐습니다: {detail}</span>
+    <span data-phrase="result.one">문서 하나, {size}</span>
+    <span data-phrase="result.many">{documents}, 모두 합쳐 {size}</span>
+    <span data-phrase="result.sub">{files}에서 {pages}.</span>
+    <span data-phrase="result.checked">확인했습니다: 이 페이지가 파일마다 다시 열어 쪽을 세었습니다.</span>
+    <span data-phrase="result.unchecked">이번 작업은 확인이 안 맞습니다 &mdash; {problem}. 원본을 가지고 계세요.</span>
+    <span data-phrase="result.zip">{n}개 모두 ZIP으로 내려받기</span>
+    <span data-phrase="result.download">내려받기</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">완성된 파일이 {found}으로 열립니다. 1쪽을 요청했는데도요</span>
+    <span data-phrase="check.wrong.many">완성된 파일이 {found}으로 열립니다. {expected}쪽을 요청했는데도요</span>
+    <span data-phrase="check.ok">여기서 다시 열어 {pages}을 세었습니다</span>
+    <span data-phrase="check.noopen">완성된 파일이 다시 열리지 않았습니다({detail})</span>
+    <span data-phrase="facts.links">{links}이 함께 넘어왔고, 문서 안쪽을 가리키는 것들은 자기 쪽이 지금 있는 자리를 따라가도록 다시 쓰였습니다.</span>
+    <span data-phrase="facts.fields">{fields}이 함께 넘어왔고, 채워져 있던 그대로입니다.</span>
+    <span data-phrase="facts.dropped">넘어오지 않는 것들. 더 이상 존재하지 않는 순서를 설명하기 때문입니다: 태그가 붙은 읽기 순서 트리, 쪽 이름표(&laquo;iii, iv, 1,
+      2&raquo;), 끼워 넣은 첨부, 그리고 문서 수준의 모든 JavaScript. 만든 프로그램 줄도, 만든 날짜도, 이 파일을 만든 도구의 이름도
+      넣지 않습니다.</span>
+    <span data-phrase="notes.brokenlinks">{links}이 이 파일에 없는 쪽을 가리키고 있어서, 읽는 사람을 엉뚱한 곳으로 보내는 대신 뒤에 아무것도 없는 채로 제자리에 두었습니다.</span>
+    <span data-phrase="notes.actions.one">&laquo;어느 쪽으로 가기&raquo;도 &laquo;웹 주소 열기&raquo;도 아닌 동작 1개 &mdash; 이 JavaScript 실행, 이
+      파일 열기, 이 양식 보내기 &mdash; 는 복사하지 않았습니다.</span>
+    <span data-phrase="notes.actions.many">&laquo;어느 쪽으로 가기&raquo;도 &laquo;웹 주소 열기&raquo;도 아닌 동작 {n}개 &mdash; 이 JavaScript 실행,
+      이 파일 열기, 이 양식 보내기 &mdash; 는 복사하지 않았습니다.</span>
+    <span data-phrase="notes.samename.one">이 파일들 가운데 둘 이상에서 같은 이름을 쓰는 양식 칸이 1개 있습니다({names}). 읽는 프로그램은 이름이 같은 칸을 한 칸으로 다루므로,
+      하나를 채우면 다른 하나도 채워집니다.</span>
+    <span data-phrase="notes.samename.many">이 파일들 가운데 둘 이상에서 같은 이름을 쓰는 양식 칸이 {n}개 있습니다({names}). 읽는 프로그램은 이름이 같은 칸을 한 칸으로 다루므로,
+      하나를 채우면 다른 하나도 채워집니다.</span>
+    <span data-phrase="notes.name">&laquo;{name}&raquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">쪽이 하나도 없는 문서는 문서가 아닙니다</span>
     <span data-phrase="read.nocatalogue">이 파일에는 문서 카탈로그가 없어서 다시 쓸 것이 없습니다. PDF가 아니거나, 여기서 고칠 수 있는 정도를 넘어 손상된 것입니다.</span>
     <span data-phrase="read.noheader">PDF처럼 시작하지 않습니다. %PDF- 헤더가 없습니다.</span>
     <span data-phrase="net.clean">문서는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이 사이트의

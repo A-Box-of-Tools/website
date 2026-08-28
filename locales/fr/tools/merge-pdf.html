@@ -164,6 +164,109 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 page</span>
+    <span data-phrase="count.page.many">{n} pages</span>
+    <span data-phrase="count.file.one">1 fichier</span>
+    <span data-phrase="count.file.many">{n} fichiers</span>
+    <span data-phrase="count.link.one">1 lien</span>
+    <span data-phrase="count.link.many">{n} liens</span>
+    <span data-phrase="count.field.one">1 champ de formulaire</span>
+    <span data-phrase="count.field.many">{n} champs de formulaire</span>
+    <span data-phrase="count.document.one">1 document</span>
+    <span data-phrase="count.document.many">{n} documents</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDF</span>
+    <span data-phrase="size.bytes">{n} octets</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="load.notpdf">{name} : pas un PDF, il n'y a donc pas de pages dedans à déplacer.</span>
+    <span data-phrase="load.nopages">{name} : ouvert, mais aucune page n'a pu y être trouvée.</span>
+    <span data-phrase="load.failed">{name} : {reason}</span>
+    <span data-phrase="load.repaired">{name} avait une table de références croisées qui ne correspondait pas à son
+      contenu, il a donc été lu en cherchant les objets un à un. C'est une réparation,
+      elle a marché, mais vérifiez le résultat avant de l'envoyer où que ce soit.</span>
+    <span data-phrase="read.locked">ce PDF est chiffré. Retirer un mot de passe à un document est un autre travail que
+      déplacer ses pages, et cet outil ne le fera pas dans votre dos.</span>
+    <span data-phrase="read.cancelled">annulé.</span>
+    <span data-phrase="read.unreadable">n'a pas pu être lu ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · dont {used} encore dans l'ordre</span>
+    <span data-phrase="source.remove">Retirer {name} et toutes ses pages</span>
+    <span data-phrase="page.drag">Faire glisser pour déplacer la page {n}</span>
+    <span data-phrase="page.turned">Tournée par cet outil</span>
+    <span data-phrase="page.remove">Retirer la page {n}</span>
+    <span data-phrase="page.from">{name}, page {n}</span>
+    <span data-phrase="page.anticlockwise">Tourner la page {n} dans le sens inverse des aiguilles d'une montre</span>
+    <span data-phrase="page.clockwise">Tourner la page {n} dans le sens des aiguilles d'une montre</span>
+    <span data-phrase="page.earlier">Avancer la page {n}</span>
+    <span data-phrase="page.later">Reculer la page {n}</span>
+    <span data-phrase="range.none">aucune</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">Ce n'est ni un numéro de page ni une plage de pages : {list}. {total} Écrivez-les
+      comme 1-3, 8, 12-.</span>
+    <span data-phrase="range.bad.many">Ce ne sont ni des numéros de page ni des plages de pages : {list}. {total}
+      Écrivez-les comme 1-3, 8, 12-.</span>
+    <span data-phrase="range.total.one">Il y a 1 page.</span>
+    <span data-phrase="range.total.many">Il y a {n} pages.</span>
+    <span data-phrase="range.empty">Nommez d'abord quelques pages &mdash; 1-3, 8, 12- et ainsi de suite.</span>
+    <span data-phrase="plan.from">{pages} venant de {files}</span>
+    <span data-phrase="plan.one">en un seul PDF</span>
+    <span data-phrase="plan.many">en {files}, remis dans un seul ZIP pour que ce soit un seul enregistrement plutôt
+      que {n}</span>
+    <span data-phrase="plan.nosplit">&mdash; mais rien dans cette case ne nomme une page dans la plage, cela sortirait
+      donc en un seul fichier</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">Fabriquer le document</span>
+    <span data-phrase="run.many">Fabriquer {n} documents</span>
+    <span data-phrase="list.count">{pages} dans l'ordre</span>
+    <span data-phrase="list.empty">Plus aucune page. Ajoutez un fichier, ou appuyez sur &laquo; Revenir à l'ordre
+      d'origine &raquo;.</span>
+    <span data-phrase="progress.copying">Copie des pages</span>
+    <span data-phrase="progress.writing">Écriture de {what}</span>
+    <span data-phrase="progress.checking">Vérification de ce qui a été écrit</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">Annulé. Rien n'a été changé ; les pages ci-dessus sont encore exactement telles que
+      vous les avez laissées.</span>
+    <span data-phrase="run.failed">Cela n'a pas marché : {detail}</span>
+    <span data-phrase="result.one">Un document, {size}</span>
+    <span data-phrase="result.many">{documents}, {size} en tout</span>
+    <span data-phrase="result.sub">{pages} venant de {files}.</span>
+    <span data-phrase="result.checked">Vérifié : chaque fichier a été rouvert par cette page et ses pages comptées.</span>
+    <span data-phrase="result.unchecked">Cette exécution ne se vérifie pas &mdash; {problem}. Gardez vos originaux.</span>
+    <span data-phrase="result.zip">Tout télécharger ({n}) en un ZIP</span>
+    <span data-phrase="result.download">Télécharger</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">le fichier fini s'ouvre avec {found} là où 1 était demandée</span>
+    <span data-phrase="check.wrong.many">le fichier fini s'ouvre avec {found} là où {expected} étaient demandées</span>
+    <span data-phrase="check.ok">rouvert ici et {pages} comptées</span>
+    <span data-phrase="check.noopen">le fichier fini n'a pas pu être rouvert ({detail})</span>
+    <span data-phrase="facts.links">{links} sont passés, et ceux qui pointent à l'intérieur du document ont été réécrits
+      pour suivre leur page là où elle est maintenant.</span>
+    <span data-phrase="facts.fields">{fields} sont passés, remplis comme ils étaient.</span>
+    <span data-phrase="facts.dropped">Non repris, parce que cela décrit un ordre qui n'existe plus : l'arbre de l'ordre de
+      lecture balisé, les étiquettes de page (&laquo; iii, iv, 1, 2 &raquo;), les pièces
+      jointes intégrées, et tout JavaScript au niveau du document. Pas plus qu'une ligne
+      de producteur, une date de création, ou un nom pour l'outil qui l'a fait.</span>
+    <span data-phrase="notes.brokenlinks">{links} pointaient vers une page qui n'est pas dans ce fichier, ils ont donc été
+      laissés en place sans rien derrière eux plutôt que d'envoyer le lecteur au mauvais
+      endroit.</span>
+    <span data-phrase="notes.actions.one">1 action qui n'était ni &laquo; aller à une page &raquo; ni &laquo; ouvrir une
+      adresse web &raquo; &mdash; exécuter ce JavaScript, ouvrir ce fichier, envoyer ce
+      formulaire &mdash; n'a pas été copiée.</span>
+    <span data-phrase="notes.actions.many">{n} actions qui n'étaient ni &laquo; aller à une page &raquo; ni &laquo; ouvrir une
+      adresse web &raquo; &mdash; exécuter ce JavaScript, ouvrir ce fichier, envoyer ce
+      formulaire &mdash; n'ont pas été copiées.</span>
+    <span data-phrase="notes.samename.one">1 champ de formulaire porte le même nom dans plus d'un de ces fichiers ({names}). Un
+      lecteur traite les champs qui partagent un nom comme un seul champ, donc remplir
+      l'un remplira l'autre.</span>
+    <span data-phrase="notes.samename.many">{n} champs de formulaire portent le même nom dans plus d'un de ces fichiers
+      ({names}). Un lecteur traite les champs qui partagent un nom comme un seul champ,
+      donc remplir l'un remplira l'autre.</span>
+    <span data-phrase="notes.name">&laquo; {name} &raquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">un document sans aucune page dedans n'est pas un document</span>
     <span data-phrase="read.nocatalogue">Ce fichier n&rsquo;a pas de catalogue de document, il n&rsquo;y a donc rien à
       réécrire. Ou ce n&rsquo;est pas un PDF, ou il est abîmé au-delà de ce qui se répare
       ici.</span>

@@ -164,6 +164,108 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 pagina</span>
+    <span data-phrase="count.page.many">{n} pagina's</span>
+    <span data-phrase="count.file.one">1 bestand</span>
+    <span data-phrase="count.file.many">{n} bestanden</span>
+    <span data-phrase="count.link.one">1 link</span>
+    <span data-phrase="count.link.many">{n} links</span>
+    <span data-phrase="count.field.one">1 formulierveld</span>
+    <span data-phrase="count.field.many">{n} formuliervelden</span>
+    <span data-phrase="count.document.one">1 document</span>
+    <span data-phrase="count.document.many">{n} documenten</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDF's</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: geen PDF, dus er zitten geen pagina's in om te verplaatsen.</span>
+    <span data-phrase="load.nopages">{name}: geopend, maar er waren geen pagina's in te vinden.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} had een kruisverwijzingstabel die niet bij de inhoud paste, en is daarom
+      gelezen door de objecten één voor één af te zoeken. Dat is een reparatie, en hij is
+      gelukt, maar controleer het resultaat voordat je het ergens heen stuurt.</span>
+    <span data-phrase="read.locked">deze PDF is versleuteld. Een wachtwoord van een document halen is ander werk dan de
+      pagina's ervan verschuiven, en dit gereedschap doet het niet achter je rug om.</span>
+    <span data-phrase="read.cancelled">geannuleerd.</span>
+    <span data-phrase="read.unreadable">kon niet gelezen worden ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · waarvan {used} nog in de volgorde</span>
+    <span data-phrase="source.remove">{name} en al zijn pagina's verwijderen</span>
+    <span data-phrase="page.drag">Sleep om pagina {n} te verplaatsen</span>
+    <span data-phrase="page.turned">Door dit gereedschap gedraaid</span>
+    <span data-phrase="page.remove">Pagina {n} verwijderen</span>
+    <span data-phrase="page.from">{name}, pagina {n}</span>
+    <span data-phrase="page.anticlockwise">Pagina {n} linksom draaien</span>
+    <span data-phrase="page.clockwise">Pagina {n} rechtsom draaien</span>
+    <span data-phrase="page.earlier">Pagina {n} naar voren</span>
+    <span data-phrase="page.later">Pagina {n} naar achteren</span>
+    <span data-phrase="range.none">geen</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">Dit is geen paginanummer en geen paginabereik: {list}. {total} Schrijf ze als 1-3,
+      8, 12-.</span>
+    <span data-phrase="range.bad.many">Dit zijn geen paginanummers en geen paginabereiken: {list}. {total} Schrijf ze als
+      1-3, 8, 12-.</span>
+    <span data-phrase="range.total.one">Er is 1 pagina.</span>
+    <span data-phrase="range.total.many">Er zijn {n} pagina's.</span>
+    <span data-phrase="range.empty">Noem eerst een paar pagina's &mdash; 1-3, 8, 12- enzovoort.</span>
+    <span data-phrase="plan.from">{pages} uit {files}</span>
+    <span data-phrase="plan.one">als één PDF</span>
+    <span data-phrase="plan.many">als {files}, in één zip overhandigd zodat het één keer opslaan is in plaats van {n}</span>
+    <span data-phrase="plan.nosplit">&mdash; maar niets in dat vakje noemt een pagina binnen het bereik, dus het zou als
+      één bestand uitkomen</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">Het document maken</span>
+    <span data-phrase="run.many">{n} documenten maken</span>
+    <span data-phrase="list.count">{pages} in de volgorde</span>
+    <span data-phrase="list.empty">Geen pagina's meer over. Voeg een bestand toe, of druk op &laquo;Terug naar hoe ze
+      kwamen&raquo;.</span>
+    <span data-phrase="progress.copying">Pagina's kopiëren</span>
+    <span data-phrase="progress.writing">{what} schrijven</span>
+    <span data-phrase="progress.checking">Controleren wat er geschreven is</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">Geannuleerd. Er is niets veranderd; de pagina's hierboven staan nog precies zoals je
+      ze liet.</span>
+    <span data-phrase="run.failed">Dat werkte niet: {detail}</span>
+    <span data-phrase="result.one">Eén document, {size}</span>
+    <span data-phrase="result.many">{documents}, samen {size}</span>
+    <span data-phrase="result.sub">{pages} uit {files}.</span>
+    <span data-phrase="result.checked">Gecontroleerd: elk bestand is door deze pagina opnieuw geopend en de pagina's zijn
+      geteld.</span>
+    <span data-phrase="result.unchecked">Deze ronde klopt niet &mdash; {problem}. Hou je originelen.</span>
+    <span data-phrase="result.zip">Alle {n} als zip downloaden</span>
+    <span data-phrase="result.download">Downloaden</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">het afgeronde bestand opent met {found} waar er 1 gevraagd was</span>
+    <span data-phrase="check.wrong.many">het afgeronde bestand opent met {found} waar er {expected} gevraagd waren</span>
+    <span data-phrase="check.ok">hier opnieuw geopend en {pages} geteld</span>
+    <span data-phrase="check.noopen">het afgeronde bestand ging niet meer open ({detail})</span>
+    <span data-phrase="facts.links">{links} kwamen mee, en die die naar het document zelf wijzen zijn herschreven zodat
+      ze hun pagina volgen naar waar die nu staat.</span>
+    <span data-phrase="facts.fields">{fields} kwamen mee, ingevuld zoals ze waren.</span>
+    <span data-phrase="facts.dropped">Niet meegenomen, omdat het een volgorde beschrijft die niet meer bestaat: de boom
+      met de getagde leesvolgorde, paginalabels (&laquo;iii, iv, 1, 2&raquo;), ingesloten
+      bijlagen, en elk JavaScript op documentniveau. Evenmin een producerregel, een
+      aanmaakdatum of een naam voor het gereedschap dat het gemaakt heeft.</span>
+    <span data-phrase="notes.brokenlinks">{links} wezen naar een pagina die niet in dit bestand zit, dus die zijn op hun plek
+      gelaten met niets erachter in plaats van de lezer ergens verkeerd heen te sturen.</span>
+    <span data-phrase="notes.actions.one">1 actie die noch &laquo;ga naar een pagina&raquo; noch &laquo;open een
+      webadres&raquo; was &mdash; voer dit JavaScript uit, open dit bestand, verstuur dit
+      formulier &mdash; is niet gekopieerd.</span>
+    <span data-phrase="notes.actions.many">{n} acties die noch &laquo;ga naar een pagina&raquo; noch &laquo;open een
+      webadres&raquo; waren &mdash; voer dit JavaScript uit, open dit bestand, verstuur
+      dit formulier &mdash; zijn niet gekopieerd.</span>
+    <span data-phrase="notes.samename.one">1 formulierveld heeft in meer dan een van deze bestanden dezelfde naam ({names}).
+      Een lezer behandelt velden met dezelfde naam als één veld, dus het invullen van het
+      een vult het ander ook in.</span>
+    <span data-phrase="notes.samename.many">{n} formuliervelden hebben in meer dan een van deze bestanden dezelfde naam
+      ({names}). Een lezer behandelt velden met dezelfde naam als één veld, dus het
+      invullen van het een vult het ander ook in.</span>
+    <span data-phrase="notes.name">&laquo;{name}&raquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">een document zonder pagina's erin is geen document</span>
     <span data-phrase="read.nocatalogue">Dit bestand heeft geen documentcatalogus, dus er valt niets te herschrijven. Het is
       óf geen PDF, óf verder beschadigd dan hier te repareren valt.</span>
     <span data-phrase="read.noheader">Dit begint niet als een PDF: er is geen %PDF--kop.</span>

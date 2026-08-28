@@ -161,6 +161,104 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 page</span>
+    <span data-phrase="count.page.many">{n} pages</span>
+    <span data-phrase="count.file.one">1 file</span>
+    <span data-phrase="count.file.many">{n} files</span>
+    <span data-phrase="count.link.one">1 link</span>
+    <span data-phrase="count.link.many">{n} links</span>
+    <span data-phrase="count.field.one">1 form field</span>
+    <span data-phrase="count.field.many">{n} form fields</span>
+    <span data-phrase="count.document.one">1 document</span>
+    <span data-phrase="count.document.many">{n} documents</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDFs</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: not a PDF, so there are no pages in it to move.</span>
+    <span data-phrase="load.nopages">{name}: opened, but no pages could be found in it.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} had a cross-reference table that did not match its contents, so it was read
+      by scanning for objects instead. That is a repair, and it worked, but check the
+      result before you send it anywhere.</span>
+    <span data-phrase="read.locked">this PDF is encrypted. Taking a password off a document is a different job from
+      moving its pages around, and this tool will not do it behind your back.</span>
+    <span data-phrase="read.cancelled">cancelled.</span>
+    <span data-phrase="read.unreadable">could not be read ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · {used} of them still in the running order</span>
+    <span data-phrase="source.remove">Remove {name} and all of its pages</span>
+    <span data-phrase="page.drag">Drag to move page {n}</span>
+    <span data-phrase="page.turned">Turned by this tool</span>
+    <span data-phrase="page.remove">Remove page {n}</span>
+    <span data-phrase="page.from">{name}, page {n}</span>
+    <span data-phrase="page.anticlockwise">Turn page {n} anticlockwise</span>
+    <span data-phrase="page.clockwise">Turn page {n} clockwise</span>
+    <span data-phrase="page.earlier">Move page {n} earlier</span>
+    <span data-phrase="page.later">Move page {n} later</span>
+    <span data-phrase="range.none">none</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">This is not a page number or a range of them: {list}. {total} Write them as 1-3, 8,
+      12-.</span>
+    <span data-phrase="range.bad.many">These are not a page number or a range of them: {list}. {total} Write them as 1-3,
+      8, 12-.</span>
+    <span data-phrase="range.total.one">There is 1 page.</span>
+    <span data-phrase="range.total.many">There are {n} pages.</span>
+    <span data-phrase="range.empty">Name some pages first &mdash; 1-3, 8, 12- and so on.</span>
+    <span data-phrase="plan.from">{pages} from {files}</span>
+    <span data-phrase="plan.one">as one PDF</span>
+    <span data-phrase="plan.many">as {files}, handed over in one ZIP so it is one save rather than {n}</span>
+    <span data-phrase="plan.nosplit">&mdash; but nothing in that box names a page in range, so it would come out as one
+      file</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">Build the document</span>
+    <span data-phrase="run.many">Build {n} documents</span>
+    <span data-phrase="list.count">{pages} in the running order</span>
+    <span data-phrase="list.empty">No pages left. Add a file, or press &ldquo;Back to how they came&rdquo;.</span>
+    <span data-phrase="progress.copying">Copying pages</span>
+    <span data-phrase="progress.writing">Writing {what}</span>
+    <span data-phrase="progress.checking">Checking what was written</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">Cancelled. Nothing was changed; the pages above are still exactly as you left them.</span>
+    <span data-phrase="run.failed">That did not work: {detail}</span>
+    <span data-phrase="result.one">One document, {size}</span>
+    <span data-phrase="result.many">{documents}, {size} altogether</span>
+    <span data-phrase="result.sub">{pages} from {files}.</span>
+    <span data-phrase="result.checked">Checked: every file was opened again by this page and its pages counted.</span>
+    <span data-phrase="result.unchecked">This run did not check out &mdash; {problem}. Keep your originals.</span>
+    <span data-phrase="result.zip">Download all {n} as a ZIP</span>
+    <span data-phrase="result.download">Download</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">the finished file opens with {found} where 1 was asked for</span>
+    <span data-phrase="check.wrong.many">the finished file opens with {found} where {expected} were asked for</span>
+    <span data-phrase="check.ok">opened again here and counted {pages}</span>
+    <span data-phrase="check.noopen">the finished file would not open again ({detail})</span>
+    <span data-phrase="facts.links">{links} came across, with the ones that point inside the document rewritten to
+      follow their page to where it now is.</span>
+    <span data-phrase="facts.fields">{fields} came across, filled in as they were.</span>
+    <span data-phrase="facts.dropped">Not carried across, because it describes an order that no longer exists: the
+      tagged-reading-order tree, page labels (&ldquo;iii, iv, 1, 2&rdquo;), embedded
+      attachments, and any document-level JavaScript. Nor is any producer line, creation
+      date, or name for the tool that made it.</span>
+    <span data-phrase="notes.brokenlinks">{links} pointed at a page that is not in this file, so they were left in place with
+      nothing behind them rather than sending the reader somewhere wrong.</span>
+    <span data-phrase="notes.actions.one">1 action that was neither &ldquo;go to a page&rdquo; nor &ldquo;open a web
+      address&rdquo; &mdash; run this JavaScript, open this file, submit this form &mdash;
+      was not copied.</span>
+    <span data-phrase="notes.actions.many">{n} actions that were neither &ldquo;go to a page&rdquo; nor &ldquo;open a web
+      address&rdquo; &mdash; run this JavaScript, open this file, submit this form &mdash;
+      were not copied.</span>
+    <span data-phrase="notes.samename.one">1 form field has the same name in more than one of these files ({names}). A reader
+      treats fields sharing a name as one field, so filling one will fill the other.</span>
+    <span data-phrase="notes.samename.many">{n} form fields have the same name in more than one of these files ({names}). A
+      reader treats fields sharing a name as one field, so filling one will fill the
+      other.</span>
+    <span data-phrase="notes.name">&ldquo;{name}&rdquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">a document with no pages in it is not a document</span>
     <span data-phrase="read.nocatalogue">This file has no document catalogue, so there is nothing to rewrite. It is either
       not a PDF or damaged past what can be repaired here.</span>
     <span data-phrase="read.noheader">This does not start like a PDF: there is no %PDF- header.</span>

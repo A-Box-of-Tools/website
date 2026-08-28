@@ -164,6 +164,111 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 Seite</span>
+    <span data-phrase="count.page.many">{n} Seiten</span>
+    <span data-phrase="count.file.one">1 Datei</span>
+    <span data-phrase="count.file.many">{n} Dateien</span>
+    <span data-phrase="count.link.one">1 Verweis</span>
+    <span data-phrase="count.link.many">{n} Verweise</span>
+    <span data-phrase="count.field.one">1 Formularfeld</span>
+    <span data-phrase="count.field.many">{n} Formularfelder</span>
+    <span data-phrase="count.document.one">1 Dokument</span>
+    <span data-phrase="count.document.many">{n} Dokumente</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDFs</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: keine PDF, es sind also keine Seiten darin, die sich verschieben ließen.</span>
+    <span data-phrase="load.nopages">{name}: geöffnet, aber es waren keine Seiten darin zu finden.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} hatte eine Querverweistabelle, die nicht zu ihrem Inhalt passte, und wurde
+      deshalb durch Absuchen nach Objekten gelesen. Das ist eine Reparatur, sie hat
+      funktioniert, aber prüfen Sie das Ergebnis, bevor Sie es irgendwohin schicken.</span>
+    <span data-phrase="read.locked">diese PDF ist verschlüsselt. Einem Dokument ein Passwort abzunehmen ist eine andere
+      Arbeit, als seine Seiten umzusortieren, und dieses Werkzeug tut es nicht hinter
+      Ihrem Rücken.</span>
+    <span data-phrase="read.cancelled">abgebrochen.</span>
+    <span data-phrase="read.unreadable">konnte nicht gelesen werden ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · davon {used} noch in der Reihenfolge</span>
+    <span data-phrase="source.remove">{name} und alle ihre Seiten entfernen</span>
+    <span data-phrase="page.drag">Ziehen, um Seite {n} zu verschieben</span>
+    <span data-phrase="page.turned">Von diesem Werkzeug gedreht</span>
+    <span data-phrase="page.remove">Seite {n} entfernen</span>
+    <span data-phrase="page.from">{name}, Seite {n}</span>
+    <span data-phrase="page.anticlockwise">Seite {n} gegen den Uhrzeigersinn drehen</span>
+    <span data-phrase="page.clockwise">Seite {n} im Uhrzeigersinn drehen</span>
+    <span data-phrase="page.earlier">Seite {n} nach vorn</span>
+    <span data-phrase="page.later">Seite {n} nach hinten</span>
+    <span data-phrase="range.none">keine</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">Das ist keine Seitenzahl und kein Bereich von Seiten: {list}. {total} Schreiben Sie
+      sie als 1-3, 8, 12-.</span>
+    <span data-phrase="range.bad.many">Das sind keine Seitenzahlen und keine Bereiche von Seiten: {list}. {total} Schreiben
+      Sie sie als 1-3, 8, 12-.</span>
+    <span data-phrase="range.total.one">Es gibt 1 Seite.</span>
+    <span data-phrase="range.total.many">Es gibt {n} Seiten.</span>
+    <span data-phrase="range.empty">Nennen Sie zuerst ein paar Seiten &mdash; 1-3, 8, 12- und so weiter.</span>
+    <span data-phrase="plan.from">{pages} aus {files}</span>
+    <span data-phrase="plan.one">als eine PDF</span>
+    <span data-phrase="plan.many">als {files}, in einem ZIP übergeben, damit es ein Speichern ist statt {n}</span>
+    <span data-phrase="plan.nosplit">&mdash; aber nichts in diesem Feld nennt eine Seite im Bereich, es käme also als
+      eine Datei heraus</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">Das Dokument erzeugen</span>
+    <span data-phrase="run.many">{n} Dokumente erzeugen</span>
+    <span data-phrase="list.count">{pages} in der Reihenfolge</span>
+    <span data-phrase="list.empty">Keine Seiten mehr übrig. Fügen Sie eine Datei hinzu, oder drücken Sie &bdquo;Zurück
+      zum Original&ldquo;.</span>
+    <span data-phrase="progress.copying">Seiten werden kopiert</span>
+    <span data-phrase="progress.writing">{what} wird geschrieben</span>
+    <span data-phrase="progress.checking">Es wird geprüft, was geschrieben wurde</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">Abgebrochen. Nichts wurde geändert; die Seiten oben sind noch genau so, wie Sie sie
+      gelassen haben.</span>
+    <span data-phrase="run.failed">Das hat nicht funktioniert: {detail}</span>
+    <span data-phrase="result.one">Ein Dokument, {size}</span>
+    <span data-phrase="result.many">{documents}, {size} zusammen</span>
+    <span data-phrase="result.sub">{pages} aus {files}.</span>
+    <span data-phrase="result.checked">Geprüft: jede Datei wurde von dieser Seite noch einmal geöffnet und ihre Seiten
+      gezählt.</span>
+    <span data-phrase="result.unchecked">Dieser Durchlauf ging nicht auf &mdash; {problem}. Behalten Sie Ihre Originale.</span>
+    <span data-phrase="result.zip">Alle {n} als ZIP herunterladen</span>
+    <span data-phrase="result.download">Herunterladen</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">die fertige Datei öffnet mit {found}, wo 1 verlangt war</span>
+    <span data-phrase="check.wrong.many">die fertige Datei öffnet mit {found}, wo {expected} verlangt waren</span>
+    <span data-phrase="check.ok">hier noch einmal geöffnet und {pages} gezählt</span>
+    <span data-phrase="check.noopen">die fertige Datei ließ sich nicht wieder öffnen ({detail})</span>
+    <span data-phrase="facts.links">{links} kamen mit, und die, die ins Dokument selbst zeigen, wurden umgeschrieben,
+      damit sie ihrer Seite dahin folgen, wo sie jetzt ist.</span>
+    <span data-phrase="facts.fields">{fields} kamen mit, ausgefüllt wie sie waren.</span>
+    <span data-phrase="facts.dropped">Nicht übernommen, weil es eine Reihenfolge beschreibt, die es nicht mehr gibt: der
+      Baum der ausgezeichneten Lesereihenfolge, Seitenbezeichnungen (&bdquo;iii, iv, 1,
+      2&ldquo;), eingebettete Anhänge und jedes JavaScript auf Dokumentebene. Ebenso wenig
+      eine Erzeugerzeile, ein Erstellungsdatum oder ein Name für das Werkzeug, das sie
+      gemacht hat.</span>
+    <span data-phrase="notes.brokenlinks">{links} zeigten auf eine Seite, die nicht in dieser Datei ist, und wurden deshalb an
+      Ort und Stelle gelassen, mit nichts dahinter, statt den Leser irgendwohin Falsches
+      zu schicken.</span>
+    <span data-phrase="notes.actions.one">1 Aktion, die weder &bdquo;zu einer Seite springen&ldquo; noch &bdquo;eine
+      Webadresse öffnen&ldquo; war &mdash; dieses JavaScript ausführen, diese Datei
+      öffnen, dieses Formular absenden &mdash;, wurde nicht kopiert.</span>
+    <span data-phrase="notes.actions.many">{n} Aktionen, die weder &bdquo;zu einer Seite springen&ldquo; noch &bdquo;eine
+      Webadresse öffnen&ldquo; waren &mdash; dieses JavaScript ausführen, diese Datei
+      öffnen, dieses Formular absenden &mdash;, wurden nicht kopiert.</span>
+    <span data-phrase="notes.samename.one">1 Formularfeld hat in mehr als einer dieser Dateien denselben Namen ({names}). Ein
+      Betrachter behandelt Felder mit demselben Namen als ein Feld, das Ausfüllen des
+      einen füllt also auch das andere.</span>
+    <span data-phrase="notes.samename.many">{n} Formularfelder haben in mehr als einer dieser Dateien denselben Namen ({names}).
+      Ein Betrachter behandelt Felder mit demselben Namen als ein Feld, das Ausfüllen des
+      einen füllt also auch das andere.</span>
+    <span data-phrase="notes.name">&bdquo;{name}&ldquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">ein Dokument ohne Seiten darin ist kein Dokument</span>
     <span data-phrase="read.nocatalogue">Diese Datei hat keinen Dokumentkatalog, es gibt also nichts neu zu schreiben.
       Entweder ist sie kein PDF oder sie ist über das hinaus beschädigt, was sich hier
       reparieren lässt.</span>

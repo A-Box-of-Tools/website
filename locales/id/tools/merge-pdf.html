@@ -169,6 +169,108 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 halaman</span>
+    <span data-phrase="count.page.many">{n} halaman</span>
+    <span data-phrase="count.file.one">1 berkas</span>
+    <span data-phrase="count.file.many">{n} berkas</span>
+    <span data-phrase="count.link.one">1 tautan</span>
+    <span data-phrase="count.link.many">{n} tautan</span>
+    <span data-phrase="count.field.one">1 ruas formulir</span>
+    <span data-phrase="count.field.many">{n} ruas formulir</span>
+    <span data-phrase="count.document.one">1 dokumen</span>
+    <span data-phrase="count.document.many">{n} dokumen</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDF</span>
+    <span data-phrase="size.bytes">{n} bita</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: bukan PDF, jadi tidak ada halaman di dalamnya yang bisa dipindah.</span>
+    <span data-phrase="load.nopages">{name}: terbuka, tapi tidak ada halaman yang ditemukan di dalamnya.</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} punya tabel rujukan silang yang tidak cocok dengan isinya, jadi ia dibaca
+      dengan menyisir objeknya satu per satu. Itu perbaikan, dan berhasil, tapi periksa
+      hasilnya sebelum Anda kirim ke mana-mana.</span>
+    <span data-phrase="read.locked">PDF ini terenkripsi. Melepas kata sandi dari sebuah dokumen itu pekerjaan yang lain
+      daripada memindah-mindah halamannya, dan alat ini tidak akan melakukannya diam-diam.</span>
+    <span data-phrase="read.cancelled">dibatalkan.</span>
+    <span data-phrase="read.unreadable">tidak terbaca ({detail}).</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · {used} di antaranya masih di dalam urutan</span>
+    <span data-phrase="source.remove">Keluarkan {name} dan semua halamannya</span>
+    <span data-phrase="page.drag">Seret untuk memindah halaman {n}</span>
+    <span data-phrase="page.turned">Diputar oleh alat ini</span>
+    <span data-phrase="page.remove">Keluarkan halaman {n}</span>
+    <span data-phrase="page.from">{name}, halaman {n}</span>
+    <span data-phrase="page.anticlockwise">Putar halaman {n} berlawanan arah jarum jam</span>
+    <span data-phrase="page.clockwise">Putar halaman {n} searah jarum jam</span>
+    <span data-phrase="page.earlier">Majukan halaman {n}</span>
+    <span data-phrase="page.later">Mundurkan halaman {n}</span>
+    <span data-phrase="range.none">tidak ada</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">Ini bukan nomor halaman ataupun rentang halaman: {list}. {total} Tulis begini: 1-3,
+      8, 12-.</span>
+    <span data-phrase="range.bad.many">Ini bukan nomor halaman ataupun rentang halaman: {list}. {total} Tulis begini: 1-3,
+      8, 12-.</span>
+    <span data-phrase="range.total.one">Ada 1 halaman.</span>
+    <span data-phrase="range.total.many">Ada {n} halaman.</span>
+    <span data-phrase="range.empty">Sebutkan dulu beberapa halaman &mdash; 1-3, 8, 12- dan seterusnya.</span>
+    <span data-phrase="plan.from">{pages} dari {files}</span>
+    <span data-phrase="plan.one">sebagai satu PDF</span>
+    <span data-phrase="plan.many">sebagai {files}, diserahkan dalam satu ZIP supaya cukup sekali simpan, bukan {n}
+      kali</span>
+    <span data-phrase="plan.nosplit">&mdash; tapi tidak ada isi kotak itu yang menyebut halaman di dalam rentangnya, jadi
+      hasilnya akan jadi satu berkas saja</span>
+    <span data-phrase="plan.line">{parts}.</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">Buat dokumennya</span>
+    <span data-phrase="run.many">Buat {n} dokumen</span>
+    <span data-phrase="list.count">{pages} di dalam urutan</span>
+    <span data-phrase="list.empty">Tidak ada halaman yang tersisa. Tambahkan berkas, atau tekan &laquo;Kembalikan
+      seperti semula&raquo;.</span>
+    <span data-phrase="progress.copying">Menyalin halaman</span>
+    <span data-phrase="progress.writing">Menulis {what}</span>
+    <span data-phrase="progress.checking">Memeriksa apa yang sudah ditulis</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">Dibatalkan. Tidak ada yang diubah; halaman di atas masih persis seperti Anda
+      tinggalkan.</span>
+    <span data-phrase="run.failed">Itu tidak berhasil: {detail}</span>
+    <span data-phrase="result.one">Satu dokumen, {size}</span>
+    <span data-phrase="result.many">{documents}, {size} seluruhnya</span>
+    <span data-phrase="result.sub">{pages} dari {files}.</span>
+    <span data-phrase="result.checked">Diperiksa: tiap berkas dibuka lagi oleh halaman ini dan halamannya dihitung.</span>
+    <span data-phrase="result.unchecked">Yang ini tidak cocok &mdash; {problem}. Simpan aslinya.</span>
+    <span data-phrase="result.zip">Unduh semua {n} sebagai satu ZIP</span>
+    <span data-phrase="result.download">Unduh</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">berkas jadinya terbuka dengan {found} padahal yang diminta 1</span>
+    <span data-phrase="check.wrong.many">berkas jadinya terbuka dengan {found} padahal yang diminta {expected}</span>
+    <span data-phrase="check.ok">dibuka lagi di sini dan dihitung {pages}</span>
+    <span data-phrase="check.noopen">berkas jadinya tidak bisa dibuka lagi ({detail})</span>
+    <span data-phrase="facts.links">{links} ikut menyeberang, dan yang menunjuk ke dalam dokumennya ditulis ulang supaya
+      mengikuti halamannya ke tempatnya sekarang.</span>
+    <span data-phrase="facts.fields">{fields} ikut menyeberang, terisi seperti sebelumnya.</span>
+    <span data-phrase="facts.dropped">Tidak dibawa, karena menggambarkan urutan yang sudah tidak ada: pohon urutan baca
+      bertag, label halaman (&laquo;iii, iv, 1, 2&raquo;), lampiran tertanam, dan
+      JavaScript apa pun di tingkat dokumen. Begitu pula baris produser, tanggal
+      pembuatan, atau nama alat yang membuatnya.</span>
+    <span data-phrase="notes.brokenlinks">{links} menunjuk ke halaman yang tidak ada di berkas ini, jadi mereka dibiarkan di
+      tempatnya tanpa apa-apa di baliknya, daripada mengirim pembaca ke tempat yang salah.</span>
+    <span data-phrase="notes.actions.one">1 tindakan yang bukan &laquo;pergi ke halaman&raquo; dan bukan &laquo;buka alamat
+      web&raquo; &mdash; jalankan JavaScript ini, buka berkas ini, kirim formulir ini
+      &mdash; tidak disalin.</span>
+    <span data-phrase="notes.actions.many">{n} tindakan yang bukan &laquo;pergi ke halaman&raquo; dan bukan &laquo;buka alamat
+      web&raquo; &mdash; jalankan JavaScript ini, buka berkas ini, kirim formulir ini
+      &mdash; tidak disalin.</span>
+    <span data-phrase="notes.samename.one">1 ruas formulir memakai nama yang sama di lebih dari satu berkas ini ({names}).
+      Pembaca memperlakukan ruas yang senama sebagai satu ruas, jadi mengisi yang satu
+      akan mengisi yang lain.</span>
+    <span data-phrase="notes.samename.many">{n} ruas formulir memakai nama yang sama di lebih dari satu berkas ini ({names}).
+      Pembaca memperlakukan ruas yang senama sebagai satu ruas, jadi mengisi yang satu
+      akan mengisi yang lain.</span>
+    <span data-phrase="notes.name">&laquo;{name}&raquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">dokumen yang tidak ada halamannya bukanlah dokumen</span>
     <span data-phrase="read.nocatalogue">File ini tidak punya katalog dokumen, jadi tidak ada yang bisa ditulis ulang. Entah
       ia bukan PDF, entah rusaknya sudah lewat dari yang bisa diperbaiki di sini.</span>
     <span data-phrase="read.noheader">Ini tidak dimulai seperti PDF: tidak ada header %PDF-.</span>

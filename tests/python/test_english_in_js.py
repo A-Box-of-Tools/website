@@ -77,7 +77,7 @@ BASELINE = {
     'image-to-ico': 6,
     'images-to-pdf': 26,
     'images-to-video': 26,
-    'merge-pdf': 60,
+    'merge-pdf': 18,
     'password-generator': 8,
     'qr-barcode': 44,
     'qr-barcode-reader': 13,

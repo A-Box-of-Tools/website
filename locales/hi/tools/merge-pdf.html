@@ -160,6 +160,105 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="count.page.one">1 पन्ना</span>
+    <span data-phrase="count.page.many">{n} पन्ने</span>
+    <span data-phrase="count.file.one">1 फ़ाइल</span>
+    <span data-phrase="count.file.many">{n} फ़ाइलें</span>
+    <span data-phrase="count.link.one">1 लिंक</span>
+    <span data-phrase="count.link.many">{n} लिंक</span>
+    <span data-phrase="count.field.one">1 फ़ॉर्म फ़ील्ड</span>
+    <span data-phrase="count.field.many">{n} फ़ॉर्म फ़ील्ड</span>
+    <span data-phrase="count.document.one">1 दस्तावेज़</span>
+    <span data-phrase="count.document.many">{n} दस्तावेज़</span>
+    <span data-phrase="count.pdf.one">1 PDF</span>
+    <span data-phrase="count.pdf.many">{n} PDF</span>
+    <span data-phrase="size.bytes">{n} बाइट</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="load.notpdf">{name}: यह PDF नहीं है, इसलिए इसमें हिलाने को कोई पन्ना है ही नहीं।</span>
+    <span data-phrase="load.nopages">{name}: खुल तो गई, पर इसमें कोई पन्ना मिला ही नहीं।</span>
+    <span data-phrase="load.failed">{name}: {reason}</span>
+    <span data-phrase="load.repaired">{name} की क्रॉस-रेफ़रेंस तालिका उसकी अपनी सामग्री से मेल नहीं खाती थी, इसलिए उसे
+      ऑब्जेक्ट एक-एक करके ढूँढ़कर पढ़ा गया। यह एक मरम्मत है, और काम कर गई, पर नतीजा कहीं
+      भेजने से पहले जाँच लीजिए।</span>
+    <span data-phrase="read.locked">यह PDF एन्क्रिप्टेड है। किसी दस्तावेज़ का पासवर्ड हटाना उसके पन्ने इधर-उधर करने से
+      अलग काम है, और यह औज़ार वह आपकी पीठ पीछे नहीं करेगा।</span>
+    <span data-phrase="read.cancelled">रद्द कर दिया गया।</span>
+    <span data-phrase="read.unreadable">पढ़ी नहीं जा सकी ({detail})।</span>
+    <span data-phrase="source.facts">{size} · {pages}</span>
+    <span data-phrase="source.facts.some">{size} · {pages} · इनमें से {used} अब भी क्रम में हैं</span>
+    <span data-phrase="source.remove">{name} और उसके सारे पन्ने हटाइए</span>
+    <span data-phrase="page.drag">पन्ना {n} खिसकाने के लिए खींचिए</span>
+    <span data-phrase="page.turned">इस औज़ार ने घुमाया</span>
+    <span data-phrase="page.remove">पन्ना {n} हटाइए</span>
+    <span data-phrase="page.from">{name}, पन्ना {n}</span>
+    <span data-phrase="page.anticlockwise">पन्ना {n} वामावर्त घुमाइए</span>
+    <span data-phrase="page.clockwise">पन्ना {n} दक्षिणावर्त घुमाइए</span>
+    <span data-phrase="page.earlier">पन्ना {n} पहले ले जाइए</span>
+    <span data-phrase="page.later">पन्ना {n} बाद में ले जाइए</span>
+    <span data-phrase="range.none">कोई नहीं</span>
+    <span data-phrase="range.pair">{from}, {to}</span>
+    <span data-phrase="range.run">{from}-{to}</span>
+    <span data-phrase="range.bad.one">यह न पन्ने का नंबर है न पन्नों की सीमा: {list}। {total} इन्हें ऐसे लिखिए: 1-3, 8,
+      12-।</span>
+    <span data-phrase="range.bad.many">ये न पन्नों के नंबर हैं न पन्नों की सीमाएँ: {list}। {total} इन्हें ऐसे लिखिए: 1-3,
+      8, 12-।</span>
+    <span data-phrase="range.total.one">1 पन्ना है।</span>
+    <span data-phrase="range.total.many">{n} पन्ने हैं।</span>
+    <span data-phrase="range.empty">पहले कुछ पन्ने बताइए &mdash; 1-3, 8, 12- वग़ैरह।</span>
+    <span data-phrase="plan.from">{files} में से {pages}</span>
+    <span data-phrase="plan.one">एक ही PDF के तौर पर</span>
+    <span data-phrase="plan.many">{files} के तौर पर, एक ही ZIP में दिए गए ताकि {n} बार के बजाय एक बार सहेजना पड़े</span>
+    <span data-phrase="plan.nosplit">&mdash; पर उस ख़ाने में जो लिखा है वह सीमा के भीतर किसी पन्ने का नाम नहीं लेता,
+      इसलिए यह एक ही फ़ाइल बनकर निकलेगा</span>
+    <span data-phrase="plan.line">{parts}।</span>
+    <span data-phrase="plan.join">{a} {b}</span>
+    <span data-phrase="run.one">दस्तावेज़ बनाइए</span>
+    <span data-phrase="run.many">{n} दस्तावेज़ बनाइए</span>
+    <span data-phrase="list.count">क्रम में {pages}</span>
+    <span data-phrase="list.empty">कोई पन्ना बचा ही नहीं। कोई फ़ाइल जोड़िए, या &laquo;जैसे आए थे वैसे&raquo; दबाइए।</span>
+    <span data-phrase="progress.copying">पन्ने कॉपी हो रहे हैं</span>
+    <span data-phrase="progress.writing">{what} लिखी जा रही है</span>
+    <span data-phrase="progress.checking">जो लिखा गया उसकी जाँच हो रही है</span>
+    <span data-phrase="progress.at">{stage}…</span>
+    <span data-phrase="run.cancelled">रद्द कर दिया गया। कुछ भी नहीं बदला; ऊपर के पन्ने ठीक वैसे ही हैं जैसे आपने छोड़े थे।</span>
+    <span data-phrase="run.failed">यह काम नहीं आया: {detail}</span>
+    <span data-phrase="result.one">एक दस्तावेज़, {size}</span>
+    <span data-phrase="result.many">{documents}, कुल मिलाकर {size}</span>
+    <span data-phrase="result.sub">{files} में से {pages}।</span>
+    <span data-phrase="result.checked">जाँच लिया: हर फ़ाइल इसी पन्ने ने दोबारा खोली और उसके पन्ने गिने।</span>
+    <span data-phrase="result.unchecked">यह बार जाँच में पूरा नहीं उतरा &mdash; {problem}। अपनी असली फ़ाइलें रखे रहिए।</span>
+    <span data-phrase="result.zip">सारे {n} एक ZIP में डाउनलोड कीजिए</span>
+    <span data-phrase="result.download">डाउनलोड</span>
+    <span data-phrase="result.facts">{pages} · {size}</span>
+    <span data-phrase="check.wrong.one">बनी हुई फ़ाइल {found} के साथ खुलती है, जबकि 1 माँगा गया था</span>
+    <span data-phrase="check.wrong.many">बनी हुई फ़ाइल {found} के साथ खुलती है, जबकि {expected} माँगे गए थे</span>
+    <span data-phrase="check.ok">यहीं दोबारा खोली और {pages} गिने</span>
+    <span data-phrase="check.noopen">बनी हुई फ़ाइल दोबारा खुली ही नहीं ({detail})</span>
+    <span data-phrase="facts.links">{links} साथ आए, और जो दस्तावेज़ के भीतर की ओर इशारा करते हैं उन्हें दोबारा लिखा गया
+      ताकि वे अपने पन्ने के पीछे-पीछे वहीं जाएँ जहाँ वह अब है।</span>
+    <span data-phrase="facts.fields">{fields} साथ आए, जैसे भरे थे वैसे ही।</span>
+    <span data-phrase="facts.dropped">साथ नहीं आया, क्योंकि वह ऐसा क्रम बताता है जो अब है ही नहीं: टैग किए गए पढ़ने के
+      क्रम का पेड़, पन्नों के लेबल (&laquo;iii, iv, 1, 2&raquo;), भीतर रखे अटैचमेंट, और
+      दस्तावेज़ स्तर का कोई भी JavaScript। न ही कोई प्रोड्यूसर पंक्ति, बनाने की तारीख़, या
+      उसे बनाने वाले औज़ार का नाम।</span>
+    <span data-phrase="notes.brokenlinks">{links} ऐसे पन्ने की ओर इशारा कर रहे थे जो इस फ़ाइल में है ही नहीं, इसलिए पाठक को
+      कहीं ग़लत भेजने के बजाय उन्हें अपनी जगह पर, पीछे कुछ भी बिना, छोड़ दिया गया।</span>
+    <span data-phrase="notes.actions.one">1 क्रिया जो न &laquo;किसी पन्ने पर जाइए&raquo; थी न &laquo;कोई वेब पता खोलिए&raquo;
+      &mdash; यह JavaScript चलाइए, यह फ़ाइल खोलिए, यह फ़ॉर्म भेजिए &mdash; कॉपी नहीं की
+      गई।</span>
+    <span data-phrase="notes.actions.many">{n} क्रियाएँ जो न &laquo;किसी पन्ने पर जाइए&raquo; थीं न &laquo;कोई वेब पता
+      खोलिए&raquo; &mdash; यह JavaScript चलाइए, यह फ़ाइल खोलिए, यह फ़ॉर्म भेजिए &mdash;
+      कॉपी नहीं की गईं।</span>
+    <span data-phrase="notes.samename.one">इन फ़ाइलों में से एक से ज़्यादा में 1 फ़ॉर्म फ़ील्ड का नाम एक ही है ({names})। पाठक
+      एक ही नाम वाले फ़ील्डों को एक ही फ़ील्ड मानता है, इसलिए एक भरने पर दूसरा भी भर
+      जाएगा।</span>
+    <span data-phrase="notes.samename.many">इन फ़ाइलों में से एक से ज़्यादा में {n} फ़ॉर्म फ़ील्ड का नाम एक ही है ({names})।
+      पाठक एक ही नाम वाले फ़ील्डों को एक ही फ़ील्ड मानता है, इसलिए एक भरने पर दूसरा भी भर
+      जाएगा।</span>
+    <span data-phrase="notes.name">&laquo;{name}&raquo;</span>
+    <span data-phrase="notes.more">{list}, …</span>
+    <span data-phrase="assemble.empty">जिसमें एक भी पन्ना न हो वह दस्तावेज़ नहीं होता</span>
     <span data-phrase="read.nocatalogue">इस फ़ाइल में दस्तावेज़ की सूची ही नहीं है, इसलिए दोबारा लिखने को कुछ है ही नहीं। या
       तो यह PDF नहीं है, या इतनी ख़राब है जितना यहाँ ठीक नहीं हो सकता।</span>
     <span data-phrase="read.noheader">इसकी शुरुआत PDF जैसी नहीं है: %PDF- हेडर नहीं है।</span>
