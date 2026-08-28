@@ -92,7 +92,7 @@ export function planSize(intrinsic, settings) {
       width = longest * ratio;
     }
   } else {
-    throw new Error(`unknown size mode: ${mode}`);
+    throw new Error(`unknown size mode: ${mode}`);   // a bug here, never a file
   }
 
   return whole(px(width), px(height));
@@ -184,7 +184,9 @@ export function atDensity(plan, multiple) {
 /**
  * Whether this is a canvas a browser will actually produce.
  *
- * @returns {{ok: boolean, warn: boolean, reason: string}}
+ * @returns {{ok: boolean, warn: boolean, key: string, values: object}} `key`
+ *   names the sentence and is empty when there is nothing to say; a value
+ *   that is itself `{key, values}` is a phrase the caller resolves first.
  */
 export function checkLimits(plan) {
   const pixels = plan.width * plan.height;
@@ -193,8 +195,8 @@ export function checkLimits(plan) {
     return {
       ok: false,
       warn: false,
-      reason: `${plan.width} × ${plan.height} is past the ${MAX_SIDE} pixel limit a canvas has on a side. `
-        + 'Nothing would come back but a blank image.',
+      key: 'limit.side',
+      values: { width: plan.width, height: plan.height, max: MAX_SIDE },
     };
   }
 
@@ -202,8 +204,8 @@ export function checkLimits(plan) {
     return {
       ok: false,
       warn: false,
-      reason: `${megapixels(pixels)} is more than a browser will hold - it is ${Math.round(pixels * 4 / 1e6)} MB `
-        + 'of canvas before anything is encoded. Ask for a smaller size.',
+      key: 'limit.pixels',
+      values: { size: megapixels(pixels), mb: Math.round(pixels * 4 / 1e6) },
     };
   }
 
@@ -211,17 +213,18 @@ export function checkLimits(plan) {
     return {
       ok: true,
       warn: true,
-      reason: `${megapixels(pixels)} is above the ${Math.round(WARN_PIXELS / 1e6)} megapixel ceiling Safari has on `
-        + 'an iPhone or iPad. It will work on a desktop; on a phone it may come back blank.',
+      key: 'limit.safari',
+      values: { size: megapixels(pixels), ceiling: Math.round(WARN_PIXELS / 1e6) },
     };
   }
 
-  return { ok: true, warn: false, reason: '' };
+  return { ok: true, warn: false, key: '', values: {} };
 }
 
+/** A phrase and its blank, not a sentence: the word for it is not English. */
 export const megapixels = (pixels) => {
   const mp = pixels / 1e6;
-  return `${mp < 10 ? mp.toFixed(1) : Math.round(mp)} megapixels`;
+  return { key: 'unit.megapixels', values: { n: mp < 10 ? mp.toFixed(1) : Math.round(mp) } };
 };
 
 /**
@@ -229,21 +232,28 @@ export const megapixels = (pixels) => {
  * renderer is handed - so the page cannot describe something other than what
  * runs.
  */
-export function describePlan(plan, intrinsic, densities) {
-  const size = `${plan.width} × ${plan.height}`;
-  const from = `The file draws itself at ${intrinsic.width} × ${intrinsic.height}`;
+export function describePlan(plan, intrinsic, densities, t) {
+  const parts = [t('plan.from', {
+    fromWidth: intrinsic.width,
+    fromHeight: intrinsic.height,
+    width: plan.width,
+    height: plan.height,
+    times: times(plan.width / intrinsic.width),
+  })];
 
-  const shape = plan.stretch
-    ? ' The shape is stretched to fill the box, so the drawing is distorted.'
-    : plan.padded
-      ? ' It is centred in the box, with the background showing either side.'
-      : '';
+  // A clause spliced into a sentence cannot be translated, so each of the
+  // three shapes this can take is a sentence of its own.
+  if (plan.stretch) parts.push(t('plan.stretched'));
+  else if (plan.padded) parts.push(t('plan.padded'));
 
-  const extra = densities.length > 1
-    ? ` Plus ${densities.slice(1).map((d) => `${plan.width * d} × ${plan.height * d} at @${d}x`).join(' and ')}.`
-    : '';
+  if (densities.length > 1) {
+    const list = densities.slice(1)
+      .map((d) => t('plan.density', { width: plan.width * d, height: plan.height * d, d }))
+      .reduce((a, b) => t('join.and', { a, b }));
+    parts.push(t('plan.plus', { list }));
+  }
 
-  return `${from}; this comes out at ${size}, which is ${times(plan.width / intrinsic.width)} that.${shape}${extra}`;
+  return parts.reduce((a, b) => t('join.sentences', { a, b }));
 }
 
 /** "2x", "0.5x", "1.33x" - said the same way wherever a scale is shown. */

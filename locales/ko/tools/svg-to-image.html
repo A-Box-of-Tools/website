@@ -210,6 +210,53 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: 이 도구는 SVG 파일만 읽습니다. PNG나 JPEG는 이미 픽셀이라, 그런
+      것에는 이미지 크기 조절이 있습니다.</span>
+    <span data-phrase="read.nosvg.named">{name}: 이 파일에는 &lt;svg&gt; 요소가 없습니다.</span>
+    <span data-phrase="read.nosvg">이 파일에는 &lt;svg&gt; 요소가 없습니다.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">이 브라우저는 SVG를 그리지 못했습니다. 올바른 XML이 아닐 수 있습니다.</span>
+    <span data-phrase="encode.refused">이 브라우저는 그 크기로 {format}을 쓰지 않았습니다.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; 너무 큼: {why}</span>
+    <span data-phrase="plan.none">SVG를 넣으면 어떤 크기로 나오는지 여기에 적힙니다.</span>
+    <span data-phrase="plan.from">파일은 자신을 {fromWidth} &times; {fromHeight}로 그립니다. 이것은
+      {width} &times; {height}로 나오며, 그 {times}입니다.</span>
+    <span data-phrase="plan.stretched">상자를 채우도록 모양이 늘어나서 그림이 일그러집니다.</span>
+    <span data-phrase="plan.padded">상자 가운데에 놓이고, 양옆으로 배경이 보입니다.</span>
+    <span data-phrase="plan.density">@{d}x에서 {width} &times; {height}</span>
+    <span data-phrase="plan.plus">여기에 {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height}는 캔버스 한 변의 한계인 {max}픽셀을 넘습니다.
+      빈 이미지 말고는 아무것도 돌아오지 않습니다.</span>
+    <span data-phrase="limit.pixels">{size}는 브라우저가 감당하는 것보다 많습니다. 아무것도 인코딩하기 전에 캔버스만
+      {mb} MB입니다. 더 작은 크기가 필요합니다.</span>
+    <span data-phrase="limit.safari">{size}는 iPhone이나 iPad의 Safari에 있는 {ceiling}메가픽셀 상한을
+      넘습니다. 데스크톱에서는 되지만 휴대전화에서는 비어서 돌아올 수 있습니다.</span>
+    <span data-phrase="unit.megapixels">{n}메가픽셀</span>
+    <span data-phrase="format.png">손실이 없고, 셋 중에서 모든 소프트웨어가 읽는 유일한 형식입니다. 단색면과 또렷한
+      가장자리&mdash;그림은 대개 그것으로 이루어집니다&mdash;가 잘 압축되므로, 래스터로 바꾼 로고는 어차피 JPEG보다 PNG가 더 작은
+      편입니다.</span>
+    <span data-phrase="format.jpeg">투명을 담지 못하고, 손실이 하필 이런 그림에서 가장 심하게 드러납니다. 또렷한 가장자리마다
+      얼룩 고리가 생깁니다. 사진 같은 음영이 주를 이루는 그림에는 쓸 만하지만, 그 밖에는 드뭅니다.</span>
+    <span data-phrase="format.webp">PNG처럼 투명을 담고, 같은 품질이면 나머지 둘보다 파일이 작습니다. 요즘 브라우저는 모두
+      읽지만, 오래된 소프트웨어와 일부 인쇄소는 아직 열지 못합니다.</span>
+    <span data-phrase="format.webp.cannot">이 브라우저는 WebP를 쓰지 못해서 대신 PNG가 나옵니다. 나머지 둘 중
+      하나를 고르세요.</span>
+    <span data-phrase="bg.none">그림에서 투명한 부분은 투명한 채로 남습니다.</span>
+    <span data-phrase="bg.behind">그림 전체 뒤에 칠해지므로 파일 안에 투명한 곳은 없습니다.</span>
+    <span data-phrase="bg.needed">{format}에는 투명이 없어서 이 색이 그림 뒤에 칠해집니다. 그것이 없으면 투명하던 곳은
+      모두 검게 나옵니다.</span>
+    <span data-phrase="preview.actual">나올 크기 그대로 보여 줍니다.</span>
+    <span data-phrase="preview.scaled">{size} 파일의 {times}로 보여 줍니다. 줄인 것이 아니라 벡터에서 다시 그린
+      것이라, 그 크기에서 실제로 이렇게 보입니다.</span>
+    <span data-phrase="preview.checkerboard">바둑판 무늬는 파일에서 투명해질 자리입니다.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a}와 {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">이미지 만들기</span>
     <span data-phrase="run.many">이미지 {count}개 만들기</span>
     <span data-phrase="chosen.one">파일 한 개 선택됨</span>

@@ -213,6 +213,72 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: dit gereedschap leest alleen SVG-bestanden.
+      Een PNG of een JPEG bestaat al uit pixels; daarvoor is Afbeeldingsformaat
+      wijzigen.</span>
+    <span data-phrase="read.nosvg.named">{name}: er zit geen &lt;svg&gt;-element in dit
+      bestand.</span>
+    <span data-phrase="read.nosvg">Er zit geen &lt;svg&gt;-element in dit bestand.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">Deze browser kon de SVG niet tekenen. Het is
+      misschien geen geldige XML.</span>
+    <span data-phrase="encode.refused">Deze browser wilde op dat formaat geen {format}
+      schrijven.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; te groot: {why}</span>
+    <span data-phrase="plan.none">Voeg een SVG toe, dan staat hier hoe groot hij eruit
+      komt.</span>
+    <span data-phrase="plan.from">Het bestand tekent zichzelf op {fromWidth} &times;
+      {fromHeight}; hier komt {width} &times; {height} uit, dat is {times} zoveel.</span>
+    <span data-phrase="plan.stretched">De vorm wordt uitgerekt om het kader te vullen,
+      dus de tekening wordt vervormd.</span>
+    <span data-phrase="plan.padded">Hij staat midden in het kader, met de achtergrond
+      aan weerszijden zichtbaar.</span>
+    <span data-phrase="plan.density">{width} &times; {height} op @{d}x</span>
+    <span data-phrase="plan.plus">Plus {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height} gaat over de grens van {max}
+      pixels heen die een canvas per zijde heeft. Er zou niets terugkomen dan een leeg
+      beeld.</span>
+    <span data-phrase="limit.pixels">{size} is meer dan een browser aankan &mdash; dat
+      is {mb} MB canvas nog voordat er iets gecodeerd is. Er is een kleiner formaat
+      nodig.</span>
+    <span data-phrase="limit.safari">{size} gaat over het plafond van {ceiling}
+      megapixel heen dat Safari op een iPhone of iPad heeft. Op een desktop werkt het;
+      op een telefoon komt het misschien leeg terug.</span>
+    <span data-phrase="unit.megapixels">{n} megapixel</span>
+    <span data-phrase="format.png">Verliesvrij, en de enige van de drie die elk
+      programma leest. Vlakke kleur en harde randen &mdash; en daar bestaat een tekening
+      grotendeels uit &mdash; comprimeren er goed in, dus een gerasterd logo is als PNG
+      meestal toch al kleiner dan als JPEG.</span>
+    <span data-phrase="format.jpeg">Geen transparantie, en verliesgevend op precies de
+      manier die bij dit soort plaatje het meest opvalt: een krans van spikkels rond
+      elke harde rand. De moeite waard voor een tekening die vooral uit fotoachtige
+      verlopen bestaat, en verder zelden.</span>
+    <span data-phrase="format.webp">Transparantie als een PNG, en bij gelijke kwaliteit
+      een kleiner bestand dan de andere twee. Elke huidige browser leest het; oudere
+      programma&rsquo;s en sommige drukkerijen openen er nog steeds geen.</span>
+    <span data-phrase="format.webp.cannot">Deze browser kan geen WebP schrijven, dus er
+      zou een PNG uitkomen. Kies een van de andere twee.</span>
+    <span data-phrase="bg.none">De transparante delen van de tekening blijven
+      transparant.</span>
+    <span data-phrase="bg.behind">Achter het hele beeld gelegd, dus in het bestand is
+      niets transparant.</span>
+    <span data-phrase="bg.needed">{format} kent geen transparantie, dus deze kleur wordt
+      achter de tekening gelegd. Zonder die kleur zou alles wat transparant was zwart
+      worden.</span>
+    <span data-phrase="preview.actual">Getoond op het formaat dat het krijgt.</span>
+    <span data-phrase="preview.scaled">Getoond op {times} van het bestand van {size},
+      opnieuw getekend uit de vector in plaats van verkleind &mdash; dus zo ziet dat
+      formaat eruit.</span>
+    <span data-phrase="preview.checkerboard">Het schaakbordpatroon is waar het bestand
+      transparant wordt.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} en {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">De afbeelding maken</span>
     <span data-phrase="run.many">De {count} afbeeldingen maken</span>
     <span data-phrase="chosen.one">Eén bestand gekozen</span>

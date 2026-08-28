@@ -212,6 +212,66 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: this tool only reads SVG files. A PNG or a
+      JPEG is already pixels; the Image Resizer is the one for those.</span>
+    <span data-phrase="read.nosvg.named">{name}: there is no &lt;svg&gt; element in this
+      file.</span>
+    <span data-phrase="read.nosvg">There is no &lt;svg&gt; element in this file.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">This browser could not draw the SVG. It may not be
+      valid XML.</span>
+    <span data-phrase="encode.refused">This browser would not write {format} at that
+      size.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; too big: {why}</span>
+    <span data-phrase="plan.none">Add an SVG and this says what size it will come out.</span>
+    <span data-phrase="plan.from">The file draws itself at {fromWidth} &times;
+      {fromHeight}; this comes out at {width} &times; {height}, which is {times} that.</span>
+    <span data-phrase="plan.stretched">The shape is stretched to fill the box, so the
+      drawing is distorted.</span>
+    <span data-phrase="plan.padded">It is centred in the box, with the background
+      showing either side.</span>
+    <span data-phrase="plan.density">{width} &times; {height} at @{d}x</span>
+    <span data-phrase="plan.plus">Plus {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height} is past the {max} pixel
+      limit a canvas has on a side. Nothing would come back but a blank image.</span>
+    <span data-phrase="limit.pixels">{size} is more than a browser will hold &mdash; it
+      is {mb} MB of canvas before anything is encoded. Ask for a smaller size.</span>
+    <span data-phrase="limit.safari">{size} is above the {ceiling} megapixel ceiling
+      Safari has on an iPhone or iPad. It will work on a desktop; on a phone it may come
+      back blank.</span>
+    <span data-phrase="unit.megapixels">{n} megapixels</span>
+    <span data-phrase="format.png">Lossless, and the only one of the three that every
+      piece of software reads. Flat colour and hard edges &mdash; which is most of what
+      a drawing is made of &mdash; compress well in it, so a rasterised logo is usually
+      smaller as a PNG than as a JPEG anyway.</span>
+    <span data-phrase="format.jpeg">No transparency, and lossy in the way that shows
+      worst on exactly this kind of picture: a ring of speckle around every hard edge.
+      Worth it for a drawing that is mostly photograph-like shading, and rarely
+      otherwise.</span>
+    <span data-phrase="format.webp">Transparency like a PNG, and a smaller file than
+      either of the others at the same quality. Read by every current browser; older
+      software and some print shops still will not open one.</span>
+    <span data-phrase="format.webp.cannot">This browser cannot write WebP, so a PNG
+      would come out instead. Pick one of the other two.</span>
+    <span data-phrase="bg.none">The transparent parts of the drawing stay transparent.</span>
+    <span data-phrase="bg.behind">Painted behind the whole picture, so nothing in the
+      file is transparent.</span>
+    <span data-phrase="bg.needed">{format} has no transparency, so this colour is
+      painted behind the drawing. Without it, everything that was transparent would come
+      out black.</span>
+    <span data-phrase="preview.actual">Shown at the size it will be.</span>
+    <span data-phrase="preview.scaled">Shown at {times} of the {size} file, redrawn from
+      the vector rather than shrunk &mdash; so this is what that size looks like.</span>
+    <span data-phrase="preview.checkerboard">The checkerboard is where the file will be
+      transparent.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} and {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">Make the image</span>
     <span data-phrase="run.many">Make the {count} images</span>
     <span data-phrase="chosen.one">One file chosen</span>

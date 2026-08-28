@@ -96,7 +96,8 @@ BASELINE = {
     # reader throws internally and never shows.
     'split-gif': 5,
     'stack-images': 7,
-    'svg-to-image': 27,
+    # An internal marker for an impossible mode, and a viewBox attribute.
+    'svg-to-image': 2,
     'timelapse-video': 0,
     # A filename template, a clock format, two CSS percentages and three class
     # names the timeline builds.

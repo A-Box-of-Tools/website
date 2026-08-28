@@ -210,6 +210,57 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: هذه الأداة لا تقرأ إلا ملفات SVG. أما PNG أو
+      JPEG فهو بكسلات أصلاً؛ لذلك هناك أداة تغيير حجم الصور.</span>
+    <span data-phrase="read.nosvg.named">{name}: لا يوجد عنصر &lt;svg&gt; في هذا الملف.</span>
+    <span data-phrase="read.nosvg">لا يوجد عنصر &lt;svg&gt; في هذا الملف.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">لم يستطع هذا المتصفح رسم ملف SVG. ربما لم يكن XML
+      سليماً.</span>
+    <span data-phrase="encode.refused">رفض هذا المتصفح كتابة {format} بهذا المقاس.</span>
+    <span data-phrase="out.size">&larr; {size}</span>
+    <span data-phrase="out.toobig">&larr; أكبر من اللازم: {why}</span>
+    <span data-phrase="plan.none">أضف ملف SVG ليظهر هنا المقاس الذي سيخرج به.</span>
+    <span data-phrase="plan.from">يرسم الملف نفسه بمقاس {fromWidth} &times;
+      {fromHeight}؛ وهذا يخرج بمقاس {width} &times; {height}، أي {times} ذلك.</span>
+    <span data-phrase="plan.stretched">تُمدّ الصورة لتملأ الإطار، فيخرج الرسم مشوّهاً.</span>
+    <span data-phrase="plan.padded">تتوسط الإطار، وتظهر الخلفية على جانبيها.</span>
+    <span data-phrase="plan.density">{width} &times; {height} عند @{d}x</span>
+    <span data-phrase="plan.plus">وكذلك {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height} يتجاوز حد {max} بكسل الذي
+      للوحة الرسم في الضلع الواحد. لن يعود إلا صورة فارغة.</span>
+    <span data-phrase="limit.pixels">{size} أكثر مما يحتمله المتصفح &mdash; فهذا {mb}
+      ميغابايت من لوحة الرسم قبل ترميز أي شيء. يلزم مقاس أصغر.</span>
+    <span data-phrase="limit.safari">{size} فوق سقف {ceiling} ميغابكسل الذي لسفاري على
+      آيفون أو آيباد. سينجح على حاسوب مكتبي؛ أما على الهاتف فقد يعود فارغاً.</span>
+    <span data-phrase="unit.megapixels">{n} ميغابكسل</span>
+    <span data-phrase="format.png">بلا فقد، وهو الوحيد من الثلاثة الذي يقرأه كل برنامج.
+      الألوان المسطحة والحواف الحادة &mdash; وهي معظم ما يتكوّن منه الرسم &mdash; تُضغط
+      فيه جيداً، فالشعار المُنقَّط عادةً أصغر بصيغة PNG منه بصيغة JPEG على أي حال.</span>
+    <span data-phrase="format.jpeg">لا شفافية فيه، وفقده يظهر بأسوأ صورة في هذا النوع من
+      الصور تحديداً: هالة من النقط حول كل حافة حادة. يستحق العناء لرسم معظمه تدرّجات
+      شبيهة بالصور الفوتوغرافية، ونادراً غير ذلك.</span>
+    <span data-phrase="format.webp">شفافية كشفافية PNG، وملف أصغر من الاثنين الآخرين
+      بالجودة نفسها. تقرأه كل المتصفحات الحديثة؛ أما البرامج القديمة وبعض المطابع فلا
+      تفتحه بعد.</span>
+    <span data-phrase="format.webp.cannot">هذا المتصفح لا يكتب WebP، فسيخرج PNG بدلاً
+      منه. اختر أحد الاثنين الآخرين.</span>
+    <span data-phrase="bg.none">تبقى الأجزاء الشفافة من الرسم شفافة.</span>
+    <span data-phrase="bg.behind">تُرسم خلف الصورة كلها، فلا يبقى في الملف شيء شفاف.</span>
+    <span data-phrase="bg.needed">صيغة {format} لا تعرف الشفافية، فيُرسم هذا اللون خلف
+      الرسم. ولولاه لخرج كل ما كان شفافاً أسودَ.</span>
+    <span data-phrase="preview.actual">معروض بالمقاس الذي سيخرج به.</span>
+    <span data-phrase="preview.scaled">معروض بمقدار {times} من ملف {size}، أُعيد رسمه من
+      المتجه لا صُغِّر &mdash; فهكذا يبدو ذلك المقاس فعلاً.</span>
+    <span data-phrase="preview.checkerboard">رقعة الشطرنج هي المواضع التي سيكون فيها
+      الملف شفافاً.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} و{b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}، {b}</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
     <span data-phrase="run.one">أنشئ الصورة</span>
     <span data-phrase="run.many">أنشئ الصور {count}</span>
     <span data-phrase="chosen.one">ملف واحد مختار</span>

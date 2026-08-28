@@ -216,6 +216,69 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notsvg">{name}: dieses Werkzeug liest nur SVG-Dateien. Ein
+      PNG oder ein JPEG besteht schon aus Pixeln; dafür ist der Bildskalierer da.</span>
+    <span data-phrase="read.nosvg.named">{name}: in dieser Datei gibt es kein
+      &lt;svg&gt;-Element.</span>
+    <span data-phrase="read.nosvg">In dieser Datei gibt es kein &lt;svg&gt;-Element.</span>
+    <span data-phrase="file.failed">{name}: {why}</span>
+    <span data-phrase="draw.failed">Dieser Browser konnte das SVG nicht zeichnen. Es ist
+      vielleicht kein gültiges XML.</span>
+    <span data-phrase="encode.refused">Dieser Browser wollte in dieser Größe kein
+      {format} schreiben.</span>
+    <span data-phrase="out.size">&rarr; {size}</span>
+    <span data-phrase="out.toobig">&rarr; zu groß: {why}</span>
+    <span data-phrase="plan.none">Fügen Sie ein SVG hinzu, dann steht hier, wie groß es
+      herauskommt.</span>
+    <span data-phrase="plan.from">Die Datei zeichnet sich selbst mit {fromWidth} &times;
+      {fromHeight}; heraus kommt {width} &times; {height}, das ist {times} so groß.</span>
+    <span data-phrase="plan.stretched">Die Form wird auf den Rahmen gedehnt, die
+      Zeichnung wird also verzerrt.</span>
+    <span data-phrase="plan.padded">Sie steht mittig im Rahmen, links und rechts schaut
+      der Hintergrund heraus.</span>
+    <span data-phrase="plan.density">{width} &times; {height} bei @{d}x</span>
+    <span data-phrase="plan.plus">Dazu {list}.</span>
+    <span data-phrase="limit.side">{width} &times; {height} liegt über der Grenze von
+      {max} Pixeln, die eine Canvas pro Seite hat. Zurück käme nur ein leeres Bild.</span>
+    <span data-phrase="limit.pixels">{size} ist mehr, als ein Browser fasst &mdash; das
+      sind {mb} MB Canvas, bevor überhaupt etwas kodiert wird. Eine kleinere Größe wäre
+      nötig.</span>
+    <span data-phrase="limit.safari">{size} liegt über der Grenze von {ceiling}
+      Megapixeln, die Safari auf einem iPhone oder iPad hat. Auf einem Desktop geht es;
+      auf einem Telefon kommt vielleicht ein leeres Bild zurück.</span>
+    <span data-phrase="unit.megapixels">{n} Megapixel</span>
+    <span data-phrase="format.png">Verlustfrei, und das einzige der drei, das jedes
+      Programm liest. Flächige Farben und harte Kanten &mdash; und daraus besteht eine
+      Zeichnung meistens &mdash; komprimieren sich darin gut, ein gerastertes Logo ist
+      als PNG also ohnehin meist kleiner als ein JPEG.</span>
+    <span data-phrase="format.jpeg">Keine Transparenz, und verlustbehaftet auf genau die
+      Art, die bei dieser Art Bild am meisten auffällt: ein Kranz aus Sprenkeln um jede
+      harte Kante. Für eine Zeichnung mit vorwiegend fotoartigen Verläufen lohnt es
+      sich, sonst selten.</span>
+    <span data-phrase="format.webp">Transparenz wie ein PNG, und bei gleicher Qualität
+      eine kleinere Datei als die beiden anderen. Jeder aktuelle Browser liest es;
+      ältere Programme und manche Druckereien öffnen es noch immer nicht.</span>
+    <span data-phrase="format.webp.cannot">Dieser Browser kann kein WebP schreiben, es
+      käme also ein PNG heraus. Nehmen Sie eines der beiden anderen.</span>
+    <span data-phrase="bg.none">Die transparenten Stellen der Zeichnung bleiben
+      transparent.</span>
+    <span data-phrase="bg.behind">Hinter das ganze Bild gelegt, in der Datei ist also
+      nichts transparent.</span>
+    <span data-phrase="bg.needed">{format} kennt keine Transparenz, diese Farbe wird
+      also hinter die Zeichnung gelegt. Ohne sie käme alles, was transparent war,
+      schwarz heraus.</span>
+    <span data-phrase="preview.actual">In der Größe gezeigt, in der es herauskommt.</span>
+    <span data-phrase="preview.scaled">Mit {times} der {size} großen Datei gezeigt, aus
+      dem Vektor neu gezeichnet statt verkleinert &mdash; so sieht diese Größe also aus.</span>
+    <span data-phrase="preview.checkerboard">Das Schachbrettmuster ist, wo die Datei
+      transparent sein wird.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.and">{a} und {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="run.one">Das Bild erstellen</span>
     <span data-phrase="run.many">Die {count} Bilder erstellen</span>
     <span data-phrase="chosen.one">Eine Datei gewählt</span>
