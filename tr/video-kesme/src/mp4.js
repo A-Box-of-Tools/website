@@ -163,7 +163,7 @@ return fullBox('elst',0,0,...payload);
 class Track{
 constructor({kind,timescale,sampleEntry,matrix=null,width=0,height=0}){
 if(!sampleEntry||!sampleEntry.byteLength){
-throw new Error(`The ${kind === 'soun' ? 'audio' : 'video'} track has no sample entry.`);
+throw new Error(kind==='soun'?'write.noaudioentry':'write.novideoentry');
 }
 this.kind=kind;
 this.timescale=timescale;
@@ -274,12 +274,11 @@ minf,
 finalize(){
 const tracks=this.tracks.filter((track)=>track.samples.length);
 if(!tracks.some((track)=>track.kind==='vide')){
-throw new Error('The section you chose holds no video frames.');
+throw new Error('write.noframes');
 }
 const totalBytes=tracks.reduce((total,track)=>total+track.bytes,0);
 if(totalBytes>0xfffffff0){
-throw new Error('The trimmed video would pass the 4 GB limit this writer can '
-+'address. Choose a shorter section.');
+throw new Error('write.toobig');
 }
 const durationMs=Math.max(...tracks.map((track)=>track.playedMs));
 const build=(mdatDataOffset)=>{
@@ -295,7 +294,7 @@ const probe=build(0);
 const mdatDataOffset=header.byteLength+probe.moov.byteLength+8;
 const{moov,chunks}=build(mdatDataOffset);
 if(moov.byteLength!==probe.moov.byteLength){
-throw new Error('Internal error: the moov size was not stable between passes.');
+throw new Error('write.moovunstable');
 }
 const mdatHeader=concat([u32(totalBytes+8),ascii('mdat')]);
 const parts=[header,moov,mdatHeader];

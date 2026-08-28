@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/aparar-video/:';
-const CACHE_NAME=CACHE_PREFIX+'02d2e9cb65';
+const CACHE_NAME=CACHE_PREFIX+'7172ca9eae';
 const ASSETS=[
 './',
 'index.html',

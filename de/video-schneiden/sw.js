@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/video-schneiden/:';
-const CACHE_NAME=CACHE_PREFIX+'03659e7007';
+const CACHE_NAME=CACHE_PREFIX+'bd215882e0';
 const ASSETS=[
 './',
 'index.html',

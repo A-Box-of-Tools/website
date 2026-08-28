@@ -6,6 +6,9 @@ import{reverseExact,decoderConfig}from'./reverse.js';
 import{measureFps,reverseByPlayback}from'./playback.js';
 import{averageFps,gopRanges}from'./timeline.js';
 import{hasWebCodecs,hasEncoder,canDecode}from'./support.js';
+function why(fallback,absent){
+return phrase(fallback?.key??absent,fallback?.values);
+}
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),
@@ -113,30 +116,28 @@ fallbackReason=null;
 }catch(error){
 media=null;
 fallbackReason=error instanceof UnsupportedFile
-?error.reason
-:(error.message||'the file could not be read as an MP4.');
+?{key:error.reason,values:error.values}
+:{key:error.message||'read.unreadable'};
 }
 let decodable=false;
 if(media&&hasWebCodecs()){
 decodable=await canDecode(decoderConfig(media.video));
 if(!decodable){
-fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+fallbackReason={key:'read.nodecoder',values:{codec:media.video.codec}};
 }
 }else if(media&&!hasWebCodecs()){
-fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+fallbackReason={key:'read.nowebcodecs'};
 }
 if(decodable&&played.ok
 &&(played.width!==media.video.displayWidth
 ||played.height!==media.video.displayHeight)){
 decodable=false;
-fallbackReason='this file is stored turned in a way the reader and the player '
-+'disagree on.';
+fallbackReason={key:'read.turned'};
 }
 canReverseExactly=decodable;
 canPlay=played.ok;
 if(!canReverseExactly&&!canPlay){
-showError('This browser cannot open this file: '
-+`${fallbackReason ?? 'the format is not one it plays.'}`);
+showError(phrase('open.failed',{reason:why(fallbackReason,'read.notplayed')}));
 resetView();
 return;
 }
@@ -168,7 +169,7 @@ updateAudioNote();
 updateSummary();
 }catch(error){
 console.error(error);
-showError(error?.message||'That file could not be opened.');
+showError(error?.message?phrase(error.message):'That file could not be opened.');
 resetView();
 }finally{
 loading=false;
@@ -202,13 +203,10 @@ el.srcAudio.textContent='whatever the player finds';
 }
 el.pathNote.hidden=canReverseExactly;
 if(!canReverseExactly){
-const why=fallbackReason??'its layout is not one the reader here understands.';
-const rate=fpsMeasured
-?`${fps} frames a second, measured off a second of it`
-:`${fps} frames a second - assumed, because this browser will not report a frame rate`;
-el.pathNote.textContent="This one is reversed by stepping the browser's own player "
-+`backwards through it, because ${why} That is slower than reading the file directly, `
-+`and the clip is sampled at ${rate}.`;
+el.pathNote.textContent=phrase('path.record',{
+reason:why(fallbackReason,'read.layout'),
+rate:phrase(fpsMeasured?'path.fps.measured':'path.fps.assumed',{fps}),
+});
 }
 }
 function releaseFile(){
@@ -351,7 +349,7 @@ el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message||'Something went wrong while reversing.');
+showError(error?.message?phrase(error.message):'Something went wrong while reversing.');
 console.error(error);
 }
 }finally{

@@ -1,9 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 export class UnsupportedFile extends Error{
-constructor(reason){
+constructor(reason,values){
 super(reason);
 this.name='UnsupportedFile';
 this.reason=reason;
+this.values=values;
 }
 }
 function fourcc(view,at){
@@ -66,7 +67,7 @@ this.bytes=new Uint8Array(await this.file.slice(offset,end).arrayBuffer());
 }
 const at=offset-this.start;
 if(at+length>this.bytes.length){
-throw new UnsupportedFile('the file ends in the middle of a frame.');
+throw new UnsupportedFile('read.midframe');
 }
 return this.bytes.subarray(at,at+length);
 }
@@ -95,11 +96,11 @@ return found;
 }
 const hex=(n)=>n.toString(16).padStart(2,'0');
 function avcCodec(prefix,config){
-if(config.length<4)throw new UnsupportedFile('the H.264 configuration record is too short.');
+if(config.length<4)throw new UnsupportedFile('read.avcshort');
 return`${prefix}.${hex(config[1])}${hex(config[2])}${hex(config[3])}`;
 }
 function hevcCodec(prefix,config){
-if(config.length<13)throw new UnsupportedFile('the HEVC configuration record is too short.');
+if(config.length<13)throw new UnsupportedFile('read.hevcshort');
 const space=['','A','B','C'][(config[1]>>6)&0x3];
 const tier=((config[1]>>5)&0x1)?'H':'L';
 const profile=config[1]&0x1f;
@@ -118,7 +119,7 @@ return[
 ].join('.');
 }
 function av1Codec(config){
-if(config.length<3)throw new UnsupportedFile('the AV1 configuration record is too short.');
+if(config.length<3)throw new UnsupportedFile('read.av1short');
 const profile=(config[1]>>5)&0x7;
 const level=config[1]&0x1f;
 const tier=((config[2]>>7)&0x1)?'H':'M';
@@ -144,10 +145,10 @@ const stco=findBox(view,stbl.body,stbl.end,'stco')
 const ctts=findBox(view,stbl.body,stbl.end,'ctts');
 const stss=findBox(view,stbl.body,stbl.end,'stss');
 if(!stsz&&findBox(view,stbl.body,stbl.end,'stz2')){
-throw new UnsupportedFile('sample sizes are in a compact table this reader does not decode.');
+throw new UnsupportedFile('read.compactsizes');
 }
 if(!stts||!stsc||!stsz||!stco){
-throw new UnsupportedFile('the sample tables are incomplete.');
+throw new UnsupportedFile('read.sampletables');
 }
 const sizesHead=fullBox(view,stsz);
 const uniform=view.getUint32(sizesHead.at);
@@ -207,7 +208,7 @@ first:view.getUint32(runsHead.at+4+r*12)-1,
 perChunk:view.getUint32(runsHead.at+8+r*12),
 });
 }
-if(!runs.length)throw new UnsupportedFile('the chunk table is empty.');
+if(!runs.length)throw new UnsupportedFile('read.chunktable');
 const samples=[];
 let index=0;
 let run=0;
@@ -227,7 +228,7 @@ offset+=size;
 index++;
 }
 }
-if(!samples.length)throw new UnsupportedFile('the track holds no samples.');
+if(!samples.length)throw new UnsupportedFile('read.nosamples');
 return samples;
 }
 function fragmentDefaults(view,moov){
@@ -335,7 +336,7 @@ const VIDEO_ENTRIES=new Set(['avc1','avc3','hvc1','hev1','av01','vp09']);
 function readVideoTrack(view,trak,timescale,duration,fragmented){
 const tkhd=findBox(view,trak.body,trak.end,'tkhd');
 const stbl=findPath(view,trak,'mdia','minf','stbl');
-if(!tkhd||!stbl)throw new UnsupportedFile('the video track is missing its sample tables.');
+if(!tkhd||!stbl)throw new UnsupportedFile('read.nostbl');
 const head=fullBox(view,tkhd);
 const trackId=view.getUint32(head.at+(head.version===1?16:8));
 const rotation=rotationOf(view,tkhd.end-44);
@@ -344,15 +345,14 @@ view.byteOffset+tkhd.end-44,view.byteOffset+tkhd.end-8));
 const trackWidth=view.getUint32(tkhd.end-8);
 const trackHeight=view.getUint32(tkhd.end-4);
 const stsd=findBox(view,stbl.body,stbl.end,'stsd');
-if(!stsd)throw new UnsupportedFile('the video track has no sample description.');
+if(!stsd)throw new UnsupportedFile('read.nostsd');
 const[entry]=[...boxes(view,fullBox(view,stsd).at+4,stsd.end)];
-if(!entry)throw new UnsupportedFile('the video sample description is empty.');
+if(!entry)throw new UnsupportedFile('read.emptystsd');
 if(entry.type==='encv'||findBox(view,entry.body+78,entry.end,'sinf')){
-throw new UnsupportedFile('the video track is encrypted.');
+throw new UnsupportedFile('read.encrypted');
 }
 if(!VIDEO_ENTRIES.has(entry.type)){
-throw new UnsupportedFile(
-`the video is stored as "${entry.type}", which this reader does not know.`);
+throw new UnsupportedFile('read.unknowncodec',{type:entry.type});
 }
 const codedWidth=view.getUint16(entry.body+24);
 const codedHeight=view.getUint16(entry.body+26);
@@ -377,7 +377,7 @@ codec=vp9Codec(view,box);
 }
 if(codec)break;
 }
-if(!codec)throw new UnsupportedFile(`the "${entry.type}" track carries no decoder configuration.`);
+if(!codec)throw new UnsupportedFile('read.noconfig',{type:entry.type});
 const samples=fragmented?[]:readSamples(view,stbl);
 const turned=rotation===90||rotation===270;
 return{
@@ -423,10 +423,10 @@ samples:fragmented?[]:readSamples(view,stbl),
 export async function demux(file){
 const top=await topLevel(file);
 if(!top.some((box)=>box.type==='ftyp'||box.type==='moov')){
-throw new UnsupportedFile('this is not an MP4 or MOV file.');
+throw new UnsupportedFile('read.notmp4');
 }
 const outer=top.find((box)=>box.type==='moov');
-if(!outer)throw new UnsupportedFile('the file has no movie header.');
+if(!outer)throw new UnsupportedFile('read.nomoov');
 const bytes=new Uint8Array(await file.slice(outer.start,outer.end).arrayBuffer());
 const view=new DataView(bytes.buffer);
 const moov={body:outer.body-outer.start,end:bytes.length};
@@ -453,14 +453,14 @@ video=readVideoTrack(view,trak,timescale,duration,fragmented);
 audio=readAudioTrack(view,trak,timescale,duration,fragmented);
 }
 }
-if(!video)throw new UnsupportedFile('the file has no video track this reader can use.');
-if(!video.timescale)throw new UnsupportedFile('the video track has no timescale.');
+if(!video)throw new UnsupportedFile('read.novideo');
+if(!video.timescale)throw new UnsupportedFile('read.notimescale');
 if(fragmented){
 const wanted=new Map([[video.trackId,video.samples]]);
 if(audio)wanted.set(audio.trackId,audio.samples);
 const clocks=await readFragments(file,top,fragmentDefaults(view,moov),wanted);
 if(!video.samples.length){
-throw new UnsupportedFile('the fragments in this file hold no frames for its video track.');
+throw new UnsupportedFile('read.nofragments');
 }
 for(const track of[video,audio]){
 const clock=track&&clocks.get(track.trackId);
