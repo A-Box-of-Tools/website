@@ -149,6 +149,15 @@ TAIWAN_REGISTER = [
     ('安裝包', '安裝檔'),
     ('進位制', '進位'),            # 十六進位制 -> 十六進位
     ('麵包屑導航', '麵包屑導覽'),
+    # The hub's filter, which arrived in Taiwan as a database operation: s2twp
+    # sends 查找 to 查詢, and a 查詢 is something you run against a record,
+    # not the label on a box you type a tool's name into. These have to be
+    # whole phrases rather than a bare 查詢 -> 尋找, because by the time this
+    # runs the corpus's three real 查询 - a query string, a media query - are
+    # spelled 查詢 as well and would go with it. 匹配 is likewise fine where
+    # dicom-viewer and redact-pdf mean it technically, and wrong here.
+    ('查詢工具', '尋找工具'),
+    ('沒有匹配的工具', '沒有符合的工具'),
     # 剪切 became 剪下, which in Taiwan is the clipboard verb. Every one of
     # these is a video or audio trim, and no text tool uses the word.
     ('剪下', '剪輯'),
@@ -352,6 +361,15 @@ TAIWAN_REGISTER_RE = [
     # A distance or a township 里 would be wrecked by this, so main() checks
     # that locales/zh/ has none before the rule can run.
     (re.compile(r'里'), '裡'),
+    # A source repository is a 儲存庫 in Taiwan - GitHub's own Traditional
+    # interface says so, and the share tool's hand-written pages have said so
+    # here since they were written. 倉庫 keeps only its literal sense, the
+    # building goods sit in, which is why this catch-all needs a guard: the
+    # barcode page's 商店、倉庫或者貨運公司 is a real warehouse, and it is
+    # recognised by the shop it is listed beside. The compounds want no rule
+    # of their own - s2twp writes 程式碼倉庫 and 原始碼倉庫, and this finishes
+    # both. main() refuses to run if that one sentence is ever reworded.
+    (re.compile(r'(?<!商店、)倉庫'), '儲存庫'),
     # 摳字眼 wraps across a line in its TOML value.
     (re.compile(r'摳\\?\n\s*字眼'), '咬文嚼字'),
     # Spacing where a replacement above put Latin against Han: the corpus
@@ -367,10 +385,10 @@ TAIWAN_REGISTER_RE = [
 # The share tool's pages were written by hand at Taiwan register in the
 # commit that gave the tool its languages, and every zh edit since has been
 # carried into them by hand in the same commit. Converting zh would be a
-# strict regression - it puts back 倉庫 for 儲存庫, IP地址 for IP位址,
-# mainland ASCII quotes for 「」, and mis-segmentations like 復制 - so the
-# committed text is the truth and this script leaves it alone. An edit to
-# the zh side of any of these has to be carried over by hand.
+# strict regression - it puts back IP地址 for IP位址, mainland ASCII quotes
+# for 「」, and mis-segmentations like 復制 - so the committed text is the
+# truth and this script leaves it alone. An edit to the zh side of any of
+# these has to be carried over by hand.
 MAINTAINED = {
     'pages/guides/share-text-between-devices.html',
     'pages/guides/share-text-between-devices.toml',
@@ -447,6 +465,16 @@ def main():
         sys.exit('locales/zh/ now uses 里 in a sense that is not the locative '
                  f'裡: {set(miles)}. The rule in TAIWAN_REGISTER_RE converts '
                  'every 里; give this one an exception before running again.')
+
+    # The 倉庫 rule tells a source repository from a warehouse by the one
+    # warehouse there is. Reword that sentence and the rule stops seeing it,
+    # silently, in a page about barcodes.
+    warehouse = '商店、仓库或者货运公司'
+    if warehouse not in corpus:
+        sys.exit(f'locales/zh/ no longer says {warehouse}, which is the '
+                 'literal warehouse the 倉庫 rule in TAIWAN_REGISTER_RE '
+                 'excepts. Point its lookbehind at the new wording, or drop '
+                 'both this check and the lookbehind if the sentence is gone.')
 
     changed, written = [], 0
     for src in sorted(SRC.rglob('*')):

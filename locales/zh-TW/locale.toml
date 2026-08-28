@@ -293,7 +293,7 @@ reading_one = "正在讀取 {count} 個檔案&hellip;"
 reading_many = "正在讀取 {count} 個檔案&hellip;"
 
 check_yourself = """
-      <strong>你可以自己核對。</strong>上面這些不用你信。這個頁面是倉庫裡的\
+      <strong>你可以自己核對。</strong>上面這些不用你信。這個頁面是儲存庫裡的\
       模板和配置產生出來的，構建指令碼你能讀，也能自己跑一遍，跑出來的結果就\
       提交在 <code>dist</code> 分支上。拿實際發給你的內容，跟你自己從原始碼\
       構建出來的結果對一遍就知道了："""
