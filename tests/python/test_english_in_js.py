@@ -61,7 +61,9 @@ BASELINE = {
     'compress-image': 2,
     'compress-pdf': 6,
     'crop-video': 0,
-    'dicom-viewer': 15,
+    # Two internal keys, a DOM id, a clock format, one key template and the
+    # fixed-width layout of a line in the text report.
+    'dicom-viewer': 6,
     # Three lines of PDF syntax, two CSS class names, an aspect ratio, a
     # filename template, and one invariant check: orderCorners is only ever
     # handed the four corners of a quad.
@@ -74,14 +76,18 @@ BASELINE = {
     'format-json': 3,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
-    'gif-maker': 22,
+    # Six invariant checks the writer makes about its own arguments - a bug
+    # here rather than anything a file can cause - and a CSS class name.
+    'gif-maker': 7,
     # A filename template.
     'grab-frame': 1,
     'hash-checksum': 10,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
-    # A filename template, a dimension pair, a CSS percentage, a phrase key, the
-    # note written into a padded JPEG, and the eight published citations.
+    # All thirteen are accounted for and none of them moves: a filename
+    # template, a dimension pair, a CSS percentage, a phrase key, the note
+    # written into a padded JPEG, and the eight published citations, which
+    # stay as published so that somebody can search for them.
     'id-photo': 13,
     # A CSS class name and one line of the CSS rule the tool writes out.
     'image-to-data-uri': 2,
@@ -95,10 +101,17 @@ BASELINE = {
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
     'qr-barcode': 2,
+    # None of these thirteen reaches a reader. Six are qr-decode.js's
+    # diagnostics, which detect.js catches and turns into a null; two are
+    # camera.js's and main.js's markers, which are likewise swallowed by
+    # their callers; two are a symbology's published name; and three are a
+    # digit pair, a CSS selector and a key template.
     'qr-barcode-reader': 13,
     # A key template, and a CSS class name the stage builds.
     'redact-image': 2,
-    'redact-pdf': 15,
+    # Three Base-14 glyph tables from the PDF specification, four lines of
+    # PDF syntax, three internal range keys and one key template.
+    'redact-pdf': 11,
     'resize-image': 5,
     # The key template that picks between two whole sentences.
     'reverse-video': 1,

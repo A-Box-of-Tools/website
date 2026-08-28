@@ -41,10 +41,12 @@ export function millimetres(value) {
  * showing `100.0 HU` where the answer is exactly 100 suggests a precision the
  * scanner did not have.
  */
-export function quantity(value, unit) {
+export function quantity(value, unit, t) {
   const shown = Number.isInteger(value) ? String(value)
     : Math.abs(value) >= 100 ? value.toFixed(1) : value.toFixed(3).replace(/0+$/, '').replace(/\.$/, '');
-  return unit ? `${shown} ${unit}` : shown;
+  // Where the unit goes is the language's business: it follows the number
+  // in English and precedes it in some others.
+  return unit ? t('unit.value', { n: shown, unit }) : shown;
 }
 
 /** A window, said the way a workstation says it: centre first, then width. */

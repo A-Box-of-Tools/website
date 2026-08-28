@@ -338,7 +338,7 @@ function matchRow(hit) {
 
   const number = document.createElement('span');
   number.className = 'match-page';
-  number.textContent = `p. ${page.number}`;
+  number.textContent = phrase('page.short', { n: page.number });
 
   const line = document.createElement('span');
   line.className = 'match-line';
@@ -660,7 +660,9 @@ function show(result, check, terms) {
   el.checkTerms.hidden = terms === 0;
   el.checkTerms.replaceChildren(...check.terms.map((term) => {
     const item = document.createElement('li');
-    item.textContent = `“${term.text}” — ${term.was} → ${term.now}`;
+    item.textContent = phrase('term.change', {
+      text: term.text, was: term.was, now: term.now,
+    });
     return item;
   }));
 
@@ -684,7 +686,13 @@ function facts(report, boxes) {
     : phrase('fact.noboxes'));
 
   if (report.strings.changed) {
-    lines.push(phrase('fact.elsewhere', { where: report.strings.where.join(', ') }));
+    // Each place is a phrase, and so is the comma between two of them: not
+    // every language separates a list the same way.
+    lines.push(phrase('fact.elsewhere', {
+      where: report.strings.where
+        .map((key) => phrase(key))
+        .reduce((a, b) => phrase('join.comma', { a, b })),
+    }));
   }
   lines.push(phrase('fact.metadata'));
   if (report.attachments || report.actions) {

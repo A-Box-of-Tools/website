@@ -417,14 +417,21 @@ test('a UTF-8 name survives being declared', () => {
   assert.equal(text(dataset, '00100010', decoder), 'Müller^Jörg');
 });
 
+/* A stand-in for `phrase()`. values.js ships in fifteen languages, so what
+   it hands back is a key and its blanks. */
+const say = (key, values = {}) => (
+  Object.keys(values).length ? `${key}(${Object.values(values).join(',')})` : key);
+
 test('dates, times, ages and names are written out for a person', () => {
   assert.equal(date('20190314'), '14 March 2019');
   assert.equal(date('1975.03.14'), '14 March 1975');
   assert.equal(date('not a date'), null);
   assert.equal(time('134522'), '13:45:22');
   assert.equal(time('1345'), '13:45:00');
-  assert.equal(age('045Y'), '45 years');
-  assert.equal(age('001M'), '1 month');
+  // `age` names a sentence and takes a resolver: "45 years" is not one
+  // noun with an `s` on it in a language whose plural is not a suffix.
+  assert.equal(age('045Y', say), 'age.year.many(45)');
+  assert.equal(age('001M', say), 'age.month.one(1)');
   // Reordered and not recased. Names in DICOM files are conventionally written
   // in capitals, and a viewer that title-cased them would turn MCDONALD into
   // Mcdonald and O'BRIEN into O'brien - which is inventing, on the one field
