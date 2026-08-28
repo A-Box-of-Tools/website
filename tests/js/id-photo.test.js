@@ -64,7 +64,13 @@ test('specs: every entry can be cropped to and is describable', () => {
     assert.ok(spec.notes.length > 0, `${spec.id} says nothing about itself`);
     assert.ok(spec.source.authority, `${spec.id} names no authority`);
     assert.ok(BACKGROUNDS[spec.background], `${spec.id} wants a background that does not exist`);
-    assert.ok(printLabel(spec).length > 0);
+    // Every note, and the country and document names, are phrase keys that
+    // body.html has to carry - a key nothing resolves would reach the page
+    // as itself. tests/python/test_phrases.py is what checks they are there.
+    for (const key of [spec.country, spec.document, ...spec.notes]) {
+      assert.match(key, /^[a-z][a-z0-9.-]*$/, `${spec.id}: ${key} is not a phrase key`);
+    }
+    assert.ok(printLabel(spec, say).length > 0);
   }
 });
 
@@ -125,9 +131,9 @@ test('portalBytes: an unstated end is not a limit', () => {
 });
 
 test('pixelLabel: says which kind of rule it is', () => {
-  assert.match(pixelLabel(specById('us-dv')), /exactly 600 x 600/);
-  assert.match(pixelLabel(specById('uk-passport')), /at least 600 x 750/);
-  assert.equal(pixelLabel(specById('schengen')), null);
+  assert.equal(pixelLabel(specById('us-dv'), say), 'px.exact 600 600');
+  assert.equal(pixelLabel(specById('uk-passport'), say), 'px.least 600 750');
+  assert.equal(pixelLabel(specById('schengen'), say), null);
 });
 
 test('specsByCountry: groups without losing or duplicating anything', () => {
@@ -331,7 +337,7 @@ test('planSheet: a 35 x 45 fits eight to a 6 x 4 print', () => {
   assert.equal(plan.count, 8);
   assert.equal(plan.columns, 4);
   assert.equal(plan.rows, 2);
-  assert.match(describeSheet(plan), /8 copies/);
+  assert.equal(describeSheet(plan, say), 'sheet.many 8 4 2');
 });
 
 test('planSheet: nothing is scaled to fit', () => {
@@ -393,7 +399,7 @@ test('planSheet: a photograph larger than the paper lays out nothing, and says s
   const plan = bestSheet({ photo: { widthMm: 300, heightMm: 400 }, paper: paperById('4x6'), dpi: 300 });
   assert.equal(plan.count, 0);
   assert.equal(plan.marks.length, 0);
-  assert.match(describeSheet(plan), /does not fit/);
+  assert.equal(describeSheet(plan, say), 'sheet.none');
 });
 
 test('planSheet: doubling the resolution doubles the pixels and moves nothing', () => {
