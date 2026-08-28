@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/share-text/:';
-const CACHE_NAME=CACHE_PREFIX+'c96cb71f5c';
+const CACHE_NAME=CACHE_PREFIX+'45e6aa43a9';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=388c545c10',
+'styles.css?v=191908f858',
 'manifest.json',
 'src/shared/phrases.js',
 'src/main.js',

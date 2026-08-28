@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/lecteur-de-qr-code/:';
-const CACHE_NAME=CACHE_PREFIX+'6908052d9e';
+const CACHE_NAME=CACHE_PREFIX+'0a266297b9';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=064a2cea88',
+'styles.css?v=7b1bcbeeb4',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

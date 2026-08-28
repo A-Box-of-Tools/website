@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/videodan-kare-yakalama/:';
-const CACHE_NAME=CACHE_PREFIX+'5026e09e21';
+const CACHE_NAME=CACHE_PREFIX+'668bd4a29b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5759a61653',
+'styles.css?v=45c02829f7',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

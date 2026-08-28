@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resim-karartma/:';
-const CACHE_NAME=CACHE_PREFIX+'24b783eb64';
+const CACHE_NAME=CACHE_PREFIX+'54a01534da';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=30a440f8ce',
+'styles.css?v=2c1df88635',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

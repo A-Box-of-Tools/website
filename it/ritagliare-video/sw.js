@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/ritagliare-video/:';
-const CACHE_NAME=CACHE_PREFIX+'69c7a13d76';
+const CACHE_NAME=CACHE_PREFIX+'8d64604f44';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=00b403c9ac',
+'styles.css?v=1cd537d28b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/decouper-un-gif-en-images/:';
-const CACHE_NAME=CACHE_PREFIX+'7275d18cb4';
+const CACHE_NAME=CACHE_PREFIX+'b66085b931';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a4c8d41660',
+'styles.css?v=52ad1021fd',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

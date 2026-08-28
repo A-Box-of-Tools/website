@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/동영상-화면-자르기/:';
-const CACHE_NAME=CACHE_PREFIX+'bf2d1056ea';
+const CACHE_NAME=CACHE_PREFIX+'af38383ee0';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=00b403c9ac',
+'styles.css?v=1cd537d28b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

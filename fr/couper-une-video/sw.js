@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/couper-une-video/:';
-const CACHE_NAME=CACHE_PREFIX+'65dce31be5';
+const CACHE_NAME=CACHE_PREFIX+'83eb4b6d36';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5995d4a241',
+'styles.css?v=0209387800',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
