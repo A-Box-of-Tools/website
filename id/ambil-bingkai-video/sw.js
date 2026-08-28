@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/ambil-bingkai-video/:';
-const CACHE_NAME=CACHE_PREFIX+'95bb3a90d3';
+const CACHE_NAME=CACHE_PREFIX+'303888f19d';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=1b0b082ed0',
+'styles.css?v=57b0c118d3',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

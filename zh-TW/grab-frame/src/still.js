@@ -39,7 +39,8 @@ export function encodeStill(canvas,{type='image/png',quality=0.92}={}){
 return new Promise((resolve,reject)=>{
 const done=(blob)=>{
 if(blob)resolve(blob);
-else reject(new Error(`This browser would not write a ${FORMATS[type]?.label ?? type}.`));
+else reject(Object.assign(new Error('save.nowrite'),
+{values:{format:FORMATS[type]?.label??type}}));
 };
 if(type==='image/png')canvas.toBlob(done,type);
 else canvas.toBlob(done,type,quality);

@@ -114,7 +114,7 @@ if(working)return;
 clearError();
 releaseFile();
 file=picked;
-picker.busy('Reading the file...');
+picker.busy(phrase('step.reading'));
 try{
 objectUrl=URL.createObjectURL(picked);
 const played=await openInPlayer(el.preview,objectUrl);
@@ -168,7 +168,8 @@ setUpTransport();
 await goTo(0);
 }catch(error){
 console.error(error);
-showError(error?.message||'That file could not be opened.');
+showError(error?.message
+?phrase(error.message,fill(error.values)):phrase('open.notopened'));
 resetView();
 }finally{
 picker.done();
@@ -184,15 +185,22 @@ function describeSource(){
 el.source.hidden=false;
 el.srcName.textContent=file.name;
 el.srcSize.textContent=formatBytes(file.size);
-el.srcFrame.textContent=`${source.width} x ${source.height}`;
-el.srcLength.textContent=duration?formatDuration(duration):'unknown';
+el.srcFrame.textContent=phrase('size.plain',
+{width:source.width,height:source.height});
+el.srcLength.textContent=duration?formatDuration(duration):phrase('len.unknown');
 if(exact){
-const turned=media.video.rotation?`, turned ${media.video.rotation} degrees`:'';
-el.srcCodec.textContent=`${media.video.codec} (${media.video.entryType})${turned}`;
-el.srcFrames.textContent=`${reader.count.toLocaleString()} frames`;
+el.srcCodec.textContent=media.video.rotation
+?phrase('src.codec.turned',{
+codec:media.video.codec,
+entry:media.video.entryType,
+degrees:media.video.rotation,
+})
+:phrase('src.codec',{codec:media.video.codec,entry:media.video.entryType});
+el.srcFrames.textContent=phrase(reader.count===1?'n.frame.one':'n.frame.many',
+{n:reader.count.toLocaleString()});
 }else{
-el.srcCodec.textContent="read by the browser's own player";
-el.srcFrames.textContent='not counted on this path';
+el.srcCodec.textContent=phrase('src.byplayer');
+el.srcFrames.textContent=phrase('src.uncounted');
 }
 el.pathNote.hidden=exact&&playable;
 if(!exact){
@@ -234,7 +242,7 @@ el.scrub.max=String(Math.max(1,Math.round(duration*1000)));
 el.scrub.step='1';
 }
 el.play.disabled=!playable;
-el.play.title=playable?'Play or pause (space)':'This browser will not play this file';
+el.play.title=phrase(playable?'play.title':'play.cannot');
 }
 async function goTo(seconds){
 const clamped=Math.max(0,Math.min(seconds,duration||seconds));
@@ -264,8 +272,11 @@ el.preview.hidden=true;
 function updateReadout(){
 el.atTime.textContent=clockTime(position);
 el.atFrame.textContent=exact
-?`frame ${(frameIndex + 1).toLocaleString()} of ${reader.count.toLocaleString()}`
-:'frame times are not read on this path';
+?phrase('at.frame',{
+n:(frameIndex+1).toLocaleString(),
+total:reader.count.toLocaleString(),
+})
+:phrase('at.notread');
 }
 async function showFrame(index){
 wantedFrame=index;
@@ -286,7 +297,10 @@ el.stageBusy.hidden=true;
 }
 }
 }catch(error){
-if(error?.name!=='AbortError')showError(error?.message||'That frame could not be decoded.');
+if(error?.name!=='AbortError'){
+showError(error?.message
+?phrase(error.message,fill(error.values)):phrase('decode.nodecode'));
+}
 }finally{
 drawing=false;
 }
@@ -332,7 +346,7 @@ function play(){
 if(!playable||playing)return;
 playing=true;
 el.play.textContent='⏸';
-el.play.setAttribute('aria-label','Pause');
+el.play.setAttribute('aria-label',phrase('play.pause'));
 el.preview.hidden=false;
 el.still.hidden=true;
 el.preview.currentTime=position;
@@ -343,7 +357,7 @@ function pause(){
 if(!playing)return;
 playing=false;
 el.play.textContent='▶';
-el.play.setAttribute('aria-label','Play');
+el.play.setAttribute('aria-label',phrase('play.play'));
 el.preview.pause();
 goTo(el.preview.currentTime);
 }
@@ -391,9 +405,8 @@ function updateFormatNote(){
 const type=currentType();
 el.qualityField.hidden=type==='image/png';
 el.formatNote.textContent=type==='image/png'
-?`Lossless: the still holds exactly the pixels the frame decoded to, at ${source.width || '?'} x ${source.height || '?'}.`
-:'Compressed again on top of the video\'s own compression. Fine for a preview, '
-+'not for anything that will be edited further.';
+?phrase('note.png',{width:source.width||'?',height:source.height||'?'})
+:phrase('note.lossy');
 }
 el.format.addEventListener('change',updateFormatNote);
 el.quality.addEventListener('input',()=>{
@@ -404,8 +417,9 @@ el.every.addEventListener('input',updateSeriesButton);
 function updateSeriesButton(){
 const every=Number(el.every.value);
 el.grabSeries.textContent=every>0
-?`Grab one every ${every % 1 ? every.toFixed(1) : every} seconds`
-:'Grab a series';
+?phrase(every===1?'series.every.one':'series.every.many',
+{n:every%1?every.toFixed(1):every})
+:phrase('series.any');
 }
 function addShot({blob,time,width,height,type}){
 const shot={
@@ -423,15 +437,16 @@ renderShots();
 return shot;
 }
 function renderShots(){
-el.shotsCount.textContent=shots.length===1
-?'1 still, held in this page only'
-:`${shots.length} stills, held in this page only`;
+el.shotsCount.textContent=phrase(
+shots.length===1?'n.still.one':'n.still.many',
+{n:shots.length},
+);
 el.shots.replaceChildren(...shots.map((shot)=>{
 const item=document.createElement('li');
 item.className='shot';
 const image=document.createElement('img');
 image.src=shot.url;
-image.alt=`The frame at ${clockTime(shot.time)}`;
+image.alt=phrase('shot.alt',{time:clockTime(shot.time)});
 image.loading='lazy';
 const body=document.createElement('div');
 body.className='shot-body';
@@ -440,7 +455,11 @@ when.className='shot-time';
 when.textContent=clockTime(shot.time);
 const meta=document.createElement('span');
 meta.className='shot-meta';
-meta.textContent=`${FORMATS[shot.type]?.label ?? 'PNG'} · ${shot.width} x ${shot.height} · ${formatBytes(shot.blob.size)}`;
+meta.textContent=[
+FORMATS[shot.type]?.label??'PNG',
+phrase('size.plain',{width:shot.width,height:shot.height}),
+formatBytes(shot.blob.size),
+].reduce((a,b)=>phrase('join.dot',{a,b}));
 body.append(when,meta);
 const actions=document.createElement('div');
 actions.className='shot-actions';
@@ -448,11 +467,11 @@ const save=document.createElement('a');
 save.className='as-button';
 save.href=shot.url;
 save.download=shot.name;
-save.textContent='Save';
+save.textContent=phrase('shot.save');
 const remove=document.createElement('button');
 remove.type='button';
 remove.className='ghost danger';
-remove.textContent='Remove';
+remove.textContent=phrase('shot.remove');
 remove.addEventListener('click',()=>removeShot(shot.id));
 actions.append(save,remove);
 item.append(image,body,actions);
@@ -487,12 +506,13 @@ name=shot.name.replace(/(\.[^.]+)$/,`-${n}$1`);
 }
 used.add(name);
 files.push({name,data:new Uint8Array(await shot.blob.arrayBuffer())});
-setProgress({done:++done,total:shots.length,label:'Packing...'});
+setProgress({done:++done,total:shots.length,step:'step.packing'});
 }
 const base=(file?.name??'video').replace(/\.[^.]+$/,'');
 saveBlob(makeZip(files),`${base}-stills.zip`);
 }catch(error){
-showError(error?.message||'That archive could not be built.');
+showError(error?.message?phrase(error.message,fill(error.values))
+:phrase('zip.failed'));
 }finally{
 setWorking(false);
 el.progress.hidden=true;
@@ -542,9 +562,10 @@ height:canvas.height,
 type:options.type,
 });
 el.shotsCard.scrollIntoView({behavior:'smooth',block:'nearest'});
-el.grab.title=`Last saved: ${shot.name}`;
+el.grab.title=phrase('grab.last',{name:shot.name});
 }catch(error){
-showError(error?.message||'That frame could not be saved.');
+showError(error?.message?phrase(error.message,fill(error.values))
+:phrase('save.failed'));
 console.error(error);
 }finally{
 setWorking(false);
@@ -555,7 +576,7 @@ if(working||!file)return;
 if(playing)pause();
 const every=Number(el.every.value);
 if(!(every>0)){
-showError('Set an interval of more than zero seconds.');
+showError(phrase('series.nointerval'));
 return;
 }
 clearError();
@@ -568,8 +589,8 @@ const{signal}=abortController;
 try{
 if(exact){
 const indexes=seriesFrames(reader.order,{every});
-if(!indexes.length)throw new Error('That interval picks out no frames.');
-setProgress({done:0,total:indexes.length,label:'Grabbing'});
+if(!indexes.length)throw new Error('series.noframes');
+setProgress({done:0,total:indexes.length,step:'step.grabbing'});
 await decodeSeries({
 file,
 video:media.video,
@@ -609,7 +630,8 @@ setProgress({done:n+1,total:times.length,label:'Grabbing'});
 el.shotsCard.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 if(error?.name!=='AbortError'){
-showError(error?.message||'Something went wrong while grabbing the series.');
+showError(error?.message?phrase(error.message,fill(error.values))
+:phrase('series.failed'));
 console.error(error);
 }
 }finally{
@@ -626,11 +648,18 @@ el.grab.disabled=state;
 el.grabSeries.disabled=state;
 el.downloadAll.disabled=state;
 }
-function setProgress({done,total,label}){
+function setProgress({done,total,step}){
 const fraction=total>0?Math.min(1,done/total):0;
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
-el.progressLabel.textContent=`${label} ${done.toLocaleString()} of ${total.toLocaleString()}`
-+` (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase(step,{
+done:done.toLocaleString(),
+total:total.toLocaleString(),
+percent:Math.round(fraction*100),
+});
+}
+function fill(values={}){
+return Object.fromEntries(Object.entries(values)
+.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
 }
 function showError(message){
 el.error.textContent=message;
@@ -641,16 +670,18 @@ el.error.hidden=true;
 el.error.textContent='';
 }
 function formatBytes(bytes){
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
-if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
-return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
+if(bytes<1024*1024*1024){
+return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
+}
+return phrase('size.gb',{n:(bytes/1024/1024/1024).toFixed(2)});
 }
 function formatDuration(seconds){
 const whole=Math.max(0,Math.round(seconds));
 const minutes=Math.floor(whole/60);
 return minutes
-?`${minutes}m ${String(whole % 60).padStart(2, '0')}s`
-:`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+?phrase('time.minutes',{minutes,seconds:String(whole%60).padStart(2,'0')})
+:phrase('time.seconds',{n:seconds<10?seconds.toFixed(1):whole});
 }
 window.addEventListener('beforeunload',(event)=>{
 if(!working)return;

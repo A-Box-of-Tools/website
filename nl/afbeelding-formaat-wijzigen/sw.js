@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/afbeelding-formaat-wijzigen/:';
-const CACHE_NAME=CACHE_PREFIX+'83fe3cfd0d';
+const CACHE_NAME=CACHE_PREFIX+'55f80a7a31';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=989510d484',
+'styles.css?v=4341ff8eda',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

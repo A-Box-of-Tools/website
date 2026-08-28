@@ -58,6 +58,7 @@ waiting(){
 for(const card of document.querySelectorAll('main .card')){
 if(card.dataset.waited==='yes')card.setAttribute('inert','');
 }
+sayWaiting();
 },
 };
 }

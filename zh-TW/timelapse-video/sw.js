@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/timelapse-video/:';
-const CACHE_NAME=CACHE_PREFIX+'74043e8b2b';
+const CACHE_NAME=CACHE_PREFIX+'0d49bc41f6';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=8e498fefa3',
+'styles.css?v=5dabb23bad',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

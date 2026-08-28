@@ -42,10 +42,7 @@ Math.round(width*height*fps*(QUALITY_BPP[quality]??QUALITY_BPP.medium)),
 );
 const codec=await pickH264Codec({width,height,framerate:fps,bitrate});
 if(!codec){
-throw new Error(
-`This browser will not encode H.264 at ${width}×${height}. `
-+'Try a smaller resolution, or switch the output format to WebM.',
-);
+throw Object.assign(new Error('encode.noh264'),{values:{width,height}});
 }
 const canvas=document.createElement('canvas');
 canvas.width=width;

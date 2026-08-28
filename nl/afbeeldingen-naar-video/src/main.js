@@ -85,7 +85,12 @@ seconds:durationUnit==='seconds'&&typed>0?typed:3,
 });
 items=items.concat(loaded);
 if(skipped.length){
-showError(`Skipped ${skipped.length} file(s) that could not be read as images: ${skipped.slice(0, 3).join(', ')}${skipped.length > 3 ? '…' : ''}`);
+const names=skipped.slice(0,3)
+.reduce((a,b)=>phrase('join.comma',{a,b}));
+showError(phrase(skipped.length===1?'read.skipped.one':'read.skipped.many',{
+n:skipped.length,
+names:skipped.length>3?phrase('list.more',{names}):names,
+}));
 }else{
 clearError();
 }
@@ -141,8 +146,9 @@ handle.type='button';
 handle.className='drag-handle';
 handle.draggable=true;
 handle.textContent='⋮⋮';
-handle.title=`Drag to reorder ${item.name}`;
-handle.setAttribute('aria-label',`Drag to reorder ${item.name}`);
+const dragLabel=phrase('tile.drag',{name:item.name});
+handle.title=dragLabel;
+handle.setAttribute('aria-label',dragLabel);
 const thumbWrap=document.createElement('div');
 thumbWrap.className='thumb-wrap';
 thumbWrap.draggable=true;
@@ -159,8 +165,9 @@ const remove=document.createElement('button');
 remove.type='button';
 remove.className='remove-btn';
 remove.textContent='×';
-remove.title=`Remove ${item.name}`;
-remove.setAttribute('aria-label',`Remove ${item.name}`);
+const removeLabel=phrase('tile.remove',{name:item.name});
+remove.title=removeLabel;
+remove.setAttribute('aria-label',removeLabel);
 remove.addEventListener('click',()=>{
 releaseItem(item);
 items.splice(index,1);
@@ -172,15 +179,21 @@ meta.className='image-meta';
 const name=document.createElement('p');
 name.className='image-name';
 name.textContent=item.name;
-name.title=`${item.name} — ${item.width}×${item.height}`;
+name.title=phrase('join.dash',{
+a:item.name,
+b:phrase('size.plain',{width:item.width,height:item.height}),
+});
 meta.append(name);
 const dims=document.createElement('p');
 dims.className='image-dims';
-dims.textContent=`${item.width} × ${item.height} · ${formatBytes(item.file.size)}`;
+dims.textContent=phrase('join.dot',{
+a:phrase('size.plain',{width:item.width,height:item.height}),
+b:formatBytes(item.file.size),
+});
 if(item.sourceUrl){
 const source=document.createElement('span');
 source.className='image-source';
-source.textContent=` · from ${item.sourceHost}`;
+source.textContent=phrase('tile.source',{host:item.sourceHost});
 source.title=item.sourceUrl;
 dims.append(source);
 }
@@ -194,9 +207,8 @@ amount.min=inFrames?'1':'0.1';
 amount.max=inFrames?'3600':'60';
 amount.step=inFrames?'1':'0.1';
 amount.value=String(inFrames?item.frames:item.seconds);
-amount.setAttribute('aria-label',inFrames
-?`Frames to show ${item.name}`
-:`Seconds to show ${item.name}`);
+amount.setAttribute('aria-label',
+phrase(inFrames?'tile.frames':'tile.seconds',{name:item.name}));
 amount.addEventListener('change',()=>{
 const value=Number(amount.value);
 if(inFrames){
@@ -211,14 +223,14 @@ updateSummary();
 controls.append(amount);
 const unit=document.createElement('span');
 unit.className='unit';
-unit.textContent=inFrames?'fr':'sec';
+unit.textContent=phrase(inFrames?'unit.frames':'unit.seconds');
 controls.append(unit);
 const left=document.createElement('button');
 left.type='button';
 left.className='move-btn';
 left.textContent='‹';
-left.title='Move earlier';
-left.setAttribute('aria-label',`Move ${item.name} earlier`);
+left.title=phrase('tile.earlier.short');
+left.setAttribute('aria-label',phrase('tile.earlier',{name:item.name}));
 left.disabled=index===0;
 left.addEventListener('click',()=>{moveItem(items,index,index-1);render();});
 controls.append(left);
@@ -226,8 +238,8 @@ const right=document.createElement('button');
 right.type='button';
 right.className='move-btn';
 right.textContent='›';
-right.title='Move later';
-right.setAttribute('aria-label',`Move ${item.name} later`);
+right.title=phrase('tile.later.short');
+right.setAttribute('aria-label',phrase('tile.later',{name:item.name}));
 right.disabled=index===items.length-1;
 right.addEventListener('click',()=>{moveItem(items,index,index+1);render();});
 controls.append(right);
@@ -292,7 +304,8 @@ const any=items.length>0;
 el.listToolbar.hidden=!any;
 el.reorderHint.hidden=items.length<2;
 el.bulk.hidden=!any;
-el.countLabel.textContent=`${items.length} image${items.length === 1 ? '' : 's'}`;
+el.countLabel.textContent=phrase(items.length===1?'n.image.one':'n.image.many',
+{n:items.length});
 el.exportBtn.disabled=!any||exporting;
 syncCustomControls();
 updateSummary();
@@ -390,35 +403,38 @@ if(el.fps.value==='custom'){
 const typed=Number(el.fpsCustom.value);
 const used=currentFps();
 el.fpsNote.textContent=Number.isFinite(typed)&&typed===used
-?`${used} frames per second.`
-:`Using ${used} fps (allowed range ${FPS_MIN}-${FPS_MAX}).`;
+?phrase('fps.used',{n:used})
+:phrase('fps.clamped',{n:used,min:FPS_MIN,max:FPS_MAX});
 }else{
 el.fpsNote.textContent='';
 }
 if(el.resolution.value==='auto'){
 const{width,height}=currentSettings();
 el.resolutionNote.textContent=items.length
-?`Matched to ${width} x ${height}. No image is scaled down.`
-:'Matches the highest resolution among your images.';
+?phrase('size.matched',{width,height})
+:phrase('size.matchhighest');
 }else if(el.resolution.value==='custom'){
 const{width,height}=currentSettings();
-el.resolutionNote.textContent=`Output ${width} x ${height} (rounded to even numbers).`;
+el.resolutionNote.textContent=phrase('size.custom',{width,height});
 }else{
 el.resolutionNote.textContent='';
 }
 }
+const EMPTY='\u2014';
 function formatDuration(seconds){
 const whole=Math.round(seconds);
 const mins=Math.floor(whole/60);
 const secs=whole%60;
-return mins?`${mins}m ${String(secs).padStart(2, '0')}s`:`${seconds.toFixed(1)}s`;
+return mins
+?phrase('time.minutes',{minutes:mins,seconds:String(secs).padStart(2,'0')})
+:phrase('time.seconds',{n:seconds.toFixed(1)});
 }
 function updateSummary(){
 if(!items.length){
-el.sumImages.textContent='—';
-el.sumDuration.textContent='—';
-el.sumSize.textContent='—';
-el.sumFrames.textContent='—';
+el.sumImages.textContent=EMPTY;
+el.sumDuration.textContent=EMPTY;
+el.sumSize.textContent=EMPTY;
+el.sumFrames.textContent=EMPTY;
 return;
 }
 const settings=currentSettings();
@@ -426,10 +442,11 @@ const resolved=resolvedItems(settings.fps);
 const totalSeconds=resolved.reduce((sum,item)=>sum+item.duration,0);
 el.sumImages.textContent=String(items.length);
 el.sumDuration.textContent=formatDuration(totalSeconds);
-el.sumSize.textContent=`${settings.width} × ${settings.height}`;
+el.sumSize.textContent=phrase('size.plain',
+{width:settings.width,height:settings.height});
 el.sumFrames.textContent=countFrames(resolved,settings.fps).toLocaleString();
 el.bulkNote.textContent=durationUnit==='frames'
-?`at ${settings.fps} fps that is ${formatDuration(totalSeconds)} total`
+?phrase('bulk.note',{fps:settings.fps,total:formatDuration(totalSeconds)})
 :'';
 }
 async function updatePreview(){
@@ -482,12 +499,10 @@ schedulePreview();
 function updateFormatNote(){
 const usingWebm=el.format.value==='webm'||!hasWebCodecs();
 if(!hasWebCodecs()&&!hasMediaRecorder()){
-el.formatNote.textContent='This browser cannot encode video. Try a recent Chrome, Edge, or Safari.';
+el.formatNote.textContent=phrase('note.nocodec');
 return;
 }
-el.formatNote.textContent=usingWebm
-?'Records in real time — keep this tab visible until it finishes.'
-:'Encodes faster than real time. Works in the background.';
+el.formatNote.textContent=phrase(usingWebm?'note.record':'note.encode');
 }
 function initFormatNote(){
 el.backgroundField.style.visibility=el.fit.value==='contain'?'visible':'hidden';
@@ -513,15 +528,21 @@ function setProgress({phase,done,total,realtime}){
 const fraction=total>0?Math.min(1,done/total):0;
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
 if(phase==='preparing'){
-el.progressLabel.textContent='Preparing…';
+el.progressLabel.textContent=phrase('step.preparing');
 }else if(phase==='finishing'){
-el.progressLabel.textContent='Finishing up…';
+el.progressLabel.textContent=phrase('step.finishing');
 }else if(realtime){
-el.progressLabel.textContent=
-`Recording in real time — ${formatDuration(done)} of ${formatDuration(total)} (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase('step.realtime',{
+done:formatDuration(done),
+total:formatDuration(total),
+percent:Math.round(fraction*100),
+});
 }else{
-el.progressLabel.textContent=
-`Encoding frame ${done.toLocaleString()} of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase('step.frame',{
+done:done.toLocaleString(),
+total:total.toLocaleString(),
+percent:Math.round(fraction*100),
+});
 }
 }
 function outputFilename(extension){
@@ -534,8 +555,8 @@ String(now.getDate()).padStart(2,'0'),
 return`slideshow-${stamp}.${extension}`;
 }
 function formatBytes(bytes){
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
-return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
+return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
 }
 async function runExport(){
 if(exporting||!items.length)return;
@@ -557,21 +578,27 @@ settings,
 onProgress:setProgress,
 signal:abortController.signal,
 });
-if(warning)showError(warning);
+if(warning)showError(phrase(warning));
 if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
 lastResultUrl=URL.createObjectURL(blob);
 el.resultVideo.src=lastResultUrl;
 el.download.href=lastResultUrl;
 el.download.download=outputFilename(extension);
-el.resultInfo.textContent=
-`${extension.toUpperCase()} · ${settings.width}×${settings.height} · ${settings.fps} fps · ${formatBytes(blob.size)} · ${codec}`;
+el.resultInfo.textContent=[
+extension.toUpperCase(),
+phrase('size.plain',{width:settings.width,height:settings.height}),
+phrase('out.fps',{n:settings.fps}),
+formatBytes(blob.size),
+codec,
+].reduce((a,b)=>phrase('join.dot',{a,b}));
 el.result.hidden=false;
 el.progress.hidden=true;
 el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message?phrase(error.message):phrase('export.failed'));
+showError(error?.message
+?phrase(error.message,error.values):phrase('export.failed'));
 console.error(error);
 }
 }finally{

@@ -167,7 +167,7 @@ await decoder.flush();
 await Promise.all(this.pending.copies);
 if(this.failure)throw this.failure;
 const frame=this.cache.get(target);
-if(!frame)throw new Error('That frame could not be decoded from this file.');
+if(!frame)throw new Error('decode.noframe');
 return frame;
 }catch(error){
 this.#discard();
