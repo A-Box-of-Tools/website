@@ -71,17 +71,17 @@ async function openFile(file){
 hideError();
 picker.busy(readingLabel(1));
 el.working.hidden=false;
-el.working.textContent=`Reading ${file.name}…`;
+el.working.textContent=phrase('read.reading',{name:file.name});
 try{
 const bytes=new Uint8Array(await file.arrayBuffer());
 await new Promise((resolve)=>{setTimeout(resolve,0);});
 show(file,bytes);
 }catch(error){
+const why=phrase(error.message,fill(error.values));
 if(error instanceof NotAGif){
-showError(`${file.name} is not a GIF: ${error.message}. `
-+'This tool reads the GIF format itself, so it has nothing to say about other files.');
+showError(phrase('read.notagif',{name:file.name,why}));
 }else{
-showError(`${file.name} could not be read: ${error.message}`);
+showError(phrase('read.failed',{name:file.name,why}));
 }
 }finally{
 picker.done();
@@ -144,9 +144,9 @@ if(previous&&same(previous,composited))identical+=1;
 previous=composited;
 drawn.push({
 stored:thumbnail(painted.pixels,frame.width,frame.height,
-`What frame ${frame.index + 1} stores, on its own`),
+phrase('shot.stored',{n:frame.index+1})),
 composited:thumbnail(composited,gif.width,gif.height,
-`The canvas after frame ${frame.index + 1}`),
+phrase('shot.composited',{n:frame.index+1})),
 used:painted.used,
 missing:painted.missing,
 clears:stream.clears,
@@ -196,28 +196,29 @@ el.fileName.textContent=view.name;
 el.factVersion.textContent=`GIF${gif.version}`;
 el.factCanvas.textContent=`${gif.width} × ${gif.height}`;
 el.factSize.textContent=fileSize(gif.size);
-el.factSize.title=exact(gif.size);
+el.factSize.title=exact(gif.size,phrase);
 el.factFrames.textContent=count(gif.frames.length);
-el.factWritten.textContent=gif.frames.length?clock(timing.nominal):'—';
+el.factWritten.textContent=gif.frames.length?clock(timing.nominal,phrase):'—';
 if(timing.clamped>0){
-el.factPlays.textContent=`${clock(timing.real)}${fps ? ` (${fps.toFixed(1)} fps)` : ''}`;
+el.factPlays.textContent=played(timing.real,fps);
 el.factPlays.className='warn';
-el.factPlays.title=`${count(timing.clamped)} frames ask for less than 0.02s and every `
-+'browser holds them for 0.10s instead.';
+el.factPlays.title=phrase('clamped.note',{n:count(timing.clamped)});
 }else{
-el.factPlays.textContent=gif.frames.length
-?`${clock(timing.real)}${fps ? ` (${fps.toFixed(1)} fps)` : ''}`
-:'—';
+el.factPlays.textContent=gif.frames.length?played(timing.real,fps):'—';
 el.factPlays.className='';
 el.factPlays.title='';
 }
 el.factLoops.textContent=gif.loop===null
-?'once — no loop block'
-:gif.loop===0?'forever':`${count(gif.loop)} times`;
-el.factColors.textContent=plural(view.colors,'colour','colours');
+?phrase('loops.none')
+:gif.loop===0?phrase('loops.forever'):phrase('loops.times',{n:count(gif.loop)});
+el.factColors.textContent=plural(view.colors,'n.colour',phrase);
+}
+function played(real,fps){
+const time=clock(real,phrase);
+return fps?phrase('plays.rate',{time,fps:fps.toFixed(1)}):time;
 }
 const LEVEL_MARK={bad:'✖',warn:'⚠',note:'•'};
-const LEVEL_NAME={bad:'Problem',warn:'Worth knowing',note:'Note'};
+const LEVEL_NAME={bad:'level.bad',warn:'level.warn',note:'level.note'};
 function renderFindings(list){
 el.findings.replaceChildren();
 for(const finding of list){
@@ -226,19 +227,24 @@ item.className=`finding ${finding.level}`;
 const mark=document.createElement('span');
 mark.className='finding-mark';
 mark.textContent=LEVEL_MARK[finding.level];
-mark.title=LEVEL_NAME[finding.level];
+mark.title=phrase(LEVEL_NAME[finding.level]);
 const body=document.createElement('div');
-const title=phrase(finding.title,finding.values);
-const said=phrase(finding.body,finding.values);
+const values=fill(finding.values);
+const title=phrase(finding.title,values);
+const said=phrase(finding.body,values);
 body.innerHTML=`<strong>${title}</strong> ${said}`;
 item.append(mark,body);
 el.findings.append(item);
 }
 }
+function fill(values={}){
+return Object.fromEntries(Object.entries(values)
+.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
+}
 function renderBudget(gif,plan){
 el.budgetBar.replaceChildren();
 el.budgetRows.replaceChildren();
-el.budgetTotal.textContent=exact(gif.size);
+el.budgetTotal.textContent=exact(gif.size,phrase);
 for(const row of plan.rows){
 if(row.bytes===0&&row.key!=='pixels')continue;
 const slice=document.createElement('span');
@@ -272,13 +278,11 @@ el.frames.replaceChildren();
 shown=0;
 const undrawn=drawn.filter((frame)=>frame===null).length;
 const full=gif.frames.filter((frame)=>isFullCanvas(gif,frame)).length;
+const frames=plural(gif.frames.length,'n.frame',phrase);
 el.framesLede.textContent=undrawn>0
-?`${plural(gif.frames.length, 'frame', 'frames')}. `
-+`${count(gif.frames.length - undrawn)} of them are drawn here; the rest are too large `
-+'to hold in memory all at once and are reported from their headers alone.'
-:`${plural(gif.frames.length, 'frame', 'frames')}, `
-+`${full === 0 ? 'none' : full === gif.frames.length ? 'all' : count(full)} of them `
-+'covering the whole canvas.';
+?phrase('frames.partial',{frames,drawn:count(gif.frames.length-undrawn)})
+:phrase(full===0?'frames.none':full===gif.frames.length?'frames.all'
+:'frames.some',{frames,n:count(full)});
 more(gif,drawn);
 }
 function more(gif,drawn){
@@ -289,7 +293,7 @@ el.frames.append(frameCard(gif,gif.frames[index],drawn[index]));
 shown=end;
 const left=gif.frames.length-shown;
 el.showMore.hidden=left<=0;
-el.showMore.textContent=`Show the other ${plural(left, 'frame', 'frames')}`;
+el.showMore.textContent=phrase('frames.more',{frames:plural(left,'n.frame',phrase)});
 }
 function frameCard(gif,frame,drawn){
 const item=document.createElement('li');
@@ -301,27 +305,40 @@ figure.append(el.frameView.value==='stored'?drawn.stored:drawn.composited);
 }else{
 const blank=document.createElement('p');
 blank.className='frame-blank';
-blank.textContent='not drawn';
+blank.textContent=phrase('frame.notdrawn');
 figure.append(blank);
 }
 const heading=document.createElement('p');
 heading.className='frame-head';
-heading.textContent=`Frame ${frame.index + 1}`;
+heading.textContent=phrase('frame.number',{n:frame.index+1});
 const rows=[
-['Delay',delay(frame.delay)+(frame.delay<2?' → 0.10s':'')],
-['Rectangle',`${frame.width} × ${frame.height} at ${frame.left}, ${frame.top}`],
+[phrase('frame.delay'),frame.delay<2
+?phrase('frame.clamped',{delay:delay(frame.delay,phrase)})
+:delay(frame.delay,phrase)],
+[phrase('frame.rectangle'),phrase('frame.rect',{
+width:frame.width,height:frame.height,left:frame.left,top:frame.top,
+})],
 [phrase('frame.disposal'),
 phrase(DISPOSALS[frame.disposal]??'disposal.reserved',{n:frame.disposal})],
-['Palette',frame.palette
-?`${count(frame.palette.count)} of its own`
-:gif.globalPalette?'the global one':'none at all'],
-['Transparent',frame.transparentIndex>=0?`index ${frame.transparentIndex}`:'no'],
-['Size',`${fileSize(frame.bytes)} — ${percent(frame.bytes / gif.size)}`],
+[phrase('frame.palette'),frame.palette
+?phrase('palette.own',{n:count(frame.palette.count)})
+:phrase(gif.globalPalette?'palette.global':'palette.none')],
+[phrase('frame.transparent'),frame.transparentIndex>=0
+?phrase('frame.transparent.index',{n:frame.transparentIndex})
+:phrase('frame.transparent.no')],
+[phrase('frame.size'),phrase('frame.sizevalue',{
+size:fileSize(frame.bytes),share:percent(frame.bytes/gif.size),
+})],
 ];
-if(frame.interlaced)rows.push(['Interlaced','yes']);
-if(drawn&&drawn.ratio>0)rows.push(['Compressed',`${drawn.ratio.toFixed(1)}×`]);
+if(frame.interlaced)rows.push([phrase('frame.interlaced'),phrase('frame.yes')]);
+if(drawn&&drawn.ratio>0){
+rows.push([phrase('frame.compressed'),
+phrase('frame.ratio',{ratio:drawn.ratio.toFixed(1)})]);
+}
 if(drawn&&(drawn.corrupt||drawn.truncated)){
-rows.push(['Trouble',drawn.corrupt??'the data ends early']);
+rows.push([phrase('frame.trouble'),drawn.corrupt
+?phrase(drawn.corrupt.key,drawn.corrupt.values)
+:phrase('frame.endsearly')]);
 }
 const list=document.createElement('dl');
 list.className='frame-facts';
@@ -351,10 +368,11 @@ if(current)more(current.gif,current.drawn);
 function renderColors(gif,view,used){
 const locals=gif.frames.filter((frame)=>frame.palette);
 const waste=view.waste;
-el.colorsLede.textContent='The tables in this file declare '
-+`${plural(waste.declared, 'colour', 'colours')} between them, the pixels refer to `
-+`${count(waste.referenced)} of those, and ${count(view.colors)} of those are different `
-+'from each other.';
+el.colorsLede.textContent=phrase('colours.lede',{
+declared:plural(waste.declared,'n.colour',phrase),
+referenced:count(waste.referenced),
+different:count(view.colors),
+});
 el.globalPaletteWrap.hidden=!gif.globalPalette;
 if(gif.globalPalette){
 const union=new Uint8Array(256);
@@ -363,21 +381,25 @@ if(frame.palette||!used[index])continue;
 for(let at=0;at<256;at+=1)if(used[index][at])union[at]=1;
 }
 const sharing=gif.frames.filter((frame)=>!frame.palette).length;
-el.globalPaletteNote.textContent=`${plural(gif.globalPalette.count, 'entry', 'entries')}, `
-+`${fileSize(gif.globalPalette.bytes)}, shared by `
-+`${plural(sharing, 'frame', 'frames')}. `
-+'Faded entries are ones no pixel ever refers to.';
+el.globalPaletteNote.textContent=phrase('palette.globalnote',{
+entries:plural(gif.globalPalette.count,'n.entry',phrase),
+size:fileSize(gif.globalPalette.bytes),
+frames:plural(sharing,'n.frame',phrase),
+});
 el.globalPalette.replaceChildren(...swatches(gif.globalPalette,union));
 }
 el.localPalettesWrap.hidden=locals.length===0;
 if(locals.length>0){
-el.localPalettesSummary.textContent=`${plural(locals.length, 'per-frame table', 'per-frame tables')} `
-+`(${fileSize(locals.reduce((sum, frame) => sum + frame.palette.bytes, 0))} in total)`;
+el.localPalettesSummary.textContent=phrase('palette.locals',{
+tables:plural(locals.length,'n.localtable',phrase),
+size:fileSize(locals.reduce((sum,frame)=>sum+frame.palette.bytes,0)),
+});
 el.localPalettes.replaceChildren();
 for(const frame of locals.slice(0,24)){
 const heading=document.createElement('h4');
-heading.textContent=`Frame ${frame.index + 1} — `
-+`${plural(frame.palette.count, 'colour', 'colours')}`;
+heading.textContent=phrase('palette.frameheading',{
+n:frame.index+1,colours:plural(frame.palette.count,'n.colour',phrase),
+});
 const list=document.createElement('ul');
 list.className='palette';
 list.append(...swatches(frame.palette,used[frame.index]));
@@ -386,8 +408,7 @@ el.localPalettes.append(heading,list);
 if(locals.length>24){
 const note=document.createElement('p');
 note.className='palette-note';
-note.textContent=`The first 24 of ${count(locals.length)} are shown. `
-+'The rest are in the downloadable report.';
+note.textContent=phrase('palette.capped',{n:count(locals.length)});
 el.localPalettes.append(note);
 }
 }
@@ -429,28 +450,16 @@ el.extras.append(item);
 }
 }
 function describe(extension){
-if(extension.kind==='comment'){
-return'A comment. No viewer shows it, and every copy of the file carries it.';
-}
+if(extension.kind==='comment')return phrase('block.comment');
 if(extension.loop!==undefined){
 return extension.loop===0
-?'The loop block, saying to play forever. It is not part of the GIF specification: '
-+'Netscape invented it in 1995 and everything implemented it anyway.'
-:`The loop block, saying to play ${plural(extension.loop, 'time', 'times')}.`;
+?phrase('block.loop.forever')
+:phrase('block.loop.times',{times:plural(extension.loop,'n.time',phrase)});
 }
-if(extension.name.startsWith('XMP')){
-return'An XMP packet: the XML an image editor writes to record what it did. Nothing '
-+'draws it.';
-}
-if(extension.name.startsWith('ICCRGBG1')){
-return'An ICC colour profile, saying what the palette’s numbers mean as colours. '
-+'Almost nothing reads one out of a GIF.';
-}
-if(extension.kind==='plain-text'){
-return'A plain-text block, which asks the viewer to draw text over the picture. It was '
-+'in the 1989 specification and was never implemented by anything.';
-}
-return'An application block. Viewers skip the ones they do not recognise.';
+if(extension.name.startsWith('XMP'))return phrase('block.xmp');
+if(extension.name.startsWith('ICCRGBG1'))return phrase('block.icc');
+if(extension.kind==='plain-text')return phrase('block.plaintext');
+return phrase('block.application');
 }
 el.downloadReport.addEventListener('click',()=>{
 if(!current)return;
@@ -468,10 +477,9 @@ if(!current)return;
 const text=report(current.gif,current.view,phrase);
 try{
 await navigator.clipboard.writeText(text);
-el.copyStatus.textContent='Copied. It is plain text, and it went to your clipboard only.';
+el.copyStatus.textContent=phrase('copy.done');
 }catch{
-el.copyStatus.textContent='This browser would not let the page write to the clipboard. '
-+'Use "Download it" instead.';
+el.copyStatus.textContent=phrase('copy.refused');
 }
 });
 function showError(message){

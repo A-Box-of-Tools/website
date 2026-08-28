@@ -2,7 +2,8 @@
 const MAX_CODES=4096;
 export function lzwDecode(data,minCodeSize,pixelCount){
 if(minCodeSize<2||minCodeSize>8){
-return fail(pixelCount,`the code size is ${minCodeSize}, and the format allows 2 to 8`);
+return fail(pixelCount,
+{key:'decode.codesize',values:{size:minCodeSize}});
 }
 const clearCode=1<<minCodeSize;
 const endCode=clearCode+1;

@@ -4,18 +4,18 @@ if(count<1024)return`${count} B`;
 if(count<1024*1024)return`${(count / 1024).toFixed(count < 10240 ? 1 : 0)} KB`;
 return`${(count / 1048576).toFixed(count < 10485760 ? 2 : 1)} MB`;
 }
-export const exact=(count)=>`${count.toLocaleString()} bytes`;
-export function delay(centiseconds){
-if(centiseconds===0)return'0s';
+export const exact=(count,t)=>t('size.exactbytes',{n:count.toLocaleString()});
+export function delay(centiseconds,t){
+if(centiseconds===0)return t('unit.seconds',{n:'0'});
 const value=centiseconds/100;
-return value>=10?`${value.toFixed(1)}s`:`${value.toFixed(2)}s`;
+return t('unit.seconds',{n:value.toFixed(value>=10?1:2)});
 }
-export function clock(centiseconds){
+export function clock(centiseconds,t){
 const total=centiseconds/100;
-if(total<60)return`${total.toFixed(total < 10 ? 2 : 1)}s`;
+if(total<60)return t('unit.seconds',{n:total.toFixed(total<10?2:1)});
 const minutes=Math.floor(total/60);
 const seconds=total-minutes*60;
-return`${minutes}m ${seconds.toFixed(1)}s`;
+return t('clock.minutes',{minutes,seconds:seconds.toFixed(1)});
 }
 export function rate(frames,centiseconds){
 if(frames<2||centiseconds<=0)return null;
@@ -33,4 +33,5 @@ const at=index*3;
 const pair=(byte)=>byte.toString(16).padStart(2,'0');
 return`#${pair(colors[at])}${pair(colors[at + 1])}${pair(colors[at + 2])}`.toUpperCase();
 }
-export const plural=(value,one,many)=>`${count(value)} ${value === 1 ? one : many}`;
+export const plural=(value,key,t)=>t(`${key}.${value === 1 ? 'one' : 'many'}`,
+{n:count(value)});
