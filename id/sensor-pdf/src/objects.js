@@ -79,7 +79,13 @@ if(j===needle.length)return i;
 }
 return-1;
 }
-export class PdfSyntaxError extends Error{}
+export class PdfSyntaxError extends Error{
+constructor(key,values){
+super(key);
+this.name='PdfSyntaxError';
+this.values=values;
+}
+}
 export class Parser{
 constructor(bytes,pos=0,resolve=null){
 this.bytes=bytes;
@@ -112,9 +118,9 @@ this.pos+=word.length;
 return true;
 }
 parseValue(depth=0){
-if(depth>200)throw new PdfSyntaxError('nested too deeply');
+if(depth>200)throw new PdfSyntaxError('pdf.deep');
 this.skip();
-if(this.pos>=this.bytes.length)throw new PdfSyntaxError('ran off the end');
+if(this.pos>=this.bytes.length)throw new PdfSyntaxError('pdf.short');
 const code=this.bytes[this.pos];
 if(code===0x2f)return this.parseName();
 if(code===0x28)return this.parseLiteralString();
@@ -131,8 +137,10 @@ const word=this.peekKeyword();
 if(word==='true'){this.pos+=4;return true;}
 if(word==='false'){this.pos+=5;return false;}
 if(word==='null'){this.pos+=4;return null;}
-throw new PdfSyntaxError(
-`unexpected ${word || `byte 0x${code.toString(16)}`} at ${this.pos}`);
+throw word
+?new PdfSyntaxError('pdf.unexpected',{found:word,at:this.pos})
+:new PdfSyntaxError('pdf.unexpectedbyte',
+{hex:code.toString(16),at:this.pos});
 }
 parseName(){
 this.pos+=1;
@@ -297,7 +305,7 @@ if(ascii(bytes,after.pos,after.pos+9)==='endstream')end=start+length;
 }
 if(end<0){
 end=indexOfAscii(bytes,'endstream',start);
-if(end<0)throw new PdfSyntaxError('a stream with no endstream');
+if(end<0)throw new PdfSyntaxError('pdf.noendstream');
 if(bytes[end-1]===0x0a)end-=1;
 if(bytes[end-1]===0x0d)end-=1;
 }
@@ -314,7 +322,7 @@ parser.skip();
 const num=parser.readNumber();
 parser.skip();
 const gen=parser.readNumber();
-if(!parser.eatKeyword('obj'))throw new PdfSyntaxError(`no obj keyword at ${offset}`);
+if(!parser.eatKeyword('obj'))throw new PdfSyntaxError('pdf.noobj',{at:offset});
 const value=parser.parseValue();
 return{num,gen,value};
 }

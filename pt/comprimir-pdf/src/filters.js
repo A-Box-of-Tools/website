@@ -3,7 +3,13 @@ import{Name}from'./objects.js';
 const IMAGE_FILTERS=new Set([
 'DCTDecode','DCT','JPXDecode','JBIG2Decode','CCITTFaxDecode','CCF',
 ]);
-class FilterError extends Error{}
+class FilterError extends Error{
+constructor(key,values){
+super(key);
+this.name='FilterError';
+this.values=values;
+}
+}
 async function inflate(bytes){
 try{
 return await pump(bytes,'deflate');
@@ -11,7 +17,7 @@ return await pump(bytes,'deflate');
 try{
 return await pump(bytes,'deflate-raw');
 }catch{
-throw new FilterError(`Flate stream would not decompress (${first.message})`);
+throw new FilterError('pdf.flate',{detail:first.message});
 }
 }
 }
@@ -21,7 +27,7 @@ return pump(bytes,'deflate',true);
 async function pump(bytes,format,compress=false){
 const Stream=compress?CompressionStream:DecompressionStream;
 if(typeof Stream!=='function'){
-throw new FilterError('this browser has no CompressionStream');
+throw new FilterError('pdf.nocompression');
 }
 const stream=new Blob([bytes]).stream().pipeThrough(new Stream(format));
 return new Uint8Array(await new Response(stream).arrayBuffer());
@@ -56,7 +62,7 @@ let entry;
 if(code<256)entry=[code];
 else if(dict[code-258])entry=dict[code-258];
 else if(previous)entry=[...previous,previous[0]];
-else throw new FilterError('LZW stream starts with an undefined code');
+else throw new FilterError('pdf.lzw');
 out.push(...entry);
 if(previous){
 dict[dictSize-258]=[...previous,entry[0]];
@@ -235,9 +241,9 @@ case'RL':
 bytes=runLengthDecode(bytes);
 break;
 case'Crypt':
-throw new FilterError('this stream is encrypted');
+throw new FilterError('pdf.cryptfilter');
 default:
-throw new FilterError(`unknown filter /${filter}`);
+throw new FilterError('pdf.unknownfilter',{name:filter});
 }
 if(filter==='FlateDecode'||filter==='Fl'
 ||filter==='LZWDecode'||filter==='LZW'){

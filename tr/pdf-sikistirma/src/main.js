@@ -101,7 +101,8 @@ if(error instanceof EncryptedPdfError||error instanceof NotAPdfError){
 return phrase(error.message);
 }
 if(error?.name==='AbortError')return phrase('run.cancelled');
-return phrase('read.failed',{detail:error?.message??error});
+return phrase('read.failed',
+{detail:phrase(error?.message??String(error),error?.values)});
 }
 function reset(){
 loaded=null;
