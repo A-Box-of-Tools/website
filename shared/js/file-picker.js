@@ -154,6 +154,11 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
       for (const card of document.querySelectorAll('main .card')) {
         if (card.dataset.waited === 'yes') card.setAttribute('inert', '');
       }
+      // And it says so again. These two arrived as separate changes - one
+      // puts the card back when a file is turned away, the other gives a
+      // waiting card its sentence - so a refused file dimmed the card and
+      // left it as bare as it was before either of them.
+      sayWaiting();
     },
   };
 }
