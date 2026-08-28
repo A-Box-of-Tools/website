@@ -82,6 +82,68 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">De texto para Base64 e de volta. As quebras de
+      linha da entrada são ignoradas, então uma chave quebrada em linhas cola do jeito
+      que está.</span>
+    <span data-phrase="codec.base64url.name">Base64, seguro para URL</span>
+    <span data-phrase="codec.base64url.note">O mesmo, com - e _ no lugar de + e /, e sem
+      preenchimento. É o que um JWT e a maioria dos tokens usam.</span>
+    <span data-phrase="codec.url.name">Endereço web, um valor</span>
+    <span data-phrase="codec.url.note">Codificação por porcentagem para um valor que vai
+      numa query string: escapa tudo a que uma URL dá significado.</span>
+    <span data-phrase="codec.url-whole.name">Endereço web, URL inteira</span>
+    <span data-phrase="codec.url-whole.note">Codificação por porcentagem que deixa o
+      endereço em si funcionando &mdash; as barras, o ? e o &amp; ficam.</span>
+    <span data-phrase="codec.html.name">Entidades HTML</span>
+    <span data-phrase="codec.html.note">Os cinco caracteres que precisam ser escapados
+      na marcação. Ao decodificar também lê entidades numéricas e as nomeadas mais
+      comuns.</span>
+    <span data-phrase="codec.hex.name">Bytes em hexadecimal</span>
+    <span data-phrase="codec.hex.note">Os bytes UTF-8 do texto, em hexadecimal. Ao
+      decodificar tanto faz qual separador o despejo usou.</span>
+    <span data-phrase="codec.escapes.name">Escapes com barra invertida</span>
+    <span data-phrase="codec.escapes.note">A cara de uma string literal em JavaScript,
+      Java ou JSON: \n, \t e \uXXXX para tudo acima do ASCII.</span>
+    <span data-phrase="sample.text">Uma string com &lt;sinais de maior e menor&gt;, um E
+      comercial &amp; um café.</span>
+    <span data-phrase="step.reading">Lendo o arquivo&hellip;</span>
+    <span data-phrase="read.failed">Esse arquivo não pôde ser lido: {why}</span>
+    <span data-phrase="count.empty">vazio</span>
+    <span data-phrase="n.line.one">{n} linha</span>
+    <span data-phrase="n.line.many">{n} linhas</span>
+    <span data-phrase="n.character.one">{n} caractere</span>
+    <span data-phrase="n.character.many">{n} caracteres</span>
+    <span data-phrase="result.nothing">Nada ainda.</span>
+    <span data-phrase="result.none">Não saiu nada.</span>
+    <span data-phrase="out.encoded">{name}, codificado &mdash; {in} de entrada, {out} de
+      saída</span>
+    <span data-phrase="out.decoded">{name}, decodificado &mdash; {in} de entrada, {out}
+      de saída</span>
+    <span data-phrase="b64.padding">Tem mais de dois caracteres de preenchimento no fim.</span>
+    <span data-phrase="b64.notfour">Tem preenchimento, mas o comprimento não é múltiplo
+      de quatro.</span>
+    <span data-phrase="b64.length">Tem um caractere a mais ou três a menos para ser
+      Base64.</span>
+    <span data-phrase="b64.character">&ldquo;{ch}&rdquo; não é um caractere que o Base64
+      use.</span>
+    <span data-phrase="hex.digit">&ldquo;{ch}&rdquo; não é um dígito hexadecimal.</span>
+    <span data-phrase="hex.odd">Isso é um número ímpar de dígitos hexadecimais.</span>
+    <span data-phrase="esc.braces">\u{&hellip;} precisa de dígitos hexadecimais dentro
+      das chaves.</span>
+    <span data-phrase="esc.digits">\{escape} precisa de {width} dígitos hexadecimais
+      depois.</span>
+    <span data-phrase="esc.unknown">\{escape} não é um escape que isto leia.</span>
+    <span data-phrase="pct.incomplete">&ldquo;{escape}&rdquo; não é um escape de
+      porcentagem completo.</span>
+    <span data-phrase="pct.notutf8">Esses escapes de porcentagem não formam UTF-8
+      válido.</span>
+    <span data-phrase="utf8.notext">Esses bytes não são texto UTF-8, então não há o que
+      mostrar. Pode ser um arquivo em vez de uma string.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">O seu texto não foi a lugar nenhum. {total}
       arquivos carregados. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

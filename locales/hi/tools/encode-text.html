@@ -82,6 +82,61 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">टेक्स्ट से Base64 और वापस। इनपुट की पंक्ति-टूट
+      अनदेखी कर दी जाती है, इसलिए लपेटी हुई कुंजी जैसी है वैसी ही चिपकाई जा सकती है।</span>
+    <span data-phrase="codec.base64url.name">Base64, URL के लिए सुरक्षित</span>
+    <span data-phrase="codec.base64url.note">वही, बस + और / की जगह - और _, और कोई पैडिंग
+      नहीं। JWT और अधिकतर टोकन यही इस्तेमाल करते हैं।</span>
+    <span data-phrase="codec.url.name">वेब पता, एक मान</span>
+    <span data-phrase="codec.url.note">क्वेरी स्ट्रिंग में जाने वाले मान के लिए प्रतिशत
+      एनकोडिंग: जिस भी चीज़ का URL में कोई अर्थ है, वह एस्केप हो जाती है।</span>
+    <span data-phrase="codec.url-whole.name">वेब पता, पूरा URL</span>
+    <span data-phrase="codec.url-whole.note">ऐसी प्रतिशत एनकोडिंग जो पते को चलता हुआ
+      छोड़ देती है &mdash; स्लैश, ? और &amp; बने रहते हैं।</span>
+    <span data-phrase="codec.html.name">HTML एंटिटी</span>
+    <span data-phrase="codec.html.note">वे पाँच अक्षर जिन्हें मार्कअप में एस्केप करना ही
+      पड़ता है। डीकोड करते समय संख्यात्मक और आम नामित एंटिटी भी पढ़ी जाती हैं।</span>
+    <span data-phrase="codec.hex.name">हेक्स बाइट</span>
+    <span data-phrase="codec.hex.note">टेक्स्ट के UTF-8 बाइट, हेक्स में। डीकोड करते समय
+      डंप ने जो भी विभाजक इस्तेमाल किया हो, उससे फ़र्क़ नहीं पड़ता।</span>
+    <span data-phrase="codec.escapes.name">बैकस्लैश एस्केप</span>
+    <span data-phrase="codec.escapes.note">JavaScript, Java या JSON में स्ट्रिंग लिटरल
+      ऐसा दिखता है: \n, \t और ASCII से ऊपर की हर चीज़ के लिए \uXXXX।</span>
+    <span data-phrase="sample.text">एक स्ट्रिंग जिसमें &lt;कोण कोष्ठक&gt;, एक ऐम्परसैंड
+      &amp; और एक कैफ़े है।</span>
+    <span data-phrase="step.reading">फ़ाइल पढ़ी जा रही है&hellip;</span>
+    <span data-phrase="read.failed">वह फ़ाइल पढ़ी नहीं जा सकी: {why}</span>
+    <span data-phrase="count.empty">ख़ाली</span>
+    <span data-phrase="n.line.one">{n} पंक्ति</span>
+    <span data-phrase="n.line.many">{n} पंक्तियाँ</span>
+    <span data-phrase="n.character.one">{n} अक्षर</span>
+    <span data-phrase="n.character.many">{n} अक्षर</span>
+    <span data-phrase="result.nothing">अभी कुछ नहीं।</span>
+    <span data-phrase="result.none">कुछ निकला ही नहीं।</span>
+    <span data-phrase="out.encoded">{name}, एनकोड किया &mdash; {in} अंदर, {out} बाहर</span>
+    <span data-phrase="out.decoded">{name}, डीकोड किया &mdash; {in} अंदर, {out} बाहर</span>
+    <span data-phrase="b64.padding">इसके अंत में दो से ज़्यादा पैडिंग अक्षर हैं।</span>
+    <span data-phrase="b64.notfour">इसमें पैडिंग है, पर इसकी लंबाई चार का गुणज नहीं है।</span>
+    <span data-phrase="b64.length">Base64 होने के लिए यह एक अक्षर लंबा या तीन अक्षर छोटा
+      है।</span>
+    <span data-phrase="b64.character">&ldquo;{ch}&rdquo; ऐसा अक्षर नहीं जो Base64
+      इस्तेमाल करता हो।</span>
+    <span data-phrase="hex.digit">&ldquo;{ch}&rdquo; हेक्स अंक नहीं है।</span>
+    <span data-phrase="hex.odd">हेक्स अंकों की संख्या विषम है।</span>
+    <span data-phrase="esc.braces">\u{&hellip;} को घुंघराले कोष्ठकों में हेक्स अंक
+      चाहिए।</span>
+    <span data-phrase="esc.digits">\{escape} के बाद {width} हेक्स अंक चाहिए।</span>
+    <span data-phrase="esc.unknown">\{escape} ऐसा एस्केप नहीं जिसे यह पढ़ता हो।</span>
+    <span data-phrase="pct.incomplete">&ldquo;{escape}&rdquo; पूरा प्रतिशत एस्केप नहीं
+      है।</span>
+    <span data-phrase="pct.notutf8">ये प्रतिशत एस्केप वैध UTF-8 नहीं बनाते।</span>
+    <span data-phrase="utf8.notext">ये बाइट UTF-8 टेक्स्ट नहीं हैं, इसलिए दिखाने को कुछ
+      है ही नहीं। शायद ये स्ट्रिंग नहीं, कोई फ़ाइल हैं।</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">आपका टेक्स्ट कहीं नहीं गया। {total} फ़ाइलें
       लोड हुईं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

@@ -82,6 +82,64 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">Text nach Base64 und zurück. Zeilenumbrüche in
+      der Eingabe werden ignoriert, ein umbrochener Schlüssel lässt sich also so
+      einfügen, wie er ist.</span>
+    <span data-phrase="codec.base64url.name">Base64, URL-sicher</span>
+    <span data-phrase="codec.base64url.note">Dasselbe, mit - und _ statt + und /, und
+      ohne Auffüllzeichen. Das verwenden ein JWT und die meisten Token.</span>
+    <span data-phrase="codec.url.name">Webadresse, ein Wert</span>
+    <span data-phrase="codec.url.note">Prozentkodierung für einen Wert, der in einen
+      Query-String geht: alles, dem eine URL eine Bedeutung gibt, wird maskiert.</span>
+    <span data-phrase="codec.url-whole.name">Webadresse, ganze URL</span>
+    <span data-phrase="codec.url-whole.note">Prozentkodierung, bei der die Adresse
+      selbst funktionsfähig bleibt &mdash; die Schrägstriche, das ? und das &amp;
+      bleiben erhalten.</span>
+    <span data-phrase="codec.html.name">HTML-Entitäten</span>
+    <span data-phrase="codec.html.note">Die fünf Zeichen, die in Markup maskiert werden
+      müssen. Beim Dekodieren werden auch numerische und die gängigen benannten
+      Entitäten gelesen.</span>
+    <span data-phrase="codec.hex.name">Hex-Bytes</span>
+    <span data-phrase="codec.hex.note">Die UTF-8-Bytes des Textes, in Hex. Beim
+      Dekodieren ist es egal, welches Trennzeichen der Dump verwendet hat.</span>
+    <span data-phrase="codec.escapes.name">Backslash-Escapes</span>
+    <span data-phrase="codec.escapes.note">So sieht ein String-Literal in JavaScript,
+      Java oder JSON aus: \n, \t und \uXXXX für alles oberhalb von ASCII.</span>
+    <span data-phrase="sample.text">Ein Text mit &lt;spitzen Klammern&gt;, einem
+      Und-Zeichen &amp; einer Straße.</span>
+    <span data-phrase="step.reading">Die Datei wird gelesen&hellip;</span>
+    <span data-phrase="read.failed">Diese Datei konnte nicht gelesen werden: {why}</span>
+    <span data-phrase="count.empty">leer</span>
+    <span data-phrase="n.line.one">{n} Zeile</span>
+    <span data-phrase="n.line.many">{n} Zeilen</span>
+    <span data-phrase="n.character.one">{n} Zeichen</span>
+    <span data-phrase="n.character.many">{n} Zeichen</span>
+    <span data-phrase="result.nothing">Noch nichts.</span>
+    <span data-phrase="result.none">Es kam nichts heraus.</span>
+    <span data-phrase="out.encoded">{name}, kodiert &mdash; {in} hinein, {out} heraus</span>
+    <span data-phrase="out.decoded">{name}, dekodiert &mdash; {in} hinein, {out} heraus</span>
+    <span data-phrase="b64.padding">Da stehen mehr als zwei Auffüllzeichen am Ende.</span>
+    <span data-phrase="b64.notfour">Das ist aufgefüllt, aber seine Länge ist kein
+      Vielfaches von vier.</span>
+    <span data-phrase="b64.length">Das ist ein Zeichen zu lang oder drei zu kurz für
+      Base64.</span>
+    <span data-phrase="b64.character">&bdquo;{ch}&ldquo; ist kein Zeichen, das Base64
+      verwendet.</span>
+    <span data-phrase="hex.digit">&bdquo;{ch}&ldquo; ist keine Hex-Ziffer.</span>
+    <span data-phrase="hex.odd">Das ist eine ungerade Anzahl Hex-Ziffern.</span>
+    <span data-phrase="esc.braces">\u{&hellip;} braucht Hex-Ziffern in den Klammern.</span>
+    <span data-phrase="esc.digits">\{escape} braucht danach {width} Hex-Ziffern.</span>
+    <span data-phrase="esc.unknown">\{escape} ist kein Escape, das hier gelesen wird.</span>
+    <span data-phrase="pct.incomplete">&bdquo;{escape}&ldquo; ist kein vollständiges
+      Prozent-Escape.</span>
+    <span data-phrase="pct.notutf8">Diese Prozent-Escapes ergeben kein gültiges UTF-8.</span>
+    <span data-phrase="utf8.notext">Diese Bytes sind kein UTF-8-Text, es gibt also
+      nichts zu zeigen. Vielleicht sind es eine Datei und keine Zeichenkette.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">Ihr Text ist nirgendwohin gegangen. {total}
       Dateien geladen. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

@@ -128,6 +128,10 @@ test('every codec on the menu has the parts the page reads', () => {
     assert.ok(codec.id && codec.name && codec.note, codec.id);
     assert.equal(typeof codec.encode, 'function');
     assert.equal(typeof codec.decode, 'function');
+    // Keys off the id, not words: this file ships in fifteen languages, and the
+    // page is the only place a phrase can be read.
+    assert.equal(codec.name, `codec.${codec.id}.name`);
+    assert.equal(codec.note, `codec.${codec.id}.note`);
   }
   assert.equal(codecById('nonsense').id, CODECS[0].id, 'an unknown id falls back to the first');
 });

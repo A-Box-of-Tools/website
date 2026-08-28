@@ -82,6 +82,56 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">텍스트를 Base64로, 또 그 반대로 바꿉니다. 입력의 줄바꿈은 무시하므로 여러
+      줄로 접힌 키도 그대로 붙여넣으면 됩니다.</span>
+    <span data-phrase="codec.base64url.name">Base64, URL에 안전한 형태</span>
+    <span data-phrase="codec.base64url.note">같은 것인데 +와 / 대신 -와 _를 쓰고 채움 문자가 없습니다. JWT와
+      대부분의 토큰이 쓰는 방식입니다.</span>
+    <span data-phrase="codec.url.name">웹 주소, 값 하나</span>
+    <span data-phrase="codec.url.note">질의 문자열에 들어갈 값을 위한 퍼센트 인코딩입니다. URL이 뜻을 부여하는 것은 모두
+      이스케이프합니다.</span>
+    <span data-phrase="codec.url-whole.name">웹 주소, 전체 URL</span>
+    <span data-phrase="codec.url-whole.note">주소 자체는 그대로 동작하게 두는 퍼센트 인코딩입니다. 빗금과 ?,
+      &amp;는 남습니다.</span>
+    <span data-phrase="codec.html.name">HTML 엔티티</span>
+    <span data-phrase="codec.html.note">마크업에서 반드시 이스케이프해야 하는 다섯 글자입니다. 디코딩할 때는 숫자 엔티티와
+      흔한 이름 엔티티도 읽습니다.</span>
+    <span data-phrase="codec.hex.name">16진 바이트</span>
+    <span data-phrase="codec.hex.note">텍스트의 UTF-8 바이트를 16진으로 적습니다. 디코딩할 때는 그 덤프가 어떤 구분자를
+      썼든 무시합니다.</span>
+    <span data-phrase="codec.escapes.name">역슬래시 이스케이프</span>
+    <span data-phrase="codec.escapes.note">JavaScript나 Java, JSON의 문자열 리터럴 모양입니다. \n,
+      \t, 그리고 ASCII를 넘는 것에는 \uXXXX를 씁니다.</span>
+    <span data-phrase="sample.text">&lt;꺾쇠괄호&gt;와 앰퍼샌드 &amp;, 그리고 카페가 들어간 문자열.</span>
+    <span data-phrase="step.reading">파일을 읽는 중&hellip;</span>
+    <span data-phrase="read.failed">그 파일은 읽지 못했습니다: {why}</span>
+    <span data-phrase="count.empty">비어 있음</span>
+    <span data-phrase="n.line.one">{n}줄</span>
+    <span data-phrase="n.line.many">{n}줄</span>
+    <span data-phrase="n.character.one">{n}자</span>
+    <span data-phrase="n.character.many">{n}자</span>
+    <span data-phrase="result.nothing">아직 아무것도 없습니다.</span>
+    <span data-phrase="result.none">아무것도 나오지 않았습니다.</span>
+    <span data-phrase="out.encoded">{name}, 인코딩 &mdash; 입력 {in}, 출력 {out}</span>
+    <span data-phrase="out.decoded">{name}, 디코딩 &mdash; 입력 {in}, 출력 {out}</span>
+    <span data-phrase="b64.padding">끝에 채움 문자가 두 개보다 많습니다.</span>
+    <span data-phrase="b64.notfour">채움 문자는 있는데 길이가 4의 배수가 아닙니다.</span>
+    <span data-phrase="b64.length">Base64가 되기에는 한 글자 길거나 세 글자 모자랍니다.</span>
+    <span data-phrase="b64.character">&ldquo;{ch}&rdquo;은 Base64가 쓰는 글자가 아닙니다.</span>
+    <span data-phrase="hex.digit">&ldquo;{ch}&rdquo;은 16진 숫자가 아닙니다.</span>
+    <span data-phrase="hex.odd">16진 숫자의 개수가 홀수입니다.</span>
+    <span data-phrase="esc.braces">\u{&hellip;}에는 중괄호 안에 16진 숫자가 있어야 합니다.</span>
+    <span data-phrase="esc.digits">\{escape} 뒤에는 16진 숫자가 {width}개 있어야 합니다.</span>
+    <span data-phrase="esc.unknown">\{escape}은 여기서 읽는 이스케이프가 아닙니다.</span>
+    <span data-phrase="pct.incomplete">&ldquo;{escape}&rdquo;은 완전한 퍼센트 이스케이프가 아닙니다.</span>
+    <span data-phrase="pct.notutf8">그 퍼센트 이스케이프들은 올바른 UTF-8이 되지 않습니다.</span>
+    <span data-phrase="utf8.notext">그 바이트는 UTF-8 텍스트가 아니라서 보여줄 것이 없습니다. 문자열이 아니라 파일일 수
+      있습니다.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">텍스트는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
       {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.

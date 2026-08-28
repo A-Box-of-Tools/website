@@ -82,6 +82,58 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">من النص إلى Base64 والعكس. تُهمَل فواصل الأسطر
+      في المدخل، فالمفتاح الملفوف يُلصَق كما هو.</span>
+    <span data-phrase="codec.base64url.name">Base64 صالح للروابط</span>
+    <span data-phrase="codec.base64url.note">الشيء نفسه، لكن بـ- و_ بدل + و/، وبلا حشو.
+      هذا ما يستعمله رمز JWT ومعظم الرموز.</span>
+    <span data-phrase="codec.url.name">عنوان ويب، قيمة واحدة</span>
+    <span data-phrase="codec.url.note">ترميز بالنسبة المئوية لقيمة ستدخل في سلسلة
+      استعلام: يُهرَّب كل ما يعطيه الرابط معنى.</span>
+    <span data-phrase="codec.url-whole.name">عنوان ويب، الرابط كاملاً</span>
+    <span data-phrase="codec.url-whole.note">ترميز بالنسبة المئوية يُبقي العنوان نفسه
+      عاملاً &mdash; فالشرطات المائلة وعلامة ؟ و&amp; تبقى كما هي.</span>
+    <span data-phrase="codec.html.name">كيانات HTML</span>
+    <span data-phrase="codec.html.note">الأحرف الخمسة التي يجب تهريبها في الترميز. وعند
+      فكّ الترميز تُقرأ الكيانات الرقمية والمسمّاة الشائعة كذلك.</span>
+    <span data-phrase="codec.hex.name">بايتات ست عشرية</span>
+    <span data-phrase="codec.hex.note">بايتات النص بترميز UTF-8، بالنظام الست عشري. وعند
+      فكّ الترميز لا يهم أي فاصل استعمله المقتطف.</span>
+    <span data-phrase="codec.escapes.name">تهريب بالشرطة المائلة العكسية</span>
+    <span data-phrase="codec.escapes.note">هكذا يبدو نص حرفي في جافاسكربت أو جافا أو
+      JSON: ‏\n و\t و\uXXXX لكل ما هو فوق ASCII.</span>
+    <span data-phrase="sample.text">نص فيه &lt;أقواس زاوية&gt; وعلامة &amp; ومقهى.</span>
+    <span data-phrase="step.reading">جارٍ قراءة الملف&hellip;</span>
+    <span data-phrase="read.failed">تعذّرت قراءة ذلك الملف: {why}</span>
+    <span data-phrase="count.empty">فارغ</span>
+    <span data-phrase="n.line.one">سطر واحد</span>
+    <span data-phrase="n.line.many">{n} سطراً</span>
+    <span data-phrase="n.character.one">حرف واحد</span>
+    <span data-phrase="n.character.many">{n} حرفاً</span>
+    <span data-phrase="result.nothing">لا شيء بعد.</span>
+    <span data-phrase="result.none">لم يخرج شيء.</span>
+    <span data-phrase="out.encoded">{name}، مُرمَّز &mdash; {in} داخلاً، {out} خارجاً</span>
+    <span data-phrase="out.decoded">{name}، مفكوك الترميز &mdash; {in} داخلاً، {out}
+      خارجاً</span>
+    <span data-phrase="b64.padding">في آخره أكثر من حرفَي حشو.</span>
+    <span data-phrase="b64.notfour">فيه حشو، لكن طوله ليس من مضاعفات الأربعة.</span>
+    <span data-phrase="b64.length">هذا أطول بحرف أو أقصر بثلاثة أحرف مما يلزم لـBase64.</span>
+    <span data-phrase="b64.character">‏&laquo;{ch}&raquo; ليس حرفاً يستعمله Base64.</span>
+    <span data-phrase="hex.digit">‏&laquo;{ch}&raquo; ليس رقماً ست عشرياً.</span>
+    <span data-phrase="hex.odd">عدد الأرقام الست عشرية فردي.</span>
+    <span data-phrase="esc.braces">‏\u{&hellip;} يحتاج أرقاماً ست عشرية بين القوسين.</span>
+    <span data-phrase="esc.digits">‏\{escape} يحتاج {width} رقماً ست عشرياً بعده.</span>
+    <span data-phrase="esc.unknown">‏\{escape} ليس تهريباً يُقرأ هنا.</span>
+    <span data-phrase="pct.incomplete">‏&laquo;{escape}&raquo; ليس تهريباً مئوياً
+      كاملاً.</span>
+    <span data-phrase="pct.notutf8">هذه التهريبات المئوية لا تكوّن UTF-8 سليماً.</span>
+    <span data-phrase="utf8.notext">هذه البايتات ليست نصاً بترميز UTF-8، فلا شيء يُعرض.
+      لعلها ملف لا سلسلة نصية.</span>
+    <span data-phrase="join.comma">{a}، {b}</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
     <span data-phrase="net.clean">نصّك لم يذهب إلى أي مكان. {total} ملفاً
       حُمِّلت. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

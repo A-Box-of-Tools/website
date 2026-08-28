@@ -82,6 +82,74 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">Du texte vers Base64 et retour. Les sauts de
+      ligne de l&rsquo;entrée sont ignorés, une clé repliée se colle donc telle quelle.</span>
+    <span data-phrase="codec.base64url.name">Base64, compatible URL</span>
+    <span data-phrase="codec.base64url.note">Pareil, avec - et _ au lieu de + et /, et
+      sans remplissage. C&rsquo;est ce qu&rsquo;utilisent un JWT et la plupart des
+      jetons.</span>
+    <span data-phrase="codec.url.name">Adresse web, une valeur</span>
+    <span data-phrase="codec.url.note">Encodage pourcent pour une valeur qui va dans une
+      chaîne de requête&nbsp;: tout ce à quoi une URL donne un sens est échappé.</span>
+    <span data-phrase="codec.url-whole.name">Adresse web, URL entière</span>
+    <span data-phrase="codec.url-whole.note">Encodage pourcent qui laisse
+      l&rsquo;adresse elle-même fonctionner &mdash; les barres obliques, le ? et le
+      &amp; sont gardés.</span>
+    <span data-phrase="codec.html.name">Entités HTML</span>
+    <span data-phrase="codec.html.note">Les cinq caractères qu&rsquo;il faut échapper
+      dans du balisage. Le décodage lit aussi les entités numériques et les entités
+      nommées courantes.</span>
+    <span data-phrase="codec.hex.name">Octets en hexadécimal</span>
+    <span data-phrase="codec.hex.note">Les octets UTF-8 du texte, en hexadécimal. Le
+      décodage ignore le séparateur qu&rsquo;a utilisé le dump, quel qu&rsquo;il soit.</span>
+    <span data-phrase="codec.escapes.name">Échappements antislash</span>
+    <span data-phrase="codec.escapes.note">À quoi ressemble une chaîne littérale en
+      JavaScript, Java ou JSON&nbsp;: \n, \t et \uXXXX pour tout ce qui dépasse
+      l&rsquo;ASCII.</span>
+    <span data-phrase="sample.text">Une chaîne avec des &lt;chevrons&gt;, une
+      esperluette &amp; un café.</span>
+    <span data-phrase="step.reading">Lecture du fichier&hellip;</span>
+    <span data-phrase="read.failed">Ce fichier n&rsquo;a pas pu être lu&nbsp;: {why}</span>
+    <span data-phrase="count.empty">vide</span>
+    <span data-phrase="n.line.one">{n} ligne</span>
+    <span data-phrase="n.line.many">{n} lignes</span>
+    <span data-phrase="n.character.one">{n} caractère</span>
+    <span data-phrase="n.character.many">{n} caractères</span>
+    <span data-phrase="result.nothing">Rien pour l&rsquo;instant.</span>
+    <span data-phrase="result.none">Rien n&rsquo;est sorti.</span>
+    <span data-phrase="out.encoded">{name}, encodé &mdash; {in} en entrée, {out} en
+      sortie</span>
+    <span data-phrase="out.decoded">{name}, décodé &mdash; {in} en entrée, {out} en
+      sortie</span>
+    <span data-phrase="b64.padding">Il y a plus de deux caractères de remplissage à la
+      fin.</span>
+    <span data-phrase="b64.notfour">C&rsquo;est rempli, mais sa longueur n&rsquo;est pas
+      un multiple de quatre.</span>
+    <span data-phrase="b64.length">C&rsquo;est un caractère de trop ou trois de moins
+      qu&rsquo;il ne faut pour du Base64.</span>
+    <span data-phrase="b64.character">«&nbsp;{ch}&nbsp;» n&rsquo;est pas un caractère
+      que Base64 utilise.</span>
+    <span data-phrase="hex.digit">«&nbsp;{ch}&nbsp;» n&rsquo;est pas un chiffre
+      hexadécimal.</span>
+    <span data-phrase="hex.odd">Cela fait un nombre impair de chiffres hexadécimaux.</span>
+    <span data-phrase="esc.braces">\u{&hellip;} a besoin de chiffres hexadécimaux entre
+      les accolades.</span>
+    <span data-phrase="esc.digits">\{escape} a besoin de {width} chiffres hexadécimaux
+      après lui.</span>
+    <span data-phrase="esc.unknown">\{escape} n&rsquo;est pas un échappement que ceci
+      sait lire.</span>
+    <span data-phrase="pct.incomplete">«&nbsp;{escape}&nbsp;» n&rsquo;est pas un
+      échappement pourcent complet.</span>
+    <span data-phrase="pct.notutf8">Ces échappements pourcent ne forment pas de
+      l&rsquo;UTF-8 valide.</span>
+    <span data-phrase="utf8.notext">Ces octets ne sont pas du texte UTF-8, il n&rsquo;y
+      a donc rien à montrer. C&rsquo;est peut-être un fichier plutôt qu&rsquo;une
+      chaîne.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
     <span data-phrase="net.clean">votre texte n'est allé nulle part. {total}
       fichiers chargés. {platform}</span>
     <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet

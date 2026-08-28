@@ -38,7 +38,7 @@ let downloadUrl = null;
 // Filled from the list the module exports, so a codec that exists is on the
 // menu and one that does not cannot be.
 for (const codec of CODECS) {
-  el.codec.append(new Option(codec.name, codec.id));
+  el.codec.append(new Option(phrase(codec.name), codec.id));
 }
 
 /* ------------------------------------------------------------------- input */
@@ -50,7 +50,7 @@ const picker = wireFilePicker({
 });
 
 async function loadFiles(files) {
-  picker.busy('Reading the file...');
+  picker.busy(phrase('step.reading'));
   try {
     // Read as text, here, by the browser. There is no other step: the string
     // goes into the box below and never anywhere else.
@@ -58,7 +58,7 @@ async function loadFiles(files) {
     updateCounts();
     run();
   } catch (error) {
-    showError(`That file could not be read: ${error?.message ?? error}`);
+    showError(phrase('read.failed', { why: error?.message ?? error }));
   } finally {
     picker.done();
   }
@@ -90,7 +90,7 @@ el.clear.addEventListener('click', () => {
 });
 
 el.sample.addEventListener('click', () => {
-  el.input.value = SAMPLES.encode.a;
+  el.input.value = phrase(SAMPLES.encode.a);
   updateCounts();
   run();
 });
@@ -100,11 +100,16 @@ function updateCounts() {
 }
 
 function describe(text) {
-  if (text === '') return 'empty';
+  if (text === '') return phrase('count.empty');
   const lines = text.split('\n').length;
-  return `${lines.toLocaleString()} line${lines === 1 ? '' : 's'}, `
-    + `${text.length.toLocaleString()} character${text.length === 1 ? '' : 's'}, `
-    + humanBytes(byteLength(text));
+  // Three phrases folded with a fourth rather than one with commas in it:
+  // ja and zh separate a list with a character of their own.
+  return [
+    phrase(lines === 1 ? 'n.line.one' : 'n.line.many', { n: lines.toLocaleString() }),
+    phrase(text.length === 1 ? 'n.character.one' : 'n.character.many',
+      { n: text.length.toLocaleString() }),
+    humanBytes(byteLength(text)),
+  ].reduce((a, b) => phrase('join.comma', { a, b }));
 }
 
 const byteLength = (text) => new TextEncoder().encode(text).length;
@@ -114,11 +119,11 @@ const byteLength = (text) => new TextEncoder().encode(text).length;
 function run() {
   clearError();
   clearResult();
-  el.codecNote.textContent = codecById(el.codec.value).note;
+  el.codecNote.textContent = phrase(codecById(el.codec.value).note);
 
   const text = el.input.value;
   if (text.trim() === '') {
-    el.resultNote.textContent = 'Nothing yet.';
+    el.resultNote.textContent = phrase('result.nothing');
     return;
   }
 
@@ -128,7 +133,9 @@ function run() {
     // Bad input is the expected outcome of pasting something broken, and is
     // reported as information rather than as a failure. Anything else is a
     // bug here and goes to the console as well.
-    showError(error?.message ?? String(error));
+    // A CodecError names a phrase; anything else is a bug here and arrives
+    // as whatever the platform said, which phrase() hands back unchanged.
+    showError(phrase(error?.message ?? String(error), error?.values));
     if (error?.name !== 'CodecError') console.error(error);
   }
 }
@@ -143,14 +150,15 @@ function runEncode(text) {
     if (error?.name === 'TypeError') {
       // What a fatal TextDecoder throws. Its own message says nothing useful
       // to somebody who pasted the wrong thing into the box.
-      throw new CodecError('Those bytes are not UTF-8 text, so there is nothing to show. '
-        + 'They may be a file rather than a string.');
+      throw new CodecError('utf8.notext');
     }
     throw error;
   }
-  show(out, `${codec.name}, ${decoding ? 'decoded' : 'encoded'} - `
-    + `${humanBytes(byteLength(text))} in, ${humanBytes(byteLength(out))} out`,
-    decoding ? 'decoded.txt' : 'encoded.txt');
+  show(out, phrase(decoding ? 'out.decoded' : 'out.encoded', {
+    name: phrase(codec.name),
+    in: humanBytes(byteLength(text)),
+    out: humanBytes(byteLength(out)),
+  }), decoding ? 'decoded.txt' : 'encoded.txt');
 }
 
 /* -------------------------------------------------------------- the result */
@@ -208,7 +216,7 @@ function clearResult() {
 function showError(message) {
   el.error.textContent = message;
   el.error.hidden = false;
-  el.resultNote.textContent = 'Nothing came out.';
+  el.resultNote.textContent = phrase('result.none');
 }
 
 function clearError() {
@@ -221,9 +229,9 @@ function clearError() {
 const pickedDirection = () => document.querySelector('input[name="direction"]:checked').value;
 
 function humanBytes(bytes) {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  if (bytes < 1024) return phrase('size.b', { n: bytes });
+  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(1) });
+  return phrase('size.mb', { n: (bytes / (1024 * 1024)).toFixed(2) });
 }
 
 /* ------------------------------------------------- privacy panel + offline */
