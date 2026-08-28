@@ -26,10 +26,18 @@ const utf8 = {
 };
 
 /** Thrown when the input is not what the codec was told it was. */
+/**
+ * Something the pasted text is, rather than something that went wrong.
+ *
+ * The message is a phrase key and `values` are its blanks: this module is
+ * copied byte for byte into fifteen languages, so only the page can turn
+ * either into a sentence.
+ */
 export class CodecError extends Error {
-  constructor(message) {
-    super(message);
+  constructor(key, values = {}) {
+    super(key);
     this.name = 'CodecError';
+    this.values = values;
   }
 }
 
@@ -56,13 +64,9 @@ export function base64ToBytes(text) {
   const cleaned = text.replace(/[\s\r\n]+/g, '');
   const body = cleaned.replace(/=+$/, '');
   const padding = cleaned.length - body.length;
-  if (padding > 2) throw new CodecError('That has more than two padding characters on the end.');
-  if (padding && cleaned.length % 4 !== 0) {
-    throw new CodecError('That is padded, but its length is not a multiple of four.');
-  }
-  if (body.length % 4 === 1) {
-    throw new CodecError('That is one character too long or three too short to be Base64.');
-  }
+  if (padding > 2) throw new CodecError('b64.padding');
+  if (padding && cleaned.length % 4 !== 0) throw new CodecError('b64.notfour');
+  if (body.length % 4 === 1) throw new CodecError('b64.length');
 
   const bytes = new Uint8Array(Math.floor((body.length * 6) / 8));
   let held = 0;
@@ -72,7 +76,7 @@ export function base64ToBytes(text) {
     let value = ALPHABET.indexOf(ch);
     if (value < 0) value = URL_ALPHABET.indexOf(ch);
     if (value < 0) {
-      throw new CodecError(`"${ch}" is not a character Base64 uses.`);
+      throw new CodecError('b64.character', { ch });
     }
     // Masked to sixteen bits because that is all that is ever read back out:
     // at most six new bits on top of the seven that can still be waiting.
@@ -141,9 +145,9 @@ export function hexToBytes(text) {
   if (cleaned === '') return new Uint8Array(0);
   if (!/^[0-9a-fA-F]+$/.test(cleaned)) {
     const bad = cleaned.match(/[^0-9a-fA-F]/)[0];
-    throw new CodecError(`"${bad}" is not a hex digit.`);
+    throw new CodecError('hex.digit', { ch: bad });
   }
-  if (cleaned.length % 2) throw new CodecError('That is an odd number of hex digits.');
+  if (cleaned.length % 2) throw new CodecError('hex.odd');
   const bytes = new Uint8Array(cleaned.length / 2);
   for (let i = 0; i < bytes.length; i += 1) {
     bytes[i] = parseInt(cleaned.slice(i * 2, i * 2 + 2), 16);
@@ -187,7 +191,7 @@ export function unescapeUnicode(text) {
     if (next === 'u' && text[i + 2] === '{') {
       const end = text.indexOf('}', i + 3);
       const digits = end < 0 ? '' : text.slice(i + 3, end);
-      if (!/^[0-9a-fA-F]{1,6}$/.test(digits)) throw new CodecError('\\u{...} needs hex digits in the braces.');
+      if (!/^[0-9a-fA-F]{1,6}$/.test(digits)) throw new CodecError('esc.braces');
       out += String.fromCodePoint(parseInt(digits, 16));
       i = end;
       continue;
@@ -196,14 +200,14 @@ export function unescapeUnicode(text) {
       const width = next === 'u' ? 4 : 2;
       const digits = text.slice(i + 2, i + 2 + width);
       if (!new RegExp(`^[0-9a-fA-F]{${width}}$`).test(digits)) {
-        throw new CodecError(`\\${next} needs ${width} hex digits after it.`);
+        throw new CodecError('esc.digits', { escape: next, width });
       }
       out += String.fromCharCode(parseInt(digits, 16));
       i += 1 + width;
       continue;
     }
     if (next !== undefined && next in short) { out += short[next]; i += 1; continue; }
-    throw new CodecError(`\\${next ?? ''} is not an escape this reads.`);
+    throw new CodecError('esc.unknown', { escape: next ?? '' });
   }
   return out;
 }
@@ -215,9 +219,8 @@ function decodePercent(text, whole) {
     return whole ? decodeURI(text) : decodeURIComponent(text);
   } catch {
     const bad = /%[0-9a-fA-F]{0,2}/.exec(text.replace(/%[0-9a-fA-F]{2}/g, ''));
-    throw new CodecError(bad
-      ? `"${bad[0]}" is not a complete percent escape.`
-      : 'Those percent escapes are not valid UTF-8.');
+    throw new CodecError(bad ? 'pct.incomplete' : 'pct.notutf8',
+      bad ? { escape: bad[0] } : {});
   }
 }
 
@@ -226,54 +229,58 @@ function decodePercent(text, whole) {
 /**
  * Every codec the page offers, in the order it offers them. One list, so the
  * <select> and the work behind it cannot disagree about what exists.
+ *
+ * `name` and `note` are phrase keys rather than words. What a codec is called
+ * on the menu and the sentence under it are both read by somebody, and this
+ * file ships in fifteen languages; main.js resolves them.
  */
 export const CODECS = [
   {
     id: 'base64',
-    name: 'Base64',
-    note: 'Text to Base64 and back. Line breaks in the input are ignored, so a wrapped key pastes in as it is.',
+    name: 'codec.base64.name',
+    note: 'codec.base64.note',
     encode: (text) => bytesToBase64(utf8.encode(text)),
     decode: (text) => utf8.decode(base64ToBytes(text)),
   },
   {
     id: 'base64url',
-    name: 'Base64, URL-safe',
-    note: 'The same, with - and _ instead of + and /, and no padding. This is what a JWT and most tokens use.',
+    name: 'codec.base64url.name',
+    note: 'codec.base64url.note',
     encode: (text) => bytesToBase64(utf8.encode(text), { urlSafe: true }),
     decode: (text) => utf8.decode(base64ToBytes(text)),
   },
   {
     id: 'url',
-    name: 'Web address, one value',
-    note: 'Percent-encoding for a value going into a query string: everything a URL gives a meaning to is escaped.',
+    name: 'codec.url.name',
+    note: 'codec.url.note',
     encode: (text) => encodeURIComponent(text),
     decode: (text) => decodePercent(text, false),
   },
   {
     id: 'url-whole',
-    name: 'Web address, whole URL',
-    note: 'Percent-encoding that leaves the address itself working - the slashes, the ? and the & are kept.',
+    name: 'codec.url-whole.name',
+    note: 'codec.url-whole.note',
     encode: (text) => encodeURI(text),
     decode: (text) => decodePercent(text, true),
   },
   {
     id: 'html',
-    name: 'HTML entities',
-    note: 'The five characters that have to be escaped in markup. Decoding also reads numeric entities and the common named ones.',
+    name: 'codec.html.name',
+    note: 'codec.html.note',
     encode: escapeHtml,
     decode: unescapeHtml,
   },
   {
     id: 'hex',
-    name: 'Hex bytes',
-    note: 'The UTF-8 bytes of the text, in hex. Decoding ignores whatever separator the dump used.',
+    name: 'codec.hex.name',
+    note: 'codec.hex.note',
     encode: (text) => bytesToHex(utf8.encode(text), { spaced: true }),
     decode: (text) => utf8.decode(hexToBytes(text)),
   },
   {
     id: 'escapes',
-    name: 'Backslash escapes',
-    note: 'What a string literal in JavaScript, Java or JSON looks like: \\n, \\t and \\uXXXX for anything above ASCII.',
+    name: 'codec.escapes.name',
+    note: 'codec.escapes.note',
     encode: escapeUnicode,
     decode: unescapeUnicode,
   },

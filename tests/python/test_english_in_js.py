@@ -64,7 +64,7 @@ BASELINE = {
     'dicom-viewer': 15,
     'document-scanner': 13,
     'edit-audio': 18,
-    'encode-text': 23,
+    'encode-text': 0,
     'exif-editor': 30,
     'format-json': 3,
     # Two key templates, a CSS pixel value and two lines of table layout.

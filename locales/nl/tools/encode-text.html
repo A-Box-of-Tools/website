@@ -82,6 +82,62 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">Tekst naar Base64 en terug. Regeleinden in de
+      invoer worden genegeerd, dus een afgebroken sleutel plak je erin zoals hij is.</span>
+    <span data-phrase="codec.base64url.name">Base64, URL-veilig</span>
+    <span data-phrase="codec.base64url.note">Hetzelfde, met - en _ in plaats van + en /,
+      en zonder opvulling. Dit is wat een JWT en de meeste tokens gebruiken.</span>
+    <span data-phrase="codec.url.name">Webadres, één waarde</span>
+    <span data-phrase="codec.url.note">Procentcodering voor een waarde die in een query
+      string terechtkomt: alles waaraan een URL betekenis geeft wordt ontsnapt.</span>
+    <span data-phrase="codec.url-whole.name">Webadres, hele URL</span>
+    <span data-phrase="codec.url-whole.note">Procentcodering die het adres zelf laat
+      werken &mdash; de schuine strepen, het ? en het &amp; blijven staan.</span>
+    <span data-phrase="codec.html.name">HTML-entiteiten</span>
+    <span data-phrase="codec.html.note">De vijf tekens die in markup ontsnapt moeten
+      worden. Bij het decoderen worden ook numerieke en de gangbare benoemde entiteiten
+      gelezen.</span>
+    <span data-phrase="codec.hex.name">Hex-bytes</span>
+    <span data-phrase="codec.hex.note">De UTF-8-bytes van de tekst, in hex. Bij het
+      decoderen maakt het niet uit welk scheidingsteken de dump gebruikte.</span>
+    <span data-phrase="codec.escapes.name">Backslash-escapes</span>
+    <span data-phrase="codec.escapes.note">Hoe een string-literal in JavaScript, Java of
+      JSON eruitziet: \n, \t en \uXXXX voor alles boven ASCII.</span>
+    <span data-phrase="sample.text">Een tekst met &lt;punthaken&gt;, een ampersand &amp;
+      een café.</span>
+    <span data-phrase="step.reading">Het bestand wordt gelezen&hellip;</span>
+    <span data-phrase="read.failed">Dat bestand kon niet gelezen worden: {why}</span>
+    <span data-phrase="count.empty">leeg</span>
+    <span data-phrase="n.line.one">{n} regel</span>
+    <span data-phrase="n.line.many">{n} regels</span>
+    <span data-phrase="n.character.one">{n} teken</span>
+    <span data-phrase="n.character.many">{n} tekens</span>
+    <span data-phrase="result.nothing">Nog niets.</span>
+    <span data-phrase="result.none">Er kwam niets uit.</span>
+    <span data-phrase="out.encoded">{name}, gecodeerd &mdash; {in} erin, {out} eruit</span>
+    <span data-phrase="out.decoded">{name}, gedecodeerd &mdash; {in} erin, {out} eruit</span>
+    <span data-phrase="b64.padding">Daar staan meer dan twee opvultekens aan het eind.</span>
+    <span data-phrase="b64.notfour">Dat is opgevuld, maar de lengte is geen veelvoud van
+      vier.</span>
+    <span data-phrase="b64.length">Dat is één teken te lang of drie te kort voor Base64.</span>
+    <span data-phrase="b64.character">&bdquo;{ch}&rdquo; is geen teken dat Base64
+      gebruikt.</span>
+    <span data-phrase="hex.digit">&bdquo;{ch}&rdquo; is geen hex-cijfer.</span>
+    <span data-phrase="hex.odd">Dat is een oneven aantal hex-cijfers.</span>
+    <span data-phrase="esc.braces">\u{&hellip;} heeft hex-cijfers tussen de accolades
+      nodig.</span>
+    <span data-phrase="esc.digits">\{escape} heeft er {width} hex-cijfers achter nodig.</span>
+    <span data-phrase="esc.unknown">\{escape} is geen escape die dit leest.</span>
+    <span data-phrase="pct.incomplete">&bdquo;{escape}&rdquo; is geen volledige
+      procent-escape.</span>
+    <span data-phrase="pct.notutf8">Die procent-escapes vormen geen geldige UTF-8.</span>
+    <span data-phrase="utf8.notext">Die bytes zijn geen UTF-8-tekst, dus er valt niets
+      te tonen. Het is misschien een bestand en geen tekenreeks.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">Je tekst is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
