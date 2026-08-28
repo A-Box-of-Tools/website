@@ -290,6 +290,7 @@ related_heading = "箱の中のほかのツール"
 handoff_lead = "結果をそのまま次へ："
 privacy_heading = "この主張を確かめる方法"
 
+card_waiting = "上でファイルを選ぶとすぐに開きます。"
 pledge_line = """
     {{ tool.words.plural }}が<strong>アップロードされることはありません</strong>。サーバーが存在しないからです。"""
 

@@ -289,6 +289,7 @@ related_heading = "工具箱里还有"
 handoff_lead = "把结果直接带到："
 privacy_heading = "这条隐私承诺怎么核实"
 
+card_waiting = "在上方选择文件后就会打开。"
 pledge_line = """
     你的{{ tool.words.plural }}<strong>不会上传</strong>。这里根本没有服务器。"""
 

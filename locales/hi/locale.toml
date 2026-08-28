@@ -306,6 +306,7 @@ related_heading = "बॉक्स में और भी टूल"
 handoff_lead = "नतीजा सीधे यहाँ ले जाइए:"
 privacy_heading = "प्राइवेसी का यह दावा कैसे जाँचा जा सकता है"
 
+card_waiting = "ऊपर फ़ाइल चुनते ही यह खुल जाएगा।"
 pledge_line = """
     यह टूल {{ tool.words.plural }} <strong>कभी अपलोड नहीं करता</strong>। यहाँ कोई सर्वर है ही नहीं।"""
 

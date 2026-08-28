@@ -400,6 +400,7 @@ related_heading = "Ook in de gereedschapskist"
 handoff_lead = "Neem het resultaat rechtstreeks mee naar:"
 privacy_heading = "Hoe je de privacybelofte controleert"
 
+card_waiting = "Gaat open zodra je hierboven een bestand kiest."
 pledge_line = """
     Je {{ tool.words.plural }} worden <strong>nooit geüpload</strong>. Er is geen server."""
 

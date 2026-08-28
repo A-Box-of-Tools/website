@@ -662,6 +662,16 @@ related_heading = "Also in the box"
 handoff_lead = "Carry the result straight into:"
 privacy_heading = "How the privacy claim is verifiable"
 
+# What a step says while it is still waiting. Every tool's last card is on the
+# page from the start and dimmed, so the whole job can be read before anything
+# is handed over - but a dimmed heading over a dimmed button says only that
+# something is unavailable, not what would make it available. This says it.
+#
+# One sentence rather than one per card, because `inert` comes off in exactly
+# one place - the moment files arrive, in shared/js/file-picker.js - so it is
+# the same answer on all of them.
+card_waiting = "This opens as soon as you choose a file above."
+
 # The headline claim. The noun in the middle is this tool's own - "files",
 # "pictures", "clips" - and the sentence is written round it rather than in two
 # pieces either side of it, so a language that puts the verb last can.

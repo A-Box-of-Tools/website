@@ -46,6 +46,33 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
   const titleEl = dropzone.querySelector('.dropzone-title');
   const idle = idleTitle ?? titleEl?.textContent ?? '';
 
+  /**
+   * Say what a dimmed card is waiting for.
+   *
+   * The last step of a tool is on the page from the start and dimmed, so the
+   * whole job can be read before anything is handed over. What that left on
+   * eleven tools was a heading and a disabled button and nothing else - "3
+   * Compress", "4 Your stills", "2 What it says" - which tells a reader that
+   * the step exists and not what would open it.
+   *
+   * One sentence, from the frame, because `inert` comes off in exactly one
+   * place: the moment files arrive, below. So it is the same answer on every
+   * card that carries it.
+   */
+  const sayWaiting = () => {
+    for (const card of document.querySelectorAll('main .card[inert]')) {
+      if (card.querySelector('.card-waiting')) continue;
+      const line = document.createElement('p');
+      line.className = 'card-waiting';
+      line.textContent = phrase('card.waiting');
+      // Where a lede would be, rather than at the end under the controls it
+      // is explaining.
+      const heading = card.querySelector('h2');
+      if (heading) heading.after(line);
+      else card.prepend(line);
+    }
+  };
+
   const hand = (files) => {
     const picked = Array.from(files ?? []);
     if (!picked.length) return;
@@ -61,8 +88,12 @@ export function wireFilePicker({ input, dropzone, onFiles, idleTitle }) {
       card.dataset.waited = 'yes';
       card.removeAttribute('inert');
     }
+    // The card is not waiting any more, so it stops saying so.
+    for (const line of document.querySelectorAll('main .card .card-waiting')) line.remove();
     onFiles(picked);
   };
+
+  sayWaiting();
 
   input.addEventListener('change', () => {
     // `input.files` is a live list and resetting `value` empties it, so take a

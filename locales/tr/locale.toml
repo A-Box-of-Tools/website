@@ -412,6 +412,7 @@ related_heading = "Kutuda ayrıca"
 handoff_lead = "Sonucu doğrudan şuraya taşıyın:"
 privacy_heading = "Gizlilik iddiası nasıl doğrulanabilir"
 
+card_waiting = "Yukarıdan bir dosya seçtiğinizde açılır."
 pledge_line = """
     {{ tool.words.plural }} <strong>asla yüklenmez</strong>. Sunucu yoktur."""
 
