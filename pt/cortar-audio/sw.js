@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/cortar-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'5a3ef2efcd';
+const CACHE_NAME=CACHE_PREFIX+'1d9fe91c82';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=8e0c53a8f1',
+'styles.css?v=93bdecd345',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

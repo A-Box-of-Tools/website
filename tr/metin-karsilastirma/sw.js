@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/metin-karsilastirma/:';
-const CACHE_NAME=CACHE_PREFIX+'2612867b5a';
+const CACHE_NAME=CACHE_PREFIX+'0b595d688b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=3e040dfc2f',
+'styles.css?v=734f81e656',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

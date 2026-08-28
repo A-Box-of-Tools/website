@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/video-kirpma/:';
-const CACHE_NAME=CACHE_PREFIX+'e7ad5c1489';
+const CACHE_NAME=CACHE_PREFIX+'6de0832a79';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=3860f14f86',
+'styles.css?v=f48d950299',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
