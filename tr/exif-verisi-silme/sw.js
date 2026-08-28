@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/exif-verisi-silme/:';
-const CACHE_NAME=CACHE_PREFIX+'e15518707c';
+const CACHE_NAME=CACHE_PREFIX+'bdbce2d444';
 const ASSETS=[
 './',
 'index.html',
