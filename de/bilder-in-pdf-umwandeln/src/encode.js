@@ -61,7 +61,7 @@ bitmap.close();
 async function jpegStream(canvas,settings,width,height){
 const quality=Math.min(1,Math.max(0.3,Number(settings.quality)||0.9));
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,'image/jpeg',quality));
-if(!blob)throw new Error('This browser could not encode the picture as a JPEG.');
+if(!blob)throw new Error('encode.nojpeg');
 return{
 kind:'dct',
 data:new Uint8Array(await blob.arrayBuffer()),
@@ -162,10 +162,7 @@ return pb<=pc?b:c;
 }
 export async function deflate(bytes){
 if(typeof CompressionStream!=='function'){
-throw new Error(
-'This browser has no CompressionStream, which the lossless setting needs. '
-+'Choose one of the JPEG settings instead.',
-);
+throw new Error('encode.nodeflate');
 }
 const stream=new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate'));
 return new Uint8Array(await new Response(stream).arrayBuffer());

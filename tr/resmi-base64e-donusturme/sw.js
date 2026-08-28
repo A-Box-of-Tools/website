@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resmi-base64e-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'cf87812b4e';
+const CACHE_NAME=CACHE_PREFIX+'1756989bc0';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a908bd4b42',
+'styles.css?v=5b7b0e266e',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

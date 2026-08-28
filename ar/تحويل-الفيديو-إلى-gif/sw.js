@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحويل-الفيديو-إلى-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'0b8923845b';
+const CACHE_NAME=CACHE_PREFIX+'bb26aa2c01';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0e8138f290',
+'styles.css?v=879858526f',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

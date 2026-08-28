@@ -8,14 +8,14 @@ const items=[];
 const skipped=[];
 for(const file of Array.from(files)){
 if(!looksLikeImage(file)){
-skipped.push(`${file.name}: not an image this tool can read.`);
+skipped.push({key:'read.notimage',values:{name:file.name}});
 continue;
 }
 let bitmap;
 try{
 bitmap=await createImageBitmap(file,{imageOrientation:'from-image'});
 }catch{
-skipped.push(`${file.name}: this browser could not decode it.`);
+skipped.push({key:'read.nodecode',values:{name:file.name}});
 continue;
 }
 try{

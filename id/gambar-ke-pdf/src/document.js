@@ -4,7 +4,7 @@ import{prepareImage}from'./encode.js';
 import{layoutPage,placement}from'./layout.js';
 const PRODUCER='abox.tools images to PDF';
 export async function buildDocument(items,settings,{onProgress,signal}={}){
-if(!items.length)throw new Error('Choose at least one image first.');
+if(!items.length)throw new Error('build.noimages');
 const pdf=new PdfWriter();
 const catalog=pdf.reserve();
 const pageTree=pdf.reserve();

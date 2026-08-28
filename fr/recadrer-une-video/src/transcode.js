@@ -83,6 +83,7 @@ duration:Math.max(1,Math.round(
 }
 return out;
 }
+const said=(key,values={})=>Object.assign(new Error(key),{values});
 export async function cropExact({
 file,media,crop,quality='medium',keepAudio=true,onProgress,signal,
 }){
@@ -92,8 +93,7 @@ const fps=averageFps(video);
 const bitrate=chooseBitrate({video,crop,fps,quality});
 const codec=await pickH264Codec({width,height,framerate:Math.round(fps),bitrate});
 if(!codec){
-throw new Error(`This browser will not encode H.264 at ${width}x${height}. `
-+'Crop a smaller area, or switch the output to WebM.');
+throw said('encode.noh264',{width,height});
 }
 onProgress?.({phase:'preparing',done:0,total:video.samples.length});
 const writer=new Mp4Writer({width,height});
@@ -194,7 +194,7 @@ onProgress?.({phase:'finishing',done:decoded,total});
 await decoder.flush();
 await encoder.flush();
 if(failure)throw failure;
-if(!encoded)throw new Error('Nothing could be decoded from this file.');
+if(!encoded)throw new Error('encode.nothing');
 return{blob:writer.finalize(),extension:'mp4',codec,frames:encoded};
 }finally{
 if(decoder.state!=='closed')decoder.close();
@@ -257,7 +257,7 @@ if(sample.pts>targetTicks+video.timescale*0.4)break;
 }
 await decoder.flush();
 if(failure)throw failure;
-if(!drawn)throw new Error('No frame could be decoded from this file.');
+if(!drawn)throw new Error('decode.nodraw');
 return canvas;
 }finally{
 if(decoder.state!=='closed')decoder.close();

@@ -27,7 +27,7 @@ const image=new Image();
 try{
 await new Promise((resolve,reject)=>{
 image.onload=()=>resolve();
-image.onerror=()=>reject(new Error('this browser could not draw the SVG. It may not be valid XML.'));
+image.onerror=()=>reject(new Error('draw.failed'));
 image.src=url;
 });
 if(typeof image.decode==='function'){
@@ -59,7 +59,8 @@ return canvas;
 export async function encode(canvas,mime,quality){
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,quality));
 if(!blob){
-throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime} at that size.`);
+throw Object.assign(new Error('encode.refused'),
+{values:{format:FORMATS[mime]?.label??mime}});
 }
 return blob;
 }

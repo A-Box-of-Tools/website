@@ -187,7 +187,7 @@ this.audio=null;
 }
 setDecoderConfig(description){
 if(this.avcC)return;
-if(!description)throw new Error('The encoder produced no decoder configuration.');
+if(!description)throw new Error('mp4.noconfig');
 this.avcC=description instanceof Uint8Array
 ?description
 :new Uint8Array(description instanceof ArrayBuffer
@@ -279,14 +279,13 @@ minf,
 );
 }
 finalize(){
-if(!this.video.samples.length)throw new Error('No frames were encoded.');
-if(!this.avcC)throw new Error('The encoder never reported a decoder configuration.');
+if(!this.video.samples.length)throw new Error('mp4.noframes');
+if(!this.avcC)throw new Error('mp4.noconfig');
 this.#closeVideoDurations();
 const tracks=this.audio&&this.audio.samples.length?[this.video,this.audio]:[this.video];
 const totalBytes=tracks.reduce((total,track)=>total+track.bytes,0);
 if(totalBytes>0xfffffff0){
-throw new Error('The cropped video exceeds the 4 GB limit. '
-+'Lower the quality, or crop a smaller area.');
+throw new Error('mp4.toobig');
 }
 const origin=Math.min(...tracks.map((track)=>track.samples[0].time/track.timescale));
 const durationMs=Math.max(...tracks.map((track)=>Math.round(
@@ -305,7 +304,7 @@ const probe=build(0);
 const mdatDataOffset=header.byteLength+probe.moov.byteLength+8;
 const{moov,chunks}=build(mdatDataOffset);
 if(moov.byteLength!==probe.moov.byteLength){
-throw new Error('Internal error: the moov size was not stable between passes.');
+throw new Error('mp4.unstable');
 }
 const mdatHeader=concat([u32(totalBytes+8),ascii('mdat')]);
 const parts=[header,moov,mdatHeader];

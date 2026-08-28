@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-export function bytes(n){
-if(n<1024)return`${n} B`;
-if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
-return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+export function bytes(n,t){
+if(n<1024)return t('size.b',{n});
+if(n<1024*1024)return t('size.kb',{n:(n/1024).toFixed(n<10240?1:0)});
+return t('size.mb',{n:(n/(1024*1024)).toFixed(2)});
 }
 export const dimensions=(width,height)=>`${width} × ${height}`;
 export function stemOf(name){

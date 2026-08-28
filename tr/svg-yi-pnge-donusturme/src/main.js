@@ -89,14 +89,13 @@ const failures=[];
 try{
 for(const file of files){
 if(!looksLikeSvg(file)){
-failures.push(`${file.name}: this tool only reads SVG files. `
-+'A PNG or a JPEG is already pixels; the Image Resizer is the one for those.');
+failures.push(phrase('read.notsvg',{name:file.name}));
 continue;
 }
 const text=decodeSvgText(await file.arrayBuffer());
 const intrinsic=intrinsicSize(text);
 if(!intrinsic){
-failures.push(`${file.name}: there is no <svg> element in this file.`);
+failures.push(phrase('read.nosvg.named',{name:file.name}));
 continue;
 }
 items.push({
@@ -207,17 +206,19 @@ name.className='file-name';
 name.textContent=item.file.name;
 const sub=document.createElement('p');
 sub.className='file-sub';
-sub.textContent=`${phrase(sourceKey(item.intrinsic), {
-      size: dimensions(item.intrinsic.width, item.intrinsic.height),
-    })} · ${humanBytes(item.file.size)}`
-;
+sub.textContent=phrase('join.dot',{
+a:phrase(sourceKey(item.intrinsic),{
+size:dimensions(item.intrinsic.width,item.intrinsic.height),
+}),
+b:humanBytes(item.file.size,phrase),
+});
 const out=document.createElement('p');
 out.className='file-out';
 const plan=planFor(item);
 const limit=checkLimits(atDensity(plan,densities().at(-1)));
 out.textContent=limit.ok
-?`→ ${dimensions(plan.width, plan.height)}`
-:`→ too big: ${limit.reason}`;
+?phrase('out.size',{size:dimensions(plan.width,plan.height)})
+:phrase('out.toobig',{why:phrase(limit.key,fill(limit.values))});
 out.classList.toggle('warn',!limit.ok);
 main.append(name,sub,out);
 wrap.append(thumb,main);
@@ -245,15 +246,19 @@ row.append(wrap,remove);
 el.fileList.append(row);
 }
 }
+function fill(values={}){
+return Object.fromEntries(Object.entries(values)
+.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
+}
 function renderNotes(){
 const item=activeItem();
 const set=settings();
 el.sizeSummary.textContent=item
-?describePlan(planFor(item),item.intrinsic,set.densities)
-:'Add an SVG and this says what size it will come out.';
+?describePlan(planFor(item),item.intrinsic,set.densities,phrase)
+:phrase('plan.none');
 const worst=worstLimit();
 el.sizeWarning.hidden=!worst;
-el.sizeWarning.textContent=worst?.reason??'';
+el.sizeWarning.textContent=worst?phrase(worst.key,fill(worst.values)):'';
 el.sizeWarning.classList.toggle('warn',Boolean(worst&&!worst.ok));
 el.formatNote.textContent=formatSentence(set.mime);
 el.backgroundNote.textContent=backgroundSentence(set);
@@ -271,27 +276,15 @@ return worst;
 const everythingFits=()=>items.every(
 (item)=>checkLimits(atDensity(planFor(item),densities().at(-1))).ok);
 function formatSentence(mime){
-if(mime===PNG){
-return'Lossless, and the only one of the three that every piece of software reads. '
-+'Flat colour and hard edges - which is most of what a drawing is made of - compress well in it, '
-+'so a rasterised logo is usually smaller as a PNG than as a JPEG anyway.';
-}
-if(mime===JPEG){
-return'No transparency, and lossy in the way that shows worst on exactly this kind of picture: '
-+'a ring of speckle around every hard edge. Worth it for a drawing that is mostly photograph-like '
-+'shading, and rarely otherwise.';
-}
-return writable.has(WEBP)
-?'Transparency like a PNG, and a smaller file than either of the others at the same quality. '
-+'Read by every current browser; older software and some print shops still will not open one.'
-:'This browser cannot write WebP, so a PNG would come out instead. Pick one of the other two.';
+if(mime===PNG)return phrase('format.png');
+if(mime===JPEG)return phrase('format.jpeg');
+return phrase(writable.has(WEBP)?'format.webp':'format.webp.none');
 }
 function backgroundSentence({mime,background}){
-if(!background)return'The transparent parts of the drawing stay transparent.';
+if(!background)return phrase('bg.none');
 return FORMATS[mime].alpha
-?'Painted behind the whole picture, so nothing in the file is transparent.'
-:`${FORMATS[mime].label} has no transparency, so this colour is painted behind the drawing. `
-+'Without it, everything that was transparent would come out black.';
+?phrase('bg.behind')
+:phrase('bg.needed',{format:FORMATS[mime].label});
 }
 const PREVIEW_MAX=420;
 let previewToken=0;
@@ -320,7 +313,12 @@ canvas.height=0;
 held.release();
 }
 }catch(error){
-if(token===previewToken)showLoadError(`${item.file.name}: ${error.message}`);
+if(token===previewToken){
+showLoadError(phrase('file.failed',{
+name:item.file.name,
+why:phrase(error.message,fill(error.values)),
+}));
+}
 return;
 }
 el.previewCanvas.classList.toggle('opaque',Boolean(set.background));
@@ -345,13 +343,14 @@ stretch:plan.stretch,
 }
 function previewSentence(full,shown,set){
 const scale=shown.width===full.width
-?'Shown at the size it will be.'
-:`Shown at ${times(shown.width / full.width)} of the ${dimensions(full.width, full.height)} `
-+'file, redrawn from the vector rather than shrunk - so this is what that size looks like.';
-const alpha=set.background
-?''
-:' The checkerboard is where the file will be transparent.';
-return`${scale}${alpha}`;
+?phrase('preview.actual')
+:phrase('preview.scaled',{
+times:times(shown.width/full.width),
+size:dimensions(full.width,full.height),
+});
+return set.background
+?scale
+:phrase('join.sentences',{a:scale,b:phrase('preview.checkerboard')});
 }
 el.run.addEventListener('click',()=>{
 runAll().catch((error)=>{
@@ -403,12 +402,12 @@ el.resultsSummary.textContent=results.length===1
 ?phrase('written.one',{
 name:results[0].name,
 size:dimensions(results[0].plan.width,results[0].plan.height),
-bytes:humanBytes(total),
+bytes:humanBytes(total,phrase),
 })
 :phrase('written.many',{
 count:results.length.toLocaleString(),
 drawings:sources.toLocaleString(),
-bytes:humanBytes(total),
+bytes:humanBytes(total,phrase),
 });
 for(const one of results)el.resultList.append(resultRow(one));
 el.downloadZip.hidden=results.length<2;
@@ -424,7 +423,10 @@ name.className='result-name';
 name.textContent=one.name;
 const headline=document.createElement('p');
 headline.className='result-headline';
-headline.textContent=`${dimensions(one.plan.width, one.plan.height)}, ${humanBytes(one.blob.size)}`;
+headline.textContent=phrase('join.comma',{
+a:dimensions(one.plan.width,one.plan.height),
+b:humanBytes(one.blob.size,phrase),
+});
 const detail=document.createElement('p');
 detail.className='result-detail';
 detail.textContent=phrase(

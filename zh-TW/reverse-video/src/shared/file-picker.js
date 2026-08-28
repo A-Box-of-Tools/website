@@ -3,6 +3,17 @@ import{phrase}from'./phrases.js';
 export function wireFilePicker({input,dropzone,onFiles,idleTitle}){
 const titleEl=dropzone.querySelector('.dropzone-title');
 const idle=idleTitle??titleEl?.textContent??'';
+const sayWaiting=()=>{
+for(const card of document.querySelectorAll('main .card[inert]')){
+if(card.querySelector('.card-waiting'))continue;
+const line=document.createElement('p');
+line.className='card-waiting';
+line.textContent=phrase('card.waiting');
+const heading=card.querySelector('h2');
+if(heading)heading.after(line);
+else card.prepend(line);
+}
+};
 const hand=(files)=>{
 const picked=Array.from(files??[]);
 if(!picked.length)return;
@@ -10,8 +21,10 @@ for(const card of document.querySelectorAll('main .card[inert]')){
 card.dataset.waited='yes';
 card.removeAttribute('inert');
 }
+for(const line of document.querySelectorAll('main .card .card-waiting'))line.remove();
 onFiles(picked);
 };
+sayWaiting();
 input.addEventListener('change',()=>{
 const picked=Array.from(input.files);
 input.value='';

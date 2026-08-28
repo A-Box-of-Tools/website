@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/censurar-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'ed76367dbb';
+const CACHE_NAME=CACHE_PREFIX+'09b87a9fd8';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a0e6a5ae05',
+'styles.css?v=d5b3d1193e',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -137,7 +137,7 @@ return answer(DEFAULT_WIDTH,DEFAULT_HEIGHT,'default');
 const round=(n)=>Math.max(1,Math.round(n*1000)/1000);
 export function sizedSvg(text,width,height,{stretch=false}={}){
 const root=readRoot(text);
-if(!root)throw new Error('there is no <svg> element in this file.');
+if(!root)throw new Error('read.nosvg');
 const attrs={...root.attrs};
 const size=intrinsicSize(text);
 if(!parseViewBox(attrs.viewbox)){
