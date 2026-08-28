@@ -137,6 +137,98 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (regel {line}, kolom {column})</span>
+    <span data-phrase="char.end">het einde van de tekst</span>
+    <span data-phrase="char.newline">een regeleinde</span>
+    <span data-phrase="char.tab">een tab</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="json.trailing">Onverwacht: {found} na het einde van de waarde</span>
+    <span data-phrase="json.early">De tekst houdt te vroeg op</span>
+    <span data-phrase="json.keystring">Een sleutel moet een string tussen dubbele aanhalingstekens zijn, en dit is {found}</span>
+    <span data-phrase="json.colon">Dubbele punt verwacht na de sleutel, gevonden {found}</span>
+    <span data-phrase="json.unexpected">Onverwacht: {found}</span>
+    <span data-phrase="json.commabrace">Komma of sluitende accolade verwacht, gevonden {found}</span>
+    <span data-phrase="json.commabracket">Komma of sluitende blokhaak verwacht, gevonden {found}</span>
+    <span data-phrase="json.object">Dit object wordt nooit gesloten</span>
+    <span data-phrase="json.array">Deze array wordt nooit gesloten</span>
+    <span data-phrase="json.string">Deze string wordt nooit gesloten</span>
+    <span data-phrase="json.hex">Na \u moeten vier hexadecimale cijfers komen</span>
+    <span data-phrase="json.escape">\{next} is geen escape die JSON kent</span>
+    <span data-phrase="json.control">Een ruw stuurteken in een string &mdash; schrijf het als een escape</span>
+    <span data-phrase="json.number">Dit is geen getal dat JSON toestaat</span>
+    <span data-phrase="css.comment">Dit commentaar wordt nooit gesloten</span>
+    <span data-phrase="css.brace">Een sluitende accolade zonder open blok</span>
+    <span data-phrase="css.block">Dit blok wordt nooit gesloten</span>
+    <span data-phrase="css.string">Deze string wordt nooit gesloten</span>
+    <span data-phrase="css.bracket">Dit haakje wordt nooit gesloten</span>
+    <span data-phrase="css.declaration">&laquo;{statement}&raquo; is geen declaratie &mdash; er staat geen dubbele punt in</span>
+    <span data-phrase="xml.comment">Dit commentaar wordt nooit gesloten</span>
+    <span data-phrase="xml.cdata">Deze CDATA-sectie wordt nooit gesloten</span>
+    <span data-phrase="xml.declaration">Deze declaratie wordt nooit gesloten</span>
+    <span data-phrase="xml.closing">Deze sluittag wordt nooit afgemaakt</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; wordt nooit gesloten</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; sluit een tag die nooit geopend is</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt; sluit een element terwijl &lt;{open}&gt; nog open staat</span>
+    <span data-phrase="xml.inside">Onverwacht: &laquo;{ch}&raquo; in &lt;{name}&gt;</span>
+    <span data-phrase="xml.tagname">Een tagnaam moet met een letter beginnen</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; wordt nooit afgemaakt</span>
+    <span data-phrase="xml.attrvalue">Het attribuut &laquo;{name}&raquo; heeft geen waarde, en dat staat XML niet toe</span>
+    <span data-phrase="xml.attrstring">Deze attribuutwaarde wordt nooit gesloten</span>
+    <span data-phrase="xml.attrquote">In XML moet een attribuutwaarde tussen aanhalingstekens staan</span>
+    <span data-phrase="yaml.dedent">Deze regel is minder ingesprongen dan het blok waar hij in staat</span>
+    <span data-phrase="yaml.documents">Meer dan één document in dit bestand. Zet ze een voor een om.</span>
+    <span data-phrase="yaml.indent">Deze regel is verder ingesprongen dan de sleutel erboven</span>
+    <span data-phrase="yaml.keyvalue">Hier werd &laquo;key: value&raquo; verwacht</span>
+    <span data-phrase="yaml.aliases">Aliassen (*name) worden niet ondersteund &mdash; JSON kan niet zeggen
+      &laquo;dezelfde knoop twee keer&raquo;</span>
+    <span data-phrase="yaml.tags">Tags (!name) worden niet ondersteund &mdash; het type zou geraden moeten worden</span>
+    <span data-phrase="yaml.complexkey">Een &laquo;?&raquo;-sleutel wordt hier niet ondersteund</span>
+    <span data-phrase="yaml.blockscalar">&laquo;{header}&raquo; is geen blokscalair die dit leest</span>
+    <span data-phrase="yaml.afterquote">Er staat tekst na het sluitende aanhalingsteken</span>
+    <span data-phrase="yaml.anchors">Ankers (&amp;name) worden niet ondersteund &mdash; JSON kan niet zeggen
+      &laquo;dezelfde knoop twee keer&raquo;</span>
+    <span data-phrase="yaml.hex">Na \{next} moeten {width} hexadecimale cijfers komen</span>
+    <span data-phrase="yaml.escape">\{next} is geen escape die dit leest</span>
+    <span data-phrase="yaml.quoted">Deze string tussen aanhalingstekens wordt nooit gesloten</span>
+    <span data-phrase="yaml.afterflow">Er staat tekst na het einde van de flow-verzameling</span>
+    <span data-phrase="yaml.flowearly">De flow-verzameling houdt te vroeg op</span>
+    <span data-phrase="yaml.flowseq">Komma of sluitende blokhaak verwacht in deze flow-reeks</span>
+    <span data-phrase="yaml.flowkey">Dubbele punt verwacht na een sleutel in deze flow-mapping</span>
+    <span data-phrase="yaml.flowmap">Komma of sluitende accolade verwacht in deze flow-mapping</span>
+    <span data-phrase="convert.json-yaml.name">JSON naar YAML</span>
+    <span data-phrase="convert.yaml-json.name">YAML naar JSON</span>
+    <span data-phrase="convert.json-xml.name">JSON naar XML</span>
+    <span data-phrase="convert.xml-json.name">XML naar JSON</span>
+    <span data-phrase="convert.json-yaml">Er gaat niets verloren: elk JSON-document is al een YAML-document. Strings komen
+      alleen tussen aanhalingstekens waar ze zonder iets anders zouden zeggen.</span>
+    <span data-phrase="convert.yaml-json">Commentaar gaat verloren, want JSON heeft nergens plek voor. Ankers, aliassen en
+      tags stoppen de omzetting in plaats van geraden te worden.</span>
+    <span data-phrase="convert.json-xml">Een array wordt een herhaald element, wat de enige vorm is die terugleest. Een leeg
+      object en een lege string komen er allebei uit als leeg element.</span>
+    <span data-phrase="convert.xml-json">Attributen worden leden met een @ in de naam, de eigen tekst van een element wordt
+      #text waar hij de plek moet delen, en elke waarde blijft een string &mdash; XML
+      heeft nooit gezegd welke getallen waren.</span>
+    <span data-phrase="format.unknown">{language} is geen taal die dit opmaakt.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">Het bestand wordt gelezen…</span>
+    <span data-phrase="read.failed">Dat bestand kon niet gelezen worden: {reason}</span>
+    <span data-phrase="out.nothing">Nog niets.</span>
+    <span data-phrase="out.empty">Er kwam niets uit.</span>
+    <span data-phrase="style.noyaml">YAML heeft geen samengeperste vorm die het schrijven waard is: de korte is
+      flow-stijl, en die is onleesbaar.</span>
+    <span data-phrase="detect.unknown">Dit lijkt geen JSON, XML, HTML, CSS of YAML. Kies de taal uit het menu als het er
+      toch een van is.</span>
+    <span data-phrase="detect.read">Gelezen als {name}.</span>
+    <span data-phrase="note.squeezed">{name}, plat samengeperst</span>
+    <span data-phrase="note.laid">{name}, uitgelegd</span>
+    <span data-phrase="note.smaller">{what} &mdash; van {before} naar {after}, {percent}% eraf</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} regels, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} regels, {size}</span>
+    <span data-phrase="copy.copy">Kopiëren</span>
+    <span data-phrase="copy.copied">Gekopieerd</span>
+    <span data-phrase="copy.selected">Geselecteerd &mdash; druk op Ctrl+C</span>
     <span data-phrase="net.clean">Je tekst is nergens heen gegaan. {total}
       bestanden geladen. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

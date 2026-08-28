@@ -51,7 +51,9 @@ export function formatText(text, { language, minify = false, indent = '  ', sort
         // YAML at all. The button that would ask for it is disabled instead.
         return printYaml(parseYaml(text), { indent: indent === '\t' ? 2 : indent.length || 2 });
       default:
-        throw new Error(`${language} is not a language this formats.`);
+        const wrong = new Error('format.unknown');
+  wrong.values = { language };
+  throw wrong;
     }
   }
 }

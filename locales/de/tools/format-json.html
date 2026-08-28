@@ -137,6 +137,106 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (Zeile {line}, Spalte {column})</span>
+    <span data-phrase="char.end">das Ende des Textes</span>
+    <span data-phrase="char.newline">ein Zeilenumbruch</span>
+    <span data-phrase="char.tab">ein Tabulator</span>
+    <span data-phrase="char.is">&bdquo;{ch}&ldquo;</span>
+    <span data-phrase="json.trailing">Unerwartet {found} nach dem Ende des Werts</span>
+    <span data-phrase="json.early">Der Text ist zu früh zu Ende</span>
+    <span data-phrase="json.keystring">Ein Schlüssel muss eine Zeichenkette in doppelten Anführungszeichen sein, und das
+      hier ist {found}</span>
+    <span data-phrase="json.colon">Nach dem Schlüssel wurde ein Doppelpunkt erwartet, gefunden wurde {found}</span>
+    <span data-phrase="json.unexpected">Unerwartet {found}</span>
+    <span data-phrase="json.commabrace">Erwartet wurde ein Komma oder eine schließende geschweifte Klammer, gefunden wurde
+      {found}</span>
+    <span data-phrase="json.commabracket">Erwartet wurde ein Komma oder eine schließende eckige Klammer, gefunden wurde
+      {found}</span>
+    <span data-phrase="json.object">Dieses Objekt wird nie geschlossen</span>
+    <span data-phrase="json.array">Dieses Array wird nie geschlossen</span>
+    <span data-phrase="json.string">Diese Zeichenkette wird nie geschlossen</span>
+    <span data-phrase="json.hex">Auf \u müssen vier Hexadezimalziffern folgen</span>
+    <span data-phrase="json.escape">\{next} ist keine Escape-Sequenz, die JSON kennt</span>
+    <span data-phrase="json.control">Ein rohes Steuerzeichen in einer Zeichenkette &mdash; schreiben Sie es als
+      Escape-Sequenz</span>
+    <span data-phrase="json.number">Das ist keine Zahl, die JSON erlaubt</span>
+    <span data-phrase="css.comment">Dieser Kommentar wird nie geschlossen</span>
+    <span data-phrase="css.brace">Eine schließende geschweifte Klammer ohne offenen Block</span>
+    <span data-phrase="css.block">Dieser Block wird nie geschlossen</span>
+    <span data-phrase="css.string">Diese Zeichenkette wird nie geschlossen</span>
+    <span data-phrase="css.bracket">Diese Klammer wird nie geschlossen</span>
+    <span data-phrase="css.declaration">&bdquo;{statement}&ldquo; ist keine Deklaration &mdash; es steht kein Doppelpunkt
+      darin</span>
+    <span data-phrase="xml.comment">Dieser Kommentar wird nie geschlossen</span>
+    <span data-phrase="xml.cdata">Dieser CDATA-Abschnitt wird nie geschlossen</span>
+    <span data-phrase="xml.declaration">Diese Deklaration wird nie geschlossen</span>
+    <span data-phrase="xml.closing">Dieses schließende Tag wird nie beendet</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; wird nie geschlossen</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; schließt ein Tag, das nie geöffnet wurde</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt; schließt ein Element, während &lt;{open}&gt; noch offen ist</span>
+    <span data-phrase="xml.inside">Unerwartet &bdquo;{ch}&ldquo; in &lt;{name}&gt;</span>
+    <span data-phrase="xml.tagname">Ein Tag-Name muss mit einem Buchstaben anfangen</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; wird nie beendet</span>
+    <span data-phrase="xml.attrvalue">Das Attribut &bdquo;{name}&ldquo; hat keinen Wert, was XML nicht erlaubt</span>
+    <span data-phrase="xml.attrstring">Dieser Attributwert wird nie geschlossen</span>
+    <span data-phrase="xml.attrquote">Ein Attributwert muss in XML in Anführungszeichen stehen</span>
+    <span data-phrase="yaml.dedent">Diese Zeile ist weniger eingerückt als der Block, in dem sie steht</span>
+    <span data-phrase="yaml.documents">Mehr als ein Dokument in dieser Datei. Wandeln Sie sie einzeln um.</span>
+    <span data-phrase="yaml.indent">Diese Zeile ist weiter eingerückt als der Schlüssel darüber</span>
+    <span data-phrase="yaml.keyvalue">Hier wurde &bdquo;key: value&ldquo; erwartet</span>
+    <span data-phrase="yaml.aliases">Aliasse (*name) werden nicht unterstützt &mdash; JSON hat keine Möglichkeit,
+      &bdquo;derselbe Knoten zweimal&ldquo; zu sagen</span>
+    <span data-phrase="yaml.tags">Tags (!name) werden nicht unterstützt &mdash; der Typ müsste geraten werden</span>
+    <span data-phrase="yaml.complexkey">Ein &bdquo;?&ldquo;-Schlüssel wird hier nicht unterstützt</span>
+    <span data-phrase="yaml.blockscalar">&bdquo;{header}&ldquo; ist kein Block-Skalar, den dies liest</span>
+    <span data-phrase="yaml.afterquote">Nach dem schließenden Anführungszeichen steht noch Text</span>
+    <span data-phrase="yaml.anchors">Anker (&amp;name) werden nicht unterstützt &mdash; JSON hat keine Möglichkeit,
+      &bdquo;derselbe Knoten zweimal&ldquo; zu sagen</span>
+    <span data-phrase="yaml.hex">Nach \{next} müssen {width} Hexadezimalziffern stehen</span>
+    <span data-phrase="yaml.escape">\{next} ist keine Escape-Sequenz, die dies liest</span>
+    <span data-phrase="yaml.quoted">Diese Zeichenkette in Anführungszeichen wird nie geschlossen</span>
+    <span data-phrase="yaml.afterflow">Nach dem Ende der Flow-Sammlung steht noch Text</span>
+    <span data-phrase="yaml.flowearly">Die Flow-Sammlung endet zu früh</span>
+    <span data-phrase="yaml.flowseq">In dieser Flow-Sequenz wurde ein Komma oder eine schließende eckige Klammer erwartet</span>
+    <span data-phrase="yaml.flowkey">In diesem Flow-Mapping wurde nach einem Schlüssel ein Doppelpunkt erwartet</span>
+    <span data-phrase="yaml.flowmap">In diesem Flow-Mapping wurde ein Komma oder eine schließende geschweifte Klammer
+      erwartet</span>
+    <span data-phrase="convert.json-yaml.name">JSON zu YAML</span>
+    <span data-phrase="convert.yaml-json.name">YAML zu JSON</span>
+    <span data-phrase="convert.json-xml.name">JSON zu XML</span>
+    <span data-phrase="convert.xml-json.name">XML zu JSON</span>
+    <span data-phrase="convert.json-yaml">Nichts geht verloren: jedes JSON-Dokument ist schon ein YAML-Dokument. Zeichenketten
+      werden nur dort in Anführungszeichen gesetzt, wo sie ohne sie etwas anderes sagen
+      würden.</span>
+    <span data-phrase="convert.yaml-json">Kommentare gehen verloren, weil JSON keinen Platz für einen hat. Anker, Aliasse und
+      Tags brechen die Umwandlung ab, statt geraten zu werden.</span>
+    <span data-phrase="convert.json-xml">Ein Array wird zu einem wiederholten Element, was die einzige Form ist, die sich
+      zurücklesen lässt. Ein leeres Objekt und eine leere Zeichenkette kommen beide als
+      leeres Element heraus.</span>
+    <span data-phrase="convert.xml-json">Attribute werden zu Membern mit einem @ im Namen, der eigene Text eines Elements
+      wird zu #text, wo er sich den Platz teilen muss, und jeder Wert bleibt eine
+      Zeichenkette &mdash; XML hat nie gesagt, welche Zahlen waren.</span>
+    <span data-phrase="format.unknown">{language} ist keine Sprache, die dies formatiert.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">Die Datei wird gelesen…</span>
+    <span data-phrase="read.failed">Diese Datei konnte nicht gelesen werden: {reason}</span>
+    <span data-phrase="out.nothing">Noch nichts.</span>
+    <span data-phrase="out.empty">Es kam nichts heraus.</span>
+    <span data-phrase="style.noyaml">YAML hat keine gequetschte Form, die zu schreiben sich lohnt: die kurze ist
+      Flow-Stil, und der ist unlesbar.</span>
+    <span data-phrase="detect.unknown">Das sieht nicht nach JSON, XML, HTML, CSS oder YAML aus. Wählen Sie die Sprache aus
+      dem Menü, falls es doch eine davon ist.</span>
+    <span data-phrase="detect.read">Als {name} gelesen.</span>
+    <span data-phrase="note.squeezed">{name}, flach gequetscht</span>
+    <span data-phrase="note.laid">{name}, ausgelegt</span>
+    <span data-phrase="note.smaller">{what} &mdash; von {before} auf {after}, {percent}% weniger</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} Zeilen, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} Zeilen, {size}</span>
+    <span data-phrase="copy.copy">Kopieren</span>
+    <span data-phrase="copy.copied">Kopiert</span>
+    <span data-phrase="copy.selected">Ausgewählt &mdash; Strg+C drücken</span>
     <span data-phrase="net.clean">Ihr Text ist nirgendwohin gegangen. {total}
       Dateien geladen. {platform}</span>
     <span data-phrase="net.dirty">Etwas hat {hosts} kontaktiert, und das tut

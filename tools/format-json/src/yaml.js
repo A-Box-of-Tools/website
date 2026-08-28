@@ -201,7 +201,7 @@ export function parseYaml(text) {
   const value = doc.parseNode(0);
   doc.skipBlank();
   if (doc.at < doc.lines.length) {
-    doc.fail('This line is indented less than the block it is in', doc.at);
+    doc.fail('yaml.dedent', doc.at);
   }
   return value;
 }
@@ -221,9 +221,10 @@ class Doc {
     }
   }
 
-  fail(message, lineIndex, column = 0) {
-    throw new ParseError(message, this.starts[Math.min(lineIndex, this.lines.length - 1)] + column,
-      this.source);
+  fail(reason, lineIndex, column = 0, values) {
+    throw new ParseError(reason,
+      this.starts[Math.min(lineIndex, this.lines.length - 1)] + column,
+      this.source, values);
   }
 
   /** Skip blank lines, comment lines and the document markers. */
@@ -233,7 +234,7 @@ class Doc {
       const trimmed = line.trim();
       if (trimmed === '' || trimmed.startsWith('#')) { this.at += 1; continue; }
       if (trimmed === '---' && this.startedDocument) {
-        this.fail('More than one document in this file. Convert them one at a time.', this.at);
+        this.fail('yaml.documents', this.at);
       }
       if (trimmed === '---') { this.startedDocument = true; this.at += 1; continue; }
       if (trimmed === '...') { this.at += 1; continue; }
@@ -270,10 +271,10 @@ class Doc {
       const here = this.indentOf(this.at);
       if (here < indent) break;
       const lineIndex = this.at;
-      if (here > indent) this.fail('This line is indented further than the key above it', lineIndex);
+      if (here > indent) this.fail('yaml.indent', lineIndex);
       const rest = this.lines[lineIndex].slice(here);
       const end = this.keyEnd(rest);
-      if (end < 0) this.fail('Expected "key: value" here', lineIndex, here);
+      if (end < 0) this.fail('yaml.keyvalue', lineIndex, here);
 
       const key = this.readKey(rest.slice(0, end), lineIndex, here);
       const after = rest.slice(end + 1).trim();
@@ -369,19 +370,19 @@ class Doc {
   readKey(raw, lineIndex, column) {
     const text = raw.trim();
     if (text.startsWith('"') || text.startsWith("'")) {
-      return readQuoted(text, (message) => this.fail(message, lineIndex, column));
+      return readQuoted(text, (key, values) => this.fail(key, lineIndex, column, values));
     }
     if (text.startsWith('&') || text.startsWith('*') || text.startsWith('!')) {
       this.fail(unsupported(text[0]), lineIndex, column);
     }
-    if (text === '?') this.fail('A "?" key is not supported here', lineIndex, column);
+    if (text === '?') this.fail('yaml.complexkey', lineIndex, column);
     return text;
   }
 
   /** A `|` or `>` scalar, and the lines under it. */
   blockScalar(header, indent, lineIndex) {
     const match = /^([|>])([+-]?)([0-9]?)([+-]?)\s*(#.*)?$/.exec(header.trim());
-    if (!match) this.fail(`"${header.trim()}" is not a block scalar this reads`, lineIndex);
+    if (!match) this.fail('yaml.blockscalar', lineIndex, 0, { header: header.trim() });
     const folded = match[1] === '>';
     const chomp = match[2] || match[4] || '';
     const explicit = match[3] ? Number(match[3]) : 0;
@@ -425,13 +426,14 @@ class Doc {
       this.fail(unsupported(trimmed[0]), lineIndex, column);
     }
     if (trimmed.startsWith('[') || trimmed.startsWith('{')) {
-      return parseFlow(trimmed, (message) => this.fail(message, lineIndex, column));
+      return parseFlow(trimmed, (key, values) => this.fail(key, lineIndex, column, values));
     }
     if (trimmed.startsWith('"') || trimmed.startsWith("'")) {
-      const [value, end] = readQuotedWithEnd(trimmed, (message) => this.fail(message, lineIndex, column));
+      const [value, end] = readQuotedWithEnd(trimmed,
+        (key, values) => this.fail(key, lineIndex, column, values));
       const after = trimmed.slice(end).trim();
       if (after !== '' && !after.startsWith('#')) {
-        this.fail('There is text after the closing quote', lineIndex, column);
+        this.fail('yaml.afterquote', lineIndex, column);
       }
       return { t: 'str', value };
     }
@@ -439,10 +441,11 @@ class Doc {
   }
 }
 
+/** Which refusal a YAML mark this reader will not follow gets, by key. */
 function unsupported(mark) {
-  if (mark === '&') return 'Anchors (&name) are not supported - JSON has no way to say "the same node twice"';
-  if (mark === '*') return 'Aliases (*name) are not supported - JSON has no way to say "the same node twice"';
-  return 'Tags (!name) are not supported - the type would have to be guessed';
+  if (mark === '&') return 'yaml.anchors';
+  if (mark === '*') return 'yaml.aliases';
+  return 'yaml.tags';
 }
 
 /** A trailing ` # comment` is not part of a plain scalar. */
@@ -495,7 +498,7 @@ function jsonNumber(text) {
 
 function readQuoted(text, fail) {
   const [value, end] = readQuotedWithEnd(text, fail);
-  if (text.slice(end).trim() !== '') fail('There is text after the closing quote');
+  if (text.slice(end).trim() !== '') fail('yaml.afterquote');
   return value;
 }
 
@@ -520,19 +523,19 @@ function readQuotedWithEnd(text, fail) {
         const width = next === 'x' ? 2 : next === 'u' ? 4 : 8;
         const digits = text.slice(i + 2, i + 2 + width);
         if (!new RegExp(`^[0-9a-fA-F]{${width}}$`).test(digits)) {
-          fail(`\\${next} needs ${width} hex digits after it`);
+          fail('yaml.hex', { next, width });
         }
         value += String.fromCodePoint(parseInt(digits, 16));
         i += 1 + width;
         continue;
       }
       if (next in short) { value += short[next]; i += 1; continue; }
-      fail(`\\${next ?? ''} is not an escape this reads`);
+      fail('yaml.escape', { next: next ?? '' });
     }
     if (ch === '"') return [value, i + 1];
     value += ch;
   }
-  fail('This quoted string is never closed');
+  fail('yaml.quoted');
   return ['', text.length];
 }
 
@@ -546,7 +549,7 @@ export function parseFlow(text, fail) {
   const value = readFlowValue(text, state, fail);
   skipFlowSpace(text, state);
   if (state.at < text.length && !text.slice(state.at).trim().startsWith('#')) {
-    fail('There is text after the end of the flow collection');
+    fail('yaml.afterflow');
   }
   return value;
 }
@@ -558,7 +561,7 @@ function skipFlowSpace(text, state) {
 function readFlowValue(text, state, fail) {
   skipFlowSpace(text, state);
   const ch = text[state.at];
-  if (ch === undefined) fail('The flow collection ends early');
+  if (ch === undefined) fail('yaml.flowearly');
   if (ch === '[') return readFlowSeq(text, state, fail);
   if (ch === '{') return readFlowMap(text, state, fail);
   if (ch === '"' || ch === "'") {
@@ -581,7 +584,7 @@ function readFlowSeq(text, state, fail) {
     skipFlowSpace(text, state);
     if (text[state.at] === ',') { state.at += 1; continue; }
     if (text[state.at] === ']') { state.at += 1; return { t: 'seq', items }; }
-    fail('Expected a comma or a closing bracket in this flow sequence');
+    fail('yaml.flowseq');
   }
 }
 
@@ -603,13 +606,13 @@ function readFlowMap(text, state, fail) {
       key = text.slice(start, state.at).trim();
     }
     skipFlowSpace(text, state);
-    if (text[state.at] !== ':') fail('Expected a colon after a key in this flow mapping');
+    if (text[state.at] !== ':') fail('yaml.flowkey');
     state.at += 1;
     pairs.push({ key, value: readFlowValue(text, state, fail) });
     skipFlowSpace(text, state);
     if (text[state.at] === ',') { state.at += 1; continue; }
     if (text[state.at] === '}') { state.at += 1; return { t: 'map', pairs }; }
-    fail('Expected a comma or a closing brace in this flow mapping');
+    fail('yaml.flowmap');
   }
 }
 

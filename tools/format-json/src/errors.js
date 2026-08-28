@@ -6,22 +6,32 @@
  * is a position in a string nobody is looking at - the page shows lines. So
  * every parser here carries the offset it failed at, and the line and column
  * are worked out from the text once, here, rather than four times badly.
+ *
+ * What it does not carry is the sentence. `reason` is a phrase key and
+ * `values` fills its blanks; main.js resolves the pair and puts the line and
+ * column around it. See shared/js/phrases.js.
  */
 
 export class ParseError extends Error {
   /**
-   * @param {string} message  what was wrong, in words
-   * @param {number} index    where in the source it was noticed
-   * @param {string} text     the source itself, for the line and column
+   * @param {string} reason  a phrase key saying what was wrong
+   * @param {number} index   where in the source it was noticed
+   * @param {string} text    the source itself, for the line and column
+   * @param {Record<string, unknown>} [values]  what fills the key's blanks
    */
-  constructor(message, index, text) {
+  constructor(reason, index, text, values) {
     const { line, column } = positionOf(text, index);
-    super(`${message} (line ${line}, column ${column})`);
+    // The message is the key. Every parser in here is copied byte for
+    // byte into fifteen languages and none of them can reach the DOM to
+    // look a sentence up, so the sentence is main.js's to compose - with
+    // the line and the column, which are a sentence of their own.
+    super(reason);
     this.name = 'ParseError';
     this.index = index;
     this.line = line;
     this.column = column;
-    this.reason = message;
+    this.reason = reason;
+    this.values = values;
   }
 }
 
