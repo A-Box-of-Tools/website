@@ -506,15 +506,15 @@ test('a sync sample table appears only when some frames are not keyframes', asyn
 test('a track with no sample entry is refused', () => {
   const writer = new Mp4Writer();
   assert.throws(() => writer.addTrack({ kind: 'vide', timescale: 90000, sampleEntry: null }),
-    /no sample entry/);
+    (error) => error.message === 'write.novideoentry');
   assert.throws(() => writer.addTrack({ kind: 'soun', timescale: 48000, sampleEntry: new Uint8Array(0) }),
-    /audio track has no sample entry/);
+    (error) => error.message === 'write.noaudioentry');
 });
 
 test('a file with no video frames is refused rather than written', () => {
   const writer = new Mp4Writer();
   writer.addTrack({ kind: 'vide', timescale: 90000, sampleEntry: avcSampleEntry(16, 16, AVCC) });
-  assert.throws(() => writer.finalize(), /holds no video frames/);
+  assert.throws(() => writer.finalize(), (error) => error.message === 'write.noframes');
 });
 
 test('sound is interleaved with the picture rather than written after it', async () => {

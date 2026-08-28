@@ -228,6 +228,39 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
+    <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
+    <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>
+    <span data-phrase="read.av1short">The AV1 configuration record is too short.</span>
+    <span data-phrase="read.compactsizes">The sample sizes are in a compact table this reader does not decode.</span>
+    <span data-phrase="read.sampletables">The sample tables are incomplete.</span>
+    <span data-phrase="read.chunktable">The chunk table is empty.</span>
+    <span data-phrase="read.nosamples">The track holds no samples.</span>
+    <span data-phrase="read.nostbl">The video track is missing its sample tables.</span>
+    <span data-phrase="read.nostsd">The video track has no sample description.</span>
+    <span data-phrase="read.emptystsd">The video sample description is empty.</span>
+    <span data-phrase="read.encrypted">The video track is encrypted.</span>
+    <span data-phrase="read.unknowncodec">The video is stored as &ldquo;{type}&rdquo;, which this reader does not know.</span>
+    <span data-phrase="read.noconfig">The &ldquo;{type}&rdquo; track carries no decoder configuration.</span>
+    <span data-phrase="read.notmp4">This is not an MP4 or MOV file.</span>
+    <span data-phrase="read.nomoov">The file has no movie header.</span>
+    <span data-phrase="read.novideo">The file has no video track this reader can use.</span>
+    <span data-phrase="read.notimescale">The video track has no timescale.</span>
+    <span data-phrase="read.nofragments">The fragments in this file hold no frames for its video track.</span>
+    <span data-phrase="read.unreadable">The file could not be read as an MP4.</span>
+    <span data-phrase="read.notplayed">The format is not one this browser plays.</span>
+    <span data-phrase="read.layout">The layout of this file is not one the reader here understands.</span>
+    <span data-phrase="write.noaudioentry">The audio track has no sample entry.</span>
+    <span data-phrase="write.novideoentry">The video track has no sample entry.</span>
+    <span data-phrase="write.moovunstable">Internal error: the moov size was not stable between passes.</span>
+    <span data-phrase="write.noframes">The section you chose holds no video frames.</span>
+    <span data-phrase="write.toobig">The trimmed video would pass the 4 GB limit this writer can address. Choose a
+      shorter section.</span>
+    <span data-phrase="open.norecord">{name} cannot be recorded by this browser, so it cannot be cut.</span>
+    <span data-phrase="open.failed">{name} could not be opened. {reason}</span>
+    <span data-phrase="path.record">{reason} So {name} is cut by playing it and recording the result: that takes as long
+      as the result is long, everything is re-encoded rather than copied, and only one
+      segment can be kept.</span>
     <span data-phrase="net.clean">your videos have gone nowhere. {total} files
       loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool
