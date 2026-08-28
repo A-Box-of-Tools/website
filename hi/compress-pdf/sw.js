@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/compress-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'1e24092126';
+const CACHE_NAME=CACHE_PREFIX+'4374dee742';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=e52a35a93f',
+'styles.css?v=701f8602dc',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/파비콘-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'04c90c214e';
+const CACHE_NAME=CACHE_PREFIX+'49ebf9baa6';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4f5d2c3d0c',
+'styles.css?v=e1e24dc721',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

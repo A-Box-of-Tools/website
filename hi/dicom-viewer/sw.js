@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/dicom-viewer/:';
-const CACHE_NAME=CACHE_PREFIX+'50287b49e2';
+const CACHE_NAME=CACHE_PREFIX+'c88a15dd19';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=afc7ed9c55',
+'styles.css?v=0c9b67e91c',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

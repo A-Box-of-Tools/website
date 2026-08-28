@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/이미지-base64-변환/:';
-const CACHE_NAME=CACHE_PREFIX+'3c512a3384';
+const CACHE_NAME=CACHE_PREFIX+'e5975d1db8';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5e5027e91d',
+'styles.css?v=6c0f636bc6',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
