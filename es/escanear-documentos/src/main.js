@@ -348,7 +348,7 @@ el.scanPreview.getContext('2d')
 describeScan(page,shape);
 renderStrip();
 }catch(error){
-showError(phrase('error.failed',{detail:error.message}));
+showError(phrase('error.failed',{detail:phrase(error.message)}));
 }finally{
 if(previewToken===token)el.scanBusy.hidden=true;
 }
@@ -521,7 +521,7 @@ try{
 await new Promise((resolve)=>setTimeout(resolve,0));
 await work(report);
 }catch(error){
-showError(phrase('error.failed',{detail:error.message}));
+showError(phrase('error.failed',{detail:phrase(error.message)}));
 }finally{
 busy=false;
 el.busy.hidden=true;

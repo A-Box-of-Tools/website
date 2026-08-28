@@ -12,10 +12,7 @@ return out;
 }
 export async function deflate(bytes){
 if(typeof CompressionStream!=='function'){
-throw new Error(
-'This browser has no CompressionStream, which the black and white mode '
-+'needs to compress a page. Choose one of the other modes instead.',
-);
+throw new Error('encode.nodeflate');
 }
 const stream=new Blob([bytes]).stream().pipeThrough(new CompressionStream('deflate'));
 return new Uint8Array(await new Response(stream).arrayBuffer());
@@ -40,7 +37,7 @@ const quality=Math.min(1,Math.max(0.3,Number(settings?.quality)||0.82));
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,'image/jpeg',quality));
 canvas.width=0;
 canvas.height=0;
-if(!blob)throw new Error('This browser could not encode the page as a JPEG.');
+if(!blob)throw new Error('encode.nojpeg');
 return{
 kind:'dct',
 data:new Uint8Array(await blob.arrayBuffer()),
@@ -62,6 +59,6 @@ const quality=page.mono
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,type,quality));
 canvas.width=0;
 canvas.height=0;
-if(!blob)throw new Error('This browser could not encode the page.');
+if(!blob)throw new Error('encode.nopage');
 return{blob,extension:page.mono?'png':'jpg'};
 }

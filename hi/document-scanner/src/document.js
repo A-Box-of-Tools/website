@@ -45,7 +45,7 @@ height,
 };
 }
 export function buildDocument(pages,settings){
-if(!pages.length)throw new Error('There are no pages to write.');
+if(!pages.length)throw new Error('build.nopages');
 const pdf=new PdfWriter();
 const catalog=pdf.reserve();
 const tree=pdf.reserve();

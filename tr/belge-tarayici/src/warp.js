@@ -10,7 +10,7 @@ const toSource=homography(
 [{x:0,y:0},{x:width,y:0},{x:width,y:height},{x:0,y:height}],
 inset(quad,INSET*samples),
 );
-if(!toSource)throw new Error('Those four corners do not make a page.');
+if(!toSource)throw new Error('warp.degenerate');
 const out=new Uint8ClampedArray(width*height*4);
 const step=1/samples;
 const first=step/2;
