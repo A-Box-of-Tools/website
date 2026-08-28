@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/video-knippen/:';
-const CACHE_NAME=CACHE_PREFIX+'e23223d89c';
+const CACHE_NAME=CACHE_PREFIX+'cc8411f168';
 const ASSETS=[
 './',
 'index.html',

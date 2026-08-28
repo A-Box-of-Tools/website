@@ -145,7 +145,9 @@ var carrier=new DataTransfer();
 for(var i=0;i<files.length;i+=1)carrier.items.add(files[i]);
 input.files=carrier.files;
 restoring=true;
+input.dataset.langRestore='1';
 input.dispatchEvent(new Event('change',{bubbles:true}));
+delete input.dataset.langRestore;
 restoring=false;
 }
 function receive(){

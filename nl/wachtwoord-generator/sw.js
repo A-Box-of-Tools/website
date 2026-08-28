@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/wachtwoord-generator/:';
-const CACHE_NAME=CACHE_PREFIX+'fcb2b5b2d6';
+const CACHE_NAME=CACHE_PREFIX+'f45efd1cba';
 const ASSETS=[
 './',
 'index.html',

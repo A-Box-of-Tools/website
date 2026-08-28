@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/redact-image/:';
-const CACHE_NAME=CACHE_PREFIX+'b9e9fe8907';
+const CACHE_NAME=CACHE_PREFIX+'77f2ac7364';
 const ASSETS=[
 './',
 'index.html',

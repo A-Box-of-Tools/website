@@ -41,13 +41,14 @@ dropzone:el.dropzone,
 onFiles(files){loadFiles(files);},
 });
 async function loadFiles(files){
+const restoring=el.fileInput?.dataset.langRestore==='1';
 picker.busy(readingLabel(files.length));
 try{
 const texts=await Promise.all(files.slice(0,2).map((file)=>file.text()));
 if(texts.length>1){
 el.input.value=texts[0];
 el.inputB.value=texts[1];
-}else if(el.input.value.trim()&&!el.inputB.value.trim()){
+}else if(!restoring&&el.input.value.trim()&&!el.inputB.value.trim()){
 el.inputB.value=texts[0];
 }else{
 el.input.value=texts[0];
