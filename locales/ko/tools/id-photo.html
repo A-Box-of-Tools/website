@@ -210,6 +210,65 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">인쇄 크기</span>
+    <span data-phrase="facts.head">머리, 턱에서 정수리까지</span>
+    <span data-phrase="facts.eye">눈높이, 아래에서부터</span>
+    <span data-phrase="facts.background">배경</span>
+    <span data-phrase="band.range">{min}에서 {max}까지</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (권고)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">머리 높이가 {measured}입니다. 규정은 {wanted}를 요구합니다.</span>
+    <span data-phrase="verdict.head.low">머리 높이가 {measured}로 너무 작습니다. 규정은 {wanted}를 요구합니다. 상자를 더 작게 만드세요.</span>
+    <span data-phrase="verdict.head.high">머리 높이가 {measured}로 너무 큽니다. 규정은 {wanted}를 요구합니다. 상자를 더 크게 만드세요.</span>
+    <span data-phrase="verdict.eye.ok">눈높이가 {measured}입니다. 규정은 {wanted}를 요구합니다.</span>
+    <span data-phrase="verdict.eye.low">눈높이가 {measured}로, 화면에서 너무 아래입니다. 규정은 {wanted}를 요구합니다. 상자를 아래로 옮기세요.</span>
+    <span data-phrase="verdict.eye.high">눈높이가 {measured}로, 화면에서 너무 위입니다. 규정은 {wanted}를 요구합니다. 상자를 위로 옮기세요.</span>
+    <span data-phrase="tilt.level">눈높이가 수평입니다.</span>
+    <span data-phrase="tilt.ok.left">머리가 왼쪽으로 {degrees}도 기울었는데, 심사관이 알아채지 못하는 몇 도 안에 듭니다.</span>
+    <span data-phrase="tilt.ok.right">머리가 오른쪽으로 {degrees}도 기울었는데, 심사관이 알아채지 못하는 몇 도 안에 듭니다.</span>
+    <span data-phrase="tilt.bad.left">머리가 왼쪽으로 {degrees}도 기울었고, 이 정도면 눈에 띕니다. 카메라를 수평으로 두고 다시 찍거나, 사진을 먼저 바로 세우세요.</span>
+    <span data-phrase="tilt.bad.right">머리가 오른쪽으로 {degrees}도 기울었고, 이 정도면 눈에 띕니다. 카메라를 수평으로 두고 다시 찍거나, 사진을 먼저 바로 세우세요.</span>
+    <span data-phrase="centre.ok">얼굴이 화면 가운데에 있습니다.</span>
+    <span data-phrase="centre.left">얼굴이 화면 너비의 {size}만큼 가운데에서 왼쪽에 있습니다. 상자를 반대쪽으로 끌거나 &lsquo;맞추기&rsquo;를 다시 누르세요.</span>
+    <span data-phrase="centre.right">얼굴이 화면 너비의 {size}만큼 가운데에서 오른쪽에 있습니다. 상자를 반대쪽으로 끌거나 &lsquo;맞추기&rsquo;를 다시 누르세요.</span>
+    <span data-phrase="resample.enough">자른 영역은 {have}픽셀이고 결과물은 {need}이므로, 없는 것을 지어낼 일이 없습니다.</span>
+    <span data-phrase="resample.slight">자른 영역이 {have}픽셀뿐인데 결과물은 {need}입니다. 조금 확대되고, 그 대가는 약간의 선명함뿐입니다.</span>
+    <span data-phrase="resample.severe">자른 영역이 {have}픽셀뿐인데 결과물은 {need}입니다. 많이 모자랍니다. 결과가 흐릿해지고, 인쇄하면 화면 캡처처럼 보입니다. 더 가까이서
+      찍거나 더 높은 해상도로 찍은 사진 말고는 방법이 없습니다.</span>
+    <span data-phrase="ready.geometry">치수가 아직 규정에 맞지 않습니다. 그래도 파일은 저장할 수 있습니다. 여기서 당신 사진을 못 준다고 하는 것은 없습니다. 다만 위의 숫자가 서식에서
+      잴 값입니다.</span>
+    <span data-phrase="ready.background">치수는 규정에 맞습니다. 배경은 아닙니다. 사진이 반려되는 더 흔한 이유가 배경입니다.</span>
+    <span data-phrase="ready.good">치수도 규정에 맞고 배경도 무난합니다.</span>
+    <span data-phrase="bg.white.label">순백</span>
+    <span data-phrase="bg.white.inline">순백</span>
+    <span data-phrase="bg.white.note">흰 벽은 사진에서 밝은 회색으로 나옵니다. 요구하는 것은 무늬 없이 고르게 밝고 그림자 없는 배경이지, 특정 페인트 색이 아닙니다.</span>
+    <span data-phrase="bg.off-white.label">흰색 또는 아이보리</span>
+    <span data-phrase="bg.off-white.inline">흰색 또는 아이보리</span>
+    <span data-phrase="bg.off-white.note">둘 다 받아 줍니다. 실제로는 무늬 없고 밝기만 하면 됩니다. 무늬도, 가구도, 머리 뒤 그림자도 없어야 합니다.</span>
+    <span data-phrase="bg.light-grey.label">밝은 회색</span>
+    <span data-phrase="bg.light-grey.inline">밝은 회색</span>
+    <span data-phrase="bg.light-grey.note">밝은 회색은 ICAO가 선호하는 색입니다. 밝은 얼굴을 배경에서 떼어 놓고, 어두운 머리카락도 떼어 놓기 때문입니다. 순백은 둘 다 하지 못합니다.</span>
+    <span data-phrase="bg.cream.label">밝은 회색 또는 크림색</span>
+    <span data-phrase="bg.cream.inline">밝은 회색 또는 크림색</span>
+    <span data-phrase="bg.cream.note">영국이 쓰는 표현입니다. 크림색은 따뜻한 아이보리처럼 보입니다. 규정이 노리는 것은 배경이 단순하고 고르다는 점이지, 특정 색조가 아닙니다.</span>
+    <span data-phrase="bg.colour.bad">배경이 {hex}로 측정되는데, {wanted}와는 거리가 멉니다.</span>
+    <span data-phrase="bg.colour.warn">배경이 {hex}로 측정됩니다. {wanted}에 가깝지만 딱 그것은 아닙니다.</span>
+    <span data-phrase="bg.colour.good">배경이 {hex}로 측정되고, {wanted}로 통과합니다.</span>
+    <span data-phrase="bg.uniform.bad">한 가지 색이 아닙니다. 뒤에 그림자나 무늬, 아니면 물건이 있습니다.</span>
+    <span data-phrase="bg.uniform.warn">조금 고르지 않습니다. 벽에서 반 걸음 더 떨어져 서는 것으로 대개 다 해결됩니다.</span>
+    <span data-phrase="bg.uniform.good">고르게 밝고, 머리 뒤에 그림자가 없습니다.</span>
+    <span data-phrase="bg.sides.bad">배경 한쪽이 반대쪽보다 훨씬 어둡습니다. 옆에서 빛이 든 것으로 보입니다.</span>
+    <span data-phrase="bg.sides.warn">한쪽이 반대쪽보다 조금 어둡습니다.</span>
+    <span data-phrase="bg.note">{colour} 이 도구는 배경을 바꿔 주지 않습니다. 사진에서 사람을 오려 내려면 분할 모델이 필요하고, 성능이 나쁜 모델은 하필 사진이 가장 자주
+      반려되는 사람들의 머리카락을 먹습니다. 벽에서 반 걸음 더 떨어져 서는 편이 어떤 필터보다 많은 경우를 해결합니다.</span>
+    <span data-phrase="bg.signature.note">여기서 서명을 손대지 않습니다. 재서 알려 드릴 뿐이고, 자르는 위치는 직접 옮기시면 됩니다.</span>
+    <span data-phrase="sig.ink.bad">자른 영역에 잉크가 거의 없습니다. 상자가 서명에서 벗어났거나, 펜이 사진에 담기기에 너무 흐렸습니다.</span>
+    <span data-phrase="sig.ink.warn">어두운 픽셀이 아주 많습니다. 자른 영역이 밑줄이나 종이 가장자리를 물지 않았는지 확인하세요.</span>
+    <span data-phrase="sig.ink.good">잉크가 자른 영역의 {coverage}%를 덮고 있어서 서명으로 읽힙니다.</span>
+    <span data-phrase="sig.paper.bad">종이가 흰색이 아니라 회색으로 나옵니다. 종이에 빛을 더 주거나, 사진 대신 스캔을 쓰세요.</span>
+    <span data-phrase="sig.paper.warn">종이가 조금 칙칙합니다. 대부분의 서식은 서명 뒤에 깨끗한 흰 종이를 원합니다.</span>
+    <span data-phrase="sig.paper.good">종이가 깨끗하고 하얗습니다.</span>
     <span data-phrase="marks.measured">네 점 모두 사진에서 재어 놓았습니다. 정수리는 머리의 윤곽에서, 눈동자는 그 어두움에서, 턱 끝은 턱이 목으로 들어가는 자리에서요. 그래도 한 번 확인하시고 잘못 떨어진 점은 끌어다 놓으세요. 잘라내기는 점이 최종적으로 놓인 자리에서 만들어집니다.</span>
     <span data-phrase="marks.rough">놓기는 했지만 전부 잰 것은 아닙니다. 상자를 맞추기 전에 네 점을 모두 확인하세요.</span>
     <span data-phrase="marks.none">이 사진에서는 아무것도 잴 수 없었습니다. 점은 대신 처음 자리에 있습니다. 정수리와 턱 끝, 양쪽 눈동자로 끌어다 놓으세요.</span>

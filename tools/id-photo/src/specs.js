@@ -44,38 +44,10 @@
  * grey is not a stationer's grey.
  */
 export const BACKGROUNDS = {
-  white: {
-    id: 'white',
-    label: 'Plain white',
-    hex: '#ffffff',
-    tolerance: 14,
-    note: 'A white wall photographs light grey. What is being asked for is a plain, '
-      + 'evenly lit, shadow-free background, not a paint colour.',
-  },
-  'off-white': {
-    id: 'off-white',
-    label: 'White or off-white',
-    hex: '#f6f4f0',
-    tolerance: 18,
-    note: 'Either is accepted, which in practice means anything plain and light '
-      + 'with no pattern, no furniture and no shadow behind the head.',
-  },
-  'light-grey': {
-    id: 'light-grey',
-    label: 'Plain light grey',
-    hex: '#dcdcdc',
-    tolerance: 20,
-    note: 'Light grey is the ICAO preference because it separates a fair face from '
-      + 'the background and dark hair from it as well. Pure white does neither.',
-  },
-  cream: {
-    id: 'cream',
-    label: 'Light grey or cream',
-    hex: '#ebe4d7',
-    tolerance: 22,
-    note: 'The wording used by the UK. Cream reads as a warm off-white; the point '
-      + 'of the rule is that it is plain and uniform, not that it is any one shade.',
-  },
+  white: { id: 'white', hex: '#ffffff', tolerance: 14 },
+  'off-white': { id: 'off-white', hex: '#f6f4f0', tolerance: 18 },
+  'light-grey': { id: 'light-grey', hex: '#dcdcdc', tolerance: 20 },
+  cream: { id: 'cream', hex: '#ebe4d7', tolerance: 22 },
 };
 
 /* -------------------------------------------------------------- geometries */
@@ -578,7 +550,23 @@ export function specsByCountry() {
   return groups;
 }
 
-export const backgroundOf = (spec) => BACKGROUNDS[spec.background] ?? BACKGROUNDS.white;
+/**
+ * The background a rule asks for, in the reader's language.
+ *
+ * Three phrases rather than two: `label` is what the swatch says, `inline` is
+ * the same words where a sentence carries them ("...which passes as plain
+ * white"), and the second is not the first lowercased - German capitalises its
+ * nouns and would be wrong either way round.
+ */
+export function backgroundOf(spec, t) {
+  const found = BACKGROUNDS[spec.background] ?? BACKGROUNDS.white;
+  return {
+    ...found,
+    label: t(`bg.${found.id}.label`),
+    inline: t(`bg.${found.id}.inline`),
+    note: t(`bg.${found.id}.note`),
+  };
+}
 
 /**
  * The pixel size a portal file should be written at.

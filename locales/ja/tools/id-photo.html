@@ -197,6 +197,62 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">印刷サイズ</span>
+    <span data-phrase="facts.head">頭、あごから頭頂まで</span>
+    <span data-phrase="facts.eye">目の高さ、下から</span>
+    <span data-phrase="facts.background">背景</span>
+    <span data-phrase="band.range">{min}から{max}</span>
+    <span data-phrase="band.mm">{range}（{min}〜{max}mm）</span>
+    <span data-phrase="band.guidance">{band}（目安）</span>
+    <span data-phrase="measured.mm">{percent}（{mm}mm）</span>
+    <span data-phrase="verdict.head.ok">頭の高さは{measured}です。規定は{wanted}を求めています。</span>
+    <span data-phrase="verdict.head.low">頭の高さは{measured}で、小さすぎます。規定は{wanted}を求めています。枠を小さくしてください。</span>
+    <span data-phrase="verdict.head.high">頭の高さは{measured}で、大きすぎます。規定は{wanted}を求めています。枠を大きくしてください。</span>
+    <span data-phrase="verdict.eye.ok">目の高さは{measured}です。規定は{wanted}を求めています。</span>
+    <span data-phrase="verdict.eye.low">目の高さは{measured}で、画面の中で低すぎます。規定は{wanted}を求めています。枠を下げてください。</span>
+    <span data-phrase="verdict.eye.high">目の高さは{measured}で、画面の中で高すぎます。規定は{wanted}を求めています。枠を上げてください。</span>
+    <span data-phrase="tilt.level">目の高さは水平です。</span>
+    <span data-phrase="tilt.ok.left">頭が左に{degrees}度傾いていますが、審査で気づかれない数度の範囲に収まっています。</span>
+    <span data-phrase="tilt.ok.right">頭が右に{degrees}度傾いていますが、審査で気づかれない数度の範囲に収まっています。</span>
+    <span data-phrase="tilt.bad.left">頭が左に{degrees}度傾いていて、これは目につきます。カメラを水平にして撮り直すか、先に画像を回して起こしてください。</span>
+    <span data-phrase="tilt.bad.right">頭が右に{degrees}度傾いていて、これは目につきます。カメラを水平にして撮り直すか、先に画像を回して起こしてください。</span>
+    <span data-phrase="centre.ok">顔は画面の中央にあります。</span>
+    <span data-phrase="centre.left">顔が画面の幅の{size}だけ中央より左にあります。枠を反対側へ動かすか、もう一度「合わせる」を押してください。</span>
+    <span data-phrase="centre.right">顔が画面の幅の{size}だけ中央より右にあります。枠を反対側へ動かすか、もう一度「合わせる」を押してください。</span>
+    <span data-phrase="resample.enough">切り抜きは{have}ピクセル、書き出しは{need}なので、作り足すものはありません。</span>
+    <span data-phrase="resample.slight">切り抜きは{have}ピクセルしかなく、書き出しは{need}です。少し拡大され、失うのはわずかな解像感だけです。</span>
+    <span data-phrase="resample.severe">切り抜きは{have}ピクセルしかなく、書き出しは{need}です。まるで足りません。結果は眠くなり、紙にすると画面写真のように見えます。もっと近づいて、あるいはもっと高い解像度で撮り直すほかありません。</span>
+    <span data-phrase="ready.geometry">寸法はまだ規定に届いていません。それでもファイルは保存できます。ここにはあなたの写真を渡さない仕組みはありません。ただ、窓口が測るのは上の数字です。</span>
+    <span data-phrase="ready.background">寸法は規定どおりです。背景はそうではありません。写真が返される理由としてはこちらのほうが多いです。</span>
+    <span data-phrase="ready.good">寸法は規定どおりで、背景も差し支えありません。</span>
+    <span data-phrase="bg.white.label">白一色</span>
+    <span data-phrase="bg.white.inline">白一色</span>
+    <span data-phrase="bg.white.note">白い壁は写真では薄いグレーに写ります。求められているのは、無地で、むらなく明るく、影のない背景であって、塗料の色ではありません。</span>
+    <span data-phrase="bg.off-white.label">白またはオフホワイト</span>
+    <span data-phrase="bg.off-white.inline">白またはオフホワイト</span>
+    <span data-phrase="bg.off-white.note">どちらでもかまいません。実際には、無地で明るければよいということです。柄がなく、家具が写らず、頭の後ろに影がないこと。</span>
+    <span data-phrase="bg.light-grey.label">薄いグレー一色</span>
+    <span data-phrase="bg.light-grey.inline">薄いグレー一色</span>
+    <span data-phrase="bg.light-grey.note">薄いグレーはICAOが勧める色です。色白の顔を背景から切り離し、黒い髪も切り離してくれるからです。真っ白はどちらもしてくれません。</span>
+    <span data-phrase="bg.cream.label">薄いグレーまたはクリーム</span>
+    <span data-phrase="bg.cream.inline">薄いグレーまたはクリーム</span>
+    <span data-phrase="bg.cream.note">イギリスの言い回しです。クリームは暖かいオフホワイトに見えます。規定が求めているのは背景が無地でむらのないことであって、特定の色味ではありません。</span>
+    <span data-phrase="bg.colour.bad">背景は{hex}と測れました。{wanted}からはかなり離れています。</span>
+    <span data-phrase="bg.colour.warn">背景は{hex}と測れました。{wanted}に近いのですが、そのものではありません。</span>
+    <span data-phrase="bg.colour.good">背景は{hex}と測れました。{wanted}として通ります。</span>
+    <span data-phrase="bg.uniform.bad">一色ではありません。うしろに影か、柄か、物があります。</span>
+    <span data-phrase="bg.uniform.warn">わずかにむらがあります。壁から半歩離れて立つだけで、たいていは片づきます。</span>
+    <span data-phrase="bg.uniform.good">むらなく明るく、頭の後ろに影もありません。</span>
+    <span data-phrase="bg.sides.bad">背景の片側がもう一方よりずっと暗く、横からの光のように見えます。</span>
+    <span data-phrase="bg.sides.warn">片側がもう一方より少し暗くなっています。</span>
+    <span data-phrase="bg.note">{colour} この道具は背景を差し替えません。写真から人を切り抜くにはセグメンテーションモデルが要り、出来の悪いものは、ただでさえ写真をはねられることの多い人の髪を食べてしまいます。壁から半歩離れて立つほうが、どんなフィルターよりも多くを解決します。</span>
+    <span data-phrase="bg.signature.note">ここで署名に手は加えません。測って報告するだけで、切り抜く位置はご自分で動かせます。</span>
+    <span data-phrase="sig.ink.bad">切り抜きの中にインクがほとんどありません。枠が署名から外れているか、ペンが薄すぎて写らなかったかのどちらかです。</span>
+    <span data-phrase="sig.ink.warn">暗い画素が非常に多いです。切り抜きが罫線や紙の端を巻き込んでいないか確かめてください。</span>
+    <span data-phrase="sig.ink.good">インクが切り抜きの{coverage}%を覆っていて、署名として読み取れます。</span>
+    <span data-phrase="sig.paper.bad">紙が白ではなく灰色に出ています。紙にもっと光を当てるか、写真ではなくスキャンにしてください。</span>
+    <span data-phrase="sig.paper.warn">紙が少しくすんでいます。多くの書式は、署名の後ろにきれいな白い紙を求めます。</span>
+    <span data-phrase="sig.paper.good">紙はきれいな白です。</span>
     <span data-phrase="marks.measured">4点とも写真から測りました&mdash;頭頂は頭の輪郭から、瞳はその暗さから、あごは下顎が首に入るところから。それでも確かめて、ずれている点はドラッグしてください。切り抜きは4点が最終的にある場所から取られます。</span><span data-phrase="marks.rough">置きましたが、すべてを測れたわけではありません。枠を合わせる前に4点とも確かめてください。</span><span data-phrase="marks.none">この写真からは何も測れませんでした。点は代わりに初期位置にあります。頭頂、あご、左右の瞳へドラッグしてください。</span>
     <span data-phrase="marks.manual">4つの点はあなたのもので、何も動かしません。それぞれを頭頂、あご、瞳へドラッグしてください。</span><span data-phrase="marks.edited">点を動かしたので、4つともあなたのものになりました。「探してもらう」を選ぶと写真をもう一度測ります。</span>
 

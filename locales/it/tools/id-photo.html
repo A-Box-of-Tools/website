@@ -214,6 +214,96 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">Dimensione di stampa</span>
+    <span data-phrase="facts.head">Testa, dal mento alla sommità</span>
+    <span data-phrase="facts.eye">Linea degli occhi, dal basso</span>
+    <span data-phrase="facts.background">Sfondo</span>
+    <span data-phrase="band.range">da {min} a {max}</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (indicativo)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">L&rsquo;altezza della testa è {measured}. La regola chiede {wanted}.</span>
+    <span data-phrase="verdict.head.low">L&rsquo;altezza della testa è {measured}, ed è troppo poco. La regola chiede
+      {wanted}. Rimpicciolisci il riquadro.</span>
+    <span data-phrase="verdict.head.high">L&rsquo;altezza della testa è {measured}, ed è troppo. La regola chiede {wanted}.
+      Allarga il riquadro.</span>
+    <span data-phrase="verdict.eye.ok">La linea degli occhi è a {measured}. La regola chiede {wanted}.</span>
+    <span data-phrase="verdict.eye.low">La linea degli occhi è a {measured}, troppo in basso nell&rsquo;inquadratura. La
+      regola chiede {wanted}. Sposta il riquadro in giù.</span>
+    <span data-phrase="verdict.eye.high">La linea degli occhi è a {measured}, troppo in alto nell&rsquo;inquadratura. La
+      regola chiede {wanted}. Sposta il riquadro in su.</span>
+    <span data-phrase="tilt.level">La linea degli occhi è in piano.</span>
+    <span data-phrase="tilt.ok.left">La testa pende di {degrees} gradi a sinistra, e sta dentro i due gradi che un
+      esaminatore non nota.</span>
+    <span data-phrase="tilt.ok.right">La testa pende di {degrees} gradi a destra, e sta dentro i due gradi che un
+      esaminatore non nota.</span>
+    <span data-phrase="tilt.bad.left">La testa pende di {degrees} gradi a sinistra, e si vede. Rifai la foto con la
+      macchina in piano, oppure raddrizza prima l&rsquo;immagine.</span>
+    <span data-phrase="tilt.bad.right">La testa pende di {degrees} gradi a destra, e si vede. Rifai la foto con la macchina
+      in piano, oppure raddrizza prima l&rsquo;immagine.</span>
+    <span data-phrase="centre.ok">Il viso è al centro dell&rsquo;inquadratura.</span>
+    <span data-phrase="centre.left">Il viso sta {size} della larghezza a sinistra del centro. Tira il riquadro
+      dall&rsquo;altra parte, oppure premi di nuovo &laquo;Adatta&raquo;.</span>
+    <span data-phrase="centre.right">Il viso sta {size} della larghezza a destra del centro. Tira il riquadro
+      dall&rsquo;altra parte, oppure premi di nuovo &laquo;Adatta&raquo;.</span>
+    <span data-phrase="resample.enough">Il ritaglio è di {have} pixel e l&rsquo;uscita di {need}, quindi non c&rsquo;è
+      niente da inventare.</span>
+    <span data-phrase="resample.slight">Il ritaglio è solo di {have} pixel e l&rsquo;uscita di {need}. Verrà ingrandito un
+      poco, e questo costa un filo di nitidezza e nient&rsquo;altro.</span>
+    <span data-phrase="resample.severe">Il ritaglio è solo di {have} pixel e l&rsquo;uscita di {need}. Manca parecchio: il
+      risultato verrà molle, e su carta sembrerà una schermata. L&rsquo;unico rimedio è
+      una foto scattata più da vicino, o a risoluzione più alta.</span>
+    <span data-phrase="ready.geometry">L&rsquo;inquadratura non rispetta ancora la regola. Puoi salvare i file lo stesso
+      &mdash; qui nessuno ti nega la tua fotografia &mdash; ma i numeri qui sopra sono
+      quelli che il modulo andrà a misurare.</span>
+    <span data-phrase="ready.background">L&rsquo;inquadratura rispetta la regola. Lo sfondo no, ed è il motivo più frequente
+      per cui una foto torna indietro.</span>
+    <span data-phrase="ready.good">L&rsquo;inquadratura rispetta la regola e lo sfondo passa.</span>
+    <span data-phrase="bg.white.label">Bianco pieno</span>
+    <span data-phrase="bg.white.inline">bianco pieno</span>
+    <span data-phrase="bg.white.note">Un muro bianco viene fotografato grigio chiaro. Quello che si chiede è uno sfondo
+      pieno, illuminato in modo uniforme e senza ombre, non un colore di pittura.</span>
+    <span data-phrase="bg.off-white.label">Bianco o bianco sporco</span>
+    <span data-phrase="bg.off-white.inline">bianco o bianco sporco</span>
+    <span data-phrase="bg.off-white.note">Vanno bene entrambi, che in pratica vuol dire qualunque cosa piena e chiara: niente
+      fantasie, niente mobili e niente ombre dietro la testa.</span>
+    <span data-phrase="bg.light-grey.label">Grigio chiaro pieno</span>
+    <span data-phrase="bg.light-grey.inline">grigio chiaro pieno</span>
+    <span data-phrase="bg.light-grey.note">Il grigio chiaro è la preferenza dell&rsquo;ICAO perché stacca dallo sfondo un viso
+      chiaro, e anche i capelli scuri. Il bianco puro non fa né l&rsquo;una né
+      l&rsquo;altra cosa.</span>
+    <span data-phrase="bg.cream.label">Grigio chiaro o crema</span>
+    <span data-phrase="bg.cream.inline">grigio chiaro o crema</span>
+    <span data-phrase="bg.cream.note">È la formula usata dal Regno Unito. Il crema si legge come un bianco sporco caldo;
+      quello che la regola vuole è che lo sfondo sia pieno e uniforme, non che sia una
+      tinta precisa.</span>
+    <span data-phrase="bg.colour.bad">Lo sfondo misura {hex}, ed è lontanissimo da {wanted}.</span>
+    <span data-phrase="bg.colour.warn">Lo sfondo misura {hex} &mdash; vicino a {wanted}, ma non ci siamo del tutto.</span>
+    <span data-phrase="bg.colour.good">Lo sfondo misura {hex}, e passa come {wanted}.</span>
+    <span data-phrase="bg.uniform.bad">Non è un colore solo &mdash; c&rsquo;è un&rsquo;ombra, una fantasia o un oggetto
+      dietro di te.</span>
+    <span data-phrase="bg.uniform.warn">Leggermente disomogeneo. Mettersi mezzo metro più lontano dal muro di solito risolve
+      tutto.</span>
+    <span data-phrase="bg.uniform.good">Illuminato in modo uniforme, senza ombre dietro la testa.</span>
+    <span data-phrase="bg.sides.bad">Un lato dello sfondo è molto più scuro dell&rsquo;altro, e si legge come luce
+      laterale.</span>
+    <span data-phrase="bg.sides.warn">Un lato è un po&rsquo; più scuro dell&rsquo;altro.</span>
+    <span data-phrase="bg.note">{colour} Questo strumento non sostituisce lo sfondo: ritagliare una persona da una
+      fotografia richiede un modello di segmentazione, e uno fatto male mangia i capelli
+      proprio a quelle persone a cui le foto vengono già rifiutate più spesso. Mettersi
+      mezzo metro più lontano dal muro ne risolve più di qualsiasi filtro.</span>
+    <span data-phrase="bg.signature.note">Qui non si tocca la tua firma. Viene misurata e descritta, e il ritaglio è tuo.</span>
+    <span data-phrase="sig.ink.bad">Quasi nessun inchiostro nel ritaglio. O il riquadro è fuori dalla firma, o la penna
+      era troppo chiara per essere fotografata.</span>
+    <span data-phrase="sig.ink.warn">Moltissimi pixel scuri &mdash; controlla che il ritaglio non abbia preso una riga
+      del foglio o il bordo della pagina.</span>
+    <span data-phrase="sig.ink.good">L&rsquo;inchiostro copre il {coverage}% del ritaglio, e questo si legge come una
+      firma.</span>
+    <span data-phrase="sig.paper.bad">La carta viene fuori grigia invece che bianca. Più luce sul foglio, oppure una
+      scansione al posto della foto.</span>
+    <span data-phrase="sig.paper.warn">La carta è un po&rsquo; spenta. Quasi tutti i moduli vogliono un foglio bianco e
+      pulito dietro la firma.</span>
+    <span data-phrase="sig.paper.good">La carta è pulita e bianca.</span>
     <span data-phrase="marks.measured">Tutti e quattro sono stati misurati sulla foto: la
       sommità del capo dal contorno della testa, le pupille da quanto sono scure, il
       mento da dove la mascella entra nel collo. Controllali lo stesso e trascina

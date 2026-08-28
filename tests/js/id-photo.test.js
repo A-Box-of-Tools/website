@@ -52,6 +52,11 @@ import { JFIF_SEGMENT, ascii, concat, jpeg, segment } from './helpers.js';
 
 /* ================================================================ the rules */
 
+// The sentences live in body.html now, so these functions take a resolver.
+// This one answers with the key and whatever values were handed to it, which
+// is what lets an assertion name the sentence that was chosen.
+const say = (key, values = {}) => [key, ...Object.values(values)].join(' ');
+
 test('specs: every entry can be cropped to and is describable', () => {
   for (const spec of SPECS) {
     assert.ok(spec.print || spec.digital, `${spec.id} has neither a print size nor a pixel size`);
@@ -156,7 +161,7 @@ test('withCustom: a head band typed backwards is read the right way round', () =
 
 test('backgroundOf: every named colour parses to a real one', () => {
   for (const spec of SPECS) {
-    const background = backgroundOf(spec);
+    const background = backgroundOf(spec, say);
     assert.match(background.hex, /^#[0-9a-f]{6}$/);
     assert.ok(background.tolerance > 0);
   }
@@ -458,7 +463,7 @@ test('readBackground: an empty picture is not guessed at', () => {
 });
 
 test('checkBackground: the right colour passes and a wrong one does not', () => {
-  const grey = backgroundOf(specById('schengen'));
+  const grey = backgroundOf(specById('schengen'), say);
   const good = checkBackground(readBackground(flatImage([220, 220, 220]), { stride: 1 }), grey);
   assert.equal(good.status, 'good');
 
@@ -468,7 +473,7 @@ test('checkBackground: the right colour passes and a wrong one does not', () => 
 });
 
 test('checkBackground: a shadow down one side is reported separately from the colour', () => {
-  const white = BACKGROUNDS.white;
+  const white = backgroundOf({ background: 'white' }, say);
   const reading = readBackground(flatImage([252, 252, 252], { shade: [170, 170, 170] }), { stride: 1 });
   const verdict = checkBackground(reading, white);
   assert.equal(verdict.status, 'bad');
@@ -477,7 +482,7 @@ test('checkBackground: a shadow down one side is reported separately from the co
 });
 
 test('checkBackground: nothing to read is "unknown", not a pass', () => {
-  assert.equal(checkBackground(null, BACKGROUNDS.white).status, 'unknown');
+  assert.equal(checkBackground(null, backgroundOf({ background: 'white' }, say)).status, 'unknown');
 });
 
 test('readSignature: ink on white paper, and a page with nothing on it', () => {
@@ -596,24 +601,28 @@ test('outName: a name with nothing usable in it still produces a filename', () =
 });
 
 test('bandText: the published millimetres are shown, not recomputed ones', () => {
-  assert.match(bandText(specById('uk-passport').head, 45), /29-34 mm/);
-  assert.match(bandText(specById('icao').head, 45), /31\.5-36 mm/);
+  // The published millimetres are handed to the phrase as values; the dash and
+  // the unit between them belong to body.html.
+  assert.match(bandText(specById('uk-passport').head, 45, say), /band\.mm .* 29 34$/);
+  assert.match(bandText(specById('icao').head, 45, say), /band\.mm .* 31\.5 36$/);
   assert.equal(percent(0.732), '73.2%');
   assert.equal(trim(16.933333), '16.9');
 });
 
-test('verdictText: says which way to drag, and never for a passing check', () => {
+test('verdictText: names the sentence for the subject and the direction', () => {
   const spec = specById('uk-passport');
-  const low = verdictText({ value: 0.5, mm: 22.5, status: 'low', min: 0.64, max: 0.76 }, 'Head height', 45);
-  assert.match(low, /too small/);
-  assert.match(low, /Make the box smaller/);
+  // A whole sentence per way of being wrong, so the key says which one: the
+  // words that tell somebody which way to drag are in body.html, translated.
+  const low = verdictText({ value: 0.5, mm: 22.5, status: 'low', min: 0.64, max: 0.76 }, 'head', 45, say);
+  assert.match(low, /^verdict\.head\.low/);
+  // The measurement is carried as a value; the word "mm" belongs to the phrase.
+  assert.match(low, /22\.5/);
 
-  const eye = verdictText({ value: 0.4, mm: 18, status: 'low', min: 0.5, max: 0.6 }, 'Eye line', 45);
-  assert.match(eye, /too low in the frame/);
-  assert.match(eye, /Move the box down/);
+  const eye = verdictText({ value: 0.4, mm: 18, status: 'low', min: 0.5, max: 0.6 }, 'eye', 45, say);
+  assert.match(eye, /^verdict\.eye\.low/);
 
-  const ok = verdictText({ value: 0.7, mm: 31.5, status: 'ok', min: 0.64, max: 0.76 }, 'Head height', 45);
-  assert.ok(!/Make the box/.test(ok));
+  const ok = verdictText({ value: 0.7, mm: 31.5, status: 'ok', min: 0.64, max: 0.76 }, 'head', 45, say);
+  assert.match(ok, /^verdict\.head\.ok/);
   assert.ok(spec.head.minMm);
 });
 
@@ -623,13 +632,16 @@ test('statusClass: an advisory band never paints a failure red', () => {
   assert.equal(statusClass('high', true), 'warn');
 });
 
-test('tiltText, centreText, resamplingText, readyText: all say something', () => {
-  assert.match(tiltText({ degrees: 0.1, status: 'ok' }), /level/);
-  assert.match(tiltText({ degrees: -4.2, status: 'high' }), /4\.2 degrees to the left/);
-  assert.match(centreText({ offset: 0, status: 'ok' }), /centred/);
-  assert.match(centreText({ offset: -0.08, status: 'low' }), /left of centre/);
-  assert.match(resamplingText(resampling({ width: 120, height: 150 }, { width: 600, height: 750 })), /soft/);
-  assert.match(readyText(false, 'good'), /does not meet the rule yet/);
-  assert.match(readyText(true, 'bad'), /background does not/);
-  assert.match(readyText(true, 'good'), /meets the rule/);
+test('tiltText, centreText, resamplingText, readyText: each picks its sentence', () => {
+  assert.equal(tiltText({ degrees: 0.1, status: 'ok' }, say), 'tilt.level');
+  assert.match(tiltText({ degrees: -4.2, status: 'high' }, say), /^tilt\.bad\.left 4\.2/);
+  assert.equal(centreText({ offset: 0, status: 'ok' }, say), 'centre.ok');
+  assert.match(centreText({ offset: -0.08, status: 'low' }, say), /^centre\.left/);
+  assert.match(
+    resamplingText(resampling({ width: 120, height: 150 }, { width: 600, height: 750 }), say),
+    /^resample\.severe/,
+  );
+  assert.equal(readyText(false, 'good', say), 'ready.geometry');
+  assert.equal(readyText(true, 'bad', say), 'ready.background');
+  assert.equal(readyText(true, 'good', say), 'ready.good');
 });

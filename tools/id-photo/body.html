@@ -215,6 +215,91 @@
     JavaScript, and a semicolon is not the mark half these languages join with.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">Print size</span>
+    <span data-phrase="facts.head">Head, chin to crown</span>
+    <span data-phrase="facts.eye">Eye line, from the bottom</span>
+    <span data-phrase="facts.background">Background</span>
+    <span data-phrase="band.range">{min} to {max}</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (guidance)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">Head height is {measured}. The rule asks for {wanted}.</span>
+    <span data-phrase="verdict.head.low">Head height is {measured}, which is too small. The rule asks for {wanted}. Make the
+      box smaller.</span>
+    <span data-phrase="verdict.head.high">Head height is {measured}, which is too large. The rule asks for {wanted}. Make the
+      box larger.</span>
+    <span data-phrase="verdict.eye.ok">The eye line is {measured}. The rule asks for {wanted}.</span>
+    <span data-phrase="verdict.eye.low">The eye line is {measured}, which is too low in the frame. The rule asks for
+      {wanted}. Move the box down.</span>
+    <span data-phrase="verdict.eye.high">The eye line is {measured}, which is too high in the frame. The rule asks for
+      {wanted}. Move the box up.</span>
+    <span data-phrase="tilt.level">The eye line is level.</span>
+    <span data-phrase="tilt.ok.left">The head leans {degrees} degrees to the left, which is within the couple of degrees
+      an examiner will not notice.</span>
+    <span data-phrase="tilt.ok.right">The head leans {degrees} degrees to the right, which is within the couple of degrees
+      an examiner will not notice.</span>
+    <span data-phrase="tilt.bad.left">The head leans {degrees} degrees to the left, which is enough to be noticed. Retake
+      it with the camera level, or straighten the picture first.</span>
+    <span data-phrase="tilt.bad.right">The head leans {degrees} degrees to the right, which is enough to be noticed. Retake
+      it with the camera level, or straighten the picture first.</span>
+    <span data-phrase="centre.ok">The face is centred in the frame.</span>
+    <span data-phrase="centre.left">The face sits {size} of the frame&rsquo;s width to the left of centre. Drag the box
+      the other way, or press Fit again.</span>
+    <span data-phrase="centre.right">The face sits {size} of the frame&rsquo;s width to the right of centre. Drag the box
+      the other way, or press Fit again.</span>
+    <span data-phrase="resample.enough">The crop is {have} pixels and the output is {need}, so nothing has to be invented.</span>
+    <span data-phrase="resample.slight">The crop is only {have} pixels and the output is {need}. It will be enlarged
+      slightly, which costs a little sharpness and nothing else.</span>
+    <span data-phrase="resample.severe">The crop is only {have} pixels and the output is {need}. That is a long way short:
+      the result will look soft, and on paper it will look like a screenshot. A photograph
+      taken closer, or at a higher resolution, is the only fix.</span>
+    <span data-phrase="ready.geometry">The geometry does not meet the rule yet. You can still save the files &mdash;
+      nothing here refuses to give you your own photograph &mdash; but the figures above
+      are what the form will be measuring.</span>
+    <span data-phrase="ready.background">The geometry meets the rule. The background does not, and that is the more common
+      reason a photograph comes back.</span>
+    <span data-phrase="ready.good">The geometry meets the rule and the background reads as acceptable.</span>
+    <span data-phrase="bg.white.label">Plain white</span>
+    <span data-phrase="bg.white.inline">plain white</span>
+    <span data-phrase="bg.white.note">A white wall photographs light grey. What is being asked for is a plain, evenly lit,
+      shadow-free background, not a paint colour.</span>
+    <span data-phrase="bg.off-white.label">White or off-white</span>
+    <span data-phrase="bg.off-white.inline">white or off-white</span>
+    <span data-phrase="bg.off-white.note">Either is accepted, which in practice means anything plain and light with no
+      pattern, no furniture and no shadow behind the head.</span>
+    <span data-phrase="bg.light-grey.label">Plain light grey</span>
+    <span data-phrase="bg.light-grey.inline">plain light grey</span>
+    <span data-phrase="bg.light-grey.note">Light grey is the ICAO preference because it separates a fair face from the
+      background and dark hair from it as well. Pure white does neither.</span>
+    <span data-phrase="bg.cream.label">Light grey or cream</span>
+    <span data-phrase="bg.cream.inline">light grey or cream</span>
+    <span data-phrase="bg.cream.note">The wording used by the UK. Cream reads as a warm off-white; the point of the rule
+      is that it is plain and uniform, not that it is any one shade.</span>
+    <span data-phrase="bg.colour.bad">The background reads {hex}, which is a long way from {wanted}.</span>
+    <span data-phrase="bg.colour.warn">The background reads {hex} &mdash; close to {wanted}, but not quite it.</span>
+    <span data-phrase="bg.colour.good">The background reads {hex}, which passes as {wanted}.</span>
+    <span data-phrase="bg.uniform.bad">It is not one flat colour &mdash; there is a shadow, a pattern or an object behind
+      you.</span>
+    <span data-phrase="bg.uniform.warn">Slightly uneven. Standing a foot further from the wall is usually the whole fix.</span>
+    <span data-phrase="bg.uniform.good">Evenly lit, with no shadow behind the head.</span>
+    <span data-phrase="bg.sides.bad">One side of the background is much darker than the other, which reads as side
+      lighting.</span>
+    <span data-phrase="bg.sides.warn">One side is a little darker than the other.</span>
+    <span data-phrase="bg.note">{colour} This tool will not replace a background: cutting a person out of a
+      photograph needs a segmentation model, and a bad one eats the hair of exactly the
+      people whose photographs already get rejected most often. Standing a foot further
+      from the wall fixes more of these than any filter would.</span>
+    <span data-phrase="bg.signature.note">Nothing here changes your signature. It is measured and reported, and the crop is
+      yours to move.</span>
+    <span data-phrase="sig.ink.bad">Almost no ink in the crop. Either the box is off the signature, or the pen was too
+      light to photograph.</span>
+    <span data-phrase="sig.ink.warn">A great deal of dark pixels &mdash; check the crop has not taken in a ruled line or
+      the edge of the page.</span>
+    <span data-phrase="sig.ink.good">Ink covers {coverage}% of the crop, which reads as a signature.</span>
+    <span data-phrase="sig.paper.bad">The paper is coming out grey rather than white. More light on the page, or a scan
+      rather than a photo.</span>
+    <span data-phrase="sig.paper.warn">The paper is a little dull. Most forms want a clean white page behind the signature.</span>
+    <span data-phrase="sig.paper.good">The paper is clean and white.</span>
     <span data-phrase="marks.measured">All four were measured off the photograph
       &mdash; the crown from the outline of your head, the pupils from the dark of
       them, the chin from where the jaw runs into the neck. Check them anyway, and

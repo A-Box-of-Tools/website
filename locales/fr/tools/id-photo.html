@@ -217,6 +217,100 @@
     a semicolon; nothing else is substituted.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="facts.print">Taille d&rsquo;impression</span>
+    <span data-phrase="facts.head">Tête, du menton au sommet du crâne</span>
+    <span data-phrase="facts.eye">Ligne des yeux, depuis le bas</span>
+    <span data-phrase="facts.background">Fond</span>
+    <span data-phrase="band.range">de {min} à {max}</span>
+    <span data-phrase="band.mm">{range} ({min}&ndash;{max} mm)</span>
+    <span data-phrase="band.guidance">{band} (indicatif)</span>
+    <span data-phrase="measured.mm">{percent} ({mm} mm)</span>
+    <span data-phrase="verdict.head.ok">La hauteur de tête est de {measured}. La règle demande {wanted}.</span>
+    <span data-phrase="verdict.head.low">La hauteur de tête est de {measured}, ce qui est trop petit. La règle demande
+      {wanted}. Réduisez le cadre.</span>
+    <span data-phrase="verdict.head.high">La hauteur de tête est de {measured}, ce qui est trop grand. La règle demande
+      {wanted}. Agrandissez le cadre.</span>
+    <span data-phrase="verdict.eye.ok">La ligne des yeux est à {measured}. La règle demande {wanted}.</span>
+    <span data-phrase="verdict.eye.low">La ligne des yeux est à {measured}, ce qui est trop bas dans le cadre. La règle
+      demande {wanted}. Descendez le cadre.</span>
+    <span data-phrase="verdict.eye.high">La ligne des yeux est à {measured}, ce qui est trop haut dans le cadre. La règle
+      demande {wanted}. Remontez le cadre.</span>
+    <span data-phrase="tilt.level">La ligne des yeux est horizontale.</span>
+    <span data-phrase="tilt.ok.left">La tête penche de {degrees} degrés vers la gauche, ce qui reste dans les quelques
+      degrés qu&rsquo;un examinateur ne remarquera pas.</span>
+    <span data-phrase="tilt.ok.right">La tête penche de {degrees} degrés vers la droite, ce qui reste dans les quelques
+      degrés qu&rsquo;un examinateur ne remarquera pas.</span>
+    <span data-phrase="tilt.bad.left">La tête penche de {degrees} degrés vers la gauche, et cela se voit. Refaites la
+      photo avec l&rsquo;appareil d&rsquo;aplomb, ou redressez l&rsquo;image
+      d&rsquo;abord.</span>
+    <span data-phrase="tilt.bad.right">La tête penche de {degrees} degrés vers la droite, et cela se voit. Refaites la
+      photo avec l&rsquo;appareil d&rsquo;aplomb, ou redressez l&rsquo;image
+      d&rsquo;abord.</span>
+    <span data-phrase="centre.ok">Le visage est centré dans le cadre.</span>
+    <span data-phrase="centre.left">Le visage est décalé de {size} de la largeur du cadre vers la gauche. Tirez le cadre
+      dans l&rsquo;autre sens, ou appuyez de nouveau sur
+      &laquo;&nbsp;Ajuster&nbsp;&raquo;.</span>
+    <span data-phrase="centre.right">Le visage est décalé de {size} de la largeur du cadre vers la droite. Tirez le cadre
+      dans l&rsquo;autre sens, ou appuyez de nouveau sur
+      &laquo;&nbsp;Ajuster&nbsp;&raquo;.</span>
+    <span data-phrase="resample.enough">Le recadrage fait {have} pixels et la sortie {need}&nbsp;: rien n&rsquo;a à être
+      inventé.</span>
+    <span data-phrase="resample.slight">Le recadrage ne fait que {have} pixels et la sortie {need}. Il sera légèrement
+      agrandi, ce qui coûte un peu de netteté et rien d&rsquo;autre.</span>
+    <span data-phrase="resample.severe">Le recadrage ne fait que {have} pixels et la sortie {need}. C&rsquo;est très loin du
+      compte&nbsp;: le résultat paraîtra mou, et sur papier il aura l&rsquo;air
+      d&rsquo;une capture d&rsquo;écran. Seule une photo prise de plus près, ou à une
+      résolution plus haute, y remédie.</span>
+    <span data-phrase="ready.geometry">Le cadrage ne satisfait pas encore la règle. Vous pouvez tout de même enregistrer
+      les fichiers &mdash; rien ici ne vous refuse votre propre photographie &mdash; mais
+      ce sont les chiffres ci-dessus que le formulaire mesurera.</span>
+    <span data-phrase="ready.background">Le cadrage satisfait la règle. Le fond non, et c&rsquo;est la raison la plus
+      fréquente pour laquelle une photo revient.</span>
+    <span data-phrase="ready.good">Le cadrage satisfait la règle et le fond passe.</span>
+    <span data-phrase="bg.white.label">Blanc uni</span>
+    <span data-phrase="bg.white.inline">blanc uni</span>
+    <span data-phrase="bg.white.note">Un mur blanc se photographie en gris clair. Ce qui est demandé, c&rsquo;est un fond
+      uni, éclairé uniformément et sans ombre, pas une couleur de peinture.</span>
+    <span data-phrase="bg.off-white.label">Blanc ou blanc cassé</span>
+    <span data-phrase="bg.off-white.inline">blanc ou blanc cassé</span>
+    <span data-phrase="bg.off-white.note">Les deux sont acceptés, ce qui en pratique veut dire tout ce qui est uni et
+      clair&nbsp;: pas de motif, pas de meuble et pas d&rsquo;ombre derrière la tête.</span>
+    <span data-phrase="bg.light-grey.label">Gris clair uni</span>
+    <span data-phrase="bg.light-grey.inline">gris clair uni</span>
+    <span data-phrase="bg.light-grey.note">Le gris clair est la préférence de l&rsquo;OACI parce qu&rsquo;il détache un visage
+      clair du fond, et les cheveux foncés aussi. Le blanc pur ne fait ni l&rsquo;un ni
+      l&rsquo;autre.</span>
+    <span data-phrase="bg.cream.label">Gris clair ou crème</span>
+    <span data-phrase="bg.cream.inline">gris clair ou crème</span>
+    <span data-phrase="bg.cream.note">La formulation employée par le Royaume-Uni. Le crème se lit comme un blanc cassé
+      chaud&nbsp;; ce que veut la règle, c&rsquo;est que le fond soit uni et uniforme, pas
+      qu&rsquo;il soit d&rsquo;une teinte précise.</span>
+    <span data-phrase="bg.colour.bad">Le fond se mesure à {hex}, ce qui est très loin de {wanted}.</span>
+    <span data-phrase="bg.colour.warn">Le fond se mesure à {hex} &mdash; proche de {wanted}, mais pas tout à fait.</span>
+    <span data-phrase="bg.colour.good">Le fond se mesure à {hex}, ce qui passe pour du {wanted}.</span>
+    <span data-phrase="bg.uniform.bad">Ce n&rsquo;est pas une seule couleur unie &mdash; il y a une ombre, un motif ou un
+      objet derrière vous.</span>
+    <span data-phrase="bg.uniform.warn">Légèrement inégal. Se tenir un demi-mètre plus loin du mur suffit presque toujours.</span>
+    <span data-phrase="bg.uniform.good">Éclairé uniformément, sans ombre derrière la tête.</span>
+    <span data-phrase="bg.sides.bad">Un côté du fond est bien plus sombre que l&rsquo;autre, ce qui se lit comme un
+      éclairage latéral.</span>
+    <span data-phrase="bg.sides.warn">Un côté est un peu plus sombre que l&rsquo;autre.</span>
+    <span data-phrase="bg.note">{colour} Cet outil ne remplacera pas un fond&nbsp;: détourer une personne demande un
+      modèle de segmentation, et un mauvais mange les cheveux de précisément ceux dont les
+      photos sont déjà refusées le plus souvent. Se tenir un demi-mètre plus loin du mur
+      en corrige davantage que n&rsquo;importe quel filtre.</span>
+    <span data-phrase="bg.signature.note">Rien ici ne modifie votre signature. Elle est mesurée et décrite, et le cadre est à
+      vous.</span>
+    <span data-phrase="sig.ink.bad">Presque pas d&rsquo;encre dans le cadre. Ou bien le cadre est à côté de la
+      signature, ou bien le stylo était trop clair pour être photographié.</span>
+    <span data-phrase="sig.ink.warn">Énormément de pixels sombres &mdash; vérifiez que le cadre n&rsquo;a pas attrapé une
+      ligne réglée ou le bord de la page.</span>
+    <span data-phrase="sig.ink.good">L&rsquo;encre couvre {coverage}&nbsp;% du cadre, ce qui se lit comme une signature.</span>
+    <span data-phrase="sig.paper.bad">Le papier ressort gris plutôt que blanc. Plus de lumière sur la page, ou un scan
+      plutôt qu&rsquo;une photo.</span>
+    <span data-phrase="sig.paper.warn">Le papier est un peu terne. La plupart des formulaires veulent une page blanche et
+      propre derrière la signature.</span>
+    <span data-phrase="sig.paper.good">Le papier est propre et blanc.</span>
     <span data-phrase="marks.measured">Les quatre ont été mesurés sur la photo&nbsp;: le sommet
       du crâne d&rsquo;après le contour de votre tête, les pupilles d&rsquo;après ce
       qu&rsquo;elles ont de sombre, le menton là où la mâchoire rejoint le cou.
