@@ -62,6 +62,10 @@ const picker = wireFilePicker({
 });
 
 async function loadFiles(files) {
+  // Taken before the first await, while the flag is still on the input:
+  // shared/lang-keep.js sets it for the length of its dispatch, and this
+  // handler starts synchronously inside that.
+  const restoring = el.fileInput?.dataset.langRestore === '1';
   picker.busy(readingLabel(files.length));
   try {
     // Read as text, here, by the browser. There is no other step: the strings
@@ -70,9 +74,15 @@ async function loadFiles(files) {
     if (texts.length > 1) {
       el.input.value = texts[0];
       el.inputB.value = texts[1];
-    } else if (el.input.value.trim() && !el.inputB.value.trim()) {
+    } else if (!restoring && el.input.value.trim() && !el.inputB.value.trim()) {
       // One file dropped onto a comparison that already has an original fills
       // the empty side, which is the only thing it could sensibly mean.
+      //
+      // Only when somebody dropped it. A file handed back by a language
+      // switch is the same file that was in the first box, and the text
+      // already restored into that box is what it was read from - so the
+      // empty side is not where it belongs, and putting it there turns one
+      // document into two identical ones.
       el.inputB.value = texts[0];
     } else {
       el.input.value = texts[0];
