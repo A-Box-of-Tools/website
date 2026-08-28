@@ -12,6 +12,10 @@
  * fourteen bytes present in essentially every JPEG - means it fires on
  * everything, which is the same as it never firing, because nobody reads a
  * warning that is always on.
+ *
+ * A kind is a phrase key rather than a word. EXIF, XMP and IPTC keep their
+ * published names on the page, but "a colour profile" and "a timestamp" are
+ * this tool's own words, and this module ships in fifteen languages.
  */
 
 import test from 'node:test';
@@ -29,7 +33,7 @@ test('EXIF in a JPEG is found, and its size is the whole segment', () => {
   const exif = segment(0xe1, concat(EXIF_ID, TIFF_LE));
   const found = metadata(jpeg([exif]), 'image/jpeg');
 
-  assert.deepEqual(found.kinds, ['EXIF']);
+  assert.deepEqual(found.kinds, ['kind.exif']);
   // The marker and the length field are part of what a data URI would carry,
   // so the figure on the page counts them.
   assert.equal(found.bytes, exif.length);
@@ -52,7 +56,7 @@ test('XMP, ICC, IPTC and a comment are told apart', () => {
 
   assert.deepEqual(
     metadata(file, 'image/jpeg').kinds,
-    ['XMP', 'a colour profile', 'IPTC', 'a comment'],
+    ['kind.xmp', 'kind.icc', 'kind.iptc', 'kind.comment'],
   );
 });
 
@@ -60,7 +64,7 @@ test('two EXIF-carrying segments are one kind and two sizes', () => {
   const one = segment(0xe1, concat(EXIF_ID, TIFF_LE));
   const found = metadata(jpeg([one, one]), 'image/jpeg');
 
-  assert.deepEqual(found.kinds, ['EXIF']);
+  assert.deepEqual(found.kinds, ['kind.exif']);
   assert.equal(found.bytes, one.length * 2);
 });
 
@@ -82,20 +86,20 @@ test('PNG text chunks are found', () => {
   const text = textChunk('Comment', 'taken at home');
   const found = metadata(png([text]), 'image/png');
 
-  assert.deepEqual(found.kinds, ['text']);
+  assert.deepEqual(found.kinds, ['kind.text']);
   assert.equal(found.bytes, text.length);
 });
 
 test('an eXIf chunk in a PNG is EXIF', () => {
   const exif = chunk('eXIf', TIFF_LE);
-  assert.deepEqual(metadata(png([exif]), 'image/png').kinds, ['EXIF']);
+  assert.deepEqual(metadata(png([exif]), 'image/png').kinds, ['kind.exif']);
 });
 
 test('an iTXt holding XMP is named as XMP, not as text', () => {
   // Where an editor puts the things people expect EXIF to hold, so lumping it
   // in with "text" would understate what is being copied.
   const xmp = chunk('iTXt', concat(ascii('XML:com.adobe.xmp\0'), ascii('\0\0\0\0<x:xmpmeta/>')));
-  assert.deepEqual(metadata(png([xmp]), 'image/png').kinds, ['XMP']);
+  assert.deepEqual(metadata(png([xmp]), 'image/png').kinds, ['kind.xmp']);
 });
 
 test('a colour profile and a timestamp are both named', () => {
@@ -103,7 +107,7 @@ test('a colour profile and a timestamp are both named', () => {
     chunk('iCCP', concat(ascii('sRGB\0\0'), ascii('deflated'))),
     chunk('tIME', new Uint8Array(7)),
   ]);
-  assert.deepEqual(metadata(file, 'image/png').kinds, ['a colour profile', 'a timestamp']);
+  assert.deepEqual(metadata(file, 'image/png').kinds, ['kind.icc', 'kind.time']);
 });
 
 test('an ordinary PNG reports nothing', () => {
@@ -116,7 +120,7 @@ test('WebP EXIF and XMP chunks are found', () => {
   const exif = webpChunk('EXIF', TIFF_LE);
   const found = metadata(webp([VP8_CHUNK, exif]), 'image/webp');
 
-  assert.deepEqual(found.kinds, ['EXIF']);
+  assert.deepEqual(found.kinds, ['kind.exif']);
   assert.equal(found.bytes, TIFF_LE.length + 8);
 });
 
@@ -127,7 +131,7 @@ test('an odd-length WebP chunk does not desynchronise the walk', () => {
   const odd = webpChunk('XMP ', ascii('seven..'));
   const file = webp([VP8_CHUNK, odd, webpChunk('EXIF', TIFF_LE)]);
 
-  assert.deepEqual(metadata(file, 'image/webp').kinds, ['XMP', 'EXIF']);
+  assert.deepEqual(metadata(file, 'image/webp').kinds, ['kind.xmp', 'kind.exif']);
 });
 
 test('a plain WebP reports nothing', () => {

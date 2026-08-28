@@ -82,6 +82,62 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">Metinden Base64&rsquo;e ve geri. Girdideki
+      satır sonları yok sayılır, dolayısıyla satırlara bölünmüş bir anahtar olduğu gibi
+      yapıştırılabilir.</span>
+    <span data-phrase="codec.base64url.name">Base64, URL&rsquo;ye uygun</span>
+    <span data-phrase="codec.base64url.note">Aynısı; + ve / yerine - ve _, dolgu da yok.
+      JWT ve çoğu jetonun kullandığı budur.</span>
+    <span data-phrase="codec.url.name">Web adresi, tek bir değer</span>
+    <span data-phrase="codec.url.note">Sorgu dizesine girecek bir değer için yüzde
+      kodlaması: bir URL&rsquo;nin anlam yüklediği her şey kaçışlanır.</span>
+    <span data-phrase="codec.url-whole.name">Web adresi, adresin tamamı</span>
+    <span data-phrase="codec.url-whole.note">Adresin kendisini çalışır bırakan yüzde
+      kodlaması &mdash; eğik çizgiler, ? ve &amp; korunur.</span>
+    <span data-phrase="codec.html.name">HTML varlıkları</span>
+    <span data-phrase="codec.html.note">İşaretlemede kaçışlanması gereken beş karakter.
+      Çözerken sayısal varlıklar ve yaygın adlandırılmış olanlar da okunur.</span>
+    <span data-phrase="codec.hex.name">Onaltılık baytlar</span>
+    <span data-phrase="codec.hex.note">Metnin UTF-8 baytları, onaltılık olarak. Çözerken
+      dökümün hangi ayırıcıyı kullandığı fark etmez.</span>
+    <span data-phrase="codec.escapes.name">Ters eğik çizgi kaçışları</span>
+    <span data-phrase="codec.escapes.note">JavaScript, Java ya da JSON&rsquo;daki bir
+      dize sabitinin görünüşü: \n, \t ve ASCII üstündeki her şey için \uXXXX.</span>
+    <span data-phrase="sample.text">İçinde &lt;açılı ayraçlar&gt;, bir ve işareti &amp;
+      bir kahve geçen bir dize.</span>
+    <span data-phrase="step.reading">Dosya okunuyor&hellip;</span>
+    <span data-phrase="read.failed">Bu dosya okunamadı: {why}</span>
+    <span data-phrase="count.empty">boş</span>
+    <span data-phrase="n.line.one">{n} satır</span>
+    <span data-phrase="n.line.many">{n} satır</span>
+    <span data-phrase="n.character.one">{n} karakter</span>
+    <span data-phrase="n.character.many">{n} karakter</span>
+    <span data-phrase="result.nothing">Henüz bir şey yok.</span>
+    <span data-phrase="result.none">Hiçbir şey çıkmadı.</span>
+    <span data-phrase="out.encoded">{name}, kodlandı &mdash; {in} girdi, {out} çıktı</span>
+    <span data-phrase="out.decoded">{name}, çözüldü &mdash; {in} girdi, {out} çıktı</span>
+    <span data-phrase="b64.padding">Sonunda ikiden fazla dolgu karakteri var.</span>
+    <span data-phrase="b64.notfour">Dolgusu var ama uzunluğu dördün katı değil.</span>
+    <span data-phrase="b64.length">Base64 olmak için bir karakter uzun ya da üç karakter
+      kısa.</span>
+    <span data-phrase="b64.character">&ldquo;{ch}&rdquo;, Base64&rsquo;ün kullandığı bir
+      karakter değil.</span>
+    <span data-phrase="hex.digit">&ldquo;{ch}&rdquo; bir onaltılık basamak değil.</span>
+    <span data-phrase="hex.odd">Onaltılık basamak sayısı tek.</span>
+    <span data-phrase="esc.braces">\u{&hellip;} süslü ayraçların içine onaltılık basamak
+      ister.</span>
+    <span data-phrase="esc.digits">\{escape} ardından {width} onaltılık basamak ister.</span>
+    <span data-phrase="esc.unknown">\{escape}, burada okunan bir kaçış değil.</span>
+    <span data-phrase="pct.incomplete">&ldquo;{escape}&rdquo; tam bir yüzde kaçışı
+      değil.</span>
+    <span data-phrase="pct.notutf8">Bu yüzde kaçışları geçerli UTF-8 oluşturmuyor.</span>
+    <span data-phrase="utf8.notext">Bu baytlar UTF-8 metni değil, dolayısıyla
+      gösterilecek bir şey yok. Bir dize değil, bir dosya olabilirler.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">metniniz hiçbir yere gitmedi. {total} dosya
       yüklendi. {platform}</span>
     <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç

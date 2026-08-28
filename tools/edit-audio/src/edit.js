@@ -42,12 +42,14 @@ export async function render(source, settings, { onProgress, signal } = {}) {
   signal?.throwIfAborted();
 
   if (settings.reverse) {
-    report(0.02, 'Reversing…');
+    // A phrase key, not a word: this module ships in fifteen languages and
+    // the page is the only place a sentence can be read.
+    report(0.02, 'step.reversing');
     reverse(channels);
   }
 
   if (settings.speed !== 1) {
-    const label = settings.keepPitch ? 'Stretching, keeping the pitch…' : 'Resampling…';
+    const label = settings.keepPitch ? 'step.stretching' : 'step.resampling';
     report(0.05, label);
     const onStep = (done) => report(0.05 + done * 0.88, label);
     channels = settings.keepPitch
@@ -56,7 +58,7 @@ export async function render(source, settings, { onProgress, signal } = {}) {
   }
 
   signal?.throwIfAborted();
-  report(0.95, 'Setting the level…');
+  report(0.95, 'step.level');
 
   const before = peak(channels);
   const gain = settings.volume.mode === 'normalize'
@@ -64,7 +66,7 @@ export async function render(source, settings, { onProgress, signal } = {}) {
     : dbToGain(settings.volume.db);
 
   const after = gain === 1 ? { peak: before, clipped: countOver(channels) } : applyGain(channels, gain);
-  report(1, 'Writing the file…');
+  report(1, 'step.writing');
 
   return { channels, peak: after.peak, clipped: after.clipped, gain };
 }

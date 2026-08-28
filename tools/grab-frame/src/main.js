@@ -163,7 +163,7 @@ async function loadFile(picked) {
   releaseFile();
 
   file = picked;
-  picker.busy('Reading the file...');
+  picker.busy(phrase('step.reading'));
 
   try {
     objectUrl = URL.createObjectURL(picked);
@@ -232,7 +232,10 @@ async function loadFile(picked) {
     await goTo(0);
   } catch (error) {
     console.error(error);
-    showError(error?.message || 'That file could not be opened.');
+    // The leaf modules throw keys; a browser that failed for its own reasons
+    // throws a sentence, and phrase() hands back what it does not recognise.
+    showError(error?.message
+      ? phrase(error.message, fill(error.values)) : phrase('open.notopened'));
     resetView();
   } finally {
     picker.done();
@@ -255,16 +258,23 @@ function describeSource() {
   el.source.hidden = false;
   el.srcName.textContent = file.name;
   el.srcSize.textContent = formatBytes(file.size);
-  el.srcFrame.textContent = `${source.width} x ${source.height}`;
-  el.srcLength.textContent = duration ? formatDuration(duration) : 'unknown';
+  el.srcFrame.textContent = phrase('size.plain',
+    { width: source.width, height: source.height });
+  el.srcLength.textContent = duration ? formatDuration(duration) : phrase('len.unknown');
 
   if (exact) {
-    const turned = media.video.rotation ? `, turned ${media.video.rotation} degrees` : '';
-    el.srcCodec.textContent = `${media.video.codec} (${media.video.entryType})${turned}`;
-    el.srcFrames.textContent = `${reader.count.toLocaleString()} frames`;
+    el.srcCodec.textContent = media.video.rotation
+      ? phrase('src.codec.turned', {
+        codec: media.video.codec,
+        entry: media.video.entryType,
+        degrees: media.video.rotation,
+      })
+      : phrase('src.codec', { codec: media.video.codec, entry: media.video.entryType });
+    el.srcFrames.textContent = phrase(reader.count === 1 ? 'n.frame.one' : 'n.frame.many',
+      { n: reader.count.toLocaleString() });
   } else {
-    el.srcCodec.textContent = "read by the browser's own player";
-    el.srcFrames.textContent = 'not counted on this path';
+    el.srcCodec.textContent = phrase('src.byplayer');
+    el.srcFrames.textContent = phrase('src.uncounted');
   }
 
   el.pathNote.hidden = exact && playable;
@@ -319,7 +329,7 @@ function setUpTransport() {
     el.scrub.step = '1';
   }
   el.play.disabled = !playable;
-  el.play.title = playable ? 'Play or pause (space)' : 'This browser will not play this file';
+  el.play.title = phrase(playable ? 'play.title' : 'play.cannot');
 }
 
 /** Move to a point in the clip, in seconds. */
@@ -363,8 +373,11 @@ function showStill() {
 function updateReadout() {
   el.atTime.textContent = clockTime(position);
   el.atFrame.textContent = exact
-    ? `frame ${(frameIndex + 1).toLocaleString()} of ${reader.count.toLocaleString()}`
-    : 'frame times are not read on this path';
+    ? phrase('at.frame', {
+      n: (frameIndex + 1).toLocaleString(),
+      total: reader.count.toLocaleString(),
+    })
+    : phrase('at.notread');
 }
 
 /**
@@ -394,7 +407,10 @@ async function showFrame(index) {
       }
     }
   } catch (error) {
-    if (error?.name !== 'AbortError') showError(error?.message || 'That frame could not be decoded.');
+    if (error?.name !== 'AbortError') {
+      showError(error?.message
+        ? phrase(error.message, fill(error.values)) : phrase('decode.nodecode'));
+    }
   } finally {
     drawing = false;
   }
@@ -455,7 +471,7 @@ function play() {
   if (!playable || playing) return;
   playing = true;
   el.play.textContent = '⏸';
-  el.play.setAttribute('aria-label', 'Pause');
+  el.play.setAttribute('aria-label', phrase('play.pause'));
   el.preview.hidden = false;
   el.still.hidden = true;
   el.preview.currentTime = position;
@@ -467,7 +483,7 @@ function pause() {
   if (!playing) return;
   playing = false;
   el.play.textContent = '▶';
-  el.play.setAttribute('aria-label', 'Play');
+  el.play.setAttribute('aria-label', phrase('play.play'));
   el.preview.pause();
   // Snap to the frame that was on screen, so what is saved is what was seen.
   goTo(el.preview.currentTime);
@@ -533,9 +549,8 @@ function updateFormatNote() {
   const type = currentType();
   el.qualityField.hidden = type === 'image/png';
   el.formatNote.textContent = type === 'image/png'
-    ? `Lossless: the still holds exactly the pixels the frame decoded to, at ${source.width || '?'} x ${source.height || '?'}.`
-    : 'Compressed again on top of the video\'s own compression. Fine for a preview, '
-      + 'not for anything that will be edited further.';
+    ? phrase('note.png', { width: source.width || '?', height: source.height || '?' })
+    : phrase('note.lossy');
 }
 
 el.format.addEventListener('change', updateFormatNote);
@@ -547,9 +562,12 @@ el.every.addEventListener('input', updateSeriesButton);
 
 function updateSeriesButton() {
   const every = Number(el.every.value);
+  // "every 1 seconds" was already wrong in English, and a plural chosen
+  // outside the phrase is wrong in most languages. Two whole sentences.
   el.grabSeries.textContent = every > 0
-    ? `Grab one every ${every % 1 ? every.toFixed(1) : every} seconds`
-    : 'Grab a series';
+    ? phrase(every === 1 ? 'series.every.one' : 'series.every.many',
+      { n: every % 1 ? every.toFixed(1) : every })
+    : phrase('series.any');
 }
 
 /* -------------------------------------------------------------- the stills */
@@ -571,9 +589,10 @@ function addShot({ blob, time, width, height, type }) {
 }
 
 function renderShots() {
-  el.shotsCount.textContent = shots.length === 1
-    ? '1 still, held in this page only'
-    : `${shots.length} stills, held in this page only`;
+  el.shotsCount.textContent = phrase(
+    shots.length === 1 ? 'n.still.one' : 'n.still.many',
+    { n: shots.length },
+  );
 
   el.shots.replaceChildren(...shots.map((shot) => {
     const item = document.createElement('li');
@@ -581,7 +600,7 @@ function renderShots() {
 
     const image = document.createElement('img');
     image.src = shot.url;
-    image.alt = `The frame at ${clockTime(shot.time)}`;
+    image.alt = phrase('shot.alt', { time: clockTime(shot.time) });
     image.loading = 'lazy';
 
     const body = document.createElement('div');
@@ -591,7 +610,11 @@ function renderShots() {
     when.textContent = clockTime(shot.time);
     const meta = document.createElement('span');
     meta.className = 'shot-meta';
-    meta.textContent = `${FORMATS[shot.type]?.label ?? 'PNG'} · ${shot.width} x ${shot.height} · ${formatBytes(shot.blob.size)}`;
+    meta.textContent = [
+      FORMATS[shot.type]?.label ?? 'PNG',
+      phrase('size.plain', { width: shot.width, height: shot.height }),
+      formatBytes(shot.blob.size),
+    ].reduce((a, b) => phrase('join.dot', { a, b }));
     body.append(when, meta);
 
     const actions = document.createElement('div');
@@ -600,11 +623,11 @@ function renderShots() {
     save.className = 'as-button';
     save.href = shot.url;
     save.download = shot.name;
-    save.textContent = 'Save';
+    save.textContent = phrase('shot.save');
     const remove = document.createElement('button');
     remove.type = 'button';
     remove.className = 'ghost danger';
-    remove.textContent = 'Remove';
+    remove.textContent = phrase('shot.remove');
     remove.addEventListener('click', () => removeShot(shot.id));
     actions.append(save, remove);
 
@@ -652,13 +675,14 @@ el.downloadAll.addEventListener('click', async () => {
       }
       used.add(name);
       files.push({ name, data: new Uint8Array(await shot.blob.arrayBuffer()) });
-      setProgress({ done: ++done, total: shots.length, label: 'Packing...' });
+      setProgress({ done: ++done, total: shots.length, step: 'step.packing' });
     }
 
     const base = (file?.name ?? 'video').replace(/\.[^.]+$/, '');
     saveBlob(makeZip(files), `${base}-stills.zip`);
   } catch (error) {
-    showError(error?.message || 'That archive could not be built.');
+    showError(error?.message ? phrase(error.message, fill(error.values))
+      : phrase('zip.failed'));
   } finally {
     setWorking(false);
     el.progress.hidden = true;
@@ -720,9 +744,10 @@ el.grab.addEventListener('click', async () => {
       type: options.type,
     });
     el.shotsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    el.grab.title = `Last saved: ${shot.name}`;
+    el.grab.title = phrase('grab.last', { name: shot.name });
   } catch (error) {
-    showError(error?.message || 'That frame could not be saved.');
+    showError(error?.message ? phrase(error.message, fill(error.values))
+      : phrase('save.failed'));
     console.error(error);
   } finally {
     setWorking(false);
@@ -735,7 +760,7 @@ el.grabSeries.addEventListener('click', async () => {
 
   const every = Number(el.every.value);
   if (!(every > 0)) {
-    showError('Set an interval of more than zero seconds.');
+    showError(phrase('series.nointerval'));
     return;
   }
 
@@ -751,8 +776,8 @@ el.grabSeries.addEventListener('click', async () => {
   try {
     if (exact) {
       const indexes = seriesFrames(reader.order, { every });
-      if (!indexes.length) throw new Error('That interval picks out no frames.');
-      setProgress({ done: 0, total: indexes.length, label: 'Grabbing' });
+      if (!indexes.length) throw new Error('series.noframes');
+      setProgress({ done: 0, total: indexes.length, step: 'step.grabbing' });
 
       // One forward walk through the file, rather than a seek per still: the
       // decoder is fed from the first keyframe and every wanted frame is taken
@@ -798,7 +823,8 @@ el.grabSeries.addEventListener('click', async () => {
     el.shotsCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } catch (error) {
     if (error?.name !== 'AbortError') {
-      showError(error?.message || 'Something went wrong while grabbing the series.');
+      showError(error?.message ? phrase(error.message, fill(error.values))
+        : phrase('series.failed'));
       console.error(error);
     }
   } finally {
@@ -818,11 +844,27 @@ function setWorking(state) {
   el.downloadAll.disabled = state;
 }
 
-function setProgress({ done, total, label }) {
+// `step` names the whole sentence rather than a word glued in front of a
+// count: where the verb falls in that line is not the same in every language.
+function setProgress({ done, total, step }) {
   const fraction = total > 0 ? Math.min(1, done / total) : 0;
   el.progressBar.style.width = `${(fraction * 100).toFixed(1)}%`;
-  el.progressLabel.textContent = `${label} ${done.toLocaleString()} of ${total.toLocaleString()}`
-    + ` (${Math.round(fraction * 100)}%)`;
+  el.progressLabel.textContent = phrase(step, {
+    done: done.toLocaleString(),
+    total: total.toLocaleString(),
+    percent: Math.round(fraction * 100),
+  });
+}
+
+/**
+ * An error's blanks, with any that are themselves a phrase resolved.
+ *
+ * still.js names the format it could not write; the reader's sentence is
+ * built here, where a phrase can be read.
+ */
+function fill(values = {}) {
+  return Object.fromEntries(Object.entries(values)
+    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
 }
 
 function showError(message) {
@@ -836,17 +878,19 @@ function clearError() {
 }
 
 function formatBytes(bytes) {
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  if (bytes < 1024 * 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-  return `${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
+  if (bytes < 1024 * 1024 * 1024) {
+    return phrase('size.mb', { n: (bytes / 1024 / 1024).toFixed(1) });
+  }
+  return phrase('size.gb', { n: (bytes / 1024 / 1024 / 1024).toFixed(2) });
 }
 
 function formatDuration(seconds) {
   const whole = Math.max(0, Math.round(seconds));
   const minutes = Math.floor(whole / 60);
   return minutes
-    ? `${minutes}m ${String(whole % 60).padStart(2, '0')}s`
-    : `${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+    ? phrase('time.minutes', { minutes, seconds: String(whole % 60).padStart(2, '0') })
+    : phrase('time.seconds', { n: seconds < 10 ? seconds.toFixed(1) : whole });
 }
 
 window.addEventListener('beforeunload', (event) => {

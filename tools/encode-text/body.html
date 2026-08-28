@@ -82,6 +82,61 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">Text to Base64 and back. Line breaks in the
+      input are ignored, so a wrapped key pastes in as it is.</span>
+    <span data-phrase="codec.base64url.name">Base64, URL-safe</span>
+    <span data-phrase="codec.base64url.note">The same, with - and _ instead of + and /,
+      and no padding. This is what a JWT and most tokens use.</span>
+    <span data-phrase="codec.url.name">Web address, one value</span>
+    <span data-phrase="codec.url.note">Percent-encoding for a value going into a query
+      string: everything a URL gives a meaning to is escaped.</span>
+    <span data-phrase="codec.url-whole.name">Web address, whole URL</span>
+    <span data-phrase="codec.url-whole.note">Percent-encoding that leaves the address
+      itself working &mdash; the slashes, the ? and the &amp; are kept.</span>
+    <span data-phrase="codec.html.name">HTML entities</span>
+    <span data-phrase="codec.html.note">The five characters that have to be escaped in
+      markup. Decoding also reads numeric entities and the common named ones.</span>
+    <span data-phrase="codec.hex.name">Hex bytes</span>
+    <span data-phrase="codec.hex.note">The UTF-8 bytes of the text, in hex. Decoding
+      ignores whatever separator the dump used.</span>
+    <span data-phrase="codec.escapes.name">Backslash escapes</span>
+    <span data-phrase="codec.escapes.note">What a string literal in JavaScript, Java or
+      JSON looks like: \n, \t and \uXXXX for anything above ASCII.</span>
+    <span data-phrase="sample.text">A string with &lt;angle brackets&gt;, an ampersand
+      &amp; a caf&eacute;.</span>
+    <span data-phrase="step.reading">Reading the file&hellip;</span>
+    <span data-phrase="read.failed">That file could not be read: {why}</span>
+    <span data-phrase="count.empty">empty</span>
+    <span data-phrase="n.line.one">{n} line</span>
+    <span data-phrase="n.line.many">{n} lines</span>
+    <span data-phrase="n.character.one">{n} character</span>
+    <span data-phrase="n.character.many">{n} characters</span>
+    <span data-phrase="result.nothing">Nothing yet.</span>
+    <span data-phrase="result.none">Nothing came out.</span>
+    <span data-phrase="out.encoded">{name}, encoded &mdash; {in} in, {out} out</span>
+    <span data-phrase="out.decoded">{name}, decoded &mdash; {in} in, {out} out</span>
+    <span data-phrase="b64.padding">That has more than two padding characters on the
+      end.</span>
+    <span data-phrase="b64.notfour">That is padded, but its length is not a multiple of
+      four.</span>
+    <span data-phrase="b64.length">That is one character too long or three too short to
+      be Base64.</span>
+    <span data-phrase="b64.character">&ldquo;{ch}&rdquo; is not a character Base64 uses.</span>
+    <span data-phrase="hex.digit">&ldquo;{ch}&rdquo; is not a hex digit.</span>
+    <span data-phrase="hex.odd">That is an odd number of hex digits.</span>
+    <span data-phrase="esc.braces">\u{&hellip;} needs hex digits in the braces.</span>
+    <span data-phrase="esc.digits">\{escape} needs {width} hex digits after it.</span>
+    <span data-phrase="esc.unknown">\{escape} is not an escape this reads.</span>
+    <span data-phrase="pct.incomplete">&ldquo;{escape}&rdquo; is not a complete percent
+      escape.</span>
+    <span data-phrase="pct.notutf8">Those percent escapes are not valid UTF-8.</span>
+    <span data-phrase="utf8.notext">Those bytes are not UTF-8 text, so there is nothing
+      to show. They may be a file rather than a string.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">your text has gone nowhere. {total} files
       loaded. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

@@ -175,6 +175,72 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Lettura del suono&hellip;</span>
+    <span data-phrase="step.starting">Avvio&hellip;</span>
+    <span data-phrase="step.reversing">Inversione&hellip;</span>
+    <span data-phrase="step.stretching">Allungamento, tenendo
+      l&rsquo;intonazione&hellip;</span>
+    <span data-phrase="step.resampling">Ricampionamento&hellip;</span>
+    <span data-phrase="step.level">Impostazione del livello&hellip;</span>
+    <span data-phrase="step.writing">Scrittura del file&hellip;</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} canali</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (dal file)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (supposti)</span>
+    <span data-phrase="src.guessednote">Questo formato non dice in nessuna intestazione
+      che questo strumento legga a che frequenza è stato registrato, quindi è stato
+      decodificato a 48 kHz. Se la registrazione è stata fatta a un&rsquo;altra
+      frequenza, il browser l&rsquo;ha ricampionata in ingresso &mdash; ed è
+      l&rsquo;unica cosa qui che non sia esatta.</span>
+    <span data-phrase="peak.silence">silenzio</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">Lasciato com&rsquo;è, a 1x.</span>
+    <span data-phrase="speed.pitch.faster">{speed} più veloce, con l&rsquo;intonazione
+      dov&rsquo;è. La registrazione viene tagliata in finestre che si sovrappongono e
+      riposata più vicina, e questo si fa qui, non altrove.</span>
+    <span data-phrase="speed.pitch.slower">{speed} più lento, con l&rsquo;intonazione
+      dov&rsquo;è. La registrazione viene tagliata in finestre che si sovrappongono e
+      riposata più distanziata, e questo si fa qui, non altrove.</span>
+    <span data-phrase="speed.moves.faster">{speed} più veloce, e tutto si sposta con
+      lui: {semitones} semitoni in su, come un nastro che gira troppo in fretta.</span>
+    <span data-phrase="speed.moves.slower">{speed} più lento, e tutto si sposta con lui:
+      {semitones} semitoni in giù, come un nastro che gira troppo piano.</span>
+    <span data-phrase="volume.already">È già esattamente dove questa impostazione lo
+      metterebbe.</span>
+    <span data-phrase="volume.raised">Alzato di {db} dB, il che porta il momento più
+      forte della registrazione appena sotto il fondo scala.</span>
+    <span data-phrase="volume.lowered">Abbassato di {db} dB, il che porta il momento più
+      forte della registrazione appena sotto il fondo scala.</span>
+    <span data-phrase="volume.unchanged">Lasciato esattamente com&rsquo;è.</span>
+    <span data-phrase="volume.up">{db} dB in su, il che moltiplica ogni campione per
+      {gain} e porta il momento più forte a {peak}.</span>
+    <span data-phrase="volume.down">{db} dB in giù, il che moltiplica ogni campione per
+      {gain} e porta il momento più forte a {peak}.</span>
+    <span data-phrase="clip.over">Con questa impostazione il momento più forte finisce
+      {db} dB sopra il fondo scala.</span>
+    <span data-phrase="clip.float">Un WAV a 32 bit in virgola mobile regge quei
+      campioni, quindi nel file non si perde niente &mdash; ma qualunque cosa lo
+      riproduca deve riabbassare il livello, e la maggior parte lo taglierà al soffitto.
+      Abbassalo, oppure scegli &laquo;più forte che si può&raquo;.</span>
+    <span data-phrase="clip.int">Un WAV a 16 bit non regge quello, quindi quei campioni
+      verrebbero tagliati al soffitto, ed è così che suona la distorsione. Abbassalo,
+      scegli &laquo;più forte che si può&raquo;, oppure scrivi a 32 bit in virgola
+      mobile, che li tiene.</span>
+    <span data-phrase="out.wav.float">WAV, 32 bit virgola mobile</span>
+    <span data-phrase="out.wav.int">WAV, 16 bit</span>
+    <span data-phrase="out.peak">picco {peak}</span>
+    <span data-phrase="out.clipped.one">{n} campione oltre il fondo scala</span>
+    <span data-phrase="out.clipped.many">{n} campioni oltre il fondo scala</span>
+    <span data-phrase="out.took">{n} s</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">Quel file è vuoto.</span>
     <span data-phrase="audio.nodecode">Questo browser non è riuscito a tirare fuori alcun suono da quel file. O il formato
       è uno che non decodifica, o il file non ha proprio una traccia audio. MP3, WAV,

@@ -181,6 +181,71 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Membaca suaranya&hellip;</span>
+    <span data-phrase="step.starting">Memulai&hellip;</span>
+    <span data-phrase="step.reversing">Membalik&hellip;</span>
+    <span data-phrase="step.stretching">Merentangkan, nadanya dipertahankan&hellip;</span>
+    <span data-phrase="step.resampling">Mencuplik ulang&hellip;</span>
+    <span data-phrase="step.level">Menyetel arasnya&hellip;</span>
+    <span data-phrase="step.writing">Menulis berkasnya&hellip;</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stereo</span>
+    <span data-phrase="channels.many">{n} kanal</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (dari berkasnya)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (dianggap)</span>
+    <span data-phrase="src.guessednote">Format ini tidak menyebutkan, di kepala mana pun
+      yang dibaca alat ini, pada laju berapa rekamannya dibuat, jadi ia diawakode pada
+      48 kHz. Kalau rekamannya dibuat pada laju lain, browser mencuplik ulang saat
+      memuat &mdash; dan itu satu-satunya hal di sini yang tidak persis.</span>
+    <span data-phrase="peak.silence">sunyi</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">Dibiarkan apa adanya, pada 1x.</span>
+    <span data-phrase="speed.pitch.faster">{speed} lebih cepat, nadanya tetap di
+      tempatnya. Rekamannya dipotong jadi jendela-jendela yang bertindihan lalu
+      diletakkan kembali lebih rapat, dan itu dikerjakan di sini, bukan dikirim ke
+      mana-mana.</span>
+    <span data-phrase="speed.pitch.slower">{speed} lebih lambat, nadanya tetap di
+      tempatnya. Rekamannya dipotong jadi jendela-jendela yang bertindihan lalu
+      diletakkan kembali lebih renggang, dan itu dikerjakan di sini, bukan dikirim ke
+      mana-mana.</span>
+    <span data-phrase="speed.moves.faster">{speed} lebih cepat, dan semuanya ikut
+      bergeser: {semitones} seminada ke atas, seperti pita yang berjalan terlalu cepat.</span>
+    <span data-phrase="speed.moves.slower">{speed} lebih lambat, dan semuanya ikut
+      bergeser: {semitones} seminada ke bawah, seperti pita yang berjalan terlalu
+      lambat.</span>
+    <span data-phrase="volume.already">Sudah persis di tempat yang dituju setelan ini.</span>
+    <span data-phrase="volume.raised">Dinaikkan {db} dB, sehingga saat paling keras
+      dalam rekamannya tepat di bawah skala penuh.</span>
+    <span data-phrase="volume.lowered">Diturunkan {db} dB, sehingga saat paling keras
+      dalam rekamannya tepat di bawah skala penuh.</span>
+    <span data-phrase="volume.unchanged">Dibiarkan persis seperti sekarang.</span>
+    <span data-phrase="volume.up">Naik {db} dB, yang mengalikan tiap cuplikan dengan
+      {gain} dan membawa saat paling keras ke {peak}.</span>
+    <span data-phrase="volume.down">Turun {db} dB, yang mengalikan tiap cuplikan dengan
+      {gain} dan membawa saat paling keras ke {peak}.</span>
+    <span data-phrase="clip.over">Dengan setelan ini saat paling keras jatuh {db} dB di
+      atas skala penuh.</span>
+    <span data-phrase="clip.float">WAV 32-bita mengambang sanggup menampung cuplikan
+      itu, jadi tidak ada yang hilang di berkasnya sendiri &mdash; tetapi apa pun yang
+      memutarnya harus menurunkan arasnya lagi, dan kebanyakan justru meratakannya di
+      langit-langit. Turunkan, atau pilih &ldquo;sekeras mungkin&rdquo;.</span>
+    <span data-phrase="clip.int">WAV 16-bita tidak sanggup menampungnya, jadi cuplikan
+      itu akan diratakan di langit-langit, dan begitulah bunyi distorsi. Turunkan, pilih
+      &ldquo;sekeras mungkin&rdquo;, atau tulis 32-bita mengambang yang menyimpannya.</span>
+    <span data-phrase="out.wav.float">WAV, 32 bita mengambang</span>
+    <span data-phrase="out.wav.int">WAV, 16 bita</span>
+    <span data-phrase="out.peak">puncak {peak}</span>
+    <span data-phrase="out.clipped.one">{n} cuplikan di atas skala penuh</span>
+    <span data-phrase="out.clipped.many">{n} cuplikan di atas skala penuh</span>
+    <span data-phrase="out.took">{n} dtk</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">Berkas itu kosong.</span>
     <span data-phrase="audio.nodecode">Browser ini tidak berhasil mengambil suara apa pun dari berkas itu. Entah formatnya
       tidak bisa diawakode olehnya, entah berkasnya memang tidak punya jalur audio sama

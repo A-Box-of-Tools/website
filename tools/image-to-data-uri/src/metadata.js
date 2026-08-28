@@ -106,25 +106,25 @@ function jpeg(bytes) {
 
 function jpegKind(bytes, marker, body) {
   if (marker === 0xe1) {
-    if (ascii(bytes, body, 'Exif\0\0')) return 'EXIF';
-    if (ascii(bytes, body, 'http://ns.adobe.com/xap/1.0/\0')) return 'XMP';
+    if (ascii(bytes, body, 'Exif\0\0')) return 'kind.exif';
+    if (ascii(bytes, body, 'http://ns.adobe.com/xap/1.0/\0')) return 'kind.xmp';
     return null;
   }
-  if (marker === 0xe2 && ascii(bytes, body, 'ICC_PROFILE\0')) return 'a colour profile';
-  if (marker === 0xed && ascii(bytes, body, 'Photoshop 3.0\0')) return 'IPTC';
-  if (marker === 0xfe) return 'a comment';
+  if (marker === 0xe2 && ascii(bytes, body, 'ICC_PROFILE\0')) return 'kind.icc';
+  if (marker === 0xed && ascii(bytes, body, 'Photoshop 3.0\0')) return 'kind.iptc';
+  if (marker === 0xfe) return 'kind.comment';
   return null;
 }
 
 /* --------------------------------------------------------------------- PNG */
 
 const PNG_CHUNKS = {
-  eXIf: 'EXIF',
-  iTXt: 'text',
-  tEXt: 'text',
-  zTXt: 'text',
-  iCCP: 'a colour profile',
-  tIME: 'a timestamp',
+  eXIf: 'kind.exif',
+  iTXt: 'kind.text',
+  tEXt: 'kind.text',
+  zTXt: 'kind.text',
+  iCCP: 'kind.icc',
+  tIME: 'kind.time',
 };
 
 function png(bytes) {
@@ -137,7 +137,7 @@ function png(bytes) {
     // iTXt often holds XMP, which is worth naming separately: it is where a
     // photo editor puts the things people expect EXIF to hold.
     const kind = type === 'iTXt' && ascii(bytes, at + 8, 'XML:com.adobe.xmp\0')
-      ? 'XMP'
+      ? 'kind.xmp'
       : PNG_CHUNKS[type];
     if (kind) hits.push({ kind, bytes: length + 12 });
     if (type === 'IEND') break;
@@ -150,9 +150,9 @@ function png(bytes) {
 /* -------------------------------------------------------------------- WebP */
 
 const WEBP_CHUNKS = {
-  EXIF: 'EXIF',
-  'XMP ': 'XMP',
-  ICCP: 'a colour profile',
+  EXIF: 'kind.exif',
+  'XMP ': 'kind.xmp',
+  ICCP: 'kind.icc',
 };
 
 function webp(bytes) {

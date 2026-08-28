@@ -95,8 +95,10 @@ const stage = new Stage(el.stage, {
   onDelete: (id) => removeRegion(id),
   onGestureStart: () => snapshot(),
   regionOf: (id) => regions.find((region) => region.id === id),
-  describe: (region, index) => `Area ${index + 1}: ${describeRegion(region, el.strength.value)}. `
-    + 'The arrow keys move it, Alt and the arrow keys resize it, and Delete removes it.',
+  describe: (region, index) => phrase('region.aria', {
+    n: index + 1,
+    what: describeRegion(region, el.strength.value, phrase),
+  }),
 });
 
 /* ------------------------------------------------------------- the picture */
@@ -123,7 +125,7 @@ async function decode(file) {
     const image = await new Promise((resolve, reject) => {
       const element = new Image();
       element.onload = () => resolve(element);
-      element.onerror = () => reject(new Error('this browser could not decode the picture.'));
+      element.onerror = () => reject(new Error('read.nodecode'));
       element.src = url;
     });
     return { bitmap: image, width: image.naturalWidth, height: image.naturalHeight };
@@ -149,14 +151,18 @@ async function load(file) {
     selectedId = null;
     counter = 0;
 
-    el.loadedName.textContent = `${file.name} - ${decoded.width} x ${decoded.height}`;
+    el.loadedName.textContent = phrase('loaded.name', {
+      name: file.name, width: decoded.width, height: decoded.height,
+    });
     el.loaded.hidden = false;
     el.editEmpty.hidden = true;
     el.editControls.hidden = false;
     showFormatRow();
     refresh();
   } catch (error) {
-    showLoadError(`That file could not be opened: ${error.message}`);
+    // decode() throws a key; a browser that failed for its own reasons throws
+    // a sentence, and phrase() hands back what it does not recognise.
+    showLoadError(phrase('read.failed', { why: phrase(error.message) }));
   } finally {
     wired.done();
   }
@@ -298,12 +304,12 @@ function refresh() {
   el.undo.disabled = history.length === 0;
   el.clearBoxes.disabled = regions.length === 0;
   el.save.disabled = !picture || busy;
-  el.strengthNote.textContent = strengthNote(el.strength.value);
+  el.strengthNote.textContent = strengthNote(el.strength.value, phrase);
 }
 
 function renderList() {
   const strength = el.strength.value;
-  el.boxSummary.textContent = countSummary(regions);
+  el.boxSummary.textContent = countSummary(regions, phrase);
 
   const risk = riskNote(regions, strength);
   el.riskNote.textContent = risk ?? '';
@@ -328,13 +334,11 @@ function renderList() {
 
     const choice = document.createElement('select');
     choice.className = 'region-style';
-    choice.setAttribute('aria-label', `What area ${index + 1} does`);
-    for (const [value, label] of [
-      ['fill', 'Black out'], ['pixelate', 'Pixelate'], ['blur', 'Blur'],
-    ]) {
+    choice.setAttribute('aria-label', phrase('region.choice', { n: index + 1 }));
+    for (const value of ['fill', 'pixelate', 'blur']) {
       const option = document.createElement('option');
       option.value = value;
-      option.textContent = label;
+      option.textContent = phrase(`choice.${value}`);
       option.selected = region.style === value;
       choice.append(option);
     }
@@ -424,7 +428,7 @@ async function save() {
     const quality = format.lossy ? Number(el.quality.value) / 100 : undefined;
     const blob = await new Promise((resolve, reject) => {
       canvas.toBlob(
-        (made) => (made ? resolve(made) : reject(new Error('the browser could not encode it.'))),
+        (made) => (made ? resolve(made) : reject(new Error('write.noencode'))),
         format.mime,
         quality,
       );
@@ -434,7 +438,7 @@ async function save() {
     canvas.height = 0;
     showResult(blob, format);
   } catch (error) {
-    showLoadError(`Something went wrong writing the file: ${error.message}`);
+    showLoadError(phrase('write.failed', { why: phrase(error.message) }));
   } finally {
     busy = false;
     el.busy.hidden = true;
@@ -456,15 +460,20 @@ function showResult(blob, format) {
 
   const name = outName(stemOf(picture.file.name), format);
   el.resultImage.src = resultUrl;
-  el.resultImage.alt = `The redacted picture, ${picture.width} by ${picture.height} pixels`;
+  el.resultImage.alt = phrase('result.alt',
+    { width: picture.width, height: picture.height });
   el.download.href = resultUrl;
   el.download.download = name;
 
   const facts = [
-    `${name} - ${sizeText(blob.size)}, ${picture.width} x ${picture.height}`,
-    countSummary(regions) || 'No areas were marked, so this is the same picture re-encoded.',
-    'Written from the redacted pixels, so it carries no EXIF, no GPS, no embedded '
-    + 'thumbnail and no layer with the original in it.',
+    phrase('result.file', {
+      name,
+      size: sizeText(blob.size, phrase),
+      width: picture.width,
+      height: picture.height,
+    }),
+    countSummary(regions, phrase) || phrase('result.nothing'),
+    phrase('result.clean'),
   ];
   el.resultFacts.replaceChildren(...facts.map((line) => {
     const item = document.createElement('li');

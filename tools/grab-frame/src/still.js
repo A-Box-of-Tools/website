@@ -95,7 +95,10 @@ export function encodeStill(canvas, { type = 'image/png', quality = 0.92 } = {})
   return new Promise((resolve, reject) => {
     const done = (blob) => {
       if (blob) resolve(blob);
-      else reject(new Error(`This browser would not write a ${FORMATS[type]?.label ?? type}.`));
+      // A key and its blank: this module ships in fifteen languages and only
+      // the page can read a phrase.
+      else reject(Object.assign(new Error('save.nowrite'),
+        { values: { format: FORMATS[type]?.label ?? type } }));
     };
     // The quality argument is ignored for PNG, which has none to spend.
     if (type === 'image/png') canvas.toBlob(done, type);

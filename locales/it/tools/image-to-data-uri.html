@@ -147,6 +147,57 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: questo non è un formato immagine che
+      questo strumento conosca. Il tipo in una URI di dati deve essere quello giusto,
+      quindi non ne indovinerà uno.</span>
+    <span data-phrase="read.mismatch">Il nome dice {extension}, ma i byte sono {label}.
+      La URI dice {mime}, che è quello che funzionerà.</span>
+    <span data-phrase="row.remove">Togli {name} dalla lista</span>
+    <span data-phrase="n.image.one">{n} immagine</span>
+    <span data-phrase="n.image.many">{n} immagini</span>
+    <span data-phrase="results.one">{n} immagine, {size} di testo in tutto. Niente di
+      tutto ciò è andato da nessuna parte.</span>
+    <span data-phrase="results.many">{n} immagini, {size} di testo in tutto. Niente di
+      tutto ciò è andato da nessuna parte.</span>
+    <span data-phrase="facts.in">{size} in ingresso</span>
+    <span data-phrase="facts.out">{n} caratteri in uscita</span>
+    <span data-phrase="overhead.same">della stessa dimensione del file</span>
+    <span data-phrase="overhead.larger">più grande del file del {percent}%</span>
+    <span data-phrase="overhead.smaller">più piccolo del file del {percent}%</span>
+    <span data-phrase="verdict.tiny">Abbastanza piccolo perché convenga
+      senz&rsquo;altro: una richiesta in meno, e quasi niente aggiunto al file in cui
+      finisce.</span>
+    <span data-phrase="verdict.icon">Una dimensione normale per un&rsquo;icona
+      incorporata. Ne vale la pena per qualcosa che compare su ogni pagina.</span>
+    <span data-phrase="verdict.large">Grande per un&rsquo;immagine incorporata. Tutto
+      ciò che include questo foglio di stile ora se la porta dietro, e non può più
+      essere messa in cache per conto suo.</span>
+    <span data-phrase="verdict.toobig">Troppo grande da incorporare. Servito come file
+      normale verrebbe messo in cache una volta e scaricato in parallelo; incorporato,
+      sta sul percorso critico di ogni pagina e viene riscaricato ogni volta che cambia
+      qualunque cosa attorno.</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">un profilo colore</span>
+    <span data-phrase="kind.time">una marca temporale</span>
+    <span data-phrase="kind.comment">un commento</span>
+    <span data-phrase="kind.text">testo</span>
+    <span data-phrase="meta.plain">Porta {size} di {kinds}. Viene copiato nella URI
+      insieme all&rsquo;immagine.</span>
+    <span data-phrase="meta.share">Porta {size} di {kinds}, cioè il {percent}% del file.
+      Viene copiato nella URI insieme all&rsquo;immagine.</span>
+    <span data-phrase="render.failed">Questo browser non ha voluto disegnare il
+      risultato. La URI è ben formata; il formato è uno che non sa decodificare.</span>
+    <span data-phrase="sniff.unrenderable">Nessun browser tranne Safari disegna questo
+      formato, quindi la URI sarà valida e l&rsquo;immagine non comparirà. Convertila
+      prima.</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.and">{a} e {b}</span>
+    <span data-phrase="size.b">{n} byte</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">Le tue immagini non sono andate da nessuna
       parte. {total} file caricati, tutti quanti di questo sito. {platform}</span>
     <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo

@@ -63,8 +63,10 @@ BASELINE = {
     'crop-video': 0,
     'dicom-viewer': 15,
     'document-scanner': 13,
-    'edit-audio': 18,
-    'encode-text': 23,
+    # A clock format, and one invariant check in each of the two speed
+    # modules - main.js clamps the speed, so neither can be reached.
+    'edit-audio': 3,
+    'encode-text': 0,
     'exif-editor': 30,
     'format-json': 3,
     # Two key templates, a CSS pixel value and two lines of table layout.
@@ -72,25 +74,29 @@ BASELINE = {
     # Six invariant checks the writer makes about its own arguments - a bug
     # here rather than anything a file can cause - and a CSS class name.
     'gif-maker': 7,
-    'grab-frame': 22,
+    # A filename template.
+    'grab-frame': 1,
     'hash-checksum': 10,
     # A CSS class name and the two halves of one internal state name.
     'heic-to-jpg': 3,
     # A filename template, a dimension pair, a CSS percentage, a phrase key, the
     # note written into a padded JPEG, and the eight published citations.
     'id-photo': 13,
-    'image-to-data-uri': 20,
+    # A CSS class name and one line of the CSS rule the tool writes out.
+    'image-to-data-uri': 2,
     'image-to-ico': 6,
     # The /Producer string written into the PDF, five lines of PDF syntax, a
     # CSS pixel value, a key template and the output filename.
     'images-to-pdf': 9,
-    'images-to-video': 21,
+    # A CSS class name the list builds.
+    'images-to-video': 1,
     'merge-pdf': 5,
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
     'qr-barcode': 2,
     'qr-barcode-reader': 13,
-    'redact-image': 17,
+    # A key template, and a CSS class name the stage builds.
+    'redact-image': 2,
     'redact-pdf': 15,
     'resize-image': 5,
     # The key template that picks between two whole sentences.
@@ -107,7 +113,8 @@ BASELINE = {
     # names the timeline builds.
     'trim-audio': 7,
     'trim-video': 9,
-    'video-to-gif': 23,
+    # A CSS class name the range bar builds and two CSS percentages.
+    'video-to-gif': 3,
 }
 
 # Modules that hold somebody else's vocabulary rather than this site's prose.

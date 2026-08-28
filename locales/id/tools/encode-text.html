@@ -82,6 +82,64 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="codec.base64.name">Base64</span>
+    <span data-phrase="codec.base64.note">Teks ke Base64 dan kembali. Pergantian baris
+      pada masukan diabaikan, jadi kunci yang terpotong ke beberapa baris bisa ditempel
+      apa adanya.</span>
+    <span data-phrase="codec.base64url.name">Base64, aman untuk URL</span>
+    <span data-phrase="codec.base64url.note">Sama saja, dengan - dan _ menggantikan +
+      dan /, dan tanpa pengisi. Inilah yang dipakai JWT dan kebanyakan token.</span>
+    <span data-phrase="codec.url.name">Alamat web, satu nilai</span>
+    <span data-phrase="codec.url.note">Pengodean persen untuk nilai yang masuk ke query
+      string: semua yang diberi makna oleh sebuah URL akan dilolosi.</span>
+    <span data-phrase="codec.url-whole.name">Alamat web, seluruh URL</span>
+    <span data-phrase="codec.url-whole.note">Pengodean persen yang membiarkan alamatnya
+      sendiri tetap jalan &mdash; garis miring, ?, dan &amp; dipertahankan.</span>
+    <span data-phrase="codec.html.name">Entitas HTML</span>
+    <span data-phrase="codec.html.note">Lima karakter yang harus dilolosi di markah.
+      Saat mengawakode, entitas angka dan entitas bernama yang umum juga dibaca.</span>
+    <span data-phrase="codec.hex.name">Bita heksadesimal</span>
+    <span data-phrase="codec.hex.note">Bita UTF-8 dari teksnya, dalam heksadesimal. Saat
+      mengawakode, pemisah apa pun yang dipakai dump itu diabaikan.</span>
+    <span data-phrase="codec.escapes.name">Pelolosan garis miring terbalik</span>
+    <span data-phrase="codec.escapes.note">Seperti inilah rupa literal string di
+      JavaScript, Java, atau JSON: \n, \t, dan \uXXXX untuk apa pun di atas ASCII.</span>
+    <span data-phrase="sample.text">Sebuah string dengan &lt;tanda kurung sudut&gt;,
+      sebuah ampersand &amp; secangkir kopi.</span>
+    <span data-phrase="step.reading">Membaca berkasnya&hellip;</span>
+    <span data-phrase="read.failed">Berkas itu tidak bisa dibaca: {why}</span>
+    <span data-phrase="count.empty">kosong</span>
+    <span data-phrase="n.line.one">{n} baris</span>
+    <span data-phrase="n.line.many">{n} baris</span>
+    <span data-phrase="n.character.one">{n} karakter</span>
+    <span data-phrase="n.character.many">{n} karakter</span>
+    <span data-phrase="result.nothing">Belum ada apa-apa.</span>
+    <span data-phrase="result.none">Tidak ada yang keluar.</span>
+    <span data-phrase="out.encoded">{name}, dikodekan &mdash; {in} masuk, {out} keluar</span>
+    <span data-phrase="out.decoded">{name}, diawakode &mdash; {in} masuk, {out} keluar</span>
+    <span data-phrase="b64.padding">Ada lebih dari dua karakter pengisi di ujungnya.</span>
+    <span data-phrase="b64.notfour">Itu berpengisi, tetapi panjangnya bukan kelipatan
+      empat.</span>
+    <span data-phrase="b64.length">Itu kepanjangan satu karakter atau kependekan tiga
+      untuk jadi Base64.</span>
+    <span data-phrase="b64.character">&ldquo;{ch}&rdquo; bukan karakter yang dipakai
+      Base64.</span>
+    <span data-phrase="hex.digit">&ldquo;{ch}&rdquo; bukan digit heksadesimal.</span>
+    <span data-phrase="hex.odd">Jumlah digit heksadesimalnya ganjil.</span>
+    <span data-phrase="esc.braces">\u{&hellip;} perlu digit heksadesimal di dalam kurung
+      kurawalnya.</span>
+    <span data-phrase="esc.digits">\{escape} perlu {width} digit heksadesimal
+      setelahnya.</span>
+    <span data-phrase="esc.unknown">\{escape} bukan pelolosan yang dibaca di sini.</span>
+    <span data-phrase="pct.incomplete">&ldquo;{escape}&rdquo; bukan pelolosan persen
+      yang utuh.</span>
+    <span data-phrase="pct.notutf8">Pelolosan persen itu bukan UTF-8 yang sah.</span>
+    <span data-phrase="utf8.notext">Bita-bita itu bukan teks UTF-8, jadi tidak ada yang
+      bisa ditampilkan. Mungkin itu berkas, bukan string.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">teks Anda tidak pergi ke mana pun. {total}
       file dimuat. {platform}</span>
     <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak

@@ -33,9 +33,11 @@ export const STYLES = ['fill', 'pixelate', 'blur'];
  * Measured against the box, one setting behaves the same way on both.
  */
 export const STRENGTHS = {
-  light: { id: 'light', label: 'Light', blocks: 14, blur: 22 },
-  medium: { id: 'medium', label: 'Medium', blocks: 9, blur: 14 },
-  heavy: { id: 'heavy', label: 'Heavy', blocks: 5, blur: 7 },
+  // `label` is a phrase key: this module ships in fifteen languages and the
+  // page is the only place a word can be read.
+  light: { id: 'light', label: 'strength.light', blocks: 14, blur: 22 },
+  medium: { id: 'medium', label: 'strength.medium', blocks: 9, blur: 14 },
+  heavy: { id: 'heavy', label: 'strength.heavy', blocks: 5, blur: 7 },
 };
 
 export const strengthOf = (id) => STRENGTHS[id] ?? STRENGTHS.medium;

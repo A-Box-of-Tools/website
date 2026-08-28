@@ -777,6 +777,15 @@ footer a:hover { text-decoration: underline; }
   text-align: center;
 }
 
+/* Underlined, unlike the rest of the footer's links, because these sit inside
+   a sentence rather than in a list of their own. A link in a block of text
+   that is marked by colour alone is invisible to a reader who cannot see that
+   colour - there is nothing else to tell them where the sentence stops and
+   the link starts. The links above are each on their own line, where their
+   position does that job. */
+.footer-licence a { text-decoration: underline; }
+
+
 /* The language switcher, across the foot of the page above the closing line.
 
    A row of plain links and nothing else: no JavaScript, no cookie, no

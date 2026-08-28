@@ -176,6 +176,71 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Lecture du son&hellip;</span>
+    <span data-phrase="step.starting">Démarrage&hellip;</span>
+    <span data-phrase="step.reversing">Inversion&hellip;</span>
+    <span data-phrase="step.stretching">Étirement, hauteur conservée&hellip;</span>
+    <span data-phrase="step.resampling">Rééchantillonnage&hellip;</span>
+    <span data-phrase="step.level">Réglage du niveau&hellip;</span>
+    <span data-phrase="step.writing">Écriture du fichier&hellip;</span>
+    <span data-phrase="channels.mono">mono</span>
+    <span data-phrase="channels.stereo">stéréo</span>
+    <span data-phrase="channels.many">{n} canaux</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (d&rsquo;après le fichier)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (supposé)</span>
+    <span data-phrase="src.guessednote">Ce format n&rsquo;indique pas dans un en-tête
+      que cet outil lit à quelle fréquence l&rsquo;enregistrement a été fait, il a donc
+      été décodé à 48 kHz. Si l&rsquo;enregistrement a été fait à une autre fréquence,
+      le navigateur l&rsquo;a rééchantillonné en entrée &mdash; c&rsquo;est la seule
+      chose ici qui ne soit pas exacte.</span>
+    <span data-phrase="peak.silence">silence</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">Laissé tel quel, à 1x.</span>
+    <span data-phrase="speed.pitch.faster">{speed} plus vite, en gardant la hauteur là
+      où elle est. L&rsquo;enregistrement est découpé en fenêtres qui se recouvrent et
+      reposé plus serré &mdash; ici, et pas ailleurs.</span>
+    <span data-phrase="speed.pitch.slower">{speed} plus lentement, en gardant la hauteur
+      là où elle est. L&rsquo;enregistrement est découpé en fenêtres qui se recouvrent
+      et reposé plus espacé &mdash; ici, et pas ailleurs.</span>
+    <span data-phrase="speed.moves.faster">{speed} plus vite, et tout suit&nbsp;:
+      {semitones} demi-tons vers le haut, comme une bande qui défile trop vite.</span>
+    <span data-phrase="speed.moves.slower">{speed} plus lentement, et tout suit&nbsp;:
+      {semitones} demi-tons vers le bas, comme une bande qui défile trop lentement.</span>
+    <span data-phrase="volume.already">Déjà exactement là où ce réglage le mettrait.</span>
+    <span data-phrase="volume.raised">Monté de {db} dB, ce qui place le moment le plus
+      fort de l&rsquo;enregistrement juste sous la pleine échelle.</span>
+    <span data-phrase="volume.lowered">Baissé de {db} dB, ce qui place le moment le plus
+      fort de l&rsquo;enregistrement juste sous la pleine échelle.</span>
+    <span data-phrase="volume.unchanged">Laissé exactement tel quel.</span>
+    <span data-phrase="volume.up">{db} dB de plus, ce qui multiplie chaque échantillon
+      par {gain} et porte le moment le plus fort à {peak}.</span>
+    <span data-phrase="volume.down">{db} dB de moins, ce qui multiplie chaque
+      échantillon par {gain} et porte le moment le plus fort à {peak}.</span>
+    <span data-phrase="clip.over">À ce réglage, le moment le plus fort dépasse la pleine
+      échelle de {db} dB.</span>
+    <span data-phrase="clip.float">Un WAV 32 bits flottant retiendra ces échantillons,
+      rien n&rsquo;est donc perdu dans le fichier lui-même &mdash; mais tout ce qui le
+      lit devra redescendre le niveau, et la plupart des logiciels l&rsquo;écrêteront au
+      plafond à la place. Baissez-le, ou choisissez «&nbsp;aussi fort que
+      possible&nbsp;».</span>
+    <span data-phrase="clip.int">Un WAV 16 bits ne peut pas retenir cela&nbsp;: ces
+      échantillons seraient écrêtés au plafond, et c&rsquo;est exactement le son de la
+      distorsion. Baissez-le, choisissez «&nbsp;aussi fort que possible&nbsp;», ou
+      écrivez du 32 bits flottant, qui les garde.</span>
+    <span data-phrase="out.wav.float">WAV, 32 bits flottant</span>
+    <span data-phrase="out.wav.int">WAV, 16 bits</span>
+    <span data-phrase="out.peak">crête {peak}</span>
+    <span data-phrase="out.clipped.one">{n} échantillon au-dessus de la pleine échelle</span>
+    <span data-phrase="out.clipped.many">{n} échantillons au-dessus de la pleine échelle</span>
+    <span data-phrase="out.took">{n} s</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} o</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="size.gb">{n} Go</span>
     <span data-phrase="audio.empty">Ce fichier est vide.</span>
     <span data-phrase="audio.nodecode">Ce navigateur n&rsquo;a pas su tirer de son de ce fichier. Soit le format est un de
       ceux qu&rsquo;il ne décode pas, soit le fichier n&rsquo;a pas de piste audio du
