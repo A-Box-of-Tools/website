@@ -46,6 +46,9 @@ const KEYFRAME_SECONDS = 2;
 const QUEUE_LIMIT = 8;
 
 /** How long one seek may take before the clip is called unreadable. */
+/** An error whose message is a phrase key; the caller resolves it. */
+const said = (key, values = {}) => Object.assign(new Error(key), { values });
+
 const SEEK_TIMEOUT = 10_000;
 
 /** What the frame rate is assumed to be when the browser will not say. */
@@ -103,9 +106,8 @@ function seekTo(video, seconds) {
       else resolve();
     };
     const ok = () => done(null);
-    const bad = () => done(new Error('The browser stopped being able to read this clip.'));
-    const timer = setTimeout(
-      () => done(new Error('The browser took too long to seek in this clip.')), SEEK_TIMEOUT);
+    const bad = () => done(new Error('play.unreadable'));
+    const timer = setTimeout(() => done(new Error('play.slowseek')), SEEK_TIMEOUT);
 
     video.addEventListener('seeked', ok, { once: true });
     video.addEventListener('error', bad, { once: true });
@@ -208,8 +210,7 @@ export async function reverseByPlayback({
     width: frame.width, height: frame.height, framerate: Math.round(fps), bitrate,
   });
   if (!codec) {
-    throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
-      + 'A smaller clip will work; this one will not.');
+    throw said('encode.noh264', { width: frame.width, height: frame.height });
   }
 
   onProgress?.({ phase: 'preparing', done: 0, total });
@@ -309,8 +310,8 @@ export async function reverseByPlayback({
     onProgress?.({ phase: 'finishing', done: total, total });
     await encoder.flush();
     if (failure) throw failure;
-    if (!encoded.length) throw new Error('No frames could be read out of this file.');
-    if (!avcC) throw new Error('The encoder never reported a decoder configuration.');
+    if (!encoded.length) throw new Error('play.noframes');
+    if (!avcC) throw new Error('encode.noconfig');
   } finally {
     if (encoder.state !== 'closed') encoder.close();
   }

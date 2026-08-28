@@ -94,6 +94,72 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Reading the file&hellip;</span>
+    <span data-phrase="step.measuring">Measuring the frame rate&hellip;</span>
+    <span data-phrase="open.notopened">That file could not be opened.</span>
+    <span data-phrase="preview.none">This browser will not play this file, so there is no preview. Reversing it does not
+      go through the player, so it will still work.</span>
+    <span data-phrase="nocodec.page">This browser has no video encoder (WebCodecs), so it cannot write a reversed video.
+      Chrome, Edge and Safari 16.4 or newer can; so can Firefox 133 and newer.</span>
+    <span data-phrase="nocodec.file">This browser has no video encoder, so nothing here can write the reversed clip. A
+      recent Chrome, Edge or Safari will.</span>
+    <span data-phrase="src.unknown">unknown</span>
+    <span data-phrase="src.byplayer">read by the browser&rsquo;s own player</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), turned {degrees} degrees</span>
+    <span data-phrase="src.audio.one">{entry}, {n} channel, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} channels, {rate} Hz</span>
+    <span data-phrase="src.audio.none">none</span>
+    <span data-phrase="src.audio.whatever">whatever the player finds</span>
+    <span data-phrase="sound.off">The reversed clip will have no sound at all.</span>
+    <span data-phrase="sound.exact">Decoded, turned round sample by sample, and encoded again as AAC. That second encode
+      is unavoidable: packets played in the other order are not a reversal.</span>
+    <span data-phrase="sound.player">Read by the browser, turned round sample by sample, and encoded again as AAC.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (from {fromWidth} x {fromHeight}; H.264 has no way to store an
+      odd-sided frame)</span>
+    <span data-phrase="frames.groups">{n} in {groups} groups</span>
+    <span data-phrase="frames.about">about {n}, at {fps} a second</span>
+    <span data-phrase="path.exact">Decoded group by group from the end, into MP4</span>
+    <span data-phrase="path.player">Stepped backwards through the player, into MP4</span>
+    <span data-phrase="step.preparing">Preparing&hellip;</span>
+    <span data-phrase="step.soundreading">Reading the sound&hellip;</span>
+    <span data-phrase="step.soundwriting">Reversing the sound&hellip;</span>
+    <span data-phrase="step.finishing">Finishing up&hellip;</span>
+    <span data-phrase="step.frame">Reversing frame {done} of {total} ({percent}%)</span>
+    <span data-phrase="audio.descriptor">Internal error: the audio description is larger than expected.</span>
+    <span data-phrase="audio.nosound">No sound came back from this file.</span>
+    <span data-phrase="audio.noencode">The sound was decoded but nothing came back from the encoder.</span>
+    <span data-phrase="audio.toolarge">The sound in this file is not AAC, so reversing it would mean handing the whole file
+      to the browser for reading &mdash; and this file is too large for that. The video
+      has been reversed without sound.</span>
+    <span data-phrase="audio.unreadable">No sound could be read out of this file, so the reversed video has none. Either it
+      has no audio track, or this browser will not decode the one it has.</span>
+    <span data-phrase="audio.noaac">Reversing the sound means encoding it again, and this browser will not encode AAC.
+      The video has been reversed without sound; Chrome, Edge and Safari will do it with.</span>
+    <span data-phrase="play.unreadable">The browser stopped being able to read this clip.</span>
+    <span data-phrase="play.slowseek">The browser took too long to seek in this clip.</span>
+    <span data-phrase="play.noframes">No frames could be read out of this file.</span>
+    <span data-phrase="reverse.noframes">No frames could be decoded from this file.</span>
+    <span data-phrase="encode.noh264">This browser will not encode H.264 at {width}x{height}. A smaller clip will work;
+      this one will not.</span>
+    <span data-phrase="encode.noconfig">The encoder never reported a decoder configuration.</span>
+    <span data-phrase="stall.decoder">The video decoder stopped responding partway through, without reporting a reason. A
+      shorter clip, a lower quality setting, or a different browser is worth trying.</span>
+    <span data-phrase="stall.encoder">The video encoder stopped responding partway through, without reporting a reason. A
+      shorter clip, a lower quality setting, or a different browser is worth trying.</span>
+    <span data-phrase="stall.both">The video decoder or encoder stopped responding partway through, without reporting a
+      reason. A shorter clip, a lower quality setting, or a different browser is worth
+      trying.</span>
+    <span data-phrase="export.failed">Something went wrong while reversing.</span>
+    <span data-phrase="n.frame.one">{n} frame</span>
+    <span data-phrase="n.frame.many">{n} frames</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes}m {seconds}s</span>
+    <span data-phrase="time.seconds">{n}s</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>

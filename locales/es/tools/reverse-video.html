@@ -94,6 +94,75 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Leyendo el archivo&hellip;</span>
+    <span data-phrase="step.measuring">Midiendo la cadencia&hellip;</span>
+    <span data-phrase="open.notopened">Ese archivo no se ha podido abrir.</span>
+    <span data-phrase="preview.none">Este navegador no reproduce este archivo, así que no hay vista previa. Invertirlo no
+      pasa por el reproductor, así que funcionará igual.</span>
+    <span data-phrase="nocodec.page">Este navegador no tiene codificador de vídeo (WebCodecs), así que no puede escribir
+      un vídeo invertido. Chrome, Edge y Safari 16.4 o más nuevos sí pueden; y Firefox 133
+      y más nuevos también.</span>
+    <span data-phrase="nocodec.file">Este navegador no tiene codificador de vídeo, así que aquí nada puede escribir el
+      clip invertido. Un Chrome, Edge o Safari reciente sí.</span>
+    <span data-phrase="src.unknown">desconocida</span>
+    <span data-phrase="src.byplayer">leído por el propio reproductor del navegador</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), girado {degrees} grados</span>
+    <span data-phrase="src.audio.one">{entry}, {n} canal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} canales, {rate} Hz</span>
+    <span data-phrase="src.audio.none">ninguno</span>
+    <span data-phrase="src.audio.whatever">lo que encuentre el reproductor</span>
+    <span data-phrase="sound.off">El clip invertido no tendrá sonido ninguno.</span>
+    <span data-phrase="sound.exact">Descodificado, dado la vuelta muestra a muestra y codificado otra vez como AAC. Esa
+      segunda codificación es inevitable: unos paquetes reproducidos al revés no son una
+      inversión.</span>
+    <span data-phrase="sound.player">Leído por el navegador, dado la vuelta muestra a muestra y codificado otra vez como
+      AAC.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (desde {fromWidth} x {fromHeight}; H.264 no sabe guardar un
+      fotograma de lado impar)</span>
+    <span data-phrase="frames.groups">{n} en {groups} grupos</span>
+    <span data-phrase="frames.about">unos {n}, a {fps} por segundo</span>
+    <span data-phrase="path.exact">Descodificado grupo a grupo desde el final, a MP4</span>
+    <span data-phrase="path.player">Recorrido hacia atrás por el reproductor, a MP4</span>
+    <span data-phrase="step.preparing">Preparando&hellip;</span>
+    <span data-phrase="step.soundreading">Leyendo el sonido&hellip;</span>
+    <span data-phrase="step.soundwriting">Invirtiendo el sonido&hellip;</span>
+    <span data-phrase="step.finishing">Terminando&hellip;</span>
+    <span data-phrase="step.frame">Invirtiendo el fotograma {done} de {total} ({percent}%)</span>
+    <span data-phrase="audio.descriptor">Error interno: la descripción del audio es mayor de lo esperado.</span>
+    <span data-phrase="audio.nosound">De este archivo no ha vuelto ningún sonido.</span>
+    <span data-phrase="audio.noencode">El sonido se ha descodificado pero del codificador no ha vuelto nada.</span>
+    <span data-phrase="audio.toolarge">El sonido de este archivo no es AAC, así que invertirlo significaría darle el
+      archivo entero al navegador para que lo lea &mdash; y este archivo es demasiado
+      grande para eso. El vídeo se ha invertido sin sonido.</span>
+    <span data-phrase="audio.unreadable">De este archivo no se ha podido leer sonido, así que el vídeo invertido no lo tiene.
+      O no tiene pista de audio, o este navegador no descodifica la que tiene.</span>
+    <span data-phrase="audio.noaac">Invertir el sonido significa codificarlo otra vez, y este navegador no codifica AAC.
+      El vídeo se ha invertido sin sonido; Chrome, Edge y Safari lo hacen con él.</span>
+    <span data-phrase="play.unreadable">El navegador ha dejado de poder leer este clip.</span>
+    <span data-phrase="play.slowseek">El navegador ha tardado demasiado en moverse por este clip.</span>
+    <span data-phrase="play.noframes">De este archivo no se ha podido leer ningún fotograma.</span>
+    <span data-phrase="reverse.noframes">De este archivo no se ha podido descodificar ningún fotograma.</span>
+    <span data-phrase="encode.noh264">Este navegador no codifica H.264 a {width}x{height}. Un clip más pequeño funcionará;
+      este no.</span>
+    <span data-phrase="encode.noconfig">El codificador nunca ha informado de una configuración de descodificador.</span>
+    <span data-phrase="stall.decoder">El descodificador de vídeo ha dejado de responder a medio camino, sin decir por qué.
+      Merece la pena probar un clip más corto, una calidad más baja u otro navegador.</span>
+    <span data-phrase="stall.encoder">El codificador de vídeo ha dejado de responder a medio camino, sin decir por qué.
+      Merece la pena probar un clip más corto, una calidad más baja u otro navegador.</span>
+    <span data-phrase="stall.both">El descodificador o el codificador de vídeo ha dejado de responder a medio camino,
+      sin decir por qué. Merece la pena probar un clip más corto, una calidad más baja u
+      otro navegador.</span>
+    <span data-phrase="export.failed">Algo ha salido mal al invertir.</span>
+    <span data-phrase="n.frame.one">{n} fotograma</span>
+    <span data-phrase="n.frame.many">{n} fotogramas</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">El archivo termina en mitad de un fotograma.</span>
     <span data-phrase="read.avcshort">El registro de configuración H.264 es demasiado corto.</span>
     <span data-phrase="read.hevcshort">El registro de configuración HEVC es demasiado corto.</span>

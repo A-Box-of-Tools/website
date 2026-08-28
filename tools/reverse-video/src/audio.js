@@ -180,7 +180,7 @@ function box(type, ...payload) {
 function descriptor(tag, ...payload) {
   const body = concat(payload);
   if (body.byteLength > 0x7f) {
-    throw new Error('Internal error: the audio description is larger than expected.');
+    throw new Error('audio.descriptor');
   }
   return concat([bytes(tag, body.byteLength), body]);
 }
@@ -356,7 +356,7 @@ export async function decodeWholeFile(file, sampleRate = 48000) {
   const channels = [];
   for (let c = 0; c < audio.numberOfChannels; c++) channels.push(audio.getChannelData(c));
   if (!channels.length || !channels[0].length) {
-    throw new Error('No sound came back from this file.');
+    throw new Error('audio.nosound');
   }
   return { channels, sampleRate: audio.sampleRate };
 }
@@ -435,7 +435,7 @@ export async function encodeAudioTrack({ channels, sampleRate, onProgress, signa
     await encoder.flush();
     if (failure) throw failure;
     if (!encoded.length || !asc) {
-      throw new Error('The sound was decoded but nothing came back from the encoder.');
+      throw new Error('audio.noencode');
     }
   } finally {
     if (encoder.state !== 'closed') encoder.close();
@@ -488,9 +488,9 @@ export async function reversedAudioTrack({
     if (file.size > maxDecodeBytes) {
       return {
         track: null,
-        note: 'The sound in this file is not AAC, so reversing it would mean handing the '
-          + 'whole file to the browser for reading - and this file is too large for that. '
-          + 'The video has been reversed without sound.',
+        // A key rather than a sentence: this file is copied byte for byte into
+        // fifteen languages, and main.js is where the words live.
+        note: 'audio.toolarge',
       };
     }
     onProgress?.({ phase: 'sound-reading', done: 0, total: 1 });
@@ -502,8 +502,7 @@ export async function reversedAudioTrack({
       // note says both rather than picking one and being wrong half the time.
       return {
         track: null,
-        note: 'No sound could be read out of this file, so the reversed video has none. '
-          + 'Either it has no audio track, or this browser will not decode the one it has.',
+        note: 'audio.unreadable',
       };
     }
   }
@@ -518,9 +517,7 @@ export async function reversedAudioTrack({
   })) {
     return {
       track: null,
-      note: 'Reversing the sound means encoding it again, and this browser will not encode '
-        + 'AAC. The video has been reversed without sound; Chrome, Edge and Safari will do '
-        + 'it with.',
+      note: 'audio.noaac',
     };
   }
 

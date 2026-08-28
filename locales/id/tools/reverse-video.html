@@ -100,6 +100,75 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Membaca berkasnya&hellip;</span>
+    <span data-phrase="step.measuring">Mengukur laju bingkai&hellip;</span>
+    <span data-phrase="open.notopened">Berkas itu tidak bisa dibuka.</span>
+    <span data-phrase="preview.none">Browser ini tidak memainkan berkas ini, jadi tidak ada pratinjau. Membalikkannya
+      tidak lewat pemutar, jadi tetap akan jalan.</span>
+    <span data-phrase="nocodec.page">Browser ini tidak punya pengode video (WebCodecs), jadi ia tidak bisa menulis video
+      terbalik. Chrome, Edge, dan Safari 16.4 atau lebih baru bisa; Firefox 133 ke atas
+      juga.</span>
+    <span data-phrase="nocodec.file">Browser ini tidak punya pengode video, jadi tidak ada di sini yang bisa menulis klip
+      terbaliknya. Chrome, Edge, atau Safari yang baru bisa.</span>
+    <span data-phrase="src.unknown">tidak diketahui</span>
+    <span data-phrase="src.byplayer">dibaca pemutar bawaan browser</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), diputar {degrees} derajat</span>
+    <span data-phrase="src.audio.one">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.none">tidak ada</span>
+    <span data-phrase="src.audio.whatever">apa pun yang ditemukan pemutar</span>
+    <span data-phrase="sound.off">Klip terbaliknya tidak akan bersuara sama sekali.</span>
+    <span data-phrase="sound.exact">Diawakode, dibalik cuplikan demi cuplikan, lalu dikodekan lagi sebagai AAC.
+      Pengodean kedua itu tak terhindarkan: paket yang dimainkan dengan urutan terbalik
+      bukanlah pembalikan.</span>
+    <span data-phrase="sound.player">Dibaca browser, dibalik cuplikan demi cuplikan, lalu dikodekan lagi sebagai AAC.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (dari {fromWidth} x {fromHeight}; H.264 tidak punya cara
+      menyimpan bingkai bersisi ganjil)</span>
+    <span data-phrase="frames.groups">{n} dalam {groups} kelompok</span>
+    <span data-phrase="frames.about">sekitar {n}, pada {fps} per detik</span>
+    <span data-phrase="path.exact">Diawakode kelompok demi kelompok dari belakang, menjadi MP4</span>
+    <span data-phrase="path.player">Dilangkahi mundur lewat pemutar, menjadi MP4</span>
+    <span data-phrase="step.preparing">Bersiap&hellip;</span>
+    <span data-phrase="step.soundreading">Membaca suaranya&hellip;</span>
+    <span data-phrase="step.soundwriting">Membalik suaranya&hellip;</span>
+    <span data-phrase="step.finishing">Merampungkan&hellip;</span>
+    <span data-phrase="step.frame">Membalik bingkai {done} dari {total} ({percent}%)</span>
+    <span data-phrase="audio.descriptor">Galat internal: keterangan audionya lebih besar dari yang diperkirakan.</span>
+    <span data-phrase="audio.nosound">Tidak ada suara yang kembali dari berkas ini.</span>
+    <span data-phrase="audio.noencode">Suaranya sudah diawakode tetapi tidak ada yang kembali dari pengodenya.</span>
+    <span data-phrase="audio.toolarge">Suara di berkas ini bukan AAC, jadi membaliknya berarti menyerahkan seluruh berkas
+      kepada browser untuk dibaca &mdash; dan berkas ini terlalu besar untuk itu. Videonya
+      dibalik tanpa suara.</span>
+    <span data-phrase="audio.unreadable">Tidak ada suara yang bisa dibaca dari berkas ini, jadi video terbaliknya tanpa
+      suara. Entah ia tidak punya jalur audio, entah browser ini tidak bisa mengawakode
+      yang ada.</span>
+    <span data-phrase="audio.noaac">Membalik suara berarti mengodekannya lagi, dan browser ini tidak mengodekan AAC.
+      Videonya dibalik tanpa suara; Chrome, Edge, dan Safari melakukannya dengan suara.</span>
+    <span data-phrase="play.unreadable">Browser berhenti bisa membaca klip ini.</span>
+    <span data-phrase="play.slowseek">Browser terlalu lama melompat di dalam klip ini.</span>
+    <span data-phrase="play.noframes">Tidak ada bingkai yang bisa dibaca dari berkas ini.</span>
+    <span data-phrase="reverse.noframes">Tidak ada bingkai yang bisa diawakode dari berkas ini.</span>
+    <span data-phrase="encode.noh264">Browser ini tidak mengodekan H.264 pada {width}x{height}. Klip yang lebih kecil akan
+      jalan; yang ini tidak.</span>
+    <span data-phrase="encode.noconfig">Pengodenya tidak pernah melaporkan konfigurasi pengawakode.</span>
+    <span data-phrase="stall.decoder">Pengawakode video berhenti menjawab di tengah jalan, tanpa menyebut alasan. Klip
+      yang lebih pendek, mutu yang lebih rendah, atau browser lain layak dicoba.</span>
+    <span data-phrase="stall.encoder">Pengode video berhenti menjawab di tengah jalan, tanpa menyebut alasan. Klip yang
+      lebih pendek, mutu yang lebih rendah, atau browser lain layak dicoba.</span>
+    <span data-phrase="stall.both">Pengawakode atau pengode video berhenti menjawab di tengah jalan, tanpa menyebut
+      alasan. Klip yang lebih pendek, mutu yang lebih rendah, atau browser lain layak
+      dicoba.</span>
+    <span data-phrase="export.failed">Ada yang salah saat membalik.</span>
+    <span data-phrase="n.frame.one">{n} bingkai</span>
+    <span data-phrase="n.frame.many">{n} bingkai</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} mnt {seconds} dtk</span>
+    <span data-phrase="time.seconds">{n} dtk</span>
     <span data-phrase="read.midframe">File-nya berhenti di tengah sebuah bingkai.</span>
     <span data-phrase="read.avcshort">Rekaman konfigurasi H.264 terlalu pendek.</span>
     <span data-phrase="read.hevcshort">Rekaman konfigurasi HEVC terlalu pendek.</span>

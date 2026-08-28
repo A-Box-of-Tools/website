@@ -89,7 +89,8 @@ BASELINE = {
     'redact-image': 17,
     'redact-pdf': 15,
     'resize-image': 5,
-    'reverse-video': 34,
+    # The key template that picks between two whole sentences.
+    'reverse-video': 1,
     'share-text': 1,
     # A filename template, one line of a template literal, and three markers the
     # reader throws internally and never shows.

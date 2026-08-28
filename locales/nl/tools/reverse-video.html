@@ -94,6 +94,74 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Het bestand wordt gelezen&hellip;</span>
+    <span data-phrase="step.measuring">De beeldsnelheid wordt gemeten&hellip;</span>
+    <span data-phrase="open.notopened">Dat bestand kon niet geopend worden.</span>
+    <span data-phrase="preview.none">Deze browser speelt dit bestand niet af, dus er is geen voorbeeld. Het omkeren gaat
+      niet via de speler, dus het werkt toch.</span>
+    <span data-phrase="nocodec.page">Deze browser heeft geen video-encoder (WebCodecs) en kan dus geen omgekeerde video
+      schrijven. Chrome, Edge en Safari 16.4 of nieuwer kunnen het; Firefox 133 en nieuwer
+      ook.</span>
+    <span data-phrase="nocodec.file">Deze browser heeft geen video-encoder, dus niets hier kan de omgekeerde clip
+      schrijven. Een recente Chrome, Edge of Safari wel.</span>
+    <span data-phrase="src.unknown">onbekend</span>
+    <span data-phrase="src.byplayer">gelezen door de eigen speler van de browser</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} graden gedraaid</span>
+    <span data-phrase="src.audio.one">{entry}, {n} kanaal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} kanalen, {rate} Hz</span>
+    <span data-phrase="src.audio.none">geen</span>
+    <span data-phrase="src.audio.whatever">wat de speler vindt</span>
+    <span data-phrase="sound.off">De omgekeerde clip heeft helemaal geen geluid.</span>
+    <span data-phrase="sound.exact">Gedecodeerd, sample voor sample omgedraaid en opnieuw als AAC gecodeerd. Die tweede
+      codering is onvermijdelijk: pakketten die in de andere volgorde worden afgespeeld
+      zijn geen omkering.</span>
+    <span data-phrase="sound.player">Door de browser gelezen, sample voor sample omgedraaid en opnieuw als AAC gecodeerd.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (uit {fromWidth} x {fromHeight}; H.264 kan een beeld met een
+      oneven zijde niet opslaan)</span>
+    <span data-phrase="frames.groups">{n} in {groups} groepen</span>
+    <span data-phrase="frames.about">ongeveer {n}, bij {fps} per seconde</span>
+    <span data-phrase="path.exact">Groep voor groep vanaf het eind gedecodeerd, naar MP4</span>
+    <span data-phrase="path.player">Achteruit door de speler gestapt, naar MP4</span>
+    <span data-phrase="step.preparing">Voorbereiden&hellip;</span>
+    <span data-phrase="step.soundreading">Het geluid wordt gelezen&hellip;</span>
+    <span data-phrase="step.soundwriting">Het geluid wordt omgekeerd&hellip;</span>
+    <span data-phrase="step.finishing">Afronden&hellip;</span>
+    <span data-phrase="step.frame">Beeld {done} van {total} wordt omgekeerd ({percent}%)</span>
+    <span data-phrase="audio.descriptor">Interne fout: de audiobeschrijving is groter dan verwacht.</span>
+    <span data-phrase="audio.nosound">Uit dit bestand kwam geen geluid terug.</span>
+    <span data-phrase="audio.noencode">Het geluid is gedecodeerd maar er kwam niets terug van de encoder.</span>
+    <span data-phrase="audio.toolarge">Het geluid in dit bestand is geen AAC, dus omkeren zou betekenen dat het hele
+      bestand aan de browser wordt gegeven om te lezen &mdash; en dit bestand is daar te
+      groot voor. De video is zonder geluid omgekeerd.</span>
+    <span data-phrase="audio.unreadable">Uit dit bestand viel geen geluid te lezen, dus de omgekeerde video heeft er geen. Of
+      het heeft geen audiospoor, of deze browser decodeert dat ene niet.</span>
+    <span data-phrase="audio.noaac">Het geluid omkeren betekent het opnieuw coderen, en deze browser codeert geen AAC.
+      De video is zonder geluid omgekeerd; Chrome, Edge en Safari doen het met.</span>
+    <span data-phrase="play.unreadable">De browser kon deze clip niet meer lezen.</span>
+    <span data-phrase="play.slowseek">De browser deed er te lang over om in deze clip te zoeken.</span>
+    <span data-phrase="play.noframes">Uit dit bestand vielen geen beelden te lezen.</span>
+    <span data-phrase="reverse.noframes">Uit dit bestand vielen geen beelden te decoderen.</span>
+    <span data-phrase="encode.noh264">Deze browser codeert geen H.264 op {width}x{height}. Een kleinere clip werkt wel;
+      deze niet.</span>
+    <span data-phrase="encode.noconfig">De encoder heeft nooit een decoderconfiguratie gemeld.</span>
+    <span data-phrase="stall.decoder">De videodecoder hield halverwege op met antwoorden, zonder een reden te geven. Een
+      kortere clip, een lagere kwaliteit of een andere browser is het proberen waard.</span>
+    <span data-phrase="stall.encoder">De video-encoder hield halverwege op met antwoorden, zonder een reden te geven. Een
+      kortere clip, een lagere kwaliteit of een andere browser is het proberen waard.</span>
+    <span data-phrase="stall.both">De videodecoder of -encoder hield halverwege op met antwoorden, zonder een reden te
+      geven. Een kortere clip, een lagere kwaliteit of een andere browser is het proberen
+      waard.</span>
+    <span data-phrase="export.failed">Er ging iets mis bij het omkeren.</span>
+    <span data-phrase="n.frame.one">{n} beeld</span>
+    <span data-phrase="n.frame.many">{n} beelden</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Het bestand houdt midden in een frame op.</span>
     <span data-phrase="read.avcshort">Het H.264-configuratierecord is te kort.</span>
     <span data-phrase="read.hevcshort">Het HEVC-configuratierecord is te kort.</span>

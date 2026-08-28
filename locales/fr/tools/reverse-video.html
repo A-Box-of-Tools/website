@@ -94,6 +94,78 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Lecture du fichier&hellip;</span>
+    <span data-phrase="step.measuring">Mesure de la cadence&hellip;</span>
+    <span data-phrase="open.notopened">Ce fichier n&rsquo;a pas pu être ouvert.</span>
+    <span data-phrase="preview.none">Ce navigateur ne lit pas ce fichier, il n&rsquo;y a donc pas d&rsquo;aperçu.
+      L&rsquo;inversion ne passe pas par le lecteur, elle marchera quand même.</span>
+    <span data-phrase="nocodec.page">Ce navigateur n&rsquo;a pas d&rsquo;encodeur vidéo (WebCodecs), il ne peut donc pas
+      écrire de vidéo inversée. Chrome, Edge et Safari 16.4 ou plus récents le
+      peuvent&nbsp;; Firefox 133 et plus récent aussi.</span>
+    <span data-phrase="nocodec.file">Ce navigateur n&rsquo;a pas d&rsquo;encodeur vidéo, rien ici ne peut donc écrire le
+      clip inversé. Un Chrome, Edge ou Safari récent le fera.</span>
+    <span data-phrase="src.unknown">inconnue</span>
+    <span data-phrase="src.byplayer">lu par le lecteur du navigateur</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), tourné de {degrees} degrés</span>
+    <span data-phrase="src.audio.one">{entry}, {n} canal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} canaux, {rate} Hz</span>
+    <span data-phrase="src.audio.none">aucun</span>
+    <span data-phrase="src.audio.whatever">ce que le lecteur trouve</span>
+    <span data-phrase="sound.off">Le clip inversé n&rsquo;aura aucun son.</span>
+    <span data-phrase="sound.exact">Décodé, retourné échantillon par échantillon, et réencodé en AAC. Ce second encodage
+      est inévitable&nbsp;: des paquets joués dans l&rsquo;autre sens ne sont pas une
+      inversion.</span>
+    <span data-phrase="sound.player">Lu par le navigateur, retourné échantillon par échantillon, et réencodé en AAC.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="size.evened">{width} x {height} (à partir de {fromWidth} x {fromHeight}&nbsp;; H.264 ne sait pas
+      stocker une image à côté impair)</span>
+    <span data-phrase="frames.groups">{n} en {groups} groupes</span>
+    <span data-phrase="frames.about">environ {n}, à {fps} par seconde</span>
+    <span data-phrase="path.exact">Décodé groupe par groupe depuis la fin, vers MP4</span>
+    <span data-phrase="path.player">Parcouru à reculons dans le lecteur, vers MP4</span>
+    <span data-phrase="step.preparing">Préparation&hellip;</span>
+    <span data-phrase="step.soundreading">Lecture du son&hellip;</span>
+    <span data-phrase="step.soundwriting">Inversion du son&hellip;</span>
+    <span data-phrase="step.finishing">Finalisation&hellip;</span>
+    <span data-phrase="step.frame">Inversion de l&rsquo;image {done} sur {total} ({percent}%)</span>
+    <span data-phrase="audio.descriptor">Erreur interne&nbsp;: la description audio est plus grosse que prévu.</span>
+    <span data-phrase="audio.nosound">Aucun son n&rsquo;est revenu de ce fichier.</span>
+    <span data-phrase="audio.noencode">Le son a été décodé mais rien n&rsquo;est revenu de l&rsquo;encodeur.</span>
+    <span data-phrase="audio.toolarge">Le son de ce fichier n&rsquo;est pas de l&rsquo;AAC, l&rsquo;inverser voudrait donc
+      dire confier le fichier entier au navigateur pour lecture &mdash; et ce fichier est
+      trop gros pour cela. La vidéo a été inversée sans son.</span>
+    <span data-phrase="audio.unreadable">Aucun son n&rsquo;a pu être lu dans ce fichier, la vidéo inversée n&rsquo;en a donc
+      pas. Soit elle n&rsquo;a pas de piste audio, soit ce navigateur ne décode pas celle
+      qu&rsquo;elle a.</span>
+    <span data-phrase="audio.noaac">Inverser le son veut dire le réencoder, et ce navigateur n&rsquo;encode pas
+      l&rsquo;AAC. La vidéo a été inversée sans son&nbsp;; Chrome, Edge et Safari le font
+      avec.</span>
+    <span data-phrase="play.unreadable">Le navigateur n&rsquo;a plus réussi à lire ce clip.</span>
+    <span data-phrase="play.slowseek">Le navigateur a mis trop de temps à se déplacer dans ce clip.</span>
+    <span data-phrase="play.noframes">Aucune image n&rsquo;a pu être lue dans ce fichier.</span>
+    <span data-phrase="reverse.noframes">Aucune image n&rsquo;a pu être décodée dans ce fichier.</span>
+    <span data-phrase="encode.noh264">Ce navigateur n&rsquo;encode pas le H.264 en {width}x{height}. Un clip plus petit
+      marchera&nbsp;; celui-ci non.</span>
+    <span data-phrase="encode.noconfig">L&rsquo;encodeur n&rsquo;a jamais annoncé de configuration de décodeur.</span>
+    <span data-phrase="stall.decoder">Le décodeur vidéo a cessé de répondre en cours de route, sans donner de raison. Un
+      clip plus court, une qualité plus basse ou un autre navigateur valent la peine
+      d&rsquo;être essayés.</span>
+    <span data-phrase="stall.encoder">L&rsquo;encodeur vidéo a cessé de répondre en cours de route, sans donner de raison.
+      Un clip plus court, une qualité plus basse ou un autre navigateur valent la peine
+      d&rsquo;être essayés.</span>
+    <span data-phrase="stall.both">Le décodeur ou l&rsquo;encodeur vidéo a cessé de répondre en cours de route, sans
+      donner de raison. Un clip plus court, une qualité plus basse ou un autre navigateur
+      valent la peine d&rsquo;être essayés.</span>
+    <span data-phrase="export.failed">Quelque chose a mal tourné pendant l&rsquo;inversion.</span>
+    <span data-phrase="n.frame.one">{n} image</span>
+    <span data-phrase="n.frame.many">{n} images</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="size.gb">{n} Go</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Le fichier se termine au milieu d&rsquo;une image.</span>
     <span data-phrase="read.avcshort">L&rsquo;enregistrement de configuration H.264 est trop court.</span>
     <span data-phrase="read.hevcshort">L&rsquo;enregistrement de configuration HEVC est trop court.</span>
