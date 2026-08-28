@@ -178,8 +178,8 @@ const steps=Math.floor(Math.abs(dark*20-total*10)/total);
 score+=steps*10;
 return score;
 }
-export function makeQr(text,options={}){
-const encoded=encodeText(text,options);
+export function makeQr(text,options={},t){
+const encoded=encodeText(text,options,t);
 const symbol=new QrSymbol(encoded.version);
 drawFunctionPatterns(symbol);
 drawCodewords(symbol,encoded.codewords);

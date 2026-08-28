@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{isGoTo,namedDestinations,resolveDestination}from'./dests.js';
+import{count}from'./format.js';
 import{decodeText,normalizeRotation,readPages}from'./pages.js';
 import{pruneOutline,readOutline,writeOutline}from'./outline.js';
 import{
@@ -117,8 +118,8 @@ if(!(value instanceof Map))return false;
 if(isName(value.get('Type'),'Page')||isName(value.get('Type'),'Pages'))return true;
 return value.has('Contents')&&(value.has('MediaBox')||value.has('Parent'));
 }
-export function assemble(entries,{bookmarks=true}={}){
-if(!entries.length)throw new Error('a document with no pages in it is not a document');
+export function assemble(entries,{bookmarks=true,t}={}){
+if(!entries.length)throw new Error('assemble.empty');
 const version=entries.reduce(
 (best,entry)=>(entry.source.version>best?entry.source.version:best),'1.5');
 const build=new Build(version);
@@ -168,14 +169,11 @@ build.put(catalogNum,catalog);
 build.trailer.set('Root',new Ref(catalogNum,0));
 copier.drain();
 if(state.brokenLinks){
-notes.push(`${state.brokenLinks} link${state.brokenLinks === 1 ? '' : 's'} pointed at `
-+'a page that is not in this file, so they were left in place with nothing behind '
-+'them rather than sending the reader somewhere wrong.');
+notes.push(t('notes.brokenlinks',{links:count(state.brokenLinks,'link',t)}));
 }
 if(state.actionsDropped){
-notes.push(`${state.actionsDropped} action${state.actionsDropped === 1 ? '' : 's'} `
-+'that were neither "go to a page" nor "open a web address" - run this JavaScript, '
-+'open this file, submit this form - were not copied.');
+notes.push(t(state.actionsDropped===1?'notes.actions.one':'notes.actions.many',
+{n:state.actionsDropped}));
 }
 return{build,notes,fields:state.widgets.length,links:state.links};
 }
@@ -321,11 +319,12 @@ form.set('DR',into);
 }
 const shared=[...owners.entries()].filter(([,files])=>files.size>1);
 if(shared.length){
-notes.push(`${shared.length} form field${shared.length === 1 ? '' : 's'} have the `
-+`same name in more than one of these files (${shared.slice(0, 3)
-        .map(([field]) => `"${field}"`).join(', ')}${shared.length > 3 ? ', …' : ''}). `
-+'A reader treats fields sharing a name as one field, so filling one will fill '
-+'the other.');
+const named=shared.slice(0,3)
+.map(([field])=>t('notes.name',{name:field})).join(', ');
+notes.push(t(shared.length===1?'notes.samename.one':'notes.samename.many',{
+n:shared.length,
+names:shared.length>3?t('notes.more',{list:named}):named,
+}));
 }
 return build.add(form);
 }

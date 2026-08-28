@@ -23,6 +23,11 @@ const found=new Set([JPEG,PNG]);
 if(await canEncode(WEBP))found.add(WEBP);
 return found;
 }
+function refusal(key,values){
+const error=new Error(key);
+error.values=values;
+return error;
+}
 export async function render(source,plan,{mime,quality,background='#ffffff'}){
 const canvas=document.createElement('canvas');
 canvas.width=plan.canvas.width;
@@ -41,7 +46,7 @@ plan.source.x,plan.source.y,plan.source.width,plan.source.height,
 plan.draw.x,plan.draw.y,plan.draw.width,plan.draw.height,
 );
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,mime,quality));
-if(!blob)throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime}.`);
+if(!blob)throw refusal('write.refused',{format:FORMATS[mime]?.label??mime});
 canvas.width=0;
 canvas.height=0;
 return blob;
@@ -59,7 +64,7 @@ try{
 const img=await new Promise((resolve,reject)=>{
 const element=new Image();
 element.onload=()=>resolve(element);
-element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.onerror=()=>reject(refusal('decode.failed'));
 element.src=url;
 });
 return{bitmap:img,width:img.naturalWidth,height:img.naturalHeight};

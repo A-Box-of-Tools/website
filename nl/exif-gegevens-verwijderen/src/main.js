@@ -184,7 +184,11 @@ main.appendChild(name);
 const sub=document.createElement('span');
 sub.className='file-sub';
 sub.textContent=item.ok
-?`${KIND_NAMES[item.kind]} · ${humanBytes(item.size)} · about ${humanBytes(metadataSize(item))} of metadata`
+?phrase('row.file',{
+kind:KIND_NAMES[item.kind],
+size:humanBytes(item.size),
+metadata:humanBytes(metadataSize(item)),
+})
 :item.error;
 main.appendChild(sub);
 if(item.ok){
@@ -193,7 +197,7 @@ row.className='badges';
 for(const badge of badges(item)){
 const span=document.createElement('span');
 span.className=`badge badge-${badge.level}`;
-span.textContent=badge.label;
+span.textContent=phrase(badge.label,badge.values);
 row.appendChild(span);
 }
 main.appendChild(row);
@@ -203,8 +207,9 @@ li.appendChild(pick);
 const remove=document.createElement('button');
 remove.type='button';
 remove.className='row-remove';
-remove.title=`Take ${item.name} off the list`;
-remove.setAttribute('aria-label',`Take ${item.name} off the list`);
+const off=phrase('row.remove',{name:item.name});
+remove.title=off;
+remove.setAttribute('aria-label',off);
 remove.textContent='×';
 remove.addEventListener('click',()=>removeItem(item.id));
 li.appendChild(remove);
@@ -212,15 +217,15 @@ el.fileList.appendChild(li);
 }
 }
 function renderKeepSummary(){
-const kept=[];
-if(el.keepOrientation.checked)kept.push('the orientation tag');
-if(el.keepIcc.checked)kept.push('the colour profile');
-el.keepSummary.textContent=kept.length
-?`Everything else goes: EXIF, GPS, the maker note, XMP, IPTC, comments, the embedded thumbnail, and any block this tool could not identify. Kept: ${kept.join(' and ')}.`
-:'Absolutely everything goes, including the orientation tag and the colour profile. The file will carry no metadata of any kind.';
+const orientation=el.keepOrientation.checked;
+const icc=el.keepIcc.checked;
+if(!orientation&&!icc)el.keepSummary.textContent=phrase('keep.nothing');
+else if(orientation&&icc)el.keepSummary.textContent=phrase('keep.both');
+else el.keepSummary.textContent=phrase(orientation?'keep.orientation':'keep.icc');
 }
 el.keepOrientation.addEventListener('change',renderKeepSummary);
 el.keepIcc.addEventListener('change',renderKeepSummary);
+const say=(value)=>(value&&value.key?phrase(value.key,value.values):value);
 const selected=()=>items.find((i)=>i.id===selectedId&&i.ok)??null;
 function renderInspector(){
 const item=selected();
@@ -245,7 +250,9 @@ el.inspectSub.textContent=[
 KIND_NAMES[item.kind],
 size?`${size.width} × ${size.height}`:null,
 humanBytes(item.size),
-hasMetadata(item)?`about ${humanBytes(metadataSize(item))} of it metadata`:'no metadata found',
+hasMetadata(item)
+?phrase('inspect.metadata',{size:humanBytes(metadataSize(item))})
+:phrase('inspect.nometadata'),
 ].filter(Boolean).join(' · ');
 renderFindings(item);
 renderBlocks(item);
@@ -297,60 +304,73 @@ item.exif.thumbnail=null;
 };
 if(item.exifUnreadable){
 list.push({
-title:'An EXIF block that would not parse',
-detail:`${humanBytes(meta.exif.length)}, and this tool could not read it: ${item.exifError} Saving rewrites the EXIF block from what is listed below, so an unreadable one cannot be carried across - it goes whichever button you press.`,
+title:phrase('block.exifbad.title'),
+detail:phrase('block.exifbad.detail',{
+size:humanBytes(meta.exif.length),
+reason:phrase(item.exifError),
+}),
 gone:true,
-pill:'Cannot be kept',
+pill:phrase('block.cannotkeep'),
 });
 }
 if(item.had.exif){
 list.push({
-title:'EXIF tags',
-detail:`${countTags(item)} tags across the camera, image and location directories.`,
+title:phrase('block.exif.title'),
+detail:phrase(countTags(item)===1?'block.exif.one':'block.exif.many',
+{count:countTags(item)}),
 gone:countTags(item)===0,
-label:'Remove every tag',
+label:phrase('block.exif.remove'),
 remove:clearGroups,
 });
 }
 if(item.had.gps){
 list.push({
-title:'GPS location',
+title:phrase('block.gps.title'),
 detail:item.had.where,
 gone:groups.gps.length===0,
-label:'Remove the location',
+label:phrase('block.gps.remove'),
 remove:()=>{groups.gps=[];},
 });
 }
 if(item.had.thumbnail){
 list.push({
-title:'Embedded thumbnail',
-detail:'A small second copy of the picture, which may predate any cropping.',
+title:phrase('block.thumbnail.title'),
+detail:phrase('block.thumbnail.detail'),
 gone:!item.exif.thumbnail,
-label:'Remove the thumbnail',
+label:phrase('block.thumbnail.remove'),
 remove:()=>{item.exif.thumbnail=null;},
 });
 }
 const containerBlocks=[
-['xmp','XMP packet',meta.xmp!==null&&meta.xmp!==undefined,
-()=>`${humanBytes(meta.xmp.length)} of XML: usually the camera again, plus the edit history.`],
-['iptc','IPTC block',Boolean(meta.iptc),
-()=>`${humanBytes(meta.iptc.length)} of caption, byline and credit fields.`],
-['text','Text chunks',meta.text.length>0,
-()=>`${meta.text.length} key/value pair${meta.text.length === 1 ? '' : 's'}: ${meta.text.map((t) => t.keyword).join(', ')}.`],
-['comments','Comments',meta.comments.length>0,
-()=>`${meta.comments.length} comment${meta.comments.length === 1 ? '' : 's'} stored beside the picture.`],
-['extras','Blocks this tool cannot read',meta.extras.length>0,
-()=>`${meta.extras.map((x) => `${x.label} (${humanBytes(x.size)})`).join(', ')}. Removable without being readable.`],
-['icc','Colour profile',Boolean(meta.icc),
-()=>`${humanBytes(meta.icc.length)}${meta.iccName ? ` named "${meta.iccName}"` : ''}. Says nothing about you; removing it can shift the colours.`],
+['xmp',meta.xmp!==null&&meta.xmp!==undefined,
+()=>phrase('block.xmp.detail',{size:humanBytes(meta.xmp.length)})],
+['iptc',Boolean(meta.iptc),
+()=>phrase('block.iptc.detail',{size:humanBytes(meta.iptc.length)})],
+['text',meta.text.length>0,
+()=>phrase(meta.text.length===1?'block.text.one':'block.text.many',{
+count:meta.text.length,
+keywords:meta.text.map((t)=>t.keyword).join(', '),
+})],
+['comments',meta.comments.length>0,
+()=>phrase(meta.comments.length===1?'block.comments.one':'block.comments.many',
+{count:meta.comments.length})],
+['extras',meta.extras.length>0,
+()=>phrase('block.extras.detail',{
+blocks:meta.extras.map((x)=>`${x.label} (${humanBytes(x.size)})`).join(', '),
+})],
+['icc',Boolean(meta.icc),
+()=>phrase(meta.iccName?'block.icc.named':'block.icc.detail',{
+size:humanBytes(meta.icc.length),
+name:meta.iccName,
+})],
 ];
-for(const[id,title,present,detail]of containerBlocks){
+for(const[id,present,detail]of containerBlocks){
 if(!present)continue;
 list.push({
-title,
+title:phrase(`block.${id}.title`),
 detail:detail(),
 gone:item.drop.has(id),
-label:'Remove',
+label:phrase('block.remove'),
 remove:()=>item.drop.add(id),
 });
 }
@@ -362,7 +382,7 @@ const blocks=blockDescriptors(item);
 if(!blocks.length&&!item.meta.notes.length){
 const li=document.createElement('li');
 li.className='block block-none';
-li.textContent='This file has no metadata blocks in it at all.';
+li.textContent=phrase('block.none');
 el.blockList.appendChild(li);
 return;
 }
@@ -412,7 +432,7 @@ text.append(title,detail);
 li.appendChild(text);
 const pill=document.createElement('span');
 pill.className='block-kept-pill';
-pill.textContent='Kept';
+pill.textContent=phrase('block.kept');
 li.appendChild(pill);
 el.blockList.appendChild(li);
 }
@@ -420,9 +440,7 @@ el.blockList.appendChild(li);
 function renderTags(item){
 el.tagGroups.replaceChildren();
 const groups=tagGroups(item);
-el.tagsNote.textContent=groups.length
-?'Change a value and it is written back when you save. Tags with no editor can still be removed - deleting a value never needs to understand it.'
-:'There are no EXIF tags in this photo.';
+el.tagsNote.textContent=phrase(groups.length?'editor.note':'editor.notags');
 if(item.textChunks?.length&&!item.drop.has('text'))el.tagGroups.appendChild(textChunkGroup(item));
 for(const group of groups){
 const section=document.createElement('section');
@@ -464,18 +482,17 @@ function textChunkGroup(item){
 const section=document.createElement('section');
 section.className='tag-group';
 const heading=document.createElement('h4');
-heading.textContent='Text chunks';
+heading.textContent=phrase('block.text.title');
 const count=document.createElement('span');
 count.className='group-count';
-count.textContent=`${item.textChunks.length} pair${item.textChunks.length === 1 ? '' : 's'}`;
+count.textContent=phrase(item.textChunks.length===1?'editor.pairs.one':'editor.pairs.many',
+{count:item.textChunks.length});
 heading.appendChild(count);
 section.appendChild(heading);
 const frozen=item.textChunks.some((t)=>t.unreadable);
 const note=document.createElement('p');
 note.className='group-note';
-note.textContent=frozen
-?'This file has a compressed text chunk that would not unpack. Editing the set would drop it, so the set is read-only here - it can still be removed as a block.'
-:'PNG stores these instead of EXIF tags. Editing any of them rewrites the set.';
+note.textContent=phrase(frozen?'editor.frozen':'editor.textnote');
 section.appendChild(note);
 const scroll=document.createElement('div');
 scroll.className='table-scroll';
@@ -516,7 +533,7 @@ const valueCell=document.createElement('td');
 if(chunk.unreadable){
 const span=document.createElement('span');
 span.className='tag-readonly';
-span.textContent='compressed, and it would not unpack';
+span.textContent=phrase('editor.unreadable');
 valueCell.appendChild(span);
 }else if(frozen){
 const span=document.createElement('span');
@@ -528,7 +545,7 @@ const input=document.createElement('input');
 input.className='tag-input';
 input.value=chunk.value;
 input.spellcheck=false;
-input.setAttribute('aria-label',`Value for ${chunk.keyword}`);
+input.setAttribute('aria-label',phrase('editor.valuefor',{keyword:chunk.keyword}));
 input.addEventListener('change',()=>{
 chunk.value=input.value;
 item.textDirty=true;
@@ -544,7 +561,7 @@ const remove=document.createElement('button');
 remove.type='button';
 remove.className='tag-delete';
 remove.textContent='Remove';
-remove.setAttribute('aria-label',`Remove the ${chunk.keyword} text chunk`);
+remove.setAttribute('aria-label',phrase('editor.removechunk',{keyword:chunk.keyword}));
 remove.addEventListener('click',()=>{
 const at=item.textChunks.indexOf(chunk);
 if(at>=0)item.textChunks.splice(at,1);
@@ -617,7 +634,7 @@ const spec=describeTag(group,entry.tag);
 if(!spec.edit){
 const span=document.createElement('span');
 span.className='tag-readonly';
-span.textContent=formatValue(group,entry);
+span.textContent=say(formatValue(group,entry));
 return span;
 }
 const commit=(control,raw)=>{
@@ -627,10 +644,11 @@ clearEditError();
 markDirty(item);
 }else if(String(raw).trim()===''){
 control.classList.add('bad');
-showEditError(`${spec.name} cannot be left blank. Use the Remove button beside it if you want the tag gone altogether.`);
+showEditError(phrase('edit.blank',{tag:spec.name}));
 }else{
 control.classList.add('bad');
-showEditError(`"${raw}" is not a value this tag can hold. ${spec.name} expects ${spec.edit === 'text' ? 'text' : 'a number'}.`);
+showEditError(phrase(spec.edit==='text'?'edit.wanttext':'edit.wantnumber',
+{value:raw,tag:spec.name}));
 }
 };
 if(spec.edit==='enum'){
@@ -659,17 +677,17 @@ input.addEventListener('change',()=>commit(input,input.value));
 return input;
 }
 const ADDABLE=[
-{group:'ifd0',tag:0x010e,type:TYPE.ASCII,hint:'A sentence describing the picture'},
-{group:'ifd0',tag:0x013b,type:TYPE.ASCII,hint:'Who took it'},
-{group:'ifd0',tag:0x8298,type:TYPE.ASCII,hint:'e.g. (c) 2026 Your Name'},
-{group:'ifd0',tag:0x0131,type:TYPE.ASCII,hint:'What produced the file'},
-{group:'ifd0',tag:0x0132,type:TYPE.ASCII,hint:'2026:08:19 14:30:00'},
-{group:'ifd0',tag:0x010f,type:TYPE.ASCII,hint:'e.g. Canon'},
-{group:'ifd0',tag:0x0110,type:TYPE.ASCII,hint:'e.g. EOS R6'},
-{group:'ifd0',tag:0x0112,type:TYPE.SHORT,hint:'1 is the right way up; 6 is rotated 90 degrees'},
-{group:'exif',tag:0x9003,type:TYPE.ASCII,hint:'2026:08:19 14:30:00'},
-{group:'exif',tag:0x9286,type:TYPE.UNDEFINED,hint:'Free text'},
-{group:'exif',tag:0x8827,type:TYPE.SHORT,hint:'e.g. 400'},
+{group:'ifd0',tag:0x010e,type:TYPE.ASCII,hint:'hint.description'},
+{group:'ifd0',tag:0x013b,type:TYPE.ASCII,hint:'hint.artist'},
+{group:'ifd0',tag:0x8298,type:TYPE.ASCII,hint:'hint.copyright'},
+{group:'ifd0',tag:0x0131,type:TYPE.ASCII,hint:'hint.software'},
+{group:'ifd0',tag:0x0132,type:TYPE.ASCII,hint:'hint.datetime'},
+{group:'ifd0',tag:0x010f,type:TYPE.ASCII,hint:'hint.make'},
+{group:'ifd0',tag:0x0110,type:TYPE.ASCII,hint:'hint.model'},
+{group:'ifd0',tag:0x0112,type:TYPE.SHORT,hint:'hint.orientation'},
+{group:'exif',tag:0x9003,type:TYPE.ASCII,hint:'hint.datetime'},
+{group:'exif',tag:0x9286,type:TYPE.UNDEFINED,hint:'hint.comment'},
+{group:'exif',tag:0x8827,type:TYPE.SHORT,hint:'hint.iso'},
 ];
 function renderAddTag(item){
 el.addTagSelect.replaceChildren();
@@ -688,7 +706,7 @@ syncAddTagHint();
 }
 function syncAddTagHint(){
 const candidate=ADDABLE.find((c)=>`${c.group}:${c.tag}`===el.addTagSelect.value);
-el.addTagValue.placeholder=candidate?.hint??'';
+el.addTagValue.placeholder=candidate?phrase(candidate.hint):'';
 }
 el.addTagSelect.addEventListener('change',syncAddTagHint);
 el.addTagGo.addEventListener('click',()=>{
@@ -698,7 +716,7 @@ const candidate=ADDABLE.find((c)=>`${c.group}:${c.tag}`===el.addTagSelect.value)
 if(!candidate)return;
 const entry=createEntry(candidate.tag,candidate.type,el.addTagValue.value,item.exif.littleEndian);
 if(!entry){
-showEditError(`"${el.addTagValue.value}" is not a value that tag can hold.`);
+showEditError(phrase('edit.badvalue',{value:el.addTagValue.value}));
 return;
 }
 item.exif.groups[candidate.group].push(entry);
@@ -760,7 +778,7 @@ for(const item of items){
 if(!item.ok)continue;
 try{
 if(!hasMetadata(item)){
-results.push({item,note:'Nothing to remove - this file had no metadata in it.'});
+results.push({item,note:phrase('strip.nothing')});
 continue;
 }
 results.push({item,data:serialize(item,stripPlan(item,keepOrientation,keepIcc))});
@@ -771,8 +789,8 @@ results.push({item,error:error.message});
 showResults(results);
 const cleaned=results.filter((r)=>r.data).length;
 el.stripStatus.textContent=cleaned
-?`${cleaned} photo${cleaned === 1 ? '' : 's'} cleaned. Nothing left this machine.`
-:'Nothing needed removing.';
+?phrase(cleaned===1?'strip.done.one':'strip.done.many',{count:cleaned})
+:phrase('strip.none');
 });
 function clearResults(){
 for(const url of resultUrls)URL.revokeObjectURL(url);
@@ -798,7 +816,11 @@ const detail=document.createElement('p');
 detail.className='result-detail';
 if(result.data){
 const saved=result.item.size-result.data.length;
-detail.textContent=`${humanBytes(result.item.size)} to ${humanBytes(result.data.length)} - ${humanBytes(Math.max(0, saved))} of metadata gone. The picture itself is unchanged.`;
+detail.textContent=phrase('result.saved',{
+before:humanBytes(result.item.size),
+after:humanBytes(result.data.length),
+saved:humanBytes(Math.max(0,saved)),
+});
 }else if(result.error){
 detail.textContent=result.error;
 li.classList.add('result-failed');
@@ -863,7 +885,7 @@ unreadable:Boolean(t.unreadable),
 item.textDirty=false;
 item.dirty=false;
 render();
-el.saveStatus.textContent='Back to the file as it was read.';
+el.saveStatus.textContent=phrase('save.reverted');
 });
 function showLoadError(message){
 el.loadError.textContent=message;

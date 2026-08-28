@@ -1,10 +1,11 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{assemble}from'./assemble.js';
 import{archiveName,outputNames,splitInto}from'./plan.js';
+import{count}from'./format.js';
 import{PdfDocument}from'./reader.js';
 import{makeZip}from'./zip.js';
 import{writeDocument}from'./writer.js';
-export async function produce(entries,how,{onProgress,signal}={}){
+export async function produce(entries,how,{onProgress,signal,t}={}){
 const parts=splitInto(entries,how.split);
 const names=outputNames(parts,{
 stem:how.stem,mode:how.split?.mode??'single',suffix:how.suffix,
@@ -16,11 +17,11 @@ for(let at=0;at<parts.length;at+=1){
 if(signal?.aborted)throw new DOMException('Cancelled','AbortError');
 onProgress?.(at,parts.length,names[at]);
 const part=parts[at];
-const built=assemble(part.entries,{bookmarks:how.bookmarks});
+const built=assemble(part.entries,{bookmarks:how.bookmarks,t});
 for(const note of built.notes)notes.add(note);
 const written=await writeDocument(built.build,{signal});
 const data=new Uint8Array(await written.arrayBuffer());
-const check=await verify(data,part.entries.length);
+const check=await verify(data,part.entries.length,t);
 if(!check.ok)failed=check.text;
 files.push({
 name:names[at],
@@ -49,22 +50,21 @@ ok:!failed,
 problem:failed,
 };
 }
-async function verify(bytes,expected){
+async function verify(bytes,expected,t){
 try{
 const doc=await PdfDocument.open(bytes);
 const pages=doc.countPages();
 if(pages!==expected){
 return{
 ok:false,
-text:`the finished file opens with ${pages} page${pages === 1 ? '' : 's'} `
-+`where ${expected} ${expected === 1 ? 'was' : 'were'} asked for`,
+text:t(expected===1?'check.wrong.one':'check.wrong.many',{
+found:count(pages,'page',t),
+expected,
+}),
 };
 }
-return{
-ok:true,
-text:`opened again here and counted ${pages} page${pages === 1 ? '' : 's'}`,
-};
+return{ok:true,text:t('check.ok',{pages:count(pages,'page',t)})};
 }catch(error){
-return{ok:false,text:`the finished file would not open again (${error.message})`};
+return{ok:false,text:t('check.noopen',{detail:error.message})};
 }
 }

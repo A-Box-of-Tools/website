@@ -48,13 +48,13 @@ offlineStatus:$('offline-status'),
 offlineDot:$('offline-dot'),
 };
 const BARCODE_FIELD={
-code128:['The text','ABOX-TOOLS-128'],
-ean13:['The number','590123412345'],
-upca:['The number','03600029145'],
-ean8:['The number','9638507'],
-itf14:['The number','1540014128876'],
-itf:['The number','1234567890'],
-code39:['The text','ABOX TOOLS'],
+code128:['field.thetext','ABOX-TOOLS-128'],
+ean13:['field.thenumber','590123412345'],
+upca:['field.thenumber','03600029145'],
+ean8:['field.thenumber','9638507'],
+itf14:['field.thenumber','1540014128876'],
+itf:['field.thenumber','1234567890'],
+code39:['field.thetext','ABOX TOOLS'],
 };
 const typed=new Map();
 let current=null;
@@ -88,16 +88,17 @@ input.id=`field-${field.id}`;
 if(field.type==='textarea')input.rows=3;
 else if(field.type==='select'){
 for(const[value,text]of field.options){
-input.append(new Option(text,value));
+input.append(new Option(phrase(text),value));
 }
 }else{
 input.type=field.type;
 }
-if(field.placeholder)input.placeholder=field.placeholder;
+if(field.placeholder)input.placeholder=phrase(field.placeholder);
 const label=document.createElement('label');
 label.htmlFor=input.id;
-label.textContent=field.label
-+(field.optional&&field.type!=='checkbox'?' (optional)':'');
+label.textContent=field.optional&&field.type!=='checkbox'
+?phrase('field.optional',{label:phrase(field.label)})
+:phrase(field.label);
 if(field.type==='checkbox'){
 input.checked=fieldValue(field.id)===true;
 wrapper.append(input,label);
@@ -133,14 +134,16 @@ function update(){
 const values=currentValues();
 const isQr=el.symbology.value==='qr';
 const kind=isQr?el.format.value:'text';
-const blanks=isQr?missing(kind,values):(values.text?[]:['Something to put in it']);
+const blanks=isQr?missing(kind,values):(values.text?[]:['payload.something']);
 if(blanks.length){
-showNothing(`Fill in: ${blanks.join(', ')}.`,blanks.length===fieldsFor().length);
+const list=blanks.map((key)=>phrase(key))
+.reduce((a,b)=>phrase('join.list',{a,b}));
+showNothing(phrase('payload.fillin',{list}),blanks.length===fieldsFor().length);
 return;
 }
 let text;
 try{
-text=isQr?compose(kind,values):values.text;
+text=isQr?compose(kind,values,phrase):values.text;
 }catch(error){
 showNothing(error.message,false);
 return;
@@ -161,60 +164,72 @@ for(const button of[el.downloadSvg,el.downloadPng,el.copyPng])button.disabled=fa
 }
 function drawQr(text){
 const quiet=clamp(Number(el.quiet.value),0,16);
-const qr=makeQr(text,{level:el.level.value});
+const qr=makeQr(text,{level:el.level.value},phrase);
 const across=qr.size+quiet*2;
 const asked=clamp(Number(el.size.value),64,4096);
 const scale=Math.max(1,Math.floor(asked/across));
 const pixels=across*scale;
 el.sizeNote.textContent=pixels===asked
-?`${pixels} pixels square, at ${scale} per module.`
-:`${pixels} pixels square rather than ${asked}, because ${across} modules `
-+`across only divides evenly at ${scale} pixels each. The SVG has no such `
-+'limit - it prints at any size.';
+?phrase('size.exact',{pixels,scale})
+:phrase('size.rounded',{
+pixels,asked,across,scale,
+});
 const svg=qrSvg(qr,{...style(),scale,quiet});
 const used=Math.round((qr.bits/qr.capacityBits)*100);
 return{
 svg,
 name:'qr-code',
-facts:`Version ${qr.version}: ${qr.size} modules square, ${qr.mode} mode, `
-+`level ${qr.level} - about ${qr.recovery}% of it can be destroyed and still read. `
-+`Mask ${qr.mask}. Using ${qr.bits} of the ${qr.capacityBits} bits this version holds `
-+`(${used}%), which at this version and level is room for `
-+`${capacityFor(qr.mode, qr.version, qr.level)} ${countedIn(qr.mode)} in all.`,
+facts:phrase('facts.qr',{
+version:qr.version,
+size:qr.size,
+mode:qr.mode,
+level:qr.level,
+recovery:qr.recovery,
+mask:qr.mask,
+bits:qr.bits,
+capacity:qr.capacityBits,
+used,
+most:capacityFor(qr.mode,qr.version,qr.level),
+unit:countedIn(qr.mode),
+}),
 };
 }
 function drawBarcode(text){
 const code=makeBarcode(text,{
 symbology:el.symbology.value,
 code39Check:el.code39Check.checked,
-});
+},phrase);
 const scale=clamp(Number(el.barWidth.value),1,10);
 const height=clamp(Number(el.barHeight.value),20,600);
 const svg=barcodeSvg(code,{
 ...style(),scale,height,text:el.showText.checked,
 });
 const size=sizeOfSvg(svg);
-el.sizeNote.textContent=`${size.width} by ${size.height} pixels, at ${scale} `
-+`pixel${scale === 1 ? '' : 's'} for the narrowest bar.`;
+el.sizeNote.textContent=phrase(scale===1?'size.barcode.one':'size.barcode.many',
+{width:size.width,height:size.height,scale});
 return{
 svg,
 name:`${code.symbology}-${code.text}`.replace(/[^a-z0-9-]/gi,'-').toLowerCase(),
-facts:`${code.name}, holding ${code.text}. ${code.modules.length} modules across, `
-+`${code.quiet.left} of them the quiet zone on the left and ${code.quiet.right} on `
-+`the right - white space the scanner needs, so it is part of the picture rather `
-+`than something to crop off.${code.note ? ` ${code.note}` : ''}`,
+facts:(()=>{
+const facts=phrase('facts.barcode',{
+name:code.name,
+text:code.text,
+modules:code.modules.length,
+left:code.quiet.left,
+right:code.quiet.right,
+});
+return code.note?phrase('facts.andnote',{facts,note:code.note}):facts;
+})(),
 };
 }
 function describeString(text){
 const bytes=new TextEncoder().encode(text).length;
 const characters=[...text].length;
-return bytes===characters
-?`${characters} character${characters === 1 ? '' : 's'}.`
-:`${characters} characters, ${bytes} bytes - some of them are not ASCII, and a QR `
-+'code counts what it stores in bytes.';
+if(bytes!==characters)return phrase('string.bytes',{characters,bytes});
+return phrase(characters===1?'string.one':'string.many',{n:characters});
 }
 function countedIn(mode){
-return mode==='byte'?'bytes':'characters';
+return phrase(mode==='byte'?'unit.bytes':'unit.characters');
 }
 function showNothing(message,quiet){
 current=null;
@@ -241,12 +256,11 @@ el.code39CheckRow.hidden=el.symbology.value!=='code39';
 el.encodedPanel.hidden=!isQr;
 if(isQr){
 const kind=KINDS.find((entry)=>entry.id===el.format.value);
-el.symbologyNote.textContent='A QR code holds any text at all, and every phone '
-+'camera made in the last ten years reads one without an app.';
-el.formatNote.textContent=kind.note;
+el.symbologyNote.textContent=phrase('note.symbology.qr');
+el.formatNote.textContent=phrase(kind.note);
 }else{
 const symbology=SYMBOLOGIES.find((entry)=>entry.id===el.symbology.value);
-el.symbologyNote.textContent=symbology.holds;
+el.symbologyNote.textContent=phrase(symbology.holds);
 el.formatNote.textContent='';
 }
 buildFields();
@@ -258,15 +272,15 @@ return current?.name??'code';
 el.downloadSvg.addEventListener('click',()=>{
 if(!current)return;
 download(new Blob([current.svg],{type:'image/svg+xml'}),`${baseName()}.svg`);
-el.downloadNote.textContent='Saved. Nothing was sent anywhere to make it.';
+el.downloadNote.textContent=phrase('save.done');
 });
 el.downloadPng.addEventListener('click',async()=>{
 if(!current)return;
 try{
 download(await svgToPng(current.svg),`${baseName()}.png`);
-el.downloadNote.textContent='Saved. Nothing was sent anywhere to make it.';
+el.downloadNote.textContent=phrase('save.done');
 }catch(error){
-el.downloadNote.textContent=`${error.message}. The SVG will still download.`;
+el.downloadNote.textContent=phrase('save.failed',{detail:phrase(error.message)});
 }
 });
 el.copyPng.addEventListener('click',async()=>{
@@ -274,15 +288,14 @@ if(!current)return;
 try{
 const blob=await svgToPng(current.svg);
 await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);
-el.downloadNote.textContent='Copied. Paste it wherever you need it.';
+el.downloadNote.textContent=phrase('save.copied');
 }catch{
-el.downloadNote.textContent='This browser would not let the page write to the '
-+'clipboard. Download it instead.';
+el.downloadNote.textContent=phrase('save.noclipboard');
 }
 });
 el.symbology.addEventListener('change',switchSymbology);
 el.format.addEventListener('change',()=>{
-el.formatNote.textContent=KINDS.find((kind)=>kind.id===el.format.value).note;
+el.formatNote.textContent=phrase(KINDS.find((kind)=>kind.id===el.format.value).note);
 buildFields();
 update();
 });
@@ -363,7 +376,7 @@ window.addEventListener('unhandledrejection',(event)=>{
 el.inputError.hidden=false;
 el.inputError.textContent=phrase('error.broke',{detail:event.reason?.message??event.reason});
 });
-for(const kind of KINDS)el.format.append(new Option(kind.name,kind.id));
+for(const kind of KINDS)el.format.append(new Option(phrase(kind.name),kind.id));
 switchSymbology();
 monitorNetwork();
 registerServiceWorker();

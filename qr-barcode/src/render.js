@@ -86,7 +86,7 @@ image.width=width;
 image.height=height;
 await new Promise((resolve,reject)=>{
 image.onload=resolve;
-image.onerror=()=>reject(new Error('this browser would not draw the SVG'));
+image.onerror=()=>reject(new Error('render.nosvg'));
 image.src=url;
 });
 const canvas=document.createElement('canvas');
@@ -98,7 +98,7 @@ context.drawImage(image,0,0,canvas.width,canvas.height);
 return await new Promise((resolve,reject)=>{
 canvas.toBlob((blob)=>{
 if(blob)resolve(blob);
-else reject(new Error('this browser would not write a PNG'));
+else reject(new Error('render.nopng'));
 },'image/png');
 });
 }finally{

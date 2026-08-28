@@ -6,57 +6,55 @@ if(a[i]!==b[i])return false;
 }
 return true;
 }
-function nameOf(clip,index){
-return clip.name||`clip ${index + 1}`;
+function nameOf(clip,index,t){
+return clip.name||t('clip.nth',{n:index+1});
 }
-export function videoJoinable(clips){
-if(!clips.length)return{ok:false,reason:'there is nothing to join.'};
+export function videoJoinable(clips,t){
+if(!clips.length)return{ok:false,reason:t('join.nothing')};
 const unread=clips.findIndex((clip)=>!clip.media);
 if(unread>=0){
 return{
 ok:false,
-reason:`${nameOf(clips[unread], unread)} is not an MP4 this reader understands, `
-+'so its frames cannot be copied.',
+reason:t('join.unread',{name:nameOf(clips[unread],unread,t)}),
 };
 }
 const first=clips[0].media.video;
 for(let i=1;i<clips.length;i++){
 const video=clips[i].media.video;
-const name=nameOf(clips[i],i);
+const name=nameOf(clips[i],i,t);
 if(video.displayWidth!==first.displayWidth||video.displayHeight!==first.displayHeight){
 return{
 ok:false,
-reason:`${name} is ${video.displayWidth}x${video.displayHeight} and the first clip `
-+`is ${first.displayWidth}x${first.displayHeight}.`,
+reason:t('join.size',{
+name,
+size:`${video.displayWidth}x${video.displayHeight}`,
+first:`${first.displayWidth}x${first.displayHeight}`,
+}),
 };
 }
 if(video.rotation!==first.rotation){
 return{
 ok:false,
-reason:`${name} is stored turned ${video.rotation} degrees and the first clip `
-+`${first.rotation ? `is turned ${first.rotation}` : 'is not turned'}.`,
+reason:t(first.rotation?'join.rotated':'join.rotated.none',
+{name,degrees:video.rotation,first:first.rotation}),
 };
 }
 if(video.codec!==first.codec){
 return{
 ok:false,
-reason:`${name} is ${video.codec} and the first clip is ${first.codec}.`,
+reason:t('join.codec',{name,codec:video.codec,first:first.codec}),
 };
 }
 if(!sameBytes(video.sampleEntry,first.sampleEntry)){
-return{
-ok:false,
-reason:`${name} is the same codec as the first clip but was encoded with different `
-+'settings, so one description cannot cover both.',
-};
+return{ok:false,reason:t('join.settings',{name})};
 }
 }
 return{ok:true,reason:null};
 }
-export function audioJoinable(clips){
+export function audioJoinable(clips,t){
 if(!clips.length)return{ok:true,reason:null,present:false};
 if(clips.some((clip)=>!clip.media)){
-return{ok:false,reason:'one of the clips could not be read.',present:false};
+return{ok:false,reason:t('join.unreadable'),present:false};
 }
 const withSound=clips.filter((clip)=>clip.media.audio&&clip.media.audio.samples.length);
 if(!withSound.length)return{ok:true,reason:null,present:false};
@@ -65,38 +63,37 @@ const silent=clips.findIndex(
 (clip)=>!(clip.media.audio&&clip.media.audio.samples.length));
 return{
 ok:false,
-reason:`${nameOf(clips[silent], silent)} has no sound and the others do, so a copy `
-+'would go quiet partway through.',
+reason:t('join.silent',{name:nameOf(clips[silent],silent,t)}),
 present:true,
 };
 }
 const first=clips[0].media.audio;
 for(let i=1;i<clips.length;i++){
 const audio=clips[i].media.audio;
-const name=nameOf(clips[i],i);
+const name=nameOf(clips[i],i,t);
 if(Math.round(audio.sampleRate)!==Math.round(first.sampleRate)
 ||audio.channels!==first.channels){
 return{
 ok:false,
-reason:`${name} has ${audio.channels}-channel sound at `
-+`${Math.round(audio.sampleRate)} Hz and the first clip has ${first.channels}-channel `
-+`at ${Math.round(first.sampleRate)} Hz.`,
+reason:t('join.sound',{
+name,
+channels:audio.channels,
+rate:Math.round(audio.sampleRate),
+firstchannels:first.channels,
+firstrate:Math.round(first.sampleRate),
+}),
 present:true,
 };
 }
 if(!sameBytes(audio.sampleEntry,first.sampleEntry)){
-return{
-ok:false,
-reason:`${name} has sound encoded differently from the first clip.`,
-present:true,
-};
+return{ok:false,reason:t('join.soundentry',{name}),present:true};
 }
 }
 return{ok:true,reason:null,present:true};
 }
-export function joinability(clips,{keepAudio=true}={}){
-const video=videoJoinable(clips);
-const audio=audioJoinable(clips);
+export function joinability(clips,{keepAudio=true,t}={}){
+const video=videoJoinable(clips,t);
+const audio=audioJoinable(clips,t);
 let sound='none';
 if(keepAudio&&audio.present)sound=audio.ok?'copy':'encode';
 if(!video.ok)return{copy:false,reason:video.reason,sound};

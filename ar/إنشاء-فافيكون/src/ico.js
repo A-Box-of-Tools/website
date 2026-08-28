@@ -5,16 +5,19 @@ const ICONDIRENTRY=16;
 const DIB_HEADER=40;
 const BI_RGB=0;
 const MASK_CUTOFF=128;
+function refusal(key,values){
+const error=new Error(key);
+error.values=values;
+return error;
+}
 export function writeIco(entries){
-if(!entries.length)throw new Error('an icon needs at least one image in it.');
+if(!entries.length)throw refusal('ico.empty');
 for(const entry of entries){
 if(entry.width<1||entry.height<1){
-throw new Error('an icon image cannot be zero pixels across.');
+throw refusal('ico.zero');
 }
 if(entry.width>MAX_SIDE||entry.height>MAX_SIDE){
-throw new Error(
-`${entry.width}x${entry.height} does not fit in an .ico: the format stores `
-+`each side in one byte, so 256 is the largest there is.`);
+throw refusal('ico.toobig',{size:`${entry.width}x${entry.height}`});
 }
 }
 const total=ICONDIR+entries.length*ICONDIRENTRY
@@ -43,7 +46,7 @@ return out;
 }
 export function dibEntry({width,height,data}){
 if(data.length!==width*height*4){
-throw new Error('the pixel buffer does not match the size it claims to be.');
+throw refusal('ico.pixels');
 }
 const xorStride=width*4;
 const maskStride=((width+31)>>5)*4;
@@ -82,17 +85,17 @@ if(alpha<MASK_CUTOFF)out[maskRow+(x>>3)]|=0x80>>(x&7);
 return out;
 }
 export function readIcoDirectory(bytes){
-if(bytes.length<ICONDIR)throw new Error('not an .ico: too short to hold a header.');
+if(bytes.length<ICONDIR)throw refusal('ico.short');
 const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
-if(view.getUint16(2,true)!==1)throw new Error('not an .ico: the type field is not 1.');
+if(view.getUint16(2,true)!==1)throw refusal('ico.type');
 const count=view.getUint16(4,true);
 const found=[];
 for(let i=0;i<count;i+=1){
 const dir=ICONDIR+i*ICONDIRENTRY;
-if(dir+ICONDIRENTRY>bytes.length)throw new Error('the directory runs past the end of the file.');
+if(dir+ICONDIRENTRY>bytes.length)throw refusal('ico.directory');
 const size=view.getUint32(dir+8,true);
 const offset=view.getUint32(dir+12,true);
-if(offset+size>bytes.length)throw new Error('an entry points past the end of the file.');
+if(offset+size>bytes.length)throw refusal('ico.entry');
 found.push({
 width:bytes[dir]===0?MAX_SIDE:bytes[dir],
 height:bytes[dir+1]===0?MAX_SIDE:bytes[dir+1],

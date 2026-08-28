@@ -115,16 +115,18 @@ for(const block of blocks)result[at++]=block.ec[i];
 }
 return result;
 }
-export function encodeText(text,options={}){
+export function encodeText(text,options={},t){
 const level=options.level??'M';
 const mode=options.mode??chooseMode(text);
 const version=fitVersion(text,mode,level,options.minVersion??1,
 options.maxVersion??40);
 if(version===0){
-throw new RangeError(
-`too long for a QR code at level ${level}: ${unitCount(text, mode)} `
-+`${mode === 'byte' ? 'bytes' : 'characters'}, and the largest symbol holds `
-+`${capacityFor(mode, options.maxVersion ?? 40, level)}`);
+throw new RangeError(t('qr.toolong',{
+level,
+count:unitCount(text,mode),
+unit:t(mode==='byte'?'unit.bytes':'unit.characters'),
+most:capacityFor(mode,options.maxVersion??40,level),
+}));
 }
 const capacity=dataCapacity(version,level);
 const bits=writeSegment(text,mode,version);

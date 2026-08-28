@@ -6,6 +6,11 @@ stretch:'stretch',
 };
 export const NOMINAL_VECTOR=1024;
 const isVector=(file)=>file.type==='image/svg+xml'||/\.svg$/i.test(file.name??'');
+function refusal(key,values){
+const error=new Error(key);
+error.values=values;
+return error;
+}
 export async function decode(file){
 const vector=isVector(file);
 if(!vector&&typeof createImageBitmap==='function'){
@@ -21,7 +26,7 @@ try{
 img=await new Promise((resolve,reject)=>{
 const element=new Image();
 element.onload=()=>resolve(element);
-element.onerror=()=>reject(new Error('this browser could not decode the picture.'));
+element.onerror=()=>reject(refusal('decode.failed'));
 element.src=url;
 });
 }catch(error){
@@ -143,6 +148,6 @@ return{width:data.width,height:data.height,data:data.data};
 }
 export async function png(canvas){
 const blob=await new Promise((resolve)=>canvas.toBlob(resolve,'image/png'));
-if(!blob)throw new Error('this browser would not write a PNG.');
+if(!blob)throw refusal('png.refused');
 return new Uint8Array(await blob.arrayBuffer());
 }

@@ -14,11 +14,16 @@ export const ICNS_TYPES=[
 {type:'ic10',px:1024,role:'icon_512x512@2x'},
 ];
 export const ICNS_SIZES=[...new Set(ICNS_TYPES.map(({px})=>px))];
+function refusal(key,values){
+const error=new Error(key);
+error.values=values;
+return error;
+}
 export function writeIcns(elements){
-if(!elements.length)throw new Error('an icon needs at least one image in it.');
+if(!elements.length)throw refusal('icns.empty');
 for(const element of elements){
 if(element.type.length!==4){
-throw new Error(`"${element.type}" is not a four-letter icns type.`);
+throw refusal('icns.type',{type:element.type});
 }
 }
 const total=ELEMENT_HEADER
@@ -37,22 +42,22 @@ at+=ELEMENT_HEADER+element.data.length;
 return out;
 }
 export function readIcnsElements(bytes){
-if(bytes.length<ELEMENT_HEADER)throw new Error('not an .icns: too short to hold a header.');
+if(bytes.length<ELEMENT_HEADER)throw refusal('icns.short');
 const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
-if(view.getUint32(0,false)!==MAGIC)throw new Error('not an .icns: the magic is not "icns".');
+if(view.getUint32(0,false)!==MAGIC)throw refusal('icns.magic');
 const claimed=view.getUint32(4,false);
 if(claimed!==bytes.length){
-throw new Error(`the header claims ${claimed} bytes and the file is ${bytes.length}.`);
+throw refusal('icns.length',{claimed,actual:bytes.length});
 }
 const sizeOf=new Map(ICNS_TYPES.map(({type,px})=>[type,px]));
 const found=[];
 let at=ELEMENT_HEADER;
 while(at<bytes.length){
-if(at+ELEMENT_HEADER>bytes.length)throw new Error('an element runs past the end of the file.');
+if(at+ELEMENT_HEADER>bytes.length)throw refusal('icns.element');
 const type=String.fromCharCode(bytes[at],bytes[at+1],bytes[at+2],bytes[at+3]);
 const length=view.getUint32(at+4,false);
 if(length<ELEMENT_HEADER||at+length>bytes.length){
-throw new Error(`the ${type} element claims a length the file cannot hold.`);
+throw refusal('icns.elementlength',{type});
 }
 found.push({type,px:sizeOf.get(type)??null,bytes:length-ELEMENT_HEADER});
 at+=length;

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/digitalizar-documentos/:';
-const CACHE_NAME=CACHE_PREFIX+'90b73e0771';
+const CACHE_NAME=CACHE_PREFIX+'f89626580a';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=85da4ff630',
+'styles.css?v=6c32284656',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

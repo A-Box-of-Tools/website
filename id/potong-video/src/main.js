@@ -262,7 +262,7 @@ const title=document.createElement('button');
 title.type='button';
 title.className='clip-name';
 title.textContent=entry.name;
-title.title='Mark this video';
+title.title=phrase('clip.mark');
 title.addEventListener('click',()=>selectClip(index));
 const marked=segmentRanges(entry.segments).length;
 const facts=document.createElement('p');
@@ -270,8 +270,12 @@ facts.className='clip-facts';
 facts.textContent=[
 `${entry.source.width} x ${entry.source.height}`,
 formatDuration(entry.duration),
-marked?`${marked} segment${marked === 1 ? '' : 's'}`:'not marked',
-entry.media?(entry.media.audio?'with sound':'no sound'):'recorded to cut',
+marked
+?phrase(marked===1?'clip.segments.one':'clip.segments.many',{n:marked})
+:phrase('clip.notmarked'),
+phrase(entry.media
+?(entry.media.audio?'clip.sound':'clip.nosound')
+:'clip.recorded'),
 ].join(' · ');
 body.append(title,facts);
 const actions=document.createElement('div');
@@ -323,7 +327,10 @@ updateMethodOptions();
 function describeSelection(){
 const entry=clip();
 el.editing.hidden=clips.length<2||!entry;
-if(entry)el.editing.textContent=`${entry.name} — ${selected + 1} of ${clips.length}`;
+if(entry){
+el.editing.textContent=phrase('clip.editing',
+{name:entry.name,index:selected+1,total:clips.length});
+}
 }
 function selectClip(index){
 if(index<0||index>=clips.length)return;
@@ -342,8 +349,7 @@ el.preview.removeAttribute('src');
 el.preview.hidden=true;
 el.stageNote.hidden=false;
 setTransportEnabled(false);
-el.stageNote.textContent='This browser will not play this video, so the frames below are '
-+'decoded one at a time to show you where the marks are. The cut itself is unaffected.';
+el.stageNote.textContent=phrase('stage.noplay');
 drawStill(entry,0);
 }
 el.stage.style.aspectRatio=`${entry.source.width} / ${entry.source.height}`;
@@ -395,8 +401,8 @@ el.still.getContext('2d').drawImage(canvas,0,0);
 el.still.hidden=false;
 }
 }catch(error){
-el.stageNote.textContent='This browser will not play this video and no frame could be '
-+`decoded from it either (${error.message}). The marks below still work on its length.`;
+el.stageNote.textContent=phrase('stage.noframe',
+{detail:phrase(error.message,error.values)});
 }finally{
 stillBusy=false;
 }
@@ -465,13 +471,13 @@ const entry=clip();
 if(!entry)return;
 const last=entry.segments[entry.segments.length-1];
 if(!last){
-showError('Nothing is open yet. Press I where the part should start, then O where it ends.');
+showError(phrase('mark.noopen'));
 return;
 }
 const at=timeline.snap(currentTime());
 if(at<=last.start){
-showError(`That would end the segment at ${formatTime(at)}, which is before it starts `
-+`at ${formatTime(last.start)}. Move the playhead past the start first.`);
+showError(phrase('mark.before',
+{at:formatTime(at),start:formatTime(last.start)}));
 return;
 }
 last.end=at;
@@ -497,7 +503,7 @@ if(!entry)return;
 const start=timeline.snap(currentTime());
 const end=Math.min(entry.duration,start+Math.min(5,entry.duration-start));
 if(end-start<0.05){
-showError('There is not enough video left here to add a segment. Move the playhead back.');
+showError(phrase('mark.nospace'));
 return;
 }
 entry.segments.push({id:entry.nextSegmentId++,start,end});
@@ -507,7 +513,8 @@ renderSegments();
 el.resetSegments.addEventListener('click',()=>{
 const entry=clip();
 if(!entry?.segments.length)return;
-if(!window.confirm(`Clear all ${entry.segments.length} segments of ${entry.name}?`))return;
+if(!window.confirm(phrase('mark.clearall',
+{n:entry.segments.length,name:entry.name})))return;
 entry.segments=[];
 selectedSegment=null;
 renderSegments();
@@ -528,8 +535,8 @@ el.segmentTable.hidden=segments.length===0;
 el.segmentsEmpty.hidden=segments.length>0;
 el.segmentRows.innerHTML='';
 el.segmentCount.textContent=segments.length===0
-?'none yet — the whole video'
-:`${finished.length} of ${segments.length}`;
+?phrase('segments.none')
+:phrase('segments.some',{done:finished.length,total:segments.length});
 el.totalKept.textContent=formatTime(
 mode==='keep'&&finished.length
 ?totalCaptured(segments)
@@ -605,10 +612,11 @@ const cell=document.createElement('td');
 cell.className='segment-buttons';
 const entry=clip();
 cell.append(
-iconButton('▶','Play this segment',()=>playSegment(segment),segment.end===null),
-iconButton('↑','Move up',()=>moveSegment(index,-1),index===0),
-iconButton('↓','Move down',()=>moveSegment(index,1),index===entry.segments.length-1),
-iconButton('✕','Remove',()=>removeSegment(index),false,'danger'),
+iconButton('▶',phrase('seg.play'),()=>playSegment(segment),segment.end===null),
+iconButton('↑',phrase('seg.up'),()=>moveSegment(index,-1),index===0),
+iconButton('↓',phrase('seg.down'),()=>moveSegment(index,1),
+index===entry.segments.length-1),
+iconButton('✕',phrase('seg.remove'),()=>removeSegment(index),false,'danger'),
 );
 return cell;
 }
@@ -645,7 +653,7 @@ const entry=clip();
 if(!entry)return;
 const ranges=segmentRanges(entry.segments);
 if(!ranges.length){
-showError('There is nothing marked to save yet.');
+showError(phrase('marks.nothing'));
 return;
 }
 const text=writeTimestamps(entry.segments,{
@@ -670,8 +678,7 @@ try{
 const parsed=readTimestamps(await file.text());
 const kept=parsed.segments.filter((segment)=>segment.start<entry.duration);
 if(!kept.length){
-showError(`Every segment in ${file.name} starts after this video ends. `
-+'It was probably marked against a different one.');
+showError(phrase('marks.pastend',{name:file.name}));
 return;
 }
 entry.segments=kept.map((segment)=>({
@@ -686,20 +693,21 @@ clearError();
 if(dropped||parsed.skipped){
 const says=[];
 if(dropped){
-says.push(`${dropped} segment${dropped === 1 ? '' : 's'} in ${file.name} `
-+`${dropped === 1 ? 'starts' : 'start'} past the end of this video, so `
-+`${dropped === 1 ? 'it was' : 'they were'} left out.`);
+says.push(phrase(dropped===1?'marks.dropped.one':'marks.dropped.many',
+{n:dropped,name:file.name}));
 }
 if(parsed.skipped){
-says.push(`${parsed.skipped} line${parsed.skipped === 1 ? '' : 's'} could not be `
-+'read as a segment.');
+says.push(phrase(
+parsed.skipped===1?'marks.skipped.one':'marks.skipped.many',
+{n:parsed.skipped}));
 }
-says.push(`${kept.length} loaded.`);
-showError(says.join(' '));
+says.push(phrase('marks.loaded',{n:kept.length}));
+showError(sentences(says));
 }
 renderSegments();
 }catch(error){
-showError(`${file.name} could not be read: ${error.message}`);
+showError(phrase('marks.failed',
+{name:file.name,reason:phrase(error.message,error.values)}));
 }
 });
 function typing(target){
@@ -759,7 +767,7 @@ function updateMethodOptions(){
 const chosen=exportClips();
 const keepAudio=el.keepAudio.checked;
 const join=chosen.length
-?joinability(chosen,{keepAudio})
+?joinability(chosen,{keepAudio,t:phrase})
 :{copy:false,reason:null,sound:'none'};
 const everyDemuxed=chosen.length>0&&chosen.every((entry)=>entry.media);
 const canCopy=everyDemuxed&&join.copy;
@@ -777,9 +785,7 @@ canRecord?'record':null,
 if(!available.includes(el.method.value))el.method.value=available[0]??'copy';
 el.joinNote.hidden=clips.length<2||canCopy||!join.reason;
 if(!el.joinNote.hidden){
-el.joinNote.textContent=`These videos cannot be joined without re-encoding: ${join.reason} `
-+'One track carries one description of what is in it, so videos that disagree have to be '
-+'written out again to share one.';
+el.joinNote.textContent=phrase('join.note',{reason:join.reason});
 }
 updateMethodNote();
 }
@@ -789,41 +795,25 @@ const chosen=exportClips();
 const sections=chosen.reduce((total,entry)=>total+entry.ranges.length,0);
 const many=chosen.length>1;
 if(method==='copy'){
-el.methodNote.textContent=sections>1
-?'Every marked part is moved into the new file exactly as it is, one after another. '
-+'Nothing is decoded and nothing is encoded, so no part of this costs quality.'
-:'The frames are moved into the new file exactly as they are, so nothing is decoded '
-+'and nothing is encoded. Quick, and it cannot cost quality. Each part starts at the '
-+'nearest keyframe before your mark.';
+el.methodNote.textContent=phrase(sections>1?'method.copy.many':'method.copy.one');
 }else if(method==='exact'){
-el.methodNote.textContent=many
-?'Every video is decoded and written out again into one stream, so videos that disagree '
-+'about size or codec can still be joined. The sound is copied where they agree about '
-+'it and re-encoded where they do not.'
-:'Every part starts on the frame you marked, by decoding from the keyframe in front of '
-+'it and encoding the picture again. The sound is still copied rather than re-encoded.';
+el.methodNote.textContent=phrase(many?'method.exact.many':'method.exact.one');
 }else{
-el.methodNote.textContent='Plays the marked part through and records it, so it takes as '
-+'long as that part is long and everything is re-encoded. Keep this tab in front while '
-+'it runs.';
+el.methodNote.textContent=phrase('method.record');
 }
 el.qualityField.hidden=method==='copy';
 el.frameField.hidden=!(method==='exact'&&many);
 const anySound=chosen.some((entry)=>entry.media?.audio?.samples.length)
 ||clips.some((entry)=>!entry.media);
-const sound=joinability(chosen,{keepAudio:el.keepAudio.checked}).sound;
+const sound=joinability(chosen,{keepAudio:el.keepAudio.checked,t:phrase}).sound;
 if(!anySound){
-el.audioNote.textContent='There is no audio track here, so there is nothing to keep.';
+el.audioNote.textContent=phrase('audio.none');
 }else if(method==='record'){
-el.audioNote.textContent='Captured from playback and re-encoded, because that is all '
-+'a recording can do.';
+el.audioNote.textContent=phrase('audio.record');
 }else if(sound==='encode'&&method==='exact'){
-el.audioNote.textContent='These videos describe their sound differently, so it is decoded '
-+'and encoded once for the whole result. That is the only case in this tool where the '
-+'sound is not carried across untouched.';
+el.audioNote.textContent=phrase('audio.encode');
 }else{
-el.audioNote.textContent='Copied from the file sample by sample, without ever being '
-+'decoded, so it loses nothing.';
+el.audioNote.textContent=phrase('audio.copy');
 }
 el.keepAudio.disabled=!anySound;
 updateSummary();
@@ -837,38 +827,33 @@ const chosen=exportClips();
 if(!chosen.length){
 el.exportBtn.disabled=true;
 el.sumLength.textContent='0s';
-el.sumClips.textContent=mode==='cut'
-?'nothing — the marks cover the whole video'
-:'nothing marked';
+el.sumClips.textContent=phrase(
+mode==='cut'?'sum.nothing.cut':'sum.nothing.keep');
 return;
 }
 const method=el.method.value;
 const keepAudio=el.keepAudio.checked&&!el.keepAudio.disabled;
 const kept=chosen.reduce((total,entry)=>total+totalSeconds(entry.ranges),0);
 const sections=chosen.reduce((total,entry)=>total+entry.ranges.length,0);
-const parts=`${sections} part${sections === 1 ? '' : 's'}`;
+const parts=phrase(sections===1?'sum.parts.one':'sum.parts.many',
+{n:sections});
 el.sumClips.textContent=chosen.length===1
-?(mode==='cut'?`${parts}, once the marked ones are gone`:parts)
-:`${parts} from ${chosen.length} videos`;
+?(mode==='cut'?phrase('sum.parts.cut',{parts}):parts)
+:phrase('sum.parts.videos',{parts,n:chosen.length});
 el.sumLength.textContent=formatDuration(kept);
 const first=chosen[0];
 if(method==='copy'&&first.media){
 const behind=keyframeBefore(first.media.video,first.ranges[0].start);
 const preRoll=Math.max(0,first.ranges[0].start-behind);
-el.sumStart.textContent=preRoll<0.001
-?'exactly where you marked (it is on a keyframe)'
-:'exactly where you marked, through an edit mark';
+el.sumStart.textContent=phrase(preRoll<0.001
+?'sum.start.keyframe'
+:'sum.start.editmark');
 el.cutNote.hidden=preRoll<0.001;
 if(preRoll>=0.001){
-el.cutNote.textContent='The nearest keyframe before your first mark is '
-+`${preRoll.toFixed(2)}s earlier, and the frames in between have to stay in the `
-+'file - nothing after them can be decoded without them. They are marked not to '
-+'be played, which every mainstream player honours. A player that ignores edit '
-+`marks will show those ${preRoll.toFixed(2)}s at the front. Choose "Cut exactly `
-+'here" if that matters more than keeping the original bytes.';
+el.cutNote.textContent=phrase('cut.note',{seconds:preRoll.toFixed(2)});
 }
 }else{
-el.sumStart.textContent='exactly where you marked';
+el.sumStart.textContent=phrase('sum.start.exact');
 el.cutNote.hidden=true;
 }
 const frame=method==='exact'&&chosen.length>1
@@ -886,27 +871,34 @@ bytes=estimateRecording({
 size:first.source,fps:clips[0].fps,quality:el.quality.value,seconds:kept,
 });
 }
-el.sumSize.textContent=bytes?`about ${formatBytes(bytes)}`:'—';
+el.sumSize.textContent=bytes
+?phrase('sum.size',{size:formatBytes(bytes)})
+:'—';
 if(method==='copy'){
-el.sumPicture.textContent='copied, frame for frame';
+el.sumPicture.textContent=phrase('sum.picture.copy');
 }else if(method==='exact'){
 const bars=chosen.filter((entry)=>!fittedBox({
 displayWidth:entry.source.width,displayHeight:entry.source.height,frame,
 }).fits).length;
-el.sumPicture.textContent=`re-encoded to H.264, ${frame.width} x ${frame.height}`
-+(bars?` (${bars} fitted with bars)`:'');
+el.sumPicture.textContent=phrase(
+bars?'sum.picture.exact.bars':'sum.picture.exact',
+{size:`${frame.width} x ${frame.height}`,n:bars});
 }else{
-el.sumPicture.textContent='recorded as it plays';
+el.sumPicture.textContent=phrase('sum.picture.record');
 }
-const sound=joinability(chosen,{keepAudio:true}).sound;
-if(sound==='none')el.sumSound.textContent='none in this video';
-else if(!keepAudio)el.sumSound.textContent='left out';
-else if(method==='record')el.sumSound.textContent='re-encoded from playback';
-else if(sound==='encode'&&method==='exact')el.sumSound.textContent='decoded and re-encoded once';
-else el.sumSound.textContent='copied, sample for sample';
+const sound=joinability(chosen,{keepAudio:true,t:phrase}).sound;
+if(sound==='none')el.sumSound.textContent=phrase('sum.sound.none');
+else if(!keepAudio)el.sumSound.textContent=phrase('sum.sound.left');
+else if(method==='record')el.sumSound.textContent=phrase('sum.sound.record');
+else if(sound==='encode'&&method==='exact'){
+el.sumSound.textContent=phrase('sum.sound.encode');
+}else el.sumSound.textContent=phrase('sum.sound.copy');
 el.exportBtn.disabled=exporting;
-el.exportBtn.textContent=sections>1?`Cut and join ${sections} parts`:'Cut video';
+el.exportBtn.textContent=sections>1
+?phrase('export.many',{n:sections})
+:phrase('export.one');
 }
+const sentences=(said)=>said.reduce((a,b)=>phrase('join.sentences',{a,b}));
 function showError(message){
 el.error.textContent=message;
 el.error.hidden=false;
@@ -918,21 +910,26 @@ el.error.textContent='';
 function setProgress({phase,done,total,realtime}){
 const fraction=total>0?Math.min(1,done/total):0;
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
+const percent=Math.round(fraction*100);
 if(phase==='preparing'){
-el.progressLabel.textContent='Preparing...';
+el.progressLabel.textContent=phrase('progress.preparing');
 }else if(phase==='finishing'){
-el.progressLabel.textContent='Writing the file...';
+el.progressLabel.textContent=phrase('progress.finishing');
 }else if(phase==='sound'){
-el.progressLabel.textContent=`Encoding the sound - ${done + 1} of ${total}`;
+el.progressLabel.textContent=phrase('progress.sound',
+{done:done+1,total});
 }else if(phase==='copying'){
-el.progressLabel.textContent=`Copying sample ${done.toLocaleString()} `
-+`of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase('progress.copying',{
+done:done.toLocaleString(),total:total.toLocaleString(),percent,
+});
 }else if(realtime){
-el.progressLabel.textContent='Recording in real time - '
-+`${formatDuration(done)} of ${formatDuration(total)} (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase('progress.realtime',{
+done:formatDuration(done),total:formatDuration(total),percent,
+});
 }else{
-el.progressLabel.textContent=`Frame ${done.toLocaleString()} `
-+`of ${total.toLocaleString()} (${Math.round(fraction * 100)}%)`;
+el.progressLabel.textContent=phrase('progress.frame',{
+done:done.toLocaleString(),total:total.toLocaleString(),percent,
+});
 }
 }
 function outputFilename(extension){
@@ -940,24 +937,25 @@ const base=(clips[0]?.name??'video').replace(/\.[^.]+$/,'');
 return`${base}-cut.${extension}`;
 }
 function formatBytes(bytes){
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(0)} KB`;
-if(bytes<1024*1024*1024)return`${(bytes / 1024 / 1024).toFixed(1)} MB`;
-return`${(bytes / 1024 / 1024 / 1024).toFixed(2)} GB`;
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
+if(bytes<1024*1024*1024){
+return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
+}
+return phrase('size.gb',{n:(bytes/1024/1024/1024).toFixed(2)});
 }
 function formatDuration(seconds){
 const whole=Math.max(0,Math.round(seconds));
 const minutes=Math.floor(whole/60);
 return minutes
-?`${minutes}m ${String(whole % 60).padStart(2, '0')}s`
-:`${seconds < 10 ? seconds.toFixed(1) : whole}s`;
+?phrase('dur.minutes',{m:minutes,s:String(whole%60).padStart(2,'0')})
+:phrase('dur.seconds',{s:seconds<10?seconds.toFixed(1):whole});
 }
 async function runExport(){
 if(exporting)return;
 const chosen=exportClips();
 if(!chosen.length){
-showError(mode==='cut'
-?'The marks cover the whole video, so cutting them out would leave nothing.'
-:'There is nothing marked to keep. Press I and O while it plays.');
+showError(phrase(
+mode==='cut'?'export.nothing.cut':'export.nothing.keep'));
 return;
 }
 clearError();
@@ -983,7 +981,7 @@ result=await joinByCopy({clips:chosen,keepAudio,onProgress,signal});
 const frame=chosen.length>1
 ?outputFrame(chosen,el.frame.value)
 :outputFrame(chosen.slice(0,1),'first');
-const sound=joinability(chosen,{keepAudio}).sound;
+const sound=joinability(chosen,{keepAudio,t:phrase}).sound;
 result=await joinExact({
 clips:chosen,
 frame,
@@ -1004,7 +1002,9 @@ onProgress,
 signal,
 });
 }
-if(result.warning)showError(result.warning);
+if(result.warning?.length){
+showError(sentences(result.warning.map((key)=>phrase(key))));
+}
 if(lastResultUrl)URL.revokeObjectURL(lastResultUrl);
 lastResultUrl=URL.createObjectURL(result.blob);
 const sections=chosen.reduce((total,entry)=>total+entry.ranges.length,0);
@@ -1013,10 +1013,10 @@ el.download.href=lastResultUrl;
 el.download.download=outputFilename(result.extension);
 el.resultInfo.textContent=[
 result.extension.toUpperCase(),
-sections>1?`${sections} parts`:null,
+sections>1?phrase('result.parts',{n:sections}):null,
 formatDuration(chosen.reduce((total,entry)=>total+totalSeconds(entry.ranges),0)),
 formatBytes(result.blob.size),
-method==='copy'?'not re-encoded':result.codec,
+method==='copy'?phrase('result.notreencoded'):result.codec,
 ].filter(Boolean).join(' · ');
 el.result.hidden=false;
 el.progress.hidden=true;
@@ -1024,7 +1024,9 @@ el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message?phrase(error.message):'Something went wrong.');
+showError(error?.message
+?phrase(error.message,error.values)
+:phrase('error.generic'));
 console.error(error);
 }
 }finally{

@@ -2,12 +2,12 @@
 export const KINDS=[
 {
 id:'text',
-name:'Text or a link',
-note:'Anything at all. A web address is what a phone camera will offer to open.',
+name:'kind.text.name',
+note:'kind.text.note',
 fields:[
 {
 id:'text',
-label:'Text or web address',
+label:'field.text',
 type:'textarea',
 placeholder:'https://abox.tools/',
 },
@@ -15,70 +15,74 @@ placeholder:'https://abox.tools/',
 },
 {
 id:'wifi',
-name:'Wi-Fi network',
-note:'Scanning it offers to join the network. Android reads this natively; '
-+'so does the iPhone camera from iOS 11 onwards.',
+name:'kind.wifi.name',
+note:'kind.wifi.note',
 fields:[
-{id:'ssid',label:'Network name (SSID)',type:'text',placeholder:'The Coffee Shop'},
-{id:'password',label:'Password',type:'text',placeholder:'',optional:true},
+{
+id:'ssid',label:'field.ssid',type:'text',placeholder:'field.ssid.example',
+},
+{id:'password',label:'field.password',type:'text',placeholder:'',optional:true},
 {
 id:'security',
-label:'Security',
+label:'field.security',
 type:'select',
-options:[['WPA','WPA / WPA2 / WPA3'],['WEP','WEP'],['nopass','Open - no password']],
+options:[['WPA','field.wpa'],['WEP','field.wep'],['nopass','field.open']],
 },
-{id:'hidden',label:'The network is hidden',type:'checkbox',optional:true},
+{id:'hidden',label:'field.hidden',type:'checkbox',optional:true},
 ],
 },
 {
 id:'contact',
-name:'Contact card',
-note:'A vCard, which is what a phone offers to save into its address book.',
+name:'kind.contact.name',
+note:'kind.contact.note',
 fields:[
-{id:'first',label:'First name',type:'text',placeholder:'Ada',optional:true},
-{id:'last',label:'Last name',type:'text',placeholder:'Lovelace',optional:true},
-{id:'org',label:'Organisation',type:'text',placeholder:'',optional:true},
-{id:'title',label:'Job title',type:'text',placeholder:'',optional:true},
-{id:'phone',label:'Phone',type:'tel',placeholder:'+44 20 7946 0000',optional:true},
-{id:'email',label:'Email',type:'email',placeholder:'',optional:true},
-{id:'url',label:'Website',type:'text',placeholder:'',optional:true},
-{id:'address',label:'Address',type:'text',placeholder:'',optional:true},
+{id:'first',label:'field.first',type:'text',placeholder:'Ada',optional:true},
+{id:'last',label:'field.last',type:'text',placeholder:'Lovelace',optional:true},
+{id:'org',label:'field.org',type:'text',placeholder:'',optional:true},
+{id:'title',label:'field.title',type:'text',placeholder:'',optional:true},
+{
+id:'phone',label:'field.phone',type:'tel',placeholder:'+44 20 7946 0000',
+optional:true,
+},
+{id:'email',label:'field.email',type:'email',placeholder:'',optional:true},
+{id:'url',label:'field.url',type:'text',placeholder:'',optional:true},
+{id:'address',label:'field.address',type:'text',placeholder:'',optional:true},
 ],
 },
 {
 id:'email',
-name:'Email',
-note:'Opens a new message with the address, and the subject and body if you fill them in.',
+name:'kind.email.name',
+note:'kind.email.note',
 fields:[
-{id:'to',label:'To',type:'email',placeholder:'hi@abox.tools'},
-{id:'subject',label:'Subject',type:'text',placeholder:'',optional:true},
-{id:'body',label:'Message',type:'textarea',placeholder:'',optional:true},
+{id:'to',label:'field.to',type:'email',placeholder:'hi@abox.tools'},
+{id:'subject',label:'field.subject',type:'text',placeholder:'',optional:true},
+{id:'body',label:'field.body',type:'textarea',placeholder:'',optional:true},
 ],
 },
 {
 id:'sms',
-name:'Text message',
-note:'Opens a new message to that number, with the text ready to send.',
+name:'kind.sms.name',
+note:'kind.sms.note',
 fields:[
-{id:'number',label:'Phone number',type:'tel',placeholder:'+15551234567'},
-{id:'message',label:'Message',type:'textarea',placeholder:'',optional:true},
+{id:'number',label:'field.number',type:'tel',placeholder:'+15551234567'},
+{id:'message',label:'field.message',type:'textarea',placeholder:'',optional:true},
 ],
 },
 {
 id:'phone',
-name:'Phone number',
-note:'Offers to call the number.',
+name:'kind.phone.name',
+note:'kind.phone.note',
 fields:[
-{id:'number',label:'Phone number',type:'tel',placeholder:'+15551234567'},
+{id:'number',label:'field.number',type:'tel',placeholder:'+15551234567'},
 ],
 },
 {
 id:'location',
-name:'A place on the map',
-note:'Opens the coordinates in whichever map application the phone uses.',
+name:'kind.location.name',
+note:'kind.location.note',
 fields:[
-{id:'latitude',label:'Latitude',type:'text',placeholder:'51.5007'},
-{id:'longitude',label:'Longitude',type:'text',placeholder:'-0.1246'},
+{id:'latitude',label:'field.latitude',type:'text',placeholder:'51.5007'},
+{id:'longitude',label:'field.longitude',type:'text',placeholder:'-0.1246'},
 ],
 },
 ];
@@ -88,7 +92,7 @@ return value.replace(/([\\;,:"])/g,'\\$1');
 function vcardEscape(value){
 return value.replace(/([\\;,])/g,'\\$1').replace(/\r?\n/g,'\\n');
 }
-export function compose(kind,values){
+export function compose(kind,values,t){
 const value=(id)=>String(values[id]??'').trim();
 if(kind==='text')return String(values.text??'');
 if(kind==='wifi'){
@@ -128,14 +132,14 @@ return value('message')?`SMSTO:${number}:${values.message}`:`SMSTO:${number}`;
 }
 if(kind==='phone')return`tel:${value('number').replace(/\s+/g, '')}`;
 if(kind==='location')return`geo:${value('latitude')},${value('longitude')}`;
-throw new RangeError(`no such kind: ${kind}`);
+throw new RangeError(t('payload.nosuch',{kind}));
 }
 export function missing(kind,values){
 const definition=KINDS.find((entry)=>entry.id===kind);
 if(kind==='contact'){
 const anything=definition.fields
 .some((field)=>String(values[field.id]??'').trim());
-return anything?[]:['At least one detail'];
+return anything?[]:['payload.anydetail'];
 }
 return definition.fields
 .filter((field)=>!field.optional&&field.type!=='checkbox'

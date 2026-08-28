@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-export function parseRanges(text,total){
+export function parseRanges(text,total,t){
 const trimmed=String(text??'').trim();
 if(!trimmed)return{pages:[],error:''};
 const wanted=new Set();
@@ -45,13 +45,14 @@ const pages=[...wanted].sort((a,b)=>a-b);
 if(!bad.length)return{pages,error:''};
 return{
 pages,
-error:`${bad.length === 1 ? 'This is not' : 'These are not'} a page number or a `
-+`range of them: ${bad.join(', ')}. There ${total === 1 ? 'is' : 'are'} `
-+`${total} page${total === 1 ? '' : 's'}; write them as 1-3, 8, 12-.`,
+error:t(bad.length===1?'range.bad.one':'range.bad.many',{
+list:bad.join(', '),
+total:t(total===1?'range.total.one':'range.total.many',{n:total}),
+}),
 };
 }
-export function describeRanges(pages){
-if(!pages.length)return'none';
+export function describeRanges(pages,t){
+if(!pages.length)return t('range.none');
 const runs=[];
 let start=pages[0];
 let last=pages[0];
@@ -67,8 +68,8 @@ last=page;
 runs.push([start,last]);
 return runs.map(([from,to])=>{
 if(from===to)return String(from);
-if(to===from+1)return`${from}, ${to}`;
-return`${from}-${to}`;
+if(to===from+1)return t('range.pair',{from,to});
+return t('range.run',{from,to});
 }).join(', ');
 }
 export function splitInto(entries,{mode='single',size=1,at=[]}={}){

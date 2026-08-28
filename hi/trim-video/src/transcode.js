@@ -89,15 +89,16 @@ export async function joinExact({
 clips,frame,quality='medium',audioMode='copy',onProgress,signal,
 }){
 const usable=clips.filter((clip)=>clip.ranges.length&&clip.media);
-if(!usable.length)throw new Error('There is nothing selected to keep.');
+if(!usable.length)throw new Error('nothing.selected');
 const fps=Math.max(...usable.map((clip)=>averageFps(clip.media.video)));
 const bitrate=chooseJoinBitrate({clips:usable,frame,fps,quality});
 const codec=await pickH264Codec({
 width:frame.width,height:frame.height,framerate:Math.round(fps),bitrate,
 });
 if(!codec){
-throw new Error(`This browser will not encode H.264 at ${frame.width}x${frame.height}. `
-+'Choose a smaller frame, or use "Keep every byte", which encodes nothing at all.');
+const refused=new Error('encode.toobig');
+refused.values={size:`${frame.width}x${frame.height}`};
+throw refused;
 }
 onProgress?.({phase:'preparing',done:0,total:1});
 const canvas=document.createElement('canvas');
@@ -264,8 +265,8 @@ if(decoder.state!=='closed')decoder.close();
 onProgress?.({phase:'finishing',done:drawn,total});
 await encoder.flush();
 if(failure)throw failure;
-if(!encoded.length)throw new Error('No frames could be decoded from what you chose.');
-if(!avcC)throw new Error('The encoder never reported a decoder configuration.');
+if(!encoded.length)throw new Error('decode.none');
+if(!avcC)throw new Error('encode.noconfig');
 }finally{
 if(encoder.state!=='closed')encoder.close();
 }
@@ -319,9 +320,7 @@ duration:sample.duration,
 });
 }
 }else{
-warning='These clips describe their sound differently, so it had to be re-encoded '
-+'to be joined - and this browser will not encode AAC. The video has been joined '
-+'without sound. Chrome and Edge will do it.';
+warning='warn.noaac';
 }
 }
 return{
@@ -402,7 +401,7 @@ if(sample.pts>targetTicks+video.timescale*0.4)break;
 }
 await decoder.flush();
 if(failure)throw failure;
-if(!drawn)throw new Error('No frame could be decoded from this file.');
+if(!drawn)throw new Error('decode.noframe');
 return canvas;
 }finally{
 if(decoder.state!=='closed')decoder.close();

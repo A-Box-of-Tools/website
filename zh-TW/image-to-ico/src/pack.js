@@ -1,42 +1,44 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{listOf}from'./files.js';
+const WIDTH=78;
 export const PACK_IMAGES=[
 {
 name:'favicon-16x16.png',
 px:16,
-why:'the tab, for browsers that prefer a PNG to the .ico',
+why:'pack.favicon16',
 },
 {
 name:'favicon-32x32.png',
 px:32,
-why:'the bookmark bar and a pinned Windows shortcut',
+why:'pack.favicon32',
 },
 {
 name:'apple-touch-icon.png',
 px:180,
 opaque:true,
-why:'iOS home screen. Drawn opaque: iOS turns transparency into black',
+why:'pack.apple',
 },
 {
 name:'android-chrome-192x192.png',
 px:192,
-why:'Android home screen, and the install prompt',
+why:'pack.android192',
 },
 {
 name:'android-chrome-512x512.png',
 px:512,
-why:'the splash screen a web app shows while it starts',
+why:'pack.android512',
 },
 {
 name:'android-chrome-maskable-512x512.png',
 px:512,
 opaque:true,
 inset:0.1,
-why:'the same icon inside the safe area an adaptive launcher crops to',
+why:'pack.maskable',
 },
 {
 name:'mstile-150x150.png',
 px:150,
-why:'a tile pinned to the Windows Start menu',
+why:'pack.mstile',
 },
 ];
 export function manifest({name,background,theme}){
@@ -72,9 +74,9 @@ return`<?xml version="1.0" encoding="utf-8"?>
 `
 ;
 }
-export function headSnippet(){
-return`<!-- Icons. favicon.ico goes at the site root; browsers ask for it by
-     that address without being told, so it needs no <link> of its own. -->
+export function headSnippet(t){
+const comment=wrap(t('head.comment'),WIDTH-5).split('\n').join('\n     ');
+return`<!-- ${comment} -->
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -84,32 +86,49 @@ return`<!-- Icons. favicon.ico goes at the site root; browsers ask for it by
 `
 ;
 }
-export function readme(icoName,sizes,hasIco){
-const lines=PACK_IMAGES.map((image)=>`  ${image.name}  -  ${image.why}`);
+export function readme(icoName,sizes,hasIco,t){
+const line=(name,why)=>{
+const head=`  ${name}  -  `;
+const indent=' '.repeat(head.length);
+return head+wrap(why,WIDTH-head.length).split('\n').join(`\n${indent}`);
+};
+const lines=PACK_IMAGES.map((image)=>line(image.name,t(image.why)));
 const ico=hasIco
-?`  ${icoName}  -  the classic favicon, holding ${sizes.join(', ')} pixel versions\n`
+?`${line(icoName, t('readme.ico', { sizes: listOf(sizes, t) }))}\n`
 :'';
-return`Website icon set
-================
+const title=t('readme.title');
+return`${title}
+${'='.repeat(columns(title))}
 
-Made in the browser at abox.tools/image-to-ico/ - nothing was uploaded to
-make it, and nothing about these files was sent anywhere.
+${wrap(t('readme.made'))}
 
-Upload every file except this one and head.html to the root of your site, so
-that they answer at /favicon.ico, /apple-touch-icon.png and so on. The paths in
-site.webmanifest, browserconfig.xml and head.html all assume that. If they go
-in a subfolder instead, edit those three files to match.
+${wrap(t('readme.upload'))}
 
 ${ico}${lines.join('\n')}
-  site.webmanifest  -  read by Android and by any install-to-home-screen prompt
-  browserconfig.xml  -  read by a tile pinned to the Windows Start menu
-  head.html  -  the markup to paste into your <head>; not a file to upload
+${line('site.webmanifest', t('readme.manifest'))}
+${line('browserconfig.xml', t('readme.browserconfig'))}
+${line('head.html', t('readme.head'))}
 
-Set the name in site.webmanifest to your site's name before you upload it, and
-the two colours in it to whatever suits the icon.
+${wrap(t('readme.setname'))}
 ${hasIco ? '' : `
-Note: no favicon.ico is in here, because the .ico output was switched off. A
-site really does want one - it is the address browsers ask for by themselves.
+${wrap(t('readme.noico'))}
 `}`
 ;
+}
+function columns(text){
+return[...text].reduce((n,ch)=>n+(/[ᄀ-ᅟ⺀-〾ぁ-㏿㐀-䶿一-鿿ꀀ-꓏가-힣豈-﫿︰-﹯＀-｠￠-￦]/.test(ch)?2:1),0);
+}
+function wrap(text,width=WIDTH){
+const lines=[];
+let line='';
+for(const word of text.split(' ')){
+if(line&&line.length+1+word.length>width){
+lines.push(line);
+line=word;
+}else{
+line=line?`${line} ${word}`:word;
+}
+}
+if(line)lines.push(line);
+return lines.join('\n');
 }

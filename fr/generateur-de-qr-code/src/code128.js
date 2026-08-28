@@ -24,13 +24,12 @@ export const QUIET=10;
 const isDigitCode=(code)=>code>=48&&code<=57;
 const inA=(code)=>code<96;
 const inB=(code)=>code>=32&&code<=127;
-export function values(text){
+export function values(text,t){
 const codes=[...text].map((character)=>character.codePointAt(0));
 const bad=codes.findIndex((code)=>code>127);
 if(bad!==-1){
-throw new RangeError(
-`Code 128 holds ASCII only, and ${JSON.stringify([...text][bad])} is not. `
-+'A QR code will hold it.');
+throw new RangeError(t('bar.notascii',
+{char:JSON.stringify([...text][bad])}));
 }
 const digits=(from)=>{
 let run=0;
@@ -104,10 +103,10 @@ if(code>95)return'B';
 }
 return'B';
 }
-export function modules(text){
+export function modules(text,t){
 const parts=[];
 for(let i=0;i<QUIET;i+=1)parts.push(0);
-for(const symbol of values(text)){
+for(const symbol of values(text,t)){
 let dark=1;
 for(const width of PATTERNS[symbol]){
 for(let i=0;i<Number(width);i+=1)parts.push(dark);
