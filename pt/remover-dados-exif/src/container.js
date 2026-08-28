@@ -24,11 +24,11 @@ if((mark==='II'&&bytes[2]===0x2a)||(mark==='MM'&&bytes[3]===0x2a))return'tiff';
 return'unknown';
 }
 const REFUSALS={
-heic:'HEIC is a box format built out of nested atoms, and rewriting one safely needs a different parser from the three here. Convert it to JPEG first - the HEIC to JPG tool on this site does that, and can leave the metadata out on the way.',
-avif:'AVIF uses the same box format as HEIC, and the same applies: rewriting one needs a parser this tool does not have yet.',
-gif:'GIF has comment and application blocks rather than EXIF, and almost never carries anything personal. It is not handled here.',
-tiff:'A bare TIFF is all metadata and all image at once, with the pixels addressed by the same offsets this tool would have to move. Editing one is a different job from editing a photo.',
-unknown:'This does not look like a JPEG, PNG or WebP.',
+heic:'refuse.heic',
+avif:'refuse.avif',
+gif:'refuse.gif',
+tiff:'refuse.tiff',
+unknown:'refuse.unknown',
 };
 export async function readImage(file){
 return readBytes(new Uint8Array(await file.arrayBuffer()));
@@ -54,7 +54,7 @@ return serializeExif(exif);
 }
 export function serialize(item,plan){
 const handler=HANDLERS[item.kind];
-if(!handler)throw new Error('This format cannot be written.');
+if(!handler)throw new Error('refuse.unwritable');
 const doc=cloneDoc(item.doc);
 handler.apply(doc,plan);
 return handler.write(doc);

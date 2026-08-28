@@ -72,7 +72,7 @@ let item;
 try{
 item=await readImage(file);
 }catch(error){
-failures.push(`${file.name}: ${error.message}`);
+failures.push(`${file.name}: ${phrase(error.message, error.values)}`);
 continue;
 }
 item.id=nextId;
@@ -101,7 +101,7 @@ unreadable:Boolean(t.unreadable),
 item.textDirty=false;
 }
 items.push(item);
-if(!item.ok)failures.push(`${file.name}: ${item.error}`);
+if(!item.ok)failures.push(`${file.name}: ${phrase(item.error, item.values)}`);
 }
 }finally{
 picker.done();
@@ -406,10 +406,10 @@ li.className='block block-kept';
 const text=document.createElement('div');
 const title=document.createElement('p');
 title.className='block-title';
-title.textContent=note.label;
+title.textContent=phrase(note.label);
 const detail=document.createElement('p');
 detail.className='block-detail';
-detail.textContent=note.detail;
+detail.textContent=phrase(note.detail);
 text.append(title,detail);
 li.appendChild(text);
 const pill=document.createElement('span');

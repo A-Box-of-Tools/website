@@ -39,15 +39,15 @@ while(end>=2&&bytes[end-1]===0&&bytes[end-2]===0)end-=2;
 return bytes.subarray(0,end);
 }
 export function parseExif(bytes){
-if(!bytes||bytes.length<8)return{ok:false,error:'The block is too short to be EXIF.'};
+if(!bytes||bytes.length<8)return{ok:false,error:'read.exifshort'};
 const mark=String.fromCharCode(bytes[0],bytes[1]);
 if(mark!=='II'&&mark!=='MM'){
-return{ok:false,error:'No byte-order mark - this is not a TIFF block.'};
+return{ok:false,error:'read.exifnobom'};
 }
 const littleEndian=mark==='II';
 const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
 if(view.getUint16(2,littleEndian)!==42){
-return{ok:false,error:'The TIFF magic number is wrong.'};
+return{ok:false,error:'read.exifmagic'};
 }
 const groups={ifd0:[],exif:[],gps:[],interop:[],ifd1:[]};
 let thumbnail=null;
@@ -85,7 +85,7 @@ return view.getUint32(offset+2+count*12,littleEndian);
 };
 const nextOffset=readIfd(view.getUint32(4,littleEndian),'ifd0');
 if(nextOffset===-1&&groups.ifd0.length===0){
-return{ok:false,error:'The first directory offset points outside the block.'};
+return{ok:false,error:'read.exifoffset'};
 }
 if(nextOffset>0)readIfd(nextOffset,'ifd1');
 const at=groups.ifd1.find((e)=>e.tag===THUMB_OFFSET)?.value;

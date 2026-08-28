@@ -17,7 +17,7 @@ return new Uint8Array(await new Response(stream).arrayBuffer());
 }
 export async function read(bytes){
 if(bytes.length<12||SIGNATURE.some((b,i)=>bytes[i]!==b)){
-return{ok:false,kind:'png',error:'This does not start like a PNG.'};
+return{ok:false,kind:'png',error:'read.notpng'};
 }
 const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength);
 const chunks=[];
@@ -26,7 +26,7 @@ while(at+8<=bytes.length){
 const length=view.getUint32(at);
 const type=latin1.decode(bytes.subarray(at+4,at+8));
 if(at+12+length>bytes.length){
-return{ok:false,kind:'png',error:'A chunk claims a length that runs off the end of the file.'};
+return{ok:false,kind:'png',error:'read.pngoverrun'};
 }
 const chunk={type,data:bytes.slice(at+8,at+8+length)};
 if(TEXT_TYPES.has(type))chunk.text=await readText(chunk);
@@ -35,7 +35,7 @@ at+=12+length;
 if(type==='IEND')break;
 }
 if(!chunks.length||chunks[0].type!=='IHDR'){
-return{ok:false,kind:'png',error:'The header chunk is missing.'};
+return{ok:false,kind:'png',error:'read.pngnoheader'};
 }
 return{ok:true,kind:'png',chunks};
 }
