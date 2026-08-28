@@ -119,7 +119,7 @@ return file.type==='application/pdf'||/\.pdf$/i.test(file.name);
 }
 function messageFor(error){
 if(error instanceof EncryptedPdfError)return phrase('load.encrypted');
-if(error instanceof NotAPdfError)return error.message;
+if(error instanceof NotAPdfError)return phrase(error.message);
 return phrase('load.broken',{detail:error?.message??error});
 }
 function reset(){

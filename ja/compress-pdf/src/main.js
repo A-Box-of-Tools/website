@@ -69,26 +69,22 @@ reset();
 picker.busy(readingLabel(1));
 try{
 if(!looksLikePdf(file)){
-throw new NotAPdfError('That is not a PDF. This tool only works on PDF files.');
+throw new NotAPdfError('read.notpdf');
 }
 const raw=new Uint8Array(await file.arrayBuffer());
 const doc=await PdfDocument.open(raw);
 const inventory=takeInventory(doc);
 loaded={file,bytes:raw,inventory};
 el.fileName.textContent=file.name;
-el.fileFacts.textContent=`${humanBytes(raw.length)} · `
-+`${count(inventory.pages, 'page')}`;
+el.fileFacts.textContent=`${say(humanBytes(raw.length))} · `
++`${say(count(inventory.pages, 'pages'))}`;
 el.fileRow.hidden=false;
 renderInventory(inventory);
 renderSettings();
 if(doc.repaired){
-note('This file\'s cross-reference table did not match its contents, so it was '
-+'read by scanning for objects instead. That is a repair, and it worked, but '
-+'check the result before you send it anywhere.');
+note(phrase('note.repaired'));
 }else if(doc.incremental){
-note('This document has been edited and re-saved at least once, so it is carrying '
-+'older copies of objects that nothing points at any more. Those are left out '
-+'of the rewrite.');
+note(phrase('note.incremental'));
 }
 }catch(error){
 showLoadError(messageFor(error));
@@ -96,15 +92,16 @@ showLoadError(messageFor(error));
 picker.done();
 }
 }
+const say=(said)=>(said&&said.key?phrase(said.key,said.values):said??'');
 function looksLikePdf(file){
 return file.type==='application/pdf'||/\.pdf$/i.test(file.name);
 }
 function messageFor(error){
 if(error instanceof EncryptedPdfError||error instanceof NotAPdfError){
-return error.message;
+return phrase(error.message);
 }
-if(error?.name==='AbortError')return'Cancelled.';
-return`This PDF could not be read: ${error?.message ?? error}`;
+if(error?.name==='AbortError')return phrase('run.cancelled');
+return phrase('read.failed',{detail:error?.message??error});
 }
 function reset(){
 loaded=null;
@@ -139,7 +136,7 @@ el.dropzone.focus();
 });
 function renderInventory(inventory){
 const said=verdict(inventory);
-el.verdict.textContent=said.text;
+el.verdict.textContent=say(said.text);
 el.verdict.className=`verdict ${said.tone}`;
 el.breakdownBar.replaceChildren();
 el.breakdownBar.hidden=false;
@@ -148,37 +145,36 @@ for(const group of inventory.groups){
 const slice=document.createElement('span');
 slice.className=`slice slice-${group.id}`;
 slice.style.flexGrow=String(group.bytes);
-slice.title=`${group.label}: ${humanBytes(group.bytes)}`;
+slice.title=`${phrase(group.label)}: ${say(humanBytes(group.bytes))}`;
 el.breakdownBar.append(slice);
 const row=document.createElement('li');
 const key=document.createElement('span');
 key.className=`key key-${group.id}`;
 const label=document.createElement('span');
 label.className='key-label';
-label.textContent=group.label;
+label.textContent=phrase(group.label);
 const size=document.createElement('span');
 size.className='key-size';
-size.textContent=`${humanBytes(group.bytes)} · ${share(group.bytes, inventory.total)}`;
+size.textContent=`${say(humanBytes(group.bytes))} · ${share(group.bytes, inventory.total)}`;
 row.append(key,label,size);
 el.breakdownList.append(row);
 }
 el.inventoryNotes.textContent=notesFor(inventory);
 }
 function notesFor(inventory){
-const parts=[`${humanBytes(inventory.total)} across `
-+`${count(inventory.pages, 'page')}.`];
+const parts=[phrase('inv.size',{
+size:say(humanBytes(inventory.total)),
+pages:say(count(inventory.pages,'pages')),
+})];
 const images=inventory.groups.find((group)=>group.id==='images');
-if(images)parts.push(`${count(images.count, 'image')} embedded.`);
+if(images)parts.push(phrase('inv.images',{images:say(count(images.count,'images'))}));
 const orphans=inventory.groups.find((group)=>group.id==='orphans');
 if(orphans){
-parts.push(`${humanBytes(orphans.bytes)} of it is no longer referenced by `
-+'anything - left behind by an earlier edit - and will simply not be copied over.');
+parts.push(phrase('inv.orphans',{size:say(humanBytes(orphans.bytes))}));
 }
 const fonts=inventory.groups.find((group)=>group.id==='fonts');
 if(fonts&&fonts.bytes>inventory.total*0.15){
-parts.push('The embedded fonts are a large share of this file. They are kept '
-+'whole: subsetting a font is how a document ends up missing characters '
-+'when somebody else opens it.');
+parts.push(phrase('inv.fonts'));
 }
 return parts.join(' ');
 }
@@ -209,7 +205,7 @@ stripMeta:el.stripMeta.checked,
 function renderSettings(){
 const chosen=settings();
 el.qualityOut.textContent=String(Math.round(chosen.quality*100));
-el.settingsSummary.textContent=describeSettings(chosen);
+el.settingsSummary.textContent=say(describeSettings(chosen));
 }
 el.run.addEventListener('click',run);
 el.cancel.addEventListener('click',()=>running?.abort());
@@ -221,20 +217,20 @@ el.cancel.hidden=false;
 el.result.hidden=true;
 el.runError.hidden=true;
 el.progress.hidden=false;
-setProgress(0,1,'Reading the document');
+setProgress(0,1,phrase('stage.reading'));
 releaseDownload();
 let cancelled=false;
 try{
 const result=await compressDocument(loaded.bytes,settings(),{
 signal:running.signal,
-onStage:(stage)=>setProgress(null,null,stage),
+onStage:(stage)=>setProgress(null,null,phrase(stage)),
 onProgress:(done,total)=>setProgress(done,total,null),
 });
 showResult(result);
 }catch(error){
 if(error?.name==='AbortError'){
 cancelled=true;
-el.progressLabel.textContent='Cancelled. Nothing was changed; press Compress to start again.';
+el.progressLabel.textContent=phrase('run.cancelledfull');
 }else{
 el.runError.textContent=messageFor(error);
 el.runError.hidden=false;
@@ -259,15 +255,17 @@ el.progressLabel.textContent=`${stageText}...`;
 function showResult(result){
 const saved=result.before-result.after;
 el.resultSize.textContent=saved>0
-?`${humanBytes(result.before)} → ${humanBytes(result.after)}`
-:`${humanBytes(result.after)} - no smaller than it started`;
+?`${say(humanBytes(result.before))} → ${say(humanBytes(result.after))}`
+:phrase('result.nosmaller',{size:say(humanBytes(result.after))});
 el.resultSub.textContent=saved>0
-?`${change(result.before, result.after)}, ${humanBytes(saved)} saved.`
-:'Everything in this file was already about as small as it goes. The original '
-+'is the better file to keep.';
-el.checkLine.textContent=result.check.ok
-?`Checked: ${result.check.text}`
-:`This run did not check out - ${result.check.text}. Keep your original.`;
+?phrase('result.saved',{
+change:say(change(result.before,result.after)),
+size:say(humanBytes(saved)),
+})
+:phrase('result.alreadysmall');
+el.checkLine.textContent=phrase(result.check.ok?'check.passed':'check.failed',{
+found:say(result.check.text),
+});
 el.checkLine.className=`check-line ${result.check.ok ? 'good' : 'bad'}`;
 renderFacts(result);
 renderImages(result.images);
@@ -282,30 +280,35 @@ const touched=result.images.filter((image)=>image.action!=='kept');
 const shrunk=touched.filter((image)=>image.action==='downsampled');
 const facts=[];
 if(result.images.length===0){
-facts.push('No images in this document, so nothing was re-encoded. The saving '
-+'is from repacking it and leaving out what nothing referred to.');
+facts.push(phrase('facts.noimages'));
 }else{
-facts.push(`${count(touched.length, 'image')} of ${result.images.length} re-encoded`
-+`${shrunk.length ? `, ${shrunk.length} of them with fewer pixels` : ''}.`);
+facts.push(phrase(shrunk.length?'facts.reencoded.shrunk':'facts.reencoded',{
+touched:touched.length,
+total:result.images.length,
+shrunk:shrunk.length,
+}));
 }
 const kept=result.images.filter((image)=>image.action==='kept'&&image.note);
 if(kept.length){
 const reasons=new Map();
 for(const image of kept)reasons.set(image.note,(reasons.get(image.note)??0)+1);
 for(const[reason,howMany]of reasons){
-facts.push(`${count(howMany, 'image')} left alone: ${reason}.`);
+facts.push(phrase('facts.kept',{
+images:say(count(howMany,'images')),
+reason:phrase(reason),
+}));
 }
 }
 if(result.metadataRemoved){
-facts.push(`${count(result.metadataRemoved, 'entry', 'entries')} of `
-+'application metadata removed.');
+facts.push(phrase('facts.metadata',{
+entries:say(count(result.metadataRemoved,'entries')),
+}));
 }
 if(result.incremental){
-facts.push('Older, superseded copies of objects from earlier edits were not copied over.');
+facts.push(phrase('facts.incremental'));
 }
 if(result.repaired){
-facts.push('The original\'s cross-reference table was broken and had to be rebuilt '
-+'by scanning. Check this file before sending it on.');
+facts.push(phrase('facts.repaired'));
 }
 el.resultFacts.replaceChildren(...facts.map((text)=>{
 const row=document.createElement('li');
@@ -320,19 +323,21 @@ el.imageList.replaceChildren(...images.map((image)=>{
 const row=document.createElement('li');
 const left=document.createElement('span');
 left.className='image-what';
+const size=dimensions(image.width,image.height);
 left.textContent=image.action==='kept'
-?`Kept: ${image.note}`
-:`${image.action === 'downsampled' ? 'Downsampled' : 'Recompressed'} to `
-+`${dimensions(image.width, image.height)}`
-+`${image.dpiAfter ? ` (${dpi(image.dpiAfter)})` : ''}`;
+?phrase('row.kept',{why:phrase(image.note)})
+:phrase(`row.${image.action}${image.dpiAfter ? '.dpi' : ''}`,{
+size,
+dpi:dpi(image.dpiAfter),
+});
 const right=document.createElement('span');
 right.className='image-size';
 right.textContent=image.after<image.before
-?`${humanBytes(image.before)} → ${humanBytes(image.after)}`
-:humanBytes(image.before);
+?`${say(humanBytes(image.before))} → ${say(humanBytes(image.after))}`
+:say(humanBytes(image.before));
 const was=document.createElement('span');
 was.className='image-was';
-was.textContent=image.dpiBefore?`was ${dpi(image.dpiBefore)}`:'';
+was.textContent=image.dpiBefore?phrase('row.was',{dpi:dpi(image.dpiBefore)}):'';
 row.append(left,was,right);
 return row;
 }));

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/juntar-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'62a92a15fb';
+const CACHE_NAME=CACHE_PREFIX+'a9e2d99100';
 const ASSETS=[
 './',
 'index.html',

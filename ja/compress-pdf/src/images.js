@@ -3,15 +3,15 @@ import{decodeStream,deflate,filterNames}from'./filters.js';
 import{isName,name,Name,PdfStream,Ref}from'./objects.js';
 const TINY=4*1024;
 export const SKIP={
-jpx:'JPEG 2000 - no browser can decode it',
-jbig2:'JBIG2 - no browser can decode it, and it is already tightly packed',
-ccitt:'fax-coded (CCITT) - already about as small as bilevel gets',
-cmyk:'CMYK - re-encoding risks shifting print colours',
-mask:'a stencil mask - one bit per pixel already',
-tiny:'already small enough that re-encoding would only cost quality',
-colorspace:'an unusual colour space this tool will not guess at',
-unreadable:'the image data would not decode',
-unused:'never drawn on any page',
+jpx:'kept.jpx',
+jbig2:'kept.jbig2',
+ccitt:'kept.ccitt',
+cmyk:'kept.cmyk',
+mask:'kept.mask',
+tiny:'kept.tiny',
+colorspace:'kept.colorspace',
+unreadable:'kept.unreadable',
+unused:'kept.unused',
 };
 export function findImages(doc){
 const masks=new Map();
@@ -133,7 +133,7 @@ try{
 const img=await new Promise((resolve,reject)=>{
 const element=new Image();
 element.onload=()=>resolve(element);
-element.onerror=()=>reject(new Error('this browser could not decode the image'));
+element.onerror=()=>reject(new Error('kept.nodecode'));
 element.src=url;
 });
 return{source:img,width:img.naturalWidth,height:img.naturalHeight};

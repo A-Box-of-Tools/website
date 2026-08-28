@@ -111,7 +111,7 @@ if(error instanceof EncryptedPdfError){
 return'this PDF is encrypted. Taking a password off a document is a different job '
 +'from moving its pages around, and this tool will not do it behind your back.';
 }
-if(error instanceof NotAPdfError)return error.message;
+if(error instanceof NotAPdfError)return phrase(error.message);
 if(error?.name==='AbortError')return'cancelled.';
 return`could not be read (${error?.message ?? error}).`;
 }
