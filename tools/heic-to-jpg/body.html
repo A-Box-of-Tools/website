@@ -118,6 +118,80 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">this is an AVIF, not a HEIC. Every current browser opens one already, so there is
+      nothing here it needs doing to it.</span>
+    <span data-phrase="refuse.jpeg">this is already a JPEG.</span>
+    <span data-phrase="refuse.png">this is a PNG, which already opens everywhere.</span>
+    <span data-phrase="refuse.other">this is not a HEIC. Whatever {name} is, the first bytes of it are not a HEIF
+      container, and the name is not evidence either way.</span>
+    <span data-phrase="list.count.one">{n} photo, {size} in total</span>
+    <span data-phrase="list.count.many">{n} photos, {size} in total</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">Take {name} off the list</span>
+    <span data-phrase="meta.none">no photo details in this file</span>
+    <span data-phrase="meta.gps">GPS coordinates</span>
+    <span data-phrase="meta.nothing">photo details, but nothing identifying</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG is what the phone would have written if it had been asked to. Every program,
+      every website and every printer opens one.</span>
+    <span data-phrase="format.png">PNG throws nothing away, and a photograph saved as one is typically five to ten
+      times the size of the JPEG. It is the right choice for a screenshot or a diagram and
+      the wrong one for a holiday.</span>
+    <span data-phrase="format.webp">WebP is smaller than JPEG at the same quality and is opened by every browser
+      released since 2020 &mdash; but not by every desktop program, which is the thing to
+      check before sending one to somebody.</span>
+    <span data-phrase="exif.dropped">The date, camera and location are left out.</span>
+    <span data-phrase="exif.kept">The date, camera and location are copied across, with the rotation tag corrected
+      because the picture itself has already been turned the right way up.</span>
+    <span data-phrase="exif.cannot">The photo details cannot come along: only JPEG has a standard place to put them that
+      the canvas can write, so a {format} comes out with the picture and nothing else.</span>
+    <span data-phrase="format.file">file</span>
+    <span data-phrase="format.new">the new format</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; not supported by this browser</span>
+    <span data-phrase="step.waiting">waiting for the decoder</span>
+    <span data-phrase="step.reading">reading</span>
+    <span data-phrase="step.decoding">decoding</span>
+    <span data-phrase="step.writing.picture">writing picture {index} of {total}</span>
+    <span data-phrase="step.writing.file">writing the {format}</span>
+    <span data-phrase="progress.line">{index} of {total}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">the decoder did not load. It is served from this site, so this is either a blocked
+      request or a bad first visit &mdash; reloading usually fixes it.</span>
+    <span data-phrase="heif.nostart">the decoder loaded but did not start.</span>
+    <span data-phrase="heif.noread">the decoder could not read this file ({detail}).</span>
+    <span data-phrase="heif.nopicture">there is no picture in this file that the decoder could find.</span>
+    <span data-phrase="heif.nosize">the picture in this file has no size the decoder could use.</span>
+    <span data-phrase="heif.nodraw">the decoder read the file but could not draw it.</span>
+    <span data-phrase="codec.nowrite">this browser would not write {format}.</span>
+    <span data-phrase="n.heic.one">{n} HEIC file</span>
+    <span data-phrase="n.heic.many">{n} HEIC files</span>
+    <span data-phrase="n.picture.one">{n} {format} picture</span>
+    <span data-phrase="n.picture.many">{n} {format} pictures</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
+    <span data-phrase="result.alt">The converted picture: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">Download</span>
+    <span data-phrase="out.format">{format} at {size}</span>
+    <span data-phrase="out.quality">quality {n}</span>
+    <span data-phrase="out.part">picture {n} of {total} in the file</span>
+    <span data-phrase="out.exif.kept">photo details kept</span>
+    <span data-phrase="out.exif.keptgps">photo details kept, GPS coordinates included</span>
+    <span data-phrase="out.exif.none">no photo details written</span>
+    <span data-phrase="out.exif.toolarge">the photo details were too large for a JPEG segment and were left out</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">about the same size</span>
+    <span data-phrase="size.smaller">{n}% smaller</span>
+    <span data-phrase="size.larger">{n}% larger</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">The HEIC decoder loads from this site the first time you use it: about 1.4 MB, once,
+      then cached.</span>
+    <span data-phrase="engine.loading">Loading the HEIC decoder from this site: about 1.4 MB, once.</span>
+    <span data-phrase="engine.ready">Decoder ready &mdash; served from this site, and cached so it is here next time and
+      with the network unplugged.</span>
+    <span data-phrase="engine.failed">The decoder could not start: {why}</span>
     <span data-phrase="progress.stopped">Stopped after {done} of {total}. What was finished is below.</span>
     <span data-phrase="progress.stopped.none">Stopped before the first one was finished.</span>
     <span data-phrase="offline.ready">ready &mdash; the decoder is cached too,

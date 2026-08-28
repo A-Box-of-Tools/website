@@ -32,6 +32,15 @@ import {
   ascii, concat, indexOfBytes, jpeg as makeJpeg, JFIF_SEGMENT, u16be, u32be,
 } from './helpers.js';
 
+/**
+ * The stand-in for phrase(). What the row says lives in body.html now, in
+ * fifteen languages; the order of the parts is what this file is about, and
+ * the join is a phrase of its own, so it is resolved for real here.
+ */
+const say = (key, values = {}) => (
+  key === 'join.dot' ? `${values.a} | ${values.b}`
+    : [key, ...Object.values(values)].join(' '));
+
 /* ------------------------------------------------------------- a TIFF block */
 
 const ASCII = 2;
@@ -332,16 +341,17 @@ test('uniqueNames: the suffix does not collide with a name already used', () => 
 
 test('metadataText: what the row says about a photo', () => {
   assert.equal(
-    metadataText({ present: false, camera: '', taken: '', gps: false }),
-    'no photo details in this file',
+    metadataText({ present: false, camera: '', taken: '', gps: false }, say),
+    'meta.none',
   );
   // Coordinates first: it is the only part somebody might act on.
   assert.equal(
-    metadataText({ present: true, camera: 'Apple iPhone 15', taken: '2026-08-20 14:03', gps: true }),
-    'GPS coordinates · 2026-08-20 14:03 · Apple iPhone 15',
+    metadataText({ present: true, camera: 'Apple iPhone 15', taken: '2026-08-20 14:03', gps: true },
+      say),
+    'meta.gps | 2026-08-20 14:03 | Apple iPhone 15',
   );
   assert.equal(
-    metadataText({ present: true, camera: '', taken: '', gps: false }),
-    'photo details, but nothing identifying',
+    metadataText({ present: true, camera: '', taken: '', gps: false }, say),
+    'meta.nothing',
   );
 });

@@ -128,6 +128,81 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">ini AVIF, bukan HEIC. Semua browser masa kini sudah bisa membukanya, jadi tidak ada
+      yang perlu dilakukan padanya di sini.</span>
+    <span data-phrase="refuse.jpeg">ini sudah JPEG.</span>
+    <span data-phrase="refuse.png">ini PNG, yang sudah terbuka di mana-mana.</span>
+    <span data-phrase="refuse.other">ini bukan HEIC. Apa pun {name} itu, bita-bita awalnya bukan wadah HEIF, dan namanya
+      juga bukan bukti apa-apa.</span>
+    <span data-phrase="list.count.one">{n} foto, {size} seluruhnya</span>
+    <span data-phrase="list.count.many">{n} foto, {size} seluruhnya</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">Keluarkan {name} dari daftar</span>
+    <span data-phrase="meta.none">tidak ada rincian foto di berkas ini</span>
+    <span data-phrase="meta.gps">koordinat GPS</span>
+    <span data-phrase="meta.nothing">ada rincian foto, tetapi tidak ada yang mengenali</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG adalah yang akan ditulis ponsel kalau diminta. Semua program, semua situs, dan
+      semua pencetak bisa membukanya.</span>
+    <span data-phrase="format.png">PNG tidak membuang apa pun, dan foto yang disimpan begitu biasanya lima sampai
+      sepuluh kali ukuran JPEG-nya. Ini pilihan tepat untuk tangkapan layar atau diagram,
+      dan pilihan salah untuk foto liburan.</span>
+    <span data-phrase="format.webp">WebP lebih kecil daripada JPEG pada mutu yang sama dan terbuka di semua browser
+      rilisan sejak 2020 &mdash; tetapi tidak di semua program desktop, dan justru itu
+      yang perlu dicek sebelum mengirimkannya ke orang lain.</span>
+    <span data-phrase="exif.dropped">Tanggal, kamera, dan lokasi ditinggalkan.</span>
+    <span data-phrase="exif.kept">Tanggal, kamera, dan lokasi disalin, dengan tanda putarannya dibetulkan karena
+      gambarnya sendiri sudah diputar menghadap benar.</span>
+    <span data-phrase="exif.cannot">Rincian fotonya tidak bisa ikut: hanya JPEG yang punya tempat baku untuk itu yang
+      bisa ditulis kanvas, jadi berkas {format} keluar dengan gambarnya saja.</span>
+    <span data-phrase="format.file">berkas</span>
+    <span data-phrase="format.new">format yang baru</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; tidak didukung browser ini</span>
+    <span data-phrase="step.waiting">menunggu pengawakode</span>
+    <span data-phrase="step.reading">membaca</span>
+    <span data-phrase="step.decoding">mengawakode</span>
+    <span data-phrase="step.writing.picture">menulis gambar {index} dari {total}</span>
+    <span data-phrase="step.writing.file">menulis {format}</span>
+    <span data-phrase="progress.line">{index} dari {total}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">pengawakodenya tidak termuat. Ia disajikan dari situs ini, jadi entah permintaannya
+      diblokir entah kunjungan pertamanya gagal &mdash; memuat ulang biasanya
+      membereskannya.</span>
+    <span data-phrase="heif.nostart">pengawakodenya termuat tetapi tidak berjalan.</span>
+    <span data-phrase="heif.noread">pengawakodenya tidak bisa membaca berkas ini ({detail}).</span>
+    <span data-phrase="heif.nopicture">tidak ada gambar di berkas ini yang bisa ditemukan pengawakodenya.</span>
+    <span data-phrase="heif.nosize">gambar di berkas ini tidak punya ukuran yang bisa dipakai pengawakodenya.</span>
+    <span data-phrase="heif.nodraw">pengawakodenya membaca berkasnya tetapi tidak bisa menggambarnya.</span>
+    <span data-phrase="codec.nowrite">browser ini tidak mau menulis {format}.</span>
+    <span data-phrase="n.heic.one">{n} berkas HEIC</span>
+    <span data-phrase="n.heic.many">{n} berkas HEIC</span>
+    <span data-phrase="n.picture.one">{n} gambar {format}</span>
+    <span data-phrase="n.picture.many">{n} gambar {format}</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
+    <span data-phrase="result.alt">Gambar hasil konversi: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">Unduh</span>
+    <span data-phrase="out.format">{format} pada {size}</span>
+    <span data-phrase="out.quality">mutu {n}</span>
+    <span data-phrase="out.part">gambar {n} dari {total} dalam berkas</span>
+    <span data-phrase="out.exif.kept">rincian foto dipertahankan</span>
+    <span data-phrase="out.exif.keptgps">rincian foto dipertahankan, termasuk koordinat GPS</span>
+    <span data-phrase="out.exif.none">tidak ada rincian foto yang ditulis</span>
+    <span data-phrase="out.exif.toolarge">rincian fotonya terlalu besar untuk segmen JPEG dan ditinggalkan</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">kurang lebih sama besarnya</span>
+    <span data-phrase="size.smaller">{n}% lebih kecil</span>
+    <span data-phrase="size.larger">{n}% lebih besar</span>
+    <span data-phrase="size.bytes">{n} bita</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">Pengawakode HEIC dimuat dari situs ini saat pertama kali Anda memakainya: sekitar
+      1,4 MB, sekali saja, lalu tersimpan di singgahan.</span>
+    <span data-phrase="engine.loading">Memuat pengawakode HEIC dari situs ini: sekitar 1,4 MB, sekali saja.</span>
+    <span data-phrase="engine.ready">Pengawakode siap &mdash; disajikan dari situs ini dan disinggahkan, jadi ia ada lagi
+      lain kali, bahkan tanpa jaringan.</span>
+    <span data-phrase="engine.failed">Pengawakodenya tidak bisa berjalan: {why}</span>
     <span data-phrase="progress.stopped">Dihentikan setelah {done} dari {total}. Yang sudah selesai ada di bawah.</span>
     <span data-phrase="progress.stopped.none">Dihentikan sebelum yang pertama selesai.</span>
     <span data-phrase="offline.ready">siap &mdash; dekodernya ikut disinggahkan,

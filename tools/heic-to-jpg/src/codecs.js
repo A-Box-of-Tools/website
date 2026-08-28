@@ -79,9 +79,14 @@ export async function encodePixels(picture, { mime, quality }) {
   const blob = await new Promise((resolve) => target.el.toBlob(resolve, mime, quality));
   release(target.el);
 
-  if (!blob) throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime}.`);
+  // A key and its blank; main.js resolves them. This file is copied byte for
+  // byte into fifteen languages.
+  if (!blob) throw said('codec.nowrite', { format: FORMATS[mime]?.label ?? mime });
   return blob;
 }
+
+/** An error whose message is a phrase key; the caller resolves it. */
+const said = (key, values = {}) => Object.assign(new Error(key), { values });
 
 function canvas(width, height, alpha) {
   const el = document.createElement('canvas');

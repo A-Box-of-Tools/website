@@ -119,6 +119,81 @@
     hier staat wint van die van het frame - zie shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">dit is een AVIF, geen HEIC. Elke huidige browser opent er al een, dus hier valt er
+      niets mee te doen.</span>
+    <span data-phrase="refuse.jpeg">dit is al een JPEG.</span>
+    <span data-phrase="refuse.png">dit is een PNG, die overal al opengaat.</span>
+    <span data-phrase="refuse.other">dit is geen HEIC. Wat {name} ook is, de eerste bytes ervan zijn geen HEIF-container,
+      en de naam bewijst ook niets.</span>
+    <span data-phrase="list.count.one">{n} foto, {size} in totaal</span>
+    <span data-phrase="list.count.many">{n} foto&rsquo;s, {size} in totaal</span>
+    <span data-phrase="row.sub">HEIC ({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">{name} van de lijst halen</span>
+    <span data-phrase="meta.none">geen fotogegevens in dit bestand</span>
+    <span data-phrase="meta.gps">GPS-coördinaten</span>
+    <span data-phrase="meta.nothing">fotogegevens, maar niets herkenbaars</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG is wat de telefoon geschreven zou hebben als erom was gevraagd. Elk programma,
+      elke website en elke printer opent er een.</span>
+    <span data-phrase="format.png">PNG gooit niets weg, en een foto die zo bewaard wordt is meestal vijf tot tien keer
+      zo groot als de JPEG. Het is de juiste keuze voor een schermafdruk of een tekening
+      en de verkeerde voor een vakantie.</span>
+    <span data-phrase="format.webp">WebP is bij gelijke kwaliteit kleiner dan JPEG en gaat open in elke browser die
+      sinds 2020 is uitgekomen &mdash; maar niet in elk bureaubladprogramma, en dat is wat
+      je moet nagaan voordat je er iemand een stuurt.</span>
+    <span data-phrase="exif.dropped">De datum, de camera en de locatie blijven weg.</span>
+    <span data-phrase="exif.kept">De datum, de camera en de locatie gaan mee, met de draaitag gecorrigeerd omdat het
+      beeld zelf al goed om is gedraaid.</span>
+    <span data-phrase="exif.cannot">De fotogegevens kunnen niet mee: alleen JPEG heeft er een genormeerde plek voor die
+      het canvas kan schrijven, dus een {format}-bestand komt eruit met het beeld en
+      verder niets.</span>
+    <span data-phrase="format.file">bestand</span>
+    <span data-phrase="format.new">het nieuwe formaat</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; niet ondersteund door deze browser</span>
+    <span data-phrase="step.waiting">wachten op de decoder</span>
+    <span data-phrase="step.reading">lezen</span>
+    <span data-phrase="step.decoding">decoderen</span>
+    <span data-phrase="step.writing.picture">beeld {index} van {total} schrijven</span>
+    <span data-phrase="step.writing.file">de {format} schrijven</span>
+    <span data-phrase="progress.line">{index} van {total}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">de decoder is niet geladen. Hij komt van deze site, dus dit is of een geblokkeerd
+      verzoek of een misgelopen eerste bezoek &mdash; opnieuw laden helpt meestal.</span>
+    <span data-phrase="heif.nostart">de decoder is geladen maar niet gestart.</span>
+    <span data-phrase="heif.noread">de decoder kon dit bestand niet lezen ({detail}).</span>
+    <span data-phrase="heif.nopicture">er zit in dit bestand geen beeld dat de decoder kon vinden.</span>
+    <span data-phrase="heif.nosize">het beeld in dit bestand heeft geen formaat dat de decoder kon gebruiken.</span>
+    <span data-phrase="heif.nodraw">de decoder heeft het bestand gelezen maar kon het niet tekenen.</span>
+    <span data-phrase="codec.nowrite">deze browser wilde geen {format} schrijven.</span>
+    <span data-phrase="n.heic.one">{n} HEIC-bestand</span>
+    <span data-phrase="n.heic.many">{n} HEIC-bestanden</span>
+    <span data-phrase="n.picture.one">{n} {format}-beeld</span>
+    <span data-phrase="n.picture.many">{n} {format}-beelden</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}, {change}.</span>
+    <span data-phrase="result.alt">Het omgezette beeld: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">Downloaden</span>
+    <span data-phrase="out.format">{format} op {size}</span>
+    <span data-phrase="out.quality">kwaliteit {n}</span>
+    <span data-phrase="out.part">beeld {n} van {total} in het bestand</span>
+    <span data-phrase="out.exif.kept">fotogegevens behouden</span>
+    <span data-phrase="out.exif.keptgps">fotogegevens behouden, GPS-coördinaten inbegrepen</span>
+    <span data-phrase="out.exif.none">geen fotogegevens geschreven</span>
+    <span data-phrase="out.exif.toolarge">de fotogegevens waren te groot voor een JPEG-segment en zijn weggelaten</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">ongeveer even groot</span>
+    <span data-phrase="size.smaller">{n}% kleiner</span>
+    <span data-phrase="size.larger">{n}% groter</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="engine.first">De HEIC-decoder wordt de eerste keer dat je hem gebruikt van deze site geladen:
+      ongeveer 1,4 MB, eenmalig, daarna in de cache.</span>
+    <span data-phrase="engine.loading">De HEIC-decoder wordt van deze site geladen: ongeveer 1,4 MB, eenmalig.</span>
+    <span data-phrase="engine.ready">Decoder klaar &mdash; geleverd door deze site en in de cache, dus de volgende keer
+      aanwezig en ook met het netwerk eruit.</span>
+    <span data-phrase="engine.failed">De decoder kon niet starten: {why}</span>
     <span data-phrase="progress.stopped">Gestopt na {done} van {total}. Wat af is, staat hieronder.</span>
     <span data-phrase="progress.stopped.none">Gestopt voordat de eerste af was.</span>
     <span data-phrase="offline.ready">klaar &mdash; de decoder is ook bewaard,

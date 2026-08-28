@@ -115,6 +115,76 @@
     over the frame's one - see shared/js/phrases.js.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.refused">{name}: {why}</span>
+    <span data-phrase="refuse.avif">هذا AVIF لا HEIC. وكل متصفح حديث يفتحه أصلاً، فليس ثمة ما يُفعل به هنا.</span>
+    <span data-phrase="refuse.jpeg">هذا JPEG أصلاً.</span>
+    <span data-phrase="refuse.png">هذا PNG، وهو يُفتح في كل مكان أصلاً.</span>
+    <span data-phrase="refuse.other">هذا ليس HEIC. أياً كان {name}، فأول بايتاته ليست حاوية HEIF، والاسم ليس دليلاً في
+      الاتجاهين.</span>
+    <span data-phrase="list.count.one">صورة واحدة، {size} إجمالاً</span>
+    <span data-phrase="list.count.many">{n} صورة، {size} إجمالاً</span>
+    <span data-phrase="row.sub">HEIC ‏({brand}) &middot; {size}</span>
+    <span data-phrase="row.remove">أزل {name} من القائمة</span>
+    <span data-phrase="meta.none">لا تفاصيل تصوير في هذا الملف</span>
+    <span data-phrase="meta.gps">إحداثيات GPS</span>
+    <span data-phrase="meta.nothing">تفاصيل تصوير، لكن لا شيء يدل على صاحبها</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="format.jpeg">JPEG هو ما كان الهاتف سيكتبه لو طُلب منه ذلك. يفتحه كل برنامج وكل موقع وكل طابعة.</span>
+    <span data-phrase="format.png">PNG لا يرمي شيئاً، والصورة المحفوظة به تكون عادةً خمسة إلى عشرة أضعاف حجم JPEG. وهو
+      الخيار الصحيح للقطة شاشة أو رسم تخطيطي، والخاطئ لصور عطلة.</span>
+    <span data-phrase="format.webp">WebP أصغر من JPEG عند الجودة نفسها، ويفتحه كل متصفح صدر منذ 2020 &mdash; لكن ليس كل
+      برنامج سطح مكتب، وهذا بالضبط ما ينبغي التحقق منه قبل إرسال واحد إلى أحد.</span>
+    <span data-phrase="exif.dropped">التاريخ والكاميرا والموقع تُترك.</span>
+    <span data-phrase="exif.kept">التاريخ والكاميرا والموقع تُنسخ، مع تصحيح وسم الدوران لأن الصورة نفسها قد أُديرت إلى
+      وضعها الصحيح.</span>
+    <span data-phrase="exif.cannot">تفاصيل التصوير لا تستطيع المجيء: JPEG وحده له موضع قياسي لها يستطيع الكانفاس كتابته،
+      فيخرج ملف {format} بالصورة وحدها.</span>
+    <span data-phrase="format.file">ملف</span>
+    <span data-phrase="format.new">الصيغة الجديدة</span>
+    <span data-phrase="webp.unsupported">WebP &mdash; غير مدعوم في هذا المتصفح</span>
+    <span data-phrase="step.waiting">في انتظار فاكّ الترميز</span>
+    <span data-phrase="step.reading">قراءة</span>
+    <span data-phrase="step.decoding">فك ترميز</span>
+    <span data-phrase="step.writing.picture">كتابة الصورة {index} من {total}</span>
+    <span data-phrase="step.writing.file">كتابة ملف {format}</span>
+    <span data-phrase="progress.line">{index} من {total}: {name} &mdash; {note}</span>
+    <span data-phrase="heif.noload">لم يُحمَّل فاكّ الترميز. وهو يُقدَّم من هذا الموقع، فإما أن الطلب مُعترَض وإما أن
+      الزيارة الأولى تعثّرت &mdash; وإعادة التحميل تصلح ذلك عادةً.</span>
+    <span data-phrase="heif.nostart">حُمّل فاكّ الترميز لكنه لم يبدأ.</span>
+    <span data-phrase="heif.noread">لم يستطع فاكّ الترميز قراءة هذا الملف ({detail}).</span>
+    <span data-phrase="heif.nopicture">ليس في هذا الملف صورة استطاع فاكّ الترميز أن يجدها.</span>
+    <span data-phrase="heif.nosize">الصورة في هذا الملف بلا مقاس يستطيع فاكّ الترميز استعماله.</span>
+    <span data-phrase="heif.nodraw">قرأ فاكّ الترميز الملف لكنه لم يستطع رسمه.</span>
+    <span data-phrase="codec.nowrite">هذا المتصفح لم يكتب ملف {format}.</span>
+    <span data-phrase="n.heic.one">ملف HEIC واحد</span>
+    <span data-phrase="n.heic.many">{n} ملفات HEIC</span>
+    <span data-phrase="n.picture.one">صورة {format} واحدة</span>
+    <span data-phrase="n.picture.many">{n} صور {format}</span>
+    <span data-phrase="results.summary">{files} &rarr; {pictures}. {before} &rarr; {after}، {change}.</span>
+    <span data-phrase="result.alt">الصورة بعد التحويل: {name}</span>
+    <span data-phrase="result.headline">{before} &rarr; {after} &middot; {change}</span>
+    <span data-phrase="result.download">نزّل</span>
+    <span data-phrase="out.format">{format} بمقاس {size}</span>
+    <span data-phrase="out.quality">الجودة {n}</span>
+    <span data-phrase="out.part">الصورة {n} من {total} في الملف</span>
+    <span data-phrase="out.exif.kept">تفاصيل التصوير محفوظة</span>
+    <span data-phrase="out.exif.keptgps">تفاصيل التصوير محفوظة، وإحداثيات GPS معها</span>
+    <span data-phrase="out.exif.none">لم تُكتب تفاصيل تصوير</span>
+    <span data-phrase="out.exif.toolarge">كانت تفاصيل التصوير أكبر من أن تسعها فقرة JPEG فتُركت</span>
+    <span data-phrase="out.line">{list}.</span>
+    <span data-phrase="size.same">الحجم نفسه تقريباً</span>
+    <span data-phrase="size.smaller">أصغر بنسبة {n}%</span>
+    <span data-phrase="size.larger">أكبر بنسبة {n}%</span>
+    <span data-phrase="size.bytes">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
+    <span data-phrase="engine.first">يُحمَّل فاكّ ترميز HEIC من هذا الموقع أول مرة تستعمله: نحو 1.4 ميغابايت، مرة واحدة،
+      ثم يُخزَّن.</span>
+    <span data-phrase="engine.loading">تحميل فاكّ ترميز HEIC من هذا الموقع: نحو 1.4 ميغابايت، مرة واحدة.</span>
+    <span data-phrase="engine.ready">فاكّ الترميز جاهز &mdash; قُدِّم من هذا الموقع وخُزِّن، فهو هنا في المرة القادمة
+      وحتى مع فصل الشبكة.</span>
+    <span data-phrase="engine.failed">لم يستطع فاكّ الترميز أن يبدأ: {why}</span>
     <span data-phrase="progress.stopped">أُوقف بعد {done} من {total}. ما اكتمل موجود بالأسفل.</span>
     <span data-phrase="progress.stopped.none">أُوقف قبل أن يكتمل الأول.</span>
     <span data-phrase="offline.ready">جاهزة &mdash; وفاكُّ الترميز مخبَّأ
