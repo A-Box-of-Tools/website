@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/capturar-fotograma-de-video/:';
-const CACHE_NAME=CACHE_PREFIX+'a84b3f428f';
+const CACHE_NAME=CACHE_PREFIX+'ee6c58b31a';
 const ASSETS=[
 './',
 'index.html',

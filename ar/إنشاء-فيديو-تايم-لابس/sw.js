@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/إنشاء-فيديو-تايم-لابس/:';
-const CACHE_NAME=CACHE_PREFIX+'178a120c0a';
+const CACHE_NAME=CACHE_PREFIX+'e02c0ed22c';
 const ASSETS=[
 './',
 'index.html',

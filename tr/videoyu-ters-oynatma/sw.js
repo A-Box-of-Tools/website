@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/videoyu-ters-oynatma/:';
-const CACHE_NAME=CACHE_PREFIX+'6e2ba34fb9';
+const CACHE_NAME=CACHE_PREFIX+'974ebfc9c0';
 const ASSETS=[
 './',
 'index.html',
