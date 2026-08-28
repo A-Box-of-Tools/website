@@ -267,7 +267,9 @@ test('decodeStream unwraps a flate layer in front of an image filter', async () 
 
 test('decodeStream refuses a filter it does not know', async () => {
   const stream = new PdfStream(new Map([['Filter', name('MadeUpDecode')]]), ascii('x'));
-  await assert.rejects(() => decodeStream(stream), /unknown filter \/MadeUpDecode/);
+  await assert.rejects(() => decodeStream(stream),
+    (error) => error.message === 'pdf.unknownfilter'
+      && error.values.name === 'MadeUpDecode');
 });
 
 test('decodeStream undoes a PNG predictor', async () => {

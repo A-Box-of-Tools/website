@@ -27,7 +27,20 @@ const IMAGE_FILTERS = new Set([
   'DCTDecode', 'DCT', 'JPXDecode', 'JBIG2Decode', 'CCITTFaxDecode', 'CCF',
 ]);
 
-class FilterError extends Error {}
+/**
+ * A stream this reader could not decode.
+ *
+ * The message is a phrase key and `values` fills its blanks. This file is
+ * copied byte for byte into every language and cannot reach the DOM, so
+ * the sentence is the page's to compose - see shared/js/phrases.js.
+ */
+class FilterError extends Error {
+  constructor(key, values) {
+    super(key);
+    this.name = 'FilterError';
+    this.values = values;
+  }
+}
 
 /* ------------------------------------------------------------------- flate */
 
@@ -49,7 +62,7 @@ async function inflate(bytes) {
     } catch {
       // A truncated stream is common in damaged files and is worth reporting
       // as itself rather than as the second attempt's error.
-      throw new FilterError(`Flate stream would not decompress (${first.message})`);
+      throw new FilterError('pdf.flate', { detail: first.message });
     }
   }
 }
@@ -62,7 +75,7 @@ export async function deflate(bytes) {
 async function pump(bytes, format, compress = false) {
   const Stream = compress ? CompressionStream : DecompressionStream;
   if (typeof Stream !== 'function') {
-    throw new FilterError('this browser has no CompressionStream');
+    throw new FilterError('pdf.nocompression');
   }
   const stream = new Blob([bytes]).stream().pipeThrough(new Stream(format));
   return new Uint8Array(await new Response(stream).arrayBuffer());
@@ -113,7 +126,7 @@ function lzwDecode(bytes, early = 1) {
       if (code < 256) entry = [code];
       else if (dict[code - 258]) entry = dict[code - 258];
       else if (previous) entry = [...previous, previous[0]]; // the KwKwK case
-      else throw new FilterError('LZW stream starts with an undefined code');
+      else throw new FilterError('pdf.lzw');
 
       out.push(...entry);
 
@@ -354,9 +367,9 @@ export async function decodeStream(stream, resolve = (v) => v) {
       case 'Crypt':
         // /Crypt only appears in encrypted documents, which this tool turns
         // away at the door. Reaching here means that check was wrong.
-        throw new FilterError('this stream is encrypted');
+        throw new FilterError('pdf.cryptfilter');
       default:
-        throw new FilterError(`unknown filter /${filter}`);
+        throw new FilterError('pdf.unknownfilter', { name: filter });
     }
 
     if (filter === 'FlateDecode' || filter === 'Fl'

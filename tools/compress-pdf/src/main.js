@@ -142,13 +142,15 @@ function looksLikePdf(file) {
 }
 
 function messageFor(error) {
-  // Those two carry a phrase key rather than a sentence; anything else is the
-  // parser talking, and what it says goes inside a sentence that is translated.
+  // All of them carry a phrase key rather than a sentence: the two below say
+  // what kind of file it is, and the reader's own refusals go inside a
+  // sentence that names the file. See shared/js/phrases.js.
   if (error instanceof EncryptedPdfError || error instanceof NotAPdfError) {
     return phrase(error.message);
   }
   if (error?.name === 'AbortError') return phrase('run.cancelled');
-  return phrase('read.failed', { detail: error?.message ?? error });
+  return phrase('read.failed',
+    { detail: phrase(error?.message ?? String(error), error?.values) });
 }
 
 function reset() {
