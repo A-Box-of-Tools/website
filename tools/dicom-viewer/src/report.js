@@ -44,9 +44,10 @@ export function report(file, decoder, t) {
   say(t('report.title', { name: file.name }));
   say('='.repeat(Math.min(72, 16 + file.name.length)));
   say();
-  row(size, `${fileSize(file.size)} (${t('report.bytes', {
-    count: file.size.toLocaleString(),
-  })})`);
+  row(size, t('report.size', {
+    size: fileSize(file.size),
+    bytes: t('report.bytes', { count: file.size.toLocaleString() }),
+  }));
   row(syntax, file.syntax.name);
   row('', file.syntax.uid);
   if (file.sopClass) row(object, file.sopClass);
@@ -59,7 +60,9 @@ export function report(file, decoder, t) {
         : t('report.samples', { count: samplesPerPixel })}, ${photometric}`);
     if (count > 1) row(frames, count);
     if (file.image.spacing) {
-      row(spacing, `${file.image.spacing.row} × ${file.image.spacing.column} mm`);
+      row(spacing, t('report.spacing.value', {
+        row: file.image.spacing.row, column: file.image.spacing.column,
+      }));
     }
   }
 
@@ -75,13 +78,13 @@ export function report(file, decoder, t) {
   say();
   say(meta);
   say('-'.repeat(meta.length));
-  dump(file.meta, decoder, say);
+  dump(file.meta, decoder, say, t);
 
   const dataset = t('report.dataset');
   say();
   say(dataset);
   say('-'.repeat(dataset.length));
-  dump(file.dataset, decoder, say);
+  dump(file.dataset, decoder, say, t);
 
   say();
   say(t('report.origin', { origin: file.origin }));
@@ -90,17 +93,17 @@ export function report(file, decoder, t) {
 }
 
 /** Every element of a dataset, one per line, nesting and all. */
-function dump(dataset, decoder, say) {
+function dump(dataset, decoder, say, t) {
   if (!dataset || dataset.elements.length === 0) {
-    say('  (none)');
+    say(`  ${t('report.none')}`);
     return;
   }
 
   for (const { element, depth } of walk(dataset)) {
     const indent = '  '.repeat(depth + 1);
     const known = describe(element.tag);
-    const name = known.name ?? (known.private ? '(private)' : '(unknown)');
-    const { shown } = display(element, decoder);
+    const name = known.name ?? t(known.private ? 'tag.private' : 'tag.unknown');
+    const { shown } = display(element, decoder, t);
 
     // The name column is padded to a width the great majority of names fit in
     // and is allowed to overrun for the few that do not. A column wide enough

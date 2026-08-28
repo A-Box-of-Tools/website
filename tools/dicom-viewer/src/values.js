@@ -195,7 +195,7 @@ const hex4 = (value) => value.toString(16).padStart(4, '0');
  * the whole design. A viewer that shows only the tidied form cannot be checked
  * against anything, and one that shows only the raw form is a hex dump.
  */
-export function display(element, decoder) {
+export function display(element, decoder, t) {
   const { vr } = element;
 
   if (element.items) {
@@ -206,45 +206,53 @@ export function display(element, decoder) {
     const total = element.fragments.reduce((sum, part) => sum + part.length, 0);
     const count = element.fragments.length;
     return {
-      shown: `${count === 1 ? '1 compressed fragment' : `${count} compressed fragments`}, ${
-        total.toLocaleString()} bytes`,
+      shown: t(count === 1 ? 'value.fragment.one' : 'value.fragment.many',
+        { n: count, bytes: total.toLocaleString() }),
       raw: '',
     };
   }
   if (!element.value) {
-    return { shown: `${element.length.toLocaleString()} bytes, not shown`, raw: '' };
+    return {
+      shown: t('value.notshown', { bytes: element.length.toLocaleString() }),
+      raw: '',
+    };
   }
 
   const list = values(element, decoder);
   if (list.length === 0) {
-    return { shown: element.length === 0 ? '(empty)' : binary(element), raw: '' };
+    return {
+      shown: element.length === 0 ? t('value.empty') : binary(element, t),
+      raw: '',
+    };
   }
 
   const raw = TEXT.has(vr) ? trim(decoder.decode(element.value)) : '';
-  const shown = list.map((value) => pretty(vr, value)).join(' \\ ');
+  const shown = list.map((value) => pretty(vr, value, t)).join(' \\ ');
   return { shown, raw: shown === raw ? '' : raw };
 }
 
 /** Bytes with no readable form: the first of them, and how many there are. */
-function binary(element) {
+function binary(element, t) {
   const head = Array.from(element.value.subarray(0, 16))
     .map((byte) => byte.toString(16).padStart(2, '0'))
     .join(' ');
-  const more = element.value.length > 16 ? ' …' : '';
-  return `${element.length.toLocaleString()} bytes: ${head}${more}`;
+  return t(element.value.length > 16 ? 'value.bytes.more' : 'value.bytes', {
+    bytes: element.length.toLocaleString(),
+    head,
+  });
 }
 
-function pretty(vr, value) {
+function pretty(vr, value, t) {
   if (vr === 'DA') return date(String(value)) ?? String(value);
   if (vr === 'TM') return time(String(value)) ?? String(value);
   if (vr === 'DT') return dateTime(String(value)) ?? String(value);
   if (vr === 'PN') return personName(String(value));
-  if (vr === 'AS') return age(String(value)) ?? String(value);
+  if (vr === 'AS') return age(String(value), t) ?? String(value);
   if (vr === 'UI') {
     const name = uidName(trim(String(value)));
     return name ? `${name} (${trim(String(value))})` : trim(String(value));
   }
-  if (vr === 'CS') return code(String(value));
+  if (vr === 'CS') return code(String(value), t);
   return String(value);
 }
 
@@ -303,12 +311,14 @@ export function personName(value) {
 }
 
 /** `045Y` as `45 years`, which is the only form the VR allows. */
-export function age(value) {
+export function age(value, t) {
   const match = /^(\d{3})([DWMY])$/.exec(value.trim().toUpperCase());
   if (!match) return null;
   const count = Number(match[1]);
+  // Eight whole phrases rather than a noun with an `s` on it: a language
+  // whose plural is not a suffix cannot be served by appending one.
   const unit = { D: 'day', W: 'week', M: 'month', Y: 'year' }[match[2]];
-  return `${count} ${unit}${count === 1 ? '' : 's'}`;
+  return t(`age.${unit}.${count === 1 ? 'one' : 'many'}`, { n: count });
 }
 
 /**
@@ -319,20 +329,26 @@ export function age(value) {
  * what the picture is, which way round it is - is useful, and expanding the
  * rest would be a dictionary of its own that went out of date.
  */
+// The code itself is the standard's and is the same everywhere; the gloss
+// after it is this tool's own, so each entry is a phrase key and the phrase
+// carries both. RGB needs no gloss and so needs no key.
 const CODES = {
-  MONOCHROME1: 'MONOCHROME1 (0 is white)',
-  MONOCHROME2: 'MONOCHROME2 (0 is black)',
-  'PALETTE COLOR': 'PALETTE COLOR (indexes into the lookup tables)',
-  RGB: 'RGB',
-  'YBR_FULL': 'YBR_FULL (colour, as luminance and two differences)',
-  'YBR_FULL_422': 'YBR_FULL_422 (colour, with the differences at half width)',
-  HFS: 'HFS (head first, supine)',
-  HFP: 'HFP (head first, prone)',
-  FFS: 'FFS (feet first, supine)',
-  FFP: 'FFP (feet first, prone)',
-  M: 'M (male)',
-  F: 'F (female)',
-  O: 'O (other)',
+  MONOCHROME1: 'code.monochrome1',
+  MONOCHROME2: 'code.monochrome2',
+  'PALETTE COLOR': 'code.palette',
+  'YBR_FULL': 'code.ybrfull',
+  'YBR_FULL_422': 'code.ybr422',
+  HFS: 'code.hfs',
+  HFP: 'code.hfp',
+  FFS: 'code.ffs',
+  FFP: 'code.ffp',
+  M: 'code.male',
+  F: 'code.female',
+  O: 'code.other',
 };
 
-const code = (value) => CODES[String(value).trim().toUpperCase()] ?? String(value).trim();
+const code = (value, t) => {
+  const clean = String(value).trim();
+  const key = CODES[clean.toUpperCase()];
+  return key ? t(key) : clean;
+};

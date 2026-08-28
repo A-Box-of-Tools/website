@@ -61,7 +61,9 @@ BASELINE = {
     'compress-image': 2,
     'compress-pdf': 6,
     'crop-video': 0,
-    'dicom-viewer': 15,
+    # Two internal keys, a DOM id, a clock format, one key template and the
+    # fixed-width layout of a line in the text report.
+    'dicom-viewer': 6,
     'document-scanner': 13,
     'edit-audio': 18,
     'encode-text': 0,
