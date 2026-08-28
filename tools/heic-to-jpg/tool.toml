@@ -23,7 +23,7 @@ favicon = "&#128247;"       # the tab icon, drawn into an inline SVG
 # vendored. `icon` above stays the emoji: it is what og-image.ps1
 # rasterises for the share card and the two installed-app icons, which
 # want a filled colourful mark rather than a line drawing.
-glyph = "replace"
+glyph = "arrow-right-left"
 category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "images"
