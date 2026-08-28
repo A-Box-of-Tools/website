@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/goruntu-istifleme/:';
-const CACHE_NAME=CACHE_PREFIX+'a9b9dfcd8d';
+const CACHE_NAME=CACHE_PREFIX+'2e3fc7b414';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=1cd259ffc2',
+'styles.css?v=077763c499',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

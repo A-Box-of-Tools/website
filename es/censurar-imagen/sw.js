@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/censurar-imagen/:';
-const CACHE_NAME=CACHE_PREFIX+'a0d365c857';
+const CACHE_NAME=CACHE_PREFIX+'f1abb33ab8';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=458a4fbeb0',
+'styles.css?v=608c23c43a',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

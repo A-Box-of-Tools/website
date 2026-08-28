@@ -7,7 +7,7 @@ bits,crackTime,passphraseSpace,passwordSpace,rating,scientific,
 import{wordlist}from'./wordlist.js';
 const $=(id)=>document.getElementById(id);
 const el={
-tabs:Array.from(document.querySelectorAll('.tab')),
+modes:Array.from(document.querySelectorAll('input[name="mode"]')),
 panels:{
 password:$('options-password'),
 passphrase:$('options-passphrase'),
@@ -75,24 +75,13 @@ let shown=[];
 let mode='password';
 function setMode(next){
 mode=next;
-for(const tab of el.tabs){
-const on=tab.dataset.mode===next;
-tab.setAttribute('aria-selected',String(on));
-tab.tabIndex=on?0:-1;
-}
+for(const radio of el.modes)radio.checked=radio.value===next;
 for(const[name,panel]of Object.entries(el.panels))panel.hidden=name!==next;
 make();
 }
-for(const tab of el.tabs){
-tab.addEventListener('click',()=>setMode(tab.dataset.mode));
-tab.addEventListener('keydown',(event)=>{
-const step=event.key==='ArrowRight'?1:event.key==='ArrowLeft'?-1:0;
-if(!step)return;
-event.preventDefault();
-const index=el.tabs.indexOf(tab);
-const next=el.tabs[(index+step+el.tabs.length)%el.tabs.length];
-next.focus();
-setMode(next.dataset.mode);
+for(const radio of el.modes){
+radio.addEventListener('change',()=>{
+if(radio.checked)setMode(radio.value);
 });
 }
 function options(){
