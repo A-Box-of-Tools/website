@@ -62,7 +62,10 @@ BASELINE = {
     'compress-pdf': 6,
     'crop-video': 0,
     'dicom-viewer': 15,
-    'document-scanner': 13,
+    # Three lines of PDF syntax, two CSS class names, an aspect ratio, a
+    # filename template, and one invariant check: orderCorners is only ever
+    # handed the four corners of a quad.
+    'document-scanner': 8,
     # A clock format, and one invariant check in each of the two speed
     # modules - main.js clamps the speed, so neither can be reached.
     'edit-audio': 3,

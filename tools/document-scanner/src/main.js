@@ -515,7 +515,10 @@ async function renderPreview() {
     // is worth putting right.
     renderStrip();
   } catch (error) {
-    showError(phrase('error.failed', { detail: error.message }));
+    // The leaf modules throw keys; a browser that failed for its own
+    // reasons throws a sentence, and phrase() hands back what it does not
+    // recognise.
+    showError(phrase('error.failed', { detail: phrase(error.message) }));
   } finally {
     if (previewToken === token) el.scanBusy.hidden = true;
   }
@@ -753,7 +756,10 @@ async function run(work) {
     await new Promise((resolve) => setTimeout(resolve, 0));
     await work(report);
   } catch (error) {
-    showError(phrase('error.failed', { detail: error.message }));
+    // The leaf modules throw keys; a browser that failed for its own
+    // reasons throws a sentence, and phrase() hands back what it does not
+    // recognise.
+    showError(phrase('error.failed', { detail: phrase(error.message) }));
   } finally {
     busy = false;
     el.busy.hidden = true;

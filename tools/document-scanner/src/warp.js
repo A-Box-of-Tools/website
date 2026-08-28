@@ -76,7 +76,9 @@ export function warpPage(source, quad, size) {
     [{ x: 0, y: 0 }, { x: width, y: 0 }, { x: width, y: height }, { x: 0, y: height }],
     inset(quad, INSET * samples),
   );
-  if (!toSource) throw new Error('Those four corners do not make a page.');
+  // A phrase key: this module ships in fifteen languages, and dragging a
+  // corner past its neighbours is something somebody can actually do.
+  if (!toSource) throw new Error('warp.degenerate');
   const out = new Uint8ClampedArray(width * height * 4);
   const step = 1 / samples;
   const first = step / 2;
