@@ -97,7 +97,9 @@ BASELINE = {
     'qr-barcode-reader': 13,
     # A key template, and a CSS class name the stage builds.
     'redact-image': 2,
-    'redact-pdf': 15,
+    # Three Base-14 glyph tables from the PDF specification, four lines of
+    # PDF syntax, three internal range keys and one key template.
+    'redact-pdf': 11,
     'resize-image': 5,
     # The key template that picks between two whole sentences.
     'reverse-video': 1,

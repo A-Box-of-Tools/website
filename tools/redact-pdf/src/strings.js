@@ -118,12 +118,20 @@ function isFieldName(dict) {
   return dict.has('FT') || dict.has('Ff') || dict.has('Kids');
 }
 
+/**
+ * Where a string was found, as a phrase key.
+ *
+ * A key rather than the words: this module is copied byte for byte into
+ * fifteen languages, and main.js is the only place a phrase can be read.
+ */
 function describe(key) {
-  if (key === 'V' || key === 'DV' || key === 'TU') return 'a form field';
-  if (key === 'Contents' || key === 'RC' || key === 'Subj' || key === 'T') return 'a comment';
-  if (key === 'ActualText' || key === 'Alt' || key === 'E') return 'a copy-and-paste replacement';
-  if (key === 'F' || key === 'UF' || key === 'Desc') return 'an attachment';
-  return 'the document properties';
+  if (key === 'V' || key === 'DV' || key === 'TU') return 'where.field';
+  if (key === 'Contents' || key === 'RC' || key === 'Subj' || key === 'T') {
+    return 'where.comment';
+  }
+  if (key === 'ActualText' || key === 'Alt' || key === 'E') return 'where.actualtext';
+  if (key === 'F' || key === 'UF' || key === 'Desc') return 'where.attachment';
+  return 'where.properties';
 }
 
 /**
