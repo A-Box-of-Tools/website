@@ -64,7 +64,10 @@ BASELINE = {
     # Two internal keys, a DOM id, a clock format, one key template and the
     # fixed-width layout of a line in the text report.
     'dicom-viewer': 6,
-    'document-scanner': 13,
+    # Three lines of PDF syntax, two CSS class names, an aspect ratio, a
+    # filename template, and one invariant check: orderCorners is only ever
+    # handed the four corners of a quad.
+    'document-scanner': 8,
     # A clock format, and one invariant check in each of the two speed
     # modules - main.js clamps the speed, so neither can be reached.
     'edit-audio': 3,
