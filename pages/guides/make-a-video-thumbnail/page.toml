@@ -23,7 +23,7 @@ lede = """
 
 updated = "26 August 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-08-27"
 
 og_title = "The exact frame, at the platform's size, under the byte limit"
 og_description = "Step frame by frame to the right instant, save it losslessly, crop to 16:9, and compress to the platform's ceiling - without uploading the footage."

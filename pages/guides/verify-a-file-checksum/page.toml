@@ -31,7 +31,7 @@ lede = """
 
 updated = "26 August 2026"
 published = "2026-08-23"
-lastmod = "2026-08-26"
+lastmod = "2026-08-27"
 
 og_title = "Checking a download against its checksum, and what that proves"
 og_description = "What the hex under a download link is for, how to compare it on any operating system, and why taking it off the same page as the file defeats the point."

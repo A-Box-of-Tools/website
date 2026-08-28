@@ -30,7 +30,7 @@ lede = """
 
 updated = "26 August 2026"
 published = "2026-08-20"
-lastmod = "2026-08-26"
+lastmod = "2026-08-27"
 
 og_title = "Formatting JSON without handing it to anybody"
 og_description = "What a JSON formatter must never change about your file, how to read the parse error, and why the site you paste it into matters."

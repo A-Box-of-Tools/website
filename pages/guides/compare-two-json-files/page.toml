@@ -30,7 +30,7 @@ lede = """
 
 updated = "26 August 2026"
 published = "2026-08-26"
-lastmod = "2026-08-26"
+lastmod = "2026-08-27"
 
 og_title = "Compare two JSON files without the formatting noise"
 og_description = "Canonicalise both files - same indent, sorted keys - then diff them. What lights up after that is real, and none of it was uploaded."
