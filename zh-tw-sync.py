@@ -149,6 +149,15 @@ TAIWAN_REGISTER = [
     ('安裝包', '安裝檔'),
     ('進位制', '進位'),            # 十六進位制 -> 十六進位
     ('麵包屑導航', '麵包屑導覽'),
+    # The hub's filter, which arrived in Taiwan as a database operation: s2twp
+    # sends 查找 to 查詢, and a 查詢 is something you run against a record,
+    # not the label on a box you type a tool's name into. These have to be
+    # whole phrases rather than a bare 查詢 -> 尋找, because by the time this
+    # runs the corpus's three real 查询 - a query string, a media query - are
+    # spelled 查詢 as well and would go with it. 匹配 is likewise fine where
+    # dicom-viewer and redact-pdf mean it technically, and wrong here.
+    ('查詢工具', '尋找工具'),
+    ('沒有匹配的工具', '沒有符合的工具'),
     # 剪切 became 剪下, which in Taiwan is the clipboard verb. Every one of
     # these is a video or audio trim, and no text tool uses the word.
     ('剪下', '剪輯'),
