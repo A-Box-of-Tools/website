@@ -171,6 +171,62 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.skipped.one">Skipped {n} file that could not be read as an
+      image: {names}</span>
+    <span data-phrase="read.skipped.many">Skipped {n} files that could not be read as
+      images: {names}</span>
+    <span data-phrase="list.more">{names}&hellip;</span>
+    <span data-phrase="tile.drag">Drag to reorder {name}</span>
+    <span data-phrase="tile.remove">Remove {name}</span>
+    <span data-phrase="tile.frames">Frames to show {name}</span>
+    <span data-phrase="tile.seconds">Seconds to show {name}</span>
+    <span data-phrase="tile.earlier">Move {name} earlier</span>
+    <span data-phrase="tile.earlier.short">Move earlier</span>
+    <span data-phrase="tile.later">Move {name} later</span>
+    <span data-phrase="tile.later.short">Move later</span>
+    <span data-phrase="tile.source">&middot; from {host}</span>
+    <span data-phrase="unit.frames">fr</span>
+    <span data-phrase="unit.seconds">sec</span>
+    <span data-phrase="n.image.one">{n} image</span>
+    <span data-phrase="n.image.many">{n} images</span>
+    <span data-phrase="fps.used">{n} frames per second.</span>
+    <span data-phrase="fps.clamped">Using {n} fps (allowed range {min}-{max}).</span>
+    <span data-phrase="size.matched">Matched to {width} x {height}. No image is scaled
+      down.</span>
+    <span data-phrase="size.matchhighest">Matches the highest resolution among your
+      images.</span>
+    <span data-phrase="size.custom">Output {width} x {height} (rounded to even numbers).</span>
+    <span data-phrase="note.nocodec">This browser cannot encode video. Try a recent
+      Chrome, Edge, or Safari.</span>
+    <span data-phrase="note.record">Records in real time &mdash; keep this tab visible
+      until it finishes.</span>
+    <span data-phrase="note.encode">Encodes faster than real time. Works in the
+      background.</span>
+    <span data-phrase="size.plain">{width} &times; {height}</span>
+    <span data-phrase="bulk.note">at {fps} fps that is {total} total</span>
+    <span data-phrase="step.preparing">Preparing&hellip;</span>
+    <span data-phrase="step.finishing">Finishing up&hellip;</span>
+    <span data-phrase="step.realtime">Recording in real time &mdash; {done} of {total}
+      ({percent}%)</span>
+    <span data-phrase="step.frame">Encoding frame {done} of {total} ({percent}%)</span>
+    <span data-phrase="out.fps">{n} fps</span>
+    <span data-phrase="encode.noh264">This browser will not encode H.264 at
+      {width}&times;{height}. Try a smaller resolution, or switch the output format to
+      WebM.</span>
+    <span data-phrase="record.nothing">This browser supports neither WebCodecs nor
+      canvas recording.</span>
+    <span data-phrase="record.stalled">Recording stalled &mdash; this browser pauses
+      canvas capture in background tabs. Keep this tab visible while the video is being
+      created.</span>
+    <span data-phrase="record.hidden">The tab was hidden during recording, so some
+      frames may be missing. Re-run the export with this tab visible for a clean result.</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.dash">{a} &mdash; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="time.minutes">{minutes}m {seconds}s</span>
+    <span data-phrase="time.seconds">{n}s</span>
     <span data-phrase="mp4.noconfig">The encoder produced no decoder configuration.</span>
     <span data-phrase="mp4.noframes">No frames were encoded.</span>
     <span data-phrase="mp4.toobig">The video is over the 4 GB limit. Lower the quality,

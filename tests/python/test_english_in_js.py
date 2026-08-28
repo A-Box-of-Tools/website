@@ -82,7 +82,8 @@ BASELINE = {
     # The /Producer string written into the PDF, five lines of PDF syntax, a
     # CSS pixel value, a key template and the output filename.
     'images-to-pdf': 9,
-    'images-to-video': 21,
+    # A CSS class name the list builds.
+    'images-to-video': 1,
     'merge-pdf': 5,
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.

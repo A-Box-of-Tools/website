@@ -66,10 +66,9 @@ export async function encodeToMp4({ items, settings, onProgress, signal }) {
 
   const codec = await pickH264Codec({ width, height, framerate: fps, bitrate });
   if (!codec) {
-    throw new Error(
-      `This browser will not encode H.264 at ${width}×${height}. `
-      + 'Try a smaller resolution, or switch the output format to WebM.',
-    );
+    // A key and its blanks: this module ships in fifteen languages, and only
+    // the page can read a phrase.
+    throw Object.assign(new Error('encode.noh264'), { values: { width, height } });
   }
 
   const canvas = document.createElement('canvas');
