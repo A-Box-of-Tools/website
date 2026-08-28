@@ -731,25 +731,40 @@ button, .as-button {
 
 /* The same caret the pledge fold uses, for the same reason: a heading that can
    be opened should not look exactly like one that cannot. */
+/* The same mark the steps above use.
+
+   It was a caret, and a caret and a circled i side by side on one page are two
+   answers to the same question: what happens if I click this. Both of these
+   open explanation - a step's, and the whole list of steps - so both wear the
+   mark that means explanation. The caret is left to the pledge, which is not
+   an explanation but a claim with its evidence folded under it, and whose
+   summary already carries two live status dots that an i would compete with.
+
+   Drawn the same way and for the same reason as the card mark: generated
+   content counts towards the accessible name, so this is background shapes in
+   a circle where a screen reader cannot reach it. */
 .how-to-fold > summary > h2::after {
   content: "";
-  width: 0.5rem;
-  height: 0.5rem;
-  border-right: 2px solid var(--text-dim);
-  border-bottom: 2px solid var(--text-dim);
-  transform: rotate(45deg) translate(-0.1rem, -0.1rem);
-  transition: transform 0.15s;
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  color: var(--text-dim);
+  background:
+    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
+      50% 22% / 2.5px 2.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat;
+  transition: color 0.15s;
 }
 
-.how-to-fold[open] > summary > h2::after {
-  transform: rotate(225deg) translate(-0.05rem, -0.05rem);
-}
+.how-to-fold[open] > summary > h2::after { color: var(--accent); }
 
 .how-to-fold > summary:hover > h2,
 .how-to-fold > summary:focus-visible > h2 { color: var(--accent); }
 
 .how-to-fold > summary:hover > h2::after,
-.how-to-fold > summary:focus-visible > h2::after { border-color: var(--accent); }
+.how-to-fold > summary:focus-visible > h2::after { color: var(--accent); }
 
 .how-to-fold[open] > summary > h2 { margin-bottom: 0.9rem; }
 
