@@ -11,6 +11,9 @@ MIN_FRAMES,
 clampSpeed,speedForLength,lengthForSpeed,sampleInterval,frameTimes,repeatsFrames,
 outputSize,chooseBitrate,estimateBytes,decodeRuns,decodeCost,
 }from'./plan.js';
+function why(fallback,absent){
+return phrase(fallback?.key??absent,fallback?.values);
+}
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),
@@ -145,17 +148,17 @@ fallbackReason=null;
 }catch(error){
 media=null;
 fallbackReason=error instanceof UnsupportedFile
-?error.reason
-:(error.message||'the file could not be read as an MP4.');
+?{key:error.reason,values:error.values}
+:{key:error.message||'read.unreadable'};
 }
 let readable=false;
 if(media&&hasWebCodecs()){
 readable=await canDecode(decoderConfig(media.video));
 if(!readable){
-fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+fallbackReason={key:'read.nodecoder',values:{codec:media.video.codec}};
 }
 }else if(media&&!hasWebCodecs()){
-fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+fallbackReason={key:'read.nowebcodecs'};
 }
 canReadDirectly=readable;
 let opensButCannotDecode=false;
@@ -171,14 +174,8 @@ canPlay=false;
 }
 if(!canReadDirectly&&!canPlay){
 showError(opensButCannotDecode
-?'This browser opened the file but cannot decode the video in it. '
-+'That is usually Dolby Vision, or HEVC on a machine with no '
-+'hardware support for it - the container reads fine and the '
-+'picture never arrives. Convert it to an ordinary MP4 (H.264) '
-+'first, and this will read it directly.'
-:`This browser cannot open this file: ${fallbackReason
-          ?? 'the format is not one it plays.'}`
-);
+?phrase('open.nodecode')
+:phrase('open.failed',{reason:why(fallbackReason,'read.notplayed')}));
 resetView();
 return;
 }
@@ -253,9 +250,9 @@ el.srcCodec.textContent="read by the browser's own player";
 }
 el.pathNote.hidden=canReadDirectly;
 if(!canReadDirectly){
-el.pathNote.textContent='This one is read by seeking the browser\'s own player to each '
-+`instant, because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
-+'That works on every format the browser plays, and is a little slower.';
+el.pathNote.textContent=phrase('path.seek',{
+reason:why(fallbackReason,'read.layout'),
+});
 }
 }
 function defaultSpeed(){

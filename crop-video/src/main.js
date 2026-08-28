@@ -6,6 +6,9 @@ import{cropExact,grabFrame,decoderConfig,averageFps}from'./transcode.js';
 import{cropByRecording}from'./record.js';
 import{Cropper}from'./cropper.js';
 import{hasWebCodecs,hasMediaRecorder,canDecode}from'./support.js';
+function why(fallback,absent){
+return phrase(fallback?.key??absent,fallback?.values);
+}
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),
@@ -117,29 +120,29 @@ fallbackReason=null;
 }catch(error){
 media=null;
 fallbackReason=error instanceof UnsupportedFile
-?error.reason
-:(error.message||'the file could not be read as an MP4.');
+?{key:error.reason,values:error.values}
+:{key:error.message||'read.unreadable'};
 }
 let decodable=false;
 if(media&&hasWebCodecs()){
 decodable=await canDecode(decoderConfig(media.video));
 if(!decodable){
-fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+fallbackReason={key:'read.nodecoder',values:{codec:media.video.codec}};
 }
 }else if(media&&!hasWebCodecs()){
-fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+fallbackReason={key:'read.nowebcodecs'};
 }
 if(decodable&&played.ok
 &&(played.width!==media.video.displayWidth||played.height!==media.video.displayHeight)){
 decodable=false;
-fallbackReason='this file is stored turned in a way the reader and the player disagree on.';
+fallbackReason={key:'read.turned'};
 }
 canCropExactly=decodable;
 canRecord=played.ok&&hasMediaRecorder();
 if(!canCropExactly&&!canRecord){
 showError(played.ok
-?'This browser cannot record video, so it cannot crop this file.'
-:`This browser cannot open this file: ${fallbackReason ?? 'the format is not one it plays.'}`);
+?phrase('open.norecord')
+:phrase('open.failed',{reason:why(fallbackReason,'read.notplayed')}));
 resetView();
 return;
 }
@@ -208,9 +211,9 @@ el.srcAudio.textContent='whatever the player finds';
 }
 el.pathNote.hidden=canCropExactly;
 if(!canCropExactly){
-el.pathNote.textContent=`This one is cropped by playing it and recording the result, `
-+`because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
-+'That takes as long as the video is long, and the sound is re-encoded rather than copied.';
+el.pathNote.textContent=phrase('path.record',{
+reason:why(fallbackReason,'read.layout'),
+});
 }
 }
 function releaseFile(){

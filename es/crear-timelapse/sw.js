@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/crear-timelapse/:';
-const CACHE_NAME=CACHE_PREFIX+'7c49296544';
+const CACHE_NAME=CACHE_PREFIX+'85b39fa8ac';
 const ASSETS=[
 './',
 'index.html',

@@ -7,6 +7,9 @@ import{encodeGif,ColorHistogram,MAX_COLORS}from'./encode.js';
 import{RangeBar,formatTime,parseTime}from'./range.js';
 import{frameTimes,frameDelays,outputSize,workingBytes,estimateBytes,MAX_FPS}from'./plan.js';
 import{hasWebCodecs,canDecode}from'./support.js';
+function why(fallback,absent){
+return phrase(fallback?.key??absent,fallback?.values);
+}
 const $=(id)=>document.getElementById(id);
 const el={
 dropzone:$('dropzone'),
@@ -132,28 +135,27 @@ fallbackReason=null;
 }catch(error){
 media=null;
 fallbackReason=error instanceof UnsupportedFile
-?error.reason
-:(error.message||'the file could not be read as an MP4.');
+?{key:error.reason,values:error.values}
+:{key:error.message||'read.unreadable'};
 }
 let decodable=false;
 if(media&&hasWebCodecs()){
 decodable=await canDecode(decoderConfig(media.video));
 if(!decodable){
-fallbackReason=`this browser will not decode ${media.video.codec} directly.`;
+fallbackReason={key:'read.nodecoder',values:{codec:media.video.codec}};
 }
 }else if(media&&!hasWebCodecs()){
-fallbackReason='this browser has no WebCodecs, so frames cannot be decoded one by one.';
+fallbackReason={key:'read.nowebcodecs'};
 }
 if(decodable&&played.ok
 &&(played.width!==media.video.displayWidth||played.height!==media.video.displayHeight)){
 decodable=false;
-fallbackReason='this file is stored turned in a way the reader and the player disagree on.';
+fallbackReason={key:'read.turned'};
 }
 canRead=decodable;
 canPlay=played.ok;
 if(!canRead&&!canPlay){
-showError('This browser cannot open this file: '
-+`${fallbackReason ?? 'the format is not one it plays.'}`);
+showError(phrase('open.failed',{reason:why(fallbackReason,'read.notplayed')}));
 resetView();
 return;
 }
@@ -202,10 +204,9 @@ el.srcCodec.textContent="read by the browser's own player";
 el.srcPath.textContent=canRead?'WebCodecs, frame by frame':'the player, one seek per frame';
 el.pathNote.hidden=canRead;
 if(!canRead){
-el.pathNote.textContent='The frames for this one are collected by seeking the player to '
-+`each instant, because ${fallbackReason ?? 'its layout is not one the reader here understands.'} `
-+'That is slower, and the browser decides which frame each seek lands on, so a fast '
-+'section can come out a frame out here and there.';
+el.pathNote.textContent=phrase('path.seek',{
+reason:why(fallbackReason,'read.layout'),
+});
 }
 }
 function releaseFile(){
