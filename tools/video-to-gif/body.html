@@ -173,6 +173,48 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Reading the file&hellip;</span>
+    <span data-phrase="open.notopened">That file could not be opened.</span>
+    <span data-phrase="preview.none">This browser will not play this file, so there is
+      no preview. The frames are still read and converted &mdash; mark the section by
+      its times below.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="len.unknown">unknown</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), turned {degrees} degrees</span>
+    <span data-phrase="src.byplayer">read by the browser&rsquo;s own player</span>
+    <span data-phrase="path.codecs">WebCodecs, frame by frame</span>
+    <span data-phrase="path.player">the player, one seek per frame</span>
+    <span data-phrase="sum.section">{from} to {to} ({span}s)</span>
+    <span data-phrase="size.from">{width} x {height} (from {fromWidth} x {fromHeight})</span>
+    <span data-phrase="sum.bytes">{low} to {high}</span>
+    <span data-phrase="note.wider">That is wider than the video itself ({px} px), which
+      cannot add detail that was never there &mdash; only bytes.</span>
+    <span data-phrase="note.memory">Every frame is held in memory while the palette is
+      chosen, which for these settings is about {size}.</span>
+    <span data-phrase="note.memory.toobig">That is more than this tool will attempt
+      &mdash; shorten the section, or drop the width or the frame rate.</span>
+    <span data-phrase="note.memory.ok">A shorter section, a smaller width or a lower
+      frame rate all bring it down.</span>
+    <span data-phrase="step.readframe">Reading frame {done} of {total}</span>
+    <span data-phrase="step.writeframe">Writing frame {done} of {total}</span>
+    <span data-phrase="n.frame.one">{n} frame</span>
+    <span data-phrase="n.frame.many">{n} frames</span>
+    <span data-phrase="out.dropped">{frames} ({n} identical, dropped)</span>
+    <span data-phrase="out.fps">{n} fps</span>
+    <span data-phrase="out.colours">{n} colours</span>
+    <span data-phrase="export.tooshort">That section is too short to take a frame from.</span>
+    <span data-phrase="export.toobig">That would need more memory than this tool will
+      ask a browser for. Shorten the section, or drop the width or the frame rate.</span>
+    <span data-phrase="export.failed">Something went wrong while making the GIF.</span>
+    <span data-phrase="read.noframes">No frames could be decoded from this file.</span>
+    <span data-phrase="play.stopped">The browser stopped being able to play this file
+      partway through.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>
