@@ -181,6 +181,79 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">Área de corte. As setas movem, Alt com as setas
+      redimensiona, e segurando Shift cada passo é de dez pixels.</span>
+    <span data-phrase="step.reading">Lendo o arquivo&hellip;</span>
+    <span data-phrase="open.notopened">Esse arquivo não pôde ser aberto.</span>
+    <span data-phrase="nocodec.page">Este navegador não sabe decodificar nem gravar
+      vídeo, então esta ferramenta não tem com o que trabalhar. Um Chrome, Edge, Firefox
+      ou Safari recente sabe.</span>
+    <span data-phrase="preview.still">Este navegador não toca este arquivo, então o
+      quadro abaixo foi decodificado para mostrar o que está sendo cortado, e mexer no
+      controle decodifica outro. O corte em si não é afetado.</span>
+    <span data-phrase="preview.none">Este navegador não toca este arquivo e também não
+      deu para decodificar quadro nenhum dele. {why} A moldura abaixo continua
+      funcionando pelo tamanho.</span>
+    <span data-phrase="decode.nodraw">Não voltou quadro nenhum do decodificador.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">desconhecido</span>
+    <span data-phrase="len.unknown">desconhecida</span>
+    <span data-phrase="src.byplayer">lido pelo próprio player do navegador</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), girado {degrees} graus</span>
+    <span data-phrase="src.audio.one">{entry}, {n} canal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} canais, {rate} Hz</span>
+    <span data-phrase="src.audio.none">nenhum</span>
+    <span data-phrase="src.audio.whatever">o que o player achar</span>
+    <span data-phrase="note.exact">Decodifica e recodifica cada quadro, mais rápido que
+      em tempo real, e copia o som original sem mexer.</span>
+    <span data-phrase="note.record">Toca o clipe inteiro e grava, então demora o tempo
+      do vídeo e o som é recodificado. Esta aba precisa ficar na frente enquanto roda.</span>
+    <span data-phrase="note.audio.exact">Copiado do arquivo byte a byte, então não perde
+      nada.</span>
+    <span data-phrase="note.audio.record">Captado da reprodução e recodificado, porque é
+      tudo o que uma gravação consegue fazer.</span>
+    <span data-phrase="size.from">{width} x {height} (a partir de {fromWidth} x
+      {fromHeight})</span>
+    <span data-phrase="kept.whole">o quadro inteiro</span>
+    <span data-phrase="kept.part">{percent}% da imagem</span>
+    <span data-phrase="out.exact">Recodificado quadro a quadro, em MP4</span>
+    <span data-phrase="out.record.mp4">Gravado em tempo real, em MP4</span>
+    <span data-phrase="out.record.webm">Gravado em tempo real, em WebM</span>
+    <span data-phrase="step.preparing">Preparando&hellip;</span>
+    <span data-phrase="step.finishing">Finalizando&hellip;</span>
+    <span data-phrase="step.realtime">Gravando em tempo real &mdash; {done} de {total}
+      ({percent}%)</span>
+    <span data-phrase="step.frame">Cortando o quadro {done} de {total} ({percent}%)</span>
+    <span data-phrase="crop.toosmall">O corte está pequeno demais. Precisa de pelo menos
+      16 pixels para cada lado.</span>
+    <span data-phrase="record.noplay">Este navegador não conseguiu tocar o arquivo para
+      cortá-lo.</span>
+    <span data-phrase="record.slowopen">O arquivo demorou demais para abrir.</span>
+    <span data-phrase="record.norecord">Este navegador não sabe recodificar nem gravar
+      vídeo.</span>
+    <span data-phrase="record.hidden">A aba ficou escondida durante a gravação, então
+      podem faltar quadros. Outra passada com esta aba na frente dá um resultado limpo.</span>
+    <span data-phrase="record.nosound">O som não pôde ser captado neste navegador, então
+      o resultado não tem faixa de áudio.</span>
+    <span data-phrase="encode.noh264">Este navegador não codifica H.264 em
+      {width}x{height}. Uma área menor funciona, ou trocar a saída para WebM.</span>
+    <span data-phrase="encode.nothing">Não deu para decodificar nada deste arquivo.</span>
+    <span data-phrase="export.failed">Algo deu errado ao cortar.</span>
+    <span data-phrase="mp4.noconfig">O codificador não forneceu configuração de
+      decodificador nenhuma.</span>
+    <span data-phrase="mp4.noframes">Nenhum quadro foi codificado.</span>
+    <span data-phrase="mp4.toobig">O vídeo cortado passa do limite de 4 GB. Baixar a
+      qualidade ou cortar uma área menor resolve.</span>
+    <span data-phrase="mp4.unstable">Erro interno: o tamanho do índice do MP4 não ficou
+      estável entre as passagens.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
     <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
     <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>

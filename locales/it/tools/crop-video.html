@@ -181,6 +181,84 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">Area di ritaglio. Le frecce la spostano, Alt e le
+      frecce la ridimensionano, e tenendo Maiusc ogni passo è di dieci pixel.</span>
+    <span data-phrase="step.reading">Lettura del file&hellip;</span>
+    <span data-phrase="open.notopened">Quel file non si è potuto aprire.</span>
+    <span data-phrase="nocodec.page">Questo browser non sa né decodificare né registrare
+      video, quindi questo strumento non ha niente con cui lavorare. Un Chrome, Edge,
+      Firefox o Safari recente sì.</span>
+    <span data-phrase="preview.still">Questo browser non riproduce questo file, perciò
+      il fotogramma qui sotto è stato decodificato per mostrare che cosa si sta
+      ritagliando, e spostando il cursore se ne decodifica un altro. Il ritaglio in sé
+      non ne risente.</span>
+    <span data-phrase="preview.none">Questo browser non riproduce questo file e non se
+      ne è potuto decodificare nemmeno un fotogramma. {why} Il riquadro qui sotto
+      funziona lo stesso sulla sua dimensione.</span>
+    <span data-phrase="decode.nodraw">Dal decodificatore non è tornato alcun fotogramma.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">sconosciuto</span>
+    <span data-phrase="len.unknown">sconosciuta</span>
+    <span data-phrase="src.byplayer">letto dal lettore del browser</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), ruotato di {degrees} gradi</span>
+    <span data-phrase="src.audio.one">{entry}, {n} canale, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} canali, {rate} Hz</span>
+    <span data-phrase="src.audio.none">nessuno</span>
+    <span data-phrase="src.audio.whatever">quello che trova il lettore</span>
+    <span data-phrase="note.exact">Decodifica e ricodifica ogni fotogramma, più veloce
+      del tempo reale, e copia il suono originale senza toccarlo.</span>
+    <span data-phrase="note.record">Riproduce il clip per intero e lo registra, quindi
+      ci mette quanto dura il video e il suono viene ricodificato. Questa scheda deve
+      restare in primo piano mentre va.</span>
+    <span data-phrase="note.audio.exact">Copiato dal file byte per byte, quindi non
+      perde niente.</span>
+    <span data-phrase="note.audio.record">Catturato dalla riproduzione e ricodificato,
+      perché è tutto quello che una registrazione sa fare.</span>
+    <span data-phrase="size.from">{width} x {height} (da {fromWidth} x {fromHeight})</span>
+    <span data-phrase="kept.whole">tutto il fotogramma</span>
+    <span data-phrase="kept.part">il {percent}% dell&rsquo;immagine</span>
+    <span data-phrase="out.exact">Ricodificato fotogramma per fotogramma, in MP4</span>
+    <span data-phrase="out.record.mp4">Registrato in tempo reale, in MP4</span>
+    <span data-phrase="out.record.webm">Registrato in tempo reale, in WebM</span>
+    <span data-phrase="step.preparing">Preparazione&hellip;</span>
+    <span data-phrase="step.finishing">Conclusione&hellip;</span>
+    <span data-phrase="step.realtime">Registrazione in tempo reale &mdash; {done} di
+      {total} ({percent}%)</span>
+    <span data-phrase="step.frame">Ritaglio del fotogramma {done} di {total}
+      ({percent}%)</span>
+    <span data-phrase="crop.toosmall">Il ritaglio è troppo piccolo. Gli servono almeno
+      16 pixel per lato.</span>
+    <span data-phrase="record.noplay">Questo browser non è riuscito a riprodurre il file
+      per ritagliarlo.</span>
+    <span data-phrase="record.slowopen">Il file ci ha messo troppo ad aprirsi.</span>
+    <span data-phrase="record.norecord">Questo browser non sa né ricodificare né
+      registrare video.</span>
+    <span data-phrase="record.hidden">La scheda è rimasta nascosta durante la
+      registrazione, quindi qualche fotogramma può mancare. Un secondo giro con questa
+      scheda in primo piano dà un risultato pulito.</span>
+    <span data-phrase="record.nosound">Il suono non si è potuto catturare in questo
+      browser, quindi il risultato non ha traccia audio.</span>
+    <span data-phrase="encode.noh264">Questo browser non codifica H.264 a
+      {width}x{height}. Un&rsquo;area più piccola funziona, oppure l&rsquo;uscita in
+      WebM.</span>
+    <span data-phrase="encode.nothing">Da questo file non si è potuto decodificare
+      niente.</span>
+    <span data-phrase="export.failed">Qualcosa è andato storto durante il ritaglio.</span>
+    <span data-phrase="mp4.noconfig">Il codificatore non ha fornito alcuna
+      configurazione di decodifica.</span>
+    <span data-phrase="mp4.noframes">Non è stato codificato alcun fotogramma.</span>
+    <span data-phrase="mp4.toobig">Il video ritagliato supera il limite di 4 GB.
+      Abbassare la qualità o ritagliare un&rsquo;area più piccola risolve.</span>
+    <span data-phrase="mp4.unstable">Errore interno: la dimensione dell&rsquo;indice MP4
+      non è rimasta stabile fra una passata e l&rsquo;altra.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Il file finisce a metà di un fotogramma.</span>
     <span data-phrase="read.avcshort">Il record di configurazione H.264 è troppo corto.</span>
     <span data-phrase="read.hevcshort">Il record di configurazione HEVC è troppo corto.</span>

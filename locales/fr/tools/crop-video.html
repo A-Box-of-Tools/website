@@ -182,6 +182,83 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">Zone de recadrage. Les flèches la déplacent, Alt et
+      les flèches la redimensionnent, et maintenir Maj fait des pas de dix pixels.</span>
+    <span data-phrase="step.reading">Lecture du fichier&hellip;</span>
+    <span data-phrase="open.notopened">Ce fichier n&rsquo;a pas pu être ouvert.</span>
+    <span data-phrase="nocodec.page">Ce navigateur ne sait ni décoder ni enregistrer de
+      vidéo&nbsp;: cet outil n&rsquo;a donc rien avec quoi travailler. Un Chrome, Edge,
+      Firefox ou Safari récent le fera.</span>
+    <span data-phrase="preview.still">Ce navigateur ne lit pas ce fichier&nbsp;:
+      l&rsquo;image ci-dessous a donc été décodée pour montrer ce qui est recadré, et
+      déplacer le curseur en décode une autre. Le recadrage lui-même n&rsquo;est pas
+      concerné.</span>
+    <span data-phrase="preview.none">Ce navigateur ne lit pas ce fichier et aucune image
+      n&rsquo;a pu en être décodée non plus. {why} Le cadre ci-dessous fonctionne quand
+      même sur sa taille.</span>
+    <span data-phrase="decode.nodraw">Aucune image n&rsquo;est revenue du décodeur.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">inconnu</span>
+    <span data-phrase="len.unknown">inconnue</span>
+    <span data-phrase="src.byplayer">lu par le lecteur du navigateur</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), tourné de {degrees} degrés</span>
+    <span data-phrase="src.audio.one">{entry}, {n} canal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} canaux, {rate} Hz</span>
+    <span data-phrase="src.audio.none">aucun</span>
+    <span data-phrase="src.audio.whatever">ce que le lecteur trouve</span>
+    <span data-phrase="note.exact">Décode et réencode chaque image, plus vite
+      qu&rsquo;en temps réel, et recopie le son d&rsquo;origine tel quel.</span>
+    <span data-phrase="note.record">Lit le clip en entier et l&rsquo;enregistre&nbsp;:
+      cela prend donc la durée de la vidéo et le son est réencodé. Cet onglet doit
+      rester au premier plan pendant ce temps.</span>
+    <span data-phrase="note.audio.exact">Recopié du fichier octet par octet, il ne perd
+      rien.</span>
+    <span data-phrase="note.audio.record">Capté à la lecture et réencodé, car
+      c&rsquo;est tout ce qu&rsquo;un enregistrement sait faire.</span>
+    <span data-phrase="size.from">{width} x {height} (à partir de {fromWidth} x
+      {fromHeight})</span>
+    <span data-phrase="kept.whole">toute l&rsquo;image</span>
+    <span data-phrase="kept.part">{percent}% de l&rsquo;image</span>
+    <span data-phrase="out.exact">Réencodé image par image, vers MP4</span>
+    <span data-phrase="out.record.mp4">Enregistré en temps réel, vers MP4</span>
+    <span data-phrase="out.record.webm">Enregistré en temps réel, vers WebM</span>
+    <span data-phrase="step.preparing">Préparation&hellip;</span>
+    <span data-phrase="step.finishing">Finalisation&hellip;</span>
+    <span data-phrase="step.realtime">Enregistrement en temps réel &mdash; {done} sur
+      {total} ({percent}%)</span>
+    <span data-phrase="step.frame">Recadrage de l&rsquo;image {done} sur {total}
+      ({percent}%)</span>
+    <span data-phrase="crop.toosmall">Le recadrage est trop petit. Il lui faut au moins
+      16 pixels dans chaque sens.</span>
+    <span data-phrase="record.noplay">Ce navigateur n&rsquo;a pas pu relire le fichier
+      pour le recadrer.</span>
+    <span data-phrase="record.slowopen">Le fichier a mis trop de temps à s&rsquo;ouvrir.</span>
+    <span data-phrase="record.norecord">Ce navigateur ne sait ni réencoder ni
+      enregistrer de vidéo.</span>
+    <span data-phrase="record.hidden">L&rsquo;onglet était masqué pendant
+      l&rsquo;enregistrement, il peut donc manquer des images. Un second essai avec cet
+      onglet au premier plan donne un résultat propre.</span>
+    <span data-phrase="record.nosound">Le son n&rsquo;a pas pu être capté dans ce
+      navigateur, le résultat n&rsquo;a donc pas de piste audio.</span>
+    <span data-phrase="encode.noh264">Ce navigateur n&rsquo;encode pas le H.264 en
+      {width}x{height}. Une zone plus petite passera, ou une sortie en WebM.</span>
+    <span data-phrase="encode.nothing">Rien n&rsquo;a pu être décodé de ce fichier.</span>
+    <span data-phrase="export.failed">Quelque chose a mal tourné pendant le recadrage.</span>
+    <span data-phrase="mp4.noconfig">L&rsquo;encodeur n&rsquo;a fourni aucune
+      configuration de décodeur.</span>
+    <span data-phrase="mp4.noframes">Aucune image n&rsquo;a été encodée.</span>
+    <span data-phrase="mp4.toobig">La vidéo recadrée dépasse la limite de 4&nbsp;Go.
+      Baisser la qualité ou recadrer plus petit y remédie.</span>
+    <span data-phrase="mp4.unstable">Erreur interne&nbsp;: la taille de l&rsquo;index
+      MP4 n&rsquo;était pas stable d&rsquo;une passe à l&rsquo;autre.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="size.gb">{n} Go</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Le fichier se termine au milieu d&rsquo;une image.</span>
     <span data-phrase="read.avcshort">L&rsquo;enregistrement de configuration H.264 est trop court.</span>
     <span data-phrase="read.hevcshort">L&rsquo;enregistrement de configuration HEVC est trop court.</span>

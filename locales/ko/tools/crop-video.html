@@ -181,6 +181,64 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">자르기 영역. 화살표 키로 옮기고, Alt와 화살표 키로 크기를 바꾸며, Shift를 누르면 한
+      번에 10픽셀씩 움직입니다.</span>
+    <span data-phrase="step.reading">파일을 읽는 중&hellip;</span>
+    <span data-phrase="open.notopened">그 파일은 열지 못했습니다.</span>
+    <span data-phrase="nocodec.page">이 브라우저는 영상을 디코딩하지도 녹화하지도 못해서, 이 도구가 다룰 것이 없습니다. 최근의
+      Chrome, Edge, Firefox, Safari는 됩니다.</span>
+    <span data-phrase="preview.still">이 브라우저는 이 파일을 재생하지 않아서, 아래 프레임은 무엇을 자르는지 보여주려고
+      디코딩한 것이고 슬라이더를 옮기면 다른 프레임을 디코딩합니다. 자르기 자체에는 영향이 없습니다.</span>
+    <span data-phrase="preview.none">이 브라우저는 이 파일을 재생하지 않고, 프레임도 하나 디코딩하지 못했습니다. {why}
+      아래 자르기 상자는 크기만으로도 그대로 쓸 수 있습니다.</span>
+    <span data-phrase="decode.nodraw">디코더에서 프레임이 돌아오지 않았습니다.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">알 수 없음</span>
+    <span data-phrase="len.unknown">알 수 없음</span>
+    <span data-phrase="src.byplayer">브라우저 자체 재생기로 읽음</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees}도 돌아감</span>
+    <span data-phrase="src.audio.one">{entry}, {n}채널, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n}채널, {rate} Hz</span>
+    <span data-phrase="src.audio.none">없음</span>
+    <span data-phrase="src.audio.whatever">재생기가 찾는 대로</span>
+    <span data-phrase="note.exact">모든 프레임을 디코딩해 다시 인코딩하며, 실시간보다 빠르고, 원래 소리는 그대로 옮깁니다.</span>
+    <span data-phrase="note.record">클립을 끝까지 재생하며 녹화하므로 영상 길이만큼 걸리고 소리는 다시 인코딩됩니다. 진행하는
+      동안 이 탭을 앞에 두어야 합니다.</span>
+    <span data-phrase="note.audio.exact">파일에서 바이트 단위로 그대로 옮기므로 잃는 것이 없습니다.</span>
+    <span data-phrase="note.audio.record">재생에서 받아 다시 인코딩합니다. 녹화로 할 수 있는 것은 거기까지입니다.</span>
+    <span data-phrase="size.from">{width} x {height} ({fromWidth} x {fromHeight}에서)</span>
+    <span data-phrase="kept.whole">프레임 전체</span>
+    <span data-phrase="kept.part">화면의 {percent}%</span>
+    <span data-phrase="out.exact">프레임마다 다시 인코딩해서 MP4로</span>
+    <span data-phrase="out.record.mp4">실시간으로 녹화해서 MP4로</span>
+    <span data-phrase="out.record.webm">실시간으로 녹화해서 WebM으로</span>
+    <span data-phrase="step.preparing">준비하는 중&hellip;</span>
+    <span data-phrase="step.finishing">마무리하는 중&hellip;</span>
+    <span data-phrase="step.realtime">실시간으로 녹화하는 중 &mdash; {total} 중 {done} ({percent}%)</span>
+    <span data-phrase="step.frame">{total}프레임 중 {done}번째를 자르는 중 ({percent}%)</span>
+    <span data-phrase="crop.toosmall">자르기 영역이 너무 작습니다. 가로세로 모두 16픽셀 이상이어야 합니다.</span>
+    <span data-phrase="record.noplay">이 브라우저는 자르기 위해 파일을 재생하지 못했습니다.</span>
+    <span data-phrase="record.slowopen">파일을 여는 데 너무 오래 걸렸습니다.</span>
+    <span data-phrase="record.norecord">이 브라우저는 영상을 다시 인코딩하지도 녹화하지도 못합니다.</span>
+    <span data-phrase="record.hidden">녹화하는 동안 탭이 가려져 있어서 빠진 프레임이 있을 수 있습니다. 이 탭을 앞에 두고 한
+      번 더 돌리면 깔끔한 결과가 나옵니다.</span>
+    <span data-phrase="record.nosound">이 브라우저에서는 소리를 담지 못해서 결과에 오디오 트랙이 없습니다.</span>
+    <span data-phrase="encode.noh264">이 브라우저는 {width}x{height}로 H.264를 인코딩하지 않습니다. 더 좁은
+      영역은 되고, 출력을 WebM으로 바꿔도 됩니다.</span>
+    <span data-phrase="encode.nothing">이 파일에서는 아무것도 디코딩하지 못했습니다.</span>
+    <span data-phrase="export.failed">자르는 중에 문제가 생겼습니다.</span>
+    <span data-phrase="mp4.noconfig">인코더가 디코더 구성을 내놓지 않았습니다.</span>
+    <span data-phrase="mp4.noframes">인코딩된 프레임이 하나도 없습니다.</span>
+    <span data-phrase="mp4.toobig">잘라낸 영상이 4 GB 한도를 넘습니다. 품질을 낮추거나 더 좁은 영역을 자르면 됩니다.</span>
+    <span data-phrase="mp4.unstable">내부 오류: MP4 색인의 크기가 두 차례 계산 사이에 달라졌습니다.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes}분 {seconds}초</span>
+    <span data-phrase="time.seconds">{n}초</span>
     <span data-phrase="read.midframe">파일이 프레임 한가운데에서 끝났습니다.</span>
     <span data-phrase="read.avcshort">H.264 설정 레코드가 너무 짧습니다.</span>
     <span data-phrase="read.hevcshort">HEVC 설정 레코드가 너무 짧습니다.</span>

@@ -187,6 +187,79 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">Kırpma alanı. Ok tuşları onu taşır, Alt ile ok tuşları
+      boyutunu değiştirir, Shift basılıyken her adım on piksel olur.</span>
+    <span data-phrase="step.reading">Dosya okunuyor&hellip;</span>
+    <span data-phrase="open.notopened">Bu dosya açılamadı.</span>
+    <span data-phrase="nocodec.page">Bu tarayıcı videoyu ne çözebiliyor ne de
+      kaydedebiliyor, dolayısıyla bu aracın çalışacak bir şeyi yok. Yeni bir Chrome,
+      Edge, Firefox ya da Safari çalışır.</span>
+    <span data-phrase="preview.still">Bu tarayıcı bu dosyayı oynatmıyor, bu yüzden
+      aşağıdaki kare neyin kırpıldığını göstermek için çözüldü; kaydırıcıyı oynatmak bir
+      başkasını çözer. Kırpmanın kendisi bundan etkilenmiyor.</span>
+    <span data-phrase="preview.none">Bu tarayıcı bu dosyayı oynatmıyor ve ondan tek bir
+      kare de çözülemedi. {why} Aşağıdaki kırpma çerçevesi boyutu üzerinden yine de
+      çalışır.</span>
+    <span data-phrase="decode.nodraw">Çözücüden hiç kare gelmedi.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">bilinmiyor</span>
+    <span data-phrase="len.unknown">bilinmiyor</span>
+    <span data-phrase="src.byplayer">tarayıcının kendi oynatıcısıyla okundu</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} derece döndürülmüş</span>
+    <span data-phrase="src.audio.one">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.none">yok</span>
+    <span data-phrase="src.audio.whatever">oynatıcı ne bulursa</span>
+    <span data-phrase="note.exact">Her kareyi çözüp yeniden kodlar, gerçek zamandan
+      hızlı, ve özgün sesi olduğu gibi kopyalar.</span>
+    <span data-phrase="note.record">Klibi baştan sona oynatıp kaydeder, yani video ne
+      kadar uzunsa o kadar sürer ve ses yeniden kodlanır. Bu sekme çalışırken önde
+      kalmalı.</span>
+    <span data-phrase="note.audio.exact">Dosyadan bayt bayt kopyalanır, hiçbir şey
+      yitmez.</span>
+    <span data-phrase="note.audio.record">Oynatmadan yakalanıp yeniden kodlanır, çünkü
+      bir kaydın yapabileceği bundan ibaret.</span>
+    <span data-phrase="size.from">{width} x {height} ({fromWidth} x {fromHeight}
+      boyutundan)</span>
+    <span data-phrase="kept.whole">karenin tamamı</span>
+    <span data-phrase="kept.part">resmin %{percent} kadarı</span>
+    <span data-phrase="out.exact">Kare kare yeniden kodlandı, MP4 olarak</span>
+    <span data-phrase="out.record.mp4">Gerçek zamanlı kaydedildi, MP4 olarak</span>
+    <span data-phrase="out.record.webm">Gerçek zamanlı kaydedildi, WebM olarak</span>
+    <span data-phrase="step.preparing">Hazırlanıyor&hellip;</span>
+    <span data-phrase="step.finishing">Tamamlanıyor&hellip;</span>
+    <span data-phrase="step.realtime">Gerçek zamanlı kaydediliyor &mdash; {total} içinde
+      {done} (%{percent})</span>
+    <span data-phrase="step.frame">{total} kareden {done}. kare kırpılıyor (%{percent})</span>
+    <span data-phrase="crop.toosmall">Kırpma çok küçük. Her yöne en az 16 piksel olması
+      gerekir.</span>
+    <span data-phrase="record.noplay">Bu tarayıcı kırpmak için dosyayı geri oynatamadı.</span>
+    <span data-phrase="record.slowopen">Dosyanın açılması çok uzun sürdü.</span>
+    <span data-phrase="record.norecord">Bu tarayıcı videoyu ne yeniden kodlayabiliyor ne
+      de kaydedebiliyor.</span>
+    <span data-phrase="record.hidden">Kayıt sırasında sekme arkadaydı, bu yüzden bazı
+      kareler eksik olabilir. Bu sekme öndeyken bir kez daha çalıştırmak temiz bir sonuç
+      verir.</span>
+    <span data-phrase="record.nosound">Ses bu tarayıcıda yakalanamadı, dolayısıyla
+      sonuçta ses izi yok.</span>
+    <span data-phrase="encode.noh264">Bu tarayıcı {width}x{height} boyutunda H.264
+      kodlamıyor. Daha küçük bir alan olur, ya da çıktı WebM yapılabilir.</span>
+    <span data-phrase="encode.nothing">Bu dosyadan hiçbir şey çözülemedi.</span>
+    <span data-phrase="export.failed">Kırparken bir şeyler ters gitti.</span>
+    <span data-phrase="mp4.noconfig">Kodlayıcı hiçbir çözücü yapılandırması vermedi.</span>
+    <span data-phrase="mp4.noframes">Hiç kare kodlanmadı.</span>
+    <span data-phrase="mp4.toobig">Kırpılan video 4 GB sınırını aşıyor. Kaliteyi
+      düşürmek ya da daha küçük bir alan kırpmak bunu çözer.</span>
+    <span data-phrase="mp4.unstable">İç hata: MP4 dizininin boyutu iki geçiş arasında
+      sabit kalmadı.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} dk {seconds} sn</span>
+    <span data-phrase="time.seconds">{n} sn</span>
     <span data-phrase="read.midframe">Dosya bir karenin ortasında bitiyor.</span>
     <span data-phrase="read.avcshort">H.264 yapılandırma kaydı fazla kısa.</span>
     <span data-phrase="read.hevcshort">HEVC yapılandırma kaydı fazla kısa.</span>

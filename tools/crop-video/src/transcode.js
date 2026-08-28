@@ -150,6 +150,13 @@ async function readAudio(file, audio, signal) {
  *   in display coordinates, with even width and height
  * @returns {Promise<{blob: Blob, extension: string, codec: string, frames: number}>}
  */
+/**
+ * A refusal named rather than written out. This module is copied byte for
+ * byte into fifteen languages, so what it can hand back is a phrase key;
+ * main.js turns it into the reader's own sentence.
+ */
+const said = (key, values = {}) => Object.assign(new Error(key), { values });
+
 export async function cropExact({
   file, media, crop, quality = 'medium', keepAudio = true, onProgress, signal,
 }) {
@@ -161,8 +168,7 @@ export async function cropExact({
 
   const codec = await pickH264Codec({ width, height, framerate: Math.round(fps), bitrate });
   if (!codec) {
-    throw new Error(`This browser will not encode H.264 at ${width}x${height}. `
-      + 'Crop a smaller area, or switch the output to WebM.');
+    throw said('encode.noh264', { width, height });
   }
 
   onProgress?.({ phase: 'preparing', done: 0, total: video.samples.length });
@@ -282,7 +288,7 @@ export async function cropExact({
     await decoder.flush();
     await encoder.flush();
     if (failure) throw failure;
-    if (!encoded) throw new Error('Nothing could be decoded from this file.');
+    if (!encoded) throw new Error('encode.nothing');
 
     return { blob: writer.finalize(), extension: 'mp4', codec, frames: encoded };
   } finally {
@@ -371,7 +377,7 @@ export async function grabFrame({ file, media, atSeconds = 0, maxWidth = 960, si
 
     await decoder.flush();
     if (failure) throw failure;
-    if (!drawn) throw new Error('No frame could be decoded from this file.');
+    if (!drawn) throw new Error('decode.nodraw');
     return canvas;
   } finally {
     if (decoder.state !== 'closed') decoder.close();

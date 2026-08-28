@@ -273,7 +273,7 @@ export class Mp4Writer {
    */
   setDecoderConfig(description) {
     if (this.avcC) return;
-    if (!description) throw new Error('The encoder produced no decoder configuration.');
+    if (!description) throw new Error('mp4.noconfig');
     this.avcC = description instanceof Uint8Array
       ? description
       : new Uint8Array(description instanceof ArrayBuffer
@@ -406,8 +406,8 @@ export class Mp4Writer {
 
   /** @returns {Blob} a complete, faststart MP4 file. */
   finalize() {
-    if (!this.video.samples.length) throw new Error('No frames were encoded.');
-    if (!this.avcC) throw new Error('The encoder never reported a decoder configuration.');
+    if (!this.video.samples.length) throw new Error('mp4.noframes');
+    if (!this.avcC) throw new Error('mp4.noconfig');
 
     this.#closeVideoDurations();
 
@@ -417,8 +417,7 @@ export class Mp4Writer {
     // 32-bit chunk offsets and a 32-bit `mdat` size cap this at 4 GB. Anything
     // near it is a mistake rather than a case worth supporting.
     if (totalBytes > 0xfffffff0) {
-      throw new Error('The cropped video exceeds the 4 GB limit. '
-        + 'Lower the quality, or crop a smaller area.');
+      throw new Error('mp4.toobig');
     }
 
     // Where the earliest track begins. Everything is written relative to it, so
@@ -449,7 +448,7 @@ export class Mp4Writer {
     const { moov, chunks } = build(mdatDataOffset);
 
     if (moov.byteLength !== probe.moov.byteLength) {
-      throw new Error('Internal error: the moov size was not stable between passes.');
+      throw new Error('mp4.unstable');
     }
 
     const mdatHeader = concat([u32(totalBytes + 8), ascii('mdat')]);

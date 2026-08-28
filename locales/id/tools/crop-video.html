@@ -188,6 +188,82 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">Area pemotongan. Tombol panah memindahkannya, Alt
+      dengan tombol panah mengubah ukurannya, dan menahan Shift membuat tiap langkah
+      sepuluh piksel.</span>
+    <span data-phrase="step.reading">Membaca berkasnya&hellip;</span>
+    <span data-phrase="open.notopened">Berkas itu tidak bisa dibuka.</span>
+    <span data-phrase="nocodec.page">Browser ini tidak bisa mengawakode maupun merekam
+      video, jadi alat ini tidak punya apa-apa untuk dikerjakan. Chrome, Edge, Firefox,
+      atau Safari yang baru bisa.</span>
+    <span data-phrase="preview.still">Browser ini tidak memainkan berkas ini, jadi
+      bingkai di bawah diawakode untuk menunjukkan apa yang sedang dipotong, dan
+      menggeser penggesernya mengawakode bingkai lain. Pemotongannya sendiri tidak
+      terpengaruh.</span>
+    <span data-phrase="preview.none">Browser ini tidak memainkan berkas ini dan tidak
+      ada bingkai yang bisa diawakode darinya juga. {why} Kotak potong di bawah tetap
+      bekerja berdasarkan ukurannya.</span>
+    <span data-phrase="decode.nodraw">Tidak ada bingkai yang kembali dari
+      pengawakodenya.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">tidak diketahui</span>
+    <span data-phrase="len.unknown">tidak diketahui</span>
+    <span data-phrase="src.byplayer">dibaca pemutar bawaan browser</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), diputar {degrees} derajat</span>
+    <span data-phrase="src.audio.one">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.none">tidak ada</span>
+    <span data-phrase="src.audio.whatever">apa pun yang ditemukan pemutar</span>
+    <span data-phrase="note.exact">Mengawakode dan mengodekan ulang tiap bingkai, lebih
+      cepat daripada waktu nyata, dan menyalin suara aslinya apa adanya.</span>
+    <span data-phrase="note.record">Memainkan klipnya sampai habis lalu merekamnya, jadi
+      lamanya sepanjang videonya dan suaranya dikodekan ulang. Tab ini harus tetap di
+      depan selama prosesnya berjalan.</span>
+    <span data-phrase="note.audio.exact">Disalin dari berkasnya bita demi bita, jadi
+      tidak ada yang hilang.</span>
+    <span data-phrase="note.audio.record">Ditangkap dari pemutaran lalu dikodekan ulang,
+      karena hanya itu yang bisa dilakukan sebuah rekaman.</span>
+    <span data-phrase="size.from">{width} x {height} (dari {fromWidth} x {fromHeight})</span>
+    <span data-phrase="kept.whole">seluruh bingkai</span>
+    <span data-phrase="kept.part">{percent}% dari gambarnya</span>
+    <span data-phrase="out.exact">Dikodekan ulang bingkai demi bingkai, menjadi MP4</span>
+    <span data-phrase="out.record.mp4">Direkam dalam waktu nyata, menjadi MP4</span>
+    <span data-phrase="out.record.webm">Direkam dalam waktu nyata, menjadi WebM</span>
+    <span data-phrase="step.preparing">Bersiap&hellip;</span>
+    <span data-phrase="step.finishing">Merampungkan&hellip;</span>
+    <span data-phrase="step.realtime">Merekam dalam waktu nyata &mdash; {done} dari
+      {total} ({percent}%)</span>
+    <span data-phrase="step.frame">Memotong bingkai {done} dari {total} ({percent}%)</span>
+    <span data-phrase="crop.toosmall">Potongannya terlalu kecil. Setidaknya perlu 16
+      piksel ke tiap arah.</span>
+    <span data-phrase="record.noplay">Browser ini tidak bisa memainkan kembali berkasnya
+      untuk dipotong.</span>
+    <span data-phrase="record.slowopen">Berkasnya terlalu lama dibuka.</span>
+    <span data-phrase="record.norecord">Browser ini tidak bisa mengodekan ulang maupun
+      merekam video.</span>
+    <span data-phrase="record.hidden">Tabnya tersembunyi saat merekam, jadi sebagian
+      bingkai mungkin hilang. Sekali lagi dengan tab ini di depan akan memberi hasil
+      yang bersih.</span>
+    <span data-phrase="record.nosound">Suaranya tidak bisa ditangkap di browser ini,
+      jadi hasilnya tanpa jalur audio.</span>
+    <span data-phrase="encode.noh264">Browser ini tidak mengodekan H.264 pada
+      {width}x{height}. Area yang lebih kecil bisa, atau keluarannya diganti ke WebM.</span>
+    <span data-phrase="encode.nothing">Tidak ada yang bisa diawakode dari berkas ini.</span>
+    <span data-phrase="export.failed">Ada yang salah saat memotong.</span>
+    <span data-phrase="mp4.noconfig">Pengodenya tidak memberi konfigurasi pengawakode.</span>
+    <span data-phrase="mp4.noframes">Tidak ada bingkai yang dikodekan.</span>
+    <span data-phrase="mp4.toobig">Video hasil potongannya melewati batas 4 GB.
+      Menurunkan mutu atau memotong area yang lebih kecil akan menolong.</span>
+    <span data-phrase="mp4.unstable">Galat internal: ukuran indeks MP4-nya tidak tetap
+      antara satu lintasan dan lintasan berikutnya.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} mnt {seconds} dtk</span>
+    <span data-phrase="time.seconds">{n} dtk</span>
     <span data-phrase="read.midframe">File-nya berhenti di tengah sebuah bingkai.</span>
     <span data-phrase="read.avcshort">Rekaman konfigurasi H.264 terlalu pendek.</span>
     <span data-phrase="read.hevcshort">Rekaman konfigurasi HEVC terlalu pendek.</span>

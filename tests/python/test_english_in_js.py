@@ -60,7 +60,7 @@ BASELINE = {
     'compare-text': 3,
     'compress-image': 2,
     'compress-pdf': 6,
-    'crop-video': 31,
+    'crop-video': 0,
     'dicom-viewer': 15,
     'document-scanner': 13,
     'edit-audio': 18,
