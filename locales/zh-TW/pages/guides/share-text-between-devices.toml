@@ -1,17 +1,21 @@
 #
-# 指南：裝置間分享文字與檔案 - Traditional Chinese.
+# 指南：裝置間分享文字與檔案 - Traditional Chinese (Taiwan register).
+#
+# MAINTAINED BY HAND, unlike the rest of this locale: zh-tw-sync.py skips it,
+# for the reasons its MAINTAINED list gives. An edit to the zh copy has to be
+# carried over here yourself.
 #
 
 nav = "裝置間分享"
 title = "裝置間分享文字與檔案 &mdash; 不上傳"
-description = "把文字或檔案經直連加密通道從一個瀏覽器送到另一個——不用給自己發郵件，不留聊天記錄，不需要帳號，也沒有哪臺伺服器留著副本。"
+description = "把文字或檔案經直連加密通道從一個瀏覽器送到另一個——不用寄信給自己，不留聊天紀錄，不需要帳號，也沒有哪台伺服器留著副本。"
 
 heading = "如何不上傳就在裝置間分享文字與檔案"
 lede = """
-    把一條筆記或一個檔案挪到另一臺機器上，慣用的辦法個個都會留下副本：在已傳送資料夾裡，在聊天記錄裡，或者在某個分享網站的伺服器上、一個只能選擇相信的刪除按鈕背後。有一種辦法哪裡都不留，因為壓根什麼都不存——而且它也是唯一一種名字能隔著房間喊出來的辦法。"""
+    把一則筆記或一個檔案挪到另一台機器上，慣用的辦法個個都會留下副本：在寄件備份裡，在聊天紀錄裡，或者在某個分享網站的伺服器上、一個只能選擇相信的刪除按鈕背後。有一種辦法哪裡都不留，因為壓根什麼都不存——而且它也是唯一一種名稱能隔著房間喊出來的辦法。"""
 
 updated = "2026年8月27日"
 
 og_title = "裝置間分享，沒有伺服器留副本"
-og_description = "文字和檔案經直連加密通道從瀏覽器到瀏覽器——連結名說得出口，哪裡都不存東西，分享隨分頁一起結束。"
+og_description = "文字和檔案經直連加密通道從瀏覽器到瀏覽器——連結名稱說得出口，哪裡都不存東西，分享隨分頁一起結束。"
 og_image_alt = "abox.tools - 不走伺服器的工具"
