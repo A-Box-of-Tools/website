@@ -14,7 +14,7 @@ const found=[tag(bytes,8)];
 for(let at=16;at+4<=size;at+=4)found.push(tag(bytes,at));
 return found;
 }
-const UNRENDERABLE='No browser except Safari draws this format, so the URI will be valid and the picture will not appear. Convert it first.';
+const UNRENDERABLE='sniff.unrenderable';
 const TESTS=[
 (b)=>starts(b,0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a)
 &&{mime:'image/png',label:'PNG'},
