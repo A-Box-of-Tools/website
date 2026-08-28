@@ -1,13 +1,14 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 export class ParseError extends Error{
-constructor(message,index,text){
+constructor(reason,index,text,values){
 const{line,column}=positionOf(text,index);
-super(`${message} (line ${line}, column ${column})`);
+super(reason);
 this.name='ParseError';
 this.index=index;
 this.line=line;
 this.column=column;
-this.reason=message;
+this.reason=reason;
+this.values=values;
 }
 }
 export function positionOf(text,index){

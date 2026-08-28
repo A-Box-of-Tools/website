@@ -44,7 +44,7 @@ let mode='format';
 let result=null;
 let downloadUrl=null;
 for(const conversion of CONVERSIONS){
-el.conversion.append(new Option(conversion.name,conversion.id));
+el.conversion.append(new Option(phrase(conversion.name),conversion.id));
 }
 function setMode(next){
 mode=next;
@@ -75,12 +75,12 @@ dropzone:el.dropzone,
 onFiles(files){loadFiles(files);},
 });
 async function loadFiles(files){
-picker.busy('Reading the file...');
+picker.busy(phrase('read.reading'));
 try{
 el.input.value=await files[0].text();
 run();
 }catch(error){
-showError(`That file could not be read: ${error?.message ?? error}`);
+showError(phrase('read.failed',{reason:say(error)}));
 }finally{
 picker.done();
 }
@@ -127,14 +127,14 @@ clearResult();
 updateOptionVisibility();
 const text=el.input.value;
 if(text.trim()===''){
-el.resultNote.textContent='Nothing yet.';
+el.resultNote.textContent=phrase('out.nothing');
 return;
 }
 try{
 if(mode==='format')runFormat(text);
 else runConvert(text);
 }catch(error){
-showError(error?.message??String(error));
+showError(say(error));
 if(error?.name!=='ParseError')console.error(error);
 }
 }
@@ -142,11 +142,9 @@ function updateOptionVisibility(){
 const language=chosenLanguage();
 el.sortKeys.closest('.field').hidden=!(language&&languageById(language).sorts);
 el.style.disabled=!!language&&!languageById(language).minifies;
-el.styleNote.textContent=el.style.disabled
-?'YAML has no squeezed form worth writing: the short one is flow style, which is unreadable.'
-:'';
+el.styleNote.textContent=el.style.disabled?phrase('style.noyaml'):'';
 el.rootField.hidden=el.conversion.value!=='json-xml';
-el.conversionNote.textContent=conversionById(el.conversion.value).note;
+el.conversionNote.textContent=phrase(conversionById(el.conversion.value).note);
 }
 function chosenLanguage(){
 if(el.language.value!=='auto')return el.language.value;
@@ -156,12 +154,12 @@ function runFormat(text){
 const language=chosenLanguage();
 if(!language){
 el.detected.textContent='';
-showError('This does not look like JSON, XML, HTML, CSS or YAML. '
-+'Pick the language from the menu if it is one of them.');
+showError(phrase('detect.unknown'));
 return;
 }
 el.detected.textContent=el.language.value==='auto'
-?`Read as ${languageById(language).name}.`:'';
+?phrase('detect.read',{name:languageById(language).name})
+:'';
 const minify=el.style.value==='minify'&&languageById(language).minifies;
 const out=formatText(text,{
 language,
@@ -171,13 +169,21 @@ sortKeys:el.sortKeys.checked&&languageById(language).sorts,
 });
 const before=byteLength(text);
 const after=byteLength(out);
-const change=minify&&before>0
-?` - ${humanBytes(before)} down to ${humanBytes(after)}, `
-+`${Math.round((1 - after / before) * 100)}% off`
-:'';
-show(out,`${languageById(language).name}, ${minify ? 'squeezed flat' : 'laid out'}`
-+`${change || ` - ${out.split('\n').length - 1} lines, ${humanBytes(after)}`}`,
-`formatted.${language}`);
+const what=phrase(minify?'note.squeezed':'note.laid',
+{name:languageById(language).name});
+const note=minify&&before>0
+?phrase('note.smaller',{
+what,
+before:humanBytes(before),
+after:humanBytes(after),
+percent:Math.round((1-after/before)*100),
+})
+:phrase('note.lines',{
+what,
+lines:out.split('\n').length-1,
+size:humanBytes(after),
+});
+show(out,note,`formatted.${language}`);
 }
 function runConvert(text){
 const conversion=conversionById(el.conversion.value);
@@ -187,8 +193,11 @@ spaces:el.indent.value==='tab'?2:Number(el.indent.value),
 sortKeys:el.sortKeys.checked,
 root:el.rootName.value.trim(),
 });
-show(out,`${conversion.name} - ${out.split('\n').length - 1} lines, ${humanBytes(byteLength(out))}`,
-`converted.${conversion.output}`);
+show(out,phrase('note.converted',{
+name:phrase(conversion.name),
+lines:out.split('\n').length-1,
+size:humanBytes(byteLength(out)),
+}),`converted.${conversion.output}`);
 }
 function show(text,note,name){
 el.output.textContent=text;
@@ -210,16 +219,16 @@ el.copy.addEventListener('click',async()=>{
 if(!result)return;
 try{
 await navigator.clipboard.writeText(result.text);
-el.copy.textContent='Copied';
+el.copy.textContent=phrase('copy.copied');
 }catch{
 const range=document.createRange();
 range.selectNodeContents(el.output);
 const selection=window.getSelection();
 selection.removeAllRanges();
 selection.addRange(range);
-el.copy.textContent='Selected - press Ctrl+C';
+el.copy.textContent=phrase('copy.selected');
 }
-setTimeout(()=>{el.copy.textContent='Copy';},2500);
+setTimeout(()=>{el.copy.textContent=phrase('copy.copy');},2500);
 });
 function clearResult(){
 el.output.textContent='';
@@ -229,10 +238,22 @@ result=null;
 if(downloadUrl)URL.revokeObjectURL(downloadUrl);
 downloadUrl=null;
 }
+function say(error){
+const fill=(values={})=>Object.fromEntries(Object.entries(values)
+.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
+if(error?.name==='ParseError'){
+return phrase('parse.at',{
+reason:phrase(error.reason,fill(error.values)),
+line:error.line,
+column:error.column,
+});
+}
+return error?.message?phrase(error.message,fill(error.values)):String(error);
+}
 function showError(message){
 el.error.textContent=message;
 el.error.hidden=false;
-el.resultNote.textContent='Nothing came out.';
+el.resultNote.textContent=phrase('out.empty');
 }
 function clearError(){
 el.error.hidden=true;
@@ -240,9 +261,9 @@ el.error.textContent='';
 }
 const indentString=()=>(el.indent.value==='tab'?'\t':' '.repeat(Number(el.indent.value)));
 function humanBytes(bytes){
-if(bytes<1024)return`${bytes} B`;
-if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} KB`;
-return`${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+if(bytes<1024)return phrase('size.bytes',{n:bytes});
+if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(1)});
+return phrase('size.mb',{n:(bytes/(1024*1024)).toFixed(2)});
 }
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;

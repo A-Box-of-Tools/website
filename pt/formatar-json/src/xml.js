@@ -42,14 +42,14 @@ pushText(text.slice(at,next));
 at=next;
 if(text.startsWith('<!--',at)){
 const end=text.indexOf('-->',at+4);
-if(end<0)throw new ParseError('This comment is never closed',at,text);
+if(end<0)throw new ParseError('xml.comment',at,text);
 top().children.push({t:'comment',text:text.slice(at+4,end)});
 at=end+3;
 continue;
 }
 if(text.startsWith('<![CDATA[',at)){
 const end=text.indexOf(']]>',at+9);
-if(end<0)throw new ParseError('This CDATA section is never closed',at,text);
+if(end<0)throw new ParseError('xml.cdata',at,text);
 top().children.push({t:'cdata',text:text.slice(at+9,end)});
 at=end+3;
 continue;
@@ -57,26 +57,25 @@ continue;
 if(text.startsWith('<?',at)||text.startsWith('<!',at)){
 const close=text.startsWith('<?',at)?'?>':'>';
 const end=text.indexOf(close,at+2);
-if(end<0)throw new ParseError('This declaration is never closed',at,text);
+if(end<0)throw new ParseError('xml.declaration',at,text);
 top().children.push({t:'directive',text:text.slice(at,end+close.length)});
 at=end+close.length;
 continue;
 }
 if(text.startsWith('</',at)){
 const end=text.indexOf('>',at);
-if(end<0)throw new ParseError('This closing tag is never finished',at,text);
+if(end<0)throw new ParseError('xml.closing',at,text);
 const name=normalise(text.slice(at+2,end).trim(),html);
 at=end+1;
 const depth=findOpen(stack,name);
 if(depth<0){
 if(!html){
-throw new ParseError(`</${name}> closes a tag that was never opened`,next,text);
+throw new ParseError('xml.stray',next,text,{name});
 }
 continue;
 }
 if(depth<stack.length-1&&!html){
-throw new ParseError(
-`</${name}> closes an element while <${top().name}> is still open`,next,text);
+throw new ParseError('xml.crossed',next,text,{name,open:top().name});
 }
 stack.length=depth;
 continue;
@@ -108,7 +107,7 @@ stack.push(element);
 }
 if(stack.length>1&&!html){
 const open=stack[stack.length-1];
-throw new ParseError(`<${open.name}> is never closed`,text.length,text);
+throw new ParseError('xml.unclosed',text.length,text,{name:open.name});
 }
 return root.children;
 }
@@ -125,27 +124,26 @@ const NAME_START=/[A-Za-z_:]/;
 function readTag(text,start,html){
 let at=start+1;
 if(!NAME_START.test(text[at]??'')){
-throw new ParseError('A tag name has to start with a letter',at,text);
+throw new ParseError('xml.tagname',at,text);
 }
 while(at<text.length&&!/[\s/>]/.test(text[at]))at+=1;
 const name=normalise(text.slice(start+1,at),html);
 const attrs=[];
 for(;;){
 while(at<text.length&&/\s/.test(text[at]))at+=1;
-if(at>=text.length)throw new ParseError(`<${name}> is never finished`,start,text);
+if(at>=text.length)throw new ParseError('xml.unfinished',start,text,{name});
 if(text[at]==='>')return{name,attrs,selfClosed:false,end:at+1};
 if(text.startsWith('/>',at))return{name,attrs,selfClosed:true,end:at+2};
 const nameStart=at;
 while(at<text.length&&!/[\s=/>]/.test(text[at]))at+=1;
 const attrName=text.slice(nameStart,at);
 if(attrName===''){
-throw new ParseError(`Unexpected "${text[at]}" inside <${name}>`,at,text);
+throw new ParseError('xml.inside',at,text,{ch:text[at],name});
 }
 while(at<text.length&&/\s/.test(text[at]))at+=1;
 if(text[at]!=='='){
 if(!html){
-throw new ParseError(
-`The attribute "${attrName}" has no value, which XML does not allow`,nameStart,text);
+throw new ParseError('xml.attrvalue',nameStart,text,{name:attrName});
 }
 attrs.push({name:attrName,value:null,quote:'"'});
 continue;
@@ -155,13 +153,13 @@ while(at<text.length&&/\s/.test(text[at]))at+=1;
 const quote=text[at];
 if(quote==='"'||quote==="'"){
 const end=text.indexOf(quote,at+1);
-if(end<0)throw new ParseError('This attribute value is never closed',at,text);
+if(end<0)throw new ParseError('xml.attrstring',at,text);
 attrs.push({name:attrName,value:text.slice(at+1,end),quote});
 at=end+1;
 continue;
 }
 if(!html){
-throw new ParseError('An attribute value has to be quoted in XML',at,text);
+throw new ParseError('xml.attrquote',at,text);
 }
 const valueStart=at;
 while(at<text.length&&!/[\s>]/.test(text[at]))at+=1;

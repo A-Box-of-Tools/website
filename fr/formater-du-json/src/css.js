@@ -22,7 +22,7 @@ while(state.at<text.length){
 const ch=text[state.at];
 if(ch==='/'&&text[state.at+1]==='*'){
 const end=text.indexOf('*/',state.at+2);
-if(end<0)throw new ParseError('This comment is never closed',state.at,text);
+if(end<0)throw new ParseError('css.comment',state.at,text);
 if(buffer.trim()===''){
 nodes.push({t:'comment',text:text.slice(state.at+2,end)});
 }else{
@@ -51,7 +51,7 @@ bufferStart=state.at;
 continue;
 }
 if(ch==='}'){
-if(top)throw new ParseError('A closing brace with no block open',state.at,text);
+if(top)throw new ParseError('css.brace',state.at,text);
 state.at+=1;
 flushStatement(state.at);
 return nodes;
@@ -66,7 +66,7 @@ if(buffer==='')bufferStart=state.at;
 buffer+=ch;
 state.at+=1;
 }
-if(!top)throw new ParseError('This block is never closed',text.length,text);
+if(!top)throw new ParseError('css.block',text.length,text);
 flushStatement(state.at);
 return nodes;
 }
@@ -84,7 +84,7 @@ return text.slice(start,state.at);
 }
 state.at+=1;
 }
-throw new ParseError('This string is never closed',start,text);
+throw new ParseError('css.string',start,text);
 }
 function readBrackets(state){
 const{text}=state;
@@ -102,7 +102,7 @@ continue;
 }
 state.at+=1;
 }
-throw new ParseError('This bracket is never closed',start,text);
+throw new ParseError('css.bracket',start,text);
 }
 function splitDeclaration(statement,start,text,end){
 const state={text:statement,at:0};
@@ -117,9 +117,7 @@ return{prop,value};
 }
 state.at+=1;
 }
-throw new ParseError(
-`"${statement}" is not a declaration - there is no colon in it`,
-Math.min(start,Math.max(0,end-1)),text);
+throw new ParseError('css.declaration',Math.min(start,Math.max(0,end-1)),text,{statement});
 }
 export function printCss(nodes,{indent='  ',minify=false}={}){
 if(minify)return squeeze(nodes);

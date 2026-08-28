@@ -6,16 +6,14 @@ skipSpace(state);
 const value=readValue(state);
 skipSpace(state);
 if(state.at<text.length){
-throw new ParseError(
-`Unexpected ${describe(text[state.at])} after the end of the value`,
-state.at,text);
+throw new ParseError('json.trailing',state.at,text,{found:describe(text[state.at])});
 }
 return value;
 }
 function readValue(state){
 const{text}=state;
 const ch=text[state.at];
-if(ch===undefined)throw new ParseError('The text ended early',state.at,text);
+if(ch===undefined)throw new ParseError('json.early',state.at,text);
 if(ch==='{')return readObject(state);
 if(ch==='[')return readArray(state);
 if(ch==='"')return readString(state);
@@ -26,7 +24,7 @@ state.at+=word.length;
 return word==='null'?{t:'null'}:{t:'bool',value:word==='true'};
 }
 }
-throw new ParseError(`Unexpected ${describe(ch)}`,state.at,text);
+throw new ParseError('json.unexpected',state.at,text,{found:describe(ch)});
 }
 function readObject(state){
 const{text}=state;
@@ -41,15 +39,12 @@ return{t:'map',pairs};
 for(;;){
 skipSpace(state);
 if(text[state.at]!=='"'){
-throw new ParseError(
-`A key has to be a double-quoted string, and this is ${describe(text[state.at])}`,
-state.at,text);
+throw new ParseError('json.keystring',state.at,text,{found:describe(text[state.at])});
 }
 const key=readString(state);
 skipSpace(state);
 if(text[state.at]!==':'){
-throw new ParseError(
-`Expected a colon after the key, found ${describe(text[state.at])}`,state.at,text);
+throw new ParseError('json.colon',state.at,text,{found:describe(text[state.at])});
 }
 state.at+=1;
 skipSpace(state);
@@ -59,11 +54,9 @@ skipSpace(state);
 if(text[state.at]===','){state.at+=1;continue;}
 if(text[state.at]==='}'){state.at+=1;return{t:'map',pairs};}
 if(state.at>=text.length){
-throw new ParseError('This object is never closed',start,text);
+throw new ParseError('json.object',start,text);
 }
-throw new ParseError(
-`Expected a comma or a closing brace, found ${describe(text[state.at])}`,
-state.at,text);
+throw new ParseError('json.commabrace',state.at,text,{found:describe(text[state.at])});
 }
 }
 function readArray(state){
@@ -83,11 +76,9 @@ skipSpace(state);
 if(text[state.at]===','){state.at+=1;continue;}
 if(text[state.at]===']'){state.at+=1;return{t:'seq',items};}
 if(state.at>=text.length){
-throw new ParseError('This array is never closed',start,text);
+throw new ParseError('json.array',start,text);
 }
-throw new ParseError(
-`Expected a comma or a closing bracket, found ${describe(text[state.at])}`,
-state.at,text);
+throw new ParseError('json.commabracket',state.at,text,{found:describe(text[state.at])});
 }
 }
 const SHORT_ESCAPES={'"':'"','\\':'\\','/':'/',b:'\b',f:'\f',n:'\n',r:'\r',t:'\t'};
@@ -98,7 +89,7 @@ state.at+=1;
 let value='';
 for(;;){
 const ch=text[state.at];
-if(ch===undefined)throw new ParseError('This string is never closed',start,text);
+if(ch===undefined)throw new ParseError('json.string',start,text);
 if(ch==='"'){
 state.at+=1;
 return{t:'str',value,raw:text.slice(start,state.at)};
@@ -108,7 +99,7 @@ const next=text[state.at+1];
 if(next==='u'){
 const digits=text.slice(state.at+2,state.at+6);
 if(!/^[0-9a-fA-F]{4}$/.test(digits)){
-throw new ParseError('\\u has to be followed by four hex digits',state.at,text);
+throw new ParseError('json.hex',state.at,text);
 }
 value+=String.fromCharCode(parseInt(digits,16));
 state.at+=6;
@@ -119,11 +110,10 @@ value+=SHORT_ESCAPES[next];
 state.at+=2;
 continue;
 }
-throw new ParseError(`\\${next ?? ''} is not an escape JSON knows`,state.at,text);
+throw new ParseError('json.escape',state.at,text,{next:next??''});
 }
 if(ch<' '){
-throw new ParseError(
-'A raw control character in a string - write it as an escape',state.at,text);
+throw new ParseError('json.control',state.at,text);
 }
 value+=ch;
 state.at+=1;
@@ -133,11 +123,11 @@ const NUMBER=/^-?(?:0|[1-9][0-9]*)(?:\.[0-9]+)?(?:[eE][+-]?[0-9]+)?/;
 function readNumber(state){
 const{text}=state;
 const match=NUMBER.exec(text.slice(state.at));
-if(!match)throw new ParseError('This is not a number JSON allows',state.at,text);
+if(!match)throw new ParseError('json.number',state.at,text);
 const raw=match[0];
 const after=text[state.at+raw.length];
 if(after==='.'||after==='e'||after==='E'||/[0-9]/.test(after??'')){
-throw new ParseError('This is not a number JSON allows',state.at,text);
+throw new ParseError('json.number',state.at,text);
 }
 state.at+=raw.length;
 return{t:'num',raw};
@@ -147,10 +137,10 @@ const{text}=state;
 while(state.at<text.length&&' \t\n\r'.includes(text[state.at]))state.at+=1;
 }
 function describe(ch){
-if(ch===undefined)return'the end of the text';
-if(ch==='\n')return'a line break';
-if(ch==='\t')return'a tab';
-return`"${ch}"`;
+if(ch===undefined)return{key:'char.end'};
+if(ch==='\n')return{key:'char.newline'};
+if(ch==='\t')return{key:'char.tab'};
+return{key:'char.is',values:{ch}};
 }
 export function printJson(data,{indent='  ',sortKeys=false}={}){
 const gap=indent===''?'':'\n';
