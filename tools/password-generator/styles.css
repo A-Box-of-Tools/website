@@ -2,44 +2,64 @@
 
 /* ---------------------------------------------------------------- the tabs */
 
-.tabs {
-  display: flex;
-  gap: 0.3rem;
-  flex-wrap: wrap;
+/* The two kinds of secret, as a segmented control.
+
+   It was a tab strip, and a tab strip says "two views of one thing". These are
+   two different things to make, with different settings and different advice,
+   which is a choice rather than a view - so it is a radio group wearing one
+   border, and the browser handles the arrow keys and the focus ring itself. */
+.segmented {
+  display: inline-flex;
+  padding: 0.2rem;
+  gap: 0.2rem;
   margin-bottom: 1.1rem;
-  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
 }
 
-/* The underline separates the tabs from what they switch. With this card's
-   explanation folded away the strip is the last thing in the box, and the line
-   is then drawn across nothing with the card's own padding under it - which
-   reads as a panel that failed to load rather than as a finished card. */
-.card > .tabs:last-child {
-  margin-bottom: 0;
-  border-bottom: none;
+.segment { position: relative; }
+
+/* Visually hidden rather than display:none, so it keeps its place in the focus
+   order and the ring below has something to hang on. */
+.segment input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.tab {
-  background: none;
-  border: 1px solid transparent;
-  border-bottom: none;
-  border-radius: 8px 8px 0 0;
-  padding: 0.5rem 0.95rem;
-  margin-bottom: -1px;
+.segment span {
+  display: block;
+  padding: 0.42rem 1.05rem;
+  border-radius: 999px;
   color: var(--text-dim);
   font-weight: 600;
   font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
 }
 
-.tab:hover { color: var(--text); }
+.segment span:hover { color: var(--text); }
 
-.tab[aria-selected="true"] {
+.segment input:checked + span {
   background: var(--surface);
-  border-color: var(--border);
   color: var(--accent);
-  /* The selected tab covers the line under the strip, which is what joins it
-     to the panel below rather than leaving it floating above one. */
-  box-shadow: 0 1px 0 0 var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.segment input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .segment span { transition: none; }
 }
 
 .card-lede { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
@@ -208,7 +228,45 @@
   color: var(--text-dim);
   margin-bottom: 1.2rem;
 }
-.assumptions summary { cursor: pointer; font-weight: 600; color: var(--text); }
+/* The same mark the steps and the how-to list wear. This is the third fold on
+   the page that opens explanation, and it was the only one saying so with a
+   bare bold line: the reader had to click it to find out it was a fold at all.
+   Drawn as background shapes rather than the letter, for the reason
+   shared/css/tool-frame.css gives where it draws the other two. */
+.assumptions summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text);
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.assumptions summary::-webkit-details-marker { display: none; }
+
+.assumptions summary::after {
+  content: "";
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  color: var(--text-dim);
+  background:
+    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
+      50% 22% / 2.5px 2.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat;
+  transition: color 0.15s;
+}
+
+.assumptions summary:hover::after,
+.assumptions summary:focus-visible::after,
+.assumptions[open] summary::after { color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .assumptions summary::after { transition: none; }
+}
 .assumptions p { margin: 0.6rem 0 0; }
 
 /* ----------------------------------------------------------------- the list */
