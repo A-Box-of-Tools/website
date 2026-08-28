@@ -571,7 +571,7 @@ el.result.scrollIntoView({behavior:'smooth',block:'nearest'});
 }catch(error){
 el.progress.hidden=true;
 if(error?.name!=='AbortError'){
-showError(error?.message||'Something went wrong while creating the video.');
+showError(error?.message?phrase(error.message):phrase('export.failed'));
 console.error(error);
 }
 }finally{

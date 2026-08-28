@@ -146,7 +146,7 @@ export async function previewFrame({file,media,atSeconds=0,maxWidth=640,signal})
 const{video}=media;
 const times=[Math.max(0,atSeconds)];
 const[run]=decodeRuns({samples:video.samples,timescale:video.timescale,times});
-if(!run)throw new Error('This file has no frames in it.');
+if(!run)throw new Error('decode.noframes');
 const scale=Math.min(1,maxWidth/video.displayWidth);
 const width=Math.max(2,Math.round(video.displayWidth*scale));
 const height=Math.max(2,Math.round(video.displayHeight*scale));
@@ -190,7 +190,7 @@ data:bytes,
 await decoder.flush();
 if(failure)throw failure;
 sampler.finish();
-if(!drawn)throw new Error('No frame could be decoded from this file.');
+if(!drawn)throw new Error('decode.nodraw');
 return canvas;
 }finally{
 if(decoder.state!=='closed')decoder.close();

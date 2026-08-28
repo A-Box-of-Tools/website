@@ -86,7 +86,7 @@ encoder.addEventListener('dequeue',done);
 async finish(){
 await this.#encoder.flush();
 if(this.#failure)throw this.#failure;
-if(!this.#written)throw new Error('Nothing could be decoded from this file.');
+if(!this.#written)throw new Error('encode.nothing');
 return{blob:this.#muxer.finalize(),frames:this.#written};
 }
 close(){
