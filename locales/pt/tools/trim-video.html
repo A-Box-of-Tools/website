@@ -229,6 +229,146 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">clipe {n}</span>
+    <span data-phrase="join.nothing">não há nada para juntar.</span>
+    <span data-phrase="join.unread">{name} não é um MP4 que este leitor entenda, então os quadros dele não dá para
+      copiar.</span>
+    <span data-phrase="join.size">{name} tem {size} e o primeiro clipe tem {first}.</span>
+    <span data-phrase="join.rotated">{name} está guardado girado {degrees} graus e o primeiro clipe está girado {first}.</span>
+    <span data-phrase="join.rotated.none">{name} está guardado girado {degrees} graus e o primeiro clipe não está girado.</span>
+    <span data-phrase="join.codec">{name} é {codec} e o primeiro clipe é {first}.</span>
+    <span data-phrase="join.settings">{name} tem o mesmo codec do primeiro clipe mas foi codificado com outros ajustes,
+      então uma descrição não serve para os dois.</span>
+    <span data-phrase="join.unreadable">um dos clipes não deu para ler.</span>
+    <span data-phrase="join.silent">{name} não tem som e os outros têm, então uma cópia ficaria muda no meio do caminho.</span>
+    <span data-phrase="join.sound">{name} tem som de {channels} canais a {rate} Hz e o primeiro clipe tem de
+      {firstchannels} canais a {firstrate} Hz.</span>
+    <span data-phrase="join.soundentry">{name} tem o som codificado de outro jeito que o primeiro clipe.</span>
+    <span data-phrase="audio.toobig">Erro interno: a descrição do som é maior do que o esperado.</span>
+    <span data-phrase="audio.noencode">O som foi decodificado mas do codificador não voltou nada.</span>
+    <span data-phrase="nothing.selected">Não há nada selecionado para guardar.</span>
+    <span data-phrase="encode.toobig">Este navegador não vai codificar H.264 em {size}. Escolha um quadro menor, ou use
+      &laquo;Guardar cada byte&raquo;, que não codifica nada.</span>
+    <span data-phrase="decode.none">Não deu para decodificar nenhum quadro do que você escolheu.</span>
+    <span data-phrase="decode.noframe">Não deu para decodificar nenhum quadro deste arquivo.</span>
+    <span data-phrase="encode.noconfig">O codificador nunca informou uma configuração de decodificador.</span>
+    <span data-phrase="record.noplay">Este navegador não conseguiu reproduzir o arquivo para cortá-lo.</span>
+    <span data-phrase="record.slow">O arquivo demorou demais para abrir.</span>
+    <span data-phrase="record.noseek">O navegador não conseguiu ir até o começo do trecho.</span>
+    <span data-phrase="record.nosupport">Este navegador não sabe nem recodificar nem gravar vídeo.</span>
+    <span data-phrase="marks.unreadable">Não deu para ler nenhum trecho daquele arquivo. Cada linha depois da primeira
+      deveria ser um começo e um fim, separados por uma vírgula.</span>
+    <span data-phrase="warn.hidden">A aba ficou em segundo plano durante a gravação, então alguns quadros podem estar
+      faltando. Rode de novo com esta aba na frente para um resultado limpo.</span>
+    <span data-phrase="warn.nosound">O som não deu para capturar neste navegador, então o resultado não tem faixa de
+      áudio.</span>
+    <span data-phrase="warn.noaac">Estes clipes descrevem o som de jeitos diferentes, então teria de ser recodificado
+      para juntar &mdash; e este navegador não codifica AAC. O vídeo foi juntado sem som.
+      Chrome e Edge fazem isso.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}m {s}s</span>
+    <span data-phrase="dur.seconds">{s}s</span>
+    <span data-phrase="clip.mark">Marcar este vídeo</span>
+    <span data-phrase="clip.segments.one">1 trecho</span>
+    <span data-phrase="clip.segments.many">{n} trechos</span>
+    <span data-phrase="clip.notmarked">sem marcação</span>
+    <span data-phrase="clip.sound">com som</span>
+    <span data-phrase="clip.nosound">sem som</span>
+    <span data-phrase="clip.recorded">gravado para cortar</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} de {total}</span>
+    <span data-phrase="stage.noplay">Este navegador não vai reproduzir este vídeo, então os quadros abaixo são
+      decodificados um de cada vez para mostrar onde estão as marcações. O corte em si não
+      muda.</span>
+    <span data-phrase="stage.noframe">Este navegador não vai reproduzir este vídeo e também não deu para decodificar
+      nenhum quadro dele ({detail}). As marcações abaixo continuam funcionando na duração
+      dele.</span>
+    <span data-phrase="mark.noopen">Ainda não há nada aberto. Aperte I onde o trecho deve começar, e depois O onde ele
+      acaba.</span>
+    <span data-phrase="mark.before">Isso acabaria o trecho em {at}, que é antes do começo dele em {start}. Mova o cursor
+      para depois do começo primeiro.</span>
+    <span data-phrase="mark.nospace">Não sobrou vídeo suficiente aqui para adicionar um trecho. Mova o cursor para trás.</span>
+    <span data-phrase="mark.clearall">Apagar todos os {n} trechos de {name}?</span>
+    <span data-phrase="segments.none">nenhum ainda &mdash; o vídeo inteiro</span>
+    <span data-phrase="segments.some">{done} de {total}</span>
+    <span data-phrase="seg.play">Reproduzir este trecho</span>
+    <span data-phrase="seg.up">Subir</span>
+    <span data-phrase="seg.down">Descer</span>
+    <span data-phrase="seg.remove">Tirar</span>
+    <span data-phrase="marks.nothing">Ainda não há nada marcado para salvar.</span>
+    <span data-phrase="marks.pastend">Todos os trechos em {name} começam depois que este vídeo acaba. Provavelmente foram
+      marcados em outro.</span>
+    <span data-phrase="marks.dropped.one">1 trecho em {name} começa depois do fim deste vídeo, então ficou de fora.</span>
+    <span data-phrase="marks.dropped.many">{n} trechos em {name} começam depois do fim deste vídeo, então ficaram de fora.</span>
+    <span data-phrase="marks.skipped.one">1 linha não deu para ler como trecho.</span>
+    <span data-phrase="marks.skipped.many">{n} linhas não deram para ler como trechos.</span>
+    <span data-phrase="marks.loaded">{n} carregados.</span>
+    <span data-phrase="marks.failed">{name} não deu para ler: {reason}</span>
+    <span data-phrase="join.note">Estes vídeos não dá para juntar sem recodificar: {reason} Uma faixa carrega uma só
+      descrição do que tem dentro dela, então vídeos que não combinam precisam ser
+      reescritos para dividir uma.</span>
+    <span data-phrase="method.copy.one">Os quadros são passados para o arquivo novo exatamente como estão, então nada é
+      decodificado e nada é codificado. Rápido, e não pode custar qualidade. Cada trecho
+      começa no quadro-chave mais próximo antes da sua marcação.</span>
+    <span data-phrase="method.copy.many">Cada trecho marcado é passado para o arquivo novo exatamente como está, um depois do
+      outro. Nada é decodificado e nada é codificado, então nenhuma parte disso custa
+      qualidade.</span>
+    <span data-phrase="method.exact.one">Cada trecho começa no quadro que você marcou, decodificando a partir do quadro-chave
+      anterior e codificando a imagem de novo. O som continua sendo copiado em vez de
+      recodificado.</span>
+    <span data-phrase="method.exact.many">Cada vídeo é decodificado e reescrito num fluxo só, então dá para juntar até vídeos
+      que não combinam em tamanho ou codec. O som é copiado onde combinam e recodificado
+      onde não.</span>
+    <span data-phrase="method.record">Reproduz o trecho marcado inteiro e grava, então demora o tanto que esse trecho dura
+      e tudo é recodificado. Deixe esta aba na frente enquanto roda.</span>
+    <span data-phrase="audio.none">Não tem faixa de áudio aqui, então não há nada para guardar.</span>
+    <span data-phrase="audio.record">Capturado da reprodução e recodificado, porque é tudo que uma gravação consegue
+      fazer.</span>
+    <span data-phrase="audio.encode">Estes vídeos descrevem o som de jeitos diferentes, então ele é decodificado e
+      codificado uma vez para o resultado inteiro. É o único caso nesta ferramenta em que
+      o som não passa intacto.</span>
+    <span data-phrase="audio.copy">Copiado do arquivo amostra por amostra, sem nunca ser decodificado, então não perde
+      nada.</span>
+    <span data-phrase="sum.nothing.cut">nada &mdash; as marcações cobrem o vídeo inteiro</span>
+    <span data-phrase="sum.nothing.keep">nada marcado</span>
+    <span data-phrase="sum.parts.one">1 trecho</span>
+    <span data-phrase="sum.parts.many">{n} trechos</span>
+    <span data-phrase="sum.parts.cut">{parts}, depois que os marcados saírem</span>
+    <span data-phrase="sum.parts.videos">{parts} de {n} vídeos</span>
+    <span data-phrase="sum.start.keyframe">exatamente onde você marcou (cai num quadro-chave)</span>
+    <span data-phrase="sum.start.editmark">exatamente onde você marcou, por uma marca de edição</span>
+    <span data-phrase="sum.start.exact">exatamente onde você marcou</span>
+    <span data-phrase="cut.note">O quadro-chave mais próximo antes da sua primeira marcação está {seconds}s antes, e
+      os quadros do meio têm de ficar no arquivo &mdash; nada do que vem depois dá para
+      decodificar sem eles. Eles estão marcados para não serem reproduzidos, coisa que
+      todo reprodutor comum respeita. Um reprodutor que ignora marcas de edição vai
+      mostrar esses {seconds}s no começo. Escolha &laquo;Cortar exatamente aqui&raquo; se
+      isso importa mais do que guardar os bytes originais.</span>
+    <span data-phrase="sum.size">uns {size}</span>
+    <span data-phrase="sum.picture.copy">copiada, quadro a quadro</span>
+    <span data-phrase="sum.picture.exact">recodificada para H.264, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">recodificada para H.264, {size} ({n} encaixados com faixas)</span>
+    <span data-phrase="sum.picture.record">gravada enquanto roda</span>
+    <span data-phrase="sum.sound.none">nenhum neste vídeo</span>
+    <span data-phrase="sum.sound.left">deixado de fora</span>
+    <span data-phrase="sum.sound.record">recodificado da reprodução</span>
+    <span data-phrase="sum.sound.encode">decodificado e recodificado uma vez</span>
+    <span data-phrase="sum.sound.copy">copiado, amostra por amostra</span>
+    <span data-phrase="export.one">Cortar o vídeo</span>
+    <span data-phrase="export.many">Cortar e juntar {n} trechos</span>
+    <span data-phrase="progress.preparing">Preparando…</span>
+    <span data-phrase="progress.finishing">Escrevendo o arquivo…</span>
+    <span data-phrase="progress.sound">Codificando o som &mdash; {done} de {total}</span>
+    <span data-phrase="progress.copying">Copiando a amostra {done} de {total} ({percent}%)</span>
+    <span data-phrase="progress.realtime">Gravando em tempo real &mdash; {done} de {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">Quadro {done} de {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">As marcações cobrem o vídeo inteiro, então cortá-las fora não deixaria nada.</span>
+    <span data-phrase="export.nothing.keep">Não há nada marcado para guardar. Aperte I e O enquanto roda.</span>
+    <span data-phrase="result.parts">{n} trechos</span>
+    <span data-phrase="result.notreencoded">sem recodificar</span>
+    <span data-phrase="error.generic">Alguma coisa deu errado.</span>
     <span data-phrase="read.midframe">O arquivo termina no meio de um quadro.</span>
     <span data-phrase="read.avcshort">O registro de configuração H.264 é curto demais.</span>
     <span data-phrase="read.hevcshort">O registro de configuração HEVC é curto demais.</span>

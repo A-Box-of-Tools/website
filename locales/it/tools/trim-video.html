@@ -229,6 +229,149 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">clip {n}</span>
+    <span data-phrase="join.nothing">non c'è niente da unire.</span>
+    <span data-phrase="join.unread">{name} non è un MP4 che questo lettore capisca, quindi i suoi fotogrammi non si
+      possono copiare.</span>
+    <span data-phrase="join.size">{name} è {size} e il primo clip è {first}.</span>
+    <span data-phrase="join.rotated">{name} è salvato ruotato di {degrees} gradi e il primo clip è ruotato di {first}.</span>
+    <span data-phrase="join.rotated.none">{name} è salvato ruotato di {degrees} gradi e il primo clip non è ruotato.</span>
+    <span data-phrase="join.codec">{name} è {codec} e il primo clip è {first}.</span>
+    <span data-phrase="join.settings">{name} ha lo stesso codec del primo clip ma è stato codificato con impostazioni
+      diverse, quindi una sola descrizione non può valere per entrambi.</span>
+    <span data-phrase="join.unreadable">uno dei clip non è stato letto.</span>
+    <span data-phrase="join.silent">{name} non ha audio e gli altri sì, quindi una copia diventerebbe muta a metà
+      strada.</span>
+    <span data-phrase="join.sound">{name} ha un audio a {channels} canali a {rate} Hz e il primo clip ce l'ha a
+      {firstchannels} canali a {firstrate} Hz.</span>
+    <span data-phrase="join.soundentry">{name} ha l'audio codificato diversamente dal primo clip.</span>
+    <span data-phrase="audio.toobig">Errore interno: la descrizione dell'audio è più grande del previsto.</span>
+    <span data-phrase="audio.noencode">L'audio è stato decodificato ma dal codificatore non è tornato niente.</span>
+    <span data-phrase="nothing.selected">Non c'è niente di selezionato da tenere.</span>
+    <span data-phrase="encode.toobig">Questo browser non codificherà H.264 a {size}. Scegli un riquadro più piccolo,
+      oppure usa &laquo;Tieni ogni byte&raquo;, che non codifica proprio niente.</span>
+    <span data-phrase="decode.none">Non è stato decodificato nessun fotogramma da quello che hai scelto.</span>
+    <span data-phrase="decode.noframe">Non è stato decodificato nessun fotogramma da questo file.</span>
+    <span data-phrase="encode.noconfig">Il codificatore non ha mai comunicato una configurazione del decodificatore.</span>
+    <span data-phrase="record.noplay">Questo browser non è riuscito a riprodurre il file per tagliarlo.</span>
+    <span data-phrase="record.slow">Il file ci ha messo troppo ad aprirsi.</span>
+    <span data-phrase="record.noseek">Il browser non è riuscito a portarsi all'inizio della sezione.</span>
+    <span data-phrase="record.nosupport">Questo browser non sa né ricodificare né registrare video.</span>
+    <span data-phrase="marks.unreadable">Da quel file non è stato letto nessun segmento. Ogni riga dopo la prima dovrebbe
+      essere un inizio e una fine, separati da una virgola.</span>
+    <span data-phrase="warn.hidden">La scheda era in secondo piano durante la registrazione, quindi qualche fotogramma
+      può mancare. Rifallo con questa scheda davanti per un risultato pulito.</span>
+    <span data-phrase="warn.nosound">L'audio non è stato catturato in questo browser, quindi il risultato non ha traccia
+      audio.</span>
+    <span data-phrase="warn.noaac">Questi clip descrivono il loro audio in modo diverso, quindi per unirli sarebbe
+      stato da ricodificare &mdash; e questo browser non codifica AAC. Il video è stato
+      unito senza audio. Chrome ed Edge lo fanno.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}m {s}s</span>
+    <span data-phrase="dur.seconds">{s}s</span>
+    <span data-phrase="clip.mark">Segna questo video</span>
+    <span data-phrase="clip.segments.one">1 segmento</span>
+    <span data-phrase="clip.segments.many">{n} segmenti</span>
+    <span data-phrase="clip.notmarked">non segnato</span>
+    <span data-phrase="clip.sound">con audio</span>
+    <span data-phrase="clip.nosound">senza audio</span>
+    <span data-phrase="clip.recorded">registrato per tagliare</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} di {total}</span>
+    <span data-phrase="stage.noplay">Questo browser non riprodurrà questo video, quindi i fotogrammi qui sotto vengono
+      decodificati uno alla volta per mostrarti dove sono i segni. Il taglio in sé non
+      cambia.</span>
+    <span data-phrase="stage.noframe">Questo browser non riprodurrà questo video e non è riuscito nemmeno a decodificarne
+      un fotogramma ({detail}). I segni qui sotto funzionano lo stesso sulla sua durata.</span>
+    <span data-phrase="mark.noopen">Non c'è ancora niente di aperto. Premi I dove il pezzo deve iniziare, e poi O dove
+      finisce.</span>
+    <span data-phrase="mark.before">Così il segmento finirebbe a {at}, che è prima del suo inizio a {start}. Sposta
+      prima la testina oltre l'inizio.</span>
+    <span data-phrase="mark.nospace">Qui non è rimasto abbastanza video per aggiungere un segmento. Sposta la testina
+      indietro.</span>
+    <span data-phrase="mark.clearall">Cancellare tutti e {n} i segmenti di {name}?</span>
+    <span data-phrase="segments.none">ancora nessuno &mdash; tutto il video</span>
+    <span data-phrase="segments.some">{done} di {total}</span>
+    <span data-phrase="seg.play">Riproduci questo segmento</span>
+    <span data-phrase="seg.up">Sposta su</span>
+    <span data-phrase="seg.down">Sposta giù</span>
+    <span data-phrase="seg.remove">Togli</span>
+    <span data-phrase="marks.nothing">Non c'è ancora niente di segnato da salvare.</span>
+    <span data-phrase="marks.pastend">Tutti i segmenti in {name} iniziano dopo la fine di questo video. Probabilmente sono
+      stati segnati su un altro.</span>
+    <span data-phrase="marks.dropped.one">1 segmento in {name} inizia oltre la fine di questo video, quindi è stato lasciato
+      fuori.</span>
+    <span data-phrase="marks.dropped.many">{n} segmenti in {name} iniziano oltre la fine di questo video, quindi sono stati
+      lasciati fuori.</span>
+    <span data-phrase="marks.skipped.one">1 riga non è stata letta come segmento.</span>
+    <span data-phrase="marks.skipped.many">{n} righe non sono state lette come segmenti.</span>
+    <span data-phrase="marks.loaded">{n} caricati.</span>
+    <span data-phrase="marks.failed">{name} non è stato letto: {reason}</span>
+    <span data-phrase="join.note">Questi video non si possono unire senza ricodificare: {reason} Una traccia porta una
+      sola descrizione di quello che c'è dentro, quindi i video che non vanno d'accordo
+      vanno riscritti per condividerne una.</span>
+    <span data-phrase="method.copy.one">I fotogrammi vengono spostati nel nuovo file esattamente come sono, quindi non si
+      decodifica e non si codifica niente. Veloce, e non può costare qualità. Ogni pezzo
+      inizia al fotogramma chiave più vicino prima del tuo segno.</span>
+    <span data-phrase="method.copy.many">Ogni pezzo segnato viene spostato nel nuovo file esattamente com'è, uno dopo
+      l'altro. Non si decodifica e non si codifica niente, quindi nessuna parte di tutto
+      questo costa qualità.</span>
+    <span data-phrase="method.exact.one">Ogni pezzo inizia sul fotogramma che hai segnato, decodificando dal fotogramma
+      chiave che lo precede e ricodificando l'immagine. L'audio viene ancora copiato
+      invece che ricodificato.</span>
+    <span data-phrase="method.exact.many">Ogni video viene decodificato e riscritto in un solo flusso, così si possono unire
+      anche video che non vanno d'accordo su dimensione o codec. L'audio viene copiato
+      dove vanno d'accordo e ricodificato dove no.</span>
+    <span data-phrase="method.record">Riproduce per intero il pezzo segnato e lo registra, quindi ci mette quanto dura
+      quel pezzo e tutto viene ricodificato. Tieni questa scheda davanti mentre gira.</span>
+    <span data-phrase="audio.none">Qui non c'è traccia audio, quindi non c'è niente da tenere.</span>
+    <span data-phrase="audio.record">Catturato dalla riproduzione e ricodificato, perché una registrazione non sa fare
+      altro.</span>
+    <span data-phrase="audio.encode">Questi video descrivono il loro audio in modo diverso, quindi viene decodificato e
+      codificato una volta per tutto il risultato. È l'unico caso in questo strumento in
+      cui l'audio non passa intatto.</span>
+    <span data-phrase="audio.copy">Copiato dal file campione per campione, senza mai essere decodificato, quindi non
+      perde niente.</span>
+    <span data-phrase="sum.nothing.cut">niente &mdash; i segni coprono tutto il video</span>
+    <span data-phrase="sum.nothing.keep">niente di segnato</span>
+    <span data-phrase="sum.parts.one">1 pezzo</span>
+    <span data-phrase="sum.parts.many">{n} pezzi</span>
+    <span data-phrase="sum.parts.cut">{parts}, una volta tolti quelli segnati</span>
+    <span data-phrase="sum.parts.videos">{parts} da {n} video</span>
+    <span data-phrase="sum.start.keyframe">esattamente dove hai segnato (cade su un fotogramma chiave)</span>
+    <span data-phrase="sum.start.editmark">esattamente dove hai segnato, tramite un segno di montaggio</span>
+    <span data-phrase="sum.start.exact">esattamente dove hai segnato</span>
+    <span data-phrase="cut.note">Il fotogramma chiave più vicino prima del tuo primo segno è {seconds}s prima, e i
+      fotogrammi in mezzo devono restare nel file &mdash; niente di quello che viene dopo
+      si può decodificare senza di loro. Sono segnati per non essere riprodotti, cosa che
+      ogni lettore diffuso rispetta. Un lettore che ignora i segni di montaggio mostrerà
+      quei {seconds}s all'inizio. Scegli &laquo;Taglia esattamente qui&raquo; se questo
+      conta più che tenere i byte originali.</span>
+    <span data-phrase="sum.size">circa {size}</span>
+    <span data-phrase="sum.picture.copy">copiata, fotogramma per fotogramma</span>
+    <span data-phrase="sum.picture.exact">ricodificata in H.264, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">ricodificata in H.264, {size} ({n} adattati con bande)</span>
+    <span data-phrase="sum.picture.record">registrata mentre va</span>
+    <span data-phrase="sum.sound.none">nessuno in questo video</span>
+    <span data-phrase="sum.sound.left">lasciato fuori</span>
+    <span data-phrase="sum.sound.record">ricodificato dalla riproduzione</span>
+    <span data-phrase="sum.sound.encode">decodificato e ricodificato una volta</span>
+    <span data-phrase="sum.sound.copy">copiato, campione per campione</span>
+    <span data-phrase="export.one">Taglia il video</span>
+    <span data-phrase="export.many">Taglia e unisci {n} pezzi</span>
+    <span data-phrase="progress.preparing">Preparazione…</span>
+    <span data-phrase="progress.finishing">Scrittura del file…</span>
+    <span data-phrase="progress.sound">Codifica dell'audio &mdash; {done} di {total}</span>
+    <span data-phrase="progress.copying">Copia del campione {done} di {total} ({percent}%)</span>
+    <span data-phrase="progress.realtime">Registrazione in tempo reale &mdash; {done} di {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">Fotogramma {done} di {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">I segni coprono tutto il video, quindi toglierli non lascerebbe niente.</span>
+    <span data-phrase="export.nothing.keep">Non c'è niente di segnato da tenere. Premi I e O mentre va.</span>
+    <span data-phrase="result.parts">{n} pezzi</span>
+    <span data-phrase="result.notreencoded">non ricodificata</span>
+    <span data-phrase="error.generic">Qualcosa è andato storto.</span>
     <span data-phrase="read.midframe">Il file finisce a metà di un fotogramma.</span>
     <span data-phrase="read.avcshort">Il record di configurazione H.264 è troppo corto.</span>
     <span data-phrase="read.hevcshort">Il record di configurazione HEVC è troppo corto.</span>

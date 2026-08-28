@@ -230,6 +230,147 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">clip {n}</span>
+    <span data-phrase="join.nothing">er valt niets samen te voegen.</span>
+    <span data-phrase="join.unread">{name} is geen MP4 die deze lezer begrijpt, dus de beelden ervan kunnen niet
+      gekopieerd worden.</span>
+    <span data-phrase="join.size">{name} is {size} en de eerste clip is {first}.</span>
+    <span data-phrase="join.rotated">{name} is {degrees} graden gedraaid opgeslagen en de eerste clip is {first}
+      gedraaid.</span>
+    <span data-phrase="join.rotated.none">{name} is {degrees} graden gedraaid opgeslagen en de eerste clip is niet gedraaid.</span>
+    <span data-phrase="join.codec">{name} is {codec} en de eerste clip is {first}.</span>
+    <span data-phrase="join.settings">{name} heeft dezelfde codec als de eerste clip maar is met andere instellingen
+      gecodeerd, dus één beschrijving kan er niet voor allebei gelden.</span>
+    <span data-phrase="join.unreadable">een van de clips kon niet gelezen worden.</span>
+    <span data-phrase="join.silent">{name} heeft geen geluid en de andere wel, dus een kopie zou halverwege stil vallen.</span>
+    <span data-phrase="join.sound">{name} heeft geluid met {channels} kanalen op {rate} Hz en de eerste clip met
+      {firstchannels} kanalen op {firstrate} Hz.</span>
+    <span data-phrase="join.soundentry">{name} heeft het geluid anders gecodeerd dan de eerste clip.</span>
+    <span data-phrase="audio.toobig">Interne fout: de geluidsbeschrijving is groter dan verwacht.</span>
+    <span data-phrase="audio.noencode">Het geluid is gedecodeerd maar er kwam niets terug van de encoder.</span>
+    <span data-phrase="nothing.selected">Er is niets geselecteerd om te houden.</span>
+    <span data-phrase="encode.toobig">Deze browser codeert geen H.264 op {size}. Kies een kleiner kader, of neem
+      &laquo;Elke byte houden&raquo;, dat helemaal niets codeert.</span>
+    <span data-phrase="decode.none">Er kon geen enkel beeld gedecodeerd worden uit wat je koos.</span>
+    <span data-phrase="decode.noframe">Er kon geen beeld gedecodeerd worden uit dit bestand.</span>
+    <span data-phrase="encode.noconfig">De encoder heeft nooit een decoderconfiguratie gemeld.</span>
+    <span data-phrase="record.noplay">Deze browser kon het bestand niet afspelen om het bij te knippen.</span>
+    <span data-phrase="record.slow">Het bestand deed er te lang over om te openen.</span>
+    <span data-phrase="record.noseek">De browser kon niet naar het begin van het stuk springen.</span>
+    <span data-phrase="record.nosupport">Deze browser kan video niet hercoderen en niet opnemen.</span>
+    <span data-phrase="marks.unreadable">Er konden geen segmenten uit dat bestand gelezen worden. Elke regel na de eerste
+      hoort een begin en een eind te zijn, gescheiden door een komma.</span>
+    <span data-phrase="warn.hidden">Het tabblad stond op de achtergrond tijdens de opname, dus er kunnen beelden
+      ontbreken. Doe het opnieuw met dit tabblad ervoor voor een schoon resultaat.</span>
+    <span data-phrase="warn.nosound">Het geluid kon in deze browser niet opgenomen worden, dus het resultaat heeft geen
+      geluidsspoor.</span>
+    <span data-phrase="warn.noaac">Deze clips beschrijven hun geluid verschillend, dus het had hercodeerd moeten worden
+      om ze samen te voegen &mdash; en deze browser codeert geen AAC. De video is zonder
+      geluid samengevoegd. Chrome en Edge doen het wel.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}m {s}s</span>
+    <span data-phrase="dur.seconds">{s}s</span>
+    <span data-phrase="clip.mark">Deze video markeren</span>
+    <span data-phrase="clip.segments.one">1 segment</span>
+    <span data-phrase="clip.segments.many">{n} segmenten</span>
+    <span data-phrase="clip.notmarked">niet gemarkeerd</span>
+    <span data-phrase="clip.sound">met geluid</span>
+    <span data-phrase="clip.nosound">zonder geluid</span>
+    <span data-phrase="clip.recorded">opgenomen om te knippen</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} van {total}</span>
+    <span data-phrase="stage.noplay">Deze browser speelt deze video niet af, dus de beelden hieronder worden een voor een
+      gedecodeerd om te laten zien waar de markeringen staan. De knip zelf verandert daar
+      niet door.</span>
+    <span data-phrase="stage.noframe">Deze browser speelt deze video niet af en er kon ook geen beeld uit gedecodeerd
+      worden ({detail}). De markeringen hieronder werken nog steeds op de lengte ervan.</span>
+    <span data-phrase="mark.noopen">Er staat nog niets open. Druk op I waar het stuk moet beginnen, en dan op O waar het
+      eindigt.</span>
+    <span data-phrase="mark.before">Dan zou het segment eindigen op {at}, en dat is voor het begin op {start}. Zet de
+      afspeelkop eerst voorbij het begin.</span>
+    <span data-phrase="mark.nospace">Er is hier niet genoeg video over om een segment toe te voegen. Zet de afspeelkop
+      terug.</span>
+    <span data-phrase="mark.clearall">Alle {n} segmenten van {name} wissen?</span>
+    <span data-phrase="segments.none">nog geen &mdash; de hele video</span>
+    <span data-phrase="segments.some">{done} van {total}</span>
+    <span data-phrase="seg.play">Dit segment afspelen</span>
+    <span data-phrase="seg.up">Omhoog</span>
+    <span data-phrase="seg.down">Omlaag</span>
+    <span data-phrase="seg.remove">Verwijderen</span>
+    <span data-phrase="marks.nothing">Er is nog niets gemarkeerd om op te slaan.</span>
+    <span data-phrase="marks.pastend">Elk segment in {name} begint nadat deze video ophoudt. Ze zijn waarschijnlijk op een
+      andere gemarkeerd.</span>
+    <span data-phrase="marks.dropped.one">1 segment in {name} begint voorbij het einde van deze video, dus het is weggelaten.</span>
+    <span data-phrase="marks.dropped.many">{n} segmenten in {name} beginnen voorbij het einde van deze video, dus ze zijn
+      weggelaten.</span>
+    <span data-phrase="marks.skipped.one">1 regel kon niet als segment gelezen worden.</span>
+    <span data-phrase="marks.skipped.many">{n} regels konden niet als segment gelezen worden.</span>
+    <span data-phrase="marks.loaded">{n} geladen.</span>
+    <span data-phrase="marks.failed">{name} kon niet gelezen worden: {reason}</span>
+    <span data-phrase="join.note">Deze video's kunnen niet samengevoegd worden zonder te hercoderen: {reason} Eén
+      spoor draagt één beschrijving van wat erin zit, dus video's die het oneens zijn
+      moeten opnieuw geschreven worden om er één te delen.</span>
+    <span data-phrase="method.copy.one">De beelden worden precies zoals ze zijn naar het nieuwe bestand verplaatst, dus er
+      wordt niets gedecodeerd en niets gecodeerd. Snel, en het kan geen kwaliteit kosten.
+      Elk stuk begint bij het dichtstbijzijnde sleutelbeeld voor je markering.</span>
+    <span data-phrase="method.copy.many">Elk gemarkeerd stuk wordt precies zoals het is naar het nieuwe bestand verplaatst,
+      het een na het ander. Er wordt niets gedecodeerd en niets gecodeerd, dus geen enkel
+      deel hiervan kost kwaliteit.</span>
+    <span data-phrase="method.exact.one">Elk stuk begint op het beeld dat je gemarkeerd hebt, door te decoderen vanaf het
+      sleutelbeeld ervoor en het beeld opnieuw te coderen. Het geluid wordt nog steeds
+      gekopieerd in plaats van hercodeerd.</span>
+    <span data-phrase="method.exact.many">Elke video wordt gedecodeerd en opnieuw uitgeschreven in één stroom, zodat video's
+      die het oneens zijn over formaat of codec toch samengevoegd kunnen worden. Het
+      geluid wordt gekopieerd waar ze het eens zijn en hercodeerd waar niet.</span>
+    <span data-phrase="method.record">Speelt het gemarkeerde stuk helemaal af en neemt het op, dus het duurt zo lang als
+      dat stuk duurt en alles wordt hercodeerd. Houd dit tabblad ervoor terwijl het loopt.</span>
+    <span data-phrase="audio.none">Er is hier geen geluidsspoor, dus er valt niets te houden.</span>
+    <span data-phrase="audio.record">Opgenomen vanaf het afspelen en hercodeerd, want meer kan een opname niet.</span>
+    <span data-phrase="audio.encode">Deze video's beschrijven hun geluid verschillend, dus het wordt één keer voor het
+      hele resultaat gedecodeerd en gecodeerd. Dat is het enige geval in dit gereedschap
+      waarin het geluid niet onaangeroerd meegaat.</span>
+    <span data-phrase="audio.copy">Sample voor sample uit het bestand gekopieerd, zonder ooit gedecodeerd te worden,
+      dus er gaat niets verloren.</span>
+    <span data-phrase="sum.nothing.cut">niets &mdash; de markeringen dekken de hele video</span>
+    <span data-phrase="sum.nothing.keep">niets gemarkeerd</span>
+    <span data-phrase="sum.parts.one">1 stuk</span>
+    <span data-phrase="sum.parts.many">{n} stukken</span>
+    <span data-phrase="sum.parts.cut">{parts}, als de gemarkeerde eruit zijn</span>
+    <span data-phrase="sum.parts.videos">{parts} uit {n} video's</span>
+    <span data-phrase="sum.start.keyframe">precies waar je markeerde (het valt op een sleutelbeeld)</span>
+    <span data-phrase="sum.start.editmark">precies waar je markeerde, via een montagemarkering</span>
+    <span data-phrase="sum.start.exact">precies waar je markeerde</span>
+    <span data-phrase="cut.note">Het dichtstbijzijnde sleutelbeeld voor je eerste markering ligt {seconds}s eerder,
+      en de beelden ertussen moeten in het bestand blijven &mdash; zonder hen is niets
+      erna te decoderen. Ze zijn gemarkeerd om niet afgespeeld te worden, en daar houdt
+      elke gangbare speler zich aan. Een speler die montagemarkeringen negeert laat die
+      {seconds}s vooraan zien. Kies &laquo;Precies hier knippen&raquo; als dat zwaarder
+      weegt dan de oorspronkelijke bytes houden.</span>
+    <span data-phrase="sum.size">ongeveer {size}</span>
+    <span data-phrase="sum.picture.copy">gekopieerd, beeld voor beeld</span>
+    <span data-phrase="sum.picture.exact">hercodeerd naar H.264, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">hercodeerd naar H.264, {size} ({n} ingepast met balken)</span>
+    <span data-phrase="sum.picture.record">opgenomen terwijl het speelt</span>
+    <span data-phrase="sum.sound.none">geen in deze video</span>
+    <span data-phrase="sum.sound.left">weggelaten</span>
+    <span data-phrase="sum.sound.record">hercodeerd vanaf het afspelen</span>
+    <span data-phrase="sum.sound.encode">één keer gedecodeerd en hercodeerd</span>
+    <span data-phrase="sum.sound.copy">gekopieerd, sample voor sample</span>
+    <span data-phrase="export.one">De video knippen</span>
+    <span data-phrase="export.many">{n} stukken knippen en samenvoegen</span>
+    <span data-phrase="progress.preparing">Voorbereiden…</span>
+    <span data-phrase="progress.finishing">Het bestand schrijven…</span>
+    <span data-phrase="progress.sound">Het geluid coderen &mdash; {done} van {total}</span>
+    <span data-phrase="progress.copying">Sample {done} van {total} kopiëren ({percent}%)</span>
+    <span data-phrase="progress.realtime">Opnemen in real time &mdash; {done} van {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">Beeld {done} van {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">De markeringen dekken de hele video, dus die eruit knippen zou niets overlaten.</span>
+    <span data-phrase="export.nothing.keep">Er is niets gemarkeerd om te houden. Druk op I en O terwijl het speelt.</span>
+    <span data-phrase="result.parts">{n} stukken</span>
+    <span data-phrase="result.notreencoded">niet hercodeerd</span>
+    <span data-phrase="error.generic">Er is iets misgegaan.</span>
     <span data-phrase="read.midframe">Het bestand houdt midden in een frame op.</span>
     <span data-phrase="read.avcshort">Het H.264-configuratierecord is te kort.</span>
     <span data-phrase="read.hevcshort">Het HEVC-configuratierecord is te kort.</span>

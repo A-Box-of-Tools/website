@@ -173,7 +173,7 @@ function box(type, ...payload) {
 function descriptor(tag, ...payload) {
   const body = concat(payload);
   if (body.byteLength > 0x7f) {
-    throw new Error('Internal error: the audio description is larger than expected.');
+    throw new Error('audio.toobig');
   }
   return concat([bytes(tag, body.byteLength), body]);
 }
@@ -489,7 +489,7 @@ export async function encodeJoinedAudio({
     // did not, which is a fault in this file rather than in the browser, and
     // saying otherwise sends somebody to install a different one.
     if (!encoded.length || !asc) {
-      throw new Error('The sound was decoded but nothing came back from the encoder.');
+      throw new Error('audio.noencode');
     }
   } finally {
     if (encoder.state !== 'closed') encoder.close();

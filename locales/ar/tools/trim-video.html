@@ -227,6 +227,130 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">المقطع {n}</span>
+    <span data-phrase="join.nothing">ليس ثمة ما يُوصَل.</span>
+    <span data-phrase="join.unread">{name} ليس ملف MP4 يفهمه هذا القارئ، فلا سبيل إلى نسخ إطاراته.</span>
+    <span data-phrase="join.size">{name} حجمه {size} والمقطع الأول {first}.</span>
+    <span data-phrase="join.rotated">{name} مخزَّن مُداراً {degrees} درجة والمقطع الأول مُدار {first}.</span>
+    <span data-phrase="join.rotated.none">{name} مخزَّن مُداراً {degrees} درجة والمقطع الأول غير مُدار.</span>
+    <span data-phrase="join.codec">{name} بترميز {codec} والمقطع الأول بترميز {first}.</span>
+    <span data-phrase="join.settings">{name} بترميز المقطع الأول نفسه لكنه رُمِّز بإعدادات مختلفة، فلا يسع وصفٌ واحد
+      كليهما.</span>
+    <span data-phrase="join.unreadable">لم يمكن قراءة أحد المقاطع.</span>
+    <span data-phrase="join.silent">{name} بلا صوت وللبقية صوت، فالنسخة ستصمت في منتصف الطريق.</span>
+    <span data-phrase="join.sound">{name} صوته بـ{channels} قناة عند {rate} هرتز والمقطع الأول صوته بـ{firstchannels}
+      قناة عند {firstrate} هرتز.</span>
+    <span data-phrase="join.soundentry">{name} صوته مُرمَّز على نحو يختلف عن المقطع الأول.</span>
+    <span data-phrase="audio.toobig">خطأ داخلي: وصف الصوت أكبر مما هو متوقع.</span>
+    <span data-phrase="audio.noencode">فُكَّ ترميز الصوت لكن لم يعد شيء من المُرمِّز.</span>
+    <span data-phrase="nothing.selected">لم يُحدَّد شيء للإبقاء عليه.</span>
+    <span data-phrase="encode.toobig">لن يرمّز هذا المتصفح H.264 بحجم {size}. اختر إطاراً أصغر، أو استعمل «أبقِ كل بايت»،
+      وهي لا ترمّز شيئاً البتة.</span>
+    <span data-phrase="decode.none">لم يمكن فكّ ترميز أي إطار مما اخترته.</span>
+    <span data-phrase="decode.noframe">لم يمكن فكّ ترميز أي إطار من هذا الملف.</span>
+    <span data-phrase="encode.noconfig">لم يُبلغ المُرمِّز قط عن إعداد لفاكّ الترميز.</span>
+    <span data-phrase="record.noplay">لم يستطع هذا المتصفح تشغيل الملف ليُقصّ.</span>
+    <span data-phrase="record.slow">استغرق الملف وقتاً أطول من اللازم كي يُفتح.</span>
+    <span data-phrase="record.noseek">لم يستطع المتصفح الانتقال إلى بداية المقطع.</span>
+    <span data-phrase="record.nosupport">هذا المتصفح لا يستطيع إعادة ترميز الفيديو ولا تسجيله.</span>
+    <span data-phrase="marks.unreadable">لم يمكن قراءة أي جزء من ذلك الملف. وكل سطر بعد الأول ينبغي أن يكون بداية ونهاية،
+      تفصل بينهما فاصلة.</span>
+    <span data-phrase="warn.hidden">كان اللسان مخفياً أثناء التسجيل، فقد تنقص بعض الإطارات. أعِد التشغيل وهذا اللسان في
+      المقدمة لتحصل على نتيجة نظيفة.</span>
+    <span data-phrase="warn.nosound">لم يمكن التقاط الصوت في هذا المتصفح، فليس في النتيجة مسار صوتي.</span>
+    <span data-phrase="warn.noaac">تصف هذه المقاطع صوتها على أنحاء مختلفة، فكان لا بد من إعادة ترميزه لوصلها &mdash;
+      وهذا المتصفح لا يرمّز AAC. وُصِل الفيديو بلا صوت. وكروم وإيدج يفعلانها.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} ك.بايت</span>
+    <span data-phrase="size.mb">{n} م.بايت</span>
+    <span data-phrase="size.gb">{n} ج.بايت</span>
+    <span data-phrase="dur.minutes">{m} د {s} ث</span>
+    <span data-phrase="dur.seconds">{s} ث</span>
+    <span data-phrase="clip.mark">علِّم هذا الفيديو</span>
+    <span data-phrase="clip.segments.one">جزء واحد</span>
+    <span data-phrase="clip.segments.many">{n} أجزاء</span>
+    <span data-phrase="clip.notmarked">غير مُعلَّم</span>
+    <span data-phrase="clip.sound">بصوت</span>
+    <span data-phrase="clip.nosound">بلا صوت</span>
+    <span data-phrase="clip.recorded">مُسجَّل ليُقصّ</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} من {total}</span>
+    <span data-phrase="stage.noplay">لن يشغّل هذا المتصفح هذا الفيديو، ولذلك تُفَكّ الإطارات أدناه واحداً واحداً لتريك
+      أين العلامات. أما القصّ نفسه فلا يتأثر.</span>
+    <span data-phrase="stage.noframe">لن يشغّل هذا المتصفح هذا الفيديو، ولم يمكن فكّ ترميز أي إطار منه أيضاً ({detail}).
+      والعلامات أدناه تعمل على مدته رغم ذلك.</span>
+    <span data-phrase="mark.noopen">لا شيء مفتوح بعد. اضغط I حيث ينبغي أن يبدأ الجزء، ثم O حيث ينتهي.</span>
+    <span data-phrase="mark.before">هذا سينهي الجزء عند {at}، وهو قبل بدايته عند {start}. حرّك رأس التشغيل إلى ما بعد
+      البداية أولاً.</span>
+    <span data-phrase="mark.nospace">لم يبق هنا من الفيديو ما يكفي لإضافة جزء. أرجِع رأس التشغيل إلى الوراء.</span>
+    <span data-phrase="mark.clearall">أتمسح أجزاء {name} كلها، وعددها {n}؟</span>
+    <span data-phrase="segments.none">لا شيء بعد &mdash; الفيديو كله</span>
+    <span data-phrase="segments.some">{done} من {total}</span>
+    <span data-phrase="seg.play">شغّل هذا الجزء</span>
+    <span data-phrase="seg.up">حرّك لأعلى</span>
+    <span data-phrase="seg.down">حرّك لأسفل</span>
+    <span data-phrase="seg.remove">أزِل</span>
+    <span data-phrase="marks.nothing">لم يُعلَّم بعد شيء ليُحفظ.</span>
+    <span data-phrase="marks.pastend">كل جزء في {name} يبدأ بعد نهاية هذا الفيديو. والأرجح أنه عُلِّم على فيديو آخر.</span>
+    <span data-phrase="marks.dropped.one">جزء واحد في {name} يبدأ بعد نهاية هذا الفيديو، فتُرك خارجاً.</span>
+    <span data-phrase="marks.dropped.many">{n} أجزاء في {name} تبدأ بعد نهاية هذا الفيديو، فتُركت خارجاً.</span>
+    <span data-phrase="marks.skipped.one">سطر واحد لم يمكن قراءته كجزء.</span>
+    <span data-phrase="marks.skipped.many">{n} أسطر لم يمكن قراءتها كأجزاء.</span>
+    <span data-phrase="marks.loaded">حُمِّل منها {n}.</span>
+    <span data-phrase="marks.failed">لم يمكن قراءة {name}: {reason}</span>
+    <span data-phrase="join.note">لا يمكن وصل هذه المقاطع دون إعادة ترميز: {reason} فالمسار الواحد يحمل وصفاً واحداً
+      لما فيه، والمقاطع التي لا تتفق لا بد من إعادة كتابتها كي تتشارك وصفاً واحداً.</span>
+    <span data-phrase="method.copy.one">تُنقل الإطارات إلى الملف الجديد كما هي تماماً، فلا يُفَكّ ترميز شيء ولا يُرمَّز شيء.
+      سريع، ولا يمكن أن يكلّف جودة. ويبدأ كل جزء عند أقرب إطار مفتاحي قبل علامتك.</span>
+    <span data-phrase="method.copy.many">يُنقل كل جزء مُعلَّم إلى الملف الجديد كما هو تماماً، واحداً تلو الآخر. فلا يُفَكّ
+      ترميز شيء ولا يُرمَّز شيء، ولا يكلّف أي جزء من هذا جودة.</span>
+    <span data-phrase="method.exact.one">يبدأ كل جزء عند الإطار الذي علّمته بالضبط، بفكّ الترميز من الإطار المفتاحي الذي قبله
+      وإعادة ترميز الصورة. أما الصوت فما زال يُنسخ لا يُعاد ترميزه.</span>
+    <span data-phrase="method.exact.many">يُفَكّ ترميز كل فيديو ويُعاد كتابته في تيار واحد، فتُوصَل حتى المقاطع التي لا تتفق
+      في الحجم أو الترميز. ويُنسخ الصوت حيث تتفق، ويُعاد ترميزه حيث لا تتفق.</span>
+    <span data-phrase="method.record">يشغّل الجزء المُعلَّم كاملاً ويسجّله، فيستغرق بقدر طوله ويُعاد ترميز كل شيء. أبقِ
+      هذا اللسان في المقدمة أثناء العمل.</span>
+    <span data-phrase="audio.none">ليس هنا مسار صوتي، فليس ثمة ما يُبقى عليه.</span>
+    <span data-phrase="audio.record">التُقط من التشغيل وأُعيد ترميزه، لأن هذا كل ما يستطيعه التسجيل.</span>
+    <span data-phrase="audio.encode">تصف هذه المقاطع صوتها على أنحاء مختلفة، فيُفَكّ ترميزه ويُرمَّز مرة واحدة للنتيجة
+      كلها. وهذه هي الحالة الوحيدة في هذه الأداة التي لا يُنقل فيها الصوت كما هو.</span>
+    <span data-phrase="audio.copy">يُنسخ من الملف عيّنةً عيّنة، دون أن يُفَكّ ترميزه قط، فلا يفقد شيئاً.</span>
+    <span data-phrase="sum.nothing.cut">لا شيء &mdash; العلامات تغطي الفيديو كله</span>
+    <span data-phrase="sum.nothing.keep">لا شيء مُعلَّم</span>
+    <span data-phrase="sum.parts.one">جزء واحد</span>
+    <span data-phrase="sum.parts.many">{n} أجزاء</span>
+    <span data-phrase="sum.parts.cut">{parts}، بعد أن تذهب المُعلَّمة</span>
+    <span data-phrase="sum.parts.videos">{parts} من {n} مقاطع</span>
+    <span data-phrase="sum.start.keyframe">حيث علّمت بالضبط (فهي على إطار مفتاحي)</span>
+    <span data-phrase="sum.start.editmark">حيث علّمت بالضبط، عبر علامة تحرير</span>
+    <span data-phrase="sum.start.exact">حيث علّمت بالضبط</span>
+    <span data-phrase="cut.note">أقرب إطار مفتاحي قبل علامتك الأولى يسبقها بـ{seconds} ثانية، والإطارات بينهما لا بد
+      أن تبقى في الملف &mdash; فما بعدها لا يُفَكّ ترميزه دونها. وهي مُعلَّمة بألا تُعرض،
+      وكل مشغّل شائع يحترم ذلك. أما المشغّل الذي يتجاهل علامات التحرير فسيعرض تلك
+      الـ{seconds} ثانية في المقدمة. اختر «اقصص هنا بالضبط» إن كان ذلك أهم عندك من الإبقاء
+      على البايتات الأصلية.</span>
+    <span data-phrase="sum.size">نحو {size}</span>
+    <span data-phrase="sum.picture.copy">منسوخة، إطاراً إطاراً</span>
+    <span data-phrase="sum.picture.exact">مُعاد ترميزها إلى H.264، {size}</span>
+    <span data-phrase="sum.picture.exact.bars">مُعاد ترميزها إلى H.264، {size} ({n} مُلائمة بأشرطة)</span>
+    <span data-phrase="sum.picture.record">مُسجَّلة أثناء التشغيل</span>
+    <span data-phrase="sum.sound.none">لا صوت في هذا الفيديو</span>
+    <span data-phrase="sum.sound.left">مُستبعَد</span>
+    <span data-phrase="sum.sound.record">مُعاد ترميزه من التشغيل</span>
+    <span data-phrase="sum.sound.encode">فُكّ ترميزه وأُعيد ترميزه مرة</span>
+    <span data-phrase="sum.sound.copy">منسوخ، عيّنةً عيّنة</span>
+    <span data-phrase="export.one">اقصص الفيديو</span>
+    <span data-phrase="export.many">اقصص {n} أجزاء وصِلها</span>
+    <span data-phrase="progress.preparing">جارٍ التحضير…</span>
+    <span data-phrase="progress.finishing">جارٍ كتابة الملف…</span>
+    <span data-phrase="progress.sound">جارٍ ترميز الصوت &mdash; {done} من {total}</span>
+    <span data-phrase="progress.copying">جارٍ نسخ العيّنة {done} من {total} ({percent}%)</span>
+    <span data-phrase="progress.realtime">تسجيل في الزمن الحقيقي &mdash; {done} من {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">الإطار {done} من {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">العلامات تغطي الفيديو كله، فقصّها لن يترك شيئاً.</span>
+    <span data-phrase="export.nothing.keep">لم يُعلَّم شيء للإبقاء عليه. اضغط I وO أثناء التشغيل.</span>
+    <span data-phrase="result.parts">{n} أجزاء</span>
+    <span data-phrase="result.notreencoded">بلا إعادة ترميز</span>
+    <span data-phrase="error.generic">حدث خطأ ما.</span>
     <span data-phrase="read.midframe">ينتهي الملف في منتصف إطار.</span>
     <span data-phrase="read.avcshort">سجل إعداد H.264 أقصر مما ينبغي.</span>
     <span data-phrase="read.hevcshort">سجل إعداد HEVC أقصر مما ينبغي.</span>

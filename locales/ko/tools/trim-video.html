@@ -228,6 +228,120 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">클립 {n}</span>
+    <span data-phrase="join.nothing">이을 것이 없습니다.</span>
+    <span data-phrase="join.unread">{name}은 이 판독기가 이해하는 MP4가 아니어서 그 프레임을 복사할 수 없습니다.</span>
+    <span data-phrase="join.size">{name}은 {size}이고 첫 클립은 {first}입니다.</span>
+    <span data-phrase="join.rotated">{name}은 {degrees}도 돌려서 저장되었고 첫 클립은 {first}도 돌아가 있습니다.</span>
+    <span data-phrase="join.rotated.none">{name}은 {degrees}도 돌려서 저장되었고 첫 클립은 돌아가 있지 않습니다.</span>
+    <span data-phrase="join.codec">{name}은 {codec}이고 첫 클립은 {first}입니다.</span>
+    <span data-phrase="join.settings">{name}은 첫 클립과 같은 코덱이지만 다른 설정으로 인코딩되어서, 하나의 설명으로 둘을 다 덮을 수 없습니다.</span>
+    <span data-phrase="join.unreadable">클립 하나를 읽지 못했습니다.</span>
+    <span data-phrase="join.silent">{name}에는 소리가 없고 다른 것들에는 있어서, 복사하면 도중에 조용해집니다.</span>
+    <span data-phrase="join.sound">{name}은 {rate} Hz의 {channels}채널 소리이고 첫 클립은 {firstrate} Hz의 {firstchannels}채널입니다.</span>
+    <span data-phrase="join.soundentry">{name}은 소리가 첫 클립과 다르게 인코딩되어 있습니다.</span>
+    <span data-phrase="audio.toobig">내부 오류: 소리 설명이 예상보다 큽니다.</span>
+    <span data-phrase="audio.noencode">소리는 디코딩되었지만 인코더에서 아무것도 돌아오지 않았습니다.</span>
+    <span data-phrase="nothing.selected">남길 것으로 선택된 것이 없습니다.</span>
+    <span data-phrase="encode.toobig">이 브라우저는 {size}로 H.264를 인코딩하지 않습니다. 더 작은 프레임을 고르거나, 아무것도 인코딩하지 않는 &laquo;모든 바이트
+      그대로&raquo;를 쓰세요.</span>
+    <span data-phrase="decode.none">고르신 것에서 프레임을 하나도 디코딩하지 못했습니다.</span>
+    <span data-phrase="decode.noframe">이 파일에서 프레임을 하나도 디코딩하지 못했습니다.</span>
+    <span data-phrase="encode.noconfig">인코더가 디코더 설정을 한 번도 알려 주지 않았습니다.</span>
+    <span data-phrase="record.noplay">이 브라우저는 잘라내려고 파일을 재생하지 못했습니다.</span>
+    <span data-phrase="record.slow">파일을 여는 데 너무 오래 걸렸습니다.</span>
+    <span data-phrase="record.noseek">브라우저가 그 구간의 처음으로 이동하지 못했습니다.</span>
+    <span data-phrase="record.nosupport">이 브라우저는 영상을 다시 인코딩하지도, 녹화하지도 못합니다.</span>
+    <span data-phrase="marks.unreadable">그 파일에서 구간을 하나도 읽지 못했습니다. 첫 줄 뒤의 각 줄은 시작과 끝을 쉼표로 나눠 적어야 합니다.</span>
+    <span data-phrase="warn.hidden">녹화하는 동안 탭이 뒤에 있어서 빠진 프레임이 있을 수 있습니다. 깔끔한 결과를 원하면 이 탭을 앞에 두고 다시 돌리세요.</span>
+    <span data-phrase="warn.nosound">이 브라우저에서는 소리를 담지 못해서 결과에 오디오 트랙이 없습니다.</span>
+    <span data-phrase="warn.noaac">이 클립들은 소리를 서로 다르게 설명해서, 이으려면 다시 인코딩해야 했습니다 &mdash; 그런데 이 브라우저는 AAC를 인코딩하지 않습니다. 영상은
+      소리 없이 이었습니다. 크롬과 엣지는 해냅니다.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}분 {s}초</span>
+    <span data-phrase="dur.seconds">{s}초</span>
+    <span data-phrase="clip.mark">이 영상에 표시하기</span>
+    <span data-phrase="clip.segments.one">구간 1개</span>
+    <span data-phrase="clip.segments.many">구간 {n}개</span>
+    <span data-phrase="clip.notmarked">표시 없음</span>
+    <span data-phrase="clip.sound">소리 있음</span>
+    <span data-phrase="clip.nosound">소리 없음</span>
+    <span data-phrase="clip.recorded">자르려고 녹화함</span>
+    <span data-phrase="clip.editing">{name} &mdash; {total}개 가운데 {index}번째</span>
+    <span data-phrase="stage.noplay">이 브라우저는 이 영상을 재생하지 않아서, 표시가 어디 있는지 보여 주려고 아래 프레임을 하나씩 디코딩합니다. 자르는 것 자체에는 영향이 없습니다.</span>
+    <span data-phrase="stage.noframe">이 브라우저는 이 영상을 재생하지 않고, 프레임 하나도 디코딩하지 못했습니다({detail}). 아래 표시는 영상 길이 위에서는 그대로 동작합니다.</span>
+    <span data-phrase="mark.noopen">아직 열린 것이 없습니다. 구간이 시작할 자리에서 I를, 끝날 자리에서 O를 누르세요.</span>
+    <span data-phrase="mark.before">그러면 구간이 {at}에서 끝나는데, 시작인 {start}보다 앞입니다. 재생 위치를 시작 뒤로 먼저 옮기세요.</span>
+    <span data-phrase="mark.nospace">여기에는 구간을 더할 만큼 영상이 남아 있지 않습니다. 재생 위치를 뒤로 옮기세요.</span>
+    <span data-phrase="mark.clearall">{name}의 구간 {n}개를 모두 지울까요?</span>
+    <span data-phrase="segments.none">아직 없음 &mdash; 영상 전체</span>
+    <span data-phrase="segments.some">{total}개 가운데 {done}개</span>
+    <span data-phrase="seg.play">이 구간 재생</span>
+    <span data-phrase="seg.up">위로</span>
+    <span data-phrase="seg.down">아래로</span>
+    <span data-phrase="seg.remove">지우기</span>
+    <span data-phrase="marks.nothing">저장할 표시가 아직 없습니다.</span>
+    <span data-phrase="marks.pastend">{name}의 모든 구간이 이 영상이 끝난 뒤에 시작합니다. 아마 다른 영상에 표시한 것 같습니다.</span>
+    <span data-phrase="marks.dropped.one">{name}의 구간 1개가 이 영상의 끝을 지나 시작해서 빠졌습니다.</span>
+    <span data-phrase="marks.dropped.many">{name}의 구간 {n}개가 이 영상의 끝을 지나 시작해서 빠졌습니다.</span>
+    <span data-phrase="marks.skipped.one">1줄을 구간으로 읽지 못했습니다.</span>
+    <span data-phrase="marks.skipped.many">{n}줄을 구간으로 읽지 못했습니다.</span>
+    <span data-phrase="marks.loaded">{n}개를 불러왔습니다.</span>
+    <span data-phrase="marks.failed">{name}을 읽지 못했습니다: {reason}</span>
+    <span data-phrase="join.note">이 영상들은 다시 인코딩하지 않고는 이을 수 없습니다: {reason} 트랙 하나는 그 안에 무엇이 있는지에 대한 설명을 하나만 담으므로, 서로 맞지
+      않는 영상은 설명 하나를 함께 쓰도록 다시 써야 합니다.</span>
+    <span data-phrase="method.copy.one">프레임이 있는 그대로 새 파일로 옮겨지므로 아무것도 디코딩하지 않고 아무것도 인코딩하지 않습니다. 빠르고, 품질이 깎일 수가 없습니다. 각 부분은 표시
+      앞의 가장 가까운 키프레임에서 시작합니다.</span>
+    <span data-phrase="method.copy.many">표시한 부분마다 있는 그대로, 하나씩 차례로 새 파일로 옮겨집니다. 아무것도 디코딩하지 않고 아무것도 인코딩하지 않으므로, 이 과정의 어느 부분도
+      품질을 깎지 않습니다.</span>
+    <span data-phrase="method.exact.one">각 부분은 표시한 바로 그 프레임에서 시작합니다. 그 앞의 키프레임부터 디코딩해 그림을 다시 인코딩하기 때문입니다. 소리는 다시 인코딩하지 않고 그대로
+      복사합니다.</span>
+    <span data-phrase="method.exact.many">영상마다 디코딩해서 하나의 스트림으로 다시 쓰므로, 크기나 코덱이 맞지 않는 영상도 이을 수 있습니다. 소리는 맞는 곳에서는 복사하고 맞지 않는
+      곳에서는 다시 인코딩합니다.</span>
+    <span data-phrase="method.record">표시한 부분을 끝까지 재생하면서 녹화하므로, 그 부분 길이 만큼 걸리고 모든 것이 다시 인코딩됩니다. 돌아가는 동안 이 탭을 앞에 두세요.</span>
+    <span data-phrase="audio.none">여기에는 오디오 트랙이 없어서 남길 것도 없습니다.</span>
+    <span data-phrase="audio.record">재생에서 담아 다시 인코딩했습니다. 녹화가 할 수 있는 것은 그것뿐이니까요.</span>
+    <span data-phrase="audio.encode">이 영상들은 소리를 서로 다르게 설명해서, 결과 전체에 대해 한 번 디코딩하고 인코딩합니다. 이 도구에서 소리가 그대로 넘어가지 않는 유일한
+      경우입니다.</span>
+    <span data-phrase="audio.copy">파일에서 샘플 단위로 복사하고 한 번도 디코딩하지 않으므로 잃는 것이 없습니다.</span>
+    <span data-phrase="sum.nothing.cut">없음 &mdash; 표시가 영상 전체를 덮습니다</span>
+    <span data-phrase="sum.nothing.keep">표시한 것 없음</span>
+    <span data-phrase="sum.parts.one">1군데</span>
+    <span data-phrase="sum.parts.many">{n}군데</span>
+    <span data-phrase="sum.parts.cut">표시한 것들이 빠지고 나면 {parts}</span>
+    <span data-phrase="sum.parts.videos">영상 {n}개에서 {parts}</span>
+    <span data-phrase="sum.start.keyframe">표시한 자리 그대로(키프레임 위입니다)</span>
+    <span data-phrase="sum.start.editmark">표시한 자리 그대로, 편집 표시를 통해</span>
+    <span data-phrase="sum.start.exact">표시한 자리 그대로</span>
+    <span data-phrase="cut.note">첫 표시 앞의 가장 가까운 키프레임은 {seconds}초 앞에 있고, 그 사이 프레임들은 파일에 남아야 합니다 &mdash; 그것들 없이는 뒤의 어떤
+      것도 디코딩되지 않으니까요. 그 프레임들은 재생하지 말라고 표시되어 있고, 주요 재생기는 모두 이를 지킵니다. 편집 표시를 무시하는 재생기는 그
+      {seconds}초를 앞에 보여 줍니다. 원래 바이트를 지키는 것보다 그것이 더 중요하면 &laquo;바로 여기서 자르기&raquo;를 고르세요.</span>
+    <span data-phrase="sum.size">약 {size}</span>
+    <span data-phrase="sum.picture.copy">복사됨, 프레임 그대로</span>
+    <span data-phrase="sum.picture.exact">H.264로 다시 인코딩, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">H.264로 다시 인코딩, {size}({n}개는 여백을 넣어 맞춤)</span>
+    <span data-phrase="sum.picture.record">재생하면서 녹화</span>
+    <span data-phrase="sum.sound.none">이 영상에는 없음</span>
+    <span data-phrase="sum.sound.left">넣지 않음</span>
+    <span data-phrase="sum.sound.record">재생에서 다시 인코딩</span>
+    <span data-phrase="sum.sound.encode">한 번 디코딩하고 다시 인코딩</span>
+    <span data-phrase="sum.sound.copy">복사됨, 샘플 그대로</span>
+    <span data-phrase="export.one">영상 자르기</span>
+    <span data-phrase="export.many">{n}군데를 자르고 잇기</span>
+    <span data-phrase="progress.preparing">준비하는 중…</span>
+    <span data-phrase="progress.finishing">파일을 쓰는 중…</span>
+    <span data-phrase="progress.sound">소리를 인코딩하는 중 &mdash; {total}개 가운데 {done}개</span>
+    <span data-phrase="progress.copying">{total}개 가운데 {done}번째 샘플을 복사하는 중({percent}%)</span>
+    <span data-phrase="progress.realtime">실시간으로 녹화하는 중 &mdash; {total} 가운데 {done}({percent}%)</span>
+    <span data-phrase="progress.frame">{total}개 가운데 {done}번째 프레임({percent}%)</span>
+    <span data-phrase="export.nothing.cut">표시가 영상 전체를 덮고 있어서, 그것을 잘라내면 남는 것이 없습니다.</span>
+    <span data-phrase="export.nothing.keep">남길 것으로 표시한 것이 없습니다. 재생하는 동안 I와 O를 누르세요.</span>
+    <span data-phrase="result.parts">{n}군데</span>
+    <span data-phrase="result.notreencoded">다시 인코딩하지 않음</span>
+    <span data-phrase="error.generic">무언가 잘못되었습니다.</span>
     <span data-phrase="read.midframe">파일이 프레임 한가운데에서 끝났습니다.</span>
     <span data-phrase="read.avcshort">H.264 설정 레코드가 너무 짧습니다.</span>
     <span data-phrase="read.hevcshort">HEVC 설정 레코드가 너무 짧습니다.</span>

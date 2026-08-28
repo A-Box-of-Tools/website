@@ -91,7 +91,7 @@ BASELINE = {
     'svg-to-image': 27,
     'timelapse-video': 34,
     'trim-audio': 41,
-    'trim-video': 75,
+    'trim-video': 9,
     'video-to-gif': 23,
 }
 

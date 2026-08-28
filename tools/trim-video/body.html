@@ -228,6 +228,137 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">clip {n}</span>
+    <span data-phrase="join.nothing">there is nothing to join.</span>
+    <span data-phrase="join.unread">{name} is not an MP4 this reader understands, so its frames cannot be copied.</span>
+    <span data-phrase="join.size">{name} is {size} and the first clip is {first}.</span>
+    <span data-phrase="join.rotated">{name} is stored turned {degrees} degrees and the first clip is turned {first}.</span>
+    <span data-phrase="join.rotated.none">{name} is stored turned {degrees} degrees and the first clip is not turned.</span>
+    <span data-phrase="join.codec">{name} is {codec} and the first clip is {first}.</span>
+    <span data-phrase="join.settings">{name} is the same codec as the first clip but was encoded with different settings,
+      so one description cannot cover both.</span>
+    <span data-phrase="join.unreadable">one of the clips could not be read.</span>
+    <span data-phrase="join.silent">{name} has no sound and the others do, so a copy would go quiet partway through.</span>
+    <span data-phrase="join.sound">{name} has {channels}-channel sound at {rate} Hz and the first clip has
+      {firstchannels}-channel at {firstrate} Hz.</span>
+    <span data-phrase="join.soundentry">{name} has sound encoded differently from the first clip.</span>
+    <span data-phrase="audio.toobig">Internal error: the audio description is larger than expected.</span>
+    <span data-phrase="audio.noencode">The sound was decoded but nothing came back from the encoder.</span>
+    <span data-phrase="nothing.selected">There is nothing selected to keep.</span>
+    <span data-phrase="encode.toobig">This browser will not encode H.264 at {size}. Choose a smaller frame, or use
+      &ldquo;Keep every byte&rdquo;, which encodes nothing at all.</span>
+    <span data-phrase="decode.none">No frames could be decoded from what you chose.</span>
+    <span data-phrase="decode.noframe">No frame could be decoded from this file.</span>
+    <span data-phrase="encode.noconfig">The encoder never reported a decoder configuration.</span>
+    <span data-phrase="record.noplay">This browser could not play the file back to trim it.</span>
+    <span data-phrase="record.slow">The file took too long to open.</span>
+    <span data-phrase="record.noseek">The browser could not seek to the start of the section.</span>
+    <span data-phrase="record.nosupport">This browser can neither re-encode nor record video.</span>
+    <span data-phrase="marks.unreadable">No segments could be read from that file. Each line after the first should be a
+      start and an end, separated by a comma.</span>
+    <span data-phrase="warn.hidden">The tab was hidden while recording, so some frames may be missing. Run it again with
+      this tab in front for a clean result.</span>
+    <span data-phrase="warn.nosound">The sound could not be captured in this browser, so the result has no audio track.</span>
+    <span data-phrase="warn.noaac">These clips describe their sound differently, so it had to be re-encoded to be
+      joined &mdash; and this browser will not encode AAC. The video has been joined
+      without sound. Chrome and Edge will do it.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}m {s}s</span>
+    <span data-phrase="dur.seconds">{s}s</span>
+    <span data-phrase="clip.mark">Mark this video</span>
+    <span data-phrase="clip.segments.one">1 segment</span>
+    <span data-phrase="clip.segments.many">{n} segments</span>
+    <span data-phrase="clip.notmarked">not marked</span>
+    <span data-phrase="clip.sound">with sound</span>
+    <span data-phrase="clip.nosound">no sound</span>
+    <span data-phrase="clip.recorded">recorded to cut</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} of {total}</span>
+    <span data-phrase="stage.noplay">This browser will not play this video, so the frames below are decoded one at a time
+      to show you where the marks are. The cut itself is unaffected.</span>
+    <span data-phrase="stage.noframe">This browser will not play this video and no frame could be decoded from it either
+      ({detail}). The marks below still work on its length.</span>
+    <span data-phrase="mark.noopen">Nothing is open yet. Press I where the part should start, then O where it ends.</span>
+    <span data-phrase="mark.before">That would end the segment at {at}, which is before it starts at {start}. Move the
+      playhead past the start first.</span>
+    <span data-phrase="mark.nospace">There is not enough video left here to add a segment. Move the playhead back.</span>
+    <span data-phrase="mark.clearall">Clear all {n} segments of {name}?</span>
+    <span data-phrase="segments.none">none yet &mdash; the whole video</span>
+    <span data-phrase="segments.some">{done} of {total}</span>
+    <span data-phrase="seg.play">Play this segment</span>
+    <span data-phrase="seg.up">Move up</span>
+    <span data-phrase="seg.down">Move down</span>
+    <span data-phrase="seg.remove">Remove</span>
+    <span data-phrase="marks.nothing">There is nothing marked to save yet.</span>
+    <span data-phrase="marks.pastend">Every segment in {name} starts after this video ends. It was probably marked against
+      a different one.</span>
+    <span data-phrase="marks.dropped.one">1 segment in {name} starts past the end of this video, so it was left out.</span>
+    <span data-phrase="marks.dropped.many">{n} segments in {name} start past the end of this video, so they were left out.</span>
+    <span data-phrase="marks.skipped.one">1 line could not be read as a segment.</span>
+    <span data-phrase="marks.skipped.many">{n} lines could not be read as a segment.</span>
+    <span data-phrase="marks.loaded">{n} loaded.</span>
+    <span data-phrase="marks.failed">{name} could not be read: {reason}</span>
+    <span data-phrase="join.note">These videos cannot be joined without re-encoding: {reason} One track carries one
+      description of what is in it, so videos that disagree have to be written out again
+      to share one.</span>
+    <span data-phrase="method.copy.one">The frames are moved into the new file exactly as they are, so nothing is decoded
+      and nothing is encoded. Quick, and it cannot cost quality. Each part starts at the
+      nearest keyframe before your mark.</span>
+    <span data-phrase="method.copy.many">Every marked part is moved into the new file exactly as it is, one after another.
+      Nothing is decoded and nothing is encoded, so no part of this costs quality.</span>
+    <span data-phrase="method.exact.one">Every part starts on the frame you marked, by decoding from the keyframe in front of
+      it and encoding the picture again. The sound is still copied rather than re-encoded.</span>
+    <span data-phrase="method.exact.many">Every video is decoded and written out again into one stream, so videos that
+      disagree about size or codec can still be joined. The sound is copied where they
+      agree about it and re-encoded where they do not.</span>
+    <span data-phrase="method.record">Plays the marked part through and records it, so it takes as long as that part is
+      long and everything is re-encoded. Keep this tab in front while it runs.</span>
+    <span data-phrase="audio.none">There is no audio track here, so there is nothing to keep.</span>
+    <span data-phrase="audio.record">Captured from playback and re-encoded, because that is all a recording can do.</span>
+    <span data-phrase="audio.encode">These videos describe their sound differently, so it is decoded and encoded once for
+      the whole result. That is the only case in this tool where the sound is not carried
+      across untouched.</span>
+    <span data-phrase="audio.copy">Copied from the file sample by sample, without ever being decoded, so it loses
+      nothing.</span>
+    <span data-phrase="sum.nothing.cut">nothing &mdash; the marks cover the whole video</span>
+    <span data-phrase="sum.nothing.keep">nothing marked</span>
+    <span data-phrase="sum.parts.one">1 part</span>
+    <span data-phrase="sum.parts.many">{n} parts</span>
+    <span data-phrase="sum.parts.cut">{parts}, once the marked ones are gone</span>
+    <span data-phrase="sum.parts.videos">{parts} from {n} videos</span>
+    <span data-phrase="sum.start.keyframe">exactly where you marked (it is on a keyframe)</span>
+    <span data-phrase="sum.start.editmark">exactly where you marked, through an edit mark</span>
+    <span data-phrase="sum.start.exact">exactly where you marked</span>
+    <span data-phrase="cut.note">The nearest keyframe before your first mark is {seconds}s earlier, and the frames in
+      between have to stay in the file &mdash; nothing after them can be decoded without
+      them. They are marked not to be played, which every mainstream player honours. A
+      player that ignores edit marks will show those {seconds}s at the front. Choose
+      &ldquo;Cut exactly here&rdquo; if that matters more than keeping the original bytes.</span>
+    <span data-phrase="sum.size">about {size}</span>
+    <span data-phrase="sum.picture.copy">copied, frame for frame</span>
+    <span data-phrase="sum.picture.exact">re-encoded to H.264, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">re-encoded to H.264, {size} ({n} fitted with bars)</span>
+    <span data-phrase="sum.picture.record">recorded as it plays</span>
+    <span data-phrase="sum.sound.none">none in this video</span>
+    <span data-phrase="sum.sound.left">left out</span>
+    <span data-phrase="sum.sound.record">re-encoded from playback</span>
+    <span data-phrase="sum.sound.encode">decoded and re-encoded once</span>
+    <span data-phrase="sum.sound.copy">copied, sample for sample</span>
+    <span data-phrase="export.one">Cut video</span>
+    <span data-phrase="export.many">Cut and join {n} parts</span>
+    <span data-phrase="progress.preparing">Preparing…</span>
+    <span data-phrase="progress.finishing">Writing the file…</span>
+    <span data-phrase="progress.sound">Encoding the sound &mdash; {done} of {total}</span>
+    <span data-phrase="progress.copying">Copying sample {done} of {total} ({percent}%)</span>
+    <span data-phrase="progress.realtime">Recording in real time &mdash; {done} of {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">Frame {done} of {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">The marks cover the whole video, so cutting them out would leave nothing.</span>
+    <span data-phrase="export.nothing.keep">There is nothing marked to keep. Press I and O while it plays.</span>
+    <span data-phrase="result.parts">{n} parts</span>
+    <span data-phrase="result.notreencoded">not re-encoded</span>
+    <span data-phrase="error.generic">Something went wrong.</span>
     <span data-phrase="read.midframe">The file ends in the middle of a frame.</span>
     <span data-phrase="read.avcshort">The H.264 configuration record is too short.</span>
     <span data-phrase="read.hevcshort">The HEVC configuration record is too short.</span>

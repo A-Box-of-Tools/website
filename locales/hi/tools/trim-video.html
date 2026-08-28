@@ -230,6 +230,141 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">क्लिप {n}</span>
+    <span data-phrase="join.nothing">जोड़ने को कुछ है ही नहीं।</span>
+    <span data-phrase="join.unread">{name} ऐसी MP4 नहीं जिसे यह रीडर समझता हो, इसलिए इसके फ़्रेम कॉपी नहीं किए जा सकते।</span>
+    <span data-phrase="join.size">{name} {size} का है और पहली क्लिप {first} की।</span>
+    <span data-phrase="join.rotated">{name} {degrees} डिग्री घुमाकर सहेजा गया है और पहली क्लिप {first} डिग्री घुमी हुई
+      है।</span>
+    <span data-phrase="join.rotated.none">{name} {degrees} डिग्री घुमाकर सहेजा गया है और पहली क्लिप घुमी हुई नहीं है।</span>
+    <span data-phrase="join.codec">{name} {codec} है और पहली क्लिप {first}।</span>
+    <span data-phrase="join.settings">{name} का कोडेक पहली क्लिप जैसा ही है, पर इसे अलग सेटिंग्स से एनकोड किया गया था,
+      इसलिए एक ही विवरण दोनों पर लागू नहीं हो सकता।</span>
+    <span data-phrase="join.unreadable">क्लिपों में से एक पढ़ी नहीं जा सकी।</span>
+    <span data-phrase="join.silent">{name} में आवाज़ नहीं है और बाक़ी में है, इसलिए कॉपी बीच रास्ते चुप हो जाएगी।</span>
+    <span data-phrase="join.sound">{name} में {rate} Hz पर {channels} चैनल की आवाज़ है और पहली क्लिप में {firstrate} Hz
+      पर {firstchannels} चैनल की।</span>
+    <span data-phrase="join.soundentry">{name} की आवाज़ पहली क्लिप से अलग तरीक़े से एनकोड की गई है।</span>
+    <span data-phrase="audio.toobig">भीतरी ग़लती: आवाज़ का विवरण उम्मीद से बड़ा है।</span>
+    <span data-phrase="audio.noencode">आवाज़ डिकोड तो हुई पर एनकोडर से कुछ लौटा ही नहीं।</span>
+    <span data-phrase="nothing.selected">रखने के लिए कुछ चुना ही नहीं गया।</span>
+    <span data-phrase="encode.toobig">यह ब्राउज़र {size} पर H.264 एनकोड नहीं करेगा। छोटा फ़्रेम चुनिए, या &laquo;हर बाइट
+      रखिए&raquo; लीजिए, जो कुछ भी एनकोड नहीं करता।</span>
+    <span data-phrase="decode.none">आपने जो चुना उससे एक भी फ़्रेम डिकोड नहीं हो सका।</span>
+    <span data-phrase="decode.noframe">इस फ़ाइल से एक भी फ़्रेम डिकोड नहीं हो सका।</span>
+    <span data-phrase="encode.noconfig">एनकोडर ने कभी कोई डिकोडर कॉन्फ़िगरेशन बताया ही नहीं।</span>
+    <span data-phrase="record.noplay">यह ब्राउज़र काटने के लिए फ़ाइल चला नहीं सका।</span>
+    <span data-phrase="record.slow">फ़ाइल खुलने में बहुत ज़्यादा समय लगा।</span>
+    <span data-phrase="record.noseek">ब्राउज़र हिस्से की शुरुआत तक नहीं पहुँच सका।</span>
+    <span data-phrase="record.nosupport">यह ब्राउज़र वीडियो न दोबारा एनकोड कर सकता है न रिकॉर्ड।</span>
+    <span data-phrase="marks.unreadable">उस फ़ाइल से कोई हिस्सा पढ़ा नहीं जा सका। पहली के बाद हर पंक्ति में एक शुरुआत और एक
+      अंत होना चाहिए, बीच में अल्पविराम।</span>
+    <span data-phrase="warn.hidden">रिकॉर्डिंग के दौरान यह टैब पीछे था, इसलिए कुछ फ़्रेम छूट सकते हैं। साफ़ नतीजे के लिए
+      इसे इस टैब को सामने रखकर दोबारा चलाइए।</span>
+    <span data-phrase="warn.nosound">इस ब्राउज़र में आवाज़ पकड़ी नहीं जा सकी, इसलिए नतीजे में कोई ऑडियो ट्रैक नहीं है।</span>
+    <span data-phrase="warn.noaac">ये क्लिपें अपनी आवाज़ अलग-अलग तरह से बताती हैं, इसलिए जोड़ने के लिए उसे दोबारा एनकोड
+      करना पड़ता &mdash; और यह ब्राउज़र AAC एनकोड नहीं करता। वीडियो बिना आवाज़ के जोड़ा
+      गया है। Chrome और Edge यह कर लेते हैं।</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}m {s}s</span>
+    <span data-phrase="dur.seconds">{s}s</span>
+    <span data-phrase="clip.mark">इस वीडियो पर निशान लगाइए</span>
+    <span data-phrase="clip.segments.one">1 हिस्सा</span>
+    <span data-phrase="clip.segments.many">{n} हिस्से</span>
+    <span data-phrase="clip.notmarked">कोई निशान नहीं</span>
+    <span data-phrase="clip.sound">आवाज़ के साथ</span>
+    <span data-phrase="clip.nosound">बिना आवाज़</span>
+    <span data-phrase="clip.recorded">काटने के लिए रिकॉर्ड किया</span>
+    <span data-phrase="clip.editing">{name} &mdash; {total} में से {index}</span>
+    <span data-phrase="stage.noplay">यह ब्राउज़र इस वीडियो को नहीं चलाएगा, इसलिए नीचे के फ़्रेम एक-एक करके डिकोड किए जा
+      रहे हैं ताकि आप देख सकें कि निशान कहाँ हैं। कटाई ख़ुद इससे प्रभावित नहीं होती।</span>
+    <span data-phrase="stage.noframe">यह ब्राउज़र इस वीडियो को नहीं चलाएगा और इससे एक फ़्रेम भी डिकोड नहीं हो सका
+      ({detail})। नीचे के निशान फिर भी इसकी लंबाई पर काम करते हैं।</span>
+    <span data-phrase="mark.noopen">अभी कुछ खुला ही नहीं है। जहाँ से हिस्सा शुरू होना चाहिए वहाँ I दबाइए, फिर जहाँ ख़त्म
+      हो वहाँ O।</span>
+    <span data-phrase="mark.before">इससे हिस्सा {at} पर ख़त्म होगा, जो उसकी शुरुआत {start} से पहले है। पहले प्लेहेड को
+      शुरुआत के आगे ले जाइए।</span>
+    <span data-phrase="mark.nospace">यहाँ हिस्सा जोड़ने भर वीडियो बचा ही नहीं। प्लेहेड को पीछे ले जाइए।</span>
+    <span data-phrase="mark.clearall">{name} के सारे {n} हिस्से मिटा दें?</span>
+    <span data-phrase="segments.none">अभी कोई नहीं &mdash; पूरा वीडियो</span>
+    <span data-phrase="segments.some">{total} में से {done}</span>
+    <span data-phrase="seg.play">यह हिस्सा चलाइए</span>
+    <span data-phrase="seg.up">ऊपर ले जाइए</span>
+    <span data-phrase="seg.down">नीचे ले जाइए</span>
+    <span data-phrase="seg.remove">हटाइए</span>
+    <span data-phrase="marks.nothing">सहेजने के लिए अभी कोई निशान लगा ही नहीं है।</span>
+    <span data-phrase="marks.pastend">{name} का हर हिस्सा इस वीडियो के ख़त्म होने के बाद शुरू होता है। शायद ये निशान किसी
+      और वीडियो पर लगाए गए थे।</span>
+    <span data-phrase="marks.dropped.one">{name} का 1 हिस्सा इस वीडियो के अंत के बाद शुरू होता है, इसलिए उसे छोड़ दिया गया।</span>
+    <span data-phrase="marks.dropped.many">{name} के {n} हिस्से इस वीडियो के अंत के बाद शुरू होते हैं, इसलिए उन्हें छोड़ दिया
+      गया।</span>
+    <span data-phrase="marks.skipped.one">1 पंक्ति हिस्से के तौर पर पढ़ी नहीं जा सकी।</span>
+    <span data-phrase="marks.skipped.many">{n} पंक्तियाँ हिस्सों के तौर पर पढ़ी नहीं जा सकीं।</span>
+    <span data-phrase="marks.loaded">{n} लोड हुए।</span>
+    <span data-phrase="marks.failed">{name} पढ़ी नहीं जा सकी: {reason}</span>
+    <span data-phrase="join.note">ये वीडियो दोबारा एनकोड किए बिना जोड़े नहीं जा सकते: {reason} एक ट्रैक अपने भीतर की
+      चीज़ का एक ही विवरण ढोता है, इसलिए जो वीडियो आपस में मेल नहीं खाते उन्हें एक विवरण
+      साझा करने के लिए दोबारा लिखना पड़ता है।</span>
+    <span data-phrase="method.copy.one">फ़्रेम नई फ़ाइल में ठीक जैसे हैं वैसे ही चले जाते हैं, इसलिए न कुछ डिकोड होता है न
+      एनकोड। तेज़, और इससे गुणवत्ता घट ही नहीं सकती। हर हिस्सा आपके निशान से पहले के सबसे
+      पास वाले कीफ़्रेम से शुरू होता है।</span>
+    <span data-phrase="method.copy.many">निशान लगा हर हिस्सा नई फ़ाइल में ठीक जैसा है वैसा ही, एक के बाद एक, चला जाता है। न
+      कुछ डिकोड होता है न एनकोड, इसलिए इसका कोई भी हिस्सा गुणवत्ता नहीं घटाता।</span>
+    <span data-phrase="method.exact.one">हर हिस्सा ठीक उसी फ़्रेम से शुरू होता है जिस पर आपने निशान लगाया: उसके आगे वाले
+      कीफ़्रेम से डिकोड करके और तस्वीर दोबारा एनकोड करके। आवाज़ फिर भी दोबारा एनकोड नहीं,
+      कॉपी ही होती है।</span>
+    <span data-phrase="method.exact.many">हर वीडियो डिकोड करके एक ही धारा में दोबारा लिखा जाता है, इसलिए वे वीडियो भी जुड़
+      जाते हैं जो साइज़ या कोडेक पर मेल नहीं खाते। आवाज़ वहाँ कॉपी होती है जहाँ वे मेल
+      खाते हैं और वहाँ दोबारा एनकोड जहाँ नहीं।</span>
+    <span data-phrase="method.record">निशान लगे हिस्से को पूरा चलाकर रिकॉर्ड करता है, इसलिए उतना ही समय लगता है जितना वह
+      हिस्सा लंबा है और सब कुछ दोबारा एनकोड होता है। चलते समय इस टैब को सामने रखिए।</span>
+    <span data-phrase="audio.none">यहाँ कोई ऑडियो ट्रैक है ही नहीं, इसलिए रखने को कुछ नहीं।</span>
+    <span data-phrase="audio.record">चलाते समय पकड़कर दोबारा एनकोड किया गया, क्योंकि रिकॉर्डिंग इससे ज़्यादा कुछ कर ही
+      नहीं सकती।</span>
+    <span data-phrase="audio.encode">ये वीडियो अपनी आवाज़ अलग-अलग तरह से बताते हैं, इसलिए पूरे नतीजे के लिए उसे एक बार
+      डिकोड और एनकोड किया जाता है। इस औज़ार में यही अकेला मौक़ा है जब आवाज़ बिना छुए पार
+      नहीं जाती।</span>
+    <span data-phrase="audio.copy">फ़ाइल से सैंपल दर सैंपल कॉपी की जाती है, बिना कभी डिकोड हुए, इसलिए कुछ भी नहीं खोता।</span>
+    <span data-phrase="sum.nothing.cut">कुछ नहीं &mdash; निशान पूरे वीडियो को ढक लेते हैं</span>
+    <span data-phrase="sum.nothing.keep">कोई निशान नहीं</span>
+    <span data-phrase="sum.parts.one">1 हिस्सा</span>
+    <span data-phrase="sum.parts.many">{n} हिस्से</span>
+    <span data-phrase="sum.parts.cut">{parts}, जब निशान लगे हिस्से चले जाएँगे</span>
+    <span data-phrase="sum.parts.videos">{n} वीडियो से {parts}</span>
+    <span data-phrase="sum.start.keyframe">ठीक वहीं जहाँ आपने निशान लगाया (वह एक कीफ़्रेम पर पड़ता है)</span>
+    <span data-phrase="sum.start.editmark">ठीक वहीं जहाँ आपने निशान लगाया, एक एडिट मार्क के ज़रिए</span>
+    <span data-phrase="sum.start.exact">ठीक वहीं जहाँ आपने निशान लगाया</span>
+    <span data-phrase="cut.note">आपके पहले निशान से पहले का सबसे पास वाला कीफ़्रेम {seconds}s पहले है, और बीच के
+      फ़्रेम फ़ाइल में रहने ही पड़ेंगे &mdash; उनके बिना उनके बाद का कुछ भी डिकोड नहीं हो
+      सकता। उन पर न चलाने का निशान लगा है, जिसे हर आम प्लेयर मानता है। जो प्लेयर एडिट
+      मार्क नज़रअंदाज़ करता है वह वे {seconds}s शुरू में दिखाएगा। अगर यह आपके लिए असली
+      बाइट रखने से ज़्यादा मायने रखता है तो &laquo;ठीक यहीं काटिए&raquo; चुनिए।</span>
+    <span data-phrase="sum.size">क़रीब {size}</span>
+    <span data-phrase="sum.picture.copy">कॉपी की गई, फ़्रेम दर फ़्रेम</span>
+    <span data-phrase="sum.picture.exact">H.264 में दोबारा एनकोड की गई, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">H.264 में दोबारा एनकोड की गई, {size} ({n} पट्टियों के साथ फ़िट किए गए)</span>
+    <span data-phrase="sum.picture.record">चलते-चलते रिकॉर्ड की गई</span>
+    <span data-phrase="sum.sound.none">इस वीडियो में कोई नहीं</span>
+    <span data-phrase="sum.sound.left">छोड़ दी गई</span>
+    <span data-phrase="sum.sound.record">चलाने से दोबारा एनकोड की गई</span>
+    <span data-phrase="sum.sound.encode">एक बार डिकोड और दोबारा एनकोड की गई</span>
+    <span data-phrase="sum.sound.copy">कॉपी की गई, सैंपल दर सैंपल</span>
+    <span data-phrase="export.one">वीडियो काटिए</span>
+    <span data-phrase="export.many">{n} हिस्से काटकर जोड़िए</span>
+    <span data-phrase="progress.preparing">तैयारी हो रही है…</span>
+    <span data-phrase="progress.finishing">फ़ाइल लिखी जा रही है…</span>
+    <span data-phrase="progress.sound">आवाज़ एनकोड हो रही है &mdash; {total} में से {done}</span>
+    <span data-phrase="progress.copying">{total} में से {done} सैंपल कॉपी हो रहे हैं ({percent}%)</span>
+    <span data-phrase="progress.realtime">असली समय में रिकॉर्डिंग &mdash; {total} में से {done} ({percent}%)</span>
+    <span data-phrase="progress.frame">{total} में से {done} फ़्रेम ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">निशान पूरे वीडियो को ढक लेते हैं, इसलिए उन्हें काट देने पर कुछ बचेगा ही नहीं।</span>
+    <span data-phrase="export.nothing.keep">रखने के लिए कोई निशान नहीं लगा है। चलते समय I और O दबाइए।</span>
+    <span data-phrase="result.parts">{n} हिस्से</span>
+    <span data-phrase="result.notreencoded">दोबारा एनकोड नहीं की गई</span>
+    <span data-phrase="error.generic">कुछ गड़बड़ हो गई।</span>
     <span data-phrase="read.midframe">फ़ाइल एक फ़्रेम के बीचोंबीच ख़त्म हो जाती है।</span>
     <span data-phrase="read.avcshort">H.264 का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>
     <span data-phrase="read.hevcshort">HEVC का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>

@@ -235,6 +235,142 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">klip {n}</span>
+    <span data-phrase="join.nothing">birleştirilecek bir şey yok.</span>
+    <span data-phrase="join.unread">{name} bu okuyucunun anladığı bir MP4 değil, dolayısıyla kareleri kopyalanamaz.</span>
+    <span data-phrase="join.size">{name} {size}, ilk klip ise {first}.</span>
+    <span data-phrase="join.rotated">{name} {degrees} derece döndürülmüş olarak saklanmış, ilk klip ise {first} derece
+      döndürülmüş.</span>
+    <span data-phrase="join.rotated.none">{name} {degrees} derece döndürülmüş olarak saklanmış, ilk klip ise döndürülmemiş.</span>
+    <span data-phrase="join.codec">{name} {codec}, ilk klip ise {first}.</span>
+    <span data-phrase="join.settings">{name} ilk kliple aynı kodeği kullanıyor ama farklı ayarlarla kodlanmış, dolayısıyla
+      tek bir tanım ikisini birden karşılayamaz.</span>
+    <span data-phrase="join.unreadable">kliplerden biri okunamadı.</span>
+    <span data-phrase="join.silent">{name} sessiz, diğerlerinde ses var; bir kopya yolun ortasında susardı.</span>
+    <span data-phrase="join.sound">{name} {rate} Hz'de {channels} kanallı ses taşıyor, ilk klip ise {firstrate} Hz'de
+      {firstchannels} kanallı.</span>
+    <span data-phrase="join.soundentry">{name} sesi ilk klipten farklı kodlanmış.</span>
+    <span data-phrase="audio.toobig">İç hata: ses tanımı beklenenden büyük.</span>
+    <span data-phrase="audio.noencode">Ses çözüldü ama kodlayıcıdan geriye bir şey gelmedi.</span>
+    <span data-phrase="nothing.selected">Tutulacak hiçbir şey seçilmemiş.</span>
+    <span data-phrase="encode.toobig">Bu tarayıcı {size} boyutunda H.264 kodlamayacak. Daha küçük bir çerçeve seçin, ya da
+      hiçbir şeyi kodlamayan &laquo;Her baytı koru&raquo; seçeneğini kullanın.</span>
+    <span data-phrase="decode.none">Seçtiğiniz şeyden hiçbir kare çözülemedi.</span>
+    <span data-phrase="decode.noframe">Bu dosyadan hiçbir kare çözülemedi.</span>
+    <span data-phrase="encode.noconfig">Kodlayıcı hiçbir zaman bir çözücü yapılandırması bildirmedi.</span>
+    <span data-phrase="record.noplay">Bu tarayıcı, kırpmak için dosyayı oynatamadı.</span>
+    <span data-phrase="record.slow">Dosyanın açılması çok uzun sürdü.</span>
+    <span data-phrase="record.noseek">Tarayıcı bölümün başına atlayamadı.</span>
+    <span data-phrase="record.nosupport">Bu tarayıcı videoyu ne yeniden kodlayabiliyor ne de kaydedebiliyor.</span>
+    <span data-phrase="marks.unreadable">O dosyadan hiçbir parça okunamadı. İlkinden sonraki her satır, virgülle ayrılmış bir
+      başlangıç ve bir bitiş olmalı.</span>
+    <span data-phrase="warn.hidden">Kayıt sırasında sekme arkada kaldı, dolayısıyla bazı kareler eksik olabilir. Temiz
+      bir sonuç için bu sekme öndeyken yeniden çalıştırın.</span>
+    <span data-phrase="warn.nosound">Bu tarayıcıda ses yakalanamadı, dolayısıyla sonuçta ses izi yok.</span>
+    <span data-phrase="warn.noaac">Bu klipler seslerini farklı tanımlıyor, birleştirmek için sesin yeniden kodlanması
+      gerekirdi &mdash; ve bu tarayıcı AAC kodlamıyor. Video sessiz olarak birleştirildi.
+      Chrome ve Edge bunu yapar.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}d {s}sn</span>
+    <span data-phrase="dur.seconds">{s}sn</span>
+    <span data-phrase="clip.mark">Bu videoyu işaretle</span>
+    <span data-phrase="clip.segments.one">1 parça</span>
+    <span data-phrase="clip.segments.many">{n} parça</span>
+    <span data-phrase="clip.notmarked">işaretlenmemiş</span>
+    <span data-phrase="clip.sound">sesli</span>
+    <span data-phrase="clip.nosound">sessiz</span>
+    <span data-phrase="clip.recorded">kesmek için kaydedildi</span>
+    <span data-phrase="clip.editing">{name} &mdash; {total} içinden {index}</span>
+    <span data-phrase="stage.noplay">Bu tarayıcı bu videoyu oynatmayacak, bu yüzden işaretlerin nerede olduğunu göstermek
+      için aşağıdaki kareler teker teker çözülüyor. Kesimin kendisi bundan etkilenmiyor.</span>
+    <span data-phrase="stage.noframe">Bu tarayıcı bu videoyu oynatmayacak, ondan tek bir kare de çözülemedi ({detail}).
+      Aşağıdaki işaretler videonun uzunluğu üzerinde yine de çalışıyor.</span>
+    <span data-phrase="mark.noopen">Henüz açık bir şey yok. Parçanın başlaması gereken yerde I'ye, bittiği yerde O'ya
+      basın.</span>
+    <span data-phrase="mark.before">Bu, parçayı {at} noktasında bitirirdi; oysa parça {start} noktasında başlıyor. Önce
+      oynatma başlığını başlangıcın ötesine götürün.</span>
+    <span data-phrase="mark.nospace">Burada parça eklemeye yetecek kadar video kalmadı. Oynatma başlığını geri alın.</span>
+    <span data-phrase="mark.clearall">{name} dosyasının {n} parçasının hepsi silinsin mi?</span>
+    <span data-phrase="segments.none">henüz yok &mdash; videonun tamamı</span>
+    <span data-phrase="segments.some">{total} içinden {done}</span>
+    <span data-phrase="seg.play">Bu parçayı oynat</span>
+    <span data-phrase="seg.up">Yukarı taşı</span>
+    <span data-phrase="seg.down">Aşağı taşı</span>
+    <span data-phrase="seg.remove">Kaldır</span>
+    <span data-phrase="marks.nothing">Kaydedilecek işaretlenmiş bir şey henüz yok.</span>
+    <span data-phrase="marks.pastend">{name} içindeki her parça, bu video bittikten sonra başlıyor. Herhalde başka bir
+      videoya göre işaretlenmiştir.</span>
+    <span data-phrase="marks.dropped.one">{name} içindeki 1 parça bu videonun sonundan sonra başlıyor, bu yüzden dışarıda
+      bırakıldı.</span>
+    <span data-phrase="marks.dropped.many">{name} içindeki {n} parça bu videonun sonundan sonra başlıyor, bu yüzden dışarıda
+      bırakıldı.</span>
+    <span data-phrase="marks.skipped.one">1 satır parça olarak okunamadı.</span>
+    <span data-phrase="marks.skipped.many">{n} satır parça olarak okunamadı.</span>
+    <span data-phrase="marks.loaded">{n} tanesi yüklendi.</span>
+    <span data-phrase="marks.failed">{name} okunamadı: {reason}</span>
+    <span data-phrase="join.note">Bu videolar yeniden kodlanmadan birleştirilemez: {reason} Bir iz, içinde ne olduğuna
+      dair tek bir tanım taşır; dolayısıyla birbirine uymayan videoların tek bir tanımı
+      paylaşabilmesi için yeniden yazılmaları gerekir.</span>
+    <span data-phrase="method.copy.one">Kareler yeni dosyaya tam olduğu gibi taşınır, yani hiçbir şey çözülmez ve hiçbir şey
+      kodlanmaz. Hızlıdır ve kaliteye mal olamaz. Her parça, işaretinizden önceki en yakın
+      anahtar karede başlar.</span>
+    <span data-phrase="method.copy.many">İşaretlenmiş her parça yeni dosyaya tam olduğu gibi, birbiri ardına taşınır. Hiçbir
+      şey çözülmez ve hiçbir şey kodlanmaz, yani bunun hiçbir parçası kaliteye mal olmaz.</span>
+    <span data-phrase="method.exact.one">Her parça, işaretlediğiniz karede başlar: bunun için önündeki anahtar kareden
+      itibaren çözülür ve görüntü yeniden kodlanır. Ses yine de yeniden kodlanmaz,
+      kopyalanır.</span>
+    <span data-phrase="method.exact.many">Her video çözülür ve tek bir akışa yeniden yazılır, böylece boyut ya da kodek
+      konusunda uyuşmayan videolar bile birleştirilebilir. Ses, uyuştukları yerde
+      kopyalanır, uyuşmadıkları yerde yeniden kodlanır.</span>
+    <span data-phrase="method.record">İşaretlenmiş parçayı baştan sona oynatıp kaydeder, yani o parça ne kadar uzunsa o
+      kadar sürer ve her şey yeniden kodlanır. Çalışırken bu sekmeyi önde tutun.</span>
+    <span data-phrase="audio.none">Burada ses izi yok, dolayısıyla korunacak bir şey de yok.</span>
+    <span data-phrase="audio.record">Oynatmadan yakalanıp yeniden kodlandı, çünkü bir kaydın yapabileceği tek şey bu.</span>
+    <span data-phrase="audio.encode">Bu videolar seslerini farklı tanımlıyor, bu yüzden ses bütün sonuç için bir kez
+      çözülüp kodlanıyor. Bu araçta sesin dokunulmadan geçirilmediği tek durum budur.</span>
+    <span data-phrase="audio.copy">Dosyadan örnek örnek kopyalanır, hiç çözülmeden; yani hiçbir şey kaybetmez.</span>
+    <span data-phrase="sum.nothing.cut">hiçbir şey &mdash; işaretler videonun tamamını kaplıyor</span>
+    <span data-phrase="sum.nothing.keep">işaretlenmiş bir şey yok</span>
+    <span data-phrase="sum.parts.one">1 parça</span>
+    <span data-phrase="sum.parts.many">{n} parça</span>
+    <span data-phrase="sum.parts.cut">{parts}, işaretlenenler gittikten sonra</span>
+    <span data-phrase="sum.parts.videos">{n} videodan {parts}</span>
+    <span data-phrase="sum.start.keyframe">tam işaretlediğiniz yerde (bir anahtar kareye denk geliyor)</span>
+    <span data-phrase="sum.start.editmark">tam işaretlediğiniz yerde, bir kurgu işareti aracılığıyla</span>
+    <span data-phrase="sum.start.exact">tam işaretlediğiniz yerde</span>
+    <span data-phrase="cut.note">İlk işaretinizden önceki en yakın anahtar kare {seconds}sn daha erken, ve aradaki
+      karelerin dosyada kalması gerekiyor &mdash; onlar olmadan sonrasındaki hiçbir şey
+      çözülemez. Bu kareler oynatılmayacak diye işaretlenmiştir ve yaygın oynatıcıların
+      hepsi buna uyar. Kurgu işaretlerini yok sayan bir oynatıcı o {seconds}sn'yi başta
+      gösterir. Bu, özgün baytları korumaktan daha önemliyse &laquo;Tam burada kes&raquo;
+      seçeneğini seçin.</span>
+    <span data-phrase="sum.size">yaklaşık {size}</span>
+    <span data-phrase="sum.picture.copy">kopyalandı, kare kare</span>
+    <span data-phrase="sum.picture.exact">H.264 olarak yeniden kodlandı, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">H.264 olarak yeniden kodlandı, {size} ({n} tanesi bantlarla yerleştirildi)</span>
+    <span data-phrase="sum.picture.record">oynarken kaydedildi</span>
+    <span data-phrase="sum.sound.none">bu videoda yok</span>
+    <span data-phrase="sum.sound.left">dışarıda bırakıldı</span>
+    <span data-phrase="sum.sound.record">oynatmadan yeniden kodlandı</span>
+    <span data-phrase="sum.sound.encode">bir kez çözülüp yeniden kodlandı</span>
+    <span data-phrase="sum.sound.copy">kopyalandı, örnek örnek</span>
+    <span data-phrase="export.one">Videoyu kes</span>
+    <span data-phrase="export.many">{n} parçayı kes ve birleştir</span>
+    <span data-phrase="progress.preparing">Hazırlanıyor…</span>
+    <span data-phrase="progress.finishing">Dosya yazılıyor…</span>
+    <span data-phrase="progress.sound">Ses kodlanıyor &mdash; {total} içinden {done}</span>
+    <span data-phrase="progress.copying">{total} örnekten {done} tanesi kopyalanıyor (%{percent})</span>
+    <span data-phrase="progress.realtime">Gerçek zamanlı kayıt &mdash; {total} içinden {done} (%{percent})</span>
+    <span data-phrase="progress.frame">{total} kareden {done} (%{percent})</span>
+    <span data-phrase="export.nothing.cut">İşaretler videonun tamamını kaplıyor, dolayısıyla onları kesip çıkarmak geriye
+      hiçbir şey bırakmazdı.</span>
+    <span data-phrase="export.nothing.keep">Tutulacak işaretlenmiş bir şey yok. Oynarken I ve O tuşlarına basın.</span>
+    <span data-phrase="result.parts">{n} parça</span>
+    <span data-phrase="result.notreencoded">yeniden kodlanmadı</span>
+    <span data-phrase="error.generic">Bir şeyler ters gitti.</span>
     <span data-phrase="read.midframe">Dosya bir karenin ortasında bitiyor.</span>
     <span data-phrase="read.avcshort">H.264 yapılandırma kaydı fazla kısa.</span>
     <span data-phrase="read.hevcshort">HEVC yapılandırma kaydı fazla kısa.</span>

@@ -230,6 +230,155 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="clip.nth">Clip {n}</span>
+    <span data-phrase="join.nothing">es gibt nichts zu verbinden.</span>
+    <span data-phrase="join.unread">{name} ist keine MP4, die dieser Leser versteht, also können seine Frames nicht
+      kopiert werden.</span>
+    <span data-phrase="join.size">{name} ist {size} und der erste Clip ist {first}.</span>
+    <span data-phrase="join.rotated">{name} ist um {degrees} Grad gedreht gespeichert und der erste Clip ist um {first}
+      gedreht.</span>
+    <span data-phrase="join.rotated.none">{name} ist um {degrees} Grad gedreht gespeichert und der erste Clip ist nicht
+      gedreht.</span>
+    <span data-phrase="join.codec">{name} ist {codec} und der erste Clip ist {first}.</span>
+    <span data-phrase="join.settings">{name} hat denselben Codec wie der erste Clip, wurde aber mit anderen Einstellungen
+      kodiert, also kann eine Beschreibung nicht für beide gelten.</span>
+    <span data-phrase="join.unreadable">einer der Clips konnte nicht gelesen werden.</span>
+    <span data-phrase="join.silent">{name} hat keinen Ton und die anderen haben welchen, eine Kopie würde also
+      mittendrin still werden.</span>
+    <span data-phrase="join.sound">{name} hat {channels}-kanaligen Ton mit {rate} Hz und der erste Clip hat
+      {firstchannels}-kanaligen mit {firstrate} Hz.</span>
+    <span data-phrase="join.soundentry">{name} hat anders kodierten Ton als der erste Clip.</span>
+    <span data-phrase="audio.toobig">Interner Fehler: die Tonbeschreibung ist größer als erwartet.</span>
+    <span data-phrase="audio.noencode">Der Ton wurde dekodiert, aber vom Encoder kam nichts zurück.</span>
+    <span data-phrase="nothing.selected">Es ist nichts ausgewählt, was behalten werden soll.</span>
+    <span data-phrase="encode.toobig">Dieser Browser wird H.264 nicht in {size} kodieren. Wählen Sie einen kleineren
+      Rahmen, oder nehmen Sie &bdquo;Jedes Byte behalten&ldquo;, das gar nichts kodiert.</span>
+    <span data-phrase="decode.none">Aus dem Gewählten konnten keine Frames dekodiert werden.</span>
+    <span data-phrase="decode.noframe">Aus dieser Datei konnte kein Frame dekodiert werden.</span>
+    <span data-phrase="encode.noconfig">Der Encoder hat nie eine Decoder-Konfiguration gemeldet.</span>
+    <span data-phrase="record.noplay">Dieser Browser konnte die Datei zum Schneiden nicht abspielen.</span>
+    <span data-phrase="record.slow">Die Datei brauchte zu lange zum Öffnen.</span>
+    <span data-phrase="record.noseek">Der Browser konnte nicht an den Anfang des Abschnitts springen.</span>
+    <span data-phrase="record.nosupport">Dieser Browser kann Video weder neu kodieren noch aufnehmen.</span>
+    <span data-phrase="marks.unreadable">Aus dieser Datei konnten keine Abschnitte gelesen werden. Jede Zeile nach der ersten
+      sollte ein Anfang und ein Ende sein, durch ein Komma getrennt.</span>
+    <span data-phrase="warn.hidden">Der Tab war während der Aufnahme im Hintergrund, es können also Frames fehlen.
+      Lassen Sie es noch einmal mit diesem Tab im Vordergrund laufen.</span>
+    <span data-phrase="warn.nosound">Der Ton konnte in diesem Browser nicht aufgenommen werden, das Ergebnis hat also
+      keine Tonspur.</span>
+    <span data-phrase="warn.noaac">Diese Clips beschreiben ihren Ton unterschiedlich, er hätte zum Verbinden also neu
+      kodiert werden müssen &mdash; und dieser Browser kodiert kein AAC. Das Video wurde
+      ohne Ton verbunden. Chrome und Edge können es.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="dur.minutes">{m}m {s}s</span>
+    <span data-phrase="dur.seconds">{s}s</span>
+    <span data-phrase="clip.mark">Dieses Video markieren</span>
+    <span data-phrase="clip.segments.one">1 Abschnitt</span>
+    <span data-phrase="clip.segments.many">{n} Abschnitte</span>
+    <span data-phrase="clip.notmarked">nicht markiert</span>
+    <span data-phrase="clip.sound">mit Ton</span>
+    <span data-phrase="clip.nosound">ohne Ton</span>
+    <span data-phrase="clip.recorded">zum Schneiden aufgenommen</span>
+    <span data-phrase="clip.editing">{name} &mdash; {index} von {total}</span>
+    <span data-phrase="stage.noplay">Dieser Browser wird dieses Video nicht abspielen, deshalb werden die Frames unten
+      einzeln dekodiert, um zu zeigen, wo die Markierungen liegen. Der Schnitt selbst ist
+      davon nicht betroffen.</span>
+    <span data-phrase="stage.noframe">Dieser Browser wird dieses Video nicht abspielen, und es ließ sich auch kein Frame
+      daraus dekodieren ({detail}). Die Markierungen unten funktionieren auf seiner Länge
+      weiterhin.</span>
+    <span data-phrase="mark.noopen">Es ist noch nichts offen. Drücken Sie I, wo der Teil anfangen soll, und dann O, wo
+      er endet.</span>
+    <span data-phrase="mark.before">Das würde den Abschnitt bei {at} enden lassen, und das liegt vor seinem Anfang bei
+      {start}. Bewegen Sie den Abspielkopf erst hinter den Anfang.</span>
+    <span data-phrase="mark.nospace">Hier ist nicht genug Video übrig, um einen Abschnitt hinzuzufügen. Bewegen Sie den
+      Abspielkopf zurück.</span>
+    <span data-phrase="mark.clearall">Alle {n} Abschnitte von {name} löschen?</span>
+    <span data-phrase="segments.none">noch keine &mdash; das ganze Video</span>
+    <span data-phrase="segments.some">{done} von {total}</span>
+    <span data-phrase="seg.play">Diesen Abschnitt abspielen</span>
+    <span data-phrase="seg.up">Nach oben</span>
+    <span data-phrase="seg.down">Nach unten</span>
+    <span data-phrase="seg.remove">Entfernen</span>
+    <span data-phrase="marks.nothing">Es ist noch nichts markiert, was gespeichert werden könnte.</span>
+    <span data-phrase="marks.pastend">Jeder Abschnitt in {name} beginnt nach dem Ende dieses Videos. Er wurde
+      wahrscheinlich für ein anderes gesetzt.</span>
+    <span data-phrase="marks.dropped.one">1 Abschnitt in {name} beginnt hinter dem Ende dieses Videos und wurde deshalb
+      weggelassen.</span>
+    <span data-phrase="marks.dropped.many">{n} Abschnitte in {name} beginnen hinter dem Ende dieses Videos und wurden deshalb
+      weggelassen.</span>
+    <span data-phrase="marks.skipped.one">1 Zeile ließ sich nicht als Abschnitt lesen.</span>
+    <span data-phrase="marks.skipped.many">{n} Zeilen ließen sich nicht als Abschnitt lesen.</span>
+    <span data-phrase="marks.loaded">{n} geladen.</span>
+    <span data-phrase="marks.failed">{name} konnte nicht gelesen werden: {reason}</span>
+    <span data-phrase="join.note">Diese Videos lassen sich ohne neues Kodieren nicht verbinden: {reason} Eine Spur
+      trägt eine Beschreibung dessen, was in ihr steckt, also müssen Videos, die nicht
+      übereinstimmen, neu geschrieben werden, um sich eine zu teilen.</span>
+    <span data-phrase="method.copy.one">Die Frames werden genau so, wie sie sind, in die neue Datei verschoben, es wird also
+      nichts dekodiert und nichts kodiert. Schnell, und es kann keine Qualität kosten.
+      Jeder Teil beginnt am nächsten Keyframe vor Ihrer Markierung.</span>
+    <span data-phrase="method.copy.many">Jeder markierte Teil wird genau so, wie er ist, in die neue Datei verschoben, einer
+      nach dem anderen. Es wird nichts dekodiert und nichts kodiert, kein Teil davon
+      kostet also Qualität.</span>
+    <span data-phrase="method.exact.one">Jeder Teil beginnt genau bei dem Frame, den Sie markiert haben: dafür wird ab dem
+      Keyframe davor dekodiert und das Bild neu kodiert. Der Ton wird weiterhin kopiert
+      statt neu kodiert.</span>
+    <span data-phrase="method.exact.many">Jedes Video wird dekodiert und in einen einzigen Strom neu geschrieben, so lassen
+      sich auch Videos verbinden, die sich in Größe oder Codec unterscheiden. Der Ton wird
+      kopiert, wo sie sich einig sind, und neu kodiert, wo nicht.</span>
+    <span data-phrase="method.record">Spielt den markierten Teil durch und nimmt ihn auf, es dauert also so lange, wie
+      dieser Teil lang ist, und alles wird neu kodiert. Lassen Sie diesen Tab im
+      Vordergrund, während es läuft.</span>
+    <span data-phrase="audio.none">Hier ist keine Tonspur, es gibt also nichts zu behalten.</span>
+    <span data-phrase="audio.record">Aus der Wiedergabe aufgenommen und neu kodiert, weil eine Aufnahme nichts anderes
+      kann.</span>
+    <span data-phrase="audio.encode">Diese Videos beschreiben ihren Ton unterschiedlich, er wird also einmal für das
+      ganze Ergebnis dekodiert und kodiert. Das ist der einzige Fall in diesem Werkzeug,
+      in dem der Ton nicht unangetastet übernommen wird.</span>
+    <span data-phrase="audio.copy">Sample für Sample aus der Datei kopiert, ohne je dekodiert zu werden, also geht
+      nichts verloren.</span>
+    <span data-phrase="sum.nothing.cut">nichts &mdash; die Markierungen decken das ganze Video ab</span>
+    <span data-phrase="sum.nothing.keep">nichts markiert</span>
+    <span data-phrase="sum.parts.one">1 Teil</span>
+    <span data-phrase="sum.parts.many">{n} Teile</span>
+    <span data-phrase="sum.parts.cut">{parts}, wenn die markierten weg sind</span>
+    <span data-phrase="sum.parts.videos">{parts} aus {n} Videos</span>
+    <span data-phrase="sum.start.keyframe">genau da, wo Sie markiert haben (es liegt auf einem Keyframe)</span>
+    <span data-phrase="sum.start.editmark">genau da, wo Sie markiert haben, über eine Schnittmarke</span>
+    <span data-phrase="sum.start.exact">genau da, wo Sie markiert haben</span>
+    <span data-phrase="cut.note">Der nächste Keyframe vor Ihrer ersten Markierung liegt {seconds}s früher, und die
+      Frames dazwischen müssen in der Datei bleiben &mdash; ohne sie lässt sich nichts
+      danach dekodieren. Sie sind als nicht abzuspielen markiert, woran sich jeder gängige
+      Player hält. Ein Player, der Schnittmarken ignoriert, zeigt diese {seconds}s am
+      Anfang. Wählen Sie &bdquo;Genau hier schneiden&ldquo;, wenn Ihnen das wichtiger ist,
+      als die ursprünglichen Bytes zu behalten.</span>
+    <span data-phrase="sum.size">etwa {size}</span>
+    <span data-phrase="sum.picture.copy">kopiert, Frame für Frame</span>
+    <span data-phrase="sum.picture.exact">neu kodiert zu H.264, {size}</span>
+    <span data-phrase="sum.picture.exact.bars">neu kodiert zu H.264, {size} ({n} mit Balken eingepasst)</span>
+    <span data-phrase="sum.picture.record">aufgenommen, während es läuft</span>
+    <span data-phrase="sum.sound.none">keiner in diesem Video</span>
+    <span data-phrase="sum.sound.left">weggelassen</span>
+    <span data-phrase="sum.sound.record">aus der Wiedergabe neu kodiert</span>
+    <span data-phrase="sum.sound.encode">einmal dekodiert und neu kodiert</span>
+    <span data-phrase="sum.sound.copy">kopiert, Sample für Sample</span>
+    <span data-phrase="export.one">Video schneiden</span>
+    <span data-phrase="export.many">{n} Teile schneiden und verbinden</span>
+    <span data-phrase="progress.preparing">Wird vorbereitet…</span>
+    <span data-phrase="progress.finishing">Die Datei wird geschrieben…</span>
+    <span data-phrase="progress.sound">Der Ton wird kodiert &mdash; {done} von {total}</span>
+    <span data-phrase="progress.copying">Sample {done} von {total} wird kopiert ({percent}%)</span>
+    <span data-phrase="progress.realtime">Aufnahme in Echtzeit &mdash; {done} von {total} ({percent}%)</span>
+    <span data-phrase="progress.frame">Frame {done} von {total} ({percent}%)</span>
+    <span data-phrase="export.nothing.cut">Die Markierungen decken das ganze Video ab, sie herauszuschneiden würde also nichts
+      übrig lassen.</span>
+    <span data-phrase="export.nothing.keep">Es ist nichts markiert, was behalten werden soll. Drücken Sie I und O, während es
+      läuft.</span>
+    <span data-phrase="result.parts">{n} Teile</span>
+    <span data-phrase="result.notreencoded">nicht neu kodiert</span>
+    <span data-phrase="error.generic">Da ist etwas schiefgegangen.</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>

@@ -74,10 +74,10 @@ function whenReady(video, signal) {
       if (error) reject(error); else resolve();
     };
     const ok = () => done(null);
-    const bad = () => done(new Error('This browser could not play the file back to trim it.'));
+    const bad = () => done(new Error('record.noplay'));
     const cancel = () => done(aborted());
 
-    const timer = setTimeout(() => done(new Error('The file took too long to open.')), LOAD_TIMEOUT);
+    const timer = setTimeout(() => done(new Error('record.slow')), LOAD_TIMEOUT);
     if (video.readyState >= 2) { done(null); return; }
     video.addEventListener('canplay', ok, { once: true });
     video.addEventListener('error', bad, { once: true });
@@ -102,7 +102,7 @@ function seekTo(video, seconds, signal) {
     const cancel = () => done(aborted());
 
     const timer = setTimeout(
-      () => done(new Error('The browser could not seek to the start of the section.')),
+      () => done(new Error('record.noseek')),
       SEEK_TIMEOUT);
 
     if (Math.abs(video.currentTime - seconds) < 0.001) { done(null); return; }
@@ -125,7 +125,7 @@ export async function trimByRecording({
   src, range, size, quality = 'medium', keepAudio = true, fps = 30, onProgress, signal,
 }) {
   const mimeType = pickRecorderMimeType();
-  if (!mimeType) throw new Error('This browser can neither re-encode nor record video.');
+  if (!mimeType) throw new Error('record.nosupport');
 
   const canvas = document.createElement('canvas');
   canvas.width = Math.max(2, Math.floor(size.width / 2) * 2);
@@ -301,15 +301,12 @@ export async function trimByRecording({
       codec: mimeType,
       exact: true,
       preRoll: 0,
+      // Keys, not sentences, and not joined here either: which mark
+      // separates two sentences is the reader's language's business.
       warning: [
-        wentHidden
-          ? 'The tab was hidden while recording, so some frames may be missing. '
-            + 'Run it again with this tab in front for a clean result.'
-          : null,
-        audioMissing && keepAudio
-          ? 'The sound could not be captured in this browser, so the result has no audio track.'
-          : null,
-      ].filter(Boolean).join(' ') || null,
+        wentHidden ? 'warn.hidden' : null,
+        audioMissing && keepAudio ? 'warn.nosound' : null,
+      ].filter(Boolean),
     };
   } catch (error) {
     if (recorder && recorder.state !== 'inactive') recorder.stop();

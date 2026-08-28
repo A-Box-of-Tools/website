@@ -117,7 +117,7 @@ export function audioSamplesFor({ file, audio, plan, durations, seam, outTimesca
  */
 export async function joinByCopy({ clips, keepAudio = true, onProgress, signal }) {
   const usable = clips.filter((clip) => clip.ranges.length);
-  if (!usable.length) throw new Error('There is nothing selected to keep.');
+  if (!usable.length) throw new Error('nothing.selected');
 
   const firstVideo = usable[0].media.video;
   const firstAudio = usable[0].media.audio;
