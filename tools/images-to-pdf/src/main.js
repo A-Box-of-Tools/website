@@ -172,8 +172,9 @@ function buildItemNode(item, index) {
   remove.type = 'button';
   remove.className = 'remove-btn';
   remove.textContent = '×';
-  remove.title = `Remove ${item.name}`;
-  remove.setAttribute('aria-label', `Remove ${item.name}`);
+  const removeLabel = phrase('tile.remove', { name: item.name });
+  remove.title = removeLabel;
+  remove.setAttribute('aria-label', removeLabel);
   remove.addEventListener('click', () => {
     // Every control that changes the queue stands down while a document is
     // being written from it. The Images to Video tool hands its encoder a
@@ -210,22 +211,22 @@ function buildItemNode(item, index) {
   const controls = document.createElement('div');
   controls.className = 'image-controls';
   controls.append(
-    tileButton('↺', `Rotate ${item.name} anticlockwise`, false, () => {
+    tileButton('↺', phrase('tile.left', { name: item.name }), false, () => {
       if (exporting) return;
       rotateItem(item, -1);
       render();
     }),
-    tileButton('↻', `Rotate ${item.name} clockwise`, false, () => {
+    tileButton('↻', phrase('tile.right', { name: item.name }), false, () => {
       if (exporting) return;
       rotateItem(item, 1);
       render();
     }),
-    tileButton('‹', `Move ${item.name} earlier`, index === 0, () => {
+    tileButton('‹', phrase('tile.earlier', { name: item.name }), index === 0, () => {
       if (exporting) return;
       moveItem(items, index, index - 1);
       render();
     }),
-    tileButton('›', `Move ${item.name} later`, index === items.length - 1, () => {
+    tileButton('›', phrase('tile.later', { name: item.name }), index === items.length - 1, () => {
       if (exporting) return;
       moveItem(items, index, index + 1);
       render();
