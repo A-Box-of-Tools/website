@@ -104,13 +104,15 @@ $accent = [System.Drawing.ColorTranslator]::FromHtml('#5b9bd8')
 # headless browser screenshotting the file cannot be told which colour scheme to
 # pretend to be in, so the choice is made by overriding the classes instead.
 $markPaletteDark = @'
-svg .logo-lid{stroke:#5b9bd8}svg .logo-tool{fill:#3772ab}svg .logo-tool-alt{fill:#5b9bd8}
-svg .logo-box{fill:#3772ab}svg .logo-band{fill:#5b9bd8}svg .logo-latch{fill:#cfe3f8}
+svg .logo-box{fill:#c4922a}svg .logo-band{fill:#f5c655}svg .logo-latch{fill:#ef7fa8}
+svg .logo-app-a{fill:#5b9bd8}svg .logo-app-b{fill:#b18ae4}svg .logo-app-c{fill:#5cc48c}
+svg .logo-app-d{fill:#ef8080}svg .logo-glyph{fill:#16202b}svg .logo-stroke{stroke:#16202b}
 '@
 
 $markPaletteLight = @'
-svg .logo-lid{stroke:#2b6cb0}svg .logo-tool{fill:#1d4f83}svg .logo-tool-alt{fill:#2b6cb0}
-svg .logo-box{fill:#1d4f83}svg .logo-band{fill:#2b6cb0}svg .logo-latch{fill:#d7e7f7}
+svg .logo-box{fill:#b07d10}svg .logo-band{fill:#f0b429}svg .logo-latch{fill:#e8618f}
+svg .logo-app-a{fill:#2b6cb0}svg .logo-app-b{fill:#8b5cc7}svg .logo-app-c{fill:#2f9e63}
+svg .logo-app-d{fill:#d94a4a}svg .logo-glyph{fill:#ffffff}svg .logo-stroke{stroke:#ffffff}
 '@
 
 <#
