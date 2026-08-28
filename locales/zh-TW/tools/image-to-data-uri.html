@@ -137,6 +137,39 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}：這不是這個工具認得的圖片格式。資料 URI 裡的類型必須寫對，所以它不會去猜。</span>
+    <span data-phrase="read.mismatch">檔名說是 {extension}，但位元組是 {label}。URI 裡寫的是 {mime}，能用的是這個。</span>
+    <span data-phrase="row.remove">把 {name} 從列表裡去掉</span>
+    <span data-phrase="n.image.one">{n} 張圖片</span>
+    <span data-phrase="n.image.many">{n} 張圖片</span>
+    <span data-phrase="results.one">{n} 張圖片，一共 {size} 文字。這些都沒去過任何地方。</span>
+    <span data-phrase="results.many">{n} 張圖片，一共 {size} 文字。這些都沒去過任何地方。</span>
+    <span data-phrase="facts.in">進 {size}</span>
+    <span data-phrase="facts.out">出 {n} 個字元</span>
+    <span data-phrase="overhead.same">和檔案一樣大</span>
+    <span data-phrase="overhead.larger">比檔案大 {percent}%</span>
+    <span data-phrase="overhead.smaller">比檔案小 {percent}%</span>
+    <span data-phrase="verdict.tiny">小到這麼做明顯划算：少一次請求，落進去的那個檔案也幾乎沒變大。</span>
+    <span data-phrase="verdict.icon">內嵌圖示的正常大小。對每個頁面都出現的東西來說值得。</span>
+    <span data-phrase="verdict.large">作為內嵌圖片偏大了。凡是引用這份樣式表的都得帶著它，而且它自己沒法單獨快取。</span>
+    <span data-phrase="verdict.toobig">太大了，不適合內嵌。當成普通檔案發出去只會快取一次並且並行下載；內嵌之後它就落在每個頁面的關鍵路徑上，周圍任何東西一變就要整份重下。</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">一份色彩配置</span>
+    <span data-phrase="kind.time">一個時間戳</span>
+    <span data-phrase="kind.comment">一段註釋</span>
+    <span data-phrase="kind.text">文字</span>
+    <span data-phrase="meta.plain">裡面有 {size} 的{kinds}。它會跟著圖片一起被抄進 URI。</span>
+    <span data-phrase="meta.share">裡面有 {size} 的{kinds}，佔檔案的 {percent}%。它會跟著圖片一起被抄進 URI。</span>
+    <span data-phrase="render.failed">這個瀏覽器不肯畫出結果。URI 本身沒問題，只是這個格式它解不了。</span>
+    <span data-phrase="sniff.unrenderable">除了 Safari，沒有瀏覽器畫得出這個格式，所以 URI 會是有效的，圖卻不會出現。請先轉換一下。</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}，{b}</span>
+    <span data-phrase="join.and">{a} 和 {b}</span>
+    <span data-phrase="size.b">{n} 位元組</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">你的圖片沒有去任何地方。載入了 {total} 個檔案，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到圖片，或圖片裡的一個位元組。</span>

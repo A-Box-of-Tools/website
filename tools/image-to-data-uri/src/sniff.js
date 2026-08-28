@@ -54,7 +54,9 @@ function brands(bytes) {
  * scanner produces - and both make a data URI that is perfectly well-formed
  * and renders nowhere.
  */
-const UNRENDERABLE = 'No browser except Safari draws this format, so the URI will be valid and the picture will not appear. Convert it first.';
+// A phrase key: this module ships in fifteen languages, and the page is the
+// only place a sentence can be read.
+const UNRENDERABLE = 'sniff.unrenderable';
 
 const TESTS = [
   (b) => starts(b, 0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a)

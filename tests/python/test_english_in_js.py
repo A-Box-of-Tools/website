@@ -77,7 +77,8 @@ BASELINE = {
     # A filename template, a dimension pair, a CSS percentage, a phrase key, the
     # note written into a padded JPEG, and the eight published citations.
     'id-photo': 13,
-    'image-to-data-uri': 20,
+    # A CSS class name and one line of the CSS rule the tool writes out.
+    'image-to-data-uri': 2,
     'image-to-ico': 6,
     # The /Producer string written into the PDF, five lines of PDF syntax, a
     # CSS pixel value, a key template and the output filename.
