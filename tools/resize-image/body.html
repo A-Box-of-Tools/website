@@ -285,6 +285,130 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: not an image this tool can read.</span>
+    <span data-phrase="load.undecodable">{name}: this browser could not decode it.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">this browser would not write {format}.</span>
+    <span data-phrase="decode.failed">this browser could not decode the picture.</span>
+    <span data-phrase="size.bytes">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.one">1 image</span>
+    <span data-phrase="count.many">{n} images</span>
+    <span data-phrase="change.same">about the same size</span>
+    <span data-phrase="change.smaller">{percent}% smaller</span>
+    <span data-phrase="change.larger">{percent}% larger</span>
+    <span data-phrase="list.count">{count}, {size} in total</span>
+    <span data-phrase="row.shown">{name} is the one in the crop preview</span>
+    <span data-phrase="row.draw">Draw the crop box on {name}</span>
+    <span data-phrase="row.badge">In the preview</span>
+    <span data-phrase="row.remove">Take {name} off the list</span>
+    <span data-phrase="row.untouched">Nothing is being changed, so this one is passed through exactly as it is.</span>
+    <span data-phrase="row.becomes">becomes {size}</span>
+    <span data-phrase="run.one">Resize the image</span>
+    <span data-phrase="run.many">Resize the images</span>
+    <span data-phrase="preview.alt">Preview of {name}</span>
+    <span data-phrase="crop.box">Crop area. The arrow keys move it, Alt and the arrow keys resize it, and holding
+      Shift makes each step ten pixels.</span>
+    <span data-phrase="stage.name">Drawing on {name}.</span>
+    <span data-phrase="stage.note">Every image keeps its own box. {note}</span>
+    <span data-phrase="others.one.cropped">{name} has a box of its own.</span>
+    <span data-phrase="others.one.whole">{name} is still on the whole picture &mdash; pick it from the list above to crop
+      that one too.</span>
+    <span data-phrase="others.none">The other {count} are still on the whole picture &mdash; pick one from the list
+      above to crop it.</span>
+    <span data-phrase="others.all.two">Both of the others have a box of their own.</span>
+    <span data-phrase="others.all.many">All {n} of the others have a box of their own.</span>
+    <span data-phrase="others.some.one">1 of the other {total} has a box of its own; the rest are still on the whole
+      picture.</span>
+    <span data-phrase="others.some.many">{n} of the other {total} have a box of their own; the rest are still on the whole
+      picture.</span>
+    <span data-phrase="apply.same.one">Every image on the list is exactly this size, so the other one gets exactly this
+      box.</span>
+    <span data-phrase="apply.same.many">Every image on the list is exactly this size, so they all get exactly this box.</span>
+    <span data-phrase="apply.free">The same relative area on each &mdash; the same fractions of its own width and
+      height &mdash; because they are not all the same size.</span>
+    <span data-phrase="apply.source">The largest box in the picture's own shape that fits the same relative area of each,
+      so every result comes out the shape you locked even though they are not all the same
+      size.</span>
+    <span data-phrase="apply.ratio">The largest {ratio} box that fits the same relative area of each, so every result
+      comes out the shape you locked even though they are not all the same size.</span>
+    <span data-phrase="format.keep">A JPEG stays a JPEG, a PNG stays a PNG. Anything this browser cannot write &mdash; a
+      GIF, a BMP &mdash; comes out as PNG, which keeps transparency and flat colour.</span>
+    <span data-phrase="format.jpeg">Small and universal, and no transparency: anything see-through is filled with the
+      background colour.</span>
+    <span data-phrase="format.png">Lossless and transparent, and much larger than the other two on a photograph.</span>
+    <span data-phrase="format.webp">Smaller than JPEG at the same quality, keeps transparency, and every current browser
+      opens it.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; not supported by this browser</span>
+    <span data-phrase="plan.crop">cropped to {crop}</span>
+    <span data-phrase="plan.resize">resized to {size}</span>
+    <span data-phrase="plan.keep">kept at {size}</span>
+    <span data-phrase="plan.cropresize">cropped to {crop}, then resized to {size}</span>
+    <span data-phrase="plan.padded">{what}, padded out to the exact frame you asked for</span>
+    <span data-phrase="plan.written">{what}, written as {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Add an image and this will say exactly what it becomes.</span>
+    <span data-phrase="summary.untouched">Nothing is being changed: {name} is {size} and comes back exactly as it went in,
+      byte for byte.</span>
+    <span data-phrase="summary.plain">{name} is {size}. It comes out {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} is {size}. It comes out {out} &mdash; the picture at {scale}, on a background
+      filling the rest of that frame.</span>
+    <span data-phrase="summary.cropped">{name} is {size}. The box keeps {crop} of it. It comes out {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} is {size}. The box keeps {crop} of it. It comes out {out} &mdash; the picture
+      at {scale}, on a background filling the rest of that frame.</span>
+    <span data-phrase="scale.of.crop">{percent}% of what the box keeps</span>
+    <span data-phrase="scale.of.original">{percent}% of the original</span>
+    <span data-phrase="scale.up.crop">enlarged to {percent}% of what the box keeps</span>
+    <span data-phrase="scale.up.original">enlarged to {percent}% of the original</span>
+    <span data-phrase="summary.nothing">Nothing is cropped, nothing is resized and the format is unchanged, so there is
+      nothing to re-encode: every file is handed straight back byte for byte, EXIF tags
+      and all, because none of them is ever opened up.</span>
+    <span data-phrase="summary.plan.one">The image is {plan} &mdash; and the EXIF and GPS tags do not survive, because a
+      canvas holds pixels and nothing else.</span>
+    <span data-phrase="summary.plan.many">{name} is {plan} &mdash; and the EXIF and GPS tags do not survive, because a canvas
+      holds pixels and nothing else. {rest}</span>
+    <span data-phrase="rest.two">The other image gets the same size and format settings, with its own crop.</span>
+    <span data-phrase="rest.many">The other {count} get the same size and format settings, each with its own crop.</span>
+    <span data-phrase="progress.at">{index} of {total}: {name}</span>
+    <span data-phrase="results.nothing">Nothing was asked for, so nothing was done: every file came back exactly as it went
+      in.</span>
+    <span data-phrase="results.totals">{before} in, {after} out &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} in, {after} out &mdash; {change}. {count} needed no change and was passed
+      straight through.</span>
+    <span data-phrase="results.totals.many">{before} in, {after} out &mdash; {change}. {count} needed no change and were passed
+      straight through.</span>
+    <span data-phrase="result.open">Look at {name} full size</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; unchanged</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Passed through byte for byte, metadata and all: nothing about this file was being
+      changed.</span>
+    <span data-phrase="result.view">View</span>
+    <span data-phrase="result.download">Download</span>
+    <span data-phrase="viewer.alt.original">The original: {name}</span>
+    <span data-phrase="viewer.alt.result">The result: {name}</span>
+    <span data-phrase="viewer.caption.original">The original {name}, at {size}. Both are shown at the size this dialog has room for,
+      which is the only fair way to compare them.</span>
+    <span data-phrase="viewer.showresult">Show the result</span>
+    <span data-phrase="viewer.showoriginal">Show the original</span>
+    <span data-phrase="fact.savedas">Saved as</span>
+    <span data-phrase="fact.format">Format</span>
+    <span data-phrase="fact.before">Before</span>
+    <span data-phrase="fact.after">After</span>
+    <span data-phrase="fact.filesize">File size</span>
+    <span data-phrase="fact.cropped">Cropped</span>
+    <span data-phrase="fact.scale">Scale</span>
+    <span data-phrase="fact.padding">Padding</span>
+    <span data-phrase="fact.quality">Quality</span>
+    <span data-phrase="fact.metadata">Metadata</span>
+    <span data-phrase="fact.after.same">the same file, byte for byte</span>
+    <span data-phrase="fact.metadata.kept">kept &mdash; this file was never opened up</span>
+    <span data-phrase="fact.metadata.gone">not carried over &mdash; a canvas holds pixels and nothing else</span>
+    <span data-phrase="fact.crop.yes">{size}, from {x} across and {y} down</span>
+    <span data-phrase="fact.crop.no">no &mdash; the whole picture went through</span>
+    <span data-phrase="fact.scale.crop">{percent}% of the crop</span>
+    <span data-phrase="fact.scale.original">{percent}% of the original</span>
+    <span data-phrase="fact.padding.yes">yes &mdash; the picture sits on the background colour</span>
     <span data-phrase="progress.stopped">Stopped after {done} of {total}. What was finished is below.</span>
     <span data-phrase="progress.stopped.none">Stopped before the first one was finished.</span>
     <span data-phrase="net.clean">your images have gone nowhere. {total} files

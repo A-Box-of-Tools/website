@@ -289,6 +289,134 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name} : pas une image que cet outil sache lire.</span>
+    <span data-phrase="load.undecodable">{name} : ce navigateur n'a pas su la décoder.</span>
+    <span data-phrase="run.failed">{name} : {reason}</span>
+    <span data-phrase="write.refused">ce navigateur a refusé d'écrire du {format}.</span>
+    <span data-phrase="decode.failed">ce navigateur n'a pas su décoder l'image.</span>
+    <span data-phrase="size.bytes">{n} octets</span>
+    <span data-phrase="size.kb">{n} Ko</span>
+    <span data-phrase="size.mb">{n} Mo</span>
+    <span data-phrase="count.one">1 image</span>
+    <span data-phrase="count.many">{n} images</span>
+    <span data-phrase="change.same">à peu près la même taille</span>
+    <span data-phrase="change.smaller">{percent}% de moins</span>
+    <span data-phrase="change.larger">{percent}% de plus</span>
+    <span data-phrase="list.count">{count}, {size} en tout</span>
+    <span data-phrase="row.shown">c'est {name} qui est dans l'aperçu de recadrage</span>
+    <span data-phrase="row.draw">Tracer le cadre sur {name}</span>
+    <span data-phrase="row.badge">Dans l'aperçu</span>
+    <span data-phrase="row.remove">Retirer {name} de la liste</span>
+    <span data-phrase="row.untouched">Rien n'est modifié, donc celle-ci passe exactement telle quelle.</span>
+    <span data-phrase="row.becomes">devient {size}</span>
+    <span data-phrase="run.one">Redimensionner l'image</span>
+    <span data-phrase="run.many">Redimensionner les images</span>
+    <span data-phrase="preview.alt">Aperçu de {name}</span>
+    <span data-phrase="crop.box">Zone de recadrage. Les flèches la déplacent, Alt et les flèches la redimensionnent,
+      et en maintenant Maj chaque pas fait dix pixels.</span>
+    <span data-phrase="stage.name">Tracé sur {name}.</span>
+    <span data-phrase="stage.note">Chaque image garde son propre cadre. {note}</span>
+    <span data-phrase="others.one.cropped">{name} a un cadre à elle.</span>
+    <span data-phrase="others.one.whole">{name} est encore sur l'image entière &mdash; choisissez-la dans la liste ci-dessus
+      pour la recadrer aussi.</span>
+    <span data-phrase="others.none">Les {count} autres sont encore sur l'image entière &mdash; choisissez-en une dans la
+      liste ci-dessus pour la recadrer.</span>
+    <span data-phrase="others.all.two">Les deux autres ont chacune un cadre à elle.</span>
+    <span data-phrase="others.all.many">Les {n} autres ont chacune un cadre à elle.</span>
+    <span data-phrase="others.some.one">1 des {total} autres a un cadre à elle ; le reste est encore sur l'image entière.</span>
+    <span data-phrase="others.some.many">{n} des {total} autres ont chacune un cadre à elle ; le reste est encore sur l'image
+      entière.</span>
+    <span data-phrase="apply.same.one">Toutes les images de la liste font exactement cette taille, donc l'autre reçoit
+      exactement ce cadre.</span>
+    <span data-phrase="apply.same.many">Toutes les images de la liste font exactement cette taille, donc elles reçoivent
+      toutes exactement ce cadre.</span>
+    <span data-phrase="apply.free">La même zone relative sur chacune &mdash; les mêmes fractions de sa propre largeur
+      et de sa propre hauteur &mdash;, parce qu'elles ne font pas toutes la même taille.</span>
+    <span data-phrase="apply.source">Le plus grand cadre à la forme de l'image elle-même qui tienne dans la même zone
+      relative de chacune, pour que chaque résultat sorte à la forme que vous avez fixée
+      même si elles ne font pas toutes la même taille.</span>
+    <span data-phrase="apply.ratio">Le plus grand cadre en {ratio} qui tienne dans la même zone relative de chacune,
+      pour que chaque résultat sorte à la forme que vous avez fixée même si elles ne font
+      pas toutes la même taille.</span>
+    <span data-phrase="format.keep">Un JPEG reste un JPEG, un PNG reste un PNG. Ce que ce navigateur ne sait pas écrire
+      &mdash; un GIF, un BMP &mdash; sort en PNG, qui garde la transparence et les aplats.</span>
+    <span data-phrase="format.jpeg">Petit et universel, et sans transparence : tout ce qui est translucide est rempli
+      avec la couleur de fond.</span>
+    <span data-phrase="format.png">Sans perte et transparent, et bien plus lourd que les deux autres sur une
+      photographie.</span>
+    <span data-phrase="format.webp">Plus petit que le JPEG à qualité égale, garde la transparence, et tous les
+      navigateurs actuels l'ouvrent.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; non pris en charge par ce navigateur</span>
+    <span data-phrase="plan.crop">recadrée à {crop}</span>
+    <span data-phrase="plan.resize">redimensionnée à {size}</span>
+    <span data-phrase="plan.keep">gardée à {size}</span>
+    <span data-phrase="plan.cropresize">recadrée à {crop}, puis redimensionnée à {size}</span>
+    <span data-phrase="plan.padded">{what}, complétée jusqu'au cadre exact que vous avez demandé</span>
+    <span data-phrase="plan.written">{what}, écrite en {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Ajoutez une image et ceci dira exactement ce qu'elle devient.</span>
+    <span data-phrase="summary.untouched">Rien n'est modifié : {name} fait {size} et revient exactement telle qu'elle est
+      entrée, octet pour octet.</span>
+    <span data-phrase="summary.plain">{name} fait {size}. Il en sort {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} fait {size}. Il en sort {out} &mdash; l'image à {scale}, sur un fond qui
+      remplit le reste de ce cadre.</span>
+    <span data-phrase="summary.cropped">{name} fait {size}. Le cadre en garde {crop}. Il en sort {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} fait {size}. Le cadre en garde {crop}. Il en sort {out} &mdash; l'image à
+      {scale}, sur un fond qui remplit le reste de ce cadre.</span>
+    <span data-phrase="scale.of.crop">{percent}% de ce que garde le cadre</span>
+    <span data-phrase="scale.of.original">{percent}% de l'original</span>
+    <span data-phrase="scale.up.crop">agrandie à {percent}% de ce que garde le cadre</span>
+    <span data-phrase="scale.up.original">agrandie à {percent}% de l'original</span>
+    <span data-phrase="summary.nothing">Rien n'est recadré, rien n'est redimensionné et le format ne change pas, donc il n'y
+      a rien à réencoder : chaque fichier est rendu octet pour octet, balises EXIF
+      comprises, parce qu'aucun n'est jamais ouvert.</span>
+    <span data-phrase="summary.plan.one">L'image est {plan} &mdash; et les balises EXIF et GPS n'y survivent pas, parce qu'un
+      canvas contient des pixels et rien d'autre.</span>
+    <span data-phrase="summary.plan.many">{name} est {plan} &mdash; et les balises EXIF et GPS n'y survivent pas, parce qu'un
+      canvas contient des pixels et rien d'autre. {rest}</span>
+    <span data-phrase="rest.two">L'autre image reçoit les mêmes réglages de taille et de format, avec son propre
+      recadrage.</span>
+    <span data-phrase="rest.many">Les {count} autres reçoivent les mêmes réglages de taille et de format, chacune avec
+      son propre recadrage.</span>
+    <span data-phrase="progress.at">{index} sur {total} : {name}</span>
+    <span data-phrase="results.nothing">Rien n'était demandé, donc rien n'a été fait : chaque fichier est revenu exactement
+      tel qu'il est entré.</span>
+    <span data-phrase="results.totals">{before} en entrée, {after} en sortie &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} en entrée, {after} en sortie &mdash; {change}. {count} n'avait besoin
+      d'aucune modification et est passée telle quelle.</span>
+    <span data-phrase="results.totals.many">{before} en entrée, {after} en sortie &mdash; {change}. {count} n'avaient besoin
+      d'aucune modification et sont passées telles quelles.</span>
+    <span data-phrase="result.open">Voir {name} en grand</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; inchangée</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Passée octet pour octet, métadonnées comprises : rien dans ce fichier n'était
+      modifié.</span>
+    <span data-phrase="result.view">Voir</span>
+    <span data-phrase="result.download">Télécharger</span>
+    <span data-phrase="viewer.alt.original">L'original : {name}</span>
+    <span data-phrase="viewer.alt.result">Le résultat : {name}</span>
+    <span data-phrase="viewer.caption.original">L'original {name}, en {size}. Les deux sont montrés à la taille dont cette fenêtre
+      dispose, ce qui est la seule façon honnête de les comparer.</span>
+    <span data-phrase="viewer.showresult">Montrer le résultat</span>
+    <span data-phrase="viewer.showoriginal">Montrer l'original</span>
+    <span data-phrase="fact.savedas">Enregistrée sous</span>
+    <span data-phrase="fact.format">Format</span>
+    <span data-phrase="fact.before">Avant</span>
+    <span data-phrase="fact.after">Après</span>
+    <span data-phrase="fact.filesize">Taille du fichier</span>
+    <span data-phrase="fact.cropped">Recadrée</span>
+    <span data-phrase="fact.scale">Échelle</span>
+    <span data-phrase="fact.padding">Remplissage</span>
+    <span data-phrase="fact.quality">Qualité</span>
+    <span data-phrase="fact.metadata">Métadonnées</span>
+    <span data-phrase="fact.after.same">le même fichier, octet pour octet</span>
+    <span data-phrase="fact.metadata.kept">gardées &mdash; ce fichier n'a jamais été ouvert</span>
+    <span data-phrase="fact.metadata.gone">non reprises &mdash; un canvas contient des pixels et rien d'autre</span>
+    <span data-phrase="fact.crop.yes">{size}, à partir de {x} en largeur et {y} en hauteur</span>
+    <span data-phrase="fact.crop.no">non &mdash; l'image entière est passée</span>
+    <span data-phrase="fact.scale.crop">{percent}% du recadrage</span>
+    <span data-phrase="fact.scale.original">{percent}% de l'original</span>
+    <span data-phrase="fact.padding.yes">oui &mdash; l'image repose sur la couleur de fond</span>
     <span data-phrase="progress.stopped">Arrêté après {done} sur {total}. Ce qui est terminé est ci-dessous.</span>
     <span data-phrase="progress.stopped.none">Arrêté avant que le premier soit terminé.</span>
     <span data-phrase="net.clean">vos images ne sont allées nulle part. {total}

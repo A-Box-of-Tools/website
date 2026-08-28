@@ -291,6 +291,137 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: kein Bild, das dieses Werkzeug lesen kann.</span>
+    <span data-phrase="load.undecodable">{name}: dieser Browser konnte es nicht dekodieren.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">dieser Browser wollte kein {format} schreiben.</span>
+    <span data-phrase="decode.failed">dieser Browser konnte das Bild nicht dekodieren.</span>
+    <span data-phrase="size.bytes">{n} Bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.one">1 Bild</span>
+    <span data-phrase="count.many">{n} Bilder</span>
+    <span data-phrase="change.same">ungefähr gleich groß</span>
+    <span data-phrase="change.smaller">{percent}% kleiner</span>
+    <span data-phrase="change.larger">{percent}% größer</span>
+    <span data-phrase="list.count">{count}, {size} insgesamt</span>
+    <span data-phrase="row.shown">{name} ist das Bild in der Zuschnitt-Vorschau</span>
+    <span data-phrase="row.draw">Den Rahmen auf {name} ziehen</span>
+    <span data-phrase="row.badge">In der Vorschau</span>
+    <span data-phrase="row.remove">{name} von der Liste nehmen</span>
+    <span data-phrase="row.untouched">Hier wird nichts geändert, also geht dieses Bild genau so durch, wie es ist.</span>
+    <span data-phrase="row.becomes">wird {size}</span>
+    <span data-phrase="run.one">Bild in der Größe ändern</span>
+    <span data-phrase="run.many">Bilder in der Größe ändern</span>
+    <span data-phrase="preview.alt">Vorschau von {name}</span>
+    <span data-phrase="crop.box">Zuschnittbereich. Die Pfeiltasten verschieben ihn, Alt und die Pfeiltasten ändern
+      seine Größe, und mit gedrückter Umschalttaste sind es zehn Pixel pro Schritt.</span>
+    <span data-phrase="stage.name">Gezogen wird auf {name}.</span>
+    <span data-phrase="stage.note">Jedes Bild behält seinen eigenen Rahmen. {note}</span>
+    <span data-phrase="others.one.cropped">{name} hat einen eigenen Rahmen.</span>
+    <span data-phrase="others.one.whole">{name} steht noch auf dem ganzen Bild &mdash; wählen Sie es oben aus der Liste, um
+      auch dieses zuzuschneiden.</span>
+    <span data-phrase="others.none">Die anderen {count} stehen noch auf dem ganzen Bild &mdash; wählen Sie oben eines
+      aus der Liste, um es zuzuschneiden.</span>
+    <span data-phrase="others.all.two">Beide anderen haben einen eigenen Rahmen.</span>
+    <span data-phrase="others.all.many">Alle {n} anderen haben einen eigenen Rahmen.</span>
+    <span data-phrase="others.some.one">1 der anderen {total} hat einen eigenen Rahmen; der Rest steht noch auf dem ganzen
+      Bild.</span>
+    <span data-phrase="others.some.many">{n} der anderen {total} haben einen eigenen Rahmen; der Rest steht noch auf dem
+      ganzen Bild.</span>
+    <span data-phrase="apply.same.one">Alle Bilder auf der Liste sind genau gleich groß, also bekommt das andere genau
+      diesen Rahmen.</span>
+    <span data-phrase="apply.same.many">Alle Bilder auf der Liste sind genau gleich groß, also bekommen sie alle genau
+      diesen Rahmen.</span>
+    <span data-phrase="apply.free">Auf jedem derselbe relative Ausschnitt &mdash; dieselben Bruchteile der eigenen
+      Breite und Höhe &mdash;, weil sie nicht alle gleich groß sind.</span>
+    <span data-phrase="apply.source">Der größte Rahmen in der Form des Bildes selbst, der in denselben relativen
+      Ausschnitt jedes Bildes passt, damit jedes Ergebnis die Form bekommt, die Sie
+      festgelegt haben, obwohl sie nicht alle gleich groß sind.</span>
+    <span data-phrase="apply.ratio">Der größte Rahmen im Verhältnis {ratio}, der in denselben relativen Ausschnitt jedes
+      Bildes passt, damit jedes Ergebnis die Form bekommt, die Sie festgelegt haben,
+      obwohl sie nicht alle gleich groß sind.</span>
+    <span data-phrase="format.keep">Ein JPEG bleibt ein JPEG, ein PNG bleibt ein PNG. Was dieser Browser nicht schreiben
+      kann &mdash; ein GIF, ein BMP &mdash;, kommt als PNG heraus, das Transparenz und
+      flache Farben behält.</span>
+    <span data-phrase="format.jpeg">Klein und überall lesbar, und ohne Transparenz: alles Durchsichtige wird mit der
+      Hintergrundfarbe gefüllt.</span>
+    <span data-phrase="format.png">Verlustfrei und transparent, und bei einer Fotografie viel größer als die anderen
+      beiden.</span>
+    <span data-phrase="format.webp">Kleiner als JPEG bei gleicher Qualität, behält Transparenz, und jeder aktuelle
+      Browser öffnet es.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; von diesem Browser nicht unterstützt</span>
+    <span data-phrase="plan.crop">zugeschnitten auf {crop}</span>
+    <span data-phrase="plan.resize">auf {size} gebracht</span>
+    <span data-phrase="plan.keep">bei {size} belassen</span>
+    <span data-phrase="plan.cropresize">zugeschnitten auf {crop} und dann auf {size} gebracht</span>
+    <span data-phrase="plan.padded">{what}, aufgefüllt auf genau den Rahmen, den Sie wollten</span>
+    <span data-phrase="plan.written">{what}, geschrieben als {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Fügen Sie ein Bild hinzu, und hier steht genau, was daraus wird.</span>
+    <span data-phrase="summary.untouched">Es wird nichts geändert: {name} ist {size} und kommt genau so zurück, wie es
+      hineinging, Byte für Byte.</span>
+    <span data-phrase="summary.plain">{name} ist {size}. Heraus kommt {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} ist {size}. Heraus kommt {out} &mdash; das Bild bei {scale}, auf einem
+      Hintergrund, der den Rest dieses Rahmens füllt.</span>
+    <span data-phrase="summary.cropped">{name} ist {size}. Der Rahmen behält davon {crop}. Heraus kommt {out} &mdash;
+      {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} ist {size}. Der Rahmen behält davon {crop}. Heraus kommt {out} &mdash; das
+      Bild bei {scale}, auf einem Hintergrund, der den Rest dieses Rahmens füllt.</span>
+    <span data-phrase="scale.of.crop">{percent}% dessen, was der Rahmen behält</span>
+    <span data-phrase="scale.of.original">{percent}% des Originals</span>
+    <span data-phrase="scale.up.crop">vergrößert auf {percent}% dessen, was der Rahmen behält</span>
+    <span data-phrase="scale.up.original">vergrößert auf {percent}% des Originals</span>
+    <span data-phrase="summary.nothing">Nichts wird zugeschnitten, nichts in der Größe geändert und das Format bleibt, also
+      gibt es nichts neu zu kodieren: jede Datei wird Byte für Byte zurückgegeben,
+      EXIF-Tags und alles, weil keine von ihnen je geöffnet wird.</span>
+    <span data-phrase="summary.plan.one">Das Bild wird {plan} &mdash; und die EXIF- und GPS-Tags überleben das nicht, denn
+      ein Canvas hält Pixel und sonst nichts.</span>
+    <span data-phrase="summary.plan.many">{name} wird {plan} &mdash; und die EXIF- und GPS-Tags überleben das nicht, denn ein
+      Canvas hält Pixel und sonst nichts. {rest}</span>
+    <span data-phrase="rest.two">Das andere Bild bekommt dieselben Größen- und Formateinstellungen, mit seinem
+      eigenen Zuschnitt.</span>
+    <span data-phrase="rest.many">Die anderen {count} bekommen dieselben Größen- und Formateinstellungen, jedes mit
+      seinem eigenen Zuschnitt.</span>
+    <span data-phrase="progress.at">{index} von {total}: {name}</span>
+    <span data-phrase="results.nothing">Es war nichts verlangt, also wurde nichts getan: jede Datei kam genau so zurück, wie
+      sie hineinging.</span>
+    <span data-phrase="results.totals">{before} hinein, {after} heraus &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} hinein, {after} heraus &mdash; {change}. {count} brauchte keine Änderung
+      und wurde direkt durchgereicht.</span>
+    <span data-phrase="results.totals.many">{before} hinein, {after} heraus &mdash; {change}. {count} brauchten keine Änderung
+      und wurden direkt durchgereicht.</span>
+    <span data-phrase="result.open">{name} in voller Größe ansehen</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; unverändert</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Byte für Byte durchgereicht, Metadaten und alles: an dieser Datei wurde nichts
+      geändert.</span>
+    <span data-phrase="result.view">Ansehen</span>
+    <span data-phrase="result.download">Herunterladen</span>
+    <span data-phrase="viewer.alt.original">Das Original: {name}</span>
+    <span data-phrase="viewer.alt.result">Das Ergebnis: {name}</span>
+    <span data-phrase="viewer.caption.original">Das Original {name}, bei {size}. Beide werden in der Größe gezeigt, für die dieses
+      Fenster Platz hat, was die einzig faire Art ist, sie zu vergleichen.</span>
+    <span data-phrase="viewer.showresult">Das Ergebnis zeigen</span>
+    <span data-phrase="viewer.showoriginal">Das Original zeigen</span>
+    <span data-phrase="fact.savedas">Gespeichert als</span>
+    <span data-phrase="fact.format">Format</span>
+    <span data-phrase="fact.before">Vorher</span>
+    <span data-phrase="fact.after">Nachher</span>
+    <span data-phrase="fact.filesize">Dateigröße</span>
+    <span data-phrase="fact.cropped">Zugeschnitten</span>
+    <span data-phrase="fact.scale">Maßstab</span>
+    <span data-phrase="fact.padding">Auffüllung</span>
+    <span data-phrase="fact.quality">Qualität</span>
+    <span data-phrase="fact.metadata">Metadaten</span>
+    <span data-phrase="fact.after.same">dieselbe Datei, Byte für Byte</span>
+    <span data-phrase="fact.metadata.kept">behalten &mdash; diese Datei wurde nie geöffnet</span>
+    <span data-phrase="fact.metadata.gone">nicht übernommen &mdash; ein Canvas hält Pixel und sonst nichts</span>
+    <span data-phrase="fact.crop.yes">{size}, ab {x} von links und {y} von oben</span>
+    <span data-phrase="fact.crop.no">nein &mdash; das ganze Bild ging durch</span>
+    <span data-phrase="fact.scale.crop">{percent}% des Zuschnitts</span>
+    <span data-phrase="fact.scale.original">{percent}% des Originals</span>
+    <span data-phrase="fact.padding.yes">ja &mdash; das Bild sitzt auf der Hintergrundfarbe</span>
     <span data-phrase="progress.stopped">Nach {done} von {total} abgebrochen. Was fertig wurde, steht unten.</span>
     <span data-phrase="progress.stopped.none">Abgebrochen, bevor das erste fertig war.</span>
     <span data-phrase="net.clean">Ihre Bilder sind nirgendwohin gegangen.

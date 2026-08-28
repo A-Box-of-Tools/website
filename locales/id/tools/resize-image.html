@@ -297,6 +297,134 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: bukan gambar yang bisa dibaca alat ini.</span>
+    <span data-phrase="load.undecodable">{name}: peramban ini tidak bisa mendekodenya.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">peramban ini menolak menulis {format}.</span>
+    <span data-phrase="decode.failed">peramban ini tidak bisa mendekode gambarnya.</span>
+    <span data-phrase="size.bytes">{n} bita</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.one">1 gambar</span>
+    <span data-phrase="count.many">{n} gambar</span>
+    <span data-phrase="change.same">kira-kira sama besarnya</span>
+    <span data-phrase="change.smaller">{percent}% lebih kecil</span>
+    <span data-phrase="change.larger">{percent}% lebih besar</span>
+    <span data-phrase="list.count">{count}, {size} seluruhnya</span>
+    <span data-phrase="row.shown">{name} yang ada di pratinjau pangkasan</span>
+    <span data-phrase="row.draw">Gambar kotak pangkas di {name}</span>
+    <span data-phrase="row.badge">Di pratinjau</span>
+    <span data-phrase="row.remove">Keluarkan {name} dari daftar</span>
+    <span data-phrase="row.untouched">Tidak ada yang diubah, jadi yang ini lewat persis seperti apa adanya.</span>
+    <span data-phrase="row.becomes">jadi {size}</span>
+    <span data-phrase="run.one">Ubah ukuran gambarnya</span>
+    <span data-phrase="run.many">Ubah ukuran gambar-gambarnya</span>
+    <span data-phrase="preview.alt">Pratinjau {name}</span>
+    <span data-phrase="crop.box">Area pangkas. Tombol panah memindahkannya, Alt dan tombol panah mengubah ukurannya,
+      dan sambil menahan Shift tiap langkah jadi sepuluh piksel.</span>
+    <span data-phrase="stage.name">Digambar di {name}.</span>
+    <span data-phrase="stage.note">Tiap gambar punya kotaknya sendiri. {note}</span>
+    <span data-phrase="others.one.cropped">{name} punya kotak sendiri.</span>
+    <span data-phrase="others.one.whole">{name} masih pada seluruh gambar &mdash; pilih dari daftar di atas untuk memangkas
+      yang itu juga.</span>
+    <span data-phrase="others.none">{count} yang lain masih pada seluruh gambar &mdash; pilih satu dari daftar di atas
+      untuk memangkasnya.</span>
+    <span data-phrase="others.all.two">Dua-duanya yang lain punya kotak sendiri.</span>
+    <span data-phrase="others.all.many">Semua {n} yang lain punya kotak sendiri.</span>
+    <span data-phrase="others.some.one">1 dari {total} yang lain punya kotak sendiri; sisanya masih pada seluruh gambar.</span>
+    <span data-phrase="others.some.many">{n} dari {total} yang lain punya kotak sendiri; sisanya masih pada seluruh gambar.</span>
+    <span data-phrase="apply.same.one">Semua gambar di daftar ukurannya persis segini, jadi yang satunya dapat kotak yang
+      persis ini.</span>
+    <span data-phrase="apply.same.many">Semua gambar di daftar ukurannya persis segini, jadi semuanya dapat kotak yang
+      persis ini.</span>
+    <span data-phrase="apply.free">Area relatif yang sama di tiap gambar &mdash; pecahan yang sama dari lebar dan
+      tingginya sendiri &mdash;, karena ukurannya tidak sama semua.</span>
+    <span data-phrase="apply.source">Kotak terbesar dengan bentuk gambar itu sendiri yang muat di area relatif yang sama
+      pada tiap gambar, supaya tiap hasilnya keluar dengan bentuk yang Anda kunci walaupun
+      ukurannya tidak sama semua.</span>
+    <span data-phrase="apply.ratio">Kotak {ratio} terbesar yang muat di area relatif yang sama pada tiap gambar, supaya
+      tiap hasilnya keluar dengan bentuk yang Anda kunci walaupun ukurannya tidak sama
+      semua.</span>
+    <span data-phrase="format.keep">JPEG tetap JPEG, PNG tetap PNG. Yang tidak bisa ditulis peramban ini &mdash; GIF,
+      BMP &mdash; keluar sebagai PNG, yang mempertahankan transparansi dan warna rata.</span>
+    <span data-phrase="format.jpeg">Kecil dan bisa dibuka di mana saja, dan tanpa transparansi: semua yang tembus
+      pandang diisi warna latar.</span>
+    <span data-phrase="format.png">Tanpa kehilangan kualitas dan bisa transparan, dan jauh lebih besar daripada dua
+      lainnya untuk sebuah foto.</span>
+    <span data-phrase="format.webp">Lebih kecil daripada JPEG pada kualitas yang sama, mempertahankan transparansi, dan
+      semua peramban sekarang bisa membukanya.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; tidak didukung peramban ini</span>
+    <span data-phrase="plan.crop">dipangkas jadi {crop}</span>
+    <span data-phrase="plan.resize">diubah ukurannya jadi {size}</span>
+    <span data-phrase="plan.keep">dibiarkan {size}</span>
+    <span data-phrase="plan.cropresize">dipangkas jadi {crop}, lalu diubah ukurannya jadi {size}</span>
+    <span data-phrase="plan.padded">{what}, diisi sampai persis bingkai yang Anda minta</span>
+    <span data-phrase="plan.written">{what}, ditulis sebagai {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Tambahkan sebuah gambar dan di sini akan tertulis persis jadi apa gambarnya.</span>
+    <span data-phrase="summary.untouched">Tidak ada yang diubah: {name} berukuran {size} dan kembali persis seperti waktu
+      masuk, bita demi bita.</span>
+    <span data-phrase="summary.plain">{name} berukuran {size}. Keluarnya {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} berukuran {size}. Keluarnya {out} &mdash; gambarnya pada {scale}, di atas
+      latar yang mengisi sisa bingkai itu.</span>
+    <span data-phrase="summary.cropped">{name} berukuran {size}. Kotaknya menyimpan {crop} dari itu. Keluarnya {out} &mdash;
+      {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} berukuran {size}. Kotaknya menyimpan {crop} dari itu. Keluarnya {out} &mdash;
+      gambarnya pada {scale}, di atas latar yang mengisi sisa bingkai itu.</span>
+    <span data-phrase="scale.of.crop">{percent}% dari yang disimpan kotaknya</span>
+    <span data-phrase="scale.of.original">{percent}% dari aslinya</span>
+    <span data-phrase="scale.up.crop">diperbesar jadi {percent}% dari yang disimpan kotaknya</span>
+    <span data-phrase="scale.up.original">diperbesar jadi {percent}% dari aslinya</span>
+    <span data-phrase="summary.nothing">Tidak ada yang dipangkas, tidak ada yang diubah ukurannya dan formatnya tetap, jadi
+      tidak ada yang perlu dikodekan ulang: tiap berkas dikembalikan bita demi bita,
+      lengkap dengan tag EXIF, karena tidak satu pun pernah dibuka.</span>
+    <span data-phrase="summary.plan.one">Gambarnya {plan} &mdash; dan tag EXIF dan GPS-nya tidak ikut selamat, karena canvas
+      cuma menyimpan piksel dan tidak lebih.</span>
+    <span data-phrase="summary.plan.many">{name} {plan} &mdash; dan tag EXIF dan GPS-nya tidak ikut selamat, karena canvas
+      cuma menyimpan piksel dan tidak lebih. {rest}</span>
+    <span data-phrase="rest.two">Gambar yang satunya dapat setelan ukuran dan format yang sama, dengan pangkasannya
+      sendiri.</span>
+    <span data-phrase="rest.many">{count} yang lain dapat setelan ukuran dan format yang sama, masing-masing dengan
+      pangkasannya sendiri.</span>
+    <span data-phrase="progress.at">{index} dari {total}: {name}</span>
+    <span data-phrase="results.nothing">Tidak ada yang diminta, jadi tidak ada yang dikerjakan: tiap berkas kembali persis
+      seperti waktu masuk.</span>
+    <span data-phrase="results.totals">{before} masuk, {after} keluar &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} masuk, {after} keluar &mdash; {change}. {count} tidak perlu diubah dan
+      lewat begitu saja.</span>
+    <span data-phrase="results.totals.many">{before} masuk, {after} keluar &mdash; {change}. {count} tidak perlu diubah dan
+      lewat begitu saja.</span>
+    <span data-phrase="result.open">Lihat {name} ukuran penuh</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; tidak berubah</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Lewat bita demi bita, lengkap dengan metadata: tidak ada apa pun dari berkas ini
+      yang diubah.</span>
+    <span data-phrase="result.view">Lihat</span>
+    <span data-phrase="result.download">Unduh</span>
+    <span data-phrase="viewer.alt.original">Yang asli: {name}</span>
+    <span data-phrase="viewer.alt.result">Hasilnya: {name}</span>
+    <span data-phrase="viewer.caption.original">{name} yang asli, pada {size}. Dua-duanya ditampilkan pada ukuran yang muat di kotak
+      ini, yang merupakan satu-satunya cara adil untuk membandingkannya.</span>
+    <span data-phrase="viewer.showresult">Tampilkan hasilnya</span>
+    <span data-phrase="viewer.showoriginal">Tampilkan yang asli</span>
+    <span data-phrase="fact.savedas">Disimpan sebagai</span>
+    <span data-phrase="fact.format">Format</span>
+    <span data-phrase="fact.before">Sebelum</span>
+    <span data-phrase="fact.after">Sesudah</span>
+    <span data-phrase="fact.filesize">Ukuran berkas</span>
+    <span data-phrase="fact.cropped">Dipangkas</span>
+    <span data-phrase="fact.scale">Skala</span>
+    <span data-phrase="fact.padding">Isian</span>
+    <span data-phrase="fact.quality">Kualitas</span>
+    <span data-phrase="fact.metadata">Metadata</span>
+    <span data-phrase="fact.after.same">berkas yang sama, bita demi bita</span>
+    <span data-phrase="fact.metadata.kept">tetap ada &mdash; berkas ini tidak pernah dibuka</span>
+    <span data-phrase="fact.metadata.gone">tidak ikut &mdash; canvas cuma menyimpan piksel dan tidak lebih</span>
+    <span data-phrase="fact.crop.yes">{size}, mulai {x} dari kiri dan {y} dari atas</span>
+    <span data-phrase="fact.crop.no">tidak &mdash; seluruh gambarnya lewat</span>
+    <span data-phrase="fact.scale.crop">{percent}% dari pangkasannya</span>
+    <span data-phrase="fact.scale.original">{percent}% dari aslinya</span>
+    <span data-phrase="fact.padding.yes">ya &mdash; gambarnya duduk di atas warna latar</span>
     <span data-phrase="progress.stopped">Dihentikan setelah {done} dari {total}. Yang sudah selesai ada di bawah.</span>
     <span data-phrase="progress.stopped.none">Dihentikan sebelum yang pertama selesai.</span>
     <span data-phrase="net.clean">gambar Anda tidak pergi ke mana pun. {total}

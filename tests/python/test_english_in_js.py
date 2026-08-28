@@ -83,7 +83,7 @@ BASELINE = {
     'qr-barcode-reader': 13,
     'redact-image': 17,
     'redact-pdf': 28,
-    'resize-image': 53,
+    'resize-image': 5,
     'reverse-video': 34,
     'share-text': 1,
     'split-gif': 36,

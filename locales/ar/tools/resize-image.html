@@ -283,6 +283,118 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: ليست صورة تقدر هذه الأداة على قراءتها.</span>
+    <span data-phrase="load.undecodable">{name}: لم يستطع هذا المتصفح فكّ ترميزها.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">رفض هذا المتصفح كتابة {format}.</span>
+    <span data-phrase="decode.failed">لم يستطع هذا المتصفح فكّ ترميز الصورة.</span>
+    <span data-phrase="size.bytes">{n} بايت</span>
+    <span data-phrase="size.kb">{n} ك.بايت</span>
+    <span data-phrase="size.mb">{n} م.بايت</span>
+    <span data-phrase="count.one">صورة واحدة</span>
+    <span data-phrase="count.many">{n} صورة</span>
+    <span data-phrase="change.same">بالحجم نفسه تقريباً</span>
+    <span data-phrase="change.smaller">أصغر بنسبة {percent}%</span>
+    <span data-phrase="change.larger">أكبر بنسبة {percent}%</span>
+    <span data-phrase="list.count">{count}، {size} في المجموع</span>
+    <span data-phrase="row.shown">{name} هي التي في معاينة القص</span>
+    <span data-phrase="row.draw">ارسم إطار القص على {name}</span>
+    <span data-phrase="row.badge">في المعاينة</span>
+    <span data-phrase="row.remove">أزِل {name} من القائمة</span>
+    <span data-phrase="row.untouched">لا شيء يتغيّر هنا، فتمرّ هذه كما هي تماماً.</span>
+    <span data-phrase="row.becomes">تصير {size}</span>
+    <span data-phrase="run.one">غيّر حجم الصورة</span>
+    <span data-phrase="run.many">غيّر حجم الصور</span>
+    <span data-phrase="preview.alt">معاينة {name}</span>
+    <span data-phrase="crop.box">منطقة القص. تحرّكها مفاتيح الأسهم، ويغيّر حجمها Alt مع الأسهم، ومع الاستمرار في
+      الضغط على Shift تصير كل خطوة عشرة بكسلات.</span>
+    <span data-phrase="stage.name">الرسم على {name}.</span>
+    <span data-phrase="stage.note">كل صورة تحتفظ بإطارها. {note}</span>
+    <span data-phrase="others.one.cropped">{name} لها إطار خاص بها.</span>
+    <span data-phrase="others.one.whole">{name} ما زالت على الصورة كلها &mdash; اخترها من القائمة أعلاه لقصّ تلك أيضاً.</span>
+    <span data-phrase="others.none">{count} الأخرى ما زالت على الصورة كلها &mdash; اختر واحدة من القائمة أعلاه لقصّها.</span>
+    <span data-phrase="others.all.two">كلتا الأخريين لها إطار خاص بها.</span>
+    <span data-phrase="others.all.many">الأخريات كلهنّ، وعددهنّ {n}، لكل منها إطار خاص بها.</span>
+    <span data-phrase="others.some.one">واحدة من الأخريات {total} لها إطار خاص بها؛ والبقية ما زالت على الصورة كلها.</span>
+    <span data-phrase="others.some.many">{n} من الأخريات {total} لكل منها إطار خاص بها؛ والبقية ما زالت على الصورة كلها.</span>
+    <span data-phrase="apply.same.one">كل الصور في القائمة بهذا الحجم تماماً، فتأخذ الأخرى هذا الإطار بعينه.</span>
+    <span data-phrase="apply.same.many">كل الصور في القائمة بهذا الحجم تماماً، فتأخذ كلها هذا الإطار بعينه.</span>
+    <span data-phrase="apply.free">المساحة النسبية نفسها في كل واحدة &mdash; الكسور نفسها من عرضها وارتفاعها هي &mdash;
+      لأنها ليست كلها بالحجم نفسه.</span>
+    <span data-phrase="apply.source">أكبر إطار على شكل الصورة نفسها يسع المساحة النسبية نفسها من كل واحدة، حتى تخرج كل
+      نتيجة بالشكل الذي ثبّتّه وإن لم تكن كلها بالحجم نفسه.</span>
+    <span data-phrase="apply.ratio">أكبر إطار بنسبة {ratio} يسع المساحة النسبية نفسها من كل واحدة، حتى تخرج كل نتيجة
+      بالشكل الذي ثبّتّه وإن لم تكن كلها بالحجم نفسه.</span>
+    <span data-phrase="format.keep">يبقى JPEG على حاله، ويبقى PNG على حاله. وما لا يستطيع هذا المتصفح كتابته &mdash; GIF
+      أو BMP &mdash; يخرج PNG، وهو يحفظ الشفافية والألوان المسطّحة.</span>
+    <span data-phrase="format.jpeg">صغير ويُفتح في كل مكان، ولا شفافية فيه: كل ما هو شفّاف يُملأ بلون الخلفية.</span>
+    <span data-phrase="format.png">بلا فقدان ويقبل الشفافية، وأكبر كثيراً من الاثنين الآخرين في صورة فوتوغرافية.</span>
+    <span data-phrase="format.webp">أصغر من JPEG عند الجودة نفسها، ويحفظ الشفافية، ويفتحه كل متصفح حديث.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; غير مدعوم في هذا المتصفح</span>
+    <span data-phrase="plan.crop">مقصوصة إلى {crop}</span>
+    <span data-phrase="plan.resize">محوَّلة إلى {size}</span>
+    <span data-phrase="plan.keep">متروكة عند {size}</span>
+    <span data-phrase="plan.cropresize">مقصوصة إلى {crop}، ثم محوَّلة إلى {size}</span>
+    <span data-phrase="plan.padded">{what}، ومملوءة إلى الإطار الذي طلبته بالضبط</span>
+    <span data-phrase="plan.written">{what}، ومكتوبة بصيغة {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">أضِف صورة وسيقول هذا السطر بالضبط ما تصير إليه.</span>
+    <span data-phrase="summary.untouched">لا شيء يتغيّر: {name} حجمها {size} وتعود كما دخلت تماماً، بايتاً بايتاً.</span>
+    <span data-phrase="summary.plain">{name} حجمها {size}. وتخرج {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} حجمها {size}. وتخرج {out} &mdash; الصورة عند {scale}، على خلفية تملأ بقية ذلك
+      الإطار.</span>
+    <span data-phrase="summary.cropped">{name} حجمها {size}. ويُبقي الإطار منها {crop}. وتخرج {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} حجمها {size}. ويُبقي الإطار منها {crop}. وتخرج {out} &mdash; الصورة عند
+      {scale}، على خلفية تملأ بقية ذلك الإطار.</span>
+    <span data-phrase="scale.of.crop">{percent}% مما يُبقيه الإطار</span>
+    <span data-phrase="scale.of.original">{percent}% من الأصل</span>
+    <span data-phrase="scale.up.crop">مكبَّرة إلى {percent}% مما يُبقيه الإطار</span>
+    <span data-phrase="scale.up.original">مكبَّرة إلى {percent}% من الأصل</span>
+    <span data-phrase="summary.nothing">لا شيء يُقصّ، ولا شيء يتغيّر حجمه، والصيغة على حالها، فليس ثمة ما يُعاد ترميزه: كل
+      ملف يُعاد بايتاً بايتاً، بأوسام EXIF وكل شيء، لأن أياً منها لا يُفتح أصلاً.</span>
+    <span data-phrase="summary.plan.one">الصورة {plan} &mdash; ولا تنجو أوسام EXIF وGPS من ذلك، لأن الـcanvas يحمل بكسلات ولا
+      شيء غيرها.</span>
+    <span data-phrase="summary.plan.many">{name} {plan} &mdash; ولا تنجو أوسام EXIF وGPS من ذلك، لأن الـcanvas يحمل بكسلات ولا
+      شيء غيرها. {rest}</span>
+    <span data-phrase="rest.two">وتأخذ الصورة الأخرى إعدادات الحجم والصيغة نفسها، بقصّها هي.</span>
+    <span data-phrase="rest.many">وتأخذ {count} الأخرى إعدادات الحجم والصيغة نفسها، كل واحدة بقصّها هي.</span>
+    <span data-phrase="progress.at">{index} من {total}: {name}</span>
+    <span data-phrase="results.nothing">لم يُطلب شيء، فلم يُفعل شيء: عاد كل ملف كما دخل تماماً.</span>
+    <span data-phrase="results.totals">{before} داخلاً، و{after} خارجاً &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} داخلاً، و{after} خارجاً &mdash; {change}. و{count} لم تحتج إلى أي تغيير
+      فمرّت كما هي.</span>
+    <span data-phrase="results.totals.many">{before} داخلاً، و{after} خارجاً &mdash; {change}. و{count} لم تحتج إلى أي تغيير
+      فمرّت كما هي.</span>
+    <span data-phrase="result.open">انظر إلى {name} بحجمها الكامل</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; بلا تغيير</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">مرّت بايتاً بايتاً، ببياناتها الوصفية وكل شيء: لم يكن في هذا الملف ما يتغيّر.</span>
+    <span data-phrase="result.view">انظر</span>
+    <span data-phrase="result.download">نزِّل</span>
+    <span data-phrase="viewer.alt.original">الأصل: {name}</span>
+    <span data-phrase="viewer.alt.result">النتيجة: {name}</span>
+    <span data-phrase="viewer.caption.original">الأصل {name}، عند {size}. وكلتاهما معروضة بالحجم الذي تتسع له هذه النافذة، وهي
+      الطريقة المنصفة الوحيدة للمقارنة بينهما.</span>
+    <span data-phrase="viewer.showresult">اعرض النتيجة</span>
+    <span data-phrase="viewer.showoriginal">اعرض الأصل</span>
+    <span data-phrase="fact.savedas">محفوظة باسم</span>
+    <span data-phrase="fact.format">الصيغة</span>
+    <span data-phrase="fact.before">قبل</span>
+    <span data-phrase="fact.after">بعد</span>
+    <span data-phrase="fact.filesize">حجم الملف</span>
+    <span data-phrase="fact.cropped">القصّ</span>
+    <span data-phrase="fact.scale">المقياس</span>
+    <span data-phrase="fact.padding">الملء</span>
+    <span data-phrase="fact.quality">الجودة</span>
+    <span data-phrase="fact.metadata">البيانات الوصفية</span>
+    <span data-phrase="fact.after.same">الملف نفسه، بايتاً بايتاً</span>
+    <span data-phrase="fact.metadata.kept">محفوظة &mdash; لم يُفتح هذا الملف قط</span>
+    <span data-phrase="fact.metadata.gone">لم تُنقل &mdash; الـcanvas يحمل بكسلات ولا شيء غيرها</span>
+    <span data-phrase="fact.crop.yes">{size}، ابتداءً من {x} عرضاً و{y} نزولاً</span>
+    <span data-phrase="fact.crop.no">لا &mdash; مرّت الصورة كلها</span>
+    <span data-phrase="fact.scale.crop">{percent}% من المقصوص</span>
+    <span data-phrase="fact.scale.original">{percent}% من الأصل</span>
+    <span data-phrase="fact.padding.yes">نعم &mdash; تجلس الصورة على لون الخلفية</span>
     <span data-phrase="progress.stopped">أُوقف بعد {done} من {total}. ما اكتمل موجود بالأسفل.</span>
     <span data-phrase="progress.stopped.none">أُوقف قبل أن يكتمل الأول.</span>
     <span data-phrase="net.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً

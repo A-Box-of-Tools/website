@@ -11,11 +11,19 @@ import {
 import { Cropper } from './cropper.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import {
-  bytes as humanBytes, change, countOf, describePlan, dimensions, outName, scaleText,
+  bytes, change as changeOf, countOf as imageCount, describePlan as planText,
+  dimensions, outName, scaleText,
 } from './files.js';
 import { makeZip } from './shared/zip.js';
 
 const $ = (id) => document.getElementById(id);
+
+// files.js cannot reach the DOM, so the words it needs come to it. Bound once
+// here rather than passed at every call site.
+const humanBytes = (n) => bytes(n, phrase);
+const change = (before, after) => changeOf(before, after, phrase);
+const countOf = (n) => imageCount(n, phrase);
+const describePlan = (size, crop, result, mime) => planText(size, crop, result, mime, phrase);
 
 const el = {
   dropzone: $('dropzone'),
@@ -140,6 +148,7 @@ let writable = new Set([JPEG, PNG]);
 let loadingPreview = false;
 
 const cropper = new Cropper(el.stage, {
+  label: phrase('crop.box'),
   onChange(rect) {
     writeCropFields(rect);
     if (loadingPreview) return;
@@ -181,7 +190,7 @@ async function addFiles(files) {
   try {
     for (const file of files) {
       if (!isImage(file)) {
-        failures.push(`${file.name}: not an image this tool can read.`);
+        failures.push(phrase('load.notimage', { name: file.name }));
         continue;
       }
 
@@ -200,7 +209,7 @@ async function addFiles(files) {
       item.size = await measure(item.thumbUrl);
       if (!item.size) {
         URL.revokeObjectURL(item.thumbUrl);
-        failures.push(`${file.name}: this browser could not decode it.`);
+        failures.push(phrase('load.undecodable', { name: file.name }));
         continue;
       }
 
@@ -277,7 +286,7 @@ function ensureReference() {
   if (!reference?.size) return;
 
   el.preview.src = reference.thumbUrl;
-  el.preview.alt = `Preview of ${reference.file.name}`;
+  el.preview.alt = phrase('preview.alt', { name: reference.file.name });
   el.stage.style.aspectRatio = `${reference.size.width} / ${reference.size.height}`;
   // Capped by width rather than by height. See the note beside .stage in
   // styles.css: a max-height on a box that has a width and a ratio breaks the
@@ -322,7 +331,8 @@ function render() {
   // files whose thumbnails have already been revoked.
   el.clearAll.disabled = busy;
   el.countLabel.textContent = any
-    ? `${countOf(items.length)}, ${humanBytes(totalBytes())} in total`
+    ? phrase('list.count',
+      { count: countOf(items.length), size: humanBytes(totalBytes()) })
     : '';
 
   renderList();
@@ -332,7 +342,7 @@ function render() {
   renderSummaries();
 
   el.run.disabled = !any || busy;
-  el.run.textContent = items.length === 1 ? 'Resize the image' : 'Resize the images';
+  el.run.textContent = phrase(items.length === 1 ? 'run.one' : 'run.many');
 }
 
 const totalBytes = () => items.reduce((n, i) => n + i.file.size, 0);
@@ -363,9 +373,8 @@ function renderList() {
     if (choosable) {
       main.type = 'button';
       main.setAttribute('aria-pressed', String(shown));
-      main.title = shown
-        ? `${item.file.name} is the one in the crop preview`
-        : `Draw the crop box on ${item.file.name}`;
+      main.title = phrase(shown ? 'row.shown' : 'row.draw',
+        { name: item.file.name });
       main.disabled = busy;
       main.addEventListener('click', () => showItem(item.id));
     }
@@ -406,7 +415,7 @@ function renderList() {
     if (shown) {
       const badge = document.createElement('span');
       badge.className = 'file-badge';
-      badge.textContent = 'In the preview';
+      badge.textContent = phrase('row.badge');
       main.appendChild(badge);
     }
 
@@ -415,8 +424,8 @@ function renderList() {
     const remove = document.createElement('button');
     remove.type = 'button';
     remove.className = 'row-remove';
-    remove.title = `Take ${item.file.name} off the list`;
-    remove.setAttribute('aria-label', `Take ${item.file.name} off the list`);
+    remove.title = phrase('row.remove', { name: item.file.name });
+    remove.setAttribute('aria-label', remove.title);
     remove.textContent = '×';
     remove.disabled = busy;
     remove.addEventListener('click', () => removeItem(item.id));
@@ -430,8 +439,9 @@ function renderList() {
 function paintOutcome(node, outcome) {
   node.className = outcome.untouched ? 'file-note' : 'file-outcome';
   node.textContent = outcome.untouched
-    ? 'Nothing is being changed, so this one is passed through exactly as it is.'
-    : `becomes ${dimensions(outcome.canvas.width, outcome.canvas.height)}`;
+    ? phrase('row.untouched')
+    : phrase('row.becomes',
+      { size: dimensions(outcome.canvas.width, outcome.canvas.height) });
 }
 
 /** The same lines again, without rebuilding the rows they sit in. */
@@ -456,7 +466,9 @@ function renderCropCard() {
   }
 
   const others = items.filter((i) => i.id !== referenceId);
-  el.stageName.textContent = others.length ? `Drawing on ${reference.file.name}. ` : '';
+  el.stageName.textContent = others.length
+    ? phrase('stage.name', { name: reference.file.name })
+    : '';
   el.applyRow.hidden = !others.length;
   el.applyNote.textContent = others.length
     ? applyNoteText(reference, others.length)
@@ -470,7 +482,7 @@ function renderCropCard() {
   }
 
   el.stageNote.hidden = false;
-  el.stageNote.textContent = `Every image keeps its own box. ${othersNoteText(others)}`;
+  el.stageNote.textContent = phrase('stage.note', { note: othersNoteText(others) });
 }
 
 /** How many of the others have actually been cropped, said as a sentence. */
@@ -478,24 +490,25 @@ function othersNoteText(others) {
   const cropped = others.filter(isCropped);
 
   if (others.length === 1) {
-    return cropped.length
-      ? `${others[0].file.name} has a box of its own.`
-      : `${others[0].file.name} is still on the whole picture - pick it from the list above to crop that one too.`;
+    return phrase(cropped.length ? 'others.one.cropped' : 'others.one.whole',
+      { name: others[0].file.name });
   }
 
   if (!cropped.length) {
-    return `The other ${countOf(others.length)} are still on the whole picture - pick one from `
-      + 'the list above to crop it.';
+    return phrase('others.none', { count: countOf(others.length) });
   }
 
   if (cropped.length === others.length) {
     return others.length === 2
-      ? 'Both of the others have a box of their own.'
-      : `All ${others.length} of the others have a box of their own.`;
+      ? phrase('others.all.two')
+      : phrase('others.all.many', { n: others.length });
   }
 
-  return `${cropped.length} of the other ${others.length} ${cropped.length === 1 ? 'has' : 'have'} `
-    + 'a box of its own; the rest are still on the whole picture.';
+  // "1 of the other 4 has" against "3 of the other 4 have" is one
+  // sentence in English and a different one in most languages, so it is
+  // two sentences here rather than a verb chosen by a ternary.
+  return phrase(cropped.length === 1 ? 'others.some.one' : 'others.some.many',
+    { n: cropped.length, total: others.length });
 }
 
 /** What the "use this crop on every image" button is about to do. */
@@ -504,26 +517,21 @@ function applyNoteText(reference, count) {
     && i.size.width === reference.size.width && i.size.height === reference.size.height);
 
   if (same) {
-    return `Every image on the list is exactly this size, so ${count === 1 ? 'the other one gets' : 'they all get'} `
-      + 'exactly this box.';
+    return phrase(count === 1 ? 'apply.same.one' : 'apply.same.many');
   }
 
-  return reference.aspectKey === 'free'
-    ? 'The same relative area on each - the same fractions of its own width and height - because '
-      + 'they are not all the same size.'
-    : `The largest ${aspectLabel(reference.aspectKey)} box that fits the same relative area of each, `
-      + 'so every result comes out the shape you locked even though they are not all the same size.';
+  // "the picture's own shape" is a phrase; "16:9" is a ratio and reads
+  // the same everywhere, so it goes in the blank rather than becoming a
+  // key that would only ever hold itself.
+  if (reference.aspectKey === 'free') return phrase('apply.free');
+  if (reference.aspectKey === 'source') return phrase('apply.source');
+  return phrase('apply.ratio', { ratio: reference.aspectKey });
 }
 
 /** Has anything actually been taken off this picture? */
 function isCropped(item) {
   return Boolean(item.size && item.crop
     && (item.crop.width !== item.size.width || item.crop.height !== item.size.height));
-}
-
-/** The locked shape, in the words on the button that set it. */
-function aspectLabel(key) {
-  return key === 'source' ? "picture's own shape" : key;
 }
 
 function renderSizeFields() {
@@ -550,14 +558,14 @@ function renderFormatFields() {
   el.qualityField.hidden = choice === PNG;
   el.qualityValue.textContent = el.quality.value;
 
-  const note = {
-    keep: 'A JPEG stays a JPEG, a PNG stays a PNG. Anything this browser cannot write - a GIF, a BMP - comes out as PNG, which keeps transparency and flat colour.',
-    [JPEG]: 'Small and universal, and no transparency: anything see-through is filled with the background colour.',
-    [PNG]: 'Lossless and transparent, and much larger than the other two on a photograph.',
-    [WEBP]: 'Smaller than JPEG at the same quality, keeps transparency, and every current browser opens it.',
-  }[choice] ?? '';
+  const key = {
+    keep: 'format.keep',
+    [JPEG]: 'format.jpeg',
+    [PNG]: 'format.png',
+    [WEBP]: 'format.webp',
+  }[choice];
 
-  el.formatNote.textContent = note;
+  el.formatNote.textContent = key ? phrase(key) : '';
 }
 
 /**
@@ -572,7 +580,7 @@ function renderSummaries() {
   const reference = referenceItem();
 
   if (!reference?.size) {
-    el.sizeSummary.textContent = 'Add an image and this will say exactly what it becomes.';
+    el.sizeSummary.textContent = phrase('summary.empty');
     el.planSummary.textContent = '';
     return;
   }
@@ -583,21 +591,26 @@ function renderSummaries() {
   const name = reference.file.name;
 
   if (outcome.untouched) {
-    el.sizeSummary.textContent = `Nothing is being changed: ${name} is `
-      + `${dimensions(reference.size.width, reference.size.height)} and comes back exactly as it `
-      + 'went in, byte for byte.';
+    el.sizeSummary.textContent = phrase('summary.untouched', {
+      name,
+      size: dimensions(reference.size.width, reference.size.height),
+    });
   } else {
-    const from = cropped ? 'of what the box keeps' : 'of the original';
-    const scale = outcome.scale > 1
-      ? `enlarged to ${scaleText(outcome.scale)} ${from}`
-      : `${scaleText(outcome.scale)} ${from}`;
+    // Two, three or four sentences, and each version is whole. Building
+    // it up by adding clauses would put the full stops and the dashes in
+    // this file, where no translator can move them.
+    const scale = phrase(
+      `scale.${outcome.scale > 1 ? 'up' : 'of'}.${cropped ? 'crop' : 'original'}`,
+      { percent: scaleText(outcome.scale) });
 
-    el.sizeSummary.textContent = `${name} is ${dimensions(reference.size.width, reference.size.height)}.`
-      + (cropped ? ` The box keeps ${dimensions(crop.width, crop.height)} of it.` : '')
-      + ` It comes out ${dimensions(outcome.canvas.width, outcome.canvas.height)}`
-      + (outcome.padded
-        ? ` - the picture at ${scale}, on a background filling the rest of that frame.`
-        : ` - ${scale}.`);
+    el.sizeSummary.textContent = phrase(
+      `summary.${cropped ? 'cropped' : 'plain'}${outcome.padded ? '.padded' : ''}`, {
+        name,
+        size: dimensions(reference.size.width, reference.size.height),
+        crop: dimensions(crop.width, crop.height),
+        out: dimensions(outcome.canvas.width, outcome.canvas.height),
+        scale,
+      });
   }
 
   // The numbers above belong to the picture on screen, so the sentence that
@@ -605,11 +618,9 @@ function renderSummaries() {
   // than claiming every file comes out the same size. They do not: the size
   // and format settings are shared, and every crop is the image's own.
   const mime = outputMime(reference.file.type);
-  const rest = items.length === 1
-    ? ''
-    : items.length === 2
-      ? ' The other image gets the same size and format settings, with its own crop.'
-      : ` The other ${countOf(items.length - 1)} get the same size and format settings, each with its own crop.`;
+  const rest = items.length === 2
+    ? phrase('rest.two')
+    : phrase('rest.many', { count: countOf(items.length - 1) });
 
   // "Nothing is being changed" is only true of the whole batch when it is true
   // of every file in it - one image with a box drawn on it is a change, even
@@ -617,13 +628,12 @@ function renderSummaries() {
   const nothingAtAll = el.format.value === 'keep'
     && items.every((i) => i.size && previewOf(i).untouched);
 
+  const plan = describePlan(reference.size, crop, outcome, mime);
   el.planSummary.textContent = nothingAtAll
-    ? 'Nothing is cropped, nothing is resized and the format is unchanged, so there is nothing '
-      + 'to re-encode: every file is handed straight back byte for byte, EXIF tags and all, '
-      + 'because none of them is ever opened up.'
-    : `${items.length === 1 ? 'The image is' : `${name} is`} `
-      + `${describePlan(reference.size, crop, outcome, mime).replace(/\.$/, '')}`
-      + ` - and the EXIF and GPS tags do not survive, because a canvas holds pixels and nothing else.${rest}`;
+    ? phrase('summary.nothing')
+    : items.length === 1
+      ? phrase('summary.plan.one', { plan })
+      : phrase('summary.plan.many', { name, plan, rest });
 }
 
 /* ------------------------------------------------------------- the options */
@@ -864,7 +874,12 @@ el.run.addEventListener('click', async () => {
       try {
         collected.push(await processOne(item));
       } catch (error) {
-        failures.push(`${item.file.name}: ${error.message}`);
+        // codecs.js throws a key; the platform throws a sentence. Both
+        // come through phrase(), which hands back what it cannot find.
+        failures.push(phrase('run.failed', {
+          name: item.file.name,
+          reason: phrase(error.message, error.values),
+        }));
       }
       // One turn of the event loop between images, so the progress bar is a
       // progress bar rather than a thing that appears finished at the end.
@@ -896,7 +911,8 @@ el.cancel.addEventListener('click', () => { stopping = true; });
 
 function showProgress(index, total, name) {
   el.progressBar.style.width = `${Math.round((index / total) * 100)}%`;
-  el.progressLabel.textContent = `${index + 1} of ${total}: ${name}`;
+  el.progressLabel.textContent = phrase('progress.at',
+    { index: index + 1, total, name });
 }
 
 /**
@@ -987,12 +1003,19 @@ function showResults() {
   const after = results.reduce((n, r) => n + r.after, 0);
   const untouched = results.filter((r) => r.untouched).length;
 
-  const totals = `${humanBytes(before)} in, ${humanBytes(after)} out - ${change(before, after)}.`;
+  const totals = {
+    before: humanBytes(before),
+    after: humanBytes(after),
+    change: change(before, after),
+  };
   el.resultsSummary.textContent = untouched === results.length
-    ? 'Nothing was asked for, so nothing was done: every file came back exactly as it went in.'
+    ? phrase('results.nothing')
     : untouched
-      ? `${totals} ${countOf(untouched)} needed no change and were passed straight through.`
-      : totals;
+      // "1 image needed no change and were passed straight through" is
+      // what a noun chosen by a ternary gets you. Two sentences instead.
+      ? phrase(untouched === 1 ? 'results.totals.one' : 'results.totals.many',
+        { ...totals, count: countOf(untouched) })
+      : phrase('results.totals', totals);
 
   el.downloadZip.hidden = results.length < 2;
   el.downloadZip.onclick = async () => {
@@ -1019,8 +1042,8 @@ function resultRow(result) {
   const open = document.createElement('button');
   open.type = 'button';
   open.className = 'result-open';
-  open.title = `Look at ${result.outName} full size`;
-  open.setAttribute('aria-label', `Look at ${result.outName} full size`);
+  open.title = phrase('result.open', { name: result.outName });
+  open.setAttribute('aria-label', open.title);
   open.addEventListener('click', () => openViewer(result));
 
   const thumb = document.createElement('img');
@@ -1057,7 +1080,7 @@ function resultRow(result) {
   const view = document.createElement('button');
   view.type = 'button';
   view.className = 'ghost';
-  view.textContent = 'View';
+  view.textContent = phrase('result.view');
   view.addEventListener('click', () => openViewer(result));
   actions.appendChild(view);
 
@@ -1065,7 +1088,7 @@ function resultRow(result) {
   link.className = 'primary as-button';
   link.href = result.url;
   link.download = result.outName;
-  link.textContent = 'Download';
+  link.textContent = phrase('result.download');
   actions.appendChild(link);
 
   li.appendChild(actions);
@@ -1075,15 +1098,24 @@ function resultRow(result) {
 /** The before-and-after line, used on the row and again in the viewer. */
 function headlineOf(result) {
   return result.untouched
-    ? `${dimensions(result.size.width, result.size.height)} · ${humanBytes(result.before)} - unchanged`
-    : `${dimensions(result.size.width, result.size.height)} → ${dimensions(result.canvas.width, result.canvas.height)}`
-      + ` · ${humanBytes(result.before)} → ${humanBytes(result.after)} · ${change(result.before, result.after)}`;
+    ? phrase('result.head.untouched', {
+      size: dimensions(result.size.width, result.size.height),
+      bytes: humanBytes(result.before),
+    })
+    : phrase('result.head', {
+      before: dimensions(result.size.width, result.size.height),
+      after: dimensions(result.canvas.width, result.canvas.height),
+      beforebytes: humanBytes(result.before),
+      afterbytes: humanBytes(result.after),
+      change: change(result.before, result.after),
+    });
 }
 
 function detailOf(result) {
   return result.untouched
-    ? 'Passed through byte for byte, metadata and all: nothing about this file was being changed.'
-    : describePlan(result.size, result.crop, result, result.mime);
+    ? phrase('result.untouched')
+    : phrase('plan.only',
+      { plan: describePlan(result.size, result.crop, result, result.mime) });
 }
 
 /* ------------------------------------------------------------------ viewer */
@@ -1119,17 +1151,22 @@ function paintViewer() {
 
   el.viewerName.textContent = result.outName;
   el.viewerImage.src = original ? result.item.thumbUrl : result.url;
-  el.viewerImage.alt = `${original ? 'The original' : 'The result'}: ${result.name}`;
+  el.viewerImage.alt = phrase(original ? 'viewer.alt.original' : 'viewer.alt.result',
+    { name: result.name });
 
   el.viewerCaption.textContent = original
-    ? `The original ${result.name}, at ${dimensions(result.size.width, result.size.height)}. Both are shown at the size this dialog has room for, which is the only fair way to compare them.`
+    ? phrase('viewer.caption.original', {
+      name: result.name,
+      size: dimensions(result.size.width, result.size.height),
+    })
     : detailOf(result);
 
   // A file that was passed through untouched *is* the original, so there is
   // nothing to compare it against and the toggle would swap in the same
   // picture twice.
   el.viewerCompare.hidden = result.untouched;
-  el.viewerCompare.textContent = original ? 'Show the result' : 'Show the original';
+  el.viewerCompare.textContent =
+    phrase(original ? 'viewer.showresult' : 'viewer.showoriginal');
   el.viewerCompare.setAttribute('aria-pressed', String(original));
 
   el.viewerDownload.href = result.url;
@@ -1149,30 +1186,38 @@ function paintViewer() {
 
 /** Everything worth knowing about one finished file, as pairs. */
 function viewerFacts(result) {
+  const size = (w, h, n) => `${dimensions(w, h)} · ${humanBytes(n)}`;
   const facts = [
-    ['Saved as', result.outName],
-    ['Format', FORMATS[result.mime]?.label ?? result.mime],
-    ['Before', `${dimensions(result.size.width, result.size.height)} · ${humanBytes(result.before)}`],
+    [phrase('fact.savedas'), result.outName],
+    [phrase('fact.format'), FORMATS[result.mime]?.label ?? result.mime],
+    [phrase('fact.before'), size(result.size.width, result.size.height, result.before)],
   ];
 
   if (result.untouched) {
-    facts.push(['After', 'the same file, byte for byte']);
-    facts.push(['Metadata', 'kept - this file was never opened up']);
+    facts.push([phrase('fact.after'), phrase('fact.after.same')]);
+    facts.push([phrase('fact.metadata'), phrase('fact.metadata.kept')]);
     return facts;
   }
 
-  facts.push(['After', `${dimensions(result.canvas.width, result.canvas.height)} · ${humanBytes(result.after)}`]);
-  facts.push(['File size', change(result.before, result.after)]);
+  facts.push([phrase('fact.after'),
+    size(result.canvas.width, result.canvas.height, result.after)]);
+  facts.push([phrase('fact.filesize'), change(result.before, result.after)]);
 
   const cropped = result.crop.width !== result.size.width || result.crop.height !== result.size.height;
-  facts.push(['Cropped', cropped
-    ? `${dimensions(result.crop.width, result.crop.height)}, from ${result.crop.x} across and ${result.crop.y} down`
-    : 'no - the whole picture went through']);
+  facts.push([phrase('fact.cropped'), cropped
+    ? phrase('fact.crop.yes', {
+      size: dimensions(result.crop.width, result.crop.height),
+      x: result.crop.x,
+      y: result.crop.y,
+    })
+    : phrase('fact.crop.no')]);
 
-  facts.push(['Scale', `${scaleText(result.scale)} of ${cropped ? 'the crop' : 'the original'}`]);
-  if (result.padded) facts.push(['Padding', 'yes - the picture sits on the background colour']);
-  if (FORMATS[result.mime]?.lossy) facts.push(['Quality', el.quality.value]);
-  facts.push(['Metadata', 'not carried over - a canvas holds pixels and nothing else']);
+  facts.push([phrase('fact.scale'),
+    phrase(cropped ? 'fact.scale.crop' : 'fact.scale.original',
+      { percent: scaleText(result.scale) })]);
+  if (result.padded) facts.push([phrase('fact.padding'), phrase('fact.padding.yes')]);
+  if (FORMATS[result.mime]?.lossy) facts.push([phrase('fact.quality'), el.quality.value]);
+  facts.push([phrase('fact.metadata'), phrase('fact.metadata.gone')]);
 
   return facts;
 }
@@ -1344,7 +1389,7 @@ async function checkEncoders() {
   for (const option of el.format.options) {
     if (option.value === WEBP) {
       option.disabled = true;
-      option.textContent = 'WebP - not supported by this browser';
+      option.textContent = phrase('format.webp.no');
     }
   }
   if (el.format.value === WEBP) el.format.value = 'keep';

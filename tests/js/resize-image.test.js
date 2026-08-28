@@ -333,12 +333,24 @@ test('READABLE: everything writable can also be read', () => {
 
 /* =================================================================== words */
 
+/**
+ * A stand-in for `phrase`, so a test can say which sentence was chosen.
+ *
+ * The real one reads the markup. This one writes the key and its blanks, which
+ * is what these tests are about: whether the right sentence was picked and the
+ * right numbers went into it. The English is body.html's business.
+ */
+const say = (key, values = {}) => {
+  const filled = Object.entries(values).map(([k, v]) => `${k}=${v}`).join(' ');
+  return filled ? `${key} ${filled}` : key;
+};
+
 test('bytes: the units people expect', () => {
-  assert.equal(bytes(0), '0 bytes');
-  assert.equal(bytes(1023), '1023 bytes');
-  assert.equal(bytes(1024), '1.0 KB');
-  assert.equal(bytes(10240), '10 KB');
-  assert.equal(bytes(1024 * 1024), '1.00 MB');
+  assert.equal(bytes(0, say), 'size.bytes n=0');
+  assert.equal(bytes(1023, say), 'size.bytes n=1023');
+  assert.equal(bytes(1024, say), 'size.kb n=1.0');
+  assert.equal(bytes(10240, say), 'size.kb n=10');
+  assert.equal(bytes(1024 * 1024, say), 'size.mb n=1.00');
 });
 
 test('dimensions: a real multiplication sign, not the letter x', () => {
@@ -357,42 +369,52 @@ test('outName: a file with no name at all still gets one', () => {
 });
 
 test('change: which way it went', () => {
-  assert.equal(change(1000, 250), '75% smaller');
-  assert.equal(change(1000, 1200), '20% larger');
-  assert.equal(change(1000, 1000), 'about the same size');
-  assert.equal(change(0, 100), '');
+  assert.equal(change(1000, 250, say), 'change.smaller percent=75');
+  assert.equal(change(1000, 1200, say), 'change.larger percent=20');
+  assert.equal(change(1000, 1000, say), 'change.same');
+  assert.equal(change(0, 100, say), '');
 });
 
-test('countOf: the plural is not "1 images"', () => {
-  assert.equal(countOf(1), '1 image');
-  assert.equal(countOf(4), '4 images');
+test('countOf: one and many are different keys, not an appended s', () => {
+  assert.equal(countOf(1, say), 'count.one n=1');
+  assert.equal(countOf(4, say), 'count.many n=4');
 });
 
-test('scaleText: a small percentage keeps a decimal, so it is never "0%"', () => {
-  assert.equal(scaleText(0.5), '50%');
-  assert.equal(scaleText(1), '100%');
-  assert.equal(scaleText(0.004), '0.4%');
-  assert.equal(scaleText(0.0999), '10.0%');
+test('scaleText: a small percentage keeps a decimal, so it is never "0"', () => {
+  // No sign: Turkish writes %75 and English writes 75%, so which side it goes
+  // on is decided by the phrase that shows it, not here.
+  assert.equal(scaleText(0.5), '50');
+  assert.equal(scaleText(1), '100');
+  assert.equal(scaleText(0.004), '0.4');
+  assert.equal(scaleText(0.0999), '10.0');
 });
 
 test('describePlan: says what happened, in the order it happened', () => {
   const crop = { x: 500, y: 0, width: 3000, height: 3000 };
   const result = plan(crop, { mode: 'pixels', width: 1000, height: 1000, fit: 'contain' });
   assert.equal(
-    describePlan(PHOTO, result.source, result, WEBP),
-    'cropped to 3000 × 3000, then resized to 1000 × 1000, written as WebP.',
+    describePlan(PHOTO, result.source, result, WEBP, say),
+    'plan.written what=plan.cropresize crop=3000 × 3000 size=1000 × 1000 format=WebP',
   );
 });
 
 test('describePlan: a picture that only changes format says so and nothing more', () => {
   const result = plan(whole(PHOTO), { mode: 'none' });
   assert.equal(
-    describePlan(PHOTO, result.source, result, PNG),
-    'kept at 4000 × 3000, written as PNG.',
+    describePlan(PHOTO, result.source, result, PNG, say),
+    'plan.written what=plan.keep size=4000 × 3000 format=PNG',
   );
 });
 
 test('describePlan: padding is called out, because the frame is not the picture', () => {
   const result = plan(whole(PHOTO), { mode: 'pixels', width: 1000, height: 1000, fit: 'pad' });
-  assert.match(describePlan(PHOTO, result.source, result, JPEG), /padded out to the exact frame/);
+  assert.match(describePlan(PHOTO, result.source, result, JPEG, say), /what=plan\.padded/);
+});
+
+test('describePlan: no terminator, because a caller may carry on past it', () => {
+  // The plan summary continues "- and the EXIF and GPS tags do not survive".
+  // It used to cut the full stop off with a regular expression, which is a
+  // thing that only works in the languages that end a sentence with one.
+  const result = plan(whole(PHOTO), { mode: 'none' });
+  assert.doesNotMatch(describePlan(PHOTO, result.source, result, PNG, say), /[.。]$/);
 });

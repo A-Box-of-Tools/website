@@ -290,6 +290,135 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="load.notimage">{name}: non è un'immagine che questo strumento sappia leggere.</span>
+    <span data-phrase="load.undecodable">{name}: questo browser non è riuscito a decodificarla.</span>
+    <span data-phrase="run.failed">{name}: {reason}</span>
+    <span data-phrase="write.refused">questo browser non ha voluto scrivere {format}.</span>
+    <span data-phrase="decode.failed">questo browser non è riuscito a decodificare l'immagine.</span>
+    <span data-phrase="size.bytes">{n} byte</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="count.one">1 immagine</span>
+    <span data-phrase="count.many">{n} immagini</span>
+    <span data-phrase="change.same">più o meno la stessa dimensione</span>
+    <span data-phrase="change.smaller">{percent}% in meno</span>
+    <span data-phrase="change.larger">{percent}% in più</span>
+    <span data-phrase="list.count">{count}, {size} in tutto</span>
+    <span data-phrase="row.shown">{name} è quella nell'anteprima del ritaglio</span>
+    <span data-phrase="row.draw">Disegna il riquadro su {name}</span>
+    <span data-phrase="row.badge">Nell'anteprima</span>
+    <span data-phrase="row.remove">Togli {name} dalla lista</span>
+    <span data-phrase="row.untouched">Non si cambia niente, quindi questa passa esattamente com'è.</span>
+    <span data-phrase="row.becomes">diventa {size}</span>
+    <span data-phrase="run.one">Ridimensiona l'immagine</span>
+    <span data-phrase="run.many">Ridimensiona le immagini</span>
+    <span data-phrase="preview.alt">Anteprima di {name}</span>
+    <span data-phrase="crop.box">Area di ritaglio. Le frecce la spostano, Alt e le frecce la ridimensionano, e
+      tenendo premuto Maiusc ogni passo è di dieci pixel.</span>
+    <span data-phrase="stage.name">Si disegna su {name}.</span>
+    <span data-phrase="stage.note">Ogni immagine tiene il suo riquadro. {note}</span>
+    <span data-phrase="others.one.cropped">{name} ha un riquadro suo.</span>
+    <span data-phrase="others.one.whole">{name} è ancora su tutta l'immagine &mdash; sceglila dalla lista qui sopra per
+      ritagliare anche quella.</span>
+    <span data-phrase="others.none">Le altre {count} sono ancora su tutta l'immagine &mdash; scegline una dalla lista
+      qui sopra per ritagliarla.</span>
+    <span data-phrase="others.all.two">Entrambe le altre hanno un riquadro loro.</span>
+    <span data-phrase="others.all.many">Tutte e {n} le altre hanno un riquadro loro.</span>
+    <span data-phrase="others.some.one">1 delle altre {total} ha un riquadro suo; il resto è ancora su tutta l'immagine.</span>
+    <span data-phrase="others.some.many">{n} delle altre {total} hanno un riquadro loro; il resto è ancora su tutta
+      l'immagine.</span>
+    <span data-phrase="apply.same.one">Tutte le immagini della lista hanno esattamente questa dimensione, quindi l'altra
+      riceve esattamente questo riquadro.</span>
+    <span data-phrase="apply.same.many">Tutte le immagini della lista hanno esattamente questa dimensione, quindi ricevono
+      tutte esattamente questo riquadro.</span>
+    <span data-phrase="apply.free">La stessa area relativa su ciascuna &mdash; le stesse frazioni della sua larghezza e
+      della sua altezza &mdash;, perché non hanno tutte la stessa dimensione.</span>
+    <span data-phrase="apply.source">Il riquadro più grande nella forma dell'immagine stessa che entri nella stessa area
+      relativa di ciascuna, così ogni risultato esce nella forma che hai fissato anche se
+      non hanno tutte la stessa dimensione.</span>
+    <span data-phrase="apply.ratio">Il riquadro {ratio} più grande che entri nella stessa area relativa di ciascuna,
+      così ogni risultato esce nella forma che hai fissato anche se non hanno tutte la
+      stessa dimensione.</span>
+    <span data-phrase="format.keep">Un JPEG resta un JPEG, un PNG resta un PNG. Quello che questo browser non sa
+      scrivere &mdash; un GIF, un BMP &mdash; esce come PNG, che tiene la trasparenza e i
+      colori piatti.</span>
+    <span data-phrase="format.jpeg">Piccolo e universale, e senza trasparenza: tutto ciò che si vede attraverso viene
+      riempito con il colore di sfondo.</span>
+    <span data-phrase="format.png">Senza perdite e con trasparenza, e molto più pesante degli altri due su una
+      fotografia.</span>
+    <span data-phrase="format.webp">Più piccolo del JPEG a parità di qualità, tiene la trasparenza, e lo apre ogni
+      browser attuale.</span>
+    <span data-phrase="format.webp.no">WebP &mdash; non supportato da questo browser</span>
+    <span data-phrase="plan.crop">ritagliata a {crop}</span>
+    <span data-phrase="plan.resize">ridimensionata a {size}</span>
+    <span data-phrase="plan.keep">lasciata a {size}</span>
+    <span data-phrase="plan.cropresize">ritagliata a {crop} e poi ridimensionata a {size}</span>
+    <span data-phrase="plan.padded">{what}, riempita fino alla cornice esatta che hai chiesto</span>
+    <span data-phrase="plan.written">{what}, scritta come {format}</span>
+    <span data-phrase="plan.only">{plan}.</span>
+    <span data-phrase="summary.empty">Aggiungi un'immagine e qui ci sarà scritto esattamente che cosa diventa.</span>
+    <span data-phrase="summary.untouched">Non si cambia niente: {name} è {size} e torna esattamente com'è entrata, byte per
+      byte.</span>
+    <span data-phrase="summary.plain">{name} è {size}. Esce {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.plain.padded">{name} è {size}. Esce {out} &mdash; l'immagine al {scale}, su uno sfondo che riempie
+      il resto di quella cornice.</span>
+    <span data-phrase="summary.cropped">{name} è {size}. Il riquadro ne tiene {crop}. Esce {out} &mdash; {scale}.</span>
+    <span data-phrase="summary.cropped.padded">{name} è {size}. Il riquadro ne tiene {crop}. Esce {out} &mdash; l'immagine al
+      {scale}, su uno sfondo che riempie il resto di quella cornice.</span>
+    <span data-phrase="scale.of.crop">{percent}% di quello che tiene il riquadro</span>
+    <span data-phrase="scale.of.original">{percent}% dell'originale</span>
+    <span data-phrase="scale.up.crop">ingrandita al {percent}% di quello che tiene il riquadro</span>
+    <span data-phrase="scale.up.original">ingrandita al {percent}% dell'originale</span>
+    <span data-phrase="summary.nothing">Non si ritaglia niente, non si ridimensiona niente e il formato non cambia, quindi
+      non c'è niente da ricodificare: ogni file viene restituito byte per byte, tag EXIF
+      compresi, perché nessuno viene mai aperto.</span>
+    <span data-phrase="summary.plan.one">L'immagine viene {plan} &mdash; e i tag EXIF e GPS non sopravvivono, perché un
+      canvas contiene pixel e nient'altro.</span>
+    <span data-phrase="summary.plan.many">{name} viene {plan} &mdash; e i tag EXIF e GPS non sopravvivono, perché un canvas
+      contiene pixel e nient'altro. {rest}</span>
+    <span data-phrase="rest.two">L'altra immagine riceve le stesse impostazioni di dimensione e formato, con il suo
+      ritaglio.</span>
+    <span data-phrase="rest.many">Le altre {count} ricevono le stesse impostazioni di dimensione e formato, ognuna con
+      il suo ritaglio.</span>
+    <span data-phrase="progress.at">{index} di {total}: {name}</span>
+    <span data-phrase="results.nothing">Non era stato chiesto niente, quindi non è stato fatto niente: ogni file è tornato
+      esattamente com'è entrato.</span>
+    <span data-phrase="results.totals">{before} in entrata, {after} in uscita &mdash; {change}.</span>
+    <span data-phrase="results.totals.one">{before} in entrata, {after} in uscita &mdash; {change}. {count} non aveva bisogno
+      di modifiche ed è passata così.</span>
+    <span data-phrase="results.totals.many">{before} in entrata, {after} in uscita &mdash; {change}. {count} non avevano bisogno
+      di modifiche e sono passate così.</span>
+    <span data-phrase="result.open">Guarda {name} a dimensione piena</span>
+    <span data-phrase="result.head.untouched">{size} · {bytes} &mdash; invariata</span>
+    <span data-phrase="result.head">{before} → {after} · {beforebytes} → {afterbytes} · {change}</span>
+    <span data-phrase="result.untouched">Passata byte per byte, metadati compresi: di questo file non si stava cambiando
+      niente.</span>
+    <span data-phrase="result.view">Guarda</span>
+    <span data-phrase="result.download">Scarica</span>
+    <span data-phrase="viewer.alt.original">L'originale: {name}</span>
+    <span data-phrase="viewer.alt.result">Il risultato: {name}</span>
+    <span data-phrase="viewer.caption.original">L'originale {name}, a {size}. Sono mostrate entrambe alla dimensione che questa
+      finestra ha a disposizione, che è l'unico modo onesto di confrontarle.</span>
+    <span data-phrase="viewer.showresult">Mostra il risultato</span>
+    <span data-phrase="viewer.showoriginal">Mostra l'originale</span>
+    <span data-phrase="fact.savedas">Salvata come</span>
+    <span data-phrase="fact.format">Formato</span>
+    <span data-phrase="fact.before">Prima</span>
+    <span data-phrase="fact.after">Dopo</span>
+    <span data-phrase="fact.filesize">Dimensione del file</span>
+    <span data-phrase="fact.cropped">Ritagliata</span>
+    <span data-phrase="fact.scale">Scala</span>
+    <span data-phrase="fact.padding">Riempimento</span>
+    <span data-phrase="fact.quality">Qualità</span>
+    <span data-phrase="fact.metadata">Metadati</span>
+    <span data-phrase="fact.after.same">lo stesso file, byte per byte</span>
+    <span data-phrase="fact.metadata.kept">tenuti &mdash; questo file non è mai stato aperto</span>
+    <span data-phrase="fact.metadata.gone">non riportati &mdash; un canvas contiene pixel e nient'altro</span>
+    <span data-phrase="fact.crop.yes">{size}, da {x} in orizzontale e {y} in verticale</span>
+    <span data-phrase="fact.crop.no">no &mdash; è passata tutta l'immagine</span>
+    <span data-phrase="fact.scale.crop">{percent}% del ritaglio</span>
+    <span data-phrase="fact.scale.original">{percent}% dell'originale</span>
+    <span data-phrase="fact.padding.yes">sì &mdash; l'immagine poggia sul colore di sfondo</span>
     <span data-phrase="progress.stopped">Fermato dopo {done} di {total}. Quello che è stato finito è qui sotto.</span>
     <span data-phrase="progress.stopped.none">Fermato prima che il primo fosse finito.</span>
     <span data-phrase="net.clean">Le tue immagini non sono andate da nessuna

@@ -46,7 +46,7 @@ export class Cropper {
    * @param {HTMLElement} stage  the element the preview exactly fills
    * @param {{onChange: Function}} options
    */
-  constructor(stage, { onChange } = {}) {
+  constructor(stage, { onChange, label } = {}) {
     this.#stage = stage;
     this.#onChange = onChange;
 
@@ -54,9 +54,7 @@ export class Cropper {
     this.#box.className = 'crop-box';
     this.#box.tabIndex = 0;
     this.#box.setAttribute('role', 'application');
-    this.#box.setAttribute('aria-label',
-      'Crop area. The arrow keys move it, Alt and the arrow keys resize it, '
-      + 'and holding Shift makes each step ten pixels.');
+    if (label) this.#box.setAttribute('aria-label', label);
 
     this.#label = document.createElement('span');
     this.#label.className = 'crop-size';
