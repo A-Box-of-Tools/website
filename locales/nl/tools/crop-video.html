@@ -181,6 +181,80 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">Bijsnijgebied. De pijltoetsen verplaatsen het, Alt met
+      de pijltoetsen verandert de grootte, en met Shift is elke stap tien pixels.</span>
+    <span data-phrase="step.reading">Het bestand wordt gelezen&hellip;</span>
+    <span data-phrase="open.notopened">Dat bestand kon niet geopend worden.</span>
+    <span data-phrase="nocodec.page">Deze browser kan video niet decoderen en niet
+      opnemen, dus dit gereedschap heeft niets om mee te werken. Een recente Chrome,
+      Edge, Firefox of Safari wel.</span>
+    <span data-phrase="preview.still">Deze browser speelt dit bestand niet af, dus het
+      beeld hieronder is gedecodeerd om te laten zien wat er bijgesneden wordt, en de
+      schuif decodeert er nog een. Op het bijsnijden zelf heeft dat geen invloed.</span>
+    <span data-phrase="preview.none">Deze browser speelt dit bestand niet af en er viel
+      ook geen beeld uit te decoderen. {why} Het kader hieronder werkt nog steeds op
+      zijn afmeting.</span>
+    <span data-phrase="decode.nodraw">Er kwam geen beeld terug van de decoder.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">onbekend</span>
+    <span data-phrase="len.unknown">onbekend</span>
+    <span data-phrase="src.byplayer">gelezen door de eigen speler van de browser</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), {degrees} graden gedraaid</span>
+    <span data-phrase="src.audio.one">{entry}, {n} kanaal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} kanalen, {rate} Hz</span>
+    <span data-phrase="src.audio.none">geen</span>
+    <span data-phrase="src.audio.whatever">wat de speler vindt</span>
+    <span data-phrase="note.exact">Decodeert en hercodeert elk beeld, sneller dan
+      realtime, en neemt het originele geluid ongewijzigd over.</span>
+    <span data-phrase="note.record">Speelt de clip helemaal af en neemt hem op, dus het
+      duurt zo lang als de video is en het geluid wordt hercodeerd. Dit tabblad moet
+      ondertussen vooraan blijven.</span>
+    <span data-phrase="note.audio.exact">Byte voor byte uit het bestand overgenomen, dus
+      er gaat niets verloren.</span>
+    <span data-phrase="note.audio.record">Van het afspelen opgevangen en hercodeerd,
+      want meer kan een opname niet.</span>
+    <span data-phrase="size.from">{width} x {height} (uit {fromWidth} x {fromHeight})</span>
+    <span data-phrase="kept.whole">het hele beeld</span>
+    <span data-phrase="kept.part">{percent}% van het beeld</span>
+    <span data-phrase="out.exact">Beeld voor beeld hercodeerd, naar MP4</span>
+    <span data-phrase="out.record.mp4">In realtime opgenomen, naar MP4</span>
+    <span data-phrase="out.record.webm">In realtime opgenomen, naar WebM</span>
+    <span data-phrase="step.preparing">Voorbereiden&hellip;</span>
+    <span data-phrase="step.finishing">Afronden&hellip;</span>
+    <span data-phrase="step.realtime">Opnemen in realtime &mdash; {done} van {total}
+      ({percent}%)</span>
+    <span data-phrase="step.frame">Beeld {done} van {total} wordt bijgesneden
+      ({percent}%)</span>
+    <span data-phrase="crop.toosmall">Het bijsnijden is te klein. Het moet elke kant op
+      minstens 16 pixels zijn.</span>
+    <span data-phrase="record.noplay">Deze browser kon het bestand niet afspelen om het
+      bij te snijden.</span>
+    <span data-phrase="record.slowopen">Het bestand deed er te lang over om te openen.</span>
+    <span data-phrase="record.norecord">Deze browser kan video niet hercoderen en niet
+      opnemen.</span>
+    <span data-phrase="record.hidden">Het tabblad stond tijdens de opname op de
+      achtergrond, dus er kunnen beelden ontbreken. Nog een keer met dit tabblad vooraan
+      geeft een schoon resultaat.</span>
+    <span data-phrase="record.nosound">Het geluid kon in deze browser niet opgevangen
+      worden, dus het resultaat heeft geen audiospoor.</span>
+    <span data-phrase="encode.noh264">Deze browser codeert geen H.264 op
+      {width}x{height}. Een kleiner gebied werkt wel, of WebM als uitvoer.</span>
+    <span data-phrase="encode.nothing">Uit dit bestand viel niets te decoderen.</span>
+    <span data-phrase="export.failed">Er ging iets mis bij het bijsnijden.</span>
+    <span data-phrase="mp4.noconfig">De encoder leverde geen decoderconfiguratie.</span>
+    <span data-phrase="mp4.noframes">Er zijn geen beelden gecodeerd.</span>
+    <span data-phrase="mp4.toobig">De bijgesneden video gaat over de grens van 4 GB
+      heen. Een lagere kwaliteit of een kleiner gebied helpt.</span>
+    <span data-phrase="mp4.unstable">Interne fout: de grootte van de MP4-index was
+      tussen twee doorgangen niet stabiel.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Het bestand houdt midden in een frame op.</span>
     <span data-phrase="read.avcshort">Het H.264-configuratierecord is te kort.</span>
     <span data-phrase="read.hevcshort">Het HEVC-configuratierecord is te kort.</span>

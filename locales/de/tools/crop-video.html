@@ -182,6 +182,83 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">Zuschneidebereich. Die Pfeiltasten verschieben ihn,
+      Alt und die Pfeiltasten ändern seine Größe, und mit gedrückter Umschalttaste sind
+      es zehn Pixel pro Schritt.</span>
+    <span data-phrase="step.reading">Die Datei wird gelesen&hellip;</span>
+    <span data-phrase="open.notopened">Diese Datei konnte nicht geöffnet werden.</span>
+    <span data-phrase="nocodec.page">Dieser Browser kann Video weder dekodieren noch
+      aufzeichnen, hier ist also nichts, womit sich arbeiten ließe. Ein aktuelles
+      Chrome, Edge, Firefox oder Safari schon.</span>
+    <span data-phrase="preview.still">Dieser Browser spielt diese Datei nicht ab, das
+      Bild unten wurde also dekodiert, um zu zeigen, was zugeschnitten wird, und der
+      Schieberegler dekodiert ein weiteres. Auf den Zuschnitt selbst hat das keinen
+      Einfluss.</span>
+    <span data-phrase="preview.none">Dieser Browser spielt diese Datei nicht ab, und es
+      ließ sich auch kein Bild daraus dekodieren. {why} Der Zuschneiderahmen unten
+      funktioniert trotzdem über seine Größe.</span>
+    <span data-phrase="decode.nodraw">Vom Dekoder kam kein Bild zurück.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">unbekannt</span>
+    <span data-phrase="len.unknown">unbekannt</span>
+    <span data-phrase="src.byplayer">vom Player des Browsers gelesen</span>
+    <span data-phrase="src.codec">{codec} ({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ({entry}), um {degrees} Grad gedreht</span>
+    <span data-phrase="src.audio.one">{entry}, {n} Kanal, {rate} Hz</span>
+    <span data-phrase="src.audio.many">{entry}, {n} Kanäle, {rate} Hz</span>
+    <span data-phrase="src.audio.none">keiner</span>
+    <span data-phrase="src.audio.whatever">was der Player findet</span>
+    <span data-phrase="note.exact">Dekodiert jedes Bild und kodiert es neu, schneller
+      als in Echtzeit, und übernimmt den Originalton unverändert.</span>
+    <span data-phrase="note.record">Spielt den Clip durch und zeichnet ihn auf, es
+      dauert also so lange, wie das Video lang ist, und der Ton wird neu kodiert. Dieser
+      Tab sollte dabei im Vordergrund bleiben.</span>
+    <span data-phrase="note.audio.exact">Byte für Byte aus der Datei übernommen, es geht
+      also nichts verloren.</span>
+    <span data-phrase="note.audio.record">Von der Wiedergabe abgegriffen und neu
+      kodiert, denn mehr kann eine Aufzeichnung nicht.</span>
+    <span data-phrase="size.from">{width} x {height} (aus {fromWidth} x {fromHeight})</span>
+    <span data-phrase="kept.whole">das ganze Bild</span>
+    <span data-phrase="kept.part">{percent}% des Bildes</span>
+    <span data-phrase="out.exact">Bild für Bild neu kodiert, in MP4</span>
+    <span data-phrase="out.record.mp4">In Echtzeit aufgezeichnet, in MP4</span>
+    <span data-phrase="out.record.webm">In Echtzeit aufgezeichnet, in WebM</span>
+    <span data-phrase="step.preparing">Wird vorbereitet&hellip;</span>
+    <span data-phrase="step.finishing">Wird abgeschlossen&hellip;</span>
+    <span data-phrase="step.realtime">Wird in Echtzeit aufgezeichnet &mdash; {done} von
+      {total} ({percent}%)</span>
+    <span data-phrase="step.frame">Bild {done} von {total} wird zugeschnitten
+      ({percent}%)</span>
+    <span data-phrase="crop.toosmall">Der Zuschnitt ist zu klein. Er muss in jede
+      Richtung mindestens 16 Pixel groß sein.</span>
+    <span data-phrase="record.noplay">Dieser Browser konnte die Datei zum Zuschneiden
+      nicht abspielen.</span>
+    <span data-phrase="record.slowopen">Die Datei hat zu lange zum Öffnen gebraucht.</span>
+    <span data-phrase="record.norecord">Dieser Browser kann Video weder neu kodieren
+      noch aufzeichnen.</span>
+    <span data-phrase="record.hidden">Der Tab war während der Aufzeichnung im
+      Hintergrund, es können also Bilder fehlen. Ein zweiter Lauf mit diesem Tab im
+      Vordergrund ergibt ein sauberes Ergebnis.</span>
+    <span data-phrase="record.nosound">Der Ton ließ sich in diesem Browser nicht
+      mitschneiden, das Ergebnis hat also keine Tonspur.</span>
+    <span data-phrase="encode.noh264">Dieser Browser kodiert kein H.264 bei
+      {width}x{height}. Ein kleinerer Ausschnitt geht, oder WebM als Ausgabe.</span>
+    <span data-phrase="encode.nothing">Aus dieser Datei ließ sich nichts dekodieren.</span>
+    <span data-phrase="export.failed">Beim Zuschneiden ist etwas schiefgegangen.</span>
+    <span data-phrase="mp4.noconfig">Der Encoder hat keine Decoder-Konfiguration
+      geliefert.</span>
+    <span data-phrase="mp4.noframes">Es wurden keine Bilder kodiert.</span>
+    <span data-phrase="mp4.toobig">Das zugeschnittene Video liegt über der 4-GB-Grenze.
+      Weniger Qualität oder ein kleinerer Ausschnitt hilft.</span>
+    <span data-phrase="mp4.unstable">Interner Fehler: die Größe des MP4-Index war
+      zwischen zwei Durchgängen nicht stabil.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
+    <span data-phrase="time.minutes">{minutes} min {seconds} s</span>
+    <span data-phrase="time.seconds">{n} s</span>
     <span data-phrase="read.midframe">Die Datei endet mitten in einem Einzelbild.</span>
     <span data-phrase="read.avcshort">Der H.264-Konfigurationsdatensatz ist zu kurz.</span>
     <span data-phrase="read.hevcshort">Der HEVC-Konfigurationsdatensatz ist zu kurz.</span>

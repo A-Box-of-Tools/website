@@ -60,10 +60,10 @@ function whenReady(video, signal) {
       if (error) reject(error); else resolve();
     };
     const ok = () => done(null);
-    const bad = () => done(new Error('This browser could not play the file back to crop it.'));
+    const bad = () => done(new Error('record.noplay'));
     const cancel = () => done(aborted());
 
-    const timer = setTimeout(() => done(new Error('The file took too long to open.')), LOAD_TIMEOUT);
+    const timer = setTimeout(() => done(new Error('record.slowopen')), LOAD_TIMEOUT);
     if (video.readyState >= 2) { done(null); return; }
     video.addEventListener('canplay', ok, { once: true });
     video.addEventListener('error', bad, { once: true });
@@ -76,13 +76,15 @@ function whenReady(video, signal) {
  * @param {string} args.src  an object URL for the chosen file
  * @param {{x: number, y: number, width: number, height: number}} args.crop
  *   in the coordinates of the played picture, which is already the right way up
- * @returns {Promise<{blob: Blob, extension: string, codec: string, warning: string|null}>}
+ * @returns {Promise<{blob: Blob, extension: string, codec: string,
+ *   warnings: string[]}>} `warnings` are phrase keys; the caller resolves
+ *   them and decides how two sentences are joined.
  */
 export async function cropByRecording({
   src, crop, quality = 'medium', keepAudio = true, fps = 30, onProgress, signal,
 }) {
   const mimeType = pickRecorderMimeType();
-  if (!mimeType) throw new Error('This browser can neither re-encode nor record video.');
+  if (!mimeType) throw new Error('record.norecord');
 
   const canvas = document.createElement('canvas');
   canvas.width = crop.width;
@@ -252,15 +254,10 @@ export async function cropByRecording({
       blob: new Blob(parts, { type: mimeType }),
       extension: mimeType.includes('webm') ? 'webm' : 'mp4',
       codec: mimeType,
-      warning: [
-        wentHidden
-          ? 'The tab was hidden while recording, so some frames may be missing. '
-            + 'Run it again with this tab in front for a clean result.'
-          : null,
-        audioMissing && keepAudio
-          ? 'The sound could not be captured in this browser, so the result has no audio track.'
-          : null,
-      ].filter(Boolean).join(' ') || null,
+      warnings: [
+        wentHidden ? 'record.hidden' : null,
+        audioMissing && keepAudio ? 'record.nosound' : null,
+      ].filter(Boolean),
     };
   } catch (error) {
     if (recorder && recorder.state !== 'inactive') recorder.stop();

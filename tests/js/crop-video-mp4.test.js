@@ -233,17 +233,19 @@ test('the first decoder configuration wins', () => {
   assert.deepEqual(writer.avcC, AVCC);
 });
 
+// The writer ships in fifteen languages, so it refuses with a phrase key and
+// the page turns that into a sentence.
 test('refusals rather than a broken file', () => {
   assert.throws(() => new Mp4Writer({ width: 16, height: 16 }).setDecoderConfig(null),
-    /no decoder configuration/);
+    { message: 'mp4.noconfig' });
 
   const noFrames = new Mp4Writer({ width: 16, height: 16 });
   noFrames.setDecoderConfig(AVCC);
-  assert.throws(() => noFrames.finalize(), /No frames were encoded/);
+  assert.throws(() => noFrames.finalize(), { message: 'mp4.noframes' });
 
   const noConfig = new Mp4Writer({ width: 16, height: 16 });
   noConfig.addVideoSample(ascii('v'), true, 0);
-  assert.throws(() => noConfig.finalize(), /never reported a decoder configuration/);
+  assert.throws(() => noConfig.finalize(), { message: 'mp4.noconfig' });
 });
 
 test('the blob is typed as an mp4', () => {

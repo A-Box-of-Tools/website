@@ -181,6 +181,71 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="crop.aria">منطقة القص. مفاتيح الأسهم تحرّكها، وAlt مع الأسهم
+      يغيّر حجمها، ومع Shift تصير كل خطوة عشر بكسلات.</span>
+    <span data-phrase="step.reading">جارٍ قراءة الملف&hellip;</span>
+    <span data-phrase="open.notopened">تعذّر فتح ذلك الملف.</span>
+    <span data-phrase="nocodec.page">هذا المتصفح لا يفكّ ترميز الفيديو ولا يسجّله، فلا
+      شيء لدى هذه الأداة لتعمل عليه. متصفح كروم أو إدج أو فايرفوكس أو سفاري حديث يفعل.</span>
+    <span data-phrase="preview.still">هذا المتصفح لا يشغّل هذا الملف، فقد فُكّ ترميز
+      الإطار أدناه ليُظهر ما يُقص، وتحريك الشريط يفكّ ترميز إطار آخر. أما القص نفسه فلا
+      يتأثر.</span>
+    <span data-phrase="preview.none">هذا المتصفح لا يشغّل هذا الملف، ولم يُفَكّ ترميز أي
+      إطار منه كذلك. {why} وإطار القص أدناه يظل يعمل على مقاسه.</span>
+    <span data-phrase="decode.nodraw">لم يُرجِع فاكّ الترميز أي إطار.</span>
+    <span data-phrase="size.plain">{width} x {height}</span>
+    <span data-phrase="src.unknown">غير معروف</span>
+    <span data-phrase="len.unknown">غير معروفة</span>
+    <span data-phrase="src.byplayer">قرأه مشغّل المتصفح نفسه</span>
+    <span data-phrase="src.codec">{codec} ‏({entry})</span>
+    <span data-phrase="src.codec.turned">{codec} ‏({entry})، مُدار {degrees} درجة</span>
+    <span data-phrase="src.audio.one">{entry}، قناة {n}، {rate} هرتز</span>
+    <span data-phrase="src.audio.many">{entry}، {n} قنوات، {rate} هرتز</span>
+    <span data-phrase="src.audio.none">لا شيء</span>
+    <span data-phrase="src.audio.whatever">ما يجده المشغّل</span>
+    <span data-phrase="note.exact">يفكّ ترميز كل إطار ويعيد ترميزه، أسرع من الزمن
+      الحقيقي، وينسخ الصوت الأصلي كما هو.</span>
+    <span data-phrase="note.record">يشغّل المقطع كاملاً ويسجّله، فيستغرق مدة الفيديو
+      نفسها ويُعاد ترميز الصوت. ينبغي أن تبقى علامة التبويب هذه في المقدمة أثناء ذلك.</span>
+    <span data-phrase="note.audio.exact">منسوخ من الملف بايتاً بايتاً، فلا يفقد شيئاً.</span>
+    <span data-phrase="note.audio.record">ملتقط من التشغيل ومُعاد ترميزه، لأن هذا كل ما
+      يستطيعه التسجيل.</span>
+    <span data-phrase="size.from">{width} x {height} (من {fromWidth} x {fromHeight})</span>
+    <span data-phrase="kept.whole">الإطار كله</span>
+    <span data-phrase="kept.part">{percent}% من الصورة</span>
+    <span data-phrase="out.exact">أُعيد ترميزه إطاراً إطاراً، إلى MP4</span>
+    <span data-phrase="out.record.mp4">سُجّل في الزمن الحقيقي، إلى MP4</span>
+    <span data-phrase="out.record.webm">سُجّل في الزمن الحقيقي، إلى WebM</span>
+    <span data-phrase="step.preparing">التحضير&hellip;</span>
+    <span data-phrase="step.finishing">الإنهاء&hellip;</span>
+    <span data-phrase="step.realtime">التسجيل في الزمن الحقيقي &mdash; {done} من {total}
+      ({percent}%)</span>
+    <span data-phrase="step.frame">قص الإطار {done} من {total} ({percent}%)</span>
+    <span data-phrase="crop.toosmall">القص أصغر من اللازم. يحتاج 16 بكسل على الأقل في كل
+      اتجاه.</span>
+    <span data-phrase="record.noplay">لم يستطع هذا المتصفح تشغيل الملف لقصّه.</span>
+    <span data-phrase="record.slowopen">استغرق فتح الملف وقتاً أطول من اللازم.</span>
+    <span data-phrase="record.norecord">هذا المتصفح لا يعيد ترميز الفيديو ولا يسجّله.</span>
+    <span data-phrase="record.hidden">كانت علامة التبويب مخفية أثناء التسجيل، فقد تنقص
+      بعض الإطارات. تشغيله مرة أخرى وهذه العلامة في المقدمة يعطي نتيجة نظيفة.</span>
+    <span data-phrase="record.nosound">تعذّر التقاط الصوت في هذا المتصفح، فالنتيجة بلا
+      مسار صوتي.</span>
+    <span data-phrase="encode.noh264">هذا المتصفح لا يرمّز H.264 بمقاس {width}x{height}.
+      مساحة أصغر تنجح، أو تحويل المخرَج إلى WebM.</span>
+    <span data-phrase="encode.nothing">لم يُفَكّ ترميز أي شيء من هذا الملف.</span>
+    <span data-phrase="export.failed">حدث خطأ أثناء القص.</span>
+    <span data-phrase="mp4.noconfig">لم يعطِ المرمّز أي إعدادات لفاكّ الترميز.</span>
+    <span data-phrase="mp4.noframes">لم يُرمَّز أي إطار.</span>
+    <span data-phrase="mp4.toobig">الفيديو المقصوص يتجاوز حد 4 غيغابايت. خفض الجودة أو
+      قص مساحة أصغر يحل الأمر.</span>
+    <span data-phrase="mp4.unstable">خطأ داخلي: لم يستقر حجم فهرس MP4 بين مرورين.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
+    <span data-phrase="size.gb">{n} غيغابايت</span>
+    <span data-phrase="time.minutes">{minutes} د {seconds} ث</span>
+    <span data-phrase="time.seconds">{n} ث</span>
     <span data-phrase="read.midframe">ينتهي الملف في منتصف إطار.</span>
     <span data-phrase="read.avcshort">سجل إعداد H.264 أقصر مما ينبغي.</span>
     <span data-phrase="read.hevcshort">سجل إعداد HEVC أقصر مما ينبغي.</span>
