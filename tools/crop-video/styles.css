@@ -55,9 +55,17 @@
   background: var(--surface-2);
 }
 
+/* The picture sits inside a margin rather than against the edge of the card.
+   A crop on the whole frame - which is where every file opens - puts the box's
+   border on the outermost row of pixels and its handles half outside them, and
+   `overflow: hidden`, which is what keeps the dimming shadow off the rest of
+   the page, would cut those handles in half. The margin is wider than a
+   handle's overhang: seven pixels, or nine where they are drawn larger for a
+   finger. */
 .stage-wrap {
   display: flex;
   justify-content: center;
+  padding: 0.75rem;
   background: #000;
   border: 1px solid var(--border);
   border-radius: var(--radius);
