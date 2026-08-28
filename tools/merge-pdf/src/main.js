@@ -162,7 +162,8 @@ function messageFor(error) {
   if (error instanceof EncryptedPdfError) return phrase('read.locked');
   if (error instanceof NotAPdfError) return phrase(error.message);
   if (error?.name === 'AbortError') return phrase('read.cancelled');
-  return phrase('read.unreadable', { detail: error?.message ?? error });
+  return phrase('read.unreadable',
+    { detail: phrase(error?.message ?? String(error), error?.values) });
 }
 
 function showLoadError(text) {

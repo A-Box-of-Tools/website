@@ -118,7 +118,7 @@ export class PdfDocument {
   async readXref() {
     const at = lastIndexOfAscii(this.bytes, 'startxref',
       this.bytes.length) ?? -1;
-    if (at < 0) throw new PdfSyntaxError('no startxref');
+    if (at < 0) throw new PdfSyntaxError('pdf.nostartxref');
 
     const parser = new Parser(this.bytes, at + 9);
     parser.skip();
@@ -167,7 +167,7 @@ export class PdfDocument {
     if (parser.eatKeyword('xref')) return this.readXrefTable(parser);
 
     const { value } = parseIndirectObject(this.bytes, offset, (ref) => this.resolve(ref));
-    if (!(value instanceof PdfStream)) throw new PdfSyntaxError('not an xref section');
+    if (!(value instanceof PdfStream)) throw new PdfSyntaxError('pdf.noxref');
     await this.readXrefStream(value);
     return value.dict;
   }
@@ -218,12 +218,12 @@ export class PdfDocument {
   async readXrefStream(stream) {
     const { bytes } = await decodeStream(stream, (v) => this.resolve(v));
     const widths = (this.resolve(stream.dict.get('W')) ?? []).map((w) => this.resolve(w));
-    if (widths.length < 3) throw new PdfSyntaxError('an xref stream with no /W');
+    if (widths.length < 3) throw new PdfSyntaxError('pdf.now');
 
     const size = this.resolve(stream.dict.get('Size')) ?? 0;
     const index = this.resolve(stream.dict.get('Index')) ?? [0, size];
     const rowBytes = widths.reduce((sum, w) => sum + w, 0);
-    if (rowBytes <= 0) throw new PdfSyntaxError('an xref stream with zero-width fields');
+    if (rowBytes <= 0) throw new PdfSyntaxError('pdf.zerowidth');
 
     let at = 0;
     const field = (width) => {

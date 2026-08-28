@@ -202,7 +202,8 @@ test('an unclosed dictionary is reported', () => {
 
 test('nesting past the guard is refused rather than exhausting the stack', () => {
   // This runs on bytes a stranger sent.
-  assert.throws(() => parse('['.repeat(400) + ']'.repeat(400)), /nested too deeply/);
+  assert.throws(() => parse('['.repeat(400) + ']'.repeat(400)),
+    /^PdfSyntaxError: pdf\.deep$/);
 });
 
 /* ============================================================= references */
@@ -298,7 +299,8 @@ test('an indirect /Length that cannot be resolved falls back', () => {
 });
 
 test('a stream with no endstream is reported', () => {
-  assert.throws(() => parse('<< >>\nstream\nDATA'), /no endstream/);
+  assert.throws(() => parse('<< >>\nstream\nDATA'),
+    /^PdfSyntaxError: pdf\.noendstream$/);
 });
 
 test('a stream may hold bytes that look like syntax', () => {
@@ -331,7 +333,8 @@ test('parseIndirectObject reads from an offset', () => {
 });
 
 test('parseIndirectObject refuses something that is not one', () => {
-  assert.throws(() => parseIndirectObject(ascii('12 0 << >>'), 0), /no obj keyword/);
+  assert.throws(() => parseIndirectObject(ascii('12 0 << >>'), 0),
+    (error) => error.message === 'pdf.noobj' && error.values.at === 0);
 });
 
 /* ============================================================ byte search */
@@ -369,7 +372,7 @@ test('the searches do not run off either end', () => {
 /* ================================================================ refusals */
 
 test('an empty input, and a value that is not one', () => {
-  assert.throws(() => parse(''), /ran off the end/);
+  assert.throws(() => parse(''), /^PdfSyntaxError: pdf\.short$/);
   assert.throws(() => parse('>>'), PdfSyntaxError);
   assert.throws(() => parse(']'), PdfSyntaxError);
 });
@@ -380,6 +383,13 @@ test('a syntax error names where it happened', () => {
     assert.fail('should have thrown');
   } catch (err) {
     assert.ok(err instanceof PdfSyntaxError);
-    assert.match(err.message, /at 3/);
+    // The offset is what this test is about, and it is a blank in the
+    // sentence rather than part of it - the sentence is in body.html.
+    // A "]" is not a word, so it is reported as the byte it is - which is
+    // the other of the two keys, because "byte" is a word and goes in the
+    // sentence rather than beside the number.
+    assert.equal(err.message, 'pdf.unexpectedbyte');
+    assert.equal(err.values.at, 3);
+    assert.equal(err.values.hex, '5d');
   }
 });

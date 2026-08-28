@@ -146,7 +146,20 @@ export function lastIndexOfAscii(bytes, needle, from = bytes.length) {
 
 /* --------------------------------------------------------------- the parser */
 
-export class PdfSyntaxError extends Error {}
+/**
+ * A file that is not shaped the way a PDF is.
+ *
+ * The message is a phrase key and `values` fills its blanks. This file is
+ * copied byte for byte into every language and cannot reach the DOM, so
+ * the sentence is the page's to compose - see shared/js/phrases.js.
+ */
+export class PdfSyntaxError extends Error {
+  constructor(key, values) {
+    super(key);
+    this.name = 'PdfSyntaxError';
+    this.values = values;
+  }
+}
 
 /**
  * A cursor over the file's bytes that hands back one value at a time.
@@ -208,9 +221,9 @@ export class Parser {
    * sent. Two hundred is far past anything a real document needs.
    */
   parseValue(depth = 0) {
-    if (depth > 200) throw new PdfSyntaxError('nested too deeply');
+    if (depth > 200) throw new PdfSyntaxError('pdf.deep');
     this.skip();
-    if (this.pos >= this.bytes.length) throw new PdfSyntaxError('ran off the end');
+    if (this.pos >= this.bytes.length) throw new PdfSyntaxError('pdf.short');
 
     const code = this.bytes[this.pos];
 
@@ -234,8 +247,12 @@ export class Parser {
     // ']' and '>>' reach here when an array or dictionary is missing a value.
     // Reported rather than skipped: a silent guess here is how a parser ends
     // up writing out a document that is subtly not the one it read.
-    throw new PdfSyntaxError(
-      `unexpected ${word || `byte 0x${code.toString(16)}`} at ${this.pos}`);
+    // Two keys rather than one with a clause spliced into it: a token out
+    // of the file is data and goes in a blank, but "byte" is a word.
+    throw word
+      ? new PdfSyntaxError('pdf.unexpected', { found: word, at: this.pos })
+      : new PdfSyntaxError('pdf.unexpectedbyte',
+        { hex: code.toString(16), at: this.pos });
   }
 
   parseName() {
@@ -450,7 +467,7 @@ export class Parser {
 
     if (end < 0) {
       end = indexOfAscii(bytes, 'endstream', start);
-      if (end < 0) throw new PdfSyntaxError('a stream with no endstream');
+      if (end < 0) throw new PdfSyntaxError('pdf.noendstream');
       // The EOL before `endstream` is the file's punctuation, not part of the
       // data. Dropping it is what every reader does, and keeping it corrupts
       // anything whose length matters, which is all of them.
@@ -481,7 +498,7 @@ export function parseIndirectObject(bytes, offset, resolve) {
   const num = parser.readNumber();
   parser.skip();
   const gen = parser.readNumber();
-  if (!parser.eatKeyword('obj')) throw new PdfSyntaxError(`no obj keyword at ${offset}`);
+  if (!parser.eatKeyword('obj')) throw new PdfSyntaxError('pdf.noobj', { at: offset });
   const value = parser.parseValue();
   return { num, gen, value };
 }
