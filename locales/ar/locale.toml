@@ -353,6 +353,12 @@ blurb = """
         أدوات لا تلامس خادما أبدا. ملفاتك تبقى على جهازك &mdash; لا
         شيء تحتاج إلى رفعه، ولا حساب عليك إنشاؤه."""
 base = "كل ادعاء في هذا الموقع مُعَدّ ليُتحقَّق منه، لا ليُصدَّق."
+licence = """
+    النصوص بترخيص
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>،
+    والشيفرة بترخيص
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.
+    أعد استخدامها مع ذكر المصدر."""
 
 #
 # ---------------------------------------------------------------------------

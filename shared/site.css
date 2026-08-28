@@ -743,6 +743,15 @@ footer a:hover { text-decoration: underline; }
   text-align: center;
 }
 
+/* The licence, directly under the closing line and quieter than it. It shares
+   that line's rule about the border - there is only one, above the pair, so the
+   two read as one closing block rather than as two footers. */
+.footer-licence {
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
 /* The language switcher, across the foot of the page above the closing line.
 
    A row of plain links and nothing else: no JavaScript, no cookie, no

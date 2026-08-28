@@ -811,6 +811,31 @@ blurb = """
         nothing to upload, no account to make."""
 base = "Every claim on this site is meant to be checked, not believed."
 
+# What the site licenses, rather than what it reserves. The conventional footer
+# line is a copyright notice, and here that would be a false one: LICENSE puts
+# the code under MIT and LICENSE-CONTENT puts every sentence a visitor reads
+# under CC BY 4.0, so "all rights reserved" would deny, on the page itself, the
+# thing those two files grant. Copyright attaches on creation under the Berne
+# Convention and a notice has not been required since 1989, so the notice was
+# never buying anything a licence line does not buy better.
+#
+# The <a> sits inside the translated string for the reason given above
+# `guarantees_note`: which words carry the link is a translator's decision. The
+# two URLs are written out rather than built from `source_url`, because strings
+# under [footer] are substituted into the template and not themselves rendered -
+# a {{ }} here ships to the visitor verbatim. pages/terms/body.html spells the
+# same repository out for the same reason.
+#
+# The year is deliberately absent. A year computed at build time would rewrite
+# twelve hundred pages every 1 January, which `--check` would report as the
+# whole site changing and the deploy would then submit wholesale to IndexNow.
+licence = """
+    Text under
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>,
+    code under
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.
+    Reuse it, credit it."""
+
 #
 # ---------------------------------------------------------------------------
 # /llms.txt - the same site, said once in plain text, for a machine.

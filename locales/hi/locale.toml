@@ -227,6 +227,12 @@ blurb = """
         ऐसे टूल जो किसी सर्वर से बात ही नहीं करते। आपकी फ़ाइलें आपके डिवाइस
         पर ही रहती हैं। न कुछ अपलोड करना, न कोई खाता बनाना।"""
 base = "इस साइट का हर दावा जाँचने के लिए लिखा गया है, मान लेने के लिए नहीं।"
+licence = """
+    यहाँ का लेखन
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>
+    के तहत है और कोड
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>
+    के तहत। स्रोत बताकर दोनों का इस्तेमाल कीजिए।"""
 
 #
 # ---------------------------------------------------------------------------

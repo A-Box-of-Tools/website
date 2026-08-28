@@ -337,6 +337,12 @@ blurb = """
         Sunucuya hiç dokunmayan araçlar. Dosyalarınız cihazınızda kalır
         &mdash; yükleyecek bir şey yok, oluşturulacak bir hesap yok."""
 base = "Bu sitedeki her iddia inanılmak için değil, doğrulanmak için var."
+licence = """
+    Metinler
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>,
+    kod ise
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>
+    lisanslıdır. Kaynak göstererek dilediğiniz gibi kullanın."""
 
 #
 # ---------------------------------------------------------------------------

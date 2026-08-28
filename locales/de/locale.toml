@@ -374,6 +374,12 @@ blurb = """
         Werkzeuge, die ohne Server auskommen. Ihre Dateien bleiben auf Ihrem
         Gerät. Sie laden nichts hoch und legen kein Konto an."""
 base = "Jede Behauptung auf dieser Seite ist zum Nachprüfen gedacht, nicht zum Glauben."
+licence = """
+    Texte unter
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>,
+    Code unter
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.
+    Gern weiterverwenden, mit Quellenangabe."""
 
 #
 # ---------------------------------------------------------------------------

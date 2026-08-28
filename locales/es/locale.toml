@@ -327,6 +327,12 @@ blurb = """
         Herramientas que no pasan por ningún servidor. Tus archivos se quedan
         en tu dispositivo, sin nada que subir y sin ninguna cuenta que crear."""
 base = "Cada afirmación de este sitio está hecha para comprobarla, no para creértela."
+licence = """
+    Los textos, con licencia
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>;
+    el código, con
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>.
+    Reutilízalo citando la fuente."""
 
 #
 # ---------------------------------------------------------------------------

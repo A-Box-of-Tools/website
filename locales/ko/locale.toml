@@ -346,6 +346,12 @@ blurb = """
         서버를 거치지 않는 도구들. 파일은 내 기기에 그대로 남습니다. 올릴 것도,
         만들 계정도 없습니다."""
 base = "이 사이트에 적힌 주장은 믿으라고 쓴 것이 아니라 확인해 보라고 쓴 것입니다."
+licence = """
+    글은
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>,
+    코드는
+    <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>
+    라이선스입니다. 출처만 밝히면 마음껏 가져다 쓰세요."""
 
 #
 # ---------------------------------------------------------------------------
