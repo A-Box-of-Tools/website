@@ -226,22 +226,7 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 .pledge-fold summary { list-style: none; cursor: pointer; }
 .pledge-fold summary::-webkit-details-marker { display: none; }
 
-/* The affordance the hidden default marker was providing. Physical borders on
-   purpose: a caret that points down or up needs no mirroring for RTL. */
-.pledge-caret {
-  flex: none;
-  width: 0.5rem;
-  height: 0.5rem;
-  margin-inline-start: auto;
-  align-self: center;
-  border-right: 2px solid var(--text-dim);
-  border-bottom: 2px solid var(--text-dim);
-  transform: rotate(45deg);
-  transition: transform 0.15s ease;
-}
 
-.pledge-fold[open] .pledge-caret { transform: rotate(-135deg); }
-.pledge-fold summary:hover .pledge-caret { border-color: var(--accent); }
 
 .pledge-sub {
   margin: 0.5rem 0 0;
@@ -445,7 +430,27 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   summary is already named by the heading inside it, and the mark is decoration
   on top of that, so it is drawn where a screen reader cannot reach it.
 */
-.card-note > summary::after {
+/*
+  Every fold on a tool page that opens EXPLANATION wears this one mark: a
+  step's small print, the list of steps at the foot of the page, each question,
+  and the pledge's evidence. They were four different marks - a circled i, a
+  caret, the browser's own triangle, and a bare bold line - which is four
+  answers to the same question about what a click will do.
+
+  The pledge is drawn on a real <span> rather than a pseudo-element only
+  because its summary already has one: the markup carries an empty
+  `.pledge-caret` for exactly this purpose, and reusing it keeps the mark inside
+  the flex row with the claim rather than hanging off the end of it.
+
+  What is deliberately NOT here: a fold that opens CONTROLS or DATA. The URL
+  panel, the language switcher, gif-analyzer's per-frame tables and id-photo's
+  manual measurements all open something you operate or read, not something
+  that explains, and an i on those would be a promise the fold does not keep.
+*/
+.card-note > summary::after,
+.how-to-fold > summary > h2::after,
+.faq-list > details > summary::after,
+.pledge-fold .pledge-caret {
   content: "";
   flex: none;
   width: 1.05rem;
@@ -457,16 +462,40 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
     radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
       50% 22% / 2.5px 2.5px no-repeat,
     linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat;
-  transition: color 0.15s;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
 }
 
 .card-note > summary:hover::after,
-.card-note > summary:focus-visible::after { color: var(--accent); }
+.card-note > summary:focus-visible::after,
+.how-to-fold > summary:hover > h2::after,
+.how-to-fold > summary:focus-visible > h2::after,
+.faq-list > details > summary:hover::after,
+.faq-list > details > summary:focus-visible::after,
+.pledge-fold summary:hover .pledge-caret { color: var(--accent); }
 
-/* Open, the mark stops being an invitation and becomes a state: it is the
-   accent colour, so a reader scanning a page of cards can see which ones they
-   have already opened without reading them again. */
-.card-note[open] > summary::after { color: var(--accent); }
+/*
+  Open, the mark stops being an invitation and becomes a state - and says so by
+  filling in rather than by changing colour. Outlined either way it read as a
+  button that had been pressed and might spring back; filled, it is plainly on,
+  and a reader scanning a page of cards can see which ones they have already
+  opened without reading them again.
+
+  The colour goes last in the `background` shorthand, which is where the
+  shorthand takes a background-color: the two shapes that draw the i sit on top
+  of it, in the one colour that is legible on the accent in both themes.
+*/
+.card-note[open] > summary::after,
+.how-to-fold[open] > summary > h2::after,
+.faq-list > details[open] > summary::after,
+.pledge-fold[open] .pledge-caret {
+  color: var(--accent-text);
+  border-color: var(--accent);
+  background:
+    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
+      50% 22% / 2.5px 2.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat,
+    var(--accent);
+}
 
 .card-note[open] > summary > h2 { margin-bottom: 0.7rem; }
 
@@ -731,40 +760,10 @@ button, .as-button {
 
 /* The same caret the pledge fold uses, for the same reason: a heading that can
    be opened should not look exactly like one that cannot. */
-/* The same mark the steps above use.
-
-   It was a caret, and a caret and a circled i side by side on one page are two
-   answers to the same question: what happens if I click this. Both of these
-   open explanation - a step's, and the whole list of steps - so both wear the
-   mark that means explanation. The caret is left to the pledge, which is not
-   an explanation but a claim with its evidence folded under it, and whose
-   summary already carries two live status dots that an i would compete with.
-
-   Drawn the same way and for the same reason as the card mark: generated
-   content counts towards the accessible name, so this is background shapes in
-   a circle where a screen reader cannot reach it. */
-.how-to-fold > summary > h2::after {
-  content: "";
-  flex: none;
-  width: 1.05rem;
-  height: 1.05rem;
-  border: 1.5px solid currentColor;
-  border-radius: 50%;
-  color: var(--text-dim);
-  background:
-    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
-      50% 22% / 2.5px 2.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat;
-  transition: color 0.15s;
-}
-
-.how-to-fold[open] > summary > h2::after { color: var(--accent); }
 
 .how-to-fold > summary:hover > h2,
 .how-to-fold > summary:focus-visible > h2 { color: var(--accent); }
 
-.how-to-fold > summary:hover > h2::after,
-.how-to-fold > summary:focus-visible > h2::after { color: var(--accent); }
 
 .how-to-fold[open] > summary > h2 { margin-bottom: 0.9rem; }
 
@@ -802,9 +801,13 @@ button, .as-button {
   cursor: pointer;
   font-weight: 600;
   font-size: 0.93rem;
-  list-style-position: outside;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.faq-list summary::-webkit-details-marker { display: none; }
 .faq-list summary:hover { color: var(--accent); }
 
 .faq-list details[open] summary { margin-bottom: 0.5rem; }

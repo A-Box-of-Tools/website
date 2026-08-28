@@ -261,8 +261,18 @@
 }
 
 .assumptions summary:hover::after,
-.assumptions summary:focus-visible::after,
-.assumptions[open] summary::after { color: var(--accent); }
+.assumptions summary:focus-visible::after { color: var(--accent); }
+
+/* Open, it fills in, the same as every other mark on the page. */
+.assumptions[open] summary::after {
+  color: var(--accent-text);
+  border-color: var(--accent);
+  background:
+    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
+      50% 22% / 2.5px 2.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat,
+    var(--accent);
+}
 
 @media (prefers-reduced-motion: reduce) {
   .assumptions summary::after { transition: none; }
