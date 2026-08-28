@@ -146,6 +146,52 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: this is not an image format this tool
+      recognises. The type in a data URI has to be right, so it will not guess one.</span>
+    <span data-phrase="read.mismatch">The name says {extension}, but the bytes are
+      {label}. The URI says {mime}, which is the one that will work.</span>
+    <span data-phrase="row.remove">Take {name} off the list</span>
+    <span data-phrase="n.image.one">{n} image</span>
+    <span data-phrase="n.image.many">{n} images</span>
+    <span data-phrase="results.one">{n} picture, {size} of text in total. None of it has
+      been anywhere.</span>
+    <span data-phrase="results.many">{n} pictures, {size} of text in total. None of it
+      has been anywhere.</span>
+    <span data-phrase="facts.in">{size} in</span>
+    <span data-phrase="facts.out">{n} characters out</span>
+    <span data-phrase="overhead.same">the same size as the file</span>
+    <span data-phrase="overhead.larger">{percent}% larger than the file</span>
+    <span data-phrase="overhead.smaller">{percent}% smaller than the file</span>
+    <span data-phrase="verdict.tiny">Small enough that this is a clear win: one fewer
+      request, and nothing much added to the file it lands in.</span>
+    <span data-phrase="verdict.icon">A normal size for an inlined icon. Worth it for
+      something that appears on every page.</span>
+    <span data-phrase="verdict.large">Large for an inline picture. Everything that
+      includes this stylesheet now carries it, and it cannot be cached on its own.</span>
+    <span data-phrase="verdict.toobig">Too big to inline. Served as an ordinary file
+      this would be cached once and fetched in parallel; inlined, it is on the critical
+      path of every page and re-downloaded whenever anything around it changes.</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">a colour profile</span>
+    <span data-phrase="kind.time">a timestamp</span>
+    <span data-phrase="kind.comment">a comment</span>
+    <span data-phrase="kind.text">text</span>
+    <span data-phrase="meta.plain">Carries {size} of {kinds}. It is copied into the URI
+      along with the picture.</span>
+    <span data-phrase="meta.share">Carries {size} of {kinds}, which is {percent}% of the
+      file. It is copied into the URI along with the picture.</span>
+    <span data-phrase="render.failed">This browser would not draw the result. The URI is
+      well formed; the format is one it cannot decode.</span>
+    <span data-phrase="sniff.unrenderable">No browser except Safari draws this format,
+      so the URI will be valid and the picture will not appear. Convert it first.</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.and">{a} and {b}</span>
+    <span data-phrase="size.b">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">your images have gone nowhere. {total} files
       loaded, all of them this page's own. {platform}</span>
     <span data-phrase="net.dirty">something contacted {hosts}, which this tool

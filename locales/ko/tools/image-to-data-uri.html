@@ -143,6 +143,46 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: 이 도구가 아는 이미지 형식이 아닙니다. 데이터 URI 안의 종류는 맞아야
+      해서, 짐작해서 넣지 않습니다.</span>
+    <span data-phrase="read.mismatch">이름은 {extension}이라고 하는데 바이트는 {label}입니다. URI에는
+      {mime}이 적히고, 실제로 되는 쪽은 그것입니다.</span>
+    <span data-phrase="row.remove">{name}을 목록에서 빼기</span>
+    <span data-phrase="n.image.one">이미지 {n}개</span>
+    <span data-phrase="n.image.many">이미지 {n}개</span>
+    <span data-phrase="results.one">이미지 {n}개, 글자는 모두 {size}. 어느 것도 어디에도 가지 않았습니다.</span>
+    <span data-phrase="results.many">이미지 {n}개, 글자는 모두 {size}. 어느 것도 어디에도 가지 않았습니다.</span>
+    <span data-phrase="facts.in">입력 {size}</span>
+    <span data-phrase="facts.out">출력 {n}자</span>
+    <span data-phrase="overhead.same">파일과 같은 크기</span>
+    <span data-phrase="overhead.larger">파일보다 {percent}% 큼</span>
+    <span data-phrase="overhead.smaller">파일보다 {percent}% 작음</span>
+    <span data-phrase="verdict.tiny">분명히 이득일 만큼 작습니다. 요청이 하나 줄고, 들어가는 파일도 거의 커지지 않습니다.</span>
+    <span data-phrase="verdict.icon">끼워 넣는 아이콘으로는 흔한 크기입니다. 모든 쪽에 나오는 것이라면 그럴 만합니다.</span>
+    <span data-phrase="verdict.large">끼워 넣는 그림치고는 큽니다. 이 스타일시트를 불러오는 모든 것이 이제 이걸 함께
+      짊어지고, 따로 캐시할 수도 없습니다.</span>
+    <span data-phrase="verdict.toobig">끼워 넣기에는 너무 큽니다. 보통 파일로 내주면 한 번 캐시되고 병렬로 받아지지만, 끼워
+      넣으면 모든 쪽의 임계 경로에 놓이고 주변에서 뭐라도 바뀔 때마다 통째로 다시 내려받게 됩니다.</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">색 프로필</span>
+    <span data-phrase="kind.time">시각 기록</span>
+    <span data-phrase="kind.comment">주석</span>
+    <span data-phrase="kind.text">텍스트</span>
+    <span data-phrase="meta.plain">{kinds}이 {size}만큼 들어 있습니다. 그림과 함께 URI로 복사됩니다.</span>
+    <span data-phrase="meta.share">{kinds}이 {size}만큼 들어 있고, 파일의 {percent}%입니다. 그림과 함께
+      URI로 복사됩니다.</span>
+    <span data-phrase="render.failed">이 브라우저는 결과를 그리지 않았습니다. URI 자체는 제대로 되어 있고, 형식이
+      디코딩하지 못하는 것일 뿐입니다.</span>
+    <span data-phrase="sniff.unrenderable">Safari 말고는 이 형식을 그리는 브라우저가 없어서, URI는 올바른데 그림은
+      나오지 않습니다. 먼저 변환하세요.</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.and">{a}와 {b}</span>
+    <span data-phrase="size.b">{n}바이트</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">이미지는 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이
       사이트의 것입니다. {platform}</span>
     <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다. 살펴볼

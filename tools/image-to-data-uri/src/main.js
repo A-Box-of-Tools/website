@@ -96,7 +96,7 @@ async function addFiles(files) {
       const kind = sniff(data);
 
       if (!kind) {
-        failures.push(`${file.name}: this is not an image format this tool recognises. The type in a data URI has to be right, so it will not guess one.`);
+        failures.push(phrase('read.notimage', { name: file.name }));
         continue;
       }
 
@@ -110,7 +110,11 @@ async function addFiles(files) {
         label: kind.label,
         note: kind.note ?? '',
         mismatch: declared && declared !== kind.mime
-          ? `The name says ${file.name.replace(/^.*\./, '.')}, but the bytes are ${kind.label}. The URI says ${kind.mime}, which is the one that will work.`
+          ? phrase('read.mismatch', {
+            extension: file.name.replace(/^.*\./, '.'),
+            label: kind.label,
+            mime: kind.mime,
+          })
           : '',
         meta: metadata(data, kind.mime),
         svg: kind.mime === 'image/svg+xml',
@@ -243,7 +247,8 @@ function draw() {
   const shape = currentShape();
   const rows = results();
 
-  el.countLabel.textContent = `${items.length} ${items.length === 1 ? 'image' : 'images'}`;
+  el.countLabel.textContent = phrase(items.length === 1 ? 'n.image.one' : 'n.image.many',
+    { n: items.length });
   el.listToolbar.hidden = items.length === 0;
   el.emptyNote.hidden = items.length > 0;
   el.results.hidden = items.length === 0;
@@ -253,8 +258,10 @@ function draw() {
   if (!items.length) return;
 
   const total = rows.reduce((sum, row) => sum + renderShape(shape, row).length, 0);
-  el.resultsSummary.textContent =
-    `${items.length} ${items.length === 1 ? 'picture' : 'pictures'}, ${humanBytes(total)} of text in total. None of it has been anywhere.`;
+  el.resultsSummary.textContent = phrase(
+    items.length === 1 ? 'results.one' : 'results.many',
+    { n: items.length, size: humanBytes(total, phrase) },
+  );
 
   el.resultList.replaceChildren(...rows.map((row) => resultRow(shape, row)));
 }
@@ -285,9 +292,9 @@ function drawFileList() {
     sub.className = 'file-sub';
     sub.textContent = [
       item.label,
-      humanBytes(item.file.size),
+      humanBytes(item.file.size, phrase),
       item.width && item.height && item.renders ? dimensions(item.width, item.height) : null,
-    ].filter(Boolean).join(' · ');
+    ].filter(Boolean).reduce((a, b) => phrase('join.dot', { a, b }));
     text.appendChild(sub);
 
     main.appendChild(text);
@@ -296,8 +303,9 @@ function drawFileList() {
     const remove = document.createElement('button');
     remove.type = 'button';
     remove.className = 'row-remove';
-    remove.title = `Take ${item.file.name} off the list`;
-    remove.setAttribute('aria-label', `Take ${item.file.name} off the list`);
+    const removeLabel = phrase('row.remove', { name: item.file.name });
+    remove.title = removeLabel;
+    remove.setAttribute('aria-label', removeLabel);
     remove.textContent = '×';
     remove.disabled = busy;
     remove.addEventListener('click', () => removeItem(item.id));
@@ -336,27 +344,27 @@ function resultRow(shape, row) {
   const facts = [
     item.mime,
     item.width && item.height && item.renders ? dimensions(item.width, item.height) : null,
-    `${humanBytes(item.file.size)} in`,
-    `${count(code.length)} characters out`,
-    overhead(item.file.size, row.uri.length),
+    phrase('facts.in', { size: humanBytes(item.file.size, phrase) }),
+    phrase('facts.out', { n: count(code.length) }),
+    overhead(item.file.size, row.uri.length, phrase),
   ].filter(Boolean);
 
   const sub = document.createElement('p');
   sub.className = 'result-sub';
-  sub.textContent = facts.join(' · ');
+  sub.textContent = facts.reduce((a, b) => phrase('join.dot', { a, b }));
   meta.appendChild(sub);
 
   const call = verdict(row.uri.length);
   const judgement = document.createElement('p');
   judgement.className = `result-verdict ${call.level}`;
-  judgement.textContent = call.text;
+  judgement.textContent = phrase(call.key);
   meta.appendChild(judgement);
 
   for (const warning of [
     item.mismatch,
     item.note,
-    item.renders ? '' : 'This browser would not draw the result. The URI is well formed; the format is one it cannot decode.',
-    item.meta ? metadataNote(item.meta, item.file.size) : '',
+    item.renders ? '' : phrase('render.failed'),
+    item.meta ? metadataNote(item.meta, item.file.size, phrase) : '',
   ]) {
     if (!warning) continue;
     const line = document.createElement('p');
