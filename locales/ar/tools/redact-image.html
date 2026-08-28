@@ -177,6 +177,53 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">لم يستطع هذا المتصفح فكّ ترميز الصورة.</span>
+    <span data-phrase="read.failed">تعذّر فتح هذا الملف: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height} عند {x}، {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; مبكسلة، كتل {size} بكسل
+      ({across} x {down})</span>
+    <span data-phrase="region.blurred">{where} &mdash; مطموسة، نصف قطر {radius} بكسل</span>
+    <span data-phrase="region.filled">{where} &mdash; محجوبة بالأسود</span>
+    <span data-phrase="region.aria">المنطقة {n}: {what}. مفاتيح الأسهم تحرّكها، وAlt مع
+      الأسهم يغيّر حجمها، وDelete يزيلها.</span>
+    <span data-phrase="region.choice">ما تفعله المنطقة {n}</span>
+    <span data-phrase="choice.fill">حجب بالأسود</span>
+    <span data-phrase="choice.pixelate">بكسلة</span>
+    <span data-phrase="choice.blur">طمس</span>
+    <span data-phrase="style.fill.one">واحدة محجوبة بالأسود</span>
+    <span data-phrase="style.fill.many">{n} محجوبة بالأسود</span>
+    <span data-phrase="style.pixelate.one">واحدة مبكسلة</span>
+    <span data-phrase="style.pixelate.many">{n} مبكسلة</span>
+    <span data-phrase="style.blur.one">واحدة مطموسة</span>
+    <span data-phrase="style.blur.many">{n} مطموسة</span>
+    <span data-phrase="count.one">منطقة واحدة: {parts}.</span>
+    <span data-phrase="count.many">{n} مناطق: {parts}.</span>
+    <span data-phrase="strength.light">خفيف</span>
+    <span data-phrase="strength.medium">متوسط</span>
+    <span data-phrase="strength.heavy">قوي</span>
+    <span data-phrase="strength.note">{label} &mdash; نحو {blocks} كتلة على الضلع الأقصر
+      من المربع، ونصف قطر طمس يساوي 1/{blur} منه.</span>
+    <span data-phrase="risk.mosaic">أدق فسيفساء هنا {across} x {down} كتلة من {size}
+      بكسل. وهذا يعني {averages} متوسطاً لما كان تحتها، وكلها باقية في الملف.</span>
+    <span data-phrase="risk.blur.one">نصف قطر الطمس {radius} بكسل. والطمس متوسط أيضاً،
+      والطمس الخفيف فوق نص واضح هو بالضبط الحالة التي عُكست من قبل.</span>
+    <span data-phrase="risk.blur.many">أصغر طمس نصف قطره {radius} بكسل. والطمس متوسط
+      أيضاً، والطمس الخفيف فوق نص واضح هو بالضبط الحالة التي عُكست من قبل.</span>
+    <span data-phrase="risk.advice">احجب بالأسود كل ما يُقرأ كنص.</span>
+    <span data-phrase="write.noencode">لم يستطع المتصفح ترميزها.</span>
+    <span data-phrase="write.failed">حدث خطأ أثناء كتابة الملف: {why}</span>
+    <span data-phrase="result.alt">الصورة المحجوبة، {width} في {height} بكسل</span>
+    <span data-phrase="result.file">{name} &mdash; {size}، {width} x {height}</span>
+    <span data-phrase="result.nothing">لم تُعلَّم أي منطقة، فهذه هي الصورة نفسها بعد
+      إعادة ترميزها.</span>
+    <span data-phrase="result.clean">كُتبت من البكسلات المحجوبة، فهي لا تحمل EXIF ولا
+      GPS ولا صورة مصغّرة مضمّنة ولا طبقة فيها الأصل.</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.comma">{a}، {b}</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
     <span data-phrase="net.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

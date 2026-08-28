@@ -175,6 +175,71 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Der Ton wird gelesen&hellip;</span>
+    <span data-phrase="step.starting">Wird gestartet&hellip;</span>
+    <span data-phrase="step.reversing">Wird umgekehrt&hellip;</span>
+    <span data-phrase="step.stretching">Wird gedehnt, die Tonhöhe bleibt&hellip;</span>
+    <span data-phrase="step.resampling">Wird neu abgetastet&hellip;</span>
+    <span data-phrase="step.level">Der Pegel wird gesetzt&hellip;</span>
+    <span data-phrase="step.writing">Die Datei wird geschrieben&hellip;</span>
+    <span data-phrase="channels.mono">Mono</span>
+    <span data-phrase="channels.stereo">Stereo</span>
+    <span data-phrase="channels.many">{n} Kanäle</span>
+    <span data-phrase="src.format">{channels}, {khz} kHz</span>
+    <span data-phrase="src.rate.file">{rate} Hz (aus der Datei)</span>
+    <span data-phrase="src.rate.assumed">{rate} Hz (angenommen)</span>
+    <span data-phrase="src.guessednote">Dieses Format sagt in keinem Header, den dieses
+      Werkzeug liest, mit welcher Rate aufgenommen wurde, also wurde mit 48 kHz
+      dekodiert. Wurde die Aufnahme mit einer anderen Rate gemacht, hat der Browser sie
+      beim Einlesen umgerechnet &mdash; das ist das Einzige hier, was nicht exakt ist.</span>
+    <span data-phrase="peak.silence">Stille</span>
+    <span data-phrase="peak.dbfs">{n} dBFS</span>
+    <span data-phrase="speed.times">{n}x</span>
+    <span data-phrase="speed.none">Bleibt bei 1x, unverändert.</span>
+    <span data-phrase="speed.pitch.faster">{speed} schneller, die Tonhöhe bleibt, wo sie
+      ist. Die Aufnahme wird in überlappende Fenster zerlegt und enger beieinander
+      wieder abgelegt &mdash; hier, nicht irgendwo anders.</span>
+    <span data-phrase="speed.pitch.slower">{speed} langsamer, die Tonhöhe bleibt, wo sie
+      ist. Die Aufnahme wird in überlappende Fenster zerlegt und weiter auseinander
+      wieder abgelegt &mdash; hier, nicht irgendwo anders.</span>
+    <span data-phrase="speed.moves.faster">{speed} schneller, und alles geht mit:
+      {semitones} Halbtöne nach oben, so wie ein Band, das zu schnell läuft.</span>
+    <span data-phrase="speed.moves.slower">{speed} langsamer, und alles geht mit:
+      {semitones} Halbtöne nach unten, so wie ein Band, das zu langsam läuft.</span>
+    <span data-phrase="volume.already">Liegt schon genau da, wo diese Einstellung es
+      hinlegen würde.</span>
+    <span data-phrase="volume.raised">Um {db} dB angehoben, womit der lauteste Moment
+      der Aufnahme knapp unter Vollaussteuerung liegt.</span>
+    <span data-phrase="volume.lowered">Um {db} dB abgesenkt, womit der lauteste Moment
+      der Aufnahme knapp unter Vollaussteuerung liegt.</span>
+    <span data-phrase="volume.unchanged">Bleibt genau so, wie es ist.</span>
+    <span data-phrase="volume.up">{db} dB hinauf, was jedes Sample mit {gain}
+      multipliziert und den lautesten Moment auf {peak} bringt.</span>
+    <span data-phrase="volume.down">{db} dB hinunter, was jedes Sample mit {gain}
+      multipliziert und den lautesten Moment auf {peak} bringt.</span>
+    <span data-phrase="clip.over">Bei dieser Einstellung liegt der lauteste Moment {db}
+      dB über Vollaussteuerung.</span>
+    <span data-phrase="clip.float">Ein 32-Bit-Float-WAV hält diese Samples, in der Datei
+      selbst geht also nichts verloren &mdash; aber alles, was sie abspielt, muss den
+      Pegel wieder herunterziehen, und die meisten Dinge kappen ihn stattdessen an der
+      Obergrenze. Drehen Sie es herunter, oder wählen Sie &bdquo;so laut wie
+      möglich&ldquo;.</span>
+    <span data-phrase="clip.int">Ein 16-Bit-WAV kann das nicht halten, diese Samples
+      würden also an der Obergrenze gekappt, und genau so klingt Verzerrung. Drehen Sie
+      es herunter, wählen Sie &bdquo;so laut wie möglich&ldquo;, oder schreiben Sie
+      32-Bit-Float, das sie behält.</span>
+    <span data-phrase="out.wav.float">WAV, 32 Bit Float</span>
+    <span data-phrase="out.wav.int">WAV, 16 Bit</span>
+    <span data-phrase="out.peak">Spitze {peak}</span>
+    <span data-phrase="out.clipped.one">{n} Sample über Vollaussteuerung</span>
+    <span data-phrase="out.clipped.many">{n} Samples über Vollaussteuerung</span>
+    <span data-phrase="out.took">{n} s</span>
+    <span data-phrase="join.sentences">{a} {b}</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="size.gb">{n} GB</span>
     <span data-phrase="audio.empty">Diese Datei ist leer.</span>
     <span data-phrase="audio.nodecode">Dieser Browser konnte aus dieser Datei keinen Ton lesen. Entweder ist das Format
       eines, das er nicht dekodiert, oder die Datei hat überhaupt keine Tonspur. MP3, WAV,

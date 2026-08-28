@@ -487,6 +487,16 @@ read_first_lead = """
       Zuerst lesenswert sind <code>config/site.toml</code> für die
       Content-Security-Policy"""
 
+dlp_note = """
+      <strong>Wenn die Sicherheitssoftware Ihres Arbeitgebers vor einem Upload
+      warnt.</strong> Sie beobachtet den Moment, in dem im Browser eine Datei
+      ausgewählt wird, und kann nicht wissen, ob die Seite sie senden will
+      &mdash; also warnt sie beim Auswählen. Hier wird nichts gesendet: öffnen
+      Sie die Entwicklerwerkzeuge, wechseln Sie zu Netzwerk und wählen Sie eine
+      Datei. Es gibt keine Anfrage, die sie trägt, und überhaupt keine außer
+      der lokalen Vorschau der Seite. Dieselbe Prüfung schafft Ihre IT in einer
+      halben Minute."""
+
 [ui.feedback]
 # Die Beschriftungen der Daumen sind nur für Screenreader und den Tooltip - die
 # Symbole selbst brauchen keine Übersetzung.

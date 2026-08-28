@@ -146,6 +146,55 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: dit is geen beeldformaat dat dit
+      gereedschap herkent. Het type in een data-URI moet kloppen, dus het gaat er geen
+      raden.</span>
+    <span data-phrase="read.mismatch">De naam zegt {extension}, maar de bytes zijn
+      {label}. De URI zegt {mime}, en dat is degene die zal werken.</span>
+    <span data-phrase="row.remove">{name} van de lijst halen</span>
+    <span data-phrase="n.image.one">{n} afbeelding</span>
+    <span data-phrase="n.image.many">{n} afbeeldingen</span>
+    <span data-phrase="results.one">{n} afbeelding, {size} tekst in totaal. Niets ervan
+      is ergens geweest.</span>
+    <span data-phrase="results.many">{n} afbeeldingen, {size} tekst in totaal. Niets
+      ervan is ergens geweest.</span>
+    <span data-phrase="facts.in">{size} erin</span>
+    <span data-phrase="facts.out">{n} tekens eruit</span>
+    <span data-phrase="overhead.same">even groot als het bestand</span>
+    <span data-phrase="overhead.larger">{percent}% groter dan het bestand</span>
+    <span data-phrase="overhead.smaller">{percent}% kleiner dan het bestand</span>
+    <span data-phrase="verdict.tiny">Klein genoeg dat dit duidelijk winst is: één
+      verzoek minder, en er wordt weinig toegevoegd aan het bestand waar het in belandt.</span>
+    <span data-phrase="verdict.icon">Een normale grootte voor een ingesloten pictogram.
+      De moeite waard voor iets dat op elke pagina staat.</span>
+    <span data-phrase="verdict.large">Groot voor een ingesloten afbeelding. Alles wat
+      deze stylesheet insluit draagt hem nu mee, en hij kan niet meer apart in de cache.</span>
+    <span data-phrase="verdict.toobig">Te groot om in te sluiten. Als gewoon bestand
+      geserveerd zou dit één keer in de cache komen en parallel opgehaald worden;
+      ingesloten staat het op het kritieke pad van elke pagina en wordt het opnieuw
+      opgehaald zodra er iets omheen verandert.</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">een kleurprofiel</span>
+    <span data-phrase="kind.time">een tijdstempel</span>
+    <span data-phrase="kind.comment">een opmerking</span>
+    <span data-phrase="kind.text">tekst</span>
+    <span data-phrase="meta.plain">Bevat {size} aan {kinds}. Dat wordt samen met het
+      beeld in de URI gekopieerd.</span>
+    <span data-phrase="meta.share">Bevat {size} aan {kinds}, oftewel {percent}% van het
+      bestand. Dat wordt samen met het beeld in de URI gekopieerd.</span>
+    <span data-phrase="render.failed">Deze browser wilde het resultaat niet tekenen. De
+      URI is welgevormd; het formaat is er een dat hij niet kan decoderen.</span>
+    <span data-phrase="sniff.unrenderable">Geen enkele browser behalve Safari tekent dit
+      formaat, dus de URI wordt geldig en de afbeelding verschijnt niet. Zet hem eerst
+      om.</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.and">{a} en {b}</span>
+    <span data-phrase="size.b">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">Je afbeeldingen zijn nergens heen gegaan.
       {total} bestanden geladen, allemaal van deze site zelf. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

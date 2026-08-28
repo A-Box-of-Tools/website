@@ -146,6 +146,54 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: este não é um formato de imagem que esta
+      ferramenta reconheça. O tipo numa URI de dados tem que estar certo, então ela não
+      vai chutar nenhum.</span>
+    <span data-phrase="read.mismatch">O nome diz {extension}, mas os bytes são {label}.
+      A URI diz {mime}, que é o que vai funcionar.</span>
+    <span data-phrase="row.remove">Tirar {name} da lista</span>
+    <span data-phrase="n.image.one">{n} imagem</span>
+    <span data-phrase="n.image.many">{n} imagens</span>
+    <span data-phrase="results.one">{n} imagem, {size} de texto no total. Nada disso foi
+      a lugar nenhum.</span>
+    <span data-phrase="results.many">{n} imagens, {size} de texto no total. Nada disso
+      foi a lugar nenhum.</span>
+    <span data-phrase="facts.in">{size} de entrada</span>
+    <span data-phrase="facts.out">{n} caracteres de saída</span>
+    <span data-phrase="overhead.same">do mesmo tamanho que o arquivo</span>
+    <span data-phrase="overhead.larger">{percent}% maior que o arquivo</span>
+    <span data-phrase="overhead.smaller">{percent}% menor que o arquivo</span>
+    <span data-phrase="verdict.tiny">Pequeno o bastante para valer claramente a pena:
+      uma requisição a menos, e quase nada acrescentado ao arquivo onde vai parar.</span>
+    <span data-phrase="verdict.icon">Um tamanho normal para um ícone embutido. Vale a
+      pena para algo que aparece em toda página.</span>
+    <span data-phrase="verdict.large">Grande para uma imagem embutida. Tudo o que inclui
+      esta folha de estilo passa a carregá-la, e ela não pode mais ser cacheada sozinha.</span>
+    <span data-phrase="verdict.toobig">Grande demais para embutir. Servido como arquivo
+      comum isso seria cacheado uma vez e baixado em paralelo; embutido, fica no caminho
+      crítico de toda página e é baixado de novo sempre que qualquer coisa em volta
+      muda.</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">um perfil de cor</span>
+    <span data-phrase="kind.time">uma marca de tempo</span>
+    <span data-phrase="kind.comment">um comentário</span>
+    <span data-phrase="kind.text">texto</span>
+    <span data-phrase="meta.plain">Carrega {size} de {kinds}. Isso é copiado para dentro
+      da URI junto com a imagem.</span>
+    <span data-phrase="meta.share">Carrega {size} de {kinds}, o que dá {percent}% do
+      arquivo. Isso é copiado para dentro da URI junto com a imagem.</span>
+    <span data-phrase="render.failed">Este navegador não quis desenhar o resultado. A
+      URI está bem formada; o formato é um que ele não consegue decodificar.</span>
+    <span data-phrase="sniff.unrenderable">Nenhum navegador além do Safari desenha este
+      formato, então a URI vai ser válida e a imagem não vai aparecer. Converta antes.</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.and">{a} e {b}</span>
+    <span data-phrase="size.b">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">As suas imagens não foram a lugar nenhum.
       {total} arquivos carregados, todos do próprio site. {platform}</span>
     <span data-phrase="net.dirty">Alguma coisa contatou {hosts}, e esta

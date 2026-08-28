@@ -63,7 +63,9 @@ BASELINE = {
     'crop-video': 0,
     'dicom-viewer': 15,
     'document-scanner': 13,
-    'edit-audio': 18,
+    # A clock format, and one invariant check in each of the two speed
+    # modules - main.js clamps the speed, so neither can be reached.
+    'edit-audio': 3,
     'encode-text': 0,
     'exif-editor': 30,
     'format-json': 3,
@@ -78,7 +80,8 @@ BASELINE = {
     # A filename template, a dimension pair, a CSS percentage, a phrase key, the
     # note written into a padded JPEG, and the eight published citations.
     'id-photo': 13,
-    'image-to-data-uri': 20,
+    # A CSS class name and one line of the CSS rule the tool writes out.
+    'image-to-data-uri': 2,
     'image-to-ico': 6,
     # The /Producer string written into the PDF, five lines of PDF syntax, a
     # CSS pixel value, a key template and the output filename.
@@ -90,7 +93,8 @@ BASELINE = {
     # The two left are a symbology's own name and a line of SVG markup.
     'qr-barcode': 2,
     'qr-barcode-reader': 13,
-    'redact-image': 17,
+    # A key template, and a CSS class name the stage builds.
+    'redact-image': 2,
     # Three Base-14 glyph tables from the PDF specification, four lines of
     # PDF syntax, three internal range keys and one key template.
     'redact-pdf': 11,

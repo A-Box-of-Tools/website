@@ -164,6 +164,45 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">这个浏览器解不开这张图片。</span>
+    <span data-phrase="read.failed">这个文件打不开：{why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} x {height}</span>
+    <span data-phrase="region.where">{width} x {height}，位于 {x}, {y}</span>
+    <span data-phrase="region.pixelated">{where} &mdash; 打了马赛克，{size} px 的方块（{across} x {down}）</span>
+    <span data-phrase="region.blurred">{where} &mdash; 模糊，半径 {radius} px</span>
+    <span data-phrase="region.filled">{where} &mdash; 涂黑</span>
+    <span data-phrase="region.aria">区域 {n}：{what}。方向键移动它，Alt 加方向键改变大小，Delete 删除它。</span>
+    <span data-phrase="region.choice">区域 {n} 做什么</span>
+    <span data-phrase="choice.fill">涂黑</span>
+    <span data-phrase="choice.pixelate">打马赛克</span>
+    <span data-phrase="choice.blur">模糊</span>
+    <span data-phrase="style.fill.one">{n} 处涂黑</span>
+    <span data-phrase="style.fill.many">{n} 处涂黑</span>
+    <span data-phrase="style.pixelate.one">{n} 处马赛克</span>
+    <span data-phrase="style.pixelate.many">{n} 处马赛克</span>
+    <span data-phrase="style.blur.one">{n} 处模糊</span>
+    <span data-phrase="style.blur.many">{n} 处模糊</span>
+    <span data-phrase="count.one">{n} 处区域：{parts}。</span>
+    <span data-phrase="count.many">{n} 处区域：{parts}。</span>
+    <span data-phrase="strength.light">轻</span>
+    <span data-phrase="strength.medium">中</span>
+    <span data-phrase="strength.heavy">重</span>
+    <span data-phrase="strength.note">{label} &mdash; 沿框的短边大约 {blocks} 个方块，模糊半径是它的 1/{blur}。</span>
+    <span data-phrase="risk.mosaic">这里最细的马赛克是 {across} x {down} 个 {size} px 的方块。也就是把下面的东西平均成了 {averages} 个数，全都留在文件里。</span>
+    <span data-phrase="risk.blur.one">这处模糊的半径是 {radius} px。模糊也是一种平均，而清晰文字上的一点点模糊，正是已经被人反推出来过的那种情况。</span>
+    <span data-phrase="risk.blur.many">最小的那处模糊半径是 {radius} px。模糊也是一种平均，而清晰文字上的一点点模糊，正是已经被人反推出来过的那种情况。</span>
+    <span data-phrase="risk.advice">凡是能当文字读出来的，都涂黑。</span>
+    <span data-phrase="write.noencode">浏览器没能把它编码出来。</span>
+    <span data-phrase="write.failed">写文件的时候出了问题：{why}</span>
+    <span data-phrase="result.alt">涂黑后的图片，{width} × {height} 像素</span>
+    <span data-phrase="result.file">{name} &mdash; {size}，{width} x {height}</span>
+    <span data-phrase="result.nothing">没有标出任何区域，所以这就是同一张图片重新编码了一遍。</span>
+    <span data-phrase="result.clean">从涂黑后的像素写出来的，所以里面没有 EXIF、没有 GPS、没有内嵌缩略图，也没有藏着原图的图层。</span>
+    <span data-phrase="join.sentences">{a}{b}</span>
+    <span data-phrase="join.comma">{a}，{b}</span>
+    <span data-phrase="size.b">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">你的图片没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到图片，或图片里的一个字节。</span>

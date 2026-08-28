@@ -453,6 +453,16 @@ read_first_lead = """
       Les fichiers à lire en premier sont <code>config/site.toml</code> pour la
       Content-Security-Policy"""
 
+dlp_note = """
+      <strong>Si le logiciel de sécurité de votre employeur signale un
+      envoi.</strong> Il surveille le moment où un fichier est choisi dans un
+      navigateur, et il ne peut pas savoir si la page compte l'envoyer &mdash;
+      il alerte donc au choix. Rien n'est envoyé ici : ouvrez les outils de
+      développement, allez dans Réseau, et choisissez un fichier. Aucune
+      requête ne le transporte, et aucune requête du tout hormis l'aperçu local
+      de la page. C'est la vérification que votre service informatique peut
+      faire en trente secondes."""
+
 [ui.feedback]
 # Les libellés des pouces servent au lecteur d'écran et à l'infobulle : les
 # icônes, elles, se passent de traduction.

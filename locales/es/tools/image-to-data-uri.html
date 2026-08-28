@@ -146,6 +146,55 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: este no es un formato de imagen que esta
+      herramienta reconozca. El tipo de una URI de datos tiene que ser el correcto, así
+      que no va a adivinar ninguno.</span>
+    <span data-phrase="read.mismatch">El nombre dice {extension}, pero los bytes son
+      {label}. La URI dice {mime}, que es el que va a funcionar.</span>
+    <span data-phrase="row.remove">Quitar {name} de la lista</span>
+    <span data-phrase="n.image.one">{n} imagen</span>
+    <span data-phrase="n.image.many">{n} imágenes</span>
+    <span data-phrase="results.one">{n} imagen, {size} de texto en total. Nada de eso ha
+      ido a ningún sitio.</span>
+    <span data-phrase="results.many">{n} imágenes, {size} de texto en total. Nada de eso
+      ha ido a ningún sitio.</span>
+    <span data-phrase="facts.in">{size} de entrada</span>
+    <span data-phrase="facts.out">{n} caracteres de salida</span>
+    <span data-phrase="overhead.same">del mismo tamaño que el archivo</span>
+    <span data-phrase="overhead.larger">un {percent}% mayor que el archivo</span>
+    <span data-phrase="overhead.smaller">un {percent}% menor que el archivo</span>
+    <span data-phrase="verdict.tiny">Lo bastante pequeño como para que salga claramente
+      a cuenta: una petición menos, y casi nada añadido al archivo donde acaba.</span>
+    <span data-phrase="verdict.icon">Un tamaño normal para un icono incrustado. Merece
+      la pena para algo que aparece en todas las páginas.</span>
+    <span data-phrase="verdict.large">Grande para una imagen incrustada. Todo lo que
+      incluya esta hoja de estilos la lleva ahora consigo, y ya no se puede cachear por
+      su cuenta.</span>
+    <span data-phrase="verdict.toobig">Demasiado grande para incrustarlo. Servido como
+      archivo normal se cachearía una vez y se descargaría en paralelo; incrustado, está
+      en el camino crítico de cada página y se vuelve a descargar cada vez que cambia
+      cualquier cosa a su alrededor.</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">un perfil de color</span>
+    <span data-phrase="kind.time">una marca de tiempo</span>
+    <span data-phrase="kind.comment">un comentario</span>
+    <span data-phrase="kind.text">texto</span>
+    <span data-phrase="meta.plain">Lleva {size} de {kinds}. Se copia dentro de la URI
+      junto con la imagen.</span>
+    <span data-phrase="meta.share">Lleva {size} de {kinds}, que es el {percent}% del
+      archivo. Se copia dentro de la URI junto con la imagen.</span>
+    <span data-phrase="render.failed">Este navegador no ha querido dibujar el resultado.
+      La URI está bien formada; el formato es uno que no sabe descodificar.</span>
+    <span data-phrase="sniff.unrenderable">Ningún navegador salvo Safari dibuja este
+      formato, así que la URI será válida y la imagen no aparecerá. Conviértela primero.</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.and">{a} y {b}</span>
+    <span data-phrase="size.b">{n} bytes</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">tus imágenes no han ido a ninguna parte.
       {total} archivos cargados, todos ellos de esta misma página. {platform}</span>
     <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta

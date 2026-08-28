@@ -147,6 +147,52 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: यह ऐसा इमेज फ़ॉर्मैट नहीं जिसे यह औज़ार
+      पहचानता हो। डेटा URI में टाइप सही होना ही चाहिए, इसलिए यह अंदाज़ा नहीं लगाएगा।</span>
+    <span data-phrase="read.mismatch">नाम {extension} कहता है, पर बाइट {label} हैं। URI
+      {mime} कहता है, और वही चलेगा।</span>
+    <span data-phrase="row.remove">{name} को सूची से हटाइए</span>
+    <span data-phrase="n.image.one">{n} तस्वीर</span>
+    <span data-phrase="n.image.many">{n} तस्वीरें</span>
+    <span data-phrase="results.one">{n} तस्वीर, कुल {size} टेक्स्ट। इसमें से कुछ भी कहीं
+      नहीं गया।</span>
+    <span data-phrase="results.many">{n} तस्वीरें, कुल {size} टेक्स्ट। इसमें से कुछ भी
+      कहीं नहीं गया।</span>
+    <span data-phrase="facts.in">{size} अंदर</span>
+    <span data-phrase="facts.out">{n} अक्षर बाहर</span>
+    <span data-phrase="overhead.same">फ़ाइल जितना ही बड़ा</span>
+    <span data-phrase="overhead.larger">फ़ाइल से {percent}% बड़ा</span>
+    <span data-phrase="overhead.smaller">फ़ाइल से {percent}% छोटा</span>
+    <span data-phrase="verdict.tiny">इतना छोटा कि यह साफ़ फ़ायदे का सौदा है: एक अनुरोध
+      कम, और जिस फ़ाइल में यह बैठेगा उसमें कुछ ख़ास जुड़ता भी नहीं।</span>
+    <span data-phrase="verdict.icon">अंदर रखे आइकन के लिए सामान्य आकार। हर पन्ने पर
+      दिखने वाली चीज़ के लिए सार्थक है।</span>
+    <span data-phrase="verdict.large">अंदर रखी तस्वीर के लिए बड़ा। जो कुछ भी यह
+      स्टाइलशीट शामिल करता है वह अब इसे भी ढोता है, और यह अलग से कैश नहीं हो सकती।</span>
+    <span data-phrase="verdict.toobig">अंदर रखने के लिए बहुत बड़ा। सामान्य फ़ाइल की तरह
+      परोसा जाता तो एक बार कैश होकर समांतर आता; अंदर रखे जाने पर यह हर पन्ने के नाज़ुक
+      रास्ते पर है और आसपास कुछ भी बदलते ही दोबारा डाउनलोड होता है।</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">एक रंग प्रोफ़ाइल</span>
+    <span data-phrase="kind.time">एक टाइमस्टैंप</span>
+    <span data-phrase="kind.comment">एक टिप्पणी</span>
+    <span data-phrase="kind.text">टेक्स्ट</span>
+    <span data-phrase="meta.plain">इसमें {size} का {kinds} है। वह तस्वीर के साथ ही URI
+      में उतर जाता है।</span>
+    <span data-phrase="meta.share">इसमें {size} का {kinds} है, जो फ़ाइल का {percent}%
+      है। वह तस्वीर के साथ ही URI में उतर जाता है।</span>
+    <span data-phrase="render.failed">इस ब्राउज़र ने नतीजा बनाने से मना कर दिया। URI ठीक
+      बना है; फ़ॉर्मैट ही ऐसा है जिसे वह डीकोड नहीं कर सकता।</span>
+    <span data-phrase="sniff.unrenderable">Safari के सिवा कोई ब्राउज़र इस फ़ॉर्मैट को
+      नहीं बनाता, इसलिए URI वैध तो होगा पर तस्वीर दिखेगी नहीं। पहले इसे बदल लीजिए।</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}, {b}</span>
+    <span data-phrase="join.and">{a} और {b}</span>
+    <span data-phrase="size.b">{n} बाइट</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">आपकी तस्वीरें कहीं नहीं गईं। {total} फ़ाइलें
       लोड हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

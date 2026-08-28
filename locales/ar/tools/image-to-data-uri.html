@@ -142,6 +142,52 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}: هذه ليست صيغة صور تعرفها هذه الأداة. ولا
+      بد أن يكون النوع في معرّف URI للبيانات صحيحاً، فهي لا تخمّنه.</span>
+    <span data-phrase="read.mismatch">الاسم يقول {extension}، لكن البايتات {label}.
+      ويقول المعرّف {mime}، وهو الذي سينجح.</span>
+    <span data-phrase="row.remove">أخرج {name} من القائمة</span>
+    <span data-phrase="n.image.one">صورة واحدة</span>
+    <span data-phrase="n.image.many">{n} صورة</span>
+    <span data-phrase="results.one">صورة واحدة، {size} من النص في المجمل. ولم يذهب شيء
+      منها إلى أي مكان.</span>
+    <span data-phrase="results.many">{n} صور، {size} من النص في المجمل. ولم يذهب شيء
+      منها إلى أي مكان.</span>
+    <span data-phrase="facts.in">{size} داخلاً</span>
+    <span data-phrase="facts.out">{n} محرفاً خارجاً</span>
+    <span data-phrase="overhead.same">بحجم الملف نفسه</span>
+    <span data-phrase="overhead.larger">أكبر من الملف بنسبة {percent}%</span>
+    <span data-phrase="overhead.smaller">أصغر من الملف بنسبة {percent}%</span>
+    <span data-phrase="verdict.tiny">صغير بما يكفي ليكون مكسباً واضحاً: طلب واحد أقل،
+      ولا يضاف شيء يُذكر إلى الملف الذي يحل فيه.</span>
+    <span data-phrase="verdict.icon">حجم عادي لأيقونة مضمّنة. ويستحق العناء لشيء يظهر في
+      كل صفحة.</span>
+    <span data-phrase="verdict.large">كبير على صورة مضمّنة. فكل ما يضم صفحة الأنماط هذه
+      صار يحمله، ولم يعد ممكناً تخزينه مؤقتاً وحده.</span>
+    <span data-phrase="verdict.toobig">أكبر من أن يُضمَّن. فلو قُدّم ملفاً عادياً لخُزّن
+      مؤقتاً مرة واحدة ولجُلب على التوازي؛ أما مضمّناً فهو على المسار الحرج لكل صفحة
+      ويُعاد تنزيله كلما تغيّر أي شيء حوله.</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">ملف تعريف ألوان</span>
+    <span data-phrase="kind.time">ختم زمني</span>
+    <span data-phrase="kind.comment">تعليق</span>
+    <span data-phrase="kind.text">نص</span>
+    <span data-phrase="meta.plain">يحمل {size} من {kinds}. ويُنسخ ذلك إلى المعرّف مع
+      الصورة.</span>
+    <span data-phrase="meta.share">يحمل {size} من {kinds}، أي {percent}% من الملف.
+      ويُنسخ ذلك إلى المعرّف مع الصورة.</span>
+    <span data-phrase="render.failed">رفض هذا المتصفح رسم النتيجة. المعرّف سليم البنية؛
+      لكن الصيغة مما لا يستطيع فكّ ترميزه.</span>
+    <span data-phrase="sniff.unrenderable">لا يرسم هذه الصيغة متصفح غير سفاري، فسيكون
+      المعرّف صحيحاً ولن تظهر الصورة. حوّلها أولاً.</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}، {b}</span>
+    <span data-phrase="join.and">{a} و{b}</span>
+    <span data-phrase="size.b">{n} بايت</span>
+    <span data-phrase="size.kb">{n} كيلوبايت</span>
+    <span data-phrase="size.mb">{n} ميغابايت</span>
     <span data-phrase="net.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

@@ -137,6 +137,39 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}：这不是这个工具认得的图片格式。数据 URI 里的类型必须写对，所以它不会去猜。</span>
+    <span data-phrase="read.mismatch">文件名说是 {extension}，但字节是 {label}。URI 里写的是 {mime}，能用的是这个。</span>
+    <span data-phrase="row.remove">把 {name} 从列表里去掉</span>
+    <span data-phrase="n.image.one">{n} 张图片</span>
+    <span data-phrase="n.image.many">{n} 张图片</span>
+    <span data-phrase="results.one">{n} 张图片，一共 {size} 文字。这些都没去过任何地方。</span>
+    <span data-phrase="results.many">{n} 张图片，一共 {size} 文字。这些都没去过任何地方。</span>
+    <span data-phrase="facts.in">进 {size}</span>
+    <span data-phrase="facts.out">出 {n} 个字符</span>
+    <span data-phrase="overhead.same">和文件一样大</span>
+    <span data-phrase="overhead.larger">比文件大 {percent}%</span>
+    <span data-phrase="overhead.smaller">比文件小 {percent}%</span>
+    <span data-phrase="verdict.tiny">小到这么做明显划算：少一次请求，落进去的那个文件也几乎没变大。</span>
+    <span data-phrase="verdict.icon">内嵌图标的正常大小。对每个页面都出现的东西来说值得。</span>
+    <span data-phrase="verdict.large">作为内嵌图片偏大了。凡是引用这份样式表的都得带着它，而且它自己没法单独缓存。</span>
+    <span data-phrase="verdict.toobig">太大了，不适合内嵌。当成普通文件发出去只会缓存一次并且并行下载；内嵌之后它就落在每个页面的关键路径上，周围任何东西一变就要整份重下。</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">一份色彩配置</span>
+    <span data-phrase="kind.time">一个时间戳</span>
+    <span data-phrase="kind.comment">一段注释</span>
+    <span data-phrase="kind.text">文字</span>
+    <span data-phrase="meta.plain">里面有 {size} 的{kinds}。它会跟着图片一起被抄进 URI。</span>
+    <span data-phrase="meta.share">里面有 {size} 的{kinds}，占文件的 {percent}%。它会跟着图片一起被抄进 URI。</span>
+    <span data-phrase="render.failed">这个浏览器不肯画出结果。URI 本身没问题，只是这个格式它解不了。</span>
+    <span data-phrase="sniff.unrenderable">除了 Safari，没有浏览器画得出这个格式，所以 URI 会是有效的，图却不会出现。请先转换一下。</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}，{b}</span>
+    <span data-phrase="join.and">{a} 和 {b}</span>
+    <span data-phrase="size.b">{n} 字节</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">你的图片没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}</span>
     <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到图片，或图片里的一个字节。</span>

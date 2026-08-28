@@ -131,6 +131,39 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notimage">{name}：これはこの道具が知っている画像形式ではありません。データURIの中の種別は正しくなければならないので、推測はしません。</span>
+    <span data-phrase="read.mismatch">名前は{extension}ですが、中身のバイトは{label}です。URIには{mime}と書いてあり、動くのはこちらです。</span>
+    <span data-phrase="row.remove">{name}を一覧から外す</span>
+    <span data-phrase="n.image.one">{n}枚</span>
+    <span data-phrase="n.image.many">{n}枚</span>
+    <span data-phrase="results.one">画像{n}件、テキストは合計{size}。どれもどこにも送られていません。</span>
+    <span data-phrase="results.many">画像{n}件、テキストは合計{size}。どれもどこにも送られていません。</span>
+    <span data-phrase="facts.in">入力{size}</span>
+    <span data-phrase="facts.out">出力{n}文字</span>
+    <span data-phrase="overhead.same">ファイルと同じ大きさ</span>
+    <span data-phrase="overhead.larger">ファイルより{percent}%大きい</span>
+    <span data-phrase="overhead.smaller">ファイルより{percent}%小さい</span>
+    <span data-phrase="verdict.tiny">明らかに得になるほど小さいサイズです。リクエストが1つ減り、埋め込む先のファイルもほとんど大きくなりません。</span>
+    <span data-phrase="verdict.icon">埋め込みアイコンとしてはふつうの大きさです。どのページにも出るものなら見合います。</span>
+    <span data-phrase="verdict.large">埋め込む画像としては大きめです。このスタイルシートを読み込むものすべてがこれを抱えることになり、単独ではキャッシュできなくなります。</span>
+    <span data-phrase="verdict.toobig">埋め込むには大きすぎます。ふつうのファイルとして配れば一度キャッシュされて並行して取得できますが、埋め込むとすべてのページのクリティカルパスに乗り、周りの何かが変わるたびに丸ごと再取得されます。</span>
+    <span data-phrase="kind.exif">EXIF</span>
+    <span data-phrase="kind.xmp">XMP</span>
+    <span data-phrase="kind.iptc">IPTC</span>
+    <span data-phrase="kind.icc">カラープロファイル</span>
+    <span data-phrase="kind.time">タイムスタンプ</span>
+    <span data-phrase="kind.comment">コメント</span>
+    <span data-phrase="kind.text">テキスト</span>
+    <span data-phrase="meta.plain">{kinds}が{size}分入っています。これも画像と一緒にURIへ複写されます。</span>
+    <span data-phrase="meta.share">{kinds}が{size}分入っており、ファイルの{percent}%にあたります。これも画像と一緒にURIへ複写されます。</span>
+    <span data-phrase="render.failed">このブラウザーは結果を描画しませんでした。URIの形式は正しく、デコードできない形式だというだけです。</span>
+    <span data-phrase="sniff.unrenderable">この形式を描画するブラウザーはSafari以外にありません。URIは正しくても画像は出ません。先に変換してください。</span>
+    <span data-phrase="join.dot">{a} &middot; {b}</span>
+    <span data-phrase="join.comma">{a}、{b}</span>
+    <span data-phrase="join.and">{a}と{b}</span>
+    <span data-phrase="size.b">{n}バイト</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
     <span data-phrase="net.clean">画像はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、画像も、その1バイトも渡っていません。</span>

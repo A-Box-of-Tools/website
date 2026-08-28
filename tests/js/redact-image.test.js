@@ -403,61 +403,74 @@ test('chooseFormat: auto keeps a photograph a photograph', () => {
   assert.equal(chooseFormat('nonsense', 'image/jpeg'), FORMATS.png);
 });
 
+/**
+ * A stand-in for `phrase()`. These five functions ship in fifteen languages, so
+ * they name a sentence and take a resolver rather than writing English; spelling
+ * the key out beside its blanks keeps the tests about the numbers, which is what
+ * they were always about.
+ */
+const say = (key, values = {}) => `${key}(${Object.entries(values)
+  .map(([name, value]) => `${name}=${value}`).join(',')})`;
+
 test('sizeText: bytes, KB and MB, in the units people read', () => {
-  assert.equal(sizeText(900), '900 B');
-  assert.equal(sizeText(2048), '2.0 KB');
-  assert.equal(sizeText(5 * 1024 * 1024), '5.00 MB');
+  assert.equal(sizeText(900, say), 'size.b(n=900)');
+  assert.equal(sizeText(2048, say), 'size.kb(n=2.0)');
+  assert.equal(sizeText(5 * 1024 * 1024, say), 'size.mb(n=5.00)');
 });
 
 test('describeRegion: a mosaic row says how many blocks it is made of', () => {
-  const row = describeRegion({ x: 10, y: 20, width: 200, height: 100, style: 'pixelate' }, 'medium');
-  assert.match(row, /200 x 100 at 10, 20/);
-  assert.match(row, /11 px blocks \(19 x 10\)/);
+  const row = describeRegion(
+    { x: 10, y: 20, width: 200, height: 100, style: 'pixelate' }, 'medium', say,
+  );
+  assert.match(row, /width=200,height=100,x=10,y=20/);
+  assert.match(row, /size=11,across=19,down=10/);
 
   assert.match(
-    describeRegion({ x: 0, y: 0, width: 60, height: 60, style: 'fill' }, 'medium'),
-    /blacked out$/,
+    describeRegion({ x: 0, y: 0, width: 60, height: 60, style: 'fill' }, 'medium', say),
+    /^region\.filled\(/,
   );
   assert.match(
-    describeRegion({ x: 0, y: 0, width: 60, height: 60, style: 'blur' }, 'medium'),
-    /blurred, 4 px radius$/,
+    describeRegion({ x: 0, y: 0, width: 60, height: 60, style: 'blur' }, 'medium', say),
+    /radius=4/,
   );
 });
 
 test('countSummary: says nothing at all until there is something to say', () => {
-  assert.equal(countSummary([]), '');
-  assert.equal(countSummary([{ style: 'fill' }]), '1 area: 1 blacked out.');
-  assert.equal(
-    countSummary([{ style: 'fill' }, { style: 'fill' }, { style: 'blur' }]),
-    '3 areas: 2 blacked out, 1 blurred.',
-  );
+  assert.equal(countSummary([], say), '');
+  assert.match(countSummary([{ style: 'fill' }], say), /^count\.one\(n=1,/);
+  assert.match(countSummary([{ style: 'fill' }], say), /style\.fill\.one\(n=1\)/);
+
+  const three = countSummary([{ style: 'fill' }, { style: 'fill' }, { style: 'blur' }], say);
+  assert.match(three, /^count\.many\(n=3,/);
+  assert.match(three, /style\.fill\.many\(n=2\)/);
+  assert.match(three, /style\.blur\.one\(n=1\)/);
 });
 
 test('riskNote: silent when every box is a fill, and counted when one is not', () => {
-  assert.equal(riskNote([{ style: 'fill', width: 100, height: 100 }], 'medium'), null);
-  assert.equal(riskNote([], 'medium'), null);
+  assert.equal(riskNote([{ style: 'fill', width: 100, height: 100 }], 'medium', say), null);
+  assert.equal(riskNote([], 'medium', say), null);
 
-  const note = riskNote([{ style: 'pixelate', x: 0, y: 0, width: 300, height: 60 }], 'medium');
+  const note = riskNote([{ style: 'pixelate', x: 0, y: 0, width: 300, height: 60 }], 'medium', say);
   const blocks = blockCount({ width: 300, height: 60 }, 'medium');
-  assert.match(note, new RegExp(`${blocks.across} x ${blocks.down} blocks`));
-  assert.match(note, new RegExp(`${blocks.across * blocks.down} averages`));
-  assert.match(note, /Black out anything that reads as text\./);
+  assert.match(note, new RegExp(`across=${blocks.across},down=${blocks.down}`));
+  assert.match(note, new RegExp(`averages=${blocks.across * blocks.down}`));
+  assert.match(note, /risk\.advice/);
 });
 
 test('riskNote: reports the finest mosaic, because that is the one worth worrying about', () => {
   const coarse = { style: 'pixelate', x: 0, y: 0, width: 40, height: 40 };
   const fine = { style: 'pixelate', x: 0, y: 0, width: 600, height: 200 };
-  const note = riskNote([coarse, fine], 'medium');
+  const note = riskNote([coarse, fine], 'medium', say);
   const blocks = blockCount(fine, 'medium');
-  assert.match(note, new RegExp(`${blocks.across} x ${blocks.down} blocks`));
+  assert.match(note, new RegExp(`across=${blocks.across},down=${blocks.down}`));
 });
 
 test('riskNote: a blur is reported by its radius', () => {
-  const note = riskNote([{ style: 'blur', x: 0, y: 0, width: 280, height: 140 }], 'medium');
-  assert.match(note, /radius of 10 px/);
+  const note = riskNote([{ style: 'blur', x: 0, y: 0, width: 280, height: 140 }], 'medium', say);
+  assert.match(note, /risk\.blur\.one\(radius=10\)/);
 });
 
 test('strengthNote: names the setting and the number behind it', () => {
-  assert.match(strengthNote('heavy'), /^Heavy/);
-  assert.match(strengthNote('heavy'), new RegExp(`${STRENGTHS.heavy.blocks} blocks`));
+  assert.match(strengthNote('heavy', say), /label=strength\.heavy/);
+  assert.match(strengthNote('heavy', say), new RegExp(`blocks=${STRENGTHS.heavy.blocks}`));
 });

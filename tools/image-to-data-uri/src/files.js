@@ -2,10 +2,10 @@
 
 /** KB and MB mean 1024 and 1024*1024 here, which is what a file manager shows
  *  on every platform except macOS. */
-export function bytes(n) {
-  if (n < 1024) return `${n} bytes`;
-  if (n < 1024 * 1024) return `${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
-  return `${(n / (1024 * 1024)).toFixed(2)} MB`;
+export function bytes(n, t) {
+  if (n < 1024) return t('size.b', { n });
+  if (n < 1024 * 1024) return t('size.kb', { n: (n / 1024).toFixed(n < 10240 ? 1 : 0) });
+  return t('size.mb', { n: (n / (1024 * 1024)).toFixed(2) });
 }
 
 /** "1,204,556" - a character count is read, not compared, so it gets commas. */
@@ -15,11 +15,15 @@ export function count(n) {
 
 /** "a third longer", as a number. A data URI is ASCII, so one character is one
  *  byte and the length of the string is the size of the thing. */
-export function overhead(fileBytes, uriLength) {
+export function overhead(fileBytes, uriLength, t) {
   if (!fileBytes) return '';
   const delta = Math.round(((uriLength - fileBytes) / fileBytes) * 100);
-  if (delta === 0) return 'the same size as the file';
-  return delta > 0 ? `${delta}% larger than the file` : `${-delta}% smaller than the file`;
+  if (delta === 0) return t('overhead.same');
+  // Three whole sentences: Turkish writes the sign in front of the number,
+  // and a comparison is not built the same way in every language either.
+  return delta > 0
+    ? t('overhead.larger', { percent: delta })
+    : t('overhead.smaller', { percent: -delta });
 }
 
 /**
@@ -36,31 +40,16 @@ export function overhead(fileBytes, uriLength) {
  * The thresholds are round numbers rather than measurements. They are where
  * the advice changes, not where the browser does anything different.
  *
- * @returns {{level: 'good'|'fair'|'poor', text: string}}
+ * `key` names the sentence rather than holding it: this module ships in
+ * fifteen languages and only the page can read a phrase.
+ *
+ * @returns {{level: 'good'|'fair'|'poor', key: string}}
  */
 export function verdict(uriLength) {
-  if (uriLength <= 2 * 1024) {
-    return {
-      level: 'good',
-      text: 'Small enough that this is a clear win: one fewer request, and nothing much added to the file it lands in.',
-    };
-  }
-  if (uriLength <= 10 * 1024) {
-    return {
-      level: 'good',
-      text: 'A normal size for an inlined icon. Worth it for something that appears on every page.',
-    };
-  }
-  if (uriLength <= 50 * 1024) {
-    return {
-      level: 'fair',
-      text: 'Large for an inline picture. Everything that includes this stylesheet now carries it, and it cannot be cached on its own.',
-    };
-  }
-  return {
-    level: 'poor',
-    text: 'Too big to inline. Served as an ordinary file this would be cached once and fetched in parallel; inlined, it is on the critical path of every page and re-downloaded whenever anything around it changes.',
-  };
+  if (uriLength <= 2 * 1024) return { level: 'good', key: 'verdict.tiny' };
+  if (uriLength <= 10 * 1024) return { level: 'good', key: 'verdict.icon' };
+  if (uriLength <= 50 * 1024) return { level: 'fair', key: 'verdict.large' };
+  return { level: 'poor', key: 'verdict.toobig' };
 }
 
 /**
@@ -70,17 +59,24 @@ export function verdict(uriLength) {
  * a fact, and "a third of what you are about to paste is not the picture" is
  * the reason to do something about it.
  */
-export function metadataNote(meta, fileBytes) {
+export function metadataNote(meta, fileBytes, t) {
   const share = fileBytes ? Math.round((meta.bytes / fileBytes) * 100) : 0;
-  const kinds = list(meta.kinds);
-  const portion = share >= 5 ? `, which is ${share}% of the file` : '';
-  return `Carries ${bytes(meta.bytes)} of ${kinds}${portion}. It is copied into the URI along with the picture.`;
+  const values = { size: bytes(meta.bytes, t), kinds: list(meta.kinds, t), percent: share };
+  // A clause spliced into a sentence cannot be translated, so the version
+  // with the proportion in it is a sentence of its own.
+  return t(share >= 5 ? 'meta.share' : 'meta.plain', values);
 }
 
 /** "EXIF", "EXIF and XMP", "EXIF, XMP and a colour profile". */
-export function list(items) {
-  if (items.length <= 1) return items[0] ?? '';
-  return `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`;
+export function list(items, t) {
+  const said = items.map((item) => t(item));
+  if (said.length <= 1) return said[0] ?? '';
+  // The last join is a different word from the others in most languages,
+  // so the two separators are two phrases.
+  return t('join.and', {
+    a: said.slice(0, -1).reduce((x, y) => t('join.comma', { a: x, b: y })),
+    b: said[said.length - 1],
+  });
 }
 
 /** "4032 x 3024", with a real multiplication sign. */
