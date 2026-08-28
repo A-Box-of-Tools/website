@@ -274,12 +274,14 @@ kbd {
 
 .result-facts summary {
   cursor: pointer;
+  user-select: none;
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--text-dim);
 }
 
-.result-facts summary:hover { color: var(--accent); }
+.result-facts summary:hover,
+.result-facts summary:focus-visible { color: var(--accent); }
 
 .facts-list {
   margin: 0.8rem 0 0;

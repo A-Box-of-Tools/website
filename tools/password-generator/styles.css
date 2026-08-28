@@ -231,52 +231,18 @@
 /* The same mark the steps and the how-to list wear. This is the third fold on
    the page that opens explanation, and it was the only one saying so with a
    bare bold line: the reader had to click it to find out it was a fold at all.
-   Drawn as background shapes rather than the letter, for the reason
-   shared/css/tool-frame.css gives where it draws the other two. */
+
+   The mark itself is not drawn here. It used to be - forty lines copied out of
+   shared/css/tool-frame.css - and the copy drifted: it transitioned only the
+   colour, so this one mark snapped into its filled state while the other two
+   faded. The body asks for `info-fold` instead and the frame draws it, which
+   is one mark in one place for all three. All that is left here is what is
+   this fold's own: the weight and colour of its summary line. */
 .assumptions summary {
-  cursor: pointer;
   font-weight: 600;
   color: var(--text);
-  list-style: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
-.assumptions summary::-webkit-details-marker { display: none; }
-
-.assumptions summary::after {
-  content: "";
-  flex: none;
-  width: 1.05rem;
-  height: 1.05rem;
-  border: 1.5px solid currentColor;
-  border-radius: 50%;
-  color: var(--text-dim);
-  background:
-    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
-      50% 22% / 2.5px 2.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat;
-  transition: color 0.15s;
-}
-
-.assumptions summary:hover::after,
-.assumptions summary:focus-visible::after { color: var(--accent); }
-
-/* Open, it fills in, the same as every other mark on the page. */
-.assumptions[open] summary::after {
-  color: var(--accent-text);
-  border-color: var(--accent);
-  background:
-    radial-gradient(circle at 50% 50%, currentColor 50%, transparent 51%)
-      50% 22% / 2.5px 2.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 50% 78% / 2px 0.4rem no-repeat,
-    var(--accent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .assumptions summary::after { transition: none; }
-}
 .assumptions p { margin: 0.6rem 0 0; }
 
 /* ----------------------------------------------------------------- the list */

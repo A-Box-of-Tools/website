@@ -309,10 +309,14 @@
 
 #local-palettes-wrap summary {
   cursor: pointer;
+  user-select: none;
   font-size: 0.9rem;
   font-weight: 600;
   padding: 0.5rem 0;
 }
+
+#local-palettes-wrap summary:hover,
+#local-palettes-wrap summary:focus-visible { color: var(--accent); }
 
 /* ------------------------------------------------------------ the extras */
 

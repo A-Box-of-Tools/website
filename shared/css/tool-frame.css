@@ -277,7 +277,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 }
 
 .pledge-fold[open] .pledge-caret { transform: rotate(-135deg); }
-.pledge-fold summary:hover .pledge-caret { border-color: var(--accent); }
+.pledge-fold summary:hover .pledge-caret,
+.pledge-fold summary:focus-visible .pledge-caret { border-color: var(--accent); }
 
 
 
@@ -473,6 +474,29 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 
 .card-note > summary > h2 { margin: 0; }
 
+/* A fold that explains something but is not a step and is not the how-to list.
+   The class is here so that a tool with one does not have to redraw the mark:
+   password-generator's "What that estimate assumes" carried its own copy of
+   the forty lines below, and the copy had already drifted - it transitioned
+   only the colour, so that one mark snapped into its filled state while every
+   other mark on the site faded into it. Opt in with `class="… info-fold"` and
+   the fold behaves like the other two by construction.
+
+   The layout here rather than in the tool: the mark is placed with `flex: none`
+   and needs a flex container to sit in, so a fold that opted in without it
+   would get the mark in the wrong place and no way to tell why. inline-flex
+   and not flex, because this summary is a line of text with the mark after it
+   rather than a heading with the mark pushed to the end of a full-width row. */
+.info-fold > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.info-fold > summary::-webkit-details-marker { display: none; }
+
 /*
   The mark that says there is more here, drawn rather than typed.
 
@@ -485,9 +509,11 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 */
 /*
   The mark on a fold that explains a step: the small print under one of them,
-  and the list of steps at the foot of the page. Both are the same promise -
-  open this and it will tell you more about the thing you are looking at - and
-  they were two different marks, a circled i and a caret, until they were not.
+  the list of steps at the foot of the page, and anything a tool opts in with
+  `info-fold`. All three are the same promise - open this and it will tell you
+  more about the thing you are looking at. The first two were two different
+  marks, a circled i and a caret, until they were not; the third drew its own
+  copy of the i in its own stylesheet, until it did not.
 
   Two folds nearby keep their own marker on purpose. The pledge has a caret
   because what it opens is the evidence for the page's central claim rather
@@ -501,7 +527,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   that explains, and an i on those would be a promise the fold does not keep.
 */
 .card-note > summary::after,
-.how-to-fold > summary > h2::after {
+.how-to-fold > summary > h2::after,
+.info-fold > summary::after {
   content: "";
   flex: none;
   width: 1.05rem;
@@ -519,7 +546,9 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 .card-note > summary:hover::after,
 .card-note > summary:focus-visible::after,
 .how-to-fold > summary:hover > h2::after,
-.how-to-fold > summary:focus-visible > h2::after { color: var(--accent); }
+.how-to-fold > summary:focus-visible > h2::after,
+.info-fold > summary:hover::after,
+.info-fold > summary:focus-visible::after { color: var(--accent); }
 
 /*
   Open, the mark stops being an invitation and becomes a state - and says so by
@@ -533,7 +562,8 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   of it, in the one colour that is legible on the accent in both themes.
 */
 .card-note[open] > summary::after,
-.how-to-fold[open] > summary > h2::after {
+.how-to-fold[open] > summary > h2::after,
+.info-fold[open] > summary::after {
   color: var(--accent-text);
   border-color: var(--accent);
   background:
@@ -576,7 +606,9 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 .card-note > :last-child { margin-bottom: 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .card-note > summary::after { transition: none; }
+  .card-note > summary::after,
+  .how-to-fold > summary > h2::after,
+  .info-fold > summary::after { transition: none; }
 }
 
 .step {
@@ -895,7 +927,8 @@ button, .as-button {
   list-style-position: outside;
 }
 
-.faq-list summary:hover { color: var(--accent); }
+.faq-list summary:hover,
+.faq-list summary:focus-visible { color: var(--accent); }
 
 .faq-list details[open] summary { margin-bottom: 0.5rem; }
 
@@ -1196,6 +1229,7 @@ footer a:hover { text-decoration: underline; }
 .lang-pick > summary::-webkit-details-marker { display: none; }
 
 .lang-pick > summary:hover,
+.lang-pick > summary:focus-visible,
 .lang-pick[open] > summary {
   border-color: var(--accent);
   color: var(--accent);

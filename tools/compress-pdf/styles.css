@@ -217,7 +217,11 @@
   font-size: 0.88rem;
   font-weight: 600;
   cursor: pointer;
+  user-select: none;
 }
+
+.advanced summary:hover,
+.advanced summary:focus-visible { color: var(--accent); }
 
 .advanced[open] summary { border-bottom: 1px solid var(--border); }
 .advanced > *:not(summary) { margin-inline: 0.9rem; }

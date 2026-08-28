@@ -129,7 +129,15 @@
   background: var(--surface-2);
 }
 
-.custom-panel summary { cursor: pointer; font-size: 0.88rem; font-weight: 600; }
+.custom-panel summary {
+  cursor: pointer;
+  user-select: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.custom-panel summary:hover,
+.custom-panel summary:focus-visible { color: var(--accent); }
 .custom-panel[open] summary { margin-bottom: 0.8rem; }
 .custom-panel .numbers + .numbers { margin-top: 0.7rem; }
 
