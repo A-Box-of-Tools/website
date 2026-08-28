@@ -39,6 +39,13 @@
     <summary type="html">用兩套字母表編碼和解碼 Base64，給 URL 做百分號編碼，轉義 HTML 實體，讀十六進位和反斜槓轉義。全都在你的瀏覽器裡跑，什麼都不上傳——token 從不離開你的機器。</summary>
   </entry>
   <entry>
+    <title type="html">DICOM 閱片器</title>
+    <id>https://abox.tools/zh-TW/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/dicom-viewer/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在瀏覽器裡開啟 CT、MR、X 光和超音波影像。調窗寬窗位，翻整套序列，按毫米測量，讀遍每一個 DICOM 標籤，還能看清這個檔案裡究竟什麼在指認病人。什麼都不會上傳。</summary>
+  </entry>
+  <entry>
     <title type="html">EXIF 檢視與清除</title>
     <id>https://abox.tools/zh-TW/exif-editor/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/exif-editor/"/>
@@ -88,6 +95,13 @@
     <summary type="html">把多個 PDF 合到一起，把一個拆成好幾個，把頁面拖成你要的順序，全都在你自己的瀏覽器裡完成。什麼都不上傳，不用註冊，成品檔案在交給你之前還會被重新開啟、重新數一遍頁數。</summary>
   </entry>
   <entry>
+    <title type="html">PDF 塗黑</title>
+    <id>https://abox.tools/zh-TW/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/redact-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把字從 PDF 裡拿掉，而不是在上面畫個黑塊。字是從繪製這一頁的指令裡刪掉的，做好的檔案會被重新開啟搜一遍，證明它們真的沒了，而且什麼都不會上傳。</summary>
+  </entry>
+  <entry>
     <title type="html">PDF 壓縮</title>
     <id>https://abox.tools/zh-TW/compress-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compress-pdf/"/>
@@ -102,11 +116,25 @@
     <summary type="html">產生連結、Wi-Fi 或者名片 QR Code，也產生 EAN-13、UPC-A、Code 128 和 Code 39 條碼。可下載 SVG 或 PNG。全部在你的瀏覽器裡完成。</summary>
   </entry>
   <entry>
+    <title type="html">QR Code 與條碼識讀</title>
+    <id>https://abox.tools/zh-TW/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode-reader/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">從照片、截圖或鏡頭讀取 QR Code，在開啟之前就看清這個連結到底通向哪裡。EAN、UPC、Code 128、Code 39 和 ITF 條碼也能讀。什麼都不上傳。</summary>
+  </entry>
+  <entry>
     <title type="html">SVG 轉圖片</title>
     <id>https://abox.tools/zh-TW/svg-to-image/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/svg-to-image/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">在瀏覽器裡把 SVG 轉成 PNG、JPEG 或 WebP，尺寸隨你定。給寬度、給倍數，或者給一個框，還能順手出 @2x 和 @3x。透明保住，什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">什麼時候該把圖片塞進 CSS，什麼時候不該</title>
+    <id>https://abox.tools/zh-TW/guides/embed-an-image-in-css/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/embed-an-image-in-css/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">data URI 的代價在哪裡，base64 為什麼多出三分之一而 gzip 又還不回來，SVG 為什麼絕不該用 base64，以及那個只坑內聯 SVG、還一聲不吭的引號問題。</summary>
   </entry>
   <entry>
     <title type="html">圖片堆疊</title>
@@ -212,33 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/crop-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">把 MP4、MOV 或 WebM 裁成任意形狀，方圖、9:16 直式，或者精確到畫素的一個框。在瀏覽器裡跑，不上傳，聲音留著，斷網也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">影片轉 GIF</title>
-    <id>https://abox.tools/zh-TW/video-to-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/video-to-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 MP4、MOV 或 WebM 裡的一段做成 GIF 動圖。段落、寬度和幀率你來定，讀幀和寫 GIF 都在你的瀏覽器裡完成。什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">文件掃描</title>
-    <id>https://abox.tools/zh-TW/document-scanner/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/document-scanner/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把手機拍的紙張照片變成一份擺正、亮度均勻的 PDF。四個角替你找好，透視給你掰正，陰影除掉。全部在你的瀏覽器裡跑，什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">文字比對</title>
-    <id>https://abox.tools/zh-TW/compare-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compare-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">比對兩段文字，逐行、逐詞看清每一處差異，並排或單列顯示。比對在你的瀏覽器裡跑，什麼都不上傳——尚未釋出的程式碼從不離開你的機器。</summary>
-  </entry>
-  <entry>
-    <title type="html">文字與檔案分享</title>
-    <id>https://abox.tools/zh-TW/share-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/share-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把文字或檔案經由直連加密通道從一個瀏覽器送到另一個。連結名稱說得出口，邊打字邊即時同步，逐一核准讀者——任何伺服器上永遠不存任何東西。免費，無須註冊。</summary>
   </entry>
 </feed>

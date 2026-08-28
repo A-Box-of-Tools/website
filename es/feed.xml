@@ -53,6 +53,13 @@
     <summary type="html">Guarda cualquier fotograma de un MP4, MOV o WebM como PNG o JPEG a tamaño completo. Avanza fotograma a fotograma, o saca uno cada pocos segundos. Funciona en el navegador: no se sube nada.</summary>
   </entry>
   <entry>
+    <title type="html">Censor de PDF</title>
+    <id>https://abox.tools/es/censurar-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Saca palabras de un PDF en vez de pintar un rectángulo negro encima. Las letras se borran de las propias instrucciones de dibujo de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada.</summary>
+  </entry>
+  <entry>
     <title type="html">Censor de imágenes</title>
     <id>https://abox.tools/es/censurar-imagen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-imagen/"/>
@@ -130,6 +137,20 @@
     <summary type="html">Convierte un vídeo largo en un timelapse: 10x, 60x o la velocidad que escribas. Todo en el navegador, sin subir nada, sin marca de agua y también sin conexión.</summary>
   </entry>
   <entry>
+    <title type="html">Cuándo meter una imagen dentro de tu CSS y cuándo no</title>
+    <id>https://abox.tools/es/guias/incrustar-una-imagen-en-css/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/incrustar-una-imagen-en-css/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Lo que cuesta un data URI, por qué base64 añade un tercio y gzip no te lo devuelve, por qué un SVG no debería ir nunca en base64, y el error de comillas que rompe los SVG incrustados sin decir nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo comparar dos archivos JSON</title>
+    <id>https://abox.tools/es/guias/comparar-dos-archivos-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/comparar-dos-archivos-json/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Formatea los dos archivos igual, ordena las claves y compáralos después. Por qué un diff de JSON en crudo es casi todo ruido, cómo canonizar los dos lados en el navegador, y qué sobrevive hasta el parche.</summary>
+  </entry>
+  <entry>
     <title type="html">Cómo compartir texto y archivos entre dispositivos sin subirlos</title>
     <id>https://abox.tools/es/guias/compartir-texto-entre-dispositivos/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/compartir-texto-entre-dispositivos/"/>
@@ -137,108 +158,87 @@
     <summary type="html">Llevar texto o archivos de un navegador a otro por una conexión directa y cifrada: sin mandarse correos a uno mismo, sin historial de chat, sin cuenta, y sin que ningún servidor se quede una copia.</summary>
   </entry>
   <entry>
-    <title type="html">Editor de audio</title>
-    <id>https://abox.tools/es/editar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/editar-audio/"/>
+    <title type="html">Cómo comprobar una descarga contra su checksum</title>
+    <id>https://abox.tools/es/guias/verificar-el-checksum-de-una-descarga/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/verificar-el-checksum-de-una-descarga/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Pon una pista del revés, acelérala o ralentízala y levanta una grabación que quedó floja. También le saca el sonido a un vídeo. Todo en el navegador, sin subir nada.</summary>
+    <summary type="html">Cómo comparar un checksum MD5 o SHA-256 en Windows, macOS y Linux o en el navegador, qué demuestra realmente que coincida, y el error que deja toda la operación en nada.</summary>
   </entry>
   <entry>
-    <title type="html">Escáner de documentos</title>
-    <id>https://abox.tools/es/escanear-documentos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/escanear-documentos/"/>
+    <title type="html">Cómo convertir un video largo en un timelapse</title>
+    <id>https://abox.tools/es/guias/convertir-un-video-largo-en-timelapse/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-un-video-largo-en-timelapse/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Convierte la foto de una hoja hecha con el teléfono en un PDF enderezado y con luz uniforme. Las esquinas se buscan solas, la perspectiva se deshace y la sombra se divide. Funciona entero en el navegador: no se sube nada.</summary>
+    <summary type="html">Una hora de metraje en un minuto que se deja ver: cómo elegir la velocidad, por qué decir la duración final gana a hacer cuentas, y cuándo el resultado debe volverse un GIF.</summary>
   </entry>
   <entry>
-    <title type="html">Formateador de JSON</title>
-    <id>https://abox.tools/es/formatear-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-json/"/>
+    <title type="html">Cómo crear un código QR y demostrar que escanea</title>
+    <id>https://abox.tools/es/guias/crear-un-codigo-qr-y-comprobar-que-escanea/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/crear-un-codigo-qr-y-comprobar-que-escanea/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Formatea y minifica JSON, XML, HTML, CSS y YAML, y convierte JSON a YAML o XML y al revés. Los analizadores corren en tu navegador y no se sube nada: un token o un archivo de configuración nunca sale de tu equipo.</summary>
+    <summary type="html">Genera el código y verifícalo después con el lector del mismo sitio: la carga exacta, el enlace real, a tamaño de imprenta y desde una foto, antes de la tirada. Todo en el navegador, nada subido.</summary>
   </entry>
   <entry>
-    <title type="html">Generador de QR y códigos de barras</title>
-    <id>https://abox.tools/es/generar-codigo-qr/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/generar-codigo-qr/"/>
+    <title type="html">Cómo crear una miniatura de video con el fotograma exacto</title>
+    <id>https://abox.tools/es/guias/crear-una-miniatura-de-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/crear-una-miniatura-de-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Haz un código QR para un enlace, una red wifi o una tarjeta de contacto, o un código de barras EAN-13, UPC-A, Code 128 o Code 39. Descárgalo en SVG o PNG. Todo ocurre en tu navegador.</summary>
+    <summary type="html">Avanza fotograma a fotograma hasta el instante preciso, guárdalo sin pérdida, dale el formato de la plataforma y clava su límite de bytes. Tres herramientas del navegador seguidas, y el metraje nunca sale de tu equipo.</summary>
   </entry>
   <entry>
-    <title type="html">Generador de contraseñas y frases de contraseña</title>
-    <id>https://abox.tools/es/generador-de-contrasenas/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/generador-de-contrasenas/"/>
+    <title type="html">Cómo editar un GIF fotograma a fotograma</title>
+    <id>https://abox.tools/es/guias/editar-un-gif-fotograma-a-fotograma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/editar-un-gif-fotograma-a-fotograma/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Crea una contraseña aleatoria segura, o una frase de contraseña tipo diceware a partir de una lista de 7.776 palabras incluida en la página. La saca el generador criptográfico de tu navegador, no se envía a ningún sitio y no se guarda. Gratis y sin registro.</summary>
+    <summary type="html">Desarma un GIF en sus fotogramas, quita o reordena los que haga falta, y reconstrúyelo conservando los tiempos. Qué sobrevive al viaje de ida y vuelta, qué cuesta la paleta, y cómo ver por qué un GIF pesa.</summary>
   </entry>
   <entry>
-    <title type="html">HEIC a JPG</title>
-    <id>https://abox.tools/es/convertir-heic-a-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-heic-a-jpg/"/>
+    <title type="html">Cómo escanear varias páginas en un PDF pequeño</title>
+    <id>https://abox.tools/es/guias/escanear-varias-paginas-en-un-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/escanear-varias-paginas-en-un-pdf/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Convierte en JPG las fotos HEIC de un iPhone, dentro del navegador. El descodificador funciona en tu dispositivo: no se sube nada, no hay cuenta, va sin conexión, y la fecha y los datos de la cámara pueden venirse contigo.</summary>
+    <summary type="html">Fotografía cada página, consigue un PDF, combínalo con los documentos que ya tienes y encógelo hasta que se pueda enviar. Tres herramientas del navegador seguidas, y el papeleo nunca sale del teléfono.</summary>
   </entry>
   <entry>
-    <title type="html">Hash y suma de verificación</title>
-    <id>https://abox.tools/es/calcular-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/calcular-checksum/"/>
+    <title type="html">Cómo formatear JSON sin entregárselo a nadie</title>
+    <id>https://abox.tools/es/guias/formatear-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/formatear-json/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Calcula el MD5, SHA-1, SHA-256, SHA-384 o SHA-512 de cualquier archivo y compáralo con el checksum que publicó la página de descarga. El archivo se lee en el navegador y no se sube nunca, sea del tamaño que sea.</summary>
+    <summary type="html">Cómo ordenar, comprobar y minificar JSON en tu propio navegador: qué no debe cambiar nunca un formateador de tu archivo, cómo leer el mensaje de error, y por qué importa el sitio en el que lo pegas.</summary>
   </entry>
   <entry>
-    <title type="html">Imagen a ICO</title>
-    <id>https://abox.tools/es/crear-favicon/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/crear-favicon/"/>
+    <title type="html">Cómo hacer un GIF animado con imágenes</title>
+    <id>https://abox.tools/es/guias/hacer-un-gif-con-imagenes/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/hacer-un-gif-con-imagenes/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Convierte un PNG, JPEG o SVG en un .ico de verdad con varios tamaños, o en un .icns de macOS, dentro del navegador. Favicon, icono de aplicación de Windows, icono de Mac y los archivos de Apple y Android que necesita una web. No se sube nada.</summary>
+    <summary type="html">Convierte un puñado de fotos en un GIF animado: a qué velocidad puede ir de verdad un GIF, qué cambia el ajuste de la paleta, y las tres cosas que de verdad hacen el archivo más pequeño.</summary>
   </entry>
   <entry>
-    <title type="html">Imagen a data URI</title>
-    <id>https://abox.tools/es/imagen-a-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/imagen-a-base64/"/>
+    <title type="html">Cómo hacer un GIF de una parte de un video</title>
+    <id>https://abox.tools/es/guias/gif-de-una-parte-de-un-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/gif-de-una-parte-de-un-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Convierte un PNG, JPEG, SVG o WebP en un data URI listo para pegar en tu CSS o tu HTML. Los SVG se codifican con porcentajes y no en base64, así que salen más cortos y siguen leyéndose. Todo en el navegador, sin subir nada.</summary>
+    <summary type="html">Corta primero los segundos que importan y convierte solo esos. Cuándo basta la línea de tiempo del conversor a GIF, cuándo cortar antes con el cortador de video, y por qué cada segundo de GIF sale tan caro.</summary>
   </entry>
   <entry>
-    <title type="html">Imágenes a PDF</title>
-    <id>https://abox.tools/es/imagenes-a-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/imagenes-a-pdf/"/>
+    <title type="html">Cómo hacer un video boomerang</title>
+    <id>https://abox.tools/es/guias/hacer-un-video-boomerang/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/hacer-un-video-boomerang/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Une imágenes JPG, PNG o WebP en un solo PDF, gratis y sin salir del navegador. Las fotos entran sin volver a codificarse, y no se sube nada.</summary>
+    <summary type="html">Corta el momento, invierte la copia, une las dos y déjalo en bucle. Tres herramientas seguidas, todas en el navegador, y el orden que deja el trabajo entero en un minuto.</summary>
   </entry>
   <entry>
-    <title type="html">Imágenes a vídeo</title>
-    <id>https://abox.tools/es/imagenes-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/imagenes-a-video/"/>
+    <title type="html">Cómo limpiar una nota de voz antes de enviarla</title>
+    <id>https://abox.tools/es/guias/limpiar-una-nota-de-voz/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/limpiar-una-nota-de-voz/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Convierte imágenes JPG, PNG o WebP en un vídeo MP4 de pase de diapositivas, gratis y sin salir del navegador. No se sube nada, no hay que registrarse y funciona sin conexión.</summary>
+    <summary type="html">Corta el aire muerto y los comienzos en falso, y sube después el nivel casi a plena escala. Dos herramientas del navegador seguidas, en el orden que conserva la calidad, y la grabación nunca sale de tu equipo.</summary>
   </entry>
   <entry>
-    <title type="html">Invertidor de vídeo</title>
-    <id>https://abox.tools/es/invertir-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/invertir-video/"/>
+    <title type="html">Cómo preparar las fotos del móvil para la web</title>
+    <id>https://abox.tools/es/guias/preparar-fotos-para-la-web/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/preparar-fotos-para-la-web/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Reproduce un MP4, MOV o WebM al revés, con el sonido invertido también. Funciona en el navegador: no se sube nada, no hay marca de agua y va sin conexión.</summary>
-  </entry>
-  <entry>
-    <title type="html">Recortador de vídeo</title>
-    <id>https://abox.tools/es/recortar-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/recortar-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Recorta un MP4, MOV o WebM a la forma que quieras: cuadrado, 9:16 o una caja de píxeles exacta. Todo en el navegador, sin subir nada y conservando el sonido.</summary>
-  </entry>
-  <entry>
-    <title type="html">Redimensionador de imágenes</title>
-    <id>https://abox.tools/es/redimensionar-imagen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/redimensionar-imagen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Redimensiona, recorta y convierte imágenes JPEG, PNG y WebP dentro del navegador. Píxeles exactos, un porcentaje o un lado largo, para una imagen o para una carpeta entera. No se sube nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG a imagen</title>
-    <id>https://abox.tools/es/convertir-svg-a-png/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-svg-a-png/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Convierte un SVG en un PNG, JPEG o WebP a cualquier tamaño, dentro del navegador. Di el ancho, un múltiplo o una caja, y llévate también las copias @2x y @3x. Se conserva la transparencia y no se sube nada.</summary>
+    <summary type="html">HEIC a JPEG, GPS fuera, redimensionadas para la página y comprimidas a un presupuesto: toda la cadena en el navegador, y los originales nunca salen de tu equipo.</summary>
   </entry>
 </feed>

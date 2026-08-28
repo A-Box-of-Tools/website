@@ -165,11 +165,25 @@
     <summary type="html">اضغط صورة JPEG أو PNG أو WebP إلى حجم محدّد بالضبط: 100 KB أو 2 MB أو أي حجم آخر. يعمل بالكامل داخل متصفحك، فلا يُرفع شيء، ولا حساب، ويعمل دون اتصال.</summary>
   </entry>
   <entry>
+    <title type="html">طامس PDF</title>
+    <id>https://abox.tools/ar/طمس-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/طمس-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">أخرِج الكلمات من ملف PDF بدل رسم مستطيل أسود فوقها. تُحذَف الحروف من تعليمات رسم الصفحة نفسها، ويُفتَح الملف المنتهي من جديد ويُبحَث فيه برهاناً على أنها زالت، ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
     <title type="html">طمس الصور</title>
     <id>https://abox.tools/ar/طمس-الصورة/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/طمس-الصورة/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">غطِّ اسماً أو عنواناً أو رقم حساب في صورة أو لقطة شاشة، ثم أعِد ترميز الصورة، فتزول البكسلات المخفية من الملف بدل أن تقبع تحت مستطيل. يعمل بالكامل داخل متصفحك.</summary>
+  </entry>
+  <entry>
+    <title type="html">عارض DICOM</title>
+    <id>https://abox.tools/ar/عارض-dicom/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/عارض-dicom/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">افتح صور CT وMR والأشعة السينية والموجات فوق الصوتية في متصفحك. اضبط النافذة والمستوى، وتصفّح سلسلة كاملة، وقِس بالمليمترات، واقرأ كل وسم DICOM، وانظر ما الذي في الملف يعرّف المريض بالضبط. ولا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">عارض EXIF ومُزيله</title>
@@ -186,6 +200,34 @@
     <summary type="html">شغّل ملف MP4 أو MOV أو WebM بالمقلوب، والصوت معكوس كذلك. يعمل داخل متصفحك: لا يُرفع شيء، ولا علامة مائية، ويعمل دون اتصال.</summary>
   </entry>
   <entry>
+    <title type="html">قارئ رموز QR والباركود</title>
+    <id>https://abox.tools/ar/مسح-رمز-qr/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مسح-رمز-qr/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">اقرأ رمز QR من صورة أو لقطة شاشة أو كاميرتك، وانظر بالضبط إلى أين يذهب الرابط قبل أن تفتحه. وباركودات EAN وUPC وCode 128 وCode 39 وITF كذلك. ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تجهِّز صور الهاتف للنشر</title>
+    <id>https://abox.tools/ar/أدلة/تجهيز-الصور-للنشر/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تجهيز-الصور-للنشر/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">من HEIC إلى JPEG، وGPS محذوف، ومقاس مضبوط للصفحة، وضغط على ميزانية: السلسلة كلها في المتصفح، والأصول لا تغادر جهازك أبداً.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تحرّر صورة GIF إطارًا إطارًا</title>
+    <id>https://abox.tools/ar/أدلة/تحرير-gif-اطارا-اطارا/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحرير-gif-اطارا-اطارا/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">فكّك صورة GIF إلى إطاراتها، واحذف أو أعد الترتيب، ثم أعد بناءها والتوقيت محفوظ. ما الذي ينجو من الرحلة ذهابًا وإيابًا، وما ثمن اللوحة اللونية، وكيف ترى سبب ثقل GIF.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تحوّل فيديو طويلًا إلى تصوير متسارع</title>
+    <id>https://abox.tools/ar/أدلة/تحويل-فيديو-طويل-الى-تايم-لابس/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/تحويل-فيديو-طويل-الى-تايم-لابس/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">ساعة من التصوير في دقيقة تُشاهَد: كيف تختار السرعة، ولماذا تحديد المدة النهائية أفضل من الحساب، ومتى ينبغي أن يصير الناتج صورة GIF.</summary>
+  </entry>
+  <entry>
     <title type="html">كيف تشارك النص والملفات بين الأجهزة دون رفعها</title>
     <id>https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/مشاركة-النص-بين-الأجهزة/"/>
@@ -193,52 +235,10 @@
     <summary type="html">انقل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر - دون أن تراسل نفسك بالبريد، ودون سجلّ محادثة، ودون حساب، ودون أن يحتفظ أي خادم بنسخة.</summary>
   </entry>
   <entry>
-    <title type="html">محرّر الصوت</title>
-    <id>https://abox.tools/ar/تحرير-الصوت/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
+    <title type="html">كيف تصنع GIF متحرّكة من صور</title>
+    <id>https://abox.tools/ar/أدلة/إنشاء-gif-من-الصور/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/إنشاء-gif-من-الصور/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">محلّل GIF</title>
-    <id>https://abox.tools/ar/تحليل-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحليل-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">فكِّك ملف GIF داخل متصفحك: كل إطار بتأخيره وطريقة التخلّص منه، وجداول الألوان، وعدد التكرارات، وتفصيلٌ بايتاً بايتاً لأين ذهب حجم الملف. ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">مرمِّز Base64 ومفكِّكه</title>
-    <id>https://abox.tools/ar/ترميز-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/ترميز-base64/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">رمِّز وفكِّك Base64 بأبجديتَيه، ورمِّز العناوين ترميزاً مئوياً، واهرُب كيانات HTML، واقرأ السداسي عشري وهروبات الشرطة المائلة العكسية. كل ذلك يجري في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">مشاركة النص والملفات</title>
-    <id>https://abox.tools/ar/مشاركة-النص/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مشاركة-النص/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">أرسل نصاً أو ملفات من متصفح إلى آخر عبر اتصال مباشر مشفّر. اسم رابط يُقال بصوت مسموع، وتحديث حي أثناء الكتابة، وموافقة لكل قارئ - ولا شيء على أي خادم أبداً. مجاني، دون تسجيل.</summary>
-  </entry>
-  <entry>
-    <title type="html">مقارن النصوص</title>
-    <id>https://abox.tools/ar/مقارنة-النصوص/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مقارنة-النصوص/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">قارِن نصّين وانظر كل فرق، سطراً سطراً وكلمةً كلمة، جنباً إلى جنب أو في عمود واحد. المقارنة تعمل في متصفحك ولا يُرفع شيء - فلا تغادر الشيفرة غير المنشورة جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">مقصّ الصوت</title>
-    <id>https://abox.tools/ar/قص-الصوت/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/قص-الصوت/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">شغّل تسجيلاً وعلّم على كل جزء يستحق البقاء وهو يمرّ، ثم احفظ تلك الأجزاء ملفاً واحداً. قَصٌّ دقيق إلى العيّنة، وبلا طقطقة عند الوصلات، ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">مقصّ الفيديو</title>
-    <id>https://abox.tools/ar/تقصير-الفيديو/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تقصير-الفيديو/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">شاهد فيديو وعلّم على كل جزء يستحق البقاء وهو يعمل، ثم احفظ تلك الأجزاء ملفاً واحداً. يعمل داخل متصفحك: لا يُرفع شيء، ولا يُعاد ترميز شيء، ويعمل دون اتصال.</summary>
+    <summary type="html">حوِّل طقماً من الصور إلى ملف GIF متحرّك واحد: بأي سرعة يستطيع ملف GIF أن يعمل حقاً، وماذا يغيّر إعدادُ لوحة الألوان، والأشياءُ الثلاثة التي تصغّر الملف فعلاً.</summary>
   </entry>
 </feed>

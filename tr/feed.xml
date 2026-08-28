@@ -46,6 +46,55 @@
     <summary type="html">Bir sayfanın telefon fotoğrafını düzeltilmiş, eşit aydınlatılmış bir PDF'e çevirin. Köşeler sizin için bulunur, perspektif geri alınır, gölge bölünüp atılır. Tamamen tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
   </entry>
   <entry>
+    <title type="html">Bir GIF kare kare nasıl düzenlenir</title>
+    <id>https://abox.tools/tr/rehberler/gif-kare-kare-duzenleme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gif-kare-kare-duzenleme/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">GIF'i karelerine ayırın, istediklerinizi çıkarın ya da sıralayın, zamanlamayı koruyarak yeniden kurun. Gidiş dönüşten neyin sağ çıktığı, paletin bedeli ve bir GIF'in neden ağır olduğunu görmenin yolu.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir GIF karelerine nasıl ayrılır</title>
+    <id>https://abox.tools/tr/rehberler/gifi-karelere-ayirma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gifi-karelere-ayirma/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Hareketli bir GIF'in her karesini PNG olarak alın: bazı kareler neden resmin yalnızca küçük bir yamasıdır, saydamlığa ne olur ve yeniden birleştirebilmek için zamanlamayı nasıl korursunuz.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir indirme, sağlama toplamına karşı nasıl denetlenir</title>
+    <id>https://abox.tools/tr/rehberler/dosya-saglama-toplamini-dogrulama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/dosya-saglama-toplamini-dogrulama/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Windows, macOS ve Linux'ta ya da tarayıcınızda bir MD5 veya SHA-256 sağlama toplamı nasıl denetlenir, bir eşleşme gerçekte neyi kanıtlar ve bütün işi anlamsız kılan hata.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bir resim CSS'inizin içine ne zaman konur, ne zaman konmaz</title>
+    <id>https://abox.tools/tr/rehberler/cssye-resim-gomme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/cssye-resim-gomme/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Bir data URI'nin bedeli, base64'ün neden üçte bir eklediği ve gzip'in bunu neden geri vermediği, bir SVG'nin neden asla base64 olmaması gerektiği ve satır içi SVG'leri sessizce bozan tırnak hatası.</summary>
+  </entry>
+  <entry>
+    <title type="html">Birden çok sayfa tek ve küçük bir PDF'e nasıl taranır</title>
+    <id>https://abox.tools/tr/rehberler/birden-cok-sayfayi-tek-pdf-tarama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/birden-cok-sayfayi-tek-pdf-tarama/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Her sayfayı fotoğraflayın, tek PDF alın, elinizdeki belgelerle birleştirin ve gönderilene kadar küçültün. Arka arkaya üç tarayıcı aracı ve evraklar telefondan hiç çıkmıyor.</summary>
+  </entry>
+  <entry>
+    <title type="html">Bumerang video nasıl yapılır</title>
+    <id>https://abox.tools/tr/rehberler/bumerang-video-yapma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/bumerang-video-yapma/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Anı kesin, kopyayı ters çevirin, ikisini birleştirin ve döngüye alın. Arka arkaya üç araç, hepsi tarayıcıda ve bütün işi bir dakikaya indiren sıra.</summary>
+  </entry>
+  <entry>
+    <title type="html">DICOM Görüntüleyici</title>
+    <id>https://abox.tools/tr/dicom-goruntuleyici/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/dicom-goruntuleyici/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">BT, MR, röntgen ve ultrason taramalarını tarayıcınızda açın. Pencere ve seviye, bütün bir seriyi kaydırma, milimetre cinsinden ölçüm, her DICOM etiketini okuma ve dosyada hastayı tam olarak neyin tanımladığını görme. Hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
     <title type="html">EXIF Görüntüleyici ve Silici</title>
     <id>https://abox.tools/tr/exif-verisi-silme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/exif-verisi-silme/"/>
@@ -123,6 +172,13 @@
     <summary type="html">JPG, PNG veya WebP görselleri MP4 slayt gösterisi videosuna çevirin; ücretsiz ve tamamen tarayıcınızda. Hiçbir şey yüklenmez, kayıt gerekmez ve çevrimdışı da çalışır.</summary>
   </entry>
   <entry>
+    <title type="html">Görsellerden nasıl hareketli GIF yapılır</title>
+    <id>https://abox.tools/tr/rehberler/resimlerden-gif-olusturma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/resimlerden-gif-olusturma/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Bir resim setini tek bir hareketli GIF'e çevirin: bir GIF gerçekte ne kadar hızlı oynayabilir, palet ayarı neyi değiştirir ve dosyayı gerçekten küçülten üç şey.</summary>
+  </entry>
+  <entry>
     <title type="html">Görüntü istifleyici</title>
     <id>https://abox.tools/tr/goruntu-istifleme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/goruntu-istifleme/"/>
@@ -142,6 +198,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/json-bicimlendirme/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JSON, XML, HTML, CSS ve YAML biçimlendirin ve küçültün; JSON'u YAML ya da XML'e çevirin ve geri alın. Ayrıştırıcılar tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç ya da bir yapılandırma dosyası makinenizden hiç çıkmaz.</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON kimseye vermeden nasıl biçimlendirilir</title>
+    <id>https://abox.tools/tr/rehberler/json-yuklemeden-bicimlendirme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/json-yuklemeden-bicimlendirme/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JSON'u kendi tarayıcınızda nasıl düzenli yazar, denetler ve küçültürsünüz: bir biçimlendiricinin dosyanızda asla değiştirmemesi gereken şeyler, hata iletisinin nasıl okunacağı ve yapıştırdığınız sitenin neden önemli olduğu.</summary>
   </entry>
   <entry>
     <title type="html">Metin Karşılaştırma</title>
@@ -172,73 +235,10 @@
     <summary type="html">PDF'leri birleştirin, birini birkaç dosyaya bölün ve sayfaları istediğiniz sıraya sürükleyin &amp;mdash; hepsi kendi tarayıcınızın içinde. Hiçbir şey yüklenmez, hesap gerekmez ve bitmiş dosya size sunulmadan önce yeniden açılıp sayılır.</summary>
   </entry>
   <entry>
-    <title type="html">PDF Sıkıştırıcı</title>
-    <id>https://abox.tools/tr/pdf-sikistirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-sikistirma/"/>
+    <title type="html">PDF Karartıcı</title>
+    <id>https://abox.tools/tr/pdf-karartma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-karartma/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir PDF'i yüklemeden küçültün. Dosyayı kendi tarayıcınız okur, yeniden sıkıştırır ve yeniden yazar; araç da hiçbir şeye dokunmadan önce boyutun asıl nerede olduğunu gösterir.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR ve Barkod Üreteci</title>
-    <id>https://abox.tools/tr/qr-kod-olusturma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/qr-kod-olusturma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir bağlantı, bir Wi-Fi ağı ya da bir kartvizit için QR kod üretin; ya da EAN-13, UPC-A, Code 128 veya Code 39 barkodu. SVG ya da PNG olarak indirin. Hepsi tarayıcınızda olur.</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG'den Görsele</title>
-    <id>https://abox.tools/tr/svg-yi-pnge-donusturme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/svg-yi-pnge-donusturme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir SVG'yi tarayıcınızda istediğiniz boyutta PNG, JPEG ya da WebP'ye dönüştürün. Genişliği, bir çarpanı ya da bir kutuyu söyleyin; @2x ve @3x kopyalarını da alın. Saydamlık korunur, hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ses Düzenleyici</title>
-    <id>https://abox.tools/tr/ses-duzenleme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-duzenleme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir parçayı geriye oynatın, hızlandırın ya da yavaşlatın ve sessiz bir kaydı daha yüksek yapın. Bir videonun sesini de çıkarır. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ses Kesici</title>
-    <id>https://abox.tools/tr/ses-kesme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-kesme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir kaydı oynatın, geçerken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Örnek hassasiyetinde kesimler, birleşme yerlerinde tıklama yok, hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Time-Lapse Yapıcı</title>
-    <id>https://abox.tools/tr/time-lapse-video-olusturma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/time-lapse-video-olusturma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Uzun bir videoyu time-lapse'e çevirin: 10 kat, 60 kat ya da yazdığınız herhangi bir hız. Tarayıcınızda çalışır, yani hiçbir şey yüklenmez, filigran yoktur ve çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Vesikalık Fotoğraf Yapıcı</title>
-    <id>https://abox.tools/tr/biyometrik-vesikalik-fotograf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/biyometrik-vesikalik-fotograf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ülkenizin yayımlanmış kuralına uygun bir pasaport ya da vize fotoğrafı yapın: tam mm ve DPI, canlı kafa yüksekliği ve göz hattı yerleşimi, arka plan denetimi, basılabilir 4x6 sayfa ve portalın KB sınırına sığdırılmış bir dosya. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Video Kare Yakalayıcı</title>
-    <id>https://abox.tools/tr/videodan-kare-yakalama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/videodan-kare-yakalama/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir MP4, MOV veya WebM'in herhangi bir karesini tam boyutlu PNG ya da JPEG olarak kaydedin. Kare kare ilerleyin ya da birkaç saniyede bir alın. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Video Kesici</title>
-    <id>https://abox.tools/tr/video-kesme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/video-kesme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir videoyu izleyin, oynarken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Tarayıcınızda çalışır: hiçbir şey yüklenmez, hiçbir şey yeniden kodlanmaz, çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Video Kırpıcı</title>
-    <id>https://abox.tools/tr/video-kirpma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/video-kirpma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir MP4, MOV veya WebM'i istediğiniz şekle kırpın: kare, 9:16 ya da tam piksel kutusu. Tarayıcınızda çalışır: hiçbir şey yüklenmez, ses korunur, çevrimdışı da çalışır.</summary>
+    <summary type="html">Bir PDF'ten kelimeleri, üzerlerine siyah dikdörtgen çizmek yerine çıkarın. Harfler sayfanın kendi çizim talimatlarından silinir, bitmiş dosya yeniden açılıp gittiklerini kanıtlamak için aranır ve hiçbir şey yüklenmez.</summary>
   </entry>
 </feed>

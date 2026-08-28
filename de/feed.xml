@@ -46,6 +46,13 @@
     <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
   </entry>
   <entry>
+    <title type="html">Aus Bildern ein animiertes GIF machen</title>
+    <id>https://abox.tools/de/ratgeber/aus-bildern-ein-gif-machen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/aus-bildern-ein-gif-machen/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Aus einer Reihe Bilder ein animiertes GIF: wie schnell ein GIF wirklich laufen kann, was die Paletteneinstellung ändert, und die drei Dinge, die die Datei tatsächlich kleiner machen.</summary>
+  </entry>
+  <entry>
     <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
     <id>https://abox.tools/de/base64-kodieren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
@@ -109,6 +116,13 @@
     <summary type="html">JPEG-, PNG- und WebP-Bilder im Browser skalieren, zuschneiden und umwandeln. Exakte Pixel, ein Prozentwert oder die lange Kante, für ein Bild oder einen ganzen Ordner. Nichts wird hochgeladen.</summary>
   </entry>
   <entry>
+    <title type="html">DICOM-Viewer</title>
+    <id>https://abox.tools/de/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/dicom-viewer/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Öffnen Sie CT-, MRT-, Röntgen- und Ultraschallaufnahmen im Browser. Fenster und Zentrum, eine ganze Serie durchblättern, in Millimetern messen, jeden DICOM-Tag lesen und genau sehen, was in der Datei die Patientin oder den Patienten benennt. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
     <title type="html">Dokumentenscanner</title>
     <id>https://abox.tools/de/dokumente-scannen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/dokumente-scannen/"/>
@@ -121,6 +135,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/exif-daten-entfernen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Die EXIF- und GPS-Daten in einem Foto sehen, bearbeiten oder mit einem Klick vollständig entfernen. Im Browser: kein Upload, und das Bild wird nie neu kodiert.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ein GIF in Einzelbilder zerlegen</title>
+    <id>https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Jedes Bild eines animierten GIFs als PNG: warum manche Bilder nur ein kleiner Ausschnitt sind, was mit der Transparenz passiert und wie Sie die Zeiten behalten, um die Animation wieder zusammenzusetzen.</summary>
   </entry>
   <entry>
     <title type="html">GIF-Analyse</title>
@@ -158,6 +179,13 @@
     <summary type="html">Die MD5-, SHA-1-, SHA-256-, SHA-384- oder SHA-512-Prüfsumme einer beliebigen Datei berechnen und mit der Angabe der Downloadseite vergleichen. Die Datei wird im Browser gelesen und nie hochgeladen, in jeder Größe.</summary>
   </entry>
   <entry>
+    <title type="html">JSON formatieren, ohne es jemandem zu geben</title>
+    <id>https://abox.tools/de/ratgeber/json-formatieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/json-formatieren/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">JSON im eigenen Browser einrücken, prüfen und minifizieren: was ein Formatierer an Ihrer Datei niemals ändern darf, wie Sie die Fehlermeldung lesen, und warum es zählt, in welches Feld Sie das einfügen.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON-Formatierer</title>
     <id>https://abox.tools/de/json-formatieren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
@@ -170,6 +198,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-verkleinern/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Ein PDF verkleinern, ohne es hochzuladen. Ihr eigener Browser liest die Datei, komprimiert sie neu und schreibt sie neu, und vorher zeigt Ihnen das Werkzeug, wo die Größe tatsächlich steckt.</summary>
+  </entry>
+  <entry>
+    <title type="html">PDF-Schwärzer</title>
+    <id>https://abox.tools/de/pdf-schwaerzen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/pdf-schwaerzen/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Wörter aus einem PDF entfernen, statt ein schwarzes Rechteck darüber zu legen. Die Buchstaben werden aus den Zeichenanweisungen der Seite gelöscht, die fertige Datei wird erneut geöffnet und durchsucht, um zu belegen, dass sie weg sind, und nichts wird hochgeladen.</summary>
   </entry>
   <entry>
     <title type="html">PDF-Zusammenfügen &amp; Teilen</title>
@@ -200,45 +235,10 @@
     <summary type="html">Einen QR-Code für einen Link, ein WLAN oder eine Kontaktkarte erzeugen, oder einen EAN-13-, UPC-A-, Code-128- oder Code-39-Barcode. Als SVG oder PNG herunterladen. Alles passiert in Ihrem Browser.</summary>
   </entry>
   <entry>
-    <title type="html">SVG zu Bild</title>
-    <id>https://abox.tools/de/svg-in-png-umwandeln/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/svg-in-png-umwandeln/"/>
+    <title type="html">QR- &amp; Barcode-Scanner</title>
+    <id>https://abox.tools/de/qr-code-scannen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/qr-code-scannen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ein SVG im Browser in beliebiger Größe in ein PNG, JPEG oder WebP umwandeln. Nennen Sie die Breite, einen Faktor oder einen Rahmen; @2x- und @3x-Kopien gibt es dazu. Transparenz bleibt, nichts wird hochgeladen.</summary>
-  </entry>
-  <entry>
-    <title type="html">So teilen Sie Text und Dateien zwischen Geräten, ohne sie hochzuladen</title>
-    <id>https://abox.tools/de/ratgeber/text-zwischen-geraeten-teilen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/text-zwischen-geraeten-teilen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen bringen - ohne Mail an sich selbst, ohne Chatverlauf, ohne Konto, und ohne dass ein Server eine Kopie behält.</summary>
-  </entry>
-  <entry>
-    <title type="html">Standbild-Greifer</title>
-    <id>https://abox.tools/de/standbild-aus-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/standbild-aus-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Jedes Einzelbild eines MP4, MOV oder WebM in voller Größe als PNG oder JPEG speichern. Bild für Bild vorrücken oder alle paar Sekunden eines nehmen. Läuft im Browser, es wird nichts hochgeladen.</summary>
-  </entry>
-  <entry>
-    <title type="html">Text &amp; Dateien teilen</title>
-    <id>https://abox.tools/de/text-teilen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/text-teilen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Text oder Dateien über eine direkte, verschlüsselte Verbindung von einem Browser in einen anderen schicken. Ein aussprechbarer Link-Name, Live-Aktualisierung beim Tippen, Freigabe pro Leser - und niemals etwas auf einem Server. Kostenlos, ohne Anmeldung.</summary>
-  </entry>
-  <entry>
-    <title type="html">Textvergleich</title>
-    <id>https://abox.tools/de/text-vergleichen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/text-vergleichen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Zwei Texte vergleichen und jeden Unterschied sehen, Zeile für Zeile und Wort für Wort, nebeneinander oder in einer Spalte. Der Vergleich läuft in Ihrem Browser, hochgeladen wird nichts - unveröffentlichter Code verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
-    <title type="html">Video zu GIF</title>
-    <id>https://abox.tools/de/video-in-gif-umwandeln/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/video-in-gif-umwandeln/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Einen Teil eines MP4, MOV oder WebM in ein animiertes GIF verwandeln. Wählen Sie Abschnitt, Breite und Bildrate; die Einzelbilder werden in Ihrem Browser gelesen und das GIF dort geschrieben. Kein Upload.</summary>
+    <summary type="html">Einen QR-Code aus einem Foto, einem Screenshot oder mit der Kamera scannen und sehen, wohin der Link wirklich führt, bevor Sie ihn öffnen. Auch EAN, UPC, Code 128, Code 39 und ITF. Nichts wird hochgeladen.</summary>
   </entry>
 </feed>

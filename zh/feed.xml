@@ -39,6 +39,13 @@
     <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
   </entry>
   <entry>
+    <title type="html">DICOM 阅片器</title>
+    <id>https://abox.tools/zh/dicom-viewer/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/dicom-viewer/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在浏览器里打开 CT、MR、X 光和超声影像。调窗宽窗位，翻整套序列，按毫米测量，读遍每一个 DICOM 标签，还能看清这个文件里究竟什么在指认病人。什么都不会上传。</summary>
+  </entry>
+  <entry>
     <title type="html">EXIF 查看与清除</title>
     <id>https://abox.tools/zh/exif-editor/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/exif-editor/"/>
@@ -95,6 +102,13 @@
     <summary type="html">把多个 PDF 合到一起，把一个拆成好几个，把页面拖成你要的顺序，全都在你自己的浏览器里完成。什么都不上传，不用注册，成品文件在交给你之前还会被重新打开、重新数一遍页数。</summary>
   </entry>
   <entry>
+    <title type="html">PDF 涂黑</title>
+    <id>https://abox.tools/zh/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">把字从 PDF 里拿掉，而不是在上面画个黑块。字是从绘制这一页的指令里删掉的，做好的文件会被重新打开搜一遍，证明它们真的没了，而且什么都不会上传。</summary>
+  </entry>
+  <entry>
     <title type="html">SVG 转图片</title>
     <id>https://abox.tools/zh/svg-to-image/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/svg-to-image/"/>
@@ -107,6 +121,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">生成链接、Wi-Fi 或者名片二维码，也生成 EAN-13、UPC-A、Code 128 和 Code 39 条形码。可下载 SVG 或 PNG。全部在你的浏览器里完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">二维码与条形码识读</title>
+    <id>https://abox.tools/zh/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode-reader/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">从照片、截图或摄像头读取二维码，在打开之前就看清这个链接到底通向哪里。EAN、UPC、Code 128、Code 39 和 ITF 条形码也能读。什么都不上传。</summary>
+  </entry>
+  <entry>
+    <title type="html">什么时候该把图片塞进 CSS，什么时候不该</title>
+    <id>https://abox.tools/zh/guides/embed-an-image-in-css/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/embed-an-image-in-css/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">data URI 的代价在哪儿，base64 为什么多出三分之一而 gzip 又还不回来，SVG 为什么绝不该用 base64，以及那个只坑内联 SVG、还一声不吭的引号问题。</summary>
   </entry>
   <entry>
     <title type="html">哈希与校验和</title>
@@ -193,52 +221,24 @@
     <summary type="html">把长视频做成延时摄影，10 倍、60 倍，或者你自己填的倍数。在浏览器里跑，不上传，没有水印，断网也能用。</summary>
   </entry>
   <entry>
-    <title type="html">文本与文件分享</title>
-    <id>https://abox.tools/zh/share-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/share-text/"/>
+    <title type="html">怎么不把 JSON 交给任何人也能格式化</title>
+    <id>https://abox.tools/zh/guides/format-json-without-uploading-it/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/format-json-without-uploading-it/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把文本或文件经由直连加密通道从一个浏览器送到另一个。链接名说得出口，边打字边实时同步，逐个批准读者——任何服务器上永远不存任何东西。免费，无需注册。</summary>
+    <summary type="html">在自己的浏览器里排版、检查和压缩 JSON：一个格式化工具绝不该改动你文件的哪些地方、错误信息该怎么读，以及你把东西粘进哪个框里为什么要紧。</summary>
   </entry>
   <entry>
-    <title type="html">文本比对</title>
-    <id>https://abox.tools/zh/compare-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compare-text/"/>
+    <title type="html">怎么从正好那一帧做视频封面图</title>
+    <id>https://abox.tools/zh/guides/make-a-video-thumbnail/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-video-thumbnail/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">比对两段文本，逐行、逐词看清每一处差异，并排或单列显示。比对在你的浏览器里跑，什么都不上传——尚未发布的代码从不离开你的机器。</summary>
+    <summary type="html">逐帧走到正确的瞬间，无损保存，裁成平台的形状，压到字节上限的正下方。三个浏览器工具接力，素材从不离开你的电脑。</summary>
   </entry>
   <entry>
-    <title type="html">文档扫描</title>
-    <id>https://abox.tools/zh/document-scanner/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/document-scanner/"/>
+    <title type="html">怎么做一个二维码，并证明它扫得出来</title>
+    <id>https://abox.tools/zh/guides/make-a-qr-code-and-prove-it-scans/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-qr-code-and-prove-it-scans/"/>
     <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把手机拍的纸张照片变成一份摆正、亮度均匀的 PDF。四个角替你找好，透视给你掰正，阴影除掉。全部在你的浏览器里跑，什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">视频倒放</title>
-    <id>https://abox.tools/zh/reverse-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/reverse-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 MP4、MOV 或 WebM 反过来放，声音也一并倒过来。全在浏览器里跑：什么都不上传，没有水印，断网照样能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">视频剪切</title>
-    <id>https://abox.tools/zh/trim-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">一边看一边把值得留的段落标出来，然后把这些段落存成一个文件。在浏览器里跑，不上传，不重新编码，断网也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">视频截帧</title>
-    <id>https://abox.tools/zh/grab-frame/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/grab-frame/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 MP4、MOV 或 WebM 的任意一帧存成原尺寸 PNG 或 JPEG。可以一帧一帧地挪，也可以每隔几秒截一张。全在浏览器里跑，什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">视频裁剪</title>
-    <id>https://abox.tools/zh/crop-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/crop-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 MP4、MOV 或 WebM 裁成任意形状，方图、9:16 竖屏，或者精确到像素的一个框。在浏览器里跑，不上传，声音留着，断网也能用。</summary>
+    <summary type="html">生成二维码，再用同一个网站的识别器验证：一字不差的内容、真正的链接，按印刷尺寸、用一张照片，在批量印刷之前。全在浏览器里，什么都不上传。</summary>
   </entry>
 </feed>
