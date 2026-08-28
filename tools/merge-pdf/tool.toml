@@ -20,6 +20,10 @@ category = "documents-and-audio"
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "documents"
 
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works.
+css_parts = ["progress"]
+
 js_parts = ["file-picker"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of

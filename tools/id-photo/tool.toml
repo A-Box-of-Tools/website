@@ -19,6 +19,10 @@ category = "images"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "images"
 
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar this tool draws while it works.
+css_parts = ["progress"]
+
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker"]
 lastmod = "2026-08-27"

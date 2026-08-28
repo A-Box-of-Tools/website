@@ -52,7 +52,7 @@ const el = {
 
   run: $('run'),
   cancel: $('cancel'),
-  progressWrap: $('progress-wrap'),
+  progress: $('progress'),
   progressBar: $('progress-bar'),
   progressLabel: $('progress-label'),
   error: $('error'),
@@ -444,7 +444,7 @@ function start() {
   el.error.hidden = true;
   el.result.hidden = true;
   el.cancel.hidden = false;
-  el.progressWrap.hidden = false;
+  el.progress.hidden = false;
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = '';
   render();
@@ -568,7 +568,7 @@ function movesNote(moves) {
 function finishRun() {
   busy = false;
   el.cancel.hidden = true;
-  el.progressWrap.hidden = true;
+  el.progress.hidden = true;
   render();
 }
 

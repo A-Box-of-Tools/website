@@ -16,7 +16,7 @@ const el = {
   runCard: $('run-card'),
   progress: $('progress'),
   progressTrack: $('progress-track'),
-  progressFill: $('progress-fill'),
+  progressBar: $('progress-bar'),
   progressText: $('progress-text'),
   stop: $('stop'),
 
@@ -178,7 +178,7 @@ el.restart.addEventListener('click', () => start(outstanding()));
 
 function showProgress(done, total, speed) {
   const fraction = total ? done / total : 1;
-  el.progressFill.style.width = `${Math.min(100, fraction * 100)}%`;
+  el.progressBar.style.width = `${Math.min(100, fraction * 100)}%`;
   el.progressTrack.setAttribute('aria-valuenow', String(Math.round(fraction * 100)));
 
   const parts = [percent(fraction)];
