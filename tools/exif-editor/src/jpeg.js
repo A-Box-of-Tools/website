@@ -53,14 +53,14 @@ function bytesOf(text) {
  */
 export function read(bytes) {
   if (bytes.length < 4 || bytes[0] !== 0xff || bytes[1] !== SOI) {
-    return { ok: false, kind: 'jpeg', error: 'This does not start like a JPEG.' };
+    return { ok: false, kind: 'jpeg', error: 'read.notjpeg' };
   }
 
   const segments = [];
   let i = 2;
 
   while (i < bytes.length) {
-    if (bytes[i] !== 0xff) return { ok: false, kind: 'jpeg', error: 'Lost the segment structure - the file looks damaged.' };
+    if (bytes[i] !== 0xff) return { ok: false, kind: 'jpeg', error: 'read.jpeglost' };
 
     // Any number of 0xFF bytes may pad the gap before a marker.
     let marker = bytes[i + 1];
@@ -73,7 +73,7 @@ export function read(bytes) {
     if (i + 4 > bytes.length) break;
     const length = (bytes[i + 2] << 8) | bytes[i + 3];
     if (length < 2 || i + 2 + length > bytes.length) {
-      return { ok: false, kind: 'jpeg', error: 'A segment claims a length that runs off the end of the file.' };
+      return { ok: false, kind: 'jpeg', error: 'read.jpegoverrun' };
     }
 
     // Everything from the start-of-scan marker onwards is the picture. It is
@@ -84,7 +84,7 @@ export function read(bytes) {
     i += 2 + length;
   }
 
-  return { ok: false, kind: 'jpeg', error: 'The file ended before the image data started.' };
+  return { ok: false, kind: 'jpeg', error: 'read.jpegnoscan' };
 }
 
 /** Reassemble a JPEG from its segments and its untouched scan. */
@@ -185,14 +185,16 @@ export function collect(doc) {
     } else if (role === 'other') {
       meta.extras.push({ label: labelFor(segment), size: payload.length });
     } else if (role === 'jfif') {
+      // Both halves are keys: main.js resolves them against #phrases, because
+      // this module is copied into fifteen languages unchanged.
       meta.notes.push({
-        label: 'JFIF header',
-        detail: 'The five-byte block that says a JPEG is a JPEG, plus the print resolution. Kept: it says nothing about you, and some older software will not open a file without it.',
+        label: 'segment.jfif.label',
+        detail: 'segment.jfif.detail',
       });
     } else if (role === 'adobe') {
       meta.notes.push({
-        label: 'Adobe colour marker',
-        detail: 'Records which colour transform the encoder used. Kept, because removing it turns some files inside out colour-wise.',
+        label: 'segment.adobe.label',
+        detail: 'segment.adobe.detail',
       });
     }
   }
@@ -217,9 +219,11 @@ function segmentWithId(marker, id, body) {
   payload.set(head);
   payload.set(body, head.length);
   if (payload.length > MAX_PAYLOAD) {
-    throw new Error(
-      `That metadata block is ${payload.length} bytes and a JPEG segment holds ${MAX_PAYLOAD}. Remove the thumbnail or the maker note and try again.`,
-    );
+    // The key of a sentence and its numbers: this module is copied into
+    // fifteen languages and cannot reach the markup the words live in.
+    const error = new Error('write.segmentfull');
+    error.values = { size: payload.length, limit: MAX_PAYLOAD };
+    throw error;
   }
   return { marker, payload };
 }

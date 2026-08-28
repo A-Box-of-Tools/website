@@ -29,25 +29,25 @@ const STRIP_ALL = { exif: null, xmp: null, iptc: null, icc: null, comments: null
 
 test('jpeg: a file that does not start like one', () => {
   assert.equal(jpeg.read(ascii('nope')).ok, false);
-  assert.match(jpeg.read(ascii('nope')).error, /does not start like a JPEG/);
+  assert.equal(jpeg.read(ascii('nope')).error, 'read.notjpeg');
 });
 
 test('jpeg: a file with no scan in it', () => {
   const parsed = jpeg.read(new Uint8Array([0xff, 0xd8, 0xff, 0xd9]));
   assert.equal(parsed.ok, false);
-  assert.match(parsed.error, /ended before the image data/);
+  assert.equal(parsed.error, 'read.jpegnoscan');
 });
 
 test('jpeg: a segment claiming a length past the end of the file', () => {
   const bytes = concat([0xff, 0xd8], [0xff, 0xe1], [0xff, 0xff], ascii('short'));
   const parsed = jpeg.read(bytes);
   assert.equal(parsed.ok, false);
-  assert.match(parsed.error, /runs off the end/);
+  assert.equal(parsed.error, 'read.jpegoverrun');
 });
 
 test('jpeg: lost segment structure is reported', () => {
   const bytes = concat([0xff, 0xd8], ascii('not a marker'));
-  assert.match(jpeg.read(bytes).error, /segment structure/);
+  assert.equal(jpeg.read(bytes).error, 'read.jpeglost');
 });
 
 test('jpeg: read then write is byte-for-byte', () => {
@@ -100,7 +100,7 @@ test('jpeg: jfif and the adobe marker are reported as deliberately kept', () => 
   const adobe = segment(0xee, ascii('Adobe\0something'));
   const meta = jpeg.collect(jpeg.read(makeJpeg([JFIF_SEGMENT, adobe])));
   assert.deepEqual(meta.notes.map((n) => n.label),
-    ['JFIF header', 'Adobe colour marker']);
+    ['segment.jfif.label', 'segment.adobe.label']);
   assert.equal(meta.extras.length, 0);
 });
 
@@ -169,9 +169,11 @@ test('jpeg: a new exif block is written into an APP1 segment', () => {
 
 test('jpeg: metadata too large for one segment is refused with advice', () => {
   const doc = jpeg.read(makeJpeg([]));
+  // The key and the two numbers the sentence needs; the advice itself lives in
+  // body.html, in fifteen languages.
   assert.throws(
     () => jpeg.apply(doc, { exif: new Uint8Array(70000) }),
-    /thumbnail|maker note/,
+    (error) => error.message === 'write.segmentfull' && error.values.size > 70000,
   );
 });
 
@@ -180,17 +182,17 @@ test('jpeg: metadata too large for one segment is refused with advice', () => {
 test('png: a file that does not start like one', async () => {
   const parsed = await png.read(ascii('not a png at all'));
   assert.equal(parsed.ok, false);
-  assert.match(parsed.error, /does not start like a PNG/);
+  assert.equal(parsed.error, 'read.notpng');
 });
 
 test('png: a chunk claiming a length past the end of the file', async () => {
   const bad = concat(PNG_SIGNATURE, [0xff, 0xff, 0xff, 0xff], ascii('IHDR'), ascii('xx'));
-  assert.match((await png.read(bad)).error, /runs off the end/);
+  assert.equal((await png.read(bad)).error, 'read.pngoverrun');
 });
 
 test('png: a file whose first chunk is not IHDR', async () => {
   const bad = concat(PNG_SIGNATURE, textChunk('a', 'b'));
-  assert.match((await png.read(bad)).error, /header chunk is missing/);
+  assert.equal((await png.read(bad)).error, 'read.pngnoheader');
 });
 
 test('png: read then write recomputes every CRC and matches', async () => {
@@ -311,14 +313,14 @@ test('png: a keyword longer than the format allows is truncated', async () => {
 /* ================================================================== WebP */
 
 test('webp: a file that does not start like one', () => {
-  assert.match(webp.read(ascii('RIFFxxxxNOPExxxx')).error, /does not start like a WebP/);
-  assert.match(webp.read(ascii('short')).error, /does not start like a WebP/);
+  assert.equal(webp.read(ascii('RIFFxxxxNOPExxxx')).error, 'read.notwebp');
+  assert.equal(webp.read(ascii('short')).error, 'read.notwebp');
 });
 
 test('webp: a chunk claiming a size past the end of the file', () => {
   const bytes = concat(ascii('RIFF'), new Uint8Array([20, 0, 0, 0]), ascii('WEBP'),
     ascii('VP8 '), new Uint8Array([0xff, 0xff, 0, 0]), ascii('xx'));
-  assert.match(webp.read(bytes).error, /runs off the end/);
+  assert.equal(webp.read(bytes).error, 'read.webpoverrun');
 });
 
 test('webp: read then write is byte-for-byte', () => {
@@ -430,7 +432,8 @@ test('webp: a plain file gains a VP8X header when metadata is added', () => {
 
 test('webp: adding metadata without a known size is refused', () => {
   const doc = webp.read(makeWebp([VP8_CHUNK]));
-  assert.throws(() => webp.apply(doc, { exif: ascii('TIFF') }), /size could not be read/);
+  assert.throws(() => webp.apply(doc, { exif: ascii('TIFF') }),
+                (error) => error.message === 'write.webpnosize');
 });
 
 test('webp: chunks come out in the order the specification asks for', () => {

@@ -143,6 +143,32 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">これはJPEGの始まり方をしていません。</span>
+    <span data-phrase="read.jpeglost">セグメントの並びが途切れました。ファイルが壊れているようです。</span>
+    <span data-phrase="read.jpegoverrun">あるセグメントが、ファイルの終わりを越える長さを名乗っています。</span>
+    <span data-phrase="read.jpegnoscan">画像データが始まる前にファイルが終わりました。</span>
+    <span data-phrase="read.notpng">これはPNGの始まり方をしていません。</span>
+    <span data-phrase="read.pngoverrun">あるチャンクが、ファイルの終わりを越える長さを名乗っています。</span>
+    <span data-phrase="read.pngnoheader">ヘッダーチャンクがありません。</span>
+    <span data-phrase="read.notwebp">これはWebPの始まり方をしていません。</span>
+    <span data-phrase="read.webpoverrun">あるチャンクが、ファイルの終わりを越える大きさを名乗っています。</span>
+    <span data-phrase="read.webpnochunks">このファイルにはチャンクが1つもありません。</span>
+    <span data-phrase="read.exifshort">このブロックはEXIFにしては短すぎます。</span>
+    <span data-phrase="read.exifnobom">バイト順の印がありません。TIFFブロックではありません。</span>
+    <span data-phrase="read.exifmagic">TIFFのマジックナンバーが違います。</span>
+    <span data-phrase="read.exifoffset">最初のディレクトリの位置がブロックの外を指しています。</span>
+    <span data-phrase="refuse.heic">HEICは入れ子のボックスでできた形式で、安全に書き直すには、ここにある3つとは別のパーサーが要ります。まずJPEGに変換してください。このサイトのHEIC→JPG変換ツールがそれをしますし、ついでにメタデータを置いてくることもできます。</span>
+    <span data-phrase="refuse.avif">AVIFもHEICと同じボックス形式です。事情は同じで、書き直すにはこの道具がまだ持っていないパーサーが要ります。</span>
+    <span data-phrase="refuse.gif">GIFにはEXIFの代わりにコメントブロックとアプリケーションブロックがあり、個人的なものを抱えていることはまずありません。ここでは扱いません。</span>
+    <span data-phrase="refuse.tiff">裸のTIFFは、全体がメタデータであり、同時に全体が画像です。しかも画素は、この道具が動かすことになるまさにその位置で指されています。それを編集するのは、写真を編集するのとは別の仕事です。</span>
+    <span data-phrase="refuse.unknown">これはJPEGにもPNGにもWebPにも見えません。</span>
+    <span data-phrase="refuse.unwritable">この形式は書き出せません。</span>
+    <span data-phrase="segment.jfif.label">JFIFヘッダー</span>
+    <span data-phrase="segment.jfif.detail">JPEGがJPEGであることを示す5バイトのブロックと、印刷解像度です。残します。あなたについては何も語りませんし、古いソフトの中にはこれがないファイルを開けないものがあります。</span>
+    <span data-phrase="segment.adobe.label">Adobeのカラーマーカー</span>
+    <span data-phrase="segment.adobe.detail">エンコーダーがどの色変換を使ったかを記録しています。外すと色が裏返るファイルがあるので、残します。</span>
+    <span data-phrase="write.segmentfull">そのメタデータブロックは{size}バイトで、JPEGのセグメントに入るのは{limit}バイトまでです。サムネイルかメーカーノートを外して、もう一度試してください。</span>
+    <span data-phrase="write.webpnosize">このWebPには拡張ヘッダーがなく、大きさも読み取れなかったので、メタデータを足せません。</span>
     <span data-phrase="net.clean">写真はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
     <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、ファイルもタグも渡っていません。</span>

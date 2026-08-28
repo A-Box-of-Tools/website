@@ -115,17 +115,17 @@ function trimNulPairs(bytes) {
  *            groups?: Record<string, Entry[]>, thumbnail?: Uint8Array|null}}
  */
 export function parseExif(bytes) {
-  if (!bytes || bytes.length < 8) return { ok: false, error: 'The block is too short to be EXIF.' };
+  if (!bytes || bytes.length < 8) return { ok: false, error: 'read.exifshort' };
 
   const mark = String.fromCharCode(bytes[0], bytes[1]);
   if (mark !== 'II' && mark !== 'MM') {
-    return { ok: false, error: 'No byte-order mark - this is not a TIFF block.' };
+    return { ok: false, error: 'read.exifnobom' };
   }
   const littleEndian = mark === 'II';
   const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
 
   if (view.getUint16(2, littleEndian) !== 42) {
-    return { ok: false, error: 'The TIFF magic number is wrong.' };
+    return { ok: false, error: 'read.exifmagic' };
   }
 
   const groups = { ifd0: [], exif: [], gps: [], interop: [], ifd1: [] };
@@ -188,7 +188,7 @@ export function parseExif(bytes) {
   // different claim from "this block is unreadable" - the caller needs the
   // second one, because it is the one worth telling a person about.
   if (nextOffset === -1 && groups.ifd0.length === 0) {
-    return { ok: false, error: 'The first directory offset points outside the block.' };
+    return { ok: false, error: 'read.exifoffset' };
   }
 
   if (nextOffset > 0) readIfd(nextOffset, 'ifd1');

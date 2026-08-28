@@ -152,6 +152,41 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">هذا لا يبدأ بداية ملف JPEG.</span>
+    <span data-phrase="read.jpeglost">ضاع بناء المقاطع &mdash; ويبدو الملف تالفاً.</span>
+    <span data-phrase="read.jpegoverrun">مقطعٌ يدّعي طولاً يتجاوز نهاية الملف.</span>
+    <span data-phrase="read.jpegnoscan">انتهى الملف قبل أن تبدأ بيانات الصورة.</span>
+    <span data-phrase="read.notpng">هذا لا يبدأ بداية ملف PNG.</span>
+    <span data-phrase="read.pngoverrun">كتلةٌ تدّعي طولاً يتجاوز نهاية الملف.</span>
+    <span data-phrase="read.pngnoheader">كتلة الترويسة غائبة.</span>
+    <span data-phrase="read.notwebp">هذا لا يبدأ بداية ملف WebP.</span>
+    <span data-phrase="read.webpoverrun">كتلةٌ تدّعي حجماً يتجاوز نهاية الملف.</span>
+    <span data-phrase="read.webpnochunks">لا كتل في هذا الملف أصلاً.</span>
+    <span data-phrase="read.exifshort">الكتلة أقصر من أن تكون EXIF.</span>
+    <span data-phrase="read.exifnobom">لا علامة لترتيب البايتات &mdash; فهذه ليست كتلة TIFF.</span>
+    <span data-phrase="read.exifmagic">الرقم السحري لـ TIFF خطأ.</span>
+    <span data-phrase="read.exifoffset">إزاحة الفهرس الأول تشير إلى خارج الكتلة.</span>
+    <span data-phrase="refuse.heic">صيغة HEIC مبنيّة على صناديق متداخلة، وإعادة كتابة واحدٍ منها بأمان تحتاج محلِّلاً
+      غير الثلاثة الموجودة هنا. حوِّلها أولاً إلى JPEG &mdash; فأداة HEIC إلى JPG في هذا
+      الموقع تفعل ذلك، وقد تترك البيانات الوصفية خلفها في الطريق.</span>
+    <span data-phrase="refuse.avif">تستعمل AVIF صيغة الصناديق نفسها التي تستعملها HEIC، والحكم واحد: إعادة كتابة واحدٍ
+      منها تحتاج محلِّلاً لا تملكه هذه الأداة بعد.</span>
+    <span data-phrase="refuse.gif">في GIF كتل تعليق وكتل تطبيقات بدل EXIF، وهي لا تحمل شيئاً شخصياً إلا نادراً. ولا
+      تُعالَج هنا.</span>
+    <span data-phrase="refuse.tiff">ملف TIFF المجرَّد بياناتٌ وصفية كلُّه وصورةٌ كلُّه في آنٍ واحد، وبكسلاته معنونةٌ
+      بالإزاحات نفسها التي على هذه الأداة أن تحرّكها. وتحريره صنعةٌ غير صنعة تحرير الصورة.</span>
+    <span data-phrase="refuse.unknown">هذا لا يبدو JPEG ولا PNG ولا WebP.</span>
+    <span data-phrase="refuse.unwritable">هذه الصيغة لا تُكتَب.</span>
+    <span data-phrase="segment.jfif.label">ترويسة JFIF</span>
+    <span data-phrase="segment.jfif.detail">الكتلة ذات البايتات الخمسة التي تقول إن الـ JPEG هو JPEG، ومعها دقّة الطباعة. يُبقى
+      عليها: فهي لا تقول عنك شيئاً، وبعض البرامج القديمة لا تفتح ملفاً خالياً منها.</span>
+    <span data-phrase="segment.adobe.label">علامة ألوان Adobe</span>
+    <span data-phrase="segment.adobe.detail">تسجّل أي تحويل لوني استعمله المرمِّز. ويُبقى عليها لأن إسقاطها يقلب ألوان بعض
+      الملفات رأساً على عقب.</span>
+    <span data-phrase="write.segmentfull">كتلة البيانات الوصفية هذه {size} بايت، ومقطع JPEG يسع {limit}. أزِل المصغَّرة أو
+      ملاحظة الصانع ثم أعِد المحاولة.</span>
+    <span data-phrase="write.webpnosize">ملف WebP هذا بلا ترويسة موسَّعة، ولم يمكن قراءة حجمه، فلا سبيل إلى إضافة بيانات
+      وصفية إليه.</span>
     <span data-phrase="net.clean">صورك لم تذهب إلى أي مكان. {total} ملفاً
       حُمِّلت، كلها ملفات هذه الصفحة نفسها. {platform}</span>
     <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه

@@ -102,7 +102,9 @@ async function addFiles(files) {
       try {
         item = await readImage(file);
       } catch (error) {
-        failures.push(`${file.name}: ${error.message}`);
+        // The readers name their refusal; phrase() returns a key it does not
+        // know unchanged, so a real message from the platform still shows.
+        failures.push(`${file.name}: ${phrase(error.message, error.values)}`);
         continue;
       }
 
@@ -147,7 +149,7 @@ async function addFiles(files) {
       }
 
       items.push(item);
-      if (!item.ok) failures.push(`${file.name}: ${item.error}`);
+      if (!item.ok) failures.push(`${file.name}: ${phrase(item.error, item.values)}`);
     }
   } finally {
     picker.done();
@@ -539,10 +541,11 @@ function renderBlocks(item) {
     const text = document.createElement('div');
     const title = document.createElement('p');
     title.className = 'block-title';
-    title.textContent = note.label;
+    // The readers name both halves; the sentences live in body.html.
+    title.textContent = phrase(note.label);
     const detail = document.createElement('p');
     detail.className = 'block-detail';
-    detail.textContent = note.detail;
+    detail.textContent = phrase(note.detail);
     text.append(title, detail);
     li.appendChild(text);
     const pill = document.createElement('span');

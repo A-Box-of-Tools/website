@@ -155,6 +155,44 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">इसकी शुरुआत JPEG जैसी नहीं है।</span>
+    <span data-phrase="read.jpeglost">सेगमेंट का ढाँचा टूट गया, फ़ाइल ख़राब लगती है।</span>
+    <span data-phrase="read.jpegoverrun">एक सेगमेंट ऐसी लंबाई बता रहा है जो फ़ाइल के अंत से आगे निकल जाती है।</span>
+    <span data-phrase="read.jpegnoscan">तस्वीर का डेटा शुरू होने से पहले ही फ़ाइल ख़त्म हो गई।</span>
+    <span data-phrase="read.notpng">इसकी शुरुआत PNG जैसी नहीं है।</span>
+    <span data-phrase="read.pngoverrun">एक चंक ऐसी लंबाई बता रहा है जो फ़ाइल के अंत से आगे निकल जाती है।</span>
+    <span data-phrase="read.pngnoheader">हेडर चंक ही नहीं है।</span>
+    <span data-phrase="read.notwebp">इसकी शुरुआत WebP जैसी नहीं है।</span>
+    <span data-phrase="read.webpoverrun">एक चंक ऐसा आकार बता रहा है जो फ़ाइल के अंत से आगे निकल जाता है।</span>
+    <span data-phrase="read.webpnochunks">इस फ़ाइल के भीतर एक भी चंक नहीं है।</span>
+    <span data-phrase="read.exifshort">यह ब्लॉक EXIF होने के लिहाज़ से बहुत छोटा है।</span>
+    <span data-phrase="read.exifnobom">बाइट क्रम का कोई निशान नहीं, यह TIFF ब्लॉक नहीं है।</span>
+    <span data-phrase="read.exifmagic">TIFF का जादुई अंक ग़लत है।</span>
+    <span data-phrase="read.exifoffset">पहली डायरेक्टरी का ऑफ़सेट ब्लॉक से बाहर की ओर इशारा कर रहा है।</span>
+    <span data-phrase="refuse.heic">HEIC एक-दूसरे के भीतर धरे डिब्बों वाला फ़ॉर्मैट है, और उसे सुरक्षित ढंग से दोबारा
+      लिखने के लिए इन तीनों से अलग पार्सर चाहिए। पहले उसे JPEG में बदल लीजिए &mdash; इस
+      साइट का HEIC से JPG वाला औज़ार यही करता है, और रास्ते में मेटाडेटा को पीछे भी छोड़
+      सकता है।</span>
+    <span data-phrase="refuse.avif">AVIF वही डिब्बों वाला फ़ॉर्मैट इस्तेमाल करता है जो HEIC करता है, और बात भी वही है:
+      उसे दोबारा लिखने के लिए वह पार्सर चाहिए जो इस औज़ार के पास अभी नहीं है।</span>
+    <span data-phrase="refuse.gif">GIF में EXIF की जगह टिप्पणी और ऐप्लिकेशन ब्लॉक होते हैं, और उनमें निजी कुछ लगभग कभी
+      नहीं होता। यहाँ इसे नहीं छेड़ा जाता।</span>
+    <span data-phrase="refuse.tiff">नंगा TIFF पूरा का पूरा मेटाडेटा है और साथ ही पूरा का पूरा तस्वीर, और उसके पिक्सल
+      उन्हीं ऑफ़सेट से पते पाते हैं जिन्हें यह औज़ार खिसकाएगा। ऐसी फ़ाइल में फेरबदल करना
+      एक फ़ोटो में फेरबदल करने से अलग कारीगरी है।</span>
+    <span data-phrase="refuse.unknown">यह न JPEG लगती है, न PNG, न WebP।</span>
+    <span data-phrase="refuse.unwritable">यह फ़ॉर्मैट लिखा नहीं जा सकता।</span>
+    <span data-phrase="segment.jfif.label">JFIF हेडर</span>
+    <span data-phrase="segment.jfif.detail">पाँच बाइट का वह ब्लॉक जो बताता है कि JPEG, JPEG है, और साथ में छपाई का रिज़ॉल्यूशन।
+      रहने दिया जाता है: यह आपके बारे में कुछ नहीं कहता, और कुछ पुराने प्रोग्राम इसके बिना
+      फ़ाइल खोलते ही नहीं।</span>
+    <span data-phrase="segment.adobe.label">Adobe का रंग चिह्न</span>
+    <span data-phrase="segment.adobe.detail">यह दर्ज करता है कि एन्कोडर ने कौन-सा रंग रूपांतरण इस्तेमाल किया। रहने दिया जाता है,
+      क्योंकि इसे हटाने पर कुछ फ़ाइलों के रंग उलट जाते हैं।</span>
+    <span data-phrase="write.segmentfull">वह मेटाडेटा ब्लॉक {size} बाइट का है और एक JPEG सेगमेंट में {limit} बाइट ही समाते
+      हैं। थंबनेल या मेकर नोट हटाइए और दोबारा कोशिश कीजिए।</span>
+    <span data-phrase="write.webpnosize">इस WebP में विस्तारित हेडर नहीं है, और इसका आकार पढ़ा नहीं जा सका, इसलिए इसमें
+      मेटाडेटा जोड़ा नहीं जा सकता।</span>
     <span data-phrase="net.clean">आपकी फ़ोटो कहीं नहीं गईं। {total} फ़ाइलें लोड
       हुईं, और वे सब इसी साइट की अपनी हैं। {platform}</span>
     <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल

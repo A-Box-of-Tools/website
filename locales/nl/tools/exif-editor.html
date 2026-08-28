@@ -155,6 +155,44 @@
     a {name} is filled in by the caller.
   -->
   <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.notjpeg">Dit begint niet als een JPEG.</span>
+    <span data-phrase="read.jpeglost">De segmentstructuur is kwijt &mdash; het bestand ziet er beschadigd uit.</span>
+    <span data-phrase="read.jpegoverrun">Een segment claimt een lengte die voorbij het einde van het bestand loopt.</span>
+    <span data-phrase="read.jpegnoscan">Het bestand eindigde voordat de beeldgegevens begonnen.</span>
+    <span data-phrase="read.notpng">Dit begint niet als een PNG.</span>
+    <span data-phrase="read.pngoverrun">Een chunk claimt een lengte die voorbij het einde van het bestand loopt.</span>
+    <span data-phrase="read.pngnoheader">De header-chunk ontbreekt.</span>
+    <span data-phrase="read.notwebp">Dit begint niet als een WebP.</span>
+    <span data-phrase="read.webpoverrun">Een chunk claimt een grootte die voorbij het einde van het bestand loopt.</span>
+    <span data-phrase="read.webpnochunks">Er zitten geen chunks in het bestand.</span>
+    <span data-phrase="read.exifshort">Het blok is te kort om EXIF te zijn.</span>
+    <span data-phrase="read.exifnobom">Geen bytevolgorde-markering &mdash; dit is geen TIFF-blok.</span>
+    <span data-phrase="read.exifmagic">Het TIFF-magische getal klopt niet.</span>
+    <span data-phrase="read.exifoffset">De offset van de eerste directory wijst buiten het blok.</span>
+    <span data-phrase="refuse.heic">HEIC is een boxformaat van geneste atomen, en er een veilig herschrijven vraagt een
+      andere parser dan de drie die hier zitten. Zet het eerst om naar JPEG &mdash; het
+      HEIC-naar-JPG-gereedschap op deze site doet dat, en kan de metadata onderweg
+      weglaten.</span>
+    <span data-phrase="refuse.avif">AVIF gebruikt hetzelfde boxformaat als HEIC, en hetzelfde geldt: er een herschrijven
+      vraagt een parser die dit gereedschap nog niet heeft.</span>
+    <span data-phrase="refuse.gif">GIF heeft commentaar- en toepassingsblokken in plaats van EXIF, en draagt bijna
+      nooit iets persoonlijks. Het wordt hier niet behandeld.</span>
+    <span data-phrase="refuse.tiff">Een kale TIFF is tegelijk helemaal metadata en helemaal beeld, met de pixels
+      geadresseerd door dezelfde offsets die dit gereedschap zou moeten verzetten. Er een
+      bewerken is een ander vak dan een foto bewerken.</span>
+    <span data-phrase="refuse.unknown">Dit lijkt geen JPEG, PNG of WebP.</span>
+    <span data-phrase="refuse.unwritable">Dit formaat kan niet geschreven worden.</span>
+    <span data-phrase="segment.jfif.label">JFIF-header</span>
+    <span data-phrase="segment.jfif.detail">Het blok van vijf bytes dat zegt dat een JPEG een JPEG is, plus de afdrukresolutie.
+      Blijft: het zegt niets over u, en sommige oudere software opent een bestand zonder
+      dat blok niet.</span>
+    <span data-phrase="segment.adobe.label">Adobe-kleurmarkering</span>
+    <span data-phrase="segment.adobe.detail">Legt vast welke kleurtransformatie de encoder gebruikte. Blijft, omdat weghalen
+      sommige bestanden qua kleur binnenstebuiten keert.</span>
+    <span data-phrase="write.segmentfull">Dat metadatablok is {size} bytes en in een JPEG-segment past {limit}. Haal de
+      miniatuur of de fabrikantnotitie eruit en probeer het opnieuw.</span>
+    <span data-phrase="write.webpnosize">Deze WebP heeft geen uitgebreide header, en de grootte ervan kon niet gelezen
+      worden, dus er kan geen metadata aan toegevoegd worden.</span>
     <span data-phrase="net.clean">Je foto's zijn nergens heen gegaan. {total}
       bestanden geladen, allemaal van deze site zelf. {platform}</span>
     <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit

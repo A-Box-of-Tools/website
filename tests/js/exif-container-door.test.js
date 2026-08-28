@@ -91,13 +91,13 @@ test('readBytes: a format that cannot be rewritten explains itself', async () =>
   const item = await readBytes(heic);
   assert.equal(item.ok, false);
   assert.equal(item.kind, 'heic');
-  assert.match(item.error, /Convert it to JPEG/);
+  assert.equal(item.error, 'refuse.heic');
 });
 
 test('readBytes: an unknown format is refused plainly', async () => {
   const item = await readBytes(ascii('this is a text file'));
   assert.equal(item.ok, false);
-  assert.match(item.error, /JPEG, PNG or WebP/);
+  assert.equal(item.error, 'refuse.unknown');
 });
 
 test('readBytes: a damaged file of a known format reports the format error', async () => {
