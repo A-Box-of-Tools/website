@@ -6,11 +6,13 @@
   IndexedDB for the next page. See that file for why nothing in the journey
   touches the network.
 
-  Rendered inert rather than hidden: the row says which tools this one feeds,
-  and that is worth reading before you have handed anything over - it is half
-  of what the page is for. shared/js/file-picker.js takes the attribute off
-  when a file arrives, and handoff.js moves the row under the result once
-  there is one.
+  It used to render inert instead - present but dimmed and unclickable - on the
+  argument that the row says which tools this one feeds, and that is worth
+  reading before you have handed anything over. What that produced was an
+  offer, in a box, under a disabled button, to carry a result that did not
+  exist. A control that cannot do anything yet is better absent than present
+  and greyed, and the tools this one feeds are named in "Also in the box"
+  further down every one of these pages whether or not anything has been made.
 
   Rendered rather than built in JavaScript for the same reason the feedback
   panel is: the lead line is translated in every locale's [ui.tool], and each
@@ -22,7 +24,7 @@
   each name is drawn in CSS, where Arabic can turn it around; written here it
   would point out of the page in the one language that reads the other way.
 -->
-<nav class="handoff" id="handoff" aria-labelledby="handoff-lead" inert>
+<nav class="handoff" id="handoff" aria-labelledby="handoff-lead" hidden>
   <p class="handoff-lead" id="handoff-lead">{{ ui.tool.handoff_lead }}</p>
   <ul class="handoff-targets">
 {% for other in handoff %}    <li>

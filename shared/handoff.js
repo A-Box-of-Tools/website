@@ -41,8 +41,8 @@
  * Like shared/feedback.js beside it, this is a frame script rather than a
  * shared module: no tool imports it, no tool.toml asks for it, and the only
  * markup it touches is its own - templates/partials/handoff.html, rendered
- * hidden on pages that declare targets and moved next to the download link
- * when there is a result to carry.
+ * hidden on pages that declare targets, then moved next to the download link
+ * and revealed when there is a result to carry.
  */
 (function () {
   'use strict';
@@ -194,8 +194,10 @@
     // re-runs this function, which sets it again - a microtask loop that
     // freezes the tab. Writing only on change is what breaks the cycle.
     if (!anchor) {
-      // No result yet. The row stays where the markup put it, saying what this
-      // tool feeds; whether it is still inert is file-picker.js's business.
+      // No result yet, so the row stays hidden. An offer to carry a result
+      // is a false one until there is a result: the strip used to sit under
+      // the last card, greyed, promising to pass on something the page had
+      // not made.
       return;
     }
     // Under the result the download belongs to. A tool laid out in a way this
@@ -207,10 +209,11 @@
     } else if (anchor.parentNode && anchor.nextElementSibling !== nav) {
       anchor.insertAdjacentElement('afterend', nav);
     }
-    if (nav.hidden) nav.hidden = false;
     // A result is the strongest possible sign there is something to carry, so
-    // the row is live from here whatever the picker did.
-    if (nav.hasAttribute('inert')) nav.removeAttribute('inert');
+    // this is the one place the row is revealed. Guarded by a read for the
+    // reason above: the observer watches `hidden`, and writing it unchanged
+    // would re-enter this function forever.
+    if (nav.hidden) nav.hidden = false;
   }
 
   // Tools reveal the link by unhiding it and swapping its href for each new

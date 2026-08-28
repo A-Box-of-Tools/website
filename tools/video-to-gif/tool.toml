@@ -33,7 +33,7 @@ js_parts = ["file-picker"]
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["gif-analyzer", "split-gif"]
-lastmod = "2026-08-27"
+lastmod = "2026-08-28"
 
 # --- what search engines and chat apps are told ------------------------------
 
