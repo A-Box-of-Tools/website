@@ -138,7 +138,8 @@ body = """
       dentro dela para movê-la e qualquer canto para redimensionar. Trave numa
       proporção antes (1:1 para um post quadrado, 9:16 para celular, 16:9 para um
       quadro deitado) ou digite uma caixa exata em pixels nos quatro campos
-      abaixo."""
+      abaixo.
+      Toque o vídeo, ou arraste o controle deslizante abaixo dele, para escolher o quadro sobre o qual você alinha a caixa."""
 
 [[howto]]
 title = "Escolha quanta qualidade gastar."

@@ -35,6 +35,7 @@
     <h2><span class="step">2</span> Tentukan pangkasannya</h2>
 
     <p class="stage-hint">
+      Putar klipnya, atau seret penggeser di bawahnya, untuk memilih bingkai yang dijadikan acuan kotaknya.
       Seret di dalam kotak untuk memindahkannya, atau sudut mana pun untuk
       mengubah ukurannya. Saat kotaknya terfokus, tombol panah menggesernya satu
       piksel sekali tekan, <kbd>Alt</kbd>&nbsp;+&nbsp;panah mengubah ukurannya,
@@ -46,9 +47,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Pratinjau"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Mendekode&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Bergerak melewati klip">
+        <button type="button" id="step-back" class="ghost" title="Bingkai sebelumnya"
+          aria-label="Bingkai sebelumnya">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Putar atau jeda"
+          aria-label="Putar">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Bingkai berikutnya"
+          aria-label="Bingkai berikutnya">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Posisi di dalam klip">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -187,6 +217,9 @@
       tidak sepakat soal putaran itu.</span>
     <span data-phrase="open.failed">Peramban ini tidak bisa membuka file ini. {reason}</span>
     <span data-phrase="open.norecord">Peramban ini tidak bisa merekam video, jadi tidak bisa memangkas file ini juga.</span>
+    <span data-phrase="play.play">Putar</span>
+    <span data-phrase="play.pause">Jeda</span>
+    <span data-phrase="play.cannot">Peramban ini tidak memutar file ini, jadi bingkainya didekode satu per satu.</span>
     <span data-phrase="path.record">{reason} Karena itu yang satu ini dipangkas dengan cara diputar lalu direkam
       hasilnya: itu memakan waktu selama videonya, dan suaranya dikodekan ulang, bukan
       disalin.</span>

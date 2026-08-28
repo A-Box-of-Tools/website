@@ -132,7 +132,8 @@ body = """
       por dentro para moverla y desde cualquier esquina para cambiarle el
       tamaño. Puedes fijarla antes a una forma, sea 1:1 para una publicación
       cuadrada, 9:16 para el móvil o 16:9 para un encuadre panorámico, o
-      escribir una caja de píxeles exacta en los cuatro campos de debajo."""
+      escribir una caja de píxeles exacta en los cuatro campos de debajo.
+      Reproduce el clip, o arrastra el control deslizante de debajo, para elegir el fotograma sobre el que encuadras la caja."""
 
 [[howto]]
 title = "Elige cuánta calidad gastar."

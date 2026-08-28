@@ -35,7 +35,7 @@
     <h2><span class="step">2</span> 拉出裁剪框</h2>
 
     <p class="stage-hint">
-      在框里拖是移动，拖四角是缩放。框选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键是改大小，按住 <kbd>Shift</kbd> 一步走十个。
+      播放片子，或拖下面的滑块，挑一帧来对齐这个框。在框里拖是移动，拖四角是缩放。框选中时，方向键一次挪一个像素，<kbd>Alt</kbd>&nbsp;+&nbsp;方向键是改大小，按住 <kbd>Shift</kbd> 一步走十个。
     </p>
 
     <!-- The crop box itself is added here by src/cropper.js. The stage is given
@@ -43,9 +43,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="预览"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>正在解码&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="在片子里移动">
+        <button type="button" id="step-back" class="ghost" title="上一帧"
+          aria-label="上一帧">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="播放或暂停"
+          aria-label="播放">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="下一帧"
+          aria-label="下一帧">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="在片子里的位置">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -180,6 +209,9 @@
     <span data-phrase="read.turned">这个文件是转着存的，这里的读取器和浏览器的播放器对这个旋转的看法不一致。</span>
     <span data-phrase="open.failed">这个浏览器打不开这个文件。{reason}</span>
     <span data-phrase="open.norecord">这个浏览器录不了视频，所以也裁不了这个文件。</span>
+    <span data-phrase="play.play">播放</span>
+    <span data-phrase="play.pause">暂停</span>
+    <span data-phrase="play.cannot">这个浏览器不播放这个文件，画面改成一帧一帧解码。</span>
     <span data-phrase="path.record">{reason}所以这个只能一边播一边录着裁：视频有多长就要花多长时间，声音也是重新编码而不是照搬。</span>
     <span data-phrase="net.clean">你的视频没有去任何地方。加载了 {total} 个文件。{platform}</span>
     <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>

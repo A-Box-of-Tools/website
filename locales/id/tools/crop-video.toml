@@ -135,7 +135,8 @@ body = """
       dalamnya untuk memindahkan dan sudut mana pun untuk mengubah ukuran. Kunci
       dulu ke sebuah bentuk &mdash; 1:1 untuk unggahan persegi, 9:16 untuk
       ponsel, 16:9 untuk bingkai lebar &mdash; atau ketikkan kotak piksel yang
-      persis ke empat kolom di bawahnya."""
+      persis ke empat kolom di bawahnya.
+      Putar klipnya, atau seret penggeser di bawahnya, untuk memilih bingkai yang dijadikan acuan kotaknya."""
 
 [[howto]]
 title = "Pilih berapa banyak kualitas yang dibelanjakan."

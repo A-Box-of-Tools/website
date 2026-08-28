@@ -137,7 +137,8 @@ body = """
       ziehen verschiebt ihn, an den Ecken ziehen ändert seine Größe. Legen Sie
       ihn vorher auf ein Format fest, etwa 1:1 für einen quadratischen Beitrag,
       9:16 fürs Handy oder 16:9 für ein breites Bild. Oder tippen Sie in die vier
-      Felder darunter ein exaktes Pixelfenster."""
+      Felder darunter ein exaktes Pixelfenster.
+      Spielen Sie den Clip ab oder ziehen Sie den Regler darunter, um das Einzelbild zu wählen, an dem Sie den Rahmen ausrichten."""
 
 [[howto]]
 title = "Entscheiden Sie, wie viel Qualität ausgegeben wird."

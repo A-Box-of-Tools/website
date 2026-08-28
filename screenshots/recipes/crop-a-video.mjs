@@ -7,8 +7,17 @@ export const tool = 'crop-video';
 export const helpers = {
   load: async (k) => {
     k.give(await k.video({ seconds: 16 }));
-    await k.wait('#crop-card');
-    await k.seek('#preview', 4.5);
+    // The transport arrives with the file, and the crop card was on screen
+    // before it, so this is what says the file is in.
+    await k.wait('#transport');
+    // Moved from the slider rather than by setting currentTime behind the
+    // page's back, so the clock under it agrees with the frame the crop box
+    // is being lined up against.
+    k.set('#scrub', '4500');
+    await k.until(() => {
+      const video = document.querySelector('#preview');
+      return !video.seeking && video.readyState >= 2;
+    }, { label: 'the frame at 4.5s' });
     await k.set('#crop-w', '640');
     await k.set('#crop-h', '640');
     k.click('#crop-centre');

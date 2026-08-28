@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> Den Zuschnitt festlegen</h2>
 
     <p class="stage-hint">
+      Spielen Sie den Clip ab oder ziehen Sie den Regler darunter, um das Einzelbild zu wählen, an dem Sie den Rahmen ausrichten.
       Ziehen Sie innen im Rahmen, um ihn zu verschieben, oder an einer Ecke, um
       seine Größe zu ändern. Ist der Rahmen fokussiert, verschieben ihn die
       Pfeiltasten um je ein Pixel,
@@ -40,9 +41,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Vorschau"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Wird dekodiert&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Durch den Clip bewegen">
+        <button type="button" id="step-back" class="ghost" title="Vorheriges Einzelbild"
+          aria-label="Vorheriges Einzelbild">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Abspielen oder pausieren"
+          aria-label="Abspielen">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Nächstes Einzelbild"
+          aria-label="Nächstes Einzelbild">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Position im Clip">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -182,6 +212,9 @@
       sind sich über die Drehung nicht einig.</span>
     <span data-phrase="open.failed">Dieser Browser kann diese Datei nicht öffnen. {reason}</span>
     <span data-phrase="open.norecord">Dieser Browser kann kein Video aufnehmen und diese Datei deshalb nicht zuschneiden.</span>
+    <span data-phrase="play.play">Abspielen</span>
+    <span data-phrase="play.pause">Pausieren</span>
+    <span data-phrase="play.cannot">Dieser Browser spielt diese Datei nicht ab, deshalb werden die Einzelbilder stattdessen eines nach dem anderen dekodiert.</span>
     <span data-phrase="path.record">{reason} Deshalb wird dieses hier zugeschnitten, indem es abgespielt und dabei
       aufgenommen wird &mdash; das dauert so lange, wie das Video lang ist, und der Ton
       wird neu kodiert statt kopiert.</span>

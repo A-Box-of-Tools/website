@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> اضبط الاقتصاص</h2>
 
     <p class="stage-hint">
+      شغِّل المقطع، أو اسحب الشريط الذي تحته، لاختيار اللحظة التي تضبط عليها الإطار.
       اسحب داخل الإطار لتحريكه، أو أي ركن لتغيير حجمه. ومع تركيز المؤشر على
       الإطار تحرّكه مفاتيح الأسهم بكسلاً بكسلاً،
       و<kbd>Alt</kbd>&nbsp;+&nbsp;الأسهم تغيّر حجمه، وإمساك
@@ -39,9 +40,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="معاينة"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>يجري فكّ الترميز&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="التنقّل في المقطع">
+        <button type="button" id="step-back" class="ghost" title="الإطار السابق"
+          aria-label="الإطار السابق">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="تشغيل أو إيقاف"
+          aria-label="تشغيل">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="الإطار التالي"
+          aria-label="الإطار التالي">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="الموضع في المقطع">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -178,6 +208,9 @@
     <span data-phrase="read.turned">هذا الملف مخزَّن مُداراً، والقارئ هنا ومشغّل المتصفّح لا يتفقان على مقدار الإدارة.</span>
     <span data-phrase="open.failed">لا يستطيع هذا المتصفّح فتح هذا الملف. {reason}</span>
     <span data-phrase="open.norecord">لا يستطيع هذا المتصفّح تسجيل الفيديو، فلا يستطيع قصّ أطراف هذا الملف.</span>
+    <span data-phrase="play.play">تشغيل</span>
+    <span data-phrase="play.pause">إيقاف مؤقت</span>
+    <span data-phrase="play.cannot">لا يشغّل هذا المتصفّح هذا الملف، فتُفكّ الإطارات إطاراً إطاراً بدلاً من ذلك.</span>
     <span data-phrase="path.record">{reason} ولذلك تُقصّ أطراف هذا بتشغيله وتسجيل ما يخرج منه: وهذا يستغرق من الوقت مثل
       طول الفيديو، ويُعاد ترميز الصوت بدل نسخه.</span>
     <span data-phrase="net.clean">مقطعك لم يذهب إلى أي مكان. {total} ملفاً

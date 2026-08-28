@@ -140,7 +140,8 @@ body = """
       glisser depuis l'intérieur pour le déplacer, et par un coin pour le
       redimensionner. Verrouillez-le d'abord sur une forme, 1:1 pour une
       publication carrée, 9:16 pour un téléphone ou 16:9 pour un cadre large, ou
-      tapez un cadre en pixels exact dans les quatre champs en dessous."""
+      tapez un cadre en pixels exact dans les quatre champs en dessous.
+      Lisez le clip, ou faites glisser le curseur en dessous, pour choisir l&rsquo;image sur laquelle vous alignez le cadre."""
 
 [[howto]]
 title = "Choisissez combien de qualité dépenser."

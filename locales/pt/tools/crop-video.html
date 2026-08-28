@@ -28,6 +28,7 @@
     <h2><span class="step">2</span> Defina o corte</h2>
 
     <p class="stage-hint">
+      Toque o vídeo, ou arraste o controle deslizante abaixo dele, para escolher o quadro sobre o qual você alinha a caixa.
       Arraste dentro da caixa para movê-la, ou qualquer canto para
       redimensioná-la. Com a caixa em foco, as setas a empurram um pixel de cada
       vez, <kbd>Alt</kbd>&nbsp;+&nbsp;setas a redimensionam, e segurar
@@ -39,9 +40,38 @@
          needs no recalculating when the window is resized. -->
     <div class="stage-wrap">
       <div class="stage" id="stage">
-        <video id="preview" playsinline controls></video>
+        <video id="preview" playsinline aria-label="Pré-visualização"></video>
         <canvas id="still" hidden aria-hidden="true"></canvas>
+        <p class="stage-busy" id="stage-busy" hidden>Decodificando&hellip;</p>
       </div>
+    </div>
+
+    <!--
+      The player's own controls used to be here, inside the picture: a bar
+      across the bottom of the very area the crop box has to be draggable in,
+      covering its lower handles and taking a click meant for the box. So
+      playback moved out of the frame and into this row, which does the same
+      job and covers nothing.
+    -->
+    <div class="transport" id="transport" hidden>
+      <div class="transport-buttons" role="group" aria-label="Percorrer o vídeo">
+        <button type="button" id="step-back" class="ghost" title="Quadro anterior"
+          aria-label="Quadro anterior">&#9664;|</button>
+        <button type="button" id="play" class="ghost" title="Tocar ou pausar"
+          aria-label="Tocar">&#9654;</button>
+        <button type="button" id="step-on" class="ghost" title="Próximo quadro"
+          aria-label="Próximo quadro">|&#9654;</button>
+      </div>
+
+      <!-- Stepped in whole frames, so the arrow keys move this slider the way
+           the buttons beside it do. -->
+      <input type="range" id="scrub" min="0" max="1000" value="0" step="1"
+        aria-label="Posição no vídeo">
+
+      <p class="readout">
+        <span id="at-time">0:00.000</span>
+        <span class="readout-dim" id="at-length"></span>
+      </p>
     </div>
 
     <p id="stage-note" class="stage-note" hidden></p>
@@ -181,6 +211,9 @@
     <span data-phrase="open.failed">Este navegador não consegue abrir este arquivo. {reason}</span>
     <span data-phrase="open.norecord">Este navegador não consegue gravar vídeo, então também não consegue recortar este
       arquivo.</span>
+    <span data-phrase="play.play">Tocar</span>
+    <span data-phrase="play.pause">Pausar</span>
+    <span data-phrase="play.cannot">Este navegador não toca este arquivo, então os quadros são decodificados um a um.</span>
     <span data-phrase="path.record">{reason} Por isso este é recortado tocando o vídeo e gravando o que sai: demora o
       tempo que o vídeo durar, e o som é recodificado em vez de copiado.</span>
     <span data-phrase="net.clean">O seu vídeo não foi a lugar nenhum. {total}
