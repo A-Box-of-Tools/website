@@ -193,6 +193,46 @@ class FrameRules(unittest.TestCase):
             self.assertIn('.skip-link:focus', text,
                           f'{sheet}: a skip link that never becomes visible')
 
+    def test_a_fold_that_answers_the_pointer_answers_the_keyboard(self):
+        """Every `summary:hover` has a `:focus-visible` saying the same thing.
+
+        A <details> is opened by pointer and by keyboard alike, so a summary
+        that lights up under the mouse and does nothing under Tab tells half
+        its readers where they are. That is what drifted: nine tools wrote
+        their own fold and its summary rule, three of them never wrote a hover
+        at all, and of the six that did, not one carried the focus half - nor
+        did the questions accordion, the language switcher or the pledge, in
+        the shared frame where every tool inherits them.
+
+        The check is by base selector rather than by eye: strip the state off
+        `.encoded summary:hover` and a `:focus-visible` on the same base has to
+        exist in the same file. It reads the source rather than the build for
+        the reason the rules above do - the built CSS is minified and one
+        stylesheet per tool, so a gap would report thirty-six times or not at
+        all.
+        """
+        state = re.compile(r':(?:hover|focus-visible)')
+        wrong = []
+        sheets = (sorted(ROOT.glob('shared/*.css'))
+                  + sorted(ROOT.glob('shared/css/*.css'))
+                  + sorted(ROOT.glob('tools/*/styles.css')))
+        for path in sheets:
+            css = re.sub(r'/\*.*?\*/', '', path.read_text(encoding='utf-8'), flags=re.S)
+            hovers, focused = set(), set()
+            for selectors in re.findall(r'([^{}]+)\{[^{}]*\}', css):
+                for one in selectors.split(','):
+                    one = ' '.join(one.split())
+                    if 'summary' not in one:
+                        continue
+                    if ':hover' in one:
+                        hovers.add(state.sub('', one))
+                    elif ':focus-visible' in one:
+                        focused.add(state.sub('', one))
+            name = path.relative_to(ROOT).as_posix()
+            wrong += [f'{name}: {sel}:hover has no :focus-visible'
+                      for sel in sorted(hovers - focused)]
+        self.assertEqual([], wrong, '\n' + '\n'.join(wrong))
+
 
 if __name__ == '__main__':
     unittest.main()

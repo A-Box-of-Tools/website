@@ -222,7 +222,8 @@
   user-select: none;
 }
 
-.meta-panel summary:hover { color: var(--accent); }
+.meta-panel summary:hover,
+.meta-panel summary:focus-visible { color: var(--accent); }
 .meta-body { padding: 0 0.9rem 0.9rem; }
 
 .meta-note {

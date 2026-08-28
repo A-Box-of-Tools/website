@@ -858,6 +858,7 @@ footer a:hover { text-decoration: underline; }
 .lang-pick > summary::-webkit-details-marker { display: none; }
 
 .lang-pick > summary:hover,
+.lang-pick > summary:focus-visible,
 .lang-pick[open] > summary {
   border-color: var(--accent);
   color: var(--accent);

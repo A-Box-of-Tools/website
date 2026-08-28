@@ -21,7 +21,11 @@
   user-select: none;
 }
 
-.url-panel summary:hover { color: var(--accent); }
+/* Hover and focus together, as on every other fold that opens controls or
+   data: a keyboard reaching the summary should get the same cue a pointer
+   hovering it does, and half of these folds used to answer only the pointer. */
+.url-panel summary:hover,
+.url-panel summary:focus-visible { color: var(--accent); }
 .url-body { padding: 0 0.9rem 0.9rem; }
 
 .url-warning {

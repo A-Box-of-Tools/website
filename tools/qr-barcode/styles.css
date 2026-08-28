@@ -166,12 +166,14 @@
 
 .encoded summary {
   cursor: pointer;
+  user-select: none;
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-dim);
 }
 
-.encoded summary:hover { color: var(--accent); }
+.encoded summary:hover,
+.encoded summary:focus-visible { color: var(--accent); }
 
 .encoded pre {
   margin: 0.7rem 0 0;

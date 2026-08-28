@@ -496,7 +496,8 @@
   user-select: none;
 }
 
-.add-tag summary:hover { color: var(--accent); }
+.add-tag summary:hover,
+.add-tag summary:focus-visible { color: var(--accent); }
 
 .add-tag-body {
   display: flex;
