@@ -30,6 +30,16 @@
  *
  * Nothing here reaches the network. The rules are read off this file, which is
  * served from the same origin as the rest of the tool and cached with it.
+ *
+ * FOURTH, THE WORDS ARE KEYS AND THE CITATION IS NOT. `country`, `document`,
+ * the upload's `label` and every note are this site's own writing about
+ * somebody else's numbers, and this file is copied byte for byte into fifteen
+ * languages - so they are phrase keys and main.js resolves them. `source` is
+ * left as it is published: an authority's name and a document's title are what
+ * a reader searches for to check the transcription, and translating them is
+ * how a citation stops being one. The two entries that cite nothing - common
+ * practice, and the figures you typed in yourself - are keys like the rest of
+ * the prose, because there is no publication there to be faithful to.
  */
 
 /* ------------------------------------------------------------ backgrounds */
@@ -118,28 +128,21 @@ export const ICAO_EYE = band(0.50, 0.60);
 export const SPECS = [
   {
     id: 'icao',
-    country: 'ICAO standard',
-    document: 'Any biometric travel document',
+    country: 'country.icao',
+    document: 'spec.icao.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: ICAO_HEAD,
     eye: ICAO_EYE,
     background: 'light-grey',
     digital: {
-      label: 'Machine-readable capture',
+      label: 'spec.icao.upload',
       width: { min: 413 },
       height: { min: 531 },
       bytes: {},
       format: 'image/jpeg',
     },
-    notes: [
-      'The 35 x 45 mm frame is what most of the world issues against, and 70-80 per '
-        + 'cent head height with the eye line between half and three-fifths of the way '
-        + 'up is the geometry every specification below is a variation of.',
-      'Doc 9303 also asks for at least 90 pixels between the centres of the eyes in '
-        + 'the stored image, which a 413 x 531 crop of a modern phone photograph clears '
-        + 'comfortably.',
-    ],
+    notes: ['spec.icao.note1', 'spec.icao.note2'],
     source: {
       authority: 'International Civil Aviation Organization',
       document: 'Doc 9303, Machine Readable Travel Documents, Part 3',
@@ -149,28 +152,24 @@ export const SPECS = [
 
   {
     id: 'us-passport',
-    country: 'United States',
-    document: 'Passport, visa and green card',
+    country: 'country.us',
+    document: 'spec.us-passport.doc',
     kind: 'portrait',
     print: { widthMm: 51, heightMm: 51, dpi: 300 },
     head: mmBand(25, 35, 51),
     eye: mmBand(28, 35, 51),
     background: 'off-white',
     digital: {
-      label: 'Online photo upload',
+      label: 'spec.us-passport.upload',
       width: { min: 600, max: 1200 },
       height: { min: 600, max: 1200 },
       bytes: { max: 240 * 1024 },
       format: 'image/jpeg',
     },
     notes: [
-      'Square, and the only square passport photograph in wide use: 2 x 2 inches, '
-        + 'which is 51 x 51 mm.',
-      'The head may sit anywhere from 25 to 35 mm, a far wider window than the ICAO '
-        + 'rule, and the eye line is measured from the bottom edge rather than as a '
-        + 'proportion.',
-      'The uploaded file must be square as well, between 600 and 1200 pixels a side, '
-        + 'and 240 KB is the ceiling the form enforces.',
+      'spec.us-passport.note1',
+      'spec.us-passport.note2',
+      'spec.us-passport.note3',
     ],
     source: {
       authority: 'U.S. Department of State',
@@ -181,26 +180,21 @@ export const SPECS = [
 
   {
     id: 'us-dv',
-    country: 'United States',
-    document: 'Diversity Visa lottery entry',
+    country: 'country.us',
+    document: 'spec.us-dv.doc',
     kind: 'portrait',
     print: { widthMm: 51, heightMm: 51, dpi: 300 },
     head: mmBand(25, 35, 51),
     eye: mmBand(28, 35, 51),
     background: 'off-white',
     digital: {
-      label: 'Entrant Status Check upload',
+      label: 'spec.us-dv.upload',
       width: { exact: 600 },
       height: { exact: 600 },
       bytes: { max: 240 * 1024 },
       format: 'image/jpeg',
     },
-    notes: [
-      'The same photograph as the passport rule above, but the entry form takes one '
-        + 'size and one size only: exactly 600 x 600 pixels, at most 240 KB.',
-      'An entry rejected for its photograph is not corrected, it is discarded, which '
-        + 'is why this one is worth getting exactly right rather than approximately.',
-    ],
+    notes: ['spec.us-dv.note1', 'spec.us-dv.note2'],
     source: {
       authority: 'U.S. Department of State',
       document: 'dvprogram.state.gov, Photo Requirements',
@@ -210,27 +204,21 @@ export const SPECS = [
 
   {
     id: 'uk-passport',
-    country: 'United Kingdom',
-    document: 'Passport',
+    country: 'country.uk',
+    document: 'spec.uk-passport.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: mmBand(29, 34, 45),
     eye: ICAO_EYE,
     background: 'cream',
     digital: {
-      label: 'Digital photo for an online application',
+      label: 'spec.uk-passport.upload',
       width: { min: 600 },
       height: { min: 750 },
       bytes: { min: 50 * 1024, max: 10 * 1024 * 1024 },
       format: 'image/jpeg',
     },
-    notes: [
-      'The head is measured chin to crown and must be between 29 and 34 mm - notably '
-        + 'shorter than the ICAO band, so a photo cropped to the ICAO rule can be '
-        + 'refused here for having too large a head.',
-      'The digital rule has a floor as well as a ceiling: under 50 KB the upload is '
-        + 'refused for being too small.',
-    ],
+    notes: ['spec.uk-passport.note1', 'spec.uk-passport.note2'],
     source: {
       authority: 'HM Passport Office',
       document: 'gov.uk, Passport photo requirements',
@@ -240,20 +228,15 @@ export const SPECS = [
 
   {
     id: 'schengen',
-    country: 'Schengen area',
-    document: 'Visa application',
+    country: 'country.schengen',
+    document: 'spec.schengen.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: mmBand(32, 36, 45),
     eye: ICAO_EYE,
     background: 'light-grey',
     digital: null,
-    notes: [
-      'The common visa format used by every Schengen consulate: 35 x 45 mm with the '
-        + 'face filling 70 to 80 per cent of the height, which is 32 to 36 mm.',
-      'Consulates differ on what they will accept as a background. Plain light grey '
-        + 'is refused by nobody; a white wall with a shadow on it is refused by most.',
-    ],
+    notes: ['spec.schengen.note1', 'spec.schengen.note2'],
     source: {
       authority: 'European Commission',
       document: 'Visa Code, common photograph standards (ICAO-aligned)',
@@ -263,21 +246,15 @@ export const SPECS = [
 
   {
     id: 'de-passport',
-    country: 'Germany',
-    document: 'Passport and identity card',
+    country: 'country.de',
+    document: 'spec.de-passport.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: mmBand(32, 36, 45),
     eye: ICAO_EYE,
     background: 'light-grey',
     digital: null,
-    notes: [
-      'The Bundesdruckerei photo template asks for a face height of 32 to 36 mm in a '
-        + '35 x 45 mm frame, with the eyes in the upper third.',
-      'Since 2025 the photograph is normally captured at the issuing office or sent '
-        + 'to it electronically by a photographer, so a print made here is for the '
-        + 'applications that still take one.',
-    ],
+    notes: ['spec.de-passport.note1', 'spec.de-passport.note2'],
     source: {
       authority: 'Bundesministerium des Innern',
       document: 'Passbildschablone / biometric photo template',
@@ -287,8 +264,8 @@ export const SPECS = [
 
   {
     id: 'ca-passport',
-    country: 'Canada',
-    document: 'Passport',
+    country: 'country.ca',
+    document: 'spec.ca-passport.doc',
     kind: 'portrait',
     print: { widthMm: 50, heightMm: 70, dpi: 300 },
     head: mmBand(31, 36, 70),
@@ -296,14 +273,9 @@ export const SPECS = [
     background: 'white',
     digital: null,
     notes: [
-      'The odd one out on shape: 50 x 70 mm, which is taller and narrower in '
-        + 'proportion than anything else here, so a crop made for another country '
-        + 'will not fit it.',
-      'Face height is 31 to 36 mm measured chin to crown. Canada publishes no eye '
-        + 'line, so the band shown here is the one that follows from the head sitting '
-        + 'centred in the frame; treat it as guidance rather than as a rule.',
-      'The photographer must print the date and the studio name on the back, which is '
-        + 'not something any tool can do for you.',
+      'spec.ca-passport.note1',
+      'spec.ca-passport.note2',
+      'spec.ca-passport.note3',
     ],
     source: {
       authority: 'Immigration, Refugees and Citizenship Canada',
@@ -314,20 +286,15 @@ export const SPECS = [
 
   {
     id: 'au-passport',
-    country: 'Australia',
-    document: 'Passport',
+    country: 'country.au',
+    document: 'spec.au-passport.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: mmBand(32, 36, 45),
     eye: ICAO_EYE,
     background: 'light-grey',
     digital: null,
-    notes: [
-      'A plain, light-coloured background with the face 32 to 36 mm from chin to '
-        + 'crown in a 35 x 45 mm print.',
-      'Two prints are asked for with a paper application, which is what the sheet '
-        + 'export below is for.',
-    ],
+    notes: ['spec.au-passport.note1', 'spec.au-passport.note2'],
     source: {
       authority: 'Australian Passport Office',
       document: 'passports.gov.au, Photo guidelines',
@@ -337,20 +304,15 @@ export const SPECS = [
 
   {
     id: 'in-passport',
-    country: 'India',
-    document: 'Passport',
+    country: 'country.in',
+    document: 'spec.in-passport.doc',
     kind: 'portrait',
     print: { widthMm: 51, heightMm: 51, dpi: 300 },
     head: mmBand(25, 35, 51),
     eye: mmBand(28, 35, 51),
     background: 'white',
     digital: null,
-    notes: [
-      'Passport Seva asks for a 2 x 2 inch photograph on a plain white background, '
-        + 'the same frame the United States uses.',
-      'A 35 x 45 mm print is what most Indian forms mean by "passport size", and it '
-        + 'is a separate entry in this list - the two are not interchangeable.',
-    ],
+    notes: ['spec.in-passport.note1', 'spec.in-passport.note2'],
     source: {
       authority: 'Ministry of External Affairs',
       document: 'Passport Seva, photo specifications',
@@ -360,53 +322,42 @@ export const SPECS = [
 
   {
     id: 'in-print-35x45',
-    country: 'India',
-    document: 'Passport-size print for a form',
+    country: 'country.in',
+    document: 'spec.in-print-35x45.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: mmBand(30, 36, 45),
     eye: ICAO_EYE,
     background: 'white',
     digital: null,
-    notes: [
-      'What a bank, a college or a government form means when it asks for a '
-        + '"passport size photo" to be pasted on: 35 x 45 mm, white background, head '
-        + 'and shoulders.',
-      'No authority publishes a head-height band for this, so the ICAO one is applied '
-        + 'and shown as guidance. Nothing measures these with a ruler.',
-    ],
+    notes: ['spec.in-print-35x45.note1', 'spec.in-print-35x45.note2'],
     source: {
-      authority: 'Common practice',
-      document: 'The 35 x 45 mm stationer standard, not a published rule',
+      authority: 'source.common',
+      document: 'source.common.doc',
       checked: '2026-08-20',
     },
   },
 
   {
     id: 'in-exam-photo',
-    country: 'India',
-    document: 'SSC / UPSC online form photo',
+    country: 'country.in',
+    document: 'spec.in-exam-photo.doc',
     kind: 'portrait',
     print: null,
     head: band(0.60, 0.80, true),
     eye: band(0.52, 0.68, true),
     background: 'white',
     digital: {
-      label: 'Online application photo',
+      label: 'spec.in-exam-photo.upload',
       width: { exact: 200 },
       height: { exact: 230 },
       bytes: { min: 20 * 1024, max: 50 * 1024 },
       format: 'image/jpeg',
     },
     notes: [
-      'The rule these forms actually enforce is three numbers: 200 x 230 pixels, '
-        + 'JPEG, and between 20 and 50 KB. Both ends are checked - a 12 KB file is '
-        + 'refused for being too small exactly as a 60 KB one is refused for being '
-        + 'too large.',
-      'The head-and-shoulders framing is described in words rather than measured, so '
-        + 'the bands here are guidance drawn from the sample images on the forms.',
-      'There is no print size, because there is nothing to print: this is a file for '
-        + 'a web form. The sheet export is switched off for it.',
+      'spec.in-exam-photo.note1',
+      'spec.in-exam-photo.note2',
+      'spec.in-exam-photo.note3',
     ],
     source: {
       authority: 'Staff Selection Commission / UPSC',
@@ -417,30 +368,24 @@ export const SPECS = [
 
   {
     id: 'in-exam-signature',
-    country: 'India',
-    document: 'SSC / UPSC online form signature',
+    country: 'country.in',
+    document: 'spec.in-exam-signature.doc',
     kind: 'signature',
     print: null,
     head: band(0, 1, true),
     eye: band(0, 1, true),
     background: 'white',
     digital: {
-      label: 'Online application signature',
+      label: 'spec.in-exam-signature.upload',
       width: { exact: 140 },
       height: { exact: 60 },
       bytes: { min: 10 * 1024, max: 20 * 1024 },
       format: 'image/jpeg',
     },
     notes: [
-      'Not a portrait at all: a signature written in black or dark blue ink on white '
-        + 'paper, photographed or scanned, cropped to 140 x 60 pixels and saved as a '
-        + 'JPEG between 10 and 20 KB.',
-      'The head and eye overlay is switched off for this one. What is checked instead '
-        + 'is that the paper is light, that there is ink on it, and that the ink is '
-        + 'not so faint the form will read it as blank.',
-      'A 140 x 60 crop of a signature is 8400 pixels. Reaching 10 KB is the hard part '
-        + 'of this specification, not staying under 20 - see the padding note on the '
-        + 'page.',
+      'spec.in-exam-signature.note1',
+      'spec.in-exam-signature.note2',
+      'spec.in-exam-signature.note3',
     ],
     source: {
       authority: 'Staff Selection Commission / UPSC',
@@ -451,26 +396,21 @@ export const SPECS = [
 
   {
     id: 'cn-passport',
-    country: 'China',
-    document: 'Passport and visa',
+    country: 'country.cn',
+    document: 'spec.cn-passport.doc',
     kind: 'portrait',
     print: { widthMm: 33, heightMm: 48, dpi: 300 },
     head: mmBand(28, 33, 48),
     eye: band(0.50, 0.62, true),
     background: 'white',
     digital: {
-      label: 'Online visa application upload',
+      label: 'spec.cn-passport.upload',
       width: { exact: 354 },
       height: { exact: 472 },
       bytes: { min: 40 * 1024, max: 120 * 1024 },
       format: 'image/jpeg',
     },
-    notes: [
-      'A 33 x 48 mm frame, which is narrower than the 35 x 45 used almost everywhere '
-        + 'else, with the head 28 to 33 mm from chin to crown.',
-      'The upload has a floor as well as a ceiling - 40 KB to 120 KB at exactly '
-        + '354 x 472 pixels, which is that same frame at 272 dpi.',
-    ],
+    notes: ['spec.cn-passport.note1', 'spec.cn-passport.note2'],
     source: {
       authority: 'National Immigration Administration',
       document: 'Published photograph standard for exit and entry documents',
@@ -480,20 +420,15 @@ export const SPECS = [
 
   {
     id: 'jp-passport',
-    country: 'Japan',
-    document: 'Passport',
+    country: 'country.jp',
+    document: 'spec.jp-passport.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: mmBand(32, 36, 45),
     eye: band(0.53, 0.64, true),
     background: 'off-white',
     digital: null,
-    notes: [
-      'A 35 x 45 mm print with the face 34 mm from chin to crown, give or take 2 mm, '
-        + 'and 4 to 6 mm of clear space above the head.',
-      'The clearance above the head is stated as its own rule here rather than being '
-        + 'implied by the head height, which is why the eye band shown is guidance.',
-    ],
+    notes: ['spec.jp-passport.note1', 'spec.jp-passport.note2'],
     source: {
       authority: 'Ministry of Foreign Affairs of Japan',
       document: 'Passport photograph standards',
@@ -503,29 +438,24 @@ export const SPECS = [
 
   {
     id: 'custom',
-    country: 'Anywhere else',
-    document: 'Type the numbers yourself',
+    country: 'country.other',
+    document: 'spec.custom.doc',
     kind: 'portrait',
     print: { widthMm: 35, heightMm: 45, dpi: 300 },
     head: ICAO_HEAD,
     eye: ICAO_EYE,
     background: 'white',
     digital: {
-      label: 'Whatever the form asks for',
+      label: 'spec.custom.upload',
       width: { exact: 413 },
       height: { exact: 531 },
       bytes: { max: 200 * 1024 },
       format: 'image/jpeg',
     },
-    notes: [
-      'Every figure on this one is editable. Put in what the form in front of you '
-        + 'says, and the overlay, the print and the file-size search all follow it.',
-      'It starts on the ICAO geometry, because a country not on the list above is '
-        + 'far more likely to be using that than anything else.',
-    ],
+    notes: ['spec.custom.note1', 'spec.custom.note2'],
     source: {
-      authority: 'You',
-      document: 'Whatever you were sent',
+      authority: 'source.you',
+      document: 'source.you.doc',
       checked: '',
     },
   },
@@ -536,7 +466,12 @@ const BY_ID = new Map(SPECS.map((spec) => [spec.id, spec]));
 
 export const specById = (id) => BY_ID.get(id) ?? SPECS[0];
 
-/** The specification list grouped by country, for the <optgroup>s. */
+/**
+ * The specification list grouped by country, for the <optgroup>s.
+ *
+ * Grouped on the key rather than on the name, so the three Indian rules stay
+ * one group in every language whatever India is called there.
+ */
 export function specsByCountry() {
   const groups = [];
   for (const spec of SPECS) {
@@ -594,25 +529,29 @@ export function portalBytes(spec) {
 }
 
 /** How the print size reads in a sentence: "35 x 45 mm at 300 dpi". */
-export function printLabel(spec) {
-  if (!spec.print) return 'no print size - this rule is for a web form';
+export function printLabel(spec, t) {
+  if (!spec.print) return t('print.none');
   const { widthMm, heightMm, dpi } = spec.print;
-  return `${trim(widthMm)} x ${trim(heightMm)} mm at ${dpi} dpi`;
+  return t('print.size', { width: trim(widthMm), height: trim(heightMm), dpi });
 }
 
 /** How a pixel rule reads: "exactly 200 x 230", "at least 600 x 750". */
-export function pixelLabel(spec) {
+export function pixelLabel(spec, t) {
   const digital = spec.digital;
   if (!digital) return null;
   const axis = (value) => (value.exact ? `${value.exact}` : value.min ? `${value.min}+` : '-');
   if (digital.width.exact && digital.height.exact) {
-    return `exactly ${digital.width.exact} x ${digital.height.exact} px`;
+    return t('px.exact', { width: digital.width.exact, height: digital.height.exact });
   }
   if (digital.width.max || digital.height.max) {
-    return `${axis(digital.width)} x ${axis(digital.height)} px, up to `
-      + `${digital.width.max ?? '?'} x ${digital.height.max ?? '?'}`;
+    return t('px.upto', {
+      width: axis(digital.width),
+      height: axis(digital.height),
+      maxWidth: digital.width.max ?? '?',
+      maxHeight: digital.height.max ?? '?',
+    });
   }
-  return `at least ${digital.width.min} x ${digital.height.min} px`;
+  return t('px.least', { width: digital.width.min, height: digital.height.min });
 }
 
 /** 35 rather than 35.0, and 16.9 rather than 16.933333333333334. */

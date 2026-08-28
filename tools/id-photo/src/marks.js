@@ -23,12 +23,17 @@
  * either can be told apart is here.
  */
 
-/** The dots, in the order they are tabbed through. */
+/**
+ * The dots, in the order they are tabbed through.
+ *
+ * The name and the hint are phrase keys: this file is copied byte for byte
+ * into fifteen languages, and the caller hands in the resolver.
+ */
 export const MARK_KEYS = [
-  { key: 'crown', label: 'Crown', hint: 'the very top of the head, hair included' },
-  { key: 'chin', label: 'Chin', hint: 'the bottom of the chin' },
-  { key: 'leftEye', label: 'Left eye', hint: 'the pupil, on the left as you look at it' },
-  { key: 'rightEye', label: 'Right eye', hint: 'the other pupil' },
+  { key: 'crown', label: 'mark.crown', hint: 'mark.crown.hint' },
+  { key: 'chin', label: 'mark.chin', hint: 'mark.chin.hint' },
+  { key: 'leftEye', label: 'mark.lefteye', hint: 'mark.lefteye.hint' },
+  { key: 'rightEye', label: 'mark.righteye', hint: 'mark.righteye.hint' },
 ];
 
 /** Where each dot opens, as fractions of the picture. */
@@ -46,17 +51,19 @@ export class Marks {
   #source = { width: 0, height: 0 };
   #points = null;
 
-  constructor(stage, { onChange } = {}) {
+  constructor(stage, { onChange, t } = {}) {
     this.#stage = stage;
     this.#onChange = onChange;
 
-    for (const { key, label, hint } of MARK_KEYS) {
+    for (const entry of MARK_KEYS) {
+      const { key } = entry;
+      const label = t(entry.label);
       const dot = document.createElement('button');
       dot.type = 'button';
       dot.className = `face-mark mark-${key}`;
       dot.dataset.key = key;
       dot.hidden = true;
-      dot.setAttribute('aria-label', `${label}: ${hint}. The arrow keys move it; hold Shift for ten pixels at a time.`);
+      dot.setAttribute('aria-label', t('mark.aria', { label, hint: t(entry.hint) }));
 
       const caption = document.createElement('span');
       caption.className = 'face-mark-label';

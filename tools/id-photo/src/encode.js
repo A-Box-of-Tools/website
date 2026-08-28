@@ -43,7 +43,7 @@ export async function decode(file) {
     const img = await new Promise((resolve, reject) => {
       const element = new Image();
       element.onload = () => resolve(element);
-      element.onerror = () => reject(new Error('this browser could not decode the picture.'));
+      element.onerror = () => reject(new Error('encode.nodecode'));
       element.src = url;
     });
     return { bitmap: img, width: img.naturalWidth, height: img.naturalHeight };
@@ -125,7 +125,7 @@ export function free(canvas) {
 /** One encode. Rejects rather than returning null, so a caller cannot ignore it. */
 export async function toBytes(canvas, quality) {
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, JPEG, quality));
-  if (!blob) throw new Error('this browser would not write a JPEG.');
+  if (!blob) throw new Error('encode.nojpeg');
   return new Uint8Array(await blob.arrayBuffer());
 }
 
@@ -164,17 +164,22 @@ const MAX_ENCODES = 10;
  *   is padded with a JPEG comment - see jpeg.js, which explains exactly what
  *   that does and does not change, and writes the explanation into the file.
  *
+ * The sentence it comes back with is built here rather than in the caller,
+ * because which of the three it is depends on which way the search went; `t`
+ * is the caller's phrase(), and this file has no English of its own.
+ *
  * @param {HTMLCanvasElement} canvas
  * @param {{min: number, max: number}} band  in bytes
+ * @param {(key: string, values?: object) => string} t
  * @returns {Promise<BandResult>}
  */
-export async function encodeToBand(canvas, band) {
+export async function encodeToBand(canvas, band, t) {
   const max = band.max ?? Infinity;
   const min = band.min ?? 0;
 
   let encodes = 0;
   const attempt = async (quality) => {
-    if (encodes >= MAX_ENCODES) throw new Error('gave up after too many attempts.');
+    if (encodes >= MAX_ENCODES) throw new Error('encode.gaveup');
     encodes += 1;
     return { bytes: await toBytes(canvas, quality), quality };
   };
@@ -187,9 +192,8 @@ export async function encodeToBand(canvas, band) {
     // dial to under a hundredth, which is finer than the encoder distinguishes.
     const bottom = await attempt(FLOOR);
     if (bottom.bytes.length > max) {
-      return finish(bottom, false, `Even at the lowest quality worth using, this comes out at `
-        + `${Math.round(bottom.bytes.length / 1024)} KB, which is over the limit. `
-        + `The picture has more detail in it than the form allows for.`);
+      return finish(bottom, false, t('how.toobig',
+        { size: sizeText(bottom.bytes.length, t) }));
     }
 
     let low = FLOOR;
@@ -217,8 +221,10 @@ export async function encodeToBand(canvas, band) {
   }
 
   if (best.bytes.length >= min) {
-    return finish(best, true, `Written at quality ${Math.round(best.quality * 100)}, `
-      + `which is ${sizeText(best.bytes.length)} - inside the band the form accepts.`);
+    return finish(best, true, t('how.fitted', {
+      quality: Math.round(best.quality * 100),
+      size: sizeText(best.bytes.length, t),
+    }));
   }
 
   // Under the floor. Padding is the only honest way up from here.
@@ -226,10 +232,11 @@ export async function encodeToBand(canvas, band) {
   return finish(
     { bytes: padded, quality: best.quality },
     padded.length >= min,
-    `The picture encodes to ${sizeText(best.bytes.length)} at the very top of the quality `
-      + `dial, which is still under the ${sizeText(min)} floor the form insists on. `
-      + `${sizeText(padded.length - best.bytes.length)} of JPEG comment was added to reach it; `
-      + `the picture itself is untouched.`,
+    t('how.padded', {
+      size: sizeText(best.bytes.length, t),
+      floor: sizeText(min, t),
+      added: sizeText(padded.length - best.bytes.length, t),
+    }),
     padded.length - best.bytes.length,
   );
 
@@ -239,10 +246,10 @@ export async function encodeToBand(canvas, band) {
 }
 
 /** Bytes as somebody would say them. KB here means 1024 bytes, as the forms mean it. */
-export function sizeText(bytes) {
-  if (bytes < 1024) return `${bytes} bytes`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+export function sizeText(bytes, t) {
+  if (bytes < 1024) return t('size.bytes', { n: bytes });
+  if (bytes < 1024 * 1024) return t('size.kb', { n: (bytes / 1024).toFixed(1) });
+  return t('size.mb', { n: (bytes / (1024 * 1024)).toFixed(2) });
 }
 
 /**
