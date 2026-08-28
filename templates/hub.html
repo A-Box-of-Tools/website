@@ -163,6 +163,49 @@
   </p>
 
   <!--
+    The filter, directly above the categories it narrows.
+
+    It ships `hidden` and shared/hub-filter.js is the only thing that reveals
+    it. That order matters and is not a detail: with JavaScript off, the page
+    is the page it has always been rather than a search box that swallows
+    everything typed into it. The words are in the markup rather than written
+    by the script for the ordinary reason - a string in a .js file is copied
+    into every language and is English in fourteen of them.
+
+    A <label> as well as a placeholder, because a placeholder is not an
+    accessible name and disappears the moment anybody types. It is drawn
+    off-screen; the placeholder says the same words to everybody else.
+  -->
+  <div class="tool-filter" id="tool-filter" hidden>
+    <label class="visually-hidden" for="tool-filter-input">{{ ui.hub_filter_label }}</label>
+    <span class="tool-filter-icon" aria-hidden="true">
+      <svg viewBox="0 0 16 16" width="15" height="15" fill="none"
+           stroke="currentColor" stroke-width="1.6" focusable="false">
+        <circle cx="7" cy="7" r="5"/><path d="M11 11l3.5 3.5" stroke-linecap="round"/>
+      </svg>
+    </span>
+    <input type="search" id="tool-filter-input" autocomplete="off"
+           placeholder="{{ ui.hub_filter_label }}">
+    <!-- The key that focuses this, drawn rather than described: it is one
+         character and means the same thing in every language here. -->
+    <span class="tool-filter-key" aria-hidden="true">/</span>
+  </div>
+
+  <!--
+    The live region is the wrapper, and it is never hidden; only the sentence
+    inside it is. That order is the whole point: a region has to be in the
+    document before the change it is meant to announce, and a `role="status"`
+    on an element that is itself `hidden` until the moment it matters is a
+    region the screen reader was never told about. So the empty <div> stays,
+    costing nothing and no height, and the message appears inside it.
+  -->
+  <div class="tool-filter-status" role="status">
+    <p class="tool-filter-none" id="tool-filter-none" hidden>
+      {{ ui.hub_filter_none }}
+    </p>
+  </div>
+
+  <!--
     ==========================================================================
     ADDING A TOOL
 
@@ -226,6 +269,13 @@
 </main>
 
 {% include "partials/footer.html" %}
+
+<!--
+  What reveals and drives the filter above. `defer` rather than blocking: the
+  field is hidden until this runs, so there is nothing to flash and nothing a
+  reader could type into before it is listening.
+-->
+<script src="{{ filter_href }}" defer></script>
 
 </body>
 </html>

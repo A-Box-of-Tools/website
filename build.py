@@ -258,6 +258,15 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         (TEMPLATES / 'offline.js').read_text(encoding='utf-8'), 'templates/offline.js')
     offline_v = sitelib.text_hash(offline_js)
 
+    # The hub's filter, hashed and served from the root like the four above and
+    # for the same reason. Only the front page of each language loads it, and
+    # every one of those loads the same bytes: what it reads is the cards in
+    # the page it finds itself in, so there is nothing in it that differs
+    # between languages and no reason to write a copy per language.
+    filter_js = emit.js_text(
+        (SHARED / 'hub-filter.js').read_text(encoding='utf-8'), 'shared/hub-filter.js')
+    filter_v = sitelib.text_hash(filter_js)
+
     planned = sitelib.load_toml(CONFIG / 'planned.toml')
 
     tools = [sitelib.load_tool(path, site)
@@ -389,7 +398,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
             done, links = build_locale(out, templates, locale, locales, site,
                                        tools, prose, planned, css_v, lang_v,
                                        feedback_v, handoff_v, keep_v,
-                                       offline_v, site_css, emit, only)
+                                       offline_v, filter_v, site_css, emit, only)
             written += done
             page_links.update(links)
     else:
@@ -397,7 +406,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
             pending = [
                 pool.submit(build_locale, out, templates, locale, locales, site,
                             tools, prose, planned, css_v, lang_v, feedback_v,
-                            handoff_v, keep_v, offline_v, site_css, emit, only)
+                            handoff_v, keep_v, offline_v, filter_v, site_css, emit, only)
                 for locale in targets
             ]
             for future in pending:
@@ -517,6 +526,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     write(out / 'site.css', site_css)
     write(out / 'lang.js', lang_js)
     write(out / 'offline.js', offline_js)
+    write(out / 'hub-filter.js', filter_js)
     write(out / 'feedback.js', feedback_js)
     write(out / 'handoff.js', handoff_js)
     write(out / 'lang-keep.js', keep_js)
@@ -559,7 +569,7 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
 
 def build_locale(out, templates, locale, locales, site, tools, prose, planned,
                  css_v, lang_v, feedback_v, handoff_v, keep_v, offline_v,
-                 site_css, emit, only=None):
+                 filter_v, site_css, emit, only=None):
     """The whole site, in one language, under out/<lang>/ - or at the root of
     out/ for English, whose pages keep the addresses they have always had.
 
@@ -697,7 +707,7 @@ def build_locale(out, templates, locale, locales, site, tools, prose, planned,
     written.append(f'{locale["prefix"]}{links["guides"]}/index.html')
 
     build_hub(dest_root, templates, locale, locales, site, by_slug, footer,
-              links, css_v, lang_v, offline_v, site_css, emit)
+              links, css_v, lang_v, offline_v, filter_v, site_css, emit)
     written.append(f'{locale["prefix"]}index.html')
 
     build_roadmap(dest_root, templates, locale, locales, site,
@@ -1367,7 +1377,7 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
 
 
 def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
-              css_v, lang_v, offline_v, site_css, emit):
+              css_v, lang_v, offline_v, filter_v, site_css, emit):
     """The front page of one language, and the app it can be installed as.
 
     Installable for the same reason a tool is, and with the same three files
@@ -1423,6 +1433,7 @@ def build_hub(out, templates, locale, locales, site, by_slug, footer, links,
         # against the page that loaded it, not against the script - so a copy
         # per language would be that many ways to fetch one file.
         'offline_href': f'/offline.js?v={offline_v}',
+        'filter_href': f'/hub-filter.js?v={filter_v}',
     })
     context['ui'] = i18n.render_ui(templates, root['ui'], context,
                                    f'ui [{locale["lang"]}]')

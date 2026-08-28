@@ -416,6 +416,9 @@ guarantees_note = """
     nennt vier Prüfungen, die Sie selbst durchführen können, auf dieser Seite
     wie auf jeder anderen."""
 
+hub_filter_label = "Werkzeug suchen"
+hub_filter_none = "Kein Werkzeug passt dazu."
+
 hub_guides_note = """
     Unsicher, welche Einstellung Sie bewegen sollen oder was sie kostet?
     <a href="{{ base }}{{ links.guides }}/">Zu jedem Werkzeug gibt es einen

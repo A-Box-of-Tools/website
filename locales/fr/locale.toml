@@ -380,6 +380,9 @@ guarantees_note = """
     présente quatre vérifications que vous pouvez mener vous-même, sur ce site
     comme sur n'importe quel autre."""
 
+hub_filter_label = "Trouver un outil"
+hub_filter_none = "Aucun outil ne correspond."
+
 hub_guides_note = """
     Vous ne savez pas quel réglage déplacer, ni ce qu'il coûte&nbsp;?
     <a href="{{ base }}{{ links.guides }}/">Il y a un guide pour chaque

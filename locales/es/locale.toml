@@ -362,6 +362,9 @@ guarantees_note = """
     propone cuatro comprobaciones que puedes hacer tú, aquí o en cualquier otro
     sitio."""
 
+hub_filter_label = "Buscar una herramienta"
+hub_filter_none = "Ninguna herramienta coincide."
+
 hub_guides_note = """
     ¿No sabes qué ajuste mover, ni qué cuesta?
     <a href="{{ base }}{{ links.guides }}/">Hay una guía para cada

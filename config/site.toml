@@ -14,7 +14,7 @@ name = "A Box of Tools"
 domain = "https://abox.tools/"
 brand_mark = "&#129520;"          # the toolbox emoji, used on the hub header
 lang = "en"
-lastmod = "2026-08-20"     # the hub page's own sitemap date
+lastmod = "2026-08-27"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
@@ -613,6 +613,16 @@ guarantees_note = """
     <a href="{{ base }}{{ links.safety_guide }}/">
       How to tell whether a tool really needs your files</a>
     sets out four checks you can run yourself, on this site or any other."""
+
+# The box above the categories that narrows them as you type. Two strings and
+# no count: "3 of 37" would need a plural rule per language for a number that
+# the reader can already see, since what it is counting is on the screen.
+#
+# The label is used twice on one control - as the placeholder a sighted reader
+# sees and as the <label> a screen reader hears - so it has to read as an
+# instruction rather than as a heading. "Find a tool", not "Search".
+hub_filter_label = "Find a tool"
+hub_filter_none = "No tool matches that."
 
 hub_guides_note = """
     Not sure which setting to move, or what it costs?

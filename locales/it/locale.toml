@@ -357,6 +357,9 @@ guarantees_note = """
     spiega quattro verifiche che puoi fare da solo, qui come su qualunque altro
     sito."""
 
+hub_filter_label = "Trova uno strumento"
+hub_filter_none = "Nessuno strumento corrisponde."
+
 hub_guides_note = """
     Non sai quale impostazione toccare, o quanto ti costa?
     <a href="{{ base }}{{ links.guides }}/">C'è una guida per ogni

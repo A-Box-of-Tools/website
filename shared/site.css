@@ -166,7 +166,87 @@ code {
   unicode-bidi: isolate;
 }
 
+/* ---- the filter -------------------------------------------------------- */
+
+/* The box above the categories, revealed by shared/hub-filter.js and drawn
+   nowhere until it is. It is one row - a magnifier, the field, and the key
+   that focuses it - laid out as a grid so the field takes whatever is left
+   and the two marks keep their own width at any size.
+
+   Logical properties throughout, so the magnifier leads and the key trails in
+   Arabic exactly as they do in English, without a second rule saying so. */
+.tool-filter {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 2rem;
+  padding: 0.15rem 0.75rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.tool-filter:focus-within { border-color: var(--accent); }
+
+.tool-filter-icon { display: flex; color: var(--text-dim); }
+
+/*
+  The field itself carries no border, no ground and no ring: the box around it
+  is the control, and a second outline inside the first is the thing that makes
+  a search field look bolted on. The focus ring goes on the box instead, above.
+
+  `appearance: none` is for Safari, which otherwise draws type="search" as a
+  rounded pill with its own inset shadow and ignores most of what is set here.
+*/
+.tool-filter input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-width: 0;
+  padding: 0.55rem 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+}
+
+.tool-filter input:focus { outline: none; }
+
+/* Safari draws its own clear button on a search field, at a size and position
+   that fights the "/" beside it. */
+.tool-filter input::-webkit-search-decoration,
+.tool-filter input::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.tool-filter-key {
+  padding: 0.05rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  color: var(--text-dim);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+/* The keyboard shortcut it advertises does not exist on a phone, and the mark
+   for it is the width of a character the reader cannot press. */
+@media (max-width: 620px) {
+  .tool-filter-key { display: none; }
+}
+
+.tool-filter-none {
+  margin: 0 0 2.5rem;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+
 /* ---- categories -------------------------------------------------------- */
+
+/* The filter hides a card by setting `hidden` on its row and a whole group by
+   setting it on the section. Neither element has a `display` of its own today,
+   so the attribute already works - this makes that true whatever a later rule
+   sets, which is the same reason shared/css/tool-frame.css carries it. */
+[hidden] { display: none !important; }
 
 .category { margin: 0 0 2.5rem; }
 
