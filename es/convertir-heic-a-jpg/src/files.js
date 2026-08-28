@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{FORMATS}from'./codecs.js';
-export function bytes(n){
-if(n<1024)return`${n} bytes`;
-if(n<1024*1024)return`${(n / 1024).toFixed(n < 10240 ? 1 : 0)} KB`;
-return`${(n / (1024 * 1024)).toFixed(2)} MB`;
+export function bytes(n,t){
+if(n<1024)return t('size.bytes',{n});
+if(n<1024*1024)return t('size.kb',{n:(n/1024).toFixed(n<10240?1:0)});
+return t('size.mb',{n:(n/(1024*1024)).toFixed(2)});
 }
 export function dimensions(width,height){
 return`${width} × ${height}`;
@@ -29,17 +29,19 @@ seen.set(unique,1);
 return unique;
 });
 }
-export function change(before,after){
+export function change(before,after,t){
 if(before===0)return'';
 const delta=Math.round(((before-after)/before)*100);
-if(delta===0)return'about the same size';
-return delta>0?`${delta}% smaller`:`${-delta}% larger`;
+if(delta===0)return t('size.same');
+return t(delta>0?'size.smaller':'size.larger',{n:Math.abs(delta)});
 }
-export function metadataText(exif){
-if(!exif.present)return'no photo details in this file';
+export function metadataText(exif,t){
+if(!exif.present)return t('meta.none');
 const parts=[];
-if(exif.gps)parts.push('GPS coordinates');
+if(exif.gps)parts.push(t('meta.gps'));
 if(exif.taken)parts.push(exif.taken);
 if(exif.camera)parts.push(exif.camera);
-return parts.length?parts.join(' · '):'photo details, but nothing identifying';
+return parts.length
+?parts.reduce((a,b)=>t('join.dot',{a,b}))
+:t('meta.nothing');
 }

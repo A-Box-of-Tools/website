@@ -34,9 +34,10 @@ release(surface.el);
 }
 const blob=await new Promise((resolve)=>target.el.toBlob(resolve,mime,quality));
 release(target.el);
-if(!blob)throw new Error(`this browser would not write ${FORMATS[mime]?.label ?? mime}.`);
+if(!blob)throw said('codec.nowrite',{format:FORMATS[mime]?.label??mime});
 return blob;
 }
+const said=(key,values={})=>Object.assign(new Error(key),{values});
 function canvas(width,height,alpha){
 const el=document.createElement('canvas');
 el.width=width;

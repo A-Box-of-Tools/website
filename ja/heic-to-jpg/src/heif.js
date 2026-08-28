@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const ENGINE=new URL('../vendor/libheif.js',import.meta.url);
+const said=(key,values={})=>Object.assign(new Error(key),{values});
 let loading=null;
 export function warmEngine(){
 engine().catch(()=>{
@@ -15,15 +16,13 @@ const script=document.createElement('script');
 script.src=ENGINE.href;
 script.async=true;
 script.addEventListener('load',resolve,{once:true});
-script.addEventListener('error',()=>reject(new Error(
-'the decoder did not load. It is served from this site, so this is either '
-+'a blocked request or a bad first visit - reloading usually fixes it.',
-)),{once:true});
+script.addEventListener('error',
+()=>reject(said('heif.noload')),{once:true});
 document.head.append(script);
 });
 const factory=globalThis.libheif;
 if(typeof factory!=='function'){
-throw new Error('the decoder loaded but did not start.');
+throw said('heif.nostart');
 }
 return factory();
 }
@@ -34,10 +33,10 @@ let images;
 try{
 images=decoder.decode(bytes);
 }catch(error){
-throw new Error(`the decoder could not read this file (${error.message}).`);
+throw said('heif.noread',{detail:error.message});
 }
 if(!images||images.length===0){
-throw new Error('there is no picture in this file that the decoder could find.');
+throw said('heif.nopicture');
 }
 const out=[];
 try{
@@ -45,7 +44,7 @@ for(const image of images){
 const width=image.get_width();
 const height=image.get_height();
 if(!(width>0&&height>0)){
-throw new Error('the picture in this file has no size the decoder could use.');
+throw said('heif.nosize');
 }
 const surface={
 width,
@@ -55,7 +54,7 @@ data:new Uint8ClampedArray(width*height*4),
 await new Promise((resolve,reject)=>{
 image.display(surface,(result)=>{
 if(result)resolve();
-else reject(new Error('the decoder read the file but could not draw it.'));
+else reject(said('heif.nodraw'));
 });
 });
 out.push({

@@ -65,7 +65,8 @@ for(const file of files){
 const head=new Uint8Array(await file.slice(0,HEAD_BYTES).arrayBuffer());
 const brand=heifBrand(head);
 if(!brand){
-failures.push(`${file.name}: ${refusal(head, file)}`);
+failures.push(phrase('load.refused',
+{name:file.name,why:refusal(head,file)}));
 continue;
 }
 items.push({
@@ -89,18 +90,10 @@ clearResults();
 render();
 }
 function refusal(head,file){
-if(isAvif(head)){
-return'this is an AVIF, not a HEIC. Every current browser opens one already, '
-+'so there is nothing here it needs doing to it.';
-}
-if(head[0]===0xff&&head[1]===0xd8){
-return'this is already a JPEG.';
-}
-if(head[0]===0x89&&head[1]===0x50){
-return'this is a PNG, which already opens everywhere.';
-}
-return`this is not a HEIC. Whatever ${file.name} is, the first bytes of it are `
-+'not a HEIF container, and the name is not evidence either way.';
+if(isAvif(head))return phrase('refuse.avif');
+if(head[0]===0xff&&head[1]===0xd8)return phrase('refuse.jpeg');
+if(head[0]===0x89&&head[1]===0x50)return phrase('refuse.png');
+return phrase('refuse.other',{name:file.name});
 }
 function removeItem(id){
 const at=items.findIndex((i)=>i.id===id);
@@ -120,7 +113,8 @@ const any=items.length>0;
 el.listToolbar.hidden=!any;
 el.clearAll.disabled=busy;
 el.countLabel.textContent=any
-?`${items.length} photo${items.length === 1 ? '' : 's'}, ${humanBytes(totalBytes())} in total`
+?phrase(items.length===1?'list.count.one':'list.count.many',
+{n:items.length,size:humanBytes(totalBytes(),phrase)})
 :'';
 el.convertAll.disabled=!any||busy;
 renderList();
@@ -142,22 +136,20 @@ name.textContent=item.file.name;
 text.appendChild(name);
 const sub=document.createElement('p');
 sub.className='file-sub';
-sub.textContent=[
-`HEIC (${item.brand})`,
-humanBytes(item.file.size),
-].join(' · ');
+sub.textContent=phrase('row.sub',
+{brand:item.brand,size:humanBytes(item.file.size,phrase)});
 text.appendChild(sub);
 const note=document.createElement('p');
 note.className=item.exif.gps?'file-note file-note-gps':'file-note';
-note.textContent=metadataText(item.exif);
+note.textContent=metadataText(item.exif,phrase);
 text.appendChild(note);
 main.appendChild(text);
 li.appendChild(main);
 const remove=document.createElement('button');
 remove.type='button';
 remove.className='row-remove';
-remove.title=`Take ${item.file.name} off the list`;
-remove.setAttribute('aria-label',`Take ${item.file.name} off the list`);
+remove.title=phrase('row.remove',{name:item.file.name});
+remove.setAttribute('aria-label',remove.title);
 remove.textContent='×';
 remove.disabled=busy;
 remove.addEventListener('click',()=>removeItem(item.id));
@@ -169,25 +161,15 @@ function renderFormatNote(){
 const mime=el.formatSelect.value;
 const lossy=FORMATS[mime]?.lossy;
 el.qualityRow.hidden=!lossy;
-const format={
-[JPEG]:'JPEG is what the phone would have written if it had been asked to. '
-+'Every program, every website and every printer opens one.',
-[PNG]:'PNG throws nothing away, and a photograph saved as one is typically '
-+'five to ten times the size of the JPEG. It is the right choice for a '
-+'screenshot or a diagram and the wrong one for a holiday.',
-[WEBP]:'WebP is smaller than JPEG at the same quality and is opened by every '
-+'browser released since 2020 - but not by every desktop program, which is '
-+'the thing to check before sending one to somebody.',
-}[mime]??'';
+const format={[JPEG]:'format.jpeg',[PNG]:'format.png',[WEBP]:'format.webp'}[mime];
 const details=!el.keepExif.checked
-?'The date, camera and location are left out.'
+?phrase('exif.dropped')
 :mime===JPEG
-?'The date, camera and location are copied across, with the rotation tag '
-+'corrected because the picture itself has already been turned the right way up.'
-:`The photo details cannot come along: only JPEG has a standard place to put `
-+`them that the canvas can write, so a ${FORMATS[mime]?.label ?? 'file'} `
-+`comes out with the picture and nothing else.`;
-el.formatNote.textContent=`${format} ${details}`;
+?phrase('exif.kept')
+:phrase('exif.cannot',{format:FORMATS[mime]?.label??phrase('format.file')});
+el.formatNote.textContent=format
+?phrase('join.sentences',{a:phrase(format),b:details})
+:details;
 }
 for(const control of[el.formatSelect,el.keepExif]){
 control.addEventListener('change',()=>{
@@ -212,11 +194,11 @@ const collected=[];
 const failures=[];
 let stopped=false;
 try{
-showProgress(0,items.length,'','waiting for the decoder');
+showProgress(0,items.length,'',phrase('step.waiting'));
 await engine();
 for(const[index,item]of items.entries()){
 if(stopping){stopped=true;break;}
-showProgress(index,items.length,item.file.name,'reading');
+showProgress(index,items.length,item.file.name,phrase('step.reading'));
 try{
 for(const result of await convertOne(item,(note)=>{
 if(stopping)throw new DOMException('Cancelled','AbortError');
@@ -226,12 +208,14 @@ collected.push(result);
 }
 }catch(error){
 if(error?.name==='AbortError'){stopped=true;break;}
-failures.push(`${item.file.name}: ${error.message}`);
+failures.push(phrase('load.refused',{
+name:item.file.name,why:phrase(error.message,error.values),
+}));
 }
 await new Promise((resolve)=>setTimeout(resolve,0));
 }
 }catch(error){
-failures.push(error.message);
+failures.push(phrase(error.message,error.values));
 }finally{
 busy=false;
 stopping=false;
@@ -252,7 +236,7 @@ el.cancel.addEventListener('click',()=>{stopping=true;});
 function showProgress(index,total,name,note){
 el.progressBar.style.width=`${Math.round((index / total) * 100)}%`;
 el.progressLabel.textContent=name
-?`${index + 1} of ${total}: ${name} - ${note}`
+?phrase('progress.line',{index:index+1,total,name,note})
 :note;
 }
 async function convertOne(item,onStep){
@@ -260,14 +244,15 @@ const mime=el.formatSelect.value;
 const quality=Number(el.quality.value)/100;
 const keepExif=el.keepExif.checked;
 const bytes=new Uint8Array(await item.file.arrayBuffer());
-onStep('decoding');
+onStep(phrase('step.decoding'));
 const pictures=await decodeHeic(bytes);
 const tiff=keepExif&&mime===JPEG?readExif(bytes):null;
 const out=[];
 for(const[index,picture]of pictures.entries()){
 onStep(pictures.length>1
-?`writing picture ${index + 1} of ${pictures.length}`
-:`writing the ${FORMATS[mime]?.label ?? 'file'}`);
+?phrase('step.writing.picture',{index:index+1,total:pictures.length})
+:phrase('step.writing.file',
+{format:FORMATS[mime]?.label??phrase('format.file')}));
 let blob=await encodePixels(picture,{mime,quality});
 let metadata='none';
 if(tiff&&picture.primary){
@@ -314,10 +299,15 @@ const before=new Set(results.map((r)=>r.name)).size;
 const beforeBytes=[...new Map(results.map((r)=>[r.name,r.before])).values()]
 .reduce((n,size)=>n+size,0);
 const afterBytes=results.reduce((n,r)=>n+r.after,0);
-const label=FORMATS[results[0].mime]?.label??'the new format';
-el.resultsSummary.textContent=`${before} HEIC ${before === 1 ? 'file' : 'files'} `
-+`→ ${results.length} ${label} ${results.length === 1 ? 'picture' : 'pictures'}. `
-+`${humanBytes(beforeBytes)} → ${humanBytes(afterBytes)}, ${change(beforeBytes, afterBytes)}.`;
+const label=FORMATS[results[0].mime]?.label??phrase('format.new');
+el.resultsSummary.textContent=phrase('results.summary',{
+files:phrase(before===1?'n.heic.one':'n.heic.many',{n:before}),
+pictures:phrase(results.length===1?'n.picture.one':'n.picture.many',
+{n:results.length,format:label}),
+before:humanBytes(beforeBytes,phrase),
+after:humanBytes(afterBytes,phrase),
+change:change(beforeBytes,afterBytes,phrase),
+});
 el.downloadZip.hidden=results.length<2;
 el.downloadZip.onclick=async()=>{
 el.downloadZip.disabled=true;
@@ -340,7 +330,7 @@ resultUrls.push(url);
 const thumb=document.createElement('img');
 thumb.className='result-thumb';
 thumb.src=url;
-thumb.alt=`The converted picture: ${result.outName}`;
+thumb.alt=phrase('result.alt',{name:result.outName});
 thumb.loading='lazy';
 li.appendChild(thumb);
 const text=document.createElement('div');
@@ -352,8 +342,12 @@ text.appendChild(name);
 const headline=document.createElement('p');
 headline.className='result-headline';
 headline.textContent=result.parts>1
-?humanBytes(result.after)
-:`${humanBytes(result.before)} → ${humanBytes(result.after)} · ${change(result.before, result.after)}`;
+?humanBytes(result.after,phrase)
+:phrase('result.headline',{
+before:humanBytes(result.before,phrase),
+after:humanBytes(result.after,phrase),
+change:change(result.before,result.after,phrase),
+});
 text.appendChild(headline);
 const detail=document.createElement('p');
 detail.className='result-detail';
@@ -366,21 +360,28 @@ const link=document.createElement('a');
 link.className='primary as-button';
 link.href=url;
 link.download=result.outName;
-link.textContent='Download';
+link.textContent=phrase('result.download');
 actions.appendChild(link);
 li.appendChild(actions);
 return li;
 }
 function describe(result){
-const parts=[`${FORMATS[result.mime]?.label ?? result.mime} at ${dimensions(result.width, result.height)}`];
-if(FORMATS[result.mime]?.lossy)parts.push(`quality ${Math.round(result.quality * 100)}`);
-if(result.part)parts.push(`picture ${result.part} of ${result.parts} in the file`);
+const parts=[phrase('out.format',{
+format:FORMATS[result.mime]?.label??result.mime,
+size:dimensions(result.width,result.height),
+})];
+if(FORMATS[result.mime]?.lossy){
+parts.push(phrase('out.quality',{n:Math.round(result.quality*100)}));
+}
+if(result.part){
+parts.push(phrase('out.part',{n:result.part,total:result.parts}));
+}
 parts.push({
-kept:`photo details kept${result.exif.gps ? ', GPS coordinates included' : ''}`,
-none:'no photo details written',
-'too large':'the photo details were too large for a JPEG segment and were left out',
+kept:phrase(result.exif.gps?'out.exif.keptgps':'out.exif.kept'),
+none:phrase('out.exif.none'),
+'too large':phrase('out.exif.toolarge'),
 }[result.metadata]);
-return`${parts.join(' · ')}.`;
+return phrase('out.line',{list:parts.reduce((a,b)=>phrase('join.dot',{a,b}))});
 }
 function saveBlob(blob,name){
 const url=URL.createObjectURL(blob);
@@ -469,12 +470,12 @@ let watching=false;
 function watchEngine(){
 if(watching)return;
 watching=true;
-sayEngine('Loading the HEIC decoder from this site: about 1.4 MB, once.');
+sayEngine(phrase('engine.loading'));
 engine().then(()=>{
-sayEngine('Decoder ready - served from this site, and cached so it is here '
-+'next time and with the network unplugged.','good');
+sayEngine(phrase('engine.ready'),'good');
 }).catch((error)=>{
-sayEngine(`The decoder could not start: ${error.message}`,'warn');
+sayEngine(phrase('engine.failed',
+{why:phrase(error.message,error.values)}),'warn');
 });
 }
 async function checkEncoders(){
@@ -483,7 +484,7 @@ if(writable.has(WEBP))return;
 for(const option of el.formatSelect.options){
 if(option.value===WEBP){
 option.disabled=true;
-option.textContent='WebP - not supported by this browser';
+option.textContent=phrase('webp.unsupported');
 }
 }
 if(el.formatSelect.value===WEBP)el.formatSelect.value=JPEG;
@@ -496,7 +497,7 @@ window.addEventListener('unhandledrejection',(event)=>{
 showLoadError(phrase('error.broke',{detail:event.reason?.message??event.reason}));
 });
 el.qualityValue.textContent=el.quality.value;
-sayEngine('The HEIC decoder loads from this site the first time you use it: about 1.4 MB, once, then cached.');
+sayEngine(phrase('engine.first'));
 render();
 checkEncoders();
 monitorNetwork();
