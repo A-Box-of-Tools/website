@@ -1105,7 +1105,7 @@ function matching() {
 
   return rows.filter(({ element }) => {
     const known = describe(element.tag);
-    const { shown: value } = display(element, open.decoder);
+    const { shown: value } = display(element, open.decoder, phrase);
     return (asTag !== null && element.tag.includes(asTag))
       || (known.name ?? '').toLowerCase().includes(query)
       || value.toLowerCase().includes(query);
@@ -1143,7 +1143,7 @@ function lede(list, page, query) {
 
 function tagRow(element, depth, meta) {
   const known = describe(element.tag);
-  const { shown: value, raw, sequence } = display(element, open.decoder);
+  const { shown: value, raw, sequence } = display(element, open.decoder, phrase);
 
   const row = document.createElement('tr');
   if (meta) row.className = 'meta-row';
