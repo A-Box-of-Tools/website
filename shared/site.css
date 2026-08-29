@@ -457,6 +457,22 @@ code {
 .brand-home { color: inherit; text-decoration: none; }
 .brand-home:hover { color: var(--accent); }
 
+/*
+  The site mark above a page heading, on the one page that asks for it. The
+  selector is two deep because .site-logo below sets 1.35em for the brand line
+  and the footer, and this has to outrank it without changing what those get.
+
+  Sized in px rather than em: this one is a picture rather than a glyph sitting
+  in a line of type, so it should not resize with whatever font-size the header
+  happens to inherit.
+*/
+.page-mark { margin: 0.4rem 0 1rem; line-height: 0; }
+.page-mark .site-logo { width: 104px; height: 104px; }
+
+@media (max-width: 620px) {
+  .page-mark .site-logo { width: 76px; height: 76px; }
+}
+
 .site-logo {
   width: 1.35em;
   height: 1.35em;

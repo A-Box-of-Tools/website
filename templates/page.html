@@ -110,6 +110,17 @@
     <span aria-hidden="true">&rsaquo;</span>
 {% endfor %}    <span aria-current="page">{{ page.nav }}</span>
   </nav>
+{% endif %}  <!--
+    The site mark, drawn at a size worth looking at, on the one page whose job
+    is to say who is behind all this. Everywhere else it is 1.35em in the brand
+    line and again in the footer, which is enough to identify a page and not
+    enough to be looked at. Set by `mark` in the page's own toml, defaulted off
+    in buildlib/site.py, so this is a page opting in rather than the template
+    knowing which page is which.
+  -->
+{% if page.mark %}  <div class="page-mark">
+{% include "partials/site-mark.html" %}
+  </div>
 {% endif %}  <h1>{{ page.heading }}</h1>
   <p class="lede">
 {{ page.lede }}

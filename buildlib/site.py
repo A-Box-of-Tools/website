@@ -564,6 +564,13 @@ def load_page(path, site, root):
     # out. build.py checks the slug names a tool that exists.
     page.setdefault('tool', '')
 
+    # Whether the page draws the site mark above its heading. Only About does,
+    # because only About is the page a reader lands on to find out who is
+    # behind the site - and a page answering that question should show the mark
+    # it is answering for, at a size somebody can actually look at rather than
+    # the 1.35em it gets in the brand line and the footer.
+    page.setdefault('mark', False)
+
     page['url'] = f'{site["domain"]}{page["slug"]}/'
     page['dir'] = path.parent
     # How far this page sits below the root, so the frame around it can point at

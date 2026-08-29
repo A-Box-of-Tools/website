@@ -21,6 +21,10 @@ nav = "About"
 title = "About abox.tools &mdash; Who Makes These Tools, and Why"
 description = "An independent, self-funded project: thirty-six tools that run entirely in your browser, the reason they are built that way, how the site pays for itself, and how to check every claim on it for yourself."
 
+# The one page that draws the site mark full size above its heading. See the
+# note beside the default in buildlib/site.py.
+mark = true
+
 heading = "About abox.tools"
 lede = """
     One person, in Ontario, building the tools they kept needing and kept not
