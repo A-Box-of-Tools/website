@@ -19,6 +19,17 @@ The dark banner is the one to reach for by default: it holds the most contrast
 against X's own chrome in either of its themes, and the app tiles read
 brightest against it.
 
+## Licence
+
+These are trade marks, and they are **not** covered by this repository's MIT or
+CC BY licences — see [`LICENSE-BRAND`](../LICENSE-BRAND) at the root, which says
+what you may do with them without asking (refer to the site, link to it, use the
+mark unaltered to identify it) and what needs permission (using it as your own,
+altering it, implying endorsement).
+
+That boundary is the reason the file exists: an MIT grant over a logo would let
+anyone put it on their own product.
+
 ## Where the mark actually lives
 
 `shared/logo.svg` — that is the only place the shape is authored. The three

@@ -75,6 +75,7 @@ INVISIBLE_FILES = (
     'ROADMAP.md',
     'LICENSE',
     'LICENSE-CONTENT',
+    'LICENSE-BRAND',
     '.gitignore',
     '.gitattributes',
 )
