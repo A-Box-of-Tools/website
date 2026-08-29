@@ -112,7 +112,10 @@
   </nav>
 {% endif %}  <!--
     The heading, the lede and the date are wrapped so that a page which asks
-    for the site mark can set the two side by side. The wrapper is written on
+    for the site mark can set the two side by side, the text leading and the
+    mark to its right. The mark comes after the text in the markup rather than
+    being floated: that way Arabic mirrors the pair without a second rule, and
+    a reader on a screen reader meets the heading before the decoration. The wrapper is written on
     every page rather than only on those, because a flex row with one child
     lays out exactly as the bare elements did - so nothing else in the tree
     moves, and there is no second shape of this header to keep working.
@@ -125,10 +128,7 @@
     knowing which page is which.
   -->
   <div class="head-lockup">
-{% if page.mark %}    <div class="page-mark">
-{% include "partials/site-mark.html" %}
-    </div>
-{% endif %}    <div class="head-text">
+    <div class="head-text">
       <h1>{{ page.heading }}</h1>
       <p class="lede">
 {{ page.lede }}
@@ -145,7 +145,10 @@
       </p>
 {% endif %}      <p class="legal-date">{{ ui.last_updated }} {{ page.updated }}</p>
     </div>
-  </div>
+{% if page.mark %}    <div class="page-mark">
+{% include "partials/site-mark.html" %}
+    </div>
+{% endif %}  </div>
 </header>
 
 <!--
