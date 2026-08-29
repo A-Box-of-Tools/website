@@ -179,7 +179,7 @@ TRANSLATABLE_SITE_PATHS = (
 # quietly redefining one in the middle of a wall of prose.
 STRUCTURAL_KEYS = frozenset({
     'slug', 'id', 'order', 'lastmod', 'published', 'category', 'group',
-    'mark', 'icon', 'favicon', 'brand_mark', 'kind', 'tool',
+    'mark', 'icon', 'favicon', 'kind', 'tool',
     'css_parts', 'js_parts', 'roadmap_group', 'handoff',
     # `analytics_extra` is prose, and is still structure, which looks like a
     # contradiction until you see where it lands: the tail of one sentence in

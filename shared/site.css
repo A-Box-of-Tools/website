@@ -66,7 +66,17 @@ body {
   color: var(--text-dim);
 }
 
-.brand-mark { font-size: 1.05rem; }
+/*
+  The site mark in the brand line, which used to be the toolbox emoji. An emoji
+  sits on the text baseline by itself; an inline SVG sits on it badly, so it is
+  nudged down by roughly the distance between a lowercase x-height and the
+  bottom of the box it is drawn in.
+
+  1.35em comes from .site-logo below, which the footer already uses for the same
+  pairing of mark and wordmark. Nothing here overrides it - the two lockups
+  should not drift apart.
+*/
+.brand .site-logo { vertical-align: -0.34em; }
 
 .hub-head h1 {
   margin: 0;
