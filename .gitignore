@@ -37,3 +37,6 @@ __test-*.png
 # Cloudflare API tokens and anything else local
 .env
 *.token
+
+# Written by scripts/emit_media.py as the input to rendering media/*.png.
+media/src/

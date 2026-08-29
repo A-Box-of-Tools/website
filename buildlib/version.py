@@ -65,6 +65,7 @@ INVISIBLE = (
     'docs/',
     '.claude/',
     'workers/',          # deployed by hand, and not part of a page
+    'media/',            # artwork for profiles and press; the build never copies it
 )
 
 #: Individual files, rather than trees, that are equally invisible.
