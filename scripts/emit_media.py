@@ -15,11 +15,20 @@ The layout is built around what X does to a header image, none of which is
 guessable from the file on its own:
 
   1500x500 is the header size. The avatar is a circle overlapping the BOTTOM
-  LEFT, covering roughly the first 210px across and 130px up from the bottom -
-  so nothing that has to be read goes there. The header is cropped vertically
-  on narrow screens, so the copy sits in a band about 90px clear of the top and
-  bottom edges. And it is shown at roughly a third of these pixels on a phone,
-  which is why the type is 72px and there are only two lines of it.
+  LEFT - 319px across, centred at x=242, so it covers x 82..401 and the bottom
+  160px. That is measured off a live profile, not estimated: the first pass
+  guessed 208px at x=164, which was a third too small, and the banner it
+  produced put the mark directly above the avatar so the profile showed the
+  same logo twice, stacked.
+
+  Hence two layouts that leave the corner alone. `clear` carries no mark at all
+  and lets the avatar be the logo; `mark` puts one at the far right, where it
+  reads as a bookend rather than a repeat. Both start their type at x=452.
+
+  The header is also cropped vertically on narrow screens, so the copy sits in
+  a band about 90px clear of the top and bottom edges. And it is shown at
+  roughly a third of these pixels on a phone, which is why the type is large
+  and there are only two lines of it.
 
   The avatar is 400x400 and X crops it to a circle, so the mark is inset well
   clear of the corners.
@@ -71,15 +80,24 @@ TEXTURE = [(1352, 54, 44, -14, 'logo-app-b', .15), (1428, 168, 28, 22, 'logo-app
            (1245, 250, 16, 30, 'logo-app-d', .10)]
 
 
-def tiles(palette):
+#: For the layouts that leave the bottom left alone. Nothing sits inside the
+#: avatar's circle, and nothing sits behind the type.
+TEXTURE_CLEAR = [
+    (1330, 60, 44, -14, 'logo-app-b', .15), (1420, 176, 28, 22, 'logo-app-c', .13),
+    (1272, 392, 22, 40, 'logo-app-d', .12), (1408, 320, 34, -18, 'logo-app-a', .11),
+    (96, 58, 30, 18, 'logo-app-c', .13), (192, 132, 20, -24, 'logo-app-b', .11),
+    (52, 196, 16, 30, 'logo-app-d', .10), (1214, 244, 16, 30, 'logo-app-d', .10)]
+
+
+def tiles(palette, spec=None):
     return '\n'.join(
         f'  <div style="position:absolute;left:{x}px;top:{y}px;width:{s}px;'
         f'height:{s}px;border-radius:{s * 0.28:.0f}px;background:{palette[key]};'
         f'opacity:{op};transform:rotate({rot}deg)"></div>'
-        for x, y, s, rot, key, op in TEXTURE)
+        for x, y, s, rot, key, op in (spec or TEXTURE))
 
 
-BANNER = '''<!doctype html><meta charset="utf-8">
+HEAD_ONLY = '''<!doctype html><meta charset="utf-8">
 <style>
   * {{ box-sizing: border-box; }}
   body {{ margin: 0; width: 1500px; height: 500px; overflow: hidden; }}
@@ -111,8 +129,16 @@ BANNER = '''<!doctype html><meta charset="utf-8">
   }}
   .tick {{ color: {ok}; margin-right: 9px; font-weight: 700; }}
   .mark {{ flex: none; line-height: 0; }}
+  /* The layouts that leave the avatar's corner alone start here. 452 is
+     clear of the circle's right edge at x=401, with room to breathe. */
+  .block {{ position: absolute; left: 452px; top: 50%;
+           transform: translateY(-50%); }}
+  .right-mark {{ position: absolute; right: 74px; top: 50%;
+                transform: translateY(-50%); line-height: 0; }}
 </style>
-<div class="banner">
+'''
+
+BANNER = HEAD_ONLY + '''<div class="banner">
 {texture}
   <div class="inner">
     <div class="mark">{mark}</div>
@@ -126,6 +152,32 @@ BANNER = '''<!doctype html><meta charset="utf-8">
       </div>
     </div>
   </div>
+</div>
+'''
+
+
+#: The copy block, identical in both of the layouts that clear the avatar.
+COPY = '''    <p class="kicker">abox.tools</p>
+    <h1>A box of tools that<br><span class="quiet">never touch a server</span></h1>
+    <div class="chips">
+      <span class="chip"><span class="tick">&check;</span>always free</span>
+      <span class="chip"><span class="tick">&check;</span>nothing uploaded</span>
+      <span class="chip"><span class="tick">&check;</span>works offline</span>
+    </div>
+'''
+
+BANNER_CLEAR = HEAD_ONLY + '''<div class="banner">
+{texture}
+  <div class="block">
+{copy}  </div>
+</div>
+'''
+
+BANNER_MARK = HEAD_ONLY + '''<div class="banner">
+{texture}
+  <div class="block">
+{copy}  </div>
+  <div class="right-mark">{mark}</div>
 </div>
 '''
 
@@ -164,12 +216,27 @@ THEMES = [
 def main():
     SRC.mkdir(parents=True, exist_ok=True)
     for name, palette, page, avatar_bg in THEMES:
+        # The original layout, mark on the left. Kept because it reads well on
+        # its own; see media/README.md for what it does on a live profile.
         (SRC / f'banner-{name}.html').write_bytes(
             BANNER.format(mark=mark(palette, 260), texture=tiles(palette),
                           **page).encode('utf-8'))
+
+        # The two that leave the avatar's corner alone. Only the light and dark
+        # colourways of these are kept - the yellow one is the light palette on
+        # a warm ground, which is the pairing the profile actually uses.
+        if name in ('yellow', 'dark'):
+            clear = tiles(palette, TEXTURE_CLEAR)
+            (SRC / f'banner-clear-{name}.html').write_bytes(
+                BANNER_CLEAR.format(texture=clear, copy=COPY, **page).encode('utf-8'))
+            (SRC / f'banner-mark-{name}.html').write_bytes(
+                BANNER_MARK.format(texture=tiles(palette, TEXTURE_CLEAR[4:]),
+                                   copy=COPY, mark=mark(palette, 250),
+                                   **page).encode('utf-8'))
+
         (SRC / f'avatar-{name}.html').write_bytes(
             AVATAR.format(bg=avatar_bg, mark=mark(palette, 296)).encode('utf-8'))
-        print(f'wrote media/src/banner-{name}.html and avatar-{name}.html')
+        print(f'wrote the html for {name}')
 
     # The mark itself, so the kit is complete without reaching into shared/.
     # A copy, not a second original: shared/logo.svg is the only place the
