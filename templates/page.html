@@ -91,7 +91,8 @@
   <div class="head-row">
     <p class="brand">
       <a class="brand-home" href="{{ base }}">
-        <span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools
+        {% include "partials/site-mark.html" %}
+        abox.tools
       </a>
     </p>
     {% include "partials/lang-pick.html" %}

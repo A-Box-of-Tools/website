@@ -125,7 +125,10 @@
 
 <header class="hub-head">
   <div class="head-row">
-    <p class="brand"><span class="brand-mark" aria-hidden="true">{{ site.brand_mark }}</span> abox.tools</p>
+    <p class="brand">
+      {% include "partials/site-mark.html" %}
+      abox.tools
+    </p>
     {% include "partials/lang-pick.html" %}
   </div>
   <h1>{{ site.hub.heading }}</h1>

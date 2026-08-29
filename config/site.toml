@@ -12,7 +12,6 @@
 
 name = "A Box of Tools"
 domain = "https://abox.tools/"
-brand_mark = "&#129520;"          # the toolbox emoji, used on the hub header
 lang = "en"
 lastmod = "2026-08-27"     # the hub page's own sitemap date
 source_url = "https://github.com/A-Box-of-Tools/website"
