@@ -784,7 +784,7 @@ const digits=query.replace(/[\s(),.-]/g,'');
 const asTag=/^[0-9a-f]{3,8}$/.test(digits)?digits:null;
 return rows.filter(({element})=>{
 const known=describe(element.tag);
-const{shown:value}=display(element,open.decoder);
+const{shown:value}=display(element,open.decoder,phrase);
 return(asTag!==null&&element.tag.includes(asTag))
 ||(known.name??'').toLowerCase().includes(query)
 ||value.toLowerCase().includes(query);
@@ -815,7 +815,7 @@ total:count(list.length),query,
 }
 function tagRow(element,depth,meta){
 const known=describe(element.tag);
-const{shown:value,raw,sequence}=display(element,open.decoder);
+const{shown:value,raw,sequence}=display(element,open.decoder,phrase);
 const row=document.createElement('tr');
 if(meta)row.className='meta-row';
 if(sequence)row.classList.add('sequence-row');
