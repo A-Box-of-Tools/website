@@ -458,16 +458,35 @@ code {
 .brand-home:hover { color: var(--accent); }
 
 /*
-  The site mark above a page heading, on the one page that asks for it. The
-  selector is two deep because .site-logo below sets 1.35em for the brand line
-  and the footer, and this has to outrank it without changing what those get.
+  The heading block, and beside it the site mark on the one page that asks for
+  it. A flex row with a single child lays out exactly as the bare elements did,
+  so every page that does not set `mark` is unmoved by this.
 
-  Sized in px rather than em: this one is a picture rather than a glyph sitting
-  in a line of type, so it should not resize with whatever font-size the header
-  happens to inherit.
+  The mark leads, because it is the thing being introduced and the heading is
+  what introduces it. `align-items: center` rather than flex-start: the mark is
+  a picture with its own weight low and left, and hanging it off the cap height
+  of the h1 leaves it looking dropped.
+
+  The selector for the size is two deep because .site-logo below sets 1.35em
+  for the brand line and the footer, and this has to outrank it without
+  changing what those get. Sized in px rather than em because this one is a
+  picture rather than a glyph in a line of type, so it should not resize with
+  whatever font-size the header happens to inherit.
 */
-.page-mark { margin: 0.4rem 0 1rem; line-height: 0; }
-.page-mark .site-logo { width: 104px; height: 104px; }
+.head-lockup { display: flex; align-items: center; gap: 1.5rem; }
+.head-text { min-width: 0; }
+.page-mark { flex: none; line-height: 0; }
+.page-mark .site-logo { width: 118px; height: 118px; }
+
+/* Side by side stops being side by side well before the phone widths: the lede
+   is 62ch and the mark takes 118px out of the front of it. */
+@media (max-width: 760px) {
+  .head-lockup { display: block; }
+  .page-mark { margin: 0.2rem 0 0.9rem; }
+  .page-mark .site-logo { width: 76px; height: 76px; }
+}
+
+.site-logo { width: 104px; height: 104px; }
 
 @media (max-width: 620px) {
   .page-mark .site-logo { width: 76px; height: 76px; }
