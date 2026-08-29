@@ -1,0 +1,77 @@
+TRADE MARKS AND BRAND ASSETS
+
+Copyright (c) 2026 A Box of Tools
+
+This repository carries two open licences, and this notice is the boundary of
+both of them.
+
+  LICENSE          MIT, and covers the code.
+  LICENSE-CONTENT  CC BY 4.0, and covers the words the site publishes.
+
+Neither of them grants any right in the name or the mark. That is deliberate.
+An MIT grant over a logo would let anyone put it on their own product, and a
+CC BY grant would let anyone publish a modified version of it as ours. The
+point of a mark is that it identifies one thing, and a licence that lets it
+identify anything else destroys the only job it has.
+
+
+WHAT THIS COVERS
+
+  - The names "A Box of Tools" and "abox.tools".
+  - The site mark, wherever it appears in this repository: shared/logo.svg,
+    shared/logo-ink.svg, shared/logo-ink-graphite.svg, the icons in shared/,
+    every tools/*/og.png share card, and everything in media/.
+  - The wordmark, and the combination of the mark with either name.
+
+These are unregistered marks. They are asserted by use, not by a filing.
+
+
+WHAT YOU MAY DO WITHOUT ASKING
+
+  - Refer to the site by name, and link to it.
+  - Use the mark, unaltered, to identify the site in writing about it: an
+    article, a review, a directory listing, a talk, a list of tools you find
+    useful. This is ordinary nominative use and needs no permission.
+  - Reproduce a screenshot of the site that happens to include the mark.
+  - Fork this repository, keeping the mark in place, so long as the fork does
+    not present itself as this project.
+
+Attribution is welcome but not required for any of the above.
+
+
+WHAT YOU MAY NOT DO WITHOUT WRITTEN PERMISSION
+
+  - Use the mark or either name as, or as part of, the name or logo of your own
+    product, service, organisation, domain, or account.
+  - Alter the mark - recolour it, redraw it, crop it, stretch it, add to it, or
+    take a piece out of it - and present the result as the mark.
+  - Use the mark in a way that suggests this project endorses, sponsors,
+    supplies, or is affiliated with something it does not.
+  - Sell the mark, or merchandise carrying it.
+  - Register the mark, either name, or anything confusingly similar, as a trade
+    mark or domain anywhere.
+
+If you run a fork and change what it does, change the name and the mark too.
+That is not a courtesy; it is the whole distinction the mark exists to draw.
+
+
+ONE PART OF THE MARK IS NOT OURS
+
+The music glyph inside the site mark is Lucide's `music` icon, used under the
+ISC licence, and additionally under Feather's MIT licence because Lucide derives
+that icon from Feather. See THIRD-PARTY-NOTICES.md.
+
+Nothing in this notice claims any right over that icon on its own, and nothing
+here restricts your use of it from Lucide under its own terms. What is claimed
+is the composite mark: the tipped gift box, the four app tiles, the confetti,
+the colours, and the arrangement of them.
+
+
+ASKING
+
+Permission for anything in the second list: hi@abox.tools. It is usually a yes
+for anything that is honest about what it is.
+
+
+This notice describes how the holder intends to exercise these rights. It is
+not legal advice, and it is not a substitute for taking any if you need it.
