@@ -458,33 +458,25 @@ code {
 .brand-home:hover { color: var(--accent); }
 
 /*
-  The heading block, and to its right the site mark on the one page that asks
-  for it. A flex row with a single child lays out exactly as the bare elements
-  did, so every page that does not set `mark` is unmoved by this.
+  The site mark opening the article, on the one page that asks for it. It sits
+  inside <main>, so it takes the prose column's own left edge and lines up with
+  the headings and paragraphs under it rather than with the frame around them.
 
-  The text leads and the mark follows, in the markup as well as on screen. That
-  keeps the heading first for anyone reading the page in order, and it means
-  Arabic mirrors the pair from `margin-inline-start` alone rather than needing a
-  rule of its own.
-
-  `margin-inline-start: auto` pushes the mark to the far edge of the header
-  rather than parking it against the lede. The lede wraps at 62ch and the
-  header is 940 wide, so sitting it right after the text would leave it
-  stranded mid-column; at the edge it balances the language picker above it.
-
-  `align-items: center` rather than flex-start: the mark is a picture with its
-  weight low and left, and hung off the cap height of the h1 it looks dropped.
-
-  The selector for the size is two deep because .site-logo below sets 1.35em
-  for the brand line and the footer, and this has to outrank it without
-  changing what those get. Sized in px rather than em because this one is a
-  picture rather than a glyph in a line of type, so it should not resize with
-  whatever font-size the header happens to inherit.
+  There is a rule below setting .site-logo to 1.35em for the brand line and the
+  footer; this is two selectors deep so it outranks that without changing what
+  those get. Sized in px rather than em because this one is a picture rather
+  than a glyph sitting in a line of type, so it should not resize with whatever
+  font-size it happens to inherit.
 */
-.head-lockup { display: flex; align-items: center; gap: 1.75rem; }
-.head-text { min-width: 0; }
-.page-mark { flex: none; line-height: 0; margin-inline-start: auto; }
-.page-mark .site-logo { width: 124px; height: 124px; }
+.page-mark { margin: 0 0 1.9rem; line-height: 0; }
+.page-mark .site-logo { width: 116px; height: 116px; }
+
+@media (max-width: 620px) {
+  .page-mark { margin-bottom: 1.4rem; }
+  .page-mark .site-logo { width: 84px; height: 84px; }
+}
+
+.site-logo { width: 124px; height: 124px; }
 
 /* Side by side stops working well before the phone widths: the lede is 62ch
    and the header has no room left to push the mark into. Stacked, it goes back
