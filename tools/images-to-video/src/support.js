@@ -1,5 +1,7 @@
 /** Feature detection for the two encoding paths. */
 
+import { askSupported } from './shared/codec-support.js';
+
 /**
  * Candidate H.264 codec strings, best profile/level first. Levels matter:
  * 4.0 tops out around 1080p30, so larger canvases need 5.1+ to be accepted.
@@ -35,15 +37,17 @@ export async function pickH264Codec({ width, height, framerate, bitrate }) {
   if (!hasWebCodecs()) return null;
 
   for (const codec of H264_CANDIDATES) {
-    try {
-      const { supported } = await VideoEncoder.isConfigSupported({
-        codec, width, height, framerate, bitrate,
-        avc: { format: 'avc' },
-      });
-      if (supported) return codec;
-    } catch {
-      // Malformed-for-this-browser codec string; try the next one.
-    }
+    const supported = await askSupported(VideoEncoder, {
+      codec, width, height, framerate, bitrate,
+      avc: { format: 'avc' },
+    });
+    if (supported) return codec;
+    // A browser that did not answer at all will not answer for the other
+    // eight either, and asking anyway would turn one deadline into nine. See
+    // shared/js/codec-support.js for the build this really happens on.
+    if (supported === null) return null;
+    // Otherwise a plain no - most often a codec string this browser cannot
+    // parse - so try the next one.
   }
   return null;
 }

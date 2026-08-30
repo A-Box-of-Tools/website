@@ -33,7 +33,7 @@ css_parts = ["progress"]
 # Shared modules this tool asks for. The same arrangement as css_parts, and for
 # the same reason: a component more than one tool needs and no tool should own.
 # file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "codec-support"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools

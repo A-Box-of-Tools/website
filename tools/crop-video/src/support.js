@@ -8,6 +8,8 @@
  * no demuxer for.
  */
 
+import { askSupported } from './shared/codec-support.js';
+
 /**
  * Candidate H.264 codec strings, best profile/level first. Levels matter: 4.0
  * tops out around 1080p30, so larger frames need 5.1 or better to be accepted.
@@ -40,13 +42,9 @@ export function hasMediaRecorder() {
 /** Whether this browser will decode the configuration a demuxed track reports. */
 export async function canDecode(config) {
   if (!hasWebCodecs()) return false;
-  try {
-    const { supported } = await VideoDecoder.isConfigSupported(config);
-    return Boolean(supported);
-  } catch {
-    // A codec string this browser cannot even parse. Not decodable either.
-    return false;
-  }
+  // A browser that never answers is one that cannot decode, as far as anybody
+  // waiting for this page is concerned.
+  return await askSupported(VideoDecoder, config) === true;
 }
 
 /**
@@ -57,15 +55,17 @@ export async function pickH264Codec({ width, height, framerate, bitrate }) {
   if (!hasWebCodecs()) return null;
 
   for (const codec of H264_CANDIDATES) {
-    try {
-      const { supported } = await VideoEncoder.isConfigSupported({
-        codec, width, height, framerate, bitrate,
-        avc: { format: 'avc' },
-      });
-      if (supported) return codec;
-    } catch {
-      // Malformed-for-this-browser codec string; try the next one.
-    }
+    const supported = await askSupported(VideoEncoder, {
+      codec, width, height, framerate, bitrate,
+      avc: { format: 'avc' },
+    });
+    if (supported) return codec;
+    // A browser that did not answer at all will not answer for the other
+    // eight either, and asking anyway would turn one deadline into nine. See
+    // shared/js/codec-support.js for the build this really happens on.
+    if (supported === null) return null;
+    // Otherwise a plain no - most often a codec string this browser cannot
+    // parse - so try the next one.
   }
   return null;
 }
