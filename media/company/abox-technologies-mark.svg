@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Abox Technologies">
+  <title>Abox Technologies</title>
+  <!--
+    The company mark: an A held in square brackets. The name, drawn literally -
+    a box, with an A in it - in the one notation where a bracket IS a container,
+    which is the part that earns the word Technologies.
+
+    Three decisions are load-bearing.
+
+      - The apex is flat, not pointed. A pointed apex makes this look like
+        somebody typed [A] in Helvetica; the flat top is the single detail that
+        says the letter was drawn. It is the first thing to protect.
+      - The brackets are lighter than the letter - 3.6 against 4.4. Equal
+        weights make the punctuation shout as loudly as the name. The brackets
+        are the container and should read as one.
+      - The bracket returns are short. Full-length arms read as punctuation;
+        short ones read as the corners of a box, which is the whole point.
+
+    Colours are baked in rather than inherited, because this file is also used
+    as a favicon, where no page CSS reaches it. The dark block only fires on the
+    viewer's OS theme - it cannot know it has been placed on a dark panel inside
+    a light page. For that, use abox-technologies-mark-reverse.svg.
+  -->
+  <style>
+    .br { stroke: #b07d10; fill: none; }
+    .lt { stroke: #16191d; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .br { stroke: #f0b429; }
+      .lt { stroke: #e8eaed; }
+    }
+  </style>
+  <g stroke-linejoin="miter">
+    <path class="br" stroke-width="3.6" d="M14 12H9.4v40H14"/>
+    <path class="br" stroke-width="3.6" d="M50 12h4.6v40H50"/>
+    <path class="lt" stroke-width="4.4" d="M22 50 29 15h6l7 35"/>
+    <path class="lt" stroke-width="4.4" d="M24.4 38h15.2"/>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Abox Technologies">
+  <title>Abox Technologies</title>
+  <!--
+    The tile, for a favicon, an app icon, or a social avatar.
+
+    The bare mark is stroked, and a 4.4 stroke on a 64 grid is about one pixel
+    once this is a 16px favicon - thin enough to grey out against a busy tab
+    strip. The tile gives it a ground of its own, and the mark is drawn inset
+    and slightly heavier inside it so the whole thing holds at that size.
+
+    The tile inverts on a dark OS theme rather than staying dark, because a
+    near-black tile on a near-black tab strip loses its own edges.
+  -->
+  <style>
+    .tile { fill: #16191d; }
+    .br { stroke: #f0b429; fill: none; }
+    .lt { stroke: #ffffff; fill: none; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #e8eaed; }
+      .br { stroke: #b07d10; }
+      .lt { stroke: #16202b; }
+    }
+  </style>
+  <rect class="tile" width="64" height="64" rx="14"/>
+  <g stroke-linejoin="miter">
+    <path class="br" stroke-width="3.6" d="M18 16h-3.6v32H18"/>
+    <path class="br" stroke-width="3.6" d="M46 16h3.6v32H46"/>
+    <path class="lt" stroke-width="4.4" d="M24 46 29.6 18h4.8l5.6 28"/>
+    <path class="lt" stroke-width="4.4" d="M26.2 36.4h11.6"/>
+  </g>
+</svg>

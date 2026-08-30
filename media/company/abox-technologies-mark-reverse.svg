@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Abox Technologies">
+  <title>Abox Technologies</title>
+  <!--
+    The mark for dark grounds, with no media query: a fixed light palette.
+
+    This exists because the main file decides its colours from the viewer's OS
+    theme, which is right for a favicon and wrong for a dark panel inside a
+    light page - a hero band, a footer, a slide. There the OS is in light mode
+    and the main file would draw near-black on near-black. Use this one instead
+    whenever you control the background and it is dark.
+  -->
+  <style>
+    .br { stroke: #f0b429; fill: none; }
+    .lt { stroke: #e8eaed; fill: none; }
+  </style>
+  <g stroke-linejoin="miter">
+    <path class="br" stroke-width="3.6" d="M14 12H9.4v40H14"/>
+    <path class="br" stroke-width="3.6" d="M50 12h4.6v40H50"/>
+    <path class="lt" stroke-width="4.4" d="M22 50 29 15h6l7 35"/>
+    <path class="lt" stroke-width="4.4" d="M24.4 38h15.2"/>
+  </g>
+</svg>
