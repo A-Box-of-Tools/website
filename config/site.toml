@@ -363,7 +363,7 @@ order = ["merge-pdf", "compress-pdf", "redact-pdf", "images-to-pdf", "document-s
 id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
-order = ["json-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+order = ["json-formatter", "yaml-to-json", "xml-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
 
 # Addresses that moved. Each key is a slug a tool used to answer at, each
 # value the slug of the tool that answers now; build.py writes a stub at the
