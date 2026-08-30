@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 130" width="190" height="130" role="img" aria-label="Abox Technologies">
+  <title>Abox Technologies</title>
+  <!--
+    The stacked lockup: for a square-ish slot - a slide, a business card, a
+    badge - where the horizontal one would have to be set too small to read.
+
+    "TECHNOLOGIES" is tracked out to the width of the word above it rather than
+    set at its natural spacing. That is what stops the second line reading as a
+    caption that happens to be sitting under a logo.
+
+    Same warning as the horizontal lockup: THE TYPE IS LIVE TEXT. Convert to
+    outlines before print.
+  -->
+  <style>
+    .br { stroke: #b07d10; fill: none; }
+    .lt { stroke: #16191d; fill: none; }
+    .nm { fill: #16191d; }
+    .ds { fill: #45505a; }
+    .wm { font-family: Archivo, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+          text-anchor: middle; }
+    @media (prefers-color-scheme: dark) {
+      .br { stroke: #f0b429; }
+      .lt { stroke: #e8eaed; }
+      .nm { fill: #e8eaed; }
+      .ds { fill: #aab4c0; }
+    }
+  </style>
+  <g transform="translate(63 2)">
+  <g stroke-linejoin="miter">
+      <path class="br" stroke-width="3.6" d="M14 12H9.4v40H14"/>
+      <path class="br" stroke-width="3.6" d="M50 12h4.6v40H50"/>
+      <path class="lt" stroke-width="4.4" d="M22 50 29 15h6l7 35"/>
+      <path class="lt" stroke-width="4.4" d="M24.4 38h15.2"/>
+    </g>
+  </g>
+  <text class="wm nm" x="95" y="94" font-size="27" font-weight="700" letter-spacing="-0.5">Abox</text>
+  <text class="wm ds" x="96.7" y="114" font-size="10.5" font-weight="500" letter-spacing="3.4">TECHNOLOGIES</text>
+</svg>

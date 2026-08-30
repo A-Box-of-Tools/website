@@ -3,6 +3,10 @@
 Artwork for places that are not the site: a social profile, a directory
 listing, a press mention, anyone who asks for a logo.
 
+This folder is the **site's** mark, for abox.tools. The company's mark, for
+Abox Technologies, is in [`company/`](company/README.md) and is a different
+drawing on purpose - see the note there. Neither substitutes for the other.
+
 Nothing here is published. The build copies `shared/`, not this folder, so
 these files exist for people rather than for pages.
 
@@ -16,6 +20,7 @@ these files exist for people rather than for pages.
 | `avatar-{dark,light,yellow}.png` | 400&times;400 | X profile picture |
 | `logo.svg` | vector | the mark, in colour |
 | `logo-ink.svg` `logo-ink-graphite.svg` | vector | the mark in one colour, for print and any single-plate job |
+| `company/` | &mdash; | the Abox Technologies mark and its lockups |
 
 **Use `banner-mark-*` or `banner-clear-*`.** The `banner-{dark,light,yellow}`
 set puts the mark at the left, where X's avatar sits directly underneath it, so

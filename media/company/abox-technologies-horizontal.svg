@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 64" width="300" height="64" role="img" aria-label="Abox Technologies">
+  <title>Abox Technologies</title>
+  <!--
+    The horizontal lockup: mark left, name right, for a site header, an email
+    signature, a letterhead.
+
+    "Abox" is bold and "Technologies" regular, because the distinctive half of
+    the name is the half that has to survive being small - set both bold and
+    neither reads as the name.
+
+    Clear space is the width of one bracket arm on every side. Nothing comes
+    closer than that.
+
+    THE TYPE IS LIVE TEXT, NOT OUTLINES. It renders in Archivo where Archivo is
+    installed and falls back to the platform UI face otherwise, so two machines
+    can draw this file differently. Fine on the web, wrong for print: convert
+    the text to outlines in a vector editor first. Archivo is free, under the
+    SIL Open Font License.
+  -->
+  <style>
+    .br { stroke: #b07d10; fill: none; }
+    .lt { stroke: #16191d; fill: none; }
+    .nm { fill: #16191d; }
+    .ds { fill: #45505a; }
+    .wm { font-family: Archivo, "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+          font-size: 24px; letter-spacing: -0.4px; }
+    @media (prefers-color-scheme: dark) {
+      .br { stroke: #f0b429; }
+      .lt { stroke: #e8eaed; }
+      .nm { fill: #e8eaed; }
+      .ds { fill: #aab4c0; }
+    }
+  </style>
+  <g transform="translate(0 6) scale(0.8)">
+  <g stroke-linejoin="miter">
+      <path class="br" stroke-width="3.6" d="M14 12H9.4v40H14"/>
+      <path class="br" stroke-width="3.6" d="M50 12h4.6v40H50"/>
+      <path class="lt" stroke-width="4.4" d="M22 50 29 15h6l7 35"/>
+      <path class="lt" stroke-width="4.4" d="M24.4 38h15.2"/>
+    </g>
+  </g>
+  <text class="wm" x="55" y="40"><tspan class="nm" font-weight="700">Abox</tspan><tspan class="ds" font-weight="400"> Technologies</tspan></text>
+</svg>

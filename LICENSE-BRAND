@@ -17,13 +17,24 @@ identify anything else destroys the only job it has.
 
 WHAT THIS COVERS
 
-  - The names "A Box of Tools" and "abox.tools".
+  - The names "A Box of Tools", "abox.tools", and "Abox Technologies".
   - The site mark, wherever it appears in this repository: shared/logo.svg,
     shared/logo-ink.svg, shared/logo-ink-graphite.svg, the icons in shared/,
     every tools/*/og.png share card, and everything in media/.
-  - The wordmark, and the combination of the mark with either name.
+  - The company mark - the letter A held in square brackets - in every form it
+    takes in media/company/: the colour mark, the reverse, the one-colour mark,
+    the tile, and both lockups with the name set beside it.
+  - The wordmark, and the combination of either mark with any of the names.
 
 These are unregistered marks. They are asserted by use, not by a filing.
+
+There are two marks here and they are not interchangeable. The site mark
+identifies abox.tools, the thing you can use; the company mark identifies Abox
+Technologies, the thing that publishes it. They share an owner and a palette
+and nothing else, deliberately - the site mark is a box being given away, which
+is true of the site and not of the company. Putting one where the other belongs
+misstates which of them is making the claim, and that is the only job either of
+them has.
 
 
 WHAT YOU MAY DO WITHOUT ASKING
@@ -65,6 +76,13 @@ Nothing in this notice claims any right over that icon on its own, and nothing
 here restricts your use of it from Lucide under its own terms. What is claimed
 is the composite mark: the tipped gift box, the four app tiles, the confetti,
 the colours, and the arrangement of them.
+
+The company mark has no such caveat. It contains no third-party work, and what
+is claimed is the whole of it: the bracket pair, the flat-apex letter, the
+weights the two are set at, and the arrangement. The name beside it in the
+lockups is set in Archivo, which is free under the SIL Open Font License; no
+font file ships in this repository, and setting the same words in the same face
+is not something this notice reaches.
 
 
 ASKING

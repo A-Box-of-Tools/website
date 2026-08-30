@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Abox Technologies">
+  <title>Abox Technologies</title>
+  <!--
+    One colour, for a print shop, an embroiderer, or any single-plate job.
+
+    The brackets keep their lighter weight rather than matching the letter. In
+    the colour mark hue does that separating; here weight is the only thing
+    left to do it with, and setting both at 4.4 collapses the mark into one
+    undifferentiated ink shape.
+  -->
+  <style>
+    .k { stroke: #16191d; fill: none; }
+    @media (prefers-color-scheme: dark) { .k { stroke: #e8eaed; } }
+  </style>
+  <g stroke-linejoin="miter" class="k">
+    <path stroke-width="3.4" d="M14 12H9.4v40H14"/>
+    <path stroke-width="3.4" d="M50 12h4.6v40H50"/>
+    <path stroke-width="4.6" d="M22 50 29 15h6l7 35"/>
+    <path stroke-width="4.6" d="M24.4 38h15.2"/>
+  </g>
+</svg>
