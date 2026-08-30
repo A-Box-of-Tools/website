@@ -133,7 +133,7 @@ def _named(inner, match):
     if not name:
         return match.group(0).strip()
     # The opening tag is kept exactly as it was, id and all: four of these are
-    # written to by their tool - edit-audio's depth-note, format-json's
+    # written to by their tool - edit-audio's depth-note, json-formatter's
     # language-note, reverse-video's audio-note, timelapse-video's size-note -
     # and a rebuilt <p> without the id is a tool that has lost its handle.
     return (f'{match.group("open")}<strong>{name}</strong> '

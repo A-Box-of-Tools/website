@@ -57,7 +57,7 @@ TOOLS = ROOT / 'tools'
 # Sentences left in each tool's JavaScript. Lower these as they are moved into
 # the markup; nothing may raise one. See the module docstring.
 BASELINE = {
-    'compare-text': 3,
+    'base64': 0,
     'compress-image': 2,
     'compress-pdf': 6,
     'crop-video': 0,
@@ -71,9 +71,7 @@ BASELINE = {
     # A clock format, and one invariant check in each of the two speed
     # modules - main.js clamps the speed, so neither can be reached.
     'edit-audio': 3,
-    'encode-text': 0,
     'exif-editor': 30,
-    'format-json': 3,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
     # Six invariant checks the writer makes about its own arguments - a bug
@@ -97,6 +95,7 @@ BASELINE = {
     'images-to-pdf': 9,
     # A CSS class name the list builds.
     'images-to-video': 1,
+    'json-formatter': 3,
     'merge-pdf': 5,
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
@@ -122,6 +121,7 @@ BASELINE = {
     'stack-images': 7,
     # An internal marker for an impossible mode, and a viewBox attribute.
     'svg-to-image': 2,
+    'text-diff': 3,
     'timelapse-video': 0,
     # A filename template, a clock format, two CSS percentages and three class
     # names the timeline builds.

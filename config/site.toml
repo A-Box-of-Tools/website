@@ -363,7 +363,7 @@ order = ["merge-pdf", "compress-pdf", "redact-pdf", "images-to-pdf", "document-s
 id = "text-codes-and-passwords"
 name = "Text, codes &amp; passwords"
 note = "Read it, check it, or make it here - no token, no config file and no password on somebody else's server."
-order = ["format-json", "compare-text", "encode-text", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
+order = ["json-formatter", "text-diff", "base64", "share-text", "qr-barcode", "qr-barcode-reader", "hash-checksum", "password-generator"]
 
 # Addresses that moved. Each key is a slug a tool used to answer at, each
 # value the slug of the tool that answers now; build.py writes a stub at the
@@ -371,8 +371,25 @@ order = ["format-json", "compare-text", "encode-text", "share-text", "qr-barcode
 # one page doing four jobs, and in 2026 it became three tools - the locales
 # that had renamed their slug to a search phrase kept their address, so the
 # stubs are for English and the locales that write no slugs at all.
+#
+# The three English slugs then moved a second time. The split had named them
+# for what the page does - format-json, compare-text, encode-text - while
+# every locale that writes its own slug had already named them for what gets
+# typed into a search box: json-formatieren, base64-kodieren, comparar-textos.
+# English was the odd one out, and worst on the page it cost the most:
+# /encode-text/ did not contain the word "base64" anywhere, which is the whole
+# reason anybody arrives there. The English addresses now say what the
+# localized ones have said all along, and the names in [words] already did.
+#
+# text-tools points straight at json-formatter rather than at format-json:
+# a meta refresh landing on a second meta refresh is a chain a crawler is
+# entitled to abandon, and there is no reason to build one when the address
+# it ends at is known right here.
 [redirects]
-"text-tools" = "format-json"
+"text-tools" = "json-formatter"
+"format-json" = "json-formatter"
+"compare-text" = "text-diff"
+"encode-text" = "base64"
 
 #
 # ---------------------------------------------------------------------------

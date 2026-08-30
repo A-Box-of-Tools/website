@@ -3,7 +3,7 @@
  * differences nobody cares about.
  */
 
-export const tool = 'compare-text';
+export const tool = 'text-diff';
 
 export const data = {
   LEFT: JSON.stringify({

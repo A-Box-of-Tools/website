@@ -73,9 +73,9 @@ complete = true
 "merge-pdf" = "pdf-samenvoegen"
 "reverse-video" = "video-achteruit-afspelen"
 "split-gif" = "gif-splitsen-in-frames"
-"format-json" = "json-formatteren"
-"encode-text" = "base64-coderen"
-"compare-text" = "tekst-vergelijken"
+"json-formatter" = "json-formatteren"
+"base64" = "base64-coderen"
+"text-diff" = "tekst-vergelijken"
 "trim-audio" = "audio-knippen"
 # Aaneen geschreven zou het één woord zijn, maar in een adres leest
 # "wachtwoord-generator" beter en het is ook wat er gezocht wordt.

@@ -1,0 +1,241 @@
+#
+# Tekstvergelijker - Dutch.
+#
+# Overrides for tools/text-diff/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Tekstvergelijker"
+heading = "Tekstvergelijker <span class=\"h1-kw\">&mdash; twee teksten vergelijken, naast elkaar</span>"
+tagline = "Twee teksten erin, elk verschil gemarkeerd, regel voor regel en woord voor woord. Er wordt niets in andermans server geplakt."
+
+title = "Teksten vergelijken &mdash; diff naast elkaar &mdash; zonder uploaden"
+description = "Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit."
+og_title = "Twee teksten vergelijken zonder ze in een server te plakken"
+og_description = "Een vergelijker op je eigen apparaat. Regel- en woordverschillen, naast elkaar, en een patch die een codereview kan lezen; en wat je plakt gaat nergens heen."
+og_image_alt = "Tekstvergelijker - twee teksten vergelijken, zonder uploaden"
+
+pledge = """
+    Een vergelijking is rekenwerk op twee tekenreeksen, hier gedaan, in deze
+    pagina. Het algoritme is dat van Myers &mdash; hetzelfde dat
+    <code>git diff</code> gebruikt &mdash;, met de hand geschreven in
+    <code>src/diff.js</code>, waar je het kunt nalezen. Deze tool heeft geen
+    enkele netwerkfunctie, niets op te halen en niets te versturen, en dat telt
+    hier: wat mensen vergelijken zijn contracten, configuratiebestanden en nog
+    niet uitgebrachte code, altijd in paren."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en vergelijk iets. Geen enkel verzoek draagt
+      één teken van wat je plakte. Of trek de stekker uit je internet en vergelijk
+      het alsnog."""
+
+read_first = """
+ en <code>src/diff.js</code> voor het
+      algoritme van Myers, de woord-voor-woordronde binnen elke gewijzigde regel en
+      de drie beveiligingen die voorkomen dat een pathologische vergelijking de
+      pagina bevriest."""
+
+howto_heading = "Zo vergelijk je twee teksten zonder ze te uploaden"
+
+card = """
+            Vergelijk twee teksten en zie wat er veranderde, regel voor regel en
+            woord voor woord. Plak een contract of niet uitgebrachte code zonder
+            het aan iemand te geven."""
+
+[words]
+plural = "teksten"
+choose = "een bestand"
+analytics_extra = """, en geen van de
+  twee kanten van wat deze tool vergelijkt"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen groottelimiet"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Wat je plakt kan nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen
+      daarvan is van ons. Er is hier geen eindpunt waar een geplakt token verzameld zou
+      kunnen worden, en er staat ook niets in de code dat het daarheen zou sturen als
+      dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er staat nergens in <code>src/</code> een
+      <code>fetch</code>, een <code>XMLHttpRequest</code> of een
+      <code>sendBeacon</code>. De vergelijking is een functie in deze pagina die
+      twee tekenreeksen aanneemt en teruggeeft wat er veranderde."""
+
+[[privacy]]
+title = "Het algoritme is het standaardalgoritme, integraal na te lezen."
+body = """
+ Het kortste-bewerkingsscript-algoritme
+      van Myers, hetzelfde dat <code>git diff</code> gebruikt, met de hand
+      geschreven in <code>src/diff.js</code> met de beslissingen erbij
+      becommentarieerd. De tests in <code>tests/js/text-diff.test.js</code> bewijzen
+      dat de verwijderingen de linkertekst weer opbouwen en de invoegingen de
+      rechter, en dat is wat correct betekent voor een diff."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen van alle
+      krijgt één teken van je tekst mee. Elke regel die hem leest, ontleedt of
+      wegschrijft, wordt vanaf deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool werkt
+      onveranderd door, omdat er nooit een netwerkstap in zat. Eenvoudiger bewijs
+      bestaat er niet."""
+
+[[howto]]
+title = "Plak de twee teksten, of sleep de twee bestanden."
+body = """
+ Het origineel links, de
+      gewijzigde versie rechts. Twee bestanden die je tegelijk op de kiezer sleept
+      landen aan weerskanten, in de volgorde waarin je ze losliet; wissel de kanten
+      om als het andersom was."""
+
+[[howto]]
+title = "Kies hoe je het leest."
+body = """
+ Naast elkaar, of in één kolom. Een telefoon
+      begint in één kolom, want naast elkaar vraagt twee kolommen tekst en op een
+      telefoon past er ongeveer één; het menu staat er hoe dan ook naast."""
+
+[[howto]]
+title = "Negeer wat er niet toe doet."
+body = """
+ Witruimte, hoofd- en kleine letters, lege
+      regels &mdash; elk apart te negeren, zodat een opnieuw geformatteerd bestand
+      niet leest als honderd wijzigingen. Standaard wordt het ongewijzigde middenstuk
+      opgevouwen tot een telling, met drie regels aan weerszijden van elke
+      wijziging."""
+
+[[howto]]
+title = "Lees wat er veranderde."
+body = """
+ Verwijderde regels zijn links gemarkeerd,
+      toegevoegde rechts, en binnen een gewijzigde regel zijn de woorden die
+      verschillen uitgelicht &mdash; een diff van twee alinea's toont dus het woord
+      dat verschoof en niet twee hele alinea's."""
+
+[[howto]]
+title = "Neem de patch mee."
+body = """
+ De download is een <code>.patch</code> in het
+      unified-formaat, precies wat een codereview, <code>git apply</code> en elke
+      diff-viewer verwachten. Kopiëren zet hetzelfde op je klembord."""
+
+[[faq]]
+q = "Worden mijn teksten ergens naartoe geüpload?"
+a = """
+        Nee. De vergelijking is een functie die in je eigen browser draait, op je
+        eigen hardware. Deze tool heeft geen enkele netwerkfunctie: hij haalt nooit
+        iets op en verstuurt nooit iets, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze
+        mag benaderen, waarvan er geen enkele van ons is. Dat is de reden om hem te
+        gebruiken voor een contract, een configuratiebestand of niet uitgebrachte
+        code: zoiets in andermans vergelijker plakken is beide versies tegelijk
+        weggeven."""
+
+[[faq]]
+q = "Wat doet die vergelijking eigenlijk?"
+a = """
+        Hij zoekt de kortste reeks bewerkingen die de linkertekst in de rechtertekst
+        verandert, met het algoritme van Myers, hetzelfde dat <code>git diff</code>
+        gebruikt. Dat het de kortste is, is precies wat een diff leesbaar maakt: een
+        regel die in het midden wordt ingevoegd hoort als één invoeging te verschijnen
+        en niet alsof elke regel erna veranderd is. Binnen een gewijzigde regel worden
+        ook de woorden gemarkeerd die verschillen, dus een diff van twee alinea's laat
+        het verschoven woord zien in plaats van twee hele alinea's."""
+
+[[faq]]
+q = "Kan hij twee bestanden vergelijken in plaats van twee plakjes tekst?"
+a = """
+        Ja. Sleep ze allebei tegelijk op de kiezer en ze landen aan weerskanten, in
+        de volgorde waarin je ze losliet. Je browser leest ze in deze pagina, en
+        verder gaan ze nergens heen. Wissel de kanten om als je ze verkeerd om hebt
+        neergezet."""
+
+[[faq]]
+q = "Wat komt er uit een vergelijking, en kan ik dat toepassen?"
+a = """
+        De download is een unified diff: het <code>@@ -3,5 +3,5 @@</code>-formaat dat
+        <code>git apply</code>, <code>patch</code> en elk code-reviewhulpmiddel lezen.
+        Kopiëren doet hetzelfde naar je klembord. Wat op het scherm staat is een weergave
+        daarvan: naast elkaar, of in één kolom, met de onveranderde stukken tot een
+        aantal ingeklapt tenzij je ze allemaal vraagt."""
+
+[[faq]]
+q = "Kan hij witruimte, hoofdletters of lege regels negeren?"
+a = """
+        Ja, elk apart. Witruimte negeren laat een opnieuw geformatteerd bestand als
+        ongewijzigd vergelijken; hoofd- en kleine letters negeren behandelt
+        <code>Error</code> en <code>error</code> als hetzelfde woord; lege regels
+        negeren slaat de regels over die niets dragen. De tellers boven het
+        resultaat zeggen dan dat de twee gelijk zijn zodra de verschillen die je
+        vroeg te negeren genegeerd zijn &mdash; wat niet dezelfde bewering is als
+        identiek, en de pagina houdt die twee beweringen uit elkaar."""
+
+[[faq]]
+q = "Hoe groot mag de vergelijking zijn?"
+a = """
+        Hier is geen limiet ingesteld, want er is geen server die ervoor betaalt.
+        Twee teksten van twintigduizend regels met een handvol wijzigingen
+        vergelijken meteen, want het gedeelde begin en einde worden weggeknipt
+        voordat het echte werk begint. Een vergelijking van twee teksten die
+        helemaal niets gemeen hebben stopt vroeg en zegt dat, in plaats van een
+        minuut te besteden aan het bewijzen van het vanzelfsprekende; en een heel
+        lange vergelijking tekent de eerste paar duizend regels en laat de rest aan
+        de gedownloade patch."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        limiet op hoeveel je plakt aan te pas. De site draait op advertenties, en die
+        betalen hem; die advertenties krijgen niets over je tekst mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij
+        werkt gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er
+        niets geüpload wordt, want een tool die je teksten wegstuurde om ze te laten
+        vergelijken zou ermee ophouden zodra je de stekker eruit trok."""
+
+[schema]
+description = "Twee teksten vergelijken met een regel- en woorddiff, naast elkaar of in één kolom, en het resultaat downloaden als unified patch. De vergelijking draait in de browser en er wordt niets geüpload."
+features = [
+  "Vergelijkt twee teksten met het algoritme van Myers, naast elkaar of in één kolom",
+  "Markeert de woorden die veranderden binnen een gewijzigde regel",
+  "Naast elkaar of in één kolom, met het ongewijzigde middenstuk opgevouwen tot een telling",
+  "Negeert witruimte, hoofdletters of lege regels, elk apart",
+  "Downloadt een vergelijking als unified diff die een code review kan lezen",
+  "Vergelijkt twee gesleepte bestanden net zo makkelijk als twee geplakte teksten",
+  "Knipt het gedeelde begin en einde weg, dus lange, gelijkende bestanden vergelijken meteen",
+  "Werkt offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep hier twee bestanden naartoe"
+hint = "of klik om te bladeren &mdash; alle tekstbestanden, één per kant"

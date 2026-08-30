@@ -1,5 +1,5 @@
 /**
- * tools/format-json/src/convert.js - JSON to and from YAML and XML.
+ * tools/json-formatter/src/convert.js - JSON to and from YAML and XML.
  *
  * The tests that matter here are the round trips, because a converter is only
  * useful if the document that comes back is the document that went in. Where
@@ -13,7 +13,7 @@ import assert from 'node:assert/strict';
 
 import {
   jsonToYaml, yamlToJson, jsonToXml, xmlToJson, CONVERSIONS,
-} from '../../tools/format-json/src/convert.js';
+} from '../../tools/json-formatter/src/convert.js';
 
 const round = (text) => yamlToJson(jsonToYaml(text), { indent: '' }).trim();
 
