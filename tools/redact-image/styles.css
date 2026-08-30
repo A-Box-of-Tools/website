@@ -265,7 +265,21 @@ kbd {
   margin-bottom: 1.1rem;
 }
 
-.field { display: flex; flex-direction: column; gap: 0.35rem; }
+/* `overflow-x: clip` rather than the `min-width: 0` two rules up, because this
+   is the other half of the same problem and that half does not answer it.
+   #format's box is already the width of its column; what is too wide is the
+   text inside it - "Auto - JPEG for a photo, PNG for anything else" - and
+   WebKit adds a <select>'s longest option to the scrollable width of every
+   ancestor even when the box itself fits. On a 390px phone that made the whole
+   document two pixels wider than the screen, which is a page that rubber-bands
+   sideways for no reason a reader can see. Nothing is lost by clipping: the
+   sentence was already being truncated, and the dropdown the browser opens is
+   not drawn inside this box.
+
+   `clip` rather than `hidden`: hidden would make this a scroll container,
+   which forces the other axis to `auto` and would cut off anything that ever
+   needs to escape upwards. */
+.field { display: flex; flex-direction: column; gap: 0.35rem; overflow-x: clip; }
 .field > label { font-size: 0.85rem; font-weight: 600; }
 
 .field-note {
