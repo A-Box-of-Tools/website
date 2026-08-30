@@ -311,7 +311,7 @@ function renderList() {
   const strength = el.strength.value;
   el.boxSummary.textContent = countSummary(regions, phrase);
 
-  const risk = riskNote(regions, strength);
+  const risk = riskNote(regions, strength, phrase);
   el.riskNote.textContent = risk ?? '';
   el.riskNote.hidden = risk === null;
 
@@ -326,7 +326,7 @@ function renderList() {
     const text = document.createElement('button');
     text.type = 'button';
     text.className = 'region-text';
-    text.textContent = describeRegion(region, strength);
+    text.textContent = describeRegion(region, strength, phrase);
     text.addEventListener('click', () => {
       select(region.id);
       stage.focus(region.id);
