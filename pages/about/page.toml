@@ -2,8 +2,8 @@
 # The About page. Prose lives next door in body.html; this file is the frame
 # around it.
 #
-# It exists because the site did not have one, and a site with thirty-six tools
-# and forty guides on it that never says who made any of them reads as nobody's
+# It exists because the site did not have one, and a site with this many tools
+# and guides on it that never says who made any of them reads as nobody's
 # work. Every claim on every tool page - nothing is uploaded, there is no
 # server, you can check for yourself - is a claim somebody is making, and a
 # reader is entitled to know who and why before deciding whether to believe it.
@@ -19,7 +19,7 @@ schema_type = "AboutPage"
 nav = "About"
 
 title = "About abox.tools &mdash; Who Makes These Tools, and Why"
-description = "An independent, self-funded project: thirty-six tools that run entirely in your browser, the reason they are built that way, how the site pays for itself, and how to check every claim on it for yourself."
+description = "An independent, self-funded project: {{ tool_count }} tools that run entirely in your browser, the reason they are built that way, how the site pays for itself, and how to check every claim on it for yourself."
 
 heading = "About abox.tools"
 lede = """

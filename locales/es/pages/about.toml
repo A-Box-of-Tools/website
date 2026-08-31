@@ -8,7 +8,7 @@
 nav = "Sobre este sitio"
 
 title = "Sobre abox.tools &mdash; quién hace estas herramientas y por qué"
-description = "Un proyecto independiente y autofinanciado: treinta y seis herramientas que funcionan enteras en el navegador, el motivo de que estén hechas así, cómo se paga el sitio y cómo comprobar por tu cuenta cada afirmación que hay en él."
+description = "Un proyecto independiente y autofinanciado: {{ tool_count }} herramientas que funcionan enteras en el navegador, el motivo de que estén hechas así, cómo se paga el sitio y cómo comprobar por tu cuenta cada afirmación que hay en él."
 
 heading = "Sobre abox.tools"
 lede = """

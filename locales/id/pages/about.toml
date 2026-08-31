@@ -8,7 +8,7 @@
 nav = "Tentang"
 
 title = "Tentang abox.tools &mdash; siapa yang membuat alat-alat ini, dan mengapa"
-description = "Proyek independen yang dibiayai sendiri: tiga puluh enam alat yang berjalan sepenuhnya di peramban Anda, alasan alat-alat itu dibuat seperti itu, bagaimana situs ini membiayai dirinya, dan cara memeriksa sendiri setiap pernyataan di dalamnya."
+description = "Proyek independen yang dibiayai sendiri: {{ tool_count }} alat yang berjalan sepenuhnya di peramban Anda, alasan alat-alat itu dibuat seperti itu, bagaimana situs ini membiayai dirinya, dan cara memeriksa sendiri setiap pernyataan di dalamnya."
 
 heading = "Tentang abox.tools"
 lede = """
