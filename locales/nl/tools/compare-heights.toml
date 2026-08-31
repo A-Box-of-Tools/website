@@ -17,14 +17,16 @@ og_image_alt = "Lengtevergelijker - lengtes naast elkaar vergelijken, zonder upl
 
 pledge = """
     Een lengtegrafiek is rekenwerk en een tekening: er is geen bestand om te
-    versturen en geen dienst om iets aan te vragen. De man, de vrouw, de jongen
-    en het meisje zijn illustraties uit het publieke domein die met deze pagina
-    meekomen, en de jongen en het meisje zijn tekeningen van echte kinderen in
-    plaats van klein gemaakte volwassenen &mdash; en dat is precies wat een
-    gezinsgrafiek behoedt voor een fout die niemand kan benoemen. Elke stap
-    gebeurt in een paar honderd regels JavaScript op deze pagina die je kunt
-    lezen. Er is überhaupt geen netwerkfunctie, en dat telt hier omdat wat je
-    typt een lijst van mensen is en hoe lang ze elk zijn."""
+    versturen en geen dienst om iets aan te vragen &mdash; en het ene bestand
+    dat deze pagina aanneemt, een eigen SVG voor op de meetlat, wordt hier
+    gelezen en gaat nergens heen. De man, de vrouw, de jongen en het meisje zijn
+    illustraties uit het publieke domein die met deze pagina meekomen, en de
+    jongen en het meisje zijn tekeningen van echte kinderen in plaats van klein
+    gemaakte volwassenen &mdash; en dat is precies wat een gezinsgrafiek behoedt
+    voor een fout die niemand kan benoemen. Elke stap gebeurt in een paar
+    honderd regels JavaScript op deze pagina die je kunt lezen. Er is überhaupt
+    geen netwerkfunctie, en dat telt hier omdat wat je typt een lijst van mensen
+    is en hoe lang ze elk zijn."""
 
 live_hint = """
       Je hoeft ons niet op ons woord te geloven: open de DevTools, kijk naar het
@@ -32,14 +34,16 @@ live_hint = """
       van geen van beide een teken. Of trek de stekker uit het internet en maak
       de grafiek toch."""
 
-read_first = """
-, <code>src/traced.js</code> en
+read_first = """, <code>src/traced.js</code> en
       <code>vendor/</code> voor de vier figuren en waar hun illustraties vandaan
       komen, <code>src/figures.js</code> voor de lijst waar het menu uit
       opgebouwd wordt, <code>src/units.js</code> voor hoe een getypte lengte een
       getal wordt en hoe de meetlat wordt gelabeld, <code>src/chart.js</code>
-      voor de opmaak, en <code>src/save.js</code> voor de twee downloads &mdash;
-      dat zijn de SVG op het scherm, en diezelfde SVG op een canvas geschilderd."""
+      voor de opmaak, <code>src/save.js</code> voor de twee downloads &mdash;
+      dat zijn de SVG op het scherm, en diezelfde SVG op een canvas geschilderd
+      &mdash; en <code>src/import-svg.js</code> voor de witte lijst waaruit een
+      toegevoegde SVG wordt herbouwd, het enige bestand hier waar fout zitten
+      zou uitmaken."""
 
 howto_heading = "Zo maak je een lengtevergelijkingsgrafiek"
 
@@ -118,6 +122,21 @@ body = """
       lettertype op te halen en geen afbeelding in te laden."""
 
 [[privacy]]
+title = "Een SVG die je toevoegt wordt hier gelezen, en herbouwd in plaats van vertrouwd."
+body = """
+ Het bestand
+      verlaat deze pagina nooit &mdash; het wordt gelezen met de eigen
+      <code>FileReader</code> van de browser en ontleed tot een levenloos
+      document dat niets uitvoert. Wat getekend wordt is niet dat bestand:
+      <code>src/import-svg.js</code> bouwt een NIEUWE tekening uit een witte
+      lijst van vormen en geometrie, zodat een script, een stylesheet, een
+      lettertype, een gelinkte afbeelding of een verwijzing naar een ander
+      document achterblijft in plaats van mee te komen. Dat telt dubbel, want de
+      grafiek die je downloadt is een bestand dat je naar anderen stuurt: alles
+      wat het overleefd had, zou hun browser zijn die dagen later de server van
+      een vreemde aanroept, vanuit iets dat deze pagina heeft geschreven."""
+
+[[privacy]]
 title = "De illustraties staan hier, ze worden niet opgehaald."
 body = """
  Alle vier de figuren
@@ -186,6 +205,17 @@ body = """
       heeft er twintig, gegroepeerd, en elk ervan komt binnen als een gewone regel
       waar je je eigen getallen overheen kunt typen. Voorwerpen nemen naast een
       hoogte ook een breedte, dus een deur is 203 bij 81 en geen streep."""
+
+[[howto]]
+title = "Of zet er je eigen tekening op."
+body = """
+ <strong>Eigen SVG
+      toevoegen</strong> neemt een bestand van je machine en tekent de vorm
+      ervan op de hoogte die je opgeeft &mdash; waar je naar grijpt als de
+      grafiek over een product, een voertuig of een gebouw gaat in plaats van
+      over een mens. Het houdt de eigen verhoudingen van de tekening aan, kleurt
+      hem als elke andere regel, en leest het bestand hier in plaats van het
+      ergens heen te sturen."""
 
 [[howto]]
 title = "Zet de meetlat in de eenheden waarin je lezer denkt."
@@ -264,6 +294,26 @@ a = """
         bedoeling: de illustratie belandt in een afbeelding die jij downloadt, en
         een licentie die naamsvermelding eist zou die eis aan jouw grafiek
         plakken."""
+
+[[faq]]
+q = "Kan ik mijn eigen tekening op de grafiek zetten?"
+a = """
+        Ja &mdash; <strong>Eigen SVG toevoegen</strong> neemt elk SVG-bestand
+        en zet de vorm ervan op de meetlat op de hoogte die je typt: een logo,
+        een plattegrond, een machineonderdeel, een auto. De verhoudingen zijn de
+        zijne, dus er is geen breedte in te vullen.
+        <br><br>
+        Twee dingen om te weten. Hij wordt in <strong>één egale kleur</strong>
+        getekend, die waar die regel op staat, want dat is wat de rest van de
+        grafiek is &mdash; een tekening van dunne omtrekken in plaats van
+        gevulde vormen komt er dus als een klodder uit, en daarvoor is dit het
+        verkeerde gereedschap. En alleen de <em>vormen</em> worden bewaard: het
+        bestand wordt van de grond af opnieuw opgebouwd uit paden, rechthoeken
+        en cirkels, en alles wat het netwerk zou kunnen bereiken &mdash; een
+        gelinkte afbeelding, een stylesheet, een lettertype, een script &mdash;
+        blijft achter. Het bestand zelf gaat nooit ergens heen; dat deel gaat
+        over de grafiek die je downloadt, die een bestand is dat je misschien
+        naar iemand stuurt."""
 
 [[faq]]
 q = "Waarom is er geen peuter of baby?"
@@ -368,11 +418,12 @@ a = """
 description = "Teken een lengtevergelijkingsgrafiek in de browser. Voeg een man, een vrouw, een jongen, een meisje en voorwerpen toe met hun lengtes in centimeters of in voet en inches, zet ze op volgorde, geef ze kleur en download het resultaat als PNG of SVG. Er wordt niets geüpload."
 features = [
   "Tot twaalf figuren op één meetlat, in willekeurige volgorde",
-  "Figuren van man, vrouw, jongen en meisje, en een gewone rechthoek voor voorwerpen",
+  "Figuren van man, vrouw, jongen en meisje, en getekende voorwerpen op maat van de getallen die je typt",
   "Man, vrouw, jongen en meisje getekend uit het publieke domein - de kinderen als kinderen getekend en niet als verkleinde volwassenen",
   "Lengtes getypt als 173, 1,73 m, 5'8\", 68 in of 5 ft 8, met de lezing terug in beeld",
   "Centimeters of voet en inches, gewisseld zonder iemands lengte te veranderen",
-  "Twintig kant-en-klare voorwerpen: deuren, ramen, een whiteboard, een automaat, een zeecontainer, meubels",
+  "Twintig kant-en-klare voorwerpen, zeventien ervan getekend: deuren, ramen, een whiteboard, een automaat, meubels",
+  "Elke eigen SVG op de meetlat, herbouwd uit alleen zijn vormen",
   "Een meetlat waarvan de afstand wordt gekozen uit wat de afbeelding kan dragen",
   "Elke achtergrondkleur, of geen, met inkt die erop leesbaar blijft",
   "PNG op elke pixelhoogte, en een SVG die op elk formaat scherp afdrukt",

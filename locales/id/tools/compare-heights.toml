@@ -17,7 +17,9 @@ og_image_alt = "Pembanding Tinggi Badan - membandingkan tinggi berdampingan, tan
 
 pledge = """
     Bagan tinggi badan adalah hitungan dan sebuah gambar: tidak ada berkas yang
-    perlu dikirim dan tidak ada layanan yang perlu ditanyai. Pria, wanita, anak
+    perlu dikirim dan tidak ada layanan yang perlu ditanyai &mdash; dan satu
+    berkas yang diterima halaman ini, SVG milik Anda untuk ditaruh di
+    penggarisnya, dibaca di sini dan tidak ke mana-mana. Pria, wanita, anak
     laki-laki, dan anak perempuan adalah karya seni domain publik yang ikut
     dikirim bersama halaman ini, dan anak laki-laki serta anak perempuannya
     adalah gambar anak-anak sungguhan, bukan orang dewasa yang dikecilkan
@@ -33,14 +35,16 @@ live_hint = """
       permintaan membawa satu karakter dari keduanya. Atau cabut sambungan
       internet dan buat bagannya tetap."""
 
-read_first = """
-, <code>src/traced.js</code> dan
+read_first = """, <code>src/traced.js</code> dan
       <code>vendor/</code> untuk empat figur dan asal-usul karyanya,
       <code>src/figures.js</code> untuk daftar yang menjadi bahan menunya,
       <code>src/units.js</code> untuk bagaimana tinggi yang diketik menjadi angka
       dan bagaimana penggarisnya diberi label, <code>src/chart.js</code> untuk
-      tata letaknya, dan <code>src/save.js</code> untuk dua unduhannya &mdash;
-      yaitu SVG di layar, dan SVG yang sama itu dilukiskan ke sebuah kanvas."""
+      tata letaknya, <code>src/save.js</code> untuk dua unduhannya &mdash; yaitu
+      SVG di layar, dan SVG yang sama itu dilukiskan ke sebuah kanvas &mdash;
+      dan <code>src/import-svg.js</code> untuk daftar putih yang dipakai
+      membangun ulang SVG yang ditambahkan, satu-satunya berkas di sini yang
+      kalau salah akan berdampak."""
 
 howto_heading = "Cara membuat bagan perbandingan tinggi badan"
 
@@ -119,6 +123,21 @@ body = """
       perlu diambil dan tidak ada gambar yang perlu dimuat di dalamnya."""
 
 [[privacy]]
+title = "SVG yang Anda tambahkan dibaca di sini, dan dibangun ulang alih-alih dipercaya."
+body = """
+ Berkasnya tidak
+      pernah meninggalkan halaman ini &mdash; ia dibaca dengan
+      <code>FileReader</code> milik peramban sendiri dan diurai menjadi dokumen
+      mati yang tidak menjalankan apa pun. Yang digambar bukan berkas itu:
+      <code>src/import-svg.js</code> membangun gambar BARU dari daftar putih
+      bentuk dan geometri, sehingga skrip, lembar gaya, fon, gambar tertaut,
+      atau rujukan ke dokumen lain ditinggalkan alih-alih ikut terbawa. Itu
+      penting dua kali lipat, karena bagan yang Anda unduh adalah berkas yang
+      Anda kirim ke orang lain: apa pun yang selamat akan menjadi peramban
+      mereka yang memanggil server orang asing, berhari-hari kemudian, dari
+      sesuatu yang ditulis halaman ini."""
+
+[[privacy]]
 title = "Karya gambarnya ada di sini, bukan diambil dari luar."
 body = """
  Keempat figurnya
@@ -188,6 +207,17 @@ body = """
       datang sebagai baris biasa yang bisa Anda timpa dengan angka Anda sendiri.
       Benda punya lebar selain tinggi, jadi sebuah pintu itu 203 kali 81, bukan
       sebuah garis."""
+
+[[howto]]
+title = "Atau taruh gambar Anda sendiri di atasnya."
+body = """
+ <strong>Tambahkan SVG
+      milik Anda</strong> mengambil berkas dari mesin Anda dan menggambar
+      bentuknya pada tinggi berapa pun yang Anda berikan &mdash; inilah yang
+      dipakai kalau bagannya tentang produk, kendaraan, atau bangunan, bukan
+      tentang orang. Ia mempertahankan proporsi gambarnya sendiri, mewarnainya
+      seperti baris lain mana pun, dan membaca berkasnya di sini alih-alih
+      mengirimnya ke mana pun."""
 
 [[howto]]
 title = "Setel penggarisnya ke satuan yang dipikirkan pembaca Anda."
@@ -265,6 +295,25 @@ a = """
         itulah intinya: karya gambarnya berakhir di dalam sebuah gambar yang Anda
         unduh, dan lisensi yang menuntut atribusi akan menempelkan tuntutan itu
         pada bagan Anda."""
+
+[[faq]]
+q = "Bisakah saya menaruh gambar saya sendiri di bagannya?"
+a = """
+        Bisa &mdash; <strong>Tambahkan SVG milik Anda</strong> mengambil berkas
+        SVG apa pun dan menaruh bentuknya di penggaris pada tinggi berapa pun
+        yang Anda ketik: logo, denah, bagian mesin, mobil. Proporsinya adalah
+        miliknya sendiri, jadi tidak ada lebar yang perlu diisi.
+        <br><br>
+        Dua hal yang perlu diketahui. Ia digambar sebagai <strong>satu warna
+        padat</strong>, warna yang disetel untuk baris itu, karena itulah
+        seluruh sisa bagannya &mdash; jadi gambar yang dibuat dari garis tipis,
+        bukan bentuk terisi, keluar sebagai gumpalan, dan untuk itu ini alat
+        yang keliru. Dan hanya <em>bentuk</em>-nya yang disimpan: berkasnya
+        dibangun ulang dari nol dari path, persegi panjang, dan lingkaran, dan
+        apa pun yang bisa menjangkau jaringan &mdash; gambar tertaut, lembar
+        gaya, fon, skrip &mdash; ditinggalkan. Berkasnya sendiri tidak pernah ke
+        mana-mana; bagian itu tentang bagan yang Anda unduh, yang merupakan
+        berkas yang mungkin Anda kirim ke orang lain."""
 
 [[faq]]
 q = "Kenapa tidak ada balita atau bayi?"
@@ -369,11 +418,12 @@ a = """
 description = "Menggambar bagan perbandingan tinggi badan di peramban. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda beserta tingginya dalam sentimeter atau kaki dan inci, urutkan, warnai, lalu unduh hasilnya sebagai PNG atau SVG. Tidak ada yang diunggah."
 features = [
   "Sampai dua belas figur pada satu penggaris, dalam urutan apa pun",
-  "Figur pria, wanita, anak laki-laki, dan anak perempuan, serta persegi panjang polos untuk benda",
+  "Figur pria, wanita, anak laki-laki, dan anak perempuan, serta benda-benda bergambar yang diukur dari angka yang Anda ketik",
   "Pria, wanita, anak laki-laki, dan anak perempuan bergambar domain publik - anak-anaknya digambar sebagai anak-anak, bukan orang dewasa yang diperkecil",
   "Tinggi diketik sebagai 173, 1,73 m, 5'8\", 68 in, atau 5 ft 8, dengan hasil bacanya ditampilkan",
   "Sentimeter atau kaki dan inci, ditukar tanpa mengubah tinggi siapa pun",
-  "Dua puluh benda siap pakai: pintu, jendela, papan tulis, mesin penjual otomatis, kontainer kapal, perabot",
+  "Dua puluh benda siap pakai, tujuh belas di antaranya bergambar: pintu, jendela, papan tulis, mesin penjual otomatis, perabot",
+  "SVG milik Anda sendiri di penggaris, dibangun ulang hanya dari bentuk-bentuknya",
   "Penggaris yang jaraknya dipilih dari apa yang sanggup dibawa gambarnya",
   "Warna latar apa pun, atau tanpa latar, dengan tinta yang dipilih agar tetap terbaca di atasnya",
   "PNG pada tinggi piksel berapa pun, dan SVG yang tercetak tajam pada ukuran berapa pun",

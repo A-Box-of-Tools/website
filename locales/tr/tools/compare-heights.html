@@ -43,7 +43,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Kişi ekle</button>
         <button type="button" id="add-object" class="ghost">Nesne ekle</button>
+        <button type="button" id="add-svg" class="ghost">Kendi SVG'niz</button>
         <button type="button" id="clear" class="ghost danger">Grafiği temizle</button>
+        <!-- Gösterilmek yerine yukarıdaki düğmeyle çalıştırılır: etiketi burada, çünkü
+             bir ziyaretçinin erişebildiği bir denetimin, tıkladığı şey olsun ya da
+             olmasın, bir adı olmalıdır. -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="Grafiğe konacak bir SVG dosyası seçin" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -53,35 +59,56 @@
       <select id="preset">
         <option value="" selected>Birini seçin&hellip;</option>
         <optgroup label="Kapılar ve pencereler">
-          <option value="door-interior" data-cm="203" data-width="81">İç kapı &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">Giriş kapısı &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">Pencere &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">Garaj kapısı &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">İç kapı &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">Giriş kapısı &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">Pencere &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">Garaj kapısı &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="Okul ve ofis">
-          <option value="board" data-cm="120" data-width="240">Beyaz tahta ya da kara tahta &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">Ofis masası &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">Dört çekmeceli dosya dolabı &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">Projeksiyon perdesi, 100 in &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">Beyaz tahta ya da kara tahta &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">Ofis masası &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">Dört çekmeceli dosya dolabı &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">Projeksiyon perdesi, 100 in &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="Şehirde">
-          <option value="vending" data-cm="183" data-width="100">Otomat &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">Tekerlekli çöp konteyneri, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">Otomat &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">Tekerlekli çöp konteyneri, 240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">Basketbol potası &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">Deniz konteyneri, 20 ft &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="Evde">
-          <option value="fridge" data-cm="178" data-width="76">Buzdolabı, derin donduruculu &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">Buzdolabı, derin donduruculu &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">Mutfak tezgâhı &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">Yemek masası &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">Yemek sandalyesi &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">Üç kişilik kanepe &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">Duvar piyanosu &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">Akustik gitar &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">Şarap şişesi &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">Yemek masası &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">Yemek sandalyesi &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">Üç kişilik kanepe &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">Duvar piyanosu &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">Akustik gitar &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">Şarap şişesi &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>Kendi SVG'niz</strong> herhangi bir çizimi cetvele koyar &mdash;
+      bir logo, bir kat planı, bir makine parçası. Bu sayfada okunur ve hiçbir
+      yere gitmez. Yalnızca içindeki biçimler tutulur: her satır için sizin
+      seçtiğiniz tek bir düz renkle gelir, ve ağa ulaşabilecek ne varsa &mdash;
+      bağlantılı bir resim, bir stil sayfası, bir yazı tipi, bir betik &mdash;
+      birine gönderebileceğiniz bir grafiğin içine taşınmak yerine geride
+      bırakılır. Dolu biçimler yerine ince çizgilerden yapılmış bir çizim tek
+      parça bir leke olarak çıkar; bunun yanlış araç olduğu tek durum da budur.
+    </p>
+
+    <p class="field-summary">
+      Bunların çoğu düz bir blok olarak değil, çizilmiş olarak gelir &mdash;
+      kolu olan bir kapı, üstünde dondurucusu olan bir buzdolabı, koltuk olduğu
+      görülen bir koltuk. Çizim satırdaki iki sayıya oturtulur, yani biçimi
+      belirleyen sayılardır: kendi sayılarınızı üzerine yazın, resim onları
+      izler. Üçünün çizimi yok, çünkü özgür ve oranları doğru bir çizim
+      bulunamadı: basketbol potası, deniz konteyneri ve mutfak tezgâhı, eskiden
+      her nesnenin olduğu o dikdörtgen olarak gelir.
+    </p>
+
 
     <p class="field-summary">
       Bunlardan birkaçı gerçekten sabittir: 20&nbsp;ft'lik bir deniz

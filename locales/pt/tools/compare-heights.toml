@@ -17,14 +17,16 @@ og_image_alt = "Comparador de alturas - comparar alturas lado a lado, sem envio"
 
 pledge = """
     Um gráfico de alturas é aritmética e um desenho: não há arquivo nenhum para
-    enviar nem serviço nenhum para consultar. O homem, a mulher, o menino e a
-    menina são ilustrações de domínio público que vão junto com esta página, e o
-    menino e a menina são desenhos de crianças de verdade, não adultos
-    encolhidos &mdash; que é o que impede um gráfico de família de ficar errado
-    de um jeito que ninguém sabe nomear. Cada passo acontece em umas poucas
-    centenas de linhas de JavaScript desta página que você pode ler. Não existe
-    função de rede de espécie alguma, e aqui isso importa porque o que você
-    digita é uma lista de pessoas e a altura de cada uma."""
+    enviar nem serviço nenhum para consultar &mdash; e o único arquivo que esta
+    página aceita, um SVG seu para pôr na régua, é lido aqui e não vai a lugar
+    nenhum. O homem, a mulher, o menino e a menina são ilustrações de domínio
+    público que vão junto com esta página, e o menino e a menina são desenhos de
+    crianças de verdade, não adultos encolhidos &mdash; que é o que impede um
+    gráfico de família de ficar errado de um jeito que ninguém sabe nomear. Cada
+    passo acontece em umas poucas centenas de linhas de JavaScript desta página
+    que você pode ler. Não existe função de rede de espécie alguma, e aqui isso
+    importa porque o que você digita é uma lista de pessoas e a altura de cada
+    uma."""
 
 live_hint = """
       Você não precisa acreditar na nossa palavra: abra o DevTools, olhe a aba de
@@ -32,14 +34,16 @@ live_hint = """
       de nenhum dos dois. Ou desconecte da internet e faça o gráfico assim
       mesmo."""
 
-read_first = """
-, <code>src/traced.js</code> e
+read_first = """, <code>src/traced.js</code> e
       <code>vendor/</code> para as quatro figuras e de onde vieram as
       ilustrações delas, <code>src/figures.js</code> para a lista com que o menu
       é montado, <code>src/units.js</code> para como uma altura digitada vira
       número e como a régua é rotulada, <code>src/chart.js</code> para o arranjo,
-      e <code>src/save.js</code> para os dois downloads &mdash; que são o SVG na
-      tela, e esse mesmo SVG pintado num canvas."""
+      <code>src/save.js</code> para os dois downloads &mdash; que são o SVG na
+      tela, e esse mesmo SVG pintado num canvas &mdash; e
+      <code>src/import-svg.js</code> para a lista branca a partir da qual um SVG
+      enviado é reconstruído, que é o único arquivo daqui em que errar teria
+      peso."""
 
 howto_heading = "Como fazer um gráfico de comparação de alturas"
 
@@ -115,6 +119,21 @@ body = """
       carregar dentro."""
 
 [[privacy]]
+title = "Um SVG que você acrescenta é lido aqui, e reconstruído em vez de aceito."
+body = """
+ O arquivo
+      nunca sai desta página &mdash; ele é lido com o próprio
+      <code>FileReader</code> do navegador e analisado num documento inerte que
+      não executa nada. O que é desenhado não é aquele arquivo:
+      <code>src/import-svg.js</code> monta um desenho NOVO a partir de uma lista
+      branca de formas e geometria, então um script, uma folha de estilo, uma
+      fonte, uma imagem vinculada ou uma referência a outro documento fica para
+      trás em vez de passar. Isso conta em dobro, porque o gráfico que você
+      baixa é um arquivo que você manda para outras pessoas: qualquer coisa que
+      tivesse sobrevivido seria o navegador delas chamando o servidor de um
+      estranho, dias depois, a partir de algo que esta página escreveu."""
+
+[[privacy]]
 title = "As ilustrações estão aqui, não são buscadas."
 body = """
  As quatro figuras
@@ -180,6 +199,16 @@ body = """
       que as mostra. O menu tem vinte deles, agrupados, e cada um vira uma linha
       comum onde você pode digitar os seus próprios números. Objetos têm largura
       além de altura, então uma porta é 203 por 81 e não uma faixa."""
+
+[[howto]]
+title = "Ou ponha nele um desenho seu."
+body = """
+ <strong>Acrescentar seu
+      próprio SVG</strong> pega um arquivo da sua máquina e desenha a forma dele
+      na altura que você der &mdash; o recurso a usar quando o gráfico é sobre um
+      produto, um veículo ou um prédio em vez de uma pessoa. Ele mantém as
+      proporções do próprio desenho, colore como qualquer outra linha, e lê o
+      arquivo aqui em vez de mandá-lo para algum lugar."""
 
 [[howto]]
 title = "Ponha a régua nas unidades em que quem lê pensa."
@@ -254,6 +283,25 @@ a = """
         público não pede nada, e é justamente esse o ponto: a ilustração acaba
         dentro de uma imagem que você baixa, e uma licença que exigisse
         atribuição grudaria essa exigência no seu gráfico."""
+
+[[faq]]
+q = "Posso pôr um desenho meu no gráfico?"
+a = """
+        Pode &mdash; <strong>Acrescentar seu próprio SVG</strong> pega qualquer
+        arquivo SVG e põe a forma dele na régua na altura que você digitar: um
+        logotipo, uma planta, uma peça de máquina, um carro. As proporções são
+        as dele, então não há largura a preencher.
+        <br><br>
+        Duas coisas a saber. Ele é desenhado numa <strong>única cor
+        chapada</strong>, a que aquela linha estiver, porque é isso que o resto
+        do gráfico é &mdash; então um desenho feito de contornos finos em vez de
+        formas preenchidas sai como um borrão, e para isso esta é a ferramenta
+        errada. E só as <em>formas</em> são mantidas: o arquivo é reconstruído do
+        zero a partir de traçados, retângulos e círculos, e tudo o que pudesse
+        alcançar a rede &mdash; uma imagem vinculada, uma folha de estilo, uma
+        fonte, um script &mdash; fica para trás. O arquivo em si nunca vai a
+        lugar nenhum; essa parte é sobre o gráfico que você baixa, que é um
+        arquivo que você talvez mande para alguém."""
 
 [[faq]]
 q = "Por que não tem uma criança pequena ou um bebê?"
@@ -356,11 +404,12 @@ a = """
 description = "Desenhe um gráfico de comparação de alturas no navegador. Acrescente um homem, uma mulher, um menino, uma menina e objetos com as alturas em centímetros ou em pés e polegadas, ordene, colora e baixe o resultado como PNG ou SVG. Nada é enviado."
 features = [
   "Até doze figuras numa régua só, em qualquer ordem",
-  "Figuras de homem, mulher, menino e menina, e um retângulo simples para objetos",
+  "Figuras de homem, mulher, menino e menina, e objetos desenhados dimensionados pelos números que você digita",
   "Homem, mulher, menino e menina desenhados em domínio público - as crianças desenhadas como crianças, não como adultos reduzidos",
   "Alturas digitadas como 173, 1,73 m, 5'8\", 68 in ou 5 ft 8, com a leitura mostrada de volta",
   "Centímetros ou pés e polegadas, trocados sem mudar a altura de ninguém",
-  "Vinte objetos prontos: portas, janelas, um quadro, uma máquina de vendas, um contêiner, móveis",
+  "Vinte objetos prontos, dezessete deles desenhados: portas, janelas, um quadro branco, uma máquina de vendas, móveis",
+  "Qualquer SVG seu na régua, reconstruído só a partir das formas dele",
   "Uma régua cujo espaçamento é escolhido pelo que a imagem aguenta",
   "Qualquer cor de fundo, ou nenhuma, com a tinta escolhida para continuar legível em cima",
   "PNG em qualquer altura em pixels, e um SVG que imprime nítido em qualquer tamanho",

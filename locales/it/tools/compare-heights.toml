@@ -17,15 +17,16 @@ og_image_alt = "Confronto di altezze - confrontare altezze affiancate, senza car
 
 pledge = """
     Un grafico delle altezze è aritmetica e un disegno: non c'è nessun file da
-    mandare e nessun servizio da interrogare. L'uomo, la donna, il bambino e la
-    bambina sono illustrazioni di pubblico dominio che viaggiano con questa
-    pagina, e il bambino e la bambina sono disegni di bambini veri invece che
-    adulti rimpiccioliti &mdash; ed è proprio questo che impedisce a un grafico
-    di famiglia di venire storto in un modo che nessuno sa spiegare. Ogni
-    passaggio avviene in qualche centinaio di righe di JavaScript di questa
-    pagina che puoi leggere. Non c'è nessuna funzione di rete di alcun tipo, e
-    qui conta perché quello che scrivi è un elenco di persone e di quanto è alta
-    ciascuna."""
+    mandare e nessun servizio da interrogare &mdash; e l'unico file che questa
+    pagina accetta, un SVG tuo da mettere sul righello, viene letto qui e non va
+    da nessuna parte. L'uomo, la donna, il bambino e la bambina sono disegni di
+    pubblico dominio che viaggiano con questa pagina, e il bambino e la bambina
+    sono disegni di bambini veri invece che di adulti fatti piccoli &mdash; ed è
+    questo che impedisce a un grafico di famiglia di venire storto in un modo
+    che nessuno sa nominare. Ogni passo avviene in qualche centinaio di righe di
+    JavaScript in questa pagina, che puoi leggere. Non c'è nessuna funzione di
+    rete di alcun tipo, e qui conta perché quello che scrivi è un elenco di
+    persone e quanto è alta ciascuna."""
 
 live_hint = """
       Non devi crederci sulla parola: apri i DevTools, guarda la scheda di rete e
@@ -33,14 +34,16 @@ live_hint = """
       dell'uno né dell'altra. Oppure stacca internet e fai il grafico lo
       stesso."""
 
-read_first = """
-, <code>src/traced.js</code> e
-      <code>vendor/</code> per le quattro figure e da dove arrivano i loro
+read_first = """, <code>src/traced.js</code> e
+      <code>vendor/</code> per le quattro figure e da dove vengono i loro
       disegni, <code>src/figures.js</code> per l'elenco con cui è costruito il
       menù, <code>src/units.js</code> per come un'altezza scritta diventa un
-      numero e per come è etichettato il righello, <code>src/chart.js</code> per
-      l'impaginazione e <code>src/save.js</code> per i due download &mdash; che
-      sono l'SVG sullo schermo, e quello stesso SVG dipinto su un canvas."""
+      numero e come è etichettato il righello, <code>src/chart.js</code> per
+      l'impaginazione, <code>src/save.js</code> per i due download &mdash; che
+      sono l'SVG sullo schermo, e quello stesso SVG dipinto su un canvas &mdash;
+      e <code>src/import-svg.js</code> per la lista bianca da cui un SVG
+      caricato viene ricostruito, che è l'unico file qui dove sbagliare
+      conterebbe."""
 
 howto_heading = "Come fare un grafico di confronto delle altezze"
 
@@ -120,6 +123,21 @@ body = """
       c'è nessun font da scaricare e nessuna immagine da caricarci dentro."""
 
 [[privacy]]
+title = "Un SVG che aggiungi viene letto qui, e ricostruito invece che creduto."
+body = """
+ Il file non
+      lascia mai questa pagina &mdash; viene letto con il <code>FileReader</code>
+      del browser stesso e analizzato in un documento inerte che non esegue
+      niente. Quello che viene disegnato non è quel file:
+      <code>src/import-svg.js</code> costruisce un disegno NUOVO da una lista
+      bianca di forme e geometria, così che uno script, un foglio di stile, un
+      font, un'immagine collegata o un riferimento a un altro documento resti
+      fuori invece di passare. Conta due volte, perché il grafico che scarichi è
+      un file che mandi ad altre persone: quello che fosse sopravvissuto sarebbe
+      il loro browser che chiama il server di uno sconosciuto, giorni dopo, da
+      qualcosa che ha scritto questa pagina."""
+
+[[privacy]]
 title = "I disegni sono qui, non vengono scaricati."
 body = """
  Tutte e quattro le
@@ -188,6 +206,16 @@ body = """
       diventa una riga normale su cui puoi scrivere i tuoi numeri. Gli oggetti
       prendono una larghezza oltre a un'altezza, quindi una porta è 203 per 81 e
       non una striscia."""
+
+[[howto]]
+title = "Oppure metticene sopra uno tuo."
+body = """
+ <strong>Aggiungi il tuo
+      SVG</strong> prende un file dalla tua macchina e ne disegna la forma
+      all'altezza che gli dai &mdash; la cosa da usare quando il grafico parla
+      di un prodotto, un veicolo o un edificio invece che di una persona. Tiene
+      le proporzioni del disegno stesso, lo colora come qualsiasi altra riga, e
+      legge il file qui invece di mandarlo da qualche parte."""
 
 [[howto]]
 title = "Metti il righello nelle unità in cui pensa chi legge."
@@ -265,6 +293,26 @@ a = """
         pubblico dominio non chiede niente, ed è proprio questo il punto: il
         disegno finisce dentro un'immagine che scarichi, e una licenza che
         richiedesse l'attribuzione attaccherebbe quella richiesta al tuo grafico."""
+
+[[faq]]
+q = "Posso mettere un mio disegno sul grafico?"
+a = """
+        Sì &mdash; <strong>Aggiungi il tuo SVG</strong> prende qualsiasi file
+        SVG e ne mette la forma sul righello all'altezza che scrivi: un logo,
+        una pianta, un pezzo di macchinario, un'auto. Le proporzioni sono le
+        sue, quindi non c'è una larghezza da riempire.
+        <br><br>
+        Due cose da sapere. Viene disegnato in <strong>un solo colore
+        pieno</strong>, quello su cui è impostata quella riga, perché è quello
+        che è il resto del grafico &mdash; quindi un disegno fatto di contorni
+        sottili invece che di forme piene esce come una macchia, e per quello
+        questo è lo strumento sbagliato. E si tengono solo le <em>forme</em>: il
+        file viene ricostruito da zero a partire da tracciati, rettangoli e
+        cerchi, e tutto quello che potrebbe raggiungere la rete &mdash;
+        un'immagine collegata, un foglio di stile, un font, uno script &mdash;
+        resta fuori. Il file in sé non va mai da nessuna parte; quella parte
+        riguarda il grafico che scarichi, che è un file che magari mandi a
+        qualcuno."""
 
 [[faq]]
 q = "Perché non c'è un bimbo piccolo o un neonato?"
@@ -368,11 +416,12 @@ a = """
 description = "Disegnare un grafico di confronto delle altezze nel browser. Aggiungi un uomo, una donna, un bambino, una bambina e degli oggetti con le loro altezze in centimetri o in piedi e pollici, mettili in ordine, colorali e scarica il risultato come PNG o SVG. Non viene caricato niente."
 features = [
   "Fino a dodici figure su un solo righello, in qualsiasi ordine",
-  "Figure di uomo, donna, bambino e bambina, e un semplice rettangolo per gli oggetti",
+  "Figure di uomo, donna, bambino e bambina, e oggetti disegnati dimensionati dai numeri che scrivi",
   "Uomo, donna, bambino e bambina disegnati di pubblico dominio - i bambini disegnati come bambini invece che come adulti ridotti",
   "Altezze scritte come 173, 1,73 m, 5'8\", 68 in o 5 ft 8, con la lettura mostrata",
   "Centimetri o piedi e pollici, cambiati senza modificare l'altezza di nessuno",
-  "Venti oggetti già pronti: porte, finestre, una lavagna, un distributore automatico, un container, mobili",
+  "Venti oggetti già pronti, diciassette dei quali disegnati: porte, finestre, una lavagna bianca, un distributore, mobili",
+  "Qualunque SVG tuo sul righello, ricostruito dalle sole sue forme",
   "Un righello la cui spaziatura è scelta da quello che l'immagine riesce a portare",
   "Qualsiasi colore di sfondo, o nessuno, con l'inchiostro scelto per restare leggibile sopra",
   "PNG a qualsiasi altezza in pixel, e un SVG che stampa nitido a qualsiasi dimensione",

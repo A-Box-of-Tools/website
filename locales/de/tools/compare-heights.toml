@@ -17,15 +17,16 @@ og_image_alt = "Größenvergleich - Größen nebeneinander vergleichen, ohne Upl
 
 pledge = """
     Ein Größendiagramm ist Rechnen und eine Zeichnung: Es gibt keine Datei zu
-    verschicken und keinen Dienst zu fragen. Der Mann, die Frau, der Junge und
-    das Mädchen sind gemeinfreie Zeichnungen, die mit dieser Seite ausgeliefert
-    werden, und der Junge und das Mädchen sind Zeichnungen wirklicher Kinder und
-    keine klein gemachten Erwachsenen. Genau das verhindert, dass ein
-    Familiendiagramm auf eine Weise falsch aussieht, die niemand benennen kann.
-    Jeder Schritt davon passiert in ein paar hundert Zeilen JavaScript auf dieser
-    Seite, die Sie lesen können. Eine Netzfunktion gibt es überhaupt nicht, und
-    das ist hier wichtig, denn was Sie eintippen, ist eine Liste von Menschen und
-    wie groß jeder davon ist."""
+    senden und keinen Dienst zu fragen &mdash; und die eine Datei, die diese
+    Seite annimmt, ein eigenes SVG für den Maßstab, wird hier gelesen und geht
+    nirgendwohin. Mann, Frau, Junge und Mädchen sind gemeinfreie Zeichnungen,
+    die mit dieser Seite ausgeliefert werden, und Junge und Mädchen sind
+    Zeichnungen wirklicher Kinder statt klein gemachter Erwachsener &mdash; und
+    genau das verhindert, dass ein Familiendiagramm auf eine Weise falsch
+    aussieht, die niemand benennen kann. Jeder Schritt davon geschieht in ein
+    paar hundert Zeilen JavaScript auf dieser Seite, die Sie lesen können. Es
+    gibt keinerlei Netzwerkfunktion, und das zählt hier, weil das, was Sie
+    tippen, eine Liste von Menschen ist und wie groß jeder davon ist."""
 
 live_hint = """
       Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
@@ -33,15 +34,16 @@ live_hint = """
       Keine einzige Anfrage trägt ein Zeichen von beidem. Oder trennen Sie die
       Internetverbindung und erstellen Sie das Diagramm trotzdem."""
 
-read_first = """
-, <code>src/traced.js</code> und
-      <code>vendor/</code> für die vier Figuren und dafür, woher ihre Bilder
-      stammen, <code>src/figures.js</code> für die Liste, aus der das Menü
-      gebaut wird, <code>src/units.js</code> dafür, wie aus einer getippten
-      Größe eine Zahl wird und wie der Maßstab beschriftet ist,
-      <code>src/chart.js</code> für die Anordnung und <code>src/save.js</code>
-      für die beiden Downloads &mdash; das SVG auf dem Bildschirm und dasselbe
-      SVG, auf ein Canvas gemalt."""
+read_first = """, <code>src/traced.js</code> und
+      <code>vendor/</code> für die vier Figuren und die Herkunft ihrer
+      Zeichnungen, <code>src/figures.js</code> für die Liste, aus der das Menü
+      gebaut wird, <code>src/units.js</code> dafür, wie aus einer getippten Größe
+      eine Zahl wird und wie der Maßstab beschriftet ist,
+      <code>src/chart.js</code> für das Layout, <code>src/save.js</code> für die
+      beiden Downloads &mdash; das sind das SVG auf dem Bildschirm und dasselbe
+      SVG auf ein Canvas gemalt &mdash; und <code>src/import-svg.js</code> für
+      die Positivliste, aus der ein hochgeladenes SVG neu gebaut wird, die
+      einzige Datei hier, bei der ein Fehler zählen würde."""
 
 howto_heading = "So erstellen Sie ein Größenvergleichsdiagramm"
 
@@ -118,6 +120,21 @@ body = """
       keine Schrift abzurufen und kein Bild darin zu laden."""
 
 [[privacy]]
+title = "Ein SVG, das Sie hinzufügen, wird hier gelesen und neu gebaut statt geglaubt."
+body = """
+ Die Datei
+      verlässt diese Seite nie &mdash; sie wird mit dem browsereigenen
+      <code>FileReader</code> gelesen und in ein totes Dokument geparst, das
+      nichts ausführt. Gezeichnet wird nicht diese Datei:
+      <code>src/import-svg.js</code> baut aus einer Positivliste von Formen und
+      Geometrie eine NEUE Zeichnung, sodass ein Skript, ein Stylesheet, eine
+      Schrift, ein verlinktes Bild oder ein Verweis auf ein anderes Dokument
+      zurückbleibt, statt mitgenommen zu werden. Das zählt doppelt, denn das
+      Diagramm, das Sie herunterladen, ist eine Datei, die Sie anderen schicken:
+      Was überlebt hätte, wäre deren Browser, der Tage später den Server eines
+      Fremden aufruft &mdash; aus etwas, das diese Seite geschrieben hat."""
+
+[[privacy]]
 title = "Die Zeichnungen sind hier, sie werden nicht abgerufen."
 body = """
  Alle vier Figuren
@@ -188,6 +205,16 @@ body = """
       jeder wird zu einer gewöhnlichen Zeile, über die Sie Ihre eigenen Zahlen
       tippen können. Gegenstände haben neben der Höhe auch eine Breite, eine Tür
       ist also 203 auf 81 und kein Streifen."""
+
+[[howto]]
+title = "Oder setzen Sie Ihre eigene Zeichnung darauf."
+body = """
+ <strong>Eigenes SVG
+      hinzufügen</strong> nimmt eine Datei von Ihrem Rechner und zeichnet deren
+      Form in der Höhe, die Sie ihr geben &mdash; das Mittel der Wahl, wenn es im
+      Diagramm um ein Produkt, ein Fahrzeug oder ein Gebäude geht statt um einen
+      Menschen. Es behält die Proportionen der Zeichnung, färbt sie wie jede
+      andere Zeile und liest die Datei hier, statt sie irgendwohin zu senden."""
 
 [[howto]]
 title = "Stellen Sie den Maßstab auf die Einheiten Ihrer Leser ein."
@@ -267,6 +294,26 @@ a = """
         und darum geht es: Die Zeichnung landet in einem Bild, das Sie
         herunterladen, und eine Lizenz, die eine Namensnennung verlangt, würde
         diese Anforderung an Ihr Diagramm heften."""
+
+[[faq]]
+q = "Kann ich meine eigene Zeichnung auf das Diagramm setzen?"
+a = """
+        Ja &mdash; <strong>Eigenes SVG hinzufügen</strong> nimmt jede
+        SVG-Datei und setzt deren Form in der Höhe, die Sie eintippen, auf den
+        Maßstab: ein Logo, einen Grundriss, ein Maschinenteil, ein Auto. Die
+        Proportionen sind ihre eigenen, es gibt also keine Breite einzutragen.
+        <br><br>
+        Zweierlei ist zu wissen. Sie wird in <strong>einer einzigen
+        Volltonfarbe</strong> gezeichnet, in der, auf die diese Zeile gesetzt
+        ist, weil der Rest des Diagramms genau das ist &mdash; eine Zeichnung
+        aus dünnen Umrissen statt aus gefüllten Formen kommt also als Klecks
+        heraus, und dafür ist dies das falsche Werkzeug. Und behalten werden nur
+        die <em>Formen</em>: Die Datei wird aus Pfaden, Rechtecken und Kreisen
+        von Grund auf neu gebaut, und alles, was das Netz erreichen könnte
+        &mdash; ein verlinktes Bild, ein Stylesheet, eine Schrift, ein Skript
+        &mdash;, bleibt zurück. Die Datei selbst geht nirgendwohin; dieser Teil
+        betrifft das Diagramm, das Sie herunterladen und vielleicht jemandem
+        schicken."""
 
 [[faq]]
 q = "Warum gibt es kein Kleinkind und kein Baby?"
@@ -373,11 +420,12 @@ a = """
 description = "Ein Größenvergleichsdiagramm im Browser zeichnen. Fügen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen und Gegenstände mit ihren Maßen in Zentimetern oder in Fuß und Zoll hinzu, ordnen Sie sie, färben Sie sie und laden Sie das Ergebnis als PNG oder SVG herunter. Hochgeladen wird nichts."
 features = [
   "Bis zu zwölf Figuren auf einem Maßstab, in beliebiger Reihenfolge",
-  "Figuren für Mann, Frau, Jungen und Mädchen, und ein schlichtes Rechteck für Gegenstände",
+  "Figuren für Mann, Frau, Jungen und Mädchen, und gezeichnete Gegenstände, bemessen nach den Zahlen, die Sie tippen",
   "Gemeinfrei gezeichneter Mann, Frau, Junge und Mädchen - die Kinder als Kinder gezeichnet statt als verkleinerte Erwachsene",
   "Größen als 173, 1,73 m, 5'8\", 68 in oder 5 ft 8 getippt, mit angezeigter Lesung",
   "Zentimeter oder Fuß und Zoll, umschaltbar, ohne dass sich jemandes Größe ändert",
-  "Zwanzig fertige Gegenstände: Türen, Fenster, ein Whiteboard, ein Getränkeautomat, ein Seecontainer, Möbel",
+  "Zwanzig fertige Gegenstände, siebzehn davon gezeichnet: Türen, Fenster, ein Whiteboard, ein Getränkeautomat, Möbel",
+  "Jedes eigene SVG auf dem Maßstab, allein aus seinen Formen neu gebaut",
   "Ein Maßstab, dessen Abstand sich danach richtet, was das Bild tragen kann",
   "Jede Hintergrundfarbe oder gar keine, mit einer Schrift, die darauf lesbar bleibt",
   "PNG in jeder Pixelhöhe, und ein SVG, das in jeder Größe scharf druckt",

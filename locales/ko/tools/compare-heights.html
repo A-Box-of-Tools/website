@@ -43,7 +43,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">사람 추가</button>
         <button type="button" id="add-object" class="ghost">사물 추가</button>
+        <button type="button" id="add-svg" class="ghost">내 SVG</button>
         <button type="button" id="clear" class="ghost danger">차트 비우기</button>
+        <!-- 보이는 대신 위의 버튼이 동작시킵니다. 레이블이 여기 있는 것은, 방문자가 닿을 수 있는
+             컨트롤이라면 클릭한 것이든 아니든 이름이 필요하기 때문입니다. -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="차트에 올릴 SVG 파일을 고르세요" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -53,35 +58,53 @@
       <select id="preset">
         <option value="" selected>하나 고르기&hellip;</option>
         <optgroup label="문과 창">
-          <option value="door-interior" data-cm="203" data-width="81">실내문 &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">현관문 &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">창문 &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">차고문 &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">실내문 &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">현관문 &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">창문 &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">차고문 &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="학교와 사무실">
-          <option value="board" data-cm="120" data-width="240">화이트보드 또는 칠판 &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">사무용 책상 &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">4단 서류 캐비닛 &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">프로젝터 스크린, 100인치 &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">화이트보드 또는 칠판 &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">사무용 책상 &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">4단 서류 캐비닛 &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">프로젝터 스크린, 100인치 &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="동네에서">
-          <option value="vending" data-cm="183" data-width="100">자동판매기 &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">바퀴 달린 쓰레기통, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">자동판매기 &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">바퀴 달린 쓰레기통, 240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">농구 골대 &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">해상 컨테이너, 20피트 &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="집에서">
-          <option value="fridge" data-cm="178" data-width="76">냉장고, 냉동실 포함 &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">냉장고, 냉동실 포함 &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">주방 상판 &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">식탁 &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">식탁 의자 &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">3인용 소파 &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">업라이트 피아노 &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">통기타 &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">와인병 &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">식탁 &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">식탁 의자 &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">3인용 소파 &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">업라이트 피아노 &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">통기타 &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">와인병 &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>내 SVG</strong>는 어떤 그림이든 눈금자 위에 올려 줍니다. 로고도, 평면도도,
+      기계 부품도 됩니다. 그림은 이 페이지 안에서 읽히고 어디로도 가지 않습니다. 남는 것은
+      그 안의 도형뿐이라, 줄마다 고르신 단색 하나로 들어옵니다. 그리고 네트워크에 닿을 수
+      있는 것은 무엇이든 &mdash; 링크된 이미지, 스타일시트, 글꼴, 스크립트 &mdash; 남에게
+      보내실 수도 있는 차트 안으로 실려 가지 않고 그 자리에 남습니다. 채워진 도형이 아니라
+      가는 선으로 그린 그림은 통짜 얼룩처럼 나오는데, 이 도구가 맞지 않는 경우는 그것
+      하나입니다.
+    </p>
+
+    <p class="field-summary">
+      대부분은 밋밋한 덩어리가 아니라 그림으로 들어옵니다. 손잡이가 달린 문, 위에 냉동실이
+      있는 냉장고, 소파인 줄 보이는 소파처럼요. 그림은 그 줄의 두 숫자에 맞춰지므로 모양을
+      정하는 것은 숫자입니다. 그 위에 직접 적으시면 그림이 따라옵니다. 셋은 그림이 없는데,
+      자유롭게 쓸 수 있으면서 비율이 맞는 것을 찾지 못했기 때문입니다. 농구 골대와 해상
+      컨테이너, 주방 상판은 예전에 모든 사물이 그랬던 그 직사각형으로 들어옵니다.
+    </p>
+
 
     <p class="field-summary">
       이 가운데 몇 가지는 정말로 정해져 있습니다. 20피트 해상 컨테이너는 정의상

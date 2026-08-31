@@ -17,28 +17,30 @@ og_image_alt = "Boy Karşılaştırma - boyları yan yana karşılaştırma, yü
 
 pledge = """
     Bir boy grafiği aritmetik ve bir çizimdir: gönderilecek bir dosya ve
-    sorulacak bir hizmet yoktur. Erkek, kadın, erkek çocuk ve kız çocuk bu
-    sayfayla birlikte gelen kamu malı çizimlerdir, ve erkek çocuk ile kız çocuk
-    küçültülmüş yetişkinler değil gerçek çocukların çizimleridir &mdash; bir
-    aile grafiğinin, kimsenin adını koyamadığı bir biçimde yanlış görünmesini
-    önleyen de tam olarak budur. Bunun her adımı, bu sayfada okuyabileceğiniz
-    birkaç yüz satır JavaScript içinde olup biter. Herhangi bir ağ işlevi hiç
-    yoktur, ve bu burada önemlidir; çünkü yazdığınız şey bir insan listesi ve her
-    birinin boyudur."""
+    sorulacak bir hizmet yoktur &mdash; ve bu sayfanın kabul ettiği tek dosya,
+    cetvele koyacağınız kendi SVG'niz, burada okunur ve hiçbir yere gitmez.
+    Erkek, kadın, erkek çocuk ve kız çocuk bu sayfayla birlikte gelen kamu malı
+    çizimlerdir, ve erkek çocuk ile kız çocuk küçültülmüş yetişkinler değil
+    gerçek çocukların çizimleridir &mdash; bir aile grafiğinin, kimsenin adını
+    koyamadığı bir biçimde yanlış görünmesini önleyen de tam olarak budur. Bunun
+    her adımı, bu sayfada okuyabileceğiniz birkaç yüz satır JavaScript içinde
+    olup biter. Herhangi bir ağ işlevi hiç yoktur, ve bu burada önemlidir; çünkü
+    yazdığınız şey bir insan listesi ve her birinin boyudur."""
 
 live_hint = """
       Sözümüze güvenmek zorunda değilsiniz: DevTools'u açın, ağ sekmesini izleyin
       ve bir ad ile bir boy yazın. Tek bir istek bile ikisinden bir karakter
       taşımaz. Ya da internet bağlantısını kesin ve grafiği yine de yapın."""
 
-read_first = """
-, dört figür ve çizimlerinin nereden geldiği için
+read_first = """, dört figür ve çizimlerinin nereden geldiği için
       <code>src/traced.js</code> ile <code>vendor/</code>, menünün kurulduğu
       liste için <code>src/figures.js</code>, yazılan bir boyun nasıl sayıya
       döndüğü ve cetvelin nasıl etiketlendiği için <code>src/units.js</code>,
-      yerleşim için <code>src/chart.js</code>, ve iki indirme için
+      yerleşim için <code>src/chart.js</code>, iki indirme için
       <code>src/save.js</code> &mdash; ki bunlar ekrandaki SVG ile aynı SVG'nin
-      bir tuvale boyanmış hâlidir."""
+      bir tuvale boyanmış hâlidir &mdash; ve eklenen bir SVG'nin kendisinden
+      yeniden kurulduğu beyaz liste için <code>src/import-svg.js</code>, yani
+      buradaki, yanlış olmasının önem taşıyacağı tek dosya."""
 
 howto_heading = "Boy karşılaştırma grafiği nasıl yapılır"
 
@@ -114,6 +116,20 @@ body = """
       getirilecek bir yazı tipi ve içine yüklenecek bir görsel yoktur."""
 
 [[privacy]]
+title = "Eklediğiniz bir SVG burada okunur, ve güvenilmek yerine yeniden kurulur."
+body = """
+ Dosya bu sayfadan
+      hiç çıkmaz &mdash; tarayıcının kendi <code>FileReader</code>'ıyla okunur
+      ve hiçbir şey çalıştırmayan ölü bir belgeye ayrıştırılır. Çizilen şey o
+      dosya değildir: <code>src/import-svg.js</code>, biçimlerden ve geometriden
+      oluşan bir beyaz listeden YENİ bir çizim kurar; böylece bir betik, bir
+      stil sayfası, bir yazı tipi, bağlantılı bir resim ya da başka bir belgeye
+      yapılan atıf, taşınmak yerine geride bırakılır. Bu iki kez önemlidir,
+      çünkü indirdiğiniz grafik başkalarına gönderdiğiniz bir dosyadır: sağ
+      kalan herhangi bir şey, günler sonra, bu sayfanın yazdığı bir şeyden
+      onların tarayıcısının bir yabancının sunucusunu çağırması olurdu."""
+
+[[privacy]]
 title = "Çizimler burada, getirilmiyor."
 body = """
  Dört figürün dördü de
@@ -178,6 +194,16 @@ body = """
       gruplanmış hâlde, ve her biri kendi sayılarınızı üzerine yazabileceğiniz
       sıradan bir satır olarak gelir. Nesneler yüksekliğin yanı sıra bir genişlik de
       alır, yani bir kapı bir şerit değil 203'e 81'dir."""
+
+[[howto]]
+title = "Ya da üzerine kendi çiziminizi koyun."
+body = """
+ <strong>Kendi SVG'nizi
+      ekleyin</strong>, makinenizden bir dosya alır ve onun biçimini verdiğiniz
+      boyda çizer &mdash; grafik bir insan yerine bir ürün, bir araç ya da bir
+      bina hakkındayken başvurulacak şey budur. Çizimin kendi oranlarını korur,
+      onu diğer satırlar gibi renklendirir, ve dosyayı bir yere göndermek yerine
+      burada okur."""
 
 [[howto]]
 title = "Cetveli okurunuzun düşündüğü birimlere ayarlayın."
@@ -251,6 +277,25 @@ a = """
         istemez ve asıl mesele budur: çizim, indirdiğiniz bir resmin içinde son
         bulur ve atıf isteyen bir lisans o zorunluluğu sizin grafiğinize
         iliştirirdi."""
+
+[[faq]]
+q = "Grafiğe kendi çizimimi koyabilir miyim?"
+a = """
+        Evet &mdash; <strong>Kendi SVG'nizi ekleyin</strong>, herhangi bir SVG
+        dosyasını alır ve onun biçimini yazdığınız boyda cetvele koyar: bir
+        logo, bir kat planı, bir makine parçası, bir araba. Oranları kendine
+        aittir, dolayısıyla doldurulacak bir genişlik yoktur.
+        <br><br>
+        Bilinmesi gereken iki şey var. <strong>Tek bir düz renkle</strong>
+        çizilir, o satırın ayarlandığı renkle, çünkü grafiğin geri kalanı da
+        odur &mdash; yani dolu biçimler yerine ince dış hatlardan yapılmış bir
+        çizim leke olarak çıkar, ve bunun için bu yanlış araçtır. Ve yalnızca
+        <em>biçimler</em> tutulur: dosya, yollardan, dikdörtgenlerden ve
+        dairelerden sıfırdan yeniden kurulur, ve ağa ulaşabilecek ne varsa
+        &mdash; bağlantılı bir resim, bir stil sayfası, bir yazı tipi, bir betik
+        &mdash; geride bırakılır. Dosyanın kendisi hiçbir yere gitmez; bu kısım
+        indirdiğiniz grafikle ilgilidir, ki o da birine gönderebileceğiniz bir
+        dosyadır."""
 
 [[faq]]
 q = "Neden küçük çocuk ya da bebek yok?"
@@ -348,11 +393,12 @@ a = """
 description = "Tarayıcıda bir boy karşılaştırma grafiği çizin. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk ve nesneleri boylarıyla birlikte santimetre ya da fit ve inç cinsinden ekleyin, sıralayın, renklendirin ve sonucu PNG veya SVG olarak indirin. Hiçbir şey yüklenmez."
 features = [
   "Tek bir cetvelde on iki figüre kadar, istediğiniz sırada",
-  "Erkek, kadın, erkek çocuk ve kız çocuk figürleri, ve nesneler için sade bir dikdörtgen",
+  "Erkek, kadın, erkek çocuk ve kız çocuk figürleri, ve yazdığınız sayılara göre boyutlanan çizilmiş nesneler",
   "Kamu malı çizilmiş erkek, kadın, erkek çocuk ve kız çocuk - çocuklar küçültülmüş yetişkinler olarak değil çocuk olarak çizilmiş",
   "173, 1,73 m, 5'8\", 68 in ya da 5 ft 8 olarak yazılan boylar, okunuşu geri gösterilerek",
   "Santimetre ya da fit ve inç; kimsenin boyunu değiştirmeden değiştirilir",
-  "Hazır yirmi nesne: kapılar, pencereler, bir beyaz tahta, bir otomat, bir deniz konteyneri, mobilya",
+  "Yirmi hazır nesne, on yedisi çizilmiş: kapılar, pencereler, bir beyaz tahta, bir otomat, mobilyalar",
+  "Cetvelde kendi SVG'nizden herhangi biri, yalnızca biçimlerinden yeniden kurulmuş",
   "Aralığı, resmin taşıyabileceğinden seçilen bir cetvel",
   "Her arka plan rengi ya da hiçbiri; üzerinde okunur kalacak biçimde seçilen mürekkeple",
   "Her piksel yüksekliğinde PNG, ve her boyutta net basılan bir SVG",

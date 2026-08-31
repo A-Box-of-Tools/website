@@ -45,7 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Person hinzufügen</button>
         <button type="button" id="add-object" class="ghost">Gegenstand hinzufügen</button>
+        <button type="button" id="add-svg" class="ghost">Eigenes SVG</button>
         <button type="button" id="clear" class="ghost danger">Diagramm leeren</button>
+        <!-- Wird vom Button darüber ausgelöst statt angezeigt: Die Beschriftung steht
+             hier, weil ein Bedienelement, das ein Besucher erreichen kann, einen
+             Namen braucht, ob es das Angeklickte ist oder nicht. -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="SVG-Datei auswählen, die auf das Diagramm soll" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -55,35 +61,58 @@
       <select id="preset">
         <option value="" selected>Auswählen&hellip;</option>
         <optgroup label="Türen &amp; Fenster">
-          <option value="door-interior" data-cm="203" data-width="81">Zimmertür &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">Haustür &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">Fenster &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">Garagentor &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">Zimmertür &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">Haustür &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">Fenster &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">Garagentor &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="Schule &amp; Büro">
-          <option value="board" data-cm="120" data-width="240">Whiteboard oder Tafel &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">Schreibtisch &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">Aktenschrank, vier Schubladen &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">Leinwand, 100 Zoll &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">Whiteboard oder Tafel &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">Schreibtisch &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">Aktenschrank, vier Schubladen &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">Leinwand, 100 Zoll &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="In der Stadt">
-          <option value="vending" data-cm="183" data-width="100">Getränkeautomat &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">Mülltonne, 240 l &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">Getränkeautomat &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">Mülltonne, 240 l &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">Basketballkorb &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">Seecontainer, 20 Fuß &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="Im Haus">
-          <option value="fridge" data-cm="178" data-width="76">Kühl-Gefrier-Kombination &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">Kühl-Gefrier-Kombination &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">Küchenarbeitsplatte &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">Esstisch &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">Esszimmerstuhl &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">Sofa, drei Sitze &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">Klavier &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">Akustikgitarre &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">Weinflasche &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">Esstisch &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">Esszimmerstuhl &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">Sofa, drei Sitze &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">Klavier &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">Akustikgitarre &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">Weinflasche &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>Eigenes SVG</strong> setzt jede beliebige Zeichnung auf den Maßstab
+      &mdash; ein Logo, einen Grundriss, ein Maschinenteil. Sie wird auf dieser
+      Seite gelesen und geht nirgendwohin. Behalten werden nur die Formen darin:
+      Sie kommt in einer einzigen Volltonfarbe an, die Sie je Zeile wählen, und
+      alles, was das Netz erreichen könnte &mdash; ein verlinktes Bild, ein
+      Stylesheet, eine Schrift, ein Skript &mdash;, bleibt zurück, statt in ein
+      Diagramm getragen zu werden, das Sie jemandem schicken. Eine Zeichnung aus
+      dünnen Linien statt aus gefüllten Formen kommt als einfarbiger Klecks
+      heraus, und das ist der eine Fall, in dem dies das falsche Werkzeug ist.
+    </p>
+
+    <p class="field-summary">
+      Die meisten davon kommen gezeichnet an und nicht als schlichter Block
+      &mdash; eine Tür mit Klinke, ein Kühlschrank mit dem Gefrierfach darüber,
+      ein Sofa, dem man ansieht, dass es eines ist. Die Zeichnung wird in die
+      beiden Zahlen der Zeile eingepasst, es sind also die Zahlen, die die Form
+      bestimmen: Tippen Sie Ihre eigenen darüber, und das Bild folgt. Drei haben
+      keine Zeichnung, weil sich nichts Freies mit richtigen Proportionen fand:
+      Basketballkorb, Seecontainer und Küchenarbeitsplatte kommen als das
+      Rechteck an, das früher jeder Gegenstand war.
+    </p>
+
 
     <p class="field-summary">
       Ein paar davon liegen wirklich fest: Ein 20-Fuß-Seecontainer ist per

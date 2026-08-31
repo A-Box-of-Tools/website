@@ -35,7 +35,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">加一个人</button>
         <button type="button" id="add-object" class="ghost">加一件东西</button>
+        <button type="button" id="add-svg" class="ghost">自己的 SVG</button>
         <button type="button" id="clear" class="ghost danger">清空图表</button>
+        <!-- 不显示，由上面那个按钮来驱动：标签写在这里，是因为访客能够到的控件都需要一个名字，
+             不管它是不是他们点的那一个。 -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="选择一个要放到图上的 SVG 文件" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -45,35 +50,43 @@
       <select id="preset">
         <option value="" selected>挑一个&hellip;</option>
         <optgroup label="门和窗">
-          <option value="door-interior" data-cm="203" data-width="81">室内门 &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">入户门 &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">窗户 &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">车库门 &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">室内门 &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">入户门 &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">窗户 &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">车库门 &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="学校和办公室">
-          <option value="board" data-cm="120" data-width="240">白板或黑板 &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">办公桌 &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">四抽文件柜 &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">投影幕，100 英寸 &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">白板或黑板 &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">办公桌 &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">四抽文件柜 &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">投影幕，100 英寸 &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="街上的东西">
-          <option value="vending" data-cm="183" data-width="100">自动售货机 &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">带轮垃圾桶，240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">自动售货机 &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">带轮垃圾桶，240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">篮球架 &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">海运集装箱，20 英尺 &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="家里的东西">
-          <option value="fridge" data-cm="178" data-width="76">冰箱冷冻一体 &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">冰箱冷冻一体 &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">厨房台面 &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">餐桌 &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">餐椅 &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">三人沙发 &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">立式钢琴 &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">民谣吉他 &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">葡萄酒瓶 &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">餐桌 &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">餐椅 &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">三人沙发 &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">立式钢琴 &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">民谣吉他 &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">葡萄酒瓶 &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>自己的 SVG</strong> 能把任何一张图放到标尺上——一个标志、一张平面图、一个机器零件都行。文件在这个页面里读，哪儿都不去。留下的只有里面的形状：它以一种实色进来，颜色由你逐行来挑；而任何够得着网络的东西——外链图片、样式表、字体、脚本——都会被留在原地，不会跟着进到一张你可能发给别人的图里。用细线画的、不是实心形状的图，出来会是一团实心的墨块，这也是这个工具唯一不合适的场合。
+    </p>
+
+    <p class="field-summary">
+      这里大多数是画出来的，不是一个素方块——带把手的门、上面带冷冻室的冰箱、一看就是沙发的沙发。画会按这一行的两个数字来套，所以决定形状的还是数字：把你自己的盖上去，图就跟着变。有三个没有画，因为没找到既能自由使用、比例又对的：篮球架、海运集装箱和厨房台面，还是以前每件物件都用的那个矩形。
+    </p>
+
 
     <p class="field-summary">
       里头有几个是真的固定：20 英尺的海运集装箱按定义就是 259&nbsp;cm 高，篮球框在 305，美国的室内门是 203 乘 81。其余是常见尺寸而不是标准——门、窗和台面各国不同、各家也不同。每一个进来都是一行普通的行，量一下你自己的，把真数字盖上去。
