@@ -225,9 +225,9 @@ While iterating on one tool, scope the build instead:
 python build.py --only <slug> --locale en --quiet
 ```
 
-Seconds rather than a couple of minutes, because it does not write the other
-thirty-five tools or the fifteen languages' worth of guides. The page it writes
-is byte for byte the page a full build writes, so it is worth looking at; what
+Seconds rather than a couple of minutes, because it does not write any tool but
+the one named, or the fifteen languages' worth of guides. The page it writes is
+byte for byte the page a full build writes, so it is worth looking at; what
 it does not write is everything that lists other pages — hub, guides, roadmap,
 404, sitemap, feeds — and it does not check links, since every link out of the
 scope would report broken. Run the full command above before calling the change

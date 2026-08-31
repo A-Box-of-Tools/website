@@ -208,7 +208,7 @@ class FrameRules(unittest.TestCase):
         `.encoded summary:hover` and a `:focus-visible` on the same base has to
         exist in the same file. It reads the source rather than the build for
         the reason the rules above do - the built CSS is minified and one
-        stylesheet per tool, so a gap would report thirty-six times or not at
+        stylesheet per tool, so a gap would report once per tool or not at
         all.
         """
         state = re.compile(r':(?:hover|focus-visible)')

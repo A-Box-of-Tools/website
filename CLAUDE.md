@@ -38,7 +38,7 @@ node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 **Scope the build while you are working on one tool.** The third line above is
 the loop: a full build writes about twelve hundred pages in fifteen languages
 and takes a couple of minutes, and `--only` cuts that to seconds by not writing
-the other thirty-five tools. The pages it writes are byte for byte the pages a
+any tool but the one named. The pages it writes are byte for byte the pages a
 full build writes — that is tested — so what you look at is what ships. What it
 does **not** write is anything that lists other pages: the hub, the guides, the
 roadmap, the 404, the sitemap and the feeds are skipped and links are not
