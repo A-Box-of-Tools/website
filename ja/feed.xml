@@ -74,13 +74,6 @@
     <summary type="html">MP4やMOV、WebMから音声を取り出してWAVとして保存します。動画が端末を離れることはなく、映像は一度も復号されません。処理はすべてご自分のブラウザの中で動きます。</summary>
   </entry>
   <entry>
-    <title type="html">身長比較チャート</title>
-    <id>https://abox.tools/ja/compare-heights/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/compare-heights/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">身長を並べて比べられます。男性・女性・男の子・女の子に加えて、ドアや窓、ホワイトボード、自動販売機といったものも足せます。センチメートルでも、フィートとインチでも指定でき、できあがった図はPNGかSVGでダウンロードできます。描画はあなたのブラウザの中で行われます。</summary>
-  </entry>
-  <entry>
     <title type="html">身長比較チャートの作り方</title>
     <id>https://abox.tools/ja/guides/make-a-height-comparison-chart/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/make-a-height-comparison-chart/"/>
@@ -240,5 +233,12 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/format-json-without-uploading-it/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">自分のブラウザの中でJSONを整え、確かめ、詰める方法。整形ツールがファイルについて決して変えてはいけないもの、エラーの読み方、そして貼り付ける先が問題になる理由。</summary>
+  </entry>
+  <entry>
+    <title type="html">PDFの黒塗り</title>
+    <id>https://abox.tools/ja/redact-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/redact-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">PDFの文字の上に黒い四角を描くのではなく、文字そのものを取り除きます。文字はページを描く命令から消され、できあがったファイルをもう一度開いて検索し、本当に消えたことを確かめます。何もアップロードしません。</summary>
   </entry>
 </feed>

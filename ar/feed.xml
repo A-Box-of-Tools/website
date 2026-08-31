@@ -39,13 +39,6 @@
     <summary type="html">استخرج الصوت من ملف MP4 أو MOV أو WebM واحفظه بصيغة WAV. الفيديو لا يغادر جهازك، وصورته لا تُفكّ شفرتها أبداً، فالعمل كلّه يجري في متصفّحك أنت.</summary>
   </entry>
   <entry>
-    <title type="html">رسم مقارنة الأطوال</title>
-    <id>https://abox.tools/ar/مقارنة-الاطوال/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مقارنة-الاطوال/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">قارن الأطوال جنباً إلى جنب. أضِف رجلاً وامرأة وصبياً وفتاة وأشياء &amp;mdash; باباً ونافذة وسبّورة وآلة بيع &amp;mdash; بالسنتيمترات أو بالأقدام والبوصات، ونزّل الرسم بصيغة PNG أو SVG. وهو يُرسَم في متصفّحك.</summary>
-  </entry>
-  <entry>
     <title type="html">كيف تصنع رسم مقارنة أطوال</title>
     <id>https://abox.tools/ar/أدلة/عمل-رسم-مقارنة-الاطوال/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/عمل-رسم-مقارنة-الاطوال/"/>
@@ -240,5 +233,12 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/صورة-شخصية-بيومترية/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">اصنع صورة جواز سفر أو تأشيرة على القاعدة المنشورة لبلدك: المليمترات والـ dpi بالضبط، وطبقة حيّة لارتفاع الرأس وخطّ العينين، وفحص للخلفية، وورقة طباعة مقاس 4×6، وملف مضغوط إلى حدّ الـ KB الذي تفرضه البوابة. ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">ضاغط PDF</title>
+    <id>https://abox.tools/ar/ضغط-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/ضغط-pdf/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">صغِّر ملف PDF دون رفعه. يُقرأ الملف ويُعاد ضغطه ويُعاد كتابته بمتصفحك أنت، وتريك الأداة أين يقع حجمه فعلاً قبل أن تمسّ شيئاً.</summary>
   </entry>
 </feed>

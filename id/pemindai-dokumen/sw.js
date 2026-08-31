@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pemindai-dokumen/:';
-const CACHE_NAME=CACHE_PREFIX+'d7d151231c';
+const CACHE_NAME=CACHE_PREFIX+'9c23ac6662';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=99fc6a8c75',
+'styles.css?v=517fe30a06',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

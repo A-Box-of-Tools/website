@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/pdf-schwaerzen/:';
-const CACHE_NAME=CACHE_PREFIX+'04e570b57e';
+const CACHE_NAME=CACHE_PREFIX+'21f9fae2d0';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=d584fdc4f3',
+'styles.css?v=8e024d1951',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -81,13 +81,6 @@
     <summary type="html">比對兩段文字，逐行、逐詞看清每一處差異，並排或單列顯示。比對在你的瀏覽器裡跑，什麼都不上傳——尚未釋出的程式碼從不離開你的機器。</summary>
   </entry>
   <entry>
-    <title type="html">身高對比圖</title>
-    <id>https://abox.tools/zh-TW/compare-heights/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compare-heights/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">把身高並排比出來。可以加男性、女性、男孩、女孩，也可以加物件——門、窗、白板、自動售貨機——用釐米或者英尺英寸都行，做好的圖能下載成 PNG 或 SVG。它是在你的瀏覽器裡畫的。</summary>
-  </entry>
-  <entry>
     <title type="html">音訊編輯</title>
     <id>https://abox.tools/zh-TW/edit-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/edit-audio/"/>
@@ -240,5 +233,12 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode-reader/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">從照片、截圖或鏡頭讀取 QR Code，在開啟之前就看清這個連結到底通向哪裡。EAN、UPC、Code 128、Code 39 和 ITF 條碼也能讀。什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">SVG 轉圖片</title>
+    <id>https://abox.tools/zh-TW/svg-to-image/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/svg-to-image/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">在瀏覽器裡把 SVG 轉成 PNG、JPEG 或 WebP，尺寸隨你定。給寬度、給倍數，或者給一個框，還能順手出 @2x 和 @3x。透明保住，什麼都不上傳。</summary>
   </entry>
 </feed>

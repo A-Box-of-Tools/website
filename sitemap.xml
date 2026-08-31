@@ -553,12 +553,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ar/مقارنة-الاطوال/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/ar/ضغط-الصور/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -1076,12 +1070,6 @@
   </url>
   <url>
     <loc>https://abox.tools/de/base64-kodieren/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/de/groessenvergleich-erstellen/</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -1609,12 +1597,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/es/comparar-alturas/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/es/comprimir-imagen/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -2132,12 +2114,6 @@
   </url>
   <url>
     <loc>https://abox.tools/fr/encoder-base64/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/fr/comparer-des-tailles/</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -2665,12 +2641,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/hi/compare-heights/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/hi/compress-image/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -3188,12 +3158,6 @@
   </url>
   <url>
     <loc>https://abox.tools/id/encode-base64/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/id/bandingkan-tinggi-badan/</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -3721,12 +3685,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/it/confrontare-altezze/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/it/comprimere-immagine/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -4244,12 +4202,6 @@
   </url>
   <url>
     <loc>https://abox.tools/ja/base64/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/ja/compare-heights/</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -4777,12 +4729,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ko/키-비교/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/ko/이미지-압축/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -5300,12 +5246,6 @@
   </url>
   <url>
     <loc>https://abox.tools/nl/base64-coderen/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/nl/lengtes-vergelijken/</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -5833,12 +5773,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/pt/comparar-alturas/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/pt/comprimir-imagem/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -6356,12 +6290,6 @@
   </url>
   <url>
     <loc>https://abox.tools/tr/base64-kodlama/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/tr/boy-karsilastirma/</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -6889,12 +6817,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/zh/compare-heights/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/zh/compress-image/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -7412,12 +7334,6 @@
   </url>
   <url>
     <loc>https://abox.tools/zh-TW/base64/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/zh-TW/compare-heights/</loc>
     <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

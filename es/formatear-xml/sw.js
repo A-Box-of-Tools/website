@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/formatear-xml/:';
-const CACHE_NAME=CACHE_PREFIX+'abe48d7876';
+const CACHE_NAME=CACHE_PREFIX+'eb1781df77';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=6a61bc26f6',
+'styles.css?v=1df96b4bb1',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

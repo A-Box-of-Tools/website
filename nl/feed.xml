@@ -67,13 +67,6 @@
     <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
   </entry>
   <entry>
-    <title type="html">Lengtevergelijker</title>
-    <id>https://abox.tools/nl/lengtes-vergelijken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/lengtes-vergelijken/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Vergelijk lengtes naast elkaar. Voeg een man, een vrouw, een jongen, een meisje en voorwerpen toe &amp;mdash; een deur, een raam, een whiteboard, een automaat &amp;mdash; in centimeters of in voet en inches, en download de grafiek als PNG of SVG. Hij wordt in je browser getekend.</summary>
-  </entry>
-  <entry>
     <title type="html">Tekstvergelijker</title>
     <id>https://abox.tools/nl/tekst-vergelijken/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
@@ -240,5 +233,12 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Elk frame van een geanimeerde GIF als PNG: waarom sommige frames maar een klein lapje van het plaatje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart om het weer in elkaar te zetten.</summary>
+  </entry>
+  <entry>
+    <title type="html">Framegrabber</title>
+    <id>https://abox.tools/nl/frame-uit-video-halen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/frame-uit-video-halen/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Sla elk frame van een MP4, MOV of WebM op als PNG of JPEG op volle grootte. Stap frame voor frame door de clip, of pak er om de zoveel seconden een. Draait in je browser: er wordt niets geüpload.</summary>
   </entry>
 </feed>

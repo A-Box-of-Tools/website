@@ -1,5 +1,9 @@
 # The four drawn figures
 
+*The objects a visitor can add for scale are drawn too, and they are in*
+*[`objects/`](objects/LICENSE.md), which explains why their licences are*
+*allowed to be a little wider than the four people's.*
+
 The man, the woman, the boy and the girl on this tool's charts are not drawn
 here. They are artwork by other people, in the public domain, and the four
 files in this folder are those files as they were published — so anybody can
@@ -25,6 +29,15 @@ icon family uses — that promise would stop being true, because the attribution
 would travel into their chart. CC0 and public domain attach nothing to
 anything. That is why these four, which took a search, rather than the sets
 that were sitting there.
+
+The objects in [`objects/`](objects/LICENSE.md) are held to the same *test* and
+land in a slightly different place. MIT and Apache-2.0 ask for a notice to
+travel with the icon set — which that folder carries — and ask nothing of a
+picture drawn with it. CC BY asks something of the picture. The line is drawn
+between those two, not between "public domain" and "everything else", and it
+had to move because a person is one drawing and the objects are twenty: below
+the level of a silhouetted human being, the public domain simply does not have
+a fridge in it.
 
 ## The two changes, and why each was made
 

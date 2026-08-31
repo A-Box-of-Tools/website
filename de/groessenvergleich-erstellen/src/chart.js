@@ -31,7 +31,7 @@ function columns(figures,scale,font,measure){
 const gap=font*1.7;
 return figures.map((figure)=>{
 const height=figure.cm*scale;
-const drawn=figure.shape.paths
+const drawn=figure.shape.markup&&!figure.shape.stretch
 ?figure.shape.width*height
 :Math.max((figure.widthCm||figure.cm*0.6)*scale,6);
 const name=figure.name?measure(figure.name,font,600):0;
@@ -50,7 +50,7 @@ const tallest=figures.reduce((most,f)=>Math.max(most,f.cm),0)||100;
 const{topCm,step}=ceiling(tallest,plotHeight,labelHeight,unit);
 const scale=plotHeight/topCm;
 const lines=[];
-for(let cm=0;cm<=topCm+1e-6;cm+=step){
+for(let cm=step;cm<=topCm+1e-6;cm+=step){
 lines.push({cm,text:gridLabel(cm,unit)});
 }
 const rulerFont=Math.round(font*0.8);
@@ -97,13 +97,14 @@ const{figure}=column;
 const centre=round(x+column.width/2);
 const top=round(groundY-column.height);
 const colour=escape(figure.colour);
-if(figure.shape.paths){
+if(figure.shape.markup){
 const scaled=round(column.height);
 const inner=figure.shape.inner
 ?`<g transform="${escape(figure.shape.inner)}">`:'';
+const across=round(column.drawn);
+const factors=figure.shape.stretch?`${across} ${scaled}`:`${scaled}`;
 parts.push(`<g fill="${colour}" transform="translate(${centre} ${top}) `
-+`scale(${scaled})">${inner}`
-+figure.shape.paths.map((d)=>`<path d="${d}"/>`).join('')
++`scale(${factors})">${inner}${figure.shape.markup}`
 +`${inner ? '</g>' : ''}</g>`);
 }else{
 parts.push(`<rect x="${round(centre - column.drawn / 2)}" y="${top}" `

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/qr코드-스캔/:';
-const CACHE_NAME=CACHE_PREFIX+'34a750c1c7';
+const CACHE_NAME=CACHE_PREFIX+'53a479ab7e';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a703c6081c',
+'styles.css?v=f6489ef484',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

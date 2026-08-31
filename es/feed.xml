@@ -39,13 +39,6 @@
     <summary type="html">Codifica y decodifica Base64 en los dos alfabetos, codifica URL en porcentaje, escapa entidades HTML y lee hexadecimal y escapes con barra invertida. Todo corre en tu navegador y no se sube nada: un token nunca sale de tu equipo.</summary>
   </entry>
   <entry>
-    <title type="html">Comparador de alturas</title>
-    <id>https://abox.tools/es/comparar-alturas/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/comparar-alturas/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Compara alturas lado a lado. Añade un hombre, una mujer, un niño, una niña y objetos &amp;mdash; una puerta, una ventana, una pizarra, una máquina expendedora &amp;mdash; en centímetros o en pies y pulgadas, y descarga el gráfico como PNG o SVG. Se dibuja en tu navegador.</summary>
-  </entry>
-  <entry>
     <title type="html">Comparador de textos</title>
     <id>https://abox.tools/es/comparar-textos/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/comparar-textos/"/>
@@ -240,5 +233,12 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/incrustar-una-imagen-en-css/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Lo que cuesta un data URI, por qué base64 añade un tercio y gzip no te lo devuelve, por qué un SVG no debería ir nunca en base64, y el error de comillas que rompe los SVG incrustados sin decir nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cómo comparar dos archivos JSON</title>
+    <id>https://abox.tools/es/guias/comparar-dos-archivos-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/comparar-dos-archivos-json/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Formatea los dos archivos igual, ordena las claves y compáralos después. Por qué un diff de JSON en crudo es casi todo ruido, cómo canonizar los dos lados en el navegador, y qué sobrevive hasta el parche.</summary>
   </entry>
 </feed>

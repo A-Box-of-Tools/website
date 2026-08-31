@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/belge-tarayici/:';
-const CACHE_NAME=CACHE_PREFIX+'c5033e2b0f';
+const CACHE_NAME=CACHE_PREFIX+'4315f2247a';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=99fc6a8c75',
+'styles.css?v=517fe30a06',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

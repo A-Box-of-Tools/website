@@ -81,13 +81,6 @@
     <summary type="html">比对两段文本，逐行、逐词看清每一处差异，并排或单列显示。比对在你的浏览器里跑，什么都不上传——尚未发布的代码从不离开你的机器。</summary>
   </entry>
   <entry>
-    <title type="html">身高对比图</title>
-    <id>https://abox.tools/zh/compare-heights/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compare-heights/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">把身高并排比出来。可以加男性、女性、男孩、女孩，也可以加物件——门、窗、白板、自动售货机——用厘米或者英尺英寸都行，做好的图能下载成 PNG 或 SVG。它是在你的浏览器里画的。</summary>
-  </entry>
-  <entry>
     <title type="html">音频编辑</title>
     <id>https://abox.tools/zh/edit-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/edit-audio/"/>
@@ -240,5 +233,12 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">生成链接、Wi-Fi 或者名片二维码，也生成 EAN-13、UPC-A、Code 128 和 Code 39 条形码。可下载 SVG 或 PNG。全部在你的浏览器里完成。</summary>
+  </entry>
+  <entry>
+    <title type="html">二维码与条形码识读</title>
+    <id>https://abox.tools/zh/qr-barcode-reader/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode-reader/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">从照片、截图或摄像头读取二维码，在打开之前就看清这个链接到底通向哪里。EAN、UPC、Code 128、Code 39 和 ITF 条形码也能读。什么都不上传。</summary>
   </entry>
 </feed>

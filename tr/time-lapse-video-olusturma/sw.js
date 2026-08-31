@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/time-lapse-video-olusturma/:';
-const CACHE_NAME=CACHE_PREFIX+'03b0cb3c15';
+const CACHE_NAME=CACHE_PREFIX+'6588a6728b';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=cee444bdb0',
+'styles.css?v=f612151d49',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

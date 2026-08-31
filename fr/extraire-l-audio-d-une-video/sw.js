@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/extraire-l-audio-d-une-video/:';
-const CACHE_NAME=CACHE_PREFIX+'b31c911f12';
+const CACHE_NAME=CACHE_PREFIX+'0725d331d3';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=e3e16db3f0',
+'styles.css?v=01d18a45f9',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

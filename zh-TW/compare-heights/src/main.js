@@ -1,9 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
-import{SHAPES,shapeOf}from'./figures.js';
+import{SHAPES,objectShape,shapeOf}from'./figures.js';
 import{FONT,chartSvg,isDark}from'./chart.js';
 import{format,formatBoth,parseHeight,toInput}from'./units.js';
 import{download,svgBlob,svgToPng}from'./save.js';
+import{LIMITS,importSvg}from'./import-svg.js';
 const $=(id)=>document.getElementById(id);
 const el={
 rows:$('rows'),
@@ -11,6 +12,8 @@ rowHead:document.querySelector('.row-head'),
 rowCount:$('row-count'),
 addPerson:$('add-person'),
 addObject:$('add-object'),
+addSvg:$('add-svg'),
+svgFile:$('svg-file'),
 clear:$('clear'),
 preset:$('preset'),
 inputError:$('input-error'),
@@ -48,8 +51,57 @@ function measure(text,fontPx,weight=400){
 gauge.font=`${weight} ${fontPx}px ${FONT}`;
 return gauge.measureText(String(text)).width;
 }
+const stage=document.createElementNS('http://www.w3.org/2000/svg','svg');
+stage.setAttribute('aria-hidden','true');
+stage.style.cssText='position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden';
+function plain(element,depth=0){
+if(depth>40)return null;
+const attrs={};
+for(const attribute of element.attributes??[]){
+attrs[attribute.name.toLowerCase()]=attribute.value;
+}
+return{
+tag:element.tagName,
+attrs,
+children:[...element.children].map((child)=>plain(child,depth+1)).filter(Boolean),
+};
+}
+async function shapeFromFile(file){
+if(file.size>LIMITS.bytes)return{error:'svg.toobig'};
+const text=await file.text();
+const doc=new DOMParser().parseFromString(text,'image/svg+xml');
+if(doc.querySelector('parsererror')||!doc.documentElement){
+return{error:'svg.unreadable'};
+}
+const result=importSvg(plain(doc.documentElement));
+if(result.error)return result;
+if(!stage.isConnected)document.body.append(stage);
+const group=document.createElementNS('http://www.w3.org/2000/svg','g');
+group.innerHTML=result.markup;
+stage.append(group);
+const box=group.getBBox();
+group.remove();
+if(!(box.width>0)||!(box.height>0))return{error:'svg.noshapes'};
+return{
+shape:{
+id:'upload',
+label:'shape.upload',
+width:box.width/box.height,
+inner:`scale(${1 / box.height}) translate(${-(box.x + box.width / 2)} ${-box.y})`,
+paths:null,
+markup:result.markup,
+defaultCm:0,
+},
+shapes:result.shapes,
+name:file.name.replace(/\.svg$/i,'').slice(0,40),
+};
+}
 function unit(){
 return el.unit.value;
+}
+function figureFor(row){
+const carried=row.shape==='upload'||row.shape==='object';
+return carried&&row.art?row.art:shapeOf(row.shape);
 }
 function heightPlaceholder(){
 return phrase(unit()==='ft'?'row.heightexampleft':'row.heightexample');
@@ -65,6 +117,7 @@ name:values.name??'',
 height:values.height??(start?toInput(start,unit()):''),
 width:values.width??'',
 colour:values.colour??PALETTE[(rows.length)%PALETTE.length],
+art:values.art??null,
 };
 row.node=buildRow(row);
 rows.push(row);
@@ -76,16 +129,23 @@ node.className='row';
 const shape=document.createElement('select');
 shape.className='row-shape';
 for(const option of SHAPES)shape.append(new Option(phrase(option.label),option.id));
+if(row.art?.id==='upload')shape.append(new Option(phrase('shape.upload'),'upload'));
 shape.value=row.shape;
 shape.addEventListener('change',()=>{
-const was=shapeOf(row.shape).defaultCm;
+const was=figureFor(row).defaultCm;
+if(shape.value==='upload'&&!row.art){
+shape.value=row.shape;
+askForFile(row);
+return;
+}
 row.shape=shape.value;
-const now=shapeOf(row.shape).defaultCm;
+const now=figureFor(row).defaultCm;
 if(now&&was&&row.height.trim()===toInput(was,unit())){
 row.height=toInput(now,unit());
 height.value=row.height;
 }
 node.classList.toggle('is-object',row.shape==='object');
+node.classList.toggle('is-upload',row.shape==='upload');
 draw();
 });
 const name=document.createElement('input');
@@ -137,6 +197,7 @@ remove.classList.add('danger');
 tools.append(up,down,remove);
 node.append(grip,shape,name,heightCell,width,colour,tools);
 node.classList.toggle('is-object',row.shape==='object');
+node.classList.toggle('is-upload',row.shape==='upload');
 row.controls={
 shape,name,height,width,colour,up,down,remove,reads,
 };
@@ -218,6 +279,7 @@ controls.down.disabled=index===rows.length-1;
 const full=rows.length>=MOST;
 el.addPerson.disabled=full;
 el.addObject.disabled=full;
+el.addSvg.disabled=full;
 el.preset.disabled=full;
 el.rowCount.textContent=full?phrase('chart.full'):'';
 }
@@ -233,9 +295,9 @@ continue;
 }
 reads.textContent=phrase('row.reads',{height:formatBoth(parsed.cm,unit())});
 reads.className='row-reads';
-const shape=shapeOf(row.shape);
+const shape=figureFor(row);
 let widthCm=0;
-if(!shape.paths){
+if(!shape.markup){
 const wide=parseHeight(row.width,unit());
 widthCm=wide.error?parsed.cm*shape.width:wide.cm;
 }
@@ -328,6 +390,40 @@ addRow('object');
 paintRows();
 draw();
 });
+let wantsFile=null;
+function askForFile(row){
+wantsFile=row??null;
+el.svgFile.value='';
+el.svgFile.click();
+}
+el.addSvg.addEventListener('click',()=>askForFile(null));
+el.svgFile.addEventListener('change',async()=>{
+const file=el.svgFile.files?.[0];
+const row=wantsFile;
+wantsFile=null;
+if(!file)return;
+const result=await shapeFromFile(file);
+if(result.error){
+el.inputError.hidden=false;
+el.inputError.textContent=phrase(result.error);
+return;
+}
+el.inputError.hidden=true;
+result.shape.defaultCm=100;
+if(row){
+row.art=result.shape;
+row.shape='upload';
+if(!row.name.trim())row.name=result.name;
+if(!row.height.trim())row.height=toInput(100,unit());
+}else{
+addRow('upload',{
+art:result.shape,name:result.name,height:toInput(100,unit()),
+});
+}
+paintRows();
+draw();
+note(phrase('svg.added',{shapes:result.shapes}));
+});
 el.clear.addEventListener('click',()=>{
 rows=[];
 paintRows();
@@ -341,6 +437,7 @@ addRow('object',{
 name:option.textContent.split('—')[0].trim(),
 height:toInput(cm,unit()),
 width:toInput(Number(option.dataset.width),unit()),
+art:option.dataset.art?objectShape(option.dataset.art):null,
 });
 paintRows();
 draw();
@@ -367,6 +464,11 @@ el.transparent,el.size]){
 control.addEventListener('input',draw);
 control.addEventListener('change',draw);
 }
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
+});
 const PLATFORM_HOSTS=/(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
 function monitorNetwork(){
 const platform=new Set();

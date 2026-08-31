@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/exif-verisi-silme/:';
-const CACHE_NAME=CACHE_PREFIX+'8143f1585d';
+const CACHE_NAME=CACHE_PREFIX+'49708a2e4f';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=588807629a',
+'styles.css?v=f23e6e3014',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

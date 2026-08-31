@@ -39,13 +39,6 @@
     <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
-    <title type="html">Boy Karşılaştırma</title>
-    <id>https://abox.tools/tr/boy-karsilastirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/boy-karsilastirma/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Boyları yan yana karşılaştırın. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk ve nesneler ekleyin &amp;mdash; bir kapı, bir pencere, bir beyaz tahta, bir otomat &amp;mdash; santimetre ya da fit ve inç cinsinden, sonra grafiği PNG veya SVG olarak indirin. Tarayıcınızda çizilir.</summary>
-  </entry>
-  <entry>
     <title type="html">Boy karşılaştırma grafiği nasıl yapılır</title>
     <id>https://abox.tools/tr/rehberler/boy-karsilastirma-grafigi-yapma/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/boy-karsilastirma-grafigi-yapma/"/>
@@ -240,5 +233,12 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/gifi-karelere-ayirma/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Hareketli bir GIF'i karelerine ayırın ve her birini PNG olarak kaydedin; ücretsiz ve tamamen tarayıcınızda. Saydamlığı ve zamanlamayı korur. Hiçbir şey yüklenmez ve çevrimdışı da çalışır.</summary>
+  </entry>
+  <entry>
+    <title type="html">GIF Çözümleyici</title>
+    <id>https://abox.tools/tr/gif-analiz-etme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gif-analiz-etme/"/>
+    <updated>2026-08-27T00:00:00Z</updated>
+    <summary type="html">Bir GIF'i tarayıcınızda parçalarına ayırın: gecikmesi ve tasfiye kuralıyla her kare, renk tabloları, döngü sayısı ve dosya boyutunun nereye gittiğine dair bayt bayt bir döküm. Hiçbir şey yüklenmez.</summary>
   </entry>
 </feed>

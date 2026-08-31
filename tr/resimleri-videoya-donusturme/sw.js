@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resimleri-videoya-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'398ff16e9e';
+const CACHE_NAME=CACHE_PREFIX+'aafd7e2fad';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=f000f2706c',
+'styles.css?v=f89386a9dd',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
