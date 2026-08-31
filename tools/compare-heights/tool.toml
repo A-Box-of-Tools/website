@@ -8,11 +8,14 @@
 #
 # The second tool here whose input is typed rather than dropped, after the QR
 # generator, so it has no [picker] table either. It does take one optional
-# file - an SVG to put a shape of your own on the ruler - and that is a bare
+# file - a picture of your own to put on the ruler - and that is a bare
 # <input type="file"> behind a button rather than the shared picker: the
 # picker draws a drop zone and owns a page's main flow, and here the main flow
-# is still typing. See src/import-svg.js for what happens to the file, which
-# is the part worth reading. What is unusual about it is
+# is still typing. Two readers sit behind it, and both are worth reading:
+# src/import-svg.js, which rebuilds a drawing out of a whitelist because an SVG
+# is a program, and src/import-image.js, which has the opposite job - a raster
+# is only pixels, so what needs proving there is that the href it WRITES can
+# only ever be a picture this page encoded.") What is unusual about it is
 # what the input IS: a list of people's names and how tall each of them is,
 # which is the most personal thing anything on this site is handed and the
 # reason the privacy panel below is written about a list rather than a file.
@@ -64,8 +67,8 @@ og_card = "Two adults, a child and a doorway on one ruler - drawn on your own ma
 
 pledge = """
     A height chart is arithmetic and a drawing: there is no file to send and no
-    service to ask &mdash; and the one file this page will take, an SVG of your
-    own to put on the ruler, is read here and goes nowhere. The man, the woman, the boy and the girl are public-domain
+    service to ask &mdash; and the one file this page will take, a picture of
+    your own to put on the ruler, is read here and goes nowhere. The man, the woman, the boy and the girl are public-domain
     artwork that ships with this page, and the boy and the girl are drawings of
     actual children rather than adults made small &mdash; which is what stops a
     family chart looking wrong in a way nobody can name. Every step of it
@@ -179,7 +182,7 @@ body = """
       fetch and no image to load inside it."""
 
 [[privacy]]
-title = "An SVG you add is read here, and rebuilt rather than trusted."
+title = "A picture you add is read here, and never sent."
 body = """
  The file
       never leaves this page &mdash; it is read with the browser's own
@@ -190,7 +193,15 @@ body = """
       document is left behind rather than carried through. That matters twice
       over, because the chart you download is a file you send to other people:
       anything that survived would be their browser calling a stranger's server,
-      days later, from something this page wrote."""
+      days later, from something this page wrote.
+
+      A photograph or a PNG is not a program and has nothing to rebuild: the
+      browser's own decoder reads it, and it is redrawn onto a canvas here
+      before it goes on the chart. That redrawing is what leaves the file's
+      metadata behind &mdash; the camera, the place, the profile, whatever was
+      in it &mdash; because none of that survives a canvas. What ends up in the
+      chart is a picture this page encoded, written in as data rather than as
+      an address, so the chart still points at nothing."""
 
 [[privacy]]
 title = "The artwork is here, not fetched."
@@ -263,11 +274,12 @@ body = """
 title = "Or put your own drawing on it."
 body = """
  <strong>Add your own
-      SVG</strong> takes a file from your machine and draws its shape at
+      picture</strong> takes a file from your machine and puts it on the ruler at
       whatever height you give it &mdash; the thing to reach for when the chart
-      is about a product, a vehicle or a building rather than a person. It keeps
-      the drawing's own proportions, colours it like any other row, and reads the
-      file here rather than sending it anywhere."""
+      is about a product, a vehicle or a building rather than a person. An SVG
+      is drawn in the row's own colour like every other figure; a photograph or
+      a PNG goes on as itself. Either keeps its own proportions, and either is
+      read here rather than sent anywhere."""
 
 [[howto]]
 title = "Set the ruler to the units your reader thinks in."
@@ -348,23 +360,30 @@ a = """
         requirement to your chart."""
 
 [[faq]]
-q = "Can I put my own drawing on the chart?"
+q = "Can I put my own picture on the chart?"
 a = """
-        Yes &mdash; <strong>Add your own SVG</strong> takes any SVG file and
-        puts its shape on the ruler at whatever height you type: a logo, a floor
-        plan, a piece of machinery, a car. Its proportions are its own, so
-        there is no width to fill in.
+        Yes &mdash; <strong>Add your own picture</strong> takes a drawing or a
+        photograph and puts it on the ruler at whatever height you type: a logo,
+        a floor plan, a piece of machinery, a car, or a photo of the thing
+        itself. Its proportions are its own, so there is no width to fill in.
         <br><br>
-        Two things to know. It is drawn as <strong>one solid colour</strong>,
-        the one that row is set to, because that is what the rest of the chart
-        is &mdash; so a drawing made of thin outlines rather than filled shapes
-        comes out as a blob, and this is the wrong tool for it. And only the
-        <em>shapes</em> are kept: the file is rebuilt from scratch out of paths
-        and rectangles and circles, and anything that could reach the network
-        &mdash; a linked image, a stylesheet, a font, a script &mdash; is left
-        behind. The file itself never goes anywhere; that part is about the
-        chart you download, which is a file you might send to somebody
-        else."""
+        An <strong>SVG</strong> is drawn as one solid colour, the one that row
+        is set to, because that is what the rest of the chart is &mdash; so a
+        drawing made of thin outlines rather than filled shapes comes out as a
+        blob, and this is the wrong tool for it. Only the <em>shapes</em> are
+        kept: the file is rebuilt from scratch out of paths and rectangles and
+        circles, and anything that could reach the network &mdash; a linked
+        image, a stylesheet, a font, a script &mdash; is left behind.
+        <br><br>
+        A <strong>photo or a PNG</strong> goes on as itself and keeps its own
+        colours, so the row's colour only names it. It is redrawn here before it
+        goes on, which bounds how much it adds to the chart and leaves the
+        file's metadata behind. Transparency is kept, so a cut-out stands on the
+        ruler cleanly &mdash; and a photo brings its background with it, which is
+        worth cropping off first.
+        <br><br>
+        Neither file goes anywhere. That matters twice over, because the chart
+        you download is a file you might send to somebody else."""
 
 [[faq]]
 q = "Why is there no toddler or baby?"
@@ -478,7 +497,7 @@ features = [
   "Heights typed as 173, 1.73 m, 5'8\", 68 in or 5 ft 8, with the reading shown back",
   "Centimetres or feet and inches, switched without changing anybody's height",
   "Twenty ready-made objects, seventeen of them drawn: doors, windows, a whiteboard, a vending machine, furniture",
-  "Any SVG of your own on the ruler, rebuilt from its shapes alone",
+  "Any picture of your own on the ruler &mdash; an SVG rebuilt from its shapes, or a photo as it is",
   "A ruler whose spacing is chosen from what the picture can carry",
   "Any background colour, or none, with the ink chosen to stay legible on it",
   "PNG out at any pixel height, and an SVG that prints sharp at any size",

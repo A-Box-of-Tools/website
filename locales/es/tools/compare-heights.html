@@ -45,13 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Añadir una persona</button>
         <button type="button" id="add-object" class="ghost">Añadir un objeto</button>
-        <button type="button" id="add-svg" class="ghost">Tu propio SVG</button>
+        <button type="button" id="add-svg" class="ghost">Tu propia imagen</button>
         <button type="button" id="clear" class="ghost danger">Vaciar el gráfico</button>
         <!-- Lo dispara el botón de arriba en vez de mostrarse: la etiqueta está aquí
              porque un control al que un visitante puede llegar necesita un nombre,
              sea o no lo que ha pulsado. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="Elige un archivo SVG para poner en el gráfico" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Elige una imagen para poner en el gráfico" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -91,7 +91,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>Tu propio SVG</strong> pone cualquier dibujo en la regla &mdash;
+      <strong>Un SVG</strong> pone cualquier dibujo en la regla &mdash;
       un logotipo, un plano, una pieza de maquinaria. Se lee en esta página y no
       va a ninguna parte. Solo se conservan las formas que tiene: llega en un
       único color plano que eliges por fila, y todo lo que pudiera alcanzar la
@@ -100,6 +100,10 @@
       quizá le mandes a alguien. Un dibujo hecho de líneas finas en lugar de
       formas rellenas sale como un borrón macizo, que es el único caso en que
       esta es la herramienta equivocada.
+    </p>
+
+    <p class="field-summary">
+      <strong>Una foto o un PNG</strong> va tal cual y conserva sus propios colores, así que el color de la fila solo la nombra. También se lee aquí, y se vuelve a dibujar antes de entrar &mdash; lo que limita cuánto engorda el gráfico y deja atrás los metadatos del archivo. Lo transparente sigue siendo transparente, así que un recorte se apoya limpio en la regla, y una foto trae su fondo consigo, que conviene recortar antes.
     </p>
 
     <p class="field-summary">
@@ -229,7 +233,7 @@
     <span data-phrase="shape.boy">Niño</span>
     <span data-phrase="shape.girl">Niña</span>
     <span data-phrase="shape.object">Objeto</span>
-    <span data-phrase="shape.upload">Tu propio SVG</span>
+    <span data-phrase="shape.upload">Tu propia imagen</span>
 
     <span data-phrase="row.shape">Figura de la fila {n}</span>
     <span data-phrase="row.name">Nombre de la fila {n}</span>
@@ -255,6 +259,9 @@
     <span data-phrase="svg.noshapes">En ese archivo no hay nada que dibujar. Solo se conservan las formas &mdash; un archivo de puro texto, efectos o imágenes enlazadas no tiene ninguna.</span>
     <span data-phrase="svg.unreadable">Ese archivo no es un SVG que esto pueda leer.</span>
     <span data-phrase="svg.toobig">Ese archivo es demasiado grande para ser una sola forma. El límite son dos megabytes.</span>
+    <span data-phrase="image.added">Añadida. La imagen se leyó en esta página y no se subió nada.</span>
+    <span data-phrase="image.unreadable">Ese archivo no es una imagen que esto pueda leer.</span>
+    <span data-phrase="image.toobig">Esa imagen es demasiado grande. El límite son doce megabytes.</span>
     <span data-phrase="chart.empty">Añade a alguien y el gráfico aparecerá aquí.</span>
     <span data-phrase="chart.noheights">Cada fila necesita una altura. Rellena una y el gráfico aparecerá aquí.</span>
     <span data-phrase="chart.full">Doce figuras es todo lo que este gráfico admite sin dejar de leerse.</span>

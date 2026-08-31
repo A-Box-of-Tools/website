@@ -45,13 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Person hinzufügen</button>
         <button type="button" id="add-object" class="ghost">Gegenstand hinzufügen</button>
-        <button type="button" id="add-svg" class="ghost">Eigenes SVG</button>
+        <button type="button" id="add-svg" class="ghost">Eigenes Bild</button>
         <button type="button" id="clear" class="ghost danger">Diagramm leeren</button>
         <!-- Wird vom Button darüber ausgelöst statt angezeigt: Die Beschriftung steht
              hier, weil ein Bedienelement, das ein Besucher erreichen kann, einen
              Namen braucht, ob es das Angeklickte ist oder nicht. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="SVG-Datei auswählen, die auf das Diagramm soll" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Bild auswählen, das auf das Diagramm soll" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -91,7 +91,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>Eigenes SVG</strong> setzt jede beliebige Zeichnung auf den Maßstab
+      <strong>Ein SVG</strong> setzt jede beliebige Zeichnung auf den Maßstab
       &mdash; ein Logo, einen Grundriss, ein Maschinenteil. Sie wird auf dieser
       Seite gelesen und geht nirgendwohin. Behalten werden nur die Formen darin:
       Sie kommt in einer einzigen Volltonfarbe an, die Sie je Zeile wählen, und
@@ -100,6 +100,10 @@
       Diagramm getragen zu werden, das Sie jemandem schicken. Eine Zeichnung aus
       dünnen Linien statt aus gefüllten Formen kommt als einfarbiger Klecks
       heraus, und das ist der eine Fall, in dem dies das falsche Werkzeug ist.
+    </p>
+
+    <p class="field-summary">
+      <strong>Ein Foto oder ein PNG</strong> kommt stattdessen als es selbst auf das Diagramm und behält seine eigenen Farben, sodass die Zeilenfarbe es nur noch benennt. Es wird ebenfalls hier gelesen und vorher neu gezeichnet &mdash; das begrenzt, wie stark es das Diagramm wachsen lässt, und lässt die Metadaten der Datei zurück. Was durchsichtig ist, bleibt durchsichtig: ein Freisteller steht sauber auf dem Maßstab, ein Foto bringt seinen Hintergrund mit, und den schneidet man besser vorher weg.
     </p>
 
     <p class="field-summary">
@@ -230,7 +234,7 @@
     <span data-phrase="shape.boy">Junge</span>
     <span data-phrase="shape.girl">Mädchen</span>
     <span data-phrase="shape.object">Gegenstand</span>
-    <span data-phrase="shape.upload">Eigenes SVG</span>
+    <span data-phrase="shape.upload">Eigenes Bild</span>
 
     <span data-phrase="row.shape">Figur für Zeile {n}</span>
     <span data-phrase="row.name">Name für Zeile {n}</span>
@@ -256,6 +260,9 @@
     <span data-phrase="svg.noshapes">In dieser Datei ist nichts zu zeichnen. Behalten werden nur die Formen &mdash; eine Datei aus lauter Text, Effekten oder verlinkten Bildern hat keine.</span>
     <span data-phrase="svg.unreadable">Diese Datei ist kein SVG, das hier gelesen werden kann.</span>
     <span data-phrase="svg.toobig">Diese Datei ist zu groß für eine einzelne Form. Bei zwei Megabyte ist Schluss.</span>
+    <span data-phrase="image.added">Hinzugefügt. Das Bild wurde auf dieser Seite gelesen, hochgeladen wurde nichts.</span>
+    <span data-phrase="image.unreadable">Diese Datei ist kein Bild, das hier gelesen werden kann.</span>
+    <span data-phrase="image.toobig">Dieses Bild ist zu groß. Bei zwölf Megabyte ist Schluss.</span>
     <span data-phrase="chart.empty">Fügen Sie jemanden hinzu, und das Diagramm erscheint hier.</span>
     <span data-phrase="chart.noheights">Jede Zeile braucht eine Größe. Tragen Sie eine ein, und das Diagramm erscheint hier.</span>
     <span data-phrase="chart.full">Zwölf Figuren sind so viele, wie dieses Diagramm fassen kann und dabei lesbar bleibt.</span>

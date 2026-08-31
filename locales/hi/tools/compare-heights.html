@@ -43,12 +43,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">एक व्यक्ति जोड़िए</button>
         <button type="button" id="add-object" class="ghost">एक चीज़ जोड़िए</button>
-        <button type="button" id="add-svg" class="ghost">अपनी SVG</button>
+        <button type="button" id="add-svg" class="ghost">अपनी तस्वीर</button>
         <button type="button" id="clear" class="ghost danger">चार्ट खाली कीजिए</button>
         <!-- दिखने के बजाय ऊपर वाले बटन से चलता है: लेबल यहाँ इसलिए है कि जिस नियंत्रण तक कोई
              आगंतुक पहुँच सकता है उसे नाम चाहिए, चाहे उसने उसी पर क्लिक किया हो या नहीं। -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="चार्ट पर रखने के लिए एक SVG फ़ाइल चुनिए" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="चार्ट पर रखने के लिए एक तस्वीर चुनिए" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -88,7 +88,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>अपनी SVG</strong> किसी भी चित्र को पैमाने पर रख देती है &mdash; एक
+      <strong>कोई SVG</strong> किसी भी चित्र को पैमाने पर रख देती है &mdash; एक
       लोगो, एक नक़्शा, मशीन का कोई हिस्सा। वह इसी पेज में पढ़ी जाती है और कहीं नहीं
       जाती। उसमें से सिर्फ़ आकृतियाँ रखी जाती हैं: वह एक ही भरे हुए रंग में आती है,
       जो आप हर पंक्ति के लिए चुनते हैं, और जो कुछ भी नेटवर्क तक पहुँच सकता था &mdash;
@@ -96,6 +96,10 @@
       चार्ट में जाने के बजाय पीछे छूट जाता है जिसे आप शायद किसी को भेजें। भरी हुई
       आकृतियों के बजाय पतली रेखाओं से बना चित्र एक ठोस धब्बे की तरह निकलेगा, और यही
       वह इकलौता मौक़ा है जब यह ग़लत औज़ार है।
+    </p>
+
+    <p class="field-summary">
+      <strong>कोई फ़ोटो या PNG</strong> जैसी है वैसी ही जाती है और अपने रंग रखती है, इसलिए पंक्ति का रंग सिर्फ़ उसका नाम लिखता है। वह भी यहीं पढ़ी जाती है और रखे जाने से पहले दोबारा बनाई जाती है &mdash; इससे चार्ट कितना भारी होगा यह सीमित रहता है और फ़ाइल का मेटाडेटा पीछे छूट जाता है। जो पारदर्शी है वह पारदर्शी ही रहता है, इसलिए कटी हुई तस्वीर पैमाने पर साफ़ खड़ी होती है, और फ़ोटो अपनी पृष्ठभूमि भी साथ लाती है, जिसे पहले काट देना बेहतर है।
     </p>
 
     <p class="field-summary">
@@ -223,7 +227,7 @@
     <span data-phrase="shape.boy">लड़का</span>
     <span data-phrase="shape.girl">लड़की</span>
     <span data-phrase="shape.object">चीज़</span>
-    <span data-phrase="shape.upload">अपनी SVG</span>
+    <span data-phrase="shape.upload">अपनी तस्वीर</span>
 
     <span data-phrase="row.shape">पंक्ति {n} की आकृति</span>
     <span data-phrase="row.name">पंक्ति {n} का नाम</span>
@@ -249,6 +253,9 @@
     <span data-phrase="svg.noshapes">उस फ़ाइल में बनाने लायक कुछ नहीं है। सिर्फ़ आकृतियाँ रखी जाती हैं &mdash; और जिस फ़ाइल में केवल टेक्स्ट, इफ़ेक्ट या जुड़ी हुई तस्वीरें हों, उसमें वे नहीं होतीं।</span>
     <span data-phrase="svg.unreadable">वह फ़ाइल ऐसी SVG नहीं जो यहाँ पढ़ी जा सके।</span>
     <span data-phrase="svg.toobig">वह फ़ाइल एक आकृति के लिहाज़ से बहुत बड़ी है। सीमा दो मेगाबाइट है।</span>
+    <span data-phrase="image.added">जुड़ गई। तस्वीर इसी पेज में पढ़ी गई और कुछ भी अपलोड नहीं हुआ।</span>
+    <span data-phrase="image.unreadable">वह फ़ाइल ऐसी तस्वीर नहीं जो यहाँ पढ़ी जा सके।</span>
+    <span data-phrase="image.toobig">वह तस्वीर बहुत बड़ी है। सीमा बारह मेगाबाइट है।</span>
     <span data-phrase="chart.empty">किसी को जोड़िए, और चार्ट यहाँ दिख जाएगा।</span>
     <span data-phrase="chart.noheights">हर पंक्ति को एक ऊँचाई चाहिए। एक भर दीजिए, और चार्ट यहाँ दिख जाएगा।</span>
     <span data-phrase="chart.full">बारह आकृतियाँ ही इतनी हैं जितनी यह चार्ट पढ़ने लायक रहते हुए सँभाल सकता है।</span>

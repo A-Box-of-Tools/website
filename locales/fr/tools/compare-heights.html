@@ -45,13 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Ajouter une personne</button>
         <button type="button" id="add-object" class="ghost">Ajouter un objet</button>
-        <button type="button" id="add-svg" class="ghost">Votre propre SVG</button>
+        <button type="button" id="add-svg" class="ghost">Votre propre image</button>
         <button type="button" id="clear" class="ghost danger">Vider le graphique</button>
         <!-- Déclenché par le bouton ci-dessus plutôt qu'affiché : le libellé est ici
              parce qu'un contrôle qu'un visiteur peut atteindre a besoin d'un nom,
              qu'il soit ou non ce sur quoi il a cliqué. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="Choisir un fichier SVG à mettre sur le graphique" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Choisir une image à mettre sur le graphique" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -91,7 +91,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>Votre propre SVG</strong> pose n'importe quel dessin sur la règle
+      <strong>Un SVG</strong> pose n'importe quel dessin sur la règle
       &mdash; un logo, un plan, une pièce de machine. Il est lu dans cette page
       et ne va nulle part. Seules les formes qu'il contient sont gardées&nbsp;:
       il arrive dans une seule couleur pleine que vous choisissez par ligne, et
@@ -100,6 +100,10 @@
       d'être emporté dans un graphique que vous enverriez à quelqu'un. Un dessin
       fait de traits fins plutôt que de formes pleines ressort en pâté d'un seul
       tenant, et c'est le seul cas où ce n'est pas le bon outil.
+    </p>
+
+    <p class="field-summary">
+      <strong>Une photo ou un PNG</strong> arrive tel quel et garde ses propres couleurs, si bien que la couleur de la ligne ne fait plus que le nommer. Il est lu ici lui aussi, et redessiné avant d'être posé &mdash; ce qui borne ce qu'il ajoute au graphique et laisse derrière lui les métadonnées du fichier. Ce qui est transparent le reste : un détourage se pose proprement sur la règle, tandis qu'une photo apporte son fond avec elle, qu'il vaut mieux recadrer avant.
     </p>
 
     <p class="field-summary">
@@ -231,7 +235,7 @@
     <span data-phrase="shape.boy">Garçon</span>
     <span data-phrase="shape.girl">Fille</span>
     <span data-phrase="shape.object">Objet</span>
-    <span data-phrase="shape.upload">Votre propre SVG</span>
+    <span data-phrase="shape.upload">Votre propre image</span>
 
     <span data-phrase="row.shape">Figure de la ligne {n}</span>
     <span data-phrase="row.name">Nom de la ligne {n}</span>
@@ -257,6 +261,9 @@
     <span data-phrase="svg.noshapes">Il n'y a rien à dessiner dans ce fichier. Seules les formes sont conservées &mdash; un fichier fait uniquement de texte, d'effets ou d'images liées n'en a aucune.</span>
     <span data-phrase="svg.unreadable">Ce fichier n'est pas un SVG lisible ici.</span>
     <span data-phrase="svg.toobig">Ce fichier est trop gros pour une seule forme. La limite est de deux mégaoctets.</span>
+    <span data-phrase="image.added">Ajoutée. L'image a été lue dans cette page et rien n'a été envoyé.</span>
+    <span data-phrase="image.unreadable">Ce fichier n'est pas une image lisible ici.</span>
+    <span data-phrase="image.toobig">Cette image est trop grosse. La limite est de douze mégaoctets.</span>
     <span data-phrase="chart.empty">Ajoutez quelqu'un, et le graphique apparaîtra ici.</span>
     <span data-phrase="chart.noheights">Chaque ligne a besoin d'une taille. Remplissez-en une et le graphique apparaîtra ici.</span>
     <span data-phrase="chart.full">Douze figures, c'est tout ce que ce graphique peut porter en restant lisible.</span>

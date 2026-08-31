@@ -45,13 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Iemand toevoegen</button>
         <button type="button" id="add-object" class="ghost">Een voorwerp toevoegen</button>
-        <button type="button" id="add-svg" class="ghost">Eigen SVG</button>
+        <button type="button" id="add-svg" class="ghost">Eigen afbeelding</button>
         <button type="button" id="clear" class="ghost danger">De grafiek leegmaken</button>
         <!-- Aangestuurd door de knop hierboven in plaats van getoond: het label staat
              hier omdat een besturingselement dat een bezoeker kan bereiken een naam
              nodig heeft, of het nu is waarop geklikt is of niet. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="Kies een SVG-bestand om op de grafiek te zetten" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Kies een afbeelding om op de grafiek te zetten" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -91,7 +91,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>Eigen SVG</strong> zet elke tekening op de meetlat &mdash; een
+      <strong>Een SVG</strong> zet elke tekening op de meetlat &mdash; een
       logo, een plattegrond, een machineonderdeel. Hij wordt in deze pagina
       gelezen en gaat nergens heen. Alleen de vormen erin worden bewaard: hij
       komt aan in één egale kleur die je per regel kiest, en alles wat het
@@ -101,6 +101,10 @@
       tekening van dunne lijnen in plaats van gevulde vormen komt er als één
       massieve klodder uit, en dat is het enige geval waarin dit het verkeerde
       gereedschap is.
+    </p>
+
+    <p class="field-summary">
+      <strong>Een foto of een PNG</strong> gaat er in plaats daarvan als zichzelf op en houdt zijn eigen kleuren, zodat de kleur van de rij hem alleen nog benoemt. Ook die wordt hier gelezen en eerst opnieuw getekend &mdash; dat begrenst hoeveel hij aan de grafiek toevoegt en laat de metadata van het bestand achter. Wat doorzichtig is blijft doorzichtig, dus een uitsnede staat schoon op de meetlat, en een foto neemt zijn achtergrond mee, die je er beter eerst af kunt snijden.
     </p>
 
     <p class="field-summary">
@@ -229,7 +233,7 @@
     <span data-phrase="shape.boy">Jongen</span>
     <span data-phrase="shape.girl">Meisje</span>
     <span data-phrase="shape.object">Voorwerp</span>
-    <span data-phrase="shape.upload">Eigen SVG</span>
+    <span data-phrase="shape.upload">Eigen afbeelding</span>
 
     <span data-phrase="row.shape">Figuur voor regel {n}</span>
     <span data-phrase="row.name">Naam voor regel {n}</span>
@@ -255,6 +259,9 @@
     <span data-phrase="svg.noshapes">In dat bestand valt niets te tekenen. Alleen de vormen worden bewaard &mdash; een bestand met alleen tekst, effecten of gelinkte afbeeldingen heeft er geen.</span>
     <span data-phrase="svg.unreadable">Dat bestand is geen SVG die dit kan lezen.</span>
     <span data-phrase="svg.toobig">Dat bestand is te groot voor één vorm. Twee megabyte is de grens.</span>
+    <span data-phrase="image.added">Toegevoegd. De afbeelding is op deze pagina gelezen en er is niets geüpload.</span>
+    <span data-phrase="image.unreadable">Dat bestand is geen afbeelding die dit kan lezen.</span>
+    <span data-phrase="image.toobig">Die afbeelding is te groot. Twaalf megabyte is de grens.</span>
     <span data-phrase="chart.empty">Voeg iemand toe, en de grafiek verschijnt hier.</span>
     <span data-phrase="chart.noheights">Elke regel heeft een lengte nodig. Vul er een in en de grafiek verschijnt hier.</span>
     <span data-phrase="chart.full">Twaalf figuren is alles wat deze grafiek kan dragen en leesbaar blijven.</span>

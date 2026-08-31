@@ -45,13 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Tambah orang</button>
         <button type="button" id="add-object" class="ghost">Tambah benda</button>
-        <button type="button" id="add-svg" class="ghost">SVG milik Anda</button>
+        <button type="button" id="add-svg" class="ghost">Gambar milik Anda</button>
         <button type="button" id="clear" class="ghost danger">Kosongkan bagan</button>
         <!-- Dijalankan oleh tombol di atas alih-alih ditampilkan: labelnya ada di sini
              karena kontrol yang bisa dijangkau pengunjung butuh nama, baik itu yang
              mereka klik maupun bukan. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="Pilih berkas SVG untuk ditaruh di bagan" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Pilih gambar untuk ditaruh di bagan" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -91,7 +91,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>SVG milik Anda</strong> menaruh gambar apa pun di penggaris
+      <strong>Sebuah SVG</strong> menaruh gambar apa pun di penggaris
       &mdash; sebuah logo, denah, atau bagian mesin. Ia dibaca di halaman ini
       dan tidak ke mana-mana. Hanya bentuk di dalamnya yang disimpan: ia datang
       sebagai satu warna padat yang Anda pilih per baris, dan apa pun yang bisa
@@ -100,6 +100,10 @@
       Anda kirim ke orang lain. Gambar yang dibuat dari garis tipis, bukan dari
       bentuk terisi, akan keluar sebagai gumpalan padat, dan itulah satu-satunya
       kasus di mana ini alat yang keliru.
+    </p>
+
+    <p class="field-summary">
+      <strong>Foto atau PNG</strong> masuk apa adanya dan menyimpan warnanya sendiri, jadi warna baris hanya menamainya. Berkasnya juga dibaca di sini dan digambar ulang sebelum dipasang &mdash; itu membatasi seberapa berat bagannya jadi, dan meninggalkan metadata berkas. Yang tembus pandang tetap tembus pandang, jadi gambar yang sudah dipotong berdiri bersih di penggaris, sedangkan foto membawa latarnya, yang sebaiknya dipangkas dulu.
     </p>
 
     <p class="field-summary">
@@ -228,7 +232,7 @@
     <span data-phrase="shape.boy">Anak laki-laki</span>
     <span data-phrase="shape.girl">Anak perempuan</span>
     <span data-phrase="shape.object">Benda</span>
-    <span data-phrase="shape.upload">SVG milik Anda</span>
+    <span data-phrase="shape.upload">Gambar milik Anda</span>
 
     <span data-phrase="row.shape">Figur untuk baris {n}</span>
     <span data-phrase="row.name">Nama untuk baris {n}</span>
@@ -254,6 +258,9 @@
     <span data-phrase="svg.noshapes">Tidak ada yang bisa digambar di berkas itu. Hanya bentuknya yang disimpan &mdash; berkas yang isinya cuma teks, efek atau gambar tertaut tidak punya satu pun.</span>
     <span data-phrase="svg.unreadable">Berkas itu bukan SVG yang bisa dibaca di sini.</span>
     <span data-phrase="svg.toobig">Berkas itu terlalu besar untuk satu bentuk. Batasnya dua megabita.</span>
+    <span data-phrase="image.added">Ditambahkan. Gambarnya dibaca di halaman ini dan tidak ada yang diunggah.</span>
+    <span data-phrase="image.unreadable">Berkas itu bukan gambar yang bisa dibaca di sini.</span>
+    <span data-phrase="image.toobig">Gambar itu terlalu besar. Batasnya dua belas megabita.</span>
     <span data-phrase="chart.empty">Tambahkan seseorang, dan bagannya muncul di sini.</span>
     <span data-phrase="chart.noheights">Setiap baris perlu tinggi. Isi satu dan bagannya muncul di sini.</span>
     <span data-phrase="chart.full">Dua belas figur adalah sebanyak yang bisa dimuat bagan ini dan tetap terbaca.</span>

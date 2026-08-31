@@ -6,6 +6,7 @@ import { FONT, chartSvg, isDark } from './chart.js';
 import { format, formatBoth, parseHeight, toInput } from './units.js';
 import { download, svgBlob, svgToPng } from './save.js';
 import { LIMITS, importSvg } from './import-svg.js';
+import { IMAGE_LIMITS, fit, imageMarkup, nameFromFile } from './import-image.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -159,6 +160,79 @@ async function shapeFromFile(file) {
     shapes: result.shapes,
     name: file.name.replace(/\.svg$/i, '').slice(0, 40),
   };
+}
+
+/**
+ * Read one picture into a shape, or say why not.
+ *
+ * The browser's own decoder does the reading, in `createImageBitmap`, which
+ * runs nothing and resolves nothing: a raster has no references in it to
+ * follow. What comes back is redrawn onto a canvas at a bounded size and
+ * encoded again, so what reaches the chart is a PNG this page wrote - see
+ * import-image.js for why that matters more than the reading does.
+ *
+ * Anything the browser can decode is taken, not only PNG. Refusing a JPEG
+ * would be extra code to make the tool worse: it decodes, it draws, and what
+ * is embedded is a PNG either way.
+ */
+async function shapeFromImage(file) {
+  if (file.size > IMAGE_LIMITS.bytes) return { error: 'image.toobig' };
+
+  let bitmap;
+  try {
+    bitmap = await createImageBitmap(file);
+  } catch {
+    return { error: 'image.unreadable' };
+  }
+
+  const box = fit(bitmap.width, bitmap.height);
+  const tiny = bitmap.width < IMAGE_LIMITS.smallest || bitmap.height < IMAGE_LIMITS.smallest;
+  if (!box || tiny) {
+    bitmap.close?.();
+    return { error: 'image.unreadable' };
+  }
+
+  const canvas = document.createElement('canvas');
+  canvas.width = box.width;
+  canvas.height = box.height;
+  const context = canvas.getContext('2d');
+  context.imageSmoothingQuality = 'high';
+  context.drawImage(bitmap, 0, 0, box.width, box.height);
+  bitmap.close?.();
+
+  const aspect = box.width / box.height;
+  const markup = imageMarkup(canvas.toDataURL('image/png'), aspect);
+  if (!markup) return { error: 'image.unreadable' };
+
+  return {
+    shape: {
+      id: 'upload',
+      label: 'shape.upload',
+      width: aspect,
+      // No `inner`, unlike a drawing: a picture has no coordinates of its own
+      // to be mapped out of, so imageMarkup writes it into the unit box
+      // directly.
+      inner: null,
+      paths: null,
+      markup,
+      raster: true,
+      defaultCm: 0,
+    },
+    name: nameFromFile(file.name),
+  };
+}
+
+/**
+ * Which of the two readers a file goes to.
+ *
+ * An SVG is a program and has to go through the whitelist; everything else is
+ * pixels. A file that lies about which it is can only be wrong in the safe
+ * direction: an SVG named .png is handed to the image decoder, which
+ * rasterises it and runs nothing, and a raster named .svg fails to parse and
+ * is refused.
+ */
+function isVector(file) {
+  return file.type === 'image/svg+xml' || /\.svg$/i.test(file.name);
 }
 
 /* --------------------------------------------------------------------- rows */
@@ -620,7 +694,7 @@ el.svgFile.addEventListener('change', async () => {
   wantsFile = null;
   if (!file) return;
 
-  const result = await shapeFromFile(file);
+  const result = isVector(file) ? await shapeFromFile(file) : await shapeFromImage(file);
   if (result.error) {
     el.inputError.hidden = false;
     el.inputError.textContent = phrase(result.error);
@@ -641,7 +715,9 @@ el.svgFile.addEventListener('change', async () => {
   }
   paintRows();
   draw();
-  note(phrase('svg.added', { shapes: result.shapes }));
+  note(result.shapes === undefined
+    ? phrase('image.added')
+    : phrase('svg.added', { shapes: result.shapes }));
 });
 
 el.clear.addEventListener('click', () => {
