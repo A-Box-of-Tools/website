@@ -122,8 +122,35 @@ all of it is knowable up front:
 |---|---|
 | Background removal | A segmentation model, not a codec. FFmpeg does not do it and would not help — this needs weights and an inference runtime, which is a separate argument on a separate day |
 | Camera RAW, **decoded** (CR2, NEF, ARW) | FFmpeg does not decode these either. It would take LibRaw or dcraw on top: a second engine, for one family of formats. Still ruled out — but see below, because reading a RAW file turned out not to require it |
-| Raster to vector (image to SVG) | A tracing algorithm, not a conversion: large, and the output disappoints everyone who expected their photo back as shapes |
 | PDF page to PNG | Asked for constantly, and the one PDF job that needs a *renderer* rather than a reader: a font engine and a full graphics model, which is a vendored engine on the scale of the FFmpeg argument. Everything else this site does to a PDF — merging, compressing, redacting, rotating pages, and the cropping still on the roadmap — rewrites objects without ever drawing a page, which is why those are small and this is not |
+
+### Raster to vector, which was ruled out here and then built
+
+This table used to carry a line reading *"Raster to vector (image to SVG): a
+tracing algorithm, not a conversion: large, and the output disappoints everyone
+who expected their photo back as shapes."* `/image-to-svg/` exists, so the line
+had to go, and what happened to it is worth keeping because it is two different
+kinds of wrong in one sentence.
+
+**"Large" was an assumption, and it was false.** It assumed a vendored engine,
+the way background removal assumes weights. Contour following and curve fitting
+are arithmetic over an `ImageData` - the same shape of code as
+`document-scanner`'s page finder - and what shipped is around seven hundred
+lines with nothing behind them. The test in this file caught the right thing
+about background removal and the wrong thing here, because it was applied to the
+word "algorithm" rather than to what the algorithm needs.
+
+**"The output disappoints" was correct, and is not fixable.** A photograph
+traced as line art is four thousand overlapping shapes and a megabyte and a half
+per megapixel, and it looks worse than the JPEG. That is not an implementation
+waiting to improve; it is what tracing is. So the refusal is in the tool rather
+than in this file: past a thousand loops it stops drawing the result and says
+what happened. A tool that cannot do a thing can still be the best place to
+learn that it cannot.
+
+The distinction that survives is the same one the RAW entry draws below. Ask
+what the job *needs*, not what it is called: weights and an inference runtime
+are a different argument from arithmetic, however clever the arithmetic is.
 
 ### Camera RAW, read rather than decoded
 

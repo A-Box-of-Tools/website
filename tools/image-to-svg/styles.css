@@ -1,0 +1,105 @@
+/* Only what this page needs. The frame - cards, buttons, the drop zone, the
+   pledge, the privacy panel - is in shared/css/tool-frame.css. */
+
+/* A control, its label and its readout on one line, wrapping to two on a
+   phone rather than squeezing the slider to nothing. */
+.option-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.8rem;
+  margin-bottom: 0.7rem;
+}
+
+.option-row > label:first-child { min-width: 12ch; color: var(--text-dim); }
+.option-row.wrap { gap: 0.5rem 1rem; }
+.option-row input[type="range"] { flex: 1 1 9rem; max-width: 18rem; }
+.option-row output {
+  min-width: 8ch;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.option-group {
+  border-inline-start: 3px solid var(--border);
+  padding-inline-start: 0.9rem;
+  margin: 0 0 0.9rem;
+}
+
+.check {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text);
+}
+
+.field-note {
+  margin: 0 0 0.8rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* The two views, side by side on a desktop and stacked on a phone, where two
+   half-width pictures would be too small to judge an outline by. */
+.stages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+  margin-bottom: 0.6rem;
+}
+
+@media (max-width: 44rem) {
+  .stages { grid-template-columns: 1fr; }
+}
+
+.stage-title {
+  margin: 0 0 0.3rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+}
+
+/* A fixed box, so "fit" has something definite to fit into and both panes
+   agree about what one unit of zoom means. White whatever the theme is: this
+   is a drawing on paper, and a black-on-dark silhouette is not a preview. */
+.stage {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  height: clamp(15rem, 46vh, 30rem);
+  cursor: grab;
+  touch-action: none;
+}
+
+.stage.dragging { cursor: grabbing; }
+
+/* The picture and the outline are moved with a transform rather than
+   scrolled: one number says where we are looking and both panes read it, so
+   there is no scroll event to chase round a loop. */
+.stage-box { position: absolute; inset-block-start: 0; inset-inline-start: 0; }
+.stage-box > * { position: absolute; inset-block-start: 0; inset-inline-start: 0; display: block; }
+.stage-box > canvas:first-child { image-rendering: pixelated; }
+
+/* What stands in for the drawing when there is too much of it to draw. */
+.stage-said { display: grid; place-items: center; }
+
+.hint {
+  min-height: 1.4rem;
+  margin: 0 0 0.9rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+.controls { margin-bottom: 0.4rem; }
+
+.facts {
+  margin: 0 0 0.9rem;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+#download { display: inline-block; text-decoration: none; }

@@ -1,0 +1,265 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Choose the picture</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">Take it off</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card" inert>
+    <h2><span class="step">2</span> Say what the shape is</h2>
+
+    <p class="card-lede">
+      Tracing needs one bit per pixel &mdash; in, or out. There are two ways to
+      decide that, and they suit different pictures. A drawing on white paper
+      divides by <strong>light and dark</strong>. A photograph of one object
+      does not: a dark red figure on dark grey stone is dark on dark, and no
+      brightness divides them. That one wants <strong>the subject</strong>,
+      which works out what the background is from the edges of the picture and
+      keeps whatever is not it.
+    </p>
+
+    <div class="option-row">
+      <label for="find">What to look for</label>
+      <select id="find">
+        <option value="threshold">Light and dark &mdash; a drawing, a logo, a scan</option>
+        <option value="subject">The subject &mdash; a photograph of one thing</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">Where light becomes dark</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          Work it out for me</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">How much counts as the subject</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">How far to follow it into shadow</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">Close gaps up to</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          Fill it in solid</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          Keep the smaller pieces too</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          Learn the background from the edges</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        Swap them round &mdash; trace the light half instead</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card" inert>
+    <h2><span class="step">3</span> Check the outline, and fix what it got wrong</h2>
+
+    <p class="card-lede">
+      The red line is the outline as it stands, drawn over the pixels it came
+      from &mdash; which is the only place the question can be settled, because
+      an outline is right or wrong relative to those pixels and nothing else.
+      Drag either picture to move both, roll the wheel to zoom, and click
+      anything that should not be there. A click takes the whole patch of that
+      colour, so you are pointing at a shape rather than a pixel; click it again
+      to put it back.
+    </p>
+
+    <div class="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">The picture</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="The picture, with the traced outline drawn over it. Drag to move, roll to zoom, click a part to leave it out."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">The SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="The traced drawing. Drag to move, roll to zoom, click a part to leave it out."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">Zoom</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> Fit</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">Show</label>
+        <select id="show">
+          <option value="picture">The picture</option>
+          <option value="mask">What the tracer was given</option>
+          <option value="measured">What it measured</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          Draw the outline over it</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">A click takes</label>
+        <select id="wand-mode">
+          <option value="colour">Everything that colour</option>
+          <option value="shape">Everything joined to it</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">Near enough</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          Click to say &ldquo;this is background&rdquo; instead</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>Undo</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>Undo them all</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>How smooth the line should be</h2></summary>
+      <p class="fold-note">
+        Two numbers decide how the staircase of pixels becomes curves. Neither
+        needs touching for most pictures, and both are worth knowing about when
+        one does.
+      </p>
+      <div class="option-row">
+        <label for="detail">Detail</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          Work it out per shape</label>
+      </div>
+      <p class="field-note">
+        How far the line may stray from the pixels. Below about one it does
+        nothing at all, because a staircase step stands a whole pixel off the
+        line it belongs to; above about two it starts eating real curves.
+      </p>
+      <div class="option-row">
+        <label for="corner">Corner sharpness</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        How far the outline must turn before that turn is kept as a corner
+        rather than rounded into a curve. Low enough and every wobble is a
+        corner, and a circle comes back as a polygon.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Take the SVG</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>Download the SVG</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">this browser could not decode the picture.</span>
+    <span data-phrase="read.failed">That file could not be opened: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">The picture being traced, {width} by {height} pixels</span>
+
+    <span data-phrase="threshold.auto">worked out: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">Found one piece, which is {share}% of the
+      picture.</span>
+    <span data-phrase="subject.found.many">Found {islands} separate pieces and kept the
+      largest, which is {share}% of the picture.</span>
+    <span data-phrase="subject.told">Using {count} colours you pointed at as
+      background.</span>
+    <span data-phrase="subject.border">Learning the background from a band round the
+      edge of the picture.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">per shape</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">exactly that colour</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">not used &mdash; a click takes the whole
+      joined shape</span>
+
+    <span data-phrase="hover.ink">Part of the shape: {size} pixels, {share}% of the
+      picture. Click to leave it out.</span>
+    <span data-phrase="hover.paper">Not part of the shape: {size} pixels, {share}% of
+      the picture. Click to fill it in.</span>
+    <span data-phrase="hover.big">Over {size} pixels &mdash; too much to outline while
+      you move. Click to take it anyway.</span>
+    <span data-phrase="hover.long">{size} pixels. The edge is too long to draw while
+      you move.</span>
+    <span data-phrase="hover.sample">This colour: click to add it to what counts as
+      background.</span>
+    <span data-phrase="samples.clear.one">Forget that colour</span>
+    <span data-phrase="samples.clear.many">Forget those {count} colours</span>
+
+    <span data-phrase="facts.line.one">One shape, {points} points, {bytes}. Traced in
+      {ms}&nbsp;ms.</span>
+    <span data-phrase="facts.line.many">{loops} shapes, {points} points, {bytes}. Traced
+      in {ms}&nbsp;ms.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">{count} correction of your own.</span>
+    <span data-phrase="facts.edits.many">{count} corrections of your own.</span>
+    <span data-phrase="toobig.warning">This came out as {loops} separate shapes and
+      {bytes} of drawing, which is what a photograph looks like when it is traced as
+      if it were line art. The file is still yours to download, but it will open
+      slowly and it will not look like the photograph. Try
+      <em>the subject</em> above instead.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

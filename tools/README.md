@@ -26,6 +26,7 @@ browser and uploads nothing; how the site around them is built is in the
 | [Image to ICO](image-to-ico/) | `/image-to-ico/` | One picture in. Every size a browser, Windows or a Mac asks for, out. |
 | [Image to Data URI](image-to-data-uri/) | `/image-to-data-uri/` | The whole picture as one line of text. Paste it straight into CSS or HTML. |
 | [SVG to Image](svg-to-image/) | `/svg-to-image/` | Name the size. A vector has none of its own to lose. |
+| [Image to SVG](image-to-svg/) | `/image-to-svg/` | One shape, one outline. Point at whatever should not be there. |
 | [Height Comparison Chart](compare-heights/) | `/compare-heights/` | Type the heights, take the picture. Nothing is sent to draw it. |
 | [Images to Video](images-to-video/) | `/images-to-video/` | Turn a folder of images into a video. |
 | [Video Cutter](trim-video/) | `/trim-video/` | Mark the parts worth keeping as it plays. Get them back as one video. |
