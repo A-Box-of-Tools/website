@@ -107,6 +107,13 @@ complete = true
 "timelapse-video" = "타임랩스-만들기"
 "hash-checksum" = "체크섬-확인"
 "share-text" = "텍스트-공유"
+# 찾는 것은 소리이지 형식이 아니라서 "mp3"는 일부러 넣지 않았습니다. 이 페이지는
+# MP3를 쓰지 않고, 주소가 지키지 못할 것을 약속해서는 안 됩니다.
+"extract-audio-from-video" = "동영상-오디오-추출"
+"xml-formatter" = "xml-포맷터"
+"yaml-to-json" = "yaml-json-변환"
+# 사람들이 치는 말은 "키 비교"이고, 그림은 결과라서 제목에 남습니다.
+"compare-heights" = "키-비교"
 # DICOM은 DICOM으로 둡니다. 병원이 건네는 CD에 그렇게 적혀 있고, 번역된 말로
 # 찾는 사람은 없습니다.
 "dicom-viewer" = "dicom-뷰어"
@@ -169,6 +176,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "가이드/gif-프레임별로-편집"
 "guides/make-a-qr-code-and-prove-it-scans" = "가이드/qr코드-만들고-스캔-확인"
 "guides/clean-up-a-voice-memo" = "가이드/음성-메모-정리하기"
+"guides/make-a-height-comparison-chart" = "가이드/키-비교-차트-만들기"
 
 #
 # ---------------------------------------------------------------------------

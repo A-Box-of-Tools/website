@@ -1,0 +1,261 @@
+#
+# YAML JSON donusturucu - Turkish.
+#
+# Overrides for tools/yaml-to-json/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "YAML'den JSON'a Dönüştürücü"
+heading = "YAML'den&nbsp;JSON'a <span class=\"h1-kw\">&mdash; ve JSON'dan yeniden YAML'e</span>"
+tagline = "İki yön de var, ve her birinin neye mal olduğunu söylüyor. Bunların hiçbiri başkasının sunucusuna yapıştırılmaz."
+
+title = "YAML'den JSON'a Dönüştürücü &mdash; iki yönlü, yükleme yok"
+description = "YAML'i JSON'a, JSON'u YAML'e tarayıcınızda dönüştürün. YAML 1.2 okur, böylece yes ve no metin olarak kalır, ve her yönün tam olarak neyi kaybettirdiğini söyler. Hiçbir şey yüklenmez: bir yapılandırma dosyası cihazınızdan hiç çıkmaz."
+og_title = "YAML'i bir sunucuya yapıştırmadan dönüştürün"
+og_description = "Kendi cihazınızda çalışan bir YAML ve JSON dönüştürücü. Anahtarlar sırasını, sayılar basamaklarını korur, ve yapıştırdığınız şey hiçbir yere gitmez."
+og_image_alt = "YAML'den JSON'a Dönüştürücü - iki yön, yükleme yok"
+
+pledge = """
+    Dönüştürmek, bir metin dizisi üzerinde yapılan aritmetiktir; burada, bu
+    sayfada yapılır. İki ayrıştırıcı da elle yazılmıştır ve <code>src/</code>
+    içindedir &mdash; <code>yaml.js</code> ve <code>json.js</code> &mdash; başka
+    da bir şey yoktur. Bu aracın herhangi bir ağ işlevi hiç yoktur &mdash;
+    getirecek bir şey de, gönderecek bir şey de &mdash; ve bu, burada bu sitenin
+    hemen her yerinden daha çok önemlidir: bir YAML dosyası çoğunlukla bir
+    dağıtım yapılandırmasıdır, ve bir dağıtım yapılandırması çoğunlukla ana
+    makine adları, kova adları ve sırlarla doludur."""
+
+live_hint = """
+      Sözümüze güvenmek zorunda değilsiniz: DevTools'u açın, ağ sekmesini izleyin
+      ve bir şey dönüştürün. Tek bir istek bile yapıştırdığınızdan bir karakter
+      taşımaz. Ya da internet bağlantısını kesin ve yine de dönüştürün."""
+
+read_first = """
+, bir çıpanın ne demek istediğini tahmin etmek yerine
+      onu geri çeviren okuyucu için <code>src/yaml.js</code>, ve bir dönüşümün
+      neden iki biçimi birden bilen hiçbir şey araya girmeden bir ayrıştırıcı ile
+      bir yazıcıdan ibaret olduğu için <code>src/convert.js</code>."""
+
+howto_heading = "YAML yüklemeden JSON'a nasıl dönüştürülür"
+
+card = """
+            YAML'i JSON'a ya da JSON'u YAML'e çevirin, ve bu yolculuğun neye mal
+            olduğunu size söylesin. Bir dağıtım yapılandırmasını kimseye vermeden
+            yapıştırın."""
+
+[words]
+plural = "YAML ve JSON dosyalarınız"
+choose = "bir dosya"
+analytics_extra = """, buradan geçen
+  YAML de JSON da"""
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Boyut sınırı yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Yapıştırdığınızın gidecek bir yeri yok."
+body = """
+ Content-Security-Policy,
+      bu sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların
+      hiçbiri bize ait değildir. Burada yapıştırılmış bir yapılandırmanın
+      toplanabileceği hiçbir uç nokta yoktur; olsaydı bile kodda onu oraya
+      gönderecek hiçbir şey yoktur."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmez."
+body = """
+ <code>src/</code>
+      içinde hiçbir yerde ne bir <code>fetch</code>, ne bir
+      <code>XMLHttpRequest</code>, ne de bir <code>sendBeacon</code> vardır. İki
+      ayrıştırıcı da iki yazıcı da, bu sayfada bir metin alıp bir metin döndüren
+      işlevlerdir."""
+
+[[privacy]]
+title = "YAML 1.2 okur, yani Norveç yine Norveç kalır."
+body = """
+ YAML 1.1'de
+      <code>no</code> bir mantıksal değerdi; Norveç'in ülke kodunu
+      <code>false</code>'a çeviren o ünlü hata budur. Burada 1.2 okunur ve o,
+      göründüğü gibi bir metindir. Öbür yönde bu sözcükler <em>tırnak içinde</em>
+      geri yazılır, çünkü dosyayı sonra açacak şey hâlâ bir 1.1 okuyucusu
+      olabilir. <code>tests/js/text-convert.test.js</code> iki yarıyı da
+      denetler."""
+
+[[privacy]]
+title = "Dürüst olamayacak bir dönüşüm, onun yerine durur."
+body = """
+ YAML içindeki
+      bir çıpa, bir takma ad ya da bir etiket, sessizce başka bir şey demek olan
+      bir JSON belgesi üretmek yerine, hangi satırda olduğunu söyleyen bir iletiyle
+      dönüşümü bitirir. JSON'un &bdquo;aynı düğüm iki kez&ldquo; demenin bir yolu
+      yoktur ve bir yorum seçmek, sizin yerinize seçmek olurdu."""
+
+[[privacy]]
+title = "Google'ın yüklediği ve kendisine verilmeyen şeyler."
+body = """
+ Reklam ve
+      ölçüm betikleri Google'dan, bağış düğmesi ise Buy Me a Coffee'den gelir.
+      Hiçbirine metninizden bir karakter verilmez. Onu okuyan, ayrıştıran ve yazan
+      her satır bu kaynaktan sunulur ve depoda listelenmiştir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde zaten hiç ağ adımı olmadı. Bundan daha basit bir kanıt
+      yoktur."""
+
+[[howto]]
+title = "Yönü seçin."
+body = """
+ <em>YAML'den JSON'a</em> ya da <em>JSON'dan
+      YAML'e</em>. Menünün altındaki not, o yönün neyi kaybettirdiğini siz bir şey
+      yapıştırmadan önce söyler, sonra değil."""
+
+[[howto]]
+title = "Yapıştırın ya da dosyayı bırakın."
+body = """
+ Seçip kopyalayabildiğiniz her
+      şey olur. Seçiciye bırakılan bir dosyayı kendi tarayıcınız okur ve kutuya
+      koyar &mdash; atlanacak bir yükleme adımı yoktur &mdash; ve bir
+      <code>.json</code> ya da <code>.yaml</code> uzantısı yönü sizin için
+      belirler."""
+
+[[howto]]
+title = "Girintiyi seçin."
+body = """
+ İki boşluk, dört ya da bir sekme. Sekme
+      yalnızca JSON için sunulur: YAML boşluklarla tanımlanır ve sekme onun içinde
+      geçerli bir girinti değildir."""
+
+[[howto]]
+title = "Hatayı hatanın olduğu yerde okuyun."
+body = """
+ Burada başarısız olan bir
+      ayrıştırıcı, &bdquo;4193. konumda beklenmeyen belirteç&ldquo; demek yerine
+      ne bulduğunu ve hangi satır ile sütunda olduğunu söyler. Bu, genellikle bir
+      yapılandırma dosyasını başka hiçbir şey açmadan onarmaya yeter."""
+
+[[howto]]
+title = "Sonucu alın."
+body = """
+ Kopyalayın ya da çıktığı biçimin adını taşıyan
+      bir dosya olarak indirin."""
+
+[[faq]]
+q = "YAML'im bir yere yükleniyor mu?"
+a = """
+        Hayır. Bu sayfadaki iki ayrıştırıcı da iki yazıcı da, kendi tarayıcınızda,
+        kendi donanımınızda çalışan işlevlerdir. Bu aracın herhangi bir ağ işlevi
+        hiç yoktur &mdash; hiçbir zaman bir şey getirmez ve hiçbir zaman bir şey
+        göndermez &mdash; ve sayfanın <code>Content-Security-Policy</code>'si
+        iletişim kurabileceği her adresi sayar; hiçbiri bize ait değildir. Bunu bir
+        dağıtım yapılandırması için kullanmanın sebebi de tam olarak budur: o
+        dosyalar ana makine adları, kova adları ve arada birinin taşımak istediği
+        bir sırla doludur, ve birini başkasının dönüştürücüsüne yapıştırmak onu ona
+        vermektir."""
+
+[[faq]]
+q = "YAML'i JSON'a çevirirken ne kaybolur?"
+a = """
+        Yorumlar, çünkü JSON'un onları koyacak bir yeri yoktur. Çıpalar, takma
+        adlar ve etiketler tahmin edilmek yerine doğrudan geri çevrilir &mdash;
+        her biri JSON'un söyleyemeyeceği bir şey söyler, ve sessizce bir yorum
+        seçen bir dönüştürücü size dosyanın söylediği şey olmayan bir belge verirdi.
+        Öbür yön hiçbir şey kaybettirmez: her JSON belgesi zaten bir YAML
+        belgesidir."""
+
+[[faq]]
+q = "YAML'imde no yazıyor ama JSON'da metin olarak çıktı. Neden?"
+a = """
+        Çünkü o gerçekten bir metin, ve burada 1.1 değil YAML 1.2 okunuyor. YAML
+        1.1'de <code>yes</code>, <code>no</code>, <code>on</code> ve
+        <code>off</code> mantıksal değerlerdi; Norveç'in ülke kodunu
+        <code>false</code>'a çeviren o ünlü hata budur. YAML 1.2 bunu bıraktı,
+        burası da bıraktı: metinden başka bir şey olarak okunanlar yalnızca
+        <code>true</code>, <code>false</code>, <code>null</code> ve
+        <code>~</code>'dir. Öbür yönde bu sözcükler <em>tırnak içinde</em> geri
+        yazılır &mdash; burada tırnaksız da metin olarak okunacak olsalar bile
+        &mdash; çünkü dosyayı sonra açacak şey öyle okumayabilir. PyYAML hâlâ
+        varsayılan olarak 1.1 kullanıyor. Katı okuyup temkinli yazmak, iki yönde
+        de doğru olan tek birleşimdir."""
+
+[[faq]]
+q = "Anahtarlarımın sırasını koruyor mu?"
+a = """
+        Evet, iki yönde de, ve bu kulağa geldiğinden daha zordur.
+        <code>JSON.parse</code> üzerine kurulmuş bir dönüştürücü, tam sayıya
+        benzeyen anahtarları sessizce başa alır; böylece
+        <code>{"10":a,"2":b}</code>, <code>{"2":b,"10":a}</code> olarak geri gelir.
+        Sayılar yazdığınız basamakları korur, yani yirmi basamaklı bir hesap
+        kimliği son üç basamağını bir double'a kaptırmaz. Sıralanmasını
+        <em>istiyorsanız</em> bir kutucuk var, ve o, kod noktalarına göre değil,
+        anahtarların okunuşuna göre sıralar."""
+
+[[faq]]
+q = "Birden çok YAML belgesini bir kerede dönüştürebilir mi?"
+a = """
+        Hayır, ve birini seçmek yerine bunu söyler. <code>---</code> ayırıcıları
+        olan bir dosya birden çok belge taşır, ve JSON'un &bdquo;birkaç
+        belge&ldquo; anlamına gelen bir biçimi yoktur &mdash; bir dizi, dosyanın
+        hiç öne sürmediği bir iddia olurdu. Onları birer birer dönüştürün."""
+
+[[faq]]
+q = "Burada neden bir YAML biçimlendirici yok?"
+a = """
+        Çünkü YAML'in yazmaya değer sıkıştırılmış bir biçimi yok &mdash; kısa olanı
+        akış biçemidir, o da okunmaz, ve okunmazlık bir dosyayı YAML'de tutmanın
+        sebebinin tam tersidir. JSON, XML, HTML ve CSS'i açmak
+        <a href="../json-bicimlendirme/">JSON biçimlendiricinin</a> işidir, ve o
+        YAML'i de açar."""
+
+[[faq]]
+q = "Ne kadar büyük bir dosyayı işleyebilir?"
+a = """
+        Burada konulmuş bir sınır yoktur, çünkü bunun bedelini ödeyen bir sunucu
+        yoktur. Gerçek tavan kendi cihazınızdır: birkaç megabaytlık YAML sorun
+        çıkarmaz ve çok uzun bir belgede sayfa, klavyeyi sizinle paylaşmamak yerine
+        dönüştürmeden önce yazmanızda bir duraklama bekler."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap gerekiyor mu?"
+a = """
+        Ücretsizdir; hesap, oturum açma, deneme süresi ve ne kadar
+        yapıştıracağınıza dair bir sınır yoktur. Sitede reklam vardır, masrafı
+        karşılayan da odur; reklamlara metninizle ilgili hiçbir şey verilmez."""
+
+[[faq]]
+q = "Çevrimdışı çalışır mı?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin;
+        çalışmayı sürdürür. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yoludur: yapılandırmanızı dönüştürülmek üzere
+        gönderen bir araç, fişi çektiğiniz anda dururdu."""
+
+[schema]
+description = "YAML'i JSON'a ve JSON'u YAML'e tarayıcıda dönüştürün. YAML 1.2 okur, anahtarların sırasını ve her sayının tam basamaklarını korur, ve her yönün neyi kaybettirdiğini söyler. Hiçbir şey yüklenmez."
+features = [
+  "YAML'i JSON'a, JSON'u YAML'e dönüştürür",
+  "YAML 1.2 okur, böylece yes ve no metin olarak kalır",
+  "Anahtarların sırasını ve her sayının tam basamaklarını korur",
+  "Çıpaları, takma adları ve etiketleri ne demek istediklerini tahmin etmek yerine geri çevirir",
+  "Hatanın hangi satır ve sütunda olduğunu sözcüklerle söyler",
+  "Bırakılan bir dosyada da yapıştırılan metinde de çalışır",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Bir dosyayı buraya bırakın"
+hint = "ya da tıklayıp seçin &mdash; bir .yaml, .yml veya .json dosyası"

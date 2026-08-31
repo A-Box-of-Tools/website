@@ -1,0 +1,381 @@
+#
+# Lengtes vergelijken - Dutch.
+#
+# Overrides for tools/compare-heights/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Lengtevergelijker"
+heading = "Lengtes&nbsp;vergelijken <span class=\"h1-kw\">&mdash; een grafiek naast elkaar die je kunt downloaden</span>"
+tagline = "Typ de lengtes, neem de afbeelding mee. Er wordt niets verstuurd om hem te tekenen."
+
+title = "Lengtes vergelijken &mdash; gratis, zonder aanmelden, zonder upload"
+description = "Vergelijk lengtes naast elkaar. Voeg een man, een vrouw, een jongen, een meisje en voorwerpen toe &mdash; een deur, een raam, een whiteboard, een automaat &mdash; in centimeters of in voet en inches, en download de grafiek als PNG of SVG. Hij wordt in je browser getekend."
+og_title = "Vergelijk lengtes naast elkaar en houd de afbeelding"
+og_description = "Zet twee volwassenen, een jongen, een meisje en een deuropening op dezelfde meetlat, in centimeters of in voet en inches, en download het resultaat. Geen account, geen watermerk, en geen namenlijst die je apparaat verlaat."
+og_image_alt = "Lengtevergelijker - lengtes naast elkaar vergelijken, zonder upload"
+
+pledge = """
+    Een lengtegrafiek is rekenwerk en een tekening: er is geen bestand om te
+    versturen en geen dienst om iets aan te vragen. De man, de vrouw, de jongen
+    en het meisje zijn illustraties uit het publieke domein die met deze pagina
+    meekomen, en de jongen en het meisje zijn tekeningen van echte kinderen in
+    plaats van klein gemaakte volwassenen &mdash; en dat is precies wat een
+    gezinsgrafiek behoedt voor een fout die niemand kan benoemen. Elke stap
+    gebeurt in een paar honderd regels JavaScript op deze pagina die je kunt
+    lezen. Er is überhaupt geen netwerkfunctie, en dat telt hier omdat wat je
+    typt een lijst van mensen is en hoe lang ze elk zijn."""
+
+live_hint = """
+      Je hoeft ons niet op ons woord te geloven: open de DevTools, kijk naar het
+      netwerktabblad en typ een naam en een lengte. Geen enkele aanvraag draagt
+      van geen van beide een teken. Of trek de stekker uit het internet en maak
+      de grafiek toch."""
+
+read_first = """
+, <code>src/traced.js</code> en
+      <code>vendor/</code> voor de vier figuren en waar hun illustraties vandaan
+      komen, <code>src/figures.js</code> voor de lijst waar het menu uit
+      opgebouwd wordt, <code>src/units.js</code> voor hoe een getypte lengte een
+      getal wordt en hoe de meetlat wordt gelabeld, <code>src/chart.js</code>
+      voor de opmaak, en <code>src/save.js</code> voor de twee downloads &mdash;
+      dat zijn de SVG op het scherm, en diezelfde SVG op een canvas geschilderd."""
+
+howto_heading = "Zo maak je een lengtevergelijkingsgrafiek"
+
+card = """
+            Zet twee volwassenen, een kind en een deuropening op dezelfde meetlat
+            &mdash; in centimeters of in voet en inches &mdash; en download hem
+            als PNG of SVG."""
+
+[words]
+plural = "namen, lengtes en de grafiek die ze vormen"
+choose = "wie er op de grafiek komt"
+analytics_extra = """, en geen naam en
+  geen lengte die je typt"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen watermerk"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Een lijst van mensen is niet iets kleins om weg te geven."
+body = """
+ De
+      meeste lengtegrafieken willen een account, en die dat niet doen hebben nog
+      steeds een server die elke naam en elk getal ziet dat je typt. Wat je hier
+      typt is wie er in je gezin zit en hoe lang ze elk zijn, vaak met de
+      leeftijd van een kind die je uit de figuur naast de naam kunt afleiden.
+      Niets daarvan wordt ergens heen gestuurd, want er is hier nergens waar het
+      heen zou kunnen."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er is nergens in
+      <code>src/</code> een <code>fetch</code>, een <code>XMLHttpRequest</code>
+      of een <code>sendBeacon</code> te vinden. In het Content-Security-Policy
+      staat elk adres dat deze pagina mag benaderen, en geen daarvan is van
+      ons."""
+
+[[privacy]]
+title = "Er wordt tussen twee bezoeken ook niets onthouden."
+body = """
+ De grafiek
+      leeft in de pagina en nergens anders. Sluit het tabblad en de lijst is weg:
+      er is geen account dat hem vasthoudt, geen cookie die hem meedraagt, en er
+      wordt niets in de opslag van deze browser geschreven &mdash; en daarom is
+      een grafiek die je wilt bewaren een grafiek die je downloadt."""
+
+[[privacy]]
+title = "De link draagt de grafiek niet."
+body = """
+ Verschillende gereedschappen
+      als dit zetten de hele lijst in de adresbalk zodat hij gedeeld kan worden,
+      en daarmee wordt elke naam en elke lengte iets dat wordt gelogd door alles
+      waar de link doorheen gaat &mdash; een chatserver, een mailscanner, iemands
+      browsergeschiedenis. Het adres van deze pagina verandert nooit terwijl je
+      typt."""
+
+[[privacy]]
+title = "De PNG wordt gemaakt van de SVG die op het scherm staat."
+body = """
+ De
+      download is geen tweede weergave die het met het voorbeeld oneens zou
+      kunnen zijn. Dezelfde opmaak wordt aan de browser gegeven en op een canvas
+      geschilderd, en daarom kan het ook met het netwerk eruit: er is geen
+      lettertype op te halen en geen afbeelding in te laden."""
+
+[[privacy]]
+title = "De illustraties staan hier, ze worden niet opgehaald."
+body = """
+ Alle vier de figuren
+      zijn illustraties uit het publieke domein, en ze worden vanaf deze origin
+      geserveerd met de rest van de pagina &mdash; geen icoonlettertype, geen
+      CDN, geen sprite-bestand dat van de server van iemand anders wordt
+      getrokken terwijl je typt. Daarom tekent de grafiek zich ook nog met het
+      netwerk eruit."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google en de donatieknop van Buy Me a Coffee. Geen
+      van hen krijgt een naam of een lengte. Elke regel die van je lijst een
+      afbeelding maakt wordt vanaf deze origin geserveerd en staat in de
+      repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Trek de netwerkstekker eruit en het
+      gereedschap is onveranderd, want er zat nooit een netwerkstap in. Dat is
+      het eenvoudigste bewijs dat er is."""
+
+[[howto]]
+title = "Voeg eerst iedereen toe en denk daarna pas aan hoe het eruitziet."
+body = """
+ Een
+      regel is een figuur, een naam, een lengte en een kleur. De naam is optioneel
+      &mdash; een grafiek van twee naamloze silhouetten met hun lengtes erboven is
+      vaak precies wat iemand wil &mdash; en de pijltjes op elke regel schuiven
+      hem naar links of rechts als de volgorde uitmaakt."""
+
+[[howto]]
+title = "Typ de lengte zoals je hem schrijft."
+body = """
+ <code>173</code>,
+      <code>1,73 m</code>, <code>5'8\"</code>, <code>68 in</code> en
+      <code>5 ft 8</code> worden allemaal goed gelezen. De regel onder het vak
+      laat zien wat er begrepen is, in beide stelsels, dus een verkeerde lezing
+      is zichtbaar voordat er getekend wordt in plaats van nadat het afgedrukt
+      is. Een kaal getal is centimeters op een metrische grafiek en inches op een
+      imperiale, en een kaal getal onder de drie is meters &mdash; niemand is
+      1,73 cm lang."""
+
+[[howto]]
+title = "Kies de figuur die bij de persoon past."
+body = """
+ Een kind is ongeveer zes
+      hoofden hoog en een volwassene zevenenhalf, dus een kind dat als een
+      gekrompen volwassene is getekend ziet er verkeerd uit op een manier die
+      lastig te benoemen en makkelijk te zien is. De jongen en het meisje zijn
+      tekeningen van echte kinderen in plaats van klein gemaakte volwassenen, en
+      dat is het grootste deel van wat een gezinsgrafiek op een gezin doet
+      lijken. Elke regel komt bovendien al met een lengte erin binnen, dus iemand
+      toevoegen tekent iemand &mdash; typ er gewoon overheen."""
+
+[[howto]]
+title = "Zet iets vertrouwds op de grafiek."
+body = """
+ Een getal is abstract en een
+      deuropening niet. Eén voorwerp toevoegen van een formaat dat iedereen kent
+      &mdash; een deur, een raam, een schoolbord, een automaat &mdash; is wat een
+      grafiek die twee lengtes noemt verandert in een die ze laat zien. Het menu
+      heeft er twintig, gegroepeerd, en elk ervan komt binnen als een gewone regel
+      waar je je eigen getallen overheen kunt typen. Voorwerpen nemen naast een
+      hoogte ook een breedte, dus een deur is 203 bij 81 en geen streep."""
+
+[[howto]]
+title = "Zet de meetlat in de eenheden waarin je lezer denkt."
+body = """
+ Wisselen
+      tussen centimeters en voet herschrijft wat er in de vakken staat in plaats
+      van het opnieuw uit te leggen, dus de grafiek zelf verschuift niet: alleen
+      de notatie verandert. Is de grafiek voor twee soorten lezers, dan staat de
+      lengte boven elke figuur in de eenheid van de grafiek en heeft de regel
+      onder elk vak ze allebei."""
+
+[[howto]]
+title = "De PNG om te plakken, de SVG om af te drukken."
+body = """
+ De PNG is een
+      afbeelding op de pixelhoogte die je hebt ingesteld, en dat is wat een
+      chatvenster, een document of een dia wil. De SVG is de grafiek als
+      instructies, dus hij drukt scherp af op elk formaat en kan achteraf nog
+      worden herkleurd door alles wat vectoren opent."""
+
+[[faq]]
+q = "Wordt er iets van wat ik typ ergens heen gestuurd?"
+a = """
+        Nee. De grafiek wordt getekend door JavaScript in deze pagina, op je
+        eigen apparaat, en dit gereedschap heeft überhaupt geen netwerkfunctie
+        &mdash; het haalt nooit iets op en stuurt nooit iets weg. In het
+        <code>Content-Security-Policy</code> van de pagina staat elk adres dat ze
+        mag benaderen, en geen daarvan is van ons. Dat is het hier waard om
+        gewoon te zeggen, want de invoer is een lijst van namen van mensen en hoe
+        lang ze elk zijn, en dat is persoonlijker dan het meeste waar deze site
+        mee omgaat."""
+
+[[faq]]
+q = "Kan ik de grafiek downloaden?"
+a = """
+        Ja, als PNG of als SVG, zonder watermerk en zonder account. De PNG wordt
+        getekend op de pixelhoogte die je instelt en is degene om in een document,
+        een dia of een chat te plakken. De SVG is de grafiek als instructies in
+        plaats van als pixels: hij drukt scherp af op elk formaat en kan later in
+        elke vectoreditor worden geopend en herkleurd. Ze worden allebei gemaakt
+        van dezelfde opmaak die op het scherm staat, dus geen van beide kan het
+        met het voorbeeld oneens zijn."""
+
+[[faq]]
+q = "Hoe schrijf ik de lengte &mdash; in centimeters of in voet?"
+a = """
+        Allebei goed, op elke regel, hoe je hem normaal ook schrijft.
+        <code>173</code>, <code>173 cm</code>, <code>1,73 m</code>,
+        <code>5'8\"</code>, <code>5 ft 8 in</code> en <code>68 in</code> worden
+        allemaal begrepen, en de regel onder het vak laat in beide stelsels zien
+        wat er gelezen is. Een kaal getal is centimeters wanneer de grafiek
+        metrisch is en inches wanneer hij imperiaal is; een kaal getal onder de
+        drie wordt als meters genomen, want 1,73 cm is geen lengte die iemand
+        typt."""
+
+[[faq]]
+q = "Waarom lijken de kinderen niet op kleine volwassenen?"
+a = """
+        Omdat een kind dat niet is. Lichaamsverhoudingen veranderen met de
+        leeftijd: een tweejarige is ruwweg vierenhalf hoofd hoog, een achtjarige
+        zes, een volwassene zevenenhalf &mdash; het hoofd is dus bijna een kwart
+        van een klein kind en een achtste van een volwassene. De jongen en het
+        meisje zijn hier tekeningen van echte kinderen in plaats van één
+        verkleind silhouet, en daarom lijkt een gezinsgrafiek op een gezin in
+        plaats van op vier volwassenen op verschillende formaten."""
+
+[[faq]]
+q = "Waar komen de figuren vandaan?"
+a = """
+        Alle vier zijn illustraties van andere mensen, allemaal in het publieke
+        domein: de man van pitr, de vrouw van Madeleine Price Ball, het meisje
+        van OpenClipart-Vectors, en de jongen van Ryan Kissinger voor de NIH
+        BioArt-bibliotheek. Elk bestand komt met deze pagina mee in
+        <code>vendor/</code> zoals het is gepubliceerd, dus je kunt ze tegen de
+        originelen leggen. Het publieke domein vraagt niets, en dat is precies de
+        bedoeling: de illustratie belandt in een afbeelding die jij downloadt, en
+        een licentie die naamsvermelding eist zou die eis aan jouw grafiek
+        plakken."""
+
+[[faq]]
+q = "Waarom is er geen peuter of baby?"
+a = """
+        Omdat niemand er een heeft getekend en in het publieke domein heeft
+        gezet. Wikimedia Commons heeft precies één bruikbaar vrij kind &mdash;
+        het meisje &mdash; en de NIH BioArt-bibliotheek de jongen; onder de
+        schoolleeftijd komt de zoektocht leeg terug, en elke samenhangende vrije
+        set mensen is een toiletpictogram met op elke leeftijd dezelfde vorm, wat
+        precies de fout is die dit hele gereedschap moet vermijden. Er is een
+        tijd een peuter geweest die door de eigen code van deze pagina werd
+        getekend, en het was de enige figuur op de grafiek die niemand had
+        getekend: dat zag je, naast vier die wel getekend waren. Voor iemand die
+        kleiner is dan de jongen of het meisje: zet een van die twee op de echte
+        lengte &mdash; de meetlat draagt de vergelijking, en die klopt dan."""
+
+[[faq]]
+q = "Hoeveel mensen kan ik op één grafiek zetten?"
+a = """
+        Twaalf. Dat is geen technische grens &mdash; de tekening zou er met
+        plezier dertig doen &mdash; maar voorbij een dozijn worden de kolommen
+        smaller dan de namen die erboven staan en houdt de afbeelding op leesbaar
+        te zijn. Heb je er meer nodig, dan geeft het uitzetten van de namen je de
+        breedte terug, of twee grafieken zeggen het beter dan één."""
+
+[[faq]]
+q = "Kan ik een voorwerp op de grafiek zetten?"
+a = """
+        Ja &mdash; een gewone rechthoek neemt een hoogte en een breedte, dus alles
+        met twee afmetingen komt naast de mensen te staan. Het menu heeft er
+        twintig om mee te beginnen, in vier groepen: deuren en ramen, school en
+        kantoor (een whiteboard, een bureau, een archiefkast, een
+        projectiescherm), dingen in de stad (een automaat, een kliko, een
+        basketbalring, een zeecontainer van 20&nbsp;ft) en dingen in huis. Sommige
+        daarvan zijn echte normen en sommige gebruikelijke maten, wat de pagina
+        hardop zegt; elk ervan komt binnen als een gewone regel waar je overheen
+        kunt typen. Eén vertrouwd voorwerp doet meer voor een grafiek dan hoeveel
+        extra mensen ook: het is wat een vergelijking verandert in een gevoel voor
+        schaal."""
+
+[[faq]]
+q = "Is er een figuur voor een hond of een kat?"
+a = """
+        Nee, en dat is een bewust gat en geen vergissing. Ze zijn allebei gebouwd
+        &mdash; en profil, staand, met het hoofd op schouderhoogte, zodat de
+        bovenkant van de tekening de lengte ernaast zou zijn, want daar meet elke
+        rasstandaard een dier. Ze kwamen er niet goed genoeg uit om uit te
+        brengen: een viervoeter van opzij naast vier mensen van voren leest als
+        een fout, ook als de tekening goed is. Een rechthoek op schofthoogte van
+        het dier is voorlopig eerlijk."""
+
+[[faq]]
+q = "Kan ik de grafiek met een link delen?"
+a = """
+        Niet vanaf hier, en dat is met opzet. Gereedschappen die het aanbieden
+        doen het door de hele lijst in het adres te zetten, en dan belandt elke
+        naam en elke lengte in alles waar de link doorheen reist &mdash; de logs
+        van een chatserver, een mailscanner, iemands browsergeschiedenis, een
+        dienst die een linkvoorbeeld ophaalt. Download de afbeelding en stuur die
+        in plaats daarvan: hij zegt hetzelfde en draagt geen lijst mee."""
+
+[[faq]]
+q = "Is het gratis, en mag ik de grafiek commercieel gebruiken?"
+a = """
+        Het is gratis, er is geen account en geen watermerk, en je mag het
+        resultaat in een rapport, een presentatie, een advertentie of een product
+        zetten. De site draait op advertenties, want die betalen hem. Niets aan
+        een grafiek die je hier maakt is van ons, en er wordt niets bewaard."""
+
+[[faq]]
+q = "Waarom staat de meetlat in tientallen en niet in enen?"
+a = """
+        Omdat de afstand wordt gekozen uit hoeveel lijnen de afbeelding kan dragen
+        in plaats van uit een vast getal. Een grafiek van twee volwassenen krijgt
+        elke tien centimeter een lijn; zet er een basketbalring bij en de lijnen
+        gaan naar vijfentwintig, want negentig lijnen op één afbeelding zijn een
+        grijze waas in plaats van een meetlat. In voet en inches is de ladder een,
+        drie, zes en twaalf inch, zodat de lijnen op hele inches landen in plaats
+        van er net naast."""
+
+[[faq]]
+q = "Kan ik de grafiek op een donkere dia zetten?"
+a = """
+        Ja. Zet de achtergrond op de kleur waar hij op komt te staan en de meetlat
+        en het schrift wisselen tussen donker en licht om erbij te passen &mdash;
+        uitgerekend uit de helderheid van de kleur in plaats van geraden. Vink
+        daarna &sbquo;helemaal geen achtergrond&lsquo; aan als je de afbeelding
+        zelf transparant wilt: de kleur die je koos bepaalt nog steeds de inkt,
+        dus een transparante grafiek die naar een marineblauwe dia gaat komt daar
+        leesbaar op uit."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, trek daarna de stekker uit het internet en
+        ze blijft werken. Dat is meteen de eenvoudigste manier om te bewijzen dat
+        er niets geüpload wordt: gereedschap dat je lijst wegstuurt om er een
+        grafiek van te laten tekenen zou stoppen op het moment dat je de stekker
+        eruit trekt."""
+
+[schema]
+description = "Teken een lengtevergelijkingsgrafiek in de browser. Voeg een man, een vrouw, een jongen, een meisje en voorwerpen toe met hun lengtes in centimeters of in voet en inches, zet ze op volgorde, geef ze kleur en download het resultaat als PNG of SVG. Er wordt niets geüpload."
+features = [
+  "Tot twaalf figuren op één meetlat, in willekeurige volgorde",
+  "Figuren van man, vrouw, jongen en meisje, en een gewone rechthoek voor voorwerpen",
+  "Man, vrouw, jongen en meisje getekend uit het publieke domein - de kinderen als kinderen getekend en niet als verkleinde volwassenen",
+  "Lengtes getypt als 173, 1,73 m, 5'8\", 68 in of 5 ft 8, met de lezing terug in beeld",
+  "Centimeters of voet en inches, gewisseld zonder iemands lengte te veranderen",
+  "Twintig kant-en-klare voorwerpen: deuren, ramen, een whiteboard, een automaat, een zeecontainer, meubels",
+  "Een meetlat waarvan de afstand wordt gekozen uit wat de afbeelding kan dragen",
+  "Elke achtergrondkleur, of geen, met inkt die erop leesbaar blijft",
+  "PNG op elke pixelhoogte, en een SVG die op elk formaat scherp afdrukt",
+  "Geen watermerk, geen account, geen link die je lijst meedraagt",
+  "Draait offline; er wordt niets geüpload",
+]

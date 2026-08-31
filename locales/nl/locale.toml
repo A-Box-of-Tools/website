@@ -84,6 +84,15 @@ complete = true
 "qr-barcode-reader" = "qr-code-scannen"
 "hash-checksum" = "checksum-controleren"
 "share-text" = "tekst-delen"
+# Het gaat om het geluid, niet om het formaat: "mp3" staat er met opzet niet
+# in, want de pagina schrijft er geen en een adres hoort niets te beloven wat
+# het niet waarmaakt.
+"extract-audio-from-video" = "audio-uit-video-halen"
+"xml-formatter" = "xml-formatteren"
+"yaml-to-json" = "yaml-naar-json-omzetten"
+# "Lengtes vergelijken" is wat er getypt wordt; de grafiek is het resultaat en
+# blijft in de titel staan.
+"compare-heights" = "lengtes-vergelijken"
 # DICOM blijft DICOM: dat staat er op het schijfje dat het ziekenhuis meegeeft,
 # en niemand zoekt het vertaald.
 "dicom-viewer" = "dicom-viewer"
@@ -144,6 +153,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "gidsen/gif-beeld-voor-beeld-bewerken"
 "guides/make-a-qr-code-and-prove-it-scans" = "gidsen/qr-code-maken-en-bewijzen-dat-hij-scant"
 "guides/clean-up-a-voice-memo" = "gidsen/spraakmemo-opschonen"
+"guides/make-a-height-comparison-chart" = "gidsen/een-lengtegrafiek-maken"
 
 #
 # ---------------------------------------------------------------------------

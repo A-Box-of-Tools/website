@@ -1,0 +1,184 @@
+<main id="main">
+  <!-- Step 1 &mdash; which of the two jobs this is -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli il lavoro</h2>
+
+    <!--
+      A tab strip rather than two pages, because the two jobs share an input:
+      the XML you just laid out to read is the XML you then want as JSON, and
+      pasting it into a second tool is the thing this arrangement exists to
+      avoid. `role="tablist"` and the arrow keys are wired in main.js.
+    -->
+    <div class="tabs" role="tablist" aria-label="Cosa fare con l'XML">
+      <button type="button" role="tab" id="tab-format" class="tab" data-mode="format"
+              aria-selected="true" aria-controls="options-format">Formatta</button>
+      <button type="button" role="tab" id="tab-convert" class="tab" data-mode="convert"
+              aria-selected="false" tabindex="-1" aria-controls="options-convert">Converti</button>
+    </div>
+
+    <div class="settings" id="options-format" role="tabpanel" aria-labelledby="tab-format">
+      <div class="field">
+        <label for="indent">Rientro</label>
+        <select id="indent">
+          <option value="2" selected>Due spazi</option>
+          <option value="4">Quattro spazi</option>
+          <option value="tab">Una tabulazione</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="style">Disposizione</label>
+        <select id="style">
+          <option value="pretty" selected>Mettilo in ordine</option>
+          <option value="minify">Comprimilo</option>
+        </select>
+        <p class="field-note">
+          Compattarlo è lo stesso documento senza nessuno degli spazi che c'erano solo per leggerlo.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-convert" role="tabpanel" aria-labelledby="tab-convert" hidden>
+      <div class="field">
+        <label for="conversion">Converti</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field" id="root-field" hidden>
+        <label for="root-name">Nome dell'elemento esterno</label>
+        <input type="text" id="root-name" value="root" spellcheck="false" autocomplete="off">
+        <p class="field-note">
+          XML ha un solo elemento in cima e JSON no, quindi bisogna inventarne uno.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> Incollalo</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">Il tuo XML</label>
+          <span class="count" id="input-count">vuoto</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Incolla qui l'XML - oppure trascina sopra un file .xml, .svg o .rss."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Prova un esempio</button>
+        <button type="button" id="clear" class="ghost danger">Svuota</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card" inert>
+    <h2><span class="step">3</span> Prenditi il risultato</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">Ancora niente.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>Copia</button>
+        <a id="download" class="ghost as-button" hidden download>Scarica</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+
+    The parser errors are the XML and JSON halves of json-formatter's list and
+    are worded identically to them - the same two parsers raise them, and a
+    reader who meets the same broken file on both pages should be told the same
+    thing about it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (riga {line}, colonna {column})</span>
+    <span data-phrase="char.end">la fine del testo</span>
+    <span data-phrase="char.newline">un a capo</span>
+    <span data-phrase="char.tab">una tabulazione</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="xml.comment">Questo commento non viene mai chiuso</span>
+    <span data-phrase="xml.cdata">Questa sezione CDATA non viene mai chiusa</span>
+    <span data-phrase="xml.declaration">Questa dichiarazione non viene mai chiusa</span>
+    <span data-phrase="xml.closing">Questo tag di chiusura non viene mai finito</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; non viene mai chiuso</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; chiude un tag che non è mai stato aperto</span>
+    <span data-phrase="xml.crossed">&lt;/{name}&gt; chiude un elemento mentre &lt;{open}&gt; è ancora aperto</span>
+    <span data-phrase="xml.inside">Inatteso: &laquo;{ch}&raquo; dentro &lt;{name}&gt;</span>
+    <span data-phrase="xml.tagname">Il nome di un tag deve cominciare con una lettera</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; non viene mai finito</span>
+    <span data-phrase="xml.attrvalue">L'attributo &laquo;{name}&raquo; non ha valore, e XML non lo permette</span>
+    <span data-phrase="xml.attrstring">Il valore di questo attributo non viene mai chiuso</span>
+    <span data-phrase="xml.attrquote">In XML il valore di un attributo deve stare fra virgolette</span>
+    <span data-phrase="json.trailing">Inatteso: {found} dopo la fine del valore</span>
+    <span data-phrase="json.early">Il testo finisce troppo presto</span>
+    <span data-phrase="json.keystring">Una chiave deve essere una stringa fra virgolette doppie, e questo è {found}</span>
+    <span data-phrase="json.colon">Attesi i due punti dopo la chiave, trovato {found}</span>
+    <span data-phrase="json.unexpected">Inatteso: {found}</span>
+    <span data-phrase="json.commabrace">Attesa una virgola o una graffa di chiusura, trovato {found}</span>
+    <span data-phrase="json.commabracket">Attesa una virgola o una quadra di chiusura, trovato {found}</span>
+    <span data-phrase="json.object">Questo oggetto non viene mai chiuso</span>
+    <span data-phrase="json.array">Questo array non viene mai chiuso</span>
+    <span data-phrase="json.string">Questa stringa non viene mai chiusa</span>
+    <span data-phrase="json.hex">Dopo \u devono esserci quattro cifre esadecimali</span>
+    <span data-phrase="json.escape">\{next} non è un escape che JSON conosca</span>
+    <span data-phrase="json.control">Un carattere di controllo grezzo dentro una stringa &mdash; scrivilo come escape</span>
+    <span data-phrase="json.number">Questo non è un numero che JSON permetta</span>
+    <span data-phrase="convert.xml-json.name">Da XML a JSON</span>
+    <span data-phrase="convert.json-xml.name">Da JSON a XML</span>
+    <span data-phrase="convert.xml-json">Gli attributi diventano membri con una @ nel nome, il testo proprio di un elemento
+      diventa #text dove deve condividere il posto, e ogni valore resta una stringa
+      &mdash; XML non ha mai detto quali fossero numeri.</span>
+    <span data-phrase="convert.json-xml">Un array diventa un elemento ripetuto, che è la sola forma che si rilegge. Un
+      oggetto vuoto e una stringa vuota escono tutti e due come elemento vuoto.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">Sto leggendo il file…</span>
+    <span data-phrase="read.failed">Quel file non è stato letto: {reason}</span>
+    <span data-phrase="out.nothing">Ancora niente.</span>
+    <span data-phrase="out.empty">Non è uscito niente.</span>
+    <span data-phrase="note.squeezed">XML, compattato</span>
+    <span data-phrase="note.laid">XML, formattato</span>
+    <span data-phrase="note.smaller">{what} &mdash; da {before} a {after}, {percent}% in meno</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} righe, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} righe, {size}</span>
+    <span data-phrase="copy.copy">Copia</span>
+    <span data-phrase="copy.copied">Copiato</span>
+    <span data-phrase="copy.selected">Selezionato &mdash; premi Ctrl+C</span>
+    <span data-phrase="net.clean">Il tuo XML non è andato da nessuna parte. {total} file
+      caricati. {platform}</span>
+    <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo
+      strumento non lo fa mai. {platform}</span>
+    <span data-phrase="net.platform.one">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivato neanche un carattere.</span>
+    <span data-phrase="net.platform.many">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivato neanche un carattere.</span>
+  </div>
+</main>

@@ -1,0 +1,241 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> قل من تقارن</h2>
+
+    <p class="card-lede">
+      اسمٌ وطولٌ ونوعُ الشكل الذي يُرسَم. ويبدأ كلّ صفّ بطولٍ يمكنك الكتابة
+      فوقه مباشرة. ويمكن كتابة الأطوال كما تكتبها أنت &mdash; <code>173</code>،
+      <code>1.73&nbsp;m</code>، <code>5'8"</code>، <code>68&nbsp;in</code>
+      &mdash; والسطر أسفل كلّ خانة يُظهر ما فُهِم، أو يقوله بالأحمر إن كانت
+      الخانة فارغة أو تعذّرت قراءة الطول. ولا يُخمَّن شيء في صمت أبداً.
+    </p>
+
+    <p class="card-lede">
+      <strong>من الأعلى إلى الأسفل هنا هو من اليسار إلى اليمين على
+      الرسم.</strong> اسحب صفّاً من المقبض عند حافته اليسرى لتنقله، أو استعمل
+      السهمين اللذين يفعلان الشيء نفسه من لوحة المفاتيح. وفي الحالتين يعود الرسم
+      إلى ترتيبك أنت إن كان يرتّب بحسب الطول.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">القياس بـ</label>
+      <select id="unit">
+        <option value="cm" selected>السنتيمترات</option>
+        <option value="ft">الأقدام والبوصات</option>
+      </select>
+    </div>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span></span>
+        <span>الشكل</span>
+        <span>الاسم</span>
+        <span>الطول</span>
+        <span>العرض</span>
+        <span>اللون</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">أضِف شخصاً</button>
+        <button type="button" id="add-object" class="ghost">أضِف شيئاً</button>
+        <button type="button" id="clear" class="ghost danger">أفرِغ الرسم</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">أو أضِف شيئاً يعطي مقياساً</label>
+      <select id="preset">
+        <option value="" selected>اختر واحداً&hellip;</option>
+        <optgroup label="الأبواب والنوافذ">
+          <option value="door-interior" data-cm="203" data-width="81">باب داخلي &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">باب المدخل &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">نافذة &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">باب مرآب &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="المدرسة والمكتب">
+          <option value="board" data-cm="120" data-width="240">سبّورة بيضاء أو طباشيرية &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">مكتب &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">خزانة ملفات بأربعة أدراج &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">شاشة عرض، 100 بوصة &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="في المدينة">
+          <option value="vending" data-cm="183" data-width="100">آلة بيع &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">حاوية نفايات بعجلات، 240 لتراً &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">سلّة كرة السلة &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">حاوية شحن، 20 قدماً &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="في البيت">
+          <option value="fridge" data-cm="178" data-width="76">ثلاجة بمجمّد &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">سطح مطبخ &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">طاولة طعام &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">كرسي طعام &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">أريكة بثلاثة مقاعد &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">بيانو قائم &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">غيتار صوتي &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">زجاجة نبيذ &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      بعض هذه المقاسات ثابتة فعلاً: حاوية الشحن مقاس 20 قدماً ارتفاعها
+      259&nbsp;سم بحكم التعريف، وطوق كرة السلة على 305، والباب الداخلي الأمريكي
+      203 في 81. أما البقية فمعتادة لا معيارية &mdash; فالأبواب والنوافذ وأسطح
+      المطابخ تختلف من بلد إلى بلد ومن بيت إلى بيت. وكلّ واحد منها يصل كصفٍّ
+      عادي، فقِس ما عندك واكتب الأرقام الحقيقية فوقه.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> خذه</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="رسم مقارنة الأطوال الذي صنعته"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">نزّل ملف SVG</button>
+      <button type="button" id="download-png" class="primary">نزّل ملف PNG</button>
+      <button type="button" id="copy-png" class="ghost">انسخ الصورة</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      ‏PNG هو ما يُلصَق في مستند أو محادثة. أما SVG فهو الذي يُحتفَظ به: فهو
+      الرسم بوصفه تعليمات لا بكسلات، ولذلك يُطبَع حادّاً بأي حجم ويمكن إعادة
+      تلوينه لاحقاً بأي برنامج يفتح المتّجهات.
+    </p>
+
+    <fieldset class="options">
+      <legend>كيف يبدو</legend>
+
+      <div class="option-row">
+        <label for="order">الترتيب</label>
+        <select id="order">
+          <option value="entered" selected>كما أدخلتها</option>
+          <option value="tallest">الأطول أولاً</option>
+          <option value="shortest">الأقصر أولاً</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>ارسم المسطرة</strong>
+          <span class="check-note">
+            الخطوط العابرة للرسم والأرقام على الجانبين. وبدونها تظلّ الصورة
+            تقارن شخصين مقارنةً صحيحة، لكنها تكفّ عن قول كم يبلغ طول أيٍّ
+            منهما.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>اكتب الأسماء والأطوال فوق كلّ شكل</strong>
+          <span class="check-note">
+            إن أُطفئ صار الرسم ظلالاً على مسطرة &mdash; وهو ما تريده إن كانت
+            الأسماء ستُكتَب أصلاً في المكان الذي تلصقه فيه.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="background">خلفه</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>بلا خلفية إطلاقاً</strong>
+          <span class="check-note">
+            شفّاف، لوضعه على شريحة لها لون بالفعل. وتُرسَم المسطرة والكتابة
+            داكنةً أو فاتحة بحسب اللون المختار أعلاه، فاضبطه على ما يقارب ما
+            ستستقرّ عليه الصورة حتى حين تكون الخلفية نفسها مُطفأة.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">ارتفاع الصورة بالبكسل</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        هذا ارتفاع منطقة الرسم، فالصورة النهائية أعلى منه قليلاً: إذ تجلس
+        الأسماء فوقها. أما العرض فيتبع عدد الأشكال وعرض بطاقة كلٍّ منها. والسطر
+        أسفل الصورة يقول ما الذي خرج.
+      </p>
+    </fieldset>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">رجل</span>
+    <span data-phrase="shape.woman">امرأة</span>
+    <span data-phrase="shape.boy">صبي</span>
+    <span data-phrase="shape.girl">فتاة</span>
+    <span data-phrase="shape.object">شيء</span>
+
+    <span data-phrase="row.shape">شكل الصفّ {n}</span>
+    <span data-phrase="row.name">اسم الصفّ {n}</span>
+    <span data-phrase="row.height">طول الصفّ {n}</span>
+    <span data-phrase="row.width">عرض الصفّ {n}</span>
+    <span data-phrase="row.colour">لون الصفّ {n}</span>
+    <span data-phrase="row.up">انقل الصفّ {n} لأعلى</span>
+    <span data-phrase="row.down">انقل الصفّ {n} لأسفل</span>
+    <span data-phrase="row.remove">احذف الصفّ {n}</span>
+    <span data-phrase="row.drag">اسحب لإعادة الترتيب</span>
+    <span data-phrase="row.nameexample">الاسم</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">العرض</span>
+    <span data-phrase="row.reads">قُرِئ ‎{height}</span>
+
+    <span data-phrase="height.empty">يحتاج هذا الصفّ إلى طول قبل أن يُرسَم.</span>
+    <span data-phrase="height.unreadable">ليس طولاً مما يُفهَم هنا. جرّب 173 أو 1.73 m أو 5'8" أو 68 in.</span>
+    <span data-phrase="height.tooshort">أقصر من أن يُرسَم &mdash; 5 سم هو الأصغر.</span>
+    <span data-phrase="height.tootall">أطول مما يبلغه الرسم &mdash; الحدّ 12 متراً.</span>
+
+    <span data-phrase="chart.empty">أضِف أحداً، ويظهر الرسم هنا.</span>
+    <span data-phrase="chart.noheights">كلّ صفّ يحتاج إلى طول. املأ واحداً ويظهر الرسم هنا.</span>
+    <span data-phrase="chart.full">اثنا عشر شكلاً هي أقصى ما يحمله هذا الرسم ويظلّ مقروءاً.</span>
+    <span data-phrase="facts.chart">{count} أشكال، {width} في {height} بكسل. تمتدّ المسطرة من الأرض إلى {top}، بخطٍّ كلّ {step}.</span>
+    <span data-phrase="facts.one">شكل واحد، {width} في {height} بكسل. تمتدّ المسطرة من الأرض إلى {top}، بخطٍّ كلّ {step}.</span>
+
+    <span data-phrase="save.done">حُفِظ. ولم يُرسَل شيء إلى أي مكان لرسمه.</span>
+    <span data-phrase="save.failed">{detail}. وسيُنزَّل ملف SVG رغم ذلك.</span>
+    <span data-phrase="save.copied">نُسِخ. الصقه حيث تحتاجه.</span>
+    <span data-phrase="save.noclipboard">لم يسمح هذا المتصفّح للصفحة بالكتابة في الحافظة. نزّله بدل ذلك.</span>
+    <span data-phrase="save.nothing">ليس على الرسم بعدُ ما يُحفَظ.</span>
+    <span data-phrase="render.nosvg">لم يشأ هذا المتصفّح رسم ملف SVG</span>
+    <span data-phrase="render.nopng">لم يشأ هذا المتصفّح كتابة ملف PNG</span>
+
+    <span data-phrase="net.clean">الأسماء والأطوال التي كتبتها لم تذهب إلى أي
+      مكان. {total} ملفاً حُمِّلت. {platform}</span>
+    <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه
+      الأداة أبداً. {platform}</span>
+    <span data-phrase="net.platform.one">نصوصُ الإعلانات والقياس وزرّ التبرّع
+      الخاصة بالصفحة حُمِّلت من مضيفٍ {hosts}؛ ولم يُعطَ واحد منها اسماً ولا
+      طولاً.</span>
+    <span data-phrase="net.platform.many">نصوصُ الإعلانات والقياس وزرّ التبرّع
+      الخاصة بالصفحة حُمِّلت من {hosts} مضيفاً؛ ولم يُعطَ واحد منها اسماً ولا
+      طولاً.</span>
+  </div>
+</main>

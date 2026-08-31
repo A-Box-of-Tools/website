@@ -1,0 +1,266 @@
+#
+# Formatador de XML - Portuguese (Brazil).
+#
+# Overrides for tools/xml-formatter/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Formatador de XML"
+heading = "Formatador&nbsp;de&nbsp;XML <span class=\"h1-kw\">&mdash; organize, esprema ou converta em JSON</span>"
+tagline = "XML organizado para ler ou espremido para publicar, e convertido em JSON nos dois sentidos. Nada disso é colado no servidor de outra pessoa."
+
+title = "Formatador de XML e XML para JSON &mdash; grátis, sem enviar nada"
+description = "Formate, indente e comprima XML, e converta XML para JSON ou JSON para XML. O analisador roda no seu navegador e nada é enviado, então um feed, uma nota fiscal ou um arquivo de configuração nunca sai do seu computador."
+og_title = "Formatar XML sem colar num servidor"
+og_description = "Um formatador e conversor de XML rodando no seu próprio computador. Ele diz em que linha está o erro, e o que você cola não vai a lugar nenhum."
+og_image_alt = "Formatador de XML - organizar, comprimir ou converter, sem envio"
+
+pledge = """
+    Formatar e converter são aritmética sobre um texto, feita aqui, nesta
+    página. O analisador é escrito à mão e está em <code>src/xml.js</code>, e não
+    há mais nada. Esta ferramenta não tem função de rede de espécie alguma
+    &mdash; nada para buscar, nada para enviar &mdash; e isso pesa aqui mais do
+    que a palavra &ldquo;XML&rdquo; sugere: o que chega neste formato costuma ser
+    uma nota fiscal, um extrato bancário, um prontuário, ou uma requisição SOAP
+    com as credenciais de alguém no cabeçalho."""
+
+live_hint = """
+      Você não precisa acreditar na nossa palavra: abra o DevTools, olhe a aba de
+      rede e formate alguma coisa. Nenhuma requisição carrega um caractere do que
+      você colou. Ou desconecte da internet e formate assim mesmo."""
+
+read_first = """
+, <code>src/xml.js</code> para o analisador que
+      diz qual tag nunca foi fechada, e <code>src/convert.js</code> para entender
+      por que todo valor sai do XML como texto em vez de ser adivinhado."""
+
+howto_heading = "Como formatar XML sem enviar o arquivo"
+
+card = """
+            Organize o XML para ler, esprema para publicar, ou converta em JSON
+            e de volta. Cole uma nota fiscal ou um feed sem entregar a
+            ninguém."""
+
+[words]
+plural = "XML e JSON"
+choose = "um arquivo"
+analytics_extra = """, e nada do XML
+  que passa por aqui"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem limite de tamanho"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "O que você cola não tem para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todos os endereços que esta página pode
+      contatar, e nenhum deles é nosso. Não existe aqui nenhum ponto final onde
+      uma nota fiscal colada pudesse ser recolhida, nem nada no código que a
+      enviaria se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Não há nenhum
+      <code>fetch</code>, nenhum <code>XMLHttpRequest</code> e nenhum
+      <code>sendBeacon</code> em lugar algum de <code>src/</code>. O analisador e
+      o impressor são funções desta página que recebem um texto e devolvem um
+      texto."""
+
+[[privacy]]
+title = "Nenhuma entidade externa é resolvida, nunca."
+body = """
+ Um
+      <code>DOCTYPE</code> com uma entidade externa dentro é o jeito de convencer
+      um analisador de XML a ler um arquivo da máquina que está analisando, e é o
+      buraco mais antigo do formato. <code>src/xml.js</code> é um leitor escrito à
+      mão que não tem resolução de entidades nenhuma &mdash; não desligada,
+      ausente &mdash; e esta página nunca entrega o seu texto ao
+      <code>DOMParser</code> do próprio navegador."""
+
+[[privacy]]
+title = "Todo valor que sai do XML é texto."
+body = """
+ <code>&lt;port&gt;8080&lt;/port&gt;</code>
+      não diz nada sobre aquilo ser um número, então o JSON diz
+      <code>"8080"</code>. Decidir por você seria inventar uma informação que
+      depois viaja como se estivesse no arquivo."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = """
+ Os scripts
+      de publicidade e de medição vêm do Google, e o botão de doação vem do Buy
+      Me a Coffee. Nenhum deles recebe um caractere do seu texto. Toda linha que
+      lê, analisa ou escreve é servida desta origem e está listada no
+      repositório."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e a ferramenta continua igual,
+      porque nunca houve uma etapa de rede nela. Essa é a prova mais simples de
+      todas."""
+
+[[howto]]
+title = "Escolha o trabalho."
+body = """
+ Duas abas, uma caixa:
+      <em>Formatar</em> organiza o XML ou esprema; <em>Converter</em> transforma
+      em JSON, ou o JSON de volta em XML. O XML que você acabou de organizar é o
+      XML que você converte, sem colar duas vezes."""
+
+[[howto]]
+title = "Cole, ou arraste o arquivo."
+body = """
+ Qualquer coisa que você consiga
+      selecionar e copiar serve, e um arquivo <code>.xml</code>,
+      <code>.svg</code>, <code>.rss</code> ou <code>.xsd</code> arrastado para o
+      seletor é lido pelo seu próprio navegador e colocado na caixa &mdash; não
+      existe etapa de envio para pular."""
+
+[[howto]]
+title = "Escolha a indentação, ou esprema."
+body = """
+ Dois espaços, quatro, ou uma
+      tabulação. Espremer é o mesmo documento sem nenhum dos espaços que só
+      estavam ali para leitura, e o resultado diz quantos bytes isso
+      economizou."""
+
+[[howto]]
+title = "Leia o erro onde o erro está."
+body = """
+ Um analisador que falha aqui diz
+      <em>qual tag</em> nunca foi fechada e em que linha e coluna, em vez de
+      &ldquo;erro na linha 1&rdquo;, que é o que um navegador diz de um documento
+      que leu de uma vez só."""
+
+[[howto]]
+title = "Leve o resultado."
+body = """
+ Copie, ou baixe como arquivo, com o nome do
+      formato em que ele saiu."""
+
+[[faq]]
+q = "Meu XML é enviado para algum lugar?"
+a = """
+        Não. O analisador e o impressor desta página são funções que rodam no seu
+        próprio navegador, no seu próprio hardware. Esta ferramenta não tem função
+        de rede de espécie alguma &mdash; nunca busca nada e nunca envia nada
+        &mdash; e a <code>Content-Security-Policy</code> da página lista todos os
+        endereços que ela pode contatar, e nenhum deles é nosso. Isso importa mais
+        para XML do que a fama do formato sugere: o que chega nele costuma ser uma
+        nota fiscal, um extrato bancário, um prontuário, ou uma requisição SOAP
+        com credenciais no cabeçalho."""
+
+[[faq]]
+q = "Ele resolve entidades externas?"
+a = """
+        Não, e não há nada para desligar. Resolver entidades externas é o jeito de
+        convencer um analisador de XML a ler arquivos da máquina que o executa
+        &mdash; o ataque que costuma ser escrito XXE &mdash; e
+        <code>src/xml.js</code> é um leitor escrito à mão sem resolução de
+        entidades nenhuma. O seu texto também nunca é entregue ao
+        <code>DOMParser</code> do próprio navegador. Um <code>DOCTYPE</code> passa
+        adiante sem nunca ser executado."""
+
+[[faq]]
+q = "O que se perde ao converter XML para JSON?"
+a = """
+        A ordem do conteúdo misto, os comentários, e a diferença entre um atributo
+        e um elemento filho &mdash; essa última suavizada em vez de apagada,
+        porque um atributo vira um membro cujo nome começa com <code>@</code>. O
+        texto próprio de um elemento vira <code>#text</code> quando precisa ficar
+        ao lado de outra coisa, e filhos repetidos viram um array. Todo valor
+        continua sendo texto: XML não tem tipos, e decidir que <code>8080</code>
+        era um número seria inventar informação."""
+
+[[faq]]
+q = "O que se perde ao converter JSON para XML?"
+a = """
+        A diferença entre um objeto vazio, um array vazio e um texto vazio, que
+        viram todos os três um elemento vazio, e o tipo de cada valor, porque XML
+        não tem tipos. Um array vira um elemento repetido, que é a única forma que
+        se lê de volta, e uma chave que um nome de elemento não aguenta tem os
+        caracteres complicados substituídos em vez de sair um documento que
+        nenhum analisador vai ler."""
+
+[[faq]]
+q = "Ele formata um SVG, um feed RSS ou um arquivo POM?"
+a = """
+        Formata. Os três são XML, e isto lê XML em vez de algum dialeto
+        específico. Um SVG organizado assim fica mais fácil de editar à mão; um
+        feed RSS ou Atom normalmente é publicado espremido e fica ilegível até
+        alguma coisa abrir. O jeito como fica disposto não muda nada do que o
+        documento significa."""
+
+[[faq]]
+q = "Reindentar o XML muda o que ele significa?"
+a = """
+        Para um documento cujos elementos contêm outros elementos, não. Onde pode
+        importar é no texto: o espaço em branco dentro de um elemento que contém
+        palavras faz parte desse texto, então um elemento que só contém texto é
+        deixado numa linha em vez de ser aberto. As seções <code>CDATA</code> são
+        copiadas exatamente como estavam."""
+
+[[faq]]
+q = "Por que não usar o analisador de XML do próprio navegador?"
+a = """
+        Por causa do que ele diz quando o documento está quebrado. O
+        <code>DOMParser</code> devolve um documento de erro cuja redação é
+        diferente em cada navegador e muitas vezes se resume a &ldquo;erro na
+        linha 1&rdquo;. Um leitor escrito à mão consegue dizer qual tag nunca foi
+        fechada, e onde ela foi aberta, que é justamente o que você precisava
+        saber. Não resolver entidades externas é o outro motivo."""
+
+[[faq]]
+q = "De que tamanho pode ser o arquivo?"
+a = """
+        Não há limite nenhum posto aqui, porque não há servidor pagando por um. O
+        teto de verdade é o seu próprio computador: alguns megabytes de XML vão
+        bem, e num documento muito longo a página espera uma pausa na sua digitação
+        antes de reformatar, em vez de disputar o teclado com você."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não tem conta, nem login, nem período de teste, nem limite de
+        quanto você cola. O site exibe publicidade, e é ela que paga a conta; os
+        anúncios não recebem nada sobre o seu texto."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Funciona. Carregue a página uma vez, desligue a internet e ela continua
+        funcionando. Esse é também o jeito mais simples de provar que nada é
+        enviado: uma ferramenta que mandasse o seu XML embora para formatar
+        pararia no instante em que você desconectasse."""
+
+[schema]
+description = "Formatar, indentar e comprimir XML, e converter XML para JSON ou JSON para XML. O analisador roda no navegador, não resolve nenhuma entidade externa, e nada é enviado."
+features = [
+  "Organiza o XML, ou esprema e diz quantos bytes isso economizou",
+  "Converte XML para JSON e JSON para XML, dizendo o que cada sentido perde",
+  "Diz qual tag nunca foi fechada, e em que linha e coluna",
+  "Não resolve nenhuma entidade externa, então um XXE nunca passa de texto",
+  "Lê SVG, RSS, Atom, XSD e qualquer outro XML",
+  "Funciona com um arquivo arrastado do mesmo jeito que com um colado",
+  "Roda offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste um arquivo para cá"
+hint = "ou clique para procurar &mdash; um arquivo .xml, .svg ou .rss"

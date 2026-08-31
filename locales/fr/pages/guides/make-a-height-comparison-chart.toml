@@ -1,0 +1,20 @@
+#
+# Guide : faire un graphique de comparaison de tailles - French.
+#
+
+nav = "Faire un graphique de tailles"
+title = "Comment faire un graphique de comparaison de tailles"
+description = "Transformer une liste de tailles en une image côte à côte : comment écrire les tailles, quelle figure choisir pour un enfant, pourquoi un objet familier fait plus qu'une troisième personne, et comment sortir le graphique en PNG ou en SVG."
+
+heading = "Comment faire un graphique de comparaison de tailles"
+lede = """
+    Deux nombres ne vous disent pas à quoi ressemble une différence de quinze
+    centimètres. Une image, si, en une seconde environ, et c'est toute la raison
+    d'être de ces graphiques. Voici comment en faire un qui soit juste autant que
+    convaincant."""
+
+updated = "30 août 2026"
+
+og_title = "Faire un graphique de comparaison de tailles"
+og_description = "Comment écrire les tailles, quelle figure choisir, et pourquoi un objet familier sur le graphique fait plus qu'une troisième personne."
+og_image_alt = "abox.tools - des outils qui ne touchent jamais un serveur"

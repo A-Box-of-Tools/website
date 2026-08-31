@@ -1,0 +1,104 @@
+<main id="main">
+  <!-- 第一步 &mdash; 文件 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一个视频</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>文件</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>大小</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>时长</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>声音</dt><dd id="src-channels">&mdash;</dd></div>
+      <div><dt>采样率</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <!--
+      Only shown when the file did not declare its own sample rate. It matters:
+      in that case the samples handed back are not the ones on the disk, and a
+      tool that says nothing about it is claiming more than it did.
+      One line: Chinese has no spaces between words, so a wrapped sentence
+      arrives with a hole in the middle of it.
+    -->
+    <p id="rate-note" class="path-note" hidden>
+      这个文件没写自己是按什么采样率录的，所以按 48 kHz 读取。声音是对的，采样数不是磁盘上的那个。
+    </p>
+  </section>
+
+  <!-- 第二步 &mdash; 出来的东西 -->
+  <section class="card" id="take-card" inert>
+    <h2><span class="step">2</span> 把声音取走</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="channels">声道</label>
+        <select id="channels">
+          <option value="as-is" selected>保持原样</option>
+          <option value="mono">混成单声道</option>
+        </select>
+        <p class="field-note" id="channels-note">
+          单声道会把文件减半，转写和人声录音要的正是这个。它把两个声道取平均，而不是扔掉一个。
+        </p>
+      </div>
+    </div>
+
+    <!--
+      No button. A WAV is the samples with a header in front of them, so writing
+      one is fast enough to redo whenever a setting changes - and a file that is
+      always the one the settings describe needs nothing pressed to make it so.
+    -->
+    <div id="result" class="result" hidden>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>下载音频</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+    Every Chinese phrase stays on one line, for the reason above.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">正在读取声音&hellip;</span>
+    <span data-phrase="audio.empty">这个文件是空的。</span>
+    <!--
+      Two causes, one message, deliberately. decodeAudioData throws the same
+      error for a file the browser cannot read and for a video that simply has
+      no audio track, and nothing this page can reach tells the two apart. On
+      THIS tool the second is the likely one - a screen recording made without a
+      microphone is silent, and its owner is exactly the person who comes here -
+      so naming only the format would send them off to convert a file that was
+      never the problem. Both possibilities, in the order they actually happen.
+    -->
+    <span data-phrase="audio.nodecode">从这个文件里读不到声音。要么它没有音轨（录屏时没选麦克风，录出来是静音的），要么这个浏览器读不了它的格式。MP4、MOV、WebM 和 M4V 几乎都能用；AVI、WMV 和大多数 MKV 不行。</span>
+    <span data-phrase="audio.nosound">这个文件里没有声音，只有画面。</span>
+    <span data-phrase="wav.nochannels">没有声道可写。</span>
+    <span data-phrase="wav.uneven">各声道长度不一致，这本来不该发生。</span>
+    <span data-phrase="channels.mono">单声道</span>
+    <span data-phrase="channels.stereo">立体声</span>
+    <span data-phrase="channels.many">超过两个声道</span>
+    <span data-phrase="rate.khz">{n} kHz</span>
+    <span data-phrase="out.info">WAV &mdash; {size}，{length}，{channels}，{rate} kHz</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">你的视频没有去任何地方。加载了 {total} 个文件。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
+    <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到它的一个字节。</span>
+    <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到它的一个字节。</span>
+  </div>
+</main>

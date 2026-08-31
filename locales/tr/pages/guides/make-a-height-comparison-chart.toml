@@ -1,0 +1,20 @@
+#
+# Rehber: boy karsilastirma grafigi yapma - Turkish.
+#
+
+nav = "Boy grafiği yapma"
+title = "Boy karşılaştırma grafiği nasıl yapılır"
+description = "Bir boy listesini yan yana bir resme çevirin: boyların nasıl yazılacağı, bir çocuk için hangi figürün seçileceği, tanıdık tek bir nesnenin neden üçüncü bir kişiden daha çok iş gördüğü, ve grafiğin PNG ya da SVG olarak nasıl dışarı çıkarılacağı."
+
+heading = "Boy karşılaştırma grafiği nasıl yapılır"
+lede = """
+    İki sayı, on beş santimetrelik bir farkın neye benzediğini size söylemez.
+    Bir resim söyler, hem de yaklaşık bir saniyede; bu grafiklerin var olma
+    sebebi de tam olarak budur. İşte yalnızca ikna edici değil, aynı zamanda
+    doğru olan birini nasıl yapacağınız."""
+
+updated = "30 Ağustos 2026"
+
+og_title = "Boy karşılaştırma grafiği yapmak"
+og_description = "Boyların nasıl yazılacağı, hangi figürün seçileceği, ve grafikteki tanıdık bir nesnenin neden üçüncü bir kişiden daha çok iş gördüğü."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

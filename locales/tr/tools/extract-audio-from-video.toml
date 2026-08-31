@@ -1,0 +1,272 @@
+#
+# Videodan ses cikarma - Turkish.
+#
+# Overrides for tools/extract-audio-from-video/tool.toml. Only words: the slug,
+# the category, the icon, the CSP and the list of shared parts stay where they
+# are.
+#
+
+name = "Videodan Ses Çıkarma"
+heading = "Videodan&nbsp;Ses&nbsp;Çıkarma <span class=\"h1-kw\">&mdash; sesin kendisi, WAV olarak</span>"
+tagline = "Bir video bırakın, sesini alın. Görüntü hiçbir zaman çözülmez ve hiçbir şey yüklenmez."
+
+title = "Videodan Ses Çıkarma &mdash; ücretsiz, tarayıcınızda, yükleme yok"
+description = "Bir MP4, MOV veya WebM dosyasındaki sesi alıp WAV olarak kaydedin. Video cihazınızdan çıkmaz ve görüntüsü hiçbir zaman çözülmez; işin tamamı kendi tarayıcınızda yürür."
+og_title = "Bir videonun sesini yüklemeden alın"
+og_description = "Bir MP4, MOV veya WebM bırakın, sesini WAV olarak kaydedin. Yalnızca ses izi çözülür ve dosya hiçbir yere gitmez."
+og_image_alt = "Videodan Ses Çıkarma - sesin kendisi, yükleme yok"
+
+pledge = """
+    Çözücü, tarayıcınızda zaten bulunan çözücüdür &mdash; bir dosyayı
+    <code>&lt;video&gt;</code> ögesinde oynatan kod yolunun aynısı &mdash; ve
+    ondan yalnızca ses izi istenir. WAV yazmak, örneklerin önüne kırk dört
+    baytlık bir başlık koymaktır; <code>src/wav.js</code> içinde durur. Döngüde
+    hiçbir kodlayıcı yoktur, yükleme adımı yoktur ve bu sayfanın herhangi bir
+    ağ işlevi hiç bulunmaz."""
+
+live_hint = """
+      Sözümüze güvenmek zorunda değilsiniz: DevTools'u açın, ağ sekmesini
+      izleyin ve bir video bırakın. Tek bir istek bile ondan bir bayt taşımaz.
+      Ya da internet bağlantısını kesin ve sesi yine de çıkarın."""
+
+read_first = """
+, buradaki tek çözücü ve görüntünün neden hiç
+      istenmediği için <code>src/decode.js</code>, kaydınızın sessizce yeniden
+      örneklenmesini engelleyen başlık okuması için ise
+      <code>src/samplerate.js</code>."""
+
+howto_heading = "Bir videonun sesi yüklemeden nasıl çıkarılır"
+
+card = """
+            Bir MP4, MOV veya WebM bırakın ve sesi tek başına kaydedin.
+            Yalnızca ses izi çözülür; görüntü hiç okunmaz ve dosya cihazınızdan
+            çıkmaz."""
+
+[words]
+plural = "videolarınız"
+choose = "bir video"
+analytics_extra = """, buradan geçen
+  kayıtlarla ilgili hiçbir şey de"""
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Boyut sınırı yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Videonuzun gidecek bir yeri yok."
+body = """
+ Content-Security-Policy,
+      bu sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların
+      hiçbiri bize ait değildir. Burada bir dosyanın toplanabileceği hiçbir uç
+      nokta yoktur; olsaydı bile kodda onu oraya gönderecek hiçbir şey yoktur."""
+
+[[privacy]]
+title = "Görüntü hiçbir biçimde çözülmez."
+body = """
+ Yalnızca ses izi istenir.
+      Kareler okunmaz, çözülmez, çizilmez ve bakılmaz &mdash; bu sayfada bunu
+      yapabilecek hiçbir kod yoktur &mdash; ve çıkan dosyanın içinde ses vardır,
+      başka bir şey yoktur. Bu, kendini tutmaya dair bir söz değildir:
+      <code>decodeAudioData</code>'ya baytlar verilir ve o ses döndürür;
+      <code>src/</code> içinde çalıştırılacak bir video çözücüsü yoktur."""
+
+[[privacy]]
+title = "Çözücü, tarayıcınızda zaten bulunan çözücüdür."
+body = """
+ Biçiminizi
+      okumak için buraya hiçbir şey gönderilmez, okumak için bu sayfanın
+      dışındaki hiçbir şeyden de yardım istenmez. Hangi dosyaların çalıştığı bu
+      yüzden tam olarak tarayıcınızın zaten oynattığı dosyalardır."""
+
+[[privacy]]
+title = "Örnekler yeniden kodlanmaz, olduğu gibi yazılır."
+body = """
+
+      Bir WAV, çözücünün geri verdiği örneklerin önüne bir başlık konmuş
+      hâlidir. Döngüde kaydınız hakkında karar veren bir kodlayıcı yoktur ve
+      böyle bir şeyin olabileceği, yükleme diye tarif edilebilecek hiçbir adım
+      yoktur."""
+
+[[privacy]]
+title = "Google'ın yüklediği ve kendisine verilmeyen şeyler."
+body = """
+ Reklam ve
+      ölçüm betikleri Google'dan, bağış düğmesi ise Buy Me a Coffee'den gelir.
+      Hiçbirine videonuzla ilgili bir şey verilmez: ne dosya, ne örnek, ne ad,
+      ne boyut, ne de süre."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç
+      değişmez; çünkü içinde zaten hiç ağ adımı olmadı. Bundan daha basit bir
+      kanıt yoktur."""
+
+[[howto]]
+title = "Videoyu bırakın."
+body = """
+ Telefondan, kameradan, ekran
+      kaydedicisinden ya da bir indirmeden gelen bir MP4, MOV, M4V veya WebM.
+      Onu kendi tarayıcınız okur; atlanacak bir yükleme adımı yoktur."""
+
+[[howto]]
+title = "Ne bulduğunu okuyun."
+body = """
+ Süre, kanal sayısı ve örnekleme
+      hızı, doğrudan dosyanın içinden. Dosya kendi hızını bildirmediyse sayfa
+      bunu söyler; sessizce yeniden örnekleyip hiçbir şeye dokunulmadığını iddia
+      etmez."""
+
+[[howto]]
+title = "Daha küçük olsun isterseniz mono seçin."
+body = """
+ Kanalları olduğu
+      gibi bırakmak kaydı tam olarak eski hâlinde tutar. Monoya indirgemek
+      dosyayı yarıya düşürür ve bir deşifre ya da bir ses kaydının istediği
+      budur; kanallardan birini atmak yerine ortalamasını alır."""
+
+[[howto]]
+title = "Kaydetmeden önce dinleyin."
+body = """
+ Oynatıcıdaki, birazdan
+      indirilecek olan dosyadır, video değil; yani kulağa doğru geliyorsa indirme
+      de doğrudur."""
+
+[[howto]]
+title = "Alın ya da devam ettirin."
+body = """
+ WAV'ı indirin ya da önce
+      kaydetmeden doğrudan kesiciye veya düzenleyiciye gönderin."""
+
+[[faq]]
+q = "Videom bir yere yükleniyor mu?"
+a = """
+        Hayır. Çözme de yazma da kendi tarayıcınızda, kendi donanımınızda olur.
+        Bu aracın herhangi bir ağ işlevi hiç yoktur &mdash; hiçbir zaman bir şey
+        indirmez ve hiçbir zaman bir şey göndermez &mdash; ve sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        sayar; hiçbiri bize ait değildir. Söylenene güvenmek yerine denetlemeyi
+        yeğliyorsanız internet bağlantısını kesin ve sesi yine de çıkarın."""
+
+[[faq]]
+q = "Bana MP3 verebilir mi?"
+a = """
+        Hayır, ve verebiliyormuş gibi de yapmaz. Hiçbir tarayıcı MP3 kodlayıcısı
+        ile gelmez ve bir kodlayıcıya ulaşmanın tek yolu videonuzu böyle bir
+        kodlayıcısı olan bir sunucuya göndermektir &mdash; bu site tam da bunu
+        yapmamak için vardır. Elde ettiğiniz şey bir WAV'dır: örneklerin önünde
+        kırk dört baytlık bir başlık; hiçbir kodlayıcı gerektirmez ve hiçbir
+        kalite kaybına yol açamaz. Daha büyüktür, stereoda dakikada yaklaşık on
+        megabayt, ve her oynatıcı, telefon ve düzenleyici açar. MP3 isteyen bir
+        şey bundan saniyesinde bir MP3 üretebilir."""
+
+[[faq]]
+q = "Görüntüye hiç bakılıyor mu?"
+a = """
+        Hayır, ve burada ona bakabilecek hiçbir şey yok. Tarayıcının çözücüsüne
+        dosya verilir ve ondan ses izi istenir; video izi hiçbir zaman çözülmez,
+        hiçbir zaman çizilmez ve bu sayfanın koduna hiç ulaşmaz.
+        <code>src/</code> içinde çalıştırılacak bir video çözücüsü yoktur. Çıkan
+        dosyanın içinde ses vardır, başka bir şey yoktur."""
+
+[[faq]]
+q = "Ses okunamadı diyor ama video gayet iyi oynuyor."
+a = """
+        O hâlde videonun neredeyse kesinlikle hiç ses izi yoktur. Mikrofon
+        seçilmeden alınmış bir ekran kaydı sessizdir; sesi kapalı bırakılarak bir
+        düzenleyiciden dışa aktarılmış bir klip de öyledir. İkisi de kusursuz
+        oynar, çünkü oynatılacak bir görüntü vardır. İleti bu olasılığı önce
+        anar, çünkü ikisinden daha olası olanı budur; diğeri ise bu tarayıcının
+        okumayacağı bir biçimdir. Dosyayı bir oynatıcıda açın ve hiçbir işe
+        yaramayan bir ses düzeyi denetimi arayın: hangisiyle karşı karşıya
+        olduğunuzu anlamanın en hızlı yolu budur."""
+
+[[faq]]
+q = "Hangi video biçimlerini açabilirim?"
+a = """
+        Tarayıcınızın çözdüğü her şeyi; pratikte bu MP4, M4V, MOV ve WebM
+        demektir, ayrıca bütün ses biçimleri. Dışarıda kalanlar bu sitenin her
+        yerindeki aynı kısa listedir: AVI, WMV ve MKV'lerin çoğu. Tarayıcınızın
+        okumayacağı bir dosya, yarı yolda tökezlemek yerine bunu söyleyen bir
+        iletiyle geri çevrilir."""
+
+[[faq]]
+q = "Kalite kaybı oluyor mu?"
+a = """
+        Videonun oluşturulurken kendi sesine zaten yaptığının ötesinde hiçbir
+        kayıp olmaz. Çözücünün geri verdiği örnekler olduğu gibi yazılır: ikinci
+        bir kodlama yoktur, dolayısıyla ikinci bir kayıp kuşağı da yoktur.
+        Bilinmesi gereken tek şey örnekleme hızıdır: dosyanın kendi hızı önce
+        başlığından okunur ve çözme o hızda yapılır, böylece kaydınız sessizce
+        yeniden örneklenmez. Bir dosya hız bildirmiyorsa, sayfa hangi hızı
+        varsaydığını söyler."""
+
+[[faq]]
+q = "WAV neden videodan bu kadar büyük?"
+a = """
+        Çünkü WAV sıkıştırılmamıştır, videonun ses izi ise sıkıştırılmıştı. CD
+        kalitesindeki ses, içeriği ne olursa olsun stereoda dakikada yaklaşık on
+        megabayt tutar; bir MP4'ün içindeki AAC izi belki bunun onda biri.
+        Monoya indirgemek bunu yarıya düşürür. Bu, yeniden kodlamamanın
+        bedelidir ve bir kez ödenir: dosyayı bundan sonra neyle açarsanız açın,
+        o sıkıştırabilir."""
+
+[[faq]]
+q = "Ne kadar uzun bir videoyu işleyebilir?"
+a = """
+        Burada konulmuş bir sınır yoktur, çünkü bunun bedelini ödeyen bir sunucu
+        yoktur. Gerçek tavan kendi cihazınızın belleğidir: dosya okunur ve bütün
+        ses izi örnek olarak bellekte tutulur, dolayısıyla küçük bir cihazda çok
+        uzun bir kaydın yeri dolabilir. Birkaç saatlik video genellikle sorun
+        çıkarmaz ve bir telefon dizüstünden daha azını kaldırır."""
+
+[[faq]]
+q = "Kısaltabilir ya da sesini yükseltebilir miyim?"
+a = """
+        Evet, ama burada değil: bu sayfa tek bir iş yapar. Bir sonuç oluştuğunda
+        indirme bağlantısının yanında, onu önce kaydetmeden doğrudan
+        <a href="../ses-kesme/">ses kesiciye</a> ya da
+        <a href="../ses-duzenleme/">ses düzenleyiciye</a> taşıyan bir bağlantı sırası
+        belirir; ikisi de onu yüklemez."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap gerekiyor mu?"
+a = """
+        Ücretsizdir; hesap, oturum açma, deneme süresi ve kaç video açacağınıza
+        dair bir sınır yoktur. Sitede reklam vardır, masrafı karşılayan da odur;
+        reklamlara dosyanızla ilgili hiçbir şey verilmez."""
+
+[[faq]]
+q = "Çevrimdışı çalışır mı?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin;
+        çalışmayı sürdürür. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yoludur: videonuzu işlenmek üzere gönderen bir
+        araç, fişi çektiğiniz anda dururdu."""
+
+[schema]
+description = "Bir MP4, MOV veya WebM dosyasındaki ses izini çıkarıp WAV olarak kaydedin. Yalnızca ses çözülür, görüntü hiç okunmaz ve hiçbir şey yüklenmez."
+features = [
+  "MP4, M4V, MOV ve WebM videolarının sesini WAV olarak kaydeder",
+  "Yalnızca ses izini çözer; görüntü hiç okunmaz",
+  "Dosyanın kendi örnekleme hızını önce okur, böylece sessizce yeniden örnekleme olmaz",
+  "Ortalama alarak monoya indirger, dosya boyutunun yarısı için",
+  "Kaydetmeden önce sonucu dinletir",
+  "Sonucu kaydetmeden ses kesiciye veya düzenleyiciye taşır",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Bir videoyu buraya bırakın"
+hint = "ya da tıklayıp seçin &mdash; MP4, MOV, M4V veya WebM"

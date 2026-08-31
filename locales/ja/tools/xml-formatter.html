@@ -1,0 +1,175 @@
+<main id="main">
+  <!-- Step 1 &mdash; which of the two jobs this is -->
+  <section class="card">
+    <h2><span class="step">1</span> 仕事を選ぶ</h2>
+
+    <!--
+      A tab strip rather than two pages, because the two jobs share an input:
+      the XML you just laid out to read is the XML you then want as JSON, and
+      pasting it into a second tool is the thing this arrangement exists to
+      avoid. `role="tablist"` and the arrow keys are wired in main.js.
+    -->
+    <div class="tabs" role="tablist" aria-label="XMLをどうするか">
+      <button type="button" role="tab" id="tab-format" class="tab" data-mode="format"
+              aria-selected="true" aria-controls="options-format">整形</button>
+      <button type="button" role="tab" id="tab-convert" class="tab" data-mode="convert"
+              aria-selected="false" tabindex="-1" aria-controls="options-convert">変換</button>
+    </div>
+
+    <div class="settings" id="options-format" role="tabpanel" aria-labelledby="tab-format">
+      <div class="field">
+        <label for="indent">字下げ</label>
+        <select id="indent">
+          <option value="2" selected>半角2つ</option>
+          <option value="4">半角4つ</option>
+          <option value="tab">タブ</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="style">仕上げ方</label>
+        <select id="style">
+          <option value="pretty" selected>整える</option>
+          <option value="minify">平らに詰める</option>
+        </select>
+        <p class="field-note">
+          平たく圧縮したものは、読むためだけにあった空白をすべて取り除いた同じ文書です。
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-convert" role="tabpanel" aria-labelledby="tab-convert" hidden>
+      <div class="field">
+        <label for="conversion">変換</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field" id="root-field" hidden>
+        <label for="root-name">いちばん外側の要素の名前</label>
+        <input type="text" id="root-name" value="root" spellcheck="false" autocomplete="off">
+        <p class="field-note">
+          XMLは頂点にひとつだけ要素を持ちますが、JSONは持ちません。だから、ひとつこしらえる必要があります。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> 貼り付ける</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">あなたのXML</label>
+          <span class="count" id="input-count">空</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="ここにXMLを貼り付け - または上に.xml・.svg・.rssファイルをドロップ。"></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">例を試す</button>
+        <button type="button" id="clear" class="ghost danger">消去</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card" inert>
+    <h2><span class="step">3</span> 結果を持ち出す</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">まだ何もありません。</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>コピー</button>
+        <a id="download" class="ghost as-button" hidden download>ダウンロード</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+
+    The parser errors are the XML and JSON halves of json-formatter's list and
+    are worded identically to them - the same two parsers raise them, and a
+    reader who meets the same broken file on both pages should be told the same
+    thing about it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason}（{line}行目、{column}文字目）</span>
+    <span data-phrase="char.end">テキストの終わり</span>
+    <span data-phrase="char.newline">改行</span>
+    <span data-phrase="char.tab">タブ</span>
+    <span data-phrase="char.is">「{ch}」</span>
+    <span data-phrase="xml.comment">このコメントが閉じられていません</span>
+    <span data-phrase="xml.cdata">このCDATAセクションが閉じられていません</span>
+    <span data-phrase="xml.declaration">この宣言が閉じられていません</span>
+    <span data-phrase="xml.closing">この終了タグが完結していません</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; が閉じられていません</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; は開かれていないタグを閉じています</span>
+    <span data-phrase="xml.crossed">&lt;{open}&gt; がまだ開いているのに &lt;/{name}&gt; が要素を閉じています</span>
+    <span data-phrase="xml.inside">&lt;{name}&gt; の中に想定していない「{ch}」があります</span>
+    <span data-phrase="xml.tagname">タグ名は英字で始まらなければなりません</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; が完結していません</span>
+    <span data-phrase="xml.attrvalue">属性「{name}」に値がありません。XMLはこれを許しません</span>
+    <span data-phrase="xml.attrstring">この属性値が閉じられていません</span>
+    <span data-phrase="xml.attrquote">XMLでは属性値を引用符で囲まなければなりません</span>
+    <span data-phrase="json.trailing">値の終わりのあとに{found}があります</span>
+    <span data-phrase="json.early">テキストが途中で終わっています</span>
+    <span data-phrase="json.keystring">キーは二重引用符で囲んだ文字列でなければなりませんが、これは{found}です</span>
+    <span data-phrase="json.colon">キーのあとにコロンが必要ですが、{found}がありました</span>
+    <span data-phrase="json.unexpected">{found}は想定していません</span>
+    <span data-phrase="json.commabrace">カンマか閉じ波かっこが必要ですが、{found}がありました</span>
+    <span data-phrase="json.commabracket">カンマか閉じ角かっこが必要ですが、{found}がありました</span>
+    <span data-phrase="json.object">このオブジェクトが閉じられていません</span>
+    <span data-phrase="json.array">この配列が閉じられていません</span>
+    <span data-phrase="json.string">この文字列が閉じられていません</span>
+    <span data-phrase="json.hex">\u のあとには16進数字が4つ必要です</span>
+    <span data-phrase="json.escape">\{next} はJSONが知っているエスケープではありません</span>
+    <span data-phrase="json.control">文字列の中に生の制御文字があります &mdash; エスケープとして書いてください</span>
+    <span data-phrase="json.number">これはJSONが許す数値ではありません</span>
+    <span data-phrase="convert.xml-json.name">XMLからJSONへ</span>
+    <span data-phrase="convert.json-xml.name">JSONからXMLへ</span>
+    <span data-phrase="convert.xml-json">属性は@の付いた名前のメンバーになり、要素自身のテキストは場所を分け合う必要があるところで#textになり、値はすべて文字列のままです &mdash; XMLはどれが数値かを一度も言っていません。</span>
+    <span data-phrase="convert.json-xml">配列は繰り返しの要素になります。読み戻せる形はそれだけだからです。空のオブジェクトと空の文字列は、どちらも空の要素として出てきます。</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">ファイルを読んでいます…</span>
+    <span data-phrase="read.failed">そのファイルは読めませんでした：{reason}</span>
+    <span data-phrase="out.nothing">まだ何もありません。</span>
+    <span data-phrase="out.empty">何も出てきませんでした。</span>
+    <span data-phrase="note.squeezed">XML、平たく圧縮</span>
+    <span data-phrase="note.laid">XML、整形</span>
+    <span data-phrase="note.smaller">{what} &mdash; {before}から{after}へ、{percent}%減</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines}行、{size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines}行、{size}</span>
+    <span data-phrase="copy.copy">コピー</span>
+    <span data-phrase="copy.copied">コピーしました</span>
+    <span data-phrase="copy.selected">選択しました &mdash; Ctrl+Cを押してください</span>
+    <span data-phrase="net.clean">XMLはどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、その一文字も渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、その一文字も渡っていません。</span>
+  </div>
+</main>

@@ -1,0 +1,215 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> 说清楚你在比谁</h2>
+
+    <p class="card-lede">
+      一个名字、一个身高，还有画成哪种图形。每一行一开始就带着一个身高，你可以直接盖着改。身高按你平时的写法写就行——<code>173</code>、<code>1.73&nbsp;m</code>、<code>5'8"</code>、<code>68&nbsp;in</code> 都读得懂——每个框下面那行会显示它读成了什么；框是空的，或者身高读不出来，它就用红字说出来。不会有什么被悄悄猜掉。
+    </p>
+
+    <p class="card-lede">
+      <strong>这里的从上到下，就是图上的从左到右。</strong>要挪动一行，抓住它左边的把手拖，或者用箭头，那在键盘上做的是同一件事。不管哪种，只要图表原本在按身高排序，它都会回到你自己的顺序。
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">单位</label>
+      <select id="unit">
+        <option value="cm" selected>厘米</option>
+        <option value="ft">英尺和英寸</option>
+      </select>
+    </div>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span></span>
+        <span>图形</span>
+        <span>名字</span>
+        <span>身高</span>
+        <span>宽度</span>
+        <span>颜色</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">加一个人</button>
+        <button type="button" id="add-object" class="ghost">加一件东西</button>
+        <button type="button" id="clear" class="ghost danger">清空图表</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">或者加点东西当参照</label>
+      <select id="preset">
+        <option value="" selected>挑一个&hellip;</option>
+        <optgroup label="门和窗">
+          <option value="door-interior" data-cm="203" data-width="81">室内门 &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">入户门 &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">窗户 &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">车库门 &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="学校和办公室">
+          <option value="board" data-cm="120" data-width="240">白板或黑板 &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">办公桌 &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">四抽文件柜 &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">投影幕，100 英寸 &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="街上的东西">
+          <option value="vending" data-cm="183" data-width="100">自动售货机 &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">带轮垃圾桶，240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">篮球架 &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">海运集装箱，20 英尺 &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="家里的东西">
+          <option value="fridge" data-cm="178" data-width="76">冰箱冷冻一体 &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">厨房台面 &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">餐桌 &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">餐椅 &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">三人沙发 &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">立式钢琴 &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">民谣吉他 &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">葡萄酒瓶 &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      里头有几个是真的固定：20 英尺的海运集装箱按定义就是 259&nbsp;cm 高，篮球框在 305，美国的室内门是 203 乘 81。其余是常见尺寸而不是标准——门、窗和台面各国不同、各家也不同。每一个进来都是一行普通的行，量一下你自己的，把真数字盖上去。
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> 拿走</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="你做好的身高对比图"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">下载 SVG</button>
+      <button type="button" id="download-png" class="primary">下载 PNG</button>
+      <button type="button" id="copy-png" class="ghost">复制图片</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      要粘进文档或者聊天窗口的是 PNG。要留着的是 SVG：它把图表存成指令而不是像素，所以放到多大都印得清楚，以后任何能打开矢量的东西都能给它换颜色。
+    </p>
+
+    <fieldset class="options">
+      <legend>它长什么样</legend>
+
+      <div class="option-row">
+        <label for="order">顺序</label>
+        <select id="order">
+          <option value="entered" selected>按你输入的顺序</option>
+          <option value="tallest">高的在前</option>
+          <option value="shortest">矮的在前</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>画出标尺</strong>
+          <span class="check-note">
+            横穿图表的那些线，还有两边的数字。没有它们，这张图仍然能正确地比出两个人谁高，但它不再说谁有多高。
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>在每个图形上方写名字和身高</strong>
+          <span class="check-note">
+            关掉之后，图表就是标尺上的一排剪影——如果名字反正要写在你粘贴过去的那个东西里，你要的就是这样。
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="background">背景</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>完全不要背景</strong>
+          <span class="check-note">
+            透明，方便放到本来就有颜色的幻灯片上。标尺和文字会按上面选的颜色画成深色或浅色，所以就算背景本身关掉了，也把那个颜色设成图差不多要落在的颜色。
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">图片高度，以像素计</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        那是绘图区的高度，所以成品会稍微高一点：名字在它上面。宽度由有几个图形、每个的标签有多宽决定。图下面那行会说最后是多少。
+      </p>
+    </fieldset>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">男性</span>
+    <span data-phrase="shape.woman">女性</span>
+    <span data-phrase="shape.boy">男孩</span>
+    <span data-phrase="shape.girl">女孩</span>
+    <span data-phrase="shape.object">物体</span>
+
+    <span data-phrase="row.shape">第 {n} 行的图形</span>
+    <span data-phrase="row.name">第 {n} 行的名字</span>
+    <span data-phrase="row.height">第 {n} 行的身高</span>
+    <span data-phrase="row.width">第 {n} 行的宽度</span>
+    <span data-phrase="row.colour">第 {n} 行的颜色</span>
+    <span data-phrase="row.up">把第 {n} 行上移</span>
+    <span data-phrase="row.down">把第 {n} 行下移</span>
+    <span data-phrase="row.remove">删掉第 {n} 行</span>
+    <span data-phrase="row.drag">拖动可重新排序</span>
+    <span data-phrase="row.nameexample">名字</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">宽度</span>
+    <span data-phrase="row.reads">读作 {height}</span>
+
+    <span data-phrase="height.empty">这一行要先有身高才画得出来。</span>
+    <span data-phrase="height.unreadable">这不是这里读得懂的身高。试试 173、1.73 m、5'8" 或者 68 in。</span>
+    <span data-phrase="height.tooshort">太矮画不出来——最小 5 cm。</span>
+    <span data-phrase="height.tootall">比图表能到的还高——上限是 12 米。</span>
+
+    <span data-phrase="chart.empty">加个人，图表就出现在这里。</span>
+    <span data-phrase="chart.noheights">每一行都得有身高。填一个，图表就出现在这里。</span>
+    <span data-phrase="chart.full">十二个图形已经是这张图表还能读得清的极限了。</span>
+    <span data-phrase="facts.chart">{count} 个图形，{width} × {height} 像素。标尺从地面一直到 {top}，每 {step} 一条线。</span>
+    <span data-phrase="facts.one">一个图形，{width} × {height} 像素。标尺从地面一直到 {top}，每 {step} 一条线。</span>
+
+    <span data-phrase="save.done">已保存。为了画它，没有往任何地方送过东西。</span>
+    <span data-phrase="save.failed">{detail}。SVG 还是会下载。</span>
+    <span data-phrase="save.copied">已复制。要用就粘过去。</span>
+    <span data-phrase="save.noclipboard">这个浏览器不让页面写剪贴板。改成下载吧。</span>
+    <span data-phrase="save.nothing">图表上还没有可保存的东西。</span>
+    <span data-phrase="render.nosvg">这个浏览器不肯画这个 SVG</span>
+    <span data-phrase="render.nopng">这个浏览器不肯写 PNG</span>
+
+    <span data-phrase="net.clean">你输入的名字和身高没有去任何地方。加载了 {total} 个文件。{platform}</span>
+    <span data-phrase="net.dirty">有东西联系了 {hosts}，而这个工具从不这么做。{platform}</span>
+    <span data-phrase="net.platform.one">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何名字或身高。</span>
+    <span data-phrase="net.platform.many">本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到任何名字或身高。</span>
+  </div>
+</main>

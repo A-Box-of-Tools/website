@@ -1,0 +1,248 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> Di' chi stai confrontando</h2>
+
+    <p class="card-lede">
+      Un nome, un'altezza e che tipo di figura disegnare. Ogni riga parte da
+      un'altezza su cui puoi scrivere sopra direttamente. Le altezze si possono
+      scrivere come le scrivi tu &mdash; <code>173</code>,
+      <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
+      &mdash; e la riga sotto ogni casella mostra cosa è stato capito, oppure lo
+      dice in rosso se la casella è vuota o l'altezza non si riesce a leggere.
+      Non viene mai indovinato niente di nascosto.
+    </p>
+
+    <p class="card-lede">
+      <strong>Dall'alto in basso qui è da sinistra a destra sul
+      grafico.</strong> Trascina una riga dalla maniglia sul suo bordo sinistro
+      per spostarla, oppure usa le frecce, che fanno la stessa cosa da tastiera.
+      In tutti e due i casi il grafico torna al tuo ordine se stava ordinando
+      per altezza.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Misurato in</label>
+      <select id="unit">
+        <option value="cm" selected>Centimetri</option>
+        <option value="ft">Piedi e pollici</option>
+      </select>
+    </div>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span></span>
+        <span>Figura</span>
+        <span>Nome</span>
+        <span>Altezza</span>
+        <span>Larghezza</span>
+        <span>Colore</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">Aggiungi una persona</button>
+        <button type="button" id="add-object" class="ghost">Aggiungi un oggetto</button>
+        <button type="button" id="clear" class="ghost danger">Svuota il grafico</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">Oppure aggiungi qualcosa che dia la scala</label>
+      <select id="preset">
+        <option value="" selected>Scegline uno&hellip;</option>
+        <optgroup label="Porte e finestre">
+          <option value="door-interior" data-cm="203" data-width="81">Porta interna &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">Porta d'ingresso &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">Finestra &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">Basculante del garage &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="Scuola e ufficio">
+          <option value="board" data-cm="120" data-width="240">Lavagna bianca o nera &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">Scrivania da ufficio &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">Classificatore a quattro cassetti &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">Schermo da proiezione, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="In giro per la città">
+          <option value="vending" data-cm="183" data-width="100">Distributore automatico &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">Bidone con ruote, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">Canestro da basket &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">Container marittimo, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="In giro per casa">
+          <option value="fridge" data-cm="178" data-width="76">Frigorifero con congelatore &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">Piano di lavoro della cucina &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">Tavolo da pranzo &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">Sedia da pranzo &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">Divano a tre posti &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">Pianoforte verticale &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">Chitarra acustica &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">Bottiglia di vino &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      Alcune di queste misure sono davvero fisse: un container marittimo da
+      20&nbsp;ft è alto 259&nbsp;cm per definizione, un canestro sta a 305, e
+      una porta interna americana è 203 per 81. Le altre sono tipiche più che
+      standard &mdash; porte, finestre e piani di lavoro cambiano da paese a
+      paese e da casa a casa. Ognuna arriva come una riga normale, quindi misura
+      la tua e scrivici sopra i numeri veri.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Prenditelo</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Il grafico delle altezze che hai fatto"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Scarica l'SVG</button>
+      <button type="button" id="download-png" class="primary">Scarica il PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copia l'immagine</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Il PNG è quello da incollare in un documento o in una chat. L'SVG è
+      quello da tenere: è il grafico come istruzioni invece che come pixel,
+      quindi stampa nitido a qualsiasi dimensione e può essere ricolorato dopo
+      da qualunque cosa apra i vettori.
+    </p>
+
+    <fieldset class="options">
+      <legend>Come viene</legend>
+
+      <div class="option-row">
+        <label for="order">Ordine</label>
+        <select id="order">
+          <option value="entered" selected>Come li hai inseriti</option>
+          <option value="tallest">Prima i più alti</option>
+          <option value="shortest">Prima i più bassi</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>Disegna il righello</strong>
+          <span class="check-note">
+            Le righe che attraversano il grafico e i numeri sui due lati. Senza
+            di loro l'immagine confronta ancora bene due persone, ma smette di
+            dire quanto è alta ciascuna.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>Scrivi nomi e altezze sopra ogni figura</strong>
+          <span class="check-note">
+            Spento, il grafico è sagome su un righello &mdash; ed è quello che
+            vuoi se i nomi finiscono già in quello dove lo stai incollando.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="background">Dietro</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Nessuno sfondo</strong>
+          <span class="check-note">
+            Trasparente, per posarlo su una slide che ha già un colore. Il
+            righello e la scritta vengono disegnati scuri o chiari a seconda del
+            colore scelto qui sopra, quindi imposta quello più o meno su ciò su
+            cui finirà l'immagine, anche quando lo sfondo è spento.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">Altezza dell'immagine, in pixel</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Quella è l'altezza dell'area di disegno, quindi l'immagine finita è un
+        po' più alta: i nomi stanno sopra. La larghezza viene da quante figure
+        ci sono e da quanto è larga l'etichetta di ciascuna. La riga sotto
+        l'immagine dice com'è venuta.
+      </p>
+    </fieldset>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">Uomo</span>
+    <span data-phrase="shape.woman">Donna</span>
+    <span data-phrase="shape.boy">Bambino</span>
+    <span data-phrase="shape.girl">Bambina</span>
+    <span data-phrase="shape.object">Oggetto</span>
+
+    <span data-phrase="row.shape">Figura della riga {n}</span>
+    <span data-phrase="row.name">Nome della riga {n}</span>
+    <span data-phrase="row.height">Altezza della riga {n}</span>
+    <span data-phrase="row.width">Larghezza della riga {n}</span>
+    <span data-phrase="row.colour">Colore della riga {n}</span>
+    <span data-phrase="row.up">Sposta la riga {n} in su</span>
+    <span data-phrase="row.down">Sposta la riga {n} in giù</span>
+    <span data-phrase="row.remove">Togli la riga {n}</span>
+    <span data-phrase="row.drag">Trascina per riordinare</span>
+    <span data-phrase="row.nameexample">Nome</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">Larghezza</span>
+    <span data-phrase="row.reads">Letto come {height}</span>
+
+    <span data-phrase="height.empty">Questa riga ha bisogno di un'altezza prima di poter essere disegnata.</span>
+    <span data-phrase="height.unreadable">Questa non è un'altezza che qui si capisca. Prova 173, 1,73 m, 5'8" o 68 in.</span>
+    <span data-phrase="height.tooshort">Troppo basso per disegnarlo &mdash; 5 cm è il minimo.</span>
+    <span data-phrase="height.tootall">Più alto di dove arriva il grafico &mdash; il limite è 12 metri.</span>
+
+    <span data-phrase="chart.empty">Aggiungi qualcuno e il grafico comparirà qui.</span>
+    <span data-phrase="chart.noheights">Ogni riga ha bisogno di un'altezza. Riempine una e il grafico comparirà qui.</span>
+    <span data-phrase="chart.full">Dodici figure sono quante ne regge questo grafico restando leggibile.</span>
+    <span data-phrase="facts.chart">{count} figure, {width} per {height} pixel. Il righello va da terra fino a {top}, con una riga ogni {step}.</span>
+    <span data-phrase="facts.one">Una figura, {width} per {height} pixel. Il righello va da terra fino a {top}, con una riga ogni {step}.</span>
+
+    <span data-phrase="save.done">Salvato. Per disegnarlo non è stato mandato niente da nessuna parte.</span>
+    <span data-phrase="save.failed">{detail}. L'SVG si scaricherà lo stesso.</span>
+    <span data-phrase="save.copied">Copiato. Incollalo dove ti serve.</span>
+    <span data-phrase="save.noclipboard">Questo browser non ha lasciato che la pagina scrivesse negli appunti. Scaricalo invece.</span>
+    <span data-phrase="save.nothing">Sul grafico non c'è ancora niente da salvare.</span>
+    <span data-phrase="render.nosvg">questo browser non ha voluto disegnare l'SVG</span>
+    <span data-phrase="render.nopng">questo browser non ha voluto scrivere un PNG</span>
+
+    <span data-phrase="net.clean">i nomi e le altezze che hai scritto non sono
+      andati da nessuna parte. {total} file caricati. {platform}</span>
+    <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo
+      strumento non lo fa mai. {platform}</span>
+    <span data-phrase="net.platform.one">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivato un nome o un'altezza.</span>
+    <span data-phrase="net.platform.many">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivato un nome o un'altezza.</span>
+  </div>
+</main>

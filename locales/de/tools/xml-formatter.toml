@@ -1,0 +1,280 @@
+#
+# XML-Formatierer - German.
+#
+# Overrides for tools/xml-formatter/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "XML-Formatierer"
+heading = "XML-Formatierer <span class=\"h1-kw\">&mdash; auslegen, flach pressen oder in JSON umwandeln</span>"
+tagline = "XML zum Lesen ausgelegt oder zum Ausliefern flach gepresst, und in beide Richtungen zu JSON umgewandelt. Nichts davon wird in den Server eines anderen eingefügt."
+
+title = "XML formatieren &amp; XML in JSON umwandeln &mdash; kostenlos, ohne Upload"
+description = "XML formatieren, einrücken und minimieren und XML in JSON oder JSON in XML umwandeln. Der Parser läuft in Ihrem Browser, hochgeladen wird nichts - ein Feed, eine Rechnung oder eine Konfigurationsdatei verlässt Ihr Gerät also nie."
+og_title = "XML formatieren, ohne es in einen Server einzufügen"
+og_description = "Ein XML-Formatierer und -Umwandler auf Ihrem eigenen Gerät. Er sagt Ihnen, in welcher Zeile der Fehler steckt, und was Sie einfügen, geht nirgendwohin."
+og_image_alt = "XML-Formatierer - auslegen, minimieren oder umwandeln, ohne Upload"
+
+pledge = """
+    Formatieren und Umwandeln sind Rechnen auf einer Zeichenkette, und zwar
+    hier, auf dieser Seite. Der Parser ist von Hand geschrieben und steht in
+    <code>src/xml.js</code>, und mehr gibt es nicht. Eine Netzfunktion hat
+    dieses Werkzeug überhaupt nicht, weder etwas abzurufen noch etwas zu senden.
+    Das wiegt hier schwerer, als das Wort &bdquo;XML&ldquo; vermuten lässt, denn
+    was in diesem Format ankommt, ist meist eine Rechnung, ein Kontoauszug, eine
+    Patientenakte oder eine SOAP-Nachricht mit den Zugangsdaten von jemandem im
+    Kopf."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und formatieren Sie etwas. Keine einzige Anfrage
+      trägt ein Zeichen dessen, was Sie eingefügt haben. Oder trennen Sie die
+      Internetverbindung und formatieren Sie es trotzdem."""
+
+read_first = """
+, <code>src/xml.js</code> für den Parser, der
+      Ihnen sagt, welches Tag nie geschlossen wurde, und
+      <code>src/convert.js</code> dafür, warum jeder Wert als Zeichenkette aus
+      dem XML kommt, statt erraten zu werden."""
+
+howto_heading = "So formatieren Sie XML, ohne es hochzuladen"
+
+card = """
+            Legen Sie XML zum Lesen aus, pressen Sie es zum Ausliefern flach
+            oder wandeln Sie es in JSON um und zurück. Fügen Sie eine Rechnung
+            oder einen Feed ein, ohne sie jemandem zu geben."""
+
+[words]
+plural = "XML und JSON"
+choose = "eine Datei"
+analytics_extra = """, und kein XML,
+  das hier hindurchgeht"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Keine Größengrenze"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Was Sie einfügen, hat keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem eine eingefügte Rechnung eingesammelt werden könnte, und im Code steht
+      auch nichts, das sie dorthin schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ In <code>src/</code> gibt es nirgends
+      ein <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>. Der Parser und der Drucker sind Funktionen auf
+      dieser Seite, die eine Zeichenkette nehmen und eine Zeichenkette
+      zurückgeben."""
+
+[[privacy]]
+title = "Externe Entitäten werden niemals aufgelöst."
+body = """
+ Ein
+      <code>DOCTYPE</code> mit einer externen Entität darin ist der Weg, auf dem
+      ein XML-Parser dazu gebracht wird, eine Datei von dem Gerät zu lesen, das
+      gerade parst, und es ist das älteste Loch des Formats.
+      <code>src/xml.js</code> ist ein von Hand geschriebener Leser, in dem
+      überhaupt keine Entitätsauflösung steckt &mdash; nicht abgeschaltet,
+      sondern gar nicht vorhanden &mdash; und diese Seite übergibt Ihren Text
+      auch niemals dem <code>DOMParser</code> des Browsers."""
+
+[[privacy]]
+title = "Jeder Wert aus XML ist eine Zeichenkette."
+body = """
+ <code>&lt;port&gt;8080&lt;/port&gt;</code>
+      sagt nichts darüber, ob das eine Zahl ist, also steht im JSON
+      <code>"8080"</code>. Das für Sie zu entscheiden hieße, eine Information zu
+      erfinden, die dann weiterreist, als hätte sie in der Datei gestanden."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
+      Keinem von ihnen wird ein Zeichen Ihres Textes übergeben. Jede Zeile, die
+      ihn liest, parst oder schreibt, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug arbeitet unverändert weiter, denn einen Netzschritt gab es darin
+      nie. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie die Aufgabe."
+body = """
+ Zwei Reiter, ein Feld:
+      <em>Formatieren</em> legt XML aus oder presst es flach,
+      <em>Umwandeln</em> macht JSON daraus oder JSON wieder zu XML. Das XML, das
+      Sie gerade ausgelegt haben, ist das XML, das Sie umwandeln, ohne es zweimal
+      einzufügen."""
+
+[[howto]]
+title = "Fügen Sie es ein, oder legen Sie die Datei ab."
+body = """
+ Alles, was sich
+      markieren und kopieren lässt, funktioniert, und eine <code>.xml</code>-,
+      <code>.svg</code>-, <code>.rss</code>- oder <code>.xsd</code>-Datei, die
+      Sie auf das Auswahlfeld ziehen, wird von Ihrem eigenen Browser gelesen und
+      in das Feld gesetzt. Es gibt keinen Upload-Schritt, den man weglassen
+      müsste."""
+
+[[howto]]
+title = "Wählen Sie die Einrückung, oder pressen Sie es flach."
+body = """
+ Zwei
+      Leerzeichen, vier oder ein Tabulator. Flach gepresst ist dasselbe Dokument
+      ohne jedes Leerzeichen, das nur zum Lesen da war, und das Ergebnis sagt,
+      wie viele Bytes das gespart hat."""
+
+[[howto]]
+title = "Lesen Sie den Fehler dort, wo der Fehler ist."
+body = """
+ Ein Parser, der
+      hier scheitert, sagt, <em>welches Tag</em> nie geschlossen wurde und in
+      welcher Zeile und Spalte, statt &bdquo;Fehler in Zeile 1&ldquo;, was ein
+      Browser über ein Dokument sagt, das er auf einen Schlag gelesen hat."""
+
+[[howto]]
+title = "Nehmen Sie das Ergebnis mit."
+body = """
+ Kopieren Sie es, oder laden Sie es
+      als Datei herunter, benannt nach dem Format, in dem es herauskam."""
+
+[[faq]]
+q = "Wird mein XML irgendwohin hochgeladen?"
+a = """
+        Nein. Der Parser und der Drucker auf dieser Seite sind Funktionen, die in
+        Ihrem eigenen Browser auf Ihrer eigenen Hardware laufen. Eine
+        Netzfunktion hat dieses Werkzeug überhaupt nicht &mdash; es ruft nie
+        etwas ab und sendet nie etwas &mdash; und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Das wiegt bei XML
+        schwerer, als der Ruf des Formats vermuten lässt: Was darin ankommt, ist
+        meist eine Rechnung, ein Kontoauszug, eine Patientenakte oder eine
+        SOAP-Anfrage mit Zugangsdaten im Kopf."""
+
+[[faq]]
+q = "Löst es externe Entitäten auf?"
+a = """
+        Nein, und es gibt auch nichts abzuschalten. Das Auflösen externer
+        Entitäten ist der Weg, auf dem ein XML-Parser dazu gebracht wird, Dateien
+        von dem Gerät zu lesen, auf dem er läuft &mdash; der Angriff, der
+        üblicherweise XXE geschrieben wird &mdash; und <code>src/xml.js</code>
+        ist ein von Hand geschriebener Leser ohne jede Entitätsauflösung. Ihr
+        Text wird auch niemals dem <code>DOMParser</code> des Browsers übergeben.
+        Ein <code>DOCTYPE</code> wird durchgereicht, ohne jemals ausgeführt zu
+        werden."""
+
+[[faq]]
+q = "Was geht beim Umwandeln von XML in JSON verloren?"
+a = """
+        Die Reihenfolge gemischter Inhalte, die Kommentare und der Unterschied
+        zwischen einem Attribut und einem Kindelement &mdash; wobei der letzte
+        eher abgemildert als getilgt wird, denn ein Attribut wird zu einem
+        Member, dessen Name mit <code>@</code> anfängt. Der eigene Text eines
+        Elements wird zu <code>#text</code>, wenn er neben etwas anderem stehen
+        muss, und wiederholte Kinder werden zu einem Array. Jeder Wert bleibt
+        eine Zeichenkette: XML kennt keine Typen, und zu entscheiden, dass
+        <code>8080</code> eine Zahl war, hieße, eine Information zu erfinden."""
+
+[[faq]]
+q = "Was geht beim Umwandeln von JSON in XML verloren?"
+a = """
+        Der Unterschied zwischen einem leeren Objekt, einem leeren Array und
+        einer leeren Zeichenkette, die alle drei zu einem leeren Element werden,
+        und der Typ jedes Werts, denn XML kennt keine Typen. Ein Array wird zu
+        einem wiederholten Element, was die einzige Form ist, die sich
+        zurücklesen lässt, und bei einem Schlüssel, den ein Elementname nicht
+        tragen kann, werden die sperrigen Zeichen ersetzt, statt ein Dokument
+        auszugeben, das kein Parser lesen wird."""
+
+[[faq]]
+q = "Kann es ein SVG, einen RSS-Feed oder eine POM-Datei formatieren?"
+a = """
+        Ja. Alle drei sind XML, und dies liest XML und nicht irgendeinen
+        bestimmten Dialekt davon. Ein so ausgelegtes SVG lässt sich leichter von
+        Hand bearbeiten; ein RSS- oder Atom-Feed wird üblicherweise flach
+        gepresst ausgeliefert und ist unlesbar, bis ihn etwas wieder auseinander
+        legt. An der Bedeutung des Dokuments ändert die Anordnung nichts."""
+
+[[faq]]
+q = "Ändert das neue Einrücken die Bedeutung des XML?"
+a = """
+        Bei einem Dokument, dessen Elemente andere Elemente enthalten, nicht.
+        Wo es eine Rolle spielen kann, ist Text: Leerraum innerhalb eines
+        Elements, das Wörter enthält, ist Teil dieses Textes, und deshalb bleibt
+        ein Element, das nichts als Text enthält, auf einer Zeile, statt
+        auseinandergelegt zu werden. <code>CDATA</code>-Abschnitte werden genau
+        so durchgereicht, wie sie waren."""
+
+[[faq]]
+q = "Warum nicht einfach den XML-Parser des Browsers nehmen?"
+a = """
+        Wegen dem, was er sagt, wenn das Dokument kaputt ist. Der
+        <code>DOMParser</code> gibt ein Fehlerdokument zurück, dessen Wortlaut in
+        jedem Browser anders ist und oft auf &bdquo;Fehler in Zeile 1&ldquo;
+        hinausläuft. Ein von Hand geschriebener Leser kann sagen, welches Tag nie
+        geschlossen wurde und wo es geöffnet wurde, und genau das wollten Sie
+        wissen. Keine externen Entitäten aufzulösen, ist der zweite Grund."""
+
+[[faq]]
+q = "Wie groß darf die Datei sein?"
+a = """
+        Hier ist keine Grenze eingebaut, denn es gibt keinen Server, der dafür
+        bezahlt. Die praktische Obergrenze ist Ihr eigenes Gerät: Ein paar
+        Megabyte XML sind unproblematisch, und bei einem sehr langen Dokument
+        wartet die Seite auf eine Pause beim Tippen, bevor sie neu formatiert,
+        statt Ihnen die Tastatur streitig zu machen."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und keine Grenze dafür, wie viel Sie einfügen. Bezahlt wird die
+        Seite über Werbung, und den Anzeigen wird nichts über Ihren Text
+        übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihr XML zum Formatieren
+        wegschickt, bliebe in dem Moment stehen, in dem Sie die Verbindung
+        trennen."""
+
+[schema]
+description = "XML formatieren, einrücken und minimieren und XML in JSON oder JSON in XML umwandeln. Der Parser läuft im Browser, löst keine externen Entitäten auf, und hochgeladen wird nichts."
+features = [
+  "Legt XML aus oder presst es flach und sagt, wie viele Bytes das gespart hat",
+  "Wandelt XML in JSON und JSON in XML um und sagt, was jede Richtung kostet",
+  "Sagt, welches Tag nie geschlossen wurde, und in welcher Zeile und Spalte",
+  "Löst keine externen Entitäten auf, eine XXE-Nutzlast bleibt also immer nur Text",
+  "Liest SVG, RSS, Atom, XSD und jedes andere XML",
+  "Arbeitet mit einer abgelegten Datei ebenso wie mit Eingefügtem",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Datei hierher ziehen"
+hint = "oder klicken und auswählen &mdash; eine .xml-, .svg- oder .rss-Datei"

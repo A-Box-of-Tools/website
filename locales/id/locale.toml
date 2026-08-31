@@ -86,6 +86,15 @@ complete = true
 "timelapse-video" = "buat-video-time-lapse"
 "hash-checksum" = "hitung-checksum"
 "share-text" = "berbagi-teks"
+# Yang dicari suaranya, bukan formatnya: "mp3" sengaja tidak ada, karena
+# halaman ini tidak menulis MP3 dan sebuah alamat tidak boleh menjanjikan
+# apa yang tidak ditepatinya.
+"extract-audio-from-video" = "ekstrak-audio-dari-video"
+"xml-formatter" = "format-xml"
+"yaml-to-json" = "konversi-yaml-ke-json"
+# "Bandingkan tinggi badan" yang diketik orang; grafiknya hasil, dan tinggal
+# di judul.
+"compare-heights" = "bandingkan-tinggi-badan"
 
 # The indexes and the legal pages.
 "guides" = "panduan"
@@ -153,6 +162,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "panduan/mengedit-gif-bingkai-demi-bingkai"
 "guides/make-a-qr-code-and-prove-it-scans" = "panduan/membuat-kode-qr-dan-membuktikannya-terbaca"
 "guides/clean-up-a-voice-memo" = "panduan/merapikan-memo-suara"
+"guides/make-a-height-comparison-chart" = "panduan/membuat-bagan-perbandingan-tinggi"
 
 #
 # ---------------------------------------------------------------------------

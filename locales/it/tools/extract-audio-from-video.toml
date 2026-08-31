@@ -1,0 +1,285 @@
+#
+# Estrarre l'audio da un video - Italian.
+#
+# Overrides for tools/extract-audio-from-video/tool.toml. Only words: the slug,
+# the category, the icon, the CSP and the list of shared parts stay where they
+# are.
+#
+
+name = "Estrarre l'audio da un video"
+heading = "Estrarre&nbsp;l'audio&nbsp;da&nbsp;un&nbsp;video <span class=\"h1-kw\">&mdash; il suono da solo, in WAV</span>"
+tagline = "Trascina dentro un video e portati via il suono. L'immagine non viene mai decodificata, e non viene caricato niente."
+
+title = "Estrarre l'audio da un video &mdash; gratis, nel browser, senza caricare niente"
+description = "Tira fuori il suono da un MP4, MOV o WebM e salvalo come WAV. Il video non lascia il tuo dispositivo e la sua immagine non viene mai decodificata: tutto il lavoro gira nel tuo browser."
+og_title = "Tirare fuori il suono da un video senza caricarlo"
+og_description = "Trascina dentro un MP4, MOV o WebM e salva il suo audio come WAV. Viene decodificata solo la traccia audio, e il file non va da nessuna parte."
+og_image_alt = "Estrarre l'audio da un video - il suono da solo, senza caricamenti"
+
+pledge = """
+    Il decodificatore è quello che il tuo browser ha già, lo stesso percorso di
+    codice che riproduce un file in un elemento <code>&lt;video&gt;</code>, e gli
+    viene chiesta la traccia audio e nient'altro. Scrivere un WAV significa
+    mettere un'intestazione di quarantaquattro byte davanti ai campioni, in
+    <code>src/wav.js</code>. Non c'è nessun codificatore di mezzo, nessun passo
+    di caricamento, e questa pagina non ha nessuna funzione di rete di alcun
+    tipo."""
+
+live_hint = """
+      Non devi crederci sulla parola: apri i DevTools, guarda la scheda di rete
+      e trascina dentro un video. Non una sola richiesta ne porta un byte.
+      Oppure stacca internet ed estrai il suono lo stesso."""
+
+read_first = """
+, <code>src/decode.js</code> per l'unico
+      decodificatore che c'è e per il motivo per cui l'immagine non viene mai
+      chiesta, e <code>src/samplerate.js</code> per la lettura dell'intestazione
+      che impedisce alla tua registrazione di essere ricampionata in
+      silenzio."""
+
+howto_heading = "Come estrarre l'audio da un video senza caricarlo"
+
+card = """
+            Trascina dentro un MP4, MOV o WebM e salva il suono da solo. Viene
+            decodificata solo la traccia audio: l'immagine non viene mai letta,
+            e il file non lascia il tuo dispositivo."""
+
+[words]
+plural = "video"
+choose = "un video"
+analytics_extra = """, e niente sulle
+  registrazioni che ci passano dentro"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessun limite di dimensione"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Il tuo video non ha dove andare."
+body = """
+ La
+      Content-Security-Policy elenca ogni indirizzo che questa pagina può
+      contattare, e nessuno di questi è nostro. Qui non c'è nessun endpoint dove
+      un file possa essere raccolto, e nel codice non c'è niente che ce lo
+      manderebbe se ci fosse."""
+
+[[privacy]]
+title = "L'immagine non viene decodificata affatto."
+body = """
+ Viene chiesta solo
+      la traccia audio. I fotogrammi non vengono letti, né decodificati, né
+      disegnati, né guardati &mdash; su questa pagina non c'è codice che
+      potrebbe farlo &mdash; e il file che esce contiene suono e nient'altro.
+      Non è una promessa di autocontrollo: a <code>decodeAudioData</code>
+      vengono passati i byte e restituisce suono, e in <code>src/</code> non c'è
+      nessun decodificatore video da eseguire."""
+
+[[privacy]]
+title = "Il decodificatore è quello che il tuo browser ha già."
+body = """
+ Qui non
+      viene spedito niente per leggere il tuo formato, e non viene chiesto niente
+      a niente fuori da questa pagina per leggerlo. Quali file funzionano è
+      quindi esattamente quello che il tuo browser già riproduce."""
+
+[[privacy]]
+title = "I campioni vengono scritti così come sono, non ricodificati."
+body = """
+
+      Un WAV sono i campioni restituiti dal decodificatore con un'intestazione
+      davanti. Non c'è nessun codificatore di mezzo che prenda decisioni sulla
+      tua registrazione, e non c'è niente che si possa descrivere come un
+      caricamento su cui una cosa del genere possa avvenire."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google, e il pulsante delle
+      donazioni da Buy Me a Coffee. A nessuno di loro viene passato niente sul
+      tuo video: né il file, né un campione, né un nome, una dimensione o una
+      durata."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento è identico,
+      perché un passo di rete non c'è mai stato. È la prova più semplice che ci
+      sia."""
+
+[[howto]]
+title = "Trascina dentro il video."
+body = """
+ Un MP4, MOV, M4V o WebM, da un
+      telefono, da una fotocamera, da un registratore di schermo o da un
+      download. Lo legge il tuo browser; non c'è nessun passo di caricamento da
+      saltare."""
+
+[[howto]]
+title = "Leggi cosa ha trovato."
+body = """
+ La durata, il numero di canali e la
+      frequenza di campionamento, presi direttamente dal file. Se il file non ha
+      dichiarato la sua frequenza la pagina lo dice, invece di ricampionare in
+      silenzio sostenendo che non è stato toccato niente."""
+
+[[howto]]
+title = "Scegli il mono, se lo vuoi più piccolo."
+body = """
+ Lasciare i canali
+      come sono tiene la registrazione esattamente com'era. Il missaggio in mono
+      dimezza il file ed è quello che vuole una trascrizione o una registrazione
+      vocale; fa la media dei canali invece di buttarne via uno."""
+
+[[howto]]
+title = "Ascoltalo prima di salvarlo."
+body = """
+ Il lettore riproduce il file che
+      sta per essere scaricato, non il video: quindi se suona bene, il download è
+      giusto."""
+
+[[howto]]
+title = "Portatelo via, oppure passalo avanti."
+body = """
+ Scarica il WAV, oppure
+      mandalo direttamente al tagliatore o all'editor senza salvarlo prima."""
+
+[[faq]]
+q = "Il mio video viene caricato da qualche parte?"
+a = """
+        No. La decodifica e la scrittura avvengono entrambe nel tuo browser,
+        sul tuo hardware. Questo strumento non ha nessuna funzione di rete di
+        alcun tipo &mdash; non scarica mai niente e non manda mai niente &mdash;
+        e la <code>Content-Security-Policy</code> della pagina elenca ogni
+        indirizzo che può contattare, e nessuno di questi è nostro. Se preferisci
+        verificare invece che fidarti, stacca internet ed estrai il suono lo
+        stesso."""
+
+[[faq]]
+q = "Può darmi un MP3?"
+a = """
+        No, e non farà finta di poterlo fare. Nessun browser include un
+        codificatore MP3, e l'unico modo per arrivarne a uno è mandare il tuo
+        video a un server che ce l'ha, che è l'unica cosa per cui questo sito
+        esiste per non farla. Quello che ottieni è un WAV: i campioni con
+        un'intestazione di quarantaquattro byte davanti, che non ha bisogno di
+        nessun codificatore e non può costare qualità. È più grande, circa dieci
+        megabyte al minuto in stereo, e lo apre qualunque lettore, telefono o
+        programma di montaggio. Qualsiasi cosa voglia un MP3 può farne uno da lì
+        in un secondo."""
+
+[[faq]]
+q = "L'immagine viene mai guardata?"
+a = """
+        No, e qui non c'è niente che potrebbe guardarla. Al decodificatore del
+        browser viene passato il file e gli viene chiesta la sua traccia audio;
+        la traccia video non viene mai decodificata, mai disegnata e non arriva
+        nemmeno al codice di questa pagina. In <code>src/</code> non c'è nessun
+        decodificatore video da eseguire. Il file che esce contiene suono e
+        nient'altro."""
+
+[[faq]]
+q = "Dice che non è stato possibile leggere audio, ma il video si vede benissimo."
+a = """
+        Allora quasi sicuramente il video non ha traccia audio. Una registrazione
+        dello schermo fatta senza microfono selezionato è muta, e lo è anche una
+        clip esportata da un programma di montaggio con l'audio silenziato:
+        entrambe si riproducono perfettamente, perché c'è un'immagine da
+        mostrare. Il messaggio nomina questo caso per primo perché è il più
+        probabile dei due; l'altro è un formato che questo browser non leggerà.
+        Apri il file in un lettore e cerca un controllo del volume che non fa
+        niente: è il modo più rapido per capire quale dei due hai."""
+
+[[faq]]
+q = "Quali formati video posso aprire?"
+a = """
+        Quelli che il tuo browser decodifica, che in pratica vuol dire MP4, M4V,
+        MOV e WebM, e tutti i formati audio oltre a questi. Quello che resta
+        fuori è la stessa breve lista di ogni altra parte del sito: AVI, WMV e la
+        maggior parte degli MKV. Un file che il tuo browser non leggerà viene
+        rifiutato con un messaggio che lo dice, invece di fallire a metà
+        strada."""
+
+[[faq]]
+q = "Si perde qualità?"
+a = """
+        Niente oltre a quello che il video aveva già fatto al proprio audio
+        quando è stato creato. I campioni che il decodificatore restituisce
+        vengono scritti così come sono: non c'è una seconda codifica, quindi non
+        c'è una seconda generazione di perdita. L'unica cosa da sapere è la
+        frequenza di campionamento: quella del file viene letta per prima dalla
+        sua intestazione e la decodifica viene fatta a quella frequenza, così la
+        tua registrazione non viene ricampionata in silenzio. Se un file non ne
+        dichiara nessuna, la pagina dice quale ha assunto."""
+
+[[faq]]
+q = "Perché il WAV è molto più grande del video?"
+a = """
+        Perché un WAV non è compresso e la traccia audio del video lo era. Il
+        suono in qualità CD occupa circa dieci megabyte al minuto in stereo,
+        qualunque cosa contenga; la traccia AAC dentro un MP4 forse un decimo di
+        quello. Il missaggio in mono lo dimezza. È il prezzo del non
+        ricodificare, e si paga una volta sola: qualunque cosa con cui aprirai il
+        file dopo potrà comprimerlo."""
+
+[[faq]]
+q = "Quanto può essere lungo il video?"
+a = """
+        Qui non c'è nessun limite impostato, perché non c'è un server che lo
+        paga. Il tetto vero è la memoria del tuo dispositivo: il file viene letto
+        per intero e tutta la traccia audio viene tenuta come campioni, quindi
+        una registrazione molto lunga su un dispositivo piccolo può restare senza
+        spazio. Qualche ora di video di solito va bene, e un telefono ne reggerà
+        meno di un portatile."""
+
+[[faq]]
+q = "Posso accorciarlo o alzare il volume?"
+a = """
+        Sì, ma non qui: questa pagina fa un lavoro solo. Quando c'è un risultato
+        compare una fila di link accanto al download che lo porta direttamente
+        nel <a href="../tagliare-audio/">tagliatore audio</a> o
+        nell'<a href="../modificare-audio/">editor audio</a> senza salvarlo prima, e
+        senza che nemmeno loro lo carichino."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di
+        prova e non c'è limite a quanti video apri. Il sito ha della pubblicità,
+        ed è quella che lo mantiene; agli annunci non arriva niente sul tuo
+        file."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca internet e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente: uno strumento che mandasse via il tuo video per
+        elaborarlo si fermerebbe nel momento in cui stacchi la spina."""
+
+[schema]
+description = "Estrarre la traccia audio da un MP4, MOV o WebM e salvarla come WAV. Viene decodificato solo l'audio, l'immagine non viene mai letta, e non viene caricato niente."
+features = [
+  "Salva come WAV l'audio dei video MP4, M4V, MOV e WebM",
+  "Decodifica solo la traccia audio; l'immagine non viene mai letta",
+  "Legge prima la frequenza di campionamento del file, così niente viene ricampionato in silenzio",
+  "Missa in mono facendo la media, per metà della dimensione",
+  "Riproduce il risultato prima che tu lo salvi",
+  "Porta il risultato nel tagliatore o nell'editor audio senza salvarlo",
+  "Funziona offline; niente caricamenti, nessun account",
+]
+
+[picker]
+title = "Trascina qui un video"
+hint = "oppure clicca per sceglierlo &mdash; MP4, MOV, M4V o WebM"

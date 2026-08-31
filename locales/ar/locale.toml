@@ -109,6 +109,13 @@ complete = true
 "timelapse-video" = "إنشاء-فيديو-تايم-لابس"
 "hash-checksum" = "حساب-قيمة-التجزئة"
 "share-text" = "مشاركة-النص"
+# المبحوث عنه هو الصوت لا الصيغة، و"mp3" غائبة عن قصد: الصفحة لا تكتب MP3،
+# والعنوان لا ينبغي أن يعِد بما لا يفي به.
+"extract-audio-from-video" = "استخراج-الصوت-من-الفيديو"
+"xml-formatter" = "تنسيق-xml"
+"yaml-to-json" = "تحويل-yaml-الى-json"
+# ما يُكتب في البحث هو "مقارنة الأطوال"، والرسم نتيجةٌ تبقى في العنوان.
+"compare-heights" = "مقارنة-الاطوال"
 "stack-images" = "تكديس-الصور"
 
 # The indexes and the legal pages.
@@ -172,6 +179,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "أدلة/تحرير-gif-اطارا-اطارا"
 "guides/make-a-qr-code-and-prove-it-scans" = "أدلة/صنع-رمز-qr-والتاكد-انه-يقرا"
 "guides/clean-up-a-voice-memo" = "أدلة/تنظيف-تسجيل-صوتي"
+"guides/make-a-height-comparison-chart" = "أدلة/عمل-رسم-مقارنة-الاطوال"
 
 #
 # ---------------------------------------------------------------------------

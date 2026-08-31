@@ -1,0 +1,110 @@
+<main id="main">
+  <!-- 1단계 &mdash; 파일 -->
+  <section class="card">
+    <h2><span class="step">1</span> 동영상 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>파일</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>크기</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>길이</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>소리</dt><dd id="src-channels">&mdash;</dd></div>
+      <div><dt>샘플레이트</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <!--
+      Only shown when the file did not declare its own sample rate. It matters:
+      in that case the samples handed back are not the ones on the disk, and a
+      tool that says nothing about it is claiming more than it did.
+    -->
+    <p id="rate-note" class="path-note" hidden>
+      이 파일은 어떤 레이트로 녹음됐는지 밝히지 않아서 48 kHz로 읽었습니다.
+      소리는 맞고, 샘플 수만 디스크에 있는 값과 다릅니다.
+    </p>
+  </section>
+
+  <!-- 2단계 &mdash; 나오는 것 -->
+  <section class="card" id="take-card" inert>
+    <h2><span class="step">2</span> 소리 가져가기</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="channels">채널</label>
+        <select id="channels">
+          <option value="as-is" selected>그대로 두기</option>
+          <option value="mono">모노로 합치기</option>
+        </select>
+        <p class="field-note" id="channels-note">
+          모노는 파일을 절반으로 줄여 주고, 전사나 음성 녹음이 원하는 것이 바로
+          이쪽입니다. 한쪽을 버리는 대신 두 채널의 평균을 냅니다.
+        </p>
+      </div>
+    </div>
+
+    <!--
+      No button. A WAV is the samples with a header in front of them, so writing
+      one is fast enough to redo whenever a setting changes - and a file that is
+      always the one the settings describe needs nothing pressed to make it so.
+    -->
+    <div id="result" class="result" hidden>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>오디오 내려받기</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">소리를 읽는 중&hellip;</span>
+    <span data-phrase="audio.empty">그 파일은 비어 있습니다.</span>
+    <!--
+      Two causes, one message, deliberately. decodeAudioData throws the same
+      error for a file the browser cannot read and for a video that simply has
+      no audio track, and nothing this page can reach tells the two apart. On
+      THIS tool the second is the likely one - a screen recording made without a
+      microphone is silent, and its owner is exactly the person who comes here -
+      so naming only the format would send them off to convert a file that was
+      never the problem. Both possibilities, in the order they actually happen.
+    -->
+    <span data-phrase="audio.nodecode">그 파일에서는 소리를 읽을 수 없었습니다. 오디오 트랙이
+      없거나 &mdash; 마이크를 고르지 않고 찍은 화면 녹화는 무음입니다 &mdash; 이 브라우저가 그
+      형식을 읽지 못하는 것입니다. MP4, MOV, WebM, M4V는 거의 언제나 됩니다. AVI, WMV와 대부분의
+      MKV는 되지 않습니다.</span>
+    <span data-phrase="audio.nosound">그 파일에는 소리가 없습니다. 화면만 들어 있습니다.</span>
+    <span data-phrase="wav.nochannels">쓸 채널이 없습니다.</span>
+    <span data-phrase="wav.uneven">채널 길이가 서로 다릅니다. 원래 있을 수 없는 일입니다.</span>
+    <span data-phrase="channels.mono">모노</span>
+    <span data-phrase="channels.stereo">스테레오</span>
+    <span data-phrase="channels.many">두 개가 넘는 채널</span>
+    <span data-phrase="rate.khz">{n} kHz</span>
+    <span data-phrase="out.info">WAV &mdash; {size}, {length}, {rate} kHz의 {channels}</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">동영상은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
+      {platform}</span>
+    <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.
+      {platform}</span>
+    <span data-phrase="net.platform.one">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 그 파일을 1바이트도 받지 않았습니다.</span>
+    <span data-phrase="net.platform.many">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 그 파일을 1바이트도 받지 않았습니다.</span>
+  </div>
+</main>

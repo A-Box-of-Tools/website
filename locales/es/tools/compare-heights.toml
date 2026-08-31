@@ -1,0 +1,378 @@
+#
+# Comparar alturas - Spanish.
+#
+# Overrides for tools/compare-heights/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Comparador de alturas"
+heading = "Comparar&nbsp;alturas <span class=\"h1-kw\">&mdash; un gráfico lado a lado que puedes descargar</span>"
+tagline = "Escribe las alturas, llévate la imagen. No se envía nada para dibujarla."
+
+title = "Comparar alturas &mdash; gratis, sin registro, sin subir nada"
+description = "Compara alturas lado a lado. Añade un hombre, una mujer, un niño, una niña y objetos &mdash; una puerta, una ventana, una pizarra, una máquina expendedora &mdash; en centímetros o en pies y pulgadas, y descarga el gráfico como PNG o SVG. Se dibuja en tu navegador."
+og_title = "Compara alturas lado a lado y quédate con la imagen"
+og_description = "Pon a dos adultos, un niño, una niña y una puerta en la misma regla, en centímetros o en pies y pulgadas, y descarga el resultado. Sin cuenta, sin marca de agua, y sin ninguna lista de nombres saliendo de tu dispositivo."
+og_image_alt = "Comparador de alturas - comparar alturas lado a lado, sin subir nada"
+
+pledge = """
+    Un gráfico de alturas es aritmética y un dibujo: no hay ningún archivo que
+    enviar ni ningún servicio al que preguntar. El hombre, la mujer, el niño y
+    la niña son ilustraciones de dominio público que viajan con esta página, y
+    el niño y la niña son dibujos de niños de verdad y no adultos hechos
+    pequeños &mdash; que es lo que evita que un gráfico familiar quede mal de
+    una forma que nadie sabe nombrar. Cada paso ocurre en unos cientos de líneas
+    de JavaScript de esta página que puedes leer. No hay función de red de
+    ninguna clase, y aquí eso importa porque lo que escribes es una lista de
+    personas y lo que mide cada una."""
+
+live_hint = """
+      No hace falta que nos creas: abre las DevTools, mira la pestaña de red y
+      escribe un nombre y una altura. Ni una sola petición lleva un carácter de
+      ninguno de los dos. O desconéctate de internet y haz el gráfico
+      igualmente."""
+
+read_first = """
+, <code>src/traced.js</code> y
+      <code>vendor/</code> para las cuatro figuras y de dónde salió su
+      ilustración, <code>src/figures.js</code> para la lista con la que se
+      construye el menú, <code>src/units.js</code> para cómo una altura escrita
+      se vuelve un número y cómo se rotula la regla, <code>src/chart.js</code>
+      para la disposición, y <code>src/save.js</code> para las dos descargas
+      &mdash; que son el SVG en pantalla, y ese mismo SVG pintado sobre un
+      lienzo."""
+
+howto_heading = "Cómo hacer un gráfico de comparación de alturas"
+
+card = """
+            Pon a dos adultos, un niño y una puerta en la misma regla &mdash; en
+            centímetros o en pies y pulgadas &mdash; y descárgalo como PNG o
+            SVG."""
+
+[words]
+plural = "nombres, alturas y el gráfico que forman"
+choose = "quién sale en el gráfico"
+analytics_extra = """, ni un nombre ni
+  una altura de las que escribes"""
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin marca de agua"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Una lista de personas no es poca cosa para entregarla."
+body = """
+ La
+      mayoría de los gráficos de alturas quieren una cuenta, y los que no, aun
+      así tienen un servidor que ve cada nombre y cada número que escribes. Lo
+      que estás escribiendo aquí es quién forma tu familia y cuánto mide cada
+      uno, muchas veces con la edad de un niño implícita en la figura de al
+      lado. Nada de eso se envía a ninguna parte, porque aquí no hay adónde
+      pueda ir."""
+
+[[privacy]]
+title = "Aquí nada descarga nada."
+body = """
+ No hay ningún
+      <code>fetch</code>, ningún <code>XMLHttpRequest</code> ni ningún
+      <code>sendBeacon</code> en todo <code>src/</code>. La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna de ellas es nuestra."""
+
+[[privacy]]
+title = "Tampoco se recuerda nada entre una visita y otra."
+body = """
+ El gráfico
+      vive en la página y en ningún otro sitio. Cierra la pestaña y la lista
+      desaparece: no hay cuenta que la guarde, ni cookie que la lleve, ni nada
+      escrito en el almacenamiento de este navegador &mdash; que es también por
+      lo que un gráfico que quieras conservar es un gráfico que te descargas."""
+
+[[privacy]]
+title = "El enlace no lleva el gráfico."
+body = """
+ Varias herramientas como esta
+      meten la lista entera en la barra de direcciones para poder compartirla, y
+      eso convierte cada nombre y cada altura en algo que registra todo aquello
+      por donde pasa el enlace &mdash; un servidor de chat, un escáner de correo,
+      el historial de alguien. La dirección de esta página no cambia nunca
+      mientras escribes."""
+
+[[privacy]]
+title = "El PNG se hace a partir del SVG que está en pantalla."
+body = """
+ La descarga
+      no es una segunda representación que pudiera discrepar de la vista previa.
+      El mismo marcado se le entrega al navegador y se pinta sobre un lienzo, que
+      es también por lo que puede hacerse con la red desconectada: no hay ninguna
+      fuente que descargar ni ninguna imagen que cargar dentro."""
+
+[[privacy]]
+title = "Las ilustraciones están aquí, no se descargan."
+body = """
+ Las cuatro figuras
+      son ilustraciones de dominio público, y se sirven desde este origen junto
+      con el resto de la página &mdash; sin fuente de iconos, sin CDN, sin hoja
+      de sprites traída del servidor de otro mientras escribes. Es también por lo
+      que el gráfico sigue dibujándose con la red desconectada."""
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = """
+ Los scripts de
+      publicidad y de medición vienen de Google, y el botón de donación de Buy Me
+      a Coffee. A ninguno se le entrega un nombre ni una altura. Cada línea que
+      convierte tu lista en una imagen se sirve desde este origen y está en el
+      repositorio."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconecta la red y la herramienta sigue
+      igual, porque nunca hubo un paso de red en ella. Es la prueba más simple de
+      todas."""
+
+[[howto]]
+title = "Añade a todos primero y luego preocúpate del aspecto."
+body = """
+ Una fila
+      es una figura, un nombre, una altura y un color. El nombre es opcional
+      &mdash; un gráfico de dos siluetas sin nombre con sus alturas encima suele
+      ser exactamente lo que alguien quiere &mdash; y las flechas de cada fila la
+      mueven a izquierda o derecha si el orden importa."""
+
+[[howto]]
+title = "Escribe la altura como tú la escribas."
+body = """
+ <code>173</code>,
+      <code>1,73 m</code>, <code>5'8\"</code>, <code>68 in</code> y
+      <code>5 ft 8</code> se leen todos correctamente. La línea de debajo de la
+      casilla muestra qué se ha entendido, en los dos sistemas, así que una mala
+      lectura se ve antes de dibujarse y no después de imprimirse. Un número solo
+      son centímetros en un gráfico métrico y pulgadas en uno imperial, y un
+      número solo por debajo de tres son metros &mdash; nadie mide 1,73 cm."""
+
+[[howto]]
+title = "Elige la figura que corresponde a la persona."
+body = """
+ Un niño mide unas seis
+      cabezas y un adulto siete y media, así que un niño dibujado como un adulto
+      encogido se ve mal de una forma difícil de nombrar y fácil de notar. El
+      niño y la niña son dibujos de niños de verdad y no adultos hechos
+      pequeños, y eso es la mayor parte de lo que hace que un gráfico familiar
+      parezca una familia. Cada fila llega además con una altura ya puesta, así
+      que añadir a alguien dibuja a alguien &mdash; escribe directamente encima."""
+
+[[howto]]
+title = "Pon algo familiar en el gráfico."
+body = """
+ Un número es abstracto y una
+      puerta no. Añadir un solo objeto de un tamaño que todo el mundo conoce
+      &mdash; una puerta, una ventana, una pizarra de aula, una máquina
+      expendedora &mdash; es lo que convierte un gráfico que enuncia dos alturas
+      en uno que las muestra. El menú tiene veinte, agrupados, y cada uno llega
+      como una fila normal sobre la que puedes escribir tus propios números. Los
+      objetos llevan una anchura además de una altura, así que una puerta es 203
+      por 81 y no una raya."""
+
+[[howto]]
+title = "Pon la regla en las unidades en las que piensa quien lo lee."
+body = """
+ Cambiar
+      entre centímetros y pies reescribe lo que hay en las casillas en lugar de
+      reinterpretarlo, así que el gráfico en sí no se mueve: solo cambia la
+      notación. Si el gráfico es para dos públicos, la altura escrita encima de
+      cada figura va en la unidad del gráfico y la línea de debajo de cada casilla
+      tiene las dos."""
+
+[[howto]]
+title = "El PNG para pegar, el SVG para imprimir."
+body = """
+ El PNG es una imagen a
+      la altura en píxeles que hayas puesto, que es lo que quiere una ventana de
+      chat, un documento o una diapositiva. El SVG es el gráfico como
+      instrucciones, así que se imprime nítido a cualquier tamaño y todavía puede
+      recolorearse después con cualquier cosa que abra vectores."""
+
+[[faq]]
+q = "¿Se envía a alguna parte algo de lo que escribo?"
+a = """
+        No. El gráfico lo dibuja JavaScript de esta página, en tu propio
+        dispositivo, y esta herramienta no tiene función de red de ninguna clase
+        &mdash; nunca descarga nada y nunca envía nada. La
+        <code>Content-Security-Policy</code> de la página nombra todas las
+        direcciones que puede contactar, ninguna de las cuales es nuestra. Vale
+        la pena decirlo claramente aquí porque la entrada es una lista de nombres
+        de personas y de lo que mide cada una, que es más personal que casi todo
+        lo que maneja este sitio."""
+
+[[faq]]
+q = "¿Puedo descargar el gráfico?"
+a = """
+        Sí, como PNG o como SVG, sin marca de agua y sin cuenta. El PNG se dibuja
+        a la altura en píxeles que pongas y es el que se pega en un documento,
+        una diapositiva o un chat. El SVG es el gráfico como instrucciones en
+        lugar de como píxeles: se imprime nítido a cualquier tamaño y puede
+        abrirse y recolorearse más tarde en cualquier editor vectorial. Los dos
+        se hacen a partir del mismo marcado que está en pantalla, así que ninguno
+        puede discrepar de la vista previa."""
+
+[[faq]]
+q = "¿Cómo escribo la altura &mdash; en centímetros o en pies?"
+a = """
+        Como quieras, en cualquier fila, de la manera en que la escribas
+        normalmente. <code>173</code>, <code>173 cm</code>, <code>1,73 m</code>,
+        <code>5'8\"</code>, <code>5 ft 8 in</code> y <code>68 in</code> se
+        entienden todos, y la línea de debajo de la casilla muestra qué se ha
+        leído en los dos sistemas. Un número solo son centímetros cuando el
+        gráfico es métrico y pulgadas cuando es imperial; un número solo por
+        debajo de tres se toma como metros, porque 1,73 cm no es una altura que
+        nadie escriba."""
+
+[[faq]]
+q = "¿Por qué los niños no parecen adultos pequeños?"
+a = """
+        Porque un niño no lo es. Las proporciones del cuerpo cambian con la
+        edad: un niño de dos años mide más o menos cuatro cabezas y media, uno
+        de ocho seis, y un adulto siete y media &mdash; así que la cabeza es
+        casi un cuarto de un niño pequeño y un octavo de una persona adulta. El
+        niño y la niña de aquí son dibujos de niños reales y no una sola silueta
+        reducida, que es por lo que un gráfico familiar parece una familia y no
+        cuatro adultos de tamaños distintos."""
+
+[[faq]]
+q = "¿De dónde salen las figuras?"
+a = """
+        Las cuatro son ilustraciones de otras personas, todas de dominio
+        público: el hombre de pitr, la mujer de Madeleine Price Ball, la niña de
+        OpenClipart-Vectors, y el niño de Ryan Kissinger para la biblioteca NIH
+        BioArt. Cada archivo viaja con esta página en <code>vendor/</code> tal
+        como se publicó, así que puedes cotejarlos con los originales. El dominio
+        público no pide nada, que es de lo que se trata: la ilustración acaba
+        dentro de una imagen que te descargas, y una licencia que exigiera
+        atribución le pegaría esa exigencia a tu gráfico."""
+
+[[faq]]
+q = "¿Por qué no hay un bebé ni un niño pequeño?"
+a = """
+        Porque nadie ha dibujado uno y lo ha puesto en dominio público.
+        Wikimedia Commons tiene exactamente un niño libre utilizable &mdash; la
+        niña &mdash; y la biblioteca NIH BioArt el niño; por debajo de la edad
+        escolar la búsqueda vuelve vacía, y todo conjunto libre y coherente de
+        personas es un pictograma de aseo con la misma forma a todas las edades,
+        que es el error que esta herramienta entera existe para evitar. Durante
+        un tiempo hubo un bebé dibujado por el propio código de esta página, y
+        era la única figura del gráfico que nadie había dibujado: se le notaba,
+        al lado de cuatro que sí. Para alguien más bajo que el niño o la niña,
+        pon a uno de los dos en la altura real &mdash; lo que lleva la
+        comparación es la regla, y estará bien."""
+
+[[faq]]
+q = "¿Cuánta gente puedo poner en un gráfico?"
+a = """
+        Doce. No es un límite técnico &mdash; el dibujo haría treinta encantado
+        &mdash; pero pasada la docena las columnas se vuelven más estrechas que
+        los nombres escritos encima y la imagen deja de leerse. Si necesitas más,
+        apagar los nombres te devuelve la anchura, o dos gráficos lo dirán mejor
+        que uno."""
+
+[[faq]]
+q = "¿Puedo poner un objeto en el gráfico?"
+a = """
+        Sí &mdash; un rectángulo simple lleva una altura y una anchura, así que
+        cualquier cosa con dos dimensiones va al lado de las personas. El menú
+        tiene veinte para empezar, en cuatro grupos: puertas y ventanas, escuela y
+        oficina (una pizarra, una mesa, un archivador, una pantalla de
+        proyección), cosas de la ciudad (una máquina expendedora, un contenedor
+        con ruedas, una canasta de baloncesto, un contenedor marítimo de
+        20&nbsp;ft) y cosas de casa. Algunas son normas de verdad y otras tamaños
+        típicos, cosa que la página dice en voz alta; cada una llega como una fila
+        normal sobre la que puedes escribir. Un objeto familiar hace más por un
+        gráfico que cualquier cantidad de personas de más: es lo que convierte una
+        comparación en una noción de escala."""
+
+[[faq]]
+q = "¿Hay una figura para un perro o un gato?"
+a = """
+        No, y es un hueco deliberado más que un descuido. Los dos se construyeron
+        &mdash; de perfil, de pie, con la cabeza a la altura del hombro, para que
+        lo alto del dibujo fuese la altura escrita al lado, que es donde todo
+        estándar de raza mide a un animal. No salieron lo bastante bien como para
+        publicarlos: un cuadrúpedo visto de lado junto a cuatro personas vistas de
+        frente se lee como un error aunque el dibujo sea bueno. Un rectángulo a la
+        altura de la cruz del animal es honesto mientras tanto."""
+
+[[faq]]
+q = "¿Puedo compartir el gráfico con un enlace?"
+a = """
+        Desde aquí no, y es deliberado. Las herramientas que lo ofrecen lo hacen
+        metiendo la lista entera en la dirección, lo que significa que cada
+        nombre y cada altura acaban en todo aquello por lo que viaja el enlace
+        &mdash; los registros de un servidor de chat, un escáner de correo, el
+        historial de alguien, un servicio que va a buscar la vista previa del
+        enlace. Descarga la imagen y manda eso: dice lo mismo y no lleva ninguna
+        lista consigo."""
+
+[[faq]]
+q = "¿Es gratis? ¿Puedo usar el gráfico comercialmente?"
+a = """
+        Es gratis, no hay cuenta ni marca de agua, y puedes poner el resultado en
+        un informe, una presentación, un anuncio o un producto. El sitio lleva
+        publicidad, que es lo que lo paga. Nada de un gráfico que hagas aquí es
+        nuestro, y no se guarda nada."""
+
+[[faq]]
+q = "¿Por qué la regla va de diez en diez y no de uno en uno?"
+a = """
+        Porque el espaciado se elige a partir de cuántas líneas puede llevar la
+        imagen y no de un número fijo. Un gráfico de dos adultos lleva una línea
+        cada diez centímetros; pon una canasta de baloncesto y las líneas se van a
+        veinticinco, porque noventa líneas en una imagen son un velo gris y no una
+        regla. En pies y pulgadas la escalera es de una, tres, seis y doce
+        pulgadas, así que las líneas caen en pulgadas enteras en lugar de cerca de
+        ellas."""
+
+[[faq]]
+q = "¿Puedo poner el gráfico en una diapositiva oscura?"
+a = """
+        Sí. Pon el fondo del color sobre el que va a ir y la regla y el texto
+        cambian entre oscuro y claro para que le vaya bien &mdash; calculado a
+        partir de la luminancia del color y no adivinado. Después marca
+        &laquo;sin fondo alguno&raquo; si quieres la imagen transparente: el color
+        que elegiste sigue decidiendo la tinta, así que un gráfico transparente
+        que va a una diapositiva azul marino sale legible sobre ella."""
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = """
+        Sí. Carga la página una vez, desconéctate de internet y sigue
+        funcionando. Esa es también la forma más simple de demostrar que no se
+        sube nada: una herramienta que mandara tu lista fuera para que le
+        dibujaran un gráfico se pararía en el momento en que te desconectaras."""
+
+[schema]
+description = "Dibuja un gráfico de comparación de alturas en el navegador. Añade un hombre, una mujer, un niño, una niña y objetos con sus alturas en centímetros o en pies y pulgadas, ordénalos, coloréalos y descarga el resultado como PNG o SVG. No se sube nada."
+features = [
+  "Hasta doce figuras en una misma regla, en cualquier orden",
+  "Figuras de hombre, mujer, niño y niña, y un rectángulo simple para objetos",
+  "Hombre, mujer, niño y niña dibujados de dominio público - los niños dibujados como niños y no como adultos reducidos",
+  "Alturas escritas como 173, 1,73 m, 5'8\", 68 in o 5 ft 8, mostrando la lectura",
+  "Centímetros o pies y pulgadas, cambiados sin alterar la altura de nadie",
+  "Veinte objetos listos: puertas, ventanas, una pizarra, una máquina expendedora, un contenedor marítimo, muebles",
+  "Una regla cuyo espaciado se elige según lo que la imagen puede llevar",
+  "Cualquier color de fondo, o ninguno, con la tinta elegida para seguir siendo legible encima",
+  "PNG a cualquier altura en píxeles, y un SVG que se imprime nítido a cualquier tamaño",
+  "Sin marca de agua, sin cuenta, sin ningún enlace que lleve tu lista",
+  "Funciona sin conexión; no se sube nada",
+]

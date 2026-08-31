@@ -1,0 +1,251 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> Dites qui vous comparez</h2>
+
+    <p class="card-lede">
+      Un nom, une taille, et quel genre de figure dessiner. Chaque ligne
+      démarre avec une taille que vous pouvez réécrire directement. Les tailles
+      peuvent s'écrire comme vous les écrivez &mdash; <code>173</code>,
+      <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
+      &mdash; et la ligne sous chaque case montre ce qui a été compris, ou le
+      dit en rouge si la case est vide ou si la taille ne peut pas être lue.
+      Rien n'est jamais deviné en silence.
+    </p>
+
+    <p class="card-lede">
+      <strong>De haut en bas ici, c'est de gauche à droite sur le
+      graphique.</strong> Faites glisser une ligne par la poignée de son bord
+      gauche pour la déplacer, ou servez-vous des flèches, qui font la même
+      chose au clavier. Dans les deux cas le graphique revient à votre propre
+      ordre s'il triait par taille.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Mesuré en</label>
+      <select id="unit">
+        <option value="cm" selected>Centimètres</option>
+        <option value="ft">Pieds et pouces</option>
+      </select>
+    </div>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span></span>
+        <span>Figure</span>
+        <span>Nom</span>
+        <span>Taille</span>
+        <span>Largeur</span>
+        <span>Couleur</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">Ajouter une personne</button>
+        <button type="button" id="add-object" class="ghost">Ajouter un objet</button>
+        <button type="button" id="clear" class="ghost danger">Vider le graphique</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">Ou ajoutez quelque chose qui donne l'échelle</label>
+      <select id="preset">
+        <option value="" selected>Choisissez&hellip;</option>
+        <optgroup label="Portes et fenêtres">
+          <option value="door-interior" data-cm="203" data-width="81">Porte intérieure &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">Porte d'entrée &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">Fenêtre &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">Porte de garage &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="École et bureau">
+          <option value="board" data-cm="120" data-width="240">Tableau blanc ou noir &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">Bureau &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">Classeur à quatre tiroirs &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">Écran de projection, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="Dans la ville">
+          <option value="vending" data-cm="183" data-width="100">Distributeur automatique &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">Poubelle à roulettes, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">Panier de basket &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">Conteneur maritime, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="Dans la maison">
+          <option value="fridge" data-cm="178" data-width="76">Réfrigérateur-congélateur &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">Plan de travail de cuisine &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">Table de salle à manger &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">Chaise de salle à manger &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">Canapé trois places &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">Piano droit &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">Guitare acoustique &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">Bouteille de vin &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      Quelques-unes de ces mesures sont vraiment fixes&nbsp;: un conteneur
+      maritime de 20&nbsp;ft fait 259&nbsp;cm de haut par définition, un cercle
+      de basket est à 305, et une porte intérieure américaine fait 203 sur 81.
+      Les autres sont typiques plutôt que normalisées &mdash; portes, fenêtres
+      et plans de travail varient selon le pays et selon la maison. Chacune
+      arrive comme une ligne ordinaire&nbsp;: mesurez la vôtre et tapez les
+      vrais chiffres par-dessus.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Emportez-le</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Le graphique de tailles que vous avez fait"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Télécharger le SVG</button>
+      <button type="button" id="download-png" class="primary">Télécharger le PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copier l'image</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Le PNG est celui à coller dans un document ou une conversation. Le SVG
+      est celui à garder&nbsp;: c'est le graphique sous forme d'instructions
+      plutôt que de pixels, il s'imprime donc net à n'importe quelle taille et
+      tout ce qui ouvre des vecteurs peut le recolorer plus tard.
+    </p>
+
+    <fieldset class="options">
+      <legend>Son allure</legend>
+
+      <div class="option-row">
+        <label for="order">Ordre</label>
+        <select id="order">
+          <option value="entered" selected>Comme vous les avez saisis</option>
+          <option value="tallest">Les plus grands d'abord</option>
+          <option value="shortest">Les plus petits d'abord</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>Dessiner la règle</strong>
+          <span class="check-note">
+            Les lignes en travers du graphique et les chiffres des deux côtés.
+            Sans elles l'image compare toujours correctement deux personnes,
+            mais elle cesse de dire la taille de l'une ou de l'autre.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>Écrire les noms et les tailles au-dessus de chaque figure</strong>
+          <span class="check-note">
+            Désactivé, le graphique n'est que des silhouettes sur une règle
+            &mdash; ce que vous voulez si les noms figurent déjà là où vous le
+            collez.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="background">Derrière</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Aucun fond du tout</strong>
+          <span class="check-note">
+            Transparent, pour le poser sur une diapositive qui a déjà une
+            couleur. La règle et le texte sont dessinés sombres ou clairs selon
+            la couleur choisie ci-dessus&nbsp;: réglez-la donc à peu près sur ce
+            sur quoi l'image se posera, même quand le fond lui-même est
+            désactivé.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">Hauteur de l'image, en pixels</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        C'est la hauteur de la zone de dessin&nbsp;: l'image finie est donc un
+        peu plus haute, car les noms se placent au-dessus. La largeur découle du
+        nombre de figures et de la largeur de l'étiquette de chacune. La ligne
+        sous l'image dit ce que cela a donné.
+      </p>
+    </fieldset>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">Homme</span>
+    <span data-phrase="shape.woman">Femme</span>
+    <span data-phrase="shape.boy">Garçon</span>
+    <span data-phrase="shape.girl">Fille</span>
+    <span data-phrase="shape.object">Objet</span>
+
+    <span data-phrase="row.shape">Figure de la ligne {n}</span>
+    <span data-phrase="row.name">Nom de la ligne {n}</span>
+    <span data-phrase="row.height">Taille de la ligne {n}</span>
+    <span data-phrase="row.width">Largeur de la ligne {n}</span>
+    <span data-phrase="row.colour">Couleur de la ligne {n}</span>
+    <span data-phrase="row.up">Monter la ligne {n}</span>
+    <span data-phrase="row.down">Descendre la ligne {n}</span>
+    <span data-phrase="row.remove">Retirer la ligne {n}</span>
+    <span data-phrase="row.drag">Glissez pour réordonner</span>
+    <span data-phrase="row.nameexample">Nom</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">Largeur</span>
+    <span data-phrase="row.reads">Lu comme {height}</span>
+
+    <span data-phrase="height.empty">Cette ligne a besoin d'une taille avant de pouvoir être dessinée.</span>
+    <span data-phrase="height.unreadable">Ce n'est pas une taille comprise ici. Essayez 173, 1,73 m, 5'8" ou 68 in.</span>
+    <span data-phrase="height.tooshort">Trop petit pour être dessiné &mdash; 5 cm est le minimum.</span>
+    <span data-phrase="height.tootall">Plus grand que ne va le graphique &mdash; la limite est de 12 mètres.</span>
+
+    <span data-phrase="chart.empty">Ajoutez quelqu'un, et le graphique apparaîtra ici.</span>
+    <span data-phrase="chart.noheights">Chaque ligne a besoin d'une taille. Remplissez-en une et le graphique apparaîtra ici.</span>
+    <span data-phrase="chart.full">Douze figures, c'est tout ce que ce graphique peut porter en restant lisible.</span>
+    <span data-phrase="facts.chart">{count} figures, {width} sur {height} pixels. La règle va du sol à {top}, avec une ligne tous les {step}.</span>
+    <span data-phrase="facts.one">Une figure, {width} sur {height} pixels. La règle va du sol à {top}, avec une ligne tous les {step}.</span>
+
+    <span data-phrase="save.done">Enregistré. Rien n'a été envoyé nulle part pour le dessiner.</span>
+    <span data-phrase="save.failed">{detail}. Le SVG se téléchargera quand même.</span>
+    <span data-phrase="save.copied">Copié. Collez-le où vous en avez besoin.</span>
+    <span data-phrase="save.noclipboard">Ce navigateur n'a pas laissé la page écrire dans le presse-papiers. Téléchargez-le à la place.</span>
+    <span data-phrase="save.nothing">Il n'y a encore rien à enregistrer sur le graphique.</span>
+    <span data-phrase="render.nosvg">ce navigateur n'a pas voulu dessiner le SVG</span>
+    <span data-phrase="render.nopng">ce navigateur n'a pas voulu écrire de PNG</span>
+
+    <span data-phrase="net.clean">les noms et les tailles que vous avez tapés ne
+      sont allés nulle part. {total} fichiers chargés. {platform}</span>
+    <span data-phrase="net.dirty">quelque chose a contacté {hosts}, ce que cet
+      outil ne fait jamais. {platform}</span>
+    <span data-phrase="net.platform.one">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôte&nbsp;; aucun d'eux n'a reçu de nom ni de taille.</span>
+    <span data-phrase="net.platform.many">Les scripts de publicité, de mesure et
+      du bouton de don propres à la page ont été chargés depuis {hosts}
+      hôtes&nbsp;; aucun d'eux n'a reçu de nom ni de taille.</span>
+  </div>
+</main>

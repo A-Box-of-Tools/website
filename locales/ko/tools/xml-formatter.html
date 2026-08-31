@@ -1,0 +1,181 @@
+<main id="main">
+  <!-- Step 1 &mdash; which of the two jobs this is -->
+  <section class="card">
+    <h2><span class="step">1</span> 할 일 고르기</h2>
+
+    <!--
+      A tab strip rather than two pages, because the two jobs share an input:
+      the XML you just laid out to read is the XML you then want as JSON, and
+      pasting it into a second tool is the thing this arrangement exists to
+      avoid. `role="tablist"` and the arrow keys are wired in main.js.
+    -->
+    <div class="tabs" role="tablist" aria-label="XML을 어떻게 할지">
+      <button type="button" role="tab" id="tab-format" class="tab" data-mode="format"
+              aria-selected="true" aria-controls="options-format">정렬</button>
+      <button type="button" role="tab" id="tab-convert" class="tab" data-mode="convert"
+              aria-selected="false" tabindex="-1" aria-controls="options-convert">변환</button>
+    </div>
+
+    <div class="settings" id="options-format" role="tabpanel" aria-labelledby="tab-format">
+      <div class="field">
+        <label for="indent">들여쓰기</label>
+        <select id="indent">
+          <option value="2" selected>공백 두 칸</option>
+          <option value="4">공백 네 칸</option>
+          <option value="tab">탭</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="style">배치</label>
+        <select id="style">
+          <option value="pretty" selected>펼치기</option>
+          <option value="minify">납작하게 눌러 담기</option>
+        </select>
+        <p class="field-note">
+          납작하게 압축한 것은 읽기 좋으라고만 있던 공백을 모두 뺀 같은 문서입니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-convert" role="tabpanel" aria-labelledby="tab-convert" hidden>
+      <div class="field">
+        <label for="conversion">변환</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field" id="root-field" hidden>
+        <label for="root-name">바깥 요소의 이름</label>
+        <input type="text" id="root-name" value="root" spellcheck="false" autocomplete="off">
+        <p class="field-note">
+          XML에는 맨 위에 요소가 하나 있어야 하는데 JSON에는 없으므로, 하나를
+          지어내야 합니다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> 붙여 넣기</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">당신의 XML</label>
+          <span class="count" id="input-count">비어 있음</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="여기에 XML을 붙여 넣으세요 - 또는 위에 .xml, .svg, .rss 파일을 놓으세요."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">예시로 해 보기</button>
+        <button type="button" id="clear" class="ghost danger">지우기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card" inert>
+    <h2><span class="step">3</span> 결과 가져가기</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">아직 없습니다.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>복사</button>
+        <a id="download" class="ghost as-button" hidden download>내려받기</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+
+    The parser errors are the XML and JSON halves of json-formatter's list and
+    are worded identically to them - the same two parsers raise them, and a
+    reader who meets the same broken file on both pages should be told the same
+    thing about it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} ({line}행 {column}열)</span>
+    <span data-phrase="char.end">텍스트의 끝</span>
+    <span data-phrase="char.newline">줄바꿈</span>
+    <span data-phrase="char.tab">탭</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="xml.comment">이 주석이 끝내 닫히지 않습니다</span>
+    <span data-phrase="xml.cdata">이 CDATA 구역이 끝내 닫히지 않습니다</span>
+    <span data-phrase="xml.declaration">이 선언이 끝내 닫히지 않습니다</span>
+    <span data-phrase="xml.closing">이 닫는 태그가 끝내 완성되지 않습니다</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt;이(가) 끝내 닫히지 않습니다</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt;이(가) 열린 적 없는 태그를 닫습니다</span>
+    <span data-phrase="xml.crossed">&lt;{open}&gt;이(가) 아직 열려 있는데 &lt;/{name}&gt;이(가) 요소를 닫습니다</span>
+    <span data-phrase="xml.inside">&lt;{name}&gt; 안에 예상하지 못한 &laquo;{ch}&raquo;이(가) 있습니다</span>
+    <span data-phrase="xml.tagname">태그 이름은 글자로 시작해야 합니다</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt;이(가) 끝내 완성되지 않습니다</span>
+    <span data-phrase="xml.attrvalue">&laquo;{name}&raquo; 속성에 값이 없는데, XML은 이를 허용하지 않습니다</span>
+    <span data-phrase="xml.attrstring">이 속성 값이 끝내 닫히지 않습니다</span>
+    <span data-phrase="xml.attrquote">XML에서 속성 값은 따옴표로 감싸야 합니다</span>
+    <span data-phrase="json.trailing">값이 끝난 뒤에 {found}이(가) 있습니다</span>
+    <span data-phrase="json.early">텍스트가 너무 일찍 끝났습니다</span>
+    <span data-phrase="json.keystring">키는 큰따옴표로 감싼 문자열이어야 하는데, 이것은 {found}입니다</span>
+    <span data-phrase="json.colon">키 다음에 콜론이 와야 하는데 {found}이(가) 있습니다</span>
+    <span data-phrase="json.unexpected">{found}은(는) 예상하지 못한 것입니다</span>
+    <span data-phrase="json.commabrace">쉼표나 닫는 중괄호가 와야 하는데 {found}이(가) 있습니다</span>
+    <span data-phrase="json.commabracket">쉼표나 닫는 대괄호가 와야 하는데 {found}이(가) 있습니다</span>
+    <span data-phrase="json.object">이 객체가 끝내 닫히지 않습니다</span>
+    <span data-phrase="json.array">이 배열이 끝내 닫히지 않습니다</span>
+    <span data-phrase="json.string">이 문자열이 끝내 닫히지 않습니다</span>
+    <span data-phrase="json.hex">\u 뒤에는 16진수 네 자리가 와야 합니다</span>
+    <span data-phrase="json.escape">\{next}은(는) JSON이 아는 이스케이프가 아닙니다</span>
+    <span data-phrase="json.control">문자열 안에 날것의 제어 문자가 있습니다 &mdash; 이스케이프로 쓰세요</span>
+    <span data-phrase="json.number">이것은 JSON이 허용하는 숫자가 아닙니다</span>
+    <span data-phrase="convert.xml-json.name">XML에서 JSON으로</span>
+    <span data-phrase="convert.json-xml.name">JSON에서 XML로</span>
+    <span data-phrase="convert.xml-json">속성은 이름에 @가 붙은 멤버가 되고, 요소 자신의 텍스트는 자리를 나눠야 할 때 #text가 되며, 모든 값은 문자열로 남습니다 &mdash;
+      XML은 어느 것이 숫자인지 한 번도 말한 적이 없습니다.</span>
+    <span data-phrase="convert.json-xml">배열은 되풀이되는 요소가 됩니다. 되읽을 수 있는 모양은 그것뿐입니다. 빈 객체와 빈 문자열은 둘 다 빈 요소로 나옵니다.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">파일을 읽는 중…</span>
+    <span data-phrase="read.failed">그 파일은 읽지 못했습니다: {reason}</span>
+    <span data-phrase="out.nothing">아직 아무것도 없습니다.</span>
+    <span data-phrase="out.empty">아무것도 나오지 않았습니다.</span>
+    <span data-phrase="note.squeezed">XML, 납작하게 압축</span>
+    <span data-phrase="note.laid">XML, 보기 좋게 정리</span>
+    <span data-phrase="note.smaller">{what} &mdash; {before}에서 {after}로, {percent}% 감소</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines}줄, {size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines}줄, {size}</span>
+    <span data-phrase="copy.copy">복사</span>
+    <span data-phrase="copy.copied">복사했습니다</span>
+    <span data-phrase="copy.selected">선택했습니다 &mdash; Ctrl+C를 누르세요</span>
+    <span data-phrase="net.clean">XML은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔습니다.
+      {platform}</span>
+    <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.
+      {platform}</span>
+    <span data-phrase="net.platform.one">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 그 한 글자도 받지 않았습니다.</span>
+    <span data-phrase="net.platform.many">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 그 한 글자도 받지 않았습니다.</span>
+  </div>
+</main>

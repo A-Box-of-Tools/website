@@ -1,0 +1,382 @@
+#
+# Bandingkan tinggi badan - Indonesian.
+#
+# Overrides for tools/compare-heights/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Pembanding Tinggi Badan"
+heading = "Bandingkan&nbsp;Tinggi&nbsp;Badan <span class=\"h1-kw\">&mdash; bagan berdampingan yang bisa Anda unduh</span>"
+tagline = "Ketik tingginya, bawa gambarnya. Tidak ada yang dikirim untuk menggambarnya."
+
+title = "Bandingkan Tinggi Badan &mdash; gratis, tanpa daftar, tanpa unggah"
+description = "Bandingkan tinggi badan berdampingan. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda &mdash; pintu, jendela, papan tulis, mesin penjual otomatis &mdash; dalam sentimeter atau kaki dan inci, lalu unduh bagannya sebagai PNG atau SVG. Ia digambar di peramban Anda."
+og_title = "Bandingkan tinggi badan berdampingan dan simpan gambarnya"
+og_description = "Taruh dua orang dewasa, seorang anak laki-laki, seorang anak perempuan, dan sebuah pintu pada penggaris yang sama, dalam sentimeter atau kaki dan inci, lalu unduh hasilnya. Tanpa akun, tanpa tanda air, dan tanpa satu pun daftar nama yang meninggalkan perangkat Anda."
+og_image_alt = "Pembanding Tinggi Badan - membandingkan tinggi berdampingan, tanpa unggah"
+
+pledge = """
+    Bagan tinggi badan adalah hitungan dan sebuah gambar: tidak ada berkas yang
+    perlu dikirim dan tidak ada layanan yang perlu ditanyai. Pria, wanita, anak
+    laki-laki, dan anak perempuan adalah karya seni domain publik yang ikut
+    dikirim bersama halaman ini, dan anak laki-laki serta anak perempuannya
+    adalah gambar anak-anak sungguhan, bukan orang dewasa yang dikecilkan
+    &mdash; dan itulah yang mencegah bagan keluarga terlihat keliru dengan cara
+    yang tak bisa disebut namanya siapa pun. Setiap langkahnya terjadi di
+    beberapa ratus baris JavaScript di halaman ini yang bisa Anda baca. Tidak
+    ada fungsi jaringan apa pun, dan di sini itu penting karena yang Anda ketik
+    adalah daftar orang dan tinggi masing-masing."""
+
+live_hint = """
+      Anda tidak perlu percaya begitu saja: buka DevTools, perhatikan tab
+      jaringan, lalu ketik sebuah nama dan sebuah tinggi. Tidak satu pun
+      permintaan membawa satu karakter dari keduanya. Atau cabut sambungan
+      internet dan buat bagannya tetap."""
+
+read_first = """
+, <code>src/traced.js</code> dan
+      <code>vendor/</code> untuk empat figur dan asal-usul karyanya,
+      <code>src/figures.js</code> untuk daftar yang menjadi bahan menunya,
+      <code>src/units.js</code> untuk bagaimana tinggi yang diketik menjadi angka
+      dan bagaimana penggarisnya diberi label, <code>src/chart.js</code> untuk
+      tata letaknya, dan <code>src/save.js</code> untuk dua unduhannya &mdash;
+      yaitu SVG di layar, dan SVG yang sama itu dilukiskan ke sebuah kanvas."""
+
+howto_heading = "Cara membuat bagan perbandingan tinggi badan"
+
+card = """
+            Taruh dua orang dewasa, seorang anak, dan sebuah pintu pada penggaris
+            yang sama &mdash; dalam sentimeter atau kaki dan inci &mdash; lalu
+            unduh sebagai PNG atau SVG."""
+
+[words]
+plural = "nama, tinggi, dan bagan yang terbentuk darinya"
+choose = "siapa yang masuk ke bagan"
+analytics_extra = """, dan tidak juga nama
+  atau tinggi yang Anda ketik"""
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa tanda air"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Daftar orang bukan hal kecil untuk diserahkan."
+body = """
+ Kebanyakan
+      bagan tinggi badan meminta akun, dan yang tidak meminta pun tetap punya
+      server yang melihat setiap nama dan setiap angka yang Anda ketik. Yang Anda
+      ketik di sini adalah siapa saja di keluarga Anda dan berapa tinggi masing-
+      masing, sering kali dengan usia seorang anak yang tersirat dari figur di
+      sebelah namanya. Tidak satu pun dari itu dikirim ke mana pun, sebab di sini
+      tidak ada tempat untuk perginya."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada
+      <code>fetch</code>, tidak ada <code>XMLHttpRequest</code>, dan tidak ada
+      <code>sendBeacon</code> di mana pun dalam <code>src/</code>. Di dalam
+      Content-Security-Policy tertulis setiap alamat yang boleh dihubungi halaman
+      ini, dan tidak satu pun milik kami."""
+
+[[privacy]]
+title = "Antar kunjungan pun tidak ada yang diingat."
+body = """
+ Bagannya hidup di
+      halaman ini dan tidak di tempat lain. Tutup tabnya dan daftarnya lenyap:
+      tidak ada akun yang menyimpannya, tidak ada kuki yang membawanya, dan tidak
+      ada apa pun yang ditulis ke penyimpanan peramban ini &mdash; itu juga
+      sebabnya bagan yang ingin Anda simpan adalah bagan yang Anda unduh."""
+
+[[privacy]]
+title = "Tautannya tidak membawa bagan itu."
+body = """
+ Beberapa alat semacam ini
+      memasukkan seluruh daftar ke bilah alamat supaya bisa dibagikan, dan itu
+      mengubah setiap nama dan setiap tinggi menjadi sesuatu yang dicatat oleh apa
+      pun yang dilewati tautan itu &mdash; server obrolan, pemindai surel, riwayat
+      peramban seseorang. Alamat halaman ini tidak pernah berubah sewaktu Anda
+      mengetik."""
+
+[[privacy]]
+title = "PNG-nya dibuat dari SVG yang ada di layar."
+body = """
+ Unduhannya bukan
+      penggambaran kedua yang bisa berbeda dari pratinjaunya. Markah yang sama
+      diserahkan kepada peramban lalu dilukiskan ke sebuah kanvas, dan itu juga
+      sebabnya hal ini bisa dilakukan dengan jaringan dicabut: tidak ada fon yang
+      perlu diambil dan tidak ada gambar yang perlu dimuat di dalamnya."""
+
+[[privacy]]
+title = "Karya gambarnya ada di sini, bukan diambil dari luar."
+body = """
+ Keempat figurnya
+      adalah karya domain publik, dan disajikan dari asal ini bersama sisa
+      halamannya &mdash; tanpa fon ikon, tanpa CDN, tanpa lembar sprite yang
+      ditarik dari server orang lain sewaktu Anda mengetik. Itu juga sebabnya
+      bagannya tetap tergambar dengan jaringan dicabut."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip
+      iklan dan pengukuran datang dari Google, dan tombol donasi dari Buy Me a
+      Coffee. Tidak satu pun diberi sebuah nama atau sebuah tinggi. Setiap baris
+      yang mengubah daftar Anda menjadi gambar disajikan dari asal ini dan
+      terdaftar di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan jaringan dan alat ini tidak
+      berubah, sebab memang tidak pernah ada langkah jaringan di dalamnya. Itu
+      bukti yang paling sederhana."""
+
+[[howto]]
+title = "Masukkan semua orang dulu, urusan tampilan belakangan."
+body = """
+ Satu baris
+      berisi sebuah figur, sebuah nama, sebuah tinggi, dan sebuah warna. Namanya
+      opsional &mdash; bagan berisi dua siluet tanpa nama dengan tinggi di atasnya
+      sering kali justru yang diinginkan orang &mdash; dan panah pada tiap baris
+      menggesernya ke kiri atau ke kanan kalau urutannya penting."""
+
+[[howto]]
+title = "Ketik tingginya sebagaimana Anda menuliskannya."
+body = """
+ <code>173</code>,
+      <code>1,73 m</code>, <code>5'8\"</code>, <code>68 in</code>, dan
+      <code>5 ft 8</code> semuanya terbaca dengan benar. Baris di bawah kotak
+      menunjukkan apa yang dipahami, dalam dua sistem sekaligus, sehingga salah
+      baca terlihat sebelum digambar, bukan setelah dicetak. Angka telanjang
+      berarti sentimeter pada bagan metrik dan inci pada bagan imperial, dan angka
+      telanjang di bawah tiga berarti meter &mdash; tidak ada orang setinggi
+      1,73 cm."""
+
+[[howto]]
+title = "Pilih figur yang cocok dengan orangnya."
+body = """
+ Seorang anak tingginya
+      sekitar enam kepala dan orang dewasa tujuh setengah, jadi anak yang
+      digambar sebagai orang dewasa yang menyusut terlihat salah dengan cara yang
+      sulit disebut namanya tapi mudah dilihat. Anak laki-laki dan anak
+      perempuannya adalah gambar anak-anak sungguhan, bukan orang dewasa yang
+      dikecilkan, dan itulah sebagian besar yang membuat bagan keluarga terlihat
+      seperti keluarga. Setiap baris juga sudah datang dengan tinggi di dalamnya,
+      jadi menambahkan seseorang berarti menggambar seseorang &mdash; tinggal
+      ketik menimpanya."""
+
+[[howto]]
+title = "Taruh sesuatu yang akrab di bagan itu."
+body = """
+ Angka itu abstrak, pintu
+      tidak. Menambahkan satu benda berukuran yang semua orang tahu &mdash; pintu,
+      jendela, papan tulis kelas, mesin penjual otomatis &mdash; itulah yang
+      mengubah bagan yang menyebutkan dua tinggi menjadi bagan yang
+      menunjukkannya. Menunya memuat dua puluh, berkelompok, dan tiap satunya
+      datang sebagai baris biasa yang bisa Anda timpa dengan angka Anda sendiri.
+      Benda punya lebar selain tinggi, jadi sebuah pintu itu 203 kali 81, bukan
+      sebuah garis."""
+
+[[howto]]
+title = "Setel penggarisnya ke satuan yang dipikirkan pembaca Anda."
+body = """
+ Berpindah
+      antara sentimeter dan kaki menuliskan ulang isi kotaknya, bukan
+      menafsirkannya ulang, jadi bagannya sendiri tidak bergerak: yang berubah
+      hanya notasinya. Kalau bagannya untuk dua khalayak, tinggi yang ditulis di
+      atas tiap figur memakai satuan bagan dan baris di bawah tiap kotak memuat
+      keduanya."""
+
+[[howto]]
+title = "PNG untuk ditempel, SVG untuk dicetak."
+body = """
+ PNG adalah gambar pada
+      tinggi piksel yang Anda setel, dan itulah yang diinginkan jendela obrolan,
+      dokumen, atau salindia. SVG adalah bagan dalam bentuk instruksi, jadi ia
+      tercetak tajam pada ukuran berapa pun dan masih bisa diwarnai ulang nanti
+      oleh apa pun yang membuka vektor."""
+
+[[faq]]
+q = "Apakah yang saya ketik dikirim ke suatu tempat?"
+a = """
+        Tidak. Bagannya digambar oleh JavaScript di halaman ini, di perangkat
+        Anda sendiri, dan alat ini tidak punya fungsi jaringan apa pun &mdash;
+        tidak pernah mengambil apa pun dan tidak pernah mengirim apa pun.
+        <code>Content-Security-Policy</code> halaman ini menyebutkan setiap alamat
+        yang boleh dihubunginya, tidak satu pun milik kami. Ini layak dikatakan
+        terang-terangan di sini karena masukannya adalah daftar nama orang dan
+        tinggi masing-masing, yang lebih pribadi daripada hampir semua yang
+        ditangani situs ini."""
+
+[[faq]]
+q = "Bisakah saya mengunduh bagannya?"
+a = """
+        Bisa, sebagai PNG atau SVG, tanpa tanda air dan tanpa akun. PNG-nya
+        digambar pada tinggi piksel yang Anda setel dan itulah yang ditempel ke
+        dokumen, salindia, atau obrolan. SVG adalah bagan dalam bentuk instruksi,
+        bukan piksel: ia tercetak tajam pada ukuran berapa pun dan bisa dibuka
+        lalu diwarnai ulang nanti di penyunting vektor mana pun. Keduanya dibuat
+        dari markah yang sama dengan yang ada di layar, jadi tidak satu pun bisa
+        berbeda dari pratinjaunya."""
+
+[[faq]]
+q = "Bagaimana saya menulis tingginya &mdash; sentimeter atau kaki?"
+a = """
+        Terserah, di baris mana pun, dengan cara yang biasa Anda pakai.
+        <code>173</code>, <code>173 cm</code>, <code>1,73 m</code>,
+        <code>5'8\"</code>, <code>5 ft 8 in</code>, dan <code>68 in</code>
+        semuanya dipahami, dan baris di bawah kotak menunjukkan apa yang terbaca
+        dalam dua sistem. Angka telanjang berarti sentimeter kalau bagannya metrik
+        dan inci kalau imperial; angka telanjang di bawah tiga dianggap meter,
+        sebab 1,73 cm bukan tinggi yang diketik siapa pun."""
+
+[[faq]]
+q = "Kenapa anak-anaknya tidak terlihat seperti orang dewasa yang dikecilkan?"
+a = """
+        Karena anak memang bukan itu. Proporsi tubuh berubah menurut usia: anak
+        dua tahun tingginya kira-kira empat setengah kepala, anak delapan tahun
+        enam, orang dewasa tujuh setengah &mdash; jadi kepala hampir seperempat
+        dari anak kecil dan seperdelapan dari orang dewasa. Anak laki-laki dan
+        anak perempuan di sini adalah gambar anak-anak sungguhan, bukan satu
+        siluet yang diperkecil, dan itulah sebabnya bagan keluarga terlihat
+        seperti keluarga, bukan seperti empat orang dewasa dengan ukuran berbeda."""
+
+[[faq]]
+q = "Dari mana figur-figurnya berasal?"
+a = """
+        Keempatnya adalah karya orang lain, semuanya domain publik: prianya oleh
+        pitr, wanitanya oleh Madeleine Price Ball, anak perempuannya oleh
+        OpenClipart-Vectors, dan anak laki-lakinya oleh Ryan Kissinger untuk
+        pustaka NIH BioArt. Tiap berkas ikut dikirim bersama halaman ini di
+        <code>vendor/</code> apa adanya seperti saat diterbitkan, jadi Anda bisa
+        mencocokkannya dengan aslinya. Domain publik tidak menuntut apa pun, dan
+        itulah intinya: karya gambarnya berakhir di dalam sebuah gambar yang Anda
+        unduh, dan lisensi yang menuntut atribusi akan menempelkan tuntutan itu
+        pada bagan Anda."""
+
+[[faq]]
+q = "Kenapa tidak ada balita atau bayi?"
+a = """
+        Karena tidak ada yang menggambarnya lalu melepasnya ke domain publik.
+        Wikimedia Commons punya persis satu anak bebas yang bisa dipakai &mdash;
+        anak perempuan itu &mdash; dan pustaka NIH BioArt punya anak laki-lakinya;
+        di bawah usia sekolah pencarian pulang dengan tangan kosong, dan setiap
+        set orang yang bebas dan selaras adalah piktogram toilet dengan bentuk
+        yang sama pada segala usia, yang justru merupakan kesalahan yang hendak
+        dihindari seluruh alat ini. Sempat ada balita yang digambar oleh kode
+        halaman ini sendiri, dan ia satu-satunya figur di bagan yang tidak
+        digambar siapa pun: kelihatan, berdiri di sebelah empat yang digambar
+        orang. Untuk siapa pun yang lebih kecil daripada anak laki-laki atau anak
+        perempuan itu, setel salah satunya ke tinggi yang sebenarnya &mdash; yang
+        membawa perbandingannya adalah penggarisnya, dan itu akan benar."""
+
+[[faq]]
+q = "Berapa banyak orang yang bisa saya taruh di satu bagan?"
+a = """
+        Dua belas. Itu bukan batas teknis &mdash; gambarnya dengan senang hati
+        akan membuat tiga puluh &mdash; tapi lewat selusin, kolomnya jadi lebih
+        sempit daripada nama yang tertulis di atasnya dan gambarnya berhenti
+        terbaca. Kalau perlu lebih, mematikan namanya mengembalikan lebarnya, atau
+        dua bagan akan mengatakannya lebih baik daripada satu."""
+
+[[faq]]
+q = "Bisakah saya menaruh sebuah benda di bagan?"
+a = """
+        Bisa &mdash; persegi panjang polos menerima tinggi dan lebar, jadi apa pun
+        yang punya dua dimensi bisa berdiri di samping orang-orangnya. Menunya
+        memuat dua puluh untuk memulai, dalam empat kelompok: pintu dan jendela,
+        sekolah dan kantor (papan tulis, meja, lemari arsip, layar proyektor),
+        benda-benda di kota (mesin penjual otomatis, tong sampah beroda, ring
+        basket, kontainer kapal 20&nbsp;ft), dan benda-benda di rumah. Sebagian
+        memang standar sungguhan dan sebagian ukuran lazim, dan halaman ini
+        mengatakannya terang-terangan; tiap satunya datang sebagai baris biasa
+        yang bisa Anda timpa. Satu benda yang akrab berbuat lebih banyak untuk
+        sebuah bagan daripada berapa pun tambahan orang: ia yang mengubah
+        perbandingan menjadi rasa akan skala."""
+
+[[faq]]
+q = "Apakah ada figur untuk anjing atau kucing?"
+a = """
+        Tidak, dan itu kekosongan yang disengaja, bukan kelalaian. Keduanya sudah
+        dibuat &mdash; tampak samping, berdiri, dengan kepala sejajar bahu, supaya
+        puncak gambarnya menjadi tinggi yang tertulis di sebelahnya, yaitu tempat
+        setiap standar ras mengukur seekor hewan. Hasilnya tidak cukup baik untuk
+        dikirimkan: hewan berkaki empat tampak samping yang berdiri di sebelah
+        empat orang tampak depan terbaca sebagai kekeliruan sekalipun gambarnya
+        bagus. Sebuah persegi panjang setinggi bahu hewan itu jujur untuk
+        sementara."""
+
+[[faq]]
+q = "Bisakah saya membagikan bagannya lewat tautan?"
+a = """
+        Tidak dari sini, dan itu disengaja. Alat yang menawarkannya melakukannya
+        dengan memasukkan seluruh daftar ke alamatnya, yang berarti setiap nama
+        dan setiap tinggi berakhir di apa pun yang dilalui tautan itu &mdash;
+        catatan server obrolan, pemindai surel, riwayat peramban seseorang, layanan
+        pengambil pratinjau tautan. Unduh gambarnya dan kirim itu saja: ia
+        mengatakan hal yang sama dan tidak membawa daftar apa pun."""
+
+[[faq]]
+q = "Apakah gratis, dan bolehkah bagannya dipakai untuk keperluan komersial?"
+a = """
+        Gratis, tidak ada akun dan tidak ada tanda air, dan Anda boleh menaruh
+        hasilnya di laporan, presentasi, iklan, atau produk. Situs ini memasang
+        iklan, dan itulah yang membiayainya. Tidak ada bagian dari bagan yang Anda
+        buat di sini yang menjadi milik kami, dan tidak ada yang disimpan."""
+
+[[faq]]
+q = "Kenapa penggarisnya per sepuluh dan bukan per satu?"
+a = """
+        Karena jaraknya dipilih dari berapa banyak garis yang sanggup dibawa
+        gambarnya, bukan dari angka tetap. Bagan berisi dua orang dewasa mendapat
+        satu garis tiap sepuluh sentimeter; taruh ring basket di situ dan garisnya
+        bergeser ke dua puluh lima, sebab sembilan puluh garis dalam satu gambar
+        itu sapuan kelabu, bukan penggaris. Dalam kaki dan inci tangganya adalah
+        satu, tiga, enam, dan dua belas inci, sehingga garisnya jatuh tepat di
+        inci bulat alih-alih di dekatnya."""
+
+[[faq]]
+q = "Bisakah bagannya ditaruh di salindia gelap?"
+a = """
+        Bisa. Setel latarnya ke warna tempat ia akan berada, dan penggaris serta
+        tulisannya berganti antara gelap dan terang supaya cocok &mdash; dihitung
+        dari luminans warnanya, bukan ditebak. Lalu centang &ldquo;tanpa latar
+        sama sekali&rdquo; kalau Anda ingin gambarnya sendiri transparan: warna
+        yang Anda pilih tetap menentukan tintanya, jadi bagan transparan yang
+        menuju salindia biru tua keluar terbaca di atasnya."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan sambungan internet dan halaman
+        ini tetap bekerja. Itu sekaligus cara paling sederhana untuk membuktikan
+        tidak ada yang diunggah: alat yang mengirim daftar Anda pergi untuk
+        digambarkan menjadi bagan akan berhenti begitu sambungannya dicabut."""
+
+[schema]
+description = "Menggambar bagan perbandingan tinggi badan di peramban. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda beserta tingginya dalam sentimeter atau kaki dan inci, urutkan, warnai, lalu unduh hasilnya sebagai PNG atau SVG. Tidak ada yang diunggah."
+features = [
+  "Sampai dua belas figur pada satu penggaris, dalam urutan apa pun",
+  "Figur pria, wanita, anak laki-laki, dan anak perempuan, serta persegi panjang polos untuk benda",
+  "Pria, wanita, anak laki-laki, dan anak perempuan bergambar domain publik - anak-anaknya digambar sebagai anak-anak, bukan orang dewasa yang diperkecil",
+  "Tinggi diketik sebagai 173, 1,73 m, 5'8\", 68 in, atau 5 ft 8, dengan hasil bacanya ditampilkan",
+  "Sentimeter atau kaki dan inci, ditukar tanpa mengubah tinggi siapa pun",
+  "Dua puluh benda siap pakai: pintu, jendela, papan tulis, mesin penjual otomatis, kontainer kapal, perabot",
+  "Penggaris yang jaraknya dipilih dari apa yang sanggup dibawa gambarnya",
+  "Warna latar apa pun, atau tanpa latar, dengan tinta yang dipilih agar tetap terbaca di atasnya",
+  "PNG pada tinggi piksel berapa pun, dan SVG yang tercetak tajam pada ukuran berapa pun",
+  "Tanpa tanda air, tanpa akun, tanpa tautan yang membawa daftar Anda",
+  "Jalan tanpa internet; tidak ada yang diunggah",
+]

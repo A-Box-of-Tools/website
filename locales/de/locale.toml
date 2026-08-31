@@ -114,6 +114,15 @@ complete = true
 "timelapse-video" = "zeitraffer-erstellen"
 "hash-checksum" = "pruefsumme-berechnen"
 "share-text" = "text-teilen"
+# Gesucht wird der Ton, nicht das Format: "ton aus video extrahieren" ist die
+# Phrase, und "mp3" steht bewusst nicht darin, weil die Seite kein MP3 schreibt.
+"extract-audio-from-video" = "ton-aus-video-extrahieren"
+"xml-formatter" = "xml-formatieren"
+# Beide Richtungen stehen im Titel; die Adresse nennt die, die gesucht wird.
+"yaml-to-json" = "yaml-in-json-umwandeln"
+# "Groessenvergleich" ist das Wort, das gesucht wird, und es sagt zugleich,
+# was das Bild am Ende zeigt.
+"compare-heights" = "groessenvergleich-erstellen"
 
 # The indexes and the legal pages. "Ratgeber" rather than a literal
 # "Anleitungen": it is the word German publishers use for exactly this kind of
@@ -180,6 +189,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "ratgeber/gif-bild-fuer-bild-bearbeiten"
 "guides/make-a-qr-code-and-prove-it-scans" = "ratgeber/qr-code-erstellen-und-scan-beweisen"
 "guides/clean-up-a-voice-memo" = "ratgeber/sprachmemo-aufraeumen"
+"guides/make-a-height-comparison-chart" = "ratgeber/groessenvergleich-diagramm-erstellen"
 
 #
 # ---------------------------------------------------------------------------

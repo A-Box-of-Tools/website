@@ -1,0 +1,179 @@
+<main id="main">
+  <!-- Step 1 &mdash; which way round -->
+  <section class="card">
+    <h2><span class="step">1</span> Yönü seçin</h2>
+
+    <!--
+      A menu rather than a tab strip, which is what json-formatter uses for its
+      two jobs. The difference is that these two are the same job pointing
+      opposite ways: there is one box, one set of options and one result either
+      way, and nothing on the page changes shape when the direction does. A tab
+      strip would promise a second panel that does not exist.
+    -->
+    <div class="settings">
+      <div class="field">
+        <label for="conversion">Dönüştür</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="indent">Girinti</label>
+        <select id="indent">
+          <option value="2" selected>İki boşluk</option>
+          <option value="4">Dört boşluk</option>
+          <option value="tab">Bir sekme</option>
+        </select>
+        <p class="field-note">
+          Sekme yalnızca JSON için sunulur. YAML boşluklarla tanımlanır ve sekme onun içinde geçerli bir girinti değildir.
+        </p>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="sort-keys">
+          <input type="checkbox" id="sort-keys">
+          Her nesnenin anahtarlarını sırala
+        </label>
+        <p class="field-note">
+          Anahtarların kod noktalarına göre değil, okunuşlarına göre; böylece <code>item2</code>, <code>item10</code>'dan önce gelir.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> Yapıştırın</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+      Its extension also sets the direction, because a dropped .json is not a
+      request to read JSON as though it were YAML.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input" id="input-label">YAML'iniz</label>
+          <span class="count" id="input-count">boş</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="YAML'i buraya yapıştırın - ya da yukarıya bir .yaml, .yml veya .json dosyası bırakın."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Bir örnek dene</button>
+        <button type="button" id="clear" class="ghost danger">Temizle</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card" inert>
+    <h2><span class="step">3</span> Sonucu alın</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">Henüz bir şey yok.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>Kopyala</button>
+        <a id="download" class="ghost as-button" hidden download>İndir</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+
+    The parser errors are the JSON and YAML halves of json-formatter's list and
+    are worded identically to them - the same two parsers raise them, and a
+    reader who meets the same broken file on both pages should be told the same
+    thing about it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (satır {line}, sütun {column})</span>
+    <span data-phrase="char.end">metnin sonu</span>
+    <span data-phrase="char.newline">bir satır sonu</span>
+    <span data-phrase="char.tab">bir sekme</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="json.trailing">Beklenmedik: değerin sonundan sonra {found}</span>
+    <span data-phrase="json.early">Metin çok erken bitiyor</span>
+    <span data-phrase="json.keystring">Anahtarın çift tırnaklı bir dizge olması gerekir, oysa bu {found}</span>
+    <span data-phrase="json.colon">Anahtardan sonra iki nokta beklendi, {found} bulundu</span>
+    <span data-phrase="json.unexpected">Beklenmedik: {found}</span>
+    <span data-phrase="json.commabrace">Virgül ya da kapanan süslü parantez beklendi, {found} bulundu</span>
+    <span data-phrase="json.commabracket">Virgül ya da kapanan köşeli parantez beklendi, {found} bulundu</span>
+    <span data-phrase="json.object">Bu nesne hiç kapatılmıyor</span>
+    <span data-phrase="json.array">Bu dizi hiç kapatılmıyor</span>
+    <span data-phrase="json.string">Bu dizge hiç kapatılmıyor</span>
+    <span data-phrase="json.hex">\u işaretini dört onaltılık basamak izlemeli</span>
+    <span data-phrase="json.escape">\{next} JSON'un bildiği bir kaçış dizisi değil</span>
+    <span data-phrase="json.control">Dizgenin içinde çıplak bir denetim karakteri var &mdash; onu bir kaçış dizisi olarak
+      yazın</span>
+    <span data-phrase="json.number">Bu, JSON'un izin verdiği bir sayı değil</span>
+    <span data-phrase="yaml.dedent">Bu satır, içinde bulunduğu bloktan daha az girintili</span>
+    <span data-phrase="yaml.documents">Bu dosyada birden çok belge var. Onları teker teker dönüştürün.</span>
+    <span data-phrase="yaml.indent">Bu satır, üstündeki anahtardan daha çok girintili</span>
+    <span data-phrase="yaml.keyvalue">Burada &laquo;key: value&raquo; bekleniyordu</span>
+    <span data-phrase="yaml.aliases">Takma adlar (*name) desteklenmiyor &mdash; JSON'un &laquo;aynı düğüm iki kez&raquo;
+      demenin bir yolu yok</span>
+    <span data-phrase="yaml.tags">Etiketler (!name) desteklenmiyor &mdash; türün tahmin edilmesi gerekirdi</span>
+    <span data-phrase="yaml.complexkey">Burada &laquo;?&raquo; anahtarı desteklenmiyor</span>
+    <span data-phrase="yaml.blockscalar">&laquo;{header}&raquo; bunun okuduğu bir blok skaleri değil</span>
+    <span data-phrase="yaml.afterquote">Kapanan tırnaktan sonra metin var</span>
+    <span data-phrase="yaml.anchors">Çapalar (&amp;name) desteklenmiyor &mdash; JSON'un &laquo;aynı düğüm iki kez&raquo;
+      demenin bir yolu yok</span>
+    <span data-phrase="yaml.hex">\{next} işaretinden sonra {width} onaltılık basamak gerekir</span>
+    <span data-phrase="yaml.escape">\{next} bunun okuduğu bir kaçış dizisi değil</span>
+    <span data-phrase="yaml.quoted">Tırnak içindeki bu dizge hiç kapatılmıyor</span>
+    <span data-phrase="yaml.afterflow">Akış koleksiyonunun sonundan sonra metin var</span>
+    <span data-phrase="yaml.flowearly">Akış koleksiyonu çok erken bitiyor</span>
+    <span data-phrase="yaml.flowseq">Bu akış dizisinde virgül ya da kapanan köşeli parantez beklendi</span>
+    <span data-phrase="yaml.flowkey">Bu akış eşlemesinde anahtardan sonra iki nokta beklendi</span>
+    <span data-phrase="yaml.flowmap">Bu akış eşlemesinde virgül ya da kapanan süslü parantez beklendi</span>
+    <span data-phrase="convert.yaml-json.name">YAML'dan JSON'a</span>
+    <span data-phrase="convert.json-yaml.name">JSON'dan YAML'a</span>
+    <span data-phrase="convert.yaml-json">Açıklamalar kaybolur, çünkü JSON'un onları koyacak yeri yok. Çapalar, takma adlar ve
+      etiketler tahmin edilmek yerine dönüşümü durdurur.</span>
+    <span data-phrase="convert.json-yaml">Hiçbir şey kaybolmaz: her JSON belgesi zaten bir YAML belgesidir. Dizgeler yalnızca
+      tırnaksız bırakıldığında anlamları değişecek yerlerde tırnağa alınır.</span>
+    <span data-phrase="label.yaml">YAML'iniz</span>
+    <span data-phrase="label.json">JSON'unuz</span>
+    <span data-phrase="placeholder.yaml">YAML'i buraya yapıştırın - ya da yukarıya bir .yaml, .yml veya .json dosyası bırakın.</span>
+    <span data-phrase="placeholder.json">JSON'u buraya yapıştırın - ya da yukarıya bir .json, .yaml veya .yml dosyası bırakın.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">Dosya okunuyor…</span>
+    <span data-phrase="read.failed">O dosya okunamadı: {reason}</span>
+    <span data-phrase="out.nothing">Henüz bir şey yok.</span>
+    <span data-phrase="out.empty">Hiçbir şey çıkmadı.</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} satır, {size}</span>
+    <span data-phrase="copy.copy">Kopyala</span>
+    <span data-phrase="copy.copied">Kopyalandı</span>
+    <span data-phrase="copy.selected">Seçildi &mdash; Ctrl+C tuşlarına basın</span>
+    <span data-phrase="net.clean">metniniz hiçbir yere gitmedi. {total} dosya
+      yüklendi. {platform}</span>
+    <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç
+      bunu asla yapmaz. {platform}</span>
+    <span data-phrase="net.platform.one">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {hosts} sunucudan yüklendi; hiçbirine ondan tek bir
+      karakter verilmedi.</span>
+    <span data-phrase="net.platform.many">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {hosts} sunucudan yüklendi; hiçbirine ondan tek bir
+      karakter verilmedi.</span>
+  </div>
+</main>

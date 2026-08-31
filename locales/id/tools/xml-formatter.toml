@@ -1,0 +1,273 @@
+#
+# Pemformat XML - Indonesian.
+#
+# Overrides for tools/xml-formatter/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pemformat XML"
+heading = "Pemformat&nbsp;XML <span class=\"h1-kw\">&mdash; rapikan, mampatkan, atau ubah jadi JSON</span>"
+tagline = "XML dirapikan agar terbaca atau dimampatkan agar siap kirim, dan diubah ke JSON dua arah. Tidak ada satu pun yang ditempel ke server orang lain."
+
+title = "Pemformat XML &amp; XML ke JSON &mdash; gratis, tanpa unggah"
+description = "Format, beri indentasi, dan mampatkan XML, lalu ubah XML ke JSON atau JSON ke XML. Pengurainya berjalan di peramban Anda dan tidak ada yang diunggah, jadi sebuah feed, faktur, atau berkas konfigurasi tidak pernah meninggalkan perangkat Anda."
+og_title = "Memformat XML tanpa menempelkannya ke sebuah server"
+og_description = "Pemformat dan pengubah XML yang berjalan di perangkat Anda sendiri. Ia menyebut galatnya ada di baris mana, dan apa yang Anda tempel tidak pergi ke mana pun."
+og_image_alt = "Pemformat XML - merapikan, memampatkan, atau mengubah, tanpa unggah"
+
+pledge = """
+    Memformat dan mengubah adalah hitungan atas sebuah untai teks, dikerjakan di
+    sini, di halaman ini. Pengurainya ditulis tangan dan ada di
+    <code>src/xml.js</code>, dan tidak ada yang lain. Alat ini tidak punya fungsi
+    jaringan apa pun &mdash; tidak ada yang diambil, tidak ada yang dikirim
+    &mdash; dan di sini itu lebih berarti daripada yang disiratkan kata
+    &ldquo;XML&rdquo;: yang datang dalam format ini biasanya sebuah faktur,
+    rekening koran, rekam medis, atau permintaan SOAP dengan kredensial seseorang
+    di headernya."""
+
+live_hint = """
+      Anda tidak perlu percaya begitu saja: buka DevTools, perhatikan tab
+      jaringan, lalu format sesuatu. Tidak satu pun permintaan membawa satu
+      karakter dari yang Anda tempel. Atau cabut sambungan internet dan format
+      tetap."""
+
+read_first = """
+, <code>src/xml.js</code> untuk pengurai yang
+      menyebutkan tag mana yang tidak pernah ditutup, dan
+      <code>src/convert.js</code> untuk alasan setiap nilai keluar dari XML
+      sebagai untai teks alih-alih ditebak."""
+
+howto_heading = "Cara memformat XML tanpa mengunggahnya"
+
+card = """
+            Rapikan XML agar terbaca, mampatkan agar siap kirim, atau ubah jadi
+            JSON dan kembali lagi. Tempel sebuah faktur atau feed tanpa
+            menyerahkannya kepada siapa pun."""
+
+[words]
+plural = "XML dan JSON"
+choose = "sebuah file"
+analytics_extra = """, dan tidak ada XML
+  yang lewat di sini"""
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa batas ukuran"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Yang Anda tempel tidak punya tempat untuk pergi."
+body = """
+ Di dalam
+      Content-Security-Policy tertulis setiap alamat yang boleh dihubungi halaman
+      ini, dan tidak satu pun milik kami. Tidak ada titik akhir di sini tempat
+      sebuah faktur yang ditempel bisa dikumpulkan, dan tidak ada pula di dalam
+      kode yang akan mengirimkannya seandainya ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada
+      <code>fetch</code>, tidak ada <code>XMLHttpRequest</code>, dan tidak ada
+      <code>sendBeacon</code> di mana pun dalam <code>src/</code>. Pengurai dan
+      pencetaknya adalah fungsi di halaman ini yang menerima untai teks dan
+      mengembalikan untai teks."""
+
+[[privacy]]
+title = "Entitas eksternal tidak pernah diselesaikan, sama sekali."
+body = """
+ Sebuah
+      <code>DOCTYPE</code> berisi entitas eksternal adalah cara sebuah pengurai
+      XML dibujuk membaca berkas dari mesin yang sedang mengurai, dan itu lubang
+      tertua di format ini. <code>src/xml.js</code> adalah pembaca tulisan tangan
+      yang sama sekali tidak punya penyelesaian entitas &mdash; bukan dimatikan,
+      melainkan tidak ada &mdash; dan halaman ini tidak pernah menyerahkan teks
+      Anda kepada <code>DOMParser</code> milik peramban."""
+
+[[privacy]]
+title = "Setiap nilai yang keluar dari XML adalah untai teks."
+body = """
+ <code>&lt;port&gt;8080&lt;/port&gt;</code>
+      tidak mengatakan apakah itu sebuah angka, jadi JSON-nya menulis
+      <code>"8080"</code>. Memutuskannya untuk Anda berarti mengarang informasi
+      yang lalu ikut berjalan seolah-olah ada di dalam berkasnya."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip
+      iklan dan pengukuran datang dari Google, dan tombol donasi dari Buy Me a
+      Coffee. Tidak satu pun diberi satu karakter dari teks Anda. Setiap baris
+      yang membaca, mengurai, atau menulisnya disajikan dari asal ini dan
+      terdaftar di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan jaringan dan alat ini tidak
+      berubah, sebab memang tidak pernah ada langkah jaringan di dalamnya. Itu
+      bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih pekerjaannya."
+body = """
+ Dua tab, satu kotak:
+      <em>Format</em> merapikan XML atau memampatkannya; <em>Ubah</em>
+      menjadikannya JSON, atau JSON kembali jadi XML. XML yang baru saja Anda
+      rapikan adalah XML yang Anda ubah, tanpa menempelnya dua kali."""
+
+[[howto]]
+title = "Tempel, atau jatuhkan berkasnya."
+body = """
+ Apa pun yang bisa Anda sorot
+      dan salin akan jalan, dan berkas <code>.xml</code>, <code>.svg</code>,
+      <code>.rss</code>, atau <code>.xsd</code> yang dijatuhkan ke pemilih dibaca
+      oleh peramban Anda sendiri lalu dimasukkan ke kotaknya &mdash; tidak ada
+      langkah unggah yang perlu dilewati."""
+
+[[howto]]
+title = "Pilih indentasinya, atau mampatkan."
+body = """
+ Dua spasi, empat, atau satu
+      tab. Memampatkan berarti dokumen yang sama tanpa setiap spasi yang ada
+      hanya supaya enak dibaca, dan hasilnya menyebutkan berapa bita yang
+      dihemat."""
+
+[[howto]]
+title = "Baca galatnya di tempat galatnya berada."
+body = """
+ Pengurai yang gagal di
+      sini menyebut <em>tag mana</em> yang tidak pernah ditutup dan di baris serta
+      kolom berapa, alih-alih &ldquo;galat di baris 1&rdquo;, yang adalah ucapan
+      sebuah peramban tentang dokumen yang dibacanya sekaligus."""
+
+[[howto]]
+title = "Ambil hasilnya."
+body = """
+ Salin, atau unduh sebagai berkas, dinamai
+      menurut format tempat ia keluar."""
+
+[[faq]]
+q = "Apakah XML saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Pengurai dan pencetak di halaman ini adalah fungsi yang berjalan di
+        peramban Anda sendiri, di perangkat keras Anda sendiri. Alat ini tidak
+        punya fungsi jaringan apa pun &mdash; tidak pernah mengambil apa pun dan
+        tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebutkan setiap alamat
+        yang boleh dihubunginya, tidak satu pun milik kami. Untuk XML itu lebih
+        berarti daripada yang disiratkan reputasi formatnya: yang datang di
+        dalamnya biasanya sebuah faktur, rekening koran, rekam medis, atau
+        permintaan SOAP dengan kredensial di headernya."""
+
+[[faq]]
+q = "Apakah ia menyelesaikan entitas eksternal?"
+a = """
+        Tidak, dan tidak ada yang perlu dimatikan. Penyelesaian entitas eksternal
+        adalah cara sebuah pengurai XML dibujuk membaca berkas dari mesin yang
+        menjalankannya &mdash; serangan yang biasa ditulis XXE &mdash; dan
+        <code>src/xml.js</code> adalah pembaca tulisan tangan tanpa penyelesaian
+        entitas sama sekali. Teks Anda juga tidak pernah diserahkan kepada
+        <code>DOMParser</code> milik peramban. Sebuah <code>DOCTYPE</code> dibawa
+        lewat begitu saja tanpa pernah dijalankan."""
+
+[[faq]]
+q = "Apa yang hilang saat mengubah XML ke JSON?"
+a = """
+        Urutan isi campuran, komentar, dan perbedaan antara atribut dan elemen
+        anak &mdash; yang terakhir dilunakkan alih-alih dihapus, karena sebuah
+        atribut menjadi anggota yang namanya diawali <code>@</code>. Teks milik
+        sebuah elemen menjadi <code>#text</code> bila ia harus berdampingan
+        dengan yang lain, dan anak yang berulang menjadi sebuah array. Setiap
+        nilai tetap untai teks: XML tidak punya tipe, dan memutuskan bahwa
+        <code>8080</code> adalah angka berarti mengarang informasi."""
+
+[[faq]]
+q = "Apa yang hilang saat mengubah JSON ke XML?"
+a = """
+        Perbedaan antara objek kosong, array kosong, dan untai kosong, yang
+        ketiganya menjadi elemen kosong, serta tipe setiap nilai, karena XML tidak
+        punya tipe. Sebuah array menjadi elemen berulang, satu-satunya bentuk yang
+        terbaca kembali, dan kunci yang tidak sanggup ditampung sebuah nama elemen
+        diganti karakter canggungnya alih-alih dikeluarkan sebagai dokumen yang
+        tidak akan dibaca pengurai mana pun."""
+
+[[faq]]
+q = "Bisakah ia memformat SVG, feed RSS, atau berkas POM?"
+a = """
+        Bisa. Ketiganya adalah XML, dan ini membaca XML alih-alih satu dialek
+        tertentu. SVG yang dirapikan begini lebih mudah disunting tangan; feed RSS
+        atau Atom biasanya dikirim dalam keadaan mampat dan tak terbaca sampai ada
+        yang membukanya. Tata letaknya tidak mengubah apa pun dari arti dokumen
+        itu."""
+
+[[faq]]
+q = "Apakah mengubah indentasi XML mengubah artinya?"
+a = """
+        Untuk dokumen yang elemennya berisi elemen lain, tidak. Yang bisa
+        berpengaruh adalah teks: spasi di dalam elemen yang berisi kata adalah
+        bagian dari teks itu, jadi elemen yang isinya hanya teks dibiarkan dalam
+        satu baris alih-alih dibuka. Bagian <code>CDATA</code> disalin persis
+        seperti semula."""
+
+[[faq]]
+q = "Kenapa tidak memakai pengurai XML milik peramban saja?"
+a = """
+        Karena apa yang dikatakannya waktu dokumennya rusak.
+        <code>DOMParser</code> mengembalikan dokumen galat yang kata-katanya
+        berbeda di setiap peramban dan sering kali hanya berbunyi &ldquo;galat di
+        baris 1&rdquo;. Pembaca tulisan tangan bisa menyebut tag mana yang tidak
+        pernah ditutup, dan di mana ia dibuka, dan itulah yang sebenarnya perlu
+        Anda ketahui. Tidak menyelesaikan entitas eksternal adalah alasan yang
+        satu lagi."""
+
+[[faq]]
+q = "Sebesar apa berkas yang bisa ditangani?"
+a = """
+        Tidak ada batas yang dipasang di sini, sebab tidak ada server yang
+        membayarinya. Batas sesungguhnya adalah perangkat Anda sendiri: beberapa
+        megabita XML aman, dan untuk dokumen yang sangat panjang halaman ini
+        menunggu jeda ketikan Anda sebelum memformat ulang, alih-alih berebut
+        papan ketik dengan Anda."""
+
+[[faq]]
+q = "Apakah gratis, dan perlukah akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa coba, dan
+        tidak ada batas berapa banyak yang Anda tempel. Situs ini memasang iklan,
+        dan itulah yang membiayainya; iklan-iklan itu tidak diberi apa pun tentang
+        teks Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan sambungan internet dan halaman
+        ini tetap bekerja. Itu sekaligus cara paling sederhana untuk membuktikan
+        tidak ada yang diunggah: alat yang mengirim XML Anda pergi untuk diformat
+        akan berhenti begitu sambungannya dicabut."""
+
+[schema]
+description = "Memformat, memberi indentasi, dan memampatkan XML, serta mengubah XML ke JSON atau JSON ke XML. Pengurainya berjalan di peramban, tidak menyelesaikan entitas eksternal, dan tidak ada yang diunggah."
+features = [
+  "Merapikan XML, atau memampatkannya dan menyebut berapa bita yang dihemat",
+  "Mengubah XML ke JSON dan JSON ke XML, sambil menyebut apa yang hilang di tiap arah",
+  "Menyebut tag mana yang tidak pernah ditutup, dan di baris serta kolom berapa",
+  "Tidak menyelesaikan entitas eksternal, jadi muatan XXE selamanya cuma teks",
+  "Membaca SVG, RSS, Atom, XSD, dan XML apa pun lainnya",
+  "Jalan pada berkas yang dijatuhkan sama seperti pada teks yang ditempel",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan sebuah file di sini"
+hint = "atau klik untuk memilih &mdash; berkas .xml, .svg, atau .rss"

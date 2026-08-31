@@ -1,0 +1,240 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> 누구를 견주는지 적으세요</h2>
+
+    <p class="card-lede">
+      이름과 키, 그리고 어떤 그림을 그릴지. 모든 줄은 그 위에 바로 덮어쓸 수 있는
+      키로 시작합니다. 키는 평소 쓰시는 대로 적으셔도 됩니다 &mdash;
+      <code>173</code>, <code>1.73&nbsp;m</code>, <code>5'8"</code>,
+      <code>68&nbsp;in</code> &mdash; 그리고 각 칸 아래 줄이 무엇으로 읽었는지
+      보여 주며, 칸이 비었거나 키를 읽을 수 없으면 빨간색으로 그렇다고 말합니다.
+      아무것도 조용히 짐작되지 않습니다.
+    </p>
+
+    <p class="card-lede">
+      <strong>여기서 위에서 아래는 차트에서 왼쪽에서 오른쪽입니다.</strong>
+      줄을 옮기려면 왼쪽 가장자리의 손잡이를 잡아 끌거나, 키보드에서 같은 일을
+      하는 화살표를 쓰세요. 어느 쪽이든 키순으로 정렬 중이었다면 차트는 사용자가
+      정한 순서로 돌아갑니다.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">단위</label>
+      <select id="unit">
+        <option value="cm" selected>센티미터</option>
+        <option value="ft">피트와 인치</option>
+      </select>
+    </div>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span></span>
+        <span>그림</span>
+        <span>이름</span>
+        <span>키</span>
+        <span>너비</span>
+        <span>색</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">사람 추가</button>
+        <button type="button" id="add-object" class="ghost">사물 추가</button>
+        <button type="button" id="clear" class="ghost danger">차트 비우기</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">아니면 크기를 가늠할 것을 하나 넣으세요</label>
+      <select id="preset">
+        <option value="" selected>하나 고르기&hellip;</option>
+        <optgroup label="문과 창">
+          <option value="door-interior" data-cm="203" data-width="81">실내문 &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">현관문 &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">창문 &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">차고문 &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="학교와 사무실">
+          <option value="board" data-cm="120" data-width="240">화이트보드 또는 칠판 &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">사무용 책상 &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">4단 서류 캐비닛 &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">프로젝터 스크린, 100인치 &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="동네에서">
+          <option value="vending" data-cm="183" data-width="100">자동판매기 &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">바퀴 달린 쓰레기통, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">농구 골대 &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">해상 컨테이너, 20피트 &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="집에서">
+          <option value="fridge" data-cm="178" data-width="76">냉장고, 냉동실 포함 &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">주방 상판 &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">식탁 &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">식탁 의자 &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">3인용 소파 &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">업라이트 피아노 &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">통기타 &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">와인병 &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      이 가운데 몇 가지는 정말로 정해져 있습니다. 20피트 해상 컨테이너는 정의상
+      높이가 259&nbsp;cm이고, 농구 링은 305에 있으며, 미국식 실내문은 203 곱하기
+      81입니다. 나머지는 규격이 아니라 흔한 값입니다. 문과 창과 상판은 나라마다,
+      집마다 다릅니다. 모두 평범한 행으로 들어오니, 직접 재어 보고 진짜 숫자를 그
+      위에 적으세요.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> 가져가세요</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="직접 만드신 키 비교 차트"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG 내려받기</button>
+      <button type="button" id="download-png" class="primary">PNG 내려받기</button>
+      <button type="button" id="copy-png" class="ghost">이미지 복사</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      문서나 대화창에 붙여 넣을 것은 PNG입니다. 간직할 것은 SVG입니다. 차트를
+      픽셀이 아니라 지시로 담고 있어서 어떤 크기로도 또렷하게 인쇄되고, 벡터를 여는
+      무엇으로든 나중에 색을 바꿀 수 있습니다.
+    </p>
+
+    <fieldset class="options">
+      <legend>어떻게 보일지</legend>
+
+      <div class="option-row">
+        <label for="order">순서</label>
+        <select id="order">
+          <option value="entered" selected>입력하신 순서대로</option>
+          <option value="tallest">큰 쪽부터</option>
+          <option value="shortest">작은 쪽부터</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>눈금자 그리기</strong>
+          <span class="check-note">
+            차트를 가로지르는 선과 양쪽의 숫자입니다. 그것이 없어도 그림은 두
+            사람을 여전히 옳게 견주지만, 둘 중 누가 얼마나 큰지는 더 이상 말하지
+            않습니다.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>각 그림 위에 이름과 키 쓰기</strong>
+          <span class="check-note">
+            끄면 차트는 눈금자 위의 실루엣이 됩니다. 붙여 넣을 곳에 이름이 이미
+            들어갈 예정이라면 그편이 낫습니다.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="background">뒤쪽</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>배경을 아예 두지 않기</strong>
+          <span class="check-note">
+            투명하게 해서, 이미 색이 있는 슬라이드 위에 얹기 위한 것입니다.
+            눈금자와 글씨는 위에서 고른 색에 맞춰 어둡게 또는 밝게 그려지므로,
+            배경 자체를 껐더라도 그림이 놓일 곳과 비슷한 색으로 맞춰 두세요.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">그림의 높이, 픽셀 단위</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        그것은 그리는 영역의 높이라서, 완성된 그림은 조금 더 높습니다. 이름이 그
+        위에 놓이기 때문입니다. 너비는 그림이 몇 개인지, 각각의 이름표가 얼마나
+        넓은지에 따라 정해집니다. 그림 아래의 줄이 최종 크기를 알려 줍니다.
+      </p>
+    </fieldset>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">남성</span>
+    <span data-phrase="shape.woman">여성</span>
+    <span data-phrase="shape.boy">남자아이</span>
+    <span data-phrase="shape.girl">여자아이</span>
+    <span data-phrase="shape.object">사물</span>
+
+    <span data-phrase="row.shape">{n}번째 줄의 그림</span>
+    <span data-phrase="row.name">{n}번째 줄의 이름</span>
+    <span data-phrase="row.height">{n}번째 줄의 키</span>
+    <span data-phrase="row.width">{n}번째 줄의 너비</span>
+    <span data-phrase="row.colour">{n}번째 줄의 색</span>
+    <span data-phrase="row.up">{n}번째 줄을 위로</span>
+    <span data-phrase="row.down">{n}번째 줄을 아래로</span>
+    <span data-phrase="row.remove">{n}번째 줄 삭제</span>
+    <span data-phrase="row.drag">끌어서 순서 바꾸기</span>
+    <span data-phrase="row.nameexample">이름</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">너비</span>
+    <span data-phrase="row.reads">{height}(으)로 읽었습니다</span>
+
+    <span data-phrase="height.empty">이 줄은 그려지려면 키가 있어야 합니다.</span>
+    <span data-phrase="height.unreadable">여기서 읽을 수 있는 키가 아닙니다. 173, 1.73 m, 5'8" 또는 68 in처럼 적어 보세요.</span>
+    <span data-phrase="height.tooshort">그리기에 너무 작습니다 &mdash; 5 cm가 가장 작습니다.</span>
+    <span data-phrase="height.tootall">차트가 닿는 것보다 큽니다 &mdash; 12미터가 한계입니다.</span>
+
+    <span data-phrase="chart.empty">누군가를 넣으면 차트가 여기에 나타납니다.</span>
+    <span data-phrase="chart.noheights">모든 줄에 키가 있어야 합니다. 하나를 채우면 차트가 여기에 나타납니다.</span>
+    <span data-phrase="chart.full">열두 개가 이 차트가 읽히는 채로 담을 수 있는 전부입니다.</span>
+    <span data-phrase="facts.chart">그림 {count}개, {width} × {height} 픽셀. 눈금자는 바닥에서 {top}까지, {step}마다 선이 하나씩 들어갑니다.</span>
+    <span data-phrase="facts.one">그림 하나, {width} × {height} 픽셀. 눈금자는 바닥에서 {top}까지, {step}마다 선이 하나씩 들어갑니다.</span>
+
+    <span data-phrase="save.done">저장했습니다. 그리려고 어디로도 아무것도 보내지 않았습니다.</span>
+    <span data-phrase="save.failed">{detail}. SVG는 그래도 내려받아집니다.</span>
+    <span data-phrase="save.copied">복사했습니다. 필요한 곳에 붙여 넣으세요.</span>
+    <span data-phrase="save.noclipboard">이 브라우저가 페이지의 클립보드 쓰기를 허락하지 않았습니다. 대신 내려받으세요.</span>
+    <span data-phrase="save.nothing">차트에 아직 저장할 것이 없습니다.</span>
+    <span data-phrase="render.nosvg">이 브라우저가 SVG를 그리려 하지 않았습니다</span>
+    <span data-phrase="render.nopng">이 브라우저가 PNG를 쓰려 하지 않았습니다</span>
+
+    <span data-phrase="net.clean">입력하신 이름과 키는 어디로도 가지 않았습니다.
+      파일 {total}개를 불러왔습니다. {platform}</span>
+    <span data-phrase="net.dirty">무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다.
+      {platform}</span>
+    <span data-phrase="net.platform.one">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 이름이나 키를 받지 않았습니다.</span>
+    <span data-phrase="net.platform.many">광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트
+      {hosts}곳에서 왔습니다. 그중 어느 쪽도 이름이나 키를 받지 않았습니다.</span>
+  </div>
+</main>

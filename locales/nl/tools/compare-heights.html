@@ -1,0 +1,248 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> Zeg wie je vergelijkt</h2>
+
+    <p class="card-lede">
+      Een naam, een lengte, en wat voor figuur er getekend moet worden. Elke
+      regel begint met een lengte die je er zo overheen kunt typen. Lengtes mag
+      je schrijven zoals jij ze schrijft &mdash; <code>173</code>,
+      <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
+      &mdash; en de regel onder elk vak laat zien wat er begrepen is, of zegt
+      het in het rood als het vak leeg is of de lengte niet te lezen valt. Er
+      wordt nooit stilletjes iets geraden.
+    </p>
+
+    <p class="card-lede">
+      <strong>Van boven naar beneden is hier van links naar rechts op de
+      grafiek.</strong> Sleep een regel aan het handvat op de linkerrand om hem
+      te verplaatsen, of gebruik de pijltjes, die vanaf het toetsenbord
+      hetzelfde doen. Hoe dan ook gaat de grafiek terug naar jouw eigen volgorde
+      als hij op lengte sorteerde.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Gemeten in</label>
+      <select id="unit">
+        <option value="cm" selected>Centimeters</option>
+        <option value="ft">Voet en inches</option>
+      </select>
+    </div>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span></span>
+        <span>Figuur</span>
+        <span>Naam</span>
+        <span>Lengte</span>
+        <span>Breedte</span>
+        <span>Kleur</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">Iemand toevoegen</button>
+        <button type="button" id="add-object" class="ghost">Een voorwerp toevoegen</button>
+        <button type="button" id="clear" class="ghost danger">De grafiek leegmaken</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">Of voeg iets toe voor de schaal</label>
+      <select id="preset">
+        <option value="" selected>Kies er een&hellip;</option>
+        <optgroup label="Deuren en ramen">
+          <option value="door-interior" data-cm="203" data-width="81">Binnendeur &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">Voordeur &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">Raam &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">Garagedeur &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="School en kantoor">
+          <option value="board" data-cm="120" data-width="240">Whiteboard of schoolbord &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">Bureau &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">Archiefkast, vier laden &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">Projectiescherm, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="In de stad">
+          <option value="vending" data-cm="183" data-width="100">Automaat &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">Kliko, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">Basketbalring &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">Zeecontainer, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="In huis">
+          <option value="fridge" data-cm="178" data-width="76">Koel-vriescombinatie &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">Keukenblad &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">Eettafel &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">Eetkamerstoel &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">Driezitsbank &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">Pianino &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">Akoestische gitaar &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">Wijnfles &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      Een paar hiervan liggen echt vast: een zeecontainer van 20&nbsp;ft is per
+      definitie 259&nbsp;cm hoog, een basketbalring hangt op 305, en een
+      Amerikaanse binnendeur is 203 bij 81. De rest is gebruikelijk in plaats
+      van genormeerd &mdash; deuren, ramen en werkbladen verschillen per land en
+      per huis. Elk ervan komt binnen als een gewone regel, dus meet die van jou
+      op en typ de echte getallen eroverheen.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Neem hem mee</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="De lengtegrafiek die je hebt gemaakt"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">De SVG downloaden</button>
+      <button type="button" id="download-png" class="primary">De PNG downloaden</button>
+      <button type="button" id="copy-png" class="ghost">De afbeelding kopiëren</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      De PNG is degene om in een document of een chat te plakken. De SVG is
+      degene om te bewaren: die is de grafiek als instructies in plaats van als
+      pixels, dus hij drukt scherp af op elk formaat en kan later door alles wat
+      vectoren opent worden herkleurd.
+    </p>
+
+    <fieldset class="options">
+      <legend>Hoe het eruitziet</legend>
+
+      <div class="option-row">
+        <label for="order">Volgorde</label>
+        <select id="order">
+          <option value="entered" selected>Zoals je ze hebt ingevoerd</option>
+          <option value="tallest">Langste eerst</option>
+          <option value="shortest">Kortste eerst</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>De meetlat tekenen</strong>
+          <span class="check-note">
+            De lijnen dwars over de grafiek en de getallen aan beide kanten.
+            Zonder die vergelijkt de afbeelding twee mensen nog steeds goed,
+            maar zegt ze niet meer hoe lang ze zijn.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>De namen en lengtes boven elke figuur schrijven</strong>
+          <span class="check-note">
+            Uit is de grafiek silhouetten op een meetlat &mdash; en dat is wat
+            je wilt als de namen toch al staan in datgene waar je het in plakt.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="background">Erachter</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Helemaal geen achtergrond</strong>
+          <span class="check-note">
+            Transparant, om op een dia te zetten die al een kleur heeft. De
+            meetlat en het schrift worden donker of licht getekend, passend bij
+            de kleur die je hierboven kiest, dus zet die ongeveer op waar de
+            afbeelding op komt te staan, ook als de achtergrond zelf uit is.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">Hoogte van de afbeelding, in pixels</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Dat is de hoogte van het tekenvlak, dus de afgemaakte afbeelding is
+        iets hoger: de namen staan erboven. De breedte volgt uit hoeveel figuren
+        er zijn en hoe breed het label van elk is. De regel onder de afbeelding
+        zegt wat het geworden is.
+      </p>
+    </fieldset>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">Man</span>
+    <span data-phrase="shape.woman">Vrouw</span>
+    <span data-phrase="shape.boy">Jongen</span>
+    <span data-phrase="shape.girl">Meisje</span>
+    <span data-phrase="shape.object">Voorwerp</span>
+
+    <span data-phrase="row.shape">Figuur voor regel {n}</span>
+    <span data-phrase="row.name">Naam voor regel {n}</span>
+    <span data-phrase="row.height">Lengte voor regel {n}</span>
+    <span data-phrase="row.width">Breedte voor regel {n}</span>
+    <span data-phrase="row.colour">Kleur voor regel {n}</span>
+    <span data-phrase="row.up">Regel {n} omhoog</span>
+    <span data-phrase="row.down">Regel {n} omlaag</span>
+    <span data-phrase="row.remove">Regel {n} verwijderen</span>
+    <span data-phrase="row.drag">Sleep om te herschikken</span>
+    <span data-phrase="row.nameexample">Naam</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">Breedte</span>
+    <span data-phrase="row.reads">Gelezen als {height}</span>
+
+    <span data-phrase="height.empty">Deze regel heeft een lengte nodig voordat hij getekend kan worden.</span>
+    <span data-phrase="height.unreadable">Dat is geen lengte die dit begrijpt. Probeer 173, 1,73 m, 5'8" of 68 in.</span>
+    <span data-phrase="height.tooshort">Te klein om te tekenen &mdash; 5 cm is het kleinste.</span>
+    <span data-phrase="height.tootall">Langer dan de grafiek reikt &mdash; 12 meter is de grens.</span>
+
+    <span data-phrase="chart.empty">Voeg iemand toe, en de grafiek verschijnt hier.</span>
+    <span data-phrase="chart.noheights">Elke regel heeft een lengte nodig. Vul er een in en de grafiek verschijnt hier.</span>
+    <span data-phrase="chart.full">Twaalf figuren is alles wat deze grafiek kan dragen en leesbaar blijven.</span>
+    <span data-phrase="facts.chart">{count} figuren, {width} bij {height} pixels. De meetlat loopt van de grond tot {top}, met een lijn om de {step}.</span>
+    <span data-phrase="facts.one">Eén figuur, {width} bij {height} pixels. De meetlat loopt van de grond tot {top}, met een lijn om de {step}.</span>
+
+    <span data-phrase="save.done">Opgeslagen. Er is nergens iets heen gestuurd om het te tekenen.</span>
+    <span data-phrase="save.failed">{detail}. De SVG wordt toch gedownload.</span>
+    <span data-phrase="save.copied">Gekopieerd. Plak hem waar je hem nodig hebt.</span>
+    <span data-phrase="save.noclipboard">Deze browser liet de pagina niet naar het klembord schrijven. Download hem in plaats daarvan.</span>
+    <span data-phrase="save.nothing">Er staat nog niets op de grafiek om op te slaan.</span>
+    <span data-phrase="render.nosvg">deze browser wilde de SVG niet tekenen</span>
+    <span data-phrase="render.nopng">deze browser wilde geen PNG schrijven</span>
+
+    <span data-phrase="net.clean">de namen en lengtes die je hebt getypt zijn
+      nergens heen gegaan. {total} bestanden geladen. {platform}</span>
+    <span data-phrase="net.dirty">Iets heeft {hosts} benaderd, en dat doet dit
+      gereedschap nooit. {platform}</span>
+    <span data-phrase="net.platform.one">De eigen scripts van de site voor
+      advertenties, meting en de donatieknop kwamen van {hosts} host; geen
+      daarvan heeft een naam of een lengte gekregen.</span>
+    <span data-phrase="net.platform.many">De eigen scripts van de site voor
+      advertenties, meting en de donatieknop kwamen van {hosts} hosts; geen
+      daarvan heeft een naam of een lengte gekregen.</span>
+  </div>
+</main>

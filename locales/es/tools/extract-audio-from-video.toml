@@ -1,0 +1,278 @@
+#
+# Extraer el audio de un vídeo - Spanish.
+#
+# Overrides for tools/extract-audio-from-video/tool.toml. Only words: the slug,
+# the category, the icon, the CSP and the list of shared parts stay where they
+# are.
+#
+
+name = "Extraer el audio de un vídeo"
+heading = "Extraer&nbsp;el&nbsp;audio&nbsp;de&nbsp;un&nbsp;vídeo <span class=\"h1-kw\">&mdash; el sonido a solas, en WAV</span>"
+tagline = "Suelta un vídeo y quédate con el sonido. La imagen no se descodifica nunca, y no se sube nada."
+
+title = "Extraer el audio de un vídeo &mdash; gratis, en tu navegador, sin subir nada"
+description = "Saca el sonido de un MP4, MOV o WebM y guárdalo como WAV. El vídeo no sale de tu dispositivo y su imagen no se descodifica en ningún momento: todo el trabajo ocurre en tu propio navegador."
+og_title = "Sacar el sonido de un vídeo sin subirlo a ninguna parte"
+og_description = "Suelta un MP4, MOV o WebM y guarda su audio como WAV. Solo se descodifica la pista de sonido, y el archivo no va a ningún sitio."
+og_image_alt = "Extraer el audio de un vídeo - el sonido a solas, sin subir nada"
+
+pledge = """
+    El descodificador es el que ya trae tu navegador, el mismo camino de código
+    que reproduce un archivo en un elemento <code>&lt;video&gt;</code>, y se le
+    pide la pista de audio y nada más. Escribir un WAV consiste en poner una
+    cabecera de cuarenta y cuatro bytes delante de las muestras, y eso está en
+    <code>src/wav.js</code>. No hay ningún codificador por medio, no hay paso de
+    subida, y esta página no tiene función de red de ninguna clase."""
+
+live_hint = """
+      No hace falta que nos creas: abre las DevTools, mira la pestaña de red y
+      suelta un vídeo. Ni una sola petición lleva un byte de él. O desconéctate
+      de internet y saca el sonido igualmente."""
+
+read_first = """
+, <code>src/decode.js</code> para el único
+      descodificador que hay y para saber por qué nunca se pide la imagen, y
+      <code>src/samplerate.js</code> para el olfateo de cabecera que evita que
+      tu grabación se remuestree en silencio."""
+
+howto_heading = "Cómo extraer el audio de un vídeo sin subirlo"
+
+card = """
+            Suelta un MP4, MOV o WebM y guarda el sonido a solas. Solo se
+            descodifica la pista de audio: la imagen no se lee nunca, y el
+            archivo no sale de tu dispositivo."""
+
+[words]
+plural = "vídeos"
+choose = "un vídeo"
+analytics_extra = """, ni nada sobre las
+  grabaciones que pasan por aquí"""
+
+[[facts]]
+text = "Sin subidas"
+
+[[facts]]
+text = "Sin cuenta"
+
+[[facts]]
+text = "Sin límite de tamaño"
+
+[[facts]]
+text = "Funciona sin conexión"
+
+[[facts]]
+text = "Código abierto"
+
+[[privacy]]
+title = "Tu vídeo no tiene adónde ir."
+body = """
+ La
+      Content-Security-Policy nombra todas las direcciones que esta página puede
+      contactar, y ninguna de ellas es nuestra. Aquí no hay ningún punto final
+      donde recoger un archivo, ni nada en el código que lo enviaría si lo
+      hubiera."""
+
+[[privacy]]
+title = "La imagen no se descodifica en ningún momento."
+body = """
+ Solo se pide la
+      pista de audio. Los fotogramas no se leen, ni se descodifican, ni se
+      dibujan, ni se miran, porque en esta página no hay código capaz de hacerlo,
+      y el archivo que sale contiene sonido y nada más. No es una promesa de
+      contención: a <code>decodeAudioData</code> se le entregan los bytes y
+      devuelve sonido, y en <code>src/</code> no hay ningún descodificador de
+      vídeo que pudiera ejecutarse."""
+
+[[privacy]]
+title = "El descodificador es el que ya trae tu navegador."
+body = """
+ Aquí no se
+      envía nada para leer tu formato, ni se le pide nada a nada de fuera de esta
+      página para leerlo. Qué archivos funcionan es, por tanto, lo que tu
+      navegador ya sabe reproducir."""
+
+[[privacy]]
+title = "Las muestras se escriben tal cual, no se vuelven a codificar."
+body = """
+
+      Un WAV son las muestras que devolvió el descodificador con una cabecera
+      delante. No hay ningún codificador por medio tomando decisiones sobre tu
+      grabación, ni nada que pudiera describirse como una subida donde eso
+      pudiera ocurrir."""
+
+[[privacy]]
+title = "Qué carga Google, y qué no llega a ver."
+body = """
+ Los scripts de
+      publicidad y de medición vienen de Google, y el botón de donación de Buy Me
+      a Coffee. A ninguno se le entrega nada sobre tu vídeo: ni el archivo, ni
+      una muestra, ni un nombre, un tamaño o una duración."""
+
+[[privacy]]
+title = "Funciona sin conexión."
+body = """
+ Desconecta la red y la herramienta sigue
+      igual, porque nunca hubo un paso de red en ella. Es la prueba más simple de
+      todas."""
+
+[[howto]]
+title = "Suelta el vídeo."
+body = """
+ Un MP4, MOV, M4V o WebM, de un
+      móvil, de una cámara, de un grabador de pantalla o de una descarga. Lo lee
+      tu propio navegador; no hay paso de subida que omitir."""
+
+[[howto]]
+title = "Lee lo que ha encontrado."
+body = """
+ La duración, el número de canales
+      y la frecuencia de muestreo, sacados directamente del archivo. Si el
+      archivo no declaró su frecuencia, la página lo dice, en lugar de
+      remuestrear en silencio y afirmar que no se tocó nada."""
+
+[[howto]]
+title = "Elige mono si lo quieres más pequeño."
+body = """
+ Dejar los canales como
+      están mantiene la grabación exactamente igual que era. Mezclar a mono
+      reduce el archivo a la mitad y es lo que quiere una transcripción o una
+      grabación de voz; promedia los canales en lugar de tirar uno."""
+
+[[howto]]
+title = "Escúchalo antes de guardarlo."
+body = """
+ El reproductor es el archivo que
+      está a punto de descargarse, no el vídeo, así que si suena bien, la
+      descarga está bien."""
+
+[[howto]]
+title = "Llévatelo, o pásalo al siguiente."
+body = """
+ Descarga el WAV, o mándalo
+      directamente al recortador o al editor sin guardarlo antes."""
+
+[[faq]]
+q = "¿Se sube mi vídeo a alguna parte?"
+a = """
+        No. Tanto la descodificación como la escritura ocurren en tu propio
+        navegador, en tu propio hardware. Esta herramienta no tiene función de
+        red de ninguna clase &mdash; nunca descarga nada y nunca envía nada
+        &mdash; y la <code>Content-Security-Policy</code> de la página nombra
+        todas las direcciones que puede contactar, ninguna de las cuales es
+        nuestra. Si prefieres comprobarlo a que te lo cuenten, desconéctate de
+        internet y saca el sonido igualmente."""
+
+[[faq]]
+q = "¿Puede darme un MP3?"
+a = """
+        No, y no va a fingir que sí. Ningún navegador trae un codificador de MP3,
+        y la única manera de llegar a uno es mandar tu vídeo a un servidor que lo
+        tenga, que es justo lo que este sitio existe para no hacer. Lo que
+        obtienes es un WAV: las muestras con una cabecera de cuarenta y cuatro
+        bytes delante, que no necesita codificador alguno y no puede costar
+        calidad. Es más grande, unos diez megabytes por minuto en estéreo, y lo
+        abre cualquier reproductor, móvil o editor. Lo que quiera un MP3 puede
+        hacer uno a partir de él en un segundo."""
+
+[[faq]]
+q = "¿Se llega a mirar la imagen?"
+a = """
+        No, y aquí no hay nada que pudiera mirarla. Al descodificador del
+        navegador se le entrega el archivo y se le pide su pista de audio; la
+        pista de vídeo no se descodifica nunca, no se dibuja nunca y no llega
+        siquiera al código de esta página. En <code>src/</code> no hay ningún
+        descodificador de vídeo que pudiera ejecutarse. El archivo que sale
+        contiene sonido y nada más."""
+
+[[faq]]
+q = "Dice que no se pudo leer sonido, pero el vídeo se ve perfectamente."
+a = """
+        Entonces es casi seguro que el vídeo no tiene pista de audio. Una
+        grabación de pantalla hecha sin micrófono seleccionado es muda, y también
+        lo es un clip exportado por un editor con el sonido silenciado; los dos
+        se reproducen perfectamente, porque hay imagen que reproducir. El mensaje
+        nombra esto primero porque es la más probable de las dos causas; la otra
+        es un formato que este navegador no va a leer. Abre el archivo en un
+        reproductor y busca un control de volumen que no haga nada: es la forma
+        más rápida de saber cuál de las dos tienes."""
+
+[[faq]]
+q = "¿Qué formatos de vídeo puedo abrir?"
+a = """
+        Los que descodifique tu navegador, que en la práctica significa MP4, M4V,
+        MOV y WebM, y todos los formatos de audio además. Lo que queda fuera es
+        la misma lista corta que en el resto del sitio: AVI, WMV y la mayoría de
+        los MKV. Un archivo que tu navegador no vaya a leer se rechaza con un
+        mensaje que lo dice, en lugar de fallar a mitad de camino."""
+
+[[faq]]
+q = "¿Se pierde calidad?"
+a = """
+        Nada más allá de lo que el vídeo ya le hizo a su propio audio cuando se
+        creó. Las muestras que devuelve el descodificador se escriben tal cual:
+        no hay una segunda codificación, así que no hay una segunda generación de
+        pérdida. Lo único que conviene saber es la frecuencia de muestreo: la del
+        propio archivo se lee primero de su cabecera y la descodificación se hace
+        a esa frecuencia, de modo que tu grabación no se remuestrea en silencio.
+        Si un archivo no declara ninguna, la página dice qué frecuencia
+        supuso."""
+
+[[faq]]
+q = "¿Por qué el WAV es mucho más grande que el vídeo?"
+a = """
+        Porque un WAV no está comprimido y la pista de audio del vídeo sí lo
+        estaba. El sonido con calidad de CD ocupa unos diez megabytes por minuto
+        en estéreo, contenga lo que contenga; la pista AAC dentro de un MP4 quizá
+        una décima parte de eso. Mezclar a mono lo reduce a la mitad. Es el
+        precio de no recodificar, y se paga una sola vez: lo que abras después
+        con el archivo ya puede comprimirlo."""
+
+[[faq]]
+q = "¿De qué duración puede ser el vídeo?"
+a = """
+        Aquí no hay ningún límite puesto, porque no hay un servidor pagándolo. El
+        techo real es la memoria de tu propio dispositivo: el archivo se lee
+        entero y toda la pista de audio se mantiene como muestras, así que una
+        grabación muy larga en un dispositivo pequeño puede quedarse sin sitio.
+        Unas cuantas horas de vídeo normalmente van bien, y un móvil aguantará
+        menos que un portátil."""
+
+[[faq]]
+q = "¿Puedo recortarlo o subirle el volumen?"
+a = """
+        Sí, pero no aquí: esta página hace un solo trabajo. Cuando hay un
+        resultado aparece una fila de enlaces junto a la descarga que lo lleva
+        directamente al <a href="../cortar-audio/">recortador de audio</a> o al
+        <a href="../editar-audio/">editor de audio</a> sin guardarlo antes, y sin
+        que ninguno de los dos lo suba tampoco."""
+
+[[faq]]
+q = "¿Es gratis? ¿Necesito una cuenta?"
+a = """
+        Es gratis, y no hay cuenta, ni inicio de sesión, ni versión de prueba, ni
+        límite de cuántos vídeos abres. El sitio lleva publicidad, que es lo que
+        lo paga; a los anuncios no se les da nada sobre tu archivo."""
+
+[[faq]]
+q = "¿Funciona sin conexión?"
+a = """
+        Sí. Carga la página una vez, desconéctate de internet y sigue
+        funcionando. Esa es también la forma más simple de demostrar que no se
+        sube nada: una herramienta que mandara tu vídeo fuera para procesarlo se
+        pararía en el momento en que te desconectaras."""
+
+[schema]
+description = "Extrae la pista de audio de un MP4, MOV o WebM y guárdala como WAV. Solo se descodifica el audio, la imagen no se lee nunca, y no se sube nada."
+features = [
+  "Guarda como WAV el audio de vídeos MP4, M4V, MOV y WebM",
+  "Descodifica solo la pista de audio; la imagen no se lee nunca",
+  "Lee primero la frecuencia de muestreo del archivo, para no remuestrear en silencio",
+  "Mezcla a mono promediando, para la mitad de tamaño",
+  "Reproduce el resultado antes de que lo guardes",
+  "Lleva el resultado al recortador o al editor de audio sin guardarlo",
+  "Funciona sin conexión; sin subidas, sin cuenta",
+]
+
+[picker]
+title = "Suelta aquí un vídeo"
+hint = "o haz clic para buscarlo &mdash; MP4, MOV, M4V o WebM"

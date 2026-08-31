@@ -1,0 +1,274 @@
+#
+# Formattatore XML - Italian.
+#
+# Overrides for tools/xml-formatter/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Formattatore XML"
+heading = "Formattatore&nbsp;XML <span class=\"h1-kw\">&mdash; sistemalo, compattalo o trasformalo in JSON</span>"
+tagline = "XML sistemato per leggerlo o compattato per spedirlo, e convertito in JSON in tutte e due le direzioni. Niente di tutto questo finisce incollato nel server di qualcun altro."
+
+title = "Formattatore XML e XML in JSON &mdash; gratis, senza caricare niente"
+description = "Formatta, indenta e compatta XML, e converti XML in JSON o JSON in XML. Il parser gira nel tuo browser e non viene caricato niente, quindi un feed, una fattura o un file di configurazione non lascia mai il tuo dispositivo."
+og_title = "Formattare XML senza incollarlo in un server"
+og_description = "Un formattatore e convertitore XML che gira sul tuo dispositivo. Ti dice su quale riga sta l'errore, e quello che incolli non va da nessuna parte."
+og_image_alt = "Formattatore XML - sistemarlo, compattarlo o convertirlo, senza caricamenti"
+
+pledge = """
+    Formattare e convertire sono aritmetica su una stringa, fatta qui, in questa
+    pagina. Il parser è scritto a mano e sta in <code>src/xml.js</code>, e non
+    c'è nient'altro. Questo strumento non ha nessuna funzione di rete di alcun
+    tipo &mdash; niente da scaricare, niente da mandare &mdash; e qui conta più
+    di quanto la parola &ldquo;XML&rdquo; lasci pensare: quello che arriva in
+    questo formato di solito è una fattura, un estratto conto, una cartella
+    clinica, o una richiesta SOAP con le credenziali di qualcuno
+    nell'intestazione."""
+
+live_hint = """
+      Non devi crederci sulla parola: apri i DevTools, guarda la scheda di rete e
+      formatta qualcosa. Non una sola richiesta porta un carattere di quello che
+      hai incollato. Oppure stacca internet e formattalo lo stesso."""
+
+read_first = """
+, <code>src/xml.js</code> per il parser che ti
+      dice quale tag non è stato mai chiuso, e <code>src/convert.js</code> per il
+      motivo per cui ogni valore esce dall'XML come stringa invece di essere
+      indovinato."""
+
+howto_heading = "Come formattare XML senza caricarlo"
+
+card = """
+            Sistema l'XML per leggerlo, compattalo per spedirlo, oppure
+            trasformalo in JSON e viceversa. Incolla una fattura o un feed senza
+            consegnarla a nessuno."""
+
+[words]
+plural = "XML e JSON"
+choose = "un file"
+analytics_extra = """, e niente dell'XML
+  che ci passa dentro"""
+
+[[facts]]
+text = "Niente caricamenti"
+
+[[facts]]
+text = "Nessun account"
+
+[[facts]]
+text = "Nessun limite di dimensione"
+
+[[facts]]
+text = "Funziona offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Quello che incolli non ha dove andare."
+body = """
+ La
+      Content-Security-Policy elenca ogni indirizzo che questa pagina può
+      contattare, e nessuno di questi è nostro. Qui non c'è nessun endpoint dove
+      una fattura incollata possa essere raccolta, e nel codice non c'è niente
+      che ce la manderebbe se ci fosse."""
+
+[[privacy]]
+title = "Qui niente va a prendere niente."
+body = """
+ Non c'è nessun
+      <code>fetch</code>, nessun <code>XMLHttpRequest</code> e nessun
+      <code>sendBeacon</code> da nessuna parte in <code>src/</code>. Il parser e
+      lo stampatore sono funzioni di questa pagina che prendono una stringa e
+      restituiscono una stringa."""
+
+[[privacy]]
+title = "Nessuna entità esterna viene mai risolta."
+body = """
+ Un
+      <code>DOCTYPE</code> con dentro un'entità esterna è il modo in cui un
+      parser XML viene convinto a leggere un file dalla macchina che sta
+      analizzando, ed è il buco più vecchio del formato.
+      <code>src/xml.js</code> è un lettore scritto a mano che non ha nessuna
+      risoluzione di entità &mdash; non disattivata, assente &mdash; e questa
+      pagina non consegna mai il tuo testo al <code>DOMParser</code> del browser
+      stesso."""
+
+[[privacy]]
+title = "Ogni valore che esce dall'XML è una stringa."
+body = """
+ <code>&lt;port&gt;8080&lt;/port&gt;</code>
+      non dice niente sul fatto che quello sia un numero, quindi il JSON dice
+      <code>"8080"</code>. Deciderlo al posto tuo sarebbe inventare
+      un'informazione che poi viaggia come se fosse stata nel file."""
+
+[[privacy]]
+title = "Cosa carica Google, e cosa non gli arriva."
+body = """
+ Gli script della
+      pubblicità e della misurazione arrivano da Google, e il pulsante delle
+      donazioni da Buy Me a Coffee. A nessuno dei due viene passato un carattere
+      del tuo testo. Ogni riga che lo legge, lo analizza o lo scrive è servita da
+      questa origine ed è elencata nel repository."""
+
+[[privacy]]
+title = "Funziona offline."
+body = """
+ Stacca la rete e lo strumento è identico,
+      perché un passo di rete non c'è mai stato. È la prova più semplice che ci
+      sia."""
+
+[[howto]]
+title = "Scegli il lavoro."
+body = """
+ Due schede, una casella:
+      <em>Formatta</em> sistema l'XML o lo compatta; <em>Converti</em> lo
+      trasforma in JSON, o il JSON di nuovo in XML. L'XML che hai appena
+      sistemato è l'XML che converti, senza incollarlo due volte."""
+
+[[howto]]
+title = "Incollalo, oppure trascina il file."
+body = """
+ Va bene qualunque cosa tu
+      possa selezionare e copiare, e un file <code>.xml</code>,
+      <code>.svg</code>, <code>.rss</code> o <code>.xsd</code> trascinato sul
+      selettore viene letto dal tuo browser e messo nella casella &mdash; non c'è
+      nessun passo di caricamento da saltare."""
+
+[[howto]]
+title = "Scegli l'indentazione, o compattalo."
+body = """
+ Due spazi, quattro,
+      oppure una tabulazione. Compattarlo è lo stesso documento senza nessuno
+      degli spazi che c'erano solo per leggerlo, e il risultato dice quanti byte
+      ha fatto risparmiare."""
+
+[[howto]]
+title = "Leggi l'errore dove sta l'errore."
+body = """
+ Un parser che qui fallisce
+      dice <em>quale tag</em> non è stato mai chiuso e su quale riga e colonna,
+      invece di &ldquo;errore alla riga 1&rdquo;, che è quello che dice un browser
+      di un documento letto tutto in una volta."""
+
+[[howto]]
+title = "Prenditi il risultato."
+body = """
+ Copialo, oppure scaricalo come file,
+      con il nome del formato in cui è uscito."""
+
+[[faq]]
+q = "Il mio XML viene caricato da qualche parte?"
+a = """
+        No. Il parser e lo stampatore di questa pagina sono funzioni che girano
+        nel tuo browser, sul tuo hardware. Questo strumento non ha nessuna
+        funzione di rete di alcun tipo &mdash; non scarica mai niente e non manda
+        mai niente &mdash; e la <code>Content-Security-Policy</code> della pagina
+        elenca ogni indirizzo che può contattare, e nessuno di questi è nostro.
+        Per l'XML conta più di quanto la fama del formato lasci pensare: quello
+        che ci arriva dentro di solito è una fattura, un estratto conto, una
+        cartella clinica, o una richiesta SOAP con le credenziali
+        nell'intestazione."""
+
+[[faq]]
+q = "Risolve le entità esterne?"
+a = """
+        No, e non c'è niente da disattivare. La risoluzione delle entità esterne
+        è il modo in cui un parser XML viene convinto a leggere file dalla
+        macchina che lo esegue &mdash; l'attacco che di solito si scrive XXE
+        &mdash; e <code>src/xml.js</code> è un lettore scritto a mano senza
+        nessuna risoluzione di entità. Il tuo testo non viene mai consegnato
+        nemmeno al <code>DOMParser</code> del browser. Un <code>DOCTYPE</code>
+        viene portato avanti senza essere mai eseguito."""
+
+[[faq]]
+q = "Cosa si perde convertendo XML in JSON?"
+a = """
+        L'ordine del contenuto misto, i commenti, e la differenza tra un
+        attributo e un elemento figlio &mdash; quest'ultima attenuata più che
+        cancellata, perché un attributo diventa un membro il cui nome comincia
+        con <code>@</code>. Il testo proprio di un elemento diventa
+        <code>#text</code> quando deve stare accanto a qualcos'altro, e i figli
+        ripetuti diventano un array. Ogni valore resta una stringa: l'XML non ha
+        tipi, e decidere che <code>8080</code> fosse un numero sarebbe inventare
+        un'informazione."""
+
+[[faq]]
+q = "Cosa si perde convertendo JSON in XML?"
+a = """
+        La differenza tra un oggetto vuoto, un array vuoto e una stringa vuota,
+        che diventano tutti e tre un elemento vuoto, e il tipo di ogni valore,
+        perché l'XML non ha tipi. Un array diventa un elemento ripetuto, che è
+        l'unica forma che si rilegge, e a una chiave che un nome di elemento non
+        può reggere vengono sostituiti i caratteri scomodi invece di produrre un
+        documento che nessun parser leggerà."""
+
+[[faq]]
+q = "Può formattare un SVG, un feed RSS o un file POM?"
+a = """
+        Sì. Tutti e tre sono XML, e questo legge XML invece di un dialetto
+        particolare. Un SVG sistemato così è più facile da modificare a mano; un
+        feed RSS o Atom di solito viene spedito compattato ed è illeggibile
+        finché qualcosa non lo apre. La disposizione non cambia niente di quello
+        che il documento significa."""
+
+[[faq]]
+q = "Reindentare l'XML cambia quello che significa?"
+a = """
+        Per un documento i cui elementi contengono altri elementi, no. Dove può
+        contare è il testo: gli spazi dentro un elemento che contiene parole
+        fanno parte di quel testo, quindi un elemento che contiene solo testo
+        viene lasciato su una riga invece che aperto. Le sezioni
+        <code>CDATA</code> vengono copiate esattamente com'erano."""
+
+[[faq]]
+q = "Perché non usare direttamente il parser XML del browser?"
+a = """
+        Per quello che dice quando il documento è rotto. Il
+        <code>DOMParser</code> restituisce un documento di errore la cui
+        formulazione è diversa in ogni browser e spesso si riduce a
+        &ldquo;errore alla riga 1&rdquo;. Un lettore scritto a mano può dire
+        quale tag non è stato mai chiuso, e dove era stato aperto, che è la cosa
+        che ti serviva davvero sapere. Non risolvere le entità esterne è l'altro
+        motivo."""
+
+[[faq]]
+q = "Quanto può essere grande il file?"
+a = """
+        Qui non c'è nessun limite impostato, perché non c'è un server che lo
+        paga. Il tetto vero è il tuo dispositivo: qualche megabyte di XML va
+        bene, e con un documento molto lungo la pagina aspetta una pausa nella
+        tua digitazione prima di riformattare, invece di litigarti la
+        tastiera."""
+
+[[faq]]
+q = "È gratis, e mi serve un account?"
+a = """
+        È gratis, e non c'è account, non c'è registrazione, non c'è periodo di
+        prova e non c'è limite a quanto incolli. Il sito ha della pubblicità, ed
+        è quella che lo mantiene; agli annunci non arriva niente sul tuo
+        testo."""
+
+[[faq]]
+q = "Funziona offline?"
+a = """
+        Sì. Carica la pagina una volta, poi stacca internet e continua a
+        funzionare. È anche il modo più semplice per dimostrare che non viene
+        caricato niente: uno strumento che mandasse via il tuo XML per
+        formattarlo si fermerebbe nel momento in cui stacchi la spina."""
+
+[schema]
+description = "Formattare, indentare e compattare XML, e convertire XML in JSON o JSON in XML. Il parser gira nel browser, non risolve nessuna entità esterna, e non viene caricato niente."
+features = [
+  "Sistema l'XML, oppure lo compatta e dice quanti byte ha fatto risparmiare",
+  "Converte XML in JSON e JSON in XML, dicendo cosa perde ogni direzione",
+  "Dice quale tag non è stato mai chiuso, e su quale riga e colonna",
+  "Non risolve nessuna entità esterna, quindi un payload XXE resta sempre solo testo",
+  "Legge SVG, RSS, Atom, XSD e qualunque altro XML",
+  "Funziona su un file trascinato come su un incollato",
+  "Funziona offline; niente caricamenti, nessun account",
+]
+
+[picker]
+title = "Trascina qui un file"
+hint = "oppure clicca per sceglierlo &mdash; un file .xml, .svg o .rss"
