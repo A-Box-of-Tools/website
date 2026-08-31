@@ -691,6 +691,19 @@ for (const control of [el.order, el.showRuler, el.showNames, el.background,
 
 /* ------------------------------------------------------ the live network check */
 
+/* ------------------------------------------------- privacy panel + offline */
+
+// The header's toggle, which every other tool on the site wires and this one
+// did not. The panel it opens is the live network check - the page's own
+// evidence for the claim it makes - so a toggle that does nothing is the one
+// control here it is worst to leave dead. It went unnoticed because nothing
+// throws: the elements are looked up, the listener is simply never added.
+el.privacyToggle.addEventListener('click', () => {
+  const open = el.privacyPanel.hidden;
+  el.privacyPanel.hidden = !open;
+  el.privacyToggle.setAttribute('aria-expanded', String(open));
+});
+
 // Google's ad and measurement scripts, and the donate button's. They are the
 // price of the site being free, they are loaded without the visitor asking, and
 // none of them is handed anything typed into this page - so they are reported
