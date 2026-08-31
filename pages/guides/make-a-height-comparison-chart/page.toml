@@ -1,0 +1,35 @@
+#
+# Guide: making a height comparison chart.
+#
+# Written for the person who has two numbers and wants a picture: a family, a
+# cast of characters, a piece of furniture against the person who has to lift
+# it. What the notation rules are, why the figure you pick matters more than
+# people expect, why one familiar object beats a third person, and what a
+# chart you can share by link costs you.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/make-a-height-comparison-chart"
+kind = "guide"
+nav = "Making a height chart"
+group = "doing-the-job"
+tool = "compare-heights"
+
+title = "How to Make a Height Comparison Chart"
+description = "Turn a list of heights into a side-by-side picture: how to write the heights, which figure to pick for a child, why one familiar object does more than a third person, and how to get the chart out as a PNG or an SVG."
+
+heading = "How to make a height comparison chart"
+lede = """
+    Two numbers do not tell you what a fifteen-centimetre difference looks
+    like. A picture does, in about a second, which is the whole reason these
+    charts exist. Here is how to make one that is right as well as
+    convincing."""
+
+updated = "30 August 2026"
+published = "2026-08-30"
+lastmod = "2026-08-30"
+
+og_title = "Making a height comparison chart"
+og_description = "How to write the heights, which figure to pick, and why one familiar object on the chart does more than a third person."
+og_image_alt = "abox.tools - tools that never touch a server"

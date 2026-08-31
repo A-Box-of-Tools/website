@@ -1,0 +1,415 @@
+#
+# Height Comparison Chart
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# The second tool here whose input is typed rather than dropped, after the QR
+# generator, so it has no [picker] table either. What is unusual about it is
+# what the input IS: a list of people's names and how tall each of them is,
+# which is the most personal thing anything on this site is handed and the
+# reason the privacy panel below is written about a list rather than a file.
+#
+# It needs no [csp] table. The PNG is the page's own SVG painted onto a canvas
+# through a blob: URL, and img-src already carries blob: on every tool page -
+# see [tool_csp] in config/site.toml.
+#
+# It is the second tool with a vendor/ folder, after heic-to-jpg, and the first
+# whose vendored files are pictures rather than code: four of the five people
+# are public-domain artwork somebody else drew. vendor/LICENSE.md says who, why
+# the licence had to ask for nothing rather than merely be free, and why the
+# man is smoothed on the way in.
+#
+
+slug = "compare-heights"
+name = "Height Comparison Chart"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Height&nbsp;Comparison <span class=\"h1-kw\">&mdash; a side-by-side chart you can download</span>"
+tagline = "Type the heights, take the picture. Nothing is sent to draw it."
+icon = "&#128207;"          # the straight ruler, beside the page heading
+favicon = "&#128207;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1 rasterises
+# for the share card and the two installed-app icons, which want a filled
+# colourful mark rather than a line drawing.
+glyph = "ruler"
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "beyond"
+lastmod = "2026-08-30"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Height Comparison Chart &mdash; Free, No Sign-Up, Nothing Uploaded"
+description = "Compare heights side by side. Add a man, a woman, a boy, a girl, a toddler and objects &mdash; a door, a window, a whiteboard, a vending machine &mdash; in centimetres or feet and inches, and download the chart as a PNG or an SVG. It is drawn in your browser."
+og_title = "Compare heights side by side, and keep the picture"
+og_description = "Put two adults, a child, a toddler and a doorway on the same ruler, in centimetres or feet and inches, and download the result. No account, no watermark, and no list of names leaving your machine."
+og_image_alt = "Height Comparison Chart - compare heights side by side, nothing uploaded"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every card,
+# so this is the only part of it that belongs to this tool.
+og_card = "Two adults, a child and a doorway on one ruler - drawn on your own machine."
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    A height chart is arithmetic and a drawing: there is no file to send and no
+    service to ask. The man, the woman, the boy and the girl are public-domain
+    artwork that ships with this page; the toddler is built here from a table of
+    body proportions, which is why it is shaped like a toddler rather than like
+    a small adult. Every step of it happens in about six hundred lines of
+    JavaScript in this page that you can read. There is no network feature of
+    any kind, which matters here because what you type is a list of people and
+    how tall each of them is."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and type
+      a name and a height. Not one request carries a character of either. Or
+      unplug from the internet and make the chart anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/traced.js</code>
+      and <code>vendor/</code> for the four drawn figures and where their
+      artwork came from, <code>src/figures.js</code> for the proportion table the
+      toddler is built from, <code>src/units.js</code> for how a typed height
+      becomes a number and how the ruler is labelled, <code>src/chart.js</code>
+      for the layout, and <code>src/save.js</code> for the two downloads &mdash;
+      which are the SVG on screen, and that same SVG painted onto a canvas."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to make a height comparison chart"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Put two adults, a child and a doorway on the same ruler &mdash; in
+            centimetres or feet and inches &mdash; and download it as a PNG or
+            an SVG."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "names, heights and the chart they make"
+choose = "who goes on the chart"
+analytics_extra = """, and not a
+  name or a height you type"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "A list of people is not a small thing to hand over."
+body = """
+ Most
+      height charts want an account, and the ones that do not still have a
+      server that sees every name and number you type. What you are typing here
+      is who is in your family and how tall each of them is, often with a
+      child's age implied by the figure beside the name. None of it is sent
+      anywhere, because there is nowhere here for it to go."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The
+      Content-Security-Policy names every address this page may contact, and
+      not one of them belongs to this site."""
+
+[[privacy]]
+title = "Nothing is remembered between visits, either."
+body = """
+ The
+      chart lives in the page and nowhere else. Close the tab and the list is
+      gone: there is no account holding it, no cookie carrying it, and nothing
+      written into this browser's storage &mdash; which is also why a chart you
+      want to keep is a chart you download."""
+
+[[privacy]]
+title = "The link does not carry the chart."
+body = """
+ Several tools like this one
+      put the whole list into the address bar so it can be shared, which turns
+      every name and height into something logged by whatever the link passes
+      through &mdash; a chat server, a mail scanner, somebody's browser history.
+      The address of this page never changes as you type."""
+
+[[privacy]]
+title = "The PNG is made from the SVG that is on screen."
+body = """
+ The
+      download is not a second rendering that might disagree with the preview.
+      The same markup is handed to the browser and painted onto a canvas, which
+      is also why it can be done with the network unplugged: there is no font to
+      fetch and no image to load inside it."""
+
+[[privacy]]
+title = "The artwork is here, not fetched."
+body = """
+ The four drawn
+      figures are public-domain artwork, and they are served from this origin
+      with the rest of the page &mdash; no icon font, no CDN, no sprite sheet
+      pulled off somebody else's server as you type. It is also why the chart
+      still draws with the network unplugged."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed a name or a height. Every line that turns
+      your list into a picture is served from this origin and listed in the
+      repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Add everybody first, then worry about how it looks."
+body = """
+ A row is a
+      figure, a name, a height and a colour. The name is optional &mdash; a
+      chart of two unnamed silhouettes with their heights over them is often
+      exactly what somebody wants &mdash; and the arrows on each row move it
+      left or right if the order matters."""
+
+[[howto]]
+title = "Type the height however you write it."
+body = """
+ <code>173</code>,
+      <code>1.73 m</code>, <code>5'8"</code>, <code>68 in</code> and
+      <code>5 ft 8</code> are all read correctly. The line under the box shows
+      what was understood, in both systems, so a misread is visible before it
+      is drawn rather than after it is printed. A bare number is centimetres on
+      a metric chart and inches on an imperial one, and a bare number under
+      three is metres &mdash; nobody is 1.73 cm tall."""
+
+[[howto]]
+title = "Pick the figure that matches the person."
+body = """
+ A two-year-old is
+      about four and a half head-heights tall and an adult is seven and a half,
+      so a toddler drawn as a shrunken adult looks wrong in a way that is hard
+      to name and easy to see. There is a boy and a girl for school age and a
+      toddler below it, each with its own proportions rather than being the
+      adult made small, which is most of what makes a family chart look like a
+      family."""
+
+[[howto]]
+title = "Put something familiar on the chart."
+body = """
+ A number is abstract and a
+      doorway is not. Adding one object of a size everybody knows &mdash; a
+      door, a window, a classroom whiteboard, a vending machine &mdash; is what
+      turns a chart that states two heights into one that shows them. The menu
+      holds twenty of them, grouped, and every one becomes an ordinary row you
+      can type your own numbers over. Objects take a width as well as a height,
+      so a door is 203 by 81 rather than a stripe."""
+
+[[howto]]
+title = "Set the ruler to the units your reader thinks in."
+body = """
+ Switching
+      between centimetres and feet rewrites what is in the boxes rather than
+      reinterpreting it, so the chart itself does not move &mdash; only the
+      notation does. If the chart is for two audiences, the height written above
+      each figure is in the chart's unit and the line under each box has both."""
+
+[[howto]]
+title = "Take the PNG for pasting, the SVG for printing."
+body = """
+ The PNG is a
+      picture at the pixel height you set, which is what a chat window, a
+      document or a slide wants. The SVG is the chart as instructions, so it
+      prints sharp at any size and can still be recoloured afterwards by
+      anything that opens vectors."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is anything I type sent anywhere?"
+a = """
+        No. The chart is drawn by JavaScript in this page, on your own machine,
+        and this tool has no network feature of any kind &mdash; it never
+        fetches anything and never sends anything. The page's
+        <code>Content-Security-Policy</code> names every address it may contact,
+        none of which belongs to this site. That is worth saying plainly here
+        because the input is a list of people's names and how tall each of them
+        is, which is more personal than most of what this site handles."""
+
+[[faq]]
+q = "Can I download the chart?"
+a = """
+        Yes, as a PNG or as an SVG, with no watermark and no account. The PNG is
+        drawn at whatever pixel height you set and is the one to paste into a
+        document, a slide or a chat. The SVG is the chart as instructions rather
+        than pixels: it prints sharp at any size and can be opened and
+        recoloured later in any vector editor. Both are made from the same
+        markup that is on screen, so neither can disagree with the preview."""
+
+[[faq]]
+q = "How do I write the height &mdash; centimetres or feet?"
+a = """
+        Either, in any row, whichever way you normally write it.
+        <code>173</code>, <code>173 cm</code>, <code>1.73 m</code>,
+        <code>5'8"</code>, <code>5 ft 8 in</code> and <code>68 in</code> are all
+        understood, and the line under the box shows what was read in both
+        systems. A bare number is centimetres when the chart is metric and
+        inches when it is imperial; a bare number under three is taken as
+        metres, because 1.73 cm is not a height anybody types."""
+
+[[faq]]
+q = "Why does the toddler not look like a small adult?"
+a = """
+        Because a toddler is not one. Body proportions change with age: a
+        two-year-old is roughly four and a half head-heights tall, an
+        eight-year-old six, an adult seven and a half &mdash; so the head is
+        nearly a quarter of a toddler and an eighth of a grown-up. The boy and
+        the girl are drawings of actual children, and the toddler has its own
+        table of proportions rather than being a silhouette scaled down, which is
+        why a family chart looks like a family instead of like four adults at
+        different sizes."""
+
+[[faq]]
+q = "Where do the figures come from?"
+a = """
+        Four of the five are artwork by other people, all of it in the public
+        domain: the man by pitr, the woman by Madeleine Price Ball, the girl by
+        OpenClipart-Vectors, and the boy by Ryan Kissinger for the NIH BioArt
+        library. Every file ships with this page in <code>vendor/</code> as it
+        was published, so you can check them against the originals. Public domain
+        asks for nothing, which is the point: the artwork ends up inside a picture
+        you download, and a licence needing attribution would attach that
+        requirement to your chart. Only the toddler is drawn by this page's own
+        code &mdash; below school age there is nothing free to be had."""
+
+[[faq]]
+q = "How many people can I put on one chart?"
+a = """
+        Twelve. That is not a technical limit &mdash; the drawing would happily
+        do thirty &mdash; but past a dozen the columns get narrower than the
+        names written over them and the picture stops being readable. If you
+        need more, turning the names off gives you back the width, or two charts
+        will say it better than one."""
+
+[[faq]]
+q = "Can I put an object on the chart?"
+a = """
+        Yes &mdash; a plain rectangle takes a height and a width, so anything
+        with two dimensions goes on beside the people. The menu holds twenty to
+        start from, in four groups: doors and windows, school and office
+        (a whiteboard, a desk, a filing cabinet, a projector screen), things
+        around town (a vending machine, a wheelie bin, a basketball hoop, a
+        20&nbsp;ft shipping container) and things around the house. Some of
+        those are genuine standards and some are typical sizes, which the page
+        says out loud; each arrives as an ordinary row you can type over. One
+        familiar object does more for a chart than any number of extra people:
+        it is what turns a comparison into a sense of scale."""
+
+[[faq]]
+q = "Is there a figure for a dog or a cat?"
+a = """
+        No, and it is a deliberate gap rather than an oversight. Both were built
+        &mdash; in profile, standing with the head level with the shoulder, so
+        that the top of the drawing would be the height written beside it, which
+        is where every breed standard measures an animal. They did not come out
+        well enough to ship: a quadruped seen from the side standing next to
+        four people seen from the front reads as a mistake even when the drawing
+        is good. A rectangle at the animal's shoulder height is honest in the
+        meantime."""
+
+[[faq]]
+q = "Can I share the chart with a link?"
+a = """
+        Not from here, and that is deliberate. Tools that offer it do it by
+        putting the whole list into the address, which means every name and
+        every height ends up in whatever the link travels through &mdash; a chat
+        server's logs, a mail scanner, somebody's browser history, a link
+        preview fetcher. Download the picture and send that instead: it says
+        the same thing and carries no list with it."""
+
+[[faq]]
+q = "Is it free, and can I use the chart commercially?"
+a = """
+        It is free, there is no account and no watermark, and you can put the
+        result in a report, a presentation, a listing or a product. The site
+        carries advertising, which is what pays for it. Nothing about a chart
+        you make here is owned by us, and nothing is kept."""
+
+[[faq]]
+q = "Why is the ruler in tens and not in ones?"
+a = """
+        Because the spacing is chosen from how many lines the picture can carry
+        rather than from a fixed number. A chart of two adults gets a line every
+        ten centimetres; put a basketball hoop on it and the lines move to
+        twenty-five, because ninety lines on one picture is a grey wash rather
+        than a ruler. In feet and inches the ladder is one, three, six and
+        twelve inches, so the lines land on whole inches instead of near them."""
+
+[[faq]]
+q = "Can I put the chart on a dark slide?"
+a = """
+        Yes. Set the background to the colour it will sit on and the ruler and
+        the writing switch between dark and light to suit it &mdash; worked out
+        from the colour's luminance rather than from a guess. Then tick "no
+        background at all" if you want the picture itself transparent: the
+        colour you chose still decides the ink, so a transparent chart headed
+        for a navy slide comes out legible on it."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your list away to have a chart drawn would
+        stop the moment you unplugged."""
+
+[schema]
+category = "UtilitiesApplication"
+description = "Draw a height comparison chart in the browser. Add a man, a woman, a boy, a girl, a toddler and objects with their heights in centimetres or feet and inches, order them, colour them, and download the result as a PNG or an SVG. Nothing is uploaded."
+features = [
+  "Up to twelve figures on one ruler, in any order",
+  "Man, woman, child and toddler figures, and a plain rectangle for objects",
+  "Public-domain drawn man, woman, boy and girl, and a toddler with its own proportions rather than a scaled adult",
+  "Heights typed as 173, 1.73 m, 5'8\", 68 in or 5 ft 8, with the reading shown back",
+  "Centimetres or feet and inches, switched without changing anybody's height",
+  "Twenty ready-made objects: doors, windows, a whiteboard, a vending machine, a shipping container, furniture",
+  "A ruler whose spacing is chosen from what the picture can carry",
+  "Any background colour, or none, with the ink chosen to stay legible on it",
+  "PNG out at any pixel height, and an SVG that prints sharp at any size",
+  "No watermark, no account, no link that carries your list",
+  "Runs offline; nothing uploaded",
+]

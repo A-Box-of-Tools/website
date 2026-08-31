@@ -1,0 +1,268 @@
+/*
+  What this tool needs on top of shared/css/tool-frame.css.
+
+  Two things, really: the table of rows, which is the whole interface, and the
+  panel the chart is previewed in. The rest is the form vocabulary the QR
+  generator wrote for the first typed-input tool here - the same names, so a
+  reader moving between the two files is reading the same rules.
+*/
+
+.error {
+  margin: 1rem 0 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
+  color: var(--danger);
+  font-size: 0.9rem;
+  white-space: pre-line;
+}
+
+.card-lede {
+  margin: -0.4rem 0 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 68ch;
+}
+
+.field-summary {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 72ch;
+}
+
+.field-summary.warn { color: var(--warn); }
+
+/* ------------------------------------------------------------ the row table */
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/*
+  Six columns, and the header only names them once. The alternative - a label
+  on every field of every row - is twelve rows saying "Name" twelve times, and
+  the narrow layout below turns those columns into a block anyway, where the
+  placeholders do the naming instead.
+*/
+.row-head,
+.row {
+  display: grid;
+  /* The last two are fixed rather than `auto` because the header's cells for
+     them are empty, and an `auto` column sized to an empty span is a header
+     whose labels sit over the wrong controls. */
+  grid-template-columns:
+    minmax(6.5rem, 0.9fr) minmax(7rem, 1.3fr) minmax(7.5rem, 1.2fr)
+    minmax(4.5rem, 0.7fr) 2.6rem 6.8rem;
+  gap: 0.5rem;
+  align-items: start;
+}
+
+.row-head {
+  /* Level with a row's own text: the row has a border and 0.55rem of padding
+     inside it, and the header has neither. */
+  padding: 0 calc(0.55rem + 1px) 0.15rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.row {
+  padding: 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.row select,
+.row input[type="text"] {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.45rem 0.5rem;
+  font: inherit;
+  font-size: 0.92rem;
+  color: var(--text);
+  width: 100%;
+  min-width: 0;
+}
+
+.row-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+/* What the height box was understood to mean, under the height box. It is the
+   only answer to "did it read 5'8 as five foot eight", and it is worth the
+   line it takes. */
+.row-reads {
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+
+.row-reads.bad { color: var(--danger); }
+
+/* The width box belongs to the rectangle and to nothing else. It keeps its
+   grid cell when it is not wanted, so a row with an object in it does not
+   shunt every column along. */
+.row:not(.is-object) .row-width { visibility: hidden; }
+
+.row-colour {
+  width: 2.6rem;
+  height: 2.3rem;
+  padding: 0.1rem;
+}
+
+.row-tools {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.row-tools .icon {
+  width: 2.1rem;
+  height: 2.3rem;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.row-tools .icon.danger { color: var(--danger); }
+.row-tools .icon:disabled { opacity: 0.35; cursor: default; }
+
+@media (max-width: 700px) {
+  .row-head { display: none; }
+
+  .row {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  .row-name { grid-column: 1 / -1; }
+  .row-cell { grid-column: 1 / -1; }
+  .row:not(.is-object) .row-width { display: none; }
+  .row-tools { justify-content: flex-end; }
+}
+
+.preset-row { margin-top: 1.1rem; }
+
+/* ------------------------------------------------------------- the options */
+
+.options {
+  margin: 1.2rem 0 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+
+.options legend {
+  padding: 0 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+  min-width: 0;
+}
+
+.option-row label { font-size: 0.9rem; font-weight: 600; }
+.option-row select { min-width: 0; max-width: 100%; }
+.option-row input[type="number"] { width: 7rem; }
+
+.check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+}
+
+/* A checkbox has no bottom margin of its own, so the option row that follows
+   one sits straight underneath it. */
+.check + .option-row { margin-top: 0.9rem; }
+
+.check input { margin-top: 0.25rem; flex: none; }
+.check strong { display: block; font-size: 0.9rem; }
+.check + .check { margin-top: 0.8rem; }
+
+.check-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  max-width: 70ch;
+}
+
+.options .field-summary {
+  padding-top: 0.7rem;
+  border-top: 1px dashed var(--border);
+}
+
+/* --------------------------------------------------------------- the result */
+
+/*
+  The chequerboard is what makes a transparent background visible as
+  transparent rather than as white, which is the difference between a chart
+  that works on a dark slide and one that does not.
+*/
+.preview {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 14rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, #e6e8ec 25%, transparent 25%),
+    linear-gradient(-45deg, #e6e8ec 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #e6e8ec 75%),
+    linear-gradient(-45deg, transparent 75%, #e6e8ec 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 0 8px, 8px -8px, -8px 0;
+  overflow-x: auto;
+}
+
+.preview:empty { background-image: none; background-color: var(--surface-2); }
+
+/* The chart is drawn at whatever pixel height was asked for, which is usually
+   taller than the card. It is scaled to fit here and downloaded at its real
+   size; `height: auto` is what stops a wide chart being squashed. */
+.preview svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.facts {
+  margin: 1rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 78ch;
+}
+
+.run-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 1.2rem;
+}

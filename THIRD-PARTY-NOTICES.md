@@ -4,8 +4,10 @@ This site has no dependencies and no build step for its JavaScript. What is in
 `shared/` and each tool's `src/` is byte for byte what the browser runs, and
 almost all of it is written here.
 
-The exception is one icon, listed below. Its licence requires that the notice
-travel with the copy, which is what this file is for.
+There are two exceptions, listed below. The first is an icon whose licence
+requires that the notice travel with the copy, which is what this file is for.
+The second asks for nothing at all, and is here because artwork somebody else
+drew should be credited whether or not a licence insists on it.
 
 ---
 
@@ -82,6 +84,37 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+---
+
+## Four public-domain figures — the people on the height chart
+
+The man, the woman, the boy and the girl on `/compare-heights/` are artwork by
+other people, in the public domain:
+
+| File | Drawn by | Source | Licence |
+|---|---|---|---|
+| [`man-standing-silhouette.svg`](tools/compare-heights/vendor/man-standing-silhouette.svg) | pitr | [Commons](https://commons.wikimedia.org/wiki/File:Man_standing_silhouette.svg) | CC0 1.0 |
+| [`woman-short-hair-and-jeans.svg`](tools/compare-heights/vendor/woman-short-hair-and-jeans.svg) | Madeleine Price Ball | [Commons](https://commons.wikimedia.org/wiki/File:Silhouette_of_Woman_with_Short_Hair_and_Jeans.svg) | CC0 1.0 |
+| [`boy-outline-nih-bioart-59.svg`](tools/compare-heights/vendor/boy-outline-nih-bioart-59.svg) | Ryan Kissinger, courtesy of NIAID | [Commons](https://commons.wikimedia.org/wiki/File:Boy_Outline_(NIH_BioArt_59).svg) | Public domain |
+| [`girl-silhouette-black.svg`](tools/compare-heights/vendor/girl-silhouette-black.svg) | OpenClipart-Vectors | [Commons](https://commons.wikimedia.org/wiki/File:Girl_silhouette_black.svg) | CC0 1.0 |
+
+None of those licences requires anything: no attribution, no notice, no
+share-alike. They are listed because the artwork deserves the credit.
+
+That they ask for nothing is also why they were chosen. The artwork ends up
+inside a picture a visitor downloads and puts in a report, and that page
+promises they may use it for anything with no strings — a CC BY licence would
+have travelled into their chart and made the promise false.
+
+The files are as published, with two documented exceptions: one CRLF in the
+boy became a newline, because every text file here is LF; and the man is
+smoothed before he is drawn, by
+[`scripts/smooth-outline.mjs`](scripts/smooth-outline.mjs), because his
+original is a hand-traced photograph with a visibly shaky edge. A test
+re-derives that smoothing from the vendored file on every run. Both are
+explained in
+[`tools/compare-heights/vendor/LICENSE.md`](tools/compare-heights/vendor/LICENSE.md).
 
 ---
 

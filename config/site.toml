@@ -335,8 +335,8 @@ body = """
 [[hub.categories]]
 id = "images"
 name = "Images"
-note = "Resize one, shrink one, or take out what it quietly records about you - none of it sent anywhere."
-order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "stack-images", "redact-image", "exif-editor", "dicom-viewer", "image-to-ico", "image-to-data-uri", "svg-to-image"]
+note = "Resize one, shrink one, take out what it quietly records about you, or draw one from nothing - none of it sent anywhere."
+order = ["compress-image", "resize-image", "heic-to-jpg", "id-photo", "stack-images", "redact-image", "exif-editor", "dicom-viewer", "image-to-ico", "image-to-data-uri", "svg-to-image", "compare-heights"]
 
 # Video and GIF were two categories, and the line between them was one this site
 # cared about and a reader did not: a GIF is what somebody makes when the MP4
@@ -535,6 +535,7 @@ order = [
   "whats-inside-a-gif",
   "format-json-without-uploading-it",
   "share-text-between-devices",
+  "make-a-height-comparison-chart",
 ]
 
 [[guides.groups]]
