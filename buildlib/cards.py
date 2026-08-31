@@ -9,17 +9,30 @@ Three kinds of prose, all of them explanation rather than state:
     step is for;
   * `<span class="check-note">` - the small print under a checkbox, saying what
     turning it on costs;
-  * the `field-summary` or `field-note` that closes an options fieldset - the
-    policy the settings above it add up to.
+  * `<p class="field-note">` - what one control does, wherever it sits;
+  * `<p class="field-summary">` - what a group of them adds up to, likewise.
 
 They are gathered into one `<details>` whose summary is the card's own heading,
 with a small mark beside it. Closed, a card is the controls it operates;
 opened, it is everything it used to say.
 
-What does NOT move is anything that reports rather than explains. The line
-under the target field - "This image is over 200 KB, so it will be compressed
-until it is not" - answers a question the reader asked by typing a number, and
-a status hidden behind a fold is a status nobody reads.
+A summary used to fold only if it closed a `<fieldset>`, which is a fact about
+where somebody typed it and not about what it says. Four tools had summaries
+sitting open on the page because of that, compare-heights three of them in a
+row - half a screen of prose between a menu and the chart it fills in.
+
+WHAT DOES NOT MOVE
+
+Anything that reports rather than explains. The line under the target field -
+"This image is over 200 KB, so it will be compressed until it is not" - answers
+a question the reader asked by typing a number, and a status hidden behind a
+fold is a status nobody reads.
+
+Those are told apart by being EMPTY in the markup: a paragraph the tool writes
+into has nothing in it until it does. Every rule here checks that, and the
+fieldset one did not, so five tools were folding away a status their own
+JavaScript fills in. `tests/python/test_cards.py` now asserts both halves -
+that no written summary is left on a page, and that no empty one is folded.
 
 WHY THE BUILD DOES THIS AND NOT THE MARKUP
 
@@ -92,6 +105,19 @@ TAGS = re.compile(r'<[^>]+>')
 CHECK_NOTE = re.compile(
     r'(?P<strong><strong>(?:(?!</strong>).)*</strong>)\s*'
     r'(?P<note><span class="check-note">(?:(?!</span>).)*</span>)', re.S)
+
+# What a whole group of controls adds up to, wherever the tool happened to put
+# it. `field-summary` names the paragraph rather than its position, and until
+# this existed only the ones that closed a fieldset were folded - so four tools
+# had summaries sitting open on the page for no reason but where they were
+# written. compare-heights had three of them under one menu, half a screen of
+# prose above the chart.
+#
+# The empty ones are skipped for the reason every empty note is: the tool writes
+# into them - qr-barcode's symbology and encoded notes, the download note three
+# tools share - and a status behind a fold is a status nobody reads.
+SUMMARY = re.compile(
+    r'[ \t]*<p class="field-summary"[^>]*>(?P<body>(?:(?!</p>).)*)</p>\n?', re.S)
 
 # The explanation a settings fieldset closes with.
 CLOSING_NOTE = re.compile(
@@ -167,8 +193,24 @@ def _fold_card(card):
         found.append((match.start(), match.end(), match.group(0).strip(), ''))
 
     for match in CLOSING_NOTE.finditer(inner):
+        # Empty for the same reason an empty field-note is: the tool writes
+        # into it. This rule did not use to check, so five tools were folding
+        # away a status line their own JavaScript fills in - compress-image and
+        # heic-to-jpg's format note, document-scanner's and redact-image's
+        # strength note, qr-barcode's size note. They report; they stay.
+        if not TAGS.sub('', match.group('note')).strip():
+            continue
         found.append((match.start(), match.end(),
                       match.group('note'), match.group('tail')))
+
+    # After CLOSING_NOTE, so that a summary which does close a fieldset is
+    # already claimed and is not folded twice.
+    for match in SUMMARY.finditer(inner):
+        if not TAGS.sub('', match.group('body')).strip():
+            continue
+        if any(start <= match.start() < end for start, end, _, _ in found):
+            continue
+        found.append((match.start(), match.end(), match.group(0).strip(), ''))
 
     for match in FIELD_NOTE.finditer(inner):
         if not TAGS.sub('', match.group('body')).strip():
