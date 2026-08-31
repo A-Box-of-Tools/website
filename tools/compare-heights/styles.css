@@ -53,15 +53,43 @@
 .row-head,
 .row {
   display: grid;
-  /* The last two are fixed rather than `auto` because the header's cells for
-     them are empty, and an `auto` column sized to an empty span is a header
-     whose labels sit over the wrong controls. */
+  /* The first and last three are fixed rather than `auto` because the header's
+     cells for them are empty, and an `auto` column sized to an empty span is a
+     header whose labels sit over the wrong controls. */
   grid-template-columns:
-    minmax(6.5rem, 0.9fr) minmax(7rem, 1.3fr) minmax(7.5rem, 1.2fr)
+    1.3rem minmax(6.5rem, 0.9fr) minmax(7rem, 1.3fr) minmax(7.5rem, 1.2fr)
     minmax(4.5rem, 0.7fr) 2.6rem 6.8rem;
   gap: 0.5rem;
   align-items: start;
 }
+
+/* The drag handle. `touch-action: none` is not decoration: without it a touch
+   that starts here scrolls the page and the row never moves. */
+.row-grip {
+  align-self: center;
+  cursor: grab;
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  line-height: 1;
+  text-align: center;
+  touch-action: none;
+  user-select: none;
+}
+
+.row-grip:hover { color: var(--accent); }
+
+.row.is-dragging {
+  cursor: grabbing;
+  border-color: var(--accent);
+  box-shadow: var(--shadow);
+  opacity: 0.9;
+}
+
+.row.is-dragging .row-grip { cursor: grabbing; }
+
+/* While a row is being dragged, nothing else on the page should be selecting
+   text under the pointer. */
+body.is-reordering { user-select: none; }
 
 .row-head {
   /* Level with a row's own text: the row has a border and 0.55rem of padding
@@ -143,18 +171,32 @@
 @media (max-width: 700px) {
   .row-head { display: none; }
 
+  /* The handle keeps its own column down the left of the stacked block, so a
+     row can still be dragged with a thumb. */
   .row {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.3rem 1fr auto;
     align-items: center;
   }
 
-  .row-name { grid-column: 1 / -1; }
-  .row-cell { grid-column: 1 / -1; }
+  /* `span 5` and not `1 / -1`: these rows are implicit, and -1 names the last
+     EXPLICIT line, so it would resolve to a single row and leave the handle
+     at the top of the block instead of down the side of it. */
+  .row-grip { grid-row: 1 / span 5; }
+  .row-shape { grid-column: 2; }
+  .row-colour { grid-column: 3; }
+  .row-name { grid-column: 2 / -1; }
+  .row-cell { grid-column: 2 / -1; }
+  .row-width { grid-column: 2 / -1; }
   .row:not(.is-object) .row-width { display: none; }
-  .row-tools { justify-content: flex-end; }
+  .row-tools { grid-column: 2 / -1; justify-content: flex-end; }
 }
 
 .preset-row { margin-top: 1.1rem; }
+
+/* The unit sits above the table it changes rather than in a panel of its own:
+   it decides what a number typed into any of those boxes means, so it is part
+   of the typing rather than part of the picture. */
+.unit-row { margin-bottom: 1.1rem; }
 
 /* ------------------------------------------------------------- the options */
 

@@ -60,7 +60,7 @@ const PALETTE = [
 ];
 
 /** What "add a person" adds, in turn, so a fresh chart is not four identical men. */
-const PEOPLE_ORDER = ['man', 'woman', 'boy', 'girl', 'toddler'];
+const PEOPLE_ORDER = ['man', 'woman', 'boy', 'girl'];
 
 /** Every row on the chart. The DOM node for each is kept on the row itself. */
 let rows = [];
@@ -91,15 +91,25 @@ function heightPlaceholder() {
   return phrase(unit() === 'ft' ? 'row.heightexampleft' : 'row.heightexample');
 }
 
+/**
+ * A row, ready to draw.
+ *
+ * The height starts at the figure's own default rather than empty, so adding a
+ * person puts somebody on the chart instead of a row asking to be filled in.
+ * It is a number to type over: the point of the tool is the heights you know,
+ * and a chart that draws nothing until you have typed one is a chart that
+ * opens as a form.
+ */
 function addRow(shape, values = {}) {
   if (rows.length >= MOST) return null;
 
   counter += 1;
+  const start = shapeOf(shape).defaultCm;
   const row = {
     key: counter,
     shape,
     name: values.name ?? '',
-    height: values.height ?? '',
+    height: values.height ?? (start ? toInput(start, unit()) : ''),
     width: values.width ?? '',
     colour: values.colour ?? PALETTE[(rows.length) % PALETTE.length],
   };
@@ -119,7 +129,16 @@ function buildRow(row) {
   for (const option of SHAPES) shape.append(new Option(phrase(option.label), option.id));
   shape.value = row.shape;
   shape.addEventListener('change', () => {
+    const was = shapeOf(row.shape).defaultCm;
     row.shape = shape.value;
+    // Swapping a figure moves the height with it, but only while the height is
+    // still the one that arrived with the old figure: a number somebody typed
+    // is theirs, and changing the drawing is not a reason to lose it.
+    const now = shapeOf(row.shape).defaultCm;
+    if (now && was && row.height.trim() === toInput(was, unit())) {
+      row.height = toInput(now, unit());
+      height.value = row.height;
+    }
     node.classList.toggle('is-object', row.shape === 'object');
     draw();
   });
@@ -158,19 +177,21 @@ function buildRow(row) {
   colour.value = row.colour;
   colour.addEventListener('input', () => { row.colour = colour.value; draw(); });
 
+  // The handle. A span rather than a button, because it does nothing a click
+  // could do: the keyboard route to the same job is the two arrows beside it,
+  // which is why dragging is allowed to be pointer-only without leaving
+  // anybody out.
+  const grip = document.createElement('span');
+  grip.className = 'row-grip';
+  grip.setAttribute('aria-hidden', 'true');
+  grip.title = phrase('row.drag');
+  grip.textContent = '⠿';
+  grip.addEventListener('pointerdown', (event) => startDrag(event, row));
+
   const tools = document.createElement('div');
   tools.className = 'row-tools';
-  const move = (by) => {
-    const at = rows.indexOf(row);
-    const to = at + by;
-    if (to < 0 || to >= rows.length) return;
-    rows.splice(at, 1);
-    rows.splice(to, 0, row);
-    paintRows();
-    draw();
-  };
-  const up = iconButton('&#8592;', () => move(-1));
-  const down = iconButton('&#8594;', () => move(1));
+  const up = iconButton('&#8593;', () => move(row, -1));
+  const down = iconButton('&#8595;', () => move(row, 1));
   const remove = iconButton('&#215;', () => {
     rows = rows.filter((other) => other !== row);
     paintRows();
@@ -179,7 +200,7 @@ function buildRow(row) {
   remove.classList.add('danger');
   tools.append(up, down, remove);
 
-  node.append(shape, name, heightCell, width, colour, tools);
+  node.append(grip, shape, name, heightCell, width, colour, tools);
   node.classList.toggle('is-object', row.shape === 'object');
 
   // Kept for the renaming pass in paintRows: the aria-labels carry a row
@@ -188,6 +209,91 @@ function buildRow(row) {
     shape, name, height, width, colour, up, down, remove, reads,
   };
   return node;
+}
+
+/**
+ * Move one row to a new place in the list.
+ *
+ * Reordering by hand is a statement about the order, so it takes the chart off
+ * "tallest first" if it was on it. The alternative is a drag that visibly does
+ * nothing, which reads as a broken control rather than as a setting somewhere
+ * else winning.
+ */
+function reorder(row, to) {
+  const at = rows.indexOf(row);
+  if (to < 0 || to >= rows.length || to === at) return false;
+  rows.splice(at, 1);
+  rows.splice(to, 0, row);
+  if (el.order.value !== 'entered') el.order.value = 'entered';
+  return true;
+}
+
+function move(row, by) {
+  if (!reorder(row, rows.indexOf(row) + by)) return;
+  paintRows();
+  draw();
+  // The button the visitor pressed has just been re-appended, and a control
+  // that loses focus when it is used cannot be pressed twice by a keyboard.
+  row.controls[by < 0 ? 'up' : 'down'].focus();
+}
+
+/* ------------------------------------------------------------- dragging a row */
+
+/** The row being dragged, while one is. */
+let dragged = null;
+
+/**
+ * Which slot the pointer is over.
+ *
+ * The rows are read from the page rather than from the model because the
+ * dragged row is still in the flow: it moves as the list is reordered, which
+ * is what makes the drag look like the thing it is doing.
+ */
+function slotAt(y) {
+  for (let i = 0; i < rows.length; i += 1) {
+    const box = rows[i].node.getBoundingClientRect();
+    if (y < box.top + box.height / 2) return i;
+  }
+  return rows.length - 1;
+}
+
+function onDragMove(event) {
+  if (!dragged) return;
+  // Without this a touch drag scrolls the page instead of moving the row.
+  event.preventDefault();
+  if (reorder(dragged, slotAt(event.clientY))) {
+    paintRows();
+    draw();
+  }
+}
+
+function endDrag() {
+  if (!dragged) return;
+  dragged.node.classList.remove('is-dragging');
+  dragged = null;
+  document.body.classList.remove('is-reordering');
+  window.removeEventListener('pointermove', onDragMove);
+  window.removeEventListener('pointerup', endDrag);
+  window.removeEventListener('pointercancel', endDrag);
+}
+
+/**
+ * Start a drag.
+ *
+ * The listeners go on the window rather than on the row, and there is no
+ * pointer capture: paintRows() re-appends every row node as the order changes,
+ * and a captured pointer is released the moment its element leaves the
+ * document - so the drag would end on the first swap.
+ */
+function startDrag(event, row) {
+  if (event.button > 0) return;
+  event.preventDefault();
+  dragged = row;
+  row.node.classList.add('is-dragging');
+  document.body.classList.add('is-reordering');
+  window.addEventListener('pointermove', onDragMove, { passive: false });
+  window.addEventListener('pointerup', endDrag);
+  window.addEventListener('pointercancel', endDrag);
 }
 
 function iconButton(html, onClick) {
@@ -242,8 +348,13 @@ function readRows() {
     const { reads } = row.controls;
 
     if (parsed.error) {
-      reads.textContent = row.height.trim() ? phrase(parsed.error) : phrase('height.empty');
-      reads.className = `row-reads${row.height.trim() ? ' bad' : ''}`;
+      // An empty box reads as an error like any other. It used to be a neutral
+      // hint, on the grounds that a row you have not filled in yet is not a
+      // mistake - but every row now arrives with a height in it, so an empty
+      // one is a box somebody has cleared, and a row that will not be drawn
+      // should say so where the reading would have been.
+      reads.textContent = phrase(parsed.error);
+      reads.className = 'row-reads bad';
       continue;
     }
 
@@ -282,7 +393,10 @@ function draw() {
   if (!figures.length) {
     current = null;
     el.preview.replaceChildren();
-    el.facts.textContent = phrase('chart.empty');
+    // Two different nothings: a chart with no rows at all, and a chart whose
+    // rows have all had their heights emptied. The second is a mistake to
+    // correct rather than a step not taken yet.
+    el.facts.textContent = phrase(rows.length ? 'chart.noheights' : 'chart.empty');
     setDownloads(false);
     return;
   }
@@ -525,11 +639,12 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 // Two people to start with, so the page arrives as a chart rather than as an
-// empty form. Neither is named: the heights alone say what the tool does, and
-// a pair of invented names would be somebody's idea of a name in fifteen
-// languages.
-addRow('man', { height: toInput(178, 'cm') });
-addRow('woman', { height: toInput(165, 'cm') });
+// empty form. Their heights are the figures' own defaults, from the same place
+// every other row gets one. Neither is named: the heights alone say what the
+// tool does, and a pair of invented names would be somebody's idea of a name
+// in fifteen languages.
+addRow('man');
+addRow('woman');
 paintRows();
 draw();
 

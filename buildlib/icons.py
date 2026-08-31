@@ -13,7 +13,7 @@ trust.
 
 Lucide is ISC, which asks that the notice travel with the copies - so
 shared/icons/LICENSE is the file that came with them, and it is why the folder
-is one directory rather than thirty-six files loose in shared/.
+is one directory rather than a scatter of files loose in shared/.
 
 WHY THE WRAPPER IS DROPPED AT ALL
 
@@ -35,8 +35,8 @@ from . import site as sitelib
 WRAPPER = re.compile(r'\A\s*<svg\b[^>]*>(?P<inner>.*)</svg>\s*\Z', re.S)
 
 # Two or more spaces, or a newline and its indent: upstream pretty-prints one
-# element per line, and inside a page that is thirty-six icons' worth of
-# whitespace saying nothing.
+# element per line, and inside a page holding an icon for every tool that is a
+# lot of whitespace saying nothing.
 GAPS = re.compile(r'\s*\n\s*')
 
 
@@ -71,8 +71,8 @@ def inner(root, name):
 def load_all(root, names):
     """Every icon the site needs, worked out once.
 
-    One dict for the whole build rather than a read per page: the same thirty-six
-    drawings are placed on the hub, on every tool page's header, and on the four
+    One dict for the whole build rather than a read per page: the same drawings
+    are placed on the hub, on every tool page's header, and on the four
     neighbour tiles at the foot of each of them, in fifteen languages. Reading
     them off the disk each time would be about sixty thousand file opens for
     eighteen kilobytes of geometry.

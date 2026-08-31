@@ -15,7 +15,17 @@ to put the paragraph, the list only ever grows.
 
 Read [What can be built here](docs/what-can-be-built-here.md) first. It holds
 the test every entry here has already passed, the table of what the browser
-can do unaided, and the three things ruled out for good.
+can do unaided, and the things ruled out for good.
+
+**A claim about what a browser cannot do is a claim with an expiry date, and it
+is cheap to check.** Three lines here rested on one — AVIF, animated WebP and
+MP3 — and on 30 August 2026 all three were put to a browser rather than
+believed. Two were wrong, and they had been wrong for long enough to shape
+which tools got built. Whoever revisits this next should re-run them rather
+than inherit them: open a page on the site, and ask `canvas.convertToBlob` for
+the format, or `VideoEncoder`/`AudioEncoder`'s `isConfigSupported` for the
+codec. Each section below says what its answer was, so a paragraph that has
+gone stale can be told apart from one that was never tested.
 
 ## How a line earns its place
 
@@ -41,10 +51,13 @@ whether the work is worth doing at all:
 
 ## The three ways a line leaves this list
 
-1. **It ships.** Move it out of `config/planned.toml` and out of all ten
-   `locales/*/planned.toml`, and add the folder under `tools/` in the same
-   commit. The lists are merged positionally, so a locale list one item longer
-   than English fails the build.
+1. **It ships.** Move it out of `config/planned.toml` and out of every
+   `locales/*/planned.toml`, add the folder under `tools/`, and **delete its
+   section from this file** — all in the same commit. The lists are merged
+   positionally, so a locale list one item longer than English fails the build.
+   Nothing checks the last step, and it is the one that gets missed: the
+   document scanner shipped in #116 and its paragraph sat here arguing for a
+   tool you could already use until this revisit found it.
 2. **It turns out to be a feature.** Build it into the tool that already owns
    the input, and record it under [Folded into tools that
    exist](#folded-into-tools-that-exist) below so nobody re-adds the card.
@@ -68,14 +81,33 @@ is not one more field in somebody else's form.
 
 ### AVIF
 
-Chromium's `canvas.toBlob` is the only native AVIF writer, and every other
-browser quietly hands back a PNG when asked for one — which is worse than
-refusing, because the file is named `.avif` and is not one. That is the entire
-argument for the tool: doing it here means it behaves the same everywhere.
-Where the browser can write it, the browser writes it; where it cannot,
-this is the group's one candidate for a vendored `libaom`, on the terms the
-README sets out for [`heic-to-jpg`](tools/heic-to-jpg/README.md) — the narrow
-library, not the 25 MB general one.
+Every browser reads AVIF and not one of them will write one. Asked for
+`image/avif`, `canvas.toBlob` hands back a PNG — silently, with the wrong type
+on the blob, which is worse than refusing, because the file is named `.avif`
+and is not one. That is the whole argument for the tool.
+
+This card used to say Chromium was the exception and that the fallback was a
+vendored `libaom`. Both halves were wrong, and measuring them is what this
+revisit was for. Chromium 148 returns `image/png` from `toBlob` **and** from
+`OffscreenCanvas.convertToBlob`, and no browser ships the `ImageEncoder` that
+WebCodecs specified for exactly this. But
+an AVIF is one AV1 keyframe in the same ISO-BMFF container HEIC uses, and
+`VideoEncoder` encodes AV1 today — `av01.0.04M.08` reports supported and hands
+back a real OBU stream, sequence header and all. So the encoder is already
+installed and the work is the container, which is the kind of thing this
+repository has three of in `mp4.js` and a reader for in
+[`heic-to-jpg`](tools/heic-to-jpg/src/boxes.js).
+
+One piece is genuinely missing and should not be discovered late:
+`VideoEncoder` returns a null `decoderConfig.description` for AV1, so the
+`av1C` box — the profile, level and chroma flags in front of a copy of the
+sequence header — has to be built by hand out of that header rather than copied
+from what the encoder gives you. That is the tool, and it is not `libaom`.
+
+Detecting the browsers that cannot do it is already solved and shipped:
+[`compress-image`](tools/compress-image/src/codecs.js) encodes a single pixel
+and checks the type of the blob that comes back, precisely because `toBlob`
+does not report failure. That probe is the front door of this tool.
 
 ### DICOM anonymizer
 
@@ -109,8 +141,13 @@ separate tool and not a button on the viewer.
 ### GIF to MP4 or WebM
 
 Same animation, usually a tenth of the size, and every platform that rejects a
-30 MB GIF accepts the MP4. The muxer exists twice over in this repository
-already, so the work is the decode side and the encoder settings.
+30 MB GIF accepts the MP4. The muxer exists five times over in this repository
+already — three variants of `mp4.js`, declared as groups in
+`tests/python/test_duplicates.py` — and the one this wants is the smaller of
+them, the single video track with no audio that
+[`images-to-video`](tools/images-to-video/) and the time-lapse maker share. A
+GIF has no sound to carry. So the work is the decode side and the encoder
+settings.
 
 ### Edit a GIF
 
@@ -125,11 +162,33 @@ same file.
 
 ### Animated WebP
 
-Every browser decodes animated WebP and none of them encode it, which is why
-this is the only line in the group that cannot be built out of what the browser
-already has. It needs `libwebp` vendored into the one tool that uses it, with
-`'wasm-unsafe-eval'` on that page and nowhere else. The card says so out loud
-because a roadmap that hides its costs is how a tool ends up half-built.
+This card used to say that none of the browsers encode animated WebP, that it
+therefore needed `libwebp` vendored, and that it would be the second page on
+the site to carry `'wasm-unsafe-eval'`. The card advertised that cost out loud,
+which was the right instinct and the wrong fact. It was tested for this
+revisit, and it is not true.
+
+The browser will not encode an *animation*, but it encodes every **frame** of
+one: `canvas.convertToBlob({type: 'image/webp'})` returns a complete still
+WebP, which is a RIFF file with the bitstream in a `VP8 ` or `VP8L` chunk.
+An animation is those same chunks wrapped one per `ANMF`, behind a `VP8X` and
+an `ANIM`. Four frames assembled that way came to 448 bytes and the browser's
+own `ImageDecoder` read them straight back — `animated: true`, four frames, the
+durations intact.
+
+Transparency was the case worth doubting, because it is the reason to convert a
+GIF to this format at all, and it survives without special handling: given a
+canvas with an alpha channel the encoder returns `VP8L`, which carries its own
+alpha, so there is no separate `ALPH` chunk to order correctly. A three-frame
+test came back with the corner pixel still `rgba(0, 0, 0, 0)` and the drawing
+on top of it opaque.
+
+So this is container assembly of about the same size as the muxer work
+elsewhere on this list, it needs no vendored anything, and the site keeps its
+one `'wasm-unsafe-eval'` page rather than gaining a second. The reason this
+line sat at the bottom of its group for so long has been removed; what is left
+is the frame-by-frame decode of the GIF going in, which
+[`split-gif`](tools/split-gif/src/gif.js) already does.
 
 ## Video
 
@@ -143,10 +202,10 @@ that [`crop-video`](tools/crop-video/) already carries.
 
 The cheapest thing on this entire list, and it should be built first for that
 reason. A sideways MP4 does not need re-encoding — it needs a different display
-matrix in `tkhd`, which is a few bytes. `tests/python/test_duplicates.py:28`
-notes that the trim and reverse readers deliberately carry the display matrix
-out of the file whole, so the hard part is already sitting in the repository
-being used for something else.
+matrix in `tkhd`, which is a few bytes. `tests/python/test_duplicates.py` says
+of the second `demux.js` group that the trim and reverse readers deliberately
+carry the sample entry and the display matrix out of the file whole, so the
+hard part is already sitting in the repository being used for something else.
 
 ### Mute a video
 
@@ -188,20 +247,36 @@ transcription service.
 
 MP3, WAV and Opus. WAV out is a 44-byte header in front of the samples and
 already exists in [`edit-audio/src/wav.js`](tools/edit-audio/src/wav.js); Opus
-comes out of `MediaRecorder`, which every browser ships. MP3 is the one that
-needs help, because no browser has an encoder — and the answer is
-`libmp3lame` alone, not a general FFmpeg build. That is the
+comes out of `MediaRecorder`, which every browser ships, and out of
+`AudioEncoder` beside it, which also encodes AAC — so an `.m4a`, which is what
+most people mean when they say a file will not play, is free as well. MP3 is
+the one that needs help, and it is the one claim on this list that measuring
+did not overturn: `AudioEncoder.isConfigSupported({codec: 'mp3'})` is false and
+`MediaRecorder` will not take `audio/mpeg`. The answer is `libmp3lame` alone,
+not a general FFmpeg build. That is the
 [`heic-to-jpg`](tools/heic-to-jpg/README.md) lesson written down where the next
 person will look for it: 1.4 MB for the job you need beats 25–30 MB for every
 job you do not.
 
 ## Documents & PDF
 
-### Rotate & crop pages
+### Crop pages
 
-A scan that came in sideways, or a page with margins worth losing. Both are one
-entry in the page dictionary, and [`merge-pdf`](tools/merge-pdf/src/objects.js)
-already reads and rewrites those.
+A page with margins worth losing: the scan with an inch of white down one side,
+the slide deck printed four-up. It is one entry in the page dictionary, and
+[`merge-pdf`](tools/merge-pdf/src/pages.js) already reads `/MediaBox`,
+normalises the corners a real file names them in — either order, and both
+happen — and writes it back out.
+
+This card used to be "Rotate & crop pages", and half of it was a promise to
+build something that had already shipped. `merge-pdf` turns pages: one page by
+the arrows on its card, a range by "Turn these", the whole document by "Turn
+every page", in fifteen languages. Advertising that as forthcoming is the
+second question at the top of this file failing in its sharpest form — a card
+next to a shipped tool, describing what the shipped tool does, reads as an
+admission that the tool is unfinished. It is recorded under [Folded into tools
+that exist](#folded-into-tools-that-exist), which is where it should have gone
+the day it was built.
 
 ### Extract images
 
@@ -209,15 +284,6 @@ Pulling the pictures back out of a document is the reader
 [`compress-pdf`](tools/compress-pdf/src/images.js) needed anyway, run in the
 other direction, and it answers a question people ask constantly: the picture
 is in the PDF and nowhere else, and they need it back.
-
-### Document scanner
-
-A phone photo of a page, with the corners found, the perspective straightened,
-the shadows thresholded away and the result written out as a PDF. It is canvas
-work in front of [`images-to-pdf`](tools/images-to-pdf/), which is the back half
-already built. What people photograph this way are IDs, bills, contracts and
-forms for an office that asked for a scan, so the upload is the part that
-should bother them.
 
 ## Beyond media
 
@@ -268,6 +334,7 @@ made its tool look unfinished for as long as it sat on the roadmap.
 | Fade in & out | [`edit-audio`](tools/edit-audio/) | [`trim-audio`](tools/trim-audio/src/main.js) already places fades on its cuts. What was left is fading the head and tail of a whole file: a control in the audio editor. |
 | Waveform image | [`edit-audio`](tools/edit-audio/src/waveform.js) | That tool already draws the waveform. The roadmap item was a download button underneath it. |
 | Save a video's audio | shipped | [`trim-audio`](tools/trim-audio/) and [`edit-audio`](tools/edit-audio/) both accept a video and never decode its picture. This was on the roadmap after it was built. |
+| Rotate PDF pages | [`merge-pdf`](tools/merge-pdf/) | `/Rotate` is one number in the page dictionary, so the merger got it for nothing while it was already rewriting them — per page, per range, or the whole document. It was on the roadmap after it was built, paired with [Crop pages](#crop-pages), which is the half that is still real. |
 
 ## Taken off the list
 
@@ -324,5 +391,8 @@ answer can be revisited rather than re-argued.
   somebody is ready to start it, not before.
 - **PDF page to PNG.** Asked for constantly, and it needs a renderer rather
   than a reader — a font engine and a full graphics model, which is a vendored
-  engine on the scale of the FFmpeg argument. It belongs beside background
-  removal and camera RAW in the README's ruled-out table, not here.
+  engine on the scale of the FFmpeg argument. This entry used to end by saying
+  it belonged beside background removal and camera RAW in the ruled-out table
+  instead of here; that move has now been made, so the argument lives in
+  [What can be built here](docs/what-can-be-built-here.md#what-is-still-left-out)
+  and this line is a signpost to it.

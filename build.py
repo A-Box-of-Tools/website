@@ -61,7 +61,7 @@ A SCOPED BUILD
 `--only` and `--locale` narrow what gets written, for the case that is most of
 the work and none of the interest: changing one tool and wanting to look at it.
 A full build writes about twelve hundred pages in every language the site has,
-and thirty-five of the thirty-six tools in it are not the one being worked on.
+and all but one of the tools in it are not the one being worked on.
 
 What they narrow is only what is WRITTEN. Everything is still loaded, every
 language is still surveyed, and each page is still rendered knowing every other
@@ -330,10 +330,10 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     #
     # This is also most of what a scoped build saves. Reading and minifying
     # every module of every tool is the largest fixed cost the build has, and
-    # thirty-five thirty-sixths of it is work on tools the run is not going to
-    # write. The import check goes with it, which is a real check being skipped
-    # - but it is a check on tools this run does not touch, and CI runs the
-    # whole build on every push.
+    # nearly all of it is work on tools the run is not going to write. The
+    # import check goes with it, which is a real check being skipped - but it
+    # is a check on tools this run does not touch, and CI runs the whole build
+    # on every push.
     for tool in tools:
         if only and tool['slug'] not in only:
             continue
@@ -366,6 +366,34 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     for locale in locales:
         i18n.check_slugs(locale, [tool['slug'] for tool in tools],
                          [page['slug'] for page in prose], site)
+
+    # How many tools there are, put into the pages that say so. The About page
+    # names the number in its opening paragraph and in the description a search
+    # result quotes, and a number written into prose is a number nobody is told
+    # to move: it read thirty-six in all fifteen languages while there were
+    # forty of them.
+    #
+    # Done here for the reason the screenshots above are: it is one fact,
+    # identical in every language, so working it out inside the languages would
+    # be answering the same question fifteen times. And it has to be here
+    # rather than further in, because a description is quoted by things that
+    # never render a page - llms.txt is built from these dicts, and a count
+    # filled in at render time shipped it the placeholder itself.
+    #
+    # The body of a page is not done here: there is one body file per language,
+    # so build_page renders that as it goes, the way a tool's body.html is
+    # already rendered.
+    counts = {'tool_count': len(tools)}
+    for page in prose:
+        said = [(f'pages/{page["slug"]}', page)]
+        said += [(f'locales/{locale["lang"]}/pages/{page["slug"]}',
+                  locale['pages'].get(page['slug'], {}))
+                 for locale in locales]
+        for where, table in said:
+            for key in ('description', 'og_description'):
+                if key in table:
+                    table[key] = templates.render_source(
+                        table[key], f'{where} {key}', counts)
 
     # Same reasoning as --only above: a language named that does not exist has
     # to say so rather than quietly write nothing.
@@ -1352,6 +1380,24 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
              'href': f'{up}{links["guides"]}/'},
         ]
 
+    # The body goes through the template engine, so the sentence naming how
+    # many tools there are can ask for the number instead of spelling it out.
+    # The head strings were rendered when the pages were loaded - build() says
+    # why they cannot wait until here - and the count is the same one: every
+    # tool the site has, and not the ones a run happens to write, because
+    # build_language works its lists out before --only narrows anything.
+    #
+    # It is an ordinary template name for the reason i18n.render_ui gives about
+    # the [ui] strings: a translator who mistypes {{ tool_count }} gets a build
+    # that fails naming the string, rather than a published sentence with a
+    # hole in the middle of it.
+    body = templates.render_source(
+        i18n.body_for(locale, 'pages', page['slug'],
+                      body_path.read_text(encoding='utf-8')),
+        f'pages/{page["slug"]} [{locale["lang"]}] body.html',
+        {'site': root, 'page': page, 'base': up, 'links': links,
+         'tool_count': len(by_slug)})
+
     context = frame(locale, locales, site, page['slug'], up, links, lang_v, {
         'page': page,
         'tool': by_slug.get(page['tool'], {}),
@@ -1364,10 +1410,8 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
         # The screenshots are measured on the way past, because the body that
         # carries them is a different file in every language and the picture is
         # the same picture in all of them. See buildlib/screens.py.
-        'body': screens.fill_sizes(
-            i18n.body_for(locale, 'pages', page['slug'],
-                          body_path.read_text(encoding='utf-8')).rstrip('\n'),
-            page['shots'], f'{page["slug"]} [{locale["lang"]}]'),
+        'body': screens.fill_sizes(body.rstrip('\n'), page['shots'],
+                                   f'{page["slug"]} [{locale["lang"]}]'),
     })
     # [ui.guide] only where the page names a tool. It reaches for {{ tool }},
     # and a legal page has not got one - nor has a guide about no tool in
@@ -1765,8 +1809,8 @@ def copy_shared(out):
         # copying the source over one of them here would undo that.
         # `icons` is the same kind of input: shared/icons holds upstream Lucide
         # for buildlib/icons.py to inline into the pages, and nothing fetches an
-        # .svg from there - publishing the folder would be thirty-six files at
-        # the site root that no page links to.
+        # .svg from there - publishing the folder would put a directory of
+        # SVGs at the site root that no page links to.
         if path.name in ('css', 'js', 'icons', 'site.css', 'lang.js',
                          'feedback.js', 'handoff.js', 'lang-keep.js',
                          'hub-filter.js'):

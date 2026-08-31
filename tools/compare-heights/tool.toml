@@ -17,8 +17,8 @@
 # see [tool_csp] in config/site.toml.
 #
 # It is the second tool with a vendor/ folder, after heic-to-jpg, and the first
-# whose vendored files are pictures rather than code: four of the five people
-# are public-domain artwork somebody else drew. vendor/LICENSE.md says who, why
+# whose vendored files are pictures rather than code: every person on the chart
+# is public-domain artwork somebody else drew. vendor/LICENSE.md says who, why
 # the licence had to ask for nothing rather than merely be free, and why the
 # man is smoothed on the way in.
 #
@@ -45,9 +45,9 @@ lastmod = "2026-08-30"
 # --- what search engines and chat apps are told ------------------------------
 
 title = "Height Comparison Chart &mdash; Free, No Sign-Up, Nothing Uploaded"
-description = "Compare heights side by side. Add a man, a woman, a boy, a girl, a toddler and objects &mdash; a door, a window, a whiteboard, a vending machine &mdash; in centimetres or feet and inches, and download the chart as a PNG or an SVG. It is drawn in your browser."
+description = "Compare heights side by side. Add a man, a woman, a boy, a girl and objects &mdash; a door, a window, a whiteboard, a vending machine &mdash; in centimetres or feet and inches, and download the chart as a PNG or an SVG. It is drawn in your browser."
 og_title = "Compare heights side by side, and keep the picture"
-og_description = "Put two adults, a child, a toddler and a doorway on the same ruler, in centimetres or feet and inches, and download the result. No account, no watermark, and no list of names leaving your machine."
+og_description = "Put two adults, a boy, a girl and a doorway on the same ruler, in centimetres or feet and inches, and download the result. No account, no watermark, and no list of names leaving your machine."
 og_image_alt = "Height Comparison Chart - compare heights side by side, nothing uploaded"
 
 # The subtitle on the share card that og-image.ps1 draws into og.png. The
@@ -60,12 +60,12 @@ og_card = "Two adults, a child and a doorway on one ruler - drawn on your own ma
 pledge = """
     A height chart is arithmetic and a drawing: there is no file to send and no
     service to ask. The man, the woman, the boy and the girl are public-domain
-    artwork that ships with this page; the toddler is built here from a table of
-    body proportions, which is why it is shaped like a toddler rather than like
-    a small adult. Every step of it happens in about six hundred lines of
-    JavaScript in this page that you can read. There is no network feature of
-    any kind, which matters here because what you type is a list of people and
-    how tall each of them is."""
+    artwork that ships with this page, and the boy and the girl are drawings of
+    actual children rather than adults made small &mdash; which is what stops a
+    family chart looking wrong in a way nobody can name. Every step of it
+    happens in a few hundred lines of JavaScript in this page that you can
+    read. There is no network feature of any kind, which matters here because
+    what you type is a list of people and how tall each of them is."""
 
 live_hint = """
       Don't take our word for it: open DevTools, watch the Network tab, and type
@@ -76,12 +76,12 @@ live_hint = """
 
 read_first = """
 , <code>src/traced.js</code>
-      and <code>vendor/</code> for the four drawn figures and where their
-      artwork came from, <code>src/figures.js</code> for the proportion table the
-      toddler is built from, <code>src/units.js</code> for how a typed height
-      becomes a number and how the ruler is labelled, <code>src/chart.js</code>
-      for the layout, and <code>src/save.js</code> for the two downloads &mdash;
-      which are the SVG on screen, and that same SVG painted onto a canvas."""
+      and <code>vendor/</code> for the four figures and where their artwork came
+      from, <code>src/figures.js</code> for the list the menu is built out of,
+      <code>src/units.js</code> for how a typed height becomes a number and how
+      the ruler is labelled, <code>src/chart.js</code> for the layout, and
+      <code>src/save.js</code> for the two downloads &mdash; which are the SVG on
+      screen, and that same SVG painted onto a canvas."""
 
 # --- the written half of the page --------------------------------------------
 
@@ -172,11 +172,11 @@ body = """
 [[privacy]]
 title = "The artwork is here, not fetched."
 body = """
- The four drawn
-      figures are public-domain artwork, and they are served from this origin
-      with the rest of the page &mdash; no icon font, no CDN, no sprite sheet
-      pulled off somebody else's server as you type. It is also why the chart
-      still draws with the network unplugged."""
+ All four figures
+      are public-domain artwork, and they are served from this origin with the
+      rest of the page &mdash; no icon font, no CDN, no sprite sheet pulled off
+      somebody else's server as you type. It is also why the chart still draws
+      with the network unplugged."""
 
 [[privacy]]
 title = "What Google loads, and what it is not given."
@@ -217,13 +217,13 @@ body = """
 [[howto]]
 title = "Pick the figure that matches the person."
 body = """
- A two-year-old is
-      about four and a half head-heights tall and an adult is seven and a half,
-      so a toddler drawn as a shrunken adult looks wrong in a way that is hard
-      to name and easy to see. There is a boy and a girl for school age and a
-      toddler below it, each with its own proportions rather than being the
-      adult made small, which is most of what makes a family chart look like a
-      family."""
+ A child is
+      about six head-heights tall and an adult seven and a half, so a child
+      drawn as a shrunken adult looks wrong in a way that is hard to name and
+      easy to see. The boy and the girl are drawings of actual children rather
+      than adults made small, which is most of what makes a family chart look
+      like a family. Every row also arrives with a height already in it, so
+      adding somebody draws somebody &mdash; type straight over it."""
 
 [[howto]]
 title = "Put something familiar on the chart."
@@ -292,29 +292,41 @@ a = """
         metres, because 1.73 cm is not a height anybody types."""
 
 [[faq]]
-q = "Why does the toddler not look like a small adult?"
+q = "Why do the children not look like small adults?"
 a = """
-        Because a toddler is not one. Body proportions change with age: a
+        Because a child is not one. Body proportions change with age: a
         two-year-old is roughly four and a half head-heights tall, an
         eight-year-old six, an adult seven and a half &mdash; so the head is
-        nearly a quarter of a toddler and an eighth of a grown-up. The boy and
-        the girl are drawings of actual children, and the toddler has its own
-        table of proportions rather than being a silhouette scaled down, which is
-        why a family chart looks like a family instead of like four adults at
-        different sizes."""
+        nearly a quarter of a small child and an eighth of a grown-up. The boy
+        and the girl here are drawings of actual children rather than one
+        silhouette scaled down, which is why a family chart looks like a family
+        instead of like four adults at different sizes."""
 
 [[faq]]
 q = "Where do the figures come from?"
 a = """
-        Four of the five are artwork by other people, all of it in the public
-        domain: the man by pitr, the woman by Madeleine Price Ball, the girl by
+        All four are artwork by other people, all of it in the public domain:
+        the man by pitr, the woman by Madeleine Price Ball, the girl by
         OpenClipart-Vectors, and the boy by Ryan Kissinger for the NIH BioArt
         library. Every file ships with this page in <code>vendor/</code> as it
         was published, so you can check them against the originals. Public domain
         asks for nothing, which is the point: the artwork ends up inside a picture
         you download, and a licence needing attribution would attach that
-        requirement to your chart. Only the toddler is drawn by this page's own
-        code &mdash; below school age there is nothing free to be had."""
+        requirement to your chart."""
+
+[[faq]]
+q = "Why is there no toddler or baby?"
+a = """
+        Because nobody has drawn one and put it in the public domain. Wikimedia
+        Commons has exactly one usable free child &mdash; the girl &mdash; and
+        the NIH BioArt library the boy; below school age the search comes back
+        empty, and every coherent free set of people is a restroom pictogram the
+        same shape at every age, which is the mistake this whole tool is built
+        to avoid. There was a toddler built by this page's own code for a while,
+        and it was the only figure on the chart nobody had drawn: it looked it,
+        standing next to four that somebody had. For anybody smaller than the
+        boy or the girl, set one of them to the real height &mdash; the ruler is
+        what carries the comparison, and it will be right."""
 
 [[faq]]
 q = "How many people can I put on one chart?"
@@ -399,11 +411,11 @@ a = """
 
 [schema]
 category = "UtilitiesApplication"
-description = "Draw a height comparison chart in the browser. Add a man, a woman, a boy, a girl, a toddler and objects with their heights in centimetres or feet and inches, order them, colour them, and download the result as a PNG or an SVG. Nothing is uploaded."
+description = "Draw a height comparison chart in the browser. Add a man, a woman, a boy, a girl and objects with their heights in centimetres or feet and inches, order them, colour them, and download the result as a PNG or an SVG. Nothing is uploaded."
 features = [
   "Up to twelve figures on one ruler, in any order",
-  "Man, woman, child and toddler figures, and a plain rectangle for objects",
-  "Public-domain drawn man, woman, boy and girl, and a toddler with its own proportions rather than a scaled adult",
+  "Man, woman, boy and girl figures, and a plain rectangle for objects",
+  "Public-domain drawn man, woman, boy and girl - the children drawn as children rather than scaled adults",
   "Heights typed as 173, 1.73 m, 5'8\", 68 in or 5 ft 8, with the reading shown back",
   "Centimetres or feet and inches, switched without changing anybody's height",
   "Twenty ready-made objects: doors, windows, a whiteboard, a vending machine, a shipping container, furniture",

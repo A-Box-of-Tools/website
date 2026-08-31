@@ -4,9 +4,9 @@
 
 A list of people and objects with a height each, drawn side by side on a ruler,
 downloadable as a PNG or an SVG. There is no file in and no file out that the
-visitor did not ask for, no account, and no network step of any kind. The man,
-the woman, the boy and the girl are public-domain artwork that ships with the
-page; the toddler and the rectangle are drawn by its own code.
+visitor did not ask for, no account, and no network step of any kind. Every
+person on the chart is public-domain artwork that ships with the page; the
+rectangle is the only thing the code draws itself.
 
 The tool it is modelled on — and the reason people look for one at all — puts
 the whole list into the address bar so a chart can be shared by link. This one
@@ -16,12 +16,13 @@ through. The answer here is that you download the picture and send that.
 
 ## Why it is built the way it is
 
-### Four figures are drawn, one is built
+### Every person is drawn artwork
 
 The man, the woman, the boy and the girl are artwork by other people:
 `src/traced.js` carries their path data and `vendor/` carries the four files it
 came out of, with `vendor/LICENSE.md` naming who drew each one. People drew
 those, and it shows — clothes, a pose, hair, the shape of a shoe on a floor.
+Nothing on the chart is a silhouette this repository invented.
 
 **The licence mattered more than the drawing.** The artwork ends up inside a
 picture the visitor downloads and puts in a report, and the page tells them
@@ -59,30 +60,40 @@ is exactly what `traced.js` ships, so the derived file cannot quietly stop being
 derived. `scripts/smooth-figure.mjs` is the same thing as a command, for when a
 figure is added or upstream republishes one.
 
-### The toddler is built, and is not a scaled adult
+### There is nobody smaller than the boy and the girl
 
-Because there is nothing to put there. Wikimedia Commons has one usable free
-child — the girl — and NIH BioArt the boy; below school age the public domain
-runs out, and every coherent free family of people is a restroom pictogram
-about four and a half heads tall at *every* age. So `src/figures.js` holds a
-table of body proportions — where the chin, the shoulder, the waist, the knee
-and the ankle sit as fractions of the whole, and how wide the body is at each —
-and one routine that walks it into an outline.
+Because nobody has drawn one and released it. Wikimedia Commons has exactly one
+usable free child — the girl — and NIH BioArt the boy; below school age the
+search comes back empty, and every coherent free family of people is a restroom
+pictogram about four and a half heads tall at *every* age.
 
-That is not a consolation prize; it is the thing most of these charts get
-wrong. **A small person is not a scaled-down large one.** A two-year-old is
-about four and a half head-heights tall, an eight-year-old six, an adult seven
-and a half. Every chart that scales one silhouette therefore draws a toddler
-with an adult's head-to-body ratio, which looks wrong in a way most readers
-cannot name and all of them can see.
+A toddler built here from a table of body proportions stood on the chart for a
+while. The table was the right idea — **a small person is not a scaled-down
+large one**, a two-year-old is about four and a half head-heights tall and an
+adult seven and a half — but it was the only figure nobody had drawn, and next
+to four that somebody had it looked exactly like that. It is gone, along with
+the two hundred lines that built it: `roundedLoop`, `mirrored`, the proportion
+tables and the outline walker.
 
-The modelling language is deliberately tiny: a closed polyline where every
-vertex carries its own corner radius, in `roundedLoop`. A square corner is
-r = 0 — the sole of a foot — and everything else on a body is round. One list
-of points goes down the right-hand side and back up the inside of the right
-leg, and `mirrored` walks it back up the left, so it is not possible for an
-edit to the waist to leave a body lopsided. Nothing is stroked, so the several
-overlapping subpaths — head, body-with-legs, two arms — read as one shape.
+The age argument survives without it, and in a better place: the boy and the
+girl are drawings of actual children, so the chart never has to make the
+mistake in the first place. For anybody smaller, set one of them to the real
+height — the ruler carries the comparison.
+
+### Every row arrives with a height in it
+
+`defaultCm` lives on the figure, in `traced.js`, because it belongs to the
+figure rather than to the interface. Adding a person therefore draws somebody
+instead of an empty row waiting to be filled in, and the tool opens as a chart
+rather than as a form. Changing a row's figure moves the height with it, but
+only while the height is still the one that arrived — a number somebody typed
+is theirs.
+
+The other half of that: an empty height box is now an **error**, in red, where
+the reading would have been. It used to be a neutral hint, on the grounds that
+a row you have not filled in yet is not a mistake. Now that every row arrives
+with a height, an empty one is a box somebody cleared, and a row that will not
+be drawn should say so.
 
 ### There is no dog, and there was
 
@@ -155,7 +166,7 @@ keeps the canvas untainted so `toBlob` will give the bytes back.
 |---|---|
 | `vendor/` | the four public-domain files the people came out of, as published, and their licence |
 | `src/traced.js` | those four figures' path data, the box each was measured at, and the transform that puts it in the unit box |
-| `src/figures.js` | the proportion table the toddler is built from, and the outline builder that walks it |
+| `src/figures.js` | the list of figures the menu is built from, and each one's default height |
 | `src/units.js` | typed height → centimetres, centimetres → written height, and the ruler's spacing and labels |
 | `src/chart.js` | the layout and the SVG, with text measured through a callback |
 | `src/save.js` | the SVG blob, the canvas rasterisation, and the download |

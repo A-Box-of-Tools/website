@@ -1,0 +1,72 @@
+#
+# Daftar rencana di peta jalan - Indonesian.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a Indonesian list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+# This file arrived late. Indonesian joined the site in #104, after the ten
+# languages that already had one, and the roadmap was the page nobody noticed
+# it was missing: the address was translated, the frame was translated, and the
+# list of tools inside it stayed English. See ROADMAP.md.
+#
+
+note = "Belum dibuat. Dicantumkan di sini supaya Anda bisa melihat arahnya."
+
+[[group]]
+id = "images"
+name = "Gambar"
+items = [
+  ["Tambah teks", "di atas gambarnya, atau dalam kotak keterangan di atasnya"],
+  ["AVIF", "format yang bisa dibaca semua peramban dan tidak bisa ditulis satu pun"],
+  ["Anonimkan DICOM", "mengeluarkan data pasien dari hasil pindai tanpa menyentuh pindaiannya"],
+]
+
+[[group]]
+id = "gif"
+name = "GIF &amp; Animasi"
+items = [
+  ["GIF ke MP4 atau WebM", "animasi yang sama, biasanya sepersepuluh ukurannya"],
+  ["Edit GIF", "ubah ukuran, pangkas, putar, balik, atau ubah kecepatannya"],
+  ["WebP animasi", "animasi yang sama dengan ukuran jauh lebih kecil, transparansi tetap utuh"],
+]
+
+[[group]]
+id = "video"
+name = "Video"
+items = [
+  ["Ubah ukuran", "sampai ke ukuran yang benar-benar bisa dikirim"],
+  ["Putar", "untuk klip yang terekam menyamping &mdash; dan tidak satu frame pun didekode"],
+  ["Bisukan video", "buang suaranya, gambarnya dibiarkan utuh"],
+  ["Konversi ke MP4", "apa pun yang keluar dari kamera, jadi berkas yang benar-benar bisa diunggah"],
+  ["Bakar subtitle", "berkas SRT yang digambar langsung ke dalam gambarnya"],
+  ["Konverter subtitle", "SRT, VTT, ASS, SBV, dan LRC ke segala arah, dengan waktu yang bisa digeser"],
+]
+
+[[group]]
+id = "audio"
+name = "Audio"
+items = [
+  ["Konversi format", "MP3, WAV, dan Opus, ke segala arah"],
+]
+
+[[group]]
+id = "documents"
+name = "Dokumen &amp; PDF"
+items = [
+  ["Pangkas halaman", "potong margin hasil pindai, atau margin slide yang dicetak ke PDF"],
+  ["Ekstrak gambar", "mengambil kembali gambar-gambar dari dalam dokumen"],
+]
+
+[[group]]
+id = "beyond"
+name = "Di luar media"
+items = [
+  ["CSV &amp; JSON", "konversi dua arah, sekaligus merapikan hasil ekspor lembar kerja"],
+  ["Sertifikat &amp; kunci", "membaca sertifikat atau permintaan penandatanganan tanpa menempelkannya ke server orang lain"],
+]

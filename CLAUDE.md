@@ -38,7 +38,7 @@ node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 **Scope the build while you are working on one tool.** The third line above is
 the loop: a full build writes about twelve hundred pages in fifteen languages
 and takes a couple of minutes, and `--only` cuts that to seconds by not writing
-the other thirty-five tools. The pages it writes are byte for byte the pages a
+any tool but the one named. The pages it writes are byte for byte the pages a
 full build writes — that is tested — so what you look at is what ships. What it
 does **not** write is anything that lists other pages: the hub, the guides, the
 roadmap, the 404, the sitemap and the feeds are skipped and links are not
@@ -180,7 +180,8 @@ the site that has not been built. Change one half of this and change the other,
 or the site asks to be indexed and refuses in the same breath.
 
 **Some modules are deliberately copied, and must stay in step.** The MP4
-reader is in five tools and the writer in two, because the rule above blocks
+reader is copied into every tool that reads frames out of a video file, and
+the writer into every tool that writes one, because the rule above blocks
 sharing them. `tests/python/test_duplicates.py` declares which copies must
 agree and fails if they drift, comparing tokens so each copy keeps its own
 comments. Fix one copy and it will tell you about the others; add a new copy

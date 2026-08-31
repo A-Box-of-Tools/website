@@ -1,0 +1,72 @@
+#
+# القائمة المخطط لها في خارطة الطريق - Arabic.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a Arabic list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+# This file arrived late. Arabic joined the site in #101, after the ten
+# languages that already had one, and the roadmap was the page nobody noticed
+# it was missing: the address was translated, the frame was translated, and the
+# list of tools inside it stayed English. See ROADMAP.md.
+#
+
+note = "لم يُبنَ بعد. مذكور هنا لتعرف إلى أين يتجه هذا المشروع."
+
+[[group]]
+id = "images"
+name = "الصور"
+items = [
+  ["إضافة نص", "فوق الصورة، أو في مربع تعليق أعلاها"],
+  ["AVIF", "الصيغة التي يقرؤها كل متصفح ولا يكتبها أي منها"],
+  ["إخفاء هوية DICOM", "إخراج بيانات المريض من الفحص دون المساس بالفحص نفسه"],
+]
+
+[[group]]
+id = "gif"
+name = "GIF والرسوم المتحركة"
+items = [
+  ["من GIF إلى MP4 أو WebM", "الحركة نفسها، بعُشر الحجم غالبًا"],
+  ["تحرير GIF", "تغيير الحجم، الاقتصاص، التدوير، العكس، أو تغيير سرعة العرض"],
+  ["WebP متحركة", "الحركة نفسها بجزء يسير من الحجم، مع الشفافية كما هي"],
+]
+
+[[group]]
+id = "video"
+name = "الفيديو"
+items = [
+  ["تغيير الحجم", "إلى حجم يمكن إرساله فعلًا"],
+  ["التدوير", "للمقطع الذي صُوّر بالعرض &mdash; ودون فك ترميز إطار واحد"],
+  ["كتم الفيديو", "إسقاط الصوت وترك الصورة كما هي"],
+  ["التحويل إلى MP4", "أيًّا كان ما خرج من الكاميرا، بالصيغة التي تُرفع فعلًا"],
+  ["دمج الترجمة في الصورة", "ملف SRT مرسوم داخل الصورة"],
+  ["محوّل ملفات الترجمة", "SRT وVTT وASS وSBV وLRC في أي اتجاه، مع توقيتات قابلة للإزاحة"],
+]
+
+[[group]]
+id = "audio"
+name = "الصوت"
+items = [
+  ["تحويل الصيغة", "MP3 وWAV وOpus، في أي اتجاه"],
+]
+
+[[group]]
+id = "documents"
+name = "المستندات وPDF"
+items = [
+  ["اقتصاص الصفحات", "قص هوامش نسخة ممسوحة ضوئيًا، أو هوامش شرائح مطبوعة"],
+  ["استخراج الصور", "إخراج الصور من داخل المستند مرة أخرى"],
+]
+
+[[group]]
+id = "beyond"
+name = "ما وراء الوسائط"
+items = [
+  ["CSV وJSON", "التحويل في الاتجاهين، وتنظيف ما صدّره برنامج الجداول"],
+  ["الشهادات والمفاتيح", "قراءة شهادة أو طلب توقيع دون لصقه في خادم شخص آخر"],
+]

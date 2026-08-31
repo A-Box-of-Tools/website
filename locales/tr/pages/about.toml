@@ -8,7 +8,7 @@
 nav = "Hakkında"
 
 title = "abox.tools Hakkında &mdash; bu araçları kim yapıyor, neden böyle"
-description = "Bağımsız ve kendi kendini finanse eden bir proje: tamamen tarayıcıda çalışan otuz altı araç, bu şekilde yapılmalarının nedeni, sitenin masrafını neyin karşıladığı ve buradaki her iddianın kendi başınıza nasıl doğrulanacağı."
+description = "Bağımsız ve kendi kendini finanse eden bir proje: tamamen tarayıcıda çalışan {{ tool_count }} araç, bu şekilde yapılmalarının nedeni, sitenin masrafını neyin karşıladığı ve buradaki her iddianın kendi başınıza nasıl doğrulanacağı."
 
 heading = "abox.tools hakkında"
 lede = """

@@ -19,7 +19,6 @@ export const helpers = {
       ['woman', 'Mum', '168'],
       ['boy', 'Sam', '134'],
       ['girl', 'Rosa', '122'],
-      ['toddler', 'Theo', '86'],
     ];
     for (let i = 0; i < family.length; i += 1) k.click('#add-person');
 

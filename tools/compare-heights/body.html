@@ -4,14 +4,32 @@
     <h2><span class="step">1</span> Say who you are comparing</h2>
 
     <p class="card-lede">
-      A name, a height, and what kind of figure to draw. Heights can be written
-      however you write them &mdash; <code>173</code>, <code>1.73&nbsp;m</code>,
-      <code>5'8"</code>, <code>68&nbsp;in</code> &mdash; and the row underneath
-      each box shows what was understood, so nothing is guessed silently.
+      A name, a height, and what kind of figure to draw. Every row starts at a
+      height you can type straight over. Heights can be written however you
+      write them &mdash; <code>173</code>, <code>1.73&nbsp;m</code>,
+      <code>5'8"</code>, <code>68&nbsp;in</code> &mdash; and the line underneath
+      each box shows what was understood, or says so in red if the box is empty
+      or the height cannot be read. Nothing is ever guessed silently.
     </p>
+
+    <p class="card-lede">
+      <strong>Top to bottom here is left to right on the chart.</strong> Drag a
+      row by the handle at its left edge to move it, or use the arrows, which do
+      the same thing from a keyboard. Either way the chart goes back to your own
+      order if it was sorting by height.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Measured in</label>
+      <select id="unit">
+        <option value="cm" selected>Centimetres</option>
+        <option value="ft">Feet and inches</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>Figure</span>
         <span>Name</span>
         <span>Height</span>
@@ -77,20 +95,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> Choose how it looks</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Take it</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="The height chart you have made"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Download the SVG</button>
+      <button type="button" id="download-png" class="primary">Download the PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copy the image</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      The PNG is the one to paste into a document or a chat. The SVG is the one
+      to keep: it is the chart as instructions rather than as pixels, so it
+      prints at any size and can be recoloured later by anything that opens
+      vectors.
+    </p>
 
     <fieldset class="options">
-      <legend>The ruler</legend>
-
-      <div class="option-row">
-        <label for="unit">Measured in</label>
-        <select id="unit">
-          <option value="cm" selected>Centimetres</option>
-          <option value="ft">Feet and inches</option>
-        </select>
-      </div>
+      <legend>How it looks</legend>
 
       <div class="option-row">
         <label for="order">Order</label>
@@ -123,10 +152,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>Colour and size</legend>
 
       <div class="option-row">
         <label for="background">Behind it</label>
@@ -154,34 +179,10 @@
       <p class="field-summary">
         That is the height of the drawing area, so the finished picture is a
         little taller: the names sit above it. The width follows from how many
-        figures there are and how wide each one's label is. Step three says
-        what it came out at.
+        figures there are and how wide each one's label is. The line under the
+        picture says what it came out at.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> Take it</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="The height chart you have made"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">Download the SVG</button>
-      <button type="button" id="download-png" class="primary">Download the PNG</button>
-      <button type="button" id="copy-png" class="ghost">Copy the image</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      The PNG is the one to paste into a document or a chat. The SVG is the one
-      to keep: it is the chart as instructions rather than as pixels, so it
-      prints at any size and can be recoloured later by anything that opens
-      vectors.
-    </p>
   </section>
 
   <!--
@@ -195,7 +196,6 @@
     <span data-phrase="shape.woman">Woman</span>
     <span data-phrase="shape.boy">Boy</span>
     <span data-phrase="shape.girl">Girl</span>
-    <span data-phrase="shape.toddler">Toddler</span>
     <span data-phrase="shape.object">Object</span>
 
     <span data-phrase="row.shape">Figure for row {n}</span>
@@ -203,21 +203,23 @@
     <span data-phrase="row.height">Height for row {n}</span>
     <span data-phrase="row.width">Width for row {n}</span>
     <span data-phrase="row.colour">Colour for row {n}</span>
-    <span data-phrase="row.up">Move row {n} left</span>
-    <span data-phrase="row.down">Move row {n} right</span>
+    <span data-phrase="row.up">Move row {n} up</span>
+    <span data-phrase="row.down">Move row {n} down</span>
     <span data-phrase="row.remove">Remove row {n}</span>
+    <span data-phrase="row.drag">Drag to reorder</span>
     <span data-phrase="row.nameexample">Name</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">Width</span>
     <span data-phrase="row.reads">Read as {height}</span>
 
-    <span data-phrase="height.empty">A height, and this row is drawn.</span>
+    <span data-phrase="height.empty">This row needs a height before it can be drawn.</span>
     <span data-phrase="height.unreadable">Not a height this understands. Try 173, 1.73 m, 5'8" or 68 in.</span>
     <span data-phrase="height.tooshort">Too short to draw &mdash; 5 cm is the smallest.</span>
     <span data-phrase="height.tootall">Taller than the chart goes &mdash; 12 metres is the limit.</span>
 
     <span data-phrase="chart.empty">Add somebody, and the chart appears here.</span>
+    <span data-phrase="chart.noheights">Every row needs a height. Fill one in and the chart appears here.</span>
     <span data-phrase="chart.full">Twelve figures is as many as this chart will hold and still be readable.</span>
     <span data-phrase="facts.chart">{count} figures, {width} by {height} pixels. The ruler runs from the ground to {top}, with a line every {step}.</span>
     <span data-phrase="facts.one">One figure, {width} by {height} pixels. The ruler runs from the ground to {top}, with a line every {step}.</span>
