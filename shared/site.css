@@ -766,6 +766,62 @@ footer {
 
 .footer-brand p { margin: 0.55rem 0 0; max-width: 34ch; }
 
+/* "Get in touch" is the one column that is a row: three marks side by side
+   rather than three lines of text. It is still a <ul>, because it is still a
+   list of links and a screen reader should hear how many there are - only the
+   direction it runs in changes.
+
+   The targets are 2.25rem square with the drawing at 1.05rem inside them, which
+   is the smallest the guidance allows a touch target to be and is a good deal
+   larger than the one-line links above them. A row of icons is the easiest
+   thing in a footer to miss with a thumb.
+
+   Named through `.footer-col ul` rather than on its own, because that is the
+   rule it is overriding and that rule is the more specific of the two: a bare
+   `.footer-marks` loses its margin and its gap to it silently, and the row
+   still looks almost right. */
+.footer-col ul.footer-marks {
+  grid-auto-flow: column;
+  justify-content: start;
+  gap: 0.25rem;
+  /* Half the difference between the target and the drawing inside it, taken
+     back off the left, so the first mark's edge lines up with the heading
+     above it and with the column of links to its left. Without it the row
+     starts a tenth of an inch in from everything else in the footer, which is
+     the kind of thing nobody can name and everybody can see. Logical, so that
+     the pull is on whichever side the row starts from - in Arabic that is the
+     right, and `margin-left` there widens the gap it was meant to close. */
+  margin-inline-start: -0.6rem;
+}
+
+.footer-marks a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  color: var(--text-dim);
+}
+
+.footer-marks a:hover,
+.footer-marks a:focus-visible {
+  color: var(--accent);
+  background: var(--surface-2);
+  text-decoration: none;   /* the underline the other footer links get has
+                              nothing to underline here */
+}
+
+/* Filled, not stroked, unlike every other drawing on the site: two of the three
+   are other people's logos and those are published as solid shapes. The
+   envelope is drawn to match them rather than the site, so the row reads as one
+   set. */
+.footer-mark {
+  width: 1.05rem;
+  height: 1.05rem;
+  fill: currentColor;
+}
+
 footer p { margin: 0.35rem 0; }
 footer a { color: var(--accent); text-decoration: none; }
 footer a:hover { text-decoration: underline; }

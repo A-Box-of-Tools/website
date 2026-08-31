@@ -81,6 +81,7 @@ name to being either grouped or listed below with a reason.
 import collections
 import itertools
 import pathlib
+import re
 import unittest
 
 from buildlib import minify
@@ -246,6 +247,55 @@ class Coverage(unittest.TestCase):
                         (TOOLS / tool / 'src' / module).is_file(),
                         f'tools/{tool}/src/{module} is declared here and is '
                         f'not on disk')
+
+
+# The two stylesheets. `.footer-*` is not a module and could not be declared
+# above, but it is the same failure in another language: one footer partial,
+# rendered on every page in the site, and two hand-kept copies of the rules
+# that dress it - shared/site.css for the hub, the guides and the prose pages,
+# shared/css/tool-frame.css for the thirty-six tools.
+#
+# Every simple selector in a group has to mention the footer for the group to
+# count here. That is not fussiness: `main, .topbar, ..., footer` sets the page
+# width, and the list either side of `footer` is legitimately different in the
+# two sheets, because a tool page and a hub page are not made of the same parts.
+FOOTER_SHEETS = ('shared/site.css', 'shared/css/tool-frame.css')
+RULE = re.compile(r'([^{}]+)\{([^{}]*)\}')
+COMMENT = re.compile(r'/\*.*?\*/', re.S)
+
+
+def footer_rules(path):
+    """The footer rules of one sheet, as {selectors: declarations}, whitespace
+    and comments normalised away."""
+    css = COMMENT.sub('', (ROOT / path).read_text(encoding='utf-8'))
+    rules = {}
+    for group, body in RULE.findall(css):
+        parts = [' '.join(part.split()) for part in group.split(',')]
+        if all('footer' in part for part in parts):
+            rules[', '.join(parts)] = ' '.join(body.split())
+    return rules
+
+
+class TheFooterInBothSheets(unittest.TestCase):
+    """The footer is one partial and has to look like one thing.
+
+    This is here because it drifted: the row of marks under "Get in touch" was
+    written into the tool sheet and not the other, so it was checked on a tool
+    page, looked right, and shipped as three enormous unstyled logos down the
+    side of every page that is not a tool. Nothing in the build could say so -
+    a stylesheet missing a rule is not an error, it is a page.
+    """
+
+    def test_the_two_sheets_dress_the_footer_the_same(self):
+        site, frame = (footer_rules(path) for path in FOOTER_SHEETS)
+        for selector in sorted(set(site) | set(frame)):
+            with self.subTest(selector=selector):
+                self.assertEqual(
+                    site.get(selector), frame.get(selector),
+                    f'{selector}: the two sheets disagree. The footer is one '
+                    f'partial on every page, so a rule added to '
+                    f'{FOOTER_SHEETS[1]} belongs in {FOOTER_SHEETS[0]} too, '
+                    f'and identically.')
 
 
 if __name__ == '__main__':
