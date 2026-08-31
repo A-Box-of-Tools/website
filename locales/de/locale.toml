@@ -414,6 +414,7 @@ footer_site = "Diese Seite"
 footer_contact = "Kontakt"
 footer_sitemap = "Sitemap"
 footer_source = "Den Quellcode auf GitHub lesen"
+footer_x = "abox.tools auf X"
 
 guarantees_note = """
     Nichts davon müssen Sie uns glauben.

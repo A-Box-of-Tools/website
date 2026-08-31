@@ -234,6 +234,7 @@ footer_site = "本站"
 footer_contact = "聯絡我們"
 footer_sitemap = "網站地圖"
 footer_source = "在 GitHub 上讀程式碼"
+footer_x = "abox.tools 的 X 帳號"
 
 guarantees_note = """
     上面這些不用你信。

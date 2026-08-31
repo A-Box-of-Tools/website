@@ -271,6 +271,7 @@ footer_site = "यह साइट"
 footer_contact = "संपर्क करें"
 footer_sitemap = "साइटमैप"
 footer_source = "GitHub पर कोड पढ़ें"
+footer_x = "X पर abox.tools"
 
 guarantees_note = """
     इनमें से किसी भी बात को भरोसे पर मानने की ज़रूरत नहीं।

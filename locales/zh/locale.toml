@@ -255,6 +255,7 @@ footer_site = "本站"
 footer_contact = "联系我们"
 footer_sitemap = "站点地图"
 footer_source = "在 GitHub 上读代码"
+footer_x = "abox.tools 的 X 账号"
 
 guarantees_note = """
     上面这些不用你信。

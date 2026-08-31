@@ -373,6 +373,7 @@ footer_site = "Bu site"
 footer_contact = "Bize ulaşın"
 footer_sitemap = "Site haritası"
 footer_source = "Kaynak kodu GitHub'da okuyun"
+footer_x = "X'te abox.tools"
 
 guarantees_note = """
     Bunların hiçbirine güvenmeniz gerekmez.

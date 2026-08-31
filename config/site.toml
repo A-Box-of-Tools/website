@@ -18,6 +18,12 @@ source_url = "https://github.com/A-Box-of-Tools/website"
 source_label = "github.com/A-Box-of-Tools/website"
 contact_email = "hi@abox.tools"
 
+# The account the site posts from. It is here rather than in the footer markup
+# because it is the same fact twice: the link a reader follows, and the `sameAs`
+# a search engine reads off the Organization node to decide that the profile and
+# the site are one publisher. Two copies of a handle is one that gets renamed.
+x_url = "https://x.com/aboxtools"
+
 # The version is deliberately NOT here. It is a git tag, worked out by the
 # deploy from what the change touched - see buildlib/version.py and "The
 # version" in CLAUDE.md. It lived on this line until it was noticed that
@@ -619,7 +625,15 @@ footer_tools = "Tools"
 footer_site = "This site"
 footer_contact = "Get in touch"
 footer_sitemap = "Sitemap"
+
+# The three links under "Get in touch" are drawn rather than written - a
+# repository, an account and an address are things a reader recognises by their
+# marks - so these two lines are no longer the words on screen. They are the
+# accessible names: what a screen reader announces, and what the tooltip says.
+# That is why they still have to be translated, and why each names where it
+# goes rather than saying "GitHub" or "X", which a link already looks like.
 footer_source = "Read the code on GitHub"
+footer_x = "abox.tools on X"
 
 # The three lines that carry a link inside a sentence. The <a> is part of the
 # translated string on purpose: which words are the link, and where in the

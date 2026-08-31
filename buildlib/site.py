@@ -357,9 +357,12 @@ def hub_jsonld(site, tools):
                 'url': site['contact_url'],
                 'availableLanguage': 'en',
             },
-            # The repository. `sameAs` is for the same entity somewhere else,
-            # which is exactly what it is: the site is that repository, built.
-            'sameAs': [site['source_url']],
+            # The repository and the account. `sameAs` is for the same entity
+            # somewhere else, which is exactly what both are: the site is that
+            # repository, built, and that account, posting. It is the only
+            # place the two are claimed to be one publisher rather than three
+            # addresses that happen to share a name.
+            'sameAs': [site['source_url'], site['x_url']],
         },
         {
             '@type': 'CollectionPage',

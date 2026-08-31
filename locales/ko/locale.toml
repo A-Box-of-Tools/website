@@ -393,6 +393,7 @@ footer_site = "이 사이트"
 footer_contact = "문의"
 footer_sitemap = "사이트맵"
 footer_source = "GitHub에서 코드 보기"
+footer_x = "abox.tools X 계정"
 
 guarantees_note = """
     셋 중 어느 것도 그냥 믿으실 필요는 없습니다.

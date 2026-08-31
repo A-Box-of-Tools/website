@@ -34,6 +34,7 @@ SITE = {'domain': 'https://example.test/', 'name': 'Site', 'lang': 'en',
         'contact_url': 'https://example.test/contact/',
         'contact_email': 'hi@example.test',
         'source_url': 'https://example.test/source',
+        'x_url': 'https://x.example.test/site',
         'publisher': {'region': 'Ontario', 'country': 'CA',
                       'contact_slug': 'contact'},
         'guides': {'slug': 'guides', 'heading': 'Guides',
@@ -356,7 +357,8 @@ class StructuredData(unittest.TestCase):
         self.assertEqual(org['address']['addressRegion'], 'Ontario')
         self.assertEqual(org['contactPoint']['url'],
                          'https://example.test/contact/')
-        self.assertEqual(org['sameAs'], ['https://example.test/source'])
+        self.assertEqual(org['sameAs'], ['https://example.test/source',
+                                         'https://x.example.test/site'])
 
     def test_the_hub_lists_the_tools_in_order(self):
         tools = [{'name': 'A', 'url': 'https://example.test/a/'},

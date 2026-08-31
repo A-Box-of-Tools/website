@@ -383,6 +383,7 @@ footer_site = "Situs ini"
 footer_contact = "Hubungi kami"
 footer_sitemap = "Peta situs"
 footer_source = "Baca kode sumber di GitHub"
+footer_x = "abox.tools di X"
 
 guarantees_note = """
     Anda tidak perlu memercayai semua itu begitu saja.
