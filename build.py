@@ -61,7 +61,7 @@ A SCOPED BUILD
 `--only` and `--locale` narrow what gets written, for the case that is most of
 the work and none of the interest: changing one tool and wanting to look at it.
 A full build writes about twelve hundred pages in every language the site has,
-and thirty-five of the thirty-six tools in it are not the one being worked on.
+and all but one of the tools in it are not the one being worked on.
 
 What they narrow is only what is WRITTEN. Everything is still loaded, every
 language is still surveyed, and each page is still rendered knowing every other
@@ -330,10 +330,10 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
     #
     # This is also most of what a scoped build saves. Reading and minifying
     # every module of every tool is the largest fixed cost the build has, and
-    # thirty-five thirty-sixths of it is work on tools the run is not going to
-    # write. The import check goes with it, which is a real check being skipped
-    # - but it is a check on tools this run does not touch, and CI runs the
-    # whole build on every push.
+    # nearly all of it is work on tools the run is not going to write. The
+    # import check goes with it, which is a real check being skipped - but it
+    # is a check on tools this run does not touch, and CI runs the whole build
+    # on every push.
     for tool in tools:
         if only and tool['slug'] not in only:
             continue
@@ -1352,6 +1352,39 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
              'href': f'{up}{links["guides"]}/'},
         ]
 
+    # How many tools there are, for the one page that says so out loud. Worked
+    # out here rather than written into fifteen translations of one sentence,
+    # because a number in prose is a number that goes stale: this one read
+    # thirty-six in every language at once, in the description a search engine
+    # quotes as well as in the paragraph, until there were forty of them.
+    #
+    # `by_slug` is every tool the site has rather than the ones this run
+    # writes: build_language works its lists out before --only narrows
+    # anything, because the footer and the "Also in the box" ring are facts
+    # about the whole site. So the number is the site's and not the run's -
+    # which matters here because a scoped build writes no prose page at all,
+    # and the first one that did would otherwise have counted its own scope.
+    #
+    # It reaches the page as an ordinary template name for the reason
+    # i18n.render_ui gives about the [ui] strings: a translator who mistypes
+    # {{ tool_count }} gets a build that fails naming the string, rather than a
+    # published sentence with a hole in the middle of it.
+    counts = {'tool_count': len(by_slug)}
+    where = f'pages/{page["slug"]} [{locale["lang"]}]'
+
+    # The head strings go through the engine too, and before the JSON-LD is
+    # built from them, so the count a search result shows is the same number as
+    # the page under it.
+    page = {**page,
+            **{key: templates.render_source(page[key], f'{where} {key}', counts)
+               for key in ('description', 'og_description') if key in page}}
+
+    body = templates.render_source(
+        i18n.body_for(locale, 'pages', page['slug'],
+                      body_path.read_text(encoding='utf-8')),
+        f'{where} body.html',
+        {'site': root, 'page': page, 'base': up, 'links': links, **counts})
+
     context = frame(locale, locales, site, page['slug'], up, links, lang_v, {
         'page': page,
         'tool': by_slug.get(page['tool'], {}),
@@ -1364,10 +1397,8 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
         # The screenshots are measured on the way past, because the body that
         # carries them is a different file in every language and the picture is
         # the same picture in all of them. See buildlib/screens.py.
-        'body': screens.fill_sizes(
-            i18n.body_for(locale, 'pages', page['slug'],
-                          body_path.read_text(encoding='utf-8')).rstrip('\n'),
-            page['shots'], f'{page["slug"]} [{locale["lang"]}]'),
+        'body': screens.fill_sizes(body.rstrip('\n'), page['shots'],
+                                   f'{page["slug"]} [{locale["lang"]}]'),
     })
     # [ui.guide] only where the page names a tool. It reaches for {{ tool }},
     # and a legal page has not got one - nor has a guide about no tool in
@@ -1765,8 +1796,8 @@ def copy_shared(out):
         # copying the source over one of them here would undo that.
         # `icons` is the same kind of input: shared/icons holds upstream Lucide
         # for buildlib/icons.py to inline into the pages, and nothing fetches an
-        # .svg from there - publishing the folder would be thirty-six files at
-        # the site root that no page links to.
+        # .svg from there - publishing the folder would put a directory of
+        # SVGs at the site root that no page links to.
         if path.name in ('css', 'js', 'icons', 'site.css', 'lang.js',
                          'feedback.js', 'handoff.js', 'lang-keep.js',
                          'hub-filter.js'):
