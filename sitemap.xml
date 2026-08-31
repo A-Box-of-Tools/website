@@ -19,8 +19,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/compare-text/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -61,19 +61,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/encode-text/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/exif-editor/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/format-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -135,6 +123,12 @@
   <url>
     <loc>https://abox.tools/images-to-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/json-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -207,6 +201,12 @@
   <url>
     <loc>https://abox.tools/svg-to-image/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/text-diff/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -517,8 +517,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ar/مقارنة-النصوص/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/ar/ترميز-base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -559,19 +559,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ar/ترميز-base64/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/ar/إزالة-بيانات-exif/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/ar/تنسيق-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -633,6 +621,12 @@
   <url>
     <loc>https://abox.tools/ar/تحويل-الصور-إلى-فيديو/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/تنسيق-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -705,6 +699,12 @@
   <url>
     <loc>https://abox.tools/ar/تحويل-svg-إلى-png/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/مقارنة-النصوص/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1015,8 +1015,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/de/text-vergleichen/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/de/base64-kodieren/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1057,19 +1057,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/de/base64-kodieren/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/de/exif-daten-entfernen/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/de/json-formatieren/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -1131,6 +1119,12 @@
   <url>
     <loc>https://abox.tools/de/bilder-in-video-umwandeln/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/json-formatieren/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1203,6 +1197,12 @@
   <url>
     <loc>https://abox.tools/de/svg-in-png-umwandeln/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/text-vergleichen/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1513,8 +1513,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/es/comparar-textos/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/es/codificar-base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1555,19 +1555,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/es/codificar-base64/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/es/eliminar-datos-exif/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/es/formatear-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -1629,6 +1617,12 @@
   <url>
     <loc>https://abox.tools/es/imagenes-a-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/formatear-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1701,6 +1695,12 @@
   <url>
     <loc>https://abox.tools/es/convertir-svg-a-png/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/comparar-textos/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2011,8 +2011,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/fr/comparer-des-textes/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/fr/encoder-base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2053,19 +2053,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/fr/encoder-base64/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/fr/supprimer-les-donnees-exif/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/fr/formater-du-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -2127,6 +2115,12 @@
   <url>
     <loc>https://abox.tools/fr/images-en-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/formater-du-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2199,6 +2193,12 @@
   <url>
     <loc>https://abox.tools/fr/convertir-svg-en-png/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/comparer-des-textes/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2509,8 +2509,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/hi/compare-text/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/hi/base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2551,19 +2551,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/hi/encode-text/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/hi/exif-editor/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/hi/format-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -2625,6 +2613,12 @@
   <url>
     <loc>https://abox.tools/hi/images-to-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/json-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2697,6 +2691,12 @@
   <url>
     <loc>https://abox.tools/hi/svg-to-image/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/text-diff/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3007,8 +3007,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/id/bandingkan-teks/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/id/encode-base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3049,19 +3049,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/id/encode-base64/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/id/hapus-data-exif/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/id/format-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -3123,6 +3111,12 @@
   <url>
     <loc>https://abox.tools/id/gambar-ke-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/format-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3195,6 +3189,12 @@
   <url>
     <loc>https://abox.tools/id/svg-ke-png/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/bandingkan-teks/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3505,8 +3505,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/it/confrontare-testi/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/it/codifica-base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3547,19 +3547,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/it/codifica-base64/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/it/rimuovere-dati-exif/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/it/formattare-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -3621,6 +3609,12 @@
   <url>
     <loc>https://abox.tools/it/immagini-in-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/formattare-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3693,6 +3687,12 @@
   <url>
     <loc>https://abox.tools/it/svg-in-png/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/confrontare-testi/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4003,8 +4003,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ja/compare-text/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/ja/base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4045,19 +4045,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ja/encode-text/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/ja/exif-editor/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/ja/format-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -4119,6 +4107,12 @@
   <url>
     <loc>https://abox.tools/ja/images-to-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/json-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4191,6 +4185,12 @@
   <url>
     <loc>https://abox.tools/ja/svg-to-image/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/text-diff/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4501,8 +4501,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ko/텍스트-비교/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/ko/base64-인코딩/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4543,19 +4543,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/ko/base64-인코딩/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/ko/exif-정보-삭제/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/ko/json-포맷터/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -4617,6 +4605,12 @@
   <url>
     <loc>https://abox.tools/ko/사진으로-동영상-만들기/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/json-포맷터/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4689,6 +4683,12 @@
   <url>
     <loc>https://abox.tools/ko/svg-png-변환/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/텍스트-비교/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4999,8 +4999,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/nl/tekst-vergelijken/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/nl/base64-coderen/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5041,19 +5041,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/nl/base64-coderen/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/nl/exif-gegevens-verwijderen/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/nl/json-formatteren/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -5115,6 +5103,12 @@
   <url>
     <loc>https://abox.tools/nl/afbeeldingen-naar-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/json-formatteren/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5187,6 +5181,12 @@
   <url>
     <loc>https://abox.tools/nl/svg-naar-png/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/tekst-vergelijken/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5497,8 +5497,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/pt/comparar-textos/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/pt/codificar-base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5539,19 +5539,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/pt/codificar-base64/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/pt/remover-dados-exif/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/pt/formatar-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -5613,6 +5601,12 @@
   <url>
     <loc>https://abox.tools/pt/imagens-para-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/formatar-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5685,6 +5679,12 @@
   <url>
     <loc>https://abox.tools/pt/svg-para-png/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/comparar-textos/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5995,8 +5995,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/tr/metin-karsilastirma/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/tr/base64-kodlama/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6037,19 +6037,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/tr/base64-kodlama/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/tr/exif-verisi-silme/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/tr/json-bicimlendirme/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -6111,6 +6099,12 @@
   <url>
     <loc>https://abox.tools/tr/resimleri-videoya-donusturme/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/json-bicimlendirme/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6183,6 +6177,12 @@
   <url>
     <loc>https://abox.tools/tr/svg-yi-pnge-donusturme/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/metin-karsilastirma/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6493,8 +6493,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/zh/compare-text/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/zh/base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6535,19 +6535,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/zh/encode-text/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/zh/exif-editor/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/zh/format-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -6609,6 +6597,12 @@
   <url>
     <loc>https://abox.tools/zh/images-to-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/json-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6681,6 +6675,12 @@
   <url>
     <loc>https://abox.tools/zh/svg-to-image/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/text-diff/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6991,8 +6991,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://abox.tools/zh-TW/compare-text/</loc>
-    <lastmod>2026-08-27</lastmod>
+    <loc>https://abox.tools/zh-TW/base64/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -7033,19 +7033,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://abox.tools/zh-TW/encode-text/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://abox.tools/zh-TW/exif-editor/</loc>
-    <lastmod>2026-08-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://abox.tools/zh-TW/format-json/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -7107,6 +7095,12 @@
   <url>
     <loc>https://abox.tools/zh-TW/images-to-video/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/json-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -7179,6 +7173,12 @@
   <url>
     <loc>https://abox.tools/zh-TW/svg-to-image/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/text-diff/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

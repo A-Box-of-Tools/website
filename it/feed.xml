@@ -26,11 +26,32 @@
   <id>https://abox.tools/it/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/it/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/it/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/it/</uri>
   </author>
+  <entry>
+    <title type="html">Codificatore e decodificatore Base64</title>
+    <id>https://abox.tools/it/codifica-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/codifica-base64/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Codifica e decodifica Base64 in entrambi gli alfabeti, codifica URL in percentuale, fai l'escape delle entità HTML e leggi esadecimale ed escape con barra rovesciata. Gira tutto nel tuo browser e non viene caricato niente: un token non lascia mai il tuo dispositivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Confronto testi</title>
+    <id>https://abox.tools/it/confrontare-testi/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/confrontare-testi/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Confronta due testi e guarda ogni differenza, riga per riga e parola per parola, fianco a fianco o in una colonna. Il confronto gira nel tuo browser e non viene caricato niente: il codice non ancora pubblicato non lascia mai il tuo dispositivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formattatore JSON</title>
+    <id>https://abox.tools/it/formattare-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Formatta e minimizza JSON, XML, HTML, CSS e YAML, e converti JSON in YAML o XML e viceversa. I parser girano nel tuo browser e non viene caricato niente: un token o un file di configurazione non lascia mai il tuo dispositivo.</summary>
+  </entry>
   <entry>
     <title type="html">Come ritagliare un video in una forma diversa</title>
     <id>https://abox.tools/it/guide/ritagliare-un-video/</id>
@@ -130,13 +151,6 @@
     <summary type="html">Smonta una GIF nel browser: ogni fotogramma con la sua durata e il suo smaltimento, le tavole dei colori, le ripetizioni e il conto byte per byte di dove è finito il peso del file. Non viene caricato niente.</summary>
   </entry>
   <entry>
-    <title type="html">Codificatore e decodificatore Base64</title>
-    <id>https://abox.tools/it/codifica-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/codifica-base64/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Codifica e decodifica Base64 in entrambi gli alfabeti, codifica URL in percentuale, fai l'escape delle entità HTML e leggi esadecimale ed escape con barra rovesciata. Gira tutto nel tuo browser e non viene caricato niente: un token non lascia mai il tuo dispositivo.</summary>
-  </entry>
-  <entry>
     <title type="html">Come condividere testo e file tra dispositivi senza caricarli</title>
     <id>https://abox.tools/it/guide/condividere-testo-tra-dispositivi/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/condividere-testo-tra-dispositivi/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/ripulire-un-memo-vocale/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Taglia l'aria morta e le false partenze, poi porta il livello quasi a fondo scala. Due strumenti del browser in fila, nell'ordine che conserva la qualità, e la registrazione non lascia mai la tua macchina.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come scansionare più pagine in un PDF piccolo</title>
-    <id>https://abox.tools/it/guide/scansionare-piu-pagine-in-un-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/scansionare-piu-pagine-in-un-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Fotografa ogni pagina, ottieni un PDF, combinalo con i documenti che hai già e rimpiccioliscilo finché non parte. Tre strumenti del browser in fila, e le carte non lasciano mai il telefono.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come trasformare un video lungo in un timelapse</title>
-    <id>https://abox.tools/it/guide/trasformare-un-video-lungo-in-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/trasformare-un-video-lungo-in-timelapse/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Un'ora di girato in un minuto guardabile: come scegliere la velocità, perché dire la durata finale batte fare i conti, e quando il risultato deve diventare una GIF.</summary>
   </entry>
 </feed>

@@ -26,11 +26,32 @@
   <id>https://abox.tools/es/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/es/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/es/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/es/</uri>
   </author>
+  <entry>
+    <title type="html">Codificador y decodificador Base64</title>
+    <id>https://abox.tools/es/codificar-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/codificar-base64/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Codifica y decodifica Base64 en los dos alfabetos, codifica URL en porcentaje, escapa entidades HTML y lee hexadecimal y escapes con barra invertida. Todo corre en tu navegador y no se sube nada: un token nunca sale de tu equipo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comparador de textos</title>
+    <id>https://abox.tools/es/comparar-textos/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/comparar-textos/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Compara dos textos y mira cada diferencia, línea a línea y palabra a palabra, lado a lado o en una columna. La comparación corre en tu navegador y no se sube nada: el código sin publicar nunca sale de tu equipo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formateador de JSON</title>
+    <id>https://abox.tools/es/formatear-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Formatea y minifica JSON, XML, HTML, CSS y YAML, y convierte JSON a YAML o XML y al revés. Los analizadores corren en tu navegador y no se sube nada: un token o un archivo de configuración nunca sale de tu equipo.</summary>
+  </entry>
   <entry>
     <title type="html">Apilador de imágenes</title>
     <id>https://abox.tools/es/apilar-imagenes/</id>
@@ -151,20 +172,6 @@
     <summary type="html">Cubre un nombre, una dirección o un número de cuenta en una foto o una captura y vuelve a guardar la imagen, de modo que los píxeles ocultos desaparecen del archivo en lugar de quedarse debajo de un rectángulo. Todo ocurre en el navegador.</summary>
   </entry>
   <entry>
-    <title type="html">Codificador y decodificador Base64</title>
-    <id>https://abox.tools/es/codificar-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/codificar-base64/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Codifica y decodifica Base64 en los dos alfabetos, codifica URL en porcentaje, escapa entidades HTML y lee hexadecimal y escapes con barra invertida. Todo corre en tu navegador y no se sube nada: un token nunca sale de tu equipo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comparador de textos</title>
-    <id>https://abox.tools/es/comparar-textos/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/comparar-textos/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Compara dos textos y mira cada diferencia, línea a línea y palabra a palabra, lado a lado o en una columna. La comparación corre en tu navegador y no se sube nada: el código sin publicar nunca sale de tu equipo.</summary>
-  </entry>
-  <entry>
     <title type="html">Compartir texto y archivos</title>
     <id>https://abox.tools/es/compartir-texto/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/compartir-texto/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/crear-un-codigo-qr-y-comprobar-que-escanea/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Genera el código y verifícalo después con el lector del mismo sitio: la carga exacta, el enlace real, a tamaño de imprenta y desde una foto, antes de la tirada. Todo en el navegador, nada subido.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cómo crear una miniatura de video con el fotograma exacto</title>
-    <id>https://abox.tools/es/guias/crear-una-miniatura-de-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/crear-una-miniatura-de-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Avanza fotograma a fotograma hasta el instante preciso, guárdalo sin pérdida, dale el formato de la plataforma y clava su límite de bytes. Tres herramientas del navegador seguidas, y el metraje nunca sale de tu equipo.</summary>
   </entry>
 </feed>

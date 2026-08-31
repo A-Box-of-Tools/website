@@ -26,11 +26,32 @@
   <id>https://abox.tools/ja/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ja/</uri>
   </author>
+  <entry>
+    <title type="html">Base64エンコーダー・デコーダー</title>
+    <id>https://abox.tools/ja/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/base64/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSONフォーマッター</title>
+    <id>https://abox.tools/ja/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/json-formatter/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">テキスト差分</title>
+    <id>https://abox.tools/ja/text-diff/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/text-diff/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
+  </entry>
   <entry>
     <title type="html">GIF作成</title>
     <id>https://abox.tools/ja/gif-maker/</id>
@@ -130,13 +151,6 @@
     <summary type="html">両方のファイルを同じように整形し、キーを並べ替えてから比較する。生のJSON差分がほとんどノイズである理由、ブラウザで両側を正規形にする方法、そしてパッチまで生き残るもの。</summary>
   </entry>
   <entry>
-    <title type="html">Base64エンコーダー・デコーダー</title>
-    <id>https://abox.tools/ja/encode-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/encode-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
-  </entry>
-  <entry>
     <title type="html">DICOMビューア</title>
     <id>https://abox.tools/ja/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/dicom-viewer/"/>
@@ -193,13 +207,6 @@
     <summary type="html">自分のブラウザの中でJSONを整え、確かめ、詰める方法。整形ツールがファイルについて決して変えてはいけないもの、エラーの読み方、そして貼り付ける先が問題になる理由。</summary>
   </entry>
   <entry>
-    <title type="html">JSONフォーマッター</title>
-    <id>https://abox.tools/ja/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/format-json/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
-  </entry>
-  <entry>
     <title type="html">PDFの黒塗り</title>
     <id>https://abox.tools/ja/redact-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/redact-pdf/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/qr-barcode-reader/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">写真、スクリーンショット、カメラからQRコードを読み取り、開く前にリンクの行き先をそのまま確かめられます。EAN、UPC、Code 128、Code 39、ITFのバーコードにも対応。何もアップロードされません。</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG→画像変換ツール</title>
-    <id>https://abox.tools/ja/svg-to-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/svg-to-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">SVGを好きなサイズのPNG・JPEG・WebPにブラウザの中で変換します。幅、倍率、枠のいずれかを指定でき、@2xと@3xも一緒に作れます。透過はそのまま、アップロードはありません。</summary>
   </entry>
 </feed>

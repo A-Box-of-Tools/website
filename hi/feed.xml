@@ -26,11 +26,32 @@
   <id>https://abox.tools/hi/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/hi/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/hi/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/hi/</uri>
   </author>
+  <entry>
+    <title type="html">Base64 एनकोडर-डिकोडर</title>
+    <id>https://abox.tools/hi/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/base64/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON फ़ॉर्मैटर</title>
+    <id>https://abox.tools/hi/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/json-formatter/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">टेक्स्ट डिफ़</title>
+    <id>https://abox.tools/hi/text-diff/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/text-diff/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क़ देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
   <entry>
     <title type="html">GIF मेकर</title>
     <id>https://abox.tools/hi/gif-maker/</id>
@@ -123,13 +144,6 @@
     <summary type="html">MP4, MOV या WebM के किसी हिस्से को चलती हुई GIF बना दीजिए। हिस्सा, चौड़ाई और फ़्रेम दर चुनिए; फ़्रेम आपके ब्राउज़र में पढ़े जाते हैं और GIF भी वहीं लिखी जाती है। कुछ अपलोड नहीं होता।</summary>
   </entry>
   <entry>
-    <title type="html">Base64 एनकोडर-डिकोडर</title>
-    <id>https://abox.tools/hi/encode-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/encode-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
-  </entry>
-  <entry>
     <title type="html">DICOM व्यूअर</title>
     <id>https://abox.tools/hi/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/dicom-viewer/"/>
@@ -193,13 +207,6 @@
     <summary type="html">JSON को अपने ही ब्राउज़र में कैसे सजाएँ, जाँचें और निचोड़ें - फ़ॉर्मैटर को आपकी फ़ाइल के बारे में क्या कभी नहीं बदलना चाहिए, त्रुटि का संदेश कैसे पढ़ें, और आप जिस साइट में उसे चिपकाते हैं वह क्यों मायने रखती है।</summary>
   </entry>
   <entry>
-    <title type="html">JSON फ़ॉर्मैटर</title>
-    <id>https://abox.tools/hi/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/format-json/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
-  </entry>
-  <entry>
     <title type="html">PDF कंप्रेसर</title>
     <id>https://abox.tools/hi/compress-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-pdf/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">कोड बनाइए, फिर उसी साइट के रीडर से जाँचिए: हू-ब-हू सामग्री, असली लिंक, छपाई के आकार में और एक तस्वीर से, छपाई से पहले। सब ब्राउज़र में, कुछ भी अपलोड नहीं।</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG से तस्वीर</title>
-    <id>https://abox.tools/hi/svg-to-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/svg-to-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">SVG को किसी भी साइज़ की PNG, JPEG या WebP में बदलिए, अपने ब्राउज़र में ही। चौड़ाई बताइए, कोई गुणक, या कोई डिब्बा, और साथ में @2x तथा @3x नकलें भी पाइए। पारदर्शिता बची रहती है, और कुछ अपलोड नहीं होता।</summary>
   </entry>
 </feed>

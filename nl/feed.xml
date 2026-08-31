@@ -26,11 +26,32 @@
   <id>https://abox.tools/nl/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/nl/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/nl/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/nl/</uri>
   </author>
+  <entry>
+    <title type="html">Base64-codeerder &amp; -decodeerder</title>
+    <id>https://abox.tools/nl/base64-coderen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/base64-coderen/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Codeer en decodeer Base64 in beide alfabetten, procentcodeer URL's, escape HTML-entiteiten en lees hex en backslash-escapes. Het draait allemaal in je browser en er wordt niets geüpload: een token verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON-formatter</title>
+    <id>https://abox.tools/nl/json-formatteren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/json-formatteren/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">Tekstvergelijker</title>
+    <id>https://abox.tools/nl/tekst-vergelijken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit.</summary>
+  </entry>
   <entry>
     <title type="html">Afbeeldingen naar pdf</title>
     <id>https://abox.tools/nl/afbeeldingen-naar-pdf/</id>
@@ -165,13 +186,6 @@
     <summary type="html">Schaal, snijd bij en zet JPEG-, PNG- en WebP-afbeeldingen om in je browser. Exacte pixels, een percentage of een lange zijde - één afbeelding of een hele map. Er wordt niets geüpload.</summary>
   </entry>
   <entry>
-    <title type="html">Base64-codeerder &amp; -decodeerder</title>
-    <id>https://abox.tools/nl/base64-coderen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/base64-coderen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Codeer en decodeer Base64 in beide alfabetten, procentcodeer URL's, escape HTML-entiteiten en lees hex en backslash-escapes. Het draait allemaal in je browser en er wordt niets geüpload: een token verlaat je machine dus nooit.</summary>
-  </entry>
-  <entry>
     <title type="html">DICOM-viewer</title>
     <id>https://abox.tools/nl/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/dicom-viewer/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/checksum-controleren/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Bereken de MD5, SHA-1, SHA-256, SHA-384 of SHA-512 van elk bestand en vergelijk die met de checksum op de downloadpagina. Het bestand wordt in je browser gelezen en nooit geüpload, hoe groot het ook is.</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON formatteren zonder het aan iemand te geven</title>
-    <id>https://abox.tools/nl/gidsen/json-formatteren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/json-formatteren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JSON in je eigen browser uitlijnen, controleren en verkleinen: wat een formatteerder nooit aan je bestand mag veranderen, hoe je de foutmelding leest, en waarom het uitmaakt in welk vak je het plakt.</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON-formatter</title>
-    <id>https://abox.tools/nl/json-formatteren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/json-formatteren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
   </entry>
 </feed>

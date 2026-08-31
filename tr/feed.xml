@@ -26,11 +26,32 @@
   <id>https://abox.tools/tr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/tr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/tr/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/tr/</uri>
   </author>
+  <entry>
+    <title type="html">Base64 Kodlayıcı ve Çözücü</title>
+    <id>https://abox.tools/tr/base64-kodlama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/base64-kodlama/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON Biçimlendirici</title>
+    <id>https://abox.tools/tr/json-bicimlendirme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/json-bicimlendirme/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS ve YAML biçimlendirin ve küçültün; JSON'u YAML ya da XML'e çevirin ve geri alın. Ayrıştırıcılar tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç ya da bir yapılandırma dosyası makinenizden hiç çıkmaz.</summary>
+  </entry>
+  <entry>
+    <title type="html">Metin Karşılaştırma</title>
+    <id>https://abox.tools/tr/metin-karsilastirma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-karsilastirma/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
+  </entry>
   <entry>
     <title type="html">Belge Tarayıcı</title>
     <id>https://abox.tools/tr/belge-tarayici/</id>
@@ -121,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/videoyu-gife-donusturme/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Bir MP4, MOV veya WebM'in bir bölümünü hareketli GIF'e çevirin. Bölümü, genişliği ve kare hızını seçin; kareler okunur ve GIF tarayıcınızda yazılır. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64 Kodlayıcı ve Çözücü</title>
-    <id>https://abox.tools/tr/base64-kodlama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/base64-kodlama/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
     <title type="html">Bir GIF kare kare nasıl düzenlenir</title>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/resmi-base64e-donusturme/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Bir PNG, JPEG, SVG veya WebP'yi CSS ya da HTML içine yapıştırabileceğiniz bir data URI'ye çevirin. SVG'ler base64 yerine yüzde kodlamasıyla yazılır; böylece hem okunur kalır hem de daha kısadır. Tarayıcınızda çalışır, hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görselden ICO'ya</title>
-    <id>https://abox.tools/tr/favicon-olusturma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/favicon-olusturma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir PNG, JPEG veya SVG'yi tarayıcınızda gerçek, çok boyutlu bir .ico ya da bir macOS .icns dosyasına dönüştürün. Favicon, Windows uygulama simgesi, Mac uygulama simgesi ve bir sitenin ihtiyaç duyduğu Apple ile Android dosyaları. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görsellerden Videoya</title>
-    <id>https://abox.tools/tr/resimleri-videoya-donusturme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resimleri-videoya-donusturme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPG, PNG veya WebP görselleri MP4 slayt gösterisi videosuna çevirin; ücretsiz ve tamamen tarayıcınızda. Hiçbir şey yüklenmez, kayıt gerekmez ve çevrimdışı da çalışır.</summary>
   </entry>
 </feed>

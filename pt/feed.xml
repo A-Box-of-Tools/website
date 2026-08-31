@@ -26,11 +26,32 @@
   <id>https://abox.tools/pt/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/pt/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/pt/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/pt/</uri>
   </author>
+  <entry>
+    <title type="html">Codificador e decodificador Base64</title>
+    <id>https://abox.tools/pt/codificar-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/codificar-base64/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Codifique e decodifique Base64 nos dois alfabetos, codifique URL em porcentagem, escape entidades HTML e leia hexadecimal e escapes com barra invertida. Tudo roda no seu navegador e nada é enviado: um token nunca sai do seu computador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comparador de textos</title>
+    <id>https://abox.tools/pt/comparar-textos/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/comparar-textos/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Compare dois textos e veja cada diferença, linha a linha e palavra por palavra, lado a lado ou numa coluna só. A comparação roda no seu navegador e nada é enviado: código ainda não lançado nunca sai do seu computador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formatador de JSON</title>
+    <id>https://abox.tools/pt/formatar-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/formatar-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Formate e minifique JSON, XML, HTML, CSS e YAML, e converta JSON para YAML ou XML e de volta. Os analisadores rodam no seu navegador e nada é enviado: um token ou um arquivo de configuração nunca sai do seu computador.</summary>
+  </entry>
   <entry>
     <title type="html">Aparador de vídeo</title>
     <id>https://abox.tools/pt/aparar-video/</id>
@@ -137,13 +158,6 @@
     <summary type="html">Cubra um nome, um endereço ou um número de conta em uma foto ou print e salve a imagem de novo, de modo que os pixels ocultos somem do arquivo em vez de ficarem embaixo de um retângulo. Tudo acontece no navegador.</summary>
   </entry>
   <entry>
-    <title type="html">Codificador e decodificador Base64</title>
-    <id>https://abox.tools/pt/codificar-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/codificar-base64/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Codifique e decodifique Base64 nos dois alfabetos, codifique URL em porcentagem, escape entidades HTML e leia hexadecimal e escapes com barra invertida. Tudo roda no seu navegador e nada é enviado: um token nunca sai do seu computador.</summary>
-  </entry>
-  <entry>
     <title type="html">Como comparar dois arquivos JSON</title>
     <id>https://abox.tools/pt/guias/comparar-dois-arquivos-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/comparar-dois-arquivos-json/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/limpar-uma-nota-de-voz/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Corte o ar morto e os falsos começos, depois suba o nível até quase o fundo de escala. Duas ferramentas do navegador em sequência, na ordem que preserva a qualidade, e a gravação nunca sai da sua máquina.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como preparar as fotos do celular para a web</title>
-    <id>https://abox.tools/pt/guias/preparar-fotos-para-a-web/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/preparar-fotos-para-a-web/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">HEIC para JPEG, GPS removido, redimensionadas para a página e comprimidas a um orçamento: a sequência inteira no navegador, e os originais nunca saem da sua máquina.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como separar um GIF em quadros</title>
-    <id>https://abox.tools/pt/guias/separar-um-gif-em-quadros/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/separar-um-gif-em-quadros/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Tire cada quadro de um GIF animado em PNG: por que alguns quadros são só um pedacinho da imagem, o que acontece com a transparência, e como guardar os tempos para montar tudo de novo.</summary>
   </entry>
 </feed>

@@ -26,11 +26,32 @@
   <id>https://abox.tools/ko/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ko/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ko/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ko/</uri>
   </author>
+  <entry>
+    <title type="html">Base64 인코더 · 디코더</title>
+    <id>https://abox.tools/ko/base64-인코딩/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/base64-인코딩/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Base64를 두 알파벳 모두로 인코딩·디코딩하고, URL을 퍼센트 인코딩하고, HTML 엔티티를 이스케이프하고, 16진수와 역슬래시 이스케이프를 읽습니다. 전부 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이 내 기기를 떠날 일이 없습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON 포매터</title>
+    <id>https://abox.tools/ko/json-포맷터/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/json-포맷터/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS, YAML을 정렬하고 압축하고, JSON을 YAML이나 XML로 바꾸고 되돌립니다. 파서는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이나 설정 파일이 내 기기를 떠날 일이 없습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">텍스트 비교</title>
+    <id>https://abox.tools/ko/텍스트-비교/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/텍스트-비교/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">두 텍스트를 비교해 모든 차이를 줄 단위, 단어 단위로, 나란히 또는 한 열로 봅니다. 비교는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 공개 전 코드가 내 기기를 떠날 일이 없습니다.</summary>
+  </entry>
   <entry>
     <title type="html">GIF 만들기</title>
     <id>https://abox.tools/ko/gif-만들기/</id>
@@ -123,13 +144,6 @@
     <summary type="html">긴 동영상을 타임랩스로 바꿉니다. 10배, 60배, 직접 입력한 배속까지. 브라우저에서 돌아갑니다. 업로드 없음, 워터마크 없음, 오프라인 동작.</summary>
   </entry>
   <entry>
-    <title type="html">Base64 인코더 · 디코더</title>
-    <id>https://abox.tools/ko/base64-인코딩/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/base64-인코딩/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Base64를 두 알파벳 모두로 인코딩·디코딩하고, URL을 퍼센트 인코딩하고, HTML 엔티티를 이스케이프하고, 16진수와 역슬래시 이스케이프를 읽습니다. 전부 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이 내 기기를 떠날 일이 없습니다.</summary>
-  </entry>
-  <entry>
     <title type="html">DICOM 뷰어</title>
     <id>https://abox.tools/ko/dicom-뷰어/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/dicom-뷰어/"/>
@@ -186,13 +200,6 @@
     <summary type="html">두 파일을 같은 방식으로 정렬하고, 키를 정렬하고, 그다음 비교합니다. 날것의 JSON diff가 왜 거의 잡음뿐인지, 브라우저에서 양쪽을 표준형으로 만드는 법, 그리고 패치까지 살아남는 것.</summary>
   </entry>
   <entry>
-    <title type="html">JSON 포매터</title>
-    <id>https://abox.tools/ko/json-포맷터/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/json-포맷터/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS, YAML을 정렬하고 압축하고, JSON을 YAML이나 XML로 바꾸고 되돌립니다. 파서는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이나 설정 파일이 내 기기를 떠날 일이 없습니다.</summary>
-  </entry>
-  <entry>
     <title type="html">PDF 가리기</title>
     <id>https://abox.tools/ko/pdf-가리기/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-가리기/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/svg-png-변환/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">SVG를 브라우저에서 원하는 크기의 PNG, JPEG, WebP로 바꿉니다. 너비나 배수, 상자 크기를 말하면 @2x와 @3x 사본까지 받습니다. 투명도는 그대로 유지되고 아무것도 업로드되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">긴 동영상을 타임랩스로 바꾸는 방법</title>
-    <id>https://abox.tools/ko/가이드/긴-영상을-타임랩스로/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/긴-영상을-타임랩스로/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">한 시간짜리 촬영본을 볼 만한 1분으로: 속도를 고르는 법, 계산 대신 최종 길이를 말하는 편이 나은 이유, 그리고 결과물이 GIF가 되어야 하는 경우.</summary>
   </entry>
 </feed>

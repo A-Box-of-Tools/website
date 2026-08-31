@@ -26,11 +26,32 @@
   <id>https://abox.tools/de/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/de/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/de/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/de/</uri>
   </author>
+  <entry>
+    <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
+    <id>https://abox.tools/de/base64-kodieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Base64 in beiden Alphabeten kodieren und dekodieren, URLs prozentkodieren, HTML-Entities maskieren und Hex und Backslash-Escapes lesen. Alles läuft in Ihrem Browser, hochgeladen wird nichts - ein Token verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON-Formatierer</title>
+    <id>https://abox.tools/de/json-formatieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS und YAML formatieren und minimieren und JSON in YAML oder XML umwandeln und zurück. Die Parser laufen in Ihrem Browser, hochgeladen wird nichts - ein Token oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
+    <title type="html">Textvergleich</title>
+    <id>https://abox.tools/de/text-vergleichen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/text-vergleichen/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Zwei Texte vergleichen und jeden Unterschied sehen, Zeile für Zeile und Wort für Wort, nebeneinander oder in einer Spalte. Der Vergleich läuft in Ihrem Browser, hochgeladen wird nichts - unveröffentlichter Code verlässt Ihr Gerät also nie.</summary>
+  </entry>
   <entry>
     <title type="html">Audio-Editor</title>
     <id>https://abox.tools/de/audio-bearbeiten/</id>
@@ -130,13 +151,6 @@
     <summary type="html">Aus einer Reihe Bilder ein animiertes GIF: wie schnell ein GIF wirklich laufen kann, was die Paletteneinstellung ändert, und die drei Dinge, die die Datei tatsächlich kleiner machen.</summary>
   </entry>
   <entry>
-    <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
-    <id>https://abox.tools/de/base64-kodieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Base64 in beiden Alphabeten kodieren und dekodieren, URLs prozentkodieren, HTML-Entities maskieren und Hex und Backslash-Escapes lesen. Alles läuft in Ihrem Browser, hochgeladen wird nichts - ein Token verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
     <title type="html">Bild als Data-URI</title>
     <id>https://abox.tools/de/bild-als-base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-als-base64/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/pruefsumme-berechnen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Die MD5-, SHA-1-, SHA-256-, SHA-384- oder SHA-512-Prüfsumme einer beliebigen Datei berechnen und mit der Angabe der Downloadseite vergleichen. Die Datei wird im Browser gelesen und nie hochgeladen, in jeder Größe.</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON formatieren, ohne es jemandem zu geben</title>
-    <id>https://abox.tools/de/ratgeber/json-formatieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/json-formatieren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JSON im eigenen Browser einrücken, prüfen und minifizieren: was ein Formatierer an Ihrer Datei niemals ändern darf, wie Sie die Fehlermeldung lesen, und warum es zählt, in welches Feld Sie das einfügen.</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON-Formatierer</title>
-    <id>https://abox.tools/de/json-formatieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS und YAML formatieren und minimieren und JSON in YAML oder XML umwandeln und zurück. Die Parser laufen in Ihrem Browser, hochgeladen wird nichts - ein Token oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
   </entry>
 </feed>

@@ -26,11 +26,32 @@
   <id>https://abox.tools/zh/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/zh/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/zh/"/>
-  <updated>2026-08-28T00:00:00Z</updated>
+  <updated>2026-08-30T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/zh/</uri>
   </author>
+  <entry>
+    <title type="html">Base64 编码解码</title>
+    <id>https://abox.tools/zh/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/base64/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">JSON 格式化</title>
+    <id>https://abox.tools/zh/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/json-formatter/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">文本比对</title>
+    <id>https://abox.tools/zh/text-diff/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/text-diff/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">比对两段文本，逐行、逐词看清每一处差异，并排或单列显示。比对在你的浏览器里跑，什么都不上传——尚未发布的代码从不离开你的机器。</summary>
+  </entry>
   <entry>
     <title type="html">GIF 制作</title>
     <id>https://abox.tools/zh/gif-maker/</id>
@@ -123,13 +144,6 @@
     <summary type="html">把一段声音倒着放、放快或放慢，把录轻了的录音提上来。视频里的声音也能抽出来。在浏览器里跑，什么都不上传。</summary>
   </entry>
   <entry>
-    <title type="html">Base64 编码解码</title>
-    <id>https://abox.tools/zh/encode-text/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/encode-text/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
-  </entry>
-  <entry>
     <title type="html">DICOM 阅片器</title>
     <id>https://abox.tools/zh/dicom-viewer/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/dicom-viewer/"/>
@@ -163,13 +177,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/heic-to-jpg/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">在浏览器里把 iPhone 的 HEIC 照片转成 JPG。解码器跑在你自己的机器上，不上传，不注册，断网也能用，拍摄日期和相机信息可以一起带过去。</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON 格式化</title>
-    <id>https://abox.tools/zh/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/format-json/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
   </entry>
   <entry>
     <title type="html">PDF 压缩</title>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-image/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">把照片或截图里的姓名、地址、账号遮住再存一份，被遮的像素是从文件里没了，不是压在一个矩形下面。全程在浏览器里跑。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片缩放</title>
-    <id>https://abox.tools/zh/resize-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/resize-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在浏览器里给 JPEG、PNG 和 WebP 改尺寸、裁切、转格式。精确到像素、按百分比，或者定长边，一张也行，一整个文件夹也行。什么都不上传。</summary>
   </entry>
 </feed>
