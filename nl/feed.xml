@@ -32,6 +32,13 @@
     <uri>https://abox.tools/nl/</uri>
   </author>
   <entry>
+    <title type="html">Audio uit video halen</title>
+    <id>https://abox.tools/nl/audio-uit-video-halen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-uit-video-halen/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Haal het geluid uit een MP4, MOV of WebM en bewaar het als WAV. De video blijft op je eigen apparaat en het beeld wordt nooit gedecodeerd, want het hele karwei draait in je eigen browser.</summary>
+  </entry>
+  <entry>
     <title type="html">Audiobewerker</title>
     <id>https://abox.tools/nl/audio-bewerken/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-bewerken/"/>
@@ -46,6 +53,13 @@
     <summary type="html">Codeer en decodeer Base64 in beide alfabetten, procentcodeer URL's, escape HTML-entiteiten en lees hex en backslash-escapes. Het draait allemaal in je browser en er wordt niets geüpload: een token verlaat je machine dus nooit.</summary>
   </entry>
   <entry>
+    <title type="html">Hoe je een lengtevergelijkingsgrafiek maakt</title>
+    <id>https://abox.tools/nl/gidsen/een-lengtegrafiek-maken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-lengtegrafiek-maken/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Maak van een lijst lengtes een afbeelding naast elkaar: hoe je de lengtes schrijft, welke figuur bij een kind hoort, waarom één vertrouwd voorwerp meer doet dan een derde persoon, en hoe je de grafiek als PNG of SVG naar buiten krijgt.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON-formatter</title>
     <id>https://abox.tools/nl/json-formatteren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/json-formatteren/"/>
@@ -53,11 +67,32 @@
     <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
   </entry>
   <entry>
+    <title type="html">Lengtevergelijker</title>
+    <id>https://abox.tools/nl/lengtes-vergelijken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/lengtes-vergelijken/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Vergelijk lengtes naast elkaar. Voeg een man, een vrouw, een jongen, een meisje en voorwerpen toe &amp;mdash; een deur, een raam, een whiteboard, een automaat &amp;mdash; in centimeters of in voet en inches, en download de grafiek als PNG of SVG. Hij wordt in je browser getekend.</summary>
+  </entry>
+  <entry>
     <title type="html">Tekstvergelijker</title>
     <id>https://abox.tools/nl/tekst-vergelijken/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
+    <title type="html">XML-formatter</title>
+    <id>https://abox.tools/nl/xml-formatteren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/xml-formatteren/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Formatteer, laat inspringen en verklein XML, en zet XML om naar JSON of JSON naar XML. De parser draait in je browser en er wordt niets geüpload, dus een feed, een factuur of een configuratiebestand blijft op je eigen apparaat.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML-naar-JSON-omzetter</title>
+    <id>https://abox.tools/nl/yaml-naar-json-omzetten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/yaml-naar-json-omzetten/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Zet YAML om naar JSON en JSON naar YAML in je browser. Het leest YAML 1.2, dus yes en no blijven tekenreeksen, en het zegt precies wat elke richting kost. Er wordt niets geüpload, dus een configuratiebestand blijft op je eigen apparaat.</summary>
   </entry>
   <entry>
     <title type="html">Afbeeldingen naar pdf</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-gif-splitsen-in-frames/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Elk frame van een geanimeerde GIF als PNG: waarom sommige frames maar een klein lapje van het plaatje zijn, wat er met de transparantie gebeurt, en hoe je de timing bewaart om het weer in elkaar te zetten.</summary>
-  </entry>
-  <entry>
-    <title type="html">Framegrabber</title>
-    <id>https://abox.tools/nl/frame-uit-video-halen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/frame-uit-video-halen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Sla elk frame van een MP4, MOV of WebM op als PNG of JPEG op volle grootte. Stap frame voor frame door de clip, of pak er om de zoveel seconden een. Draait in je browser: er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF-analyse</title>
-    <id>https://abox.tools/nl/gif-analyseren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-analyseren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Haal een GIF uit elkaar in je browser: elk frame met zijn vertraging en opruimregel, de kleurtabellen, het aantal herhalingen en een byte-voor-byte overzicht van waar de bestandsgrootte heen ging. Er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF-splitser</title>
-    <id>https://abox.tools/nl/gif-splitsen-in-frames/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/gif-splitsen-in-frames/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Splits een geanimeerde GIF in losse frames en sla elk frame op als PNG, gratis en helemaal in je browser. Transparantie en timing blijven behouden. Er wordt niets geüpload en het werkt offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">HEIC naar JPG</title>
-    <id>https://abox.tools/nl/heic-naar-jpg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/heic-naar-jpg/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Zet HEIC-foto's van een iPhone om naar JPG in je browser. De decoder draait op je eigen apparaat, dus er wordt niets geüpload. Werkt offline, en de datum en cameragegevens mogen mee.</summary>
-  </entry>
-  <entry>
-    <title type="html">Hash en checksum</title>
-    <id>https://abox.tools/nl/checksum-controleren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/checksum-controleren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bereken de MD5, SHA-1, SHA-256, SHA-384 of SHA-512 van elk bestand en vergelijk die met de checksum op de downloadpagina. Het bestand wordt in je browser gelezen en nooit geüpload, hoe groot het ook is.</summary>
   </entry>
 </feed>

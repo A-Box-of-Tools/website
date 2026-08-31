@@ -32,11 +32,32 @@
     <uri>https://abox.tools/id/</uri>
   </author>
   <entry>
+    <title type="html">Cara membuat bagan perbandingan tinggi badan</title>
+    <id>https://abox.tools/id/panduan/membuat-bagan-perbandingan-tinggi/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/membuat-bagan-perbandingan-tinggi/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Ubah daftar tinggi badan menjadi gambar berdampingan: cara menulis tingginya, figur mana yang dipilih untuk anak, kenapa satu benda yang akrab lebih berguna daripada orang ketiga, dan cara mengeluarkan bagannya sebagai PNG atau SVG.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ekstrak Audio dari Video</title>
+    <id>https://abox.tools/id/ekstrak-audio-dari-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/ekstrak-audio-dari-video/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Ambil suara dari MP4, MOV, atau WebM dan simpan sebagai WAV. Video tidak pernah meninggalkan perangkat Anda dan gambarnya tidak pernah didekode, karena seluruh pekerjaan berjalan di peramban Anda sendiri.</summary>
+  </entry>
+  <entry>
     <title type="html">Pembanding Teks</title>
     <id>https://abox.tools/id/bandingkan-teks/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/bandingkan-teks/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Bandingkan dua teks dan lihat setiap perbedaannya, baris demi baris dan kata demi kata, berdampingan atau dalam satu kolom. Pembandingannya berjalan di peramban Anda dan tidak ada yang diunggah - kode yang belum dirilis tidak pernah meninggalkan mesin Anda.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pembanding Tinggi Badan</title>
+    <id>https://abox.tools/id/bandingkan-tinggi-badan/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/bandingkan-tinggi-badan/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Bandingkan tinggi badan berdampingan. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda &amp;mdash; pintu, jendela, papan tulis, mesin penjual otomatis &amp;mdash; dalam sentimeter atau kaki dan inci, lalu unduh bagannya sebagai PNG atau SVG. Ia digambar di peramban Anda.</summary>
   </entry>
   <entry>
     <title type="html">Pemformat JSON</title>
@@ -46,11 +67,25 @@
     <summary type="html">Format dan padatkan JSON, XML, HTML, CSS, dan YAML, dan ubah JSON menjadi YAML atau XML dan sebaliknya. Penguraiannya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token atau file konfigurasi tidak pernah meninggalkan mesin Anda.</summary>
   </entry>
   <entry>
+    <title type="html">Pemformat XML</title>
+    <id>https://abox.tools/id/format-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/format-xml/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Format, beri indentasi, dan mampatkan XML, lalu ubah XML ke JSON atau JSON ke XML. Pengurainya berjalan di peramban Anda dan tidak ada yang diunggah, jadi sebuah feed, faktur, atau berkas konfigurasi tidak pernah meninggalkan perangkat Anda.</summary>
+  </entry>
+  <entry>
     <title type="html">Pengode &amp;amp; Pengurai Base64</title>
     <id>https://abox.tools/id/encode-base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/encode-base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Kodekan dan uraikan Base64 dalam kedua alfabetnya, kodekan URL dengan persen, escape entitas HTML, dan baca heksadesimal serta escape garis miring terbalik. Semuanya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token tidak pernah meninggalkan mesin Anda.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pengubah YAML ke JSON</title>
+    <id>https://abox.tools/id/konversi-yaml-ke-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/konversi-yaml-ke-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Ubah YAML ke JSON dan JSON ke YAML di peramban Anda. Ia membaca YAML 1.2, jadi yes dan no tetap berupa teks, dan ia menyebutkan persis apa yang hilang di tiap arah. Tidak ada yang diunggah: sebuah berkas konfigurasi tidak pernah meninggalkan perangkat Anda.</summary>
   </entry>
   <entry>
     <title type="html">Penyunting Audio</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memverifikasi-checksum-file/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Cara memeriksa checksum MD5 atau SHA-256 di Windows, macOS, dan Linux atau di peramban Anda, apa yang sebenarnya dibuktikan sebuah kecocokan, dan kekeliruan yang membuat seluruh latihannya sia-sia.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara memformat JSON tanpa menyerahkannya kepada siapa pun</title>
-    <id>https://abox.tools/id/panduan/format-json-tanpa-mengunggah/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/format-json-tanpa-mengunggah/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Cara menata, memeriksa, dan memampatkan JSON di peramban Anda sendiri - apa yang tidak boleh diubah sebuah pemformat pada file Anda, cara membaca pesan galatnya, dan kenapa situs tempat Anda menempelkannya itu penting.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara memindai banyak halaman jadi satu PDF kecil</title>
-    <id>https://abox.tools/id/panduan/memindai-banyak-halaman-jadi-satu-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memindai-banyak-halaman-jadi-satu-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Foto tiap halaman, dapatkan satu PDF, gabungkan dengan dokumen yang sudah ada, dan kecilkan sampai bisa terkirim. Tiga alat peramban berturut-turut, dan berkasnya tidak pernah meninggalkan ponsel.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara memisah GIF menjadi bingkai</title>
-    <id>https://abox.tools/id/panduan/pisah-gif-ke-bingkai/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/pisah-gif-ke-bingkai/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Dapatkan setiap bingkai sebuah GIF animasi sebagai PNG: kenapa sebagian bingkai hanya berupa tambalan kecil dari gambarnya, apa yang terjadi pada transparansinya, dan bagaimana menyimpan pewaktuannya supaya Anda bisa menyusunnya kembali.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara mengubah video panjang menjadi timelapse</title>
-    <id>https://abox.tools/id/panduan/mengubah-video-panjang-jadi-timelapse/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/mengubah-video-panjang-jadi-timelapse/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Satu jam rekaman menjadi satu menit yang enak ditonton: cara memilih kecepatan, mengapa menyebutkan durasi akhir lebih baik daripada berhitung, dan kapan hasilnya perlu menjadi GIF.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara menyiapkan foto ponsel untuk web</title>
-    <id>https://abox.tools/id/panduan/menyiapkan-foto-untuk-web/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/menyiapkan-foto-untuk-web/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">HEIC ke JPEG, GPS dibuang, diubah ukurannya untuk halaman dan dimampatkan ke anggaran: seluruh rantai di peramban, dan foto aslinya tidak pernah meninggalkan mesin Anda.</summary>
   </entry>
 </feed>

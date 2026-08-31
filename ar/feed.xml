@@ -32,11 +32,39 @@
     <uri>https://abox.tools/ar/</uri>
   </author>
   <entry>
+    <title type="html">استخراج الصوت من الفيديو</title>
+    <id>https://abox.tools/ar/استخراج-الصوت-من-الفيديو/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/استخراج-الصوت-من-الفيديو/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">استخرج الصوت من ملف MP4 أو MOV أو WebM واحفظه بصيغة WAV. الفيديو لا يغادر جهازك، وصورته لا تُفكّ شفرتها أبداً، فالعمل كلّه يجري في متصفّحك أنت.</summary>
+  </entry>
+  <entry>
+    <title type="html">رسم مقارنة الأطوال</title>
+    <id>https://abox.tools/ar/مقارنة-الاطوال/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/مقارنة-الاطوال/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">قارن الأطوال جنباً إلى جنب. أضِف رجلاً وامرأة وصبياً وفتاة وأشياء &amp;mdash; باباً ونافذة وسبّورة وآلة بيع &amp;mdash; بالسنتيمترات أو بالأقدام والبوصات، ونزّل الرسم بصيغة PNG أو SVG. وهو يُرسَم في متصفّحك.</summary>
+  </entry>
+  <entry>
+    <title type="html">كيف تصنع رسم مقارنة أطوال</title>
+    <id>https://abox.tools/ar/أدلة/عمل-رسم-مقارنة-الاطوال/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/عمل-رسم-مقارنة-الاطوال/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">حوّل قائمة أطوال إلى صورة جنباً إلى جنب: كيف تكتب الأطوال، وأي شكل تختار للطفل، ولماذا يفعل شيء مألوف واحد أكثر مما يفعله شخص ثالث، وكيف تُخرِج الرسم بصيغة PNG أو SVG.</summary>
+  </entry>
+  <entry>
     <title type="html">محرّر الصوت</title>
     <id>https://abox.tools/ar/تحرير-الصوت/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">محوّل YAML إلى JSON</title>
+    <id>https://abox.tools/ar/تحويل-yaml-الى-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-yaml-الى-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">حوّل YAML إلى JSON وJSON إلى YAML في متصفّحك. يقرأ YAML 1.2، فتبقى yes وno نصوصاً، ويقول بالضبط ما يفقده كلّ اتجاه. لا يُرفع شيء، فلا يغادر ملفُّ إعدادات جهازك أبداً.</summary>
   </entry>
   <entry>
     <title type="html">مرمِّز Base64 ومفكِّكه</title>
@@ -58,6 +86,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-json/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">نسِّق وصغِّر JSON وXML وHTML وCSS وYAML، وحوِّل JSON إلى YAML أو XML وبالعكس. المحلِّلات تعمل في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز أو ملف إعدادات جهازك أبداً.</summary>
+  </entry>
+  <entry>
+    <title type="html">مُنسّق XML</title>
+    <id>https://abox.tools/ar/تنسيق-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-xml/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">نسّق XML وأزِح أسطره واضغطه، وحوّل XML إلى JSON أو JSON إلى XML. المحلّل يعمل في متصفّحك ولا يُرفع شيء، فلا تغادر تغذيةٌ ولا فاتورةٌ ولا ملفُّ إعدادات جهازك أبداً.</summary>
   </entry>
   <entry>
     <title type="html">اقتصاص الفيديو</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/صورة-شخصية-بيومترية/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">اصنع صورة جواز سفر أو تأشيرة على القاعدة المنشورة لبلدك: المليمترات والـ dpi بالضبط، وطبقة حيّة لارتفاع الرأس وخطّ العينين، وفحص للخلفية، وورقة طباعة مقاس 4×6، وملف مضغوط إلى حدّ الـ KB الذي تفرضه البوابة. ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">ضاغط PDF</title>
-    <id>https://abox.tools/ar/ضغط-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/ضغط-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">صغِّر ملف PDF دون رفعه. يُقرأ الملف ويُعاد ضغطه ويُعاد كتابته بمتصفحك أنت، وتريك الأداة أين يقع حجمه فعلاً قبل أن تمسّ شيئاً.</summary>
-  </entry>
-  <entry>
-    <title type="html">ضاغط الصور</title>
-    <id>https://abox.tools/ar/ضغط-الصور/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/ضغط-الصور/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">اضغط صورة JPEG أو PNG أو WebP إلى حجم محدّد بالضبط: 100 KB أو 2 MB أو أي حجم آخر. يعمل بالكامل داخل متصفحك، فلا يُرفع شيء، ولا حساب، ويعمل دون اتصال.</summary>
-  </entry>
-  <entry>
-    <title type="html">طامس PDF</title>
-    <id>https://abox.tools/ar/طمس-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/طمس-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">أخرِج الكلمات من ملف PDF بدل رسم مستطيل أسود فوقها. تُحذَف الحروف من تعليمات رسم الصفحة نفسها، ويُفتَح الملف المنتهي من جديد ويُبحَث فيه برهاناً على أنها زالت، ولا يُرفع شيء.</summary>
-  </entry>
-  <entry>
-    <title type="html">طمس الصور</title>
-    <id>https://abox.tools/ar/طمس-الصورة/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/طمس-الصورة/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">غطِّ اسماً أو عنواناً أو رقم حساب في صورة أو لقطة شاشة، ثم أعِد ترميز الصورة، فتزول البكسلات المخفية من الملف بدل أن تقبع تحت مستطيل. يعمل بالكامل داخل متصفحك.</summary>
-  </entry>
-  <entry>
-    <title type="html">عارض DICOM</title>
-    <id>https://abox.tools/ar/عارض-dicom/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/عارض-dicom/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">افتح صور CT وMR والأشعة السينية والموجات فوق الصوتية في متصفحك. اضبط النافذة والمستوى، وتصفّح سلسلة كاملة، وقِس بالمليمترات، واقرأ كل وسم DICOM، وانظر ما الذي في الملف يعرّف المريض بالضبط. ولا يُرفع شيء.</summary>
   </entry>
 </feed>

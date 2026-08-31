@@ -32,11 +32,32 @@
     <uri>https://abox.tools/fr/</uri>
   </author>
   <entry>
+    <title type="html">Comment faire un graphique de comparaison de tailles</title>
+    <id>https://abox.tools/fr/guides/faire-un-graphique-de-tailles/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/faire-un-graphique-de-tailles/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Transformer une liste de tailles en une image côte à côte : comment écrire les tailles, quelle figure choisir pour un enfant, pourquoi un objet familier fait plus qu'une troisième personne, et comment sortir le graphique en PNG ou en SVG.</summary>
+  </entry>
+  <entry>
+    <title type="html">Comparateur de tailles</title>
+    <id>https://abox.tools/fr/comparer-des-tailles/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-tailles/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Comparez des tailles côte à côte. Ajoutez un homme, une femme, un garçon, une fille et des objets &amp;mdash; une porte, une fenêtre, un tableau blanc, un distributeur &amp;mdash; en centimètres ou en pieds et pouces, et téléchargez le graphique en PNG ou en SVG. Il est dessiné dans votre navigateur.</summary>
+  </entry>
+  <entry>
     <title type="html">Comparateur de textes</title>
     <id>https://abox.tools/fr/comparer-des-textes/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-textes/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Comparez deux textes et voyez chaque différence, ligne à ligne et mot à mot, côte à côte ou en une colonne. La comparaison tourne dans votre navigateur, rien n'est envoyé - du code non publié ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Convertisseur YAML vers JSON</title>
+    <id>https://abox.tools/fr/convertir-du-yaml-en-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/convertir-du-yaml-en-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Convertissez YAML en JSON et JSON en YAML dans votre navigateur. Il lit le YAML 1.2, donc yes et no restent des chaînes, et il dit exactement ce que chaque sens perd. Rien n'est envoyé : un fichier de configuration ne quitte jamais votre machine.</summary>
   </entry>
   <entry>
     <title type="html">Encodeur &amp;amp; décodeur Base64</title>
@@ -46,11 +67,25 @@
     <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
   </entry>
   <entry>
+    <title type="html">Extraire l'audio d'une vidéo</title>
+    <id>https://abox.tools/fr/extraire-l-audio-d-une-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/extraire-l-audio-d-une-video/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Récupérez le son d'un MP4, MOV ou WebM et enregistrez-le en WAV. La vidéo ne quitte pas votre machine et son image n'est jamais décodée&amp;nbsp;: tout le travail se fait dans votre propre navigateur.</summary>
+  </entry>
+  <entry>
     <title type="html">Formateur JSON</title>
     <id>https://abox.tools/fr/formater-du-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-json/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Formatez et compactez du JSON, du XML, du HTML, du CSS et du YAML, et convertissez du JSON en YAML ou en XML et inversement. Les analyseurs tournent dans votre navigateur, rien n'est envoyé - un jeton ou un fichier de configuration ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formateur XML</title>
+    <id>https://abox.tools/fr/formater-du-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-xml/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Mettez en forme, indentez et compactez du XML, et convertissez XML en JSON ou JSON en XML. L'analyseur tourne dans votre navigateur et rien n'est envoyé, donc un flux, une facture ou un fichier de configuration ne quitte jamais votre machine.</summary>
   </entry>
   <entry>
     <title type="html">Éditeur audio</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Couper d'abord les secondes qui comptent, puis ne convertir que celles-là. Quand la timeline du convertisseur GIF suffit, quand couper d'abord avec le découpeur vidéo, et pourquoi chaque seconde de GIF coûte si cher.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment faire une vidéo boomerang</title>
-    <id>https://abox.tools/fr/guides/faire-une-video-boomerang/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/faire-une-video-boomerang/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Couper le moment, inverser la copie, joindre les deux et boucler. Trois outils à la suite, tous dans le navigateur, et l'ordre qui ramène tout le travail à une minute.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment formater du JSON sans le confier à personne</title>
-    <id>https://abox.tools/fr/guides/formater-du-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/formater-du-json/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Mettre en forme, vérifier et minifier du JSON dans son propre navigateur&amp;nbsp;: ce qu'un formateur ne doit jamais changer dans votre fichier, comment lire le message d'erreur, et pourquoi le site où vous collez compte.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment modifier un GIF image par image</title>
-    <id>https://abox.tools/fr/guides/modifier-un-gif-image-par-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/modifier-un-gif-image-par-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Décomposer un GIF en ses images, en retirer ou en réordonner, et le rebâtir en gardant les temps. Ce qui survit à l'aller-retour, ce que coûte la palette, et comment voir pourquoi un GIF est lourd.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment nettoyer un mémo vocal avant de l'envoyer</title>
-    <id>https://abox.tools/fr/guides/nettoyer-un-memo-vocal/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/nettoyer-un-memo-vocal/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Couper les blancs et les faux départs, puis remonter le niveau presque à pleine échelle. Deux outils du navigateur à la suite, dans l'ordre qui préserve la qualité, et l'enregistrement ne quitte jamais votre machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment partager du texte et des fichiers entre appareils sans les téléverser</title>
-    <id>https://abox.tools/fr/guides/partager-du-texte-entre-appareils/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/partager-du-texte-entre-appareils/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Faire passer du texte ou des fichiers d'un navigateur à un autre par une connexion directe et chiffrée - sans s'envoyer de courriel, sans historique de discussion, sans compte, et sans qu'un serveur garde une copie.</summary>
   </entry>
 </feed>

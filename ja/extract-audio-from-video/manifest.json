@@ -1,8 +1,8 @@
 {
   "id": "/ja/extract-audio-from-video/",
-  "name": "Extract Audio from Video",
-  "short_name": "Extract Audio from Video",
-  "description": "Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded.",
+  "name": "\u52d5\u753b\u304b\u3089\u97f3\u58f0\u3092\u62bd\u51fa",
+  "short_name": "\u52d5\u753b\u304b\u3089\u97f3\u58f0\u3092\u62bd\u51fa",
+  "description": "\u52d5\u753b\u3092\u7f6e\u3051\u3070\u3001\u97f3\u3060\u3051\u304c\u53d6\u308a\u51fa\u305b\u307e\u3059\u3002\u6620\u50cf\u306f\u4e00\u5ea6\u3082\u5fa9\u53f7\u3055\u308c\u305a\u3001\u4f55\u3082\u30a2\u30c3\u30d7\u30ed\u30fc\u30c9\u3055\u308c\u307e\u305b\u3093\u3002",
   "lang": "ja",
   "dir": "ltr",
   "start_url": "./",

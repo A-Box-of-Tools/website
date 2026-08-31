@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تغيير-حجم-الصورة/:';
-const CACHE_NAME=CACHE_PREFIX+'ad972d507d';
+const CACHE_NAME=CACHE_PREFIX+'f68563eeac';
 const ASSETS=[
 './',
 'index.html',

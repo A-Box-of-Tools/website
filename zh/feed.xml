@@ -46,11 +46,46 @@
     <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
   </entry>
   <entry>
+    <title type="html">XML 格式化</title>
+    <id>https://abox.tools/zh/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/xml-formatter/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">格式化、缩进和压缩 XML，把 XML 转成 JSON 或者把 JSON 转回 XML。解析器在你的浏览器里跑，什么都不上传，所以一个订阅源、一张发票或者一份配置文件永远不会离开你的设备。</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML 转 JSON</title>
+    <id>https://abox.tools/zh/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/yaml-to-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">在你的浏览器里把 YAML 转成 JSON、把 JSON 转成 YAML。它读的是 YAML 1.2，所以 yes 和 no 还是字符串，而且会明确说出每个方向丢了什么。什么都不上传：一份配置文件永远不会离开你的设备。</summary>
+  </entry>
+  <entry>
+    <title type="html">从视频里提取音频</title>
+    <id>https://abox.tools/zh/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/extract-audio-from-video/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 里的声音取出来，存成 WAV。视频不会离开你的设备，画面也从不解码，整个过程都在你自己的浏览器里跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎么做一张身高对比图</title>
+    <id>https://abox.tools/zh/guides/make-a-height-comparison-chart/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/make-a-height-comparison-chart/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">把一串身高变成一张并排的图：身高怎么写，给小孩挑哪个图形，为什么一件眼熟的东西比第三个人更管用，以及怎么把图导出成 PNG 或 SVG。</summary>
+  </entry>
+  <entry>
     <title type="html">文本比对</title>
     <id>https://abox.tools/zh/text-diff/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/text-diff/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">比对两段文本，逐行、逐词看清每一处差异，并排或单列显示。比对在你的浏览器里跑，什么都不上传——尚未发布的代码从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">身高对比图</title>
+    <id>https://abox.tools/zh/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compare-heights/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">把身高并排比出来。可以加男性、女性、男孩、女孩，也可以加物件——门、窗、白板、自动售货机——用厘米或者英尺英寸都行，做好的图能下载成 PNG 或 SVG。它是在你的浏览器里画的。</summary>
   </entry>
   <entry>
     <title type="html">音频编辑</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">生成链接、Wi-Fi 或者名片二维码，也生成 EAN-13、UPC-A、Code 128 和 Code 39 条形码。可下载 SVG 或 PNG。全部在你的浏览器里完成。</summary>
-  </entry>
-  <entry>
-    <title type="html">二维码与条形码识读</title>
-    <id>https://abox.tools/zh/qr-barcode-reader/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode-reader/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">从照片、截图或摄像头读取二维码，在打开之前就看清这个链接到底通向哪里。EAN、UPC、Code 128、Code 39 和 ITF 条形码也能读。什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">什么时候该把图片塞进 CSS，什么时候不该</title>
-    <id>https://abox.tools/zh/guides/embed-an-image-in-css/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/embed-an-image-in-css/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">data URI 的代价在哪儿，base64 为什么多出三分之一而 gzip 又还不回来，SVG 为什么绝不该用 base64，以及那个只坑内联 SVG、还一声不吭的引号问题。</summary>
-  </entry>
-  <entry>
-    <title type="html">哈希与校验和</title>
-    <id>https://abox.tools/zh/hash-checksum/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/hash-checksum/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">计算任意文件的 MD5、SHA-1、SHA-256、SHA-384 或 SHA-512，并和下载页面上公布的校验和对照。文件在浏览器里读取，多大都不会上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片压缩</title>
-    <id>https://abox.tools/zh/compress-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/compress-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 JPEG、PNG 或 WebP 压到你要的大小，100 KB、2 MB 都行。全程在浏览器里跑，不上传，不注册，断网也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片涂黑与打码</title>
-    <id>https://abox.tools/zh/redact-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/redact-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把照片或截图里的姓名、地址、账号遮住再存一份，被遮的像素是从文件里没了，不是压在一个矩形下面。全程在浏览器里跑。</summary>
   </entry>
 </feed>

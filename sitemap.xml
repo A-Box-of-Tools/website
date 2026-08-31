@@ -553,6 +553,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ar/مقارنة-الاطوال/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ar/ضغط-الصور/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -591,6 +597,12 @@
   <url>
     <loc>https://abox.tools/ar/إزالة-بيانات-exif/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/استخراج-الصوت-من-الفيديو/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -759,6 +771,18 @@
   <url>
     <loc>https://abox.tools/ar/تحويل-الفيديو-إلى-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/تنسيق-xml/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/تحويل-yaml-الى-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -949,6 +973,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ar/أدلة/عمل-رسم-مقارنة-الاطوال/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ar/أدلة/gif-من-جزء-من-فيديو/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -1051,6 +1081,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/groessenvergleich-erstellen/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/bild-komprimieren/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -1089,6 +1125,12 @@
   <url>
     <loc>https://abox.tools/de/exif-daten-entfernen/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/ton-aus-video-extrahieren/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1257,6 +1299,18 @@
   <url>
     <loc>https://abox.tools/de/video-in-gif-umwandeln/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/xml-formatieren/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/yaml-in-json-umwandeln/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1447,6 +1501,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/de/ratgeber/groessenvergleich-diagramm-erstellen/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/de/ratgeber/gif-aus-videoausschnitt/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -1549,6 +1609,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/comparar-alturas/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/comprimir-imagen/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -1587,6 +1653,12 @@
   <url>
     <loc>https://abox.tools/es/eliminar-datos-exif/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/extraer-audio-de-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1755,6 +1827,18 @@
   <url>
     <loc>https://abox.tools/es/convertir-video-a-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/formatear-xml/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/convertir-yaml-a-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1945,6 +2029,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/es/guias/hacer-un-grafico-de-alturas/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/es/guias/gif-de-una-parte-de-un-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -2047,6 +2137,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/fr/comparer-des-tailles/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/fr/compresser-une-image/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -2085,6 +2181,12 @@
   <url>
     <loc>https://abox.tools/fr/supprimer-les-donnees-exif/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/extraire-l-audio-d-une-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2253,6 +2355,18 @@
   <url>
     <loc>https://abox.tools/fr/video-en-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/formater-du-xml/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/convertir-du-yaml-en-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2443,6 +2557,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/fr/guides/faire-un-graphique-de-tailles/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -2545,6 +2665,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/hi/compare-heights/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/hi/compress-image/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -2583,6 +2709,12 @@
   <url>
     <loc>https://abox.tools/hi/exif-editor/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/extract-audio-from-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2751,6 +2883,18 @@
   <url>
     <loc>https://abox.tools/hi/video-to-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/xml-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/yaml-to-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2941,6 +3085,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/hi/guides/make-a-height-comparison-chart/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/hi/guides/make-a-gif-from-part-of-a-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -3043,6 +3193,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/id/bandingkan-tinggi-badan/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/id/kompres-gambar/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -3081,6 +3237,12 @@
   <url>
     <loc>https://abox.tools/id/hapus-data-exif/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/ekstrak-audio-dari-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3249,6 +3411,18 @@
   <url>
     <loc>https://abox.tools/id/video-ke-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/format-xml/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/konversi-yaml-ke-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3439,6 +3613,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/id/panduan/membuat-bagan-perbandingan-tinggi/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/id/panduan/gif-dari-potongan-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -3541,6 +3721,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/confrontare-altezze/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/comprimere-immagine/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -3579,6 +3765,12 @@
   <url>
     <loc>https://abox.tools/it/rimuovere-dati-exif/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/estrarre-audio-da-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3747,6 +3939,18 @@
   <url>
     <loc>https://abox.tools/it/video-in-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/formattare-xml/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/convertire-yaml-in-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3937,6 +4141,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/it/guide/fare-un-grafico-di-altezze/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/it/guide/gif-da-una-parte-di-un-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -4039,6 +4249,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ja/compare-heights/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ja/compress-image/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -4077,6 +4293,12 @@
   <url>
     <loc>https://abox.tools/ja/exif-editor/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/extract-audio-from-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4245,6 +4467,18 @@
   <url>
     <loc>https://abox.tools/ja/video-to-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/xml-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/yaml-to-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4435,6 +4669,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ja/guides/make-a-height-comparison-chart/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ja/guides/make-a-gif-from-part-of-a-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -4537,6 +4777,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ko/키-비교/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ko/이미지-압축/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -4575,6 +4821,12 @@
   <url>
     <loc>https://abox.tools/ko/exif-정보-삭제/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/동영상-오디오-추출/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4743,6 +4995,18 @@
   <url>
     <loc>https://abox.tools/ko/동영상-gif-변환/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/xml-포맷터/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/yaml-json-변환/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4933,6 +5197,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/ko/가이드/키-비교-차트-만들기/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/ko/가이드/영상-일부로-gif-만들기/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -5035,6 +5305,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/lengtes-vergelijken/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/afbeelding-comprimeren/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -5073,6 +5349,12 @@
   <url>
     <loc>https://abox.tools/nl/exif-gegevens-verwijderen/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/audio-uit-video-halen/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5241,6 +5523,18 @@
   <url>
     <loc>https://abox.tools/nl/video-naar-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/xml-formatteren/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/yaml-naar-json-omzetten/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5431,6 +5725,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/nl/gidsen/een-lengtegrafiek-maken/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/nl/gidsen/gif-van-een-stuk-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -5533,6 +5833,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/comparar-alturas/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/comprimir-imagem/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -5571,6 +5877,12 @@
   <url>
     <loc>https://abox.tools/pt/remover-dados-exif/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/extrair-audio-de-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5739,6 +6051,18 @@
   <url>
     <loc>https://abox.tools/pt/video-para-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/formatar-xml/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/converter-yaml-para-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5929,6 +6253,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/pt/guias/fazer-um-grafico-de-alturas/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/pt/guias/gif-de-um-trecho-de-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -6031,6 +6361,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/tr/boy-karsilastirma/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/tr/resim-sikistirma/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -6069,6 +6405,12 @@
   <url>
     <loc>https://abox.tools/tr/exif-verisi-silme/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/videodan-ses-cikarma/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6237,6 +6579,18 @@
   <url>
     <loc>https://abox.tools/tr/videoyu-gife-donusturme/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/xml-bicimlendirme/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/yaml-json-donusturme/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6427,6 +6781,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/tr/rehberler/boy-karsilastirma-grafigi-yapma/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/tr/rehberler/videonun-bir-kisminden-gif/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -6529,6 +6889,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/zh/compare-heights/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/zh/compress-image/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -6567,6 +6933,12 @@
   <url>
     <loc>https://abox.tools/zh/exif-editor/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/extract-audio-from-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6735,6 +7107,18 @@
   <url>
     <loc>https://abox.tools/zh/video-to-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/xml-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/yaml-to-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6925,6 +7309,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://abox.tools/zh/guides/make-a-height-comparison-chart/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/zh/guides/make-a-gif-from-part-of-a-video/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -7027,6 +7417,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/zh-TW/compare-heights/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/zh-TW/compress-image/</loc>
     <lastmod>2026-08-27</lastmod>
     <changefreq>monthly</changefreq>
@@ -7065,6 +7461,12 @@
   <url>
     <loc>https://abox.tools/zh-TW/exif-editor/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/extract-audio-from-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -7233,6 +7635,18 @@
   <url>
     <loc>https://abox.tools/zh-TW/video-to-gif/</loc>
     <lastmod>2026-08-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/xml-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/yaml-to-json/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -7419,6 +7833,12 @@
   <url>
     <loc>https://abox.tools/zh-TW/guides/share-text-between-devices/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/guides/make-a-height-comparison-chart/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>

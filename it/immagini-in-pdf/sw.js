@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/immagini-in-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'32deb4e1f2';
+const CACHE_NAME=CACHE_PREFIX+'b1003c8954';
 const ASSETS=[
 './',
 'index.html',

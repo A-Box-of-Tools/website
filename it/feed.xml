@@ -39,11 +39,32 @@
     <summary type="html">Codifica e decodifica Base64 in entrambi gli alfabeti, codifica URL in percentuale, fai l'escape delle entità HTML e leggi esadecimale ed escape con barra rovesciata. Gira tutto nel tuo browser e non viene caricato niente: un token non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
+    <title type="html">Come fare un grafico di confronto delle altezze</title>
+    <id>https://abox.tools/it/guide/fare-un-grafico-di-altezze/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/fare-un-grafico-di-altezze/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Trasformare un elenco di altezze in un'immagine affiancata: come scrivere le altezze, quale figura scegliere per un bambino, perché un solo oggetto familiare fa più di una terza persona, e come tirare fuori il grafico come PNG o SVG.</summary>
+  </entry>
+  <entry>
+    <title type="html">Confronto di altezze</title>
+    <id>https://abox.tools/it/confrontare-altezze/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/confrontare-altezze/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Confronta le altezze una accanto all'altra. Aggiungi un uomo, una donna, un bambino, una bambina e degli oggetti &amp;mdash; una porta, una finestra, una lavagna, un distributore automatico &amp;mdash; in centimetri o in piedi e pollici, e scarica il grafico come PNG o SVG. Viene disegnato nel tuo browser.</summary>
+  </entry>
+  <entry>
     <title type="html">Confronto testi</title>
     <id>https://abox.tools/it/confrontare-testi/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/confrontare-testi/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Confronta due testi e guarda ogni differenza, riga per riga e parola per parola, fianco a fianco o in una colonna. Il confronto gira nel tuo browser e non viene caricato niente: il codice non ancora pubblicato non lascia mai il tuo dispositivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Convertitore da YAML a JSON</title>
+    <id>https://abox.tools/it/convertire-yaml-in-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/convertire-yaml-in-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Converti YAML in JSON e JSON in YAML nel tuo browser. Legge YAML 1.2, quindi yes e no restano stringhe, e dice esattamente cosa perde ogni direzione. Non viene caricato niente: un file di configurazione non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
     <title type="html">Editor audio</title>
@@ -53,11 +74,25 @@
     <summary type="html">Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser, senza caricare niente.</summary>
   </entry>
   <entry>
+    <title type="html">Estrarre l'audio da un video</title>
+    <id>https://abox.tools/it/estrarre-audio-da-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/estrarre-audio-da-video/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Tira fuori il suono da un MP4, MOV o WebM e salvalo come WAV. Il video non lascia il tuo dispositivo e la sua immagine non viene mai decodificata: tutto il lavoro gira nel tuo browser.</summary>
+  </entry>
+  <entry>
     <title type="html">Formattatore JSON</title>
     <id>https://abox.tools/it/formattare-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-json/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Formatta e minimizza JSON, XML, HTML, CSS e YAML, e converti JSON in YAML o XML e viceversa. I parser girano nel tuo browser e non viene caricato niente: un token o un file di configurazione non lascia mai il tuo dispositivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formattatore XML</title>
+    <id>https://abox.tools/it/formattare-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-xml/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Formatta, indenta e compatta XML, e converti XML in JSON o JSON in XML. Il parser gira nel tuo browser e non viene caricato niente, quindi un feed, una fattura o un file di configurazione non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
     <title type="html">Come ritagliare un video in una forma diversa</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-una-gif-da-immagini/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Trasformare una serie di immagini in una GIF animata: quanto veloce può andare davvero una GIF, cosa cambia l'impostazione della tavolozza, e le tre cose che il file lo alleggeriscono sul serio.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come fare una GIF da una parte di un video</title>
-    <id>https://abox.tools/it/guide/gif-da-una-parte-di-un-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/gif-da-una-parte-di-un-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Prima taglia i secondi che contano, poi converti solo quelli. Quando basta la timeline del convertitore GIF, quando tagliare prima con il tagliavideo, e perché ogni secondo di GIF costa così tanto.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come formattare JSON senza darlo a nessuno</title>
-    <id>https://abox.tools/it/guide/formattare-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/formattare-json/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Come impaginare, controllare e minificare JSON nel proprio browser: cosa un formattatore non deve mai cambiare del tuo file, come si legge il messaggio di errore, e perché conta in che casella lo incolli.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come modificare una GIF fotogramma per fotogramma</title>
-    <id>https://abox.tools/it/guide/modificare-una-gif-fotogramma-per-fotogramma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/modificare-una-gif-fotogramma-per-fotogramma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Scomponi una GIF nei suoi fotogrammi, toglline o riordinali, e ricostruiscila conservando i tempi. Cosa sopravvive al viaggio di andata e ritorno, cosa costa la tavolozza, e come vedere perché una GIF pesa.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come preparare le foto del telefono per il web</title>
-    <id>https://abox.tools/it/guide/preparare-le-foto-per-il-web/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/preparare-le-foto-per-il-web/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">HEIC in JPEG, GPS tolto, ridimensionate per la pagina e compresse a un budget: tutta la catena nel browser, e gli originali non lasciano mai la tua macchina.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come ripulire un memo vocale prima di mandarlo</title>
-    <id>https://abox.tools/it/guide/ripulire-un-memo-vocale/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/ripulire-un-memo-vocale/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Taglia l'aria morta e le false partenze, poi porta il livello quasi a fondo scala. Due strumenti del browser in fila, nell'ordine che conserva la qualità, e la registrazione non lascia mai la tua macchina.</summary>
   </entry>
 </feed>

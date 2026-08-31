@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/tumpuk-gambar/:';
-const CACHE_NAME=CACHE_PREFIX+'22d93fea18';
+const CACHE_NAME=CACHE_PREFIX+'8d6bde5c00';
 const ASSETS=[
 './',
 'index.html',

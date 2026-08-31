@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/video-to-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'71e67a4a3d';
+const CACHE_NAME=CACHE_PREFIX+'dd7f98504f';
 const ASSETS=[
 './',
 'index.html',

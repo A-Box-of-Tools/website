@@ -1,8 +1,8 @@
 {
   "id": "/ja/compare-heights/",
-  "name": "Height Comparison Chart",
-  "short_name": "Height Comparison Chart",
-  "description": "Type the heights, take the picture. Nothing is sent to draw it.",
+  "name": "\u8eab\u9577\u6bd4\u8f03\u30c1\u30e3\u30fc\u30c8",
+  "short_name": "\u8eab\u9577\u6bd4\u8f03\u30c1\u30e3\u30fc\u30c8",
+  "description": "\u8eab\u9577\u3092\u6253\u3061\u8fbc\u3081\u3070\u3001\u7d75\u304c\u6301\u3061\u5e30\u308c\u307e\u3059\u3002\u63cf\u304f\u305f\u3081\u306b\u4f55\u304b\u3092\u9001\u308b\u3053\u3068\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
   "lang": "ja",
   "dir": "ltr",
   "start_url": "./",

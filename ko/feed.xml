@@ -46,11 +46,46 @@
     <summary type="html">JSON, XML, HTML, CSS, YAML을 정렬하고 압축하고, JSON을 YAML이나 XML로 바꾸고 되돌립니다. 파서는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이나 설정 파일이 내 기기를 떠날 일이 없습니다.</summary>
   </entry>
   <entry>
+    <title type="html">XML 포맷터</title>
+    <id>https://abox.tools/ko/xml-포맷터/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/xml-포맷터/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">XML을 포맷하고 들여쓰고 압축하며, XML을 JSON으로 또는 JSON을 XML로 바꿉니다. 파서가 브라우저에서 돌고 아무것도 업로드되지 않아서, 피드도 청구서도 설정 파일도 기기를 떠나지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML → JSON 변환기</title>
+    <id>https://abox.tools/ko/yaml-json-변환/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/yaml-json-변환/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">브라우저에서 YAML을 JSON으로, JSON을 YAML로 바꿉니다. YAML 1.2를 읽어서 yes와 no가 문자열로 남고, 각 방향이 무엇을 잃는지 정확히 말해 줍니다. 아무것도 업로드되지 않아서 설정 파일이 기기를 떠나지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">동영상에서 오디오 추출</title>
+    <id>https://abox.tools/ko/동영상-오디오-추출/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-오디오-추출/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">MP4, MOV, WebM에서 소리를 꺼내 WAV로 저장합니다. 동영상은 기기를 떠나지 않고 화면은 한 번도 디코딩되지 않습니다. 모든 작업이 사용자의 브라우저 안에서 이뤄집니다.</summary>
+  </entry>
+  <entry>
     <title type="html">오디오 편집</title>
     <id>https://abox.tools/ko/오디오-편집/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-편집/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">음원을 거꾸로 돌리고, 빠르거나 느리게 만들고, 작게 녹음된 소리를 키웁니다. 동영상에서 소리만 뽑아내는 것도 됩니다. 브라우저에서 돌아가고 아무것도 업로드하지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">키 비교 차트</title>
+    <id>https://abox.tools/ko/키-비교/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/키-비교/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">키를 나란히 비교하세요. 남성과 여성, 남자아이와 여자아이, 그리고 사물 &amp;mdash; 문, 창문, 화이트보드, 자동판매기 &amp;mdash; 을 센티미터나 피트·인치로 넣고, 차트를 PNG나 SVG로 내려받으세요. 그림은 브라우저에서 그려집니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">키 비교 차트를 만드는 방법</title>
+    <id>https://abox.tools/ko/가이드/키-비교-차트-만들기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/키-비교-차트-만들기/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">키 목록을 나란히 놓인 그림으로 바꾸는 법: 키를 어떻게 적는지, 아이에게는 어떤 그림을 고르는지, 익숙한 사물 하나가 왜 세 번째 사람보다 더 큰 일을 하는지, 그리고 차트를 PNG나 SVG로 꺼내는 법.</summary>
   </entry>
   <entry>
     <title type="html">텍스트 비교</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-가리기/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">PDF에서 글자 위에 검은 칸을 그리는 대신 글자를 빼냅니다. 글자는 그 장을 그리는 명령에서 지워지고, 완성된 파일을 다시 열어 검색해서 사라졌음을 증명하며, 아무것도 업로드되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 압축</title>
-    <id>https://abox.tools/ko/pdf-용량-줄이기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-용량-줄이기/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">PDF를 업로드하지 않고 작게 만듭니다. 파일을 읽고 다시 압축하고 새로 쓰는 일을 브라우저가 전부 처리합니다. 손대기 전에 용량이 실제로 어디에 쏠려 있는지부터 보여 줍니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR 코드를 만들고 찍힌다는 것을 증명하는 방법</title>
-    <id>https://abox.tools/ko/가이드/qr코드-만들고-스캔-확인/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/qr코드-만들고-스캔-확인/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">코드를 생성한 뒤 같은 사이트의 리더로 검증합니다. 정확한 내용물, 진짜 링크를, 인쇄 크기에서 사진으로, 대량 인쇄 전에. 전부 브라우저에서, 아무것도 업로드하지 않고.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR과 바코드 생성</title>
-    <id>https://abox.tools/ko/qr코드-만들기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/qr코드-만들기/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">링크나 와이파이, 연락처를 담은 QR 코드를 만들고, EAN-13, UPC-A, Code 128, Code 39 바코드도 만듭니다. SVG나 PNG로 내려받으세요. 전부 브라우저 안에서 일어납니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">QR과 바코드 스캔</title>
-    <id>https://abox.tools/ko/qr코드-스캔/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/qr코드-스캔/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">사진, 스크린숏, 카메라로 QR 코드를 읽고, 열기 전에 링크가 실제로 어디로 가는지 확인하세요. EAN, UPC, Code 128, Code 39, ITF 바코드도 읽습니다. 아무것도 올라가지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG를 이미지로</title>
-    <id>https://abox.tools/ko/svg-png-변환/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/svg-png-변환/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">SVG를 브라우저에서 원하는 크기의 PNG, JPEG, WebP로 바꿉니다. 너비나 배수, 상자 크기를 말하면 @2x와 @3x 사본까지 받습니다. 투명도는 그대로 유지되고 아무것도 업로드되지 않습니다.</summary>
   </entry>
 </feed>

@@ -46,11 +46,46 @@
     <summary type="html">格式化和壓縮 JSON、XML、HTML、CSS 和 YAML，把 JSON 轉成 YAML 或 XML 再轉回來。解析器在你的瀏覽器裡跑，什麼都不上傳——token 和配置檔案從不離開你的機器。</summary>
   </entry>
   <entry>
+    <title type="html">XML 格式化</title>
+    <id>https://abox.tools/zh-TW/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/xml-formatter/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">格式化、縮排和壓縮 XML，把 XML 轉成 JSON 或者把 JSON 轉回 XML。解析器在你的瀏覽器裡跑，什麼都不上傳，所以一個訂閱源、一張發票或者一份配置檔案永遠不會離開你的裝置。</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML 轉 JSON</title>
+    <id>https://abox.tools/zh-TW/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/yaml-to-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">在你的瀏覽器裡把 YAML 轉成 JSON、把 JSON 轉成 YAML。它讀的是 YAML 1.2，所以 yes 和 no 還是字串，而且會明確說出每個方向丟了什麼。什麼都不上傳：一份配置檔案永遠不會離開你的裝置。</summary>
+  </entry>
+  <entry>
+    <title type="html">從影片裡提取音訊</title>
+    <id>https://abox.tools/zh-TW/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/extract-audio-from-video/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 裡的聲音取出來，存成 WAV。影片不會離開你的裝置，畫面也從不解碼，整個過程都在你自己的瀏覽器裡跑。</summary>
+  </entry>
+  <entry>
+    <title type="html">怎麼做一張身高對比圖</title>
+    <id>https://abox.tools/zh-TW/guides/make-a-height-comparison-chart/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/make-a-height-comparison-chart/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">把一串身高變成一張並排的圖：身高怎麼寫，給小孩挑哪個圖形，為什麼一件眼熟的東西比第三個人更管用，以及怎麼把圖匯出成 PNG 或 SVG。</summary>
+  </entry>
+  <entry>
     <title type="html">文字比對</title>
     <id>https://abox.tools/zh-TW/text-diff/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/text-diff/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">比對兩段文字，逐行、逐詞看清每一處差異，並排或單列顯示。比對在你的瀏覽器裡跑，什麼都不上傳——尚未釋出的程式碼從不離開你的機器。</summary>
+  </entry>
+  <entry>
+    <title type="html">身高對比圖</title>
+    <id>https://abox.tools/zh-TW/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compare-heights/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">把身高並排比出來。可以加男性、女性、男孩、女孩，也可以加物件——門、窗、白板、自動售貨機——用釐米或者英尺英寸都行，做好的圖能下載成 PNG 或 SVG。它是在你的瀏覽器裡畫的。</summary>
   </entry>
   <entry>
     <title type="html">音訊編輯</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/qr-barcode-reader/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">從照片、截圖或鏡頭讀取 QR Code，在開啟之前就看清這個連結到底通向哪裡。EAN、UPC、Code 128、Code 39 和 ITF 條碼也能讀。什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">SVG 轉圖片</title>
-    <id>https://abox.tools/zh-TW/svg-to-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/svg-to-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在瀏覽器裡把 SVG 轉成 PNG、JPEG 或 WebP，尺寸隨你定。給寬度、給倍數，或者給一個框，還能順手出 @2x 和 @3x。透明保住，什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">什麼時候該把圖片塞進 CSS，什麼時候不該</title>
-    <id>https://abox.tools/zh-TW/guides/embed-an-image-in-css/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/embed-an-image-in-css/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">data URI 的代價在哪裡，base64 為什麼多出三分之一而 gzip 又還不回來，SVG 為什麼絕不該用 base64，以及那個只坑內聯 SVG、還一聲不吭的引號問題。</summary>
-  </entry>
-  <entry>
-    <title type="html">圖片塗黑與打碼</title>
-    <id>https://abox.tools/zh-TW/redact-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/redact-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把照片或截圖裡的姓名、地址、帳號遮住再存一份，被遮的畫素是從檔案裡沒了，不是壓在一個矩形下面。全程在瀏覽器裡跑。</summary>
-  </entry>
-  <entry>
-    <title type="html">圖片壓縮</title>
-    <id>https://abox.tools/zh-TW/compress-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compress-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">把 JPEG、PNG 或 WebP 壓到你要的大小，100 KB、2 MB 都行。全程在瀏覽器裡跑，不上傳，不註冊，斷網也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">圖片縮放</title>
-    <id>https://abox.tools/zh-TW/resize-image/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/resize-image/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">在瀏覽器裡給 JPEG、PNG 和 WebP 改尺寸、裁切、轉格式。精確到畫素、按百分比，或者定長邊，一張也行，一整個資料夾也行。什麼都不上傳。</summary>
   </entry>
 </feed>

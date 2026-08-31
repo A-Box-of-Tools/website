@@ -1,0 +1,26 @@
+{
+  "id": "/fr/formater-du-xml/",
+  "name": "Formateur XML",
+  "short_name": "Formateur XML",
+  "description": "Du XML mis en forme pour \u00eatre lu ou compact\u00e9 pour \u00eatre livr\u00e9, et converti en JSON dans les deux sens. Rien de tout cela n'est coll\u00e9 dans le serveur de quelqu'un d'autre.",
+  "lang": "fr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

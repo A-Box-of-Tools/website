@@ -1,8 +1,8 @@
 {
   "id": "/ja/yaml-to-json/",
-  "name": "YAML to JSON Converter",
-  "short_name": "YAML to JSON Converter",
-  "description": "Both directions, and it says what each one costs. Nothing is pasted into anyone else's server.",
+  "name": "YAML\u30fbJSON\u5909\u63db",
+  "short_name": "YAML\u30fbJSON\u5909\u63db",
+  "description": "\u53cc\u65b9\u5411\u3067\u3001\u305d\u308c\u305e\u308c\u306e\u4ee3\u511f\u3082\u4f1d\u3048\u307e\u3059\u3002\u3069\u3061\u3089\u3082\u3001\u3088\u305d\u306e\u30b5\u30fc\u30d0\u30fc\u306b\u8cbc\u308a\u4ed8\u3051\u3089\u308c\u308b\u3053\u3068\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
   "lang": "ja",
   "dir": "ltr",
   "start_url": "./",

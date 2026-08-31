@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/extract-audio-from-video/",
-  "name": "Extract Audio from Video",
-  "short_name": "Extract Audio from Video",
-  "description": "Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded.",
+  "name": "\u5f9e\u5f71\u7247\u88e1\u63d0\u53d6\u97f3\u8a0a",
+  "short_name": "\u5f9e\u5f71\u7247\u88e1\u63d0\u53d6\u97f3\u8a0a",
+  "description": "\u628a\u5f71\u7247\u62d6\u9032\u4f86\uff0c\u8072\u97f3\u5c31\u53d6\u51fa\u4f86\u4e86\u3002\u756b\u9762\u5f9e\u4e0d\u89e3\u78bc\uff0c\u4e5f\u4e0d\u4e0a\u50b3\u4efb\u4f55\u6771\u897f\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

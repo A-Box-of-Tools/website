@@ -46,6 +46,13 @@
     <summary type="html">Base64 in beiden Alphabeten kodieren und dekodieren, URLs prozentkodieren, HTML-Entities maskieren und Hex und Backslash-Escapes lesen. Alles läuft in Ihrem Browser, hochgeladen wird nichts - ein Token verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
+    <title type="html">Größenvergleich</title>
+    <id>https://abox.tools/de/groessenvergleich-erstellen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/groessenvergleich-erstellen/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Vergleichen Sie Größen nebeneinander. Nehmen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen und Gegenstände dazu &amp;mdash; eine Tür, ein Fenster, ein Whiteboard, einen Getränkeautomaten &amp;mdash; in Zentimetern oder in Fuß und Zoll, und laden Sie das Diagramm als PNG oder SVG herunter. Gezeichnet wird es in Ihrem Browser.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON-Formatierer</title>
     <id>https://abox.tools/de/json-formatieren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
@@ -58,6 +65,34 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/text-vergleichen/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Zwei Texte vergleichen und jeden Unterschied sehen, Zeile für Zeile und Wort für Wort, nebeneinander oder in einer Spalte. Der Vergleich läuft in Ihrem Browser, hochgeladen wird nichts - unveröffentlichter Code verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ton aus Video extrahieren</title>
+    <id>https://abox.tools/de/ton-aus-video-extrahieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ton-aus-video-extrahieren/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Holen Sie den Ton aus einem MP4, MOV oder WebM und speichern Sie ihn als WAV. Das Video verlässt Ihr Gerät nicht, und sein Bild wird nie dekodiert. Die ganze Arbeit läuft in Ihrem eigenen Browser.</summary>
+  </entry>
+  <entry>
+    <title type="html">Wie man ein Größenvergleichsdiagramm erstellt</title>
+    <id>https://abox.tools/de/ratgeber/groessenvergleich-diagramm-erstellen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/groessenvergleich-diagramm-erstellen/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Aus einer Liste von Größen ein Bild nebeneinander machen: wie die Größen geschrieben werden, welche Figur zu einem Kind gehört, warum ein einziger vertrauter Gegenstand mehr bringt als eine dritte Person, und wie das Diagramm als PNG oder SVG herauskommt.</summary>
+  </entry>
+  <entry>
+    <title type="html">XML-Formatierer</title>
+    <id>https://abox.tools/de/xml-formatieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/xml-formatieren/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">XML formatieren, einrücken und minimieren und XML in JSON oder JSON in XML umwandeln. Der Parser läuft in Ihrem Browser, hochgeladen wird nichts - ein Feed, eine Rechnung oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML-zu-JSON-Umwandler</title>
+    <id>https://abox.tools/de/yaml-in-json-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/yaml-in-json-umwandeln/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
     <title type="html">Audio-Schneider</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/exif-daten-entfernen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Die EXIF- und GPS-Daten in einem Foto sehen, bearbeiten oder mit einem Klick vollständig entfernen. Im Browser: kein Upload, und das Bild wird nie neu kodiert.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ein GIF in Einzelbilder zerlegen</title>
-    <id>https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Jedes Bild eines animierten GIFs als PNG: warum manche Bilder nur ein kleiner Ausschnitt sind, was mit der Transparenz passiert und wie Sie die Zeiten behalten, um die Animation wieder zusammenzusetzen.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF-Analyse</title>
-    <id>https://abox.tools/de/gif-analysieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-analysieren/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ein GIF im Browser auseinandernehmen: jedes Einzelbild mit Anzeigedauer und Entsorgungsart, die Farbtabellen, die Wiederholungen und eine Byte-für-Byte-Aufstellung, wohin die Dateigröße gegangen ist. Es wird nichts hochgeladen.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF-Zerleger</title>
-    <id>https://abox.tools/de/gif-in-einzelbilder-zerlegen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/gif-in-einzelbilder-zerlegen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Ein animiertes GIF in seine Einzelbilder zerlegen und jedes davon als PNG speichern, kostenlos und vollständig im Browser. Transparenz und Timing bleiben erhalten. Es wird nichts hochgeladen, und es geht auch offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">HEIC zu JPG</title>
-    <id>https://abox.tools/de/heic-in-jpg-umwandeln/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/heic-in-jpg-umwandeln/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">HEIC-Fotos vom iPhone im Browser in JPG umwandeln. Der Decoder läuft auf Ihrem eigenen Gerät: nichts wird hochgeladen, kein Konto, auch offline, und Datum und Kameradaten dürfen mitkommen.</summary>
-  </entry>
-  <entry>
-    <title type="html">Hash &amp; Prüfsumme</title>
-    <id>https://abox.tools/de/pruefsumme-berechnen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/pruefsumme-berechnen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Die MD5-, SHA-1-, SHA-256-, SHA-384- oder SHA-512-Prüfsumme einer beliebigen Datei berechnen und mit der Angabe der Downloadseite vergleichen. Die Datei wird im Browser gelesen und nie hochgeladen, in jeder Größe.</summary>
   </entry>
 </feed>

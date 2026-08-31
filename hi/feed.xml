@@ -46,6 +46,34 @@
     <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
   </entry>
   <entry>
+    <title type="html">XML फ़ॉर्मैटर</title>
+    <id>https://abox.tools/hi/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/xml-formatter/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">XML को फ़ॉर्मैट, इंडेंट और मिनिफ़ाई कीजिए, और XML को JSON या JSON को XML में बदलिए। पार्सर आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता, इसलिए कोई फ़ीड, इनवॉइस या कॉन्फ़िग फ़ाइल आपकी डिवाइस से बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML से JSON कन्वर्टर</title>
+    <id>https://abox.tools/hi/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/yaml-to-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">अपने ब्राउज़र में YAML को JSON और JSON को YAML में बदलिए। यह YAML 1.2 पढ़ता है, इसलिए yes और no स्ट्रिंग ही रहते हैं, और बताता है कि हर दिशा में क्या खोता है। कुछ भी अपलोड नहीं होता, इसलिए कोई कॉन्फ़िग फ़ाइल आपकी डिवाइस से बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">ऊँचाई तुलना चार्ट</title>
+    <id>https://abox.tools/hi/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-heights/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">ऊँचाइयों की अगल-बगल तुलना कीजिए। एक पुरुष, एक महिला, एक लड़का, एक लड़की और चीज़ें जोड़िए &amp;mdash; दरवाज़ा, खिड़की, व्हाइटबोर्ड, वेंडिंग मशीन &amp;mdash; सेंटीमीटर में या फ़ुट और इंच में, और चार्ट को PNG या SVG के रूप में डाउनलोड कीजिए। यह आपके ब्राउज़र में बनता है।</summary>
+  </entry>
+  <entry>
+    <title type="html">ऊँचाई तुलना चार्ट कैसे बनाएँ</title>
+    <id>https://abox.tools/hi/guides/make-a-height-comparison-chart/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-height-comparison-chart/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">ऊँचाइयों की सूची को अगल-बगल की तस्वीर में बदलिए: ऊँचाइयाँ कैसे लिखें, बच्चे के लिए कौन-सी आकृति चुनें, एक जानी-पहचानी चीज़ तीसरे व्यक्ति से ज़्यादा काम क्यों करती है, और चार्ट को PNG या SVG के रूप में कैसे बाहर लाएँ।</summary>
+  </entry>
+  <entry>
     <title type="html">ऑडियो एडिटर</title>
     <id>https://abox.tools/hi/edit-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/edit-audio/"/>
@@ -58,6 +86,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/text-diff/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">दो टेक्स्ट मिलाइए और हर फ़र्क़ देखिए, पंक्ति-दर-पंक्ति और शब्द-दर-शब्द, अगल-बगल या एक कॉलम में। तुलना आपके ब्राउज़र में चलती है और कुछ भी अपलोड नहीं होता - अभी जारी न हुआ कोड आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
+    <title type="html">वीडियो से ऑडियो निकालें</title>
+    <id>https://abox.tools/hi/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/extract-audio-from-video/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">MP4, MOV या WebM से आवाज़ निकालिए और उसे WAV में सेव कीजिए। वीडियो आपकी डिवाइस से बाहर नहीं जाता और उसकी तस्वीर कभी डिकोड नहीं होती, क्योंकि पूरा काम आपके अपने ब्राउज़र में होता है।</summary>
   </entry>
   <entry>
     <title type="html">GIF मेकर</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/format-json-without-uploading-it/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JSON को अपने ही ब्राउज़र में कैसे सजाएँ, जाँचें और निचोड़ें - फ़ॉर्मैटर को आपकी फ़ाइल के बारे में क्या कभी नहीं बदलना चाहिए, त्रुटि का संदेश कैसे पढ़ें, और आप जिस साइट में उसे चिपकाते हैं वह क्यों मायने रखती है।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF कंप्रेसर</title>
-    <id>https://abox.tools/hi/compress-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">PDF को बिना अपलोड किए छोटा कीजिए। फ़ाइल को आपका अपना ब्राउज़र पढ़ता है, दोबारा कंप्रेस करता है और दोबारा लिखता है। और कुछ भी छूने से पहले टूल आपको दिखा देता है कि साइज़ असल में बैठा कहाँ है।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF से मिटाइए</title>
-    <id>https://abox.tools/hi/redact-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/redact-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">PDF में शब्दों पर काला चौकोर बनाने के बजाय उन्हें निकाल दीजिए। अक्षर उन्हीं निर्देशों से मिटा दिए जाते हैं जिनसे पन्ना बनता है, तैयार फ़ाइल को दोबारा खोलकर खोजा जाता है कि वे वाकई चले गए, और कुछ भी अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">QR और बारकोड जनरेटर</title>
-    <id>https://abox.tools/hi/qr-barcode/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/qr-barcode/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">किसी लिंक, Wi-Fi नेटवर्क या कॉन्टैक्ट कार्ड के लिए QR कोड बनाइए, या EAN-13, UPC-A, Code 128 और Code 39 बारकोड। SVG या PNG में डाउनलोड कीजिए। यह सब आपके ब्राउज़र में होता है।</summary>
-  </entry>
-  <entry>
-    <title type="html">QR और बारकोड रीडर</title>
-    <id>https://abox.tools/hi/qr-barcode-reader/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/qr-barcode-reader/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">किसी फ़ोटो, स्क्रीनशॉट या अपने कैमरे से QR कोड पढ़िए, और खोलने से पहले देखिए कि लिंक असल में कहाँ जाता है। EAN, UPC, Code 128, Code 39 और ITF बारकोड भी। कुछ भी अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">QR कोड कैसे बनाएँ और कैसे साबित करें कि वह पढ़ा जाता है</title>
-    <id>https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-qr-code-and-prove-it-scans/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">कोड बनाइए, फिर उसी साइट के रीडर से जाँचिए: हू-ब-हू सामग्री, असली लिंक, छपाई के आकार में और एक तस्वीर से, छपाई से पहले। सब ब्राउज़र में, कुछ भी अपलोड नहीं।</summary>
   </entry>
 </feed>

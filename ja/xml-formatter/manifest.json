@@ -1,8 +1,8 @@
 {
   "id": "/ja/xml-formatter/",
-  "name": "XML Formatter",
-  "short_name": "XML Formatter",
-  "description": "XML laid out to read or squeezed to ship, and converted to JSON both ways. Nothing is pasted into anyone else's server.",
+  "name": "XML\u30d5\u30a9\u30fc\u30de\u30c3\u30bf\u30fc",
+  "short_name": "XML\u30d5\u30a9\u30fc\u30de\u30c3\u30bf\u30fc",
+  "description": "\u8aad\u3080\u305f\u3081\u306b\u6574\u3048\u305fXML\u3001\u9001\u308b\u305f\u3081\u306b\u5e73\u305f\u304f\u5727\u7e2e\u3057\u305fXML\u3001\u305d\u3057\u3066\u53cc\u65b9\u5411\u306eJSON\u5909\u63db\u3002\u305d\u306e\u3069\u308c\u3082\u3001\u3088\u305d\u306e\u30b5\u30fc\u30d0\u30fc\u306b\u8cbc\u308a\u4ed8\u3051\u3089\u308c\u308b\u3053\u3068\u306f\u3042\u308a\u307e\u305b\u3093\u3002",
   "lang": "ja",
   "dir": "ltr",
   "start_url": "./",

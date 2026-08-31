@@ -1,0 +1,26 @@
+{
+  "id": "/tr/xml-bicimlendirme/",
+  "name": "XML Bi\u00e7imlendirici",
+  "short_name": "XML Bi\u00e7imlendirici",
+  "description": "Okunmak i\u00e7in a\u00e7\u0131lm\u0131\u015f ya da g\u00f6nderilmek i\u00e7in s\u0131k\u0131\u015ft\u0131r\u0131lm\u0131\u015f XML, ve iki y\u00f6nde de JSON'a \u00e7evrilmi\u015f h\u00e2li. Bunlar\u0131n hi\u00e7biri ba\u015fkas\u0131n\u0131n sunucusuna yap\u0131\u015ft\u0131r\u0131lmaz.",
+  "lang": "tr",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

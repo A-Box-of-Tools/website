@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/pdf-합치기/:';
-const CACHE_NAME=CACHE_PREFIX+'91f5f12760';
+const CACHE_NAME=CACHE_PREFIX+'d98c67f18a';
 const ASSETS=[
 './',
 'index.html',

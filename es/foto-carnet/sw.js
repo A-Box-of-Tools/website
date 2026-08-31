@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/foto-carnet/:';
-const CACHE_NAME=CACHE_PREFIX+'81492a78d8';
+const CACHE_NAME=CACHE_PREFIX+'87d6ec0d02';
 const ASSETS=[
 './',
 'index.html',

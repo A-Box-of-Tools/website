@@ -1,8 +1,8 @@
 {
   "id": "/zh-TW/yaml-to-json/",
-  "name": "YAML to JSON Converter",
-  "short_name": "YAML to JSON Converter",
-  "description": "Both directions, and it says what each one costs. Nothing is pasted into anyone else's server.",
+  "name": "YAML \u8f49 JSON",
+  "short_name": "YAML \u8f49 JSON",
+  "description": "\u5169\u500b\u65b9\u5411\u90fd\u6709\uff0c\u800c\u4e14\u6703\u544a\u8a34\u4f60\u5404\u81ea\u7684\u4ee3\u50f9\u3002\u9019\u4e9b\u90fd\u4e0d\u6703\u8cbc\u9032\u5225\u4eba\u7684\u4f3a\u670d\u5668\u3002",
   "lang": "zh-Hant",
   "dir": "ltr",
   "start_url": "./",

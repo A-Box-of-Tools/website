@@ -39,6 +39,20 @@
     <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">Boy Karşılaştırma</title>
+    <id>https://abox.tools/tr/boy-karsilastirma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/boy-karsilastirma/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Boyları yan yana karşılaştırın. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk ve nesneler ekleyin &amp;mdash; bir kapı, bir pencere, bir beyaz tahta, bir otomat &amp;mdash; santimetre ya da fit ve inç cinsinden, sonra grafiği PNG veya SVG olarak indirin. Tarayıcınızda çizilir.</summary>
+  </entry>
+  <entry>
+    <title type="html">Boy karşılaştırma grafiği nasıl yapılır</title>
+    <id>https://abox.tools/tr/rehberler/boy-karsilastirma-grafigi-yapma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/boy-karsilastirma-grafigi-yapma/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Bir boy listesini yan yana bir resme çevirin: boyların nasıl yazılacağı, bir çocuk için hangi figürün seçileceği, tanıdık tek bir nesnenin neden üçüncü bir kişiden daha çok iş gördüğü, ve grafiğin PNG ya da SVG olarak nasıl dışarı çıkarılacağı.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON Biçimlendirici</title>
     <id>https://abox.tools/tr/json-bicimlendirme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/json-bicimlendirme/"/>
@@ -58,6 +72,27 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-duzenleme/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Bir parçayı geriye oynatın, hızlandırın ya da yavaşlatın ve sessiz bir kaydı daha yüksek yapın. Bir videonun sesini de çıkarır. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
+    <title type="html">Videodan Ses Çıkarma</title>
+    <id>https://abox.tools/tr/videodan-ses-cikarma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/videodan-ses-cikarma/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Bir MP4, MOV veya WebM dosyasındaki sesi alıp WAV olarak kaydedin. Video cihazınızdan çıkmaz ve görüntüsü hiçbir zaman çözülmez; işin tamamı kendi tarayıcınızda yürür.</summary>
+  </entry>
+  <entry>
+    <title type="html">XML Biçimlendirici</title>
+    <id>https://abox.tools/tr/xml-bicimlendirme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/xml-bicimlendirme/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">XML'i biçimlendirin, girintileyin ve sıkıştırın; XML'i JSON'a ya da JSON'u XML'e çevirin. Ayrıştırıcı tarayıcınızda çalışır ve hiçbir şey yüklenmez, böylece bir akış, bir fatura ya da bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML'den JSON'a Dönüştürücü</title>
+    <id>https://abox.tools/tr/yaml-json-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/yaml-json-donusturme/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">YAML'i JSON'a, JSON'u YAML'e tarayıcınızda dönüştürün. YAML 1.2 okur, böylece yes ve no metin olarak kalır, ve her yönün tam olarak neyi kaybettirdiğini söyler. Hiçbir şey yüklenmez: bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
   </entry>
   <entry>
     <title type="html">Belge Tarayıcı</title>
@@ -205,40 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/gifi-karelere-ayirma/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Hareketli bir GIF'i karelerine ayırın ve her birini PNG olarak kaydedin; ücretsiz ve tamamen tarayıcınızda. Saydamlığı ve zamanlamayı korur. Hiçbir şey yüklenmez ve çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Çözümleyici</title>
-    <id>https://abox.tools/tr/gif-analiz-etme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gif-analiz-etme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir GIF'i tarayıcınızda parçalarına ayırın: gecikmesi ve tasfiye kuralıyla her kare, renk tabloları, döngü sayısı ve dosya boyutunun nereye gittiğine dair bayt bayt bir döküm. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görsel Boyutlandırıcı</title>
-    <id>https://abox.tools/tr/resim-boyutlandirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resim-boyutlandirma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPEG, PNG ve WebP görselleri tarayıcınızda boyutlandırın, kırpın ve dönüştürün. Tam piksel, yüzde ya da uzun kenar &amp;mdash; tek bir görsel veya koca bir klasör. Hiçbir şey yüklenmez.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görsel Karartıcı</title>
-    <id>https://abox.tools/tr/resim-karartma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resim-karartma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir fotoğraftaki ya da ekran görüntüsündeki bir ismi, adresi veya hesap numarasını kapatın ve resmi yeniden kodlayın; böylece gizlenen pikseller bir dikdörtgenin altında durmak yerine dosyadan gitmiş olur. Tamamen tarayıcınızda çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görsel Sıkıştırıcı</title>
-    <id>https://abox.tools/tr/resim-sikistirma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resim-sikistirma/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPEG, PNG veya WebP'yi tam istediğiniz boyuta sıkıştırın: 100 KB, 2 MB, ne gerekiyorsa. Tarayıcınızda çalışır, hiçbir şey yüklenmez, çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görselden Data URI'ye</title>
-    <id>https://abox.tools/tr/resmi-base64e-donusturme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resmi-base64e-donusturme/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Bir PNG, JPEG, SVG veya WebP'yi CSS ya da HTML içine yapıştırabileceğiniz bir data URI'ye çevirin. SVG'ler base64 yerine yüzde kodlamasıyla yazılır; böylece hem okunur kalır hem de daha kısadır. Tarayıcınızda çalışır, hiçbir şey yüklenmez.</summary>
   </entry>
 </feed>

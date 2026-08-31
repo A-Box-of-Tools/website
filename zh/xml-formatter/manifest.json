@@ -1,8 +1,8 @@
 {
   "id": "/zh/xml-formatter/",
-  "name": "XML Formatter",
-  "short_name": "XML Formatter",
-  "description": "XML laid out to read or squeezed to ship, and converted to JSON both ways. Nothing is pasted into anyone else's server.",
+  "name": "XML \u683c\u5f0f\u5316",
+  "short_name": "XML \u683c\u5f0f\u5316",
+  "description": "\u6392\u5f00\u4e86\u597d\u8bfb\u7684 XML\uff0c\u538b\u5e73\u4e86\u597d\u53d1\u7684 XML\uff0c\u8fd8\u6709\u4e24\u4e2a\u65b9\u5411\u7684 JSON \u8f6c\u6362\u3002\u8fd9\u4e9b\u90fd\u4e0d\u4f1a\u7c98\u8fdb\u522b\u4eba\u7684\u670d\u52a1\u5668\u3002",
   "lang": "zh-Hans",
   "dir": "ltr",
   "start_url": "./",
