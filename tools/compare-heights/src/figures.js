@@ -58,6 +58,10 @@ export const SHAPES = [
     width: art.width,
     inner: art.inner,
     paths: art.paths,
+    // What the chart actually emits. The four that ship are path data, so it
+    // is built here once; an uploaded shape arrives as markup already, from
+    // import-svg.js, and is the only other thing the chart will draw.
+    markup: art.paths.map((d) => `<path d="${d}"/>`).join(''),
     defaultCm: art.defaultCm,
   })),
   // The rectangle. It carries no paths because its shape is two numbers the
@@ -70,6 +74,7 @@ export const SHAPES = [
     width: 0.6,
     inner: null,
     paths: null,
+    markup: null,
     defaultCm: 0,
   },
 ];

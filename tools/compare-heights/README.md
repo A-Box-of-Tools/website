@@ -95,6 +95,39 @@ a row you have not filled in yet is not a mistake. Now that every row arrives
 with a height, an empty one is a box somebody cleared, and a row that will not
 be drawn should say so.
 
+### An uploaded SVG is rebuilt, not cleaned up
+
+`src/import-svg.js` is the one module here where being wrong is not cosmetic.
+An SVG is a program: it can carry `<script>`, an `onload=` on any element, a
+`<foreignObject>` holding a whole HTML document, a `<use>` into another file,
+an `<image href="https://…">`, and a stylesheet that imports one. Two things
+make that sharp here:
+
+- the file is read on the visitor's own machine, so anything executable would
+  be executing in their page, with their chart in it;
+- **the result is downloaded and sent to other people.** An `<image href>` that
+  survived would be a chart phoning a stranger's server, open on somebody
+  else's machine, days later. This whole tool is a page-long promise that
+  nothing it makes talks to anything.
+
+So nothing from the file is ever inserted. The browser parses it — `DOMParser`
+on `image/svg+xml`, which builds an inert document and runs nothing — `main.js`
+walks that into plain `{tag, attrs, children}` objects, and `import-svg.js`
+**builds a third tree** containing only the elements and attributes on its
+whitelist. An attribute does not have to be recognised as dangerous to be
+dropped; it is dropped because it was not asked for. That is the only shape of
+this job that stays safe when SVG grows a feature next year.
+
+Everything becomes a `<path>`, so what ships is one element with one attribute
+rather than six of each. `transform` survives — it is numeric and has nowhere
+to put a URL — which is what lets a nested drawing keep its shape without the
+coordinates being rewritten. `fill` does not, both because a row's colour is
+the chart's to choose and because `fill` can hold `url(#…)`.
+
+`tests/js/compare-heights-import-svg.test.js` is mostly a list of things that
+must not come out the other side, one per line, so the policy can be read
+without reading the implementation.
+
 ### There is no dog, and there was
 
 A dog and a cat were built, in profile, standing with the head level with the
@@ -167,6 +200,7 @@ keeps the canvas untainted so `toBlob` will give the bytes back.
 | `vendor/` | the four public-domain files the people came out of, as published, and their licence |
 | `src/traced.js` | those four figures' path data, the box each was measured at, and the transform that puts it in the unit box |
 | `src/figures.js` | the list of figures the menu is built from, and each one's default height |
+| `src/import-svg.js` | the whitelist an uploaded SVG is rebuilt from |
 | `src/units.js` | typed height → centimetres, centimetres → written height, and the ruler's spacing and labels |
 | `src/chart.js` | the layout and the SVG, with text measured through a callback |
 | `src/save.js` | the SVG blob, the canvas rasterisation, and the download |
