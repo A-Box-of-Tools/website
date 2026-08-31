@@ -38,7 +38,7 @@ js_parts = ["file-picker"]
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["trim-audio"]
-lastmod = "2026-08-28"
+lastmod = "2026-08-30"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -253,9 +253,11 @@ q = "Can I get the audio out of a video?"
 a = """
         Yes, and that is the same job here as opening an MP3. Drop an MP4, MOV
         or WebM in and only its audio track is decoded: the picture is never
-        read, and what comes out is a sound file with no video in it. It is also
-        how to save the sound from a clip without editing it at all &mdash;
-        leave every setting alone and press the button."""
+        read, and what comes out is a sound file with no video in it. If that is
+        the whole of what you want &mdash; the sound, unchanged &mdash; then
+        <a href="../extract-audio-from-video/">Extract Audio from Video</a> is
+        the same job on a page with nothing else on it. Come back here when the
+        sound needs changing as well."""
 
 [[faq]]
 q = "Does changing the speed change the pitch?"

@@ -105,9 +105,9 @@ GROUPS = [
     # by anybody noticing. They are declared as what they are.
     ('crc32.js', ['exif-editor', 'merge-pdf']),
     ('zip.js', ['exif-editor', 'merge-pdf']),
-    ('wav.js', ['edit-audio', 'trim-audio']),
-    ('samplerate.js', ['edit-audio', 'trim-audio']),
-    ('decode.js', ['edit-audio', 'trim-audio']),
+    ('wav.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
+    ('samplerate.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
+    ('decode.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
     ('support.js', ['crop-video', 'trim-video']),
     ('support.js', ['reverse-video', 'timelapse-video']),
     # The text parsers, across the three pages that read them. json-formatter

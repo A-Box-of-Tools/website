@@ -72,6 +72,7 @@ BASELINE = {
     # modules - main.js clamps the speed, so neither can be reached.
     'edit-audio': 3,
     'exif-editor': 30,
+    'extract-audio-from-video': 0,
     # Two key templates, a CSS pixel value and two lines of table layout.
     'gif-analyzer': 5,
     # Six invariant checks the writer makes about its own arguments - a bug

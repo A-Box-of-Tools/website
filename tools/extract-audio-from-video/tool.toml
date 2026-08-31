@@ -1,0 +1,396 @@
+#
+# Extract Audio from Video
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# WHY THIS IS NOT A SETTING ON edit-audio
+#
+# It was one, and it worked: dropping a video on the Audio Editor and pressing
+# the button with every setting left alone has always saved the sound out of it.
+# That page even answers "Can I get the audio out of a video?" in its FAQ. What
+# it does not do is answer anybody who searched for it - the page is called
+# Audio Editor, its address says edit-audio, and the whole job is described as
+# a by-the-way clause at the end of a tagline about reversing tracks.
+#
+# "Extract audio from video" is the phrase, and it is a bigger one than
+# anything else the audio pages do. So it has an address that says it, a page
+# with one job on it and nothing to configure, and an FAQ of its own.
+#
+# WHY THE FILE THAT COMES OUT IS A WAV, AND WHY THE ADDRESS DOES NOT SAY MP3
+#
+# "video to mp3" is the larger phrase again, and this tool cannot honestly
+# answer it. No browser ships an MP3 encoder; the only route to one is sending
+# the video to a server that has it, which is the single thing this site exists
+# not to do. ROADMAP.md is explicit that MP3 out waits on a vendored
+# libmp3lame, and edit-audio has answered "Why does it save a WAV rather than
+# an MP3?" in public for as long as it has existed.
+#
+# An address promising a file the page cannot produce would be the first
+# dishonest URL on the site, and it would be dishonest about the exact thing
+# the site is for. So the address says what actually happens. If libmp3lame is
+# ever vendored, this is the page that gains the option - and the address still
+# reads true, because extracting is what it does and MP3 would only be the
+# format it wrote.
+#
+# THE DECODER MODULES ARE COPIES, ON PURPOSE
+#
+# src/decode.js, src/samplerate.js and src/wav.js are byte for byte the ones in
+# edit-audio and trim-audio, declared in tests/python/test_duplicates.py so that
+# a fix to any of them is a fix to all three tools. They cannot be shared:
+# build.py copies shared/js into a tool at src/shared/ at build time, that path
+# does not exist in the source tree, and the JavaScript tests import these
+# modules straight off the disk.
+#
+
+slug = "extract-audio-from-video"
+name = "Extract Audio from Video"
+# The trailing span says what comes out, because that is the question a reader
+# arrives with and the one the format makes for them. The product name stays
+# the loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Extract&nbsp;Audio&nbsp;from&nbsp;Video <span class=\"h1-kw\">&mdash; the sound on its own, as a WAV</span>"
+tagline = "Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded."
+icon = "&#128266;"          # the mark beside the page heading
+favicon = "&#128266;"       # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. `icon` above stays the emoji: it is what og-image.ps1
+# rasterises for the share card and the two installed-app icons, which
+# want a filled colourful mark rather than a line drawing.
+#
+# Shared with trim-audio: the site has thirty-six marks for thirty-seven tools,
+# and a waveform is what both of these hand back.
+glyph = "audio-waveform"
+category = "documents-and-audio"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+# It sits at the top of that group as a link, above the names still to be built.
+roadmap_group = "audio"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. progress is the bar the shared picker draws while it reads.
+css_parts = ["progress"]
+
+# Shared modules this tool asks for. file-picker brings in the drop zone.
+js_parts = ["file-picker"]
+# Where a finished result can be carried without being saved first: the row of
+# links shared/handoff.js shows beside the download once there is one. The sound
+# out of a video is very often wanted shorter, or louder, which is the next two
+# tools exactly.
+handoff = ["trim-audio", "edit-audio"]
+lastmod = "2026-08-30"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Extract Audio from Video &mdash; Free, In Your Browser, No Upload"
+description = "Get the sound out of an MP4, MOV or WebM and save it as a WAV. The video never leaves your machine and its picture is never decoded - the whole job runs in your own browser."
+og_title = "Take the sound out of a video without uploading it"
+og_description = "Drop an MP4, MOV or WebM in and save its audio as a WAV. Only the audio track is decoded, and the file goes nowhere."
+og_image_alt = "Extract Audio from Video - the sound on its own, no upload"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Drop a video in, take the sound out - and the picture is never decoded."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  This tool widens two directives on its own page and narrows nothing.
+  media-src carries blob: because the WAV is played back from memory on this
+  machine rather than from a URL, and connect-src carries blob: because the
+  carry-on row reads that same result back out of this page before parking it
+  for the next tool. blob: names bytes inside this page; neither gains any
+  reach over the network."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The decoder is the one already in your browser &mdash; the same code path
+    that plays a file in a <code>&lt;video&gt;</code> element &mdash; and it is
+    asked for the audio track and nothing else. Writing a WAV is putting a
+    forty-four-byte header in front of the samples, in
+    <code>src/wav.js</code>. There is no encoder in the loop, no upload step,
+    and no network feature of any kind on this page."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and drop
+      a video in. Not one request carries a byte of it. Or unplug from the
+      internet and take the sound out anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/decode.js</code> for the
+      one decoder there is and why the picture is never asked for, and
+      <code>src/samplerate.js</code> for the header sniffing that stops your
+      recording being quietly resampled."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to extract the audio from a video without uploading it"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            Drop an MP4, MOV or WebM in and save the sound on its own. Only the
+            audio track is decoded &mdash; the picture is never read, and the
+            file never leaves your machine."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "videos"
+choose = "a video"
+analytics_extra = """, and nothing about
+  the recordings that pass through it"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No size limit"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your video has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that a file
+      could be collected at, and nothing in the code that would send it if there
+      were."""
+
+[[privacy]]
+title = "The picture is never decoded at all."
+body = """
+ Only the audio track is
+      asked for. The frames are not read, not decoded, not drawn and not looked
+      at &mdash; there is no code on this page that could &mdash; and the file
+      that comes out holds sound and nothing else. That is not a promise about
+      restraint: <code>decodeAudioData</code> is handed the bytes and returns
+      sound, and there is no video decoder in <code>src/</code> to run."""
+
+[[privacy]]
+title = "The decoder is the one already in your browser."
+body = """
+ Nothing is
+      shipped here to read your format and nothing is asked of anything outside
+      this page to read it either. Which files work is therefore whatever your
+      browser already plays."""
+
+[[privacy]]
+title = "The samples are written down, not encoded again."
+body = """
+
+      A WAV is the samples the decoder handed back with a header in front of
+      them. There is no encoder in the loop making decisions about your
+      recording, and nothing that could be described as an upload for one to
+      happen on."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your video: not a file, not
+      a sample, not a name, a size or a length."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Drop the video in."
+body = """
+ An MP4, MOV, M4V or WebM, from a
+      phone, a camera, a screen recorder or a download. It is read by your own
+      browser; there is no upload step to leave out."""
+
+[[howto]]
+title = "Read what it found."
+body = """
+ The length, the number of channels
+      and the sample rate, straight out of the file. If the file did not declare
+      its rate the page says so, rather than quietly resampling and claiming
+      nothing was touched."""
+
+[[howto]]
+title = "Choose mono, if you want it smaller."
+body = """
+ Leaving the channels
+      alone keeps the recording exactly as it was. Mixing down to mono halves
+      the file and is what a transcriber or a voice recording wants; it averages
+      the channels rather than throwing one away."""
+
+[[howto]]
+title = "Play it before you save it."
+body = """
+ The player is the file that
+      is about to be downloaded, not the video &mdash; so if it sounds right,
+      the download is right."""
+
+[[howto]]
+title = "Take it, or carry it on."
+body = """
+ Download the WAV, or send it
+      straight to the trimmer or the editor without saving it first."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my video uploaded anywhere?"
+a = """
+        No. The decoding and the writing both happen in your own browser, on
+        your own hardware. This tool has no network feature of any kind &mdash;
+        it never fetches anything and never sends anything &mdash; and the
+        page's <code>Content-Security-Policy</code> names every address it may
+        contact, none of which belongs to this site. Unplug from the internet
+        and take the sound out anyway if you would rather check than be
+        told."""
+
+[[faq]]
+q = "Can it give me an MP3?"
+a = """
+        No, and it will not pretend to. No browser ships an MP3 encoder, and the
+        only way to reach one is to send your video to a server that has it
+        &mdash; which is the one thing this site exists not to do. What you get
+        is a WAV: the samples with a forty-four-byte header in front, which
+        needs no encoder at all and cannot cost any quality. It is larger, about
+        ten megabytes a minute in stereo, and every player, phone and editor
+        opens one. Anything that wants an MP3 can make one from it in a
+        second."""
+
+[[faq]]
+q = "Is the picture ever looked at?"
+a = """
+        No, and there is nothing here that could look at it. The browser's
+        decoder is handed the file and asked for its audio track; the video
+        track is never decoded, never drawn and never reaches this page's code
+        at all. There is no video decoder in <code>src/</code> to run. The file
+        that comes out holds sound and nothing else."""
+
+[[faq]]
+q = "It says no sound could be read, but the video plays fine."
+a = """
+        Then the video almost certainly has no audio track. A screen recording
+        made without a microphone selected is silent, and so is a clip exported
+        by an editor with the sound left muted &mdash; both play perfectly,
+        because there is a picture to play. The message names this first because
+        it is the likelier of the two causes; the other is a format this browser
+        will not read. Open the file in a player and look for a volume control
+        that does nothing: that is the quickest way to tell which you have."""
+
+[[faq]]
+q = "Which video formats can I open?"
+a = """
+        Whatever your browser decodes, which in practice means MP4, M4V, MOV and
+        WebM, and every audio format besides. What is left out is the same short
+        list as everywhere else on this site: AVI, WMV, and most MKVs. A file
+        your browser will not read is refused with a message saying so, rather
+        than failing halfway through."""
+
+[[faq]]
+q = "Does it lose any quality?"
+a = """
+        Nothing beyond what the video already did to its own audio when it was
+        made. The samples the decoder hands back are written down as they are
+        &mdash; there is no second encode, so there is no second generation of
+        loss. The one thing to know is the sample rate: the file's own rate is
+        read out of its header first and the decode is done at that rate, so
+        your recording is not quietly resampled. If a file does not declare one,
+        the page says which rate it assumed."""
+
+[[faq]]
+q = "Why is the WAV so much bigger than the video?"
+a = """
+        Because a WAV is not compressed and the video's audio track was. Sound
+        at CD quality is about ten megabytes a minute in stereo, whatever it
+        holds; the AAC track inside an MP4 is perhaps a tenth of that. Mixing
+        down to mono halves it. This is the cost of not re-encoding, and it is
+        paid once: whatever you open the file in next can compress it."""
+
+[[faq]]
+q = "How long a video can it handle?"
+a = """
+        There is no limit set here, because there is no server paying for one.
+        The practical ceiling is your own machine's memory: the file is read in
+        and the whole audio track is held as samples, so a very long recording
+        on a small machine can run out of room. A few hours of video is
+        ordinarily fine, and a phone will manage less than a laptop."""
+
+[[faq]]
+q = "Can I cut it down or make it louder?"
+a = """
+        Yes, but not here &mdash; this page does one job. When there is a result
+        there is a row of links beside the download that carries it straight
+        into the <a href="../trim-audio/">audio trimmer</a> or the
+        <a href="../edit-audio/">audio editor</a> without saving it first, and
+        without either of them uploading it either."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no limit on
+        how many videos you open. The site carries advertising, which is what
+        pays for it; the ads are not given anything about your file."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your video away to be processed would stop
+        the moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Extract the audio track from an MP4, MOV or WebM and save it as a WAV. Only the audio is decoded, the picture is never read, and nothing is uploaded."
+features = [
+  "Saves the audio from MP4, M4V, MOV and WebM video as a WAV",
+  "Decodes only the audio track; the picture is never read",
+  "Reads the file's own sample rate first, so nothing is quietly resampled",
+  "Mixes down to mono by averaging, for half the file size",
+  "Plays the result before you save it",
+  "Carries the result into the audio trimmer or editor without saving",
+  "Runs offline; no upload, no account",
+]
+
+# This tool widens two directives on its own page. blob: on media-src because
+# the WAV is played from memory rather than from a URL, and blob: on
+# connect-src because the carry-on row reads that result back out of this page
+# before parking it for the next tool (see shared/handoff.js), and reading a
+# blob: URL is a fetch the policy has to permit. A tool can only ever widen its
+# own page this way - it cannot narrow the site policy, and it cannot touch any
+# other tool's.
+[csp]
+"connect-src" = ["blob:"]
+"media-src" = ["'self'", "blob:"]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js.
+[picker]
+accept = "video/*,audio/*"
+multiple = false
+title = "Drop a video here"
+hint = "or click to browse &mdash; MP4, MOV, M4V or WebM"
