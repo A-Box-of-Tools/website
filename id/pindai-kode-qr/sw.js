@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pindai-kode-qr/:';
-const CACHE_NAME=CACHE_PREFIX+'14a3cc4eda';
+const CACHE_NAME=CACHE_PREFIX+'176e9c0416';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4b53baa5a1',
+'styles.css?v=93a7eb0dae',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
