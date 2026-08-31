@@ -1616,6 +1616,23 @@ footer a:hover { text-decoration: underline; }
 ins.adsbygoogle { display: block; }
 ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
 
+/* And no wider than the screen, whatever arrives in it.
+
+   A creative wider than the phone it is on makes the whole document scroll
+   sideways, which is a page that rubber-bands under the thumb for a reason
+   the reader cannot see and cannot fix. The QA suite caught /base64/ eight
+   pixels over on both phone projects; it does not reproduce where the slot
+   comes back unfilled, which is what points at the creative rather than the
+   page.
+
+   What arrives in the slot is not this site's to choose, but how much room it
+   is allowed to take is. `max-width` is what Google's own guidance asks for on
+   a responsive unit; `overflow-x: clip` is the belt to that brace, and `clip`
+   rather than `hidden` so the slot does not become a scroll container and drag
+   the other axis to `auto` with it. */
+ins.adsbygoogle { max-width: 100%; overflow-x: clip; }
+
+
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---------------------------------------------------------------- handoff */
