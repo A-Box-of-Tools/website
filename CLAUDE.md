@@ -294,9 +294,11 @@ commit.
 
 GitHub has no public API for the images a PR body embeds: the
 `user-attachments/assets/…` URLs come from the web uploader's own session
-endpoint, and neither `gh` nor `gh api` can reach it. So an agent opening a PR
-writes the Before/After section with the filenames as visible placeholders and
-hands the files to whoever is at the keyboard to drop in. Do not commit
-screenshots to get a raw URL — see the `git add -A` trap above for what stray
-files cost here. A change with nothing visible in it says so in one line
-instead of shipping empty placeholders.
+endpoint, and neither `gh` nor `gh api` can reach it. The browser that is
+already signed in can, though, which is how an agent lands them without anybody
+at the keyboard — upload through the comment box, read the URLs back out of it,
+and edit the body with `gh`. The steps, and the fallback for when there is no
+browser to drive, are in the `tool-development` skill under "Photograph it".
+Do not commit screenshots to get a raw URL — see the `git add -A` trap above
+for what stray files cost here. A change with nothing visible in it says so in
+one line instead of shipping empty placeholders.

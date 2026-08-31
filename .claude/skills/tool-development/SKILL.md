@@ -311,17 +311,52 @@ of the locale rather than guessing:
 python -c "import tomllib;print(tomllib.load(open('locales/ar/locale.toml','rb'))['slugs']['compress-image'])"
 ```
 
-**Then hand the files over.** GitHub has no public API for the images a PR body
-embeds — the `user-attachments/assets/…` URLs come from the web uploader's own
-session endpoint, and neither `gh` nor `gh api` can reach it. So write the
-Before/After section with the filenames as visible placeholders and give the
-files to whoever is at the keyboard. Do not commit screenshots to get a raw URL;
-see the `git add -A` trap above for what stray files cost here.
+**Then put them in the PR yourself, through the browser.** GitHub has no public
+API for the images a PR body embeds: the `user-attachments/assets/…` URLs come
+from the web uploader's own session endpoint, and neither `gh` nor `gh api` can
+reach it. What *can* reach it is the browser that is already signed in — the
+`claude-in-chrome` MCP drives the real Chrome on this machine — so the pictures
+do not have to be handed to a human at all.
 
-**And say in the body how to put them in.** The person who lands the pictures is
-not necessarily the person who read the session, and a bare "(images to be
-dropped in)" tells them nothing about where or how. Put the steps under the
-table, in the description itself:
+The trick is that the upload and the body are two separate jobs. Nothing has to
+be opened for editing, and no comment is ever posted:
+
+1. `list_connected_browsers`, then open the pull request.
+2. `find` the file input on the **Add a comment** box at the foot of the page —
+   *not* the description editor. It is the same uploader and it is not attached
+   to anything yet.
+3. `file_upload` every PNG in one call. The limit is 10 MB a call and these
+   crops are tens of kilobytes; paths out of the session scratchpad are
+   accepted.
+4. Read the URLs straight back out of the field:
+   `document.getElementById('new_comment_field').value`. GitHub has already
+   written an `<img>` for each file, with its natural width and height and its
+   filename as the `alt`.
+5. **Empty that field**, or a draft comment is left sitting on the PR. Clicking
+   it by `ref` and pressing ctrl+a did nothing when this was worked out; what
+   works is going through the field's own input handling, so its draft store
+   clears with it:
+
+   ```js
+   const t = document.getElementById('new_comment_field');
+   t.focus(); t.setSelectionRange(0, t.value.length);
+   document.execCommand('insertText', false, '');
+   ```
+
+6. Put the `<img>` tags into the Before/After table and
+   `gh pr edit <n> --body-file <file>`. The assets outlive the comment that was
+   never sent.
+
+Then reload and check `naturalWidth` on the body's images. That is the only
+proof that they loaded: the tags resolve through
+`private-user-images.githubusercontent.com` with a signed token, so a broken
+image and a working one look identical in the markup.
+
+**If no browser is connected**, fall back to the old way: write the Before/After
+section with the filenames as visible placeholders, hand the files to whoever is
+at the keyboard, and say in the body itself how to put them in — the person who
+lands the pictures is not necessarily the person who read the session, and a
+bare "(images to be dropped in)" tells them nothing about where or how.
 
 ```markdown
 | Before | After |
@@ -329,9 +364,8 @@ table, in the description itself:
 | `something-before.png` | `something-after.png` |
 
 The two filenames are placeholders. GitHub's image uploader lives in the web
-editor's own session — neither `gh` nor `gh api` can reach it — so the pictures
-have to be dropped in by hand. Both files were handed over in the session that
-opened this PR.
+editor's own session, so the pictures have to be dropped in by hand. Both files
+were handed over in the session that opened this PR.
 
 **How to put them in:**
 
@@ -351,3 +385,8 @@ opened this PR.
 The last step matters: the instructions are scaffolding for one action, and a
 merged PR that still explains how to upload the pictures it is already showing
 reads as an unfinished one.
+
+Either way, do not commit screenshots to get a raw URL — see the `git add -A`
+trap above for what stray files cost here. Release assets are not the way round
+it either: this repository's releases are cut per version tag by the deploy, and
+a *draft* release's asset URLs need authentication, so they do not render.
