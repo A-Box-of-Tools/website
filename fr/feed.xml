@@ -39,6 +39,13 @@
     <summary type="html">Transformer une liste de tailles en une image côte à côte : comment écrire les tailles, quelle figure choisir pour un enfant, pourquoi un objet familier fait plus qu'une troisième personne, et comment sortir le graphique en PNG ou en SVG.</summary>
   </entry>
   <entry>
+    <title type="html">Comparateur de tailles</title>
+    <id>https://abox.tools/fr/comparer-des-tailles/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-tailles/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Comparez des tailles côte à côte. Ajoutez un homme, une femme, un garçon, une fille et des objets &amp;mdash; une porte, une fenêtre, un tableau blanc, un distributeur &amp;mdash; en centimètres ou en pieds et pouces, et téléchargez le graphique en PNG ou en SVG. Il est dessiné dans votre navigateur.</summary>
+  </entry>
+  <entry>
     <title type="html">Comparateur de textes</title>
     <id>https://abox.tools/fr/comparer-des-textes/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-textes/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/gif-a-partir-d-un-extrait-video/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Couper d'abord les secondes qui comptent, puis ne convertir que celles-là. Quand la timeline du convertisseur GIF suffit, quand couper d'abord avec le découpeur vidéo, et pourquoi chaque seconde de GIF coûte si cher.</summary>
-  </entry>
-  <entry>
-    <title type="html">Comment faire une vidéo boomerang</title>
-    <id>https://abox.tools/fr/guides/faire-une-video-boomerang/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/faire-une-video-boomerang/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Couper le moment, inverser la copie, joindre les deux et boucler. Trois outils à la suite, tous dans le navigateur, et l'ordre qui ramène tout le travail à une minute.</summary>
   </entry>
 </feed>

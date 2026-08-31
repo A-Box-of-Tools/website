@@ -46,6 +46,13 @@
     <summary type="html">Trasformare un elenco di altezze in un'immagine affiancata: come scrivere le altezze, quale figura scegliere per un bambino, perché un solo oggetto familiare fa più di una terza persona, e come tirare fuori il grafico come PNG o SVG.</summary>
   </entry>
   <entry>
+    <title type="html">Confronto di altezze</title>
+    <id>https://abox.tools/it/confrontare-altezze/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/confrontare-altezze/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Confronta le altezze una accanto all'altra. Aggiungi un uomo, una donna, un bambino, una bambina e degli oggetti &amp;mdash; una porta, una finestra, una lavagna, un distributore automatico &amp;mdash; in centimetri o in piedi e pollici, e scarica il grafico come PNG o SVG. Viene disegnato nel tuo browser.</summary>
+  </entry>
+  <entry>
     <title type="html">Confronto testi</title>
     <id>https://abox.tools/it/confrontare-testi/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/confrontare-testi/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-una-gif-da-immagini/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Trasformare una serie di immagini in una GIF animata: quanto veloce può andare davvero una GIF, cosa cambia l'impostazione della tavolozza, e le tre cose che il file lo alleggeriscono sul serio.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come fare una GIF da una parte di un video</title>
-    <id>https://abox.tools/it/guide/gif-da-una-parte-di-un-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/gif-da-una-parte-di-un-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Prima taglia i secondi che contano, poi converti solo quelli. Quando basta la timeline del convertitore GIF, quando tagliare prima con il tagliavideo, e perché ogni secondo di GIF costa così tanto.</summary>
   </entry>
 </feed>

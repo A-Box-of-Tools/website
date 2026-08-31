@@ -60,6 +60,13 @@
     <summary type="html">अपने ब्राउज़र में YAML को JSON और JSON को YAML में बदलिए। यह YAML 1.2 पढ़ता है, इसलिए yes और no स्ट्रिंग ही रहते हैं, और बताता है कि हर दिशा में क्या खोता है। कुछ भी अपलोड नहीं होता, इसलिए कोई कॉन्फ़िग फ़ाइल आपकी डिवाइस से बाहर नहीं जाती।</summary>
   </entry>
   <entry>
+    <title type="html">ऊँचाई तुलना चार्ट</title>
+    <id>https://abox.tools/hi/compare-heights/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compare-heights/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">ऊँचाइयों की अगल-बगल तुलना कीजिए। एक पुरुष, एक महिला, एक लड़का, एक लड़की और चीज़ें जोड़िए &amp;mdash; दरवाज़ा, खिड़की, व्हाइटबोर्ड, वेंडिंग मशीन &amp;mdash; सेंटीमीटर में या फ़ुट और इंच में, और चार्ट को PNG या SVG के रूप में डाउनलोड कीजिए। यह आपके ब्राउज़र में बनता है।</summary>
+  </entry>
+  <entry>
     <title type="html">ऊँचाई तुलना चार्ट कैसे बनाएँ</title>
     <id>https://abox.tools/hi/guides/make-a-height-comparison-chart/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/make-a-height-comparison-chart/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/format-json-without-uploading-it/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JSON को अपने ही ब्राउज़र में कैसे सजाएँ, जाँचें और निचोड़ें - फ़ॉर्मैटर को आपकी फ़ाइल के बारे में क्या कभी नहीं बदलना चाहिए, त्रुटि का संदेश कैसे पढ़ें, और आप जिस साइट में उसे चिपकाते हैं वह क्यों मायने रखती है।</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF कंप्रेसर</title>
-    <id>https://abox.tools/hi/compress-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/compress-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">PDF को बिना अपलोड किए छोटा कीजिए। फ़ाइल को आपका अपना ब्राउज़र पढ़ता है, दोबारा कंप्रेस करता है और दोबारा लिखता है। और कुछ भी छूने से पहले टूल आपको दिखा देता है कि साइज़ असल में बैठा कहाँ है।</summary>
   </entry>
 </feed>

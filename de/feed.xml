@@ -46,6 +46,13 @@
     <summary type="html">Base64 in beiden Alphabeten kodieren und dekodieren, URLs prozentkodieren, HTML-Entities maskieren und Hex und Backslash-Escapes lesen. Alles läuft in Ihrem Browser, hochgeladen wird nichts - ein Token verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
+    <title type="html">Größenvergleich</title>
+    <id>https://abox.tools/de/groessenvergleich-erstellen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/groessenvergleich-erstellen/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Vergleichen Sie Größen nebeneinander. Nehmen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen und Gegenstände dazu &amp;mdash; eine Tür, ein Fenster, ein Whiteboard, einen Getränkeautomaten &amp;mdash; in Zentimetern oder in Fuß und Zoll, und laden Sie das Diagramm als PNG oder SVG herunter. Gezeichnet wird es in Ihrem Browser.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON-Formatierer</title>
     <id>https://abox.tools/de/json-formatieren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/exif-daten-entfernen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Die EXIF- und GPS-Daten in einem Foto sehen, bearbeiten oder mit einem Klick vollständig entfernen. Im Browser: kein Upload, und das Bild wird nie neu kodiert.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ein GIF in Einzelbilder zerlegen</title>
-    <id>https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/gif-in-einzelbilder-zerlegen/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Jedes Bild eines animierten GIFs als PNG: warum manche Bilder nur ein kleiner Ausschnitt sind, was mit der Transparenz passiert und wie Sie die Zeiten behalten, um die Animation wieder zusammenzusetzen.</summary>
   </entry>
 </feed>

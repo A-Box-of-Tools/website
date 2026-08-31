@@ -53,6 +53,13 @@
     <summary type="html">Bandingkan dua teks dan lihat setiap perbedaannya, baris demi baris dan kata demi kata, berdampingan atau dalam satu kolom. Pembandingannya berjalan di peramban Anda dan tidak ada yang diunggah - kode yang belum dirilis tidak pernah meninggalkan mesin Anda.</summary>
   </entry>
   <entry>
+    <title type="html">Pembanding Tinggi Badan</title>
+    <id>https://abox.tools/id/bandingkan-tinggi-badan/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/bandingkan-tinggi-badan/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Bandingkan tinggi badan berdampingan. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda &amp;mdash; pintu, jendela, papan tulis, mesin penjual otomatis &amp;mdash; dalam sentimeter atau kaki dan inci, lalu unduh bagannya sebagai PNG atau SVG. Ia digambar di peramban Anda.</summary>
+  </entry>
+  <entry>
     <title type="html">Pemformat JSON</title>
     <id>https://abox.tools/id/format-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/format-json/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/memverifikasi-checksum-file/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Cara memeriksa checksum MD5 atau SHA-256 di Windows, macOS, dan Linux atau di peramban Anda, apa yang sebenarnya dibuktikan sebuah kecocokan, dan kekeliruan yang membuat seluruh latihannya sia-sia.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara memformat JSON tanpa menyerahkannya kepada siapa pun</title>
-    <id>https://abox.tools/id/panduan/format-json-tanpa-mengunggah/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/format-json-tanpa-mengunggah/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Cara menata, memeriksa, dan memampatkan JSON di peramban Anda sendiri - apa yang tidak boleh diubah sebuah pemformat pada file Anda, cara membaca pesan galatnya, dan kenapa situs tempat Anda menempelkannya itu penting.</summary>
   </entry>
 </feed>

@@ -46,6 +46,13 @@
     <summary type="html">Transforme uma lista de alturas numa imagem lado a lado: como escrever as alturas, que figura escolher para uma criança, por que um objeto familiar faz mais que uma terceira pessoa, e como tirar o gráfico como PNG ou SVG.</summary>
   </entry>
   <entry>
+    <title type="html">Comparador de alturas</title>
+    <id>https://abox.tools/pt/comparar-alturas/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/comparar-alturas/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Compare alturas lado a lado. Acrescente um homem, uma mulher, um menino, uma menina e objetos &amp;mdash; uma porta, uma janela, um quadro branco, uma máquina de vendas &amp;mdash; em centímetros ou em pés e polegadas, e baixe o gráfico como PNG ou SVG. Ele é desenhado no seu navegador.</summary>
+  </entry>
+  <entry>
     <title type="html">Comparador de textos</title>
     <id>https://abox.tools/pt/comparar-textos/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/comparar-textos/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/editar-um-gif-quadro-a-quadro/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Desmonte um GIF nos quadros dele, tire ou reordene os que precisar, e reconstrua mantendo os tempos. O que sobrevive à ida e volta, o que a paleta custa, e como ver por que um GIF pesa.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como fazer um GIF animado com imagens</title>
-    <id>https://abox.tools/pt/guias/fazer-um-gif-com-imagens/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/fazer-um-gif-com-imagens/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Transforme um conjunto de fotos num GIF animado: a que velocidade um GIF realmente toca, o que a opção de paleta muda, e as três coisas que de fato deixam o arquivo menor.</summary>
   </entry>
 </feed>
