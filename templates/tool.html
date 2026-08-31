@@ -133,11 +133,16 @@
 {% include "partials/lang-notice.html" %}
 
 <!--
-  Visible by default and removed by main.js once it boots. If the scripts never
-  run - opening this file straight from disk blocks ES modules, and so does a
-  CSP or network failure - this stays on screen and explains why. Without it the
-  page looks fine, the file picker still opens (that part is pure HTML), and
-  nothing at all happens when you choose {{ tool.words.choose }}.
+  In the page from the start and removed by main.js once it boots. If the
+  scripts never run - opening this file straight from disk blocks ES modules,
+  and so does a CSP or network failure - nothing removes it and it explains
+  why. Without it the page looks fine, the file picker still opens (that part
+  is pure HTML), and nothing at all happens when you choose
+  {{ tool.words.choose }}.
+
+  It is in the page but not on screen: shared/css/tool-frame.css keeps it
+  collapsed for the first five seconds, so a page whose module is merely on its
+  way is never accused of being broken.
 -->
 <div id="boot-warning" class="boot-warning">
   <strong>{{ ui.tool.boot_title }}</strong>

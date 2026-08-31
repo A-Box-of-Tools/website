@@ -231,6 +231,69 @@ class DownloadHooks(unittest.TestCase):
         self.assertRegex(body, r'id="save-edits"[^>]*data-download')
 
 
+class BootNotice(unittest.TestCase):
+    """The notice about a page whose code never started, and when it shows.
+
+    It has to be in the markup from the start, because the code that would add
+    it is the code that did not run - so every page carried a red error at
+    first paint and removed it a tenth of a second later, when main.js got
+    there. A visitor reported that as a bug, and from the outside it is
+    indistinguishable from a page that broke and recovered.
+
+    What stops it is a delay in shared/css/tool-frame.css: the notice is
+    collapsed when the page paints, and an animation with a delay and no
+    duration reveals it, so it arrives only on a page that really is not
+    coming. Both halves are checked here because either alone is wrong - the
+    markup without the CSS is the flash again, and the CSS without a notice to
+    reveal is nothing at all.
+    """
+
+    def setUp(self):
+        self.template = (ROOT / 'templates' / 'tool.html').read_text(encoding='utf-8')
+        self.css = (ROOT / 'shared' / 'css' / 'tool-frame.css').read_text(encoding='utf-8')
+        found = re.search(r'#boot-warning\s*\{([^}]*)\}', self.css)
+        self.assertIsNotNone(found, 'shared/css/tool-frame.css: no #boot-warning rule')
+        self.rule = found.group(1)
+
+    def test_the_notice_is_in_the_page_the_build_writes(self):
+        self.assertIn('id="boot-warning"', self.template)
+
+    def test_it_is_collapsed_when_the_page_paints(self):
+        self.assertRegex(self.rule, r'max-height:\s*0',
+                         'the notice is on screen at first paint again')
+
+    def test_a_delay_and_not_a_duration_is_what_reveals_it(self):
+        """Nothing moves: the reveal is a jump, some seconds in.
+
+        Read out of the shorthand rather than compared to it whole, so that
+        changing how long the page is given is not a test failure. Removing the
+        wait is, because a page that is merely slow is not a page that failed.
+        """
+        animation = re.search(r'animation:\s*([^;]+);', self.rule)
+        self.assertIsNotNone(animation, 'nothing reveals the notice')
+        name, *rest = animation.group(1).split()
+        times = [word for word in rest if re.fullmatch(r'[\d.]+m?s', word)]
+        self.assertEqual(len(times), 2, f'expected a duration and a delay, got {rest}')
+        duration, delay = times
+        self.assertEqual(float(duration.rstrip('ms')), 0,
+                         'the reveal is a jump, not a fade')
+        self.assertGreater(float(delay.rstrip('s')), 1, 'a page is accused too soon')
+        self.assertIn('forwards', rest, 'the notice would take itself away again')
+        self.assertRegex(self.css, r'@keyframes\s+' + re.escape(name) + r'\s*\{',
+                         f'{name} is named but never written')
+
+    def test_what_it_collapses_is_what_the_reveal_puts_back(self):
+        """A property zeroed and never restored is a notice nobody can read."""
+        name = re.search(r'animation:\s*(\S+)', self.rule).group(1)
+        frames = self.css.split('@keyframes ' + name, 1)[1].split('\n}')[0]
+        for prop in dict(re.findall(r'([a-z-]+):\s*([^;]+);', self.rule)):
+            if prop == 'animation':
+                continue
+            with self.subTest(property=prop):
+                self.assertIn(f'{prop}:', frames,
+                              f'{prop} is collapsed and never restored')
+
+
 class BuildTheSite(unittest.TestCase):
     """A whole plain build, into a temporary directory.
 
