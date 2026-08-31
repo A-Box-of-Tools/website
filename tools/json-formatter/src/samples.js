@@ -24,7 +24,7 @@ export const SAMPLES = {
       '  "regions": ["eu-west", "us-east"],',
       '  "flags": { "cache": true, "debug": false },',
       '  "note": "no",',
-      '  "command": "run --watch\nreload --graceful"',
+      '  "command": "run --watch\\nreload --graceful"',
       '}',
     ].join('\n'),
   },

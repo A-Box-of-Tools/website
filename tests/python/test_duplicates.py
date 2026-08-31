@@ -110,6 +110,17 @@ GROUPS = [
     ('decode.js', ['edit-audio', 'trim-audio']),
     ('support.js', ['crop-video', 'trim-video']),
     ('support.js', ['reverse-video', 'timelapse-video']),
+    # The text parsers, across the three pages that read them. json-formatter
+    # is the one that has all of them; yaml-to-json and xml-formatter were split
+    # out of it so that "yaml to json" and "xml formatter" have an address that
+    # says so, and each took the parsers it needs and no others. errors.js is
+    # here because a ParseError carries the line, the column and a phrase key,
+    # and three pages reporting the same broken file differently would be worse
+    # than any of them reporting it badly.
+    ('json.js', ['json-formatter', 'xml-formatter', 'yaml-to-json']),
+    ('errors.js', ['json-formatter', 'xml-formatter', 'yaml-to-json']),
+    ('xml.js', ['json-formatter', 'xml-formatter']),
+    ('yaml.js', ['json-formatter', 'yaml-to-json']),
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that
@@ -132,6 +143,18 @@ SINGLETONS = {
         'asks only about encoding, because nothing here reads a video in',
     ('support.js', 'video-to-gif'):
         'asks only about reading, because the GIF encoder is in this folder',
+    # The three convert.js files are the same functions in different
+    # combinations, which is why they are singletons rather than a group. The
+    # parsers beside them ARE grouped, so a fix to the YAML reader or the XML
+    # reader still lands everywhere; what differs here is only which pair of
+    # conversions the file carries, and carrying the other pair would mean
+    # shipping a parser the tool never calls.
+    ('convert.js', 'json-formatter'):
+        'both pairs, because that page offers all four conversions',
+    ('convert.js', 'yaml-to-json'):
+        'the YAML pair alone, so the tool ships no XML parser it never calls',
+    ('convert.js', 'xml-formatter'):
+        'the XML pair alone, so the tool ships no YAML parser it never calls',
 }
 
 

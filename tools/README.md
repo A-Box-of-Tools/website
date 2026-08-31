@@ -44,6 +44,8 @@ browser and uploads nothing; how the site around them is built is in the
 | [Audio Trimmer](trim-audio/) | `/trim-audio/` | Mark the parts worth keeping as it plays. Get them back as one file, cut where you said. |
 | [Audio Editor](edit-audio/) | `/edit-audio/` | Play it backwards, change the speed, lift a quiet recording — all of it here, on your machine. |
 | [JSON Formatter](json-formatter/) | `/json-formatter/` | JSON, XML, HTML, CSS and YAML, formatted or converted. Nothing is pasted into anyone else's server. |
+| [YAML to JSON Converter](yaml-to-json/) | `/yaml-to-json/` | Both directions, and it says what each one costs. Nothing is pasted into anyone else's server. |
+| [XML Formatter](xml-formatter/) | `/xml-formatter/` | XML laid out to read or squeezed to ship, and converted to JSON both ways. Nothing is pasted into anyone else's server. |
 | [Text Diff](text-diff/) | `/text-diff/` | Two texts in, every difference marked, line by line and word by word. Nothing is pasted into anyone else's server. |
 | [Base64 Encoder & Decoder](base64/) | `/base64/` | Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server. |
 | [Share Text & Files](share-text/) | `/share-text/` | The share lives in this open tab. Readers fetch it directly from your browser, encrypted, and closing the tab ends it - nothing is stored on any server. |
