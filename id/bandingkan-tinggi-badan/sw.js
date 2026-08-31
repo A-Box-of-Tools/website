@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/bandingkan-tinggi-badan/:';
-const CACHE_NAME=CACHE_PREFIX+'64c96c6c23';
+const CACHE_NAME=CACHE_PREFIX+'74444a93ff';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/chart.js',
 'src/figures.js',
+'src/import-image.js',
 'src/import-svg.js',
 'src/main.js',
 'src/objects.js',

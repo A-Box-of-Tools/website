@@ -5,6 +5,7 @@ import{FONT,chartSvg,isDark}from'./chart.js';
 import{format,formatBoth,parseHeight,toInput}from'./units.js';
 import{download,svgBlob,svgToPng}from'./save.js';
 import{LIMITS,importSvg}from'./import-svg.js';
+import{IMAGE_LIMITS,fit,imageMarkup,nameFromFile}from'./import-image.js';
 const $=(id)=>document.getElementById(id);
 const el={
 rows:$('rows'),
@@ -95,6 +96,47 @@ defaultCm:0,
 shapes:result.shapes,
 name:file.name.replace(/\.svg$/i,'').slice(0,40),
 };
+}
+async function shapeFromImage(file){
+if(file.size>IMAGE_LIMITS.bytes)return{error:'image.toobig'};
+let bitmap;
+try{
+bitmap=await createImageBitmap(file);
+}catch{
+return{error:'image.unreadable'};
+}
+const box=fit(bitmap.width,bitmap.height);
+const tiny=bitmap.width<IMAGE_LIMITS.smallest||bitmap.height<IMAGE_LIMITS.smallest;
+if(!box||tiny){
+bitmap.close?.();
+return{error:'image.unreadable'};
+}
+const canvas=document.createElement('canvas');
+canvas.width=box.width;
+canvas.height=box.height;
+const context=canvas.getContext('2d');
+context.imageSmoothingQuality='high';
+context.drawImage(bitmap,0,0,box.width,box.height);
+bitmap.close?.();
+const aspect=box.width/box.height;
+const markup=imageMarkup(canvas.toDataURL('image/png'),aspect);
+if(!markup)return{error:'image.unreadable'};
+return{
+shape:{
+id:'upload',
+label:'shape.upload',
+width:aspect,
+inner:null,
+paths:null,
+markup,
+raster:true,
+defaultCm:0,
+},
+name:nameFromFile(file.name),
+};
+}
+function isVector(file){
+return file.type==='image/svg+xml'||/\.svg$/i.test(file.name);
 }
 function unit(){
 return el.unit.value;
@@ -402,7 +444,7 @@ const file=el.svgFile.files?.[0];
 const row=wantsFile;
 wantsFile=null;
 if(!file)return;
-const result=await shapeFromFile(file);
+const result=isVector(file)?await shapeFromFile(file):await shapeFromImage(file);
 if(result.error){
 el.inputError.hidden=false;
 el.inputError.textContent=phrase(result.error);
@@ -422,7 +464,9 @@ art:result.shape,name:result.name,height:toInput(100,unit()),
 }
 paintRows();
 draw();
-note(phrase('svg.added',{shapes:result.shapes}));
+note(result.shapes===undefined
+?phrase('image.added')
+:phrase('svg.added',{shapes:result.shapes}));
 });
 el.clear.addEventListener('click',()=>{
 rows=[];
