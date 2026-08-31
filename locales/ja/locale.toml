@@ -256,6 +256,7 @@ footer_site = "このサイト"
 footer_contact = "お問い合わせ"
 footer_sitemap = "サイトマップ"
 footer_source = "GitHubでコードを読む"
+footer_x = "abox.toolsのXアカウント"
 
 guarantees_note = """
     以上のどれも、鵜呑みにする必要はありません。\

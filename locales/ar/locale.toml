@@ -392,6 +392,7 @@ footer_site = "هذا الموقع"
 footer_contact = "تواصل معنا"
 footer_sitemap = "خريطة الموقع"
 footer_source = "اقرأ الشيفرة المصدرية على GitHub"
+footer_x = "abox.tools على X"
 
 guarantees_note = """
     لا شيء من هذا عليك تصديقه دون تحقق.

@@ -355,6 +355,7 @@ footer_site = "Este site"
 footer_contact = "Fale com a gente"
 footer_sitemap = "Mapa do site"
 footer_source = "Ler o código no GitHub"
+footer_x = "abox.tools no X"
 
 guarantees_note = """
     Nada disso você precisa aceitar na fé.

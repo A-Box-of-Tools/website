@@ -363,6 +363,7 @@ footer_site = "Deze site"
 footer_contact = "Contact"
 footer_sitemap = "Sitemap"
 footer_source = "Lees de code op GitHub"
+footer_x = "abox.tools op X"
 
 guarantees_note = """
     Je hoeft daar niets van op ons woord aan te nemen.
