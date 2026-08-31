@@ -16,15 +16,16 @@ og_description = "Pon a dos adultos, un niño, una niña y una puerta en la mism
 og_image_alt = "Comparador de alturas - comparar alturas lado a lado, sin subir nada"
 
 pledge = """
-    Un gráfico de alturas es aritmética y un dibujo: no hay ningún archivo que
-    enviar ni ningún servicio al que preguntar. El hombre, la mujer, el niño y
-    la niña son ilustraciones de dominio público que viajan con esta página, y
-    el niño y la niña son dibujos de niños de verdad y no adultos hechos
-    pequeños &mdash; que es lo que evita que un gráfico familiar quede mal de
-    una forma que nadie sabe nombrar. Cada paso ocurre en unos cientos de líneas
-    de JavaScript de esta página que puedes leer. No hay función de red de
-    ninguna clase, y aquí eso importa porque lo que escribes es una lista de
-    personas y lo que mide cada una."""
+    Un gráfico de alturas es aritmética y un dibujo: no hay archivo que enviar
+    ni servicio al que preguntar &mdash; y el único archivo que esta página
+    acepta, un SVG tuyo para poner en la regla, se lee aquí y no va a ninguna
+    parte. El hombre, la mujer, el niño y la niña son ilustraciones de dominio
+    público que viajan con esta página, y el niño y la niña son dibujos de niños
+    de verdad en lugar de adultos hechos pequeños &mdash; que es lo que evita
+    que un gráfico de familia se vea mal de una manera que nadie sabe nombrar.
+    Cada paso ocurre en unos cientos de líneas de JavaScript de esta página que
+    puedes leer. No hay función de red de ningún tipo, y eso importa aquí porque
+    lo que escribes es una lista de personas y cuánto mide cada una."""
 
 live_hint = """
       No hace falta que nos creas: abre las DevTools, mira la pestaña de red y
@@ -32,15 +33,16 @@ live_hint = """
       ninguno de los dos. O desconéctate de internet y haz el gráfico
       igualmente."""
 
-read_first = """
-, <code>src/traced.js</code> y
+read_first = """, <code>src/traced.js</code> y
       <code>vendor/</code> para las cuatro figuras y de dónde salió su
-      ilustración, <code>src/figures.js</code> para la lista con la que se
-      construye el menú, <code>src/units.js</code> para cómo una altura escrita
-      se vuelve un número y cómo se rotula la regla, <code>src/chart.js</code>
-      para la disposición, y <code>src/save.js</code> para las dos descargas
-      &mdash; que son el SVG en pantalla, y ese mismo SVG pintado sobre un
-      lienzo."""
+      ilustración, <code>src/figures.js</code> para la lista con la que se monta
+      el menú, <code>src/units.js</code> para cómo una altura escrita se vuelve
+      número y cómo se rotula la regla, <code>src/chart.js</code> para la
+      maquetación, <code>src/save.js</code> para las dos descargas &mdash; que
+      son el SVG que está en pantalla, y ese mismo SVG pintado sobre un canvas
+      &mdash; y <code>src/import-svg.js</code> para la lista blanca con la que se
+      reconstruye un SVG subido, que es el único archivo de aquí donde
+      equivocarse importaría."""
 
 howto_heading = "Cómo hacer un gráfico de comparación de alturas"
 
@@ -119,6 +121,21 @@ body = """
       fuente que descargar ni ninguna imagen que cargar dentro."""
 
 [[privacy]]
+title = "Un SVG que añadas se lee aquí, y se reconstruye en vez de creerse."
+body = """
+ El archivo
+      no sale nunca de esta página &mdash; se lee con el propio
+      <code>FileReader</code> del navegador y se analiza en un documento inerte
+      que no ejecuta nada. Lo que se dibuja no es ese archivo:
+      <code>src/import-svg.js</code> construye un dibujo NUEVO a partir de una
+      lista blanca de formas y geometría, así que un script, una hoja de
+      estilos, una fuente, una imagen enlazada o una referencia a otro documento
+      se queda fuera en vez de pasar. Eso importa dos veces, porque el gráfico
+      que descargas es un archivo que mandas a otra gente: cualquier cosa que
+      hubiera sobrevivido sería el navegador de ellos llamando al servidor de un
+      desconocido, días después, desde algo que escribió esta página."""
+
+[[privacy]]
 title = "Las ilustraciones están aquí, no se descargan."
 body = """
  Las cuatro figuras
@@ -185,6 +202,16 @@ body = """
       como una fila normal sobre la que puedes escribir tus propios números. Los
       objetos llevan una anchura además de una altura, así que una puerta es 203
       por 81 y no una raya."""
+
+[[howto]]
+title = "O pon encima tu propio dibujo."
+body = """
+ <strong>Añadir tu propio
+      SVG</strong> coge un archivo de tu equipo y dibuja su forma a la altura
+      que le des &mdash; lo que hay que usar cuando el gráfico va de un producto,
+      un vehículo o un edificio en lugar de una persona. Mantiene las
+      proporciones del propio dibujo, lo colorea como cualquier otra fila, y lee
+      el archivo aquí en vez de mandarlo a ninguna parte."""
 
 [[howto]]
 title = "Pon la regla en las unidades en las que piensa quien lo lee."
@@ -262,6 +289,26 @@ a = """
         público no pide nada, que es de lo que se trata: la ilustración acaba
         dentro de una imagen que te descargas, y una licencia que exigiera
         atribución le pegaría esa exigencia a tu gráfico."""
+
+[[faq]]
+q = "¿Puedo poner mi propio dibujo en el gráfico?"
+a = """
+        Sí &mdash; <strong>Añadir tu propio SVG</strong> coge cualquier archivo
+        SVG y pone su forma en la regla a la altura que escribas: un logotipo,
+        un plano, una pieza de maquinaria, un coche. Sus proporciones son las
+        suyas, así que no hay ancho que rellenar.
+        <br><br>
+        Dos cosas que conviene saber. Se dibuja en <strong>un solo color
+        plano</strong>, el que tenga puesto esa fila, porque eso es lo que es el
+        resto del gráfico &mdash; así que un dibujo hecho de contornos finos en
+        lugar de formas rellenas sale como un borrón, y para eso esta es la
+        herramienta equivocada. Y solo se conservan las <em>formas</em>: el
+        archivo se reconstruye desde cero a partir de trazados, rectángulos y
+        círculos, y todo lo que pudiera alcanzar la red &mdash; una imagen
+        enlazada, una hoja de estilos, una fuente, un script &mdash; se queda
+        fuera. El archivo en sí no va nunca a ninguna parte; esa parte va del
+        gráfico que descargas, que es un archivo que quizá le mandes a
+        alguien."""
 
 [[faq]]
 q = "¿Por qué no hay un bebé ni un niño pequeño?"
@@ -365,11 +412,12 @@ a = """
 description = "Dibuja un gráfico de comparación de alturas en el navegador. Añade un hombre, una mujer, un niño, una niña y objetos con sus alturas en centímetros o en pies y pulgadas, ordénalos, coloréalos y descarga el resultado como PNG o SVG. No se sube nada."
 features = [
   "Hasta doce figuras en una misma regla, en cualquier orden",
-  "Figuras de hombre, mujer, niño y niña, y un rectángulo simple para objetos",
+  "Figuras de hombre, mujer, niño y niña, y objetos dibujados con el tamaño de los números que escribes",
   "Hombre, mujer, niño y niña dibujados de dominio público - los niños dibujados como niños y no como adultos reducidos",
   "Alturas escritas como 173, 1,73 m, 5'8\", 68 in o 5 ft 8, mostrando la lectura",
   "Centímetros o pies y pulgadas, cambiados sin alterar la altura de nadie",
-  "Veinte objetos listos: puertas, ventanas, una pizarra, una máquina expendedora, un contenedor marítimo, muebles",
+  "Veinte objetos ya hechos, diecisiete de ellos dibujados: puertas, ventanas, una pizarra, una máquina expendedora, muebles",
+  "Cualquier SVG tuyo en la regla, reconstruido solo a partir de sus formas",
   "Una regla cuyo espaciado se elige según lo que la imagen puede llevar",
   "Cualquier color de fondo, o ninguno, con la tinta elegida para seguir siendo legible encima",
   "PNG a cualquier altura en píxeles, y un SVG que se imprime nítido a cualquier tamaño",

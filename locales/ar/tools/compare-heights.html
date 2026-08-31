@@ -42,7 +42,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">أضِف شخصاً</button>
         <button type="button" id="add-object" class="ghost">أضِف شيئاً</button>
+        <button type="button" id="add-svg" class="ghost">SVG خاص بك</button>
         <button type="button" id="clear" class="ghost danger">أفرِغ الرسم</button>
+        <!-- يشغّله الزرّ الذي فوقه بدل أن يُعرَض: التسمية هنا لأن أيّ عنصر تحكّم يستطيع
+             الزائر بلوغه يحتاج اسماً، سواء أكان هو ما نقر عليه أم لا. -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="اختر ملف SVG ليوضَع على الرسم" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -52,35 +57,53 @@
       <select id="preset">
         <option value="" selected>اختر واحداً&hellip;</option>
         <optgroup label="الأبواب والنوافذ">
-          <option value="door-interior" data-cm="203" data-width="81">باب داخلي &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">باب المدخل &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">نافذة &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">باب مرآب &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">باب داخلي &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">باب المدخل &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">نافذة &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">باب مرآب &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="المدرسة والمكتب">
-          <option value="board" data-cm="120" data-width="240">سبّورة بيضاء أو طباشيرية &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">مكتب &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">خزانة ملفات بأربعة أدراج &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">شاشة عرض، 100 بوصة &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">سبّورة بيضاء أو طباشيرية &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">مكتب &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">خزانة ملفات بأربعة أدراج &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">شاشة عرض، 100 بوصة &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="في المدينة">
-          <option value="vending" data-cm="183" data-width="100">آلة بيع &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">حاوية نفايات بعجلات، 240 لتراً &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">آلة بيع &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">حاوية نفايات بعجلات، 240 لتراً &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">سلّة كرة السلة &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">حاوية شحن، 20 قدماً &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="في البيت">
-          <option value="fridge" data-cm="178" data-width="76">ثلاجة بمجمّد &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">ثلاجة بمجمّد &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">سطح مطبخ &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">طاولة طعام &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">كرسي طعام &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">أريكة بثلاثة مقاعد &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">بيانو قائم &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">غيتار صوتي &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">زجاجة نبيذ &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">طاولة طعام &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">كرسي طعام &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">أريكة بثلاثة مقاعد &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">بيانو قائم &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">غيتار صوتي &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">زجاجة نبيذ &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      يضع <strong>SVG خاص بك</strong> أيّ رسمة على المسطرة &mdash; شعاراً أو
+      مخطّطاً أو قطعة آلة. تُقرأ في هذه الصفحة ولا تذهب إلى أي مكان. ولا يُحتفَظ
+      إلا بالأشكال التي فيها: فهي تصل بلونٍ واحد صافٍ تختاره لكلّ صفّ، وكلّ ما
+      كان بوسعه بلوغ الشبكة &mdash; صورة مرتبطة أو ورقة أنماط أو خطّ أو نصّ
+      برمجي &mdash; يُترَك خلفه بدل أن يُحمَل داخل رسمٍ قد ترسله إلى أحد. أما
+      الرسمة المصنوعة من خطوط رفيعة لا من أشكال مملوءة فتخرج لطخةً صمّاء، وتلك
+      هي الحالة الوحيدة التي تكون فيها هذه الأداة هي الخطأ.
+    </p>
+
+    <p class="field-summary">
+      معظم هذه تصل مرسومةً لا ككتلة صمّاء &mdash; باب بمقبضه، وثلّاجة فوقها
+      مجمّدها، وأريكة تراها أريكة. والرسمة تُلاءَم مع العددين في الصفّ، فالعددان
+      هما اللذان يقرّران الشكل: اكتب عدديك فوقهما وتتبعهما الصورة. وثلاثة منها
+      بلا رسمة، إذ لم يظهر شيء حرّ وصحيح النسب: سلّة كرة السلة وحاوية الشحن وسطح
+      المطبخ تصل مستطيلاتٍ كما كان كلّ شيء من قبل.
+    </p>
+
 
     <p class="field-summary">
       بعض هذه المقاسات ثابتة فعلاً: حاوية الشحن مقاس 20 قدماً ارتفاعها

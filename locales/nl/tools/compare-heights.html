@@ -45,7 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Iemand toevoegen</button>
         <button type="button" id="add-object" class="ghost">Een voorwerp toevoegen</button>
+        <button type="button" id="add-svg" class="ghost">Eigen SVG</button>
         <button type="button" id="clear" class="ghost danger">De grafiek leegmaken</button>
+        <!-- Aangestuurd door de knop hierboven in plaats van getoond: het label staat
+             hier omdat een besturingselement dat een bezoeker kan bereiken een naam
+             nodig heeft, of het nu is waarop geklikt is of niet. -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="Kies een SVG-bestand om op de grafiek te zetten" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -55,35 +61,59 @@
       <select id="preset">
         <option value="" selected>Kies er een&hellip;</option>
         <optgroup label="Deuren en ramen">
-          <option value="door-interior" data-cm="203" data-width="81">Binnendeur &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">Voordeur &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">Raam &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">Garagedeur &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">Binnendeur &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">Voordeur &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">Raam &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">Garagedeur &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="School en kantoor">
-          <option value="board" data-cm="120" data-width="240">Whiteboard of schoolbord &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">Bureau &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">Archiefkast, vier laden &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">Projectiescherm, 100 in &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">Whiteboard of schoolbord &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">Bureau &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">Archiefkast, vier laden &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">Projectiescherm, 100 in &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="In de stad">
-          <option value="vending" data-cm="183" data-width="100">Automaat &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">Kliko, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">Automaat &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">Kliko, 240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">Basketbalring &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">Zeecontainer, 20 ft &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="In huis">
-          <option value="fridge" data-cm="178" data-width="76">Koel-vriescombinatie &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">Koel-vriescombinatie &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">Keukenblad &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">Eettafel &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">Eetkamerstoel &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">Driezitsbank &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">Pianino &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">Akoestische gitaar &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">Wijnfles &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">Eettafel &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">Eetkamerstoel &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">Driezitsbank &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">Pianino &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">Akoestische gitaar &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">Wijnfles &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>Eigen SVG</strong> zet elke tekening op de meetlat &mdash; een
+      logo, een plattegrond, een machineonderdeel. Hij wordt in deze pagina
+      gelezen en gaat nergens heen. Alleen de vormen erin worden bewaard: hij
+      komt aan in één egale kleur die je per regel kiest, en alles wat het
+      netwerk zou kunnen bereiken &mdash; een gelinkte afbeelding, een
+      stylesheet, een lettertype, een script &mdash; blijft achter in plaats van
+      mee te gaan in een grafiek die je misschien naar iemand stuurt. Een
+      tekening van dunne lijnen in plaats van gevulde vormen komt er als één
+      massieve klodder uit, en dat is het enige geval waarin dit het verkeerde
+      gereedschap is.
+    </p>
+
+    <p class="field-summary">
+      De meeste komen getekend aan in plaats van als een kaal blok &mdash; een
+      deur met een klink, een koelkast met de vriezer erboven, een bank waaraan
+      je ziet dat het een bank is. De tekening wordt op de twee getallen van de
+      regel gepast, dus die getallen bepalen de vorm: typ je eigen getallen
+      eroverheen en de afbeelding volgt. Drie hebben geen tekening, omdat er
+      niets vrijs met de juiste verhoudingen te vinden was: de basketbalring, de
+      zeecontainer en het keukenblad komen aan als de rechthoek die elk voorwerp
+      vroeger was.
+    </p>
+
 
     <p class="field-summary">
       Een paar hiervan liggen echt vast: een zeecontainer van 20&nbsp;ft is per

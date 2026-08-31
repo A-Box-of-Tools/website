@@ -45,7 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Aggiungi una persona</button>
         <button type="button" id="add-object" class="ghost">Aggiungi un oggetto</button>
+        <button type="button" id="add-svg" class="ghost">Il tuo SVG</button>
         <button type="button" id="clear" class="ghost danger">Svuota il grafico</button>
+        <!-- Azionato dal pulsante qui sopra invece che mostrato: l'etichetta sta qui
+             perché un controllo che un visitatore può raggiungere ha bisogno di un
+             nome, che sia o no la cosa su cui ha cliccato. -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="Scegli un file SVG da mettere sul grafico" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -55,35 +61,58 @@
       <select id="preset">
         <option value="" selected>Scegline uno&hellip;</option>
         <optgroup label="Porte e finestre">
-          <option value="door-interior" data-cm="203" data-width="81">Porta interna &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">Porta d'ingresso &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">Finestra &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">Basculante del garage &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">Porta interna &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">Porta d'ingresso &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">Finestra &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">Basculante del garage &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="Scuola e ufficio">
-          <option value="board" data-cm="120" data-width="240">Lavagna bianca o nera &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">Scrivania da ufficio &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">Classificatore a quattro cassetti &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">Schermo da proiezione, 100 in &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">Lavagna bianca o nera &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">Scrivania da ufficio &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">Classificatore a quattro cassetti &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">Schermo da proiezione, 100 in &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="In giro per la città">
-          <option value="vending" data-cm="183" data-width="100">Distributore automatico &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">Bidone con ruote, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">Distributore automatico &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">Bidone con ruote, 240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">Canestro da basket &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">Container marittimo, 20 ft &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="In giro per casa">
-          <option value="fridge" data-cm="178" data-width="76">Frigorifero con congelatore &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">Frigorifero con congelatore &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">Piano di lavoro della cucina &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">Tavolo da pranzo &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">Sedia da pranzo &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">Divano a tre posti &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">Pianoforte verticale &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">Chitarra acustica &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">Bottiglia di vino &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">Tavolo da pranzo &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">Sedia da pranzo &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">Divano a tre posti &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">Pianoforte verticale &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">Chitarra acustica &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">Bottiglia di vino &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>Il tuo SVG</strong> mette qualunque disegno sul righello &mdash;
+      un logo, una pianta, un pezzo di macchinario. Viene letto in questa pagina
+      e non va da nessuna parte. Si tiene solo quello che c'è dentro come forme:
+      arriva in un unico colore pieno che scegli riga per riga, e tutto quello
+      che potrebbe raggiungere la rete &mdash; un'immagine collegata, un foglio
+      di stile, un font, uno script &mdash; resta fuori invece di finire dentro
+      un grafico che magari mandi a qualcuno. Un disegno fatto di linee sottili
+      invece che di forme piene esce come una macchia compatta, ed è l'unico
+      caso in cui questo è lo strumento sbagliato.
+    </p>
+
+    <p class="field-summary">
+      Quasi tutti arrivano disegnati e non come un blocco liscio &mdash; una
+      porta con la maniglia, un frigorifero con il congelatore sopra, un divano
+      che si vede che è un divano. Il disegno viene adattato ai due numeri della
+      riga, quindi sono i numeri a decidere la forma: scrivi i tuoi sopra e
+      l'immagine segue. Tre non hanno disegno, perché non ne è saltato fuori
+      nessuno libero e con le proporzioni giuste: il canestro da basket, il
+      container marittimo e il piano di lavoro della cucina arrivano come il
+      rettangolo che prima era ogni oggetto.
+    </p>
+
 
     <p class="field-summary">
       Alcune di queste misure sono davvero fisse: un container marittimo da

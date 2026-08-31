@@ -43,7 +43,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">एक व्यक्ति जोड़िए</button>
         <button type="button" id="add-object" class="ghost">एक चीज़ जोड़िए</button>
+        <button type="button" id="add-svg" class="ghost">अपनी SVG</button>
         <button type="button" id="clear" class="ghost danger">चार्ट खाली कीजिए</button>
+        <!-- दिखने के बजाय ऊपर वाले बटन से चलता है: लेबल यहाँ इसलिए है कि जिस नियंत्रण तक कोई
+             आगंतुक पहुँच सकता है उसे नाम चाहिए, चाहे उसने उसी पर क्लिक किया हो या नहीं। -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="चार्ट पर रखने के लिए एक SVG फ़ाइल चुनिए" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -53,35 +58,56 @@
       <select id="preset">
         <option value="" selected>कोई एक चुनिए&hellip;</option>
         <optgroup label="दरवाज़े और खिड़कियाँ">
-          <option value="door-interior" data-cm="203" data-width="81">भीतरी दरवाज़ा &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">मुख्य दरवाज़ा &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">खिड़की &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">गैराज का दरवाज़ा &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">भीतरी दरवाज़ा &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">मुख्य दरवाज़ा &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">खिड़की &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">गैराज का दरवाज़ा &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="स्कूल और दफ़्तर">
-          <option value="board" data-cm="120" data-width="240">व्हाइटबोर्ड या ब्लैकबोर्ड &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">दफ़्तर की मेज़ &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">चार दराज़ वाली फ़ाइल अलमारी &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">प्रोजेक्टर स्क्रीन, 100 in &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">व्हाइटबोर्ड या ब्लैकबोर्ड &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">दफ़्तर की मेज़ &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">चार दराज़ वाली फ़ाइल अलमारी &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">प्रोजेक्टर स्क्रीन, 100 in &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="शहर में">
-          <option value="vending" data-cm="183" data-width="100">वेंडिंग मशीन &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">पहियों वाला कूड़ेदान, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">वेंडिंग मशीन &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">पहियों वाला कूड़ेदान, 240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">बास्केटबॉल का घेरा &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">जहाज़ी कंटेनर, 20 ft &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="घर में">
-          <option value="fridge" data-cm="178" data-width="76">फ़्रिज-फ़्रीज़र &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">फ़्रिज-फ़्रीज़र &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">रसोई का प्लेटफ़ॉर्म &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">खाने की मेज़ &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">खाने की कुर्सी &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">तीन सीट वाला सोफ़ा &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">अपराइट पियानो &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">एकॉस्टिक गिटार &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">वाइन की बोतल &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">खाने की मेज़ &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">खाने की कुर्सी &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">तीन सीट वाला सोफ़ा &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">अपराइट पियानो &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">एकॉस्टिक गिटार &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">वाइन की बोतल &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>अपनी SVG</strong> किसी भी चित्र को पैमाने पर रख देती है &mdash; एक
+      लोगो, एक नक़्शा, मशीन का कोई हिस्सा। वह इसी पेज में पढ़ी जाती है और कहीं नहीं
+      जाती। उसमें से सिर्फ़ आकृतियाँ रखी जाती हैं: वह एक ही भरे हुए रंग में आती है,
+      जो आप हर पंक्ति के लिए चुनते हैं, और जो कुछ भी नेटवर्क तक पहुँच सकता था &mdash;
+      कोई जुड़ी हुई तस्वीर, कोई स्टाइलशीट, कोई फ़ॉन्ट, कोई स्क्रिप्ट &mdash; वह उस
+      चार्ट में जाने के बजाय पीछे छूट जाता है जिसे आप शायद किसी को भेजें। भरी हुई
+      आकृतियों के बजाय पतली रेखाओं से बना चित्र एक ठोस धब्बे की तरह निकलेगा, और यही
+      वह इकलौता मौक़ा है जब यह ग़लत औज़ार है।
+    </p>
+
+    <p class="field-summary">
+      इनमें से ज़्यादातर सादे डिब्बे की तरह नहीं, बने हुए चित्र की तरह आते हैं &mdash;
+      हैंडल वाला दरवाज़ा, ऊपर फ़्रीज़र वाला फ़्रिज, ऐसा सोफ़ा जो देखने में सोफ़ा लगे।
+      चित्र को पंक्ति के दोनों नंबरों में बिठाया जाता है, यानी आकार नंबर ही तय करते
+      हैं: उनके ऊपर अपने नंबर लिख दीजिए और तस्वीर पीछे-पीछे चली आएगी। तीन के पास कोई
+      चित्र नहीं है, क्योंकि सही अनुपात वाला कोई मुफ़्त चित्र नहीं मिला: बास्केटबॉल का
+      घेरा, जहाज़ी कंटेनर और रसोई का प्लेटफ़ॉर्म उसी आयत की तरह आते हैं जो पहले हर
+      चीज़ हुआ करती थी।
+    </p>
+
 
     <p class="field-summary">
       इनमें से कुछ वाक़ई तय हैं: 20&nbsp;ft का जहाज़ी कंटेनर परिभाषा से ही

@@ -45,7 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Tambah orang</button>
         <button type="button" id="add-object" class="ghost">Tambah benda</button>
+        <button type="button" id="add-svg" class="ghost">SVG milik Anda</button>
         <button type="button" id="clear" class="ghost danger">Kosongkan bagan</button>
+        <!-- Dijalankan oleh tombol di atas alih-alih ditampilkan: labelnya ada di sini
+             karena kontrol yang bisa dijangkau pengunjung butuh nama, baik itu yang
+             mereka klik maupun bukan. -->
+        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
+               aria-label="Pilih berkas SVG untuk ditaruh di bagan" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -55,35 +61,57 @@
       <select id="preset">
         <option value="" selected>Pilih satu&hellip;</option>
         <optgroup label="Pintu &amp; jendela">
-          <option value="door-interior" data-cm="203" data-width="81">Pintu dalam &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">Pintu depan &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">Jendela &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">Pintu garasi &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">Pintu dalam &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">Pintu depan &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">Jendela &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">Pintu garasi &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="Sekolah &amp; kantor">
-          <option value="board" data-cm="120" data-width="240">Papan tulis putih atau hitam &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">Meja kantor &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">Lemari arsip, empat laci &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">Layar proyektor, 100 in &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">Papan tulis putih atau hitam &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">Meja kantor &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">Lemari arsip, empat laci &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">Layar proyektor, 100 in &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="Di sekitar kota">
-          <option value="vending" data-cm="183" data-width="100">Mesin penjual otomatis &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">Tong sampah beroda, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">Mesin penjual otomatis &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">Tong sampah beroda, 240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">Ring basket &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">Kontainer kapal, 20 ft &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="Di sekitar rumah">
-          <option value="fridge" data-cm="178" data-width="76">Kulkas dua pintu &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">Kulkas dua pintu &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">Meja dapur &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">Meja makan &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">Kursi makan &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">Sofa tiga dudukan &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">Piano tegak &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">Gitar akustik &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">Botol anggur &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">Meja makan &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">Kursi makan &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">Sofa tiga dudukan &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">Piano tegak &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">Gitar akustik &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">Botol anggur &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
+    <p class="field-summary">
+      <strong>SVG milik Anda</strong> menaruh gambar apa pun di penggaris
+      &mdash; sebuah logo, denah, atau bagian mesin. Ia dibaca di halaman ini
+      dan tidak ke mana-mana. Hanya bentuk di dalamnya yang disimpan: ia datang
+      sebagai satu warna padat yang Anda pilih per baris, dan apa pun yang bisa
+      menjangkau jaringan &mdash; gambar tertaut, lembar gaya, fon, skrip
+      &mdash; ditinggalkan alih-alih ikut terbawa ke dalam bagan yang mungkin
+      Anda kirim ke orang lain. Gambar yang dibuat dari garis tipis, bukan dari
+      bentuk terisi, akan keluar sebagai gumpalan padat, dan itulah satu-satunya
+      kasus di mana ini alat yang keliru.
+    </p>
+
+    <p class="field-summary">
+      Kebanyakan datang tergambar, bukan sebagai balok polos &mdash; pintu
+      dengan gagangnya, kulkas dengan freezer di atasnya, sofa yang kelihatan
+      memang sofa. Gambarnya dipaskan ke dua angka di baris itu, jadi angkanyalah
+      yang menentukan bentuknya: ketik angka Anda sendiri menimpanya dan
+      gambarnya mengikuti. Tiga di antaranya tidak punya gambar, karena tidak
+      ada yang bebas dan proporsinya benar: ring basket, kontainer kapal, dan
+      meja dapur datang sebagai persegi panjang seperti dulu semua benda.
+    </p>
+
 
     <p class="field-summary">
       Beberapa di antaranya memang pasti: kontainer kapal 20&nbsp;ft tingginya
