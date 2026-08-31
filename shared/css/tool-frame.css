@@ -104,6 +104,51 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
   color: var(--text);
 }
 
+/* Five seconds of a page doing nothing, and then the notice - not before.
+
+   It cannot be added when the trouble is noticed, because the code that would
+   add it is the code that did not run: it is in the page from the start and
+   main.js removes it on the way past. So every visitor whose page is perfectly
+   fine used to watch it flash by while the module was still on its way, which
+   is what it looks like from the outside - a red error, on a page that then
+   works. Visitors reported it as a bug, and they were right to.
+
+   A page served over http boots in a fraction of a second, so nobody whose
+   page is coming ever waits long enough to see this. A page opened straight
+   out of a folder never boots at all, and its reader waits five seconds for
+   the explanation - the cheaper half of the trade, and they are already
+   looking at something broken.
+
+   Collapsed rather than `display: none` because the reveal is an animation and
+   `display` in a keyframe is recent enough that an older browser would hide
+   the notice for ever - and an older browser refusing modern syntax is one of
+   the ways a page arrives here in the first place. Every property below
+   animates everywhere.
+
+   Nothing here moves: the duration is zero and the delay is the whole
+   mechanism, so this is not one of the animations that belongs in a
+   prefers-reduced-motion switch-off. */
+#boot-warning {
+  overflow: hidden;
+  max-height: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-width: 0;
+  animation: boot-warning-late 0s linear 5s forwards;
+}
+
+@keyframes boot-warning-late {
+  to {
+    overflow: visible;
+    max-height: 100vh;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-width: 1px;
+  }
+}
+
 .boot-warning strong { color: var(--danger); }
 .boot-warning p { margin: 0.5rem 0; font-size: 0.9rem; }
 
