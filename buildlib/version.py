@@ -89,7 +89,7 @@ NEW_TOOL = re.compile(r'^tools/([^/]+)/tool\.toml$')
 TAG = re.compile(r'^(\d+)\.(\d+)\.(\d+)$')
 
 #: Where counting starts when there is no version tag yet. 1.0.0 rather than a
-#: number worked backwards from the thirty-six tools already here, because a
+#: number worked backwards from the tools already here, because a
 #: version is a promise about what happens next and inventing a history for it
 #: would be neither true nor useful.
 FIRST = (1, 0, 0)

@@ -52,7 +52,7 @@ is not fussiness. The slug is translated in every locale — `ueber-diese-seite`
 `chi-siamo`, `소개` — so deriving one from the other would have worked in
 English and quietly stopped working in the other fourteen languages.
 
-Why the kind exists at all: a site carrying thirty-six tools that never says who
+Why the kind exists at all: a site carrying dozens of tools that never says who
 made any of them reads as nobody's. Every claim on every tool page is a claim
 somebody is making, and a reader deciding whether to believe it is entitled to
 know who, and why. It is also the first thing an ad network's review looks for,
