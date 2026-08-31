@@ -367,6 +367,34 @@ def build(out, clean=False, minify_output=True, jobs=None, only=None,
         i18n.check_slugs(locale, [tool['slug'] for tool in tools],
                          [page['slug'] for page in prose], site)
 
+    # How many tools there are, put into the pages that say so. The About page
+    # names the number in its opening paragraph and in the description a search
+    # result quotes, and a number written into prose is a number nobody is told
+    # to move: it read thirty-six in all fifteen languages while there were
+    # forty of them.
+    #
+    # Done here for the reason the screenshots above are: it is one fact,
+    # identical in every language, so working it out inside the languages would
+    # be answering the same question fifteen times. And it has to be here
+    # rather than further in, because a description is quoted by things that
+    # never render a page - llms.txt is built from these dicts, and a count
+    # filled in at render time shipped it the placeholder itself.
+    #
+    # The body of a page is not done here: there is one body file per language,
+    # so build_page renders that as it goes, the way a tool's body.html is
+    # already rendered.
+    counts = {'tool_count': len(tools)}
+    for page in prose:
+        said = [(f'pages/{page["slug"]}', page)]
+        said += [(f'locales/{locale["lang"]}/pages/{page["slug"]}',
+                  locale['pages'].get(page['slug'], {}))
+                 for locale in locales]
+        for where, table in said:
+            for key in ('description', 'og_description'):
+                if key in table:
+                    table[key] = templates.render_source(
+                        table[key], f'{where} {key}', counts)
+
     # Same reasoning as --only above: a language named that does not exist has
     # to say so rather than quietly write nothing.
     if langs:
@@ -1352,38 +1380,23 @@ def build_page(out, templates, locale, locales, site, page, footer, links,
              'href': f'{up}{links["guides"]}/'},
         ]
 
-    # How many tools there are, for the one page that says so out loud. Worked
-    # out here rather than written into fifteen translations of one sentence,
-    # because a number in prose is a number that goes stale: this one read
-    # thirty-six in every language at once, in the description a search engine
-    # quotes as well as in the paragraph, until there were forty of them.
+    # The body goes through the template engine, so the sentence naming how
+    # many tools there are can ask for the number instead of spelling it out.
+    # The head strings were rendered when the pages were loaded - build() says
+    # why they cannot wait until here - and the count is the same one: every
+    # tool the site has, and not the ones a run happens to write, because
+    # build_language works its lists out before --only narrows anything.
     #
-    # `by_slug` is every tool the site has rather than the ones this run
-    # writes: build_language works its lists out before --only narrows
-    # anything, because the footer and the "Also in the box" ring are facts
-    # about the whole site. So the number is the site's and not the run's -
-    # which matters here because a scoped build writes no prose page at all,
-    # and the first one that did would otherwise have counted its own scope.
-    #
-    # It reaches the page as an ordinary template name for the reason
-    # i18n.render_ui gives about the [ui] strings: a translator who mistypes
-    # {{ tool_count }} gets a build that fails naming the string, rather than a
-    # published sentence with a hole in the middle of it.
-    counts = {'tool_count': len(by_slug)}
-    where = f'pages/{page["slug"]} [{locale["lang"]}]'
-
-    # The head strings go through the engine too, and before the JSON-LD is
-    # built from them, so the count a search result shows is the same number as
-    # the page under it.
-    page = {**page,
-            **{key: templates.render_source(page[key], f'{where} {key}', counts)
-               for key in ('description', 'og_description') if key in page}}
-
+    # It is an ordinary template name for the reason i18n.render_ui gives about
+    # the [ui] strings: a translator who mistypes {{ tool_count }} gets a build
+    # that fails naming the string, rather than a published sentence with a
+    # hole in the middle of it.
     body = templates.render_source(
         i18n.body_for(locale, 'pages', page['slug'],
                       body_path.read_text(encoding='utf-8')),
-        f'{where} body.html',
-        {'site': root, 'page': page, 'base': up, 'links': links, **counts})
+        f'pages/{page["slug"]} [{locale["lang"]}] body.html',
+        {'site': root, 'page': page, 'base': up, 'links': links,
+         'tool_count': len(by_slug)})
 
     context = frame(locale, locales, site, page['slug'], up, links, lang_v, {
         'page': page,
