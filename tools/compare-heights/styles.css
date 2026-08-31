@@ -193,6 +193,10 @@ body.is-reordering { user-select: none; }
 
 .preset-row { margin-top: 1.1rem; }
 
+/* An uploaded shape has no width to type: its proportions are its own, and
+   stretching somebody's drawing to a number would be the tool redrawing it. */
+.row.is-upload .row-width { visibility: hidden; }
+
 /* The unit sits above the table it changes rather than in a panel of its own:
    it decides what a number typed into any of those boxes means, so it is part
    of the typing rather than part of the picture. */

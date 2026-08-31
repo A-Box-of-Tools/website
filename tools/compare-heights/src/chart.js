@@ -91,7 +91,7 @@ function columns(figures, scale, font, measure) {
 
   return figures.map((figure) => {
     const height = figure.cm * scale;
-    const drawn = figure.shape.paths
+    const drawn = figure.shape.markup
       ? figure.shape.width * height
       : Math.max((figure.widthCm || figure.cm * 0.6) * scale, 6);
     const name = figure.name ? measure(figure.name, font, 600) : 0;
@@ -192,18 +192,24 @@ export function chartSvg(figures, options, measure) {
     const top = round(groundY - column.height);
     const colour = escape(figure.colour);
 
-    if (figure.shape.paths) {
+    if (figure.shape.markup) {
       const scaled = round(column.height);
       // Two transforms, not one. The outer puts a unit-tall figure where this
-      // column wants it; the inner - which only a traced figure carries - is
-      // what makes that figure unit-tall in the first place, out of whatever
-      // coordinates the artist happened to draw it in. Kept separate so the
-      // vendored path data can stay byte for byte what upstream published.
+      // column wants it; the inner - which a drawn figure carries and a built
+      // one does not - is what makes that figure unit-tall in the first place,
+      // out of whatever coordinates the artist happened to draw it in. Kept
+      // separate so the vendored path data can stay byte for byte what
+      // upstream published, and so an uploaded shape is never rewritten
+      // either.
       const inner = figure.shape.inner
         ? `<g transform="${escape(figure.shape.inner)}">` : '';
+      // `markup` is already markup, and is the only string here that is not
+      // escaped on the way out. For the four figures that ship it is built
+      // from traced.js; for an uploaded one it is whatever survived
+      // import-svg.js, which builds a new tree out of a whitelist rather than
+      // cleaning up the old one. Nothing else may be passed through here.
       parts.push(`<g fill="${colour}" transform="translate(${centre} ${top}) `
-        + `scale(${scaled})">${inner}`
-        + figure.shape.paths.map((d) => `<path d="${d}"/>`).join('')
+        + `scale(${scaled})">${inner}${figure.shape.markup}`
         + `${inner ? '</g>' : ''}</g>`);
     } else {
       parts.push(`<rect x="${round(centre - column.drawn / 2)}" y="${top}" `

@@ -5,6 +5,7 @@ import { SHAPES, shapeOf } from './figures.js';
 import { FONT, chartSvg, isDark } from './chart.js';
 import { format, formatBoth, parseHeight, toInput } from './units.js';
 import { download, svgBlob, svgToPng } from './save.js';
+import { LIMITS, importSvg } from './import-svg.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -14,6 +15,8 @@ const el = {
   rowCount: $('row-count'),
   addPerson: $('add-person'),
   addObject: $('add-object'),
+  addSvg: $('add-svg'),
+  svgFile: $('svg-file'),
   clear: $('clear'),
   preset: $('preset'),
   inputError: $('input-error'),
@@ -81,10 +84,98 @@ function measure(text, fontPx, weight = 400) {
   return gauge.measureText(String(text)).width;
 }
 
+/* ----------------------------------------------------- a shape from a file */
+
+// One off-screen SVG, the same trick chart.js's `measure` uses for text: an
+// uploaded shape is drawn in whatever coordinates its author chose, and the
+// only way to know the box it occupies is to let the browser lay it out.
+const stage = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+stage.setAttribute('aria-hidden', 'true');
+stage.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden';
+
+/**
+ * The parsed document as plain objects, which is all import-svg.js will take.
+ *
+ * Deliberately lossy: it copies the tag and the attributes and nothing else -
+ * no node references, no text, no namespaces. The sanitiser then builds a
+ * third tree from a whitelist, so what reaches the page has been through two
+ * translations that only carry geometry.
+ */
+function plain(element, depth = 0) {
+  if (depth > 40) return null;
+  const attrs = {};
+  for (const attribute of element.attributes ?? []) {
+    attrs[attribute.name.toLowerCase()] = attribute.value;
+  }
+  return {
+    tag: element.tagName,
+    attrs,
+    children: [...element.children].map((child) => plain(child, depth + 1)).filter(Boolean),
+  };
+}
+
+/**
+ * Read one file into a shape, or say why not.
+ *
+ * `DOMParser` on `image/svg+xml` builds an inert document: nothing in the file
+ * runs, no `onload` fires, and no reference in it is resolved. That is the
+ * only place the visitor's file is ever parsed, and nothing from it is
+ * inserted anywhere - see import-svg.js for what is built instead.
+ */
+async function shapeFromFile(file) {
+  if (file.size > LIMITS.bytes) return { error: 'svg.toobig' };
+
+  const text = await file.text();
+  const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+  if (doc.querySelector('parsererror') || !doc.documentElement) {
+    return { error: 'svg.unreadable' };
+  }
+
+  const result = importSvg(plain(doc.documentElement));
+  if (result.error) return result;
+
+  if (!stage.isConnected) document.body.append(stage);
+  const group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  group.innerHTML = result.markup;
+  stage.append(group);
+  const box = group.getBBox();
+  group.remove();
+
+  if (!(box.width > 0) || !(box.height > 0)) return { error: 'svg.noshapes' };
+
+  return {
+    shape: {
+      id: 'upload',
+      label: 'shape.upload',
+      width: box.width / box.height,
+      // The same mapping every drawn figure gets: the artwork's own box onto
+      // the unit box the chart places figures in. The uploaded coordinates are
+      // never rewritten, only wrapped.
+      inner: `scale(${1 / box.height}) translate(${-(box.x + box.width / 2)} ${-box.y})`,
+      paths: null,
+      markup: result.markup,
+      defaultCm: 0,
+    },
+    shapes: result.shapes,
+    name: file.name.replace(/\.svg$/i, '').slice(0, 40),
+  };
+}
+
 /* --------------------------------------------------------------------- rows */
 
 function unit() {
   return el.unit.value;
+}
+
+/**
+ * The figure a row draws.
+ *
+ * An uploaded shape lives on the row rather than in SHAPES, because it is one
+ * visitor's drawing rather than something this tool ships - so every reader of
+ * a row's figure has to come through here rather than through shapeOf().
+ */
+function figureFor(row) {
+  return row.shape === 'upload' && row.art ? row.art : shapeOf(row.shape);
 }
 
 function heightPlaceholder() {
@@ -112,6 +203,9 @@ function addRow(shape, values = {}) {
     height: values.height ?? (start ? toInput(start, unit()) : ''),
     width: values.width ?? '',
     colour: values.colour ?? PALETTE[(rows.length) % PALETTE.length],
+    // An uploaded shape belongs to the row that was given it, not to the menu:
+    // it is one visitor's drawing, not a figure this tool ships.
+    art: values.art ?? null,
   };
 
   row.node = buildRow(row);
@@ -127,19 +221,28 @@ function buildRow(row) {
   const shape = document.createElement('select');
   shape.className = 'row-shape';
   for (const option of SHAPES) shape.append(new Option(phrase(option.label), option.id));
+  if (row.art) shape.append(new Option(phrase('shape.upload'), 'upload'));
   shape.value = row.shape;
   shape.addEventListener('change', () => {
-    const was = shapeOf(row.shape).defaultCm;
+    const was = figureFor(row).defaultCm;
+    // Picking "your own SVG" on a row that has not got one yet is a way of
+    // asking for the file dialog, which is the only place it can come from.
+    if (shape.value === 'upload' && !row.art) {
+      shape.value = row.shape;
+      askForFile(row);
+      return;
+    }
     row.shape = shape.value;
     // Swapping a figure moves the height with it, but only while the height is
     // still the one that arrived with the old figure: a number somebody typed
     // is theirs, and changing the drawing is not a reason to lose it.
-    const now = shapeOf(row.shape).defaultCm;
+    const now = figureFor(row).defaultCm;
     if (now && was && row.height.trim() === toInput(was, unit())) {
       row.height = toInput(now, unit());
       height.value = row.height;
     }
     node.classList.toggle('is-object', row.shape === 'object');
+    node.classList.toggle('is-upload', row.shape === 'upload');
     draw();
   });
 
@@ -202,6 +305,7 @@ function buildRow(row) {
 
   node.append(grip, shape, name, heightCell, width, colour, tools);
   node.classList.toggle('is-object', row.shape === 'object');
+  node.classList.toggle('is-upload', row.shape === 'upload');
 
   // Kept for the renaming pass in paintRows: the aria-labels carry a row
   // number, and every number after a removed row has just changed.
@@ -333,6 +437,7 @@ function paintRows() {
   const full = rows.length >= MOST;
   el.addPerson.disabled = full;
   el.addObject.disabled = full;
+  el.addSvg.disabled = full;
   el.preset.disabled = full;
   el.rowCount.textContent = full ? phrase('chart.full') : '';
 }
@@ -361,9 +466,9 @@ function readRows() {
     reads.textContent = phrase('row.reads', { height: formatBoth(parsed.cm, unit()) });
     reads.className = 'row-reads';
 
-    const shape = shapeOf(row.shape);
+    const shape = figureFor(row);
     let widthCm = 0;
-    if (!shape.paths) {
+    if (!shape.markup) {
       const wide = parseHeight(row.width, unit());
       widthCm = wide.error ? parsed.cm * shape.width : wide.cm;
     }
@@ -480,6 +585,55 @@ el.addObject.addEventListener('click', () => {
   addRow('object');
   paintRows();
   draw();
+});
+
+/**
+ * Which row a pending file is for: a new one, or one already on the chart.
+ *
+ * The input is a single hidden <input type="file"> rather than one per row,
+ * and rather than the shared file picker every other tool here uses. That
+ * picker draws a drop zone and owns the page's main flow; this is an optional
+ * extra on a tool whose input is typed, and a button that opens a dialog is
+ * the whole of what it needs.
+ */
+let wantsFile = null;
+
+function askForFile(row) {
+  wantsFile = row ?? null;
+  el.svgFile.value = '';
+  el.svgFile.click();
+}
+
+el.addSvg.addEventListener('click', () => askForFile(null));
+
+el.svgFile.addEventListener('change', async () => {
+  const file = el.svgFile.files?.[0];
+  const row = wantsFile;
+  wantsFile = null;
+  if (!file) return;
+
+  const result = await shapeFromFile(file);
+  if (result.error) {
+    el.inputError.hidden = false;
+    el.inputError.textContent = phrase(result.error);
+    return;
+  }
+  el.inputError.hidden = true;
+
+  result.shape.defaultCm = 100;
+  if (row) {
+    row.art = result.shape;
+    row.shape = 'upload';
+    if (!row.name.trim()) row.name = result.name;
+    if (!row.height.trim()) row.height = toInput(100, unit());
+  } else {
+    addRow('upload', {
+      art: result.shape, name: result.name, height: toInput(100, unit()),
+    });
+  }
+  paintRows();
+  draw();
+  note(phrase('svg.added', { shapes: result.shapes }));
 });
 
 el.clear.addEventListener('click', () => {
