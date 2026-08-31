@@ -1,0 +1,277 @@
+#
+# YAML in JSON umwandeln - German.
+#
+# Overrides for tools/yaml-to-json/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "YAML-zu-JSON-Umwandler"
+heading = "YAML&nbsp;zu&nbsp;JSON <span class=\"h1-kw\">&mdash; und JSON zurück zu YAML</span>"
+tagline = "Beide Richtungen, und es sagt Ihnen, was jede davon kostet. Nichts davon wird in den Server eines anderen eingefügt."
+
+title = "YAML-zu-JSON-Umwandler &mdash; in beide Richtungen, ohne Upload"
+description = "YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie."
+og_title = "YAML umwandeln, ohne es in einen Server einzufügen"
+og_description = "Ein YAML- und JSON-Umwandler auf Ihrem eigenen Gerät. Schlüssel behalten ihre Reihenfolge, Zahlen ihre Ziffern, und was Sie einfügen, geht nirgendwohin."
+og_image_alt = "YAML-zu-JSON-Umwandler - beide Richtungen, ohne Upload"
+
+pledge = """
+    Umwandeln ist Rechnen auf einer Zeichenkette, und zwar hier, auf dieser
+    Seite. Die beiden Parser sind von Hand geschrieben und liegen in
+    <code>src/</code> &mdash; <code>yaml.js</code> und <code>json.js</code>
+    &mdash; und mehr gibt es nicht. Eine Netzfunktion hat dieses Werkzeug
+    überhaupt nicht, weder etwas abzurufen noch etwas zu senden. Das wiegt hier
+    schwerer als fast überall sonst auf dieser Seite: Eine YAML-Datei ist meist
+    eine Deployment-Konfiguration, und eine Deployment-Konfiguration steckt
+    meist voller Hostnamen, Bucket-Namen und Geheimnisse."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und wandeln Sie etwas um. Keine einzige Anfrage
+      trägt ein Zeichen dessen, was Sie eingefügt haben. Oder trennen Sie die
+      Internetverbindung und wandeln Sie es trotzdem um."""
+
+read_first = """
+, <code>src/yaml.js</code> für den Leser, der
+      einen Anker lieber ablehnt, als zu raten, was er bedeuten sollte, und
+      <code>src/convert.js</code> dafür, warum eine Umwandlung ein Parser und
+      ein Schreiber ist, ohne etwas dazwischen, das beide Formate zugleich
+      kennt."""
+
+howto_heading = "So wandeln Sie YAML in JSON um, ohne es hochzuladen"
+
+card = """
+            Machen Sie aus YAML JSON oder aus JSON YAML, und lassen Sie sich
+            sagen, was die Reise kostet. Fügen Sie eine Deployment-Konfiguration
+            ein, ohne sie jemandem zu geben."""
+
+[words]
+plural = "YAML und JSON"
+choose = "eine Datei"
+analytics_extra = """, und weder das YAML
+  noch das JSON, das hier hindurchgeht"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Keine Größengrenze"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Was Sie einfügen, hat keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren
+      darf, und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an
+      dem eine eingefügte Konfiguration eingesammelt werden könnte, und im Code
+      steht auch nichts, das sie dorthin schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ In <code>src/</code> gibt es nirgends
+      ein <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>. Beide Parser und beide Schreiber sind Funktionen
+      auf dieser Seite, die eine Zeichenkette nehmen und eine Zeichenkette
+      zurückgeben."""
+
+[[privacy]]
+title = "Es liest YAML 1.2, Norwegen bleibt also Norwegen."
+body = """
+ In YAML 1.1
+      war <code>no</code> ein Wahrheitswert, und das ist der berühmte Fehler, der
+      aus dem Ländercode für Norwegen <code>false</code> macht. Hier wird 1.2
+      gelesen, wo es die Zeichenkette ist, nach der es aussieht. In der anderen
+      Richtung werden diese Wörter <em>in Anführungszeichen</em>
+      zurückgeschrieben, denn was die Datei als Nächstes öffnet, kann immer noch
+      ein 1.1-Leser sein. <code>tests/js/text-convert.test.js</code> prüft beide
+      Hälften."""
+
+[[privacy]]
+title = "Eine Umwandlung, die nicht ehrlich sein kann, hört lieber auf."
+body = """
+ Ein
+      Anker, ein Alias oder ein Tag im YAML beendet die Umwandlung mit einer
+      Meldung, in welcher Zeile er steht, statt ein JSON-Dokument zu liefern,
+      das stillschweigend etwas anderes bedeutet. JSON hat keine Möglichkeit,
+      &bdquo;derselbe Knoten zweimal&ldquo; zu sagen, und eine Deutung
+      auszuwählen hieße, für Sie zu entscheiden."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
+      Keinem von ihnen wird ein Zeichen Ihres Textes übergeben. Jede Zeile, die
+      ihn liest, parst oder schreibt, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug arbeitet unverändert weiter, denn einen Netzschritt gab es darin
+      nie. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Wählen Sie die Richtung."
+body = """
+ <em>YAML zu JSON</em> oder <em>JSON
+      zu YAML</em>. Die Notiz unter dem Menü sagt Ihnen, was diese Richtung
+      verliert, bevor Sie etwas einfügen, und nicht danach."""
+
+[[howto]]
+title = "Fügen Sie es ein, oder legen Sie die Datei ab."
+body = """
+ Alles, was sich
+      markieren und kopieren lässt, funktioniert. Eine Datei, die Sie auf das
+      Auswahlfeld ziehen, wird von Ihrem eigenen Browser gelesen und in das Feld
+      gesetzt &mdash; es gibt keinen Upload-Schritt, den man weglassen müsste
+      &mdash; und eine Endung <code>.json</code> oder <code>.yaml</code> stellt
+      die Richtung gleich mit ein."""
+
+[[howto]]
+title = "Wählen Sie die Einrückung."
+body = """
+ Zwei Leerzeichen, vier oder ein
+      Tabulator. Der Tabulator wird nur für JSON angeboten: YAML ist über
+      Leerzeichen definiert, und ein Tabulator ist darin keine erlaubte
+      Einrückung."""
+
+[[howto]]
+title = "Lesen Sie den Fehler dort, wo der Fehler ist."
+body = """
+ Ein Parser, der
+      hier scheitert, sagt, was er gefunden hat und in welcher Zeile und Spalte,
+      statt &bdquo;unerwartetes Token an Position 4193&ldquo;. Das reicht
+      üblicherweise, um eine Konfigurationsdatei zu reparieren, ohne sonst etwas
+      zu öffnen."""
+
+[[howto]]
+title = "Nehmen Sie das Ergebnis mit."
+body = """
+ Kopieren Sie es, oder laden Sie es
+      als Datei herunter, benannt nach dem Format, in dem es herauskam."""
+
+[[faq]]
+q = "Wird mein YAML irgendwohin hochgeladen?"
+a = """
+        Nein. Beide Parser und beide Schreiber auf dieser Seite sind Funktionen,
+        die in Ihrem eigenen Browser auf Ihrer eigenen Hardware laufen. Eine
+        Netzfunktion hat dieses Werkzeug überhaupt nicht &mdash; es ruft nie
+        etwas ab und sendet nie etwas &mdash; und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Genau deshalb ist es das
+        Werkzeug für eine Deployment-Konfiguration: Die stecken voller Hostnamen,
+        Bucket-Namen und gelegentlich eines Geheimnisses, das jemand verschieben
+        wollte, und eine davon in den Umwandler eines anderen einzufügen heißt,
+        sie ihm zu geben."""
+
+[[faq]]
+q = "Was geht beim Umwandeln von YAML in JSON verloren?"
+a = """
+        Die Kommentare, denn JSON hat keinen Platz für einen. Anker, Aliase und
+        Tags werden rundheraus abgelehnt, statt erraten zu werden &mdash; jedes
+        davon sagt etwas, das JSON nicht sagen kann, und ein Umwandler, der
+        stillschweigend eine Deutung auswählte, gäbe Ihnen ein Dokument, das
+        nicht das ist, was in der Datei stand. Die andere Richtung verliert
+        nichts: Jedes JSON-Dokument ist bereits ein YAML-Dokument."""
+
+[[faq]]
+q = "In meinem YAML steht no, und im JSON kam eine Zeichenkette heraus. Warum?"
+a = """
+        Weil es eine Zeichenkette ist und hier YAML 1.2 gelesen wird, nicht 1.1.
+        In YAML 1.1 waren <code>yes</code>, <code>no</code>, <code>on</code> und
+        <code>off</code> Wahrheitswerte, und das ist der berühmte Fehler, der aus
+        dem Ländercode für Norwegen <code>false</code> macht. YAML 1.2 hat das
+        fallen gelassen, und dieses Werkzeug auch: Nur <code>true</code>,
+        <code>false</code>, <code>null</code> und <code>~</code> werden als etwas
+        anderes als Text gelesen. In der anderen Richtung werden diese Wörter
+        <em>in Anführungszeichen</em> zurückgeschrieben, obwohl sie hier auch
+        ohne als Text gelesen würden &mdash; denn was die Datei als Nächstes
+        öffnet, tut das vielleicht nicht. PyYAML verwendet immer noch 1.1 als
+        Voreinstellung. Streng zu lesen und vorsichtig zu schreiben, ist die
+        einzige Kombination, die in beide Richtungen richtig ist."""
+
+[[faq]]
+q = "Bleibt die Reihenfolge meiner Schlüssel erhalten?"
+a = """
+        Ja, in beiden Richtungen, und das ist schwerer, als es klingt. Ein
+        Umwandler, der auf <code>JSON.parse</code> aufbaut, zieht ganzzahlig
+        aussehende Schlüssel stillschweigend nach vorn, aus
+        <code>{"10":a,"2":b}</code> wird also <code>{"2":b,"10":a}</code>. Zahlen
+        behalten die Ziffern, die Sie getippt haben, eine zwanzigstellige
+        Kontonummer verliert ihre letzten drei also nicht an ein Double. Wenn Sie
+        sie <em>sortiert</em> haben wollen, gibt es ein Kästchen dafür, und es
+        sortiert danach, wie die Schlüssel sich lesen, und nicht nach ihren
+        Codepunkten."""
+
+[[faq]]
+q = "Kann es mehrere YAML-Dokumente auf einmal umwandeln?"
+a = """
+        Nein, und es sagt das, statt sich eines auszusuchen. Eine Datei mit
+        <code>---</code>-Trennern enthält mehr als ein Dokument, und JSON hat
+        keine Form, die &bdquo;mehrere Dokumente&ldquo; bedeutet &mdash; ein
+        Array wäre eine Behauptung, die die Datei nie aufgestellt hat. Wandeln
+        Sie sie einzeln um."""
+
+[[faq]]
+q = "Warum gibt es hier keinen YAML-Formatierer?"
+a = """
+        Weil YAML keine gepresste Form hat, die sich zu schreiben lohnte &mdash;
+        die kurze ist der Flow-Stil, der unlesbar ist, und unlesbar ist das
+        Gegenteil des Grundes, eine Datei überhaupt in YAML zu halten. JSON, XML,
+        HTML und CSS auszulegen, ist die Aufgabe des
+        <a href="../json-formatieren/">JSON-Formatierers</a>, und er legt auch
+        YAML aus."""
+
+[[faq]]
+q = "Wie groß darf die Datei sein?"
+a = """
+        Hier ist keine Grenze eingebaut, denn es gibt keinen Server, der dafür
+        bezahlt. Die praktische Obergrenze ist Ihr eigenes Gerät: Ein paar
+        Megabyte YAML sind unproblematisch, und bei einem sehr langen Dokument
+        wartet die Seite auf eine Pause beim Tippen, bevor sie umwandelt, statt
+        Ihnen die Tastatur streitig zu machen."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine
+        Testphase und keine Grenze dafür, wie viel Sie einfügen. Bezahlt wird die
+        Seite über Werbung, und den Anzeigen wird nichts über Ihren Text
+        übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihre Konfiguration zum
+        Umwandeln wegschickt, bliebe in dem Moment stehen, in dem Sie die
+        Verbindung trennen."""
+
+[schema]
+description = "YAML in JSON und JSON in YAML umwandeln, im Browser. Gelesen wird YAML 1.2, die Reihenfolge der Schlüssel und die genauen Ziffern jeder Zahl bleiben erhalten, und es sagt, was jede Richtung verliert. Hochgeladen wird nichts."
+features = [
+  "Wandelt YAML in JSON und JSON in YAML um",
+  "Liest YAML 1.2, yes und no bleiben also Zeichenketten",
+  "Behält die Reihenfolge der Schlüssel und die genauen Ziffern jeder Zahl",
+  "Lehnt Anker, Aliase und Tags ab, statt zu raten, was sie bedeuten sollten",
+  "Sagt in Worten, in welcher Zeile und Spalte ein Fehler steckt",
+  "Arbeitet mit einer abgelegten Datei ebenso wie mit Eingefügtem",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Datei hierher ziehen"
+hint = "oder klicken und auswählen &mdash; eine .yaml-, .yml- oder .json-Datei"

@@ -1,0 +1,20 @@
+#
+# Panduan: membuat bagan perbandingan tinggi badan - Indonesian.
+#
+
+nav = "Membuat bagan tinggi badan"
+title = "Cara membuat bagan perbandingan tinggi badan"
+description = "Ubah daftar tinggi badan menjadi gambar berdampingan: cara menulis tingginya, figur mana yang dipilih untuk anak, kenapa satu benda yang akrab lebih berguna daripada orang ketiga, dan cara mengeluarkan bagannya sebagai PNG atau SVG."
+
+heading = "Cara membuat bagan perbandingan tinggi badan"
+lede = """
+    Dua angka tidak memberi tahu Anda seperti apa rupanya selisih lima belas
+    sentimeter. Sebuah gambar memberi tahu, dalam waktu sekitar satu detik, dan
+    itulah seluruh alasan keberadaan bagan semacam ini. Berikut cara membuat
+    bagan yang bukan hanya meyakinkan, tetapi juga benar."""
+
+updated = "30 Agustus 2026"
+
+og_title = "Membuat bagan perbandingan tinggi badan"
+og_description = "Cara menulis tingginya, figur mana yang dipilih, dan kenapa satu benda yang akrab di bagan lebih berguna daripada orang ketiga."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

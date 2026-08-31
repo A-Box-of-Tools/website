@@ -1,0 +1,347 @@
+#
+# Boy karsilastirma - Turkish.
+#
+# Overrides for tools/compare-heights/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Boy Karşılaştırma"
+heading = "Boy&nbsp;Karşılaştırma <span class=\"h1-kw\">&mdash; indirebileceğiniz, yan yana bir grafik</span>"
+tagline = "Boyları yazın, resmi alın. Onu çizmek için hiçbir şey gönderilmez."
+
+title = "Boy Karşılaştırma &mdash; ücretsiz, kayıt yok, yükleme yok"
+description = "Boyları yan yana karşılaştırın. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk, bir küçük çocuk ve nesneler ekleyin &mdash; bir kapı, bir pencere, bir beyaz tahta, bir otomat &mdash; santimetre ya da fit ve inç cinsinden, sonra grafiği PNG veya SVG olarak indirin. Tarayıcınızda çizilir."
+og_title = "Boyları yan yana karşılaştırın ve resmi saklayın"
+og_description = "İki yetişkini, bir çocuğu, bir küçük çocuğu ve bir kapı boşluğunu aynı cetvele koyun; santimetre ya da fit ve inç cinsinden, ve sonucu indirin. Hesap yok, filigran yok, ve cihazınızdan çıkan hiçbir ad listesi yok."
+og_image_alt = "Boy Karşılaştırma - boyları yan yana karşılaştırma, yükleme yok"
+
+pledge = """
+    Bir boy grafiği aritmetik ve bir çizimdir: gönderilecek bir dosya ve
+    sorulacak bir hizmet yoktur. Erkek, kadın, erkek çocuk ve kız çocuk bu
+    sayfayla birlikte gelen kamu malı çizimlerdir; küçük çocuk ise burada bir
+    vücut oran tablosundan kurulur, ve bu yüzden küçültülmüş bir yetişkine değil
+    bir küçük çocuğa benzer. Bunun her adımı, bu sayfada okuyabileceğiniz
+    yaklaşık altı yüz satır JavaScript içinde olup biter. Herhangi bir ağ işlevi
+    hiç yoktur, ve bu burada önemlidir; çünkü yazdığınız şey bir insan listesi ve
+    her birinin boyudur."""
+
+live_hint = """
+      Sözümüze güvenmek zorunda değilsiniz: DevTools'u açın, ağ sekmesini izleyin
+      ve bir ad ile bir boy yazın. Tek bir istek bile ikisinden bir karakter
+      taşımaz. Ya da internet bağlantısını kesin ve grafiği yine de yapın."""
+
+read_first = """
+, dört çizili figür ve çizimlerinin nereden geldiği için
+      <code>src/traced.js</code> ile <code>vendor/</code>, küçük çocuğun kurulduğu
+      oran tablosu için <code>src/figures.js</code>, yazılan bir boyun nasıl sayıya
+      döndüğü ve cetvelin nasıl etiketlendiği için <code>src/units.js</code>,
+      yerleşim için <code>src/chart.js</code>, ve iki indirme için
+      <code>src/save.js</code> &mdash; ki bunlar ekrandaki SVG ile aynı SVG'nin bir
+      tuvale boyanmış hâlidir."""
+
+howto_heading = "Boy karşılaştırma grafiği nasıl yapılır"
+
+card = """
+            İki yetişkini, bir çocuğu ve bir kapı boşluğunu aynı cetvele koyun
+            &mdash; santimetre ya da fit ve inç cinsinden &mdash; ve PNG veya SVG
+            olarak indirin."""
+
+[words]
+plural = "adlar, boylar ve bunlardan çıkan grafik"
+choose = "grafikte kimin yer alacağı"
+analytics_extra = """, yazdığınız bir ad
+  ya da bir boy da"""
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Bir insan listesi teslim edilecek küçük bir şey değildir."
+body = """
+ Boy
+      grafiklerinin çoğu hesap ister, istemeyenlerin ise yazdığınız her adı ve her
+      sayıyı gören bir sunucusu yine de vardır. Burada yazdığınız şey ailenizde
+      kimlerin olduğu ve her birinin ne kadar uzun olduğudur; çoğu zaman adın
+      yanındaki figürden bir çocuğun yaşı da anlaşılır. Bunların hiçbiri hiçbir
+      yere gönderilmez, çünkü burada gidebileceği bir yer yoktur."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmez."
+body = """
+ <code>src/</code>
+      içinde hiçbir yerde ne bir <code>fetch</code>, ne bir
+      <code>XMLHttpRequest</code>, ne de bir <code>sendBeacon</code> vardır.
+      Content-Security-Policy, bu sayfanın iletişim kurabileceği her adresi tek tek
+      sayar ve bunların hiçbiri bize ait değildir."""
+
+[[privacy]]
+title = "İki ziyaret arasında da hiçbir şey hatırlanmaz."
+body = """
+ Grafik sayfada
+      yaşar, başka hiçbir yerde değil. Sekmeyi kapatın, liste gitmiştir: onu tutan
+      bir hesap, taşıyan bir çerez ve bu tarayıcının deposuna yazılmış hiçbir şey
+      yoktur &mdash; saklamak istediğiniz bir grafiğin indirdiğiniz bir grafik
+      olmasının sebebi de budur."""
+
+[[privacy]]
+title = "Bağlantı grafiği taşımaz."
+body = """
+ Bunun gibi birçok araç, paylaşılabilsin
+      diye bütün listeyi adres çubuğuna koyar; bu da her adı ve her boyu,
+      bağlantının uğradığı her şeyin kaydettiği bir şeye dönüştürür &mdash; bir
+      sohbet sunucusu, bir posta tarayıcı, birinin tarayıcı geçmişi. Bu sayfanın
+      adresi siz yazarken hiç değişmez."""
+
+[[privacy]]
+title = "PNG, ekranda duran SVG'den yapılır."
+body = """
+ İndirme, önizlemeyle
+      uyuşmayabilecek ikinci bir çizim değildir. Aynı işaretleme tarayıcıya verilip
+      bir tuvale boyanır; bu, ağ fişi çekiliyken de yapılabilmesinin sebebidir:
+      getirilecek bir yazı tipi ve içine yüklenecek bir görsel yoktur."""
+
+[[privacy]]
+title = "Çizimler burada, getirilmiyor."
+body = """
+ Dört çizili figür kamu malı
+      çizimlerdir ve sayfanın geri kalanıyla birlikte bu kaynaktan sunulur &mdash;
+      simge yazı tipi yok, CDN yok, siz yazarken başkasının sunucusundan çekilen
+      bir sprite sayfası yok. Grafiğin ağ fişi çekiliyken de çizilmesinin sebebi de
+      budur."""
+
+[[privacy]]
+title = "Google'ın yüklediği ve kendisine verilmeyen şeyler."
+body = """
+ Reklam ve
+      ölçüm betikleri Google'dan, bağış düğmesi ise Buy Me a Coffee'den gelir.
+      Hiçbirine bir ad ya da bir boy verilmez. Listenizi bir resme çeviren her
+      satır bu kaynaktan sunulur ve depoda listelenmiştir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde zaten hiç ağ adımı olmadı. Bundan daha basit bir kanıt
+      yoktur."""
+
+[[howto]]
+title = "Önce herkesi ekleyin, nasıl göründüğünü sonra dert edin."
+body = """
+ Bir satır
+      bir figür, bir ad, bir boy ve bir renktir. Ad isteğe bağlıdır &mdash;
+      boyları üstlerinde yazan iki adsız siluetten oluşan bir grafik çoğu zaman tam
+      da istenendir &mdash; ve her satırdaki oklar, sıra önemliyse onu sola ya da
+      sağa taşır."""
+
+[[howto]]
+title = "Boyu nasıl yazıyorsanız öyle yazın."
+body = """
+ <code>173</code>,
+      <code>1,73 m</code>, <code>5'8\"</code>, <code>68 in</code> ve
+      <code>5 ft 8</code> hepsi doğru okunur. Kutunun altındaki satır neyin
+      anlaşıldığını her iki sistemde de gösterir; böylece yanlış bir okuma,
+      basıldıktan sonra değil çizilmeden önce görünür. Çıplak bir sayı, metrik bir
+      grafikte santimetre, imperial bir grafikte inçtir; üçün altındaki çıplak bir
+      sayı ise metredir &mdash; kimse 1,73 cm boyunda değildir."""
+
+[[howto]]
+title = "Kişiye uyan figürü seçin."
+body = """
+ İki yaşındaki bir çocuk yaklaşık dört
+      buçuk baş boyundadır, bir yetişkin ise yedi buçuk; bu yüzden küçültülmüş bir
+      yetişkin gibi çizilen bir küçük çocuk, adı konması güç ama görülmesi kolay bir
+      biçimde yanlış durur. Okul çağı için bir erkek çocuk ile bir kız çocuk, onun
+      altında da bir küçük çocuk var; her biri küçültülmüş yetişkin olmak yerine
+      kendi oranlarıyla. Bir aile grafiğinin aileye benzemesini sağlayan da çoğunlukla
+      budur."""
+
+[[howto]]
+title = "Grafiğe tanıdık bir şey koyun."
+body = """
+ Bir sayı soyuttur, bir kapı boşluğu
+      değil. Herkesin boyutunu bildiği tek bir nesne eklemek &mdash; bir kapı, bir
+      pencere, bir sınıf tahtası, bir otomat &mdash; iki boyu bildiren bir grafiği,
+      onları gösteren bir grafiğe çeviren şeydir. Menüde bunlardan yirmi tane var,
+      gruplanmış hâlde, ve her biri kendi sayılarınızı üzerine yazabileceğiniz
+      sıradan bir satır olarak gelir. Nesneler yüksekliğin yanı sıra bir genişlik de
+      alır, yani bir kapı bir şerit değil 203'e 81'dir."""
+
+[[howto]]
+title = "Cetveli okurunuzun düşündüğü birimlere ayarlayın."
+body = """
+ Santimetre ile fit
+      arasında geçiş yapmak, kutulardakini yeniden yorumlamak yerine yeniden yazar;
+      böylece grafiğin kendisi kımıldamaz, yalnızca gösterim değişir. Grafik iki
+      okur kitlesi içinse, her figürün üstünde yazan boy grafiğin biriminde olur ve
+      her kutunun altındaki satırda ikisi birden bulunur."""
+
+[[howto]]
+title = "Yapıştırmak için PNG, basmak için SVG."
+body = """
+ PNG, belirlediğiniz piksel
+      yüksekliğinde bir resimdir; bir sohbet penceresinin, bir belgenin ya da bir
+      slaytın istediği de budur. SVG ise grafiğin yönerge hâlidir, bu yüzden her
+      boyutta net basılır ve sonradan vektör açan her şeyle yeniden
+      renklendirilebilir."""
+
+[[faq]]
+q = "Yazdığım herhangi bir şey bir yere gönderiliyor mu?"
+a = """
+        Hayır. Grafik bu sayfadaki JavaScript tarafından, kendi cihazınızda çizilir
+        ve bu aracın herhangi bir ağ işlevi hiç yoktur &mdash; hiçbir zaman bir şey
+        getirmez ve hiçbir zaman bir şey göndermez. Sayfanın
+        <code>Content-Security-Policy</code>'si iletişim kurabileceği her adresi
+        sayar; hiçbiri bize ait değildir. Bunu burada açıkça söylemeye değer, çünkü
+        girdi insanların adlarından ve her birinin boyundan oluşan bir listedir; bu
+        da bu sitenin ele aldığı hemen her şeyden daha özeldir."""
+
+[[faq]]
+q = "Grafiği indirebilir miyim?"
+a = """
+        Evet, PNG ya da SVG olarak, filigransız ve hesapsız. PNG belirlediğiniz
+        piksel yüksekliğinde çizilir ve bir belgeye, bir slayta ya da bir sohbete
+        yapıştırılacak olan odur. SVG ise grafiğin piksel değil yönerge hâlidir:
+        her boyutta net basılır ve sonradan herhangi bir vektör düzenleyicide
+        açılıp yeniden renklendirilebilir. İkisi de ekranda duran aynı işaretlemeden
+        yapılır, dolayısıyla hiçbiri önizlemeyle uyuşmazlık edemez."""
+
+[[faq]]
+q = "Boyu nasıl yazayım &mdash; santimetre mi, fit mi?"
+a = """
+        Hangisi olursa, hangi satırda olursa, normalde nasıl yazıyorsanız öyle.
+        <code>173</code>, <code>173 cm</code>, <code>1,73 m</code>,
+        <code>5'8\"</code>, <code>5 ft 8 in</code> ve <code>68 in</code> hepsi
+        anlaşılır, ve kutunun altındaki satır her iki sistemde de neyin okunduğunu
+        gösterir. Çıplak bir sayı, grafik metrikse santimetre, imperial ise inçtir;
+        üçün altındaki çıplak bir sayı metre kabul edilir, çünkü 1,73 cm kimsenin
+        yazacağı bir boy değildir."""
+
+[[faq]]
+q = "Küçük çocuk neden küçültülmüş bir yetişkine benzemiyor?"
+a = """
+        Çünkü küçük bir çocuk öyle değildir. Vücut oranları yaşla değişir: iki
+        yaşındaki bir çocuk kabaca dört buçuk baş boyundadır, sekiz yaşındaki altı,
+        bir yetişkin yedi buçuk &mdash; yani baş, bir küçük çocuğun neredeyse dörtte
+        biri, bir yetişkinin ise sekizde biridir. Erkek çocuk ile kız çocuk gerçek
+        çocukların çizimleridir, ve küçük çocuğun küçültülmüş bir siluet olmak yerine
+        kendi oran tablosu vardır; bir aile grafiğinin farklı boyutlarda dört
+        yetişkin gibi değil de bir aile gibi görünmesinin sebebi budur."""
+
+[[faq]]
+q = "Figürler nereden geliyor?"
+a = """
+        Beşten dördü başkalarının çizimleri, hepsi de kamu malı: erkek pitr'den,
+        kadın Madeleine Price Ball'dan, kız çocuk OpenClipart-Vectors'tan, ve erkek
+        çocuk NIH BioArt kitaplığı için Ryan Kissinger'dan. Her dosya bu sayfayla
+        birlikte <code>vendor/</code> içinde yayımlandığı hâliyle gelir, böylece
+        onları asıllarıyla karşılaştırabilirsiniz. Kamu malı hiçbir şey istemez ve
+        asıl mesele budur: çizim, indirdiğiniz bir resmin içinde son bulur ve
+        atıf isteyen bir lisans o zorunluluğu sizin grafiğinize iliştirirdi.
+        Yalnızca küçük çocuk bu sayfanın kendi koduyla çizilir &mdash; okul çağının
+        altında bulunacak özgür bir şey yoktu."""
+
+[[faq]]
+q = "Bir grafiğe kaç kişi koyabilirim?"
+a = """
+        On iki. Bu teknik bir sınır değil &mdash; çizim seve seve otuz tane yapardı
+        &mdash; ama bir düzineyi geçince sütunlar üstlerinde yazan adlardan daha dar
+        olur ve resim okunur olmaktan çıkar. Daha fazlası gerekiyorsa adları kapatmak
+        genişliği size geri verir, ya da iki grafik bunu birinden daha iyi anlatır."""
+
+[[faq]]
+q = "Grafiğe bir nesne koyabilir miyim?"
+a = """
+        Evet &mdash; sade bir dikdörtgen bir yükseklik ve bir genişlik alır, yani iki
+        boyutu olan her şey insanların yanına konur. Menüde başlamak için yirmi tane
+        var, dört grup hâlinde: kapılar ve pencereler, okul ve ofis (bir beyaz tahta,
+        bir masa, bir dosya dolabı, bir projeksiyon perdesi), şehirdeki şeyler (bir
+        otomat, bir tekerlekli çöp konteyneri, bir basketbol potası, 20&nbsp;ft'lik
+        bir deniz konteyneri) ve evdeki şeyler. Bunların bir kısmı gerçek standart, bir
+        kısmı olağan ölçüdür; sayfa bunu açıkça söyler. Her biri üzerine
+        yazabileceğiniz sıradan bir satır olarak gelir. Tanıdık tek bir nesne, bir
+        grafik için ne kadar fazladan insandan daha çoğunu yapar: bir karşılaştırmayı
+        ölçek duygusuna çeviren odur."""
+
+[[faq]]
+q = "Köpek ya da kedi için bir figür var mı?"
+a = """
+        Yok, ve bu bir gözden kaçırma değil, bilinçli bir boşluk. İkisi de yapılmıştı
+        &mdash; profilden, ayakta, baş omuz hizasında; böylece çizimin tepesi yanında
+        yazan boy olacaktı, ki her ırk standardı bir hayvanı orada ölçer. Yayımlanacak
+        kadar iyi çıkmadılar: önden görünen dört kişinin yanında yandan görünen dört
+        ayaklı bir hayvan, çizim iyi olsa bile bir hata gibi okunuyor. Hayvanın omuz
+        yüksekliğinde bir dikdörtgen, o zamana dek dürüst bir karşılık."""
+
+[[faq]]
+q = "Grafiği bir bağlantıyla paylaşabilir miyim?"
+a = """
+        Buradan hayır, ve bu bilinçli. Bunu sunan araçlar, bütün listeyi adrese
+        koyarak yapar; bu da her adın ve her boyun, bağlantının içinden geçtiği her
+        şeye düşmesi demektir &mdash; bir sohbet sunucusunun günlükleri, bir posta
+        tarayıcı, birinin tarayıcı geçmişi, bağlantı önizlemesi çeken bir hizmet.
+        Bunun yerine resmi indirip onu gönderin: aynı şeyi söyler ve yanında hiçbir
+        liste taşımaz."""
+
+[[faq]]
+q = "Ücretsiz mi, ve grafiği ticari olarak kullanabilir miyim?"
+a = """
+        Ücretsizdir, hesap ve filigran yoktur, ve sonucu bir rapora, bir sunuma, bir
+        ilana ya da bir ürüne koyabilirsiniz. Sitede reklam vardır, masrafı karşılayan
+        da odur. Burada yaptığınız bir grafiğin hiçbir yanı bize ait değildir, ve
+        hiçbir şey saklanmaz."""
+
+[[faq]]
+q = "Cetvel neden birer birer değil de onar onar?"
+a = """
+        Çünkü aralık, sabit bir sayıdan değil, resmin kaç çizgi taşıyabileceğinden
+        seçilir. İki yetişkinlik bir grafik her on santimetrede bir çizgi alır; üzerine
+        bir basketbol potası koyun, çizgiler yirmi beşe kayar, çünkü bir resim üzerinde
+        doksan çizgi cetvel değil gri bir bulanıklıktır. Fit ve inçte merdiven bir, üç,
+        altı ve on iki inçtir; böylece çizgiler tam inçlerin yakınına değil üstüne
+        düşer."""
+
+[[faq]]
+q = "Grafiği koyu bir slayta koyabilir miyim?"
+a = """
+        Evet. Arka planı üzerinde duracağı renge ayarlayın; cetvel ile yazı ona uyacak
+        biçimde koyu ile açık arasında geçiş yapar &mdash; tahminle değil, rengin
+        parlaklığından hesaplanarak. Sonra resmin kendisini saydam istiyorsanız
+        &bdquo;hiç arka plan yok&ldquo; kutusunu işaretleyin: mürekkebe yine seçtiğiniz
+        renk karar verir, yani lacivert bir slayta gidecek saydam bir grafik onun
+        üzerinde okunur çıkar."""
+
+[[faq]]
+q = "Çevrimdışı çalışır mı?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin; çalışmayı
+        sürdürür. Bu aynı zamanda hiçbir şeyin yüklenmediğini kanıtlamanın en basit
+        yoludur: listenizi grafik çizdirmek üzere gönderen bir araç, fişi çektiğiniz
+        anda dururdu."""
+
+[schema]
+description = "Tarayıcıda bir boy karşılaştırma grafiği çizin. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk, bir küçük çocuk ve nesneleri boylarıyla birlikte santimetre ya da fit ve inç cinsinden ekleyin, sıralayın, renklendirin ve sonucu PNG veya SVG olarak indirin. Hiçbir şey yüklenmez."
+features = [
+  "Tek bir cetvelde on iki figüre kadar, istediğiniz sırada",
+  "Erkek, kadın, çocuk ve küçük çocuk figürleri, ve nesneler için sade bir dikdörtgen",
+  "Kamu malı çizilmiş erkek, kadın, erkek çocuk ve kız çocuk, ve küçültülmüş bir yetişkin yerine kendi oranlarına sahip bir küçük çocuk",
+  "173, 1,73 m, 5'8\", 68 in ya da 5 ft 8 olarak yazılan boylar, okunuşu geri gösterilerek",
+  "Santimetre ya da fit ve inç; kimsenin boyunu değiştirmeden değiştirilir",
+  "Hazır yirmi nesne: kapılar, pencereler, bir beyaz tahta, bir otomat, bir deniz konteyneri, mobilya",
+  "Aralığı, resmin taşıyabileceğinden seçilen bir cetvel",
+  "Her arka plan rengi ya da hiçbiri; üzerinde okunur kalacak biçimde seçilen mürekkeple",
+  "Her piksel yüksekliğinde PNG, ve her boyutta net basılan bir SVG",
+  "Filigran yok, hesap yok, listenizi taşıyan bir bağlantı yok",
+  "Çevrimdışı çalışır; hiçbir şey yüklenmez",
+]

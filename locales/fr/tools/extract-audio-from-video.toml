@@ -1,0 +1,285 @@
+#
+# Extraire l'audio d'une vidéo - French.
+#
+# Overrides for tools/extract-audio-from-video/tool.toml. Only words: the slug,
+# the category, the icon, the CSP and the list of shared parts stay where they
+# are.
+#
+
+name = "Extraire l'audio d'une vidéo"
+heading = "Extraire&nbsp;l'audio&nbsp;d'une&nbsp;vidéo <span class=\"h1-kw\">&mdash; le son seul, en WAV</span>"
+tagline = "Déposez une vidéo et repartez avec le son. L'image n'est jamais décodée, et rien n'est envoyé."
+
+title = "Extraire l'audio d'une vidéo &mdash; gratuit, dans votre navigateur, sans envoi"
+description = "Récupérez le son d'un MP4, MOV ou WebM et enregistrez-le en WAV. La vidéo ne quitte pas votre machine et son image n'est jamais décodée&nbsp;: tout le travail se fait dans votre propre navigateur."
+og_title = "Récupérer le son d'une vidéo sans l'envoyer nulle part"
+og_description = "Déposez un MP4, MOV ou WebM et enregistrez son audio en WAV. Seule la piste sonore est décodée, et le fichier ne va nulle part."
+og_image_alt = "Extraire l'audio d'une vidéo - le son seul, sans envoi"
+
+pledge = """
+    Le décodeur est celui que votre navigateur possède déjà, le même chemin de
+    code qui lit un fichier dans un élément <code>&lt;video&gt;</code>, et on
+    lui demande la piste audio et rien d'autre. Écrire un WAV consiste à poser
+    un en-tête de quarante-quatre octets devant les échantillons, dans
+    <code>src/wav.js</code>. Il n'y a aucun encodeur dans la boucle, aucune
+    étape d'envoi, et cette page n'a aucune fonction réseau d'aucune sorte."""
+
+live_hint = """
+      Inutile de nous croire sur parole&nbsp;: ouvrez les DevTools, regardez
+      l'onglet réseau et déposez une vidéo. Pas une requête n'en transporte un
+      octet. Ou débranchez internet et récupérez le son quand même."""
+
+read_first = """
+, <code>src/decode.js</code> pour l'unique
+      décodeur qui existe ici et pourquoi l'image n'est jamais demandée, et
+      <code>src/samplerate.js</code> pour la lecture d'en-tête qui empêche votre
+      enregistrement d'être rééchantillonné en silence."""
+
+howto_heading = "Comment extraire l'audio d'une vidéo sans l'envoyer"
+
+card = """
+            Déposez un MP4, MOV ou WebM et enregistrez le son seul. Seule la
+            piste audio est décodée&nbsp;: l'image n'est jamais lue, et le
+            fichier ne quitte pas votre machine."""
+
+[words]
+plural = "vidéos"
+choose = "une vidéo"
+analytics_extra = """, ni rien sur les
+  enregistrements qui passent par là"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans limite de taille"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Votre vidéo n'a nulle part où aller."
+body = """
+ La
+      Content-Security-Policy nomme chaque adresse que cette page peut
+      contacter, et aucune ne nous appartient. Il n'y a ici aucun point de
+      collecte où un fichier pourrait aboutir, et rien dans le code qui l'y
+      enverrait s'il en existait un."""
+
+[[privacy]]
+title = "L'image n'est jamais décodée du tout."
+body = """
+ Seule la piste audio est
+      demandée. Les images ne sont ni lues, ni décodées, ni dessinées, ni
+      regardées &mdash; il n'y a sur cette page aucun code qui le pourrait
+      &mdash; et le fichier qui sort contient du son et rien d'autre. Ce n'est
+      pas une promesse de retenue&nbsp;: on remet les octets à
+      <code>decodeAudioData</code>, qui renvoie du son, et il n'y a dans
+      <code>src/</code> aucun décodeur vidéo à exécuter."""
+
+[[privacy]]
+title = "Le décodeur est celui que votre navigateur possède déjà."
+body = """
+ Rien
+      n'est livré ici pour lire votre format, et rien hors de cette page n'est
+      sollicité pour le lire non plus. Les fichiers qui fonctionnent sont donc
+      exactement ceux que votre navigateur sait déjà lire."""
+
+[[privacy]]
+title = "Les échantillons sont écrits tels quels, pas réencodés."
+body = """
+
+      Un WAV, ce sont les échantillons rendus par le décodeur avec un en-tête
+      devant. Aucun encodeur ne prend de décision sur votre enregistrement, et
+      il n'y a rien qu'on puisse appeler un envoi sur lequel cela se
+      produirait."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les
+      scripts publicitaires et de mesure viennent de Google, et le bouton de don
+      de Buy Me a Coffee. Aucun d'eux ne reçoit quoi que ce soit sur votre
+      vidéo&nbsp;: ni un fichier, ni un échantillon, ni un nom, une taille ou une
+      durée."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Débranchez le réseau et l'outil est
+      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+      preuve la plus simple qui soit."""
+
+[[howto]]
+title = "Déposez la vidéo."
+body = """
+ Un MP4, MOV, M4V ou WebM, venant
+      d'un téléphone, d'un appareil photo, d'un enregistreur d'écran ou d'un
+      téléchargement. C'est votre propre navigateur qui le lit&nbsp;; il n'y a
+      pas d'étape d'envoi à omettre."""
+
+[[howto]]
+title = "Lisez ce qui a été trouvé."
+body = """
+ La durée, le nombre de canaux et
+      la fréquence d'échantillonnage, directement tirés du fichier. Si le fichier
+      n'a pas déclaré sa fréquence, la page le dit, plutôt que de
+      rééchantillonner en silence en prétendant n'avoir rien touché."""
+
+[[howto]]
+title = "Choisissez le mono si vous le voulez plus léger."
+body = """
+ Laisser les
+      canaux tels quels garde l'enregistrement exactement comme il était. Le
+      mixage en mono divise le fichier par deux et c'est ce que veut une
+      transcription ou un enregistrement de voix&nbsp;; il fait la moyenne des
+      canaux plutôt que d'en jeter un."""
+
+[[howto]]
+title = "Écoutez-le avant de l'enregistrer."
+body = """
+ Le lecteur joue le fichier qui
+      est sur le point d'être téléchargé, pas la vidéo&nbsp;: si cela sonne
+      juste, le téléchargement est juste."""
+
+[[howto]]
+title = "Emportez-le, ou passez-le à la suite."
+body = """
+ Téléchargez le WAV, ou
+      envoyez-le directement au découpeur ou à l'éditeur sans l'enregistrer
+      d'abord."""
+
+[[faq]]
+q = "Ma vidéo est-elle envoyée quelque part&nbsp;?"
+a = """
+        Non. Le décodage et l'écriture se font tous deux dans votre propre
+        navigateur, sur votre propre matériel. Cet outil n'a aucune fonction
+        réseau d'aucune sorte &mdash; il ne récupère jamais rien et n'envoie
+        jamais rien &mdash; et la <code>Content-Security-Policy</code> de la page
+        nomme chaque adresse qu'elle peut contacter, dont aucune ne nous
+        appartient. Si vous préférez vérifier qu'on vous le dise, débranchez
+        internet et récupérez le son quand même."""
+
+[[faq]]
+q = "Peut-il me donner un MP3&nbsp;?"
+a = """
+        Non, et il ne fera pas semblant. Aucun navigateur ne livre d'encodeur
+        MP3, et le seul moyen d'en atteindre un est d'envoyer votre vidéo à un
+        serveur qui en possède un &mdash; ce qui est précisément la seule chose
+        que ce site existe pour ne pas faire. Ce que vous obtenez est un
+        WAV&nbsp;: les échantillons avec un en-tête de quarante-quatre octets
+        devant, ce qui ne demande aucun encodeur et ne peut coûter aucune
+        qualité. Il est plus lourd, environ dix mégaoctets la minute en stéréo,
+        et tout lecteur, téléphone ou éditeur l'ouvre. Ce qui veut un MP3 peut en
+        faire un à partir de là en une seconde."""
+
+[[faq]]
+q = "L'image est-elle regardée à un moment&nbsp;?"
+a = """
+        Non, et il n'y a rien ici qui pourrait la regarder. On remet le fichier
+        au décodeur du navigateur en lui demandant sa piste audio&nbsp;; la piste
+        vidéo n'est jamais décodée, jamais dessinée et n'atteint même pas le code
+        de cette page. Il n'y a dans <code>src/</code> aucun décodeur vidéo à
+        exécuter. Le fichier qui sort contient du son et rien d'autre."""
+
+[[faq]]
+q = "Il dit qu'aucun son n'a pu être lu, mais la vidéo se lit très bien."
+a = """
+        Alors la vidéo n'a presque certainement aucune piste audio. Un
+        enregistrement d'écran fait sans micro sélectionné est muet, et un extrait
+        exporté par un logiciel de montage avec le son coupé l'est aussi&nbsp;;
+        les deux se lisent parfaitement, parce qu'il y a une image à afficher. Le
+        message nomme ce cas en premier parce que c'est le plus probable des
+        deux&nbsp;; l'autre est un format que ce navigateur ne lira pas. Ouvrez
+        le fichier dans un lecteur et cherchez un réglage de volume qui ne fait
+        rien&nbsp;: c'est le moyen le plus rapide de savoir lequel des deux vous
+        avez."""
+
+[[faq]]
+q = "Quels formats vidéo puis-je ouvrir&nbsp;?"
+a = """
+        Tout ce que votre navigateur décode, ce qui en pratique veut dire MP4,
+        M4V, MOV et WebM, et tous les formats audio par ailleurs. Ce qui reste
+        dehors est la même courte liste que partout ailleurs sur ce site&nbsp;:
+        AVI, WMV et la plupart des MKV. Un fichier que votre navigateur ne lira
+        pas est refusé avec un message qui le dit, plutôt que d'échouer à
+        mi-chemin."""
+
+[[faq]]
+q = "Y a-t-il une perte de qualité&nbsp;?"
+a = """
+        Rien au-delà de ce que la vidéo avait déjà fait subir à son propre audio
+        au moment de sa création. Les échantillons rendus par le décodeur sont
+        écrits tels quels&nbsp;: il n'y a pas de second encodage, donc pas de
+        seconde génération de perte. La seule chose à savoir est la fréquence
+        d'échantillonnage&nbsp;: celle du fichier est lue d'abord dans son
+        en-tête et le décodage se fait à cette fréquence, si bien que votre
+        enregistrement n'est pas rééchantillonné en silence. Si un fichier n'en
+        déclare aucune, la page dit quelle fréquence elle a supposée."""
+
+[[faq]]
+q = "Pourquoi le WAV est-il tellement plus lourd que la vidéo&nbsp;?"
+a = """
+        Parce qu'un WAV n'est pas compressé et que la piste audio de la vidéo
+        l'était. Du son de qualité CD pèse environ dix mégaoctets la minute en
+        stéréo, quel qu'en soit le contenu&nbsp;; la piste AAC d'un MP4 en fait
+        peut-être un dixième. Le mixage en mono divise cela par deux. C'est le
+        prix de ne pas réencoder, et il se paie une fois&nbsp;: ce avec quoi vous
+        ouvrirez le fichier ensuite pourra le compresser."""
+
+[[faq]]
+q = "Quelle durée de vidéo peut-il traiter&nbsp;?"
+a = """
+        Aucune limite n'est inscrite ici, parce qu'aucun serveur ne la paie. Le
+        plafond réel est la mémoire de votre propre machine&nbsp;: le fichier est
+        lu en entier et toute la piste audio est conservée sous forme
+        d'échantillons, si bien qu'un enregistrement très long sur une petite
+        machine peut manquer de place. Quelques heures de vidéo passent
+        ordinairement bien, et un téléphone en supportera moins qu'un portable."""
+
+[[faq]]
+q = "Puis-je le raccourcir ou monter le volume&nbsp;?"
+a = """
+        Oui, mais pas ici&nbsp;: cette page fait un seul travail. Dès qu'il y a
+        un résultat, une rangée de liens à côté du téléchargement l'emporte
+        directement vers le <a href="../couper-un-audio/">découpeur audio</a> ou
+        l'<a href="../modifier-un-audio/">éditeur audio</a> sans l'enregistrer d'abord,
+        et sans que l'un ou l'autre ne l'envoie non plus."""
+
+[[faq]]
+q = "Est-ce gratuit, et faut-il un compte&nbsp;?"
+a = """
+        C'est gratuit, et il n'y a ni compte, ni identification, ni période
+        d'essai, ni limite au nombre de vidéos que vous ouvrez. Le site affiche
+        de la publicité, et c'est elle qui le finance&nbsp;; les annonces ne
+        reçoivent rien sur votre fichier."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, puis débranchez internet et elle continue
+        de fonctionner. C'est aussi la façon la plus simple de prouver que rien
+        n'est envoyé&nbsp;: un outil qui expédierait votre vidéo pour la traiter
+        s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Extraire la piste audio d'un MP4, MOV ou WebM et l'enregistrer en WAV. Seul l'audio est décodé, l'image n'est jamais lue, et rien n'est envoyé."
+features = [
+  "Enregistre en WAV le son des vidéos MP4, M4V, MOV et WebM",
+  "Ne décode que la piste audio&nbsp;; l'image n'est jamais lue",
+  "Lit d'abord la fréquence d'échantillonnage du fichier, pour ne rien rééchantillonner en silence",
+  "Mixe en mono par moyenne, pour la moitié de la taille",
+  "Fait écouter le résultat avant l'enregistrement",
+  "Emporte le résultat vers le découpeur ou l'éditeur audio sans l'enregistrer",
+  "Fonctionne hors ligne&nbsp;; sans envoi, sans compte",
+]
+
+[picker]
+title = "Déposez une vidéo ici"
+hint = "ou cliquez pour parcourir &mdash; MP4, MOV, M4V ou WebM"

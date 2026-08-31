@@ -1,0 +1,104 @@
+<main id="main">
+  <!-- 手順1 &mdash; ファイル -->
+  <section class="card">
+    <h2><span class="step">1</span> 動画を選ぶ</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>ファイル</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>大きさ</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>長さ</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>音</dt><dd id="src-channels">&mdash;</dd></div>
+      <div><dt>標本化周波数</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <!--
+      Only shown when the file did not declare its own sample rate. It matters:
+      in that case the samples handed back are not the ones on the disk, and a
+      tool that says nothing about it is claiming more than it did.
+      One line: Japanese has no spaces between words, so a wrapped sentence
+      arrives with a hole in the middle of it.
+    -->
+    <p id="rate-note" class="path-note" hidden>
+      このファイルは録音時の周波数を書いていなかったため、48 kHzとして読みました。音は正しく、サンプル数だけがディスク上のものと異なります。
+    </p>
+  </section>
+
+  <!-- 手順2 &mdash; 出てくるもの -->
+  <section class="card" id="take-card" inert>
+    <h2><span class="step">2</span> 音を取り出す</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="channels">チャンネル</label>
+        <select id="channels">
+          <option value="as-is" selected>そのままにする</option>
+          <option value="mono">モノラルに混ぜる</option>
+        </select>
+        <p class="field-note" id="channels-note">
+          モノラルにするとファイルは半分になり、文字起こしや声の録音が求めるのはこちらです。片方を捨てるのではなく、両チャンネルを平均します。
+        </p>
+      </div>
+    </div>
+
+    <!--
+      No button. A WAV is the samples with a header in front of them, so writing
+      one is fast enough to redo whenever a setting changes - and a file that is
+      always the one the settings describe needs nothing pressed to make it so.
+    -->
+    <div id="result" class="result" hidden>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>音声をダウンロード</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+    Every Japanese phrase stays on one line, for the reason above.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">音を読み込んでいます&hellip;</span>
+    <span data-phrase="audio.empty">このファイルは空です。</span>
+    <!--
+      Two causes, one message, deliberately. decodeAudioData throws the same
+      error for a file the browser cannot read and for a video that simply has
+      no audio track, and nothing this page can reach tells the two apart. On
+      THIS tool the second is the likely one - a screen recording made without a
+      microphone is silent, and its owner is exactly the person who comes here -
+      so naming only the format would send them off to convert a file that was
+      never the problem. Both possibilities, in the order they actually happen.
+    -->
+    <span data-phrase="audio.nodecode">このファイルからは音を読み取れませんでした。音声トラックがないか&mdash;マイクを選ばずに録った画面録画は無音です&mdash;このブラウザがその形式を読まないかのどちらかです。MP4・MOV・WebM・M4Vはほぼ必ず開けます。AVI・WMVとほとんどのMKVは開けません。</span>
+    <span data-phrase="audio.nosound">このファイルに音はありません。映像だけが入っています。</span>
+    <span data-phrase="wav.nochannels">書き出すチャンネルがありません。</span>
+    <span data-phrase="wav.uneven">チャンネルの長さが揃っていません。本来ありえないことです。</span>
+    <span data-phrase="channels.mono">モノラル</span>
+    <span data-phrase="channels.stereo">ステレオ</span>
+    <span data-phrase="channels.many">3チャンネル以上</span>
+    <span data-phrase="rate.khz">{n} kHz</span>
+    <span data-phrase="out.info">WAV &mdash; {size}、{length}、{channels}、{rate} kHz</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">動画はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、動画は1バイトも渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、動画は1バイトも渡っていません。</span>
+  </div>
+</main>

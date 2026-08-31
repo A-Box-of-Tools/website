@@ -1,0 +1,20 @@
+#
+# Ratgeber: ein Größenvergleichsdiagramm erstellen - German.
+#
+
+nav = "Größendiagramm erstellen"
+title = "Wie man ein Größenvergleichsdiagramm erstellt"
+description = "Aus einer Liste von Größen ein Bild nebeneinander machen: wie die Größen geschrieben werden, welche Figur zu einem Kind gehört, warum ein einziger vertrauter Gegenstand mehr bringt als eine dritte Person, und wie das Diagramm als PNG oder SVG herauskommt."
+
+heading = "Wie man ein Größenvergleichsdiagramm erstellt"
+lede = """
+    Zwei Zahlen sagen Ihnen nicht, wie ein Unterschied von fünfzehn Zentimetern
+    aussieht. Ein Bild tut das in etwa einer Sekunde, und genau dafür gibt es
+    diese Diagramme. Hier steht, wie eines entsteht, das nicht nur überzeugt,
+    sondern auch stimmt."""
+
+updated = "30. August 2026"
+
+og_title = "Ein Größenvergleichsdiagramm erstellen"
+og_description = "Wie die Größen geschrieben werden, welche Figur zu wählen ist, und warum ein vertrauter Gegenstand im Diagramm mehr bringt als eine dritte Person."
+og_image_alt = "abox.tools - Werkzeuge, die ohne Server auskommen"

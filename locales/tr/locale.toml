@@ -88,6 +88,13 @@ complete = true
 "timelapse-video" = "time-lapse-video-olusturma"
 "hash-checksum" = "saglama-toplami-hesaplama"
 "share-text" = "metin-paylasma"
+# Aranan ses, bicim degil: "mp3" bilerek yok, cunku sayfa MP3 yazmiyor ve bir
+# adres tutamayacagi bir sey vaat etmemeli.
+"extract-audio-from-video" = "videodan-ses-cikarma"
+"xml-formatter" = "xml-bicimlendirme"
+"yaml-to-json" = "yaml-json-donusturme"
+# Yazilan sey "boy karsilastirma"; grafik sonuctur ve basligda kalir.
+"compare-heights" = "boy-karsilastirma"
 "stack-images" = "goruntu-istifleme"
 
 # The indexes and the legal pages.
@@ -151,6 +158,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "rehberler/gif-kare-kare-duzenleme"
 "guides/make-a-qr-code-and-prove-it-scans" = "rehberler/qr-kod-yapip-okundugunu-kanitlama"
 "guides/clean-up-a-voice-memo" = "rehberler/sesli-notu-temizleme"
+"guides/make-a-height-comparison-chart" = "rehberler/boy-karsilastirma-grafigi-yapma"
 
 #
 # ---------------------------------------------------------------------------

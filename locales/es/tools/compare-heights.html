@@ -1,0 +1,246 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> Di a quién estás comparando</h2>
+
+    <p class="card-lede">
+      Un nombre, una altura y qué tipo de figura dibujar. Las alturas se pueden
+      escribir como tú las escribes &mdash; <code>173</code>,
+      <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
+      &mdash; y la línea de debajo de cada casilla muestra qué se ha entendido,
+      así que nada se adivina en silencio.
+    </p>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span>Figura</span>
+        <span>Nombre</span>
+        <span>Altura</span>
+        <span>Anchura</span>
+        <span>Color</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">Añadir una persona</button>
+        <button type="button" id="add-object" class="ghost">Añadir un objeto</button>
+        <button type="button" id="clear" class="ghost danger">Vaciar el gráfico</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">O añade algo que dé escala</label>
+      <select id="preset">
+        <option value="" selected>Elige uno&hellip;</option>
+        <optgroup label="Puertas y ventanas">
+          <option value="door-interior" data-cm="203" data-width="81">Puerta interior &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">Puerta de entrada &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">Ventana &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">Puerta de garaje &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="Escuela y oficina">
+          <option value="board" data-cm="120" data-width="240">Pizarra blanca o de tiza &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">Mesa de oficina &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">Archivador de cuatro cajones &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">Pantalla de proyección, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="Por la ciudad">
+          <option value="vending" data-cm="183" data-width="100">Máquina expendedora &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">Contenedor con ruedas, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">Canasta de baloncesto &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">Contenedor marítimo, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="Por la casa">
+          <option value="fridge" data-cm="178" data-width="76">Frigorífico combinado &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">Encimera de cocina &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">Mesa de comedor &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">Silla de comedor &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">Sofá de tres plazas &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">Piano vertical &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">Guitarra acústica &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">Botella de vino &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      Unos cuantos de estos sí son fijos: un contenedor marítimo de 20&nbsp;ft
+      mide 259&nbsp;cm de alto por definición, un aro de baloncesto está a 305,
+      y una puerta interior estadounidense es de 203 por 81. El resto son
+      medidas típicas y no normas &mdash; puertas, ventanas y encimeras varían
+      según el país y según la casa. Cada uno llega como una fila normal, así
+      que mide la tuya y escribe encima los números reales.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; how the chart is drawn -->
+  <section class="card">
+    <h2><span class="step">2</span> Elige cómo se ve</h2>
+
+    <fieldset class="options">
+      <legend>La regla</legend>
+
+      <div class="option-row">
+        <label for="unit">Medido en</label>
+        <select id="unit">
+          <option value="cm" selected>Centímetros</option>
+          <option value="ft">Pies y pulgadas</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="order">Orden</label>
+        <select id="order">
+          <option value="entered" selected>Como los has escrito</option>
+          <option value="tallest">Los más altos primero</option>
+          <option value="shortest">Los más bajos primero</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>Dibujar la regla</strong>
+          <span class="check-note">
+            Las líneas que cruzan el gráfico y las cifras a ambos lados. Sin
+            ellas la imagen sigue comparando bien a dos personas, pero deja de
+            decir cuánto mide cada una.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>Escribir los nombres y las alturas sobre cada figura</strong>
+          <span class="check-note">
+            Desactivado, el gráfico son siluetas sobre una regla, que es lo que
+            quieres si los nombres van a ir en aquello donde lo estés
+            pegando.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Color y tamaño</legend>
+
+      <div class="option-row">
+        <label for="background">Detrás</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Sin fondo alguno</strong>
+          <span class="check-note">
+            Transparente, para soltarlo sobre una diapositiva que ya tiene
+            color. La regla y el texto se dibujan oscuros o claros según el
+            color elegido arriba, así que ponlo más o menos en aquello sobre lo
+            que va a ir la imagen, aunque el fondo esté desactivado.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">Altura de la imagen, en píxeles</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Esa es la altura del área de dibujo, así que la imagen acabada es un
+        poco más alta: los nombres van encima. La anchura sale de cuántas
+        figuras hay y de lo ancha que sea la etiqueta de cada una. El paso tres
+        dice cómo ha quedado.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the picture -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Llévatelo</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="El gráfico de alturas que has hecho"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Descargar el SVG</button>
+      <button type="button" id="download-png" class="primary">Descargar el PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copiar la imagen</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      El PNG es el que se pega en un documento o en un chat. El SVG es el que
+      hay que guardar: es el gráfico como instrucciones en lugar de como
+      píxeles, así que se imprime nítido a cualquier tamaño y cualquier cosa
+      que abra vectores puede recolorearlo después.
+    </p>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">Hombre</span>
+    <span data-phrase="shape.woman">Mujer</span>
+    <span data-phrase="shape.boy">Niño</span>
+    <span data-phrase="shape.girl">Niña</span>
+    <span data-phrase="shape.toddler">Bebé</span>
+    <span data-phrase="shape.object">Objeto</span>
+
+    <span data-phrase="row.shape">Figura de la fila {n}</span>
+    <span data-phrase="row.name">Nombre de la fila {n}</span>
+    <span data-phrase="row.height">Altura de la fila {n}</span>
+    <span data-phrase="row.width">Anchura de la fila {n}</span>
+    <span data-phrase="row.colour">Color de la fila {n}</span>
+    <span data-phrase="row.up">Mover la fila {n} a la izquierda</span>
+    <span data-phrase="row.down">Mover la fila {n} a la derecha</span>
+    <span data-phrase="row.remove">Quitar la fila {n}</span>
+    <span data-phrase="row.nameexample">Nombre</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">Anchura</span>
+    <span data-phrase="row.reads">Leído como {height}</span>
+
+    <span data-phrase="height.empty">Una altura, y esta fila se dibuja.</span>
+    <span data-phrase="height.unreadable">Esto no es una altura que se entienda aquí. Prueba 173, 1,73 m, 5'8" o 68 in.</span>
+    <span data-phrase="height.tooshort">Demasiado bajo para dibujarlo &mdash; 5 cm es lo mínimo.</span>
+    <span data-phrase="height.tootall">Más alto de lo que llega el gráfico &mdash; el límite son 12 metros.</span>
+
+    <span data-phrase="chart.empty">Añade a alguien y el gráfico aparecerá aquí.</span>
+    <span data-phrase="chart.full">Doce figuras es todo lo que este gráfico admite sin dejar de leerse.</span>
+    <span data-phrase="facts.chart">{count} figuras, {width} por {height} píxeles. La regla va del suelo a {top}, con una línea cada {step}.</span>
+    <span data-phrase="facts.one">Una figura, {width} por {height} píxeles. La regla va del suelo a {top}, con una línea cada {step}.</span>
+
+    <span data-phrase="save.done">Guardado. No se ha enviado nada a ninguna parte para dibujarlo.</span>
+    <span data-phrase="save.failed">{detail}. El SVG se descargará igualmente.</span>
+    <span data-phrase="save.copied">Copiado. Pégalo donde lo necesites.</span>
+    <span data-phrase="save.noclipboard">Este navegador no ha dejado que la página escriba en el portapapeles. Descárgalo en su lugar.</span>
+    <span data-phrase="save.nothing">Todavía no hay nada en el gráfico que guardar.</span>
+    <span data-phrase="render.nosvg">este navegador no ha querido dibujar el SVG</span>
+    <span data-phrase="render.nopng">este navegador no ha querido escribir un PNG</span>
+
+    <span data-phrase="net.clean">los nombres y las alturas que has escrito no han
+      ido a ninguna parte. {total} archivos cargados. {platform}</span>
+    <span data-phrase="net.dirty">algo ha contactado con {hosts}, cosa que esta
+      herramienta no hace nunca. {platform}</span>
+    <span data-phrase="net.platform.one">Los scripts propios de la página para
+      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      host; a ninguno se le ha dado un nombre ni una altura.</span>
+    <span data-phrase="net.platform.many">Los scripts propios de la página para
+      publicidad, medición y el botón de donación se han cargado desde {hosts}
+      hosts; a ninguno se le ha dado un nombre ni una altura.</span>
+  </div>
+</main>

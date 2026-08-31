@@ -1,0 +1,246 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> Sebutkan siapa yang Anda bandingkan</h2>
+
+    <p class="card-lede">
+      Sebuah nama, sebuah tinggi, dan jenis figur yang digambar. Tinggi boleh
+      ditulis sebagaimana Anda menuliskannya &mdash; <code>173</code>,
+      <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
+      &mdash; dan baris di bawah setiap kotak menunjukkan apa yang dipahami,
+      jadi tidak ada yang ditebak diam-diam.
+    </p>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span>Figur</span>
+        <span>Nama</span>
+        <span>Tinggi</span>
+        <span>Lebar</span>
+        <span>Warna</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">Tambah orang</button>
+        <button type="button" id="add-object" class="ghost">Tambah benda</button>
+        <button type="button" id="clear" class="ghost danger">Kosongkan bagan</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">Atau tambahkan sesuatu sebagai pembanding ukuran</label>
+      <select id="preset">
+        <option value="" selected>Pilih satu&hellip;</option>
+        <optgroup label="Pintu &amp; jendela">
+          <option value="door-interior" data-cm="203" data-width="81">Pintu dalam &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">Pintu depan &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">Jendela &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">Pintu garasi &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="Sekolah &amp; kantor">
+          <option value="board" data-cm="120" data-width="240">Papan tulis putih atau hitam &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">Meja kantor &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">Lemari arsip, empat laci &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">Layar proyektor, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="Di sekitar kota">
+          <option value="vending" data-cm="183" data-width="100">Mesin penjual otomatis &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">Tong sampah beroda, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">Ring basket &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">Kontainer kapal, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="Di sekitar rumah">
+          <option value="fridge" data-cm="178" data-width="76">Kulkas dua pintu &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">Meja dapur &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">Meja makan &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">Kursi makan &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">Sofa tiga dudukan &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">Piano tegak &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">Gitar akustik &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">Botol anggur &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      Beberapa di antaranya memang pasti: kontainer kapal 20&nbsp;ft tingginya
+      259&nbsp;cm menurut definisinya, ring basket ada di 305, dan pintu dalam
+      Amerika berukuran 203 kali 81. Sisanya adalah ukuran lazim, bukan standar
+      &mdash; pintu, jendela, dan meja dapur berbeda-beda menurut negara dan
+      menurut rumahnya. Semuanya datang sebagai baris biasa, jadi ukurlah milik
+      Anda dan ketik angka yang sebenarnya menimpanya.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; how the chart is drawn -->
+  <section class="card">
+    <h2><span class="step">2</span> Pilih tampilannya</h2>
+
+    <fieldset class="options">
+      <legend>Penggarisnya</legend>
+
+      <div class="option-row">
+        <label for="unit">Diukur dalam</label>
+        <select id="unit">
+          <option value="cm" selected>Sentimeter</option>
+          <option value="ft">Kaki dan inci</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="order">Urutan</label>
+        <select id="order">
+          <option value="entered" selected>Seperti yang Anda masukkan</option>
+          <option value="tallest">Yang tertinggi dulu</option>
+          <option value="shortest">Yang terpendek dulu</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>Gambar penggarisnya</strong>
+          <span class="check-note">
+            Garis-garis melintang bagan dan angka di kedua sisinya. Tanpa itu
+            gambarnya tetap membandingkan dua orang dengan benar, tapi berhenti
+            menyebutkan berapa tinggi masing-masing.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>Tulis nama dan tinggi di atas setiap figur</strong>
+          <span class="check-note">
+            Kalau dimatikan, bagannya menjadi siluet di atas penggaris &mdash;
+            dan itulah yang Anda mau kalau namanya toh akan muncul di tempat
+            Anda menempelkannya.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Warna dan ukuran</legend>
+
+      <div class="option-row">
+        <label for="background">Di belakangnya</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Tanpa latar sama sekali</strong>
+          <span class="check-note">
+            Transparan, untuk dijatuhkan ke slide yang sudah punya warna.
+            Penggaris dan tulisannya digambar gelap atau terang menyesuaikan
+            warna yang dipilih di atas, jadi aturlah warna itu kira-kira seperti
+            tempat gambarnya nanti berada, sekalipun latarnya sendiri dimatikan.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">Tinggi gambar, dalam piksel</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Itu tinggi bidang gambarnya, jadi gambar jadinya sedikit lebih tinggi:
+        namanya duduk di atasnya. Lebarnya mengikuti berapa banyak figur yang
+        ada dan seberapa lebar label masing-masing. Langkah tiga menyebutkan
+        hasil akhirnya.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the picture -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Ambil</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Bagan tinggi badan yang Anda buat"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Unduh SVG-nya</button>
+      <button type="button" id="download-png" class="primary">Unduh PNG-nya</button>
+      <button type="button" id="copy-png" class="ghost">Salin gambarnya</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      PNG adalah yang ditempelkan ke dokumen atau obrolan. SVG adalah yang
+      disimpan: ia adalah bagan sebagai instruksi, bukan sebagai piksel, jadi ia
+      tercetak tajam pada ukuran berapa pun dan bisa diwarnai ulang nanti oleh
+      apa pun yang membuka vektor.
+    </p>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">Pria</span>
+    <span data-phrase="shape.woman">Wanita</span>
+    <span data-phrase="shape.boy">Anak laki-laki</span>
+    <span data-phrase="shape.girl">Anak perempuan</span>
+    <span data-phrase="shape.toddler">Balita</span>
+    <span data-phrase="shape.object">Benda</span>
+
+    <span data-phrase="row.shape">Figur untuk baris {n}</span>
+    <span data-phrase="row.name">Nama untuk baris {n}</span>
+    <span data-phrase="row.height">Tinggi untuk baris {n}</span>
+    <span data-phrase="row.width">Lebar untuk baris {n}</span>
+    <span data-phrase="row.colour">Warna untuk baris {n}</span>
+    <span data-phrase="row.up">Pindahkan baris {n} ke kiri</span>
+    <span data-phrase="row.down">Pindahkan baris {n} ke kanan</span>
+    <span data-phrase="row.remove">Hapus baris {n}</span>
+    <span data-phrase="row.nameexample">Nama</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">Lebar</span>
+    <span data-phrase="row.reads">Dibaca sebagai {height}</span>
+
+    <span data-phrase="height.empty">Sebuah tinggi, dan baris ini digambar.</span>
+    <span data-phrase="height.unreadable">Ini bukan tinggi yang dipahami di sini. Coba 173, 1,73 m, 5'8" atau 68 in.</span>
+    <span data-phrase="height.tooshort">Terlalu pendek untuk digambar &mdash; 5 cm yang paling kecil.</span>
+    <span data-phrase="height.tootall">Lebih tinggi daripada jangkauan bagan &mdash; batasnya 12 meter.</span>
+
+    <span data-phrase="chart.empty">Tambahkan seseorang, dan bagannya muncul di sini.</span>
+    <span data-phrase="chart.full">Dua belas figur adalah sebanyak yang bisa dimuat bagan ini dan tetap terbaca.</span>
+    <span data-phrase="facts.chart">{count} figur, {width} kali {height} piksel. Penggarisnya membentang dari tanah sampai {top}, dengan satu garis setiap {step}.</span>
+    <span data-phrase="facts.one">Satu figur, {width} kali {height} piksel. Penggarisnya membentang dari tanah sampai {top}, dengan satu garis setiap {step}.</span>
+
+    <span data-phrase="save.done">Tersimpan. Tidak ada yang dikirim ke mana pun untuk menggambarnya.</span>
+    <span data-phrase="save.failed">{detail}. SVG-nya tetap akan terunduh.</span>
+    <span data-phrase="save.copied">Tersalin. Tempelkan di mana pun Anda perlu.</span>
+    <span data-phrase="save.noclipboard">Peramban ini tidak mengizinkan halaman menulis ke papan klip. Unduh saja sebagai gantinya.</span>
+    <span data-phrase="save.nothing">Belum ada apa pun di bagan untuk disimpan.</span>
+    <span data-phrase="render.nosvg">peramban ini tidak mau menggambar SVG-nya</span>
+    <span data-phrase="render.nopng">peramban ini tidak mau menulis PNG</span>
+
+    <span data-phrase="net.clean">nama dan tinggi yang Anda ketik tidak pergi ke
+      mana pun. {total} file dimuat. {platform}</span>
+    <span data-phrase="net.dirty">sesuatu menghubungi {hosts}, dan itu tidak
+      pernah dilakukan alat ini. {platform}</span>
+    <span data-phrase="net.platform.one">Skrip iklan, pengukuran, dan tombol
+      donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi
+      sebuah nama atau tinggi.</span>
+    <span data-phrase="net.platform.many">Skrip iklan, pengukuran, dan tombol
+      donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi
+      sebuah nama atau tinggi.</span>
+  </div>
+</main>

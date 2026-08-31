@@ -1,0 +1,178 @@
+<main id="main">
+  <!-- Step 1 &mdash; which way round -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli la direzione</h2>
+
+    <!--
+      A menu rather than a tab strip, which is what json-formatter uses for its
+      two jobs. The difference is that these two are the same job pointing
+      opposite ways: there is one box, one set of options and one result either
+      way, and nothing on the page changes shape when the direction does. A tab
+      strip would promise a second panel that does not exist.
+    -->
+    <div class="settings">
+      <div class="field">
+        <label for="conversion">Converti</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="indent">Rientro</label>
+        <select id="indent">
+          <option value="2" selected>Due spazi</option>
+          <option value="4">Quattro spazi</option>
+          <option value="tab">Una tabulazione</option>
+        </select>
+        <p class="field-note">
+          La tabulazione è offerta solo per il JSON. Lo YAML è definito in termini di spazi e una tabulazione non è un'indentazione valida al suo interno.
+        </p>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="sort-keys">
+          <input type="checkbox" id="sort-keys">
+          Ordina le chiavi di ogni oggetto
+        </label>
+        <p class="field-note">
+          In base a come si leggono le chiavi invece che ai loro code point, quindi <code>item2</code> viene prima di <code>item10</code>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> Incollalo</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+      Its extension also sets the direction, because a dropped .json is not a
+      request to read JSON as though it were YAML.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input" id="input-label">Il tuo YAML</label>
+          <span class="count" id="input-count">vuoto</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="Incolla qui lo YAML - oppure trascina sopra un file .yaml, .yml o .json."></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">Prova un esempio</button>
+        <button type="button" id="clear" class="ghost danger">Svuota</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card" inert>
+    <h2><span class="step">3</span> Prenditi il risultato</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">Ancora niente.</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>Copia</button>
+        <a id="download" class="ghost as-button" hidden download>Scarica</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+
+    The parser errors are the JSON and YAML halves of json-formatter's list and
+    are worded identically to them - the same two parsers raise them, and a
+    reader who meets the same broken file on both pages should be told the same
+    thing about it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (riga {line}, colonna {column})</span>
+    <span data-phrase="char.end">la fine del testo</span>
+    <span data-phrase="char.newline">un a capo</span>
+    <span data-phrase="char.tab">una tabulazione</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="json.trailing">Inatteso: {found} dopo la fine del valore</span>
+    <span data-phrase="json.early">Il testo finisce troppo presto</span>
+    <span data-phrase="json.keystring">Una chiave deve essere una stringa fra virgolette doppie, e questo è {found}</span>
+    <span data-phrase="json.colon">Attesi i due punti dopo la chiave, trovato {found}</span>
+    <span data-phrase="json.unexpected">Inatteso: {found}</span>
+    <span data-phrase="json.commabrace">Attesa una virgola o una graffa di chiusura, trovato {found}</span>
+    <span data-phrase="json.commabracket">Attesa una virgola o una quadra di chiusura, trovato {found}</span>
+    <span data-phrase="json.object">Questo oggetto non viene mai chiuso</span>
+    <span data-phrase="json.array">Questo array non viene mai chiuso</span>
+    <span data-phrase="json.string">Questa stringa non viene mai chiusa</span>
+    <span data-phrase="json.hex">Dopo \u devono esserci quattro cifre esadecimali</span>
+    <span data-phrase="json.escape">\{next} non è un escape che JSON conosca</span>
+    <span data-phrase="json.control">Un carattere di controllo grezzo dentro una stringa &mdash; scrivilo come escape</span>
+    <span data-phrase="json.number">Questo non è un numero che JSON permetta</span>
+    <span data-phrase="yaml.dedent">Questa riga è rientrata meno del blocco in cui si trova</span>
+    <span data-phrase="yaml.documents">Più di un documento in questo file. Convertili uno alla volta.</span>
+    <span data-phrase="yaml.indent">Questa riga è rientrata più della chiave sopra</span>
+    <span data-phrase="yaml.keyvalue">Qui era atteso &laquo;key: value&raquo;</span>
+    <span data-phrase="yaml.aliases">Gli alias (*name) non sono supportati &mdash; JSON non ha modo di dire &laquo;lo
+      stesso nodo due volte&raquo;</span>
+    <span data-phrase="yaml.tags">I tag (!name) non sono supportati &mdash; il tipo andrebbe indovinato</span>
+    <span data-phrase="yaml.complexkey">Qui una chiave &laquo;?&raquo; non è supportata</span>
+    <span data-phrase="yaml.blockscalar">&laquo;{header}&raquo; non è uno scalare a blocco che questo legga</span>
+    <span data-phrase="yaml.afterquote">C'è del testo dopo la virgoletta di chiusura</span>
+    <span data-phrase="yaml.anchors">Le ancore (&amp;name) non sono supportate &mdash; JSON non ha modo di dire &laquo;lo
+      stesso nodo due volte&raquo;</span>
+    <span data-phrase="yaml.hex">Dopo \{next} servono {width} cifre esadecimali</span>
+    <span data-phrase="yaml.escape">\{next} non è un escape che questo legga</span>
+    <span data-phrase="yaml.quoted">Questa stringa fra virgolette non viene mai chiusa</span>
+    <span data-phrase="yaml.afterflow">C'è del testo dopo la fine della collezione in flow</span>
+    <span data-phrase="yaml.flowearly">La collezione in flow finisce troppo presto</span>
+    <span data-phrase="yaml.flowseq">Attesa una virgola o una quadra di chiusura in questa sequenza in flow</span>
+    <span data-phrase="yaml.flowkey">Attesi i due punti dopo una chiave in questo mapping in flow</span>
+    <span data-phrase="yaml.flowmap">Attesa una virgola o una graffa di chiusura in questo mapping in flow</span>
+    <span data-phrase="convert.yaml-json.name">Da YAML a JSON</span>
+    <span data-phrase="convert.json-yaml.name">Da JSON a YAML</span>
+    <span data-phrase="convert.yaml-json">I commenti si perdono, perché JSON non ha dove metterne uno. Ancore, alias e tag
+      fermano la conversione invece di essere indovinati.</span>
+    <span data-phrase="convert.json-yaml">Non si perde niente: ogni documento JSON è già un documento YAML. Le stringhe
+      vengono messe fra virgolette solo dove lasciarle nude cambierebbe quello che dicono.</span>
+    <span data-phrase="label.yaml">Il tuo YAML</span>
+    <span data-phrase="label.json">Il tuo JSON</span>
+    <span data-phrase="placeholder.yaml">Incolla qui lo YAML - oppure trascina sopra un file .yaml, .yml o .json.</span>
+    <span data-phrase="placeholder.json">Incolla qui il JSON - oppure trascina sopra un file .json, .yaml o .yml.</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">Sto leggendo il file…</span>
+    <span data-phrase="read.failed">Quel file non è stato letto: {reason}</span>
+    <span data-phrase="out.nothing">Ancora niente.</span>
+    <span data-phrase="out.empty">Non è uscito niente.</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} righe, {size}</span>
+    <span data-phrase="copy.copy">Copia</span>
+    <span data-phrase="copy.copied">Copiato</span>
+    <span data-phrase="copy.selected">Selezionato &mdash; premi Ctrl+C</span>
+    <span data-phrase="net.clean">Il tuo testo non è andato da nessuna parte.
+      {total} file caricati. {platform}</span>
+    <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo
+      strumento non lo fa mai. {platform}</span>
+    <span data-phrase="net.platform.one">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivato neanche un carattere.</span>
+    <span data-phrase="net.platform.many">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi è arrivato neanche un carattere.</span>
+  </div>
+</main>

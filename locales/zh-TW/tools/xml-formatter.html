@@ -1,0 +1,175 @@
+<main id="main">
+  <!-- Step 1 &mdash; which of the two jobs this is -->
+  <section class="card">
+    <h2><span class="step">1</span> 選好要做的事</h2>
+
+    <!--
+      A tab strip rather than two pages, because the two jobs share an input:
+      the XML you just laid out to read is the XML you then want as JSON, and
+      pasting it into a second tool is the thing this arrangement exists to
+      avoid. `role="tablist"` and the arrow keys are wired in main.js.
+    -->
+    <div class="tabs" role="tablist" aria-label="拿這段 XML 做什麼">
+      <button type="button" role="tab" id="tab-format" class="tab" data-mode="format"
+              aria-selected="true" aria-controls="options-format">格式化</button>
+      <button type="button" role="tab" id="tab-convert" class="tab" data-mode="convert"
+              aria-selected="false" tabindex="-1" aria-controls="options-convert">轉換</button>
+    </div>
+
+    <div class="settings" id="options-format" role="tabpanel" aria-labelledby="tab-format">
+      <div class="field">
+        <label for="indent">縮排</label>
+        <select id="indent">
+          <option value="2" selected>兩個空格</option>
+          <option value="4">四個空格</option>
+          <option value="tab">一個製表符</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="style">排法</label>
+        <select id="style">
+          <option value="pretty" selected>排開</option>
+          <option value="minify">壓平</option>
+        </select>
+        <p class="field-note">
+          壓平之後還是同一份文件，只是去掉了每一個只為好看而存在的空格。
+        </p>
+      </div>
+    </div>
+
+    <div class="settings" id="options-convert" role="tabpanel" aria-labelledby="tab-convert" hidden>
+      <div class="field">
+        <label for="conversion">轉換</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field" id="root-field" hidden>
+        <label for="root-name">最外層元素的名字</label>
+        <input type="text" id="root-name" value="root" spellcheck="false" autocomplete="off">
+        <p class="field-note">
+          XML 頂上只有一個元素，JSON 沒有，所以得替它造一個。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> 貼進來</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input">你的 XML</label>
+          <span class="count" id="input-count">空的</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="把 XML 貼上到這裡 - 或者在上面放一個 .xml、.svg 或 .rss 檔案。"></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">試個例子</button>
+        <button type="button" id="clear" class="ghost danger">清空</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card" inert>
+    <h2><span class="step">3</span> 把結果帶走</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">還沒有結果。</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>複製</button>
+        <a id="download" class="ghost as-button" hidden download>下載</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+
+    The parser errors are the XML and JSON halves of json-formatter's list and
+    are worded identically to them - the same two parsers raise them, and a
+    reader who meets the same broken file on both pages should be told the same
+    thing about it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason}（第 {line} 行，第 {column} 列）</span>
+    <span data-phrase="char.end">文字的末尾</span>
+    <span data-phrase="char.newline">一個換行</span>
+    <span data-phrase="char.tab">一個製表符</span>
+    <span data-phrase="char.is">「{ch}」</span>
+    <span data-phrase="xml.comment">這個註釋一直沒關上</span>
+    <span data-phrase="xml.cdata">這個 CDATA 段一直沒關上</span>
+    <span data-phrase="xml.declaration">這個宣告一直沒關上</span>
+    <span data-phrase="xml.closing">這個結束標籤一直沒寫完</span>
+    <span data-phrase="xml.unclosed">&lt;{name}&gt; 一直沒關上</span>
+    <span data-phrase="xml.stray">&lt;/{name}&gt; 關的是一個從沒開啟過的標籤</span>
+    <span data-phrase="xml.crossed">&lt;{open}&gt; 還開著，&lt;/{name}&gt; 就把一個元素關掉了</span>
+    <span data-phrase="xml.inside">&lt;{name}&gt; 裡沒料到會有「{ch}」</span>
+    <span data-phrase="xml.tagname">標籤名必須以字母開頭</span>
+    <span data-phrase="xml.unfinished">&lt;{name}&gt; 一直沒寫完</span>
+    <span data-phrase="xml.attrvalue">屬性「{name}」沒有值，XML 不允許這樣</span>
+    <span data-phrase="xml.attrstring">這個屬性值一直沒關上</span>
+    <span data-phrase="xml.attrquote">XML 裡屬性值必須加引號</span>
+    <span data-phrase="json.trailing">值結束之後還有{found}</span>
+    <span data-phrase="json.early">文字提前結束了</span>
+    <span data-phrase="json.keystring">鍵必須是雙引號包起來的字串，而這裡是{found}</span>
+    <span data-phrase="json.colon">鍵後面應該是冒號，找到的是{found}</span>
+    <span data-phrase="json.unexpected">沒料到會有{found}</span>
+    <span data-phrase="json.commabrace">這裡應該是逗號或右花括號，找到的是{found}</span>
+    <span data-phrase="json.commabracket">這裡應該是逗號或右方括號，找到的是{found}</span>
+    <span data-phrase="json.object">這個物件一直沒關上</span>
+    <span data-phrase="json.array">這個陣列一直沒關上</span>
+    <span data-phrase="json.string">這個字串一直沒關上</span>
+    <span data-phrase="json.hex">\u 後面必須跟四個十六進位數字</span>
+    <span data-phrase="json.escape">\{next} 不是 JSON 認得的轉義</span>
+    <span data-phrase="json.control">字串裡有個未轉義的控制字元 &mdash; 寫成轉義形式</span>
+    <span data-phrase="json.number">這不是 JSON 允許的數字</span>
+    <span data-phrase="convert.xml-json.name">XML 轉 JSON</span>
+    <span data-phrase="convert.json-xml.name">JSON 轉 XML</span>
+    <span data-phrase="convert.xml-json">屬性變成名字帶 @ 的成員，元素自己的文字在需要跟別的擠在一起時變成 #text，每個值都還是字串 &mdash; XML 從來沒說過哪些是數字。</span>
+    <span data-phrase="convert.json-xml">陣列會變成重複出現的元素，這是唯一能讀回來的形狀。空物件和空字串出來都是一個空元素。</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">正在讀檔案…</span>
+    <span data-phrase="read.failed">那個檔案讀不了：{reason}</span>
+    <span data-phrase="out.nothing">還沒有東西。</span>
+    <span data-phrase="out.empty">什麼都沒出來。</span>
+    <span data-phrase="note.squeezed">XML，壓平了</span>
+    <span data-phrase="note.laid">XML，排好了</span>
+    <span data-phrase="note.smaller">{what} &mdash; 從 {before} 到 {after}，少了 {percent}%</span>
+    <span data-phrase="note.lines">{what} &mdash; {lines} 行，{size}</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} 行，{size}</span>
+    <span data-phrase="copy.copy">複製</span>
+    <span data-phrase="copy.copied">複製好了</span>
+    <span data-phrase="copy.selected">已選中 &mdash; 按 Ctrl+C</span>
+    <span data-phrase="net.clean">你的 XML 沒有去任何地方。載入了 {total} 個檔案。{platform}</span>
+    <span data-phrase="net.dirty">有東西聯絡了 {hosts}，而這個工具從不這麼做。{platform}</span>
+    <span data-phrase="net.platform.one">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到其中的一個字。</span>
+    <span data-phrase="net.platform.many">本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到其中的一個字。</span>
+  </div>
+</main>

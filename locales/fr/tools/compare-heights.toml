@@ -1,0 +1,376 @@
+#
+# Comparer des tailles - French.
+#
+# Overrides for tools/compare-heights/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Comparateur de tailles"
+heading = "Comparer&nbsp;des&nbsp;tailles <span class=\"h1-kw\">&mdash; un graphique côte à côte, téléchargeable</span>"
+tagline = "Tapez les tailles, emportez l'image. Rien n'est envoyé pour la dessiner."
+
+title = "Comparer des tailles &mdash; gratuit, sans inscription, sans envoi"
+description = "Comparez des tailles côte à côte. Ajoutez un homme, une femme, un garçon, une fille, un tout-petit et des objets &mdash; une porte, une fenêtre, un tableau blanc, un distributeur &mdash; en centimètres ou en pieds et pouces, et téléchargez le graphique en PNG ou en SVG. Il est dessiné dans votre navigateur."
+og_title = "Comparez des tailles côte à côte et gardez l'image"
+og_description = "Mettez deux adultes, un enfant, un tout-petit et une porte sur la même règle, en centimètres ou en pieds et pouces, et téléchargez le résultat. Sans compte, sans filigrane, et sans aucune liste de noms qui quitte votre machine."
+og_image_alt = "Comparateur de tailles - comparer des tailles côte à côte, sans envoi"
+
+pledge = """
+    Un graphique de tailles, c'est de l'arithmétique et un dessin&nbsp;: il n'y a
+    aucun fichier à envoyer ni aucun service à interroger. L'homme, la femme, le
+    garçon et la fille sont des illustrations du domaine public livrées avec
+    cette page&nbsp;; le tout-petit est construit ici à partir d'une table de
+    proportions corporelles, et c'est pourquoi il a la forme d'un tout-petit et
+    non d'un adulte en réduction. Chaque étape se déroule dans environ six cents
+    lignes de JavaScript de cette page que vous pouvez lire. Il n'y a aucune
+    fonction réseau d'aucune sorte, et cela compte ici parce que ce que vous
+    tapez est une liste de personnes et la taille de chacune."""
+
+live_hint = """
+      Inutile de nous croire sur parole&nbsp;: ouvrez les DevTools, regardez
+      l'onglet réseau et tapez un nom et une taille. Pas une requête n'en
+      transporte un caractère. Ou débranchez internet et faites le graphique
+      quand même."""
+
+read_first = """
+, <code>src/traced.js</code> et
+      <code>vendor/</code> pour les quatre figures dessinées et l'origine de
+      leurs illustrations, <code>src/figures.js</code> pour la table de
+      proportions à partir de laquelle le tout-petit est construit,
+      <code>src/units.js</code> pour la façon dont une taille tapée devient un
+      nombre et dont la règle est graduée, <code>src/chart.js</code> pour la
+      mise en page, et <code>src/save.js</code> pour les deux téléchargements
+      &mdash; qui sont le SVG à l'écran, et ce même SVG peint sur un canvas."""
+
+howto_heading = "Comment faire un graphique de comparaison de tailles"
+
+card = """
+            Mettez deux adultes, un enfant et une porte sur la même règle
+            &mdash; en centimètres ou en pieds et pouces &mdash; et
+            téléchargez-le en PNG ou en SVG."""
+
+[words]
+plural = "noms, tailles et le graphique qu'ils forment"
+choose = "qui figure sur le graphique"
+analytics_extra = """, ni un nom ni une
+  taille que vous tapez"""
+
+[[facts]]
+text = "Sans envoi"
+
+[[facts]]
+text = "Sans compte"
+
+[[facts]]
+text = "Sans filigrane"
+
+[[facts]]
+text = "Fonctionne hors ligne"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Une liste de personnes n'est pas une petite chose à confier."
+body = """
+ La
+      plupart des graphiques de tailles réclament un compte, et ceux qui n'en
+      réclament pas ont tout de même un serveur qui voit chaque nom et chaque
+      nombre que vous tapez. Ce que vous tapez ici, c'est qui compose votre
+      famille et la taille de chacun, souvent avec l'âge d'un enfant deviné à la
+      figure posée à côté du nom. Rien de tout cela n'est envoyé nulle part,
+      parce qu'il n'y a ici nulle part où cela puisse aller."""
+
+[[privacy]]
+title = "Rien ici ne récupère quoi que ce soit."
+body = """
+ Il n'y a aucun
+      <code>fetch</code>, aucun <code>XMLHttpRequest</code> et aucun
+      <code>sendBeacon</code> nulle part dans <code>src/</code>. La
+      Content-Security-Policy nomme chaque adresse que cette page peut
+      contacter, et aucune ne nous appartient."""
+
+[[privacy]]
+title = "Rien n'est mémorisé d'une visite à l'autre non plus."
+body = """
+ Le
+      graphique vit dans la page et nulle part ailleurs. Fermez l'onglet et la
+      liste a disparu&nbsp;: aucun compte ne la conserve, aucun cookie ne la
+      transporte, et rien n'est écrit dans le stockage de ce navigateur &mdash;
+      c'est aussi pourquoi un graphique que vous voulez garder est un graphique
+      que vous téléchargez."""
+
+[[privacy]]
+title = "Le lien ne transporte pas le graphique."
+body = """
+ Plusieurs outils de ce
+      genre mettent la liste entière dans la barre d'adresse pour qu'elle puisse
+      être partagée, ce qui transforme chaque nom et chaque taille en quelque
+      chose qu'enregistre tout ce par quoi le lien passe &mdash; un serveur de
+      messagerie instantanée, un scanner de courrier, l'historique de quelqu'un.
+      L'adresse de cette page ne change jamais pendant que vous tapez."""
+
+[[privacy]]
+title = "Le PNG est fabriqué à partir du SVG qui est à l'écran."
+body = """
+ Le
+      téléchargement n'est pas un second rendu qui pourrait diverger de l'aperçu.
+      Le même balisage est remis au navigateur et peint sur un canvas, ce qui est
+      aussi pourquoi cela se fait réseau débranché&nbsp;: il n'y a aucune police
+      à récupérer et aucune image à charger dedans."""
+
+[[privacy]]
+title = "Les illustrations sont ici, elles ne sont pas récupérées."
+body = """
+ Les
+      quatre figures dessinées sont des illustrations du domaine public, et elles
+      sont servies depuis cette origine avec le reste de la page &mdash; pas de
+      police d'icônes, pas de CDN, pas de feuille de sprites tirée du serveur de
+      quelqu'un d'autre pendant que vous tapez. C'est aussi pourquoi le graphique
+      se dessine encore réseau débranché."""
+
+[[privacy]]
+title = "Ce que Google charge, et ce qu'on ne lui donne pas."
+body = """
+ Les
+      scripts publicitaires et de mesure viennent de Google, et le bouton de don
+      de Buy Me a Coffee. Aucun d'eux ne reçoit de nom ni de taille. Chaque ligne
+      qui transforme votre liste en image est servie depuis cette origine et
+      figure dans le dépôt."""
+
+[[privacy]]
+title = "Cela fonctionne hors ligne."
+body = """
+ Débranchez le réseau et l'outil est
+      inchangé, parce qu'il n'y a jamais eu d'étape réseau dedans. C'est la
+      preuve la plus simple qui soit."""
+
+[[howto]]
+title = "Ajoutez tout le monde d'abord, l'allure viendra après."
+body = """
+ Une ligne,
+      c'est une figure, un nom, une taille et une couleur. Le nom est facultatif
+      &mdash; un graphique de deux silhouettes anonymes avec leurs tailles
+      au-dessus est souvent exactement ce qu'on veut &mdash; et les flèches de
+      chaque ligne la déplacent à gauche ou à droite si l'ordre compte."""
+
+[[howto]]
+title = "Tapez la taille comme vous l'écrivez."
+body = """
+ <code>173</code>,
+      <code>1,73 m</code>, <code>5'8\"</code>, <code>68 in</code> et
+      <code>5 ft 8</code> sont tous lus correctement. La ligne sous la case
+      montre ce qui a été compris, dans les deux systèmes, si bien qu'une
+      mauvaise lecture est visible avant le dessin plutôt qu'après
+      l'impression. Un nombre nu, ce sont des centimètres sur un graphique
+      métrique et des pouces sur un graphique impérial, et un nombre nu
+      inférieur à trois, ce sont des mètres &mdash; personne ne mesure
+      1,73&nbsp;cm."""
+
+[[howto]]
+title = "Choisissez la figure qui correspond à la personne."
+body = """
+ Un enfant de deux
+      ans mesure environ quatre têtes et demie et un adulte sept et demie, si
+      bien qu'un tout-petit dessiné comme un adulte rétréci a l'air faux d'une
+      manière difficile à nommer et facile à voir. Il y a un garçon et une fille
+      pour l'âge scolaire et un tout-petit en dessous, chacun avec ses propres
+      proportions plutôt que l'adulte rapetissé, et c'est l'essentiel de ce qui
+      fait qu'un graphique de famille ressemble à une famille."""
+
+[[howto]]
+title = "Mettez quelque chose de familier sur le graphique."
+body = """
+ Un nombre est
+      abstrait, une porte ne l'est pas. Ajouter un seul objet d'une taille que
+      tout le monde connaît &mdash; une porte, une fenêtre, un tableau de classe,
+      un distributeur &mdash; est ce qui transforme un graphique qui énonce deux
+      tailles en un graphique qui les montre. Le menu en contient vingt,
+      regroupés, et chacun arrive comme une ligne ordinaire par-dessus laquelle
+      vous pouvez taper vos propres chiffres. Les objets prennent une largeur en
+      plus d'une hauteur, si bien qu'une porte fait 203 sur 81 et non une
+      bande."""
+
+[[howto]]
+title = "Réglez la règle sur les unités auxquelles pense votre lecteur."
+body = """
+ Passer
+      des centimètres aux pieds réécrit ce qu'il y a dans les cases plutôt que de
+      le réinterpréter, si bien que le graphique lui-même ne bouge pas&nbsp;:
+      seule la notation change. Si le graphique s'adresse à deux publics, la
+      taille écrite au-dessus de chaque figure est dans l'unité du graphique et
+      la ligne sous chaque case porte les deux."""
+
+[[howto]]
+title = "Le PNG pour coller, le SVG pour imprimer."
+body = """
+ Le PNG est une image à
+      la hauteur en pixels que vous avez réglée, ce que veut une fenêtre de
+      discussion, un document ou une diapositive. Le SVG est le graphique sous
+      forme d'instructions, il s'imprime donc net à n'importe quelle taille et
+      peut encore être recoloré ensuite par tout ce qui ouvre des vecteurs."""
+
+[[faq]]
+q = "Ce que je tape est-il envoyé quelque part&nbsp;?"
+a = """
+        Non. Le graphique est dessiné par du JavaScript de cette page, sur votre
+        propre machine, et cet outil n'a aucune fonction réseau d'aucune sorte
+        &mdash; il ne récupère jamais rien et n'envoie jamais rien. La
+        <code>Content-Security-Policy</code> de la page nomme chaque adresse
+        qu'elle peut contacter, dont aucune ne nous appartient. Cela vaut la
+        peine d'être dit clairement ici, parce que l'entrée est une liste de noms
+        de personnes et de leurs tailles, ce qui est plus personnel que la
+        plupart de ce que traite ce site."""
+
+[[faq]]
+q = "Puis-je télécharger le graphique&nbsp;?"
+a = """
+        Oui, en PNG ou en SVG, sans filigrane et sans compte. Le PNG est dessiné
+        à la hauteur en pixels que vous réglez et c'est celui à coller dans un
+        document, une diapositive ou une discussion. Le SVG est le graphique sous
+        forme d'instructions plutôt que de pixels&nbsp;: il s'imprime net à
+        n'importe quelle taille et peut être ouvert et recoloré plus tard dans
+        n'importe quel éditeur vectoriel. Les deux sont fabriqués à partir du
+        même balisage que celui à l'écran, aucun ne peut donc diverger de
+        l'aperçu."""
+
+[[faq]]
+q = "Comment écrire la taille &mdash; en centimètres ou en pieds&nbsp;?"
+a = """
+        Comme vous voulez, sur n'importe quelle ligne, de la façon dont vous
+        l'écrivez d'habitude. <code>173</code>, <code>173 cm</code>,
+        <code>1,73 m</code>, <code>5'8\"</code>, <code>5 ft 8 in</code> et
+        <code>68 in</code> sont tous compris, et la ligne sous la case montre ce
+        qui a été lu dans les deux systèmes. Un nombre nu, ce sont des
+        centimètres quand le graphique est métrique et des pouces quand il est
+        impérial&nbsp;; un nombre nu inférieur à trois est pris pour des mètres,
+        parce que 1,73&nbsp;cm n'est pas une taille que quiconque tape."""
+
+[[faq]]
+q = "Pourquoi le tout-petit ne ressemble-t-il pas à un adulte en réduction&nbsp;?"
+a = """
+        Parce qu'un tout-petit n'en est pas un. Les proportions du corps changent
+        avec l'âge&nbsp;: un enfant de deux ans mesure à peu près quatre têtes et
+        demie, un enfant de huit ans six, un adulte sept et demie &mdash; la tête
+        représente donc près d'un quart d'un tout-petit et un huitième d'un
+        adulte. Le garçon et la fille sont des dessins d'enfants réels, et le
+        tout-petit a sa propre table de proportions au lieu d'être une silhouette
+        réduite, ce qui explique qu'un graphique de famille ressemble à une
+        famille plutôt qu'à quatre adultes de tailles différentes."""
+
+[[faq]]
+q = "D'où viennent les figures&nbsp;?"
+a = """
+        Quatre des cinq sont des illustrations d'autres personnes, toutes dans le
+        domaine public&nbsp;: l'homme par pitr, la femme par Madeleine Price
+        Ball, la fille par OpenClipart-Vectors, et le garçon par Ryan Kissinger
+        pour la bibliothèque NIH BioArt. Chaque fichier est livré avec cette page
+        dans <code>vendor/</code> tel qu'il a été publié, vous pouvez donc les
+        comparer aux originaux. Le domaine public ne demande rien, et c'est bien
+        le point&nbsp;: l'illustration finit à l'intérieur d'une image que vous
+        téléchargez, et une licence exigeant une attribution attacherait cette
+        exigence à votre graphique. Seul le tout-petit est dessiné par le code de
+        cette page &mdash; en dessous de l'âge scolaire, il n'y avait rien de
+        libre à trouver."""
+
+[[faq]]
+q = "Combien de personnes puis-je mettre sur un graphique&nbsp;?"
+a = """
+        Douze. Ce n'est pas une limite technique &mdash; le dessin en ferait
+        volontiers trente &mdash; mais passé la douzaine les colonnes deviennent
+        plus étroites que les noms écrits au-dessus et l'image cesse d'être
+        lisible. S'il vous en faut davantage, désactiver les noms vous rend la
+        largeur, ou deux graphiques le diront mieux qu'un."""
+
+[[faq]]
+q = "Puis-je mettre un objet sur le graphique&nbsp;?"
+a = """
+        Oui &mdash; un simple rectangle prend une hauteur et une largeur, donc
+        tout ce qui a deux dimensions se place à côté des personnes. Le menu en
+        propose vingt pour commencer, en quatre groupes&nbsp;: portes et
+        fenêtres, école et bureau (un tableau, un bureau, un classeur, un écran
+        de projection), choses de la ville (un distributeur, une poubelle à
+        roulettes, un panier de basket, un conteneur de 20&nbsp;ft) et choses de
+        la maison. Certaines sont de véritables normes et d'autres des tailles
+        typiques, ce que la page dit à voix haute&nbsp;; chacune arrive comme une
+        ligne ordinaire par-dessus laquelle vous pouvez taper. Un objet familier
+        fait plus pour un graphique que n'importe quel nombre de personnes
+        supplémentaires&nbsp;: c'est lui qui transforme une comparaison en sens
+        de l'échelle."""
+
+[[faq]]
+q = "Y a-t-il une figure pour un chien ou un chat&nbsp;?"
+a = """
+        Non, et c'est un manque délibéré plutôt qu'un oubli. Les deux ont été
+        construits &mdash; de profil, debout, la tête à hauteur d'épaule, pour
+        que le haut du dessin soit la taille écrite à côté, là où toute norme de
+        race mesure un animal. Ils ne sont pas sortis assez bien pour être
+        livrés&nbsp;: un quadrupède vu de côté à côté de quatre personnes vues de
+        face se lit comme une erreur même quand le dessin est bon. Un rectangle à
+        la hauteur du garrot de l'animal est honnête en attendant."""
+
+[[faq]]
+q = "Puis-je partager le graphique par un lien&nbsp;?"
+a = """
+        Pas d'ici, et c'est délibéré. Les outils qui le proposent le font en
+        mettant la liste entière dans l'adresse, ce qui veut dire que chaque nom
+        et chaque taille finissent dans tout ce par quoi le lien voyage &mdash;
+        les journaux d'un serveur de messagerie, un scanner de courrier,
+        l'historique de quelqu'un, un service qui va chercher un aperçu de lien.
+        Téléchargez l'image et envoyez-la à la place&nbsp;: elle dit la même
+        chose et ne transporte aucune liste."""
+
+[[faq]]
+q = "Est-ce gratuit, et puis-je utiliser le graphique commercialement&nbsp;?"
+a = """
+        C'est gratuit, il n'y a ni compte ni filigrane, et vous pouvez mettre le
+        résultat dans un rapport, une présentation, une annonce ou un produit. Le
+        site affiche de la publicité, et c'est elle qui le finance. Rien de ce
+        que vous faites ici ne nous appartient, et rien n'est conservé."""
+
+[[faq]]
+q = "Pourquoi la règle est-elle en dizaines et non en unités&nbsp;?"
+a = """
+        Parce que l'espacement est choisi d'après le nombre de lignes que l'image
+        peut porter plutôt que d'après un nombre fixe. Un graphique de deux
+        adultes reçoit une ligne tous les dix centimètres&nbsp;; ajoutez-y un
+        panier de basket et les lignes passent à vingt-cinq, parce que
+        quatre-vingt-dix lignes sur une image font un lavis gris plutôt qu'une
+        règle. En pieds et pouces l'échelle est de un, trois, six et douze
+        pouces, si bien que les lignes tombent sur des pouces entiers au lieu de
+        tomber à côté."""
+
+[[faq]]
+q = "Puis-je mettre le graphique sur une diapositive sombre&nbsp;?"
+a = """
+        Oui. Réglez le fond sur la couleur sur laquelle il se posera et la règle
+        et le texte basculent entre sombre et clair pour s'y accorder &mdash;
+        calculé d'après la luminance de la couleur plutôt que deviné. Cochez
+        ensuite &laquo;&nbsp;aucun fond du tout&nbsp;&raquo; si vous voulez
+        l'image elle-même transparente&nbsp;: la couleur que vous avez choisie
+        décide toujours de l'encre, si bien qu'un graphique transparent destiné à
+        une diapositive bleu marine en ressort lisible."""
+
+[[faq]]
+q = "Est-ce que cela fonctionne hors ligne&nbsp;?"
+a = """
+        Oui. Chargez la page une fois, puis débranchez internet et elle continue
+        de fonctionner. C'est aussi la façon la plus simple de prouver que rien
+        n'est envoyé&nbsp;: un outil qui expédierait votre liste pour qu'on lui
+        dessine un graphique s'arrêterait à l'instant où vous débranchez."""
+
+[schema]
+description = "Dessiner un graphique de comparaison de tailles dans le navigateur. Ajoutez un homme, une femme, un garçon, une fille, un tout-petit et des objets avec leurs tailles en centimètres ou en pieds et pouces, ordonnez-les, colorez-les et téléchargez le résultat en PNG ou en SVG. Rien n'est envoyé."
+features = [
+  "Jusqu'à douze figures sur une même règle, dans n'importe quel ordre",
+  "Figures d'homme, de femme, d'enfant et de tout-petit, et un simple rectangle pour les objets",
+  "Homme, femme, garçon et fille dessinés du domaine public, et un tout-petit avec ses propres proportions plutôt qu'un adulte réduit",
+  "Tailles tapées 173, 1,73 m, 5'8\", 68 in ou 5 ft 8, avec la lecture affichée",
+  "Centimètres ou pieds et pouces, changés sans modifier la taille de personne",
+  "Vingt objets prêts&nbsp;: portes, fenêtres, un tableau, un distributeur, un conteneur maritime, du mobilier",
+  "Une règle dont l'espacement est choisi d'après ce que l'image peut porter",
+  "N'importe quelle couleur de fond, ou aucune, avec une encre choisie pour rester lisible dessus",
+  "PNG à n'importe quelle hauteur en pixels, et un SVG qui s'imprime net à n'importe quelle taille",
+  "Sans filigrane, sans compte, sans lien qui transporte votre liste",
+  "Fonctionne hors ligne&nbsp;; rien n'est envoyé",
+]

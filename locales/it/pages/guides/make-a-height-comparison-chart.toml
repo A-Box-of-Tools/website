@@ -1,0 +1,20 @@
+#
+# Guida: fare un grafico di confronto delle altezze - Italian.
+#
+
+nav = "Fare un grafico di altezze"
+title = "Come fare un grafico di confronto delle altezze"
+description = "Trasformare un elenco di altezze in un'immagine affiancata: come scrivere le altezze, quale figura scegliere per un bambino, perché un solo oggetto familiare fa più di una terza persona, e come tirare fuori il grafico come PNG o SVG."
+
+heading = "Come fare un grafico di confronto delle altezze"
+lede = """
+    Due numeri non ti dicono che aspetto ha una differenza di quindici
+    centimetri. Un'immagine sì, in circa un secondo, ed è tutto il motivo per cui
+    questi grafici esistono. Ecco come farne uno che oltre a convincere sia anche
+    giusto."""
+
+updated = "30 agosto 2026"
+
+og_title = "Fare un grafico di confronto delle altezze"
+og_description = "Come scrivere le altezze, quale figura scegliere, e perché un oggetto familiare sul grafico fa più di una terza persona."
+og_image_alt = "abox.tools - strumenti che non toccano mai un server"

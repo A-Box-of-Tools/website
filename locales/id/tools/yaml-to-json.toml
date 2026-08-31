@@ -1,0 +1,271 @@
+#
+# Pengubah YAML ke JSON - Indonesian.
+#
+# Overrides for tools/yaml-to-json/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Pengubah YAML ke JSON"
+heading = "YAML&nbsp;ke&nbsp;JSON <span class=\"h1-kw\">&mdash; dan JSON kembali ke YAML</span>"
+tagline = "Dua arah, dan ia menyebutkan biaya masing-masing. Tidak ada satu pun yang ditempel ke server orang lain."
+
+title = "Pengubah YAML ke JSON &mdash; dua arah, tanpa unggah"
+description = "Ubah YAML ke JSON dan JSON ke YAML di peramban Anda. Ia membaca YAML 1.2, jadi yes dan no tetap berupa teks, dan ia menyebutkan persis apa yang hilang di tiap arah. Tidak ada yang diunggah: sebuah berkas konfigurasi tidak pernah meninggalkan perangkat Anda."
+og_title = "Mengubah YAML tanpa menempelkannya ke sebuah server"
+og_description = "Pengubah YAML dan JSON yang berjalan di perangkat Anda sendiri. Kunci tetap pada urutannya, angka tetap pada digitnya, dan apa yang Anda tempel tidak pergi ke mana pun."
+og_image_alt = "Pengubah YAML ke JSON - dua arah, tanpa unggah"
+
+pledge = """
+    Mengubah adalah hitungan atas sebuah untai teks, dikerjakan di sini, di
+    halaman ini. Kedua pengurainya ditulis tangan dan ada di <code>src/</code>
+    &mdash; <code>yaml.js</code> dan <code>json.js</code> &mdash; dan tidak ada
+    yang lain. Alat ini tidak punya fungsi jaringan apa pun &mdash; tidak ada
+    yang diambil, tidak ada yang dikirim &mdash; dan di sini itu lebih berarti
+    daripada hampir di mana pun di situs ini: sebuah berkas YAML biasanya adalah
+    konfigurasi penggelaran, dan konfigurasi penggelaran biasanya penuh nama
+    host, nama bucket, dan rahasia."""
+
+live_hint = """
+      Anda tidak perlu percaya begitu saja: buka DevTools, perhatikan tab
+      jaringan, lalu ubah sesuatu. Tidak satu pun permintaan membawa satu
+      karakter dari yang Anda tempel. Atau cabut sambungan internet dan ubah
+      tetap."""
+
+read_first = """
+, <code>src/yaml.js</code> untuk pembaca yang
+      menolak sebuah jangkar alih-alih menebak maksudnya, dan
+      <code>src/convert.js</code> untuk alasan sebuah konversi adalah satu
+      pengurai dan satu pencetak, tanpa apa pun di antaranya yang mengenal kedua
+      format sekaligus."""
+
+howto_heading = "Cara mengubah YAML ke JSON tanpa mengunggahnya"
+
+card = """
+            Jadikan YAML sebagai JSON atau JSON sebagai YAML, dan biarkan ia
+            menyebutkan biaya perjalanannya. Tempel sebuah konfigurasi
+            penggelaran tanpa menyerahkannya kepada siapa pun."""
+
+[words]
+plural = "YAML dan JSON"
+choose = "sebuah file"
+analytics_extra = """, dan tidak juga YAML
+  atau JSON yang lewat di sini"""
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa batas ukuran"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Yang Anda tempel tidak punya tempat untuk pergi."
+body = """
+ Di dalam
+      Content-Security-Policy tertulis setiap alamat yang boleh dihubungi halaman
+      ini, dan tidak satu pun milik kami. Tidak ada titik akhir di sini tempat
+      sebuah konfigurasi yang ditempel bisa dikumpulkan, dan tidak ada pula di
+      dalam kode yang akan mengirimkannya seandainya ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada
+      <code>fetch</code>, tidak ada <code>XMLHttpRequest</code>, dan tidak ada
+      <code>sendBeacon</code> di mana pun dalam <code>src/</code>. Kedua pengurai
+      dan kedua pencetaknya adalah fungsi di halaman ini yang menerima untai teks
+      dan mengembalikan untai teks."""
+
+[[privacy]]
+title = "Ia membaca YAML 1.2, jadi Norwegia tetap Norwegia."
+body = """
+ Di YAML 1.1,
+      <code>no</code> adalah boolean, dan itulah kutu terkenal yang mengubah kode
+      negara Norwegia menjadi <code>false</code>. Ini membaca 1.2, tempat ia
+      menjadi teks sebagaimana tampaknya. Ke arah sebaliknya kata-kata itu ditulis
+      kembali <em>dalam tanda kutip</em>, sebab apa pun yang membuka berkasnya
+      nanti bisa jadi masih pembaca 1.1.
+      <code>tests/js/text-convert.test.js</code> memeriksa kedua bagiannya."""
+
+[[privacy]]
+title = "Konversi yang tidak bisa jujur memilih berhenti."
+body = """
+ Sebuah jangkar,
+      alias, atau tag di dalam YAML mengakhiri konversi dengan pesan yang
+      menyebut ia ada di baris mana, alih-alih menghasilkan dokumen JSON yang
+      diam-diam berarti hal lain. JSON tidak punya cara mengatakan &ldquo;simpul
+      yang sama dua kali&rdquo;, dan memilih satu tafsiran berarti memilihkannya
+      untuk Anda."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip
+      iklan dan pengukuran datang dari Google, dan tombol donasi dari Buy Me a
+      Coffee. Tidak satu pun diberi satu karakter dari teks Anda. Setiap baris
+      yang membaca, mengurai, atau menulisnya disajikan dari asal ini dan
+      terdaftar di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan jaringan dan alat ini tidak
+      berubah, sebab memang tidak pernah ada langkah jaringan di dalamnya. Itu
+      bukti yang paling sederhana."""
+
+[[howto]]
+title = "Pilih arahnya."
+body = """
+ <em>YAML ke JSON</em> atau <em>JSON ke
+      YAML</em>. Catatan di bawah menunya menyebutkan apa yang hilang di arah itu
+      sebelum Anda menempel apa pun, bukan sesudahnya."""
+
+[[howto]]
+title = "Tempel, atau jatuhkan berkasnya."
+body = """
+ Apa pun yang bisa Anda sorot dan
+      salin akan jalan. Berkas yang dijatuhkan ke pemilih dibaca oleh peramban
+      Anda sendiri lalu dimasukkan ke kotaknya &mdash; tidak ada langkah unggah
+      yang perlu dilewati &mdash; dan akhiran <code>.json</code> atau
+      <code>.yaml</code> sekalian menetapkan arahnya untuk Anda."""
+
+[[howto]]
+title = "Pilih indentasinya."
+body = """
+ Dua spasi, empat, atau satu tab. Tab
+      hanya ditawarkan untuk JSON: YAML didefinisikan dengan spasi, dan tab bukan
+      indentasi yang sah di dalamnya."""
+
+[[howto]]
+title = "Baca galatnya di tempat galatnya berada."
+body = """
+ Pengurai yang gagal di
+      sini menyebut apa yang ditemuinya dan di baris serta kolom berapa,
+      alih-alih &ldquo;token tak terduga di posisi 4193&rdquo;. Biasanya itu sudah
+      cukup untuk membetulkan sebuah berkas konfigurasi tanpa membuka apa pun
+      lagi."""
+
+[[howto]]
+title = "Ambil hasilnya."
+body = """
+ Salin, atau unduh sebagai berkas, dinamai
+      menurut format tempat ia keluar."""
+
+[[faq]]
+q = "Apakah YAML saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Kedua pengurai dan kedua pencetak di halaman ini adalah fungsi
+        yang berjalan di peramban Anda sendiri, di perangkat keras Anda sendiri.
+        Alat ini tidak punya fungsi jaringan apa pun &mdash; tidak pernah
+        mengambil apa pun dan tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebutkan setiap alamat
+        yang boleh dihubunginya, tidak satu pun milik kami. Justru itulah
+        alasannya memakai ini untuk konfigurasi penggelaran: berkas semacam itu
+        penuh nama host, nama bucket, dan sesekali sebuah rahasia yang hendak
+        dipindahkan seseorang, dan menempelkannya ke pengubah milik orang lain
+        sama saja memberikannya."""
+
+[[faq]]
+q = "Apa yang hilang saat mengubah YAML ke JSON?"
+a = """
+        Komentarnya, karena JSON tidak punya tempat untuk menaruhnya. Jangkar,
+        alias, dan tag ditolak langsung alih-alih ditebak &mdash; masing-masing
+        mengatakan sesuatu yang tidak bisa dikatakan JSON, dan pengubah yang
+        diam-diam memilih satu tafsiran akan menyerahkan dokumen yang bukan isi
+        berkasnya. Arah sebaliknya tidak kehilangan apa pun: setiap dokumen JSON
+        sudah merupakan dokumen YAML."""
+
+[[faq]]
+q = "YAML saya menulis no dan JSON-nya keluar sebagai teks. Kenapa?"
+a = """
+        Karena itu memang teks, dan ini membaca YAML 1.2, bukan 1.1. Di YAML 1.1,
+        <code>yes</code>, <code>no</code>, <code>on</code>, dan <code>off</code>
+        adalah boolean, dan itulah kutu terkenal yang mengubah kode negara
+        Norwegia menjadi <code>false</code>. YAML 1.2 meninggalkannya, dan ini
+        juga: hanya <code>true</code>, <code>false</code>, <code>null</code>, dan
+        <code>~</code> yang dibaca sebagai sesuatu selain teks. Ke arah
+        sebaliknya, kata-kata itu ditulis kembali <em>dalam tanda kutip</em>,
+        meski di sini tanpa tanda kutip pun akan terbaca sebagai teks &mdash;
+        sebab apa pun yang membukanya nanti mungkin tidak begitu. PyYAML masih
+        memakai 1.1 sebagai bawaan. Membaca dengan ketat dan menulis dengan
+        hati-hati adalah satu-satunya paduan yang benar di kedua arah."""
+
+[[faq]]
+q = "Apakah urutan kunci saya dipertahankan?"
+a = """
+        Ya, di kedua arah, dan itu lebih sulit daripada kedengarannya. Pengubah
+        yang dibangun di atas <code>JSON.parse</code> diam-diam memindahkan kunci
+        yang menyerupai bilangan bulat ke depan, sehingga
+        <code>{"10":a,"2":b}</code> kembali sebagai <code>{"2":b,"10":a}</code>.
+        Angka mempertahankan digit yang Anda ketik, jadi id rekening dua puluh
+        digit tidak kehilangan tiga digit terakhirnya gara-gara sebuah double.
+        Kalau Anda memang <em>ingin</em> urut, ada kotak centangnya, dan ia
+        mengurutkan menurut cara kuncinya terbaca, bukan menurut titik kodenya."""
+
+[[faq]]
+q = "Bisakah ia mengubah beberapa dokumen YAML sekaligus?"
+a = """
+        Tidak, dan ia mengatakannya alih-alih memilih salah satu. Berkas dengan
+        pemisah <code>---</code> memuat lebih dari satu dokumen, dan JSON tidak
+        punya bentuk yang berarti &ldquo;beberapa dokumen&rdquo; &mdash; sebuah
+        array akan menjadi klaim yang tidak pernah dibuat berkas itu. Ubahlah satu
+        per satu."""
+
+[[faq]]
+q = "Kenapa tidak ada pemformat YAML di sini?"
+a = """
+        Karena YAML tidak punya bentuk mampat yang layak ditulis &mdash; yang
+        pendek adalah gaya flow, yang tak terbaca, dan tak terbaca justru
+        kebalikan dari alasan menyimpan sebuah berkas dalam YAML. Merapikan JSON,
+        XML, HTML, dan CSS adalah tugas
+        <a href="../format-json/">pemformat JSON</a>, dan ia merapikan YAML
+        juga."""
+
+[[faq]]
+q = "Sebesar apa berkas yang bisa ditangani?"
+a = """
+        Tidak ada batas yang dipasang di sini, sebab tidak ada server yang
+        membayarinya. Batas sesungguhnya adalah perangkat Anda sendiri: beberapa
+        megabita YAML aman, dan untuk dokumen yang sangat panjang halaman ini
+        menunggu jeda ketikan Anda sebelum mengubah, alih-alih berebut papan ketik
+        dengan Anda."""
+
+[[faq]]
+q = "Apakah gratis, dan perlukah akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa coba, dan
+        tidak ada batas berapa banyak yang Anda tempel. Situs ini memasang iklan,
+        dan itulah yang membiayainya; iklan-iklan itu tidak diberi apa pun tentang
+        teks Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan sambungan internet dan halaman
+        ini tetap bekerja. Itu sekaligus cara paling sederhana untuk membuktikan
+        tidak ada yang diunggah: alat yang mengirim konfigurasi Anda pergi untuk
+        diubah akan berhenti begitu sambungannya dicabut."""
+
+[schema]
+description = "Mengubah YAML ke JSON dan JSON ke YAML di peramban. Membaca YAML 1.2, mempertahankan urutan kunci dan digit persis setiap angka, serta menyebutkan apa yang hilang di tiap arah. Tidak ada yang diunggah."
+features = [
+  "Mengubah YAML ke JSON dan JSON ke YAML",
+  "Membaca YAML 1.2, jadi yes dan no tetap berupa teks",
+  "Mempertahankan urutan kunci dan digit persis setiap angka",
+  "Menolak jangkar, alias, dan tag alih-alih menebak maksudnya",
+  "Menyebut di baris dan kolom berapa galatnya, dengan kata-kata",
+  "Jalan pada berkas yang dijatuhkan sama seperti pada teks yang ditempel",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan sebuah file di sini"
+hint = "atau klik untuk memilih &mdash; berkas .yaml, .yml, atau .json"

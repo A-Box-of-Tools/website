@@ -1,0 +1,265 @@
+#
+# YAML-naar-JSON-omzetter - Dutch.
+#
+# Overrides for tools/yaml-to-json/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "YAML-naar-JSON-omzetter"
+heading = "YAML&nbsp;naar&nbsp;JSON <span class=\"h1-kw\">&mdash; en JSON terug naar YAML</span>"
+tagline = "Beide richtingen, en het zegt wat elke richting kost. Niets ervan wordt in de server van iemand anders geplakt."
+
+title = "YAML-naar-JSON-omzetter &mdash; beide kanten op, zonder upload"
+description = "Zet YAML om naar JSON en JSON naar YAML in je browser. Het leest YAML 1.2, dus yes en no blijven tekenreeksen, en het zegt precies wat elke richting kost. Er wordt niets geüpload, dus een configuratiebestand blijft op je eigen apparaat."
+og_title = "YAML omzetten zonder het in een server te plakken"
+og_description = "Een YAML- en JSON-omzetter die op je eigen apparaat draait. Sleutels houden hun volgorde, getallen hun cijfers, en wat je plakt gaat nergens heen."
+og_image_alt = "YAML-naar-JSON-omzetter - beide richtingen, zonder upload"
+
+pledge = """
+    Omzetten is rekenen aan een tekenreeks, hier, in deze pagina. De twee
+    parsers zijn met de hand geschreven en staan in <code>src/</code> &mdash;
+    <code>yaml.js</code> en <code>json.js</code> &mdash; en meer is er niet. Dit
+    gereedschap heeft überhaupt geen netwerkfunctie &mdash; niets op te halen,
+    niets te versturen &mdash; en dat weegt hier zwaarder dan bijna overal
+    anders op deze site: een YAML-bestand is meestal een deployconfiguratie, en
+    een deployconfiguratie zit meestal vol hostnamen, bucketnamen en geheimen."""
+
+live_hint = """
+      Je hoeft ons niet op ons woord te geloven: open de DevTools, kijk naar het
+      netwerktabblad en zet iets om. Geen enkele aanvraag draagt een teken van
+      wat je hebt geplakt. Of trek de stekker uit het internet en zet het toch
+      om."""
+
+read_first = """
+, <code>src/yaml.js</code> voor de lezer die een
+      anker weigert in plaats van te raden wat het betekende, en
+      <code>src/convert.js</code> voor waarom een omzetting één parser en één
+      printer is, met niets ertussen dat beide formaten tegelijk kent."""
+
+howto_heading = "Zo zet je YAML om naar JSON zonder het te uploaden"
+
+card = """
+            Maak van YAML JSON of van JSON YAML, en laat je vertellen wat de reis
+            kost. Plak een deployconfiguratie zonder hem aan iemand te geven."""
+
+[words]
+plural = "YAML en JSON"
+choose = "een bestand"
+analytics_extra = """, en niet de YAML en
+  niet de JSON die er doorheen gaat"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen groottelimiet"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Wat je plakt kan nergens heen."
+body = """
+ In het
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan is van ons. Er is hier geen eindpunt waar een geplakte
+      configuratie opgehaald zou kunnen worden, en er staat ook niets in de code
+      dat hem erheen zou sturen als dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er is nergens in
+      <code>src/</code> een <code>fetch</code>, een <code>XMLHttpRequest</code>
+      of een <code>sendBeacon</code> te vinden. Beide parsers en beide printers
+      zijn functies in deze pagina die een tekenreeks aannemen en een tekenreeks
+      teruggeven."""
+
+[[privacy]]
+title = "Het leest YAML 1.2, dus Noorwegen blijft Noorwegen."
+body = """
+ In YAML 1.1
+      was <code>no</code> een boolean, en dat is de beroemde bug die de landcode
+      van Noorwegen in <code>false</code> verandert. Dit leest 1.2, waar het de
+      tekenreeks is waar het op lijkt. De andere kant op worden die woorden
+      <em>tussen aanhalingstekens</em> teruggeschreven, want wat het bestand
+      daarna opent kan nog steeds een 1.1-lezer zijn.
+      <code>tests/js/text-convert.test.js</code> controleert beide helften."""
+
+[[privacy]]
+title = "Een omzetting die niet eerlijk kan zijn stopt liever."
+body = """
+ Een anker,
+      een alias of een tag in de YAML beëindigt de omzetting met een melding op
+      welke regel het staat, in plaats van een JSON-document dat stilletjes iets
+      anders betekent. JSON heeft geen manier om &sbquo;dezelfde node twee
+      keer&lsquo; te zeggen, en een uitleg kiezen zou voor jou beslissen zijn."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google en de donatieknop van Buy Me a Coffee. Geen
+      van hen krijgt een teken van je tekst. Elke regel die hem leest, parseert
+      of schrijft wordt vanaf deze origin geserveerd en staat in de
+      repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Trek de netwerkstekker eruit en het
+      gereedschap is onveranderd, want er zat nooit een netwerkstap in. Dat is
+      het eenvoudigste bewijs dat er is."""
+
+[[howto]]
+title = "Kies de richting."
+body = """
+ <em>YAML naar JSON</em> of <em>JSON naar
+      YAML</em>. De opmerking onder het menu zegt wat die richting kost voordat je
+      iets plakt, en niet erna."""
+
+[[howto]]
+title = "Plak het, of zet het bestand neer."
+body = """
+ Alles wat je kunt selecteren
+      en kopiëren werkt. Een bestand dat je op de kiezer zet wordt door je eigen
+      browser gelezen en in het vak gezet &mdash; er is geen uploadstap om over
+      te slaan &mdash; en een <code>.json</code>- of <code>.yaml</code>-extensie
+      kiest de richting alvast voor je."""
+
+[[howto]]
+title = "Kies de inspringing."
+body = """
+ Twee spaties, vier, of een tab. De tab
+      wordt alleen voor JSON aangeboden: YAML is in termen van spaties
+      gedefinieerd, en een tab is daarin geen geldige inspringing."""
+
+[[howto]]
+title = "Lees de fout waar de fout zit."
+body = """
+ Een parser die hier vastloopt
+      zegt wat hij aantrof en op welke regel en kolom, in plaats van
+      &sbquo;onverwacht token op positie 4193&lsquo;. Dat is meestal genoeg om een
+      configuratiebestand te repareren zonder iets anders te openen."""
+
+[[howto]]
+title = "Neem het resultaat mee."
+body = """
+ Kopieer het, of download het als
+      bestand, genoemd naar het formaat waarin het eruit kwam."""
+
+[[faq]]
+q = "Wordt mijn YAML ergens geüpload?"
+a = """
+        Nee. Beide parsers en beide printers op deze pagina zijn functies die in
+        je eigen browser draaien, op je eigen hardware. Dit gereedschap heeft
+        überhaupt geen netwerkfunctie &mdash; het haalt nooit iets op en stuurt
+        nooit iets weg &mdash; en in het <code>Content-Security-Policy</code> van
+        de pagina staat elk adres dat ze mag benaderen, en geen daarvan is van
+        ons. Dat is precies de reden om het voor een deployconfiguratie te
+        gebruiken: die zitten vol hostnamen, bucketnamen en af en toe een geheim
+        dat iemand wilde verplaatsen, en er een in de omzetter van iemand anders
+        plakken is hem weggeven."""
+
+[[faq]]
+q = "Wat gaat er verloren bij het omzetten van YAML naar JSON?"
+a = """
+        De commentaren, want JSON heeft nergens plaats voor een. Ankers, aliassen
+        en tags worden ronduit geweigerd in plaats van geraden &mdash; ze zeggen
+        elk iets wat JSON niet kan zeggen, en een omzetter die stilletjes een
+        uitleg koos zou je een document geven dat niet is wat het bestand zei. De
+        andere richting verliest niets: elk JSON-document is al een
+        YAML-document."""
+
+[[faq]]
+q = "Mijn YAML zegt no en de JSON kwam eruit als tekenreeks. Waarom?"
+a = """
+        Omdat het er een is, en dit YAML 1.2 leest in plaats van 1.1. In YAML 1.1
+        waren <code>yes</code>, <code>no</code>, <code>on</code> en
+        <code>off</code> booleans, en dat is de beroemde bug die de landcode van
+        Noorwegen in <code>false</code> verandert. YAML 1.2 heeft dat laten vallen
+        en dit ook: alleen <code>true</code>, <code>false</code>,
+        <code>null</code> en <code>~</code> worden als iets anders dan tekst
+        gelezen. De andere kant op worden die woorden <em>tussen
+        aanhalingstekens</em> teruggeschreven, ook al zou dit ze zonder ook als
+        tekst lezen, want wat het bestand daarna opent doet dat misschien niet.
+        PyYAML gebruikt nog steeds 1.1 als standaard. Streng lezen en behoudend
+        schrijven is de enige combinatie die beide kanten op klopt."""
+
+[[faq]]
+q = "Blijft de volgorde van mijn sleutels bewaard?"
+a = """
+        Ja, beide kanten op, en dat is lastiger dan het klinkt. Een omzetter die
+        op <code>JSON.parse</code> gebouwd is schuift sleutels die op gehele
+        getallen lijken stilletjes naar voren, dus <code>{"10":a,"2":b}</code>
+        komt terug als <code>{"2":b,"10":a}</code>. Getallen houden de cijfers die
+        je typte, dus een rekeningnummer van twintig cijfers raakt zijn laatste
+        drie niet kwijt aan een double. Wil je ze <em>wel</em> gesorteerd, dan is
+        er een vinkje, en dat sorteert naar hoe de sleutels lezen in plaats van
+        naar hun codepunten."""
+
+[[faq]]
+q = "Kan het meerdere YAML-documenten tegelijk omzetten?"
+a = """
+        Nee, en het zegt dat in plaats van er een te kiezen. Een bestand met
+        <code>---</code>-scheidingen bevat meer dan één document, en JSON heeft
+        geen vorm die &sbquo;meerdere documenten&lsquo; betekent &mdash; een array
+        zou een bewering zijn die het bestand nooit deed. Zet ze een voor een
+        om."""
+
+[[faq]]
+q = "Waarom is er hier geen YAML-formatter?"
+a = """
+        Omdat YAML geen samengeperste vorm heeft die het schrijven waard is: de
+        korte is flow-stijl, die onleesbaar is, en onleesbaar is het tegendeel van
+        de reden om een bestand in YAML te houden. JSON, XML, HTML en CSS
+        uitleggen is het werk van de
+        <a href="../json-formatteren/">JSON-formatter</a>, en die legt YAML ook
+        uit."""
+
+[[faq]]
+q = "Hoe groot mag het bestand zijn?"
+a = """
+        Er is hier geen limiet ingesteld, want er is geen server die ervoor
+        betaalt. Het echte plafond is je eigen apparaat: een paar megabyte YAML
+        gaat prima, en bij een heel lang document wacht de pagina op een pauze in
+        je typen voordat ze omzet, in plaats van met je om het toetsenbord te
+        vechten."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
+        geen limiet op hoeveel je plakt. De site draait op advertenties, want die
+        betalen hem; de advertenties krijgen niets over je tekst."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, trek daarna de stekker uit het internet en
+        ze blijft werken. Dat is meteen de eenvoudigste manier om te bewijzen dat
+        er niets geüpload wordt: gereedschap dat je configuratie wegstuurt om
+        omgezet te worden zou stoppen op het moment dat je de stekker eruit
+        trekt."""
+
+[schema]
+description = "Zet YAML om naar JSON en JSON naar YAML in de browser. Leest YAML 1.2, houdt de volgorde van de sleutels en de exacte cijfers van elk getal, en zegt wat elke richting kost. Er wordt niets geüpload."
+features = [
+  "Zet YAML om naar JSON en JSON naar YAML",
+  "Leest YAML 1.2, dus yes en no blijven tekenreeksen",
+  "Houdt de volgorde van de sleutels en de exacte cijfers van elk getal",
+  "Weigert ankers, aliassen en tags in plaats van te raden wat ze betekenden",
+  "Zegt in woorden op welke regel en kolom een fout zit",
+  "Werkt op een neergezet bestand net zo goed als op geplakte tekst",
+  "Draait offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep hier een bestand naartoe"
+hint = "of klik om te bladeren &mdash; een .yaml-, .yml- of .json-bestand"

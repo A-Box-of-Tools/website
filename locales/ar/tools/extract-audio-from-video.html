@@ -1,0 +1,109 @@
+<main id="main">
+  <!-- الخطوة 1 &mdash; الملف -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر فيديو</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>الملف</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>الحجم</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>المدة</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>الصوت</dt><dd id="src-channels">&mdash;</dd></div>
+      <div><dt>معدّل العيّنات</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <!--
+      Only shown when the file did not declare its own sample rate. It matters:
+      in that case the samples handed back are not the ones on the disk, and a
+      tool that says nothing about it is claiming more than it did.
+    -->
+    <p id="rate-note" class="path-note" hidden>
+      لم يذكر هذا الملف المعدّل الذي سُجِّل عنده، فقُرئ عند 48 kHz. الصوت سليم؛
+      أما عدد العيّنات فليس العدد الموجود على القرص.
+    </p>
+  </section>
+
+  <!-- الخطوة 2 &mdash; ما يخرج -->
+  <section class="card" id="take-card" inert>
+    <h2><span class="step">2</span> خذ الصوت</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="channels">القنوات</label>
+        <select id="channels">
+          <option value="as-is" selected>اتركها كما هي</option>
+          <option value="mono">امزجها إلى أحادي الصوت</option>
+        </select>
+        <p class="field-note" id="channels-note">
+          أحادي الصوت يخفض الملف إلى النصف، وهو ما يريده التفريغ النصّي أو تسجيل
+          الكلام. وهو يأخذ متوسّط القناتين بدل أن يرمي إحداهما.
+        </p>
+      </div>
+    </div>
+
+    <!--
+      No button. A WAV is the samples with a header in front of them, so writing
+      one is fast enough to redo whenever a setting changes - and a file that is
+      always the one the settings describe needs nothing pressed to make it so.
+    -->
+    <div id="result" class="result" hidden>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>نزّل الصوت</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">تُقرأ الأصوات&hellip;</span>
+    <span data-phrase="audio.empty">هذا الملف فارغ.</span>
+    <!--
+      Two causes, one message, deliberately. decodeAudioData throws the same
+      error for a file the browser cannot read and for a video that simply has
+      no audio track, and nothing this page can reach tells the two apart. On
+      THIS tool the second is the likely one - a screen recording made without a
+      microphone is silent, and its owner is exactly the person who comes here -
+      so naming only the format would send them off to convert a file that was
+      never the problem. Both possibilities, in the order they actually happen.
+    -->
+    <span data-phrase="audio.nodecode">تعذّرت قراءة أي صوت من هذا الملف. فإمّا أنه بلا مسار صوتي
+      &mdash; تسجيل الشاشة دون ميكروفون يكون صامتاً &mdash; وإمّا أن هذا المتصفّح لن يقرأ الصيغة.
+      وتعمل MP4 وMOV وWebM وM4V في الغالب دائماً؛ أما AVI وWMV ومعظم MKV فلا.</span>
+    <span data-phrase="audio.nosound">لا صوت في هذا الملف &mdash; فيه صورة ولا شيء غيرها.</span>
+    <span data-phrase="wav.nochannels">لا قنوات تُكتَب.</span>
+    <span data-phrase="wav.uneven">أطوال القنوات مختلفة، وهذا ما لا ينبغي أن يكون ممكناً.</span>
+    <span data-phrase="channels.mono">أحادي الصوت</span>
+    <span data-phrase="channels.stereo">ستيريو</span>
+    <span data-phrase="channels.many">أكثر من قناتين</span>
+    <span data-phrase="rate.khz">{n} kHz</span>
+    <span data-phrase="out.info">WAV &mdash; {size}، {length}، {channels} عند {rate} kHz</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">فيديوك لم يذهب إلى أي مكان. {total} ملفاً
+      حُمِّلت. {platform}</span>
+    <span data-phrase="net.dirty">اتصل شيءٌ بـ {hosts}، وهو ما لا تفعله هذه
+      الأداة أبداً. {platform}</span>
+    <span data-phrase="net.platform.one">نصوصُ الإعلانات والقياس وزرّ التبرّع
+      الخاصة بالصفحة حُمِّلت من مضيفٍ {hosts}؛ ولم يُعطَ واحد منها بايتاً منه.</span>
+    <span data-phrase="net.platform.many">نصوصُ الإعلانات والقياس وزرّ التبرّع
+      الخاصة بالصفحة حُمِّلت من {hosts} مضيفاً؛ ولم يُعطَ واحد منها بايتاً منه.</span>
+  </div>
+</main>

@@ -73,6 +73,14 @@ complete = true
 "timelapse-video" = "creare-timelapse"
 "hash-checksum" = "verificare-checksum"
 "share-text" = "condividere-testo"
+# Si cerca il suono, non il formato: "mp3" non c'e apposta, perche la pagina
+# non ne scrive uno e un indirizzo non deve promettere quello che non fa.
+"extract-audio-from-video" = "estrarre-audio-da-video"
+"xml-formatter" = "formattare-xml"
+"yaml-to-json" = "convertire-yaml-in-json"
+# "Confrontare altezze" e quello che si digita; il grafico e il risultato e
+# resta nel titolo.
+"compare-heights" = "confrontare-altezze"
 # Il DICOM resta DICOM: e la sigla che sta scritta sul CD che consegna
 # l’ospedale, e nessuno la cerca tradotta.
 "dicom-viewer" = "visualizzatore-dicom"
@@ -135,6 +143,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "guide/modificare-una-gif-fotogramma-per-fotogramma"
 "guides/make-a-qr-code-and-prove-it-scans" = "guide/creare-un-codice-qr-e-provare-che-si-legge"
 "guides/clean-up-a-voice-memo" = "guide/ripulire-un-memo-vocale"
+"guides/make-a-height-comparison-chart" = "guide/fare-un-grafico-di-altezze"
 
 #
 # ---------------------------------------------------------------------------

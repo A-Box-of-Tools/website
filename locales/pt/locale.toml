@@ -81,6 +81,14 @@ complete = true
 "timelapse-video" = "fazer-timelapse"
 "hash-checksum" = "verificar-checksum"
 "share-text" = "compartilhar-texto"
+# Procura-se o som, nao o formato: "mp3" nao entra de proposito, porque a
+# pagina nao escreve um e um endereco nao deve prometer o que nao cumpre.
+"extract-audio-from-video" = "extrair-audio-de-video"
+"xml-formatter" = "formatar-xml"
+"yaml-to-json" = "converter-yaml-para-json"
+# "Comparar alturas" e o que se digita; o grafico e o resultado e fica no
+# titulo.
+"compare-heights" = "comparar-alturas"
 # DICOM continua DICOM: e a sigla que vem escrita no disco que o hospital
 # entrega, e ninguem a procura traduzida.
 "dicom-viewer" = "visualizador-dicom"
@@ -139,6 +147,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "guias/editar-um-gif-quadro-a-quadro"
 "guides/make-a-qr-code-and-prove-it-scans" = "guias/criar-um-codigo-qr-e-provar-que-escaneia"
 "guides/clean-up-a-voice-memo" = "guias/limpar-uma-nota-de-voz"
+"guides/make-a-height-comparison-chart" = "guias/fazer-um-grafico-de-alturas"
 
 #
 # ---------------------------------------------------------------------------

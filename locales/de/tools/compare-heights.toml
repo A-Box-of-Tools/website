@@ -1,0 +1,371 @@
+#
+# Größenvergleich - German.
+#
+# Overrides for tools/compare-heights/tool.toml. Only words: the slug, the
+# category, the icon and the list of shared parts stay where they are.
+#
+
+name = "Größenvergleich"
+heading = "Größenvergleich <span class=\"h1-kw\">&mdash; ein Diagramm nebeneinander, zum Herunterladen</span>"
+tagline = "Größen eintippen, Bild mitnehmen. Zum Zeichnen wird nichts verschickt."
+
+title = "Größenvergleich erstellen &mdash; kostenlos, ohne Anmeldung, ohne Upload"
+description = "Vergleichen Sie Größen nebeneinander. Nehmen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen, ein Kleinkind und Gegenstände dazu &mdash; eine Tür, ein Fenster, ein Whiteboard, einen Getränkeautomaten &mdash; in Zentimetern oder in Fuß und Zoll, und laden Sie das Diagramm als PNG oder SVG herunter. Gezeichnet wird es in Ihrem Browser."
+og_title = "Größen nebeneinander vergleichen und das Bild behalten"
+og_description = "Stellen Sie zwei Erwachsene, ein Kind, ein Kleinkind und eine Türöffnung auf denselben Maßstab, in Zentimetern oder in Fuß und Zoll, und laden Sie das Ergebnis herunter. Kein Konto, kein Wasserzeichen, und keine Namensliste, die Ihr Gerät verlässt."
+og_image_alt = "Größenvergleich - Größen nebeneinander vergleichen, ohne Upload"
+
+pledge = """
+    Ein Größendiagramm ist Rechnen und eine Zeichnung: Es gibt keine Datei zu
+    verschicken und keinen Dienst zu fragen. Der Mann, die Frau, der Junge und
+    das Mädchen sind gemeinfreie Zeichnungen, die mit dieser Seite ausgeliefert
+    werden; das Kleinkind wird hier aus einer Tabelle von Körperproportionen
+    aufgebaut, und deshalb sieht es aus wie ein Kleinkind und nicht wie ein
+    kleiner Erwachsener. Jeder Schritt davon passiert in rund sechshundert
+    Zeilen JavaScript auf dieser Seite, die Sie lesen können. Eine Netzfunktion
+    gibt es überhaupt nicht, und das ist hier wichtig, denn was Sie eintippen,
+    ist eine Liste von Menschen und wie groß jeder davon ist."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und tippen Sie einen Namen und eine Größe ein.
+      Keine einzige Anfrage trägt ein Zeichen von beidem. Oder trennen Sie die
+      Internetverbindung und erstellen Sie das Diagramm trotzdem."""
+
+read_first = """
+, <code>src/traced.js</code> und
+      <code>vendor/</code> für die vier gezeichneten Figuren und dafür, woher
+      ihre Bilder stammen, <code>src/figures.js</code> für die
+      Proportionstabelle, aus der das Kleinkind aufgebaut wird,
+      <code>src/units.js</code> dafür, wie aus einer getippten Größe eine Zahl
+      wird und wie der Maßstab beschriftet ist, <code>src/chart.js</code> für
+      die Anordnung und <code>src/save.js</code> für die beiden Downloads
+      &mdash; das SVG auf dem Bildschirm und dasselbe SVG, auf ein Canvas
+      gemalt."""
+
+howto_heading = "So erstellen Sie ein Größenvergleichsdiagramm"
+
+card = """
+            Stellen Sie zwei Erwachsene, ein Kind und eine Türöffnung auf
+            denselben Maßstab &mdash; in Zentimetern oder in Fuß und Zoll
+            &mdash; und laden Sie es als PNG oder SVG herunter."""
+
+[words]
+plural = "Namen, Größen und das Diagramm daraus"
+choose = "wer aufs Diagramm kommt"
+analytics_extra = """, und weder einen
+  Namen noch eine Größe, die Sie eintippen"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Kein Wasserzeichen"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Eine Liste von Menschen ist keine Kleinigkeit, die man weggibt."
+body = """
+ Die
+      meisten Größendiagramme wollen ein Konto, und die anderen haben immer noch
+      einen Server, der jeden Namen und jede Zahl sieht, die Sie eintippen. Was
+      Sie hier eintippen, ist, wer zu Ihrer Familie gehört und wie groß jeder
+      davon ist, oft mit dem Alter eines Kindes, das die Figur daneben verrät.
+      Nichts davon wird irgendwohin geschickt, denn es gibt hier nichts, wohin es
+      gehen könnte."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ In <code>src/</code> gibt es nirgends
+      ein <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>. In der Content-Security-Policy steht jede Adresse,
+      die diese Seite kontaktieren darf, und keine einzige davon gehört uns."""
+
+[[privacy]]
+title = "Zwischen zwei Besuchen wird auch nichts gemerkt."
+body = """
+ Das Diagramm
+      lebt auf der Seite und sonst nirgends. Schließen Sie den Tab, und die Liste
+      ist weg: Kein Konto hält sie, kein Cookie trägt sie, und in den Speicher
+      dieses Browsers wird nichts geschrieben. Deshalb ist ein Diagramm, das Sie
+      behalten wollen, auch ein Diagramm, das Sie herunterladen."""
+
+[[privacy]]
+title = "Der Link trägt das Diagramm nicht."
+body = """
+ Etliche Werkzeuge dieser Art
+      packen die ganze Liste in die Adresszeile, damit sie sich teilen lässt, und
+      machen damit aus jedem Namen und jeder Größe etwas, das alles protokolliert,
+      wodurch der Link läuft &mdash; ein Chat-Server, ein Mail-Scanner, jemandes
+      Browserverlauf. Die Adresse dieser Seite ändert sich beim Tippen nie."""
+
+[[privacy]]
+title = "Das PNG entsteht aus dem SVG, das auf dem Bildschirm steht."
+body = """
+ Der
+      Download ist keine zweite Darstellung, die von der Vorschau abweichen
+      könnte. Dieselbe Auszeichnung wird dem Browser übergeben und auf ein Canvas
+      gemalt, und genau deshalb geht das auch mit gezogenem Netzstecker: Es gibt
+      keine Schrift abzurufen und kein Bild darin zu laden."""
+
+[[privacy]]
+title = "Die Zeichnungen sind hier, sie werden nicht abgerufen."
+body = """
+ Die vier
+      gezeichneten Figuren sind gemeinfreie Bilder, und sie kommen mit dem Rest
+      der Seite von dieser Domain &mdash; keine Icon-Schriftart, kein CDN, kein
+      Sprite-Bild, das beim Tippen vom Server eines anderen geholt wird. Deshalb
+      zeichnet das Diagramm auch ohne Netzverbindung weiter."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee.
+      Keinem von ihnen wird ein Name oder eine Größe übergeben. Jede Zeile, die
+      aus Ihrer Liste ein Bild macht, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug arbeitet unverändert weiter, denn einen Netzschritt gab es darin
+      nie. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Erst alle eintragen, dann über das Aussehen nachdenken."
+body = """
+ Eine
+      Zeile ist eine Figur, ein Name, eine Größe und eine Farbe. Der Name ist
+      freiwillig &mdash; ein Diagramm aus zwei namenlosen Silhouetten mit ihren
+      Größen darüber ist oft genau das, was jemand will &mdash; und die Pfeile an
+      jeder Zeile schieben sie nach links oder rechts, falls die Reihenfolge
+      zählt."""
+
+[[howto]]
+title = "Tippen Sie die Größe so, wie Sie sie schreiben."
+body = """
+ <code>173</code>,
+      <code>1,73 m</code>, <code>5'8\"</code>, <code>68 in</code> und
+      <code>5 ft 8</code> werden alle richtig gelesen. Die Zeile unter dem Feld
+      zeigt, was verstanden wurde, und zwar in beiden Systemen. Ein Lesefehler
+      ist damit sichtbar, bevor gezeichnet wird, und nicht erst nach dem Drucken.
+      Eine nackte Zahl sind Zentimeter auf einem metrischen Diagramm und Zoll auf
+      einem imperialen, und eine nackte Zahl unter drei sind Meter &mdash;
+      niemand ist 1,73 cm groß."""
+
+[[howto]]
+title = "Wählen Sie die Figur, die zur Person passt."
+body = """
+ Ein Zweijähriger ist
+      etwa viereinhalb Kopfhöhen groß und ein Erwachsener siebeneinhalb, ein als
+      geschrumpfter Erwachsener gezeichnetes Kleinkind sieht also auf eine Weise
+      falsch aus, die schwer zu benennen und leicht zu sehen ist. Es gibt einen
+      Jungen und ein Mädchen für das Schulalter und ein Kleinkind darunter, jedes
+      mit eigenen Proportionen statt als klein gemachter Erwachsener, und genau
+      das macht den größten Teil davon aus, dass ein Familiendiagramm nach einer
+      Familie aussieht."""
+
+[[howto]]
+title = "Stellen Sie etwas Vertrautes daneben."
+body = """
+ Eine Zahl ist abstrakt, eine
+      Türöffnung nicht. Ein einziger Gegenstand in einer Größe, die jeder kennt
+      &mdash; eine Tür, ein Fenster, ein Whiteboard aus dem Klassenzimmer, ein
+      Getränkeautomat &mdash; macht aus einem Diagramm, das zwei Größen nennt,
+      eines, das sie zeigt. Das Menü hält zwanzig davon bereit, gruppiert, und
+      jeder wird zu einer gewöhnlichen Zeile, über die Sie Ihre eigenen Zahlen
+      tippen können. Gegenstände haben neben der Höhe auch eine Breite, eine Tür
+      ist also 203 auf 81 und kein Streifen."""
+
+[[howto]]
+title = "Stellen Sie den Maßstab auf die Einheiten Ihrer Leser ein."
+body = """
+ Der
+      Wechsel zwischen Zentimetern und Fuß schreibt um, was in den Feldern steht,
+      statt es umzudeuten. Das Diagramm selbst bewegt sich also nicht, nur die
+      Schreibweise. Ist das Diagramm für zwei Publika, so steht die Größe über
+      jeder Figur in der Einheit des Diagramms, und die Zeile unter jedem Feld
+      hat beide."""
+
+[[howto]]
+title = "Das PNG zum Einfügen, das SVG zum Drucken."
+body = """
+ Das PNG ist ein Bild
+      in der Pixelhöhe, die Sie eingestellt haben, und das ist es, was ein
+      Chatfenster, ein Dokument oder eine Folie will. Das SVG ist das Diagramm
+      als Anweisungen, es druckt also in jeder Größe scharf und lässt sich
+      hinterher noch von allem umfärben, was Vektoren öffnet."""
+
+[[faq]]
+q = "Wird irgendetwas, das ich eintippe, irgendwohin geschickt?"
+a = """
+        Nein. Das Diagramm wird von JavaScript auf dieser Seite gezeichnet, auf
+        Ihrem eigenen Gerät, und eine Netzfunktion hat dieses Werkzeug überhaupt
+        nicht &mdash; es ruft nie etwas ab und sendet nie etwas. In der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die
+        sie kontaktieren darf; keine davon gehört uns. Das gehört hier deutlich
+        gesagt, denn die Eingabe ist eine Liste von Namen und wie groß jeder
+        davon ist, und das ist persönlicher als das meiste, womit diese Seite
+        umgeht."""
+
+[[faq]]
+q = "Kann ich das Diagramm herunterladen?"
+a = """
+        Ja, als PNG oder als SVG, ohne Wasserzeichen und ohne Konto. Das PNG wird
+        in der Pixelhöhe gezeichnet, die Sie einstellen, und ist das, was man in
+        ein Dokument, eine Folie oder einen Chat einfügt. Das SVG ist das
+        Diagramm als Anweisungen statt als Pixel: Es druckt in jeder Größe scharf
+        und lässt sich später in jedem Vektorprogramm öffnen und umfärben. Beide
+        entstehen aus derselben Auszeichnung, die auf dem Bildschirm steht,
+        keines von beiden kann also von der Vorschau abweichen."""
+
+[[faq]]
+q = "Wie schreibe ich die Größe &mdash; in Zentimetern oder in Fuß?"
+a = """
+        Wie Sie wollen, in jeder Zeile, so wie Sie es normalerweise schreiben.
+        <code>173</code>, <code>173 cm</code>, <code>1,73 m</code>,
+        <code>5'8\"</code>, <code>5 ft 8 in</code> und <code>68 in</code> werden
+        alle verstanden, und die Zeile unter dem Feld zeigt in beiden Systemen,
+        was gelesen wurde. Eine nackte Zahl sind Zentimeter, wenn das Diagramm
+        metrisch ist, und Zoll, wenn es imperial ist; eine nackte Zahl unter drei
+        wird als Meter genommen, denn 1,73 cm ist keine Größe, die jemand
+        eintippt."""
+
+[[faq]]
+q = "Warum sieht das Kleinkind nicht aus wie ein kleiner Erwachsener?"
+a = """
+        Weil es keiner ist. Körperproportionen ändern sich mit dem Alter: Ein
+        Zweijähriger ist rund viereinhalb Kopfhöhen groß, ein Achtjähriger sechs,
+        ein Erwachsener siebeneinhalb &mdash; der Kopf ist also fast ein Viertel
+        eines Kleinkindes und ein Achtel eines Erwachsenen. Der Junge und das
+        Mädchen sind Zeichnungen wirklicher Kinder, und das Kleinkind hat seine
+        eigene Proportionstabelle, statt eine verkleinerte Silhouette zu sein.
+        Deshalb sieht ein Familiendiagramm nach einer Familie aus und nicht nach
+        vier Erwachsenen in verschiedenen Größen."""
+
+[[faq]]
+q = "Woher kommen die Figuren?"
+a = """
+        Vier der fünf sind Zeichnungen anderer Leute, alle gemeinfrei: der Mann
+        von pitr, die Frau von Madeleine Price Ball, das Mädchen von
+        OpenClipart-Vectors und der Junge von Ryan Kissinger für die
+        NIH-BioArt-Bibliothek. Jede Datei wird mit dieser Seite in
+        <code>vendor/</code> so ausgeliefert, wie sie veröffentlicht wurde, Sie
+        können sie also gegen die Originale prüfen. Gemeinfrei verlangt nichts,
+        und darum geht es: Die Zeichnung landet in einem Bild, das Sie
+        herunterladen, und eine Lizenz, die eine Namensnennung verlangt, würde
+        diese Anforderung an Ihr Diagramm heften. Nur das Kleinkind wird vom Code
+        dieser Seite selbst gezeichnet &mdash; unterhalb des Schulalters war
+        nichts Freies zu bekommen."""
+
+[[faq]]
+q = "Wie viele Menschen passen auf ein Diagramm?"
+a = """
+        Zwölf. Das ist keine technische Grenze &mdash; die Zeichnung würde
+        bereitwillig dreißig machen &mdash; aber jenseits eines Dutzends werden
+        die Spalten schmaler als die Namen darüber, und das Bild hört auf, lesbar
+        zu sein. Wenn Sie mehr brauchen, gibt Ihnen das Abschalten der Namen die
+        Breite zurück, oder zwei Diagramme sagen es besser als eines."""
+
+[[faq]]
+q = "Kann ich einen Gegenstand aufs Diagramm setzen?"
+a = """
+        Ja &mdash; ein einfaches Rechteck nimmt eine Höhe und eine Breite, alles
+        mit zwei Maßen kommt also neben die Menschen. Das Menü hält zwanzig zum
+        Anfangen bereit, in vier Gruppen: Türen und Fenster, Schule und Büro (ein
+        Whiteboard, ein Schreibtisch, ein Aktenschrank, eine Leinwand), Dinge aus
+        der Stadt (ein Getränkeautomat, eine Mülltonne, ein Basketballkorb, ein
+        20-Fuß-Seecontainer) und Dinge aus dem Haus. Einige davon sind echte
+        Normen und einige typische Maße, und die Seite sagt das laut; jedes kommt
+        als gewöhnliche Zeile an, über die Sie tippen können. Ein vertrauter
+        Gegenstand tut für ein Diagramm mehr als beliebig viele zusätzliche
+        Menschen: Er macht aus einem Vergleich ein Gefühl für Größe."""
+
+[[faq]]
+q = "Gibt es eine Figur für einen Hund oder eine Katze?"
+a = """
+        Nein, und das ist eine bewusste Lücke und kein Versehen. Beide wurden
+        gebaut &mdash; im Profil, stehend, den Kopf auf Schulterhöhe, damit die
+        Oberkante der Zeichnung die Größe daneben wäre, denn dort misst jeder
+        Rassestandard ein Tier. Sie wurden nicht gut genug, um sie
+        auszuliefern: Ein Vierbeiner von der Seite neben vier Menschen von vorn
+        liest sich als Fehler, selbst wenn die Zeichnung gut ist. Ein Rechteck
+        auf Schulterhöhe des Tieres ist einstweilen ehrlich."""
+
+[[faq]]
+q = "Kann ich das Diagramm mit einem Link teilen?"
+a = """
+        Von hier aus nicht, und das ist Absicht. Werkzeuge, die es anbieten,
+        machen es, indem sie die ganze Liste in die Adresse packen, und damit
+        landet jeder Name und jede Größe in allem, wodurch der Link reist &mdash;
+        in den Protokollen eines Chat-Servers, in einem Mail-Scanner, in jemandes
+        Browserverlauf, in einem Dienst, der Linkvorschauen abruft. Laden Sie das
+        Bild herunter und schicken Sie das: Es sagt dasselbe und trägt keine
+        Liste mit sich."""
+
+[[faq]]
+q = "Ist es kostenlos, und darf ich das Diagramm gewerblich nutzen?"
+a = """
+        Es ist kostenlos, es gibt kein Konto und kein Wasserzeichen, und Sie
+        dürfen das Ergebnis in einen Bericht, eine Präsentation, ein Inserat oder
+        ein Produkt setzen. Bezahlt wird die Seite über Werbung. An einem
+        Diagramm, das Sie hier machen, gehört uns nichts, und aufgehoben wird
+        nichts."""
+
+[[faq]]
+q = "Warum ist der Maßstab in Zehnern und nicht in Einern?"
+a = """
+        Weil der Abstand danach gewählt wird, wie viele Linien das Bild tragen
+        kann, und nicht nach einer festen Zahl. Ein Diagramm mit zwei Erwachsenen
+        bekommt alle zehn Zentimeter eine Linie; stellen Sie einen Basketballkorb
+        dazu, und die Linien rücken auf fünfundzwanzig, denn neunzig Linien auf
+        einem Bild sind ein grauer Schleier und kein Maßstab. In Fuß und Zoll ist
+        die Leiter ein, drei, sechs und zwölf Zoll, damit die Linien auf ganzen
+        Zoll landen statt daneben."""
+
+[[faq]]
+q = "Kann ich das Diagramm auf eine dunkle Folie setzen?"
+a = """
+        Ja. Stellen Sie den Hintergrund auf die Farbe, auf der es liegen wird,
+        und der Maßstab und die Schrift wechseln passend dazu zwischen dunkel und
+        hell &mdash; ausgerechnet aus der Helligkeit der Farbe und nicht geraten.
+        Setzen Sie dann das Häkchen bei &bdquo;Gar kein Hintergrund&ldquo;, wenn
+        das Bild selbst transparent sein soll: Über die Farbe der Schrift
+        entscheidet immer noch die gewählte Farbe, ein transparentes Diagramm für
+        eine marineblaue Folie kommt darauf also lesbar heraus."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung,
+        und sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür,
+        dass nichts hochgeladen wird: Ein Werkzeug, das Ihre Liste wegschickt,
+        um ein Diagramm zeichnen zu lassen, bliebe in dem Moment stehen, in dem
+        Sie die Verbindung trennen."""
+
+[schema]
+description = "Ein Größenvergleichsdiagramm im Browser zeichnen. Fügen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen, ein Kleinkind und Gegenstände mit ihren Maßen in Zentimetern oder in Fuß und Zoll hinzu, ordnen Sie sie, färben Sie sie und laden Sie das Ergebnis als PNG oder SVG herunter. Hochgeladen wird nichts."
+features = [
+  "Bis zu zwölf Figuren auf einem Maßstab, in beliebiger Reihenfolge",
+  "Figuren für Mann, Frau, Kind und Kleinkind, und ein schlichtes Rechteck für Gegenstände",
+  "Gemeinfrei gezeichneter Mann, Frau, Junge und Mädchen, und ein Kleinkind mit eigenen Proportionen statt eines verkleinerten Erwachsenen",
+  "Größen als 173, 1,73 m, 5'8\", 68 in oder 5 ft 8 getippt, mit angezeigter Lesung",
+  "Zentimeter oder Fuß und Zoll, umschaltbar, ohne dass sich jemandes Größe ändert",
+  "Zwanzig fertige Gegenstände: Türen, Fenster, ein Whiteboard, ein Getränkeautomat, ein Seecontainer, Möbel",
+  "Ein Maßstab, dessen Abstand sich danach richtet, was das Bild tragen kann",
+  "Jede Hintergrundfarbe oder gar keine, mit einer Schrift, die darauf lesbar bleibt",
+  "PNG in jeder Pixelhöhe, und ein SVG, das in jeder Größe scharf druckt",
+  "Kein Wasserzeichen, kein Konto, kein Link, der Ihre Liste mit sich trägt",
+  "Läuft offline; es wird nichts hochgeladen",
+]

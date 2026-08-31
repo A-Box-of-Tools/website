@@ -1,0 +1,282 @@
+#
+# Ekstrak audio dari video - Indonesian.
+#
+# Overrides for tools/extract-audio-from-video/tool.toml. Only words: the slug,
+# the category, the icon, the CSP and the list of shared parts stay where they
+# are.
+#
+
+name = "Ekstrak Audio dari Video"
+heading = "Ekstrak&nbsp;Audio&nbsp;dari&nbsp;Video <span class=\"h1-kw\">&mdash; suaranya saja, sebagai WAV</span>"
+tagline = "Jatuhkan sebuah video dan ambil suaranya. Gambarnya tidak pernah didekode, dan tidak ada yang diunggah."
+
+title = "Ekstrak Audio dari Video &mdash; gratis, di peramban Anda, tanpa unggah"
+description = "Ambil suara dari MP4, MOV, atau WebM dan simpan sebagai WAV. Video tidak pernah meninggalkan perangkat Anda dan gambarnya tidak pernah didekode, karena seluruh pekerjaan berjalan di peramban Anda sendiri."
+og_title = "Mengambil suara dari sebuah video tanpa mengunggahnya"
+og_description = "Jatuhkan MP4, MOV, atau WebM lalu simpan audionya sebagai WAV. Hanya jalur audio yang didekode, dan berkasnya tidak pergi ke mana pun."
+og_image_alt = "Ekstrak Audio dari Video - suaranya saja, tanpa unggah"
+
+pledge = """
+    Dekodernya adalah yang sudah ada di peramban Anda, jalur kode yang sama
+    yang memutar berkas di elemen <code>&lt;video&gt;</code>, dan yang diminta
+    darinya hanyalah jalur audio. Menulis WAV berarti menaruh header empat puluh
+    empat bita di depan sampel, ada di <code>src/wav.js</code>. Tidak ada
+    enkoder di dalamnya, tidak ada langkah unggah, dan halaman ini tidak punya
+    fungsi jaringan apa pun."""
+
+live_hint = """
+      Anda tidak perlu percaya begitu saja: buka DevTools, perhatikan tab
+      jaringan, lalu jatuhkan sebuah video. Tidak satu pun permintaan membawa
+      satu bita darinya. Atau cabut sambungan internet dan ambil suaranya
+      tetap."""
+
+read_first = """
+, <code>src/decode.js</code> untuk satu-satunya
+      dekoder yang ada dan alasan gambar tidak pernah diminta, dan
+      <code>src/samplerate.js</code> untuk pembacaan header yang mencegah
+      rekaman Anda diambil ulang sampelnya diam-diam."""
+
+howto_heading = "Cara mengekstrak audio dari video tanpa mengunggahnya"
+
+card = """
+            Jatuhkan MP4, MOV, atau WebM lalu simpan suaranya saja. Hanya jalur
+            audio yang didekode, gambarnya tidak pernah dibaca, dan berkasnya
+            tidak pernah meninggalkan perangkat Anda."""
+
+[words]
+plural = "video"
+choose = "sebuah video"
+analytics_extra = """, dan tidak ada apa pun
+  tentang rekaman yang lewat di sini"""
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa batas ukuran"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Video Anda tidak punya tempat untuk pergi."
+body = """
+ Di dalam
+      Content-Security-Policy tertulis setiap alamat yang boleh dihubungi
+      halaman ini, dan tidak satu pun milik kami. Tidak ada titik akhir di sini
+      tempat sebuah berkas bisa dikumpulkan, dan tidak ada pula di dalam kode
+      yang akan mengirimkannya seandainya ada."""
+
+[[privacy]]
+title = "Gambarnya sama sekali tidak didekode."
+body = """
+ Yang diminta hanya
+      jalur audio. Bingkai-bingkainya tidak dibaca, tidak didekode, tidak
+      digambar, dan tidak dilihat, sebab di halaman ini tidak ada kode yang
+      sanggup melakukannya, dan berkas yang keluar berisi suara dan tidak ada
+      yang lain. Ini bukan janji soal menahan diri:
+      <code>decodeAudioData</code> diberi bitanya lalu mengembalikan suara, dan
+      di <code>src/</code> tidak ada dekoder video yang bisa dijalankan."""
+
+[[privacy]]
+title = "Dekodernya adalah yang sudah ada di peramban Anda."
+body = """
+ Tidak ada
+      yang dikirimkan ke sini untuk membaca format Anda, dan tidak ada pula yang
+      dimintai bantuan dari luar halaman ini untuk membacanya. Berkas mana yang
+      bisa dibuka, karena itu, persis apa yang sudah bisa diputar peramban
+      Anda."""
+
+[[privacy]]
+title = "Sampelnya dituliskan apa adanya, bukan dikodekan ulang."
+body = """
+
+      Sebuah WAV adalah sampel yang dikembalikan dekoder dengan header di
+      depannya. Tidak ada enkoder yang mengambil keputusan atas rekaman Anda,
+      dan tidak ada yang bisa disebut unggahan sebagai tempat hal itu
+      terjadi."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip
+      iklan dan pengukuran datang dari Google, dan tombol donasi dari Buy Me a
+      Coffee. Tidak satu pun diberi apa pun tentang video Anda: bukan berkasnya,
+      bukan sampelnya, bukan nama, ukuran, atau durasinya."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan jaringan dan alat ini tidak
+      berubah, sebab memang tidak pernah ada langkah jaringan di dalamnya. Itu
+      bukti yang paling sederhana."""
+
+[[howto]]
+title = "Jatuhkan videonya."
+body = """
+ MP4, MOV, M4V, atau WebM, dari
+      ponsel, kamera, perekam layar, atau hasil unduhan. Yang membacanya adalah
+      peramban Anda sendiri; tidak ada langkah unggah yang perlu dilewati."""
+
+[[howto]]
+title = "Baca apa yang ditemukannya."
+body = """
+ Durasi, jumlah kanal, dan laju
+      sampel, langsung dari berkasnya. Kalau berkasnya tidak menyatakan lajunya,
+      halaman ini mengatakannya, alih-alih diam-diam mengambil ulang sampel lalu
+      mengaku tidak menyentuh apa pun."""
+
+[[howto]]
+title = "Pilih mono kalau ingin lebih kecil."
+body = """
+ Membiarkan kanalnya apa
+      adanya menjaga rekaman persis seperti semula. Mencampur ke mono memangkas
+      berkas jadi separuh dan itulah yang dibutuhkan transkripsi atau rekaman
+      suara; kanalnya dirata-ratakan, bukan dibuang salah satu."""
+
+[[howto]]
+title = "Dengarkan sebelum menyimpannya."
+body = """
+ Pemutarnya memutar berkas yang
+      sebentar lagi diunduh, bukan videonya, jadi kalau terdengar benar,
+      unduhannya benar."""
+
+[[howto]]
+title = "Bawa, atau teruskan."
+body = """
+ Unduh WAV-nya, atau kirim langsung ke
+      pemotong atau penyunting tanpa menyimpannya lebih dulu."""
+
+[[faq]]
+q = "Apakah video saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Pendekodean dan penulisannya sama-sama terjadi di peramban Anda
+        sendiri, di perangkat keras Anda sendiri. Alat ini tidak punya fungsi
+        jaringan apa pun &mdash; tidak pernah mengambil apa pun dan tidak pernah
+        mengirim apa pun &mdash; dan <code>Content-Security-Policy</code> halaman
+        ini menyebutkan setiap alamat yang boleh dihubungi, tidak satu pun milik
+        kami. Kalau Anda lebih suka memeriksa daripada diberi tahu, cabut
+        sambungan internet dan ambil suaranya tetap."""
+
+[[faq]]
+q = "Bisakah menghasilkan MP3?"
+a = """
+        Tidak, dan tidak akan berpura-pura bisa. Tidak ada peramban yang
+        menyertakan enkoder MP3, dan satu-satunya jalan menuju enkoder adalah
+        mengirim video Anda ke server yang punya &mdash; dan justru itulah satu
+        hal yang situs ini ada untuk tidak melakukannya. Yang Anda dapat adalah
+        WAV: sampel dengan header empat puluh empat bita di depannya, yang tidak
+        butuh enkoder sama sekali dan tidak mungkin mengurangi kualitas.
+        Ukurannya memang lebih besar, sekitar sepuluh megabita per menit dalam
+        stereo, dan setiap pemutar, ponsel, dan penyunting bisa membukanya. Apa
+        pun yang butuh MP3 bisa membuatnya dari sini dalam sedetik."""
+
+[[faq]]
+q = "Apakah gambarnya pernah dilihat?"
+a = """
+        Tidak, dan di sini tidak ada apa pun yang sanggup melihatnya. Dekoder
+        peramban diberi berkasnya lalu dimintai jalur audionya; jalur videonya
+        tidak pernah didekode, tidak pernah digambar, dan bahkan tidak sampai ke
+        kode halaman ini. Di <code>src/</code> tidak ada dekoder video yang bisa
+        dijalankan. Berkas yang keluar berisi suara dan tidak ada yang lain."""
+
+[[faq]]
+q = "Katanya tidak ada suara yang bisa dibaca, padahal videonya jalan normal."
+a = """
+        Kalau begitu videonya hampir pasti memang tidak punya jalur audio.
+        Rekaman layar yang dibuat tanpa memilih mikrofon itu bisu, begitu pula
+        klip yang diekspor penyunting dengan suaranya dibisukan: keduanya jalan
+        sempurna, karena ada gambar untuk ditampilkan. Pesannya menyebut
+        kemungkinan ini lebih dulu karena inilah yang lebih sering terjadi; yang
+        satu lagi adalah format yang tidak akan dibaca peramban ini. Buka
+        berkasnya di sebuah pemutar dan cari pengatur volume yang tidak
+        berpengaruh: itu cara tercepat mengetahui yang mana yang Anda hadapi."""
+
+[[faq]]
+q = "Format video apa saja yang bisa saya buka?"
+a = """
+        Apa pun yang bisa didekode peramban Anda, yang dalam praktiknya berarti
+        MP4, M4V, MOV, dan WebM, ditambah semua format audio. Yang tertinggal di
+        luar adalah daftar pendek yang sama seperti di seluruh situs ini: AVI,
+        WMV, dan sebagian besar MKV. Berkas yang tidak akan dibaca peramban Anda
+        ditolak dengan pesan yang menyatakannya, alih-alih gagal di tengah
+        jalan."""
+
+[[faq]]
+q = "Apakah kualitasnya berkurang?"
+a = """
+        Tidak lebih dari yang sudah dilakukan video itu sendiri terhadap
+        audionya waktu dibuat. Sampel yang dikembalikan dekoder dituliskan apa
+        adanya: tidak ada pengodean kedua, jadi tidak ada generasi kehilangan
+        kedua. Satu hal yang perlu diketahui adalah laju sampelnya: laju milik
+        berkas itu dibaca lebih dulu dari headernya dan pendekodean dilakukan
+        pada laju itu, sehingga rekaman Anda tidak diambil ulang sampelnya
+        diam-diam. Kalau sebuah berkas tidak menyatakannya, halaman ini
+        mengatakan laju mana yang diasumsikan."""
+
+[[faq]]
+q = "Kenapa WAV-nya jauh lebih besar daripada videonya?"
+a = """
+        Karena WAV tidak dimampatkan sedangkan jalur audio video itu dimampatkan.
+        Suara berkualitas CD memakan sekitar sepuluh megabita per menit dalam
+        stereo, apa pun isinya; jalur AAC di dalam MP4 mungkin sepersepuluhnya.
+        Mencampur ke mono memangkasnya jadi separuh. Inilah harga dari tidak
+        mengodekan ulang, dan dibayar sekali saja: apa pun yang Anda pakai untuk
+        membukanya nanti bisa memampatkannya."""
+
+[[faq]]
+q = "Sepanjang apa video yang bisa ditangani?"
+a = """
+        Tidak ada batas yang dipasang di sini, sebab tidak ada server yang
+        membayarinya. Batas sesungguhnya adalah memori perangkat Anda sendiri:
+        berkasnya dibaca masuk dan seluruh jalur audionya disimpan sebagai
+        sampel, jadi rekaman yang sangat panjang di perangkat kecil bisa
+        kehabisan ruang. Beberapa jam video biasanya aman, dan ponsel akan
+        sanggup lebih sedikit daripada laptop."""
+
+[[faq]]
+q = "Bisakah saya memotongnya atau mengeraskan suaranya?"
+a = """
+        Bisa, tapi bukan di sini: halaman ini mengerjakan satu tugas saja. Begitu
+        ada hasil, muncul sederet tautan di samping unduhan yang membawanya
+        langsung ke <a href="../potong-audio/">pemotong audio</a> atau
+        <a href="../sunting-audio/">penyunting audio</a> tanpa menyimpannya lebih
+        dulu, dan tanpa keduanya mengunggahnya juga."""
+
+[[faq]]
+q = "Apakah gratis, dan perlukah akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa coba, dan
+        tidak ada batas berapa banyak video yang Anda buka. Situs ini memasang
+        iklan, dan itulah yang membiayainya; iklan-iklan itu tidak diberi apa pun
+        tentang berkas Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan sambungan internet dan halaman
+        ini tetap bekerja. Itu sekaligus cara paling sederhana untuk membuktikan
+        tidak ada yang diunggah: alat yang mengirim video Anda pergi untuk
+        diproses akan berhenti begitu sambungannya dicabut."""
+
+[schema]
+description = "Mengambil jalur audio dari MP4, MOV, atau WebM dan menyimpannya sebagai WAV. Hanya audionya yang didekode, gambarnya tidak pernah dibaca, dan tidak ada yang diunggah."
+features = [
+  "Menyimpan audio dari video MP4, M4V, MOV, dan WebM sebagai WAV",
+  "Hanya mendekode jalur audio; gambarnya tidak pernah dibaca",
+  "Membaca laju sampel milik berkas lebih dulu, agar tidak ada yang diambil ulang sampelnya diam-diam",
+  "Mencampur ke mono dengan merata-ratakan, untuk separuh ukuran berkas",
+  "Memutar hasilnya sebelum Anda menyimpannya",
+  "Membawa hasilnya ke pemotong atau penyunting audio tanpa menyimpan",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan sebuah video di sini"
+hint = "atau klik untuk memilih &mdash; MP4, MOV, M4V, atau WebM"

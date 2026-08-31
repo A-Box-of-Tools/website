@@ -1,0 +1,115 @@
+<main id="main">
+  <!-- Passo 1 &mdash; il file -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli un video</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <p id="status" class="path-note" role="status" aria-live="polite" hidden></p>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <dl class="source" id="source" hidden>
+      <div><dt>File</dt><dd id="src-name">&mdash;</dd></div>
+      <div><dt>Dimensione</dt><dd id="src-size">&mdash;</dd></div>
+      <div><dt>Durata</dt><dd id="src-length">&mdash;</dd></div>
+      <div><dt>Audio</dt><dd id="src-channels">&mdash;</dd></div>
+      <div><dt>Frequenza di campionamento</dt><dd id="src-rate">&mdash;</dd></div>
+    </dl>
+
+    <!--
+      Only shown when the file did not declare its own sample rate. It matters:
+      in that case the samples handed back are not the ones on the disk, and a
+      tool that says nothing about it is claiming more than it did.
+    -->
+    <p id="rate-note" class="path-note" hidden>
+      Questo file non diceva a quale frequenza fosse stato registrato, quindi è
+      stato letto a 48 kHz. Il suono è giusto; il numero di campioni non è
+      quello che sta sul disco.
+    </p>
+  </section>
+
+  <!-- Passo 2 &mdash; cosa esce -->
+  <section class="card" id="take-card" inert>
+    <h2><span class="step">2</span> Prendi il suono</h2>
+
+    <div class="settings">
+      <div class="field">
+        <label for="channels">Canali</label>
+        <select id="channels">
+          <option value="as-is" selected>Lasciarli come sono</option>
+          <option value="mono">Missare in mono</option>
+        </select>
+        <p class="field-note" id="channels-note">
+          Il mono dimezza il file, ed è quello che vuole una trascrizione o una
+          registrazione vocale. Fa la media dei canali invece di buttarne via
+          uno.
+        </p>
+      </div>
+    </div>
+
+    <!--
+      No button. A WAV is the samples with a header in front of them, so writing
+      one is fast enough to redo whenever a setting changes - and a file that is
+      always the one the settings describe needs nothing pressed to make it so.
+    -->
+    <div id="result" class="result" hidden>
+      <audio id="result-audio" controls></audio>
+      <div class="result-meta">
+        <p id="result-info"></p>
+        <a id="download" class="primary as-button" download>Scarica l'audio</a>
+      </div>
+    </div>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="step.reading">Lettura del suono&hellip;</span>
+    <span data-phrase="audio.empty">Quel file è vuoto.</span>
+    <!--
+      Two causes, one message, deliberately. decodeAudioData throws the same
+      error for a file the browser cannot read and for a video that simply has
+      no audio track, and nothing this page can reach tells the two apart. On
+      THIS tool the second is the likely one - a screen recording made without a
+      microphone is silent, and its owner is exactly the person who comes here -
+      so naming only the format would send them off to convert a file that was
+      never the problem. Both possibilities, in the order they actually happen.
+    -->
+    <span data-phrase="audio.nodecode">Da quel file non è stato possibile leggere nessun suono.
+      O non ha una traccia audio &mdash; una registrazione dello schermo fatta senza microfono è
+      muta &mdash; oppure questo browser non leggerà il formato. MP4, MOV, WebM e M4V funzionano
+      quasi sempre; AVI, WMV e la maggior parte degli MKV no.</span>
+    <span data-phrase="audio.nosound">In quel file non c'è suono &mdash; contiene un'immagine e
+      nient'altro.</span>
+    <span data-phrase="wav.nochannels">Non ci sono canali da scrivere.</span>
+    <span data-phrase="wav.uneven">I canali hanno lunghezze diverse, cosa che non dovrebbe essere possibile.</span>
+    <span data-phrase="channels.mono">Mono</span>
+    <span data-phrase="channels.stereo">Stereo</span>
+    <span data-phrase="channels.many">Più di due canali</span>
+    <span data-phrase="rate.khz">{n} kHz</span>
+    <span data-phrase="out.info">WAV &mdash; {size}, {length}, {channels} a {rate} kHz</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="net.clean">Il tuo video non è andato da nessuna parte.
+      {total} file caricati. {platform}</span>
+    <span data-phrase="net.dirty">Qualcosa ha contattato {hosts}, e questo
+      strumento non lo fa mai. {platform}</span>
+    <span data-phrase="net.platform.one">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi ne è arrivato un byte.</span>
+    <span data-phrase="net.platform.many">Gli script del sito per la pubblicità,
+      la misurazione e il pulsante delle donazioni sono arrivati da {hosts}
+      host; a nessuno di questi ne è arrivato un byte.</span>
+  </div>
+</main>

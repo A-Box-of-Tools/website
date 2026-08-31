@@ -1,0 +1,246 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> Kimi karşılaştırdığınızı söyleyin</h2>
+
+    <p class="card-lede">
+      Bir ad, bir boy ve nasıl bir figür çizileceği. Boylar sizin yazdığınız
+      gibi yazılabilir &mdash; <code>173</code>, <code>1,73&nbsp;m</code>,
+      <code>5'8"</code>, <code>68&nbsp;in</code> &mdash; ve her kutunun
+      altındaki satır neyin anlaşıldığını gösterir, böylece hiçbir şey sessizce
+      tahmin edilmez.
+    </p>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span>Figür</span>
+        <span>Ad</span>
+        <span>Boy</span>
+        <span>Genişlik</span>
+        <span>Renk</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">Kişi ekle</button>
+        <button type="button" id="add-object" class="ghost">Nesne ekle</button>
+        <button type="button" id="clear" class="ghost danger">Grafiği temizle</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">Ya da ölçek versin diye bir şey ekleyin</label>
+      <select id="preset">
+        <option value="" selected>Birini seçin&hellip;</option>
+        <optgroup label="Kapılar ve pencereler">
+          <option value="door-interior" data-cm="203" data-width="81">İç kapı &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">Giriş kapısı &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">Pencere &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">Garaj kapısı &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="Okul ve ofis">
+          <option value="board" data-cm="120" data-width="240">Beyaz tahta ya da kara tahta &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">Ofis masası &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">Dört çekmeceli dosya dolabı &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">Projeksiyon perdesi, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="Şehirde">
+          <option value="vending" data-cm="183" data-width="100">Otomat &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">Tekerlekli çöp konteyneri, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">Basketbol potası &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">Deniz konteyneri, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="Evde">
+          <option value="fridge" data-cm="178" data-width="76">Buzdolabı, derin donduruculu &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">Mutfak tezgâhı &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">Yemek masası &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">Yemek sandalyesi &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">Üç kişilik kanepe &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">Duvar piyanosu &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">Akustik gitar &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">Şarap şişesi &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      Bunlardan birkaçı gerçekten sabittir: 20&nbsp;ft'lik bir deniz
+      konteyneri tanımı gereği 259&nbsp;cm yüksekliğindedir, bir basketbol
+      çemberi 305'tedir ve bir Amerikan iç kapısı 203'e 81'dir. Geri kalanlar
+      standart değil, olağan ölçülerdir &mdash; kapılar, pencereler ve tezgâhlar
+      ülkeden ülkeye ve evden eve değişir. Her biri sıradan bir satır olarak
+      gelir; kendinizinkini ölçün ve gerçek sayıları üzerine yazın.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; how the chart is drawn -->
+  <section class="card">
+    <h2><span class="step">2</span> Nasıl görüneceğini seçin</h2>
+
+    <fieldset class="options">
+      <legend>Cetvel</legend>
+
+      <div class="option-row">
+        <label for="unit">Ölçü birimi</label>
+        <select id="unit">
+          <option value="cm" selected>Santimetre</option>
+          <option value="ft">Fit ve inç</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="order">Sıra</label>
+        <select id="order">
+          <option value="entered" selected>Girdiğiniz gibi</option>
+          <option value="tallest">Önce en uzun</option>
+          <option value="shortest">Önce en kısa</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>Cetveli çiz</strong>
+          <span class="check-note">
+            Grafiği boydan boya geçen çizgiler ve iki yandaki sayılar. Onlar
+            olmadan da resim iki kişiyi doğru karşılaştırır, ama ikisinin de
+            boyunu söylemekten vazgeçer.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>Adları ve boyları her figürün üstüne yaz</strong>
+          <span class="check-note">
+            Kapalıyken grafik, cetvel üzerinde siluetlerden ibarettir &mdash;
+            adlar zaten yapıştıracağınız yerde yer alacaksa istediğiniz de
+            budur.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Renk ve boyut</legend>
+
+      <div class="option-row">
+        <label for="background">Arkasında</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>Hiç arka plan yok</strong>
+          <span class="check-note">
+            Saydam; zaten bir rengi olan bir slaytın üzerine bırakmak için.
+            Cetvel ile yazı, yukarıda seçilen renge göre koyu ya da açık
+            çizilir; bu yüzden arka planın kendisi kapalıyken bile onu resmin
+            üzerine oturacağı renge yakın ayarlayın.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">Resmin piksel cinsinden yüksekliği</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        Bu, çizim alanının yüksekliğidir; bu yüzden bitmiş resim biraz daha
+        uzundur: adlar onun üstünde durur. Genişlik, kaç figür olduğundan ve her
+        birinin etiketinin ne kadar geniş olduğundan çıkar. Üçüncü adım sonucun
+        ne olduğunu söyler.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the picture -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Alın</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Yaptığınız boy karşılaştırma grafiği"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG'yi indir</button>
+      <button type="button" id="download-png" class="primary">PNG'yi indir</button>
+      <button type="button" id="copy-png" class="ghost">Resmi kopyala</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Bir belgeye ya da sohbete yapıştırılacak olan PNG'dir. Saklanacak olan
+      ise SVG: o, grafiği piksel olarak değil yönerge olarak taşır, bu yüzden
+      her boyutta net basılır ve sonradan vektör açan her şeyle yeniden
+      renklendirilebilir.
+    </p>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">Erkek</span>
+    <span data-phrase="shape.woman">Kadın</span>
+    <span data-phrase="shape.boy">Erkek çocuk</span>
+    <span data-phrase="shape.girl">Kız çocuk</span>
+    <span data-phrase="shape.toddler">Küçük çocuk</span>
+    <span data-phrase="shape.object">Nesne</span>
+
+    <span data-phrase="row.shape">{n}. satırın figürü</span>
+    <span data-phrase="row.name">{n}. satırın adı</span>
+    <span data-phrase="row.height">{n}. satırın boyu</span>
+    <span data-phrase="row.width">{n}. satırın genişliği</span>
+    <span data-phrase="row.colour">{n}. satırın rengi</span>
+    <span data-phrase="row.up">{n}. satırı sola taşı</span>
+    <span data-phrase="row.down">{n}. satırı sağa taşı</span>
+    <span data-phrase="row.remove">{n}. satırı kaldır</span>
+    <span data-phrase="row.nameexample">Ad</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">Genişlik</span>
+    <span data-phrase="row.reads">{height} olarak okundu</span>
+
+    <span data-phrase="height.empty">Bir boy girin, bu satır çizilsin.</span>
+    <span data-phrase="height.unreadable">Bu, burada anlaşılan bir boy değil. 173, 1,73 m, 5'8" ya da 68 in deneyin.</span>
+    <span data-phrase="height.tooshort">Çizilemeyecek kadar kısa &mdash; en küçüğü 5 cm.</span>
+    <span data-phrase="height.tootall">Grafiğin çıktığından daha uzun &mdash; sınır 12 metre.</span>
+
+    <span data-phrase="chart.empty">Birini ekleyin, grafik burada belirsin.</span>
+    <span data-phrase="chart.full">On iki figür, bu grafiğin okunur kalarak taşıyabileceği en fazla sayıdır.</span>
+    <span data-phrase="facts.chart">{count} figür, {width}'e {height} piksel. Cetvel yerden {top} yüksekliğine kadar uzanıyor, her {step} bir çizgiyle.</span>
+    <span data-phrase="facts.one">Bir figür, {width}'e {height} piksel. Cetvel yerden {top} yüksekliğine kadar uzanıyor, her {step} bir çizgiyle.</span>
+
+    <span data-phrase="save.done">Kaydedildi. Çizmek için hiçbir yere hiçbir şey gönderilmedi.</span>
+    <span data-phrase="save.failed">{detail}. SVG yine de inecek.</span>
+    <span data-phrase="save.copied">Kopyalandı. Nereye gerekiyorsa yapıştırın.</span>
+    <span data-phrase="save.noclipboard">Bu tarayıcı sayfanın panoya yazmasına izin vermedi. Onun yerine indirin.</span>
+    <span data-phrase="save.nothing">Grafikte henüz kaydedilecek bir şey yok.</span>
+    <span data-phrase="render.nosvg">bu tarayıcı SVG'yi çizmek istemedi</span>
+    <span data-phrase="render.nopng">bu tarayıcı PNG yazmak istemedi</span>
+
+    <span data-phrase="net.clean">yazdığınız adlar ve boylar hiçbir yere gitmedi.
+      {total} dosya yüklendi. {platform}</span>
+    <span data-phrase="net.dirty">bir şey {hosts} ile iletişim kurdu; bu araç
+      bunu asla yapmaz. {platform}</span>
+    <span data-phrase="net.platform.one">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {hosts} sunucudan yüklendi; hiçbirine bir ad ya da bir
+      boy verilmedi.</span>
+    <span data-phrase="net.platform.many">Sayfanın kendi reklam, ölçüm ve bağış
+      düğmesi betikleri {hosts} sunucudan yüklendi; hiçbirine bir ad ya da bir
+      boy verilmedi.</span>
+  </div>
+</main>

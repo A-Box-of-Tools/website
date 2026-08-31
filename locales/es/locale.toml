@@ -85,6 +85,14 @@ complete = true
 "timelapse-video" = "crear-timelapse"
 "hash-checksum" = "calcular-checksum"
 "share-text" = "compartir-texto"
+# Se busca el sonido, no el formato: "mp3" no aparece a proposito, porque la
+# pagina no escribe un MP3 y una direccion no deberia prometerlo.
+"extract-audio-from-video" = "extraer-audio-de-video"
+"xml-formatter" = "formatear-xml"
+"yaml-to-json" = "convertir-yaml-a-json"
+# "Comparar alturas" es lo que se teclea; el resultado, un grafico, va en el
+# titulo y no en la direccion.
+"compare-heights" = "comparar-alturas"
 
 "guides" = "guias"
 "roadmap" = "hoja-de-ruta"
@@ -142,6 +150,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "guias/editar-un-gif-fotograma-a-fotograma"
 "guides/make-a-qr-code-and-prove-it-scans" = "guias/crear-un-codigo-qr-y-comprobar-que-escanea"
 "guides/clean-up-a-voice-memo" = "guias/limpiar-una-nota-de-voz"
+"guides/make-a-height-comparison-chart" = "guias/hacer-un-grafico-de-alturas"
 
 #
 # ---------------------------------------------------------------------------

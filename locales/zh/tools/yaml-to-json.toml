@@ -1,0 +1,221 @@
+#
+# YAML 转 JSON - Simplified Chinese.
+#
+# Overrides for tools/yaml-to-json/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+# Every prose value below ends its lines with a backslash. Chinese puts no
+# space between words, so a newline inside a sentence arrives as a space inside
+# a sentence once the markup is collapsed - see "The strings in the JavaScript"
+# in docs/languages.md.
+#
+
+name = "YAML 转 JSON"
+heading = "YAML 转 JSON <span class=\"h1-kw\">&mdash; JSON 也能转回 YAML</span>"
+tagline = "两个方向都有，而且会告诉你各自的代价。这些都不会粘进别人的服务器。"
+
+title = "YAML 转 JSON &mdash; 双向转换，不上传"
+description = "在你的浏览器里把 YAML 转成 JSON、把 JSON 转成 YAML。它读的是 YAML 1.2，所以 yes 和 no 还是字符串，而且会明确说出每个方向丢了什么。什么都不上传：一份配置文件永远不会离开你的设备。"
+og_title = "不用把 YAML 粘进服务器就能转换"
+og_description = "一个跑在你自己设备上的 YAML 和 JSON 转换工具。键保持顺序，数字保持位数，而你粘进去的东西哪儿也不去。"
+og_image_alt = "YAML 转 JSON - 双向转换，不上传"
+
+pledge = """\
+    转换是对一段字符串做算术，就在这里，在这个页面上。两个解析器都是手写的，都在 \
+    <code>src/</code> 里——<code>yaml.js</code> 和 <code>json.js</code>——除此之外\
+    再没有别的。这个工具压根就没有网络功能，没有要取的，也没有要发的。这一点在这里\
+    比本站几乎任何地方都更要紧：一份 YAML 文件多半是部署配置，而部署配置多半塞满了\
+    主机名、桶名和密钥。"""
+
+live_hint = """
+      不用信我们说的。打开开发者工具，盯着“网络”面板，转换点什么。没有哪个请求\
+      带走你粘进去的一个字符。嫌麻烦就直接拔掉网线，照样转换。"""
+
+read_first = """\
+，宁可拒绝一个锚点也不去猜它想说什么的读取器在\
+      <code>src/yaml.js</code>；一次转换为什么就是一个解析器加一个打印器、中间没有\
+      任何同时认得两种格式的东西，在 <code>src/convert.js</code>。"""
+
+howto_heading = "不上传就把 YAML 转成 JSON 的步骤"
+
+card = """\
+            把 YAML 变成 JSON，或者把 JSON 变成 YAML，并且让它告诉你这趟的代价。\
+            粘一份部署配置，不用交给任何人。"""
+
+[words]
+plural = "YAML 和 JSON"
+choose = "一个文件"
+analytics_extra = """，经过这里的 YAML \
+  和 JSON 同样如此"""
+
+[[facts]]
+text = "不上传"
+
+[[facts]]
+text = "不注册"
+
+[[facts]]
+text = "无大小限制"
+
+[[facts]]
+text = "断网可用"
+
+[[facts]]
+text = "开源"
+
+[[privacy]]
+title = "你粘进来的东西没有出去的路。"
+body = """\
+      Content-Security-Policy 里写着这个页面允许联系的每一个地址，没有一个属于\
+      本站。这里没有任何可以收走一份粘进来的配置的接收端，就算有，代码里也没有\
+      把它送过去的东西。"""
+
+[[privacy]]
+title = "这里不会去取任何东西。"
+body = """\
+      <code>src/</code> 里哪儿都没有 <code>fetch</code>，没有\
+      <code>XMLHttpRequest</code>，也没有 <code>sendBeacon</code>。两个解析器和\
+      两个打印器都是这个页面里的函数：进去一段字符串，出来一段字符串。"""
+
+[[privacy]]
+title = "它读的是 YAML 1.2，所以挪威还是挪威。"
+body = """\
+      在 YAML 1.1 里，<code>no</code> 是个布尔值，这就是那个著名的坑：挪威的国家\
+      代码会变成 <code>false</code>。这里读的是 1.2，在那里它就是它看上去的那个\
+      字符串。反过来的时候，这些词会<em>带引号</em>写回去，因为下一个打开这份文件的\
+      东西可能还是个 1.1 的读取器。<code>tests/js/text-convert.test.js</code> 两头\
+      都查。"""
+
+[[privacy]]
+title = "没法诚实的转换，宁可停下来。"
+body = """\
+      YAML 里的锚点、别名或者标签，会带着“它在第几行”的提示结束这次转换，而不是给你\
+      一份悄悄变了意思的 JSON 文档。JSON 没有办法表达“同一个节点用两次”，而挑一种\
+      解释，就是替你做主。"""
+
+[[privacy]]
+title = "Google 加载了什么，又没拿到什么。"
+body = """\
+      广告和统计脚本来自 Google，捐赠按钮来自 Buy Me a Coffee。它们谁也没拿到你文本\
+      里的一个字符。读它、解析它、写它的每一行代码，都从这个源提供，也都列在仓库里。"""
+
+[[privacy]]
+title = "断网可用。"
+body = """\
+      拔掉网线，这个工具一点变化都没有，因为它里面本来就没有联网这一步。这是最简单的\
+      证明。"""
+
+[[howto]]
+title = "选方向。"
+body = """\
+      <em>YAML 转 JSON</em> 或者 <em>JSON 转 YAML</em>。菜单下面那行小字会在你粘\
+      任何东西之前，而不是之后，告诉你这个方向会丢什么。"""
+
+[[howto]]
+title = "粘进来，或者把文件放上去。"
+body = """\
+      能选中能复制的都行。把文件放到选择框上，你自己的浏览器会读它并填进输入框——这里\
+      没有上传这一步可以省略——而 <code>.json</code> 或 <code>.yaml</code> 的后缀\
+      顺便就把方向定好了。"""
+
+[[howto]]
+title = "选缩进。"
+body = """\
+      两个空格、四个空格，或者一个制表符。制表符只对 JSON 提供：YAML 是按空格定义的，\
+      制表符在它里面不是合法缩进。"""
+
+[[howto]]
+title = "在出错的地方读错误。"
+body = """\
+      在这里失败的解析器会告诉你它遇到了什么，在第几行第几列，而不是“位置 4193 处有\
+      意外的 token”。通常这就够你修好一份配置文件，不用再打开别的东西。"""
+
+[[howto]]
+title = "把结果拿走。"
+body = """\
+      复制，或者下载成文件，文件名按它出来的格式取。"""
+
+[[faq]]
+q = "我的 YAML 会被上传到什么地方吗？"
+a = """\
+        不会。这个页面上的两个解析器和两个打印器，都是在你自己的浏览器里、你自己的\
+        硬件上跑的函数。这个工具压根就没有网络功能，从不取任何东西，也从不发任何\
+        东西，页面的 <code>Content-Security-Policy</code> 里写着它允许联系的每一个\
+        地址，没有一个属于本站。这正是拿它处理部署配置的理由：那种文件里塞满主机名、\
+        桶名，偶尔还有某人打算挪走的密钥，把它粘进别人的转换器，就是把它给了对方。"""
+
+[[faq]]
+q = "把 YAML 转成 JSON 会丢什么？"
+a = """\
+        注释，因为 JSON 没地方放。锚点、别名和标签会被直接拒绝，而不是靠猜——它们各自\
+        说的事情 JSON 都说不出来，一个悄悄挑了种解释的转换器，会交给你一份并不是文件\
+        原意的文档。反方向不丢任何东西：每一份 JSON 文档本来就已经是 YAML 文档。"""
+
+[[faq]]
+q = "我的 YAML 里写的是 no，JSON 出来却是字符串。为什么？"
+a = """\
+        因为它本来就是字符串，而这里读的是 YAML 1.2，不是 1.1。在 YAML 1.1 里，\
+        <code>yes</code>、<code>no</code>、<code>on</code> 和 <code>off</code> 都是\
+        布尔值，这就是那个著名的坑：挪威的国家代码会变成 <code>false</code>。YAML 1.2 \
+        把这条丢掉了，这里也一样：只有 <code>true</code>、<code>false</code>、\
+        <code>null</code> 和 <code>~</code> 会被当成文本之外的东西读。反过来的时候，\
+        这些词会<em>带引号</em>写回去——哪怕这里不带引号也照样当文本读——因为下一个打开\
+        这份文件的东西未必如此。PyYAML 到现在默认还是 1.1。严格地读、保守地写，是两边\
+        都对的唯一组合。"""
+
+[[faq]]
+q = "它会保持我的键顺序吗？"
+a = """\
+        会，两个方向都会，而这比听上去难。建立在 <code>JSON.parse</code> 上的转换器\
+        会悄悄把看着像整数的键挪到前面，于是 <code>{"10":a,"2":b}</code> 回来就成了\
+        <code>{"2":b,"10":a}</code>。数字保留你打的每一位，所以一个二十位的账号不会\
+        因为双精度浮点丢掉最后三位。如果你<em>就是想</em>排序，有个勾选框，而且它按键\
+        读起来的样子排，不是按码位。"""
+
+[[faq]]
+q = "能一次转换好几份 YAML 文档吗？"
+a = """\
+        不能，而且它会直说，而不是替你挑一份。带 <code>---</code> 分隔符的文件装着不止\
+        一份文档，而 JSON 没有哪种形状表示“好几份文档”——用数组的话，就成了这份文件\
+        从没做过的断言。一份一份转。"""
+
+[[faq]]
+q = "这里为什么没有 YAML 格式化？"
+a = """\
+        因为 YAML 没有值得一写的压缩形式——短的那种是流式风格，读不了，而读不了正是\
+        把文件留成 YAML 这件事的反面。排开 JSON、XML、HTML 和 CSS 是\
+        <a href="../json-formatter/">JSON 格式化</a>的活儿，而且它也排 YAML。"""
+
+[[faq]]
+q = "文件最大能有多大？"
+a = """\
+        这里没有设限，因为没有服务器在为此付钱。真正的上限是你自己的设备：几兆字节的 \
+        YAML 没问题，文档很长的时候，页面会等你打字停下来再转换，而不是跟你抢键盘。"""
+
+[[faq]]
+q = "免费吗？需要注册吗？"
+a = """\
+        免费，没有账号，不用登录，没有试用期，也不限制你粘多少。本站有广告，站点靠它\
+        维持；广告拿不到关于你文本的任何东西。"""
+
+[[faq]]
+q = "断网还能用吗？"
+a = """\
+        能。页面加载一次之后拔掉网线，它照样工作。这也是证明没有上传的最简单办法：一个\
+        把你的配置送出去转换的工具，在你拔线的那一刻就停了。"""
+
+[schema]
+description = "在浏览器里把 YAML 转成 JSON、把 JSON 转成 YAML。读的是 YAML 1.2，保持键的顺序和每个数字的确切位数，并说明每个方向会丢什么。什么都不上传。"
+features = [
+  "把 YAML 转成 JSON，把 JSON 转成 YAML",
+  "读 YAML 1.2，所以 yes 和 no 还是字符串",
+  "保持键的顺序和每个数字的确切位数",
+  "拒绝锚点、别名和标签，而不是猜它们想说什么",
+  "用人话说出错误在第几行第几列",
+  "对拖进来的文件和粘进来的文本一样管用",
+  "断网可用；不上传，不注册",
+]
+
+[picker]
+title = "把文件拖到这里"
+hint = "也可以点击选择 &mdash; 一个 .yaml、.yml 或 .json 文件"

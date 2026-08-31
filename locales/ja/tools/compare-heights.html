@@ -1,0 +1,218 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> 誰を比べるかを書きます</h2>
+
+    <p class="card-lede">
+      名前、身長、そしてどの図を描くか。身長は普段の書き方のままで構いません。<code>173</code>、<code>1.73&nbsp;m</code>、<code>5'8"</code>、<code>68&nbsp;in</code>のどれでも読めます。各欄の下の行がどう解釈したかを示すので、黙って推測されることはありません。
+    </p>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span>図</span>
+        <span>名前</span>
+        <span>身長</span>
+        <span>幅</span>
+        <span>色</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">人を追加</button>
+        <button type="button" id="add-object" class="ghost">ものを追加</button>
+        <button type="button" id="clear" class="ghost danger">図表を空にする</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">または、大きさの目安になるものを足す</label>
+      <select id="preset">
+        <option value="" selected>選んでください&hellip;</option>
+        <optgroup label="ドアと窓">
+          <option value="door-interior" data-cm="203" data-width="81">室内ドア &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">玄関ドア &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">窓 &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">ガレージのシャッター &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="学校とオフィス">
+          <option value="board" data-cm="120" data-width="240">ホワイトボードまたは黒板 &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">オフィスデスク &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">書類キャビネット、4段 &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">プロジェクタースクリーン、100インチ &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="街のなかのもの">
+          <option value="vending" data-cm="183" data-width="100">自動販売機 &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">キャスター付きごみ箱、240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">バスケットゴール &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">海上コンテナ、20フィート &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="家のなかのもの">
+          <option value="fridge" data-cm="178" data-width="76">冷蔵庫（冷凍室付き） &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">キッチンカウンター &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">ダイニングテーブル &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">ダイニングチェア &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">ソファ、3人掛け &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">アップライトピアノ &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">アコースティックギター &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">ワインボトル &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      このうちいくつかは本当に決まっています。20フィートの海上コンテナは定義上259&nbsp;cmの高さで、バスケットのリングは305、アメリカの室内ドアは203に81です。残りは規格ではなく典型的な値で、ドアも窓も天板も国によって家によって違います。どれも普通の行として入るので、ご自分のものを測って本当の数字を上書きしてください。
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; how the chart is drawn -->
+  <section class="card">
+    <h2><span class="step">2</span> 見た目を選びます</h2>
+
+    <fieldset class="options">
+      <legend>目盛り</legend>
+
+      <div class="option-row">
+        <label for="unit">単位</label>
+        <select id="unit">
+          <option value="cm" selected>センチメートル</option>
+          <option value="ft">フィートとインチ</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="order">並び順</label>
+        <select id="order">
+          <option value="entered" selected>入力した順</option>
+          <option value="tallest">背の高い順</option>
+          <option value="shortest">背の低い順</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>目盛りを描く</strong>
+          <span class="check-note">
+            図表を横切る線と、左右両側の数字です。なくても二人を正しく比べる絵にはなりますが、どちらが何センチなのかは言わなくなります。
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>各図の上に名前と身長を書く</strong>
+          <span class="check-note">
+            切っておくと、図表は目盛りの上のシルエットだけになります。貼り付ける先に名前を書くつもりなら、そちらが望ましいはずです。
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>色と大きさ</legend>
+
+      <div class="option-row">
+        <label for="background">背景</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>背景をまったく付けない</strong>
+          <span class="check-note">
+            透明にして、すでに色のあるスライドに載せるためのものです。目盛りと文字は上で選んだ色に合わせて濃くも淡くも描かれるので、背景そのものを切っていても、絵が載る先の色をおおよそ指定しておいてください。
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">画像の高さ（ピクセル）</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        これは描画領域の高さなので、仕上がりの絵は少し高くなります。名前がその上に載るからです。幅は図が何体あるか、それぞれの見出しがどれだけ広いかで決まります。何ピクセルになったかは手順3が伝えます。
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the picture -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> 持ち帰ります</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="あなたが作った身長比較図"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVGをダウンロード</button>
+      <button type="button" id="download-png" class="primary">PNGをダウンロード</button>
+      <button type="button" id="copy-png" class="ghost">画像をコピー</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      文書やチャットに貼るならPNGです。取っておくならSVGで、こちらは図表をピクセルではなく指示として持っているので、どんな大きさでも鮮明に印刷でき、ベクターを開けるものなら後から色を変えられます。
+    </p>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">男性</span>
+    <span data-phrase="shape.woman">女性</span>
+    <span data-phrase="shape.boy">男の子</span>
+    <span data-phrase="shape.girl">女の子</span>
+    <span data-phrase="shape.toddler">幼児</span>
+    <span data-phrase="shape.object">もの</span>
+
+    <span data-phrase="row.shape">{n}行目の図</span>
+    <span data-phrase="row.name">{n}行目の名前</span>
+    <span data-phrase="row.height">{n}行目の身長</span>
+    <span data-phrase="row.width">{n}行目の幅</span>
+    <span data-phrase="row.colour">{n}行目の色</span>
+    <span data-phrase="row.up">{n}行目を左へ</span>
+    <span data-phrase="row.down">{n}行目を右へ</span>
+    <span data-phrase="row.remove">{n}行目を削除</span>
+    <span data-phrase="row.nameexample">名前</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">幅</span>
+    <span data-phrase="row.reads">{height}として読みました</span>
+
+    <span data-phrase="height.empty">身長を入れると、この行が描かれます。</span>
+    <span data-phrase="height.unreadable">これは読み取れる身長ではありません。173、1.73 m、5'8"、68 in のように書いてみてください。</span>
+    <span data-phrase="height.tooshort">小さすぎて描けません。5 cmが下限です。</span>
+    <span data-phrase="height.tootall">図表の範囲より高すぎます。12メートルまでです。</span>
+
+    <span data-phrase="chart.empty">誰かを追加すると、ここに図表が出ます。</span>
+    <span data-phrase="chart.full">12体が、この図表が読めるまま収められる限りです。</span>
+    <span data-phrase="facts.chart">{count}体、{width}×{height}ピクセル。目盛りは地面から{top}まで、{step}ごとに線が入ります。</span>
+    <span data-phrase="facts.one">1体、{width}×{height}ピクセル。目盛りは地面から{top}まで、{step}ごとに線が入ります。</span>
+
+    <span data-phrase="save.done">保存しました。描くために、どこにも何も送っていません。</span>
+    <span data-phrase="save.failed">{detail}。SVGはそれでもダウンロードされます。</span>
+    <span data-phrase="save.copied">コピーしました。必要なところに貼り付けてください。</span>
+    <span data-phrase="save.noclipboard">このブラウザはページがクリップボードに書き込むのを許しませんでした。代わりにダウンロードしてください。</span>
+    <span data-phrase="save.nothing">図表にはまだ保存するものがありません。</span>
+    <span data-phrase="render.nosvg">このブラウザがSVGを描いてくれませんでした</span>
+    <span data-phrase="render.nopng">このブラウザがPNGを書いてくれませんでした</span>
+
+    <span data-phrase="net.clean">入力された名前と身長はどこへも出ていません。{total}件のファイルを読み込みました。{platform}</span>
+    <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。{platform}</span>
+    <span data-phrase="net.platform.one">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、名前も身長も渡っていません。</span>
+    <span data-phrase="net.platform.many">広告・計測・寄付ボタンのためのサイト自身のスクリプトが{hosts}のホストから読み込まれました。そのどれにも、名前も身長も渡っていません。</span>
+  </div>
+</main>

@@ -1,0 +1,273 @@
+#
+# XML-formatter - Dutch.
+#
+# Overrides for tools/xml-formatter/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "XML-formatter"
+heading = "XML-formatter <span class=\"h1-kw\">&mdash; uitleggen, plat persen of omzetten naar JSON</span>"
+tagline = "XML uitgelegd om te lezen of plat geperst om te versturen, en beide kanten op omgezet naar JSON. Niets ervan wordt in de server van iemand anders geplakt."
+
+title = "XML-formatter &amp; XML naar JSON &mdash; gratis, zonder upload"
+description = "Formatteer, laat inspringen en verklein XML, en zet XML om naar JSON of JSON naar XML. De parser draait in je browser en er wordt niets geüpload, dus een feed, een factuur of een configuratiebestand blijft op je eigen apparaat."
+og_title = "XML formatteren zonder het in een server te plakken"
+og_description = "Een XML-formatter en -omzetter die op je eigen apparaat draait. Hij zegt op welke regel de fout zit, en wat je plakt gaat nergens heen."
+og_image_alt = "XML-formatter - uitleggen, verkleinen of omzetten, zonder upload"
+
+pledge = """
+    Formatteren en omzetten zijn rekenen aan een tekenreeks, hier, in deze
+    pagina. De parser is met de hand geschreven en staat in
+    <code>src/xml.js</code>, en meer is er niet. Dit gereedschap heeft
+    überhaupt geen netwerkfunctie &mdash; niets op te halen, niets te versturen
+    &mdash; en dat weegt hier zwaarder dan het woord &sbquo;XML&lsquo; doet
+    vermoeden, want wat in dit formaat binnenkomt is meestal een factuur, een
+    bankafschrift, een medisch dossier of een SOAP-bericht met iemands
+    inloggegevens in de kop."""
+
+live_hint = """
+      Je hoeft ons niet op ons woord te geloven: open de DevTools, kijk naar het
+      netwerktabblad en formatteer iets. Geen enkele aanvraag draagt een teken
+      van wat je hebt geplakt. Of trek de stekker uit het internet en formatteer
+      het toch."""
+
+read_first = """
+, <code>src/xml.js</code> voor de parser die je
+      vertelt welke tag nooit is gesloten, en <code>src/convert.js</code> voor
+      waarom elke waarde als tekenreeks uit de XML komt in plaats van geraden te
+      worden."""
+
+howto_heading = "Zo formatteer je XML zonder het te uploaden"
+
+card = """
+            Leg XML uit om het te lezen, pers het plat om het te versturen, of
+            zet het om naar JSON en terug. Plak een factuur of een feed zonder
+            hem aan iemand te geven."""
+
+[words]
+plural = "XML en JSON"
+choose = "een bestand"
+analytics_extra = """, en niets van de XML
+  die er doorheen gaat"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen groottelimiet"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Wat je plakt kan nergens heen."
+body = """
+ In het
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en
+      geen daarvan is van ons. Er is hier geen eindpunt waar een geplakte factuur
+      opgehaald zou kunnen worden, en er staat ook niets in de code dat hem
+      erheen zou sturen als dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er is nergens in
+      <code>src/</code> een <code>fetch</code>, een <code>XMLHttpRequest</code>
+      of een <code>sendBeacon</code> te vinden. De parser en de printer zijn
+      functies in deze pagina die een tekenreeks aannemen en een tekenreeks
+      teruggeven."""
+
+[[privacy]]
+title = "Externe entiteiten worden nooit opgelost."
+body = """
+ Een
+      <code>DOCTYPE</code> met een externe entiteit erin is de manier waarop een
+      XML-parser wordt overgehaald een bestand te lezen van de machine die aan
+      het parsen is, en het is het oudste gat in het formaat.
+      <code>src/xml.js</code> is een met de hand geschreven lezer waar helemaal
+      geen entiteitsafhandeling in zit &mdash; niet uitgezet, afwezig &mdash; en
+      deze pagina geeft je tekst ook nooit aan de eigen
+      <code>DOMParser</code> van de browser."""
+
+[[privacy]]
+title = "Elke waarde die uit XML komt is een tekenreeks."
+body = """
+ <code>&lt;port&gt;8080&lt;/port&gt;</code>
+      zegt niets over de vraag of dat een getal is, dus zegt de JSON
+      <code>"8080"</code>. Dat voor je beslissen zou informatie verzinnen die
+      daarna meereist alsof ze in het bestand had gestaan."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google en de donatieknop van Buy Me a Coffee. Geen
+      van hen krijgt een teken van je tekst. Elke regel die hem leest, parseert
+      of schrijft wordt vanaf deze origin geserveerd en staat in de
+      repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Trek de netwerkstekker eruit en het
+      gereedschap is onveranderd, want er zat nooit een netwerkstap in. Dat is
+      het eenvoudigste bewijs dat er is."""
+
+[[howto]]
+title = "Kies de klus."
+body = """
+ Twee tabbladen, één vak:
+      <em>Formatteren</em> legt XML uit of perst het plat; <em>Omzetten</em>
+      maakt er JSON van, of van JSON weer XML. De XML die je net hebt uitgelegd
+      is de XML die je omzet, zonder hem twee keer te plakken."""
+
+[[howto]]
+title = "Plak het, of zet het bestand neer."
+body = """
+ Alles wat je kunt
+      selecteren en kopiëren werkt, en een <code>.xml</code>-,
+      <code>.svg</code>-, <code>.rss</code>- of <code>.xsd</code>-bestand dat je
+      op de kiezer zet wordt door je eigen browser gelezen en in het vak gezet
+      &mdash; er is geen uploadstap om over te slaan."""
+
+[[howto]]
+title = "Kies de inspringing, of pers het plat."
+body = """
+ Twee spaties, vier, of
+      een tab. Plat persen is hetzelfde document zonder elke spatie die er
+      alleen stond om het te kunnen lezen, en het resultaat zegt hoeveel bytes
+      dat scheelde."""
+
+[[howto]]
+title = "Lees de fout waar de fout zit."
+body = """
+ Een parser die hier vastloopt
+      zegt <em>welke tag</em> nooit gesloten is en op welke regel en kolom, in
+      plaats van &sbquo;fout op regel 1&lsquo;, wat een browser zegt over een
+      document dat hij in één keer las."""
+
+[[howto]]
+title = "Neem het resultaat mee."
+body = """
+ Kopieer het, of download het als
+      bestand, genoemd naar het formaat waarin het eruit kwam."""
+
+[[faq]]
+q = "Wordt mijn XML ergens geüpload?"
+a = """
+        Nee. De parser en de printer op deze pagina zijn functies die in je eigen
+        browser draaien, op je eigen hardware. Dit gereedschap heeft überhaupt
+        geen netwerkfunctie &mdash; het haalt nooit iets op en stuurt nooit iets
+        weg &mdash; en in het <code>Content-Security-Policy</code> van de pagina
+        staat elk adres dat ze mag benaderen, en geen daarvan is van ons. Dat
+        weegt bij XML zwaarder dan de reputatie van het formaat doet vermoeden:
+        wat erin binnenkomt is meestal een factuur, een bankafschrift, een medisch
+        dossier, of een SOAP-verzoek met inloggegevens in de kop."""
+
+[[faq]]
+q = "Lost het externe entiteiten op?"
+a = """
+        Nee, en er valt niets uit te zetten. Het oplossen van externe entiteiten
+        is de manier waarop een XML-parser wordt overgehaald bestanden te lezen
+        van de machine waarop hij draait &mdash; de aanval die meestal XXE wordt
+        geschreven &mdash; en <code>src/xml.js</code> is een met de hand
+        geschreven lezer zonder enige entiteitsafhandeling. Je tekst wordt ook
+        nooit aan de eigen <code>DOMParser</code> van de browser gegeven. Een
+        <code>DOCTYPE</code> wordt doorgegeven zonder ooit uitgevoerd te
+        worden."""
+
+[[faq]]
+q = "Wat gaat er verloren bij het omzetten van XML naar JSON?"
+a = """
+        De volgorde van gemengde inhoud, de commentaren, en het verschil tussen
+        een attribuut en een kindelement &mdash; dat laatste eerder verzacht dan
+        gewist, want een attribuut wordt een lid waarvan de naam met
+        <code>@</code> begint. De eigen tekst van een element wordt
+        <code>#text</code> zodra hij naast iets anders moet staan, en herhaalde
+        kinderen worden een array. Elke waarde blijft een tekenreeks: XML heeft
+        geen types, en beslissen dat <code>8080</code> een getal was zou
+        informatie verzinnen zijn."""
+
+[[faq]]
+q = "Wat gaat er verloren bij het omzetten van JSON naar XML?"
+a = """
+        Het verschil tussen een leeg object, een lege array en een lege
+        tekenreeks, die alle drie een leeg element worden, en het type van elke
+        waarde, want XML heeft geen types. Een array wordt een herhaald element,
+        de enige vorm die terugleest, en bij een sleutel die een elementnaam niet
+        kan dragen worden de lastige tekens vervangen in plaats van dat er een
+        document uitkomt dat geen enkele parser leest."""
+
+[[faq]]
+q = "Kan het een SVG, een RSS-feed of een POM-bestand formatteren?"
+a = """
+        Ja. Alle drie zijn XML, en dit leest XML in plaats van een bepaald
+        dialect ervan. Een zo uitgelegde SVG is makkelijker met de hand te
+        bewerken; een RSS- of Atom-feed wordt meestal plat geperst verstuurd en
+        is onleesbaar tot iets hem openvouwt. Aan wat het document betekent
+        verandert de opmaak niets."""
+
+[[faq]]
+q = "Verandert opnieuw laten inspringen wat de XML betekent?"
+a = """
+        Bij een document waarvan de elementen andere elementen bevatten niet.
+        Waar het wel kan uitmaken is tekst: witruimte binnen een element dat
+        woorden bevat hoort bij die tekst, dus een element dat niets dan tekst
+        bevat blijft op één regel staan in plaats van opengevouwen te worden.
+        <code>CDATA</code>-secties worden precies overgenomen zoals ze waren."""
+
+[[faq]]
+q = "Waarom niet gewoon de eigen XML-parser van de browser gebruiken?"
+a = """
+        Vanwege wat hij zegt als het document stuk is. De
+        <code>DOMParser</code> geeft een foutdocument terug waarvan de bewoording
+        in elke browser anders is en dat vaak neerkomt op &sbquo;fout op regel
+        1&lsquo;. Een met de hand geschreven lezer kan zeggen welke tag nooit
+        gesloten is, en waar hij geopend werd, en dat is precies wat je moest
+        weten. Geen externe entiteiten oplossen is de andere reden."""
+
+[[faq]]
+q = "Hoe groot mag het bestand zijn?"
+a = """
+        Er is hier geen limiet ingesteld, want er is geen server die ervoor
+        betaalt. Het echte plafond is je eigen apparaat: een paar megabyte XML
+        gaat prima, en bij een heel lang document wacht de pagina op een pauze in
+        je typen voordat ze opnieuw formatteert, in plaats van met je om het
+        toetsenbord te vechten."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er is geen account, geen inloggen, geen proefperiode en
+        geen limiet op hoeveel je plakt. De site draait op advertenties, want die
+        betalen hem; de advertenties krijgen niets over je tekst."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, trek daarna de stekker uit het internet en
+        ze blijft werken. Dat is meteen de eenvoudigste manier om te bewijzen dat
+        er niets geüpload wordt: gereedschap dat je XML wegstuurt om geformatteerd
+        te worden zou stoppen op het moment dat je de stekker eruit trekt."""
+
+[schema]
+description = "Formatteer, laat inspringen en verklein XML, en zet XML om naar JSON of JSON naar XML. De parser draait in de browser, lost geen externe entiteiten op, en er wordt niets geüpload."
+features = [
+  "Legt XML uit, of perst het plat en zegt hoeveel bytes dat scheelde",
+  "Zet XML om naar JSON en JSON naar XML, en zegt wat elke richting kost",
+  "Zegt welke tag nooit gesloten is, en op welke regel en kolom",
+  "Lost geen externe entiteiten op, dus een XXE-payload blijft altijd alleen tekst",
+  "Leest SVG, RSS, Atom, XSD en elke andere XML",
+  "Werkt op een neergezet bestand net zo goed als op geplakte tekst",
+  "Draait offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep hier een bestand naartoe"
+hint = "of klik om te bladeren &mdash; een .xml-, .svg- of .rss-bestand"

@@ -1,0 +1,20 @@
+#
+# Gids: een lengtevergelijkingsgrafiek maken - Dutch.
+#
+
+nav = "Een lengtegrafiek maken"
+title = "Hoe je een lengtevergelijkingsgrafiek maakt"
+description = "Maak van een lijst lengtes een afbeelding naast elkaar: hoe je de lengtes schrijft, welke figuur bij een kind hoort, waarom één vertrouwd voorwerp meer doet dan een derde persoon, en hoe je de grafiek als PNG of SVG naar buiten krijgt."
+
+heading = "Hoe je een lengtevergelijkingsgrafiek maakt"
+lede = """
+    Twee getallen vertellen je niet hoe een verschil van vijftien centimeter
+    eruitziet. Een afbeelding doet dat in ongeveer een seconde, en dat is de hele
+    reden dat deze grafieken bestaan. Zo maak je er een die niet alleen
+    overtuigt, maar ook klopt."""
+
+updated = "30 augustus 2026"
+
+og_title = "Een lengtevergelijkingsgrafiek maken"
+og_description = "Hoe je de lengtes schrijft, welke figuur je kiest, en waarom één vertrouwd voorwerp op de grafiek meer doet dan een derde persoon."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

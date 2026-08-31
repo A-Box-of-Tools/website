@@ -1,0 +1,178 @@
+<main id="main">
+  <!-- Step 1 &mdash; which way round -->
+  <section class="card">
+    <h2><span class="step">1</span> दिशा चुनिए</h2>
+
+    <!--
+      A menu rather than a tab strip, which is what json-formatter uses for its
+      two jobs. The difference is that these two are the same job pointing
+      opposite ways: there is one box, one set of options and one result either
+      way, and nothing on the page changes shape when the direction does. A tab
+      strip would promise a second panel that does not exist.
+    -->
+    <div class="settings">
+      <div class="field">
+        <label for="conversion">बदलिए</label>
+        <select id="conversion"></select>
+        <p class="field-note" id="conversion-note"></p>
+      </div>
+
+      <div class="field">
+        <label for="indent">इंडेंट</label>
+        <select id="indent">
+          <option value="2" selected>दो स्पेस</option>
+          <option value="4">चार स्पेस</option>
+          <option value="tab">एक टैब</option>
+        </select>
+        <p class="field-note">
+          टैब सिर्फ़ JSON के लिए दिया जाता है। YAML स्पेस के हिसाब से तय होता है और उसमें टैब वैध इंडेंट नहीं है।
+        </p>
+      </div>
+
+      <div class="field checks">
+        <label class="check" for="sort-keys">
+          <input type="checkbox" id="sort-keys">
+          हर ऑब्जेक्ट की कुंजियाँ क्रम में लगा दीजिए
+        </label>
+        <p class="field-note">
+          कुंजियाँ जैसी पढ़ी जाती हैं उस हिसाब से, उनके कोड पॉइंट के हिसाब से नहीं, इसलिए <code>item2</code> <code>item10</code> से पहले आता है।
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 2 &mdash; the text itself -->
+  <section class="card">
+    <h2><span class="step">2</span> इसे भीतर चिपकाइए</h2>
+
+    <!--
+      The picker is here for the file that is easier to drop than to open,
+      select all and copy. Nothing about it leaves the machine: the file is
+      read with FileReader into the box below, and that is the whole journey.
+      Its extension also sets the direction, because a dropped .json is not a
+      request to read JSON as though it were YAML.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div class="panes" id="panes">
+      <div class="pane">
+        <div class="pane-head">
+          <label for="input" id="input-label">आपका YAML</label>
+          <span class="count" id="input-count">खाली</span>
+        </div>
+        <textarea id="input" spellcheck="false" autocomplete="off" autocapitalize="off"
+                  autocorrect="off" wrap="off"
+                  placeholder="YAML यहाँ पेस्ट कीजिए - या ऊपर कोई .yaml, .yml या .json फ़ाइल छोड़िए।"></textarea>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <p class="count"></p>
+      <div class="toolbar-actions">
+        <button type="button" id="sample" class="ghost">कोई उदाहरण आज़माइए</button>
+        <button type="button" id="clear" class="ghost danger">खाली कीजिए</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; what came out -->
+  <section class="card" inert>
+    <h2><span class="step">3</span> नतीजा ले जाइए</h2>
+
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <div class="toolbar">
+      <p class="count" id="result-note">अभी कुछ नहीं।</p>
+      <div class="toolbar-actions">
+        <button type="button" id="copy" class="ghost" disabled>कॉपी</button>
+        <a id="download" class="ghost as-button" hidden download>डाउनलोड</a>
+      </div>
+    </div>
+
+    <pre id="output" class="output" tabindex="0"></pre>
+  </section>
+
+  <!--
+    The sentences this page says, held in the markup rather than in src/
+    because src/ is copied byte for byte into every language, so a string
+    written there would be English at all fifteen addresses but one.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+
+    The parser errors are the JSON and YAML halves of json-formatter's list and
+    are worded identically to them - the same two parsers raise them, and a
+    reader who meets the same broken file on both pages should be told the same
+    thing about it.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="parse.at">{reason} (पंक्ति {line}, कॉलम {column})</span>
+    <span data-phrase="char.end">पाठ का अंत</span>
+    <span data-phrase="char.newline">एक पंक्ति-विराम</span>
+    <span data-phrase="char.tab">एक टैब</span>
+    <span data-phrase="char.is">&laquo;{ch}&raquo;</span>
+    <span data-phrase="json.trailing">अनपेक्षित: मान के अंत के बाद {found}</span>
+    <span data-phrase="json.early">पाठ समय से पहले ख़त्म हो गया</span>
+    <span data-phrase="json.keystring">कुंजी को दोहरे उद्धरण चिह्नों वाली स्ट्रिंग होना चाहिए, और यह {found} है</span>
+    <span data-phrase="json.colon">कुंजी के बाद कोलन की उम्मीद थी, मिला {found}</span>
+    <span data-phrase="json.unexpected">अनपेक्षित: {found}</span>
+    <span data-phrase="json.commabrace">अल्पविराम या बंद करने वाला मझला कोष्ठक चाहिए था, मिला {found}</span>
+    <span data-phrase="json.commabracket">अल्पविराम या बंद करने वाला वर्ग कोष्ठक चाहिए था, मिला {found}</span>
+    <span data-phrase="json.object">यह ऑब्जेक्ट कभी बंद ही नहीं होता</span>
+    <span data-phrase="json.array">यह ऐरे कभी बंद ही नहीं होता</span>
+    <span data-phrase="json.string">यह स्ट्रिंग कभी बंद ही नहीं होती</span>
+    <span data-phrase="json.hex">\u के बाद चार हेक्साडेसिमल अंक आने चाहिए</span>
+    <span data-phrase="json.escape">\{next} ऐसा एस्केप नहीं जिसे JSON जानता हो</span>
+    <span data-phrase="json.control">स्ट्रिंग के भीतर एक कच्चा कंट्रोल कैरेक्टर &mdash; उसे एस्केप की तरह लिखिए</span>
+    <span data-phrase="json.number">यह ऐसी संख्या नहीं जिसकी JSON इजाज़त देता हो</span>
+    <span data-phrase="yaml.dedent">यह पंक्ति उस ब्लॉक से कम हाशिये पर है जिसमें वह है</span>
+    <span data-phrase="yaml.documents">इस फ़ाइल में एक से ज़्यादा दस्तावेज़ हैं। उन्हें एक-एक करके बदलिए।</span>
+    <span data-phrase="yaml.indent">यह पंक्ति ऊपर वाली कुंजी से ज़्यादा हाशिये पर है</span>
+    <span data-phrase="yaml.keyvalue">यहाँ &laquo;key: value&raquo; की उम्मीद थी</span>
+    <span data-phrase="yaml.aliases">उपनाम (*name) समर्थित नहीं &mdash; JSON के पास &laquo;वही नोड दो बार&raquo; कहने का
+      कोई तरीक़ा ही नहीं</span>
+    <span data-phrase="yaml.tags">टैग (!name) समर्थित नहीं &mdash; प्रकार का अंदाज़ा लगाना पड़ता</span>
+    <span data-phrase="yaml.complexkey">यहाँ &laquo;?&raquo; कुंजी समर्थित नहीं</span>
+    <span data-phrase="yaml.blockscalar">&laquo;{header}&raquo; ऐसा ब्लॉक स्केलर नहीं जिसे यह पढ़ता हो</span>
+    <span data-phrase="yaml.afterquote">बंद करने वाले उद्धरण चिह्न के बाद और पाठ है</span>
+    <span data-phrase="yaml.anchors">एंकर (&amp;name) समर्थित नहीं &mdash; JSON के पास &laquo;वही नोड दो बार&raquo; कहने
+      का कोई तरीक़ा ही नहीं</span>
+    <span data-phrase="yaml.hex">\{next} के बाद {width} हेक्साडेसिमल अंक चाहिए</span>
+    <span data-phrase="yaml.escape">\{next} ऐसा एस्केप नहीं जिसे यह पढ़ता हो</span>
+    <span data-phrase="yaml.quoted">उद्धरण चिह्नों वाली यह स्ट्रिंग कभी बंद ही नहीं होती</span>
+    <span data-phrase="yaml.afterflow">फ़्लो संग्रह के अंत के बाद और पाठ है</span>
+    <span data-phrase="yaml.flowearly">फ़्लो संग्रह समय से पहले ख़त्म हो जाता है</span>
+    <span data-phrase="yaml.flowseq">इस फ़्लो अनुक्रम में अल्पविराम या बंद करने वाला वर्ग कोष्ठक चाहिए था</span>
+    <span data-phrase="yaml.flowkey">इस फ़्लो मैपिंग में कुंजी के बाद कोलन चाहिए था</span>
+    <span data-phrase="yaml.flowmap">इस फ़्लो मैपिंग में अल्पविराम या बंद करने वाला मझला कोष्ठक चाहिए था</span>
+    <span data-phrase="convert.yaml-json.name">YAML से JSON</span>
+    <span data-phrase="convert.json-yaml.name">JSON से YAML</span>
+    <span data-phrase="convert.yaml-json">टिप्पणियाँ खो जाती हैं, क्योंकि JSON के पास उन्हें रखने की जगह ही नहीं। एंकर, उपनाम
+      और टैग अंदाज़े से भरे जाने के बजाय बदलाव को ही रोक देते हैं।</span>
+    <span data-phrase="convert.json-yaml">कुछ नहीं खोता: हर JSON दस्तावेज़ पहले से ही एक YAML दस्तावेज़ है। स्ट्रिंग सिर्फ़
+      वहीं उद्धरण चिह्नों में रखी जाती है जहाँ उन्हें खुला छोड़ने से उनका मतलब बदल जाता।</span>
+    <span data-phrase="label.yaml">आपका YAML</span>
+    <span data-phrase="label.json">आपका JSON</span>
+    <span data-phrase="placeholder.yaml">YAML यहाँ पेस्ट कीजिए - या ऊपर कोई .yaml, .yml या .json फ़ाइल छोड़िए।</span>
+    <span data-phrase="placeholder.json">JSON यहाँ पेस्ट कीजिए - या ऊपर कोई .json, .yaml या .yml फ़ाइल छोड़िए।</span>
+    <span data-phrase="size.bytes">{n} B</span>
+    <span data-phrase="size.kb">{n} KB</span>
+    <span data-phrase="size.mb">{n} MB</span>
+    <span data-phrase="read.reading">फ़ाइल पढ़ी जा रही है…</span>
+    <span data-phrase="read.failed">वह फ़ाइल पढ़ी नहीं जा सकी: {reason}</span>
+    <span data-phrase="out.nothing">अभी कुछ नहीं।</span>
+    <span data-phrase="out.empty">कुछ निकला ही नहीं।</span>
+    <span data-phrase="note.converted">{name} &mdash; {lines} पंक्तियाँ, {size}</span>
+    <span data-phrase="copy.copy">कॉपी</span>
+    <span data-phrase="copy.copied">कॉपी हो गया</span>
+    <span data-phrase="copy.selected">चुन लिया &mdash; Ctrl+C दबाइए</span>
+    <span data-phrase="net.clean">आपका टेक्स्ट कहीं नहीं गया। {total} फ़ाइलें
+      लोड हुईं। {platform}</span>
+    <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल
+      ऐसा कभी नहीं करता। {platform}</span>
+    <span data-phrase="net.platform.one">विज्ञापन, माप और दान वाले बटन के लिए
+      साइट की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को उसका एक
+      अक्षर भी नहीं मिला।</span>
+    <span data-phrase="net.platform.many">विज्ञापन, माप और दान वाले बटन के लिए
+      साइट की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को उसका एक
+      अक्षर भी नहीं मिला।</span>
+  </div>
+</main>

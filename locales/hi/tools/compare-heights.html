@@ -1,0 +1,244 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> बताइए आप किनकी तुलना कर रहे हैं</h2>
+
+    <p class="card-lede">
+      एक नाम, एक ऊँचाई, और कैसी आकृति बनानी है। ऊँचाई आप जैसे लिखते हैं वैसे ही
+      लिख सकते हैं &mdash; <code>173</code>, <code>1.73&nbsp;m</code>,
+      <code>5'8"</code>, <code>68&nbsp;in</code> &mdash; और हर बॉक्स के नीचे की
+      पंक्ति दिखाती है कि क्या समझा गया, इसलिए चुपचाप कुछ भी अंदाज़ा नहीं लगाया
+      जाता।
+    </p>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span>आकृति</span>
+        <span>नाम</span>
+        <span>ऊँचाई</span>
+        <span>चौड़ाई</span>
+        <span>रंग</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">एक व्यक्ति जोड़िए</button>
+        <button type="button" id="add-object" class="ghost">एक चीज़ जोड़िए</button>
+        <button type="button" id="clear" class="ghost danger">चार्ट खाली कीजिए</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">या पैमाने के लिए कुछ जोड़िए</label>
+      <select id="preset">
+        <option value="" selected>कोई एक चुनिए&hellip;</option>
+        <optgroup label="दरवाज़े और खिड़कियाँ">
+          <option value="door-interior" data-cm="203" data-width="81">भीतरी दरवाज़ा &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">मुख्य दरवाज़ा &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">खिड़की &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">गैराज का दरवाज़ा &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="स्कूल और दफ़्तर">
+          <option value="board" data-cm="120" data-width="240">व्हाइटबोर्ड या ब्लैकबोर्ड &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">दफ़्तर की मेज़ &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">चार दराज़ वाली फ़ाइल अलमारी &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">प्रोजेक्टर स्क्रीन, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="शहर में">
+          <option value="vending" data-cm="183" data-width="100">वेंडिंग मशीन &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">पहियों वाला कूड़ेदान, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">बास्केटबॉल का घेरा &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">जहाज़ी कंटेनर, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="घर में">
+          <option value="fridge" data-cm="178" data-width="76">फ़्रिज-फ़्रीज़र &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">रसोई का प्लेटफ़ॉर्म &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">खाने की मेज़ &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">खाने की कुर्सी &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">तीन सीट वाला सोफ़ा &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">अपराइट पियानो &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">एकॉस्टिक गिटार &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">वाइन की बोतल &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      इनमें से कुछ वाक़ई तय हैं: 20&nbsp;ft का जहाज़ी कंटेनर परिभाषा से ही
+      259&nbsp;cm ऊँचा होता है, बास्केटबॉल का घेरा 305 पर होता है, और अमेरिकी
+      भीतरी दरवाज़ा 203 गुणा 81 का होता है। बाक़ी मानक नहीं, बस आम माप हैं &mdash;
+      दरवाज़े, खिड़कियाँ और प्लेटफ़ॉर्म देश-देश और घर-घर बदलते हैं। हर एक एक साधारण
+      पंक्ति की तरह आता है, तो अपनी वाली नापिए और उसके ऊपर असली आँकड़े टाइप कीजिए।
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; how the chart is drawn -->
+  <section class="card">
+    <h2><span class="step">2</span> चुनिए यह कैसा दिखे</h2>
+
+    <fieldset class="options">
+      <legend>पैमाना</legend>
+
+      <div class="option-row">
+        <label for="unit">किसमें नापा जाए</label>
+        <select id="unit">
+          <option value="cm" selected>सेंटीमीटर</option>
+          <option value="ft">फ़ुट और इंच</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="order">क्रम</label>
+        <select id="order">
+          <option value="entered" selected>जैसे आपने डाले</option>
+          <option value="tallest">सबसे लंबे पहले</option>
+          <option value="shortest">सबसे छोटे पहले</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>पैमाना बनाइए</strong>
+          <span class="check-note">
+            चार्ट के आर-पार जाती लकीरें और दोनों तरफ़ के आँकड़े। इनके बिना भी
+            तस्वीर दो लोगों की तुलना ठीक करती है, पर यह बताना बंद कर देती है कि
+            उनमें से कोई कितना लंबा है।
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>हर आकृति के ऊपर नाम और ऊँचाई लिखिए</strong>
+          <span class="check-note">
+            बंद होने पर चार्ट पैमाने पर बनी परछाइयाँ भर रह जाता है &mdash; और
+            अगर नाम वैसे भी वहीं जाने हैं जहाँ आप इसे चिपका रहे हैं, तो यही
+            चाहिए।
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>रंग और आकार</legend>
+
+      <div class="option-row">
+        <label for="background">पीछे</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>कोई पृष्ठभूमि ही नहीं</strong>
+          <span class="check-note">
+            पारदर्शी, ताकि इसे ऐसी स्लाइड पर रखा जा सके जिसका रंग पहले से है।
+            पैमाना और लिखावट ऊपर चुने रंग के हिसाब से गहरे या हल्के बनते हैं,
+            इसलिए पृष्ठभूमि बंद होने पर भी उसे लगभग वही रखिए जिस पर तस्वीर
+            जाएगी।
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">तस्वीर की ऊँचाई, पिक्सेल में</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        यह बनाने की जगह की ऊँचाई है, इसलिए तैयार तस्वीर थोड़ी ज़्यादा ऊँची होती
+        है: नाम उसके ऊपर बैठते हैं। चौड़ाई इससे तय होती है कि कितनी आकृतियाँ हैं
+        और हर एक का लेबल कितना चौड़ा है। तीसरा चरण बताता है कि क्या बना।
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the picture -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> ले जाइए</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="आपका बनाया हुआ ऊँचाई तुलना चार्ट"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG डाउनलोड कीजिए</button>
+      <button type="button" id="download-png" class="primary">PNG डाउनलोड कीजिए</button>
+      <button type="button" id="copy-png" class="ghost">तस्वीर कॉपी कीजिए</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      किसी दस्तावेज़ या चैट में चिपकाने के लिए PNG है। रखने के लिए SVG है: वह
+      चार्ट को पिक्सेल की जगह निर्देशों के रूप में रखता है, इसलिए किसी भी आकार में
+      साफ़ छपता है और बाद में वेक्टर खोलने वाली किसी भी चीज़ से उसका रंग बदला जा
+      सकता है।
+    </p>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">पुरुष</span>
+    <span data-phrase="shape.woman">महिला</span>
+    <span data-phrase="shape.boy">लड़का</span>
+    <span data-phrase="shape.girl">लड़की</span>
+    <span data-phrase="shape.toddler">नन्हा बच्चा</span>
+    <span data-phrase="shape.object">चीज़</span>
+
+    <span data-phrase="row.shape">पंक्ति {n} की आकृति</span>
+    <span data-phrase="row.name">पंक्ति {n} का नाम</span>
+    <span data-phrase="row.height">पंक्ति {n} की ऊँचाई</span>
+    <span data-phrase="row.width">पंक्ति {n} की चौड़ाई</span>
+    <span data-phrase="row.colour">पंक्ति {n} का रंग</span>
+    <span data-phrase="row.up">पंक्ति {n} को बाईं ओर ले जाइए</span>
+    <span data-phrase="row.down">पंक्ति {n} को दाईं ओर ले जाइए</span>
+    <span data-phrase="row.remove">पंक्ति {n} हटाइए</span>
+    <span data-phrase="row.nameexample">नाम</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">चौड़ाई</span>
+    <span data-phrase="row.reads">{height} के रूप में पढ़ा गया</span>
+
+    <span data-phrase="height.empty">एक ऊँचाई डालिए, और यह पंक्ति बन जाएगी।</span>
+    <span data-phrase="height.unreadable">यह ऐसी ऊँचाई नहीं जो यहाँ समझी जाती हो। 173, 1.73 m, 5'8" या 68 in आज़माइए।</span>
+    <span data-phrase="height.tooshort">बनाने के लिए बहुत छोटा &mdash; 5 cm सबसे कम है।</span>
+    <span data-phrase="height.tootall">चार्ट जहाँ तक जाता है उससे ऊँचा &mdash; 12 मीटर सीमा है।</span>
+
+    <span data-phrase="chart.empty">किसी को जोड़िए, और चार्ट यहाँ दिख जाएगा।</span>
+    <span data-phrase="chart.full">बारह आकृतियाँ ही इतनी हैं जितनी यह चार्ट पढ़ने लायक रहते हुए सँभाल सकता है।</span>
+    <span data-phrase="facts.chart">{count} आकृतियाँ, {width} गुणा {height} पिक्सेल। पैमाना ज़मीन से {top} तक जाता है, हर {step} पर एक लकीर।</span>
+    <span data-phrase="facts.one">एक आकृति, {width} गुणा {height} पिक्सेल। पैमाना ज़मीन से {top} तक जाता है, हर {step} पर एक लकीर।</span>
+
+    <span data-phrase="save.done">सेव हो गया। इसे बनाने के लिए कहीं कुछ नहीं भेजा गया।</span>
+    <span data-phrase="save.failed">{detail}। SVG फिर भी डाउनलोड होगा।</span>
+    <span data-phrase="save.copied">कॉपी हो गया। जहाँ चाहिए वहाँ चिपका दीजिए।</span>
+    <span data-phrase="save.noclipboard">इस ब्राउज़र ने पेज को क्लिपबोर्ड में लिखने नहीं दिया। इसके बजाय डाउनलोड कर लीजिए।</span>
+    <span data-phrase="save.nothing">चार्ट पर अभी सेव करने लायक कुछ नहीं है।</span>
+    <span data-phrase="render.nosvg">इस ब्राउज़र ने SVG बनाने से मना कर दिया</span>
+    <span data-phrase="render.nopng">इस ब्राउज़र ने PNG लिखने से मना कर दिया</span>
+
+    <span data-phrase="net.clean">आपने जो नाम और ऊँचाइयाँ टाइप कीं वे कहीं नहीं
+      गईं। {total} फ़ाइलें लोड हुईं। {platform}</span>
+    <span data-phrase="net.dirty">किसी चीज़ ने {hosts} से संपर्क किया, और यह टूल
+      ऐसा कभी नहीं करता। {platform}</span>
+    <span data-phrase="net.platform.one">विज्ञापन, माप और दान वाले बटन के लिए
+      साइट की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को कोई नाम या
+      ऊँचाई नहीं मिली।</span>
+    <span data-phrase="net.platform.many">विज्ञापन, माप और दान वाले बटन के लिए
+      साइट की अपनी स्क्रिप्ट {hosts} होस्ट से आईं। उनमें से किसी को कोई नाम या
+      ऊँचाई नहीं मिली।</span>
+  </div>
+</main>

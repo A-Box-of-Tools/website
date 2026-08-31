@@ -95,6 +95,15 @@ complete = true
 "qr-barcode-reader" = "lecteur-de-qr-code"
 "hash-checksum" = "verifier-une-somme-de-controle"
 "share-text" = "partager-du-texte"
+# C'est le son qu'on cherche, pas le format : "mp3" n'y figure pas a dessein,
+# parce que la page n'en ecrit pas et qu'une adresse ne doit rien promettre
+# qu'elle ne tienne.
+"extract-audio-from-video" = "extraire-l-audio-d-une-video"
+"xml-formatter" = "formater-du-xml"
+"yaml-to-json" = "convertir-du-yaml-en-json"
+# "Comparer des tailles" est la phrase tapee ; le graphique est le resultat et
+# reste dans le titre.
+"compare-heights" = "comparer-des-tailles"
 
 "guides" = "guides"
 "roadmap" = "feuille-de-route"
@@ -157,6 +166,7 @@ complete = true
 "guides/edit-a-gif-frame-by-frame" = "guides/modifier-un-gif-image-par-image"
 "guides/make-a-qr-code-and-prove-it-scans" = "guides/creer-un-code-qr-et-prouver-qu-il-se-scanne"
 "guides/clean-up-a-voice-memo" = "guides/nettoyer-un-memo-vocal"
+"guides/make-a-height-comparison-chart" = "guides/faire-un-graphique-de-tailles"
 
 #
 # ---------------------------------------------------------------------------

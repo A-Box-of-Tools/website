@@ -1,0 +1,262 @@
+#
+# Conversor de YAML para JSON - Portuguese (Brazil).
+#
+# Overrides for tools/yaml-to-json/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Conversor de YAML para JSON"
+heading = "YAML&nbsp;para&nbsp;JSON <span class=\"h1-kw\">&mdash; e de JSON de volta para YAML</span>"
+tagline = "Os dois sentidos, e ele diz o que cada um custa. Nada disso é colado no servidor de outra pessoa."
+
+title = "Conversor de YAML para JSON &mdash; nos dois sentidos, sem enviar nada"
+description = "Converta YAML para JSON e JSON para YAML no seu navegador. Ele lê YAML 1.2, então yes e no continuam sendo texto, e diz exatamente o que cada sentido perde. Nada é enviado: um arquivo de configuração nunca sai do seu computador."
+og_title = "Converter YAML sem colar num servidor"
+og_description = "Um conversor de YAML e JSON rodando no seu próprio computador. As chaves mantêm a ordem, os números mantêm os dígitos, e o que você cola não vai a lugar nenhum."
+og_image_alt = "Conversor de YAML para JSON - os dois sentidos, sem envio"
+
+pledge = """
+    Converter é aritmética sobre um texto, feita aqui, nesta página. Os dois
+    analisadores são escritos à mão e estão em <code>src/</code> &mdash;
+    <code>yaml.js</code> e <code>json.js</code> &mdash; e não há mais nada. Esta
+    ferramenta não tem função de rede de espécie alguma &mdash; nada para
+    buscar, nada para enviar &mdash; e aqui isso importa mais do que em quase
+    qualquer outro canto deste site: um arquivo YAML costuma ser uma
+    configuração de deploy, e uma configuração de deploy costuma estar cheia de
+    nomes de host, nomes de bucket e segredos."""
+
+live_hint = """
+      Você não precisa acreditar na nossa palavra: abra o DevTools, olhe a aba de
+      rede e converta alguma coisa. Nenhuma requisição carrega um caractere do
+      que você colou. Ou desconecte da internet e converta assim mesmo."""
+
+read_first = """
+, <code>src/yaml.js</code> para o leitor que
+      recusa uma âncora em vez de adivinhar o que ela queria dizer, e
+      <code>src/convert.js</code> para entender por que uma conversão é um
+      analisador e um impressor, sem nada no meio que conheça os dois formatos ao
+      mesmo tempo."""
+
+howto_heading = "Como converter YAML para JSON sem enviar o arquivo"
+
+card = """
+            Transforme YAML em JSON ou JSON em YAML, e saiba o que a viagem
+            custa. Cole uma configuração de deploy sem entregar a ninguém."""
+
+[words]
+plural = "YAML e JSON"
+choose = "um arquivo"
+analytics_extra = """, e nem o YAML nem o
+  JSON que passa por aqui"""
+
+[[facts]]
+text = "Sem envio"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem limite de tamanho"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "O que você cola não tem para onde ir."
+body = """
+ A
+      Content-Security-Policy lista todos os endereços que esta página pode
+      contatar, e nenhum deles é nosso. Não existe aqui nenhum ponto final onde
+      uma configuração colada pudesse ser recolhida, nem nada no código que a
+      enviaria se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Não há nenhum
+      <code>fetch</code>, nenhum <code>XMLHttpRequest</code> e nenhum
+      <code>sendBeacon</code> em lugar algum de <code>src/</code>. Os dois
+      analisadores e os dois impressores são funções desta página que recebem um
+      texto e devolvem um texto."""
+
+[[privacy]]
+title = "Ele lê YAML 1.2, então a Noruega continua sendo a Noruega."
+body = """
+ No YAML
+      1.1, <code>no</code> era um booleano, que é o bug famoso que transforma o
+      código de país da Noruega em <code>false</code>. Aqui se lê 1.2, onde ele é
+      o texto que parece ser. No outro sentido essas palavras são escritas de
+      volta <em>entre aspas</em>, porque o que abrir o arquivo depois ainda pode
+      ser um leitor 1.1. <code>tests/js/text-convert.test.js</code> confere as
+      duas metades."""
+
+[[privacy]]
+title = "Uma conversão que não pode ser honesta para em vez disso."
+body = """
+ Uma
+      âncora, um alias ou uma tag no YAML encerram a conversão com uma mensagem
+      dizendo em que linha ela está, em vez de um documento JSON que
+      caladinho significa outra coisa. JSON não tem como dizer &ldquo;o mesmo nó
+      duas vezes&rdquo;, e escolher uma interpretação seria escolher por
+      você."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não chega até ele."
+body = """
+ Os scripts
+      de publicidade e de medição vêm do Google, e o botão de doação vem do Buy
+      Me a Coffee. Nenhum deles recebe um caractere do seu texto. Toda linha que
+      lê, analisa ou escreve é servida desta origem e está listada no
+      repositório."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e a ferramenta continua igual,
+      porque nunca houve uma etapa de rede nela. Essa é a prova mais simples de
+      todas."""
+
+[[howto]]
+title = "Escolha o sentido."
+body = """
+ <em>YAML para JSON</em> ou <em>JSON para
+      YAML</em>. A observação embaixo do menu diz o que aquele sentido perde antes
+      de você colar qualquer coisa, e não depois."""
+
+[[howto]]
+title = "Cole, ou arraste o arquivo."
+body = """
+ Qualquer coisa que você consiga
+      selecionar e copiar serve. Um arquivo arrastado para o seletor é lido pelo
+      seu próprio navegador e colocado na caixa &mdash; não existe etapa de envio
+      para pular &mdash; e uma extensão <code>.json</code> ou <code>.yaml</code>
+      já escolhe o sentido para você."""
+
+[[howto]]
+title = "Escolha a indentação."
+body = """
+ Dois espaços, quatro, ou uma tabulação.
+      A tabulação só é oferecida para JSON: YAML é definido em termos de espaços,
+      e uma tabulação não é indentação válida nele."""
+
+[[howto]]
+title = "Leia o erro onde o erro está."
+body = """
+ Um analisador que falha aqui diz o
+      que encontrou e em que linha e coluna, em vez de &ldquo;token inesperado na
+      posição 4193&rdquo;. Isso normalmente basta para consertar um arquivo de
+      configuração sem abrir mais nada."""
+
+[[howto]]
+title = "Leve o resultado."
+body = """
+ Copie, ou baixe como arquivo, com o nome do
+      formato em que ele saiu."""
+
+[[faq]]
+q = "Meu YAML é enviado para algum lugar?"
+a = """
+        Não. Os dois analisadores e os dois impressores desta página são funções
+        que rodam no seu próprio navegador, no seu próprio hardware. Esta
+        ferramenta não tem função de rede de espécie alguma &mdash; nunca busca
+        nada e nunca envia nada &mdash; e a
+        <code>Content-Security-Policy</code> da página lista todos os endereços
+        que ela pode contatar, e nenhum deles é nosso. É justamente por isso que
+        se usa isto para uma configuração de deploy: elas vivem cheias de nomes
+        de host, nomes de bucket e de vez em quando um segredo que alguém queria
+        mover, e colar uma no conversor de outra pessoa é entregá-la."""
+
+[[faq]]
+q = "O que se perde ao converter YAML para JSON?"
+a = """
+        Os comentários, porque JSON não tem onde pôr um. Âncoras, aliases e tags
+        são recusados de cara em vez de adivinhados &mdash; cada um diz uma coisa
+        que JSON não consegue dizer, e um conversor que caladinho escolhesse uma
+        interpretação te devolveria um documento que não é o que o arquivo dizia.
+        O outro sentido não perde nada: todo documento JSON já é um documento
+        YAML."""
+
+[[faq]]
+q = "Meu YAML diz no e o JSON saiu como texto. Por quê?"
+a = """
+        Porque é texto mesmo, e aqui se lê YAML 1.2 em vez de 1.1. No YAML 1.1,
+        <code>yes</code>, <code>no</code>, <code>on</code> e <code>off</code> eram
+        booleanos, que é o bug famoso que transforma o código de país da Noruega
+        em <code>false</code>. O YAML 1.2 abandonou isso e aqui também: só
+        <code>true</code>, <code>false</code>, <code>null</code> e <code>~</code>
+        são lidos como alguma coisa que não seja texto. No outro sentido, essas
+        palavras são escritas de volta <em>entre aspas</em>, mesmo que aqui elas
+        fossem lidas como texto sem as aspas &mdash; porque o que abrir o arquivo
+        depois talvez não leia. O PyYAML ainda usa 1.1 por padrão. Ler com rigor e
+        escrever com cautela é a única combinação que acerta nos dois sentidos."""
+
+[[faq]]
+q = "Ele mantém a ordem das minhas chaves?"
+a = """
+        Mantém, nos dois sentidos, e isso é mais difícil do que parece. Um
+        conversor construído em cima do <code>JSON.parse</code> caladinho joga
+        para a frente as chaves que parecem inteiros, então
+        <code>{"10":a,"2":b}</code> volta como <code>{"2":b,"10":a}</code>. Os
+        números mantêm os dígitos que você digitou, então um id de conta de vinte
+        dígitos não perde os três últimos para um double. Se você <em>quiser</em>
+        ordenar, tem uma caixinha, e ela ordena pelo jeito como as chaves se leem,
+        não pelos pontos de código."""
+
+[[faq]]
+q = "Ele converte vários documentos YAML de uma vez?"
+a = """
+        Não, e ele diz isso em vez de escolher um. Um arquivo com separadores
+        <code>---</code> contém mais de um documento, e JSON não tem nenhuma forma
+        que signifique &ldquo;vários documentos&rdquo; &mdash; um array seria uma
+        afirmação que o arquivo nunca fez. Converta um de cada vez."""
+
+[[faq]]
+q = "Por que não tem um formatador de YAML aqui?"
+a = """
+        Porque YAML não tem uma forma espremida que valha a pena escrever &mdash;
+        a curta é o estilo de fluxo, que é ilegível, e ilegível é o oposto do
+        motivo de manter um arquivo em YAML. Organizar JSON, XML, HTML e CSS é o
+        trabalho do <a href="../formatar-json/">formatador de JSON</a>, e ele
+        organiza YAML também."""
+
+[[faq]]
+q = "De que tamanho pode ser o arquivo?"
+a = """
+        Não há limite nenhum posto aqui, porque não há servidor pagando por um. O
+        teto de verdade é o seu próprio computador: alguns megabytes de YAML vão
+        bem, e num documento muito longo a página espera uma pausa na sua
+        digitação antes de converter, em vez de disputar o teclado com você."""
+
+[[faq]]
+q = "É grátis, e preciso de conta?"
+a = """
+        É grátis, e não tem conta, nem login, nem período de teste, nem limite de
+        quanto você cola. O site exibe publicidade, e é ela que paga a conta; os
+        anúncios não recebem nada sobre o seu texto."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Funciona. Carregue a página uma vez, desligue a internet e ela continua
+        funcionando. Esse é também o jeito mais simples de provar que nada é
+        enviado: uma ferramenta que mandasse a sua configuração embora para
+        converter pararia no instante em que você desconectasse."""
+
+[schema]
+description = "Converter YAML para JSON e JSON para YAML no navegador. Lê YAML 1.2, mantém a ordem das chaves e os dígitos exatos de cada número, e diz o que cada sentido perde. Nada é enviado."
+features = [
+  "Converte YAML para JSON e JSON para YAML",
+  "Lê YAML 1.2, então yes e no continuam sendo texto",
+  "Mantém a ordem das chaves e os dígitos exatos de cada número",
+  "Recusa âncoras, aliases e tags em vez de adivinhar o que queriam dizer",
+  "Diz em que linha e coluna está o erro, em palavras",
+  "Funciona com um arquivo arrastado do mesmo jeito que com um colado",
+  "Roda offline; sem envio, sem conta",
+]
+
+[picker]
+title = "Arraste um arquivo para cá"
+hint = "ou clique para procurar &mdash; um arquivo .yaml, .yml ou .json"
