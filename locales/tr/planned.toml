@@ -1,0 +1,72 @@
+#
+# Yol haritasindaki planlanan liste - Turkish.
+#
+# Overrides for config/planned.toml. Only words: the group `id` stays as it is,
+# because that is what a tool's roadmap_group matches on, and the order of the
+# groups and of the items inside them is decided once, in English.
+#
+# Every group and every item has to be here. They are merged in order, so a
+# missing entry would render in English in the middle of a Turkish list with
+# nothing on the page to say which one it was - the build refuses a list whose
+# length has changed for exactly that reason.
+#
+# This file arrived late. Turkish joined the site in #104, after the ten
+# languages that already had one, and the roadmap was the page nobody noticed
+# it was missing: the address was translated, the frame was translated, and the
+# list of tools inside it stayed English. See ROADMAP.md.
+#
+
+note = "Henüz yapılmadı. Bu işin nereye gittiğini görebilmeniz için burada."
+
+[[group]]
+id = "images"
+name = "Resimler"
+items = [
+  ["Metin ekleme", "resmin üzerine ya da üstündeki bir yazı kutusuna"],
+  ["AVIF", "her tarayıcının okuduğu, hiçbirinin yazamadığı biçim"],
+  ["DICOM anonimleştirme", "taramaya dokunmadan hasta bilgilerini içinden çıkarma"],
+]
+
+[[group]]
+id = "gif"
+name = "GIF ve Animasyon"
+items = [
+  ["GIF'ten MP4 veya WebM'e", "aynı animasyon, çoğu zaman onda bir boyutta"],
+  ["GIF düzenleme", "boyutlandırma, kırpma, döndürme, ters çevirme ya da hızını değiştirme"],
+  ["Animasyonlu WebP", "aynı animasyon çok daha küçük boyutta, saydamlığıyla birlikte"],
+]
+
+[[group]]
+id = "video"
+name = "Video"
+items = [
+  ["Boyutlandırma", "gerçekten gönderilebilecek bir boyuta indirme"],
+  ["Döndürme", "yan çekilmiş klip için &mdash; ve tek bir kare bile çözülmeden"],
+  ["Videoyu sessize alma", "sesi çıkarma, görüntüye hiç dokunmama"],
+  ["MP4'e dönüştürme", "kameradan ne çıktıysa, gerçekten yüklenebilecek dosya olarak"],
+  ["Altyazıyı görüntüye gömme", "bir SRT dosyasının görüntünün içine çizilmesi"],
+  ["Altyazı dönüştürücü", "SRT, VTT, ASS, SBV ve LRC her yöne, kaydırılabilir zamanlamalarla"],
+]
+
+[[group]]
+id = "audio"
+name = "Ses"
+items = [
+  ["Biçim dönüştürme", "MP3, WAV ve Opus, her yöne"],
+]
+
+[[group]]
+id = "documents"
+name = "Belgeler ve PDF"
+items = [
+  ["Sayfaları kırpma", "bir taramanın ya da yazdırılmış bir sunumun kenar boşluklarını kesme"],
+  ["Resimleri çıkarma", "belgenin içindeki resimleri geri alma"],
+]
+
+[[group]]
+id = "beyond"
+name = "Medyanın ötesi"
+items = [
+  ["CSV ve JSON", "iki yöne de dönüştürme ve hesap tablosunun verdiği çıktıyı toparlama"],
+  ["Sertifikalar ve anahtarlar", "bir sertifikayı ya da imza isteğini başkasının sunucusuna yapıştırmadan okuma"],
+]

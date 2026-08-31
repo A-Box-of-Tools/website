@@ -779,10 +779,13 @@ def localize_page(page, locale, site):
 def localize_planned(planned, locale, slug):
     """config/planned.toml, said in one language.
 
-    The roadmap is a real page in the sitemap, so a locale that called itself
-    finished while this list was still English would be advertising a page that
-    is half translated - which is the exact thing `complete` exists to stop.
-    Counted with everything else, so it holds the flag shut until it is done.
+    Counted with everything else a language owes, so a locale that has not
+    translated this list does not count the roadmap as one of its finished
+    pages. The roadmap is deliberately out of the sitemap - see the comment in
+    buildlib/catalogue.py - so what the debt actually withholds is narrower
+    than it once was: the hreflang set and the language switcher on this page,
+    which is still the difference between offering a reader a translation and
+    offering them the English list under a translated address.
     """
     if locale['is_base']:
         return planned

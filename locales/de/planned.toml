@@ -18,7 +18,7 @@ id = "images"
 name = "Bilder"
 items = [
   ["Text hinzufügen", "über dem Bild oder in einem Textkasten darüber"],
-  ["AVIF", "das Format, das nur ein Browser schreibt und alle anderen bloß lesen"],
+  ["AVIF", "das Format, das jeder Browser liest und keiner schreibt"],
   ["DICOM anonymisieren", "die Patientendaten aus einem Scan nehmen, ohne den Scan anzufassen"],
 ]
 
@@ -28,7 +28,7 @@ name = "GIF &amp; Animation"
 items = [
   ["GIF zu MP4 oder WebM", "dieselbe Animation, meist ein Zehntel der Größe"],
   ["Ein GIF bearbeiten", "skalieren, zuschneiden, drehen, rückwärts laufen lassen oder das Tempo ändern"],
-  ["Animiertes WebP", "dieselbe Animation bei einem Bruchteil der Größe &mdash; und das einzige hier, das einen mitgelieferten Encoder braucht"],
+  ["Animiertes WebP", "dieselbe Animation bei einem Bruchteil der Größe, Transparenz inklusive"],
 ]
 
 [[group]]
@@ -54,7 +54,7 @@ items = [
 id = "documents"
 name = "Dokumente &amp; PDF"
 items = [
-  ["Seiten drehen &amp; zuschneiden", "einen quer eingelesenen Scan geraderücken oder seine Ränder beschneiden"],
+  ["Seiten zuschneiden", "die Ränder eines Scans abschneiden, oder die einer ausgedruckten Folie"],
   ["Bilder extrahieren", "die Bilder wieder aus einem Dokument herausholen"],
 ]
 

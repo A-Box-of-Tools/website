@@ -18,7 +18,7 @@ id = "images"
 name = "Afbeeldingen"
 items = [
   ["Tekst toevoegen", "over de foto heen, of in een bijschrift erboven"],
-  ["AVIF", "het formaat dat één browser schrijft en de rest alleen leest"],
+  ["AVIF", "het formaat dat elke browser leest en geen enkele schrijft"],
   ["DICOM anonimiseren", "de patiënt uit een scan halen zonder de scan aan te raken"],
 ]
 
@@ -28,7 +28,7 @@ name = "Gif &amp; animatie"
 items = [
   ["Gif naar mp4 of WebM", "dezelfde animatie, meestal een tiende van de grootte"],
   ["Een gif bewerken", "schalen, bijsnijden, draaien, omkeren of de snelheid wijzigen"],
-  ["Bewegende WebP", "dezelfde animatie voor een fractie van de grootte &mdash; en de enige hier die een meegeleverde encoder nodig heeft"],
+  ["Bewegende WebP", "dezelfde animatie voor een fractie van de grootte, transparantie en al"],
 ]
 
 [[group]]
@@ -54,7 +54,7 @@ items = [
 id = "documents"
 name = "Documenten &amp; pdf"
 items = [
-  ["Pagina's draaien &amp; bijsnijden", "een scan rechtzetten die scheef binnenkwam, of de marges eraf halen"],
+  ["Pagina's bijsnijden", "de marges van een scan eraf halen, of die van een afgedrukte dia"],
   ["Afbeeldingen eruit halen", "de plaatjes weer uit een document trekken"],
 ]
 

@@ -66,10 +66,31 @@ on it.
 
 | Tool | Why it needs the build |
 |---|---|
-| Encoding MP3 | No browser ships an MP3 encoder. `libmp3lame` is one, so "anything to MP3" becomes a real converter instead of only "MP3 in, WAV out" |
-| Encoding AVIF | Chromium's `canvas.toBlob` is the only native writer, and everywhere else it quietly hands back a PNG. `libaom` writes it the same way in every browser |
-| Animated WebP | Every browser decodes it and none encode it. `libwebp` does both |
+| Encoding MP3 | No browser ships an MP3 encoder — `AudioEncoder` refuses `mp3` and `MediaRecorder` refuses `audio/mpeg`, checked August 2026. `libmp3lame` is one, so "anything to MP3" becomes a real converter instead of only "MP3 in, WAV out" |
 | JPEG XL, both directions | Chrome 145 and Firefox 152 carry a decoder behind a flag, and only Safari turns it on by default. `libjxl` in the build makes the browser's own support irrelevant |
+
+**Two rows came out of this table in August 2026, and how they came out is the
+point.** Encoding AVIF and animated WebP sat here for a year needing `libaom`
+and `libwebp`. Neither does, and neither claim had ever been run against a
+browser:
+
+- **Animated WebP.** The browser will not encode an animation and does encode
+  every frame of one — a still WebP from `convertToBlob` is a RIFF file with
+  the bitstream in a `VP8 ` or `VP8L` chunk, and an animation is those chunks
+  one per `ANMF`. Assembled that way, `ImageDecoder` reads the result back as
+  animated, transparency included. Container work, no engine, and the site
+  keeps `'wasm-unsafe-eval'` on exactly one page.
+- **Encoding AVIF.** No browser writes one from a canvas — Chromium 148 returns
+  a PNG from both `toBlob` and `convertToBlob`, so the old "Chromium is the
+  exception" line was wrong in the tool's favour and against it at once. But an
+  AVIF is an AV1 keyframe in the container HEIC uses, and `VideoEncoder`
+  encodes AV1 (`av01.0.04M.08`, a real OBU stream). The work is the `av1C` box
+  and the container, not `libaom`.
+
+The lesson is the one [`heic-to-jpg`](../tools/heic-to-jpg/README.md) taught in
+a different direction: the estimate in this section is a ceiling, and it is
+worth ten minutes with a console before it is worth 25 MB. See
+[ROADMAP.md](../ROADMAP.md) for both arguments in full.
 
 **What it costs, and what has to change to pay it.** None of this is free, and
 all of it is knowable up front:
@@ -102,6 +123,7 @@ all of it is knowable up front:
 | Background removal | A segmentation model, not a codec. FFmpeg does not do it and would not help — this needs weights and an inference runtime, which is a separate argument on a separate day |
 | Camera RAW, **decoded** (CR2, NEF, ARW) | FFmpeg does not decode these either. It would take LibRaw or dcraw on top: a second engine, for one family of formats. Still ruled out — but see below, because reading a RAW file turned out not to require it |
 | Raster to vector (image to SVG) | A tracing algorithm, not a conversion: large, and the output disappoints everyone who expected their photo back as shapes |
+| PDF page to PNG | Asked for constantly, and the one PDF job that needs a *renderer* rather than a reader: a font engine and a full graphics model, which is a vendored engine on the scale of the FFmpeg argument. Everything else this site does to a PDF — merging, compressing, redacting, rotating pages, and the cropping still on the roadmap — rewrites objects without ever drawing a page, which is why those are small and this is not |
 
 ### Camera RAW, read rather than decoded
 

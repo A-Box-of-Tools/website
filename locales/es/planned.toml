@@ -18,7 +18,7 @@ id = "images"
 name = "Imágenes"
 items = [
   ["Añadir texto", "sobre la propia imagen, o en un pie encima de ella"],
-  ["AVIF", "el formato que solo un navegador escribe y los demás únicamente leen"],
+  ["AVIF", "el formato que todos los navegadores leen y ninguno escribe"],
   ["Anonimizar DICOM", "sacar al paciente de una exploración sin tocar la imagen"],
 ]
 
@@ -28,7 +28,7 @@ name = "GIF y animación"
 items = [
   ["GIF a MP4 o WebM", "la misma animación, normalmente a una décima parte del tamaño"],
   ["Editar un GIF", "redimensionar, recortar, girar, invertir o cambiarle la velocidad"],
-  ["WebP animado", "la misma animación por una fracción del tamaño: el único de aquí que necesita un codificador incluido"],
+  ["WebP animado", "la misma animación por una fracción del tamaño, transparencia incluida"],
 ]
 
 [[group]]
@@ -54,7 +54,7 @@ items = [
 id = "documents"
 name = "Documentos y PDF"
 items = [
-  ["Girar y recortar páginas", "enderezar un escaneo que entró de lado, o recortarle los márgenes"],
+  ["Recortar páginas", "quitarle los márgenes a un escaneo, o a unas diapositivas impresas"],
   ["Extraer imágenes", "recuperar las fotos que hay dentro de un documento"],
 ]
 
