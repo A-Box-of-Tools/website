@@ -46,6 +46,13 @@
     <summary type="html">Confronta due testi e guarda ogni differenza, riga per riga e parola per parola, fianco a fianco o in una colonna. Il confronto gira nel tuo browser e non viene caricato niente: il codice non ancora pubblicato non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
+    <title type="html">Editor audio</title>
+    <id>https://abox.tools/it/modificare-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/modificare-audio/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser, senza caricare niente.</summary>
+  </entry>
+  <entry>
     <title type="html">Formattatore JSON</title>
     <id>https://abox.tools/it/formattare-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-json/"/>
@@ -79,13 +86,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/video-in-gif/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Trasforma un pezzo di un MP4, un MOV o un WebM in una GIF animata. Scegli il pezzo, la larghezza e la frequenza dei fotogrammi: i fotogrammi li legge e la GIF la scrive il tuo browser. Niente caricamenti.</summary>
-  </entry>
-  <entry>
-    <title type="html">Editor audio</title>
-    <id>https://abox.tools/it/modificare-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/modificare-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Riproduci una traccia al contrario, accelerala o rallentala, e alza una registrazione troppo bassa. Tira fuori anche l'audio da un video. Gira nel browser, senza caricare niente.</summary>
   </entry>
   <entry>
     <title type="html">Immagini in PDF</title>

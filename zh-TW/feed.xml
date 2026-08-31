@@ -53,6 +53,13 @@
     <summary type="html">比對兩段文字，逐行、逐詞看清每一處差異，並排或單列顯示。比對在你的瀏覽器裡跑，什麼都不上傳——尚未釋出的程式碼從不離開你的機器。</summary>
   </entry>
   <entry>
+    <title type="html">音訊編輯</title>
+    <id>https://abox.tools/zh-TW/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/edit-audio/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">把一段聲音倒著放、放快或放慢，把錄輕了的錄音提上來。影片裡的聲音也能抽出來。在瀏覽器裡跑，什麼都不上傳。</summary>
+  </entry>
+  <entry>
     <title type="html">GIF 製作</title>
     <id>https://abox.tools/zh-TW/gif-maker/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/gif-maker/"/>
@@ -135,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/trim-audio/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">一邊播放錄音，一邊把值得留下的段落隨手標出來，然後把這些段落存成一個檔案。切點精確到取樣，接縫不咔噠，什麼都不上傳。</summary>
-  </entry>
-  <entry>
-    <title type="html">音訊編輯</title>
-    <id>https://abox.tools/zh-TW/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/edit-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">把一段聲音倒著放、放快或放慢，把錄輕了的錄音提上來。影片裡的聲音也能抽出來。在瀏覽器裡跑，什麼都不上傳。</summary>
   </entry>
   <entry>
     <title type="html">DICOM 閱片器</title>

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/standbild-aus-video/:';
-const CACHE_NAME=CACHE_PREFIX+'d50e1d29ca';
+const CACHE_NAME=CACHE_PREFIX+'adba0b02bf';
 const ASSETS=[
 './',
 'index.html',

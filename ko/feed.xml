@@ -46,6 +46,13 @@
     <summary type="html">JSON, XML, HTML, CSS, YAML을 정렬하고 압축하고, JSON을 YAML이나 XML로 바꾸고 되돌립니다. 파서는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이나 설정 파일이 내 기기를 떠날 일이 없습니다.</summary>
   </entry>
   <entry>
+    <title type="html">오디오 편집</title>
+    <id>https://abox.tools/ko/오디오-편집/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-편집/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">음원을 거꾸로 돌리고, 빠르거나 느리게 만들고, 작게 녹음된 소리를 키웁니다. 동영상에서 소리만 뽑아내는 것도 됩니다. 브라우저에서 돌아가고 아무것도 업로드하지 않습니다.</summary>
+  </entry>
+  <entry>
     <title type="html">텍스트 비교</title>
     <id>https://abox.tools/ko/텍스트-비교/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/텍스트-비교/"/>
@@ -114,13 +121,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-자르기/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">녹음을 틀어 놓고 지나가는 대로 남길 부분마다 표시한 다음, 그 부분들을 한 파일로 저장합니다. 샘플 단위로 정확히 잘리고, 이음매에서 딱 소리가 나지 않으며, 아무것도 업로드되지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">오디오 편집</title>
-    <id>https://abox.tools/ko/오디오-편집/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/오디오-편집/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">음원을 거꾸로 돌리고, 빠르거나 느리게 만들고, 작게 녹음된 소리를 키웁니다. 동영상에서 소리만 뽑아내는 것도 됩니다. 브라우저에서 돌아가고 아무것도 업로드하지 않습니다.</summary>
   </entry>
   <entry>
     <title type="html">이미지 스택</title>

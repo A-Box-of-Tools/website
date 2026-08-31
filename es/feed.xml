@@ -46,6 +46,13 @@
     <summary type="html">Compara dos textos y mira cada diferencia, línea a línea y palabra a palabra, lado a lado o en una columna. La comparación corre en tu navegador y no se sube nada: el código sin publicar nunca sale de tu equipo.</summary>
   </entry>
   <entry>
+    <title type="html">Editor de audio</title>
+    <id>https://abox.tools/es/editar-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/editar-audio/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Pon una pista del revés, acelérala o ralentízala y levanta una grabación que quedó floja. También le saca el sonido a un vídeo. Todo en el navegador, sin subir nada.</summary>
+  </entry>
+  <entry>
     <title type="html">Formateador de JSON</title>
     <id>https://abox.tools/es/formatear-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-json/"/>
@@ -93,13 +100,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/recortar-un-video/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Deja un clip en un cuadrado, en un vertical 9:16 o en una caja de píxeles exacta. Qué proporción quiere cada plataforma, por qué recortar tiene que recodificar y cortar no, y lo que eso cuesta.</summary>
-  </entry>
-  <entry>
-    <title type="html">Editor de audio</title>
-    <id>https://abox.tools/es/editar-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/editar-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Pon una pista del revés, acelérala o ralentízala y levanta una grabación que quedó floja. También le saca el sonido a un vídeo. Todo en el navegador, sin subir nada.</summary>
   </entry>
   <entry>
     <title type="html">Escáner de documentos</title>

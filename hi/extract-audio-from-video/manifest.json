@@ -1,0 +1,26 @@
+{
+  "id": "/hi/extract-audio-from-video/",
+  "name": "Extract Audio from Video",
+  "short_name": "Extract Audio from Video",
+  "description": "Drop a video in and take the sound out of it. The picture is never decoded, and nothing is uploaded.",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

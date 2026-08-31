@@ -32,6 +32,13 @@
     <uri>https://abox.tools/ar/</uri>
   </author>
   <entry>
+    <title type="html">محرّر الصوت</title>
+    <id>https://abox.tools/ar/تحرير-الصوت/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
     <title type="html">مرمِّز Base64 ومفكِّكه</title>
     <id>https://abox.tools/ar/ترميز-base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/ترميز-base64/"/>
@@ -121,13 +128,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/اقتصاص-الفيديو/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">اختصر مقطعاً إلى مربّع أو إلى 9:16 طولي أو إلى إطار بكسل محدّد. أي نسبة تريدها كل منصة، ولماذا على الاقتصاص أن يعيد الترميز بينما لا يفعل التقصير، وماذا يكلّف ذلك.</summary>
-  </entry>
-  <entry>
-    <title type="html">محرّر الصوت</title>
-    <id>https://abox.tools/ar/تحرير-الصوت/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">مقصّ الصوت</title>

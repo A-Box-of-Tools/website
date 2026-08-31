@@ -53,6 +53,13 @@
     <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
+    <title type="html">Ses Düzenleyici</title>
+    <id>https://abox.tools/tr/ses-duzenleme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-duzenleme/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Bir parçayı geriye oynatın, hızlandırın ya da yavaşlatın ve sessiz bir kaydı daha yüksek yapın. Bir videonun sesini de çıkarır. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
     <title type="html">Belge Tarayıcı</title>
     <id>https://abox.tools/tr/belge-tarayici/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/belge-tarayici/"/>
@@ -93,13 +100,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-birlestirme/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">PDF'leri birleştirin, birini birkaç dosyaya bölün ve sayfaları istediğiniz sıraya sürükleyin &amp;mdash; hepsi kendi tarayıcınızın içinde. Hiçbir şey yüklenmez, hesap gerekmez ve bitmiş dosya size sunulmadan önce yeniden açılıp sayılır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Ses Düzenleyici</title>
-    <id>https://abox.tools/tr/ses-duzenleme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-duzenleme/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Bir parçayı geriye oynatın, hızlandırın ya da yavaşlatın ve sessiz bir kaydı daha yüksek yapın. Bir videonun sesini de çıkarır. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
   </entry>
   <entry>
     <title type="html">Ses Kesici</title>

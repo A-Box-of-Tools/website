@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/체크섬-확인/:';
-const CACHE_NAME=CACHE_PREFIX+'5ecb140b7a';
+const CACHE_NAME=CACHE_PREFIX+'1fc3a7c63a';
 const ASSETS=[
 './',
 'index.html',

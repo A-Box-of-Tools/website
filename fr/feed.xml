@@ -53,6 +53,13 @@
     <summary type="html">Formatez et compactez du JSON, du XML, du HTML, du CSS et du YAML, et convertissez du JSON en YAML ou en XML et inversement. Les analyseurs tournent dans votre navigateur, rien n'est envoyé - un jeton ou un fichier de configuration ne quitte donc jamais votre machine.</summary>
   </entry>
   <entry>
+    <title type="html">Éditeur audio</title>
+    <id>https://abox.tools/fr/modifier-un-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/modifier-un-audio/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Passez une piste à l'envers, accélérez-la ou ralentissez-la, et relevez un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur, sans le moindre envoi.</summary>
+  </entry>
+  <entry>
     <title type="html">Comment recadrer une vidéo dans une autre forme</title>
     <id>https://abox.tools/fr/guides/recadrer-une-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/guides/recadrer-une-video/"/>
@@ -135,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/video-en-gif/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Transformez un passage d'un MP4, d'un MOV ou d'un WebM en GIF animé. Choisissez le passage, la largeur et la cadence&amp;nbsp;; les images sont lues et le GIF est écrit dans votre navigateur. Rien n'est envoyé.</summary>
-  </entry>
-  <entry>
-    <title type="html">Éditeur audio</title>
-    <id>https://abox.tools/fr/modifier-un-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/modifier-un-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Passez une piste à l'envers, accélérez-la ou ralentissez-la, et relevez un enregistrement trop faible. Récupère aussi le son d'une vidéo. Tout se passe dans votre navigateur, sans le moindre envoi.</summary>
   </entry>
   <entry>
     <title type="html">Analyseur de GIF</title>

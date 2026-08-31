@@ -53,6 +53,13 @@
     <summary type="html">2つのテキストを比較して、すべての違いを行単位・単語単位で、左右に並べて、または1列で見ます。比較はブラウザの中で動き、アップロードは一切ありません。未公開のコードが手元の端末を離れることはありません。</summary>
   </entry>
   <entry>
+    <title type="html">音声編集ツール</title>
+    <id>https://abox.tools/ja/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/edit-audio/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">音声を逆から再生し、速くしたり遅くしたりし、小さな録音を大きくします。動画から音声だけ取り出すこともできます。処理はブラウザの中だけ。アップロードはありません。</summary>
+  </entry>
+  <entry>
     <title type="html">GIF作成</title>
     <id>https://abox.tools/ja/gif-maker/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/gif-maker/"/>
@@ -135,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-audio/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">録音を再生しながら、残したい部分に次々と印を付け、その部分を1つのファイルとして保存します。サンプル単位で正確に切れ、つなぎ目でプチッと鳴らず、アップロードもありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">音声編集ツール</title>
-    <id>https://abox.tools/ja/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/edit-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">音声を逆から再生し、速くしたり遅くしたりし、小さな録音を大きくします。動画から音声だけ取り出すこともできます。処理はブラウザの中だけ。アップロードはありません。</summary>
   </entry>
   <entry>
     <title type="html">2つのJSONファイルを比較する方法</title>

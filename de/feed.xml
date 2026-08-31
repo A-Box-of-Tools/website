@@ -32,6 +32,13 @@
     <uri>https://abox.tools/de/</uri>
   </author>
   <entry>
+    <title type="html">Audio-Editor</title>
+    <id>https://abox.tools/de/audio-bearbeiten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-bearbeiten/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Eine Aufnahme rückwärts abspielen, schneller oder langsamer machen und eine leise Aufnahme anheben. Holt auch den Ton aus einem Video. Läuft im Browser: nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
     <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
     <id>https://abox.tools/de/base64-kodieren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
@@ -51,13 +58,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/text-vergleichen/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Zwei Texte vergleichen und jeden Unterschied sehen, Zeile für Zeile und Wort für Wort, nebeneinander oder in einer Spalte. Der Vergleich läuft in Ihrem Browser, hochgeladen wird nichts - unveröffentlichter Code verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio-Editor</title>
-    <id>https://abox.tools/de/audio-bearbeiten/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/audio-bearbeiten/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Eine Aufnahme rückwärts abspielen, schneller oder langsamer machen und eine leise Aufnahme anheben. Holt auch den Ton aus einem Video. Läuft im Browser: nichts wird hochgeladen.</summary>
   </entry>
   <entry>
     <title type="html">Audio-Schneider</title>

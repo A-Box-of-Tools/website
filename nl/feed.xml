@@ -32,6 +32,13 @@
     <uri>https://abox.tools/nl/</uri>
   </author>
   <entry>
+    <title type="html">Audiobewerker</title>
+    <id>https://abox.tools/nl/audio-bewerken/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-bewerken/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Speel een opname achterstevoren af, maak hem sneller of langzamer en zet een zachte opname harder. Haalt ook het geluid uit een video. Draait in je browser en uploadt niets.</summary>
+  </entry>
+  <entry>
     <title type="html">Base64-codeerder &amp; -decodeerder</title>
     <id>https://abox.tools/nl/base64-coderen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/base64-coderen/"/>
@@ -65,13 +72,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-stacken/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Voeg een reeks foto's samen tot &amp;eacute;&amp;eacute;n: middel ze om ruis te doden, neem de mediaan om mensen uit een sc&amp;egrave;ne te halen, licht op voor sterrensporen, of focus-stack een macro-opname. Leest CR2, NEF, ARW, DNG, RAF en CR3 door het eigen voorbeeld van de camera eruit te halen. Draait helemaal in je browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audiobewerker</title>
-    <id>https://abox.tools/nl/audio-bewerken/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-bewerken/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Speel een opname achterstevoren af, maak hem sneller of langzamer en zet een zachte opname harder. Haalt ook het geluid uit een video. Draait in je browser en uploadt niets.</summary>
   </entry>
   <entry>
     <title type="html">Audioknipper</title>

@@ -53,6 +53,13 @@
     <summary type="html">Kodekan dan uraikan Base64 dalam kedua alfabetnya, kodekan URL dengan persen, escape entitas HTML, dan baca heksadesimal serta escape garis miring terbalik. Semuanya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token tidak pernah meninggalkan mesin Anda.</summary>
   </entry>
   <entry>
+    <title type="html">Penyunting Audio</title>
+    <id>https://abox.tools/id/sunting-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/sunting-audio/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Putar sebuah trek secara terbalik, percepat atau perlambat, dan buat rekaman yang pelan menjadi lebih keras. Bisa juga mengeluarkan suara dari sebuah video. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
     <title type="html">Cara memangkas video ke bentuk lain</title>
     <id>https://abox.tools/id/panduan/pangkas-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/pangkas-video/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/tumpuk-gambar/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Gabungkan sebuah burst foto menjadi satu: rata-ratakan untuk membunuh derau, ambil mediannya untuk membuang orang dari sebuah pemandangan, terangkan untuk jejak bintang, atau tumpuk fokus sebuah bidikan makro. Membaca CR2, NEF, ARW, DNG, RAF, dan CR3 dengan menarik keluar pratinjau milik kameranya sendiri. Berjalan sepenuhnya di peramban Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Penyunting Audio</title>
-    <id>https://abox.tools/id/sunting-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/sunting-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Putar sebuah trek secara terbalik, percepat atau perlambat, dan buat rekaman yang pelan menjadi lebih keras. Bisa juga mengeluarkan suara dari sebuah video. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
   </entry>
   <entry>
     <title type="html">Video ke GIF</title>

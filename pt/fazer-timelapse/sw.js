@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/fazer-timelapse/:';
-const CACHE_NAME=CACHE_PREFIX+'b1b747bdbb';
+const CACHE_NAME=CACHE_PREFIX+'44ad0fbc5e';
 const ASSETS=[
 './',
 'index.html',

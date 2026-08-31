@@ -56,13 +56,19 @@
   </url>
   <url>
     <loc>https://abox.tools/edit-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://abox.tools/exif-editor/</loc>
     <lastmod>2026-08-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/extract-audio-from-video/</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -566,7 +572,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ar/تحرير-الصوت/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1064,7 +1070,7 @@
   </url>
   <url>
     <loc>https://abox.tools/de/audio-bearbeiten/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -1562,7 +1568,7 @@
   </url>
   <url>
     <loc>https://abox.tools/es/editar-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2060,7 +2066,7 @@
   </url>
   <url>
     <loc>https://abox.tools/fr/modifier-un-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -2558,7 +2564,7 @@
   </url>
   <url>
     <loc>https://abox.tools/hi/edit-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3056,7 +3062,7 @@
   </url>
   <url>
     <loc>https://abox.tools/id/sunting-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -3554,7 +3560,7 @@
   </url>
   <url>
     <loc>https://abox.tools/it/modificare-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4052,7 +4058,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ja/edit-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -4550,7 +4556,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ko/오디오-편집/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5048,7 +5054,7 @@
   </url>
   <url>
     <loc>https://abox.tools/nl/audio-bewerken/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -5546,7 +5552,7 @@
   </url>
   <url>
     <loc>https://abox.tools/pt/editar-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6044,7 +6050,7 @@
   </url>
   <url>
     <loc>https://abox.tools/tr/ses-duzenleme/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -6542,7 +6548,7 @@
   </url>
   <url>
     <loc>https://abox.tools/zh/edit-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -7040,7 +7046,7 @@
   </url>
   <url>
     <loc>https://abox.tools/zh-TW/edit-audio/</loc>
-    <lastmod>2026-08-28</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

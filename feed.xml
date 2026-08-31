@@ -32,11 +32,25 @@
     <uri>https://abox.tools/</uri>
   </author>
   <entry>
+    <title type="html">Audio Editor</title>
+    <id>https://abox.tools/edit-audio/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/edit-audio/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Play a track backwards, speed it up or slow it down, and make a quiet recording louder. Takes the sound out of a video too. Runs in your browser: nothing uploaded.</summary>
+  </entry>
+  <entry>
     <title type="html">Base64 Encoder &amp; Decoder</title>
     <id>https://abox.tools/base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extract Audio from Video</title>
+    <id>https://abox.tools/extract-audio-from-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/extract-audio-from-video/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Get the sound out of an MP4, MOV or WebM and save it as a WAV. The video never leaves your machine and its picture is never decoded - the whole job runs in your own browser.</summary>
   </entry>
   <entry>
     <title type="html">JSON Formatter</title>
@@ -65,13 +79,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/yaml-to-json/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Convert YAML to JSON and JSON to YAML in your browser. Reads YAML 1.2, so yes and no stay strings, and says exactly what each direction loses. Nothing is uploaded - a config file never leaves your machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Audio Editor</title>
-    <id>https://abox.tools/edit-audio/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/edit-audio/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Play a track backwards, speed it up or slow it down, and make a quiet recording louder. Takes the sound out of a video too. Runs in your browser: nothing uploaded.</summary>
   </entry>
   <entry>
     <title type="html">Audio Trimmer</title>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/format-json-without-uploading-it/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">How to lay out, check and minify JSON in your own browser - what a formatter must never change about your file, how to read the error message, and why the site you paste it into matters.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to get phone photos ready for the web</title>
-    <id>https://abox.tools/guides/get-photos-ready-for-the-web/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/get-photos-ready-for-the-web/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">HEIC to JPEG, GPS stripped, resized for the page and compressed to a budget - the whole pipeline in the browser, and the originals never leave your machine.</summary>
   </entry>
 </feed>
