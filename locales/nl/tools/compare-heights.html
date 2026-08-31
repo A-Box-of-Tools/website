@@ -4,15 +4,34 @@
     <h2><span class="step">1</span> Zeg wie je vergelijkt</h2>
 
     <p class="card-lede">
-      Een naam, een lengte, en wat voor figuur er getekend moet worden. Lengtes
-      mag je schrijven zoals jij ze schrijft &mdash; <code>173</code>,
+      Een naam, een lengte, en wat voor figuur er getekend moet worden. Elke
+      regel begint met een lengte die je er zo overheen kunt typen. Lengtes mag
+      je schrijven zoals jij ze schrijft &mdash; <code>173</code>,
       <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
-      &mdash; en de regel onder elk vak laat zien wat er begrepen is, zodat er
-      niets stilletjes geraden wordt.
+      &mdash; en de regel onder elk vak laat zien wat er begrepen is, of zegt
+      het in het rood als het vak leeg is of de lengte niet te lezen valt. Er
+      wordt nooit stilletjes iets geraden.
     </p>
+
+    <p class="card-lede">
+      <strong>Van boven naar beneden is hier van links naar rechts op de
+      grafiek.</strong> Sleep een regel aan het handvat op de linkerrand om hem
+      te verplaatsen, of gebruik de pijltjes, die vanaf het toetsenbord
+      hetzelfde doen. Hoe dan ook gaat de grafiek terug naar jouw eigen volgorde
+      als hij op lengte sorteerde.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Gemeten in</label>
+      <select id="unit">
+        <option value="cm" selected>Centimeters</option>
+        <option value="ft">Voet en inches</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>Figuur</span>
         <span>Naam</span>
         <span>Lengte</span>
@@ -78,20 +97,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> Kies hoe het eruitziet</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Neem hem mee</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="De lengtegrafiek die je hebt gemaakt"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">De SVG downloaden</button>
+      <button type="button" id="download-png" class="primary">De PNG downloaden</button>
+      <button type="button" id="copy-png" class="ghost">De afbeelding kopiëren</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      De PNG is degene om in een document of een chat te plakken. De SVG is
+      degene om te bewaren: die is de grafiek als instructies in plaats van als
+      pixels, dus hij drukt scherp af op elk formaat en kan later door alles wat
+      vectoren opent worden herkleurd.
+    </p>
 
     <fieldset class="options">
-      <legend>De meetlat</legend>
-
-      <div class="option-row">
-        <label for="unit">Gemeten in</label>
-        <select id="unit">
-          <option value="cm" selected>Centimeters</option>
-          <option value="ft">Voet en inches</option>
-        </select>
-      </div>
+      <legend>Hoe het eruitziet</legend>
 
       <div class="option-row">
         <label for="order">Volgorde</label>
@@ -124,10 +154,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>Kleur en formaat</legend>
 
       <div class="option-row">
         <label for="background">Erachter</label>
@@ -155,34 +181,10 @@
       <p class="field-summary">
         Dat is de hoogte van het tekenvlak, dus de afgemaakte afbeelding is
         iets hoger: de namen staan erboven. De breedte volgt uit hoeveel figuren
-        er zijn en hoe breed het label van elk is. Stap drie zegt wat het
-        geworden is.
+        er zijn en hoe breed het label van elk is. De regel onder de afbeelding
+        zegt wat het geworden is.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> Neem hem mee</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="De lengtegrafiek die je hebt gemaakt"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">De SVG downloaden</button>
-      <button type="button" id="download-png" class="primary">De PNG downloaden</button>
-      <button type="button" id="copy-png" class="ghost">De afbeelding kopiëren</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      De PNG is degene om in een document of een chat te plakken. De SVG is
-      degene om te bewaren: die is de grafiek als instructies in plaats van als
-      pixels, dus hij drukt scherp af op elk formaat en kan later door alles wat
-      vectoren opent worden herkleurd.
-    </p>
   </section>
 
   <!--
@@ -196,7 +198,6 @@
     <span data-phrase="shape.woman">Vrouw</span>
     <span data-phrase="shape.boy">Jongen</span>
     <span data-phrase="shape.girl">Meisje</span>
-    <span data-phrase="shape.toddler">Peuter</span>
     <span data-phrase="shape.object">Voorwerp</span>
 
     <span data-phrase="row.shape">Figuur voor regel {n}</span>
@@ -204,21 +205,23 @@
     <span data-phrase="row.height">Lengte voor regel {n}</span>
     <span data-phrase="row.width">Breedte voor regel {n}</span>
     <span data-phrase="row.colour">Kleur voor regel {n}</span>
-    <span data-phrase="row.up">Regel {n} naar links</span>
-    <span data-phrase="row.down">Regel {n} naar rechts</span>
+    <span data-phrase="row.up">Regel {n} omhoog</span>
+    <span data-phrase="row.down">Regel {n} omlaag</span>
     <span data-phrase="row.remove">Regel {n} verwijderen</span>
+    <span data-phrase="row.drag">Sleep om te herschikken</span>
     <span data-phrase="row.nameexample">Naam</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">Breedte</span>
     <span data-phrase="row.reads">Gelezen als {height}</span>
 
-    <span data-phrase="height.empty">Een lengte, en deze regel wordt getekend.</span>
+    <span data-phrase="height.empty">Deze regel heeft een lengte nodig voordat hij getekend kan worden.</span>
     <span data-phrase="height.unreadable">Dat is geen lengte die dit begrijpt. Probeer 173, 1,73 m, 5'8" of 68 in.</span>
     <span data-phrase="height.tooshort">Te klein om te tekenen &mdash; 5 cm is het kleinste.</span>
     <span data-phrase="height.tootall">Langer dan de grafiek reikt &mdash; 12 meter is de grens.</span>
 
     <span data-phrase="chart.empty">Voeg iemand toe, en de grafiek verschijnt hier.</span>
+    <span data-phrase="chart.noheights">Elke regel heeft een lengte nodig. Vul er een in en de grafiek verschijnt hier.</span>
     <span data-phrase="chart.full">Twaalf figuren is alles wat deze grafiek kan dragen en leesbaar blijven.</span>
     <span data-phrase="facts.chart">{count} figuren, {width} bij {height} pixels. De meetlat loopt van de grond tot {top}, met een lijn om de {step}.</span>
     <span data-phrase="facts.one">Eén figuur, {width} bij {height} pixels. De meetlat loopt van de grond tot {top}, met een lijn om de {step}.</span>

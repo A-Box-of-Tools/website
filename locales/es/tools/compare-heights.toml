@@ -10,20 +10,21 @@ heading = "Comparar&nbsp;alturas <span class=\"h1-kw\">&mdash; un gráfico lado 
 tagline = "Escribe las alturas, llévate la imagen. No se envía nada para dibujarla."
 
 title = "Comparar alturas &mdash; gratis, sin registro, sin subir nada"
-description = "Compara alturas lado a lado. Añade un hombre, una mujer, un niño, una niña, un bebé y objetos &mdash; una puerta, una ventana, una pizarra, una máquina expendedora &mdash; en centímetros o en pies y pulgadas, y descarga el gráfico como PNG o SVG. Se dibuja en tu navegador."
+description = "Compara alturas lado a lado. Añade un hombre, una mujer, un niño, una niña y objetos &mdash; una puerta, una ventana, una pizarra, una máquina expendedora &mdash; en centímetros o en pies y pulgadas, y descarga el gráfico como PNG o SVG. Se dibuja en tu navegador."
 og_title = "Compara alturas lado a lado y quédate con la imagen"
-og_description = "Pon a dos adultos, un niño, un bebé y una puerta en la misma regla, en centímetros o en pies y pulgadas, y descarga el resultado. Sin cuenta, sin marca de agua, y sin ninguna lista de nombres saliendo de tu dispositivo."
+og_description = "Pon a dos adultos, un niño, una niña y una puerta en la misma regla, en centímetros o en pies y pulgadas, y descarga el resultado. Sin cuenta, sin marca de agua, y sin ninguna lista de nombres saliendo de tu dispositivo."
 og_image_alt = "Comparador de alturas - comparar alturas lado a lado, sin subir nada"
 
 pledge = """
     Un gráfico de alturas es aritmética y un dibujo: no hay ningún archivo que
     enviar ni ningún servicio al que preguntar. El hombre, la mujer, el niño y
-    la niña son ilustraciones de dominio público que viajan con esta página; el
-    bebé se construye aquí a partir de una tabla de proporciones corporales, y
-    por eso tiene forma de bebé y no de adulto pequeño. Cada paso ocurre en unas
-    seiscientas líneas de JavaScript de esta página que puedes leer. No hay
-    función de red de ninguna clase, y aquí eso importa porque lo que escribes
-    es una lista de personas y lo que mide cada una."""
+    la niña son ilustraciones de dominio público que viajan con esta página, y
+    el niño y la niña son dibujos de niños de verdad y no adultos hechos
+    pequeños &mdash; que es lo que evita que un gráfico familiar quede mal de
+    una forma que nadie sabe nombrar. Cada paso ocurre en unos cientos de líneas
+    de JavaScript de esta página que puedes leer. No hay función de red de
+    ninguna clase, y aquí eso importa porque lo que escribes es una lista de
+    personas y lo que mide cada una."""
 
 live_hint = """
       No hace falta que nos creas: abre las DevTools, mira la pestaña de red y
@@ -33,13 +34,13 @@ live_hint = """
 
 read_first = """
 , <code>src/traced.js</code> y
-      <code>vendor/</code> para las cuatro figuras dibujadas y de dónde salió su
-      ilustración, <code>src/figures.js</code> para la tabla de proporciones con
-      la que se construye el bebé, <code>src/units.js</code> para cómo una
-      altura escrita se vuelve un número y cómo se rotula la regla,
-      <code>src/chart.js</code> para la disposición, y <code>src/save.js</code>
-      para las dos descargas &mdash; que son el SVG en pantalla, y ese mismo SVG
-      pintado sobre un lienzo."""
+      <code>vendor/</code> para las cuatro figuras y de dónde salió su
+      ilustración, <code>src/figures.js</code> para la lista con la que se
+      construye el menú, <code>src/units.js</code> para cómo una altura escrita
+      se vuelve un número y cómo se rotula la regla, <code>src/chart.js</code>
+      para la disposición, y <code>src/save.js</code> para las dos descargas
+      &mdash; que son el SVG en pantalla, y ese mismo SVG pintado sobre un
+      lienzo."""
 
 howto_heading = "Cómo hacer un gráfico de comparación de alturas"
 
@@ -120,11 +121,11 @@ body = """
 [[privacy]]
 title = "Las ilustraciones están aquí, no se descargan."
 body = """
- Las cuatro
-      figuras dibujadas son de dominio público, y se sirven desde este origen
-      junto con el resto de la página &mdash; sin fuente de iconos, sin CDN, sin
-      hoja de sprites traída del servidor de otro mientras escribes. Es también
-      por lo que el gráfico sigue dibujándose con la red desconectada."""
+ Las cuatro figuras
+      son ilustraciones de dominio público, y se sirven desde este origen junto
+      con el resto de la página &mdash; sin fuente de iconos, sin CDN, sin hoja
+      de sprites traída del servidor de otro mientras escribes. Es también por lo
+      que el gráfico sigue dibujándose con la red desconectada."""
 
 [[privacy]]
 title = "Qué carga Google, y qué no llega a ver."
@@ -165,13 +166,13 @@ body = """
 [[howto]]
 title = "Elige la figura que corresponde a la persona."
 body = """
- Un niño de dos años
-      mide unas cuatro cabezas y media, y un adulto siete y media, así que un
-      bebé dibujado como un adulto encogido se ve mal de una forma difícil de
-      nombrar y fácil de notar. Hay un niño y una niña para la edad escolar y un
-      bebé por debajo, cada uno con sus propias proporciones en lugar de ser el
-      adulto hecho pequeño, y eso es la mayor parte de lo que hace que un gráfico
-      familiar parezca una familia."""
+ Un niño mide unas seis
+      cabezas y un adulto siete y media, así que un niño dibujado como un adulto
+      encogido se ve mal de una forma difícil de nombrar y fácil de notar. El
+      niño y la niña son dibujos de niños de verdad y no adultos hechos
+      pequeños, y eso es la mayor parte de lo que hace que un gráfico familiar
+      parezca una familia. Cada fila llega además con una altura ya puesta, así
+      que añadir a alguien dibuja a alguien &mdash; escribe directamente encima."""
 
 [[howto]]
 title = "Pon algo familiar en el gráfico."
@@ -240,29 +241,42 @@ a = """
         nadie escriba."""
 
 [[faq]]
-q = "¿Por qué el bebé no parece un adulto pequeño?"
+q = "¿Por qué los niños no parecen adultos pequeños?"
 a = """
-        Porque no lo es. Las proporciones del cuerpo cambian con la edad: un niño
-        de dos años mide más o menos cuatro cabezas y media, uno de ocho seis, y
-        un adulto siete y media &mdash; así que la cabeza es casi un cuarto de un
-        bebé y un octavo de una persona adulta. El niño y la niña son dibujos de
-        niños reales, y el bebé tiene su propia tabla de proporciones en lugar de
-        ser una silueta reducida, que es por lo que un gráfico familiar parece una
-        familia y no cuatro adultos de tamaños distintos."""
+        Porque un niño no lo es. Las proporciones del cuerpo cambian con la
+        edad: un niño de dos años mide más o menos cuatro cabezas y media, uno
+        de ocho seis, y un adulto siete y media &mdash; así que la cabeza es
+        casi un cuarto de un niño pequeño y un octavo de una persona adulta. El
+        niño y la niña de aquí son dibujos de niños reales y no una sola silueta
+        reducida, que es por lo que un gráfico familiar parece una familia y no
+        cuatro adultos de tamaños distintos."""
 
 [[faq]]
 q = "¿De dónde salen las figuras?"
 a = """
-        Cuatro de las cinco son ilustraciones de otras personas, todas de dominio
+        Las cuatro son ilustraciones de otras personas, todas de dominio
         público: el hombre de pitr, la mujer de Madeleine Price Ball, la niña de
         OpenClipart-Vectors, y el niño de Ryan Kissinger para la biblioteca NIH
         BioArt. Cada archivo viaja con esta página en <code>vendor/</code> tal
         como se publicó, así que puedes cotejarlos con los originales. El dominio
         público no pide nada, que es de lo que se trata: la ilustración acaba
         dentro de una imagen que te descargas, y una licencia que exigiera
-        atribución le pegaría esa exigencia a tu gráfico. Solo el bebé lo dibuja
-        el propio código de esta página &mdash; por debajo de la edad escolar no
-        había nada libre que conseguir."""
+        atribución le pegaría esa exigencia a tu gráfico."""
+
+[[faq]]
+q = "¿Por qué no hay un bebé ni un niño pequeño?"
+a = """
+        Porque nadie ha dibujado uno y lo ha puesto en dominio público.
+        Wikimedia Commons tiene exactamente un niño libre utilizable &mdash; la
+        niña &mdash; y la biblioteca NIH BioArt el niño; por debajo de la edad
+        escolar la búsqueda vuelve vacía, y todo conjunto libre y coherente de
+        personas es un pictograma de aseo con la misma forma a todas las edades,
+        que es el error que esta herramienta entera existe para evitar. Durante
+        un tiempo hubo un bebé dibujado por el propio código de esta página, y
+        era la única figura del gráfico que nadie había dibujado: se le notaba,
+        al lado de cuatro que sí. Para alguien más bajo que el niño o la niña,
+        pon a uno de los dos en la altura real &mdash; lo que lleva la
+        comparación es la regla, y estará bien."""
 
 [[faq]]
 q = "¿Cuánta gente puedo poner en un gráfico?"
@@ -348,11 +362,11 @@ a = """
         dibujaran un gráfico se pararía en el momento en que te desconectaras."""
 
 [schema]
-description = "Dibuja un gráfico de comparación de alturas en el navegador. Añade un hombre, una mujer, un niño, una niña, un bebé y objetos con sus alturas en centímetros o en pies y pulgadas, ordénalos, coloréalos y descarga el resultado como PNG o SVG. No se sube nada."
+description = "Dibuja un gráfico de comparación de alturas en el navegador. Añade un hombre, una mujer, un niño, una niña y objetos con sus alturas en centímetros o en pies y pulgadas, ordénalos, coloréalos y descarga el resultado como PNG o SVG. No se sube nada."
 features = [
   "Hasta doce figuras en una misma regla, en cualquier orden",
-  "Figuras de hombre, mujer, niño y bebé, y un rectángulo simple para objetos",
-  "Hombre, mujer, niño y niña dibujados de dominio público, y un bebé con sus propias proporciones en lugar de un adulto reducido",
+  "Figuras de hombre, mujer, niño y niña, y un rectángulo simple para objetos",
+  "Hombre, mujer, niño y niña dibujados de dominio público - los niños dibujados como niños y no como adultos reducidos",
   "Alturas escritas como 173, 1,73 m, 5'8\", 68 in o 5 ft 8, mostrando la lectura",
   "Centímetros o pies y pulgadas, cambiados sin alterar la altura de nadie",
   "Veinte objetos listos: puertas, ventanas, una pizarra, una máquina expendedora, un contenedor marítimo, muebles",

@@ -4,15 +4,32 @@
     <h2><span class="step">1</span> बताइए आप किनकी तुलना कर रहे हैं</h2>
 
     <p class="card-lede">
-      एक नाम, एक ऊँचाई, और कैसी आकृति बनानी है। ऊँचाई आप जैसे लिखते हैं वैसे ही
-      लिख सकते हैं &mdash; <code>173</code>, <code>1.73&nbsp;m</code>,
-      <code>5'8"</code>, <code>68&nbsp;in</code> &mdash; और हर बॉक्स के नीचे की
-      पंक्ति दिखाती है कि क्या समझा गया, इसलिए चुपचाप कुछ भी अंदाज़ा नहीं लगाया
-      जाता।
+      एक नाम, एक ऊँचाई, और कैसी आकृति बनानी है। हर पंक्ति ऐसी ऊँचाई से शुरू होती
+      है जिस पर आप सीधे लिख सकते हैं। ऊँचाई आप जैसे लिखते हैं वैसे ही लिख सकते हैं
+      &mdash; <code>173</code>, <code>1.73&nbsp;m</code>, <code>5'8"</code>,
+      <code>68&nbsp;in</code> &mdash; और हर बॉक्स के नीचे की पंक्ति दिखाती है कि
+      क्या समझा गया, या लाल रंग में बता देती है अगर बॉक्स खाली है या ऊँचाई पढ़ी
+      नहीं जा सकती। चुपचाप कुछ भी अंदाज़ा नहीं लगाया जाता।
     </p>
+
+    <p class="card-lede">
+      <strong>यहाँ ऊपर से नीचे का मतलब चार्ट पर बाएँ से दाएँ है।</strong>
+      किसी पंक्ति को हटाने के लिए उसके बाएँ किनारे वाली पकड़ से खींचिए, या तीरों
+      का इस्तेमाल कीजिए, जो कीबोर्ड से यही काम करते हैं। दोनों ही सूरत में, अगर
+      चार्ट ऊँचाई से क्रम लगा रहा था तो वह आपके अपने क्रम पर लौट आता है।
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">किसमें नापा जाए</label>
+      <select id="unit">
+        <option value="cm" selected>सेंटीमीटर</option>
+        <option value="ft">फ़ुट और इंच</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>आकृति</span>
         <span>नाम</span>
         <span>ऊँचाई</span>
@@ -77,20 +94,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> चुनिए यह कैसा दिखे</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> ले जाइए</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="आपका बनाया हुआ ऊँचाई तुलना चार्ट"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG डाउनलोड कीजिए</button>
+      <button type="button" id="download-png" class="primary">PNG डाउनलोड कीजिए</button>
+      <button type="button" id="copy-png" class="ghost">तस्वीर कॉपी कीजिए</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      किसी दस्तावेज़ या चैट में चिपकाने के लिए PNG है। रखने के लिए SVG है: वह
+      चार्ट को पिक्सेल की जगह निर्देशों के रूप में रखता है, इसलिए किसी भी आकार में
+      साफ़ छपता है और बाद में वेक्टर खोलने वाली किसी भी चीज़ से उसका रंग बदला जा
+      सकता है।
+    </p>
 
     <fieldset class="options">
-      <legend>पैमाना</legend>
-
-      <div class="option-row">
-        <label for="unit">किसमें नापा जाए</label>
-        <select id="unit">
-          <option value="cm" selected>सेंटीमीटर</option>
-          <option value="ft">फ़ुट और इंच</option>
-        </select>
-      </div>
+      <legend>यह कैसा दिखे</legend>
 
       <div class="option-row">
         <label for="order">क्रम</label>
@@ -124,10 +152,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>रंग और आकार</legend>
 
       <div class="option-row">
         <label for="background">पीछे</label>
@@ -155,33 +179,10 @@
       <p class="field-summary">
         यह बनाने की जगह की ऊँचाई है, इसलिए तैयार तस्वीर थोड़ी ज़्यादा ऊँची होती
         है: नाम उसके ऊपर बैठते हैं। चौड़ाई इससे तय होती है कि कितनी आकृतियाँ हैं
-        और हर एक का लेबल कितना चौड़ा है। तीसरा चरण बताता है कि क्या बना।
+        और हर एक का लेबल कितना चौड़ा है। तस्वीर के नीचे की पंक्ति बताती है कि
+        क्या बना।
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> ले जाइए</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="आपका बनाया हुआ ऊँचाई तुलना चार्ट"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">SVG डाउनलोड कीजिए</button>
-      <button type="button" id="download-png" class="primary">PNG डाउनलोड कीजिए</button>
-      <button type="button" id="copy-png" class="ghost">तस्वीर कॉपी कीजिए</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      किसी दस्तावेज़ या चैट में चिपकाने के लिए PNG है। रखने के लिए SVG है: वह
-      चार्ट को पिक्सेल की जगह निर्देशों के रूप में रखता है, इसलिए किसी भी आकार में
-      साफ़ छपता है और बाद में वेक्टर खोलने वाली किसी भी चीज़ से उसका रंग बदला जा
-      सकता है।
-    </p>
   </section>
 
   <!--
@@ -195,7 +196,6 @@
     <span data-phrase="shape.woman">महिला</span>
     <span data-phrase="shape.boy">लड़का</span>
     <span data-phrase="shape.girl">लड़की</span>
-    <span data-phrase="shape.toddler">नन्हा बच्चा</span>
     <span data-phrase="shape.object">चीज़</span>
 
     <span data-phrase="row.shape">पंक्ति {n} की आकृति</span>
@@ -203,21 +203,23 @@
     <span data-phrase="row.height">पंक्ति {n} की ऊँचाई</span>
     <span data-phrase="row.width">पंक्ति {n} की चौड़ाई</span>
     <span data-phrase="row.colour">पंक्ति {n} का रंग</span>
-    <span data-phrase="row.up">पंक्ति {n} को बाईं ओर ले जाइए</span>
-    <span data-phrase="row.down">पंक्ति {n} को दाईं ओर ले जाइए</span>
+    <span data-phrase="row.up">पंक्ति {n} को ऊपर ले जाइए</span>
+    <span data-phrase="row.down">पंक्ति {n} को नीचे ले जाइए</span>
     <span data-phrase="row.remove">पंक्ति {n} हटाइए</span>
+    <span data-phrase="row.drag">क्रम बदलने के लिए खींचिए</span>
     <span data-phrase="row.nameexample">नाम</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">चौड़ाई</span>
     <span data-phrase="row.reads">{height} के रूप में पढ़ा गया</span>
 
-    <span data-phrase="height.empty">एक ऊँचाई डालिए, और यह पंक्ति बन जाएगी।</span>
+    <span data-phrase="height.empty">बनने से पहले इस पंक्ति को एक ऊँचाई चाहिए।</span>
     <span data-phrase="height.unreadable">यह ऐसी ऊँचाई नहीं जो यहाँ समझी जाती हो। 173, 1.73 m, 5'8" या 68 in आज़माइए।</span>
     <span data-phrase="height.tooshort">बनाने के लिए बहुत छोटा &mdash; 5 cm सबसे कम है।</span>
     <span data-phrase="height.tootall">चार्ट जहाँ तक जाता है उससे ऊँचा &mdash; 12 मीटर सीमा है।</span>
 
     <span data-phrase="chart.empty">किसी को जोड़िए, और चार्ट यहाँ दिख जाएगा।</span>
+    <span data-phrase="chart.noheights">हर पंक्ति को एक ऊँचाई चाहिए। एक भर दीजिए, और चार्ट यहाँ दिख जाएगा।</span>
     <span data-phrase="chart.full">बारह आकृतियाँ ही इतनी हैं जितनी यह चार्ट पढ़ने लायक रहते हुए सँभाल सकता है।</span>
     <span data-phrase="facts.chart">{count} आकृतियाँ, {width} गुणा {height} पिक्सेल। पैमाना ज़मीन से {top} तक जाता है, हर {step} पर एक लकीर।</span>
     <span data-phrase="facts.one">एक आकृति, {width} गुणा {height} पिक्सेल। पैमाना ज़मीन से {top} तक जाता है, हर {step} पर एक लकीर।</span>

@@ -4,15 +4,32 @@
     <h2><span class="step">1</span> Kimi karşılaştırdığınızı söyleyin</h2>
 
     <p class="card-lede">
-      Bir ad, bir boy ve nasıl bir figür çizileceği. Boylar sizin yazdığınız
-      gibi yazılabilir &mdash; <code>173</code>, <code>1,73&nbsp;m</code>,
+      Bir ad, bir boy ve nasıl bir figür çizileceği. Her satır, üzerine
+      doğrudan yazabileceğiniz bir boyla başlar. Boylar sizin yazdığınız gibi
+      yazılabilir &mdash; <code>173</code>, <code>1,73&nbsp;m</code>,
       <code>5'8"</code>, <code>68&nbsp;in</code> &mdash; ve her kutunun
-      altındaki satır neyin anlaşıldığını gösterir, böylece hiçbir şey sessizce
-      tahmin edilmez.
+      altındaki satır neyin anlaşıldığını gösterir; kutu boşsa ya da boy
+      okunamıyorsa bunu kırmızıyla söyler. Hiçbir şey sessizce tahmin edilmez.
     </p>
+
+    <p class="card-lede">
+      <strong>Buradaki yukarıdan aşağıya, grafikte soldan sağadır.</strong>
+      Bir satırı taşımak için sol kenarındaki tutamaçtan sürükleyin ya da aynı
+      işi klavyeden yapan okları kullanın. Her iki durumda da grafik, boya göre
+      sıralıyorduysa sizin kendi sıranıza döner.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Ölçü birimi</label>
+      <select id="unit">
+        <option value="cm" selected>Santimetre</option>
+        <option value="ft">Fit ve inç</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>Figür</span>
         <span>Ad</span>
         <span>Boy</span>
@@ -78,20 +95,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> Nasıl görüneceğini seçin</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Alın</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Yaptığınız boy karşılaştırma grafiği"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG'yi indir</button>
+      <button type="button" id="download-png" class="primary">PNG'yi indir</button>
+      <button type="button" id="copy-png" class="ghost">Resmi kopyala</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Bir belgeye ya da sohbete yapıştırılacak olan PNG'dir. Saklanacak olan
+      ise SVG: o, grafiği piksel olarak değil yönerge olarak taşır, bu yüzden
+      her boyutta net basılır ve sonradan vektör açan her şeyle yeniden
+      renklendirilebilir.
+    </p>
 
     <fieldset class="options">
-      <legend>Cetvel</legend>
-
-      <div class="option-row">
-        <label for="unit">Ölçü birimi</label>
-        <select id="unit">
-          <option value="cm" selected>Santimetre</option>
-          <option value="ft">Fit ve inç</option>
-        </select>
-      </div>
+      <legend>Nasıl göründüğü</legend>
 
       <div class="option-row">
         <label for="order">Sıra</label>
@@ -125,10 +153,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>Renk ve boyut</legend>
 
       <div class="option-row">
         <label for="background">Arkasında</label>
@@ -156,34 +180,10 @@
       <p class="field-summary">
         Bu, çizim alanının yüksekliğidir; bu yüzden bitmiş resim biraz daha
         uzundur: adlar onun üstünde durur. Genişlik, kaç figür olduğundan ve her
-        birinin etiketinin ne kadar geniş olduğundan çıkar. Üçüncü adım sonucun
-        ne olduğunu söyler.
+        birinin etiketinin ne kadar geniş olduğundan çıkar. Resmin altındaki
+        satır sonucun ne olduğunu söyler.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> Alın</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="Yaptığınız boy karşılaştırma grafiği"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">SVG'yi indir</button>
-      <button type="button" id="download-png" class="primary">PNG'yi indir</button>
-      <button type="button" id="copy-png" class="ghost">Resmi kopyala</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      Bir belgeye ya da sohbete yapıştırılacak olan PNG'dir. Saklanacak olan
-      ise SVG: o, grafiği piksel olarak değil yönerge olarak taşır, bu yüzden
-      her boyutta net basılır ve sonradan vektör açan her şeyle yeniden
-      renklendirilebilir.
-    </p>
   </section>
 
   <!--
@@ -197,7 +197,6 @@
     <span data-phrase="shape.woman">Kadın</span>
     <span data-phrase="shape.boy">Erkek çocuk</span>
     <span data-phrase="shape.girl">Kız çocuk</span>
-    <span data-phrase="shape.toddler">Küçük çocuk</span>
     <span data-phrase="shape.object">Nesne</span>
 
     <span data-phrase="row.shape">{n}. satırın figürü</span>
@@ -205,21 +204,23 @@
     <span data-phrase="row.height">{n}. satırın boyu</span>
     <span data-phrase="row.width">{n}. satırın genişliği</span>
     <span data-phrase="row.colour">{n}. satırın rengi</span>
-    <span data-phrase="row.up">{n}. satırı sola taşı</span>
-    <span data-phrase="row.down">{n}. satırı sağa taşı</span>
+    <span data-phrase="row.up">{n}. satırı yukarı taşı</span>
+    <span data-phrase="row.down">{n}. satırı aşağı taşı</span>
     <span data-phrase="row.remove">{n}. satırı kaldır</span>
+    <span data-phrase="row.drag">Yeniden sıralamak için sürükleyin</span>
     <span data-phrase="row.nameexample">Ad</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">Genişlik</span>
     <span data-phrase="row.reads">{height} olarak okundu</span>
 
-    <span data-phrase="height.empty">Bir boy girin, bu satır çizilsin.</span>
+    <span data-phrase="height.empty">Bu satırın çizilebilmesi için bir boya ihtiyacı var.</span>
     <span data-phrase="height.unreadable">Bu, burada anlaşılan bir boy değil. 173, 1,73 m, 5'8" ya da 68 in deneyin.</span>
     <span data-phrase="height.tooshort">Çizilemeyecek kadar kısa &mdash; en küçüğü 5 cm.</span>
     <span data-phrase="height.tootall">Grafiğin çıktığından daha uzun &mdash; sınır 12 metre.</span>
 
     <span data-phrase="chart.empty">Birini ekleyin, grafik burada belirsin.</span>
+    <span data-phrase="chart.noheights">Her satırın bir boya ihtiyacı var. Birini doldurun, grafik burada belirsin.</span>
     <span data-phrase="chart.full">On iki figür, bu grafiğin okunur kalarak taşıyabileceği en fazla sayıdır.</span>
     <span data-phrase="facts.chart">{count} figür, {width}'e {height} piksel. Cetvel yerden {top} yüksekliğine kadar uzanıyor, her {step} bir çizgiyle.</span>
     <span data-phrase="facts.one">Bir figür, {width}'e {height} piksel. Cetvel yerden {top} yüksekliğine kadar uzanıyor, her {step} bir çizgiyle.</span>

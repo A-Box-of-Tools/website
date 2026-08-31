@@ -4,15 +4,34 @@
     <h2><span class="step">1</span> Di a quién estás comparando</h2>
 
     <p class="card-lede">
-      Un nombre, una altura y qué tipo de figura dibujar. Las alturas se pueden
+      Un nombre, una altura y qué tipo de figura dibujar. Cada fila empieza con
+      una altura que puedes sobrescribir directamente. Las alturas se pueden
       escribir como tú las escribes &mdash; <code>173</code>,
       <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
       &mdash; y la línea de debajo de cada casilla muestra qué se ha entendido,
-      así que nada se adivina en silencio.
+      o lo dice en rojo si la casilla está vacía o la altura no se puede leer.
+      Nunca se adivina nada en silencio.
     </p>
+
+    <p class="card-lede">
+      <strong>De arriba abajo aquí es de izquierda a derecha en el
+      gráfico.</strong> Arrastra una fila por el tirador de su borde izquierdo
+      para moverla, o usa las flechas, que hacen lo mismo desde el teclado. En
+      cualquiera de los dos casos el gráfico vuelve a tu propio orden si estaba
+      ordenando por altura.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Medido en</label>
+      <select id="unit">
+        <option value="cm" selected>Centímetros</option>
+        <option value="ft">Pies y pulgadas</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>Figura</span>
         <span>Nombre</span>
         <span>Altura</span>
@@ -78,20 +97,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> Elige cómo se ve</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Llévatelo</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="El gráfico de alturas que has hecho"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Descargar el SVG</button>
+      <button type="button" id="download-png" class="primary">Descargar el PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copiar la imagen</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      El PNG es el que se pega en un documento o en un chat. El SVG es el que
+      hay que guardar: es el gráfico como instrucciones en lugar de como
+      píxeles, así que se imprime nítido a cualquier tamaño y cualquier cosa
+      que abra vectores puede recolorearlo después.
+    </p>
 
     <fieldset class="options">
-      <legend>La regla</legend>
-
-      <div class="option-row">
-        <label for="unit">Medido en</label>
-        <select id="unit">
-          <option value="cm" selected>Centímetros</option>
-          <option value="ft">Pies y pulgadas</option>
-        </select>
-      </div>
+      <legend>Qué aspecto tiene</legend>
 
       <div class="option-row">
         <label for="order">Orden</label>
@@ -125,10 +155,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>Color y tamaño</legend>
 
       <div class="option-row">
         <label for="background">Detrás</label>
@@ -156,34 +182,10 @@
       <p class="field-summary">
         Esa es la altura del área de dibujo, así que la imagen acabada es un
         poco más alta: los nombres van encima. La anchura sale de cuántas
-        figuras hay y de lo ancha que sea la etiqueta de cada una. El paso tres
-        dice cómo ha quedado.
+        figuras hay y de lo ancha que sea la etiqueta de cada una. La línea de
+        debajo de la imagen dice cómo ha quedado.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> Llévatelo</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="El gráfico de alturas que has hecho"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">Descargar el SVG</button>
-      <button type="button" id="download-png" class="primary">Descargar el PNG</button>
-      <button type="button" id="copy-png" class="ghost">Copiar la imagen</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      El PNG es el que se pega en un documento o en un chat. El SVG es el que
-      hay que guardar: es el gráfico como instrucciones en lugar de como
-      píxeles, así que se imprime nítido a cualquier tamaño y cualquier cosa
-      que abra vectores puede recolorearlo después.
-    </p>
   </section>
 
   <!--
@@ -197,7 +199,6 @@
     <span data-phrase="shape.woman">Mujer</span>
     <span data-phrase="shape.boy">Niño</span>
     <span data-phrase="shape.girl">Niña</span>
-    <span data-phrase="shape.toddler">Bebé</span>
     <span data-phrase="shape.object">Objeto</span>
 
     <span data-phrase="row.shape">Figura de la fila {n}</span>
@@ -205,21 +206,23 @@
     <span data-phrase="row.height">Altura de la fila {n}</span>
     <span data-phrase="row.width">Anchura de la fila {n}</span>
     <span data-phrase="row.colour">Color de la fila {n}</span>
-    <span data-phrase="row.up">Mover la fila {n} a la izquierda</span>
-    <span data-phrase="row.down">Mover la fila {n} a la derecha</span>
+    <span data-phrase="row.up">Subir la fila {n}</span>
+    <span data-phrase="row.down">Bajar la fila {n}</span>
     <span data-phrase="row.remove">Quitar la fila {n}</span>
+    <span data-phrase="row.drag">Arrastra para reordenar</span>
     <span data-phrase="row.nameexample">Nombre</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">Anchura</span>
     <span data-phrase="row.reads">Leído como {height}</span>
 
-    <span data-phrase="height.empty">Una altura, y esta fila se dibuja.</span>
+    <span data-phrase="height.empty">Esta fila necesita una altura antes de poder dibujarse.</span>
     <span data-phrase="height.unreadable">Esto no es una altura que se entienda aquí. Prueba 173, 1,73 m, 5'8" o 68 in.</span>
     <span data-phrase="height.tooshort">Demasiado bajo para dibujarlo &mdash; 5 cm es lo mínimo.</span>
     <span data-phrase="height.tootall">Más alto de lo que llega el gráfico &mdash; el límite son 12 metros.</span>
 
     <span data-phrase="chart.empty">Añade a alguien y el gráfico aparecerá aquí.</span>
+    <span data-phrase="chart.noheights">Cada fila necesita una altura. Rellena una y el gráfico aparecerá aquí.</span>
     <span data-phrase="chart.full">Doce figuras es todo lo que este gráfico admite sin dejar de leerse.</span>
     <span data-phrase="facts.chart">{count} figuras, {width} por {height} píxeles. La regla va del suelo a {top}, con una línea cada {step}.</span>
     <span data-phrase="facts.one">Una figura, {width} por {height} píxeles. La regla va del suelo a {top}, con una línea cada {step}.</span>

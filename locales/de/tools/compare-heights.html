@@ -4,15 +4,34 @@
     <h2><span class="step">1</span> Sagen Sie, wen Sie vergleichen</h2>
 
     <p class="card-lede">
-      Ein Name, eine Größe und die Art der Figur. Größen dürfen so geschrieben
+      Ein Name, eine Größe und die Art der Figur. Jede Zeile beginnt mit einer
+      Größe, die Sie einfach überschreiben können. Größen dürfen so geschrieben
       werden, wie Sie sie schreiben &mdash; <code>173</code>,
       <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
-      &mdash; und die Zeile unter jedem Feld zeigt, was verstanden wurde. So
-      wird nichts stillschweigend geraten.
+      &mdash; und die Zeile unter jedem Feld zeigt, was verstanden wurde, oder
+      sagt es in Rot, wenn das Feld leer ist oder die Größe sich nicht lesen
+      lässt. Geraten wird nie stillschweigend.
     </p>
+
+    <p class="card-lede">
+      <strong>Von oben nach unten ist hier von links nach rechts auf dem
+      Diagramm.</strong> Ziehen Sie eine Zeile am Griff an ihrem linken Rand,
+      um sie zu verschieben, oder nehmen Sie die Pfeile, die von der Tastatur
+      aus dasselbe tun. So oder so kehrt das Diagramm zu Ihrer eigenen
+      Reihenfolge zurück, falls es nach Größe sortiert hatte.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Gemessen in</label>
+      <select id="unit">
+        <option value="cm" selected>Zentimetern</option>
+        <option value="ft">Fuß und Zoll</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>Figur</span>
         <span>Name</span>
         <span>Größe</span>
@@ -78,20 +97,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> Wählen Sie, wie es aussieht</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Nehmen Sie es mit</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Das Größendiagramm, das Sie erstellt haben"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG herunterladen</button>
+      <button type="button" id="download-png" class="primary">PNG herunterladen</button>
+      <button type="button" id="copy-png" class="ghost">Bild kopieren</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Das PNG ist das, was Sie in ein Dokument oder einen Chat einfügen. Das
+      SVG ist das zum Aufheben: Es ist das Diagramm als Anweisungen statt als
+      Pixel, druckt also in jeder Größe scharf und lässt sich später von allem
+      umfärben, was Vektoren öffnet.
+    </p>
 
     <fieldset class="options">
-      <legend>Der Maßstab</legend>
-
-      <div class="option-row">
-        <label for="unit">Gemessen in</label>
-        <select id="unit">
-          <option value="cm" selected>Zentimetern</option>
-          <option value="ft">Fuß und Zoll</option>
-        </select>
-      </div>
+      <legend>Wie es aussieht</legend>
 
       <div class="option-row">
         <label for="order">Reihenfolge</label>
@@ -125,10 +155,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>Farbe und Größe</legend>
 
       <div class="option-row">
         <label for="background">Dahinter</label>
@@ -158,33 +184,9 @@
         Das ist die Höhe der Zeichenfläche, das fertige Bild wird also ein
         wenig höher: Die Namen stehen darüber. Die Breite ergibt sich daraus,
         wie viele Figuren es gibt und wie breit die Beschriftung jeder
-        einzelnen ist. Schritt drei sagt, was herausgekommen ist.
+        einzelnen ist. Die Zeile unter dem Bild sagt, was herausgekommen ist.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> Nehmen Sie es mit</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="Das Größendiagramm, das Sie erstellt haben"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">SVG herunterladen</button>
-      <button type="button" id="download-png" class="primary">PNG herunterladen</button>
-      <button type="button" id="copy-png" class="ghost">Bild kopieren</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      Das PNG ist das, was Sie in ein Dokument oder einen Chat einfügen. Das
-      SVG ist das zum Aufheben: Es ist das Diagramm als Anweisungen statt als
-      Pixel, druckt also in jeder Größe scharf und lässt sich später von allem
-      umfärben, was Vektoren öffnet.
-    </p>
   </section>
 
   <!--
@@ -198,7 +200,6 @@
     <span data-phrase="shape.woman">Frau</span>
     <span data-phrase="shape.boy">Junge</span>
     <span data-phrase="shape.girl">Mädchen</span>
-    <span data-phrase="shape.toddler">Kleinkind</span>
     <span data-phrase="shape.object">Gegenstand</span>
 
     <span data-phrase="row.shape">Figur für Zeile {n}</span>
@@ -206,21 +207,23 @@
     <span data-phrase="row.height">Größe für Zeile {n}</span>
     <span data-phrase="row.width">Breite für Zeile {n}</span>
     <span data-phrase="row.colour">Farbe für Zeile {n}</span>
-    <span data-phrase="row.up">Zeile {n} nach links</span>
-    <span data-phrase="row.down">Zeile {n} nach rechts</span>
+    <span data-phrase="row.up">Zeile {n} nach oben</span>
+    <span data-phrase="row.down">Zeile {n} nach unten</span>
     <span data-phrase="row.remove">Zeile {n} entfernen</span>
+    <span data-phrase="row.drag">Zum Umsortieren ziehen</span>
     <span data-phrase="row.nameexample">Name</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">Breite</span>
     <span data-phrase="row.reads">Gelesen als {height}</span>
 
-    <span data-phrase="height.empty">Eine Größe, und diese Zeile wird gezeichnet.</span>
+    <span data-phrase="height.empty">Diese Zeile braucht eine Größe, bevor sie gezeichnet werden kann.</span>
     <span data-phrase="height.unreadable">Das ist keine Größe, die hier verstanden wird. Versuchen Sie 173, 1,73 m, 5'8" oder 68 in.</span>
     <span data-phrase="height.tooshort">Zu klein zum Zeichnen &mdash; 5 cm ist das Kleinste.</span>
     <span data-phrase="height.tootall">Größer, als das Diagramm reicht &mdash; bei 12 Metern ist Schluss.</span>
 
     <span data-phrase="chart.empty">Fügen Sie jemanden hinzu, und das Diagramm erscheint hier.</span>
+    <span data-phrase="chart.noheights">Jede Zeile braucht eine Größe. Tragen Sie eine ein, und das Diagramm erscheint hier.</span>
     <span data-phrase="chart.full">Zwölf Figuren sind so viele, wie dieses Diagramm fassen kann und dabei lesbar bleibt.</span>
     <span data-phrase="facts.chart">{count} Figuren, {width} auf {height} Pixel. Der Maßstab reicht vom Boden bis {top}, mit einer Linie alle {step}.</span>
     <span data-phrase="facts.one">Eine Figur, {width} auf {height} Pixel. Der Maßstab reicht vom Boden bis {top}, mit einer Linie alle {step}.</span>

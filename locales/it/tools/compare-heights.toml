@@ -10,21 +10,22 @@ heading = "Confronto&nbsp;di&nbsp;altezze <span class=\"h1-kw\">&mdash; un grafi
 tagline = "Scrivi le altezze, portati via l'immagine. Per disegnarla non viene mandato niente."
 
 title = "Confronto di altezze &mdash; gratis, senza registrazione, senza caricare niente"
-description = "Confronta le altezze una accanto all'altra. Aggiungi un uomo, una donna, un bambino, una bambina, un bimbo piccolo e degli oggetti &mdash; una porta, una finestra, una lavagna, un distributore automatico &mdash; in centimetri o in piedi e pollici, e scarica il grafico come PNG o SVG. Viene disegnato nel tuo browser."
+description = "Confronta le altezze una accanto all'altra. Aggiungi un uomo, una donna, un bambino, una bambina e degli oggetti &mdash; una porta, una finestra, una lavagna, un distributore automatico &mdash; in centimetri o in piedi e pollici, e scarica il grafico come PNG o SVG. Viene disegnato nel tuo browser."
 og_title = "Confronta le altezze una accanto all'altra e tieniti l'immagine"
-og_description = "Metti due adulti, un bambino, un bimbo piccolo e una porta sullo stesso righello, in centimetri o in piedi e pollici, e scarica il risultato. Nessun account, nessuna filigrana, e nessun elenco di nomi che lascia il tuo dispositivo."
+og_description = "Metti due adulti, un bambino, una bambina e una porta sullo stesso righello, in centimetri o in piedi e pollici, e scarica il risultato. Nessun account, nessuna filigrana, e nessun elenco di nomi che lascia il tuo dispositivo."
 og_image_alt = "Confronto di altezze - confrontare altezze affiancate, senza caricamenti"
 
 pledge = """
     Un grafico delle altezze è aritmetica e un disegno: non c'è nessun file da
     mandare e nessun servizio da interrogare. L'uomo, la donna, il bambino e la
     bambina sono illustrazioni di pubblico dominio che viaggiano con questa
-    pagina; il bimbo piccolo viene costruito qui a partire da una tabella di
-    proporzioni corporee, ed è per questo che ha la forma di un bimbo piccolo e
-    non di un adulto rimpicciolito. Ogni passaggio avviene in circa seicento
-    righe di JavaScript di questa pagina che puoi leggere. Non c'è nessuna
-    funzione di rete di alcun tipo, e qui conta perché quello che scrivi è un
-    elenco di persone e di quanto è alta ciascuna."""
+    pagina, e il bambino e la bambina sono disegni di bambini veri invece che
+    adulti rimpiccioliti &mdash; ed è proprio questo che impedisce a un grafico
+    di famiglia di venire storto in un modo che nessuno sa spiegare. Ogni
+    passaggio avviene in qualche centinaio di righe di JavaScript di questa
+    pagina che puoi leggere. Non c'è nessuna funzione di rete di alcun tipo, e
+    qui conta perché quello che scrivi è un elenco di persone e di quanto è alta
+    ciascuna."""
 
 live_hint = """
       Non devi crederci sulla parola: apri i DevTools, guarda la scheda di rete e
@@ -34,13 +35,12 @@ live_hint = """
 
 read_first = """
 , <code>src/traced.js</code> e
-      <code>vendor/</code> per le quattro figure disegnate e da dove arrivano i
-      loro disegni, <code>src/figures.js</code> per la tabella di proporzioni con
-      cui è costruito il bimbo piccolo, <code>src/units.js</code> per come
-      un'altezza scritta diventa un numero e per come è etichettato il righello,
-      <code>src/chart.js</code> per l'impaginazione e <code>src/save.js</code>
-      per i due download &mdash; che sono l'SVG sullo schermo, e quello stesso
-      SVG dipinto su un canvas."""
+      <code>vendor/</code> per le quattro figure e da dove arrivano i loro
+      disegni, <code>src/figures.js</code> per l'elenco con cui è costruito il
+      menù, <code>src/units.js</code> per come un'altezza scritta diventa un
+      numero e per come è etichettato il righello, <code>src/chart.js</code> per
+      l'impaginazione e <code>src/save.js</code> per i due download &mdash; che
+      sono l'SVG sullo schermo, e quello stesso SVG dipinto su un canvas."""
 
 howto_heading = "Come fare un grafico di confronto delle altezze"
 
@@ -122,12 +122,11 @@ body = """
 [[privacy]]
 title = "I disegni sono qui, non vengono scaricati."
 body = """
- Le quattro figure
-      disegnate sono illustrazioni di pubblico dominio, e vengono servite da
-      questa origine insieme al resto della pagina &mdash; nessun font di icone,
-      nessuna CDN, nessuno sprite tirato giù dal server di qualcun altro mentre
-      scrivi. È anche per questo che il grafico si disegna ancora con la rete
-      staccata."""
+ Tutte e quattro le
+      figure sono illustrazioni di pubblico dominio, e vengono servite da questa
+      origine insieme al resto della pagina &mdash; nessun font di icone, nessuna
+      CDN, nessuno sprite tirato giù dal server di qualcun altro mentre scrivi. È
+      anche per questo che il grafico si disegna ancora con la rete staccata."""
 
 [[privacy]]
 title = "Cosa carica Google, e cosa non gli arriva."
@@ -169,13 +168,14 @@ body = """
 [[howto]]
 title = "Scegli la figura che corrisponde alla persona."
 body = """
- Un bambino di due
-      anni è alto circa quattro teste e mezza e un adulto sette e mezza, quindi
-      un bimbo piccolo disegnato come un adulto rimpicciolito viene male in un
-      modo difficile da spiegare e facile da vedere. Ci sono un bambino e una
-      bambina per l'età scolare e un bimbo piccolo sotto, ognuno con le sue
-      proporzioni invece di essere l'adulto fatto piccolo, ed è gran parte di
-      quello che fa sembrare una famiglia un grafico di famiglia."""
+ Un bambino è alto circa
+      sei teste e un adulto sette e mezza, quindi un bambino disegnato come un
+      adulto rimpicciolito viene male in un modo difficile da spiegare e facile
+      da vedere. Il bambino e la bambina sono disegni di bambini veri invece che
+      adulti rimpiccioliti, ed è gran parte di quello che fa sembrare una
+      famiglia un grafico di famiglia. Ogni riga arriva anche con un'altezza già
+      dentro, quindi aggiungere qualcuno disegna qualcuno &mdash; scrivici sopra
+      direttamente."""
 
 [[howto]]
 title = "Metti sul grafico qualcosa di familiare."
@@ -244,30 +244,42 @@ a = """
         qualcuno scriva."""
 
 [[faq]]
-q = "Perché il bimbo piccolo non sembra un adulto rimpicciolito?"
+q = "Perché i bambini non sembrano adulti rimpiccioliti?"
 a = """
-        Perché un bimbo piccolo non lo è. Le proporzioni del corpo cambiano con
-        l'età: un bambino di due anni è alto più o meno quattro teste e mezza,
-        uno di otto sei, un adulto sette e mezza &mdash; quindi la testa è quasi
-        un quarto di un bimbo piccolo e un ottavo di un adulto. Il bambino e la
-        bambina sono disegni di bambini veri, e il bimbo piccolo ha la sua tabella
-        di proporzioni invece di essere una sagoma ridotta, ed è per questo che un
-        grafico di famiglia sembra una famiglia invece che quattro adulti di
-        misure diverse."""
+        Perché un bambino non lo è. Le proporzioni del corpo cambiano con l'età:
+        un bambino di due anni è alto più o meno quattro teste e mezza, uno di
+        otto sei, un adulto sette e mezza &mdash; quindi la testa è quasi un
+        quarto di un bambino piccolo e un ottavo di un adulto. Il bambino e la
+        bambina qui sono disegni di bambini veri invece che una sola sagoma
+        ridotta, ed è per questo che un grafico di famiglia sembra una famiglia
+        invece che quattro adulti di misure diverse."""
 
 [[faq]]
 q = "Da dove vengono le figure?"
 a = """
-        Quattro delle cinque sono disegni di altre persone, tutti di pubblico
+        Tutte e quattro sono disegni di altre persone, tutti di pubblico
         dominio: l'uomo di pitr, la donna di Madeleine Price Ball, la bambina di
         OpenClipart-Vectors e il bambino di Ryan Kissinger per la biblioteca NIH
         BioArt. Ogni file viaggia con questa pagina in <code>vendor/</code> così
         com'è stato pubblicato, quindi puoi confrontarli con gli originali. Il
         pubblico dominio non chiede niente, ed è proprio questo il punto: il
         disegno finisce dentro un'immagine che scarichi, e una licenza che
-        richiedesse l'attribuzione attaccherebbe quella richiesta al tuo grafico.
-        Solo il bimbo piccolo è disegnato dal codice di questa pagina &mdash;
-        sotto l'età scolare non c'era niente di libero da trovare."""
+        richiedesse l'attribuzione attaccherebbe quella richiesta al tuo grafico."""
+
+[[faq]]
+q = "Perché non c'è un bimbo piccolo o un neonato?"
+a = """
+        Perché nessuno ne ha disegnato uno mettendolo di pubblico dominio.
+        Wikimedia Commons ha esattamente un bambino libero utilizzabile &mdash;
+        la bambina &mdash; e la biblioteca NIH BioArt il bambino; sotto l'età
+        scolare la ricerca torna vuota, e ogni set libero e coerente di persone è
+        un pittogramma da bagno pubblico con la stessa forma a ogni età, che è
+        l'errore che questo strumento intero esiste per evitare. Per un po' c'è
+        stato un bimbo piccolo disegnato dal codice di questa pagina, ed era
+        l'unica figura del grafico che nessuno aveva disegnato: si vedeva,
+        accanto a quattro che qualcuno aveva disegnato. Per chiunque sia più
+        basso del bambino o della bambina, metti uno dei due all'altezza vera
+        &mdash; è il righello che porta il confronto, e sarà giusto."""
 
 [[faq]]
 q = "Quante persone posso mettere su un grafico?"
@@ -353,11 +365,11 @@ a = """
         disegnare un grafico si fermerebbe nel momento in cui stacchi la spina."""
 
 [schema]
-description = "Disegnare un grafico di confronto delle altezze nel browser. Aggiungi un uomo, una donna, un bambino, una bambina, un bimbo piccolo e degli oggetti con le loro altezze in centimetri o in piedi e pollici, mettili in ordine, colorali e scarica il risultato come PNG o SVG. Non viene caricato niente."
+description = "Disegnare un grafico di confronto delle altezze nel browser. Aggiungi un uomo, una donna, un bambino, una bambina e degli oggetti con le loro altezze in centimetri o in piedi e pollici, mettili in ordine, colorali e scarica il risultato come PNG o SVG. Non viene caricato niente."
 features = [
   "Fino a dodici figure su un solo righello, in qualsiasi ordine",
-  "Figure di uomo, donna, bambino e bimbo piccolo, e un semplice rettangolo per gli oggetti",
-  "Uomo, donna, bambino e bambina disegnati di pubblico dominio, e un bimbo piccolo con le sue proporzioni invece di un adulto ridotto",
+  "Figure di uomo, donna, bambino e bambina, e un semplice rettangolo per gli oggetti",
+  "Uomo, donna, bambino e bambina disegnati di pubblico dominio - i bambini disegnati come bambini invece che come adulti ridotti",
   "Altezze scritte come 173, 1,73 m, 5'8\", 68 in o 5 ft 8, con la lettura mostrata",
   "Centimetri o piedi e pollici, cambiati senza modificare l'altezza di nessuno",
   "Venti oggetti già pronti: porte, finestre, una lavagna, un distributore automatico, un container, mobili",

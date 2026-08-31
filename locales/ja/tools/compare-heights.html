@@ -4,11 +4,24 @@
     <h2><span class="step">1</span> 誰を比べるかを書きます</h2>
 
     <p class="card-lede">
-      名前、身長、そしてどの図を描くか。身長は普段の書き方のままで構いません。<code>173</code>、<code>1.73&nbsp;m</code>、<code>5'8"</code>、<code>68&nbsp;in</code>のどれでも読めます。各欄の下の行がどう解釈したかを示すので、黙って推測されることはありません。
+      名前、身長、そしてどの図を描くか。どの行にも最初から身長が入っていて、その上から打ち込めます。身長は普段の書き方のままで構いません。<code>173</code>、<code>1.73&nbsp;m</code>、<code>5'8"</code>、<code>68&nbsp;in</code>のどれでも読めます。各欄の下の行がどう解釈したかを示し、欄が空のときや身長が読み取れないときは赤でそう伝えます。黙って推測されることはありません。
     </p>
+
+    <p class="card-lede">
+      <strong>ここでの上から下は、図表では左から右です。</strong>行を動かすには左端の取っ手をつまんで動かすか、キーボードから同じことをする矢印を使ってください。どちらの場合も、身長順に並べ替えていた図表はご自分の並びに戻ります。
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">単位</label>
+      <select id="unit">
+        <option value="cm" selected>センチメートル</option>
+        <option value="ft">フィートとインチ</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>図</span>
         <span>名前</span>
         <span>身長</span>
@@ -69,20 +82,28 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> 見た目を選びます</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> 持ち帰ります</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="あなたが作った身長比較図"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVGをダウンロード</button>
+      <button type="button" id="download-png" class="primary">PNGをダウンロード</button>
+      <button type="button" id="copy-png" class="ghost">画像をコピー</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      文書やチャットに貼るならPNGです。取っておくならSVGで、こちらは図表をピクセルではなく指示として持っているので、どんな大きさでも鮮明に印刷でき、ベクターを開けるものなら後から色を変えられます。
+    </p>
 
     <fieldset class="options">
-      <legend>目盛り</legend>
-
-      <div class="option-row">
-        <label for="unit">単位</label>
-        <select id="unit">
-          <option value="cm" selected>センチメートル</option>
-          <option value="ft">フィートとインチ</option>
-        </select>
-      </div>
+      <legend>見た目</legend>
 
       <div class="option-row">
         <label for="order">並び順</label>
@@ -112,10 +133,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>色と大きさ</legend>
 
       <div class="option-row">
         <label for="background">背景</label>
@@ -138,30 +155,9 @@
       </div>
 
       <p class="field-summary">
-        これは描画領域の高さなので、仕上がりの絵は少し高くなります。名前がその上に載るからです。幅は図が何体あるか、それぞれの見出しがどれだけ広いかで決まります。何ピクセルになったかは手順3が伝えます。
+        これは描画領域の高さなので、仕上がりの絵は少し高くなります。名前がその上に載るからです。幅は図が何体あるか、それぞれの見出しがどれだけ広いかで決まります。何ピクセルになったかは絵の下の行が伝えます。
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> 持ち帰ります</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="あなたが作った身長比較図"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">SVGをダウンロード</button>
-      <button type="button" id="download-png" class="primary">PNGをダウンロード</button>
-      <button type="button" id="copy-png" class="ghost">画像をコピー</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      文書やチャットに貼るならPNGです。取っておくならSVGで、こちらは図表をピクセルではなく指示として持っているので、どんな大きさでも鮮明に印刷でき、ベクターを開けるものなら後から色を変えられます。
-    </p>
   </section>
 
   <!--
@@ -175,7 +171,6 @@
     <span data-phrase="shape.woman">女性</span>
     <span data-phrase="shape.boy">男の子</span>
     <span data-phrase="shape.girl">女の子</span>
-    <span data-phrase="shape.toddler">幼児</span>
     <span data-phrase="shape.object">もの</span>
 
     <span data-phrase="row.shape">{n}行目の図</span>
@@ -183,21 +178,23 @@
     <span data-phrase="row.height">{n}行目の身長</span>
     <span data-phrase="row.width">{n}行目の幅</span>
     <span data-phrase="row.colour">{n}行目の色</span>
-    <span data-phrase="row.up">{n}行目を左へ</span>
-    <span data-phrase="row.down">{n}行目を右へ</span>
+    <span data-phrase="row.up">{n}行目を上へ</span>
+    <span data-phrase="row.down">{n}行目を下へ</span>
     <span data-phrase="row.remove">{n}行目を削除</span>
+    <span data-phrase="row.drag">ドラッグで並べ替え</span>
     <span data-phrase="row.nameexample">名前</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">幅</span>
     <span data-phrase="row.reads">{height}として読みました</span>
 
-    <span data-phrase="height.empty">身長を入れると、この行が描かれます。</span>
+    <span data-phrase="height.empty">この行は、描くために身長が必要です。</span>
     <span data-phrase="height.unreadable">これは読み取れる身長ではありません。173、1.73 m、5'8"、68 in のように書いてみてください。</span>
     <span data-phrase="height.tooshort">小さすぎて描けません。5 cmが下限です。</span>
     <span data-phrase="height.tootall">図表の範囲より高すぎます。12メートルまでです。</span>
 
     <span data-phrase="chart.empty">誰かを追加すると、ここに図表が出ます。</span>
+    <span data-phrase="chart.noheights">どの行にも身長が要ります。ひとつ入れると、ここに図表が出ます。</span>
     <span data-phrase="chart.full">12体が、この図表が読めるまま収められる限りです。</span>
     <span data-phrase="facts.chart">{count}体、{width}×{height}ピクセル。目盛りは地面から{top}まで、{step}ごとに線が入ります。</span>
     <span data-phrase="facts.one">1体、{width}×{height}ピクセル。目盛りは地面から{top}まで、{step}ごとに線が入ります。</span>

@@ -4,14 +4,32 @@
     <h2><span class="step">1</span> 누구를 견주는지 적으세요</h2>
 
     <p class="card-lede">
-      이름과 키, 그리고 어떤 그림을 그릴지. 키는 평소 쓰시는 대로 적으셔도 됩니다
-      &mdash; <code>173</code>, <code>1.73&nbsp;m</code>, <code>5'8"</code>,
+      이름과 키, 그리고 어떤 그림을 그릴지. 모든 줄은 그 위에 바로 덮어쓸 수 있는
+      키로 시작합니다. 키는 평소 쓰시는 대로 적으셔도 됩니다 &mdash;
+      <code>173</code>, <code>1.73&nbsp;m</code>, <code>5'8"</code>,
       <code>68&nbsp;in</code> &mdash; 그리고 각 칸 아래 줄이 무엇으로 읽었는지
-      보여 주기 때문에, 아무것도 조용히 짐작되지 않습니다.
+      보여 주며, 칸이 비었거나 키를 읽을 수 없으면 빨간색으로 그렇다고 말합니다.
+      아무것도 조용히 짐작되지 않습니다.
     </p>
+
+    <p class="card-lede">
+      <strong>여기서 위에서 아래는 차트에서 왼쪽에서 오른쪽입니다.</strong>
+      줄을 옮기려면 왼쪽 가장자리의 손잡이를 잡아 끌거나, 키보드에서 같은 일을
+      하는 화살표를 쓰세요. 어느 쪽이든 키순으로 정렬 중이었다면 차트는 사용자가
+      정한 순서로 돌아갑니다.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">단위</label>
+      <select id="unit">
+        <option value="cm" selected>센티미터</option>
+        <option value="ft">피트와 인치</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>그림</span>
         <span>이름</span>
         <span>키</span>
@@ -76,20 +94,30 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> 어떻게 보일지 고르세요</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> 가져가세요</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="직접 만드신 키 비교 차트"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">SVG 내려받기</button>
+      <button type="button" id="download-png" class="primary">PNG 내려받기</button>
+      <button type="button" id="copy-png" class="ghost">이미지 복사</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      문서나 대화창에 붙여 넣을 것은 PNG입니다. 간직할 것은 SVG입니다. 차트를
+      픽셀이 아니라 지시로 담고 있어서 어떤 크기로도 또렷하게 인쇄되고, 벡터를 여는
+      무엇으로든 나중에 색을 바꿀 수 있습니다.
+    </p>
 
     <fieldset class="options">
-      <legend>눈금자</legend>
-
-      <div class="option-row">
-        <label for="unit">단위</label>
-        <select id="unit">
-          <option value="cm" selected>센티미터</option>
-          <option value="ft">피트와 인치</option>
-        </select>
-      </div>
+      <legend>어떻게 보일지</legend>
 
       <div class="option-row">
         <label for="order">순서</label>
@@ -122,10 +150,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>색과 크기</legend>
 
       <div class="option-row">
         <label for="background">뒤쪽</label>
@@ -152,32 +176,9 @@
       <p class="field-summary">
         그것은 그리는 영역의 높이라서, 완성된 그림은 조금 더 높습니다. 이름이 그
         위에 놓이기 때문입니다. 너비는 그림이 몇 개인지, 각각의 이름표가 얼마나
-        넓은지에 따라 정해집니다. 최종 크기는 3단계가 알려 줍니다.
+        넓은지에 따라 정해집니다. 그림 아래의 줄이 최종 크기를 알려 줍니다.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> 가져가세요</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="직접 만드신 키 비교 차트"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">SVG 내려받기</button>
-      <button type="button" id="download-png" class="primary">PNG 내려받기</button>
-      <button type="button" id="copy-png" class="ghost">이미지 복사</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      문서나 대화창에 붙여 넣을 것은 PNG입니다. 간직할 것은 SVG입니다. 차트를
-      픽셀이 아니라 지시로 담고 있어서 어떤 크기로도 또렷하게 인쇄되고, 벡터를 여는
-      무엇으로든 나중에 색을 바꿀 수 있습니다.
-    </p>
   </section>
 
   <!--
@@ -191,7 +192,6 @@
     <span data-phrase="shape.woman">여성</span>
     <span data-phrase="shape.boy">남자아이</span>
     <span data-phrase="shape.girl">여자아이</span>
-    <span data-phrase="shape.toddler">유아</span>
     <span data-phrase="shape.object">사물</span>
 
     <span data-phrase="row.shape">{n}번째 줄의 그림</span>
@@ -199,21 +199,23 @@
     <span data-phrase="row.height">{n}번째 줄의 키</span>
     <span data-phrase="row.width">{n}번째 줄의 너비</span>
     <span data-phrase="row.colour">{n}번째 줄의 색</span>
-    <span data-phrase="row.up">{n}번째 줄을 왼쪽으로</span>
-    <span data-phrase="row.down">{n}번째 줄을 오른쪽으로</span>
+    <span data-phrase="row.up">{n}번째 줄을 위로</span>
+    <span data-phrase="row.down">{n}번째 줄을 아래로</span>
     <span data-phrase="row.remove">{n}번째 줄 삭제</span>
+    <span data-phrase="row.drag">끌어서 순서 바꾸기</span>
     <span data-phrase="row.nameexample">이름</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">너비</span>
     <span data-phrase="row.reads">{height}(으)로 읽었습니다</span>
 
-    <span data-phrase="height.empty">키를 넣으면 이 줄이 그려집니다.</span>
+    <span data-phrase="height.empty">이 줄은 그려지려면 키가 있어야 합니다.</span>
     <span data-phrase="height.unreadable">여기서 읽을 수 있는 키가 아닙니다. 173, 1.73 m, 5'8" 또는 68 in처럼 적어 보세요.</span>
     <span data-phrase="height.tooshort">그리기에 너무 작습니다 &mdash; 5 cm가 가장 작습니다.</span>
     <span data-phrase="height.tootall">차트가 닿는 것보다 큽니다 &mdash; 12미터가 한계입니다.</span>
 
     <span data-phrase="chart.empty">누군가를 넣으면 차트가 여기에 나타납니다.</span>
+    <span data-phrase="chart.noheights">모든 줄에 키가 있어야 합니다. 하나를 채우면 차트가 여기에 나타납니다.</span>
     <span data-phrase="chart.full">열두 개가 이 차트가 읽히는 채로 담을 수 있는 전부입니다.</span>
     <span data-phrase="facts.chart">그림 {count}개, {width} × {height} 픽셀. 눈금자는 바닥에서 {top}까지, {step}마다 선이 하나씩 들어갑니다.</span>
     <span data-phrase="facts.one">그림 하나, {width} × {height} 픽셀. 눈금자는 바닥에서 {top}까지, {step}마다 선이 하나씩 들어갑니다.</span>

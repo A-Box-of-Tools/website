@@ -10,21 +10,22 @@ heading = "Größenvergleich <span class=\"h1-kw\">&mdash; ein Diagramm nebenein
 tagline = "Größen eintippen, Bild mitnehmen. Zum Zeichnen wird nichts verschickt."
 
 title = "Größenvergleich erstellen &mdash; kostenlos, ohne Anmeldung, ohne Upload"
-description = "Vergleichen Sie Größen nebeneinander. Nehmen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen, ein Kleinkind und Gegenstände dazu &mdash; eine Tür, ein Fenster, ein Whiteboard, einen Getränkeautomaten &mdash; in Zentimetern oder in Fuß und Zoll, und laden Sie das Diagramm als PNG oder SVG herunter. Gezeichnet wird es in Ihrem Browser."
+description = "Vergleichen Sie Größen nebeneinander. Nehmen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen und Gegenstände dazu &mdash; eine Tür, ein Fenster, ein Whiteboard, einen Getränkeautomaten &mdash; in Zentimetern oder in Fuß und Zoll, und laden Sie das Diagramm als PNG oder SVG herunter. Gezeichnet wird es in Ihrem Browser."
 og_title = "Größen nebeneinander vergleichen und das Bild behalten"
-og_description = "Stellen Sie zwei Erwachsene, ein Kind, ein Kleinkind und eine Türöffnung auf denselben Maßstab, in Zentimetern oder in Fuß und Zoll, und laden Sie das Ergebnis herunter. Kein Konto, kein Wasserzeichen, und keine Namensliste, die Ihr Gerät verlässt."
+og_description = "Stellen Sie zwei Erwachsene, einen Jungen, ein Mädchen und eine Türöffnung auf denselben Maßstab, in Zentimetern oder in Fuß und Zoll, und laden Sie das Ergebnis herunter. Kein Konto, kein Wasserzeichen, und keine Namensliste, die Ihr Gerät verlässt."
 og_image_alt = "Größenvergleich - Größen nebeneinander vergleichen, ohne Upload"
 
 pledge = """
     Ein Größendiagramm ist Rechnen und eine Zeichnung: Es gibt keine Datei zu
     verschicken und keinen Dienst zu fragen. Der Mann, die Frau, der Junge und
     das Mädchen sind gemeinfreie Zeichnungen, die mit dieser Seite ausgeliefert
-    werden; das Kleinkind wird hier aus einer Tabelle von Körperproportionen
-    aufgebaut, und deshalb sieht es aus wie ein Kleinkind und nicht wie ein
-    kleiner Erwachsener. Jeder Schritt davon passiert in rund sechshundert
-    Zeilen JavaScript auf dieser Seite, die Sie lesen können. Eine Netzfunktion
-    gibt es überhaupt nicht, und das ist hier wichtig, denn was Sie eintippen,
-    ist eine Liste von Menschen und wie groß jeder davon ist."""
+    werden, und der Junge und das Mädchen sind Zeichnungen wirklicher Kinder und
+    keine klein gemachten Erwachsenen. Genau das verhindert, dass ein
+    Familiendiagramm auf eine Weise falsch aussieht, die niemand benennen kann.
+    Jeder Schritt davon passiert in ein paar hundert Zeilen JavaScript auf dieser
+    Seite, die Sie lesen können. Eine Netzfunktion gibt es überhaupt nicht, und
+    das ist hier wichtig, denn was Sie eintippen, ist eine Liste von Menschen und
+    wie groß jeder davon ist."""
 
 live_hint = """
       Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
@@ -34,14 +35,13 @@ live_hint = """
 
 read_first = """
 , <code>src/traced.js</code> und
-      <code>vendor/</code> für die vier gezeichneten Figuren und dafür, woher
-      ihre Bilder stammen, <code>src/figures.js</code> für die
-      Proportionstabelle, aus der das Kleinkind aufgebaut wird,
-      <code>src/units.js</code> dafür, wie aus einer getippten Größe eine Zahl
-      wird und wie der Maßstab beschriftet ist, <code>src/chart.js</code> für
-      die Anordnung und <code>src/save.js</code> für die beiden Downloads
-      &mdash; das SVG auf dem Bildschirm und dasselbe SVG, auf ein Canvas
-      gemalt."""
+      <code>vendor/</code> für die vier Figuren und dafür, woher ihre Bilder
+      stammen, <code>src/figures.js</code> für die Liste, aus der das Menü
+      gebaut wird, <code>src/units.js</code> dafür, wie aus einer getippten
+      Größe eine Zahl wird und wie der Maßstab beschriftet ist,
+      <code>src/chart.js</code> für die Anordnung und <code>src/save.js</code>
+      für die beiden Downloads &mdash; das SVG auf dem Bildschirm und dasselbe
+      SVG, auf ein Canvas gemalt."""
 
 howto_heading = "So erstellen Sie ein Größenvergleichsdiagramm"
 
@@ -120,11 +120,11 @@ body = """
 [[privacy]]
 title = "Die Zeichnungen sind hier, sie werden nicht abgerufen."
 body = """
- Die vier
-      gezeichneten Figuren sind gemeinfreie Bilder, und sie kommen mit dem Rest
-      der Seite von dieser Domain &mdash; keine Icon-Schriftart, kein CDN, kein
-      Sprite-Bild, das beim Tippen vom Server eines anderen geholt wird. Deshalb
-      zeichnet das Diagramm auch ohne Netzverbindung weiter."""
+ Alle vier Figuren
+      sind gemeinfreie Bilder, und sie kommen mit dem Rest der Seite von dieser
+      Domain &mdash; keine Icon-Schriftart, kein CDN, kein Sprite-Bild, das beim
+      Tippen vom Server eines anderen geholt wird. Deshalb zeichnet das Diagramm
+      auch ohne Netzverbindung weiter."""
 
 [[privacy]]
 title = "Was Google lädt und was Google nicht bekommt."
@@ -167,14 +167,15 @@ body = """
 [[howto]]
 title = "Wählen Sie die Figur, die zur Person passt."
 body = """
- Ein Zweijähriger ist
-      etwa viereinhalb Kopfhöhen groß und ein Erwachsener siebeneinhalb, ein als
-      geschrumpfter Erwachsener gezeichnetes Kleinkind sieht also auf eine Weise
-      falsch aus, die schwer zu benennen und leicht zu sehen ist. Es gibt einen
-      Jungen und ein Mädchen für das Schulalter und ein Kleinkind darunter, jedes
-      mit eigenen Proportionen statt als klein gemachter Erwachsener, und genau
-      das macht den größten Teil davon aus, dass ein Familiendiagramm nach einer
-      Familie aussieht."""
+ Ein Kind ist etwa sechs
+      Kopfhöhen groß und ein Erwachsener siebeneinhalb, ein als geschrumpfter
+      Erwachsener gezeichnetes Kind sieht also auf eine Weise falsch aus, die
+      schwer zu benennen und leicht zu sehen ist. Der Junge und das Mädchen sind
+      Zeichnungen wirklicher Kinder und keine klein gemachten Erwachsenen, und
+      genau das macht den größten Teil davon aus, dass ein Familiendiagramm nach
+      einer Familie aussieht. Jede Zeile kommt außerdem schon mit einer Größe an,
+      wer also jemanden hinzufügt, zeichnet jemanden &mdash; tippen Sie einfach
+      darüber."""
 
 [[howto]]
 title = "Stellen Sie etwas Vertrautes daneben."
@@ -243,31 +244,45 @@ a = """
         eintippt."""
 
 [[faq]]
-q = "Warum sieht das Kleinkind nicht aus wie ein kleiner Erwachsener?"
+q = "Warum sehen die Kinder nicht aus wie kleine Erwachsene?"
 a = """
-        Weil es keiner ist. Körperproportionen ändern sich mit dem Alter: Ein
-        Zweijähriger ist rund viereinhalb Kopfhöhen groß, ein Achtjähriger sechs,
-        ein Erwachsener siebeneinhalb &mdash; der Kopf ist also fast ein Viertel
-        eines Kleinkindes und ein Achtel eines Erwachsenen. Der Junge und das
-        Mädchen sind Zeichnungen wirklicher Kinder, und das Kleinkind hat seine
-        eigene Proportionstabelle, statt eine verkleinerte Silhouette zu sein.
-        Deshalb sieht ein Familiendiagramm nach einer Familie aus und nicht nach
-        vier Erwachsenen in verschiedenen Größen."""
+        Weil ein Kind keiner ist. Körperproportionen ändern sich mit dem Alter:
+        Ein Zweijähriger ist rund viereinhalb Kopfhöhen groß, ein Achtjähriger
+        sechs, ein Erwachsener siebeneinhalb &mdash; der Kopf ist also fast ein
+        Viertel eines kleinen Kindes und ein Achtel eines Erwachsenen. Der Junge
+        und das Mädchen hier sind Zeichnungen wirklicher Kinder und keine
+        verkleinerte einzelne Silhouette, und deshalb sieht ein Familiendiagramm
+        nach einer Familie aus und nicht nach vier Erwachsenen in verschiedenen
+        Größen."""
 
 [[faq]]
 q = "Woher kommen die Figuren?"
 a = """
-        Vier der fünf sind Zeichnungen anderer Leute, alle gemeinfrei: der Mann
-        von pitr, die Frau von Madeleine Price Ball, das Mädchen von
+        Alle vier sind Zeichnungen anderer Leute, alle gemeinfrei: der Mann von
+        pitr, die Frau von Madeleine Price Ball, das Mädchen von
         OpenClipart-Vectors und der Junge von Ryan Kissinger für die
         NIH-BioArt-Bibliothek. Jede Datei wird mit dieser Seite in
         <code>vendor/</code> so ausgeliefert, wie sie veröffentlicht wurde, Sie
         können sie also gegen die Originale prüfen. Gemeinfrei verlangt nichts,
         und darum geht es: Die Zeichnung landet in einem Bild, das Sie
         herunterladen, und eine Lizenz, die eine Namensnennung verlangt, würde
-        diese Anforderung an Ihr Diagramm heften. Nur das Kleinkind wird vom Code
-        dieser Seite selbst gezeichnet &mdash; unterhalb des Schulalters war
-        nichts Freies zu bekommen."""
+        diese Anforderung an Ihr Diagramm heften."""
+
+[[faq]]
+q = "Warum gibt es kein Kleinkind und kein Baby?"
+a = """
+        Weil niemand eines gezeichnet und gemeinfrei gestellt hat. Wikimedia
+        Commons hat genau ein brauchbares freies Kind &mdash; das Mädchen &mdash;
+        und die NIH-BioArt-Bibliothek den Jungen; unterhalb des Schulalters kommt
+        die Suche leer zurück, und jeder in sich stimmige freie Satz von Menschen
+        ist ein Toiletten-Piktogramm, in jedem Alter dieselbe Form, also genau
+        der Fehler, den dieses Werkzeug vermeiden soll. Eine Weile lang gab es
+        ein Kleinkind, das der Code dieser Seite selbst zeichnete, und es war die
+        einzige Figur auf dem Diagramm, die niemand gezeichnet hatte: Man sah es
+        ihr an, neben vier anderen, die jemand gezeichnet hatte. Für jemanden,
+        der kleiner ist als der Junge oder das Mädchen, stellen Sie eines von
+        beiden auf die echte Größe &mdash; getragen wird der Vergleich vom
+        Maßstab, und der stimmt dann."""
 
 [[faq]]
 q = "Wie viele Menschen passen auf ein Diagramm?"
@@ -355,11 +370,11 @@ a = """
         Sie die Verbindung trennen."""
 
 [schema]
-description = "Ein Größenvergleichsdiagramm im Browser zeichnen. Fügen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen, ein Kleinkind und Gegenstände mit ihren Maßen in Zentimetern oder in Fuß und Zoll hinzu, ordnen Sie sie, färben Sie sie und laden Sie das Ergebnis als PNG oder SVG herunter. Hochgeladen wird nichts."
+description = "Ein Größenvergleichsdiagramm im Browser zeichnen. Fügen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen und Gegenstände mit ihren Maßen in Zentimetern oder in Fuß und Zoll hinzu, ordnen Sie sie, färben Sie sie und laden Sie das Ergebnis als PNG oder SVG herunter. Hochgeladen wird nichts."
 features = [
   "Bis zu zwölf Figuren auf einem Maßstab, in beliebiger Reihenfolge",
-  "Figuren für Mann, Frau, Kind und Kleinkind, und ein schlichtes Rechteck für Gegenstände",
-  "Gemeinfrei gezeichneter Mann, Frau, Junge und Mädchen, und ein Kleinkind mit eigenen Proportionen statt eines verkleinerten Erwachsenen",
+  "Figuren für Mann, Frau, Jungen und Mädchen, und ein schlichtes Rechteck für Gegenstände",
+  "Gemeinfrei gezeichneter Mann, Frau, Junge und Mädchen - die Kinder als Kinder gezeichnet statt als verkleinerte Erwachsene",
   "Größen als 173, 1,73 m, 5'8\", 68 in oder 5 ft 8 getippt, mit angezeigter Lesung",
   "Zentimeter oder Fuß und Zoll, umschaltbar, ohne dass sich jemandes Größe ändert",
   "Zwanzig fertige Gegenstände: Türen, Fenster, ein Whiteboard, ein Getränkeautomat, ein Seecontainer, Möbel",

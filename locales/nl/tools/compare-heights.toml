@@ -10,21 +10,21 @@ heading = "Lengtes&nbsp;vergelijken <span class=\"h1-kw\">&mdash; een grafiek na
 tagline = "Typ de lengtes, neem de afbeelding mee. Er wordt niets verstuurd om hem te tekenen."
 
 title = "Lengtes vergelijken &mdash; gratis, zonder aanmelden, zonder upload"
-description = "Vergelijk lengtes naast elkaar. Voeg een man, een vrouw, een jongen, een meisje, een peuter en voorwerpen toe &mdash; een deur, een raam, een whiteboard, een automaat &mdash; in centimeters of in voet en inches, en download de grafiek als PNG of SVG. Hij wordt in je browser getekend."
+description = "Vergelijk lengtes naast elkaar. Voeg een man, een vrouw, een jongen, een meisje en voorwerpen toe &mdash; een deur, een raam, een whiteboard, een automaat &mdash; in centimeters of in voet en inches, en download de grafiek als PNG of SVG. Hij wordt in je browser getekend."
 og_title = "Vergelijk lengtes naast elkaar en houd de afbeelding"
-og_description = "Zet twee volwassenen, een kind, een peuter en een deuropening op dezelfde meetlat, in centimeters of in voet en inches, en download het resultaat. Geen account, geen watermerk, en geen namenlijst die je apparaat verlaat."
+og_description = "Zet twee volwassenen, een jongen, een meisje en een deuropening op dezelfde meetlat, in centimeters of in voet en inches, en download het resultaat. Geen account, geen watermerk, en geen namenlijst die je apparaat verlaat."
 og_image_alt = "Lengtevergelijker - lengtes naast elkaar vergelijken, zonder upload"
 
 pledge = """
     Een lengtegrafiek is rekenwerk en een tekening: er is geen bestand om te
     versturen en geen dienst om iets aan te vragen. De man, de vrouw, de jongen
     en het meisje zijn illustraties uit het publieke domein die met deze pagina
-    meekomen; de peuter wordt hier opgebouwd uit een tabel met
-    lichaamsverhoudingen, en daarom heeft hij de vorm van een peuter en niet van
-    een kleine volwassene. Elke stap gebeurt in ongeveer zeshonderd regels
-    JavaScript op deze pagina die je kunt lezen. Er is überhaupt geen
-    netwerkfunctie, en dat telt hier omdat wat je typt een lijst van mensen is
-    en hoe lang ze elk zijn."""
+    meekomen, en de jongen en het meisje zijn tekeningen van echte kinderen in
+    plaats van klein gemaakte volwassenen &mdash; en dat is precies wat een
+    gezinsgrafiek behoedt voor een fout die niemand kan benoemen. Elke stap
+    gebeurt in een paar honderd regels JavaScript op deze pagina die je kunt
+    lezen. Er is überhaupt geen netwerkfunctie, en dat telt hier omdat wat je
+    typt een lijst van mensen is en hoe lang ze elk zijn."""
 
 live_hint = """
       Je hoeft ons niet op ons woord te geloven: open de DevTools, kijk naar het
@@ -34,13 +34,12 @@ live_hint = """
 
 read_first = """
 , <code>src/traced.js</code> en
-      <code>vendor/</code> voor de vier getekende figuren en waar hun
-      illustraties vandaan komen, <code>src/figures.js</code> voor de
-      verhoudingstabel waaruit de peuter is opgebouwd, <code>src/units.js</code>
-      voor hoe een getypte lengte een getal wordt en hoe de meetlat wordt
-      gelabeld, <code>src/chart.js</code> voor de opmaak, en
-      <code>src/save.js</code> voor de twee downloads &mdash; dat zijn de SVG op
-      het scherm, en diezelfde SVG op een canvas geschilderd."""
+      <code>vendor/</code> voor de vier figuren en waar hun illustraties vandaan
+      komen, <code>src/figures.js</code> voor de lijst waar het menu uit
+      opgebouwd wordt, <code>src/units.js</code> voor hoe een getypte lengte een
+      getal wordt en hoe de meetlat wordt gelabeld, <code>src/chart.js</code>
+      voor de opmaak, en <code>src/save.js</code> voor de twee downloads &mdash;
+      dat zijn de SVG op het scherm, en diezelfde SVG op een canvas geschilderd."""
 
 howto_heading = "Zo maak je een lengtevergelijkingsgrafiek"
 
@@ -121,12 +120,12 @@ body = """
 [[privacy]]
 title = "De illustraties staan hier, ze worden niet opgehaald."
 body = """
- De vier
-      getekende figuren zijn illustraties uit het publieke domein, en ze worden
-      vanaf deze origin geserveerd met de rest van de pagina &mdash; geen
-      icoonlettertype, geen CDN, geen sprite-bestand dat van de server van iemand
-      anders wordt getrokken terwijl je typt. Daarom tekent de grafiek zich ook
-      nog met het netwerk eruit."""
+ Alle vier de figuren
+      zijn illustraties uit het publieke domein, en ze worden vanaf deze origin
+      geserveerd met de rest van de pagina &mdash; geen icoonlettertype, geen
+      CDN, geen sprite-bestand dat van de server van iemand anders wordt
+      getrokken terwijl je typt. Daarom tekent de grafiek zich ook nog met het
+      netwerk eruit."""
 
 [[privacy]]
 title = "Wat Google laadt, en wat het niet krijgt."
@@ -168,13 +167,14 @@ body = """
 [[howto]]
 title = "Kies de figuur die bij de persoon past."
 body = """
- Een tweejarige is ongeveer
-      vierenhalf hoofd hoog en een volwassene zevenenhalf, dus een peuter die als
-      een gekrompen volwassene is getekend ziet er verkeerd uit op een manier die
-      lastig te benoemen en makkelijk te zien is. Er is een jongen en een meisje
-      voor de schoolleeftijd en een peuter daaronder, elk met eigen verhoudingen
-      in plaats van de volwassene klein gemaakt, en dat is het grootste deel van
-      wat een gezinsgrafiek op een gezin doet lijken."""
+ Een kind is ongeveer zes
+      hoofden hoog en een volwassene zevenenhalf, dus een kind dat als een
+      gekrompen volwassene is getekend ziet er verkeerd uit op een manier die
+      lastig te benoemen en makkelijk te zien is. De jongen en het meisje zijn
+      tekeningen van echte kinderen in plaats van klein gemaakte volwassenen, en
+      dat is het grootste deel van wat een gezinsgrafiek op een gezin doet
+      lijken. Elke regel komt bovendien al met een lengte erin binnen, dus iemand
+      toevoegen tekent iemand &mdash; typ er gewoon overheen."""
 
 [[howto]]
 title = "Zet iets vertrouwds op de grafiek."
@@ -242,30 +242,43 @@ a = """
         typt."""
 
 [[faq]]
-q = "Waarom lijkt de peuter niet op een kleine volwassene?"
+q = "Waarom lijken de kinderen niet op kleine volwassenen?"
 a = """
-        Omdat een peuter dat niet is. Lichaamsverhoudingen veranderen met de
+        Omdat een kind dat niet is. Lichaamsverhoudingen veranderen met de
         leeftijd: een tweejarige is ruwweg vierenhalf hoofd hoog, een achtjarige
         zes, een volwassene zevenenhalf &mdash; het hoofd is dus bijna een kwart
-        van een peuter en een achtste van een volwassene. De jongen en het meisje
-        zijn tekeningen van echte kinderen, en de peuter heeft een eigen
-        verhoudingstabel in plaats van een verkleind silhouet te zijn, en daarom
-        lijkt een gezinsgrafiek op een gezin in plaats van op vier volwassenen op
-        verschillende formaten."""
+        van een klein kind en een achtste van een volwassene. De jongen en het
+        meisje zijn hier tekeningen van echte kinderen in plaats van één
+        verkleind silhouet, en daarom lijkt een gezinsgrafiek op een gezin in
+        plaats van op vier volwassenen op verschillende formaten."""
 
 [[faq]]
 q = "Waar komen de figuren vandaan?"
 a = """
-        Vier van de vijf zijn illustraties van andere mensen, allemaal in het
-        publieke domein: de man van pitr, de vrouw van Madeleine Price Ball, het
-        meisje van OpenClipart-Vectors, en de jongen van Ryan Kissinger voor de
-        NIH BioArt-bibliotheek. Elk bestand komt met deze pagina mee in
+        Alle vier zijn illustraties van andere mensen, allemaal in het publieke
+        domein: de man van pitr, de vrouw van Madeleine Price Ball, het meisje
+        van OpenClipart-Vectors, en de jongen van Ryan Kissinger voor de NIH
+        BioArt-bibliotheek. Elk bestand komt met deze pagina mee in
         <code>vendor/</code> zoals het is gepubliceerd, dus je kunt ze tegen de
         originelen leggen. Het publieke domein vraagt niets, en dat is precies de
         bedoeling: de illustratie belandt in een afbeelding die jij downloadt, en
         een licentie die naamsvermelding eist zou die eis aan jouw grafiek
-        plakken. Alleen de peuter wordt door de eigen code van deze pagina
-        getekend &mdash; onder de schoolleeftijd was er niets vrijs te krijgen."""
+        plakken."""
+
+[[faq]]
+q = "Waarom is er geen peuter of baby?"
+a = """
+        Omdat niemand er een heeft getekend en in het publieke domein heeft
+        gezet. Wikimedia Commons heeft precies één bruikbaar vrij kind &mdash;
+        het meisje &mdash; en de NIH BioArt-bibliotheek de jongen; onder de
+        schoolleeftijd komt de zoektocht leeg terug, en elke samenhangende vrije
+        set mensen is een toiletpictogram met op elke leeftijd dezelfde vorm, wat
+        precies de fout is die dit hele gereedschap moet vermijden. Er is een
+        tijd een peuter geweest die door de eigen code van deze pagina werd
+        getekend, en het was de enige figuur op de grafiek die niemand had
+        getekend: dat zag je, naast vier die wel getekend waren. Voor iemand die
+        kleiner is dan de jongen of het meisje: zet een van die twee op de echte
+        lengte &mdash; de meetlat draagt de vergelijking, en die klopt dan."""
 
 [[faq]]
 q = "Hoeveel mensen kan ik op één grafiek zetten?"
@@ -352,11 +365,11 @@ a = """
         eruit trekt."""
 
 [schema]
-description = "Teken een lengtevergelijkingsgrafiek in de browser. Voeg een man, een vrouw, een jongen, een meisje, een peuter en voorwerpen toe met hun lengtes in centimeters of in voet en inches, zet ze op volgorde, geef ze kleur en download het resultaat als PNG of SVG. Er wordt niets geüpload."
+description = "Teken een lengtevergelijkingsgrafiek in de browser. Voeg een man, een vrouw, een jongen, een meisje en voorwerpen toe met hun lengtes in centimeters of in voet en inches, zet ze op volgorde, geef ze kleur en download het resultaat als PNG of SVG. Er wordt niets geüpload."
 features = [
   "Tot twaalf figuren op één meetlat, in willekeurige volgorde",
-  "Figuren van man, vrouw, kind en peuter, en een gewone rechthoek voor voorwerpen",
-  "Man, vrouw, jongen en meisje getekend uit het publieke domein, en een peuter met eigen verhoudingen in plaats van een verkleinde volwassene",
+  "Figuren van man, vrouw, jongen en meisje, en een gewone rechthoek voor voorwerpen",
+  "Man, vrouw, jongen en meisje getekend uit het publieke domein - de kinderen als kinderen getekend en niet als verkleinde volwassenen",
   "Lengtes getypt als 173, 1,73 m, 5'8\", 68 in of 5 ft 8, met de lezing terug in beeld",
   "Centimeters of voet en inches, gewisseld zonder iemands lengte te veranderen",
   "Twintig kant-en-klare voorwerpen: deuren, ramen, een whiteboard, een automaat, een zeecontainer, meubels",

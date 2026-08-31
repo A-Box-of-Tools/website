@@ -4,15 +4,34 @@
     <h2><span class="step">1</span> Dites qui vous comparez</h2>
 
     <p class="card-lede">
-      Un nom, une taille, et quel genre de figure dessiner. Les tailles peuvent
-      s'écrire comme vous les écrivez &mdash; <code>173</code>,
+      Un nom, une taille, et quel genre de figure dessiner. Chaque ligne
+      démarre avec une taille que vous pouvez réécrire directement. Les tailles
+      peuvent s'écrire comme vous les écrivez &mdash; <code>173</code>,
       <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
-      &mdash; et la ligne sous chaque case montre ce qui a été compris, si bien
-      que rien n'est deviné en silence.
+      &mdash; et la ligne sous chaque case montre ce qui a été compris, ou le
+      dit en rouge si la case est vide ou si la taille ne peut pas être lue.
+      Rien n'est jamais deviné en silence.
     </p>
+
+    <p class="card-lede">
+      <strong>De haut en bas ici, c'est de gauche à droite sur le
+      graphique.</strong> Faites glisser une ligne par la poignée de son bord
+      gauche pour la déplacer, ou servez-vous des flèches, qui font la même
+      chose au clavier. Dans les deux cas le graphique revient à votre propre
+      ordre s'il triait par taille.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Mesuré en</label>
+      <select id="unit">
+        <option value="cm" selected>Centimètres</option>
+        <option value="ft">Pieds et pouces</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>Figure</span>
         <span>Nom</span>
         <span>Taille</span>
@@ -79,20 +98,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> Choisissez son allure</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Emportez-le</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Le graphique de tailles que vous avez fait"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Télécharger le SVG</button>
+      <button type="button" id="download-png" class="primary">Télécharger le PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copier l'image</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      Le PNG est celui à coller dans un document ou une conversation. Le SVG
+      est celui à garder&nbsp;: c'est le graphique sous forme d'instructions
+      plutôt que de pixels, il s'imprime donc net à n'importe quelle taille et
+      tout ce qui ouvre des vecteurs peut le recolorer plus tard.
+    </p>
 
     <fieldset class="options">
-      <legend>La règle</legend>
-
-      <div class="option-row">
-        <label for="unit">Mesuré en</label>
-        <select id="unit">
-          <option value="cm" selected>Centimètres</option>
-          <option value="ft">Pieds et pouces</option>
-        </select>
-      </div>
+      <legend>Son allure</legend>
 
       <div class="option-row">
         <label for="order">Ordre</label>
@@ -126,10 +156,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>Couleur et taille</legend>
 
       <div class="option-row">
         <label for="background">Derrière</label>
@@ -158,34 +184,10 @@
       <p class="field-summary">
         C'est la hauteur de la zone de dessin&nbsp;: l'image finie est donc un
         peu plus haute, car les noms se placent au-dessus. La largeur découle du
-        nombre de figures et de la largeur de l'étiquette de chacune. L'étape
-        trois dit ce que cela a donné.
+        nombre de figures et de la largeur de l'étiquette de chacune. La ligne
+        sous l'image dit ce que cela a donné.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> Emportez-le</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="Le graphique de tailles que vous avez fait"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">Télécharger le SVG</button>
-      <button type="button" id="download-png" class="primary">Télécharger le PNG</button>
-      <button type="button" id="copy-png" class="ghost">Copier l'image</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      Le PNG est celui à coller dans un document ou une conversation. Le SVG
-      est celui à garder&nbsp;: c'est le graphique sous forme d'instructions
-      plutôt que de pixels, il s'imprime donc net à n'importe quelle taille et
-      tout ce qui ouvre des vecteurs peut le recolorer plus tard.
-    </p>
   </section>
 
   <!--
@@ -199,7 +201,6 @@
     <span data-phrase="shape.woman">Femme</span>
     <span data-phrase="shape.boy">Garçon</span>
     <span data-phrase="shape.girl">Fille</span>
-    <span data-phrase="shape.toddler">Tout-petit</span>
     <span data-phrase="shape.object">Objet</span>
 
     <span data-phrase="row.shape">Figure de la ligne {n}</span>
@@ -207,21 +208,23 @@
     <span data-phrase="row.height">Taille de la ligne {n}</span>
     <span data-phrase="row.width">Largeur de la ligne {n}</span>
     <span data-phrase="row.colour">Couleur de la ligne {n}</span>
-    <span data-phrase="row.up">Déplacer la ligne {n} vers la gauche</span>
-    <span data-phrase="row.down">Déplacer la ligne {n} vers la droite</span>
+    <span data-phrase="row.up">Monter la ligne {n}</span>
+    <span data-phrase="row.down">Descendre la ligne {n}</span>
     <span data-phrase="row.remove">Retirer la ligne {n}</span>
+    <span data-phrase="row.drag">Glissez pour réordonner</span>
     <span data-phrase="row.nameexample">Nom</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">Largeur</span>
     <span data-phrase="row.reads">Lu comme {height}</span>
 
-    <span data-phrase="height.empty">Une taille, et cette ligne est dessinée.</span>
+    <span data-phrase="height.empty">Cette ligne a besoin d'une taille avant de pouvoir être dessinée.</span>
     <span data-phrase="height.unreadable">Ce n'est pas une taille comprise ici. Essayez 173, 1,73 m, 5'8" ou 68 in.</span>
     <span data-phrase="height.tooshort">Trop petit pour être dessiné &mdash; 5 cm est le minimum.</span>
     <span data-phrase="height.tootall">Plus grand que ne va le graphique &mdash; la limite est de 12 mètres.</span>
 
     <span data-phrase="chart.empty">Ajoutez quelqu'un, et le graphique apparaîtra ici.</span>
+    <span data-phrase="chart.noheights">Chaque ligne a besoin d'une taille. Remplissez-en une et le graphique apparaîtra ici.</span>
     <span data-phrase="chart.full">Douze figures, c'est tout ce que ce graphique peut porter en restant lisible.</span>
     <span data-phrase="facts.chart">{count} figures, {width} sur {height} pixels. La règle va du sol à {top}, avec une ligne tous les {step}.</span>
     <span data-phrase="facts.one">Une figure, {width} sur {height} pixels. La règle va du sol à {top}, avec une ligne tous les {step}.</span>

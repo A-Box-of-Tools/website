@@ -10,21 +10,22 @@ heading = "Bandingkan&nbsp;Tinggi&nbsp;Badan <span class=\"h1-kw\">&mdash; bagan
 tagline = "Ketik tingginya, bawa gambarnya. Tidak ada yang dikirim untuk menggambarnya."
 
 title = "Bandingkan Tinggi Badan &mdash; gratis, tanpa daftar, tanpa unggah"
-description = "Bandingkan tinggi badan berdampingan. Tambahkan pria, wanita, anak laki-laki, anak perempuan, balita, dan benda &mdash; pintu, jendela, papan tulis, mesin penjual otomatis &mdash; dalam sentimeter atau kaki dan inci, lalu unduh bagannya sebagai PNG atau SVG. Ia digambar di peramban Anda."
+description = "Bandingkan tinggi badan berdampingan. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda &mdash; pintu, jendela, papan tulis, mesin penjual otomatis &mdash; dalam sentimeter atau kaki dan inci, lalu unduh bagannya sebagai PNG atau SVG. Ia digambar di peramban Anda."
 og_title = "Bandingkan tinggi badan berdampingan dan simpan gambarnya"
-og_description = "Taruh dua orang dewasa, seorang anak, seorang balita, dan sebuah pintu pada penggaris yang sama, dalam sentimeter atau kaki dan inci, lalu unduh hasilnya. Tanpa akun, tanpa tanda air, dan tanpa satu pun daftar nama yang meninggalkan perangkat Anda."
+og_description = "Taruh dua orang dewasa, seorang anak laki-laki, seorang anak perempuan, dan sebuah pintu pada penggaris yang sama, dalam sentimeter atau kaki dan inci, lalu unduh hasilnya. Tanpa akun, tanpa tanda air, dan tanpa satu pun daftar nama yang meninggalkan perangkat Anda."
 og_image_alt = "Pembanding Tinggi Badan - membandingkan tinggi berdampingan, tanpa unggah"
 
 pledge = """
     Bagan tinggi badan adalah hitungan dan sebuah gambar: tidak ada berkas yang
     perlu dikirim dan tidak ada layanan yang perlu ditanyai. Pria, wanita, anak
     laki-laki, dan anak perempuan adalah karya seni domain publik yang ikut
-    dikirim bersama halaman ini; balitanya dibangun di sini dari tabel proporsi
-    tubuh, dan itulah sebabnya bentuknya balita, bukan orang dewasa yang
-    dikecilkan. Setiap langkahnya terjadi di sekitar enam ratus baris JavaScript
-    di halaman ini yang bisa Anda baca. Tidak ada fungsi jaringan apa pun, dan
-    di sini itu penting karena yang Anda ketik adalah daftar orang dan tinggi
-    masing-masing."""
+    dikirim bersama halaman ini, dan anak laki-laki serta anak perempuannya
+    adalah gambar anak-anak sungguhan, bukan orang dewasa yang dikecilkan
+    &mdash; dan itulah yang mencegah bagan keluarga terlihat keliru dengan cara
+    yang tak bisa disebut namanya siapa pun. Setiap langkahnya terjadi di
+    beberapa ratus baris JavaScript di halaman ini yang bisa Anda baca. Tidak
+    ada fungsi jaringan apa pun, dan di sini itu penting karena yang Anda ketik
+    adalah daftar orang dan tinggi masing-masing."""
 
 live_hint = """
       Anda tidak perlu percaya begitu saja: buka DevTools, perhatikan tab
@@ -34,13 +35,12 @@ live_hint = """
 
 read_first = """
 , <code>src/traced.js</code> dan
-      <code>vendor/</code> untuk empat figur gambar dan asal-usul karyanya,
-      <code>src/figures.js</code> untuk tabel proporsi yang dipakai membangun
-      balita, <code>src/units.js</code> untuk bagaimana tinggi yang diketik
-      menjadi angka dan bagaimana penggarisnya diberi label,
-      <code>src/chart.js</code> untuk tata letaknya, dan <code>src/save.js</code>
-      untuk dua unduhannya &mdash; yaitu SVG di layar, dan SVG yang sama itu
-      dilukiskan ke sebuah kanvas."""
+      <code>vendor/</code> untuk empat figur dan asal-usul karyanya,
+      <code>src/figures.js</code> untuk daftar yang menjadi bahan menunya,
+      <code>src/units.js</code> untuk bagaimana tinggi yang diketik menjadi angka
+      dan bagaimana penggarisnya diberi label, <code>src/chart.js</code> untuk
+      tata letaknya, dan <code>src/save.js</code> untuk dua unduhannya &mdash;
+      yaitu SVG di layar, dan SVG yang sama itu dilukiskan ke sebuah kanvas."""
 
 howto_heading = "Cara membuat bagan perbandingan tinggi badan"
 
@@ -121,9 +121,9 @@ body = """
 [[privacy]]
 title = "Karya gambarnya ada di sini, bukan diambil dari luar."
 body = """
- Keempat figur
-      gambar itu adalah karya domain publik, dan disajikan dari asal ini bersama
-      sisa halamannya &mdash; tanpa fon ikon, tanpa CDN, tanpa lembar sprite yang
+ Keempat figurnya
+      adalah karya domain publik, dan disajikan dari asal ini bersama sisa
+      halamannya &mdash; tanpa fon ikon, tanpa CDN, tanpa lembar sprite yang
       ditarik dari server orang lain sewaktu Anda mengetik. Itu juga sebabnya
       bagannya tetap tergambar dengan jaringan dicabut."""
 
@@ -167,13 +167,15 @@ body = """
 [[howto]]
 title = "Pilih figur yang cocok dengan orangnya."
 body = """
- Anak dua tahun tingginya
-      sekitar empat setengah kepala dan orang dewasa tujuh setengah, jadi balita
-      yang digambar sebagai orang dewasa yang menyusut terlihat salah dengan cara
-      yang sulit disebut namanya tapi mudah dilihat. Ada anak laki-laki dan anak
-      perempuan untuk usia sekolah dan balita di bawahnya, masing-masing dengan
-      proporsinya sendiri alih-alih orang dewasa yang dikecilkan, dan itulah
-      sebagian besar yang membuat bagan keluarga terlihat seperti keluarga."""
+ Seorang anak tingginya
+      sekitar enam kepala dan orang dewasa tujuh setengah, jadi anak yang
+      digambar sebagai orang dewasa yang menyusut terlihat salah dengan cara yang
+      sulit disebut namanya tapi mudah dilihat. Anak laki-laki dan anak
+      perempuannya adalah gambar anak-anak sungguhan, bukan orang dewasa yang
+      dikecilkan, dan itulah sebagian besar yang membuat bagan keluarga terlihat
+      seperti keluarga. Setiap baris juga sudah datang dengan tinggi di dalamnya,
+      jadi menambahkan seseorang berarti menggambar seseorang &mdash; tinggal
+      ketik menimpanya."""
 
 [[howto]]
 title = "Taruh sesuatu yang akrab di bagan itu."
@@ -241,31 +243,44 @@ a = """
         sebab 1,73 cm bukan tinggi yang diketik siapa pun."""
 
 [[faq]]
-q = "Kenapa balitanya tidak terlihat seperti orang dewasa yang dikecilkan?"
+q = "Kenapa anak-anaknya tidak terlihat seperti orang dewasa yang dikecilkan?"
 a = """
-        Karena balita memang bukan itu. Proporsi tubuh berubah menurut usia: anak
+        Karena anak memang bukan itu. Proporsi tubuh berubah menurut usia: anak
         dua tahun tingginya kira-kira empat setengah kepala, anak delapan tahun
         enam, orang dewasa tujuh setengah &mdash; jadi kepala hampir seperempat
-        dari balita dan seperdelapan dari orang dewasa. Anak laki-laki dan anak
-        perempuannya adalah gambar anak-anak sungguhan, dan balitanya punya tabel
-        proporsinya sendiri alih-alih siluet yang diperkecil, dan itulah sebabnya
-        bagan keluarga terlihat seperti keluarga, bukan seperti empat orang dewasa
-        dengan ukuran berbeda."""
+        dari anak kecil dan seperdelapan dari orang dewasa. Anak laki-laki dan
+        anak perempuan di sini adalah gambar anak-anak sungguhan, bukan satu
+        siluet yang diperkecil, dan itulah sebabnya bagan keluarga terlihat
+        seperti keluarga, bukan seperti empat orang dewasa dengan ukuran berbeda."""
 
 [[faq]]
 q = "Dari mana figur-figurnya berasal?"
 a = """
-        Empat dari lima adalah karya orang lain, semuanya domain publik: prianya
-        oleh pitr, wanitanya oleh Madeleine Price Ball, anak perempuannya oleh
+        Keempatnya adalah karya orang lain, semuanya domain publik: prianya oleh
+        pitr, wanitanya oleh Madeleine Price Ball, anak perempuannya oleh
         OpenClipart-Vectors, dan anak laki-lakinya oleh Ryan Kissinger untuk
         pustaka NIH BioArt. Tiap berkas ikut dikirim bersama halaman ini di
         <code>vendor/</code> apa adanya seperti saat diterbitkan, jadi Anda bisa
         mencocokkannya dengan aslinya. Domain publik tidak menuntut apa pun, dan
         itulah intinya: karya gambarnya berakhir di dalam sebuah gambar yang Anda
         unduh, dan lisensi yang menuntut atribusi akan menempelkan tuntutan itu
-        pada bagan Anda. Hanya balitanya yang digambar oleh kode halaman ini
-        sendiri &mdash; di bawah usia sekolah tidak ada yang bebas untuk
-        didapat."""
+        pada bagan Anda."""
+
+[[faq]]
+q = "Kenapa tidak ada balita atau bayi?"
+a = """
+        Karena tidak ada yang menggambarnya lalu melepasnya ke domain publik.
+        Wikimedia Commons punya persis satu anak bebas yang bisa dipakai &mdash;
+        anak perempuan itu &mdash; dan pustaka NIH BioArt punya anak laki-lakinya;
+        di bawah usia sekolah pencarian pulang dengan tangan kosong, dan setiap
+        set orang yang bebas dan selaras adalah piktogram toilet dengan bentuk
+        yang sama pada segala usia, yang justru merupakan kesalahan yang hendak
+        dihindari seluruh alat ini. Sempat ada balita yang digambar oleh kode
+        halaman ini sendiri, dan ia satu-satunya figur di bagan yang tidak
+        digambar siapa pun: kelihatan, berdiri di sebelah empat yang digambar
+        orang. Untuk siapa pun yang lebih kecil daripada anak laki-laki atau anak
+        perempuan itu, setel salah satunya ke tinggi yang sebenarnya &mdash; yang
+        membawa perbandingannya adalah penggarisnya, dan itu akan benar."""
 
 [[faq]]
 q = "Berapa banyak orang yang bisa saya taruh di satu bagan?"
@@ -351,11 +366,11 @@ a = """
         digambarkan menjadi bagan akan berhenti begitu sambungannya dicabut."""
 
 [schema]
-description = "Menggambar bagan perbandingan tinggi badan di peramban. Tambahkan pria, wanita, anak laki-laki, anak perempuan, balita, dan benda beserta tingginya dalam sentimeter atau kaki dan inci, urutkan, warnai, lalu unduh hasilnya sebagai PNG atau SVG. Tidak ada yang diunggah."
+description = "Menggambar bagan perbandingan tinggi badan di peramban. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda beserta tingginya dalam sentimeter atau kaki dan inci, urutkan, warnai, lalu unduh hasilnya sebagai PNG atau SVG. Tidak ada yang diunggah."
 features = [
   "Sampai dua belas figur pada satu penggaris, dalam urutan apa pun",
-  "Figur pria, wanita, anak, dan balita, serta persegi panjang polos untuk benda",
-  "Pria, wanita, anak laki-laki, dan anak perempuan bergambar domain publik, dan balita dengan proporsinya sendiri alih-alih orang dewasa yang diperkecil",
+  "Figur pria, wanita, anak laki-laki, dan anak perempuan, serta persegi panjang polos untuk benda",
+  "Pria, wanita, anak laki-laki, dan anak perempuan bergambar domain publik - anak-anaknya digambar sebagai anak-anak, bukan orang dewasa yang diperkecil",
   "Tinggi diketik sebagai 173, 1,73 m, 5'8\", 68 in, atau 5 ft 8, dengan hasil bacanya ditampilkan",
   "Sentimeter atau kaki dan inci, ditukar tanpa mengubah tinggi siapa pun",
   "Dua puluh benda siap pakai: pintu, jendela, papan tulis, mesin penjual otomatis, kontainer kapal, perabot",

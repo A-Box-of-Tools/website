@@ -4,15 +4,34 @@
     <h2><span class="step">1</span> Sebutkan siapa yang Anda bandingkan</h2>
 
     <p class="card-lede">
-      Sebuah nama, sebuah tinggi, dan jenis figur yang digambar. Tinggi boleh
+      Sebuah nama, sebuah tinggi, dan jenis figur yang digambar. Setiap baris
+      sudah dimulai dengan tinggi yang bisa langsung Anda timpa. Tinggi boleh
       ditulis sebagaimana Anda menuliskannya &mdash; <code>173</code>,
       <code>1,73&nbsp;m</code>, <code>5'8"</code>, <code>68&nbsp;in</code>
       &mdash; dan baris di bawah setiap kotak menunjukkan apa yang dipahami,
-      jadi tidak ada yang ditebak diam-diam.
+      atau mengatakannya dengan warna merah kalau kotaknya kosong atau tingginya
+      tidak terbaca. Tidak pernah ada yang ditebak diam-diam.
     </p>
+
+    <p class="card-lede">
+      <strong>Atas ke bawah di sini adalah kiri ke kanan pada
+      bagan.</strong> Seret sebuah baris lewat pegangan di tepi kirinya untuk
+      memindahkannya, atau pakai tanda panah, yang melakukan hal sama lewat papan
+      ketik. Bagaimanapun caranya, bagan kembali ke urutan Anda sendiri kalau
+      tadinya sedang diurutkan menurut tinggi.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">Diukur dalam</label>
+      <select id="unit">
+        <option value="cm" selected>Sentimeter</option>
+        <option value="ft">Kaki dan inci</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>Figur</span>
         <span>Nama</span>
         <span>Tinggi</span>
@@ -78,20 +97,31 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> Pilih tampilannya</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> Ambil</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="Bagan tinggi badan yang Anda buat"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Unduh SVG-nya</button>
+      <button type="button" id="download-png" class="primary">Unduh PNG-nya</button>
+      <button type="button" id="copy-png" class="ghost">Salin gambarnya</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      PNG adalah yang ditempelkan ke dokumen atau obrolan. SVG adalah yang
+      disimpan: ia adalah bagan sebagai instruksi, bukan sebagai piksel, jadi ia
+      tercetak tajam pada ukuran berapa pun dan bisa diwarnai ulang nanti oleh
+      apa pun yang membuka vektor.
+    </p>
 
     <fieldset class="options">
-      <legend>Penggarisnya</legend>
-
-      <div class="option-row">
-        <label for="unit">Diukur dalam</label>
-        <select id="unit">
-          <option value="cm" selected>Sentimeter</option>
-          <option value="ft">Kaki dan inci</option>
-        </select>
-      </div>
+      <legend>Tampilannya</legend>
 
       <div class="option-row">
         <label for="order">Urutan</label>
@@ -125,10 +155,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>Warna dan ukuran</legend>
 
       <div class="option-row">
         <label for="background">Di belakangnya</label>
@@ -156,34 +182,10 @@
       <p class="field-summary">
         Itu tinggi bidang gambarnya, jadi gambar jadinya sedikit lebih tinggi:
         namanya duduk di atasnya. Lebarnya mengikuti berapa banyak figur yang
-        ada dan seberapa lebar label masing-masing. Langkah tiga menyebutkan
-        hasil akhirnya.
+        ada dan seberapa lebar label masing-masing. Baris di bawah gambarnya
+        menyebutkan hasil akhirnya.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> Ambil</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="Bagan tinggi badan yang Anda buat"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">Unduh SVG-nya</button>
-      <button type="button" id="download-png" class="primary">Unduh PNG-nya</button>
-      <button type="button" id="copy-png" class="ghost">Salin gambarnya</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      PNG adalah yang ditempelkan ke dokumen atau obrolan. SVG adalah yang
-      disimpan: ia adalah bagan sebagai instruksi, bukan sebagai piksel, jadi ia
-      tercetak tajam pada ukuran berapa pun dan bisa diwarnai ulang nanti oleh
-      apa pun yang membuka vektor.
-    </p>
   </section>
 
   <!--
@@ -197,7 +199,6 @@
     <span data-phrase="shape.woman">Wanita</span>
     <span data-phrase="shape.boy">Anak laki-laki</span>
     <span data-phrase="shape.girl">Anak perempuan</span>
-    <span data-phrase="shape.toddler">Balita</span>
     <span data-phrase="shape.object">Benda</span>
 
     <span data-phrase="row.shape">Figur untuk baris {n}</span>
@@ -205,21 +206,23 @@
     <span data-phrase="row.height">Tinggi untuk baris {n}</span>
     <span data-phrase="row.width">Lebar untuk baris {n}</span>
     <span data-phrase="row.colour">Warna untuk baris {n}</span>
-    <span data-phrase="row.up">Pindahkan baris {n} ke kiri</span>
-    <span data-phrase="row.down">Pindahkan baris {n} ke kanan</span>
+    <span data-phrase="row.up">Naikkan baris {n}</span>
+    <span data-phrase="row.down">Turunkan baris {n}</span>
     <span data-phrase="row.remove">Hapus baris {n}</span>
+    <span data-phrase="row.drag">Seret untuk mengurutkan ulang</span>
     <span data-phrase="row.nameexample">Nama</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">Lebar</span>
     <span data-phrase="row.reads">Dibaca sebagai {height}</span>
 
-    <span data-phrase="height.empty">Sebuah tinggi, dan baris ini digambar.</span>
+    <span data-phrase="height.empty">Baris ini perlu tinggi sebelum bisa digambar.</span>
     <span data-phrase="height.unreadable">Ini bukan tinggi yang dipahami di sini. Coba 173, 1,73 m, 5'8" atau 68 in.</span>
     <span data-phrase="height.tooshort">Terlalu pendek untuk digambar &mdash; 5 cm yang paling kecil.</span>
     <span data-phrase="height.tootall">Lebih tinggi daripada jangkauan bagan &mdash; batasnya 12 meter.</span>
 
     <span data-phrase="chart.empty">Tambahkan seseorang, dan bagannya muncul di sini.</span>
+    <span data-phrase="chart.noheights">Setiap baris perlu tinggi. Isi satu dan bagannya muncul di sini.</span>
     <span data-phrase="chart.full">Dua belas figur adalah sebanyak yang bisa dimuat bagan ini dan tetap terbaca.</span>
     <span data-phrase="facts.chart">{count} figur, {width} kali {height} piksel. Penggarisnya membentang dari tanah sampai {top}, dengan satu garis setiap {step}.</span>
     <span data-phrase="facts.one">Satu figur, {width} kali {height} piksel. Penggarisnya membentang dari tanah sampai {top}, dengan satu garis setiap {step}.</span>

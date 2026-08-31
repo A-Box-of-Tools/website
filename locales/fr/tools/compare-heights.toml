@@ -10,21 +10,22 @@ heading = "Comparer&nbsp;des&nbsp;tailles <span class=\"h1-kw\">&mdash; un graph
 tagline = "Tapez les tailles, emportez l'image. Rien n'est envoyé pour la dessiner."
 
 title = "Comparer des tailles &mdash; gratuit, sans inscription, sans envoi"
-description = "Comparez des tailles côte à côte. Ajoutez un homme, une femme, un garçon, une fille, un tout-petit et des objets &mdash; une porte, une fenêtre, un tableau blanc, un distributeur &mdash; en centimètres ou en pieds et pouces, et téléchargez le graphique en PNG ou en SVG. Il est dessiné dans votre navigateur."
+description = "Comparez des tailles côte à côte. Ajoutez un homme, une femme, un garçon, une fille et des objets &mdash; une porte, une fenêtre, un tableau blanc, un distributeur &mdash; en centimètres ou en pieds et pouces, et téléchargez le graphique en PNG ou en SVG. Il est dessiné dans votre navigateur."
 og_title = "Comparez des tailles côte à côte et gardez l'image"
-og_description = "Mettez deux adultes, un enfant, un tout-petit et une porte sur la même règle, en centimètres ou en pieds et pouces, et téléchargez le résultat. Sans compte, sans filigrane, et sans aucune liste de noms qui quitte votre machine."
+og_description = "Mettez deux adultes, un garçon, une fille et une porte sur la même règle, en centimètres ou en pieds et pouces, et téléchargez le résultat. Sans compte, sans filigrane, et sans aucune liste de noms qui quitte votre machine."
 og_image_alt = "Comparateur de tailles - comparer des tailles côte à côte, sans envoi"
 
 pledge = """
     Un graphique de tailles, c'est de l'arithmétique et un dessin&nbsp;: il n'y a
     aucun fichier à envoyer ni aucun service à interroger. L'homme, la femme, le
     garçon et la fille sont des illustrations du domaine public livrées avec
-    cette page&nbsp;; le tout-petit est construit ici à partir d'une table de
-    proportions corporelles, et c'est pourquoi il a la forme d'un tout-petit et
-    non d'un adulte en réduction. Chaque étape se déroule dans environ six cents
-    lignes de JavaScript de cette page que vous pouvez lire. Il n'y a aucune
-    fonction réseau d'aucune sorte, et cela compte ici parce que ce que vous
-    tapez est une liste de personnes et la taille de chacune."""
+    cette page, et le garçon et la fille sont des dessins d'enfants réels plutôt
+    que des adultes rapetissés &mdash; ce qui est précisément ce qui empêche un
+    graphique de famille d'avoir l'air faux d'une manière que personne ne sait
+    nommer. Chaque étape se déroule dans quelques centaines de lignes de
+    JavaScript de cette page que vous pouvez lire. Il n'y a aucune fonction
+    réseau d'aucune sorte, et cela compte ici parce que ce que vous tapez est
+    une liste de personnes et la taille de chacune."""
 
 live_hint = """
       Inutile de nous croire sur parole&nbsp;: ouvrez les DevTools, regardez
@@ -34,13 +35,13 @@ live_hint = """
 
 read_first = """
 , <code>src/traced.js</code> et
-      <code>vendor/</code> pour les quatre figures dessinées et l'origine de
-      leurs illustrations, <code>src/figures.js</code> pour la table de
-      proportions à partir de laquelle le tout-petit est construit,
-      <code>src/units.js</code> pour la façon dont une taille tapée devient un
-      nombre et dont la règle est graduée, <code>src/chart.js</code> pour la
-      mise en page, et <code>src/save.js</code> pour les deux téléchargements
-      &mdash; qui sont le SVG à l'écran, et ce même SVG peint sur un canvas."""
+      <code>vendor/</code> pour les quatre figures et l'origine de leurs
+      illustrations, <code>src/figures.js</code> pour la liste dont le menu est
+      construit, <code>src/units.js</code> pour la façon dont une taille tapée
+      devient un nombre et dont la règle est graduée, <code>src/chart.js</code>
+      pour la mise en page, et <code>src/save.js</code> pour les deux
+      téléchargements &mdash; qui sont le SVG à l'écran, et ce même SVG peint sur
+      un canvas."""
 
 howto_heading = "Comment faire un graphique de comparaison de tailles"
 
@@ -122,12 +123,12 @@ body = """
 [[privacy]]
 title = "Les illustrations sont ici, elles ne sont pas récupérées."
 body = """
- Les
-      quatre figures dessinées sont des illustrations du domaine public, et elles
-      sont servies depuis cette origine avec le reste de la page &mdash; pas de
-      police d'icônes, pas de CDN, pas de feuille de sprites tirée du serveur de
-      quelqu'un d'autre pendant que vous tapez. C'est aussi pourquoi le graphique
-      se dessine encore réseau débranché."""
+ Les quatre figures
+      sont des illustrations du domaine public, et elles sont servies depuis
+      cette origine avec le reste de la page &mdash; pas de police d'icônes, pas
+      de CDN, pas de feuille de sprites tirée du serveur de quelqu'un d'autre
+      pendant que vous tapez. C'est aussi pourquoi le graphique se dessine encore
+      réseau débranché."""
 
 [[privacy]]
 title = "Ce que Google charge, et ce qu'on ne lui donne pas."
@@ -170,13 +171,14 @@ body = """
 [[howto]]
 title = "Choisissez la figure qui correspond à la personne."
 body = """
- Un enfant de deux
-      ans mesure environ quatre têtes et demie et un adulte sept et demie, si
-      bien qu'un tout-petit dessiné comme un adulte rétréci a l'air faux d'une
-      manière difficile à nommer et facile à voir. Il y a un garçon et une fille
-      pour l'âge scolaire et un tout-petit en dessous, chacun avec ses propres
-      proportions plutôt que l'adulte rapetissé, et c'est l'essentiel de ce qui
-      fait qu'un graphique de famille ressemble à une famille."""
+ Un enfant mesure environ
+      six têtes et un adulte sept et demie, si bien qu'un enfant dessiné comme un
+      adulte rétréci a l'air faux d'une manière difficile à nommer et facile à
+      voir. Le garçon et la fille sont des dessins d'enfants réels plutôt que des
+      adultes rapetissés, et c'est l'essentiel de ce qui fait qu'un graphique de
+      famille ressemble à une famille. Chaque ligne arrive en outre avec une
+      taille déjà inscrite, si bien qu'ajouter quelqu'un dessine quelqu'un
+      &mdash; tapez simplement par-dessus."""
 
 [[howto]]
 title = "Mettez quelque chose de familier sur le graphique."
@@ -247,31 +249,45 @@ a = """
         parce que 1,73&nbsp;cm n'est pas une taille que quiconque tape."""
 
 [[faq]]
-q = "Pourquoi le tout-petit ne ressemble-t-il pas à un adulte en réduction&nbsp;?"
+q = "Pourquoi les enfants ne ressemblent-ils pas à des adultes en réduction&nbsp;?"
 a = """
-        Parce qu'un tout-petit n'en est pas un. Les proportions du corps changent
+        Parce qu'un enfant n'en est pas un. Les proportions du corps changent
         avec l'âge&nbsp;: un enfant de deux ans mesure à peu près quatre têtes et
         demie, un enfant de huit ans six, un adulte sept et demie &mdash; la tête
-        représente donc près d'un quart d'un tout-petit et un huitième d'un
-        adulte. Le garçon et la fille sont des dessins d'enfants réels, et le
-        tout-petit a sa propre table de proportions au lieu d'être une silhouette
-        réduite, ce qui explique qu'un graphique de famille ressemble à une
-        famille plutôt qu'à quatre adultes de tailles différentes."""
+        représente donc près d'un quart d'un jeune enfant et un huitième d'un
+        adulte. Le garçon et la fille sont ici des dessins d'enfants réels plutôt
+        qu'une seule silhouette réduite, ce qui explique qu'un graphique de
+        famille ressemble à une famille plutôt qu'à quatre adultes de tailles
+        différentes."""
 
 [[faq]]
 q = "D'où viennent les figures&nbsp;?"
 a = """
-        Quatre des cinq sont des illustrations d'autres personnes, toutes dans le
-        domaine public&nbsp;: l'homme par pitr, la femme par Madeleine Price
+        Toutes les quatre sont des illustrations d'autres personnes, toutes dans
+        le domaine public&nbsp;: l'homme par pitr, la femme par Madeleine Price
         Ball, la fille par OpenClipart-Vectors, et le garçon par Ryan Kissinger
         pour la bibliothèque NIH BioArt. Chaque fichier est livré avec cette page
         dans <code>vendor/</code> tel qu'il a été publié, vous pouvez donc les
         comparer aux originaux. Le domaine public ne demande rien, et c'est bien
         le point&nbsp;: l'illustration finit à l'intérieur d'une image que vous
         téléchargez, et une licence exigeant une attribution attacherait cette
-        exigence à votre graphique. Seul le tout-petit est dessiné par le code de
-        cette page &mdash; en dessous de l'âge scolaire, il n'y avait rien de
-        libre à trouver."""
+        exigence à votre graphique."""
+
+[[faq]]
+q = "Pourquoi n'y a-t-il ni tout-petit ni bébé&nbsp;?"
+a = """
+        Parce que personne n'en a dessiné un et ne l'a versé au domaine public.
+        Wikimedia Commons compte exactement un enfant libre utilisable &mdash; la
+        fille &mdash; et la bibliothèque NIH BioArt le garçon&nbsp;; en dessous
+        de l'âge scolaire la recherche revient vide, et tout ensemble libre et
+        cohérent de personnages est un pictogramme de toilettes, de la même forme
+        à tous les âges, ce qui est justement l'erreur que cet outil tout entier
+        existe pour éviter. Il y a eu un temps un tout-petit dessiné par le code
+        de cette page, et c'était la seule figure du graphique que personne
+        n'avait dessinée&nbsp;: cela se voyait, à côté de quatre qui l'avaient
+        été. Pour quelqu'un de plus petit que le garçon ou la fille, réglez l'un
+        des deux à la taille réelle &mdash; c'est la règle qui porte la
+        comparaison, et elle sera juste."""
 
 [[faq]]
 q = "Combien de personnes puis-je mettre sur un graphique&nbsp;?"
@@ -360,11 +376,11 @@ a = """
         dessine un graphique s'arrêterait à l'instant où vous débranchez."""
 
 [schema]
-description = "Dessiner un graphique de comparaison de tailles dans le navigateur. Ajoutez un homme, une femme, un garçon, une fille, un tout-petit et des objets avec leurs tailles en centimètres ou en pieds et pouces, ordonnez-les, colorez-les et téléchargez le résultat en PNG ou en SVG. Rien n'est envoyé."
+description = "Dessiner un graphique de comparaison de tailles dans le navigateur. Ajoutez un homme, une femme, un garçon, une fille et des objets avec leurs tailles en centimètres ou en pieds et pouces, ordonnez-les, colorez-les et téléchargez le résultat en PNG ou en SVG. Rien n'est envoyé."
 features = [
   "Jusqu'à douze figures sur une même règle, dans n'importe quel ordre",
-  "Figures d'homme, de femme, d'enfant et de tout-petit, et un simple rectangle pour les objets",
-  "Homme, femme, garçon et fille dessinés du domaine public, et un tout-petit avec ses propres proportions plutôt qu'un adulte réduit",
+  "Figures d'homme, de femme, de garçon et de fille, et un simple rectangle pour les objets",
+  "Homme, femme, garçon et fille dessinés du domaine public - les enfants dessinés comme des enfants et non comme des adultes réduits",
   "Tailles tapées 173, 1,73 m, 5'8\", 68 in ou 5 ft 8, avec la lecture affichée",
   "Centimètres ou pieds et pouces, changés sans modifier la taille de personne",
   "Vingt objets prêts&nbsp;: portes, fenêtres, un tableau, un distributeur, un conteneur maritime, du mobilier",

@@ -10,20 +10,21 @@ heading = "Boy&nbsp;Karşılaştırma <span class=\"h1-kw\">&mdash; indirebilece
 tagline = "Boyları yazın, resmi alın. Onu çizmek için hiçbir şey gönderilmez."
 
 title = "Boy Karşılaştırma &mdash; ücretsiz, kayıt yok, yükleme yok"
-description = "Boyları yan yana karşılaştırın. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk, bir küçük çocuk ve nesneler ekleyin &mdash; bir kapı, bir pencere, bir beyaz tahta, bir otomat &mdash; santimetre ya da fit ve inç cinsinden, sonra grafiği PNG veya SVG olarak indirin. Tarayıcınızda çizilir."
+description = "Boyları yan yana karşılaştırın. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk ve nesneler ekleyin &mdash; bir kapı, bir pencere, bir beyaz tahta, bir otomat &mdash; santimetre ya da fit ve inç cinsinden, sonra grafiği PNG veya SVG olarak indirin. Tarayıcınızda çizilir."
 og_title = "Boyları yan yana karşılaştırın ve resmi saklayın"
-og_description = "İki yetişkini, bir çocuğu, bir küçük çocuğu ve bir kapı boşluğunu aynı cetvele koyun; santimetre ya da fit ve inç cinsinden, ve sonucu indirin. Hesap yok, filigran yok, ve cihazınızdan çıkan hiçbir ad listesi yok."
+og_description = "İki yetişkini, bir erkek çocuğu, bir kız çocuğu ve bir kapı boşluğunu aynı cetvele koyun; santimetre ya da fit ve inç cinsinden, ve sonucu indirin. Hesap yok, filigran yok, ve cihazınızdan çıkan hiçbir ad listesi yok."
 og_image_alt = "Boy Karşılaştırma - boyları yan yana karşılaştırma, yükleme yok"
 
 pledge = """
     Bir boy grafiği aritmetik ve bir çizimdir: gönderilecek bir dosya ve
     sorulacak bir hizmet yoktur. Erkek, kadın, erkek çocuk ve kız çocuk bu
-    sayfayla birlikte gelen kamu malı çizimlerdir; küçük çocuk ise burada bir
-    vücut oran tablosundan kurulur, ve bu yüzden küçültülmüş bir yetişkine değil
-    bir küçük çocuğa benzer. Bunun her adımı, bu sayfada okuyabileceğiniz
-    yaklaşık altı yüz satır JavaScript içinde olup biter. Herhangi bir ağ işlevi
-    hiç yoktur, ve bu burada önemlidir; çünkü yazdığınız şey bir insan listesi ve
-    her birinin boyudur."""
+    sayfayla birlikte gelen kamu malı çizimlerdir, ve erkek çocuk ile kız çocuk
+    küçültülmüş yetişkinler değil gerçek çocukların çizimleridir &mdash; bir
+    aile grafiğinin, kimsenin adını koyamadığı bir biçimde yanlış görünmesini
+    önleyen de tam olarak budur. Bunun her adımı, bu sayfada okuyabileceğiniz
+    birkaç yüz satır JavaScript içinde olup biter. Herhangi bir ağ işlevi hiç
+    yoktur, ve bu burada önemlidir; çünkü yazdığınız şey bir insan listesi ve her
+    birinin boyudur."""
 
 live_hint = """
       Sözümüze güvenmek zorunda değilsiniz: DevTools'u açın, ağ sekmesini izleyin
@@ -31,13 +32,13 @@ live_hint = """
       taşımaz. Ya da internet bağlantısını kesin ve grafiği yine de yapın."""
 
 read_first = """
-, dört çizili figür ve çizimlerinin nereden geldiği için
-      <code>src/traced.js</code> ile <code>vendor/</code>, küçük çocuğun kurulduğu
-      oran tablosu için <code>src/figures.js</code>, yazılan bir boyun nasıl sayıya
+, dört figür ve çizimlerinin nereden geldiği için
+      <code>src/traced.js</code> ile <code>vendor/</code>, menünün kurulduğu
+      liste için <code>src/figures.js</code>, yazılan bir boyun nasıl sayıya
       döndüğü ve cetvelin nasıl etiketlendiği için <code>src/units.js</code>,
       yerleşim için <code>src/chart.js</code>, ve iki indirme için
-      <code>src/save.js</code> &mdash; ki bunlar ekrandaki SVG ile aynı SVG'nin bir
-      tuvale boyanmış hâlidir."""
+      <code>src/save.js</code> &mdash; ki bunlar ekrandaki SVG ile aynı SVG'nin
+      bir tuvale boyanmış hâlidir."""
 
 howto_heading = "Boy karşılaştırma grafiği nasıl yapılır"
 
@@ -115,11 +116,11 @@ body = """
 [[privacy]]
 title = "Çizimler burada, getirilmiyor."
 body = """
- Dört çizili figür kamu malı
-      çizimlerdir ve sayfanın geri kalanıyla birlikte bu kaynaktan sunulur &mdash;
-      simge yazı tipi yok, CDN yok, siz yazarken başkasının sunucusundan çekilen
-      bir sprite sayfası yok. Grafiğin ağ fişi çekiliyken de çizilmesinin sebebi de
-      budur."""
+ Dört figürün dördü de
+      kamu malı çizimlerdir ve sayfanın geri kalanıyla birlikte bu kaynaktan
+      sunulur &mdash; simge yazı tipi yok, CDN yok, siz yazarken başkasının
+      sunucusundan çekilen bir sprite sayfası yok. Grafiğin ağ fişi çekiliyken de
+      çizilmesinin sebebi de budur."""
 
 [[privacy]]
 title = "Google'ın yüklediği ve kendisine verilmeyen şeyler."
@@ -159,13 +160,13 @@ body = """
 [[howto]]
 title = "Kişiye uyan figürü seçin."
 body = """
- İki yaşındaki bir çocuk yaklaşık dört
-      buçuk baş boyundadır, bir yetişkin ise yedi buçuk; bu yüzden küçültülmüş bir
-      yetişkin gibi çizilen bir küçük çocuk, adı konması güç ama görülmesi kolay bir
-      biçimde yanlış durur. Okul çağı için bir erkek çocuk ile bir kız çocuk, onun
-      altında da bir küçük çocuk var; her biri küçültülmüş yetişkin olmak yerine
-      kendi oranlarıyla. Bir aile grafiğinin aileye benzemesini sağlayan da çoğunlukla
-      budur."""
+ Bir çocuk yaklaşık altı baş
+      boyundadır, bir yetişkin ise yedi buçuk; bu yüzden küçültülmüş bir yetişkin
+      gibi çizilen bir çocuk, adı konması güç ama görülmesi kolay bir biçimde
+      yanlış durur. Erkek çocuk ile kız çocuk, küçültülmüş yetişkinler değil
+      gerçek çocukların çizimleridir, ve bir aile grafiğinin aileye benzemesini
+      sağlayan da çoğunlukla budur. Ayrıca her satır içinde bir boyla gelir, yani
+      birini eklemek birini çizer &mdash; üzerine doğrudan yazın."""
 
 [[howto]]
 title = "Grafiğe tanıdık bir şey koyun."
@@ -229,28 +230,41 @@ a = """
         yazacağı bir boy değildir."""
 
 [[faq]]
-q = "Küçük çocuk neden küçültülmüş bir yetişkine benzemiyor?"
+q = "Çocuklar neden küçültülmüş yetişkinlere benzemiyor?"
 a = """
-        Çünkü küçük bir çocuk öyle değildir. Vücut oranları yaşla değişir: iki
-        yaşındaki bir çocuk kabaca dört buçuk baş boyundadır, sekiz yaşındaki altı,
-        bir yetişkin yedi buçuk &mdash; yani baş, bir küçük çocuğun neredeyse dörtte
-        biri, bir yetişkinin ise sekizde biridir. Erkek çocuk ile kız çocuk gerçek
-        çocukların çizimleridir, ve küçük çocuğun küçültülmüş bir siluet olmak yerine
-        kendi oran tablosu vardır; bir aile grafiğinin farklı boyutlarda dört
-        yetişkin gibi değil de bir aile gibi görünmesinin sebebi budur."""
+        Çünkü bir çocuk öyle değildir. Vücut oranları yaşla değişir: iki
+        yaşındaki bir çocuk kabaca dört buçuk baş boyundadır, sekiz yaşındaki
+        altı, bir yetişkin yedi buçuk &mdash; yani baş, küçük bir çocuğun
+        neredeyse dörtte biri, bir yetişkinin ise sekizde biridir. Buradaki erkek
+        çocuk ile kız çocuk, küçültülmüş tek bir siluet değil gerçek çocukların
+        çizimleridir; bir aile grafiğinin farklı boyutlarda dört yetişkin gibi
+        değil de bir aile gibi görünmesinin sebebi budur."""
 
 [[faq]]
 q = "Figürler nereden geliyor?"
 a = """
-        Beşten dördü başkalarının çizimleri, hepsi de kamu malı: erkek pitr'den,
-        kadın Madeleine Price Ball'dan, kız çocuk OpenClipart-Vectors'tan, ve erkek
-        çocuk NIH BioArt kitaplığı için Ryan Kissinger'dan. Her dosya bu sayfayla
-        birlikte <code>vendor/</code> içinde yayımlandığı hâliyle gelir, böylece
-        onları asıllarıyla karşılaştırabilirsiniz. Kamu malı hiçbir şey istemez ve
-        asıl mesele budur: çizim, indirdiğiniz bir resmin içinde son bulur ve
-        atıf isteyen bir lisans o zorunluluğu sizin grafiğinize iliştirirdi.
-        Yalnızca küçük çocuk bu sayfanın kendi koduyla çizilir &mdash; okul çağının
-        altında bulunacak özgür bir şey yoktu."""
+        Dördü de başkalarının çizimleri, hepsi de kamu malı: erkek pitr'den,
+        kadın Madeleine Price Ball'dan, kız çocuk OpenClipart-Vectors'tan, ve
+        erkek çocuk NIH BioArt kitaplığı için Ryan Kissinger'dan. Her dosya bu
+        sayfayla birlikte <code>vendor/</code> içinde yayımlandığı hâliyle gelir,
+        böylece onları asıllarıyla karşılaştırabilirsiniz. Kamu malı hiçbir şey
+        istemez ve asıl mesele budur: çizim, indirdiğiniz bir resmin içinde son
+        bulur ve atıf isteyen bir lisans o zorunluluğu sizin grafiğinize
+        iliştirirdi."""
+
+[[faq]]
+q = "Neden küçük çocuk ya da bebek yok?"
+a = """
+        Çünkü kimse birini çizip kamu malı yapmamış. Wikimedia Commons'ta
+        kullanılabilir tek bir özgür çocuk var &mdash; kız çocuk &mdash; ve NIH
+        BioArt kitaplığında erkek çocuk; okul çağının altında arama boş dönüyor,
+        ve tutarlı her özgür insan seti, her yaşta aynı biçimi taşıyan bir tuvalet
+        piktogramı; ki bu araç bütünüyle o hatadan kaçınmak için var. Bir süre bu
+        sayfanın kendi koduyla çizilen bir küçük çocuk vardı, ve grafikte kimsenin
+        çizmediği tek figür oydu: birinin çizdiği dört figürün yanında bu belli
+        oluyordu. Erkek çocuktan ya da kız çocuktan daha küçük biri için,
+        ikisinden birini gerçek boya ayarlayın &mdash; karşılaştırmayı taşıyan
+        cetveldir, ve o doğru olacaktır."""
 
 [[faq]]
 q = "Bir grafiğe kaç kişi koyabilirim?"
@@ -331,11 +345,11 @@ a = """
         anda dururdu."""
 
 [schema]
-description = "Tarayıcıda bir boy karşılaştırma grafiği çizin. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk, bir küçük çocuk ve nesneleri boylarıyla birlikte santimetre ya da fit ve inç cinsinden ekleyin, sıralayın, renklendirin ve sonucu PNG veya SVG olarak indirin. Hiçbir şey yüklenmez."
+description = "Tarayıcıda bir boy karşılaştırma grafiği çizin. Bir erkek, bir kadın, bir erkek çocuk, bir kız çocuk ve nesneleri boylarıyla birlikte santimetre ya da fit ve inç cinsinden ekleyin, sıralayın, renklendirin ve sonucu PNG veya SVG olarak indirin. Hiçbir şey yüklenmez."
 features = [
   "Tek bir cetvelde on iki figüre kadar, istediğiniz sırada",
-  "Erkek, kadın, çocuk ve küçük çocuk figürleri, ve nesneler için sade bir dikdörtgen",
-  "Kamu malı çizilmiş erkek, kadın, erkek çocuk ve kız çocuk, ve küçültülmüş bir yetişkin yerine kendi oranlarına sahip bir küçük çocuk",
+  "Erkek, kadın, erkek çocuk ve kız çocuk figürleri, ve nesneler için sade bir dikdörtgen",
+  "Kamu malı çizilmiş erkek, kadın, erkek çocuk ve kız çocuk - çocuklar küçültülmüş yetişkinler olarak değil çocuk olarak çizilmiş",
   "173, 1,73 m, 5'8\", 68 in ya da 5 ft 8 olarak yazılan boylar, okunuşu geri gösterilerek",
   "Santimetre ya da fit ve inç; kimsenin boyunu değiştirmeden değiştirilir",
   "Hazır yirmi nesne: kapılar, pencereler, bir beyaz tahta, bir otomat, bir deniz konteyneri, mobilya",

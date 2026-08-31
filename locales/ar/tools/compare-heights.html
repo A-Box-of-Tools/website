@@ -4,14 +4,31 @@
     <h2><span class="step">1</span> قل من تقارن</h2>
 
     <p class="card-lede">
-      اسمٌ وطولٌ ونوعُ الشكل الذي يُرسَم. ويمكن كتابة الأطوال كما تكتبها أنت
-      &mdash; <code>173</code>، <code>1.73&nbsp;m</code>، <code>5'8"</code>،
-      <code>68&nbsp;in</code> &mdash; والسطر أسفل كلّ خانة يُظهر ما فُهِم، فلا
-      يُخمَّن شيء في صمت.
+      اسمٌ وطولٌ ونوعُ الشكل الذي يُرسَم. ويبدأ كلّ صفّ بطولٍ يمكنك الكتابة
+      فوقه مباشرة. ويمكن كتابة الأطوال كما تكتبها أنت &mdash; <code>173</code>،
+      <code>1.73&nbsp;m</code>، <code>5'8"</code>، <code>68&nbsp;in</code>
+      &mdash; والسطر أسفل كلّ خانة يُظهر ما فُهِم، أو يقوله بالأحمر إن كانت
+      الخانة فارغة أو تعذّرت قراءة الطول. ولا يُخمَّن شيء في صمت أبداً.
     </p>
+
+    <p class="card-lede">
+      <strong>من الأعلى إلى الأسفل هنا هو من اليسار إلى اليمين على
+      الرسم.</strong> اسحب صفّاً من المقبض عند حافته اليسرى لتنقله، أو استعمل
+      السهمين اللذين يفعلان الشيء نفسه من لوحة المفاتيح. وفي الحالتين يعود الرسم
+      إلى ترتيبك أنت إن كان يرتّب بحسب الطول.
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">القياس بـ</label>
+      <select id="unit">
+        <option value="cm" selected>السنتيمترات</option>
+        <option value="ft">الأقدام والبوصات</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>الشكل</span>
         <span>الاسم</span>
         <span>الطول</span>
@@ -76,20 +93,30 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> اختر شكله</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> خذه</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="رسم مقارنة الأطوال الذي صنعته"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">نزّل ملف SVG</button>
+      <button type="button" id="download-png" class="primary">نزّل ملف PNG</button>
+      <button type="button" id="copy-png" class="ghost">انسخ الصورة</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      ‏PNG هو ما يُلصَق في مستند أو محادثة. أما SVG فهو الذي يُحتفَظ به: فهو
+      الرسم بوصفه تعليمات لا بكسلات، ولذلك يُطبَع حادّاً بأي حجم ويمكن إعادة
+      تلوينه لاحقاً بأي برنامج يفتح المتّجهات.
+    </p>
 
     <fieldset class="options">
-      <legend>المسطرة</legend>
-
-      <div class="option-row">
-        <label for="unit">القياس بـ</label>
-        <select id="unit">
-          <option value="cm" selected>السنتيمترات</option>
-          <option value="ft">الأقدام والبوصات</option>
-        </select>
-      </div>
+      <legend>كيف يبدو</legend>
 
       <div class="option-row">
         <label for="order">الترتيب</label>
@@ -122,10 +149,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>اللون والحجم</legend>
 
       <div class="option-row">
         <label for="background">خلفه</label>
@@ -151,33 +174,10 @@
 
       <p class="field-summary">
         هذا ارتفاع منطقة الرسم، فالصورة النهائية أعلى منه قليلاً: إذ تجلس
-        الأسماء فوقها. أما العرض فيتبع عدد الأشكال وعرض بطاقة كلٍّ منها. والخطوة
-        الثالثة تقول ما الذي خرج.
+        الأسماء فوقها. أما العرض فيتبع عدد الأشكال وعرض بطاقة كلٍّ منها. والسطر
+        أسفل الصورة يقول ما الذي خرج.
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> خذه</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="رسم مقارنة الأطوال الذي صنعته"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">نزّل ملف SVG</button>
-      <button type="button" id="download-png" class="primary">نزّل ملف PNG</button>
-      <button type="button" id="copy-png" class="ghost">انسخ الصورة</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      ‏PNG هو ما يُلصَق في مستند أو محادثة. أما SVG فهو الذي يُحتفَظ به: فهو
-      الرسم بوصفه تعليمات لا بكسلات، ولذلك يُطبَع حادّاً بأي حجم ويمكن إعادة
-      تلوينه لاحقاً بأي برنامج يفتح المتّجهات.
-    </p>
   </section>
 
   <!--
@@ -191,7 +191,6 @@
     <span data-phrase="shape.woman">امرأة</span>
     <span data-phrase="shape.boy">صبي</span>
     <span data-phrase="shape.girl">فتاة</span>
-    <span data-phrase="shape.toddler">طفل صغير</span>
     <span data-phrase="shape.object">شيء</span>
 
     <span data-phrase="row.shape">شكل الصفّ {n}</span>
@@ -199,21 +198,23 @@
     <span data-phrase="row.height">طول الصفّ {n}</span>
     <span data-phrase="row.width">عرض الصفّ {n}</span>
     <span data-phrase="row.colour">لون الصفّ {n}</span>
-    <span data-phrase="row.up">انقل الصفّ {n} يساراً</span>
-    <span data-phrase="row.down">انقل الصفّ {n} يميناً</span>
+    <span data-phrase="row.up">انقل الصفّ {n} لأعلى</span>
+    <span data-phrase="row.down">انقل الصفّ {n} لأسفل</span>
     <span data-phrase="row.remove">احذف الصفّ {n}</span>
+    <span data-phrase="row.drag">اسحب لإعادة الترتيب</span>
     <span data-phrase="row.nameexample">الاسم</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">العرض</span>
     <span data-phrase="row.reads">قُرِئ ‎{height}</span>
 
-    <span data-phrase="height.empty">طولٌ واحد، ويُرسَم هذا الصفّ.</span>
+    <span data-phrase="height.empty">يحتاج هذا الصفّ إلى طول قبل أن يُرسَم.</span>
     <span data-phrase="height.unreadable">ليس طولاً مما يُفهَم هنا. جرّب 173 أو 1.73 m أو 5'8" أو 68 in.</span>
     <span data-phrase="height.tooshort">أقصر من أن يُرسَم &mdash; 5 سم هو الأصغر.</span>
     <span data-phrase="height.tootall">أطول مما يبلغه الرسم &mdash; الحدّ 12 متراً.</span>
 
     <span data-phrase="chart.empty">أضِف أحداً، ويظهر الرسم هنا.</span>
+    <span data-phrase="chart.noheights">كلّ صفّ يحتاج إلى طول. املأ واحداً ويظهر الرسم هنا.</span>
     <span data-phrase="chart.full">اثنا عشر شكلاً هي أقصى ما يحمله هذا الرسم ويظلّ مقروءاً.</span>
     <span data-phrase="facts.chart">{count} أشكال، {width} في {height} بكسل. تمتدّ المسطرة من الأرض إلى {top}، بخطٍّ كلّ {step}.</span>
     <span data-phrase="facts.one">شكل واحد، {width} في {height} بكسل. تمتدّ المسطرة من الأرض إلى {top}، بخطٍّ كلّ {step}.</span>

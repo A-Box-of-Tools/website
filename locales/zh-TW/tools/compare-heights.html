@@ -4,11 +4,24 @@
     <h2><span class="step">1</span> 說清楚你在比誰</h2>
 
     <p class="card-lede">
-      一個名字、一個身高，還有畫成哪種圖形。身高按你平時的寫法寫就行——<code>173</code>、<code>1.73&nbsp;m</code>、<code>5'8"</code>、<code>68&nbsp;in</code> 都讀得懂——每個框下面那行會顯示它讀成了什麼，所以不會有什麼被悄悄猜掉。
+      一個名字、一個身高，還有畫成哪種圖形。每一行一開始就帶著一個身高，你可以直接蓋著改。身高按你平時的寫法寫就行——<code>173</code>、<code>1.73&nbsp;m</code>、<code>5'8"</code>、<code>68&nbsp;in</code> 都讀得懂——每個框下面那行會顯示它讀成了什麼；框是空的，或者身高讀不出來，它就用紅字說出來。不會有什麼被悄悄猜掉。
     </p>
+
+    <p class="card-lede">
+      <strong>這裡的從上到下，就是圖上的從左到右。</strong>要挪動一行，抓住它左邊的把手拖，或者用箭頭，那在鍵盤上做的是同一件事。不管哪種，只要圖表原本在按身高排序，它都會回到你自己的順序。
+    </p>
+
+    <div class="option-row unit-row">
+      <label for="unit">單位</label>
+      <select id="unit">
+        <option value="cm" selected>釐米</option>
+        <option value="ft">英尺和英寸</option>
+      </select>
+    </div>
 
     <div class="rows" id="rows">
       <div class="row-head" aria-hidden="true">
+        <span></span>
         <span>圖形</span>
         <span>名字</span>
         <span>身高</span>
@@ -69,20 +82,28 @@
     <p id="input-error" class="error" role="alert" hidden></p>
   </section>
 
-  <!-- Step 2 &mdash; how the chart is drawn -->
-  <section class="card">
-    <h2><span class="step">2</span> 選它長什麼樣</h2>
+  <!-- Step 2 &mdash; the picture, and the handful of things that change it -->
+  <section class="card" id="result-card">
+    <h2><span class="step">2</span> 拿走</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="你做好的身高對比圖"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">下載 SVG</button>
+      <button type="button" id="download-png" class="primary">下載 PNG</button>
+      <button type="button" id="copy-png" class="ghost">複製圖片</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      要貼進文件或者聊天視窗的是 PNG。要留著的是 SVG：它把圖表存成指令而不是畫素，所以放到多大都印得清楚，以後任何能開啟向量的東西都能給它換顏色。
+    </p>
 
     <fieldset class="options">
-      <legend>標尺</legend>
-
-      <div class="option-row">
-        <label for="unit">單位</label>
-        <select id="unit">
-          <option value="cm" selected>釐米</option>
-          <option value="ft">英尺和英寸</option>
-        </select>
-      </div>
+      <legend>它長什麼樣</legend>
 
       <div class="option-row">
         <label for="order">順序</label>
@@ -112,10 +133,6 @@
           </span>
         </span>
       </label>
-    </fieldset>
-
-    <fieldset class="options">
-      <legend>顏色和大小</legend>
 
       <div class="option-row">
         <label for="background">背景</label>
@@ -138,30 +155,9 @@
       </div>
 
       <p class="field-summary">
-        那是繪圖區的高度，所以成品會稍微高一點：名字在它上面。寬度由有幾個圖形、每個的標籤有多寬決定。第三步會說最後是多少。
+        那是繪圖區的高度，所以成品會稍微高一點：名字在它上面。寬度由有幾個圖形、每個的標籤有多寬決定。圖下面那行會說最後是多少。
       </p>
     </fieldset>
-  </section>
-
-  <!-- Step 3 &mdash; the picture -->
-  <section class="card" id="result-card">
-    <h2><span class="step">3</span> 拿走</h2>
-
-    <div class="preview" id="preview" role="img" aria-label="你做好的身高對比圖"></div>
-
-    <p class="facts" id="facts"></p>
-
-    <div class="run-row">
-      <button type="button" id="download-svg" class="primary">下載 SVG</button>
-      <button type="button" id="download-png" class="primary">下載 PNG</button>
-      <button type="button" id="copy-png" class="ghost">複製圖片</button>
-    </div>
-
-    <p class="field-summary" id="download-note" role="status"></p>
-
-    <p class="field-summary">
-      要貼進文件或者聊天視窗的是 PNG。要留著的是 SVG：它把圖表存成指令而不是畫素，所以放到多大都印得清楚，以後任何能開啟向量的東西都能給它換顏色。
-    </p>
   </section>
 
   <!--
@@ -175,7 +171,6 @@
     <span data-phrase="shape.woman">女性</span>
     <span data-phrase="shape.boy">男孩</span>
     <span data-phrase="shape.girl">女孩</span>
-    <span data-phrase="shape.toddler">幼兒</span>
     <span data-phrase="shape.object">物體</span>
 
     <span data-phrase="row.shape">第 {n} 行的圖形</span>
@@ -183,21 +178,23 @@
     <span data-phrase="row.height">第 {n} 行的身高</span>
     <span data-phrase="row.width">第 {n} 行的寬度</span>
     <span data-phrase="row.colour">第 {n} 行的顏色</span>
-    <span data-phrase="row.up">把第 {n} 行左移</span>
-    <span data-phrase="row.down">把第 {n} 行右移</span>
+    <span data-phrase="row.up">把第 {n} 行上移</span>
+    <span data-phrase="row.down">把第 {n} 行下移</span>
     <span data-phrase="row.remove">刪掉第 {n} 行</span>
+    <span data-phrase="row.drag">拖動可重新排序</span>
     <span data-phrase="row.nameexample">名字</span>
     <span data-phrase="row.heightexample">173 cm</span>
     <span data-phrase="row.heightexampleft">5'8"</span>
     <span data-phrase="row.widthexample">寬度</span>
     <span data-phrase="row.reads">讀作 {height}</span>
 
-    <span data-phrase="height.empty">填個身高，這一行就畫出來了。</span>
+    <span data-phrase="height.empty">這一行要先有身高才畫得出來。</span>
     <span data-phrase="height.unreadable">這不是這裡讀得懂的身高。試試 173、1.73 m、5'8" 或者 68 in。</span>
     <span data-phrase="height.tooshort">太矮畫不出來——最小 5 cm。</span>
     <span data-phrase="height.tootall">比圖表能到的還高——上限是 12 米。</span>
 
     <span data-phrase="chart.empty">加個人，圖表就出現在這裡。</span>
+    <span data-phrase="chart.noheights">每一行都得有身高。填一個，圖表就出現在這裡。</span>
     <span data-phrase="chart.full">十二個圖形已經是這張圖表還能讀得清的極限了。</span>
     <span data-phrase="facts.chart">{count} 個圖形，{width} × {height} 畫素。標尺從地面一直到 {top}，每 {step} 一條線。</span>
     <span data-phrase="facts.one">一個圖形，{width} × {height} 畫素。標尺從地面一直到 {top}，每 {step} 一條線。</span>
