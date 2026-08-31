@@ -10,13 +10,14 @@
 # argued one paragraph at a time in ROADMAP.md. A card of four words cannot
 # carry its own reason, and a list nobody can argue with is a list nobody
 # prunes. Read it before adding a name back: several of the obvious-looking
-# gaps below are gaps on purpose, and a couple of the lines that look small
-# need an encoder vendored into them to keep the promise the rest of the site
-# keeps for free.
+# gaps below are gaps on purpose, and one of the lines that looks small needs
+# an encoder vendored into it to keep the promise the rest of the site keeps
+# for free.
 #
-# Every line costs eleven files. The translations in locales/*/planned.toml are
-# merged positionally, so a line added here without its ten translations - or a
-# locale list left one item longer than this one - fails the build.
+# Every line costs a file per language. The translations in
+# locales/*/planned.toml are merged positionally, so a line added here without
+# every one of its translations - or a locale list left one item longer than
+# this one - fails the build.
 #
 
 note = "Not built yet. Listed so you can see where this is going."
@@ -26,7 +27,7 @@ id = "images"
 name = "Images"
 items = [
   ["Add text", "over the picture, or in a caption box above it"],
-  ["AVIF", "the format one browser writes and the rest only read"],
+  ["AVIF", "the format every browser reads and not one of them will write"],
   ["DICOM anonymizer", "take the patient out of a scan without touching the scan"],
 ]
 
@@ -36,7 +37,7 @@ name = "GIF &amp; animation"
 items = [
   ["GIF to MP4 or WebM", "the same animation, usually a tenth of the size"],
   ["Edit a GIF", "resize, crop, rotate, reverse it, or change how fast it plays"],
-  ["Animated WebP", "the same animation at a fraction of the size &mdash; and the one here that needs a vendored encoder"],
+  ["Animated WebP", "the same animation at a fraction of the size, transparency and all"],
 ]
 
 [[group]]
@@ -62,7 +63,7 @@ items = [
 id = "documents"
 name = "Documents &amp; PDF"
 items = [
-  ["Rotate &amp; crop pages", "fix a scan that came in sideways, or trim its margins"],
+  ["Crop pages", "trim the margins off a scan, or off a printed slide deck"],
   ["Extract images", "pull the pictures back out of a document"],
 ]
 

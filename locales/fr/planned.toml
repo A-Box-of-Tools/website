@@ -18,7 +18,7 @@ id = "images"
 name = "Images"
 items = [
   ["Ajouter du texte", "sur l'image, ou dans un bandeau au-dessus"],
-  ["AVIF", "le format qu'un seul navigateur sait écrire, et que les autres se contentent de lire"],
+  ["AVIF", "le format que tous les navigateurs savent lire et qu'aucun ne sait écrire"],
   ["Anonymiser un DICOM", "retirer le patient d'un examen sans toucher à l'image"],
 ]
 
@@ -28,7 +28,7 @@ name = "GIF &amp; animation"
 items = [
   ["GIF en MP4 ou WebM", "la même animation, en général au dixième du poids"],
   ["Modifier un GIF", "redimensionner, recadrer, faire pivoter, inverser ou changer la vitesse"],
-  ["WebP animé", "la même animation pour une fraction du poids &mdash; et le seul ici qui exige un encodeur embarqué"],
+  ["WebP animé", "la même animation pour une fraction du poids, transparence comprise"],
 ]
 
 [[group]]
@@ -54,7 +54,7 @@ items = [
 id = "documents"
 name = "Documents &amp; PDF"
 items = [
-  ["Faire pivoter &amp; recadrer des pages", "redresser un scan couché, ou rogner ses marges"],
+  ["Recadrer des pages", "rogner les marges d'un scan, ou celles d'un diaporama imprimé"],
   ["Extraire les images", "ressortir les images d'un document"],
 ]
 
