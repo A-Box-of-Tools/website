@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/empiler-des-images/:';
-const CACHE_NAME=CACHE_PREFIX+'74d581f215';
+const CACHE_NAME=CACHE_PREFIX+'4bc43d3588';
 const ASSETS=[
 './',
 'index.html',

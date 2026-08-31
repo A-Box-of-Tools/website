@@ -31,7 +31,7 @@ pages themselves, so it cannot fall behind the tools that actually exist.
 
 ## Images
 
-Resize one, shrink one, or take out what it quietly records about you - none of it sent anywhere.
+Resize one, shrink one, take out what it quietly records about you, or draw one from nothing - none of it sent anywhere.
 
 - [Image Compressor](https://abox.tools/compress-image/): Compress JPEG, PNG and WebP images to a size you name. The tool searches for the highest quality that fits the target, resizing only when quality alone cannot get there, and measures the result against the original. Runs entirely in the browser with no upload.
 - [Image Resizer](https://abox.tools/resize-image/): Resize, crop and convert JPEG, PNG and WebP images in the browser. Set an exact pixel size, a percentage or a long edge, drag a crop box or lock it to a shape, and write the result as JPEG, PNG or WebP. Batches supported, and nothing is uploaded.
@@ -44,6 +44,7 @@ Resize one, shrink one, or take out what it quietly records about you - none of 
 - [Image to ICO](https://abox.tools/image-to-ico/): Convert an image into a multi-size Windows ICO file or a macOS ICNS file in the browser. Presets for a website favicon, a Windows application icon and a high-DPI application icon, Apple's ten icns slots, a preview of every size at its real pixel size, and an optional set of the Apple, Android and Windows tile files a website needs. Nothing is uploaded.
 - [Image to Data URI](https://abox.tools/image-to-data-uri/): Convert a PNG, JPEG, SVG, WebP, GIF or ICO into a data URI ready to paste into CSS or HTML. Base64 for raster formats and percent-encoding for SVG, wrapped in a CSS rule, a custom property, an img tag or Markdown, with the size cost and any embedded metadata reported. Runs entirely in the browser with no upload.
 - [SVG to Image](https://abox.tools/svg-to-image/): Rasterize an SVG to a PNG, JPEG or WebP at any size, in the browser. Set the size by a multiple, a width, a height, the longest side or a box, add @2x and @3x copies, keep or flatten transparency, and convert a batch at once. Nothing is uploaded.
+- [Height Comparison Chart](https://abox.tools/compare-heights/): Draw a height comparison chart in the browser. Add a man, a woman, a boy, a girl, a toddler and objects with their heights in centimetres or feet and inches, order them, colour them, and download the result as a PNG or an SVG. Nothing is uploaded.
 
 ## Video & animation
 
@@ -123,6 +124,7 @@ means, what it costs, and when not to bother.
 - [What is actually inside a GIF](https://abox.tools/guides/whats-inside-a-gif/): Frames, delays, disposal methods and colour tables explained, why browsers refuse the fastest delays, and how to work out where a GIF's file size really went.
 - [How to format JSON without handing it to anybody](https://abox.tools/guides/format-json-without-uploading-it/): How to lay out, check and minify JSON in your own browser - what a formatter must never change about your file, how to read the error message, and why the site you paste it into matters.
 - [How to share text and files between devices without uploading them](https://abox.tools/guides/share-text-between-devices/): Move text or files from one browser to another over a direct encrypted connection - no email-to-self, no chat history, no account, and nothing stored on any server to delete later.
+- [How to make a height comparison chart](https://abox.tools/guides/make-a-height-comparison-chart/): Turn a list of heights into a side-by-side picture: how to write the heights, which figure to pick for a child, why one familiar object does more than a third person, and how to get the chart out as a PNG or an SVG.
 - [How to make a GIF from part of a video](https://abox.tools/guides/make-a-gif-from-part-of-a-video/): Cut the seconds that matter first, then convert only those. When the GIF converter's own timeline is enough, when to cut with the video cutter instead, and why every second of GIF costs so much.
 - [How to make a boomerang video](https://abox.tools/guides/make-a-boomerang-video/): Cut the moment, reverse the copy, join the two, and loop it. Three tools in a row, all running in your browser, and the order that keeps the whole job down to a minute.
 - [How to turn a long video into a timelapse](https://abox.tools/guides/turn-a-long-video-into-a-timelapse/): An hour of footage into a watchable minute: how to choose the speed, why saying the finished length beats doing arithmetic, and when the result should become a GIF.

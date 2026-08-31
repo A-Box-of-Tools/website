@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/gabung-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'8cf17fb1ea';
+const CACHE_NAME=CACHE_PREFIX+'9140f88e6c';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/xml-formatter/:';
-const CACHE_NAME=CACHE_PREFIX+'e8f83e7ab7';
+const CACHE_NAME=CACHE_PREFIX+'29cee97719';
 const ASSETS=[
 './',
 'index.html',

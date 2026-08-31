@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/estrarre-fotogramma-video/:';
-const CACHE_NAME=CACHE_PREFIX+'2c459b3475';
+const CACHE_NAME=CACHE_PREFIX+'15a97648db';
 const ASSETS=[
 './',
 'index.html',

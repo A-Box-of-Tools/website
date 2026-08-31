@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/extraire-une-image-d-une-video/:';
-const CACHE_NAME=CACHE_PREFIX+'bb26b08afd';
+const CACHE_NAME=CACHE_PREFIX+'878bf8961b';
 const ASSETS=[
 './',
 'index.html',
