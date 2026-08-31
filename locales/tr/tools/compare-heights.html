@@ -43,13 +43,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Kişi ekle</button>
         <button type="button" id="add-object" class="ghost">Nesne ekle</button>
-        <button type="button" id="add-svg" class="ghost">Kendi SVG'niz</button>
+        <button type="button" id="add-svg" class="ghost">Kendi görseliniz</button>
         <button type="button" id="clear" class="ghost danger">Grafiği temizle</button>
         <!-- Gösterilmek yerine yukarıdaki düğmeyle çalıştırılır: etiketi burada, çünkü
              bir ziyaretçinin erişebildiği bir denetimin, tıkladığı şey olsun ya da
              olmasın, bir adı olmalıdır. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="Grafiğe konacak bir SVG dosyası seçin" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Grafiğe konacak bir görsel seçin" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -89,7 +89,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>Kendi SVG'niz</strong> herhangi bir çizimi cetvele koyar &mdash;
+      <strong>Bir SVG</strong> herhangi bir çizimi cetvele koyar &mdash;
       bir logo, bir kat planı, bir makine parçası. Bu sayfada okunur ve hiçbir
       yere gitmez. Yalnızca içindeki biçimler tutulur: her satır için sizin
       seçtiğiniz tek bir düz renkle gelir, ve ağa ulaşabilecek ne varsa &mdash;
@@ -97,6 +97,10 @@
       birine gönderebileceğiniz bir grafiğin içine taşınmak yerine geride
       bırakılır. Dolu biçimler yerine ince çizgilerden yapılmış bir çizim tek
       parça bir leke olarak çıkar; bunun yanlış araç olduğu tek durum da budur.
+    </p>
+
+    <p class="field-summary">
+      <strong>Bir fotoğraf ya da PNG</strong> ise olduğu gibi girer ve kendi renklerini korur; böylece satırın rengi onu yalnızca adlandırır. O da burada okunur ve konmadan önce yeniden çizilir &mdash; bu, grafiği ne kadar büyüteceğini sınırlar ve dosyanın üstverisini geride bırakır. Saydam olan saydam kalır, yani kesilmiş bir görsel cetvelin üstünde temiz durur; fotoğraf ise arka planını da getirir, onu önceden kırpmakta fayda var.
     </p>
 
     <p class="field-summary">
@@ -225,7 +229,7 @@
     <span data-phrase="shape.boy">Erkek çocuk</span>
     <span data-phrase="shape.girl">Kız çocuk</span>
     <span data-phrase="shape.object">Nesne</span>
-    <span data-phrase="shape.upload">Kendi SVG'niz</span>
+    <span data-phrase="shape.upload">Kendi görseliniz</span>
 
     <span data-phrase="row.shape">{n}. satırın figürü</span>
     <span data-phrase="row.name">{n}. satırın adı</span>
@@ -251,6 +255,9 @@
     <span data-phrase="svg.noshapes">O dosyada çizilecek bir şey yok. Yalnızca şekiller tutulur &mdash; sadece metin, efekt ya da bağlantılı görsellerden oluşan bir dosyada hiç yoktur.</span>
     <span data-phrase="svg.unreadable">O dosya, burada okunabilen bir SVG değil.</span>
     <span data-phrase="svg.toobig">O dosya tek bir şekil için fazla büyük. Sınır iki megabayt.</span>
+    <span data-phrase="image.added">Eklendi. Görsel bu sayfada okundu, hiçbir şey yüklenmedi.</span>
+    <span data-phrase="image.unreadable">O dosya, burada okunabilen bir görsel değil.</span>
+    <span data-phrase="image.toobig">O görsel fazla büyük. Sınır on iki megabayt.</span>
     <span data-phrase="chart.empty">Birini ekleyin, grafik burada belirsin.</span>
     <span data-phrase="chart.noheights">Her satırın bir boya ihtiyacı var. Birini doldurun, grafik burada belirsin.</span>
     <span data-phrase="chart.full">On iki figür, bu grafiğin okunur kalarak taşıyabileceği en fazla sayıdır.</span>

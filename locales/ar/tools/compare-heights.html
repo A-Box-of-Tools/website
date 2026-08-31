@@ -42,12 +42,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">أضِف شخصاً</button>
         <button type="button" id="add-object" class="ghost">أضِف شيئاً</button>
-        <button type="button" id="add-svg" class="ghost">SVG خاص بك</button>
+        <button type="button" id="add-svg" class="ghost">صورة خاصة بك</button>
         <button type="button" id="clear" class="ghost danger">أفرِغ الرسم</button>
         <!-- يشغّله الزرّ الذي فوقه بدل أن يُعرَض: التسمية هنا لأن أيّ عنصر تحكّم يستطيع
              الزائر بلوغه يحتاج اسماً، سواء أكان هو ما نقر عليه أم لا. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="اختر ملف SVG ليوضَع على الرسم" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="اختر صورة لتوضَع على الرسم" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -87,13 +87,17 @@
       </select>
     </div>
     <p class="field-summary">
-      يضع <strong>SVG خاص بك</strong> أيّ رسمة على المسطرة &mdash; شعاراً أو
+      يضع <strong>ملف SVG</strong> أيّ رسمة على المسطرة &mdash; شعاراً أو
       مخطّطاً أو قطعة آلة. تُقرأ في هذه الصفحة ولا تذهب إلى أي مكان. ولا يُحتفَظ
       إلا بالأشكال التي فيها: فهي تصل بلونٍ واحد صافٍ تختاره لكلّ صفّ، وكلّ ما
       كان بوسعه بلوغ الشبكة &mdash; صورة مرتبطة أو ورقة أنماط أو خطّ أو نصّ
       برمجي &mdash; يُترَك خلفه بدل أن يُحمَل داخل رسمٍ قد ترسله إلى أحد. أما
       الرسمة المصنوعة من خطوط رفيعة لا من أشكال مملوءة فتخرج لطخةً صمّاء، وتلك
       هي الحالة الوحيدة التي تكون فيها هذه الأداة هي الخطأ.
+    </p>
+
+    <p class="field-summary">
+      <strong>الصورة أو ملف PNG</strong> يوضَع كما هو ويحتفظ بألوانه، فلا يعود لون الصفّ إلا اسماً له. وهو يُقرأ هنا أيضاً ويُعاد رسمه قبل وضعه &mdash; وهذا يحدّ من مقدار ما يضيفه إلى الرسم ويترك بيانات الملف الوصفية خلفه. وما كان شفّافاً يبقى شفّافاً، فالصورة المقصوصة تقف على المسطرة نظيفة، أما الصورة الفوتوغرافية فتأتي بخلفيتها معها، والأفضل قصّها أولاً.
     </p>
 
     <p class="field-summary">
@@ -215,7 +219,7 @@
     <span data-phrase="shape.boy">صبي</span>
     <span data-phrase="shape.girl">فتاة</span>
     <span data-phrase="shape.object">شيء</span>
-    <span data-phrase="shape.upload">SVG خاص بك</span>
+    <span data-phrase="shape.upload">صورة خاصة بك</span>
 
     <span data-phrase="row.shape">شكل الصفّ {n}</span>
     <span data-phrase="row.name">اسم الصفّ {n}</span>
@@ -241,6 +245,9 @@
     <span data-phrase="svg.noshapes">لا شيء يمكن رسمه في ذلك الملف. لا تُبقى إلا الأشكال &mdash; وملف ليس فيه سوى نصوص أو مؤثرات أو صور مرتبطة لا يحوي منها شيئاً.</span>
     <span data-phrase="svg.unreadable">ذلك الملف ليس ملف SVG يمكن قراءته هنا.</span>
     <span data-phrase="svg.toobig">ذلك الملف أكبر من أن يكون شكلاً واحداً. والحد ميغابايتان.</span>
+    <span data-phrase="image.added">أُضيفت. قُرئت الصورة في هذه الصفحة ولم يُرفَع شيء.</span>
+    <span data-phrase="image.unreadable">ذلك الملف ليس صورة يمكن قراءتها هنا.</span>
+    <span data-phrase="image.toobig">تلك الصورة أكبر من اللازم. والحدّ اثنا عشر ميغابايت.</span>
     <span data-phrase="chart.empty">أضِف أحداً، ويظهر الرسم هنا.</span>
     <span data-phrase="chart.noheights">كلّ صفّ يحتاج إلى طول. املأ واحداً ويظهر الرسم هنا.</span>
     <span data-phrase="chart.full">اثنا عشر شكلاً هي أقصى ما يحمله هذا الرسم ويظلّ مقروءاً.</span>

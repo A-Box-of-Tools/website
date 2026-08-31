@@ -43,13 +43,15 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Add a person</button>
         <button type="button" id="add-object" class="ghost">Add an object</button>
-        <button type="button" id="add-svg" class="ghost">Add your own SVG</button>
+        <button type="button" id="add-svg" class="ghost">Add your own picture</button>
         <button type="button" id="clear" class="ghost danger">Clear the chart</button>
         <!-- Driven by the button above rather than shown: the label is here
              because a control a visitor can reach needs a name whether or not
-             it is the thing they clicked. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="Choose an SVG file to put on the chart" hidden>
+             it is the thing they clicked. `image/*` rather than a list of
+             types, because whatever the browser can decode is a picture this
+             can draw - it is redrawn as a PNG before it reaches the chart. -->
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Choose a picture to put on the chart" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -90,14 +92,23 @@
     </div>
 
     <p class="field-summary">
-      <strong>Your own SVG</strong> puts any drawing on the ruler &mdash; a
-      logo, a floor plan, a piece of machinery. It is read in this page and
-      goes nowhere. Only the shapes in it are kept: it arrives as one solid
-      colour you pick per row, and anything that could reach the network
-      &mdash; a linked image, a stylesheet, a font, a script &mdash; is left
-      behind rather than carried into a chart you might send to somebody. A
-      drawing made of thin lines rather than filled shapes will come out as a
-      solid blob, which is the one case where this is the wrong tool.
+      <strong>An SVG</strong> puts any drawing on the ruler &mdash; a logo, a
+      floor plan, a piece of machinery. It is read in this page and goes
+      nowhere. Only the shapes in it are kept: it arrives as one solid colour
+      you pick per row, and anything that could reach the network &mdash; a
+      linked image, a stylesheet, a font, a script &mdash; is left behind
+      rather than carried into a chart you might send to somebody. A drawing
+      made of thin lines rather than filled shapes will come out as a solid
+      blob, which is the one case where this is the wrong tool.
+    </p>
+
+    <p class="field-summary">
+      <strong>A photo or a PNG</strong> goes on as itself instead, keeping its
+      own colours, so the row's colour only names it. It is read here too, and
+      redrawn before it goes on &mdash; which bounds how much it adds to the
+      chart and leaves the file's metadata behind. Whatever is transparent
+      stays transparent, so a cut-out stands on the ruler cleanly, and a photo
+      brings its background with it, which is worth cropping off first.
     </p>
 
     <p class="field-summary">
@@ -225,7 +236,7 @@
     <span data-phrase="shape.boy">Boy</span>
     <span data-phrase="shape.girl">Girl</span>
     <span data-phrase="shape.object">Object</span>
-    <span data-phrase="shape.upload">Your own SVG</span>
+    <span data-phrase="shape.upload">Your own picture</span>
 
     <span data-phrase="row.shape">Figure for row {n}</span>
     <span data-phrase="row.name">Name for row {n}</span>
@@ -251,6 +262,9 @@
     <span data-phrase="svg.noshapes">There is nothing drawable in that file. Only the shapes are kept &mdash; a file of nothing but text, effects or linked images has none.</span>
     <span data-phrase="svg.unreadable">That file is not an SVG this can read.</span>
     <span data-phrase="svg.toobig">That file is too big to be one shape. Two megabytes is the limit.</span>
+    <span data-phrase="image.added">Added. The picture was read in this page and nothing was uploaded.</span>
+    <span data-phrase="image.unreadable">That file is not a picture this can read.</span>
+    <span data-phrase="image.toobig">That picture is too big. Twelve megabytes is the limit.</span>
     <span data-phrase="chart.empty">Add somebody, and the chart appears here.</span>
     <span data-phrase="chart.noheights">Every row needs a height. Fill one in and the chart appears here.</span>
     <span data-phrase="chart.full">Twelve figures is as many as this chart will hold and still be readable.</span>

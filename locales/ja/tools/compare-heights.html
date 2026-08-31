@@ -35,12 +35,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">人を追加</button>
         <button type="button" id="add-object" class="ghost">ものを追加</button>
-        <button type="button" id="add-svg" class="ghost">自分の SVG</button>
+        <button type="button" id="add-svg" class="ghost">自分の画像</button>
         <button type="button" id="clear" class="ghost danger">図表を空にする</button>
         <!-- 表示するのではなく上のボタンから動かします。ラベルをここに置いているのは、訪問者が
              たどり着ける操作要素には、クリックしたものかどうかによらず名前が要るからです。 -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="図表に載せるSVGファイルを選びます" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="図表に載せる画像を選びます" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -80,7 +80,11 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>自分の SVG</strong>は、どんな絵でも目盛りの上に置けます。ロゴでも、間取り図でも、機械の部品でも構いません。ファイルはこのページの中で読まれ、どこにも出ていきません。残るのはその中の図形だけで、行ごとに選んだ一色の塗りとして届きます。ネットワークに手が届きうるもの&mdash;リンクされた画像、スタイルシート、フォント、スクリプト&mdash;は、誰かに送るかもしれない図表の中に運び込まれず、そこに置いていかれます。塗られた図形ではなく細い線で描かれた絵は、一つの塊のしみになって出てきます。この道具が向かないのは、その一点だけです。
+      <strong>SVG</strong>は、どんな絵でも目盛りの上に置けます。ロゴでも、間取り図でも、機械の部品でも構いません。ファイルはこのページの中で読まれ、どこにも出ていきません。残るのはその中の図形だけで、行ごとに選んだ一色の塗りとして届きます。ネットワークに手が届きうるもの&mdash;リンクされた画像、スタイルシート、フォント、スクリプト&mdash;は、誰かに送るかもしれない図表の中に運び込まれず、そこに置いていかれます。塗られた図形ではなく細い線で描かれた絵は、一つの塊のしみになって出てきます。この道具が向かないのは、その一点だけです。
+    </p>
+
+    <p class="field-summary">
+      <strong>写真や PNG</strong> はそのまま載り、自分の色を保ちます。ですから行の色は、その名前を書くだけになります。こちらもこのページの中で読まれ、載せる前に描き直されます&mdash;図表がどれだけ重くなるかはそこで抑えられ、ファイルの付帯情報は置いていかれます。透明なところは透明のままなので、切り抜きは目盛りの上にきれいに立ちますが、写真は背景ごと来ます。先に切っておくのが良いでしょう。
     </p>
 
     <p class="field-summary">
@@ -185,7 +189,7 @@
     <span data-phrase="shape.boy">男の子</span>
     <span data-phrase="shape.girl">女の子</span>
     <span data-phrase="shape.object">もの</span>
-    <span data-phrase="shape.upload">自分の SVG</span>
+    <span data-phrase="shape.upload">自分の画像</span>
 
     <span data-phrase="row.shape">{n}行目の図</span>
     <span data-phrase="row.name">{n}行目の名前</span>
@@ -211,6 +215,9 @@
     <span data-phrase="svg.noshapes">そのファイルには描けるものがありません。残すのは図形だけなので &mdash; 文字や効果、リンクされた画像しかないファイルには何も残りません。</span>
     <span data-phrase="svg.unreadable">そのファイルは、ここで読める SVG ではありません。</span>
     <span data-phrase="svg.toobig">そのファイルは、ひとつの図形にしては大きすぎます。上限は 2 メガバイトです。</span>
+    <span data-phrase="image.added">追加しました。画像はこのページの中で読まれ、何もアップロードしていません。</span>
+    <span data-phrase="image.unreadable">そのファイルは、ここで読める画像ではありません。</span>
+    <span data-phrase="image.toobig">その画像は大きすぎます。上限は 12 メガバイトです。</span>
     <span data-phrase="chart.empty">誰かを追加すると、ここに図表が出ます。</span>
     <span data-phrase="chart.noheights">どの行にも身長が要ります。ひとつ入れると、ここに図表が出ます。</span>
     <span data-phrase="chart.full">12体が、この図表が読めるまま収められる限りです。</span>

@@ -35,12 +35,12 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">加一個人</button>
         <button type="button" id="add-object" class="ghost">加一件東西</button>
-        <button type="button" id="add-svg" class="ghost">自己的 SVG</button>
+        <button type="button" id="add-svg" class="ghost">自己的圖片</button>
         <button type="button" id="clear" class="ghost danger">清空圖表</button>
         <!-- 不顯示，由上面那個按鈕來驅動：標籤寫在這裡，是因為訪客能夠到的控制元件都需要一個名字，
              不管它是不是他們點的那一個。 -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="選擇一個要放到圖上的 SVG 檔案" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="選擇一個要放到圖上的圖片" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -80,7 +80,11 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>自己的 SVG</strong> 能把任何一張圖放到標尺上——一個標誌、一張平面圖、一個機器零件都行。檔案在這個頁面裡讀，哪裡都不去。留下的只有裡面的形狀：它以一種實色進來，顏色由你逐行來挑；而任何夠得著網路的東西——外鏈圖片、樣式表、字型、指令碼——都會被留在原地，不會跟著進到一張你可能發給別人的圖裡。用細線畫的、不是實心形狀的圖，出來會是一團實心的墨塊，這也是這個工具唯一不合適的場合。
+      <strong>SVG</strong> 能把任何一張圖放到標尺上——一個標誌、一張平面圖、一個機器零件都行。檔案在這個頁面裡讀，哪裡都不去。留下的只有裡面的形狀：它以一種實色進來，顏色由你逐行來挑；而任何夠得著網路的東西——外鏈圖片、樣式表、字型、指令碼——都會被留在原地，不會跟著進到一張你可能發給別人的圖裡。用細線畫的、不是實心形狀的圖，出來會是一團實心的墨塊，這也是這個工具唯一不合適的場合。
+    </p>
+
+    <p class="field-summary">
+      <strong>照片或 PNG</strong> 則原樣放上去，保留它自己的顏色，所以那一行的顏色只用來寫名字。它同樣在這個頁面裡讀，放上去之前會重畫一遍&mdash;這既限制了它給圖表添的分量，也把檔案裡的附帶資訊留在了外面。透明的地方仍然透明，所以去背好的圖能乾淨地站在標尺上；照片則連背景一起來，最好先裁掉。
     </p>
 
     <p class="field-summary">
@@ -185,7 +189,7 @@
     <span data-phrase="shape.boy">男孩</span>
     <span data-phrase="shape.girl">女孩</span>
     <span data-phrase="shape.object">物體</span>
-    <span data-phrase="shape.upload">自己的 SVG</span>
+    <span data-phrase="shape.upload">自己的圖片</span>
 
     <span data-phrase="row.shape">第 {n} 行的圖形</span>
     <span data-phrase="row.name">第 {n} 行的名字</span>
@@ -211,6 +215,9 @@
     <span data-phrase="svg.noshapes">那個檔案裡沒有可以畫的東西。只留下形狀 &mdash; 只有文字、效果或連結圖片的檔案，一個形狀也沒有。</span>
     <span data-phrase="svg.unreadable">那個檔案不是這裡讀得懂的 SVG。</span>
     <span data-phrase="svg.toobig">那個檔案要當一個形狀太大了。上限是兩 MB。</span>
+    <span data-phrase="image.added">已加入。圖片在這個頁面裡讀，沒有上傳任何東西。</span>
+    <span data-phrase="image.unreadable">那個檔案不是這裡讀得懂的圖片。</span>
+    <span data-phrase="image.toobig">那張圖片太大了。上限是 12 MB。</span>
     <span data-phrase="chart.empty">加個人，圖表就出現在這裡。</span>
     <span data-phrase="chart.noheights">每一行都得有身高。填一個，圖表就出現在這裡。</span>
     <span data-phrase="chart.full">十二個圖形已經是這張圖表還能讀得清的極限了。</span>

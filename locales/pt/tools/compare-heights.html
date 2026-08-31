@@ -45,13 +45,13 @@
       <div class="toolbar-actions">
         <button type="button" id="add-person" class="primary">Adicionar uma pessoa</button>
         <button type="button" id="add-object" class="ghost">Adicionar um objeto</button>
-        <button type="button" id="add-svg" class="ghost">Seu próprio SVG</button>
+        <button type="button" id="add-svg" class="ghost">Sua própria imagem</button>
         <button type="button" id="clear" class="ghost danger">Limpar o gráfico</button>
         <!-- Acionado pelo botão acima em vez de exibido: o rótulo está aqui porque um
              controle que um visitante consegue alcançar precisa de um nome, seja ou
              não aquilo em que ele clicou. -->
-        <input type="file" id="svg-file" accept=".svg,image/svg+xml"
-               aria-label="Escolha um arquivo SVG para pôr no gráfico" hidden>
+        <input type="file" id="svg-file" accept="image/*,.svg"
+               aria-label="Escolha uma imagem para pôr no gráfico" hidden>
       </div>
       <span class="count" id="row-count"></span>
     </div>
@@ -91,7 +91,7 @@
       </select>
     </div>
     <p class="field-summary">
-      <strong>Seu próprio SVG</strong> põe qualquer desenho na régua &mdash; um
+      <strong>Um SVG</strong> põe qualquer desenho na régua &mdash; um
       logotipo, uma planta, uma peça de máquina. Ele é lido nesta página e não
       vai a lugar nenhum. Só as formas que ele tem são mantidas: chega numa cor
       chapada só, escolhida por você em cada linha, e tudo o que pudesse
@@ -100,6 +100,10 @@
       dentro de um gráfico que você talvez mande para alguém. Um desenho feito
       de linhas finas em vez de formas preenchidas sai como um borrão maciço, e
       esse é o único caso em que esta é a ferramenta errada.
+    </p>
+
+    <p class="field-summary">
+      <strong>Uma foto ou um PNG</strong> entra como é e mantém as próprias cores, de modo que a cor da linha apenas a nomeia. Ela também é lida aqui e redesenhada antes de entrar &mdash; o que limita o quanto faz o gráfico crescer e deixa para trás os metadados do arquivo. O que é transparente continua transparente, então um recorte fica limpo na régua, e uma foto traz o fundo junto, que convém cortar antes.
     </p>
 
     <p class="field-summary">
@@ -227,7 +231,7 @@
     <span data-phrase="shape.boy">Menino</span>
     <span data-phrase="shape.girl">Menina</span>
     <span data-phrase="shape.object">Objeto</span>
-    <span data-phrase="shape.upload">Seu próprio SVG</span>
+    <span data-phrase="shape.upload">Sua própria imagem</span>
 
     <span data-phrase="row.shape">Figura da linha {n}</span>
     <span data-phrase="row.name">Nome da linha {n}</span>
@@ -253,6 +257,9 @@
     <span data-phrase="svg.noshapes">Nesse arquivo não há nada para desenhar. Só as formas são mantidas &mdash; um arquivo feito só de texto, efeitos ou imagens vinculadas não tem nenhuma.</span>
     <span data-phrase="svg.unreadable">Esse arquivo não é um SVG que isto consiga ler.</span>
     <span data-phrase="svg.toobig">Esse arquivo é grande demais para ser uma forma só. O limite são dois megabytes.</span>
+    <span data-phrase="image.added">Adicionada. A imagem foi lida nesta página e nada foi enviado.</span>
+    <span data-phrase="image.unreadable">Esse arquivo não é uma imagem que isto consiga ler.</span>
+    <span data-phrase="image.toobig">Essa imagem é grande demais. O limite são doze megabytes.</span>
     <span data-phrase="chart.empty">Acrescente alguém e o gráfico aparece aqui.</span>
     <span data-phrase="chart.noheights">Toda linha precisa de uma altura. Preencha uma e o gráfico aparece aqui.</span>
     <span data-phrase="chart.full">Doze figuras é o que este gráfico aguenta continuando legível.</span>

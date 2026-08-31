@@ -95,6 +95,33 @@ a row you have not filled in yet is not a mistake. Now that every row arrives
 with a height, an empty one is a box somebody cleared, and a row that will not
 be drawn should say so.
 
+### A picture goes on as itself; a drawing is rebuilt
+
+Two readers sit behind one button, and they have opposite jobs.
+
+`src/import-svg.js` reads a drawing. An SVG is a program, so nothing from the
+file is inserted: a third tree is built from a whitelist, and every `href` in
+the original is dropped, because a chart is downloaded and passed on and must
+not carry a reference to anywhere.
+
+`src/import-image.js` reads a photograph. A raster is not a program and there
+is nothing in it to sanitise — the browser's own decoder does the reading. What
+needs proving there is the other end: this module **writes** an `href`, the same
+attribute the other one drops, so `imageMarkup` refuses anything that is not a
+`data:image/png;base64,` URI of the base64 alphabet and nothing else. The bytes
+are ones this page encoded from a canvas, not the visitor's file passed through.
+
+The picture is redrawn onto a canvas rather than embedded as it arrived, and
+three things fall out of that: the size is bounded, so a twelve-megapixel photo
+cannot make a twenty-megabyte chart; the file's metadata is gone, because none
+of it survives a canvas; and the format is ours, so the string in the markup has
+one shape whatever was opened.
+
+An `<image>` in the chart looks like it should break the download, since
+`src/save.js` rasterises the SVG through a canvas and a tainted canvas cannot be
+read back. It does not: a `data:` URI is inline rather than external. That was
+put to the browser before it was relied on rather than reasoned about.
+
 ### The objects are drawn, and stretched to the numbers
 
 Every preset under *Or add something for scale* used to be a rectangle. Most of
@@ -238,6 +265,7 @@ keeps the canvas untainted so `toBlob` will give the bytes back.
 | `src/figures.js` | the list of figures the menu is built from, each one's default height, and the drawing behind an object preset |
 | `src/objects.js` | the object artwork: each drawing's path data, its measured box, its digest and its licence |
 | `src/import-svg.js` | the whitelist an uploaded SVG is rebuilt from |
+| `src/import-image.js` | the bound an uploaded photograph is redrawn to, and the only href the chart may carry |
 | `src/units.js` | typed height → centimetres, centimetres → written height, and the ruler's spacing and labels |
 | `src/chart.js` | the layout and the SVG, with text measured through a callback |
 | `src/save.js` | the SVG blob, the canvas rasterisation, and the download |

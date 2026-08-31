@@ -165,6 +165,23 @@ test('an object with no width falls back rather than collapsing', () => {
   assert.ok(Number.isFinite(result.width) && result.width > 0);
 });
 
+test('a picture is drawn straight into the unit box, with no wrapper', () => {
+  // An uploaded raster carries no `inner`: import-image.js writes the <image>
+  // in unit coordinates already, so there is nothing to map out of. The chart
+  // must not invent a <g transform> for it, and must still keep the drawing's
+  // own proportions the way it does for an uploaded drawing.
+  const picture = {
+    id: 'upload', label: 'shape.upload', width: 0.4, inner: null, paths: null,
+    markup: '<image href="data:image/png;base64,AAAA" x="-0.2" y="0" width="0.4" height="1"/>',
+    defaultCm: 0,
+  };
+  const result = draw([figure({ shape: picture, cm: 100, widthCm: 999 })]);
+  assert.match(result.svg, /<image href="data:image\/png;base64,AAAA"/);
+  assert.doesNotMatch(result.svg, /<g transform="scale/, 'no inner group');
+  assert.doesNotMatch(result.svg, /scale\([\d.]+ [\d.]+\)/,
+                      'a picture keeps its own proportions, so one factor');
+});
+
 test('an empty chart does not divide by nothing', () => {
   const result = draw([]);
   assert.ok(result.width > 0 && result.height > 0);

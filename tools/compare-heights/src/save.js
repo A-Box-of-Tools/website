@@ -5,9 +5,16 @@
  * to the browser as a blob and painted onto a canvas, so the download cannot
  * disagree with the preview about a colour, a font or where a label sits. That
  * is also what makes it possible with the network unplugged: the chart has no
- * external reference in it - no font file, no image, no stylesheet - so
+ * EXTERNAL reference in it - no font file, no stylesheet, no linked image - so
  * nothing is fetched, the canvas is not tainted, and `toBlob` gives back
  * bytes.
+ *
+ * An uploaded photograph does put an <image> in the chart, which reads like an
+ * exception to that and is not one: its href is a `data:` URI of bytes this
+ * page encoded a moment earlier, so it is the picture itself rather than a
+ * reference to one. The browser was asked directly before this was relied on -
+ * a chart with an embedded raster in it draws, does not taint the canvas, and
+ * still rasterises to a PNG. See src/import-image.js.
  *
  * Image smoothing is left ON here, which is the one place this differs from
  * the same trick in the QR generator: that tool wants hard edges on a grid of
