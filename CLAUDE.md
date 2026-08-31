@@ -180,7 +180,8 @@ the site that has not been built. Change one half of this and change the other,
 or the site asks to be indexed and refuses in the same breath.
 
 **Some modules are deliberately copied, and must stay in step.** The MP4
-reader is in five tools and the writer in two, because the rule above blocks
+reader is copied into every tool that reads frames out of a video file, and
+the writer into every tool that writes one, because the rule above blocks
 sharing them. `tests/python/test_duplicates.py` declares which copies must
 agree and fails if they drift, comparing tokens so each copy keeps its own
 comments. Fix one copy and it will tell you about the others; add a new copy

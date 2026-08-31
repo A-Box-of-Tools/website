@@ -3,14 +3,15 @@ The modules that exist as more than one copy, and have to stay in step.
 
 WHY THERE ARE COPIES AT ALL
 
-The MP4 reader is about seven hundred lines of box parsing and it sits in five
-tools. The obvious answer is shared/js/, and it is not available: a shared
-module is copied into a tool at build time, at src/shared/, so a source file
-importing one cannot be loaded outside a build - and the JavaScript tests
-import tool modules straight off the disk with no build in front of them. Every
-tool that reads MP4 reaches the reader from a leaf module that has tests
-(grab-frame's frames.js, trim-video's copy.js), so moving it would trade those
-tests for the deduplication. See "Shared parts" in README.md.
+The MP4 reader is about seven hundred lines of box parsing and it sits in every
+tool that reads frames out of a video file. The obvious answer is shared/js/,
+and it is not available: a shared module is copied into a tool at build time,
+at src/shared/, so a source file importing one cannot be loaded outside a
+build - and the JavaScript tests import tool modules straight off the disk with
+no build in front of them. Every one of those tools reaches the reader from a
+leaf module that has tests (grab-frame's frames.js, trim-video's copy.js), so
+moving it would trade those tests for the deduplication. See "Shared parts" in
+README.md.
 
 WHAT THIS ENFORCES INSTEAD
 
@@ -24,8 +25,8 @@ files of the same name whose tokens are equal are a copy, and one that is not
 declared fails. It has to work that way round, because a module copied into a
 second tool arrives under a name of its author's choosing - and a file the
 declarations have never heard of is exactly the one nobody will think to add.
-The name alone proves nothing in the other direction: thirty-six tools have a
-main.js and no two of them are the same file.
+The name alone proves nothing in the other direction: every tool has a main.js
+and no two of them are the same file.
 
 Comments are not compared. Each copy explains itself in terms of the tool it
 sits in, and that is correct - `minify.tokenize_js` drops comments, so what is
@@ -72,7 +73,7 @@ The groups are deliberate, not accidental:
     them - a broken cross-reference table, a stream whose /Length lies - is a
     repair all three want.
 
-Adding a sixth copy of one of these, or a new duplicated module, means adding
+Adding another copy of one of these, or a new duplicated module, means adding
 it here. `test_identical_copies_are_declared` finds it on disk and fails until
 it is, and `test_every_copy_is_declared` then holds the other copies of that
 name to being either grouped or listed below with a reason.
@@ -203,7 +204,7 @@ class Coverage(unittest.TestCase):
         So this one starts from disk. Two files with the same name whose token
         streams are equal are a copy by any reading, and have to sit in a group
         that keeps them in step. Nothing is inferred from the name alone -
-        thirty-six tools have a main.js and no two of them are the same file.
+        every tool has a main.js and no two of them are the same file.
         """
         by_name = collections.defaultdict(list)
         for path in sorted(TOOLS.glob('*/src/*.js')):
@@ -253,7 +254,7 @@ class Coverage(unittest.TestCase):
 # above, but it is the same failure in another language: one footer partial,
 # rendered on every page in the site, and two hand-kept copies of the rules
 # that dress it - shared/site.css for the hub, the guides and the prose pages,
-# shared/css/tool-frame.css for the thirty-six tools.
+# shared/css/tool-frame.css for the tool pages.
 #
 # Every simple selector in a group has to mention the footer for the group to
 # count here. That is not fussiness: `main, .topbar, ..., footer` sets the page
