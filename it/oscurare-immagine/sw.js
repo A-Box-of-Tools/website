@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/oscurare-immagine/:';
-const CACHE_NAME=CACHE_PREFIX+'f1c23e35bb';
+const CACHE_NAME=CACHE_PREFIX+'27760fb7a7';
 const ASSETS=[
 './',
 'index.html',

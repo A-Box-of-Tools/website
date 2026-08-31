@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/comparar-alturas/:';
-const CACHE_NAME=CACHE_PREFIX+'dfc818da55';
+const CACHE_NAME=CACHE_PREFIX+'e0aaf5fbfc';
 const ASSETS=[
 './',
 'index.html',
