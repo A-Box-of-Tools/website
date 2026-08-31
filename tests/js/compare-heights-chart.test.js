@@ -14,7 +14,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { ceiling, chartSvg, isDark } from '../../tools/compare-heights/src/chart.js';
-import { shapeOf } from '../../tools/compare-heights/src/figures.js';
+import { objectShape, shapeOf } from '../../tools/compare-heights/src/figures.js';
 
 /** A monospaced world, so a width in this file is a number anyone can check. */
 const measure = (text, fontPx) => String(text).length * fontPx * 0.5;
@@ -140,6 +140,29 @@ test('two figures are drawn at heights in the same ratio as their heights', () =
   const scales = [...result.svg.matchAll(/translate\([-\d. ]+\) scale\(([\d.]+)\)/g)]
     .map((m) => Number(m[1]));
   assert.ok(Math.abs(scales[0] / scales[1] - 2) < 0.01, `${scales[0]} to ${scales[1]}`);
+});
+
+test('a drawn object is stretched to both numbers, a person to one', () => {
+  // The whole difference between the two kinds of figure the chart draws. A
+  // person has one scale factor because nobody types a person's width; an
+  // object has two, because the width box in its row is the claim being made.
+  const door = draw([figure({ shape: objectShape('door'), cm: 203, widthCm: 81 })]);
+  const [, sx, sy] = door.svg.match(/translate\([-\d. ]+\) scale\(([\d.]+) ([\d.]+)\)/)
+    .map(Number);
+  assert.ok(Math.abs(sx / sy - 81 / 203) < 0.02,
+            `drawn ${sx} by ${sy}, wanted the ratio of 81 to 203`);
+
+  const person = draw([figure({ shape: shapeOf('man') })]);
+  assert.doesNotMatch(person.svg, /scale\([\d.]+ [\d.]+\)/,
+                      'a person keeps the proportions they were drawn with');
+});
+
+test('an object with no width falls back rather than collapsing', () => {
+  // widthCm is what somebody typed, and it can be empty for a moment.
+  const result = draw([figure({ shape: objectShape('sofa'), cm: 85, widthCm: 0 })]);
+  const [, sx] = result.svg.match(/scale\(([\d.]+) [\d.]+\)/).map(Number);
+  assert.ok(sx > 0, 'the drawing still has a width');
+  assert.ok(Number.isFinite(result.width) && result.width > 0);
 });
 
 test('an empty chart does not divide by nothing', () => {

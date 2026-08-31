@@ -59,32 +59,32 @@
       <select id="preset">
         <option value="" selected>Pick one&hellip;</option>
         <optgroup label="Doors &amp; windows">
-          <option value="door-interior" data-cm="203" data-width="81">Interior door &mdash; 203 &times; 81 cm</option>
-          <option value="door-front" data-cm="203" data-width="91">Front door &mdash; 203 &times; 91 cm</option>
-          <option value="window" data-cm="120" data-width="90">Window &mdash; 120 &times; 90 cm</option>
-          <option value="door-garage" data-cm="213" data-width="244">Garage door &mdash; 213 &times; 244 cm</option>
+          <option value="door-interior" data-art="door" data-cm="203" data-width="81">Interior door &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-art="door" data-cm="203" data-width="91">Front door &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-art="window" data-cm="120" data-width="90">Window &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-art="garage" data-cm="213" data-width="244">Garage door &mdash; 213 &times; 244 cm</option>
         </optgroup>
         <optgroup label="School &amp; office">
-          <option value="board" data-cm="120" data-width="240">Whiteboard or blackboard &mdash; 120 &times; 240 cm</option>
-          <option value="desk" data-cm="74" data-width="120">Office desk &mdash; 74 &times; 120 cm</option>
-          <option value="cabinet" data-cm="132" data-width="38">Filing cabinet, four drawer &mdash; 132 &times; 38 cm</option>
-          <option value="screen" data-cm="125" data-width="221">Projector screen, 100 in &mdash; 125 &times; 221 cm</option>
+          <option value="board" data-art="board" data-cm="120" data-width="240">Whiteboard or blackboard &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-art="desk" data-cm="74" data-width="120">Office desk &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-art="cabinet" data-cm="132" data-width="38">Filing cabinet, four drawer &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-art="screen" data-cm="125" data-width="221">Projector screen, 100 in &mdash; 125 &times; 221 cm</option>
         </optgroup>
         <optgroup label="Around town">
-          <option value="vending" data-cm="183" data-width="100">Vending machine &mdash; 183 &times; 100 cm</option>
-          <option value="bin" data-cm="107" data-width="58">Wheelie bin, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="vending" data-art="vending" data-cm="183" data-width="100">Vending machine &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-art="bin" data-cm="107" data-width="58">Wheelie bin, 240 L &mdash; 107 &times; 58 cm</option>
           <option value="hoop" data-cm="305" data-width="183">Basketball hoop &mdash; 305 &times; 183 cm</option>
           <option value="container" data-cm="259" data-width="606">Shipping container, 20 ft &mdash; 259 &times; 606 cm</option>
         </optgroup>
         <optgroup label="Around the house">
-          <option value="fridge" data-cm="178" data-width="76">Fridge-freezer &mdash; 178 &times; 76 cm</option>
+          <option value="fridge" data-art="fridge" data-cm="178" data-width="76">Fridge-freezer &mdash; 178 &times; 76 cm</option>
           <option value="counter" data-cm="91" data-width="60">Kitchen counter &mdash; 91 &times; 60 cm</option>
-          <option value="table" data-cm="75" data-width="150">Dining table &mdash; 75 &times; 150 cm</option>
-          <option value="chair" data-cm="90" data-width="45">Dining chair &mdash; 90 &times; 45 cm</option>
-          <option value="sofa" data-cm="85" data-width="210">Sofa, three seat &mdash; 85 &times; 210 cm</option>
-          <option value="piano" data-cm="125" data-width="150">Upright piano &mdash; 125 &times; 150 cm</option>
-          <option value="guitar" data-cm="100" data-width="38">Acoustic guitar &mdash; 100 &times; 38 cm</option>
-          <option value="bottle" data-cm="32" data-width="8">Wine bottle &mdash; 32 &times; 8 cm</option>
+          <option value="table" data-art="table" data-cm="75" data-width="150">Dining table &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-art="chair" data-cm="90" data-width="45">Dining chair &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-art="sofa" data-cm="85" data-width="210">Sofa, three seat &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-art="piano" data-cm="125" data-width="150">Upright piano &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-art="guitar" data-cm="100" data-width="38">Acoustic guitar &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-art="bottle" data-cm="32" data-width="8">Wine bottle &mdash; 32 &times; 8 cm</option>
         </optgroup>
       </select>
     </div>
@@ -98,6 +98,17 @@
       behind rather than carried into a chart you might send to somebody. A
       drawing made of thin lines rather than filled shapes will come out as a
       solid blob, which is the one case where this is the wrong tool.
+    </p>
+
+    <p class="field-summary">
+      Most of these arrive drawn rather than as a plain block &mdash; a door
+      with a handle, a fridge with its freezer above it, a sofa you can see is a
+      sofa. The drawing is fitted to the two numbers in the row, so it is the
+      numbers that decide the shape: type your own over them and the picture
+      follows. Three of them have no drawing, because nothing free and
+      correctly proportioned turned up: the basketball hoop, the shipping
+      container and the kitchen counter arrive as the rectangle every object
+      used to be.
     </p>
 
     <p class="field-summary">

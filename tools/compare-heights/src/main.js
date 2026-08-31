@@ -1,7 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
-import { SHAPES, shapeOf } from './figures.js';
+import { SHAPES, objectShape, shapeOf } from './figures.js';
 import { FONT, chartSvg, isDark } from './chart.js';
 import { format, formatBoth, parseHeight, toInput } from './units.js';
 import { download, svgBlob, svgToPng } from './save.js';
@@ -175,7 +175,13 @@ function unit() {
  * a row's figure has to come through here rather than through shapeOf().
  */
 function figureFor(row) {
-  return row.shape === 'upload' && row.art ? row.art : shapeOf(row.shape);
+  // `art` is a drawing this row carries rather than one of the shapes the menu
+  // offers: the SVG somebody uploaded, or the picture that came with the object
+  // preset they picked. Either way it only applies while the row is still set
+  // to the shape it arrived on - switching the row to a person is a way of
+  // asking for the person.
+  const carried = row.shape === 'upload' || row.shape === 'object';
+  return carried && row.art ? row.art : shapeOf(row.shape);
 }
 
 function heightPlaceholder() {
@@ -203,8 +209,10 @@ function addRow(shape, values = {}) {
     height: values.height ?? (start ? toInput(start, unit()) : ''),
     width: values.width ?? '',
     colour: values.colour ?? PALETTE[(rows.length) % PALETTE.length],
-    // An uploaded shape belongs to the row that was given it, not to the menu:
-    // it is one visitor's drawing, not a figure this tool ships.
+    // A drawing that belongs to this row rather than to the menu: the SVG
+    // somebody uploaded, or the picture that came with an object preset.
+    // `art.id` tells the two apart, which is what decides whether the figure
+    // menu grows a "your own SVG" entry.
     art: values.art ?? null,
   };
 
@@ -221,7 +229,7 @@ function buildRow(row) {
   const shape = document.createElement('select');
   shape.className = 'row-shape';
   for (const option of SHAPES) shape.append(new Option(phrase(option.label), option.id));
-  if (row.art) shape.append(new Option(phrase('shape.upload'), 'upload'));
+  if (row.art?.id === 'upload') shape.append(new Option(phrase('shape.upload'), 'upload'));
   shape.value = row.shape;
   shape.addEventListener('change', () => {
     const was = figureFor(row).defaultCm;
@@ -646,10 +654,14 @@ el.preset.addEventListener('change', () => {
   const option = el.preset.selectedOptions[0];
   const cm = Number(option?.dataset.cm);
   if (cm) {
+    // `data-art` names the drawing that goes with this preset. The few options
+    // without one are the objects no free drawing was found for, and they
+    // arrive as the plain rectangle every object used to be.
     addRow('object', {
       name: option.textContent.split('—')[0].trim(),
       height: toInput(cm, unit()),
       width: toInput(Number(option.dataset.width), unit()),
+      art: option.dataset.art ? objectShape(option.dataset.art) : null,
     });
     paintRows();
     draw();
