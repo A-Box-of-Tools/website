@@ -235,6 +235,18 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://abox.tools/xml-formatter/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/yaml-to-json/</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://abox.tools/guides/</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>

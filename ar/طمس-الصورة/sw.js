@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/طمس-الصورة/:';
-const CACHE_NAME=CACHE_PREFIX+'83f4177a74';
+const CACHE_NAME=CACHE_PREFIX+'c18aa7b7a2';
 const ASSETS=[
 './',
 'index.html',

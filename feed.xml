@@ -53,6 +53,20 @@
     <summary type="html">Compare two texts and see every difference, line by line and word by word, side by side or in one column. The comparison runs in your browser - nothing is uploaded, so unreleased code never leaves your machine.</summary>
   </entry>
   <entry>
+    <title type="html">XML Formatter</title>
+    <id>https://abox.tools/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/xml-formatter/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Format, indent and minify XML, and convert XML to JSON or JSON to XML. The parser runs in your browser - nothing is uploaded, so a feed, an invoice or a config file never leaves your machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML to JSON Converter</title>
+    <id>https://abox.tools/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/yaml-to-json/"/>
+    <updated>2026-08-30T00:00:00Z</updated>
+    <summary type="html">Convert YAML to JSON and JSON to YAML in your browser. Reads YAML 1.2, so yes and no stay strings, and says exactly what each direction loses. Nothing is uploaded - a config file never leaves your machine.</summary>
+  </entry>
+  <entry>
     <title type="html">Audio Editor</title>
     <id>https://abox.tools/edit-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/edit-audio/"/>
@@ -226,19 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/get-photos-ready-for-the-web/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">HEIC to JPEG, GPS stripped, resized for the page and compressed to a budget - the whole pipeline in the browser, and the originals never leave your machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to make a GIF from part of a video</title>
-    <id>https://abox.tools/guides/make-a-gif-from-part-of-a-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-gif-from-part-of-a-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Cut the seconds that matter first, then convert only those. When the GIF converter's own timeline is enough, when to cut with the video cutter instead, and why every second of GIF costs so much.</summary>
-  </entry>
-  <entry>
-    <title type="html">How to make a QR code and prove it scans</title>
-    <id>https://abox.tools/guides/make-a-qr-code-and-prove-it-scans/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/guides/make-a-qr-code-and-prove-it-scans/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Generate the code, then verify it with a reader on the same site - the exact payload, the real link, at print size and from a photo - before the print run. All in the browser, nothing uploaded.</summary>
   </entry>
 </feed>

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/afbeelding-formaat-wijzigen/:';
-const CACHE_NAME=CACHE_PREFIX+'f9e27cacf5';
+const CACHE_NAME=CACHE_PREFIX+'f4c7c5d7ca';
 const ASSETS=[
 './',
 'index.html',

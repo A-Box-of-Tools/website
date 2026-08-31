@@ -1,0 +1,26 @@
+{
+  "id": "/hi/xml-formatter/",
+  "name": "XML Formatter",
+  "short_name": "XML Formatter",
+  "description": "XML laid out to read or squeezed to ship, and converted to JSON both ways. Nothing is pasted into anyone else's server.",
+  "lang": "hi",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

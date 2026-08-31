@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/compress-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'5e5345ab8e';
+const CACHE_NAME=CACHE_PREFIX+'4925388fa2';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/caviarder-un-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'c458c6b7c4';
+const CACHE_NAME=CACHE_PREFIX+'1f239f03ac';
 const ASSETS=[
 './',
 'index.html',

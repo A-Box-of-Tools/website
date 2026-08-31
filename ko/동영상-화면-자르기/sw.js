@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/동영상-화면-자르기/:';
-const CACHE_NAME=CACHE_PREFIX+'0708efbd8a';
+const CACHE_NAME=CACHE_PREFIX+'258e3c031e';
 const ASSETS=[
 './',
 'index.html',

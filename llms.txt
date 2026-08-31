@@ -77,6 +77,8 @@ Rearrange a document or trim a recording, without sending either off to be proce
 Read it, check it, or make it here - no token, no config file and no password on somebody else's server.
 
 - [JSON Formatter](https://abox.tools/json-formatter/): Format and minify JSON, XML, HTML, CSS and YAML, and convert JSON to YAML or XML and back. The parsers run in the browser and nothing is uploaded.
+- [YAML to JSON Converter](https://abox.tools/yaml-to-json/): Convert YAML to JSON and JSON to YAML in the browser. Reads YAML 1.2, keeps the order of keys and the exact digits of every number, and says what each direction loses. Nothing is uploaded.
+- [XML Formatter](https://abox.tools/xml-formatter/): Format, indent and minify XML, and convert XML to JSON or JSON to XML. The parser runs in the browser, resolves no external entities, and nothing is uploaded.
 - [Text Diff](https://abox.tools/text-diff/): Compare two texts with a line and word diff, side by side or in one column, and download the result as a unified patch. The comparison runs in the browser and nothing is uploaded.
 - [Base64 Encoder & Decoder](https://abox.tools/base64/): Encode and decode Base64 in both alphabets, percent-encode a value or a whole URL, escape and unescape HTML entities, hex bytes and backslash escapes. Everything runs in the browser and nothing is uploaded.
 - [Share Text & Files](https://abox.tools/share-text/): Share text and files from one browser to another over a direct, end-to-end encrypted WebRTC connection. Speakable link names, live updates while typing, markdown rendering, and per-reader approval. Nothing is stored on any server; the share ends when the sharer closes the tab.
