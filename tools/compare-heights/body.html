@@ -1,0 +1,244 @@
+<main id="main">
+  <!-- Step 1 &mdash; who and what is being compared -->
+  <section class="card">
+    <h2><span class="step">1</span> Say who you are comparing</h2>
+
+    <p class="card-lede">
+      A name, a height, and what kind of figure to draw. Heights can be written
+      however you write them &mdash; <code>173</code>, <code>1.73&nbsp;m</code>,
+      <code>5'8"</code>, <code>68&nbsp;in</code> &mdash; and the row underneath
+      each box shows what was understood, so nothing is guessed silently.
+    </p>
+
+    <div class="rows" id="rows">
+      <div class="row-head" aria-hidden="true">
+        <span>Figure</span>
+        <span>Name</span>
+        <span>Height</span>
+        <span>Width</span>
+        <span>Colour</span>
+        <span></span>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="toolbar-actions">
+        <button type="button" id="add-person" class="primary">Add a person</button>
+        <button type="button" id="add-object" class="ghost">Add an object</button>
+        <button type="button" id="clear" class="ghost danger">Clear the chart</button>
+      </div>
+      <span class="count" id="row-count"></span>
+    </div>
+
+    <div class="option-row preset-row">
+      <label for="preset">Or add something for scale</label>
+      <select id="preset">
+        <option value="" selected>Pick one&hellip;</option>
+        <optgroup label="Doors &amp; windows">
+          <option value="door-interior" data-cm="203" data-width="81">Interior door &mdash; 203 &times; 81 cm</option>
+          <option value="door-front" data-cm="203" data-width="91">Front door &mdash; 203 &times; 91 cm</option>
+          <option value="window" data-cm="120" data-width="90">Window &mdash; 120 &times; 90 cm</option>
+          <option value="door-garage" data-cm="213" data-width="244">Garage door &mdash; 213 &times; 244 cm</option>
+        </optgroup>
+        <optgroup label="School &amp; office">
+          <option value="board" data-cm="120" data-width="240">Whiteboard or blackboard &mdash; 120 &times; 240 cm</option>
+          <option value="desk" data-cm="74" data-width="120">Office desk &mdash; 74 &times; 120 cm</option>
+          <option value="cabinet" data-cm="132" data-width="38">Filing cabinet, four drawer &mdash; 132 &times; 38 cm</option>
+          <option value="screen" data-cm="125" data-width="221">Projector screen, 100 in &mdash; 125 &times; 221 cm</option>
+        </optgroup>
+        <optgroup label="Around town">
+          <option value="vending" data-cm="183" data-width="100">Vending machine &mdash; 183 &times; 100 cm</option>
+          <option value="bin" data-cm="107" data-width="58">Wheelie bin, 240 L &mdash; 107 &times; 58 cm</option>
+          <option value="hoop" data-cm="305" data-width="183">Basketball hoop &mdash; 305 &times; 183 cm</option>
+          <option value="container" data-cm="259" data-width="606">Shipping container, 20 ft &mdash; 259 &times; 606 cm</option>
+        </optgroup>
+        <optgroup label="Around the house">
+          <option value="fridge" data-cm="178" data-width="76">Fridge-freezer &mdash; 178 &times; 76 cm</option>
+          <option value="counter" data-cm="91" data-width="60">Kitchen counter &mdash; 91 &times; 60 cm</option>
+          <option value="table" data-cm="75" data-width="150">Dining table &mdash; 75 &times; 150 cm</option>
+          <option value="chair" data-cm="90" data-width="45">Dining chair &mdash; 90 &times; 45 cm</option>
+          <option value="sofa" data-cm="85" data-width="210">Sofa, three seat &mdash; 85 &times; 210 cm</option>
+          <option value="piano" data-cm="125" data-width="150">Upright piano &mdash; 125 &times; 150 cm</option>
+          <option value="guitar" data-cm="100" data-width="38">Acoustic guitar &mdash; 100 &times; 38 cm</option>
+          <option value="bottle" data-cm="32" data-width="8">Wine bottle &mdash; 32 &times; 8 cm</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <p class="field-summary">
+      A few of these really are fixed: a 20&nbsp;ft shipping container is
+      259&nbsp;cm tall by definition, a basketball rim is 305, and an American
+      interior door is 203 by 81. The rest are typical rather than standard
+      &mdash; doors, windows and worktops vary by country and by house. Every
+      one arrives as an ordinary row, so measure yours and type the real numbers
+      over it.
+    </p>
+
+    <p id="input-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; how the chart is drawn -->
+  <section class="card">
+    <h2><span class="step">2</span> Choose how it looks</h2>
+
+    <fieldset class="options">
+      <legend>The ruler</legend>
+
+      <div class="option-row">
+        <label for="unit">Measured in</label>
+        <select id="unit">
+          <option value="cm" selected>Centimetres</option>
+          <option value="ft">Feet and inches</option>
+        </select>
+      </div>
+
+      <div class="option-row">
+        <label for="order">Order</label>
+        <select id="order">
+          <option value="entered" selected>As you entered them</option>
+          <option value="tallest">Tallest first</option>
+          <option value="shortest">Shortest first</option>
+        </select>
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="show-ruler" checked>
+        <span>
+          <strong>Draw the ruler</strong>
+          <span class="check-note">
+            The lines across the chart and the figures down both sides. Without
+            them the picture still compares two people correctly, but it stops
+            saying how tall either of them is.
+          </span>
+        </span>
+      </label>
+
+      <label class="check">
+        <input type="checkbox" id="show-names" checked>
+        <span>
+          <strong>Write the names and heights above each figure</strong>
+          <span class="check-note">
+            Off, the chart is silhouettes on a ruler &mdash; which is what you
+            want if the names are going in whatever you are pasting it into.
+          </span>
+        </span>
+      </label>
+    </fieldset>
+
+    <fieldset class="options">
+      <legend>Colour and size</legend>
+
+      <div class="option-row">
+        <label for="background">Behind it</label>
+        <input type="color" id="background" value="#ffffff">
+      </div>
+
+      <label class="check">
+        <input type="checkbox" id="transparent">
+        <span>
+          <strong>No background at all</strong>
+          <span class="check-note">
+            Transparent, for dropping onto a slide that already has a colour.
+            The ruler and the writing are drawn dark or light to suit the
+            colour chosen above, so set that to roughly what the picture will
+            sit on even when the background itself is off.
+          </span>
+        </span>
+      </label>
+
+      <div class="option-row">
+        <label for="size">Height of the picture, in pixels</label>
+        <input type="number" id="size" value="900" min="240" max="4000" step="20" inputmode="numeric">
+      </div>
+
+      <p class="field-summary">
+        That is the height of the drawing area, so the finished picture is a
+        little taller: the names sit above it. The width follows from how many
+        figures there are and how wide each one's label is. Step three says
+        what it came out at.
+      </p>
+    </fieldset>
+  </section>
+
+  <!-- Step 3 &mdash; the picture -->
+  <section class="card" id="result-card">
+    <h2><span class="step">3</span> Take it</h2>
+
+    <div class="preview" id="preview" role="img" aria-label="The height chart you have made"></div>
+
+    <p class="facts" id="facts"></p>
+
+    <div class="run-row">
+      <button type="button" id="download-svg" class="primary">Download the SVG</button>
+      <button type="button" id="download-png" class="primary">Download the PNG</button>
+      <button type="button" id="copy-png" class="ghost">Copy the image</button>
+    </div>
+
+    <p class="field-summary" id="download-note" role="status"></p>
+
+    <p class="field-summary">
+      The PNG is the one to paste into a document or a chat. The SVG is the one
+      to keep: it is the chart as instructions rather than as pixels, so it
+      prints at any size and can be recoloured later by anything that opens
+      vectors.
+    </p>
+  </section>
+
+  <!--
+    Every sentence this tool's JavaScript puts on screen. They are here rather
+    than in src/ because src/ is copied byte for byte into every language,
+    so a string written there would be English on fourteen pages that are not.
+    shared/js/phrases.js reads them back; a {name} is filled in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="shape.man">Man</span>
+    <span data-phrase="shape.woman">Woman</span>
+    <span data-phrase="shape.boy">Boy</span>
+    <span data-phrase="shape.girl">Girl</span>
+    <span data-phrase="shape.toddler">Toddler</span>
+    <span data-phrase="shape.object">Object</span>
+
+    <span data-phrase="row.shape">Figure for row {n}</span>
+    <span data-phrase="row.name">Name for row {n}</span>
+    <span data-phrase="row.height">Height for row {n}</span>
+    <span data-phrase="row.width">Width for row {n}</span>
+    <span data-phrase="row.colour">Colour for row {n}</span>
+    <span data-phrase="row.up">Move row {n} left</span>
+    <span data-phrase="row.down">Move row {n} right</span>
+    <span data-phrase="row.remove">Remove row {n}</span>
+    <span data-phrase="row.nameexample">Name</span>
+    <span data-phrase="row.heightexample">173 cm</span>
+    <span data-phrase="row.heightexampleft">5'8"</span>
+    <span data-phrase="row.widthexample">Width</span>
+    <span data-phrase="row.reads">Read as {height}</span>
+
+    <span data-phrase="height.empty">A height, and this row is drawn.</span>
+    <span data-phrase="height.unreadable">Not a height this understands. Try 173, 1.73 m, 5'8" or 68 in.</span>
+    <span data-phrase="height.tooshort">Too short to draw &mdash; 5 cm is the smallest.</span>
+    <span data-phrase="height.tootall">Taller than the chart goes &mdash; 12 metres is the limit.</span>
+
+    <span data-phrase="chart.empty">Add somebody, and the chart appears here.</span>
+    <span data-phrase="chart.full">Twelve figures is as many as this chart will hold and still be readable.</span>
+    <span data-phrase="facts.chart">{count} figures, {width} by {height} pixels. The ruler runs from the ground to {top}, with a line every {step}.</span>
+    <span data-phrase="facts.one">One figure, {width} by {height} pixels. The ruler runs from the ground to {top}, with a line every {step}.</span>
+
+    <span data-phrase="save.done">Saved. Nothing was sent anywhere to draw it.</span>
+    <span data-phrase="save.failed">{detail}. The SVG will still download.</span>
+    <span data-phrase="save.copied">Copied. Paste it wherever you need it.</span>
+    <span data-phrase="save.noclipboard">This browser would not let the page write to the clipboard. Download it instead.</span>
+    <span data-phrase="save.nothing">There is nothing on the chart to save yet.</span>
+    <span data-phrase="render.nosvg">this browser would not draw the SVG</span>
+    <span data-phrase="render.nopng">this browser would not write a PNG</span>
+
+    <span data-phrase="net.clean">the names and heights you typed have gone
+      nowhere. {total} files loaded. {platform}</span>
+    <span data-phrase="net.dirty">something contacted {hosts}, which this tool
+      never does. {platform}</span>
+    <span data-phrase="net.platform.one">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} host; not one of them was given
+      a name or a height.</span>
+    <span data-phrase="net.platform.many">The page's own ad, measurement and
+      donate-button scripts loaded from {hosts} hosts; not one of them was given
+      a name or a height.</span>
+  </div>
+</main>
