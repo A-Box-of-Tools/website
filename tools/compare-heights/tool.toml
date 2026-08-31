@@ -392,16 +392,23 @@ a = """
 [[faq]]
 q = "Can I put an object on the chart?"
 a = """
-        Yes &mdash; a plain rectangle takes a height and a width, so anything
-        with two dimensions goes on beside the people. The menu holds twenty to
+        Yes &mdash; and most of them arrive drawn. The menu holds twenty to
         start from, in four groups: doors and windows, school and office
         (a whiteboard, a desk, a filing cabinet, a projector screen), things
         around town (a vending machine, a wheelie bin, a basketball hoop, a
-        20&nbsp;ft shipping container) and things around the house. Some of
-        those are genuine standards and some are typical sizes, which the page
-        says out loud; each arrives as an ordinary row you can type over. One
-        familiar object does more for a chart than any number of extra people:
-        it is what turns a comparison into a sense of scale."""
+        20&nbsp;ft shipping container) and things around the house. Seventeen
+        of them come with a picture &mdash; a door with a handle, a fridge with
+        its freezer above it, a sofa you can see is a sofa &mdash; and the
+        picture is fitted to the height and width in the row, so the numbers
+        still decide the size and your own numbers typed over them still hold.
+        The other three are plain rectangles, because no free drawing of them
+        turned out to be both right and correctly proportioned, and a wrong
+        drawing is worse than an honest block on a chart about scale.
+        <br><br>
+        Some of these sizes are genuine standards and some are typical, which
+        the page says out loud. One familiar object does more for a chart than
+        any number of extra people: it is what turns a comparison into a sense
+        of scale."""
 
 [[faq]]
 q = "Is there a figure for a dog or a cat?"
@@ -466,11 +473,11 @@ category = "UtilitiesApplication"
 description = "Draw a height comparison chart in the browser. Add a man, a woman, a boy, a girl and objects with their heights in centimetres or feet and inches, order them, colour them, and download the result as a PNG or an SVG. Nothing is uploaded."
 features = [
   "Up to twelve figures on one ruler, in any order",
-  "Man, woman, boy and girl figures, and a plain rectangle for objects",
+  "Man, woman, boy and girl figures, and drawn objects sized by the numbers you type",
   "Public-domain drawn man, woman, boy and girl - the children drawn as children rather than scaled adults",
   "Heights typed as 173, 1.73 m, 5'8\", 68 in or 5 ft 8, with the reading shown back",
   "Centimetres or feet and inches, switched without changing anybody's height",
-  "Twenty ready-made objects: doors, windows, a whiteboard, a vending machine, a shipping container, furniture",
+  "Twenty ready-made objects, seventeen of them drawn: doors, windows, a whiteboard, a vending machine, furniture",
   "Any SVG of your own on the ruler, rebuilt from its shapes alone",
   "A ruler whose spacing is chosen from what the picture can carry",
   "Any background colour, or none, with the ink chosen to stay legible on it",

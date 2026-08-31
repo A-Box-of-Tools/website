@@ -39,6 +39,7 @@
  * filled in whatever colour its row picked and read as one shape.
  */
 
+import { OBJECTS } from './objects.js';
 import { TRACED } from './traced.js';
 
 /**
@@ -80,6 +81,41 @@ export const SHAPES = [
 ];
 
 const BY_ID = new Map(SHAPES.map((shape) => [shape.id, shape]));
+
+/**
+ * The rectangle, with one of the drawings from objects.js in it.
+ *
+ * A preset - a door, a fridge, a sofa - arrives with both of its numbers
+ * already filled in, and this is the picture that goes with them. It is still
+ * the object shape: the row keeps its width box, and the drawing is stretched
+ * to whatever is typed there.
+ *
+ * That stretching is the difference between an object and a person, and it is
+ * deliberate. A person keeps the proportions the artist drew, because nobody
+ * types a person's width. An object's proportions are the two numbers in front
+ * of the visitor, so the drawing has to answer to them - `inner` maps the
+ * artwork's own box onto the unit SQUARE rather than onto a unit-tall figure,
+ * and chart.js scales the two axes separately from there.
+ *
+ * An id this does not know falls back to the plain rectangle, which is what
+ * every object was before there was any artwork at all.
+ */
+export function objectShape(id) {
+  const art = OBJECTS[id];
+  if (!art) return BY_ID.get('object');
+
+  const { x, y, width, height } = art.box;
+  return {
+    id: 'object',
+    label: 'shape.object',
+    width: width / height,
+    inner: `scale(${1 / width} ${1 / height}) translate(${-(x + width / 2)} ${-y})`,
+    paths: null,
+    markup: art.markup,
+    stretch: true,
+    defaultCm: 0,
+  };
+}
 
 /**
  * One shape by id.

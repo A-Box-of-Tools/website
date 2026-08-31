@@ -157,6 +157,12 @@ SINGLETONS = {
         'the YAML pair alone, so the tool ships no XML parser it never calls',
     ('convert.js', 'xml-formatter'):
         'the XML pair alone, so the tool ships no YAML parser it never calls',
+    # Another shared name that is not a shared module: the three PDF tools'
+    # objects.js reads and writes the objects a PDF file is made of, and this
+    # one is a table of drawings - path data, bounding boxes and licences for
+    # the things a height chart can stand a person next to.
+    ('objects.js', 'compare-heights'):
+        'the object artwork, related to the PDF object model by name only',
 }
 
 

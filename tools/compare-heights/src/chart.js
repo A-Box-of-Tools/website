@@ -91,7 +91,10 @@ function columns(figures, scale, font, measure) {
 
   return figures.map((figure) => {
     const height = figure.cm * scale;
-    const drawn = figure.shape.markup
+    // A drawn person is as wide as the drawing says; a rectangle and a drawn
+    // object are as wide as the visitor typed. `stretch` is what separates the
+    // two, and it is the object presets that carry it.
+    const drawn = figure.shape.markup && !figure.shape.stretch
       ? figure.shape.width * height
       : Math.max((figure.widthCm || figure.cm * 0.6) * scale, 6);
     const name = figure.name ? measure(figure.name, font, 600) : 0;
@@ -126,8 +129,11 @@ export function chartSvg(figures, options, measure) {
   // Every line the ruler will draw, worked out before the gutters are sized:
   // the gutter has to be as wide as the widest of these labels, and the widest
   // is not always the last one.
+  // Counting from `step` rather than from zero, because the ground already is
+  // the zero line: it is drawn below, darker, and a rule and a "0 cm" on top of
+  // it would only repeat what the line under every figure's feet already says.
   const lines = [];
-  for (let cm = 0; cm <= topCm + 1e-6; cm += step) {
+  for (let cm = step; cm <= topCm + 1e-6; cm += step) {
     lines.push({ cm, text: gridLabel(cm, unit) });
   }
 
@@ -203,13 +209,17 @@ export function chartSvg(figures, options, measure) {
       // either.
       const inner = figure.shape.inner
         ? `<g transform="${escape(figure.shape.inner)}">` : '';
+      // An object is stretched to both of the numbers that were typed; a person
+      // keeps the proportions the artist gave them, so one factor does.
+      const across = round(column.drawn);
+      const factors = figure.shape.stretch ? `${across} ${scaled}` : `${scaled}`;
       // `markup` is already markup, and is the only string here that is not
       // escaped on the way out. For the four figures that ship it is built
       // from traced.js; for an uploaded one it is whatever survived
       // import-svg.js, which builds a new tree out of a whitelist rather than
       // cleaning up the old one. Nothing else may be passed through here.
       parts.push(`<g fill="${colour}" transform="translate(${centre} ${top}) `
-        + `scale(${scaled})">${inner}${figure.shape.markup}`
+        + `scale(${factors})">${inner}${figure.shape.markup}`
         + `${inner ? '</g>' : ''}</g>`);
     } else {
       parts.push(`<rect x="${round(centre - column.drawn / 2)}" y="${top}" `

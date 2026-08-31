@@ -95,6 +95,42 @@ a row you have not filled in yet is not a mistake. Now that every row arrives
 with a height, an empty one is a box somebody cleared, and a row that will not
 be drawn should say so.
 
+### The objects are drawn, and stretched to the numbers
+
+Every preset under *Or add something for scale* used to be a rectangle. Most of
+them are now a drawing — `vendor/objects/` holds sixteen files and
+[`vendor/objects/LICENSE.md`](vendor/objects/LICENSE.md) says where each came
+from. Three presets are still rectangles, because nothing free and correctly
+proportioned exists for them: the basketball hoop, the shipping container and
+the kitchen counter.
+
+Two things about this are worth knowing before changing it.
+
+**An object is stretched and a person is not.** A person keeps the proportions
+the artist drew, because nobody types a person's width. An object's proportions
+are the two numbers sitting in the row, so the drawing has to answer to them:
+`objectShape()` maps the artwork's box onto the unit *square* and `chart.js`
+scales the two axes separately, behind a `stretch` flag. A door drawn square
+would otherwise be a chart telling somebody their door is square. It also means
+the artwork only has to be *roughly* the right shape, which is what made this
+possible at all — sixteen drawings whose own aspect happens to match sixteen
+real objects do not exist.
+
+**The licence rule is wider here than for the people, and deliberately so.**
+The four people are public domain because a chart is downloaded and passed on,
+and CC BY would attach a condition to the visitor's own picture. MIT and
+Apache-2.0 attach their condition to the *icon set*, which `vendor/objects/`
+carries in full, and nothing to a drawing made with it. That distinction is the
+whole reason the objects could be drawn: below the level of a silhouetted human
+being the public domain has almost nothing, and the alternative was one icon
+family and eight rectangles.
+
+**The path data was not copied by hand.** Each file in `vendor/objects/` was
+read by this tool's own `src/import-svg.js` — the whitelist an uploaded SVG
+goes through — so what ships in `src/objects.js` is shapes and geometry and
+nothing else. The artwork this tool ships came in through exactly the door a
+stranger's file does.
+
 ### An uploaded SVG is rebuilt, not cleaned up
 
 `src/import-svg.js` is the one module here where being wrong is not cosmetic.
@@ -199,7 +235,8 @@ keeps the canvas untainted so `toBlob` will give the bytes back.
 |---|---|
 | `vendor/` | the four public-domain files the people came out of, as published, and their licence |
 | `src/traced.js` | those four figures' path data, the box each was measured at, and the transform that puts it in the unit box |
-| `src/figures.js` | the list of figures the menu is built from, and each one's default height |
+| `src/figures.js` | the list of figures the menu is built from, each one's default height, and the drawing behind an object preset |
+| `src/objects.js` | the object artwork: each drawing's path data, its measured box, its digest and its licence |
 | `src/import-svg.js` | the whitelist an uploaded SVG is rebuilt from |
 | `src/units.js` | typed height → centimetres, centimetres → written height, and the ruler's spacing and labels |
 | `src/chart.js` | the layout and the SVG, with text measured through a callback |
