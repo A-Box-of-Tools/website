@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/video-zuschneiden/:';
-const CACHE_NAME=CACHE_PREFIX+'b599a62fff';
+const CACHE_NAME=CACHE_PREFIX+'d26505616b';
 const ASSETS=[
 './',
 'index.html',
@@ -8,6 +8,7 @@ const ASSETS=[
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
+'src/shared/codec-support.js',
 'src/cropper.js',
 'src/demux.js',
 'src/draw.js',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/recadrer-une-video/:';
-const CACHE_NAME=CACHE_PREFIX+'ef5f002d8c';
+const CACHE_NAME=CACHE_PREFIX+'63262e6ae0';
 const ASSETS=[
 './',
 'index.html',
@@ -8,6 +8,7 @@ const ASSETS=[
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
+'src/shared/codec-support.js',
 'src/cropper.js',
 'src/demux.js',
 'src/draw.js',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/gambar-ke-video/:';
-const CACHE_NAME=CACHE_PREFIX+'3ed6ac7442';
+const CACHE_NAME=CACHE_PREFIX+'c5d118e7d5';
 const ASSETS=[
 './',
 'index.html',
@@ -8,6 +8,7 @@ const ASSETS=[
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
+'src/shared/codec-support.js',
 'src/shared/url-import.js',
 'src/compose.js',
 'src/encoder.js',
