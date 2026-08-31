@@ -1,0 +1,247 @@
+#
+# Pembanding Teks - Bahasa Indonesia.
+#
+# Overrides for tools/text-diff/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+# "Diff" diterjemahkan sebagai perbandingan; file yang diunduh disebut tambalan.
+#
+
+name = "Pembanding Teks"
+heading = "Pembanding&nbsp;Teks <span class=\"h1-kw\">&mdash; bandingkan dua teks, berdampingan</span>"
+tagline = "Dua teks masuk, setiap perbedaan ditandai, baris demi baris dan kata demi kata. Tidak ada yang ditempelkan ke server orang lain."
+
+title = "Bandingkan Teks &mdash; Diff Berdampingan &mdash; Tanpa Unggah"
+description = "Bandingkan dua teks dan lihat setiap perbedaannya, baris demi baris dan kata demi kata, berdampingan atau dalam satu kolom. Pembandingannya berjalan di peramban Anda dan tidak ada yang diunggah - kode yang belum dirilis tidak pernah meninggalkan mesin Anda."
+og_title = "Bandingkan dua teks tanpa menempelkannya ke sebuah server"
+og_description = "Sebuah pembanding yang berjalan di mesin Anda sendiri. Perbedaan baris dan kata, berdampingan, dan sebuah tambalan yang bisa dibaca tinjauan kode - dan yang Anda tempelkan tidak pergi ke mana-mana."
+og_image_alt = "Pembanding Teks - bandingkan dua teks, tanpa unggah"
+
+pledge = """
+    Sebuah perbandingan adalah aritmetika atas dua string, dikerjakan di sini,
+    di halaman ini. Algoritmanya adalah milik Myers &mdash; yang sama dengan
+    yang dipakai <code>git diff</code> &mdash; ditulis sendiri di dalam
+    <code>src/diff.js</code>, tempat Anda bisa membacanya. Alat ini tidak punya
+    fitur jaringan dalam bentuk apa pun &mdash; tidak ada yang diambil, tidak
+    ada yang dikirim &mdash; dan di sini itu penting: yang dibandingkan orang
+    adalah kontrak, file konfigurasi, dan kode yang belum dirilis, selalu
+    berpasangan."""
+
+live_hint = """
+      Tidak perlu percaya begitu saja: buka DevTools, perhatikan tab Network,
+      lalu bandingkan sesuatu. Tidak satu pun permintaan membawa satu karakter
+      pun dari yang Anda tempelkan. Atau cabut koneksi internet dan tetap
+      bandingkan teksnya."""
+
+read_first = """
+ dan <code>src/diff.js</code> untuk
+      algoritma Myers, lintasan kata demi kata di dalam setiap baris yang berubah,
+      dan tiga pengaman yang mencegah perbandingan patologis membekukan
+      halamannya."""
+
+howto_heading = "Cara membandingkan dua teks tanpa mengunggahnya"
+
+card = """
+            Bandingkan dua teks dan lihat apa yang berubah, baris demi baris dan
+            kata demi kata. Tempelkan sebuah kontrak atau kode yang belum dirilis
+            tanpa menyerahkannya kepada siapa pun."""
+
+[words]
+plural = "teks"
+choose = "sebuah file"
+
+[[facts]]
+text = "Tanpa unggah"
+
+[[facts]]
+text = "Tanpa akun"
+
+[[facts]]
+text = "Tanpa batas ukuran"
+
+[[facts]]
+text = "Jalan tanpa internet"
+
+[[facts]]
+text = "Sumber terbuka"
+
+[[privacy]]
+title = "Apa yang Anda tempelkan tidak punya tujuan ke mana pun."
+body = """
+ Content-Security-Policy menyebut
+      satu per satu setiap alamat yang boleh dihubungi halaman ini, dan tidak
+      satu pun milik situs ini. Tidak ada titik akhir di sini tempat token yang
+      ditempelkan bisa dikumpulkan, dan tidak ada kode yang akan mengirimnya
+      seandainya ada."""
+
+[[privacy]]
+title = "Tidak ada di sini yang mengambil apa pun."
+body = """
+ Tidak ada <code>fetch</code>, tidak ada
+      <code>XMLHttpRequest</code>, dan tidak ada <code>sendBeacon</code> di mana
+      pun di dalam <code>src/</code>. Pembandingannya adalah fungsi di halaman ini
+      yang mengambil dua string dan mengembalikan apa yang berubah."""
+
+[[privacy]]
+title = "Algoritmanya yang baku, terbaca seluruhnya."
+body = """
+ Algoritma skrip suntingan terpendek
+      milik Myers, yang sama dengan yang dipakai <code>git diff</code>, ditulis
+      sendiri di dalam <code>src/diff.js</code> dengan keputusan-keputusannya
+      diberi komentar. Pengujian di <code>tests/js/text-diff.test.js</code>
+      membuktikan penghapusannya membangun kembali teks kiri dan penyisipannya
+      membangun kembali teks kanan, dan itulah arti benar bagi sebuah diff."""
+
+[[privacy]]
+title = "Apa yang dimuat Google, dan apa yang tidak diberikan kepadanya."
+body = """
+ Skrip iklan dan pengukuran berasal
+      dari Google, dan tombol donasi dari Buy Me a Coffee. Tidak satu pun diberi
+      satu karakter pun dari teks Anda. Setiap baris yang membaca, mengurai, atau
+      menulisnya disajikan dari asal ini dan terdaftar di repositori."""
+
+[[privacy]]
+title = "Jalan tanpa internet."
+body = """
+ Putuskan koneksi jaringan dan alat ini tidak
+      berubah, karena sejak awal memang tidak ada langkah jaringan di dalamnya.
+      Itulah bukti yang paling sederhana."""
+
+[[howto]]
+title = "Tempelkan kedua teksnya, atau jatuhkan kedua file-nya."
+body = """
+ Yang asli di kiri, versi
+      yang berubah di kanan. Dua file yang dijatuhkan sekaligus ke pemilihnya
+      mendarat di sisi masing-masing, dalam urutan Anda menjatuhkannya; tukar
+      sisinya kalau terbalik."""
+
+[[howto]]
+title = "Pilih cara membacanya."
+body = """
+ Berdampingan, atau satu kolom. Ponsel mulai
+      dengan satu kolom, karena berdampingan butuh dua kolom teks dan ponsel hanya
+      muat kira-kira satu; menunya toh ada persis di situ."""
+
+[[howto]]
+title = "Abaikan yang tidak penting."
+body = """
+ Spasi, huruf besar-kecil, baris kosong
+      &mdash; masing-masing bisa diabaikan, supaya file yang diformat ulang tidak
+      terbaca seperti seratus perubahan. Bawaannya, bagian tengah yang tak berubah
+      dilipat menjadi sebuah hitungan, dengan tiga baris disimpan di kedua sisi
+      setiap perubahan."""
+
+[[howto]]
+title = "Baca apa yang berubah."
+body = """
+ Baris yang dihapus ditandai di kiri, yang
+      ditambahkan di kanan, dan di dalam baris yang berubah kata-kata yang berbeda
+      disorot &mdash; jadi perbandingan dua paragraf memperlihatkan kata yang
+      berpindah, bukan dua paragraf utuh."""
+
+[[howto]]
+title = "Ambil tambalannya."
+body = """
+ Unduhannya adalah <code>.patch</code>
+      berformat terpadu, yang memang diharapkan tinjauan kode,
+      <code>git apply</code>, dan setiap penampil diff. Salin menaruh hal yang
+      sama di papan klip Anda."""
+
+[[faq]]
+q = "Apakah teks saya diunggah ke suatu tempat?"
+a = """
+        Tidak. Pembandingannya adalah fungsi yang berjalan di peramban Anda
+        sendiri, di perangkat keras Anda sendiri. Alat ini tidak punya fitur
+        jaringan dalam bentuk apa pun &mdash; ia tidak pernah mengambil apa pun
+        dan tidak pernah mengirim apa pun &mdash; dan
+        <code>Content-Security-Policy</code> halaman ini menyebut satu per satu
+        setiap alamat yang boleh dihubunginya, dan tidak satu pun milik situs ini.
+        Itulah alasan memakainya untuk kontrak, file konfigurasi, atau kode yang
+        belum dirilis: menempelkannya ke pembanding orang lain berarti
+        menyerahkan kedua versinya sekaligus."""
+
+[[faq]]
+q = "Apa sebenarnya yang dilakukan pembandingannya?"
+a = """
+        Ia mencari himpunan suntingan terpendek yang mengubah teks di kiri menjadi
+        yang di kanan, memakai algoritma Myers &mdash; yang dipakai
+        <code>git diff</code>. Terpendeklah yang membuat sebuah perbandingan
+        terbaca: satu baris yang disisipkan di tengah seharusnya tampil sebagai
+        satu penyisipan alih-alih sebagai setiap baris sesudahnya berubah. Di
+        dalam baris yang berubah, kata yang berbeda juga ditandai, jadi
+        perbandingan dua paragraf menunjukkan kata yang berpindah alih-alih dua
+        paragraf utuh."""
+
+[[faq]]
+q = "Bisakah ia membandingkan dua file alih-alih dua tempelan?"
+a = """
+        Bisa. Jatuhkan keduanya sekaligus ke pemilihnya dan keduanya mendarat di
+        sisi masing-masing, dalam urutan Anda menjatuhkannya. Keduanya dibaca
+        peramban Anda ke halaman ini, dan hanya ke situlah mereka pergi. Tukar
+        sisinya kalau Anda menjatuhkannya terbalik."""
+
+[[faq]]
+q = "Apa yang keluar dari sebuah perbandingan, dan bisakah saya menerapkannya?"
+a = """
+        Unduhannya adalah perbandingan terpadu &mdash; format
+        <code>@@ -3,5 +3,5 @@</code> yang dibaca <code>git apply</code>,
+        <code>patch</code>, dan setiap alat tinjauan kode. Salin melakukan hal
+        yang sama ke papan klip Anda. Yang ada di layar adalah tampilannya: sisi
+        demi sisi, atau satu kolom, dengan bagian yang tidak berubah diringkas
+        menjadi sebuah hitungan kecuali Anda meminta semuanya."""
+
+[[faq]]
+q = "Bisakah ia mengabaikan spasi, huruf besar-kecil, atau baris kosong?"
+a = """
+        Bisa, masing-masing sendiri-sendiri. Mengabaikan spasi membuat file yang
+        diformat ulang dibandingkan sebagai tak berubah; mengabaikan huruf
+        besar-kecil memperlakukan <code>Error</code> dan <code>error</code>
+        sebagai kata yang sama; mengabaikan baris kosong melompati baris yang
+        tidak membawa apa-apa. Penghitung di atas hasilnya lalu menyebut keduanya
+        sama begitu perbedaan yang Anda minta abaikan diabaikan &mdash; yang bukan
+        pernyataan yang sama dengan identik, dan halaman ini menjaga kedua
+        pernyataan itu tetap terpisah."""
+
+[[faq]]
+q = "Sebesar apa perbandingan yang bisa ditanganinya?"
+a = """
+        Tidak ada batas yang ditetapkan di sini, karena tidak ada server yang
+        membayarnya. Dua teks dua puluh ribu baris dengan segelintir perubahan
+        dibandingkan seketika, karena awal dan akhir yang sama dipangkas sebelum
+        pekerjaan sesungguhnya dimulai. Perbandingan dua teks yang sama sekali
+        tidak punya kesamaan berhenti lebih awal dan mengatakannya, alih-alih
+        menghabiskan semenit membuktikan yang sudah jelas, dan perbandingan yang
+        sangat panjang menggambar beberapa ribu baris pertama dan menyisakan
+        sisanya untuk tambalan yang diunduh."""
+
+[[faq]]
+q = "Apakah gratis, dan apakah saya perlu akun?"
+a = """
+        Gratis, dan tidak ada akun, tidak ada masuk, tidak ada masa uji coba, dan
+        tidak ada batas berapa banyak yang Anda tempelkan. Situs ini memasang
+        iklan, dan itulah yang membiayainya; iklan tidak diberi apa pun tentang
+        teks Anda."""
+
+[[faq]]
+q = "Apakah jalan tanpa internet?"
+a = """
+        Ya. Muat halamannya sekali, lalu putuskan koneksi internet dan ia tetap
+        bekerja. Itu juga cara paling sederhana untuk membuktikan tidak ada yang
+        diunggah: alat yang mengirim teks Anda ke tempat lain untuk dibandingkan
+        akan berhenti begitu Anda mencabut koneksi."""
+
+[schema]
+description = "Membandingkan dua teks dengan diff baris dan kata, berdampingan atau dalam satu kolom, dan mengunduh hasilnya sebagai tambalan terpadu. Pembandingannya berjalan di peramban dan tidak ada yang diunggah."
+features = [
+  "Membandingkan dua teks dengan algoritma Myers, sisi demi sisi atau dalam satu kolom",
+  "Menandai kata yang berubah di dalam baris yang berubah",
+  "Berdampingan atau satu kolom, dengan bagian tengah tak berubah dilipat menjadi hitungan",
+  "Mengabaikan spasi, huruf besar-kecil, atau baris kosong, masing-masing sendiri",
+  "Mengunduh sebuah perbandingan sebagai tambalan terpadu yang bisa dibaca tinjauan kode",
+  "Membandingkan dua file yang dijatuhkan semudah dua tempelan",
+  "Memangkas awal dan akhir yang sama, jadi file panjang yang mirip dibandingkan seketika",
+  "Jalan tanpa internet; tanpa unggah, tanpa akun",
+]
+
+[picker]
+title = "Jatuhkan dua file di sini"
+hint = "atau klik untuk menelusuri &mdash; file teks apa pun, satu untuk tiap sisi"

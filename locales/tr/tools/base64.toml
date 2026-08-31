@@ -1,0 +1,236 @@
+#
+# Base64 Kodlayıcı ve Çözücü - Türkçe.
+#
+# Overrides for tools/base64/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Base64 Kodlayıcı ve Çözücü"
+heading = "Base64&nbsp;Kodlayıcı&nbsp;ve&nbsp;Çözücü <span class=\"h1-kw\">&mdash; ve URL, HTML varlıkları, onaltılık ve kaçışlar</span>"
+tagline = "Base64, yüzde kodlaması, HTML varlıkları, onaltılık ve ters bölü kaçışları; iki yönde de. Hiçbir şey bir başkasının sunucusuna yapıştırılmıyor."
+
+title = "Base64 Kodlama ve Çözme &mdash; URL, HTML Varlıkları, Onaltılık &mdash; Yüklemesiz"
+description = "Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &mdash; bir belirteç makinenizden hiç çıkmaz."
+og_title = "Base64'ü bir sunucuya yapıştırmadan çözün"
+og_description = "Kendi makinenizde çalışan bir kodlayıcı ve çözücü. İki alfabede Base64, URL, HTML varlıkları, onaltılık ve kaçışlar; yapıştırdığınız şey hiçbir yere gitmez."
+og_image_alt = "Base64 Kodlayıcı ve Çözücü - iki yönde, yükleme yok"
+
+pledge = """
+    Buradaki her kodlama, burada, bu sayfada yapılan, bir dizge üzerinde bir
+    aritmetiktir. Kodekler elle yazılmıştır ve <code>src/encode.js</code>
+    içindedir &mdash; ve başka bir şey yoktur. Bu aracın hiçbir türde ağ
+    özelliği yoktur &mdash; getirecek bir şey yok, gönderecek bir şey yok
+    &mdash; ve bu, neredeyse her yerden daha çok burada önemlidir: insanların
+    çevrimiçi bir Base64 çözücüsüne yapıştırdığı şey bir belirteçtir ve bir
+    belirteci bir başkasının sitesine yapıştırmak, onu teslim etmektir."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir şey çözün. Tek bir istek bile yapıştırdığınız şeyden tek bir
+      karakter taşımıyor. Ya da internet bağlantısını kesip yine de çözün."""
+
+read_first = """
+ ve kendisiyle değil RFC&nbsp;4648'in
+      test vektörleriyle sınanan, kötü girdiyi <code>atob</code> gibi akla yatkın
+      bir şey döndürmek yerine reddeden Base64 için
+      <code>src/encode.js</code>."""
+
+howto_heading = "Base64 yüklemeden nasıl kodlanır ya da çözülür"
+
+card = """
+            Base64, URL, HTML varlıkları, onaltılık ve ters bölü kaçışları;
+            kodlanmış ya da çözülmüş. Bir belirteci kimseye vermeden
+            yapıştırın."""
+
+[words]
+plural = "metniniz"
+choose = "bir dosya"
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Boyut sınırı yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Yapıştırdığınız şeyin gidecek bir yeri yok."
+body = """
+ Content-Security-Policy, bu
+      sayfanın iletişim kurabileceği her adresi tek tek sayar ve bunların hiçbiri
+      bu siteye ait değildir. Yapıştırılan bir belirtecin toplanabileceği bir uç
+      nokta burada yok, olsaydı bile onu oraya gönderecek bir kod yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmiyor."
+body = """
+ <code>src/</code> içinde hiçbir
+      yerde <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Her kodlayıcı ve her çözücü, bu sayfada bir
+      dizge alıp bir dizge döndüren işlevlerdir."""
+
+[[privacy]]
+title = "Bir şey yanlışsa çözücü bunu söylüyor."
+body = """
+ Tarayıcının kendi <code>atob</code>'u
+      reddetmesi gereken girdiyi kabul eder ve akla yatkın bir şey döndürür.
+      Buradaki Base64 elle yazılmıştır ve RFC&nbsp;4648'in test vektörleriyle
+      sınanır; yapıştırdığınız şey Base64 değilse bunu söyler ve nedenini de
+      söyler. <code>tests/js/text-encode.test.js</code> içindeki testler tam olarak
+      bunu sınar."""
+
+[[privacy]]
+title = "Google neyi yüklüyor, neyi almıyor."
+body = """
+ Reklam ve ölçüm betikleri
+      Google'dan, bağış düğmesi de Buy Me a Coffee'den geliyor. Hiçbirine
+      metninizden tek bir karakter verilmiyor. Onu okuyan, ayrıştıran ya da yazan
+      her satır bu kaynaktan sunuluyor ve depoda listeleniyor."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağ bağlantısını kesin, araç hiç değişmez;
+      çünkü içinde en baştan beri bir ağ adımı yoktu. Hepsinin içindeki en basit
+      kanıt bu."""
+
+[[howto]]
+title = "Kodlamayı seçin."
+body = """
+ İki alfabede Base64; tek bir değer ya da
+      bütün bir URL için yüzde kodlaması; beş HTML varlığı; onaltılık baytlar ve
+      bir dizge sabitinin ters bölü kaçışları. Menünün altındaki not her birinin ne
+      işe yaradığını söyler."""
+
+[[howto]]
+title = "Yönü seçin."
+body = """
+ <em>Kodla</em> düz metni alır ve kodlanmış
+      biçimi üretir; <em>Çöz</em> kodlanmış biçimi düz metne geri getirir. Sonuç
+      yazdıkça güncellenir; yön değiştirmek tek tıktır, yeniden yazmak yoktur."""
+
+[[howto]]
+title = "Yapıştırın ya da dosyayı bırakın."
+body = """
+ Seçip kopyalayabildiğiniz her şey
+      olur. Seçiciye bırakılan bir dosya kendi tarayıcınız tarafından okunur ve
+      kutuya konur &mdash; dışarıda bırakılacak bir yükleme adımı yok."""
+
+[[howto]]
+title = "Varsa hatayı okuyun."
+body = """
+ Burada başarısız olan bir çözücü ne
+      bulduğunu söyler &mdash; Base64'ün kullanmadığı bir karakter, yanlış yerde
+      dolgu, metin olmayan baytlar &mdash; akla yatkın ama yanlış bir şey döndürmek
+      yerine."""
+
+[[howto]]
+title = "Sonucu alın."
+body = """
+ Kopyalayın ya da bir metin dosyası olarak
+      indirin. Kutunun altındaki sayaçlar kaç bayt girdiğini ve kaç bayt çıktığını
+      söyler."""
+
+[[faq]]
+q = "Metnim herhangi bir yere yükleniyor mu?"
+a = """
+        Hayır. Bu sayfadaki her kodlayıcı ve her çözücü, kendi donanımınızda, kendi
+        tarayıcınızda çalışan bir işlevdir. Bu aracın hiçbir türde ağ özelliği
+        yoktur &mdash; hiçbir zaman bir şey getirmez ve hiçbir zaman bir şey
+        göndermez &mdash; ve sayfanın <code>Content-Security-Policy</code>'si
+        iletişim kurabileceği her adresi tek tek sayar; bunların hiçbiri bu siteye
+        ait değildir. Bunu bir erişim belirteci ya da bir oturum çerezi için
+        kullanmanın sebebi budur: bunlardan birini bir başkasının çözücüsüne
+        yapıştırmak, onu ona vermektir."""
+
+[[faq]]
+q = "Buradaki Base64, başka her yerdekiyle aynı Base64 mü?"
+a = """
+        Evet &mdash; kendisine karşı değil, RFC 4648'deki test vektörlerine karşı
+        denetleniyor. İki alfabe de çözülür; yani <code>-</code> ve <code>_</code>
+        ile yazılmış bir JWT, <code>+</code> ve <code>/</code> ile yazılmış biri
+        kadar kolay okunur ve 64 karakterde satır sonuna sarılmış girdi sizin için
+        açılır. Kodlama UTF-8 baytları üzerinden yapılır; yani şapkalı bir harf ya
+        da bir emoji gidiş dönüşten sağ çıkar."""
+
+[[faq]]
+q = "Base64 bir şifreleme mi?"
+a = """
+        Hayır; onu şifreleme sanmak klasik hatadır. Base64 bir yazımdır: aynı
+        baytların, bir URL'de, bir e-postada ya da bir JSON dizgesinde sağ kalan
+        bir alfabeyle yazılmış hali. Herkes geri okuyabilir &mdash; bu sayfa bunu
+        bir milisaniyede yapıyor &mdash; yani hiçbir şey gizlemez ve hiçbir şeyi
+        korumaz. Elinizdeki şey gizliyse, kodlanmadan önce gerçek bir şifrelemeye
+        ihtiyacı vardır; onun yerine değil."""
+
+[[faq]]
+q = "Çözme neden başarısız oldu?"
+a = """
+        Çünkü yapıştırılan şey, kodeğe söylenen şeyin tam olarak kendisi değil ve
+        hata hangi yönden olduğunu söylüyor: Base64 alfabesinin dışında bir
+        karakter, yanlış yerde dolgu, arkasında iki onaltılık basamak olmayan bir
+        yüzde işareti ya da Base64'ten çözülen ama UTF-8 metni olmayan baytlar
+        &mdash; bu da genellikle aslın bir dizge değil bir dosya olduğu anlamına
+        gelir. Tarayıcının kendi <code>atob</code>'u bunun yerine akla yatkın bir
+        şey döndürürdü; söylenmesi ise bir çözücüye bir şey yapıştırmanın bütün
+        amacıdır."""
+
+[[faq]]
+q = "İki web adresi kodlamasının farkı ne?"
+a = """
+        Tek bir değer ya da bütün adres. <em>Tek bir değeri</em> kodlamak, URL'nin
+        anlam yüklediği her şeyi kaçışlar &mdash; eğik çizgiler, soru işaretleri,
+        ve işaretleri &mdash; tek bir sorgu parametresi için istediğiniz de budur.
+        <em>Bütün bir URL'yi</em> kodlamak adresi çalışır halde bırakır: eğik
+        çizgiler ve <code>?</code> kalır, yalnızca bir URL'nin hiç taşıyamayacağı
+        karakterler kaçışlanır. İlkini bütün bir adrese uygulamak adresi bozar;
+        ikincisini bir değere uygulamak, değerin nerede bittiğini kaybettirir."""
+
+[[faq]]
+q = "Ne kadar büyük bir dosyayı kaldırabiliyor?"
+a = """
+        Burada konmuş bir sınır yok; çünkü bunun bedelini ödeyen bir sunucu yok.
+        Pratikteki tavan kendi makinenizdir: birkaç megabaytlık metin gayet iyidir;
+        çok uzun bir belgede ise sayfa, klavye için sizinle kavga etmek yerine
+        yazmanıza bir ara vermenizi bekler ve öyle yeniden kodlar."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap açmam gerekiyor mu?"
+a = """
+        Ücretsiz; hesap yok, giriş yok, deneme süresi yok ve ne kadar
+        yapıştırdığınıza dair bir sınır yok. Sitede reklam var, masrafı karşılayan
+        da o; reklamlara metniniz hakkında hiçbir şey verilmiyor."""
+
+[[faq]]
+q = "Çevrimdışı çalışıyor mu?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra internet bağlantısını kesin,
+        çalışmaya devam eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini
+        kanıtlamanın en basit yolu: metninizi çözülmek üzere uzağa gönderen bir
+        araç, siz fişi çeker çekmez dururdu."""
+
+[schema]
+description = "Base64'ü iki alfabede de kodlama ve çözme, tek bir değeri ya da bütün bir URL'yi yüzde kodlama, HTML varlıklarını, onaltılık baytları ve ters bölü kaçışlarını yazma ve geri okuma. Hepsi tarayıcıda çalışır ve hiçbir şey yüklenmez."
+features = [
+  "İki alfabede Base64, kodlanmış ve çözülmüş",
+  "Satırlara bölünmüş Base64 okur ve kötü girdinin neden kötü olduğunu tam olarak söyler",
+  "RFC 4648'in test vektörleriyle sınanmış",
+  "Tek bir değer için ve bütün bir URL için yüzde kodlaması",
+  "Beş HTML varlığı; sayısal ve adlı varlıklar geri okunur",
+  "Herhangi bir ayraçla onaltılık baytlar ve ters bölü kaçışları",
+  "UTF-8 baytlarıyla kodlar; emojiler gidiş dönüşü sağ atlatır",
+  "Yapıştırmanın yanı sıra bırakılan bir dosya üzerinde de çalışır",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok",
+]
+
+[picker]
+title = "Bir dosyayı buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; herhangi bir metin dosyası"

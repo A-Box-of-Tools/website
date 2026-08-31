@@ -69,9 +69,9 @@ complete = true
 "merge-pdf" = "juntar-pdf"
 "reverse-video" = "inverter-video"
 "split-gif" = "separar-gif-em-quadros"
-"format-json" = "formatar-json"
-"encode-text" = "codificar-base64"
-"compare-text" = "comparar-textos"
+"json-formatter" = "formatar-json"
+"base64" = "codificar-base64"
+"text-diff" = "comparar-textos"
 "trim-audio" = "cortar-audio"
 # Senha, não "palavra-passe", que é de Portugal. E no singular: quem procura
 # quer uma.

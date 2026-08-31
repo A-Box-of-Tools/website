@@ -1,0 +1,279 @@
+#
+# JSON-formatter - Dutch.
+#
+# Overrides for tools/json-formatter/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "JSON-formatter"
+heading = "JSON-formatter <span class=\"h1-kw\">&mdash; netjes neerzetten, platdrukken of omzetten</span>"
+tagline = "JSON, XML, HTML, CSS en YAML, geformatteerd of omgezet. Er wordt niets in andermans server geplakt."
+
+title = "JSON formatteren &amp; omzetten naar YAML &mdash; XML, HTML, CSS &mdash; zonder uploaden"
+description = "Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit."
+og_title = "JSON formatteren en omzetten zonder het in een server te plakken"
+og_description = "Een JSON-formatter en -omzetter op je eigen apparaat. Sleutels houden hun volgorde, getallen hun cijfers, en wat je plakt gaat nergens heen."
+og_image_alt = "JSON-formatter - formatteren, verkleinen en omzetten, zonder uploaden"
+
+pledge = """
+    Formatteren en omzetten zijn rekenwerk op een tekenreeks, hier gedaan, in
+    deze pagina. De parsers zijn met de hand geschreven en staan in
+    <code>src/</code>: <code>json.js</code>, <code>xml.js</code>,
+    <code>css.js</code>, <code>yaml.js</code>; en meer is er niet. Deze tool
+    heeft geen enkele netwerkfunctie, niets op te halen en niets te versturen,
+    en dat telt hier zwaarder dan bijna waar ook op deze site: wat mensen in een
+    formatter plakken zijn toegangstokens, sessiecookies, klantgegevens en nog
+    niet uitgebrachte code."""
+
+live_hint = """
+      Geloof ons vooral niet op ons woord. Open DevTools, hou het tabblad
+      &ldquo;Netwerk&rdquo; in de gaten en formatteer iets. Geen enkel verzoek draagt
+      één teken van wat je plakte. Of trek de stekker uit je internet en formatteer het
+      alsnog."""
+
+read_first = """
+, <code>src/json.js</code> voor de parser die je
+      sleutels in de volgorde laat staan waarin je ze schreef, en
+      <code>src/convert.js</code> voor waarom een omzetting één parser en één
+      schrijver is, zonder iets ertussen dat beide formaten tegelijk kent."""
+
+howto_heading = "Zo formatteer of zet je JSON om zonder het te uploaden"
+
+card = """
+            Formatteer en verklein JSON, XML, HTML, CSS en YAML, of zet ze in
+            elkaar om. Plak een token of een configuratiebestand zonder het aan
+            iemand te geven."""
+
+[words]
+plural = "tekst en code"
+choose = "een bestand"
+analytics_extra = """, en geen van de
+  talen die deze tool leest of schrijft"""
+
+[[facts]]
+text = "Geen upload"
+
+[[facts]]
+text = "Geen account"
+
+[[facts]]
+text = "Geen groottelimiet"
+
+[[facts]]
+text = "Werkt offline"
+
+[[facts]]
+text = "Open source"
+
+[[privacy]]
+title = "Wat je plakt kan nergens heen."
+body = """
+ In de
+      Content-Security-Policy staat elk adres dat deze pagina mag benaderen, en geen
+      daarvan is van ons. Er is hier geen eindpunt waar een geplakt token verzameld zou
+      kunnen worden, en er staat ook niets in de code dat het daarheen zou sturen als
+      dat er wel was."""
+
+[[privacy]]
+title = "Niets hier haalt iets op."
+body = """
+ Er staat nergens in <code>src/</code> een
+      <code>fetch</code>, een <code>XMLHttpRequest</code> of een
+      <code>sendBeacon</code>. Elke parser en elke schrijver zijn functies in deze
+      pagina die een tekenreeks aannemen en een tekenreeks teruggeven."""
+
+[[privacy]]
+title = "De formatters houden wat ze kregen."
+body = """
+ Een JSON-object komt terug met zijn
+      sleutels in de volgorde waarin je ze schreef en met zijn getallen gespeld zoals
+      jij ze spelde, want <code>src/json.js</code> is een parser en geen aanroep van
+      <code>JSON.parse</code>, die sleutels die op gehele getallen lijken naar voren
+      haalt en een id van twintig cijfers in de dichtstbijzijnde double verandert. De
+      tests in <code>tests/js/text-format.test.js</code> controleren precies dat."""
+
+[[privacy]]
+title = "Wat Google laadt, en wat het niet te zien krijgt."
+body = """
+ De advertentie- en
+      meetscripts komen van Google, de doneerknop van Buy Me a Coffee. Geen van alle
+      krijgt één teken van je tekst mee. Elke regel die hem leest, ontleedt of
+      wegschrijft, wordt vanaf deze herkomst geserveerd en staat in de repository."""
+
+[[privacy]]
+title = "Het werkt offline."
+body = """
+ Verbreek de verbinding en de tool werkt
+      onveranderd door, omdat er nooit een netwerkstap in zat. Eenvoudiger bewijs
+      bestaat er niet."""
+
+[[howto]]
+title = "Kies de klus."
+body = """
+ Twee tabbladen, één vak:
+      <em>Formatteren</em> zet JSON, XML, HTML, CSS en YAML netjes neer of drukt ze
+      plat; <em>Omzetten</em> maakt van JSON YAML of XML en terug. De tekst die je
+      net formatteerde is de tekst die je omzet, zonder hem twee keer te
+      plakken."""
+
+[[howto]]
+title = "Plak hem, of sleep het bestand."
+body = """
+ Alles wat je kunt selecteren en
+      kopiëren werkt. Een bestand dat je op de kiezer sleept wordt door je eigen
+      browser gelezen en in het vak gezet: er is hier geen uploadstap om over te
+      slaan."""
+
+[[howto]]
+title = "Laat hem de taal uitzoeken, of zeg het."
+body = """
+ Het menu zegt waarvoor hij de
+      tekst hield, en dat corrigeren is één klik. Een gok is niet meer dan een
+      startpunt, en daarom wordt hij getoond in plaats van stilletjes toegepast."""
+
+[[howto]]
+title = "Kies de inspringing, of pers het plat."
+body = """
+ Twee spaties, vier, of een tab.
+      Platgeperst is hetzelfde document met elke spatie die er alleen stond om het te
+      kunnen lezen eruit gehaald, en het resultaat zegt hoeveel bytes dat scheelde."""
+
+[[howto]]
+title = "Lees de fout waar de fout zit."
+body = """
+ Een parser die het hier opgeeft zegt wat
+      hij aantrof en op welke regel en kolom, in plaats van &ldquo;onverwacht token op
+      positie 4193&rdquo;. Dat is meestal genoeg om een configuratiebestand te repareren
+      zonder verder iets te openen."""
+
+[[howto]]
+title = "Neem het resultaat mee."
+body = """
+ Kopieer het, of download het als
+      bestand, genoemd naar de taal waarin het eruit kwam."""
+
+[[faq]]
+q = "Wordt mijn tekst ergens naartoe geüpload?"
+a = """
+        Nee. Elke parser en elke schrijver op deze pagina is een functie die in je
+        eigen browser draait, op je eigen hardware. Deze tool heeft geen enkele
+        netwerkfunctie: hij haalt nooit iets op en verstuurt nooit iets, en de
+        <code>Content-Security-Policy</code> van de pagina noemt elk adres dat ze
+        mag benaderen, waarvan er geen enkele van ons is. Dat is de reden om hem te
+        gebruiken voor een toegangstoken, een sessiecookie of een klantgegeven:
+        zoiets in andermans formatter plakken is het weggeven."""
+
+[[faq]]
+q = "Verandert JSON formatteren iets anders dan de opmaak?"
+a = """
+        Nee, en dat is lastiger dan het klinkt. Sleutels houden de volgorde waarin je ze
+        schreef: een formatter die op <code>JSON.parse</code> is gebouwd verplaatst
+        sleutels die op gehele getallen lijken stilletjes naar voren, dus
+        <code>{"10":a,"2":b}</code> komt terug als <code>{"2":b,"10":a}</code>. Getallen
+        houden de cijfers die je typte, dus een id van twintig cijfers raakt zijn laatste
+        drie niet kwijt aan een double en <code>1e999</code> wordt geen
+        <code>null</code>. Dubbele sleutels blijven allebei staan, want de standaard
+        zegt niet welke wint en er eentje weggooien zou voor jou kiezen zijn."""
+
+[[faq]]
+q = "Welke talen kan hij formatteren?"
+a = """
+        JSON, XML, HTML, CSS en YAML. JSON, XML, HTML en CSS kunnen ook platgeperst
+        worden; YAML niet, want zijn korte vorm is flowstijl, en die is onleesbaar, en
+        onleesbaar is het tegenovergestelde van de reden om een bestand in YAML te
+        houden. JavaScript staat er met opzet niet bij: zie de vraag daarover
+        hieronder."""
+
+[[faq]]
+q = "Waarom formatteert hij geen JavaScript, Python of SQL?"
+a = """
+        Omdat een programmeertaal netjes neerzetten betekent dat je hem echt moet
+        ontleden, en een formatter die het bijna goed doet is erger dan geen: hij levert
+        code op die er prima uitziet en iets anders doet. JSON, XML, CSS en YAML hebben
+        grammatica's die klein genoeg zijn om met de hand te lezen en met tests te
+        controleren die je zelf kunt draaien. Een JavaScript-formatter is Prettier, en
+        dat is een megabyte parser, die thuishoort in je editor en niet op een
+        webpagina."""
+
+[[faq]]
+q = "Mijn YAML zegt no en de JSON kwam eruit als tekenreeks. Waarom?"
+a = """
+        Omdat het een tekenreeks ís, en dit YAML 1.2 leest en geen 1.1. In YAML 1.1
+        waren <code>yes</code>, <code>no</code>, <code>on</code> en <code>off</code>
+        booleans, en dat is de beroemde bug die de landcode van Noorwegen in
+        <code>false</code> verandert. YAML 1.2 heeft dat geschrapt en deze tool ook:
+        alleen <code>true</code>, <code>false</code>, <code>null</code> en
+        <code>~</code> worden als iets anders dan tekst gelezen. De andere kant op
+        worden die woorden <em>tussen aanhalingstekens</em> teruggeschreven, ook al zou
+        deze tool ze zonder die tekens ook als tekst lezen, want wat het bestand daarna
+        opent misschien niet. PyYAML staat nog altijd standaard op 1.1. Streng lezen en
+        behoudend schrijven is de enige combinatie die beide kanten op klopt."""
+
+[[faq]]
+q = "Wat gaat er verloren bij het omzetten van YAML naar JSON?"
+a = """
+        Opmerkingen, want JSON heeft er geen plek voor. Ankers, aliassen en tags worden
+        botweg geweigerd in plaats van geraden: elk daarvan zegt iets wat JSON niet kan
+        zeggen, en een omzetter die stilletjes een uitleg koos zou je een document geven
+        dat niet is wat het bestand zei. De andere kant op gaat er niets verloren: elk
+        JSON-document is al een YAML-document."""
+
+[[faq]]
+q = "Wat gaat er verloren bij het omzetten van JSON naar XML?"
+a = """
+        Het verschil tussen een leeg object, een lege array en een lege tekenreeks, die
+        alle drie een leeg element worden, en het type van elke waarde, want XML heeft
+        geen types. Daarom laat de omgekeerde omzetting alles tekenreeks in plaats van te
+        besluiten dat <code>8080</code> een getal was. Een array wordt een herhaald
+        element, want dat is de enige vorm die weer teruggelezen kan worden, en bij een
+        sleutel die een elementnaam niet kan dragen worden de lastige tekens vervangen,
+        in plaats van een document uit te spugen dat geen enkele parser leest."""
+
+[[faq]]
+q = "Verandert HTML opnieuw inspringen hoe de pagina eruitziet?"
+a = """
+        Dat kan, en daar is deze tool eerlijk over. Witruimte tussen twee inline-elementen
+        is een spatie tussen twee woorden, dus die verplaatsen is niet gratis. Twee
+        dingen houden dat in toom: <code>&lt;pre&gt;</code> en
+        <code>&lt;textarea&gt;</code> worden precies overgenomen zoals ze waren, en een
+        element dat niets dan tekst bevat blijft op één regel staan. Al het andere wordt
+        netjes neergezet."""
+
+[[faq]]
+q = "Hoe groot mag het bestand zijn?"
+a = """
+        Hier is geen limiet ingesteld, want er is geen server die ervoor betaalt. Het
+        echte plafond is je eigen machine: een paar megabyte JSON gaat prima, en bij
+        een heel lang document wacht de pagina op een pauze in je typen voordat ze
+        opnieuw formatteert, in plaats van met je om het toetsenbord te vechten."""
+
+[[faq]]
+q = "Is het gratis, en heb ik een account nodig?"
+a = """
+        Het is gratis, en er komt geen account, geen inlog, geen proefperiode en geen
+        limiet op hoeveel je plakt aan te pas. De site draait op advertenties, en die
+        betalen hem; die advertenties krijgen niets over je tekst mee."""
+
+[[faq]]
+q = "Werkt het offline?"
+a = """
+        Ja. Laad de pagina één keer, verbreek daarna je internetverbinding en hij werkt
+        gewoon door. Dat is meteen de eenvoudigste manier om te bewijzen dat er niets
+        geüpload wordt, want een tool die je tekst wegstuurde om hem te laten formatteren
+        zou ermee ophouden zodra je de stekker eruit trok."""
+
+[schema]
+description = "JSON, XML, HTML, CSS en YAML formatteren en verkleinen, en JSON omzetten naar YAML of XML en terug. De parsers draaien in de browser en er wordt niets geüpload."
+features = [
+  "Formatteert en minifyt JSON, XML, HTML en CSS, en zet YAML netjes neer",
+  "Behoudt de volgorde van JSON-sleutels en de exacte cijfers van elk getal",
+  "Zegt op welke regel en kolom een fout zit, in woorden",
+  "Zet JSON om naar YAML en XML, en terug, en zegt wat elke richting kost",
+  "Leest YAML 1.2, zodat yes en no tekenreeksen blijven",
+  "Werkt net zo goed met een gesleept bestand als met geplakte tekst",
+  "Werkt offline; geen upload, geen account",
+]
+
+[picker]
+title = "Sleep hier een bestand naartoe"
+hint = "of klik om te bladeren &mdash; elk tekstbestand"

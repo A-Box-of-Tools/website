@@ -3,7 +3,7 @@
  * when there is one.
  */
 
-export const tool = 'format-json';
+export const tool = 'json-formatter';
 
 export const data = {
   MESSY: '{"name":"orders-api","version":"2.5.1","limits":{"rate":100,'

@@ -469,7 +469,7 @@ test('a control with no id has no name on the other side, so it is skipped', asy
  * version of this file asked every control for an id and skipped the ones that
  * had none - so a language switch handed the image back and threw away the one
  * setting that says what to do with it. Same shape in compress-pdf,
- * document-scanner, dicom-viewer, edit-audio, encode-text, image-to-data-uri,
+ * base64, document-scanner, dicom-viewer, edit-audio, image-to-data-uri,
  * merge-pdf, trim-audio and trim-video.
  */
 function radios(name, values, checked) {
@@ -626,7 +626,7 @@ test('the far side of a switch hands the work back', async () => {
 test('a file coming back says so, for exactly as long as it takes to say it', async () => {
   // A tool that places a file by looking at what is already on the page needs
   // to know the difference between a file arriving and a file coming back.
-  // compare-text puts a single dropped file into whichever box is empty, which
+  // text-diff puts a single dropped file into whichever box is empty, which
   // is right for a drop and wrong for a restore: it reads the file
   // asynchronously, the settings land while it is still reading, and by the
   // time it looks the box the file came out of is full again - so it files the

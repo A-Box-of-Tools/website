@@ -1,0 +1,246 @@
+#
+# Textvergleich - German.
+#
+# Overrides for tools/text-diff/tool.toml. Only words: the slug, the category,
+# the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Textvergleich"
+heading = "Textvergleich <span class=\"h1-kw\">&mdash; zwei Texte nebeneinander vergleichen</span>"
+tagline = "Zwei Texte hinein, jeder Unterschied markiert, Zeile für Zeile und Wort für Wort. Nichts davon wird in den Server eines anderen eingefügt."
+
+title = "Texte vergleichen &mdash; Diff nebeneinander &mdash; ohne Upload"
+description = "Zwei Texte vergleichen und jeden Unterschied sehen, Zeile für Zeile und Wort für Wort, nebeneinander oder in einer Spalte. Der Vergleich läuft in Ihrem Browser, hochgeladen wird nichts - unveröffentlichter Code verlässt Ihr Gerät also nie."
+og_title = "Zwei Texte vergleichen, ohne sie in einen Server einzufügen"
+og_description = "Ein Diff auf Ihrem eigenen Gerät. Zeilen- und Wortunterschiede, nebeneinander, und ein Patch, den ein Code-Review lesen kann - und was Sie einfügen, geht nirgendwohin."
+og_image_alt = "Textvergleich - zwei Texte vergleichen, ohne Upload"
+
+pledge = """
+    Ein Vergleich ist Rechnen auf zwei Zeichenketten, und zwar hier, auf dieser
+    Seite. Der Algorithmus ist der von Myers &mdash; derselbe, den
+    <code>git diff</code> benutzt &mdash;, von Hand geschrieben in
+    <code>src/diff.js</code>, wo Sie ihn lesen können. Eine Netzfunktion hat
+    dieses Werkzeug überhaupt nicht, weder etwas abzurufen noch etwas zu senden.
+    Das zählt hier, denn was Menschen vergleichen, sind Verträge,
+    Konfigurationsdateien und unveröffentlichter Code, und zwar paarweise."""
+
+live_hint = """
+      Sie müssen uns nicht glauben. Öffnen Sie die DevTools, sehen Sie im Tab
+      &bdquo;Netzwerk&ldquo; zu und vergleichen Sie etwas. Keine einzige Anfrage
+      trägt ein Zeichen dessen, was Sie eingefügt haben. Oder trennen Sie die
+      Internetverbindung und vergleichen Sie es trotzdem."""
+
+read_first = """
+ und <code>src/diff.js</code> für den
+      Myers-Algorithmus, den Wortvergleich innerhalb jeder geänderten Zeile und die
+      drei Sicherungen, die verhindern, dass ein pathologischer Vergleich die Seite
+      einfriert."""
+
+howto_heading = "So vergleichen Sie zwei Texte, ohne sie hochzuladen"
+
+card = """
+            Zwei Texte vergleichen und sehen, was sich geändert hat, Zeile für
+            Zeile und Wort für Wort. Fügen Sie einen Vertrag oder
+            unveröffentlichten Code ein, ohne ihn jemandem zu geben."""
+
+[words]
+plural = "Texte"
+choose = "eine Datei"
+analytics_extra = """, und keine der
+  beiden Seiten dessen, was dieses Werkzeug vergleicht"""
+
+[[facts]]
+text = "Kein Upload"
+
+[[facts]]
+text = "Kein Konto"
+
+[[facts]]
+text = "Keine Größengrenze"
+
+[[facts]]
+text = "Funktioniert offline"
+
+[[facts]]
+text = "Quelloffen"
+
+[[privacy]]
+title = "Was Sie einfügen, hat keinen Weg nach draußen."
+body = """
+ In der
+      Content-Security-Policy steht jede Adresse, die diese Seite kontaktieren darf,
+      und keine einzige davon gehört uns. Es gibt hier keinen Endpunkt, an dem ein
+      eingefügtes Token eingesammelt werden könnte, und im Code steht auch nichts, das
+      es dorthin schicken würde, gäbe es einen."""
+
+[[privacy]]
+title = "Nichts hier ruft etwas ab."
+body = """
+ In <code>src/</code> gibt es nirgends ein
+      <code>fetch</code>, kein <code>XMLHttpRequest</code> und kein
+      <code>sendBeacon</code>. Der Vergleich ist eine Funktion auf dieser Seite,
+      die zwei Zeichenketten nimmt und zurückgibt, was sich geändert hat."""
+
+[[privacy]]
+title = "Der Algorithmus ist der übliche, vollständig lesbar."
+body = """
+ Der Myers-Algorithmus für das
+      kürzeste Änderungsskript, derselbe, den <code>git diff</code> benutzt, von
+      Hand geschrieben in <code>src/diff.js</code>, mit den Entscheidungen
+      kommentiert. Die Tests in <code>tests/js/text-diff.test.js</code> beweisen,
+      dass die Löschungen den linken Text wieder aufbauen und die Einfügungen den
+      rechten, und genau das heißt bei einem Diff korrekt."""
+
+[[privacy]]
+title = "Was Google lädt und was Google nicht bekommt."
+body = """
+ Die Werbe- und
+      Messskripte kommen von Google, der Spenden-Button von Buy Me a Coffee. Keinem
+      davon wird ein Zeichen Ihres Textes übergeben. Jede Zeile, die ihn liest,
+      auswertet oder schreibt, kommt von dieser Domain selbst und steht im
+      Repository."""
+
+[[privacy]]
+title = "Es funktioniert offline."
+body = """
+ Trennen Sie die Netzverbindung, und das
+      Werkzeug bleibt unverändert, weil darin nie ein Schritt über das Netz vorgesehen
+      war. Einen einfacheren Beweis gibt es nicht."""
+
+[[howto]]
+title = "Fügen Sie beide Texte ein, oder ziehen Sie die beiden Dateien her."
+body = """
+ Das Original links, die geänderte
+      Fassung rechts. Zwei zugleich auf das Auswahlfeld gezogene Dateien landen je
+      eine auf jeder Seite, in der Reihenfolge, in der Sie sie fallen gelassen
+      haben; tauschen Sie die Seiten, wenn es andersherum war."""
+
+[[howto]]
+title = "Wählen Sie, wie Sie es lesen."
+body = """
+ Nebeneinander oder in einer Spalte. Ein
+      Telefon beginnt mit einer Spalte, denn nebeneinander braucht zwei
+      Textspalten, und ein Telefon hat Platz für ungefähr eine; das Menü ist so
+      oder so gleich daneben."""
+
+[[howto]]
+title = "Ignorieren Sie, was keine Rolle spielt."
+body = """
+ Leerraum, Groß- und Kleinschreibung,
+      leere Zeilen &mdash; jedes davon lässt sich ignorieren, damit eine neu
+      formatierte Datei nicht wie hundert Änderungen aussieht. Standardmäßig wird
+      die unveränderte Mitte zu einer Zahl zusammengeklappt, mit drei Zeilen zu
+      beiden Seiten jeder Änderung."""
+
+[[howto]]
+title = "Lesen Sie, was sich geändert hat."
+body = """
+ Entfernte Zeilen sind links markiert,
+      hinzugekommene rechts, und innerhalb einer geänderten Zeile sind die Wörter
+      hervorgehoben, die sich unterscheiden &mdash; ein Vergleich zweier Absätze
+      zeigt also das verschobene Wort und nicht zwei ganze Absätze."""
+
+[[howto]]
+title = "Nehmen Sie den Patch mit."
+body = """
+ Der Download ist ein <code>.patch</code>
+      im Unified-Format, und genau das erwarten ein Code-Review,
+      <code>git apply</code> und jeder Diff-Betrachter. Kopieren legt dasselbe in
+      Ihre Zwischenablage."""
+
+[[faq]]
+q = "Werden meine Texte irgendwohin hochgeladen?"
+a = """
+        Nein. Der Vergleich ist eine Funktion, die in Ihrem eigenen Browser auf
+        Ihrer eigenen Hardware läuft. Eine Netzfunktion hat dieses Werkzeug
+        überhaupt nicht, es ruft nie etwas ab und sendet nie etwas, und in der
+        <code>Content-Security-Policy</code> der Seite steht jede Adresse, die sie
+        kontaktieren darf; keine davon gehört uns. Genau deshalb sollte man es für
+        einen Vertrag, eine Konfigurationsdatei oder unveröffentlichten Code
+        nehmen: So etwas in den Diff-Checker eines anderen einzufügen, heißt, beide
+        Fassungen auf einmal herzugeben."""
+
+[[faq]]
+q = "Was macht der Vergleich eigentlich?"
+a = """
+        Er findet die kürzeste Folge von Änderungen, die den linken Text in den rechten
+        verwandelt, mit dem Myers-Algorithmus, demselben, den <code>git diff</code>
+        benutzt. Am kürzesten ist das, was einen Vergleich lesbar macht: Eine in der
+        Mitte eingefügte Zeile sollte als eine Einfügung erscheinen und nicht so, als
+        hätte sich jede Zeile danach geändert. Innerhalb einer geänderten Zeile werden
+        auch die Wörter markiert, die sich unterscheiden, ein Vergleich zweier Absätze
+        zeigt also das verschobene Wort und nicht zwei ganze Absätze."""
+
+[[faq]]
+q = "Kann es zwei Dateien statt zweier Einfügungen vergleichen?"
+a = """
+        Ja. Ziehen Sie beide zugleich auf das Auswahlfeld, dann landen sie je auf
+        einer Seite, in der Reihenfolge, in der Sie sie fallen gelassen haben. Ihr
+        Browser liest sie in diese Seite hinein, und weiter kommen sie nicht. Wenn
+        Sie sie falsch herum abgelegt haben, tauschen Sie die Seiten."""
+
+[[faq]]
+q = "Was kommt bei einem Vergleich heraus, und kann ich es anwenden?"
+a = """
+        Der Download ist ein Unified Diff, also das Format mit
+        <code>@@ -3,5 +3,5 @@</code>, das <code>git apply</code>, <code>patch</code>
+        und jedes Code-Review-Werkzeug lesen. Kopieren legt dasselbe in Ihre
+        Zwischenablage. Was auf dem Bildschirm steht, ist eine Ansicht davon:
+        nebeneinander oder in einer Spalte, wobei die unveränderten Teile zu einer Zahl
+        zusammengeklappt sind, sofern Sie nicht alle sehen wollen."""
+
+[[faq]]
+q = "Kann es Leerraum, Groß- und Kleinschreibung oder leere Zeilen ignorieren?"
+a = """
+        Ja, jedes für sich. Leerraum zu ignorieren lässt eine neu formatierte Datei
+        als unverändert vergleichen; Groß- und Kleinschreibung zu ignorieren
+        behandelt <code>Error</code> und <code>error</code> als dasselbe Wort; leere
+        Zeilen zu ignorieren überspringt die Zeilen, die nichts enthalten. Die
+        Zählung über dem Ergebnis sagt dann, dass die beiden gleich sind, sobald die
+        Unterschiede ignoriert sind, die Sie ignorieren wollten &mdash; was nicht
+        dieselbe Aussage ist wie identisch, und die Seite hält die beiden Aussagen
+        auseinander."""
+
+[[faq]]
+q = "Wie groß darf der Vergleich sein?"
+a = """
+        Hier ist keine Grenze gesetzt, denn es zahlt kein Server dafür. Zwei Texte
+        von zwanzigtausend Zeilen mit einer Handvoll Änderungen vergleichen sich
+        sofort, denn der gemeinsame Anfang und das gemeinsame Ende werden
+        abgeschnitten, bevor die eigentliche Arbeit beginnt. Ein Vergleich zweier
+        Texte, die überhaupt nichts gemeinsam haben, hört früh auf und sagt das,
+        statt eine Minute damit zu verbringen, das Offensichtliche zu beweisen, und
+        ein sehr langer Vergleich zeichnet die ersten paar tausend Zeilen und
+        überlässt den Rest dem heruntergeladenen Patch."""
+
+[[faq]]
+q = "Ist es kostenlos, und brauche ich ein Konto?"
+a = """
+        Es ist kostenlos, und es gibt kein Konto, keine Anmeldung, keine Testphase und
+        keine Grenze dafür, wie viel Sie einfügen. Bezahlt wird die Seite über Werbung,
+        und den Anzeigen wird nichts über Ihren Text übergeben."""
+
+[[faq]]
+q = "Funktioniert es offline?"
+a = """
+        Ja. Laden Sie die Seite einmal, trennen Sie dann die Internetverbindung, und
+        sie arbeitet weiter. Das ist zugleich der einfachste Beweis dafür, dass
+        nichts hochgeladen wird. Ein Werkzeug, das Ihre Texte zum Vergleichen
+        wegschickt, bliebe in dem Moment stehen, in dem Sie den Stecker ziehen."""
+
+[schema]
+description = "Zwei Texte mit einem Zeilen- und Wortvergleich vergleichen, nebeneinander oder in einer Spalte, und das Ergebnis als Unified Patch herunterladen. Der Vergleich läuft im Browser, und es wird nichts hochgeladen."
+features = [
+  "Vergleicht zwei Texte mit dem Myers-Algorithmus, nebeneinander oder in einer Spalte",
+  "Markiert die geänderten Wörter innerhalb einer geänderten Zeile",
+  "Nebeneinander oder in einer Spalte, mit der unveränderten Mitte zu einer Zahl zusammengeklappt",
+  "Ignoriert Leerraum, Groß- und Kleinschreibung oder leere Zeilen, jedes für sich",
+  "Lädt einen Vergleich als Unified Diff herunter, den ein Code-Review lesen kann",
+  "Vergleicht zwei hergezogene Dateien so leicht wie zwei Einfügungen",
+  "Schneidet gemeinsamen Anfang und gemeinsames Ende ab, lange ähnliche Dateien vergleichen sich also sofort",
+  "Läuft offline; kein Upload, kein Konto",
+]
+
+[picker]
+title = "Zwei Dateien hierher ziehen"
+hint = "oder klicken und auswählen &mdash; beliebige Textdateien, eine für jede Seite"

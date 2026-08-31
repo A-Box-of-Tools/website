@@ -88,9 +88,9 @@ complete = true
 # Four jobs, one address, and the one people arrive looking for is the JSON
 # formatter. 포맷터 rather than the standard 포매터, because the slug follows
 # what is typed and dev writing types 포맷터.
-"format-json" = "json-포맷터"
-"encode-text" = "base64-인코딩"
-"compare-text" = "텍스트-비교"
+"json-formatter" = "json-포맷터"
+"base64" = "base64-인코딩"
+"text-diff" = "텍스트-비교"
 # 자르기 on its own reads as trimming in Korean, which is what this tool does.
 # Cropping the picture is 화면-자르기, above.
 "trim-video" = "동영상-자르기"

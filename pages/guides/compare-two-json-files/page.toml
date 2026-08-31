@@ -7,15 +7,15 @@
 # diff of two JSON files is mostly noise - indentation, line wrapping, key
 # order - and the fix is not a smarter diff but a canonical form.
 #
-# `tool` points at compare-text: the diff is the page this guide ends on, and
-# compare-text was the one tool in the chain without a guide.
+# `tool` points at text-diff: the diff is the page this guide ends on, and
+# text-diff was the one tool in the chain without a guide.
 #
 
 slug = "guides/compare-two-json-files"
 kind = "guide"
 nav = "Compare two JSON files"
 group = "workflows"
-tool = "compare-text"
+tool = "text-diff"
 
 title = "How to Compare Two JSON Files &mdash; Without the Formatting Noise"
 description = "Format both files the same way, sort the keys, then diff them. Why a raw JSON diff is mostly noise, how to canonicalise both sides in the browser, and what survives to the patch."
