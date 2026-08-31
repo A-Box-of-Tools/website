@@ -3,9 +3,10 @@
  *
  * WHY THEY ARE NOT ALL GENERATED
  *
- * figures.js can build a body out of a table of proportions, and for the
- * toddler it still does. For everybody else, artwork somebody drew beats
- * arithmetic: clothes, a pose, hair, the shape of a shoe on the floor.
+ * Artwork somebody drew beats arithmetic: clothes, a pose, hair, the shape of a
+ * shoe on the floor. figures.js used to build one figure out of a table of body
+ * proportions and it is not missed - a chart of four drawings in one hand beats
+ * a chart of five in two.
  *
  * WHY EVERY ONE OF THEM HAD TO BE PUBLIC DOMAIN
  *
@@ -26,6 +27,10 @@
  * smoothed, and `smoothed` records that it is, so that
  * tests/js/compare-heights-traced.test.js can re-derive him from vendor/ and
  * fail if a character has moved.
+ *
+ * `defaultCm` is the height a row starts at when somebody adds this figure. It
+ * is a starting point to type over rather than a claim about averages, and it
+ * is here rather than in the interface because it belongs to the figure.
  *
  * `box` is the bounding box of the paths as they ship, measured with getBBox()
  * in a browser, and `inner` is that box mapped onto the unit box every figure
@@ -49,6 +54,7 @@ export const TRACED = {
     // scripts/smooth-outline.mjs walks it at even spacing, averages the
     // wobble out and lays a spline back through it; the test re-runs that over
     // vendor/ and fails if this is not what comes out.
+    defaultCm: 175,
     width: 0.325493,
     inner: "scale(0.0020010875050747792) translate(-82.90021800994873 -0.588546633720398)",
     paths: [
@@ -64,6 +70,7 @@ export const TRACED = {
     sha256: "81042d26de19795ccd57608c156cbce746f87ff54113a960fa2c677d71735437",
     smoothed: false,
     // As published: clean vector work that needed nothing doing to it.
+    defaultCm: 162,
     width: 0.300322,
     inner: "scale(0.0012132594506905634) translate(-209.6253890991211 -56.698936462402344)",
     paths: [
@@ -81,6 +88,7 @@ export const TRACED = {
     // As published. One carriage return became a newline on the way in,
     // because every text file in this repository is LF and git would have
     // done it anyway; the digest below is of the file as it ships.
+    defaultCm: 130,
     width: 0.395784,
     inner: "scale(0.002161911951438264) translate(-91.53494678623974 0.0008490476757287979)",
     paths: [
@@ -96,6 +104,7 @@ export const TRACED = {
     sha256: "a9824711cccc01f857939482422211e7ad47e25742dc675c1e489a6246568d4a",
     smoothed: false,
     // As published. Eight subpaths, and all eight are the girl.
+    defaultCm: 128,
     width: 0.413433,
     inner: "scale(0.00024017918680815817) translate(-951.9933624267578 -52.06360626220703)",
     paths: [

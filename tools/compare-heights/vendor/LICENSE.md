@@ -59,6 +59,7 @@ path data has to be inside it. `../src/traced.js` carries that data, along with
 the bounding box each figure was measured at and the transform that puts it in
 the unit box every figure in `../src/figures.js` lives in.
 
-The toddler is not here because there is nothing to put here: below school age
-the public domain runs out. It is built by `../src/figures.js` from a table of
-body proportions, which is also what keeps it from being an adult made small.
+There is nobody smaller than the boy and the girl because there is nothing to
+put here: below school age the public domain runs out. A toddler built from a
+table of body proportions stood here for a while and was the only figure on the
+chart nobody had drawn; it looked it, and it is gone.

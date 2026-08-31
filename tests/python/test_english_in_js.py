@@ -59,10 +59,10 @@ TOOLS = ROOT / 'tools'
 BASELINE = {
     'base64': 0,
     # Not one of these is a sentence: three are fragments of the SVG the chart
-    # writes, one is the two path commands figures.js chooses between, and one
-    # is the filename of a vendored drawing. Everything this tool says to a
-    # visitor is already in its #phrases block.
-    'compare-heights': 5,
+    # writes and one is the filename of a vendored drawing. Everything this tool
+    # says to a visitor is already in its #phrases block. It was five until the
+    # built toddler went and took figures.js's path commands with it.
+    'compare-heights': 4,
     'compress-image': 2,
     'compress-pdf': 6,
     'crop-video': 0,
