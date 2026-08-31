@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/exif-editor/:';
-const CACHE_NAME=CACHE_PREFIX+'d3960a3e8f';
+const CACHE_NAME=CACHE_PREFIX+'65a5389653';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=719ede291d',
+'styles.css?v=588807629a',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

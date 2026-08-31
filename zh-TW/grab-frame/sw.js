@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/grab-frame/:';
-const CACHE_NAME=CACHE_PREFIX+'ec0c8255ce';
+const CACHE_NAME=CACHE_PREFIX+'389aebb253';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=2394a86dbe',
+'styles.css?v=e34515b041',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/pdf-verkleinern/:';
-const CACHE_NAME=CACHE_PREFIX+'1a4b2255b1';
+const CACHE_NAME=CACHE_PREFIX+'c77a5a357d';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4c76950d67',
+'styles.css?v=e44146b316',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',

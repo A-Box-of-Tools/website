@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/دمج-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'53b55d033a';
+const CACHE_NAME=CACHE_PREFIX+'e9de06cf59';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0436e400f3',
+'styles.css?v=2f45589fcf',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/file-picker.js',
