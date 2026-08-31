@@ -39,7 +39,7 @@ const PALETTE=[
 '#4a80d4','#e0794a','#3f9e72','#a668c8',
 '#c9913a','#3f9fae','#cc6188','#7c8797',
 ];
-const PEOPLE_ORDER=['man','woman','boy','girl','toddler'];
+const PEOPLE_ORDER=['man','woman','boy','girl'];
 let rows=[];
 let counter=0;
 let current=null;
@@ -57,11 +57,12 @@ return phrase(unit()==='ft'?'row.heightexampleft':'row.heightexample');
 function addRow(shape,values={}){
 if(rows.length>=MOST)return null;
 counter+=1;
+const start=shapeOf(shape).defaultCm;
 const row={
 key:counter,
 shape,
 name:values.name??'',
-height:values.height??'',
+height:values.height??(start?toInput(start,unit()):''),
 width:values.width??'',
 colour:values.colour??PALETTE[(rows.length)%PALETTE.length],
 };
@@ -77,7 +78,13 @@ shape.className='row-shape';
 for(const option of SHAPES)shape.append(new Option(phrase(option.label),option.id));
 shape.value=row.shape;
 shape.addEventListener('change',()=>{
+const was=shapeOf(row.shape).defaultCm;
 row.shape=shape.value;
+const now=shapeOf(row.shape).defaultCm;
+if(now&&was&&row.height.trim()===toInput(was,unit())){
+row.height=toInput(now,unit());
+height.value=row.height;
+}
 node.classList.toggle('is-object',row.shape==='object');
 draw();
 });
@@ -111,19 +118,16 @@ colour.type='color';
 colour.className='row-colour';
 colour.value=row.colour;
 colour.addEventListener('input',()=>{row.colour=colour.value;draw();});
+const grip=document.createElement('span');
+grip.className='row-grip';
+grip.setAttribute('aria-hidden','true');
+grip.title=phrase('row.drag');
+grip.textContent='⠿';
+grip.addEventListener('pointerdown',(event)=>startDrag(event,row));
 const tools=document.createElement('div');
 tools.className='row-tools';
-const move=(by)=>{
-const at=rows.indexOf(row);
-const to=at+by;
-if(to<0||to>=rows.length)return;
-rows.splice(at,1);
-rows.splice(to,0,row);
-paintRows();
-draw();
-};
-const up=iconButton('&#8592;',()=>move(-1));
-const down=iconButton('&#8594;',()=>move(1));
+const up=iconButton('&#8593;',()=>move(row,-1));
+const down=iconButton('&#8595;',()=>move(row,1));
 const remove=iconButton('&#215;',()=>{
 rows=rows.filter((other)=>other!==row);
 paintRows();
@@ -131,12 +135,61 @@ draw();
 });
 remove.classList.add('danger');
 tools.append(up,down,remove);
-node.append(shape,name,heightCell,width,colour,tools);
+node.append(grip,shape,name,heightCell,width,colour,tools);
 node.classList.toggle('is-object',row.shape==='object');
 row.controls={
 shape,name,height,width,colour,up,down,remove,reads,
 };
 return node;
+}
+function reorder(row,to){
+const at=rows.indexOf(row);
+if(to<0||to>=rows.length||to===at)return false;
+rows.splice(at,1);
+rows.splice(to,0,row);
+if(el.order.value!=='entered')el.order.value='entered';
+return true;
+}
+function move(row,by){
+if(!reorder(row,rows.indexOf(row)+by))return;
+paintRows();
+draw();
+row.controls[by<0?'up':'down'].focus();
+}
+let dragged=null;
+function slotAt(y){
+for(let i=0;i<rows.length;i+=1){
+const box=rows[i].node.getBoundingClientRect();
+if(y<box.top+box.height/2)return i;
+}
+return rows.length-1;
+}
+function onDragMove(event){
+if(!dragged)return;
+event.preventDefault();
+if(reorder(dragged,slotAt(event.clientY))){
+paintRows();
+draw();
+}
+}
+function endDrag(){
+if(!dragged)return;
+dragged.node.classList.remove('is-dragging');
+dragged=null;
+document.body.classList.remove('is-reordering');
+window.removeEventListener('pointermove',onDragMove);
+window.removeEventListener('pointerup',endDrag);
+window.removeEventListener('pointercancel',endDrag);
+}
+function startDrag(event,row){
+if(event.button>0)return;
+event.preventDefault();
+dragged=row;
+row.node.classList.add('is-dragging');
+document.body.classList.add('is-reordering');
+window.addEventListener('pointermove',onDragMove,{passive:false});
+window.addEventListener('pointerup',endDrag);
+window.addEventListener('pointercancel',endDrag);
 }
 function iconButton(html,onClick){
 const button=document.createElement('button');
@@ -174,8 +227,8 @@ for(const row of rows){
 const parsed=parseHeight(row.height,unit());
 const{reads}=row.controls;
 if(parsed.error){
-reads.textContent=row.height.trim()?phrase(parsed.error):phrase('height.empty');
-reads.className=`row-reads${row.height.trim() ? ' bad' : ''}`;
+reads.textContent=phrase(parsed.error);
+reads.className='row-reads bad';
 continue;
 }
 reads.textContent=phrase('row.reads',{height:formatBoth(parsed.cm,unit())});
@@ -207,7 +260,7 @@ const figures=sorted(readRows());
 if(!figures.length){
 current=null;
 el.preview.replaceChildren();
-el.facts.textContent=phrase('chart.empty');
+el.facts.textContent=phrase(rows.length?'chart.noheights':'chart.empty');
 setDownloads(false);
 return;
 }
@@ -383,8 +436,8 @@ el.inputError.textContent=phrase('error.broke',{
 detail:event.reason?.message??event.reason,
 });
 });
-addRow('man',{height:toInput(178,'cm')});
-addRow('woman',{height:toInput(165,'cm')});
+addRow('man');
+addRow('woman');
 paintRows();
 draw();
 monitorNetwork();
