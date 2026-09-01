@@ -1,0 +1,35 @@
+#
+# Guide: trace an image into an SVG.
+#
+# The guide that has to say no as clearly as it says yes. Half the people who
+# search for "image to SVG" have a photograph and want it back as vector art,
+# and there is no version of this tool that gives them that - so the guide
+# spends its second section on which pictures trace and which do not, rather
+# than leaving them to find out after downloading a megabyte of blobs.
+#
+# Claims image-to-svg.
+#
+
+slug = "guides/trace-an-image-into-an-svg"
+kind = "guide"
+nav = "Trace an image into an SVG"
+group = "doing-the-job"
+tool = "image-to-svg"
+
+title = "How to Trace an Image into an SVG &mdash; Without Uploading It"
+description = "Turn a logo, a stencil, a signature or a silhouette into a real vector outline in your browser. Which pictures trace well, which never will, and how to fix the parts the tracer gets wrong."
+
+heading = "How to trace an image into an SVG"
+lede = """
+    A PNG enlarged is a staircase. An SVG is instructions for drawing, so it
+    is sharp at any size &mdash; and turning one into the other is called
+    tracing. It works beautifully on shapes and badly on photographs, and
+    the difference is worth understanding before you start."""
+
+updated = "31 August 2026"
+published = "2026-08-31"
+lastmod = "2026-08-31"
+
+og_title = "Trace a logo or a silhouette into an SVG, in your browser"
+og_description = "Which pictures trace into clean curves, which come back as four thousand blobs, and how to click away the parts that should not be there. Nothing is uploaded."
+og_image_alt = "abox.tools - tools that never touch a server"

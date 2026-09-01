@@ -96,6 +96,7 @@ BASELINE = {
     # A CSS class name and one line of the CSS rule the tool writes out.
     'image-to-data-uri': 2,
     'image-to-ico': 6,
+    'image-to-svg': 0,
     # The /Producer string written into the PDF, five lines of PDF syntax, a
     # CSS pixel value, a key template and the output filename.
     'images-to-pdf': 9,

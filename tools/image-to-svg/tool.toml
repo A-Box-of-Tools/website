@@ -1,0 +1,375 @@
+#
+# Image to SVG
+#
+# Everything on the generated page that is particular to this tool. The frame
+# around it - the header, the pledge, the live check, the privacy panel and the
+# footer - comes from templates/tool.html, and the parts that are true of the
+# whole site, the Content-Security-Policy among them, from config/site.toml.
+#
+# THE ONE THING TO KNOW ABOUT THIS TOOL
+#
+# It traces SHAPES, not photographs, and the page says so in several places on
+# purpose. A photograph traced as though it were line art comes back as four
+# thousand overlapping blobs and a megabyte and a half of path, which is worse
+# than the JPEG in every way a person could measure. That is not a bug to fix
+# later: it is what tracing is, and docs/what-can-be-built-here.md ruled the
+# whole idea out on those grounds until the tool was built with the refusal in
+# it. src/main.js stops drawing past a thousand loops and says what happened.
+#
+
+slug = "image-to-svg"
+name = "Image to SVG"
+# The trailing span is the phrase people search for. The product name stays the
+# loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
+heading = "Image&nbsp;to&nbsp;SVG <span class=\"h1-kw\">&mdash; trace a logo, a stencil or a silhouette into curves</span>"
+tagline = "One shape, one outline. Point at whatever should not be there."
+icon = "&#10002;&#65039;"   # the mark beside the page heading
+favicon = "&#10002;"        # the tab icon, drawn into an inline SVG
+# The drawn mark the pages wear, by its name in shared/icons - Lucide,
+# vendored. It is the mark gif-analyzer wears too, and for the same reason:
+# both pages look at a picture and work out what is in it. `shapes` would have
+# been the obvious choice and belongs to /svg-to-image/, which is this tool
+# backwards; two neighbouring cards in one category wearing one mark would say
+# they were the same tool.
+glyph = "scan-search"
+category = "images"
+# Which group on the roadmap this tool joins, by the id in config/planned.toml.
+roadmap_group = "images"
+
+# Optional stylesheets from shared/css, dropped in between the frame and this
+# tool's own rules. file-list is not among them: this tool takes one picture,
+# so there is no list to draw.
+css_parts = []
+# Shared modules this tool asks for. file-picker brings in the drop zone;
+# phrases arrives on its own, for every tool.
+js_parts = ["file-picker"]
+lastmod = "2026-08-31"
+
+# --- what search engines and chat apps are told ------------------------------
+
+title = "Image to SVG &mdash; Trace a Logo or Silhouette to Vector, No Upload"
+description = "Trace a black and white image into a real SVG outline, in your browser. Logos, stencils, signatures, line art and silhouettes become curves you can scale to any size. Click to drop anything the trace got wrong. Nothing is uploaded."
+og_title = "Turn a logo or a silhouette into an SVG, without uploading it"
+og_description = "A bitmap enlarged is a staircase; an outline is instructions. This finds the shape, fits curves to it, and lets you click away whatever should not be there - all on your own machine."
+og_image_alt = "Image to SVG - trace a logo, a stencil or a silhouette into curves"
+
+# The subtitle on the share card that og-image.ps1 draws into og.png. The
+# card's heading is `name` above and its footer is the same line on every
+# card, so this is the only part of it that belongs to this tool.
+og_card = "Trace a logo, a stencil or a silhouette into real curves, on your own machine."
+
+# Appended to the Content-Security-Policy comment in the generated page, for
+# whatever this tool needs that the rest of the site does not.
+csp_note = """
+  Nothing beyond what every tool page already gets. The traced drawing is put
+  on the page as markup this page wrote, and the download is a
+  <code>blob:</code> address made in your own browser out of the same
+  characters."""
+
+# --- the pledge block --------------------------------------------------------
+
+pledge = """
+    The picture is read off your disk by your own browser, turned into one bit
+    per pixel by <code>src/mask.js</code>, walked around by
+    <code>src/contour.js</code> and fitted with curves by
+    <code>src/fit.js</code> &mdash; about six hundred lines you can read, with
+    no engine behind them and nothing downloaded to run them. This tool has no
+    network feature of any kind: nothing to fetch, nothing to send, and no
+    server on the other end of this page to send a drawing to even if there
+    were."""
+
+live_hint = """
+      Don't take our word for it: open DevTools, watch the Network tab, and
+      trace something. Not one request carries a picture, a thumbnail, a
+      filename, or a byte of what you chose. Or unplug from the internet and
+      trace one anyway."""
+
+# --- the "how this is verified" panel ----------------------------------------
+
+read_first = """
+, <code>src/mask.js</code> for how a
+      picture becomes one bit per pixel, <code>src/contour.js</code> for the
+      walk around the edge of the shape, <code>src/fit.js</code> for how a
+      staircase becomes curves, and <code>src/subject.js</code> for how the
+      background is worked out when there is no light and dark to divide by."""
+
+# --- the written half of the page --------------------------------------------
+
+howto_heading = "How to trace an image into an SVG without uploading it"
+
+# --- the card on the hub page ------------------------------------------------
+
+card = """
+            A bitmap enlarged is a staircase. An outline is instructions, so it
+            is sharp at any size &mdash; if what you have is a shape rather than
+            a photograph."""
+
+# The nouns this tool uses for the things it works on. They appear in the boot
+# warning, the pledge line and the analytics comment, which is why they are a
+# setting rather than three copies of the same word in three files.
+[words]
+plural = "pictures"
+choose = "a picture"
+analytics_extra = """, and none of the
+  colours, sizes or file names this tool works out"""
+
+[[facts]]
+mark = "&#10007;"
+text = "No upload"
+
+[[facts]]
+mark = "&#10007;"
+text = "No account"
+
+[[facts]]
+mark = "&#10007;"
+text = "No watermark"
+
+[[facts]]
+mark = "&#10003;"
+text = "Works offline"
+
+[[facts]]
+mark = "&#10003;"
+text = "Open source"
+
+[[privacy]]
+title = "Your picture has nowhere to go."
+body = """
+ The
+      Content-Security-Policy names every address this page may contact, and not
+      one of them belongs to this site. There is no endpoint here that your
+      files could be collected at, and nothing in the code that would send them
+      if there were."""
+
+[[privacy]]
+title = "Nothing here fetches anything."
+body = """
+ There is no
+      <code>fetch</code>, no <code>XMLHttpRequest</code> and no
+      <code>sendBeacon</code> anywhere in <code>src/</code>. The whole tool is
+      arithmetic over the pixels of one picture: a threshold, a walk round the
+      edge of what it found, and some curve fitting."""
+
+[[privacy]]
+title = "There is no engine to download."
+body = """
+ Tracing is
+      usually somebody else's program, and on the web that means several
+      megabytes of compiled code arriving before the first click. There is none
+      here. The whole thing is a few hundred lines of ordinary JavaScript
+      served from this origin, which is also why the page works the moment it
+      opens rather than after a wait."""
+
+[[privacy]]
+title = "What Google loads, and what it is not given."
+body = """
+ The ad and
+      measurement scripts come from Google, and the donate button from Buy Me a
+      Coffee. None of them is handed anything about your picture. Every line
+      that reads it, thresholds it or traces it is served from this origin and
+      listed in the repository."""
+
+[[privacy]]
+title = "It works offline."
+body = """
+ Disconnect from the network and the tool
+      is unchanged, because there was never a network step in it. That is the
+      simplest proof of all."""
+
+[[howto]]
+title = "Choose the picture."
+body = """
+ A logo, a stencil, a signature, a
+      stamp, a scanned drawing, a silhouette. Anything with a clear shape in it
+      traces well; a photograph of a room does not, and there is a plain warning
+      further down rather than a surprise at the end. The file is read straight
+      off your disk and nothing is sent anywhere while you do it."""
+
+[[howto]]
+title = "Say what the shape is."
+body = """
+ A drawing on paper divides by
+      <strong>light and dark</strong>, and the level is worked out for you.
+      A photograph of one object does not &mdash; a dark red figure on dark grey
+      stone is dark on dark, and no brightness separates them. That one wants
+      <strong>the subject</strong>, which learns what the background is from a
+      band round the edge of the picture and keeps whatever is not it."""
+
+[[howto]]
+title = "Look at the red line, not at the settings."
+body = """
+ The outline is drawn over the
+      pixels it came from, because that is the only place the question can be
+      settled: an outline is right or wrong relative to those pixels and nothing
+      else. Drag either picture to move both, and roll the wheel to zoom in far
+      enough to see what the line is actually doing."""
+
+[[howto]]
+title = "Click away whatever should not be there."
+body = """
+ A speck, a staple, a stamp, a
+      caption, a shadow. A click takes the whole patch of that colour rather
+      than one pixel, so you are pointing at a shape; click it again to put it
+      back. Clicking an enclosed piece of background fills it in instead, which
+      is how a hole that should not be a hole gets closed."""
+
+[[howto]]
+title = "Adjust the smoothing only if it needs it."
+body = """
+ <em>Detail</em> is how far the
+      line may stray from the pixels while being simplified, and it is worked
+      out per shape unless you say otherwise. <em>Corner sharpness</em> decides
+      how far the outline must turn before that turn is kept as a corner rather
+      than rounded away. Most pictures need neither touched."""
+
+[[howto]]
+title = "Take the SVG."
+body = """
+ One file, one
+      <code>&lt;path&gt;</code>, no fill rule to worry about: the outlines are
+      wound one way and the holes the other, which is what makes a shape with
+      forty holes in it a single element. It opens in Illustrator, Inkscape,
+      Figma, a browser, and a cutting machine."""
+
+# Each answer renders twice: as the <details> block at the foot of the page, and
+# as FAQPage structured data in the head. The build derives the plain-text half
+# from this HTML, so the two cannot disagree - which they could, and once did,
+# when both were written out by hand.
+
+[[faq]]
+q = "Is my picture uploaded anywhere?"
+a = """
+        No. The file is read by your own browser on your own hardware, traced
+        by a few hundred lines of JavaScript served from this origin, and handed
+        back as a download. This tool has no network feature of any kind &mdash;
+        it never fetches anything and never sends anything &mdash; and the
+        page's <code>Content-Security-Policy</code> names every address it may
+        contact, none of which belongs to this site."""
+
+[[faq]]
+q = "Will this turn my photograph into an SVG?"
+a = """
+        Not usefully, and the page will say so rather than let you find out
+        after downloading. Tracing turns every patch of similar colour into its
+        own shape, so a photograph comes back as thousands of overlapping blobs
+        and a file many times larger than the JPEG, which opens slowly and does
+        not look like the photograph. What traces well is a picture with a
+        <em>shape</em> in it: a logo, a stencil, a signature, line art, a
+        silhouette. For a photograph of one object, <em>the subject</em> setting
+        will cut it out as a single silhouette, which is a different and
+        genuinely useful thing."""
+
+[[faq]]
+q = "What is the difference between the two ways of finding the shape?"
+a = """
+        What question they ask. <strong>Light and dark</strong> asks whether
+        each pixel is darker than one level, which is exactly right for ink on
+        paper and useless when the subject and the background are equally dark.
+        <strong>The subject</strong> asks what the background is &mdash; it
+        learns that from a band round the edge of the picture, measures every
+        pixel against it, and keeps the largest thing that is not it. That works
+        on a photograph of one object on a plain-ish background, and fails on a
+        picture cropped so tightly that the subject runs off three sides, since
+        the edges it learns from are then the subject. You can point at the
+        background yourself instead when that happens."""
+
+[[faq]]
+q = "Why does the traced shape have holes, or lose thin parts?"
+a = """
+        Because the picture did, once it became one bit per pixel. Turn on
+        <em>what the tracer was given</em> to see it: below about twelve pixels
+        a letter's bowl has already filled in and its stems have already merged,
+        and no amount of tracing recovers a hole that is not there. The fixes
+        are upstream &mdash; move the threshold, or start from a larger scan.
+        In <em>the subject</em> mode, <em>close gaps up to</em> seals small
+        holes and <em>fill it in solid</em> closes every hole the background
+        cannot reach from the edge of the picture."""
+
+[[faq]]
+q = "Can I fix the parts it got wrong?"
+a = """
+        Yes, and that is most of what the third step is for. Click anything that
+        should not be in the drawing and it goes; click it again and it comes
+        back. A click takes the whole patch of that colour, so one click removes
+        a whole speck or a whole stamp rather than a pixel. Clicking an enclosed
+        piece of background fills it in. Corrections are kept separately from
+        the threshold, so moving the slider afterwards does not throw them
+        away."""
+
+[[faq]]
+q = "How big will the SVG be?"
+a = """
+        For a shape, smaller than the picture: a traced silhouette is usually
+        one to five kilobytes, and a logo a few more. The page tells you exactly,
+        beside the download. For a photograph it will be enormous, which is the
+        clearest sign that it is the wrong tool for that file &mdash; and the
+        page stops drawing and says so past about a thousand separate shapes."""
+
+[[faq]]
+q = "Does it trace in colour?"
+a = """
+        No. This makes one shape in one colour, which is the case that comes out
+        looking like a drawing rather than like a bad photocopy. Colour tracing
+        means quantising to a few colours and tracing each one as its own layer,
+        and the result disappoints most of the people who ask for it. If you
+        need colour, trace the shape here and fill it in your drawing
+        program."""
+
+[[faq]]
+q = "What can I do with the SVG afterwards?"
+a = """
+        Scale it to any size without it going soft, recolour it with one
+        attribute, animate it, print it, or send it to a cutting machine or a
+        laser. It is a single <code>&lt;path&gt;</code> with no fill rule to get
+        wrong, so Illustrator, Inkscape, Figma, a browser and most CNC software
+        all read it the same way."""
+
+[[faq]]
+q = "Is there a limit on the size of the picture?"
+a = """
+        Your machine's, not ours. An A4 page scanned at 300&nbsp;dpi &mdash;
+        about nine megapixels &mdash; traces in a fraction of a second. Larger
+        pictures work; they just take longer, and the work happens on your own
+        processor rather than a queue somewhere."""
+
+[[faq]]
+q = "Is it free, and do I need an account?"
+a = """
+        It is free, and there is no account, no sign-in, no trial and no
+        watermark. There is no limit on the number or the size of the files
+        either, because there is no server paying for them &mdash; the work
+        happens on your own machine. The site carries advertising, which is what
+        pays for it; the ads are not given anything about your files."""
+
+[[faq]]
+q = "Does it work offline?"
+a = """
+        Yes. Load the page once, then disconnect from the internet and it keeps
+        working. That is also the simplest way to prove nothing is being
+        uploaded: a tool that sent your picture away to be traced would stop the
+        moment you unplugged."""
+
+[schema]
+category = "MultimediaApplication"
+description = "Trace a black and white image into an SVG outline in the browser. Thresholds by light and dark or finds the subject against its background, fits curves to the shape, and lets you click away anything that should not be traced. Nothing is uploaded."
+features = [
+  "Traces a bitmap shape into real cubic curves, sharp at any size",
+  "Two ways to find the shape: by light and dark, or by subject against background",
+  "Click any part to leave it out, or any enclosed gap to fill it in",
+  "The outline is drawn over the pixels it came from, at up to sixteen times",
+  "Holes and nested holes come out as one path with no fill rule to set",
+  "Corner and smoothing thresholds, worked out per shape unless you say otherwise",
+  "Warns when a picture is a photograph rather than line art",
+  "Runs offline; no upload, no account, no engine to download",
+]
+
+# The drop zone. Rendered by templates/partials/file-picker.html, which
+# body.html includes, and driven by src/shared/file-picker.js. One file at a
+# time: every setting on the page is judged against the picture in front of
+# you, and a batch would have to be traced blind.
+[picker]
+accept = "image/*"
+multiple = false
+title = "Drop a picture here"
+hint = "or click to browse &mdash; PNG, JPEG, WebP, GIF, AVIF"
