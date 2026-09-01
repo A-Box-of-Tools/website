@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/lengtes-vergelijken/:';
-const CACHE_NAME=CACHE_PREFIX+'1ac56edc85';
+const CACHE_NAME=CACHE_PREFIX+'c0e0e53db3';
 const ASSETS=[
 './',
 'index.html',

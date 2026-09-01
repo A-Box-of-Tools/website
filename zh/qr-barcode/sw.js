@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/qr-barcode/:';
-const CACHE_NAME=CACHE_PREFIX+'92882f8039';
+const CACHE_NAME=CACHE_PREFIX+'b28f210a3b';
 const ASSETS=[
 './',
 'index.html',

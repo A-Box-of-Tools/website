@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/supprimer-les-donnees-exif/:';
-const CACHE_NAME=CACHE_PREFIX+'81db787f0e';
+const CACHE_NAME=CACHE_PREFIX+'815e0e9419';
 const ASSETS=[
 './',
 'index.html',

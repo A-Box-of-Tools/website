@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/groessenvergleich-erstellen/:';
-const CACHE_NAME=CACHE_PREFIX+'3c710a10d8';
+const CACHE_NAME=CACHE_PREFIX+'c56937d6aa';
 const ASSETS=[
 './',
 'index.html',

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/belge-tarayici/:';
-const CACHE_NAME=CACHE_PREFIX+'99580f7e0b';
+const CACHE_NAME=CACHE_PREFIX+'220aeecad4';
 const ASSETS=[
 './',
 'index.html',

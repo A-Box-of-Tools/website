@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/berbagi-teks/:';
-const CACHE_NAME=CACHE_PREFIX+'ebc221265e';
+const CACHE_NAME=CACHE_PREFIX+'bc04ac02d0';
 const ASSETS=[
 './',
 'index.html',

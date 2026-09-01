@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/ekstrak-audio-dari-video/:';
-const CACHE_NAME=CACHE_PREFIX+'7c478ffce5';
+const CACHE_NAME=CACHE_PREFIX+'41ff45aac8';
 const ASSETS=[
 './',
 'index.html',

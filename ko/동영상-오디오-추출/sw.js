@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/동영상-오디오-추출/:';
-const CACHE_NAME=CACHE_PREFIX+'b38b8519d1';
+const CACHE_NAME=CACHE_PREFIX+'17288e0d9b';
 const ASSETS=[
 './',
 'index.html',

@@ -1,0 +1,26 @@
+{
+  "id": "/es/image-to-svg/",
+  "name": "Image to SVG",
+  "short_name": "Image to SVG",
+  "description": "One shape, one outline. Point at whatever should not be there.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f7f9",
+  "theme_color": "#f6f7f9",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

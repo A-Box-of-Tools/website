@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/xml-포맷터/:';
-const CACHE_NAME=CACHE_PREFIX+'04b41e0b59';
+const CACHE_NAME=CACHE_PREFIX+'37bdb9f0c7';
 const ASSETS=[
 './',
 'index.html',

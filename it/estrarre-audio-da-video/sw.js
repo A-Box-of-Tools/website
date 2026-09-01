@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/estrarre-audio-da-video/:';
-const CACHE_NAME=CACHE_PREFIX+'cf6d0159ed';
+const CACHE_NAME=CACHE_PREFIX+'b5dd6c7f5d';
 const ASSETS=[
 './',
 'index.html',

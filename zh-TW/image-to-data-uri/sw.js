@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/image-to-data-uri/:';
-const CACHE_NAME=CACHE_PREFIX+'ca917b9d44';
+const CACHE_NAME=CACHE_PREFIX+'0987fb4e02';
 const ASSETS=[
 './',
 'index.html',

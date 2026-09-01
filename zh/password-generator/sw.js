@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/password-generator/:';
-const CACHE_NAME=CACHE_PREFIX+'9f8191b40b';
+const CACHE_NAME=CACHE_PREFIX+'f66c443410';
 const ASSETS=[
 './',
 'index.html',

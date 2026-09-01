@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/videodan-ses-cikarma/:';
-const CACHE_NAME=CACHE_PREFIX+'4dd497ca2e';
+const CACHE_NAME=CACHE_PREFIX+'e650a02727';
 const ASSETS=[
 './',
 'index.html',
