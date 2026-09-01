@@ -88,9 +88,10 @@ export class Viewport {
       x: zw <= bw ? Math.round((bw - zw) / 2) : -Math.round(this.pan.x * this.zoom),
       y: zh <= bh ? Math.round((bh - zh) / 2) : -Math.round(this.pan.y * this.zoom),
     };
-    for (const pane of this.panes) {
-      pane.box.style.transform = `translate(${this.offset.x}px, ${this.offset.y}px)`;
-    }
+    // The individual `translate` property rather than a `transform` string:
+    // one number each and nothing for the browser to parse.
+    const { x, y } = this.offset;
+    for (const pane of this.panes) pane.box.style.translate = `${x}px ${y}px`;
   }
 
   setZoom(zoom, { fit = false } = {}) {
