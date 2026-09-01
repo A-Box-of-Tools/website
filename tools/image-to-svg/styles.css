@@ -77,6 +77,11 @@
 
 .stage.dragging { cursor: grabbing; }
 
+/* Before a picture arrives there is nothing in either pane, and two tall empty
+   boxes say less than two short ones. The step itself stays readable - that is
+   the rule - but it does not have to take half the screen to say nothing. */
+.stages.waiting .stage { height: 7rem; cursor: default; }
+
 /* The picture and the outline are moved with a transform rather than
    scrolled: one number says where we are looking and both panes read it, so
    there is no scroll event to chase round a loop. */

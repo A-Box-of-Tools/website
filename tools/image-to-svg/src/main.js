@@ -38,6 +38,7 @@ const el = {
   invert: $('invert'),
 
   workCard: $('work-card'),
+  stages: $('stages'),
   stagePicture: $('stage-picture'),
   stageSvg: $('stage-svg'),
   hint: $('hint'),
@@ -256,6 +257,10 @@ function retrace() {
 
 function redraw() {
   if (!out) return;
+  // Before this runs there was nothing to show and the panes were short. They
+  // have to be their full height BEFORE the zoom is worked out, because fit
+  // measures them.
+  el.stages.classList.remove('waiting');
   const { zw, zh, zoom } = view.apply();
   drawPicture(view.panes[0], zw, zh, zoom);
   drawSvg(view.panes[1], zw, zh);
@@ -613,6 +618,7 @@ el.clearImage.addEventListener('click', () => {
   el.hint.textContent = '';
   el.tooBig.hidden = true;
   el.fileInput.value = '';
+  el.stages.classList.add('waiting');
   picker.waiting();
   showSamples();
 });
