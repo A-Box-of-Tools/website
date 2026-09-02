@@ -19,40 +19,8 @@
 import { FileWindow } from './shared/mp4-reader.js';
 import { decodeRuns } from './plan.js';
 import { drawScaled, frameCanvas } from './draw.js';
-
-/** Frames in flight before the feed loop waits for the pipeline to catch up. */
-const QUEUE_LIMIT = 8;
-
-class AbortedError extends Error {
-  constructor() {
-    super('Cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
-
-/** The configuration VideoDecoder needs to open a track demux() found. */
-export function decoderConfig(video) {
-  const config = {
-    codec: video.codec,
-    codedWidth: video.codedWidth,
-    codedHeight: video.codedHeight,
-  };
-  // VP9 carries everything it needs in the bitstream; the others hand over the
-  // configuration record the file was written with, untouched.
-  if (video.description) config.description = video.description;
-  return config;
-}
-
-/** Frames per second, averaged over the whole track. */
-export function averageFps(video) {
-  const seconds = video.duration / video.timescale;
-  if (!seconds) return 30;
-  return Math.min(240, Math.max(1, video.samples.length / seconds));
-}
+import { decoderConfig, settle } from './shared/webcodecs.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /**
  * Serves each wanted instant from the last frame at or before it.
@@ -186,7 +154,7 @@ export async function timelapseByDecoding({
           data: bytes,   // EncodedVideoChunk copies, so the window may move on
         }));
 
-        while (decoder.decodeQueueSize > QUEUE_LIMIT) await tick(decoder);
+        await settle([decoder]);
         while (writer.busy) await writer.settle();
 
         fed += 1;
@@ -206,23 +174,6 @@ export async function timelapseByDecoding({
     if (decoder.state !== 'closed') decoder.close();
     canvas.width = 0;   // let the browser drop the backing store now
   }
-}
-
-/** Wait for the decoder to hand something back, with a cap in case it does not. */
-function tick(decoder) {
-  return new Promise((resolve) => {
-    let settled = false;
-    const done = () => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      decoder.removeEventListener('dequeue', done);
-      resolve();
-    };
-    // `dequeue` is not in every implementation yet, so cap the wait.
-    const timer = setTimeout(done, 20);
-    decoder.addEventListener('dequeue', done);
-  });
 }
 
 /**

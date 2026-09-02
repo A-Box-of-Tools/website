@@ -180,19 +180,6 @@ export function closeDurations(samples) {
   return samples;
 }
 
-/**
- * Frames per second, averaged over the whole track.
- *
- * Only ever used to choose an encoder configuration and to describe the file on
- * the page. The frame times themselves are never averaged: they are carried
- * across one by one by `reversedTimes`.
- */
-export function averageFps(video) {
-  const seconds = video.duration / video.timescale;
-  if (!seconds) return 30;
-  return Math.min(240, Math.max(1, video.samples.length / seconds));
-}
-
 /** The output frame size: the picture as watched, rounded to what H.264 can store. */
 export function outputSize(video) {
   return {

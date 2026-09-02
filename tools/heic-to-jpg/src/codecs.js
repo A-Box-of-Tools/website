@@ -12,6 +12,8 @@
  * surest way to pass that test is to have the browser write it.
  */
 
+import { said } from './shared/errors.js';
+
 export const JPEG = 'image/jpeg';
 export const PNG = 'image/png';
 export const WEBP = 'image/webp';
@@ -84,9 +86,6 @@ export async function encodePixels(picture, { mime, quality }) {
   if (!blob) throw said('codec.nowrite', { format: FORMATS[mime]?.label ?? mime });
   return blob;
 }
-
-/** An error whose message is a phrase key; the caller resolves it. */
-const said = (key, values = {}) => Object.assign(new Error(key), { values });
 
 function canvas(width, height, alpha) {
   const el = document.createElement('canvas');

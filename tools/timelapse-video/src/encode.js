@@ -15,9 +15,7 @@
  */
 
 import { Mp4Muxer } from './shared/mp4-muxer.js';
-
-/** Frames in flight before the caller is asked to wait. */
-const QUEUE_LIMIT = 8;
+import { QUEUE_LIMIT } from './shared/webcodecs.js';
 
 /**
  * Seconds of *output* between keyframes, so the finished clip scrubs.

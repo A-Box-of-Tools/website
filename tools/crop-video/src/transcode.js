@@ -16,6 +16,8 @@ import { FileWindow } from './shared/mp4-reader.js';
 import { Mp4Writer, VIDEO_TIMESCALE } from './mp4.js';
 import { drawCropped } from './draw.js';
 import { pickH264Codec } from './shared/video-support.js';
+import { decoderConfig, averageFps, micros, settle } from './shared/webcodecs.js';
+import { throwIfAborted, said } from './shared/errors.js';
 
 /** Bits per pixel per frame. Real footage moves, so these sit above the
  *  slideshow figures the images-to-video tool uses. */
@@ -27,42 +29,8 @@ const QUALITY_HEADROOM = { low: 0.8, medium: 1.25, high: 2 };
 const MIN_BITRATE = 200_000;
 const MAX_BITRATE = 60_000_000;
 
-/** Frames in flight before the feed loop waits for the pipeline to catch up. */
-const QUEUE_LIMIT = 8;
-
 /** Seconds between keyframes in the output, so seeking stays usable. */
 const KEYFRAME_SECONDS = 2;
-
-class AbortedError extends Error {
-  constructor() {
-    super('Crop cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
-
-/** The configuration VideoDecoder needs to open this track. */
-export function decoderConfig(video) {
-  const config = {
-    codec: video.codec,
-    codedWidth: video.codedWidth,
-    codedHeight: video.codedHeight,
-  };
-  // VP9 carries everything it needs in the bitstream; the others hand over the
-  // configuration record the file was written with, untouched.
-  if (video.description) config.description = video.description;
-  return config;
-}
-
-/** Frames per second, averaged over the whole track. */
-export function averageFps(video) {
-  const seconds = video.duration / video.timescale;
-  if (!seconds) return 30;
-  return Math.min(240, Math.max(1, video.samples.length / seconds));
-}
 
 /**
  * What to spend on the cropped picture.
@@ -87,32 +55,6 @@ export function chooseBitrate({ video, crop, fps, quality }) {
   }
 
   return Math.round(Math.min(MAX_BITRATE, Math.max(MIN_BITRATE, ceiling)));
-}
-
-/** Wait until both queues have drained below the limit. */
-async function settle(decoder, encoder) {
-  while (decoder.decodeQueueSize > QUEUE_LIMIT || encoder.encodeQueueSize > QUEUE_LIMIT) {
-    await new Promise((resolve) => {
-      let settled = false;
-      const done = () => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        decoder.removeEventListener('dequeue', done);
-        encoder.removeEventListener('dequeue', done);
-        resolve();
-      };
-      // `dequeue` is not in every implementation yet, so cap the wait.
-      const timer = setTimeout(done, 20);
-      decoder.addEventListener('dequeue', done);
-      encoder.addEventListener('dequeue', done);
-    });
-  }
-}
-
-/** Presentation time in microseconds, which is what WebCodecs counts in. */
-function micros(ticks, timescale) {
-  return Math.round(ticks / timescale * 1_000_000);
 }
 
 /**
@@ -150,12 +92,6 @@ async function readAudio(file, audio, signal) {
  *   in display coordinates, with even width and height
  * @returns {Promise<{blob: Blob, extension: string, codec: string, frames: number}>}
  */
-/**
- * A refusal named rather than written out. This module is copied byte for
- * byte into fifteen languages, so what it can hand back is a phrase key;
- * main.js turns it into the reader's own sentence.
- */
-const said = (key, values = {}) => Object.assign(new Error(key), { values });
 
 export async function cropExact({
   file, media, crop, quality = 'medium', keepAudio = true, onProgress, signal,
@@ -267,7 +203,7 @@ export async function cropExact({
       throwIfAborted(signal);
       if (failure) throw failure;
 
-      await settle(decoder, encoder);
+      await settle([decoder, encoder]);
 
       const sample = video.samples[i];
       const bytes = await window.read(sample.offset, sample.size);

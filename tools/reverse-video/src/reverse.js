@@ -36,8 +36,10 @@ import { drawFitted } from './draw.js';
 import { pickH264Codec } from './shared/video-support.js';
 import { reversedAudioTrack } from './audio.js';
 import {
-  averageFps, closeDurations, frameWindows, gopRanges, outputSize, reversedTimes, windowLimit,
+  closeDurations, frameWindows, gopRanges, outputSize, reversedTimes, windowLimit,
 } from './timeline.js';
+import { decoderConfig, averageFps, micros, settle } from './shared/webcodecs.js';
+import { throwIfAborted, said } from './shared/errors.js';
 
 /** Divides evenly by 24, 25, 30, 50 and 60 fps. */
 const VIDEO_TIMESCALE = 90000;
@@ -51,9 +53,6 @@ const QUALITY_HEADROOM = { low: 0.8, medium: 1.25, high: 2 };
 
 const MIN_BITRATE = 200_000;
 const MAX_BITRATE = 60_000_000;
-
-/** Frames in flight before the feed loop waits for the pipeline to catch up. */
-const QUEUE_LIMIT = 8;
 
 /**
  * How long the queues may sit without draining before a reversal gives up.
@@ -69,9 +68,6 @@ const QUEUE_LIMIT = 8;
  * outcome to be worth a backstop, and thirty seconds is far longer than a queue
  * of eight frames takes anywhere that is really working, software 4K included.
  */
-/** An error whose message is a phrase key; the caller resolves it. */
-const said = (key, values = {}) => Object.assign(new Error(key), { values });
-
 const STALL_TIMEOUT_MS = 30_000;
 
 /** Seconds between keyframes in the output, so seeking stays usable. */
@@ -79,30 +75,6 @@ const KEYFRAME_SECONDS = 2;
 
 /** How much of one group may be held as compressed bytes to save re-reading it. */
 const GROUP_CACHE_BYTES = 64 << 20;
-
-class AbortedError extends Error {
-  constructor() {
-    super('Reverse cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
-
-/** The configuration VideoDecoder needs to open this track. */
-export function decoderConfig(video) {
-  const config = {
-    codec: video.codec,
-    codedWidth: video.codedWidth,
-    codedHeight: video.codedHeight,
-  };
-  // VP9 carries everything it needs in the bitstream; the others hand over the
-  // configuration record the file was written with, untouched.
-  if (video.description) config.description = video.description;
-  return config;
-}
 
 /**
  * What to spend on the picture.
@@ -211,43 +183,6 @@ function withStallTimeout(promise, which) {
       () => reject(new Error(`stall.${which}`)), STALL_TIMEOUT_MS);
   });
   return Promise.race([promise, stalled]).finally(() => clearTimeout(timer));
-}
-
-/** Wait until both queues have drained below the limit. */
-async function settle(decoder, encoder) {
-  let bestSeen = decoder.decodeQueueSize + encoder.encodeQueueSize;
-  let progressAt = Date.now();
-
-  while (decoder.decodeQueueSize > QUEUE_LIMIT || encoder.encodeQueueSize > QUEUE_LIMIT) {
-    const size = decoder.decodeQueueSize + encoder.encodeQueueSize;
-    if (size < bestSeen) {
-      bestSeen = size;
-      progressAt = Date.now();
-    } else if (Date.now() - progressAt > STALL_TIMEOUT_MS) {
-      throw new Error('stall.both');
-    }
-
-    await new Promise((resolve) => {
-      let settled = false;
-      const done = () => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        decoder.removeEventListener('dequeue', done);
-        encoder.removeEventListener('dequeue', done);
-        resolve();
-      };
-      // `dequeue` is not in every implementation yet, so cap the wait.
-      const timer = setTimeout(done, 20);
-      decoder.addEventListener('dequeue', done);
-      encoder.addEventListener('dequeue', done);
-    });
-  }
-}
-
-/** Presentation time in microseconds, which is what WebCodecs counts in. */
-function micros(ticks, timescale) {
-  return Math.round(ticks / timescale * 1_000_000);
 }
 
 /**
@@ -575,7 +510,7 @@ export async function reverseExact({
           throwIfAborted(signal);
           if (failure) throw failure;
 
-          await settle(decoder, encoder);
+          await settle([decoder, encoder], { stallAfter: STALL_TIMEOUT_MS });
           const sample = video.samples[i];
           decoder.decode(new EncodedVideoChunk({
             type: sample.isKey ? 'key' : 'delta',
@@ -601,7 +536,7 @@ export async function reverseExact({
           if (!slot.data && !slot.bitmap) continue;
           emit(drawable(slot), wanted.get(slot.timestamp));
           discard(slot);
-          await settle(decoder, encoder);
+          await settle([decoder, encoder], { stallAfter: STALL_TIMEOUT_MS });
         }
         kept = [];
 

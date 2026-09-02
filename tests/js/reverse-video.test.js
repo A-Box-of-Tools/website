@@ -21,9 +21,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  averageFps, closeDurations, displayTimes, frameWindows, gopRanges, outputSize,
-  reversedTimes, windowLimit,
+  closeDurations, displayTimes, frameWindows, gopRanges, outputSize, reversedTimes, windowLimit,
 } from '../../tools/reverse-video/src/timeline.js';
+import { averageFps } from '../../shared/js/webcodecs.js';
 import { reverseChannels } from '../../tools/reverse-video/src/audio.js';
 
 /* ------------------------------------------------------------- fixtures */

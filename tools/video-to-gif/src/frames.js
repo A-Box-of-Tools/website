@@ -26,9 +26,8 @@
 
 import { FileWindow } from './shared/mp4-reader.js';
 import { drawScaled, frameCanvas } from './draw.js';
-
-/** Frames in flight before the feed loop waits for the decoder to catch up. */
-const QUEUE_LIMIT = 8;
+import { decoderConfig, settle } from './shared/webcodecs.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /**
  * How far past the last wanted instant to keep feeding the decoder.
@@ -43,30 +42,6 @@ const REORDER_SLACK = 0.5;
 
 /** Give up on a seek that never lands rather than hanging the page. */
 const SEEK_TIMEOUT = 10_000;
-
-class AbortedError extends Error {
-  constructor() {
-    super('Cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
-
-/** The configuration VideoDecoder needs to open a track demux() found. */
-export function decoderConfig(video) {
-  const config = {
-    codec: video.codec,
-    codedWidth: video.codedWidth,
-    codedHeight: video.codedHeight,
-  };
-  // VP9 carries everything it needs in the bitstream; the others hand over the
-  // configuration record the file was written with, untouched.
-  if (video.description) config.description = video.description;
-  return config;
-}
 
 /**
  * Collects one RGBA buffer per wanted instant.
@@ -200,7 +175,7 @@ export async function framesByDecoding({
 
       if (sample.pts > endTicks + REORDER_SLACK * video.timescale) break;
 
-      while (decoder.decodeQueueSize > QUEUE_LIMIT) await tick(decoder);
+      await settle([decoder]);
     }
 
     await decoder.flush();
@@ -213,23 +188,6 @@ export async function framesByDecoding({
     if (decoder.state !== 'closed') decoder.close();
     canvas.width = 0;   // let the browser drop the backing store now
   }
-}
-
-/** Wait for the decoder to hand something back, with a cap in case it does not. */
-function tick(decoder) {
-  return new Promise((resolve) => {
-    let settled = false;
-    const done = () => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timer);
-      decoder.removeEventListener('dequeue', done);
-      resolve();
-    };
-    // `dequeue` is not in every implementation yet, so cap the wait.
-    const timer = setTimeout(done, 20);
-    decoder.addEventListener('dequeue', done);
-  });
 }
 
 /**
