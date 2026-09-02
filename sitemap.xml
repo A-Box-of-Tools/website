@@ -266,7 +266,7 @@
   </url>
   <url>
     <loc>https://abox.tools/guides/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -524,6 +524,12 @@
   </url>
   <url>
     <loc>https://abox.tools/guides/is-it-safe-to-upload-files/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/guides/is-it-safe-to-scan-a-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -800,7 +806,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ar/أدلة/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -1052,6 +1058,12 @@
   </url>
   <url>
     <loc>https://abox.tools/ar/أدلة/هل-رفع-الملفات-آمن/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ar/أدلة/هل-مسح-رمز-qr-آمن/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1328,7 +1340,7 @@
   </url>
   <url>
     <loc>https://abox.tools/de/ratgeber/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -1580,6 +1592,12 @@
   </url>
   <url>
     <loc>https://abox.tools/de/ratgeber/ist-das-hochladen-von-dateien-sicher/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/de/ratgeber/ist-das-scannen-von-qr-codes-sicher/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -1856,7 +1874,7 @@
   </url>
   <url>
     <loc>https://abox.tools/es/guias/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2108,6 +2126,12 @@
   </url>
   <url>
     <loc>https://abox.tools/es/guias/es-seguro-subir-archivos/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/es/guias/es-seguro-escanear-un-codigo-qr/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -2384,7 +2408,7 @@
   </url>
   <url>
     <loc>https://abox.tools/fr/guides/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -2636,6 +2660,12 @@
   </url>
   <url>
     <loc>https://abox.tools/fr/guides/est-il-sur-d-envoyer-ses-fichiers/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/fr/guides/est-il-sur-de-scanner-un-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -2912,7 +2942,7 @@
   </url>
   <url>
     <loc>https://abox.tools/hi/guides/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3164,6 +3194,12 @@
   </url>
   <url>
     <loc>https://abox.tools/hi/guides/is-it-safe-to-upload-files/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/hi/guides/is-it-safe-to-scan-a-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -3440,7 +3476,7 @@
   </url>
   <url>
     <loc>https://abox.tools/id/panduan/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -3692,6 +3728,12 @@
   </url>
   <url>
     <loc>https://abox.tools/id/panduan/apakah-aman-mengunggah-file/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/id/panduan/apakah-aman-memindai-kode-qr/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -3968,7 +4010,7 @@
   </url>
   <url>
     <loc>https://abox.tools/it/guide/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -4220,6 +4262,12 @@
   </url>
   <url>
     <loc>https://abox.tools/it/guide/e-sicuro-caricare-i-propri-file/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/it/guide/e-sicuro-scansionare-un-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -4496,7 +4544,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ja/guides/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -4748,6 +4796,12 @@
   </url>
   <url>
     <loc>https://abox.tools/ja/guides/is-it-safe-to-upload-files/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ja/guides/is-it-safe-to-scan-a-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -5024,7 +5078,7 @@
   </url>
   <url>
     <loc>https://abox.tools/ko/가이드/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -5276,6 +5330,12 @@
   </url>
   <url>
     <loc>https://abox.tools/ko/가이드/파일-업로드-안전한가/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/ko/가이드/qr코드-스캔-안전한가/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -5552,7 +5612,7 @@
   </url>
   <url>
     <loc>https://abox.tools/nl/gidsen/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -5804,6 +5864,12 @@
   </url>
   <url>
     <loc>https://abox.tools/nl/gidsen/is-bestanden-uploaden-veilig/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/nl/gidsen/is-een-qr-code-scannen-veilig/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -6080,7 +6146,7 @@
   </url>
   <url>
     <loc>https://abox.tools/pt/guias/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -6332,6 +6398,12 @@
   </url>
   <url>
     <loc>https://abox.tools/pt/guias/e-seguro-enviar-arquivos/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/pt/guias/e-seguro-escanear-um-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -6608,7 +6680,7 @@
   </url>
   <url>
     <loc>https://abox.tools/tr/rehberler/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -6860,6 +6932,12 @@
   </url>
   <url>
     <loc>https://abox.tools/tr/rehberler/dosya-yuklemek-guvenli-mi/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/tr/rehberler/qr-kod-taratmak-guvenli-mi/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -7136,7 +7214,7 @@
   </url>
   <url>
     <loc>https://abox.tools/zh/guides/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -7388,6 +7466,12 @@
   </url>
   <url>
     <loc>https://abox.tools/zh/guides/is-it-safe-to-upload-files/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh/guides/is-it-safe-to-scan-a-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -7664,7 +7748,7 @@
   </url>
   <url>
     <loc>https://abox.tools/zh-TW/guides/</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -7916,6 +8000,12 @@
   </url>
   <url>
     <loc>https://abox.tools/zh-TW/guides/is-it-safe-to-upload-files/</loc>
+    <lastmod>2026-08-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://abox.tools/zh-TW/guides/is-it-safe-to-scan-a-qr-code/</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

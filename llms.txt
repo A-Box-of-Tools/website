@@ -138,6 +138,7 @@ means, what it costs, and when not to bother.
 - [How to clean up a voice memo before sending it](https://abox.tools/guides/clean-up-a-voice-memo/): Cut the dead air and the false starts, then bring the level up to full scale. Two browser tools in a row, in the order that keeps the quality, and the recording never leaves your machine.
 - [How to compare two JSON files](https://abox.tools/guides/compare-two-json-files/): Format both files the same way, sort the keys, then diff them. Why a raw JSON diff is mostly noise, how to canonicalise both sides in the browser, and what survives to the patch.
 - [Is it safe to upload files to online converters?](https://abox.tools/guides/is-it-safe-to-upload-files/): Most online converters send your file to a server. What that means, what happens to it there, and four checks that tell you whether a tool needs to.
+- [Is it safe to scan a QR code?](https://abox.tools/guides/is-it-safe-to-scan-a-qr-code/): Scanning a QR code is reading, not opening - the danger starts one tap later. What a code actually contains, how the sticker scam works, and the three ways an address lies.
 
 ## Other languages
 
