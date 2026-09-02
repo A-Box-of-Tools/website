@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/juntar-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'22145ff55b';
+const CACHE_NAME=CACHE_PREFIX+'73487e78a7';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=4e938d1431',
+'styles.css?v=9c7486eabf',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/base64-kodlama/:';
-const CACHE_NAME=CACHE_PREFIX+'1d59ac8d4f';
+const CACHE_NAME=CACHE_PREFIX+'960fc7d31d';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=7c40a2be88',
+'styles.css?v=b09870bd44',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

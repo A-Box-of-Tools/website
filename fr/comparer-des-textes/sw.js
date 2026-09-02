@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/comparer-des-textes/:';
-const CACHE_NAME=CACHE_PREFIX+'4b3d5d2542';
+const CACHE_NAME=CACHE_PREFIX+'fbedc26886';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=e16925498d',
+'styles.css?v=287b768910',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

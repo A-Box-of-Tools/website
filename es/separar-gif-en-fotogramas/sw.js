@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/separar-gif-en-fotogramas/:';
-const CACHE_NAME=CACHE_PREFIX+'51ef8301de';
+const CACHE_NAME=CACHE_PREFIX+'84a986fe7c';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0345e4cbce',
+'styles.css?v=d77942b9e2',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/redimensionar-imagem/:';
-const CACHE_NAME=CACHE_PREFIX+'8629fc446e';
+const CACHE_NAME=CACHE_PREFIX+'6ab98be75c';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a9eb9e96f7',
+'styles.css?v=8c3e2ce1ab',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

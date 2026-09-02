@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/putar-video-terbalik/:';
-const CACHE_NAME=CACHE_PREFIX+'bddeab91b5';
+const CACHE_NAME=CACHE_PREFIX+'13c8d92df4';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=28d7b67ab6',
+'styles.css?v=17548c0f0d',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

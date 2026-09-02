@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/ler-qr-code/:';
-const CACHE_NAME=CACHE_PREFIX+'9587821ca9';
+const CACHE_NAME=CACHE_PREFIX+'cd9d748222';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=f6489ef484',
+'styles.css?v=62754e0840',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/gif-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'37c3dbc63b';
+const CACHE_NAME=CACHE_PREFIX+'2a6a63c147';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=dac538a5f7',
+'styles.css?v=e316235c04',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

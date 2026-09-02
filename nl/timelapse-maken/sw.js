@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/timelapse-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'7aa1736a72';
+const CACHE_NAME=CACHE_PREFIX+'165edec559';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=5106ff98ac',
+'styles.css?v=fa6d2ddcd4',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
