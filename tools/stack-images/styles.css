@@ -107,8 +107,6 @@
    and its explanation has room to be a sentence rather than a label. */
 .field-wide { grid-column: 1 / -1; }
 
-.field { display: flex; flex-direction: column; gap: 0.3rem; }
-
 .field label { font-size: 0.85rem; font-weight: 600; }
 
 .field-note {
@@ -172,8 +170,6 @@
 }
 
 /* ----------------------------------------------------------- running it */
-
-.export-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
 
 .error {
   margin: 1rem 0 0;

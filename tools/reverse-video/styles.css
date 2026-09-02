@@ -44,9 +44,7 @@
   gap: 0.9rem;
 }
 
-.field { display: flex; flex-direction: column; gap: 0.3rem; }
 .field > label { font-size: 0.85rem; font-weight: 600; }
-.field-note { margin: 0; font-size: 0.78rem; color: var(--text-dim); }
 
 .check {
   display: flex;
@@ -74,8 +72,6 @@
 }
 
 /* ------------------------------------------------------------------ export */
-
-.export-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
 
 .error {
   margin: 1rem 0 0;

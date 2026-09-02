@@ -33,6 +33,10 @@ category = "text-codes-and-passwords"
 # It sits at the top of that group as a link, above the names still to be built.
 roadmap_group = "beyond"
 
+# Shared stylesheet parts this tool asks for, put before its own rules by
+# the build so that its own can override them.
+css_parts = ["form"]
+
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the file that is easier to drop than to open, select all and copy.
 js_parts = ["file-picker", "parse-errors", "parse-json", "parse-yaml", "parse-xml", "message-box", "download", "format"]

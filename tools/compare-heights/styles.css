@@ -18,22 +18,6 @@
   white-space: pre-line;
 }
 
-.card-lede {
-  margin: -0.4rem 0 1.1rem;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  color: var(--text-dim);
-  max-width: 68ch;
-}
-
-.field-summary {
-  margin: 0.9rem 0 0;
-  font-size: 0.86rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  max-width: 72ch;
-}
-
 .field-summary.warn { color: var(--warn); }
 
 /* ------------------------------------------------------------ the row table */
@@ -204,21 +188,6 @@ body.is-reordering { user-select: none; }
 
 /* ------------------------------------------------------------- the options */
 
-.options {
-  margin: 1.2rem 0 0;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface-2);
-}
-
-.options legend {
-  padding: 0 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--text-dim);
-}
-
 .option-row {
   display: flex;
   align-items: center;
@@ -228,8 +197,6 @@ body.is-reordering { user-select: none; }
   min-width: 0;
 }
 
-.option-row label { font-size: 0.9rem; font-weight: 600; }
-.option-row select { min-width: 0; max-width: 100%; }
 .option-row input[type="number"] { width: 7rem; }
 
 .check {

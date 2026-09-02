@@ -33,9 +33,7 @@
   margin-bottom: 1.2rem;
 }
 
-.field { display: flex; flex-direction: column; gap: 0.3rem; }
 .field > label { font-size: 0.85rem; font-weight: 600; }
-.field-note { margin: 0; font-size: 0.78rem; color: var(--text-dim); }
 
 .inline-pair {
   display: flex;
@@ -59,8 +57,6 @@
 @media (pointer: coarse) {
   .inline-pair input[type="number"] { font-size: 16px; }
 }
-
-.export-row { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
 
 /* -------------------------------------------------------------- the frames */
 
