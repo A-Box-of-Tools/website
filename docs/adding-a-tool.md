@@ -87,6 +87,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | Part | Named in | Becomes |
 |---|---|---|
 | `shared/css/file-list.css` | `css_parts = ["file-list"]` | appended to the tool's stylesheet |
+| `shared/css/results.css` | `css_parts = ["results"]` | the source panel, the summary rows, the result and its meta line, the results list; put before the tool's own rules, so a tool that wants one of them different keeps its own |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |

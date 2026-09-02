@@ -27,32 +27,9 @@
   max-width: 68ch;
 }
 
-.file-main-wrap {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0.7rem;
-}
-
-.file-name {
-  margin: 0;
-  font-weight: 600;
-  font-size: 0.92rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.file-sub { margin: 0; font-size: 0.8rem; color: var(--text-dim); }
-
 /* Said on the row itself rather than only in the results, so that "nothing
    happened to this one" is expected rather than a surprise afterwards. */
 .file-note { margin: 0.1rem 0 0; font-size: 0.78rem; color: var(--ok); font-weight: 600; }
-
-.row-remove:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); color: var(--danger); }
-.row-remove:disabled { opacity: 0.4; cursor: default; }
 
 /* ------------------------------------------------------------- the target */
 
@@ -152,27 +129,12 @@
 
 /* ----------------------------------------------------------------- results */
 
-.results { margin-top: 1.4rem; }
-
-.results-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.4rem;
-}
-
-.results-head h3 { margin: 0; font-size: 0.95rem; }
-
 .results-summary {
   margin: 0 0 0.8rem;
   font-size: 0.88rem;
   color: var(--text-dim);
   max-width: 72ch;
 }
-
-.result-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; }
 
 .result-row {
   display: flex;
@@ -202,8 +164,6 @@
 
 .result-text { min-width: 0; flex: 1 1 24rem; }
 
-.result-name { margin: 0; font-weight: 600; font-size: 0.9rem; word-break: break-all; }
-
 .result-headline {
   margin: 0.25rem 0 0;
   font-size: 0.95rem;
@@ -230,8 +190,6 @@
   color: var(--danger);
   max-width: 68ch;
 }
-
-.result-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
 
 /* ---------------------------------------------------------------- compare */
 

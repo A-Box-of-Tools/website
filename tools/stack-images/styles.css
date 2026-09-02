@@ -188,8 +188,6 @@
 
 /* ------------------------------------------------------------- the result */
 
-.result { margin-top: 1.25rem; }
-
 /* A checkerboard behind the picture, because a stack in Lighten mode over a
    night sky is very nearly black and would otherwise be indistinguishable from
    an empty box. */
@@ -208,16 +206,5 @@
   max-height: 60vh;
   object-fit: contain;
 }
-
-.result-meta {
-  margin-top: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.result-meta p { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
 
 .result-meta .field-note { flex-basis: 100%; }

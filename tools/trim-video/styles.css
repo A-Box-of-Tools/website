@@ -492,14 +492,6 @@ kbd {
   gap: 0 1.2rem;
 }
 
-.summary > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
 .summary dt { color: var(--text-dim); flex: none; }
 .summary dd { margin: 0; font-weight: 600; text-align: end; overflow-wrap: anywhere; }
 
@@ -524,8 +516,6 @@ kbd {
   white-space: pre-line;
 }
 
-.result { margin-top: 1.25rem; }
-
 .result video {
   width: 100%;
   max-height: 60vh;
@@ -533,17 +523,6 @@ kbd {
   background: #000;
   display: block;
 }
-
-.result-meta {
-  margin-top: 0.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.result-meta p { margin: 0; font-size: 0.88rem; color: var(--text-dim); }
 
 /* The element the recording path plays into. It has to be in the page and it
    has to be painted - a browser that never composites it never presents a

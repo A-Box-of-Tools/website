@@ -3,30 +3,6 @@
 
 /* -------------------------------------------------------------- the source */
 
-.source {
-  margin: 1rem 0 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 0 1.2rem;
-  font-size: 0.88rem;
-}
-
-.source > div {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.6rem;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.source dt { color: var(--text-dim); flex: none; }
-.source dd {
-  margin: 0;
-  font-weight: 600;
-  text-align: end;
-  overflow-wrap: anywhere;
-}
-
 .path-note {
   margin: 0.9rem 0 0;
   padding: 0.6rem 0.8rem;

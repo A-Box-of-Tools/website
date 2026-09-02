@@ -367,8 +367,6 @@ kbd {
 
 .progress-label { margin: 0.7rem 0 0; font-size: 0.85rem; color: var(--text-dim); }
 
-.results { margin-top: 1.4rem; }
-
 .results-head {
   display: flex;
   align-items: center;
@@ -378,7 +376,6 @@ kbd {
   margin-bottom: 0.7rem;
 }
 
-.results-head h3 { margin: 0; font-size: 0.95rem; }
 .results-head .as-button { text-decoration: none; }
 
 .result-image {
