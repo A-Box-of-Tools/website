@@ -287,6 +287,10 @@ offline_ready = "已就緒——斷網之後這一頁照樣能用。"
 offline_none = "這個瀏覽器裡用不了（其餘的照樣能用）。"
 offline_insecure = "離線快取需要 https:// 或者 localhost。"
 offline_failed = "這裡快取不了，不過反正什麼都不會上傳。"
+net_clean = "你的檔案沒有去任何地方。載入了 {total} 個檔案，全都是本站自己的。{platform}"
+net_dirty = "有東西聯絡了 {hosts}，而這個工具從不這麼做。值得去查一查。{platform}"
+net_platform_one = "本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到檔案，或檔案裡的一個位元組。"
+net_platform_many = "本站自己用於廣告、統計和捐贈按鈕的指令碼來自 {hosts} 個主機，它們誰也沒拿到檔案，或檔案裡的一個位元組。"
 
 error_broke = "出錯了：{detail}。重新載入頁面即可從頭開始。"
 

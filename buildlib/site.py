@@ -598,12 +598,16 @@ def text_hash(text):
 
 URL_IMPORT_PART = 'url-import'
 
-# The one shared module no tool asks for, because every tool page needs it:
+# The shared modules no tool asks for, because every tool page needs them:
 # shared/js/phrases.js reads the words off the page, and every tool page has
-# words on it that JavaScript puts there. Listing it in twenty-nine tool.toml
-# files would make it look like a choice, and the first tool to leave it out
-# would build clean and then fail in the browser on a module that is not there.
-FRAME_PART = 'phrases'
+# words on it that JavaScript puts there; shared/js/trust.js fills in the live
+# network check and the offline line, which every tool page wears. Listing
+# either in forty tool.toml files would make it look like a choice, and the
+# first tool to leave one out would build clean and then fail in the browser
+# on a module that is not there - or, for trust.js, ship a panel that says
+# "checking" forever, which is what image-to-svg did while the check still
+# lived in each tool's main.js.
+FRAME_PARTS = ('phrases', 'trust')
 
 
 def wants_urls(tool):
@@ -611,9 +615,8 @@ def wants_urls(tool):
 
 
 def js_parts(tool):
-    parts = list(tool.get('js_parts', []))
-    if FRAME_PART not in parts:
-        parts.insert(0, FRAME_PART)
+    parts = list(FRAME_PARTS)
+    parts += [part for part in tool.get('js_parts', []) if part not in FRAME_PARTS]
     if wants_urls(tool) and URL_IMPORT_PART not in parts:
         parts.append(URL_IMPORT_PART)
     return parts

@@ -93,15 +93,24 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
 | `shared/js/crc32.js` | `js_parts = ["crc32"]` | the CRC the ZIP and PNG writers need |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
+| `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 
 `zip` needs `crc32` listed as well — it is a separate part because a PNG writer
 wants the checksum without the archive.
 
-`phrases` is the one part no tool asks for. Every tool page wears the frame and
-the frame has sentences its JavaScript puts on screen, so `js_parts()` in
-`buildlib/site.py` adds it to every tool. Listing it twenty-nine times would
-make it look like a choice, and the first tool to leave it out would build
-clean and then 404 on a module in somebody's browser.
+`phrases` and `trust` are the two parts no tool asks for. Every tool page wears
+the frame, the frame has sentences its JavaScript puts on screen, and the
+trust panel at the foot of the pledge is the frame's markup filled in by the
+frame's script, so `js_parts()` in `buildlib/site.py` adds both to every tool.
+Listing them forty times would make them look like a choice, and the first
+tool to leave one out would build clean and then 404 on a module in somebody's
+browser — or ship a live check that says "checking" forever, which is what
+happened while the check still lived in each tool's `main.js`. `trust.js` is
+loaded by `templates/tool.html` as a module of its own, not imported by
+`main.js`, so a tool whose script fails to boot still gets an honest panel;
+its four `net.*` sentences are the frame's defaults in `[ui.tool]`, and a tool
+that would rather name its subject defines the same keys in its own `#phrases`
+block, which wins.
 
 The **file picker** is all three at once, and is the reason the arrangement
 exists: the drop zone, the hidden input, the drag highlighting, and the "Reading

@@ -441,6 +441,10 @@ offline_ready = "klaar &mdash; verbreek de verbinding en dit blijft gewoon werke
 offline_none = "niet beschikbaar in deze browser (al het andere werkt gewoon)."
 offline_insecure = "heeft https:// of localhost nodig om offline te kunnen bewaren."
 offline_failed = "bewaren lukt hier niet, maar er wordt hoe dan ook niets geüpload."
+net_clean = "Je bestanden zijn nergens heen gegaan. {total} bestanden geladen, allemaal van deze site zelf. {platform}"
+net_dirty = "Iets heeft {hosts} benaderd, en dat doet dit gereedschap nooit. Dat is het waard om na te kijken. {platform}"
+net_platform_one = "De eigen scripts van de site voor advertenties, meting en de donatieknop kwamen van {hosts} host; geen daarvan heeft een bestand of een byte ervan gekregen."
+net_platform_many = "De eigen scripts van de site voor advertenties, meting en de donatieknop kwamen van {hosts} hosts; geen daarvan heeft een bestand of een byte ervan gekregen."
 
 error_broke = "Er ging iets mis: {detail}. Herlaad de pagina om opnieuw te beginnen."
 

@@ -175,6 +175,10 @@
   <span data-phrase="offline.none">{{ ui.tool.offline_none }}</span>
   <span data-phrase="offline.insecure">{{ ui.tool.offline_insecure }}</span>
   <span data-phrase="offline.failed">{{ ui.tool.offline_failed }}</span>
+  <span data-phrase="net.clean">{{ ui.tool.net_clean }}</span>
+  <span data-phrase="net.dirty">{{ ui.tool.net_dirty }}</span>
+  <span data-phrase="net.platform.one">{{ ui.tool.net_platform_one }}</span>
+  <span data-phrase="net.platform.many">{{ ui.tool.net_platform_many }}</span>
   <span data-phrase="error.broke">{{ ui.tool.error_broke }}</span>
   <span data-phrase="reading.one">{{ ui.tool.reading_one }}</span>
   <span data-phrase="reading.many">{{ ui.tool.reading_many }}</span>
@@ -269,11 +273,15 @@
 {% endfor %}    </ul>
 
     <!-- Live, measured, and wrong-provable: this is the part that turns the
-         claim above into something a sceptical visitor can check. -->
+         claim above into something a sceptical visitor can check. Filled in
+         by src/shared/trust.js, loaded at the foot of the page. data-expected
+         names the hosts this tool's own CSP lets it talk to - share-text's
+         rendezvous - which the check counts and does not report, because the
+         page has already declared them. -->
     <div class="pledge-live">
       <p class="live-row">
         <span id="network-dot" class="live-dot" aria-hidden="true"></span>
-        <span><strong>{{ ui.tool.live_check }}</strong> <span id="network-count">{{ ui.tool.checking }}</span></span>
+        <span><strong>{{ ui.tool.live_check }}</strong> <span id="network-count" data-expected="{{ trust_expected }}">{{ ui.tool.checking }}</span></span>
       </p>
       <p class="live-row">
         <span id="offline-dot" class="live-dot" aria-hidden="true"></span>
@@ -463,6 +471,13 @@
 
 {% include "partials/footer.html" %}
 
+<!--
+  Two modules, deliberately. The trust panel above is the frame's, so the
+  script that fills it in is the frame's too - copied into src/shared/ by the
+  build like phrases.js, and loaded here rather than imported by main.js, so a
+  tool whose own script fails to boot still gets an honest panel.
+-->
+<script type="module" src="src/shared/trust.js"></script>
 <script type="module" src="src/main.js"></script>
 </body>
 </html>

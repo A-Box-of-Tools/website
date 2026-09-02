@@ -91,6 +91,7 @@ import shutil
 import sys
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
+from urllib.parse import urlsplit
 
 sys.path.insert(0, str(Path(__file__).parent))
 
@@ -1134,6 +1135,16 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             'network permission the importer needs, but body.html never includes '
             '{% include "partials/url-import.html" %}. Add it, or drop [picker.urls].')
 
+    # The hosts this page is allowed to talk to and says so: whatever its own
+    # [csp] connect-src names. shared/js/trust.js counts a fetch to one of
+    # these without reporting it, because the page has already declared it -
+    # share-text's rendezvous is the one case. Read from the CSP rather than
+    # from a key of its own so the two cannot disagree.
+    trust_expected = ' '.join(sorted({
+        urlsplit(source).hostname
+        for source in tool['csp'].get('connect-src', [])
+        if urlsplit(source).hostname}))
+
     page = emit.html(dest / 'index.html', open_links_elsewhere(templates.render(
         'tool.html', frame(locale, locales, site, tool['slug'], '../', links, lang_v, {
             'tool': tool,
@@ -1149,6 +1160,7 @@ def build_tool(out, templates, locale, locales, site, tool, footer, links,
             # Root-absolute and versioned, exactly like lang_href beside it and
             # for the same cache reason. Only a tool page asks for this one.
             'feedback_href': f'/feedback.js?v={feedback_v}',
+            'trust_expected': trust_expected,
             # The carry-the-result-on row and its script. The row renders only
             # where tool.toml declares targets; the script goes on every tool
             # page, because the receiving half is what feeds a carried file

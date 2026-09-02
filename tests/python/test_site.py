@@ -509,18 +509,21 @@ class SharedParts(unittest.TestCase):
     def test_a_tool_without_urls_wants_nothing_of_its_own(self):
         tool = {'picker': {}}
         self.assertFalse(sitelib.wants_urls(tool))
-        self.assertEqual(sitelib.js_parts(tool), ['phrases'])
+        self.assertEqual(sitelib.js_parts(tool), ['phrases', 'trust'])
         self.assertEqual(sitelib.css_parts(tool), [])
         self.assertEqual(sitelib.picker_csp(tool), {})
 
-    def test_the_phrases_module_is_never_left_out(self):
+    def test_the_frame_modules_are_never_left_out(self):
         for tool in ({}, {'js_parts': []}, {'js_parts': ['file-picker']},
                      {'picker': {'urls': True}}):
-            self.assertIn('phrases', sitelib.js_parts(tool), tool)
+            for part in ('phrases', 'trust'):
+                self.assertIn(part, sitelib.js_parts(tool), (tool, part))
 
-    def test_a_tool_that_asks_for_phrases_does_not_get_two(self):
-        tool = {'js_parts': ['file-picker', 'phrases']}
-        self.assertEqual(sitelib.js_parts(tool), ['file-picker', 'phrases'])
+    def test_a_tool_that_asks_for_a_frame_module_does_not_get_two(self):
+        # The frame's own come first whatever the tool wrote; only the order of
+        # the tool's own choices is its to decide.
+        tool = {'js_parts': ['file-picker', 'phrases', 'trust']}
+        self.assertEqual(sitelib.js_parts(tool), ['phrases', 'trust', 'file-picker'])
 
     def test_urls_pull_in_the_module_and_the_sheet(self):
         tool = {'picker': {'urls': True}}
@@ -536,12 +539,12 @@ class SharedParts(unittest.TestCase):
     def test_the_part_is_not_added_twice(self):
         tool = {'picker': {'urls': True}, 'js_parts': ['url-import', 'file-picker']}
         self.assertEqual(sitelib.js_parts(tool),
-                         ['phrases', 'url-import', 'file-picker'])
+                         ['phrases', 'trust', 'url-import', 'file-picker'])
 
     def test_explicit_parts_are_kept_in_order(self):
         tool = {'picker': {'urls': True}, 'js_parts': ['file-picker']}
         self.assertEqual(sitelib.js_parts(tool),
-                         ['phrases', 'file-picker', 'url-import'])
+                         ['phrases', 'trust', 'file-picker', 'url-import'])
 
     def test_the_returned_list_is_a_copy(self):
         parts = ['file-picker']
