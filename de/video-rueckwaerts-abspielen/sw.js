@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/video-rueckwaerts-abspielen/:';
-const CACHE_NAME=CACHE_PREFIX+'81a61d1555';
+const CACHE_NAME=CACHE_PREFIX+'ce40ca6b11';
 const ASSETS=[
 './',
 'index.html',
@@ -11,10 +11,10 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
 'src/shared/mp4-reader.js',
+'src/shared/mp4-writer.js',
 'src/audio.js',
 'src/draw.js',
 'src/main.js',
-'src/mp4.js',
 'src/playback.js',
 'src/reverse.js',
 'src/support.js',

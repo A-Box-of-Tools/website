@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/hi/images-to-video/:';
-const CACHE_NAME=CACHE_PREFIX+'50e2358c49';
+const CACHE_NAME=CACHE_PREFIX+'f7f52789b0';
 const ASSETS=[
 './',
 'index.html',
@@ -10,12 +10,12 @@ const ASSETS=[
 'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
+'src/shared/mp4-muxer.js',
 'src/shared/url-import.js',
 'src/compose.js',
 'src/encoder.js',
 'src/images.js',
 'src/main.js',
-'src/mp4.js',
 'src/recorder.js',
 'src/support.js',
 'analytics.js',

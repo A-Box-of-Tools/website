@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{FileWindow}from'./shared/mp4-reader.js';
-import{Mp4Writer,MOVIE_TIMESCALE,avcSampleEntry}from'./mp4.js';
+import{Mp4Writer,MOVIE_TIMESCALE,avcSampleEntry}from'./shared/mp4-writer.js';
 import{planRanges}from'./ranges.js';
 import{closeDurations,audioSamplesFor}from'./copy.js';
 import{encodeJoinedAudio,targetAudioFormat}from'./audio.js';

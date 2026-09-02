@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/타임랩스-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'23cfe0bac6';
+const CACHE_NAME=CACHE_PREFIX+'cba4f6bf1f';
 const ASSETS=[
 './',
 'index.html',
@@ -11,11 +11,11 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
 'src/shared/mp4-reader.js',
+'src/shared/mp4-muxer.js',
 'src/decode.js',
 'src/draw.js',
 'src/encode.js',
 'src/main.js',
-'src/mp4.js',
 'src/plan.js',
 'src/playback.js',
 'src/support.js',

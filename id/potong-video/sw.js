@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/potong-video/:';
-const CACHE_NAME=CACHE_PREFIX+'1838ccad15';
+const CACHE_NAME=CACHE_PREFIX+'9927126c07';
 const ASSETS=[
 './',
 'index.html',
@@ -11,12 +11,12 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
 'src/shared/mp4-reader.js',
+'src/shared/mp4-writer.js',
 'src/audio.js',
 'src/clips.js',
 'src/copy.js',
 'src/draw.js',
 'src/main.js',
-'src/mp4.js',
 'src/ranges.js',
 'src/record.js',
 'src/segments.js',

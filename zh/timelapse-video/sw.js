@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/timelapse-video/:';
-const CACHE_NAME=CACHE_PREFIX+'a63818c372';
+const CACHE_NAME=CACHE_PREFIX+'13883a26b1';
 const ASSETS=[
 './',
 'index.html',
@@ -11,11 +11,11 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
 'src/shared/mp4-reader.js',
+'src/shared/mp4-muxer.js',
 'src/decode.js',
 'src/draw.js',
 'src/encode.js',
 'src/main.js',
-'src/mp4.js',
 'src/plan.js',
 'src/playback.js',
 'src/support.js',

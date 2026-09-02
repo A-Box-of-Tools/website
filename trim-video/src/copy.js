@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Mp4Writer,MOVIE_TIMESCALE}from'./mp4.js';
+import{Mp4Writer,MOVIE_TIMESCALE}from'./shared/mp4-writer.js';
 import{planRanges}from'./ranges.js';
 class AbortedError extends Error{
 constructor(){

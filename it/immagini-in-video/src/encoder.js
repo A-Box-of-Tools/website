@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{Mp4Muxer}from'./mp4.js';
+import{Mp4Muxer}from'./shared/mp4-muxer.js';
 import{drawFrame}from'./compose.js';
 import{decodeFull}from'./images.js';
 import{pickH264Codec}from'./support.js';
