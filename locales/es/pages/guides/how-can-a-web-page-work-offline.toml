@@ -1,0 +1,18 @@
+#
+# Guía: ¿cómo puede una página web funcionar sin conexión? - Spanish.
+#
+
+nav = "¿Páginas sin conexión?"
+title = "¿Cómo puede una página web funcionar sin conexión?"
+description = "Una página que sigue funcionando con el Wi-Fi apagado no es magia: es un service worker y una caché, maquinaria estándar del navegador. Cómo funciona, por qué el sin-conexión es la prueba de privacidad más fuerte que una herramienta puede ofrecer, y qué no prueba."
+heading = "¿Cómo puede una página web funcionar sin el Wi-Fi?"
+lede = """
+    Porque el navegador guardó una copia completa, y un pequeño programa
+    que viaja con la página sirve esa copia siempre que la red no puede.
+    La maquinaria es estándar y merece entenderse, porque una herramienta
+    que trabaja desconectada te está enseñando algo que ninguna política
+    de privacidad puede enseñar."""
+updated = "26 de agosto de 2026"
+og_title = "¿Cómo puede una página web funcionar sin el Wi-Fi?"
+og_description = "Un service worker y una caché: maquinaria estándar del navegador. Cómo funcionan las páginas sin conexión, por qué es la prueba de privacidad más fuerte, y qué no prueba."
+og_image_alt = "abox.tools - herramientas que no pasan por ningún servidor"

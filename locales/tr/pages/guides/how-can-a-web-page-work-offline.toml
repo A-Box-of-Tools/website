@@ -1,0 +1,18 @@
+#
+# Rehber: bir web sayfası çevrimdışı nasıl çalışır? - Turkish.
+#
+
+nav = "Ağsız çalışan sayfalar?"
+title = "Bir Web Sayfası Çevrimdışı Nasıl Çalışabilir?"
+description = "Wi-Fi kapalıyken çalışmaya devam eden sayfa sihir değildir - bir service worker ile bir önbellektir; tarayıcının standart makinesi. Nasıl çalıştığı, çevrimdışının bir aracın sunabileceği en güçlü mahremiyet kanıtı olması ve neyi kanıtlamadığı."
+heading = "Bir web sayfası Wi-Fi olmadan nasıl çalışabilir?"
+lede = """
+    Çünkü tarayıcı eksiksiz bir kopya sakladı ve sayfayla birlikte gelen
+    küçük bir program, ağ yapamadığında o kopyayı sunuyor. Makine
+    standarttır ve anlamaya değer; çünkü bağlantısız çalışan bir araç,
+    size hiçbir gizlilik politikasının gösteremeyeceği bir şeyi
+    gösteriyordur."""
+updated = "26 Ağustos 2026"
+og_title = "Bir web sayfası Wi-Fi olmadan nasıl çalışabilir?"
+og_description = "Bir service worker ve bir önbellek - tarayıcının standart makinesi. Çevrimdışı sayfalar nasıl çalışır, bu neden en güçlü mahremiyet kanıtıdır, ve neyi kanıtlamaz."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

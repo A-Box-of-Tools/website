@@ -1,0 +1,18 @@
+#
+# Gids: hoe kan een webpagina offline werken? - Dutch.
+#
+
+nav = "Pagina's zonder netwerk?"
+title = "Hoe kan een webpagina offline werken?"
+description = "Een pagina die blijft werken met de wifi uit is geen magie - het is een service worker en een cache, standaard browsermachinerie. Hoe dat werkt, waarom offline het sterkste privacybewijs is dat een tool kan bieden, en wat het niet bewijst."
+heading = "Hoe kan een webpagina werken zonder wifi?"
+lede = """
+    Omdat de browser een complete kopie bewaarde, en een klein programma
+    dat met de pagina meekomt die kopie serveert wanneer het netwerk het
+    niet kan. De machinerie is standaard en het begrijpen waard, want een
+    tool die losgekoppeld doorwerkt, laat je iets zien dat geen enkel
+    privacybeleid kan laten zien."""
+updated = "26 augustus 2026"
+og_title = "Hoe kan een webpagina werken zonder wifi?"
+og_description = "Een service worker en een cache - standaard browsermachinerie. Hoe offline pagina's werken, waarom het het sterkste privacybewijs is, en wat het niet bewijst."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

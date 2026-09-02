@@ -156,6 +156,7 @@ complete = true
 "guides/is-base64-encryption" = "guias/base64-e-criptografia"
 "guides/what-a-pdf-remembers" = "guias/o-que-um-pdf-lembra"
 "guides/does-converting-a-photo-remove-its-metadata" = "guias/converter-uma-foto-remove-os-metadados"
+"guides/how-can-a-web-page-work-offline" = "guias/como-uma-pagina-web-funciona-offline"
 
 #
 # ---------------------------------------------------------------------------

@@ -1,0 +1,18 @@
+#
+# Guida: come fa una pagina web a funzionare offline? - Italian.
+#
+
+nav = "Pagine senza rete?"
+title = "Come fa una pagina web a funzionare offline?"
+description = "Una pagina che continua a lavorare a Wi-Fi spento non è magia: è un service worker e una cache, macchinario standard del browser. Come funziona, perché l'offline è la prova di riservatezza più forte che uno strumento possa offrire, e che cosa non prova."
+heading = "Come fa una pagina web a funzionare senza Wi-Fi?"
+lede = """
+    Perché il browser ne ha tenuto una copia completa, e un piccolo
+    programma consegnato con la pagina serve quella copia ogni volta che
+    la rete non può. Il macchinario è standard e merita di essere capito,
+    perché uno strumento che lavora scollegato ti sta mostrando qualcosa
+    che nessuna informativa sulla privacy può mostrare."""
+updated = "26 agosto 2026"
+og_title = "Come fa una pagina web a funzionare senza Wi-Fi?"
+og_description = "Un service worker e una cache: macchinario standard del browser. Come funzionano le pagine offline, perché è la prova di riservatezza più forte, e che cosa non prova."
+og_image_alt = "abox.tools - strumenti che non passano da nessun server"
