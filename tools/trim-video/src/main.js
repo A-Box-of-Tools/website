@@ -7,9 +7,8 @@ import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { joinByCopy, estimateJoinCopy } from './copy.js';
-import {
-  joinExact, grabFrame, decoderConfig, averageFps, chooseJoinBitrate,
-} from './transcode.js';
+import { decoderConfig, averageFps } from './shared/webcodecs.js';
+import { joinExact, grabFrame, chooseJoinBitrate } from './transcode.js';
 import { trimByRecording, estimateRecording } from './record.js';
 import { joinability, outputFrame } from './clips.js';
 import { fittedBox } from './draw.js';

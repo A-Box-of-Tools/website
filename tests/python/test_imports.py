@@ -94,7 +94,7 @@ class Resolve(unittest.TestCase):
 class Check(unittest.TestCase):
     def test_a_tool_whose_imports_all_land(self):
         files = {'src/main.js': "import { z } from './zip.js';",
-                 'src/zip.js': ''}
+                 'src/zip.js': 'export function z() {}'}
         imports.check(set(files), files.get, 'demo')       # does not raise
 
     def test_a_typo_is_refused(self):
@@ -133,3 +133,54 @@ class Check(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class Named(unittest.TestCase):
+    """A name has to be exported by the file it is imported from.
+
+    The specifier check above proves the file is there; this proves the file
+    still has the thing in it. The case it was written for: a helper moved to
+    a shared part, and a main.js that went on importing it from the old file -
+    which the build shipped, and which the browser then refused to link.
+    """
+
+    def test_named_bindings_are_read_with_their_module(self):
+        found = imports.bindings(
+            "import { a, b as c } from './x.js';\n"
+            "import d, { e } from './y.js';\n"
+            "import f from './z.js';\n"
+            "import './w.js';")
+        self.assertEqual(found, [(1, './x.js', ['a', 'b']), (2, './y.js', ['e'])])
+
+    def test_every_export_shape_is_read(self):
+        names = imports.exports(
+            "export function f() {}\n"
+            "export async function g() {}\n"
+            "export const c = 1;\n"
+            "export let l = 2;\n"
+            "export class K {}\n"
+            "export { m, n as o };\n"
+            "export { p as q } from './x.js';\n"
+            "export default r;\n"
+            "const notExported = 3;")
+        self.assertEqual(names, {'f', 'g', 'c', 'l', 'K', 'm', 'o', 'q'})
+
+    def test_a_name_the_module_does_not_export_is_refused(self):
+        # trim-video's main.js after averageFps moved to shared/js/webcodecs.js.
+        files = {'src/main.js': "import { join, averageFps } from './transcode.js';",
+                 'src/transcode.js': 'export function join() {}'}
+        with self.assertRaises(ConfigError) as caught:
+            imports.check(set(files), files.get, 'demo')
+        self.assertIn('no export named averageFps', str(caught.exception))
+        self.assertNotIn('no export named join', str(caught.exception))
+
+    def test_a_renamed_re_export_satisfies_the_import(self):
+        files = {'src/main.js': "import { formatTime } from './timeline.js';",
+                 'src/timeline.js': "export { clockText as formatTime } from './shared/format.js';",
+                 'src/shared/format.js': 'export function clockText() {}'}
+        imports.check(set(files), files.get, 'demo')       # does not raise
+
+    def test_a_default_import_is_not_checked_for_a_name(self):
+        files = {'src/main.js': "import thing from './x.js';",
+                 'src/x.js': 'export default 1;'}
+        imports.check(set(files), files.get, 'demo')       # does not raise
