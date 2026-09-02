@@ -108,12 +108,11 @@ at the foot of `body.html`, read back with `phrase()` from
 `shared/js/phrases.js`. `src/` is copied byte for byte into every language, so a
 sentence written there is English on fourteen of the tool's fifteen addresses.
 
-Three of the modules here cannot do that lookup themselves. `files.js`,
+Three of the modules here do not do that lookup themselves. `files.js`,
 `compress.js` and `codecs.js` are imported by `tests/js/compress.test.js`
-straight off the disk, and the path they would import &mdash;
-`./shared/phrases.js` &mdash; only exists inside a built tool. So they hand back
-the *key* of a phrase and the blanks to fill it with, and `main.js`, which can
-reach the page, resolves it: `bytes()` returns `{ key: 'size.kb', values: … }`,
+straight off the disk, and `phrase()` reads the words off a page that a test
+does not have. So they hand back the *key* of a phrase and the blanks to fill
+it with, and `main.js`, which can reach the page, resolves it: `bytes()` returns `{ key: 'size.kb', values: … }`,
 `fitToTarget` reports its progress as `'step.quality'`, and a failure is an
 `Error` whose message is a key and whose `values` ride along on the error. That
 last one leans on a documented property of `phrase()`: a key it does not

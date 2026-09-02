@@ -168,10 +168,11 @@ of magnitude wide, and 1,200 loops or 400 kB sits inside it.
   8-connected. They have to be opposites: a diagonal pinch that joined in both
   directions at once would leave the labels and the outlines describing
   different shapes.
-- **No `./shared/` import may appear in any module but `main.js`.** The build
-  copies shared modules into `src/shared/` at build time, a path that does not
-  exist in the source tree, and the JavaScript tests import these leaves
-  straight off the disk.
+- **A `./shared/` import is resolved for the tests, not by the tree.** The
+  build copies shared modules into `src/shared/` at build time, a path that
+  does not exist in the source tree, and the JavaScript tests import these
+  leaves straight off the disk under `tests/js/resolve-shared.mjs`, which sends
+  that one shape of import to `shared/js/`.
 - **No sentence a visitor reads belongs in `src/`.** Every one is a
   `data-phrase` in `body.html`, read back with `phrase()`. The modules return
   numbers and shapes; `main.js` does the wording.

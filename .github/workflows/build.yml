@@ -145,8 +145,10 @@ jobs:
 
       # Newer than the build job's Node, and deliberately: `node --test` only
       # learned to take a glob in 21, and on 20 the same argument is read as a
-      # path that does not exist. Nothing is installed with either, so the two
-      # versions are free to differ.
+      # path that does not exist; and the resolve hook the tests run under,
+      # tests/js/resolve-shared.mjs, needs module.registerHooks, which arrived
+      # in 22.15. Nothing is installed with either, so the two versions are
+      # free to differ.
       - uses: actions/setup-node@v4
         if: steps.covered.outputs.code == 'true'
         with:
@@ -158,7 +160,7 @@ jobs:
 
       - name: The tools (JavaScript)
         if: steps.covered.outputs.code == 'true'
-        run: node --test "tests/js/*.test.js"
+        run: node --import ./tests/js/resolve-shared.mjs --test "tests/js/*.test.js"
 
   build:
     needs: test

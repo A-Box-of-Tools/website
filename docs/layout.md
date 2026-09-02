@@ -78,7 +78,8 @@ workers/
                          whole source is published" claim is checkable
 tests/
   python/                the generator: unittest, standard library only
-  js/                    the tools: node --test, built in since Node 18
+  js/                    the tools: node --test, Node 22.15 or newer
+    resolve-shared.mjs   the --import that lets a test follow a tool's ./shared/ import
     helpers.js           image fixtures, built rather than checked in as binary
     pdf-fixtures.js      the same for PDFs, with real byte offsets
 LICENSE                  MIT: the code, and what the MIT half does not cover

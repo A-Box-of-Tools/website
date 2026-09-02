@@ -31,7 +31,7 @@ python build.py                                   # readable build into dist/
 python build.py --out _plain --clean --no-minify  # what CI runs
 python build.py --only <slug> --locale en --quiet # one tool, one language
 python -m unittest discover -t . -s tests/python  # the generator
-node --test "tests/js/*.test.js"                  # what the browser runs
+node --import ./tests/js/resolve-shared.mjs --test "tests/js/*.test.js"  # what the browser runs
 node screenshots/capture.mjs [<guide>]            # the guides' screenshots
 ```
 
@@ -70,7 +70,7 @@ python -m unittest tests.python.test_build -v -k <name>
 ```
 
 ```bash
-node --test --test-name-pattern="<name>" "tests/js/*.test.js"
+node --import ./tests/js/resolve-shared.mjs --test --test-name-pattern="<name>" "tests/js/*.test.js"
 ```
 
 
@@ -120,12 +120,19 @@ registration sharing it, so `activate` deleting anything but its own prefix
 deletes its neighbours'. It used to, and the symptom was invisible from the
 build: two tools opened, one cache in DevTools.
 
-**A shared module cannot be imported by a unit-tested leaf module.**
-`js_parts` copies `shared/js/x.js` into a tool at `src/shared/x.js` *at build
-time*; that path does not exist in the source tree, and the JavaScript tests
-import tool modules straight off the disk. So `./shared/` imports belong in
-`main.js`, which no test loads. `buildlib/imports.py` fails the build if an
-import does not land on a file the tool ships.
+**A tool's `./shared/` imports resolve only after the build, except in the
+tests.** `js_parts` copies `shared/js/x.js` into a tool at `src/shared/x.js`
+*at build time*; that path does not exist in the source tree, and the
+JavaScript tests import tool modules straight off the disk. So the test command
+above carries `--import ./tests/js/resolve-shared.mjs`: a resolve hook that
+sends a tool module's `./shared/<name>.js` to `shared/js/<name>.js` and touches
+nothing else. With it, any module may import a shared part, `main.js` or a
+unit-tested leaf; without it the first test that loads such a leaf fails,
+naming the `src/shared/` path it could not find. Until that hook existed,
+`./shared/` imports were confined to `main.js`, and the module groups that
+`tests/python/test_duplicates.py` declares as copies are what that rule
+produced — each is a move waiting to be made. `buildlib/imports.py` still fails
+the build if an import does not land on a file the tool ships.
 
 **A guide's screenshots are taken, not drawn, and never measured by hand.**
 `node screenshots/capture.mjs [<guide>]` drives the built site in a headless

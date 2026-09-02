@@ -42,10 +42,10 @@ if they ever come out, tighten the policies and put the stronger wording back.
 python build.py                                   # a readable build into dist/
 powershell -ExecutionPolicy Bypass -File serve.ps1 # build, then serve it at localhost:8080
 python -m unittest discover -t . -s tests/python   # the generator's tests
-node --test "tests/js/*.test.js"                   # the browser code's tests
+node --import ./tests/js/resolve-shared.mjs --test "tests/js/*.test.js"  # the browser code's tests
 ```
 
-Python 3.11 or newer, Node 18 or newer, nothing to install for either — no
+Python 3.11 or newer, Node 22.15 or newer, nothing to install for either — no
 lockfile, no dependency to fetch. Both test suites run in CI on every push and
 every pull request, and nothing is published if either fails.
 

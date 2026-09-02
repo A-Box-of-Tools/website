@@ -19,7 +19,7 @@ import { assemble } from './assemble.js';
 import { archiveName, outputNames, splitInto } from './plan.js';
 import { count } from './format.js';
 import { PdfDocument } from './reader.js';
-import { makeZip } from './zip.js';
+import { makeZip } from './shared/zip.js';
 import { writeDocument } from './writer.js';
 
 /**

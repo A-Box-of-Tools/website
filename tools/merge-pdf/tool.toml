@@ -29,7 +29,11 @@ roadmap_group = "documents"
 # tool's own rules. progress is the bar this tool draws while it works.
 css_parts = ["progress"]
 
-js_parts = ["file-picker"]
+# file-picker brings in the drop zone; zip is the archive a split comes back
+# in when it is more than one file, and crc32 is the checksum it needs. This
+# tool carried its own copy of those two until the tests learned to follow a
+# ./shared/ import (tests/js/resolve-shared.mjs).
+js_parts = ["file-picker", "zip", "crc32"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools

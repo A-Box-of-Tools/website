@@ -55,11 +55,12 @@ reads back.
 
 `src/xml.js`, `src/json.js` and `src/errors.js` are byte for byte
 `json-formatter`'s, declared as groups in `tests/python/test_duplicates.py`,
-which fails if they drift. They cannot simply be shared: `build.py` copies
-`shared/js/` into a tool at `src/shared/` **at build time**, that path does not
-exist in the source tree, and the JavaScript tests import these modules
-straight off the disk. That is the trade the repository has already made five
-times over for the MP4 reader.
+which fails if they drift. They are copies from before the JavaScript tests
+could follow a `./shared/` import — `build.py` copies `shared/js/` into a tool
+at `src/shared/` **at build time**, and the tests import these modules straight
+off the disk. `tests/js/resolve-shared.mjs` resolves that path for the tests
+now, so moving the three to `shared/js/` is the next step, as it is for the
+MP4 reader the repository copied five times over for the same reason.
 
 `src/convert.js` is the deliberate exception and is declared as a singleton
 with its reason: `json-formatter`'s copy carries the YAML pair as well, and

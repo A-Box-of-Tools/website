@@ -31,12 +31,13 @@ pasted rather than after.
 YAML reader is a fix to both pages rather than to whichever one somebody
 happened to open.
 
-They cannot simply be shared. `build.py` copies `shared/js/` into a tool at
-`src/shared/` **at build time**; that path does not exist in the source tree,
-and the JavaScript tests import these modules straight off the disk with no
-build in front of them. A `./shared/` import in a unit-tested leaf module
-breaks its whole test file. That is the trade the repository has already made
-five times over for the MP4 reader, and it is the same trade here.
+They are copies from before the JavaScript tests could follow a `./shared/`
+import. `build.py` copies `shared/js/` into a tool at `src/shared/` **at build
+time**; that path does not exist in the source tree, and the tests import these
+modules straight off the disk with no build in front of them.
+`tests/js/resolve-shared.mjs` resolves that path for the tests now, so moving
+the two to `shared/js/` is the next step, as it is for the MP4 reader the
+repository copied five times over for the same reason.
 
 `src/convert.js` is the deliberate exception and is declared as a singleton
 with its reason. The formatter's copy carries the XML pair as well, and

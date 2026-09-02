@@ -22,9 +22,9 @@
 #
 # src/xml.js, src/json.js and src/errors.js are byte for byte json-formatter's,
 # declared in tests/python/test_duplicates.py so that a fix to one is a fix to
-# both. They cannot be shared: build.py copies shared/js into a tool at
-# src/shared/ at build time, that path does not exist in the source tree, and
-# the JavaScript tests import these modules straight off the disk. src/convert.js
+# both. They are copies from before the JavaScript tests could follow a
+# ./shared/ import (tests/js/resolve-shared.mjs resolves it now), so moving
+# them to shared/js is the next step rather than a rule. src/convert.js
 # is the deliberate exception - json-formatter's carries the YAML pair too, and
 # importing it here would drag six hundred lines of YAML parser into a tool
 # that never mentions YAML. Its two functions are lifted from that file
