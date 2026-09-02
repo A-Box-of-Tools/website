@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/gif-erstellen/:';
-const CACHE_NAME=CACHE_PREFIX+'5142afe77b';
+const CACHE_NAME=CACHE_PREFIX+'8cbae9b9b1';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,7 @@ const ASSETS=[
 'src/shared/message-box.js',
 'src/shared/format.js',
 'src/shared/errors.js',
+'src/shared/image-list.js',
 'src/bytes.js',
 'src/compose.js',
 'src/encode.js',
