@@ -1,14 +1,19 @@
 /**
- * A PDF writer: a container built by hand, so that nothing has to be fetched to
- * make one.
+ * A PDF writer for putting pictures on pages, written out the way the MP4
+ * muxer in shared/js/mp4-muxer.js writes an MP4: a container built by hand,
+ * so that nothing has to be fetched to make one.
  *
- * THIS FILE IS A COPY of tools/images-to-pdf/src/pdf.js, and the two are held
- * identical by tests/python/test_duplicates.py. It is duplicated rather than
- * shared for the reason set out in "Shared parts" in README.md: a module under
- * shared/js/ is copied into a tool at build time, at src/shared/, so a source
- * file that imports one cannot be loaded outside a build - and the JavaScript
- * tests import tool modules straight off the disk. A fix to one copy belongs in
- * both, and that test will say so.
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-page-writer.js
+ * and the build copies it to <tool>/src/shared/pdf-page-writer.js for the two
+ * tools that ask for it with `js_parts = ["pdf-page-writer", ...]`: the one
+ * that puts pictures on pages and the one that puts straightened scans on
+ * them. It is not the quartet's pdf-writer.js, which rewrites a document
+ * somebody else made; this one only ever writes. What sits on top of it is
+ * not shared and should not be - images-to-pdf places a picture of any shape
+ * on a page of any other, with fit modes and rotation and a page colour, while
+ * a scanned page is already the right shape and its layout is twenty lines.
+ * The two carried identical copies until the tests could follow a `./shared/`
+ * import; see tests/js/resolve-shared.mjs.
  *
  * A PDF is a list of numbered objects, a cross-reference table saying what byte
  * each one starts at, and a trailer pointing at the catalogue. That is the whole

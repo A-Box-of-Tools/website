@@ -38,7 +38,7 @@ lastmod = "2026-09-01"
 # The drop zone brings in shared/js/file-picker.js. Several files at once is
 # deliberate: a folder of screenshots, or a photograph of a page of codes, is a
 # real thing people have, and reading them one at a time is the annoying way.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "qr-tables"]
 
 # --- what search engines and chat apps are told ------------------------------
 

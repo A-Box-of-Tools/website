@@ -28,7 +28,7 @@ import { makeQr } from '../../tools/qr-barcode/src/qr.js';
 // the bars back, so they hand it a resolver that echoes the key.
 const say = (key) => key;
 import { remainder } from '../../tools/qr-barcode/src/gf256.js';
-import { LEVELS, sizeOf } from '../../tools/qr-barcode/src/qr-tables.js';
+import { LEVELS, sizeOf } from '../../shared/js/qr-tables.js';
 
 import { correct } from '../../tools/qr-barcode-reader/src/reed-solomon.js';
 import { decodeMatrix, UnreadableError } from '../../tools/qr-barcode-reader/src/qr-decode.js';

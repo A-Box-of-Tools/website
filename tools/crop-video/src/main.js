@@ -6,7 +6,7 @@ import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { cropExact, grabFrame, decoderConfig, averageFps } from './transcode.js';
 import { cropByRecording } from './record.js';
 import { Cropper } from './cropper.js';
-import { hasWebCodecs, hasMediaRecorder, canDecode } from './support.js';
+import { hasWebCodecs, hasMediaRecorder, canDecode } from './shared/video-support.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer is copied byte for

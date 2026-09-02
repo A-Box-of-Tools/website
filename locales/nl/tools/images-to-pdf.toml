@@ -30,7 +30,7 @@ live_hint = """
       internet en maak er alsnog een."""
 
 read_first = """
-, en <code>src/pdf.js</code> en <code>src/document.js</code>
+, en <code>src/shared/pdf-page-writer.js</code> en <code>src/document.js</code>
       voor het hele schrijfwerk aan het bestand, waar het netwerk nooit aan te pas
       komt."""
 
@@ -74,7 +74,7 @@ body = """
 title = "De pdf wordt hier geschreven."
 body = """
  Een pdf is een lijst objecten plus
-      een tabel van waar elk object begint, en <code>src/pdf.js</code> schrijft ze
+      een tabel van waar elk object begint, en <code>src/shared/pdf-page-writer.js</code> schrijft ze
       allebei. Er wordt geen bibliotheek opgehaald en er wordt niets op een server
       gerenderd, en het gereedgekomen bestand gaat rechtstreeks vanuit het geheugen
       naar een download."""

@@ -7,7 +7,7 @@
  * it draws rather than each of these having to think in two coordinate systems.
  */
 
-import { PT_PER_INCH, PT_PER_MM } from './pdf.js';
+import { PT_PER_INCH, PT_PER_MM } from './shared/pdf-page-writer.js';
 
 /** Named page sizes, in millimetres, portrait. */
 export const PAGE_SIZES = {

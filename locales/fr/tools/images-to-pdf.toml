@@ -31,7 +31,7 @@ live_hint = """
       même."""
 
 read_first = """
-, ainsi que <code>src/pdf.js</code> et <code>src/document.js</code>
+, ainsi que <code>src/shared/pdf-page-writer.js</code> et <code>src/document.js</code>
       pour la totalité de l'écriture du fichier, qui ne touche jamais au
       réseau."""
 
@@ -76,7 +76,7 @@ body = """
 title = "Le PDF est écrit ici."
 body = """
  Un PDF, c'est une liste d'objets et une table
-      qui dit où chacun commence, et <code>src/pdf.js</code> écrit les deux.
+      qui dit où chacun commence, et <code>src/shared/pdf-page-writer.js</code> écrit les deux.
       Aucune bibliothèque n'est récupérée, rien n'est rendu sur un serveur, et le
       fichier fini est remis directement à un téléchargement depuis la
       mémoire."""

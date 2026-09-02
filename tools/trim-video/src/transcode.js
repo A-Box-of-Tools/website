@@ -27,7 +27,7 @@ import { planRanges } from './ranges.js';
 import { closeDurations, audioSamplesFor } from './copy.js';
 import { encodeJoinedAudio, targetAudioFormat } from './audio.js';
 import { drawFitted } from './draw.js';
-import { pickH264Codec } from './support.js';
+import { pickH264Codec } from './shared/video-support.js';
 
 /** Divides evenly by 24, 25, 30, 50 and 60 fps. */
 const VIDEO_TIMESCALE = 90000;

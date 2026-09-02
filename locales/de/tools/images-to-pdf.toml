@@ -28,7 +28,7 @@ live_hint = """
       die Internetverbindung und erzeugen Sie trotzdem eines."""
 
 read_first = """
-, sowie <code>src/pdf.js</code> und <code>src/document.js</code>
+, sowie <code>src/shared/pdf-page-writer.js</code> und <code>src/document.js</code>
       für das gesamte Schreiben der Datei, das nie ans Netz geht."""
 
 howto_heading = "So machen Sie aus Bildern ein PDF"
@@ -72,7 +72,7 @@ body = """
 title = "Das PDF wird hier geschrieben."
 body = """
  Ein PDF ist eine Liste von Objekten
-      und eine Tabelle, wo jedes beginnt, und <code>src/pdf.js</code> schreibt
+      und eine Tabelle, wo jedes beginnt, und <code>src/shared/pdf-page-writer.js</code> schreibt
       beides. Es wird keine Bibliothek nachgeladen und nichts auf einem Server
       gerendert, und die fertige Datei geht aus dem Arbeitsspeicher direkt in
       einen Download."""

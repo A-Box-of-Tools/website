@@ -28,7 +28,7 @@ live_hint = """
 
 read_first = """
 , ve dosya yazma işinin tamamı için
-      <code>src/pdf.js</code> ile <code>src/document.js</code>; ikisi de ağa hiç
+      <code>src/shared/pdf-page-writer.js</code> ile <code>src/document.js</code>; ikisi de ağa hiç
       dokunmaz."""
 
 howto_heading = "Görseller PDF'e nasıl çevrilir"
@@ -72,7 +72,7 @@ title = "PDF burada yazılıyor."
 body = """
  Bir PDF, nesnelerden oluşan bir liste ve
       her birinin nerede başladığını gösteren bir tablodur;
-      <code>src/pdf.js</code> ikisini de yazar. Hiçbir kitaplık getirilmiyor,
+      <code>src/shared/pdf-page-writer.js</code> ikisini de yazar. Hiçbir kitaplık getirilmiyor,
       hiçbir şey bir sunucuda çizilmiyor ve bitmiş dosya bellekten doğrudan bir
       indirmeye veriliyor."""
 

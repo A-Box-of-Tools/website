@@ -15,7 +15,7 @@
 import { FileWindow } from './shared/mp4-reader.js';
 import { Mp4Writer, VIDEO_TIMESCALE } from './mp4.js';
 import { drawCropped } from './draw.js';
-import { pickH264Codec } from './support.js';
+import { pickH264Codec } from './shared/video-support.js';
 
 /** Bits per pixel per frame. Real footage moves, so these sit above the
  *  slideshow figures the images-to-video tool uses. */

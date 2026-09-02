@@ -3,22 +3,24 @@ The modules that exist as more than one copy, and have to stay in step.
 
 WHY THERE ARE COPIES AT ALL
 
-The QR tables sit in the QR writer and the QR reader, the PDF page writer in
-the two tools that put pictures on pages, and the WebCodecs support probes in
-two pairs of video tools. They are copies because of a rule that held until
+There are none left to declare, and this file is what keeps it that way.
+
+There used to be twenty-one groups here, because of a rule that held until
 tests/js/resolve-shared.mjs: a shared module is copied into a tool at build
 time, at src/shared/, so a source file importing one could not be loaded
 outside a build - and the JavaScript tests import tool modules straight off
-the disk with no build in front of them. Every one of those tools reaches
-them from a leaf module that has tests, so sharing them would have traded
-those tests for the deduplication.
+the disk with no build in front of them. Every tool that needed the MP4
+reader, the PDF grammar or the audio decoder reached it from a leaf module
+that has tests, so sharing it would have traded those tests for the
+deduplication, and each carried a copy instead.
 
 That rule is gone. The tests now resolve a tool module's `./shared/` imports to
-shared/js/ themselves; the CRC and the ZIP writer went first, then the four PDF
-modules, the MP4 reader, the two MP4 writers, the audio decoder trio and the
-text parsers. Every group below is a move that has not happened yet, and until
-it happens the copies still have to agree - which is all this file has ever
-enforced. See "Shared
+shared/js/ themselves, and every group moved: the CRC and the ZIP writer
+first, then the four PDF modules, the MP4 reader, the two MP4 writers, the
+audio decoder trio, the text parsers, the QR tables, the PDF page writer and
+the video support probes. What remains is the scanner below, which finds the
+next copy nobody meant to make, and the singletons, which are files that share
+a name with something and nothing else. See "Shared
 parts" in docs/adding-a-tool.md.
 
 WHAT THIS ENFORCES INSTEAD
@@ -55,20 +57,24 @@ The groups are deliberate, not accidental:
     time-lapse maker write from an encoder. crop-video's writer is still its
     own: it carries audio like the trim pair and takes a different timescale
     and tkhd signature from either, so it stays a singleton below.
-  - pdf.js is the PDF container writer, in the tool that puts pictures on pages
-    and the one that puts straightened pages on pages. It is the same file on
-    purpose and there is nothing in it either of them wants differently: an
-    object table, a stream, a trailer. What sits ON TOP of it is not shared and
-    should not be - images-to-pdf has to place a picture of any shape on a page
-    of any other, with fit modes and rotation and a page colour, while a
-    scanned page is already the right shape and its layout is twenty lines.
-  - qr-tables.js is in the QR generator and the QR reader, and is the same file
-    on purpose: it is the specification's tables and the arithmetic around them,
-    and a reader that disagreed with the writer about the size of a symbol or
-    the split of its blocks would be wrong rather than different. The field
-    arithmetic beside it is NOT shared - gf256.js computes a remainder and
-    reed-solomon.js finds errors, which are different halves of the same
-    mathematics - so those two are not a group and are not meant to be.
+  - pdf.js, the page writer in the tool that puts pictures on pages and the one
+    that puts straightened pages on pages, is shared/js/pdf-page-writer.js.
+    What sits ON TOP of it is not shared and should not be - images-to-pdf has
+    to place a picture of any shape on a page of any other, with fit modes and
+    rotation and a page colour, while a scanned page is already the right shape
+    and its layout is twenty lines.
+  - qr-tables.js, the specification's tables in the QR generator and the QR
+    reader, is shared/js/qr-tables.js: a reader that disagreed with the writer
+    about the size of a symbol or the split of its blocks would be wrong rather
+    than different. The field arithmetic beside it is NOT shared - gf256.js
+    computes a remainder and reed-solomon.js finds errors, which are different
+    halves of the same mathematics - so those two are not a group and are not
+    meant to be.
+  - support.js had two groups, the cropper and trimmer's and the reverser and
+    time-lapse maker's, which asked slightly different questions of the same
+    browser; shared/js/video-support.js answers all of them. The three
+    support.js files still under tools/ ask something else again and are the
+    singletons below.
   - The four PDF modules were one group each across three tools, and are the
     first group to have made the move: they are shared/js/pdf-{objects,reader,
     filters,writer}.js now, asked for by the compressor, the merger and the
@@ -94,21 +100,11 @@ TOOLS = ROOT / 'tools'
 
 # (module, tools whose copies must be identical to each other)
 GROUPS = [
-    ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
-    ('pdf.js', ['document-scanner', 'images-to-pdf']),
-    # The two below were already identical, token for token, and were found
-    # by test_identical_copies_are_declared the day it was written rather than
-    # by anybody noticing. They are declared as what they are. Five more sat
-    # beside them - crc32.js and zip.js in exif-editor and merge-pdf, and the
-    # audio decoder, resampler and WAV writer in the three audio tools - until
-    # those tools were pointed at shared/js/ instead.
-    ('support.js', ['crop-video', 'trim-video']),
-    ('support.js', ['reverse-video', 'timelapse-video']),
-    # The text parsers were here too - json.js and errors.js across the three
-    # formatter pages, xml.js and yaml.js across the two that read each - and
-    # are shared/js/parse-{json,errors,xml,yaml}.js now, each page asking for
-    # exactly the ones it used to carry, so the XML page still ships no YAML
-    # parser and the YAML page no XML parser.
+    # Empty, and meant to stay that way. Twenty-one groups were declared here
+    # at the most, and every one of them has moved to shared/js/ since the
+    # tests learned to follow a ./shared/ import. A group added here again is
+    # a copy that could have been a part; test_identical_copies_are_declared
+    # below is what finds it, and the answer is the move, not the declaration.
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that
@@ -127,8 +123,9 @@ SINGLETONS = {
     # decode.js and support.js each ask their tool's own question. The audio
     # decoder that shared the first name is shared/js/audio-decode.js now, so
     # the time-lapse maker's is the only decode.js left under tools/; the
-    # support.js copies below answer a different question from the groups that
-    # share their name.
+    # support.js files below ask a different question from the one
+    # shared/js/video-support.js answers for the four tools that both read and
+    # write frames.
     ('decode.js', 'timelapse-video'):
         'decodes the few runs of samples a time-lapse samples, not a whole track',
     ('support.js', 'grab-frame'):

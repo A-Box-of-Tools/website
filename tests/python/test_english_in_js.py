@@ -72,7 +72,7 @@ BASELINE = {
     # Three lines of PDF syntax, two CSS class names, an aspect ratio, a
     # filename template, and one invariant check: orderCorners is only ever
     # handed the four corners of a quad.
-    'document-scanner': 8,
+    'document-scanner': 7,
     # A clock format, and one invariant check in each of the two speed
     # modules - main.js clamps the speed, so neither can be reached.
     'edit-audio': 3,
@@ -99,7 +99,7 @@ BASELINE = {
     'image-to-svg': 0,
     # The /Producer string written into the PDF, five lines of PDF syntax, a
     # CSS pixel value, a key template and the output filename.
-    'images-to-pdf': 9,
+    'images-to-pdf': 8,
     # A CSS class name the list builds.
     'images-to-video': 1,
     'json-formatter': 3,

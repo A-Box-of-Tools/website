@@ -30,7 +30,7 @@
 import { correct } from './reed-solomon.js';
 import {
   alignmentPositions, blockLayout, countBits, remainderBits, sizeOf, totalCodewords,
-} from './qr-tables.js';
+} from './shared/qr-tables.js';
 
 /** The 45 characters alphanumeric mode can hold, in the specification's order. */
 const ALPHANUMERIC = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';

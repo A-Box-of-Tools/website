@@ -21,7 +21,7 @@ So this folder is two thirds computer vision and one third specification.
 | `detect.js` | black and white → a square of modules. Finds the finder patterns, works out the size, finds the alignment pattern, builds the perspective transform, samples the grid |
 | `qr-decode.js` | modules → a string. Format information, mask, zigzag, de-interleaving, then the little language of modes and counts |
 | `reed-solomon.js` | repairs the codewords that were misread. Syndromes, Berlekamp-Massey, Chien, Forney |
-| `qr-tables.js` | the tables and formulas from ISO/IEC 18004 |
+| `shared/qr-tables.js` | the tables and formulas from ISO/IEC 18004, shared with the writer |
 | `linear.js` | the striped barcodes, which need none of the above |
 | `payload.js` | what the string *is*: a link, a network, a contact card — and what is worth warning about |
 | `scan.js` | the order all of that is tried in |

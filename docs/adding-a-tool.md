@@ -106,6 +106,9 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/parse-json.js` | `js_parts = ["parse-json"]` | JSON read into the tree every text parser speaks, and printed back |
 | `shared/js/parse-yaml.js` | `js_parts = ["parse-yaml"]` | YAML 1.2, in the half of it a converter needs |
 | `shared/js/parse-xml.js` | `js_parts = ["parse-xml"]` | XML and HTML, one parser with two rulebooks |
+| `shared/js/qr-tables.js` | `js_parts = ["qr-tables"]` | the QR specification's tables and the arithmetic around them, for the writer and the reader alike |
+| `shared/js/pdf-page-writer.js` | `js_parts = ["pdf-page-writer"]` | a PDF writer for putting pictures on pages; not the quartet's rewriter |
+| `shared/js/video-support.js` | `js_parts = ["video-support"]` | what this browser will decode, encode and record; imports `codec-support` |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 

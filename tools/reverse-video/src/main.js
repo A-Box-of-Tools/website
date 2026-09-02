@@ -6,7 +6,7 @@ import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { reverseExact, decoderConfig } from './reverse.js';
 import { measureFps, reverseByPlayback } from './playback.js';
 import { averageFps, gopRanges } from './timeline.js';
-import { hasWebCodecs, hasEncoder, canDecode } from './support.js';
+import { hasWebCodecs, hasEncoder, canDecode } from './shared/video-support.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer and the writer are

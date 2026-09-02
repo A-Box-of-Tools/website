@@ -27,7 +27,7 @@ live_hint = """
       載りません。回線を抜いてから作ってみるのでも構いません。"""
 
 read_first = """
-、そしてファイル書き出しのすべてについては<code>src/pdf.js</code>と\
+、そしてファイル書き出しのすべてについては<code>src/shared/pdf-page-writer.js</code>と\
 <code>src/document.js</code>です。どちらもネットワークに触れません。"""
 
 howto_heading = "画像をPDFにする手順"
@@ -68,7 +68,7 @@ Content-Security-Policyには、このページが接続してよいアドレス
 title = "PDFはここで書きます。"
 body = """
 PDFとは、オブジェクトの並びと、それぞれがどこから始まるかの表で、\
-      <code>src/pdf.js</code>がその両方を書きます。ライブラリを取りに行くことも、\
+      <code>src/shared/pdf-page-writer.js</code>がその両方を書きます。ライブラリを取りに行くことも、\
       サーバーで描画することもなく、できあがったファイルはメモリからそのまま\
       ダウンロードへ渡ります。"""
 

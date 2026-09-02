@@ -27,7 +27,7 @@ live_hint = """
 
 read_first = """
 , 파일을 쓰는 과정 전부는
-      <code>src/pdf.js</code>와 <code>src/document.js</code>에 있습니다. 어느
+      <code>src/shared/pdf-page-writer.js</code>와 <code>src/document.js</code>에 있습니다. 어느
       쪽도 네트워크에는 손을 대지 않습니다."""
 
 howto_heading = "이미지를 PDF로 만드는 방법"
@@ -68,7 +68,7 @@ body = """
 title = "PDF는 여기서 씁니다."
 body = """
  PDF는 객체의 목록과, 각 객체가 어디서
-      시작하는지 적어 둔 표입니다. <code>src/pdf.js</code>가 그 둘을 씁니다.
+      시작하는지 적어 둔 표입니다. <code>src/shared/pdf-page-writer.js</code>가 그 둘을 씁니다.
       라이브러리를 내려받지도, 서버에서 그려 오지도 않으며, 완성된 파일은
       메모리에서 곧바로 내려받기로 넘어갑니다."""
 

@@ -32,13 +32,13 @@ css_parts = ["progress"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "pdf-page-writer"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools
 # that exist by the build.
 handoff = ["merge-pdf", "compress-pdf"]
-lastmod = "2026-08-28"
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -68,7 +68,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, and <code>src/pdf.js</code> and <code>src/document.js</code>
+, and <code>src/shared/pdf-page-writer.js</code> and <code>src/document.js</code>
       for the whole of the file-writing, which never touches the network."""
 
 # --- the written half of the page --------------------------------------------
@@ -123,7 +123,7 @@ body = """
 title = "The PDF is written here."
 body = """
  A PDF is a list of objects and a table of where
-      each one starts, and <code>src/pdf.js</code> writes both. No library is
+      each one starts, and <code>src/shared/pdf-page-writer.js</code> writes both. No library is
       fetched, nothing is rendered on a server, and the finished file is handed
       straight to a download from memory."""
 
