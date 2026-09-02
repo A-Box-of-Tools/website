@@ -25,17 +25,7 @@ import { GifWriter } from './gif.js';
 import { createHistogram, addToHistogram, buildPalette, mapFrame } from './quantize.js';
 import { drawFrame } from './compose.js';
 import { decodeFull } from './images.js';
-
-class AbortedError extends Error {
-  constructor() {
-    super('Export cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
+import { throwIfAborted } from './shared/errors.js';
 
 /** Hand the main thread back so a click on Cancel is heard and the bar moves. */
 const yieldToPage = () => new Promise((resolve) => setTimeout(resolve, 0));

@@ -39,15 +39,14 @@
  * policy is the proof here, not the promise.
  */
 
+import { said } from './shared/errors.js';
+
 /**
  * Where the engine sits, worked out from this module's own address rather than
  * from the page's. A relative URL in a `<script>` tag resolves against the
  * document, which would break the moment this file moved.
  */
 const ENGINE = new URL('../vendor/libheif.js', import.meta.url);
-
-/** An error whose message is a phrase key; the caller resolves it. */
-const said = (key, values = {}) => Object.assign(new Error(key), { values });
 
 /** The load, started once and shared by every caller. @type {Promise|null} */
 let loading = null;

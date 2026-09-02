@@ -24,51 +24,11 @@
  *     without seeking to the end.
  */
 
+import { ascii, u16, u32, zeros, concat, box, fullBox } from './mp4-boxes.js';
+
 const TIMESCALE = 90000; // divides evenly by 24, 25, 30, 50 and 60 fps
 
 /* ---------------------------------------------------------------- helpers */
-
-function ascii(s) {
-  const out = new Uint8Array(s.length);
-  for (let i = 0; i < s.length; i++) out[i] = s.charCodeAt(i);
-  return out;
-}
-
-function u16(n) {
-  return new Uint8Array([(n >> 8) & 0xff, n & 0xff]);
-}
-
-function u32(n) {
-  return new Uint8Array([(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff]);
-}
-
-function zeros(n) {
-  return new Uint8Array(n);
-}
-
-function concat(parts) {
-  let length = 0;
-  for (const p of parts) length += p.byteLength;
-  const out = new Uint8Array(length);
-  let at = 0;
-  for (const p of parts) {
-    out.set(p, at);
-    at += p.byteLength;
-  }
-  return out;
-}
-
-/** A plain box: size + type + payload. */
-function box(type, ...payload) {
-  const body = concat(payload);
-  return concat([u32(body.byteLength + 8), ascii(type), body]);
-}
-
-/** A full box: adds the version + 24-bit flags header. */
-function fullBox(type, version, flags, ...payload) {
-  const header = new Uint8Array([version, (flags >> 16) & 0xff, (flags >> 8) & 0xff, flags & 0xff]);
-  return box(type, header, ...payload);
-}
 
 /** The identity transformation matrix every player expects. */
 const UNITY_MATRIX = concat([

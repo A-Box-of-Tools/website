@@ -1,12 +1,13 @@
 /** UI wiring and application state. */
 
 import { phrase, fill } from './shared/phrases.js';
+import { decoderConfig, averageFps } from './shared/webcodecs.js';
 import { sizeText, durationText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
-import { timelapseByDecoding, previewFrame, decoderConfig, averageFps } from './decode.js';
+import { timelapseByDecoding, previewFrame } from './decode.js';
 import { timelapseByPlaying } from './playback.js';
 import { TimelapseWriter } from './encode.js';
 import { hasEncoder, hasWebCodecs, canDecode, pickH264Codec } from './shared/video-support.js';
@@ -15,6 +16,7 @@ import {
   clampSpeed, speedForLength, lengthForSpeed, sampleInterval, frameTimes, repeatsFrames,
   outputSize, chooseBitrate, estimateBytes, decodeRuns, decodeCost,
 } from './plan.js';
+import { said } from './shared/errors.js';
 
 /**
  * A reader refusal, in the reader's language. The demuxer is copied byte for
@@ -503,9 +505,6 @@ function updateSummary() {
 }
 
 /* ------------------------------------------------------------------ export */
-
-/** An error whose message is a phrase key; showError resolves it. */
-const said = (key, values = {}) => Object.assign(new Error(key), { values });
 
 function setProgress({ phase, done, total }) {
   const fraction = total > 0 ? Math.min(1, done / total) : 0;

@@ -28,6 +28,8 @@ import { closeDurations, audioSamplesFor } from './copy.js';
 import { encodeJoinedAudio, targetAudioFormat } from './audio.js';
 import { drawFitted } from './draw.js';
 import { pickH264Codec } from './shared/video-support.js';
+import { decoderConfig, averageFps, micros, settle } from './shared/webcodecs.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /** Divides evenly by 24, 25, 30, 50 and 60 fps. */
 const VIDEO_TIMESCALE = 90000;
@@ -42,42 +44,8 @@ const QUALITY_HEADROOM = { low: 0.8, medium: 1.25, high: 2 };
 const MIN_BITRATE = 200_000;
 const MAX_BITRATE = 60_000_000;
 
-/** Frames in flight before the feed loop waits for the pipeline to catch up. */
-const QUEUE_LIMIT = 8;
-
 /** Seconds between keyframes in the output, so seeking stays usable. */
 const KEYFRAME_SECONDS = 2;
-
-class AbortedError extends Error {
-  constructor() {
-    super('Trim cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
-
-/** The configuration VideoDecoder needs to open this track. */
-export function decoderConfig(video) {
-  const config = {
-    codec: video.codec,
-    codedWidth: video.codedWidth,
-    codedHeight: video.codedHeight,
-  };
-  // VP9 carries everything it needs in the bitstream; the others hand over the
-  // configuration record the file was written with, untouched.
-  if (video.description) config.description = video.description;
-  return config;
-}
-
-/** Frames per second, averaged over the whole track. */
-export function averageFps(video) {
-  const seconds = video.duration / video.timescale;
-  if (!seconds) return 30;
-  return Math.min(240, Math.max(1, video.samples.length / seconds));
-}
 
 /** The output frame size for one clip: the picture as watched, rounded to the
  *  even numbers H.264 can describe. */
@@ -128,32 +96,6 @@ export function chooseJoinBitrate({ clips, frame, fps, quality }) {
     }));
   }
   return best;
-}
-
-/** Wait until both queues have drained below the limit. */
-async function settle(decoder, encoder) {
-  while (decoder.decodeQueueSize > QUEUE_LIMIT || encoder.encodeQueueSize > QUEUE_LIMIT) {
-    await new Promise((resolve) => {
-      let settled = false;
-      const done = () => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        decoder.removeEventListener('dequeue', done);
-        encoder.removeEventListener('dequeue', done);
-        resolve();
-      };
-      // `dequeue` is not in every implementation yet, so cap the wait.
-      const timer = setTimeout(done, 20);
-      decoder.addEventListener('dequeue', done);
-      encoder.addEventListener('dequeue', done);
-    });
-  }
-}
-
-/** Presentation time in microseconds, which is what WebCodecs counts in. */
-function micros(ticks, timescale) {
-  return Math.round(ticks / timescale * 1_000_000);
 }
 
 /**
@@ -346,7 +288,7 @@ export async function joinExact({
             throwIfAborted(signal);
             if (failure) throw failure;
 
-            await settle(decoder, encoder);
+            await settle([decoder, encoder]);
 
             const sample = video.samples[i];
             const data = await window.read(sample.offset, sample.size);

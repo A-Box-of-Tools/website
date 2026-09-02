@@ -29,11 +29,8 @@
 
 import { FileWindow } from './shared/mp4-reader.js';
 import { drawUpright } from './draw.js';
-
-/** Presentation time in microseconds, which is what WebCodecs counts in. */
-export function micros(ticks, timescale) {
-  return Math.round(ticks / timescale * 1_000_000);
-}
+import { micros } from './shared/webcodecs.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /**
  * The frames of a track in the order they are watched in.
@@ -148,17 +145,6 @@ export function seriesFrames(order, { every, from = 0, to = Infinity, limit = 50
 export function lookaheadFor(width, height, budgetBytes = 96 << 20) {
   const perFrame = Math.max(1, width * height * 4);
   return Math.max(2, Math.min(16, Math.floor(budgetBytes / perFrame)));
-}
-
-class AbortedError extends Error {
-  constructor(message = 'Cancelled.') {
-    super(message);
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
 }
 
 /**

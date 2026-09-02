@@ -44,6 +44,8 @@
  *     raises a clear error rather than producing a file that opens wrong.
  */
 
+import { ascii, u16, u32, i32, zeros, concat, box, fullBox } from './mp4-boxes.js';
+
 /** The timescale the movie header and every edit list is counted in. */
 export const MOVIE_TIMESCALE = 1000;
 
@@ -51,55 +53,6 @@ export const MOVIE_TIMESCALE = 1000;
 const CHUNK_SECONDS = 1;
 
 /* ---------------------------------------------------------------- helpers */
-
-function ascii(text) {
-  const out = new Uint8Array(text.length);
-  for (let i = 0; i < text.length; i++) out[i] = text.charCodeAt(i);
-  return out;
-}
-
-function u16(n) {
-  return new Uint8Array([(n >> 8) & 0xff, n & 0xff]);
-}
-
-function u32(n) {
-  return new Uint8Array([(n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff]);
-}
-
-/** Two's complement, which is what u32 already produces for a negative number. */
-function i32(n) {
-  return u32(n | 0);
-}
-
-function zeros(n) {
-  return new Uint8Array(n);
-}
-
-function concat(parts) {
-  let length = 0;
-  for (const part of parts) length += part.byteLength;
-  const out = new Uint8Array(length);
-  let at = 0;
-  for (const part of parts) {
-    out.set(part, at);
-    at += part.byteLength;
-  }
-  return out;
-}
-
-/** A plain box: size + type + payload. */
-function box(type, ...payload) {
-  const body = concat(payload);
-  return concat([u32(body.byteLength + 8), ascii(type), body]);
-}
-
-/** A full box: adds the version + 24-bit flags header. */
-function fullBox(type, version, flags, ...payload) {
-  const header = new Uint8Array([
-    version, (flags >> 16) & 0xff, (flags >> 8) & 0xff, flags & 0xff,
-  ]);
-  return box(type, header, ...payload);
-}
 
 const UNITY_MATRIX = concat([
   u32(0x00010000), u32(0), u32(0),

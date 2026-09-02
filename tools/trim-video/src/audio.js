@@ -26,6 +26,8 @@
  * browser's own, running on this machine.
  */
 
+import { fourcc, bytes, concat, u16, u32, box } from './shared/mp4-boxes.js';
+
 /** What a joined track is encoded at when the clips cannot agree. */
 const TARGET_BITRATE = 160_000;
 
@@ -48,11 +50,6 @@ function descriptorLength(view, at) {
     if (!(byte & 0x80)) break;
   }
   return { value, next };
-}
-
-function fourcc(view, at) {
-  return String.fromCharCode(
-    view.getUint8(at), view.getUint8(at + 1), view.getUint8(at + 2), view.getUint8(at + 3));
 }
 
 /** The AAC object type, which is the last number in the codec string. */
@@ -133,37 +130,6 @@ export function audioDecoderConfig(track) {
 }
 
 /* ------------------------------------------------------- writing a description */
-
-function bytes(...values) {
-  return new Uint8Array(values);
-}
-
-function concat(parts) {
-  let length = 0;
-  for (const part of parts) length += part.byteLength;
-  const out = new Uint8Array(length);
-  let at = 0;
-  for (const part of parts) {
-    out.set(part, at);
-    at += part.byteLength;
-  }
-  return out;
-}
-
-function u16(n) {
-  return bytes((n >> 8) & 0xff, n & 0xff);
-}
-
-function u32(n) {
-  return bytes((n >>> 24) & 0xff, (n >>> 16) & 0xff, (n >>> 8) & 0xff, n & 0xff);
-}
-
-function box(type, ...payload) {
-  const body = concat(payload);
-  const header = concat([u32(body.byteLength + 8), bytes(
-    type.charCodeAt(0), type.charCodeAt(1), type.charCodeAt(2), type.charCodeAt(3))]);
-  return concat([header, body]);
-}
 
 /**
  * One descriptor. The length is written as a single byte, which is legal and is

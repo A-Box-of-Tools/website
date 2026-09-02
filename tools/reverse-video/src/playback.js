@@ -31,6 +31,8 @@ import { drawFitted } from './draw.js';
 import { pickH264Codec } from './shared/video-support.js';
 import { reversedAudioTrack } from './audio.js';
 import { writeFile } from './reverse.js';
+import { settle } from './shared/webcodecs.js';
+import { throwIfAborted, said } from './shared/errors.js';
 
 /** Bits per pixel per frame, as in reverse.js. */
 const QUALITY_BPP = { low: 0.05, medium: 0.1, high: 0.2 };
@@ -42,28 +44,11 @@ const MAX_BITRATE = 60_000_000;
 /** Seconds between keyframes in the output, so seeking stays usable. */
 const KEYFRAME_SECONDS = 2;
 
-/** Frames in flight before the loop waits for the encoder to catch up. */
-const QUEUE_LIMIT = 8;
-
 /** How long one seek may take before the clip is called unreadable. */
-/** An error whose message is a phrase key; the caller resolves it. */
-const said = (key, values = {}) => Object.assign(new Error(key), { values });
-
 const SEEK_TIMEOUT = 10_000;
 
 /** What the frame rate is assumed to be when the browser will not say. */
 const ASSUMED_FPS = 30;
-
-class AbortedError extends Error {
-  constructor() {
-    super('Reverse cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
 
 /**
  * What to spend on the picture, when all that is known about the source is how
@@ -170,24 +155,6 @@ export async function measureFps(video, seconds = 1) {
   }
 }
 
-/** Wait until the encoder has caught up. */
-async function settle(encoder) {
-  while (encoder.encodeQueueSize > QUEUE_LIMIT) {
-    await new Promise((resolve) => {
-      let settled = false;
-      const done = () => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        encoder.removeEventListener('dequeue', done);
-        resolve();
-      };
-      const timer = setTimeout(done, 20);
-      encoder.addEventListener('dequeue', done);
-    });
-  }
-}
-
 /**
  * @param {object} args
  * @param {File} args.file  for the sound; the picture comes from `video`
@@ -277,7 +244,7 @@ export async function reverseByPlayback({
         (total - 1 - k) / fps + 0.5 / fps);
 
       await seekTo(video, at);
-      await settle(encoder);
+      await settle([encoder]);
 
       // The player has already turned the picture whichever way the file asked
       // for, so there is nothing left here to rotate.

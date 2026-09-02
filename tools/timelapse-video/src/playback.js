@@ -16,19 +16,10 @@
  */
 
 import { drawScaled, frameCanvas } from './draw.js';
+import { throwIfAborted, said } from './shared/errors.js';
 
 /** Give up on a seek that never lands rather than hanging the page. */
 const SEEK_TIMEOUT = 10_000;
-
-class AbortedError extends Error {
-  constructor() {
-    super('Cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-/** An error whose message is a phrase key; the caller resolves it. */
-const said = (key, values = {}) => Object.assign(new Error(key), { values });
 
 /**
  * What the four MediaError codes mean, in words somebody can act on.
@@ -76,7 +67,7 @@ export async function timelapseByPlaying({
 
   try {
     for (let i = 0; i < times.length; i += 1) {
-      if (signal?.aborted) throw new AbortedError();
+      throwIfAborted(signal);
 
       // A media element's error is sticky, and it can be set between two seeks
       // rather than during one - where no listener of ours is attached to hear

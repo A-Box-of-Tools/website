@@ -43,17 +43,7 @@
 
 import { Mp4Writer, MOVIE_TIMESCALE } from './shared/mp4-writer.js';
 import { planRanges } from './ranges.js';
-
-class AbortedError extends Error {
-  constructor() {
-    super('Trim cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
+import { throwIfAborted } from './shared/errors.js';
 
 /** Ticks on one clock, in ticks on another. */
 function rescale(ticks, from, to) {

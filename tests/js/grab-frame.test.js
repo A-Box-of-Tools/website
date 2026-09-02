@@ -19,8 +19,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import {
-  displayOrder, frameNear, keyframeBefore, lookaheadFor, micros, seriesFrames,
+  displayOrder, frameNear, keyframeBefore, lookaheadFor, seriesFrames,
 } from '../../tools/grab-frame/src/frames.js';
+import { micros } from '../../shared/js/webcodecs.js';
 import {
   clockTime, stillName, timecode,
 } from '../../tools/grab-frame/src/still.js';

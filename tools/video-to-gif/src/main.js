@@ -1,12 +1,13 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { decoderConfig } from './shared/webcodecs.js';
 import { sizeText } from './shared/format.js';
 import { openInPlayer } from './shared/media.js';
 import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
-import { framesByDecoding, framesByPlaying, decoderConfig } from './frames.js';
+import { framesByDecoding, framesByPlaying } from './frames.js';
 import { encodeGif, ColorHistogram, MAX_COLORS } from './encode.js';
 import { RangeBar, formatTime, parseTime } from './range.js';
 import { frameTimes, frameDelays, outputSize, workingBytes, estimateBytes, MAX_FPS } from './plan.js';

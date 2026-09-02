@@ -9,43 +9,14 @@ import { Mp4Muxer } from './shared/mp4-muxer.js';
 import { drawFrame } from './compose.js';
 import { decodeFull } from './images.js';
 import { pickH264Codec } from './support.js';
+import { settle } from './shared/webcodecs.js';
+import { throwIfAborted } from './shared/errors.js';
 
 /** Bits per pixel per frame. Slideshows are mostly static, so rate control
  *  lands well under these ceilings in practice. */
 const QUALITY_BPP = { low: 0.03, medium: 0.07, high: 0.15 };
 
 const MAX_BITRATE = 50_000_000;
-const QUEUE_LIMIT = 8; // frames in flight before we wait for the encoder
-
-class AbortedError extends Error {
-  constructor() {
-    super('Export cancelled.');
-    this.name = 'AbortError';
-  }
-}
-
-function throwIfAborted(signal) {
-  if (signal?.aborted) throw new AbortedError();
-}
-
-/** Wait until the encoder has drained below the queue limit. */
-async function applyBackpressure(encoder) {
-  while (encoder.encodeQueueSize > QUEUE_LIMIT) {
-    await new Promise((resolve) => {
-      let settled = false;
-      const done = () => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        encoder.removeEventListener('dequeue', done);
-        resolve();
-      };
-      // `dequeue` is not in every implementation yet, so cap the wait.
-      const timer = setTimeout(done, 50);
-      encoder.addEventListener('dequeue', done);
-    });
-  }
-}
 
 /** Total frames the timeline will produce. */
 export function countFrames(items, fps) {
@@ -128,7 +99,7 @@ export async function encodeToMp4({ items, settings, onProgress, signal }) {
         throwIfAborted(signal);
         if (encoderError) throw encoderError;
 
-        await applyBackpressure(encoder);
+        await settle([encoder]);
 
         const frame = new VideoFrame(canvas, {
           timestamp: Math.round(frameIndex * frameDurationUs),
