@@ -1,20 +1,35 @@
 /**
  * The crop box: the rectangle you drag over the preview.
  *
- * It keeps its state in the coordinates of the video itself - a crop is
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/cropper.js and the
+ * build copies it to <tool>/src/shared/cropper.js for the tools that ask for
+ * it with `js_parts = ["cropper", ...]`: the video cropper and the image
+ * resizer, which carried the same file apart from two rules. It imports
+ * nothing.
+ *
+ * It keeps its state in the coordinates of the picture itself - a crop is
  * "1080 x 1080 starting 420 across", not "38% of the way in" - because that is
  * what the encoder is given and what the numbers under the preview show. The
  * box is drawn in percentages of the preview, so the same rectangle survives
  * the window being resized, a phone being turned, and the preview swapping
- * between a playing video and a decoded still.
+ * between a playing video and a decoded still, or to a different image.
  *
  * Everything it does is arithmetic on one rectangle. There is no canvas here
  * and nothing is read out of the file.
+ *
+ * THE TWO RULES A TOOL SETS
+ *
+ * `minSize` is the smallest crop, in source pixels: large enough that a
+ * mis-drag cannot produce a two-pixel video, small enough for a favicon.
+ *
+ * `evenSizes` is for the video cropper. H.264 will not take odd dimensions,
+ * so its box never offers one, always rounding down and never up: rounding
+ * up is how a box that has just been clamped to the edge of the picture ends
+ * up a pixel past it again. A video with an odd number of rows therefore
+ * loses its last one, which is the whole of what that costs. No image format
+ * cares, so the resizer takes any size down to a single pixel and a
+ * 1001-pixel-wide crop is 1001 pixels wide.
  */
-
-/** The smallest crop, in source pixels. Small enough to be useful, large
- *  enough that a mis-drag cannot produce a two-pixel video. */
-const MIN_SIZE = 16;
 
 /** Which point of the box stays still while a handle is dragged. */
 const ANCHORS = {
@@ -24,23 +39,13 @@ const ANCHORS = {
 
 const HANDLES = Object.keys(ANCHORS);
 
-/**
- * H.264 will not take odd dimensions, so the box never offers one.
- *
- * Always rounded down, never up: rounding up is how a box that has just been
- * clamped to the edge of the picture ends up a pixel past it again. A video
- * with an odd number of rows therefore loses its last one, which is the whole
- * of what that costs.
- */
-function even(value) {
-  return Math.max(MIN_SIZE, Math.floor(value / 2) * 2);
-}
-
 export class Cropper {
   #stage;
   #box;
   #label;
   #onChange;
+  #minSize;
+  #even;
   #source = { width: 0, height: 0 };
   #rect = { x: 0, y: 0, width: 0, height: 0 };
   #aspect = null;
@@ -49,18 +54,24 @@ export class Cropper {
 
   /**
    * @param {HTMLElement} stage  the element the preview exactly fills
-   * @param {{onChange: Function, label: string}} options
+   * @param {object} options
+   * @param {Function} options.onChange  (rect) after every move
+   * @param {string} [options.label]  the box's accessible name; passed in
+   *   because the words live in the page, not here
+   * @param {number} [options.minSize=8]  the smallest crop, in source pixels
+   * @param {boolean} [options.evenSizes=false]  round every side down to an
+   *   even number, as H.264 needs
    */
-  constructor(stage, { onChange, label } = {}) {
+  constructor(stage, { onChange, label, minSize = 8, evenSizes = false } = {}) {
     this.#stage = stage;
     this.#onChange = onChange;
+    this.#minSize = minSize;
+    this.#even = evenSizes;
 
     this.#box = document.createElement('div');
     this.#box.className = 'crop-box';
     this.#box.tabIndex = 0;
     this.#box.setAttribute('role', 'application');
-    // The label is passed in rather than written here: a shared module
-    // cannot be imported by a leaf, so only main.js can read a phrase.
     if (label) this.#box.setAttribute('aria-label', label);
 
     this.#label = document.createElement('span');
@@ -90,10 +101,9 @@ export class Cropper {
     return this.#aspect;
   }
 
-  /** Point the box at a new video, and open it on the whole frame. */
+  /** Point the box at a new picture, and open it on the whole frame. */
   setSource(width, height) {
     this.#source = { width, height };
-    this.#aspect = null;
     this.reset();
   }
 
@@ -102,7 +112,9 @@ export class Cropper {
     this.#box.classList.toggle('disabled', !enabled);
   }
 
+  /** The whole frame, with any locked shape let go. */
   reset() {
+    this.#aspect = null;
     this.#apply({
       x: 0, y: 0, width: this.#source.width, height: this.#source.height,
     });
@@ -124,9 +136,9 @@ export class Cropper {
     const centreY = this.#rect.y + this.#rect.height / 2;
 
     // The largest box of that shape that fits inside the one already there,
-    // kept where it was. Applied to a box that is still the whole frame - which
-    // is where most people press these - that is the largest square, or the
-    // widest 16:9, the picture holds.
+    // kept where it was. Applied to a box that is still the whole picture -
+    // which is where most people press these - that is the largest square, or
+    // the widest 16:9, the picture holds.
     const width = Math.min(this.#rect.width, this.#rect.height * this.#aspect);
     const height = width / this.#aspect;
 
@@ -215,11 +227,11 @@ export class Cropper {
 
     const [x, y] = direction;
     // Alt turns the arrows into a resize, which is the one gesture a pointer
-    // has and a keyboard otherwise does not. Its step is two rather than one,
-    // because the box only ever takes an even size and a step of one would
+    // has and a keyboard otherwise does not. Where the box only ever takes an
+    // even size its step is two rather than one, because a step of one would
     // round straight back to where it started.
     if (event.altKey) {
-      const step = event.shiftKey ? 10 : 2;
+      const step = event.shiftKey ? 10 : this.#even ? 2 : 1;
       this.#resizeBy(x * step, y * step);
     } else {
       const step = event.shiftKey ? 10 : 1;
@@ -273,8 +285,8 @@ export class Cropper {
     const room = (anchor, span, side) => (
       side === 0 ? span - anchor : side === 1 ? anchor : 2 * Math.min(anchor, span - anchor)
     );
-    let maxWidth = room(anchorX, this.#source.width, ax);
-    let maxHeight = room(anchorY, this.#source.height, ay);
+    const maxWidth = room(anchorX, this.#source.width, ax);
+    const maxHeight = room(anchorY, this.#source.height, ay);
 
     if (this.#aspect) {
       const limit = Math.min(maxWidth, maxHeight * this.#aspect);
@@ -295,6 +307,13 @@ export class Cropper {
 
   /* ------------------------------------------------------------- applying */
 
+  /** One side, rounded and kept between the smallest crop and the picture. */
+  #fit(value, limit) {
+    let size = Math.min(Math.round(value), limit);
+    if (this.#even) size = Math.floor(size / 2) * 2;
+    return Math.max(Math.min(this.#minSize, limit), size);
+  }
+
   /** Round, clamp inside the picture, draw, and report. */
   #apply(rect) {
     const { width: sw, height: sh } = this.#source;
@@ -302,8 +321,8 @@ export class Cropper {
 
     // Size first, then position: the size is what the edges of the picture
     // constrain, and the position is then whatever keeps that size inside them.
-    const width = even(Math.min(Math.round(rect.width), sw));
-    const height = even(Math.min(Math.round(rect.height), sh));
+    const width = this.#fit(rect.width, sw);
+    const height = this.#fit(rect.height, sh);
     const x = Math.max(0, Math.min(Math.round(rect.x), sw - width));
     const y = Math.max(0, Math.min(Math.round(rect.y), sh - height));
 
