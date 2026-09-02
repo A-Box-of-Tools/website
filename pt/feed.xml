@@ -39,6 +39,13 @@
     <summary type="html">Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline.</summary>
   </entry>
   <entry>
+    <title type="html">Conversor de YAML para JSON</title>
+    <id>https://abox.tools/pt/converter-yaml-para-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/converter-yaml-para-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Converta YAML para JSON e JSON para YAML no seu navegador. Ele lê YAML 1.2, então yes e no continuam sendo texto, e diz exatamente o que cada sentido perde. Nada é enviado: um arquivo de configuração nunca sai do seu computador.</summary>
+  </entry>
+  <entry>
     <title type="html">Cortador de vídeo</title>
     <id>https://abox.tools/pt/cortar-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-video/"/>
@@ -72,6 +79,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/extrair-quadro-de-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Salve qualquer quadro de um MP4, MOV ou WebM como PNG ou JPEG em tamanho cheio. Avance quadro a quadro, ou tire um a cada poucos segundos. Roda no navegador: nada é enviado.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formatador de JSON</title>
+    <id>https://abox.tools/pt/formatar-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/formatar-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formate e minifique JSON, XML, HTML, CSS e YAML, e converta JSON para YAML ou XML e de volta. Os analisadores rodam no seu navegador e nada é enviado: um token ou um arquivo de configuração nunca sai do seu computador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formatador de XML</title>
+    <id>https://abox.tools/pt/formatar-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/formatar-xml/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formate, indente e comprima XML, e converta XML para JSON ou JSON para XML. O analisador roda no seu navegador e nada é enviado, então um feed, uma nota fiscal ou um arquivo de configuração nunca sai do seu computador.</summary>
   </entry>
   <entry>
     <title type="html">Leitor de QR Code e código de barras</title>
@@ -114,27 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/comparar-textos/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Compare dois textos e veja cada diferença, linha a linha e palavra por palavra, lado a lado ou numa coluna só. A comparação roda no seu navegador e nada é enviado: código ainda não lançado nunca sai do seu computador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Conversor de YAML para JSON</title>
-    <id>https://abox.tools/pt/converter-yaml-para-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/converter-yaml-para-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Converta YAML para JSON e JSON para YAML no seu navegador. Ele lê YAML 1.2, então yes e no continuam sendo texto, e diz exatamente o que cada sentido perde. Nada é enviado: um arquivo de configuração nunca sai do seu computador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formatador de JSON</title>
-    <id>https://abox.tools/pt/formatar-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/formatar-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formate e minifique JSON, XML, HTML, CSS e YAML, e converta JSON para YAML ou XML e de volta. Os analisadores rodam no seu navegador e nada é enviado: um token ou um arquivo de configuração nunca sai do seu computador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formatador de XML</title>
-    <id>https://abox.tools/pt/formatar-xml/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/formatar-xml/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formate, indente e comprima XML, e converta XML para JSON ou JSON para XML. O analisador roda no seu navegador e nada é enviado, então um feed, uma nota fiscal ou um arquivo de configuração nunca sai do seu computador.</summary>
   </entry>
   <entry>
     <title type="html">Como cortar um vídeo para outro formato de tela</title>

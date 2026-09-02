@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{parseJson,printJson}from'./json.js';
-import{parseXml,printXml}from'./xml.js';
+import{parseJson,printJson}from'./shared/parse-json.js';
+import{parseXml,printXml}from'./shared/parse-xml.js';
 import{parseCss,printCss}from'./css.js';
-import{parseYaml,printYaml}from'./yaml.js';
+import{parseYaml,printYaml}from'./shared/parse-yaml.js';
 export const LANGUAGES=[
 {id:'json',name:'JSON',minifies:true,sorts:true},
 {id:'xml',name:'XML',minifies:true,sorts:false},

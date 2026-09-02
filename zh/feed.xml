@@ -32,6 +32,27 @@
     <uri>https://abox.tools/zh/</uri>
   </author>
   <entry>
+    <title type="html">JSON 格式化</title>
+    <id>https://abox.tools/zh/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/json-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
+  </entry>
+  <entry>
+    <title type="html">XML 格式化</title>
+    <id>https://abox.tools/zh/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/xml-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">格式化、缩进和压缩 XML，把 XML 转成 JSON 或者把 JSON 转回 XML。解析器在你的浏览器里跑，什么都不上传，所以一个订阅源、一张发票或者一份配置文件永远不会离开你的设备。</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML 转 JSON</title>
+    <id>https://abox.tools/zh/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/yaml-to-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">在你的浏览器里把 YAML 转成 JSON、把 JSON 转成 YAML。它读的是 YAML 1.2，所以 yes 和 no 还是字符串，而且会明确说出每个方向丢了什么。什么都不上传：一份配置文件永远不会离开你的设备。</summary>
+  </entry>
+  <entry>
     <title type="html">从视频里提取音频</title>
     <id>https://abox.tools/zh/extract-audio-from-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/extract-audio-from-video/"/>
@@ -93,27 +114,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON 格式化</title>
-    <id>https://abox.tools/zh/json-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/json-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">格式化和压缩 JSON、XML、HTML、CSS 和 YAML，把 JSON 转成 YAML 或 XML 再转回来。解析器在你的浏览器里跑，什么都不上传——token 和配置文件从不离开你的机器。</summary>
-  </entry>
-  <entry>
-    <title type="html">XML 格式化</title>
-    <id>https://abox.tools/zh/xml-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/xml-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">格式化、缩进和压缩 XML，把 XML 转成 JSON 或者把 JSON 转回 XML。解析器在你的浏览器里跑，什么都不上传，所以一个订阅源、一张发票或者一份配置文件永远不会离开你的设备。</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML 转 JSON</title>
-    <id>https://abox.tools/zh/yaml-to-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/yaml-to-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">在你的浏览器里把 YAML 转成 JSON、把 JSON 转成 YAML。它读的是 YAML 1.2，所以 yes 和 no 还是字符串，而且会明确说出每个方向丢了什么。什么都不上传：一份配置文件永远不会离开你的设备。</summary>
   </entry>
   <entry>
     <title type="html">怎么做一张身高对比图</title>

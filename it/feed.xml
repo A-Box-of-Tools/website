@@ -32,6 +32,13 @@
     <uri>https://abox.tools/it/</uri>
   </author>
   <entry>
+    <title type="html">Convertitore da YAML a JSON</title>
+    <id>https://abox.tools/it/convertire-yaml-in-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/convertire-yaml-in-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Converti YAML in JSON e JSON in YAML nel tuo browser. Legge YAML 1.2, quindi yes e no restano stringhe, e dice esattamente cosa perde ogni direzione. Non viene caricato niente: un file di configurazione non lascia mai il tuo dispositivo.</summary>
+  </entry>
+  <entry>
     <title type="html">Editor audio</title>
     <id>https://abox.tools/it/modificare-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/modificare-audio/"/>
@@ -51,6 +58,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/estrarre-fotogramma-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Salva qualsiasi fotogramma di un MP4, MOV o WebM come PNG o JPEG a dimensione piena. Avanza fotogramma per fotogramma, oppure prendine uno ogni pochi secondi. Gira nel browser: non viene caricato niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formattatore JSON</title>
+    <id>https://abox.tools/it/formattare-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formatta e minimizza JSON, XML, HTML, CSS e YAML, e converti JSON in YAML o XML e viceversa. I parser girano nel tuo browser e non viene caricato niente: un token o un file di configurazione non lascia mai il tuo dispositivo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formattatore XML</title>
+    <id>https://abox.tools/it/formattare-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-xml/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formatta, indenta e compatta XML, e converti XML in JSON o JSON in XML. Il parser gira nel tuo browser e non viene caricato niente, quindi un feed, una fattura o un file di configurazione non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
     <title type="html">Ritagliatore di video</title>
@@ -114,27 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/confrontare-testi/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Confronta due testi e guarda ogni differenza, riga per riga e parola per parola, fianco a fianco o in una colonna. Il confronto gira nel tuo browser e non viene caricato niente: il codice non ancora pubblicato non lascia mai il tuo dispositivo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Convertitore da YAML a JSON</title>
-    <id>https://abox.tools/it/convertire-yaml-in-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/convertire-yaml-in-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Converti YAML in JSON e JSON in YAML nel tuo browser. Legge YAML 1.2, quindi yes e no restano stringhe, e dice esattamente cosa perde ogni direzione. Non viene caricato niente: un file di configurazione non lascia mai il tuo dispositivo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formattatore JSON</title>
-    <id>https://abox.tools/it/formattare-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formatta e minimizza JSON, XML, HTML, CSS e YAML, e converti JSON in YAML o XML e viceversa. I parser girano nel tuo browser e non viene caricato niente: un token o un file di configurazione non lascia mai il tuo dispositivo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formattatore XML</title>
-    <id>https://abox.tools/it/formattare-xml/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/formattare-xml/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formatta, indenta e compatta XML, e converti XML in JSON o JSON in XML. Il parser gira nel tuo browser e non viene caricato niente, quindi un feed, una fattura o un file di configurazione non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
     <title type="html">Come ritagliare un video in una forma diversa</title>

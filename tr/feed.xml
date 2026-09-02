@@ -32,6 +32,13 @@
     <uri>https://abox.tools/tr/</uri>
   </author>
   <entry>
+    <title type="html">JSON Biçimlendirici</title>
+    <id>https://abox.tools/tr/json-bicimlendirme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/json-bicimlendirme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS ve YAML biçimlendirin ve küçültün; JSON'u YAML ya da XML'e çevirin ve geri alın. Ayrıştırıcılar tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç ya da bir yapılandırma dosyası makinenizden hiç çıkmaz.</summary>
+  </entry>
+  <entry>
     <title type="html">Ses Düzenleyici</title>
     <id>https://abox.tools/tr/ses-duzenleme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/ses-duzenleme/"/>
@@ -74,6 +81,20 @@
     <summary type="html">Bir MP4, MOV veya WebM dosyasındaki sesi alıp WAV olarak kaydedin. Video cihazınızdan çıkmaz ve görüntüsü hiçbir zaman çözülmez; işin tamamı kendi tarayıcınızda yürür.</summary>
   </entry>
   <entry>
+    <title type="html">XML Biçimlendirici</title>
+    <id>https://abox.tools/tr/xml-bicimlendirme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/xml-bicimlendirme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">XML'i biçimlendirin, girintileyin ve sıkıştırın; XML'i JSON'a ya da JSON'u XML'e çevirin. Ayrıştırıcı tarayıcınızda çalışır ve hiçbir şey yüklenmez, böylece bir akış, bir fatura ya da bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML'den JSON'a Dönüştürücü</title>
+    <id>https://abox.tools/tr/yaml-json-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/yaml-json-donusturme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">YAML'i JSON'a, JSON'u YAML'e tarayıcınızda dönüştürün. YAML 1.2 okur, böylece yes ve no metin olarak kalır, ve her yönün tam olarak neyi kaybettirdiğini söyler. Hiçbir şey yüklenmez: bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
+  </entry>
+  <entry>
     <title type="html">PDF Karartıcı</title>
     <id>https://abox.tools/tr/pdf-karartma/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/pdf-karartma/"/>
@@ -109,32 +130,11 @@
     <summary type="html">Bir boy listesini yan yana bir resme çevirin: boyların nasıl yazılacağı, bir çocuk için hangi figürün seçileceği, tanıdık tek bir nesnenin neden üçüncü bir kişiden daha çok iş gördüğü, ve grafiğin PNG ya da SVG olarak nasıl dışarı çıkarılacağı.</summary>
   </entry>
   <entry>
-    <title type="html">JSON Biçimlendirici</title>
-    <id>https://abox.tools/tr/json-bicimlendirme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/json-bicimlendirme/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS ve YAML biçimlendirin ve küçültün; JSON'u YAML ya da XML'e çevirin ve geri alın. Ayrıştırıcılar tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç ya da bir yapılandırma dosyası makinenizden hiç çıkmaz.</summary>
-  </entry>
-  <entry>
     <title type="html">Metin Karşılaştırma</title>
     <id>https://abox.tools/tr/metin-karsilastirma/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/metin-karsilastirma/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">İki metni karşılaştırın ve her farkı satır satır, sözcük sözcük, yan yana ya da tek sütunda görün. Karşılaştırma tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; yayımlanmamış kod makinenizden hiç çıkmaz.</summary>
-  </entry>
-  <entry>
-    <title type="html">XML Biçimlendirici</title>
-    <id>https://abox.tools/tr/xml-bicimlendirme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/xml-bicimlendirme/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">XML'i biçimlendirin, girintileyin ve sıkıştırın; XML'i JSON'a ya da JSON'u XML'e çevirin. Ayrıştırıcı tarayıcınızda çalışır ve hiçbir şey yüklenmez, böylece bir akış, bir fatura ya da bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML'den JSON'a Dönüştürücü</title>
-    <id>https://abox.tools/tr/yaml-json-donusturme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/yaml-json-donusturme/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">YAML'i JSON'a, JSON'u YAML'e tarayıcınızda dönüştürün. YAML 1.2 okur, böylece yes ve no metin olarak kalır, ve her yönün tam olarak neyi kaybettirdiğini söyler. Hiçbir şey yüklenmez: bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
   </entry>
   <entry>
     <title type="html">Belge Tarayıcı</title>

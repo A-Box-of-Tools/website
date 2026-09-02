@@ -32,6 +32,27 @@
     <uri>https://abox.tools/hi/</uri>
   </author>
   <entry>
+    <title type="html">JSON फ़ॉर्मैटर</title>
+    <id>https://abox.tools/hi/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/json-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">XML फ़ॉर्मैटर</title>
+    <id>https://abox.tools/hi/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/xml-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">XML को फ़ॉर्मैट, इंडेंट और मिनिफ़ाई कीजिए, और XML को JSON या JSON को XML में बदलिए। पार्सर आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता, इसलिए कोई फ़ीड, इनवॉइस या कॉन्फ़िग फ़ाइल आपकी डिवाइस से बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML से JSON कन्वर्टर</title>
+    <id>https://abox.tools/hi/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/yaml-to-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">अपने ब्राउज़र में YAML को JSON और JSON को YAML में बदलिए। यह YAML 1.2 पढ़ता है, इसलिए yes और no स्ट्रिंग ही रहते हैं, और बताता है कि हर दिशा में क्या खोता है। कुछ भी अपलोड नहीं होता, इसलिए कोई कॉन्फ़िग फ़ाइल आपकी डिवाइस से बाहर नहीं जाती।</summary>
+  </entry>
+  <entry>
     <title type="html">ऑडियो एडिटर</title>
     <id>https://abox.tools/hi/edit-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/edit-audio/"/>
@@ -93,27 +114,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON फ़ॉर्मैटर</title>
-    <id>https://abox.tools/hi/json-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/json-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS और YAML को सजाइए और छोटा कीजिए, और JSON को YAML या XML में बदलिए और वापस लाइए। पार्सर आपके ब्राउज़र में चलते हैं और कुछ भी अपलोड नहीं होता - कोई टोकन या कॉन्फ़िग फ़ाइल आपकी मशीन से कभी बाहर नहीं जाती।</summary>
-  </entry>
-  <entry>
-    <title type="html">XML फ़ॉर्मैटर</title>
-    <id>https://abox.tools/hi/xml-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/xml-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">XML को फ़ॉर्मैट, इंडेंट और मिनिफ़ाई कीजिए, और XML को JSON या JSON को XML में बदलिए। पार्सर आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता, इसलिए कोई फ़ीड, इनवॉइस या कॉन्फ़िग फ़ाइल आपकी डिवाइस से बाहर नहीं जाती।</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML से JSON कन्वर्टर</title>
-    <id>https://abox.tools/hi/yaml-to-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/yaml-to-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">अपने ब्राउज़र में YAML को JSON और JSON को YAML में बदलिए। यह YAML 1.2 पढ़ता है, इसलिए yes और no स्ट्रिंग ही रहते हैं, और बताता है कि हर दिशा में क्या खोता है। कुछ भी अपलोड नहीं होता, इसलिए कोई कॉन्फ़िग फ़ाइल आपकी डिवाइस से बाहर नहीं जाती।</summary>
   </entry>
   <entry>
     <title type="html">ऊँचाई तुलना चार्ट</title>

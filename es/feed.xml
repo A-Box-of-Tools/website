@@ -39,6 +39,13 @@
     <summary type="html">Guarda cualquier fotograma de un MP4, MOV o WebM como PNG o JPEG a tamaño completo. Avanza fotograma a fotograma, o saca uno cada pocos segundos. Funciona en el navegador: no se sube nada.</summary>
   </entry>
   <entry>
+    <title type="html">Conversor de YAML a JSON</title>
+    <id>https://abox.tools/es/convertir-yaml-a-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-yaml-a-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Convierte YAML a JSON y JSON a YAML en tu navegador. Lee YAML 1.2, así que yes y no siguen siendo cadenas, y dice exactamente qué pierde cada sentido. No se sube nada: un archivo de configuración nunca sale de tu dispositivo.</summary>
+  </entry>
+  <entry>
     <title type="html">Cortador de audio</title>
     <id>https://abox.tools/es/cortar-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/cortar-audio/"/>
@@ -65,6 +72,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/extraer-audio-de-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Saca el sonido de un MP4, MOV o WebM y guárdalo como WAV. El vídeo no sale de tu dispositivo y su imagen no se descodifica en ningún momento: todo el trabajo ocurre en tu propio navegador.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formateador de JSON</title>
+    <id>https://abox.tools/es/formatear-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formatea y minifica JSON, XML, HTML, CSS y YAML, y convierte JSON a YAML o XML y al revés. Los analizadores corren en tu navegador y no se sube nada: un token o un archivo de configuración nunca sale de tu equipo.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formateador de XML</title>
+    <id>https://abox.tools/es/formatear-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-xml/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formatea, indenta y comprime XML, y convierte XML a JSON o JSON a XML. El analizador corre en tu navegador y no se sube nada, así que un feed, una factura o un archivo de configuración nunca sale de tu dispositivo.</summary>
   </entry>
   <entry>
     <title type="html">Recortador de vídeo</title>
@@ -109,32 +130,11 @@
     <summary type="html">Compara dos textos y mira cada diferencia, línea a línea y palabra a palabra, lado a lado o en una columna. La comparación corre en tu navegador y no se sube nada: el código sin publicar nunca sale de tu equipo.</summary>
   </entry>
   <entry>
-    <title type="html">Conversor de YAML a JSON</title>
-    <id>https://abox.tools/es/convertir-yaml-a-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-yaml-a-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Convierte YAML a JSON y JSON a YAML en tu navegador. Lee YAML 1.2, así que yes y no siguen siendo cadenas, y dice exactamente qué pierde cada sentido. No se sube nada: un archivo de configuración nunca sale de tu dispositivo.</summary>
-  </entry>
-  <entry>
     <title type="html">Cómo hacer un gráfico de comparación de alturas</title>
     <id>https://abox.tools/es/guias/hacer-un-grafico-de-alturas/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/hacer-un-grafico-de-alturas/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Convierte una lista de alturas en una imagen lado a lado: cómo escribir las alturas, qué figura elegir para un niño, por qué un objeto familiar hace más que una tercera persona, y cómo sacar el gráfico como PNG o SVG.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formateador de JSON</title>
-    <id>https://abox.tools/es/formatear-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formatea y minifica JSON, XML, HTML, CSS y YAML, y convierte JSON a YAML o XML y al revés. Los analizadores corren en tu navegador y no se sube nada: un token o un archivo de configuración nunca sale de tu equipo.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formateador de XML</title>
-    <id>https://abox.tools/es/formatear-xml/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/formatear-xml/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formatea, indenta y comprime XML, y convierte XML a JSON o JSON a XML. El analizador corre en tu navegador y no se sube nada, así que un feed, una factura o un archivo de configuración nunca sale de tu dispositivo.</summary>
   </entry>
   <entry>
     <title type="html">Apilador de imágenes</title>

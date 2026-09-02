@@ -46,6 +46,13 @@
     <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
   </entry>
   <entry>
+    <title type="html">JSON-Formatierer</title>
+    <id>https://abox.tools/de/json-formatieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS und YAML formatieren und minimieren und JSON in YAML oder XML umwandeln und zurück. Die Parser laufen in Ihrem Browser, hochgeladen wird nichts - ein Token oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
     <title type="html">Standbild-Greifer</title>
     <id>https://abox.tools/de/standbild-aus-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/standbild-aus-video/"/>
@@ -72,6 +79,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/video-zuschneiden/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Ein MP4, MOV oder WebM auf jedes Format zuschneiden, ob quadratisch, 9:16 oder ein exaktes Pixelfenster. Läuft im Browser: kein Upload, der Ton bleibt erhalten, auch offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">XML-Formatierer</title>
+    <id>https://abox.tools/de/xml-formatieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/xml-formatieren/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">XML formatieren, einrücken und minimieren und XML in JSON oder JSON in XML umwandeln. Der Parser läuft in Ihrem Browser, hochgeladen wird nichts - ein Feed, eine Rechnung oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML-zu-JSON-Umwandler</title>
+    <id>https://abox.tools/de/yaml-in-json-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/yaml-in-json-umwandeln/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
     <title type="html">PDF-Schwärzer</title>
@@ -102,13 +123,6 @@
     <summary type="html">Vergleichen Sie Größen nebeneinander. Nehmen Sie einen Mann, eine Frau, einen Jungen, ein Mädchen und Gegenstände dazu &amp;mdash; eine Tür, ein Fenster, ein Whiteboard, einen Getränkeautomaten &amp;mdash; in Zentimetern oder in Fuß und Zoll, und laden Sie das Diagramm als PNG oder SVG herunter. Gezeichnet wird es in Ihrem Browser.</summary>
   </entry>
   <entry>
-    <title type="html">JSON-Formatierer</title>
-    <id>https://abox.tools/de/json-formatieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS und YAML formatieren und minimieren und JSON in YAML oder XML umwandeln und zurück. Die Parser laufen in Ihrem Browser, hochgeladen wird nichts - ein Token oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
     <title type="html">Textvergleich</title>
     <id>https://abox.tools/de/text-vergleichen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/text-vergleichen/"/>
@@ -121,20 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/groessenvergleich-diagramm-erstellen/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Aus einer Liste von Größen ein Bild nebeneinander machen: wie die Größen geschrieben werden, welche Figur zu einem Kind gehört, warum ein einziger vertrauter Gegenstand mehr bringt als eine dritte Person, und wie das Diagramm als PNG oder SVG herauskommt.</summary>
-  </entry>
-  <entry>
-    <title type="html">XML-Formatierer</title>
-    <id>https://abox.tools/de/xml-formatieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/xml-formatieren/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">XML formatieren, einrücken und minimieren und XML in JSON oder JSON in XML umwandeln. Der Parser läuft in Ihrem Browser, hochgeladen wird nichts - ein Feed, eine Rechnung oder eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML-zu-JSON-Umwandler</title>
-    <id>https://abox.tools/de/yaml-in-json-umwandeln/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/yaml-in-json-umwandeln/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
     <title type="html">Bild-Stacker</title>

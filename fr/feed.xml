@@ -32,6 +32,13 @@
     <uri>https://abox.tools/fr/</uri>
   </author>
   <entry>
+    <title type="html">Convertisseur YAML vers JSON</title>
+    <id>https://abox.tools/fr/convertir-du-yaml-en-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/convertir-du-yaml-en-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Convertissez YAML en JSON et JSON en YAML dans votre navigateur. Il lit le YAML 1.2, donc yes et no restent des chaînes, et il dit exactement ce que chaque sens perd. Rien n'est envoyé : un fichier de configuration ne quitte jamais votre machine.</summary>
+  </entry>
+  <entry>
     <title type="html">Coupeur de vidéos</title>
     <id>https://abox.tools/fr/couper-une-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/couper-une-video/"/>
@@ -58,6 +65,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/extraire-l-audio-d-une-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Récupérez le son d'un MP4, MOV ou WebM et enregistrez-le en WAV. La vidéo ne quitte pas votre machine et son image n'est jamais décodée&amp;nbsp;: tout le travail se fait dans votre propre navigateur.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formateur JSON</title>
+    <id>https://abox.tools/fr/formater-du-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formatez et compactez du JSON, du XML, du HTML, du CSS et du YAML, et convertissez du JSON en YAML ou en XML et inversement. Les analyseurs tournent dans votre navigateur, rien n'est envoyé - un jeton ou un fichier de configuration ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
+    <title type="html">Formateur XML</title>
+    <id>https://abox.tools/fr/formater-du-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-xml/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Mettez en forme, indentez et compactez du XML, et convertissez XML en JSON ou JSON en XML. L'analyseur tourne dans votre navigateur et rien n'est envoyé, donc un flux, une facture ou un fichier de configuration ne quitte jamais votre machine.</summary>
   </entry>
   <entry>
     <title type="html">Recadreur de vidéos</title>
@@ -109,32 +130,11 @@
     <summary type="html">Comparez deux textes et voyez chaque différence, ligne à ligne et mot à mot, côte à côte ou en une colonne. La comparaison tourne dans votre navigateur, rien n'est envoyé - du code non publié ne quitte donc jamais votre machine.</summary>
   </entry>
   <entry>
-    <title type="html">Convertisseur YAML vers JSON</title>
-    <id>https://abox.tools/fr/convertir-du-yaml-en-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/convertir-du-yaml-en-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Convertissez YAML en JSON et JSON en YAML dans votre navigateur. Il lit le YAML 1.2, donc yes et no restent des chaînes, et il dit exactement ce que chaque sens perd. Rien n'est envoyé : un fichier de configuration ne quitte jamais votre machine.</summary>
-  </entry>
-  <entry>
     <title type="html">Encodeur &amp;amp; décodeur Base64</title>
     <id>https://abox.tools/fr/encoder-base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/encoder-base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formateur JSON</title>
-    <id>https://abox.tools/fr/formater-du-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formatez et compactez du JSON, du XML, du HTML, du CSS et du YAML, et convertissez du JSON en YAML ou en XML et inversement. Les analyseurs tournent dans votre navigateur, rien n'est envoyé - un jeton ou un fichier de configuration ne quitte donc jamais votre machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Formateur XML</title>
-    <id>https://abox.tools/fr/formater-du-xml/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/formater-du-xml/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Mettez en forme, indentez et compactez du XML, et convertissez XML en JSON ou JSON en XML. L'analyseur tourne dans votre navigateur et rien n'est envoyé, donc un flux, une facture ou un fichier de configuration ne quitte jamais votre machine.</summary>
   </entry>
   <entry>
     <title type="html">Comment recadrer une vidéo dans une autre forme</title>

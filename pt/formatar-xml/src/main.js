@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
 import{wireFilePicker}from'./shared/file-picker.js';
-import{parseXml,printXml}from'./xml.js';
+import{parseXml,printXml}from'./shared/parse-xml.js';
 import{CONVERSIONS,conversionById}from'./convert.js';
 import{SAMPLES}from'./samples.js';
 const $=(id)=>document.getElementById(id);

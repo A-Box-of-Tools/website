@@ -32,6 +32,27 @@
     <uri>https://abox.tools/ja/</uri>
   </author>
   <entry>
+    <title type="html">JSONフォーマッター</title>
+    <id>https://abox.tools/ja/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/json-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">XMLフォーマッター</title>
+    <id>https://abox.tools/ja/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/xml-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">XMLの整形・インデント・圧縮と、XMLからJSON、JSONからXMLへの変換。パーサーはあなたのブラウザで動き、何もアップロードされないので、フィードも請求書も設定ファイルも端末を離れません。</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML・JSON変換</title>
+    <id>https://abox.tools/ja/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/yaml-to-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">YAMLをJSONに、JSONをYAMLに、ブラウザの中で変換します。読むのはYAML 1.2なのでyesもnoも文字列のままで、どちらの向きで何が失われるかもはっきり伝えます。アップロードは一切ないので、設定ファイルが端末を離れることはありません。</summary>
+  </entry>
+  <entry>
     <title type="html">動画から音声を抽出</title>
     <id>https://abox.tools/ja/extract-audio-from-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/extract-audio-from-video/"/>
@@ -93,27 +114,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">JSONフォーマッター</title>
-    <id>https://abox.tools/ja/json-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/json-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">JSON・XML・HTML・CSS・YAMLの整形と最小化、JSONとYAML・XMLの相互変換。パーサーはブラウザの中で動き、アップロードは一切ありません。トークンや設定ファイルが手元の端末を離れることはありません。</summary>
-  </entry>
-  <entry>
-    <title type="html">XMLフォーマッター</title>
-    <id>https://abox.tools/ja/xml-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/xml-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">XMLの整形・インデント・圧縮と、XMLからJSON、JSONからXMLへの変換。パーサーはあなたのブラウザで動き、何もアップロードされないので、フィードも請求書も設定ファイルも端末を離れません。</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML・JSON変換</title>
-    <id>https://abox.tools/ja/yaml-to-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/yaml-to-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">YAMLをJSONに、JSONをYAMLに、ブラウザの中で変換します。読むのはYAML 1.2なのでyesもnoも文字列のままで、どちらの向きで何が失われるかもはっきり伝えます。アップロードは一切ないので、設定ファイルが端末を離れることはありません。</summary>
   </entry>
   <entry>
     <title type="html">テキスト差分</title>

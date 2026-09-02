@@ -53,6 +53,13 @@
     <summary type="html">شغّل مقطوعة بالمقلوب، وسرّعها أو أبطئها، واجعل تسجيلاً خافتاً أعلى. ويُخرِج الصوت من فيديو كذلك. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
   </entry>
   <entry>
+    <title type="html">محوّل YAML إلى JSON</title>
+    <id>https://abox.tools/ar/تحويل-yaml-الى-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-yaml-الى-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">حوّل YAML إلى JSON وJSON إلى YAML في متصفّحك. يقرأ YAML 1.2، فتبقى yes وno نصوصاً، ويقول بالضبط ما يفقده كلّ اتجاه. لا يُرفع شيء، فلا يغادر ملفُّ إعدادات جهازك أبداً.</summary>
+  </entry>
+  <entry>
     <title type="html">مقصّ الصوت</title>
     <id>https://abox.tools/ar/قص-الصوت/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/قص-الصوت/"/>
@@ -72,6 +79,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/استخراج-لقطة-من-الفيديو/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">احفظ أي إطار من ملف MP4 أو MOV أو WebM صورةَ PNG أو JPEG بالحجم الكامل. تنقّل إطاراً إطاراً، أو خذ واحدة كل بضع ثوانٍ. يعمل داخل متصفحك: ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
+    <title type="html">منسِّق JSON</title>
+    <id>https://abox.tools/ar/تنسيق-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">نسِّق وصغِّر JSON وXML وHTML وCSS وYAML، وحوِّل JSON إلى YAML أو XML وبالعكس. المحلِّلات تعمل في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز أو ملف إعدادات جهازك أبداً.</summary>
+  </entry>
+  <entry>
+    <title type="html">مُنسّق XML</title>
+    <id>https://abox.tools/ar/تنسيق-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-xml/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">نسّق XML وأزِح أسطره واضغطه، وحوّل XML إلى JSON أو JSON إلى XML. المحلّل يعمل في متصفّحك ولا يُرفع شيء، فلا تغادر تغذيةٌ ولا فاتورةٌ ولا ملفُّ إعدادات جهازك أبداً.</summary>
   </entry>
   <entry>
     <title type="html">طامس PDF</title>
@@ -102,13 +123,6 @@
     <summary type="html">حوّل قائمة أطوال إلى صورة جنباً إلى جنب: كيف تكتب الأطوال، وأي شكل تختار للطفل، ولماذا يفعل شيء مألوف واحد أكثر مما يفعله شخص ثالث، وكيف تُخرِج الرسم بصيغة PNG أو SVG.</summary>
   </entry>
   <entry>
-    <title type="html">محوّل YAML إلى JSON</title>
-    <id>https://abox.tools/ar/تحويل-yaml-الى-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-yaml-الى-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">حوّل YAML إلى JSON وJSON إلى YAML في متصفّحك. يقرأ YAML 1.2، فتبقى yes وno نصوصاً، ويقول بالضبط ما يفقده كلّ اتجاه. لا يُرفع شيء، فلا يغادر ملفُّ إعدادات جهازك أبداً.</summary>
-  </entry>
-  <entry>
     <title type="html">مرمِّز Base64 ومفكِّكه</title>
     <id>https://abox.tools/ar/ترميز-base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/ترميز-base64/"/>
@@ -121,20 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/مقارنة-النصوص/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">قارِن نصّين وانظر كل فرق، سطراً سطراً وكلمةً كلمة، جنباً إلى جنب أو في عمود واحد. المقارنة تعمل في متصفحك ولا يُرفع شيء - فلا تغادر الشيفرة غير المنشورة جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">منسِّق JSON</title>
-    <id>https://abox.tools/ar/تنسيق-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">نسِّق وصغِّر JSON وXML وHTML وCSS وYAML، وحوِّل JSON إلى YAML أو XML وبالعكس. المحلِّلات تعمل في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز أو ملف إعدادات جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">مُنسّق XML</title>
-    <id>https://abox.tools/ar/تنسيق-xml/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-xml/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">نسّق XML وأزِح أسطره واضغطه، وحوّل XML إلى JSON أو JSON إلى XML. المحلّل يعمل في متصفّحك ولا يُرفع شيء، فلا تغادر تغذيةٌ ولا فاتورةٌ ولا ملفُّ إعدادات جهازك أبداً.</summary>
   </entry>
   <entry>
     <title type="html">الصور إلى PDF</title>

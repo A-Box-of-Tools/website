@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{parseJson,printJson}from'./json.js';
-import{parseXml,printXml}from'./xml.js';
+import{parseJson,printJson}from'./shared/parse-json.js';
+import{parseXml,printXml}from'./shared/parse-xml.js';
 export function jsonToXml(text,{indent='  ',root='root'}={}){
 const data=parseJson(text);
 const lines=[];

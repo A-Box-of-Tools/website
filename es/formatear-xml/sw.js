@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/formatear-xml/:';
-const CACHE_NAME=CACHE_PREFIX+'ef53b2eeda';
+const CACHE_NAME=CACHE_PREFIX+'a7611ae2b5';
 const ASSETS=[
 './',
 'index.html',
@@ -9,12 +9,12 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/parse-errors.js',
+'src/shared/parse-json.js',
+'src/shared/parse-xml.js',
 'src/convert.js',
-'src/errors.js',
-'src/json.js',
 'src/main.js',
 'src/samples.js',
-'src/xml.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

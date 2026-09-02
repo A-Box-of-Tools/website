@@ -32,6 +32,27 @@
     <uri>https://abox.tools/zh-TW/</uri>
   </author>
   <entry>
+    <title type="html">JSON 格式化</title>
+    <id>https://abox.tools/zh-TW/json-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/json-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">格式化和壓縮 JSON、XML、HTML、CSS 和 YAML，把 JSON 轉成 YAML 或 XML 再轉回來。解析器在你的瀏覽器裡跑，什麼都不上傳——token 和配置檔案從不離開你的機器。</summary>
+  </entry>
+  <entry>
+    <title type="html">XML 格式化</title>
+    <id>https://abox.tools/zh-TW/xml-formatter/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/xml-formatter/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">格式化、縮排和壓縮 XML，把 XML 轉成 JSON 或者把 JSON 轉回 XML。解析器在你的瀏覽器裡跑，什麼都不上傳，所以一個訂閱源、一張發票或者一份配置檔案永遠不會離開你的裝置。</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML 轉 JSON</title>
+    <id>https://abox.tools/zh-TW/yaml-to-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/yaml-to-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">在你的瀏覽器裡把 YAML 轉成 JSON、把 JSON 轉成 YAML。它讀的是 YAML 1.2，所以 yes 和 no 還是字串，而且會明確說出每個方向丟了什麼。什麼都不上傳：一份配置檔案永遠不會離開你的裝置。</summary>
+  </entry>
+  <entry>
     <title type="html">影片剪輯</title>
     <id>https://abox.tools/zh-TW/trim-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/trim-video/"/>
@@ -93,27 +114,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">用兩套字母表編碼和解碼 Base64，給 URL 做百分號編碼，轉義 HTML 實體，讀十六進位和反斜槓轉義。全都在你的瀏覽器裡跑，什麼都不上傳——token 從不離開你的機器。</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON 格式化</title>
-    <id>https://abox.tools/zh-TW/json-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/json-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">格式化和壓縮 JSON、XML、HTML、CSS 和 YAML，把 JSON 轉成 YAML 或 XML 再轉回來。解析器在你的瀏覽器裡跑，什麼都不上傳——token 和配置檔案從不離開你的機器。</summary>
-  </entry>
-  <entry>
-    <title type="html">XML 格式化</title>
-    <id>https://abox.tools/zh-TW/xml-formatter/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/xml-formatter/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">格式化、縮排和壓縮 XML，把 XML 轉成 JSON 或者把 JSON 轉回 XML。解析器在你的瀏覽器裡跑，什麼都不上傳，所以一個訂閱源、一張發票或者一份配置檔案永遠不會離開你的裝置。</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML 轉 JSON</title>
-    <id>https://abox.tools/zh-TW/yaml-to-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/yaml-to-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">在你的瀏覽器裡把 YAML 轉成 JSON、把 JSON 轉成 YAML。它讀的是 YAML 1.2，所以 yes 和 no 還是字串，而且會明確說出每個方向丟了什麼。什麼都不上傳：一份配置檔案永遠不會離開你的裝置。</summary>
   </entry>
   <entry>
     <title type="html">怎麼做一張身高對比圖</title>

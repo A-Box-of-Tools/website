@@ -46,6 +46,20 @@
     <summary type="html">Pangkas MP4, MOV, atau WebM ke bentuk apa pun - persegi, 9:16, atau kotak piksel yang persis. Berjalan di peramban Anda: tidak ada yang diunggah, suaranya tetap ada, jalan tanpa internet.</summary>
   </entry>
   <entry>
+    <title type="html">Pemformat JSON</title>
+    <id>https://abox.tools/id/format-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/format-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Format dan padatkan JSON, XML, HTML, CSS, dan YAML, dan ubah JSON menjadi YAML atau XML dan sebaliknya. Penguraiannya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token atau file konfigurasi tidak pernah meninggalkan mesin Anda.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pemformat XML</title>
+    <id>https://abox.tools/id/format-xml/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/format-xml/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Format, beri indentasi, dan mampatkan XML, lalu ubah XML ke JSON atau JSON ke XML. Pengurainya berjalan di peramban Anda dan tidak ada yang diunggah, jadi sebuah feed, faktur, atau berkas konfigurasi tidak pernah meninggalkan perangkat Anda.</summary>
+  </entry>
+  <entry>
     <title type="html">Pemotong Audio</title>
     <id>https://abox.tools/id/potong-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-audio/"/>
@@ -65,6 +79,13 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/ambil-bingkai-video/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Simpan bingkai mana pun dari MP4, MOV, atau WebM sebagai PNG atau JPEG ukuran penuh. Melangkah bingkai demi bingkai, atau ambil satu setiap beberapa detik. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pengubah YAML ke JSON</title>
+    <id>https://abox.tools/id/konversi-yaml-ke-json/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/konversi-yaml-ke-json/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Ubah YAML ke JSON dan JSON ke YAML di peramban Anda. Ia membaca YAML 1.2, jadi yes dan no tetap berupa teks, dan ia menyebutkan persis apa yang hilang di tiap arah. Tidak ada yang diunggah: sebuah berkas konfigurasi tidak pernah meninggalkan perangkat Anda.</summary>
   </entry>
   <entry>
     <title type="html">Penyunting Audio</title>
@@ -109,32 +130,11 @@
     <summary type="html">Bandingkan tinggi badan berdampingan. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda &amp;mdash; pintu, jendela, papan tulis, mesin penjual otomatis &amp;mdash; dalam sentimeter atau kaki dan inci, lalu unduh bagannya sebagai PNG atau SVG. Ia digambar di peramban Anda.</summary>
   </entry>
   <entry>
-    <title type="html">Pemformat JSON</title>
-    <id>https://abox.tools/id/format-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/format-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Format dan padatkan JSON, XML, HTML, CSS, dan YAML, dan ubah JSON menjadi YAML atau XML dan sebaliknya. Penguraiannya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token atau file konfigurasi tidak pernah meninggalkan mesin Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pemformat XML</title>
-    <id>https://abox.tools/id/format-xml/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/format-xml/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Format, beri indentasi, dan mampatkan XML, lalu ubah XML ke JSON atau JSON ke XML. Pengurainya berjalan di peramban Anda dan tidak ada yang diunggah, jadi sebuah feed, faktur, atau berkas konfigurasi tidak pernah meninggalkan perangkat Anda.</summary>
-  </entry>
-  <entry>
     <title type="html">Pengode &amp;amp; Pengurai Base64</title>
     <id>https://abox.tools/id/encode-base64/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/encode-base64/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Kodekan dan uraikan Base64 dalam kedua alfabetnya, kodekan URL dengan persen, escape entitas HTML, dan baca heksadesimal serta escape garis miring terbalik. Semuanya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token tidak pernah meninggalkan mesin Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pengubah YAML ke JSON</title>
-    <id>https://abox.tools/id/konversi-yaml-ke-json/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/konversi-yaml-ke-json/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Ubah YAML ke JSON dan JSON ke YAML di peramban Anda. Ia membaca YAML 1.2, jadi yes dan no tetap berupa teks, dan ia menyebutkan persis apa yang hilang di tiap arah. Tidak ada yang diunggah: sebuah berkas konfigurasi tidak pernah meninggalkan perangkat Anda.</summary>
   </entry>
   <entry>
     <title type="html">Cara memangkas video ke bentuk lain</title>

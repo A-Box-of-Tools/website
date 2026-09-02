@@ -60,6 +60,13 @@
     <summary type="html">Sla elk frame van een MP4, MOV of WebM op als PNG of JPEG op volle grootte. Stap frame voor frame door de clip, of pak er om de zoveel seconden een. Draait in je browser: er wordt niets geüpload.</summary>
   </entry>
   <entry>
+    <title type="html">JSON-formatter</title>
+    <id>https://abox.tools/nl/json-formatteren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/json-formatteren/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
     <title type="html">Videobijsnijder</title>
     <id>https://abox.tools/nl/video-bijsnijden/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-bijsnijden/"/>
@@ -72,6 +79,20 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-knippen/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Bekijk een video, markeer tijdens het afspelen elk stuk dat het bewaren waard is en sla die stukken op als één bestand. Draait in je browser, uploadt niets, codeert niets opnieuw en werkt offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">XML-formatter</title>
+    <id>https://abox.tools/nl/xml-formatteren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/xml-formatteren/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Formatteer, laat inspringen en verklein XML, en zet XML om naar JSON of JSON naar XML. De parser draait in je browser en er wordt niets geüpload, dus een feed, een factuur of een configuratiebestand blijft op je eigen apparaat.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML-naar-JSON-omzetter</title>
+    <id>https://abox.tools/nl/yaml-naar-json-omzetten/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/yaml-naar-json-omzetten/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Zet YAML om naar JSON en JSON naar YAML in je browser. Het leest YAML 1.2, dus yes en no blijven tekenreeksen, en het zegt precies wat elke richting kost. Er wordt niets geüpload, dus een configuratiebestand blijft op je eigen apparaat.</summary>
   </entry>
   <entry>
     <title type="html">PDF onleesbaar maken</title>
@@ -102,13 +123,6 @@
     <summary type="html">Maak van een lijst lengtes een afbeelding naast elkaar: hoe je de lengtes schrijft, welke figuur bij een kind hoort, waarom één vertrouwd voorwerp meer doet dan een derde persoon, en hoe je de grafiek als PNG of SVG naar buiten krijgt.</summary>
   </entry>
   <entry>
-    <title type="html">JSON-formatter</title>
-    <id>https://abox.tools/nl/json-formatteren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/json-formatteren/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formatteer en verklein JSON, XML, HTML, CSS en YAML, en zet JSON om naar YAML of XML en terug. De parsers draaien in je browser en er wordt niets geüpload: een token of een configuratiebestand verlaat je machine dus nooit.</summary>
-  </entry>
-  <entry>
     <title type="html">Lengtevergelijker</title>
     <id>https://abox.tools/nl/lengtes-vergelijken/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/lengtes-vergelijken/"/>
@@ -121,20 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit.</summary>
-  </entry>
-  <entry>
-    <title type="html">XML-formatter</title>
-    <id>https://abox.tools/nl/xml-formatteren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/xml-formatteren/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Formatteer, laat inspringen en verklein XML, en zet XML om naar JSON of JSON naar XML. De parser draait in je browser en er wordt niets geüpload, dus een feed, een factuur of een configuratiebestand blijft op je eigen apparaat.</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML-naar-JSON-omzetter</title>
-    <id>https://abox.tools/nl/yaml-naar-json-omzetten/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/yaml-naar-json-omzetten/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Zet YAML om naar JSON en JSON naar YAML in je browser. Het leest YAML 1.2, dus yes en no blijven tekenreeksen, en het zegt precies wat elke richting kost. Er wordt niets geüpload, dus een configuratiebestand blijft op je eigen apparaat.</summary>
   </entry>
   <entry>
     <title type="html">Afbeeldingen naar pdf</title>

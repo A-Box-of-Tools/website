@@ -32,6 +32,27 @@
     <uri>https://abox.tools/ko/</uri>
   </author>
   <entry>
+    <title type="html">JSON 포매터</title>
+    <id>https://abox.tools/ko/json-포맷터/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/json-포맷터/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JSON, XML, HTML, CSS, YAML을 정렬하고 압축하고, JSON을 YAML이나 XML로 바꾸고 되돌립니다. 파서는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이나 설정 파일이 내 기기를 떠날 일이 없습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">XML 포맷터</title>
+    <id>https://abox.tools/ko/xml-포맷터/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/xml-포맷터/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">XML을 포맷하고 들여쓰고 압축하며, XML을 JSON으로 또는 JSON을 XML로 바꿉니다. 파서가 브라우저에서 돌고 아무것도 업로드되지 않아서, 피드도 청구서도 설정 파일도 기기를 떠나지 않습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">YAML → JSON 변환기</title>
+    <id>https://abox.tools/ko/yaml-json-변환/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/yaml-json-변환/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">브라우저에서 YAML을 JSON으로, JSON을 YAML로 바꿉니다. YAML 1.2를 읽어서 yes와 no가 문자열로 남고, 각 방향이 무엇을 잃는지 정확히 말해 줍니다. 아무것도 업로드되지 않아서 설정 파일이 기기를 떠나지 않습니다.</summary>
+  </entry>
+  <entry>
     <title type="html">동영상 구간 자르기</title>
     <id>https://abox.tools/ko/동영상-자르기/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-자르기/"/>
@@ -93,27 +114,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/base64-인코딩/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Base64를 두 알파벳 모두로 인코딩·디코딩하고, URL을 퍼센트 인코딩하고, HTML 엔티티를 이스케이프하고, 16진수와 역슬래시 이스케이프를 읽습니다. 전부 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이 내 기기를 떠날 일이 없습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">JSON 포매터</title>
-    <id>https://abox.tools/ko/json-포맷터/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/json-포맷터/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">JSON, XML, HTML, CSS, YAML을 정렬하고 압축하고, JSON을 YAML이나 XML로 바꾸고 되돌립니다. 파서는 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이나 설정 파일이 내 기기를 떠날 일이 없습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">XML 포맷터</title>
-    <id>https://abox.tools/ko/xml-포맷터/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/xml-포맷터/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">XML을 포맷하고 들여쓰고 압축하며, XML을 JSON으로 또는 JSON을 XML로 바꿉니다. 파서가 브라우저에서 돌고 아무것도 업로드되지 않아서, 피드도 청구서도 설정 파일도 기기를 떠나지 않습니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">YAML → JSON 변환기</title>
-    <id>https://abox.tools/ko/yaml-json-변환/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/yaml-json-변환/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">브라우저에서 YAML을 JSON으로, JSON을 YAML로 바꿉니다. YAML 1.2를 읽어서 yes와 no가 문자열로 남고, 각 방향이 무엇을 잃는지 정확히 말해 줍니다. 아무것도 업로드되지 않아서 설정 파일이 기기를 떠나지 않습니다.</summary>
   </entry>
   <entry>
     <title type="html">키 비교 차트</title>
