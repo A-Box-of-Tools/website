@@ -23,24 +23,6 @@
   gap: 0.7rem;
 }
 
-.modes legend {
-  padding: 0 0.35rem;
-  font-size: 0.8rem;
-  color: var(--text-dim);
-}
-
-.mode {
-  display: flex;
-  gap: 0.55rem;
-  align-items: start;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.mode input { margin: 0.15rem 0 0; flex: none; }
-.mode span { display: flex; flex-direction: column; gap: 0.1rem; color: var(--text-dim); }
-.mode strong { color: var(--text); font-size: 0.9rem; }
-
 /* -------------------------------------------------------------- the boxes */
 
 textarea {
