@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/faire-un-timelapse/:';
-const CACHE_NAME=CACHE_PREFIX+'11656a38ed';
+const CACHE_NAME=CACHE_PREFIX+'dc73b62390';
 const ASSETS=[
 './',
 'index.html',
@@ -19,8 +19,8 @@ const ASSETS=[
 'src/shared/webcodecs.js',
 'src/shared/errors.js',
 'src/shared/mp4-boxes.js',
+'src/shared/frame-canvas.js',
 'src/decode.js',
-'src/draw.js',
 'src/encode.js',
 'src/main.js',
 'src/plan.js',

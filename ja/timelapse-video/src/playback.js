@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{drawScaled,frameCanvas}from'./draw.js';
+import{drawScaled,frameCanvas}from'./shared/frame-canvas.js';
 import{throwIfAborted,said}from'./shared/errors.js';
 const SEEK_TIMEOUT=10_000;
 const MEDIA_ERRORS={

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{FileWindow}from'./shared/mp4-reader.js';
-import{drawScaled,frameCanvas}from'./draw.js';
+import{drawScaled,frameCanvas}from'./shared/frame-canvas.js';
 import{decoderConfig,settle}from'./shared/webcodecs.js';
 import{throwIfAborted}from'./shared/errors.js';
 const REORDER_SLACK=0.5;
@@ -47,7 +47,7 @@ export async function framesByDecoding({
 file,media,times,width,height,histogram,step=1,onProgress,signal,
 }){
 const{video}=media;
-const{canvas,ctx}=frameCanvas(width,height);
+const{canvas,ctx}=frameCanvas(width,height,{readBack:true});
 const sampler=new Sampler({times,ctx,width,height,histogram,step});
 const startTicks=times[0]*video.timescale;
 const endTicks=times[times.length-1]*video.timescale;
@@ -107,7 +107,7 @@ canvas.width=0;
 export async function framesByPlaying({
 video,times,width,height,histogram,step=1,onProgress,signal,
 }){
-const{canvas,ctx}=frameCanvas(width,height);
+const{canvas,ctx}=frameCanvas(width,height,{readBack:true});
 const frames=[];
 video.pause();
 try{

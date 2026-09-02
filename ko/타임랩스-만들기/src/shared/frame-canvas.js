@@ -11,11 +11,13 @@ else if(rotation===270)ctx.transform(0,-1,1,0,0,displayHeight);
 ctx.drawImage(source,0,0);
 ctx.setTransform(1,0,0,1,0,0);
 }
-export function frameCanvas(width,height){
+export function frameCanvas(width,height,{readBack=false}={}){
 const canvas=document.createElement('canvas');
 canvas.width=width;
 canvas.height=height;
-const ctx=canvas.getContext('2d',{alpha:false});
+const ctx=canvas.getContext('2d',readBack
+?{alpha:false,willReadFrequently:true}
+:{alpha:false});
 ctx.imageSmoothingEnabled=true;
 ctx.imageSmoothingQuality='high';
 return{canvas,ctx};

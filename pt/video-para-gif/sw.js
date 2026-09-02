@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/video-para-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'efd5b2f9b7';
+const CACHE_NAME=CACHE_PREFIX+'eb7715e914';
 const ASSETS=[
 './',
 'index.html',
@@ -15,7 +15,7 @@ const ASSETS=[
 'src/shared/format.js',
 'src/shared/webcodecs.js',
 'src/shared/errors.js',
-'src/draw.js',
+'src/shared/frame-canvas.js',
 'src/encode.js',
 'src/frames.js',
 'src/gif.js',
