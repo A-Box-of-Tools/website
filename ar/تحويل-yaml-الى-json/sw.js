@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحويل-yaml-الى-json/:';
-const CACHE_NAME=CACHE_PREFIX+'5fef109334';
+const CACHE_NAME=CACHE_PREFIX+'104d7083b6';
 const ASSETS=[
 './',
 'index.html',

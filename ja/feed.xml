@@ -207,14 +207,14 @@
     <summary type="html">両方のファイルを同じように整形し、キーを並べ替えてから比較する。生のJSON差分がほとんどノイズである理由、ブラウザで両側を正規形にする方法、そしてパッチまで生き残るもの。</summary>
   </entry>
   <entry>
-    <title type="html">AIにファイルをアップロードしても安全ですか?</title>
+    <title type="html">AIにファイルをアップロードしても安全ですか？</title>
     <id>https://abox.tools/ja/guides/is-it-safe-to-upload-files-to-an-ai/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/is-it-safe-to-upload-files-to-an-ai/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">チャット欄は、そう見えないだけのアップロードフォームです。AIに渡したファイルが実際に行く先、AIが変換サイトと違う3つの点、そして仕事に値するときに、少なく・きれいにして送る方法。</summary>
   </entry>
   <entry>
-    <title type="html">AIエージェントはこの道具を使えますか?</title>
+    <title type="html">AIエージェントはこの道具を使えますか？</title>
     <id>https://abox.tools/ja/guides/can-an-ai-agent-use-these-tools/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/can-an-ai-agent-use-these-tools/"/>
     <updated>2026-08-27T00:00:00Z</updated>
