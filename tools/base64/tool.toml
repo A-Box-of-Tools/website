@@ -24,7 +24,7 @@ slug = "base64"
 name = "Base64 Encoder & Decoder"
 # The trailing span is the rest of what the page does. The product name stays
 # the loud half; see .brand h1 .h1-kw in shared/css/tool-frame.css.
-heading = "Base64&nbsp;Encoder&nbsp;&amp;&nbsp;Decoder <span class=\"h1-kw\">&mdash; and URLs, HTML entities, hex and escapes</span>"
+heading = "Base64&nbsp;Encoder &amp;&nbsp;Decoder <span class=\"h1-kw\">&mdash; and URLs, HTML entities, hex and escapes</span>"
 tagline = "Base64, percent-encoding, HTML entities, hex and backslash escapes, both ways. Nothing is pasted into anyone else's server."
 icon = "&#128291;"          # the mark beside the page heading
 favicon = "&#128291;"       # the tab icon, drawn into an inline SVG
@@ -45,7 +45,7 @@ css_parts = ["form", "panes", "modes"]
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the file that is easier to drop than to open, select all and copy.
 js_parts = ["file-picker", "message-box", "download", "format"]
-lastmod = "2026-08-30"
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
