@@ -4,14 +4,21 @@ The modules that exist as more than one copy, and have to stay in step.
 WHY THERE ARE COPIES AT ALL
 
 The MP4 reader is about seven hundred lines of box parsing and it sits in every
-tool that reads frames out of a video file. The obvious answer is shared/js/,
-and it is not available: a shared module is copied into a tool at build time,
-at src/shared/, so a source file importing one cannot be loaded outside a
-build - and the JavaScript tests import tool modules straight off the disk with
-no build in front of them. Every one of those tools reaches the reader from a
-leaf module that has tests (grab-frame's frames.js, trim-video's copy.js), so
-moving it would trade those tests for the deduplication. See "Shared parts" in
-README.md.
+tool that reads frames out of a video file. It is a copy because of a rule that
+held until tests/js/resolve-shared.mjs: a shared module is copied into a tool
+at build time, at src/shared/, so a source file importing one could not be
+loaded outside a build - and the JavaScript tests import tool modules straight
+off the disk with no build in front of them. Every one of those tools reaches
+the reader from a leaf module that has tests (grab-frame's frames.js,
+trim-video's copy.js), so sharing it would have traded those tests for the
+deduplication.
+
+That rule is gone. The tests now resolve a tool module's `./shared/` imports to
+shared/js/ themselves, and exif-editor and merge-pdf were the first to give up
+their copies of the CRC and the ZIP writer on the strength of it. Every group
+below is a move that has not happened yet, and until it happens the copies
+still have to agree - which is all this file has ever enforced. See "Shared
+parts" in docs/adding-a-tool.md.
 
 WHAT THIS ENFORCES INSTEAD
 
@@ -102,11 +109,12 @@ GROUPS = [
     ('reader.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
     ('filters.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
     ('writer.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
-    # The seven below were already identical, token for token, and were found
+    # The five below were already identical, token for token, and were found
     # by test_identical_copies_are_declared the day it was written rather than
-    # by anybody noticing. They are declared as what they are.
-    ('crc32.js', ['exif-editor', 'merge-pdf']),
-    ('zip.js', ['exif-editor', 'merge-pdf']),
+    # by anybody noticing. They are declared as what they are. Two more sat
+    # beside them - crc32.js and zip.js in exif-editor and merge-pdf - until
+    # those tools were pointed at shared/js/ instead, the day the tests learned
+    # to follow a ./shared/ import.
     ('wav.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
     ('samplerate.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
     ('decode.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),

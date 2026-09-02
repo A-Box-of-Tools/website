@@ -61,10 +61,12 @@ quiet.
 
 `src/decode.js`, `src/samplerate.js` and `src/wav.js` are byte for byte
 `edit-audio`'s and `trim-audio`'s, declared as groups in
-`tests/python/test_duplicates.py`, which fails if they drift. They cannot
-simply be shared: `build.py` copies `shared/js/` into a tool at `src/shared/`
-**at build time**, that path does not exist in the source tree, and the
-JavaScript tests import these modules straight off the disk.
+`tests/python/test_duplicates.py`, which fails if they drift. They are copies
+from before the JavaScript tests could follow a `./shared/` import — `build.py`
+copies `shared/js/` into a tool at `src/shared/` **at build time**, and the
+tests import these modules straight off the disk. `tests/js/resolve-shared.mjs`
+resolves that path for the tests now, so moving the three to `shared/js/` is
+the next step; until then the duplicate test keeps them in step.
 
 That matters more than usual here. The WebM-through-the-MP3-frame-scanner bug
 that once reported 64 kHz for a 48 kHz Opus file lived in `samplerate.js`; a

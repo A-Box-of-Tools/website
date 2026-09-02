@@ -3,10 +3,11 @@
  *
  * Checked against values from outside this repository. There used to be nine
  * identical copies of this file and a test at the foot asserting that two of
- * them agreed. Seven of the nine are this module now, so that much of the
- * agreement is a fact about the repository rather than something to assert;
- * exif-editor and merge-pdf keep their own, for the reason in shared/js/zip.js,
- * and tests/js/exif-containers.test.js still exercises exif-editor's.
+ * them agreed. All nine are this module now, so the agreement is a fact about
+ * the repository rather than something to assert. The last two to go were
+ * exif-editor's and merge-pdf's, which are leaf modules with tests and reach
+ * this file through ./shared/ - the path tests/js/resolve-shared.mjs resolves
+ * for the tests, and tests/js/exif-containers.test.js still exercises.
  */
 
 import test from 'node:test';

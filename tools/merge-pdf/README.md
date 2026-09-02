@@ -149,9 +149,9 @@ meant to keep.
 Five ways out: one document; every *n* pages; at page numbers you name; one file
 per page; or back into the files the pages came from. More than one file goes
 into a ZIP, stored rather than deflated, because a PDF is already compressed —
-`src/zip.js` and `src/crc32.js` are the same two files six other tools here
-carry. Fifty downloads is fifty save prompts, which is where people give up and
-go back to the site that wanted the upload.
+the writer is `shared/js/zip.js`, the one every tool here that hands back an
+archive asks for. Fifty downloads is fifty save prompts, which is where people
+give up and go back to the site that wanted the upload.
 
 ## The check at the end
 
@@ -170,12 +170,12 @@ caught here and a bug caught by whoever the document was sent to.
 
 `src/objects.js`, `src/filters.js`, `src/reader.js` and `src/writer.js` are
 byte-for-byte copies of the same four files in [PDF
-Compressor](../compress-pdf/), the way `crc32.js` and `zip.js` are copies across
-seven tools here. Each tool folder in `dist/` is complete on its own, cached by
-its own service worker and working offline with nothing fetched from a
-neighbour, and that is worth more than the duplication costs. If those four ever
-have to change, they change in both places, and the JavaScript tests cover both
-copies.
+Compressor](../compress-pdf/), the way `crc32.js` and `zip.js` were copies
+across seven tools here before they moved to `shared/js/`. The copies date from
+when the JavaScript tests could not follow a `./shared/` import; they can now
+(`tests/js/resolve-shared.mjs`), so the four are a move waiting to be made.
+Until it is made they change in both places, the JavaScript tests cover both
+copies, and `tests/python/test_duplicates.py` fails if they drift.
 
 The writer took no changes at all to be used for this. It asks a document for
 four things — `objects`, `trailer`, `getObject`, `resolve` — so `Build` in

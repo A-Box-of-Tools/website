@@ -78,12 +78,16 @@ WHOLE_SUITES = (
     (re.compile(r'\b(?:python|python3|py)\s+-m\s+unittest\b'),
      re.compile(r'(?:^|\s)-k(?:\s|=)'),
      'python -m unittest tests.python.test_build -v -k <name>'),
-    (re.compile(r'\bnode\s+--test\b'),
+    # `--test` need not be the first flag: the documented command carries
+    # `--import ./tests/js/resolve-shared.mjs` in front of it.
+    (re.compile(r'\bnode\b[^&|;\n]*\s--test\b'),
      re.compile(r'--test-name-pattern'),
-     'node --test --test-name-pattern="<name>" "tests/js/*.test.js"'),
+     'node --import ./tests/js/resolve-shared.mjs --test '
+     '--test-name-pattern="<name>" "tests/js/*.test.js"'),
     (re.compile(r'\bnpm\s+(?:run\s+)?test\b'),
      None,
-     'node --test --test-name-pattern="<name>" "tests/js/*.test.js"'),
+     'node --import ./tests/js/resolve-shared.mjs --test '
+     '--test-name-pattern="<name>" "tests/js/*.test.js"'),
 )
 
 

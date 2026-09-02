@@ -39,10 +39,11 @@
 #
 # src/decode.js, src/samplerate.js and src/wav.js are byte for byte the ones in
 # edit-audio and trim-audio, declared in tests/python/test_duplicates.py so that
-# a fix to any of them is a fix to all three tools. They cannot be shared:
-# build.py copies shared/js into a tool at src/shared/ at build time, that path
-# does not exist in the source tree, and the JavaScript tests import these
-# modules straight off the disk.
+# a fix to any of them is a fix to all three tools. They are copies from before
+# the JavaScript tests could follow a ./shared/ import (build.py copies
+# shared/js into a tool at src/shared/ at build time, and the tests import
+# these modules straight off the disk); tests/js/resolve-shared.mjs resolves
+# that path now, so moving the three to shared/js is the next step.
 #
 
 slug = "extract-audio-from-video"

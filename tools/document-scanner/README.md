@@ -179,11 +179,12 @@ arithmetic.
 It is byte-for-byte the writer from
 [`images-to-pdf`](../images-to-pdf/src/pdf.js), and
 [`tests/python/test_duplicates.py`](../../tests/python/test_duplicates.py) holds
-the two identical. The reason it is duplicated rather than shared is in "Shared
-parts" in the repository README: a module under `shared/js/` is copied into a
-tool at build time, so a source file importing one cannot be loaded outside a
-build — and the JavaScript tests import tool modules straight off the disk. A
-fix to one copy belongs in both, and that test will say so.
+the two identical. It is a copy from before the JavaScript tests could follow a
+`./shared/` import — a module under `shared/js/` is copied into a tool at build
+time, and the tests import tool modules straight off the disk.
+`tests/js/resolve-shared.mjs` resolves that path for the tests now (see "Shared
+parts" in `docs/adding-a-tool.md`), so moving it to `shared/js/` is the next
+step. Until then a fix to one copy belongs in both, and that test will say so.
 
 `document.js` is *not* a copy. Images to PDF has to place a picture of any shape
 on a page of any other shape, with fit modes, rotation and a page colour; here

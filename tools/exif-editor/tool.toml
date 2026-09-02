@@ -32,8 +32,11 @@ css_parts = ["file-list"]
 
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
-# tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+# tool should own. file-picker brings in the drop zone; zip is the archive a
+# batch of cleaned files comes back in, and crc32 is the checksum both it and
+# the PNG writer need. This tool carried its own copy of those two until the
+# tests learned to follow a ./shared/ import (tests/js/resolve-shared.mjs).
+js_parts = ["file-picker", "zip", "crc32"]
 lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------

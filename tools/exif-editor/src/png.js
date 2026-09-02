@@ -14,7 +14,7 @@
  * why removing them cannot break the picture.
  */
 
-import { crc32 } from './crc32.js';
+import { crc32 } from './shared/crc32.js';
 
 const SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 

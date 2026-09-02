@@ -116,15 +116,18 @@ with the steps that bite marked.
    back with `phrase()` from `shared/js/phrases.js`, which every tool ships. A
    module too deep to reach the DOM returns a *key* and lets the caller
    resolve it — `qr-barcode-reader/src/camera.js` is the worked example.
-3. **`./shared/` imports belong in `main.js` and nowhere else.** The build
-   copies shared modules into `src/shared/` at build time; that path does not
-   exist in the source tree, and the JavaScript tests import leaf modules
-   straight off the disk, so a `./shared/` import in a unit-tested module
-   breaks its whole test file. That is why some modules are deliberately
-   duplicated across tools; `tests/python/test_duplicates.py` declares which
-   copies must agree (by token, so comments may differ) and fails when they
-   drift. Fix one copy and it names the others; add a new copy and it makes
-   you declare it.
+3. **A `./shared/` import may sit in any module, `main.js` or a tested leaf.**
+   The build copies shared modules into `src/shared/` at build time; that path
+   does not exist in the source tree, and the JavaScript tests import leaf
+   modules straight off the disk — so the test command carries
+   `--import ./tests/js/resolve-shared.mjs`, a resolve hook that sends a tool
+   module's `./shared/<name>.js` to `shared/js/<name>.js`. Leave the flag off
+   and the first such leaf fails to load, naming the path. Some modules are
+   still duplicated across tools from before that hook existed;
+   `tests/python/test_duplicates.py` declares which copies must agree (by
+   token, so comments may differ) and fails when they drift. Fix one copy and
+   it names the others; add a new copy and it makes you declare it — or,
+   better, move the module to `shared/js/` and ask for it in `js_parts`.
 4. **Keep the page's claims true.** If the change alters what the tool does
    with a file, the pledge, privacy panel, FAQ and `csp_note` in `tool.toml`
    may now overstate or understate it. The FAQ renders twice — visible
@@ -150,9 +153,9 @@ the details that bite:
   `buildlib/imports.py` fails the build on any import that does not land on a
   file the tool ships.
 - `phrases` is never listed; every tool gets it automatically.
-- The leaf-module restriction above caps what can be shared: a module that
-  unit tests import must not depend on `./shared/`. Prefer sharing at the
-  `main.js` layer, or accept a declared duplicate.
+- A module that unit tests import may depend on `./shared/`: the tests resolve
+  it (step 3 under "update an existing tool"). Prefer moving a module to
+  `shared/js/` over declaring a new duplicate.
 - Only *choosing* files is shared. What a tool does with them afterwards
   differs enough per tool that sharing it would cost more than it saves.
 - `[picker.urls]` ("add from a web address") is the one feature a tool must
@@ -242,9 +245,9 @@ half an hour locally, because most of its cases build the whole site before
 they assert anything. Write the tests a change owes (the checklists above still
 mean it), let CI run them, and spend the time on the browser instead. If CI
 reports a failure, reproduce that one case by name — `python -m unittest
-tests.python.test_build -v -k <name>`, or `node --test
---test-name-pattern="<name>" "tests/js/*.test.js"` — rather than the suite
-around it.
+tests.python.test_build -v -k <name>`, or `node --import
+./tests/js/resolve-shared.mjs --test --test-name-pattern="<name>"
+"tests/js/*.test.js"` — rather than the suite around it.
 
 Then use the thing:
 

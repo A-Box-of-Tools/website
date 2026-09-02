@@ -10,13 +10,15 @@
  * here. Ask for it with `js_parts = ["zip", "crc32"]` - the checksum is a
  * separate part because a PNG writer needs it without the archive.
  *
- * Two tools still carry their own copy, and the reason is a rule worth knowing
- * before moving anything else here: a shared module is only shipped into a
- * tool at build time, at src/shared/, so a source file that imports it cannot
- * be loaded outside a build. The tests import tool modules straight off the
- * disk. That is fine for main.js, which no test loads, and not fine for a leaf
- * module that is unit-tested - exif-editor's png.js and merge-pdf's produce.js
- * are both of those, so they keep a local copy rather than lose their tests.
+ * Every tool that writes an archive asks for this one now. Two carried their
+ * own copy for a while, and the reason is worth knowing because it shaped the
+ * rest of the repository: a shared module is only shipped into a tool at build
+ * time, at src/shared/, so a source file importing it could not be loaded
+ * outside a build - and the tests import tool modules straight off the disk.
+ * That was fine for main.js, which no test loads, and not for a leaf module
+ * with tests, which exif-editor's png.js and merge-pdf's produce.js both are.
+ * tests/js/resolve-shared.mjs resolves that import for the tests now, and
+ * those two copies were the first to go on the strength of it.
  *
  * Nothing here compresses. Deflating a folder of JPEGs saves almost nothing -
  * they are already compressed - and writing a deflate implementation to achieve

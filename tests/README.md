@@ -7,7 +7,7 @@ installed:
 | Suite | Covers | Runner |
 |---|---|---|
 | `tests/python/` | `build.py` and `buildlib/` — the site generator | `unittest`, standard library |
-| `tests/js/` | `tools/*/src/` and `shared/js/` — what the browser runs | `node --test`, built in since Node 18 |
+| `tests/js/` | `tools/*/src/` and `shared/js/` — what the browser runs | `node --test`, with a resolve hook that needs Node 22.15 |
 
 There is no test framework to install and no lockfile, which is the same
 bargain the rest of the repository makes: if you have to fetch a tree of
@@ -21,11 +21,15 @@ python -m unittest discover -t . -s tests/python
 ```
 
 ```bash
-node --test "tests/js/*.test.js"
+node --import ./tests/js/resolve-shared.mjs --test "tests/js/*.test.js"
 ```
 
 `npm test` runs the second one, and is the only thing `package.json` is for —
-see the note in that file. Both run in CI on every push and
+see the note in that file. The `--import` registers `tests/js/resolve-shared.mjs`,
+a resolve hook: a tool module imports its shared parts from `./shared/`, a
+path the build creates and the source tree does not have, and the hook sends
+that one shape of import to `shared/js/` so a test can load the module off the
+disk. Leave it off and the first such module fails to load, naming the path. Both run in CI on every push and
 every pull request that changes something they could have an opinion about,
 and the build will not publish if either fails. A change confined to the
 repository's own prose — the READMEs, `docs/`, `CLAUDE.md`, `.claude/` — skips
@@ -39,7 +43,7 @@ python -m unittest tests.python.test_cssmin -v
 ```
 
 ```bash
-node --test --test-name-pattern="stco" "tests/js/*.test.js"
+node --import ./tests/js/resolve-shared.mjs --test --test-name-pattern="stco" "tests/js/*.test.js"
 ```
 
 ## What is tested, and what is not

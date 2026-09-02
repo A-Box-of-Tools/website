@@ -143,15 +143,22 @@ cached by its own service worker, and works offline with nothing fetched from a
 neighbour. That is also why a tool's source folder imports a file it does not
 contain — the import path says `./shared/` to make where it came from obvious.
 
-**So a `./shared/` import belongs in `main.js`, and nowhere else.** The copy
+**A `./shared/` import resolves after the build, and in the tests.** The copy
 happens at build time, which means that path does not resolve in the source
-tree, and the JavaScript tests import tool modules straight off the disk with
-no build in front of them. `main.js` is safe because no test loads it. A leaf
-module that is unit-tested is not: give it a `./shared/` import and its whole
-test file stops resolving. That is why `exif-editor/src/png.js` and
-`merge-pdf/src/produce.js` keep a local copy of the CRC and the ZIP writer that
-seven other tools now share — the alternative was trading their tests for the
-deduplication.
+tree on its own — and the JavaScript tests import tool modules straight off the
+disk with no build in front of them. So the test command carries
+`--import ./tests/js/resolve-shared.mjs`: a resolve hook that sends a tool
+module's `./shared/<name>.js` to `shared/js/<name>.js` and touches nothing
+else. With it, any module may import a shared part, `main.js` or a unit-tested
+leaf. Without it, the first test that loads such a leaf fails naming the
+`src/shared/` path it could not find, which is the reminder.
+
+Until that hook existed, `./shared/` imports were confined to `main.js`, and
+the module groups that `tests/python/test_duplicates.py` declares as copies
+across tools are what that rule produced. `exif-editor/src/png.js` and
+`merge-pdf/src/produce.js` were the first to give up their copies of the CRC
+and the ZIP writer; the rest are moves waiting to be made, and until each is
+made its copies still have to agree.
 
 The build checks the half of this it can. `buildlib/imports.py` reads every
 module a tool is about to ship, with the tokeniser from `minify.py` rather than

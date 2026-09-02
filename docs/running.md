@@ -99,8 +99,15 @@ python -m unittest discover -t . -s tests/python
 ```
 
 ```bash
-node --test "tests/js/*.test.js"
+node --import ./tests/js/resolve-shared.mjs --test "tests/js/*.test.js"
 ```
+
+The `--import` is a resolve hook, `tests/js/resolve-shared.mjs`, and it is
+there because a tool module imports its shared parts from `./shared/`, a path
+the build creates and the source tree does not have. The hook sends that one
+shape of import to `shared/js/` and leaves everything else to Node; without it
+the first test that loads such a module fails, naming the path it could not
+find.
 
 The first covers `build.py` and `buildlib/` — the template engine, the two
 minifiers and their refusals, the config loading, and a whole build into a
