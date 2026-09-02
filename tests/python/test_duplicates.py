@@ -71,14 +71,11 @@ The groups are deliberate, not accidental:
     arithmetic beside it is NOT shared - gf256.js computes a remainder and
     reed-solomon.js finds errors, which are different halves of the same
     mathematics - so those two are not a group and are not meant to be.
-  - The four PDF modules are one group each across three tools. objects.js is
-    the format's grammar, reader.js opens a file somebody else wrote, filters.js
-    undoes the compression on every stream and writer.js puts the result back -
-    none of which has anything to do with what the tool then does to the
-    document. They were two copies each while only the merger and the compressor
-    existed, and undeclared; the redactor is the third, and a repair to any of
-    them - a broken cross-reference table, a stream whose /Length lies - is a
-    repair all three want.
+  - The four PDF modules were one group each across three tools, and are the
+    first group to have made the move: they are shared/js/pdf-{objects,reader,
+    filters,writer}.js now, asked for by the compressor, the merger and the
+    redactor alike. What is left of them here is the two singletons below, for
+    the readers that share nothing with the PDF one but its old name.
 
 Adding another copy of one of these, or a new duplicated module, means adding
 it here. `test_identical_copies_are_declared` finds it on disk and fails until
@@ -105,10 +102,6 @@ GROUPS = [
     ('mp4.js', ['images-to-video', 'timelapse-video']),
     ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
     ('pdf.js', ['document-scanner', 'images-to-pdf']),
-    ('objects.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
-    ('reader.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
-    ('filters.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
-    ('writer.js', ['compress-pdf', 'merge-pdf', 'redact-pdf']),
     # The five below were already identical, token for token, and were found
     # by test_identical_copies_are_declared the day it was written rather than
     # by anybody noticing. They are declared as what they are. Two more sat
@@ -140,9 +133,11 @@ SINGLETONS = {
     # The groups are keyed by file name, and a shared name is not a shared
     # module. Both of these are byte cursors over a format that is not PDF,
     # and the DICOM one swaps endianness inside a single file, which nothing
-    # reading a PDF has any reason to do.
-    ('reader.js', 'gif-analyzer'): 'a GIF reader, related to the PDF one by name only',
-    ('reader.js', 'dicom-viewer'): 'a DICOM reader, related to the PDF one by name only',
+    # reading a PDF has any reason to do. The PDF reader they were once
+    # confused with is shared/js/pdf-reader.js now; these two are each other's
+    # only namesakes left under tools/.
+    ('reader.js', 'gif-analyzer'): 'a GIF reader, related to the DICOM one by name only',
+    ('reader.js', 'dicom-viewer'): 'a DICOM reader, related to the GIF one by name only',
     # decode.js and support.js each ask their tool's own question, and the
     # copies below answer a different one from the group that shares the name.
     ('decode.js', 'timelapse-video'):
@@ -165,12 +160,6 @@ SINGLETONS = {
         'the YAML pair alone, so the tool ships no XML parser it never calls',
     ('convert.js', 'xml-formatter'):
         'the XML pair alone, so the tool ships no YAML parser it never calls',
-    # Another shared name that is not a shared module: the three PDF tools'
-    # objects.js reads and writes the objects a PDF file is made of, and this
-    # one is a table of drawings - path data, bounding boxes and licences for
-    # the things a height chart can stand a person next to.
-    ('objects.js', 'compare-heights'):
-        'the object artwork, related to the PDF object model by name only',
 }
 
 

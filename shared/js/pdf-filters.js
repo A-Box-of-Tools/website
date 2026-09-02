@@ -7,7 +7,11 @@
  * had that in it since `DecompressionStream` shipped, so the largest filter
  * here is not implemented at all: it is handed to an engine that was already
  * on the machine. That is the same bargain the rest of the site makes, and the
- * reason this tool needs no vendored library.
+ * reason none of the PDF tools needs a vendored library.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-filters.js and
+ * the build copies it to <tool>/src/shared/pdf-filters.js. One of the four
+ * PDF parts that travel together; see the header of pdf-objects.js.
  *
  * What is written out by hand are the small ones - the ASCII armours and the
  * two run-length schemes - because they are twenty lines each and there is
@@ -20,7 +24,7 @@
  * leaves them alone.
  */
 
-import { Name } from './objects.js';
+import { Name } from './pdf-objects.js';
 
 /** Filters whose output is pixels, not bytes we can work on generically. */
 const IMAGE_FILTERS = new Set([
@@ -323,7 +327,7 @@ function decodeParms(dict, count, resolve) {
 /**
  * Decode a stream as far as bytes go.
  *
- * @param {import('./objects.js').PdfStream} stream
+ * @param {import('./pdf-objects.js').PdfStream} stream
  * @param {(value: any) => any} resolve turns a Ref into the thing it points at
  * @returns {Promise<{bytes: Uint8Array, remaining: string[]}>}
  *   `remaining` names the image filters this stopped in front of. Empty means

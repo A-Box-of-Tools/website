@@ -34,8 +34,8 @@
 
 import { base14Widths, encodingByName, glyphText, STANDARD, WIN_ANSI } from './base14.js';
 import { lex } from './content.js';
-import { decodeStream } from './filters.js';
-import { Name, PdfStream, PdfString } from './objects.js';
+import { decodeStream } from './shared/pdf-filters.js';
+import { Name, PdfStream, PdfString } from './shared/pdf-objects.js';
 
 /** Text-space units are thousandths of the font size, throughout. */
 const UNITS = 1000;
@@ -43,7 +43,7 @@ const UNITS = 1000;
 /**
  * Read one font dictionary.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {Map} dict the font
  * @returns {Promise<Font>}
  */

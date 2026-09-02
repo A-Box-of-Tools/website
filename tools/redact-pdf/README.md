@@ -34,10 +34,10 @@ line. If anything did, there is no download.
 ```
 
 Nothing is uploaded and nothing is fetched. The object grammar, the reader, the
-filters and the writer are the same four modules the [merger](../merge-pdf/) and
-the [compressor](../compress-pdf/) use, byte for byte; everything else here is
-new, because neither of those two ever had to open a page's drawing
-instructions.
+filters and the writer are the shared `pdf-*` parts the [merger](../merge-pdf/)
+and the [compressor](../compress-pdf/) ship too, copied in at `src/shared/` by
+the build; everything else here is new, because neither of those two ever had
+to open a page's drawing instructions.
 
 ## Finding a word
 
@@ -238,7 +238,7 @@ a different job from taking words out of it.
 | `src/redact.js` | applying a plan to the document and writing it out |
 | `src/verify.js` | opening the finished file and looking for the words again |
 | `src/main.js` | the page: the search, the match list, the text panel, the result |
-| `src/{reader,writer,objects,filters}.js` | the PDF itself — copies of the merger's, unchanged |
+| `src/shared/pdf-{reader,writer,objects,filters}.js` | the PDF itself — the shared parts, copied in by the build |
 
 Tests are in [`tests/js/`](../../tests/js/): `redact-pdf-content`,
 `redact-pdf-fonts`, `redact-pdf-text`, `redact-pdf-matches` and

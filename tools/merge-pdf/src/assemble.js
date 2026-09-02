@@ -34,7 +34,7 @@ import { decodeText, normalizeRotation, readPages } from './pages.js';
 import { pruneOutline, readOutline, writeOutline } from './outline.js';
 import {
   isName, name, Name, PdfStream, Ref,
-} from './objects.js';
+} from './shared/pdf-objects.js';
 
 /**
  * Page keys that describe where a page used to live rather than what is on it.
@@ -122,7 +122,7 @@ export class Build {
  * reordered, and rebuilding them per output would make splitting a long
  * document into fifty files fifty times slower than it needs to be.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {string} label the file's name, for bookmark groups
  */
 export function readSource(doc, label) {

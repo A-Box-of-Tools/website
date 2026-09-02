@@ -92,11 +92,17 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
 | `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
 | `shared/js/crc32.js` | `js_parts = ["crc32"]` | the CRC the ZIP and PNG writers need |
+| `shared/js/pdf-objects.js` | `js_parts = ["pdf-objects"]` | the PDF object grammar |
+| `shared/js/pdf-reader.js` | `js_parts = ["pdf-reader"]` | opening a PDF somebody else wrote |
+| `shared/js/pdf-filters.js` | `js_parts = ["pdf-filters"]` | the stream filters, deflate included |
+| `shared/js/pdf-writer.js` | `js_parts = ["pdf-writer"]` | writing a PDF back out |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 
 `zip` needs `crc32` listed as well — it is a separate part because a PNG writer
-wants the checksum without the archive.
+wants the checksum without the archive. The four `pdf-*` parts travel
+together: the reader and the writer both import the grammar and the filters,
+and `buildlib/imports.py` refuses a tool that lists some and not the rest.
 
 `phrases` and `trust` are the two parts no tool asks for. Every tool page wears
 the frame, the frame has sentences its JavaScript puts on screen, and the

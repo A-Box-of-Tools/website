@@ -17,7 +17,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { PdfDocument } from '../../tools/redact-pdf/src/reader.js';
+import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { glyphsIn } from '../../tools/redact-pdf/src/matches.js';
 import { cornersOf, pagesOf, readPage } from '../../tools/redact-pdf/src/text.js';
 import { ascii, buildPdf, streamObject } from './pdf-fixtures.js';

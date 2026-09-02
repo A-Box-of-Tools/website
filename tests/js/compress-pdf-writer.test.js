@@ -1,5 +1,7 @@
 /**
- * tools/compress-pdf/src/{writer,inventory,placements,format,compress}.js.
+ * shared/js/pdf-writer.js, the PDF writer every PDF tool here ships, and
+ * tools/compress-pdf/src/{inventory,placements,format,compress}.js, the
+ * compressor's own work on top of it.
  *
  * The writer is where a mistake is expensive: it rebuilds the file from the
  * objects that are still reachable, so an object wrongly judged unreachable
@@ -17,10 +19,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-import { PdfDocument } from '../../tools/compress-pdf/src/reader.js';
-import { reachable, stripMetadata, writeDocument } from '../../tools/compress-pdf/src/writer.js';
-import { Ref, PdfStream } from '../../tools/compress-pdf/src/objects.js';
-import { decodeStream } from '../../tools/compress-pdf/src/filters.js';
+import { PdfDocument } from '../../shared/js/pdf-reader.js';
+import { reachable, stripMetadata, writeDocument } from '../../shared/js/pdf-writer.js';
+import { Ref, PdfStream } from '../../shared/js/pdf-objects.js';
+import { decodeStream } from '../../shared/js/pdf-filters.js';
 import { verdict } from '../../tools/compress-pdf/src/inventory.js';
 import { effectiveDpi } from '../../tools/compress-pdf/src/placements.js';
 import {

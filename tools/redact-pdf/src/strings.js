@@ -28,7 +28,7 @@
  * actually read back out.
  */
 
-import { PdfStream, PdfString } from './objects.js';
+import { PdfStream, PdfString } from './shared/pdf-objects.js';
 
 /**
  * Keys whose value is text a reader will show.
@@ -82,7 +82,7 @@ export function encodeText(text) {
 /**
  * Run `remove` over every text string in the document.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {(text: string) => string} remove
  * @returns {{changed: number, where: string[]}}
  */

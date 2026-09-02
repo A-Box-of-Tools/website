@@ -31,8 +31,8 @@
  *     the work, and re-encoding it would spend quality for nothing.
  */
 
-import { decodeStream, deflate, filterNames } from './filters.js';
-import { isName, name, Name, PdfStream, Ref } from './objects.js';
+import { decodeStream, deflate, filterNames } from './shared/pdf-filters.js';
+import { isName, name, Name, PdfStream, Ref } from './shared/pdf-objects.js';
 
 /** Under this, re-encoding cannot win enough to be worth the quality. */
 const TINY = 4 * 1024;
@@ -66,7 +66,7 @@ export const SKIP = {
 /**
  * Find every image XObject, and say what can be done with each.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @returns {ImageEntry[]}
  */
 export function findImages(doc) {

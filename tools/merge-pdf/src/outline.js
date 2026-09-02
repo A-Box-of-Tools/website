@@ -21,7 +21,7 @@
 
 import { isGoTo, resolveDestination } from './dests.js';
 import { decodeText } from './pages.js';
-import { name, PdfString, Ref } from './objects.js';
+import { name, PdfString, Ref } from './shared/pdf-objects.js';
 
 /** Enough for any real document, and a stop for one built to be a bomb. */
 const MAX_ITEMS = 5000;
@@ -29,7 +29,7 @@ const MAX_ITEMS = 5000;
 /**
  * The bookmark tree of `doc`, as plain objects.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {Map<string, any>} named what dests.js found in this document
  * @returns {{title: string, target: Ref|null, view: any[], kids: any[]}[]}
  */

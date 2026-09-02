@@ -19,9 +19,9 @@
  * over is shown as its own line rather than folded into the others.
  */
 
-import { isName, PdfStream, Ref } from './objects.js';
-import { scanObjectHeaders } from './reader.js';
-import { reachable } from './writer.js';
+import { isName, PdfStream, Ref } from './shared/pdf-objects.js';
+import { scanObjectHeaders } from './shared/pdf-reader.js';
+import { reachable } from './shared/pdf-writer.js';
 
 /** The groups, in the order the page lists them. */
 const GROUPS = [
@@ -43,7 +43,7 @@ const GROUPS = [
  */
 
 /**
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @returns {Inventory}
  */
 export function takeInventory(doc) {

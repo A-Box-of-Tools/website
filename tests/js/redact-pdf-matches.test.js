@@ -15,7 +15,7 @@ import assert from 'node:assert/strict';
 import {
   contextOf, findPattern, findTerm, glyphsIn, luhn, mergeRanges, mod97, wordsOf,
 } from '../../tools/redact-pdf/src/matches.js';
-import { PdfDocument } from '../../tools/redact-pdf/src/reader.js';
+import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { pagesOf, readPage } from '../../tools/redact-pdf/src/text.js';
 import { ascii, buildPdf, streamObject } from './pdf-fixtures.js';
 

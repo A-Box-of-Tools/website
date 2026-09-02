@@ -1,6 +1,12 @@
 /**
  * Opening a document somebody else wrote.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-reader.js and the
+ * build copies it to <tool>/src/shared/pdf-reader.js. One of the four PDF
+ * parts that travel together - see the header of pdf-objects.js - and the one
+ * every PDF tool here hands a finished file back to, so that "it opened" is
+ * checked by the same code that would have refused it.
+ *
  * A PDF is read back to front. The last line but one says `startxref` and a
  * byte offset; at that offset is a cross-reference table saying where every
  * object starts; the trailer beside it says which object is the catalogue. Walk
@@ -28,11 +34,11 @@
  *     instead of spreading `await` through every caller.
  */
 
-import { decodeStream } from './filters.js';
+import { decodeStream } from './pdf-filters.js';
 import {
   ascii, indexOfAscii, isName, lastIndexOfAscii, Parser, parseIndirectObject,
   PdfStream, PdfSyntaxError, Ref,
-} from './objects.js';
+} from './pdf-objects.js';
 
 export class NotAPdfError extends Error {}
 export class EncryptedPdfError extends Error {}

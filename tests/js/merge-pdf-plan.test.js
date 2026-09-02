@@ -22,7 +22,7 @@ import {
   normalizeBox, normalizeRotation, sizeLabel, decodeText,
 } from '../../tools/merge-pdf/src/pages.js';
 import { bytes as sizeText, count, shortName } from '../../tools/merge-pdf/src/format.js';
-import { PdfString } from '../../tools/merge-pdf/src/objects.js';
+import { PdfString } from '../../shared/js/pdf-objects.js';
 
 /* ============================================================ parseRanges */
 

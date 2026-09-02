@@ -35,7 +35,12 @@ roadmap_group = "documents"
 # tool's own rules. progress is the bar this tool draws while it works.
 css_parts = ["progress"]
 
-js_parts = ["file-picker"]
+# file-picker brings in the drop zone. The four pdf-* parts are the PDF itself
+# - the object grammar, the stream filters, the reader and the writer - and
+# travel together, because the reader and the writer import the other two;
+# the compressor and the merger ask for the same four. Everything this tool
+# does to a page's drawing instructions is its own and stays in src/.
+js_parts = ["file-picker", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer"]
 lastmod = "2026-09-01"
 
 # --- what search engines and chat apps are told ------------------------------

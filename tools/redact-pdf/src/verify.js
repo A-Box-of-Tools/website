@@ -24,7 +24,7 @@
  * file: this word is not in it.
  */
 
-import { PdfDocument } from './reader.js';
+import { PdfDocument } from './shared/pdf-reader.js';
 import { harvestStrings } from './strings.js';
 import { pagesOf, readPage } from './text.js';
 
@@ -35,7 +35,7 @@ import { pagesOf, readPage } from './text.js';
  * comment, a form field, the document properties. Both halves matter: a word
  * that survives in either is a word that survives.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {import('./text.js').Page[]} [pages] already read, to save reading again
  * @returns {Promise<string>}
  */

@@ -19,7 +19,7 @@
  * written out with no action at all rather than one that goes nowhere.
  */
 
-import { isName, Name, PdfString, Ref } from './objects.js';
+import { isName, Name, PdfString, Ref } from './shared/pdf-objects.js';
 
 /**
  * Every named destination in `doc`, as a map from the name to its destination.
@@ -27,7 +27,7 @@ import { isName, Name, PdfString, Ref } from './objects.js';
  * Both tables, with the modern one winning where they disagree, which is the
  * order a reader resolves them in.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @returns {Map<string, any>}
  */
 export function namedDestinations(doc) {
@@ -79,7 +79,7 @@ function keyOf(value) {
 /**
  * The page a destination lands on, as a reference into the source document.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @param {*} dest the value of a /Dest, or the /D of a GoTo action
  * @param {Map<string, any>} named what namedDestinations found
  * @returns {{ref: Ref, view: any[]}|null}

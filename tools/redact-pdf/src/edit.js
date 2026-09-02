@@ -34,7 +34,7 @@
  */
 
 import { formatNumber, formatString, formatValue } from './content.js';
-import { PdfString } from './objects.js';
+import { PdfString } from './shared/pdf-objects.js';
 import { decodeText, encodeText } from './strings.js';
 import { cornersOf, endOf } from './text.js';
 

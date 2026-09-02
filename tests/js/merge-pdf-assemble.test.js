@@ -24,10 +24,10 @@ import { assemble, readSource } from '../../tools/merge-pdf/src/assemble.js';
 import { namedDestinations, resolveDestination } from '../../tools/merge-pdf/src/dests.js';
 import { readPages } from '../../tools/merge-pdf/src/pages.js';
 import { produce } from '../../tools/merge-pdf/src/produce.js';
-import { PdfDocument } from '../../tools/merge-pdf/src/reader.js';
-import { decodeStream } from '../../tools/merge-pdf/src/filters.js';
-import { isName, PdfStream, Ref } from '../../tools/merge-pdf/src/objects.js';
-import { writeDocument } from '../../tools/merge-pdf/src/writer.js';
+import { PdfDocument } from '../../shared/js/pdf-reader.js';
+import { decodeStream } from '../../shared/js/pdf-filters.js';
+import { isName, PdfStream, Ref } from '../../shared/js/pdf-objects.js';
+import { writeDocument } from '../../shared/js/pdf-writer.js';
 import { ascii, buildPdf, streamObject, text } from './pdf-fixtures.js';
 
 /* ============================================================== the fixture */
