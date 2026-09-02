@@ -88,6 +88,7 @@ A component more than one tool needs, and that no tool should own, lives under
 |---|---|---|
 | `shared/css/file-list.css` | `css_parts = ["file-list"]` | appended to the tool's stylesheet |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
+| `shared/js/image-list.js` | `js_parts = ["image-list"]` | a list of pictures to work through in order: decoded once for a thumbnail and their size, sorted, reordered, re-decoded one at a time |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
 | `shared/js/url-import.js` + its CSS | `[picker.urls]` | the "add from a web address" panel |
 | `shared/js/zip.js` | `js_parts = ["zip"]` | the stored-only archive writer |
