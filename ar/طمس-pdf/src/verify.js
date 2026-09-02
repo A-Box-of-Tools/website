@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{PdfDocument}from'./reader.js';
+import{PdfDocument}from'./shared/pdf-reader.js';
 import{harvestStrings}from'./strings.js';
 import{pagesOf,readPage}from'./text.js';
 export async function harvestAll(doc,pages=null){

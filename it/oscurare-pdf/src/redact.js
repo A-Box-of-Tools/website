@@ -1,9 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{applySplices,encode}from'./content.js';
 import{planEdits}from'./edit.js';
-import{PdfStream,Ref}from'./objects.js';
+import{PdfStream,Ref}from'./shared/pdf-objects.js';
 import{removeCarriedFiles,scrubStrings}from'./strings.js';
-import{stripMetadata,writeDocument}from'./writer.js';
+import{stripMetadata,writeDocument}from'./shared/pdf-writer.js';
 export async function redact(doc,pages,chosen,options={},hooks={}){
 const{
 boxes=true,elsewhere=true,attachments=true,texts=[],

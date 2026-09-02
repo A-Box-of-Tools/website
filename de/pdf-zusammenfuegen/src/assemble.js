@@ -5,7 +5,7 @@ import{decodeText,normalizeRotation,readPages}from'./pages.js';
 import{pruneOutline,readOutline,writeOutline}from'./outline.js';
 import{
 isName,name,Name,PdfStream,Ref,
-}from'./objects.js';
+}from'./shared/pdf-objects.js';
 const SKIPPED_PAGE_KEYS=new Set([
 'Parent','B','StructParents','Metadata','PieceInfo','AA','Annots',
 'Rotate','MediaBox','Type','LastModified','Tabs',

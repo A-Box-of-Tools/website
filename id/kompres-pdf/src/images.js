@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{decodeStream,deflate,filterNames}from'./filters.js';
-import{isName,name,Name,PdfStream,Ref}from'./objects.js';
+import{decodeStream,deflate,filterNames}from'./shared/pdf-filters.js';
+import{isName,name,Name,PdfStream,Ref}from'./shared/pdf-objects.js';
 const TINY=4*1024;
 export const SKIP={
 jpx:'kept.jpx',

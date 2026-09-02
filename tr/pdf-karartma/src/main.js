@@ -4,7 +4,7 @@ import{bytes as humanBytes,outName,tally}from'./format.js';
 import{
 contextOf,FINDERS,findPattern,findTerm,glyphsIn,mergeRanges,wordsOf,
 }from'./matches.js';
-import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./reader.js';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./shared/pdf-reader.js';
 import{redact}from'./redact.js';
 import{pagesOf,readPage}from'./text.js';
 import{harvestAll,verify}from'./verify.js';

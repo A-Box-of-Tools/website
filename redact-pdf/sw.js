@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/redact-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'4ee089c0c0';
+const CACHE_NAME=CACHE_PREFIX+'d8dd197911';
 const ASSETS=[
 './',
 'index.html',
@@ -9,21 +9,21 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/pdf-objects.js',
+'src/shared/pdf-filters.js',
+'src/shared/pdf-reader.js',
+'src/shared/pdf-writer.js',
 'src/base14.js',
 'src/content.js',
 'src/edit.js',
-'src/filters.js',
 'src/fonts.js',
 'src/format.js',
 'src/main.js',
 'src/matches.js',
-'src/objects.js',
-'src/reader.js',
 'src/redact.js',
 'src/strings.js',
 'src/text.js',
 'src/verify.js',
-'src/writer.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

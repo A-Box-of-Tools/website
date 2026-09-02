@@ -2,9 +2,9 @@
 import{assemble}from'./assemble.js';
 import{archiveName,outputNames,splitInto}from'./plan.js';
 import{count}from'./format.js';
-import{PdfDocument}from'./reader.js';
+import{PdfDocument}from'./shared/pdf-reader.js';
 import{makeZip}from'./shared/zip.js';
-import{writeDocument}from'./writer.js';
+import{writeDocument}from'./shared/pdf-writer.js';
 export async function produce(entries,how,{onProgress,signal,t}={}){
 const parts=splitInto(entries,how.split);
 const names=outputNames(parts,{

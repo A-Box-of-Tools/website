@@ -4,8 +4,8 @@ import{
 decodeImage,findImages,reencode,replaceImage,SKIP,
 }from'./images.js';
 import{effectiveDpi,measurePlacements}from'./placements.js';
-import{PdfDocument}from'./reader.js';
-import{stripMetadata,writeDocument}from'./writer.js';
+import{PdfDocument}from'./shared/pdf-reader.js';
+import{stripMetadata,writeDocument}from'./shared/pdf-writer.js';
 export const PRESETS={
 smallest:{dpi:96,quality:0.55},
 screen:{dpi:130,quality:0.68},

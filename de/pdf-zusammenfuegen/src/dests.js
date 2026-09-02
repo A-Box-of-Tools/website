@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{isName,Name,PdfString,Ref}from'./objects.js';
+import{isName,Name,PdfString,Ref}from'./shared/pdf-objects.js';
 export function namedDestinations(doc){
 const found=new Map();
 const catalog=doc.catalog;

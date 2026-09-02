@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{formatNumber,formatString,formatValue}from'./content.js';
-import{PdfString}from'./objects.js';
+import{PdfString}from'./shared/pdf-objects.js';
 import{decodeText,encodeText}from'./strings.js';
 import{cornersOf,endOf}from'./text.js';
 export function planEdits(page,removing,{boxes=true,remove=null}={}){

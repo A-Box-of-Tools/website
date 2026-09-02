@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/merge-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'f4d1ee9835';
+const CACHE_NAME=CACHE_PREFIX+'f8052d12d7';
 const ASSETS=[
 './',
 'index.html',
@@ -11,18 +11,18 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',
+'src/shared/pdf-objects.js',
+'src/shared/pdf-filters.js',
+'src/shared/pdf-reader.js',
+'src/shared/pdf-writer.js',
 'src/assemble.js',
 'src/dests.js',
-'src/filters.js',
 'src/format.js',
 'src/main.js',
-'src/objects.js',
 'src/outline.js',
 'src/pages.js',
 'src/plan.js',
 'src/produce.js',
-'src/reader.js',
-'src/writer.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

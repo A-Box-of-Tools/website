@@ -4,7 +4,7 @@ import{
 compressDocument,describeSettings,PRESETS,
 }from'./compress.js';
 import{takeInventory,verdict}from'./inventory.js';
-import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./reader.js';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./shared/pdf-reader.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{
 bytes as humanBytes,change,count,dimensions,dpi,outName,share,

@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{isGoTo,resolveDestination}from'./dests.js';
 import{decodeText}from'./pages.js';
-import{name,PdfString,Ref}from'./objects.js';
+import{name,PdfString,Ref}from'./shared/pdf-objects.js';
 const MAX_ITEMS=5000;
 export function readOutline(doc,named){
 const root=doc.get(doc.catalog,'Outlines');

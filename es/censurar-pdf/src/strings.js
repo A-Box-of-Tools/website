@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{PdfStream,PdfString}from'./objects.js';
+import{PdfStream,PdfString}from'./shared/pdf-objects.js';
 const TEXT_KEYS=[
 'Title','Author','Subject','Keywords','Creator','Producer',
 'Contents','RC','Subj','T','V','DV','TU','Alt','ActualText','E',

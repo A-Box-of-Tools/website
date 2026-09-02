@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{isName,PdfString,Ref}from'./objects.js';
+import{isName,PdfString,Ref}from'./shared/pdf-objects.js';
 const INHERITED=['Resources','MediaBox','CropBox','Rotate'];
 const DEFAULT_BOX=[0,0,612,792];
 export function readPages(doc){

@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{isName,PdfStream,Ref}from'./objects.js';
-import{scanObjectHeaders}from'./reader.js';
-import{reachable}from'./writer.js';
+import{isName,PdfStream,Ref}from'./shared/pdf-objects.js';
+import{scanObjectHeaders}from'./shared/pdf-reader.js';
+import{reachable}from'./shared/pdf-writer.js';
 const GROUPS=[
 {id:'images',label:'group.images'},
 {id:'fonts',label:'group.fonts'},

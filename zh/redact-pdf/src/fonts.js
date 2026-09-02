@@ -1,8 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{base14Widths,encodingByName,glyphText,STANDARD,WIN_ANSI}from'./base14.js';
 import{lex}from'./content.js';
-import{decodeStream}from'./filters.js';
-import{Name,PdfStream,PdfString}from'./objects.js';
+import{decodeStream}from'./shared/pdf-filters.js';
+import{Name,PdfStream,PdfString}from'./shared/pdf-objects.js';
 const UNITS=1000;
 export async function readFont(doc,dict){
 const subtype=doc.get(dict,'Subtype');

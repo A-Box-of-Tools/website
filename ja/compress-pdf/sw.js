@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ja/compress-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'62518c4613';
+const CACHE_NAME=CACHE_PREFIX+'831d16349b';
 const ASSETS=[
 './',
 'index.html',
@@ -9,16 +9,16 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/pdf-objects.js',
+'src/shared/pdf-filters.js',
+'src/shared/pdf-reader.js',
+'src/shared/pdf-writer.js',
 'src/compress.js',
-'src/filters.js',
 'src/format.js',
 'src/images.js',
 'src/inventory.js',
 'src/main.js',
-'src/objects.js',
 'src/placements.js',
-'src/reader.js',
-'src/writer.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

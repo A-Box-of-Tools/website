@@ -5,7 +5,7 @@ import{bytes,count as countOf,shortName}from'./format.js';
 import{sizeLabel}from'./pages.js';
 import{describeRanges,parseRanges}from'./plan.js';
 import{produce}from'./produce.js';
-import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./reader.js';
+import{EncryptedPdfError,NotAPdfError,PdfDocument}from'./shared/pdf-reader.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 const $=(id)=>document.getElementById(id);
 const humanBytes=(n)=>bytes(n,phrase);
