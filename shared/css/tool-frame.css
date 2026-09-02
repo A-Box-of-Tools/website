@@ -246,6 +246,16 @@ main, .topbar, .crumbs, .privacy, .pledge, .faq, .tool-next, footer {
 
 @media (max-width: 620px) {
   .brand h1 .h1-kw { display: block; }
+  /* A tool's name is written with non-breaking spaces so it reads as one
+     thing, and on a phone one of them can be wider than the room beside the
+     mark: "Base64 Encoder & Decoder" at 1.4rem, in the font a Linux machine
+     falls back to, came out five pixels past the edge and made the whole page
+     scroll sideways. `anywhere` adds a break only where a run would otherwise
+     overflow, so every name that fits is left exactly as written and the one
+     that does not breaks rather than pushing the page. The break it picks is
+     not a good one, which is why base64's own heading now allows a better
+     one before the ampersand; this is the net under the rest. */
+  .brand h1 { overflow-wrap: anywhere; }
 }
 
 .tagline { margin: 0.15rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
