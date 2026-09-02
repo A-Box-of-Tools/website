@@ -31,10 +31,10 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> para as marcas e o
-      arquivo em que elas são salvas, <code>src/decode.js</code> para as vinte
+      arquivo em que elas são salvas, <code>src/shared/audio-decode.js</code> para as vinte
       linhas que entregam o seu arquivo ao decodificador do próprio navegador,
       <code>src/trim.js</code> para a conta que transforma uma marca numa sequência
-      de amostras e para o laço que as copia, e <code>src/wav.js</code> para o
+      de amostras e para o laço que as copia, e <code>src/shared/wav.js</code> para o
       cabeçalho que vai na frente delas. Nenhum deles importa nada capaz de fazer uma
       requisição."""
 

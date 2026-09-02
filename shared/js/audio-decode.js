@@ -1,6 +1,15 @@
 /**
  * Getting samples out of whatever was dropped on the page.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/audio-decode.js and
+ * the build copies it to <tool>/src/shared/audio-decode.js for the tools that
+ * ask for it with `js_parts = ["audio-decode", "samplerate", ...]` - the audio
+ * editor, the trimmer and the extractor. It imports samplerate.js beside it,
+ * so the two are asked for together, and buildlib/imports.py refuses a tool
+ * that lists one without the other. The three tools carried identical copies
+ * until the tests could follow a `./shared/` import; see
+ * tests/js/resolve-shared.mjs.
+ *
  * There is one decoder here and it is the browser's own: `decodeAudioData`,
  * the same code path that plays a file in a <video> element. It is handed the
  * bytes of the file and hands back the sound, which is what makes "the audio

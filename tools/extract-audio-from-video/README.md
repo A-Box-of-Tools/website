@@ -43,34 +43,32 @@ file in a `<video>` element — is handed the bytes and hands back sound. The
 video track is never asked for, never decoded, never drawn. That is not
 restraint: there is no video decoder in `src/` to run.
 
-Then `src/wav.js` puts a forty-four-byte header in front of the samples. There
+Then `src/shared/wav.js` puts a forty-four-byte header in front of the samples. There
 is no encoder in the loop, so there is no second generation of loss.
 
 ## The sample-rate trap
 
 `decodeAudioData` resamples to the context's rate, so a naive implementation
 silently rewrites every sample and still claims nothing was touched.
-`src/samplerate.js` sniffs the rate out of the file's own header first and the
+`src/shared/samplerate.js` sniffs the rate out of the file's own header first and the
 decode happens on an `OfflineAudioContext` at *that* rate. Where a file
 declares nothing, the page says which rate it assumed rather than staying
 quiet.
 
 **Anything that adds a new input format has to add a sniffer branch too.**
 
-## The modules are copies, on purpose
+## The modules are shared parts
 
-`src/decode.js`, `src/samplerate.js` and `src/wav.js` are byte for byte
-`edit-audio`'s and `trim-audio`'s, declared as groups in
-`tests/python/test_duplicates.py`, which fails if they drift. They are copies
-from before the JavaScript tests could follow a `./shared/` import — `build.py`
-copies `shared/js/` into a tool at `src/shared/` **at build time**, and the
-tests import these modules straight off the disk. `tests/js/resolve-shared.mjs`
-resolves that path for the tests now, so moving the three to `shared/js/` is
-the next step; until then the duplicate test keeps them in step.
+The decoder, the sample-rate sniffer and the WAV writer are
+`shared/js/audio-decode.js`, `samplerate.js` and `wav.js`, asked for in
+`tool.toml` and copied into this tool at `src/shared/` by the build — the same
+three `edit-audio` and `trim-audio` ship. They were byte-for-byte copies in all
+three tools until the JavaScript tests could follow a `./shared/` import
+(`tests/js/resolve-shared.mjs`).
 
 That matters more than usual here. The WebM-through-the-MP3-frame-scanner bug
 that once reported 64 kHz for a 48 kHz Opus file lived in `samplerate.js`; a
-repair to it is a repair all three tools want.
+repair to it is a repair all three tools want, and it lands in all three now.
 
 ## Mono averages, it does not drop a channel
 

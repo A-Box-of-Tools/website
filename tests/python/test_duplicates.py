@@ -3,20 +3,20 @@ The modules that exist as more than one copy, and have to stay in step.
 
 WHY THERE ARE COPIES AT ALL
 
-The audio decoder, the resampler and the WAV writer are six hundred lines
-between them and they sit in every tool that reads sound. They are copies
+The JSON, YAML and XML parsers are thirteen hundred lines between them and
+they sit in the three formatter pages that read those formats. They are copies
 because of a rule that held until tests/js/resolve-shared.mjs: a shared module
 is copied into a tool at build time, at src/shared/, so a source file
 importing one could not be loaded outside a build - and the JavaScript tests
 import tool modules straight off the disk with no build in front of them.
-Every one of those tools reaches them from a leaf module that has tests, so
+Every one of those pages reaches them from a leaf module that has tests, so
 sharing them would have traded those tests for the deduplication.
 
 That rule is gone. The tests now resolve a tool module's `./shared/` imports to
 shared/js/ themselves; the CRC and the ZIP writer went first, then the four PDF
-modules, then the MP4 reader and the two MP4 writers. Every group below is a
-move that has not happened yet, and until it happens the copies still have to
-agree - which is all this file has ever enforced. See "Shared
+modules, the MP4 reader, the two MP4 writers, and the audio decoder trio.
+Every group below is a move that has not happened yet, and until it happens
+the copies still have to agree - which is all this file has ever enforced. See "Shared
 parts" in docs/adding-a-tool.md.
 
 WHAT THIS ENFORCES INSTEAD
@@ -94,15 +94,12 @@ TOOLS = ROOT / 'tools'
 GROUPS = [
     ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
     ('pdf.js', ['document-scanner', 'images-to-pdf']),
-    # The five below were already identical, token for token, and were found
+    # The two below were already identical, token for token, and were found
     # by test_identical_copies_are_declared the day it was written rather than
-    # by anybody noticing. They are declared as what they are. Two more sat
-    # beside them - crc32.js and zip.js in exif-editor and merge-pdf - until
-    # those tools were pointed at shared/js/ instead, the day the tests learned
-    # to follow a ./shared/ import.
-    ('wav.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
-    ('samplerate.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
-    ('decode.js', ['edit-audio', 'extract-audio-from-video', 'trim-audio']),
+    # by anybody noticing. They are declared as what they are. Five more sat
+    # beside them - crc32.js and zip.js in exif-editor and merge-pdf, and the
+    # audio decoder, resampler and WAV writer in the three audio tools - until
+    # those tools were pointed at shared/js/ instead.
     ('support.js', ['crop-video', 'trim-video']),
     ('support.js', ['reverse-video', 'timelapse-video']),
     # The text parsers, across the three pages that read them. json-formatter
@@ -131,8 +128,11 @@ SINGLETONS = {
     # only namesakes left under tools/.
     ('reader.js', 'gif-analyzer'): 'a GIF reader, related to the DICOM one by name only',
     ('reader.js', 'dicom-viewer'): 'a DICOM reader, related to the GIF one by name only',
-    # decode.js and support.js each ask their tool's own question, and the
-    # copies below answer a different one from the group that shares the name.
+    # decode.js and support.js each ask their tool's own question. The audio
+    # decoder that shared the first name is shared/js/audio-decode.js now, so
+    # the time-lapse maker's is the only decode.js left under tools/; the
+    # support.js copies below answer a different question from the groups that
+    # share their name.
     ('decode.js', 'timelapse-video'):
         'decodes the few runs of samples a time-lapse samples, not a whole track',
     ('support.js', 'grab-frame'):

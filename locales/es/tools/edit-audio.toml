@@ -29,10 +29,10 @@ live_hint = """
       mandara tu audio fuera a procesar se pararía en seco."""
 
 read_first = """
-, <code>src/decode.js</code> para las veinte líneas
+, <code>src/shared/audio-decode.js</code> para las veinte líneas
       que le pasan tu archivo al descodificador del propio navegador,
       <code>src/stretch.js</code> para el estirador de tiempo,
-      <code>src/speed.js</code> para el remuestreador y <code>src/wav.js</code>
+      <code>src/speed.js</code> para el remuestreador y <code>src/shared/wav.js</code>
       para la cabecera que va delante de las muestras. Ninguno de ellos importa
       nada capaz de hacer una petición."""
 

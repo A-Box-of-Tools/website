@@ -21,7 +21,7 @@ pledge = """
     Code, der eine Datei in einem <code>&lt;video&gt;</code>-Element abspielt,
     und gefragt wird er nach der Tonspur und nach nichts sonst. Ein WAV zu
     schreiben heißt, einen vierundvierzig Byte langen Kopf vor die Samples zu
-    setzen, nachzulesen in <code>src/wav.js</code>. In der Schleife sitzt kein
+    setzen, nachzulesen in <code>src/shared/wav.js</code>. In der Schleife sitzt kein
     Kodierer, es gibt keinen Upload-Schritt, und eine Netzfunktion hat diese
     Seite überhaupt nicht."""
 
@@ -32,9 +32,9 @@ live_hint = """
       holen Sie den Ton trotzdem heraus."""
 
 read_first = """
-, <code>src/decode.js</code> für den einen
+, <code>src/shared/audio-decode.js</code> für den einen
       Dekoder, den es gibt, und dafür, warum das Bild nie angefordert wird, und
-      <code>src/samplerate.js</code> für das Auslesen des Kopfes, das verhindert,
+      <code>src/shared/samplerate.js</code> für das Auslesen des Kopfes, das verhindert,
       dass Ihre Aufnahme stillschweigend neu abgetastet wird."""
 
 howto_heading = "So holen Sie den Ton aus einem Video, ohne es hochzuladen"

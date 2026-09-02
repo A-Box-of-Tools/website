@@ -31,10 +31,10 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> voor de markeringen en
-      het bestand waarin ze opgeslagen worden, <code>src/decode.js</code> voor de
+      het bestand waarin ze opgeslagen worden, <code>src/shared/audio-decode.js</code> voor de
       twintig regels die je bestand aan de eigen decoder van de browser geven,
       <code>src/trim.js</code> voor het rekenwerk dat van een markering een reeks
-      samples maakt en de lus die ze kopieert, en <code>src/wav.js</code> voor de
+      samples maakt en de lus die ze kopieert, en <code>src/shared/wav.js</code> voor de
       kop die ervoor komt. Geen daarvan importeert iets dat een verzoek kan doen."""
 
 howto_heading = "Zo kort je een audiobestand in"

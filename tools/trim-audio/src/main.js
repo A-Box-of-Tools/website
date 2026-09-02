@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { decodeAudio, UnreadableFile } from './decode.js';
+import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
 import {
   formatDuration, openSegment, readTimestamps, segmentRanges, totalCaptured,
   writeTimestamps,
@@ -11,7 +11,7 @@ import { Timeline, formatTime, parseTime } from './timeline.js';
 import {
   invertRanges, isUntouched, planSections, sectionFrames, totalSeconds, trim,
 } from './trim.js';
-import { writeWav, wavSize } from './wav.js';
+import { writeWav, wavSize } from './shared/wav.js';
 import { drawWaveform, summarise } from './waveform.js';
 
 const $ = (id) => document.getElementById(id);
@@ -82,7 +82,7 @@ const el = {
 
 /** @type {File|null} */
 let file = null;
-/** What decode.js handed back, or null before a file is chosen. */
+/** What shared/audio-decode.js handed back, or null before a file is chosen. */
 let source = null;
 /** The waveform, summarised once when the file is opened. See waveform.js. */
 let summary = null;
@@ -153,7 +153,7 @@ async function loadFile(picked) {
     timeline.setEnabled(true);
     renderSegments();
   } catch (error) {
-    // decode.js throws a key; a browser that failed for its own reasons
+    // shared/audio-decode.js throws a key; a browser that failed for its own reasons
     // throws a sentence, and phrase() hands back what it does not know.
     if (error instanceof UnreadableFile) showError(phrase(error.message));
     else {

@@ -30,9 +30,9 @@ live_hint = """
 read_first = """
 , 표시와 그것이 저장되는 파일은
       <code>src/segments.js</code>, 내 파일을 브라우저 자체 디코더에 넘기는 스무
-      줄은 <code>src/decode.js</code>, 표시를 샘플 구간으로 바꾸는 계산과 그것을
+      줄은 <code>src/shared/audio-decode.js</code>, 표시를 샘플 구간으로 바꾸는 계산과 그것을
       복사하는 반복문은 <code>src/trim.js</code>, 그 앞에 붙는 헤더는
-      <code>src/wav.js</code>입니다. 어느 것도 요청을 보낼 수 있는 것을 들여오지
+      <code>src/shared/wav.js</code>입니다. 어느 것도 요청을 보낼 수 있는 것을 들여오지
       않습니다."""
 
 howto_heading = "오디오 파일을 자르는 방법"

@@ -24,7 +24,7 @@ og_image_alt = "從影片裡提取音訊 - 只要聲音，不上傳"
 pledge = """\
     解碼器就是你瀏覽器裡本來就有的那個，跟在 <code>&lt;video&gt;</code> 元素裡\
     播放檔案走的是同一條程式碼路徑，而這裡只向它要音軌。寫一個 WAV，就是在取樣\
-    前面放上四十四個位元組的檔案頭，程式碼在 <code>src/wav.js</code>。中間沒有編碼器，\
+    前面放上四十四個位元組的檔案頭，程式碼在 <code>src/shared/wav.js</code>。中間沒有編碼器，\
     沒有上傳這一步，這個頁面壓根就沒有網路功能。"""
 
 live_hint = """
@@ -33,8 +33,8 @@ live_hint = """
 
 read_first = """\
 ，這裡唯一的解碼器，以及畫面為什麼從不被索取，在 \
-<code>src/decode.js</code>；防止你的錄音被悄悄重取樣的檔案頭識別，在 \
-<code>src/samplerate.js</code>。"""
+<code>src/shared/audio-decode.js</code>；防止你的錄音被悄悄重取樣的檔案頭識別，在 \
+<code>src/shared/samplerate.js</code>。"""
 
 howto_heading = "不上傳就把影片裡的音訊取出來的步驟"
 

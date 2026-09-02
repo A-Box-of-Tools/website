@@ -32,10 +32,10 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> per i segni e il file in
-      cui vengono salvati, <code>src/decode.js</code> per le venti righe che passano
+      cui vengono salvati, <code>src/shared/audio-decode.js</code> per le venti righe che passano
       il tuo file al decodificatore del browser, <code>src/trim.js</code> per i
       conti che trasformano un segno in una serie di campioni e per il ciclo che li
-      copia, e <code>src/wav.js</code> per l'intestazione che va davanti. Nessuno di
+      copia, e <code>src/shared/wav.js</code> per l'intestazione che va davanti. Nessuno di
       loro importa qualcosa in grado di fare una richiesta."""
 
 howto_heading = "Come tagliare un file audio"

@@ -2,8 +2,8 @@
 
 import { phrase } from './shared/phrases.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { decodeAudio, UnreadableFile } from './decode.js';
-import { writeWav } from './wav.js';
+import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
+import { writeWav } from './shared/wav.js';
 import { mixToMono } from './mono.js';
 
 const $ = (id) => document.getElementById(id);
@@ -145,7 +145,7 @@ function clearResult() {
 /**
  * Whatever went wrong, as a sentence.
  *
- * decode.js throws an UnreadableFile carrying a phrase key rather than a
+ * shared/audio-decode.js throws an UnreadableFile carrying a phrase key rather than a
  * sentence, because that file is copied byte for byte into fifteen languages.
  * Anything else is the platform talking, and phrase() hands back what it cannot
  * find, so it still reads as itself.

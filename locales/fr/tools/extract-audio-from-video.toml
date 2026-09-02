@@ -21,7 +21,7 @@ pledge = """
     code qui lit un fichier dans un élément <code>&lt;video&gt;</code>, et on
     lui demande la piste audio et rien d'autre. Écrire un WAV consiste à poser
     un en-tête de quarante-quatre octets devant les échantillons, dans
-    <code>src/wav.js</code>. Il n'y a aucun encodeur dans la boucle, aucune
+    <code>src/shared/wav.js</code>. Il n'y a aucun encodeur dans la boucle, aucune
     étape d'envoi, et cette page n'a aucune fonction réseau d'aucune sorte."""
 
 live_hint = """
@@ -30,9 +30,9 @@ live_hint = """
       octet. Ou débranchez internet et récupérez le son quand même."""
 
 read_first = """
-, <code>src/decode.js</code> pour l'unique
+, <code>src/shared/audio-decode.js</code> pour l'unique
       décodeur qui existe ici et pourquoi l'image n'est jamais demandée, et
-      <code>src/samplerate.js</code> pour la lecture d'en-tête qui empêche votre
+      <code>src/shared/samplerate.js</code> pour la lecture d'en-tête qui empêche votre
       enregistrement d'être rééchantillonné en silence."""
 
 howto_heading = "Comment extraire l'audio d'une vidéo sans l'envoyer"

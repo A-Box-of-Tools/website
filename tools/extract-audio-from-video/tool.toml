@@ -35,15 +35,14 @@
 # reads true, because extracting is what it does and MP3 would only be the
 # format it wrote.
 #
-# THE DECODER MODULES ARE COPIES, ON PURPOSE
+# THE DECODER MODULES ARE SHARED PARTS
 #
-# src/decode.js, src/samplerate.js and src/wav.js are byte for byte the ones in
-# edit-audio and trim-audio, declared in tests/python/test_duplicates.py so that
-# a fix to any of them is a fix to all three tools. They are copies from before
-# the JavaScript tests could follow a ./shared/ import (build.py copies
-# shared/js into a tool at src/shared/ at build time, and the tests import
-# these modules straight off the disk); tests/js/resolve-shared.mjs resolves
-# that path now, so moving the three to shared/js is the next step.
+# The decoder, the sample-rate sniffer and the WAV writer are
+# shared/js/audio-decode.js, samplerate.js and wav.js, asked for in js_parts
+# below and copied into this tool at src/shared/ by the build - the same three
+# edit-audio and trim-audio ship. They were byte-for-byte copies in all three
+# tools until the JavaScript tests could follow a ./shared/ import
+# (tests/js/resolve-shared.mjs); a fix to any of them lands in all three now.
 #
 
 slug = "extract-audio-from-video"
@@ -73,13 +72,13 @@ roadmap_group = "audio"
 css_parts = ["progress"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "audio-decode", "samplerate", "wav"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. The sound
 # out of a video is very often wanted shorter, or louder, which is the next two
 # tools exactly.
 handoff = ["trim-audio", "edit-audio"]
-lastmod = "2026-08-30"
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -111,7 +110,7 @@ pledge = """
     that plays a file in a <code>&lt;video&gt;</code> element &mdash; and it is
     asked for the audio track and nothing else. Writing a WAV is putting a
     forty-four-byte header in front of the samples, in
-    <code>src/wav.js</code>. There is no encoder in the loop, no upload step,
+    <code>src/shared/wav.js</code>. There is no encoder in the loop, no upload step,
     and no network feature of any kind on this page."""
 
 live_hint = """
@@ -122,9 +121,9 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/decode.js</code> for the
+, <code>src/shared/audio-decode.js</code> for the
       one decoder there is and why the picture is never asked for, and
-      <code>src/samplerate.js</code> for the header sniffing that stops your
+      <code>src/shared/samplerate.js</code> for the header sniffing that stops your
       recording being quietly resampled."""
 
 # --- the written half of the page --------------------------------------------

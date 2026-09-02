@@ -1,5 +1,5 @@
 /**
- * tools/edit-audio/src/wav.js - the file the audio editor writes.
+ * shared/js/wav.js - the file the audio editor writes.
  *
  * A WAV is the one output format on this site that involves no encoder at all,
  * which is the whole reason it was chosen: what comes out is meant to be the
@@ -11,7 +11,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { writeWav, wavSize } from '../../tools/edit-audio/src/wav.js';
+import { writeWav, wavSize } from '../../shared/js/wav.js';
 import { blobBytes } from './helpers.js';
 
 /** Read a WAV back: the fields this writer sets, and the samples. */

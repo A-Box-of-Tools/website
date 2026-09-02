@@ -31,10 +31,10 @@ live_hint = """
       wegschickt, bliebe dabei einfach stehen."""
 
 read_first = """
-, <code>src/decode.js</code> für die zwanzig Zeilen,
+, <code>src/shared/audio-decode.js</code> für die zwanzig Zeilen,
       die Ihre Datei an den browsereigenen Decoder übergeben,
       <code>src/stretch.js</code> für die Zeitdehnung, <code>src/speed.js</code>
-      für das Resampling und <code>src/wav.js</code> für den Header, der vor die
+      für das Resampling und <code>src/shared/wav.js</code> für den Header, der vor die
       Samples kommt. Keines davon importiert etwas, das eine Anfrage stellen
       könnte."""
 

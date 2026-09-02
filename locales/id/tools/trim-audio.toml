@@ -31,11 +31,11 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> untuk penanda dan file
-      tempat menyimpannya, <code>src/decode.js</code> untuk dua puluh baris yang
+      tempat menyimpannya, <code>src/shared/audio-decode.js</code> untuk dua puluh baris yang
       menyerahkan file Anda ke dekoder milik peramban sendiri,
       <code>src/trim.js</code> untuk aritmetika yang mengubah sebuah penanda
       menjadi deretan sampel beserta perulangan yang menyalinnya, dan
-      <code>src/wav.js</code> untuk header yang dipasang di depannya. Tidak satu
+      <code>src/shared/wav.js</code> untuk header yang dipasang di depannya. Tidak satu
       pun mengimpor sesuatu yang bisa membuat permintaan."""
 
 howto_heading = "Cara memotong file audio"

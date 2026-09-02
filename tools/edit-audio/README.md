@@ -20,7 +20,7 @@ than the other way round:
 decodeAudioData  ->  Float32 per channel  ->  arithmetic  ->  header + samples
 ```
 
-There is no encoder anywhere in that line. `src/wav.js` is a header builder and
+There is no encoder anywhere in that line. `src/shared/wav.js` is a header builder and
 an interleaver, and the only lossy step in the whole tool is rounding a float to
 sixteen bits at the very end — which the page offers to skip, by writing 32-bit
 float instead.
@@ -49,7 +49,7 @@ every nine, and hand the result to a page that then writes it out claiming
 nothing was touched. Every "audio editor" that does this is wrong in a way
 nobody can hear and everybody would object to if it were written down.
 
-The fix needs the rate **before** the decode, so `src/samplerate.js` reads it
+The fix needs the rate **before** the decode, so `src/shared/samplerate.js` reads it
 out of the header and decodes on an `OfflineAudioContext` created at that rate,
 which resamples nothing:
 

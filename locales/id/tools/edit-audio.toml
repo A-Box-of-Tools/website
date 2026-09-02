@@ -30,11 +30,11 @@ live_hint = """
       lain untuk diproses akan langsung berhenti."""
 
 read_first = """
-, <code>src/decode.js</code> untuk dua puluh baris
+, <code>src/shared/audio-decode.js</code> untuk dua puluh baris
       yang menyerahkan file Anda ke dekoder milik peramban sendiri,
       <code>src/stretch.js</code> untuk perentang waktunya,
       <code>src/speed.js</code> untuk pengambil sampel ulangnya, dan
-      <code>src/wav.js</code> untuk header yang dipasang di depan sampelnya.
+      <code>src/shared/wav.js</code> untuk header yang dipasang di depan sampelnya.
       Tidak satu pun mengimpor sesuatu yang bisa membuat permintaan."""
 
 howto_heading = "Cara menyunting file audio"

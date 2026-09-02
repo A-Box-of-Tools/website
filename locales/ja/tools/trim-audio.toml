@@ -30,8 +30,8 @@ live_hint = """
 read_first = """
 、印とその保存先ファイルは\
       <code>src/segments.js</code>、ファイルをブラウザ自身のデコーダーへ渡す20行は\
-      <code>src/decode.js</code>、印をサンプルの範囲に変える計算とそれを複製する\
-      ループは<code>src/trim.js</code>、その前に付く見出しは<code>src/wav.js</code>\
+      <code>src/shared/audio-decode.js</code>、印をサンプルの範囲に変える計算とそれを複製する\
+      ループは<code>src/trim.js</code>、その前に付く見出しは<code>src/shared/wav.js</code>\
       です。どれも、リクエストを出せるものは何ひとつ読み込んでいません。"""
 
 howto_heading = "音声ファイルを切り出す手順"

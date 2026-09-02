@@ -1,5 +1,5 @@
 /**
- * tools/edit-audio/src/samplerate.js - reading the rate out of a header.
+ * shared/js/samplerate.js - reading the rate out of a header.
  *
  * This one is worth testing carefully for a reason that is easy to miss: it
  * cannot fail loudly. A wrong answer here does not throw and does not corrupt
@@ -12,7 +12,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { sniffSampleRate } from '../../tools/edit-audio/src/samplerate.js';
+import { sniffSampleRate } from '../../shared/js/samplerate.js';
 import { concat, ascii, u16be, u32be, u32le } from './helpers.js';
 
 /* -------------------------------------------------------------------- WAV */

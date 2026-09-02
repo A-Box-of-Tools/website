@@ -1,8 +1,15 @@
 /**
  * The WAV writer.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/wav.js and the build
+ * copies it to <tool>/src/shared/wav.js for the tools that ask for it with
+ * `js_parts = ["wav", ...]`: the audio editor, the trimmer and the extractor,
+ * which carried identical copies until the tests could follow a `./shared/`
+ * import (tests/js/resolve-shared.mjs). It imports nothing, so it can be asked
+ * for on its own.
+ *
  * This is the whole of the export path, and it is deliberately the smallest
- * file in the tool: a WAV is a header in front of the samples. No browser
+ * file in any audio tool here: a WAV is a header in front of the samples. No browser
  * ships an encoder for MP3, AAC or Opus that can be driven faster than real
  * time, so the honest choice is the one format that needs no encoder at all -
  * the samples are written down as they already are, which cannot cost quality

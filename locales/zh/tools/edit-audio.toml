@@ -30,9 +30,9 @@ live_hint = """
       网线照编，一个把音频送出去处理的工具，这时候就该停了。"""
 
 read_first = """\
-      ，<code>src/decode.js</code> 里是把你的文件交给浏览器自带解码器的那二十\
+      ，<code>src/shared/audio-decode.js</code> 里是把你的文件交给浏览器自带解码器的那二十\
       来行，<code>src/stretch.js</code> 里是变速不变调的那部分，\
-      <code>src/speed.js</code> 里是重采样，<code>src/wav.js</code> 里是采样\
+      <code>src/speed.js</code> 里是重采样，<code>src/shared/wav.js</code> 里是采样\
       前面那个文件头。这几个都没有引入任何能发请求的东西。"""
 
 howto_heading = "音频文件怎么编辑"

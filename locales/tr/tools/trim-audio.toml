@@ -32,9 +32,9 @@ live_hint = """
 read_first = """
 , işaretler ve kaydedildikleri dosya için
       <code>src/segments.js</code>, dosyanızı tarayıcının kendi çözücüsüne veren
-      yirmi satır için <code>src/decode.js</code>, bir işareti örnek dizisine
+      yirmi satır için <code>src/shared/audio-decode.js</code>, bir işareti örnek dizisine
       çeviren hesap ve onları kopyalayan döngü için <code>src/trim.js</code> ve
-      önlerine giden başlık için <code>src/wav.js</code>. Hiçbiri istek
+      önlerine giden başlık için <code>src/shared/wav.js</code>. Hiçbiri istek
       yapabilecek bir şeyi içeri almaz."""
 
 howto_heading = "Bir ses dosyası nasıl kesilir"

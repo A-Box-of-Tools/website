@@ -31,10 +31,10 @@ live_hint = """
 
 read_first = """
 , आपकी फ़ाइल ब्राउज़र के अपने डिकोडर को
-      सौंप देने वाली बीस पंक्तियों के लिए <code>src/decode.js</code>, समय
+      सौंप देने वाली बीस पंक्तियों के लिए <code>src/shared/audio-decode.js</code>, समय
       खींचने वाले हिस्से के लिए <code>src/stretch.js</code>, रीसैंपलर के लिए
       <code>src/speed.js</code>, और सैंपलों के आगे लगने वाले हेडर के लिए
-      <code>src/wav.js</code>। इनमें से कोई भी ऐसा कुछ आयात नहीं करता जो कोई
+      <code>src/shared/wav.js</code>। इनमें से कोई भी ऐसा कुछ आयात नहीं करता जो कोई
       रिक्वेस्ट कर सके।"""
 
 howto_heading = "ऑडियो फ़ाइल कैसे बदलें"
