@@ -5,7 +5,7 @@ import{planRanges}from'./ranges.js';
 import{closeDurations,audioSamplesFor}from'./copy.js';
 import{encodeJoinedAudio,targetAudioFormat}from'./audio.js';
 import{drawFitted}from'./draw.js';
-import{pickH264Codec}from'./support.js';
+import{pickH264Codec}from'./shared/video-support.js';
 const VIDEO_TIMESCALE=90000;
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};

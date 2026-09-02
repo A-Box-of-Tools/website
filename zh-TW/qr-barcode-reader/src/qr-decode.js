@@ -2,7 +2,7 @@
 import{correct}from'./reed-solomon.js';
 import{
 alignmentPositions,blockLayout,countBits,remainderBits,sizeOf,totalCodewords,
-}from'./qr-tables.js';
+}from'./shared/qr-tables.js';
 const ALPHANUMERIC='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
 const LEVEL_OF_BITS={0:'M',1:'L',2:'H',3:'Q'};
 const ECI_CHARSETS={

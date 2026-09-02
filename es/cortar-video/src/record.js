@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{pickRecorderMimeType}from'./support.js';
+import{pickRecorderMimeType}from'./shared/video-support.js';
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const LOAD_TIMEOUT=20_000;
 const SEEK_TIMEOUT=20_000;

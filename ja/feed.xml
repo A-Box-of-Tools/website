@@ -81,6 +81,13 @@
     <summary type="html">MP4・MOV・WebMを正方形、9:16、ピクセル指定など好きな形に切り抜きます。処理はブラウザの中だけ。アップロードなし、音声はそのまま、オフラインでも動きます。</summary>
   </entry>
   <entry>
+    <title type="html">画像→PDF変換ツール</title>
+    <id>https://abox.tools/ja/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JPG・PNG・WebPの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。写真はエンコードし直さずに入り、何もアップロードしません。</summary>
+  </entry>
+  <entry>
     <title type="html">音声の切り出し</title>
     <id>https://abox.tools/ja/trim-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-audio/"/>
@@ -184,13 +191,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/document-scanner/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">スマホで撮った紙の写真を、まっすぐで明るさのそろったPDFにします。四隅は自動で見つけ、傾きを戻し、影は割って取り除きます。すべてブラウザの中で動き、何もアップロードしません。</summary>
-  </entry>
-  <entry>
-    <title type="html">画像→PDF変換ツール</title>
-    <id>https://abox.tools/ja/images-to-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/images-to-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">JPG・PNG・WebPの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。写真はエンコードし直さずに入り、何もアップロードしません。</summary>
   </entry>
   <entry>
     <title type="html">画像スタック</title>

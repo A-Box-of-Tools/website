@@ -88,6 +88,13 @@
     <summary type="html">Formatea, indenta y comprime XML, y convierte XML a JSON o JSON a XML. El analizador corre en tu navegador y no se sube nada, así que un feed, una factura o un archivo de configuración nunca sale de tu dispositivo.</summary>
   </entry>
   <entry>
+    <title type="html">Imágenes a PDF</title>
+    <id>https://abox.tools/es/imagenes-a-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/imagenes-a-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Une imágenes JPG, PNG o WebP en un solo PDF, gratis y sin salir del navegador. Las fotos entran sin volver a codificarse, y no se sube nada.</summary>
+  </entry>
+  <entry>
     <title type="html">Recortador de vídeo</title>
     <id>https://abox.tools/es/recortar-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/recortar-video/"/>
@@ -170,13 +177,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/escanear-documentos/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Convierte la foto de una hoja hecha con el teléfono en un PDF enderezado y con luz uniforme. Las esquinas se buscan solas, la perspectiva se deshace y la sombra se divide. Funciona entero en el navegador: no se sube nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">Imágenes a PDF</title>
-    <id>https://abox.tools/es/imagenes-a-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/imagenes-a-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Une imágenes JPG, PNG o WebP en un solo PDF, gratis y sin salir del navegador. Las fotos entran sin volver a codificarse, y no se sube nada.</summary>
   </entry>
   <entry>
     <title type="html">Invertidor de vídeo</title>

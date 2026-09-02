@@ -74,6 +74,13 @@
     <summary type="html">Formatta, indenta e compatta XML, e converti XML in JSON o JSON in XML. Il parser gira nel tuo browser e non viene caricato niente, quindi un feed, una fattura o un file di configurazione non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
+    <title type="html">Immagini in PDF</title>
+    <id>https://abox.tools/it/immagini-in-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/immagini-in-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Unisci immagini JPG, PNG o WebP in un unico PDF, gratis e interamente dentro il tuo browser. Le foto entrano senza essere ricodificate, e non viene caricato niente.</summary>
+  </entry>
+  <entry>
     <title type="html">Ritagliatore di video</title>
     <id>https://abox.tools/it/ritagliare-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/ritagliare-video/"/>
@@ -163,13 +170,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/video-in-gif/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Trasforma un pezzo di un MP4, un MOV o un WebM in una GIF animata. Scegli il pezzo, la larghezza e la frequenza dei fotogrammi: i fotogrammi li legge e la GIF la scrive il tuo browser. Niente caricamenti.</summary>
-  </entry>
-  <entry>
-    <title type="html">Immagini in PDF</title>
-    <id>https://abox.tools/it/immagini-in-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/immagini-in-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Unisci immagini JPG, PNG o WebP in un unico PDF, gratis e interamente dentro il tuo browser. Le foto entrano senza essere ricodificate, e non viene caricato niente.</summary>
   </entry>
   <entry>
     <title type="html">Impilatore di immagini</title>

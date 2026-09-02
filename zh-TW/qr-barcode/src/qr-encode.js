@@ -2,7 +2,7 @@
 import{remainder}from'./gf256.js';
 import{
 blockLayout,countBits,dataCapacity,remainderBits,
-}from'./qr-tables.js';
+}from'./shared/qr-tables.js';
 export const ALPHANUMERIC='0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';
 const MODE_BITS={numeric:0b0001,alphanumeric:0b0010,byte:0b0100};
 export function chooseMode(text){

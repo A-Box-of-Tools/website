@@ -60,6 +60,13 @@
     <summary type="html">把 MP4、MOV 或 WebM 里的声音取出来，存成 WAV。视频不会离开你的设备，画面也从不解码，整个过程都在你自己的浏览器里跑。</summary>
   </entry>
   <entry>
+    <title type="html">图片转 PDF</title>
+    <id>https://abox.tools/zh/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。</summary>
+  </entry>
+  <entry>
     <title type="html">视频剪切</title>
     <id>https://abox.tools/zh/trim-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-video/"/>
@@ -156,13 +163,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/stack-images/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">把一串连拍的照片合成一张：取平均值消噪点，取中位数把人从画面里去掉，取最亮做星轨，或者给微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠读出相机自己的预览图来打开。全部在你的浏览器里跑。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片转 PDF</title>
-    <id>https://abox.tools/zh/images-to-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/images-to-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。</summary>
   </entry>
   <entry>
     <title type="html">延时视频</title>

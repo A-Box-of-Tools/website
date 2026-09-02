@@ -2,7 +2,7 @@
 import{encodeText}from'./qr-encode.js';
 import{
 alignmentPositions,LEVEL_BITS,RECOVERY,sizeOf,
-}from'./qr-tables.js';
+}from'./shared/qr-tables.js';
 const MASKS=[
 (row,col)=>(row+col)%2===0,
 (row)=>row%2===0,

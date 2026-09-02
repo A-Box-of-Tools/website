@@ -53,6 +53,13 @@
     <summary type="html">Get the sound out of an MP4, MOV or WebM and save it as a WAV. The video never leaves your machine and its picture is never decoded - the whole job runs in your own browser.</summary>
   </entry>
   <entry>
+    <title type="html">Images to PDF</title>
+    <id>https://abox.tools/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/images-to-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Combine JPG, PNG or WebP images into one PDF, free and entirely in your browser. Photos go in without being re-encoded, and nothing is uploaded.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON Formatter</title>
     <id>https://abox.tools/json-formatter/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/json-formatter/"/>
@@ -177,13 +184,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/stack-images/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Combine a burst of photographs into one: average them to kill noise, take the median to remove people from a scene, lighten for star trails, or focus stack a macro shot. Reads CR2, NEF, ARW, DNG, RAF and CR3 by pulling out the camera's own preview. Runs entirely in your browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Images to PDF</title>
-    <id>https://abox.tools/images-to-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/images-to-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Combine JPG, PNG or WebP images into one PDF, free and entirely in your browser. Photos go in without being re-encoded, and nothing is uploaded.</summary>
   </entry>
   <entry>
     <title type="html">PDF Merger &amp; Splitter</title>

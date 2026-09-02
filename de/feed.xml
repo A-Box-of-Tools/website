@@ -46,6 +46,13 @@
     <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
   </entry>
   <entry>
+    <title type="html">Bilder in PDF</title>
+    <id>https://abox.tools/de/bilder-in-pdf-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-in-pdf-umwandeln/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JPG-, PNG- oder WebP-Bilder zu einem PDF zusammenfügen, kostenlos und vollständig in Ihrem Browser. Fotos kommen hinein, ohne neu kodiert zu werden, und nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON-Formatierer</title>
     <id>https://abox.tools/de/json-formatieren/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/json-formatieren/"/>
@@ -142,13 +149,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-stacken/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Eine Serie von Fotos zu einem Bild zusammenrechnen: mitteln gegen das Rauschen, den Median nehmen, um Passanten aus einer Szene zu entfernen, aufhellen für Sternspuren oder eine Makroaufnahme fokusstacken. Liest CR2, NEF, ARW, DNG, RAF und CR3, indem es die Vorschau der Kamera selbst herausholt. Läuft komplett im Browser.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bilder in PDF</title>
-    <id>https://abox.tools/de/bilder-in-pdf-umwandeln/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-in-pdf-umwandeln/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">JPG-, PNG- oder WebP-Bilder zu einem PDF zusammenfügen, kostenlos und vollständig in Ihrem Browser. Fotos kommen hinein, ohne neu kodiert zu werden, und nichts wird hochgeladen.</summary>
   </entry>
   <entry>
     <title type="html">Dokumentenscanner</title>

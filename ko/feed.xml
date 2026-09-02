@@ -95,6 +95,13 @@
     <summary type="html">음원을 거꾸로 돌리고, 빠르거나 느리게 만들고, 작게 녹음된 소리를 키웁니다. 동영상에서 소리만 뽑아내는 것도 됩니다. 브라우저에서 돌아가고 아무것도 업로드하지 않습니다.</summary>
   </entry>
   <entry>
+    <title type="html">이미지를 PDF로</title>
+    <id>https://abox.tools/ko/이미지-pdf-변환/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/이미지-pdf-변환/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JPG, PNG, WebP 이미지를 PDF 하나로 묶습니다. 무료이고 전부 브라우저 안에서 돌아갑니다. 사진은 다시 인코딩되지 않고 그대로 들어가며, 아무것도 업로드되지 않습니다.</summary>
+  </entry>
+  <entry>
     <title type="html">PDF 가리기</title>
     <id>https://abox.tools/ko/pdf-가리기/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/pdf-가리기/"/>
@@ -184,13 +191,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/이미지-스택/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">연사로 찍은 사진을 한 장으로 합칩니다. 평균을 내서 노이즈를 죽이고, 중앙값으로 장면에서 사람을 지우고, 밝게 합쳐 별 궤적을 만들고, 접사를 포커스 스태킹합니다. CR2, NEF, ARW, DNG, RAF, CR3은 카메라가 넣어 둔 미리보기를 꺼내어 읽습니다. 전부 브라우저 안에서 돌아갑니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">이미지를 PDF로</title>
-    <id>https://abox.tools/ko/이미지-pdf-변환/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/이미지-pdf-변환/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">JPG, PNG, WebP 이미지를 PDF 하나로 묶습니다. 무료이고 전부 브라우저 안에서 돌아갑니다. 사진은 다시 인코딩되지 않고 그대로 들어가며, 아무것도 업로드되지 않습니다.</summary>
   </entry>
   <entry>
     <title type="html">타임랩스 만들기</title>

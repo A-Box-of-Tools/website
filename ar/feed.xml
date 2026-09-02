@@ -46,6 +46,13 @@
     <summary type="html">اقتصص ملف MP4 أو MOV أو WebM إلى أي نسبة - مربّعة، أو 9:16، أو إطار بكسل محدّد. يعمل داخل متصفحك: لا يُرفع شيء، ويبقى الصوت، ويعمل دون اتصال.</summary>
   </entry>
   <entry>
+    <title type="html">الصور إلى PDF</title>
+    <id>https://abox.tools/ar/تحويل-الصور-إلى-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الصور-إلى-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">اجمع صور JPG أو PNG أو WebP في ملف PDF واحد، مجاناً وداخل متصفحك بالكامل. تدخل الصور الفوتوغرافية دون إعادة ترميز، ولا يُرفع شيء.</summary>
+  </entry>
+  <entry>
     <title type="html">محرّر الصوت</title>
     <id>https://abox.tools/ar/تحرير-الصوت/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
@@ -135,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/مقارنة-النصوص/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">قارِن نصّين وانظر كل فرق، سطراً سطراً وكلمةً كلمة، جنباً إلى جنب أو في عمود واحد. المقارنة تعمل في متصفحك ولا يُرفع شيء - فلا تغادر الشيفرة غير المنشورة جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">الصور إلى PDF</title>
-    <id>https://abox.tools/ar/تحويل-الصور-إلى-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-الصور-إلى-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">اجمع صور JPG أو PNG أو WebP في ملف PDF واحد، مجاناً وداخل متصفحك بالكامل. تدخل الصور الفوتوغرافية دون إعادة ترميز، ولا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">الفيديو إلى GIF</title>

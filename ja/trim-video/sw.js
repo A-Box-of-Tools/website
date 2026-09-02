@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ja/trim-video/:';
-const CACHE_NAME=CACHE_PREFIX+'c674c6d9ac';
+const CACHE_NAME=CACHE_PREFIX+'a165fa2791';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,7 @@ const ASSETS=[
 'src/shared/codec-support.js',
 'src/shared/mp4-reader.js',
 'src/shared/mp4-writer.js',
+'src/shared/video-support.js',
 'src/audio.js',
 'src/clips.js',
 'src/copy.js',
@@ -20,7 +21,6 @@ const ASSETS=[
 'src/ranges.js',
 'src/record.js',
 'src/segments.js',
-'src/support.js',
 'src/timeline.js',
 'src/transcode.js',
 'analytics.js',

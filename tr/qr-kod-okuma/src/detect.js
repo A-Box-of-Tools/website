@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{decodeMatrix,UnreadableError}from'./qr-decode.js';
-import{sizeOf}from'./qr-tables.js';
+import{sizeOf}from'./shared/qr-tables.js';
 const MAX_MODULES=177;
 function isFinderRatio(runs){
 let total=0;

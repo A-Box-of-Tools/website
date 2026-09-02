@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{drawFitted}from'./draw.js';
-import{pickH264Codec}from'./support.js';
+import{pickH264Codec}from'./shared/video-support.js';
 import{reversedAudioTrack}from'./audio.js';
 import{writeFile}from'./reverse.js';
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};

@@ -32,6 +32,13 @@
     <uri>https://abox.tools/tr/</uri>
   </author>
   <entry>
+    <title type="html">Görsellerden PDF'e</title>
+    <id>https://abox.tools/tr/resimleri-pdfe-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resimleri-pdfe-donusturme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">JPG, PNG veya WebP görselleri tek bir PDF'te birleştirin; ücretsiz ve tamamen tarayıcınızda. Fotoğraflar yeniden kodlanmadan girer ve hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON Biçimlendirici</title>
     <id>https://abox.tools/tr/json-bicimlendirme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/json-bicimlendirme/"/>
@@ -156,13 +163,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/gif-olusturma/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">JPG, PNG veya WebP görselleri hareketli bir GIF'e çevirin; ücretsiz ve tamamen tarayıcınızda. Sırayı, hızı ve boyutu siz belirleyin. Hiçbir şey yüklenmez ve çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görsellerden PDF'e</title>
-    <id>https://abox.tools/tr/resimleri-pdfe-donusturme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/resimleri-pdfe-donusturme/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">JPG, PNG veya WebP görselleri tek bir PDF'te birleştirin; ücretsiz ve tamamen tarayıcınızda. Fotoğraflar yeniden kodlanmadan girer ve hiçbir şey yüklenmez.</summary>
   </entry>
   <entry>
     <title type="html">Görüntü istifleyici</title>

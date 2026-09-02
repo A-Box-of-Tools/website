@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{PdfWriter,num,textString}from'./pdf.js';
+import{PdfWriter,num,textString}from'./shared/pdf-page-writer.js';
 import{prepareImage}from'./encode.js';
 import{layoutPage,placement}from'./layout.js';
 const PRODUCER='abox.tools images to PDF';

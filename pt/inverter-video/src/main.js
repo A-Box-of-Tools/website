@@ -5,7 +5,7 @@ import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
 import{reverseExact,decoderConfig}from'./reverse.js';
 import{measureFps,reverseByPlayback}from'./playback.js';
 import{averageFps,gopRanges}from'./timeline.js';
-import{hasWebCodecs,hasEncoder,canDecode}from'./support.js';
+import{hasWebCodecs,hasEncoder,canDecode}from'./shared/video-support.js';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

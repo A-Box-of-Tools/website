@@ -14,7 +14,7 @@ import{
 openSegment,readTimestamps,segmentRanges,totalCaptured,writeTimestamps,
 }from'./segments.js';
 import{keyframeTimes,keyframeBefore,invertRanges,totalSeconds}from'./ranges.js';
-import{hasWebCodecs,hasMediaRecorder,canDecode}from'./support.js';
+import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

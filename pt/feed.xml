@@ -95,6 +95,13 @@
     <summary type="html">Formate, indente e comprima XML, e converta XML para JSON ou JSON para XML. O analisador roda no seu navegador e nada é enviado, então um feed, uma nota fiscal ou um arquivo de configuração nunca sai do seu computador.</summary>
   </entry>
   <entry>
+    <title type="html">Imagens para PDF</title>
+    <id>https://abox.tools/pt/imagens-para-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagens-para-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Junte imagens JPG, PNG ou WebP num só PDF, de graça e inteiramente no seu navegador. As fotos entram sem serem recodificadas, e nada é enviado.</summary>
+  </entry>
+  <entry>
     <title type="html">Leitor de QR Code e código de barras</title>
     <id>https://abox.tools/pt/ler-qr-code/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/ler-qr-code/"/>
@@ -170,13 +177,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/empilhar-imagens/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Junte uma sequência de fotografias numa só: tire a média para matar o ruído, use a mediana para tirar as pessoas de uma cena, clareie para rastros de estrelas, ou faça focus stacking de uma macro. Lê CR2, NEF, ARW, DNG, RAF e CR3 puxando a prévia da própria câmera. Roda inteiramente no seu navegador.</summary>
-  </entry>
-  <entry>
-    <title type="html">Imagens para PDF</title>
-    <id>https://abox.tools/pt/imagens-para-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagens-para-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Junte imagens JPG, PNG ou WebP num só PDF, de graça e inteiramente no seu navegador. As fotos entram sem serem recodificadas, e nada é enviado.</summary>
   </entry>
   <entry>
     <title type="html">Inversor de vídeo</title>

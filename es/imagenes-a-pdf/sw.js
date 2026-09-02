@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/imagenes-a-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'a0248d1855';
+const CACHE_NAME=CACHE_PREFIX+'b3d17b7b78';
 const ASSETS=[
 './',
 'index.html',
@@ -9,13 +9,13 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/pdf-page-writer.js',
 'src/document.js',
 'src/encode.js',
 'src/images.js',
 'src/jpeg.js',
 'src/layout.js',
 'src/main.js',
-'src/pdf.js',
 'analytics.js',
 ];
 self.addEventListener('install',(event)=>{

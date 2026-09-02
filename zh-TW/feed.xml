@@ -53,6 +53,13 @@
     <summary type="html">在你的瀏覽器裡把 YAML 轉成 JSON、把 JSON 轉成 YAML。它讀的是 YAML 1.2，所以 yes 和 no 還是字串，而且會明確說出每個方向丟了什麼。什麼都不上傳：一份配置檔案永遠不會離開你的裝置。</summary>
   </entry>
   <entry>
+    <title type="html">圖片轉 PDF</title>
+    <id>https://abox.tools/zh-TW/images-to-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/images-to-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把 JPG、PNG 或 WebP 合成一個 PDF，免費，全程在你的瀏覽器裡跑。照片進去不重新編碼，什麼都不上傳。</summary>
+  </entry>
+  <entry>
     <title type="html">影片剪輯</title>
     <id>https://abox.tools/zh-TW/trim-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/trim-video/"/>
@@ -156,13 +163,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/stack-images/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">把一串連拍的照片合成一張：取平均值消雜訊，取中位數把人從畫面裡去掉，取最亮做星軌，或者給微距做景深合成。CR2、NEF、ARW、DNG、RAF 和 CR3 靠讀出相機自己的預覽圖來開啟。全部在你的瀏覽器裡跑。</summary>
-  </entry>
-  <entry>
-    <title type="html">圖片轉 PDF</title>
-    <id>https://abox.tools/zh-TW/images-to-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/images-to-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">把 JPG、PNG 或 WebP 合成一個 PDF，免費，全程在你的瀏覽器裡跑。照片進去不重新編碼，什麼都不上傳。</summary>
   </entry>
   <entry>
     <title type="html">延時影片</title>

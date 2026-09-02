@@ -32,6 +32,13 @@
     <uri>https://abox.tools/nl/</uri>
   </author>
   <entry>
+    <title type="html">Afbeeldingen naar pdf</title>
+    <id>https://abox.tools/nl/afbeeldingen-naar-pdf/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-naar-pdf/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Voeg jpg-, png- of WebP-afbeeldingen samen tot één pdf, gratis en volledig in je browser. Foto's gaan erin zonder opnieuw gecodeerd te worden, en er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
     <title type="html">Audio uit video halen</title>
     <id>https://abox.tools/nl/audio-uit-video-halen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/audio-uit-video-halen/"/>
@@ -135,13 +142,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/tekst-vergelijken/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Vergelijk twee teksten en zie elk verschil, regel voor regel en woord voor woord, naast elkaar of in één kolom. De vergelijking draait in je browser en er wordt niets geüpload: nog niet uitgebrachte code verlaat je machine dus nooit.</summary>
-  </entry>
-  <entry>
-    <title type="html">Afbeeldingen naar pdf</title>
-    <id>https://abox.tools/nl/afbeeldingen-naar-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-naar-pdf/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Voeg jpg-, png- of WebP-afbeeldingen samen tot één pdf, gratis en volledig in je browser. Foto's gaan erin zonder opnieuw gecodeerd te worden, en er wordt niets geüpload.</summary>
   </entry>
   <entry>
     <title type="html">Afbeeldingen stacken</title>

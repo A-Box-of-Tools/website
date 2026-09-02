@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/lecteur-de-qr-code/:';
-const CACHE_NAME=CACHE_PREFIX+'2f6e5c7cc9';
+const CACHE_NAME=CACHE_PREFIX+'eaf3ccc409';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/qr-tables.js',
 'src/binarize.js',
 'src/camera.js',
 'src/detect.js',
@@ -16,7 +17,6 @@ const ASSETS=[
 'src/main.js',
 'src/payload.js',
 'src/qr-decode.js',
-'src/qr-tables.js',
 'src/reed-solomon.js',
 'src/scan.js',
 'analytics.js',

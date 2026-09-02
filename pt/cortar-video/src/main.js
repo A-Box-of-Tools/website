@@ -5,7 +5,7 @@ import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
 import{cropExact,grabFrame,decoderConfig,averageFps}from'./transcode.js';
 import{cropByRecording}from'./record.js';
 import{Cropper}from'./cropper.js';
-import{hasWebCodecs,hasMediaRecorder,canDecode}from'./support.js';
+import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }

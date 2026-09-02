@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/scansionare-documenti/:';
-const CACHE_NAME=CACHE_PREFIX+'5311beb97a';
+const CACHE_NAME=CACHE_PREFIX+'a054be6ec6';
 const ASSETS=[
 './',
 'index.html',
@@ -11,6 +11,7 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',
+'src/shared/pdf-page-writer.js',
 'src/clean.js',
 'src/detect.js',
 'src/document.js',
@@ -18,7 +19,6 @@ const ASSETS=[
 'src/geometry.js',
 'src/main.js',
 'src/pages.js',
-'src/pdf.js',
 'src/stage.js',
 'src/warp.js',
 'analytics.js',

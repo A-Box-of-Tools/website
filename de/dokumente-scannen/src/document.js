@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{PdfWriter,PT_PER_INCH,PT_PER_MM,num,textString}from'./pdf.js';
+import{PdfWriter,PT_PER_INCH,PT_PER_MM,num,textString}from'./shared/pdf-page-writer.js';
 const PRODUCER='abox.tools document scanner';
 export const PAGE_SIZES={
 a4:[210,297],
