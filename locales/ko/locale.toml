@@ -465,6 +465,10 @@ offline_ready = "준비됨 &mdash; 인터넷을 끊어도 이대로 동작합니
 offline_none = "이 브라우저에서는 쓸 수 없습니다 (나머지는 그대로 동작합니다)."
 offline_insecure = "오프라인 저장에는 https:// 또는 localhost가 필요합니다."
 offline_failed = "여기서는 저장할 수 없지만, 어느 쪽이든 올라가는 것은 없습니다."
+net_clean = "파일은 어디로도 가지 않았습니다. 파일 {total}개를 불러왔고 모두 이 사이트의 것입니다. {platform}"
+net_dirty = "무언가가 {hosts}에 접속했는데, 이 도구는 절대 그러지 않습니다. 살펴볼 만합니다. {platform}"
+net_platform_one = "광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트 {hosts}곳에서 왔습니다. 그중 어느 쪽도 파일이나 그 1바이트도 받지 않았습니다."
+net_platform_many = "광고와 측정과 후원 버튼을 위한 이 사이트 자신의 스크립트가 호스트 {hosts}곳에서 왔습니다. 그중 어느 쪽도 파일이나 그 1바이트도 받지 않았습니다."
 
 error_broke = "문제가 생겼습니다: {detail}. 처음부터 다시 하려면 페이지를 새로 고치세요."
 

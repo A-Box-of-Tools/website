@@ -158,8 +158,9 @@ Four things keep it from being the thing the rest of this site argues against:
   has just handled somebody's passport scan collects filenames and worse, which
   is the reason the reasons are chips.
 - **It goes where the page view already goes.** `google-analytics.com` is
-  already in `connect-src` and already named in the `PLATFORM_HOSTS` list each
-  tool's network check reads, so this added **no origin, no CSP change**, and
+  already in `connect-src` and already named in the `PLATFORM_HOSTS` list the
+  live network check reads (`shared/js/trust.js`), so this added **no origin,
+  no CSP change**, and
   the live check on the page still reads green after an answer is sent.
 - **It asks once and then leaves.** An answer buys six months of silence on that
   tool, a dismissal thirty days, a second dismissal a year — in `localStorage`,

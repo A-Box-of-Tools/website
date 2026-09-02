@@ -308,6 +308,10 @@ offline_ready = "已就绪——断网之后这一页照样能用。"
 offline_none = "这个浏览器里用不了（其余的照样能用）。"
 offline_insecure = "离线缓存需要 https:// 或者 localhost。"
 offline_failed = "这里缓存不了，不过反正什么都不会上传。"
+net_clean = "你的文件没有去任何地方。加载了 {total} 个文件，全都是本站自己的。{platform}"
+net_dirty = "有东西联系了 {hosts}，而这个工具从不这么做。值得去查一查。{platform}"
+net_platform_one = "本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到文件，或文件里的一个字节。"
+net_platform_many = "本站自己用于广告、统计和捐赠按钮的脚本来自 {hosts} 个主机，它们谁也没拿到文件，或文件里的一个字节。"
 
 error_broke = "出错了：{detail}。重新加载页面即可从头开始。"
 

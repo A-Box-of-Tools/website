@@ -761,6 +761,18 @@ offline_none = "not available in this browser (everything else still works)."
 offline_insecure = "needs https:// or localhost to cache for offline use."
 offline_failed = "caching unavailable here, but nothing is uploaded either way."
 
+# What the live network check says, read as the tail of the "Live check:"
+# label. `{total}`, `{hosts}` and `{platform}` are filled in by
+# shared/js/trust.js; the platform note is one phrase per number rather than a
+# pluralising helper, so a language whose plural is not a suffix can say the
+# two separately. These are the frame's defaults, and they say "files": a tool
+# that would rather name its subject - "your video has gone nowhere" - defines
+# the same four keys in the #phrases block of its own body.html, which wins.
+net_clean = "your files have gone nowhere. {total} files loaded, all of them this page's own. {platform}"
+net_dirty = "something contacted {hosts}, which this tool never does. Treat that as worth investigating. {platform}"
+net_platform_one = "The page's own ad, measurement and donate-button scripts loaded from {hosts} host; not one of them was given a file or a byte of one."
+net_platform_many = "The page's own ad, measurement and donate-button scripts loaded from {hosts} hosts; not one of them was given a file or a byte of one."
+
 # What the window's own `error` and `unhandledrejection` handlers say. `detail`
 # is the browser's own message, which stays in whatever language the browser
 # speaks: it comes from the engine, and no translation here can reach it.
