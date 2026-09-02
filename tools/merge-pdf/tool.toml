@@ -30,10 +30,13 @@ roadmap_group = "documents"
 css_parts = ["progress"]
 
 # file-picker brings in the drop zone; zip is the archive a split comes back
-# in when it is more than one file, and crc32 is the checksum it needs. This
-# tool carried its own copy of those two until the tests learned to follow a
-# ./shared/ import (tests/js/resolve-shared.mjs).
-js_parts = ["file-picker", "zip", "crc32"]
+# in when it is more than one file, and crc32 is the checksum it needs. The
+# four pdf-* parts are the PDF itself - the object grammar, the stream
+# filters, the reader and the writer - and travel together, because the
+# reader and the writer import the other two; the compressor and the redactor
+# ask for the same four. This tool carried its own copy of all six until the
+# tests learned to follow a ./shared/ import (tests/js/resolve-shared.mjs).
+js_parts = ["file-picker", "zip", "crc32", "pdf-objects", "pdf-filters", "pdf-reader", "pdf-writer"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools

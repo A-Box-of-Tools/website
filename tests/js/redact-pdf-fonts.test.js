@@ -20,7 +20,7 @@ import {
   MAC_ROMAN, STANDARD, WIN_ANSI,
 } from '../../tools/redact-pdf/src/base14.js';
 import { glyphsOf, readFont } from '../../tools/redact-pdf/src/fonts.js';
-import { PdfDocument } from '../../tools/redact-pdf/src/reader.js';
+import { PdfDocument } from '../../shared/js/pdf-reader.js';
 import { ascii, buildPdf, streamObject } from './pdf-fixtures.js';
 
 /** Read one font dictionary, written as it would appear in a file. */

@@ -64,7 +64,7 @@ BASELINE = {
     # built toddler went and took figures.js's path commands with it.
     'compare-heights': 4,
     'compress-image': 2,
-    'compress-pdf': 6,
+    'compress-pdf': 4,
     'crop-video': 0,
     # Two internal keys, a DOM id, a clock format, one key template and the
     # fixed-width layout of a line in the text report.
@@ -103,7 +103,7 @@ BASELINE = {
     # A CSS class name the list builds.
     'images-to-video': 1,
     'json-formatter': 3,
-    'merge-pdf': 5,
+    'merge-pdf': 3,
     'password-generator': 8,
     # The two left are a symbology's own name and a line of SVG markup.
     'qr-barcode': 2,
@@ -117,7 +117,7 @@ BASELINE = {
     'redact-image': 2,
     # Three Base-14 glyph tables from the PDF specification, four lines of
     # PDF syntax, three internal range keys and one key template.
-    'redact-pdf': 11,
+    'redact-pdf': 9,
     'resize-image': 5,
     # The key template that picks between two whole sentences.
     'reverse-video': 1,

@@ -36,8 +36,8 @@ import {
   decodeImage, findImages, reencode, replaceImage, SKIP,
 } from './images.js';
 import { effectiveDpi, measurePlacements } from './placements.js';
-import { PdfDocument } from './reader.js';
-import { stripMetadata, writeDocument } from './writer.js';
+import { PdfDocument } from './shared/pdf-reader.js';
+import { stripMetadata, writeDocument } from './shared/pdf-writer.js';
 
 /**
  * The four settings, and what each is for.

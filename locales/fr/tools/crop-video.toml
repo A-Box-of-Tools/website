@@ -34,7 +34,7 @@ live_hint = """
       vidéo ailleurs pour la traiter s'arrêterait tout simplement."""
 
 read_first = """
-, <code>src/demux.js</code> pour le lecteur qui trouve
+, <code>src/shared/mp4-reader.js</code> pour le lecteur qui trouve
       les images dans un MP4, et <code>src/transcode.js</code> pour la boucle qui
       les décode, les recadre et les encode. Ni l'un ni l'autre n'importe la
       moindre chose capable d'émettre une requête."""

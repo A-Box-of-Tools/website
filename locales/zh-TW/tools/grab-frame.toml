@@ -26,7 +26,7 @@ live_hint = """
       照樣截。真要把你的影片送出去處理，那時候它就直接不動了。"""
 
 read_first = """\
-，<code>src/demux.js</code> 是在 MP4 裡找出各幀的讀取器，\
+，<code>src/shared/mp4-reader.js</code> 是在 MP4 裡找出各幀的讀取器，\
       <code>src/frames.js</code> 是負責把你要的那一幀解出來的部分。兩者都沒有\
       引入任何能發出請求的東西。"""
 

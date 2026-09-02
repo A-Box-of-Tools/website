@@ -26,7 +26,7 @@ live_hint = """
       照样截。真要把你的视频送出去处理，那时候它就直接不动了。"""
 
 read_first = """\
-，<code>src/demux.js</code> 是在 MP4 里找出各帧的读取器，\
+，<code>src/shared/mp4-reader.js</code> 是在 MP4 里找出各帧的读取器，\
       <code>src/frames.js</code> 是负责把你要的那一帧解出来的部分。两者都没有\
       引入任何能发出请求的东西。"""
 

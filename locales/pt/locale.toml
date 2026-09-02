@@ -436,6 +436,10 @@ offline_ready = "pronto &mdash; desligue a internet e isto continua funcionando.
 offline_none = "indisponível neste navegador (todo o resto continua funcionando)."
 offline_insecure = "precisa de https:// ou localhost para guardar uma cópia offline."
 offline_failed = "não dá para guardar cópia aqui, mas nada é enviado de qualquer maneira."
+net_clean = "Os seus arquivos não foram a lugar nenhum. {total} arquivos carregados, todos do próprio site. {platform}"
+net_dirty = "Alguma coisa contatou {hosts}, e esta ferramenta nunca faz isso. Vale a pena ir ver. {platform}"
+net_platform_one = "Os scripts do próprio site para publicidade, medição e o botão de doação vieram de {hosts} host; nenhum deles recebeu um arquivo ou um byte de um."
+net_platform_many = "Os scripts do próprio site para publicidade, medição e o botão de doação vieram de {hosts} hosts; nenhum deles recebeu um arquivo ou um byte de um."
 
 error_broke = "Algo deu errado: {detail}. Recarregue a página para começar de novo."
 

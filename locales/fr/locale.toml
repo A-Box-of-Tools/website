@@ -458,6 +458,10 @@ offline_ready = "prêt &mdash; coupez la connexion et ceci continue de fonctionn
 offline_none = "indisponible dans ce navigateur (tout le reste fonctionne quand même)."
 offline_insecure = "nécessite https:// ou localhost pour mettre en cache hors ligne."
 offline_failed = "la mise en cache est impossible ici, mais rien n'est envoyé de toute façon."
+net_clean = "vos fichiers ne sont allés nulle part. {total} fichiers chargés, tous appartenant à cette page. {platform}"
+net_dirty = "quelque chose a contacté {hosts}, ce que cet outil ne fait jamais. Cela mérite d'être examiné. {platform}"
+net_platform_one = "Les scripts de publicité, de mesure et du bouton de don propres à la page ont été chargés depuis {hosts} hôte&nbsp;; aucun d'eux n'a reçu un fichier ou un octet d'un fichier."
+net_platform_many = "Les scripts de publicité, de mesure et du bouton de don propres à la page ont été chargés depuis {hosts} hôtes&nbsp;; aucun d'eux n'a reçu un fichier ou un octet d'un fichier."
 
 error_broke = "Quelque chose a échoué&nbsp;: {detail}. Rechargez la page pour repartir de zéro."
 

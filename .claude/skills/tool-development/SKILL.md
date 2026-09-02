@@ -152,7 +152,10 @@ the details that bite:
 - `js_parts = ["zip"]` needs `"crc32"` listed too — `zip.js` imports it, and
   `buildlib/imports.py` fails the build on any import that does not land on a
   file the tool ships.
-- `phrases` is never listed; every tool gets it automatically.
+- `phrases` and `trust` are never listed; every tool gets both automatically.
+  `trust.js` fills in the live network check and the offline line, and
+  `templates/tool.html` loads it as its own module - a tool's `main.js` never
+  touches the trust panel.
 - A module that unit tests import may depend on `./shared/`: the tests resolve
   it (step 3 under "update an existing tool"). Prefer moving a module to
   `shared/js/` over declaring a new duplicate.

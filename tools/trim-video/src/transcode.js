@@ -21,7 +21,7 @@
  * disagree about their sound has to re-encode it, and audio.js does that.
  */
 
-import { FileWindow } from './demux.js';
+import { FileWindow } from './shared/mp4-reader.js';
 import { Mp4Writer, MOVIE_TIMESCALE, avcSampleEntry } from './mp4.js';
 import { planRanges } from './ranges.js';
 import { closeDurations, audioSamplesFor } from './copy.js';

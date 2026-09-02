@@ -269,7 +269,7 @@ keeps the canvas untainted so `toBlob` will give the bytes back.
 | `src/units.js` | typed height → centimetres, centimetres → written height, and the ruler's spacing and labels |
 | `src/chart.js` | the layout and the SVG, with text measured through a callback |
 | `src/save.js` | the SVG blob, the canvas rasterisation, and the download |
-| `src/main.js` | the rows, the options, the live network check |
+| `src/main.js` | the rows and the options |
 
 ## What it does not do
 

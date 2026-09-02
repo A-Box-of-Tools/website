@@ -24,10 +24,10 @@
  * of ten, for everything else.
  */
 
-import { decodeStream } from './filters.js';
+import { decodeStream } from './shared/pdf-filters.js';
 import {
   indexOfAscii, Name, Parser, PdfStream, Ref,
-} from './objects.js';
+} from './shared/pdf-objects.js';
 
 /** Nested form XObjects are legal; this deep, something is wrong. */
 const MAX_DEPTH = 12;
@@ -43,7 +43,7 @@ const MAX_DEPTH = 12;
 /**
  * Measure every image in the document.
  *
- * @param {import('./reader.js').PdfDocument} doc
+ * @param {import('./shared/pdf-reader.js').PdfDocument} doc
  * @returns {Promise<Map<number, Placement>>} keyed by object number
  */
 export async function measurePlacements(doc) {

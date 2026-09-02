@@ -493,6 +493,10 @@ offline_ready = "bereit &mdash; trennen Sie die Internetverbindung, und das hier
 offline_none = "in diesem Browser nicht verfügbar (alles andere funktioniert weiter)."
 offline_insecure = "braucht https:// oder localhost, um für offline zwischenzuspeichern."
 offline_failed = "Zwischenspeichern ist hier nicht möglich, hochgeladen wird aber so oder so nichts."
+net_clean = "Ihre Dateien sind nirgendwohin gegangen. {total} Dateien geladen, allesamt eigene dieser Seite. {platform}"
+net_dirty = "Etwas hat {hosts} kontaktiert, und das tut dieses Werkzeug nie. Das ist es wert, nachgesehen zu werden. {platform}"
+net_platform_one = "Die eigenen Skripte der Seite für Werbung, Messung und den Spenden-Knopf kamen von {hosts} Host; keines davon hat eine Datei oder ein Byte davon bekommen."
+net_platform_many = "Die eigenen Skripte der Seite für Werbung, Messung und den Spenden-Knopf kamen von {hosts} Hosts; keines davon hat eine Datei oder ein Byte davon bekommen."
 
 error_broke = "Etwas ist schiefgegangen: {detail}. Laden Sie die Seite neu, um von vorn zu beginnen."
 

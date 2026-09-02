@@ -33,7 +33,7 @@ glyph = "scan-line"
 category = "text-codes-and-passwords"
 # Which group on the roadmap this tool joins, by the id in config/planned.toml.
 roadmap_group = "beyond"
-lastmod = "2026-08-27"
+lastmod = "2026-09-01"
 
 # The drop zone brings in shared/js/file-picker.js. Several files at once is
 # deliberate: a folder of screenshots, or a photograph of a page of codes, is a

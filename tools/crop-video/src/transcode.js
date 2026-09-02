@@ -12,7 +12,7 @@
  * Only the sound survives byte for byte.
  */
 
-import { FileWindow } from './demux.js';
+import { FileWindow } from './shared/mp4-reader.js';
 import { Mp4Writer, VIDEO_TIMESCALE } from './mp4.js';
 import { drawCropped } from './draw.js';
 import { pickH264Codec } from './support.js';

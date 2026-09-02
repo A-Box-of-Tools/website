@@ -2,11 +2,19 @@
  * The PDF object syntax: the half of the format that images-to-pdf never
  * needed.
  *
- * That tool writes documents, so it could get away with a writer and no reader
- * at all - a PDF it produced was one it had just built in memory. This tool
- * opens files somebody else made, which means the whole grammar: numbers,
- * names, strings in two spellings, arrays, dictionaries, streams, and the
- * indirect reference that ties them together.
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/pdf-objects.js and
+ * the build copies it to <tool>/src/shared/pdf-objects.js for every tool that
+ * asks for it with `js_parts = ["pdf-objects", ...]`. It is one of four that
+ * travel together - the grammar here, the reader, the filters and the writer -
+ * and the compressor, the merger and the redactor all ask for all four. They
+ * were three byte-identical copies each until the tests could follow a
+ * `./shared/` import; see tests/js/resolve-shared.mjs.
+ *
+ * images-to-pdf writes documents, so it could get away with a writer and no
+ * reader at all - a PDF it produced was one it had just built in memory. The
+ * tools that ask for this open files somebody else made, which means the
+ * whole grammar: numbers, names, strings in two spellings, arrays,
+ * dictionaries, streams, and the indirect reference that ties them together.
  *
  * The grammar is small. Eight kinds of value, one of which is a dictionary
  * with a byte stream stapled to it, and a reference written as "12 0 R". What

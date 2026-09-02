@@ -36,7 +36,7 @@ live_hint = """
 
 read_first = """
 ، و<code>src/segments.js</code> للعلامات
-      وللملف الذي تُحفَظ فيه، و<code>src/demux.js</code> للقارئ الذي يجد
+      وللملف الذي تُحفَظ فيه، و<code>src/shared/mp4-reader.js</code> للقارئ الذي يجد
       الإطارات في ملف MP4، و<code>src/ranges.js</code> للحساب الذي يحوّل علامة
       إلى مجرى عيّنات، و<code>src/copy.js</code> للحلقة التي تنقل تلك العيّنات
       إلى الملف الجديد. وليس فيها ما يستورد شيئاً يستطيع إرسال طلب."""

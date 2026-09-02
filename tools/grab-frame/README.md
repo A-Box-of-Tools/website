@@ -52,7 +52,7 @@ The exact path is the one to want, and the playback path is why the tool has no
 says which one it is using and why, in those words.
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to [`src/demux.js`](src/demux.js) first; if it comes back with an
+file goes to [`src/shared/mp4-reader.js`](../../shared/js/mp4-reader.js) first; if it comes back with an
 `UnsupportedFile`, the reason on it is what the page prints — "this is not an
 MP4 or MOV file", "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". A tool that says *which* thing it could not do is
@@ -66,7 +66,8 @@ right moment, sideways, which nothing about the result would tell you.
 
 ## The frame list
 
-`src/demux.js` is the reader from [`/crop-video/`](../crop-video/), unchanged.
+`src/shared/mp4-reader.js` is the reader every video tool here ships, copied
+in by the build from `shared/js/`.
 It hands back the samples of the video track in the order they are **decoded**.
 What somebody scrubbing a video is moving through is the order they are
 **watched** in, and in any file with B-frames those are not the same order.

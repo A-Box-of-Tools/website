@@ -31,7 +31,7 @@ live_hint = """
       Verarbeiten wegschickt, bliebe dabei einfach stehen."""
 
 read_first = """
-, <code>src/demux.js</code> für den Leser, der die
+, <code>src/shared/mp4-reader.js</code> für den Leser, der die
       Einzelbilder in einem MP4 findet, und <code>src/transcode.js</code> für die
       Schleife, die sie dekodiert, zuschneidet und kodiert. Keines von beiden
       importiert etwas, das eine Anfrage stellen könnte."""

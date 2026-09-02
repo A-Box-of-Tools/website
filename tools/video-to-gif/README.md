@@ -36,7 +36,7 @@ better one it can use for the file in front of it.
 | | **The reader** | **The player** |
 |---|---|---|
 | Accepts | MP4, M4V, MOV, in any codec `VideoDecoder` will open | anything the browser will *play* |
-| How | `src/demux.js` → `VideoDecoder` → canvas | seek a `<video>` to each instant → canvas |
+| How | `src/shared/mp4-reader.js` → `VideoDecoder` → canvas | seek a `<video>` to each instant → canvas |
 | Speed | one decode of the section, however many frames are wanted | one decode from the previous keyframe *per frame* |
 | Which frame | the one the file says is on screen then | whichever one the browser lands on, usually the same |
 | Needs | WebCodecs, and a codec the machine will decode | nothing this decade |
@@ -46,17 +46,17 @@ Ogg, or anything else this repository has no demuxer for — and it is not merel
 a consolation prize, because it also covers a browser with no WebCodecs at all.
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to `src/demux.js` first; if it comes back with an `UnsupportedFile`,
+file goes to `src/shared/mp4-reader.js` first; if it comes back with an `UnsupportedFile`,
 the reason on it is what the page prints — "this is not an MP4 or MOV file",
 "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". The page says which path it used, in those terms,
 rather than quietly being ten times slower on some files than on others.
 
-`src/demux.js` is the reader from [`/crop-video/`](../crop-video/), copied
-across with only its header comment changed, the same way the trimmer's copy
-was. It still reads the audio track, which a GIF has no use for; pruning it
-would mean the two copies could no longer be diffed against each other, which is
-worth more than the lines it would save.
+`src/shared/mp4-reader.js` is the reader every video tool here ships, copied in
+by the build from `shared/js/`. It still reads the audio track, which a GIF has
+no use for, and carries the sample entry and display matrix out whole for the
+trimmer's sake; one reader that does slightly more than this tool needs is
+worth more than a pruned copy of its own.
 
 ## Where the size actually goes
 

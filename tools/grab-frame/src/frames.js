@@ -27,7 +27,7 @@
  * VideoDecoder and a canvas, so it is checked in a browser instead.
  */
 
-import { FileWindow } from './demux.js';
+import { FileWindow } from './shared/mp4-reader.js';
 import { drawUpright } from './draw.js';
 
 /** Presentation time in microseconds, which is what WebCodecs counts in. */

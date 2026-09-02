@@ -694,90 +694,6 @@ $('privacy-toggle').addEventListener('click', () => {
   $('privacy-toggle').setAttribute('aria-expanded', String(open));
 });
 
-const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
-const RENDEZVOUS_HOST = new URL(RENDEZVOUS.replace('wss:', 'https:')).hostname;
-
-/**
- * Report what this page has actually fetched.
- *
- * The claim on trial here is sharper than on the rest of the site: this page
- * does talk to a server, and says so. What must still be true is that no
- * request carried the content - the rendezvous WebSocket ferries only the
- * introduction, and everything else on the wire is the frame's own ads and
- * measurement.
- */
-function monitorNetwork() {
-  const platform = new Set();
-  const external = new Set();
-
-  const inspect = (entries) => {
-    for (const entry of entries) {
-      if (entry.name.startsWith('blob:') || entry.name.startsWith('data:')) continue;
-      const url = new URL(entry.name, location.href);
-      if (url.origin === location.origin) continue;
-      if (url.hostname === RENDEZVOUS_HOST) continue; // the introduction, declared on this page
-      if (PLATFORM_HOSTS.test(url.hostname)) platform.add(url.hostname);
-      else external.add(url.hostname);
-    }
-    const total = performance.getEntriesByType('resource')
-      .filter((entry) => !entry.name.startsWith('blob:') && !entry.name.startsWith('data:')).length;
-
-    const clean = external.size === 0;
-    // One phrase per number rather than a pluralising helper: a language
-    // whose plural is not a suffix has to be able to translate the two
-    // separately.
-    const platformNote = platform.size
-      ? phrase(platform.size === 1 ? 'net.platform.one' : 'net.platform.many',
-               { hosts: platform.size })
-      : '';
-
-    $('network-count').textContent = clean
-      ? phrase('net.clean', { total, platform: platformNote })
-      : phrase('net.dirty', { hosts: [...external].join(', '), platform: platformNote });
-
-    $('network-count').className = clean ? 'good' : 'warn';
-    $('network-dot').className = `live-dot ${clean ? 'good' : 'warn'}`;
-  };
-
-  inspect(performance.getEntriesByType('resource'));
-  try {
-    new PerformanceObserver((list) => inspect(list.getEntries()))
-      .observe({ type: 'resource', buffered: true });
-  } catch {
-    // PerformanceObserver is unavailable; the one-time snapshot above stands.
-  }
-}
-
-async function registerServiceWorker() {
-  const fail = (message, detail) => {
-    $('offline-status').textContent = message;
-    $('offline-dot').className = 'live-dot';
-    if (detail) {
-      $('offline-status').title = detail;
-      console.info('Offline caching unavailable:', detail);
-    }
-  };
-
-  if (!('serviceWorker' in navigator)) {
-    fail(phrase('offline.none'));
-    return;
-  }
-  if (!window.isSecureContext) {
-    fail(phrase('offline.insecure'));
-    return;
-  }
-
-  try {
-    await navigator.serviceWorker.register('sw.js');
-    await navigator.serviceWorker.ready;
-    $('offline-status').textContent = phrase('offline.ready');
-    $('offline-status').className = 'good';
-    $('offline-dot').className = 'live-dot good';
-  } catch (error) {
-    fail(phrase('offline.failed'), error.message);
-  }
-}
-
 // An error thrown after boot would otherwise only reach the console, leaving
 // the page looking functional but doing nothing. Whichever half is showing
 // carries the message.
@@ -831,9 +747,6 @@ addEventListener('click', (event) => {
   }
   anchor.href = anchor.pathname + location.hash;
 }, true);
-
-monitorNetwork();
-registerServiceWorker();
 
 // Reached only if every step above ran without throwing.
 document.getElementById('boot-warning')?.remove();

@@ -29,7 +29,7 @@ live_hint = """
       que mandasse o seu vídeo embora para ser processado simplesmente pararia."""
 
 read_first = """
-, <code>src/demux.js</code> para o leitor que acha os
+, <code>src/shared/mp4-reader.js</code> para o leitor que acha os
       quadros dentro de um MP4, e <code>src/frames.js</code> para a parte que
       decodifica o quadro que você pediu. Nenhum dos dois importa nada capaz de
       fazer uma requisição."""

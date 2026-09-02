@@ -31,7 +31,7 @@ live_hint = """
       s'arrêterait tout simplement."""
 
 read_first = """
-, <code>src/demux.js</code> pour le lecteur qui
+, <code>src/shared/mp4-reader.js</code> pour le lecteur qui
       repère les images dans un MP4, et <code>src/frames.js</code> pour la partie
       qui décode celle que vous avez demandée. Ni l'un ni l'autre n'importe quoi que
       ce soit capable de faire une requête."""

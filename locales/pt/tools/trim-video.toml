@@ -37,7 +37,7 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> para as marcações e o
-      arquivo em que elas são salvas, <code>src/demux.js</code> para o leitor que
+      arquivo em que elas são salvas, <code>src/shared/mp4-reader.js</code> para o leitor que
       acha os quadros num MP4, <code>src/ranges.js</code> para a aritmética que
       transforma uma marcação numa sequência de amostras, e
       <code>src/copy.js</code> para o laço que move essas amostras para o arquivo

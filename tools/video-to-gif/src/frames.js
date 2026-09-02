@@ -6,7 +6,7 @@
  * question each answers is "what was on screen at 4.25 seconds", and the two
  * differ only in who does the decoding.
  *
- *   - **The reader.** demux.js walks the MP4 itself, hands the frames to
+ *   - **The reader.** shared/mp4-reader.js walks the MP4 itself, hands the frames to
  *     WebCodecs, and the frames come back with the times the file says they
  *     have. It runs as fast as the machine can go, it is exact about which
  *     frame belongs to which instant, and it works on files this browser has no
@@ -24,7 +24,7 @@
  * account for the whole animation and the frames are only in memory once.
  */
 
-import { FileWindow } from './demux.js';
+import { FileWindow } from './shared/mp4-reader.js';
 import { drawScaled, frameCanvas } from './draw.js';
 
 /** Frames in flight before the feed loop waits for the decoder to catch up. */

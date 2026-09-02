@@ -31,7 +31,7 @@ live_hint = """
 
 read_first = """\
       ，<code>src/segments.js</code> 裡是那些標記和它們存成的檔案，\
-      <code>src/demux.js</code> 裡是在 MP4 裡找出幀的那個讀取器，\
+      <code>src/shared/mp4-reader.js</code> 裡是在 MP4 裡找出幀的那個讀取器，\
       <code>src/ranges.js</code> 裡是把一個標記換算成一串取樣的那套算術，\
       <code>src/copy.js</code> 裡是把這些取樣搬進新檔案的那個迴圈。這幾個都\
       沒有引入任何能發請求的東西。"""

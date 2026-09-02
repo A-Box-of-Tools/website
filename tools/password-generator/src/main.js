@@ -58,10 +58,6 @@ const el = {
 
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
-  networkCount: $('network-count'),
-  networkDot: $('network-dot'),
-  offlineStatus: $('offline-status'),
-  offlineDot: $('offline-dot'),
 };
 
 /**
@@ -291,91 +287,6 @@ el.privacyToggle.addEventListener('click', () => {
   el.privacyToggle.setAttribute('aria-expanded', String(open));
 });
 
-/* ------------------------------------------------ the live network check */
-
-const PLATFORM_HOSTS = /(^|\.)(googlesyndication\.com|doubleclick\.net|googleadservices\.com|googletagservices\.com|adtrafficquality\.google|googletagmanager\.com|google-analytics\.com|gstatic\.com|googleapis\.com|buymeacoffee\.com|cloudflareinsights\.com|google\.[a-z]{2,3}(\.[a-z]{2})?)$/;
-
-/**
- * Report what this page has actually fetched.
- *
- * The claim on trial is not "this page is silent" - it is not, it carries ads -
- * but "nothing has carried away what it made". On this tool that is the whole
- * product: a generator that sent its output anywhere would not be a weak
- * password tool, it would be a password collection.
- */
-function monitorNetwork() {
-  const platform = new Set();
-  const external = new Set();
-
-  const inspect = (entries) => {
-    for (const entry of entries) {
-      if (entry.name.startsWith('blob:') || entry.name.startsWith('data:')) continue;
-      const url = new URL(entry.name, location.href);
-      if (url.origin === location.origin) continue;
-      if (PLATFORM_HOSTS.test(url.hostname)) platform.add(url.hostname);
-      else external.add(url.hostname);
-    }
-    const total = performance.getEntriesByType('resource')
-      .filter((entry) => !entry.name.startsWith('blob:') && !entry.name.startsWith('data:')).length;
-
-    const clean = external.size === 0;
-    // One phrase per number rather than a pluralising helper: a language
-    // whose plural is not a suffix has to be able to translate the two
-    // separately.
-    const platformNote = platform.size
-      ? phrase(platform.size === 1 ? 'net.platform.one' : 'net.platform.many',
-               { hosts: platform.size })
-      : '';
-
-    el.networkCount.textContent = clean
-      ? phrase('net.clean', { total, platform: platformNote })
-      : phrase('net.dirty', { hosts: [...external].join(', '), platform: platformNote });
-
-    el.networkCount.className = clean ? 'good' : 'warn';
-    el.networkDot.className = `live-dot ${clean ? 'good' : 'warn'}`;
-  };
-
-  inspect(performance.getEntriesByType('resource'));
-  try {
-    new PerformanceObserver((list) => inspect(list.getEntries()))
-      .observe({ type: 'resource', buffered: true });
-  } catch {
-    // PerformanceObserver is unavailable; the one-time snapshot above still stands.
-  }
-}
-
-async function registerServiceWorker() {
-  // Keep the visible text short: this sits in the trust panel, and a raw
-  // browser error dumped there reads worse than it is.
-  const fail = (message, detail) => {
-    el.offlineStatus.textContent = message;
-    el.offlineDot.className = 'live-dot';
-    if (detail) {
-      el.offlineStatus.title = detail;
-      console.info('Offline caching unavailable:', detail);
-    }
-  };
-
-  if (!('serviceWorker' in navigator)) {
-    fail(phrase('offline.none'));
-    return;
-  }
-  if (!window.isSecureContext) {
-    fail(phrase('offline.insecure'));
-    return;
-  }
-
-  try {
-    await navigator.serviceWorker.register('sw.js');
-    await navigator.serviceWorker.ready;
-    el.offlineStatus.textContent = phrase('offline.ready');
-    el.offlineStatus.className = 'good';
-    el.offlineDot.className = 'live-dot good';
-  } catch (error) {
-    fail(phrase('offline.failed'), error.message);
-  }
-}
-
 /* -------------------------------------------------------------------- boot */
 
 // An error thrown after boot would otherwise only reach the console, leaving
@@ -391,8 +302,6 @@ window.addEventListener('unhandledrejection', (event) => {
 
 showSymbols();
 make();
-monitorNetwork();
-registerServiceWorker();
 
 // Reached only if every step above ran without throwing.
 document.getElementById('boot-warning')?.remove();

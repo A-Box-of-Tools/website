@@ -31,7 +31,7 @@
  * value is a value, and anything else is the operator that ends the line.
  */
 
-import { Name, Parser, PdfString } from './objects.js';
+import { Name, Parser, PdfString } from './shared/pdf-objects.js';
 
 /** Bytes that begin an operand: a name, a string, an array, a dictionary, a
  *  number. Everything else at that position is the operator. */

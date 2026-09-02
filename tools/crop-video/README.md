@@ -29,7 +29,7 @@ says which one it is using and why, in those words, rather than quietly being
 five times slower on some files than others.
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to `src/demux.js` first; if it comes back with an `UnsupportedFile`,
+file goes to `src/shared/mp4-reader.js` first; if it comes back with an `UnsupportedFile`,
 the reason on it is what the page prints — "this is not an MP4 or MOV file",
 "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". A tool that says *which* thing it could not do is
@@ -58,7 +58,8 @@ tool.
 
 ## The reader
 
-`src/demux.js` walks an ISO base media file and hands back a flat list of
+`src/shared/mp4-reader.js` — the shared reader, copied in by the build — walks
+an ISO base media file and hands back a flat list of
 samples: where each one is in the file, how big it is, when it is shown, and
 whether it is a keyframe. Written by hand, like the muxer it sits beside,
 because the build assembles pages and never touches `src/`.
@@ -225,7 +226,7 @@ run in the browser against files generated in the page, so nothing had to be
 committed as a fixture:
 
 - an MP4 written by `src/mp4.js` from `VideoEncoder` output, played back by the
-  browser, then read again by `src/demux.js`: 45 samples in, 45 out, keyframes
+  browser, then read again by `src/shared/mp4-reader.js`: 45 samples in, 45 out, keyframes
   and frame times intact;
 - a crop of a known picture, decoded again and sampled pixel by pixel, to prove
   the rectangle that comes out is the rectangle that was drawn — including after

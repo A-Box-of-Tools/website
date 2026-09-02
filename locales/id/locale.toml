@@ -465,6 +465,10 @@ offline_ready = "siap &mdash; putuskan koneksi internet dan ini akan tetap berfu
 offline_none = "tidak tersedia di peramban ini (semua yang lain tetap berfungsi)."
 offline_insecure = "membutuhkan https:// atau localhost untuk menyimpan cache demi penggunaan luring."
 offline_failed = "penyimpanan cache tidak tersedia di sini, tetapi tidak ada yang diunggah dengan cara apa pun."
+net_clean = "file Anda tidak pergi ke mana pun. {total} file dimuat, semuanya milik halaman ini sendiri. {platform}"
+net_dirty = "sesuatu menghubungi {hosts}, dan itu tidak pernah dilakukan alat ini. Anggap itu layak diselidiki. {platform}"
+net_platform_one = "Skrip iklan, pengukuran, dan tombol donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi sebuah file atau satu byte darinya."
+net_platform_many = "Skrip iklan, pengukuran, dan tombol donasi milik halaman ini dimuat dari {hosts} host; tidak satu pun diberi sebuah file atau satu byte darinya."
 
 error_broke = "Ada yang tidak berjalan dengan benar: {detail}. Muat ulang halaman untuk memulai dari awal."
 
