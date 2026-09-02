@@ -32,6 +32,13 @@
     <uri>https://abox.tools/tr/</uri>
   </author>
   <entry>
+    <title type="html">Görselden SVG'ye</title>
+    <id>https://abox.tools/tr/gorseli-svg-ye-donusturme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gorseli-svg-ye-donusturme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Siyah beyaz bir görseli tarayıcınızda gerçek bir SVG dış çizgisine çevirin. Logolar, şablonlar, imzalar, çizgi çizimler ve silüetler istediğiniz boyuta büyüyen eğrilere dönüşür. Yanlışlıkla alınanı bir tıkla çıkarın. Hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
     <title type="html">Görsellerden PDF'e</title>
     <id>https://abox.tools/tr/resimleri-pdfe-donusturme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/resimleri-pdfe-donusturme/"/>
@@ -100,13 +107,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/yaml-json-donusturme/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">YAML'i JSON'a, JSON'u YAML'e tarayıcınızda dönüştürün. YAML 1.2 okur, böylece yes ve no metin olarak kalır, ve her yönün tam olarak neyi kaybettirdiğini söyler. Hiçbir şey yüklenmez: bir yapılandırma dosyası cihazınızdan hiç çıkmaz.</summary>
-  </entry>
-  <entry>
-    <title type="html">Görselden SVG'ye</title>
-    <id>https://abox.tools/tr/gorseli-svg-ye-donusturme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/gorseli-svg-ye-donusturme/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">Siyah beyaz bir görseli tarayıcınızda gerçek bir SVG dış çizgisine çevirin. Logolar, şablonlar, imzalar, çizgi çizimler ve silüetler istediğiniz boyuta büyüyen eğrilere dönüşür. Yanlışlıkla alınanı bir tıkla çıkarın. Hiçbir şey yüklenmez.</summary>
   </entry>
   <entry>
     <title type="html">PDF Karartıcı</title>

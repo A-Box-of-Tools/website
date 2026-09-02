@@ -88,6 +88,13 @@
     <summary type="html">Formatea, indenta y comprime XML, y convierte XML a JSON o JSON a XML. El analizador corre en tu navegador y no se sube nada, así que un feed, una factura o un archivo de configuración nunca sale de tu dispositivo.</summary>
   </entry>
   <entry>
+    <title type="html">Imagen a SVG</title>
+    <id>https://abox.tools/es/convertir-imagen-a-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-imagen-a-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Vectoriza una imagen en blanco y negro en un contorno SVG de verdad, en tu navegador. Logotipos, plantillas, firmas, dibujos a línea y siluetas se convierten en curvas que puedes escalar a cualquier tamaño. Un clic quita lo que el trazado tomó de más. No se sube nada.</summary>
+  </entry>
+  <entry>
     <title type="html">Imágenes a PDF</title>
     <id>https://abox.tools/es/imagenes-a-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/imagenes-a-pdf/"/>
@@ -107,13 +114,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/censurar-pdf/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">Saca palabras de un PDF en vez de pintar un rectángulo negro encima. Las letras se borran de las propias instrucciones de dibujo de la página, el archivo terminado se vuelve a abrir y se busca dentro para demostrar que ya no están, y no se sube nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">Imagen a SVG</title>
-    <id>https://abox.tools/es/convertir-imagen-a-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-imagen-a-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">Vectoriza una imagen en blanco y negro en un contorno SVG de verdad, en tu navegador. Logotipos, plantillas, firmas, dibujos a línea y siluetas se convierten en curvas que puedes escalar a cualquier tamaño. Un clic quita lo que el trazado tomó de más. No se sube nada.</summary>
   </entry>
   <entry>
     <title type="html">Lector de códigos QR y de barras</title>

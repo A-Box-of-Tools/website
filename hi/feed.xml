@@ -67,6 +67,13 @@
     <summary type="html">रिकॉर्डिंग चलाइए और जो-जो हिस्सा रखने लायक हो, उस पर वहीं निशान लगाते जाइए, फिर उन हिस्सों को एक ही फ़ाइल में सहेज लीजिए। सैंपल तक सटीक कट, जोड़ पर कोई खटका नहीं, और कुछ अपलोड नहीं होता।</summary>
   </entry>
   <entry>
+    <title type="html">तस्वीर से SVG</title>
+    <id>https://abox.tools/hi/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/image-to-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">काली-सफ़ेद तस्वीर को ट्रेस करके असली SVG आउटलाइन बनाइए, अपने ब्राउज़र में ही। लोगो, स्टेंसिल, दस्तखत, लाइन ड्रॉइंग और सिल्हूट ऐसे कर्व बन जाते हैं जिन्हें आप किसी भी साइज़ तक बड़ा कर सकते हैं। ट्रेस में जो गलत आ गया, उसे एक क्लिक से हटाइए। कुछ अपलोड नहीं होता।</summary>
+  </entry>
+  <entry>
     <title type="html">तस्वीरों से PDF</title>
     <id>https://abox.tools/hi/images-to-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/images-to-pdf/"/>
@@ -114,13 +121,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/qr-barcode-reader/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">किसी फ़ोटो, स्क्रीनशॉट या अपने कैमरे से QR कोड पढ़िए, और खोलने से पहले देखिए कि लिंक असल में कहाँ जाता है। EAN, UPC, Code 128, Code 39 और ITF बारकोड भी। कुछ भी अपलोड नहीं होता।</summary>
-  </entry>
-  <entry>
-    <title type="html">तस्वीर से SVG</title>
-    <id>https://abox.tools/hi/image-to-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/image-to-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">काली-सफ़ेद तस्वीर को ट्रेस करके असली SVG आउटलाइन बनाइए, अपने ब्राउज़र में ही। लोगो, स्टेंसिल, दस्तखत, लाइन ड्रॉइंग और सिल्हूट ऐसे कर्व बन जाते हैं जिन्हें आप किसी भी साइज़ तक बड़ा कर सकते हैं। ट्रेस में जो गलत आ गया, उसे एक क्लिक से हटाइए। कुछ अपलोड नहीं होता।</summary>
   </entry>
   <entry>
     <title type="html">तस्वीर को SVG में कैसे ट्रेस करें</title>

@@ -88,6 +88,13 @@
     <summary type="html">JPG・PNG・WebPの画像を1つのPDFにまとめます。無料で、処理はすべてブラウザの中。写真はエンコードし直さずに入り、何もアップロードしません。</summary>
   </entry>
   <entry>
+    <title type="html">画像→SVG変換ツール</title>
+    <id>https://abox.tools/ja/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/image-to-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">白黒の画像をブラウザの中で本物のSVGの輪郭にトレースします。ロゴ、ステンシル、署名、線画、シルエットが、どんな大きさにも伸ばせる曲線になります。トレースが拾いすぎたものはクリックひとつで外せます。アップロードはありません。</summary>
+  </entry>
+  <entry>
     <title type="html">音声の切り出し</title>
     <id>https://abox.tools/ja/trim-audio/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-audio/"/>
@@ -114,13 +121,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/qr-barcode-reader/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">写真、スクリーンショット、カメラからQRコードを読み取り、開く前にリンクの行き先をそのまま確かめられます。EAN、UPC、Code 128、Code 39、ITFのバーコードにも対応。何もアップロードされません。</summary>
-  </entry>
-  <entry>
-    <title type="html">画像→SVG変換ツール</title>
-    <id>https://abox.tools/ja/image-to-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/image-to-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">白黒の画像をブラウザの中で本物のSVGの輪郭にトレースします。ロゴ、ステンシル、署名、線画、シルエットが、どんな大きさにも伸ばせる曲線になります。トレースが拾いすぎたものはクリックひとつで外せます。アップロードはありません。</summary>
   </entry>
   <entry>
     <title type="html">画像をSVGにトレースする方法</title>

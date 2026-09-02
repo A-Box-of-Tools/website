@@ -74,6 +74,13 @@
     <summary type="html">Formatta, indenta e compatta XML, e converti XML in JSON o JSON in XML. Il parser gira nel tuo browser e non viene caricato niente, quindi un feed, una fattura o un file di configurazione non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
+    <title type="html">Immagine in SVG</title>
+    <id>https://abox.tools/it/immagine-in-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/immagine-in-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Ricalca un'immagine in bianco e nero in un vero contorno SVG, nel browser. Loghi, stencil, firme, disegni al tratto e silhouette diventano curve che puoi scalare a qualsiasi dimensione. Un clic toglie quello che il ricalco ha preso di troppo. Non viene caricato niente.</summary>
+  </entry>
+  <entry>
     <title type="html">Immagini in PDF</title>
     <id>https://abox.tools/it/immagini-in-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/immagini-in-pdf/"/>
@@ -100,13 +107,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-audio/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Riproduci una registrazione e segna al volo ogni pezzo che vale la pena tenere, poi salva quei pezzi in un unico file. Tagli esatti al campione, nessun clic ai punti di giunzione, niente caricamenti.</summary>
-  </entry>
-  <entry>
-    <title type="html">Immagine in SVG</title>
-    <id>https://abox.tools/it/immagine-in-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/immagine-in-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">Ricalca un'immagine in bianco e nero in un vero contorno SVG, nel browser. Loghi, stencil, firme, disegni al tratto e silhouette diventano curve che puoi scalare a qualsiasi dimensione. Un clic toglie quello che il ricalco ha preso di troppo. Non viene caricato niente.</summary>
   </entry>
   <entry>
     <title type="html">Lettore di QR code e codici a barre</title>

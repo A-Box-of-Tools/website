@@ -15,6 +15,8 @@ loaded:$('loaded'),
 loadedName:$('loaded-name'),
 clearImage:$('clear-image'),
 loadError:$('load-error'),
+privacyToggle:$('privacy-toggle'),
+privacyPanel:$('privacy-panel'),
 findCard:$('find-card'),
 find:$('find'),
 thresholdGroup:$('threshold-group'),
@@ -500,6 +502,11 @@ addEventListener('resize',()=>{
 if(!picture)return;
 clearTimeout(resizing);
 resizing=setTimeout(redraw,120);
+});
+el.privacyToggle.addEventListener('click',()=>{
+const open=el.privacyPanel.hidden;
+el.privacyPanel.hidden=!open;
+el.privacyToggle.setAttribute('aria-expanded',String(open));
 });
 document.getElementById('boot-warning')?.remove();
 el.threshold.disabled=el.thresholdAuto.checked;

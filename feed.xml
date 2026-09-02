@@ -53,6 +53,13 @@
     <summary type="html">Get the sound out of an MP4, MOV or WebM and save it as a WAV. The video never leaves your machine and its picture is never decoded - the whole job runs in your own browser.</summary>
   </entry>
   <entry>
+    <title type="html">Image to SVG</title>
+    <id>https://abox.tools/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Trace a black and white image into a real SVG outline, in your browser. Logos, stencils, signatures, line art and silhouettes become curves you can scale to any size. Click to drop anything the trace got wrong. Nothing is uploaded.</summary>
+  </entry>
+  <entry>
     <title type="html">Images to PDF</title>
     <id>https://abox.tools/images-to-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/images-to-pdf/"/>
@@ -100,13 +107,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/yaml-to-json/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Convert YAML to JSON and JSON to YAML in your browser. Reads YAML 1.2, so yes and no stay strings, and says exactly what each direction loses. Nothing is uploaded - a config file never leaves your machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Image to SVG</title>
-    <id>https://abox.tools/image-to-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/image-to-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">Trace a black and white image into a real SVG outline, in your browser. Logos, stencils, signatures, line art and silhouettes become curves you can scale to any size. Click to drop anything the trace got wrong. Nothing is uploaded.</summary>
   </entry>
   <entry>
     <title type="html">PDF Redactor</title>

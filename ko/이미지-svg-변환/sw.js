@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/이미지-svg-변환/:';
-const CACHE_NAME=CACHE_PREFIX+'999cbb3b38';
+const CACHE_NAME=CACHE_PREFIX+'47197d302e';
 const ASSETS=[
 './',
 'index.html',

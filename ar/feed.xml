@@ -53,6 +53,13 @@
     <summary type="html">اجمع صور JPG أو PNG أو WebP في ملف PDF واحد، مجاناً وداخل متصفحك بالكامل. تدخل الصور الفوتوغرافية دون إعادة ترميز، ولا يُرفع شيء.</summary>
   </entry>
   <entry>
+    <title type="html">صورة إلى SVG</title>
+    <id>https://abox.tools/ar/تحويل-صورة-إلى-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-صورة-إلى-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">تتبَّع صورة بالأبيض والأسود إلى خط محيط SVG حقيقي، داخل متصفحك. الشعارات والقوالب والتوقيعات والرسوم الخطية والظلال تصير منحنيات تكبّرها إلى أي حجم. وما التقطه التتبّع خطأً تزيله بنقرة. لا يُرفع شيء.</summary>
+  </entry>
+  <entry>
     <title type="html">محرّر الصوت</title>
     <id>https://abox.tools/ar/تحرير-الصوت/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحرير-الصوت/"/>
@@ -100,13 +107,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/تنسيق-xml/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">نسّق XML وأزِح أسطره واضغطه، وحوّل XML إلى JSON أو JSON إلى XML. المحلّل يعمل في متصفّحك ولا يُرفع شيء، فلا تغادر تغذيةٌ ولا فاتورةٌ ولا ملفُّ إعدادات جهازك أبداً.</summary>
-  </entry>
-  <entry>
-    <title type="html">صورة إلى SVG</title>
-    <id>https://abox.tools/ar/تحويل-صورة-إلى-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/تحويل-صورة-إلى-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">تتبَّع صورة بالأبيض والأسود إلى خط محيط SVG حقيقي، داخل متصفحك. الشعارات والقوالب والتوقيعات والرسوم الخطية والظلال تصير منحنيات تكبّرها إلى أي حجم. وما التقطه التتبّع خطأً تزيله بنقرة. لا يُرفع شيء.</summary>
   </entry>
   <entry>
     <title type="html">طامس PDF</title>

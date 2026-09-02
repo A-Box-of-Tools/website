@@ -32,6 +32,13 @@
     <uri>https://abox.tools/nl/</uri>
   </author>
   <entry>
+    <title type="html">Afbeelding naar SVG</title>
+    <id>https://abox.tools/nl/afbeelding-naar-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeelding-naar-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Trek een zwart-witafbeelding over tot een echte svg-omtrek, in je browser. Logo's, sjablonen, handtekeningen, lijntekeningen en silhouetten worden curven die je naar elk formaat kunt schalen. Klik weg wat het overtrekken verkeerd meenam. Er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
     <title type="html">Afbeeldingen naar pdf</title>
     <id>https://abox.tools/nl/afbeeldingen-naar-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeeldingen-naar-pdf/"/>
@@ -100,13 +107,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/yaml-naar-json-omzetten/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Zet YAML om naar JSON en JSON naar YAML in je browser. Het leest YAML 1.2, dus yes en no blijven tekenreeksen, en het zegt precies wat elke richting kost. Er wordt niets geüpload, dus een configuratiebestand blijft op je eigen apparaat.</summary>
-  </entry>
-  <entry>
-    <title type="html">Afbeelding naar SVG</title>
-    <id>https://abox.tools/nl/afbeelding-naar-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeelding-naar-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">Trek een zwart-witafbeelding over tot een echte svg-omtrek, in je browser. Logo's, sjablonen, handtekeningen, lijntekeningen en silhouetten worden curven die je naar elk formaat kunt schalen. Klik weg wat het overtrekken verkeerd meenam. Er wordt niets geüpload.</summary>
   </entry>
   <entry>
     <title type="html">PDF onleesbaar maken</title>

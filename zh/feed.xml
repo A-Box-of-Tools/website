@@ -67,6 +67,13 @@
     <summary type="html">把 JPG、PNG 或 WebP 合成一个 PDF，免费，全程在你的浏览器里跑。照片进去不重新编码，什么都不上传。</summary>
   </entry>
   <entry>
+    <title type="html">图片转 SVG</title>
+    <id>https://abox.tools/zh/image-to-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">在浏览器里把黑白图片描成真正的 SVG 轮廓。logo、镂空模板、签名、线稿和剪影都变成能放大到任意尺寸的曲线。描多了的部分，点一下就去掉。什么都不上传。</summary>
+  </entry>
+  <entry>
     <title type="html">视频剪切</title>
     <id>https://abox.tools/zh/trim-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/trim-video/"/>
@@ -114,13 +121,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/qr-barcode-reader/"/>
     <updated>2026-09-01T00:00:00Z</updated>
     <summary type="html">从照片、截图或摄像头读取二维码，在打开之前就看清这个链接到底通向哪里。EAN、UPC、Code 128、Code 39 和 ITF 条形码也能读。什么都不上传。</summary>
-  </entry>
-  <entry>
-    <title type="html">图片转 SVG</title>
-    <id>https://abox.tools/zh/image-to-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/image-to-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">在浏览器里把黑白图片描成真正的 SVG 轮廓。logo、镂空模板、签名、线稿和剪影都变成能放大到任意尺寸的曲线。描多了的部分，点一下就去掉。什么都不上传。</summary>
   </entry>
   <entry>
     <title type="html">怎么把图片描成 SVG</title>

@@ -95,18 +95,18 @@
     <summary type="html">Formate, indente e comprima XML, e converta XML para JSON ou JSON para XML. O analisador roda no seu navegador e nada é enviado, então um feed, uma nota fiscal ou um arquivo de configuração nunca sai do seu computador.</summary>
   </entry>
   <entry>
+    <title type="html">Imagem para SVG</title>
+    <id>https://abox.tools/pt/imagem-para-svg/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagem-para-svg/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Vetorize uma imagem em preto e branco num contorno SVG de verdade, no seu navegador. Logotipos, estênceis, assinaturas, desenhos a traço e silhuetas viram curvas que você pode ampliar a qualquer tamanho. Um clique tira o que o traçado pegou por engano. Nada é enviado.</summary>
+  </entry>
+  <entry>
     <title type="html">Imagens para PDF</title>
     <id>https://abox.tools/pt/imagens-para-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagens-para-pdf/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">Junte imagens JPG, PNG ou WebP num só PDF, de graça e inteiramente no seu navegador. As fotos entram sem serem recodificadas, e nada é enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Imagem para SVG</title>
-    <id>https://abox.tools/pt/imagem-para-svg/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/imagem-para-svg/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">Vetorize uma imagem em preto e branco num contorno SVG de verdade, no seu navegador. Logotipos, estênceis, assinaturas, desenhos a traço e silhuetas viram curvas que você pode ampliar a qualquer tamanho. Um clique tira o que o traçado pegou por engano. Nada é enviado.</summary>
   </entry>
   <entry>
     <title type="html">Leitor de QR Code e código de barras</title>

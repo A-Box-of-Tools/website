@@ -46,6 +46,13 @@
     <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
   </entry>
   <entry>
+    <title type="html">Bild zu SVG</title>
+    <id>https://abox.tools/de/bild-in-svg-umwandeln/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-in-svg-umwandeln/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Ein Schwarz-Weiß-Bild im Browser in eine echte SVG-Kontur nachzeichnen. Logos, Schablonen, Unterschriften, Strichzeichnungen und Silhouetten werden zu Kurven, die sich in jede Größe skalieren lassen. Ein Klick entfernt, was der Tracer falsch verstanden hat. Nichts wird hochgeladen.</summary>
+  </entry>
+  <entry>
     <title type="html">Bilder in PDF</title>
     <id>https://abox.tools/de/bilder-in-pdf-umwandeln/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/bilder-in-pdf-umwandeln/"/>
@@ -100,13 +107,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/yaml-in-json-umwandeln/"/>
     <updated>2026-09-02T00:00:00Z</updated>
     <summary type="html">YAML in JSON und JSON in YAML umwandeln, in Ihrem Browser. Gelesen wird YAML 1.2, also bleiben yes und no Zeichenketten, und es sagt genau, was jede Richtung verliert. Hochgeladen wird nichts, eine Konfigurationsdatei verlässt Ihr Gerät also nie.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bild zu SVG</title>
-    <id>https://abox.tools/de/bild-in-svg-umwandeln/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-in-svg-umwandeln/"/>
-    <updated>2026-09-01T00:00:00Z</updated>
-    <summary type="html">Ein Schwarz-Weiß-Bild im Browser in eine echte SVG-Kontur nachzeichnen. Logos, Schablonen, Unterschriften, Strichzeichnungen und Silhouetten werden zu Kurven, die sich in jede Größe skalieren lassen. Ein Klick entfernt, was der Tracer falsch verstanden hat. Nichts wird hochgeladen.</summary>
   </entry>
   <entry>
     <title type="html">PDF-Schwärzer</title>
