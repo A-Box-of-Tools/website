@@ -82,3 +82,21 @@ export function phrase(key, values = {}) {
   return text.replace(/\{(\w+)\}/g, (whole, name) => (
     name in values ? String(values[name]) : whole));
 }
+
+/**
+ * Values for a phrase, with any that are phrases themselves resolved first.
+ *
+ * A module too deep to reach the DOM returns a key and lets the caller look it
+ * up (see above), and when its answer is a sentence with a blank in it, what
+ * fills the blank is sometimes another key: "could not read it: {reason}",
+ * where the reason is the reader's own. So a value that is a `{key, values}`
+ * pair is looked up here, and everything else - a number, a file name, a
+ * string already in the visitor's language - passes through as it is.
+ *
+ * @param {Record<string, unknown>} [values]
+ * @returns {Record<string, unknown>}
+ */
+export function fill(values = {}) {
+  return Object.fromEntries(Object.entries(values)
+    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
+}

@@ -1,12 +1,7 @@
 /** Sizes, counts and the one judgement this tool is in a position to make. */
+import { sizeText } from './shared/format.js';
 
-/** KB and MB mean 1024 and 1024*1024 here, which is what a file manager shows
- *  on every platform except macOS. */
-export function bytes(n, t) {
-  if (n < 1024) return t('size.b', { n });
-  if (n < 1024 * 1024) return t('size.kb', { n: (n / 1024).toFixed(n < 10240 ? 1 : 0) });
-  return t('size.mb', { n: (n / (1024 * 1024)).toFixed(2) });
-}
+export const bytes = (n, t) => sizeText(n, t, { under: 'size.b', kb: 'auto', mb: 2 });
 
 /** "1,204,556" - a character count is read, not compared, so it gets commas. */
 export function count(n) {

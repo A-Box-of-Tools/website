@@ -1,10 +1,11 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { saveBlob } from './shared/download.js';
 import { SHAPES, objectShape, shapeOf } from './figures.js';
 import { FONT, chartSvg, isDark } from './chart.js';
 import { format, formatBoth, parseHeight, toInput } from './units.js';
-import { download, svgBlob, svgToPng } from './save.js';
+import { svgBlob, svgToPng } from './save.js';
 import { LIMITS, importSvg } from './import-svg.js';
 import { IMAGE_LIMITS, fit, imageMarkup, nameFromFile } from './import-image.js';
 
@@ -625,14 +626,14 @@ function note(text, bad = false) {
 
 el.downloadSvg.addEventListener('click', () => {
   if (!current) return note(phrase('save.nothing'), true);
-  download(svgBlob(current.svg), 'height-chart.svg');
+  saveBlob(svgBlob(current.svg), 'height-chart.svg');
   return note(phrase('save.done'));
 });
 
 el.downloadPng.addEventListener('click', async () => {
   if (!current) return note(phrase('save.nothing'), true);
   try {
-    download(await svgToPng(current.svg, current), 'height-chart.png');
+    saveBlob(await svgToPng(current.svg, current), 'height-chart.png');
     return note(phrase('save.done'));
   } catch (error) {
     return note(phrase('save.failed', { detail: phrase(error.message) }), true);

@@ -41,7 +41,7 @@ roadmap_group = "images"
 # Shared modules this tool asks for. file-picker brings in the drop zone; it is
 # set to accept many files because a CT is three hundred of them and dropping a
 # folder is the only sane way to open one.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "message-box"]
 lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------

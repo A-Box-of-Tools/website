@@ -28,7 +28,7 @@ roadmap_group = "documents"
 # Shared modules this tool asks for. file-picker brings in the drop zone; zip is
 # for saving several pages as pictures rather than as a document, and needs crc32
 # beside it because the archive stores a checksum per entry.
-js_parts = ["file-picker", "zip", "crc32", "pdf-page-writer"]
+js_parts = ["file-picker", "zip", "crc32", "pdf-page-writer", "message-box"]
 # Where a finished result can be carried without being saved first: the row of
 # links shared/handoff.js shows beside the download once there is one. Slugs of
 # tools whose picker takes what this page produces; checked against the tools

@@ -1,6 +1,9 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, fill } from './shared/phrases.js';
+import { sizeText, durationText } from './shared/format.js';
+import { openInPlayer } from './shared/media.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { cropExact, grabFrame, decoderConfig, averageFps } from './transcode.js';
@@ -77,6 +80,10 @@ const el = {
   privacyPanel: $('privacy-panel'),
 };
 
+const { show: showError, clear: clearError } = messageBox(el.error);
+const formatBytes = (n) => sizeText(n, phrase, { kb: 0, mb: 1, gb: 'size.gb' });
+const formatDuration = (seconds) => durationText(seconds, phrase);
+
 /** @type {File|null} */
 let file = null;
 let objectUrl = null;
@@ -126,35 +133,6 @@ const picker = wireFilePicker({
 
 
 /* ------------------------------------------------------------------ loading */
-
-/**
- * Ask the <video> element to open the file, and report what it made of it.
- * A browser that will not play a format still says so quickly, so this is also
- * the test for whether the recording path is available at all.
- */
-function openInPlayer(video, url) {
-  return new Promise((resolve) => {
-    const done = (result) => {
-      clearTimeout(timer);
-      video.removeEventListener('loadedmetadata', ok);
-      video.removeEventListener('error', bad);
-      resolve(result);
-    };
-    const ok = () => done({
-      ok: video.videoWidth > 0 && video.videoHeight > 0,
-      width: video.videoWidth,
-      height: video.videoHeight,
-      duration: Number.isFinite(video.duration) ? video.duration : 0,
-    });
-    const bad = () => done({ ok: false, width: 0, height: 0, duration: 0 });
-
-    const timer = setTimeout(bad, 15000);
-    video.addEventListener('loadedmetadata', ok, { once: true });
-    video.addEventListener('error', bad, { once: true });
-    video.src = url;
-    video.load();
-  });
-}
 
 async function loadFile(picked) {
   if (exporting) return;
@@ -580,27 +558,6 @@ function updateSummary() {
 
 /* ------------------------------------------------------------------ export */
 
-/**
- * An error's blanks, with any that are themselves a phrase resolved.
- *
- * transcode.js names the size it will not encode; the reader's sentence is
- * built here, where a phrase can be read.
- */
-function fill(values = {}) {
-  return Object.fromEntries(Object.entries(values)
-    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
-}
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
-}
-
 function setProgress({ phase, done, total, realtime }) {
   const fraction = total > 0 ? Math.min(1, done / total) : 0;
   el.progressBar.style.width = `${(fraction * 100).toFixed(1)}%`;
@@ -629,28 +586,12 @@ function outputFilename(extension) {
   return `${base}-cropped.${extension}`;
 }
 
-function formatBytes(bytes) {
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
-  if (bytes < 1024 * 1024 * 1024) {
-    return phrase('size.mb', { n: (bytes / 1024 / 1024).toFixed(1) });
-  }
-  return phrase('size.gb', { n: (bytes / 1024 / 1024 / 1024).toFixed(2) });
-}
-
 /** A moment in the clip, written the way a person reads it. */
 function clockTime(seconds) {
   const whole = Math.max(0, seconds);
   const minutes = Math.floor(whole / 60);
   const rest = whole - minutes * 60;
   return `${minutes}:${rest.toFixed(3).padStart(6, '0')}`;
-}
-
-function formatDuration(seconds) {
-  const whole = Math.max(0, Math.round(seconds));
-  const minutes = Math.floor(whole / 60);
-  return minutes
-    ? phrase('time.minutes', { minutes, seconds: String(whole % 60).padStart(2, '0') })
-    : phrase('time.seconds', { n: seconds < 10 ? seconds.toFixed(1) : whole });
 }
 
 async function runExport() {

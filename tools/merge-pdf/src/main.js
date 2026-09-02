@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { readSource } from './assemble.js';
 import { bytes, count as countOf, shortName } from './format.js';
 import { sizeLabel } from './pages.js';
@@ -62,6 +63,9 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showLoadError } = messageBox(el.loadError);
+const { show: note } = messageBox(el.loadNote);
 
 /**
  * The files chosen, in the order they were chosen.
@@ -160,16 +164,6 @@ function messageFor(error) {
   if (error?.name === 'AbortError') return phrase('read.cancelled');
   return phrase('read.unreadable',
     { detail: phrase(error?.message ?? String(error), error?.values) });
-}
-
-function showLoadError(text) {
-  el.loadError.textContent = text;
-  el.loadError.hidden = false;
-}
-
-function note(text) {
-  el.loadNote.textContent = text;
-  el.loadNote.hidden = false;
 }
 
 /* ------------------------------------------------------------- the sources */

@@ -1,6 +1,8 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { sizeText } from './shared/format.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
 import { writeWav } from './shared/wav.js';
@@ -30,6 +32,9 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError, clear: clearError } = messageBox(el.error);
+const humanBytes = (n) => sizeText(n, phrase, { under: 'size.bytes', kb: 1, mb: 1 });
 
 /**
  * The decoded sound, and the name it came in under. Held so that changing the
@@ -153,22 +158,6 @@ function clearResult() {
 function say(error) {
   if (error instanceof UnreadableFile) return phrase(error.message);
   return error?.message ? phrase(error.message) : String(error);
-}
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
-}
-
-function humanBytes(bytes) {
-  if (bytes < 1024) return phrase('size.bytes', { n: bytes });
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(1) });
-  return phrase('size.mb', { n: (bytes / (1024 * 1024)).toFixed(1) });
 }
 
 /** m:ss, or h:mm:ss once there is an hour of it. */

@@ -9,6 +9,7 @@
  */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { SCALES, outputSize, planRun, scaleThatFits } from './plan.js';
 
@@ -65,6 +66,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError } = messageBox(el.error);
 
 /** @type {{file: File, info: object|null, thumb: string|null, ok: boolean}[]} */
 let frames = [];
@@ -586,11 +589,6 @@ function finishRun() {
   el.cancel.hidden = true;
   el.progress.hidden = true;
   render();
-}
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
 }
 
 /* ------------------------------------------------------------------ events */

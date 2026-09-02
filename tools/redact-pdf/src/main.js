@@ -17,6 +17,7 @@
  */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { bytes as humanBytes, outName, tally } from './format.js';
 import {
   contextOf, FINDERS, findPattern, findTerm, glyphsIn, mergeRanges, wordsOf,
@@ -84,6 +85,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: note } = messageBox(el.loadNote);
 
 /** How many rows of matches are drawn. Everything found is still acted on;
  *  this is only what a person is asked to scroll through. */
@@ -186,11 +189,6 @@ function reset() {
 function fail(text) {
   el.loadError.textContent = text;
   el.loadError.hidden = false;
-}
-
-function note(text) {
-  el.loadNote.textContent = text;
-  el.loadNote.hidden = false;
 }
 
 /** Yield to the browser, so that a hundred-page document does not freeze the

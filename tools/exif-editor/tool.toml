@@ -36,7 +36,7 @@ css_parts = ["file-list"]
 # batch of cleaned files comes back in, and crc32 is the checksum both it and
 # the PNG writer need. This tool carried its own copy of those two until the
 # tests learned to follow a ./shared/ import (tests/js/resolve-shared.mjs).
-js_parts = ["file-picker", "zip", "crc32"]
+js_parts = ["file-picker", "zip", "crc32", "message-box", "download", "media"]
 lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------

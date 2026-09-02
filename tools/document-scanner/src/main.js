@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { readingLabel, wireFilePicker } from './shared/file-picker.js';
 import { makeZip } from './shared/zip.js';
 import { WORKING_EDGE, findPageQuad } from './detect.js';
@@ -71,6 +72,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError, clear: clearError } = messageBox(el.loadError);
 
 /**
  * How large the photograph is kept for the editor.
@@ -778,16 +781,6 @@ function show(blob, name, facts) {
 }
 
 /* ------------------------------------------------------------------ errors */
-
-function showError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
-
-function clearError() {
-  el.loadError.textContent = '';
-  el.loadError.hidden = true;
-}
 
 /* --------------------------------------------------------------- the wiring */
 

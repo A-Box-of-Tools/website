@@ -4,15 +4,9 @@
  * Both take `t`, the caller's `phrase`. src/ is copied byte for byte into
  * every language, so a word written here is English at fourteen addresses.
  */
+import { sizeText } from './shared/format.js';
 
-/** KB and MB mean 1024 and 1024*1024, which is what a file manager shows and
- *  what people mean when they say "under 5 MB". */
-export function bytes(n, t) {
-  if (!Number.isFinite(n) || n < 0) return t('size.bytes', { n: 0 });
-  if (n < 1024) return t('size.bytes', { n: Math.round(n) });
-  if (n < 1024 * 1024) return t('size.kb', { n: (n / 1024).toFixed(n < 10240 ? 1 : 0) });
-  return t('size.mb', { n: (n / (1024 * 1024)).toFixed(2) });
-}
+export const bytes = (n, t) => sizeText(n, t, { under: 'size.bytes', kb: 'auto', mb: 2 });
 
 /**
  * "1 page", "14 pages", said the same way everywhere.

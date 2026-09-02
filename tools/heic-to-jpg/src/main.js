@@ -1,6 +1,8 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { saveBlob } from './shared/download.js';
+import { messageBox } from './shared/message-box.js';
 import { encodePixels, encodableTypes, FORMATS, JPEG, PNG, WEBP } from './codecs.js';
 import { heifBrand, isAvif, readExif } from './boxes.js';
 import { describeExif, fitsInJpeg, uprightExif, withExif } from './exif.js';
@@ -40,6 +42,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 
 /**
  * How much of a file is read when it is added to the list.
@@ -564,29 +568,7 @@ function describe(result) {
   return phrase('out.line', { list: parts.reduce((a, b) => phrase('join.dot', { a, b })) });
 }
 
-/** Hand a blob to the browser's downloads. */
-function saveBlob(blob, name) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.click();
-  // Revoked late: revoking immediately can cancel a download that has not
-  // started yet in some browsers.
-  setTimeout(() => URL.revokeObjectURL(url), 60000);
-}
-
 /* ------------------------------------------------------------------ errors */
-
-function showLoadError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
-
-function clearLoadError() {
-  el.loadError.textContent = '';
-  el.loadError.hidden = true;
-}
 
 /* ------------------------------------------------- privacy panel + offline */
 

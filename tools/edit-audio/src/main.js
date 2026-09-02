@@ -1,6 +1,8 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { sizeText } from './shared/format.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeAudio, UnreadableFile } from './shared/audio-decode.js';
 import { render, lengthAfter } from './edit.js';
@@ -53,6 +55,9 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError, clear: clearError } = messageBox(el.error);
+const formatBytes = (n) => sizeText(n, phrase, { under: 'size.b', kb: 1, mb: 1, gb: 'size.gb' });
 
 /** @type {File|null} */
 let file = null;
@@ -399,16 +404,6 @@ window.addEventListener('resize', () => {
 
 /* ---------------------------------------------------------------- reporting */
 
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
-}
-
 function clearResult() {
   el.result.hidden = true;
   el.resultAudio.removeAttribute('src');
@@ -452,15 +447,6 @@ function formatDuration(seconds) {
   return hours
     ? `${hours}:${String(minutes).padStart(2, '0')}:${shown}`
     : `${minutes}:${shown}`;
-}
-
-function formatBytes(bytes) {
-  if (bytes < 1024) return phrase('size.b', { n: bytes });
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(1) });
-  if (bytes < 1024 * 1024 * 1024) {
-    return phrase('size.mb', { n: (bytes / (1024 * 1024)).toFixed(1) });
-  }
-  return phrase('size.gb', { n: (bytes / (1024 * 1024 * 1024)).toFixed(2) });
 }
 
 /* ------------------------------------------------- privacy panel + offline */

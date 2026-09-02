@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker } from './shared/file-picker.js';
 import { decodeGif, GifFormatError, playedDelay, totalDuration } from './gif.js';
 import { GifCanvas, flatten, parseColour, patchPixels } from './compose.js';
@@ -50,6 +51,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError, clear: clearError } = messageBox(el.error);
 
 /** @type {File|null} */
 let file = null;
@@ -585,16 +588,6 @@ function hideProgress() {
   el.progress.hidden = true;
   el.progressBar.style.width = '0%';
   el.progressLabel.textContent = '';
-}
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.hidden = true;
-  el.error.textContent = '';
 }
 
 /** Let go of everything the last file left behind. */

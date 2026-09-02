@@ -166,17 +166,3 @@ export async function svgToPng(svg, multiple = 1) {
   }
 }
 
-/** Hand a blob to the browser as a download. Nothing leaves the machine. */
-export function download(blob, name) {
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = name;
-  link.rel = 'noopener';
-  document.body.append(link);
-  link.click();
-  link.remove();
-  // Revoked on the next turn of the event loop: revoking it immediately can
-  // beat the download starting in some browsers.
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-}

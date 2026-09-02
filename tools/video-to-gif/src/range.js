@@ -11,24 +11,13 @@
  * or touches the video element: it is handed times and it hands times back.
  */
 
+/** m:ss.mmm - the one clock every timeline here shows; shared/js/format.js says why it rounds once. */
+export { clockText as formatTime } from './shared/format.js';
+
 /** The shortest section a drag will leave behind. */
 const MIN_SECTION = 0.1;
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
-
-/** mm:ss.mmm - short enough to read, exact enough to type back. */
-export function formatTime(seconds) {
-  const safe = Math.max(0, seconds || 0);
-  const whole = Math.floor(safe);
-  const hours = Math.floor(whole / 3600);
-  const minutes = Math.floor((whole % 3600) / 60);
-  const rest = whole % 60;
-  const millis = Math.round((safe - whole) * 1000);
-  const tail = `${String(rest).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
-  return hours
-    ? `${hours}:${String(minutes).padStart(2, '0')}:${tail}`
-    : `${minutes}:${tail}`;
-}
 
 /**
  * The reverse: "1:23.5", "83.5" and "0:01:23.500" all mean the same instant.

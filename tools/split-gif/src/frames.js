@@ -13,6 +13,9 @@
  * have - and what the two files beside this one are - is the GIF reader that
  * gets the pixels out in the first place.
  */
+import { sizeText } from './shared/format.js';
+
+export const formatBytes = (n, t) => sizeText(n, t, { under: 'size.b', kb: 'auto', mb: 1 });
 
 /** Frame thumbnails on the page are drawn no larger than this, in pixels. */
 const THUMB_MAX = 168;
@@ -152,15 +155,6 @@ export function timingList(sourceName, gif, rows, t) {
   }
 
   return `${lines.join('\n')}\n`;
-}
-
-/** A byte count in the units a person reads. */
-export function formatBytes(bytes, t) {
-  if (bytes < 1024) return t('size.b', { n: bytes });
-  if (bytes < 1024 * 1024) {
-    return t('size.kb', { n: (bytes / 1024).toFixed(bytes < 10240 ? 1 : 0) });
-  }
-  return t('size.mb', { n: (bytes / (1024 * 1024)).toFixed(1) });
 }
 
 /** Seconds, written short: 0.08s, 1.2s, 12s. */

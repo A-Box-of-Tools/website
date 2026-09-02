@@ -29,7 +29,7 @@ roadmap_group = "images"
 css_parts = ["progress"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "message-box"]
 lastmod = "2026-08-27"
 
 # --- what search engines and chat apps are told ------------------------------

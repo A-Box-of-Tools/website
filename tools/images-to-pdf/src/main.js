@@ -1,6 +1,8 @@
 /** UI wiring and application state. */
 
 import { phrase } from './shared/phrases.js';
+import { sizeText } from './shared/format.js';
+import { messageBox } from './shared/message-box.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import { loadImages, releaseItem, rotateItem, sortItems, moveItem } from './images.js';
 import { layoutPage, seenSize, PAGE_SIZES } from './layout.js';
@@ -69,6 +71,10 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showError, clear: clearError } = messageBox(el.error);
+const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
+const formatBytes = (n) => sizeText(n, phrase, { under: 'size.b', kb: 0, mb: 1 });
 
 /** The chosen pictures, in page order. */
 let items = [];
@@ -586,33 +592,7 @@ function trim(value) {
   return String(Math.round(Number(value) * 10) / 10);
 }
 
-function formatBytes(bytes) {
-  if (bytes < 1024) return phrase('size.b', { n: bytes });
-  if (bytes < 1024 * 1024) return phrase('size.kb', { n: (bytes / 1024).toFixed(0) });
-  return phrase('size.mb', { n: (bytes / (1024 * 1024)).toFixed(1) });
-}
-
 /* ------------------------------------------------------------------ export */
-
-function showError(message) {
-  el.error.textContent = message;
-  el.error.hidden = false;
-}
-
-function clearError() {
-  el.error.textContent = '';
-  el.error.hidden = true;
-}
-
-function showLoadError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
-
-function clearLoadError() {
-  el.loadError.textContent = '';
-  el.loadError.hidden = true;
-}
 
 /** Drop a finished PDF, because the settings or the pages have moved on. */
 function clearResult() {

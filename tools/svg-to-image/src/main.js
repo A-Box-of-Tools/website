@@ -1,6 +1,7 @@
 /** UI wiring and application state. */
 
-import { phrase } from './shared/phrases.js';
+import { phrase, fill } from './shared/phrases.js';
+import { messageBox } from './shared/message-box.js';
 import {
   decodeSvgText, intrinsicSize, looksLikeSvg,
 } from './svg.js';
@@ -60,6 +61,8 @@ const el = {
   privacyToggle: $('privacy-toggle'),
   privacyPanel: $('privacy-panel'),
 };
+
+const { show: showLoadError, clear: clearLoadError } = messageBox(el.loadError);
 
 /** Which panel of size fields belongs to which mode. */
 const FIELDS = {
@@ -326,17 +329,6 @@ function renderList() {
     row.append(wrap, remove);
     el.fileList.append(row);
   }
-}
-
-/**
- * A refusal's blanks, with any that are themselves a phrase resolved.
- *
- * sizing.js says how many megapixels inside a sentence about the limit, and
- * the word for a megapixel is not English everywhere either.
- */
-function fill(values = {}) {
-  return Object.fromEntries(Object.entries(values)
-    .map(([name, value]) => [name, value?.key ? phrase(value.key, value.values) : value]));
 }
 
 function renderNotes() {
@@ -670,16 +662,6 @@ for (const [group, key] of [[$('scale-presets'), 'scale'], [$('width-presets'), 
 }
 
 /* ------------------------------------------------------------------ errors */
-
-function showLoadError(message) {
-  el.loadError.textContent = message;
-  el.loadError.hidden = false;
-}
-
-function clearLoadError() {
-  el.loadError.textContent = '';
-  el.loadError.hidden = true;
-}
 
 /* ------------------------------------------------- privacy panel + offline */
 

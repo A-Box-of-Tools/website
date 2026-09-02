@@ -38,7 +38,7 @@ roadmap_group = "beyond"
 # Shared modules this tool asks for. file-picker brings in the drop zone, which
 # is here for the two files that are easier to drop than to open, select all
 # and copy - twice.
-js_parts = ["file-picker"]
+js_parts = ["file-picker", "message-box", "download"]
 lastmod = "2026-08-30"
 
 # --- what search engines and chat apps are told ------------------------------

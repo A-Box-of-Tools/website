@@ -16,7 +16,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { phrase } from '../../shared/js/phrases.js';
+import { phrase, fill } from '../../shared/js/phrases.js';
 import { readingLabel } from '../../shared/js/file-picker.js';
 
 const SELECTOR = /^#(phrases|frame-phrases) \[data-phrase="(.+)"\]$/;
@@ -99,3 +99,13 @@ test('readingLabel picks the singular for one file and the plural for any other'
     assert.equal(readingLabel(0), 'Reading 0 files');
     assert.equal(readingLabel(12), 'Reading 12 files');
   });
+
+test('fill looks up the values that are keys and leaves the rest alone', () => {
+  // A leaf that cannot reach the page hands back {key, values} for the part
+  // of its answer that is a sentence; the number and the name are not.
+  page({ tool: { 'read.short': 'only {n} bytes of it' } });
+  assert.deepEqual(
+    fill({ reason: { key: 'read.short', values: { n: 3 } }, name: 'a.pdf', count: 0 }),
+    { reason: 'only 3 bytes of it', name: 'a.pdf', count: 0 });
+  assert.deepEqual(fill(), {});
+});
