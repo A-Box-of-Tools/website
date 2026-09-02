@@ -25,7 +25,7 @@
  */
 
 import { FileWindow } from './shared/mp4-reader.js';
-import { drawScaled, frameCanvas } from './draw.js';
+import { drawScaled, frameCanvas } from './shared/frame-canvas.js';
 import { decoderConfig, settle } from './shared/webcodecs.js';
 import { throwIfAborted } from './shared/errors.js';
 
@@ -119,7 +119,7 @@ export async function framesByDecoding({
   file, media, times, width, height, histogram, step = 1, onProgress, signal,
 }) {
   const { video } = media;
-  const { canvas, ctx } = frameCanvas(width, height);
+  const { canvas, ctx } = frameCanvas(width, height, { readBack: true });
   const sampler = new Sampler({ times, ctx, width, height, histogram, step });
 
   const startTicks = times[0] * video.timescale;
@@ -204,7 +204,7 @@ export async function framesByDecoding({
 export async function framesByPlaying({
   video, times, width, height, histogram, step = 1, onProgress, signal,
 }) {
-  const { canvas, ctx } = frameCanvas(width, height);
+  const { canvas, ctx } = frameCanvas(width, height, { readBack: true });
   const frames = [];
 
   video.pause();
