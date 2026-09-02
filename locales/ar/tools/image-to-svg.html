@@ -1,0 +1,260 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> اختر الصورة</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">أزلها</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> قل ما الشكل</h2>
+
+    <p class="card-lede">
+      يحتاج التتبّع إلى بتّ واحد لكل بكسل &mdash; داخل، أو خارج. وهناك طريقتان
+      لتقرير ذلك، وتناسبان صوراً مختلفة. الرسم على ورق أبيض يُفصَل
+      بـ<strong>الفاتح والداكن</strong>. أما صورة شيء ما فلا: تمثال أحمر داكن
+      على حجر رمادي داكن هو داكن على داكن، ولا سطوع يفصل بينهما. تلك تريد
+      <strong>الموضوع</strong>، الذي يستنتج ما الخلفية من حواف الصورة ويحتفظ
+      بكل ما ليس منها.
+    </p>
+
+    <div class="option-row">
+      <label for="find">ما الذي يُبحث عنه</label>
+      <select id="find">
+        <option value="threshold">الفاتح والداكن &mdash; رسم، أو شعار، أو مسح ضوئي</option>
+        <option value="subject">الموضوع &mdash; صورة فوتوغرافية لشيء واحد</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">أين يصير الفاتح داكناً</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          احسبه لي</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">كم يُحسب موضوعاً</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">إلى أي مدى يُتبع في الظل</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">سدّ الفجوات حتى</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          املأه مصمتاً</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          احتفظ بالقطع الأصغر أيضاً</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          تعلّم الخلفية من الحواف</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        اعكسهما &mdash; تتبَّع النصف الفاتح بدلاً من ذلك</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> افحص خط المحيط وأصلح ما أخطأ فيه</h2>
+
+    <p class="card-lede">
+      الخط الأحمر هو خط المحيط كما هو الآن، مرسوماً فوق البكسلات التي جاء منها
+      &mdash; الموضع الوحيد الذي يمكن فيه حسم المسألة، لأن خط المحيط صائب أو
+      خاطئ بالنسبة إلى تلك البكسلات لا غير. اسحب أياً من الصورتين لتحريكهما
+      معاً، وأدر العجلة للتكبير، وانقر أي شيء لا ينبغي أن يكون هناك. النقرة
+      تلتقط رقعة ذلك اللون كلها، فأنت تشير إلى شكل لا إلى بكسل؛ انقره ثانيةً
+      ليعود.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">الصورة</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="الصورة، وفوقها خط المحيط المتتبَّع. اسحب للتحريك، وأدر العجلة للتكبير، وانقر جزءاً لإخراجه."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">ملف SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="الرسم المتتبَّع. اسحب للتحريك، وأدر العجلة للتكبير، وانقر جزءاً لإخراجه."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">التكبير</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> ملاءمة</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">اعرض</label>
+        <select id="show">
+          <option value="picture">الصورة</option>
+          <option value="mask">ما تلقّاه المتتبِّع</option>
+          <option value="measured">ما قاسه</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          ارسم خط المحيط فوقها</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">النقرة تلتقط</label>
+        <select id="wand-mode">
+          <option value="colour">كل ما بذلك اللون</option>
+          <option value="shape">كل ما يتصل به</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">قريب بما يكفي</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          النقرة تقول &laquo;هذه خلفية&raquo; بدلاً من ذلك</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>تراجع</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>تراجع عن الكل</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>كم ينبغي أن يكون الخط ناعماً</h2></summary>
+      <p class="fold-note">
+        رقمان يقرّران كيف يصير سُلَّم البكسلات منحنيات. لا يحتاج أيّ منهما إلى
+        لمس في معظم الصور، وكلاهما جدير بالمعرفة لحين الحاجة.
+      </p>
+      <div class="option-row">
+        <label for="detail">التفصيل</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          احسبه لكل شكل</label>
+      </div>
+      <p class="field-note">
+        مقدار ما يُسمح للخط بالابتعاد عن البكسلات. دون نحو واحد لا يفعل شيئاً
+        البتة، لأن درجة السُّلَّم تقع على بُعد بكسل كامل من الخط الذي تنتمي
+        إليه؛ وفوق نحو اثنين يبدأ في التهام منحنيات حقيقية.
+      </p>
+      <div class="option-row">
+        <label for="corner">حدّة الزوايا</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        كم يجب أن ينعطف خط المحيط ليبقى الانعطاف زاويةً بدل أن يُستدار إلى
+        منحنى. إن انخفض كثيراً صار كل اهتزاز زاوية، وعادت الدائرة مضلَّعاً.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> خذ ملف SVG</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>نزّل ملف SVG</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">لم يستطع هذا المتصفح فكّ ترميز الصورة.</span>
+    <span data-phrase="read.failed">تعذّر فتح ذلك الملف: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">الصورة الجاري تتبّعها، {width} في {height} بكسل</span>
+
+    <span data-phrase="threshold.auto">محسوب: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">عُثر على قطعة واحدة، تشكّل {share}% من
+      الصورة.</span>
+    <span data-phrase="subject.found.many">عُثر على {islands} قطعة منفصلة واحتُفظ
+      بالأكبر، وتشكّل {share}% من الصورة.</span>
+    <span data-phrase="subject.told">تُستخدم الألوان الـ{count} التي أشرت إليها
+      بوصفها خلفية.</span>
+    <span data-phrase="subject.border">تُتعلَّم الخلفية من شريط على طول حافة
+      الصورة.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">لكل شكل</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">ذلك اللون بالضبط</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">غير مستخدم &mdash; النقرة تلتقط الشكل
+      المتصل كله</span>
+
+    <span data-phrase="hover.ink">جزء من الشكل: {size} بكسل، {share}% من الصورة.
+      انقر لإخراجه.</span>
+    <span data-phrase="hover.paper">ليس جزءاً من الشكل: {size} بكسل، {share}% من
+      الصورة. انقر لملئه.</span>
+    <span data-phrase="hover.big">أكثر من {size} بكسل &mdash; أكبر من أن يُرسَم
+      محيطه أثناء تحرّكك. انقر لالتقاطه رغم ذلك.</span>
+    <span data-phrase="hover.long">{size} بكسل. الحافة أطول من أن تُرسَم أثناء
+      تحرّكك.</span>
+    <span data-phrase="hover.sample">هذا اللون: انقر لإضافته إلى ما يُحسب
+      خلفية.</span>
+    <span data-phrase="samples.clear.one">انسَ ذلك اللون</span>
+    <span data-phrase="samples.clear.many">انسَ تلك الألوان الـ{count}</span>
+
+    <span data-phrase="facts.line.one">شكل واحد، {points} نقطة، {bytes}. تُتُبِّع في
+      {ms}&nbsp;م.ث.</span>
+    <span data-phrase="facts.line.many">{loops} شكلاً، {points} نقطة، {bytes}.
+      تُتُبِّعت في {ms}&nbsp;م.ث.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">{count} تصحيح من عندك.</span>
+    <span data-phrase="facts.edits.many">{count} تصحيحات من عندك.</span>
+    <span data-phrase="toobig.warning">خرج هذا {loops} شكلاً منفصلاً و{bytes} من
+      الرسم، وهذا ما تبدو عليه صورة فوتوغرافية حين تُتتبَّع كأنها رسم خطي. الملف لا
+      يزال لك لتنزّله، لكنه سيُفتح ببطء ولن يشبه الصورة. جرّب
+      <em>الموضوع</em> في الأعلى بدلاً من ذلك.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

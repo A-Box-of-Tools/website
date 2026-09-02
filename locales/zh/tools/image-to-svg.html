@@ -1,0 +1,231 @@
+<main id="main">
+  <!-- 第一步：图片 -->
+  <section class="card">
+    <h2><span class="step">1</span> 选一张图片</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">去掉</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- 第二步：哪些像素是形状 -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> 告诉它形状是什么</h2>
+
+    <p class="card-lede">
+      描图需要每像素一位：在里面，还是在外面。决定这一点有两种办法，适合的图片不一样。白纸上的图按<strong>明暗</strong>分开。一张物件的照片不行：深灰石头上的一尊深红塑像，是深色叠深色，亮度分不开它们。这种要选<strong>主体</strong>：它从图片的边缘推断什么是背景，然后把不是背景的都留下。
+    </p>
+
+    <div class="option-row">
+      <label for="find">找什么</label>
+      <select id="find">
+        <option value="threshold">明暗：图纸、logo、扫描件</option>
+        <option value="subject">主体：只拍了一样东西的照片</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">亮到哪里算暗</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          替我算</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">多少算主体</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">往阴影里追多远</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">补上不超过</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          整个填实</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          小块也留着</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          从边缘学背景</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        反过来：描亮的那一半</label>
+    </div>
+  </section>
+
+  <!-- 第三步：看轮廓，改轮廓 -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> 检查轮廓，改掉它弄错的地方</h2>
+
+    <p class="card-lede">
+      红线是现在的轮廓，画在它来自的那些像素上面。只有在那里，这个问题才有答案，因为一条轮廓对不对，只相对于那些像素，跟别的无关。拖任意一张图，两张一起动；滚滚轮放大；不该有的东西，点一下。一下点中的是那一整块同色区域，所以你指的是一个形状而不是一个像素；再点一下就回来。
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">图片</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="图片，上面画着描出来的轮廓。拖动平移，滚轮缩放，点某个部分就把它去掉。"></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="描出来的图。拖动平移，滚轮缩放，点某个部分就把它去掉。"></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">缩放</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> 适应窗口</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">显示</label>
+        <select id="show">
+          <option value="picture">图片</option>
+          <option value="mask">描图器拿到的</option>
+          <option value="measured">它测量出来的</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          把轮廓画在上面</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">一下点中</label>
+        <select id="wand-mode">
+          <option value="colour">同色的全部</option>
+          <option value="shape">连在一起的全部</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">多接近算同色</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          改为点一下说“这是背景”</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>撤销</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>全部撤销</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>线条要多平滑</h2></summary>
+      <p class="fold-note">
+        像素的楼梯怎么变成曲线，由两个数决定。大多数图片两个都不用碰，但两个都值得知道，以备需要的时候。
+      </p>
+      <div class="option-row">
+        <label for="detail">细节</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          按形状算</label>
+      </div>
+      <p class="field-note">
+        线条允许偏离像素多远。低于 1 左右什么都不会发生，因为楼梯的一级台阶离它所属的线整整一个像素；高于 2 左右，就开始吃掉真正的曲线。
+      </p>
+      <div class="option-row">
+        <label for="corner">拐角锐度</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        轮廓要拐多大的弯，那个弯才保留为角而不是被磨成曲线。太低，每一点抖动都成了角，圆回来时成了多边形。
+      </p>
+    </details>
+  </section>
+
+  <!-- 第四步：文件 -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> 拿走 SVG</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>下载 SVG</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">这个浏览器解码不了这张图片。</span>
+    <span data-phrase="read.failed">那个文件打不开：{why}</span>
+    <span data-phrase="loaded.name">{name}——{width} &times; {height}</span>
+    <span data-phrase="picture.alt">正在描的图片，{width} &times; {height} 像素</span>
+
+    <span data-phrase="threshold.auto">算出来：{level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">找到一块，占图片的 {share}%。</span>
+    <span data-phrase="subject.found.many">找到 {islands} 块互不相连的区域，留下了最大的一块，占图片的 {share}%。</span>
+    <span data-phrase="subject.told">正在使用你指定为背景的 {count} 种颜色。</span>
+    <span data-phrase="subject.border">正在从图片边缘的一圈带子里学背景。</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">按形状</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">完全相同的颜色</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">未使用——一下点中的是整个连在一起的形状</span>
+
+    <span data-phrase="hover.ink">形状的一部分：{size} 像素，占图片的 {share}%。点一下去掉。</span>
+    <span data-phrase="hover.paper">不属于形状：{size} 像素，占图片的 {share}%。点一下填上。</span>
+    <span data-phrase="hover.big">超过 {size} 像素——太大，来不及一边移动一边画轮廓。点一下照样能选中。</span>
+    <span data-phrase="hover.long">{size} 像素。边缘太长，来不及一边移动一边画。</span>
+    <span data-phrase="hover.sample">这个颜色：点一下，把它加进算作背景的颜色里。</span>
+    <span data-phrase="samples.clear.one">忘掉那个颜色</span>
+    <span data-phrase="samples.clear.many">忘掉那 {count} 种颜色</span>
+
+    <span data-phrase="facts.line.one">一个形状，{points} 个点，{bytes}。描图用时 {ms} 毫秒。</span>
+    <span data-phrase="facts.line.many">{loops} 个形状，{points} 个点，{bytes}。描图用时 {ms} 毫秒。</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">你改了 {count} 处。</span>
+    <span data-phrase="facts.edits.many">你改了 {count} 处。</span>
+    <span data-phrase="toobig.warning">结果是 {loops} 个互不相连的形状和 {bytes} 的图——一张照片被当成线稿来描，就是这个样子。文件照样可以下载，但打开会慢，也不像那张照片。试试上面的<em>主体</em>。</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

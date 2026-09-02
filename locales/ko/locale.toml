@@ -85,6 +85,7 @@ complete = true
 "resize-image" = "이미지-크기-조절"
 "reverse-video" = "동영상-거꾸로-재생"
 "svg-to-image" = "svg-png-변환"
+"image-to-svg" = "이미지-svg-변환"
 # Four jobs, one address, and the one people arrive looking for is the JSON
 # formatter. 포맷터 rather than the standard 포매터, because the slug follows
 # what is typed and dev writing types 포맷터.
@@ -137,6 +138,7 @@ complete = true
 "guides/combine-images-into-a-pdf" = "가이드/이미지-pdf-합치기"
 "guides/compress-an-image-to-a-target-size" = "가이드/이미지-용량-줄이기"
 "guides/convert-an-svg-to-png" = "가이드/svg-png-변환하기"
+"guides/trace-an-image-into-an-svg" = "가이드/이미지-svg-변환하기"
 "guides/convert-heic-to-jpg" = "가이드/heic-jpg-변환하기"
 "guides/crop-a-video" = "가이드/동영상-화면-자르기"
 "guides/embed-an-image-in-css" = "가이드/css-이미지-넣기"

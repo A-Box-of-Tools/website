@@ -87,6 +87,7 @@ complete = true
 # and a great many people search for how to make a favicon.
 "image-to-ico" = "favicon-erstellen"
 "svg-to-image" = "svg-in-png-umwandeln"
+"image-to-svg" = "bild-in-svg-umwandeln"
 # Named for the job once more. "base64" rather than "data-uri" is what
 # gets typed, even by the people who know it is a data URI.
 "heic-to-jpg" = "heic-in-jpg-umwandeln"
@@ -151,6 +152,7 @@ complete = true
 "guides/is-it-safe-to-upload-files" = "ratgeber/ist-das-hochladen-von-dateien-sicher"
 "guides/make-a-favicon" = "ratgeber/favicon-selbst-erstellen"
 "guides/convert-an-svg-to-png" = "ratgeber/svg-in-png-umwandeln"
+"guides/trace-an-image-into-an-svg" = "ratgeber/bild-in-svg-umwandeln"
 "guides/convert-heic-to-jpg" = "ratgeber/heic-in-jpg-umwandeln"
 "guides/embed-an-image-in-css" = "ratgeber/bild-in-css-einbetten"
 "guides/make-a-qr-code" = "ratgeber/qr-code-selbst-erstellen"

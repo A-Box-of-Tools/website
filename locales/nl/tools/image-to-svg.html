@@ -1,0 +1,266 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Kies de afbeelding</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">Weghalen</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> Zeg wat de vorm is</h2>
+
+    <p class="card-lede">
+      Overtrekken heeft één bit per pixel nodig &mdash; erin, of eruit. Er zijn
+      twee manieren om dat te beslissen, en ze passen bij verschillende
+      afbeeldingen. Een tekening op wit papier scheidt op <strong>licht en
+      donker</strong>. Een foto van één voorwerp niet: een donkerrode figuur op
+      donkergrijze steen is donker op donker, en geen helderheid scheidt ze. Die
+      wil <strong>het onderwerp</strong>, dat uit de randen van de afbeelding
+      afleidt wat de achtergrond is en alles houdt wat dat niet is.
+    </p>
+
+    <div class="option-row">
+      <label for="find">Waar naar gezocht wordt</label>
+      <select id="find">
+        <option value="threshold">Licht en donker &mdash; een tekening, een logo, een scan</option>
+        <option value="subject">Het onderwerp &mdash; een foto van één ding</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">Waar licht donker wordt</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          Voor mij uitrekenen</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">Hoeveel als onderwerp telt</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">Hoe ver het de schaduw in gevolgd wordt</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">Gaten sluiten tot</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          Helemaal opvullen</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          De kleinere stukken ook houden</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          De achtergrond uit de randen leren</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        Omwisselen &mdash; in plaats daarvan de lichte helft overtrekken</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> Controleer de omtrek, en verbeter wat het fout had</h2>
+
+    <p class="card-lede">
+      De rode lijn is de omtrek zoals hij nu staat, getekend over de pixels
+      waar hij uit komt &mdash; de enige plek waar de vraag beslist kan worden,
+      want een omtrek is goed of fout ten opzichte van die pixels en van niets
+      anders. Sleep een van beide afbeeldingen om ze allebei te verschuiven,
+      rol het wieltje om te zoomen, en klik op alles wat er niet in hoort. Een
+      klik neemt het hele vlak van die kleur, dus je wijst een vorm aan en niet
+      een pixel; klik hem nog eens om hem terug te zetten.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">De afbeelding</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="De afbeelding, met de overgetrokken omtrek eroverheen. Slepen om te verschuiven, rollen om te zoomen, op een deel klikken om het weg te laten."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">De svg</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="De overgetrokken tekening. Slepen om te verschuiven, rollen om te zoomen, op een deel klikken om het weg te laten."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">Zoom</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> Passend</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">Tonen</label>
+        <select id="show">
+          <option value="picture">De afbeelding</option>
+          <option value="mask">Wat de overtrekker kreeg</option>
+          <option value="measured">Wat hij gemeten heeft</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          De omtrek eroverheen tekenen</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">Een klik neemt</label>
+        <select id="wand-mode">
+          <option value="colour">Alles van die kleur</option>
+          <option value="shape">Alles wat eraan vastzit</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">Dichtbij genoeg</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          Klik om in plaats daarvan &ldquo;dit is achtergrond&rdquo; te zeggen</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>Ongedaan maken</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>Alles ongedaan maken</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>Hoe glad de lijn moet zijn</h2></summary>
+      <p class="fold-note">
+        Twee getallen bepalen hoe de trap van pixels curven wordt. Voor de
+        meeste afbeeldingen hoeft geen van beide aangeraakt te worden, en beide
+        zijn de moeite van het kennen waard voor als het wel moet.
+      </p>
+      <div class="option-row">
+        <label for="detail">Detail</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          Per vorm uitrekenen</label>
+      </div>
+      <p class="field-note">
+        Hoe ver de lijn van de pixels mag afwijken. Onder ongeveer één doet het
+        helemaal niets, omdat een traptrede een hele pixel naast de lijn staat
+        waar ze bij hoort; boven ongeveer twee begint het echte curven op te
+        eten.
+      </p>
+      <div class="option-row">
+        <label for="corner">Hoekscherpte</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        Hoe ver de omtrek moet draaien voordat die draai als hoek blijft staan
+        in plaats van tot een curve te worden afgerond. Te laag, en elke
+        wiebel is een hoek en een cirkel komt terug als veelhoek.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Neem de svg</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>Download de svg</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">deze browser kon de afbeelding niet decoderen.</span>
+    <span data-phrase="read.failed">Dat bestand kon niet worden geopend: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">De afbeelding die overgetrokken wordt, {width} bij {height} pixels</span>
+
+    <span data-phrase="threshold.auto">uitgerekend: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">Eén stuk gevonden, {share}% van de
+      afbeelding.</span>
+    <span data-phrase="subject.found.many">{islands} losse stukken gevonden en het
+      grootste gehouden, {share}% van de afbeelding.</span>
+    <span data-phrase="subject.told">Gebruikt de {count} kleuren die je als
+      achtergrond aanwees.</span>
+    <span data-phrase="subject.border">Leert de achtergrond uit een strook langs de
+      rand van de afbeelding.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">per vorm</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">precies die kleur</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">niet gebruikt &mdash; een klik neemt de hele
+      aaneengesloten vorm</span>
+
+    <span data-phrase="hover.ink">Deel van de vorm: {size} pixels, {share}% van de
+      afbeelding. Klik om het weg te laten.</span>
+    <span data-phrase="hover.paper">Geen deel van de vorm: {size} pixels, {share}% van
+      de afbeelding. Klik om het te vullen.</span>
+    <span data-phrase="hover.big">Meer dan {size} pixels &mdash; te veel om de omtrek
+      te tekenen terwijl je beweegt. Klik om het toch te nemen.</span>
+    <span data-phrase="hover.long">{size} pixels. De rand is te lang om te tekenen
+      terwijl je beweegt.</span>
+    <span data-phrase="hover.sample">Deze kleur: klik om haar toe te voegen aan wat als
+      achtergrond telt.</span>
+    <span data-phrase="samples.clear.one">Die kleur vergeten</span>
+    <span data-phrase="samples.clear.many">Die {count} kleuren vergeten</span>
+
+    <span data-phrase="facts.line.one">Eén vorm, {points} punten, {bytes}. Overgetrokken
+      in {ms}&nbsp;ms.</span>
+    <span data-phrase="facts.line.many">{loops} vormen, {points} punten, {bytes}.
+      Overgetrokken in {ms}&nbsp;ms.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">{count} eigen verbetering.</span>
+    <span data-phrase="facts.edits.many">{count} eigen verbeteringen.</span>
+    <span data-phrase="toobig.warning">Dit kwam eruit als {loops} losse vormen en
+      {bytes} aan tekening, en zo ziet een foto eruit die overgetrokken is alsof het
+      een lijntekening was. Het bestand is nog steeds van jou om te downloaden, maar
+      het opent traag en het lijkt niet op de foto. Probeer hierboven
+      <em>het onderwerp</em> in plaats daarvan.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

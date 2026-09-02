@@ -60,6 +60,7 @@ complete = true
 # y muchísima gente busca cómo hacerse un favicon.
 "image-to-ico" = "crear-favicon"
 "svg-to-image" = "convertir-svg-a-png"
+"image-to-svg" = "convertir-imagen-a-svg"
 "heic-to-jpg" = "convertir-heic-a-jpg"
 # "Base64" es la palabra que se teclea; "data URI" es la que sale después.
 "image-to-data-uri" = "imagen-a-base64"
@@ -113,6 +114,7 @@ complete = true
 "guides/is-it-safe-to-upload-files" = "guias/es-seguro-subir-archivos"
 "guides/make-a-favicon" = "guias/como-hacer-un-favicon"
 "guides/convert-an-svg-to-png" = "guias/convertir-un-svg-a-png"
+"guides/trace-an-image-into-an-svg" = "guias/convertir-una-imagen-a-svg"
 "guides/convert-heic-to-jpg" = "guias/convertir-heic-a-jpg"
 "guides/embed-an-image-in-css" = "guias/incrustar-una-imagen-en-css"
 "guides/make-a-qr-code" = "guias/como-hacer-un-codigo-qr"

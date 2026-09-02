@@ -1,0 +1,17 @@
+#
+# Guide: tracing an image into an SVG - Dutch.
+#
+
+nav = "Een afbeelding overtrekken tot svg"
+title = "Zo trek je een afbeelding over tot een svg &mdash; zonder haar te uploaden"
+description = "Maak van een logo, een sjabloon, een handtekening of een silhouet een echte vectoromtrek in je browser. Welke afbeeldingen goed overtrekken, welke dat nooit zullen doen, en hoe je verbetert wat de overtrekker fout doet."
+heading = "Zo trek je een afbeelding over tot een svg"
+lede = """
+    Een vergrote png is een trap. Een svg is een tekeninstructie, dus scherp
+    op elk formaat &mdash; en het een in het ander veranderen heet
+    overtrekken. Het werkt prachtig op vormen en slecht op foto's, en dat
+    verschil is de moeite waard om te begrijpen voordat je begint."""
+updated = "31 augustus 2026"
+og_title = "Een logo of een silhouet overtrekken tot een svg, in je browser"
+og_description = "Welke afbeeldingen schone curven worden, welke terugkomen als vierduizend klodders, en hoe je de delen wegklikt die er niet in horen. Er wordt niets geüpload."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

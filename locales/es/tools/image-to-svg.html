@@ -1,0 +1,266 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Elige la imagen</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">Quitarla</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> Di qué es la forma</h2>
+
+    <p class="card-lede">
+      Vectorizar necesita un bit por píxel &mdash; dentro, o fuera. Hay dos
+      maneras de decidirlo, y sirven para imágenes distintas. Un dibujo sobre
+      papel blanco se separa por <strong>claro y oscuro</strong>. La foto de un
+      objeto no: una figura rojo oscuro sobre piedra gris oscuro es oscuro
+      sobre oscuro, y ninguna luminosidad las separa. Esa quiere <strong>el
+      sujeto</strong>, que deduce qué es el fondo a partir de los bordes de la
+      imagen y se queda con todo lo que no lo es.
+    </p>
+
+    <div class="option-row">
+      <label for="find">Qué buscar</label>
+      <select id="find">
+        <option value="threshold">Claro y oscuro &mdash; un dibujo, un logotipo, un escaneo</option>
+        <option value="subject">El sujeto &mdash; la fotografía de una sola cosa</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">Dónde lo claro pasa a oscuro</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          Calcularlo por mí</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">Cuánto cuenta como sujeto</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">Hasta dónde seguirlo en la sombra</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">Cerrar huecos de hasta</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          Rellenarlo macizo</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          Quedarse también con los trozos pequeños</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          Aprender el fondo de los bordes</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        Invertirlo &mdash; vectorizar la mitad clara en su lugar</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> Revisa el contorno y arregla lo que tomó mal</h2>
+
+    <p class="card-lede">
+      La línea roja es el contorno tal como está, dibujado sobre los píxeles de
+      los que salió &mdash; el único sitio donde la cuestión puede zanjarse,
+      porque un contorno está bien o mal respecto a esos píxeles y a nada más.
+      Arrastra cualquiera de las dos imágenes para mover ambas, usa la rueda
+      para acercarte y haz clic en cualquier cosa que no debería estar ahí. Un
+      clic toma toda la mancha de ese color, así que estás señalando una forma y
+      no un píxel; vuelve a hacer clic para devolverla.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">La imagen</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="La imagen, con el contorno vectorizado dibujado encima. Arrastra para mover, rueda para acercar, clic en una parte para dejarla fuera."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">El SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="El dibujo vectorizado. Arrastra para mover, rueda para acercar, clic en una parte para dejarla fuera."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">Zoom</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> Ajustar</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">Mostrar</label>
+        <select id="show">
+          <option value="picture">La imagen</option>
+          <option value="mask">Lo que recibió el trazador</option>
+          <option value="measured">Lo que midió</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          Dibujar el contorno encima</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">Un clic toma</label>
+        <select id="wand-mode">
+          <option value="colour">Todo lo de ese color</option>
+          <option value="shape">Todo lo unido a ello</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">Parecido suficiente</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          Que el clic diga &laquo;esto es fondo&raquo; en su lugar</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>Deshacer</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>Deshacerlas todas</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>Cuánto suavizar la línea</h2></summary>
+      <p class="fold-note">
+        Dos números deciden cómo la escalera de píxeles se convierte en curvas.
+        Ninguno necesita tocarse en la mayoría de las imágenes, y los dos
+        merece la pena conocerlos para cuando sí.
+      </p>
+      <div class="option-row">
+        <label for="detail">Detalle</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          Calcularlo por forma</label>
+      </div>
+      <p class="field-note">
+        Cuánto puede apartarse la línea de los píxeles. Por debajo de uno, más
+        o menos, no hace nada en absoluto, porque un escalón queda a un píxel
+        entero de la línea a la que pertenece; por encima de dos, más o menos,
+        empieza a comerse curvas de verdad.
+      </p>
+      <div class="option-row">
+        <label for="corner">Agudeza de esquinas</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        Cuánto tiene que girar el contorno para que ese giro se conserve como
+        esquina en vez de redondearse en curva. Demasiado bajo, y cada temblor
+        es una esquina y un círculo vuelve como un polígono.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Llévate el SVG</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>Descargar el SVG</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">este navegador no pudo descodificar la imagen.</span>
+    <span data-phrase="read.failed">Ese archivo no se pudo abrir: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">La imagen que se está vectorizando, de {width} por {height} píxeles</span>
+
+    <span data-phrase="threshold.auto">calculado: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">Se encontró un trozo, que es el {share}&nbsp;%
+      de la imagen.</span>
+    <span data-phrase="subject.found.many">Se encontraron {islands} trozos separados y se
+      conservó el mayor, que es el {share}&nbsp;% de la imagen.</span>
+    <span data-phrase="subject.told">Usando los {count} colores que señalaste como
+      fondo.</span>
+    <span data-phrase="subject.border">Aprendiendo el fondo de una franja alrededor
+      del borde de la imagen.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">por forma</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">exactamente ese color</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">sin uso &mdash; un clic toma toda la forma
+      unida</span>
+
+    <span data-phrase="hover.ink">Parte de la forma: {size} píxeles, el {share}&nbsp;%
+      de la imagen. Haz clic para dejarla fuera.</span>
+    <span data-phrase="hover.paper">Fuera de la forma: {size} píxeles, el
+      {share}&nbsp;% de la imagen. Haz clic para rellenarlo.</span>
+    <span data-phrase="hover.big">Más de {size} píxeles &mdash; demasiado para
+      contornear mientras te mueves. Haz clic para tomarlo de todos modos.</span>
+    <span data-phrase="hover.long">{size} píxeles. El borde es demasiado largo para
+      dibujarlo mientras te mueves.</span>
+    <span data-phrase="hover.sample">Este color: haz clic para sumarlo a lo que cuenta
+      como fondo.</span>
+    <span data-phrase="samples.clear.one">Olvidar ese color</span>
+    <span data-phrase="samples.clear.many">Olvidar esos {count} colores</span>
+
+    <span data-phrase="facts.line.one">Una forma, {points} puntos, {bytes}. Vectorizada
+      en {ms}&nbsp;ms.</span>
+    <span data-phrase="facts.line.many">{loops} formas, {points} puntos, {bytes}.
+      Vectorizadas en {ms}&nbsp;ms.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">{count} corrección tuya.</span>
+    <span data-phrase="facts.edits.many">{count} correcciones tuyas.</span>
+    <span data-phrase="toobig.warning">Esto salió como {loops} formas separadas y
+      {bytes} de dibujo, que es lo que parece una fotografía cuando se vectoriza como
+      si fuera un dibujo a línea. El archivo sigue siendo tuyo para descargarlo, pero
+      se abrirá despacio y no se parecerá a la fotografía. Prueba mejor con
+      <em>el sujeto</em>, más arriba.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

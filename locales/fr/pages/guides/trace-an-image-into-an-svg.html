@@ -1,0 +1,199 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Ouvrez <a href="../../convertir-image-en-svg/">Image en SVG</a>, déposez
+      l'image et regardez la ligne rouge. Cette ligne est le contour tel qu'il
+      est, dessiné par-dessus les pixels dont il vient. Si elle suit la forme,
+      prenez le fichier. Si quelque chose s'y trouve qui ne devrait pas y être
+      &mdash; une tache, une agrafe, une légende, une ombre &mdash;, cliquez
+      dessus et cela disparaît.
+    </p>
+    <p>
+      Tout ce qui suit tient aux deux questions qui décident si cela marche
+      tout court&nbsp;: <strong>votre image est-elle une forme ou une
+      photographie</strong>, et <strong>laquelle des deux façons de trouver la
+      forme lui faut-il</strong>.
+    </p>
+
+    <figure class="shot">
+      <img src="/screens/trace-an-image-into-an-svg/outline.webp" loading="lazy" decoding="async"
+           alt="Les deux volets&nbsp;: à gauche l'image avec le contour rouge vectorisé par-dessus, à droite le SVG terminé.">
+      <figcaption>
+        Le contour est dessiné par-dessus l'image plutôt que seulement à côté.
+        C'est le seul endroit où la question peut se trancher &mdash; un contour
+        est juste ou faux par rapport à ces pixels et à rien d'autre.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Vectoriser n'est pas convertir, et les photographies ne se vectorisent pas</h2>
+    <p>
+      Convertir un JPEG en PNG est une conversion&nbsp;: la même image, décrite
+      autrement, et rien n'est décidé en chemin. Vectoriser n'est pas cela. Cela
+      jette presque tout et garde une seule chose &mdash; la frontière d'une
+      forme &mdash; puis décrit cette frontière en courbes. Si votre image
+      contient une forme nette, c'est exactement ce que vous vouliez. Si c'est
+      la photo d'une pièce, il n'y a aucune forme à garder, et ce qui revient,
+      c'est chaque plage de couleur voisine changée en tache.
+    </p>
+    <p>
+      Ce n'est pas une limite en attente d'être levée par l'ingénierie, aussi
+      vaut-il la peine de dire clairement à quoi ressemblent les chiffres. Une
+      page A4 de dessin au trait se vectorise en trois formes et six
+      kilo-octets. Une page d'écriture manuscrite, en cinquante formes et cent
+      cinquante. Un seul mégapixel de photographie se vectorise en
+      <strong>quatre mille formes et un mégaoctet et demi</strong> &mdash; plus
+      lourd que le JPEG, plus lent à ouvrir, et cela ne ressemble pas à la
+      photo. L'outil cesse de dessiner à ce point et le dit, plutôt que de vous
+      le laisser découvrir après le téléchargement.
+    </p>
+
+    <figure class="shot">
+      <img src="/screens/trace-an-image-into-an-svg/photograph.webp" loading="lazy" decoding="async"
+           alt="L'avertissement affiché quand une photographie est vectorisée&nbsp;: des milliers de formes distinctes et un fichier très lourd.">
+      <figcaption>
+        Ce à quoi aboutit une photographie vectorisée comme un dessin au trait.
+        Le fichier reste à vous à télécharger&nbsp;; la page refuse seulement de
+        faire semblant que c'est un dessin.
+      </figcaption>
+    </figure>
+
+    <p>Ce qui se vectorise bien&nbsp;:</p>
+    <ul>
+      <li>les logos, marques et monogrammes&nbsp;;</li>
+      <li>les pochoirs, tampons et fichiers de découpe&nbsp;;</li>
+      <li>les signatures et le lettrage à la main&nbsp;;</li>
+      <li>les dessins au trait, les hachures et l'encrage de bande dessinée&nbsp;;</li>
+      <li>les silhouettes, et tout ce qui est déjà noir sur blanc.</li>
+    </ul>
+    <p>
+      Une tâche photographique fonctionne bel et bien, et c'est une autre
+      tâche&nbsp;: découper un objet de son arrière-plan en silhouette pleine.
+      C'est à cela que sert le second réglage.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les deux façons de trouver la forme</h2>
+    <p>
+      Vectoriser demande un bit par pixel &mdash; dedans, ou dehors &mdash; et
+      il y a deux façons d'en décider.
+    </p>
+    <p>
+      <strong>Clair et sombre</strong> demande si chaque pixel est plus sombre
+      qu'un seuil, et le seuil est calculé pour vous. C'est exactement juste
+      pour de l'encre sur du papier, et c'est ce que vous voulez pour chaque
+      logo, scan et pochoir. Quand il se trompe, il se trompe d'ordinaire de
+      façon visible&nbsp;: déplacez le seuil jusqu'à ce que les traits fins
+      survivent sans que le papier vire au gris avec eux.
+    </p>
+    <p>
+      <strong>Le sujet</strong> pose une autre question, parce que sur une
+      photographie la première n'a pas de réponse. Une silhouette rouge sombre
+      debout sur une pierre gris sombre, c'est du sombre sur du sombre&nbsp;:
+      aucune luminosité ne les sépare, donc aucun seuil ne le peut. À la place,
+      ce réglage apprend ce qu'est l'<em>arrière-plan</em> sur une bande le long
+      du bord de l'image, mesure chaque pixel par rapport à lui, et garde la
+      plus grande chose qui n'en fait pas partie. Une légende dans un coin n'est
+      pas la plus grande chose, elle est donc écartée plutôt que vectorisée.
+    </p>
+    <p>
+      Il a un échec qu'il vaut mieux connaître d'avance&nbsp;: une photographie
+      cadrée si serré que le sujet déborde de deux ou trois côtés. La bordure
+      est alors surtout du sujet, le modèle apprend donc les couleurs du sujet
+      lui-même, et la réponse sort à l'envers. Rien de cela ne se règle en
+      poussant un curseur &mdash; c'est l'hypothèse qui était fausse, pas
+      l'arithmétique. Désactivez <em>apprendre l'arrière-plan sur les
+      bords</em>, cochez <em>un clic dit plutôt &laquo;&nbsp;ceci est
+      l'arrière-plan&nbsp;&raquo;</em>, et cliquez l'arrière-plan deux ou trois
+      fois à la place.
+    </p>
+  </section>
+
+  <section>
+    <h2>Corriger ce qu'il a pris à tort, en le pointant</h2>
+    <p>
+      Un seuil est un seul nombre pour toute une image, et il est toujours faux
+      quelque part&nbsp;: une ombre devient de l'encre, une agrafe survit, le
+      centre d'un O se bouche. Chacune de ces erreurs est locale avec un remède
+      local évident, et ce remède n'est pas un curseur de plus &mdash; c'est de
+      pointer la chose.
+    </p>
+    <p>
+      Cliquez tout ce qui ne devrait pas être dans le dessin et cela
+      disparaît&nbsp;; cliquez-le encore et cela revient. Un clic prend
+      <strong>toute la plage de cette couleur</strong>, si bien qu'un clic
+      retire une tache entière ou un tampon entier plutôt qu'un pixel. Cliquer
+      un morceau d'arrière-plan enclavé le remplit à la place, et c'est ainsi
+      qu'un trou qui ne devrait pas en être un se referme. La ligne sous les
+      images dit lequel des deux c'est et quelle taille cela fait avant que vous
+      cliquiez, si bien qu'un clic qui emporterait la plus grande partie de
+      l'image n'est jamais une surprise.
+    </p>
+    <p>
+      Les corrections sont conservées à part du seuil, donc déplacer le curseur
+      ensuite ne les jette pas, et inverser l'image les retourne avec elle
+      &mdash; une tache que vous avez supprimée reste supprimée plutôt que de
+      réapparaître en trou percé dans l'arrière-plan.
+    </p>
+  </section>
+
+  <section>
+    <h2>Les deux nombres du lissage, et quand y toucher</h2>
+    <p>
+      <strong>Détail</strong> est la distance dont la ligne peut s'écarter des
+      pixels en se simplifiant. Sous un environ, cela ne fait rien du tout
+      &mdash; une marche d'escalier se tient à un pixel entier de la ligne à
+      laquelle elle appartient, une tolérance plus petite garde donc chaque
+      marche et il ne reste rien à simplifier. Au-dessus de deux environ, cela
+      commence à manger de vraies courbes. Il est calculé par forme sauf
+      indication contraire, parce qu'un seul nombre ne peut pas servir à la fois
+      une silhouette entière et le fût de deux pixels d'une lettre.
+    </p>
+    <p>
+      <strong>Netteté des angles</strong> est de combien le contour doit tourner
+      pour que ce virage reste un angle plutôt que d'être arrondi en courbe. Ce
+      n'est que la moitié de la décision &mdash; un sommet est aussi gardé en
+      angle s'il se tient assez loin de ses voisins, ce qui attrape de lui-même
+      chaque angle évident &mdash;, si bien que ce nombre ne décide jamais que
+      des virages peu marqués. Sous vingt degrés environ, tout devient un angle
+      et un cercle revient en polygone.
+    </p>
+    <p>
+      La plupart des images n'ont besoin ni de l'un ni de l'autre. Ils valent
+      d'être connus pour les deux cas où il le faut&nbsp;: le scan d'un texte
+      très petit, qui veut plus de détail, et une forme que vous allez découper
+      sur une machine, qui en veut d'ordinaire moins.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce que vous obtenez, et ce qu'on en fait</h2>
+    <p>
+      Un fichier avec un seul <code>&lt;path&gt;</code> dedans. Les contours
+      tournent dans un sens et les trous qu'ils enferment dans l'autre, et
+      c'est ce qui permet à une forme percée de quarante trous d'être un seul
+      élément sans règle de remplissage à régler &mdash; si bien qu'Illustrator,
+      Inkscape, Figma, un navigateur et la plupart des logiciels de découpe le
+      lisent tous de la même façon.
+    </p>
+
+    <figure class="shot">
+      <img src="/screens/trace-an-image-into-an-svg/save.webp" loading="lazy" decoding="async"
+           alt="La dernière étape&nbsp;: combien de formes et de points le dessin contient, sa taille, et le bouton de téléchargement.">
+      <figcaption>
+        Le compte vaut un coup d'œil avant de télécharger. Un dessin fait des
+        dizaines ou des centaines de points&nbsp;; des milliers veulent dire que
+        l'image était une photographie.
+      </figcaption>
+    </figure>
+
+    <p>
+      Faire le chemin inverse &mdash; un SVG que vous avez déjà, et un PNG dont
+      vous avez besoin &mdash; est <a href="../convertir-un-svg-en-png/">une
+      autre tâche, avec son propre guide</a>. Rien dans la vectorisation n'est
+      réversible&nbsp;: le SVG qui sort d'ici est un nouveau dessin de la
+      forme, pas l'image dont il a été fait.
+    </p>
+  </section>

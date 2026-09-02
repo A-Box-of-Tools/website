@@ -1,0 +1,261 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> 이미지 고르기</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">빼기</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> 무엇이 형태인지 알려 주기</h2>
+
+    <p class="card-lede">
+      윤곽 따기에는 픽셀당 1비트가 필요합니다. 안이냐, 밖이냐. 그것을 정하는
+      방법은 두 가지이고, 맞는 이미지가 다릅니다. 흰 종이에 그린 그림은
+      <strong>밝고 어두움</strong>으로 갈립니다. 물건 사진은 그렇지 않습니다. 짙은
+      회색 돌 위의 짙은 붉은 상은 어두운 것 위의 어두운 것이라 밝기로는 갈라지지
+      않습니다. 그런 사진에는 <strong>피사체</strong>가 맞습니다. 이미지
+      가장자리에서 배경이 무엇인지 알아내고, 배경이 아닌 것을 전부 남깁니다.
+    </p>
+
+    <div class="option-row">
+      <label for="find">찾을 것</label>
+      <select id="find">
+        <option value="threshold">밝고 어두움 &mdash; 그림, 로고, 스캔</option>
+        <option value="subject">피사체 &mdash; 물건 하나를 찍은 사진</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">밝음이 어두움이 되는 지점</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          대신 계산하기</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">피사체로 칠 정도</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">그림자 속으로 따라갈 거리</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">틈 메우기</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          속을 꽉 채우기</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          작은 조각도 남기기</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          가장자리에서 배경 배우기</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        뒤집기 &mdash; 밝은 쪽을 따기</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> 윤곽선을 확인하고 틀린 곳 고치기</h2>
+
+    <p class="card-lede">
+      빨간 선이 지금의 윤곽선이고, 그것이 나온 픽셀 위에 겹쳐 그려집니다. 이
+      문제를 판가름할 수 있는 곳은 거기뿐입니다. 윤곽선이 맞는지 틀린지는 그
+      픽셀에 대해서만 정해지고 다른 무엇과도 무관하니까요. 어느 쪽 그림이든 끌면
+      둘 다 움직이고, 휠을 굴리면 확대되고, 있으면 안 되는 것은 클릭하면 됩니다.
+      클릭 한 번이 그 색의 덩어리 전체를 잡으니 가리키는 것은 픽셀이 아니라
+      형태입니다. 다시 클릭하면 돌아옵니다.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">이미지</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="이미지. 따낸 윤곽선이 위에 겹쳐 그려져 있습니다. 끌어서 이동, 휠로 확대, 부분을 클릭해서 빼기."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="따낸 그림. 끌어서 이동, 휠로 확대, 부분을 클릭해서 빼기."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">확대</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> 맞추기</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">보기</label>
+        <select id="show">
+          <option value="picture">이미지</option>
+          <option value="mask">따는 쪽이 받은 것</option>
+          <option value="measured">잰 것</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          윤곽선을 위에 그리기</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">클릭 한 번이 잡는 것</label>
+        <select id="wand-mode">
+          <option value="colour">그 색 전부</option>
+          <option value="shape">붙어 있는 것 전부</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">비슷한 색으로 칠 범위</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          클릭으로 '이건 배경'이라고 알려 주기</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>되돌리기</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>전부 되돌리기</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>선을 얼마나 매끄럽게</h2></summary>
+      <p class="fold-note">
+        픽셀 계단이 곡선이 되는 방식은 두 숫자가 정합니다. 대부분의 이미지에서는
+        둘 다 손댈 필요가 없고, 필요할 때를 위해 둘 다 알아 둘 만합니다.
+      </p>
+      <div class="option-row">
+        <label for="detail">세부</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          형태별로 계산</label>
+      </div>
+      <p class="field-note">
+        선이 픽셀에서 얼마나 벗어나도 되는지. 1 아래에서는 아무 일도 일어나지
+        않는데, 계단 한 칸이 원래 속한 선에서 꼬박 한 픽셀 떨어져 있기 때문입니다.
+        2를 넘으면 진짜 곡선까지 깎아 먹기 시작합니다.
+      </p>
+      <div class="option-row">
+        <label for="corner">모서리 날카로움</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        굽이가 곡선으로 둥글려지지 않고 모서리로 남으려면 윤곽이 얼마나 꺾여야
+        하는지. 너무 낮으면 모든 흔들림이 모서리가 되고 원은 다각형으로
+        돌아옵니다.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> SVG 받기</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>SVG 내려받기</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">이 브라우저가 이미지를 디코딩하지 못했습니다.</span>
+    <span data-phrase="read.failed">그 파일을 열 수 없었습니다: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">윤곽을 따는 중인 이미지, {width} &times; {height} 픽셀</span>
+
+    <span data-phrase="threshold.auto">계산됨: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">조각 하나를 찾았습니다. 이미지의
+      {share}%입니다.</span>
+    <span data-phrase="subject.found.many">떨어진 조각 {islands}개를 찾아 가장 큰 것을
+      남겼습니다. 이미지의 {share}%입니다.</span>
+    <span data-phrase="subject.told">배경이라고 알려 주신 색 {count}가지를 쓰고
+      있습니다.</span>
+    <span data-phrase="subject.border">이미지 가장자리를 따라 난 띠에서 배경을 배우는
+      중입니다.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">형태별</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">정확히 그 색만</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">사용 안 함 &mdash; 클릭 한 번이 붙어 있는 형태
+      전체를 잡습니다</span>
+
+    <span data-phrase="hover.ink">형태의 일부: {size}픽셀, 이미지의 {share}%.
+      클릭하면 뺍니다.</span>
+    <span data-phrase="hover.paper">형태가 아님: {size}픽셀, 이미지의 {share}%.
+      클릭하면 채웁니다.</span>
+    <span data-phrase="hover.big">{size}픽셀 초과 &mdash; 움직이는 동안 윤곽을 그리기엔
+      너무 큽니다. 그래도 잡으려면 클릭하세요.</span>
+    <span data-phrase="hover.long">{size}픽셀. 움직이는 동안 그리기에는 가장자리가
+      너무 깁니다.</span>
+    <span data-phrase="hover.sample">이 색: 클릭하면 배경으로 치는 색에
+      더합니다.</span>
+    <span data-phrase="samples.clear.one">그 색 잊기</span>
+    <span data-phrase="samples.clear.many">그 {count}가지 색 잊기</span>
+
+    <span data-phrase="facts.line.one">형태 하나, 점 {points}개, {bytes}. {ms}&nbsp;ms
+      만에 땄습니다.</span>
+    <span data-phrase="facts.line.many">형태 {loops}개, 점 {points}개, {bytes}.
+      {ms}&nbsp;ms 만에 땄습니다.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">직접 고친 곳 {count}군데.</span>
+    <span data-phrase="facts.edits.many">직접 고친 곳 {count}군데.</span>
+    <span data-phrase="toobig.warning">결과가 떨어진 형태 {loops}개와 {bytes}의
+      그림으로 나왔습니다. 사진을 선화인 양 땄을 때 나오는 모습입니다. 파일은 여전히
+      내려받을 수 있지만 느리게 열리고 사진처럼 보이지 않을 것입니다. 대신 위의
+      <em>피사체</em>를 써 보세요.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

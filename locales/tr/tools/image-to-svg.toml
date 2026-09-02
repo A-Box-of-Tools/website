@@ -1,0 +1,292 @@
+#
+# Görselden SVG'ye - Türkçe.
+#
+# Overrides for tools/image-to-svg/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Görselden SVG'ye"
+heading = "Görselden&nbsp;SVG'ye <span class=\"h1-kw\">&mdash; bir logoyu, şablonu ya da silüeti eğrilere çevirin</span>"
+tagline = "Bir şekil, bir dış çizgi. Orada olmaması gerekeni gösterin, yeter."
+
+title = "Görselden SVG'ye &mdash; Bir Logoyu ya da Silüeti Vektöre Çevirin, Yüklemesiz"
+description = "Siyah beyaz bir görseli tarayıcınızda gerçek bir SVG dış çizgisine çevirin. Logolar, şablonlar, imzalar, çizgi çizimler ve silüetler istediğiniz boyuta büyüyen eğrilere dönüşür. Yanlışlıkla alınanı bir tıkla çıkarın. Hiçbir şey yüklenmez."
+og_title = "Bir logoyu ya da silüeti yüklemeden SVG'ye çevirin"
+og_description = "Büyütülmüş bir bit eşlem merdivendir; bir dış çizgi ise talimattır. Bu araç şekli bulur, üzerine eğriler oturtur ve orada olmaması gerekeni tıkla çıkarmanızı sağlar; hepsi kendi makinenizde."
+og_image_alt = "Görselden SVG'ye - bir logoyu, şablonu ya da silüeti eğrilere çevirin"
+
+pledge = """
+    Görseli diskinizden kendi tarayıcınız okur; <code>src/mask.js</code> onu
+    piksel başına bir bite indirir, <code>src/contour.js</code> şeklin kenarını
+    dolaşır ve <code>src/fit.js</code> üzerine eğriler oturtur &mdash;
+    okuyabileceğiniz altı yüz kadar satır; arkasında bir motor yok ve çalıştırmak
+    için indirilen hiçbir şey yok. Bu aracın hiçbir türde ağ özelliği yoktur:
+    getirecek bir şey yok, gönderecek bir şey yok ve olsaydı bile bu sayfanın
+    öbür ucunda bir çizimin gönderilebileceği bir sunucu yok."""
+
+live_hint = """
+      Bize güvenmek zorunda değilsiniz: geliştirici araçlarını açın, Ağ sekmesini
+      izleyin ve bir şeyi çevirin. Tek bir istek bile bir görsel, bir küçük
+      resim, bir dosya adı ya da seçtiğiniz şeyden tek bir bayt taşımıyor. Ya da
+      internet bağlantısını kesip yine de bir tanesini çevirin."""
+
+read_first = """
+, bir görselin piksel başına bir bite nasıl
+      indiği için <code>src/mask.js</code>, şeklin kenarındaki tur için
+      <code>src/contour.js</code>, bir merdivenin nasıl eğriye dönüştüğü için
+      <code>src/fit.js</code> ve ayrılacak açık-koyu olmadığında arka planın
+      nasıl bulunduğu için <code>src/subject.js</code>."""
+
+howto_heading = "Bir görsel, yüklenmeden nasıl SVG'ye çevrilir"
+
+card = """
+            Büyütülmüş bir bit eşlem merdivendir. Bir dış çizgi ise talimattır,
+            dolayısıyla her boyutta keskindir &mdash; elinizdeki bir fotoğraf
+            değil de bir şekilse."""
+
+[words]
+plural = "görselleriniz"
+choose = "bir görsel"
+analytics_extra = """, ve bu aracın
+  hesapladığı renklerden, boyutlardan ya da dosya adlarından hiçbiri"""
+
+[[facts]]
+text = "Yükleme yok"
+
+[[facts]]
+text = "Hesap yok"
+
+[[facts]]
+text = "Filigran yok"
+
+[[facts]]
+text = "Çevrimdışı çalışır"
+
+[[facts]]
+text = "Açık kaynak"
+
+[[privacy]]
+title = "Görselinizin gidecek yeri yok."
+body = """
+ Content-Security-Policy,
+      bu sayfanın bağlanabileceği her adresi sayar ve hiçbiri bu siteye ait
+      değildir. Burada dosyalarınızın toplanabileceği bir uç nokta yok; olsaydı
+      bile onları oraya gönderecek bir kod da yok."""
+
+[[privacy]]
+title = "Burada hiçbir şey bir şey getirmez."
+body = """
+ <code>src/</code> içinde
+      hiçbir yerde <code>fetch</code>, <code>XMLHttpRequest</code> ya da
+      <code>sendBeacon</code> yok. Aracın tamamı tek bir görselin pikselleri
+      üzerinde aritmetik: bir eşik, bulduğu şeyin kenarında bir tur ve biraz
+      eğri oturtma."""
+
+[[privacy]]
+title = "İndirilecek bir motor yok."
+body = """
+ Çevirme işi genellikle
+      başkasının programıdır ve web'de bu, ilk tıklamadan önce birkaç megabayt
+      derlenmiş kodun gelmesi demektir. Burada öyle bir şey yok. Tamamı bu
+      kaynaktan sunulan birkaç yüz satır sıradan JavaScript; sayfanın bir
+      bekleme sonrasında değil, açıldığı anda çalışmasının nedeni de bu."""
+
+[[privacy]]
+title = "Google'ın yüklediği ve verilmeyen şeyler."
+body = """
+ Reklam ve ölçüm
+      betikleri Google'dan, bağış düğmesi Buy Me a Coffee'den gelir. Hiçbirine
+      görselinizle ilgili hiçbir şey verilmez. Onu okuyan, eşikten geçiren ya da
+      çeviren her satır bu kaynaktan sunulur ve depoda listelidir."""
+
+[[privacy]]
+title = "Çevrimdışı çalışır."
+body = """
+ Ağı kesin; araç aynı kalır, çünkü
+      içinde hiçbir zaman bir ağ adımı olmadı. Bu, kanıtların en basiti."""
+
+[[howto]]
+title = "Görseli seçin."
+body = """
+ Bir logo, bir şablon, bir imza, bir kaşe,
+      taranmış bir çizim, bir silüet. İçinde belirgin bir şekil olan her şey
+      temiz çevrilir; bir odanın fotoğrafı çevrilmez ve bunun için sonda bir
+      sürpriz yerine aşağıda dürüst bir uyarı var. Dosya doğrudan diskinizden
+      okunur ve bu sırada hiçbir yere hiçbir şey gönderilmez."""
+
+[[howto]]
+title = "Şeklin ne olduğunu söyleyin."
+body = """
+ Kâğıt üzerindeki bir çizim
+      <strong>açık ve koyu</strong> ile ayrılır ve seviye sizin için hesaplanır.
+      Bir nesnenin fotoğrafı ayrılmaz &mdash; koyu gri taş üzerindeki koyu
+      kırmızı bir heykel, koyu üstüne koyudur ve hiçbir parlaklık ikisini
+      ayırmaz. O, görselin kenarı boyunca uzanan bir şeritten arka planın ne
+      olduğunu öğrenen ve ondan olmayan her şeyi tutan <strong>özne</strong>yi
+      ister."""
+
+[[howto]]
+title = "Ayarlara değil, kırmızı çizgiye bakın."
+body = """
+ Dış çizgi, geldiği
+      piksellerin üstüne çizilir; çünkü sorunun karara bağlanabileceği tek yer
+      orasıdır: bir dış çizgi o piksellere göre doğru ya da yanlıştır, başka
+      hiçbir şeye göre değil. İki görselden birini sürükleyin, ikisi birden
+      kayar; çizginin gerçekte ne yaptığını görecek kadar yakınlaştırmak için
+      tekerleği çevirin."""
+
+[[howto]]
+title = "Orada olmaması gerekeni tıklayıp çıkarın."
+body = """
+ Bir benek, bir zımba teli,
+      bir kaşe, bir alt yazı, bir gölge. Bir tıklama tek bir piksel değil, o
+      rengin tüm lekesini alır; yani bir şekli gösteriyorsunuz. Geri koymak için
+      yeniden tıklayın. Çevrili bir arka plan parçasına tıklamak ise onu
+      doldurur; delik olmaması gereken bir delik böyle kapanır."""
+
+[[howto]]
+title = "Yumuşatmayı yalnızca gerekirse ayarlayın."
+body = """
+ <em>Ayrıntı</em>, çizginin
+      sadeleştirilirken piksellerden ne kadar uzaklaşabileceğidir ve siz aksini
+      söylemedikçe şekil başına hesaplanır. <em>Köşe keskinliği</em>, bir
+      dönüşün yuvarlanmak yerine köşe olarak kalması için dış çizginin ne kadar
+      dönmesi gerektiğine karar verir. Çoğu görselde ikisine de dokunmak
+      gerekmez."""
+
+[[howto]]
+title = "SVG'yi alın."
+body = """
+ Tek dosya, tek
+      <code>&lt;path&gt;</code>, dert edilecek doldurma kuralı yok: dış çizgiler
+      bir yöne, delikler öbür yöne döner ve kırk delikli bir şekli tek bir öğe
+      yapan da budur. Illustrator'da, Inkscape'te, Figma'da, bir tarayıcıda ve
+      bir kesim makinesinde açılır."""
+
+[[faq]]
+q = "Görselim bir yere yükleniyor mu?"
+a = """
+        Hayır. Dosya kendi donanımınızda kendi tarayıcınız tarafından okunur, bu
+        kaynaktan sunulan birkaç yüz satır JavaScript tarafından çevrilir ve bir
+        indirme olarak geri verilir. Bu aracın hiçbir türde ağ özelliği yoktur
+        &mdash; hiçbir zaman bir şey getirmez, hiçbir zaman bir şey göndermez
+        &mdash; ve sayfanın <code>Content-Security-Policy</code>'si
+        bağlanabileceği her adresi sayar; hiçbiri bu siteye ait değildir."""
+
+[[faq]]
+q = "Fotoğrafımı SVG'ye çevirir mi?"
+a = """
+        İşe yarar biçimde çevirmez ve sayfa bunu indirdikten sonra keşfetmenize
+        bırakmak yerine söyler. Çevirme, benzer renkteki her lekeyi kendi başına
+        bir şekle dönüştürür; bu yüzden bir fotoğraf binlerce üst üste binmiş
+        leke ve JPEG'den kat kat büyük, yavaş açılan ve fotoğrafa benzemeyen bir
+        dosya olarak döner. İyi çevrilen, içinde bir <em>şekil</em> olan
+        görseldir: bir logo, bir şablon, bir imza, bir çizgi çizim, bir silüet.
+        Tek bir nesnenin fotoğrafı içinse <em>özne</em> ayarı onu tek bir dolu
+        silüet olarak keser; bu farklı bir iştir ve gerçekten işe yarar."""
+
+[[faq]]
+q = "Şekli bulmanın iki yolu arasındaki fark ne?"
+a = """
+        Sordukları soru. <strong>Açık ve koyu</strong>, her pikselin bir
+        seviyeden koyu olup olmadığını sorar; bu, kâğıt üzerindeki mürekkep için
+        tam doğru, özne ile arka plan eşit koyulukta olduğunda ise işe yaramaz.
+        <strong>Özne</strong> ise arka planın ne olduğunu sorar &mdash; bunu
+        görselin kenarı boyunca uzanan bir şeritten öğrenir, her pikseli ona
+        göre ölçer ve ondan olmayan en büyük şeyi tutar. Bu, az çok düz bir arka
+        plan önündeki bir nesnenin fotoğrafında işe yarar; öznenin üç kenardan
+        taştığı kadar sıkı kırpılmış bir görselde ise başarısız olur, çünkü
+        öğrendiği kenarlar o zaman öznenin kendisidir. Böyle olduğunda arka
+        planı kendiniz gösterebilirsiniz."""
+
+[[faq]]
+q = "Çevrilen şekilde neden delikler var ya da ince kısımlar neden kayboluyor?"
+a = """
+        Çünkü görsel piksel başına bir bite indiği anda öyleydi. Görmek için
+        <em>çeviricinin aldığı</em>nı açın: on iki piksel kadarın altında bir
+        harfin gözü çoktan dolmuş, dikey çizgileri çoktan birleşmiştir ve hiçbir
+        çevirme, orada olmayan bir deliği geri getiremez. Çareler daha öncede
+        &mdash; eşiği kaydırın ya da daha büyük bir taramadan başlayın.
+        <em>Özne</em> kipinde <em>şu kadara kadar boşlukları kapat</em> küçük
+        delikleri kapatır; <em>içini tamamen doldur</em> ise arka planın
+        görselin kenarından ulaşamadığı her deliği kapatır."""
+
+[[faq]]
+q = "Yanlış yaptığı kısımları düzeltebilir miyim?"
+a = """
+        Evet; üçüncü adımın çoğu bunun için. Çizimde olmaması gereken herhangi
+        bir şeye tıklayın, kaybolur; yeniden tıklayın, geri gelir. Bir tıklama o
+        rengin tüm lekesini alır; bu yüzden tek tıklama bir pikseli değil, koca
+        bir beneği ya da koca bir kaşeyi kaldırır. Çevrili bir arka plan
+        parçasına tıklamak onu doldurur. Düzeltmeler eşikten ayrı tutulur;
+        dolayısıyla sonradan kaydırıcıyı oynatmak onları atmaz."""
+
+[[faq]]
+q = "SVG ne kadar büyük olur?"
+a = """
+        Bir şekil için görselden küçük: çevrilmiş bir silüet genellikle bir ila
+        beş kilobayttır, bir logo birkaç kilobayt daha fazla. Sayfa indirmenin
+        yanında tam sayıyı söyler. Bir fotoğraf içinse devasa olur; bu da o
+        dosya için yanlış aracın bu olduğunun en açık işaretidir &mdash; ve
+        yaklaşık bin ayrı şekilden sonra sayfa çizmeyi bırakıp bunu söyler."""
+
+[[faq]]
+q = "Renkli çevirir mi?"
+a = """
+        Hayır. Bu araç tek renkte tek şekil yapar ki kötü bir fotokopi yerine
+        bir çizim olarak çıkan durum budur. Renkli çevirmek, birkaç renge
+        indirgeyip her birini kendi katmanı olarak çevirmek demektir ve sonuç,
+        bunu isteyenlerin çoğunu hayal kırıklığına uğratır. Renk gerekiyorsa
+        şekli burada çevirin ve çizim programınızda doldurun."""
+
+[[faq]]
+q = "Sonrasında SVG ile ne yapabilirim?"
+a = """
+        Bulanıklaşmadan istediğiniz boyuta büyütün, tek bir öznitelikle rengini
+        değiştirin, canlandırın, yazdırın ya da bir kesim makinesine veya lazere
+        gönderin. Yanlış ayarlanacak doldurma kuralı olmayan tek bir
+        <code>&lt;path&gt;</code>; dolayısıyla Illustrator, Inkscape, Figma, bir
+        tarayıcı ve çoğu CNC yazılımı onu aynı biçimde okur."""
+
+[[faq]]
+q = "Görsel boyutunda bir sınır var mı?"
+a = """
+        Makinenizin sınırı var, bizim değil. 300&nbsp;dpi'de taranmış bir A4
+        sayfası &mdash; yaklaşık dokuz megapiksel &mdash; saniyenin bir
+        kesrinde çevrilir. Daha büyük görseller de çalışır; yalnızca daha uzun
+        sürer ve iş bir yerlerdeki bir kuyrukta değil, kendi işlemcinizde
+        olur."""
+
+[[faq]]
+q = "Ücretsiz mi, hesap gerekiyor mu?"
+a = """
+        Ücretsiz; hesap, giriş, deneme süresi ya da filigran yok. Dosya
+        sayısında ya da boyutunda da sınır yok, çünkü bunların bedelini ödeyen
+        bir sunucu yok &mdash; iş kendi makinenizde olur. Sitede reklam var ve
+        masrafı o karşılıyor; reklamlara dosyalarınızla ilgili hiçbir şey
+        verilmez."""
+
+[[faq]]
+q = "Çevrimdışı çalışır mı?"
+a = """
+        Evet. Sayfayı bir kez yükleyin, sonra interneti kesin; çalışmaya devam
+        eder. Bu aynı zamanda hiçbir şeyin yüklenmediğini kanıtlamanın en basit
+        yolu: görselinizi çevrilmek üzere uzağa gönderen bir araç, kabloyu
+        çektiğiniz anda dururdu."""
+
+[schema]
+description = "Siyah beyaz bir görseli tarayıcıda SVG dış çizgisine çevirin. Açık ve koyu ile ayırır ya da özneyi arka planından bulur, şekle eğriler oturtur ve çevrilmemesi gereken her şeyi tıkla çıkarmanızı sağlar. Hiçbir şey yüklenmez."
+features = [
+  "Bir bit eşlem şeklini gerçek kübik eğrilere çevirir, her boyutta keskin",
+  "Şekli bulmanın iki yolu: açık ve koyu ile ya da arka plana karşı özne ile",
+  "Bir parçaya tıklamak onu dışarıda bırakır, çevrili bir boşluğa tıklamak onu doldurur",
+  "Dış çizgi, geldiği piksellerin üstüne çizilir; on altı kata kadar yakınlaştırılır",
+  "Delikler ve iç içe delikler, ayarlanacak doldurma kuralı olmadan tek bir yol olarak çıkar",
+  "Köşe ve yumuşatma eşikleri, siz aksini söylemedikçe şekil başına hesaplanır",
+  "Bir görsel çizgi çizim değil de fotoğraf olduğunda uyarır",
+  "Çevrimdışı çalışır; yükleme yok, hesap yok, indirilecek motor yok",
+]
+
+[picker]
+title = "Bir görseli buraya bırakın"
+hint = "ya da göz atmak için tıklayın &mdash; PNG, JPEG, WebP, GIF, AVIF"

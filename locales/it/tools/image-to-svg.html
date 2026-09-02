@@ -1,0 +1,266 @@
+<main id="main">
+  <!-- Step 1 &mdash; the picture -->
+  <section class="card">
+    <h2><span class="step">1</span> Scegli l'immagine</h2>
+
+    <!--
+      A real <label> drives the file picker natively. Calling .click() on a
+      display:none input is refused by Safari and some Chrome configurations,
+      so the input stays in the layout: visually hidden, still focusable, and
+      reachable by keyboard. There is no JavaScript in this path at all.
+    -->
+    {% include "partials/file-picker.html" %}
+
+    <div id="loaded" class="toolbar" hidden>
+      <span id="loaded-name" class="count"></span>
+      <div class="toolbar-actions">
+        <button type="button" id="clear-image" class="ghost danger">Toglila</button>
+      </div>
+    </div>
+
+    <p id="load-error" class="error" role="alert" hidden></p>
+  </section>
+
+  <!-- Step 2 &mdash; which pixels are the shape -->
+  <section class="card" id="find-card">
+    <h2><span class="step">2</span> Di' che cos'è la forma</h2>
+
+    <p class="card-lede">
+      Il ricalco ha bisogno di un bit per pixel &mdash; dentro, o fuori. Ci
+      sono due modi per deciderlo, e vanno bene per immagini diverse. Un
+      disegno su carta bianca si separa per <strong>chiaro e scuro</strong>. La
+      foto di un oggetto no: una figura rosso scuro su pietra grigio scuro è
+      scuro su scuro, e nessuna luminosità le separa. Quella vuole <strong>il
+      soggetto</strong>, che ricava che cos'è lo sfondo dai bordi dell'immagine
+      e tiene tutto quello che non lo è.
+    </p>
+
+    <div class="option-row">
+      <label for="find">Cosa cercare</label>
+      <select id="find">
+        <option value="threshold">Chiaro e scuro &mdash; un disegno, un logo, una scansione</option>
+        <option value="subject">Il soggetto &mdash; la fotografia di una cosa sola</option>
+      </select>
+    </div>
+
+    <div class="option-group" id="threshold-group">
+      <div class="option-row">
+        <label for="threshold">Dove il chiaro diventa scuro</label>
+        <input type="range" id="threshold" min="1" max="254" value="127">
+        <output id="threshold-value" for="threshold"></output>
+      </div>
+      <div class="option-row">
+        <label class="check"><input type="checkbox" id="threshold-auto" checked>
+          Calcolalo per me</label>
+      </div>
+    </div>
+
+    <div class="option-group" id="subject-group" hidden>
+      <div class="option-row">
+        <label for="sensitivity">Quanto conta come soggetto</label>
+        <input type="range" id="sensitivity" min="-60" max="60" value="0">
+        <output id="sensitivity-value" for="sensitivity"></output>
+      </div>
+      <div class="option-row">
+        <label for="reach">Fin dove seguirlo nell'ombra</label>
+        <input type="range" id="reach" min="20" max="100" value="45">
+        <output id="reach-value" for="reach"></output>
+      </div>
+      <div class="option-row">
+        <label for="seal">Chiudi i vuoti fino a</label>
+        <input type="range" id="seal" min="0" max="6" value="2">
+        <output id="seal-value" for="seal"></output>
+      </div>
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="solid" checked>
+          Riempilo tutto</label>
+        <label class="check"><input type="checkbox" id="keep-all">
+          Tieni anche i pezzi più piccoli</label>
+        <label class="check"><input type="checkbox" id="use-border" checked>
+          Impara lo sfondo dai bordi</label>
+      </div>
+      <p class="field-note" id="subject-note"></p>
+    </div>
+
+    <div class="option-row">
+      <label class="check"><input type="checkbox" id="invert">
+        Scambiali &mdash; ricalca invece la metà chiara</label>
+    </div>
+  </section>
+
+  <!-- Step 3 &mdash; look at the outline, and correct it -->
+  <section class="card" id="work-card">
+    <h2><span class="step">3</span> Controlla il contorno e sistema quello che ha sbagliato</h2>
+
+    <p class="card-lede">
+      La linea rossa è il contorno così com'è adesso, disegnato sopra i pixel da
+      cui è venuto &mdash; l'unico posto in cui la questione si può decidere,
+      perché un contorno è giusto o sbagliato rispetto a quei pixel e a
+      nient'altro. Trascina una delle due immagini per spostarle entrambe, gira
+      la rotellina per ingrandire, e clicca qualsiasi cosa che non dovrebbe
+      esserci. Un clic prende tutta la macchia di quel colore, quindi stai
+      indicando una forma e non un pixel; cliccala di nuovo per rimetterla.
+    </p>
+
+    <div class="stages waiting" id="stages">
+      <div class="stage-wrap">
+        <h3 class="stage-title">L'immagine</h3>
+        <div class="stage" id="stage-picture" role="group"
+             aria-label="L'immagine, con il contorno ricalcato disegnato sopra. Trascina per spostare, rotellina per ingrandire, clic su una parte per lasciarla fuori."></div>
+      </div>
+      <div class="stage-wrap">
+        <h3 class="stage-title">L'SVG</h3>
+        <div class="stage" id="stage-svg" role="group"
+             aria-label="Il disegno ricalcato. Trascina per spostare, rotellina per ingrandire, clic su una parte per lasciarla fuori."></div>
+      </div>
+    </div>
+
+    <p id="hint" class="hint" role="status" aria-live="polite"></p>
+
+    <div class="controls">
+      <div class="option-row">
+        <label for="zoom">Zoom</label>
+        <input type="range" id="zoom" min="-5" max="4" step="0.05" value="0">
+        <output id="zoom-value" for="zoom"></output>
+        <label class="check"><input type="checkbox" id="fit" checked> Adatta</label>
+      </div>
+
+      <div class="option-row">
+        <label for="show">Mostra</label>
+        <select id="show">
+          <option value="picture">L'immagine</option>
+          <option value="mask">Cosa ha ricevuto il ricalco</option>
+          <option value="measured">Cosa ha misurato</option>
+        </select>
+        <label class="check"><input type="checkbox" id="show-outline" checked>
+          Disegna il contorno sopra</label>
+      </div>
+
+      <div class="option-row">
+        <label for="wand-mode">Un clic prende</label>
+        <select id="wand-mode">
+          <option value="colour">Tutto quello di quel colore</option>
+          <option value="shape">Tutto quello che ci è attaccato</option>
+        </select>
+        <label for="wand-tolerance" id="tolerance-label">Abbastanza vicino</label>
+        <input type="range" id="wand-tolerance" min="0" max="120" value="32">
+        <output id="tolerance-value" for="wand-tolerance"></output>
+      </div>
+
+      <div class="option-row wrap">
+        <label class="check"><input type="checkbox" id="sample-background">
+          Il clic dice invece &laquo;questo è sfondo&raquo;</label>
+        <button type="button" id="clear-samples" class="ghost" hidden></button>
+        <button type="button" id="undo" class="ghost" disabled>Annulla</button>
+        <button type="button" id="reset-edits" class="ghost danger" disabled>Annullale tutte</button>
+      </div>
+    </div>
+
+    <details class="card-note">
+      <summary><h2>Quanto deve essere levigata la linea</h2></summary>
+      <p class="fold-note">
+        Due numeri decidono come la scala di pixel diventa curve. Nessuno dei
+        due va toccato per la maggior parte delle immagini, ed entrambi vale la
+        pena conoscerli per quando serve.
+      </p>
+      <div class="option-row">
+        <label for="detail">Dettaglio</label>
+        <input type="range" id="detail" min="0.5" max="3.5" step="0.1" value="1.5">
+        <output id="detail-value" for="detail"></output>
+        <label class="check"><input type="checkbox" id="detail-auto" checked>
+          Calcolalo per forma</label>
+      </div>
+      <p class="field-note">
+        Quanto la linea può allontanarsi dai pixel. Sotto circa uno non fa
+        niente del tutto, perché un gradino della scala sta un pixel intero
+        fuori dalla linea a cui appartiene; sopra circa due comincia a mangiarsi
+        curve vere.
+      </p>
+      <div class="option-row">
+        <label for="corner">Nettezza degli angoli</label>
+        <input type="range" id="corner" min="8" max="110" step="1" value="65">
+        <output id="corner-value" for="corner"></output>
+      </div>
+      <p class="field-note">
+        Quanto il contorno deve girare perché quella svolta resti un angolo
+        invece di venire arrotondata in una curva. Troppo basso, e ogni
+        tremolio è un angolo e un cerchio torna come un poligono.
+      </p>
+    </details>
+  </section>
+
+  <!-- Step 4 &mdash; the file -->
+  <section class="card" id="save-card" inert>
+    <h2><span class="step">4</span> Prendi l'SVG</h2>
+
+    <p id="facts" class="facts"></p>
+
+    <div class="toolbar-actions">
+      <a id="download" class="primary" download hidden>Scarica l'SVG</a>
+    </div>
+
+    <p id="too-big" class="field-note" hidden></p>
+  </section>
+
+  <!--
+    Every sentence the JavaScript puts on screen, kept in the markup so it is
+    translated with the rest of the page rather than shipping in English at
+    fifteen addresses. shared/js/phrases.js reads them back; a {name} is filled
+    in by the caller.
+  -->
+  <div id="phrases" hidden aria-hidden="true">
+    <span data-phrase="read.nodecode">questo browser non è riuscito a decodificare l'immagine.</span>
+    <span data-phrase="read.failed">Quel file non si è potuto aprire: {why}</span>
+    <span data-phrase="loaded.name">{name} &mdash; {width} &times; {height}</span>
+    <span data-phrase="picture.alt">L'immagine che viene ricalcata, {width} per {height} pixel</span>
+
+    <span data-phrase="threshold.auto">calcolato: {level}</span>
+    <span data-phrase="threshold.set">{level}</span>
+    <span data-phrase="subject.found.one">Trovato un pezzo, che è il {share}%
+      dell'immagine.</span>
+    <span data-phrase="subject.found.many">Trovati {islands} pezzi separati e tenuto il
+      più grande, che è il {share}% dell'immagine.</span>
+    <span data-phrase="subject.told">In uso i {count} colori che hai indicato come
+      sfondo.</span>
+    <span data-phrase="subject.border">Lo sfondo viene imparato da una fascia lungo il
+      bordo dell'immagine.</span>
+
+    <span data-phrase="zoom.times">{zoom}&times;</span>
+    <span data-phrase="detail.auto">per forma</span>
+    <span data-phrase="detail.set">{value}</span>
+    <span data-phrase="corner.degrees">{value}&deg;</span>
+    <span data-phrase="tolerance.exact">esattamente quel colore</span>
+    <span data-phrase="tolerance.near">&plusmn;{value}</span>
+    <span data-phrase="tolerance.joined">non usato &mdash; un clic prende tutta la
+      forma attaccata</span>
+
+    <span data-phrase="hover.ink">Parte della forma: {size} pixel, il {share}%
+      dell'immagine. Clicca per lasciarla fuori.</span>
+    <span data-phrase="hover.paper">Non fa parte della forma: {size} pixel, il {share}%
+      dell'immagine. Clicca per riempirlo.</span>
+    <span data-phrase="hover.big">Oltre {size} pixel &mdash; troppo per tracciare il
+      contorno mentre ti muovi. Clicca per prenderlo comunque.</span>
+    <span data-phrase="hover.long">{size} pixel. Il bordo è troppo lungo per essere
+      disegnato mentre ti muovi.</span>
+    <span data-phrase="hover.sample">Questo colore: clicca per aggiungerlo a quello che
+      conta come sfondo.</span>
+    <span data-phrase="samples.clear.one">Dimentica quel colore</span>
+    <span data-phrase="samples.clear.many">Dimentica quei {count} colori</span>
+
+    <span data-phrase="facts.line.one">Una forma, {points} punti, {bytes}. Ricalcata in
+      {ms}&nbsp;ms.</span>
+    <span data-phrase="facts.line.many">{loops} forme, {points} punti, {bytes}.
+      Ricalcate in {ms}&nbsp;ms.</span>
+    <!-- Two keys rather than one with an "s" appended: the plural of a noun is
+         not a suffix in every language, and a sentence assembled by adding one
+         can only be right in the language it was assembled for. -->
+    <span data-phrase="facts.edits.one">{count} correzione tua.</span>
+    <span data-phrase="facts.edits.many">{count} correzioni tue.</span>
+    <span data-phrase="toobig.warning">Sono venute fuori {loops} forme separate e
+      {bytes} di disegno, che è come appare una fotografia quando viene ricalcata come
+      se fosse un disegno al tratto. Il file resta tuo da scaricare, ma si aprirà
+      lentamente e non somiglierà alla fotografia. Prova invece
+      <em>il soggetto</em>, qui sopra.</span>
+    <span data-phrase="save.name">{stem}.svg</span>
+  </div>
+</main>

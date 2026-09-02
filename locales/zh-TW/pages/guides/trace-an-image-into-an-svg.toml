@@ -1,0 +1,16 @@
+#
+# Guide: tracing an image into an SVG - Traditional Chinese.
+#
+
+nav = "把圖片描成 SVG"
+title = "怎麼把圖片描成 SVG——不用上傳"
+description = "在瀏覽器裡把 logo、鏤空模板、簽名或剪影變成真正的向量輪廓。哪些圖片描得好，哪些永遠描不好，以及怎麼改掉描圖器弄錯的地方。"
+heading = "怎麼把圖片描成 SVG"
+lede = """
+    放大的 PNG 是一段樓梯。SVG 是繪圖指令，所以任何尺寸都銳利——把前者變成\
+    後者，叫描圖。它在形狀上效果極好，在照片上效果很差，動手之前值得先弄清\
+    這個區別。"""
+updated = "2026年8月31日"
+og_title = "在瀏覽器裡把 logo 或剪影描成 SVG"
+og_description = "哪些圖片會變成乾淨的曲線，哪些會變成四千個色塊，以及怎麼把不該有的部分點掉。什麼都不上傳。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

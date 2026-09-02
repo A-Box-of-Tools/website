@@ -1,0 +1,302 @@
+#
+# Imagem para SVG - Brazilian Portuguese.
+#
+# Overrides for tools/image-to-svg/tool.toml. Only words: the slug, the
+# category, the icon, the CSP and the list of shared parts stay where they are.
+#
+
+name = "Imagem para SVG"
+heading = "Imagem&nbsp;para&nbsp;SVG <span class=\"h1-kw\">&mdash; vetorizar um logotipo, um estêncil ou uma silhueta em curvas</span>"
+tagline = "Uma forma, um contorno. Aponte para o que não deveria estar ali."
+
+title = "Imagem para SVG &mdash; vetorizar um logotipo ou uma silhueta, sem upload"
+description = "Vetorize uma imagem em preto e branco num contorno SVG de verdade, no seu navegador. Logotipos, estênceis, assinaturas, desenhos a traço e silhuetas viram curvas que você pode ampliar a qualquer tamanho. Um clique tira o que o traçado pegou por engano. Nada é enviado."
+og_title = "Transformar um logotipo ou uma silhueta em SVG, sem enviar nada"
+og_description = "Um bitmap ampliado é uma escada; um contorno é uma instrução. Isto acha a forma, ajusta curvas a ela e deixa você tirar com um clique o que não deveria estar ali, tudo na sua própria máquina."
+og_image_alt = "Imagem para SVG - vetorizar um logotipo, um estêncil ou uma silhueta em curvas"
+
+pledge = """
+    O seu próprio navegador lê a imagem do disco, <code>src/mask.js</code> a
+    reduz a um bit por pixel, <code>src/contour.js</code> percorre a borda da
+    forma e <code>src/fit.js</code> ajusta curvas a ela &mdash; umas
+    seiscentas linhas que você pode ler, sem motor nenhum por trás e sem nada
+    para baixar para rodá-las. Esta ferramenta não tem função de rede de
+    espécie alguma: nada para buscar, nada para enviar, e nenhum servidor do
+    outro lado desta página para o qual mandar um desenho, mesmo que
+    houvesse."""
+
+live_hint = """
+      Não acredite na nossa palavra: abra o DevTools, fique de olho na aba
+      Rede e vetorize alguma coisa. Nenhuma requisição carrega uma imagem, uma
+      miniatura, um nome de arquivo ou um byte do que você escolheu. Ou
+      desligue a internet e vetorize uma mesmo assim."""
+
+read_first = """
+, <code>src/mask.js</code> para ver como
+      uma imagem vira um bit por pixel, <code>src/contour.js</code> para o
+      percurso pela borda da forma, <code>src/fit.js</code> para ver como uma
+      escada vira curvas, e <code>src/subject.js</code> para ver como o fundo
+      é descoberto quando não há claro e escuro para separar."""
+
+howto_heading = "Como vetorizar uma imagem em SVG sem enviá-la"
+
+card = """
+            Um bitmap ampliado é uma escada. Um contorno é uma instrução, então
+            é nítido em qualquer tamanho &mdash; se o que você tem é uma forma,
+            e não uma foto."""
+
+[words]
+plural = "imagens"
+choose = "uma imagem"
+analytics_extra = """, e nenhuma das
+  cores, dimensões ou nomes de arquivo que esta ferramenta calcula"""
+
+[[facts]]
+text = "Sem upload"
+
+[[facts]]
+text = "Sem conta"
+
+[[facts]]
+text = "Sem marca d'água"
+
+[[facts]]
+text = "Funciona offline"
+
+[[facts]]
+text = "Código aberto"
+
+[[privacy]]
+title = "Sua imagem não tem para onde ir."
+body = """
+ A
+      Content-Security-Policy nomeia cada endereço que esta página pode
+      contatar, e nenhum deles pertence a este site. Não existe aqui um ponto
+      onde seus arquivos pudessem ser recolhidos, nem nada no código que os
+      mandaria para lá se existisse."""
+
+[[privacy]]
+title = "Nada aqui busca coisa alguma."
+body = """
+ Não há
+      <code>fetch</code>, <code>XMLHttpRequest</code> nem
+      <code>sendBeacon</code> em lugar nenhum de <code>src/</code>. A
+      ferramenta inteira é aritmética sobre os pixels de uma única imagem: um
+      limiar, um percurso pela borda do que ela encontrou e um pouco de ajuste
+      de curvas."""
+
+[[privacy]]
+title = "Não há motor nenhum para baixar."
+body = """
+ Vetorizar
+      costuma ser o programa de outra pessoa, e na web isso significa vários
+      megabytes de código compilado chegando antes do primeiro clique. Aqui não
+      há nada disso. A coisa toda são algumas centenas de linhas de JavaScript
+      comum servidas desta origem, o que também é o motivo de a página
+      funcionar no instante em que abre, e não depois de uma espera."""
+
+[[privacy]]
+title = "O que o Google carrega, e o que não recebe."
+body = """
+ Os scripts de
+      anúncio e medição vêm do Google, e o botão de doação do Buy Me a Coffee.
+      Nenhum deles recebe coisa alguma sobre a sua imagem. Cada linha que a lê,
+      aplica o limiar ou a vetoriza é servida desta origem e está listada no
+      repositório."""
+
+[[privacy]]
+title = "Funciona offline."
+body = """
+ Desligue a rede e a ferramenta continua
+      igual, porque nunca houve uma etapa de rede nela. É a prova mais simples
+      de todas."""
+
+[[howto]]
+title = "Escolha a imagem."
+body = """
+ Um logotipo, um estêncil, uma assinatura,
+      um carimbo, um desenho escaneado, uma silhueta. Qualquer coisa com uma
+      forma clara vetoriza bem; a foto de um cômodo, não, e mais abaixo há um
+      aviso claro em vez de uma surpresa no fim. O arquivo é lido direto do seu
+      disco e nada é enviado a lugar nenhum enquanto isso."""
+
+[[howto]]
+title = "Diga o que é a forma."
+body = """
+ Um desenho no papel se separa por
+      <strong>claro e escuro</strong>, e o nível é calculado para você. A foto
+      de um objeto, não &mdash; uma figura vermelho-escura sobre pedra
+      cinza-escura é escuro sobre escuro, e nenhum brilho separa os dois. Essa
+      quer <strong>o assunto</strong>, que aprende o que é o fundo numa faixa em
+      volta da borda da imagem e guarda tudo o que não for ele."""
+
+[[howto]]
+title = "Olhe a linha vermelha, não as configurações."
+body = """
+ O contorno é desenhado por cima dos
+      pixels de onde ele veio, porque esse é o único lugar em que a questão
+      pode ser resolvida: um contorno está certo ou errado em relação a esses
+      pixels e a mais nada. Arraste qualquer uma das imagens para mover as duas,
+      e role a rodinha para aproximar o bastante para ver o que a linha está
+      fazendo de verdade."""
+
+[[howto]]
+title = "Tire com um clique o que não deveria estar ali."
+body = """
+ Um cisco, um grampo, um carimbo, uma
+      legenda, uma sombra. Um clique pega a mancha inteira daquela cor, e não
+      um pixel, então você está apontando para uma forma; clique de novo para
+      devolvê-la. Clicar num pedaço de fundo cercado o preenche, e é assim que
+      um buraco que não deveria ser buraco se fecha."""
+
+[[howto]]
+title = "Ajuste a suavização só se precisar."
+body = """
+ <em>Detalhe</em> é quanto a linha pode se
+      afastar dos pixels ao ser simplificada, e é calculado por forma, a menos
+      que você diga o contrário. <em>Nitidez dos cantos</em> decide quanto o
+      contorno precisa virar para que essa curva fique como canto em vez de ser
+      arredondada. A maioria das imagens não precisa mexer em nenhum dos
+      dois."""
+
+[[howto]]
+title = "Pegue o SVG."
+body = """
+ Um arquivo, um único
+      <code>&lt;path&gt;</code>, sem regra de preenchimento para se
+      preocupar: os contornos giram num sentido e os buracos no outro, e é
+      isso que faz de uma forma com quarenta buracos um único elemento. Ele
+      abre no Illustrator, no Inkscape, no Figma, num navegador e numa máquina
+      de corte."""
+
+[[faq]]
+q = "Minha imagem é enviada para algum lugar?"
+a = """
+        Não. O arquivo é lido pelo seu próprio navegador no seu próprio
+        hardware, vetorizado por algumas centenas de linhas de JavaScript
+        servidas desta origem, e devolvido como download. Esta ferramenta não
+        tem função de rede de espécie alguma &mdash; nunca busca nada e nunca
+        envia nada &mdash; e a <code>Content-Security-Policy</code> da página
+        nomeia cada endereço que ela pode contatar, e nenhum deles pertence a
+        este site."""
+
+[[faq]]
+q = "Isso vai transformar minha foto em SVG?"
+a = """
+        Não de um jeito útil, e a página vai dizer isso em vez de deixar você
+        descobrir depois do download. Vetorizar transforma cada mancha de cor
+        parecida numa forma própria, então uma foto volta como milhares
+        de borrões sobrepostos e um arquivo muitas vezes maior que o JPEG, que
+        abre devagar e não parece a foto. O que vetoriza bem é uma imagem
+        com uma <em>forma</em> dentro: um logotipo, um estêncil, uma
+        assinatura, um desenho a traço, uma silhueta. Para a foto de um
+        único objeto, a configuração <em>o assunto</em> vai recortá-lo como uma
+        silhueta única e sólida, o que é outra coisa, e genuinamente útil."""
+
+[[faq]]
+q = "Qual é a diferença entre os dois jeitos de achar a forma?"
+a = """
+        A pergunta que eles fazem. <strong>Claro e escuro</strong> pergunta se
+        cada pixel é mais escuro que um nível, o que é exatamente certo para
+        tinta no papel e inútil quando o assunto e o fundo são igualmente
+        escuros. <strong>O assunto</strong> pergunta o que é o fundo &mdash;
+        aprende isso numa faixa em volta da borda da imagem, mede cada pixel em
+        relação a ele e guarda a maior coisa que não for ele. Isso funciona na
+        foto de um objeto sobre um fundo mais ou menos liso, e falha numa
+        imagem cortada tão rente que o assunto sai por três lados, porque as
+        bordas de que ele aprende passam a ser o próprio assunto. Quando isso
+        acontecer, você mesmo pode apontar o fundo."""
+
+[[faq]]
+q = "Por que a forma vetorizada tem buracos, ou perde as partes finas?"
+a = """
+        Porque a imagem já os tinha assim que virou um bit por pixel. Ligue
+        <em>o que o traçador recebeu</em> para ver: abaixo de uns doze pixels o
+        olho de uma letra já fechou e as hastes já se fundiram, e nenhuma
+        vetorização recupera um buraco que não está lá. As soluções estão
+        antes &mdash; mova o limiar, ou parta de um escaneamento maior. No modo
+        <em>o assunto</em>, <em>fechar vãos de até</em> sela os buracos
+        pequenos e <em>preencher sólido</em> fecha todo buraco que o fundo não
+        alcança a partir da borda da imagem."""
+
+[[faq]]
+q = "Dá para consertar as partes que ele errou?"
+a = """
+        Dá, e é para isso que serve quase todo o terceiro passo. Clique em
+        qualquer coisa que não deveria estar no desenho e ela some; clique de
+        novo e ela volta. Um clique pega a mancha inteira daquela cor, então um
+        clique tira um cisco inteiro ou um carimbo inteiro, e não um pixel.
+        Clicar num pedaço de fundo cercado o preenche. As correções ficam
+        guardadas separadas do limiar, então mover o controle depois não as
+        joga fora."""
+
+[[faq]]
+q = "De que tamanho vai ficar o SVG?"
+a = """
+        Para uma forma, menor que a imagem: uma silhueta vetorizada costuma
+        ter de um a cinco kilobytes, e um logotipo alguns a mais. A página diz
+        exatamente, ao lado do download. Para uma foto ele será enorme, o
+        que é o sinal mais claro de que esta é a ferramenta errada para aquele
+        arquivo &mdash; e a página para de desenhar e avisa depois de umas mil
+        formas separadas."""
+
+[[faq]]
+q = "Ele vetoriza em cores?"
+a = """
+        Não. Isto faz uma forma numa cor só, que é o caso que sai parecendo um
+        desenho, e não uma fotocópia ruim. Vetorizar em cores significa reduzir
+        a poucas cores e vetorizar cada uma como uma camada própria, e o
+        resultado decepciona a maioria de quem pede. Se você precisa de cor,
+        vetorize a forma aqui e preencha no seu programa de desenho."""
+
+[[faq]]
+q = "O que posso fazer com o SVG depois?"
+a = """
+        Ampliar a qualquer tamanho sem ele ficar borrado, recolori-lo com um
+        único atributo, animá-lo, imprimi-lo, ou mandá-lo para uma máquina de
+        corte ou um laser. É um único <code>&lt;path&gt;</code> sem regra de
+        preenchimento para errar, então o Illustrator, o Inkscape, o Figma, um
+        navegador e a maioria dos softwares de CNC leem todos do mesmo
+        jeito."""
+
+[[faq]]
+q = "Existe limite para o tamanho da imagem?"
+a = """
+        O da sua máquina, não o nosso. Uma página A4 escaneada a
+        300&nbsp;dpi &mdash; uns nove megapixels &mdash; vetoriza numa fração de
+        segundo. Imagens maiores funcionam; só demoram mais, e o trabalho
+        acontece no seu próprio processador, não numa fila em algum lugar."""
+
+[[faq]]
+q = "É de graça, e preciso de conta?"
+a = """
+        É de graça, e não há conta, login, período de teste nem marca d'água.
+        Também não há limite de quantidade nem de tamanho dos arquivos, porque
+        não existe servidor pagando por eles &mdash; o trabalho acontece na sua
+        própria máquina. O site tem publicidade, que é o que o paga; os
+        anúncios não recebem nada sobre os seus arquivos."""
+
+[[faq]]
+q = "Funciona offline?"
+a = """
+        Funciona. Carregue a página uma vez, depois desligue a internet, e ela
+        continua funcionando. Esse também é o jeito mais simples de provar que
+        nada está sendo enviado: uma ferramenta que mandasse sua imagem embora
+        para ser vetorizada pararia no instante em que você tirasse o cabo."""
+
+[schema]
+description = "Vetorize uma imagem em preto e branco num contorno SVG no navegador. Separa por claro e escuro ou acha o assunto contra o fundo, ajusta curvas à forma e deixa tirar com um clique tudo o que não deveria ser vetorizado. Nada é enviado."
+features = [
+  "Vetoriza uma forma bitmap em curvas cúbicas de verdade, nítidas em qualquer tamanho",
+  "Dois jeitos de achar a forma: por claro e escuro, ou pelo assunto contra o fundo",
+  "Um clique em qualquer parte a deixa de fora, e em qualquer vão cercado o preenche",
+  "O contorno é desenhado por cima dos pixels de onde veio, com até dezesseis vezes de ampliação",
+  "Buracos e buracos aninhados saem como um único caminho, sem regra de preenchimento para definir",
+  "Limiares de canto e suavização, calculados por forma a menos que você diga o contrário",
+  "Avisa quando uma imagem é uma foto, e não um desenho a traço",
+  "Roda offline; sem upload, sem conta, sem motor para baixar",
+]
+
+[picker]
+title = "Arraste uma imagem para cá"
+hint = "ou clique para escolher &mdash; PNG, JPEG, WebP, GIF, AVIF"
