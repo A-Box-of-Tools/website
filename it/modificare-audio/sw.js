@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/modificare-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'be82c5e090';
+const CACHE_NAME=CACHE_PREFIX+'61f3304a68';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,8 @@ const ASSETS=[
 'src/shared/audio-decode.js',
 'src/shared/samplerate.js',
 'src/shared/wav.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/edit.js',
 'src/effects.js',
 'src/main.js',

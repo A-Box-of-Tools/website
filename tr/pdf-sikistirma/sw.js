@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/pdf-sikistirma/:';
-const CACHE_NAME=CACHE_PREFIX+'6be77aa520';
+const CACHE_NAME=CACHE_PREFIX+'37357f6bfb';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,7 @@ const ASSETS=[
 'src/shared/pdf-filters.js',
 'src/shared/pdf-reader.js',
 'src/shared/pdf-writer.js',
+'src/shared/message-box.js',
 'src/compress.js',
 'src/format.js',
 'src/images.js',

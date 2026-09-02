@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/قص-الصوت/:';
-const CACHE_NAME=CACHE_PREFIX+'d58b4a8cf6';
+const CACHE_NAME=CACHE_PREFIX+'d513aff776';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,8 @@ const ASSETS=[
 'src/shared/audio-decode.js',
 'src/shared/samplerate.js',
 'src/shared/wav.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/main.js',
 'src/segments.js',
 'src/timeline.js',

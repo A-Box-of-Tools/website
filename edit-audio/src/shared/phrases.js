@@ -6,3 +6,7 @@ const text=(found?.textContent??key).replace(/\s+/g,' ').trim();
 return text.replace(/\{(\w+)\}/g,(whole,name)=>(
 name in values?String(values[name]):whole));
 }
+export function fill(values={}){
+return Object.fromEntries(Object.entries(values)
+.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
+}

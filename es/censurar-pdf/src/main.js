@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{bytes as humanBytes,outName,tally}from'./format.js';
 import{
 contextOf,FINDERS,findPattern,findTerm,glyphsIn,mergeRanges,wordsOf,
@@ -61,6 +62,7 @@ resultFacts:$('result-facts'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:note}=messageBox(el.loadNote);
 const MAX_ROWS=400;
 let source=null;
 let pages=[];
@@ -132,10 +134,6 @@ el.runError.hidden=true;
 function fail(text){
 el.loadError.textContent=text;
 el.loadError.hidden=false;
-}
-function note(text){
-el.loadNote.textContent=text;
-el.loadNote.hidden=false;
 }
 function breathe(){
 return new Promise((resolve)=>{setTimeout(resolve,0);});

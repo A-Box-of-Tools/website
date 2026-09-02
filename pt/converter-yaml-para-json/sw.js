@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/converter-yaml-para-json/:';
-const CACHE_NAME=CACHE_PREFIX+'2a3e8dc842';
+const CACHE_NAME=CACHE_PREFIX+'90b6db29da';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,9 @@ const ASSETS=[
 'src/shared/parse-errors.js',
 'src/shared/parse-json.js',
 'src/shared/parse-yaml.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
+'src/shared/format.js',
 'src/convert.js',
 'src/main.js',
 'src/samples.js',

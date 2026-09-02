@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/증명사진-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'e21eee16a8';
+const CACHE_NAME=CACHE_PREFIX+'a742a6a68e';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/message-box.js',
 'src/background.js',
 'src/cropper.js',
 'src/detect.js',

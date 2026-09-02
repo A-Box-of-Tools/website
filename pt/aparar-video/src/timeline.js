@@ -1,18 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{clockText as formatTime}from'./shared/format.js';
+export{formatTime};
 const MIN_SEGMENT=0.05;
 const MAX_TICKS=400;
 function clamp(value,low,high){
 return Math.max(low,Math.min(high,value));
-}
-export function formatTime(seconds){
-const total=Math.round(Math.max(0,seconds||0)*1000);
-const whole=Math.floor(total/1000);
-const hours=Math.floor(whole/3600);
-const minutes=Math.floor((whole%3600)/60);
-const tail=`${String(whole % 60).padStart(2, '0')}.${String(total % 1000).padStart(3, '0')}`;
-return hours
-?`${hours}:${String(minutes).padStart(2, '0')}:${tail}`
-:`${minutes}:${tail}`;
 }
 export function parseTime(text){
 const trimmed=String(text??'').trim();

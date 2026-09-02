@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/visualizador-dicom/:';
-const CACHE_NAME=CACHE_PREFIX+'4017ea9864';
+const CACHE_NAME=CACHE_PREFIX+'ee516bdebe';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/message-box.js',
 'src/dicom.js',
 'src/dictionary.js',
 'src/format.js',

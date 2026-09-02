@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{downloadLink}from'./shared/download.js';
 import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
 import{maskFromImage}from'./mask.js';
 import{subjectMask}from'./subject.js';
@@ -59,6 +60,7 @@ facts:$('facts'),
 download:$('download'),
 tooBig:$('too-big'),
 };
+const download=downloadLink(el.download);
 const PREVIEW_BUDGET=1_200_000;
 const OUTLINE_BUDGET=120_000;
 const TOO_MANY_LOOPS=1200;
@@ -74,7 +76,6 @@ let outPath=null;
 let overwhelming=false;
 let bgSamples=[];
 let hover={...NOTHING};
-let downloadUrl=null;
 const view=new Viewport({
 hosts:[el.stagePicture,el.stageSvg],
 onHover:(point)=>(point?hoverAt(point):clearHover()),
@@ -397,12 +398,8 @@ if(bytes<1024*1024)return`${(bytes / 1024).toFixed(1)} kB`;
 return`${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 function offerDownload(){
-if(downloadUrl)URL.revokeObjectURL(downloadUrl);
-const blob=new Blob([out.svg],{type:'image/svg+xml'});
-downloadUrl=URL.createObjectURL(blob);
-el.download.href=downloadUrl;
-el.download.download=phrase('save.name',{stem:picture.stem});
-el.download.hidden=false;
+download.offer(new Blob([out.svg],{type:'image/svg+xml'}),
+phrase('save.name',{stem:picture.stem}));
 }
 function showSamples(){
 el.clearSamples.hidden=bgSamples.length===0;

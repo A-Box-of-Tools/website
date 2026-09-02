@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/الماسح-الضوئي-للمستندات/:';
-const CACHE_NAME=CACHE_PREFIX+'2d7eee6f28';
+const CACHE_NAME=CACHE_PREFIX+'81799cf002';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,7 @@ const ASSETS=[
 'src/shared/zip.js',
 'src/shared/crc32.js',
 'src/shared/pdf-page-writer.js',
+'src/shared/message-box.js',
 'src/clean.js',
 'src/detect.js',
 'src/document.js',

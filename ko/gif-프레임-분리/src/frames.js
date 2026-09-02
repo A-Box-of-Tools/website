@@ -1,4 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{sizeText}from'./shared/format.js';
+export const formatBytes=(n,t)=>sizeText(n,t,{under:'size.b',kb:'auto',mb:1});
 const THUMB_MAX=168;
 export function frameName(sourceName,number,total){
 const width=Math.max(2,String(total).length);
@@ -70,13 +72,6 @@ row.frame.disposal,
 ].join('\t'));
 }
 return`${lines.join('\n')}\n`;
-}
-export function formatBytes(bytes,t){
-if(bytes<1024)return t('size.b',{n:bytes});
-if(bytes<1024*1024){
-return t('size.kb',{n:(bytes/1024).toFixed(bytes<10240?1:0)});
-}
-return t('size.mb',{n:(bytes/(1024*1024)).toFixed(1)});
 }
 export function formatSeconds(seconds,t){
 if(seconds<1)return t('unit.seconds',{n:seconds.toFixed(2)});

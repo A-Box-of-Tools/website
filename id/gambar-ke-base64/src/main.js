@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{base64DataUri,svgDataUri}from'./encode.js';
 import{sniff,extensionType}from'./sniff.js';
 import{metadata}from'./metadata.js';
@@ -30,6 +31,7 @@ resultList:$('result-list'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showLoadError,clear:clearLoadError}=messageBox(el.loadError);
 let items=[];
 let nextId=1;
 let busy=false;
@@ -331,14 +333,6 @@ link.href=url;
 link.download=name;
 link.click();
 setTimeout(()=>URL.revokeObjectURL(url),60000);
-}
-function showLoadError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
-function clearLoadError(){
-el.loadError.textContent='';
-el.loadError.hidden=true;
 }
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;

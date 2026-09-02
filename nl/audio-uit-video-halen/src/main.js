@@ -1,5 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{sizeText}from'./shared/format.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker}from'./shared/file-picker.js';
 import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
 import{writeWav}from'./shared/wav.js';
@@ -27,6 +29,8 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error);
+const humanBytes=(n)=>sizeText(n,phrase,{under:'size.bytes',kb:1,mb:1});
 let sound=null;
 let sourceName='';
 let downloadUrl=null;
@@ -104,19 +108,6 @@ downloadUrl=null;
 function say(error){
 if(error instanceof UnreadableFile)return phrase(error.message);
 return error?.message?phrase(error.message):String(error);
-}
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-}
-function clearError(){
-el.error.hidden=true;
-el.error.textContent='';
-}
-function humanBytes(bytes){
-if(bytes<1024)return phrase('size.bytes',{n:bytes});
-if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(1)});
-return phrase('size.mb',{n:(bytes/(1024*1024)).toFixed(1)});
 }
 function clock(seconds){
 const whole=Math.max(0,Math.round(seconds));

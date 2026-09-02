@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
+import{phrase,fill}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{
 decodeSvgText,intrinsicSize,looksLikeSvg,
 }from'./svg.js';
@@ -57,6 +58,7 @@ downloadZip:$('download-zip'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showLoadError,clear:clearLoadError}=messageBox(el.loadError);
 const FIELDS={
 [MODES.scale]:$('scale-fields'),
 [MODES.width]:$('width-fields'),
@@ -241,10 +243,6 @@ remove.addEventListener('click',()=>removeItem(item.id));
 row.append(wrap,remove);
 el.fileList.append(row);
 }
-}
-function fill(values={}){
-return Object.fromEntries(Object.entries(values)
-.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
 }
 function renderNotes(){
 const item=activeItem();
@@ -500,14 +498,6 @@ clearResults();
 render();
 drawPreview();
 });
-}
-function showLoadError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
-function clearLoadError(){
-el.loadError.textContent='';
-el.loadError.hidden=true;
 }
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/json-bicimlendirme/:';
-const CACHE_NAME=CACHE_PREFIX+'44ba5a698c';
+const CACHE_NAME=CACHE_PREFIX+'5ef5ae01e6';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,9 @@ const ASSETS=[
 'src/shared/parse-json.js',
 'src/shared/parse-yaml.js',
 'src/shared/parse-xml.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
+'src/shared/format.js',
 'src/convert.js',
 'src/css.js',
 'src/format.js',

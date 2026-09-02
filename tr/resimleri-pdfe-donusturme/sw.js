@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resimleri-pdfe-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'2d34cf44b7';
+const CACHE_NAME=CACHE_PREFIX+'0ceb26226f';
 const ASSETS=[
 './',
 'index.html',
@@ -10,6 +10,8 @@ const ASSETS=[
 'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/pdf-page-writer.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/document.js',
 'src/encode.js',
 'src/images.js',

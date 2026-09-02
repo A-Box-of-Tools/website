@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ja/images-to-pdf/:';
-const CACHE_NAME=CACHE_PREFIX+'18b05ede9f';
+const CACHE_NAME=CACHE_PREFIX+'2287329562';
 const ASSETS=[
 './',
 'index.html',
@@ -10,6 +10,8 @@ const ASSETS=[
 'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/pdf-page-writer.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/document.js',
 'src/encode.js',
 'src/images.js',

@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{readSource}from'./assemble.js';
 import{bytes,count as countOf,shortName}from'./format.js';
 import{sizeLabel}from'./pages.js';
@@ -52,6 +53,8 @@ fileList:$('file-list'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showLoadError}=messageBox(el.loadError);
+const{show:note}=messageBox(el.loadNote);
 let sources=[];
 let entries=[];
 let running=null;
@@ -108,14 +111,6 @@ if(error instanceof NotAPdfError)return phrase(error.message);
 if(error?.name==='AbortError')return phrase('read.cancelled');
 return phrase('read.unreadable',
 {detail:phrase(error?.message??String(error),error?.values)});
-}
-function showLoadError(text){
-el.loadError.textContent=text;
-el.loadError.hidden=false;
-}
-function note(text){
-el.loadNote.textContent=text;
-el.loadNote.hidden=false;
 }
 function renderSources(){
 el.sourceList.hidden=sources.length===0;

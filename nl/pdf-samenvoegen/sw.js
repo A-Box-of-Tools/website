@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/pdf-samenvoegen/:';
-const CACHE_NAME=CACHE_PREFIX+'54f1cb5de1';
+const CACHE_NAME=CACHE_PREFIX+'d597b813aa';
 const ASSETS=[
 './',
 'index.html',
@@ -15,6 +15,8 @@ const ASSETS=[
 'src/shared/pdf-filters.js',
 'src/shared/pdf-reader.js',
 'src/shared/pdf-writer.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/assemble.js',
 'src/dests.js',
 'src/format.js',

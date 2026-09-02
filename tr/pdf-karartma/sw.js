@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/pdf-karartma/:';
-const CACHE_NAME=CACHE_PREFIX+'1fbe3b5966';
+const CACHE_NAME=CACHE_PREFIX+'aa4362f0ac';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,7 @@ const ASSETS=[
 'src/shared/pdf-filters.js',
 'src/shared/pdf-reader.js',
 'src/shared/pdf-writer.js',
+'src/shared/message-box.js',
 'src/base14.js',
 'src/content.js',
 'src/edit.js',

@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{SCALES,outputSize,planRun,scaleThatFits}from'./plan.js';
 const $=(id)=>document.getElementById(id);
@@ -50,6 +51,7 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError}=messageBox(el.error);
 let frames=[];
 let busy=false;
 let inspecting=0;
@@ -441,10 +443,6 @@ busy=false;
 el.cancel.hidden=true;
 el.progress.hidden=true;
 render();
-}
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
 }
 el.run.addEventListener('click',start);
 el.cancel.addEventListener('click',stopWork);

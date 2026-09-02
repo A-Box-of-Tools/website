@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/bild-komprimieren/:';
-const CACHE_NAME=CACHE_PREFIX+'12f8a5ca96';
+const CACHE_NAME=CACHE_PREFIX+'89db405793';
 const ASSETS=[
 './',
 'index.html',
@@ -11,6 +11,9 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
+'src/shared/media.js',
 'src/codecs.js',
 'src/compress.js',
 'src/files.js',

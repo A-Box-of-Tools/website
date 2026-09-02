@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/tagliare-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'0fc8122847';
+const CACHE_NAME=CACHE_PREFIX+'b966e31157';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,8 @@ const ASSETS=[
 'src/shared/audio-decode.js',
 'src/shared/samplerate.js',
 'src/shared/wav.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/main.js',
 'src/segments.js',
 'src/timeline.js',

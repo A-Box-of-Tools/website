@@ -1,5 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{measureImage}from'./shared/media.js';
+import{saveBlob}from'./shared/download.js';
+import{messageBox}from'./shared/message-box.js';
 import{
 decode,encodableTypes,release,FORMATS,JPEG,PNG,WEBP,READABLE,
 }from'./codecs.js';
@@ -42,6 +45,7 @@ resultsSummary:$('results-summary'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showLoadError,clear:clearLoadError}=messageBox(el.loadError);
 let items=[];
 let nextId=1;
 let busy=false;
@@ -73,7 +77,7 @@ thumbUrl:URL.createObjectURL(file),
 size:null,
 };
 nextId+=1;
-item.size=await measure(item.thumbUrl);
+item.size=await measureImage(item.thumbUrl);
 if(!item.size){
 URL.revokeObjectURL(item.thumbUrl);
 failures.push(phrase('load.undecodable',{name:file.name}));
@@ -92,14 +96,6 @@ render();
 function isImage(file){
 if(!file.type)return/\.(jpe?g|png|webp|gif|bmp|avif)$/i.test(file.name);
 return READABLE.includes(file.type)||file.type.startsWith('image/');
-}
-function measure(url){
-return new Promise((resolve)=>{
-const img=new Image();
-img.onload=()=>resolve({width:img.naturalWidth,height:img.naturalHeight});
-img.onerror=()=>resolve(null);
-img.src=url;
-});
 }
 function removeItem(id){
 const at=items.findIndex((i)=>i.id===id);
@@ -547,22 +543,6 @@ hint.className='compare-hint';
 hint.textContent=phrase('compare.hint');
 panel.appendChild(hint);
 return panel;
-}
-function saveBlob(blob,name){
-const url=URL.createObjectURL(blob);
-const link=document.createElement('a');
-link.href=url;
-link.download=name;
-link.click();
-setTimeout(()=>URL.revokeObjectURL(url),60000);
-}
-function showLoadError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
-function clearLoadError(){
-el.loadError.textContent='';
-el.loadError.hidden=true;
 }
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;

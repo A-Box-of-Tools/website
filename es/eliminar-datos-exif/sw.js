@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/eliminar-datos-exif/:';
-const CACHE_NAME=CACHE_PREFIX+'fd55c3f32f';
+const CACHE_NAME=CACHE_PREFIX+'3143bd8782';
 const ASSETS=[
 './',
 'index.html',
@@ -11,6 +11,9 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
+'src/shared/media.js',
 'src/container.js',
 'src/jpeg.js',
 'src/main.js',

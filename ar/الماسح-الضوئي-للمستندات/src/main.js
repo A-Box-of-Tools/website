@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{readingLabel,wireFilePicker}from'./shared/file-picker.js';
 import{makeZip}from'./shared/zip.js';
 import{WORKING_EDGE,findPageQuad}from'./detect.js';
@@ -64,6 +65,7 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.loadError);
 const EDIT_EDGE=1000;
 const PREVIEW_EDGE=900;
 const HISTORY=40;
@@ -535,14 +537,6 @@ item.textContent=line;
 return item;
 }));
 el.result.hidden=false;
-}
-function showError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
-function clearError(){
-el.loadError.textContent='';
-el.loadError.hidden=true;
 }
 const picker=wireFilePicker({
 input:el.fileInput,

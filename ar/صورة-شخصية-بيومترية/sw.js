@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/صورة-شخصية-بيومترية/:';
-const CACHE_NAME=CACHE_PREFIX+'ed92f7d8b4';
+const CACHE_NAME=CACHE_PREFIX+'b424e5fd2f';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/message-box.js',
 'src/background.js',
 'src/cropper.js',
 'src/detect.js',

@@ -1,5 +1,9 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
+import{phrase,fill}from'./shared/phrases.js';
+import{sizeText,durationText}from'./shared/format.js';
+import{openInPlayer}from'./shared/media.js';
+import{saveBlob}from'./shared/download.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker}from'./shared/file-picker.js';
 import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
 import{FrameReader,decodeSeries,frameNear,seriesFrames}from'./frames.js';
@@ -55,6 +59,9 @@ clear:$('clear'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error);
+const formatBytes=(n)=>sizeText(n,phrase,{kb:0,mb:1,gb:'size.gb'});
+const formatDuration=(seconds)=>durationText(seconds,phrase);
 let file=null;
 let objectUrl=null;
 let media=null;
@@ -83,28 +90,6 @@ const[picked]=files;
 if(picked)loadFile(picked);
 },
 });
-function openInPlayer(video,url){
-return new Promise((resolve)=>{
-const done=(result)=>{
-clearTimeout(timer);
-video.removeEventListener('loadedmetadata',ok);
-video.removeEventListener('error',bad);
-resolve(result);
-};
-const ok=()=>done({
-ok:video.videoWidth>0&&video.videoHeight>0,
-width:video.videoWidth,
-height:video.videoHeight,
-duration:Number.isFinite(video.duration)?video.duration:0,
-});
-const bad=()=>done({ok:false,width:0,height:0,duration:0});
-const timer=setTimeout(bad,15000);
-video.addEventListener('loadedmetadata',ok,{once:true});
-video.addEventListener('error',bad,{once:true});
-video.src=url;
-video.load();
-});
-}
 async function loadFile(picked){
 if(working)return;
 clearError();
@@ -514,14 +499,6 @@ setWorking(false);
 el.progress.hidden=true;
 }
 });
-function saveBlob(blob,name){
-const url=URL.createObjectURL(blob);
-const link=document.createElement('a');
-link.href=url;
-link.download=name;
-link.click();
-setTimeout(()=>URL.revokeObjectURL(url),60_000);
-}
 async function currentCanvas(){
 if(exact){
 const bitmap=await reader.frameAt(frameIndex);
@@ -652,32 +629,6 @@ done:done.toLocaleString(),
 total:total.toLocaleString(),
 percent:Math.round(fraction*100),
 });
-}
-function fill(values={}){
-return Object.fromEntries(Object.entries(values)
-.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
-}
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-}
-function clearError(){
-el.error.hidden=true;
-el.error.textContent='';
-}
-function formatBytes(bytes){
-if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
-if(bytes<1024*1024*1024){
-return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
-}
-return phrase('size.gb',{n:(bytes/1024/1024/1024).toFixed(2)});
-}
-function formatDuration(seconds){
-const whole=Math.max(0,Math.round(seconds));
-const minutes=Math.floor(whole/60);
-return minutes
-?phrase('time.minutes',{minutes,seconds:String(whole%60).padStart(2,'0')})
-:phrase('time.seconds',{n:seconds<10?seconds.toFixed(1):whole});
 }
 window.addEventListener('beforeunload',(event)=>{
 if(!working)return;

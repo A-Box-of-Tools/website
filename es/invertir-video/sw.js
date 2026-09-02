@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/invertir-video/:';
-const CACHE_NAME=CACHE_PREFIX+'33745e2e6e';
+const CACHE_NAME=CACHE_PREFIX+'7ced95c2cd';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,9 @@ const ASSETS=[
 'src/shared/mp4-reader.js',
 'src/shared/mp4-writer.js',
 'src/shared/video-support.js',
+'src/shared/message-box.js',
+'src/shared/media.js',
+'src/shared/format.js',
 'src/audio.js',
 'src/draw.js',
 'src/main.js',

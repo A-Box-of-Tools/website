@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/it/confrontare-testi/:';
-const CACHE_NAME=CACHE_PREFIX+'4ae0cd256f';
+const CACHE_NAME=CACHE_PREFIX+'8e729e0e2e';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,8 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
 'src/diff.js',
 'src/main.js',
 'src/samples.js',

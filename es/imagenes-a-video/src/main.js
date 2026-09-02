@@ -1,5 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{sizeText,durationText}from'./shared/format.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{loadImages,decodeFull,releaseItem,sortItems,moveItem}from'./images.js';
 import{drawFrame,resolveOutputSize}from'./compose.js';
@@ -57,6 +59,9 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error);
+const formatBytes=(n)=>sizeText(n,phrase,{kb:0,mb:1});
+const formatDuration=(seconds)=>durationText(seconds,phrase,{decimals:1});
 let items=[];
 let durationUnit='frames';
 let exporting=false;
@@ -417,14 +422,6 @@ el.resolutionNote.textContent='';
 }
 }
 const EMPTY='\u2014';
-function formatDuration(seconds){
-const whole=Math.round(seconds);
-const mins=Math.floor(whole/60);
-const secs=whole%60;
-return mins
-?phrase('time.minutes',{minutes:mins,seconds:String(secs).padStart(2,'0')})
-:phrase('time.seconds',{n:seconds.toFixed(1)});
-}
 function updateSummary(){
 if(!items.length){
 el.sumImages.textContent=EMPTY;
@@ -512,14 +509,6 @@ el.exportBtn.disabled=true;
 }
 updateFormatNote();
 }
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-}
-function clearError(){
-el.error.hidden=true;
-el.error.textContent='';
-}
 function setProgress({phase,done,total,realtime}){
 const fraction=total>0?Math.min(1,done/total):0;
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
@@ -549,10 +538,6 @@ String(now.getMonth()+1).padStart(2,'0'),
 String(now.getDate()).padStart(2,'0'),
 ].join('-');
 return`slideshow-${stamp}.${extension}`;
-}
-function formatBytes(bytes){
-if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
-return phrase('size.mb',{n:(bytes/1024/1024).toFixed(1)});
 }
 async function runExport(){
 if(exporting||!items.length)return;

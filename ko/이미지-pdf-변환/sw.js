@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/이미지-pdf-변환/:';
-const CACHE_NAME=CACHE_PREFIX+'fa5c62815d';
+const CACHE_NAME=CACHE_PREFIX+'f9411d896e';
 const ASSETS=[
 './',
 'index.html',
@@ -10,6 +10,8 @@ const ASSETS=[
 'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/pdf-page-writer.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/document.js',
 'src/encode.js',
 'src/images.js',

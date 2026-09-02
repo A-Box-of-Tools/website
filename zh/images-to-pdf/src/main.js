@@ -1,5 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{sizeText}from'./shared/format.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{loadImages,releaseItem,rotateItem,sortItems,moveItem}from'./images.js';
 import{layoutPage,seenSize,PAGE_SIZES}from'./layout.js';
@@ -60,6 +62,9 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error);
+const{show:showLoadError,clear:clearLoadError}=messageBox(el.loadError);
+const formatBytes=(n)=>sizeText(n,phrase,{under:'size.b',kb:0,mb:1});
 let items=[];
 let exporting=false;
 let cancelled=false;
@@ -424,27 +429,6 @@ return phrase('join.comma',{a:label,b:phrase(way)});
 }
 function trim(value){
 return String(Math.round(Number(value)*10)/10);
-}
-function formatBytes(bytes){
-if(bytes<1024)return phrase('size.b',{n:bytes});
-if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(0)});
-return phrase('size.mb',{n:(bytes/(1024*1024)).toFixed(1)});
-}
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-}
-function clearError(){
-el.error.textContent='';
-el.error.hidden=true;
-}
-function showLoadError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
-function clearLoadError(){
-el.loadError.textContent='';
-el.loadError.hidden=true;
 }
 function clearResult(){
 if(resultUrl){

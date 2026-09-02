@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/convertir-imagen-a-svg/:';
-const CACHE_NAME=CACHE_PREFIX+'d79cb1b693';
+const CACHE_NAME=CACHE_PREFIX+'b4fc9a5481';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/download.js',
 'src/contour.js',
 'src/fit.js',
 'src/main.js',

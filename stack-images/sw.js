@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/stack-images/:';
-const CACHE_NAME=CACHE_PREFIX+'d3bd3d9b6e';
+const CACHE_NAME=CACHE_PREFIX+'eb9850133d';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/message-box.js',
 'src/align.js',
 'src/fft.js',
 'src/main.js',

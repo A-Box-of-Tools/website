@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{PIXEL_DATA,parseDataset,parseFile,walk}from'./dicom.js';
 import{describe,formatTag}from'./dictionary.js';
@@ -68,6 +69,7 @@ tagsLede:$('tags-lede'),
 tagRows:$('tag-rows'),
 showMore:$('show-more'),
 };
+const{show:showError}=messageBox(el.loadError);
 const NOTHING='—';
 const FIRST_PAGE=250;
 const CACHE_FRAMES=8;
@@ -875,10 +877,6 @@ link.href=url;
 link.download=name;
 link.click();
 setTimeout(()=>URL.revokeObjectURL(url),10_000);
-}
-function showError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
 }
 function hideError(){
 el.loadError.hidden=true;

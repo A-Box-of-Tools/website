@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
+import{phrase,fill}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{DISPOSALS,NotAGif,frameData,parseGif}from'./gif.js';
 import{lzwDecode}from'./lzw.js';
@@ -52,6 +53,7 @@ extras:$('extras'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError}=messageBox(el.loadError);
 const PIXEL_BUDGET=300_000_000;
 const FIRST_PAGE=60;
 const THUMB=120;
@@ -232,10 +234,6 @@ body.innerHTML=`<strong>${title}</strong> ${said}`;
 item.append(mark,body);
 el.findings.append(item);
 }
-}
-function fill(values={}){
-return Object.fromEntries(Object.entries(values)
-.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
 }
 function renderBudget(gif,plan){
 el.budgetBar.replaceChildren();
@@ -478,10 +476,6 @@ el.copyStatus.textContent=phrase('copy.done');
 el.copyStatus.textContent=phrase('copy.refused');
 }
 });
-function showError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
 function hideError(){
 el.loadError.hidden=true;
 el.copyStatus.textContent='';

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/compare-heights/:';
-const CACHE_NAME=CACHE_PREFIX+'606a3b3b2b';
+const CACHE_NAME=CACHE_PREFIX+'2e9a278b53';
 const ASSETS=[
 './',
 'index.html',
@@ -8,6 +8,7 @@ const ASSETS=[
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
+'src/shared/download.js',
 'src/chart.js',
 'src/figures.js',
 'src/import-image.js',

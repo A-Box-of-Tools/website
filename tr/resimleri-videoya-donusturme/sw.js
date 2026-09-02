@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resimleri-videoya-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'c17aaf1bac';
+const CACHE_NAME=CACHE_PREFIX+'dbc4617991';
 const ASSETS=[
 './',
 'index.html',
@@ -11,6 +11,8 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
 'src/shared/mp4-muxer.js',
+'src/shared/message-box.js',
+'src/shared/format.js',
 'src/shared/url-import.js',
 'src/compose.js',
 'src/encoder.js',

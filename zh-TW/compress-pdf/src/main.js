@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{
 compressDocument,describeSettings,PRESETS,
 }from'./compress.js';
@@ -49,6 +50,8 @@ imageList:$('image-list'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showLoadError}=messageBox(el.loadError);
+const{show:note}=messageBox(el.loadNote);
 let loaded=null;
 let downloadUrl='';
 let running=null;
@@ -118,14 +121,6 @@ el.breakdownBar.replaceChildren();
 el.breakdownBar.hidden=true;
 el.breakdownList.replaceChildren();
 el.inventoryNotes.textContent='';
-}
-function showLoadError(text){
-el.loadError.textContent=text;
-el.loadError.hidden=false;
-}
-function note(text){
-el.loadNote.textContent=text;
-el.loadNote.hidden=false;
 }
 el.clearFile.addEventListener('click',()=>{
 reset();

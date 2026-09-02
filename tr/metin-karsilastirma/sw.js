@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/metin-karsilastirma/:';
-const CACHE_NAME=CACHE_PREFIX+'e53496c895';
+const CACHE_NAME=CACHE_PREFIX+'bb62247705';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,8 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
 'src/diff.js',
 'src/main.js',
 'src/samples.js',

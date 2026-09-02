@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/goruntu-istifleme/:';
-const CACHE_NAME=CACHE_PREFIX+'e41ef316a0';
+const CACHE_NAME=CACHE_PREFIX+'6902592296';
 const ASSETS=[
 './',
 'index.html',
@@ -9,6 +9,7 @@ const ASSETS=[
 'src/shared/phrases.js',
 'src/shared/trust.js',
 'src/shared/file-picker.js',
+'src/shared/message-box.js',
 'src/align.js',
 'src/fft.js',
 'src/main.js',

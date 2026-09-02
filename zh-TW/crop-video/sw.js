@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/crop-video/:';
-const CACHE_NAME=CACHE_PREFIX+'2014d0ee37';
+const CACHE_NAME=CACHE_PREFIX+'d238f65539';
 const ASSETS=[
 './',
 'index.html',
@@ -12,6 +12,9 @@ const ASSETS=[
 'src/shared/codec-support.js',
 'src/shared/mp4-reader.js',
 'src/shared/video-support.js',
+'src/shared/message-box.js',
+'src/shared/media.js',
+'src/shared/format.js',
 'src/cropper.js',
 'src/draw.js',
 'src/main.js',

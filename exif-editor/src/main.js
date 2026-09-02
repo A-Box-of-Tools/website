@@ -1,5 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{measureImage}from'./shared/media.js';
+import{saveBlob}from'./shared/download.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{makeZip}from'./shared/zip.js';
 import{readImage,readBytes,serialize,exifBytes,outputType,KIND_NAMES}from'./container.js';
@@ -47,6 +50,7 @@ editError:$('edit-error'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showLoadError,clear:clearLoadError}=messageBox(el.loadError);
 let items=[];
 let selectedId=null;
 let nextId=1;
@@ -78,7 +82,7 @@ item.size=file.size;
 item.drop=new Set();
 item.dirty=false;
 item.thumbUrl=URL.createObjectURL(file);
-const dims=await measure(item.thumbUrl);
+const dims=await measureImage(item.thumbUrl);
 if(dims&&item.doc)item.doc.canvas=dims;
 if(item.ok)normalizeExif(item);
 if(item.ok){
@@ -117,14 +121,6 @@ function normalizeExif(item){
 item.exifUnreadable=Boolean(item.exif&&!item.exif.ok&&item.meta.exif);
 item.exifError=item.exifUnreadable?item.exif.error:null;
 if(!item.exif?.ok)item.exif=emptyExif();
-}
-function measure(url){
-return new Promise((resolve)=>{
-const img=new Image();
-img.onload=()=>resolve({width:img.naturalWidth,height:img.naturalHeight});
-img.onerror=()=>resolve(null);
-img.src=url;
-});
 }
 function removeItem(id){
 const at=items.findIndex((i)=>i.id===id);
@@ -844,14 +840,6 @@ const zip=makeZip(cleaned.map((r)=>({name:outName(r.item,'clean'),data:r.data}))
 saveBlob(zip,'photos-without-metadata.zip');
 };
 }
-function saveBlob(blob,name){
-const url=URL.createObjectURL(blob);
-const link=document.createElement('a');
-link.href=url;
-link.download=name;
-link.click();
-setTimeout(()=>URL.revokeObjectURL(url),60000);
-}
 el.saveEdits.addEventListener('click',()=>{
 const item=selected();
 if(!item)return;
@@ -883,14 +871,6 @@ item.dirty=false;
 render();
 el.saveStatus.textContent=phrase('save.reverted');
 });
-function showLoadError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
-function clearLoadError(){
-el.loadError.textContent='';
-el.loadError.hidden=true;
-}
 function showEditError(message){
 el.editError.textContent=message;
 el.editError.hidden=false;

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/resize-image/:';
-const CACHE_NAME=CACHE_PREFIX+'0f2438b8aa';
+const CACHE_NAME=CACHE_PREFIX+'7379acdd36';
 const ASSETS=[
 './',
 'index.html',
@@ -11,6 +11,10 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
+'src/shared/media.js',
+'src/shared/format.js',
 'src/codecs.js',
 'src/cropper.js',
 'src/files.js',

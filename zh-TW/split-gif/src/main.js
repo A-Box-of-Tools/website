@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker}from'./shared/file-picker.js';
 import{decodeGif,GifFormatError,playedDelay,totalDuration}from'./gif.js';
 import{GifCanvas,flatten,parseColour,patchPixels}from'./compose.js';
@@ -47,6 +48,7 @@ clear:$('clear'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error);
 let file=null;
 let gif=null;
 let rows=[];
@@ -416,14 +418,6 @@ function hideProgress(){
 el.progress.hidden=true;
 el.progressBar.style.width='0%';
 el.progressLabel.textContent='';
-}
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-}
-function clearError(){
-el.error.hidden=true;
-el.error.textContent='';
 }
 function reset(){
 pass+=1;

@@ -1,5 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{downloadLink}from'./shared/download.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{compareText,alignRows,diffWords,formatUnified}from'./diff.js';
 import{SAMPLES}from'./samples.js';
@@ -27,8 +29,11 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error,{
+onShow:()=>{el.resultNote.textContent=phrase('result.failed');},
+});
+const download=downloadLink(el.download);
 let result=null;
-let downloadUrl=null;
 const copyLabel=el.copy.textContent;
 const MAX_ROWS=4000;
 const picker=wireFilePicker({
@@ -135,7 +140,7 @@ el.diffView.classList.toggle('split',el.view.value==='split');
 const patch=formatUnified(ops,{aLabel:'original',bLabel:'changed'});
 result={text:patch,name:'changes.patch'};
 el.copy.disabled=patch==='';
-offerDownload(patch,'changes.patch');
+download.offer(patch,'changes.patch');
 if(stats.identical){
 el.resultNote.textContent=phrase('result.identical');
 return;
@@ -250,15 +255,6 @@ cell.append(mark);
 }
 return cell;
 }
-function offerDownload(text,name){
-if(downloadUrl)URL.revokeObjectURL(downloadUrl);
-downloadUrl=null;
-if(text===''){el.download.hidden=true;return;}
-downloadUrl=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-el.download.href=downloadUrl;
-el.download.download=name;
-el.download.hidden=false;
-}
 el.copy.addEventListener('click',async()=>{
 if(!result)return;
 try{
@@ -277,19 +273,8 @@ setTimeout(()=>{el.copy.textContent=copyLabel;},2500);
 function clearResult(){
 el.diffView.replaceChildren();
 el.copy.disabled=true;
-el.download.hidden=true;
+download.clear();
 result=null;
-if(downloadUrl)URL.revokeObjectURL(downloadUrl);
-downloadUrl=null;
-}
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-el.resultNote.textContent=phrase('result.failed');
-}
-function clearError(){
-el.error.hidden=true;
-el.error.textContent='';
 }
 function humanBytes(bytes){
 if(bytes<1024)return`${bytes} B`;

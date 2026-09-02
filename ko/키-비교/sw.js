@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/키-비교/:';
-const CACHE_NAME=CACHE_PREFIX+'1a2bc89c2d';
+const CACHE_NAME=CACHE_PREFIX+'1704c49b4f';
 const ASSETS=[
 './',
 'index.html',
@@ -8,6 +8,7 @@ const ASSETS=[
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
+'src/shared/download.js',
 'src/chart.js',
 'src/figures.js',
 'src/import-image.js',

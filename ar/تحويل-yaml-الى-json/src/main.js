@@ -1,5 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{phrase}from'./shared/phrases.js';
+import{phrase,fill}from'./shared/phrases.js';
+import{sizeText}from'./shared/format.js';
+import{downloadLink}from'./shared/download.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker}from'./shared/file-picker.js';
 import{CONVERSIONS,conversionById}from'./convert.js';
 import{SAMPLES}from'./samples.js';
@@ -24,8 +27,12 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error,{
+onShow:()=>{el.resultNote.textContent=phrase('out.empty');},
+});
+const download=downloadLink(el.download);
+const humanBytes=(n)=>sizeText(n,phrase,{under:'size.bytes',kb:1,mb:2});
 let result=null;
-let downloadUrl=null;
 for(const conversion of CONVERSIONS){
 el.conversion.append(new Option(phrase(conversion.name),conversion.id));
 }
@@ -120,16 +127,7 @@ el.output.textContent=text;
 el.resultNote.textContent=note;
 result={text,name};
 el.copy.disabled=text==='';
-offerDownload(text,name);
-}
-function offerDownload(text,name){
-if(downloadUrl)URL.revokeObjectURL(downloadUrl);
-downloadUrl=null;
-if(text===''){el.download.hidden=true;return;}
-downloadUrl=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));
-el.download.href=downloadUrl;
-el.download.download=name;
-el.download.hidden=false;
+download.offer(text,name);
 }
 el.copy.addEventListener('click',async()=>{
 if(!result)return;
@@ -149,14 +147,10 @@ setTimeout(()=>{el.copy.textContent=phrase('copy.copy');},2500);
 function clearResult(){
 el.output.textContent='';
 el.copy.disabled=true;
-el.download.hidden=true;
+download.clear();
 result=null;
-if(downloadUrl)URL.revokeObjectURL(downloadUrl);
-downloadUrl=null;
 }
 function say(error){
-const fill=(values={})=>Object.fromEntries(Object.entries(values)
-.map(([name,value])=>[name,value?.key?phrase(value.key,value.values):value]));
 if(error?.name==='ParseError'){
 return phrase('parse.at',{
 reason:phrase(error.reason,fill(error.values)),
@@ -166,21 +160,7 @@ column:error.column,
 }
 return error?.message?phrase(error.message,fill(error.values)):String(error);
 }
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-el.resultNote.textContent=phrase('out.empty');
-}
-function clearError(){
-el.error.hidden=true;
-el.error.textContent='';
-}
 const indentString=()=>(el.indent.value==='tab'?'\t':' '.repeat(Number(el.indent.value)));
-function humanBytes(bytes){
-if(bytes<1024)return phrase('size.bytes',{n:bytes});
-if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(1)});
-return phrase('size.mb',{n:(bytes/(1024*1024)).toFixed(2)});
-}
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;
 el.privacyPanel.hidden=!open;

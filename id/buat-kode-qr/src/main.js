@@ -1,11 +1,12 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{saveBlob}from'./shared/download.js';
 import{KINDS,compose,missing}from'./payload.js';
 import{makeQr}from'./qr.js';
 import{capacityFor}from'./qr-encode.js';
 import{SYMBOLOGIES,makeBarcode}from'./barcode.js';
 import{
-barcodeSvg,download,qrSvg,sizeOfSvg,svgToPng,
+barcodeSvg,qrSvg,sizeOfSvg,svgToPng,
 }from'./render.js';
 const $=(id)=>document.getElementById(id);
 const el={
@@ -267,13 +268,13 @@ return current?.name??'code';
 }
 el.downloadSvg.addEventListener('click',()=>{
 if(!current)return;
-download(new Blob([current.svg],{type:'image/svg+xml'}),`${baseName()}.svg`);
+saveBlob(new Blob([current.svg],{type:'image/svg+xml'}),`${baseName()}.svg`);
 el.downloadNote.textContent=phrase('save.done');
 });
 el.downloadPng.addEventListener('click',async()=>{
 if(!current)return;
 try{
-download(await svgToPng(current.svg),`${baseName()}.png`);
+saveBlob(await svgToPng(current.svg),`${baseName()}.png`);
 el.downloadNote.textContent=phrase('save.done');
 }catch(error){
 el.downloadNote.textContent=phrase('save.failed',{detail:phrase(error.message)});

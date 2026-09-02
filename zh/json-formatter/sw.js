@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/json-formatter/:';
-const CACHE_NAME=CACHE_PREFIX+'d47b76948d';
+const CACHE_NAME=CACHE_PREFIX+'da4e2c70e4';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,9 @@ const ASSETS=[
 'src/shared/parse-json.js',
 'src/shared/parse-yaml.js',
 'src/shared/parse-xml.js',
+'src/shared/message-box.js',
+'src/shared/download.js',
+'src/shared/format.js',
 'src/convert.js',
 'src/css.js',
 'src/format.js',

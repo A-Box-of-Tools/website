@@ -1,5 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{sizeText}from'./shared/format.js';
+import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker}from'./shared/file-picker.js';
 import{decodeAudio,UnreadableFile}from'./shared/audio-decode.js';
 import{
@@ -72,6 +74,8 @@ download:$('download'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showError,clear:clearError}=messageBox(el.error);
+const formatBytes=(n)=>sizeText(n,phrase,{under:'size.b',kb:1,mb:1,gb:'size.gb'});
 let file=null;
 let source=null;
 let summary=null;
@@ -649,14 +653,6 @@ window.addEventListener('resize',()=>{
 timeline.redraw();
 if(lastOut)drawWaveform(el.outWave,lastOut);
 });
-function showError(message){
-el.error.textContent=message;
-el.error.hidden=false;
-}
-function clearError(){
-el.error.hidden=true;
-el.error.textContent='';
-}
 function clearResult(){
 el.result.hidden=true;
 el.resultAudio.removeAttribute('src');
@@ -667,14 +663,6 @@ lastOut=null;
 const channelWord=(count)=>(count<=2
 ?phrase(count===1?'channels.mono':'channels.stereo')
 :phrase('channels.many',{n:count}));
-function formatBytes(bytes){
-if(bytes<1024)return phrase('size.b',{n:bytes});
-if(bytes<1024*1024)return phrase('size.kb',{n:(bytes/1024).toFixed(1)});
-if(bytes<1024*1024*1024){
-return phrase('size.mb',{n:(bytes/(1024*1024)).toFixed(1)});
-}
-return phrase('size.gb',{n:(bytes/(1024*1024*1024)).toFixed(2)});
-}
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;
 el.privacyPanel.hidden=!open;

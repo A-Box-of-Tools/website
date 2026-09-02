@@ -1,10 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{FORMATS}from'./codecs.js';
-export function bytes(n,t){
-if(n<1024)return t('size.bytes',{n});
-if(n<1024*1024)return t('size.kb',{n:(n/1024).toFixed(n<10240?1:0)});
-return t('size.mb',{n:(n/(1024*1024)).toFixed(2)});
-}
+import{sizeText}from'./shared/format.js';
+export const bytes=(n,t)=>sizeText(n,t,{under:'size.bytes',kb:'auto',mb:2});
 export function dimensions(width,height){
 return`${width} × ${height}`;
 }

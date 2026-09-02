@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/동영상-gif-변환/:';
-const CACHE_NAME=CACHE_PREFIX+'a34487c0e8';
+const CACHE_NAME=CACHE_PREFIX+'3b09688193';
 const ASSETS=[
 './',
 'index.html',
@@ -10,6 +10,9 @@ const ASSETS=[
 'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/mp4-reader.js',
+'src/shared/message-box.js',
+'src/shared/media.js',
+'src/shared/format.js',
 'src/draw.js',
 'src/encode.js',
 'src/frames.js',

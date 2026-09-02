@@ -1,5 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
+import{messageBox}from'./shared/message-box.js';
 import{writeIco,dibEntry,readIcoDirectory}from'./ico.js';
 import{writeIcns,readIcnsElements,ICNS_TYPES,ICNS_SIZES}from'./icns.js';
 import{PRESETS,SIZES,WHY,presetById,storageFor,dibBytes}from'./sizes.js';
@@ -58,6 +59,7 @@ copySnippet:$('copy-snippet'),
 privacyToggle:$('privacy-toggle'),
 privacyPanel:$('privacy-panel'),
 };
+const{show:showLoadError,clear:clearLoadError}=messageBox(el.loadError);
 let items=[];
 let nextId=1;
 let busy=false;
@@ -701,14 +703,6 @@ clearResults();
 render();
 drawPreview();
 });
-}
-function showLoadError(message){
-el.loadError.textContent=message;
-el.loadError.hidden=false;
-}
-function clearLoadError(){
-el.loadError.textContent='';
-el.loadError.hidden=true;
 }
 el.privacyToggle.addEventListener('click',()=>{
 const open=el.privacyPanel.hidden;
