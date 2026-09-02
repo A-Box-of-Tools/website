@@ -190,9 +190,11 @@ q = "Kan ik het geluid uit een video halen?"
 a = """
         Ja, en dat is hier dezelfde klus als een mp3 openen. Sleep een mp4, mov of
         WebM naar binnen en alleen het audiospoor wordt gedecodeerd. Het beeld wordt
-        nooit gelezen, en wat eruit komt is een geluidsbestand zonder video erin. Zo
-        bewaar je ook het geluid uit een filmpje zonder er verder iets aan te doen:
-        laat elke instelling met rust en druk op de knop."""
+        nooit gelezen, en wat eruit komt is een geluidsbestand zonder video erin.
+        Is dat alles wat je wilt &mdash; het geluid, onveranderd &mdash;, dan
+        doet <a href="../audio-uit-video-halen/">Audio uit video halen</a>
+        hetzelfde werk op een pagina waar verder niets op staat. Kom hier terug
+        als het geluid ook nog bewerkt moet worden."""
 
 [[faq]]
 q = "Verandert de toonhoogte als ik de snelheid wijzig?"

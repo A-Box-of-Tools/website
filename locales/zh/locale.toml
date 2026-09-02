@@ -226,7 +226,7 @@ blurb = """
         不走服务器的工具。文件留在你自己的机器上，没有东西要传，也不用注册\
         账号。"""
 base = "本站说的每一句话，都是写来给你核对的，不是写来让你信的。"
-licence = """本站文字采用<a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>，代码采用<a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>。欢迎取用，注明出处即可。"""
+licence = """本站文字采用 <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE-CONTENT" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>，代码采用 <a href="https://github.com/A-Box-of-Tools/website/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT</a>。欢迎取用，注明出处即可。"""
 
 #
 # ---------------------------------------------------------------------------
@@ -258,8 +258,7 @@ footer_source = "在 GitHub 上读代码"
 footer_x = "abox.tools 的 X 账号"
 
 guarantees_note = """
-    上面这些不用你信。
-    <a href="{{ base }}{{ links.safety_guide }}/">
+    上面这些不用你信。<a href="{{ base }}{{ links.safety_guide }}/">
       怎么判断一个工具是不是真需要你的文件</a>\
     里有四项你自己动手就能做的检查，用在本站管用，用在别家也一样。"""
 
@@ -331,8 +330,7 @@ read_first_lead = """
       Content-Security-Policy"""
 
 dlp_note = """
-      <strong>如果公司的安全软件警告说有上传。</strong>
-      它盯着浏览器里选择文件的那一刻，而且无法知道页面是否打算把它发出去&mdash;&mdash;所以在选择时就发出警告。这里什么都不会发出去：打开浏览器的开发者工具，切到网络，然后选一个文件。没有任何请求带着它，除了这个页面自己的本地预览之外，根本没有任何请求。同样的检查，你们的 IT 同事半分钟就能做完。"""
+      <strong>如果公司的安全软件警告说有上传。</strong>它盯着浏览器里选择文件的那一刻，而且无法知道页面是否打算把它发出去——所以在选择时就发出警告。这里什么都不会发出去：打开浏览器的开发者工具，切到网络，然后选一个文件。没有任何请求带着它，除了这个页面自己的本地预览之外，根本没有任何请求。同样的检查，你们的 IT 同事半分钟就能做完。"""
 
 [ui.feedback]
 prompt = "这次管用吗？"

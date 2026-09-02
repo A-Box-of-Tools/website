@@ -43,7 +43,7 @@ card = """
             kost. Plak een deployconfiguratie zonder hem aan iemand te geven."""
 
 [words]
-plural = "YAML en JSON"
+plural = "YAML- en JSON-bestanden"
 choose = "een bestand"
 analytics_extra = """, en niet de YAML en
   niet de JSON die er doorheen gaat"""

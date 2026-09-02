@@ -187,9 +187,11 @@ a = """
         Bisa, dan di sini itu pekerjaan yang sama dengan membuka sebuah MP3.
         Jatuhkan MP4, MOV, atau WebM dan hanya jalur audionya yang didekode:
         gambarnya tidak pernah dibaca, dan yang keluar adalah file suara tanpa
-        video di dalamnya. Itu juga cara menyimpan suara dari sebuah klip tanpa
-        menyuntingnya sama sekali &mdash; biarkan setiap setelan apa adanya dan
-        tekan tombolnya."""
+        video di dalamnya.
+        Kalau hanya itu yang Anda mau &mdash; suaranya, tanpa perubahan &mdash;
+        maka <a href="../ekstrak-audio-dari-video/">Ekstrak Audio dari Video</a>
+        mengerjakan hal yang sama di halaman yang tidak berisi apa pun lagi.
+        Kembalilah ke sini saat suaranya juga perlu diubah."""
 
 [[faq]]
 q = "Apakah mengubah kecepatan mengubah nadanya?"

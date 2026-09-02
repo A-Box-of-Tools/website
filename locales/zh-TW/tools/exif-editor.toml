@@ -68,7 +68,7 @@ body = """\
 title = "這裡沒有任何東西會去聯網取資料。"
 body = """\
       跟這箱子裡別的工具不一樣，這一個連「從網址載入」都沒有，一步可選的聯網\
-      都沒有。整個 <code>src/</code> 裡，一個 <code>fetch</code>、一個\
+      都沒有。整個 <code>src/</code> 裡，一個 <code>fetch</code>、一個 \
       <code>XMLHttpRequest</code>、一個 <code>sendBeacon</code> 都找不到。"""
 
 [[privacy]]
@@ -124,7 +124,7 @@ body = """\
 q = "我的照片會傳到什麼地方去嗎？"
 a = """
         不會。讀取、解析、重寫，全由你自己的瀏覽器在你自己的硬體上完成。這個\
-        工具沒有任何聯網功能，不取東西，也不發東西。頁面的\
+        工具沒有任何聯網功能，不取東西，也不發東西。頁面的 \
         <code>Content-Security-Policy</code> 把它可能聯的地址全列了出來，\
         沒有一個是本站的。"""
 

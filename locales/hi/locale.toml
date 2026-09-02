@@ -24,7 +24,7 @@
 # everywhere a loanword would be showing off rather than communicating. The
 # conventions it settled on, so a later edit can stay in step:
 #
-#   * टूल, not औज़ार, for the software sense. औज़ार is good Hindi but it is a
+#   * टूल, not टूल, for the software sense. टूल is good Hindi but it is a
 #     hand tool, and "ऑनलाइन टूल" is what people actually type.
 #   * पेज, not पृष्ठ. पृष्ठ is textbook Hindi; nobody says it about a website.
 #   * Nuktas on फ and ज always (फ़ाइल, ज़रूरत, साइज़, मुफ़्त) and on the
@@ -143,7 +143,7 @@ note = "हर टूल के लिए एक। काम में क्�
 
 [[guides.groups]]
 id = "workflows"
-name = "औज़ारों की कड़ी"
+name = "टूलों की कड़ी"
 note = "ऐसे काम जिनमें दो-तीन टूल एक के बाद एक लगते हैं: किस क्रम में, और क्रम क्यों मायने रखता है।"
 
 [[guides.groups]]

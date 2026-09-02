@@ -30,8 +30,7 @@
     </h2>
 
     <p class="stage-hint">
-      从头放一遍，在某段该开始的地方按 <kbd>I</kbd>，该结束的地方按
-      <kbd>O</kbd>。想标几次都行，每一对都会变成下面的一行，成品文件就是这些行一个接一个。<kbd>U</kbd> 撤销最后一次，<kbd>空格</kbd> 播放和暂停，方向键跳五秒。按住 <kbd>Shift</kbd> 再按方向键，每次挪十毫秒。
+      从头放一遍，在某段该开始的地方按 <kbd>I</kbd>，该结束的地方按 <kbd>O</kbd>。想标几次都行，每一对都会变成下面的一行，成品文件就是这些行一个接一个。<kbd>U</kbd> 撤销最后一次，<kbd>空格</kbd>播放和暂停，方向键跳五秒。按住 <kbd>Shift</kbd> 再按方向键，每次挪十毫秒。
     </p>
 
     <!-- Built by src/timeline.js: the waveform, a band for every part, the one
@@ -144,8 +143,8 @@
       <div class="field">
         <label for="fade">让接缝柔一点</label>
         <select id="fade">
-          <option value="0">关闭 &mdash; 切在精确的采样上</option>
-          <option value="0.005" selected>5 毫秒 &mdash; 足够挡住咔哒声</option>
+          <option value="0">关闭——切在精确的采样上</option>
+          <option value="0.005" selected>5 毫秒——足够挡住咔哒声</option>
           <option value="0.02">20 毫秒</option>
           <option value="0.05">50 毫秒</option>
         </select>
@@ -197,11 +196,11 @@
     <span data-phrase="read.failed">那个文件读不了：{why}</span>
     <span data-phrase="audio.empty">那个文件是空的。</span>
     <span data-phrase="audio.nodecode">这个浏览器从那个文件里取不出任何声音。要么格式是它解不了的，要么文件里根本没有音频轨。MP3、WAV、FLAC、M4A、MP4、MOV、WebM 和 Ogg 都行；AVI、WMA 以及大多数 MKV 不行。</span>
-    <span data-phrase="audio.nosound">那个文件里没有声音 &mdash; 解出来什么都没有。</span>
+    <span data-phrase="audio.nosound">那个文件里没有声音——解出来什么都没有。</span>
     <span data-phrase="src.format">{channels}，{khz} kHz</span>
     <span data-phrase="src.rate.file">{rate} Hz（来自文件）</span>
     <span data-phrase="src.rate.assumed">{rate} Hz（假定）</span>
-    <span data-phrase="src.guessednote">这种格式没有在本工具读的任何头里写明录制时用的采样率，所以按 48 kHz 解码。如果录制时用的是别的采样率，浏览器在读入时重采样了一次 &mdash; 这是这里唯一不精确的地方。</span>
+    <span data-phrase="src.guessednote">这种格式没有在本工具读的任何头里写明录制时用的采样率，所以按 48 kHz 解码。如果录制时用的是别的采样率，浏览器在读入时重采样了一次——这是这里唯一不精确的地方。</span>
     <span data-phrase="channels.mono">单声道</span>
     <span data-phrase="channels.stereo">立体声</span>
     <span data-phrase="channels.many">{n} 个声道</span>
@@ -211,7 +210,7 @@
     <span data-phrase="mark.clearone">清掉 {name} 里唯一的一段？</span>
     <span data-phrase="mark.clearall">清掉 {name} 的全部 {n} 段？</span>
     <span data-phrase="tl.band">第 {n} 段：{from} 到 {to}</span>
-    <span data-phrase="parts.none">还没有 &mdash; 整段录音</span>
+    <span data-phrase="parts.none">还没有——整段录音</span>
     <span data-phrase="parts.count">{total} 段里的 {finished} 段</span>
     <span data-phrase="btn.play">播放这一段</span>
     <span data-phrase="btn.up">上移</span>
@@ -234,23 +233,23 @@
     <span data-phrase="n.edge.many">{n} 个边</span>
     <span data-phrase="join.sentences">{a}{b}</span>
     <span data-phrase="join.dot">{a} &middot; {b}</span>
-    <span data-phrase="sum.nothing.cut">什么都没有 &mdash; 这些标记盖住了整段录音</span>
+    <span data-phrase="sum.nothing.cut">什么都没有——这些标记盖住了整段录音</span>
     <span data-phrase="sum.nothing">什么都没标</span>
     <span data-phrase="sum.zero">0 秒</span>
     <span data-phrase="sum.parts.cut">标出来的那些去掉之后是 {parts}</span>
     <span data-phrase="sum.start">就在你标的地方，从第 {sample} 个采样开始</span>
-    <span data-phrase="sum.onepart">没有 &mdash; 只有一段，原封不动</span>
-    <span data-phrase="sum.onepart.faded">没有 &mdash; 只有一段，切口处做了淡入淡出</span>
+    <span data-phrase="sum.onepart">没有——只有一段，原封不动</span>
+    <span data-phrase="sum.onepart.faded">没有——只有一段，切口处做了淡入淡出</span>
     <span data-phrase="sum.joins.faded">{joins}，其中 {edges} 做了淡化</span>
     <span data-phrase="sum.joins.nofades">{joins}，不做淡化</span>
     <span data-phrase="sum.sound">{channels}，{khz} kHz，{depth}</span>
     <span data-phrase="depth.16">16 位</span>
     <span data-phrase="depth.float">32 位浮点</span>
     <span data-phrase="sum.untouched">什么都没标，所以什么也不切：这会把解码器产出的每一个采样按顺序全写出来，任何地方都不做淡化。这只是换个格式，别的什么都没做。</span>
-    <span data-phrase="fade.none">每一段都切在你标的那个采样上，不拿任何东西去乘任何东西。要是切口落在词中间，接缝处你可能听到一声咔哒 &mdash; 那是波形在跳，不是出了什么问题。</span>
-    <span data-phrase="fade.some">{ms} 毫秒 &mdash; 大约 {samples} 个采样 &mdash; 在一段的开头升上去、结尾降下来，接缝就咔哒不了。只有真正是切口的边才有：录音最开头或最末尾的边不动它。</span>
-    <span data-phrase="fade.some.oneedge">{ms} 毫秒 &mdash; 大约 {samples} 个采样 &mdash; 在一段的开头升上去、结尾降下来，接缝就咔哒不了。只有真正是切口的边才有：录音最开头或最末尾的边不动它，所以这里有 1 个边做了淡化。</span>
-    <span data-phrase="fade.some.edges">{ms} 毫秒 &mdash; 大约 {samples} 个采样 &mdash; 在一段的开头升上去、结尾降下来，接缝就咔哒不了。只有真正是切口的边才有：录音最开头或最末尾的边不动它，所以这里有 {n} 个边做了淡化。</span>
+    <span data-phrase="fade.none">每一段都切在你标的那个采样上，不拿任何东西去乘任何东西。要是切口落在词中间，接缝处你可能听到一声咔哒——那是波形在跳，不是出了什么问题。</span>
+    <span data-phrase="fade.some">{ms} 毫秒——大约 {samples} 个采样——在一段的开头升上去、结尾降下来，接缝就咔哒不了。只有真正是切口的边才有：录音最开头或最末尾的边不动它。</span>
+    <span data-phrase="fade.some.oneedge">{ms} 毫秒——大约 {samples} 个采样——在一段的开头升上去、结尾降下来，接缝就咔哒不了。只有真正是切口的边才有：录音最开头或最末尾的边不动它，所以这里有 1 个边做了淡化。</span>
+    <span data-phrase="fade.some.edges">{ms} 毫秒——大约 {samples} 个采样——在一段的开头升上去、结尾降下来，接缝就咔哒不了。只有真正是切口的边才有：录音最开头或最末尾的边不动它，所以这里有 {n} 个边做了淡化。</span>
     <span data-phrase="export.nothing">没有什么可留的。标出一段，或者切回「留下它们」。</span>
     <span data-phrase="step.starting">正在开始&hellip;</span>
     <span data-phrase="trim.copying">正在复制第 {done} 段，共 {total} 段&hellip;</span>

@@ -40,7 +40,7 @@ card = """
 
 [words]
 plural = "ملفات XML وJSON الخاصة بك"
-choose = "ملفاً"
+choose = "ملف"
 analytics_extra = """، ولا شيئاً من XML
   الذي يمرّ من هنا"""
 

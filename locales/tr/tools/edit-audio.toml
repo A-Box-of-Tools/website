@@ -185,9 +185,11 @@ q = "Bir videonun sesini alabilir miyim?"
 a = """
         Evet ve bu, burada bir MP3 açmakla aynı iştir. Bir MP4, MOV ya da WebM
         bırakın; yalnızca ses parçası çözülür: görüntü hiç okunmaz ve çıkan şey
-        içinde video olmayan bir ses dosyasıdır. Bu aynı zamanda bir klibin
-        sesini hiç düzenlemeden kaydetmenin de yoludur &mdash; her ayarı olduğu
-        gibi bırakın ve düğmeye basın."""
+        içinde video olmayan bir ses dosyasıdır.
+        İstediğinizin tamamı buysa &mdash; ses, değişmeden &mdash; <a
+        href="../videodan-ses-cikarma/">Videodan Ses Çıkarma</a> aynı işi
+        üzerinde başka hiçbir şey olmayan bir sayfada yapar. Sesin de değişmesi
+        gerektiğinde buraya dönün."""
 
 [[faq]]
 q = "Hızı değiştirmek perdeyi değiştirir mi?"

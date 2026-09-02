@@ -1,7 +1,7 @@
   <section>
     <h2>簡短的回答</h2>
     <p>
-      開啟<a href="../../json-formatter/">JSON 格式化</a>，把 JSON 貼進框裡，讀它。排版是你打字的時候就發生的，語言是從文字本身認出來的，縮排預設兩個空格，除非你另有吩咐。什麼都不會被上傳，因為它沒有地方可去：解析器不過是幾百行 JavaScript，跑在你已經開啟的這個分頁裡。
+      開啟 <a href="../../json-formatter/">JSON 格式化</a>，把 JSON 貼進框裡，讀它。排版是你打字的時候就發生的，語言是從文字本身認出來的，縮排預設兩個空格，除非你另有吩咐。什麼都不會被上傳，因為它沒有地方可去：解析器不過是幾百行 JavaScript，跑在你已經開啟的這個分頁裡。
     </p>
     <p>
       底下所有內容，都是你在把一個配置檔案貼進那些替代品之前值得知道的：一個格式化工具可以改什麼、大多數工具無論如何都改了什麼，以及在檔案根本讀不出來時，那條錯誤該怎麼讀。
@@ -19,8 +19,7 @@
   <section>
     <h2>格式化是什麼，不是什麼</h2>
     <p>
-      JSON 幾乎沒有語法。一個物件、一個陣列、一個字串、一個數，再加上
-      <code>true</code>、<code>false</code>、<code>null</code> 這三個詞。在這些零件之間，空白什麼也不表示：下面這個檔案
+      JSON 幾乎沒有語法。一個物件、一個陣列、一個字串、一個數，再加上 <code>true</code>、<code>false</code>、<code>null</code> 這三個詞。在這些零件之間，空白什麼也不表示：下面這個檔案
     </p>
     <pre><code>{"name":"thing","tags":["local","offline"]}</code></pre>
     <p>
@@ -46,8 +45,7 @@
 
     <h3>你的鍵的順序</h3>
     <p>
-      這是最容易把人絆住的一條。用 JavaScript 寫 JSON 格式化最順手的做法，是先調
-      <code>JSON.parse</code>，再帶上縮排調 <code>JSON.stringify</code>，而這一對並不保留那些長得像整數的鍵的順序：
+      這是最容易把人絆住的一條。用 JavaScript 寫 JSON 格式化最順手的做法，是先調 <code>JSON.parse</code>，再帶上縮排調 <code>JSON.stringify</code>，而這一對並不保留那些長得像整數的鍵的順序：
     </p>
     <pre><code>Object.keys(JSON.parse('{"10":"a","2":"b","x":"c"}'))
 // ['2', '10', 'x']</code></pre>
@@ -97,12 +95,11 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
         <strong>沒加引號的鍵。</strong><code>{a: 1}</code>，同一個錯誤從另一頭犯起——通常是因為從程式碼裡、而不是從檔案裡貼出來的。
       </li>
       <li>
-        <strong>註釋。</strong><code>// 像這樣</code>也不是 JSON。那是 JSONC，VS Code
+        <strong>註釋。</strong><code>// 像這樣</code> 也不是 JSON。那是 JSONC，VS Code
         的設定和 <code>tsconfig.json</code> 用它，別處一概讀不了。要是一條註釋非留不可，慣例是拿一個鍵來放：<code>"_comment": "..."</code>。
       </li>
       <li>
-        <strong>字串裡真正的換行或製表符。</strong>它們必須寫成 <code>\n</code> 和
-        <code>\t</code>。手工把一條 shell 命令或者一份證書貼進某個值裡時，通常就是這裡出差錯。
+        <strong>字串裡真正的換行或製表符。</strong>它們必須寫成 <code>\n</code> 和 <code>\t</code>。手工把一條 shell 命令或者一份證書貼進某個值裡時，通常就是這裡出差錯。
       </li>
       <li>
         <strong>JSON 不允許的數。</strong>前導零（<code>01</code>）、光禿禿的小數點（<code>.5</code>）、<code>NaN</code>、<code>Infinity</code> 和 <code>+1</code>，這些人們都寫，而它們沒有一個是 JSON。
@@ -149,9 +146,7 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
       當順序本身在承擔某種意義時它有害。<code>package.json</code> 對什麼放在前面是有慣例的；手寫的配置常常把相關的設定擺在一起；而一份被工具排過序又提交上去的檔案，會產出一個巨大而毫無意義的提交。排一份副本，別排原件。
     </p>
     <p>
-      有個細節值得知道：這裡的排序按的是鍵讀起來的樣子，而不是它們的碼位，所以
-      <code>item2</code> 排在 <code>item10</code> 前面，而不是後面。按碼位排，正是把
-      <code>item10</code> 塞到一堆 1 開頭的裡頭去的那種排法：技術上沒錯，對讀的人毫無用處。
+      有個細節值得知道：這裡的排序按的是鍵讀起來的樣子，而不是它們的碼位，所以 <code>item2</code> 排在 <code>item10</code> 前面，而不是後面。按碼位排，正是把 <code>item10</code> 塞到一堆 1 開頭的裡頭去的那種排法：技術上沒錯，對讀的人毫無用處。
     </p>
   </section>
 
@@ -199,8 +194,7 @@ JSON.stringify(JSON.parse('{"size":1e999}'))
         <strong>把 YAML 轉成 JSON 會丟掉註釋</strong>，因為 JSON 沒有地方放註釋。錨點和別名——YAML 用來說「同一個節點出現兩次」的辦法——也沒法表達，所以這裡選擇直接拒絕，而不是替你猜。
       </li>
       <li>
-        <strong><code>no</code> 是一個字串。</strong>在 YAML 1.1 裡，
-        <code>yes</code>、<code>no</code>、<code>on</code> 和 <code>off</code> 是布林值，所以一份含挪威的國家程式碼列表，從前回來時裡面會多出一個 <code>false</code>。YAML
+        <strong><code>no</code> 是一個字串。</strong>在 YAML 1.1 裡，<code>yes</code>、<code>no</code>、<code>on</code> 和 <code>off</code> 是布林值，所以一份含挪威的國家程式碼列表，從前回來時裡面會多出一個 <code>false</code>。YAML
         1.2 把這條去掉了，這裡也一樣——但這些詞寫回去時仍然帶引號，因為下一個開啟這份檔案的，可能是個 1.1 的讀者。
       </li>
     </ul>

@@ -42,7 +42,7 @@ card = """
 
 [words]
 plural = "نصوصك"
-choose = "ملفاً"
+choose = "ملف"
 analytics_extra = """، ولا أيَّ جانب من
   جانبَي ما تقارنه هذه الأداة"""
 

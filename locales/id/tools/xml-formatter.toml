@@ -45,7 +45,7 @@ card = """
             menyerahkannya kepada siapa pun."""
 
 [words]
-plural = "XML dan JSON"
+plural = "file XML dan JSON"
 choose = "sebuah file"
 analytics_extra = """, dan tidak ada XML
   yang lewat di sini"""

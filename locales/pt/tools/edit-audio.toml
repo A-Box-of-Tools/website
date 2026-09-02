@@ -187,9 +187,11 @@ q = "Consigo tirar o áudio de dentro de um vídeo?"
 a = """
         Consegue, e aqui é o mesmo trabalho que abrir um MP3. Jogue um MP4, MOV ou
         WebM aqui e só a trilha de áudio dele é decodificada: a imagem nunca é lida,
-        e o que sai é um arquivo de som sem vídeo nenhum. É também o jeito de salvar
-        o som de um clipe sem editá-lo, porque basta deixar todos os ajustes em paz e
-        clicar no botão."""
+        e o que sai é um arquivo de som sem vídeo nenhum.
+        Se é só isso que você quer &mdash; o som, sem mudar nada &mdash;, então
+        <a href="../extrair-audio-de-video/">Extrair o áudio de um vídeo</a> faz
+        o mesmo trabalho numa página que não tem mais nada. Volte aqui quando o
+        som também precisar de mudança."""
 
 [[faq]]
 q = "Mudar a velocidade muda o tom?"

@@ -30,8 +30,8 @@ live_hint = """
 
 read_first = """
 、何を残しどれだけの大きさで出すかを決める計算については\
-      <code>src/geometry.js</code>、切り抜きとリサイズを一度に行う単一の\
-      <code>drawImage</code>呼び出しについては<code>src/codecs.js</code>です。"""
+<code>src/geometry.js</code>、切り抜きとリサイズを一度に行う単一の\
+<code>drawImage</code>呼び出しについては<code>src/codecs.js</code>です。"""
 
 howto_heading = "画像をアップロードせずにリサイズする手順"
 

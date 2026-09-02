@@ -42,7 +42,7 @@ card = """
             ninguém."""
 
 [words]
-plural = "XML e JSON"
+plural = "arquivos XML e JSON"
 choose = "um arquivo"
 analytics_extra = """, e nada do XML
   que passa por aqui"""

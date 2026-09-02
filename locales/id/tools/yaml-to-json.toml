@@ -46,7 +46,7 @@ card = """
             penggelaran tanpa menyerahkannya kepada siapa pun."""
 
 [words]
-plural = "YAML dan JSON"
+plural = "file YAML dan JSON"
 choose = "sebuah file"
 analytics_extra = """, dan tidak juga YAML
   atau JSON yang lewat di sini"""

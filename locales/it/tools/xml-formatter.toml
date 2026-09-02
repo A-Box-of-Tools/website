@@ -44,7 +44,7 @@ card = """
             consegnarla a nessuno."""
 
 [words]
-plural = "XML e JSON"
+plural = "file XML e JSON"
 choose = "un file"
 analytics_extra = """, e niente dell'XML
   che ci passa dentro"""

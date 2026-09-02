@@ -45,7 +45,7 @@ card = """
             senza consegnarlo a nessuno."""
 
 [words]
-plural = "testo e codice"
+plural = "testi e codice"
 choose = "un file"
 analytics_extra = """, e nessuno dei
   linguaggi che questo strumento legge o scrive"""

@@ -46,7 +46,7 @@ card = """
             configuration sans le confier à personne."""
 
 [words]
-plural = "texte et code"
+plural = "textes et codes"
 choose = "un fichier"
 analytics_extra = """, ni aucun des
   langages que cet outil lit ou écrit"""

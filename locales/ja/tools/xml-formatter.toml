@@ -14,7 +14,7 @@ name = "XMLフォーマッター"
 heading = "XMLフォーマッター <span class=\"h1-kw\">&mdash; 整形、圧縮、JSONへの変換</span>"
 tagline = "読むために整えたXML、送るために平たく圧縮したXML、そして双方向のJSON変換。そのどれも、よそのサーバーに貼り付けられることはありません。"
 
-title = "XMLフォーマッター・XMLをJSONに &mdash; 無料・アップロードなし"
+title = "XMLフォーマッター・XMLをJSONに——無料・アップロードなし"
 description = "XMLの整形・インデント・圧縮と、XMLからJSON、JSONからXMLへの変換。パーサーはあなたのブラウザで動き、何もアップロードされないので、フィードも請求書も設定ファイルも端末を離れません。"
 og_title = "XMLをサーバーに貼り付けずに整形する"
 og_description = "自分の端末で動くXMLフォーマッター兼コンバーター。エラーが何行目にあるかを教えてくれて、貼り付けたものはどこにも行きません。"
@@ -35,8 +35,8 @@ live_hint = """
 
 read_first = """
 、どのタグが閉じられていないかを教えてくれるパーサーは\
-      <code>src/xml.js</code>、XMLから出てくる値がなぜ推測されずにすべて文字列のままなのかは\
-      <code>src/convert.js</code>をご覧ください。"""
+<code>src/xml.js</code>、XMLから出てくる値がなぜ推測されずにすべて文字列のままなのかは\
+<code>src/convert.js</code>をご覧ください。"""
 
 howto_heading = "XMLをアップロードせずに整形する手順"
 

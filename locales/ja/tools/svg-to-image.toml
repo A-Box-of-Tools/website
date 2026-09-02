@@ -32,9 +32,9 @@ live_hint = """
 
 read_first = """
 、ファイル自身のサイズをどう読み、ルートタグをどう書き換えるかについては\
-      <code>src/svg.js</code>、実際に描画している8行については\
-      <code>src/render.js</code>です。&lt;img&gt;と<code>drawImage</code>と\
-      <code>toBlob</code>だけで、間には何もありません。"""
+<code>src/svg.js</code>、実際に描画している8行については\
+<code>src/render.js</code>です。&lt;img&gt;と<code>drawImage</code>と\
+<code>toBlob</code>だけで、間には何もありません。"""
 
 howto_heading = "SVGをアップロードせずにPNGに変換する手順"
 

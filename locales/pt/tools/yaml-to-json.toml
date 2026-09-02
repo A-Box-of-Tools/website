@@ -44,7 +44,7 @@ card = """
             custa. Cole uma configuração de deploy sem entregar a ninguém."""
 
 [words]
-plural = "YAML e JSON"
+plural = "arquivos YAML e JSON"
 choose = "um arquivo"
 analytics_extra = """, e nem o YAML nem o
   JSON que passa por aqui"""

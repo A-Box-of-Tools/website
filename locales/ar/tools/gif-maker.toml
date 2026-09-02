@@ -48,7 +48,7 @@ card = """
 
 [words]
 plural = "صورك"
-choose = "صوراً"
+choose = "صور"
 
 [[facts]]
 text = "بلا رفع"

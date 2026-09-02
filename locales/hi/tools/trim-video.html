@@ -241,11 +241,11 @@
     <span data-phrase="join.settings">{name} का कोडेक पहली क्लिप जैसा ही है, पर इसे अलग सेटिंग्स से एनकोड किया गया था,
       इसलिए एक ही विवरण दोनों पर लागू नहीं हो सकता।</span>
     <span data-phrase="join.unreadable">क्लिपों में से एक पढ़ी नहीं जा सकी।</span>
-    <span data-phrase="join.silent">{name} में आवाज़ नहीं है और बाक़ी में है, इसलिए कॉपी बीच रास्ते चुप हो जाएगी।</span>
+    <span data-phrase="join.silent">{name} में आवाज़ नहीं है और बाकी में है, इसलिए कॉपी बीच रास्ते चुप हो जाएगी।</span>
     <span data-phrase="join.sound">{name} में {rate} Hz पर {channels} चैनल की आवाज़ है और पहली क्लिप में {firstrate} Hz
       पर {firstchannels} चैनल की।</span>
-    <span data-phrase="join.soundentry">{name} की आवाज़ पहली क्लिप से अलग तरीक़े से एनकोड की गई है।</span>
-    <span data-phrase="audio.toobig">भीतरी ग़लती: आवाज़ का विवरण उम्मीद से बड़ा है।</span>
+    <span data-phrase="join.soundentry">{name} की आवाज़ पहली क्लिप से अलग तरीके से एनकोड की गई है।</span>
+    <span data-phrase="audio.toobig">भीतरी गलती: आवाज़ का विवरण उम्मीद से बड़ा है।</span>
     <span data-phrase="audio.noencode">आवाज़ डिकोड तो हुई पर एनकोडर से कुछ लौटा ही नहीं।</span>
     <span data-phrase="nothing.selected">रखने के लिए कुछ चुना ही नहीं गया।</span>
     <span data-phrase="encode.toobig">यह ब्राउज़र {size} पर H.264 एनकोड नहीं करेगा। छोटा फ़्रेम चुनिए, या &laquo;हर बाइट
@@ -280,12 +280,12 @@
     <span data-phrase="clip.recorded">काटने के लिए रिकॉर्ड किया</span>
     <span data-phrase="clip.editing">{name} &mdash; {total} में से {index}</span>
     <span data-phrase="stage.noplay">यह ब्राउज़र इस वीडियो को नहीं चलाएगा, इसलिए नीचे के फ़्रेम एक-एक करके डिकोड किए जा
-      रहे हैं ताकि आप देख सकें कि निशान कहाँ हैं। कटाई ख़ुद इससे प्रभावित नहीं होती।</span>
+      रहे हैं ताकि आप देख सकें कि निशान कहाँ हैं। कटाई खुद इससे प्रभावित नहीं होती।</span>
     <span data-phrase="stage.noframe">यह ब्राउज़र इस वीडियो को नहीं चलाएगा और इससे एक फ़्रेम भी डिकोड नहीं हो सका
       ({detail})। नीचे के निशान फिर भी इसकी लंबाई पर काम करते हैं।</span>
-    <span data-phrase="mark.noopen">अभी कुछ खुला ही नहीं है। जहाँ से हिस्सा शुरू होना चाहिए वहाँ I दबाइए, फिर जहाँ ख़त्म
+    <span data-phrase="mark.noopen">अभी कुछ खुला ही नहीं है। जहाँ से हिस्सा शुरू होना चाहिए वहाँ I दबाइए, फिर जहाँ खत्म
       हो वहाँ O।</span>
-    <span data-phrase="mark.before">इससे हिस्सा {at} पर ख़त्म होगा, जो उसकी शुरुआत {start} से पहले है। पहले प्लेहेड को
+    <span data-phrase="mark.before">इससे हिस्सा {at} पर खत्म होगा, जो उसकी शुरुआत {start} से पहले है। पहले प्लेहेड को
       शुरुआत के आगे ले जाइए।</span>
     <span data-phrase="mark.nospace">यहाँ हिस्सा जोड़ने भर वीडियो बचा ही नहीं। प्लेहेड को पीछे ले जाइए।</span>
     <span data-phrase="mark.clearall">{name} के सारे {n} हिस्से मिटा दें?</span>
@@ -296,7 +296,7 @@
     <span data-phrase="seg.down">नीचे ले जाइए</span>
     <span data-phrase="seg.remove">हटाइए</span>
     <span data-phrase="marks.nothing">सहेजने के लिए अभी कोई निशान लगा ही नहीं है।</span>
-    <span data-phrase="marks.pastend">{name} का हर हिस्सा इस वीडियो के ख़त्म होने के बाद शुरू होता है। शायद ये निशान किसी
+    <span data-phrase="marks.pastend">{name} का हर हिस्सा इस वीडियो के खत्म होने के बाद शुरू होता है। शायद ये निशान किसी
       और वीडियो पर लगाए गए थे।</span>
     <span data-phrase="marks.dropped.one">{name} का 1 हिस्सा इस वीडियो के अंत के बाद शुरू होता है, इसलिए उसे छोड़ दिया गया।</span>
     <span data-phrase="marks.dropped.many">{name} के {n} हिस्से इस वीडियो के अंत के बाद शुरू होते हैं, इसलिए उन्हें छोड़ दिया
@@ -325,7 +325,7 @@
     <span data-phrase="audio.record">चलाते समय पकड़कर दोबारा एनकोड किया गया, क्योंकि रिकॉर्डिंग इससे ज़्यादा कुछ कर ही
       नहीं सकती।</span>
     <span data-phrase="audio.encode">ये वीडियो अपनी आवाज़ अलग-अलग तरह से बताते हैं, इसलिए पूरे नतीजे के लिए उसे एक बार
-      डिकोड और एनकोड किया जाता है। इस औज़ार में यही अकेला मौक़ा है जब आवाज़ बिना छुए पार
+      डिकोड और एनकोड किया जाता है। इस टूल में यही अकेला मौका है जब आवाज़ बिना छुए पार
       नहीं जाती।</span>
     <span data-phrase="audio.copy">फ़ाइल से सैंपल दर सैंपल कॉपी की जाती है, बिना कभी डिकोड हुए, इसलिए कुछ भी नहीं खोता।</span>
     <span data-phrase="sum.nothing.cut">कुछ नहीं &mdash; निशान पूरे वीडियो को ढक लेते हैं</span>
@@ -342,7 +342,7 @@
       सकता। उन पर न चलाने का निशान लगा है, जिसे हर आम प्लेयर मानता है। जो प्लेयर एडिट
       मार्क नज़रअंदाज़ करता है वह वे {seconds}s शुरू में दिखाएगा। अगर यह आपके लिए असली
       बाइट रखने से ज़्यादा मायने रखता है तो &laquo;ठीक यहीं काटिए&raquo; चुनिए।</span>
-    <span data-phrase="sum.size">क़रीब {size}</span>
+    <span data-phrase="sum.size">करीब {size}</span>
     <span data-phrase="sum.picture.copy">कॉपी की गई, फ़्रेम दर फ़्रेम</span>
     <span data-phrase="sum.picture.exact">H.264 में दोबारा एनकोड की गई, {size}</span>
     <span data-phrase="sum.picture.exact.bars">H.264 में दोबारा एनकोड की गई, {size} ({n} पट्टियों के साथ फ़िट किए गए)</span>
@@ -365,17 +365,17 @@
     <span data-phrase="result.parts">{n} हिस्से</span>
     <span data-phrase="result.notreencoded">दोबारा एनकोड नहीं की गई</span>
     <span data-phrase="error.generic">कुछ गड़बड़ हो गई।</span>
-    <span data-phrase="read.midframe">फ़ाइल एक फ़्रेम के बीचोंबीच ख़त्म हो जाती है।</span>
+    <span data-phrase="read.midframe">फ़ाइल एक फ़्रेम के बीचोंबीच खत्म हो जाती है।</span>
     <span data-phrase="read.avcshort">H.264 का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>
     <span data-phrase="read.hevcshort">HEVC का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>
     <span data-phrase="read.av1short">AV1 का कॉन्फ़िगरेशन रिकॉर्ड बहुत छोटा है।</span>
     <span data-phrase="read.compactsizes">सैंपल के आकार एक सिकुड़ी हुई तालिका में हैं, जिसे यह रीडर नहीं खोलता।</span>
     <span data-phrase="read.sampletables">सैंपल तालिकाएँ अधूरी हैं।</span>
-    <span data-phrase="read.chunktable">चंक तालिका ख़ाली है।</span>
+    <span data-phrase="read.chunktable">चंक तालिका खाली है।</span>
     <span data-phrase="read.nosamples">उस ट्रैक में एक भी सैंपल नहीं है।</span>
-    <span data-phrase="read.nostbl">वीडियो ट्रैक की सैंपल तालिकाएँ ग़ायब हैं।</span>
+    <span data-phrase="read.nostbl">वीडियो ट्रैक की सैंपल तालिकाएँ गायब हैं।</span>
     <span data-phrase="read.nostsd">वीडियो ट्रैक में सैंपल का विवरण नहीं है।</span>
-    <span data-phrase="read.emptystsd">वीडियो के सैंपल का विवरण ख़ाली है।</span>
+    <span data-phrase="read.emptystsd">वीडियो के सैंपल का विवरण खाली है।</span>
     <span data-phrase="read.encrypted">वीडियो ट्रैक एन्क्रिप्टेड है।</span>
     <span data-phrase="read.unknowncodec">यह वीडियो &ldquo;{type}&rdquo; के रूप में रखा गया है, और यह रीडर उसे नहीं जानता।</span>
     <span data-phrase="read.noconfig">&ldquo;{type}&rdquo; ट्रैक अपने साथ कोई डिकोडर कॉन्फ़िगरेशन नहीं ले जाता।</span>
@@ -396,7 +396,7 @@
     <span data-phrase="open.norecord">यह ब्राउज़र {name} को रिकॉर्ड नहीं कर सकता, इसलिए काट भी नहीं सकता।</span>
     <span data-phrase="open.failed">{name} खुल नहीं सकी। {reason}</span>
     <span data-phrase="path.record">{reason} इसीलिए {name} को चलाकर और उसे रिकॉर्ड करके काटा जाता है: इसमें उतना ही समय
-      लगता है जितना नतीजा लंबा है, सब कुछ नक़ल होने के बजाय दोबारा एन्कोड होता है, और
+      लगता है जितना नतीजा लंबा है, सब कुछ नकल होने के बजाय दोबारा एन्कोड होता है, और
       सिर्फ़ एक ही हिस्सा रखा जा सकता है।</span>
     <span data-phrase="net.clean">आपके वीडियो कहीं नहीं गए। {total} फ़ाइलें लोड
       हुईं। {platform}</span>

@@ -121,23 +121,23 @@
     with, and main.js, which can reach this block, resolves it.
   -->
   <div id="phrases" hidden aria-hidden="true">
-    <span data-phrase="size.bytes">{amount} バイト</span>
+    <span data-phrase="size.bytes">{amount}バイト</span>
     <span data-phrase="size.kb">{amount} KB</span>
     <span data-phrase="size.mb">{amount} MB</span>
 
-    <span data-phrase="list.count.one">画像{count}枚、合計 {size}</span>
-    <span data-phrase="list.count.many">画像{count}枚、合計 {size}</span>
+    <span data-phrase="list.count.one">画像{count}枚、合計{size}</span>
+    <span data-phrase="list.count.many">画像{count}枚、合計{size}</span>
     <span data-phrase="row.under">すでに目標サイズより小さいので、この1枚はそのままにします。</span>
-    <span data-phrase="row.remove">{name} を一覧から外す</span>
+    <span data-phrase="row.remove">{name}を一覧から外す</span>
     <span data-phrase="load.unreadable">{name}：このツールが読める画像ではありません。</span>
     <span data-phrase="load.undecodable">{name}：このブラウザーではデコードできませんでした。</span>
 
     <span data-phrase="target.none">目指すサイズを入力してください。</span>
-    <span data-phrase="target.empty">どの画像も {size} 未満にします。</span>
-    <span data-phrase="target.single.over">この画像は {size} を超えているので、超えなくなるまで圧縮します。</span>
-    <span data-phrase="target.single.under">この画像はすでに {size} 未満なので、手を触れずにそのまま通します。</span>
-    <span data-phrase="target.over.one">{total}枚のうち{over}枚が {size} を超えています</span>
-    <span data-phrase="target.over.many">{total}枚のうち{over}枚が {size} を超えています</span>
+    <span data-phrase="target.empty">どの画像も{size}未満にします。</span>
+    <span data-phrase="target.single.over">この画像は{size}を超えているので、超えなくなるまで圧縮します。</span>
+    <span data-phrase="target.single.under">この画像はすでに{size}未満なので、手を触れずにそのまま通します。</span>
+    <span data-phrase="target.over.one">{total}枚のうち{over}枚が{size}を超えています</span>
+    <span data-phrase="target.over.many">{total}枚のうち{over}枚が{size}を超えています</span>
     <span data-phrase="target.rest.one">もう1枚は手を触れずにそのまま通します</span>
     <span data-phrase="target.rest.many">残りの{count}枚は手を触れずにそのまま通します</span>
     <span data-phrase="target.summary">{over}。</span>
@@ -169,9 +169,9 @@
     <span data-phrase="error.encode">このブラウザーは{format}で書き出しませんでした。</span>
     <span data-phrase="error.decode">このブラウザーは画像をデコードできませんでした。</span>
 
-    <span data-phrase="results.all">{before} から {after} へ &mdash; {change}。どの画像も目標サイズ未満です。</span>
-    <span data-phrase="results.missed.one">{before} から {after} へ。{count}枚が目標サイズに届きませんでした &mdash; 下の行をご覧ください。</span>
-    <span data-phrase="results.missed.many">{before} から {after} へ。{count}枚が目標サイズに届きませんでした &mdash; 下の行をご覧ください。</span>
+    <span data-phrase="results.all">{before}から{after}へ &mdash; {change}。どの画像も目標サイズ未満です。</span>
+    <span data-phrase="results.missed.one">{before}から{after}へ。{count}枚が目標サイズに届きませんでした——下の行をご覧ください。</span>
+    <span data-phrase="results.missed.many">{before}から{after}へ。{count}枚が目標サイズに届きませんでした——下の行をご覧ください。</span>
     <span data-phrase="row.headline">{before} &rarr; {after} &middot; {change}</span>
     <span data-phrase="row.headline.untouched">{size} &mdash; すでに目標サイズ未満だったので、何も触っていません。</span>
     <span data-phrase="row.match">元の画像と比べて測定：{match}（SSIM {ssim}、PSNR {psnr}）。</span>
@@ -194,11 +194,11 @@
 
     <span data-phrase="detail.untouched">すでに持っていたサイズに届くために圧縮すれば画質を削るだけなので、メタデータごとバイト単位でそのまま通しました。</span>
     <span data-phrase="detail.line">{format}、{size}、{encodes}。</span>
-    <span data-phrase="detail.line.quality">{format}、画質 {quality}、{size}、{encodes}。</span>
+    <span data-phrase="detail.line.quality">{format}、画質{quality}、{size}、{encodes}。</span>
     <span data-phrase="detail.format">{format}で書き出し</span>
     <span data-phrase="detail.format.changed">{format}で書き出し。このサイズでは元の形式より画像をよく保てました</span>
-    <span data-phrase="detail.resized">{from} から {to} に縮小</span>
-    <span data-phrase="detail.full">原寸のまま {size}</span>
+    <span data-phrase="detail.resized">{from}から{to}に縮小</span>
+    <span data-phrase="detail.full">原寸のまま{size}</span>
     <span data-phrase="detail.encodes.one">{count}回のエンコードで到達</span>
     <span data-phrase="detail.encodes.many">{count}回のエンコードで到達</span>
 

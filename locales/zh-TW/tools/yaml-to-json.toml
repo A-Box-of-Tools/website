@@ -32,7 +32,7 @@ live_hint = """
       帶走你貼進去的一個字元。嫌麻煩就直接拔掉網線，照樣轉換。"""
 
 read_first = """\
-，寧可拒絕一個錨點也不去猜它想說什麼的讀取器在\
+，寧可拒絕一個錨點也不去猜它想說什麼的讀取器在 \
       <code>src/yaml.js</code>；一次轉換為什麼就是一個解析器加一個列印器、中間沒有\
       任何同時認得兩種格式的東西，在 <code>src/convert.js</code>。"""
 
@@ -43,7 +43,7 @@ card = """\
             貼一份部署配置，不用交給任何人。"""
 
 [words]
-plural = "YAML 和 JSON"
+plural = " YAML 和 JSON "
 choose = "一個檔案"
 analytics_extra = """，經過這裡的 YAML \
   和 JSON 同樣如此"""
@@ -73,7 +73,7 @@ body = """\
 [[privacy]]
 title = "這裡不會去取任何東西。"
 body = """\
-      <code>src/</code> 裡哪裡都沒有 <code>fetch</code>，沒有\
+      <code>src/</code> 裡哪裡都沒有 <code>fetch</code>，沒有 \
       <code>XMLHttpRequest</code>，也沒有 <code>sendBeacon</code>。兩個解析器和\
       兩個列印器都是這個頁面裡的函式：進去一段字串，出來一段字串。"""
 
@@ -167,7 +167,7 @@ a = """\
 q = "它會保持我的鍵順序嗎？"
 a = """\
         會，兩個方向都會，而這比聽起來難。建立在 <code>JSON.parse</code> 上的轉換器\
-        會悄悄把看起來像整數的鍵挪到前面，於是 <code>{"10":a,"2":b}</code> 回來就成了\
+        會悄悄把看起來像整數的鍵挪到前面，於是 <code>{"10":a,"2":b}</code> 回來就成了 \
         <code>{"2":b,"10":a}</code>。數字保留你打的每一位，所以一個二十位的帳號不會\
         因為雙精度浮點丟掉最後三位。如果你<em>就是想</em>排序，有個勾選框，而且它按鍵\
         讀起來的樣子排，不是按碼位。"""
@@ -183,7 +183,7 @@ a = """\
 q = "這裡為什麼沒有 YAML 格式化？"
 a = """\
         因為 YAML 沒有值得一寫的壓縮形式——短的那種是流式風格，讀不了，而讀不了正是\
-        把檔案留成 YAML 這件事的反面。排開 JSON、XML、HTML 和 CSS 是\
+        把檔案留成 YAML 這件事的反面。排開 JSON、XML、HTML 和 CSS 是 \
         <a href="../json-formatter/">JSON 格式化</a>的工作，而且它也排 YAML。"""
 
 [[faq]]
@@ -218,4 +218,4 @@ features = [
 
 [picker]
 title = "把檔案拖到這裡"
-hint = "也可以點選選擇 &mdash; 一個 .yaml、.yml 或 .json 檔案"
+hint = "也可以點選選擇——一個 .yaml、.yml 或 .json 檔案"

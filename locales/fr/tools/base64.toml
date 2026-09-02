@@ -43,7 +43,7 @@ card = """
             encodés ou décodés. Collez un jeton sans le confier à personne."""
 
 [words]
-plural = "texte"
+plural = "textes"
 choose = "un fichier"
 analytics_extra = """, ni aucun des
   encodages que cet outil lit ou écrit"""

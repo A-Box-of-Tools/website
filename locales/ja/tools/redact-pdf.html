@@ -35,7 +35,7 @@
 
     <label class="find-label" for="terms">語や語句、1行に1つ</label>
     <textarea id="terms" rows="3" spellcheck="false" autocomplete="off"
-              placeholder="佐藤&#10;千代田区丸の内1-14&#10;令和7年(ワ)40219号"></textarea>
+              placeholder="佐藤&#10;千代田区丸の内1-14&#10;令和7年（ワ）第40219号"></textarea>
 
     <div class="find-row">
       <button type="button" id="find" class="primary">検索</button>
@@ -175,7 +175,7 @@
     <span data-phrase="pdf.deep">入れ子が深すぎます</span>
     <span data-phrase="pdf.short">終わりを越えました</span>
     <span data-phrase="pdf.unexpected">{at}に想定外の{found}</span>
-    <span data-phrase="pdf.unexpectedbyte">{at}に想定外のバイト 0x{hex}</span>
+    <span data-phrase="pdf.unexpectedbyte">{at}に想定外のバイト0x{hex}</span>
     <span data-phrase="pdf.noendstream">endstreamのないストリーム</span>
     <span data-phrase="pdf.noobj">{at}にobjキーワードがありません</span>
     <span data-phrase="pdf.nostartxref">startxrefがありません</span>
@@ -184,7 +184,7 @@
     <span data-phrase="pdf.zerowidth">フィールド幅がゼロのxrefストリーム</span>
     <span data-phrase="read.nocatalogue">このファイルには文書カタログがないので、書き直すものがありません。PDFでないか、ここで直せる範囲を超えて壊れています。</span>
     <span data-phrase="read.noheader">これはPDFの始まり方をしていません。%PDF-のヘッダーがありません。</span>
-    <span data-phrase="load.notpdf">これはPDFではないので、取り除くべき文字がそもそもありません。</span><span data-phrase="load.encrypted">このPDFにはパスワードが掛かっています。書類の保護を外すのは、書類から語を取り除くのとは別の仕事で、この道具はそれを黙って行いません。</span><span data-phrase="load.broken">このファイルをPDFとして開けませんでした ({detail})。</span><span data-phrase="load.nopages">開くことは開きましたが、中にページが見つかりませんでした。</span><span data-phrase="load.repaired">この書類の相互参照表が中身と合っていなかったので、オブジェクトを探しながら読みました。これは修復であり、成功しました。どこかへ送る前に結果をよく確かめてください。</span>
+    <span data-phrase="load.notpdf">これはPDFではないので、取り除くべき文字がそもそもありません。</span><span data-phrase="load.encrypted">このPDFにはパスワードが掛かっています。書類の保護を外すのは、書類から語を取り除くのとは別の仕事で、この道具はそれを黙って行いません。</span><span data-phrase="load.broken">このファイルをPDFとして開けませんでした（{detail}）。</span><span data-phrase="load.nopages">開くことは開きましたが、中にページが見つかりませんでした。</span><span data-phrase="load.repaired">この書類の相互参照表が中身と合っていなかったので、オブジェクトを探しながら読みました。これは修復であり、成功しました。どこかへ送る前に結果をよく確かめてください。</span>
 
     <span data-phrase="doc.sub">{pages}｜文字{words}｜{size}</span>
     <span data-phrase="doc.notext">このうち{count}ページには文字がまったくありません。そういうページはページを撮った画像で、この道具にとって取り除くものはそこにありません。画像の中の語は、あった場所にそのまま残ります。</span><span data-phrase="doc.unreadable">この書類の{count}文字を文字として読めませんでした。使われているフォントが、自分のグリフから文字へ戻す対応表を持っていないからです。これらの文字は検索できないので、検索を信じるのではなく、それがあるページを目で見てください。</span><span data-phrase="doc.scan">いくつかのページは画像の上に見えない文字を載せています。スキャナーが自分の読み取り結果をそう残すからです。その文字を取り除くと、検索とコピーが見つけていたものが消えます。画像は何も変わりませんし、画像の中では語がまだ読めます。</span>
@@ -197,7 +197,7 @@
     <span data-phrase="run.summary">{pages}の{words}を取り除きます。</span><span data-phrase="run.nothing">まだ何も選ばれていません。手順2で語を検索するか、手順3で語をクリックしてください。</span><span data-phrase="run.editing">語を取り除いています&hellip;</span>
     <span data-phrase="run.writing">書類を書いています&hellip;</span>
     <span data-phrase="run.checking">できあがったファイルを開いて検索しています&hellip;</span>
-    <span data-phrase="run.failed">この書類を書き直す途中で問題が起きました ({detail})。</span><span data-phrase="run.cancelled">中止しました。何も書かれていません。</span>
+    <span data-phrase="run.failed">この書類を書き直す途中で問題が起きました（{detail}）。</span><span data-phrase="run.cancelled">中止しました。何も書かれていません。</span>
 
     <span data-phrase="result.headline">{words}を取り除きました</span>
     <span data-phrase="result.sub">{size}｜{pages}を変更｜{boxes}</span>
@@ -219,7 +219,7 @@
     <span data-phrase="net.clean">書類はどこへも出ていません。{total}件のファイルを読み込み、そのすべてがこのサイト自身のものです。{platform}</span>
     <span data-phrase="net.dirty">何かが{hosts}へ接続しました。この道具は決してそれをしません。調べてみる価値があります。{platform}</span>
 
-    <span data-phrase="finder.email">メールアドレス</span><span data-phrase="finder.card">カード番号</span><span data-phrase="finder.iban">銀行口座 (IBAN)</span>
+    <span data-phrase="finder.email">メールアドレス</span><span data-phrase="finder.card">カード番号</span><span data-phrase="finder.iban">銀行口座（IBAN）</span>
     <span data-phrase="finder.nationalid">マイナンバー・社会保障番号</span><span data-phrase="finder.phone">電話番号</span>
   </div>
 </main>

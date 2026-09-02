@@ -11,7 +11,7 @@ tagline = "把一组图片变成一段动画。"
 
 title = "用图片做 GIF | 免费、不上传、浏览器里直接做"
 description = "把 JPG、PNG 或 WebP 图片做成 GIF 动图，免费，全程在浏览器里完成。顺序、快慢和尺寸都由你定。什么都不上传，断网也能用。"
-og_title = "GIF 制作 &mdash; 在浏览器里把图片做成动图"
+og_title = "GIF 制作——在浏览器里把图片做成动图"
 og_description = "把帧排好顺序，定下每一帧停多久，选个尺寸，就能拿到一个 GIF。调色板和压缩都在你自己的机器上算出来，什么都不上传。"
 og_image_alt = "GIF 制作 - 把一组图片做成一个 GIF 动图"
 

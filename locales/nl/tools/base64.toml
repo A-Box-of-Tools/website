@@ -43,7 +43,7 @@ card = """
             of gedecodeerd. Plak een token zonder het aan iemand te geven."""
 
 [words]
-plural = "tekst"
+plural = "teksten"
 choose = "een bestand"
 analytics_extra = """, en geen van de
   coderingen die deze tool leest of schrijft"""

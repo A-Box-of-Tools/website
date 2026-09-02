@@ -14,7 +14,7 @@ name = "YAML・JSON変換"
 heading = "YAMLをJSONに <span class=\"h1-kw\">&mdash; そしてJSONをYAMLに戻す</span>"
 tagline = "双方向で、それぞれの代償も伝えます。どちらも、よそのサーバーに貼り付けられることはありません。"
 
-title = "YAML・JSON変換 &mdash; 双方向、アップロードなし"
+title = "YAML・JSON変換——双方向、アップロードなし"
 description = "YAMLをJSONに、JSONをYAMLに、ブラウザの中で変換します。読むのはYAML 1.2なのでyesもnoも文字列のままで、どちらの向きで何が失われるかもはっきり伝えます。アップロードは一切ないので、設定ファイルが端末を離れることはありません。"
 og_title = "YAMLをサーバーに貼り付けずに変換する"
 og_description = "自分の端末で動くYAML・JSON変換ツール。キーは順序を保ち、数値は桁を保ち、貼り付けたものはどこにも行きません。"
