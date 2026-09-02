@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/ses-kesme/:';
-const CACHE_NAME=CACHE_PREFIX+'2edb69ec7c';
+const CACHE_NAME=CACHE_PREFIX+'bc6aebdcbb';
 const ASSETS=[
 './',
 'index.html',
@@ -14,6 +14,8 @@ const ASSETS=[
 'src/shared/wav.js',
 'src/shared/message-box.js',
 'src/shared/format.js',
+'src/shared/segments.js',
+'src/shared/timeline.js',
 'src/main.js',
 'src/segments.js',
 'src/timeline.js',

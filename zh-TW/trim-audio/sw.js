@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh-TW/trim-audio/:';
-const CACHE_NAME=CACHE_PREFIX+'5192fba1c0';
+const CACHE_NAME=CACHE_PREFIX+'d7a9779fc0';
 const ASSETS=[
 './',
 'index.html',
@@ -14,6 +14,8 @@ const ASSETS=[
 'src/shared/wav.js',
 'src/shared/message-box.js',
 'src/shared/format.js',
+'src/shared/segments.js',
+'src/shared/timeline.js',
 'src/main.js',
 'src/segments.js',
 'src/timeline.js',

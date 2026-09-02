@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/video-knippen/:';
-const CACHE_NAME=CACHE_PREFIX+'efa0c061e0';
+const CACHE_NAME=CACHE_PREFIX+'a22c7f4daa';
 const ASSETS=[
 './',
 'index.html',
@@ -19,6 +19,8 @@ const ASSETS=[
 'src/shared/errors.js',
 'src/shared/webcodecs.js',
 'src/shared/mp4-boxes.js',
+'src/shared/segments.js',
+'src/shared/timeline.js',
 'src/audio.js',
 'src/clips.js',
 'src/copy.js',

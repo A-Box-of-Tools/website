@@ -98,6 +98,7 @@ let nextId=1;
 let playAt=0;
 let watchUntil=null;
 const timeline=new Timeline(el.timeline,{
+bandTitle:(n,from,to)=>`Segment ${n}: ${from} to ${to}`,
 onSeek:seekTo,
 onSelect:(id)=>{selectedSegment=id;renderSegments();},
 onAdjust:adjustSegment,

@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/aparar-video/:';
-const CACHE_NAME=CACHE_PREFIX+'0c8b17fb1a';
+const CACHE_NAME=CACHE_PREFIX+'cdf744cfd5';
 const ASSETS=[
 './',
 'index.html',
@@ -19,6 +19,8 @@ const ASSETS=[
 'src/shared/errors.js',
 'src/shared/webcodecs.js',
 'src/shared/mp4-boxes.js',
+'src/shared/segments.js',
+'src/shared/timeline.js',
 'src/audio.js',
 'src/clips.js',
 'src/copy.js',

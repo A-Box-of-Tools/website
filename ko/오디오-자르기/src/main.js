@@ -91,7 +91,7 @@ let lastOut=null;
 let playAt=0;
 let watchUntil=null;
 const timeline=new Timeline(el.timeline,{
-t:phrase,
+bandTitle:(n,from,to)=>phrase('tl.band',{n,from,to}),
 onSeek:(at)=>seekTo(at),
 onSelect:(id)=>{selectedSegment=id;renderSegments();},
 onAdjust:(id,times)=>adjustSegment(id,times),
