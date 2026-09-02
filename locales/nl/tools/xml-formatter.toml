@@ -18,7 +18,7 @@ og_image_alt = "XML-formatter - uitleggen, verkleinen of omzetten, zonder upload
 pledge = """
     Formatteren en omzetten zijn rekenen aan een tekenreeks, hier, in deze
     pagina. De parser is met de hand geschreven en staat in
-    <code>src/xml.js</code>, en meer is er niet. Dit gereedschap heeft
+    <code>src/shared/parse-xml.js</code>, en meer is er niet. Dit gereedschap heeft
     überhaupt geen netwerkfunctie &mdash; niets op te halen, niets te versturen
     &mdash; en dat weegt hier zwaarder dan het woord &sbquo;XML&lsquo; doet
     vermoeden, want wat in dit formaat binnenkomt is meestal een factuur, een
@@ -32,7 +32,7 @@ live_hint = """
       het toch."""
 
 read_first = """
-, <code>src/xml.js</code> voor de parser die je
+, <code>src/shared/parse-xml.js</code> voor de parser die je
       vertelt welke tag nooit is gesloten, en <code>src/convert.js</code> voor
       waarom elke waarde als tekenreeks uit de XML komt in plaats van geraden te
       worden."""
@@ -90,7 +90,7 @@ body = """
       <code>DOCTYPE</code> met een externe entiteit erin is de manier waarop een
       XML-parser wordt overgehaald een bestand te lezen van de machine die aan
       het parsen is, en het is het oudste gat in het formaat.
-      <code>src/xml.js</code> is een met de hand geschreven lezer waar helemaal
+      <code>src/shared/parse-xml.js</code> is een met de hand geschreven lezer waar helemaal
       geen entiteitsafhandeling in zit &mdash; niet uitgezet, afwezig &mdash; en
       deze pagina geeft je tekst ook nooit aan de eigen
       <code>DOMParser</code> van de browser."""
@@ -176,7 +176,7 @@ a = """
         Nee, en er valt niets uit te zetten. Het oplossen van externe entiteiten
         is de manier waarop een XML-parser wordt overgehaald bestanden te lezen
         van de machine waarop hij draait &mdash; de aanval die meestal XXE wordt
-        geschreven &mdash; en <code>src/xml.js</code> is een met de hand
+        geschreven &mdash; en <code>src/shared/parse-xml.js</code> is een met de hand
         geschreven lezer zonder enige entiteitsafhandeling. Je tekst wordt ook
         nooit aan de eigen <code>DOMParser</code> van de browser gegeven. Een
         <code>DOCTYPE</code> wordt doorgegeven zonder ooit uitgevoerd te

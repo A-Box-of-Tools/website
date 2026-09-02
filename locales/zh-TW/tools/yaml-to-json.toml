@@ -22,7 +22,7 @@ og_image_alt = "YAML 轉 JSON - 雙向轉換，不上傳"
 
 pledge = """\
     轉換是對一段字串做算術，就在這裡，在這個頁面上。兩個解析器都是手寫的，都在 \
-    <code>src/</code> 裡——<code>yaml.js</code> 和 <code>json.js</code>——除此之外\
+    <code>src/</code> 裡——<code>shared/parse-yaml.js</code> 和 <code>shared/parse-json.js</code>——除此之外\
     再沒有別的。這個工具壓根就沒有網路功能，沒有要取的，也沒有要發的。這一點在這裡\
     比本站幾乎任何地方都更要緊：一份 YAML 檔案多半是部署配置，而部署配置多半塞滿了\
     主機名、桶名和金鑰。"""
@@ -33,7 +33,7 @@ live_hint = """
 
 read_first = """\
 ，寧可拒絕一個錨點也不去猜它想說什麼的讀取器在 \
-      <code>src/yaml.js</code>；一次轉換為什麼就是一個解析器加一個列印器、中間沒有\
+      <code>src/shared/parse-yaml.js</code>；一次轉換為什麼就是一個解析器加一個列印器、中間沒有\
       任何同時認得兩種格式的東西，在 <code>src/convert.js</code>。"""
 
 howto_heading = "不上傳就把 YAML 轉成 JSON 的步驟"

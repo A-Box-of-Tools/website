@@ -21,7 +21,7 @@ included. This one is XML and the JSON it converts to, and nothing else.
 
 ## No external entities, and nothing to switch off
 
-`src/xml.js` is a hand-written reader. It has no entity resolution in it at
+`src/shared/parse-xml.js` is a hand-written reader. It has no entity resolution in it at
 all — not disabled behind a flag, *absent* — and the page never hands your text
 to the browser's `DOMParser`. A `DOCTYPE` carrying an external entity is copied
 through without ever being acted on, and `&xxe;` comes out as the five
@@ -51,22 +51,22 @@ beside something else, and repeated children become an array. Going the other
 way an array becomes a repeated element, because that is the only shape that
 reads back.
 
-## The parsers are copies, on purpose
+## The parsers are shared parts, and only the ones this page reads
 
-`src/xml.js`, `src/json.js` and `src/errors.js` are byte for byte
-`json-formatter`'s, declared as groups in `tests/python/test_duplicates.py`,
-which fails if they drift. They are copies from before the JavaScript tests
-could follow a `./shared/` import — `build.py` copies `shared/js/` into a tool
-at `src/shared/` **at build time**, and the tests import these modules straight
-off the disk. `tests/js/resolve-shared.mjs` resolves that path for the tests
-now, so moving the three to `shared/js/` is the next step, as it is for the
-MP4 reader the repository copied five times over for the same reason.
+The XML parser, the JSON parser and the error they throw are
+`shared/js/parse-xml.js`, `parse-json.js` and `parse-errors.js`, asked for in
+`tool.toml` and copied into this tool at `src/shared/` by the build — the same
+files `json-formatter` ships. They were byte-for-byte copies until the
+JavaScript tests could follow a `./shared/` import
+(`tests/js/resolve-shared.mjs`); a fix to the XML reader lands on both pages
+now. `parse-yaml` is deliberately not asked for: this page never mentions YAML,
+and `tests/js/xml-formatter.test.js` fails if it ever ships the six hundred
+lines of parser for it.
 
-`src/convert.js` is the deliberate exception and is declared as a singleton
-with its reason: `json-formatter`'s copy carries the YAML pair as well, and
-importing it here would pull six hundred lines of YAML parser into a tool that
-never mentions YAML. Its two functions are lifted from that file unchanged all
-the same, so the two copies still read side by side.
+`src/convert.js` stays this tool's own, declared as a singleton in
+`tests/python/test_duplicates.py` with its reason: `json-formatter`'s copy
+carries the YAML pair as well. Its two functions are lifted from that file
+unchanged all the same, so the two copies still read side by side.
 
 ## Why not `DOMParser`
 
@@ -86,8 +86,8 @@ elements hold other elements, the layout carries no meaning at all.
 ## Tests
 
 `tests/js/text-format.test.js` and `tests/js/text-convert.test.js` cover the
-XML parser and the two conversions through `json-formatter`'s copies, which the
-duplicate check holds identical to these. `tests/js/xml-formatter.test.js`
+shared XML parser and the two conversions through `json-formatter`'s
+`convert.js`, which carries the same two functions. `tests/js/xml-formatter.test.js`
 covers what is particular to this page: that the menu offers exactly the two
 directions, and that a `DOCTYPE` with an external entity in it is returned as
 text.

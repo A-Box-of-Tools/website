@@ -22,7 +22,7 @@ og_image_alt = "YAML 转 JSON - 双向转换，不上传"
 
 pledge = """\
     转换是对一段字符串做算术，就在这里，在这个页面上。两个解析器都是手写的，都在 \
-    <code>src/</code> 里——<code>yaml.js</code> 和 <code>json.js</code>——除此之外\
+    <code>src/</code> 里——<code>shared/parse-yaml.js</code> 和 <code>shared/parse-json.js</code>——除此之外\
     再没有别的。这个工具压根就没有网络功能，没有要取的，也没有要发的。这一点在这里\
     比本站几乎任何地方都更要紧：一份 YAML 文件多半是部署配置，而部署配置多半塞满了\
     主机名、桶名和密钥。"""
@@ -33,7 +33,7 @@ live_hint = """
 
 read_first = """\
 ，宁可拒绝一个锚点也不去猜它想说什么的读取器在 \
-      <code>src/yaml.js</code>；一次转换为什么就是一个解析器加一个打印器、中间没有\
+      <code>src/shared/parse-yaml.js</code>；一次转换为什么就是一个解析器加一个打印器、中间没有\
       任何同时认得两种格式的东西，在 <code>src/convert.js</code>。"""
 
 howto_heading = "不上传就把 YAML 转成 JSON 的步骤"

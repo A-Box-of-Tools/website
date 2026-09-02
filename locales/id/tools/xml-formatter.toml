@@ -18,7 +18,7 @@ og_image_alt = "Pemformat XML - merapikan, memampatkan, atau mengubah, tanpa ung
 pledge = """
     Memformat dan mengubah adalah hitungan atas sebuah untai teks, dikerjakan di
     sini, di halaman ini. Pengurainya ditulis tangan dan ada di
-    <code>src/xml.js</code>, dan tidak ada yang lain. Alat ini tidak punya fungsi
+    <code>src/shared/parse-xml.js</code>, dan tidak ada yang lain. Alat ini tidak punya fungsi
     jaringan apa pun &mdash; tidak ada yang diambil, tidak ada yang dikirim
     &mdash; dan di sini itu lebih berarti daripada yang disiratkan kata
     &ldquo;XML&rdquo;: yang datang dalam format ini biasanya sebuah faktur,
@@ -32,7 +32,7 @@ live_hint = """
       tetap."""
 
 read_first = """
-, <code>src/xml.js</code> untuk pengurai yang
+, <code>src/shared/parse-xml.js</code> untuk pengurai yang
       menyebutkan tag mana yang tidak pernah ditutup, dan
       <code>src/convert.js</code> untuk alasan setiap nilai keluar dari XML
       sebagai untai teks alih-alih ditebak."""
@@ -89,7 +89,7 @@ body = """
  Sebuah
       <code>DOCTYPE</code> berisi entitas eksternal adalah cara sebuah pengurai
       XML dibujuk membaca berkas dari mesin yang sedang mengurai, dan itu lubang
-      tertua di format ini. <code>src/xml.js</code> adalah pembaca tulisan tangan
+      tertua di format ini. <code>src/shared/parse-xml.js</code> adalah pembaca tulisan tangan
       yang sama sekali tidak punya penyelesaian entitas &mdash; bukan dimatikan,
       melainkan tidak ada &mdash; dan halaman ini tidak pernah menyerahkan teks
       Anda kepada <code>DOMParser</code> milik peramban."""
@@ -176,7 +176,7 @@ a = """
         Tidak, dan tidak ada yang perlu dimatikan. Penyelesaian entitas eksternal
         adalah cara sebuah pengurai XML dibujuk membaca berkas dari mesin yang
         menjalankannya &mdash; serangan yang biasa ditulis XXE &mdash; dan
-        <code>src/xml.js</code> adalah pembaca tulisan tangan tanpa penyelesaian
+        <code>src/shared/parse-xml.js</code> adalah pembaca tulisan tangan tanpa penyelesaian
         entitas sama sekali. Teks Anda juga tidak pernah diserahkan kepada
         <code>DOMParser</code> milik peramban. Sebuah <code>DOCTYPE</code> dibawa
         lewat begitu saja tanpa pernah dijalankan."""

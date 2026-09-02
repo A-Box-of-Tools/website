@@ -18,7 +18,7 @@ og_image_alt = "Convertitore da YAML a JSON - tutte e due le direzioni, senza ca
 pledge = """
     Convertire è aritmetica su una stringa, fatta qui, in questa pagina. I due
     parser sono scritti a mano e stanno in <code>src/</code> &mdash;
-    <code>yaml.js</code> e <code>json.js</code> &mdash; e non c'è nient'altro.
+    <code>shared/parse-yaml.js</code> e <code>shared/parse-json.js</code> &mdash; e non c'è nient'altro.
     Questo strumento non ha nessuna funzione di rete di alcun tipo &mdash;
     niente da scaricare, niente da mandare &mdash; e qui conta più che quasi
     ovunque su questo sito: un file YAML di solito è una configurazione di
@@ -31,7 +31,7 @@ live_hint = """
       hai incollato. Oppure stacca internet e convertilo lo stesso."""
 
 read_first = """
-, <code>src/yaml.js</code> per il lettore che
+, <code>src/shared/parse-yaml.js</code> per il lettore che
       rifiuta un'ancora invece di indovinare cosa volesse dire, e
       <code>src/convert.js</code> per il motivo per cui una conversione è un
       parser e uno stampatore, senza niente in mezzo che conosca tutti e due i

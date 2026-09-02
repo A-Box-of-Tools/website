@@ -3,20 +3,22 @@ The modules that exist as more than one copy, and have to stay in step.
 
 WHY THERE ARE COPIES AT ALL
 
-The JSON, YAML and XML parsers are thirteen hundred lines between them and
-they sit in the three formatter pages that read those formats. They are copies
-because of a rule that held until tests/js/resolve-shared.mjs: a shared module
-is copied into a tool at build time, at src/shared/, so a source file
-importing one could not be loaded outside a build - and the JavaScript tests
-import tool modules straight off the disk with no build in front of them.
-Every one of those pages reaches them from a leaf module that has tests, so
-sharing them would have traded those tests for the deduplication.
+The QR tables sit in the QR writer and the QR reader, the PDF page writer in
+the two tools that put pictures on pages, and the WebCodecs support probes in
+two pairs of video tools. They are copies because of a rule that held until
+tests/js/resolve-shared.mjs: a shared module is copied into a tool at build
+time, at src/shared/, so a source file importing one could not be loaded
+outside a build - and the JavaScript tests import tool modules straight off
+the disk with no build in front of them. Every one of those tools reaches
+them from a leaf module that has tests, so sharing them would have traded
+those tests for the deduplication.
 
 That rule is gone. The tests now resolve a tool module's `./shared/` imports to
 shared/js/ themselves; the CRC and the ZIP writer went first, then the four PDF
-modules, the MP4 reader, the two MP4 writers, and the audio decoder trio.
-Every group below is a move that has not happened yet, and until it happens
-the copies still have to agree - which is all this file has ever enforced. See "Shared
+modules, the MP4 reader, the two MP4 writers, the audio decoder trio and the
+text parsers. Every group below is a move that has not happened yet, and until
+it happens the copies still have to agree - which is all this file has ever
+enforced. See "Shared
 parts" in docs/adding-a-tool.md.
 
 WHAT THIS ENFORCES INSTEAD
@@ -102,17 +104,11 @@ GROUPS = [
     # those tools were pointed at shared/js/ instead.
     ('support.js', ['crop-video', 'trim-video']),
     ('support.js', ['reverse-video', 'timelapse-video']),
-    # The text parsers, across the three pages that read them. json-formatter
-    # is the one that has all of them; yaml-to-json and xml-formatter were split
-    # out of it so that "yaml to json" and "xml formatter" have an address that
-    # says so, and each took the parsers it needs and no others. errors.js is
-    # here because a ParseError carries the line, the column and a phrase key,
-    # and three pages reporting the same broken file differently would be worse
-    # than any of them reporting it badly.
-    ('json.js', ['json-formatter', 'xml-formatter', 'yaml-to-json']),
-    ('errors.js', ['json-formatter', 'xml-formatter', 'yaml-to-json']),
-    ('xml.js', ['json-formatter', 'xml-formatter']),
-    ('yaml.js', ['json-formatter', 'yaml-to-json']),
+    # The text parsers were here too - json.js and errors.js across the three
+    # formatter pages, xml.js and yaml.js across the two that read each - and
+    # are shared/js/parse-{json,errors,xml,yaml}.js now, each page asking for
+    # exactly the ones it used to carry, so the XML page still ships no YAML
+    # parser and the YAML page no XML parser.
 ]
 
 # Copies that are not duplicates of anything, and why. Named so that
@@ -143,10 +139,10 @@ SINGLETONS = {
         'asks only about reading, because the GIF encoder is in this folder',
     # The three convert.js files are the same functions in different
     # combinations, which is why they are singletons rather than a group. The
-    # parsers beside them ARE grouped, so a fix to the YAML reader or the XML
-    # reader still lands everywhere; what differs here is only which pair of
-    # conversions the file carries, and carrying the other pair would mean
-    # shipping a parser the tool never calls.
+    # parsers they call are shared/js/parse-*.js, so a fix to the YAML reader
+    # or the XML reader lands everywhere; what differs here is only which pair
+    # of conversions the file carries, and carrying the other pair would mean
+    # asking for a parser the tool never calls.
     ('convert.js', 'json-formatter'):
         'both pairs, because that page offers all four conversions',
     ('convert.js', 'yaml-to-json'):

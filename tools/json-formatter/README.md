@@ -53,7 +53,7 @@ id loses its last three digits and `1e999` becomes `Infinity`, which
 `JSON.stringify` then writes out as `null`. The number that came in is not the
 number that goes out, and nothing on the page says so.
 
-`src/json.js` reads into a small tree instead, keeps every number as the text it
+`src/shared/parse-json.js` reads into a small tree instead, keeps every number as the text it
 was written as, keeps the order of the keys, keeps duplicate keys — the standard
 does not say which one wins, so dropping one would be choosing for the reader —
 and keeps each string's source token, so an escape stays an escape. It also
@@ -68,7 +68,7 @@ in a string nobody is looking at.
 
 ## The tree everything else speaks
 
-One shape, defined at the top of `src/json.js`, and every parser here produces
+One shape, defined at the top of `src/shared/parse-json.js`, and every parser here produces
 it and every printer here consumes it:
 
 ```
@@ -89,10 +89,10 @@ document said.
 
 | File | Reads | The decision worth knowing |
 |---|---|---|
-| `json.js` | JSON | Order, number text, duplicate keys and string tokens are all preserved. Sorting keys is opt-in, and sorts the way a person reads them: `item2` before `item10`, using the browser's own collator |
-| `xml.js` | XML and HTML | Two modes, because they are two languages. XML is strict and an unclosed tag is an error; HTML has void elements, raw-text elements, and the small well-known table of which tag closes which — without it, `<li>a<li>b` nests |
+| `shared/parse-json.js` | JSON | Order, number text, duplicate keys and string tokens are all preserved. Sorting keys is opt-in, and sorts the way a person reads them: `item2` before `item10`, using the browser's own collator |
+| `shared/parse-xml.js` | XML and HTML | Two modes, because they are two languages. XML is strict and an unclosed tag is an error; HTML has void elements, raw-text elements, and the small well-known table of which tag closes which — without it, `<li>a<li>b` nests |
 | `css.js` | CSS | A block parser, not a property parser, so `@layer`, `@container` and nesting it has never heard of pass through instead of failing. A custom property's value is copied untouched; nothing is reordered, merged or re-spelled |
-| `yaml.js` | YAML 1.2 | Anchors, aliases, tags and second documents are refused **by name** rather than guessed at. `yes` and `no` are strings |
+| `shared/parse-yaml.js` | YAML 1.2 | Anchors, aliases, tags and second documents are refused **by name** rather than guessed at. `yes` and `no` are strings |
 
 The last two are borrowed decisions. `buildlib/cssmin.py` minifies this site's
 own stylesheets and follows the same rule — a minifier that occasionally
@@ -133,12 +133,12 @@ body.html            the two tabs, the box, the result
 styles.css           the tab strip and the boxes
 src/main.js          the wiring: tabs, options, counts
 src/format.js        which language this is, and one door to the four formatters
-src/json.js          the JSON parser and printer, and the shared tree
-src/xml.js           XML and HTML, in one parser with two rulebooks
+src/shared/parse-json.js    the JSON parser and printer, and the shared tree (a shared part)
+src/shared/parse-xml.js     XML and HTML, in one parser with two rulebooks (a shared part)
 src/css.js           the block parser
-src/yaml.js          YAML 1.2, in the half of it a converter needs
+src/shared/parse-yaml.js    YAML 1.2, in the half of it a converter needs (a shared part)
 src/convert.js       the four conversions, and what each one costs
-src/errors.js        the error the four parsers throw, with a line and column
+src/shared/parse-errors.js  the error the four parsers throw, with a line and column (a shared part)
 src/samples.js       the examples behind "Try an example"
 ```
 

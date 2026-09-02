@@ -18,7 +18,7 @@ og_image_alt = "Convertisseur YAML vers JSON - les deux sens, sans envoi"
 pledge = """
     Convertir, c'est de l'arithmétique sur une chaîne de caractères, faite ici,
     dans cette page. Les deux analyseurs sont écrits à la main et se trouvent
-    dans <code>src/</code> &mdash; <code>yaml.js</code> et <code>json.js</code>
+    dans <code>src/</code> &mdash; <code>shared/parse-yaml.js</code> et <code>shared/parse-json.js</code>
     &mdash; et il n'y a rien d'autre. Cet outil n'a aucune fonction réseau
     d'aucune sorte &mdash; rien à récupérer, rien à envoyer &mdash; et cela
     compte ici plus que presque partout ailleurs sur ce site&nbsp;: un fichier
@@ -33,7 +33,7 @@ live_hint = """
       et convertissez-le quand même."""
 
 read_first = """
-, <code>src/yaml.js</code> pour le lecteur qui
+, <code>src/shared/parse-yaml.js</code> pour le lecteur qui
       refuse une ancre plutôt que de deviner ce qu'elle voulait dire, et
       <code>src/convert.js</code> pour comprendre pourquoi une conversion est un
       analyseur et un imprimeur, sans rien entre les deux qui connaisse les deux

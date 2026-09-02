@@ -21,8 +21,8 @@ og_image_alt = "Pemformat JSON - format, padatkan, dan ubah, tanpa unggah"
 pledge = """
     Memformat dan mengubah format adalah aritmetika atas sebuah string,
     dikerjakan di sini, di halaman ini. Penguraiannya ditulis sendiri dan ada di
-    dalam <code>src/</code> &mdash; <code>json.js</code>, <code>xml.js</code>,
-    <code>css.js</code>, <code>yaml.js</code> &mdash; dan tidak ada yang lain.
+    dalam <code>src/</code> &mdash; <code>shared/parse-json.js</code>, <code>shared/parse-xml.js</code>,
+    <code>css.js</code>, <code>shared/parse-yaml.js</code> &mdash; dan tidak ada yang lain.
     Alat ini tidak punya fitur jaringan dalam bentuk apa pun &mdash; tidak ada
     yang diambil, tidak ada yang dikirim &mdash; dan itu lebih penting di sini
     daripada hampir di mana pun lain di situs ini: yang ditempelkan orang ke
@@ -36,7 +36,7 @@ live_hint = """
       teksnya."""
 
 read_first = """
-, <code>src/json.js</code> untuk pengurai yang
+, <code>src/shared/parse-json.js</code> untuk pengurai yang
       menjaga kunci Anda dalam urutan yang Anda tulis, dan
       <code>src/convert.js</code> untuk alasan sebuah pengubahan adalah satu
       pengurai dan satu penulis, tanpa apa pun di antaranya yang tahu kedua format
@@ -91,7 +91,7 @@ title = "Pemformatnya menjaga apa yang diberikan kepadanya."
 body = """
  Sebuah objek JSON kembali dengan
       kuncinya dalam urutan yang Anda tulis dan angkanya dieja sebagaimana Anda
-      mengejanya, karena <code>src/json.js</code> adalah sebuah pengurai alih-alih
+      mengejanya, karena <code>src/shared/parse-json.js</code> adalah sebuah pengurai alih-alih
       panggilan ke <code>JSON.parse</code>, yang mengurutkan ulang kunci mirip
       bilangan bulat dan mengubah id dua puluh digit menjadi bilangan ganda
       terdekat. Uji di <code>tests/js/text-format.test.js</code> memeriksa persis

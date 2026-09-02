@@ -1,5 +1,6 @@
 /**
- * tools/json-formatter/src/{json,xml,css,yaml,format}.js - the formatters.
+ * shared/js/parse-{json,xml,yaml,errors}.js and
+ * tools/json-formatter/src/{css,format}.js - the formatters.
  *
  * The thing being checked throughout is that formatting changes the layout and
  * nothing else. A formatter that reorders keys, rounds a number, drops a
@@ -11,12 +12,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { parseJson, printJson } from '../../tools/json-formatter/src/json.js';
-import { parseXml, printXml } from '../../tools/json-formatter/src/xml.js';
+import { parseJson, printJson } from '../../shared/js/parse-json.js';
+import { parseXml, printXml } from '../../shared/js/parse-xml.js';
 import { parseCss, printCss } from '../../tools/json-formatter/src/css.js';
-import { parseYaml, printYaml } from '../../tools/json-formatter/src/yaml.js';
+import { parseYaml, printYaml } from '../../shared/js/parse-yaml.js';
 import { formatText, detectLanguage } from '../../tools/json-formatter/src/format.js';
-import { ParseError } from '../../tools/json-formatter/src/errors.js';
+import { ParseError } from '../../shared/js/parse-errors.js';
 
 const json = (text, options) => printJson(parseJson(text), options);
 

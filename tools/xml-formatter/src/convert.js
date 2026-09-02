@@ -3,13 +3,13 @@
  * each with nothing in between them that knows about both formats at once.
  *
  * That is what keeps "XML to JSON" and "JSON to XML" from disagreeing about
- * what a document said: both go through the tree json.js describes, so there
+ * what a document said: both go through the tree shared/parse-json.js describes, so there
  * is no second opinion about it anywhere.
  *
  * WHY THIS IS NOT json-formatter's convert.js
  *
  * That file is these two functions plus the YAML pair, and importing it here
- * would drag yaml.js - six hundred lines of parser this page never calls -
+ * would drag the YAML parser - six hundred lines this page never calls -
  * into a tool that converts between two formats, neither of which is YAML. The
  * JSON, XML and error modules beside this one ARE byte-for-byte copies of that
  * tool's, declared in tests/python/test_duplicates.py so a fix to one is a fix
@@ -36,8 +36,8 @@
  * Both of those are on the page beside the menu that picks them, not only here.
  */
 
-import { parseJson, printJson } from './json.js';
-import { parseXml, printXml } from './xml.js';
+import { parseJson, printJson } from './shared/parse-json.js';
+import { parseXml, printXml } from './shared/parse-xml.js';
 
 /* --------------------------------------------------------------- JSON, XML */
 

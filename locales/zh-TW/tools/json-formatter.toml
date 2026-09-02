@@ -15,13 +15,13 @@ og_title = "不用把 JSON 貼進伺服器，也能格式化和轉換"
 og_description = "一個跑在你自己機器上的 JSON 格式化器和轉換器。鍵保持你寫的順序，數字保持你寫的每一位，貼進來的東西哪裡也不去。"
 og_image_alt = "JSON 格式化 - 格式化、壓縮與轉換，不上傳"
 
-pledge = """格式化和轉換都是對一串字元做算術，就在這個頁面裡做完。解析器是手寫的，都在 <code>src/</code> 裡：<code>json.js</code>、<code>xml.js</code>、<code>css.js</code>、<code>yaml.js</code>；此外別無他物。這個工具沒有任何形式的網路功能，沒有什麼可取，也沒有什麼可發。這一點在本站幾乎別處都不如在這裡要緊：人們往格式化器裡貼的，是訪問令牌、會話 cookie、客戶記錄，還有尚未釋出的程式碼。"""
+pledge = """格式化和轉換都是對一串字元做算術，就在這個頁面裡做完。解析器是手寫的，都在 <code>src/</code> 裡：<code>shared/parse-json.js</code>、<code>shared/parse-xml.js</code>、<code>css.js</code>、<code>shared/parse-yaml.js</code>；此外別無他物。這個工具沒有任何形式的網路功能，沒有什麼可取，也沒有什麼可發。這一點在本站幾乎別處都不如在這裡要緊：人們往格式化器裡貼的，是訪問令牌、會話 cookie、客戶記錄，還有尚未釋出的程式碼。"""
 
 live_hint = """
       不用信我們說的。開啟開發者工具，盯著「網路」面板，隨便格式化點什麼。沒有哪個\
       請求帶走你貼進去的一個字元。嫌麻煩就直接拔掉網線，照樣格式化。"""
 
-read_first = """，<code>src/json.js</code> 是那個會按你寫的順序保留鍵的解析器；至於為什麼一次轉換就是一個解析器加一個寫出器、中間沒有任何同時懂兩種格式的東西，看 <code>src/convert.js</code>。"""
+read_first = """，<code>src/shared/parse-json.js</code> 是那個會按你寫的順序保留鍵的解析器；至於為什麼一次轉換就是一個解析器加一個寫出器、中間沒有任何同時懂兩種格式的東西，看 <code>src/convert.js</code>。"""
 
 howto_heading = "怎樣在不上傳的前提下格式化或轉換 JSON"
 
@@ -62,7 +62,7 @@ body = """整個 <code>src/</code> 裡沒有 <code>fetch</code>，沒有 <code>X
 title = "格式化器會原樣保留交給它的東西。"
 body = """\
       一個 JSON 物件回來時，鍵還是你寫的順序，數字還是你寫的那些位，因為 \
-      <code>src/json.js</code> 是一個解析器，而不是對 <code>JSON.parse</code> 的\
+      <code>src/shared/parse-json.js</code> 是一個解析器，而不是對 <code>JSON.parse</code> 的\
       呼叫——後者會把像整數的鍵挪到前面，還會把二十位的 id 變成最接近的雙精度。\
       <code>tests/js/text-format.test.js</code> 裡的測試查的正是這些。"""
 

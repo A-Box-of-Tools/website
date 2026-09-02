@@ -3,13 +3,13 @@
  * each with nothing in between them that knows about both formats at once.
  *
  * That is what keeps "YAML to JSON" and "JSON to YAML" from disagreeing about
- * what a document said: both go through the tree json.js describes, so there
+ * what a document said: both go through the tree shared/parse-json.js describes, so there
  * is no second opinion about it anywhere.
  *
  * WHY THIS IS NOT json-formatter's convert.js
  *
  * That file is the same two functions plus the XML pair, and importing it here
- * would drag xml.js - three hundred lines of parser this page never calls -
+ * would drag the XML parser - three hundred lines this page never calls -
  * into a tool that converts between two formats, neither of which is XML. The
  * JSON, YAML and error modules beside this one ARE byte-for-byte copies of that
  * tool's, declared in tests/python/test_duplicates.py so a fix to one is a fix
@@ -26,13 +26,13 @@
  *   - **JSON to YAML** loses nothing. Every JSON document is a YAML document.
  *   - **YAML to JSON** loses comments, because JSON has nowhere to put one,
  *     and refuses outright on anchors, aliases and tags rather than guessing
- *     (see yaml.js).
+ *     (see shared/parse-yaml.js).
  *
  * Both of those are on the page beside the menu that picks them, not only here.
  */
 
-import { parseJson, printJson } from './json.js';
-import { parseYaml, printYaml } from './yaml.js';
+import { parseJson, printJson } from './shared/parse-json.js';
+import { parseYaml, printYaml } from './shared/parse-yaml.js';
 
 export function jsonToYaml(text, { indent = 2 } = {}) {
   return printYaml(parseJson(text), { indent });

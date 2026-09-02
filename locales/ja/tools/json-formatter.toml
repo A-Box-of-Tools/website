@@ -16,7 +16,7 @@ og_description = "手元の端末で動くJSONフォーマッターと変換器�
 og_image_alt = "JSONフォーマッター - 整形・最小化・変換、アップロードなし"
 
 pledge = """
-    整形も変換も文字列に対する計算で、このページの中で行われます。パーサーは手書きで<code>src/</code>にあります。<code>json.js</code>、<code>xml.js</code>、<code>css.js</code>、<code>yaml.js</code>。それ以外は何もありません。この道具にはどんなネットワーク機能もありません。取りに行く先も、送る先もありません。それがこのサイトのほぼどこよりも効いてくるのがここです。人が整形ツールに貼り付けるものは、アクセストークン、セッションのクッキー、顧客の記録、未公開のコードだからです。"""
+    整形も変換も文字列に対する計算で、このページの中で行われます。パーサーは手書きで<code>src/</code>にあります。<code>shared/parse-json.js</code>、<code>shared/parse-xml.js</code>、<code>css.js</code>、<code>shared/parse-yaml.js</code>。それ以外は何もありません。この道具にはどんなネットワーク機能もありません。取りに行く先も、送る先もありません。それがこのサイトのほぼどこよりも効いてくるのがここです。人が整形ツールに貼り付けるものは、アクセストークン、セッションのクッキー、顧客の記録、未公開のコードだからです。"""
 
 live_hint = """
       鵜呑みにする必要はありません。DevToolsの「ネットワーク」タブを開いたまま\
@@ -24,7 +24,7 @@ live_hint = """
       載りません。回線を抜いてから整形してみるのでも構いません。"""
 
 read_first = """
-、書いた順どおりにキーを保つパーサーは<code>src/json.js</code>にあります。変換がなぜパーサー1つとプリンター1つで、両方の形式を同時に知るものが間に何もないのかは、<code>src/convert.js</code>を読んでください。"""
+、書いた順どおりにキーを保つパーサーは<code>src/shared/parse-json.js</code>にあります。変換がなぜパーサー1つとプリンター1つで、両方の形式を同時に知るものが間に何もないのかは、<code>src/convert.js</code>を読んでください。"""
 
 howto_heading = "JSONをアップロードせずに整形・変換する手順"
 
@@ -68,7 +68,7 @@ body = """
 title = "整形は、渡されたものをそのまま保ちます。"
 body = """
 JSONのオブジェクトは、書いた順のキーと、書いたとおりの数字で\
-      戻ってきます。<code>src/json.js</code>が<code>JSON.parse</code>の呼び出しでは\
+      戻ってきます。<code>src/shared/parse-json.js</code>が<code>JSON.parse</code>の呼び出しでは\
       なくパーサーだからです。あちらは整数のようなキーを並べ替え、20桁のIDをいちばん\
       近い倍精度に変えてしまいます。<code>tests/js/text-format.test.js</code>の\
       テストは、まさにそこを確かめています。"""

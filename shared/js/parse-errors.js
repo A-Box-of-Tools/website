@@ -1,5 +1,12 @@
 /**
- * The one error every parser in this tool throws.
+ * The one error every text parser throws.
+ *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/parse-errors.js and
+ * the build copies it to <tool>/src/shared/parse-errors.js for every tool that
+ * asks for it - which is every tool that asks for any of parse-json.js,
+ * parse-yaml.js or parse-xml.js, because all three import this, and
+ * buildlib/imports.py refuses a parser without it. It is shared so that three
+ * pages reporting the same broken file report it the same way.
  *
  * A formatter is only useful if it can say where the input stopped making
  * sense. `JSON.parse` says "Unexpected token } in JSON at position 41", which

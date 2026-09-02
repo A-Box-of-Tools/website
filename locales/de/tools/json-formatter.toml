@@ -18,8 +18,8 @@ og_image_alt = "JSON-Formatierer - formatieren, minimieren und umwandeln, ohne U
 pledge = """
     Formatieren und Umwandeln sind Rechnen auf einer Zeichenkette, und zwar hier,
     auf dieser Seite. Die Parser sind von Hand geschrieben und liegen in
-    <code>src/</code> &mdash; <code>json.js</code>, <code>xml.js</code>,
-    <code>css.js</code>, <code>yaml.js</code> &mdash; und mehr gibt es nicht.
+    <code>src/</code> &mdash; <code>shared/parse-json.js</code>, <code>shared/parse-xml.js</code>,
+    <code>css.js</code>, <code>shared/parse-yaml.js</code> &mdash; und mehr gibt es nicht.
     Eine Netzfunktion hat dieses Werkzeug überhaupt nicht, weder etwas abzurufen
     noch etwas zu senden. Das wiegt hier schwerer als fast überall sonst auf
     dieser Seite, denn was Menschen in einen Formatierer einfügen, sind
@@ -32,7 +32,7 @@ live_hint = """
       Internetverbindung und formatieren Sie es trotzdem."""
 
 read_first = """
-, <code>src/json.js</code> für den Parser, der Ihre
+, <code>src/shared/parse-json.js</code> für den Parser, der Ihre
       Schlüssel in der Reihenfolge lässt, in der Sie sie geschrieben haben, und
       <code>src/convert.js</code> dafür, warum eine Umwandlung ein Parser und ein
       Schreiber ist, ohne etwas dazwischen, das beide Formate zugleich kennt."""
@@ -89,7 +89,7 @@ body = """
  Ein JSON-Objekt kommt mit
       seinen Schlüsseln in der Reihenfolge zurück, in der Sie sie geschrieben haben,
       und mit den Zahlen so geschrieben, wie Sie sie geschrieben haben. Denn
-      <code>src/json.js</code> ist ein Parser und kein Aufruf von
+      <code>src/shared/parse-json.js</code> ist ein Parser und kein Aufruf von
       <code>JSON.parse</code>, das zahlartige Schlüssel umsortiert und aus einer
       zwanzigstelligen Kennung die nächstgelegene Fließkommazahl macht. Die Tests in
       <code>tests/js/text-format.test.js</code> prüfen genau das."""

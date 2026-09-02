@@ -21,8 +21,8 @@ og_image_alt = "JSON 포매터 - 정렬, 압축, 변환, 업로드 없이"
 pledge = """
     정렬과 변환은 문자열을 두고 하는 산술이고, 여기 이 페이지에서
     이루어집니다. 파서는 직접 손으로 쓴 것이고 <code>src/</code> 안의
-    <code>json.js</code>, <code>xml.js</code>, <code>css.js</code>,
-    <code>yaml.js</code>에 있으며, 그 밖의 것은 없습니다. 이 도구에는 네트워크
+    <code>shared/parse-json.js</code>, <code>shared/parse-xml.js</code>, <code>css.js</code>,
+    <code>shared/parse-yaml.js</code>에 있으며, 그 밖의 것은 없습니다. 이 도구에는 네트워크
     기능이 하나도 없어서 가져올 것도 보낼 것도 없고, 그 사실이 이 사이트의 거의
     다른 어디보다 여기서 더 중요합니다. 사람들이 포매터에 붙여 넣는 것은 액세스
     토큰이고 세션 쿠키이고 고객 기록이고 공개 전 코드니까요."""
@@ -34,7 +34,7 @@ live_hint = """
 
 read_first = """
 , 쓴 순서 그대로 키를 지키는 파서는
-      <code>src/json.js</code>에 있습니다. 변환이 왜 파서 하나와 프린터 하나로
+      <code>src/shared/parse-json.js</code>에 있습니다. 변환이 왜 파서 하나와 프린터 하나로
       이루어지고 그 사이에 두 형식을 동시에 아는 것이 하나도 없는지는
       <code>src/convert.js</code>를 보시면 됩니다."""
 
@@ -83,7 +83,7 @@ body = """
 title = "포매터는 받은 것을 그대로 지킵니다."
 body = """
  JSON 객체는 쓰신 순서대로 키를
-      달고, 적으신 대로 숫자를 적은 채 돌아옵니다. <code>src/json.js</code>가
+      달고, 적으신 대로 숫자를 적은 채 돌아옵니다. <code>src/shared/parse-json.js</code>가
       <code>JSON.parse</code> 호출이 아니라 직접 쓴 파서이기 때문입니다.
       <code>JSON.parse</code>는 정수처럼 생긴 키의 순서를 바꾸고 스무 자리 id를
       가장 가까운 배정밀도 수로 만들어 버립니다.

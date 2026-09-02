@@ -2,6 +2,13 @@
  * XML and HTML: read into a tree of nodes, written back out indented or
  * squeezed flat.
  *
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/parse-xml.js and the
+ * build copies it to <tool>/src/shared/parse-xml.js for the tools that ask for
+ * it with `js_parts = ["parse-xml", "parse-errors", ...]`: the JSON formatter
+ * and the XML formatter. The YAML converter never mentions XML and does not
+ * ask, which is how three hundred lines stay off a page that would never call
+ * them. See the header of parse-json.js for how the parsers travel.
+ *
  * TWO MODES, BECAUSE THEY ARE TWO LANGUAGES
  *
  * XML is strict: every tag closes, and a tag that does not is an error worth
@@ -22,7 +29,7 @@
  * free.
  */
 
-import { ParseError } from './errors.js';
+import { ParseError } from './parse-errors.js';
 
 /** Tags that never have children in HTML, and never close. */
 const VOID = new Set([

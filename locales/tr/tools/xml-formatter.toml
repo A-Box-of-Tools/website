@@ -18,7 +18,7 @@ og_image_alt = "XML Biçimlendirici - açma, sıkıştırma ya da çevirme, yük
 pledge = """
     Biçimlendirmek ve çevirmek, bir metin dizisi üzerinde yapılan aritmetiktir;
     burada, bu sayfada yapılır. Ayrıştırıcı elle yazılmıştır ve
-    <code>src/xml.js</code> içindedir, başka da bir şey yoktur. Bu aracın
+    <code>src/shared/parse-xml.js</code> içindedir, başka da bir şey yoktur. Bu aracın
     herhangi bir ağ işlevi hiç yoktur &mdash; getirecek bir şey de, gönderecek
     bir şey de &mdash; ve bu, burada &bdquo;XML&ldquo; kelimesinin
     düşündürdüğünden daha çok önemlidir: bu biçimde gelen şey çoğunlukla bir
@@ -32,7 +32,7 @@ live_hint = """
 
 read_first = """
 , hangi etiketin hiç kapatılmadığını söyleyen
-      ayrıştırıcı için <code>src/xml.js</code>, ve her değerin XML'den tahmin
+      ayrıştırıcı için <code>src/shared/parse-xml.js</code>, ve her değerin XML'den tahmin
       edilmek yerine neden metin olarak çıktığı için
       <code>src/convert.js</code>."""
 
@@ -88,7 +88,7 @@ body = """
  İçinde dış varlık
       bulunan bir <code>DOCTYPE</code>, bir XML ayrıştırıcısının, ayrıştırma
       yapan makinedeki bir dosyayı okumaya ikna edilme yoludur ve biçimin en eski
-      açığıdır. <code>src/xml.js</code>, içinde hiç varlık çözümlemesi bulunmayan
+      açığıdır. <code>src/shared/parse-xml.js</code>, içinde hiç varlık çözümlemesi bulunmayan
       elle yazılmış bir okuyucudur &mdash; kapatılmış değil, hiç yok &mdash; ve
       bu sayfa metninizi tarayıcının kendi <code>DOMParser</code>'ına da asla
       vermez."""
@@ -171,7 +171,7 @@ a = """
         Hayır, ve kapatılacak bir şey de yok. Dış varlık çözümlemesi, bir XML
         ayrıştırıcısının kendisini çalıştıran makinedeki dosyaları okumaya ikna
         edilme yoludur &mdash; genellikle XXE diye yazılan saldırı &mdash; ve
-        <code>src/xml.js</code> içinde hiç varlık çözümlemesi olmayan elle
+        <code>src/shared/parse-xml.js</code> içinde hiç varlık çözümlemesi olmayan elle
         yazılmış bir okuyucudur. Metniniz tarayıcının kendi
         <code>DOMParser</code>'ına da hiçbir zaman verilmez. Bir
         <code>DOCTYPE</code>, hiç işletilmeden olduğu gibi taşınır."""

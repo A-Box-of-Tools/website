@@ -18,7 +18,7 @@ og_image_alt = "YAML-zu-JSON-Umwandler - beide Richtungen, ohne Upload"
 pledge = """
     Umwandeln ist Rechnen auf einer Zeichenkette, und zwar hier, auf dieser
     Seite. Die beiden Parser sind von Hand geschrieben und liegen in
-    <code>src/</code> &mdash; <code>yaml.js</code> und <code>json.js</code>
+    <code>src/</code> &mdash; <code>shared/parse-yaml.js</code> und <code>shared/parse-json.js</code>
     &mdash; und mehr gibt es nicht. Eine Netzfunktion hat dieses Werkzeug
     überhaupt nicht, weder etwas abzurufen noch etwas zu senden. Das wiegt hier
     schwerer als fast überall sonst auf dieser Seite: Eine YAML-Datei ist meist
@@ -32,7 +32,7 @@ live_hint = """
       Internetverbindung und wandeln Sie es trotzdem um."""
 
 read_first = """
-, <code>src/yaml.js</code> für den Leser, der
+, <code>src/shared/parse-yaml.js</code> für den Leser, der
       einen Anker lieber ablehnt, als zu raten, was er bedeuten sollte, und
       <code>src/convert.js</code> dafür, warum eine Umwandlung ein Parser und
       ein Schreiber ist, ohne etwas dazwischen, das beide Formate zugleich

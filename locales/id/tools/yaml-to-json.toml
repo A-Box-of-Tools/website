@@ -18,7 +18,7 @@ og_image_alt = "Pengubah YAML ke JSON - dua arah, tanpa unggah"
 pledge = """
     Mengubah adalah hitungan atas sebuah untai teks, dikerjakan di sini, di
     halaman ini. Kedua pengurainya ditulis tangan dan ada di <code>src/</code>
-    &mdash; <code>yaml.js</code> dan <code>json.js</code> &mdash; dan tidak ada
+    &mdash; <code>shared/parse-yaml.js</code> dan <code>shared/parse-json.js</code> &mdash; dan tidak ada
     yang lain. Alat ini tidak punya fungsi jaringan apa pun &mdash; tidak ada
     yang diambil, tidak ada yang dikirim &mdash; dan di sini itu lebih berarti
     daripada hampir di mana pun di situs ini: sebuah berkas YAML biasanya adalah
@@ -32,7 +32,7 @@ live_hint = """
       tetap."""
 
 read_first = """
-, <code>src/yaml.js</code> untuk pembaca yang
+, <code>src/shared/parse-yaml.js</code> untuk pembaca yang
       menolak sebuah jangkar alih-alih menebak maksudnya, dan
       <code>src/convert.js</code> untuk alasan sebuah konversi adalah satu
       pengurai dan satu pencetak, tanpa apa pun di antaranya yang mengenal kedua

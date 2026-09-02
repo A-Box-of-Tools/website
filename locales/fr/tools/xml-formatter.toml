@@ -18,7 +18,7 @@ og_image_alt = "Formateur XML - mettre en forme, compacter ou convertir, sans en
 pledge = """
     Mettre en forme et convertir, c'est de l'arithmétique sur une chaîne de
     caractères, faite ici, dans cette page. L'analyseur est écrit à la main et se
-    trouve dans <code>src/xml.js</code>, et il n'y a rien d'autre. Cet outil n'a
+    trouve dans <code>src/shared/parse-xml.js</code>, et il n'y a rien d'autre. Cet outil n'a
     aucune fonction réseau d'aucune sorte &mdash; rien à récupérer, rien à
     envoyer &mdash; ce qui compte ici plus que le mot &laquo;&nbsp;XML&nbsp;&raquo;
     ne le laisse croire&nbsp;: ce qui arrive dans ce format est le plus souvent
@@ -32,7 +32,7 @@ live_hint = """
       mettez-le en forme quand même."""
 
 read_first = """
-, <code>src/xml.js</code> pour l'analyseur qui
+, <code>src/shared/parse-xml.js</code> pour l'analyseur qui
       vous dit quelle balise n'a jamais été fermée, et <code>src/convert.js</code>
       pour comprendre pourquoi chaque valeur sort du XML sous forme de chaîne
       plutôt que d'être devinée."""
@@ -89,7 +89,7 @@ body = """
  Un
       <code>DOCTYPE</code> contenant une entité externe, c'est la façon dont on
       persuade un analyseur XML de lire un fichier sur la machine qui analyse, et
-      c'est le plus vieux trou du format. <code>src/xml.js</code> est un lecteur
+      c'est le plus vieux trou du format. <code>src/shared/parse-xml.js</code> est un lecteur
       écrit à la main qui ne comporte aucune résolution d'entité &mdash; pas
       désactivée, absente &mdash; et cette page ne confie jamais votre texte au
       <code>DOMParser</code> du navigateur."""
@@ -178,7 +178,7 @@ a = """
         Non, et il n'y a rien à désactiver. La résolution des entités externes
         est la façon dont on persuade un analyseur XML de lire des fichiers sur
         la machine qui l'exécute &mdash; l'attaque qu'on écrit d'ordinaire XXE
-        &mdash; et <code>src/xml.js</code> est un lecteur écrit à la main sans
+        &mdash; et <code>src/shared/parse-xml.js</code> est un lecteur écrit à la main sans
         aucune résolution d'entité. Votre texte n'est jamais confié non plus au
         <code>DOMParser</code> du navigateur. Un <code>DOCTYPE</code> est
         transporté tel quel sans jamais être exécuté."""

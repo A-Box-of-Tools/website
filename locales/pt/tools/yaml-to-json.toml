@@ -18,7 +18,7 @@ og_image_alt = "Conversor de YAML para JSON - os dois sentidos, sem envio"
 pledge = """
     Converter é aritmética sobre um texto, feita aqui, nesta página. Os dois
     analisadores são escritos à mão e estão em <code>src/</code> &mdash;
-    <code>yaml.js</code> e <code>json.js</code> &mdash; e não há mais nada. Esta
+    <code>shared/parse-yaml.js</code> e <code>shared/parse-json.js</code> &mdash; e não há mais nada. Esta
     ferramenta não tem função de rede de espécie alguma &mdash; nada para
     buscar, nada para enviar &mdash; e aqui isso importa mais do que em quase
     qualquer outro canto deste site: um arquivo YAML costuma ser uma
@@ -31,7 +31,7 @@ live_hint = """
       que você colou. Ou desconecte da internet e converta assim mesmo."""
 
 read_first = """
-, <code>src/yaml.js</code> para o leitor que
+, <code>src/shared/parse-yaml.js</code> para o leitor que
       recusa uma âncora em vez de adivinhar o que ela queria dizer, e
       <code>src/convert.js</code> para entender por que uma conversão é um
       analisador e um impressor, sem nada no meio que conheça os dois formatos ao
