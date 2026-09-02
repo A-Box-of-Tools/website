@@ -182,6 +182,41 @@ counts as finished: `complete` and the per-page debt are still judged
 against this locale's own work, exactly as without `fallback`. See
 "FALLING BACK TO A NEAR RELATIVE INSTEAD OF ENGLISH" in buildlib/i18n.py.
 
+## Checking a translation
+
+Two scripts read the translations, so that finding the one place a body
+drifted does not mean reading fourteen languages:
+
+    python scripts/check_locales.py                  # every language, into _checks/locales/
+    python scripts/check_locales.py --locale ja --built _plain
+
+`check_locales.py` compares every locale file with the English it overrides
+and writes a table of counts plus one file of findings per check. Half of the
+checks are structure — the same ids, `data-phrase` keys and `{blank}`
+placeholders as the English body, the same array lengths and `<code>`
+contents in the toml — and those are faults: a page with one of them shows a
+raw key or a broken control in that language, and a phrase key it reports is
+the same one CI's tests will refuse. The other half are each language's house
+style as regular expressions, taken from the top of its `locale.toml`, and
+those are places to look rather than orders. `--built` points it at a build's
+output and adds the one check that cannot be made from the source: a space
+the minifier put inside a Chinese or Japanese sentence.
+
+    python scripts/cjk_fix.py zh                     # show what would change
+    python scripts/cjk_fix.py zh --apply
+    python scripts/cjk_fix.py ja --apply --only tools/image-to-svg.toml tools/image-to-svg.html
+    python zh-tw-sync.py                             # zh-TW is generated from zh
+
+`cjk_fix.py` rewrites a Chinese or Japanese locale to its typography — the
+spacing round Latin, the double 破折号, full-width quotes and brackets, and
+sentences wrapped across source lines closed up again — and prints the diff
+first. It is idempotent, so the order after any edit to `zh` or `ja` is: the
+normaliser, then the sync, then the checker. The reasons behind each rule are
+in the two files' docstrings.
+
+Run the checker on whatever locale file you touch before the build rather
+than after: it takes seconds where the build takes minutes.
+
 ## The strings in the JavaScript
 
 Nothing under `shared/js/` or `tools/<slug>/src/` is translated. The build

@@ -209,7 +209,11 @@ and unadvertised until then. What a change does owe them:
 - a `ja` or `zh` phrase stays on one line — those languages have no spaces
   between words, so a wrapped phrase ships a visible hole mid-sentence;
 - translation itself follows `docs/languages.md`, with `locales/de/` as the
-  worked example.
+  worked example;
+- anything edited under `locales/` gets `python scripts/check_locales.py`
+  run over it, and a `zh` or `ja` file gets `python scripts/cjk_fix.py
+  <lang> --apply` first, then `python zh-tw-sync.py` — see "Checking a
+  translation" in `docs/languages.md`.
 
 ## Verify before you call it done
 

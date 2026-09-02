@@ -16,6 +16,10 @@
 dist-*/
 __pycache__/
 
+# Written by scripts/check_locales.py: a report on the translations, read
+# once and regenerated, never committed.
+/_checks/
+
 # Nothing here has a dependency to install, and package.json declares no
 # packages - but `npm install` is a reflex, and its output does not belong here.
 node_modules/
