@@ -102,6 +102,8 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/mp4-muxer.js` | `js_parts = ["mp4-muxer"]` | the MP4 writer for one H.264 track an encoder just produced; imports `mp4-boxes` |
 | `shared/js/webcodecs.js` | `js_parts = ["webcodecs"]` | a decoder's configuration, a track's frame rate, microseconds, and the wait that keeps a feed loop behind the codecs |
 | `shared/js/errors.js` | `js_parts = ["errors"]` | the cancellation every page ignores by name, and `said`, the error whose message is a phrase key |
+| `shared/js/segments.js` | `js_parts = ["segments"]` | in-and-out points marked while something plays, and the text file they are saved as; the tool passes its own shortest segment |
+| `shared/js/timeline.js` | `js_parts = ["timeline"]` | the bar with every segment drawn on it; a subclass draws what lies underneath and says where a mark lands; imports `format` |
 | `shared/js/audio-decode.js` | `js_parts = ["audio-decode"]` | the browser's own decoder, asked for the audio track and nothing else |
 | `shared/js/samplerate.js` | `js_parts = ["samplerate"]` | the sample rate sniffed out of a file's header before it is decoded; `audio-decode` imports it |
 | `shared/js/wav.js` | `js_parts = ["wav"]` | the WAV writer: a header in front of the samples |
