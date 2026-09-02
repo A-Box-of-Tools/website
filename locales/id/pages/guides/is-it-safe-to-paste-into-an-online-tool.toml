@@ -1,0 +1,18 @@
+#
+# Panduan: apakah aman menempel teks ke alat online? - Indonesian.
+#
+
+nav = "Menempel teks ke alat online, aman?"
+title = "Apakah Aman Menempelkan Teks ke Alat Online?"
+description = "Menempel terasa seperti memindah teks antarjendela sendiri, dan pada banyak alat web ia adalah unggahan diam-diam. Apa saja yang terbawa dalam teks yang ditempel, ke mana perginya, dan cara mengetahui apakah pemformat menyimpannya."
+heading = "Apakah aman menempelkan teks ke alat online?"
+lede = """
+    Menempel tidak terasa seperti mengunggah, dan di situlah jebakannya:
+    byte yang sama tetap meninggalkan mesin Anda kalau halamannya
+    mengirimkannya. Halaman ini tentang apa yang sebenarnya terbawa dalam
+    config atau log yang ditempel &mdash; dan cara mengetahui apakah alat
+    di depan Anda punya tempat untuk mengirimkannya sama sekali."""
+updated = "26 Agustus 2026"
+og_title = "Apakah aman menempelkan teks ke alat online?"
+og_description = "Tempelan bisa menjadi unggahan diam-diam. Apa yang sebenarnya terbawa dalam config, log, atau kueri, dan cara mengetahui apakah pemformat menyimpan salinannya."
+og_image_alt = "abox.tools - alat yang tidak pernah menyentuh server"

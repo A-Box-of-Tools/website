@@ -1,0 +1,18 @@
+#
+# Gids: is plakken in een online tool veilig? - Dutch.
+#
+
+nav = "Is plakken in een online tool veilig?"
+title = "Is het veilig om tekst in een online tool te plakken?"
+description = "Plakken voelt als tekst verplaatsen tussen je eigen vensters, en bij veel webtools is het een stille upload. Wat geplakte tekst allemaal meedraagt, waar hij heengaat, en hoe je ziet of de formatter hem bewaart."
+heading = "Is het veilig om tekst in een online tool te plakken?"
+lede = """
+    Plakken voelt niet als uploaden, en dat is de val: dezelfde bytes
+    verlaten je machine hoe dan ook als de pagina ze verstuurt. Dit gaat
+    over wat een geplakte config of log werkelijk meedraagt &mdash; en
+    over hoe je ziet of de tool voor je neus überhaupt ergens heen kan
+    sturen."""
+updated = "26 augustus 2026"
+og_title = "Is het veilig om tekst in een online tool te plakken?"
+og_description = "Een plak kan een stille upload zijn. Wat een config, log of query werkelijk meedraagt, en hoe je ziet of de formatter een kopie bewaart."
+og_image_alt = "abox.tools - gereedschap waar geen server aan te pas komt"

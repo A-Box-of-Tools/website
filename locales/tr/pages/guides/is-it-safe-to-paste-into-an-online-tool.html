@@ -1,0 +1,131 @@
+  <section>
+    <h2>Kısa cevap</h2>
+    <p>
+      Bir web sayfasına metin yapıştırmak, o sayfaya dosya yüklemek kadar
+      sonuç doğurabilir. Öyle hissettirmemesinin sebebi, hareketin güvenli
+      bir yerden ödünç alınmış olmasıdır: kendi iki pencereniz arasında
+      yapıştırmak, metni sizin denetiminizdeki bir yerden yine sizin
+      denetiminizdeki başka bir yere taşır. Bir web sayfasında ikinci yer,
+      bir betiğin okuyabildiği bir metin kutusudur &mdash; ve sonrasında
+      ne olacağına hareket değil, tamamen sayfa karar verir.
+    </p>
+    <p>
+      Yapıştırma biçimli pek çok araç işini bir sunucuda görür: sayfa
+      metninizi yollar, sunucu biçimlendirir, doğrular ya da
+      karşılaştırır, sonuç geri gelir. Ekranda hangi türü kullandığınızı
+      söyleyen hiçbir şey yoktur. Metin kutusu iki durumda da aynıdır;
+      &ldquo;Biçimlendir&rdquo; düğmesi de. Fark, tek bir ağ isteğidir ve
+      bakmadıkça görünmez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Bir yapıştırma gerçekte neler taşır</h2>
+    <p>
+      Online araçlara düşen şey nadiren düzyazıdır. Birinin mesleğinin
+      çalışma metnidir ve tür önemlidir; çünkü bilgisayarcılığın en hassas
+      dizgilerinden bazıları, tam da gece yarısı biçimlendiricilere
+      yapıştırılanlardır:
+    </p>
+    <ul>
+      <li>
+        <strong>Yapılandırma dosyaları</strong>, bir programın içine
+        gömülmemesi gerekenleri tutmak için vardır ve o şeyler veritabanı
+        parolaları, API anahtarları ve imza sırlarıdır. Bütün hâlinde
+        yapıştırılan bir config hepsini birden taşır.
+      </li>
+      <li>
+        <strong>Log'lar ve hata dökümleri</strong> URL'lerde oturum
+        belirteçleri, e-posta adresleri, iç makine adları ve ara sıra
+        içinde birinin kişisel verisi olan bir istek gövdesi taşır.
+      </li>
+      <li>
+        <strong>API yanıtları</strong>, üretim verisinin anlık
+        görüntüleridir &mdash; gerçek müşteriler, gerçek bakiyeler &mdash;
+        okuması rahat olsun diye uygun bir yere yapıştırılmış.
+      </li>
+      <li>
+        <strong>Base64 görünümlü her şey</strong>, bir çözücüye
+        yapıştırıldıysa genellikle önemli olduğu için kodlanmıştı: ayıklanan
+        bir belirteç, bir sertifika, bir kimlik doğrulama başlığı.
+      </li>
+    </ul>
+    <p>
+      Bir yabancının sunucusundan geçmiş bir anahtar, fark ettiğiniz anda
+      açığa çıkmış sayılmak zorundadır: iptal edilip yeniden verilmelidir
+      ve bu, üretimdeki bir sistemde kimsenin planlamadığı bir öğleden
+      sonradır. Mesele biçimlendirici sitelerin kimlik bilgisi topluyor
+      olması değil. Mesele bir sunucunun neyi kayda geçirdiğini
+      bilemeyeceğiniz ve açığa çıkmadığından emin olamadığınız bir sırrın,
+      değiştirmek zorunda olduğunuz bir sır olmasıdır.
+    </p>
+  </section>
+
+  <section>
+    <h2>Araç metninizin gitmesine neden muhtaç değil</h2>
+    <p>
+      İşte soruyu bitiren teknik gerçek: metni biçimlendirmek, doğrulamak,
+      dönüştürmek ve karşılaştırmak, bilgisayarcılığın en kolay işleri
+      arasındadır. JSON ayrıştırmak, XML'e girinti vermek, iki dosyayı
+      karşılaştırmak, base64 kodlamak &mdash; bir tarayıcı bunları
+      milisaniyeler içinde, yerelde yapar ve yıllardır yapabiliyor. Sunucu
+      işe hiçbir şey katmaz. Yapıştırma biçimli bir araç metninizi
+      yüklüyorsa, bu bir mimari kalıntısı ya da işletmecinin rahatlığıdır;
+      işin gereği asla değildir.
+    </p>
+    <p>
+      Bu sitenin metin araçları tam da bunun karşı örneğidir.
+      <a href="../../json-bicimlendirme/">JSON biçimlendirici</a> JSON,
+      XML, HTML, CSS ve YAML'ı ayrıştırır, biçimlendirir ve dönüştürür;
+      <a href="../../metin-karsilastirma/">metin karşılaştırıcı</a> iki
+      metin arasındaki her farkı satır satır, kelime kelime işaretler;
+      <a href="../../base64-kodlama/">base64 kodlayıcı ve çözücü</a> metin
+      ile kodlamaları arasında iki yönde çalışır. Üçü de sizin makinenizde
+      döner ve yapıştırdığınızın gidecek yeri yoktur &mdash; bu sayfalarda
+      onu gönderebilecek bir kod yolu bulunmaz.
+    </p>
+    <p>
+      İkisinin rehberi de hazır:
+      <a href="../json-yuklemeden-bicimlendirme/">JSON'u yüklemeden
+      biçimlendirmek</a> ve
+      <a href="../iki-json-dosyasini-karsilastirma/">iki JSON dosyasını
+      karşılaştırmak</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hangi türü kullandığınızı anlamak</h2>
+    <p>
+      Denetimler dosya araçlarındakilerle aynıdır ve
+      <a href="../dosya-yuklemek-guvenli-mi/">yükleme rehberinde</a> tam
+      hâliyle yazılıdır. Yapıştırma diliyle kısa sürümü:
+    </p>
+    <ul>
+      <li>
+        <strong>Fişi çekin.</strong> Sayfayı yükleyin, bağlantıyı kesin,
+        yapıştırın, düğmeye basın. Yerel araç devam eder; sunucu aracı
+        durur. Otuz saniye, uzmanlık sıfır, sahtesi yapılamaz.
+      </li>
+      <li>
+        <strong>Biçimlendir'e basarken Ağ sekmesini izleyin.</strong> O
+        anda yola çıkan, aşağı yukarı yapıştırdığınız boyutta bir istek,
+        yapıştırdığınızın yola çıkışıdır. İstek yoksa yükleme de yok.
+      </li>
+      <li>
+        <strong>Yardımsever fazlalıklardan kuşkulanın.</strong> Bir
+        &ldquo;bu parçayı paylaş&rdquo; düğmesi, cihazlar arasında gezen
+        bir yapıştırma geçmişi, iş arkadaşına yollanacak bir bağlantı
+        &mdash; her biri ancak metin bir sunucuda saklandıysa mümkündür.
+        Özellikler itiraftır: yapıştırdığınızı başkasına gösterebilen
+        sayfa, onu tutmuş demektir.
+      </li>
+    </ul>
+    <p>
+      Ve tek bir alışkanlık üç denetimi de geride bırakır: daha az
+      yapıştırın. Bir doğrulayıcının, bir config'in biçimini doğrulamak
+      için gerçek parolaya ihtiyacı yoktur &mdash;
+      <code>"REDACTED"</code> birebir aynı ayrıştırılır. Sırrın kendisi
+      olan yapıştırmadaysa kural daha da yalınlaşır: bir parolayı almaya
+      hakkı olan tek sayfa, o parolanın ait olduğu giriş sayfasıdır.
+    </p>
+  </section>

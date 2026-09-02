@@ -1,0 +1,133 @@
+  <section>
+    <h2>Het korte antwoord</h2>
+    <p>
+      Tekst in een webpagina plakken kan precies zulke gevolgen hebben als
+      er een bestand naartoe uploaden. Dat het niet zo voelt, komt doordat
+      het gebaar uit een veilige buurt stamt: tussen twee eigen vensters
+      verplaatst plakken tekst van een plek onder jouw beheer naar een
+      andere plek onder jouw beheer. Op een webpagina is die tweede plek
+      een tekstvak dat een script kan lezen &mdash; en wat er daarna
+      gebeurt, bepaalt de pagina, niet het gebaar.
+    </p>
+    <p>
+      Heel wat tools in plakvorm doen hun werk op een server: de pagina
+      stuurt je tekst weg, de server formatteert, valideert of
+      vergelijkt, en het resultaat komt terug. Niets op het scherm vertelt
+      welke van de twee soorten je gebruikt. Het tekstvak ziet er
+      hetzelfde uit; de knop &ldquo;Formatteren&rdquo; ook. Het verschil
+      is één netwerkverzoek, onzichtbaar tot je ernaar kijkt.
+    </p>
+  </section>
+
+  <section>
+    <h2>Wat een plak werkelijk meedraagt</h2>
+    <p>
+      Wat in online tools belandt, is zelden proza. Het is de werktekst
+      van iemands vak, en het genre doet ertoe, want een paar van de
+      gevoeligste tekenreeksen in de informatica zijn precies die welke om
+      middernacht in formatters worden geplakt:
+    </p>
+    <ul>
+      <li>
+        <strong>Configuratiebestanden</strong> bestaan om te bevatten wat
+        een programma niet hard mag inbakken, en die dingen zijn
+        databasewachtwoorden, API-sleutels en ondertekeningsgeheimen. Een
+        config die in zijn geheel geplakt wordt, draagt ze allemaal.
+      </li>
+      <li>
+        <strong>Logs en stacktraces</strong> dragen sessietokens in
+        URL's, e-mailadressen, interne machinenamen en af en toe de body
+        van een verzoek met iemands persoonsgegevens erin.
+      </li>
+      <li>
+        <strong>API-antwoorden</strong> zijn momentopnamen van
+        productiedata &mdash; echte klanten, echte saldi &mdash; ergens
+        gemakkelijks geplakt om gelezen te worden.
+      </li>
+      <li>
+        <strong>Alles wat op base64 lijkt</strong> en in een decoder
+        beland, werd meestal gecodeerd omdat het ertoe deed: een token
+        dat gedebugd wordt, een certificaat, een authenticatieheader.
+      </li>
+    </ul>
+    <p>
+      Een sleutel die langs de server van een vreemde is gereisd, moet als
+      blootgelegd gelden op het moment dat je het merkt: intrekken en
+      opnieuw uitgeven, wat op een productiesysteem een middag is die
+      niemand had ingepland. Het punt is niet dat formatter-sites
+      inloggegevens oogsten. Het punt is dat je niet kunt weten wat een
+      server logt, en een geheim waarvan je de blootstelling niet kunt
+      uitsluiten, is een geheim dat je moet vervangen.
+    </p>
+  </section>
+
+  <section>
+    <h2>Waarom de tool je tekst niet nodig heeft</h2>
+    <p>
+      Hier is het technische feit dat de vraag beslecht: tekst
+      formatteren, valideren, converteren en vergelijken behoren tot de
+      makkelijkste klussen in de informatica. JSON parsen, XML inspringen,
+      twee bestanden vergelijken, base64 coderen &mdash; een browser doet
+      het in milliseconden, lokaal, en kan dat al jaren. Een server voegt
+      niets aan de klus toe. Wanneer een plak-tool je tekst uploadt, is
+      dat een architectuurrestje of een gemak voor de beheerder, nooit een
+      noodzaak van het werk.
+    </p>
+    <p>
+      Daarvan zijn de teksttools van deze site het tegenvoorbeeld. De
+      <a href="../../json-formatteren/">JSON-formatter</a> parseert,
+      formatteert en converteert JSON, XML, HTML, CSS en YAML; de
+      <a href="../../tekst-vergelijken/">tekstvergelijker</a> markeert elk
+      verschil tussen twee teksten, regel voor regel en woord voor woord;
+      de <a href="../../base64-coderen/">base64-codeerder en
+      -decodeerder</a> gaat beide kanten op tussen tekst en zijn
+      coderingen. Alle drie draaien ze op jouw machine, en wat je plakt
+      heeft nergens heen te gaan &mdash; deze pagina's dragen geen
+      codepad dat het zou kunnen versturen.
+    </p>
+    <p>
+      Twee ervan hebben al een eigen gids:
+      <a href="../json-formatteren/">JSON formatteren zonder het te
+      uploaden</a> en <a href="../twee-json-bestanden-vergelijken/">twee
+      JSON-bestanden vergelijken</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Hoe je ziet welke soort je gebruikt</h2>
+    <p>
+      De controles zijn dezelfde als bij een bestandstool, en ze staan
+      volledig in <a href="../is-bestanden-uploaden-veilig/">de gids over
+      uploaden</a>. De korte plakversie:
+    </p>
+    <ul>
+      <li>
+        <strong>Trek de stekker eruit.</strong> Laad de pagina, verbreek
+        de verbinding, plak, druk op de knop. Een lokale tool gaat door;
+        een servertool valt stil. Dertig seconden, geen expertise, niet te
+        vervalsen.
+      </li>
+      <li>
+        <strong>Kijk naar het Netwerk-tabblad terwijl je op Formatteren
+        drukt.</strong> Een verzoek dat op dat moment vertrekt, ongeveer
+        zo groot als je plak, is je plak die vertrekt. Geen verzoek, geen
+        upload.
+      </li>
+      <li>
+        <strong>Wantrouw de behulpzame extra's.</strong> Een knop
+        &ldquo;deel dit fragment&rdquo;, een geschiedenis van je recente
+        plakken over apparaten heen, een link voor een collega &mdash; elk
+        daarvan kan alleen als de tekst op een server is opgeslagen.
+        Functies zijn bekentenissen: een pagina die jouw plak aan iemand
+        anders kan laten zien, heeft hem gehouden.
+      </li>
+    </ul>
+    <p>
+      En één gewoonte verslaat alle drie de controles: minder plakken. Een
+      validator heeft het echte wachtwoord niet nodig om de vorm van een
+      config te controleren &mdash; <code>"REDACTED"</code> parseert
+      identiek. En voor de plak die zelf het geheim is, krimpt de regel
+      tot iets nog eenvoudigers: de enige pagina die ooit een wachtwoord
+      hoort te ontvangen, is de inlogpagina waar het bij hoort.
+    </p>
+  </section>
