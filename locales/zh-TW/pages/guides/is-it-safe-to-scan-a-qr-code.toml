@@ -1,0 +1,24 @@
+#
+# Guide: is it safe to scan a QR code? - Traditional Chinese.
+#
+# Overrides for pages/guides/is-it-safe-to-scan-a-qr-code/page.toml. Prose in
+# the .html beside this file. Written in Chinese rather than translated out of
+# the English; the house style is at the top of locales/zh/locale.toml.
+#
+
+nav = "掃 QR Code 安全嗎？"
+
+title = "掃 QR Code 安全嗎？"
+description = "掃碼是讀，不是開啟。危險從點開那一下才開始。這一頁講 QR Code 裡到底裝著什麼，貼碼騙局靠什麼得手，以及網址撒謊的三種路數。"
+
+heading = "掃 QR Code 安全嗎？"
+lede = """
+    掃這一下是安全的。QR Code 就是一段文字，鏡頭對準它，發生的只有一件事，\
+    就是這段文字被讀出來。會出事的環節在後面一步，是某個東西把讀到的內容\
+    開啟的時候。而那一下，你可以不點。"""
+
+updated = "2026年8月26日"
+
+og_title = "掃 QR Code 安全嗎？"
+og_description = "掃碼只是讀，並不開啟。QR Code 裡到底裝著什麼，蓋在原碼上的假碼靠什麼得手，以及動身之前怎麼看清一個連結要去哪裡。"
+og_image_alt = "abox.tools - 不走伺服器的工具"

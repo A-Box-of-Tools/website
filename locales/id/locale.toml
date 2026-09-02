@@ -163,6 +163,7 @@ complete = true
 "guides/make-a-qr-code-and-prove-it-scans" = "panduan/membuat-kode-qr-dan-membuktikannya-terbaca"
 "guides/clean-up-a-voice-memo" = "panduan/merapikan-memo-suara"
 "guides/make-a-height-comparison-chart" = "panduan/membuat-bagan-perbandingan-tinggi"
+"guides/is-it-safe-to-scan-a-qr-code" = "panduan/apakah-aman-memindai-kode-qr"
 
 #
 # ---------------------------------------------------------------------------

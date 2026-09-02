@@ -1,0 +1,190 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Scanner est sans danger. Un QR code est un court morceau de texte
+      dessiné en petits carrés, et pointer un appareil photo dessus fait
+      exactement une chose&nbsp;: relire ce texte. Cette lecture ne peut rien
+      installer, ne peut rien visiter et ne peut toucher à rien sur votre
+      téléphone, pour la même raison que regarder une adresse écrite ne vous
+      y transporte pas.
+    </p>
+    <p>
+      Le danger commence une étape plus tard, quand quelque chose
+      <em>ouvre</em> ce qui a été lu &mdash; et toute l'astuce de chaque
+      arnaque au QR code consiste à faire arriver cette étape avant que vous
+      ayez vu où vous alliez. Le texte du code est une adresse que personne
+      ne peut lire à l'œil nu, et la plupart des téléphones y répondent d'une
+      seule pression empressée. Séparez la lecture de l'ouverture, et
+      l'arnaque n'a plus rien sur quoi s'appuyer.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qu'est vraiment un QR code</h2>
+    <p>
+      Sous les carrés, il n'y a rien d'autre qu'une chaîne de caractères
+      &mdash; quelques milliers tout au plus, généralement bien moins. Une
+      adresse web, un nom de réseau Wi-Fi avec son mot de passe, une fiche de
+      contact, une ligne de texte. Le format a été conçu en 1994 pour suivre
+      des pièces automobiles dans une usine Toyota, et il ne contient aucune
+      instruction d'aucune sorte. Un QR code ne peut pas plus
+      &laquo;&nbsp;contenir un virus&nbsp;&raquo; qu'un panneau indicateur.
+    </p>
+    <p>
+      Ce qu'il peut contenir, c'est un texte qui <em>demande</em> quelque
+      chose à votre téléphone&nbsp;: ouvrir cette adresse, rejoindre ce
+      réseau, enregistrer ce contact. Chacune de ces choses est une demande,
+      pas un ordre. Le code propose&nbsp;; ce qui l'a scanné décide. Un
+      lecteur qui vous montre le texte et attend est parfaitement sûr. Un
+      lecteur qui agit de lui-même sur le texte a remis la décision à celui
+      qui a imprimé le code &mdash; et c'est là toute la différence entre un
+      scan sûr et un scan dangereux.
+    </p>
+    <p>
+      Une note de bas de page, par honnêteté&nbsp;: le programme qui décode
+      peut avoir des bogues, comme tout programme qui analyse une entrée, et
+      il y en a eu dans des lecteurs au fil des ans. Mais ce risque
+      appartient au lecteur, pas au code, et ce n'est pas là-dessus que
+      reposent les arnaques. Elles reposent sur la pression du doigt.
+    </p>
+  </section>
+
+  <section>
+    <h2>L'astuce de l'autocollant</h2>
+    <p>
+      L'arnaque devenue assez courante pour mériter un nom &mdash; le
+      quishing &mdash; est d'une simplicité presque gênante&nbsp;: imprimer
+      son propre code, le coller par-dessus un vrai, attendre. Sur un
+      horodateur, où le faux mène à une page de paiement qui ressemble à
+      celle de la mairie. Sur une table de restaurant, par-dessus le menu.
+      Sur un avis de passage dans la boîte aux lettres, à côté des mots
+      &laquo;&nbsp;nous vous avons manqué&nbsp;&raquo;.
+    </p>
+    <p>
+      Remarquez ce qui la fait fonctionner. Ce n'est pas la sophistication
+      technique &mdash; il n'y en a aucune. C'est qu'un QR code est la seule
+      sorte d'adresse qu'une personne ne peut pas lire avant de la suivre.
+      Une adresse web louche écrite en lettres se trahit à quiconque la
+      regarde&nbsp;; la même adresse dessinée en carrés ressemble exactement
+      à une honnête. Le temps de voir où menait le code, vous y êtes déjà,
+      sur une page construite pour ressembler à celle que vous attendiez, et
+      qui demande votre numéro de carte.
+    </p>
+    <p>
+      La défense n'est pas d'arrêter de scanner. C'est de regarder l'adresse
+      <em>entre</em> le scan et la visite, ce qui coûte environ deux secondes
+      et met l'astuce complètement en échec.
+    </p>
+  </section>
+
+  <section>
+    <h2>Trois façons dont une adresse ment</h2>
+    <p>
+      Deux secondes de regard suffisent, mais seulement si vous savez quoi
+      regarder. Il y a trois formes d'apparence honnête que prend une adresse
+      louche, et les trois valent d'être connues de vue.
+    </p>
+    <h3>1. Le nom avant le @</h3>
+    <p>
+      Une adresse web peut porter un nom d'utilisateur, écrit avant un signe
+      <code>@</code>&nbsp;: tout ce qui précède le <code>@</code> est de la
+      décoration, et la vraie destination commence après.
+      <code>votrebanque.fr@evil.example</code> ne va pas à votre banque. Elle
+      va à <code>evil.example</code>, en transportant
+      &laquo;&nbsp;votrebanque.fr&nbsp;&raquo; comme identifiant sans aucun
+      sens. L'œil lit le début d'une adresse&nbsp;; le navigateur en lit la
+      fin.
+    </p>
+    <h3>2. Des lettres qui ne sont pas celles qu'elles imitent</h3>
+    <p>
+      Les alphabets se recouvrent. Un <code>&#1072;</code> cyrillique se
+      dessine exactement comme un <code>a</code> latin, et une adresse écrite
+      avec l'un est une adresse différente qui paraît identique à l'écran. Le
+      procédé a un nom &mdash; attaque par homographes &mdash; et c'est
+      pourquoi une destination peut être la copie lettre à lettre de celle en
+      qui vous avez confiance, et se trouver quand même ailleurs.
+    </p>
+    <h3>3. La première étape honnête</h3>
+    <p>
+      L'adresse du code peut être authentiquement respectable &mdash; un
+      raccourcisseur de liens, une redirection marketing, le suivi de clics
+      d'un moteur de recherche &mdash; et se contenter de vous
+      <em>renvoyer</em> vers un endroit qui ne l'est pas. La première adresse
+      passe l'examen&nbsp;; la destination est décidée par un serveur alors
+      que vous êtes déjà en route. Une adresse raccourcie dans un code
+      imprimé ne prouve rien de mal, mais elle signifie que l'adresse que
+      vous pouvez vérifier n'est pas celle où vous arriverez.
+    </p>
+  </section>
+
+  <section>
+    <h2>Comment en scanner un sans risque</h2>
+    <p>
+      La règle tient en une phrase&nbsp;: <strong>lire d'abord, ouvrir
+      ensuite, et ne jamais laisser un seul geste faire les deux.</strong> En
+      pratique&nbsp;:
+    </p>
+    <ul>
+      <li>
+        Utilisez un lecteur qui vous montre le texte décodé et s'arrête là.
+        La plupart des appareils photo de téléphone affichent la destination
+        dans un petit bandeau avant de l'ouvrir &mdash; lisez le bandeau au
+        lieu de le toucher par réflexe, et lisez la <em>fin</em> de
+        l'adresse, pas le début.
+      </li>
+      <li>
+        Soyez le plus méfiant là où l'enjeu est le plus haut et la surface
+        publique&nbsp;: tout ce qui se termine par un paiement, tout ce qui
+        vit dehors. Le code d'un horodateur mérite plus de réflexion que
+        celui d'un cartel de musée.
+      </li>
+      <li>
+        Un code qui mène droit à une page de connexion ou de coordonnées
+        bancaires est le moment de s'arrêter et de taper à la place l'adresse
+        que vous connaissez déjà. La version légitime de cette page n'est
+        jamais à plus de quelques touches de clavier.
+      </li>
+      <li>
+        Les codes Wi-Fi et les fiches de contact méritent la même
+        pause&nbsp;: l'un demande à votre téléphone de retenir un réseau,
+        l'autre d'enregistrer une personne. Les deux s'acceptent très bien en
+        connaissance de cause, et ni l'un ni l'autre ne devrait se produire
+        en silence.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Comment se comporte le lecteur d'ici</h2>
+    <p>
+      Ce site a un <a href="../../lecteur-de-qr-code/">lecteur de QR codes et
+      de codes-barres</a>, et il est bâti sur la règle que cette page vient
+      de défendre&nbsp;: <strong>il n'ouvre jamais rien.</strong> Le texte
+      décodé est affiché en entier, l'hôte que l'adresse atteindrait
+      réellement est extrait sur sa propre ligne, et les trois déguisements
+      ci-dessus sont vérifiés et nommés quand ils apparaissent. Ouvrir le
+      lien est un bouton séparé, pressé après lecture &mdash; ou jamais.
+    </p>
+    <p>
+      La lecture elle-même se fait sur votre propre machine. L'image que vous
+      scannez est décodée dans votre navigateur et n'est envoyée nulle part,
+      si bien qu'un code qui vous inspire de la méfiance peut être examiné
+      sans que personne &mdash; ce site compris &mdash; apprenne ce qu'il
+      disait&nbsp;; la page continue de fonctionner une fois le Wi-Fi coupé,
+      ce qui est la façon la plus simple de vérifier cette affirmation. Et
+      une charge ouvertement hostile, comme une adresse
+      <code>javascript:</code> qui exécuterait du code chez celui qui
+      l'ouvre, se voit refuser tout lien et est nommée pour ce qu'elle est.
+    </p>
+    <p>
+      L'autre moitié existe aussi&nbsp;: un
+      <a href="../../generateur-de-qr-code/">générateur de QR codes</a> qui
+      dessine les codes sur votre propre machine, et un guide compagnon sur
+      la façon de <a href="../creer-un-code-qr-et-prouver-qu-il-se-scanne/">
+      créer un code et prouver qu'il se scanne</a> avant de l'envoyer à
+      l'impression. Et si derrière votre question se cachait la plus large
+      &mdash; ce que confier quoi que ce soit à un site web fait réellement
+      &mdash; celle-là a
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">sa propre page</a>.
+    </p>
+  </section>

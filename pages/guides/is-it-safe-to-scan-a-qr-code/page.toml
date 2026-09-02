@@ -1,0 +1,35 @@
+#
+# Guide: is it safe to scan a QR code?
+#
+# The second guide written to be found rather than to be used. "Quishing" has
+# put the question into a lot of heads, and most of the answers online are
+# either "never scan anything" or an antivirus advert. The honest answer is
+# that the scan is harmless and the danger is one tap later - which is also
+# the reason the reader tool on this site refuses to open what it reads.
+#
+# Prose lives next door in body.html.
+#
+
+slug = "guides/is-it-safe-to-scan-a-qr-code"
+kind = "guide"
+nav = "Is it safe to scan a QR code?"
+# Which group on the guides index this joins, by the id in config/site.toml.
+group = "before-you-upload"
+
+title = "Is It Safe to Scan a QR Code?"
+description = "Scanning a QR code is reading, not opening - the danger starts one tap later. What a code actually contains, how the sticker scam works, and the three ways an address lies."
+
+heading = "Is it safe to scan a QR code?"
+lede = """
+    The scan itself is. A QR code is a piece of text, and pointing a camera at
+    it does nothing but read that text. Everything that can go wrong happens
+    one tap later, when something opens what was read &mdash; and that tap is
+    yours to withhold."""
+
+updated = "26 August 2026"
+published = "2026-08-26"
+lastmod = "2026-08-26"
+
+og_title = "Is it safe to scan a QR code?"
+og_description = "The scan is reading, not opening. What a QR code actually contains, how the sticker-over-the-menu scam works, and how to see where one goes before you go there."
+og_image_alt = "abox.tools - tools that never touch a server"

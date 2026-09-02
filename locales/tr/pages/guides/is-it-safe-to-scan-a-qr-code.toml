@@ -1,0 +1,17 @@
+#
+# Rehber: QR kod taratmak güvenli mi? - Turkish.
+#
+
+nav = "QR kod taratmak güvenli mi?"
+title = "QR Kod Taratmak Güvenli mi?"
+description = "Taramak açmak değil, okumaktır - tehlike bir dokunuş sonra başlar. Bir QR kodun gerçekte ne içerdiği, etiket dolandırıcılığının nasıl işlediği ve bir adresin yalan söylediği üç yol."
+heading = "QR kod taratmak güvenli mi?"
+lede = """
+    Taramanın kendisi güvenli. QR kod bir metin parçasıdır ve kamerayı ona
+    doğrultmak o metni okumaktan başka hiçbir şey yapmaz. Ters gidebilecek
+    her şey bir dokunuş sonra, bir şey okunanı açtığında olur &mdash; ve o
+    dokunuşu yapmamak sizin elinizde."""
+updated = "26 Ağustos 2026"
+og_title = "QR kod taratmak güvenli mi?"
+og_description = "Tarama okur, açmaz. Bir QR kodun gerçekte ne içerdiği, üstüne yapıştırılan kod dolandırıcılığının nasıl işlediği ve bir bağlantının nereye gittiğini gitmeden önce nasıl göreceğiniz."
+og_image_alt = "abox.tools - hiçbir zaman bir sunucuya dokunmayan araçlar"

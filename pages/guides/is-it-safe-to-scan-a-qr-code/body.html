@@ -1,0 +1,174 @@
+  <section>
+    <h2>The short answer</h2>
+    <p>
+      Scanning is safe. A QR code is a short piece of text drawn as squares,
+      and pointing a camera at it does exactly one thing: it reads that text
+      back. The reading cannot install anything, cannot visit anything, and
+      cannot touch anything on your phone, for the same reason that looking at
+      a written address does not take you there.
+    </p>
+    <p>
+      The danger begins one step later, when something <em>opens</em> what was
+      read &mdash; and the whole trick of every QR scam is to make that step
+      happen before you have seen where you are going. The text inside the
+      code is an address nobody can read with their eyes, and most phones
+      answer it with a single eager tap. Keep the reading and the opening
+      apart, and the scam has nothing left to work with.
+    </p>
+  </section>
+
+  <section>
+    <h2>What a QR code actually is</h2>
+    <p>
+      Underneath the squares there is nothing but a string of characters &mdash;
+      a few thousand at the outside, usually far fewer. A web address, a
+      Wi-Fi network name and password, a contact card, a line of plain text.
+      The format was designed in 1994 to track car parts through a Toyota
+      factory, and it contains no instructions of any kind. A QR code cannot
+      &ldquo;contain a virus&rdquo; any more than a signpost can.
+    </p>
+    <p>
+      What it can contain is a piece of text that <em>asks</em> your phone to
+      do something: open this address, join this network, add this contact.
+      Every one of those is a request, not a command. The code proposes;
+      whatever scanned it decides. A scanner that shows you the text and waits
+      is entirely safe. A scanner that acts on the text by itself has given the
+      decision to whoever printed the code &mdash; and that is the entire
+      difference between a safe scan and a dangerous one.
+    </p>
+    <p>
+      It is fair to add one footnote: the program doing the decoding can have
+      bugs, like any program that parses input, and there have been such bugs
+      in scanners over the years. But that risk belongs to the scanner, not to
+      the code, and it is not the thing the scams rely on. The scams rely on
+      the tap.
+    </p>
+  </section>
+
+  <section>
+    <h2>The sticker trick</h2>
+    <p>
+      The scam common enough to have earned a name &mdash; quishing &mdash; is
+      almost embarrassingly simple: print a code of your own, stick it over a
+      real one, and wait. On a parking meter, where the fake leads to a payment
+      page that looks like the council's. On a restaurant table, over the menu.
+      On a parcel card through the door, beside the words &ldquo;we missed
+      you&rdquo;.
+    </p>
+    <p>
+      Notice what makes it work. It is not technical sophistication &mdash;
+      there is none. It is that a QR code is the one kind of address a person
+      cannot read before following. A crooked web address written in letters
+      gives itself away to anyone who looks at it; the same address drawn as
+      squares looks exactly like an honest one. By the time you can see where
+      the code went, you are already there, on a page built to look like the
+      one you expected, asking for your card number.
+    </p>
+    <p>
+      The defence is not to stop scanning. It is to look at the address
+      <em>between</em> the scan and the visit, which costs about two seconds
+      and defeats the trick completely.
+    </p>
+  </section>
+
+  <section>
+    <h2>Three ways an address lies</h2>
+    <p>
+      Two seconds of looking is enough, but only if you know what to look at.
+      There are three honest-looking shapes a crooked address takes, and they
+      are worth knowing by sight.
+    </p>
+    <h3>1. The name before the @</h3>
+    <p>
+      A web address may carry a username, written before an <code>@</code>
+      sign: everything up to the <code>@</code> is decoration, and the real
+      destination starts after it.
+      <code>yourbank.com@evil.example</code> does not go to your bank.
+      It goes to <code>evil.example</code>, carrying
+      &ldquo;yourbank.com&rdquo; as a meaningless login name. The eye reads
+      the start of an address; the browser reads the end.
+    </p>
+    <h3>2. Letters that are not the letters they look like</h3>
+    <p>
+      Alphabets overlap. A Cyrillic <code>&#1072;</code> is drawn exactly like
+      a Latin <code>a</code>, and an address written with one is a different
+      address that looks identical on screen. The trick has a name &mdash; a
+      homograph attack &mdash; and it is why a destination can be a
+      letter-perfect match for the one you trust and still be somewhere else.
+    </p>
+    <h3>3. The honest first hop</h3>
+    <p>
+      The address in the code can be genuinely respectable &mdash; a link
+      shortener, a marketing redirect, a search engine's own click-tracking
+      &mdash; and merely <em>forward</em> you somewhere that is not. The first
+      address checks out; the destination is decided by a server after you
+      have already set off. A shortened address in a printed code is not proof
+      of anything wrong, but it does mean the address you can check is not the
+      address you will arrive at.
+    </p>
+  </section>
+
+  <section>
+    <h2>How to scan one safely</h2>
+    <p>
+      The rule is one sentence: <strong>read first, open second, and never let
+      one gesture do both.</strong> In practice:
+    </p>
+    <ul>
+      <li>
+        Use a scanner that shows you the decoded text and stops. Most phone
+        cameras show the destination in a small banner before opening it
+        &mdash; read the banner rather than tapping it by reflex, and read the
+        <em>end</em> of the address, not the start.
+      </li>
+      <li>
+        Be most suspicious where the stakes are highest and the surface is
+        public: anything that ends in a payment, on anything that lives
+        outdoors. A parking meter's code deserves more thought than a museum
+        label's.
+      </li>
+      <li>
+        A code that leads straight to a login or card-details page is the
+        moment to stop and type the address you already know instead. The
+        legitimate version of that page is never more than a few keystrokes
+        away.
+      </li>
+      <li>
+        Wi-Fi and contact-card codes deserve the same pause: one asks your
+        phone to remember a network, the other to store a person. Both are
+        fine to accept knowingly and neither should happen silently.
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>How the reader here behaves</h2>
+    <p>
+      This site has a <a href="../../qr-barcode-reader/">QR &amp; barcode
+      reader</a>, and it is built on the rule this page has been arguing for:
+      <strong>it never opens anything.</strong> The decoded text is printed in
+      full, the host the address would actually reach is pulled out onto its
+      own line, and the three disguises above are checked for and named when
+      they appear. Opening the link is a separate button, pressed after
+      reading &mdash; or never.
+    </p>
+    <p>
+      The reading itself happens on your own machine. The picture you scan is
+      decoded in your browser and is not sent anywhere, so a code you are
+      suspicious of can be examined without anyone &mdash; including this site
+      &mdash; learning what it said; the page keeps working with the wi-fi
+      switched off, which is the easiest way to check that claim. And a
+      payload that is outright hostile, like a <code>javascript:</code>
+      address that would run code in the opener, is refused a link entirely
+      and named for what it is.
+    </p>
+    <p>
+      The other half exists too: a <a href="../../qr-barcode/">QR code
+      generator</a> that draws codes on your own machine, and a companion
+      guide on <a href="../make-a-qr-code-and-prove-it-scans/">making a code
+      and proving it scans</a> before it goes to print. And if the question
+      behind your question was the broader one &mdash; what handing anything
+      to a website actually does &mdash; that has
+      <a href="../is-it-safe-to-upload-files/">a page of its own</a>.
+    </p>
+  </section>
