@@ -32,6 +32,13 @@
     <uri>https://abox.tools/tr/</uri>
   </author>
   <entry>
+    <title type="html">Base64 Kodlayıcı ve Çözücü</title>
+    <id>https://abox.tools/tr/base64-kodlama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/base64-kodlama/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
+  </entry>
+  <entry>
     <title type="html">Görselden SVG'ye</title>
     <id>https://abox.tools/tr/gorseli-svg-ye-donusturme/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/gorseli-svg-ye-donusturme/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/gorseli-svg-ye-donusturme/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Bir logoyu, şablonu, imzayı ya da silüeti tarayıcınızda gerçek bir vektör dış çizgisine dönüştürün. Hangi görseller iyi çevrilir, hangileri asla çevrilmez ve çeviricinin yanlış yaptığı kısımlar nasıl düzeltilir.</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64 Kodlayıcı ve Çözücü</title>
-    <id>https://abox.tools/tr/base64-kodlama/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/base64-kodlama/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Base64'ü iki alfabede de kodlayın ve çözün, URL'leri yüzde kodlayın, HTML varlıklarını kaçışlayın; onaltılığı ve ters bölü kaçışlarını okuyun. Hepsi tarayıcınızda çalışır, hiçbir şey yüklenmez &amp;mdash; bir belirteç makinenizden hiç çıkmaz.</summary>
   </entry>
   <entry>
     <title type="html">Boy Karşılaştırma</title>

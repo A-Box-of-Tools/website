@@ -46,6 +46,13 @@
     <summary type="html">Eine Aufnahme abspielen und im Vorbeigehen jeden Teil markieren, der bleiben soll, und diese Teile dann als eine Datei speichern. Samplegenaue Schnitte, kein Knacken an den Übergängen, kein Upload.</summary>
   </entry>
   <entry>
+    <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
+    <id>https://abox.tools/de/base64-kodieren/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Base64 in beiden Alphabeten kodieren und dekodieren, URLs prozentkodieren, HTML-Entities maskieren und Hex und Backslash-Escapes lesen. Alles läuft in Ihrem Browser, hochgeladen wird nichts - ein Token verlässt Ihr Gerät also nie.</summary>
+  </entry>
+  <entry>
     <title type="html">Bild zu SVG</title>
     <id>https://abox.tools/de/bild-in-svg-umwandeln/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-in-svg-umwandeln/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/ratgeber/bild-in-svg-umwandeln/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Ein Logo, eine Schablone, eine Unterschrift oder eine Silhouette im Browser in eine echte Vektorkontur verwandeln. Welche Bilder sich gut nachzeichnen lassen, welche nie, und wie Sie korrigieren, was der Tracer falsch versteht.</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64-Kodierer &amp; -Dekodierer</title>
-    <id>https://abox.tools/de/base64-kodieren/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/base64-kodieren/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Base64 in beiden Alphabeten kodieren und dekodieren, URLs prozentkodieren, HTML-Entities maskieren und Hex und Backslash-Escapes lesen. Alles läuft in Ihrem Browser, hochgeladen wird nichts - ein Token verlässt Ihr Gerät also nie.</summary>
   </entry>
   <entry>
     <title type="html">Größenvergleich</title>

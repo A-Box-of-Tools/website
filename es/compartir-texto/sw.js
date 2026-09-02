@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/compartir-texto/:';
-const CACHE_NAME=CACHE_PREFIX+'d74dd23bd9';
+const CACHE_NAME=CACHE_PREFIX+'c58cc019a5';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=a88d5a648a',
+'styles.css?v=4d26a5342f',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
@@ -42,7 +42,9 @@ if(cached)return cached;
 return fetch(request).then((response)=>{
 if(response.ok&&response.type==='basic'){
 const copy=response.clone();
-caches.open(CACHE_NAME).then((cache)=>cache.put(request,copy));
+caches.open(CACHE_NAME)
+.then((cache)=>cache.put(request,copy))
+.catch(()=>{});
 }
 return response;
 }).catch(()=>(

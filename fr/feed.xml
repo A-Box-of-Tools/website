@@ -53,6 +53,13 @@
     <summary type="html">Écoutez un enregistrement et marquez au passage chaque morceau qui mérite d'être gardé, puis enregistrez ces morceaux en un seul fichier. Coupes à l'échantillon près, aucun clic aux raccords, rien d'envoyé.</summary>
   </entry>
   <entry>
+    <title type="html">Encodeur &amp;amp; décodeur Base64</title>
+    <id>https://abox.tools/fr/encoder-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/fr/encoder-base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
+  </entry>
+  <entry>
     <title type="html">Extracteur d'image</title>
     <id>https://abox.tools/fr/extraire-une-image-d-une-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/extraire-une-image-d-une-video/"/>
@@ -149,13 +156,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/fr/comparer-des-textes/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Comparez deux textes et voyez chaque différence, ligne à ligne et mot à mot, côte à côte ou en une colonne. La comparaison tourne dans votre navigateur, rien n'est envoyé - du code non publié ne quitte donc jamais votre machine.</summary>
-  </entry>
-  <entry>
-    <title type="html">Encodeur &amp;amp; décodeur Base64</title>
-    <id>https://abox.tools/fr/encoder-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/fr/encoder-base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Encodez et décodez du Base64 dans les deux alphabets, encodez des URL en pourcent, échappez les entités HTML et lisez l'hexadécimal et les échappements antislash. Tout tourne dans votre navigateur, rien n'est envoyé - un jeton ne quitte donc jamais votre machine.</summary>
   </entry>
   <entry>
     <title type="html">Comment recadrer une vidéo dans une autre forme</title>

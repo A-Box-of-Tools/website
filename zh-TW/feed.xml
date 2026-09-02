@@ -32,6 +32,13 @@
     <uri>https://abox.tools/zh-TW/</uri>
   </author>
   <entry>
+    <title type="html">Base64 編碼解碼</title>
+    <id>https://abox.tools/zh-TW/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">用兩套字母表編碼和解碼 Base64，給 URL 做百分號編碼，轉義 HTML 實體，讀十六進位和反斜槓轉義。全都在你的瀏覽器裡跑，什麼都不上傳——token 從不離開你的機器。</summary>
+  </entry>
+  <entry>
     <title type="html">JSON 格式化</title>
     <id>https://abox.tools/zh-TW/json-formatter/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/json-formatter/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/guides/trace-an-image-into-an-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">在瀏覽器裡把 logo、鏤空模板、簽名或剪影變成真正的向量輪廓。哪些圖片描得好，哪些永遠描不好，以及怎麼改掉描圖器弄錯的地方。</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64 編碼解碼</title>
-    <id>https://abox.tools/zh-TW/base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">用兩套字母表編碼和解碼 Base64，給 URL 做百分號編碼，轉義 HTML 實體，讀十六進位和反斜槓轉義。全都在你的瀏覽器裡跑，什麼都不上傳——token 從不離開你的機器。</summary>
   </entry>
   <entry>
     <title type="html">怎麼做一張身高對比圖</title>

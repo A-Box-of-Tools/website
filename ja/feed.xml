@@ -32,6 +32,13 @@
     <uri>https://abox.tools/ja/</uri>
   </author>
   <entry>
+    <title type="html">Base64エンコーダー・デコーダー</title>
+    <id>https://abox.tools/ja/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
+  </entry>
+  <entry>
     <title type="html">JSONフォーマッター</title>
     <id>https://abox.tools/ja/json-formatter/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/json-formatter/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/trace-an-image-into-an-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">ロゴ、ステンシル、署名、シルエットを、ブラウザの中で本物のベクターの輪郭にします。きれいにトレースできる画像とそうでない画像、そしてトレーサーが間違えた部分の直し方。</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64エンコーダー・デコーダー</title>
-    <id>https://abox.tools/ja/base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Base64を2つのアルファベットでエンコード・デコードし、URLをパーセントエンコードし、HTMLエンティティをエスケープし、16進とバックスラッシュのエスケープを読みます。すべてブラウザの中で動き、アップロードは一切ありません。トークンが手元の端末を離れることはありません。</summary>
   </entry>
   <entry>
     <title type="html">テキスト差分</title>

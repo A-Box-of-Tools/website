@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/grab-frame/:';
-const CACHE_NAME=CACHE_PREFIX+'392f88a6f1';
+const CACHE_NAME=CACHE_PREFIX+'d04a1c95b3';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=08715b1562',
+'styles.css?v=aa2393e27b',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
@@ -54,7 +54,9 @@ if(cached)return cached;
 return fetch(request).then((response)=>{
 if(response.ok&&response.type==='basic'){
 const copy=response.clone();
-caches.open(CACHE_NAME).then((cache)=>cache.put(request,copy));
+caches.open(CACHE_NAME)
+.then((cache)=>cache.put(request,copy))
+.catch(()=>{});
 }
 return response;
 }).catch(()=>(

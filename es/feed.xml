@@ -39,6 +39,13 @@
     <summary type="html">Guarda cualquier fotograma de un MP4, MOV o WebM como PNG o JPEG a tamaño completo. Avanza fotograma a fotograma, o saca uno cada pocos segundos. Funciona en el navegador: no se sube nada.</summary>
   </entry>
   <entry>
+    <title type="html">Codificador y decodificador Base64</title>
+    <id>https://abox.tools/es/codificar-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/codificar-base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Codifica y decodifica Base64 en los dos alfabetos, codifica URL en porcentaje, escapa entidades HTML y lee hexadecimal y escapes con barra invertida. Todo corre en tu navegador y no se sube nada: un token nunca sale de tu equipo.</summary>
+  </entry>
+  <entry>
     <title type="html">Conversor de YAML a JSON</title>
     <id>https://abox.tools/es/convertir-yaml-a-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/convertir-yaml-a-json/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/guias/convertir-una-imagen-a-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Convierte un logotipo, una plantilla, una firma o una silueta en un contorno vectorial de verdad en tu navegador. Qué imágenes se vectorizan bien, cuáles nunca lo harán, y cómo arreglar las partes que el trazador toma mal.</summary>
-  </entry>
-  <entry>
-    <title type="html">Codificador y decodificador Base64</title>
-    <id>https://abox.tools/es/codificar-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/codificar-base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Codifica y decodifica Base64 en los dos alfabetos, codifica URL en porcentaje, escapa entidades HTML y lee hexadecimal y escapes con barra invertida. Todo corre en tu navegador y no se sube nada: un token nunca sale de tu equipo.</summary>
   </entry>
   <entry>
     <title type="html">Comparador de alturas</title>

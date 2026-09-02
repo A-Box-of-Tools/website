@@ -32,6 +32,13 @@
     <uri>https://abox.tools/ko/</uri>
   </author>
   <entry>
+    <title type="html">Base64 인코더 · 디코더</title>
+    <id>https://abox.tools/ko/base64-인코딩/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/base64-인코딩/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Base64를 두 알파벳 모두로 인코딩·디코딩하고, URL을 퍼센트 인코딩하고, HTML 엔티티를 이스케이프하고, 16진수와 역슬래시 이스케이프를 읽습니다. 전부 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이 내 기기를 떠날 일이 없습니다.</summary>
+  </entry>
+  <entry>
     <title type="html">JSON 포매터</title>
     <id>https://abox.tools/ko/json-포맷터/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/json-포맷터/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/이미지-svg-변환하기/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">로고, 스텐실, 서명, 실루엣을 브라우저에서 진짜 벡터 윤곽선으로 만듭니다. 어떤 이미지가 잘 따지고 어떤 이미지는 결코 안 되는지, 그리고 잘못 딴 부분을 고치는 법.</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64 인코더 · 디코더</title>
-    <id>https://abox.tools/ko/base64-인코딩/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/base64-인코딩/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Base64를 두 알파벳 모두로 인코딩·디코딩하고, URL을 퍼센트 인코딩하고, HTML 엔티티를 이스케이프하고, 16진수와 역슬래시 이스케이프를 읽습니다. 전부 브라우저 안에서 돌아가고 아무것도 업로드되지 않아서, 토큰이 내 기기를 떠날 일이 없습니다.</summary>
   </entry>
   <entry>
     <title type="html">키 비교 차트</title>

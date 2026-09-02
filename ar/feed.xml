@@ -74,6 +74,13 @@
     <summary type="html">حوّل YAML إلى JSON وJSON إلى YAML في متصفّحك. يقرأ YAML 1.2، فتبقى yes وno نصوصاً، ويقول بالضبط ما يفقده كلّ اتجاه. لا يُرفع شيء، فلا يغادر ملفُّ إعدادات جهازك أبداً.</summary>
   </entry>
   <entry>
+    <title type="html">مرمِّز Base64 ومفكِّكه</title>
+    <id>https://abox.tools/ar/ترميز-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ar/ترميز-base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">رمِّز وفكِّك Base64 بأبجديتَيه، ورمِّز العناوين ترميزاً مئوياً، واهرُب كيانات HTML، واقرأ السداسي عشري وهروبات الشرطة المائلة العكسية. كل ذلك يجري في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز جهازك أبداً.</summary>
+  </entry>
+  <entry>
     <title type="html">مقصّ الصوت</title>
     <id>https://abox.tools/ar/قص-الصوت/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/قص-الصوت/"/>
@@ -142,13 +149,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ar/أدلة/عمل-رسم-مقارنة-الاطوال/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">حوّل قائمة أطوال إلى صورة جنباً إلى جنب: كيف تكتب الأطوال، وأي شكل تختار للطفل، ولماذا يفعل شيء مألوف واحد أكثر مما يفعله شخص ثالث، وكيف تُخرِج الرسم بصيغة PNG أو SVG.</summary>
-  </entry>
-  <entry>
-    <title type="html">مرمِّز Base64 ومفكِّكه</title>
-    <id>https://abox.tools/ar/ترميز-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ar/ترميز-base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">رمِّز وفكِّك Base64 بأبجديتَيه، ورمِّز العناوين ترميزاً مئوياً، واهرُب كيانات HTML، واقرأ السداسي عشري وهروبات الشرطة المائلة العكسية. كل ذلك يجري في متصفحك ولا يُرفع شيء - فلا يغادر رمزٌ مميز جهازك أبداً.</summary>
   </entry>
   <entry>
     <title type="html">مقارن النصوص</title>

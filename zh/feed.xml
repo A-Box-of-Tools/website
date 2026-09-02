@@ -32,6 +32,13 @@
     <uri>https://abox.tools/zh/</uri>
   </author>
   <entry>
+    <title type="html">Base64 编码解码</title>
+    <id>https://abox.tools/zh/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh/base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
+  </entry>
+  <entry>
     <title type="html">JSON 格式化</title>
     <id>https://abox.tools/zh/json-formatter/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/json-formatter/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh/guides/trace-an-image-into-an-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">在浏览器里把 logo、镂空模板、签名或剪影变成真正的矢量轮廓。哪些图片描得好，哪些永远描不好，以及怎么改掉描图器弄错的地方。</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64 编码解码</title>
-    <id>https://abox.tools/zh/base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh/base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">用两套字母表编码和解码 Base64，给 URL 做百分号编码，转义 HTML 实体，读十六进制和反斜杠转义。全都在你的浏览器里跑，什么都不上传——token 从不离开你的机器。</summary>
   </entry>
   <entry>
     <title type="html">怎么做一张身高对比图</title>

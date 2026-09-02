@@ -39,6 +39,13 @@
     <summary type="html">Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline.</summary>
   </entry>
   <entry>
+    <title type="html">Codificador e decodificador Base64</title>
+    <id>https://abox.tools/pt/codificar-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/codificar-base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Codifique e decodifique Base64 nos dois alfabetos, codifique URL em porcentagem, escape entidades HTML e leia hexadecimal e escapes com barra invertida. Tudo roda no seu navegador e nada é enviado: um token nunca sai do seu computador.</summary>
+  </entry>
+  <entry>
     <title type="html">Conversor de YAML para JSON</title>
     <id>https://abox.tools/pt/converter-yaml-para-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/converter-yaml-para-json/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/converter-imagem-para-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Transforme um logotipo, um estêncil, uma assinatura ou uma silhueta num contorno vetorial de verdade no seu navegador. Quais imagens vetorizam bem, quais nunca vão vetorizar, e como consertar as partes que o traçador erra.</summary>
-  </entry>
-  <entry>
-    <title type="html">Codificador e decodificador Base64</title>
-    <id>https://abox.tools/pt/codificar-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/codificar-base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Codifique e decodifique Base64 nos dois alfabetos, codifique URL em porcentagem, escape entidades HTML e leia hexadecimal e escapes com barra invertida. Tudo roda no seu navegador e nada é enviado: um token nunca sai do seu computador.</summary>
   </entry>
   <entry>
     <title type="html">Como fazer um gráfico de comparação de alturas</title>

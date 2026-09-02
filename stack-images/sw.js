@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/stack-images/:';
-const CACHE_NAME=CACHE_PREFIX+'0f458bd9e7';
+const CACHE_NAME=CACHE_PREFIX+'38c5b80e1f';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=494a652d7b',
+'styles.css?v=2c7e92fa43',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
@@ -49,7 +49,9 @@ if(cached)return cached;
 return fetch(request).then((response)=>{
 if(response.ok&&response.type==='basic'){
 const copy=response.clone();
-caches.open(CACHE_NAME).then((cache)=>cache.put(request,copy));
+caches.open(CACHE_NAME)
+.then((cache)=>cache.put(request,copy))
+.catch(()=>{});
 }
 return response;
 }).catch(()=>(

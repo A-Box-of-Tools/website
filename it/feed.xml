@@ -32,6 +32,13 @@
     <uri>https://abox.tools/it/</uri>
   </author>
   <entry>
+    <title type="html">Codificatore e decodificatore Base64</title>
+    <id>https://abox.tools/it/codifica-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/codifica-base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Codifica e decodifica Base64 in entrambi gli alfabeti, codifica URL in percentuale, fai l'escape delle entità HTML e leggi esadecimale ed escape con barra rovesciata. Gira tutto nel tuo browser e non viene caricato niente: un token non lascia mai il tuo dispositivo.</summary>
+  </entry>
+  <entry>
     <title type="html">Convertitore da YAML a JSON</title>
     <id>https://abox.tools/it/convertire-yaml-in-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/convertire-yaml-in-json/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/convertire-un-immagine-in-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Trasforma un logo, uno stencil, una firma o una silhouette in un vero contorno vettoriale nel browser. Quali immagini si ricalcano bene, quali non lo faranno mai, e come sistemare le parti che il ricalco sbaglia.</summary>
-  </entry>
-  <entry>
-    <title type="html">Codificatore e decodificatore Base64</title>
-    <id>https://abox.tools/it/codifica-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/codifica-base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Codifica e decodifica Base64 in entrambi gli alfabeti, codifica URL in percentuale, fai l'escape delle entità HTML e leggi esadecimale ed escape con barra rovesciata. Gira tutto nel tuo browser e non viene caricato niente: un token non lascia mai il tuo dispositivo.</summary>
   </entry>
   <entry>
     <title type="html">Come fare un grafico di confronto delle altezze</title>

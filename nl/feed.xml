@@ -67,6 +67,13 @@
     <summary type="html">Speel een opname af en markeer onderweg elk stuk dat het waard is, en sla die stukken daarna op als één bestand. Knippen tot op de sample, geen klik bij de overgangen, niets geüpload.</summary>
   </entry>
   <entry>
+    <title type="html">Base64-codeerder &amp; -decodeerder</title>
+    <id>https://abox.tools/nl/base64-coderen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/base64-coderen/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Codeer en decodeer Base64 in beide alfabetten, procentcodeer URL's, escape HTML-entiteiten en lees hex en backslash-escapes. Het draait allemaal in je browser en er wordt niets geüpload: een token verlaat je machine dus nooit.</summary>
+  </entry>
+  <entry>
     <title type="html">Framegrabber</title>
     <id>https://abox.tools/nl/frame-uit-video-halen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/frame-uit-video-halen/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/gidsen/een-afbeelding-naar-svg-omzetten/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Maak van een logo, een sjabloon, een handtekening of een silhouet een echte vectoromtrek in je browser. Welke afbeeldingen goed overtrekken, welke dat nooit zullen doen, en hoe je verbetert wat de overtrekker fout doet.</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64-codeerder &amp; -decodeerder</title>
-    <id>https://abox.tools/nl/base64-coderen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/base64-coderen/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Codeer en decodeer Base64 in beide alfabetten, procentcodeer URL's, escape HTML-entiteiten en lees hex en backslash-escapes. Het draait allemaal in je browser en er wordt niets geüpload: een token verlaat je machine dus nooit.</summary>
   </entry>
   <entry>
     <title type="html">Hoe je een lengtevergelijkingsgrafiek maakt</title>

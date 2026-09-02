@@ -32,6 +32,13 @@
     <uri>https://abox.tools/hi/</uri>
   </author>
   <entry>
+    <title type="html">Base64 एनकोडर-डिकोडर</title>
+    <id>https://abox.tools/hi/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/hi/base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
+  </entry>
+  <entry>
     <title type="html">JSON फ़ॉर्मैटर</title>
     <id>https://abox.tools/hi/json-formatter/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/json-formatter/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/hi/guides/trace-an-image-into-an-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">लोगो, स्टेंसिल, दस्तखत या सिल्हूट को अपने ब्राउज़र में असली वेक्टर आउटलाइन बनाइए। कौन-सी तस्वीरें अच्छे से ट्रेस होती हैं, कौन-सी कभी नहीं होंगी, और ट्रेसर जो हिस्से गलत करता है उन्हें कैसे ठीक करें।</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64 एनकोडर-डिकोडर</title>
-    <id>https://abox.tools/hi/base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/hi/base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Base64 को दोनों वर्णमालाओं में एनकोड और डिकोड कीजिए, URL को परसेंट एनकोड कीजिए, HTML एंटिटी एस्केप कीजिए, और हेक्स तथा बैकस्लैश एस्केप पढ़िए। यह सब आपके ब्राउज़र में चलता है और कुछ भी अपलोड नहीं होता - कोई टोकन आपकी मशीन से कभी बाहर नहीं जाता।</summary>
   </entry>
   <entry>
     <title type="html">ऊँचाई तुलना चार्ट</title>

@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/gorseli-svg-ye-donusturme/:';
-const CACHE_NAME=CACHE_PREFIX+'7f0080f285';
+const CACHE_NAME=CACHE_PREFIX+'d708831b7d';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=0bee163daf',
+'styles.css?v=1408c1c13c',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
@@ -49,7 +49,9 @@ if(cached)return cached;
 return fetch(request).then((response)=>{
 if(response.ok&&response.type==='basic'){
 const copy=response.clone();
-caches.open(CACHE_NAME).then((cache)=>cache.put(request,copy));
+caches.open(CACHE_NAME)
+.then((cache)=>cache.put(request,copy))
+.catch(()=>{});
 }
 return response;
 }).catch(()=>(

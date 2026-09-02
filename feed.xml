@@ -46,6 +46,13 @@
     <summary type="html">Play a recording and mark every part worth keeping as it goes past, then save those parts as one file. Sample-exact cuts, no clicks at the joins, nothing uploaded.</summary>
   </entry>
   <entry>
+    <title type="html">Base64 Encoder &amp; Decoder</title>
+    <id>https://abox.tools/base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
+  </entry>
+  <entry>
     <title type="html">Extract Audio from Video</title>
     <id>https://abox.tools/extract-audio-from-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/extract-audio-from-video/"/>
@@ -128,13 +135,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/guides/trace-an-image-into-an-svg/"/>
     <updated>2026-08-31T00:00:00Z</updated>
     <summary type="html">Turn a logo, a stencil, a signature or a silhouette into a real vector outline in your browser. Which pictures trace well, which never will, and how to fix the parts the tracer gets wrong.</summary>
-  </entry>
-  <entry>
-    <title type="html">Base64 Encoder &amp; Decoder</title>
-    <id>https://abox.tools/base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Encode and decode Base64 in both alphabets, percent-encode URLs, escape HTML entities, and read hex and backslash escapes. It all runs in your browser - nothing is uploaded, so a token never leaves your machine.</summary>
   </entry>
   <entry>
     <title type="html">Height Comparison Chart</title>

@@ -95,6 +95,13 @@
     <summary type="html">Simpan bingkai mana pun dari MP4, MOV, atau WebM sebagai PNG atau JPEG ukuran penuh. Melangkah bingkai demi bingkai, atau ambil satu setiap beberapa detik. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
   </entry>
   <entry>
+    <title type="html">Pengode &amp;amp; Pengurai Base64</title>
+    <id>https://abox.tools/id/encode-base64/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/encode-base64/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Kodekan dan uraikan Base64 dalam kedua alfabetnya, kodekan URL dengan persen, escape entitas HTML, dan baca heksadesimal serta escape garis miring terbalik. Semuanya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token tidak pernah meninggalkan mesin Anda.</summary>
+  </entry>
+  <entry>
     <title type="html">Pengubah YAML ke JSON</title>
     <id>https://abox.tools/id/konversi-yaml-ke-json/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/konversi-yaml-ke-json/"/>
@@ -149,13 +156,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/bandingkan-tinggi-badan/"/>
     <updated>2026-08-30T00:00:00Z</updated>
     <summary type="html">Bandingkan tinggi badan berdampingan. Tambahkan pria, wanita, anak laki-laki, anak perempuan, dan benda &amp;mdash; pintu, jendela, papan tulis, mesin penjual otomatis &amp;mdash; dalam sentimeter atau kaki dan inci, lalu unduh bagannya sebagai PNG atau SVG. Ia digambar di peramban Anda.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pengode &amp;amp; Pengurai Base64</title>
-    <id>https://abox.tools/id/encode-base64/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/encode-base64/"/>
-    <updated>2026-08-30T00:00:00Z</updated>
-    <summary type="html">Kodekan dan uraikan Base64 dalam kedua alfabetnya, kodekan URL dengan persen, escape entitas HTML, dan baca heksadesimal serta escape garis miring terbalik. Semuanya berjalan di peramban Anda dan tidak ada yang diunggah - sebuah token tidak pernah meninggalkan mesin Anda.</summary>
   </entry>
   <entry>
     <title type="html">Cara memangkas video ke bentuk lain</title>
