@@ -69,6 +69,92 @@ def specifiers(source, where='<js>'):
     return found
 
 
+def bindings(source, where='<js>'):
+    """Every named import, as (line, specifier, [names]).
+
+    `import { a, b as c } from './x.js'` names `a` and `b` - what x.js has to
+    export, not what this module calls them. A default or a side-effect import
+    names nothing and is not listed; those are the specifier check's business.
+
+    This exists because a specifier can land on a file that exists and still
+    name something that is no longer in it. Moving a function into a shared
+    part leaves every `import { it } from './old.js'` pointing at a real file,
+    the build ships it, and the page's module fails to link on the visitor's
+    machine - which is how the video cutter spent an afternoon showing "this
+    page's code did not start" after its frame-rate helper moved.
+    """
+    found = []
+    tokens = minify.tokenize_js(source, where)
+    index = 0
+    while index < len(tokens):
+        line, text = tokens[index]
+        if text != 'import' or index + 1 >= len(tokens):
+            index += 1
+            continue
+        # skip a default binding before the braces: `import x, { a } from`
+        cursor = index + 1
+        if tokens[cursor][1] not in ('{', '(') and tokens[cursor][1][0] not in '\'"':
+            cursor += 1
+            if cursor < len(tokens) and tokens[cursor][1] == ',':
+                cursor += 1
+        if cursor >= len(tokens) or tokens[cursor][1] != '{':
+            index += 1
+            continue
+        names = []
+        cursor += 1
+        while cursor < len(tokens) and tokens[cursor][1] != '}':
+            item = tokens[cursor][1]
+            if item != ',':
+                names.append(item)
+                if cursor + 2 < len(tokens) and tokens[cursor + 1][1] == 'as':
+                    cursor += 2
+            cursor += 1
+        # `} from '…'`
+        if (cursor + 2 < len(tokens) and tokens[cursor + 1][1] == 'from'
+                and tokens[cursor + 2][1][0] in '\'"'):
+            found.append((line, tokens[cursor + 2][1][1:-1], names))
+        index = cursor + 1
+    return found
+
+
+def exports(source, where='<js>'):
+    """The names `source` exports, as a set.
+
+    Declarations (`export function f`, `export const c`, `export class C`,
+    `async` and `*` included), lists (`export { a, b as c }`), and re-exports
+    (`export { a } from './x.js'`, where the name this module offers is the
+    one after `as`, or `a`). `export default` names nothing here, and
+    `export * from` is not followed: nothing in this repository writes it.
+    """
+    names = set()
+    tokens = minify.tokenize_js(source, where)
+    index = 0
+    while index < len(tokens):
+        if tokens[index][1] != 'export' or index + 1 >= len(tokens):
+            index += 1
+            continue
+        cursor = index + 1
+        text = tokens[cursor][1]
+        if text == '{':
+            cursor += 1
+            while cursor < len(tokens) and tokens[cursor][1] != '}':
+                item = tokens[cursor][1]
+                if item != ',':
+                    if cursor + 2 < len(tokens) and tokens[cursor + 1][1] == 'as':
+                        item = tokens[cursor + 2][1]
+                        cursor += 2
+                    names.add(item)
+                cursor += 1
+        elif text in ('function', 'class', 'const', 'let', 'var', 'async'):
+            while cursor < len(tokens) and tokens[cursor][1] in (
+                    'function', 'class', 'const', 'let', 'var', 'async', '*'):
+                cursor += 1
+            if cursor < len(tokens):
+                names.add(tokens[cursor][1])
+        index = cursor + 1
+    return names
+
+
 def resolve(importer, specifier):
     """Where `specifier`, written inside `importer`, points.
 
@@ -97,11 +183,13 @@ def check(shipped, read, where):
     and fixing them one build at a time is a poor way to spend an afternoon.
     """
     problems = []
+    offered = {}
 
     for name in sorted(shipped):
         if not name.endswith('.js'):
             continue
-        for line, specifier in specifiers(read(name), f'{where}/{name}'):
+        source = read(name)
+        for line, specifier in specifiers(source, f'{where}/{name}'):
             target = resolve(name, specifier)
             if target is None:
                 problems.append(
@@ -113,9 +201,24 @@ def check(shipped, read, where):
                     f'{name}:{line}: "{specifier}" -> {target}, which this '
                     f'tool does not ship')
 
+        # A file that exists can still lack the name asked of it; the browser
+        # refuses to link the whole module and the page's code never starts.
+        for line, specifier, names in bindings(source, f'{where}/{name}'):
+            target = resolve(name, specifier)
+            if target is None or target not in shipped:
+                continue
+            if target not in offered:
+                offered[target] = exports(read(target), f'{where}/{target}')
+            for wanted in names:
+                if wanted not in offered[target]:
+                    problems.append(
+                        f'{name}:{line}: "{specifier}" has no export named '
+                        f'{wanted}')
+
     if problems:
         raise ConfigError(
             f'{where}: {len(problems)} import(s) lead nowhere:\n    '
             + '\n    '.join(problems)
             + '\n  A shared module is only shipped if tool.toml asks for it by '
-              'name in js_parts.')
+              'name in js_parts, and a name has to be exported by the file '
+              'it is imported from.')
