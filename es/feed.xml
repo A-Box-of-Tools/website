@@ -26,11 +26,32 @@
   <id>https://abox.tools/es/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/es/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/es/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/es/</uri>
   </author>
+  <entry>
+    <title type="html">Capturador de fotogramas</title>
+    <id>https://abox.tools/es/capturar-fotograma-de-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/capturar-fotograma-de-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Guarda cualquier fotograma de un MP4, MOV o WebM como PNG o JPEG a tamaño completo. Avanza fotograma a fotograma, o saca uno cada pocos segundos. Funciona en el navegador: no se sube nada.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cortador de vídeo</title>
+    <id>https://abox.tools/es/cortar-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/cortar-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Mira un vídeo y ve marcando cada trozo que valga la pena mientras se reproduce; luego guarda esos trozos en un solo archivo. Todo en el navegador: sin subir nada, sin recodificar nada y también sin conexión.</summary>
+  </entry>
+  <entry>
+    <title type="html">Recortador de vídeo</title>
+    <id>https://abox.tools/es/recortar-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/es/recortar-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Recorta un MP4, MOV o WebM a la forma que quieras: cuadrado, 9:16 o una caja de píxeles exacta. Todo en el navegador, sin subir nada y conservando el sonido.</summary>
+  </entry>
   <entry>
     <title type="html">Censor de PDF</title>
     <id>https://abox.tools/es/censurar-pdf/</id>
@@ -123,13 +144,6 @@
     <summary type="html">Reproduce una grabación y marca cada trozo que valga la pena según pasa, y guarda luego esos trozos como un solo archivo. Cortes exactos al sample, sin chasquidos en las uniones, sin subir nada.</summary>
   </entry>
   <entry>
-    <title type="html">Cortador de vídeo</title>
-    <id>https://abox.tools/es/cortar-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/cortar-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Mira un vídeo y ve marcando cada trozo que valga la pena mientras se reproduce; luego guarda esos trozos en un solo archivo. Todo en el navegador: sin subir nada, sin recodificar nada y también sin conexión.</summary>
-  </entry>
-  <entry>
     <title type="html">Creador de GIF</title>
     <id>https://abox.tools/es/crear-gif/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/crear-gif/"/>
@@ -172,13 +186,6 @@
     <summary type="html">Reproduce un MP4, MOV o WebM al revés, con el sonido invertido también. Funciona en el navegador: no se sube nada, no hay marca de agua y va sin conexión.</summary>
   </entry>
   <entry>
-    <title type="html">Recortador de vídeo</title>
-    <id>https://abox.tools/es/recortar-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/recortar-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Recorta un MP4, MOV o WebM a la forma que quieras: cuadrado, 9:16 o una caja de píxeles exacta. Todo en el navegador, sin subir nada y conservando el sonido.</summary>
-  </entry>
-  <entry>
     <title type="html">Unir y separar PDF</title>
     <id>https://abox.tools/es/unir-pdf/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/es/unir-pdf/"/>
@@ -198,13 +205,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/es/analizar-gif/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Desmonta un GIF en el navegador: cada fotograma con su duración y su descarte, las tablas de color, las repeticiones y un desglose byte a byte de adónde se fue el tamaño del archivo. No se sube nada.</summary>
-  </entry>
-  <entry>
-    <title type="html">Capturador de fotogramas</title>
-    <id>https://abox.tools/es/capturar-fotograma-de-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/es/capturar-fotograma-de-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Guarda cualquier fotograma de un MP4, MOV o WebM como PNG o JPEG a tamaño completo. Avanza fotograma a fotograma, o saca uno cada pocos segundos. Funciona en el navegador: no se sube nada.</summary>
   </entry>
   <entry>
     <title type="html">Censor de imágenes</title>

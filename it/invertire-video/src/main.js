@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
 import{wireFilePicker}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./demux.js';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
 import{reverseExact,decoderConfig}from'./reverse.js';
 import{measureFps,reverseByPlayback}from'./playback.js';
 import{averageFps,gopRanges}from'./timeline.js';

@@ -26,11 +26,32 @@
   <id>https://abox.tools/nl/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/nl/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/nl/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/nl/</uri>
   </author>
+  <entry>
+    <title type="html">Framegrabber</title>
+    <id>https://abox.tools/nl/frame-uit-video-halen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/frame-uit-video-halen/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Sla elk frame van een MP4, MOV of WebM op als PNG of JPEG op volle grootte. Stap frame voor frame door de clip, of pak er om de zoveel seconden een. Draait in je browser: er wordt niets geüpload.</summary>
+  </entry>
+  <entry>
+    <title type="html">Videobijsnijder</title>
+    <id>https://abox.tools/nl/video-bijsnijden/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-bijsnijden/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Snijd een mp4, mov of WebM bij naar elke vorm: vierkant, 9:16 of een exact pixelkader. Draait in je browser, uploadt niets, houdt het geluid en werkt offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Videoknipper</title>
+    <id>https://abox.tools/nl/video-knippen/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-knippen/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Bekijk een video, markeer tijdens het afspelen elk stuk dat het bewaren waard is en sla die stukken op als één bestand. Draait in je browser, uploadt niets, codeert niets opnieuw en werkt offline.</summary>
+  </entry>
   <entry>
     <title type="html">PDF onleesbaar maken</title>
     <id>https://abox.tools/nl/pdf-onleesbaar-maken/</id>
@@ -179,20 +200,6 @@
     <summary type="html">Speel een MP4, MOV of WebM achterstevoren af, met het geluid ook omgekeerd. Draait in je browser: er wordt niets geüpload, er komt geen watermerk aan te pas en het werkt offline.</summary>
   </entry>
   <entry>
-    <title type="html">Videobijsnijder</title>
-    <id>https://abox.tools/nl/video-bijsnijden/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-bijsnijden/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Snijd een mp4, mov of WebM bij naar elke vorm: vierkant, 9:16 of een exact pixelkader. Draait in je browser, uploadt niets, houdt het geluid en werkt offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Videoknipper</title>
-    <id>https://abox.tools/nl/video-knippen/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/video-knippen/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Bekijk een video, markeer tijdens het afspelen elk stuk dat het bewaren waard is en sla die stukken op als één bestand. Draait in je browser, uploadt niets, codeert niets opnieuw en werkt offline.</summary>
-  </entry>
-  <entry>
     <title type="html">Afbeelding naar ICO</title>
     <id>https://abox.tools/nl/favicon-maken/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/favicon-maken/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/nl/afbeelding-formaat-wijzigen/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Schaal, snijd bij en zet JPEG-, PNG- en WebP-afbeeldingen om in je browser. Exacte pixels, een percentage of een lange zijde - één afbeelding of een hele map. Er wordt niets geüpload.</summary>
-  </entry>
-  <entry>
-    <title type="html">DICOM-viewer</title>
-    <id>https://abox.tools/nl/dicom-viewer/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/nl/dicom-viewer/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Open CT-, MRI-, r&amp;ouml;ntgen- en echoscans in je browser. Venster en niveau, een hele serie doorbladeren, meten in millimeters, elke DICOM-tag lezen en precies zien wat er in het bestand de pati&amp;euml;nt aanwijst. Er wordt niets ge&amp;uuml;pload.</summary>
   </entry>
 </feed>

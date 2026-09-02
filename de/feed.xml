@@ -26,11 +26,32 @@
   <id>https://abox.tools/de/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/de/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/de/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/de/</uri>
   </author>
+  <entry>
+    <title type="html">Standbild-Greifer</title>
+    <id>https://abox.tools/de/standbild-aus-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/standbild-aus-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Jedes Einzelbild eines MP4, MOV oder WebM in voller Größe als PNG oder JPEG speichern. Bild für Bild vorrücken oder alle paar Sekunden eines nehmen. Läuft im Browser, es wird nichts hochgeladen.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video-Schneider</title>
+    <id>https://abox.tools/de/video-schneiden/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/video-schneiden/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Ein Video ansehen und beim Abspielen jeden behaltenswerten Teil markieren, dann diese Teile als eine Datei speichern. Läuft im Browser: kein Upload, nichts wird neu kodiert, auch offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video-Zuschneider</title>
+    <id>https://abox.tools/de/video-zuschneiden/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/de/video-zuschneiden/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Ein MP4, MOV oder WebM auf jedes Format zuschneiden, ob quadratisch, 9:16 oder ein exaktes Pixelfenster. Läuft im Browser: kein Upload, der Ton bleibt erhalten, auch offline.</summary>
+  </entry>
   <entry>
     <title type="html">PDF-Schwärzer</title>
     <id>https://abox.tools/de/pdf-schwaerzen/</id>
@@ -165,25 +186,11 @@
     <summary type="html">Einen Teil eines MP4, MOV oder WebM in ein animiertes GIF verwandeln. Wählen Sie Abschnitt, Breite und Bildrate; die Einzelbilder werden in Ihrem Browser gelesen und das GIF dort geschrieben. Kein Upload.</summary>
   </entry>
   <entry>
-    <title type="html">Video-Schneider</title>
-    <id>https://abox.tools/de/video-schneiden/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/video-schneiden/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Ein Video ansehen und beim Abspielen jeden behaltenswerten Teil markieren, dann diese Teile als eine Datei speichern. Läuft im Browser: kein Upload, nichts wird neu kodiert, auch offline.</summary>
-  </entry>
-  <entry>
     <title type="html">Video-Umkehrer</title>
     <id>https://abox.tools/de/video-rueckwaerts-abspielen/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/de/video-rueckwaerts-abspielen/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Ein MP4, MOV oder WebM rückwärts abspielen lassen, mit umgekehrtem Ton. Läuft im Browser: Es wird nichts hochgeladen, es gibt kein Wasserzeichen, und es geht auch offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Video-Zuschneider</title>
-    <id>https://abox.tools/de/video-zuschneiden/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/video-zuschneiden/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Ein MP4, MOV oder WebM auf jedes Format zuschneiden, ob quadratisch, 9:16 oder ein exaktes Pixelfenster. Läuft im Browser: kein Upload, der Ton bleibt erhalten, auch offline.</summary>
   </entry>
   <entry>
     <title type="html">Zeitraffer-Generator</title>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/de/bild-komprimieren/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">JPEG, PNG oder WebP auf eine exakte Größe komprimieren, ob 100 KB oder 2 MB. Läuft komplett im Browser: kein Upload, kein Konto, auch offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Bildskalierer</title>
-    <id>https://abox.tools/de/bildgroesse-aendern/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/de/bildgroesse-aendern/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">JPEG-, PNG- und WebP-Bilder im Browser skalieren, zuschneiden und umwandeln. Exakte Pixel, ein Prozentwert oder die lange Kante, für ein Bild oder einen ganzen Ordner. Nichts wird hochgeladen.</summary>
   </entry>
 </feed>

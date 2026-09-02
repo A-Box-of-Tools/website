@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./demux.js';
+import{FileWindow}from'./shared/mp4-reader.js';
 import{drawScaled,frameCanvas}from'./draw.js';
 const QUEUE_LIMIT=8;
 const REORDER_SLACK=0.5;

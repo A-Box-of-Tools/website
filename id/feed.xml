@@ -26,11 +26,32 @@
   <id>https://abox.tools/id/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/id/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/id/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/id/</uri>
   </author>
+  <entry>
+    <title type="html">Pemangkas Video</title>
+    <id>https://abox.tools/id/pangkas-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/pangkas-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Pangkas MP4, MOV, atau WebM ke bentuk apa pun - persegi, 9:16, atau kotak piksel yang persis. Berjalan di peramban Anda: tidak ada yang diunggah, suaranya tetap ada, jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pemotong Video</title>
+    <id>https://abox.tools/id/potong-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Tonton sebuah video dan tandai setiap bagian yang layak disimpan sambil diputar, lalu simpan bagian-bagian itu sebagai satu file. Berjalan di peramban Anda: tidak ada yang diunggah, tidak ada yang dikodekan ulang, jalan tanpa internet.</summary>
+  </entry>
+  <entry>
+    <title type="html">Pengambil Bingkai Video</title>
+    <id>https://abox.tools/id/ambil-bingkai-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/id/ambil-bingkai-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Simpan bingkai mana pun dari MP4, MOV, atau WebM sebagai PNG atau JPEG ukuran penuh. Melangkah bingkai demi bingkai, atau ambil satu setiap beberapa detik. Berjalan di peramban Anda: tidak ada yang diunggah.</summary>
+  </entry>
   <entry>
     <title type="html">Pembaca QR &amp; Barcode</title>
     <id>https://abox.tools/id/pindai-kode-qr/</id>
@@ -123,13 +144,6 @@
     <summary type="html">Gabungkan gambar JPG, PNG, atau WebP menjadi satu PDF, gratis dan sepenuhnya di peramban Anda. Foto masuk tanpa dikodekan ulang, dan tidak ada yang diunggah.</summary>
   </entry>
   <entry>
-    <title type="html">Pemangkas Video</title>
-    <id>https://abox.tools/id/pangkas-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/pangkas-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Pangkas MP4, MOV, atau WebM ke bentuk apa pun - persegi, 9:16, atau kotak piksel yang persis. Berjalan di peramban Anda: tidak ada yang diunggah, suaranya tetap ada, jalan tanpa internet.</summary>
-  </entry>
-  <entry>
     <title type="html">Pembalik Video</title>
     <id>https://abox.tools/id/putar-video-terbalik/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/id/putar-video-terbalik/"/>
@@ -163,13 +177,6 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-audio/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Putar sebuah rekaman dan tandai setiap bagian yang layak disimpan sambil berjalan, lalu simpan bagian-bagian itu sebagai satu file. Potongan persis pada sampel, tanpa bunyi klik di sambungannya, tidak ada yang diunggah.</summary>
-  </entry>
-  <entry>
-    <title type="html">Pemotong Video</title>
-    <id>https://abox.tools/id/potong-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/potong-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Tonton sebuah video dan tandai setiap bagian yang layak disimpan sambil diputar, lalu simpan bagian-bagian itu sebagai satu file. Berjalan di peramban Anda: tidak ada yang diunggah, tidak ada yang dikodekan ulang, jalan tanpa internet.</summary>
   </entry>
   <entry>
     <title type="html">Penggabung dan Pemisah PDF</title>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/buat-gif-dari-gambar/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Ubah sekumpulan gambar menjadi satu GIF animasi: seberapa cepat sebuah GIF sebenarnya bisa diputar, apa yang diubah setelan paletnya, dan tiga hal yang benar-benar membuat file-nya lebih kecil.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cara membuat GIF dari sebagian video</title>
-    <id>https://abox.tools/id/panduan/gif-dari-potongan-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/id/panduan/gif-dari-potongan-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Potong dulu detik-detik yang penting, lalu ubah hanya bagian itu. Kapan garis waktu pengubah GIF sudah cukup, kapan memotong dulu dengan pemotong video, dan kenapa tiap detik GIF semahal itu.</summary>
   </entry>
 </feed>

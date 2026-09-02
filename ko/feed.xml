@@ -26,11 +26,32 @@
   <id>https://abox.tools/ko/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ko/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ko/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ko/</uri>
   </author>
+  <entry>
+    <title type="html">동영상 구간 자르기</title>
+    <id>https://abox.tools/ko/동영상-자르기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-자르기/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">영상을 보면서 남길 만한 구간을 그때그때 표시하고, 그 구간들을 파일 하나로 저장합니다. 브라우저에서 돌아갑니다. 업로드 없음, 재인코딩 없음, 오프라인 동작.</summary>
+  </entry>
+  <entry>
+    <title type="html">동영상 캡처</title>
+    <id>https://abox.tools/ko/동영상-캡처/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-캡처/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">MP4, MOV, WebM의 어느 프레임이든 원본 크기 PNG나 JPEG으로 저장합니다. 한 프레임씩 넘기거나, 몇 초마다 한 장씩 뽑을 수도 있습니다. 브라우저에서 돌아가고 업로드는 없습니다.</summary>
+  </entry>
+  <entry>
+    <title type="html">동영상 화면 자르기</title>
+    <id>https://abox.tools/ko/동영상-화면-자르기/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-화면-자르기/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">MP4, MOV, WebM의 화면을 원하는 모양으로 자릅니다. 정사각형, 9:16, 픽셀 단위로 정확하게. 브라우저에서 돌아갑니다. 업로드 없음, 소리는 그대로, 오프라인 동작.</summary>
+  </entry>
   <entry>
     <title type="html">PDF 가리기</title>
     <id>https://abox.tools/ko/pdf-가리기/</id>
@@ -130,20 +151,6 @@
     <summary type="html">MP4, MOV, WebM을 거꾸로 재생합니다. 소리도 함께 뒤집습니다. 브라우저에서 돌아갑니다. 업로드 없음, 워터마크 없음, 오프라인 동작.</summary>
   </entry>
   <entry>
-    <title type="html">동영상 구간 자르기</title>
-    <id>https://abox.tools/ko/동영상-자르기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-자르기/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">영상을 보면서 남길 만한 구간을 그때그때 표시하고, 그 구간들을 파일 하나로 저장합니다. 브라우저에서 돌아갑니다. 업로드 없음, 재인코딩 없음, 오프라인 동작.</summary>
-  </entry>
-  <entry>
-    <title type="html">동영상 화면 자르기</title>
-    <id>https://abox.tools/ko/동영상-화면-자르기/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-화면-자르기/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">MP4, MOV, WebM의 화면을 원하는 모양으로 자릅니다. 정사각형, 9:16, 픽셀 단위로 정확하게. 브라우저에서 돌아갑니다. 업로드 없음, 소리는 그대로, 오프라인 동작.</summary>
-  </entry>
-  <entry>
     <title type="html">동영상을 GIF로</title>
     <id>https://abox.tools/ko/동영상-gif-변환/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/동영상-gif-변환/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ko/gif-프레임-분리/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">움직이는 GIF를 프레임으로 나눠 한 장씩 PNG로 저장합니다. 무료이고 전부 브라우저 안에서 돌아갑니다. 투명도와 재생 시간이 그대로 남고, 업로드는 없으며 오프라인에서도 됩니다.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF를 프레임 단위로 편집하는 방법</title>
-    <id>https://abox.tools/ko/가이드/gif-프레임별로-편집/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ko/가이드/gif-프레임별로-편집/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">GIF를 프레임으로 분해해 빼거나 순서를 바꾸고, 타이밍을 지킨 채 다시 조립합니다. 왕복에서 무엇이 살아남는지, 팔레트의 값은 얼마인지, GIF가 무거운 이유를 어떻게 보는지.</summary>
   </entry>
 </feed>

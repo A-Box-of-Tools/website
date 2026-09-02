@@ -26,11 +26,32 @@
   <id>https://abox.tools/ja/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/ja/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/ja/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/ja/</uri>
   </author>
+  <entry>
+    <title type="html">動画のコマ切り出し</title>
+    <id>https://abox.tools/ja/grab-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/grab-frame/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMのどのコマでも、原寸のPNGまたはJPEGで保存できます。1コマずつ送ることも、数秒おきに1枚ずつ取り出すこともできます。処理はブラウザの中だけで、アップロードはありません。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画カットツール</title>
+    <id>https://abox.tools/ja/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">動画を見ながら残す価値のある場所すべてに印を付け、その部分だけを1つのファイルとして保存します。処理はブラウザの中だけ。アップロードなし、再エンコードなし、オフラインでも動きます。</summary>
+  </entry>
+  <entry>
+    <title type="html">動画トリミングツール</title>
+    <id>https://abox.tools/ja/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/ja/crop-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">MP4・MOV・WebMを正方形、9:16、ピクセル指定など好きな形に切り抜きます。処理はブラウザの中だけ。アップロードなし、音声はそのまま、オフラインでも動きます。</summary>
+  </entry>
   <entry>
     <title type="html">PDFの黒塗り</title>
     <id>https://abox.tools/ja/redact-pdf/</id>
@@ -151,20 +172,6 @@
     <summary type="html">映像を正方形、9:16の縦長、あるいはピクセル指定の枠に切り落とす方法。どの比率をどのプラットフォームが求めるのか、カットでは不要なのに切り抜きではエンコードし直しが避けられない理由、そしてその代償。</summary>
   </entry>
   <entry>
-    <title type="html">動画カットツール</title>
-    <id>https://abox.tools/ja/trim-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/trim-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">動画を見ながら残す価値のある場所すべてに印を付け、その部分だけを1つのファイルとして保存します。処理はブラウザの中だけ。アップロードなし、再エンコードなし、オフラインでも動きます。</summary>
-  </entry>
-  <entry>
-    <title type="html">動画トリミングツール</title>
-    <id>https://abox.tools/ja/crop-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/crop-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">MP4・MOV・WebMを正方形、9:16、ピクセル指定など好きな形に切り抜きます。処理はブラウザの中だけ。アップロードなし、音声はそのまま、オフラインでも動きます。</summary>
-  </entry>
-  <entry>
     <title type="html">書類スキャナー</title>
     <id>https://abox.tools/ja/document-scanner/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/document-scanner/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/split-a-gif-into-frames/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">アニメーションGIFの全コマをPNGで取り出します。なぜ一部のコマが絵の小さな断片でしかないのか、透明はどうなるのか、そして組み立て直せるように間隔を残しておく方法。</summary>
-  </entry>
-  <entry>
-    <title type="html">GIFをコマ単位で編集する方法</title>
-    <id>https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/ja/guides/edit-a-gif-frame-by-frame/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">GIFをコマに分解し、抜いたり並べ替えたりして、タイミングを保ったまま組み直します。往復で何が生き残るか、パレットの代償はいくらか、GIFが重い理由をどう見るか。</summary>
   </entry>
 </feed>

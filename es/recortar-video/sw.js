@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/es/recortar-video/:';
-const CACHE_NAME=CACHE_PREFIX+'e5a69f74fb';
+const CACHE_NAME=CACHE_PREFIX+'d6f58c126b';
 const ASSETS=[
 './',
 'index.html',
@@ -10,8 +10,8 @@ const ASSETS=[
 'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
+'src/shared/mp4-reader.js',
 'src/cropper.js',
-'src/demux.js',
 'src/draw.js',
 'src/main.js',
 'src/mp4.js',

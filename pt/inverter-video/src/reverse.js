@@ -1,5 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-import{FileWindow}from'./demux.js';
+import{FileWindow}from'./shared/mp4-reader.js';
 import{Mp4Writer,avcSampleEntry}from'./mp4.js';
 import{drawFitted}from'./draw.js';
 import{pickH264Codec}from'./support.js';

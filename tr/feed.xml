@@ -26,11 +26,32 @@
   <id>https://abox.tools/tr/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/tr/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/tr/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/tr/</uri>
   </author>
+  <entry>
+    <title type="html">Video Kare Yakalayıcı</title>
+    <id>https://abox.tools/tr/videodan-kare-yakalama/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/videodan-kare-yakalama/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Bir MP4, MOV veya WebM'in herhangi bir karesini tam boyutlu PNG ya da JPEG olarak kaydedin. Kare kare ilerleyin ya da birkaç saniyede bir alın. Tarayıcınızda çalışır: hiçbir şey yüklenmez.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Kesici</title>
+    <id>https://abox.tools/tr/video-kesme/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/video-kesme/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Bir videoyu izleyin, oynarken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Tarayıcınızda çalışır: hiçbir şey yüklenmez, hiçbir şey yeniden kodlanmaz, çevrimdışı da çalışır.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Kırpıcı</title>
+    <id>https://abox.tools/tr/video-kirpma/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/tr/video-kirpma/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Bir MP4, MOV veya WebM'i istediğiniz şekle kırpın: kare, 9:16 ya da tam piksel kutusu. Tarayıcınızda çalışır: hiçbir şey yüklenmez, ses korunur, çevrimdışı da çalışır.</summary>
+  </entry>
   <entry>
     <title type="html">PDF Karartıcı</title>
     <id>https://abox.tools/tr/pdf-karartma/</id>
@@ -165,20 +186,6 @@
     <summary type="html">Uzun bir videoyu time-lapse'e çevirin: 10 kat, 60 kat ya da yazdığınız herhangi bir hız. Tarayıcınızda çalışır, yani hiçbir şey yüklenmez, filigran yoktur ve çevrimdışı da çalışır.</summary>
   </entry>
   <entry>
-    <title type="html">Video Kesici</title>
-    <id>https://abox.tools/tr/video-kesme/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/video-kesme/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Bir videoyu izleyin, oynarken tutmaya değer her parçayı işaretleyin, sonra o parçaları tek dosya olarak kaydedin. Tarayıcınızda çalışır: hiçbir şey yüklenmez, hiçbir şey yeniden kodlanmaz, çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
-    <title type="html">Video Kırpıcı</title>
-    <id>https://abox.tools/tr/video-kirpma/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/video-kirpma/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Bir MP4, MOV veya WebM'i istediğiniz şekle kırpın: kare, 9:16 ya da tam piksel kutusu. Tarayıcınızda çalışır: hiçbir şey yüklenmez, ses korunur, çevrimdışı da çalışır.</summary>
-  </entry>
-  <entry>
     <title type="html">Video Tersleyici</title>
     <id>https://abox.tools/tr/videoyu-ters-oynatma/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/videoyu-ters-oynatma/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/tr/rehberler/bumerang-video-yapma/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Anı kesin, kopyayı ters çevirin, ikisini birleştirin ve döngüye alın. Arka arkaya üç araç, hepsi tarayıcıda ve bütün işi bir dakikaya indiren sıra.</summary>
-  </entry>
-  <entry>
-    <title type="html">DICOM Görüntüleyici</title>
-    <id>https://abox.tools/tr/dicom-goruntuleyici/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/tr/dicom-goruntuleyici/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">BT, MR, röntgen ve ultrason taramalarını tarayıcınızda açın. Pencere ve seviye, bütün bir seriyi kaydırma, milimetre cinsinden ölçüm, her DICOM etiketini okuma ve dosyada hastayı tam olarak neyin tanımladığını görme. Hiçbir şey yüklenmez.</summary>
   </entry>
 </feed>

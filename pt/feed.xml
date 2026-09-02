@@ -26,11 +26,32 @@
   <id>https://abox.tools/pt/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/pt/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/pt/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/pt/</uri>
   </author>
+  <entry>
+    <title type="html">Aparador de vídeo</title>
+    <id>https://abox.tools/pt/aparar-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/aparar-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Cortador de vídeo</title>
+    <id>https://abox.tools/pt/cortar-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Corte um MP4, MOV ou WebM para qualquer formato: quadrado, 9:16, ou uma caixa exata em pixels. Roda no navegador, não envia nada, mantém o som e funciona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Extrator de quadro</title>
+    <id>https://abox.tools/pt/extrair-quadro-de-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/pt/extrair-quadro-de-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Salve qualquer quadro de um MP4, MOV ou WebM como PNG ou JPEG em tamanho cheio. Avance quadro a quadro, ou tire um a cada poucos segundos. Roda no navegador: nada é enviado.</summary>
+  </entry>
   <entry>
     <title type="html">Leitor de QR Code e código de barras</title>
     <id>https://abox.tools/pt/ler-qr-code/</id>
@@ -109,25 +130,11 @@
     <summary type="html">Formate, indente e comprima XML, e converta XML para JSON ou JSON para XML. O analisador roda no seu navegador e nada é enviado, então um feed, uma nota fiscal ou um arquivo de configuração nunca sai do seu computador.</summary>
   </entry>
   <entry>
-    <title type="html">Aparador de vídeo</title>
-    <id>https://abox.tools/pt/aparar-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/aparar-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Assista a um vídeo e marque cada trecho que vale a pena enquanto ele toca, depois salve esses trechos como um arquivo só. Roda no navegador, não envia nada, não recodifica nada e funciona offline.</summary>
-  </entry>
-  <entry>
     <title type="html">Como cortar um vídeo para outro formato de tela</title>
     <id>https://abox.tools/pt/guias/cortar-um-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/cortar-um-video/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Reduza um clipe a um quadrado, a um retrato 9:16 ou a uma caixa exata em pixels. Qual proporção cada plataforma quer, por que cortar obriga a recodificar e aparar não, e o que isso custa.</summary>
-  </entry>
-  <entry>
-    <title type="html">Cortador de vídeo</title>
-    <id>https://abox.tools/pt/cortar-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/cortar-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Corte um MP4, MOV ou WebM para qualquer formato: quadrado, 9:16, ou uma caixa exata em pixels. Roda no navegador, não envia nada, mantém o som e funciona offline.</summary>
   </entry>
   <entry>
     <title type="html">Cortador de áudio</title>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/criar-um-codigo-qr-e-provar-que-escaneia/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Gere o código e depois verifique com o leitor do mesmo site: a carga exata, o link real, no tamanho de impressão e a partir de uma foto, antes da tiragem. Tudo no navegador, nada enviado.</summary>
-  </entry>
-  <entry>
-    <title type="html">Como criar uma miniatura de vídeo com o quadro exato</title>
-    <id>https://abox.tools/pt/guias/criar-uma-miniatura-de-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/pt/guias/criar-uma-miniatura-de-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Avance quadro a quadro até o instante certo, salve sem perda, ponha no formato da plataforma e acerte o limite de bytes dela. Três ferramentas do navegador em sequência, e a filmagem nunca sai da sua máquina.</summary>
   </entry>
 </feed>

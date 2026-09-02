@@ -1,7 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase}from'./shared/phrases.js';
 import{wireFilePicker}from'./shared/file-picker.js';
-import{demux,UnsupportedFile}from'./demux.js';
+import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
 import{framesByDecoding,framesByPlaying,decoderConfig}from'./frames.js';
 import{encodeGif,ColorHistogram,MAX_COLORS}from'./encode.js';
 import{RangeBar,formatTime,parseTime}from'./range.js';

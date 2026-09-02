@@ -26,11 +26,32 @@
   <id>https://abox.tools/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/</uri>
   </author>
+  <entry>
+    <title type="html">Video Cropper</title>
+    <id>https://abox.tools/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/crop-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Crop an MP4, MOV or WebM to any shape - square, 9:16, or an exact pixel box. Runs in your browser: nothing uploaded, the sound is kept, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Cutter</title>
+    <id>https://abox.tools/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/trim-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Watch a video and mark every part worth keeping as it plays, then save those parts as one file. Runs in your browser: nothing uploaded, nothing re-encoded, works offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Video Frame Grabber</title>
+    <id>https://abox.tools/grab-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/grab-frame/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Save any frame of an MP4, MOV or WebM as a full-size PNG or JPEG. Step frame by frame, or take one every few seconds. Runs in your browser: nothing uploaded.</summary>
+  </entry>
   <entry>
     <title type="html">Image to SVG</title>
     <id>https://abox.tools/image-to-svg/</id>
@@ -179,20 +200,6 @@
     <summary type="html">Turn a long video into a time-lapse: 10x, 60x or any speed you type. Runs in your browser, so nothing is uploaded, there is no watermark, and it works offline.</summary>
   </entry>
   <entry>
-    <title type="html">Video Cropper</title>
-    <id>https://abox.tools/crop-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/crop-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Crop an MP4, MOV or WebM to any shape - square, 9:16, or an exact pixel box. Runs in your browser: nothing uploaded, the sound is kept, works offline.</summary>
-  </entry>
-  <entry>
-    <title type="html">Video Cutter</title>
-    <id>https://abox.tools/trim-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/trim-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Watch a video and mark every part worth keeping as it plays, then save those parts as one file. Runs in your browser: nothing uploaded, nothing re-encoded, works offline.</summary>
-  </entry>
-  <entry>
     <title type="html">Video Reverser</title>
     <id>https://abox.tools/reverse-video/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/reverse-video/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/gif-analyzer/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Take a GIF apart in your browser: every frame with its delay and disposal, the colour tables, the loop count, and a byte-by-byte breakdown of where the file size went. Nothing is uploaded.</summary>
-  </entry>
-  <entry>
-    <title type="html">GIF Splitter</title>
-    <id>https://abox.tools/split-gif/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/split-gif/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Split an animated GIF into its frames and save each one as a PNG, free and entirely in your browser. Keeps the transparency and the timing. Nothing is uploaded, and it works offline.</summary>
   </entry>
 </feed>

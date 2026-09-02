@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/video-kirpma/:';
-const CACHE_NAME=CACHE_PREFIX+'d98a9d21a4';
+const CACHE_NAME=CACHE_PREFIX+'c5847a9016';
 const ASSETS=[
 './',
 'index.html',
@@ -10,8 +10,8 @@ const ASSETS=[
 'src/shared/trust.js',
 'src/shared/file-picker.js',
 'src/shared/codec-support.js',
+'src/shared/mp4-reader.js',
 'src/cropper.js',
-'src/demux.js',
 'src/draw.js',
 'src/main.js',
 'src/mp4.js',

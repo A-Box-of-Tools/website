@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/fr/extraire-une-image-d-une-video/:';
-const CACHE_NAME=CACHE_PREFIX+'8bb4a62488';
+const CACHE_NAME=CACHE_PREFIX+'f1a44bb95c';
 const ASSETS=[
 './',
 'index.html',
@@ -11,7 +11,7 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',
-'src/demux.js',
+'src/shared/mp4-reader.js',
 'src/draw.js',
 'src/frames.js',
 'src/main.js',

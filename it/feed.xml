@@ -26,11 +26,32 @@
   <id>https://abox.tools/it/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/it/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/it/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/it/</uri>
   </author>
+  <entry>
+    <title type="html">Estrattore di fotogrammi</title>
+    <id>https://abox.tools/it/estrarre-fotogramma-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/estrarre-fotogramma-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Salva qualsiasi fotogramma di un MP4, MOV o WebM come PNG o JPEG a dimensione piena. Avanza fotogramma per fotogramma, oppure prendine uno ogni pochi secondi. Gira nel browser: non viene caricato niente.</summary>
+  </entry>
+  <entry>
+    <title type="html">Ritagliatore di video</title>
+    <id>https://abox.tools/it/ritagliare-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/ritagliare-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Ritaglia un MP4, un MOV o un WebM in qualunque forma: quadrata, 9:16 o un riquadro di pixel esatto. Gira nel browser, non carica niente, tiene l'audio e funziona offline.</summary>
+  </entry>
+  <entry>
+    <title type="html">Tagliavideo</title>
+    <id>https://abox.tools/it/tagliare-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">Guarda un video e segna ogni pezzo che vale la pena tenere mentre scorre, poi salva quei pezzi come un file solo. Gira nel browser, non carica niente, non ricodifica niente e funziona offline.</summary>
+  </entry>
   <entry>
     <title type="html">Lettore di QR code e codici a barre</title>
     <id>https://abox.tools/it/leggere-qr-code/</id>
@@ -158,25 +179,11 @@
     <summary type="html">Riproduci un MP4, MOV o WebM al contrario, con anche l'audio invertito. Gira nel browser: non viene caricato niente, non c'è filigrana e funziona offline.</summary>
   </entry>
   <entry>
-    <title type="html">Ritagliatore di video</title>
-    <id>https://abox.tools/it/ritagliare-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/ritagliare-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Ritaglia un MP4, un MOV o un WebM in qualunque forma: quadrata, 9:16 o un riquadro di pixel esatto. Gira nel browser, non carica niente, tiene l'audio e funziona offline.</summary>
-  </entry>
-  <entry>
     <title type="html">Scanner per documenti</title>
     <id>https://abox.tools/it/scansionare-documenti/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/it/scansionare-documenti/"/>
     <updated>2026-08-28T00:00:00Z</updated>
     <summary type="html">Trasforma la foto di una pagina scattata col telefono in un PDF raddrizzato e illuminato in modo uniforme. Gli angoli te li trova lui, la prospettiva viene annullata, l'ombra viene divisa via. Funziona interamente nel tuo browser: non viene caricato niente.</summary>
-  </entry>
-  <entry>
-    <title type="html">Tagliavideo</title>
-    <id>https://abox.tools/it/tagliare-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/tagliare-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">Guarda un video e segna ogni pezzo che vale la pena tenere mentre scorre, poi salva quei pezzi come un file solo. Gira nel browser, non carica niente, non ricodifica niente e funziona offline.</summary>
   </entry>
   <entry>
     <title type="html">Taglierino audio</title>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-un-video-boomerang/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">Taglia il momento, inverti la copia, unisci le due e mettilo in loop. Tre strumenti in fila, tutti nel browser, e l'ordine che riduce tutto il lavoro a un minuto.</summary>
-  </entry>
-  <entry>
-    <title type="html">Come creare una miniatura video dal fotogramma esatto</title>
-    <id>https://abox.tools/it/guide/creare-una-miniatura-per-un-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/it/guide/creare-una-miniatura-per-un-video/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">Avanza fotogramma per fotogramma fino all'istante giusto, salvalo senza perdite, portalo al formato della piattaforma e centra il suo limite di byte. Tre strumenti del browser in fila, e il girato non lascia mai la tua macchina.</summary>
   </entry>
 </feed>

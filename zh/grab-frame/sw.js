@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/zh/grab-frame/:';
-const CACHE_NAME=CACHE_PREFIX+'53e594d30e';
+const CACHE_NAME=CACHE_PREFIX+'01a76e1ee2';
 const ASSETS=[
 './',
 'index.html',
@@ -11,7 +11,7 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/zip.js',
 'src/shared/crc32.js',
-'src/demux.js',
+'src/shared/mp4-reader.js',
 'src/draw.js',
 'src/frames.js',
 'src/main.js',

@@ -26,11 +26,32 @@
   <id>https://abox.tools/zh-TW/</id>
   <link rel="self" type="application/atom+xml" href="https://abox.tools/zh-TW/feed.xml"/>
   <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/"/>
-  <updated>2026-09-01T00:00:00Z</updated>
+  <updated>2026-09-02T00:00:00Z</updated>
   <author>
     <name>A Box of Tools</name>
     <uri>https://abox.tools/zh-TW/</uri>
   </author>
+  <entry>
+    <title type="html">影片剪輯</title>
+    <id>https://abox.tools/zh-TW/trim-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/trim-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">一邊看一邊把值得留的段落標出來，然後把這些段落存成一個檔案。在瀏覽器裡跑，不上傳，不重新編碼，斷網也能用。</summary>
+  </entry>
+  <entry>
+    <title type="html">影片截幀</title>
+    <id>https://abox.tools/zh-TW/grab-frame/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/grab-frame/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 的任意一幀存成原尺寸 PNG 或 JPEG。可以一幀一幀地挪，也可以每隔幾秒截一張。全在瀏覽器裡跑，什麼都不上傳。</summary>
+  </entry>
+  <entry>
+    <title type="html">影片裁剪</title>
+    <id>https://abox.tools/zh-TW/crop-video/</id>
+    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/crop-video/"/>
+    <updated>2026-09-02T00:00:00Z</updated>
+    <summary type="html">把 MP4、MOV 或 WebM 裁成任意形狀，方圖、9:16 直式，或者精確到畫素的一個框。在瀏覽器裡跑，不上傳，聲音留著，斷網也能用。</summary>
+  </entry>
   <entry>
     <title type="html">PDF 塗黑</title>
     <id>https://abox.tools/zh-TW/redact-pdf/</id>
@@ -151,20 +172,6 @@
     <summary type="html">把 MP4、MOV 或 WebM 反過來放，聲音也一併倒過來。全在瀏覽器裡跑：什麼都不上傳，沒有水印，斷網照樣能用。</summary>
   </entry>
   <entry>
-    <title type="html">影片剪輯</title>
-    <id>https://abox.tools/zh-TW/trim-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/trim-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">一邊看一邊把值得留的段落標出來，然後把這些段落存成一個檔案。在瀏覽器裡跑，不上傳，不重新編碼，斷網也能用。</summary>
-  </entry>
-  <entry>
-    <title type="html">影片裁剪</title>
-    <id>https://abox.tools/zh-TW/crop-video/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/crop-video/"/>
-    <updated>2026-08-28T00:00:00Z</updated>
-    <summary type="html">把 MP4、MOV 或 WebM 裁成任意形狀，方圖、9:16 直式，或者精確到畫素的一個框。在瀏覽器裡跑，不上傳，聲音留著，斷網也能用。</summary>
-  </entry>
-  <entry>
     <title type="html">影片轉 GIF</title>
     <id>https://abox.tools/zh-TW/video-to-gif/</id>
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/video-to-gif/"/>
@@ -233,12 +240,5 @@
     <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/heic-to-jpg/"/>
     <updated>2026-08-27T00:00:00Z</updated>
     <summary type="html">在瀏覽器裡把 iPhone 的 HEIC 照片轉成 JPG。解碼器跑在你自己的機器上，不上傳，不註冊，斷網也能用，拍攝日期和相機資訊可以一起帶過去。</summary>
-  </entry>
-  <entry>
-    <title type="html">PDF 壓縮</title>
-    <id>https://abox.tools/zh-TW/compress-pdf/</id>
-    <link rel="alternate" type="text/html" href="https://abox.tools/zh-TW/compress-pdf/"/>
-    <updated>2026-08-27T00:00:00Z</updated>
-    <summary type="html">不上傳也能給 PDF 瘦身。讀取、重新壓縮、重新寫出，全由你自己的瀏覽器完成，而且動手之前先告訴你這份檔案的體積到底壓在哪裡。</summary>
   </entry>
 </feed>
