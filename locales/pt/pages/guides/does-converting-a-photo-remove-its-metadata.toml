@@ -1,0 +1,17 @@
+#
+# Guia: converter uma foto remove os metadados? - Brazilian Portuguese.
+#
+
+nav = "Converter remove os metadados?"
+title = "Converter uma foto remove os metadados dela?"
+description = "Às vezes - e os dois desfechos surpreendem. Quais operações tiram o EXIF, quais o mantêm em silêncio, por que a tela não mostra diferença em caso nenhum, e como conferir o arquivo em vez de supor."
+heading = "Converter uma foto remove os metadados dela?"
+lede = """
+    Às vezes, e as duas respostas já queimaram gente. Reencodar por um
+    canvas arranca tudo; um conversor caprichado carrega tudo junto; a
+    imagem fica igual nos dois casos. A única jogada confiável é parar de
+    prever e olhar o arquivo."""
+updated = "26 de agosto de 2026"
+og_title = "Converter uma foto remove os metadados dela?"
+og_description = "Às vezes - e os dois desfechos surpreendem. Quais operações tiram o EXIF, quais o mantêm, e como conferir o arquivo em vez de supor."
+og_image_alt = "abox.tools - ferramentas que não passam por servidor nenhum"

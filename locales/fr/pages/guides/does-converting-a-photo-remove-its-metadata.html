@@ -1,0 +1,130 @@
+  <section>
+    <h2>La réponse courte</h2>
+    <p>
+      Parfois. Convertir, redimensionner ou compresser une photo retire
+      ses métadonnées quand l'outil reconstruit l'image à partir des
+      pixels, et les garde quand l'outil les recopie exprès &mdash; et
+      rien à l'écran ne dit lequel des deux s'est produit. L'image a le
+      même air dans les deux cas, parce que les métadonnées n'ont jamais
+      fait partie de l'image.
+    </p>
+    <p>
+      Les deux issues surprennent, en sens opposés. Quelqu'un compte sur
+      &laquo;&nbsp;juste un redimensionnement&nbsp;&raquo; pour effacer la
+      position &mdash; elle survit. Quelqu'un d'autre compte sur un
+      changement de format pour préserver la date de prise de vue &mdash;
+      elle a disparu. Les deux erreurs ont le même remède&nbsp;: cesser de
+      prédire ce qu'un outil a probablement fait, et regarder ce que le
+      fichier contient réellement.
+    </p>
+  </section>
+
+  <section>
+    <h2>Ce qui voyage à côté, et pourquoi c'est séparé</h2>
+    <p>
+      Un fichier photo est deux choses dans un même conteneur&nbsp;:
+      l'image encodée, et un bloc d'étiquettes à son sujet &mdash; EXIF,
+      souvent accompagné de XMP et d'un profil colorimétrique. Les
+      étiquettes disent typiquement quand la photo a été prise, l'appareil
+      et l'objectif, l'exposition, les coordonnées GPS de l'endroit où
+      vous étiez, et souvent une petite miniature embarquée &mdash;
+      parfois de l'image telle qu'elle était <em>avant</em> une retouche,
+      ce qui explique qu'un recadrage puisse manquer ce qu'il recadrait.
+      La visite complète de ce bloc est dans
+      <a href="../supprimer-les-donnees-exif-et-gps/">le guide EXIF</a>.
+    </p>
+    <p>
+      Le point qui décide de tout&nbsp;: les étiquettes sont <em>à
+      côté</em> des pixels, pas dedans. Un outil qui décode l'image reçoit
+      des pixels et pas d'étiquettes&nbsp;; ce qu'il écrit en sortie ne
+      contient que ce qu'il choisit d'y remettre. Un outil qui modifie le
+      fichier sans réencoder peut laisser les étiquettes intactes &mdash;
+      ou retirer exactement elles et rien d'autre.
+    </p>
+  </section>
+
+  <section>
+    <h2>Pourquoi réencoder décape, et recopier conserve</h2>
+    <p>
+      La plupart du travail d'image dans un navigateur passe par un
+      canevas&nbsp;: décoder le fichier en pixels bruts, les transformer,
+      encoder un fichier neuf. Un canevas ne porte pas d'étiquettes, donc
+      le fichier neuf n'en a pas &mdash; non par principe mais par
+      construction. C'est pourquoi le
+      <a href="../../compresser-une-image/">compresseur d'images</a> et
+      l'outil pour <a href="../../redimensionner-une-image/">redimensionner
+      une image</a> d'ici produisent des sorties sans EXIF, sans GPS et
+      sans XMP, et leurs pages le disent&nbsp;: c'est inévitable, et bon à
+      savoir quand vous vouliez garder la date.
+    </p>
+    <p>
+      Un convertisseur, à l'inverse, peut se donner du mal pour préserver.
+      Le <a href="../../convertir-heic-en-jpg/">convertisseur HEIC vers
+      JPG</a> de ce site fait exactement cela&nbsp;: il soulève le bloc de
+      métadonnées hors du conteneur HEIC et l'installe dans le JPEG,
+      dates, GPS et tout &mdash; parce qu'une conversion est censée être
+      la même photo dans un autre manteau. (Une étiquette est réécrite à
+      dessein&nbsp;: l'orientation, pour que l'image ne bascule pas&nbsp;;
+      et le bloc ne tient que dans la sortie JPEG &mdash; le menu des
+      formats le précise.) Deux outils honnêtes, comportements opposés,
+      chacun juste pour sa tâche &mdash; et c'est précisément pourquoi
+      deviner d'après le genre d'outil ne marche pas.
+    </p>
+    <p>
+      Hors du navigateur, le tableau est tout aussi mêlé, avec la même
+      logique dessous. Captures d'écran et exports sont des encodages
+      neufs&nbsp;: pas de métadonnées d'appareil. Les messageries
+      recompressent fort, donc les photos envoyées comme photos perdent en
+      général leurs étiquettes &mdash; mais le même fichier envoyé
+      &laquo;&nbsp;en document&nbsp;&raquo; voyage octet pour octet,
+      étiquettes comprises. Pièces jointes de courriel et disques en ligne
+      déplacent les fichiers tels quels. Le motif tient&nbsp;: reconstruit
+      veut dire décapé, copié veut dire conservé.
+    </p>
+  </section>
+
+  <section>
+    <h2>Vérifier au lieu de supposer</h2>
+    <p>
+      La vérification prend moins d'une minute&nbsp;: ouvrez le fichier de
+      sortie &mdash; pas l'original &mdash; dans le
+      <a href="../../supprimer-les-donnees-exif/">lecteur-suppresseur
+      EXIF</a> et lisez ce qui s'y trouve. Il analyse le fichier sur votre
+      propre machine et montre chaque étiquette, miniature embarquée
+      comprise. Rien dedans, rien de fui. Encore dedans, et vous voyez
+      exactement quoi.
+    </p>
+    <p>
+      Trois habitudes découlent de tout ce qui précède&nbsp;:
+    </p>
+    <ul>
+      <li>
+        <strong>Quand le but est la vie privée, retirez
+        délibérément.</strong> Décapez les étiquettes avec l'outil EXIF
+        &mdash; il modifie le fichier sans réencoder, l'image ne perd donc
+        rien &mdash; puis vérifiez le résultat. Ne comptez pas sur un
+        redimensionnement qui décape par accident.
+      </li>
+      <li>
+        <strong>Quand le but est de garder la trace, convertissez avec un
+        outil qui annonce préserver</strong> &mdash; et vérifiez aussi,
+        parce que &laquo;&nbsp;il a probablement gardé&nbsp;&raquo; échoue
+        dans l'autre sens&nbsp;: une photothèque aux dates évaporées est
+        aussi une perte.
+      </li>
+      <li>
+        <strong>Vérifiez le fichier que vous envoyez vraiment</strong>,
+        après la dernière étape de votre chaîne. Chaque outil décide pour
+        lui-même, et seul le contenu du fichier final compte.
+      </li>
+    </ul>
+    <p>
+      Et si l'outil de vérification est lui-même une page web, la question
+      habituelle s'applique à lui aussi &mdash; un lecteur de métadonnées
+      reçoit votre photo, GPS compris. Celui d'ici tourne entièrement dans
+      votre navigateur, sans rien envoyer nulle part, et
+      <a href="../est-il-sur-d-envoyer-ses-fichiers/">le guide sur l'envoi
+      de fichiers</a> montre comment vérifier cette affirmation plutôt que
+      la croire.
+    </p>
+  </section>
