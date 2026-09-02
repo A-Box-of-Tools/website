@@ -132,8 +132,8 @@ BASELINE = {
     'timelapse-video': 0,
     # A filename template, a clock format, two CSS percentages and three class
     # names the timeline builds.
-    'trim-audio': 7,
-    'trim-video': 9,
+    'trim-audio': 2,
+    'trim-video': 5,
     # A CSS class name the range bar builds and two CSS percentages.
     'video-to-gif': 3,
     'xml-formatter': 0,

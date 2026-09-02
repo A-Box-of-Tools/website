@@ -128,6 +128,10 @@ let playAt = 0;
 let watchUntil = null;
 
 const timeline = new Timeline(el.timeline, {
+  // Still English, as it was in timeline.js before the bar was shared: the
+  // audio trimmer says this through its `tl.band` phrase, and this page
+  // should too, once it has one in fifteen languages.
+  bandTitle: (n, from, to) => `Segment ${n}: ${from} to ${to}`,
   onSeek: seekTo,
   onSelect: (id) => { selectedSegment = id; renderSegments(); },
   onAdjust: adjustSegment,
