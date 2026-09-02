@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/de/heic-in-jpg-umwandeln/:';
-const CACHE_NAME=CACHE_PREFIX+'ad422f3643';
+const CACHE_NAME=CACHE_PREFIX+'81e232678e';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=140d2ee0e1',
+'styles.css?v=b91f476042',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',

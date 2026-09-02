@@ -1,10 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/gif-splitsen-in-frames/:';
-const CACHE_NAME=CACHE_PREFIX+'00e0e75e8c';
+const CACHE_NAME=CACHE_PREFIX+'447f4715ec';
 const ASSETS=[
 './',
 'index.html',
-'styles.css?v=d77942b9e2',
+'styles.css?v=da2703f7c4',
 'manifest.json',
 'src/shared/phrases.js',
 'src/shared/trust.js',
