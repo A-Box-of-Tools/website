@@ -11,7 +11,7 @@ import {
 import {
   fromFractions, isUntouched, parseRatio, plan, ratioCrop, toFractions, wholeOf,
 } from './geometry.js';
-import { Cropper } from './cropper.js';
+import { Cropper } from './shared/cropper.js';
 import { wireFilePicker, readingLabel } from './shared/file-picker.js';
 import {
   bytes, change as changeOf, countOf as imageCount, describePlan as planText,
@@ -150,6 +150,9 @@ let loadingPreview = false;
 
 const cropper = new Cropper(el.stage, {
   label: phrase('crop.box'),
+  // Small enough for a favicon, large enough that a mis-drag cannot produce
+  // a one-pixel picture. Any size, odd ones included: no image format cares.
+  minSize: 8,
   onChange(rect) {
     writeCropFields(rect);
     if (loadingPreview) return;

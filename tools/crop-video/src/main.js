@@ -9,7 +9,7 @@ import { wireFilePicker } from './shared/file-picker.js';
 import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { cropExact, grabFrame } from './transcode.js';
 import { cropByRecording } from './record.js';
-import { Cropper } from './cropper.js';
+import { Cropper } from './shared/cropper.js';
 import { hasWebCodecs, hasMediaRecorder, canDecode } from './shared/video-support.js';
 
 /**
@@ -115,6 +115,10 @@ let lastResultUrl = null;
 const cropper = new Cropper(el.stage, {
   onChange: onCropChanged,
   label: phrase('crop.aria'),
+  // Large enough that a mis-drag cannot produce a two-pixel video, and even
+  // on every side, because H.264 will not store an odd frame.
+  minSize: 16,
+  evenSizes: true,
 });
 
 /* ------------------------------------------------------------------ adding */
