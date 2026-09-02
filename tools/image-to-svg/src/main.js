@@ -19,6 +19,9 @@ const el = {
   clearImage: $('clear-image'),
   loadError: $('load-error'),
 
+  privacyToggle: $('privacy-toggle'),
+  privacyPanel: $('privacy-panel'),
+
   findCard: $('find-card'),
   find: $('find'),
   thresholdGroup: $('threshold-group'),
@@ -626,6 +629,20 @@ addEventListener('resize', () => {
   if (!picture) return;
   clearTimeout(resizing);
   resizing = setTimeout(redraw, 120);
+});
+
+/* ------------------------------------------------- privacy panel + offline */
+
+// The header's toggle, which the other thirty-nine tools wire and this one did
+// not - the same omission compare-heights shipped with. The panel it opens is
+// the live network check, the page's own evidence for the claim it makes about
+// a picture somebody uploaded, so a toggle that does nothing is the one control
+// here it is worst to leave dead. Nothing throws, so nothing said so: the QA
+// suite's generic page check is what noticed, on all four of its browsers.
+el.privacyToggle.addEventListener('click', () => {
+  const open = el.privacyPanel.hidden;
+  el.privacyPanel.hidden = !open;
+  el.privacyToggle.setAttribute('aria-expanded', String(open));
 });
 
 // The frame puts a "this page's code did not start" panel in every tool page
