@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تشغيل-الفيديو-عكسيا/:';
-const CACHE_NAME=CACHE_PREFIX+'ecdc4a0b0c';
+const CACHE_NAME=CACHE_PREFIX+'7cd91d89be';
 const ASSETS=[
 './',
 'index.html',
@@ -16,6 +16,9 @@ const ASSETS=[
 'src/shared/message-box.js',
 'src/shared/media.js',
 'src/shared/format.js',
+'src/shared/webcodecs.js',
+'src/shared/errors.js',
+'src/shared/mp4-boxes.js',
 'src/audio.js',
 'src/draw.js',
 'src/main.js',

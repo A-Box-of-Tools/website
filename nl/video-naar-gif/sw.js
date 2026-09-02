@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/video-naar-gif/:';
-const CACHE_NAME=CACHE_PREFIX+'95e97ce92e';
+const CACHE_NAME=CACHE_PREFIX+'4fbcf94cc8';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,8 @@ const ASSETS=[
 'src/shared/message-box.js',
 'src/shared/media.js',
 'src/shared/format.js',
+'src/shared/webcodecs.js',
+'src/shared/errors.js',
 'src/draw.js',
 'src/encode.js',
 'src/frames.js',

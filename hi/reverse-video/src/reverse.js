@@ -5,36 +5,18 @@ import{drawFitted}from'./draw.js';
 import{pickH264Codec}from'./shared/video-support.js';
 import{reversedAudioTrack}from'./audio.js';
 import{
-averageFps,closeDurations,frameWindows,gopRanges,outputSize,reversedTimes,windowLimit,
+closeDurations,frameWindows,gopRanges,outputSize,reversedTimes,windowLimit,
 }from'./timeline.js';
+import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js';
+import{throwIfAborted,said}from'./shared/errors.js';
 const VIDEO_TIMESCALE=90000;
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};
 const MIN_BITRATE=200_000;
 const MAX_BITRATE=60_000_000;
-const QUEUE_LIMIT=8;
-const said=(key,values={})=>Object.assign(new Error(key),{values});
 const STALL_TIMEOUT_MS=30_000;
 const KEYFRAME_SECONDS=2;
 const GROUP_CACHE_BYTES=64<<20;
-class AbortedError extends Error{
-constructor(){
-super('Reverse cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
-export function decoderConfig(video){
-const config={
-codec:video.codec,
-codedWidth:video.codedWidth,
-codedHeight:video.codedHeight,
-};
-if(video.description)config.description=video.description;
-return config;
-}
 export function chooseBitrate({video,size,fps,quality}){
 const pixels=size.width*size.height;
 const byPixels=pixels*fps*(QUALITY_BPP[quality]??QUALITY_BPP.medium);
@@ -94,36 +76,6 @@ timer=setTimeout(
 ()=>reject(new Error(`stall.${which}`)),STALL_TIMEOUT_MS);
 });
 return Promise.race([promise,stalled]).finally(()=>clearTimeout(timer));
-}
-async function settle(decoder,encoder){
-let bestSeen=decoder.decodeQueueSize+encoder.encodeQueueSize;
-let progressAt=Date.now();
-while(decoder.decodeQueueSize>QUEUE_LIMIT||encoder.encodeQueueSize>QUEUE_LIMIT){
-const size=decoder.decodeQueueSize+encoder.encodeQueueSize;
-if(size<bestSeen){
-bestSeen=size;
-progressAt=Date.now();
-}else if(Date.now()-progressAt>STALL_TIMEOUT_MS){
-throw new Error('stall.both');
-}
-await new Promise((resolve)=>{
-let settled=false;
-const done=()=>{
-if(settled)return;
-settled=true;
-clearTimeout(timer);
-decoder.removeEventListener('dequeue',done);
-encoder.removeEventListener('dequeue',done);
-resolve();
-};
-const timer=setTimeout(done,20);
-decoder.addEventListener('dequeue',done);
-encoder.addEventListener('dequeue',done);
-});
-}
-}
-function micros(ticks,timescale){
-return Math.round(ticks/timescale*1_000_000);
 }
 async function readGroup(file,samples,group){
 let low=Infinity;
@@ -325,7 +277,7 @@ const until=Math.max(...run);
 for(let i=group.from;i<=until;i++){
 throwIfAborted(signal);
 if(failure)throw failure;
-await settle(decoder,encoder);
+await settle([decoder,encoder],{stallAfter:STALL_TIMEOUT_MS});
 const sample=video.samples[i];
 decoder.decode(new EncodedVideoChunk({
 type:sample.isKey?'key':'delta',
@@ -342,7 +294,7 @@ for(const slot of kept){
 if(!slot.data&&!slot.bitmap)continue;
 emit(drawable(slot),wanted.get(slot.timestamp));
 discard(slot);
-await settle(decoder,encoder);
+await settle([decoder,encoder],{stallAfter:STALL_TIMEOUT_MS});
 }
 kept=[];
 onProgress?.({phase:'reversing',done:drawn,total});

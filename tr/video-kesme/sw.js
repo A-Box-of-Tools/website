@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/video-kesme/:';
-const CACHE_NAME=CACHE_PREFIX+'7e7c77a2e6';
+const CACHE_NAME=CACHE_PREFIX+'3a3f748db8';
 const ASSETS=[
 './',
 'index.html',
@@ -16,6 +16,9 @@ const ASSETS=[
 'src/shared/message-box.js',
 'src/shared/media.js',
 'src/shared/format.js',
+'src/shared/errors.js',
+'src/shared/webcodecs.js',
+'src/shared/mp4-boxes.js',
 'src/audio.js',
 'src/clips.js',
 'src/copy.js',

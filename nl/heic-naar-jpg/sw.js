@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/heic-naar-jpg/:';
-const CACHE_NAME=CACHE_PREFIX+'3a3a784caa';
+const CACHE_NAME=CACHE_PREFIX+'9962fe303c';
 const ASSETS=[
 './',
 'index.html',
@@ -14,6 +14,7 @@ const ASSETS=[
 'src/shared/message-box.js',
 'src/shared/download.js',
 'src/shared/format.js',
+'src/shared/errors.js',
 'src/boxes.js',
 'src/codecs.js',
 'src/exif.js',

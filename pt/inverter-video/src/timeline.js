@@ -63,11 +63,6 @@ samples[i].duration=next
 }
 return samples;
 }
-export function averageFps(video){
-const seconds=video.duration/video.timescale;
-if(!seconds)return 30;
-return Math.min(240,Math.max(1,video.samples.length/seconds));
-}
 export function outputSize(video){
 return{
 width:Math.max(2,Math.floor(video.displayWidth/2)*2),

@@ -1,4 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{fourcc,bytes,concat,u16,u32,box}from'./shared/mp4-boxes.js';
 const TARGET_BITRATE=160_000;
 const AAC_CODEC='mp4a.40.2';
 function descriptorLength(view,at){
@@ -11,10 +12,6 @@ value=(value<<7)|(byte&0x7f);
 if(!(byte&0x80))break;
 }
 return{value,next};
-}
-function fourcc(view,at){
-return String.fromCharCode(
-view.getUint8(at),view.getUint8(at+1),view.getUint8(at+2),view.getUint8(at+3));
 }
 function objectType(asc){
 if(!asc.length)return 2;
@@ -69,32 +66,6 @@ numberOfChannels:track.channels,
 }catch{
 return null;
 }
-}
-function bytes(...values){
-return new Uint8Array(values);
-}
-function concat(parts){
-let length=0;
-for(const part of parts)length+=part.byteLength;
-const out=new Uint8Array(length);
-let at=0;
-for(const part of parts){
-out.set(part,at);
-at+=part.byteLength;
-}
-return out;
-}
-function u16(n){
-return bytes((n>>8)&0xff,n&0xff);
-}
-function u32(n){
-return bytes((n>>>24)&0xff,(n>>>16)&0xff,(n>>>8)&0xff,n&0xff);
-}
-function box(type,...payload){
-const body=concat(payload);
-const header=concat([u32(body.byteLength+8),bytes(
-type.charCodeAt(0),type.charCodeAt(1),type.charCodeAt(2),type.charCodeAt(3))]);
-return concat([header,body]);
 }
 function descriptor(tag,...payload){
 const body=concat(payload);

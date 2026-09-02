@@ -1,15 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{Mp4Writer,MOVIE_TIMESCALE}from'./shared/mp4-writer.js';
 import{planRanges}from'./ranges.js';
-class AbortedError extends Error{
-constructor(){
-super('Trim cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
+import{throwIfAborted}from'./shared/errors.js';
 function rescale(ticks,from,to){
 return from===to?ticks:ticks*to/from;
 }

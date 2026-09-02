@@ -3,15 +3,7 @@ import{GifWriter}from'./gif.js';
 import{createHistogram,addToHistogram,buildPalette,mapFrame}from'./quantize.js';
 import{drawFrame}from'./compose.js';
 import{decodeFull}from'./images.js';
-class AbortedError extends Error{
-constructor(){
-super('Export cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
+import{throwIfAborted}from'./shared/errors.js';
 const yieldToPage=()=>new Promise((resolve)=>setTimeout(resolve,0));
 export function loopValue(mode,times){
 if(mode==='once')return null;

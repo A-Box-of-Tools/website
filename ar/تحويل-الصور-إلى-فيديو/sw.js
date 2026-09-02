@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ar/تحويل-الصور-إلى-فيديو/:';
-const CACHE_NAME=CACHE_PREFIX+'5b5d259bae';
+const CACHE_NAME=CACHE_PREFIX+'6ab53c3172';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,9 @@ const ASSETS=[
 'src/shared/mp4-muxer.js',
 'src/shared/message-box.js',
 'src/shared/format.js',
+'src/shared/webcodecs.js',
+'src/shared/errors.js',
+'src/shared/mp4-boxes.js',
 'src/shared/url-import.js',
 'src/compose.js',
 'src/encoder.js',

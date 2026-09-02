@@ -1,27 +1,10 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{FileWindow}from'./shared/mp4-reader.js';
 import{drawScaled,frameCanvas}from'./draw.js';
-const QUEUE_LIMIT=8;
+import{decoderConfig,settle}from'./shared/webcodecs.js';
+import{throwIfAborted}from'./shared/errors.js';
 const REORDER_SLACK=0.5;
 const SEEK_TIMEOUT=10_000;
-class AbortedError extends Error{
-constructor(){
-super('Cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
-export function decoderConfig(video){
-const config={
-codec:video.codec,
-codedWidth:video.codedWidth,
-codedHeight:video.codedHeight,
-};
-if(video.description)config.description=video.description;
-return config;
-}
 class Sampler{
 #times;
 #ctx;
@@ -109,7 +92,7 @@ timestamp:Math.round(sample.pts/video.timescale*1_000_000),
 data:bytes,
 }));
 if(sample.pts>endTicks+REORDER_SLACK*video.timescale)break;
-while(decoder.decodeQueueSize>QUEUE_LIMIT)await tick(decoder);
+await settle([decoder]);
 }
 await decoder.flush();
 if(failure)throw failure;
@@ -120,20 +103,6 @@ return sampler.frames;
 if(decoder.state!=='closed')decoder.close();
 canvas.width=0;
 }
-}
-function tick(decoder){
-return new Promise((resolve)=>{
-let settled=false;
-const done=()=>{
-if(settled)return;
-settled=true;
-clearTimeout(timer);
-decoder.removeEventListener('dequeue',done);
-resolve();
-};
-const timer=setTimeout(done,20);
-decoder.addEventListener('dequeue',done);
-});
 }
 export async function framesByPlaying({
 video,times,width,height,histogram,step=1,onProgress,signal,

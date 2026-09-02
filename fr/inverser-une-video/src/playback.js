@@ -3,24 +3,15 @@ import{drawFitted}from'./draw.js';
 import{pickH264Codec}from'./shared/video-support.js';
 import{reversedAudioTrack}from'./audio.js';
 import{writeFile}from'./reverse.js';
+import{settle}from'./shared/webcodecs.js';
+import{throwIfAborted,said}from'./shared/errors.js';
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};
 const MIN_BITRATE=200_000;
 const MAX_BITRATE=60_000_000;
 const KEYFRAME_SECONDS=2;
-const QUEUE_LIMIT=8;
-const said=(key,values={})=>Object.assign(new Error(key),{values});
 const SEEK_TIMEOUT=10_000;
 const ASSUMED_FPS=30;
-class AbortedError extends Error{
-constructor(){
-super('Reverse cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
 export function chooseBitrate({fileSize,seconds,size,fps,quality}){
 const pixels=size.width*size.height;
 const byPixels=pixels*fps*(QUALITY_BPP[quality]??QUALITY_BPP.medium);
@@ -90,22 +81,6 @@ return{fps:Math.round(rate),measured:true};
 return{fps:ASSUMED_FPS,measured:false};
 }
 }
-async function settle(encoder){
-while(encoder.encodeQueueSize>QUEUE_LIMIT){
-await new Promise((resolve)=>{
-let settled=false;
-const done=()=>{
-if(settled)return;
-settled=true;
-clearTimeout(timer);
-encoder.removeEventListener('dequeue',done);
-resolve();
-};
-const timer=setTimeout(done,20);
-encoder.addEventListener('dequeue',done);
-});
-}
-}
 export async function reverseByPlayback({
 file,video,duration,fps,quality='medium',keepAudio=true,onProgress,signal,
 }){
@@ -173,7 +148,7 @@ const at=Math.min(
 Math.max(0,duration-0.0005),
 (total-1-k)/fps+0.5/fps);
 await seekTo(video,at);
-await settle(encoder);
+await settle([encoder]);
 drawFitted(ctx,video,{
 rotation:0,
 displayWidth:video.videoWidth,

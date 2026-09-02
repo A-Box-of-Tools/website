@@ -2,30 +2,8 @@
 import{FileWindow}from'./shared/mp4-reader.js';
 import{decodeRuns}from'./plan.js';
 import{drawScaled,frameCanvas}from'./draw.js';
-const QUEUE_LIMIT=8;
-class AbortedError extends Error{
-constructor(){
-super('Cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
-export function decoderConfig(video){
-const config={
-codec:video.codec,
-codedWidth:video.codedWidth,
-codedHeight:video.codedHeight,
-};
-if(video.description)config.description=video.description;
-return config;
-}
-export function averageFps(video){
-const seconds=video.duration/video.timescale;
-if(!seconds)return 30;
-return Math.min(240,Math.max(1,video.samples.length/seconds));
-}
+import{decoderConfig,settle}from'./shared/webcodecs.js';
+import{throwIfAborted}from'./shared/errors.js';
 class Sampler{
 #times;
 #canvas;
@@ -110,7 +88,7 @@ type:sample.isKey?'key':'delta',
 timestamp:Math.round(sample.pts/video.timescale*1_000_000),
 data:bytes,
 }));
-while(decoder.decodeQueueSize>QUEUE_LIMIT)await tick(decoder);
+await settle([decoder]);
 while(writer.busy)await writer.settle();
 fed+=1;
 if(fed%10===0){
@@ -127,20 +105,6 @@ return await writer.finish();
 if(decoder.state!=='closed')decoder.close();
 canvas.width=0;
 }
-}
-function tick(decoder){
-return new Promise((resolve)=>{
-let settled=false;
-const done=()=>{
-if(settled)return;
-settled=true;
-clearTimeout(timer);
-decoder.removeEventListener('dequeue',done);
-resolve();
-};
-const timer=setTimeout(done,20);
-decoder.addEventListener('dequeue',done);
-});
 }
 export async function previewFrame({file,media,atSeconds=0,maxWidth=640,signal}){
 const{video}=media;

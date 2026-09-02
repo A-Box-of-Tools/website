@@ -1,13 +1,7 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{drawScaled,frameCanvas}from'./draw.js';
+import{throwIfAborted,said}from'./shared/errors.js';
 const SEEK_TIMEOUT=10_000;
-class AbortedError extends Error{
-constructor(){
-super('Cancelled.');
-this.name='AbortError';
-}
-}
-const said=(key,values={})=>Object.assign(new Error(key),{values});
 const MEDIA_ERRORS={
 1:'media.aborted',
 2:'media.notread',
@@ -28,7 +22,7 @@ const{canvas,ctx}=frameCanvas(width,height);
 video.pause();
 try{
 for(let i=0;i<times.length;i+=1){
-if(signal?.aborted)throw new AbortedError();
+throwIfAborted(signal);
 if(video.error)throw playerDied(video,i,times.length);
 try{
 await seek(video,times[i]);

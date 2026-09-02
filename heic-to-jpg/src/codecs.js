@@ -1,4 +1,5 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{said}from'./shared/errors.js';
 export const JPEG='image/jpeg';
 export const PNG='image/png';
 export const WEBP='image/webp';
@@ -37,7 +38,6 @@ release(target.el);
 if(!blob)throw said('codec.nowrite',{format:FORMATS[mime]?.label??mime});
 return blob;
 }
-const said=(key,values={})=>Object.assign(new Error(key),{values});
 function canvas(width,height,alpha){
 const el=document.createElement('canvas');
 el.width=width;

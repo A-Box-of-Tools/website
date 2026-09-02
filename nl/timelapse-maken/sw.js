@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/nl/timelapse-maken/:';
-const CACHE_NAME=CACHE_PREFIX+'d97d4d759c';
+const CACHE_NAME=CACHE_PREFIX+'c9f5091a66';
 const ASSETS=[
 './',
 'index.html',
@@ -16,6 +16,9 @@ const ASSETS=[
 'src/shared/message-box.js',
 'src/shared/media.js',
 'src/shared/format.js',
+'src/shared/webcodecs.js',
+'src/shared/errors.js',
+'src/shared/mp4-boxes.js',
 'src/decode.js',
 'src/draw.js',
 'src/encode.js',

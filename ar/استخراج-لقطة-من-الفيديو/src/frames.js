@@ -1,9 +1,8 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{FileWindow}from'./shared/mp4-reader.js';
 import{drawUpright}from'./draw.js';
-export function micros(ticks,timescale){
-return Math.round(ticks/timescale*1_000_000);
-}
+import{micros}from'./shared/webcodecs.js';
+import{throwIfAborted}from'./shared/errors.js';
 export function displayOrder(video){
 const list=video.samples.map((sample,decode)=>({
 decode,
@@ -51,15 +50,6 @@ return picked;
 export function lookaheadFor(width,height,budgetBytes=96<<20){
 const perFrame=Math.max(1,width*height*4);
 return Math.max(2,Math.min(16,Math.floor(budgetBytes/perFrame)));
-}
-class AbortedError extends Error{
-constructor(message='Cancelled.'){
-super(message);
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
 }
 export class FrameReader{
 constructor(file,video){

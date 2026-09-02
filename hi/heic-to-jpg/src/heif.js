@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
+import{said}from'./shared/errors.js';
 const ENGINE=new URL('../vendor/libheif.js',import.meta.url);
-const said=(key,values={})=>Object.assign(new Error(key),{values});
 let loading=null;
 export function warmEngine(){
 engine().catch(()=>{

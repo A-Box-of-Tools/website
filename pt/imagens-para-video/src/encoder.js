@@ -3,34 +3,10 @@ import{Mp4Muxer}from'./shared/mp4-muxer.js';
 import{drawFrame}from'./compose.js';
 import{decodeFull}from'./images.js';
 import{pickH264Codec}from'./support.js';
+import{settle}from'./shared/webcodecs.js';
+import{throwIfAborted}from'./shared/errors.js';
 const QUALITY_BPP={low:0.03,medium:0.07,high:0.15};
 const MAX_BITRATE=50_000_000;
-const QUEUE_LIMIT=8;
-class AbortedError extends Error{
-constructor(){
-super('Export cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
-async function applyBackpressure(encoder){
-while(encoder.encodeQueueSize>QUEUE_LIMIT){
-await new Promise((resolve)=>{
-let settled=false;
-const done=()=>{
-if(settled)return;
-settled=true;
-clearTimeout(timer);
-encoder.removeEventListener('dequeue',done);
-resolve();
-};
-const timer=setTimeout(done,50);
-encoder.addEventListener('dequeue',done);
-});
-}
-}
 export function countFrames(items,fps){
 return items.reduce((total,item)=>total+Math.max(1,Math.round(item.duration*fps)),0);
 }
@@ -92,7 +68,7 @@ const frames=Math.max(1,Math.round(item.duration*fps));
 for(let i=0;i<frames;i++){
 throwIfAborted(signal);
 if(encoderError)throw encoderError;
-await applyBackpressure(encoder);
+await settle([encoder]);
 const frame=new VideoFrame(canvas,{
 timestamp:Math.round(frameIndex*frameDurationUs),
 duration:Math.round(frameDurationUs),

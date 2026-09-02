@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/id/pangkas-video/:';
-const CACHE_NAME=CACHE_PREFIX+'7932bc39a3';
+const CACHE_NAME=CACHE_PREFIX+'56b3de8677';
 const ASSETS=[
 './',
 'index.html',
@@ -15,6 +15,9 @@ const ASSETS=[
 'src/shared/message-box.js',
 'src/shared/media.js',
 'src/shared/format.js',
+'src/shared/webcodecs.js',
+'src/shared/errors.js',
+'src/shared/mp4-boxes.js',
 'src/cropper.js',
 'src/draw.js',
 'src/main.js',

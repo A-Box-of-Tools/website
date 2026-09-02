@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/ko/gif-만들기/:';
-const CACHE_NAME=CACHE_PREFIX+'50c90c2ae7';
+const CACHE_NAME=CACHE_PREFIX+'5cf1933711';
 const ASSETS=[
 './',
 'index.html',
@@ -11,6 +11,7 @@ const ASSETS=[
 'src/shared/file-picker.js',
 'src/shared/message-box.js',
 'src/shared/format.js',
+'src/shared/errors.js',
 'src/bytes.js',
 'src/compose.js',
 'src/encode.js',

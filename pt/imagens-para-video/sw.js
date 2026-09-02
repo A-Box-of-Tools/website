@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/imagens-para-video/:';
-const CACHE_NAME=CACHE_PREFIX+'7ae58f2b41';
+const CACHE_NAME=CACHE_PREFIX+'8113689450';
 const ASSETS=[
 './',
 'index.html',
@@ -13,6 +13,9 @@ const ASSETS=[
 'src/shared/mp4-muxer.js',
 'src/shared/message-box.js',
 'src/shared/format.js',
+'src/shared/webcodecs.js',
+'src/shared/errors.js',
+'src/shared/mp4-boxes.js',
 'src/shared/url-import.js',
 'src/compose.js',
 'src/encoder.js',

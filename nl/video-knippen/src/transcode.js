@@ -6,36 +6,14 @@ import{closeDurations,audioSamplesFor}from'./copy.js';
 import{encodeJoinedAudio,targetAudioFormat}from'./audio.js';
 import{drawFitted}from'./draw.js';
 import{pickH264Codec}from'./shared/video-support.js';
+import{decoderConfig,averageFps,micros,settle}from'./shared/webcodecs.js';
+import{throwIfAborted}from'./shared/errors.js';
 const VIDEO_TIMESCALE=90000;
 const QUALITY_BPP={low:0.05,medium:0.1,high:0.2};
 const QUALITY_HEADROOM={low:0.8,medium:1.25,high:2};
 const MIN_BITRATE=200_000;
 const MAX_BITRATE=60_000_000;
-const QUEUE_LIMIT=8;
 const KEYFRAME_SECONDS=2;
-class AbortedError extends Error{
-constructor(){
-super('Trim cancelled.');
-this.name='AbortError';
-}
-}
-function throwIfAborted(signal){
-if(signal?.aborted)throw new AbortedError();
-}
-export function decoderConfig(video){
-const config={
-codec:video.codec,
-codedWidth:video.codedWidth,
-codedHeight:video.codedHeight,
-};
-if(video.description)config.description=video.description;
-return config;
-}
-export function averageFps(video){
-const seconds=video.duration/video.timescale;
-if(!seconds)return 30;
-return Math.min(240,Math.max(1,video.samples.length/seconds));
-}
 export function outputSize(video){
 return{
 width:Math.max(2,Math.floor(video.displayWidth/2)*2),
@@ -63,27 +41,6 @@ video:clip.media.video,size:frame,fps,quality,
 }));
 }
 return best;
-}
-async function settle(decoder,encoder){
-while(decoder.decodeQueueSize>QUEUE_LIMIT||encoder.encodeQueueSize>QUEUE_LIMIT){
-await new Promise((resolve)=>{
-let settled=false;
-const done=()=>{
-if(settled)return;
-settled=true;
-clearTimeout(timer);
-decoder.removeEventListener('dequeue',done);
-encoder.removeEventListener('dequeue',done);
-resolve();
-};
-const timer=setTimeout(done,20);
-decoder.addEventListener('dequeue',done);
-encoder.addEventListener('dequeue',done);
-});
-}
-}
-function micros(ticks,timescale){
-return Math.round(ticks/timescale*1_000_000);
 }
 export async function joinExact({
 clips,frame,quality='medium',audioMode='copy',onProgress,signal,
@@ -227,7 +184,7 @@ wantKeyframe=true;
 for(let i=plan.video.from;i<=plan.video.to;i++){
 throwIfAborted(signal);
 if(failure)throw failure;
-await settle(decoder,encoder);
+await settle([decoder,encoder]);
 const sample=video.samples[i];
 const data=await window.read(sample.offset,sample.size);
 decoder.decode(new EncodedVideoChunk({

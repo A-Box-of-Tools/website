@@ -1,11 +1,12 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 import{phrase,fill}from'./shared/phrases.js';
+import{decoderConfig,averageFps}from'./shared/webcodecs.js';
 import{sizeText,durationText}from'./shared/format.js';
 import{openInPlayer}from'./shared/media.js';
 import{messageBox}from'./shared/message-box.js';
 import{wireFilePicker}from'./shared/file-picker.js';
 import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
-import{timelapseByDecoding,previewFrame,decoderConfig,averageFps}from'./decode.js';
+import{timelapseByDecoding,previewFrame}from'./decode.js';
 import{timelapseByPlaying}from'./playback.js';
 import{TimelapseWriter}from'./encode.js';
 import{hasEncoder,hasWebCodecs,canDecode,pickH264Codec}from'./shared/video-support.js';
@@ -14,6 +15,7 @@ MIN_FRAMES,
 clampSpeed,speedForLength,lengthForSpeed,sampleInterval,frameTimes,repeatsFrames,
 outputSize,chooseBitrate,estimateBytes,decodeRuns,decodeCost,
 }from'./plan.js';
+import{said}from'./shared/errors.js';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
 }
@@ -369,7 +371,6 @@ el.planNote.textContent=notes.length
 :'';
 el.exportBtn.disabled=working||!enough;
 }
-const said=(key,values={})=>Object.assign(new Error(key),{values});
 function setProgress({phase,done,total}){
 const fraction=total>0?Math.min(1,done/total):0;
 el.progressBar.style.width=`${(fraction * 100).toFixed(1)}%`;
