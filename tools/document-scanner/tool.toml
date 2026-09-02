@@ -27,7 +27,7 @@ roadmap_group = "documents"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["checks"]
+css_parts = ["checks", "notes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone; zip is
 # for saving several pages as pictures rather than as a document, and needs crc32

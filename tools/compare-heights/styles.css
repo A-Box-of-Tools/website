@@ -7,17 +7,6 @@
   reader moving between the two files is reading the same rules.
 */
 
-.error {
-  margin: 1rem 0 0;
-  padding: 0.7rem 0.9rem;
-  border-radius: 7px;
-  background: color-mix(in srgb, var(--danger) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--danger) 40%, transparent);
-  color: var(--danger);
-  font-size: 0.9rem;
-  white-space: pre-line;
-}
-
 .field-summary.warn { color: var(--warn); }
 
 /* ------------------------------------------------------------ the row table */

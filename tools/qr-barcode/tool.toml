@@ -29,7 +29,7 @@ category = "text-codes-and-passwords"
 roadmap_group = "beyond"
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["form", "checks"]
+css_parts = ["form", "checks", "notes"]
 js_parts = ["qr-tables", "download"]
 lastmod = "2026-08-27"
 

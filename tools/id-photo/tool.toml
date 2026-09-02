@@ -26,7 +26,7 @@ roadmap_group = "images"
 
 # Optional stylesheets from shared/css, dropped in between the frame and this
 # tool's own rules. progress is the bar this tool draws while it works.
-css_parts = ["progress", "form"]
+css_parts = ["progress", "form", "notes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone.
 js_parts = ["file-picker", "message-box"]

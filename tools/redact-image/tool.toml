@@ -27,7 +27,7 @@ roadmap_group = "images"
 
 # Shared stylesheet parts this tool asks for, put before its own rules by
 # the build so that its own can override them.
-css_parts = ["results", "form", "checks"]
+css_parts = ["results", "form", "checks", "notes"]
 
 # Shared modules this tool asks for. file-picker brings in the drop zone; the
 # list of boxes underneath the picture is this tool's own, because it is a list
