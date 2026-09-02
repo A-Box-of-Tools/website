@@ -93,6 +93,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/css/notes.css` | `css_parts = ["notes"]` | the error line, and the note that says which path a file took |
 | `shared/css/panes.css` | `css_parts = ["panes"]` | the two text panes of a formatter page and the head above each |
 | `shared/css/modes.css` | `css_parts = ["modes"]` | a choice between two ways of working, as radio rows with a title and an explanation |
+| `shared/css/cropper.css` | `css_parts = ["cropper"]` | the crop box `cropper.js` draws: the box, the dimmed surround, the handles, the size label |
 | `shared/js/file-picker.js` | `js_parts = ["file-picker"]` | copied to `<tool>/src/shared/` |
 | `shared/js/image-list.js` | `js_parts = ["image-list"]` | a list of pictures to work through in order: decoded once for a thumbnail and their size, sorted, reordered, re-decoded one at a time |
 | `templates/partials/file-picker.html` | `{% include %}` in `body.html` | the drop-zone markup |
