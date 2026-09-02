@@ -10,7 +10,7 @@ FORMATS,JPEG,PNG,WEBP,READABLE,
 import{
 fromFractions,isUntouched,parseRatio,plan,ratioCrop,toFractions,wholeOf,
 }from'./geometry.js';
-import{Cropper}from'./cropper.js';
+import{Cropper}from'./shared/cropper.js';
 import{wireFilePicker,readingLabel}from'./shared/file-picker.js';
 import{
 bytes,change as changeOf,countOf as imageCount,describePlan as planText,
@@ -104,6 +104,7 @@ let writable=new Set([JPEG,PNG]);
 let loadingPreview=false;
 const cropper=new Cropper(el.stage,{
 label:phrase('crop.box'),
+minSize:8,
 onChange(rect){
 writeCropFields(rect);
 if(loadingPreview)return;

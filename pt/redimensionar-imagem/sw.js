@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/pt/redimensionar-imagem/:';
-const CACHE_NAME=CACHE_PREFIX+'803f9c2a41';
+const CACHE_NAME=CACHE_PREFIX+'0ceacaac1d';
 const ASSETS=[
 './',
 'index.html',
@@ -15,8 +15,8 @@ const ASSETS=[
 'src/shared/download.js',
 'src/shared/media.js',
 'src/shared/format.js',
+'src/shared/cropper.js',
 'src/codecs.js',
-'src/cropper.js',
 'src/files.js',
 'src/geometry.js',
 'src/main.js',

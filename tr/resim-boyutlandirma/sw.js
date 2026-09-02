@@ -1,6 +1,6 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
 const CACHE_PREFIX='abox:/tr/resim-boyutlandirma/:';
-const CACHE_NAME=CACHE_PREFIX+'96e8c5b41b';
+const CACHE_NAME=CACHE_PREFIX+'541ff83c79';
 const ASSETS=[
 './',
 'index.html',
@@ -15,8 +15,8 @@ const ASSETS=[
 'src/shared/download.js',
 'src/shared/media.js',
 'src/shared/format.js',
+'src/shared/cropper.js',
 'src/codecs.js',
-'src/cropper.js',
 'src/files.js',
 'src/geometry.js',
 'src/main.js',

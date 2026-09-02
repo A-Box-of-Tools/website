@@ -8,7 +8,7 @@ import{wireFilePicker}from'./shared/file-picker.js';
 import{demux,UnsupportedFile}from'./shared/mp4-reader.js';
 import{cropExact,grabFrame}from'./transcode.js';
 import{cropByRecording}from'./record.js';
-import{Cropper}from'./cropper.js';
+import{Cropper}from'./shared/cropper.js';
 import{hasWebCodecs,hasMediaRecorder,canDecode}from'./shared/video-support.js';
 function why(fallback,absent){
 return phrase(fallback?.key??absent,fallback?.values);
@@ -95,6 +95,8 @@ let lastResultUrl=null;
 const cropper=new Cropper(el.stage,{
 onChange:onCropChanged,
 label:phrase('crop.aria'),
+minSize:16,
+evenSizes:true,
 });
 const picker=wireFilePicker({
 input:el.fileInput,

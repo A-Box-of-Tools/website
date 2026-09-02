@@ -1,26 +1,26 @@
 /* Built from https://github.com/A-Box-of-Tools/website by build.py. Verify with: python build.py --check */
-const MIN_SIZE=16;
 const ANCHORS={
 n:[0.5,1],s:[0.5,0],e:[0,0.5],w:[1,0.5],
 ne:[0,1],nw:[1,1],se:[0,0],sw:[1,0],
 };
 const HANDLES=Object.keys(ANCHORS);
-function even(value){
-return Math.max(MIN_SIZE,Math.floor(value/2)*2);
-}
 export class Cropper{
 #stage;
 #box;
 #label;
 #onChange;
+#minSize;
+#even;
 #source={width:0,height:0};
 #rect={x:0,y:0,width:0,height:0};
 #aspect=null;
 #drag=null;
 #enabled=true;
-constructor(stage,{onChange,label}={}){
+constructor(stage,{onChange,label,minSize=8,evenSizes=false}={}){
 this.#stage=stage;
 this.#onChange=onChange;
+this.#minSize=minSize;
+this.#even=evenSizes;
 this.#box=document.createElement('div');
 this.#box.className='crop-box';
 this.#box.tabIndex=0;
@@ -47,7 +47,6 @@ return this.#aspect;
 }
 setSource(width,height){
 this.#source={width,height};
-this.#aspect=null;
 this.reset();
 }
 setEnabled(enabled){
@@ -55,6 +54,7 @@ this.#enabled=enabled;
 this.#box.classList.toggle('disabled',!enabled);
 }
 reset(){
+this.#aspect=null;
 this.#apply({
 x:0,y:0,width:this.#source.width,height:this.#source.height,
 });
@@ -137,7 +137,7 @@ if(!direction)return;
 event.preventDefault();
 const[x,y]=direction;
 if(event.altKey){
-const step=event.shiftKey?10:2;
+const step=event.shiftKey?10:this.#even?2:1;
 this.#resizeBy(x*step,y*step);
 }else{
 const step=event.shiftKey?10:1;
@@ -175,8 +175,8 @@ else width=height*this.#aspect;
 const room=(anchor,span,side)=>(
 side===0?span-anchor:side===1?anchor:2*Math.min(anchor,span-anchor)
 );
-let maxWidth=room(anchorX,this.#source.width,ax);
-let maxHeight=room(anchorY,this.#source.height,ay);
+const maxWidth=room(anchorX,this.#source.width,ax);
+const maxHeight=room(anchorY,this.#source.height,ay);
 if(this.#aspect){
 const limit=Math.min(maxWidth,maxHeight*this.#aspect);
 width=Math.min(width,limit);
@@ -192,11 +192,16 @@ width,
 height,
 });
 }
+#fit(value,limit){
+let size=Math.min(Math.round(value),limit);
+if(this.#even)size=Math.floor(size/2)*2;
+return Math.max(Math.min(this.#minSize,limit),size);
+}
 #apply(rect){
 const{width:sw,height:sh}=this.#source;
 if(!sw||!sh)return;
-const width=even(Math.min(Math.round(rect.width),sw));
-const height=even(Math.min(Math.round(rect.height),sh));
+const width=this.#fit(rect.width,sw);
+const height=this.#fit(rect.height,sh);
 const x=Math.max(0,Math.min(Math.round(rect.x),sw-width));
 const y=Math.max(0,Math.min(Math.round(rect.y),sh-height));
 this.#rect={x,y,width,height};
