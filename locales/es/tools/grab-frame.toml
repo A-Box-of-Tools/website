@@ -29,7 +29,7 @@ live_hint = """
       fuera a procesar se pararía sin más."""
 
 read_first = """
-, <code>src/demux.js</code> para el lector que
+, <code>src/shared/mp4-reader.js</code> para el lector que
       encuentra los fotogramas dentro de un MP4 y <code>src/frames.js</code> para
       la parte que decodifica el que has pedido. Ninguno de los dos importa nada
       que pueda hacer una petición."""

@@ -30,7 +30,7 @@ live_hint = """
       網線照裁，一個把影片送出去處理的工具，這時候就該停了。"""
 
 read_first = """\
-      ，<code>src/demux.js</code> 裡是在 MP4 裡找出幀的那個讀取器，\
+      ，<code>src/shared/mp4-reader.js</code> 裡是在 MP4 裡找出幀的那個讀取器，\
       <code>src/transcode.js</code> 裡是解碼、裁剪、編碼的那個迴圈。兩個都沒有\
       引入任何能發請求的東西。"""
 

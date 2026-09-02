@@ -35,7 +35,7 @@ live_hint = """
 
 read_first = """
 、MP4の中からフレームを見つけ出す読み取り側については\
-      <code>src/demux.js</code>、それをデコードし、切り抜き、エンコードする\
+      <code>src/shared/mp4-reader.js</code>、それをデコードし、切り抜き、エンコードする\
       ループについては<code>src/transcode.js</code>です。どちらもリクエストを\
       出せるものを読み込んでいません。"""
 

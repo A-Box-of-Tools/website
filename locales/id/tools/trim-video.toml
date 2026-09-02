@@ -34,7 +34,7 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> untuk penanda dan file
-      tempat menyimpannya, <code>src/demux.js</code> untuk pembaca yang mencari
+      tempat menyimpannya, <code>src/shared/mp4-reader.js</code> untuk pembaca yang mencari
       bingkai di dalam MP4, <code>src/ranges.js</code> untuk aritmetika yang
       mengubah sebuah penanda menjadi deretan sampel, dan
       <code>src/copy.js</code> untuk perulangan yang memindahkan sampel itu ke

@@ -39,7 +39,7 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> pour les marques et le
-      fichier où elles s'enregistrent, <code>src/demux.js</code> pour le lecteur
+      fichier où elles s'enregistrent, <code>src/shared/mp4-reader.js</code> pour le lecteur
       qui trouve les images dans un MP4, <code>src/ranges.js</code> pour
       l'arithmétique qui transforme une marque en une suite d'échantillons, et
       <code>src/copy.js</code> pour la boucle qui déplace ces échantillons dans

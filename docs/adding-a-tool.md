@@ -96,6 +96,7 @@ A component more than one tool needs, and that no tool should own, lives under
 | `shared/js/pdf-reader.js` | `js_parts = ["pdf-reader"]` | opening a PDF somebody else wrote |
 | `shared/js/pdf-filters.js` | `js_parts = ["pdf-filters"]` | the stream filters, deflate included |
 | `shared/js/pdf-writer.js` | `js_parts = ["pdf-writer"]` | writing a PDF back out |
+| `shared/js/mp4-reader.js` | `js_parts = ["mp4-reader"]` | the MP4/MOV reader: every sample, where it is and when it shows |
 | `shared/js/phrases.js` | nothing — every tool gets it | the words, read off the page |
 | `shared/js/trust.js` | nothing — every tool gets it | the live network check and the offline line |
 

@@ -29,7 +29,7 @@ live_hint = """
       om hem te laten verwerken zou gewoon stoppen."""
 
 read_first = """
-, <code>src/demux.js</code> voor de lezer die de
+, <code>src/shared/mp4-reader.js</code> voor de lezer die de
       frames in een MP4 vindt, en <code>src/frames.js</code> voor het deel dat het
       gevraagde frame decodeert. Geen van beide importeert iets dat een verzoek kan
       doen."""

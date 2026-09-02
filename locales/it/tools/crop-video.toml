@@ -33,7 +33,7 @@ live_hint = """
       fermerebbe e basta."""
 
 read_first = """
-, <code>src/demux.js</code> per il lettore che trova
+, <code>src/shared/mp4-reader.js</code> per il lettore che trova
       i fotogrammi dentro un MP4, e <code>src/transcode.js</code> per il ciclo
       che li decodifica, li ritaglia e li codifica. Nessuno dei due importa
       qualcosa che sappia fare una richiesta."""

@@ -32,7 +32,7 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> für die Markierungen und
-      die Datei, in die sie gespeichert werden, <code>src/demux.js</code> für den
+      die Datei, in die sie gespeichert werden, <code>src/shared/mp4-reader.js</code> für den
       Leser, der die Einzelbilder in einem MP4 findet, <code>src/ranges.js</code>
       für die Rechnung, die aus einer Markierung eine Folge von Samples macht,
       und <code>src/copy.js</code> für die Schleife, die diese Samples in die neue

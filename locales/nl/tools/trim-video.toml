@@ -32,7 +32,7 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> voor de markeringen en
-      het bestand waarin ze opgeslagen worden, <code>src/demux.js</code> voor de
+      het bestand waarin ze opgeslagen worden, <code>src/shared/mp4-reader.js</code> voor de
       lezer die de frames in een mp4 vindt, <code>src/ranges.js</code> voor het
       rekenwerk dat een markering in een reeks samples verandert, en
       <code>src/copy.js</code> voor de lus die die samples naar het nieuwe

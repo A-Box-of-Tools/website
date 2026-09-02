@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './demux.js';
+import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { FrameReader, decodeSeries, frameNear, seriesFrames } from './frames.js';
 import { drawUpright, frameCanvas } from './draw.js';
 import { FORMATS, clockTime, encodeStill, stillName } from './still.js';

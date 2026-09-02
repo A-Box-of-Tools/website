@@ -30,7 +30,7 @@ live_hint = """
       che spedisse via il tuo video per elaborarlo si fermerebbe e basta."""
 
 read_first = """
-, <code>src/demux.js</code> per il lettore che trova i
+, <code>src/shared/mp4-reader.js</code> per il lettore che trova i
       fotogrammi dentro un MP4 e <code>src/frames.js</code> per la parte che
       decodifica quello che hai chiesto. Nessuno dei due importa qualcosa in grado
       di fare una richiesta."""

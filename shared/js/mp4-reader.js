@@ -1,18 +1,32 @@
 /**
  * A reader for ISO base media files - MP4, M4V and MOV.
  *
- * It exists so a still can be taken from the frame the file actually holds.
- * Once the frames are laid out as a list - where each one is, when it is shown,
- * and whether it can be decoded without the one before it - grabbing frame
- * number 812 is finding it in that list, decoding from the keyframe in front of
- * it, and drawing what comes out. The alternative - seeking a <video> element
- * and drawing whatever it happens to be showing - accepts more containers but
- * lands on the frame the player chose rather than the one that was asked for,
- * so it is the fallback rather than the first choice.
+ * GENERATED INTO EACH TOOL. This file lives at shared/js/mp4-reader.js and the
+ * build copies it to <tool>/src/shared/mp4-reader.js for every tool that asks
+ * for it with `js_parts = ["mp4-reader", ...]` - six of them: the cropper, the
+ * frame grabber, the time-lapse maker, the GIF maker, the trimmer and the
+ * reverser. It was six copies in two variants until the tests could follow a
+ * `./shared/` import; see tests/js/resolve-shared.mjs.
  *
- * This is the reader from /crop-video/, unchanged. Written by hand, because
- * this project has no dependencies and no build step: what is in this folder is
- * byte for byte what the browser runs.
+ * It exists so a video can be worked on from its frames rather than from a
+ * playback of them. Once the frames are laid out as a list - where each one
+ * is, how big it is, when it is shown, and whether it can be decoded without
+ * the one before it - a trim is choosing a run of that list and writing it
+ * back with nothing decoded; a crop, a reverse or a time-lapse is handing the
+ * right samples to a decoder in the right order; a frame grab is one sample
+ * and the keyframe in front of it. The alternative - playing the file and
+ * recording what comes out - accepts more containers but costs real time and
+ * re-encodes everything, so it is every tool's fallback rather than its first
+ * choice.
+ *
+ * The trim and reverse tools write the original frames back untouched, so the
+ * whole sample entry and the display matrix beside it are carried out of here
+ * verbatim for them. The re-encoding tools never read those two fields and
+ * carry a copy of a few dozen bytes for it, which is the price of one reader.
+ *
+ * Written by hand, like the muxer beside it, because this project has no
+ * dependencies and no build step: what is in this folder is byte for byte what
+ * the browser runs.
  *
  * It reads both layouts an MP4 comes in: the plain one, where one table at the
  * front says where every sample is, and the fragmented one, where each fragment
@@ -24,10 +38,8 @@
  *   - Encrypted tracks are refused: nothing here can decrypt them, and a
  *     garbled result is worse than an honest refusal.
  *   - Edit lists are ignored. They shift a track's start by a fraction of a
- *     second at most in the files people grab a frame out of, and honouring one
- *     properly means honouring all of them.
- *   - Only the video track is read. There is no sound in a still picture, so
- *     the audio track is found and then left alone.
+ *     second at most in the files people crop, and honouring one properly means
+ *     honouring all of them.
  *
  * Nothing in this file can reach the network. It is handed a File and returns a
  * description of what is in it.
@@ -37,8 +49,8 @@
  * Thrown when the file is well-formed but out of this demuxer's scope.
  *
  * `reason` is a phrase key, not a sentence: this module is copied byte for
- * byte into fifteen languages, so the sentence lives in the tool's body.html
- * and main.js resolves the key against it. `values` carries what a sentence
+ * byte into six tools and fifteen languages, so the sentence lives in each
+ * tool's body.html and its main.js resolves the key against it. `values` carries what a sentence
  * cannot know in advance - the four characters naming a codec this reader has
  * never heard of.
  */
@@ -533,6 +545,16 @@ function readVideoTrack(view, trak, timescale, duration, fragmented) {
   // the display width and height.
   const rotation = rotationOf(view, tkhd.end - 44);
 
+  // The matrix itself, and the two fixed-point sizes that follow it, are copied
+  // out whole. A trim writes the original frames back untouched, so the box
+  // that says which way up they are has to go back untouched with them - and
+  // copying the bytes is the only way to be sure the output presents exactly as
+  // the input did, including the matrices no one thought to test against.
+  const matrix = new Uint8Array(view.buffer.slice(
+    view.byteOffset + tkhd.end - 44, view.byteOffset + tkhd.end - 8));
+  const trackWidth = view.getUint32(tkhd.end - 8);
+  const trackHeight = view.getUint32(tkhd.end - 4);
+
   const stsd = findBox(view, stbl.body, stbl.end, 'stsd');
   if (!stsd) throw new UnsupportedFile('read.nostsd');
   const [entry] = [...boxes(view, fullBox(view, stsd).at + 4, stsd.end)];
@@ -547,6 +569,14 @@ function readVideoTrack(view, trak, timescale, duration, fragmented) {
 
   const codedWidth = view.getUint16(entry.body + 24);
   const codedHeight = view.getUint16(entry.body + 26);
+
+  // The whole sample entry, verbatim - the codec configuration inside it, the
+  // colour information beside it, and anything else the writer of this file
+  // chose to put there. On the copy path it is written back into the trimmed
+  // file exactly as it was found, so a description that is never parsed is a
+  // description that cannot be got wrong.
+  const sampleEntry = new Uint8Array(view.buffer.slice(
+    view.byteOffset + entry.start, view.byteOffset + entry.end));
 
   // The codec configuration box sits after the fixed 78-byte visual sample
   // entry header. It is handed to VideoDecoder untouched: this file works out
@@ -580,6 +610,10 @@ function readVideoTrack(view, trak, timescale, duration, fragmented) {
     trackId,
     codec,
     description,
+    sampleEntry,
+    matrix,
+    trackWidth,
+    trackHeight,
     entryType: entry.type,
     codedWidth,
     codedHeight,

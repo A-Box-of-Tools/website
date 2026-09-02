@@ -28,7 +28,7 @@ live_hint = """
 
 read_first = """
 , MP4 안에서 프레임을 찾아내는 판독기는
-      <code>src/demux.js</code>, 요청한 프레임을 푸는 쪽은
+      <code>src/shared/mp4-reader.js</code>, 요청한 프레임을 푸는 쪽은
       <code>src/frames.js</code>입니다. 둘 다 요청을 보낼 수 있는 것은 아무것도
       들여오지 않습니다."""
 

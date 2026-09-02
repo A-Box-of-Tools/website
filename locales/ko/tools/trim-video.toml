@@ -37,7 +37,7 @@ live_hint = """
 read_first = """
 , 표시와 그것이 저장되는 파일은
       <code>src/segments.js</code>, MP4 안에서 프레임을 찾아내는 리더는
-      <code>src/demux.js</code>, 표시 하나를 샘플의 구간으로 바꾸는 산술은
+      <code>src/shared/mp4-reader.js</code>, 표시 하나를 샘플의 구간으로 바꾸는 산술은
       <code>src/ranges.js</code>, 그 샘플을 새 파일로 옮기는 반복문은
       <code>src/copy.js</code>에 있습니다. 어느 것도 요청을 보낼 수 있는 무언가를
       불러오지 않습니다."""

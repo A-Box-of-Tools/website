@@ -50,7 +50,7 @@ on. The budget is in `windowLimit()`: about 384 MB of decoded frames, which is
 | Out | MP4 (H.264) | MP4 (H.264) |
 
 **The fallback is chosen by the reader failing, not by the extension.** Every
-file goes to `src/demux.js` first; if it comes back with an `UnsupportedFile`,
+file goes to `src/shared/mp4-reader.js` first; if it comes back with an `UnsupportedFile`,
 the reason on it is what the page prints — "this is not an MP4 or MOV file",
 "the video track is encrypted", "this browser will not decode
 `hvc1.2.4.L120.B0` directly". A tool that says *which* thing it could not do is
@@ -158,7 +158,7 @@ leaving at 6, it just becomes larger.
 | `src/reverse.js` | the exact path: the backwards walk, the encoder, and the writing |
 | `src/playback.js` | the fallback: measuring the frame rate, then a seek a frame |
 | `src/audio.js` | decoding a track, turning it round, encoding it again, and the `esds` at both ends |
-| `src/demux.js` | the MP4/MOV reader, copied from `/trim-video/` |
+| `src/shared/mp4-reader.js` | the MP4/MOV reader, shared with every video tool here |
 | `src/mp4.js` | the writer, copied from `/trim-video/` |
 | `src/draw.js` | one frame onto a canvas, the right way up |
 | `src/support.js` | what this browser will decode and encode |

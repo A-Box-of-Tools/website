@@ -32,8 +32,8 @@ css_parts = ["progress"]
 # Shared modules this tool asks for. The same arrangement as css_parts,
 # and for the same reason: a component more than one tool needs and no
 # tool should own. file-picker brings in the drop zone.
-js_parts = ["file-picker", "zip", "crc32"]
-lastmod = "2026-08-27"
+js_parts = ["file-picker", "zip", "crc32", "mp4-reader"]
+lastmod = "2026-09-02"
 
 # --- what search engines and chat apps are told ------------------------------
 
@@ -72,7 +72,7 @@ live_hint = """
 # --- the "how this is verified" panel ----------------------------------------
 
 read_first = """
-, <code>src/demux.js</code> for the reader that finds
+, <code>src/shared/mp4-reader.js</code> for the reader that finds
       the frames in an MP4, and <code>src/frames.js</code> for the part that
       decodes the one you asked for. Neither imports anything that can make a
       request."""
