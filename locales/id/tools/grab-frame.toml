@@ -30,7 +30,7 @@ live_hint = """
       untuk diproses akan langsung berhenti."""
 
 read_first = """
-, <code>src/demux.js</code> untuk pembaca yang mencari
+, <code>src/shared/mp4-reader.js</code> untuk pembaca yang mencari
       bingkai di dalam MP4, dan <code>src/frames.js</code> untuk bagian yang
       mendekode bingkai yang Anda minta. Tidak satu pun mengimpor sesuatu yang
       bisa membuat permintaan."""

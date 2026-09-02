@@ -30,7 +30,7 @@
  * for the reason src/audio.js opens with.
  */
 
-import { FileWindow } from './demux.js';
+import { FileWindow } from './shared/mp4-reader.js';
 import { Mp4Writer, avcSampleEntry } from './mp4.js';
 import { drawFitted } from './draw.js';
 import { pickH264Codec } from './support.js';
@@ -259,7 +259,7 @@ function micros(ticks, timescale) {
  * a couple of seconds of video, a few megabytes - and a group past the cache
  * limit is read from the file per pass instead.
  *
- * The window in demux.js is not used here, and this is why: it moves forwards
+ * The window in shared/mp4-reader.js is not used here, and this is why: it moves forwards
  * cheaply and backwards expensively, and this is the one thing on this site
  * that reads a file from the end.
  */

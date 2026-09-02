@@ -34,7 +34,7 @@ live_hint = """
 
 read_first = """
 , <code>src/segments.js</code> per i segni e il file
-      in cui vengono salvati, <code>src/demux.js</code> per il lettore che trova
+      in cui vengono salvati, <code>src/shared/mp4-reader.js</code> per il lettore che trova
       i fotogrammi dentro un MP4, <code>src/ranges.js</code> per l'aritmetica
       che trasforma un segno in una serie di campioni, e
       <code>src/copy.js</code> per il ciclo che sposta quei campioni nel file

@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './demux.js';
+import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { cropExact, grabFrame, decoderConfig, averageFps } from './transcode.js';
 import { cropByRecording } from './record.js';
 import { Cropper } from './cropper.js';

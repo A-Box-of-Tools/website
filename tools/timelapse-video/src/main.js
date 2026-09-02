@@ -2,7 +2,7 @@
 
 import { phrase } from './shared/phrases.js';
 import { wireFilePicker } from './shared/file-picker.js';
-import { demux, UnsupportedFile } from './demux.js';
+import { demux, UnsupportedFile } from './shared/mp4-reader.js';
 import { timelapseByDecoding, previewFrame, decoderConfig, averageFps } from './decode.js';
 import { timelapseByPlaying } from './playback.js';
 import { TimelapseWriter } from './encode.js';

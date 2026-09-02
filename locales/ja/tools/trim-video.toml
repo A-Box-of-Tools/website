@@ -34,7 +34,7 @@ live_hint = """
 
 read_first = """
 、印とその保存先ファイルについては<code>src/segments.js</code>、MP4の中から\
-      フレームを見つけ出す読み取り側については<code>src/demux.js</code>、印を一続きの\
+      フレームを見つけ出す読み取り側については<code>src/shared/mp4-reader.js</code>、印を一続きの\
       サンプルに変える計算については<code>src/ranges.js</code>、そのサンプルを新しい\
       ファイルへ移すループについては<code>src/copy.js</code>です。どれもリクエストを\
       出せるものを読み込んでいません。"""

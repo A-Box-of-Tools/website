@@ -174,11 +174,11 @@ says so before the button is pressed.
 ## What is shared with the audio editor, and why it is copied
 
 `src/decode.js`, `src/samplerate.js` and `src/wav.js` are byte for byte the
-[audio editor](../edit-audio/)'s. That is the same arrangement `src/demux.js`
-has across the three video tools: each tool folder in `dist/` is complete on its
-own, cached by its own service worker, and readable without following an import
-into a neighbour. Only `shared/js/` is genuinely shared, and only for things no
-tool should own.
+[audio editor](../edit-audio/)'s. That was the arrangement the MP4 reader had
+across the video tools too, until it moved to `shared/js/mp4-reader.js`, and
+the three here are next: a shared part is copied into each tool at build time,
+so a tool folder in `dist/` stays complete on its own, cached by its own service
+worker, and readable without following an import into a neighbour.
 
 The one thing worth knowing about `decode.js` is documented in
 `src/samplerate.js`: `decodeAudioData` resamples to whatever rate the context

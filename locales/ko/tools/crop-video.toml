@@ -36,7 +36,7 @@ live_hint = """
 
 read_first = """
 , MP4 안에서 프레임을 찾아내는 리더는
-      <code>src/demux.js</code>, 디코딩하고 자르고 인코딩하는 반복문은
+      <code>src/shared/mp4-reader.js</code>, 디코딩하고 자르고 인코딩하는 반복문은
       <code>src/transcode.js</code>에 있습니다. 둘 다 요청을 보낼 수 있는
       무언가를 불러오지 않습니다."""
 

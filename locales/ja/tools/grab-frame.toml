@@ -29,7 +29,7 @@ live_hint = """
 
 read_first = """
 、MP4の中からコマを見つける読み取りは\
-      <code>src/demux.js</code>、指定されたコマを展開する部分は\
+      <code>src/shared/mp4-reader.js</code>、指定されたコマを展開する部分は\
       <code>src/frames.js</code>です。どちらも、リクエストを出せるものは\
       何ひとつ読み込んでいません。"""
 

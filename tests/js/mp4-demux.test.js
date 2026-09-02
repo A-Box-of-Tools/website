@@ -1,11 +1,12 @@
 /**
- * The hand-written MP4 reader, in both the copies that exist.
+ * shared/js/mp4-reader.js - the hand-written MP4 reader.
  *
  * This is the file that turns somebody else's video into the list every video
  * tool works from - where each frame is, how big it is, when it is shown, and
- * whether it can be decoded on its own. Six tools carry a copy, and until now
- * none of them had a test: the reader was loaded by the suite and never once
- * executed, which reads as 21% of its lines covered and 0% of its functions.
+ * whether it can be decoded on its own. Six tools ship it, and for a long time
+ * each carried its own copy and none of them had a test: the reader was loaded
+ * by the suite and never once executed, which read as 21% of its lines covered
+ * and 0% of its functions.
  *
  * An error here does not throw. It hands back a list that is the right length
  * and the right shape and points at the wrong bytes, and what a person sees is
@@ -13,31 +14,16 @@
  * frame decoded from the middle of the one before it. So the assertions below
  * are mostly about arithmetic that has no visible failure mode.
  *
- * WHY EVERY TEST RUNS TWICE
- *
- * `tests/python/test_duplicates.py` declares two groups for demux.js - one for
- * crop-video, grab-frame, timelapse-video and video-to-gif, another for
- * reverse-video and trim-video - which means the copies inside a group are
- * checked to agree and the two groups are not. They differ: trim-video's copy
- * carries the display matrix and the sample entry out whole, because a trim
- * writes them back untouched. Everything under test here is common to both, so
- * running the suite against one copy from each group is what makes a pass
- * cover all six rather than four.
+ * The copies came in two variants - the trim and reverse tools' carried the
+ * display matrix and the sample entry out whole, because they write both back
+ * untouched, and the re-encoding tools' did not - and every test here used to
+ * run once against each. The shared module is the superset, so there is one
+ * reader to test, and the last test below is what the four re-encoding tools
+ * gained without asking.
  */
-
 import test from 'node:test';
 import assert from 'node:assert/strict';
-
-import {
-  demux as grabFrameDemux,
-  FileWindow as GrabFrameWindow,
-  UnsupportedFile as GrabFrameUnsupported,
-} from '../../tools/grab-frame/src/demux.js';
-import {
-  demux as trimVideoDemux,
-  FileWindow as TrimVideoWindow,
-  UnsupportedFile as TrimVideoUnsupported,
-} from '../../tools/trim-video/src/demux.js';
+import { demux, FileWindow, UnsupportedFile } from '../../shared/js/mp4-reader.js';
 
 import {
   AV1C, AVCC, FTYP, HVCC, VPCC_BODY,
@@ -46,17 +32,12 @@ import {
 } from './mp4-fixtures.js';
 import { ascii, concat, u32be } from './helpers.js';
 
-/** One reader from each declared duplicate group. See the header. */
-const READERS = [
-  ['grab-frame', grabFrameDemux, GrabFrameWindow, GrabFrameUnsupported],
-  ['trim-video', trimVideoDemux, TrimVideoWindow, TrimVideoUnsupported],
-];
-
-/** Run one body against both copies, so a divergence between them fails. */
+/**
+ * Kept from when every case ran against one copy from each duplicate group;
+ * the bodies still take the reader as an argument, and there is one reader.
+ */
 function forEachReader(name, body) {
-  for (const [tool, demux, FileWindow, UnsupportedFile] of READERS) {
-    test(`${name} [${tool}]`, () => body({ demux, FileWindow, UnsupportedFile }));
-  }
+  test(name, () => body({ demux, FileWindow, UnsupportedFile }));
 }
 
 const avc1 = (options = {}) => visualEntry('avc1', { config: box('avcC', AVCC), ...options });
@@ -705,15 +686,16 @@ forEachReader('a track whose timescale is zero', async ({ demux, UnsupportedFile
   await refuses(demux, UnsupportedFile, bytes, 'read.notimescale');
 });
 
-/* --------------------------------------------- what only trim-video keeps */
+/* ------------------------------------ what the trim and reverse tools keep */
 
-test('trim-video carries the matrix and sample entry out whole', async () => {
-  // Its copy of the reader has one addition: a trim writes the original frames
-  // back untouched, so the boxes describing them have to survive the trip
-  // byte for byte rather than be rebuilt from what was parsed out of them.
+test('the matrix and the sample entry come out whole', async () => {
+  // A trim writes the original frames back untouched, so the boxes describing
+  // them have to survive the trip byte for byte rather than be rebuilt from
+  // what was parsed out of them. The re-encoding tools never read these two
+  // fields, and carrying them costs a copy of a few dozen bytes.
   const entry = avc1();
   const { bytes } = plainFile({ tracks: [{ ...VIDEO, entry, rotation: 90 }] });
-  const { video } = await trimVideoDemux(asFile(bytes));
+  const { video } = await demux(asFile(bytes));
 
   assert.deepEqual(video.sampleEntry, entry);
   assert.equal(video.matrix.length, 36);

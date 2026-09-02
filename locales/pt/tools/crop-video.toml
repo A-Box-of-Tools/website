@@ -35,7 +35,7 @@ live_hint = """
       pararia."""
 
 read_first = """
-, <code>src/demux.js</code> para o leitor que acha os
+, <code>src/shared/mp4-reader.js</code> para o leitor que acha os
       quadros num MP4, e <code>src/transcode.js</code> para o laço que decodifica,
       corta e codifica. Nenhum dos dois importa qualquer coisa que consiga fazer
       uma requisição."""

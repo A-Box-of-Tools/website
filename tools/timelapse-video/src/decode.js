@@ -16,7 +16,7 @@
  * keeps the pipeline full across a run that is only two frames long.
  */
 
-import { FileWindow } from './demux.js';
+import { FileWindow } from './shared/mp4-reader.js';
 import { decodeRuns } from './plan.js';
 import { drawScaled, frameCanvas } from './draw.js';
 

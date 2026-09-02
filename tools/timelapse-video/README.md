@@ -72,7 +72,7 @@ definition a picture that depends on nothing before it.
 
 | | `decode.js` | `playback.js` |
 |---|---|---|
-| Reads with | `demux.js` + `VideoDecoder` | the `<video>` element |
+| Reads with | `shared/mp4-reader.js` + `VideoDecoder` | the `<video>` element |
 | Accepts | MP4, M4V, MOV — H.264, HEVC, AV1, VP9 | anything the browser plays |
 | Exact about which frame is which instant | yes | no: the browser decides where a seek lands |
 | Skips the parts it does not need | yes, explicitly | in effect: a seek decodes one GOP |
@@ -123,21 +123,21 @@ over sixty times as many frames.
 | `playback.js` | the fallback: seek the `<video>` element to each instant |
 | `encode.js` | canvas → `VideoEncoder` → `Mp4Muxer`; shared by both paths |
 | `draw.js` | one frame onto the output canvas, the right way up |
-| `demux.js` | the MP4 reader. A copy — see below |
+| `shared/mp4-reader.js` | the MP4 reader, shared — see below |
 | `mp4.js` | the muxer. A copy — see below |
 | `support.js` | what this browser will decode and encode |
 | `main.js` | the page: wiring, the summary, the progress bar |
 
-## The two copied modules
+## The shared reader and the copied muxer
 
-`demux.js` is the same reader `/crop-video/`, `/grab-frame/` and `/video-to-gif/`
-carry, and `mp4.js` is the same muxer `/images-to-video/` carries. Neither is
-shared through `shared/js/`, because a shared module is copied into a tool at
-build time and a source file importing one cannot be loaded outside a build —
-which is exactly what the JavaScript tests do.
+`shared/mp4-reader.js` is the reader every video tool here ships —
+`shared/js/mp4-reader.js`, asked for in `tool.toml` and copied in by the build.
+`mp4.js` is still the same muxer `/images-to-video/` carries, from before the
+JavaScript tests could follow a `./shared/` import; `tests/js/resolve-shared.mjs`
+resolves that now, so moving it is the next step.
 
-`tests/python/test_duplicates.py` declares both copies and fails if they drift
-apart. Fix one and it will tell you about the others.
+`tests/python/test_duplicates.py` declares the muxer's copies and fails if they
+drift apart. Fix one and it will tell you about the other.
 
 ## Rotation
 

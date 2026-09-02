@@ -3,21 +3,20 @@ The modules that exist as more than one copy, and have to stay in step.
 
 WHY THERE ARE COPIES AT ALL
 
-The MP4 reader is about seven hundred lines of box parsing and it sits in every
-tool that reads frames out of a video file. It is a copy because of a rule that
-held until tests/js/resolve-shared.mjs: a shared module is copied into a tool
-at build time, at src/shared/, so a source file importing one could not be
-loaded outside a build - and the JavaScript tests import tool modules straight
-off the disk with no build in front of them. Every one of those tools reaches
-the reader from a leaf module that has tests (grab-frame's frames.js,
-trim-video's copy.js), so sharing it would have traded those tests for the
-deduplication.
+The MP4 writer is about five hundred lines of box building and it sits in
+every tool that writes a video file. It is a copy because of a rule that held
+until tests/js/resolve-shared.mjs: a shared module is copied into a tool at
+build time, at src/shared/, so a source file importing one could not be loaded
+outside a build - and the JavaScript tests import tool modules straight off
+the disk with no build in front of them. Every one of those tools reaches the
+writer from a leaf module that has tests, so sharing it would have traded
+those tests for the deduplication.
 
 That rule is gone. The tests now resolve a tool module's `./shared/` imports to
-shared/js/ themselves, and exif-editor and merge-pdf were the first to give up
-their copies of the CRC and the ZIP writer on the strength of it. Every group
-below is a move that has not happened yet, and until it happens the copies
-still have to agree - which is all this file has ever enforced. See "Shared
+shared/js/ themselves; the CRC and the ZIP writer went first, then the four PDF
+modules, then the MP4 reader that used to be the largest group here. Every
+group below is a move that has not happened yet, and until it happens the
+copies still have to agree - which is all this file has ever enforced. See "Shared
 parts" in docs/adding-a-tool.md.
 
 WHAT THIS ENFORCES INSTEAD
@@ -41,16 +40,12 @@ compared is the code and only the code.
 
 The groups are deliberate, not accidental:
 
-  - demux.js has two. The trim and reverse tools write the original frames back
-    untouched, so their reader carries the sample entry and the display matrix
-    out of the file whole; the crop, grab-frame and video-to-gif readers
-    re-encode and have no use for either. That difference is commented in the
-    files and is the only difference between the groups.
-  - demux.js's first group re-encodes and has no use for the sample entry or
-    the display matrix, and the time-lapse maker joined it for that reason: it
-    draws every frame through a canvas too. What it wants the reader for is
-    different - the sample table is what lets it decode one frame in a hundred -
-    but that is a use of the reader, not a change to it.
+  - demux.js is gone from here: it is shared/js/mp4-reader.js, one module in
+    six tools. It had two groups - the trim and reverse tools' copy carried the
+    sample entry and the display matrix out of the file whole, because they
+    write both back untouched, and the four re-encoding tools' copy did not -
+    and the shared module is the superset. The four that never read those two
+    fields carry a copy of a few dozen bytes for it, which is nothing.
   - mp4.js has two groups. Trim and reverse write the sound that arrived back
     out with the picture, so their writer interleaves two tracks. Images-to-video
     and the time-lapse maker both write one video track and no audio - a
@@ -96,8 +91,6 @@ TOOLS = ROOT / 'tools'
 
 # (module, tools whose copies must be identical to each other)
 GROUPS = [
-    ('demux.js', ['crop-video', 'grab-frame', 'timelapse-video', 'video-to-gif']),
-    ('demux.js', ['reverse-video', 'trim-video']),
     ('mp4.js', ['reverse-video', 'trim-video']),
     ('mp4.js', ['images-to-video', 'timelapse-video']),
     ('qr-tables.js', ['qr-barcode', 'qr-barcode-reader']),
@@ -181,16 +174,6 @@ class Groups(unittest.TestCase):
                         f'tools/{first}/src/{module} and tools/{other}/src/'
                         f'{module} have drifted apart. They are copies of one '
                         f'another; a fix to one belongs in both.')
-
-    def test_the_groups_are_not_secretly_one_group(self):
-        # If the two demux groups ever become identical, the reason for having
-        # two has gone and they should be one - which is worth being told.
-        readers = [tokens('demux.js', tools[0])
-                   for module, tools in GROUPS if module == 'demux.js']
-        self.assertNotEqual(
-            readers[0], readers[1],
-            'the two demux.js groups now agree, so there is no longer a reason '
-            'for two - collapse them into one group here')
 
 
 class Coverage(unittest.TestCase):
