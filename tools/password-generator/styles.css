@@ -72,7 +72,6 @@
 .field > label { font-size: 0.85rem; font-weight: 600; }
 .field-note { margin: 0.15rem 0 0; font-size: 0.78rem; color: var(--text-dim); }
 
-.field.checks { gap: 0.5rem; }
 .checks-label { font-size: 0.85rem; font-weight: 600; }
 
 .check {

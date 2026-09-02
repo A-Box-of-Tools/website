@@ -1,0 +1,37 @@
+/* ----------------------------------------------------------------- panes
+   The two text panes of a formatter page - the input and the output, side
+   by side where there is room - and the head above each with its label.
+
+   Asked for with `css_parts = ["panes"]`. The six text tools carried these
+   rules token for token; the build puts this file before a tool's own
+   stylesheet, so a tool that wants one of them different writes its own
+   rule and wins, provided it sets every property the rule here sets. */
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.pane-head {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: space-between;
+}
+
+.pane-head label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.panes {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+  margin-top: 1rem;
+}
+
+.field.checks { gap: 0.5rem; }
